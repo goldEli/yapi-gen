@@ -10,6 +10,7 @@ import MainGrid from '@/components/MainGrid/MainGrid'
 import MainTable from '@/components/MainTable/MainTable'
 import ProjectCard from '@/components/ProjectCard'
 import { HoverIcon } from '@/components/ProjectCard/style'
+import RichEditor from '@/components/RichEditor'
 import ViewPort from '@/components/ViewPort'
 import useSetTitle from '@/hooks/useSetTitle'
 import {
@@ -229,6 +230,7 @@ const ProjectManagementOptimization = () => {
         onChangeVisible={() => setIsStop(!isStop)}
         onConfirm={onStopProject}
       />
+      <RichEditor />
       <div
         style={{
           display: 'flex',
