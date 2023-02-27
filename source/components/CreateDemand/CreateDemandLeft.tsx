@@ -56,16 +56,14 @@ const CreateDemandLeft = (props: Props) => {
   const { createDemandProps } = useSelector(store => store.demand)
 
   // 提交参数
-  const onConfirm = () => {
-    form.validateFields()
-    form.validateFields().then(() => {
-      const values = form.getFieldsValue()
-      values.tagIds = tagCheckedList?.map((i: any) => ({
-        name: i.name,
-        color: i.color,
-      }))
-      return { ...values }
-    })
+  const onConfirm = async () => {
+    await form.validateFields()
+    const values = form.getFieldsValue()
+    values.tagIds = tagCheckedList?.map((i: any) => ({
+      name: i.name,
+      color: i.color,
+    }))
+    return { ...values }
   }
 
   // 提交参数后的操作

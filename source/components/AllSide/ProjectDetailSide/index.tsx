@@ -28,7 +28,7 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const projectId = paramsData.id
+  const projectId = paramsData?.id
   const { projectInfo } = useSelector(store => store.project)
   const routerPath = useLocation()
   const navigate = useNavigate()

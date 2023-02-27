@@ -334,44 +334,44 @@ const CreateDemandRight = (props: Props) => {
   }
 
   // 提交右侧参数
-  const onConfirm = () => {
-    form.validateFields()
-    form.validateFields().then(() => {
-      let customValues: any = {}
-      const values = form.getFieldsValue()
-      values.priority =
-        JSON.stringify(priorityDetail) === '{}' ? null : priorityDetail
+  const onConfirm = async () => {
+    await form.validateFields()
+    // form.validateFields().then(() => {
+    let customValues: any = {}
+    const values = form.getFieldsValue()
+    values.priority =
+      JSON.stringify(priorityDetail) === '{}' ? null : priorityDetail
 
-      Object.keys(values)?.forEach((k: any) => {
-        values[k] = values[k] ? values[k] : ''
-        const obj = props.fieldsList?.filter((i: any) => k === i.content)[0]
-        // 处理预计结束时间和预计开始时间
-        if (['expected_end_at', 'expected_start_at'].includes(k)) {
-          values[k] = moment(values[k.content]).format('YYYY-MM-DD')
-        }
-        // 处理自定义字段中时间参数
-        if (obj?.fieldContent?.attr === 'date' && values[k]) {
-          values[obj.content] = moment(values[obj.content]).format(
-            obj?.fieldContent?.value[0] === 'datetime'
-              ? 'YYYY-MM-DD HH:mm:ss'
-              : 'YYYY-MM-DD',
-          )
-        } else if (
-          obj?.fieldContent?.attr === 'select_checkbox' ||
-          obj?.fieldContent?.attr === 'checkbox' ||
-          obj?.fieldContent?.attr === 'user_select_checkbox'
-        ) {
-          values[obj.content] = values[obj.content]?.length
-            ? values[obj.content]
-            : []
-        }
+    Object.keys(values)?.forEach((k: any) => {
+      values[k] = values[k] ? values[k] : ''
+      const obj = props.fieldsList?.filter((i: any) => k === i.content)[0]
+      // 处理预计结束时间和预计开始时间
+      if (['expected_end_at', 'expected_start_at'].includes(k)) {
+        values[k] = moment(values[k.content]).format('YYYY-MM-DD')
+      }
+      // 处理自定义字段中时间参数
+      if (obj?.fieldContent?.attr === 'date' && values[k]) {
+        values[obj.content] = moment(values[obj.content]).format(
+          obj?.fieldContent?.value[0] === 'datetime'
+            ? 'YYYY-MM-DD HH:mm:ss'
+            : 'YYYY-MM-DD',
+        )
+      } else if (
+        obj?.fieldContent?.attr === 'select_checkbox' ||
+        obj?.fieldContent?.attr === 'checkbox' ||
+        obj?.fieldContent?.attr === 'user_select_checkbox'
+      ) {
+        values[obj.content] = values[obj.content]?.length
+          ? values[obj.content]
+          : []
+      }
 
-        if (String(k).includes('custom_')) {
-          customValues[k] = values[k]
-        }
-      })
-      return { ...values, ...{ customField: customValues } }
+      if (String(k).includes('custom_')) {
+        customValues[k] = values[k]
+      }
     })
+    return { ...values, ...{ customField: customValues } }
+    // })
   }
 
   useImperativeHandle(props.onRef, () => {

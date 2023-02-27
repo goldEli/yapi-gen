@@ -166,8 +166,8 @@ const CreateDemand = () => {
 
   // 点击保存，hasNext是否是完成并下一个
   const onSaveCategory = async (hasNext?: number) => {
-    const leftValues = leftDom.current.confirm()
-    const rightValues = rightDom.current.confirm()
+    const leftValues = await leftDom.current.confirm()
+    const rightValues = await rightDom.current.confirm()
     if (leftValues && rightValues) {
       await onSaveDemand({ ...leftValues, ...rightValues }, hasNext)
     }

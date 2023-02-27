@@ -17,7 +17,7 @@ const ViewPort = (props: any) => {
       type: 'group',
       label: '个人视图',
       children: viewList
-        .filter((i: any) => {
+        ?.filter((i: any) => {
           return i.type !== 2
         })
         .map((item: any) => {
@@ -32,7 +32,7 @@ const ViewPort = (props: any) => {
       type: 'group',
       label: '系统',
       children: viewList
-        .filter((i: any) => {
+        ?.filter((i: any) => {
           return i.type === 2
         })
         .map((item: any) => {
