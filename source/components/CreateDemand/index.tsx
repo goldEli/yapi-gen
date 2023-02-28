@@ -62,6 +62,8 @@ const CreateDemand = () => {
     // 清除创建需求点击的下拉需求类别 -- 需求
     dispatch(setCreateCategory({}))
     setIsSaveParams(false)
+    setProjectId('')
+    setFieldList([])
     setTimeout(() => {
       leftDom.current?.reset()
       rightDom.current?.reset()
@@ -98,7 +100,7 @@ const CreateDemand = () => {
     // 如果有需求id则获取详情
     if (createDemandProps.demandId) {
       const demandResponse = await getDemandInfo({
-        projectId: projectId,
+        projectId,
         id: createDemandProps?.demandId,
       })
       setDemandInfo(demandResponse)
@@ -152,7 +154,6 @@ const CreateDemand = () => {
       leftDom.current.update()
       setIsSaveParams(true)
     } else {
-      // setChangeCategoryFormData({})
       dispatch(setCreateCategory({}))
       setTimeout(() => {
         leftDom.current?.reset()
@@ -173,7 +174,7 @@ const CreateDemand = () => {
     }
   }
 
-  //   获取初始展示数据
+  //   切换项目id获取初始展示数据
   const getInit = async (value?: any) => {
     const [projectInfoData] = await Promise.all([
       getProjectInfoValues({ projectId: value }),
@@ -192,64 +193,59 @@ const CreateDemand = () => {
   }, [isCreateDemandVisible])
 
   return (
-    <>
-      <CommonModal
-        title="创建需求"
-        isVisible={isCreateDemandVisible}
-        onClose={onCancel}
-        width="88%"
-        hasFooter={
-          <ModalFooter>
-            <Space size={16}>
-              <CommonButton type="light" onClick={onCancel}>
-                {t('common.cancel')}
+    <CommonModal
+      title="创建需求"
+      isVisible={isCreateDemandVisible}
+      onClose={onCancel}
+      width="88%"
+      hasFooter={
+        <ModalFooter>
+          <Space size={16}>
+            <CommonButton type="light" onClick={onCancel}>
+              {t('common.cancel')}
+            </CommonButton>
+            {!createDemandProps.demandId && (
+              <CommonButton type="secondary" onClick={() => onSaveCategory(1)}>
+                {t('common.finishToAdd')}
               </CommonButton>
-              {!createDemandProps.demandId && (
-                <CommonButton
-                  type="secondary"
-                  onClick={() => onSaveCategory(1)}
-                >
-                  {t('common.finishToAdd')}
-                </CommonButton>
-              )}
-              <CommonButton type="primary" onClick={() => onSaveCategory()}>
-                {createDemandProps.demandId
-                  ? t('common.confirm2')
-                  : t('newlyAdd.create')}
-              </CommonButton>
-            </Space>
-          </ModalFooter>
-        }
+            )}
+            <CommonButton type="primary" onClick={() => onSaveCategory()}>
+              {createDemandProps.demandId
+                ? t('common.confirm2')
+                : t('newlyAdd.create')}
+            </CommonButton>
+          </Space>
+        </ModalFooter>
+      }
+    >
+      <div
+        style={{
+          height: 'calc(90vh - 136px)',
+          padding: '0 4px 0 8px',
+          display: 'flex',
+        }}
       >
-        <div
-          style={{
-            height: 'calc(90vh - 136px)',
-            padding: '0 4px 0 8px',
-            display: 'flex',
-          }}
-        >
-          <CreateDemandLeft
-            projectList={projectList}
-            onRef={leftDom}
-            allCategoryList={allCategoryList}
-            projectId={projectId}
-            onChangeProjectId={setProjectId}
-            demandDetail={demandInfo}
-            onGetFieldList={setFieldList}
-            onResetForm={onResetForm}
-            onGetDataAll={getInit}
-          />
-          <CreateDemandRight
-            projectId={projectId}
-            parentList={parentList}
-            onRef={rightDom}
-            fieldsList={fieldList}
-            demandDetail={demandInfo}
-            isSaveParams={isSaveParams}
-          />
-        </div>
-      </CommonModal>
-    </>
+        <CreateDemandLeft
+          projectList={projectList}
+          onRef={leftDom}
+          allCategoryList={allCategoryList}
+          projectId={projectId}
+          onChangeProjectId={setProjectId}
+          demandDetail={demandInfo}
+          onGetFieldList={setFieldList}
+          onResetForm={onResetForm}
+          onGetDataAll={getInit}
+        />
+        <CreateDemandRight
+          projectId={projectId}
+          parentList={parentList}
+          onRef={rightDom}
+          fieldsList={fieldList}
+          demandDetail={demandInfo}
+          isSaveParams={isSaveParams}
+        />
+      </div>
+    </CommonModal>
   )
 }
 
