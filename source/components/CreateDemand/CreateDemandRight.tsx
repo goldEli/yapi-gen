@@ -68,7 +68,46 @@ const CreateDemandRight = (props: Props) => {
 
   // 回填自定义数据 -- params：传入回填数据对象，isFilter：是否是筛选回填
   const setCustomFields = (params: any, isFilter: boolean) => {
-    //
+    let resultCustom: any = {}
+    const customArr = props.fieldsList?.filter((i: any) =>
+      Object.keys(params).some((k: any) => k === i.content),
+    )
+    customArr?.forEach((element: any) => {
+      const customValue: any = params[element.content]
+      if (
+        [
+          'select_checkbox',
+          'select',
+          'checkbox',
+          'radio',
+          'user_select_checkbox',
+          'user_select',
+        ].includes(element.type.attr)
+      ) {
+        // 判断是否是下拉框，是则去除空选项
+        const values = customValue?.filter((i: any) => i !== -1)
+        // 判断是否是单选，是则取第一个
+        const resultValue = ['select', 'radio', 'user_select'].includes(
+          element.type.attr,
+        )
+          ? values[0]
+          : values
+        resultCustom[element.content] = isFilter ? resultValue : customValue
+      } else if (['number'].includes(element.type.attr)) {
+        // 判断是否是数字类型，是则获取start
+        resultCustom[element.content] = isFilter
+          ? Number(customValue?.start)
+          : customValue
+      } else if (['date'].includes(element.type.attr)) {
+        // 判断是否是时间类型，是则获取第一个时间
+        resultCustom[element.content] = isFilter
+          ? moment(customValue[0])
+          : moment(customValue)
+      } else if (['text', 'textarea'].includes(element.type.attr)) {
+        resultCustom[element.content] = customValue
+      }
+    })
+    form.setFieldsValue({ ...form, ...resultCustom })
   }
 
   // 需求详情返回后给标签及附件数组赋值
@@ -80,17 +119,17 @@ const CreateDemandRight = (props: Props) => {
     ) {
       // 需求进度
       setSchedule(props?.demandDetail?.schedule)
-      // // 获取自定义字段回显值
-      // const form1Obj: any = {}
-      // for (const key in props?.demandDetail?.customField) {
-      //   form1Obj[key] =
-      //     props?.demandDetail?.customField[key]?.attr === 'date'
-      //       ? props?.demandDetail?.customField[key]?.value
-      //         ? moment(props?.demandDetail?.customField[key]?.value)
-      //         : ''
-      //       : props?.demandDetail?.customField[key]?.value
-      // }
-      // form1.setFieldsValue(form1Obj)
+      // 获取自定义字段回显值
+      const form1Obj: any = {}
+      for (const key in props?.demandDetail?.customField) {
+        form1Obj[key] =
+          props?.demandDetail?.customField[key]?.attr === 'date'
+            ? props?.demandDetail?.customField[key]?.value
+              ? moment(props?.demandDetail?.customField[key]?.value)
+              : ''
+            : props?.demandDetail?.customField[key]?.value
+      }
+      form.setFieldsValue({ ...form, ...form1Obj })
       // 回显优先级
       setPriorityDetail(props?.demandDetail.priority)
       // 开始时间

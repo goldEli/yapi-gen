@@ -235,9 +235,7 @@ const HeaderRight = () => {
         return
       case 'demand':
         dispatch(setIsCreateDemandVisible(true))
-      // dispatch(
-      //   setCreateDemandProps({ notGetPath: true, isQuickCreate: true }),
-      // )
+        dispatch(setCreateDemandProps({ overallCreate: true }))
     }
   }
 
