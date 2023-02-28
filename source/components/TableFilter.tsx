@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next'
 import RangePicker from './RangePicker'
 import { useDispatch, useSelector } from '@store/index'
 import { setFilterKeys } from '@store/project'
-import { saveScreen, saveValue } from '@store/view'
+import { onTapSearchChoose, saveScreen, saveValue } from '@store/view'
 
 const Wrap = styled.div({
   display: 'flex',

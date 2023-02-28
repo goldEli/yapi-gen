@@ -13,7 +13,7 @@ import { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import IconFont from '../IconFont'
 import RichEditor from '../RichEditor'
-import { AddWrap, CanOperationCategory } from '../StyleCommon'
+import { AddWrap } from '../StyleCommon'
 import TagComponent from '../TagComponent'
 import UploadAttach from '../UploadAttach'
 import { decryptPhp } from '@/tools/cryptoPhp'
@@ -292,11 +292,11 @@ const CreateDemandLeft = (props: Props) => {
   }
 
   useEffect(() => {
-    if (categoryObj.id) {
+    if (categoryObj?.id) {
       form.setFieldsValue({
-        requiredCategory: categoryObj.id,
+        requiredCategory: categoryObj?.id,
       })
-      getCategoryField(categoryObj.id)
+      getCategoryField(categoryObj?.id)
     }
   }, [categoryObj])
 
@@ -502,7 +502,7 @@ const CreateDemandLeft = (props: Props) => {
               onChange={onChangeSelect}
               options={props.allCategoryList
                 ?.filter((i: any) => i.status === 1)
-                ?.filter((i: any) => i.id !== categoryObj.id)
+                ?.filter((i: any) => i.id !== categoryObj?.id)
                 ?.map((k: any) => ({
                   label: k.content,
                   value: k.id,
@@ -571,7 +571,7 @@ const CreateDemandLeft = (props: Props) => {
               optionFilterProp="label"
               getPopupContainer={node => node}
               showSearch
-              value={categoryObj.id}
+              value={categoryObj?.id}
               options={props.allCategoryList
                 ?.filter((i: any) => i.status === 1)
                 ?.map((k: any) => ({

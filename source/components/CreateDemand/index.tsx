@@ -101,7 +101,7 @@ const CreateDemand = () => {
     // 如果有需求id则获取详情
     if (createDemandProps.demandId) {
       const demandResponse = await getDemandInfo({
-        projectId,
+        projectId: createDemandProps.projectId,
         id: createDemandProps?.demandId,
       })
       setDemandInfo(demandResponse)

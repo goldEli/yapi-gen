@@ -44,6 +44,7 @@ import {
   setIsUpdateStatus,
 } from '@store/demand'
 import { changeId } from '@store/counterSlice'
+import { onTapSearchChoose } from '@store/view'
 
 const Wrap = styled.div`
   height: 100%;
@@ -201,6 +202,8 @@ const DemandBox = () => {
     init()
     return () => {
       dispatch(changeId(0))
+
+      dispatch(onTapSearchChoose({}))
     }
   }, [])
 
