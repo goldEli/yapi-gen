@@ -459,6 +459,8 @@ export const storyConfigCategoryList: any = async (params: any) => {
       isCheck: i.status,
       statusCount: i.status_count,
       remark: i.remark,
+      attachmentPath: i.attachment_path,
+      status: i.status,
     })),
   }
 }
