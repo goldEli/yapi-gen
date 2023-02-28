@@ -36,9 +36,6 @@ interface Props {
   fieldsList: any[]
   demandDetail?: any
   isSaveParams?: boolean
-  iterateId?: any
-  //是否来自子需求
-  isChild?: any
 }
 
 const CreateDemandRight = (props: Props) => {
@@ -148,15 +145,15 @@ const CreateDemandRight = (props: Props) => {
       let hasIterateId: any
       let hasChild: any
       // 如果是迭代创建或编辑，默认填入迭代
-      if (props.iterateId) {
+      if (createDemandProps.iterateId) {
         hasIterateId = removeNull(projectInfoValues, 'iterate_name')
           ?.filter((k: any) => k.status === 1)
-          .filter((i: any) => i.id === props?.iterateId).length
-          ? props?.iterateId
+          .filter((i: any) => i.id === createDemandProps?.iterateId).length
+          ? createDemandProps?.iterateId
           : null
       }
       // 如果是子需求创建或编辑，默认父需求填入当前需求id
-      if (props.isChild) {
+      if (createDemandProps.isChild) {
         hasChild = props.parentList?.filter(
           (i: any) => i.value === Number(createDemandProps?.parentId),
         )[0]?.value
@@ -178,7 +175,7 @@ const CreateDemandRight = (props: Props) => {
           removeNull(projectInfoValues, 'user_name'),
         ),
         // 迭代
-        iterate_name: props.iterateId
+        iterate_name: createDemandProps.iterateId
           ? hasIterateId
           : removeNull(projectInfoValues, 'iterate_name')
               ?.filter((k: any) => k.status === 1)
@@ -187,7 +184,7 @@ const CreateDemandRight = (props: Props) => {
           ? props?.demandDetail?.iterateId
           : null,
         // 父需求
-        parent_id: props.isChild
+        parent_id: createDemandProps.isChild
           ? hasChild
           : props.parentList?.filter(
               (i: any) => i.value === props?.demandDetail?.parentId,
@@ -199,7 +196,7 @@ const CreateDemandRight = (props: Props) => {
       })
     } else {
       // 子需求默认回填父需求
-      if (props.isChild) {
+      if (createDemandProps.isChild) {
         form.setFieldsValue({
           parent_id: props.parentList?.filter(
             (i: any) => i.value === Number(createDemandProps?.parentId),
@@ -207,19 +204,22 @@ const CreateDemandRight = (props: Props) => {
         })
       }
       // 迭代创建需求默认回填迭代
-      if (props.iterateId) {
+      if (createDemandProps.iterateId) {
         form.setFieldsValue({
           iterate_name: removeNull(projectInfoValues, 'iterate_name')
             ?.filter((k: any) => k.status === 1)
-            .filter((i: any) => i.id === props?.iterateId).length
-            ? props?.iterateId
+            .filter((i: any) => i.id === createDemandProps?.iterateId).length
+            ? createDemandProps?.iterateId
             : null,
         })
       }
       // 如果不是快速创建并且不是完成并创建下一个，则回填筛选值
       if (!props.isSaveParams && !createDemandProps.isQuickCreate) {
         // 不是在迭代创建需求并且有筛选项
-        if (!props.iterateId && filterParamsModal?.iterateIds?.length) {
+        if (
+          !createDemandProps.iterateId &&
+          filterParamsModal?.iterateIds?.length
+        ) {
           const resultId = filterParamsModal?.iterateIds?.filter(
             (i: any) => i !== -1,
           )?.[0]
