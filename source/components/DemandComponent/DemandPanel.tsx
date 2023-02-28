@@ -6,7 +6,7 @@
 /* eslint-disable react/no-array-index-key */
 import styled from '@emotion/styled'
 import { Space, Spin } from 'antd'
-// import DemandCard from '@/components/DemandCard'
+import DemandCard from '@/components/DemandCard'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData, openDetail } from '@/tools/index'
 import NoData from '@/components/NoData'
@@ -15,7 +15,8 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import { useSelector } from '@store/index'
 
 const Content = styled.div({
-  padding: 16,
+  height: 'calc(100% - 32px)',
+  padding: '20px 0',
 })
 
 const DataWrap = styled.div({
@@ -66,7 +67,7 @@ interface Props {
   isSpinning?: boolean
   onUpdate(state: any): void
 }
-const DemandPanel = (props: Props) => {
+const DemandGrid = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -106,7 +107,7 @@ const DemandPanel = (props: Props) => {
   }
 
   return (
-    <Content style={{ height: 'calc(100% - 64px)' }}>
+    <Content>
       <DataWrap>
         <Spin spinning={props?.isSpinning}>
           <SpaceWrap size={20}>
@@ -122,16 +123,15 @@ const DemandPanel = (props: Props) => {
                     dataList
                       ?.filter((item: any) => item.id === k.id)[0]
                       ?.list?.map((i: any, idx: any) => (
-                        <div key={i.id}>{i.name}</div>
-                        // <DemandCard
-                        //   key={i.id}
-                        //   onChangeDelete={props?.onDelete}
-                        //   onChangeEdit={props?.onChangeVisible}
-                        //   item={i}
-                        //   onClickItem={() => onClickItem(i)}
-                        //   indexVal={idx}
-                        //   onUpdate={() => props?.onUpdate(true)}
-                        // />
+                        <DemandCard
+                          key={i.id}
+                          onChangeDelete={props?.onDelete}
+                          onChangeEdit={props?.onChangeVisible}
+                          item={i}
+                          onClickItem={() => onClickItem(i)}
+                          indexVal={idx}
+                          onUpdate={() => props?.onUpdate(true)}
+                        />
                       ))
                   ) : (
                     <NoData />
@@ -145,4 +145,4 @@ const DemandPanel = (props: Props) => {
   )
 }
 
-export default DemandPanel
+export default DemandGrid

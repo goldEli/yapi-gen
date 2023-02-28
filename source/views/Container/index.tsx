@@ -58,6 +58,7 @@ const Main = styled.div<{ left: number }>`
   flex: 1;
   position: relative;
   overflow: auto;
+  background: var(--neutral-white-d1);
 `
 
 export const Container = () => {

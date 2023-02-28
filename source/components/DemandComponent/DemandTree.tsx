@@ -13,7 +13,7 @@ import {
   useRef,
   useState,
 } from 'react'
-import { message, Spin, Menu, Table } from 'antd'
+import { Pagination, message, Spin, Menu, Table } from 'antd'
 import styled from '@emotion/styled'
 import {
   TableStyleBox,
@@ -29,20 +29,20 @@ import NoData from '@/components/NoData'
 import { getIsPermission, getParamsData, openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
-import PaginationBox from '../TablePagination'
 import useSetTitle from '@/hooks/useSetTitle'
-// import EditDemand from '@/components/EditDemandNew/index'
-// import FloatBatch from '@/components/FloatBatch'
+import FloatBatch from '@/components/FloatBatch'
 import { useSelector } from '@store/index'
 import {
   getDemandList,
   updateDemandStatus,
   updatePriority,
 } from '@/services/demand'
+import PaginationBox from '@/components/TablePagination'
 
 const Content = styled.div({
-  height: 'calc(100% - 52px)',
-  marginTop: 20,
+  padding: '20px 12px 0 8px',
+  background: 'var(--neutral-white-d1)',
+  height: 'calc(100% - 32px)',
 })
 
 const DataWrap = styled.div({
@@ -561,24 +561,7 @@ const DemandTree = (props: Props) => {
   }
 
   return (
-    <Content style={{ height: 'calc(100% - 52px)' }}>
-      {/* 暂无数据创建 */}
-      {/* <EditDemand
-        visible={isAddVisible}
-        noDataCreate
-        onChangeVisible={onClose}
-        onUpdate={() => props.onUpdate(true)}
-      />
-
-      <EditDemand
-        visible={isVisible}
-        onChangeVisible={onCloseCreateChild}
-        onUpdate={onTest}
-        isChild
-        categoryId={isCreateChild?.categoryId}
-        parentId={isCreateChild?.id}
-      /> */}
-
+    <Content>
       <DataWrap ref={dataWrapRef}>
         <Spin spinning={props?.isSpinning}>
           {!!data?.list &&
@@ -624,7 +607,7 @@ const DemandTree = (props: Props) => {
               </NoData>
             ))}
         </Spin>
-        {/* {!hasBatch && (
+        {!hasBatch && (
           <FloatBatch
             isVisible={selectedRowKeys.length > 0}
             onClose={() => onSelectAll(false)}
@@ -632,12 +615,13 @@ const DemandTree = (props: Props) => {
             onUpdate={props.onUpdate}
             onRef={batchDom}
           />
-        )} */}
+        )}
       </DataWrap>
+
       <PaginationBox
-        total={data?.total}
         currentPage={data?.currentPage}
         pageSize={data?.pageSize}
+        total={data?.total}
         onChange={onChangePage}
       />
 

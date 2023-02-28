@@ -19,18 +19,20 @@ import ImportDemand from './ImportDemand'
 import { CanOperationCategory } from '@/components/StyleCommon'
 import { useDispatch, useSelector } from '@store/index'
 import { setFilterKeys, setFilterParamsModal } from '@store/project'
-import { setCreateCategory } from '@store/demand'
-import InputSearch from '@/components/InputSearch'
+import {
+  setCreateCategory,
+  setCreateDemandProps,
+  setIsCreateDemandVisible,
+} from '@store/demand'
 
 const OperationWrap = styled.div({
-  minHeight: 52,
+  minHeight: 32,
   minWidth: '800px',
-  lineHeight: '52px',
+  lineHeight: '32px',
   background: 'white',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  padding: '0 24px',
   '.ant-space-item': {
     display: 'flex',
     alignItems: 'center',
@@ -235,8 +237,6 @@ const Operation = (props: Props) => {
     setFilterCustomList(projectInfo?.filterCustomList)
   }
 
-  //设置标题的筛选
-
   useEffect(() => {
     if (searchChoose && searchChoose['system_view']) {
       return
@@ -266,7 +266,8 @@ const Operation = (props: Props) => {
     // 需求列表筛选参数赋值给 弹窗
     dispatch(setFilterParamsModal(filterParams))
     setTimeout(() => {
-      props.onChangeVisible?.(e)
+      dispatch(setIsCreateDemandVisible(true))
+      dispatch(setCreateDemandProps({ projectId: projectInfo?.id }))
       setIsVisible(false)
     }, 0)
   }
@@ -436,22 +437,14 @@ const Operation = (props: Props) => {
           )}
         </Space>
 
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          {/* <InputSearch
-            placeholder={t('common.pleaseSearchDemand')}
-            onChangeSearch={onChangeSearch}
-            leftIcon
-          /> */}
-          <OperationGroup
-            onChangeFilter={onChangeFilter}
-            onChangeGrid={props.onChangeGrid}
-            isGrid={props.isGrid}
-            filterState={filterState}
-            settingState={props.settingState}
-            onChangeSetting={() => props.onChangeSetting(!props.settingState)}
-            isDemand
-          />
-        </div>
+        <OperationGroup
+          onChangeFilter={onChangeFilter}
+          onChangeGrid={props.onChangeGrid}
+          isGrid={props.isGrid}
+          filterState={filterState}
+          settingState={props.settingState}
+          onChangeSetting={() => props.onChangeSetting(!props.settingState)}
+        />
       </OperationWrap>
       {!filterState && (
         <TableFilter

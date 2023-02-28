@@ -537,7 +537,7 @@ const Iteration = () => {
   }
 
   return (
-    <div style={{ height: 'calc(100% - 64px)' }}>
+    <>
       <EditIteration
         visible={isVisible}
         onChangeVisible={() => onChangeVisible('clear')}
@@ -545,7 +545,7 @@ const Iteration = () => {
         onUpdate={onUpdate}
       />
       {content()}
-    </div>
+    </>
   )
 }
 

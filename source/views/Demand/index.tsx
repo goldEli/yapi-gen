@@ -45,6 +45,12 @@ import {
 } from '@store/demand'
 import { changeId } from '@store/counterSlice'
 
+const Wrap = styled.div`
+  height: 100%;
+  display: flex;
+  padding: 20px 24px 0 24px;
+`
+
 const DemandInfoWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
@@ -558,7 +564,7 @@ const DemandBox = () => {
     return <Loading />
   }
 
-  return <div style={{ height: 'calc(100% - 64px)' }}>{content()}</div>
+  return <Wrap>{content()}</Wrap>
 }
 
 export default DemandBox

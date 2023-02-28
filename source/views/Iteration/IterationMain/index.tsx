@@ -1,3 +1,4 @@
+/* eslint-disable max-params */
 // 迭代主页
 
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -15,17 +16,21 @@ import { useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
 import { deleteDemand, getDemandInfo, getDemandList } from '@/services/demand'
 import { setDemandInfo, setFilterParams } from '@store/demand'
 import { setIsRefreshList, setIsUpdateList } from '@store/iterate'
+import { Content, IterationContent } from './style'
+import ProjectCommonOperation from '@/components/ProjectCommonOperation'
+import DemandTree from './components/DemandTree'
+import { setFilterKeys } from '@store/project'
 
-const Right = styled.div<{ isShowLeft: boolean }>({}, ({ isShowLeft }) => ({
-  width: isShowLeft ? 'calc(100% - 300px)' : '100%',
-  height: 'calc(100vh - 64px)',
+const Right = styled.div({
+  width: '100%',
+  height: '100%',
   overflowY: 'auto',
-}))
+})
 
 interface Props {
   onChangeVisible(): void
@@ -56,18 +61,26 @@ const IterationMain = (props: Props) => {
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [searchItems, setSearchItems] = useState<any>({})
   const [isSpinning, setIsSpinning] = useState(false)
+  // 用于控制失焦事件与展开子需求冲突
+  const [isUpdated, setIsUpdated] = useState(false)
+  // 用于当前操作层级不折叠
+  const [topParentId, setTopParentId] = useState(0)
+  const { filterKeys } = useSelector(store => store.project)
+  const [searchVal, setSearchVal] = useState('')
+
   const getList = async (
     state: any,
     item: any,
     searchParamsObj: any,
     updateState?: boolean,
+    topId?: any,
   ) => {
     if (!updateState) {
       setIsSpinning(true)
     }
-    let params = {}
+    let params: any = {}
 
-    if (state) {
+    if (state === 1) {
       params = {
         projectId,
         all: true,
@@ -89,7 +102,7 @@ const IterationMain = (props: Props) => {
         schedule_start: searchParamsObj.schedule_start,
         schedule_end: searchParamsObj.schedule_end,
         custom_field: searchParamsObj?.custom_field,
-        searchValue: searchParamsObj.searchValue,
+        searchValue: searchParamsObj.searchVal,
       }
     } else {
       params = {
@@ -115,10 +128,13 @@ const IterationMain = (props: Props) => {
         schedule_start: searchParamsObj.schedule_start,
         schedule_end: searchParamsObj.schedule_end,
         custom_field: searchParamsObj?.custom_field,
-        searchValue: searchParamsObj.searchValue,
+        searchValue: searchParamsObj.searchVal,
       }
     }
-
+    if (state === 2) {
+      params.tree = 1
+      params.topParentId = topId ?? topParentId
+    }
     dispatch(setFilterParams(params))
     const result = await getDemandList(params)
     setDataList(result)
@@ -126,6 +142,8 @@ const IterationMain = (props: Props) => {
     dispatch(setIsRefresh(false))
     dispatch(setIsUpdateList(false))
     props.onChangeIsUpdate(false)
+    setTopParentId(0)
+    setIsUpdated(false)
   }
 
   const onChangeGrid = (val: any) => {
@@ -142,11 +160,13 @@ const IterationMain = (props: Props) => {
     setIsDemandVisible(true)
     const result = await getDemandInfo({ projectId, id: item.id })
     dispatch(setDemandInfo(result))
+    setTopParentId(item?.topId)
   }
 
   const onDelete = (item: any) => {
     setDeleteId(item.id)
     setIsVisible(true)
+    setTopParentId(item?.topId)
   }
 
   const onDeleteConfirm = async () => {
@@ -206,61 +226,111 @@ const IterationMain = (props: Props) => {
     getList(isGrid, { page: 1, size: pageObj.size }, searchItems)
   }
 
+  const onInputSearch = (keyValue: string) => {
+    if (searchVal !== keyValue) {
+      setSearchVal(keyValue)
+      const params = searchItems
+      params.searchVal = keyValue
+      setSearchItems(params)
+      setDataList({ list: undefined })
+      getList(isGrid, { page: 1, size: pageObj.size }, params)
+      setIsUpdated(true)
+      setPageObj({
+        page: 1,
+        size: pageObj.size,
+      })
+      // 添加搜索项 计数
+      const keys = keyValue
+        ? [...filterKeys, ...['searchVal']]
+        : filterKeys?.filter((i: any) => i !== 'searchVal')
+      dispatch(setFilterKeys([...new Set(keys)]))
+    }
+  }
+
   return (
-    <div style={{ display: 'flex' }}>
+    <>
       <DeleteConfirm
         text={t('common.confirmDelDemand')}
         isVisible={isVisible}
         onChangeVisible={() => setIsVisible(!isVisible)}
         onConfirm={onDeleteConfirm}
       />
-      <WrapLeft
-        isShowLeft={isShowLeft}
-        onChangeVisible={props.onChangeVisible}
-        onCurrentDetail={onChangeCurrent}
-        onIsUpdateList={onChangeIsUpdate}
-        onChangeOperation={props.onChangeOperation}
-        currentDetail={keyRef.current}
-        updateState={props.updateState}
-      />
-      <Right isShowLeft={isShowLeft}>
-        <Operation
-          isGrid={isGrid}
-          onChangeGrid={val => onChangeGrid(val)}
-          onChangeIsShowLeft={() => setIsShowLeft(!isShowLeft)}
-          onIsUpdateList={value => dispatch(setIsUpdateList(value))}
-          currentDetail={keyRef.current}
-          settingState={isSettingState}
-          onChangeSetting={setIsSettingState}
-          onSearch={onSearch}
-          isShowLeft={isShowLeft}
-        />
-        {isGrid ? (
-          <IterationGrid
-            onChangeVisible={onChangeOperation}
-            onDelete={onDelete}
-            data={dataList}
-            isSpinning={isSpinning}
-            hasId={keyRef.current}
-            onUpdate={onUpdate}
+      <Content>
+        <ProjectCommonOperation onInputSearch={onInputSearch} />
+        <IterationContent>
+          <WrapLeft
+            isShowLeft={isShowLeft}
+            onChangeVisible={props.onChangeVisible}
+            onCurrentDetail={onChangeCurrent}
+            onIsUpdateList={onChangeIsUpdate}
+            onChangeOperation={props.onChangeOperation}
+            currentDetail={keyRef.current}
+            updateState={props.updateState}
           />
-        ) : (
-          <IterationTable
-            onChangeVisible={onChangeOperation}
-            onDelete={onDelete}
-            data={dataList}
-            onChangePageNavigation={onChangePageNavigation}
-            onChangeRow={onChangeRow}
-            settingState={isSettingState}
-            onChangeSetting={setIsSettingState}
-            onChangeOrder={onChangeOrder}
-            isSpinning={isSpinning}
-            hasId={keyRef.current}
-            onUpdate={onUpdate}
-          />
-        )}
-      </Right>
-    </div>
+          <Right>
+            <Operation
+              isGrid={isGrid}
+              onChangeGrid={val => onChangeGrid(val)}
+              onChangeIsShowLeft={() => setIsShowLeft(!isShowLeft)}
+              onIsUpdateList={value => dispatch(setIsUpdateList(value))}
+              currentDetail={keyRef.current}
+              settingState={isSettingState}
+              onChangeSetting={setIsSettingState}
+              onSearch={onSearch}
+              isShowLeft={isShowLeft}
+            />
+            {isGrid === 2 && (
+              <DemandTree
+                onChangeVisible={onChangeOperation}
+                onDelete={onDelete}
+                data={dataList}
+                onChangePageNavigation={onChangePageNavigation}
+                onChangeRow={onChangeRow}
+                settingState={isSettingState}
+                onChangeSetting={setIsSettingState}
+                onChangeOrder={onChangeOrder}
+                isSpinning={isSpinning}
+                onUpdate={onUpdate}
+                filterParams={{
+                  ...searchItems,
+                  projectId,
+                  page: 1,
+                  pageSize: 100,
+                  order: '',
+                  orderKey: '',
+                }}
+                isUpdated={isUpdated}
+              />
+            )}
+            {!isGrid && (
+              <IterationTable
+                onChangeVisible={onChangeOperation}
+                onDelete={onDelete}
+                data={dataList}
+                onChangePageNavigation={onChangePageNavigation}
+                onChangeRow={onChangeRow}
+                settingState={isSettingState}
+                onChangeSetting={setIsSettingState}
+                onChangeOrder={onChangeOrder}
+                isSpinning={isSpinning}
+                hasId={keyRef.current}
+                onUpdate={onUpdate}
+              />
+            )}
+            {isGrid === 1 && (
+              <IterationGrid
+                onChangeVisible={onChangeOperation}
+                onDelete={onDelete}
+                data={dataList}
+                isSpinning={isSpinning}
+                hasId={keyRef.current}
+                onUpdate={onUpdate}
+              />
+            )}
+          </Right>
+        </IterationContent>
+      </Content>
+    </>
   )
 }
 

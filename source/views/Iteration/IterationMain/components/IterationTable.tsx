@@ -24,8 +24,8 @@ import { updateDemandStatus, updatePriority } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
 
 const Content = styled.div({
-  padding: 16,
-  background: '#F5F7FA',
+  background: 'var(--neutral-white-d1)',
+  height: 'calc(100% - 52px)',
 })
 
 const RowIconFont = styled(IconFont)({
@@ -41,7 +41,7 @@ const DataWrap = styled.div<{ hasCreate: boolean }>(
     overflowX: 'auto',
   },
   ({ hasCreate }) => ({
-    height: hasCreate ? 'calc(100% - 40px)' : 'calc(100% - 88px)',
+    height: hasCreate ? 'calc(100% - 44px)' : 'calc(100% - 88px)',
   }),
 )
 
@@ -274,7 +274,7 @@ const IterationTable = (props: Props) => {
   }
 
   return (
-    <Content style={{ height: 'calc(100% - 64px)' }}>
+    <Content>
       {!hasCreate &&
         props.hasId &&
         props.hasId?.status === 1 &&
