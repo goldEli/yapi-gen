@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from '@store/index'
 import {
   changeCreateVisible,
   changeViewVisible,
-  saveScreen,
-  saveTitles,
+  onTapSearchChoose,
+  onTapSort,
+  onTapTitles,
 } from '@store/view'
 import { getViewList } from '@store/view/thunk'
 import { Button, Divider, Dropdown, MenuProps, Space } from 'antd'
@@ -53,8 +54,9 @@ const ViewPort = (props: any) => {
     const value =
       viewList[viewList.findIndex((i: any) => String(i.id) === e.key)]
 
-    dispatch(saveTitles(value.config.fields))
-    dispatch(saveScreen({ key: [], value: [], choose: value.config.search }))
+    dispatch(onTapTitles(value.config.fields))
+    dispatch(onTapSearchChoose(value.config.search))
+    dispatch(onTapSort(value.config.sort))
   }
   useEffect(() => {
     dispatch(getViewList(props.pid))

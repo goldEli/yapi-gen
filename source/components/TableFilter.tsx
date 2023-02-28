@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next'
 import RangePicker from './RangePicker'
 import { useDispatch, useSelector } from '@store/index'
 import { setFilterKeys } from '@store/project'
-import { saveScreen } from '@store/view'
+import { saveScreen, saveValue } from '@store/view'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -259,10 +259,10 @@ export const NumericInput2 = (props: any) => {
 
 const TableFilter = (props: any) => {
   const [t] = useTranslation()
+  const { searchChoose } = useSelector(store => store.view)
   const { list, basicsList, specialList, customList } = props
   const [form] = Form.useForm()
   const { filterKeys, projectInfoValues } = useSelector(store => store.project)
-
   const dispatch = useDispatch()
 
   const filterBasicsList = useMemo(() => {
@@ -294,13 +294,9 @@ const TableFilter = (props: any) => {
     return arr
   }, [list, customList])
 
-  // useEffect(() => {
-  //   dispatch(
-  //     saveScreen({
-  //       key: list,
-  //     }),
-  //   )
-  // }, [list])
+  useEffect(() => {
+    dispatch(saveScreen(list))
+  }, [list])
 
   // 查询筛选值，operationKey： 记录当前查询的key,delKey: 删除的key, type: 类型值1位字符串，2是时间
   const confirm = async (operationKey?: any, delKey?: any, type?: any) => {
@@ -345,12 +341,7 @@ const TableFilter = (props: any) => {
     }
     props.onSearch(res, customField)
 
-    dispatch(
-      saveScreen({
-        value: res,
-        key: list,
-      }),
-    )
+    dispatch(saveValue(res))
   }
 
   // 点击删除按钮
@@ -367,7 +358,11 @@ const TableFilter = (props: any) => {
     form.resetFields()
     confirm()
   }
-
+  useEffect(() => {
+    if (searchChoose) {
+      form.setFieldsValue(searchChoose)
+    }
+  }, [searchChoose])
   // 折叠图标
   const expandIcon = (e: any) => {
     return (

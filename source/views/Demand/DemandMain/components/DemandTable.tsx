@@ -55,7 +55,8 @@ const DemandTable = (props: Props) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { projectInfo, filterKeys } = useSelector(store => store.project)
-  const titles = useSelector(store => store.view.titles)
+  const titles = useSelector(store => store.view.tapTitles)
+  const tapSort = useSelector(store => store.view.tapSort)
   const { filterParams } = useSelector(store => store.demand)
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
@@ -121,11 +122,13 @@ const DemandTable = (props: Props) => {
   }
 
   useEffect(() => {
-    setTitleList(getTitle(titles, plainOptions))
-    setTitleList2(getTitle(titles, plainOptions2))
-    setTitleList3(getTitle(titles, plainOptions3))
+    if (titles) {
+      setTitleList(getTitle(titles, plainOptions))
+      setTitleList2(getTitle(titles, plainOptions2))
+      setTitleList3(getTitle(titles, plainOptions3))
 
-    setAllTitleList(titles)
+      setAllTitleList(titles)
+    }
   }, [titles])
 
   const getCheckList = (
@@ -181,6 +184,17 @@ const DemandTable = (props: Props) => {
     setOrder(val)
     props.onChangeOrder?.({ value: val === 2 ? 'desc' : 'asc', key })
   }
+  useEffect(() => {
+    if (tapSort) {
+      const key = Object.keys(tapSort)
+      const value = Object.values(tapSort)
+
+      if (tapSort) {
+        setOrderKey(key[0])
+        setOrder(value[0])
+      }
+    }
+  }, [tapSort])
 
   const onPropsChangeVisible = (e: any, item: any) => {
     setIsShowMore(false)
