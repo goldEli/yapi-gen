@@ -68,7 +68,7 @@
     "husky": "^8.0.1",
     "lint-staged": "^13.0.2",
     "typescript": "^4.9.4",
-    "vite": "^4.0.0",
+    "vite": "^4.1.4",
     "vite-plugin-prefetch-inject": "^0.1.0"
   },
   "name": "@jihe/template-react",

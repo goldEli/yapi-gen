@@ -1,22 +1,24 @@
+/* eslint-disable no-undefined */
+/* eslint-disable complexity */
 /* eslint-disable camelcase */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable require-unicode-regexp */
-import { getProjectInfo } from '@/services/project'
+import { getProjectInfo, getWorkflowList } from '@/services/project'
 import { getCategoryConfigList } from '@/services/demand'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
-import { setProjectInfo } from '@store/project'
 import { Form, Input, Select } from 'antd'
 import { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import IconFont from '../IconFont'
 import RichEditor from '../RichEditor'
-import { AddWrap } from '../StyleCommon'
+import { AddWrap, CanOperationCategory } from '../StyleCommon'
 import TagComponent from '../TagComponent'
 import UploadAttach from '../UploadAttach'
 import { decryptPhp } from '@/tools/cryptoPhp'
 import { removeNull } from '@/tools'
+import CommonModal from '../CommonModal'
 
 const LeftWrap = styled.div({
   height: '100%',
@@ -44,21 +46,46 @@ interface Props {
 
 const CreateDemandLeft = (props: Props) => {
   const [t] = useTranslation()
-  const dispatch = useDispatch()
   const [form] = Form.useForm()
   const inputRefDom = useRef<HTMLInputElement>(null)
   const leftDom = useRef<HTMLInputElement>(null)
   const [attachList, setAttachList] = useState<any>([])
   const [tagCheckedList, setTagCheckedList] = useState<any>([])
-  const { projectInfo, filterParamsModal, projectInfoValues } = useSelector(
+  const [projectInfo, setProjectInfo] = useState<any>({})
+  // 存储点击修改需求类别弹出确认按钮时提交的参数
+  const [changeCategoryFormData, setChangeCategoryFormData] = useState<any>({})
+  // 需求类别切换提交表单
+  const [changeCategoryForm] = Form.useForm()
+  // 切换需求类别下的工作流
+  const [workList, setWorkList] = useState<any>({
+    list: undefined,
+  })
+  // 当前操作的需求类别
+  const [currentCategory, setCurrentCategory] = useState<any>({})
+  // 点击需求类别弹出修改需求类别相应参数弹窗
+  const [isShowChangeCategory, setIsShowChangeCategory] = useState(false)
+  const [categoryObj, setCategoryObj] = useState<any>({})
+  const { filterParamsModal, projectInfoValues } = useSelector(
     store => store.project,
   )
-  const { createDemandProps } = useSelector(store => store.demand)
+  const { createDemandProps, createCategory } = useSelector(
+    store => store.demand,
+  )
+
+  // 获取需求类别配置的字段
+  const getCategoryField = async (id: any) => {
+    const result = await getCategoryConfigList({
+      projectId: props.projectId,
+      categoryId: id,
+    })
+    props.onGetFieldList(result)
+  }
 
   // 提交参数
   const onConfirm = async () => {
     await form.validateFields()
     const values = form.getFieldsValue()
+    values.category_id = categoryObj.id
     values.tagIds = tagCheckedList?.map((i: any) => ({
       name: i.name,
       color: i.color,
@@ -69,6 +96,7 @@ const CreateDemandLeft = (props: Props) => {
   // 提交参数后的操作
   const onSubmitUpdate = () => {
     setAttachList([])
+    setCategoryObj({})
     form.setFieldsValue({
       info: '',
       name: '',
@@ -87,7 +115,7 @@ const CreateDemandLeft = (props: Props) => {
     form.resetFields()
     setAttachList([])
     setTagCheckedList([])
-    dispatch(setProjectInfo({}))
+    setCategoryObj({})
   }
 
   useImperativeHandle(props.onRef, () => {
@@ -133,7 +161,7 @@ const CreateDemandLeft = (props: Props) => {
   // 获取项目信息
   const getProjectInfoData = async (id: any) => {
     const result = await getProjectInfo({ projectId: id })
-    dispatch(setProjectInfo(result))
+    setProjectInfo(result)
   }
 
   // 切换项目
@@ -159,19 +187,68 @@ const CreateDemandLeft = (props: Props) => {
     props.onGetFieldList([])
   }
 
+  // 选择新的需求类别后，获取他的工作流列表
+  const onChangeSelect = async (value: any) => {
+    if (value) {
+      setCurrentCategory(
+        props.allCategoryList
+          ?.filter((i: any) => i.status === 1)
+          ?.filter((i: any) => i.id === value)[0],
+      )
+      const result = await getWorkflowList({
+        projectId: props.projectId,
+        categoryId: value,
+      })
+      setWorkList(result)
+    } else {
+      changeCategoryForm.resetFields()
+      setCurrentCategory({})
+    }
+  }
+
   // 切换需求类别
   const onSelectCategory = async (value: any) => {
-    const result = await getCategoryConfigList({
-      projectId: props.projectId,
-      categoryId: value,
+    if (createDemandProps.demandId) {
+      changeCategoryForm.setFieldsValue({
+        categoryId: value,
+      })
+      onChangeSelect(value)
+      setIsShowChangeCategory(true)
+    } else {
+      setCategoryObj(
+        props.allCategoryList?.filter((i: any) => i.id === value)[0],
+      )
+    }
+  }
+
+  // 修改需求类别的确认
+  const onConfirmCategory = async () => {
+    await changeCategoryForm.validateFields()
+    setIsShowChangeCategory(false)
+    setCategoryObj(currentCategory)
+    setChangeCategoryFormData(changeCategoryForm.getFieldsValue())
+    setTimeout(() => {
+      changeCategoryForm.resetFields()
+    }, 100)
+  }
+
+  // 关闭修改需求类别
+  const onCloseCategory = () => {
+    form.setFieldsValue({
+      requiredCategory: categoryObj.id,
     })
-    props.onGetFieldList(result)
+    setIsShowChangeCategory(false)
+    setTimeout(() => {
+      changeCategoryForm.resetFields()
+      setChangeCategoryFormData({})
+    }, 100)
   }
 
   // 删除需求类别
   const onClearCategory = () => {
     props.onResetForm()
     props.onGetFieldList([])
+    setCategoryObj({})
   }
 
   // 获取项目数据
@@ -203,6 +280,118 @@ const CreateDemandLeft = (props: Props) => {
   }
 
   useEffect(() => {
+    if (categoryObj.id) {
+      form.setFieldsValue({
+        requiredCategory: categoryObj.id,
+      })
+      getCategoryField(categoryObj.id)
+    }
+  }, [categoryObj])
+
+  useEffect(() => {
+    if (props.projectId && props.allCategoryList?.length > 0) {
+      // 过滤掉未开启的类别
+      const resultCategoryList = props.allCategoryList?.filter(
+        (i: any) => i.status === 1,
+      )
+      // 如果有需求id
+      if (createDemandProps.demandId) {
+        //    如果可使用的能查到详情中的需求类别，则使用详情的， 反之使用列表的第一个
+        if (
+          resultCategoryList?.filter(
+            (j: any) => j.id === props.demandDetail.category,
+          )?.length
+        ) {
+          setCategoryObj(
+            resultCategoryList?.filter(
+              (j: any) => j.id === props.demandDetail.category,
+            )[0],
+          )
+        } else {
+          // 反之查所有中的需求类别，做展示用
+          setCategoryObj(
+            props.allCategoryList?.filter(
+              (j: any) => j.id === props.demandDetail.category,
+            )[0],
+          )
+        }
+      } else {
+        let hisCategoryData: any
+        // 如果是快速创建并且有缓存
+        if (
+          createDemandProps.isQuickCreate &&
+          localStorage.getItem('quickCreateData')
+        ) {
+          hisCategoryData = JSON.parse(
+            decryptPhp(localStorage.getItem('quickCreateData') as any),
+          )
+        }
+        let resultCategory: any = {}
+        // 如果是子需求的话，继承父级的需求类别
+        if (createDemandProps?.isChild) {
+          // 判断父需求类别是否被关闭，是则取列表第一条
+          const isExistence = resultCategoryList?.filter(
+            (i: any) => i.id === createDemandProps?.categoryId,
+          )
+          resultCategory = isExistence?.length
+            ? isExistence[0]
+            : resultCategoryList[0]
+        }
+        // 如果是快速创建并且有缓存数据
+        if (createDemandProps?.isQuickCreate && hisCategoryData?.categoryId) {
+          // 判断需求类别是否被关闭，是则取列表第一条
+          const isExistence = resultCategoryList?.filter(
+            (i: any) => i.id === hisCategoryData?.categoryId,
+          )
+          resultCategory = isExistence?.length
+            ? isExistence[0]
+            : resultCategoryList[0]
+        }
+        // 如果是快速创建没有缓存数据，取列表第一个
+        if (
+          (createDemandProps?.isQuickCreate && !hisCategoryData?.categoryId) ||
+          createDemandProps.noDataCreate ||
+          createDemandProps.overallCreate
+        ) {
+          resultCategory = resultCategoryList[0]
+        }
+        // 迭代创建 ,当前只有迭代是需要做筛选类别回填
+        if (createDemandProps?.iterateId) {
+          // 如果是有筛选条件的，回填筛选条件
+          if (filterParamsModal?.category_id?.length) {
+            const resultId = filterParamsModal?.category_id?.filter(
+              (i: any) => i !== -1,
+            )?.[0]
+            // 如果筛选条件存在需求类别列表，则填入，无则列表第一个
+            const resultObj = resultCategoryList?.filter(
+              (i: any) => i.id === resultId,
+            )[0]
+            resultCategory = resultObj
+          } else {
+            resultCategory = resultCategoryList[0]
+          }
+        }
+        // 如果是需求下的选择创建
+        if (createCategory.id) {
+          resultCategory = createCategory
+        }
+        //   如果有修改
+        if (resultCategory?.id) {
+          setCategoryObj(resultCategory)
+          // form.setFieldsValue({
+          //   category_id: resultCategory?.id,
+          // })
+        }
+      }
+    }
+  }, [props.projectId, props.allCategoryList])
+
+  useEffect(() => {
+    if (props.projectId) {
+      form.setFieldsValue({
+        projectId: props.projectId,
+      })
+    }
     // 是否是快捷创建
     if (createDemandProps?.isQuickCreate) {
       getProjectData()
@@ -224,6 +413,7 @@ const CreateDemandLeft = (props: Props) => {
           })),
       )
     }
+
     setTimeout(() => {
       inputRefDom.current?.focus()
     }, 100)
@@ -272,6 +462,74 @@ const CreateDemandLeft = (props: Props) => {
 
   return (
     <LeftWrap ref={leftDom}>
+      {/* 切换需求类别弹出 */}
+      <CommonModal
+        isVisible={isShowChangeCategory}
+        onClose={onCloseCategory}
+        title={t('newlyAdd.changeCategory')}
+        onConfirm={onConfirmCategory}
+      >
+        <Form
+          form={changeCategoryForm}
+          layout="vertical"
+          style={{ padding: '0 20px 0 2px' }}
+        >
+          <Form.Item label={t('newlyAdd.beforeCategory')}>
+            <div>12121212</div>
+            {/* <CanOperationCategory
+              style={{ marginRight: 8, cursor: 'pointer' }}
+              color={categoryObj?.color}
+              bgColor={
+                colorList?.filter((i: any) => i.key === categoryObj?.color)[0]
+                  ?.bgColor
+              }
+            >
+              <span className="title">{categoryObj?.content}</span>
+            </CanOperationCategory> */}
+          </Form.Item>
+          <Form.Item
+            label={t('newlyAdd.afterCategory')}
+            name="categoryId"
+            rules={[{ required: true, message: '' }]}
+          >
+            <Select
+              placeholder={t('common.pleaseSelect')}
+              showArrow
+              showSearch
+              getPopupContainer={node => node}
+              allowClear
+              optionFilterProp="label"
+              onChange={onChangeSelect}
+              options={props.allCategoryList
+                ?.filter((i: any) => i.status === 1)
+                ?.filter((i: any) => i.id !== categoryObj.id)
+                ?.map((k: any) => ({
+                  label: k.content,
+                  value: k.id,
+                }))}
+            />
+          </Form.Item>
+          <Form.Item
+            label={t('newlyAdd.afterStatus')}
+            name="statusId"
+            rules={[{ required: true, message: '' }]}
+          >
+            <Select
+              placeholder={t('common.pleaseSelect')}
+              showArrow
+              showSearch
+              getPopupContainer={node => node}
+              allowClear
+              disabled={!currentCategory.id}
+              optionFilterProp="label"
+              options={workList?.list?.map((k: any) => ({
+                label: k.name,
+                value: k.statusId,
+              }))}
+            />
+          </Form.Item>
+        </Form>
+      </CommonModal>
       <Form layout="vertical" form={form}>
         <div style={{ display: 'flex' }}>
           <Form.Item
@@ -299,7 +557,7 @@ const CreateDemandLeft = (props: Props) => {
           </Form.Item>
           <Form.Item
             label="需求类别"
-            name="category_id"
+            name="requiredCategory"
             style={{ width: '50%' }}
             rules={[{ required: true, message: '' }]}
           >
@@ -312,6 +570,7 @@ const CreateDemandLeft = (props: Props) => {
               optionFilterProp="label"
               getPopupContainer={node => node}
               showSearch
+              value={categoryObj.id}
               options={props.allCategoryList
                 ?.filter((i: any) => i.status === 1)
                 ?.map((k: any) => ({

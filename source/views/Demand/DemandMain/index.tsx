@@ -67,6 +67,7 @@ const DemandMain = (props: Props) => {
   // 用于控制失焦事件与展开子需求冲突
   const [isUpdated, setIsUpdated] = useState(false)
   const { filterKeys } = useSelector(store => store.project)
+  const searchChoose = useSelector(store => store.view.searchChoose)
   const dispatch = useDispatch()
 
   const getList = async (
@@ -82,6 +83,7 @@ const DemandMain = (props: Props) => {
     }
 
     let params: any = {}
+
     if (state === 1) {
       params = {
         projectId,
@@ -106,6 +108,7 @@ const DemandMain = (props: Props) => {
         schedule_end: searchParamsObj.schedule_end,
         custom_field: searchParamsObj?.custom_field,
         class_id: keyRef.current,
+        system_view: searchChoose ? searchChoose['system_view'] : undefined,
       }
     } else {
       params = {
@@ -133,6 +136,7 @@ const DemandMain = (props: Props) => {
         schedule_end: searchParamsObj.schedule_end,
         custom_field: searchParamsObj?.custom_field,
         class_id: keyRef.current,
+        system_view: searchChoose ? searchChoose['system_view'] : undefined,
       }
     }
     if (state === 2) {
@@ -156,7 +160,7 @@ const DemandMain = (props: Props) => {
 
   useEffect(() => {
     getList(isGrid, searchItems, pageObj, order)
-  }, [key, isGrid, order, pageObj])
+  }, [key, isGrid, order, pageObj, searchChoose])
 
   useEffect(() => {
     if (isRefresh) {

@@ -140,6 +140,7 @@ const Operation = (props: Props) => {
     store => store.project,
   )
   const { filterParams } = useSelector(store => store.demand)
+  const { searchChoose } = useSelector(store => store.view)
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -233,6 +234,22 @@ const Operation = (props: Props) => {
     setFilterSpecialList(projectInfo?.filterSpecialList)
     setFilterCustomList(projectInfo?.filterCustomList)
   }
+
+  //设置标题的筛选
+
+  useEffect(() => {
+    if (searchChoose && searchChoose['system_view']) {
+      return
+    }
+    if (searchChoose) {
+      const keys = Object.keys(searchChoose)
+      const filterFelid = projectInfo?.filterFelid
+      const newArr = filterFelid.filter((i: any) => {
+        return keys.includes(i.content)
+      })
+      setSearchList(newArr)
+    }
+  }, [searchChoose])
 
   useEffect(() => {
     if (projectInfo?.id) {
@@ -420,11 +437,11 @@ const Operation = (props: Props) => {
         </Space>
 
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <InputSearch
+          {/* <InputSearch
             placeholder={t('common.pleaseSearchDemand')}
             onChangeSearch={onChangeSearch}
             leftIcon
-          />
+          /> */}
           <OperationGroup
             onChangeFilter={onChangeFilter}
             onChangeGrid={props.onChangeGrid}

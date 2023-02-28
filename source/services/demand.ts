@@ -485,6 +485,7 @@ export const getDemandList: any = async (params: any) => {
       custom_field: params?.custom_field,
       tree: params?.tree || 0,
       top_parent_id: params?.topParentId,
+      system_view: params?.system_view,
     },
     pagesize: params?.pageSize,
     page: params?.page,

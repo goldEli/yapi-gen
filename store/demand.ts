@@ -35,6 +35,8 @@ export interface CounterState {
     categoryId?: any
     // 无数据创建
     noDataCreate?: any
+    // 是否是全局创建
+    overallCreate?: boolean
   }
 }
 
