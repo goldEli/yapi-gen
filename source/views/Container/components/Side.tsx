@@ -8,7 +8,7 @@ import AdminSide from '@/components/AllSide/AdminSide'
 import { useLocation } from 'react-router-dom'
 import MineSide from '@/components/AllSide/MineSide'
 import LogSide from '@/components/AllSide/LogSide'
-
+import DemandSetting from '@/components/AllSide/DemandSetting'
 const SideWrap = styled.div<{ firstMenuCollapse: boolean }>`
   width: ${props => (props.firstMenuCollapse ? 0 : 200)}px;
   height: 100%;
@@ -182,8 +182,9 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
       nodeComponent = <MineSide />
     } else if (String(pathname).includes('/LogManagement')) {
       nodeComponent = <LogSide />
-    } else if (String(pathname).includes('/ProjectManagement')) {
-      nodeComponent = <ProjectDetailSide leftWidth={leftWidth} />
+    } else if (String(pathname).includes('/ProjectManagement/')) {
+      // nodeComponent = <ProjectDetailSide leftWidth={leftWidth} />
+      nodeComponent = <DemandSetting leftWidth={leftWidth} />
     }
     return nodeComponent
   }
