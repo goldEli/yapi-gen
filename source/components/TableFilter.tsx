@@ -294,13 +294,13 @@ const TableFilter = (props: any) => {
     return arr
   }, [list, customList])
 
-  useEffect(() => {
-    dispatch(
-      saveScreen({
-        key: list,
-      }),
-    )
-  }, [list])
+  // useEffect(() => {
+  //   dispatch(
+  //     saveScreen({
+  //       key: list,
+  //     }),
+  //   )
+  // }, [list])
 
   // 查询筛选值，operationKey： 记录当前查询的key,delKey: 删除的key, type: 类型值1位字符串，2是时间
   const confirm = async (operationKey?: any, delKey?: any, type?: any) => {

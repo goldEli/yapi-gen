@@ -55,6 +55,7 @@ const DemandTable = (props: Props) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { projectInfo, filterKeys } = useSelector(store => store.project)
+  const titles = useSelector(store => store.view.titles)
   const { filterParams } = useSelector(store => store.demand)
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
@@ -90,11 +91,42 @@ const DemandTable = (props: Props) => {
       ...(projectInfo.titleList2 || []),
       ...(projectInfo.titleList3 || []),
     ])
+    dispatch(
+      saveTitles([
+        ...(projectInfo.titleList || []),
+        ...(projectInfo.titleList2 || []),
+        ...(projectInfo.titleList3 || []),
+      ]),
+    )
   }
 
   useEffect(() => {
     getShowkey()
   }, [projectInfo])
+
+  function getTitle(arr: any, arr1: any) {
+    const arr2: any = []
+    arr1.forEach((i: any) => {
+      arr2.push(i.value)
+    })
+
+    const myArr: any = []
+    arr.forEach((i: any) => {
+      if (arr2.includes(i)) {
+        myArr.push(i)
+      }
+    })
+
+    return myArr
+  }
+
+  useEffect(() => {
+    setTitleList(getTitle(titles, plainOptions))
+    setTitleList2(getTitle(titles, plainOptions2))
+    setTitleList3(getTitle(titles, plainOptions3))
+
+    setAllTitleList(titles)
+  }, [titles])
 
   const getCheckList = (
     list: CheckboxValueType[],

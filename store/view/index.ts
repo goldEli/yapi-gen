@@ -5,6 +5,7 @@ type SliceState = {
   screen: {
     key: any
     value: any
+    choose: any
   }
   titles: any
   createVisible: boolean
@@ -19,6 +20,7 @@ const slice = createSlice({
     screen: {
       key: [],
       value: [],
+      choose: {},
     },
     titles: [],
     createVisible: false,
@@ -35,6 +37,7 @@ const slice = createSlice({
       state.screen = {
         key: { ...state.screen.key, ...action.payload.key },
         value: { ...state.screen.value, ...action.payload.value },
+        choose: { ...action.payload.choose },
       }
     },
     saveTitles: (state, action) => {
