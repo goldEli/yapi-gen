@@ -10,7 +10,7 @@ import {
   getGroupList,
   getProjectInfoOnly,
 } from '@/services/project'
-import { changeCreateVisible } from '@store/create-propject'
+import { changeCreateVisible, editProject } from '@store/create-propject'
 import { postCreate, postEditCreate } from '@store/create-propject/thunks'
 import { useDispatch, useSelector } from '@store/index'
 import { Form, Input, Select, Tooltip, Upload } from 'antd'
@@ -71,6 +71,7 @@ const CreateAProjectForm = () => {
       return
     }
     dispatch(postCreate(obj))
+    dispatch(editProject({ visible: false, id: '' }))
   }
 
   function upper(str: string) {
@@ -131,16 +132,26 @@ const CreateAProjectForm = () => {
   //编辑项目逻辑
   const getProjectInfo = async () => {
     const res = await getProjectInfoOnly(isEditId)
+    const res2 = await getAffiliationUser(res.team_id)
+
+    setSelectLeaders(
+      res2.map((i: any) => ({
+        name: i.name,
+        id: i.id,
+      })),
+    )
     setActiveCover(res.cover)
+    setMyCover(res.cover)
     form.setFieldsValue({
       name: res.name,
       team_id: res.team_id,
       prefix: res.prefix,
       leader_id: res.leader_id,
       isPublic: res.is_public,
-      groups: res.groups,
+      groups: res.groups.map((i: any) => i.id),
       info: res.info,
     })
+    setCanChooseLeader(false)
   }
 
   const getLeader = async () => {
@@ -152,6 +163,7 @@ const CreateAProjectForm = () => {
       })),
     )
   }
+
   useEffect(() => {
     if (leaderId || leaderId === 0) {
       getLeader()
@@ -168,12 +180,17 @@ const CreateAProjectForm = () => {
     }
 
     form.resetFields()
+
+    setMyCover('')
   }, [createVisible])
 
   return (
     <CommonModal
       onConfirm={onConfirm}
-      onClose={() => dispatch(changeCreateVisible(false))}
+      onClose={() => {
+        dispatch(changeCreateVisible(false))
+        dispatch(editProject({ visible: false, id: '' }))
+      }}
       width={832}
       isVisible={createVisible}
       title="编辑项目"
@@ -264,7 +281,11 @@ const CreateAProjectForm = () => {
               <Select
                 placeholder="请选择所属"
                 optionLabelProp="label"
-                onChange={value => setLeaderId(value)}
+                onChange={value => {
+                  setLeaderId(value)
+                  // eslint-disable-next-line no-undefined
+                  form.setFieldsValue({ leader_id: undefined })
+                }}
               >
                 {affiliations.map((i: any) => (
                   <Select.Option value={i.id} key={i.id} label={i.name}>
@@ -331,17 +352,17 @@ const CreateAProjectForm = () => {
                 {[
                   {
                     name: t('project.companyOpen'),
-                    id: '1',
+                    id: 1,
                     dec: '仅项目成员可查看编辑',
                   },
                   {
                     name: t('common.privateProject'),
-                    id: '2',
+                    id: 2,
                     dec: '企业内所有成员可见，仅项目成员可编辑',
                   },
                   {
                     name: '团队公开',
-                    id: '3',
+                    id: 3,
                     dec: '团队内所有成员可见，仅项目成员可编辑',
                   },
                 ].map((i: any) => (
