@@ -54,7 +54,7 @@ export const CoverAreaImageShade = styled.div`
   visibility: hidden;
 `
 
-export const CoverAreaImageWrap = styled.div`
+export const CoverAreaImageWrap = styled.div<{ color?: string }>`
   width: 80px;
   height: 80px;
   border-radius: 6px 6px 6px 6px;
@@ -72,7 +72,17 @@ export const CoverAreaImageWrap = styled.div`
       left: 0;
       width: 80px;
       height: 40px;
-      background: var(--green);
+      transition: all 0.3s;
+      background: ${props =>
+        props.color === '#009BF2'
+          ? 'var(--blue)'
+          : props.color === '#534BFF'
+          ? 'var(--purple)'
+          : props.color === '#E86013'
+          ? 'var(--orange)'
+          : props.color === '#01AF85'
+          ? 'var(--green)'
+          : ''};
       border-radius: 6px 6px 6px 6px;
       opacity: 1;
     }
@@ -83,6 +93,7 @@ export const CoverAreaAdd = styled.div`
   width: 80px;
   height: 80px;
   border-radius: 6px 6px 6px 6px;
+  background: var(--hover-d3);
   opacity: 1;
   border: 1px solid var(--neutral-n6-d2);
   display: flex;

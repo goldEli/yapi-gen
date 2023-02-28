@@ -156,8 +156,7 @@ const Index = (props: any) => {
           />
         </HoverIcon>
       </Dropdown>
-
-      <EndTag>End</EndTag>
+      {props.item.status === 2 && <EndTag>End</EndTag>}
     </ProjectCard>
   )
 }
