@@ -24,7 +24,6 @@ import {
   setCreateDemandProps,
   setIsCreateDemandVisible,
 } from '@store/demand'
-import InputSearch from '@/components/InputSearch'
 
 const OperationWrap = styled.div({
   minHeight: 32,
@@ -143,7 +142,7 @@ const Operation = (props: Props) => {
     store => store.project,
   )
   const { filterParams } = useSelector(store => store.demand)
-  const { choose } = useSelector(store => store.view.screen)
+  const { searchChoose } = useSelector(store => store.view)
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -239,13 +238,18 @@ const Operation = (props: Props) => {
   }
 
   useEffect(() => {
-    const keys = Object.keys(choose)
-    const filterFelid = projectInfo?.filterFelid
-    const newArr = filterFelid.filter((i: any) => {
-      return keys.includes(i.content)
-    })
-    setSearchList(newArr)
-  }, [choose])
+    if (searchChoose && searchChoose['system_view']) {
+      return
+    }
+    if (searchChoose) {
+      const keys = Object.keys(searchChoose)
+      const filterFelid = projectInfo?.filterFelid
+      const newArr = filterFelid.filter((i: any) => {
+        return keys.includes(i.content)
+      })
+      setSearchList(newArr)
+    }
+  }, [searchChoose])
 
   useEffect(() => {
     if (projectInfo?.id) {

@@ -56,6 +56,7 @@ const DemandTable = (props: Props) => {
   const projectId = paramsData.id
   const { projectInfo, filterKeys } = useSelector(store => store.project)
   const titles = useSelector(store => store.view.titles)
+  const tapSort = useSelector(store => store.view.tapSort)
   const { filterParams } = useSelector(store => store.demand)
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
@@ -79,6 +80,19 @@ const DemandTable = (props: Props) => {
       }),
     )
   }, [orderKey, order])
+
+  useEffect(() => {
+    if (tapSort) {
+      const key = Object.keys(tapSort)
+      const value = Object.values(tapSort)
+
+      if (tapSort) {
+        setOrderKey(key[0])
+        setOrder(value[0])
+      }
+    }
+  }, [tapSort])
+
   const getShowkey = () => {
     setPlainOptions(projectInfo?.plainOptions || [])
     setPlainOptions2(projectInfo?.plainOptions2 || [])

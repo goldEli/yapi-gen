@@ -2,26 +2,23 @@ import { createSlice } from '@reduxjs/toolkit'
 import { getViewList } from './thunk'
 
 type SliceState = {
-  screen: {
-    key: any
-    value: any
-    choose: any
-  }
+  searchKey: any
+  valueKey: any
+  searchChoose: any
+  tapTitles: any
   titles: any
   createVisible: boolean
   viewVisible: boolean
   viewList: any[]
   sort: any
+  tapSort: any
 }
 
 const slice = createSlice({
   name: 'view',
   initialState: {
-    screen: {
-      key: [],
-      value: [],
-      choose: {},
-    },
+    searchKey: [],
+    valueKey: {},
     titles: [],
     createVisible: false,
     viewVisible: false,
@@ -33,12 +30,20 @@ const slice = createSlice({
     changeViewVisible: (state, action) => {
       state.viewVisible = action.payload
     },
+    onTapTitles: (state, action) => {
+      state.tapTitles = action.payload
+    },
+    onTapSort: (state, action) => {
+      state.tapSort = action.payload
+    },
+    onTapSearchChoose: (state, action) => {
+      state.searchChoose = action.payload
+    },
     saveScreen: (state, action) => {
-      state.screen = {
-        key: { ...state.screen.key, ...action.payload.key },
-        value: { ...state.screen.value, ...action.payload.value },
-        choose: { ...action.payload.choose },
-      }
+      state.searchKey = action.payload
+    },
+    saveValue: (state, action) => {
+      state.valueKey = action.payload
     },
     saveTitles: (state, action) => {
       state.titles = action.payload
@@ -61,6 +66,10 @@ export const {
   saveScreen,
   saveTitles,
   saveSort,
+  onTapTitles,
+  onTapSearchChoose,
+  saveValue,
+  onTapSort,
 } = slice.actions
 
 export default slice.reducer

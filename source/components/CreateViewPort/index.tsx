@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 
@@ -11,21 +12,23 @@ import { Wrap, WrapText } from './style'
 
 const CreateViewPort = (props: any) => {
   const [form] = Form.useForm()
-  const createData = useSelector(state => state.view)
+  const { searchKey, valueKey, titles, sort, createVisible } = useSelector(
+    state => state.view,
+  )
   const dispatch = useDispatch()
   const onConfirm = async () => {
     const res = await form.validateFields()
     const obj: any = {}
-    for (const i in createData.screen.key) {
-      obj[createData.screen.key[i].key] = ''
+    for (const i in searchKey) {
+      obj[searchKey[i].key] = null
     }
 
     const data = {
       name: res.name,
       config: {
-        search: { ...obj, ...createData.screen.value },
-        fields: createData.titles,
-        sort: createData.sort,
+        search: { ...obj, ...valueKey },
+        fields: titles,
+        sort,
       },
       project_id: props.pid,
     }
@@ -33,8 +36,10 @@ const CreateViewPort = (props: any) => {
     await dispatch(addViewList(data))
     await dispatch(getViewList(props.pid))
     await dispatch(changeCreateVisible(false))
+    form.resetFields()
   }
   const onClose = () => {
+    form.resetFields()
     dispatch(changeCreateVisible(false))
   }
   return (
@@ -42,7 +47,7 @@ const CreateViewPort = (props: any) => {
       onConfirm={onConfirm}
       onClose={onClose}
       title="创建视图"
-      isVisible={createData.createVisible}
+      isVisible={createVisible}
     >
       <Wrap>
         <WrapText>将当前筛选条件、显示字段、排序方式、保存为新的视图</WrapText>
@@ -52,7 +57,7 @@ const CreateViewPort = (props: any) => {
             name="name"
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
-            <Input placeholder="请输入视图名称限20字" />
+            <Input maxLength={20} placeholder="请输入视图名称限20字" />
           </Form.Item>
         </Form>
       </Wrap>
