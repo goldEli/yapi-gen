@@ -22,11 +22,9 @@ import { DividerWrap, HoverWrap } from '@/components/StyleCommon'
 import { useDispatch, useSelector } from '@store/index'
 import { setFilterKeys, setProjectInfoValues } from '@store/project'
 import { updateIterateStatus } from '@/services/iterate'
-import InputSearch from '@/components/InputSearch'
 
 const OperationWrap = styled.div<{ isShowLeft?: boolean }>(
   {
-    padding: '10px 24px',
     background: 'white',
     display: 'flex',
     alignItems: 'center',
@@ -306,21 +304,14 @@ const Operation = (props: Props) => {
             </>
           )}
         </IterationInfo>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <InputSearch
-            placeholder={t('common.pleaseSearchDemand')}
-            onChangeSearch={onChangeSearch}
-            leftIcon
-          />
-          <OperationGroup
-            onChangeFilter={onChangeFilter}
-            onChangeGrid={props.onChangeGrid}
-            isGrid={props.isGrid}
-            filterState={filterState}
-            settingState={props.settingState}
-            onChangeSetting={() => props.onChangeSetting(!props.settingState)}
-          />
-        </div>
+        <OperationGroup
+          onChangeFilter={onChangeFilter}
+          onChangeGrid={props.onChangeGrid}
+          isGrid={props.isGrid}
+          filterState={filterState}
+          settingState={props.settingState}
+          onChangeSetting={() => props.onChangeSetting(!props.settingState)}
+        />
       </OperationWrap>
       {filterState ? null : (
         <TableFilter

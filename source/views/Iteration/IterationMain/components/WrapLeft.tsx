@@ -46,9 +46,9 @@ const Left = styled.div<{ isShowLeft: boolean }>(
   {
     width: 300,
     borderRight: '1px solid #EBEDF0',
-    padding: '0px 16px 10px',
+    padding: '0px 16px 0px 0',
     background: 'white',
-    height: 'calc(100vh - 64px)',
+    height: '100%',
     '.ant-space-item': {
       display: 'flex',
     },

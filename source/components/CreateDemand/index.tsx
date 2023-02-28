@@ -13,6 +13,7 @@ import {
   setIsCreateDemandVisible,
   setIsUpdateChangeLog,
   setIsUpdateStatus,
+  setIsUpdateDemandList,
 } from '@store/demand'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsUpdateCreate } from '@store/mine'
@@ -133,7 +134,8 @@ const CreateDemand = () => {
     if (createDemandProps?.isQuickCreate) {
       dispatch(setIsUpdateCreate(true))
     } else {
-      // props.onUpdate?.()
+      // 更新列表
+      dispatch(setIsUpdateDemandList(true))
     }
 
     // 如果是快速创建，相应数据存缓存
@@ -189,6 +191,10 @@ const CreateDemand = () => {
   useEffect(() => {
     if (isCreateDemandVisible) {
       getProjectData()
+      if (createDemandProps.projectId) {
+        getInit(createDemandProps.projectId)
+        setProjectId(createDemandProps.projectId)
+      }
     }
   }, [isCreateDemandVisible])
 

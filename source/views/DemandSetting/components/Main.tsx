@@ -1,6 +1,6 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import TabsDragging from './TabsDragging'
 const TitleStyle = styled.div`
   display: flex;

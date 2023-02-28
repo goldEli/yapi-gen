@@ -17,15 +17,16 @@ import { getIsPermission, getParamsData, openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
-// import EditDemand from '@/components/EditDemandNew/index'
 import { useDispatch, useSelector } from '@store/index'
 import { setFilterParamsModal } from '@store/project'
 import { updateDemandStatus, updatePriority } from '@/services/demand'
-import PaginationBox from '../TablePagination'
+import PaginationBox from '@/components/TablePagination'
+import { saveSort, saveTitles } from '@store/view'
 
 const Content = styled.div({
-  height: 'calc(100% - 52px)',
-  marginTop: 20,
+  padding: '20px 12px 0 8px',
+  background: 'var(--neutral-white-d1)',
+  height: 'calc(100% - 32px)',
 })
 
 const DataWrap = styled.div({
@@ -54,6 +55,8 @@ const DemandTable = (props: Props) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { projectInfo, filterKeys } = useSelector(store => store.project)
+  const titles = useSelector(store => store.view.titles)
+  const tapSort = useSelector(store => store.view.tapSort)
   const { filterParams } = useSelector(store => store.demand)
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
@@ -70,6 +73,26 @@ const DemandTable = (props: Props) => {
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
   const dispatch = useDispatch()
 
+  useEffect(() => {
+    dispatch(
+      saveSort({
+        [orderKey]: order,
+      }),
+    )
+  }, [orderKey, order])
+
+  useEffect(() => {
+    if (tapSort) {
+      const key = Object.keys(tapSort)
+      const value = Object.values(tapSort)
+
+      if (tapSort) {
+        setOrderKey(key[0])
+        setOrder(value[0])
+      }
+    }
+  }, [tapSort])
+
   const getShowkey = () => {
     setPlainOptions(projectInfo?.plainOptions || [])
     setPlainOptions2(projectInfo?.plainOptions2 || [])
@@ -82,11 +105,42 @@ const DemandTable = (props: Props) => {
       ...(projectInfo.titleList2 || []),
       ...(projectInfo.titleList3 || []),
     ])
+    dispatch(
+      saveTitles([
+        ...(projectInfo.titleList || []),
+        ...(projectInfo.titleList2 || []),
+        ...(projectInfo.titleList3 || []),
+      ]),
+    )
   }
 
   useEffect(() => {
     getShowkey()
   }, [projectInfo])
+
+  function getTitle(arr: any, arr1: any) {
+    const arr2: any = []
+    arr1.forEach((i: any) => {
+      arr2.push(i.value)
+    })
+
+    const myArr: any = []
+    arr.forEach((i: any) => {
+      if (arr2.includes(i)) {
+        myArr.push(i)
+      }
+    })
+
+    return myArr
+  }
+
+  useEffect(() => {
+    setTitleList(getTitle(titles, plainOptions))
+    setTitleList2(getTitle(titles, plainOptions2))
+    setTitleList3(getTitle(titles, plainOptions3))
+
+    setAllTitleList(titles)
+  }, [titles])
 
   const getCheckList = (
     list: CheckboxValueType[],
@@ -98,6 +152,7 @@ const DemandTable = (props: Props) => {
     setTitleList2(list2)
     setTitleList3(list3)
     setAllTitleList(all)
+    dispatch(saveTitles(all))
   }
 
   const onChangePage = (page: number, size: number) => {
@@ -265,13 +320,6 @@ const DemandTable = (props: Props) => {
 
   return (
     <Content>
-      {/* 暂无数据创建 */}
-      {/* <EditDemand
-        visible={isAddVisible}
-        noDataCreate
-        onChangeVisible={() => setIsAddVisible(!isAddVisible)}
-        onUpdate={() => props.onUpdate(true)}
-      /> */}
       <DataWrap ref={dataWrapRef}>
         <Spin spinning={props?.isSpinning}>
           {!!props.data?.list &&
@@ -302,10 +350,11 @@ const DemandTable = (props: Props) => {
             ))}
         </Spin>
       </DataWrap>
+
       <PaginationBox
-        total={props.data.total}
-        currentPage={props.data.currentPage}
-        pageSize={props.data.pageSize}
+        currentPage={props.data?.currentPage}
+        pageSize={props.data?.pageSize}
+        total={props.data?.total}
         onChange={onChangePage}
       />
 

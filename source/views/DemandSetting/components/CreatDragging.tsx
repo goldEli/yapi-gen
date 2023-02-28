@@ -41,21 +41,32 @@ const SliderList = (props: any) => {
     const el: any = ref.current
     // 存储起始鼠标位置
     let delayedSetZIndexTimeoutId: any = null
+    let startY = 0
     const mouseMove = (ev: any) => {
       ev.preventDefault()
       // 获取元素 Rect 并更新 Ref
       const rect = el.getBoundingClientRect()
       prevRectRef.current = rect
       // 计算最新 left 位置
-      let latestTop = 0
+      let latestRight = ev.clientX - startY
       // 检查是否需要更新元素位置
-      if (rect.width && indexRef.current < listLengthRef.current - 1) {
-        latestTop = 200
+      if (
+        latestRight > rect.width &&
+        indexRef.current < listLengthRef.current - 1
+      ) {
+        // move down
+        // 通知父组件修改列表
+        onMoveRef.current(indexRef.current, indexRef.current + 1)
+        latestRight -= rect.width
         // 开始位置也要更新
-      } else if (latestTop < +rect.width && indexRef.current > 0) {
-        return
+        startY += rect.width
+      } else if (latestRight < -rect.width && indexRef.current > 0) {
+        // move up
+        onMoveRef.current(indexRef.current, indexRef.current - 1)
+        latestRight += rect.width
+        startY -= rect.width
       }
-      setLeft(latestTop)
+      setLeft(latestRight)
     }
     const mouseUp = (ev: any) => {
       ev.preventDefault()
@@ -112,10 +123,10 @@ const SliderList = (props: any) => {
     animationRef.current = el.animate(
       [
         {
-          right: `${-deltaY}px`,
+          left: `${-deltaY}px`,
         },
         {
-          right: `0px`,
+          left: `350px`,
         },
       ],
       200,
@@ -126,7 +137,7 @@ const SliderList = (props: any) => {
       ref={ref}
       onClick={() => props.onChange(children)}
       style={{
-        right: `${left}px`,
+        left: `${left}px`,
         transition: 'transform .2s, box-shadow .2s',
         position: 'relative',
         zIndex: zIndex.toString(),
