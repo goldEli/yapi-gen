@@ -7,6 +7,7 @@ const Wrap = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 0 24px;
+  overflow-x: hidden;
 `
 const DemandSetting = () => {
   return (
