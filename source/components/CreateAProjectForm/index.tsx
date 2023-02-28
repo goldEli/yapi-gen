@@ -169,6 +169,7 @@ const CreateAProjectForm = () => {
 
     form.resetFields()
   }, [createVisible])
+
   return (
     <CommonModal
       onConfirm={onConfirm}
@@ -190,6 +191,7 @@ const CreateAProjectForm = () => {
           <CoverArea>
             {covers?.map((i: any) => (
               <CoverAreaImageWrap
+                color={i.remarks}
                 onClick={() => setActiveCover(i.path)}
                 key={i.id}
               >
@@ -249,7 +251,7 @@ const CreateAProjectForm = () => {
                 { required: true, message: 'Please input your username!' },
               ]}
             >
-              <Input onChange={onChange} />
+              <Input placeholder="请输入项目名称" onChange={onChange} />
             </Form.Item>
 
             <Form.Item
@@ -260,7 +262,7 @@ const CreateAProjectForm = () => {
               ]}
             >
               <Select
-                placeholder="custom dropdown render"
+                placeholder="请选择所属"
                 optionLabelProp="label"
                 onChange={value => setLeaderId(value)}
               >
@@ -314,7 +316,7 @@ const CreateAProjectForm = () => {
             >
               <Select
                 disabled={canChooseLeader}
-                placeholder="custom dropdown render"
+                placeholder="请选择项目负责人"
                 optionLabelProp="label"
               >
                 {selectLeaders.map((i: any) => (
@@ -325,10 +327,7 @@ const CreateAProjectForm = () => {
               </Select>
             </Form.Item>
             <Form.Item label={<FormTitleSmall text="权限" />} name="isPublic">
-              <Select
-                placeholder="custom dropdown render"
-                optionLabelProp="label"
-              >
+              <Select placeholder="请选择权限" optionLabelProp="label">
                 {[
                   {
                     name: t('project.companyOpen'),

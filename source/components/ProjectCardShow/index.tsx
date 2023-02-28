@@ -93,10 +93,10 @@ const Index = (props: any) => {
           placement="top"
           title="1"
         >
-          <CardRightFirst>马兰士</CardRightFirst>
+          <CardRightFirst>项目名称XXX</CardRightFirst>
         </Tooltip>
 
-        <CardRightSecond>负责人：马兰士</CardRightSecond>
+        <CardRightSecond>负责人：XXX</CardRightSecond>
         <CardRightSecond>键：DXKJ</CardRightSecond>
         <TransformWrap>
           <ProgressWrap>
@@ -107,17 +107,6 @@ const Index = (props: any) => {
               percent={30}
             />
           </ProgressWrap>
-
-          <ShowWrap>
-            {arr.map((i: any) => (
-              <TextOfIcon
-                key={i.type}
-                type={i.type}
-                text={i.text}
-                num={i.num}
-              />
-            ))}
-          </ShowWrap>
         </TransformWrap>
       </CardRight>
 

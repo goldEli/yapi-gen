@@ -8,8 +8,8 @@ import {
   onTapTitles,
 } from '@store/view'
 import { getViewList } from '@store/view/thunk'
-import { Button, Divider, Dropdown, MenuProps, Space } from 'antd'
-import React, { useEffect, useState } from 'react'
+import { Divider, Dropdown } from 'antd'
+import { useEffect, useState } from 'react'
 import CommonIconFont from '../CommonIconFont'
 import { dropdowncontent, Name, SetLine, TextSpan, ViewPortWrap } from './style'
 
@@ -26,6 +26,9 @@ const ViewPort = (props: any) => {
       children: viewList
         ?.filter((i: any) => {
           return i.type !== 2
+        })
+        .filter((i: any) => {
+          return i.status !== 2
         })
         .map((item: any) => {
           return {

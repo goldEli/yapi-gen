@@ -77,7 +77,7 @@ export const ProjectCard = styled.div`
   box-sizing: border-box;
   padding: 22px 16px;
   height: 124px;
-  background: var(--neutral-n10);
+  background: var(--hover-d3);
   border-radius: 6px 6px 6px 6px;
   opacity: 1;
   display: flex;
@@ -88,9 +88,9 @@ export const ProjectCard = styled.div`
   }
 
   &:hover ${ProgressWrap} {
-    display: none;
+    /* display: none; */
   }
   &:hover ${HoverIcon} {
-    visibility: visible;
+    display: none;
   }
 `
