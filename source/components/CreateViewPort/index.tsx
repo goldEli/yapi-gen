@@ -28,7 +28,7 @@ const CreateViewPort = (props: any) => {
       config: {
         search: { ...obj, ...valueKey },
         fields: titles,
-        sort: sort,
+        sort,
       },
       project_id: props.pid,
     }
@@ -36,8 +36,10 @@ const CreateViewPort = (props: any) => {
     await dispatch(addViewList(data))
     await dispatch(getViewList(props.pid))
     await dispatch(changeCreateVisible(false))
+    form.resetFields()
   }
   const onClose = () => {
+    form.resetFields()
     dispatch(changeCreateVisible(false))
   }
   return (
@@ -55,7 +57,7 @@ const CreateViewPort = (props: any) => {
             name="name"
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
-            <Input placeholder="请输入视图名称限20字" />
+            <Input maxLength={20} placeholder="请输入视图名称限20字" />
           </Form.Item>
         </Form>
       </Wrap>

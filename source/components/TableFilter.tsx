@@ -371,11 +371,15 @@ const TableFilter = (props: any) => {
       }, {})
   }
   useEffect(() => {
-    const targetSubjects = filterObj(searchChoose, (grade: any) => {
-      return grade !== null
-    })
+    if (searchChoose && searchChoose['system_view']) {
+      return
+    }
 
     if (searchChoose) {
+      const targetSubjects = filterObj(searchChoose, (grade: any) => {
+        return grade !== null
+      })
+
       form.setFieldsValue(targetSubjects)
     }
   }, [searchChoose])

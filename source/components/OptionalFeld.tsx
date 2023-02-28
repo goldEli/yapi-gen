@@ -45,6 +45,7 @@ const CheckedItem = styled.div({
 })
 const Wrap = styled.div`
   display: flex;
+  padding: 0 24px;
 `
 const Left = styled.div`
   width: 624px;

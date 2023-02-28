@@ -16,6 +16,7 @@ import { dropdowncontent, Name, SetLine, TextSpan, ViewPortWrap } from './style'
 const ViewPort = (props: any) => {
   const dispatch = useDispatch()
   const { viewList } = useSelector(state => state.view)
+  const [name, setName] = useState('所有的')
 
   const items: any = [
     {
@@ -54,6 +55,7 @@ const ViewPort = (props: any) => {
     const value =
       viewList[viewList.findIndex((i: any) => String(i.id) === e.key)]
 
+    setName(value.name)
     dispatch(onTapTitles(value.config.fields))
     dispatch(onTapSearchChoose(value.config.search))
     dispatch(onTapSort(value.config.sort))
@@ -82,7 +84,7 @@ const ViewPort = (props: any) => {
     >
       <ViewPortWrap>
         <CommonIconFont size={18} type="view-n" />
-        <Name>视图：最长视图名称哦哦哦哦哦哦哦哦哦哦哦哦哦哦 </Name>
+        <Name>视图：{name} </Name>
       </ViewPortWrap>
     </Dropdown>
   )

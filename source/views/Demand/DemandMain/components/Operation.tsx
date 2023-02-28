@@ -238,6 +238,9 @@ const Operation = (props: Props) => {
   //设置标题的筛选
 
   useEffect(() => {
+    if (searchChoose && searchChoose['system_view']) {
+      return
+    }
     if (searchChoose) {
       const keys = Object.keys(searchChoose)
       const filterFelid = projectInfo?.filterFelid
@@ -434,11 +437,11 @@ const Operation = (props: Props) => {
         </Space>
 
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <InputSearch
+          {/* <InputSearch
             placeholder={t('common.pleaseSearchDemand')}
             onChangeSearch={onChangeSearch}
             leftIcon
-          />
+          /> */}
           <OperationGroup
             onChangeFilter={onChangeFilter}
             onChangeGrid={props.onChangeGrid}

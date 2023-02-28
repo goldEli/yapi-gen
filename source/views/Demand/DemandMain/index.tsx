@@ -108,9 +108,7 @@ const DemandMain = (props: Props) => {
         schedule_end: searchParamsObj.schedule_end,
         custom_field: searchParamsObj?.custom_field,
         class_id: keyRef.current,
-        system_view: searchChoose['system_view']
-          ? searchChoose['system_view']
-          : undefined,
+        system_view: searchChoose ? searchChoose['system_view'] : undefined,
       }
     } else {
       params = {
@@ -138,9 +136,7 @@ const DemandMain = (props: Props) => {
         schedule_end: searchParamsObj.schedule_end,
         custom_field: searchParamsObj?.custom_field,
         class_id: keyRef.current,
-        system_view: searchChoose['system_view']
-          ? searchChoose['system_view']
-          : undefined,
+        system_view: searchChoose ? searchChoose['system_view'] : undefined,
       }
     }
     if (state === 2) {
