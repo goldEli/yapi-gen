@@ -30,6 +30,8 @@ import { updateDemandStatus, updatePriority } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
 import { saveSort, saveTitles } from '@store/view'
 import FloatBatch from '../FloatBatch'
+import { DemandOperationDropdownMenu } from './DemandOperationDropdownMenu'
+import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 
 const Content = styled.div({
   padding: '20px 12px 0 8px',
@@ -227,14 +229,26 @@ const DemandTable = (props: Props) => {
     props.onChangeOrder?.({ value: val === 2 ? 'desc' : 'asc', key })
   }
 
-  const onPropsChangeVisible = (e: any, item: any) => {
+  // 点击编辑
+  const onPropsChangeVisible = (item: any) => {
     setIsShowMore(false)
-    props.onChangeVisible(e, item)
+    dispatch(setIsCreateDemandVisible(true))
+    dispatch(setCreateDemandProps({ demandId: item.id, projectId }))
   }
 
+  // 点击删除
   const onPropsChangeDelete = (item: any) => {
     setIsShowMore(false)
     props.onDelete(item)
+  }
+
+  // 点击创建子需求
+  const onCreateChild = (item: any) => {
+    setIsShowMore(false)
+    dispatch(setIsCreateDemandVisible(true))
+    dispatch(
+      setCreateDemandProps({ projectId, isChild: true, parentId: item.id }),
+    )
   }
 
   const columns = useDynamicColumns({
@@ -277,35 +291,6 @@ const DemandTable = (props: Props) => {
     } else {
       batchDom.current?.clickMenu(type)
     }
-  }
-
-  const menu = (item: any) => {
-    let menuItems = [
-      {
-        key: '1',
-        label: (
-          <div onClick={e => onPropsChangeVisible(e, item)}>
-            {t('common.edit')}
-          </div>
-        ),
-      },
-      {
-        key: '2',
-        label: (
-          <div onClick={() => onPropsChangeDelete(item)}>{t('common.del')}</div>
-        ),
-      },
-    ]
-
-    if (hasEdit) {
-      menuItems = menuItems.filter((i: any) => i.key !== '1')
-    }
-
-    if (hasDel) {
-      menuItems = menuItems.filter((i: any) => i.key !== '2')
-    }
-
-    return <Menu style={{ minWidth: 56 }} items={menuItems} />
   }
 
   const menuBatch = () => {
@@ -370,9 +355,18 @@ const DemandTable = (props: Props) => {
                 <MoreDropdown
                   isMoreVisible={isShowMore}
                   menu={
-                    selectedRowKeys?.map((i: any) => i.id).includes(record.id)
-                      ? menuBatch()
-                      : menu(record)
+                    selectedRowKeys
+                      ?.map((i: any) => i.id)
+                      .includes(record.id) ? (
+                      menuBatch()
+                    ) : (
+                      <DemandOperationDropdownMenu
+                        onEditChange={onPropsChangeVisible}
+                        onDeleteChange={onPropsChangeDelete}
+                        onCreateChild={onCreateChild}
+                        record={record}
+                      />
+                    )
                   }
                   onChangeVisible={setIsShowMore}
                 />
