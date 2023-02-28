@@ -5,7 +5,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable require-unicode-regexp */
 import { getProjectInfo, getWorkflowList } from '@/services/project'
-import { getCategoryConfigList } from '@/services/demand'
+import { getCategoryConfigList, updateDemandCategory } from '@/services/demand'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
 import { Form, Input, Select } from 'antd'
@@ -90,6 +90,18 @@ const CreateDemandLeft = (props: Props) => {
       name: i.name,
       color: i.color,
     }))
+    // 如果是编辑需求并且切换了新的需求类别
+    if (
+      createDemandProps.demandId &&
+      JSON.stringify(changeCategoryFormData) !== '{}'
+    ) {
+      await updateDemandCategory({
+        projectId: props.projectId,
+        id: createDemandProps?.demandId,
+        ...changeCategoryFormData,
+      })
+      setCurrentCategory({})
+    }
     return { ...values }
   }
 
@@ -378,9 +390,6 @@ const CreateDemandLeft = (props: Props) => {
         //   如果有修改
         if (resultCategory?.id) {
           setCategoryObj(resultCategory)
-          // form.setFieldsValue({
-          //   category_id: resultCategory?.id,
-          // })
         }
       }
     }
@@ -391,6 +400,7 @@ const CreateDemandLeft = (props: Props) => {
       form.setFieldsValue({
         projectId: props.projectId,
       })
+      getProjectInfoData(props.projectId)
     }
     // 是否是快捷创建
     if (createDemandProps?.isQuickCreate) {
@@ -475,17 +485,7 @@ const CreateDemandLeft = (props: Props) => {
           style={{ padding: '0 20px 0 2px' }}
         >
           <Form.Item label={t('newlyAdd.beforeCategory')}>
-            <div>12121212</div>
-            {/* <CanOperationCategory
-              style={{ marginRight: 8, cursor: 'pointer' }}
-              color={categoryObj?.color}
-              bgColor={
-                colorList?.filter((i: any) => i.key === categoryObj?.color)[0]
-                  ?.bgColor
-              }
-            >
-              <span className="title">{categoryObj?.content}</span>
-            </CanOperationCategory> */}
+            <div>变更前的需求类别</div>
           </Form.Item>
           <Form.Item
             label={t('newlyAdd.afterCategory')}
@@ -543,6 +543,7 @@ const CreateDemandLeft = (props: Props) => {
               placeholder={t('common.searchProject')}
               allowClear
               showArrow
+              disabled={createDemandProps.projectId}
               onClear={onClearProjectId}
               optionFilterProp="label"
               getPopupContainer={node => node}

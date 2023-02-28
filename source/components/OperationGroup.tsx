@@ -118,10 +118,6 @@ const OperationGroup = (props: Props) => {
         ),
       },
     ]
-
-    if (!props.isDemand) {
-      menuItems = menuItems.filter((i: any) => i.key !== 'tree')
-    }
     return <Menu items={menuItems} />
   }
   return (

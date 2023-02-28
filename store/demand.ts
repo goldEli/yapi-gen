@@ -4,14 +4,22 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 export interface CounterState {
   demandInfo: any
+  // 是否刷新评论
   isRefreshComment: boolean
+  // 是否更新状态 -- 需求详情使用
   isUpdateStatus: boolean
+  // 是否更新变更记录
   isUpdateChangeLog: boolean
+  // 需求创建选择的需求类别
   createCategory: any
+  // 过滤的参数
   filterParams: any
+  // 创建需求成功后是否刷新
+  isUpdateDemandList: any
 
+  // 是否打开创建需求弹窗
   isCreateDemandVisible: boolean
-  createDemandParams: any
+  // 创建需求弹窗传入
   createDemandProps: {
     // 编辑需求传入的id
     demandId?: any
@@ -47,9 +55,9 @@ const initialState: CounterState = {
   isUpdateChangeLog: false,
   createCategory: {},
   filterParams: {},
+  isUpdateDemandList: false,
 
   isCreateDemandVisible: false,
-  createDemandParams: {},
   createDemandProps: {},
 }
 
@@ -81,14 +89,14 @@ export const demandSlice = createSlice({
     setFilterParams: (state: any, action) => {
       state.filterParams = action.payload
     },
+    // 刷新需求列表
+    setIsUpdateDemandList: (state: any, action) => {
+      state.isUpdateDemandList = action.payload
+    },
 
     // 创建需求弹窗
     setIsCreateDemandVisible: (state: any, action) => {
       state.isCreateDemandVisible = action.payload
-    },
-    // 弹窗参数
-    setCreateDemandParams: (state: any, action) => {
-      state.createDemandParams = action.payload
     },
     // 创建弹窗传入的props
     setCreateDemandProps: (state: any, action) => {
@@ -107,9 +115,9 @@ export const {
   setIsUpdateChangeLog,
   setCreateCategory,
   setFilterParams,
+  setIsUpdateDemandList,
 
   setIsCreateDemandVisible,
-  setCreateDemandParams,
   setCreateDemandProps,
 } = demandSlice.actions
 

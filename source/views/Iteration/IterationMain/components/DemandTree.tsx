@@ -13,7 +13,7 @@ import {
   useRef,
   useState,
 } from 'react'
-import { Pagination, message, Spin, Menu, Table } from 'antd'
+import { message, Spin, Menu, Table } from 'antd'
 import styled from '@emotion/styled'
 import {
   TableStyleBox,
@@ -40,9 +40,9 @@ import {
 import PaginationBox from '@/components/TablePagination'
 
 const Content = styled.div({
-  padding: '16px 16px 0 16px',
-  background: '#F5F7FA',
-  height: 'auto',
+  padding: '20px 12px 0 8px',
+  background: 'var(--neutral-white-d1)',
+  height: 'calc(100% - 32px)',
 })
 
 const DataWrap = styled.div({
@@ -561,7 +561,7 @@ const DemandTree = (props: Props) => {
   }
 
   return (
-    <Content style={{ height: 'calc(100% - 52px)' }}>
+    <Content>
       <DataWrap ref={dataWrapRef}>
         <Spin spinning={props?.isSpinning}>
           {!!data?.list &&

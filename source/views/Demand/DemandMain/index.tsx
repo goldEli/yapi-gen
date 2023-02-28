@@ -8,9 +8,6 @@
 /* eslint-disable max-len */
 import React, { useState, useEffect, useRef } from 'react'
 import Operation from './components/Operation'
-import DemandTable from './components/DemandTable'
-import DemandGrid from './components/DemandGrid'
-import DemandTree from './components/DemandTree'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useSearchParams } from 'react-router-dom'
 import { message } from 'antd'
@@ -21,14 +18,19 @@ import WrapLeft from './components/WrapLeft'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
 import { setFilterKeys } from '@store/project'
-import { setFilterParams } from '@store/demand'
+import { setFilterParams, setIsUpdateDemandList } from '@store/demand'
 import { deleteDemand, getDemandList } from '@/services/demand'
 import ManageView from '@/components/ManageView'
 import CreateViewPort from '@/components/CreateViewPort'
+import DemandTable from '@/components/DemandComponent/DemandTable'
+import DemandGrid from '@/components/DemandComponent/DemandPanel'
+import DemandTree from '@/components/DemandComponent/DemandTree'
+import ProjectCommonOperation from '@/components/ProjectCommonOperation'
+import { Content, DemandContent } from './style'
 
 const Right = styled.div<{ isShowLeft: boolean }>({
   width: '100%',
-  height: 'calc(100vh - 64px)',
+  height: '100%',
   overflowY: 'auto',
 })
 
@@ -47,7 +49,7 @@ const DemandMain = (props: Props) => {
   const [key, setKey] = useState()
   const keyRef = useRef()
   const [isGrid, setIsGrid] = useState(0)
-  const [searchItems, setSearchItems] = useState({})
+  const [searchItems, setSearchItems] = useState<any>({})
   const [isVisible, setIsVisible] = useState(false)
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
   const [deleteId, setDeleteId] = useState(0)
@@ -67,6 +69,7 @@ const DemandMain = (props: Props) => {
   // 用于控制失焦事件与展开子需求冲突
   const [isUpdated, setIsUpdated] = useState(false)
   const { filterKeys } = useSelector(store => store.project)
+  const [searchVal, setSearchVal] = useState('')
   const dispatch = useDispatch()
 
   const getList = async (
@@ -162,7 +165,7 @@ const DemandMain = (props: Props) => {
     if (isRefresh) {
       getList(isGrid, searchItems, { page: 1, size: pageObj.size }, order)
     }
-  }, [isRefresh])
+  }, [isRefresh, setIsUpdateDemandList])
 
   useEffect(() => {
     if (props.isUpdate) {
@@ -214,6 +217,26 @@ const DemandMain = (props: Props) => {
     })
   }
 
+  const onInputSearch = (keyValue: any) => {
+    if (searchVal !== keyValue) {
+      setSearchVal(keyValue)
+      const params = searchItems
+      params.searchValue = keyValue
+      setSearchItems(params)
+      setDataList({ list: undefined })
+      setIsUpdated(true)
+      setPageObj({
+        page: 1,
+        size: pageObj.size,
+      })
+      // 添加搜索项 计数
+      const keys = keyValue
+        ? [...filterKeys, ...['searchVal']]
+        : filterKeys?.filter((i: any) => i !== 'searchVal')
+      dispatch(setFilterKeys([...new Set(keys)]))
+    }
+  }
+
   const onChangePageNavigation = (item: any) => {
     setPageObj(item)
   }
@@ -252,94 +275,97 @@ const DemandMain = (props: Props) => {
 
   return (
     <TreeContext.Provider value={keyValue}>
-      <div style={{ height: '100%', display: 'flex' }}>
-        <DeleteConfirm
-          text={t('common.confirmDelDemand')}
-          isVisible={isVisible}
-          onChangeVisible={() => setIsVisible(!isVisible)}
-          onConfirm={onDeleteConfirm}
-        />
-        <CreateViewPort pid={projectId} />
-        <ManageView pid={projectId} />
-        {isShowLeft && (
-          <WrapLeft
-            ref={myTreeComponent}
-            projectId={projectId}
-            isShowLeft={isShowLeft}
-            onUpdate={onUpdate}
-            iKey={key}
-          />
-        )}
-        <Right isShowLeft={isShowLeft}>
-          <Operation
-            pid={projectId}
-            isGrid={isGrid}
-            onChangeGrid={val => onChangeGrid(val)}
-            onChangeIsShowLeft={() => setIsShowLeft(!isShowLeft)}
-            onChangeVisible={(e: any) => props.onChangeVisible(e)}
-            onSearch={onSearch}
-            settingState={isSettingState}
-            onChangeSetting={setIsSettingState}
-            isShowLeft={isShowLeft}
-            otherParams={{
-              page: pageObj.page,
-              pageSize: pageObj.size,
-              orderKey: order.key,
-              order: order.value,
-              classId: key,
-              all: isGrid,
-              panel: isGrid,
-            }}
-            dataLength={dataList?.total}
-          />
-          {isGrid === 2 && (
-            <DemandTree
-              onChangeVisible={onChangeOperation}
-              onDelete={onDelete}
-              data={dataList}
-              onChangePageNavigation={onChangePageNavigation}
-              onChangeRow={onChangeRow}
+      <DeleteConfirm
+        text={t('common.confirmDelDemand')}
+        isVisible={isVisible}
+        onChangeVisible={() => setIsVisible(!isVisible)}
+        onConfirm={onDeleteConfirm}
+      />
+      <CreateViewPort pid={projectId} />
+      <ManageView pid={projectId} />
+      <Content>
+        <ProjectCommonOperation onInputSearch={onInputSearch} />
+        <DemandContent>
+          {isShowLeft && (
+            <WrapLeft
+              ref={myTreeComponent}
+              projectId={projectId}
+              isShowLeft={isShowLeft}
+              onUpdate={onUpdate}
+              iKey={key}
+            />
+          )}
+          <Right isShowLeft={isShowLeft}>
+            <Operation
+              pid={projectId}
+              isGrid={isGrid}
+              onChangeGrid={val => onChangeGrid(val)}
+              onChangeIsShowLeft={() => setIsShowLeft(!isShowLeft)}
+              onChangeVisible={(e: any) => props.onChangeVisible(e)}
+              onSearch={onSearch}
               settingState={isSettingState}
               onChangeSetting={setIsSettingState}
-              onChangeOrder={onChangeOrder}
-              isSpinning={isSpinning}
-              onUpdate={onUpdate}
-              filterParams={{
-                ...searchItems,
-                projectId,
-                page: 1,
-                pageSize: 100,
-                order: '',
-                orderKey: '',
+              isShowLeft={isShowLeft}
+              otherParams={{
+                page: pageObj.page,
+                pageSize: pageObj.size,
+                orderKey: order.key,
+                order: order.value,
+                classId: key,
+                all: isGrid,
+                panel: isGrid,
               }}
-              isUpdated={isUpdated}
+              dataLength={dataList?.total}
             />
-          )}
-          {!isGrid && (
-            <DemandTable
-              onChangeVisible={onChangeOperation}
-              onDelete={onDelete}
-              data={dataList}
-              onChangePageNavigation={onChangePageNavigation}
-              onChangeRow={onChangeRow}
-              settingState={isSettingState}
-              onChangeSetting={setIsSettingState}
-              onChangeOrder={onChangeOrder}
-              isSpinning={isSpinning}
-              onUpdate={onUpdate}
-            />
-          )}
-          {isGrid === 1 && (
-            <DemandGrid
-              onChangeVisible={onChangeOperation}
-              onDelete={onDelete}
-              data={dataList}
-              isSpinning={isSpinning}
-              onUpdate={onUpdate}
-            />
-          )}
-        </Right>
-      </div>
+            {isGrid === 2 && (
+              <DemandTree
+                onChangeVisible={onChangeOperation}
+                onDelete={onDelete}
+                data={dataList}
+                onChangePageNavigation={onChangePageNavigation}
+                onChangeRow={onChangeRow}
+                settingState={isSettingState}
+                onChangeSetting={setIsSettingState}
+                onChangeOrder={onChangeOrder}
+                isSpinning={isSpinning}
+                onUpdate={onUpdate}
+                filterParams={{
+                  ...searchItems,
+                  projectId,
+                  page: 1,
+                  pageSize: 100,
+                  order: '',
+                  orderKey: '',
+                }}
+                isUpdated={isUpdated}
+              />
+            )}
+            {!isGrid && (
+              <DemandTable
+                onChangeVisible={onChangeOperation}
+                onDelete={onDelete}
+                data={dataList}
+                onChangePageNavigation={onChangePageNavigation}
+                onChangeRow={onChangeRow}
+                settingState={isSettingState}
+                onChangeSetting={setIsSettingState}
+                onChangeOrder={onChangeOrder}
+                isSpinning={isSpinning}
+                onUpdate={onUpdate}
+              />
+            )}
+            {isGrid === 1 && (
+              <DemandGrid
+                onChangeVisible={onChangeOperation}
+                onDelete={onDelete}
+                data={dataList}
+                isSpinning={isSpinning}
+                onUpdate={onUpdate}
+              />
+            )}
+          </Right>
+        </DemandContent>
+      </Content>
     </TreeContext.Provider>
   )
 }

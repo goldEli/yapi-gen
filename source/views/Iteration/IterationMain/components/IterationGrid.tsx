@@ -16,14 +16,13 @@ import { useSelector } from '@store/index'
 
 const Content = styled.div({
   padding: 16,
-  height: '100%',
+  height: 'calc(100% - 32px)',
 })
 
 const StatusItemsWrap = styled.div({
   width: 316,
   height: '100%',
   background: 'white',
-  padding: '0 24px 16px 24px',
   borderRadius: 6,
   display: 'flex',
   flexDirection: 'column',
@@ -105,7 +104,7 @@ const IterationGrid = (props: Props) => {
   }
 
   return (
-    <Content style={{ height: `calc(100% - 52px)` }}>
+    <Content>
       <div style={{ height: '100%', overflow: 'auto' }}>
         <Spin spinning={props?.isSpinning}>
           <SpaceWrap size={20}>
