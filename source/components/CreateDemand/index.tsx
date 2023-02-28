@@ -193,7 +193,6 @@ const CreateDemand = () => {
 
   return (
     <>
-      <div>212</div>
       <CommonModal
         title="创建需求"
         isVisible={isCreateDemandVisible}

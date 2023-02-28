@@ -165,8 +165,9 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
   }
 
   const getClassSide = () => {
+    let nodeComponent: any
     if (pathname === '/ProjectManagement/Project') {
-      return (
+      nodeComponent = (
         <MoreProjectSide
           onAddClick={onAddClick}
           onChangeType={onChangeType}
@@ -176,13 +177,15 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
         />
       )
     } else if (String(pathname).includes('/AdminManagement')) {
-      return <AdminSide leftWidth={leftWidth} />
+      nodeComponent = <AdminSide leftWidth={leftWidth} />
     } else if (String(pathname).includes('/Mine')) {
-      return <MineSide />
+      nodeComponent = <MineSide />
     } else if (String(pathname).includes('/LogManagement')) {
-      return <LogSide />
+      nodeComponent = <LogSide />
+    } else if (String(pathname).includes('/ProjectManagement')) {
+      nodeComponent = <ProjectDetailSide leftWidth={leftWidth} />
     }
-    return <ProjectDetailSide leftWidth={leftWidth} />
+    return nodeComponent
   }
 
   return (
