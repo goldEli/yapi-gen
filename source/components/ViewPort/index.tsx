@@ -1,6 +1,11 @@
 /* eslint-disable react/no-unstable-nested-components */
 import { useDispatch, useSelector } from '@store/index'
-import { changeCreateVisible, changeViewVisible } from '@store/view'
+import {
+  changeCreateVisible,
+  changeViewVisible,
+  saveScreen,
+  saveTitles,
+} from '@store/view'
 import { getViewList } from '@store/view/thunk'
 import { Button, Divider, Dropdown, MenuProps, Space } from 'antd'
 import React, { useEffect, useState } from 'react'
@@ -47,7 +52,9 @@ const ViewPort = (props: any) => {
   const onClick = (e: any) => {
     const value =
       viewList[viewList.findIndex((i: any) => String(i.id) === e.key)]
-    // console.log(value)
+
+    dispatch(saveTitles(value.config.fields))
+    dispatch(saveScreen({ key: [], value: [], choose: value.config.search }))
   }
   useEffect(() => {
     dispatch(getViewList(props.pid))
