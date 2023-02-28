@@ -20,7 +20,7 @@ const CreateViewPort = (props: any) => {
     const res = await form.validateFields()
     const obj: any = {}
     for (const i in searchKey) {
-      obj[searchKey[i].key] = undefined
+      obj[searchKey[i].key] = null
     }
 
     const data = {

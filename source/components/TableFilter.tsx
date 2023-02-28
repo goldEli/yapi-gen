@@ -1,3 +1,4 @@
+/* eslint-disable no-delete-var */
 // 公用列表筛选组件
 
 /* eslint-disable no-param-reassign */
@@ -300,7 +301,7 @@ const TableFilter = (props: any) => {
 
   // 查询筛选值，operationKey： 记录当前查询的key,delKey: 删除的key, type: 类型值1位字符串，2是时间
   const confirm = async (operationKey?: any, delKey?: any, type?: any) => {
-    //当前查询的存入计数
+    // 当前查询的存入计数
     if (operationKey) {
       const keys = [...filterKeys, ...[operationKey]]
       dispatch(setFilterKeys([...new Set(keys)]))
@@ -358,11 +359,27 @@ const TableFilter = (props: any) => {
     form.resetFields()
     confirm()
   }
+
+  function filterObj(mainObject: any, filterFunction: any) {
+    return Object.keys(mainObject)
+      .filter(ObjectKey => {
+        return filterFunction(mainObject[ObjectKey])
+      })
+      .reduce((result: any, ObjectKey) => {
+        result[ObjectKey] = mainObject[ObjectKey]
+        return result
+      }, {})
+  }
   useEffect(() => {
+    const targetSubjects = filterObj(searchChoose, (grade: any) => {
+      return grade !== null
+    })
+
     if (searchChoose) {
-      form.setFieldsValue(searchChoose)
+      form.setFieldsValue(targetSubjects)
     }
   }, [searchChoose])
+
   // 折叠图标
   const expandIcon = (e: any) => {
     return (
