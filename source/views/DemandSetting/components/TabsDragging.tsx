@@ -22,7 +22,7 @@ const IconBox = styled.div`
 const ItemList = styled.div`
   display: flex;
   align-items: center;
-  width: 912px;
+  flex: 1;
   height: 64px;
   background: var(--neutral-n8);
   padding: 0 16px;

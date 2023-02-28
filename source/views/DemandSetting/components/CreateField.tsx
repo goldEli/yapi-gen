@@ -5,7 +5,6 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CreatDragging from './CreatDragging'
 const CreateFieldWrap = styled.div`
-  width: 100%;
   margin: 20px 0 0 20px;
   border-left: 1px solid var(--neutral-n6-d1);
   padding-left: 24px;
@@ -15,6 +14,9 @@ const TitleStyle = styled.div`
   align-items: center;
   color: var(--neutral-n1-d1);
   margin: 0 0 16px 0;
+  &:hover {
+    cursor: pointer;
+  }
 `
 const BottomTitleStyle = styled.div`
   display: flex;
@@ -22,6 +24,9 @@ const BottomTitleStyle = styled.div`
   justify-content: space-between;
   color: var(--neutral-n1-d1);
   margin: 0 0 16px 0;
+  &:hover {
+    cursor: pointer;
+  }
 `
 const BottomList = styled.div`
   margin-top: 24px;
@@ -55,7 +60,7 @@ const InputStyle = styled(Input)`
   }
 `
 const SearchItemList = styled.div`
-  min-width: 352px;
+  width: 352px;
   height: 44px;
   border-radius: 8px;
   background-color: var(--neutral-n8);
@@ -78,7 +83,9 @@ const SearchItemList = styled.div`
 `
 const CreateField = () => {
   const [t] = useTranslation()
+  const [searchIcon, setSearchIcon] = useState(false)
   const [search, setSearch] = useState(false)
+  const [createIcon, setCreateIcon] = useState(true)
   const option = [
     { label: t('newlyAdd.lineText'), value: '1', type: 'text' },
     { label: t('newlyAdd.moreLineText'), value: '2', type: 'textarea' },
@@ -111,8 +118,12 @@ const CreateField = () => {
   }
   return (
     <CreateFieldWrap>
-      <TitleStyle>
-        <CommonIconFont type="down-icon" size={14} color="var(--neutral-n3)" />
+      <TitleStyle onClick={() => setCreateIcon(!createIcon)}>
+        <CommonIconFont
+          type={createIcon ? 'down-icon' : 'right-icon'}
+          size={14}
+          color="var(--neutral-n3)"
+        />
         <span>创建字段</span>
         <span
           style={{
@@ -124,16 +135,22 @@ const CreateField = () => {
           将字段拖动左侧区域创建字段
         </span>
       </TitleStyle>
-      <CreatDragging
-        onChange={(item: any) => onChangeDragging(item)}
-        list={option}
-        setList={setList}
-      />
+      {createIcon && (
+        <CreatDragging
+          onChange={(item: any) => onChangeDragging(item)}
+          list={option}
+          setList={setList}
+        />
+      )}
+
       <BottomList>
         <BottomTitleStyle>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div
+            style={{ display: 'flex', alignItems: 'center' }}
+            onClick={() => setSearchIcon(!searchIcon)}
+          >
             <CommonIconFont
-              type="down-icon"
+              type={searchIcon ? 'down-icon' : 'right-icon'}
               size={14}
               color="var(--neutral-n3)"
             />
@@ -162,19 +179,25 @@ const CreateField = () => {
             />
           )}
         </BottomTitleStyle>
-        <SearchItemList>
-          <div>
-            <CommonIconFont
-              type="interation"
-              size={19}
-              color="var(--neutral-n1-d1)"
-            />
-            <span style={{ marginLeft: '8px' }}>123</span>
-          </div>
-          <div className="delIcon">
-            <CommonIconFont type="delete" size={19} color="var(--primary-d2)" />
-          </div>
-        </SearchItemList>
+        {searchIcon && (
+          <SearchItemList>
+            <div>
+              <CommonIconFont
+                type="interation"
+                size={19}
+                color="var(--neutral-n1-d1)"
+              />
+              <span style={{ marginLeft: '8px' }}>123</span>
+            </div>
+            <div className="delIcon">
+              <CommonIconFont
+                type="delete"
+                size={19}
+                color="var(--primary-d2)"
+              />
+            </div>
+          </SearchItemList>
+        )}
       </BottomList>
     </CreateFieldWrap>
   )
