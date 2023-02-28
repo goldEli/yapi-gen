@@ -110,7 +110,7 @@ const SortItem = styled.div<{ isActive: boolean }>(
 )
 
 const CardGroups = styled.div({
-  height: 'calc(100% - 52px)',
+  height: 'calc(100% - 60px)',
   width: '100%',
   overflowY: 'scroll',
   '::-webkit-scrollbar': {

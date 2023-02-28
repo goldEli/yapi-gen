@@ -3,12 +3,19 @@
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable complexity */
-import { Pagination, Menu, message, Spin } from 'antd'
+import { Pagination, Menu, message, Spin, Table } from 'antd'
 import styled from '@emotion/styled'
 import { TableStyleBox, SecondButton } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { useSearchParams } from 'react-router-dom'
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import {
+  createRef,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from '@/components/CreateProjectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -22,6 +29,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setFilterParamsModal } from '@store/project'
 import { updateDemandStatus, updatePriority } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
+import FloatBatch from '@/components/FloatBatch'
 
 const Content = styled.div({
   background: 'var(--neutral-white-d1)',
@@ -79,7 +87,11 @@ const IterationTable = (props: Props) => {
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
   const dataWrapRef = useRef<HTMLDivElement>(null)
+  const [isShowMore, setIsShowMore] = useState(false)
   const [isEdit, setIsEdit] = useState(false)
+  const batchDom: any = createRef()
+  // 勾选的id集合
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
   asyncSetTtile(`${t('title.iteration')}【${projectInfo.name}】`)
   const dispatch = useDispatch()
 
@@ -132,6 +144,24 @@ const IterationTable = (props: Props) => {
     setAllTitleList(all)
   }
 
+  // 勾选或者取消勾选，显示数量 keys: 所有选择的数量，type： 添加还是移除
+  const onOperationCheckbox = (type: any, keys?: any) => {
+    const redClassElements = document.getElementsByClassName(
+      'ant-checkbox-wrapper',
+    )
+    for (const i of redClassElements) {
+      if (i.getElementsByClassName('tagLength')[0]) {
+        i.removeChild(i.getElementsByClassName('tagLength')[0])
+      }
+      if (type === 'add' && keys?.length > 0) {
+        const div2 = document.createElement('div')
+        div2.innerText = String(keys.length)
+        div2.className = 'tagLength'
+        i.appendChild(div2)
+      }
+    }
+  }
+
   const onClickItem = (item: any) => {
     const params = encryptPhp(
       JSON.stringify({ type: 'info', id: projectId, demandId: item.id }),
@@ -141,6 +171,8 @@ const IterationTable = (props: Props) => {
 
   const onChangePage = (page: number, size: number) => {
     props.onChangePageNavigation?.({ page, size })
+    setSelectedRowKeys([])
+    onOperationCheckbox('remove')
   }
 
   const onChangeState = async (item: any) => {
@@ -174,10 +206,12 @@ const IterationTable = (props: Props) => {
   }
 
   const onPropsChangeVisible = (e: any, item: any) => {
+    setIsShowMore(false)
     props.onChangeVisible(e, item)
   }
 
   const onPropsChangeDelete = (item: any) => {
+    setIsShowMore(false)
     props.onDelete(item)
   }
 
@@ -212,6 +246,22 @@ const IterationTable = (props: Props) => {
     'b/story/save',
   )
 
+  const hasBatch = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/batch',
+  )
+
+  //  点击批量
+  const onClickBatch = (e: any, type: any) => {
+    setIsShowMore(false)
+    e.stopPropagation()
+    if (type === 'copy') {
+      batchDom.current?.copy()
+    } else {
+      batchDom.current?.clickMenu(type)
+    }
+  }
+
   const menu = (item: any) => {
     let menuItems = [
       {
@@ -241,6 +291,47 @@ const IterationTable = (props: Props) => {
     return <Menu style={{ minWidth: 56 }} items={menuItems} />
   }
 
+  const menuBatch = () => {
+    const batchItems = [
+      {
+        key: '0',
+        disabled: true,
+        label: (
+          <div>
+            {t('version2.checked', {
+              count: selectedRowKeys?.map((i: any) => i.id)?.length,
+            })}
+          </div>
+        ),
+      },
+      {
+        key: '1',
+        label: (
+          <div onClick={e => onClickBatch(e, 'edit')}>
+            {t('version2.batchEdit')}
+          </div>
+        ),
+      },
+      {
+        key: '2',
+        label: (
+          <div onClick={e => onClickBatch(e, 'delete')}>
+            {t('version2.batchDelete')}
+          </div>
+        ),
+      },
+      {
+        key: '3',
+        label: (
+          <div onClick={e => onClickBatch(e, 'copy')}>
+            {t('version2.batchCopyLink')}
+          </div>
+        ),
+      },
+    ]
+    return <Menu style={{ minWidth: 56 }} items={batchItems} />
+  }
+
   const selectColum: any = useMemo(() => {
     const arr = allTitleList
     const newList = []
@@ -257,14 +348,51 @@ const IterationTable = (props: Props) => {
         render: (text: any, record: any) => {
           return (
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              {hasEdit && hasDel ? null : <MoreDropdown menu={menu(record)} />}
+              {hasEdit && hasDel ? null : (
+                <MoreDropdown
+                  isMoreVisible={isShowMore}
+                  menu={
+                    selectedRowKeys?.map((i: any) => i.id).includes(record.id)
+                      ? menuBatch()
+                      : menu(record)
+                  }
+                  onChangeVisible={setIsShowMore}
+                />
+              )}
             </div>
           )
         },
       },
     ]
+    if (!hasBatch) {
+      arrList.push(Table.SELECTION_COLUMN as any)
+    }
     return [...arrList, ...newList]
-  }, [titleList, titleList2, titleList3, columns])
+  }, [titleList, titleList2, titleList3, columns, selectedRowKeys])
+
+  // 需求勾选
+  const onSelectChange = (record: any, selected: any) => {
+    const resultKeys = selected
+      ? [...selectedRowKeys, ...[record], ...(record.allChildrenIds || [])]
+      : selectedRowKeys?.filter((i: any) => i.id !== record.id)
+    setSelectedRowKeys([...new Set(resultKeys)])
+    onOperationCheckbox('add', [...new Set(resultKeys)])
+  }
+
+  // 全选
+  const onSelectAll = (selected: any) => {
+    if (selected) {
+      let childKeys: any = []
+      props.data?.list?.forEach((element: any) => {
+        childKeys = [...childKeys, ...[element]]
+      })
+      setSelectedRowKeys([...new Set(childKeys)])
+      onOperationCheckbox('add', [...new Set(childKeys)])
+    } else {
+      setSelectedRowKeys([])
+      onOperationCheckbox('remove')
+    }
+  }
 
   const onCreateDemand = () => {
     dispatch(setFilterParamsModal(filterParams))
@@ -307,13 +435,30 @@ const IterationTable = (props: Props) => {
                   }}
                   showSorterTooltip={false}
                   tableLayout="auto"
+                  rowSelection={
+                    !hasBatch &&
+                    ({
+                      selectedRowKeys: selectedRowKeys?.map((i: any) => i.id),
+                      onSelect: (record: any, selected: any) =>
+                        onSelectChange(record, selected),
+                      onSelectAll,
+                    } as any)
+                  }
                 />
               ) : (
                 <NoData />
               ))}
           </Spin>
         )}
-
+        {!hasBatch && (
+          <FloatBatch
+            isVisible={selectedRowKeys.length > 0}
+            onClose={() => onSelectAll(false)}
+            selectRows={selectedRowKeys}
+            onUpdate={props.onUpdate}
+            onRef={batchDom}
+          />
+        )}
         {typeof props?.hasId !== 'object' && (
           // 没有迭代的时候
           <NoData />

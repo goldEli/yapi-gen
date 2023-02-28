@@ -3,8 +3,15 @@
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-no-leaked-render */
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { message, Spin, Menu } from 'antd'
+import {
+  createRef,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
+import { message, Spin, Menu, Table } from 'antd'
 import styled from '@emotion/styled'
 import { TableStyleBox, SecondButton } from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
@@ -22,6 +29,7 @@ import { setFilterParamsModal } from '@store/project'
 import { updateDemandStatus, updatePriority } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
 import { saveSort, saveTitles } from '@store/view'
+import FloatBatch from '../FloatBatch'
 
 const Content = styled.div({
   padding: '20px 12px 0 8px',
@@ -69,6 +77,9 @@ const DemandTable = (props: Props) => {
   const [order, setOrder] = useState<any>('')
   const [isShowMore, setIsShowMore] = useState(false)
   const [isAddVisible, setIsAddVisible] = useState(false)
+  const batchDom: any = createRef()
+  // 勾选的id集合
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
   const dataWrapRef = useRef<HTMLDivElement>(null)
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
   const dispatch = useDispatch()
@@ -155,8 +166,28 @@ const DemandTable = (props: Props) => {
     dispatch(saveTitles(all))
   }
 
+  // 勾选或者取消勾选，显示数量 keys: 所有选择的数量，type： 添加还是移除
+  const onOperationCheckbox = (type: any, keys?: any) => {
+    const redClassElements = document.getElementsByClassName(
+      'ant-checkbox-wrapper',
+    )
+    for (const i of redClassElements) {
+      if (i.getElementsByClassName('tagLength')[0]) {
+        i.removeChild(i.getElementsByClassName('tagLength')[0])
+      }
+      if (type === 'add' && keys?.length > 0) {
+        const div2 = document.createElement('div')
+        div2.innerText = String(keys.length)
+        div2.className = 'tagLength'
+        i.appendChild(div2)
+      }
+    }
+  }
+
   const onChangePage = (page: number, size: number) => {
     props.onChangePageNavigation?.({ page, size })
+    setSelectedRowKeys([])
+    onOperationCheckbox('remove')
   }
 
   const onClickItem = (item: any) => {
@@ -232,6 +263,22 @@ const DemandTable = (props: Props) => {
     'b/story/delete',
   )
 
+  const hasBatch = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/batch',
+  )
+
+  //  点击批量
+  const onClickBatch = (e: any, type: any) => {
+    setIsShowMore(false)
+    e.stopPropagation()
+    if (type === 'copy') {
+      batchDom.current?.copy()
+    } else {
+      batchDom.current?.clickMenu(type)
+    }
+  }
+
   const menu = (item: any) => {
     let menuItems = [
       {
@@ -261,6 +308,47 @@ const DemandTable = (props: Props) => {
     return <Menu style={{ minWidth: 56 }} items={menuItems} />
   }
 
+  const menuBatch = () => {
+    const batchItems = [
+      {
+        key: '0',
+        disabled: true,
+        label: (
+          <div>
+            {t('version2.checked', {
+              count: selectedRowKeys?.map((i: any) => i.id)?.length,
+            })}
+          </div>
+        ),
+      },
+      {
+        key: '1',
+        label: (
+          <div onClick={e => onClickBatch(e, 'edit')}>
+            {t('version2.batchEdit')}
+          </div>
+        ),
+      },
+      {
+        key: '2',
+        label: (
+          <div onClick={e => onClickBatch(e, 'delete')}>
+            {t('version2.batchDelete')}
+          </div>
+        ),
+      },
+      {
+        key: '3',
+        label: (
+          <div onClick={e => onClickBatch(e, 'copy')}>
+            {t('version2.batchCopyLink')}
+          </div>
+        ),
+      },
+    ]
+    return <Menu style={{ minWidth: 56 }} items={batchItems} />
+  }
+
   const selectColum: any = useMemo(() => {
     const arr = allTitleList
     const newList = []
@@ -281,7 +369,11 @@ const DemandTable = (props: Props) => {
               {hasEdit && hasDel ? null : (
                 <MoreDropdown
                   isMoreVisible={isShowMore}
-                  menu={menu(record)}
+                  menu={
+                    selectedRowKeys?.map((i: any) => i.id).includes(record.id)
+                      ? menuBatch()
+                      : menu(record)
+                  }
                   onChangeVisible={setIsShowMore}
                 />
               )}
@@ -290,8 +382,11 @@ const DemandTable = (props: Props) => {
         },
       },
     ]
+    if (!hasBatch) {
+      arrList.push(Table.SELECTION_COLUMN as any)
+    }
     return [...arrList, ...newList]
-  }, [titleList, titleList2, titleList3, columns])
+  }, [titleList, titleList2, titleList3, columns, selectedRowKeys])
 
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
@@ -312,6 +407,30 @@ const DemandTable = (props: Props) => {
 
   const tableY =
     tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
+
+  // 需求勾选
+  const onSelectChange = (record: any, selected: any) => {
+    const resultKeys = selected
+      ? [...selectedRowKeys, ...[record], ...(record.allChildrenIds || [])]
+      : selectedRowKeys?.filter((i: any) => i.id !== record.id)
+    setSelectedRowKeys([...new Set(resultKeys)])
+    onOperationCheckbox('add', [...new Set(resultKeys)])
+  }
+
+  // 全选
+  const onSelectAll = (selected: any) => {
+    if (selected) {
+      let childKeys: any = []
+      props.data?.list?.forEach((element: any) => {
+        childKeys = [...childKeys, ...[element]]
+      })
+      setSelectedRowKeys([...new Set(childKeys)])
+      onOperationCheckbox('add', [...new Set(childKeys)])
+    } else {
+      setSelectedRowKeys([])
+      onOperationCheckbox('remove')
+    }
+  }
 
   const onClick = () => {
     setIsAddVisible(!isAddVisible)
@@ -335,6 +454,15 @@ const DemandTable = (props: Props) => {
                 }}
                 showSorterTooltip={false}
                 tableLayout="auto"
+                rowSelection={
+                  !hasBatch &&
+                  ({
+                    selectedRowKeys: selectedRowKeys?.map((i: any) => i.id),
+                    onSelect: (record: any, selected: any) =>
+                      onSelectChange(record, selected),
+                    onSelectAll,
+                  } as any)
+                }
               />
             ) : (
               <NoData
@@ -349,6 +477,15 @@ const DemandTable = (props: Props) => {
               </NoData>
             ))}
         </Spin>
+        {!hasBatch && (
+          <FloatBatch
+            isVisible={selectedRowKeys.length > 0}
+            onClose={() => onSelectAll(false)}
+            selectRows={selectedRowKeys}
+            onUpdate={props.onUpdate}
+            onRef={batchDom}
+          />
+        )}
       </DataWrap>
 
       <PaginationBox
