@@ -10,7 +10,11 @@ import {
   getGroupList,
   getProjectInfoOnly,
 } from '@/services/project'
-import { changeCreateVisible, editProject } from '@store/create-propject'
+import {
+  changeCreateVisible,
+  editProject,
+  onRest,
+} from '@store/create-propject'
 import { postCreate, postEditCreate } from '@store/create-propject/thunks'
 import { useDispatch, useSelector } from '@store/index'
 import { Form, Input, Select, Tooltip, Upload } from 'antd'
@@ -72,6 +76,7 @@ const CreateAProjectForm = () => {
     }
     dispatch(postCreate(obj))
     dispatch(editProject({ visible: false, id: '' }))
+    dispatch(onRest(true))
   }
 
   function upper(str: string) {

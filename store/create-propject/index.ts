@@ -4,6 +4,7 @@ import { postCreate, postEditCreate } from './thunks'
 
 type SliceState = {
   createVisible: boolean
+  isRest: boolean
   isEditId: string
 }
 
@@ -11,6 +12,7 @@ const slice = createSlice({
   name: 'createProject',
   initialState: {
     createVisible: false,
+    isRest: false,
   } as SliceState,
   reducers: {
     changeCreateVisible: (state, action) => {
@@ -20,6 +22,9 @@ const slice = createSlice({
     editProject: (state, action) => {
       state.createVisible = action.payload.visible
       state.isEditId = action.payload.id
+    },
+    onRest: (state, action) => {
+      state.isRest = action.payload
     },
   },
 
@@ -37,6 +42,6 @@ const slice = createSlice({
   },
 })
 
-export const { changeCreateVisible, editProject } = slice.actions
+export const { changeCreateVisible, editProject, onRest } = slice.actions
 
 export default slice.reducer

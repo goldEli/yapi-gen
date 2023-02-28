@@ -18,7 +18,7 @@ import {
   openProject,
   stopProject,
 } from '@/services/project'
-import { changeCreateVisible } from '@store/create-propject'
+import { changeCreateVisible, onRest } from '@store/create-propject'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefreshGroup } from '@store/project'
 import { message, Spin } from 'antd'
@@ -47,6 +47,7 @@ const ProjectManagementOptimization = () => {
   const [projectList, setProjectList] = useState<any>({
     list: undefined,
   })
+  const isRest = useSelector(state => state.createProject.isRest)
 
   const getList = async (
     active: number,
@@ -81,11 +82,12 @@ const ProjectManagementOptimization = () => {
     const result = await getProjectList(params)
     setProjectList(result)
     setIsSpinning(false)
+    dispatch(onRest(false))
   }
 
   useEffect(() => {
     getList(activeType, isGrid, isHidden, searchVal, order, pageObj, groupId)
-  }, [isHidden, activeType, order, searchVal, isGrid, pageObj, groupId])
+  }, [isHidden, activeType, order, searchVal, isGrid, pageObj, groupId, isRest])
 
   // 更新列表
   const onUpdate = () => {

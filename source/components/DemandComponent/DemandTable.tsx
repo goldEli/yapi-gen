@@ -28,7 +28,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setFilterParamsModal } from '@store/project'
 import { updateDemandStatus, updatePriority } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
-import { saveSort, saveTitles } from '@store/view'
+import { onTapSearchChoose, saveSort, saveTitles } from '@store/view'
 import FloatBatch from '../FloatBatch'
 
 const Content = styled.div({
@@ -63,7 +63,7 @@ const DemandTable = (props: Props) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { projectInfo, filterKeys } = useSelector(store => store.project)
-  const titles = useSelector(store => store.view.titles)
+  const titles = useSelector(store => store.view.tapTitles)
   const tapSort = useSelector(store => store.view.tapSort)
   const { filterParams } = useSelector(store => store.demand)
   const [titleList, setTitleList] = useState<any[]>([])
@@ -146,11 +146,13 @@ const DemandTable = (props: Props) => {
   }
 
   useEffect(() => {
-    setTitleList(getTitle(titles, plainOptions))
-    setTitleList2(getTitle(titles, plainOptions2))
-    setTitleList3(getTitle(titles, plainOptions3))
+    if (titles) {
+      setTitleList(getTitle(titles, plainOptions))
+      setTitleList2(getTitle(titles, plainOptions2))
+      setTitleList3(getTitle(titles, plainOptions3))
 
-    setAllTitleList(titles)
+      setAllTitleList(titles)
+    }
   }, [titles])
 
   const getCheckList = (
