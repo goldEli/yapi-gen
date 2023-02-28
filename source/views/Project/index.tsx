@@ -229,7 +229,7 @@ const ProjectManagementOptimization = () => {
         onChangeVisible={() => setIsStop(!isStop)}
         onConfirm={onStopProject}
       />
-      <RichEditor />
+
       <div
         style={{
           display: 'flex',

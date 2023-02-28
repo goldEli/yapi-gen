@@ -140,6 +140,7 @@ const Operation = (props: Props) => {
     store => store.project,
   )
   const { filterParams } = useSelector(store => store.demand)
+  const { choose } = useSelector(store => store.view.screen)
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -233,6 +234,17 @@ const Operation = (props: Props) => {
     setFilterSpecialList(projectInfo?.filterSpecialList)
     setFilterCustomList(projectInfo?.filterCustomList)
   }
+
+  //设置标题的筛选
+
+  useEffect(() => {
+    const keys = Object.keys(choose)
+    const filterFelid = projectInfo?.filterFelid
+    const newArr = filterFelid.filter((i: any) => {
+      return keys.includes(i.content)
+    })
+    setSearchList(newArr)
+  }, [choose])
 
   useEffect(() => {
     if (projectInfo?.id) {
