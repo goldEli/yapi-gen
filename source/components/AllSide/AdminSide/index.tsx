@@ -1,12 +1,16 @@
 /* eslint-disable react/no-unstable-nested-components */
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
+import { useSelector } from '@store/index'
 import { Menu } from 'antd'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+
 const AdminSideWrap = styled.div`
-  background-color: var(--neutral-n6-d1);
+  /* background-color: var(--neutral-n6-d1); */
   height: 100%;
 `
+
 const HeaderWrap = styled.div`
   margin: 0 16px;
   height: 72px;
@@ -25,10 +29,10 @@ const HeaderWrap = styled.div`
   }
 `
 const MenuStyle = styled(Menu)`
-  background-color: var(--neutral-n6-d1) !important;
+  background-color: var(--neutral-n9) !important;
   .ant-menu-item {
     height: 44px !important;
-    background-color: var(--neutral-n6-d1);
+    background-color: var(--neutral-n9);
     color: var(--neutral-n1-d2);
     margin: 0;
     .icon {
@@ -74,7 +78,10 @@ const IconFontStyle = styled(IconFont)`
 `
 const AdminSide = (props: any) => {
   const navigate = useNavigate()
+  const { currentMenu, userInfo } = useSelector(store => store.user)
+  const [sideList, setSideList] = useState<any>([])
 
+  // side需要做权限，currentMenu.children 里面有的才显示
   const side: any = [
     {
       label: '公司信息',
@@ -137,8 +144,8 @@ const AdminSide = (props: any) => {
   return (
     <AdminSideWrap>
       <HeaderWrap>
-        <img src="" />
-        <span>公司名称oo</span>
+        <img src={userInfo.company_logo} />
+        <span>{userInfo.company_name}</span>
       </HeaderWrap>
       <MenuStyle
         expandIcon={e =>

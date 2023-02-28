@@ -408,7 +408,7 @@ const TagComponent = (props: Props) => {
       {props?.isQuick || isCanEdit ? (
         <Popover
           visible={isOpen}
-          placement="bottom"
+          placement="bottomRight"
           trigger="click"
           onVisibleChange={onVisibleOpenChange}
           content={
