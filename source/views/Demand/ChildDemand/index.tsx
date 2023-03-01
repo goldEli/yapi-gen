@@ -38,6 +38,7 @@ import {
 } from '@store/demand'
 import PaginationBox from '@/components/TablePagination'
 import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
+import SetShowField from '@/components/SetShowField/indedx'
 
 const Operation = styled.div({
   display: 'flex',
@@ -191,26 +192,6 @@ const ChildDemand = () => {
     setOrder(val === 2 ? 'desc' : 'asc')
     getList({ page: 1, size: pageObj.size }, val === 2 ? 'desc' : 'asc', key)
   }
-
-  const setMenu = (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label: (
-            <div
-              onClick={() => {
-                setIsSettingState(true)
-                setIsVisibleFields(false)
-              }}
-            >
-              {t('common.setField')}
-            </div>
-          ),
-        },
-      ]}
-    />
-  )
 
   const onClickItem = (item: any) => {
     const params = encryptPhp(
@@ -384,7 +365,14 @@ const ChildDemand = () => {
         )}
 
         <DropDownMenu
-          menu={setMenu}
+          menu={
+            <SetShowField
+              onChangeFieldVisible={() => {
+                setIsSettingState(true)
+                setIsVisibleFields(false)
+              }}
+            />
+          }
           icon="settings"
           isVisible={isVisibleFields}
           onChangeVisible={setIsVisibleFields}

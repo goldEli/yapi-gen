@@ -28,6 +28,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
 import InputSearch from '@/components/InputSearch'
 import PaginationBox from '@/components/TablePagination'
+import SetShowField from '@/components/SetShowField/indedx'
 
 export const tableWrapP = css`
   display: flex;
@@ -313,27 +314,6 @@ const StaffManagement = () => {
   const onChangeFilter = () => {
     setIsShow(!isShow)
   }
-
-  const menu = (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label: (
-            <span
-              style={{
-                padding: '0px 12px',
-              }}
-              onClick={showModal}
-            >
-              {t('common.setField')}
-            </span>
-          ),
-        },
-      ]}
-    />
-  )
-
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
 
@@ -388,7 +368,7 @@ const StaffManagement = () => {
               </HoverWrap>
               <DividerWrap type="vertical" />
               <DropDownMenu
-                menu={menu}
+                menu={<SetShowField notView onChangeFieldVisible={showModal} />}
                 icon="settings"
                 isVisible={isVisibleFields}
                 onChangeVisible={setIsVisibleFields}

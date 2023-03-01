@@ -48,6 +48,7 @@ import { deleteDemand } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
 import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
+import SetShowField from '@/components/SetShowField/indedx'
 
 const TableBox = styled(Table)({
   '.ant-table-content': {
@@ -488,17 +489,6 @@ const CommonNeed = (props: any) => {
     }
   }
 
-  const menu = (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label: <div onClick={showModal}>{t('common.setField')}</div>,
-        },
-      ]}
-    />
-  )
-
   const onChangeMany = (state: boolean) => {
     message.success(t('version2.reviewModeChangeSuccess'))
     setIsMany(state)
@@ -590,7 +580,7 @@ const CommonNeed = (props: any) => {
               <>
                 <DividerWrap type="vertical" />
                 <DropDownMenu
-                  menu={menu}
+                  menu={<SetShowField onChangeFieldVisible={showModal} />}
                   icon="settings"
                   isVisible={isVisibleFields}
                   onChangeVisible={setIsVisibleFields}

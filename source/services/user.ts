@@ -9,6 +9,24 @@ export const getLoginDetail: any = async (isLogin?: boolean) => {
   return response
 }
 
+// 获取登录者偏好设置 -- 个人预览模式
+export const getCompanyUserPreferenceConfig: any = async () => {
+  const response = await http.get('getCompanyUserPreferenceConfig')
+  return {
+    userId: response.data.user_id,
+    companyId: response.data.company_id,
+    previewModel: response.data.preview_model,
+  }
+}
+
+// 修改登录者偏好设置 -- 个人预览模式
+export const updateCompanyUserPreferenceConfig: any = async (params: any) => {
+  await http.get('updateCompanyUserPreferenceConfig', {
+    id: params.id,
+    preview_model: params.previewModel,
+  })
+}
+
 // 退出登录
 export const loginOut: any = async () => {
   const response = await http.get('loginOut')
