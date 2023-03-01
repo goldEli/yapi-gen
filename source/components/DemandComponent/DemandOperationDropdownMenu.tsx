@@ -13,6 +13,7 @@ interface Props {
   onEditChange(row: any): void
   onDeleteChange(row: any): void
   onCreateChild(row: any): void
+  haveComment?: boolean
 }
 
 export const DemandOperationDropdownMenu = (props: Props) => {
@@ -86,10 +87,14 @@ export const DemandOperationDropdownMenu = (props: Props) => {
     },
     {
       key: '4',
-      label: <div onClick={onCopyId}>复制需求ID</div>,
+      label: <div>添加评论</div>,
     },
     {
       key: '5',
+      label: <div onClick={onCopyId}>复制需求ID</div>,
+    },
+    {
+      key: '6',
       label: <div onClick={onCopyLink}>复制标题链接</div>,
     },
   ]
@@ -101,6 +106,9 @@ export const DemandOperationDropdownMenu = (props: Props) => {
   }
   if (hasCreate) {
     menuItems = menuItems.filter((i: any) => i.key !== '3')
+  }
+  if (!props.haveComment) {
+    menuItems = menuItems.filter((i: any) => i.key !== '4')
   }
 
   return <Menu style={{ minWidth: 56 }} items={menuItems} />

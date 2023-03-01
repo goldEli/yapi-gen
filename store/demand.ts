@@ -114,6 +114,14 @@ export const demandSlice = createSlice({
     setCreateDemandProps: (state: any, action) => {
       state.createDemandProps = action.payload
     },
+    // 需求详情弹窗
+    setIsDemandDetailDrawerVisible: (state: any, action) => {
+      state.isDemandDetailDrawerVisible = action.payload
+    },
+    // 需求详情弹窗传入的props
+    setDemandDetailDrawerProps: (state: any, action) => {
+      state.demandDetailDrawerProps = action.payload
+    },
   },
   extraReducers(builder) {
     //
