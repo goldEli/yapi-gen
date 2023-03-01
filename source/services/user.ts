@@ -18,7 +18,8 @@ export const loginOut: any = async () => {
 // 跳转登录
 export const getTicket = () => {
   const url = new URL(
-    import.meta.env.__SSO_URL__ + '/' + import.meta.env.__URL_HASH__,
+    import.meta.env.__SSO_URL__,
+    // import.meta.env.__SSO_URL__ + '/' + import.meta.env.__URL_HASH__,
   )
   url.searchParams.set('type', '0')
   url.searchParams.set('redirect', location.href)
