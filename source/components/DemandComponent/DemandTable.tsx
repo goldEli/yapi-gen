@@ -232,14 +232,16 @@ const DemandTable = (props: Props) => {
   }
 
   // 点击编辑
-  const onPropsChangeVisible = (item: any) => {
+  const onEditChange = (item: any) => {
     setIsShowMore(false)
     dispatch(setIsCreateDemandVisible(true))
-    dispatch(setCreateDemandProps({ demandId: item.id, projectId }))
+    dispatch(
+      setCreateDemandProps({ demandId: item.id, projectId: item.project_id }),
+    )
   }
 
   // 点击删除
-  const onPropsChangeDelete = (item: any) => {
+  const onDeleteChange = (item: any) => {
     setIsShowMore(false)
     props.onDelete(item)
   }
@@ -249,7 +251,11 @@ const DemandTable = (props: Props) => {
     setIsShowMore(false)
     dispatch(setIsCreateDemandVisible(true))
     dispatch(
-      setCreateDemandProps({ projectId, isChild: true, parentId: item.id }),
+      setCreateDemandProps({
+        projectId: item.project_id,
+        isChild: true,
+        parentId: item.id,
+      }),
     )
   }
 
@@ -363,8 +369,8 @@ const DemandTable = (props: Props) => {
                       menuBatch()
                     ) : (
                       <DemandOperationDropdownMenu
-                        onEditChange={onPropsChangeVisible}
-                        onDeleteChange={onPropsChangeDelete}
+                        onEditChange={onEditChange}
+                        onDeleteChange={onDeleteChange}
                         onCreateChild={onCreateChild}
                         record={record}
                       />

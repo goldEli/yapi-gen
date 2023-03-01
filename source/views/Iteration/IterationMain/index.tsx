@@ -155,7 +155,7 @@ const IterationMain = (props: Props) => {
     }
   }
 
-  const onChangeOperation = async (e: any, item: any) => {
+  const onChangeOperation = async (item: any) => {
     setDemandItem(item)
     setIsDemandVisible(true)
     const result = await getDemandInfo({ projectId, id: item.id })

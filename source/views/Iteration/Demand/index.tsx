@@ -27,8 +27,13 @@ import {
   updatePriority,
   getDemandList,
 } from '@/services/demand'
-import { setFilterParams } from '@store/demand'
+import {
+  setCreateDemandProps,
+  setFilterParams,
+  setIsCreateDemandVisible,
+} from '@store/demand'
 import PaginationBox from '@/components/TablePagination'
+import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -174,37 +179,28 @@ const DemandWrap = (props: Props) => {
     getList({ page, size }, order, orderKey, props.searchGroups)
   }
 
-  const onClickRow = (item: any) => {
-    setDemandItem(item)
-    setIsVisible(true)
+  const onEditChange = (item: any) => {
+    dispatch(setIsCreateDemandVisible(true))
+    dispatch(
+      setCreateDemandProps({ demandId: item.id, projectId: item.project_id }),
+    )
   }
 
-  const onDelete = (item: any) => {
+  const onDeleteChange = (item: any) => {
     setDeleteId(item.id)
     setIsDelete(true)
   }
 
-  const menu = (item: any) => {
-    let menuItems = [
-      {
-        key: '1',
-        label: <div onClick={() => onClickRow(item)}>{t('common.edit')}</div>,
-      },
-      {
-        key: '2',
-        label: <div onClick={() => onDelete(item)}>{t('common.del')}</div>,
-      },
-    ]
-
-    if (hasEdit) {
-      menuItems = menuItems.filter((i: any) => i.key !== '1')
-    }
-
-    if (hasDel) {
-      menuItems = menuItems.filter((i: any) => i.key !== '2')
-    }
-
-    return <Menu style={{ minWidth: 56 }} items={menuItems} />
+  // 点击创建子需求
+  const onCreateChild = (item: any) => {
+    dispatch(setIsCreateDemandVisible(true))
+    dispatch(
+      setCreateDemandProps({
+        projectId: item.project_id,
+        isChild: true,
+        parentId: item.id,
+      }),
+    )
   }
 
   const updateOrderkey = (key: any, val: any) => {
@@ -308,7 +304,18 @@ const DemandWrap = (props: Props) => {
         render: (text: any, record: any) => {
           return (
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              {hasEdit && hasDel ? null : <MoreDropdown menu={menu(record)} />}
+              {hasEdit && hasDel ? null : (
+                <MoreDropdown
+                  menu={
+                    <DemandOperationDropdownMenu
+                      onEditChange={onEditChange}
+                      onDeleteChange={onDeleteChange}
+                      onCreateChild={onCreateChild}
+                      record={record}
+                    />
+                  }
+                />
+              )}
             </div>
           )
         },

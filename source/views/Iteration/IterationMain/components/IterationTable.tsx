@@ -30,6 +30,8 @@ import { setFilterParamsModal } from '@store/project'
 import { updateDemandStatus, updatePriority } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
 import FloatBatch from '@/components/FloatBatch'
+import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
+import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
 
 const Content = styled.div({
   background: 'var(--neutral-white-d1)',
@@ -205,14 +207,31 @@ const IterationTable = (props: Props) => {
     props.onChangeOrder?.({ value: val === 2 ? 'desc' : 'asc', key })
   }
 
-  const onPropsChangeVisible = (e: any, item: any) => {
+  const onEditChange = (item: any) => {
     setIsShowMore(false)
-    props.onChangeVisible(e, item)
+    dispatch(setIsCreateDemandVisible(true))
+    dispatch(
+      setCreateDemandProps({ demandId: item.id, projectId: item.project_id }),
+    )
   }
 
-  const onPropsChangeDelete = (item: any) => {
+  // 点击删除
+  const onDeleteChange = (item: any) => {
     setIsShowMore(false)
     props.onDelete(item)
+  }
+
+  // 点击创建子需求
+  const onCreateChild = (item: any) => {
+    setIsShowMore(false)
+    dispatch(setIsCreateDemandVisible(true))
+    dispatch(
+      setCreateDemandProps({
+        projectId: item.project_id,
+        isChild: true,
+        parentId: item.id,
+      }),
+    )
   }
 
   const rowIconFont = () => {
@@ -260,35 +279,6 @@ const IterationTable = (props: Props) => {
     } else {
       batchDom.current?.clickMenu(type)
     }
-  }
-
-  const menu = (item: any) => {
-    let menuItems = [
-      {
-        key: '1',
-        label: (
-          <div onClick={e => onPropsChangeVisible(e, item)}>
-            {t('common.edit')}
-          </div>
-        ),
-      },
-      {
-        key: '2',
-        label: (
-          <div onClick={() => onPropsChangeDelete(item)}>{t('common.del')}</div>
-        ),
-      },
-    ]
-
-    if (hasEdit) {
-      menuItems = menuItems.filter((i: any) => i.key !== '1')
-    }
-
-    if (hasDel) {
-      menuItems = menuItems.filter((i: any) => i.key !== '2')
-    }
-
-    return <Menu style={{ minWidth: 56 }} items={menuItems} />
   }
 
   const menuBatch = () => {
@@ -352,9 +342,18 @@ const IterationTable = (props: Props) => {
                 <MoreDropdown
                   isMoreVisible={isShowMore}
                   menu={
-                    selectedRowKeys?.map((i: any) => i.id).includes(record.id)
-                      ? menuBatch()
-                      : menu(record)
+                    selectedRowKeys
+                      ?.map((i: any) => i.id)
+                      .includes(record.id) ? (
+                      menuBatch()
+                    ) : (
+                      <DemandOperationDropdownMenu
+                        onEditChange={onEditChange}
+                        onDeleteChange={onDeleteChange}
+                        onCreateChild={onCreateChild}
+                        record={record}
+                      />
+                    )
                   }
                   onChangeVisible={setIsShowMore}
                 />

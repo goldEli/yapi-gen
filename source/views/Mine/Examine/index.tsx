@@ -42,16 +42,13 @@ const Examine = () => {
     return <Loading />
   }
   return (
-    <PermissionWrap
-      auth="b/user/copysend/story"
-      permission={userInfo?.company_permissions}
-    >
+    <>
       <div>{t('newlyAdd.mineExamine')}</div>
       <MainWrap>
         <MineSwiper data={swiperData} onTap={getProjectId} />
         <Need projectId={projectId} onChangeType={(val: any) => setType(val)} />
       </MainWrap>
-    </PermissionWrap>
+    </>
   )
 }
 

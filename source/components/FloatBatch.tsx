@@ -86,11 +86,13 @@ const FloatBatch = (props: Props) => {
     let text: any = ''
     let beforeUrl: any
     if (import.meta.env.MODE === 'production') {
-      beforeUrl = `${window.origin}/${import.meta.env.__URL_HASH__}`
+      // beforeUrl = `${window.origin}/${import.meta.env.__URL_HASH__}`
+      beforeUrl = `${window.origin}`
     } else {
-      beforeUrl = `${window.origin}${import.meta.env.__URL_ALIAS__}/${
-        import.meta.env.__URL_HASH__
-      }`
+      beforeUrl = `${window.origin}${import.meta.env.__URL_ALIAS__}`
+      // `${window.origin}${import.meta.env.__URL_ALIAS__}/${
+      //   import.meta.env.__URL_HASH__
+      // }`
     }
     props.selectRows?.forEach((element: any) => {
       const params = encryptPhp(

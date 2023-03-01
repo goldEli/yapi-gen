@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+
+// 需求下拉操作菜单
+
 import { copyLink, getIsPermission } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useSelector } from '@store/index'
@@ -39,11 +42,11 @@ export const DemandOperationDropdownMenu = (props: Props) => {
     let text: any = ''
     let beforeUrl: any
     if (import.meta.env.MODE === 'production') {
-      beforeUrl = `${window.origin}/${import.meta.env.__URL_HASH__}`
+      beforeUrl = `${window.origin}`
+      // /${import.meta.env.__URL_HASH__}
     } else {
-      beforeUrl = `${window.origin}${import.meta.env.__URL_ALIAS__}/${
-        import.meta.env.__URL_HASH__
-      }`
+      beforeUrl = `${window.origin}${import.meta.env.__URL_ALIAS__}`
+      // /${ import.meta.env.__URL_HASH__ }
     }
 
     const params = encryptPhp(

@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react'
 import { useSelector } from '@store/index'
 import ViewPort from './ViewPort'
 import { useSearchParams } from 'react-router-dom'
+import SetShowField from './SetShowField/indedx'
 
 interface Props {
   onChangeFilter?(): void
@@ -55,17 +56,6 @@ const OperationGroup = (props: Props) => {
     props.onChangeSetting?.()
     setIsVisibleFields(false)
   }
-
-  const menu = (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label: <div onClick={onClickMenuFields}>{t('common.setField')}</div>,
-        },
-      ]}
-    />
-  )
 
   const menuType = () => {
     let menuItems = [
@@ -159,7 +149,7 @@ const OperationGroup = (props: Props) => {
 
       {(props.isGrid === 0 || props.isGrid === 2) && (
         <DropDownMenu
-          menu={menu}
+          menu={<SetShowField onChangeFieldVisible={onClickMenuFields} />}
           icon="settings"
           isVisible={isVisibleFields}
           onChangeVisible={setIsVisibleFields}

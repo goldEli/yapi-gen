@@ -67,7 +67,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
   // 点击跳转后台管理
   const onToAdmin = () => {
     props.onChange(false)
-    navigate('/AdminManagement/CompanyInfo')
+    navigate('/AdminManagement/TeamManagement')
     const resultMenu = menuPermission?.menus?.filter(
       (i: any) => i.url === '/AdminManagement',
     )[0]

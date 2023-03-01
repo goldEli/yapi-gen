@@ -10,7 +10,6 @@ const Create = () => {
   asyncSetTtile(t('title.b2'))
   return (
     <MainIndex
-      auth="b/user/create/story"
       title={t('mine.mineCreate')}
       type="create"
       subTitle={t('common.createDemand')}

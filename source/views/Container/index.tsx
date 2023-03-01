@@ -24,6 +24,7 @@ import CreateAProjectForm from '@/components/CreateAProjectForm'
 import ManageView from '@/components/ManageView'
 import CreateIteration from '@/components/CreateIteration'
 import CreateDemand from '@/components/CreateDemand'
+import DemandDetailDrawer from '@/components/DemandDetailDrawer'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -144,6 +145,7 @@ export const Container = () => {
 
         <CreateIteration />
         <CreateDemand />
+        <DemandDetailDrawer />
       </ConfigProvider>
     </KitConfigProvider>
   )

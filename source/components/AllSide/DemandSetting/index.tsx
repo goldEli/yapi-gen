@@ -1,14 +1,17 @@
 // 项目二级菜单
-
 import CommonIconFont from '@/components/CommonIconFont'
-import { getProjectInfo, getProjectInfoValues } from '@/services/project'
+import {
+  getProjectInfo,
+  getProjectInfoValues,
+  storyConfigCategoryList,
+} from '@/services/project'
 import { getParamsData } from '@/tools'
-import { encryptPhp } from '@/tools/cryptoPhp'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectInfo, setProjectInfoValues } from '@store/project'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
+import EditCategory from './EditCategory'
 import {
   AllWrap,
   MenuBox,
@@ -18,14 +21,16 @@ import {
   SideInfo,
   SideTop,
   WrapSet,
-  WrapDetail,
   BackStyle,
   TitleStyle,
   Tabs,
 } from './style'
+import Dragging from './Dragging'
 
+import { setStartUsing } from '@store/demand'
 const ProjectDetailSide = (props: { leftWidth: number }) => {
-  const [t, i18n] = useTranslation()
+  const [t] = useTranslation()
+  const { startUsing } = useSelector(store => store.demand)
   const projectSide: any = useRef<HTMLInputElement>(null)
   const projectSetSide: any = useRef<HTMLInputElement>(null)
   const dispatch = useDispatch()
@@ -33,47 +38,16 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData?.id
   const { projectInfo } = useSelector(store => store.project)
-  const navigate = useNavigate()
   const [tabsActive, setTabsActive] = useState(0)
-  const [activeIndex, setActiveIndex] = useState(0)
+  const [isVisible, setIsVisible] = useState(true)
+  const [dataList, setDataList] = useState<any>()
+  const [list, setList] = useState<any>()
   const tabs = [
     {
       label: '启用',
     },
     {
       label: '未启用',
-    },
-  ]
-  const sideList = [
-    {
-      name: t('project.projectInformation'),
-      icon: 'file-text',
-      path: '/ProjectManagement/ProjectSetting?type=0',
-      isPermission: true,
-    },
-    {
-      name: t('project.projectMember'),
-      icon: 'team',
-      path: '/ProjectManagement/ProjectSetting?type=1',
-      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-        String(i.identity).includes('b/project/member'),
-      ).length,
-    },
-    {
-      name: t('project.projectPermissionGroup'),
-      icon: 'lock',
-      path: '/ProjectManagement/ProjectSetting?type=2',
-      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-        String(i.identity).includes('b/project/role'),
-      ).length,
-    },
-    {
-      name: t('newlyAdd.demandSet'),
-      icon: 'settings',
-      path: '/ProjectManagement/ProjectSetting?type=3',
-      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-        String(i.identity).includes('b/project/story_config'),
-      ).length,
     },
   ]
 
@@ -87,10 +61,18 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
     const result = await getProjectInfo({ projectId })
     dispatch(setProjectInfo(result))
   }
-
+  const getList = async () => {
+    const data = await storyConfigCategoryList({ projectId: paramsData.id })
+    const newList: any = data.list.map((el: any, index: any) => ({
+      ...el,
+      active: index === 0 ? true : false,
+    }))
+    setDataList(newList)
+  }
   useEffect(() => {
     getInfo()
     getProjectInfoValuesData()
+    getList()
   }, [])
 
   //   返回上一页
@@ -102,6 +84,21 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
     }, 200)
   }
 
+  const onChange = (item: any) => {
+    const newList: any = list?.map((el: any) => ({
+      ...el,
+      active: item.name === el.name ? true : false,
+    }))
+    setList(newList)
+  }
+  useEffect(() => {
+    setTabsActive(startUsing ? 0 : 1)
+    if (startUsing) {
+      setList(dataList?.filter((el: any) => el.status === 1))
+    } else {
+      setList(dataList?.filter((el: any) => el.status !== 1))
+    }
+  }, [startUsing, dataList])
   return (
     <AllWrap>
       <WrapSet>
@@ -117,7 +114,7 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
           <span>返回</span>
         </BackStyle>
         <Provider />
-        <TitleStyle>
+        <TitleStyle onClick={() => setIsVisible(true)}>
           <span>需求类别</span>{' '}
           <CommonIconFont
             type="plus"
@@ -131,6 +128,7 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
               className={tabsActive == index ? 'tabsActive' : ''}
               onClick={() => {
                 setTabsActive(index)
+                dispatch(setStartUsing(index === 0 ? true : false))
               }}
               key={el.label}
             >
@@ -139,25 +137,18 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
           ))}
         </Tabs>
         <MenuBox>
-          {sideList.map((i: any, index: number) => (
-            <MenuItem
-              key={i.icon}
-              isActive={activeIndex === index}
-              onClick={
-                () => setActiveIndex(index)
-                // onToInfo(index)
-              }
-            >
-              <CommonIconFont
-                type={i.icon}
-                color="var(--neutral-n3)"
-                size={18}
-              />
-              <div>{i.name}</div>
-            </MenuItem>
-          ))}
+          <Dragging
+            list={list}
+            setList={setList}
+            onChange={(item: any) => onChange(item)}
+          ></Dragging>
         </MenuBox>
       </WrapSet>
+      <EditCategory
+        onClose={() => setIsVisible(false)}
+        onUpdate={() => '99'}
+        isVisible={isVisible}
+      />
     </AllWrap>
   )
 }

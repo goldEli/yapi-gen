@@ -319,6 +319,7 @@
     "categoryRemark": "Category Description",
     "pleaseCategoryRemark": "Please enter a description category description limit of 100 characters",
     "chooseColor": "Choose Color",
+    "chooseIcon": "Select icon",
     "view": "Preview effect",
     "viewName": "Requirement name XXXX",
     "nothing": "Nothing",
