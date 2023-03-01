@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
-import { resourceUsage } from 'process'
-import React, { useEffect, useLayoutEffect } from 'react'
+import { relative } from 'path/posix'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 const Container = styled.div`
+  border-radius: 8px;
+  background-color: var(--neutral-n8);
   margin-bottom: 8px;
   &:hover {
     cursor: pointer;
@@ -12,8 +14,6 @@ const Container = styled.div`
 const ItemList = styled.div`
   min-width: 352px;
   height: 44px;
-  border-radius: 8px;
-  background-color: var(--neutral-n8);
   display: flex;
   align-items: center;
   padding: 0 24px;
@@ -21,126 +21,44 @@ const ItemList = styled.div`
 `
 
 const SliderList = (props: any) => {
-  const { children, index, onMove, listLength } = props
+  const { children, index } = props
+  const [top, setTop] = React.useState(0)
   const [left, setLeft] = React.useState(0)
-  const [isDragging, setIsDragging] = React.useState(false)
-  const [zIndex, setZIndex] = React.useState(0)
   const ref: any = React.useRef()
-  const indexRef = React.useRef(index)
-  const onMoveRef = React.useRef(onMove)
-  const listLengthRef = React.useRef(listLength)
   const prevRectRef = React.useRef(null)
-  const animationRef: any = React.useRef(null)
-  useEffect(() => {
-    // 始终保持最新状态 Ref 引用
-    indexRef.current = index
-    onMoveRef.current = onMove
-    listLengthRef.current = listLength
-  }, [index, onMove, listLength])
-  useEffect(() => {
+  let startY = 0
+  let startX = 0
+  const onDragStart = (ev: any) => {
+    ev.dataTransfer.setData('item', JSON.stringify(children))
+  }
+  const onDrag = (ev: any) => {
     const el: any = ref.current
-    // 存储起始鼠标位置
-    let delayedSetZIndexTimeoutId: any = null
-    let startY = 0
-    const mouseMove = (ev: any) => {
-      ev.preventDefault()
-      // 获取元素 Rect 并更新 Ref
-      const rect = el.getBoundingClientRect()
-      prevRectRef.current = rect
-      // 计算最新 left 位置
-      let latestRight = ev.clientX - startY
-      // 检查是否需要更新元素位置
-      if (
-        latestRight > rect.width &&
-        indexRef.current < listLengthRef.current - 1
-      ) {
-        // move down
-        // 通知父组件修改列表
-        onMoveRef.current(indexRef.current, indexRef.current + 1)
-        latestRight -= rect.width
-        // 开始位置也要更新
-        startY += rect.width
-      } else if (latestRight < -rect.width && indexRef.current > 0) {
-        // move up
-        onMoveRef.current(indexRef.current, indexRef.current - 1)
-        latestRight += rect.width
-        startY -= rect.width
-      }
-      setLeft(latestRight)
+    const rect = el.getBoundingClientRect()
+    prevRectRef.current = rect
+    // 计算最新 Top Left位置
+    let latestTop = ev.clientY - startY
+    let latestLeft = ev.clientX - startX
+    if (latestTop > 0 || latestLeft > 0) {
+      setTop(ev.pageY)
+      setLeft(ev.pageX)
     }
-    const mouseUp = (ev: any) => {
-      ev.preventDefault()
-      document.removeEventListener('mousemove', mouseMove)
-      // 重置 left
-      setLeft(0)
-      // 结束拖拽
-      setIsDragging(false)
-      delayedSetZIndexTimeoutId = setTimeout(() => {
-        // 延迟设置 zIndex，不然一结束拖拽该元素就会被盖到其他元素下面
-        setZIndex(999)
-      }, 200)
-    }
-    const mouseDown = (ev: any) => {
-      ev.preventDefault()
-      clearTimeout(delayedSetZIndexTimeoutId)
-      // 注册事件
-      document.addEventListener('mousemove', mouseMove)
-      document.addEventListener('mouseup', mouseUp, { once: true })
-      // 开始拖拽
-      setIsDragging(true)
-      setZIndex(1)
-    }
-    el.addEventListener('mousedown', mouseDown)
-  }, [])
-  useLayoutEffect(() => {
-    const el: any = ref.current
-    if (isDragging) {
-      // 拖拽中的元素不计算
-      return
-    }
-    if (prevRectRef.current === null) {
-      // 元素第一次渲染
-      prevRectRef.current = el.getBoundingClientRect()
-      return
-    }
-    if (animationRef.current) {
-      const animation = animationRef.current
-      if (animation.playState === 'running') {
-        // Cancel previous animation
-        animation.cancel()
-      }
-    }
-    // FLIP: First
-    const prevRect: any = prevRectRef.current
-    // FLIP: Last
-    const latestRect = el.getBoundingClientRect()
-    const deltaY = latestRect.y - prevRect.y
-    prevRectRef.current = latestRect
-    if (deltaY === 0) {
-      return
-    }
-    // FLIP: Invert and Play
-    animationRef.current = el.animate(
-      [
-        {
-          left: `${-deltaY}px`,
-        },
-        {
-          left: `350px`,
-        },
-      ],
-      200,
-    )
-  }, [index, isDragging])
+  }
+  const onDragEnd = () => {
+    setTop(0)
+    setLeft(0)
+  }
   return (
     <Container
       ref={ref}
-      onClick={() => props.onChange(children)}
+      draggable="true"
+      onDragStart={event => onDragStart(event)}
+      onDrag={(ev: any) => onDrag(ev)}
+      onDragEnd={() => onDragEnd()}
       style={{
+        top: `${top}px`,
         left: `${left}px`,
-        transition: 'transform .2s, box-shadow .2s',
-        position: 'relative',
-        zIndex: zIndex.toString(),
+        position: top > 0 && left > 0 ? 'fixed' : 'relative',
+        zIndex: 9999,
       }}
     >
       <ItemList>
@@ -165,7 +83,6 @@ const Sortable = (props: any) => {
           onChange={(item: any) => props.onChange(item)}
           key={child.label}
           index={i}
-          listLength={list.length}
           onMove={(prevIndex: any, nextIndex: any) => {
             const newList = [...list]
             newList.splice(nextIndex, 0, newList.splice(prevIndex, 1)[0])

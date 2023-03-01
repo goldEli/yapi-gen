@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable react/jsx-handler-names */
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { Checkbox } from 'antd'
@@ -196,7 +197,13 @@ const SliderList = (props: any) => {
         zIndex: zIndex.toString(),
       }}
     >
-      <ItemList>
+      {/* console.log(children, event.dataTransfer.getData('item')) */}
+      <ItemList
+        onDragOver={event => {
+          event.preventDefault()
+        }}
+        onDrop={event => event.dataTransfer.getData('item')}
+      >
         <div style={{ display: 'flex' }}>
           <IconBox>
             <CommonIconFont
@@ -223,11 +230,10 @@ const SliderList = (props: any) => {
 const Sortable = (props: any) => {
   const { list, setList } = props
   return (
-    <div>
+    <div draggable="true">
       {list.map((child: any, i: number) => (
         <SliderList
           onChangeTeam={(row: any) => props.onChangeTeam(row, child)}
-          onChange={(item: any) => props.onChange(item)}
           key={child.key}
           index={i}
           active={child.active}
