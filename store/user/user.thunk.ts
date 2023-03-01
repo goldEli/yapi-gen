@@ -9,6 +9,7 @@ export const getLoginDetail = createAsyncThunk(
     const menuPermission = await services.user.getMenuPermission()
     const userPreferenceConfig =
       await services.user.getCompanyUserPreferenceConfig()
+
     return {
       loginInfo: result.data,
       userInfo: result2,

@@ -250,7 +250,7 @@ const HeaderLeft = () => {
         <Space size={8}>
           <CommonIconFont
             type={
-              menuIconList?.filter((i: any) => i.key === currentMenu.url)[0]
+              menuIconList?.filter((i: any) => i.key === currentMenu?.url)?.[0]
                 .normal
             }
             size={24}
@@ -259,14 +259,14 @@ const HeaderLeft = () => {
           <MenuLabel>{currentMenu.name}</MenuLabel>
         </Space>
       </Space>
-      {currentMenu.url === '/ProjectManagement' && (
+      {currentMenu?.url === '/ProjectManagement' && (
         <ChildrenMenu>
-          {currentMenu.children?.map((i: any) => (
+          {currentMenu?.children?.map((i: any) => (
             <ChildrenMenuItem
               key={i.id}
               size={8}
               onClick={() => onClickMenu(i)}
-              isActive={String(routerPath.pathname).includes(currentMenu.url)}
+              isActive={String(routerPath.pathname).includes(currentMenu?.url)}
             >
               <MyDropdown text={i.name} />
             </ChildrenMenuItem>
