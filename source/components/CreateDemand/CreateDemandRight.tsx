@@ -2,6 +2,7 @@
 /* eslint-disable complexity */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
+import { useGetloginInfo } from '@/hooks/useGetloginInfo'
 import { getTypeComponent, removeNull } from '@/tools'
 import { decryptPhp } from '@/tools/cryptoPhp'
 import styled from '@emotion/styled'
@@ -39,10 +40,13 @@ interface Props {
 }
 
 const CreateDemandRight = (props: Props) => {
+  const info = useGetloginInfo()
   const [t] = useTranslation()
   const [form] = Form.useForm()
+
   // 折叠字段
   const [foldList, setFoldList] = useState<any>([])
+
   // 不折叠字段
   const [notFoldList, setNotFoldList] = useState<any>([])
   const [priorityDetail, setPriorityDetail] = useState<any>({})
@@ -65,7 +69,7 @@ const CreateDemandRight = (props: Props) => {
 
   // 回填自定义数据 -- params：传入回填数据对象，isFilter：是否是筛选回填
   const setCustomFields = (params: any, isFilter: boolean) => {
-    let resultCustom: any = {}
+    const resultCustom: any = {}
     const customArr = props.fieldsList?.filter((i: any) =>
       Object.keys(params).some((k: any) => k === i.content),
     )
@@ -83,6 +87,7 @@ const CreateDemandRight = (props: Props) => {
       ) {
         // 判断是否是下拉框，是则去除空选项
         const values = customValue?.filter((i: any) => i !== -1)
+
         // 判断是否是单选，是则取第一个
         const resultValue = ['select', 'radio', 'user_select'].includes(
           element.type.attr,
@@ -116,6 +121,7 @@ const CreateDemandRight = (props: Props) => {
     ) {
       // 需求进度
       setSchedule(props?.demandDetail?.schedule)
+
       // 获取自定义字段回显值
       const form1Obj: any = {}
       for (const key in props?.demandDetail?.customField) {
@@ -127,14 +133,17 @@ const CreateDemandRight = (props: Props) => {
             : props?.demandDetail?.customField[key]?.value
       }
       form.setFieldsValue({ ...form, ...form1Obj })
+
       // 回显优先级
       setPriorityDetail(props?.demandDetail.priority)
+
       // 开始时间
       if (props?.demandDetail?.expectedStart) {
         form.setFieldsValue({
           expected_start_at: moment(props?.demandDetail.expectedStart || 0),
         })
       }
+
       // 结束时间
       if (props?.demandDetail?.expectedEnd) {
         form.setFieldsValue({
@@ -144,6 +153,7 @@ const CreateDemandRight = (props: Props) => {
 
       let hasIterateId: any
       let hasChild: any
+
       // 如果是迭代创建或编辑，默认填入迭代
       if (createDemandProps.iterateId) {
         hasIterateId = removeNull(projectInfoValues, 'iterate_name')
@@ -152,6 +162,7 @@ const CreateDemandRight = (props: Props) => {
           ? createDemandProps?.iterateId
           : null
       }
+
       // 如果是子需求创建或编辑，默认父需求填入当前需求id
       if (createDemandProps.isChild) {
         hasChild = props.parentList?.filter(
@@ -165,15 +176,18 @@ const CreateDemandRight = (props: Props) => {
           props?.demandDetail?.copySend?.map((i: any) => i.copysend),
           removeNull(projectInfoValues, 'users_copysend_name'),
         ),
+
         // 附件
         attachments: props?.demandDetail?.attachment?.map(
           (i: any) => i.attachment.path,
         ),
+
         // 处理人
         users_name: getCommonUser(
           props?.demandDetail?.user?.map((i: any) => i.user),
           removeNull(projectInfoValues, 'user_name'),
         ),
+
         // 迭代
         iterate_name: createDemandProps.iterateId
           ? hasIterateId
@@ -183,6 +197,7 @@ const CreateDemandRight = (props: Props) => {
               .length
           ? props?.demandDetail?.iterateId
           : null,
+
         // 父需求
         parent_id: createDemandProps.isChild
           ? hasChild
@@ -191,6 +206,7 @@ const CreateDemandRight = (props: Props) => {
             ).length
           ? props?.demandDetail?.parentId
           : null,
+
         // 需求分类
         class: props?.demandDetail.class || null,
       })
@@ -203,6 +219,7 @@ const CreateDemandRight = (props: Props) => {
           )[0]?.value,
         })
       }
+
       // 迭代创建需求默认回填迭代
       if (createDemandProps.iterateId) {
         form.setFieldsValue({
@@ -213,6 +230,7 @@ const CreateDemandRight = (props: Props) => {
             : null,
         })
       }
+
       // 如果不是快速创建并且不是完成并创建下一个，则回填筛选值
       if (!props.isSaveParams && !createDemandProps.isQuickCreate) {
         // 不是在迭代创建需求并且有筛选项
@@ -231,12 +249,14 @@ const CreateDemandRight = (props: Props) => {
               : null,
           })
         }
+
         // 获取需求分类回填值 未分类可能是-1或者是0
         const resultClass = filterParamsModal?.class_id
           ? filterParamsModal?.class_id === -1
             ? 0
             : filterParamsModal?.class_id
           : filterParamsModal?.class_ids?.filter((i: any) => i !== -1)?.[0]
+
         // 筛选值-优先级
         const priorityId = filterParamsModal?.priorityIds?.filter(
           (i: any) => i !== -1,
@@ -288,6 +308,7 @@ const CreateDemandRight = (props: Props) => {
           setCustomFields(filterParamsModal?.custom_field, true)
         }
       }
+
       // 如果是快捷创建并且有缓存数据
       if (
         createDemandProps.isQuickCreate &&
@@ -375,8 +396,9 @@ const CreateDemandRight = (props: Props) => {
   // 提交右侧参数
   const onConfirm = async () => {
     await form.validateFields()
+
     // form.validateFields().then(() => {
-    let customValues: any = {}
+    const customValues: any = {}
     const values = form.getFieldsValue()
     values.priority =
       JSON.stringify(priorityDetail) === '{}' ? null : priorityDetail
@@ -384,10 +406,12 @@ const CreateDemandRight = (props: Props) => {
     Object.keys(values)?.forEach((k: any) => {
       values[k] = values[k] ? values[k] : ''
       const obj = props.fieldsList?.filter((i: any) => k === i.content)[0]
+
       // 处理预计结束时间和预计开始时间
       if (['expected_end_at', 'expected_start_at'].includes(k)) {
         values[k] = moment(values[k.content]).format('YYYY-MM-DD')
       }
+
       // 处理自定义字段中时间参数
       if (obj?.fieldContent?.attr === 'date' && values[k]) {
         values[obj.content] = moment(values[obj.content]).format(
@@ -410,6 +434,7 @@ const CreateDemandRight = (props: Props) => {
       }
     })
     return { ...values, ...{ customField: customValues } }
+
     // })
   }
 
@@ -436,9 +461,21 @@ const CreateDemandRight = (props: Props) => {
     })
   }
 
+  const format = (a: any) => {
+    const newA = a.filter((j: any) => {
+      return j.value === info
+    })
+
+    const newB = a.filter((j: any) => {
+      return j.value !== info
+    })
+
+    return newA.concat(newB)
+  }
   // 返回基本字段
   const getBasicTypeComponent = (item: any) => {
     let nodeComponent
+
     // 下拉多选 抄送人，处理人，迭代
     if (
       ['users_copysend_name', 'iterate_name', 'users_name'].includes(
@@ -456,15 +493,22 @@ const CreateDemandRight = (props: Props) => {
           getPopupContainer={node => node}
           allowClear
           optionFilterProp="label"
-          options={(item.content === 'iterate_name'
-            ? removeNull(projectInfoValues, item.content)?.filter(
-                (k: any) => k.status === 1,
-              )
-            : removeNull(projectInfoValues, item.content)
-          )?.map((i: any) => ({
-            label: i.content,
-            value: i.id,
-          }))}
+          options={format(
+            (item.content === 'iterate_name'
+              ? removeNull(projectInfoValues, item.content)?.filter(
+                  (k: any) => k.status === 1,
+                )
+              : removeNull(projectInfoValues, item.content)
+            )?.map((i: any) => ({
+              label:
+                (item.content === 'users_name' ||
+                  item.content === 'users_copysend_name') &&
+                i.id === info
+                  ? `${i.content} （我自己）`
+                  : i.content,
+              value: i.id,
+            })),
+          )}
         />
       )
     } else if (item.content === 'priority') {

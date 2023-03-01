@@ -18,6 +18,7 @@ import RangePicker from './RangePicker'
 import { useDispatch, useSelector } from '@store/index'
 import { setFilterKeys } from '@store/project'
 import { onTapSearchChoose, saveScreen, saveValue } from '@store/view'
+import MoreSelect from './MoreSelect'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -310,6 +311,7 @@ const TableFilter = (props: any) => {
     }
 
     const value = await form.getFieldsValue()
+
     const res = JSON.parse(JSON.stringify(value))
     const res2 = JSON.parse(JSON.stringify(value))
     const customField: any = {}
@@ -487,6 +489,36 @@ const TableFilter = (props: any) => {
                       {i.contentTxt}
                     </span>
                     <Form.Item name={i.key}>
+                      <MoreSelect
+                        onConfirm={confirm}
+                        options={deWeight(
+                          projectInfoValues
+                            ?.filter((k: any) => k.key === i.key)[0]
+                            ?.children?.map((v: any) => ({
+                              label: v.content_txt,
+                              value: v.id,
+                              id: v.id,
+                            })),
+                        )}
+                      />
+                    </Form.Item>
+                    <DelButton onClick={() => delList(i.content)}>
+                      <IconFont type="close-solid" className="icon" />
+                    </DelButton>
+                  </SelectWrapBedeck>
+                )}
+                {/* {[
+                  'select_checkbox',
+                  'checkbox',
+                  'select',
+                  'radio',
+                  'dan',
+                ].includes(i.type) && (
+                  <SelectWrapBedeck key={i.key}>
+                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                      {i.contentTxt}
+                    </span>
+                    <Form.Item name={i.key}>
                       <SelectWrap
                         showArrow
                         mode="multiple"
@@ -511,7 +543,7 @@ const TableFilter = (props: any) => {
                       <IconFont type="close-solid" className="icon" />
                     </DelButton>
                   </SelectWrapBedeck>
-                )}
+                )} */}
 
                 {['time', 'date'].includes(i.type) && (
                   <SelectWrapBedeck key={i.key}>

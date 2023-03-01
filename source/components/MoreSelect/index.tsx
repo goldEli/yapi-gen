@@ -1,8 +1,23 @@
 /* eslint-disable no-undefined */
 /* eslint-disable react-hooks/rules-of-hooks */
+import styled from '@emotion/styled'
 import { Button, Divider, Select, Tag } from 'antd'
 import React, { useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import MoreOptions from '../MoreOptions'
+import { SelectWrap } from '../TableFilter'
+
+const Btn = styled.div`
+  height: 32px;
+  border-radius: 0px 0px 0px 0px;
+  padding-left: 16px;
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: var(--neutral-n3);
+  line-height: 32px;
+  cursor: pointer;
+`
 
 type List = {
   id: string
@@ -17,13 +32,14 @@ type Props = {
 }
 
 const index = (props: any) => {
-  const [value, setValue] = useState<string[]>(() => props.value)
+  const [t] = useTranslation()
 
   const onClear = () => {
-    setValue([])
+    props.onChange(undefined)
   }
-  const handleChange = (values: string[]) => {
-    setValue(values)
+  const handleChange = (values: any) => {
+    props.onChange(values)
+    props.onConfirm(props.id)
   }
 
   function getIds(arr: List[]) {
@@ -39,8 +55,9 @@ const index = (props: any) => {
   }
 
   const invertSelection = () => {
-    const invertSelectionArray = getArrDifference(props.options, value)
-    setValue(invertSelectionArray)
+    const invertSelectionArray = getArrDifference(props.options, props.value)
+    props.onChange(invertSelectionArray)
+    props.onConfirm(props.id)
   }
 
   function mySort(arr1: List[], arr2: string[]) {
@@ -50,46 +67,43 @@ const index = (props: any) => {
   }
 
   const prepositionItems = useMemo(() => {
-    if (value?.length >= 1) {
-      const reRroup = value.concat(getArrDifference(props.options, value))
+    if (props.value?.length >= 1) {
+      const reRroup = props.value.concat(
+        getArrDifference(props.options, props.value),
+      )
 
       return mySort(props.options, reRroup)
     }
     return props.options
-  }, [props.options, value])
-
-  useEffect(() => {
-    if (value?.length < 1) {
-      return
-    }
-    props.onChange(value)
-  }, [value])
+  }, [props.options, props.value])
 
   return (
-    <Select
-      disabled={props.disabled}
-      value={value}
-      mode={props.mode ? 'multiple' : undefined}
+    <SelectWrap
+      showArrow
+      value={props.value}
+      style={{ width: '100%' }}
+      mode="multiple"
+      allowClear
+      optionFilterProp="label"
       onChange={handleChange}
-      placeholder="custom dropdown render"
+      placeholder={t('common.pleaseSelect')}
       dropdownRender={menu => (
         <>
           {menu}
           <Divider style={{ margin: '8px 0' }} />
           <div>
-            <Button onClick={onClear}>清空</Button>
-            <Button onClick={invertSelection}>反选</Button>
+            <Btn onClick={onClear}>清空所有选项</Btn>
+            <Btn onClick={invertSelection}>反选</Btn>
           </div>
         </>
       )}
-      optionLabelProp="label"
     >
       {prepositionItems.map((i: any) => (
-        <Select.Option value={i.id} key={i.id} label={i.name}>
-          <MoreOptions type={props.type} name={i.name} dec={i.dec} />
+        <Select.Option value={i.value} key={i.id}>
+          <span>{i.label}</span>
         </Select.Option>
       ))}
-    </Select>
+    </SelectWrap>
   )
 }
 
