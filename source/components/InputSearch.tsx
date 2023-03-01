@@ -1,4 +1,6 @@
 import styled from '@emotion/styled'
+import { changeColorText } from '@store/color-text'
+import { useDispatch } from '@store/index'
 import { Input } from 'antd'
 import { useState } from 'react'
 import CommonIconFont from './CommonIconFont'
@@ -37,7 +39,7 @@ interface Props {
 const InputSearch = (props: Props) => {
   // 用于控制输入框的删除图标
   const [value, setValue] = useState('')
-
+  const dispatch = useDispatch()
   return (
     <InputStyle
       ref={props?.ref}
@@ -47,7 +49,10 @@ const InputSearch = (props: Props) => {
       placeholder={props.placeholder}
       maxLength={props.length}
       onBlur={(e: any) => props.onChangeSearch?.(e.target.value)}
-      onChange={(e: any) => setValue(e.target.value)}
+      onChange={(e: any) => {
+        setValue(e.target.value)
+        dispatch(changeColorText(e.target.value))
+      }}
       onPressEnter={(e: any) => props.onChangeSearch?.(e.target.value)}
       suffix={
         <>

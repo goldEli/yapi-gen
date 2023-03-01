@@ -25,6 +25,7 @@ import ChangePriorityPopover from './ChangePriorityPopover'
 import { useSelector } from '@store/index'
 import TableQuickEdit from './TableQuickEdit'
 import { getCustomNormalValue } from '@/tools'
+import TableColorText from './TableColorText'
 
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
   {
@@ -161,7 +162,7 @@ export const useDynamicColumns = (state: any) => {
                     state.isTree ? 500 - (Number(record.level) - 1) * 24 : 500
                   }
                 >
-                  {text}
+                  <TableColorText text={text} />
                 </ListNameWrap>
               </Tooltip>
             </TableQuickEdit>

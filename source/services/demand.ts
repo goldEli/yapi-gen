@@ -331,6 +331,7 @@ export const getShapeRight = async (params: any) => {
     verify: res.data.verify,
     is_verify: res.data.is_verify === 1,
     user_has_auth: res.data.user_has_auth,
+    originalStatusUserIds: res.data.originalStatusUserIds,
   }
   return obj
 }
