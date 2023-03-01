@@ -255,10 +255,7 @@ const Profile = () => {
     return <Loading />
   }
   return (
-    <PermissionWrap
-      auth="b/user/overview"
-      permission={userInfo?.company_permissions}
-    >
+    <>
       <StyledWrap>
         <Head>
           <div>
@@ -398,7 +395,7 @@ const Profile = () => {
           onChange={onChangePage}
         />
       )}
-    </PermissionWrap>
+    </>
   )
 }
 

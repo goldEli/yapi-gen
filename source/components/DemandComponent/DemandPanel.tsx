@@ -62,7 +62,7 @@ const SpaceWrap = styled(Space)({
 
 interface Props {
   data: any
-  onChangeVisible(e: any, item: any): void
+  onChangeVisible(item: any): void
   onDelete(item: any): void
   isSpinning?: boolean
   onUpdate(state: any): void

@@ -34,6 +34,7 @@ import {
   updateIterateStatus,
 } from '@/services/iterate'
 import { setIterateInfo } from '@store/iterate'
+import SetShowField from '@/components/SetShowField/indedx'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -473,22 +474,11 @@ const Iteration = () => {
                 <DividerWrap type="vertical" />
                 <DropDownMenu
                   menu={
-                    <Menu
-                      items={[
-                        {
-                          key: '1',
-                          label: (
-                            <div
-                              onClick={() => {
-                                setSettingState(true)
-                                setIsVisibleFields(false)
-                              }}
-                            >
-                              {t('common.setField')}
-                            </div>
-                          ),
-                        },
-                      ]}
+                    <SetShowField
+                      onChangeFieldVisible={() => {
+                        setSettingState(true)
+                        setIsVisibleFields(false)
+                      }}
                     />
                   }
                   icon="settings"

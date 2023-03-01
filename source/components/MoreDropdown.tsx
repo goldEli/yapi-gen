@@ -49,7 +49,9 @@ const MoreDropdown = (props: Props) => {
       overlay={props.menu}
       trigger={['hover']}
       placement={props?.hasChild ? 'bottomLeft' : 'bottomRight'}
-      getPopupContainer={node => (props?.hasChild ? document.body : node)}
+      getPopupContainer={node =>
+        props?.hasChild || props?.isDemandCard ? document.body : node
+      }
       onVisibleChange={visible => props.onChangeVisible?.(visible)}
       className="dropdownIcon"
     >

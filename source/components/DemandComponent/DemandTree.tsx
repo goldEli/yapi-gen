@@ -211,7 +211,7 @@ const DemandTree = (props: Props) => {
   }
 
   // 点击编辑
-  const onPropsChangeVisible = (item: any) => {
+  const onEditChange = (item: any) => {
     setIsShowMore(false)
     setComputedTopId(item?.topId)
     dispatch(setIsCreateDemandVisible(true))
@@ -219,7 +219,7 @@ const DemandTree = (props: Props) => {
   }
 
   // 点击删除
-  const onPropsChangeDelete = (item: any) => {
+  const onDeleteChange = (item: any) => {
     setIsShowMore(false)
     props.onDelete(item)
     setComputedTopId(item?.topId)
@@ -440,8 +440,8 @@ const DemandTree = (props: Props) => {
                       menuBatch()
                     ) : (
                       <DemandOperationDropdownMenu
-                        onEditChange={onPropsChangeVisible}
-                        onDeleteChange={onPropsChangeDelete}
+                        onEditChange={onEditChange}
+                        onDeleteChange={onDeleteChange}
                         onCreateChild={onCreateChild}
                         record={record}
                       />

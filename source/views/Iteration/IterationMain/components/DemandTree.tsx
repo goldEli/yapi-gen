@@ -31,13 +31,15 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import FloatBatch from '@/components/FloatBatch'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import {
   getDemandList,
   updateDemandStatus,
   updatePriority,
 } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
+import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
+import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 
 const Content = styled.div({
   padding: '20px 12px 0 8px',
@@ -127,6 +129,7 @@ const DemandTree = (props: Props) => {
   // 用于获取数据更新后的展开key
   const [computedTopId, setComputedTopId] = useState(0)
   const [delayChild, setDelayChild] = useState<any>({})
+  const dispatch = useDispatch()
 
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
   const getShowkey = () => {
@@ -207,16 +210,27 @@ const DemandTree = (props: Props) => {
     props.onChangeOrder?.({ value: val === 2 ? 'desc' : 'asc', key })
   }
 
-  const onPropsChangeVisible = (e: any, item?: any) => {
+  const onEditChange = (e: any, item?: any) => {
     setIsShowMore(false)
-    props.onChangeVisible(e, item)
     setComputedTopId(item?.topId)
+    dispatch(setIsCreateDemandVisible(true))
+    dispatch(setCreateDemandProps({ demandId: item.id, projectId }))
   }
 
-  const onPropsChangeDelete = (item: any) => {
+  const onDeleteChange = (item: any) => {
     setIsShowMore(false)
     props.onDelete(item)
     setComputedTopId(item?.topId)
+  }
+
+  // 点击创建子需求
+  const onCreateChild = (item: any) => {
+    setComputedTopId(item?.topId)
+    setIsShowMore(false)
+    dispatch(setIsCreateDemandVisible(true))
+    dispatch(
+      setCreateDemandProps({ projectId, isChild: true, parentId: item.id }),
+    )
   }
 
   // 勾选或者取消勾选，显示数量 keys: 所有选择的数量，type： 添加还是移除
@@ -345,47 +359,6 @@ const DemandTree = (props: Props) => {
     setComputedTopId(item?.topId)
   }
 
-  const menu = (item: any) => {
-    let menuItems = [
-      {
-        key: '1',
-        label: (
-          <div onClick={e => onPropsChangeVisible(e, item)}>
-            {t('common.edit')}
-          </div>
-        ),
-      },
-      {
-        key: '2',
-        label: (
-          <div onClick={() => onPropsChangeDelete(item)}>{t('common.del')}</div>
-        ),
-      },
-      {
-        key: '3',
-        label: (
-          <div onClick={() => onChangeCreateChild(item)}>
-            {t('common.createChildDemand')}
-          </div>
-        ),
-      },
-    ]
-
-    if (hasEdit) {
-      menuItems = menuItems.filter((i: any) => i.key !== '1')
-    }
-
-    if (hasDel) {
-      menuItems = menuItems.filter((i: any) => i.key !== '2')
-    }
-
-    if (hasCreate || projectInfo?.status !== 1) {
-      menuItems = menuItems.filter((i: any) => i.key !== '3')
-    }
-
-    return <Menu style={{ minWidth: 56 }} items={menuItems} />
-  }
-
   //  点击批量
   const onClickBatch = (e: any, type: any) => {
     setIsShowMore(false)
@@ -459,9 +432,18 @@ const DemandTree = (props: Props) => {
                 <MoreDropdown
                   isMoreVisible={isShowMore}
                   menu={
-                    selectedRowKeys?.map((i: any) => i.id).includes(record.id)
-                      ? menuBatch()
-                      : menu(record)
+                    selectedRowKeys
+                      ?.map((i: any) => i.id)
+                      .includes(record.id) ? (
+                      menuBatch()
+                    ) : (
+                      <DemandOperationDropdownMenu
+                        onEditChange={onEditChange}
+                        onDeleteChange={onDeleteChange}
+                        onCreateChild={onCreateChild}
+                        record={record}
+                      />
+                    )
                   }
                   onChangeVisible={setIsShowMore}
                 />
