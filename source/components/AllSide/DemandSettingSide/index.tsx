@@ -26,8 +26,8 @@ import {
   Tabs,
 } from './style'
 import Dragging from './Dragging'
-
 import { setStartUsing } from '@store/demand'
+
 const ProjectDetailSide = (props: { leftWidth: number }) => {
   const [t] = useTranslation()
   const { startUsing } = useSelector(store => store.demand)
@@ -99,6 +99,7 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
       setList(dataList?.filter((el: any) => el.status !== 1))
     }
   }, [startUsing, dataList])
+
   return (
     <AllWrap>
       <WrapSet>
@@ -144,6 +145,7 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
           ></Dragging>
         </MenuBox>
       </WrapSet>
+
       <EditCategory
         onClose={() => setIsVisible(false)}
         onUpdate={() => '99'}

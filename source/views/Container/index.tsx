@@ -132,9 +132,7 @@ export const Container = () => {
               <HeaderRight />
             </HeaderWrap>
             <Content>
-              {!notHaveSide.includes(currentMenu.url) && (
-                <Side onChangeLeft={setChangeLeft} />
-              )}
+              <Side onChangeLeft={setChangeLeft} />
               <Main left={changeLeft}>
                 <Outlet />
               </Main>

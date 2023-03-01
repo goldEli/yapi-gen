@@ -83,6 +83,14 @@ const routes = [
             element: lazy(() => import('@/views/ProjectSetting')),
           },
           {
+            path: 'DemandSetting',
+            element: lazy(() => import('@/views/DemandSetting')),
+          },
+          {
+            path: 'WorkFlow',
+            element: lazy(() => import('@/views/Workflow')),
+          },
+          {
             path: 'MemberInfo',
             element: lazy(() => import('@/views/MemberInfo')),
             children: [
