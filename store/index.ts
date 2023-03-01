@@ -19,6 +19,7 @@ import view from './view/index'
 import createProject from './create-propject/index'
 import teams from './teams'
 import colorText from './color-text'
+import category from './category'
 
 export const store = configureStore({
   reducer: {
@@ -36,6 +37,7 @@ export const store = configureStore({
     view,
     createProject,
     teams,
+    category,
     colorText,
   },
 })

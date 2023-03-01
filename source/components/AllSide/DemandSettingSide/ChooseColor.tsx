@@ -1,45 +1,72 @@
 // 颜色选择组件
-
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
-import { useSelector } from '@store/index'
 import { Popover, Space } from 'antd'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-const ChooseColorWrap = styled.div<{ color?: string }>(
-  {
-    width: 80,
-    height: 32,
-    borderRadius: 6,
-    cursor: 'pointer',
+const ChooseColorWrap = styled.div({
+  width: 80,
+  height: 80,
+  borderRadius: 6,
+  cursor: 'pointer',
+  border: '1px solid var(--neutral-n6-d2)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  '& img': {
+    width: '40px',
+    height: '40px',
   },
-  ({ color }) => ({
-    background: color ? color : '#969799',
-  }),
-)
-
+})
+const TextStyle = styled.span`
+  width: 80px;
+  text-align: center;
+  line-height: 24px;
+  border-radius: 0 0 6px 6px;
+  display: inline-block;
+  height: 24px;
+  background-color: var(--neutral-n2);
+  font-size: 12px;
+  color: var(--neutral-white-d7);
+  position: absolute;
+  bottom: 0;
+`
 const ColorWrap = styled.div({
-  height: 20,
-  width: 20,
-  borderRadius: 4,
+  width: '56px',
+  height: '56px',
+  borderRadius: '6px 6px 6px 6px',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   cursor: 'pointer',
+  border: '1px solid var(--neutral-n6-d2)',
+  position: 'relative',
   svg: {
     color: 'white',
   },
 })
-
+const ImgStyle = styled.img`
+  width: 32px;
+  height: 32px;
+`
+const IconFontStyle = styled(IconFont)({
+  position: 'absolute',
+  right: 0,
+  top: 0,
+  fontSize: 22,
+})
 interface ChooseColorProps {
   color?: any
   onChange?(value?: string): void
   onChangeValue?(value?: string): void
+  colorList: any
 }
 
 const ChooseColor = (props: ChooseColorProps) => {
   const [isChooseColor, setIsChooseColor] = useState(false)
-  const { colorList } = useSelector(store => store.project)
+
   const onChangeColor = (val: string) => {
     props?.onChangeValue?.(val)
     props?.onChange?.(val)
@@ -56,13 +83,10 @@ const ChooseColor = (props: ChooseColorProps) => {
       }}
       size={8}
     >
-      {colorList.map((i: any) => (
-        <ColorWrap
-          key={i.key}
-          style={{ background: i.key }}
-          onClick={() => onChangeColor(i.key)}
-        >
-          <IconFont hidden={i.key !== props?.color} type="check" />
+      {props.colorList?.map((i: any) => (
+        <ColorWrap key={i.id} onClick={() => onChangeColor(i.path)}>
+          <ImgStyle src={i.path} />
+          <IconFontStyle hidden={i.path !== props?.color} type="anglemark" />
         </ColorWrap>
       ))}
     </Space>
@@ -79,10 +103,10 @@ const ChooseColor = (props: ChooseColorProps) => {
       content={colorStatus}
       onVisibleChange={onVisibleChange}
     >
-      <ChooseColorWrap
-        color={props?.color}
-        onClick={() => setIsChooseColor(true)}
-      />
+      <ChooseColorWrap onClick={() => setIsChooseColor(true)}>
+        <img src={props?.color} />
+        <TextStyle>更换图标</TextStyle>
+      </ChooseColorWrap>
     </Popover>
   )
 }

@@ -9,6 +9,8 @@ import { useTranslation } from 'react-i18next'
 import { deleteStoryConfigCategory } from '@/services/project'
 import { useNavigate } from 'react-router-dom'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { setStartUsing } from '@store/category'
+
 const HeaderWrap = styled.div`
   height: 66px;
   display: flex;
@@ -62,7 +64,7 @@ const BtnStyle = styled.div`
 const Header = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
-  const { startUsing } = useSelector(store => store.demand)
+  const { startUsing, activeCategory } = useSelector(store => store.category)
   const { projectInfo } = useSelector(store => store.project)
   const [checked, setChecked] = useState(startUsing)
   const [isDelete, setIsDelete] = useState(false)
@@ -86,7 +88,7 @@ const Header = () => {
       JSON.stringify({
         id: projectInfo.id,
         pageIdx: 'work',
-        categoryItem: {},
+        categoryItem: activeCategory,
       }),
     )
     navigate(`/ProjectManagement/WorkFlow?data=${params}`)
@@ -103,10 +105,8 @@ const Header = () => {
       <LeftMsg>
         <CommonIconFont type="left" size={24} />
         <MsgContent>
-          <div>策划需求</div>
-          <div>
-            需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述
-          </div>
+          <div>{activeCategory.name}</div>
+          <div>{activeCategory.remark || '--'}</div>
         </MsgContent>
       </LeftMsg>
       <RightOperate>
@@ -115,7 +115,7 @@ const Header = () => {
           <Switch
             checked={checked}
             onChange={e => {
-              setChecked(e), dispatch(setProjectInfoValues(e))
+              setChecked(e), dispatch(setStartUsing(e))
             }}
           />
         </SwitchStyle>

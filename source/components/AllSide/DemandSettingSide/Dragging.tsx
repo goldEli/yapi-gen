@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
+import { setActiveCategory } from '@store/category'
+import { useDispatch } from '@store/index'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { MenuItem } from './style'
 const Container = styled.div`
@@ -127,10 +129,12 @@ const SliderList = (props: any) => {
       200,
     )
   }, [index, isDragging])
+
+  const dispatch = useDispatch()
+
   return (
     <Container
       ref={ref}
-      onClick={() => props.onChange(children)}
       style={{
         top: `${top}px`,
         transition: 'transform .2s, box-shadow .2s',
@@ -138,7 +142,13 @@ const SliderList = (props: any) => {
         zIndex: zIndex.toString(),
       }}
     >
-      <MenuItem key={children.icon} isActive={active}>
+      <MenuItem
+        onClick={() => {
+          dispatch(setActiveCategory(props.row))
+        }}
+        key={children.icon}
+        isActive={active}
+      >
         <CommonIconFont
           type={children.icon}
           color="var(--neutral-n3)"
@@ -151,15 +161,13 @@ const SliderList = (props: any) => {
 }
 
 const Sortable = (props: any) => {
-  const { list, setList, activeIndex } = props
+  const { list, setList } = props
   return (
     <div>
       {list?.map((child: any, i: number) => (
         <>
           <SliderList
-            onClick={() => props.onClick(i)}
-            onChangeTeam={(row: any) => props.onChangeTeam(row, child)}
-            onChange={(item: any) => props.onChange(item)}
+            row={child}
             key={child.key}
             index={i}
             active={child.active}
@@ -168,6 +176,7 @@ const Sortable = (props: any) => {
               const newList = [...list]
               newList.splice(nextIndex, 0, newList.splice(prevIndex, 1)[0])
               setList(newList)
+              props.onMove(newList)
             }}
           >
             {child}
