@@ -1013,3 +1013,22 @@ export const getBatchEditConfig: any = async (params: any) => {
     attr: i.attr,
   }))
 }
+
+// 获取需求类别排序
+export const getCategorySaveSort = async (params: any) => {
+  const response = await http.put(
+    `/b/project/story_config/category/save_sort`,
+    { data: params.data },
+    { project_id: params.id },
+  )
+  return response
+}
+export const getCategoryIconList = async (id: any) => {
+  const response = await http.get(
+    `/b/project/story_config/category/icon/list?project_id=${id}`,
+    {
+      project_id: id,
+    },
+  )
+  return response
+}

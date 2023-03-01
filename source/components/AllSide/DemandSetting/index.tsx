@@ -1,10 +1,7 @@
 // 项目二级菜单
 import CommonIconFont from '@/components/CommonIconFont'
-import {
-  getProjectInfo,
-  getProjectInfoValues,
-  storyConfigCategoryList,
-} from '@/services/project'
+import { getProjectInfo, getProjectInfoValues } from '@/services/project'
+import { getCategorySaveSort } from '@/services/demand'
 import { getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectInfo, setProjectInfoValues } from '@store/project'
@@ -12,12 +9,11 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import EditCategory from './EditCategory'
+import { storyConfigCategoryList } from '@store/category/thunk'
 import {
   AllWrap,
   MenuBox,
-  MenuItem,
   Provider,
-  SideFooter,
   SideInfo,
   SideTop,
   WrapSet,
@@ -27,10 +23,10 @@ import {
 } from './style'
 import Dragging from './Dragging'
 
-import { setStartUsing } from '@store/demand'
+import { setStartUsing } from '@store/category'
 const ProjectDetailSide = (props: { leftWidth: number }) => {
   const [t] = useTranslation()
-  const { startUsing } = useSelector(store => store.demand)
+  const { startUsing, categoryList } = useSelector(store => store.category)
   const projectSide: any = useRef<HTMLInputElement>(null)
   const projectSetSide: any = useRef<HTMLInputElement>(null)
   const dispatch = useDispatch()
@@ -39,8 +35,7 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
   const projectId = paramsData?.id
   const { projectInfo } = useSelector(store => store.project)
   const [tabsActive, setTabsActive] = useState(0)
-  const [isVisible, setIsVisible] = useState(true)
-  const [dataList, setDataList] = useState<any>()
+  const [isVisible, setIsVisible] = useState(false)
   const [list, setList] = useState<any>()
   const tabs = [
     {
@@ -61,13 +56,9 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
     const result = await getProjectInfo({ projectId })
     dispatch(setProjectInfo(result))
   }
+  // 需求类别
   const getList = async () => {
-    const data = await storyConfigCategoryList({ projectId: paramsData.id })
-    const newList: any = data.list.map((el: any, index: any) => ({
-      ...el,
-      active: index === 0 ? true : false,
-    }))
-    setDataList(newList)
+    await dispatch(storyConfigCategoryList({ projectId: paramsData.id }))
   }
   useEffect(() => {
     getInfo()
@@ -84,21 +75,22 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
     }, 200)
   }
 
-  const onChange = (item: any) => {
-    const newList: any = list?.map((el: any) => ({
-      ...el,
-      active: item.name === el.name ? true : false,
+  const onMove = async (data: any) => {
+    const dataSort = data.map((el: any, index: any) => ({
+      id: el.id,
+      sort: index,
     }))
-    setList(newList)
+    await getCategorySaveSort({ id: paramsData.id, data: dataSort })
   }
   useEffect(() => {
     setTabsActive(startUsing ? 0 : 1)
     if (startUsing) {
-      setList(dataList?.filter((el: any) => el.status === 1))
+      setList(categoryList?.filter((el: any) => el.status === 1))
     } else {
-      setList(dataList?.filter((el: any) => el.status !== 1))
+      setList(categoryList?.filter((el: any) => el.status !== 1))
     }
-  }, [startUsing, dataList])
+  }, [startUsing, categoryList])
+
   return (
     <AllWrap>
       <WrapSet>
@@ -140,13 +132,13 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
           <Dragging
             list={list}
             setList={setList}
-            onChange={(item: any) => onChange(item)}
+            onMove={(data: any) => onMove(data)}
           ></Dragging>
         </MenuBox>
       </WrapSet>
       <EditCategory
         onClose={() => setIsVisible(false)}
-        onUpdate={() => '99'}
+        onUpdate={() => getList()}
         isVisible={isVisible}
       />
     </AllWrap>

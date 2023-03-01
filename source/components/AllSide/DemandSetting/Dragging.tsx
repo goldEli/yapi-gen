@@ -130,7 +130,6 @@ const SliderList = (props: any) => {
   return (
     <Container
       ref={ref}
-      onClick={() => props.onChange(children)}
       style={{
         top: `${top}px`,
         transition: 'transform .2s, box-shadow .2s',
@@ -151,15 +150,13 @@ const SliderList = (props: any) => {
 }
 
 const Sortable = (props: any) => {
-  const { list, setList, activeIndex } = props
+  const { list, setList } = props
   return (
     <div>
       {list?.map((child: any, i: number) => (
         <>
           <SliderList
             onClick={() => props.onClick(i)}
-            onChangeTeam={(row: any) => props.onChangeTeam(row, child)}
-            onChange={(item: any) => props.onChange(item)}
             key={child.key}
             index={i}
             active={child.active}
@@ -168,6 +165,7 @@ const Sortable = (props: any) => {
               const newList = [...list]
               newList.splice(nextIndex, 0, newList.splice(prevIndex, 1)[0])
               setList(newList)
+              props.onMove(newList)
             }}
           >
             {child}

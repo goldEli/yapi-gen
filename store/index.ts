@@ -18,7 +18,7 @@ import cover from './cover/index'
 import view from './view/index'
 import createProject from './create-propject/index'
 import teams from './teams'
-
+import category from './category'
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
@@ -35,6 +35,7 @@ export const store = configureStore({
     view,
     createProject,
     teams,
+    category,
   },
 })
 

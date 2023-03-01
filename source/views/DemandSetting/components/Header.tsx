@@ -4,6 +4,7 @@ import { Switch } from 'antd'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectInfoValues } from '@store/project'
 import { useEffect, useState } from 'react'
+import { setStartUsing } from '@store/category'
 const HeaderWrap = styled.div`
   height: 66px;
   display: flex;
@@ -56,7 +57,7 @@ const BtnStyle = styled.div`
 `
 const Header = () => {
   const dispatch = useDispatch()
-  const { startUsing } = useSelector(store => store.demand)
+  const { startUsing } = useSelector(store => store.category)
   const [checked, setChecked] = useState(startUsing)
   useEffect(() => {
     setChecked(startUsing ? true : false)
@@ -78,7 +79,7 @@ const Header = () => {
           <Switch
             checked={checked}
             onChange={e => {
-              setChecked(e), dispatch(setProjectInfoValues(e))
+              setChecked(e), dispatch(setStartUsing(e))
             }}
           />
         </SwitchStyle>
