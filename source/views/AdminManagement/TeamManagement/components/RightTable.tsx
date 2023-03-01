@@ -1,12 +1,20 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
+/* eslint-disable no-empty */
 import styled from '@emotion/styled'
 import HeaderSearch from './HeaderSearch'
 import Table from './Table'
 import Pagination from '@/components/TablePagination'
 import CommonModal from '@/components/CommonModal'
-import { useState } from 'react'
-import { Form, Select } from 'antd'
+import { useState, useEffect } from 'react'
+import { Form, Select, message } from 'antd'
 import IconFont from '@/components/IconFont'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import { useDispatch, useSelector } from '@store/index'
+import { getMemberList } from '@store/teams/thunk'
+import * as services from '@/services'
+import AddMemberCommonModal from './CommonModal'
+
 const RightWrap = styled.div`
   width: 100%;
   padding: 0 24px;
@@ -105,11 +113,17 @@ const RightItemIcon = styled.span`
   font-weight: 500;
 `
 const RightTable = () => {
+  const dispatch = useDispatch()
+  const { membersList, activeTeamId } = useSelector(s => s.teams)
   const [form] = Form.useForm()
   const [isVisible, setIsVisible] = useState(false)
   const [editForm, setEditForm] = useState<any>()
   const [delIsVisible, setDelIsVisible] = useState(false)
   const [type, setType] = useState('')
+  const [activeMember, setActiveMember] = useState<any>(null)
+  const [searchVal, setSearchVal] = useState('')
+  const [pageObj, setPageObj] = useState<any>({ page: 1, pageSize: 20 })
+  const [addMemberVisible, setAddMemberVisible] = useState(false)
   const options = [
     {
       value: '123',
@@ -120,6 +134,61 @@ const RightTable = () => {
       label: '132',
     },
   ]
+  const onFetchMemberList = async (pageObjVal?: any, orderVal?: any) => {
+    const param = {
+      order: orderVal?.value,
+      orderkey: orderVal?.key,
+      pagesize: pageObjVal?.size || 20,
+      page: pageObjVal?.page || 1,
+      search: {
+        team_id: activeTeamId,
+        keyword: searchVal || '',
+      },
+    }
+    await dispatch(getMemberList(param))
+  }
+
+  useEffect(() => {
+    if (activeTeamId) {
+      onFetchMemberList()
+    }
+  }, [activeTeamId, searchVal])
+  const onChangePage = (page: number, pageSize: number) => {
+    setPageObj({ page, pageSize })
+    onFetchMemberList({
+      page,
+      pageSize,
+    })
+  }
+  // const onTableChange = () => {}
+
+  const onDelConfirm = async () => {
+    if (activeMember?.team_is_admin === 1) {
+      message.warning('团队管理员不能被移除')
+      setDelIsVisible(false)
+      return
+    }
+    try {
+      await services.setting.deleteMemberList({
+        id: activeMember?.team_id,
+        user_id: activeMember?.user_id,
+      })
+      setDelIsVisible(false)
+      onFetchMemberList()
+    } catch (error) {}
+  }
+
+  const onAddConfirm = async (list: any[]) => {
+    try {
+      await services.setting.teamsMember({
+        id: activeTeamId,
+        user_ids: list.map(i => i.id),
+      })
+      setAddMemberVisible(false)
+      onFetchMemberList()
+    } catch (error) {}
+  }
+
   const teamGetForm = (row?: any) => {
     return (
       <div style={{ margin: '0 24px' }}>
@@ -142,6 +211,7 @@ const RightTable = () => {
       </div>
     )
   }
+
   const personalData = (row: any) => {
     return (
       <PersonStyle>
@@ -190,10 +260,14 @@ const RightTable = () => {
   }
   return (
     <RightWrap>
-      <HeaderSearch />
+      <HeaderSearch
+        onSetSearchVal={setSearchVal}
+        onShowAddMemberModal={() => setAddMemberVisible(true)}
+      />
       <TableBox>
         <Table
           onEditRow={(row: any, state: string) => {
+            setActiveMember(row)
             setIsVisible(true),
               setType(state),
               setEditForm(
@@ -201,23 +275,26 @@ const RightTable = () => {
               )
           }}
           onDelRow={(row: any) => {
+            setActiveMember(row)
             setDelIsVisible(true)
           }}
+          dataSource={membersList?.list}
+          // onChange={onTableChange}
         />
       </TableBox>
       <PaginationBox>
         <Pagination
-          total={100}
-          pageSize={20}
-          currentPage={1}
-          onChange={(page: number, pageSize: number) => 123}
+          total={membersList?.pager?.total}
+          pageSize={membersList?.pager?.pagesize}
+          currentPage={membersList?.pager?.page}
+          onChange={onChangePage}
         />
       </PaginationBox>
       <CommonModal
         title={type === 'detail' ? '个人资料' : '编辑成员'}
         isVisible={isVisible}
         children={editForm}
-        hasFooter={type === 'detail' ? true : false}
+        hasFooter={type === 'detail'}
         onClose={() => setIsVisible(false)}
       />
 
@@ -225,10 +302,18 @@ const RightTable = () => {
         title="移除确认"
         text="确认移除该成员？"
         isVisible={delIsVisible}
-        onConfirm={() => setDelIsVisible(false)}
+        onConfirm={onDelConfirm}
         onChangeVisible={() => setDelIsVisible(false)}
-      ></DeleteConfirm>
+      />
+
+      <AddMemberCommonModal
+        title="添加成员"
+        isVisible={addMemberVisible}
+        onClose={() => setAddMemberVisible(false)}
+        onConfirm={onAddConfirm}
+      />
     </RightWrap>
   )
 }
+
 export default RightTable

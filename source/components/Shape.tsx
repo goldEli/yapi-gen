@@ -27,11 +27,14 @@ import { useDispatch } from '@store/index'
 import { setIsUpdateChangeLog } from '@store/demand'
 import { CloseWrap } from './StyleCommon'
 import { getShapeLeft, getShapeRight } from '@/services/demand'
+import { useGetloginInfo } from '@/hooks/useGetloginInfo'
 
 export function setValue(res: any) {
   const form1Obj: any = {}
   for (const key in res?.fields) {
-    if (
+    if (res?.fields[key].content === 'users_name') {
+      form1Obj[res?.fields[key].content] = [res.originalStatusUserIds.join(',')]
+    } else if (
       res?.fields[key].type === 'select' &&
       res?.fields[key].true_value !== 0 &&
       res?.fields[key].true_value !== ''
@@ -396,6 +399,7 @@ export const ShapeContent = (props: any) => {
   const [active, setActive] = useState(activeID)
   const [reviewerValue, setReviewerValue] = useState('')
   const dispatch = useDispatch()
+  const info = useGetloginInfo()
 
   const handleChange = (value: string) => {
     setReviewerValue(value)
@@ -426,6 +430,7 @@ export const ShapeContent = (props: any) => {
       fromId: activeID,
       toId: activeID,
     })
+
     setRightList(res)
 
     form.setFieldsValue(setValue(res))
@@ -480,11 +485,32 @@ export const ShapeContent = (props: any) => {
   const confirm = async () => {
     const res2 = await form.validateFields()
     const res = JSON.parse(JSON.stringify(res2))
+
     for (const key in res) {
+      if (key === 'users_name') {
+        const newArr = res[key].filter((i: any) => {
+          return typeof i === 'string'
+        })
+        const newArr1 = res[key].filter((i: any) => {
+          return typeof i !== 'string'
+        })
+
+        const arr = Array.from(
+          new Set([
+            ...(newArr + '').split(',').map(k => Number(k)),
+            ...newArr1,
+          ]),
+        )
+        if (newArr.length >= 1) {
+          res[key] = arr
+        }
+      }
+
       if (typeof res[key] === 'undefined') {
         res[key] = null
       }
     }
+
     await form2.validateFields()
     const putData = {
       projectId,
@@ -509,6 +535,49 @@ export const ShapeContent = (props: any) => {
   const onConfirm = async () => {
     form.submit()
     await confirm()
+  }
+
+  const formatName = (content: any, name: any, id: any) => {
+    if (content === 'users_name' && id === info) {
+      return `${name} （我自己）`
+    }
+    if (rightList?.originalStatusUserIds.includes(id)) {
+      return `${name}（原状态处理人）`
+    }
+    return name
+  }
+
+  const format = (i: any) => {
+    const a = i.children?.map((item: any) => ({
+      ...item,
+      label: formatName(i.content, item.name, item.id),
+
+      value: item.id,
+    }))
+    const newA = a.filter((j: any) => {
+      return j.id === info
+    })
+
+    const newC = a.filter((j: any) => {
+      return rightList?.originalStatusUserIds.includes(j.id)
+    })
+
+    const ids = rightList?.originalStatusUserIds.join(',')
+    const names = newC.map((k: any) => k.name).join(' ; ')
+
+    const newD = [
+      {
+        id: ids,
+        label: names + '（原状态处理人）',
+        name: names,
+        value: ids,
+      },
+    ]
+    const newB = a.filter((j: any) => {
+      return j.id !== info && !rightList?.originalStatusUserIds.includes(j.id)
+    })
+
+    return (newD.length >= 1 ? newD : []).concat(newA, newB)
   }
 
   return (
@@ -629,11 +698,8 @@ export const ShapeContent = (props: any) => {
                           mode="multiple"
                           placeholder={t('common.pleaseSelect')}
                           allowClear
-                          options={i.children?.map((item: any) => ({
-                            label: item.name,
-                            value: item.id,
-                          }))}
-                          optionFilterProp="label"
+                          options={format(i)}
+                          optionFilterProp="name"
                         />
                       </Form.Item>
                     )}
