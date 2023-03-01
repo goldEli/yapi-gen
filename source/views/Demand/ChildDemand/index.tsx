@@ -31,8 +31,13 @@ import {
   updateDemandStatus,
   updatePriority,
 } from '@/services/demand'
-import { setDemandInfo } from '@store/demand'
+import {
+  setCreateDemandProps,
+  setDemandInfo,
+  setIsCreateDemandVisible,
+} from '@store/demand'
 import PaginationBox from '@/components/TablePagination'
+import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
 
 const Operation = styled.div({
   display: 'flex',
@@ -295,27 +300,30 @@ const ChildDemand = () => {
     'b/story/delete',
   )
 
-  const menu = (item: any) => {
-    let menuItems = [
-      {
-        key: '1',
-        label: <div onClick={e => onEdit(e, item)}>{t('common.edit')}</div>,
-      },
-      {
-        key: '2',
-        label: <div onClick={() => onDelete(item)}>{t('common.del')}</div>,
-      },
-    ]
+  // 点击编辑
+  const onEditChange = (item: any) => {
+    dispatch(setIsCreateDemandVisible(true))
+    dispatch(
+      setCreateDemandProps({ demandId: item.id, projectId: item.project_id }),
+    )
+  }
 
-    if (hasEdit) {
-      menuItems = menuItems.filter((i: any) => i.key !== '1')
-    }
+  // 点击删除
+  const onDeleteChange = (item: any) => {
+    setDeleteId(item.id)
+    setIsDelete(true)
+  }
 
-    if (hasDel) {
-      menuItems = menuItems.filter((i: any) => i.key !== '2')
-    }
-
-    return <Menu style={{ minWidth: 56 }} items={menuItems} />
+  // 点击创建子需求
+  const onCreateChild = (item: any) => {
+    dispatch(setIsCreateDemandVisible(true))
+    dispatch(
+      setCreateDemandProps({
+        projectId: item.project_id,
+        isChild: true,
+        parentId: item.id,
+      }),
+    )
   }
 
   const selectColum: any = useMemo(() => {
@@ -334,7 +342,18 @@ const ChildDemand = () => {
         render: (text: any, record: any) => {
           return (
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              {hasEdit && hasDel ? null : <MoreDropdown menu={menu(record)} />}
+              {hasEdit && hasDel ? null : (
+                <MoreDropdown
+                  menu={
+                    <DemandOperationDropdownMenu
+                      onEditChange={onEditChange}
+                      onDeleteChange={onDeleteChange}
+                      onCreateChild={onCreateChild}
+                      record={record}
+                    />
+                  }
+                />
+              )}
             </div>
           )
         },

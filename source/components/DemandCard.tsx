@@ -17,11 +17,13 @@ import ChildDemandTable from '@/components/ChildDemandTable'
 import DemandProgress from './DemandProgress'
 import MoreDropdown from './MoreDropdown'
 import IconFont from './IconFont'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
+import { DemandOperationDropdownMenu } from './DemandComponent/DemandOperationDropdownMenu'
+import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 
 interface Props {
   item: any
-  onChangeEdit?(e: any, item: any): void
+  onChangeEdit?(item: any): void
   onChangeDelete?(item: any): void
   onClickItem(): void
   indexVal?: any
@@ -111,6 +113,7 @@ const DemandCard = (props: Props) => {
   // 控制移入移除显示三个点
   const [isHoverVisible, setIsHoverVisible] = useState(false)
   const { projectInfo, colorList } = useSelector(store => store.project)
+  const dispatch = useDispatch()
 
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
@@ -121,38 +124,32 @@ const DemandCard = (props: Props) => {
     'b/story/delete',
   )
 
-  const onClickMenu = (type: any, e?: any) => {
+  // 点击编辑
+  const onEditChange = (item: any) => {
     setIsMoreVisible(false)
-    if (type === 'edit') {
-      props.onChangeEdit?.(e, props?.item)
-    } else {
-      props.onChangeDelete?.(props?.item)
-    }
+    dispatch(setIsCreateDemandVisible(true))
+    dispatch(
+      setCreateDemandProps({ demandId: item.id, projectId: item.project_id }),
+    )
   }
 
-  const menu = () => {
-    let menuItems = [
-      {
-        key: '1',
-        label: (
-          <div onClick={e => onClickMenu('edit', e)}>{t('common.edit')}</div>
-        ),
-      },
-      {
-        key: '2',
-        label: <div onClick={() => onClickMenu('del')}>{t('common.del')}</div>,
-      },
-    ]
+  // 点击删除
+  const onDeleteChange = (item: any) => {
+    setIsMoreVisible(false)
+    props.onChangeDelete?.(item)
+  }
 
-    if (getIsPermission(projectInfo?.projectPermissions, 'b/story/update')) {
-      menuItems = menuItems.filter((i: any) => i.key !== '1')
-    }
-
-    if (getIsPermission(projectInfo?.projectPermissions, 'b/story/delete')) {
-      menuItems = menuItems.filter((i: any) => i.key !== '2')
-    }
-
-    return <Menu items={menuItems} />
+  // 点击创建子需求
+  const onCreateChild = (item: any) => {
+    setIsMoreVisible(false)
+    dispatch(setIsCreateDemandVisible(true))
+    dispatch(
+      setCreateDemandProps({
+        projectId: item.project_id,
+        isChild: true,
+        parentId: item.id,
+      }),
+    )
   }
 
   const childrenIcon = () => {
@@ -278,7 +275,14 @@ const DemandCard = (props: Props) => {
         {!(hasDel && hasEdit) && isHoverVisible && (
           <MoreDropdown
             isMoreVisible={isMoreVisible}
-            menu={menu()}
+            menu={
+              <DemandOperationDropdownMenu
+                onEditChange={onEditChange}
+                onDeleteChange={onDeleteChange}
+                onCreateChild={onCreateChild}
+                record={props.item}
+              />
+            }
             onChangeVisible={setIsMoreVisible}
             isDemandCard
           />

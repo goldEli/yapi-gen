@@ -43,6 +43,8 @@ import { getProjectInfo, getProjectInfoValues } from '@/services/project'
 import { setProjectInfo, setProjectInfoValues } from '@store/project'
 import { deleteDemand } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
+import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
+import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 
 const TableBox = styled(Table)({
   '.ant-table-content': {
@@ -95,43 +97,53 @@ interface MoreWrapProps {
 const MoreWrap = (props: MoreWrapProps) => {
   const [t] = useTranslation()
   const [isMoreVisible, setIsMoreVisible] = useState(false)
-  const onClickMenu = (type?: any) => {
+  const dispatch = useDispatch()
+
+  // 点击编辑
+  const onEditChange = (item: any) => {
     setIsMoreVisible(false)
-    if (type === 'edit') {
-      props.onShowEdit()
-    } else {
-      props.onShowDel()
-    }
+    dispatch(setIsCreateDemandVisible(true))
+    dispatch(
+      setCreateDemandProps({ demandId: item.id, projectId: item.project_id }),
+    )
   }
-  const menu = (
-    <Menu
-      style={{ minWidth: 56 }}
-      items={[
-        {
-          key: '1',
-          label: (
-            <div onClick={() => onClickMenu('edit')}>{t('common.edit')}</div>
-          ),
-        },
-        {
-          key: '2',
-          label: (
-            <div onClick={() => onClickMenu('del')}>{t('common.del')}</div>
-          ),
-        },
-      ]}
-    />
-  )
+
+  // 点击删除
+  const onDeleteChange = (item: any) => {
+    setIsMoreVisible(false)
+    props.onShowDel()
+  }
+
+  // 点击创建子需求
+  const onCreateChild = (item: any) => {
+    setIsMoreVisible(false)
+    dispatch(setIsCreateDemandVisible(true))
+    dispatch(
+      setCreateDemandProps({
+        projectId: item.project_id,
+        isChild: true,
+        parentId: item.id,
+      }),
+    )
+  }
+
   return (
-    <ShowWrap>
+    <>
       {(props?.record?.project?.isEdit || props?.record?.project?.isDelete) && (
         <MoreDropdown
           isMoreVisible={isMoreVisible}
           onChangeVisible={setIsMoreVisible}
-          menu={menu}
+          menu={
+            <DemandOperationDropdownMenu
+              onEditChange={onEditChange}
+              onDeleteChange={onDeleteChange}
+              onCreateChild={onCreateChild}
+              record={props?.record}
+            />
+          }
         />
       )}
-    </ShowWrap>
+    </>
   )
 }
 
