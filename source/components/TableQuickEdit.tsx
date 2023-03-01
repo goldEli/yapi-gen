@@ -79,6 +79,7 @@ const TableQuickEdit = (props: Props) => {
   let projectId: any
   let canClick: any
   const dispatch = useDispatch()
+
   const isCan =
     props.isInfo ||
     !['text', 'textarea', 'number', 'integer'].includes(String(props.type))
@@ -104,6 +105,8 @@ const TableQuickEdit = (props: Props) => {
     projectId = paramsData.id
     canClick = isCan && isCanEdit
   }
+
+  // console.log(projectInfo, 'projectInfoprojectInfo', canClick)
 
   // 我的模块及他的模块并且是自定义字段 --- 接口获取
   const getIsCustomValues = async () => {

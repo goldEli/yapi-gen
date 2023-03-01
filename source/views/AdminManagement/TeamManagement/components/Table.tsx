@@ -100,58 +100,9 @@ const Table = (props: any) => {
   return (
     <TableStyle
       columns={columns}
-      dataSource={[
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-        { name: '123' },
-      ]}
+      dataSource={props.dataSource}
       pagination={false}
+      // onChange={props.onChange}
     />
   )
 }

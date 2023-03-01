@@ -25,6 +25,7 @@ import ManageView from '@/components/ManageView'
 import CreateIteration from '@/components/CreateIteration'
 import CreateDemand from '@/components/CreateDemand'
 import DemandDetailDrawer from '@/components/DemandDetailDrawer'
+import { setCurrentMenu } from '@store/user'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -67,9 +68,13 @@ export const Container = () => {
   const dispatch = useDispatch()
   const [isNextVisible, setIsNextVisible] = useState(false)
   const [changeLeft, setChangeLeft] = useState(200)
-  const { userInfo, loginInfo, menuPermission, currentMenu } = useSelector(
-    store => store.user,
-  )
+  const {
+    userInfo,
+    loginInfo,
+    menuPermission,
+    currentMenu,
+    userPreferenceConfig,
+  } = useSelector(store => store.user)
   const {
     i18n: { language },
   } = useTranslation()
@@ -109,7 +114,8 @@ export const Container = () => {
   }, [])
 
   useEffect(() => {
-    if (menuPermission.priorityUrl) {
+    // 如果没带路由则跳转优先路由
+    if (location.pathname === '/') {
       navigate(menuPermission.priorityUrl)
     }
     setIsNextVisible(loginInfo.admin_first_login)

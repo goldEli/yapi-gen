@@ -3,12 +3,13 @@ import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
 import { useRef, useState, useEffect } from 'react'
 import ProjectDetailSide from '@/components/AllSide/ProjectDetailSide'
-import MoreProjectSide from '@/components/AllSide/MoreProjectSide'
+import ProjectSide from '@/components/AllSide/ProjectSide'
 import AdminSide from '@/components/AllSide/AdminSide'
 import { useLocation } from 'react-router-dom'
 import MineSide from '@/components/AllSide/MineSide'
 import LogSide from '@/components/AllSide/LogSide'
-import DemandSetting from '@/components/AllSide/DemandSetting'
+import DemandSettingSide from '@/components/AllSide/DemandSettingSide'
+
 const SideWrap = styled.div<{ firstMenuCollapse: boolean }>`
   width: ${props => (props.firstMenuCollapse ? 0 : 200)}px;
   height: 100%;
@@ -150,6 +151,7 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
     setGroupId(id)
     setActiveType(-1)
   }
+
   const onChangeType = (type: number) => {
     setActiveType(type)
     setGroupId(null)
@@ -166,9 +168,10 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
 
   const getClassSide = () => {
     let nodeComponent: any
+
     if (pathname === '/ProjectManagement/Project') {
       nodeComponent = (
-        <MoreProjectSide
+        <ProjectSide
           onAddClick={onAddClick}
           onChangeType={onChangeType}
           activeType={activeType}
@@ -183,8 +186,8 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
     } else if (String(pathname).includes('/LogManagement')) {
       nodeComponent = <LogSide />
     } else if (String(pathname).includes('/ProjectManagement/')) {
-      // nodeComponent = <ProjectDetailSide leftWidth={leftWidth} />
-      nodeComponent = <DemandSetting leftWidth={leftWidth} />
+      nodeComponent = <ProjectDetailSide leftWidth={leftWidth} />
+      // nodeComponent = <DemandSettingSide leftWidth={leftWidth} />
     }
     return nodeComponent
   }

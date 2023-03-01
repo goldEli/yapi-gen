@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 // 公用弹窗
 
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -12,6 +13,10 @@ import CommonButton from '@/components/CommonButton'
 import { useEffect, useState } from 'react'
 import Checkbox from 'antd/lib/checkbox/Checkbox'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
+import { getDepartmentUserList } from '@store/teams/thunk'
+import { useDispatch, useSelector } from '@store/index'
+import { unionBy } from 'lodash'
+
 const { DirectoryTree } = Tree
 const ModalHeader = styled.div`
   display: flex;
@@ -38,6 +43,7 @@ const ModalStyle = styled(Modal)`
     box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
   }
 `
+
 // 添加成员弹窗
 const CreatePerson = styled.div`
   width: 100%;
@@ -190,7 +196,7 @@ interface ModalProps {
   title?: string
   onClose?(): void
   children?: any
-  onConfirm?(): void
+  onConfirm?(list: any[]): void
   confirmText?: string
   hasFooter?: any
   isShowFooter?: boolean
@@ -199,6 +205,8 @@ interface ModalProps {
 
 const CommonModal = (props: ModalProps) => {
   const [t] = useTranslation()
+  const dispatch = useDispatch()
+  const { departmentUserList } = useSelector(s => s.teams)
   // 添加成员拍平数组
   const [selectDataList, setSelectDataList] = useState<any>()
   const [searchVal, setSearchVal] = useState<any>('')
@@ -214,21 +222,25 @@ const CommonModal = (props: ModalProps) => {
     },
   ]
   const [tabsActive, setTabsActive] = useState(0)
-  const treeData: any = []
-  // 数组去重
-  const arrDuplication = (dataArray: any) => {
-    let obj: any = {}
-    let newData = dataArray.reduce((cur: any, next: any) => {
-      obj[next.key] ? '' : (obj[next.key] = cur.push(next))
-      return cur
-    }, [])
-    return newData
+  const treeData: any = departmentUserList
+
+  const onInit = () => {
+    setPersonData([])
+    setSearchVal('')
+    setCheckedKeys([])
   }
+
+  useEffect(() => {
+    if (props.isVisible) {
+      onInit()
+    }
+  }, [props.isVisible])
+
   // 勾选后获取到成员
   let checkdFilterDataList: any = []
   const checkdFilterData = (data: any) => {
     for (const i in data) {
-      if (data[i].staffs.length >= 1) {
+      if (data[i]?.staffs?.length >= 1) {
         checkdFilterDataList.push(...data[i].staffs)
       }
       if (data[i].children) {
@@ -237,32 +249,37 @@ const CommonModal = (props: ModalProps) => {
     }
     return checkdFilterDataList
   }
+
   // 删除成员
   const delPersonDataList = (el: any) => {
-    setPersonData(personData.filter((item: any) => el.key !== item.key))
+    setPersonData(personData.filter((item: any) => el.id !== item.id))
     const key: any = personData
-      .filter((item: any) => el.key !== item.key)
+      .filter((item: any) => el.id !== item.id)
       ?.map((item: any) => item.department_id)
     setCheckedKeys(key)
   }
+
   // 清空成员
   const clearPerson = () => {
     setPersonData([])
     setCheckedKeys([])
     setSearchVal('')
   }
+
   // 勾选复选框
   const onCheck = (checkedKey: any, e: any) => {
     checkdFilterDataList = []
     setCheckedKeys(checkedKey)
-    //得到重复node需要去重
-    const data = arrDuplication(checkdFilterData(e.checkedNodes))
-    setPersonData([...personData, ...data])
+
+    // 得到重复node需要去重
+    const data = unionBy(checkdFilterData(e.checkedNodes), 'id')
+    setPersonData(data)
   }
+
   // 全选
   const checkAllChange = (e: any) => {
     if (e.target.checked) {
-      const keys = treeData.map((el: any) => el.key)
+      const keys = treeData.map((el: any) => el.id)
       setCheckedKeys(keys)
       setPersonData(tabsTreeDataList?.map((item: any) => item))
     } else {
@@ -272,32 +289,42 @@ const CommonModal = (props: ModalProps) => {
   }
   // 拍平数组
   useEffect(() => {
-    const data = arrDuplication(checkdFilterData(treeData))
+    const data = unionBy(checkdFilterData(treeData), 'id')
     setTabsTreeDataList(
-      data.map((el: any) => ({ label: el.name, value: el.key, ...el })),
+      data.map((el: any) => ({ label: el.name, value: el.id, ...el })),
     )
     setSelectDataList(
-      data.map((el: any) => ({ label: el.name, value: el.key, ...el })),
+      data.map((el: any) => ({ label: el.name, value: el.id, ...el })),
     )
-  }, [])
+  }, [departmentUserList])
+
+  useEffect(() => {
+    dispatch(
+      getDepartmentUserList({
+        search: {
+          project_id: '0',
+          type: tabsActive === 1 ? 'team' : 'company',
+        },
+      }),
+    )
+  }, [tabsActive])
+
   // 下拉框选中
   const handleChange = async (value: any) => {
     setSearchVal(value)
-    const hasVal = personData.filter((el: any) => el.value === value)
+    const hasVal = personData.filter((el: any) => el.id === value)
     if (hasVal.length >= 1) {
       message.warning('已存在该联系人')
-      return
     } else {
-      const filterVal: any = selectDataList.filter(
-        (el: any) => el.key === value,
-      )
+      const filterVal: any = selectDataList.filter((el: any) => el.id === value)
       setPersonData([...personData, ...filterVal])
     }
   }
+
   return (
     <ModalStyle
       footer={false}
-      visible={false}
+      open={props.isVisible}
       title={false}
       closable={false}
       bodyStyle={{ padding: '0 4px 0 0' }}
@@ -373,6 +400,10 @@ const CommonModal = (props: ModalProps) => {
               <CommonUserAvatar avatar={node.avatar} name={node.name} />
             )}
             treeData={treeData}
+            fieldNames={{
+              title: 'name',
+              key: 'id',
+            }}
           />
         </LeftWrap>
         <RightPerson>
@@ -383,7 +414,7 @@ const CommonModal = (props: ModalProps) => {
             <span onClick={() => clearPerson()}>清空</span>
           </Header>
           {personData.map((el: any) => (
-            <ListItem key={el.key}>
+            <ListItem key={el.id}>
               <CommonUserAvatar name={el.name} />
               <IconFont
                 type="close"
@@ -398,7 +429,10 @@ const CommonModal = (props: ModalProps) => {
         <CommonButton type="secondary" onClick={props?.onClose}>
           {t('common.cancel')}
         </CommonButton>
-        <CommonButton type="primary" onClick={props?.onConfirm}>
+        <CommonButton
+          type="primary"
+          onClick={() => props?.onConfirm?.(personData)}
+        >
           {t('common.confirm')}
         </CommonButton>
       </ModalFooter>

@@ -195,10 +195,18 @@ const DemandTable = (props: Props) => {
   }
 
   const onClickItem = (item: any) => {
-    const params = encryptPhp(
-      JSON.stringify({ type: 'info', id: projectId, demandId: item.id }),
-    )
-    openDetail(`/ProjectManagement/Demand?data=${params}`)
+    dispatch({
+      type: 'demand/setIsDemandDetailDrawerVisible',
+      payload: true,
+    })
+    dispatch({
+      type: 'demand/setDemandDetailDrawerProps',
+      payload: item,
+    })
+    // const params = encryptPhp(
+    //   JSON.stringify({ type: 'info', id: projectId, demandId: item.id }),
+    // )
+    // openDetail(`/ProjectManagement/Demand?data=${params}`)
   }
 
   const onChangeState = async (item: any) => {

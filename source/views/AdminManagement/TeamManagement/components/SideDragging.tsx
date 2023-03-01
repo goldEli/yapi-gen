@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
-import { Dropdown, MenuProps } from 'antd'
+import { Dropdown, type MenuProps } from 'antd'
 import React, { useEffect, useLayoutEffect } from 'react'
+
 const Container = styled.div<{ color?: string; bgColor?: string }>(
   {
     display: 'flex',
@@ -50,7 +51,8 @@ const DropdownContainer = styled(Dropdown)`
 `
 
 const SliderList = (props: any) => {
-  const { children, index, onMove, listLength, active, childStyle } = props
+  const { children, index, onMove, listLength, active, childStyle, value } =
+    props
   const [top, setTop] = React.useState(0)
   const [isDragging, setIsDragging] = React.useState(false)
   const [zIndex, setZIndex] = React.useState(0)
@@ -68,16 +70,20 @@ const SliderList = (props: any) => {
   }, [index, onMove, listLength])
   useEffect(() => {
     const el: any = ref.current
+
     // 存储起始鼠标位置
     let startY = 0
     let delayedSetZIndexTimeoutId: any = null
     const mouseMove = (ev: any) => {
       ev.preventDefault()
+
       // 获取元素 Rect 并更新 Ref
       const rect = el.getBoundingClientRect()
       prevRectRef.current = rect
+
       // 计算最新 Top 位置
       let latestTop = ev.clientY - startY
+
       // 检查是否需要更新元素位置
       if (
         latestTop > rect.height &&
@@ -86,10 +92,12 @@ const SliderList = (props: any) => {
         // move down
         // 通知父组件修改列表
         onMoveRef.current(indexRef.current, indexRef.current + 1)
+
         // 因为 DOM 位置被改变了，需要同步计算最新位置
         // 可以理解为计算出来的值就是元素发生交换后，松开鼠标再按住鼠标时相关变量的值。
         // 可以试着注释掉这行看看会发生什么，就能理解了（会闪一下）
         latestTop -= rect.height
+
         // 开始位置也要更新
         startY += rect.height
       } else if (latestTop < -rect.height && indexRef.current > 0) {
@@ -103,8 +111,10 @@ const SliderList = (props: any) => {
     const mouseUp = (ev: any) => {
       ev.preventDefault()
       document.removeEventListener('mousemove', mouseMove)
+
       // 重置 Top
       setTop(0)
+
       // 结束拖拽
       setIsDragging(false)
       delayedSetZIndexTimeoutId = setTimeout(() => {
@@ -115,12 +125,15 @@ const SliderList = (props: any) => {
     const mouseDown = (ev: any) => {
       ev.preventDefault()
       clearTimeout(delayedSetZIndexTimeoutId)
+
       // 注册事件
       document.addEventListener('mousemove', mouseMove)
       document.addEventListener('mouseup', mouseUp, { once: true })
+
       // 开始拖拽
       setIsDragging(true)
       setZIndex(1)
+
       // 记录开始位置
       startY = ev.clientY
     }
@@ -137,6 +150,7 @@ const SliderList = (props: any) => {
       prevRectRef.current = el.getBoundingClientRect()
       return
     }
+
     // 如果有动画正在运行则取消，防止拖动速度过快有鬼畜效果
     if (animationRef.current) {
       const animation = animationRef.current
@@ -145,8 +159,10 @@ const SliderList = (props: any) => {
         animation.cancel()
       }
     }
+
     // FLIP: First
     const prevRect: any = prevRectRef.current
+
     // FLIP: Last
     const latestRect = el.getBoundingClientRect()
     const deltaY = latestRect.y - prevRect.y
@@ -154,6 +170,7 @@ const SliderList = (props: any) => {
     if (deltaY === 0) {
       return
     }
+
     // FLIP: Invert and Play
     animationRef.current = el.animate(
       [
@@ -161,7 +178,7 @@ const SliderList = (props: any) => {
           top: `${-deltaY}px`,
         },
         {
-          top: `0px`,
+          top: '0px',
         },
       ],
       200,
@@ -185,12 +202,12 @@ const SliderList = (props: any) => {
       ref={ref}
       color={childStyle.color}
       bgColor={childStyle.hoverColor}
-      onClick={() => props.onChange(children)}
+      onClick={props.onChange}
       style={{
         background: active ? childStyle.activeColor : '',
         width: childStyle.width,
         height: childStyle.height,
-        transform: isDragging ? `scale(1.01)` : `scale(1)`,
+        transform: isDragging ? 'scale(1.01)' : 'scale(1)',
         top: `${top}px`,
         transition: 'transform .2s, box-shadow .2s',
         position: 'relative',
@@ -199,10 +216,18 @@ const SliderList = (props: any) => {
     >
       <IconFontStyle type="move" className="icon" />
       <ListItemStyle>
-        <IconFont
-          type="team-8a8gio2p"
-          style={{ fontSize: 16, color: ' #98ACE0', marginRight: 8 }}
-        />
+        {value?.logo_info?.path ? (
+          <img
+            src={value?.logo_info?.path}
+            style={{ width: 16, height: 16, marginRight: 8 }}
+          />
+        ) : (
+          <IconFont
+            type="team-8a8gio2p"
+            style={{ fontSize: 16, color: ' #98ACE0', marginRight: 8 }}
+          />
+        )}
+
         {children}
       </ListItemStyle>
       <DropdownContainer
@@ -227,9 +252,9 @@ const Sortable = (props: any) => {
       {list.map((child: any, i: number) => (
         <SliderList
           onChangeTeam={(row: any) => props.onChangeTeam(row, child)}
-          onChange={(item: any) => props.onChange(item)}
+          onChange={() => props.onChange(child)}
           childStyle={childStyle}
-          key={child.key}
+          key={child.id}
           index={i}
           active={child.active}
           listLength={list.length}
@@ -238,11 +263,13 @@ const Sortable = (props: any) => {
             newList.splice(nextIndex, 0, newList.splice(prevIndex, 1)[0])
             setList(newList)
           }}
+          value={child}
         >
-          {child.children}
+          {child.name}
         </SliderList>
       ))}
     </div>
   )
 }
+
 export default Sortable

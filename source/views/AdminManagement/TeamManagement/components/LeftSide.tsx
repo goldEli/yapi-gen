@@ -1,12 +1,17 @@
+/* eslint-disable no-empty */
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
 import SideDragging from '../components/SideDragging'
 import CommonModal from '@/components/CommonModal'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import { Form, Input, message, Tooltip } from 'antd'
+import { Form, Input, message, Tooltip, Dropdown } from 'antd'
 import { uploadFileByTask } from '@/services/cos'
 import upload from 'antd/lib/upload'
+import { useDispatch, useSelector } from '@store/index'
+import { useTranslation } from 'react-i18next'
+import * as services from '@/services'
+
 const LeftSideContainer = styled.div`
   width: 232px;
   height: 100%;
@@ -143,45 +148,74 @@ const Upload = (props: any) => {
     setUploadImg(response.url)
     props.uploadImg(response)
   }
+  useEffect(() => {
+    if (props.fileList[0]?.url) {
+      setDefaultIcon(false)
+      setUploadImg(props.fileList[0]?.url)
+      props.uploadImg(props.fileList[0])
+    }
+  }, [props.fileList])
   return (
-    <>
-      <UploadStyle customRequest={customRequest} fileList={[]}>
-        <UploadTitle>
-          团队LOGO
-          <Tooltip placement="top" title={'支持jpg、png格式，大小80*80像素'}>
-            <IconFont
-              type="question"
-              style={{
-                fontSize: 16,
-                color: 'var(--neutral-n4)',
-                marginLeft: 9,
-              }}
-            />
-          </Tooltip>
-        </UploadTitle>
-        {defaultIcon ? (
+    <UploadStyle
+      customRequest={customRequest}
+      fileList={props.fileList || []}
+      showUploadList={false}
+    >
+      <UploadTitle>
+        团队LOGO
+        <Tooltip placement="top" title="支持jpg、png格式，大小80*80像素">
           <IconFont
-            type="team-8a8gio2p"
-            style={{ fontSize: 80, color: '#98ACE0' }}
+            type="question"
+            style={{
+              fontSize: 16,
+              color: 'var(--neutral-n4)',
+              marginLeft: 9,
+            }}
           />
-        ) : (
-          <img src={uploadImg} />
-        )}
-        <Mask>重新上传</Mask>
-      </UploadStyle>
-    </>
+        </Tooltip>
+      </UploadTitle>
+      {defaultIcon ? (
+        <IconFont
+          type="team-8a8gio2p"
+          style={{ fontSize: 80, color: '#98ACE0' }}
+        />
+      ) : (
+        <img src={uploadImg} />
+      )}
+      <Mask>重新上传</Mask>
+    </UploadStyle>
   )
 }
 
-import { companyTeamsList } from '@store/teams/thunk'
+import { companyTeamsList, getMemberList } from '@store/teams/thunk'
 import { addTeams, dismissTeams, editTeams } from '@/services/setting'
-import { useDispatch } from 'react-redux'
+import { Series } from 'highcharts'
+
 const LeftSide = (props: any) => {
   const dispatch = useDispatch()
-  // const { teamsMembersList } = useSelector(s => s.teams)
+  const [t] = useTranslation()
+
+  const { teamsList } = useSelector(s => s.teams)
   const [formType, setFormType] = useState('')
   const [uploadImgs, setUploadImgs] = useState<any>()
-  const [activeRow, setActiveRow] = useState()
+  const [activeRow, setActiveRow] = useState<any>()
+
+  // 创建和修改弹窗
+  const [teamIsVisible, setTeamIsVisible] = useState(false)
+
+  //  创建和修改弹窗的表单
+  const [teamForm, setTeamForm] = useState<any>(null)
+
+  // 删除团队弹窗
+  const [delTeamIsVisible, setDelTeamIsVisible] = useState(false)
+  const [form] = Form.useForm()
+  const covers = useSelector(state => state.cover.covers)
+
+  const onInitCreateModel = () => {
+    setUploadImgs(null)
+    form.resetFields()
+  }
+
   // 团队列表
   const getTeamsList = async () => {
     await dispatch(companyTeamsList())
@@ -189,35 +223,46 @@ const LeftSide = (props: any) => {
   useEffect(() => {
     getTeamsList()
   }, [])
+
   // 拖拽的宽高样式
   const childStyle = {
     width: '200px',
     height: '44px',
-    hoverColor: `var(--hover-d2)`,
-    activeColor: `var(--gradient)`,
+    hoverColor: 'var(--hover-d2)',
+    activeColor: 'var(--gradient)',
   }
-  const [list, setList] = React.useState<any>(() =>
-    [1, 2, 3, 4, 5].map(v => ({
-      key: v,
-      children: `Item ${v}`,
-    })),
-  )
-  const onChangeDragging = (item: any) => {
-    setList(
-      list.map((el: any) => ({
-        ...el,
-        active: el.children === item ? true : false,
-      })),
-    )
+
+  const onChangeDragging = async (data: any) => {
+    const newList = teamsList.map((el: any) => ({
+      ...el,
+      active: el.id === data.id,
+    }))
+    try {
+      await services.setting.moveTeamsList(newList.map(item => item.id))
+    } catch (error) {}
+    dispatch({
+      type: 'team/setTeamsList',
+      payload: newList,
+    })
+    dispatch({
+      type: 'team/setActiveTeamId',
+      payload: data.id,
+    })
   }
-  // 创建和修改弹窗
-  const [teamIsVisible, setTeamIsVisible] = useState(false)
-  //  创建和修改弹窗的表单
-  const [teamForm, setTeamForm] = useState<any>(null)
-  // 删除团队弹窗
-  const [delTeamIsVisible, setDelTeamIsVisible] = useState(false)
-  const [form] = Form.useForm()
+
+  const setList = (list: any[]) => {
+    dispatch({
+      type: 'team/setTeamsList',
+      payload: list,
+    })
+  }
+
   const teamGetForm = (row?: any) => {
+    const pic = {
+      uid: '001',
+      name: '',
+      url: row?.logo_info.path,
+    }
     return (
       <div style={{ padding: '0 24px' }}>
         <FormStyle name="basic" form={form} initialValues={{ remember: true }}>
@@ -234,45 +279,64 @@ const LeftSide = (props: any) => {
           </Form.Item>
         </FormStyle>
         <UploadBox>
-          <Upload uploadImg={(obj: any) => setUploadImgs(obj)} />
+          <Upload
+            uploadImg={(obj: any) => setUploadImgs(obj)}
+            fileList={pic ? [pic] : []}
+          />
         </UploadBox>
       </div>
     )
   }
+
   // 创建团队弹窗
   const createTeam = () => {
     setTeamIsVisible(true)
     setTeamForm(teamGetForm())
     setFormType('create')
   }
+
   // 编辑团队弹窗
   const editTeam = (row: any) => {
-    setTeamForm(teamGetForm(row))
+    setUploadImgs({
+      uid: '001',
+      name: '',
+      url: row?.logo_info.path,
+    })
     setFormType('edit')
     setTeamIsVisible(true)
+    form.setFieldsValue({
+      username: row.name,
+      id: row.id,
+    })
+    setTeamForm(teamGetForm(row))
   }
   // 弹窗确认按钮
   // addTeams,dismissTeams,editTeams
   const onConfirm = async () => {
-    const name = form.getFieldsValue().username
-    const logo = {
-      name: uploadImgs.name,
-      size: uploadImgs.size,
-      ctime: uploadImgs.time,
-      url: uploadImgs.url,
-      ext: '',
-    }
+    const value = await form.validateFields()
+    const name = value.username
+    const logo = uploadImgs?.url
     props.isSpin(true)
-    if (formType === 'create') {
-      const res = await addTeams({ name, logo })
-    } else {
-      const res = await editTeams({ name, logo })
+    try {
+      if (formType === 'create') {
+        await addTeams({ name, logo })
+      } else {
+        await editTeams(activeRow?.id, { name, logo })
+      }
+      props.isSpin(false)
+      setTeamIsVisible(false)
+      onInitCreateModel()
+      getTeamsList()
+    } catch (error) {
+      props.isSpin(false)
     }
-    props.isSpin(false)
   }
   const delOnConfirm = async () => {
-    setDelTeamIsVisible(false)
-    const res = await addTeams()
+    try {
+      await dismissTeams(activeRow?.id)
+      setDelTeamIsVisible(false)
+      getTeamsList()
+    } catch (error) {}
   }
   const onChangeTeam = (key: any, child: any) => {
     key === 'del' ? setDelTeamIsVisible(true) : editTeam(child)
@@ -282,12 +346,12 @@ const LeftSide = (props: any) => {
     <LeftSideContainer>
       <TeamAdd onClick={() => createTeam()}>
         <TiamTitleText>团队管理</TiamTitleText>
-        <IconFontStyle type="plus"></IconFontStyle>
+        <IconFontStyle type="plus" />
       </TeamAdd>
       {/* 拖拽组件 */}
       <SideDragging
         onChange={(item: any) => onChangeDragging(item)}
-        list={list}
+        list={teamsList}
         setList={setList}
         childStyle={childStyle}
         onChangeTeam={(key: string, child: any) => onChangeTeam(key, child)}
@@ -312,8 +376,9 @@ const LeftSide = (props: any) => {
           delOnConfirm()
         }}
         onChangeVisible={() => setDelTeamIsVisible(false)}
-      ></DeleteConfirm>
+      />
     </LeftSideContainer>
   )
 }
+
 export default LeftSide

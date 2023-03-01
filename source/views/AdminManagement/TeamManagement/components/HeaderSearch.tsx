@@ -37,8 +37,10 @@ const ButtonStyle = styled.div`
     cursor: pointer;
   }
 `
-const HeaderSearch = () => {
-  const [searchVal, setSearchVal] = useState('')
+const HeaderSearch = (props: {
+  onSetSearchVal: any
+  onShowAddMemberModal(): void
+}) => {
   return (
     <HeaderWrap>
       <TitleWrap>
@@ -54,10 +56,10 @@ const HeaderSearch = () => {
           bgColor="var(--neutral-white-d4)"
           length={12}
           placeholder="请输入昵称姓名邮箱电话"
-          onChangeSearch={(value: string) => setSearchVal(value)}
+          onChangeSearch={(value: string) => props.onSetSearchVal(value)}
           leftIcon
         />
-        <ButtonStyle>添加成员</ButtonStyle>
+        <ButtonStyle onClick={props.onShowAddMemberModal}>添加成员</ButtonStyle>
       </SearchBox>
     </HeaderWrap>
   )
