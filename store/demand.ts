@@ -3,6 +3,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 export interface CounterState {
+  // 启用状态
+  startUsing?: boolean
   demandInfo: any
   // 是否刷新评论
   isRefreshComment: boolean
@@ -16,7 +18,6 @@ export interface CounterState {
   filterParams: any
   // 创建需求成功后是否刷新
   isUpdateDemandList: any
-
   // 是否打开创建需求弹窗
   isCreateDemandVisible: boolean
   // 创建需求弹窗传入
@@ -59,12 +60,17 @@ const initialState: CounterState = {
 
   isCreateDemandVisible: false,
   createDemandProps: {},
+  startUsing: true,
 }
 
 export const demandSlice = createSlice({
   name: 'demand',
   initialState,
   reducers: {
+    // 启用状态
+    setStartUsing: (state: any, action) => {
+      state.startUsing = action.payload
+    },
     // 需求详情
     setDemandInfo: (state: any, action) => {
       state.demandInfo = action.payload
@@ -119,6 +125,7 @@ export const {
 
   setIsCreateDemandVisible,
   setCreateDemandProps,
+  setStartUsing,
 } = demandSlice.actions
 
 export default demandSlice.reducer

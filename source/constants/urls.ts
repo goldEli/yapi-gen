@@ -69,6 +69,7 @@ const urls = {
   storyConfigField: '/b/project/story_config/field',
   getStatusList: '/b/project/story_config/status',
   getCategoryList: '/b/project/story_config/category/list',
+  // 新增类别
   addCategory: '/b/project/story_config/category/add',
   updateCategory: '/b/project/story_config/category/edit',
   deleteCategory: '/b/project/story_config/category/delete',
