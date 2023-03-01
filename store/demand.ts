@@ -47,6 +47,10 @@ export interface CounterState {
     // 是否是全局创建
     overallCreate?: boolean
   }
+  // 需求详情弹窗预览
+  isDemandDetailDrawerVisible: boolean
+  // 需求详情弹窗预览参数
+  demandDetailDrawerProps: any
 }
 
 const initialState: CounterState = {
@@ -61,6 +65,8 @@ const initialState: CounterState = {
   isCreateDemandVisible: false,
   createDemandProps: {},
   startUsing: true,
+  isDemandDetailDrawerVisible: false,
+  demandDetailDrawerProps: {},
 }
 
 export const demandSlice = createSlice({
