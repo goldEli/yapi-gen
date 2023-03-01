@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
+import { setActiveCategory } from '@store/category'
+import { useDispatch } from '@store/index'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { MenuItem } from './style'
 const Container = styled.div`
@@ -127,6 +129,9 @@ const SliderList = (props: any) => {
       200,
     )
   }, [index, isDragging])
+
+  const dispatch = useDispatch()
+
   return (
     <Container
       ref={ref}
@@ -137,7 +142,13 @@ const SliderList = (props: any) => {
         zIndex: zIndex.toString(),
       }}
     >
-      <MenuItem key={children.icon} isActive={active}>
+      <MenuItem
+        onClick={() => {
+          dispatch(setActiveCategory(props.row))
+        }}
+        key={children.icon}
+        isActive={active}
+      >
         <CommonIconFont
           type={children.icon}
           color="var(--neutral-n3)"
@@ -156,7 +167,7 @@ const Sortable = (props: any) => {
       {list?.map((child: any, i: number) => (
         <>
           <SliderList
-            onClick={() => props.onClick(i)}
+            row={child}
             key={child.key}
             index={i}
             active={child.active}

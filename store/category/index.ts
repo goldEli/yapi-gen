@@ -10,12 +10,14 @@ export interface CounterState {
   categoryList?: any
   // 需求总列表
   getCategoryConfigList: any
+  activeCategory: any
 }
 
 const initialState: CounterState = {
   startUsing: true,
   categoryList: [],
   getCategoryConfigList: [],
+  activeCategory: {},
 }
 
 export const category = createSlice({
@@ -25,6 +27,10 @@ export const category = createSlice({
     // 启用状态
     setStartUsing: (state: any, action) => {
       state.startUsing = action.payload
+    },
+    // 当前选中的需求类别
+    setActiveCategory: (state: any, action) => {
+      state.activeCategory = action.payload
     },
   },
   extraReducers(builder) {
@@ -42,6 +48,6 @@ export const category = createSlice({
   },
 })
 
-export const { setStartUsing } = category.actions
+export const { setStartUsing, setActiveCategory } = category.actions
 
 export default category.reducer

@@ -22,8 +22,8 @@ import {
   Tabs,
 } from './style'
 import Dragging from './Dragging'
-
 import { setStartUsing } from '@store/category'
+
 const ProjectDetailSide = (props: { leftWidth: number }) => {
   const [t] = useTranslation()
   const { startUsing, categoryList } = useSelector(store => store.category)
@@ -60,6 +60,7 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
   const getList = async () => {
     await dispatch(storyConfigCategoryList({ projectId: paramsData.id }))
   }
+
   useEffect(() => {
     getInfo()
     getProjectInfoValuesData()
@@ -136,6 +137,7 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
           ></Dragging>
         </MenuBox>
       </WrapSet>
+
       <EditCategory
         onClose={() => setIsVisible(false)}
         onUpdate={() => getList()}
