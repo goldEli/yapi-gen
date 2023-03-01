@@ -18,7 +18,6 @@ interface Props {
   title: any
   type: any
   subTitle: any
-  auth: any
 }
 
 const MainIndex = (props: Props) => {
@@ -47,10 +46,7 @@ const MainIndex = (props: Props) => {
   }
 
   return (
-    <PermissionWrap
-      auth={props?.auth}
-      permission={userInfo?.company_permissions}
-    >
+    <>
       <div>{props?.title}</div>
       <MainWrap>
         <MineSwiper data={swiperData} onTap={getProjectId} />
@@ -61,7 +57,7 @@ const MainIndex = (props: Props) => {
           subTitle={props?.subTitle}
         />
       </MainWrap>
-    </PermissionWrap>
+    </>
   )
 }
 
