@@ -187,7 +187,6 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
       nodeComponent = <LogSide />
     } else if (String(pathname).includes('/ProjectManagement/')) {
       nodeComponent = <ProjectDetailSide leftWidth={leftWidth} />
-      // nodeComponent = <DemandSettingSide leftWidth={leftWidth} />
     }
     return nodeComponent
   }

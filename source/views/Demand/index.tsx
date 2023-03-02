@@ -45,11 +45,13 @@ import {
 } from '@store/demand'
 import { changeId } from '@store/counterSlice'
 import { onTapSearchChoose } from '@store/view'
+import { changeColorText } from '@store/color-text'
 
 const Wrap = styled.div`
   height: 100%;
   display: flex;
   padding: 20px 24px 0 24px;
+  flex-direction: column;
 `
 
 const DemandInfoWrap = styled.div({
@@ -58,7 +60,6 @@ const DemandInfoWrap = styled.div({
   justifyContent: 'space-between',
   height: 64,
   background: 'white',
-  padding: '0 24px',
 })
 
 const NameWrap = styled.div({
@@ -75,12 +76,11 @@ const NameWrap = styled.div({
 const ContentWrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  height: 'calc(100% - 84px)',
+  height: 'calc(100% - 64px)',
 })
 
 const MainWrap = styled(Space)({
   borderRadius: 4,
-  paddingLeft: 24,
   background: 'white',
   width: '100%',
   position: 'relative',
@@ -202,7 +202,7 @@ const DemandBox = () => {
     init()
     return () => {
       dispatch(changeId(0))
-
+      dispatch(changeColorText(''))
       dispatch(onTapSearchChoose({}))
     }
   }, [])

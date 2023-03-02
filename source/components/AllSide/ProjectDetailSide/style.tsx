@@ -12,6 +12,7 @@ export const WrapDetail = styled.div`
   overflow: hidden;
   transition: 0.2s;
   position: relative;
+  white-space: nowrap;
 `
 
 export const WrapSet = styled.div`
@@ -20,6 +21,16 @@ export const WrapSet = styled.div`
   overflow: hidden;
   transition: 0.2s;
   display: none;
+  white-space: nowrap;
+`
+
+export const WrapCategory = styled.div`
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  transition: 0.2s;
+  display: none;
+  white-space: nowrap;
 `
 
 export const SideTop = styled.div`
@@ -67,7 +78,6 @@ export const MenuItem = styled.div<{ isActive?: boolean }>`
   color: ${props =>
     props.isActive ? 'var(--primary-d2)' : 'var(--neutral-n1-d2)'};
   cursor: pointer;
-  white-space: nowrap;
   div {
     margin-left: 12px;
   }

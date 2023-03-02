@@ -3,10 +3,12 @@
 // 需求详情弹窗预览模式
 
 import { getDemandInfo } from '@/services/demand'
+import { openDetail } from '@/tools'
+import { encryptPhp } from '@/tools/cryptoPhp'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import { useDispatch, useSelector } from '@store/index'
 import { Drawer, Popover, Space } from 'antd'
-import { useEffect, useRef, useState } from 'react'
+import { createRef, useEffect, useRef, useState } from 'react'
 import CommonIconFont from '../CommonIconFont'
 import { DemandOperationDropdownMenu } from '../DemandComponent/DemandOperationDropdownMenu'
 import BasicDemand from './BasicDemand'
@@ -52,6 +54,7 @@ const DemandDetailDrawer = () => {
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const [drawerInfo, setDrawerInfo] = useState<any>({})
   const [showState, setShowState] = useState<any>(normalState)
+  const commentDom: any = createRef()
 
   const modeList = [
     { name: '详细信息', key: 'detailInfo', content: '' },
@@ -85,7 +88,14 @@ const DemandDetailDrawer = () => {
 
   // 跳转详情页面
   const onToDetail = () => {
-    //
+    const params = encryptPhp(
+      JSON.stringify({
+        type: 'info',
+        id: drawerInfo.projectId,
+        demandId: drawerInfo.id,
+      }),
+    )
+    openDetail(`/ProjectManagement/Demand?data=${params}`)
   }
 
   // 点击编辑
@@ -200,6 +210,7 @@ const DemandDetailDrawer = () => {
                 onEditChange={onEditChange}
                 onDeleteChange={onDeleteChange}
                 onCreateChild={onCreateChild}
+                onAddComment={() => commentDom.current?.addComment()}
                 record={demandDetailDrawerProps}
               />
             }
@@ -248,6 +259,7 @@ const DemandDetailDrawer = () => {
                 <DemandComment
                   detail={drawerInfo}
                   isOpen={showState[i.key].isOpen}
+                  onRef={commentDom}
                 />
               )}
             </CollapseItemContent>

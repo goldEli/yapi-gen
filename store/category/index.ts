@@ -1,6 +1,6 @@
 /* eslint-disable no-duplicate-imports */
 // 需求
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import { storyConfigCategoryList, getCategoryConfigList } from './thunk'
 
 export interface CounterState {
@@ -9,14 +9,14 @@ export interface CounterState {
   // 需求类别
   categoryList?: any
   // 需求总列表
-  getCategoryConfigList: any
+  getCategoryConfigDataList: any
   activeCategory: any
 }
 
 const initialState: CounterState = {
   startUsing: true,
   categoryList: [],
-  getCategoryConfigList: [],
+  getCategoryConfigDataList: {},
   activeCategory: {},
 }
 
@@ -43,7 +43,12 @@ export const category = createSlice({
     })
     builder.addCase(getCategoryConfigList.fulfilled, (state, action) => {
       const data = action.payload
-      // getCategoryConfigList
+      state.getCategoryConfigDataList.isFoldT = data.filter(
+        (el: any) => el.isFold === 2,
+      )
+      state.getCategoryConfigDataList.isFoldF = data.filter(
+        (el: any) => el.isFold === 1,
+      )
     })
   },
 })

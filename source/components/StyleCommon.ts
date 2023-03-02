@@ -531,7 +531,7 @@ const StatusWrap = styled.div<{ isShow?: boolean }>(
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    border: '1px solid #2877FF',
+    // border: '1px solid #2877FF',
     color: '#2877FF',
     width: 'fit-content',
   },

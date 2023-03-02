@@ -1,8 +1,10 @@
 import { Breadcrumb } from 'antd'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const MyBreadcrumb = () => {
   const navigate = useNavigate()
+  const location = useLocation()
+
   return (
     <Breadcrumb>
       <Breadcrumb.Item>项目</Breadcrumb.Item>
