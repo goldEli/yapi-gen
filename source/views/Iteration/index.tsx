@@ -35,6 +35,7 @@ import {
 } from '@/services/iterate'
 import { setIterateInfo } from '@store/iterate'
 import SetShowField from '@/components/SetShowField/indedx'
+import MyBreadcrumb from '@/components/MyBreadcrumb'
 
 const DemandInfoWrap = styled.div({
   display: 'flex',
@@ -398,6 +399,9 @@ const Iteration = () => {
           onChangeVisible={() => setIsDelete(!isDelete)}
           onConfirm={onDeleteConfirm}
         />
+        <div>
+          <MyBreadcrumb />
+        </div>
         <DemandInfoWrap>
           <NameWrap>
             <span className="name">{iterateInfo.name}</span>

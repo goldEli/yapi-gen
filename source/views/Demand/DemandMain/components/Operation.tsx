@@ -309,23 +309,41 @@ const Operation = (props: Props) => {
       {projectInfoValues
         ?.filter((i: any) => i.key === 'category')[0]
         ?.children?.filter((i: any) => i.status === 1)
-        ?.map((k: any) => (
-          <LiWrap
-            key={k.id}
-            color={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
-            onClick={(e: any) => onChangeCategory(e, k)}
-          >
-            <CanOperationCategory
+        ?.map((k: any) => {
+          return (
+            <LiWrap
+              key={k.id}
+              color={
+                colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
+              }
+              onClick={(e: any) => onChangeCategory(e, k)}
+            >
+              <img
+                src={
+                  k.category_attachment
+                    ? k.category_attachment
+                    : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
+                }
+                style={{
+                  width: '18px',
+                  height: '18px',
+                  marginRight: '8px',
+                }}
+                alt=""
+              />
+              <span>{k.content}</span>
+              {/* <CanOperationCategory
               style={{ marginRight: 0 }}
               color={k.color}
               bgColor={
                 colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
               }
             >
-              <span className="title">{k.content}</span>
-            </CanOperationCategory>
-          </LiWrap>
-        ))}
+              <span className="title">{k.content}</span>1
+            </CanOperationCategory> */}
+            </LiWrap>
+          )
+        })}
     </div>
   )
 

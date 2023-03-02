@@ -810,30 +810,33 @@ export const getProjectInfoValues: any = async (params: any) => {
         status: i.status,
         color: i.color,
         icon: i.icon,
+        ...i,
       }))
     }
     allValues = [{ id: -1, content: '空', content_txt: '空' }, ...resultValues]
     return allValues
   }
 
-  return Object.keys(response.data)?.map((i: any) => ({
-    children:
-      i === 'class'
-        ? [
-            ...[
-              {
-                title: '未分类',
-                key: 0,
-                value: 0,
-                children: [],
-              },
-            ],
-            ...getNestedChildren(response.data[i], 0),
-          ]
-        : getChildren(i, response.data[i]),
-    key: i,
-    customTag: i.includes('custom_') ? response.data[i] : null,
-  }))
+  return Object.keys(response.data)?.map((i: any) => {
+    return {
+      children:
+        i === 'class'
+          ? [
+              ...[
+                {
+                  title: '未分类',
+                  key: 0,
+                  value: 0,
+                  children: [],
+                },
+              ],
+              ...getNestedChildren(response.data[i], 0),
+            ]
+          : getChildren(i, response.data[i]),
+      key: i,
+      customTag: i.includes('custom_') ? response.data[i] : null,
+    }
+  })
 }
 
 export const getAffiliation = async () => {
