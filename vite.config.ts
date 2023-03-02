@@ -57,6 +57,5 @@ export default defineConfig(config => {
     },
     envDir: './environments/',
     envPrefix: '__',
-    base: '/' + env.__URL_HASH__,
   }
 })

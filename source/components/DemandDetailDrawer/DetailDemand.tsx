@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { addInfoDemand, deleteInfoDemand } from '@/services/demand'
 import { useSelector } from '@store/index'
-import { message } from 'antd'
+import { message, Popover } from 'antd'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import DeleteConfirm from '../DeleteConfirm'
@@ -81,7 +81,10 @@ const DetailDemand = (props: DetailDemand) => {
       </ContentItem>
       <ContentItem>
         <Label>标签</Label>
-        <TagComponent
+        <Popover trigger="click" content={<div>232323</div>}>
+          qwqwqw
+        </Popover>
+        {/* <TagComponent
           demandDetail={props.detail}
           defaultList={props.detail?.tag?.map((i: any) => ({
             id: i.id,
@@ -95,7 +98,7 @@ const DetailDemand = (props: DetailDemand) => {
             </AddWrap>
           }
           onUpdate={props.onUpdate}
-        />
+        /> */}
       </ContentItem>
       <ContentItem>
         <Label>附件</Label>

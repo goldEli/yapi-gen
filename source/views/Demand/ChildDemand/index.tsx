@@ -44,11 +44,11 @@ const Operation = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  padding: '0 24px 0px 12px ',
   height: 52,
   background: 'white',
   borderRadius: '6px 6px 0 0',
 })
+
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
   fontSize: 16,
@@ -344,7 +344,7 @@ const ChildDemand = () => {
   }, [titleList, titleList2, titleList3, columns])
 
   return (
-    <div style={{ height: 'calc(100% - 54px)', padding: '16px 16px 0 16px' }}>
+    <div style={{ height: 'calc(100% - 74px)' }}>
       <DeleteConfirm
         text={t('common.confirmDelChildDemand')}
         isVisible={isDelete}
