@@ -67,7 +67,7 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
     {
       name: t('newlyAdd.demandSet'),
       icon: 'settings',
-      path: '/ProjectManagement/DemandSetting',
+      path: '/ProjectManagement/ProjectSetting',
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
         String(i.identity).includes('b/project/story_config'),
       ).length,
@@ -114,10 +114,10 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
   useEffect(() => {
     getInfo()
     getProjectInfoValuesData()
-    if (routerPath.pathname.includes('/ProjectSetting')) {
+    if (paramsData?.type) {
       onChangeSet()
     }
-    if (routerPath.pathname.includes('/DemandSetting')) {
+    if (paramsData?.type === 3) {
       onChangeSetCategory()
     }
   }, [])
