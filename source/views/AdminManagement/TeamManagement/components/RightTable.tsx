@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { getMemberList } from '@store/teams/thunk'
 import * as services from '@/services'
 import AddMemberCommonModal from './CommonModal'
+import CommonUserAvatar from '@/components/CommonUserAvatar'
 
 const RightWrap = styled.div`
   width: 100%;
@@ -217,43 +218,45 @@ const RightTable = () => {
       <PersonStyle>
         <Row>
           <LeftItem>头像</LeftItem>
-          <RightItemIcon>李</RightItemIcon>
+          <CommonUserAvatar avatar={row.avatar} size="small" />
         </Row>
         <Row>
           <LeftItem>手机号</LeftItem>
-          <RightItem>18866686868</RightItem>
+          <RightItem>{row.phone}</RightItem>
         </Row>
         <Row>
           <LeftItem>登录邮箱</LeftItem>
-          <RightItem>18866686868</RightItem>
+          <RightItem>{row.email}</RightItem>
         </Row>
         <Row>
           <LeftItem>昵称</LeftItem>
-          <RightItem>18866686868</RightItem>
+          <RightItem>{row.nickname}</RightItem>
         </Row>
         <Row>
           <LeftItem>姓名</LeftItem>
-          <RightItem>18866686868</RightItem>
+          <RightItem>{row.name}</RightItem>
         </Row>
         <Row>
           <LeftItem>性别</LeftItem>
-          <RightItem>18866686868</RightItem>
+          <RightItem>{row.gender}</RightItem>
         </Row>
         <Row>
           <LeftItem>所属部门</LeftItem>
-          <RightItem>18866686868</RightItem>
+          <RightItem>{row.department_name}</RightItem>
         </Row>
         <Row>
           <LeftItem>职位</LeftItem>
-          <RightItem>18866686868</RightItem>
+          <RightItem>{row.position_name}</RightItem>
         </Row>
         <Row>
           <LeftItem>所在团队</LeftItem>
-          <RightItem>18866686868</RightItem>
+          <RightItem>{row.teams?.map((i: any) => i.name)?.join()}</RightItem>
         </Row>
         <Row className="row">
           <LeftItem>权限组</LeftItem>
-          <RightItem>18866686868</RightItem>
+          <RightItem>
+            {row.team_is_admin === 1 ? '团队管理' : '团队成员'}
+          </RightItem>
         </Row>
       </PersonStyle>
     )
