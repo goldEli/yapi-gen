@@ -105,8 +105,8 @@ const Header = () => {
       <LeftMsg>
         <CommonIconFont type="left" size={24} />
         <MsgContent>
-          <div>{activeCategory.name}</div>
-          <div>{activeCategory.remark || '--'}</div>
+          <div>{activeCategory?.name}</div>
+          <div>{activeCategory?.remark || '--'}</div>
         </MsgContent>
       </LeftMsg>
       <RightOperate>

@@ -72,7 +72,7 @@ const routes = [
 
           {
             path: 'Demand',
-            element: lazy(() => import('@/views/Demand')),
+            element: lazy(() => import('@/views/DemandSetting')),
           },
           {
             path: 'Iteration',
