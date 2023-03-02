@@ -43,6 +43,22 @@ const MyBreadcrumb = (props: any) => {
       props.setName ? (
         <Breadcrumb.Item>{props.setName}</Breadcrumb.Item>
       ) : null}
+      {location.pathname === '/ProjectManagement/Demand' && props.demand ? (
+        <Breadcrumb.Item>
+          <img
+            style={{
+              width: '16px',
+              height: '16px',
+              borderRadius: '4px',
+              marginRight: '4px',
+              verticalAlign: 'middle',
+            }}
+            src={props.demand.cover}
+            alt=""
+          />
+          <span>{props.demand.name}</span>
+        </Breadcrumb.Item>
+      ) : null}
     </Breadcrumb>
   )
 }

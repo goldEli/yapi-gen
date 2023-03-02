@@ -46,6 +46,7 @@ import {
 import { changeId } from '@store/counterSlice'
 import { onTapSearchChoose } from '@store/view'
 import { changeColorText } from '@store/color-text'
+import MyBreadcrumb from '@/components/MyBreadcrumb'
 
 const Wrap = styled.div`
   height: 100%;
@@ -372,6 +373,7 @@ const DemandBox = () => {
         />
       )
     }
+
     return (
       <>
         <CommonModal
@@ -442,6 +444,14 @@ const DemandBox = () => {
           onChangeVisible={() => setIsDelVisible(!isDelVisible)}
           onConfirm={onDeleteConfirm}
         />
+        <div>
+          <MyBreadcrumb
+            demand={{
+              name: demandInfo?.name,
+              cover: demandInfo?.category_attachment,
+            }}
+          />
+        </div>
         <DemandInfoWrap>
           <NameWrap>
             <Popover

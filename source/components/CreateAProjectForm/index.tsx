@@ -76,7 +76,9 @@ const CreateAProjectForm = () => {
     }
     dispatch(postCreate(obj))
     dispatch(editProject({ visible: false, id: '' }))
-    dispatch(onRest(true))
+    setTimeout(() => {
+      dispatch(onRest(true))
+    }, 500)
   }
 
   function upper(str: string) {

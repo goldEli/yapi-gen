@@ -426,7 +426,9 @@ export const getDemandInfo: any = async (params: any) => {
     project_id: params.projectId,
     id: params.id,
   })
+
   return {
+    category_attachment: response.data.category_attachment,
     id: response.data.id,
     name: response.data.name || '--',
     info: response.data.info.replaceAll('\n', '<br/>'),

@@ -8,9 +8,6 @@ import InputSearch from '@/components/InputSearch'
 import LeftTitle from '@/components/LeftTitle'
 import MainGrid from '@/components/MainGrid/MainGrid'
 import MainTable from '@/components/MainTable/MainTable'
-import ProjectCard from '@/components/ProjectCard'
-import { HoverIcon } from '@/components/ProjectCard/style'
-import RichEditor from '@/components/RichEditor'
 import useSetTitle from '@/hooks/useSetTitle'
 import {
   deleteProject,
@@ -18,6 +15,7 @@ import {
   openProject,
   stopProject,
 } from '@/services/project'
+import { getProjectCover } from '@store/cover/thunks'
 import { changeCreateVisible, onRest } from '@store/create-propject'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefreshGroup } from '@store/project'
@@ -90,6 +88,9 @@ const ProjectManagementOptimization = () => {
   useEffect(() => {
     getList(activeType, isGrid, isHidden, searchVal, order, pageObj, groupId)
   }, [isHidden, activeType, order, searchVal, isGrid, pageObj, groupId, isRest])
+  useEffect(() => {
+    dispatch(getProjectCover())
+  }, [])
 
   // 更新列表
   const onUpdate = () => {

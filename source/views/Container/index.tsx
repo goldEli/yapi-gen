@@ -97,7 +97,6 @@ export const Container = () => {
   }
 
   useEffect(() => {
-    dispatch(getProjectCover())
     dispatch(getStatus())
     dispatch(getLoginDetail())
     dispatch(getAsyncCompanyInfo())

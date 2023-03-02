@@ -3,6 +3,8 @@ import styled from '@emotion/styled'
 export const Image = styled.img`
   width: 80px;
   height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
 `
 
 export const CardRight = styled.div`
@@ -82,6 +84,7 @@ export const ProjectCard = styled.div`
   opacity: 1;
   display: flex;
   gap: 16px;
+  transition: all 0.3s;
   &:hover {
     transition: all 0.3s;
     transform: translate(0, -10px);
