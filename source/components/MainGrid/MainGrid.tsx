@@ -4,21 +4,14 @@
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
 import ProjectCard from '@/components/ProjectCard'
-import styled from '@emotion/styled'
-import { Space } from 'antd'
 import { useNavigate } from 'react-router-dom'
-import IconFont from '@/components/IconFont'
 import { getIsPermission } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { SecondButton } from '@/components/StyleCommon'
 import { useDispatch, useSelector } from '@store/index'
-import { AddProject, DataWrap, SpaceWrap } from './style'
-import { changeCreateVisible } from '@store/create-propject'
-
-import { HoverIcon } from '../ProjectCard/style'
-import { getViewList } from '@store/view/thunk'
+import { DataWrap, SpaceWrap } from './style'
 
 interface Props {
   onChangeOperation(type: string, id: number, e?: any): void

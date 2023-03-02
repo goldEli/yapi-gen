@@ -64,6 +64,7 @@ const Main = styled.div<{ left: number }>`
 
 export const Container = () => {
   const location = useLocation()
+
   const dispatch = useDispatch()
   const [isNextVisible, setIsNextVisible] = useState(false)
   const [changeLeft, setChangeLeft] = useState(200)

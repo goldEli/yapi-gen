@@ -142,6 +142,13 @@ export const useDynamicColumns = (state: any) => {
                 }
                 style={{ marginLeft: 0 }}
               >
+                <img
+                  src="https://varlet.gitee.io/varlet-ui/cat.jpg"
+                  style={{
+                    width: '10px',
+                  }}
+                  alt=""
+                />{' '}
                 {record.category}
               </CategoryWrap>
             </Tooltip>
@@ -191,7 +198,7 @@ export const useDynamicColumns = (state: any) => {
                 border: `1px solid ${text?.status.color}`,
               }}
             >
-              {text?.status.content}
+              {text?.status.content}123
             </StatusWrap>
           </ChangeStatusPopover>
         )
