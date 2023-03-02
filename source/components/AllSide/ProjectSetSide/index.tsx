@@ -36,28 +36,7 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
     { name: '迭代', icon: 'interation', path: '/ProjectManagement/Iteration' },
   ]
 
-  const setMenuList = [
-    {
-      name: '项目信息',
-      icon: 'demand',
-      path: '/ProjectManagement/ProjectSetting/ProjectInfo',
-    },
-    {
-      name: '项目成员',
-      icon: 'interation',
-      path: '/ProjectManagement/ProjectSetting/Member',
-    },
-    {
-      name: '项目权限组',
-      icon: 'demand',
-      path: '/ProjectManagement/ProjectSetting/Permission',
-    },
-    {
-      name: '需求设置',
-      icon: 'interation',
-      path: '/ProjectManagement/ProjectSetting/DemandSet',
-    },
-  ]
+  const setMenuList: any = []
 
   const getProjectInfoValuesData = async () => {
     const result = await getProjectInfoValues({ projectId })

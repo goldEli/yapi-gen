@@ -92,12 +92,18 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
     projectSide.current.style.width = '0px'
     projectSetSide.current.style.width = `${props.leftWidth}px`
     projectSetSide.current.style.display = 'block'
+    const params = encryptPhp(
+      JSON.stringify({ id: projectId, pageIdx: 'main', type: 0 }),
+    )
+    navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
   }
 
   //   返回上一页
   const onGoBack = () => {
     projectSetSide.current.style.width = '0px'
     projectSide.current.style.width = `${props.leftWidth}px`
+    const params = encryptPhp(JSON.stringify({ id: projectId }))
+    navigate(`/ProjectManagement/Demand?data=${params}`)
     setTimeout(() => {
       projectSetSide.current.style.display = 'none'
     }, 200)
@@ -176,7 +182,7 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
           {sideList.map((i: any, index: number) => (
             <MenuItem
               key={i.icon}
-              isActive={routerPath.pathname === i.path}
+              isActive={paramsData?.type === index}
               onClick={() => onToInfo(index)}
             >
               <CommonIconFont

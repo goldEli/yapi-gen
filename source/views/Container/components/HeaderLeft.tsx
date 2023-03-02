@@ -25,6 +25,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { getCompanyList, updateCompany } from '@/services/user'
 import CommonModal from '@/components/CommonModal'
 import { useTranslation } from 'react-i18next'
+import ItemDropdown from './ItemDropdown'
 
 interface DrawerComponentProps {
   value: boolean
@@ -268,7 +269,10 @@ const HeaderLeft = () => {
               onClick={() => onClickMenu(i)}
               isActive={String(routerPath.pathname).includes(currentMenu?.url)}
             >
-              <MyDropdown text={i.name} />
+              {i.url === '/ProjectManagement/Project' && (
+                <ItemDropdown text={i.name} />
+              )}
+              {i.url === '/Mine' && <MyDropdown text={i.name} />}
             </ChildrenMenuItem>
           ))}
         </ChildrenMenu>
