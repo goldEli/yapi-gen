@@ -5,6 +5,7 @@ import CommonIconFont from '../CommonIconFont'
 import InputSearch from '../InputSearch'
 import Member from './Member'
 import { MemberIcon, SearchBox, SearchOrProjectMember } from './style'
+import MyBreadcrumb from '../MyBreadcrumb'
 
 interface Props {
   onInputSearch(value: string): void
@@ -19,7 +20,9 @@ const ProjectCommonOperation = (props: Props) => {
   return (
     <>
       <SearchBox>
-        <div>121212</div>
+        <div>
+          <MyBreadcrumb />
+        </div>
         <SearchOrProjectMember size={16}>
           <InputSearch
             leftIcon

@@ -224,6 +224,13 @@ const LeftSide = (props: any) => {
     getTeamsList()
   }, [])
 
+  useEffect(() => {
+    dispatch({
+      type: 'team/setActiveTeamId',
+      payload: teamsList?.[0]?.id,
+    })
+  }, [teamsList])
+
   // 拖拽的宽高样式
   const childStyle = {
     width: '200px',
