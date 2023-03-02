@@ -34,6 +34,7 @@ export const counterSlice = createSlice({
     builder
       .addCase(companyTeamsList.fulfilled, (state, action) => {
         state.teamsList = action.payload.data
+        state.teamsList[0].active = true
       })
       .addCase(getMemberList.fulfilled, (state, action) => {
         state.membersList = {

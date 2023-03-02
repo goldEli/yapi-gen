@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import table from 'antd/lib/table'
+import { GENDER_MAP } from '@/constants'
 
 const TableStyle = styled(table)`
   .ant-table-thead > tr > th,
@@ -39,8 +40,8 @@ const Table = (props: any) => {
     {
       align: 'left',
       title: '昵称',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'nickname',
+      key: 'nickname',
     },
     {
       align: 'left',
@@ -51,38 +52,40 @@ const Table = (props: any) => {
     {
       align: 'left',
       title: '性别',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'gender',
+      key: 'gender',
+      render: (text: any, record: any) => GENDER_MAP[text],
     },
     {
       align: 'left',
       title: '邮箱',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'email',
+      key: 'email',
     },
     {
       align: 'left',
       title: '手机',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'phone',
+      key: 'phone',
     },
     {
       align: 'left',
       title: '部门',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'department_name',
+      key: 'department_name',
     },
     {
       align: 'left',
       title: '职位',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'position_name',
+      key: 'position_name',
     },
     {
       align: 'left',
       title: '团队角色',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'teams',
+      key: 'teams',
+      render: (text: any, record: any) => text?.map((i: any) => i.name)?.join(),
     },
     {
       width: 196,

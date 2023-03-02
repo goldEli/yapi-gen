@@ -15,6 +15,7 @@ import { getMemberList } from '@store/teams/thunk'
 import * as services from '@/services'
 import AddMemberCommonModal from './CommonModal'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
+import { GENDER_MAP } from '@/constants'
 
 const RightWrap = styled.div`
   width: 100%;
@@ -238,7 +239,7 @@ const RightTable = () => {
         </Row>
         <Row>
           <LeftItem>性别</LeftItem>
-          <RightItem>{row.gender}</RightItem>
+          <RightItem>{GENDER_MAP[row.gender]}</RightItem>
         </Row>
         <Row>
           <LeftItem>所属部门</LeftItem>
