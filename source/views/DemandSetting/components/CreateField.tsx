@@ -1,9 +1,12 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { Input } from 'antd'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CreatDragging from './CreatDragging'
+import { getProjectFieIds } from '@store/category/thunk'
+import { useDispatch, useSelector } from '@store/index'
+import ProjectDragging from './ProDragging'
 const CreateFieldWrap = styled.div`
   margin: 20px 0 0 20px;
   border-left: 1px solid var(--neutral-n6-d1);
@@ -59,33 +62,17 @@ const InputStyle = styled(Input)`
     background: 'var(--neutral-white-d4)';
   }
 `
-const SearchItemList = styled.div`
-  width: 352px;
-  height: 44px;
-  border-radius: 8px;
-  background-color: var(--neutral-n8);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
-  font-size: 14px;
-  .delIcon {
-    display: none;
-  }
-  &:hover {
-    cursor: pointer;
-    background-color: var(--white-d6);
-    box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
-    .delIcon {
-      display: block;
-    }
-  }
-`
+
 const CreateField = () => {
   const [t] = useTranslation()
+  const dispatch = useDispatch()
   const [searchIcon, setSearchIcon] = useState(false)
   const [search, setSearch] = useState(false)
   const [createIcon, setCreateIcon] = useState(true)
+  const { getCategoryConfigDataList } = useSelector(store => store.category)
+  const [dataList, setDataList] = useState<any>()
+  const [searchDataList, setSearchDataList] = useState<any>()
+  const { projectInfo } = useSelector(store => store.project)
   const option = [
     { label: t('newlyAdd.lineText'), value: '1', type: 'text' },
     { label: t('newlyAdd.moreLineText'), value: '2', type: 'textarea' },
@@ -116,6 +103,27 @@ const CreateField = () => {
       })),
     )
   }
+  // 过滤数据
+  const getProjectFieIdsApi = async () => {
+    const data = await dispatch(getProjectFieIds(projectInfo.id))
+    const payloadList: any = data.payload
+    const confightList = getCategoryConfigDataList.configDataList
+    const filterIds = confightList.map((item: any) => item.id)
+    setDataList(
+      payloadList.filter((item: any) => !filterIds.includes(item.storyId)),
+    )
+    setSearchDataList(
+      payloadList.filter((item: any) => !filterIds.includes(item.storyId)),
+    )
+  }
+  useEffect(() => {
+    getProjectFieIdsApi()
+  }, [])
+  // 根据输入框过滤
+  const onSearch = (value: string) => {
+    setSearchDataList(dataList.filter((el: any) => el.title.includes(value)))
+  }
+
   return (
     <CreateFieldWrap>
       <TitleStyle onClick={() => setCreateIcon(!createIcon)}>
@@ -154,13 +162,12 @@ const CreateField = () => {
               size={14}
               color="var(--neutral-n3)"
             />
-            <span>项目已有字段</span>
+            <span>项目已有字段 ({dataList?.length})</span>
           </div>
           {search ? (
             <InputStyle
               placeholder="请输入关键字"
-              onBlur={(e: any) => 113}
-              onPressEnter={(e: any) => 12}
+              onInput={(e: any) => onSearch(e.target.value)}
               allowClear
               prefix={
                 <CommonIconFont
@@ -180,23 +187,7 @@ const CreateField = () => {
           )}
         </BottomTitleStyle>
         {searchIcon && (
-          <SearchItemList>
-            <div>
-              <CommonIconFont
-                type="interation"
-                size={19}
-                color="var(--neutral-n1-d1)"
-              />
-              <span style={{ marginLeft: '8px' }}>123</span>
-            </div>
-            <div className="delIcon">
-              <CommonIconFont
-                type="delete"
-                size={19}
-                color="var(--primary-d2)"
-              />
-            </div>
-          </SearchItemList>
+          <ProjectDragging list={searchDataList} setList={setSearchDataList} />
         )}
       </BottomList>
     </CreateFieldWrap>

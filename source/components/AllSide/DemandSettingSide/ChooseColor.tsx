@@ -84,7 +84,7 @@ const ChooseColor = (props: ChooseColorProps) => {
       size={8}
     >
       {props.colorList?.map((i: any) => (
-        <ColorWrap key={i.id} onClick={() => onChangeColor(i.path)}>
+        <ColorWrap key={i.id} onClick={() => onChangeColor(i)}>
           <ImgStyle src={i.path} />
           <IconFontStyle hidden={i.path !== props?.color} type="anglemark" />
         </ColorWrap>

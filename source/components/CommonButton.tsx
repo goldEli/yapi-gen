@@ -122,6 +122,7 @@ interface Props {
   icon?: string
   //   是否禁用
   isDisable?: boolean
+  style?: any
 }
 
 const CommonButton = (props: Props) => {
@@ -199,6 +200,7 @@ const CommonButton = (props: Props) => {
 
   return (
     <button
+      style={props?.style}
       className={commonCss}
       onClick={throttleClick}
       disabled={props.isDisable}

@@ -23,6 +23,8 @@ import {
 } from './style'
 import Dragging from './Dragging'
 import { setStartUsing } from '@store/category'
+// eslint-disable-next-line no-duplicate-imports
+import { getCategoryConfigList } from '@store/category/thunk'
 import { setActiveCategory } from '@store/category/index'
 
 const ProjectDetailSide = (props: { leftWidth: number; onClick(): void }) => {
@@ -57,9 +59,21 @@ const ProjectDetailSide = (props: { leftWidth: number; onClick(): void }) => {
     const result = await getProjectInfo({ projectId })
     dispatch(setProjectInfo(result))
   }
-  // 需求类别
+  // 需求类别侧边栏
   const getList = async () => {
     await dispatch(storyConfigCategoryList({ projectId: paramsData.id }))
+  }
+  // 需求类别中间列表
+  const getCategoryConfig = async (dataItem: any) => {
+    const itemId = dataItem?.find((item: any) => item.active)?.id
+    itemId &&
+      projectId &&
+      (await dispatch(
+        getCategoryConfigList({
+          projectId: projectId,
+          categoryId: itemId,
+        }),
+      ))
   }
 
   useEffect(() => {
@@ -89,16 +103,22 @@ const ProjectDetailSide = (props: { leftWidth: number; onClick(): void }) => {
       dataItem = categoryList?.filter((el: any) => el.status !== 1)
     }
     setList(dataItem)
+    if (dataItem) {
+      getCategoryConfig(dataItem)
+    }
     dispatch(setActiveCategory(dataItem.find((item: any) => item.active)))
   }, [startUsing, categoryList])
-
+  const getTabsActive = async (index: any) => {
+    dispatch(setStartUsing(index === 0 ? true : false))
+    setTabsActive(index)
+  }
   return (
     <AllWrap>
       <WrapSet>
         <SideTop>
-          <img src={projectInfo.cover} alt="" />
+          <img src={projectInfo?.cover} alt="" />
           <SideInfo>
-            <div>{projectInfo.name}</div>
+            <div>{projectInfo?.name}</div>
             <span> 团队项目 </span>
           </SideInfo>
         </SideTop>
@@ -119,10 +139,7 @@ const ProjectDetailSide = (props: { leftWidth: number; onClick(): void }) => {
           {tabs.map((el, index) => (
             <span
               className={tabsActive == index ? 'tabsActive' : ''}
-              onClick={() => {
-                setTabsActive(index)
-                dispatch(setStartUsing(index === 0 ? true : false))
-              }}
+              onClick={() => getTabsActive(index)}
               key={el.label}
             >
               {el.label}
@@ -133,11 +150,18 @@ const ProjectDetailSide = (props: { leftWidth: number; onClick(): void }) => {
           <Dragging
             list={list}
             setList={setList}
+            onClick={(i: number) =>
+              setList(
+                list.map((el: any, index: any) => ({
+                  ...el,
+                  active: i === index ? true : false,
+                })),
+              )
+            }
             onMove={(data: any) => onMove(data)}
           ></Dragging>
         </MenuBox>
       </WrapSet>
-
       <EditCategory
         onClose={() => setIsVisible(false)}
         onUpdate={() => getList()}

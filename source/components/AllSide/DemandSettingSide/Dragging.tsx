@@ -145,10 +145,12 @@ const SliderList = (props: any) => {
       <MenuItem
         onClick={() => {
           dispatch(setActiveCategory(props.row))
+          props.onClick(index)
         }}
         key={children.icon}
         isActive={active}
       >
+        {active}
         <CommonIconFont
           type={children.icon}
           color="var(--neutral-n3)"
@@ -172,6 +174,7 @@ const Sortable = (props: any) => {
             index={i}
             active={child.active}
             listLength={list.length}
+            onClick={() => props.onClick(i)}
             onMove={(prevIndex: any, nextIndex: any) => {
               const newList = [...list]
               newList.splice(nextIndex, 0, newList.splice(prevIndex, 1)[0])
