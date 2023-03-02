@@ -2,6 +2,10 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { useRef, useState } from 'react'
+import DeleteConfirm from '@/components/DeleteConfirm'
+import { deleteStoryConfigField } from '@/services/project'
+import { message } from 'antd'
+import { useSelector } from '@store/index'
 const Container = styled.div`
   border-radius: 8px;
   background-color: var(--neutral-n8);
@@ -10,19 +14,37 @@ const Container = styled.div`
     cursor: pointer;
   }
 `
-const ItemList = styled.div`
-  min-width: 352px;
+const SearchItemList = styled.div`
+  width: 352px;
   height: 44px;
+  border-radius: 8px;
+  background-color: var(--neutral-n8);
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 0 24px;
   font-size: 14px;
+  margin-bottom: 8px;
+  .delIcon {
+    display: none;
+  }
+  &:hover {
+    cursor: pointer;
+    background-color: var(--white-d6);
+    box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+    .delIcon {
+      display: block;
+    }
+  }
 `
 
 const SliderList = (props: any) => {
   const { children } = props
   const [top, setTop] = useState(0)
   const [left, setLeft] = useState(0)
+  const [isVisible, setIsVisible] = useState(false)
+  const [delItem, setDelItem] = useState<any>()
+  const { projectInfo } = useSelector(store => store.project)
   const ref: any = useRef()
   const prevRectRef = useRef(null)
   let startY = 0
@@ -46,6 +68,15 @@ const SliderList = (props: any) => {
     setTop(0)
     setLeft(0)
   }
+  // 删除
+  const delConfig = async () => {
+    await deleteStoryConfigField({
+      id: delItem?.id,
+      projectId: projectInfo.id,
+    })
+    message.success('删除成功')
+    setIsVisible(false)
+  }
   return (
     <Container
       ref={ref}
@@ -60,14 +91,29 @@ const SliderList = (props: any) => {
         zIndex: 9999,
       }}
     >
-      <ItemList>
-        <CommonIconFont
-          type="interation"
-          size={19}
-          color="var(--neutral-n1-d1)"
-        />
-        <span style={{ marginLeft: '8px' }}>{children.label}</span>
-      </ItemList>
+      <SearchItemList>
+        <div>
+          <CommonIconFont
+            type="interation"
+            size={19}
+            color="var(--neutral-n1-d1)"
+          />
+          <span style={{ marginLeft: '8px' }}>{children.title}</span>
+        </div>
+        <div
+          className="delIcon"
+          onClick={() => {
+            setIsVisible(true), setDelItem(children)
+          }}
+        >
+          <CommonIconFont type="delete" size={19} color="var(--primary-d2)" />
+        </div>
+      </SearchItemList>
+      <DeleteConfirm
+        isVisible={isVisible}
+        onChangeVisible={() => setIsVisible(false)}
+        onConfirm={() => delConfig()}
+      />
     </Container>
   )
 }

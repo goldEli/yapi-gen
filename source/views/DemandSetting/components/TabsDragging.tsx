@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-handler-names */
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
-import { Checkbox } from 'antd'
+import { Checkbox, Tooltip } from 'antd'
 import React, { useEffect, useLayoutEffect } from 'react'
 const Container = styled.div`
   margin-bottom: 8px;
@@ -29,6 +29,10 @@ const ItemList = styled.div`
   padding: 0 16px;
   border-radius: 6px;
   justify-content: space-between;
+  &:hover {
+    background: var(--neutral-white-d6);
+    box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+  }
 `
 const ListMsg = styled.div`
   div:nth-child(1) {
@@ -69,7 +73,7 @@ const CheckboxStyle = styled(Checkbox)`
   }
 `
 const SliderList = (props: any) => {
-  const { children, index, onMove, listLength, active } = props
+  const { children, index, onMove, listLength, child } = props
   const [top, setTop] = React.useState(0)
   const [isDragging, setIsDragging] = React.useState(false)
   const [zIndex, setZIndex] = React.useState(0)
@@ -189,7 +193,6 @@ const SliderList = (props: any) => {
   return (
     <Container
       ref={ref}
-      onClick={() => props.onChange(children)}
       style={{
         top: `${top}px`,
         transition: 'transform .2s, box-shadow .2s',
@@ -198,31 +201,59 @@ const SliderList = (props: any) => {
       }}
     >
       {/* console.log(children, event.dataTransfer.getData('item')) */}
-      <ItemList
-        onDragOver={event => {
-          event.preventDefault()
-        }}
-        onDrop={event => event.dataTransfer.getData('item')}
-      >
-        <div style={{ display: 'flex' }}>
-          <IconBox>
-            <CommonIconFont
-              type="down-icon"
-              size={14}
-              color="var(--neutral-n3)"
+      {child.content !== 'user_name' &&
+      child.content !== 'users_name' &&
+      child.content !== 'created_at' &&
+      child.content !== 'finish_at' ? (
+        <ItemList>
+          <div style={{ display: 'flex' }}>
+            <IconBox>
+              <CommonIconFont
+                type="down-icon"
+                size={14}
+                color="var(--neutral-n3)"
+              />
+            </IconBox>
+            <ListMsg>
+              <div>{child?.title}</div>
+              <div>数字型</div>
+            </ListMsg>
+          </div>
+          <RightOperate>
+            {/*  onChange={(e) => console.log(e.target.checked, '88')} */}
+            <CheckboxStyle
+              checked={child?.isRequired === 1 ? true : false}
+              onChange={e => props.onChangeChecked(e.target.checked)}
             />
-          </IconBox>
-          <ListMsg>
-            <div>{children}</div>
-            <div>数字型</div>
-          </ListMsg>
-        </div>
-        <RightOperate>
-          <CheckboxStyle />
-          <Text>必填</Text>
-          <DelBtn>删除</DelBtn>
-        </RightOperate>
-      </ItemList>
+            <Text>必填</Text>
+            <DelBtn onClick={() => props.onDelete()}>删除</DelBtn>
+          </RightOperate>
+        </ItemList>
+      ) : (
+        // 创建人 处理人 完成时间 创建时间 不允许操作
+        <Tooltip placement="topRight" title={'系统字段不可编辑'}>
+          <ItemList>
+            <div style={{ display: 'flex' }}>
+              <IconBox>
+                <CommonIconFont
+                  type="down-icon"
+                  size={14}
+                  color="var(--neutral-n3)"
+                />
+              </IconBox>
+              <ListMsg>
+                <div>{child?.title}</div>
+                <div>数字型</div>
+              </ListMsg>
+            </div>
+            <RightOperate>
+              <CheckboxStyle disabled={true} />
+              <Text>必填</Text>
+              <DelBtn>删除</DelBtn>
+            </RightOperate>
+          </ItemList>
+        </Tooltip>
+      )}
     </Container>
   )
 }
@@ -230,13 +261,20 @@ const SliderList = (props: any) => {
 const Sortable = (props: any) => {
   const { list, setList } = props
   return (
-    <div draggable="true">
+    <div
+      draggable="true"
+      onDragOver={event => {
+        event.preventDefault()
+      }}
+      onDrop={event => event.dataTransfer.getData('item')}
+    >
       {list?.map((child: any, i: number) => (
         <SliderList
-          onChangeTeam={(row: any) => props.onChangeTeam(row, child)}
           key={child.key}
           index={i}
-          active={child.active}
+          child={child}
+          onChangeChecked={(val: boolean) => props.onChangeChecked(val, child)}
+          onDelete={() => props.onDelete(child)}
           listLength={list.length}
           onMove={(prevIndex: any, nextIndex: any) => {
             const newList = [...list]

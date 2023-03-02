@@ -10,7 +10,8 @@ import { deleteStoryConfigCategory } from '@/services/project'
 import { useNavigate } from 'react-router-dom'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { setStartUsing } from '@store/category'
-
+import EditCategory from '@/components/AllSide/DemandSettingSide/EditCategory'
+import { storyConfigCategoryList } from '@store/category/thunk'
 const HeaderWrap = styled.div`
   height: 66px;
   display: flex;
@@ -64,22 +65,23 @@ const BtnStyle = styled.div`
 const Header = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { startUsing, activeCategory } = useSelector(store => store.category)
   const { projectInfo } = useSelector(store => store.project)
   const [checked, setChecked] = useState(startUsing)
   const [isDelete, setIsDelete] = useState(false)
-  const navigate = useNavigate()
-
+  const [isVisible, setIsVisible] = useState(false)
   useEffect(() => {
     setChecked(startUsing ? true : false)
   }, [startUsing])
 
   // 删除需求类别
   const onDeleteConfirm = async () => {
-    // await deleteStoryConfigCategory({
-    //   id: props.row.id,
-    //   projectId: paramsData.id,
-    // })
+    await deleteStoryConfigCategory({
+      id: activeCategory.id,
+      projectId: projectInfo.id,
+    })
+    await dispatch(storyConfigCategoryList({ projectId: projectInfo.id }))
   }
 
   // 点击跳转配置工作流
@@ -92,6 +94,10 @@ const Header = () => {
       }),
     )
     navigate(`/ProjectManagement/WorkFlow?data=${params}`)
+  }
+  // 编辑
+  const editCategoryForm = () => {
+    setIsVisible(true)
   }
 
   return (
@@ -120,9 +126,15 @@ const Header = () => {
           />
         </SwitchStyle>
         <BtnStyle onClick={onSetWorkFlow}>配置工作流</BtnStyle>
-        <BtnStyle>编辑</BtnStyle>
+        <BtnStyle onClick={() => editCategoryForm()}>编辑</BtnStyle>
         <BtnStyle onClick={() => setIsDelete(true)}>删除</BtnStyle>
       </RightOperate>
+      <EditCategory
+        item={activeCategory}
+        onClose={() => setIsVisible(false)}
+        onUpdate={() => 123}
+        isVisible={isVisible}
+      />
     </HeaderWrap>
   )
 }

@@ -477,7 +477,7 @@ export const changeCategoryStatus: any = async (params: any) => {
 export const addStoryConfigCategory: any = async (params: any) => {
   await http.post<any>('addCategory', {
     name: params.name,
-    color: params?.color,
+    attachment_id: params.attachment_id,
     project_id: params.projectId,
     remark: params.remark,
   })
@@ -489,6 +489,7 @@ export const updateStoryConfigCategory: any = async (params: any) => {
     color: params?.color,
     project_id: params.projectId,
     id: params.id,
+    attachment_id: params.attachment_id,
     remark: params.remark,
   })
 }
