@@ -77,7 +77,7 @@ const Sortable = (props: any) => {
   const { list, setList } = props
   return (
     <div>
-      {list.map((child: any, i: number) => (
+      {list?.map((child: any, i: number) => (
         <SliderList
           onChangeTeam={(row: any) => props.onChangeTeam(row, child)}
           onChange={(item: any) => props.onChange(item)}

@@ -50,7 +50,7 @@ const Main = () => {
           setList={setList}
         />
       )}
-      {getCategoryConfigDataList?.isFoldT.length >= 1 && (
+      {getCategoryConfigDataList?.isFoldT?.length >= 1 && (
         <TitleStyle onClick={() => setMoreIcon(!moreIcon)}>
           <CommonIconFont
             type={moreIcon ? 'down-icon' : 'right-icon'}
@@ -60,7 +60,7 @@ const Main = () => {
           <span>更多折叠</span>
         </TitleStyle>
       )}
-      {getCategoryConfigDataList?.isFoldT.length >= 1 && moreIcon && (
+      {getCategoryConfigDataList?.isFoldT?.length >= 1 && moreIcon && (
         <TabsDragging
           onChange={(item: any) => onChangeDragging(item)}
           list={getCategoryConfigDataList?.isFoldT}
