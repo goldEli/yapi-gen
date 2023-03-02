@@ -1,4 +1,4 @@
-import { Navigate, useRoutes } from 'react-router-dom'
+import { useRoutes } from 'react-router-dom'
 import { Container } from '@/views/Container'
 import React from 'react'
 import Loading from '@/components/Loading'
@@ -72,7 +72,7 @@ const routes = [
 
           {
             path: 'Demand',
-            element: lazy(() => import('@/views/Demand')),
+            element: lazy(() => import('@/views/DemandSetting')),
           },
           {
             path: 'Iteration',
