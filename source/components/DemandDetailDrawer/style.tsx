@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Space } from 'antd'
+import { Input, Space } from 'antd'
 
 export const Header = styled.div`
   height: 52px;
@@ -21,6 +21,11 @@ export const BackIcon = styled.div`
   border-radius: 50%;
   background: var(--hover-d2);
   cursor: pointer;
+  &:hover {
+    svg {
+      color: var(--primary-d2);
+    }
+  }
 `
 
 export const ChangeIconGroup = styled.div`
@@ -283,6 +288,7 @@ export const Card = styled.div`
     }
   }
 `
+
 export const Gred = styled.div`
   cursor: pointer;
   border-radius: 4px;
@@ -309,6 +315,7 @@ export const BlueCss = styled.span`
   border-radius: 6px;
   box-shadow: 0px 0px 6px rgb(0 0 0 / 10%);
 `
+
 export const GredParent = styled.div`
   margin-right: 12px;
   position: relative;
@@ -323,4 +330,120 @@ export const GredParent = styled.div`
 export const RedCss = styled(BlueCss)`
   color: var(--function-error);
   margin-left: 12px;
+`
+
+export const TagWrap = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  padding: '16px 0',
+  maxWidth: 400,
+})
+
+export const SearchInput = styled(Input)`
+  font-size: 14px;
+  min-width: 240px;
+  height: 32px;
+  background: var(--neutral-white-d4);
+  background-blend-mode: normal;
+  mix-blend-mode: normal;
+  display: flex;
+  justify-content: flex-start;
+
+  padding: 5px 12px 5px 12px;
+  border: none;
+  input {
+    background: var(--neutral-white-d4);
+    &::placeholder {
+      font-size: 14px;
+    }
+  }
+`
+
+export const TagItem = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  minHeight: '32px',
+  cursor: 'pointer',
+  padding: '0 16px',
+  div: {
+    height: 16,
+    width: 16,
+    borderRadius: 4,
+    marginRight: 8,
+  },
+  span: {
+    color: 'var(--neutral-n2)',
+    fontSize: 14,
+  },
+  '&:hover': {
+    background: 'var(--hover-d2)',
+    span: {
+      color: 'var(--primary-d1)',
+    },
+  },
+})
+
+export const ColorWrap = styled.div({
+  height: 16,
+  width: 16,
+  borderRadius: 4,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  cursor: 'pointer',
+  svg: {
+    color: 'white',
+  },
+})
+
+export const TagCheckedItem = styled.div<{ color?: string }>(
+  {
+    width: 'max-content',
+    height: 22,
+    lineHeight: '22px',
+    padding: '0 8px',
+    fontSize: 12,
+    position: 'relative',
+    color: 'var(--neutral-n3)',
+    border: '1px solid var(--neutral-n3)',
+    boxSizing: 'border-box',
+    borderRadius: 6,
+    display: 'flex',
+    alignItems: 'center',
+    margin: '4px 8px 4px 0 ',
+    '.icon': {
+      display: 'none',
+    },
+    '&:hover': {
+      '.icon': {
+        display: 'block',
+      },
+    },
+  },
+  ({ color }) => ({
+    color: color || 'var(--neutral-n3)',
+    border: `1px solid ${color ?? 'var(--neutral-n3)'}`,
+  }),
+)
+
+export const TagGroups = styled(Space)`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+`
+
+export const AddTagIcon = styled.div`
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  border: 1px dashed var(--neutral-n3);
+  color: var(--neutral-n3);
+  cursor: pointer;
+  &:hover {
+    border: 1px dashed var(--primary-d2);
+    color: var(--primary-d2);
+  }
 `
