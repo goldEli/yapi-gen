@@ -13,7 +13,7 @@ export const getLoginDetail: any = async (isLogin?: boolean) => {
 export const getCompanyUserPreferenceConfig: any = async () => {
   const response = await http.get('getCompanyUserPreferenceConfig')
   return {
-    userId: response.data.user_id,
+    id: response.data.id,
     companyId: response.data.company_id,
     previewModel: response.data.preview_model,
   }
@@ -21,7 +21,7 @@ export const getCompanyUserPreferenceConfig: any = async () => {
 
 // 修改登录者偏好设置 -- 个人预览模式
 export const updateCompanyUserPreferenceConfig: any = async (params: any) => {
-  await http.get('updateCompanyUserPreferenceConfig', {
+  await http.post('updateCompanyUserPreferenceConfig', {
     id: params.id,
     preview_model: params.previewModel,
   })

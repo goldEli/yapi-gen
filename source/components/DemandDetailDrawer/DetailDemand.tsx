@@ -1,16 +1,18 @@
+// 需求详情右侧弹窗-详细信息
+
 /* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { addInfoDemand, deleteInfoDemand } from '@/services/demand'
 import { useSelector } from '@store/index'
-import { message, Popover } from 'antd'
+import { message } from 'antd'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import DeleteConfirm from '../DeleteConfirm'
 import IconFont from '../IconFont'
 import { AddWrap } from '../StyleCommon'
-import TagComponent from '../TagComponent'
 import UploadAttach from '../UploadAttach'
 import { ContentItem, Label } from './style'
+import DrawerTagComponent from './DrawerTagComponent'
 
 interface DetailDemand {
   detail: any
@@ -81,24 +83,10 @@ const DetailDemand = (props: DetailDemand) => {
       </ContentItem>
       <ContentItem>
         <Label>标签</Label>
-        <Popover trigger="click" content={<div>232323</div>}>
-          qwqwqw
-        </Popover>
-        {/* <TagComponent
+        <DrawerTagComponent
           demandDetail={props.detail}
-          defaultList={props.detail?.tag?.map((i: any) => ({
-            id: i.id,
-            color: i.tag?.color,
-            name: i.tag?.content,
-          }))}
-          canAdd
-          addWrap={
-            <AddWrap hasDash>
-              <IconFont type="plus" />
-            </AddWrap>
-          }
           onUpdate={props.onUpdate}
-        /> */}
+        />
       </ContentItem>
       <ContentItem>
         <Label>附件</Label>

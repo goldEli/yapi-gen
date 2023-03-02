@@ -168,7 +168,6 @@ const WrapLeftBox = () => {
           <InfoItem>
             <Label>{t('common.tag')}</Label>
             <TagComponent
-              demandDetail={demandInfo}
               defaultList={tagList}
               canAdd
               addWrap={

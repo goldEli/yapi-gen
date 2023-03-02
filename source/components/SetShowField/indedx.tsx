@@ -20,7 +20,7 @@ const SetShowField = (props: Props) => {
   const onChangeViewMode = async (type: number) => {
     await updateCompanyUserPreferenceConfig({
       previewModel: type,
-      id: userPreferenceConfig?.userId,
+      id: userPreferenceConfig?.id,
     })
     message.success('切换预览模式成功！')
     dispatch(
