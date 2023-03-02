@@ -5,7 +5,7 @@ import { useSelector } from '@store/index'
 import { Menu } from 'antd'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { fromPairs } from 'lodash'
+import { fromPairs, flattenDeep } from 'lodash'
 
 const AdminSideWrap = styled.div`
   /* background-color: var(--neutral-n6-d1); */
@@ -147,8 +147,11 @@ const AdminSide = (props: any) => {
     }
   })
 
+  const allSide = flattenDeep(
+    sideList.map(i => [i, i.children ? i.children : []]),
+  )
   const onMenuClick = (e: any) => {
-    const pathObject = side.filter((i: any) => i.key === e.key)[0]
+    const pathObject = allSide.filter((i: any) => i.key === e.key)[0]
     pathObject.path && navigate(pathObject.path)
   }
   return (
