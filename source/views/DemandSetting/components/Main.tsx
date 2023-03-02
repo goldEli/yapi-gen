@@ -19,6 +19,7 @@ const Main = () => {
   const [infoIcon, setInfoIcon] = useState(true)
   const [moreIcon, setMoreIcon] = useState(false)
   const { projectInfo } = useSelector(store => store.project)
+  const { activeCategory } = useSelector(store => store.category)
   const dispatch = useDispatch()
   const [list, setList] = useState<any>(() =>
     [1, 2, 3, 4, 5].map(v => ({
@@ -36,7 +37,10 @@ const Main = () => {
   }
   const getCategoryConfigDataList = async () => {
     const data = await dispatch(
-      getCategoryConfigList({ projectId: projectInfo.id }),
+      getCategoryConfigList({
+        projectId: projectInfo.id,
+        categoryId: activeCategory.id,
+      }),
     )
   }
   useEffect(() => {
