@@ -48,7 +48,9 @@ const ProjectManagementOptimization = () => {
     list: undefined,
   })
   const isRest = useSelector(state => state.createProject.isRest)
-
+  const { groupId: storeGid, typeId } = useSelector(
+    state => state.createProject,
+  )
   const getList = async (
     active: number,
     isTable: boolean,
@@ -92,15 +94,6 @@ const ProjectManagementOptimization = () => {
   // 更新列表
   const onUpdate = () => {
     getList(activeType, isGrid, isHidden, searchVal, order, pageObj, groupId)
-  }
-
-  const onChangeType = (type: number) => {
-    setActiveType(type)
-    setGroupId(null)
-    setPageObj({
-      page: 1,
-      size: pageObj.size,
-    })
   }
 
   const onChangeHidden = (hidden: boolean) => {
@@ -211,11 +204,19 @@ const ProjectManagementOptimization = () => {
     })
   }
 
-  // 切换分组查询列表
-  const onChangeGroup = (id: number) => {
-    setGroupId(id)
+  useEffect(() => {
+    setGroupId(storeGid)
     setActiveType(-1)
-  }
+  }, [storeGid])
+  useEffect(() => {
+    setActiveType(typeId)
+    setGroupId(null)
+    setPageObj({
+      page: 1,
+      size: pageObj.size,
+    })
+  }, [typeId])
+
   return (
     <div>
       <DeleteConfirm
