@@ -6,6 +6,8 @@ type SliceState = {
   createVisible: boolean
   isRest: boolean
   isEditId: string
+  groupId: any
+  typeId: any
 }
 
 const slice = createSlice({
@@ -13,6 +15,7 @@ const slice = createSlice({
   initialState: {
     createVisible: false,
     isRest: false,
+    typeId: 0,
   } as SliceState,
   reducers: {
     changeCreateVisible: (state, action) => {
@@ -25,6 +28,12 @@ const slice = createSlice({
     },
     onRest: (state, action) => {
       state.isRest = action.payload
+    },
+    changeGroupId: (state, action) => {
+      state.groupId = action.payload
+    },
+    changeTypeId: (state, action) => {
+      state.typeId = action.payload
     },
   },
 
@@ -42,6 +51,12 @@ const slice = createSlice({
   },
 })
 
-export const { changeCreateVisible, editProject, onRest } = slice.actions
+export const {
+  changeCreateVisible,
+  editProject,
+  onRest,
+  changeGroupId,
+  changeTypeId,
+} = slice.actions
 
 export default slice.reducer

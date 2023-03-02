@@ -12,6 +12,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
 import { useSelector } from '@store/index'
+import MyBreadcrumb from '@/components/MyBreadcrumb'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -64,9 +65,14 @@ const Setting = () => {
   ]
 
   return (
-    <Wrap>
-      <Content>{SideList[activeTabs].content}</Content>
-    </Wrap>
+    <>
+      <div>
+        <MyBreadcrumb setName={SideList[activeTabs].name} />
+      </div>
+      <Wrap>
+        <Content>{SideList[activeTabs].content}</Content>
+      </Wrap>
+    </>
   )
 }
 

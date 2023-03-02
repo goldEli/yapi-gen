@@ -1,3 +1,5 @@
+/* eslint-disable complexity */
+/* eslint-disable no-console */
 // 公用需求列表表格
 
 /* eslint-disable react/jsx-no-leaked-render */
@@ -128,12 +130,21 @@ export const useDynamicColumns = (state: any) => {
             }}
           >
             {state.isTree && state.onChangeTree(record)}
-            <Tooltip
-              placement="top"
-              getPopupContainer={node => node}
-              title={record.categoryRemark}
-            >
-              <CategoryWrap
+            <Tooltip placement="top" title={record.categoryRemark}>
+              <img
+                src={
+                  record.category_attachment
+                    ? record.category_attachment
+                    : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
+                }
+                style={{
+                  width: '18px',
+                  height: '18px',
+                  marginRight: '8px',
+                }}
+                alt=""
+              />
+              {/* <CategoryWrap
                 color={record.categoryColor}
                 bgColor={
                   colorList?.filter(
@@ -142,15 +153,9 @@ export const useDynamicColumns = (state: any) => {
                 }
                 style={{ marginLeft: 0 }}
               >
-                <img
-                  src="https://varlet.gitee.io/varlet-ui/cat.jpg"
-                  style={{
-                    width: '10px',
-                  }}
-                  alt=""
-                />{' '}
+                {' '}
                 {record.category}
-              </CategoryWrap>
+              </CategoryWrap> */}
             </Tooltip>
             <TableQuickEdit
               type="text"
@@ -194,11 +199,33 @@ export const useDynamicColumns = (state: any) => {
               onClick={record.isExamine ? onExamine : void 0}
               isShow={isCanEdit || record.isExamine}
               style={{
-                color: text?.status.color,
-                border: `1px solid ${text?.status.color}`,
+                color: String(
+                  text?.is_start === 1 && text?.is_end === 2
+                    ? '#F2F2F4'
+                    : text?.is_end === 1 && text?.is_start === 2
+                    ? '#323233'
+                    : text?.is_start === 2 && text?.is_end === 2
+                    ? '#F2F2F4'
+                    : '',
+                ),
+                background: String(
+                  text?.is_start === 1 && text?.is_end === 2
+                    ? '#6688FF'
+                    : text?.is_end === 1 && text?.is_start === 2
+                    ? '#F2F2F4'
+                    : text?.is_start === 2 && text?.is_end === 2
+                    ? '#43BA9A'
+                    : '',
+                ),
               }}
             >
-              {text?.status.content}123
+              {text?.is_start === 1 && text?.is_end === 2
+                ? '待办'
+                : text?.is_end === 1 && text?.is_start === 2
+                ? '已完成'
+                : text?.is_start === 2 && text?.is_end === 2
+                ? '进行中'
+                : ''}
             </StatusWrap>
           </ChangeStatusPopover>
         )

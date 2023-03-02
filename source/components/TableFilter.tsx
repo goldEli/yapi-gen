@@ -296,10 +296,6 @@ const TableFilter = (props: any) => {
     return arr
   }, [list, customList])
 
-  useEffect(() => {
-    dispatch(saveScreen(list))
-  }, [list])
-
   // 查询筛选值，operationKey： 记录当前查询的key,delKey: 删除的key, type: 类型值1位字符串，2是时间
   const confirm = async (operationKey?: any, delKey?: any, type?: any) => {
     // 当前查询的存入计数
@@ -362,29 +358,11 @@ const TableFilter = (props: any) => {
     confirm()
   }
 
-  function filterObj(mainObject: any, filterFunction: any) {
-    return Object.keys(mainObject)
-      .filter(ObjectKey => {
-        return filterFunction(mainObject[ObjectKey])
-      })
-      .reduce((result: any, ObjectKey) => {
-        result[ObjectKey] = mainObject[ObjectKey]
-        return result
-      }, {})
-  }
   useEffect(() => {
-    if (searchChoose && searchChoose['system_view']) {
-      return
-    }
-
-    if (searchChoose) {
-      const targetSubjects = filterObj(searchChoose, (grade: any) => {
-        return grade !== null
-      })
-
-      form.setFieldsValue(targetSubjects)
-    }
-  }, [searchChoose])
+    form.resetFields()
+    form.setFieldsValue(props.defaultValue)
+    confirm()
+  }, [props.defaultValue])
 
   // 折叠图标
   const expandIcon = (e: any) => {

@@ -118,3 +118,9 @@ export const getMenuPermission: any = async () => {
     priorityUrl: response.data.priority_url,
   }
 }
+
+// 我的最近列表
+export const getMyRecent: any = async () => {
+  const response = await http.get('/b/user/recent')
+  return response.data
+}

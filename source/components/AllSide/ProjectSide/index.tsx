@@ -13,6 +13,7 @@ import {
   getGroupList,
   updateProjectGroup,
 } from '@/services/project'
+import { changeGroupId, changeTypeId } from '@store/create-propject'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefreshGroup } from '@store/project'
 import { Form, Input, Menu, message } from 'antd'
@@ -52,6 +53,7 @@ const MoreProjectSide = (props: Props) => {
     list: undefined,
   })
   const { isRefreshGroup } = useSelector(store => store.project)
+  const { groupId: storeGid } = useSelector(state => state.createProject)
   const inputRefDom = useRef<HTMLInputElement>(null)
   const [countData, setCountData] = useState<any>({})
   const dispatch = useDispatch()
@@ -222,7 +224,12 @@ const MoreProjectSide = (props: Props) => {
       </CommonModal>
       <WrapDetail ref={projectSide}>
         <MenuBox>
-          <MenuItem>
+          <MenuItem
+            onClick={() => {
+              dispatch(changeTypeId(0))
+              dispatch(changeGroupId(null))
+            }}
+          >
             <CommonIconFont
               type="settings"
               color="var(--neutral-n3)"
@@ -230,11 +237,16 @@ const MoreProjectSide = (props: Props) => {
             />
             <div>
               {' '}
-              {t('project.mineJoin')}
+              {t('project.mineJoin')}11
               {countData.selfCount ? `（${countData.selfCount}）` : ''}
             </div>
           </MenuItem>
-          <MenuItem>
+          <MenuItem
+            onClick={() => {
+              dispatch(changeTypeId(1))
+              dispatch(changeGroupId(null))
+            }}
+          >
             <CommonIconFont
               type="settings"
               color="var(--neutral-n3)"
@@ -242,7 +254,7 @@ const MoreProjectSide = (props: Props) => {
             />
             <div>
               {' '}
-              {t('project.companyAll')}
+              {t('project.companyAll')}1
               {countData.publicCount ? `（${countData.publicCount}）` : ''}
             </div>
           </MenuItem>
@@ -273,9 +285,12 @@ const MoreProjectSide = (props: Props) => {
                 {groupList.list?.map((item: any) => (
                   <TitleBox
                     isSpace
-                    onClick={() => onChangeGroup(item)}
+                    onClick={() => {
+                      dispatch(changeGroupId(item.id))
+                      // dispatch(changeTypeId(null))
+                    }}
                     key={item.id}
-                    idx={item.id === groupId}
+                    idx={item.id === storeGid}
                   >
                     {item.name}
                     <MoreDropdown

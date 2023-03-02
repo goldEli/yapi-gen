@@ -45,6 +45,7 @@ import {
 } from '@store/demand'
 import { changeId } from '@store/counterSlice'
 import { onTapSearchChoose } from '@store/view'
+import { changeColorText } from '@store/color-text'
 
 const Wrap = styled.div`
   height: 100%;
@@ -201,7 +202,7 @@ const DemandBox = () => {
     init()
     return () => {
       dispatch(changeId(0))
-
+      dispatch(changeColorText(''))
       dispatch(onTapSearchChoose({}))
     }
   }, [])
