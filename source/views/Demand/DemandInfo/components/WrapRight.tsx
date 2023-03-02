@@ -569,6 +569,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                 <TableQuickEdit
                   item={demandInfo}
                   isInfo
+                  isInfoPage
                   keyText="users"
                   type="fixed_select"
                   defaultText={
@@ -619,6 +620,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                 <TableQuickEdit
                   item={demandInfo}
                   isInfo
+                  isInfoPage
                   keyText="iterate_id"
                   type="fixed_radio"
                   defaultText={
@@ -639,6 +641,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                 <TableQuickEdit
                   item={demandInfo}
                   isInfo
+                  isInfoPage
                   keyText="class_id"
                   type="treeSelect"
                   defaultText={demandInfo?.class}
@@ -687,6 +690,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                 <TableQuickEdit
                   item={demandInfo}
                   isInfo
+                  isInfoPage
                   keyText="expected_start_at"
                   type="date"
                   defaultText={demandInfo?.expectedStart || ''}
@@ -701,6 +705,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
               <ContentWrap>
                 <TableQuickEdit
                   isInfo
+                  isInfoPage
                   item={demandInfo}
                   keyText="expected_end_at"
                   type="date"
@@ -717,6 +722,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                 <TableQuickEdit
                   item={demandInfo}
                   isInfo
+                  isInfoPage
                   keyText="copysend"
                   type="fixed_select"
                   defaultText={
@@ -741,6 +747,7 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
                     <TableQuickEdit
                       item={demandInfo}
                       isInfo
+                      isInfoPage
                       keyText={i.content}
                       type={i.type?.attr}
                       defaultText={demandInfo?.customField?.[i.content]?.value}

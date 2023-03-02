@@ -3,12 +3,12 @@
 // 需求详情弹窗预览模式
 
 import { getDemandInfo } from '@/services/demand'
-import { getProjectInfo } from '@/services/project'
+import { getProjectInfo, getProjectInfoValues } from '@/services/project'
 import { openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import { useDispatch, useSelector } from '@store/index'
-import { setProjectInfo } from '@store/project'
+import { setProjectInfo, setProjectInfoValues } from '@store/project'
 import { Drawer, Popover, Space } from 'antd'
 import { createRef, useEffect, useRef, useState } from 'react'
 import CommonIconFont from '../CommonIconFont'
@@ -263,6 +263,7 @@ const DemandDetailDrawer = () => {
                 <BasicDemand
                   detail={drawerInfo}
                   isOpen={showState[i.key].isOpen}
+                  onUpdate={getDemandDetail}
                 />
               )}
               {i.key === 'demandComment' && (

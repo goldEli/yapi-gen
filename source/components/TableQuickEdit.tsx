@@ -65,6 +65,9 @@ interface Props {
 
   // 是否需求标题 -- 是则不加tooltip并取消padding
   isDemandName?: boolean
+
+  // 是否是详情页面
+  isInfoPage?: boolean
 }
 
 const TableQuickEdit = (props: Props) => {
@@ -106,8 +109,6 @@ const TableQuickEdit = (props: Props) => {
     canClick = isCan && isCanEdit
   }
 
-  // console.log(projectInfo, 'projectInfoprojectInfo', canClick)
-
   // 我的模块及他的模块并且是自定义字段 --- 接口获取
   const getIsCustomValues = async () => {
     const response = await storyConfigField({ projectId, key: props.keyText })
@@ -137,6 +138,7 @@ const TableQuickEdit = (props: Props) => {
     const response = projectInfoValues
       ?.filter((i: any) => i.key === props.keyText)[0]
       ?.children?.filter((i: any) => i.id !== -1)
+
     const resultValue = {
       value: ['user_select_checkbox', 'user_select'].includes(
         String(props.type),
@@ -358,7 +360,7 @@ const TableQuickEdit = (props: Props) => {
 
     try {
       await updateTableParams(obj)
-      if (props.isInfo) {
+      if (props.isInfo && props.isInfoPage) {
         const result = await getDemandInfo({ projectId, id: props.item?.id })
         dispatch(setDemandInfo(result))
       } else {
