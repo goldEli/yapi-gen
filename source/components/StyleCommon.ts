@@ -523,7 +523,7 @@ const ListNameWrap = styled.div<{
   }),
 )
 
-const StatusWrap = styled.div<{ isShow?: boolean }>(
+const StatusWrap = styled.div<{ isShow?: boolean; state?: number }>(
   {
     height: 22,
     borderRadius: 6,
@@ -535,8 +535,24 @@ const StatusWrap = styled.div<{ isShow?: boolean }>(
     color: '#2877FF',
     width: 'fit-content',
   },
-  ({ isShow }) => ({
+  ({ isShow, state }) => ({
     cursor: isShow ? 'pointer' : 'inherit',
+    color:
+      state === 1
+        ? '#F2F2F4'
+        : state === 2
+        ? '#323233'
+        : state === 3
+        ? '#F2F2F4'
+        : '',
+    background:
+      state === 1
+        ? '#6688FF'
+        : state === 2
+        ? '#F2F2F4'
+        : state === 3
+        ? '#43BA9A'
+        : '',
   }),
 )
 

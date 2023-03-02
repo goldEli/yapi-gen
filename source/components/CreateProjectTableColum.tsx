@@ -28,6 +28,7 @@ import { useSelector } from '@store/index'
 import TableQuickEdit from './TableQuickEdit'
 import { getCustomNormalValue } from '@/tools'
 import TableColorText from './TableColorText'
+import StateTag from './StateTag'
 
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
   {
@@ -195,38 +196,19 @@ export const useDynamicColumns = (state: any) => {
             record={record}
             onChangeStatus={item => state.onChangeStatus(item, record)}
           >
-            <StatusWrap
+            <StateTag
               onClick={record.isExamine ? onExamine : void 0}
               isShow={isCanEdit || record.isExamine}
-              style={{
-                color: String(
-                  text?.is_start === 1 && text?.is_end === 2
-                    ? '#F2F2F4'
-                    : text?.is_end === 1 && text?.is_start === 2
-                    ? '#323233'
-                    : text?.is_start === 2 && text?.is_end === 2
-                    ? '#F2F2F4'
-                    : '',
-                ),
-                background: String(
-                  text?.is_start === 1 && text?.is_end === 2
-                    ? '#6688FF'
-                    : text?.is_end === 1 && text?.is_start === 2
-                    ? '#F2F2F4'
-                    : text?.is_start === 2 && text?.is_end === 2
-                    ? '#43BA9A'
-                    : '',
-                ),
-              }}
-            >
-              {text?.is_start === 1 && text?.is_end === 2
-                ? '待办'
-                : text?.is_end === 1 && text?.is_start === 2
-                ? '已完成'
-                : text?.is_start === 2 && text?.is_end === 2
-                ? '进行中'
-                : ''}
-            </StatusWrap>
+              state={
+                text?.is_start === 1 && text?.is_end === 2
+                  ? 1
+                  : text?.is_end === 1 && text?.is_start === 2
+                  ? 2
+                  : text?.is_start === 2 && text?.is_end === 2
+                  ? 3
+                  : 0
+              }
+            />
           </ChangeStatusPopover>
         )
       },
