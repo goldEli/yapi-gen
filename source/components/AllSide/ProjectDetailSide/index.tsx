@@ -9,6 +9,7 @@ import { setProjectInfo, setProjectInfoValues } from '@store/project'
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import DemandSettingSide from '../DemandSettingSide'
 import {
   AllWrap,
   MenuBox,
@@ -19,12 +20,14 @@ import {
   SideTop,
   WrapSet,
   WrapDetail,
+  WrapCategory,
 } from './style'
 
 const ProjectDetailSide = (props: { leftWidth: number }) => {
   const [t, i18n] = useTranslation()
   const projectSide: any = useRef<HTMLInputElement>(null)
   const projectSetSide: any = useRef<HTMLInputElement>(null)
+  const projectSetCategory: any = useRef<HTMLInputElement>(null)
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -42,13 +45,13 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
     {
       name: t('project.projectInformation'),
       icon: 'file-text',
-      path: '/ProjectManagement/ProjectSetting?type=0',
+      path: '/ProjectManagement/ProjectSetting',
       isPermission: true,
     },
     {
       name: t('project.projectMember'),
       icon: 'team',
-      path: '/ProjectManagement/ProjectSetting?type=1',
+      path: '/ProjectManagement/ProjectSetting',
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
         String(i.identity).includes('b/project/member'),
       ).length,
@@ -56,7 +59,7 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
     {
       name: t('project.projectPermissionGroup'),
       icon: 'lock',
-      path: '/ProjectManagement/ProjectSetting?type=2',
+      path: '/ProjectManagement/ProjectSetting',
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
         String(i.identity).includes('b/project/role'),
       ).length,
@@ -64,7 +67,7 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
     {
       name: t('newlyAdd.demandSet'),
       icon: 'settings',
-      path: '/ProjectManagement/ProjectSetting?type=3',
+      path: '/ProjectManagement/DemandSetting',
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
         String(i.identity).includes('b/project/story_config'),
       ).length,
@@ -82,21 +85,42 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
     dispatch(setProjectInfo(result))
   }
 
+  //   点击项目设置
+  const onChangeSetCategory = (isInit?: boolean) => {
+    projectSide.current.style.width = '0px'
+    projectSetSide.current.style.width = '0px'
+    projectSetCategory.current.style.width = `${props.leftWidth}px`
+    projectSetCategory.current.style.display = 'block'
+    if (isInit) {
+      const params = encryptPhp(JSON.stringify({ id: projectId }))
+      navigate(`/ProjectManagement/DemandSetting?data=${params}`)
+    }
+  }
+
+  //   点击项目设置
+  const onChangeSet = (isInit?: boolean) => {
+    projectSide.current.style.width = '0px'
+    projectSetCategory.current.style.width = '0px'
+    projectSetSide.current.style.width = `${props.leftWidth}px`
+    projectSetSide.current.style.display = 'block'
+    if (isInit) {
+      const params = encryptPhp(
+        JSON.stringify({ id: projectId, pageIdx: 'main', type: 0 }),
+      )
+      navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
+    }
+  }
+
   useEffect(() => {
     getInfo()
     getProjectInfoValuesData()
+    if (routerPath.pathname.includes('/ProjectSetting')) {
+      onChangeSet()
+    }
+    if (routerPath.pathname.includes('/DemandSetting')) {
+      onChangeSetCategory()
+    }
   }, [])
-
-  //   点击项目设置
-  const onChangeSet = () => {
-    projectSide.current.style.width = '0px'
-    projectSetSide.current.style.width = `${props.leftWidth}px`
-    projectSetSide.current.style.display = 'block'
-    const params = encryptPhp(
-      JSON.stringify({ id: projectId, pageIdx: 'main', type: 0 }),
-    )
-    navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
-  }
 
   //   返回上一页
   const onGoBack = () => {
@@ -115,7 +139,7 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
     navigate(`${path}?data=${params}`)
   }
 
-  const onToInfo = (index: any) => {
+  const onToInfo = (item: any, index: any) => {
     const params = encryptPhp(
       JSON.stringify({
         type: index,
@@ -123,7 +147,22 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
         pageIdx: index === 3 ? 'main' : '',
       }),
     )
-    navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
+    navigate(`${item.path}?data=${params}`)
+    if (index === 3) {
+      onChangeSetCategory()
+    }
+  }
+
+  const onCategoryBack = () => {
+    const params = encryptPhp(
+      JSON.stringify({
+        type: 0,
+        id: projectInfo.id,
+        pageIdx: 'info',
+      }),
+    )
+    navigate(`ProjectManagement/ProjectSetting?data=${params}`)
+    onChangeSet()
   }
 
   return (
@@ -153,7 +192,7 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
             </MenuItem>
           ))}
         </MenuBox>
-        <SideFooter onClick={onChangeSet}>
+        <SideFooter onClick={() => onChangeSet(true)}>
           <div>
             <CommonIconFont
               type="settings"
@@ -183,7 +222,7 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
             <MenuItem
               key={i.icon}
               isActive={paramsData?.type === index}
-              onClick={() => onToInfo(index)}
+              onClick={() => onToInfo(i, index)}
             >
               <CommonIconFont
                 type={i.icon}
@@ -195,6 +234,13 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
           ))}
         </MenuBox>
       </WrapSet>
+
+      <WrapCategory ref={projectSetCategory}>
+        <DemandSettingSide
+          leftWidth={props.leftWidth}
+          onClick={onCategoryBack}
+        />
+      </WrapCategory>
     </AllWrap>
   )
 }
