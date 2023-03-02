@@ -42,14 +42,7 @@ export const DemandOperationDropdownMenu = (props: Props) => {
   const onCopyLink = () => {
     let text: any = ''
     let beforeUrl: any
-    if (import.meta.env.MODE === 'production') {
-      beforeUrl = `${window.origin}`
-      // /${import.meta.env.__URL_HASH__}
-    } else {
-      beforeUrl = `${window.origin}${import.meta.env.__URL_ALIAS__}`
-      // /${ import.meta.env.__URL_HASH__ }
-    }
-
+    beforeUrl = window.origin
     const params = encryptPhp(
       JSON.stringify({
         type: 'info',

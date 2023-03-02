@@ -25,15 +25,7 @@ function getIsPermission(arr: any, value: string) {
 
 // 新开页面
 function openDetail(url: string) {
-  if (import.meta.env.MODE === 'production') {
-    // /${import.meta.env.__URL_HASH__}${url}
-    window.open(`${window.origin}`)
-  } else {
-    window.open(`${window.origin}${import.meta.env.__URL_ALIAS__}`)
-    // /${
-    //   import.meta.env.__URL_HASH__
-    // }${url}
-  }
+  window.open(`${window.origin}/${import.meta.env.__URL_HASH__}${url}`)
 }
 
 // 解密地址栏参数
