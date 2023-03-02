@@ -14,7 +14,7 @@ interface PropsType {
 }
 const Container = styled.div`
   width: 320px;
-  height: auto;
+  max-height: calc(100vh - 120px);
   background-color: var(--neutral-white-d6);
   box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
   border-radius: 0px 0px 6px 6px;
@@ -53,17 +53,23 @@ const Tabs = styled.div`
     cursor: pointer;
   }
 `
-const ScrollWrap = styled.div``
+const ScrollWrap = styled.div`
+  height: calc(100vh - 256px);
+  overflow-y: auto;
+`
 const Footer = styled.div`
   height: 56px;
   line-height: 56px;
-  padding-left: 24px;
   border-radius: 0px 0px 6px 6px;
   font-size: 14px;
   font-weight: 400;
   color: var(--neutral-n1-d2);
-  margin: 8px 0;
-  &:hover {
+  margin: 8px 16px;
+  border-top: 1px solid #ecedef;
+  > div {
+    padding-left: 24px;
+  }
+  > div:hover {
     background-color: var(--hover-d2);
     cursor: pointer;
   }
@@ -165,11 +171,11 @@ const MyDropdown = (props: PropsType) => {
   const [recentList, setRecentList] = useState<any>()
   const box = [
     {
-      title: '最近联系',
+      title: '最近查看',
       name: 'recent_see',
     },
     {
-      title: '最近查看',
+      title: '最近创建',
       name: 'recent_create',
     },
   ]
@@ -232,19 +238,19 @@ const MyDropdown = (props: PropsType) => {
               style={{
                 background:
                   el.status?.is_start === 1 && el.status?.is_end === 2
-                    ? '#6688FF'
+                    ? 'var(--primary-d2)'
                     : el.status?.is_end === 1 && el.status?.is_start === 2
-                    ? '#F2F2F4'
+                    ? 'var(--neutral-n7)'
                     : el.status?.is_start === 2 && el.status?.is_end === 2
-                    ? '#43BA9A'
+                    ? 'var(--function-success)'
                     : '',
                 color:
                   el.status?.is_start === 1 && el.status?.is_end === 2
-                    ? '#F2F2F4'
+                    ? 'var(--neutral-n7)'
                     : el.status?.is_end === 1 && el.status?.is_start === 2
-                    ? '#323233'
+                    ? 'var(--neutral-n1-d1)'
                     : el.status?.is_start === 2 && el.status?.is_end === 2
-                    ? '#F2F2F4'
+                    ? 'var(--neutral-n7)'
                     : '',
               }}
             >
@@ -299,7 +305,9 @@ const MyDropdown = (props: PropsType) => {
             </>
           )} */}
         </ScrollWrap>
-        <Footer onClick={onClick}>查看我的工作</Footer>
+        <Footer onClick={onClick}>
+          <div>查看我的工作</div>
+        </Footer>
       </Container>
     )
   }
