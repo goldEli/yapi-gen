@@ -1,9 +1,10 @@
 /* eslint-disable prefer-regex-literals */
 /* eslint-disable require-unicode-regexp */
 // 需求设置-编辑需求类别
-
-/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable camelcase */
 import CommonModal from '@/components/CommonModal'
 import { Input, Form, message } from 'antd'
 import styled from '@emotion/styled'
@@ -11,7 +12,6 @@ import { useEffect, useRef, useState } from 'react'
 import ChooseColor from './ChooseColor'
 import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from '@store/index'
 import { getCategoryIconList } from '@/services/demand'
 import {
   addStoryConfigCategory,
@@ -58,16 +58,20 @@ interface EditorProps {
 const EditorCategory = (props: EditorProps) => {
   const [t] = useTranslation()
   const [name, setName] = useState<any>('')
-  const [normalColor, setNormalColor] = useState<any>('')
+  const [path, setPath] = useState<any>('')
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const inputRefDom = useRef<HTMLInputElement>(null)
   const [colorList, setColorList] = useState<any>()
   const getIconList = async () => {
-    const list: any = await getCategoryIconList(52)
+    const list: any = await getCategoryIconList()
     setColorList(list.data)
-    setNormalColor(list.data[0].path)
+    if (props?.item) {
+      setPath(props?.item?.attachmentPath)
+    } else {
+      setPath(list.data[0].path)
+    }
     form.setFieldsValue({
       color: list.data[0].path,
     })
@@ -81,7 +85,7 @@ const EditorCategory = (props: EditorProps) => {
   useEffect(() => {
     if (props?.item?.id) {
       form.setFieldsValue(props?.item)
-      setNormalColor(props?.item?.path)
+      setPath(props?.item?.path)
       setName(props?.item?.name)
     } else {
       form.resetFields()
@@ -97,12 +101,12 @@ const EditorCategory = (props: EditorProps) => {
     props.onUpdate()
     setTimeout(() => {
       form.resetFields()
-      setNormalColor('')
+      setPath('')
       setName('')
     }, 100)
   }
 
-  const onConfirm = async () => {
+  const onConfirm = async (props: any) => {
     await form.validateFields()
     if (!form.getFieldValue('color')) {
       message.warning(t('newlyAdd.pleaseChooseColor'))
@@ -111,6 +115,8 @@ const EditorCategory = (props: EditorProps) => {
     const params = form.getFieldsValue()
     params.projectId = paramsData.id
     params.id = props?.item?.id
+    const attachment_id = colorList.find((item: any) => item.path === path).id
+    params.attachment_id = attachment_id
     if (props?.item?.id) {
       try {
         await updateStoryConfigCategory(params)
@@ -135,15 +141,12 @@ const EditorCategory = (props: EditorProps) => {
     setTimeout(() => {
       form.resetFields()
       setName('')
-      setNormalColor('')
+      setPath('')
     }, 100)
   }
 
-  const onChangeValue = (val: string | undefined) => {
-    setNormalColor(val)
-    form.setFieldsValue({
-      color: val,
-    })
+  const onChangeValue = (val: { id: number; path: string }) => {
+    setPath(val.path)
   }
 
   return (
@@ -155,6 +158,7 @@ const EditorCategory = (props: EditorProps) => {
           : t('newlyAdd.createCategory')
       }
       onClose={onClose}
+      onUpdate={props.onUpdate}
       onConfirm={onConfirm}
       confirmText={props?.item?.id ? t('common.confirm') : t('newlyAdd.create')}
     >
@@ -197,21 +201,20 @@ const EditorCategory = (props: EditorProps) => {
             maxLength={100}
           />
         </Form.Item>
-        <Form.Item label={t('newlyAdd.chooseIcon')} name="color">
+        <Form.Item label={t('newlyAdd.chooseIcon')} name="attachment_id">
           <ChooseColor
-            color={normalColor}
+            color={path}
             colorList={colorList}
-            onChangeValue={val => onChangeValue(val)}
+            onChangeValue={(val: any) => onChangeValue(val)}
           />
         </Form.Item>
         <Form.Item label={t('newlyAdd.view')}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <ViewWrap
-              color={normalColor || '#969799'}
+              color={path || '#969799'}
               bgColor={
-                colorList?.filter(
-                  (i: any) => i.key === (normalColor || '#969799'),
-                )[0]?.bgColor
+                colorList?.filter((i: any) => i.key === (path || '#969799'))[0]
+                  ?.bgColor
               }
             >
               {name || t('newlyAdd.nothing')}

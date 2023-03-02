@@ -41,14 +41,14 @@ interface ModalProps {
   title?: string
   onClose?(): void
   children?: any
-  onConfirm?(): void
+  onConfirm?(): any
   confirmText?: string
   hasFooter?: any
   isShowFooter?: boolean
   hasTop?: any
 }
 
-const CommonModal = (props: ModalProps) => {
+const CommonModal = (props: any) => {
   const [t] = useTranslation()
   return (
     <ModalStyle

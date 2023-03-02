@@ -1023,12 +1023,17 @@ export const getCategorySaveSort = async (params: any) => {
   )
   return response
 }
-export const getCategoryIconList = async (id: any) => {
-  const response = await http.get(
-    `/b/project/story_config/category/icon/list?project_id=${id}`,
-    {
+// icon图标列表
+export const getCategoryIconList = async () => {
+  const response = await http.get(`/b/icon/list`)
+  return response
+}
+// 项目已有字段
+export const getProjectFieIds = async (id: any) => {
+  const response = await http.get(`/b/project/fields`, {
+    search: {
       project_id: id,
     },
-  )
-  return response
+  })
+  return response.data
 }
