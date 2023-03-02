@@ -47,6 +47,7 @@ import { changeId } from '@store/counterSlice'
 import { onTapSearchChoose } from '@store/view'
 import { changeColorText } from '@store/color-text'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
+import StateTag from '@/components/StateTag'
 
 const Wrap = styled.div`
   height: 100%;
@@ -342,23 +343,39 @@ const DemandBox = () => {
         alignItems: 'flex-start',
       }}
     >
-      {resultCategory?.map((k: any) => (
-        <LiWrap
-          key={k.id}
-          color={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
-          onClick={() => onClickCategory(k)}
-        >
-          <CanOperationCategory
-            style={{ marginRight: 0, cursor: 'pointer' }}
-            color={k.color}
-            bgColor={
-              colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
-            }
+      {resultCategory?.map((k: any) => {
+        return (
+          <LiWrap
+            key={k.id}
+            color={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
+            onClick={() => onClickCategory(k)}
           >
-            <span className="title">{k.content}</span>
-          </CanOperationCategory>
-        </LiWrap>
-      ))}
+            <img
+              src={
+                k.category_attachment
+                  ? k.category_attachment
+                  : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
+              }
+              style={{
+                width: '18px',
+                height: '18px',
+                marginRight: '8px',
+              }}
+              alt=""
+            />
+            <span>{k.content}</span>
+            {/* <CanOperationCategory
+              style={{ marginRight: 0, cursor: 'pointer' }}
+              color={k.color}
+              bgColor={
+                colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
+              }
+            >
+              <span className="title">{k.content}1</span>
+            </CanOperationCategory> */}
+          </LiWrap>
+        )
+      })}
     </div>
   )
 
@@ -396,7 +413,7 @@ const DemandBox = () => {
                     ?.bgColor
                 }
               >
-                <span className="title">{colorObj?.content}</span>
+                <span className="title">{colorObj?.content}1</span>
               </CanOperationCategory>
             </Form.Item>
             <Form.Item
@@ -462,7 +479,21 @@ const DemandBox = () => {
               getPopupContainer={node => node}
               onVisibleChange={visible => setIsShowChange(visible)}
             >
-              <CanOperationCategory
+              <img
+                src={
+                  colorObj.category_attachment
+                    ? colorObj.category_attachment
+                    : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
+                }
+                style={{
+                  width: '18px',
+                  height: '18px',
+                  marginRight: '8px',
+                }}
+                alt=""
+              />
+              <span>{colorObj?.content}</span>
+              {/* <CanOperationCategory
                 style={{
                   cursor: resultCategory?.length > 0 ? 'pointer' : 'inherit',
                   marginRight: 8,
@@ -484,7 +515,7 @@ const DemandBox = () => {
                     }}
                   />
                 )}
-              </CanOperationCategory>
+              </CanOperationCategory> */}
             </Popover>
             <div className="demandName">【{demandInfo?.id}】</div>
             <OmitText
@@ -501,7 +532,23 @@ const DemandBox = () => {
               record={demandInfo}
               onChangeStatus={onChangeStatus}
             >
-              <StatusWrap
+              <StateTag
+                onClick={demandInfo?.isExamine ? onExamine : void 0}
+                isShow={isCanEdit || demandInfo?.isExamine}
+                state={
+                  demandInfo?.status?.is_start === 1 &&
+                  demandInfo?.status?.is_end === 2
+                    ? 1
+                    : demandInfo?.status?.is_end === 1 &&
+                      demandInfo?.status?.is_start === 2
+                    ? 2
+                    : demandInfo?.status?.is_start === 2 &&
+                      demandInfo?.status?.is_end === 2
+                    ? 3
+                    : 0
+                }
+              />
+              {/* <StatusWrap
                 onClick={demandInfo?.isExamine ? onExamine : void 0}
                 isShow={isCanEdit || demandInfo?.isExamine}
                 style={{
@@ -510,7 +557,7 @@ const DemandBox = () => {
                 }}
               >
                 {demandInfo?.status?.status?.content}
-              </StatusWrap>
+              </StatusWrap> */}
             </ChangeStatusPopover>
           </NameWrap>
           <Space size={16}>
