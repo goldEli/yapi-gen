@@ -3,10 +3,14 @@
 // 需求详情弹窗预览模式
 
 import { getDemandInfo } from '@/services/demand'
+import { getProjectInfo } from '@/services/project'
+import { openDetail } from '@/tools'
+import { encryptPhp } from '@/tools/cryptoPhp'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import { useDispatch, useSelector } from '@store/index'
+import { setProjectInfo } from '@store/project'
 import { Drawer, Popover, Space } from 'antd'
-import { useEffect, useRef, useState } from 'react'
+import { createRef, useEffect, useRef, useState } from 'react'
 import CommonIconFont from '../CommonIconFont'
 import { DemandOperationDropdownMenu } from '../DemandComponent/DemandOperationDropdownMenu'
 import BasicDemand from './BasicDemand'
@@ -52,6 +56,7 @@ const DemandDetailDrawer = () => {
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const [drawerInfo, setDrawerInfo] = useState<any>({})
   const [showState, setShowState] = useState<any>(normalState)
+  const commentDom: any = createRef()
 
   const modeList = [
     { name: '详细信息', key: 'detailInfo', content: '' },
@@ -59,6 +64,13 @@ const DemandDetailDrawer = () => {
     { name: '基本信息', key: 'basicInfo', content: '' },
     { name: '需求评论', key: 'demandComment', content: '' },
   ]
+
+  const getProjectData = async () => {
+    const response = await getProjectInfo({
+      projectId: demandDetailDrawerProps.project_id,
+    })
+    dispatch(setProjectInfo(response))
+  }
 
   // 获取需求详情
   const getDemandDetail = async () => {
@@ -85,7 +97,14 @@ const DemandDetailDrawer = () => {
 
   // 跳转详情页面
   const onToDetail = () => {
-    //
+    const params = encryptPhp(
+      JSON.stringify({
+        type: 'info',
+        id: drawerInfo.projectId,
+        demandId: drawerInfo.id,
+      }),
+    )
+    openDetail(`/ProjectManagement/Demand?data=${params}`)
   }
 
   // 点击编辑
@@ -137,6 +156,7 @@ const DemandDetailDrawer = () => {
   useEffect(() => {
     if (isDemandDetailDrawerVisible) {
       getDemandDetail()
+      getProjectData()
     }
   }, [isDemandDetailDrawerVisible])
 
@@ -200,6 +220,7 @@ const DemandDetailDrawer = () => {
                 onEditChange={onEditChange}
                 onDeleteChange={onDeleteChange}
                 onCreateChild={onCreateChild}
+                onAddComment={() => commentDom.current?.addComment()}
                 record={demandDetailDrawerProps}
               />
             }
@@ -248,6 +269,7 @@ const DemandDetailDrawer = () => {
                 <DemandComment
                   detail={drawerInfo}
                   isOpen={showState[i.key].isOpen}
+                  onRef={commentDom}
                 />
               )}
             </CollapseItemContent>

@@ -48,17 +48,17 @@ const Index = (props: any) => {
   const dispatch = useDispatch()
   const arr = [
     {
-      type: 'my',
+      type: 'user-alone',
       num: props.item.memberCount,
       text: '项目人数',
     },
     {
-      type: 'project',
+      type: 'demand',
       num: props.item.iterateCount,
       text: '需求数',
     },
     {
-      type: 'm1y',
+      type: 'interation',
       num: props.item.storyCount,
       text: '迭代数',
     },

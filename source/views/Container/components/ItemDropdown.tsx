@@ -2,6 +2,9 @@ import CommonIconFont from '@/components/CommonIconFont'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { Dropdown } from 'antd'
+import { useEffect, useState } from 'react'
+import * as services from '@/services'
+import { useNavigate } from 'react-router-dom'
 
 interface PropsType {
   text: string
@@ -51,6 +54,13 @@ const Row = styled.div`
     background-color: var(--hover-d3);
   }
 `
+const ItemRow = styled(Row)`
+  > img {
+    width: 32px;
+    height: 32px;
+    margin-right: 12px;
+  }
+`
 const ItemTitle = styled.div`
   width: 100%;
   font-size: 14px;
@@ -64,26 +74,23 @@ const Border = styled.div`
   border-bottom: 1px solid var(--neutral-n6-d1);
 `
 const ItemDropdown = (props: PropsType) => {
-  const itemArr = [
-    {
-      title: '需求名称',
-      label: 'DXKJ-0001/项目名称',
-    },
-    {
-      title: '需求名称需求名称需求名...',
-      label: 'DXKJ-0001/项目名称',
-    },
-    {
-      title: '需求名称需求名称需求名...',
-      label: 'DXKJ-0001/项目名称',
-    },
-  ]
+  const navigate = useNavigate()
+  const [itemArr, setItemArr] = useState([])
+
+  const onFectProjectList = async () => {
+    const data = await services.project.getProjectRecent()
+    setItemArr(data)
+  }
+
+  useEffect(() => {
+    onFectProjectList()
+  }, [])
   const itmeMain = (item: any) => {
     return item.map((el: any) => (
-      <Row key={el.title}>
-        <IconFont type="calendar" style={{ fontSize: 32, color: '#323233' }} />
-        <ItemTitle>{el.title}</ItemTitle>
-      </Row>
+      <ItemRow key={el.name}>
+        <img src={el.cover} />
+        <ItemTitle>{el.name}</ItemTitle>
+      </ItemRow>
     ))
   }
   const dropdownRender = () => {
@@ -95,7 +102,11 @@ const ItemDropdown = (props: PropsType) => {
         </ScrollWrap>
         <Border />
         <Footer>
-          <div>
+          <div
+            onClick={() => {
+              navigate('/ProjectManagement/Project')
+            }}
+          >
             <IconFont
               type="folder-open-nor"
               style={{

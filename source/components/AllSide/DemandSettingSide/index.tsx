@@ -26,7 +26,8 @@ import { setStartUsing } from '@store/category'
 // eslint-disable-next-line no-duplicate-imports
 import { getCategoryConfigList } from '@store/category/thunk'
 import { setActiveCategory } from '@store/category/index'
-const ProjectDetailSide = (props: { leftWidth: number }) => {
+
+const ProjectDetailSide = (props: { leftWidth: number; onClick(): void }) => {
   const [t] = useTranslation()
   const { startUsing, categoryList } = useSelector(store => store.category)
   const projectSide: any = useRef<HTMLInputElement>(null)
@@ -83,11 +84,7 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
 
   //   返回上一页
   const onGoBack = () => {
-    projectSetSide.current.style.width = '0px'
-    projectSide.current.style.width = `${props.leftWidth}px`
-    setTimeout(() => {
-      projectSetSide.current.style.display = 'none'
-    }, 200)
+    props.onClick()
   }
 
   const onMove = async (data: any) => {

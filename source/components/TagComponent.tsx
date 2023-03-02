@@ -116,17 +116,13 @@ interface TagProps {
   onChangeTag?(arr: any, type: string): void
   checkedTags: any
   id?: any
-  // 是否更新，用于详情抽屉
-  onUpdate?(): void
-  // 传入的需求详情
-  demandDetail: any
 }
 
 const TagBox = (props: TagProps) => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const { projectInfoValues } = useSelector(store => store.project)
-  // const { demandInfo } = useSelector(store => store.demand)
+  const { demandInfo } = useSelector(store => store.demand)
   const [value, setValue] = useState('')
   const [arr, setArr] = useState<any>([])
   const [searchParams] = useSearchParams()
@@ -185,20 +181,16 @@ const TagBox = (props: TagProps) => {
       try {
         await addInfoDemand({
           projectId,
-          demandId: props.demandDetail?.id,
+          demandId: demandInfo?.id,
           type: 'tag',
           targetId: [{ name: item.content, color: item.color }],
         })
         message.success(t('common.addSuccess'))
-        if (props.onUpdate) {
-          props.onUpdate()
-        } else {
-          const result = await getDemandInfo({
-            projectId,
-            id: props.demandDetail?.id,
-          })
-          dispatch(setDemandInfo(result))
-        }
+        const result = await getDemandInfo({
+          projectId,
+          id: demandInfo?.id,
+        })
+        dispatch(setDemandInfo(result))
         props.onChangeIsOpen(false)
       } catch (error) {
         //
@@ -251,14 +243,11 @@ interface Props {
   defaultList?: any
   id?: any
   isQuick?: boolean
-  // 是否更新，用于详情抽屉
-  onUpdate?(): void
-  demandDetail: any
 }
 
 const TagComponent = (props: Props) => {
   const [t] = useTranslation()
-  // const { demandInfo } = useSelector(store => store.demand)
+  const { demandInfo } = useSelector(store => store.demand)
   const [newTag, setNewTag] = useState<any>('')
   const [isChooseColor, setIsChooseColor] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
@@ -297,20 +286,16 @@ const TagComponent = (props: Props) => {
       try {
         await addInfoDemand({
           projectId,
-          demandId: props.demandDetail?.id,
+          demandId: demandInfo?.id,
           type: 'tag',
           targetId: [{ name: newTag, color: value }],
         })
         message.success(t('common.addSuccess'))
-        if (props.onUpdate) {
-          props.onUpdate()
-        } else {
-          const result = await getDemandInfo({
-            projectId,
-            id: props.demandDetail?.id,
-          })
-          dispatch(setDemandInfo(result))
-        }
+        const result = await getDemandInfo({
+          projectId,
+          id: demandInfo?.id,
+        })
+        dispatch(setDemandInfo(result))
         setNewTag('')
         setIsChooseColor(false)
         setIsClear(false)
@@ -336,20 +321,16 @@ const TagComponent = (props: Props) => {
       try {
         await deleteInfoDemand({
           projectId,
-          demandId: props.demandDetail?.id,
+          demandId: demandInfo?.id,
           type: 'tag',
           targetId: item.id,
         })
         message.success(t('common.deleteSuccess'))
-        if (props.onUpdate) {
-          props.onUpdate()
-        } else {
-          const result = await getDemandInfo({
-            projectId,
-            id: props.demandDetail?.id,
-          })
-          dispatch(setDemandInfo(result))
-        }
+        const result = await getDemandInfo({
+          projectId,
+          id: demandInfo?.id,
+        })
+        dispatch(setDemandInfo(result))
       } catch (error) {
         //
       }
@@ -450,8 +431,6 @@ const TagComponent = (props: Props) => {
                 onChangeTag={props.onChangeTag}
                 checkedTags={checkedTags}
                 id={props?.id}
-                onUpdate={props.onUpdate}
-                demandDetail={props.demandDetail}
               />
             ) : null
           }

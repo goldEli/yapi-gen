@@ -56,6 +56,7 @@ const CreateDemand = () => {
   // 需求详情-编辑回填
   const [demandInfo, setDemandInfo] = useState<any>({})
   const [fieldList, setFieldList] = useState<any>([])
+  const [workStatusList, setWorkStatusList] = useState([])
 
   // 关闭创建需求
   const onCancel = () => {
@@ -241,6 +242,7 @@ const CreateDemand = () => {
           onGetFieldList={setFieldList}
           onResetForm={onResetForm}
           onGetDataAll={getInit}
+          onChangeWorkStatusList={setWorkStatusList}
         />
         <CreateDemandRight
           projectId={projectId}
@@ -249,6 +251,7 @@ const CreateDemand = () => {
           fieldsList={fieldList}
           demandDetail={demandInfo}
           isSaveParams={isSaveParams}
+          workStatusList={workStatusList}
         />
       </div>
     </CommonModal>

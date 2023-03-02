@@ -235,7 +235,7 @@ const HeaderLeft = () => {
 
   // 点击切换二级菜单
   const onClickMenu = (item: any) => {
-    navigate(item.url)
+    // navigate(item.url)
   }
 
   return (

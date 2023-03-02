@@ -24,6 +24,7 @@ import {
   setCreateDemandProps,
   setIsCreateDemandVisible,
 } from '@store/demand'
+import { saveScreen } from '@store/view'
 
 const OperationWrap = styled.div({
   minHeight: 32,
@@ -136,6 +137,8 @@ const Operation = (props: Props) => {
   const [isShowImport, setIsShowImport] = useState(false)
   const [isShowExport, setIsShowExport] = useState(false)
   const [filterState, setFilterState] = useState(true)
+  const [defaultValue, setDefaultValue] = useState({})
+
   // 导出超出限制提示
   const [exceedState, setExceedState] = useState(false)
   const { projectInfo, colorList, filterKeys, projectInfoValues } = useSelector(
@@ -183,6 +186,7 @@ const Operation = (props: Props) => {
       params.searchValue = value
       setSearchGroups(params)
       props.onSearch(params)
+
       // 添加搜索项 计数
       const keys = value
         ? [...filterKeys, ...['searchVal']]
@@ -221,33 +225,52 @@ const Operation = (props: Props) => {
 
     if (key && type === 0) {
       setSearchList(searchList.filter((item: any) => item.content !== key))
+      dispatch(
+        saveScreen(searchList.filter((item: any) => item.content !== key)),
+      )
       return
     }
     if (key && type === 1) {
       const addList = filterFelid?.filter((item: any) => item.content === key)
       setSearchList([...searchList, ...addList])
-
+      dispatch(saveScreen([...searchList, ...addList]))
       return
     }
     const arr = filterFelid?.filter((item: any) => item.isDefault === 1)
 
     setSearchList(arr)
+    dispatch(saveScreen(arr))
     setFilterBasicsList(projectInfo?.filterBasicsList)
     setFilterSpecialList(projectInfo?.filterSpecialList)
     setFilterCustomList(projectInfo?.filterCustomList)
   }
 
+  function filterObj(mainObject: any, filterFunction: any) {
+    return Object.keys(mainObject)
+      .filter(ObjectKey => {
+        return filterFunction(mainObject[ObjectKey])
+      })
+      .reduce((result: any, ObjectKey) => {
+        result[ObjectKey] = mainObject[ObjectKey]
+        return result
+      }, {})
+  }
   useEffect(() => {
-    if (searchChoose && searchChoose['system_view']) {
+    if (searchChoose && searchChoose.system_view) {
       return
     }
     if (searchChoose) {
+      const targetSubjects = filterObj(searchChoose, (grade: any) => {
+        return grade !== null
+      })
       const keys = Object.keys(searchChoose)
       const filterFelid = projectInfo?.filterFelid
       const newArr = filterFelid?.filter((i: any) => {
         return keys.includes(i.content)
       })
       setSearchList(newArr)
+      dispatch(saveScreen(newArr))
+      setDefaultValue(targetSubjects)
     }
   }, [searchChoose])
 
@@ -263,6 +286,7 @@ const Operation = (props: Props) => {
 
   const onChangeCategory = (e: any, item: any) => {
     dispatch(setCreateCategory(item))
+
     // 需求列表筛选参数赋值给 弹窗
     dispatch(setFilterParamsModal(filterParams))
     setTimeout(() => {
@@ -285,23 +309,41 @@ const Operation = (props: Props) => {
       {projectInfoValues
         ?.filter((i: any) => i.key === 'category')[0]
         ?.children?.filter((i: any) => i.status === 1)
-        ?.map((k: any) => (
-          <LiWrap
-            key={k.id}
-            color={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
-            onClick={(e: any) => onChangeCategory(e, k)}
-          >
-            <CanOperationCategory
+        ?.map((k: any) => {
+          return (
+            <LiWrap
+              key={k.id}
+              color={
+                colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
+              }
+              onClick={(e: any) => onChangeCategory(e, k)}
+            >
+              <img
+                src={
+                  k.category_attachment
+                    ? k.category_attachment
+                    : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
+                }
+                style={{
+                  width: '18px',
+                  height: '18px',
+                  marginRight: '8px',
+                }}
+                alt=""
+              />
+              <span>{k.content}</span>
+              {/* <CanOperationCategory
               style={{ marginRight: 0 }}
               color={k.color}
               bgColor={
                 colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
               }
             >
-              <span className="title">{k.content}</span>
-            </CanOperationCategory>
-          </LiWrap>
-        ))}
+              <span className="title">{k.content}</span>1
+            </CanOperationCategory> */}
+            </LiWrap>
+          )
+        })}
     </div>
   )
 
@@ -449,6 +491,7 @@ const Operation = (props: Props) => {
       {!filterState && (
         <TableFilter
           noNeed
+          defaultValue={defaultValue}
           onFilter={getSearchKey}
           onSearch={onFilterSearch}
           list={searchList}

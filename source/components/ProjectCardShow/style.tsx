@@ -3,6 +3,8 @@ import styled from '@emotion/styled'
 export const Image = styled.img`
   width: 80px;
   height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
 `
 
 export const CardRight = styled.div`

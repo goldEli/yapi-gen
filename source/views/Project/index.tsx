@@ -8,9 +8,6 @@ import InputSearch from '@/components/InputSearch'
 import LeftTitle from '@/components/LeftTitle'
 import MainGrid from '@/components/MainGrid/MainGrid'
 import MainTable from '@/components/MainTable/MainTable'
-import ProjectCard from '@/components/ProjectCard'
-import { HoverIcon } from '@/components/ProjectCard/style'
-import RichEditor from '@/components/RichEditor'
 import useSetTitle from '@/hooks/useSetTitle'
 import {
   deleteProject,
@@ -18,6 +15,7 @@ import {
   openProject,
   stopProject,
 } from '@/services/project'
+import { getProjectCover } from '@store/cover/thunks'
 import { changeCreateVisible, onRest } from '@store/create-propject'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefreshGroup } from '@store/project'
@@ -48,7 +46,9 @@ const ProjectManagementOptimization = () => {
     list: undefined,
   })
   const isRest = useSelector(state => state.createProject.isRest)
-
+  const { groupId: storeGid, typeId } = useSelector(
+    state => state.createProject,
+  )
   const getList = async (
     active: number,
     isTable: boolean,
@@ -88,19 +88,13 @@ const ProjectManagementOptimization = () => {
   useEffect(() => {
     getList(activeType, isGrid, isHidden, searchVal, order, pageObj, groupId)
   }, [isHidden, activeType, order, searchVal, isGrid, pageObj, groupId, isRest])
+  useEffect(() => {
+    dispatch(getProjectCover())
+  }, [])
 
   // 更新列表
   const onUpdate = () => {
     getList(activeType, isGrid, isHidden, searchVal, order, pageObj, groupId)
-  }
-
-  const onChangeType = (type: number) => {
-    setActiveType(type)
-    setGroupId(null)
-    setPageObj({
-      page: 1,
-      size: pageObj.size,
-    })
   }
 
   const onChangeHidden = (hidden: boolean) => {
@@ -211,11 +205,19 @@ const ProjectManagementOptimization = () => {
     })
   }
 
-  // 切换分组查询列表
-  const onChangeGroup = (id: number) => {
-    setGroupId(id)
+  useEffect(() => {
+    setGroupId(storeGid)
     setActiveType(-1)
-  }
+  }, [storeGid])
+  useEffect(() => {
+    setActiveType(typeId)
+    setGroupId(null)
+    setPageObj({
+      page: 1,
+      size: pageObj.size,
+    })
+  }, [typeId])
+
   return (
     <div>
       <DeleteConfirm

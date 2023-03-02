@@ -169,6 +169,7 @@ export const getProjectInfo: any = async (params: any) => {
   let filterBasicsList: any = []
   let filterSpecialList: any = []
   let filterCustomList: any = []
+
   // 查所有项目时，不显示筛选
   if (params.projectId) {
     filterBasicsList = response.data.storyConfig?.filter_fidlds.filter(
@@ -743,12 +744,13 @@ export const deleteProjectGroup: any = async (params: any) => {
 
 // 获取项目下拉数据
 export const getProjectInfoValues: any = async (params: any) => {
-  const response = await http.get<any>(`/b/project/getfilter_values`, {
+  const response = await http.get<any>('/b/project/getfilter_values', {
     id: params.projectId,
   })
 
   let filterCompanyList: any = []
   let filterMemberList: any = []
+
   // 查所有项目时，不调用人员接口
   if (params.projectId) {
     // 公司
@@ -777,6 +779,7 @@ export const getProjectInfoValues: any = async (params: any) => {
   const getChildren = (key: any, values: any) => {
     let allValues: any = []
     let resultValues: any = []
+
     // 自定义数据并且不是人员数据
     if (
       key.includes('custom_') &&
@@ -808,42 +811,53 @@ export const getProjectInfoValues: any = async (params: any) => {
         status: i.status,
         color: i.color,
         icon: i.icon,
+        ...i,
       }))
     }
     allValues = [{ id: -1, content: '空', content_txt: '空' }, ...resultValues]
     return allValues
   }
 
-  return Object.keys(response.data)?.map((i: any) => ({
-    children:
-      i === 'class'
-        ? [
-            ...[
-              {
-                title: '未分类',
-                key: 0,
-                value: 0,
-                children: [],
-              },
-            ],
-            ...getNestedChildren(response.data[i], 0),
-          ]
-        : getChildren(i, response.data[i]),
-    key: i,
-    customTag: i.includes('custom_') ? response.data[i] : null,
-  }))
+  return Object.keys(response.data)?.map((i: any) => {
+    return {
+      children:
+        i === 'class'
+          ? [
+              ...[
+                {
+                  title: '未分类',
+                  key: 0,
+                  value: 0,
+                  children: [],
+                },
+              ],
+              ...getNestedChildren(response.data[i], 0),
+            ]
+          : getChildren(i, response.data[i]),
+      key: i,
+      customTag: i.includes('custom_') ? response.data[i] : null,
+    }
+  })
 }
 
 export const getAffiliation = async () => {
-  const response = await http.get<any>(`/b/project/affiliation`)
+  const response = await http.get<any>('/b/project/affiliation')
+
   // console.log(response)
   return response.data
 }
 
 export const getAffiliationUser = async (id: any) => {
-  const response = await http.get<any>(`/b/project/affiliation_user`, {
+  const response = await http.get<any>('/b/project/affiliation_user', {
     team_id: id,
   })
+
   // console.log(response)
+  return response.data
+}
+
+// 用户最近访问的项目列表
+export const getProjectRecent = async () => {
+  const response = await http.get<any>('/b/project/recent')
   return response.data
 }

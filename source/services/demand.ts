@@ -426,7 +426,9 @@ export const getDemandInfo: any = async (params: any) => {
     project_id: params.projectId,
     id: params.id,
   })
+
   return {
+    category_attachment: response.data.category_attachment,
     id: response.data.id,
     name: response.data.name || '--',
     info: response.data.info.replaceAll('\n', '<br/>'),
@@ -613,6 +615,7 @@ export const getDemandList: any = async (params: any) => {
         project_id: i.project_id,
         usersNameIds: i.users_name_ids,
         usersCopySendIds: i.users_copysend_name_ids,
+        category_attachment: i.category_attachment,
         allChildrenCount: i.all_child_story_count,
         allChildrenIds: i.all_child_ids,
         children: getListItem(i.children) || null,

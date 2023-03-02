@@ -42,6 +42,8 @@ interface Props {
   onChangeProjectId(value: any): void
   // 修改项目id后更新相应数据
   onGetDataAll(values: any, categoryId?: any): void
+  // 需求类别对应的需求状态下拉列表
+  onChangeWorkStatusList(values: any): void
 }
 
 const CreateDemandLeft = (props: Props) => {
@@ -71,6 +73,15 @@ const CreateDemandLeft = (props: Props) => {
   const { createDemandProps, createCategory } = useSelector(
     store => store.demand,
   )
+
+  const getStatusList = async (value: any) => {
+    const result = await getWorkflowList({
+      projectId: props.projectId,
+      categoryId: value,
+    })
+    setWorkList(result)
+    props.onChangeWorkStatusList(result)
+  }
 
   // 获取需求类别配置的字段
   const getCategoryField = async (id: any) => {
@@ -207,11 +218,7 @@ const CreateDemandLeft = (props: Props) => {
           ?.filter((i: any) => i.status === 1)
           ?.filter((i: any) => i.id === value)[0],
       )
-      const result = await getWorkflowList({
-        projectId: props.projectId,
-        categoryId: value,
-      })
-      setWorkList(result)
+      getStatusList(value)
     } else {
       changeCategoryForm.resetFields()
       setCurrentCategory({})
@@ -296,6 +303,7 @@ const CreateDemandLeft = (props: Props) => {
       form.setFieldsValue({
         requiredCategory: categoryObj?.id,
       })
+      getStatusList(categoryObj?.id)
       getCategoryField(categoryObj?.id)
     }
   }, [categoryObj])
@@ -609,7 +617,6 @@ const CreateDemandLeft = (props: Props) => {
           )?.length > 0 && (
             <Form.Item name="tagIds" label={t('common.tag')}>
               <TagComponent
-                demandDetail={props.demandDetail}
                 defaultList={tagCheckedList}
                 onChangeTag={onChangeTag}
                 isQuick

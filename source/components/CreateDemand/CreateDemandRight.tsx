@@ -37,16 +37,15 @@ interface Props {
   fieldsList: any[]
   demandDetail?: any
   isSaveParams?: boolean
+  workStatusList?: any
 }
 
 const CreateDemandRight = (props: Props) => {
   const info = useGetloginInfo()
   const [t] = useTranslation()
   const [form] = Form.useForm()
-
   // 折叠字段
   const [foldList, setFoldList] = useState<any>([])
-
   // 不折叠字段
   const [notFoldList, setNotFoldList] = useState<any>([])
   const [priorityDetail, setPriorityDetail] = useState<any>({})
@@ -171,6 +170,8 @@ const CreateDemandRight = (props: Props) => {
       }
 
       form.setFieldsValue({
+        status: props.demandDetail?.status.status_id,
+
         // 抄送人
         users_copysend_name: getCommonUser(
           props?.demandDetail?.copySend?.map((i: any) => i.copysend),
@@ -196,7 +197,7 @@ const CreateDemandRight = (props: Props) => {
               ?.filter((i: any) => i.id === props?.demandDetail?.iterateId)
               .length
           ? props?.demandDetail?.iterateId
-          : null,
+          : [],
 
         // 父需求
         parent_id: createDemandProps.isChild
@@ -360,6 +361,7 @@ const CreateDemandRight = (props: Props) => {
     props?.demandDetail,
     props.parentList,
     props.fieldsList,
+    props.workStatusList,
   ])
 
   useEffect(() => {
@@ -629,12 +631,10 @@ const CreateDemandRight = (props: Props) => {
               getPopupContainer={node => node}
               allowClear
               optionFilterProp="label"
-              options={removeNull(projectInfoValues, 'status')?.map(
-                (i: any) => ({
-                  label: i.content,
-                  value: i.id,
-                }),
-              )}
+              options={props.workStatusList?.list?.map((i: any) => ({
+                label: i.name,
+                value: i.statusId,
+              }))}
             />
           </Form.Item>
         )}

@@ -14,12 +14,52 @@ export interface GlobalState {
   theme: number
 
   language: string
+  basicFieldList: any[]
 }
 
 const initialState: GlobalState = {
   firstMenuCollapse: false,
   theme: Number(localStorage.getItem('theme')) || 0,
   language: localStorage.getItem('language') || 'zh',
+  basicFieldList: [
+    { name: '需求进度', content: 'schedule', type: '数字型', attr: 'slider' },
+    {
+      name: '处理人',
+      content: 'users_name',
+      type: '人员多选',
+      attr: { attr: 'user_select_checkbox', value: 'projectMember' },
+    },
+    {
+      name: '抄送人',
+      content: 'priority',
+      type: '人员多选',
+      attr: { attr: 'user_select_checkbox', value: 'companyMember' },
+    },
+    { name: '创建人', content: 'priority', type: '人员单选', attr: 'select' },
+    {
+      name: '父需求',
+      content: 'priority',
+      type: '单选下拉',
+      attr: 'parentSelect',
+    },
+    {
+      name: '迭代',
+      content: 'priority',
+      type: '单选下拉',
+      attr: 'select_checkbox',
+    },
+    {
+      name: '需求分类',
+      content: 'priority',
+      type: '单选下拉',
+      attr: 'treeSelect',
+    },
+    { name: '优先级', content: 'priority', type: '单选下拉', attr: 'priority' },
+    { name: '创建时间', content: '', type: '日期', attr: ' date' },
+    { name: '完成时间', content: 'priority', type: '日期', attr: ' date' },
+    { name: '预计开始时间', content: 'priority', type: '日期', attr: ' date' },
+    { name: '预计结束时间', content: 'priority', type: '日期', attr: ' date' },
+  ],
 }
 
 export const globalSlice = createSlice({

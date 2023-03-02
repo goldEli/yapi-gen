@@ -63,6 +63,7 @@ const InputSearch = (props: Props) => {
               onClick={() => {
                 props.onChangeSearch?.('')
                 setValue('')
+                dispatch(changeColorText(''))
               }}
               size={16}
               color="var(--neutral-n4)"

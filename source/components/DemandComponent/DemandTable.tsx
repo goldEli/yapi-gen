@@ -32,6 +32,7 @@ import { onTapSearchChoose, saveSort, saveTitles } from '@store/view'
 import FloatBatch from '../FloatBatch'
 import { DemandOperationDropdownMenu } from './DemandOperationDropdownMenu'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 
 const Content = styled.div({
   padding: '20px 12px 0 8px',
@@ -85,6 +86,7 @@ const DemandTable = (props: Props) => {
   const dataWrapRef = useRef<HTMLDivElement>(null)
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
   const dispatch = useDispatch()
+  const [openDemandDetail] = useOpenDemandDetail()
 
   useEffect(() => {
     dispatch(
@@ -195,18 +197,7 @@ const DemandTable = (props: Props) => {
   }
 
   const onClickItem = (item: any) => {
-    dispatch({
-      type: 'demand/setIsDemandDetailDrawerVisible',
-      payload: true,
-    })
-    dispatch({
-      type: 'demand/setDemandDetailDrawerProps',
-      payload: item,
-    })
-    // const params = encryptPhp(
-    //   JSON.stringify({ type: 'info', id: projectId, demandId: item.id }),
-    // )
-    // openDetail(`/ProjectManagement/Demand?data=${params}`)
+    openDemandDetail(item, projectId, item.id)
   }
 
   const onChangeState = async (item: any) => {

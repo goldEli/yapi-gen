@@ -1,18 +1,24 @@
+/* eslint-disable complexity */
+/* eslint-disable @typescript-eslint/indent */
 import CommonIconFont from '@/components/CommonIconFont'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { Dropdown } from 'antd'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import * as services from '@/services'
+import { isArray } from 'lodash'
+import { useNavigate } from 'react-router-dom'
 
 interface PropsType {
   text: string
 }
 const Container = styled.div`
   width: 320px;
-  height: auto;
+  max-height: calc(100vh - 120px);
   background-color: var(--neutral-white-d6);
   box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
   border-radius: 0px 0px 6px 6px;
+  padding-bottom: 8px;
 `
 const HeraderTabs = styled.div`
   width: 100%;
@@ -47,17 +53,23 @@ const Tabs = styled.div`
     cursor: pointer;
   }
 `
-const ScrollWrap = styled.div``
+const ScrollWrap = styled.div`
+  height: calc(100vh - 256px);
+  overflow-y: auto;
+`
 const Footer = styled.div`
   height: 56px;
   line-height: 56px;
-  padding-left: 24px;
   border-radius: 0px 0px 6px 6px;
   font-size: 14px;
   font-weight: 400;
   color: var(--neutral-n1-d2);
-  margin: 8px 0;
-  &:hover {
+  margin: 8px 16px;
+  border-top: 1px solid #ecedef;
+  > div {
+    padding-left: 24px;
+  }
+  > div:hover {
     background-color: var(--hover-d2);
     cursor: pointer;
   }
@@ -115,6 +127,11 @@ const BtnBox = styled.div`
   font-weight: 400;
   text-align: center;
   line-height: 22px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 8px;
 `
 const OpenWrap = styled.div`
   width: 100%;
@@ -128,9 +145,15 @@ const Border = styled.div`
   text-align: center;
   border-bottom: 1px solid var(--neutral-n6-d1);
 `
+
+const Img = styled.img`
+  width: 20px;
+  height: 20px;
+`
 const MyDropdown = (props: PropsType) => {
-  const [tabActive, setTabActive] = useState(1)
-  const [iconState, setIconState] = useState(true)
+  const navigate = useNavigate()
+  const [tabActive, setTabActive] = useState(0)
+  const [iconState, setIconState] = useState(false)
   const tabs = [
     {
       label: '待办',
@@ -142,63 +165,101 @@ const MyDropdown = (props: PropsType) => {
       label: '最近',
     },
   ]
-  const itemArr = [
-    {
-      title: '需求名称1',
-      label: 'DXKJ-0001/项目名称',
-    },
-    {
-      title: '2需求名称需求名称需求名...2',
-      label: 'DXKJ-0001/项目名称',
-    },
-    {
-      title: '3需求名称需求名称需求名...',
-      label: 'DXKJ-0001/项目名称',
-    },
-  ]
+  const [itemArr, setItemArr] = useState<any>()
+  const [noFinishList, setNoFinishList] = useState<any>()
+  const [finishList, setFinishList] = useState<any>()
+  const [recentList, setRecentList] = useState<any>()
   const box = [
     {
-      title: '最近联系',
-      itemArr,
+      title: '最近查看',
+      name: 'recent_see',
     },
     {
-      title: '最近查看',
-      itemArr,
+      title: '最近创建',
+      name: 'recent_create',
     },
   ]
+  const onGetMyRecent = async () => {
+    const res = await services.user.getMyRecent()
+    setRecentList(res)
+  }
+  const onGetMineFinishList = async () => {
+    const res = await services.mine.getMineFinishList({
+      page: 1,
+      pagesize: 10,
+    })
+    setFinishList(res.list)
+  }
+  const onGetMineNoFinishList = async () => {
+    const res = await services.mine.getMineNoFinishList({
+      page: 1,
+      pagesize: 10,
+    })
+    setNoFinishList(res.list)
+  }
+  const onFetchList = async () => {
+    if (tabActive === 2) {
+      onGetMyRecent()
+    }
+    if (tabActive === 1) {
+      onGetMineFinishList()
+    }
+    if (tabActive === 0) {
+      onGetMineNoFinishList()
+    }
+  }
+
+  useEffect(() => {
+    onFetchList()
+  }, [tabActive])
+  const onClick = () => {
+    navigate('/Mine')
+  }
   const itmeMain = (item: any) => {
-    return item.map((el: any) => (
-      <ItemBox key={el.title}>
-        <Row>
-          <div>
-            <IconFont
-              type="calendar"
-              style={{ fontSize: 20, color: '#323233' }}
-            />
-          </div>
-          <ItemCenter>
-            <ItemTitle>{el.title}</ItemTitle>
-            <ItemMsg>{el.label}</ItemMsg>
-          </ItemCenter>
-          <>
+    return (
+      isArray(item) &&
+      item?.map((el: any) => (
+        <ItemBox key={el.title}>
+          <Row>
+            <div>
+              {/* <IconFont
+                type="calendar"
+                style={{ fontSize: 20, color: '#323233' }}
+              /> */}
+              <Img src={el.category_attachment} />
+            </div>
+            <ItemCenter>
+              <ItemTitle>{el.feedable?.name || el.name}</ItemTitle>
+              <ItemMsg>
+                {el.feedable?.project?.name || el.project?.name}
+              </ItemMsg>
+            </ItemCenter>
             <BtnBox
               style={{
                 background:
-                  tabActive === 0
+                  el.status?.is_start === 1 && el.status?.is_end === 2
+                    ? 'var(--primary-d2)'
+                    : el.status?.is_end === 1 && el.status?.is_start === 2
+                    ? 'var(--neutral-n7)'
+                    : el.status?.is_start === 2 && el.status?.is_end === 2
                     ? 'var(--function-success)'
-                    : 'var(--neutral-n7)',
+                    : '',
                 color:
-                  tabActive === 0
-                    ? 'var(--neutral-white-d1)'
-                    : 'var(--neutral-n1-d1)',
+                  el.status?.is_start === 1 && el.status?.is_end === 2
+                    ? 'var(--neutral-n7)'
+                    : el.status?.is_end === 1 && el.status?.is_start === 2
+                    ? 'var(--neutral-n1-d1)'
+                    : el.status?.is_start === 2 && el.status?.is_end === 2
+                    ? 'var(--neutral-n7)'
+                    : '',
               }}
             >
-              进行中
+              {el.status?.status?.content}
             </BtnBox>
-          </>
-        </Row>
-      </ItemBox>
-    ))
+          </Row>
+        </ItemBox>
+      ))
+    )
   }
   const dropdownRender = () => {
     return (
@@ -217,15 +278,17 @@ const MyDropdown = (props: PropsType) => {
           </Tabs>
         </HeraderTabs>
         <ScrollWrap>
-          {tabActive === 0 &&
+          {tabActive === 2 &&
             box.map(el => (
               <div style={{ marginBottom: '16px' }} key={el.title}>
                 <Title>{el.title}</Title>
-                {itmeMain(el.itemArr)}
+                {itmeMain(recentList?.[el.name])}
               </div>
             ))}
-          {(tabActive === 1 || tabActive === 2) && itmeMain(itemArr)}
-          {tabActive === 0 && (
+          {tabActive === 0 && itmeMain(noFinishList)}
+          {tabActive === 1 && itmeMain(finishList)}
+          {/* 
+          {tabActive === 2 && (
             <>
               <OpenWrap>
                 <IconFont
@@ -240,21 +303,22 @@ const MyDropdown = (props: PropsType) => {
               </OpenWrap>
               <Border />
             </>
-          )}
+          )} */}
         </ScrollWrap>
-        <Footer>查看我的工作</Footer>
+        <Footer onClick={onClick}>
+          <div>查看我的工作</div>
+        </Footer>
       </Container>
     )
   }
   return (
-    <>
-      <Dropdown dropdownRender={dropdownRender} placement="bottomLeft">
-        <div style={{ height: '52px', lineHeight: '52px' }}>
-          <span style={{ marginRight: '8px' }}>{props.text}</span>
-          <CommonIconFont type="down" size={14} />
-        </div>
-      </Dropdown>
-    </>
+    <Dropdown dropdownRender={dropdownRender} placement="bottomLeft">
+      <div style={{ height: '52px', lineHeight: '52px' }}>
+        <span style={{ marginRight: '8px' }}>{props.text}</span>
+        <CommonIconFont type="down" size={14} />
+      </div>
+    </Dropdown>
   )
 }
+
 export default MyDropdown

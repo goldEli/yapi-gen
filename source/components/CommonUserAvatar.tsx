@@ -7,6 +7,7 @@ import avatarWhite from '/avatarWhite.png'
 const UserAvatarWrap = styled.div`
   display: flex;
   align-items: center;
+  height: max-content;
 `
 
 const AvatarBox = styled.div<{ size?: string; isBorder?: boolean }>`

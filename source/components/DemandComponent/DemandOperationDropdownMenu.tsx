@@ -13,6 +13,7 @@ interface Props {
   onEditChange(row: any): void
   onDeleteChange(row: any): void
   onCreateChild(row: any): void
+  onAddComment?(): void
   haveComment?: boolean
 }
 
@@ -80,7 +81,7 @@ export const DemandOperationDropdownMenu = (props: Props) => {
     },
     {
       key: '4',
-      label: <div>添加评论</div>,
+      label: <div onClick={props.onAddComment}>添加评论</div>,
     },
     {
       key: '5',
