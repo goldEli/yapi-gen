@@ -168,6 +168,7 @@ export const HovDiv = styled.div`
   position: absolute;
   right: 0px;
 `
+
 export const MyDiv = styled.div`
   position: relative;
 `
@@ -186,6 +187,9 @@ export const CommentItem = styled.div<{ isShow?: boolean }>`
   margin-right: 12px;
   &:hover ${HovDiv} {
     visibility: visible;
+  }
+  p {
+    margin: 0;
   }
 `
 

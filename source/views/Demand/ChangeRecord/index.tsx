@@ -412,7 +412,7 @@ const ChangeRecord = () => {
     getList({ page, size }, order)
   }
   return (
-    <div style={{ height: 'calc(100% - 54px)', padding: '16px 16px 0 16px' }}>
+    <div style={{ height: 'calc(100% - 74px)' }}>
       <CommonModal
         isVisible={isVisible}
         title={t('project.changeInfo')}

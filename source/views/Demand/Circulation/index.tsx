@@ -41,11 +41,10 @@ const TimeLIneWrap = styled(Timeline)({
 })
 
 const Wrap = styled.div({
-  height: 'calc(100% - 54px)',
+  height: '100%',
   background: 'white',
   overflowX: 'auto',
-  padding: '0 32px',
-  margin: '16px 16px 0 16px',
+  padding: '0 16px',
   borderRadius: 6,
 })
 
