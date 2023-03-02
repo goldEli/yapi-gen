@@ -25,7 +25,7 @@ const useOpenDemandDetail = () => {
         }),
       )
       const url = `/ProjectManagement/Demand?data=${params}`
-      window.open(`${window.origin}/${import.meta.env.__URL_HASH__}${url}`)
+      window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
     }
   }
 

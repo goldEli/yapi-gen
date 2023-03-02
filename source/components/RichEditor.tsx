@@ -257,7 +257,7 @@ const TinyEditor = (props: any, ref: ForwardedRef<any>) => {
       for (const element of oPics) {
         if (
           element.src ===
-          `${window.location.origin}/${import.meta.env.__URL_HASH__}`
+          `${window.location.origin}${import.meta.env.__URL_HASH__}`
         ) {
           element.src = response.url
           element['data-mce-src'] = response.url
