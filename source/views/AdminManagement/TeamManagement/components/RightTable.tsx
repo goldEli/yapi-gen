@@ -128,12 +128,12 @@ const RightTable = () => {
   const [addMemberVisible, setAddMemberVisible] = useState(false)
   const options = [
     {
-      value: '123',
-      label: '132',
+      value: 1,
+      label: '团队管理',
     },
     {
-      value: '123',
-      label: '132',
+      value: 2,
+      label: '团队成员',
     },
   ]
   const onFetchMemberList = async (pageObjVal?: any, orderVal?: any) => {
@@ -162,7 +162,18 @@ const RightTable = () => {
       pageSize,
     })
   }
-  // const onTableChange = () => {}
+  const onEditConfirm = async () => {
+    const value = await form.validateFields()
+    try {
+      await services.setting.changeMemberRole({
+        id: activeTeamId,
+        type: value?.team_is_admin,
+        user_id: activeMember.user_id,
+      })
+      setIsVisible(false)
+      onFetchMemberList()
+    } catch (error) {}
+  }
 
   const onDelConfirm = async () => {
     if (activeMember?.team_is_admin === 1) {
@@ -192,13 +203,14 @@ const RightTable = () => {
   }
 
   const teamGetForm = (row?: any) => {
+    form.setFieldsValue(row)
     return (
       <div style={{ margin: '0 24px' }}>
-        <TitleStyle>设置【张三】在团队中的角色</TitleStyle>
+        <TitleStyle>设置【{row.name}】在团队中的角色</TitleStyle>
         <FormStyle name="basic" form={form} initialValues={{ remember: true }}>
           <Form.Item
             label="团队角色"
-            name="username"
+            name="team_is_admin"
             rules={[{ required: true, message: '请输入团队名称' }]}
           >
             <SelectStyle
@@ -283,7 +295,6 @@ const RightTable = () => {
             setDelIsVisible(true)
           }}
           dataSource={membersList?.list}
-          // onChange={onTableChange}
         />
       </TableBox>
       <PaginationBox>
@@ -300,6 +311,7 @@ const RightTable = () => {
         children={editForm}
         hasFooter={type === 'detail'}
         onClose={() => setIsVisible(false)}
+        onConfirm={onEditConfirm}
       />
 
       <DeleteConfirm

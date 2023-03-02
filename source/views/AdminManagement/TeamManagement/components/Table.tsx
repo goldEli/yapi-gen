@@ -83,9 +83,10 @@ const Table = (props: any) => {
     {
       align: 'left',
       title: '团队角色',
-      dataIndex: 'teams',
-      key: 'teams',
-      render: (text: any, record: any) => text?.map((i: any) => i.name)?.join(),
+      dataIndex: 'team_is_admin',
+      key: 'team_is_admin',
+      render: (text: any, record: any) =>
+        text === 1 ? '团队管理' : '团队成员',
     },
     {
       width: 196,

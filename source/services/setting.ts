@@ -192,3 +192,9 @@ export const getMemberList: any = async (parmas: any) => {
   const response = await http.get<any>('/b/company/teams/member', parmas)
   return response
 }
+
+// 团队成员权限变更
+export const changeMemberRole: any = async (parmas: any) => {
+  const response = await http.put<any>('/b/company/teams/member_change', parmas)
+  return response
+}
