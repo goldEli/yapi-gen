@@ -11,7 +11,6 @@
 /* eslint-disable react/no-danger */
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import TagComponent from '../../components/TagComponent'
 import DemandStatus from '../../components/DemandStatus'
 import UploadAttach from '@/components/UploadAttach'
 import { useSearchParams } from 'react-router-dom'
@@ -28,6 +27,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { message } from 'antd'
 import { setDemandInfo } from '@store/demand'
 import { useDispatch, useSelector } from '@store/index'
+import TagComponent from '@/components/TagComponent'
 
 const WrapLeft = styled.div({
   width: '100%',
@@ -168,6 +168,7 @@ const WrapLeftBox = () => {
           <InfoItem>
             <Label>{t('common.tag')}</Label>
             <TagComponent
+              demandDetail={demandInfo}
               defaultList={tagList}
               canAdd
               addWrap={

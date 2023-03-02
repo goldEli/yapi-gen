@@ -1,35 +1,53 @@
 /* eslint-disable no-duplicate-imports */
 import { createSlice } from '@reduxjs/toolkit'
-import { companyTeamsList } from './thunk'
+import { companyTeamsList, getMemberList, getDepartmentUserList } from './thunk'
 
 export interface CounterState {
-  teamsMembersList: any
-  teamsList: any
+  membersList: any
+  teamsList: any[]
+  activeTeamId: string | number | null
+  departmentUserList: any[]
 }
+
 const initialState: CounterState = {
-  teamsMembersList: [],
+  membersList: null,
   teamsList: [],
+  activeTeamId: null,
+  departmentUserList: [],
 }
 
 export const counterSlice = createSlice({
-  name: 'user',
+  name: 'team',
   initialState,
   reducers: {
     setTeamsMembersList: (state, action) => {
-      state.teamsMembersList = action.payload
+      state.membersList = action.payload
+    },
+    setTeamsList: (state, action) => {
+      state.teamsList = action.payload
+    },
+    setActiveTeamId: (state, action) => {
+      state.activeTeamId = action.payload
     },
   },
   extraReducers(builder) {
-    builder.addCase(companyTeamsList.fulfilled, (state, action) => {
-      state.teamsMembersList = [
-        {
-          title: '123',
-        },
-      ]
-    })
+    builder
+      .addCase(companyTeamsList.fulfilled, (state, action) => {
+        state.teamsList = action.payload.data
+        state.teamsList[0].active = true
+      })
+      .addCase(getMemberList.fulfilled, (state, action) => {
+        state.membersList = {
+          list: action.payload.data?.list,
+          pager: action.payload.data?.pager,
+        }
+      })
+      .addCase(getDepartmentUserList.fulfilled, (state, action) => {
+        state.departmentUserList = action.payload
+      })
   },
 })
 
-export const { setTeamsMembersList } = counterSlice.actions
+export const { setTeamsMembersList, setTeamsList } = counterSlice.actions
 
 export default counterSlice.reducer

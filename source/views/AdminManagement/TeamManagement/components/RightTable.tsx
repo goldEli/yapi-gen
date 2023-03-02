@@ -1,12 +1,22 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
+/* eslint-disable no-empty */
 import styled from '@emotion/styled'
 import HeaderSearch from './HeaderSearch'
 import Table from './Table'
 import Pagination from '@/components/TablePagination'
 import CommonModal from '@/components/CommonModal'
-import { useState } from 'react'
-import { Form, Select } from 'antd'
+import { useState, useEffect } from 'react'
+import { Form, Select, message } from 'antd'
 import IconFont from '@/components/IconFont'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import { useDispatch, useSelector } from '@store/index'
+import { getMemberList } from '@store/teams/thunk'
+import * as services from '@/services'
+import AddMemberCommonModal from './CommonModal'
+import CommonUserAvatar from '@/components/CommonUserAvatar'
+import { GENDER_MAP } from '@/constants'
+
 const RightWrap = styled.div`
   width: 100%;
   padding: 0 24px;
@@ -105,29 +115,102 @@ const RightItemIcon = styled.span`
   font-weight: 500;
 `
 const RightTable = () => {
+  const dispatch = useDispatch()
+  const { membersList, activeTeamId } = useSelector(s => s.teams)
   const [form] = Form.useForm()
   const [isVisible, setIsVisible] = useState(false)
   const [editForm, setEditForm] = useState<any>()
   const [delIsVisible, setDelIsVisible] = useState(false)
   const [type, setType] = useState('')
+  const [activeMember, setActiveMember] = useState<any>(null)
+  const [searchVal, setSearchVal] = useState('')
+  const [pageObj, setPageObj] = useState<any>({ page: 1, pageSize: 20 })
+  const [addMemberVisible, setAddMemberVisible] = useState(false)
   const options = [
     {
-      value: '123',
-      label: '132',
+      value: 1,
+      label: '团队管理',
     },
     {
-      value: '123',
-      label: '132',
+      value: 2,
+      label: '团队成员',
     },
   ]
+  const onFetchMemberList = async (pageObjVal?: any, orderVal?: any) => {
+    const param = {
+      order: orderVal?.value,
+      orderkey: orderVal?.key,
+      pagesize: pageObjVal?.size || 20,
+      page: pageObjVal?.page || 1,
+      search: {
+        team_id: activeTeamId,
+        keyword: searchVal || '',
+      },
+    }
+    await dispatch(getMemberList(param))
+  }
+
+  useEffect(() => {
+    if (activeTeamId) {
+      onFetchMemberList()
+    }
+  }, [activeTeamId, searchVal])
+  const onChangePage = (page: number, pageSize: number) => {
+    setPageObj({ page, pageSize })
+    onFetchMemberList({
+      page,
+      pageSize,
+    })
+  }
+  const onEditConfirm = async () => {
+    const value = await form.validateFields()
+    try {
+      await services.setting.changeMemberRole({
+        id: activeTeamId,
+        type: value?.team_is_admin,
+        user_id: activeMember.user_id,
+      })
+      setIsVisible(false)
+      onFetchMemberList()
+    } catch (error) {}
+  }
+
+  const onDelConfirm = async () => {
+    if (activeMember?.team_is_admin === 1) {
+      message.warning('团队管理员不能被移除')
+      setDelIsVisible(false)
+      return
+    }
+    try {
+      await services.setting.deleteMemberList({
+        id: activeMember?.team_id,
+        user_id: activeMember?.user_id,
+      })
+      setDelIsVisible(false)
+      onFetchMemberList()
+    } catch (error) {}
+  }
+
+  const onAddConfirm = async (list: any[]) => {
+    try {
+      await services.setting.teamsMember({
+        id: activeTeamId,
+        user_ids: list.map(i => i.id),
+      })
+      setAddMemberVisible(false)
+      onFetchMemberList()
+    } catch (error) {}
+  }
+
   const teamGetForm = (row?: any) => {
+    form.setFieldsValue(row)
     return (
       <div style={{ margin: '0 24px' }}>
-        <TitleStyle>设置【张三】在团队中的角色</TitleStyle>
+        <TitleStyle>设置【{row.name}】在团队中的角色</TitleStyle>
         <FormStyle name="basic" form={form} initialValues={{ remember: true }}>
           <Form.Item
             label="团队角色"
-            name="username"
+            name="team_is_admin"
             rules={[{ required: true, message: '请输入团队名称' }]}
           >
             <SelectStyle
@@ -142,58 +225,65 @@ const RightTable = () => {
       </div>
     )
   }
+
   const personalData = (row: any) => {
     return (
       <PersonStyle>
         <Row>
           <LeftItem>头像</LeftItem>
-          <RightItemIcon>李</RightItemIcon>
+          <CommonUserAvatar avatar={row.avatar} size="small" />
         </Row>
         <Row>
           <LeftItem>手机号</LeftItem>
-          <RightItem>18866686868</RightItem>
+          <RightItem>{row.phone}</RightItem>
         </Row>
         <Row>
           <LeftItem>登录邮箱</LeftItem>
-          <RightItem>18866686868</RightItem>
+          <RightItem>{row.email}</RightItem>
         </Row>
         <Row>
           <LeftItem>昵称</LeftItem>
-          <RightItem>18866686868</RightItem>
+          <RightItem>{row.nickname}</RightItem>
         </Row>
         <Row>
           <LeftItem>姓名</LeftItem>
-          <RightItem>18866686868</RightItem>
+          <RightItem>{row.name}</RightItem>
         </Row>
         <Row>
           <LeftItem>性别</LeftItem>
-          <RightItem>18866686868</RightItem>
+          <RightItem>{GENDER_MAP[row.gender]}</RightItem>
         </Row>
         <Row>
           <LeftItem>所属部门</LeftItem>
-          <RightItem>18866686868</RightItem>
+          <RightItem>{row.department_name}</RightItem>
         </Row>
         <Row>
           <LeftItem>职位</LeftItem>
-          <RightItem>18866686868</RightItem>
+          <RightItem>{row.position_name}</RightItem>
         </Row>
         <Row>
           <LeftItem>所在团队</LeftItem>
-          <RightItem>18866686868</RightItem>
+          <RightItem>{row.teams?.map((i: any) => i.name)?.join()}</RightItem>
         </Row>
         <Row className="row">
           <LeftItem>权限组</LeftItem>
-          <RightItem>18866686868</RightItem>
+          <RightItem>
+            {row.team_is_admin === 1 ? '团队管理' : '团队成员'}
+          </RightItem>
         </Row>
       </PersonStyle>
     )
   }
   return (
     <RightWrap>
-      <HeaderSearch />
+      <HeaderSearch
+        onSetSearchVal={setSearchVal}
+        onShowAddMemberModal={() => setAddMemberVisible(true)}
+      />
       <TableBox>
         <Table
           onEditRow={(row: any, state: string) => {
+            setActiveMember(row)
             setIsVisible(true),
               setType(state),
               setEditForm(
@@ -201,34 +291,45 @@ const RightTable = () => {
               )
           }}
           onDelRow={(row: any) => {
+            setActiveMember(row)
             setDelIsVisible(true)
           }}
+          dataSource={membersList?.list}
         />
       </TableBox>
       <PaginationBox>
         <Pagination
-          total={100}
-          pageSize={20}
-          currentPage={1}
-          onChange={(page: number, pageSize: number) => 123}
+          total={membersList?.pager?.total}
+          pageSize={membersList?.pager?.pagesize}
+          currentPage={membersList?.pager?.page}
+          onChange={onChangePage}
         />
       </PaginationBox>
       <CommonModal
         title={type === 'detail' ? '个人资料' : '编辑成员'}
         isVisible={isVisible}
         children={editForm}
-        hasFooter={type === 'detail' ? true : false}
+        hasFooter={type === 'detail'}
         onClose={() => setIsVisible(false)}
+        onConfirm={onEditConfirm}
       />
 
       <DeleteConfirm
         title="移除确认"
         text="确认移除该成员？"
         isVisible={delIsVisible}
-        onConfirm={() => setDelIsVisible(false)}
+        onConfirm={onDelConfirm}
         onChangeVisible={() => setDelIsVisible(false)}
-      ></DeleteConfirm>
+      />
+
+      <AddMemberCommonModal
+        title="添加成员"
+        isVisible={addMemberVisible}
+        onClose={() => setAddMemberVisible(false)}
+        onConfirm={onAddConfirm}
+      />
     </RightWrap>
   )
 }
+
 export default RightTable

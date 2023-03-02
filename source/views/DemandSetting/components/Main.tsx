@@ -1,7 +1,11 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import TabsDragging from './TabsDragging'
+import { getCategoryConfigList } from '@store/category/thunk'
+import { useDispatch } from 'react-redux'
+import { useSelector } from '@store/index'
+
 const TitleStyle = styled.div`
   display: flex;
   align-items: center;
@@ -14,6 +18,9 @@ const TitleStyle = styled.div`
 const Main = () => {
   const [infoIcon, setInfoIcon] = useState(true)
   const [moreIcon, setMoreIcon] = useState(false)
+  const { projectInfo } = useSelector(store => store.project)
+  const { activeCategory } = useSelector(store => store.category)
+  const dispatch = useDispatch()
   const [list, setList] = useState<any>(() =>
     [1, 2, 3, 4, 5].map(v => ({
       key: v,
@@ -28,42 +35,49 @@ const Main = () => {
       })),
     )
   }
+  const getCategoryConfigDataList = async () => {
+    const data = await dispatch(
+      getCategoryConfigList({
+        projectId: projectInfo.id,
+        categoryId: activeCategory.id,
+      }),
+    )
+  }
+  useEffect(() => {
+    getCategoryConfigDataList()
+  }, [])
   return (
     <div style={{ flex: 1 }}>
-      <>
-        <TitleStyle onClick={() => setInfoIcon(!infoIcon)}>
-          <CommonIconFont
-            type={infoIcon ? 'down-icon' : 'right-icon'}
-            size={14}
-            color="var(--neutral-n3)"
-          />
-          <span>基本信息</span>
-        </TitleStyle>
-        {infoIcon && (
-          <TabsDragging
-            onChange={(item: any) => onChangeDragging(item)}
-            list={list}
-            setList={setList}
-          />
-        )}
-      </>
-      <>
-        <TitleStyle onClick={() => setMoreIcon(!moreIcon)}>
-          <CommonIconFont
-            type={moreIcon ? 'down-icon' : 'right-icon'}
-            size={14}
-            color="var(--neutral-n3)"
-          />
-          <span>更多折叠</span>
-        </TitleStyle>
-        {moreIcon && (
-          <TabsDragging
-            onChange={(item: any) => onChangeDragging(item)}
-            list={list}
-            setList={setList}
-          />
-        )}
-      </>
+      <TitleStyle onClick={() => setInfoIcon(!infoIcon)}>
+        <CommonIconFont
+          type={infoIcon ? 'down-icon' : 'right-icon'}
+          size={14}
+          color="var(--neutral-n3)"
+        />
+        <span>基本信息</span>
+      </TitleStyle>
+      {infoIcon && (
+        <TabsDragging
+          onChange={(item: any) => onChangeDragging(item)}
+          list={list}
+          setList={setList}
+        />
+      )}
+      <TitleStyle onClick={() => setMoreIcon(!moreIcon)}>
+        <CommonIconFont
+          type={moreIcon ? 'down-icon' : 'right-icon'}
+          size={14}
+          color="var(--neutral-n3)"
+        />
+        <span>更多折叠</span>
+      </TitleStyle>
+      {moreIcon && (
+        <TabsDragging
+          onChange={(item: any) => onChangeDragging(item)}
+          list={list}
+          setList={setList}
+        />
+      )}
     </div>
   )
 }

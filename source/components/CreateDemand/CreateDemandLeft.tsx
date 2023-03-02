@@ -609,6 +609,7 @@ const CreateDemandLeft = (props: Props) => {
           )?.length > 0 && (
             <Form.Item name="tagIds" label={t('common.tag')}>
               <TagComponent
+                demandDetail={props.demandDetail}
                 defaultList={tagCheckedList}
                 onChangeTag={onChangeTag}
                 isQuick

@@ -158,6 +158,7 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
           </div>
         </SideFooter>
       </WrapDetail>
+
       <WrapSet ref={projectSetSide}>
         <SideTop>
           <img src={projectInfo.cover} alt="" />

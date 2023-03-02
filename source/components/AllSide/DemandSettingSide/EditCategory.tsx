@@ -9,14 +9,15 @@ import { Input, Form, message } from 'antd'
 import styled from '@emotion/styled'
 import { useEffect, useRef, useState } from 'react'
 import ChooseColor from './ChooseColor'
-import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from '@store/index'
+import { getCategoryIconList } from '@/services/demand'
 import {
   addStoryConfigCategory,
   updateStoryConfigCategory,
 } from '@/services/project'
+import { useSearchParams } from 'react-router-dom'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -55,31 +56,35 @@ interface EditorProps {
 }
 
 const EditorCategory = (props: EditorProps) => {
-  const { colorList } = useSelector(store => store.project)
   const [t] = useTranslation()
   const [name, setName] = useState<any>('')
-  const [normalColor, setNormalColor] = useState<any>('#2877FF')
+  const [normalColor, setNormalColor] = useState<any>('')
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const inputRefDom = useRef<HTMLInputElement>(null)
-
-  useEffect(() => {
+  const [colorList, setColorList] = useState<any>()
+  const getIconList = async () => {
+    const list: any = await getCategoryIconList(52)
+    setColorList(list.data)
+    setNormalColor(list.data[0].path)
     form.setFieldsValue({
-      color: '#2877FF',
+      color: list.data[0].path,
     })
+  }
+  useEffect(() => {
+    if (props.isVisible) {
+      getIconList()
+    }
   }, [props.isVisible])
 
   useEffect(() => {
     if (props?.item?.id) {
       form.setFieldsValue(props?.item)
-      setNormalColor(props?.item?.color)
+      setNormalColor(props?.item?.path)
       setName(props?.item?.name)
     } else {
       form.resetFields()
-      form.setFieldsValue({
-        color: '#2877FF',
-      })
       setName('')
     }
     setTimeout(() => {
@@ -92,7 +97,7 @@ const EditorCategory = (props: EditorProps) => {
     props.onUpdate()
     setTimeout(() => {
       form.resetFields()
-      setNormalColor('#2877FF')
+      setNormalColor('')
       setName('')
     }, 100)
   }
@@ -130,7 +135,7 @@ const EditorCategory = (props: EditorProps) => {
     setTimeout(() => {
       form.resetFields()
       setName('')
-      setNormalColor('#2877FF')
+      setNormalColor('')
     }, 100)
   }
 
@@ -195,6 +200,7 @@ const EditorCategory = (props: EditorProps) => {
         <Form.Item label={t('newlyAdd.chooseIcon')} name="color">
           <ChooseColor
             color={normalColor}
+            colorList={colorList}
             onChangeValue={val => onChangeValue(val)}
           />
         </Form.Item>

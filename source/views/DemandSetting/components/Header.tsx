@@ -4,6 +4,13 @@ import { Switch } from 'antd'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectInfoValues } from '@store/project'
 import { useEffect, useState } from 'react'
+import DeleteConfirm from '@/components/DeleteConfirm'
+import { useTranslation } from 'react-i18next'
+import { deleteStoryConfigCategory } from '@/services/project'
+import { useNavigate } from 'react-router-dom'
+import { encryptPhp } from '@/tools/cryptoPhp'
+import { setStartUsing } from '@store/category'
+
 const HeaderWrap = styled.div`
   height: 66px;
   display: flex;
@@ -55,21 +62,51 @@ const BtnStyle = styled.div`
   }
 `
 const Header = () => {
+  const [t] = useTranslation()
   const dispatch = useDispatch()
-  const { startUsing } = useSelector(store => store.demand)
+  const { startUsing, activeCategory } = useSelector(store => store.category)
+  const { projectInfo } = useSelector(store => store.project)
   const [checked, setChecked] = useState(startUsing)
+  const [isDelete, setIsDelete] = useState(false)
+  const navigate = useNavigate()
+
   useEffect(() => {
     setChecked(startUsing ? true : false)
   }, [startUsing])
+
+  // 删除需求类别
+  const onDeleteConfirm = async () => {
+    // await deleteStoryConfigCategory({
+    //   id: props.row.id,
+    //   projectId: paramsData.id,
+    // })
+  }
+
+  // 点击跳转配置工作流
+  const onSetWorkFlow = () => {
+    const params = encryptPhp(
+      JSON.stringify({
+        id: projectInfo.id,
+        pageIdx: 'work',
+        categoryItem: activeCategory,
+      }),
+    )
+    navigate(`/ProjectManagement/WorkFlow?data=${params}`)
+  }
+
   return (
     <HeaderWrap>
+      <DeleteConfirm
+        isVisible={isDelete}
+        text={t('newlyAdd.confirmDelCategory')}
+        onChangeVisible={() => setIsDelete(!isDelete)}
+        onConfirm={onDeleteConfirm}
+      />
       <LeftMsg>
         <CommonIconFont type="left" size={24} />
         <MsgContent>
-          <div>策划需求</div>
-          <div>
-            需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述
-          </div>
+          <div>{activeCategory.name}</div>
+          <div>{activeCategory.remark || '--'}</div>
         </MsgContent>
       </LeftMsg>
       <RightOperate>
@@ -78,13 +115,13 @@ const Header = () => {
           <Switch
             checked={checked}
             onChange={e => {
-              setChecked(e), dispatch(setProjectInfoValues(e))
+              setChecked(e), dispatch(setStartUsing(e))
             }}
           />
         </SwitchStyle>
-        <BtnStyle>配置工作流</BtnStyle>
+        <BtnStyle onClick={onSetWorkFlow}>配置工作流</BtnStyle>
         <BtnStyle>编辑</BtnStyle>
-        <BtnStyle>删除</BtnStyle>
+        <BtnStyle onClick={() => setIsDelete(true)}>删除</BtnStyle>
       </RightOperate>
     </HeaderWrap>
   )
