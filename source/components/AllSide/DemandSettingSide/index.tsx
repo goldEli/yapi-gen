@@ -23,7 +23,7 @@ import {
 } from './style'
 import Dragging from './Dragging'
 import { setStartUsing } from '@store/category'
-
+import { setActiveCategory } from '@store/category/index'
 const ProjectDetailSide = (props: { leftWidth: number }) => {
   const [t] = useTranslation()
   const { startUsing, categoryList } = useSelector(store => store.category)
@@ -85,11 +85,14 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
   }
   useEffect(() => {
     setTabsActive(startUsing ? 0 : 1)
+    let dataItem = null
     if (startUsing) {
-      setList(categoryList?.filter((el: any) => el.status === 1))
+      dataItem = categoryList?.filter((el: any) => el.status === 1)
     } else {
-      setList(categoryList?.filter((el: any) => el.status !== 1))
+      dataItem = categoryList?.filter((el: any) => el.status !== 1)
     }
+    setList(dataItem)
+    dispatch(setActiveCategory(dataItem.find((item: any) => item.active)))
   }, [startUsing, categoryList])
 
   return (
