@@ -5,6 +5,7 @@ import { useSelector } from '@store/index'
 import { Menu } from 'antd'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { fromPairs } from 'lodash'
 
 const AdminSideWrap = styled.div`
   /* background-color: var(--neutral-n6-d1); */
@@ -79,9 +80,13 @@ const IconFontStyle = styled(IconFont)`
 const AdminSide = (props: any) => {
   const navigate = useNavigate()
   const { currentMenu, userInfo } = useSelector(store => store.user)
-  const [sideList, setSideList] = useState<any>([])
 
-  // side需要做权限，currentMenu.children 里面有的才显示
+  const currentMenuMap = fromPairs(
+    currentMenu.children.map((i: any) => [i.url, i]),
+  )
+  const onFilter = (list: any[]) => {
+    return list.filter(i => (i.path ? currentMenuMap[i.path] : true))
+  }
   const side: any = [
     {
       label: '公司信息',
@@ -130,17 +135,22 @@ const AdminSide = (props: any) => {
         {
           label: '登录日志',
           key: '1-14',
-          path: '/AdminManagement/LoginManagement',
+          path: '/AdminManagement/LoginManagement2',
         },
       ],
     },
   ]
+  const sideList = onFilter(side).map(item => {
+    return {
+      ...item,
+      children: item.children ? onFilter(item.children) : null,
+    }
+  })
 
   const onMenuClick = (e: any) => {
     const pathObject = side.filter((i: any) => i.key === e.key)[0]
-    navigate(pathObject.path)
+    pathObject.path && navigate(pathObject.path)
   }
-
   return (
     <AdminSideWrap>
       <HeaderWrap>
@@ -158,7 +168,7 @@ const AdminSide = (props: any) => {
         defaultSelectedKeys={['1']}
         defaultOpenKeys={['sub1']}
         mode="inline"
-        items={side}
+        items={sideList}
         onSelect={onMenuClick}
       />
     </AdminSideWrap>
