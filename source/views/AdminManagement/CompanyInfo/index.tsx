@@ -8,28 +8,27 @@ import { Space } from 'antd'
 import { useSelector } from '@store/index'
 
 const Header = styled.div({
-  height: 64,
   background: 'white',
-  lineHeight: '64px',
   position: 'sticky',
   top: 0,
   zIndex: 1,
+  padding: '24px 0',
   span: {
     fontSize: 16,
     fontWeight: 400,
-    color: 'black',
+    color: 'var(--neutral-n1-d1)',
     paddingLeft: 24,
+    lineHeight: '24px',
   },
 })
 
 const Content = styled.div({
-  padding: 16,
   background: '#F5F7FA',
   height: 'calc(100% - 64px)',
 })
 
 const InfoWrap = styled.div({
-  padding: 24,
+  padding: '0 24px',
   background: 'white',
   height: '100%',
   borderRadius: 6,
@@ -56,10 +55,10 @@ const Title = styled.div({
 })
 
 const Subtext = styled.div({
-  color: '#646566',
+  color: 'var(--neutral-n2)',
   fontSize: 14,
   lineHeight: '24px',
-  marginTop: 8,
+  marginTop: 4,
 })
 
 const InfoBottom = styled.div({
@@ -70,10 +69,10 @@ const InfoBottom = styled.div({
 
 export const BottomTitle = styled.div({
   fontSize: 14,
-  color: 'black',
+  color: 'var(--neutral-n1-d1)',
   fontWeight: 400,
-  paddingLeft: 8,
-  borderLeft: '3px solid #2877ff',
+  paddingLeft: 11,
+  borderLeft: '3px solid var(--primary-d1)',
   marginBottom: 16,
   lineHeight: '16px',
 })
@@ -82,13 +81,13 @@ const CardWrap = styled.div({
   height: 80,
   width: 160,
   borderRadius: 6,
-  background: '#F9FAFA',
+  background: 'var(--hover-d2)',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
   div: {
-    color: '#323233',
+    color: 'var(--neutral-n1-d1)',
     fontSize: 28,
     fontWeight: 500,
     lineHeight: '28px',
@@ -96,7 +95,7 @@ const CardWrap = styled.div({
   span: {
     fontSize: 14,
     fontWeight: 400,
-    color: '#969799',
+    color: 'var(--neutral-n3)',
   },
 })
 
@@ -123,7 +122,9 @@ const CompanyInfo = () => {
               }}
             >
               <CardWrap>
-                <div>{companyInfo.projectCount}</div>
+                <div style={{ fontSize: 32, lineHeight: '44px' }}>
+                  {companyInfo.projectCount}
+                </div>
                 <span>{t('setting.currentProject')}</span>
               </CardWrap>
               <CardWrap>
