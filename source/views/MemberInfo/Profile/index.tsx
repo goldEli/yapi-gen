@@ -9,7 +9,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { css } from '@emotion/css'
 import { ChartsItem, HiddenText, SecondTitle } from '@/components/StyleCommon'
 import { Timeline, message, Pagination } from 'antd'
@@ -20,7 +20,7 @@ import IconFont from '@/components/IconFont'
 import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
-import { getParamsData, openDetail } from '@/tools'
+import { getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { OmitText } from '@star-yun/ui'
 import useSetTitle from '@/hooks/useSetTitle'
@@ -176,6 +176,7 @@ const Profile = () => {
   const [total, setTotal] = useState<number>(0)
   const [loadingState, setLoadingState] = useState<boolean>(false)
   const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
   const paramsData = getParamsData(searchParams)
   const { isMember, userId, id } = paramsData
   asyncSetTtile(
@@ -288,7 +289,7 @@ const Profile = () => {
       }),
     )
 
-    openDetail(`/ProjectManagement/Demand?data=${params}`)
+    navigate(`/ProjectManagement/Demand?data=${params}`)
   }
   const nextMonth = async () => {
     setMonthIndex(monthIndex - 1)

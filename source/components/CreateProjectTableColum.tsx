@@ -147,18 +147,6 @@ export const useDynamicColumns = (state: any) => {
                 }}
                 alt=""
               />
-              {/* <CategoryWrap
-                color={record.categoryColor}
-                bgColor={
-                  colorList?.filter(
-                    (k: any) => k.key === record.categoryColor,
-                  )[0]?.bgColor
-                }
-                style={{ marginLeft: 0 }}
-              >
-                {' '}
-                {record.category}
-              </CategoryWrap> */}
             </Tooltip>
             <TableQuickEdit
               type="text"

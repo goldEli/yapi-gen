@@ -12,10 +12,9 @@ import { TableStyleBox, SecondButton } from '@/components/StyleCommon'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import { getIsPermission, getParamsData, openDetail } from '@/tools/index'
+import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
-import { encryptPhp } from '@/tools/cryptoPhp'
 import { useDynamicColumns } from '@/components/CreateProjectTableColum'
 import MoreDropdown from '@/components/MoreDropdown'
 import { useDispatch, useSelector } from '@store/index'
@@ -34,6 +33,7 @@ import {
 } from '@store/demand'
 import PaginationBox from '@/components/TablePagination'
 import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -84,6 +84,7 @@ const DemandWrap = (props: Props) => {
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
   const dataWrapRef = useRef<HTMLDivElement>(null)
+  const [openDemandDetail] = useOpenDemandDetail()
 
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
@@ -215,10 +216,7 @@ const DemandWrap = (props: Props) => {
   }
 
   const onClickItem = (item: any) => {
-    const params = encryptPhp(
-      JSON.stringify({ type: 'info', id: projectId, demandId: item.id }),
-    )
-    openDetail(`/ProjectManagement/Demand?data=${params}`)
+    openDemandDetail(item, projectId, item.id)
   }
 
   const onChangeState = async (item: any) => {

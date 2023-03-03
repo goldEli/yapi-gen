@@ -16,7 +16,6 @@ import IconFont from '@/components/IconFont'
 import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
-import { openDetail } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { OmitText } from '@star-yun/ui'
 import useSetTitle from '@/hooks/useSetTitle'
@@ -28,6 +27,7 @@ import {
   getUserFeedList,
 } from '@/services/mine'
 import PaginationBox from '@/components/TablePagination'
+import { useNavigate } from 'react-router-dom'
 
 const Mygante = styled(Gantt)`
   min-width: 1000px;
@@ -148,6 +148,7 @@ const Profile = () => {
   const [monthIndex, setMonthIndex] = useState<any>(moment().month())
   const [pageObj, setPageObj] = useState({ page: 1, size: 20 })
   const [total, setTotal] = useState<number>(0)
+  const navigate = useNavigate()
   const [loadingState, setLoadingState] = useState<boolean>(false)
   const changeMonth = async () => {
     const res2 = await getMineGatte({
@@ -239,7 +240,7 @@ const Profile = () => {
       }),
     )
 
-    openDetail(`/ProjectManagement/Demand?data=${params}`)
+    navigate(`/ProjectManagement/Demand?data=${params}`)
   }
   const nextMonth = async () => {
     setMonthIndex(monthIndex - 1)

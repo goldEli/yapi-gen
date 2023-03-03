@@ -1,18 +1,29 @@
+/* eslint-disable react/jsx-no-useless-fragment */
+/* eslint-disable react/jsx-no-leaked-render */
+/* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/no-danger */
 // 需求详情弹窗预览模式
 
-import { getDemandInfo } from '@/services/demand'
-import { getProjectInfo, getProjectInfoValues } from '@/services/project'
-import { openDetail } from '@/tools'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
+import {
+  deleteDemand,
+  getDemandInfo,
+  updateDemandStatus,
+} from '@/services/demand'
+import { getProjectInfo } from '@/services/project'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import { useDispatch, useSelector } from '@store/index'
-import { setProjectInfo, setProjectInfoValues } from '@store/project'
-import { Drawer, Popover, Space } from 'antd'
+import { setProjectInfo } from '@store/project'
+import { Drawer, message, Popover, Space } from 'antd'
 import { createRef, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import ChangeStatusPopover from '../ChangeStatusPopover'
 import CommonIconFont from '../CommonIconFont'
+import DeleteConfirm from '../DeleteConfirm'
 import { DemandOperationDropdownMenu } from '../DemandComponent/DemandOperationDropdownMenu'
+import StateTag from '../StateTag'
 import BasicDemand from './BasicDemand'
 import ChildrenDemand from './ChildrenDemand'
 import DemandComment from './DemandComment'
@@ -28,6 +39,7 @@ import {
   CollapseItem,
   CollapseItemTitle,
   CollapseItemContent,
+  DrawerHeader,
 } from './style'
 
 const DemandDetailDrawer = () => {
@@ -52,11 +64,21 @@ const DemandDetailDrawer = () => {
   const { isDemandDetailDrawerVisible, demandDetailDrawerProps } = useSelector(
     store => store.demand,
   )
+  const { projectInfo } = useSelector(store => store.project)
+  const [t] = useTranslation()
   const dispatch = useDispatch()
   const [isMoreVisible, setIsMoreVisible] = useState(false)
+  const [isDelete, setIsDelete] = useState(false)
+  const [deleteId, setDeleteId] = useState(0)
   const [drawerInfo, setDrawerInfo] = useState<any>({})
   const [showState, setShowState] = useState<any>(normalState)
   const commentDom: any = createRef()
+  const [openDemandDetail] = useOpenDemandDetail()
+
+  const isCanEdit =
+    projectInfo.projectPermissions?.length > 0 &&
+    projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
+      ?.length > 0
 
   const modeList = [
     { name: '详细信息', key: 'detailInfo', content: '' },
@@ -67,7 +89,8 @@ const DemandDetailDrawer = () => {
 
   const getProjectData = async () => {
     const response = await getProjectInfo({
-      projectId: demandDetailDrawerProps.project_id,
+      projectId:
+        demandDetailDrawerProps.project_id ?? demandDetailDrawerProps.projectId,
     })
     dispatch(setProjectInfo(response))
   }
@@ -75,8 +98,18 @@ const DemandDetailDrawer = () => {
   // 获取需求详情
   const getDemandDetail = async () => {
     const info = await getDemandInfo({
-      projectId: demandDetailDrawerProps.project_id,
+      projectId:
+        demandDetailDrawerProps.project_id ?? demandDetailDrawerProps.projectId,
       id: demandDetailDrawerProps?.id,
+    })
+    info.hierarchy.push({
+      id: info.id,
+      categoryId: info.category,
+      prefixKey: info.prefixKey,
+      projectPrefix: info.projectPrefix,
+      categoryAttachment: info.category_attachment,
+      parentId: info.parentId,
+      name: info.name,
     })
     setDrawerInfo(info)
   }
@@ -104,7 +137,8 @@ const DemandDetailDrawer = () => {
         demandId: drawerInfo.id,
       }),
     )
-    openDetail(`/ProjectManagement/Demand?data=${params}`)
+    const url = `/ProjectManagement/Demand?data=${params}`
+    window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
   }
 
   // 点击编辑
@@ -123,6 +157,8 @@ const DemandDetailDrawer = () => {
   // 点击删除
   const onDeleteChange = (item: any) => {
     setIsMoreVisible(false)
+    setDeleteId(item.id)
+    setIsDelete(true)
     // props.onDelete(item)
     // setComputedTopId(item?.topId)
   }
@@ -134,7 +170,9 @@ const DemandDetailDrawer = () => {
     dispatch(setIsCreateDemandVisible(true))
     dispatch(
       setCreateDemandProps({
-        projectId: demandDetailDrawerProps.project_id,
+        projectId:
+          demandDetailDrawerProps.project_id ??
+          demandDetailDrawerProps.projectId,
         isChild: true,
         parentId: item.id,
       }),
@@ -153,6 +191,41 @@ const DemandDetailDrawer = () => {
     setShowState(newState)
   }
 
+  // 是否审核
+  const onExamine = () => {
+    message.warning(t('newlyAdd.underReview'))
+  }
+
+  // 修改状态
+  const onChangeStatus = async (value: any) => {
+    try {
+      await updateDemandStatus(value)
+      message.success(t('common.statusSuccess'))
+      getDemandDetail()
+    } catch (error) {
+      //
+    }
+  }
+
+  // 删除需求
+  const onDeleteConfirm = async () => {
+    try {
+      await deleteDemand({
+        projectId:
+          demandDetailDrawerProps.project_id ??
+          demandDetailDrawerProps.projectId,
+        id: deleteId,
+      })
+      message.success(t('common.deleteSuccess'))
+      setDeleteId(0)
+      setIsDelete(false)
+      onCancel()
+      // 更新列表
+    } catch (error) {
+      //
+    }
+  }
+
   useEffect(() => {
     if (isDemandDetailDrawerVisible) {
       getDemandDetail()
@@ -161,123 +234,176 @@ const DemandDetailDrawer = () => {
   }, [isDemandDetailDrawerVisible])
 
   return (
-    <Drawer
-      headerStyle={{ width: '100%' }}
-      closable={false}
-      placement="right"
-      bodyStyle={{ padding: 0 }}
-      width={640}
-      open={isDemandDetailDrawerVisible}
-      onClose={onCancel}
-      destroyOnClose
-      maskClosable={false}
-      mask={false}
-    >
-      <Header>
-        <Space size={16}>
-          <BackIcon onClick={onCancel}>
-            <CommonIconFont
-              type="right-02"
-              size={20}
-              color="var(--neutral-n1-d1)"
-            />
-          </BackIcon>
-          进行中
-        </Space>
-        <Space size={16}>
-          <ChangeIconGroup>
-            <div>
-              <CommonIconFont
-                type="up"
-                size={20}
-                color="var(--neutral-n1-d1)"
-              />
-            </div>
-            <div>
-              <CommonIconFont
-                type="down"
-                size={20}
-                color="var(--neutral-n1-d1)"
-              />
-            </div>
-          </ChangeIconGroup>
-          <ChangeIconBox onClick={onToDetail}>
-            <CommonIconFont
-              type="full-screen"
-              size={20}
-              color="var(--neutral-n1-d1)"
-            />
-          </ChangeIconBox>
-          <Popover
-            open={isMoreVisible}
-            onOpenChange={setIsMoreVisible}
-            placement="bottomRight"
-            trigger={['click', 'hover']}
-            getPopupContainer={n => n}
-            content={
-              <DemandOperationDropdownMenu
-                haveComment
-                onEditChange={onEditChange}
-                onDeleteChange={onDeleteChange}
-                onCreateChild={onCreateChild}
-                onAddComment={() => commentDom.current?.addComment()}
-                record={demandDetailDrawerProps}
-              />
-            }
-          >
-            <ChangeIconBox>
-              <CommonIconFont type="more" size={20} color="var(--neutral-n2)" />
-            </ChangeIconBox>
-          </Popover>
-        </Space>
-      </Header>
-      <Content>
-        <ParentBox size={8}>
-          <span>12212</span>
-          <span>1121212</span>
-        </ParentBox>
-        <DemandName>{drawerInfo.name}</DemandName>
-        {modeList.map((i: any) => (
-          <CollapseItem key={i.key}>
-            <CollapseItemTitle onClick={() => onChangeShowState(i)}>
-              <span>{i.name}</span>
-              <CommonIconFont
-                type={showState[i.key].isOpen ? 'up' : 'down'}
-                color="var(--neutral-n2)"
-              />
-            </CollapseItemTitle>
-            <CollapseItemContent
-              ref={showState[i.key].dom}
-              isOpen={showState[i.key].isOpen}
-            >
-              {i.key === 'detailInfo' && (
-                <DetailDemand detail={drawerInfo} onUpdate={getDemandDetail} />
-              )}
-              {i.key === 'detailDemands' && (
-                <ChildrenDemand
-                  detail={drawerInfo}
-                  isOpen={showState[i.key].isOpen}
+    <>
+      <DeleteConfirm
+        text={t('mark.del')}
+        isVisible={isDelete}
+        onChangeVisible={() => setIsDelete(!isDelete)}
+        onConfirm={onDeleteConfirm}
+      />
+      {isDemandDetailDrawerVisible && (
+        <Drawer
+          headerStyle={{ width: '100%' }}
+          closable={false}
+          placement="right"
+          bodyStyle={{ padding: 0 }}
+          width={640}
+          open={isDemandDetailDrawerVisible}
+          onClose={onCancel}
+          destroyOnClose
+          maskClosable={false}
+          mask={false}
+        >
+          <Header>
+            <Space size={16}>
+              <BackIcon onClick={onCancel}>
+                <CommonIconFont
+                  type="right-02"
+                  size={20}
+                  color="var(--neutral-n1-d1)"
                 />
-              )}
-              {i.key === 'basicInfo' && (
-                <BasicDemand
-                  detail={drawerInfo}
-                  isOpen={showState[i.key].isOpen}
-                  onUpdate={getDemandDetail}
+              </BackIcon>
+              <ChangeStatusPopover
+                isCanOperation={isCanEdit && !drawerInfo.isExamine}
+                projectId={drawerInfo.projectId}
+                record={drawerInfo}
+                onChangeStatus={onChangeStatus}
+              >
+                <StateTag
+                  onClick={drawerInfo.isExamine ? onExamine : void 0}
+                  isShow={isCanEdit || drawerInfo.isExamine}
+                  state={
+                    drawerInfo?.status?.is_start === 1 &&
+                    drawerInfo?.status?.is_end === 2
+                      ? 1
+                      : drawerInfo?.status?.is_end === 1 &&
+                        drawerInfo?.status?.is_start === 2
+                      ? 2
+                      : drawerInfo?.status?.is_start === 2 &&
+                        drawerInfo?.status?.is_end === 2
+                      ? 3
+                      : 0
+                  }
                 />
-              )}
-              {i.key === 'demandComment' && (
-                <DemandComment
-                  detail={drawerInfo}
-                  isOpen={showState[i.key].isOpen}
-                  onRef={commentDom}
+              </ChangeStatusPopover>
+            </Space>
+            <Space size={16}>
+              <ChangeIconGroup>
+                <div>
+                  <CommonIconFont
+                    type="up"
+                    size={20}
+                    color="var(--neutral-n1-d1)"
+                  />
+                </div>
+                <div>
+                  <CommonIconFont
+                    type="down"
+                    size={20}
+                    color="var(--neutral-n1-d1)"
+                  />
+                </div>
+              </ChangeIconGroup>
+              <ChangeIconBox onClick={onToDetail}>
+                <CommonIconFont
+                  type="full-screen"
+                  size={20}
+                  color="var(--neutral-n1-d1)"
                 />
-              )}
-            </CollapseItemContent>
-          </CollapseItem>
-        ))}
-      </Content>
-    </Drawer>
+              </ChangeIconBox>
+              <Popover
+                open={isMoreVisible}
+                onOpenChange={setIsMoreVisible}
+                placement="bottomRight"
+                trigger={['click', 'hover']}
+                getPopupContainer={n => n}
+                content={
+                  <DemandOperationDropdownMenu
+                    haveComment
+                    onEditChange={onEditChange}
+                    onDeleteChange={onDeleteChange}
+                    onCreateChild={onCreateChild}
+                    onAddComment={() => commentDom.current?.addComment()}
+                    record={demandDetailDrawerProps}
+                  />
+                }
+              >
+                <ChangeIconBox>
+                  <CommonIconFont
+                    type="more"
+                    size={20}
+                    color="var(--neutral-n2)"
+                  />
+                </ChangeIconBox>
+              </Popover>
+            </Space>
+          </Header>
+          <Content>
+            <ParentBox size={8}>
+              {drawerInfo.hierarchy?.map((i: any, index: number) => (
+                <DrawerHeader key={i.prefixKey}>
+                  <img src={i.categoryAttachment} alt="" />
+                  <div>
+                    {i.projectPrefix}-{i.prefixKey}
+                  </div>
+                  <span
+                    hidden={
+                      drawerInfo.hierarchy?.length <= 1 ||
+                      index === drawerInfo.hierarchy?.length - 1
+                    }
+                  >
+                    /
+                  </span>
+                </DrawerHeader>
+              ))}
+            </ParentBox>
+            <DemandName>{drawerInfo.name}</DemandName>
+            {modeList.map((i: any) => (
+              <CollapseItem key={i.key}>
+                <CollapseItemTitle onClick={() => onChangeShowState(i)}>
+                  <span>{i.name}</span>
+                  <CommonIconFont
+                    type={showState[i.key].isOpen ? 'up' : 'down'}
+                    color="var(--neutral-n2)"
+                  />
+                </CollapseItemTitle>
+                <CollapseItemContent
+                  ref={showState[i.key].dom}
+                  isOpen={showState[i.key].isOpen}
+                >
+                  {i.key === 'detailInfo' && (
+                    <DetailDemand
+                      detail={drawerInfo}
+                      onUpdate={getDemandDetail}
+                    />
+                  )}
+                  {i.key === 'detailDemands' && showState[i.key].isOpen && (
+                    <ChildrenDemand
+                      detail={drawerInfo}
+                      isOpen={showState[i.key].isOpen}
+                    />
+                  )}
+                  {i.key === 'basicInfo' && showState[i.key].isOpen && (
+                    <BasicDemand
+                      detail={drawerInfo}
+                      isOpen={showState[i.key].isOpen}
+                      onUpdate={getDemandDetail}
+                    />
+                  )}
+                  {i.key === 'demandComment' && (
+                    <DemandComment
+                      detail={drawerInfo}
+                      isOpen={showState[i.key].isOpen}
+                      onRef={commentDom}
+                    />
+                  )}
+                </CollapseItemContent>
+              </CollapseItem>
+            ))}
+          </Content>
+        </Drawer>
+      )}
+    </>
   )
 }
 
