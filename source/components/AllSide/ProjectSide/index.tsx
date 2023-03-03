@@ -53,7 +53,9 @@ const MoreProjectSide = (props: Props) => {
     list: undefined,
   })
   const { isRefreshGroup } = useSelector(store => store.project)
-  const { groupId: storeGid } = useSelector(state => state.createProject)
+  const { groupId: storeGid, typeId } = useSelector(
+    state => state.createProject,
+  )
   const inputRefDom = useRef<HTMLInputElement>(null)
   const [countData, setCountData] = useState<any>({})
   const dispatch = useDispatch()
@@ -225,6 +227,7 @@ const MoreProjectSide = (props: Props) => {
       <WrapDetail ref={projectSide}>
         <MenuBox>
           <MenuItem
+            idx={typeId === 0}
             onClick={() => {
               dispatch(changeTypeId(0))
               dispatch(changeGroupId(null))
@@ -236,12 +239,12 @@ const MoreProjectSide = (props: Props) => {
               size={18}
             />
             <div>
-              {' '}
-              {t('project.mineJoin')}11
+              {t('project.mineJoin')}
               {countData.selfCount ? `（${countData.selfCount}）` : ''}
             </div>
           </MenuItem>
           <MenuItem
+            idx={typeId === 1}
             onClick={() => {
               dispatch(changeTypeId(1))
               dispatch(changeGroupId(null))
@@ -253,8 +256,7 @@ const MoreProjectSide = (props: Props) => {
               size={18}
             />
             <div>
-              {' '}
-              {t('project.companyAll')}1
+              {t('project.companyAll')}
               {countData.publicCount ? `（${countData.publicCount}）` : ''}
             </div>
           </MenuItem>
