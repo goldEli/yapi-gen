@@ -18,7 +18,7 @@ import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { GENDER_MAP } from '@/constants'
 
 const RightWrap = styled.div`
-  width: 100%;
+  flex: 1;
   padding: 0 24px;
   height: 100%;
   position: relative;
