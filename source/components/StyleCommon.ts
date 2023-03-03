@@ -139,6 +139,7 @@ const HasIconMenu = styled.div<{ isCheck?: boolean }>(
 // 新版移入效果例：项目列表左上方操作
 const HoverWrap = styled.div<{ isActive?: any }>(
   {
+    transition: 'all .5s',
     padding: '0 8px',
     height: 32,
     borderRadius: 6,

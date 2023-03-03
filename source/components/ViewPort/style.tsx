@@ -4,10 +4,14 @@ import styled from '@emotion/styled'
 export const ViewPortWrap = styled.div`
   height: 32px;
   min-width: 120px;
-
+  transition: all 0.3s;
   display: inline-flex;
   align-items: center;
   padding: 0 8px;
+  border-radius: 4px;
+  &:hover {
+    background: #f4f5f5;
+  }
 `
 
 export const Name = styled.div`

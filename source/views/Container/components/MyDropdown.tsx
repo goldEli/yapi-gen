@@ -213,7 +213,7 @@ const MyDropdown = (props: PropsType) => {
     onFetchList()
   }, [tabActive])
   const onClick = () => {
-    navigate('/Mine')
+    navigate('/Mine/profile')
   }
   const itmeMain = (item: any) => {
     return (
