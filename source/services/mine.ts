@@ -953,6 +953,7 @@ export const getVerifyUserList: any = async (params: any) => {
     total: response.data.pager.total,
     otherCount: response.data.otherCount,
     list: response.data.list.map((i: any) => ({
+      category_attachment: i.category_attachment,
       id: i.id,
       storyVerifyId: i.story_verify_id,
       status: i.verify_status,

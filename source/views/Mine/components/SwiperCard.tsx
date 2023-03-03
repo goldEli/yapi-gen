@@ -25,10 +25,12 @@ const Warp = styled.div<{ show?: boolean }>(
   {
     position: 'relative',
     display: 'flex',
-    flexDirection: 'column',
+    alignItems: 'center',
+    paddingLeft: '12px',
     borderRadius: 4,
-    height: 104,
-    width: 160,
+    height: 64,
+    width: 200,
+    transition: 'all .3s',
     cursor: 'pointer',
     '&: hover': {
       transform: 'translate(0, -6%)',
@@ -54,20 +56,20 @@ const ImgWrap = styled.div<{ show?: boolean; address?: any }>(
     backgroundImage: `url(${address})`,
   }),
   {
-    height: 104,
+    height: 40,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%',
+    width: 40,
     overflow: 'hidden',
-    borderRadius: '4px 4px 0 0 ',
+    borderRadius: '4px ',
     backgroundSize: 'cover',
   },
 )
 
 const NameWrap = styled.div<{ show?: boolean }>(
   {
-    width: '90%',
+    width: '130px',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
@@ -82,20 +84,20 @@ const NameWrap = styled.div<{ show?: boolean }>(
 
 const TextWarp = styled.div({
   display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  padding: '0 16px',
+  flexDirection: 'column',
+  paddingLeft: '8px',
   height: 40,
   background: 'white',
   borderBottomLeftRadius: 4,
   borderBottomRightRadius: 4,
 })
 
-const SwiperCard = (props: {
+export const SwiperCard = (props: {
   show?: boolean
   tap?(): void
   name: string
   avtar: string
+  all?: boolean
 }) => {
   return (
     <Warp
@@ -112,6 +114,20 @@ const SwiperCard = (props: {
       />
       <TextWarp>
         <NameWrap show={props.show}>{props.name}</NameWrap>
+        {!props.all && (
+          <div
+            style={{
+              width: '48px',
+              height: '20px',
+              fontSize: '12px',
+              fontWeight: 400,
+              color: '#646566',
+              lineHeight: '20px',
+            }}
+          >
+            团队项目
+          </div>
+        )}
       </TextWarp>
     </Warp>
   )

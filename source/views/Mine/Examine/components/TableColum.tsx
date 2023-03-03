@@ -7,6 +7,7 @@ import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useSelector } from '@store/index'
+import { Tooltip } from 'antd'
 import { useNavigate } from 'react-router-dom'
 
 const CircleWrap = styled.div({
@@ -78,7 +79,33 @@ export const useDynamicColumns = (state: any) => {
       render: (text: string | number, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <CategoryWrap
+            <Tooltip placement="top" title={record.categoryName}>
+              <img
+                src={
+                  record.category_attachment
+                    ? record.category_attachment
+                    : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
+                }
+                style={{
+                  width: '18px',
+                  height: '18px',
+                  marginRight: '8px',
+                }}
+                alt=""
+              />
+              {/* <CategoryWrap
+                color={record.categoryColor}
+                bgColor={
+                  colorList?.filter(
+                    (k: any) => k.key === record.categoryColor,
+                  )[0]?.bgColor
+                }
+                style={{ marginLeft: 0 }}
+              >
+                {record.category}
+              </CategoryWrap> */}
+            </Tooltip>
+            {/* <CategoryWrap
               style={{ marginLeft: 0 }}
               color={record.categoryColor}
               bgColor={
@@ -87,7 +114,7 @@ export const useDynamicColumns = (state: any) => {
               }
             >
               {record.categoryName}
-            </CategoryWrap>
+            </CategoryWrap> */}
             <ClickWrap onClick={() => onToDetail(record)}>
               <OmitText
                 width={200}

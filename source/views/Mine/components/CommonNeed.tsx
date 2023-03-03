@@ -498,7 +498,12 @@ const CommonNeed = (props: any) => {
   return (
     <>
       <div style={{ padding: '0 24px', justifyContent: 'space-between' }}>
-        <div>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
           <TabsItem isActive>
             <div>{props?.subTitle}</div>
           </TabsItem>
