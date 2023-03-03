@@ -9,6 +9,7 @@
 import CommonModal from '@/components/CommonModal'
 import { Checkbox, Form, Input, message, Radio, Select } from 'antd'
 import IconFont from '@/components/IconFont'
+import { getProjectFieIds } from '@store/category/thunk'
 import styled from '@emotion/styled'
 import { useEffect, useRef, useState } from 'react'
 import { arrayMoveImmutable } from 'array-move'
@@ -21,6 +22,8 @@ import { getParamsData } from '@/tools'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { addStoryConfigField, updateStoryConfigField } from '@/services/project'
+import { useDispatch, useSelector } from '@store/index'
+import { setProjectFieIdsData } from '@store/category/index'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -80,6 +83,9 @@ interface Props {
   onClose(): void
   item?: any
   onUpdate(): void
+  fieldType?: any
+  onInsert(val: any): void
+  onEditUpdate(val: any): void
 }
 
 const DragHandle = sortableHandle(() => (
@@ -105,11 +111,13 @@ const SortItemLi = sortableElement<any>((props: any) => (
 
 const EditFiled = (props: Props) => {
   const [t] = useTranslation()
+  const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const [checked, setChecked] = useState(false)
   const [personValue, setPersonValue] = useState('')
   const ChooseDom = useRef<HTMLInputElement>(null)
+  const { projectInfo } = useSelector(store => store.project)
   const [form] = Form.useForm()
   const [value, setValue] = useState('')
   const [row, setRow] = useState([
@@ -136,6 +144,9 @@ const EditFiled = (props: Props) => {
 
   useEffect(() => {
     if (props?.item?.id) {
+      form.setFieldsValue({
+        name: props.item.title,
+      })
       form.setFieldsValue(props?.item)
       setValue(props?.item?.type)
       if (['3', '4', '5', '6'].includes(props?.item?.type)) {
@@ -162,7 +173,13 @@ const EditFiled = (props: Props) => {
       ])
     }
   }, [props?.item])
-
+  useEffect(() => {
+    if (props.isVisible && props.fieldType) {
+      form.setFieldsValue({
+        type: props.fieldType.value,
+      })
+    }
+  }, [props.isVisible])
   const onReset = () => {
     props?.onClose()
     setTimeout(() => {
@@ -187,7 +204,6 @@ const EditFiled = (props: Props) => {
       (i: any) => i.value === form.getFieldValue('type'),
     )[0]
     let contentValue
-
     if (['1', '2'].includes(selObj?.value)) {
       // 文本
       contentValue = ''
@@ -227,17 +243,23 @@ const EditFiled = (props: Props) => {
     if (props?.item?.id) {
       try {
         obj.id = props?.item?.id
-        await updateStoryConfigField(obj)
+        const res: any = await updateStoryConfigField(obj)
         message.success(t('common.editSuccess'))
         onReset()
+        props.onEditUpdate(res.data)
         props?.onUpdate()
       } catch (error) {
         //
       }
     } else {
       try {
-        await addStoryConfigField(obj)
+        const res = await addStoryConfigField(obj)
         message.success(t('common.createSuccess'))
+        props?.onInsert(res.data)
+        // 更新项目已有字段数据
+        const data: any = await dispatch(getProjectFieIds(projectInfo.id))
+        const payloadList: any = data.payload
+        dispatch(setProjectFieIdsData(payloadList))
         onReset()
         props?.onUpdate()
       } catch (error) {
@@ -291,7 +313,7 @@ const EditFiled = (props: Props) => {
     >
       <div
         ref={ChooseDom}
-        style={{ maxHeight: 464, overflowY: 'auto', padding: '0 16px 0 2px' }}
+        style={{ maxHeight: 464, overflowY: 'auto', padding: '0 24px 0 24px' }}
       >
         <FormWrap form={form} layout="vertical">
           <ItemWrap notMargin>

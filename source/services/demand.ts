@@ -1040,3 +1040,15 @@ export const getProjectFieIds = async (id: any) => {
   })
   return response.data
 }
+// 保存需求类别
+// project/story_config/category/config/save
+export const configSave = async (params: any) => {
+  const response = await http.put(
+    `/b/project/story_config/category/config/save/${params.id}`,
+    {
+      project_id: params.project_id,
+      data: params.data,
+    },
+  )
+  return response.data
+}

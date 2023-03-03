@@ -200,7 +200,6 @@ const SliderList = (props: any) => {
         zIndex: zIndex.toString(),
       }}
     >
-      {/* console.log(children, event.dataTransfer.getData('item')) */}
       {child.content !== 'user_name' &&
       child.content !== 'users_name' &&
       child.content !== 'created_at' &&
@@ -220,13 +219,24 @@ const SliderList = (props: any) => {
             </ListMsg>
           </div>
           <RightOperate>
-            {/*  onChange={(e) => console.log(e.target.checked, '88')} */}
             <CheckboxStyle
               checked={child?.isRequired === 1 ? true : false}
-              onChange={e => props.onChangeChecked(e.target.checked)}
+              onChange={e => {
+                e.preventDefault(),
+                  e.stopPropagation(),
+                  props.onChangeChecked(e.target.checked)
+              }}
             />
             <Text>必填</Text>
-            <DelBtn onClick={() => props.onDelete()}>删除</DelBtn>
+            <DelBtn
+              onClick={(event: any) => {
+                event.preventDefault(),
+                  event.stopPropagation(),
+                  props.onDelete()
+              }}
+            >
+              删除
+            </DelBtn>
           </RightOperate>
         </ItemList>
       ) : (
@@ -266,25 +276,36 @@ const Sortable = (props: any) => {
       onDragOver={event => {
         event.preventDefault()
       }}
-      onDrop={event => event.dataTransfer.getData('item')}
     >
       {list?.map((child: any, i: number) => (
-        <SliderList
-          key={child.key}
-          index={i}
-          child={child}
-          onChangeChecked={(val: boolean) => props.onChangeChecked(val, child)}
-          onDelete={() => props.onDelete(child)}
-          listLength={list.length}
-          onMove={(prevIndex: any, nextIndex: any) => {
-            const newList = [...list]
-            newList.splice(nextIndex, 0, newList.splice(prevIndex, 1)[0])
-            setList(newList)
-            props.onMove(newList)
+        <div
+          key={child.id}
+          onDrop={(event: any) => props.onDrop(event, i)}
+          onClick={(event: any) => {
+            event.preventDefault(),
+              event.stopPropagation(),
+              child.isCustomize === 1 && props.onClick(i, child)
           }}
         >
-          {child.children}
-        </SliderList>
+          <SliderList
+            key={child.id}
+            index={i}
+            child={child}
+            onChangeChecked={(val: boolean) =>
+              props.onChangeChecked(val, child)
+            }
+            onDelete={() => props.onDelete(child)}
+            listLength={list.length}
+            onMove={(prevIndex: any, nextIndex: any) => {
+              const newList = [...list]
+              newList.splice(nextIndex, 0, newList.splice(prevIndex, 1)[0])
+              setList(newList)
+              props.onMove(newList)
+            }}
+          >
+            {child.children}
+          </SliderList>
+        </div>
       ))}
     </div>
   )
