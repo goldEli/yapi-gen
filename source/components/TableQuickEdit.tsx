@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 // 需求列表快捷编辑组件
 
 /* eslint-disable react/jsx-no-leaked-render */
@@ -32,6 +33,10 @@ const LimitText = styled.div`
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+`
+
+const DisableWrap = styled.div`
+  cursor: no-drop;
 `
 
 interface Props {
@@ -301,6 +306,12 @@ const TableQuickEdit = (props: Props) => {
 
   // 操作框改变
   const onChange = async (newValue: any, type: any) => {
+    if (props.item.categoryConfigList[props.keyText] === 1 && !newValue) {
+      message.warning(`${props.keyText}为必填字段！`)
+      setIsShowControl(false)
+      return
+    }
+
     if (props.keyText === 'name' && newValue.length <= 0) {
       message.warning(t('p2.nameNotNull'))
       setIsShowControl(false)
@@ -332,6 +343,7 @@ const TableQuickEdit = (props: Props) => {
         return
       }
     }
+
     const obj: any = {
       projectId,
       id: props.item?.id,
@@ -377,6 +389,12 @@ const TableQuickEdit = (props: Props) => {
 
   // 操作框失焦
   const onBlur = (val: any) => {
+    if (props.item.categoryConfigList[props.keyText] === 1 && !val) {
+      message.warning(`${props.keyText}为必填字段！`)
+      setIsShowControl(false)
+      return
+    }
+
     if (val === props?.defaultText) {
       setIsShowControl(false)
     } else {
@@ -410,50 +428,82 @@ const TableQuickEdit = (props: Props) => {
           inputRef,
           onBlur,
         )}
-      {!isShowControl && (
-        <CanOperation
-          onClick={() =>
-            // 详情和列表上不是文本的可点击整个元素
-            canClick ? setIsShowControl(true) : void 0
-          }
-          isTable={!props.isInfo}
-          isCanEdit={isCanEdit}
-        >
-          {(!['text', 'textarea'].includes(props.type as any) ||
-            props.isDemandName) && <div>{props.children}</div>}
 
-          {['text', 'textarea'].includes(props.type as any) &&
-            !props.isDemandName && (
-              <>
-                {props.isInfo && <div>{props.children}</div>}
-                {!props.isInfo && (
-                  <Tooltip
-                    title={props.children}
-                    placement="topLeft"
-                    getPopupContainer={node => node}
-                  >
-                    <LimitText>{props.children}</LimitText>
-                  </Tooltip>
-                )}
-              </>
-            )}
-
-          {isCanEdit && (
-            <IconFontWrapEdit
-              onClick={() => setIsShowControl(true)}
-              isTable={isShowIcon}
-              type={
-                props?.isInfo ||
-                !['text', 'textarea', 'number', 'integer'].includes(
-                  String(props.type),
-                )
-                  ? 'down-icon'
-                  : 'edit-square'
+      {/* 如果是详情或者是表格上可编辑字段 */}
+      {(Object.keys(props.item.categoryConfigList).includes(props.keyText) ||
+        props.isInfo) && (
+        <>
+          {!isShowControl && (
+            <CanOperation
+              onClick={() =>
+                // 详情和列表上不是文本的可点击整个元素
+                canClick ? setIsShowControl(true) : void 0
               }
-            />
+              isTable={!props.isInfo}
+              isCanEdit={isCanEdit}
+            >
+              {(!['text', 'textarea'].includes(props.type as any) ||
+                props.isDemandName) && <div>{props.children}</div>}
+
+              {['text', 'textarea'].includes(props.type as any) &&
+                !props.isDemandName && (
+                  <>
+                    {props.isInfo && <div>{props.children}</div>}
+                    {!props.isInfo && (
+                      <Tooltip
+                        title={props.children}
+                        placement="topLeft"
+                        getPopupContainer={node => node}
+                      >
+                        <LimitText>{props.children}</LimitText>
+                      </Tooltip>
+                    )}
+                  </>
+                )}
+
+              {isCanEdit && (
+                <IconFontWrapEdit
+                  onClick={() => setIsShowControl(true)}
+                  isTable={isShowIcon}
+                  type={
+                    props?.isInfo ||
+                    !['text', 'textarea', 'number', 'integer'].includes(
+                      String(props.type),
+                    )
+                      ? 'down-icon'
+                      : 'edit-square'
+                  }
+                />
+              )}
+            </CanOperation>
           )}
-        </CanOperation>
+        </>
       )}
+
+      {/* 不能操作的并且不是详情快捷操作，只展示 */}
+      {!Object.keys(props.item.categoryConfigList).includes(props.keyText) &&
+        !props.isInfo && (
+          <DisableWrap>
+            {(!['text', 'textarea'].includes(props.type as any) ||
+              props.isDemandName) && <div>{props.children}</div>}
+
+            {['text', 'textarea'].includes(props.type as any) &&
+              !props.isDemandName && (
+                <>
+                  {props.isInfo && <div>{props.children}</div>}
+                  {!props.isInfo && (
+                    <Tooltip
+                      title={props.children}
+                      placement="topLeft"
+                      getPopupContainer={node => node}
+                    >
+                      <LimitText>{props.children}</LimitText>
+                    </Tooltip>
+                  )}
+                </>
+              )}
+          </DisableWrap>
+        )}
     </div>
   )
 }

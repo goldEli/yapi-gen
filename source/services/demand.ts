@@ -524,6 +524,7 @@ export const getDemandList: any = async (params: any) => {
       ...i.custom_field,
       categoryColor: i.category_color,
       categoryRemark: i.category_remark,
+      category_attachment: i.category_attachment,
       categoryId: i.category_id,
       project_id: i.project_id,
       usersNameIds: i.users_name_ids,
@@ -534,6 +535,7 @@ export const getDemandList: any = async (params: any) => {
       level: i.level,
       isExpended: true,
       topId: params?.parentId ?? params?.topParentId,
+      categoryConfigList: i.category_config_list,
     }))
   }
 
@@ -550,6 +552,7 @@ export const getDemandList: any = async (params: any) => {
           status: i.status,
           category: i.category,
           categoryColor: i.category_color,
+          category_attachment: i.category_attachment,
           project_id: i.project_id,
           usersNameIds: i.users_name_ids,
           usersCopySendIds: i.users_copysend_name_ids,
@@ -573,6 +576,7 @@ export const getDemandList: any = async (params: any) => {
       category: i.category,
       categoryColor: i.category_color,
       categoryRemark: i.category_remark,
+      category_attachment: i.category_attachment,
       isExamine: i.verify_lock === 1,
     }))
   } else if (params?.isChildren) {
@@ -622,6 +626,7 @@ export const getDemandList: any = async (params: any) => {
         isExpended: params.topParentId === i.id,
         level: 1,
         topId: i.id,
+        categoryConfigList: i.category_config_list,
       })),
     }
   }

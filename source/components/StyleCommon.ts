@@ -567,7 +567,10 @@ const IconFontWrapEdit = styled(IconFont)<{ isTable?: any }>(
   }),
 )
 
-const CanOperation = styled.div<{ isCanEdit?: any; isTable?: any }>(
+const CanOperation = styled.div<{
+  isCanEdit?: any
+  isTable?: any
+}>(
   {
     display: 'flex',
     alignItems: 'center',

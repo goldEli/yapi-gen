@@ -250,20 +250,20 @@ const DemandDetailDrawer = () => {
               {i.key === 'detailInfo' && (
                 <DetailDemand detail={drawerInfo} onUpdate={getDemandDetail} />
               )}
-              {i.key === 'detailDemands' && (
+              {i.key === 'detailDemands' && showState[i.key].isOpen && (
                 <ChildrenDemand
                   detail={drawerInfo}
                   isOpen={showState[i.key].isOpen}
                 />
               )}
-              {i.key === 'basicInfo' && (
+              {i.key === 'basicInfo' && showState[i.key].isOpen && (
                 <BasicDemand
                   detail={drawerInfo}
                   isOpen={showState[i.key].isOpen}
                   onUpdate={getDemandDetail}
                 />
               )}
-              {i.key === 'demandComment' && (
+              {i.key === 'demandComment' && showState[i.key].isOpen && (
                 <DemandComment
                   detail={drawerInfo}
                   isOpen={showState[i.key].isOpen}
