@@ -147,7 +147,7 @@ const AdminSide = (props: any) => {
         {
           label: '登录日志',
           key: '1-14',
-          path: '/AdminManagement/LoginManagement2',
+          path: '/AdminManagement/LoginManagement',
         },
       ],
     },
