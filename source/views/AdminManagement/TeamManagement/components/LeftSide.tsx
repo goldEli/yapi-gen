@@ -39,6 +39,11 @@ const IconFontStyle = styled(IconFont)`
   font-size: 18px;
   color: var(--neutral-n2);
   border-radius: 6px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   &:hover {
     background-color: var(--hover-d1);
   }
