@@ -376,7 +376,7 @@ const LeftSide = (props: any) => {
         onClose={() => setTeamIsVisible(false)}
       />
       <DeleteConfirm
-        title="确认解散【超强团队】团队"
+        title={`确认解散【${activeRow?.name}】团队`}
         text="解散后将自动移除团队成员，该团队项目将自动划分到公司且权限变更为私有"
         isVisible={delTeamIsVisible}
         onConfirm={() => {
