@@ -118,7 +118,7 @@ const RightTable = () => {
   const dispatch = useDispatch()
   const { membersList, activeTeamId } = useSelector(s => s.teams)
   const [form] = Form.useForm()
-  const [isVisible, setIsVisible] = useState(true)
+  const [isVisible, setIsVisible] = useState(false)
   const [editForm, setEditForm] = useState<any>()
   const [delIsVisible, setDelIsVisible] = useState(false)
   const [type, setType] = useState('')

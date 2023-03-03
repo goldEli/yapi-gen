@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import table from 'antd/lib/table'
 import { GENDER_MAP } from '@/constants'
+import CommonUserAvatar from '@/components/CommonUserAvatar'
 
 const TableStyle = styled(table)`
   .ant-table-thead > tr > th,
@@ -42,6 +43,9 @@ const Table = (props: any) => {
       title: '昵称',
       dataIndex: 'nickname',
       key: 'nickname',
+      render: (text: string, record: any) => (
+        <CommonUserAvatar avatar={record.avatar} size="small" name={text} />
+      ),
     },
     {
       align: 'left',
