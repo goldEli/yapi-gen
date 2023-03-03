@@ -496,6 +496,8 @@ export const getMineNoFinishList: any = async (params: any) => {
       count: k.count,
       list: k.list
         ? k.list?.map((i: any) => ({
+            category_attachment: i.category_attachment,
+            categoryConfigList: i.category_config_list,
             new: i.is_new,
             id: i.id,
             name: i.name,
@@ -543,6 +545,7 @@ export const getMineNoFinishList: any = async (params: any) => {
       list: response.data?.list
         ? response.data.list.map((i: any) => ({
             category_attachment: i.category_attachment,
+            categoryConfigList: i.category_config_list,
             new: i.is_new,
             id: i.id,
             name: i.name,
@@ -622,6 +625,7 @@ export const getMineCreacteList: any = async (params: any) => {
     list: response.data?.list
       ? response.data.list.map((i: any) => ({
           category_attachment: i.category_attachment,
+          categoryConfigList: i.category_config_list,
           id: i.id,
           name: i.name,
           demand: i.child_story_count,
@@ -699,6 +703,7 @@ export const getMineFinishList: any = async (params: any) => {
     list: response.data?.list
       ? response.data?.list?.map((i: any) => ({
           category_attachment: i.category_attachment,
+          categoryConfigList: i.category_config_list,
           id: i.id,
           name: i.name,
           demand: i.child_story_count,
@@ -777,6 +782,7 @@ export const getMineNeedList: any = async (params: any) => {
     list: response.data?.list
       ? response.data.list.map((i: any) => ({
           category_attachment: i.category_attachment,
+          categoryConfigList: i.category_config_list,
           id: i.id,
           name: i.name,
           demand: i.child_story_count,

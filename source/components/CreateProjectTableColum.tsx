@@ -121,8 +121,6 @@ export const useDynamicColumns = (state: any) => {
       dataIndex: 'name',
       key: 'name',
       render: (text: string | number, record: any) => {
-        console.log(record)
-
         return (
           <div
             style={{

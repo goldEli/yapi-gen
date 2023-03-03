@@ -5,10 +5,10 @@
 /* eslint-disable react/no-danger */
 // 需求详情弹窗预览模式
 
-import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import {
   deleteDemand,
   getDemandInfo,
+  getDemandList,
   updateDemandStatus,
 } from '@/services/demand'
 import { getProjectInfo } from '@/services/project'
@@ -72,8 +72,8 @@ const DemandDetailDrawer = () => {
   const [deleteId, setDeleteId] = useState(0)
   const [drawerInfo, setDrawerInfo] = useState<any>({})
   const [showState, setShowState] = useState<any>(normalState)
+  const [currentIndex, setCurrentIndex] = useState(0)
   const commentDom: any = createRef()
-  const [openDemandDetail] = useOpenDemandDetail()
 
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
@@ -87,6 +87,7 @@ const DemandDetailDrawer = () => {
     { name: '需求评论', key: 'demandComment', content: '' },
   ]
 
+  // 获取项目详情权限
   const getProjectData = async () => {
     const response = await getProjectInfo({
       projectId:
@@ -97,6 +98,7 @@ const DemandDetailDrawer = () => {
 
   // 获取需求详情
   const getDemandDetail = async () => {
+    setDrawerInfo({})
     const info = await getDemandInfo({
       projectId:
         demandDetailDrawerProps.project_id ?? demandDetailDrawerProps.projectId,
@@ -112,6 +114,10 @@ const DemandDetailDrawer = () => {
       name: info.name,
     })
     setDrawerInfo(info)
+    // 获取当前需求的下标， 用作上一下一切换
+    setCurrentIndex(
+      demandDetailDrawerProps?.demandIds.findIndex((i: any) => i === info.id),
+    )
   }
 
   // 关闭弹窗
@@ -227,11 +233,11 @@ const DemandDetailDrawer = () => {
   }
 
   useEffect(() => {
-    if (isDemandDetailDrawerVisible) {
+    if (isDemandDetailDrawerVisible || demandDetailDrawerProps?.id) {
       getDemandDetail()
       getProjectData()
     }
-  }, [isDemandDetailDrawerVisible])
+  }, [demandDetailDrawerProps, isDemandDetailDrawerVisible])
 
   return (
     <>
@@ -289,7 +295,7 @@ const DemandDetailDrawer = () => {
             </Space>
             <Space size={16}>
               <ChangeIconGroup>
-                <div>
+                <div style={{ cursor: currentIndex ? 'pointer' : 'no-drop' }}>
                   <CommonIconFont
                     type="up"
                     size={20}
