@@ -6,6 +6,30 @@ import 'swiper/css'
 import SwiperCard from './SwiperCard'
 import { useTranslation } from 'react-i18next'
 import { message } from 'antd'
+import styled from '@emotion/styled'
+
+export const SwiperWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  box-sizing: border-box;
+  padding: 0 24px;
+  height: 144px;
+  background-color: white;
+  overflow: hidden;
+  & .swiper {
+    overflow: visible;
+    margin: 0;
+  }
+  & .swiper-wrapper {
+    max-width: 1400px;
+    width: 100%;
+    display: flex;
+  }
+  & .swiper-slide {
+    width: auto !important;
+  }
+`
 
 const SwiperCardMove = (props: any) => {
   const [t] = useTranslation()
@@ -22,9 +46,9 @@ const SwiperCardMove = (props: any) => {
   }
 
   return (
-    <div>
+    <SwiperWrap>
       <Swiper
-        spaceBetween={50}
+        spaceBetween={16}
         freeMode
         grabCursor
         observer
@@ -33,6 +57,7 @@ const SwiperCardMove = (props: any) => {
       >
         <SwiperSlide key={1}>
           <SwiperCard
+            all
             name={t('mine.allProject')}
             avtar=""
             tap={() => {
@@ -55,7 +80,7 @@ const SwiperCardMove = (props: any) => {
           </SwiperSlide>
         ))}
       </Swiper>
-    </div>
+    </SwiperWrap>
   )
 }
 
