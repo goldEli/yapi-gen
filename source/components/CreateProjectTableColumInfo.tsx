@@ -115,12 +115,21 @@ export const useDynamicColumns = (state: any) => {
               alignItems: 'center',
             }}
           >
-            <Tooltip
-              placement="top"
-              getPopupContainer={node => node}
-              title={record.categoryRemark}
-            >
-              <CategoryWrap
+            <Tooltip placement="top" title={record.category}>
+              <img
+                src={
+                  record.category_attachment
+                    ? record.category_attachment
+                    : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
+                }
+                style={{
+                  width: '18px',
+                  height: '18px',
+                  marginRight: '8px',
+                }}
+                alt=""
+              />
+              {/* <CategoryWrap
                 color={record.categoryColor}
                 bgColor={
                   colorList?.filter(
@@ -130,7 +139,7 @@ export const useDynamicColumns = (state: any) => {
                 style={{ marginLeft: 0 }}
               >
                 {record.category}
-              </CategoryWrap>
+              </CategoryWrap> */}
             </Tooltip>
             <TableQuickEdit
               type="text"

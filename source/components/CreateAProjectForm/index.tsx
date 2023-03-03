@@ -139,6 +139,7 @@ const CreateAProjectForm = () => {
           i.name
         }`,
         id: i.team_id,
+        img: i.logo,
       })),
     )
   }
@@ -152,6 +153,7 @@ const CreateAProjectForm = () => {
       res2.map((i: any) => ({
         name: i.name,
         id: i.id,
+        img: i.avatar,
       })),
     )
     setActiveCover(res.cover)
@@ -170,10 +172,12 @@ const CreateAProjectForm = () => {
 
   const getLeader = async () => {
     const res = await getAffiliationUser(leaderId)
+
     setSelectLeaders(
       res.map((i: any) => ({
         name: i.name,
         id: i.id,
+        img: i.avatar,
       })),
     )
   }
@@ -306,7 +310,12 @@ const CreateAProjectForm = () => {
               >
                 {affiliations.map((i: any) => (
                   <Select.Option value={i.id} key={i.id} label={i.name}>
-                    <MoreOptions type="project" name={i.name} dec={i.dec} />
+                    <MoreOptions
+                      type="project"
+                      name={i.name}
+                      dec={i.dec}
+                      img={i.logo}
+                    />
                   </Select.Option>
                 ))}
               </Select>
@@ -361,7 +370,12 @@ const CreateAProjectForm = () => {
               >
                 {selectLeaders.map((i: any) => (
                   <Select.Option value={i.id} key={i.id} label={i.name}>
-                    <MoreOptions type="user" name={i.name} dec={i.dec} />
+                    <MoreOptions
+                      type="user"
+                      name={i.name}
+                      dec={i.dec}
+                      img={i.img}
+                    />
                   </Select.Option>
                 ))}
               </Select>
