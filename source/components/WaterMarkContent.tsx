@@ -60,7 +60,7 @@ const WaterMarkContent = (props: any) => {
   return (
     <div style={{ position: 'relative', width: '100%', height: ' 100%' }}>
       {props.children}
-      {valueId === 1 && <SvgTextBg {...memoInfo} />}
+      {valueId ? <SvgTextBg {...memoInfo} /> : null}
     </div>
   )
 }

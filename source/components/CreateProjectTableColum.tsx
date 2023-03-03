@@ -121,6 +121,8 @@ export const useDynamicColumns = (state: any) => {
       dataIndex: 'name',
       key: 'name',
       render: (text: string | number, record: any) => {
+        console.log(record)
+
         return (
           <div
             style={{
@@ -131,7 +133,7 @@ export const useDynamicColumns = (state: any) => {
             }}
           >
             {state.isTree && state.onChangeTree(record)}
-            <Tooltip placement="top" title={record.categoryRemark}>
+            <Tooltip placement="top" title={record.category}>
               <img
                 src={
                   record.category_attachment
