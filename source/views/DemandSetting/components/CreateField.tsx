@@ -69,10 +69,15 @@ const CreateField = () => {
   const [searchIcon, setSearchIcon] = useState(false)
   const [search, setSearch] = useState(false)
   const [createIcon, setCreateIcon] = useState(true)
-  const { getCategoryConfigDataList } = useSelector(store => store.category)
+  const {
+    getCategoryConfigDataList,
+    getCategoryConfigArray,
+    getProjectFieIdsData,
+  } = useSelector(store => store.category)
   const [dataList, setDataList] = useState<any>()
   const [searchDataList, setSearchDataList] = useState<any>()
   const { projectInfo } = useSelector(store => store.project)
+  const [payloadDataList, setPayloadDataList] = useState<any>()
   const option = [
     { label: t('newlyAdd.lineText'), value: '1', type: 'text' },
     { label: t('newlyAdd.moreLineText'), value: '2', type: 'textarea' },
@@ -89,41 +94,36 @@ const CreateField = () => {
       type: 'user_select_checkbox',
     },
   ]
-  const [list, setList] = React.useState<any>(() =>
-    [1, 2, 3, 4, 5].map(v => ({
-      key: v,
-      children: `Item ${v}`,
-    })),
-  )
-  const onChangeDragging = (item: any) => {
-    setList(
-      list.map((el: any) => ({
-        ...el,
-        active: el.children === item ? true : false,
-      })),
+  // 两个数组的比较过滤
+  const filterData = (confightList: any, payloadList: any) => {
+    const filterIds = confightList.map((item: any) => item.storyId)
+    setDataList(payloadList.filter((item: any) => !filterIds.includes(item.id)))
+    setSearchDataList(
+      payloadList.filter((item: any) => !filterIds.includes(item.id)),
     )
   }
   // 过滤数据
   const getProjectFieIdsApi = async () => {
+    if (!projectInfo.id) {
+      return
+    }
     const data = await dispatch(getProjectFieIds(projectInfo.id))
     const payloadList: any = data.payload
+    setPayloadDataList(payloadList)
     const confightList = getCategoryConfigDataList.configDataList
-    const filterIds = confightList.map((item: any) => item.id)
-    setDataList(
-      payloadList.filter((item: any) => !filterIds.includes(item.storyId)),
-    )
-    setSearchDataList(
-      payloadList.filter((item: any) => !filterIds.includes(item.storyId)),
-    )
+    filterData(confightList, payloadList)
   }
   useEffect(() => {
     getProjectFieIdsApi()
   }, [])
+  // useEffect(() => {
+  //   getProjectFieIdsData.length >= 1 && getCategoryConfigArray?.length >= 1 && filterData(getCategoryConfigArray, getProjectFieIdsData)
+  // }, [getProjectFieIdsData])
+
   // 根据输入框过滤
   const onSearch = (value: string) => {
     setSearchDataList(dataList.filter((el: any) => el.title.includes(value)))
   }
-
   return (
     <CreateFieldWrap>
       <TitleStyle onClick={() => setCreateIcon(!createIcon)}>
@@ -143,13 +143,7 @@ const CreateField = () => {
           将字段拖动左侧区域创建字段
         </span>
       </TitleStyle>
-      {createIcon && (
-        <CreatDragging
-          onChange={(item: any) => onChangeDragging(item)}
-          list={option}
-          setList={setList}
-        />
-      )}
+      {createIcon && <CreatDragging list={option} setList={[]} />}
 
       <BottomList>
         <BottomTitleStyle>
@@ -162,7 +156,7 @@ const CreateField = () => {
               size={14}
               color="var(--neutral-n3)"
             />
-            <span>项目已有字段 ({dataList?.length})</span>
+            <span>项目已有字段 ({payloadDataList?.length})</span>
           </div>
           {search ? (
             <InputStyle
@@ -187,7 +181,11 @@ const CreateField = () => {
           )}
         </BottomTitleStyle>
         {searchIcon && (
-          <ProjectDragging list={searchDataList} setList={setSearchDataList} />
+          <ProjectDragging
+            list={searchDataList}
+            setList={setSearchDataList}
+            onUpdate={() => getProjectFieIdsApi()}
+          />
         )}
       </BottomList>
     </CreateFieldWrap>

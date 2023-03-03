@@ -16,21 +16,20 @@ import { getStaffList } from '@/services/staff'
 import { getLoginLogs } from '@/services/setting'
 import { useSelector } from '@store/index'
 import PermissionWrap from '@/components/PermissionWrap'
+import IconFont from '@/components/IconFont'
 import PaginationBox from '@/components/TablePagination'
 
 const Header = styled.div({
   height: 'auto',
-  background: 'white',
-  lineHeight: '64px',
+  background: 'var(--neutral-white-d1)',
   position: 'sticky',
   top: 0,
   zIndex: 9,
+  padding: '24px 24px 20px',
   '.label': {
     fontSize: 16,
     fontWeight: 400,
-    color: 'black',
-    paddingLeft: 24,
-    height: 64,
+    color: 'var(--neutral-n1-d1)',
   },
 })
 
@@ -38,9 +37,10 @@ const SearchWrap = styled(Space)({
   display: 'flex',
   alignItems: 'center',
   minHeight: 64,
-  background: 'white',
-  padding: '0 24px',
+  background: 'var(--neutral-white-d1)',
+  padding: '20px 0',
   flexWrap: 'wrap',
+  borderBottom: '1px solid #ecedef',
 })
 
 const SelectWrap = styled(Select)`
@@ -48,23 +48,25 @@ const SelectWrap = styled(Select)`
     color: black;
   }
   .ant-select-selector {
-    min-width: 200px;
+    min-width: 124px;
     border: none !important;
     outline: none !important;
   }
 `
 
 const Content = styled.div({
-  padding: 16,
-  background: '#F5F7FA',
+  padding: '0px 24px 24px',
   height: 'calc(100% - 128px)',
 })
 
 const DataWrap = styled.div({
-  height: 'calc(100% - 48px)',
+  height: 'calc(100% - 64px)',
   background: 'white',
   overflowX: 'auto',
   borderRadius: 4,
+  '.ant-table-thead > tr > th': {
+    border: 'none',
+  },
 })
 
 const StatusWrap = styled.div({
@@ -90,6 +92,7 @@ const NewSort = (sortProps: any) => {
       onChangeKey={sortProps.onUpdateOrderKey}
       nowKey={sortProps.nowKey}
       order={sortProps.order === 'asc' ? 1 : 2}
+      style={{ height: 44 }}
     >
       {sortProps.children}
     </Sort>
@@ -344,7 +347,7 @@ const LoginManagement = () => {
           <div className="label">{t('setting.loginLog')}</div>
           <SearchWrap size={16}>
             <SelectWrapBedeck>
-              <span style={{ margin: '0 16px', fontSize: '14px' }}>
+              <span style={{ margin: '0 12px', fontSize: '14px' }}>
                 {t('setting.loginUser')}
               </span>
               <Form.Item name="userIds" noStyle>
@@ -358,6 +361,12 @@ const LoginManagement = () => {
                   options={staffList}
                   optionFilterProp="label"
                   getPopupContainer={node => node}
+                  suffixIcon={
+                    <IconFont
+                      type="down"
+                      style={{ fontSize: 16, color: 'var(--neutral-n4)' }}
+                    />
+                  }
                 />
               </Form.Item>
             </SelectWrapBedeck>

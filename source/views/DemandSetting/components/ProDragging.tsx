@@ -50,6 +50,7 @@ const SliderList = (props: any) => {
   let startY = 0
   let startX = 0
   const onDragStart = (ev: any) => {
+    children.dragtype = 'edit'
     ev.dataTransfer.setData('item', JSON.stringify(children))
   }
   const onDrag = (ev: any) => {
@@ -76,6 +77,7 @@ const SliderList = (props: any) => {
     })
     message.success('删除成功')
     setIsVisible(false)
+    props.onUpdate()
   }
   return (
     <Container
@@ -106,7 +108,9 @@ const SliderList = (props: any) => {
             setIsVisible(true), setDelItem(children)
           }}
         >
-          <CommonIconFont type="delete" size={19} color="var(--primary-d2)" />
+          {children?.is_customize === 1 && (
+            <CommonIconFont type="delete" size={19} color="var(--primary-d2)" />
+          )}
         </div>
       </SearchItemList>
       <DeleteConfirm
@@ -124,6 +128,7 @@ const Sortable = (props: any) => {
     <div>
       {list?.map((child: any, i: number) => (
         <SliderList
+          onUpdate={() => props.onUpdate()}
           onChangeTeam={(row: any) => props.onChangeTeam(row, child)}
           onChange={(item: any) => props.onChange(item)}
           key={child.label}

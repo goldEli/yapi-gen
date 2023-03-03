@@ -10,13 +10,16 @@ const Container = styled.div`
     cursor: pointer;
   }
 `
+
 const ItemList = styled.div`
-  min-width: 352px;
+  width: 352px;
   height: 44px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   padding: 0 24px;
   font-size: 14px;
+  margin-bottom: 8px;
 `
 
 const SliderList = (props: any) => {
@@ -27,7 +30,9 @@ const SliderList = (props: any) => {
   const prevRectRef = useRef(null)
   let startY = 0
   let startX = 0
+  // 传值位置
   const onDragStart = (ev: any) => {
+    children.dragtype = 'add'
     ev.dataTransfer.setData('item', JSON.stringify(children))
   }
   const onDrag = (ev: any) => {
@@ -78,6 +83,7 @@ const Sortable = (props: any) => {
     <div>
       {list?.map((child: any, i: number) => (
         <SliderList
+          onUpdate={() => props.onUpdate()}
           onChangeTeam={(row: any) => props.onChangeTeam(row, child)}
           onChange={(item: any) => props.onChange(item)}
           key={child.label}

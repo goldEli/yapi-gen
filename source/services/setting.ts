@@ -39,6 +39,7 @@ export const getOperateLogs: any = async (params: any) => {
       time: i.created_at,
       info: i.content,
       type: i.method,
+      avatar: i.avatar,
     })),
   }
 }

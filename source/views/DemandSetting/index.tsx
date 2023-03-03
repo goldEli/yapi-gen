@@ -5,6 +5,7 @@ import CreateField from './components/CreateField'
 import CommonButton from '@/components/CommonButton'
 import { useTranslation } from 'react-i18next'
 import { useState } from 'react'
+import { saveScreen } from '@store/view'
 
 const Wrap = styled.div`
   width: 100%;
@@ -25,24 +26,33 @@ const ButtonStyle = styled.div`
 const DemandSetting = () => {
   const [t] = useTranslation()
   const [isOperate, setIsOperate] = useState<boolean>(false)
+  const [isSave, setIsSave] = useState(false)
   // const onClose = () => {
 
   // }
   // const onConfirm = () => {
 
   // }
+  const save = () => {
+    setIsSave(true)
+  }
   return (
     <>
       <Header />
       {isOperate && (
         <ButtonStyle>
-          <CommonButton type="secondary" onClick={() => 456}>
+          <CommonButton
+            type="secondary"
+            onClick={() => {
+              setIsSave(false), setIsOperate(false)
+            }}
+          >
             {t('common.cancel')}
           </CommonButton>
           <CommonButton
             style={{ marginLeft: '16px' }}
             type="primary"
-            onClick={() => 123}
+            onClick={() => save()}
           >
             {t('common.confirm')}
           </CommonButton>
@@ -50,7 +60,13 @@ const DemandSetting = () => {
       )}
 
       <Wrap>
-        <Main onIsOperate={() => setIsOperate(true)} />
+        <Main
+          onIsOperate={() => setIsOperate(true)}
+          isSave={isSave}
+          onBack={() => {
+            setIsSave(false), setIsOperate(false)
+          }}
+        />
         <CreateField />
       </Wrap>
     </>

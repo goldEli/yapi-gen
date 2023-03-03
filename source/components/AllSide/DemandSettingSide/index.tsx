@@ -30,8 +30,6 @@ import { setActiveCategory } from '@store/category/index'
 const ProjectDetailSide = (props: { leftWidth: number; onClick(): void }) => {
   const [t] = useTranslation()
   const { startUsing, categoryList } = useSelector(store => store.category)
-  const projectSide: any = useRef<HTMLInputElement>(null)
-  const projectSetSide: any = useRef<HTMLInputElement>(null)
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)

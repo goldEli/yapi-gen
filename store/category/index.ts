@@ -16,7 +16,8 @@ export interface CounterState {
   getCategoryConfigDataList: any
   activeCategory: any
   // 项目已有字段
-  getProjectFieIds: any
+  getProjectFieIdsData: any
+  getCategoryConfigArray: any
 }
 
 const initialState: CounterState = {
@@ -26,7 +27,8 @@ const initialState: CounterState = {
   getCategoryConfigDataList: {},
   activeCategory: {},
   // 项目已有字段
-  getProjectFieIds: [],
+  getProjectFieIdsData: [],
+  getCategoryConfigArray: [],
 }
 
 export const category = createSlice({
@@ -40,6 +42,12 @@ export const category = createSlice({
     // 当前选中的需求类别
     setActiveCategory: (state: any, action) => {
       state.activeCategory = action.payload
+    },
+    setGetCategoryConfigArray: (state: any, action) => {
+      state.getCategoryConfigArray = action.payload
+    },
+    setProjectFieIdsData: (state: any, action) => {
+      state.getProjectFieIdsData = action.payload
     },
   },
   extraReducers(builder) {
@@ -66,6 +74,11 @@ export const category = createSlice({
   },
 })
 
-export const { setStartUsing, setActiveCategory } = category.actions
+export const {
+  setStartUsing,
+  setActiveCategory,
+  setGetCategoryConfigArray,
+  setProjectFieIdsData,
+} = category.actions
 
 export default category.reducer
