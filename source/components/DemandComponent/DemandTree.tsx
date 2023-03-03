@@ -171,7 +171,13 @@ const DemandTree = (props: Props) => {
 
   // 点击跳转需求详情
   const onClickItem = (item: any) => {
-    openDemandDetail(item, projectId, item.id)
+    const currentDemandTop = props.data?.list?.filter(
+      (i: any) => i.id === item.topId,
+    )?.[0]
+    const demandIds = currentDemandTop.allChildrenIds
+      ?.filter((i: any) => i.parent_id === item.parentId)
+      ?.map((k: any) => k.id)
+    openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id)
   }
 
   // 修改优先级
@@ -293,11 +299,16 @@ const DemandTree = (props: Props) => {
     }
 
     setExpandedRowKeys([...new Set(resultList)])
+    // 折叠时，判断参数错误，顶级折叠使用了子级折叠
     const resultArr = resultData?.list?.map((i: any) => ({
       ...i,
-      children: row.parentId ? row.children : dataChildren?.list,
+      children: row.parentId ? i.children : dataChildren?.list,
       isExpended: row.id === i.id ? !row.isExpended : false,
     }))
+    // console.log(resultArr, '===resultArrresultArrresultArr', {
+    //   ...resultData,
+    //   list: resultArr,
+    // })
     setData({ ...resultData, list: resultArr })
     setTimeout(() => {
       setData({ ...resultData, list: resultArr })

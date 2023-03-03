@@ -195,6 +195,7 @@ const DemandTable = (props: Props) => {
     onOperationCheckbox('remove')
   }
 
+  // 点击打开详情并组装当前平级的需求id列表
   const onClickItem = (item: any) => {
     const demandIds = props.data?.list?.map((i: any) => i.id)
     openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id)

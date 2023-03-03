@@ -143,21 +143,22 @@ const OperationGroup = (props: Props) => {
         </HoverWrap>
       )}
 
-      {(props.isGrid === 0 || props.isGrid === 2) && (
-        <DividerWrap type="vertical" />
-      )}
+      <DividerWrap type="vertical" />
 
-      {(props.isGrid === 0 || props.isGrid === 2) && (
-        <DropDownMenu
-          menu={<SetShowField onChangeFieldVisible={onClickMenuFields} />}
-          icon="settings"
-          isVisible={isVisibleFields}
-          onChangeVisible={setIsVisibleFields}
-          isActive={props.settingState}
-        >
-          <div>{t('common.tableFieldSet')}</div>
-        </DropDownMenu>
-      )}
+      <DropDownMenu
+        menu={
+          <SetShowField
+            onChangeFieldVisible={onClickMenuFields}
+            isGrid={props.isGrid}
+          />
+        }
+        icon="settings"
+        isVisible={isVisibleFields}
+        onChangeVisible={setIsVisibleFields}
+        isActive={props.settingState}
+      >
+        <div>{t('common.tableFieldSet')}</div>
+      </DropDownMenu>
     </SpaceWrap>
   )
 }

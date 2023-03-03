@@ -209,7 +209,10 @@ export const useDynamicColumns = (state: any) => {
       render: (text: any, record: Record<string, string | number>) => {
         return (
           <ChangePriorityPopover
-            isCanOperation={isCanEdit}
+            isCanOperation={
+              isCanEdit &&
+              Object.keys(record.categoryConfigList).includes('priority')
+            }
             onChangePriority={item => state.onChangeState(item, record)}
             record={{ project_id: state.projectId, id: record.id }}
           >
