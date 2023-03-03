@@ -7,7 +7,7 @@ import IconFont from '@/components/IconFont'
 import ProjectInfo from './components/ProjectInfo'
 import ProjectMember from './components/ProjectMember'
 import ProjectSet from './components/ProjectSet'
-import DemandSet from './DemandSet'
+import DemandSetting from '../DemandSetting'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
@@ -57,7 +57,7 @@ const Setting = () => {
     {
       name: t('newlyAdd.demandSet'),
       icon: 'settings',
-      content: <DemandSet />,
+      content: <DemandSetting />,
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
         String(i.identity).includes('b/project/story_config'),
       ).length,

@@ -23,11 +23,6 @@ function getIsPermission(arr: any, value: string) {
   return !arr?.filter((i: any) => i.identity === value).length
 }
 
-// 新开页面
-function openDetail(url: string) {
-  window.open(`${window.origin}/${import.meta.env.__URL_HASH__}${url}`)
-}
-
 // 解密地址栏参数
 function getParamsData(params: any) {
   return JSON.parse(decryptPhp(params.get('data') as string))
@@ -336,7 +331,6 @@ function getCustomNormalValue(attr: any, text: any) {
 
 export {
   getIsPermission,
-  openDetail,
   getParamsData,
   transData,
   getTypeComponent,

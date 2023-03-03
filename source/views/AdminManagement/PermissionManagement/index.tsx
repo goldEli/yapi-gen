@@ -37,17 +37,17 @@ const GroupWrap = styled.div({
 })
 
 const Header = styled.div({
-  height: 64,
   background: 'white',
-  lineHeight: '64px',
   position: 'sticky',
   top: 0,
   zIndex: 1,
+  padding: '24px 0',
   span: {
     fontSize: 16,
     fontWeight: 400,
-    color: 'black',
+    color: 'var(--neutral-n1-d1)',
     paddingLeft: 24,
+    lineHeight: '24px',
   },
 })
 
@@ -58,7 +58,6 @@ const Content = styled.div({
 })
 
 const SetMain = styled.div({
-  padding: '24px 0',
   background: 'white',
   borderRadius: 6,
   minHeight: '100%',
@@ -70,8 +69,9 @@ const SetLeft = styled.div({
   display: 'flex',
   flexDirection: 'column',
   height: '100%',
-  borderRight: '1px solid #EBEDF0',
-  width: 160,
+  borderRight: '1px solid #ECEDEF',
+  width: 232,
+  padding: '0 16px',
 })
 
 const SetRight = styled.div({
@@ -86,7 +86,6 @@ const Title = styled.div({
   fontWeight: 400,
   color: 'black',
   paddingLeft: 8,
-  borderLeft: '3px solid #2877FF',
   marginBottom: 8,
 })
 
@@ -99,12 +98,13 @@ const MenuItem = styled.div<{ isActive: boolean }>(
   {
     display: 'flex',
     flexDirection: 'column',
-    height: 58,
-    alignItems: 'center',
+    height: 52,
     justifyContent: 'center',
     cursor: 'pointer',
     boxSizing: 'border-box',
     position: 'relative',
+    paddingLeft: 24,
+    alignItems: 'self-start',
     '.dropdownIcon': {
       position: 'absolute',
       right: 0,
@@ -127,8 +127,7 @@ const MenuItem = styled.div<{ isActive: boolean }>(
     },
   },
   ({ isActive }) => ({
-    borderRight: isActive ? '3px solid #2877FF' : '3px solid transparent',
-    background: isActive ? '#F0F4FA!important' : 'white',
+    background: isActive ? 'var(--gradient-left) !important' : 'white',
     '.name': {
       color: isActive ? '#2877FF' : '#323233',
     },
@@ -151,7 +150,7 @@ const MainWrap = styled.div({
 
 const MainWrapItem = styled.div({
   borderBottom: '1px solid #EBEDF0',
-  padding: '24px 0',
+  padding: '24px 0 12px',
   display: 'flex',
   '.ant-checkbox-wrapper': {
     margin: '0 !important',
@@ -164,6 +163,27 @@ const ModalFooter = styled(Space)({
   alignItems: 'center',
   justifyContent: 'flex-end',
 })
+
+const IconFontStyle = styled(IconFont)`
+  font-size: 18px;
+  color: var(--neutral-n2);
+  border-radius: 6px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    background-color: var(--hover-d1);
+  }
+`
+
+const RowBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+`
 
 const CheckboxWrap = styled.div({ width: 100 })
 const OperationWrap = styled.div({ width: 100 })
@@ -434,9 +454,15 @@ const PermissionManagement = () => {
           <Spin spinning={isSpinning}>
             <SetMain>
               <SetLeft>
-                <Title style={{ marginLeft: 24 }}>
-                  {t('setting.userGroup')}
-                </Title>
+                <RowBox>
+                  <Title style={{ marginBottom: 0 }}>
+                    {t('setting.userGroup')}
+                  </Title>
+                  <IconFontStyle
+                    type="plus"
+                    onClick={() => setIsVisible(true)}
+                  />
+                </RowBox>
                 <MenuItems>
                   {dataList?.map((item: any) => (
                     <MenuItem
@@ -459,22 +485,9 @@ const PermissionManagement = () => {
                     </MenuItem>
                   ))}
                 </MenuItems>
-                <div
-                  style={{
-                    textAlign: 'center',
-                    cursor: 'pointer',
-                    color: '#2877FF',
-                    height: 58,
-                    lineHeight: '58px',
-                  }}
-                  onClick={() => setIsVisible(true)}
-                >
-                  <IconFont type="plus" />
-                  <span>{t('setting.addUserGroup')}</span>
-                </div>
               </SetLeft>
               <SetRight>
-                <Title>{activeDetail.name}</Title>
+                <Title style={{ paddingLeft: 0 }}>{activeDetail.name}</Title>
                 <TitleGroup>
                   <CheckboxWrap>{t('setting.all')}</CheckboxWrap>
                   <OperationWrap>{t('setting.operationObject')}</OperationWrap>

@@ -6,6 +6,7 @@ import 'swiper/css'
 import SwiperCard from './SwiperCard'
 import { useTranslation } from 'react-i18next'
 import { message } from 'antd'
+import { SwiperWrap } from '@/views/Mine/components/MineSwiper'
 
 const SwiperCardMove = (props: any) => {
   const [t] = useTranslation()
@@ -22,9 +23,9 @@ const SwiperCardMove = (props: any) => {
   }
 
   return (
-    <div>
+    <SwiperWrap>
       <Swiper
-        spaceBetween={50}
+        spaceBetween={16}
         freeMode
         grabCursor
         observer
@@ -55,7 +56,7 @@ const SwiperCardMove = (props: any) => {
           </SwiperSlide>
         ))}
       </Swiper>
-    </div>
+    </SwiperWrap>
   )
 }
 

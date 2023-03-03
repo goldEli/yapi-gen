@@ -20,8 +20,7 @@ import { OptionalFeld } from '@/components/OptionalFeld'
 import { useDynamicColumns } from '@/components/CreateProjectTableColum'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
-import { getIsPermission, getParamsData, openDetail } from '@/tools'
-import { encryptPhp } from '@/tools/cryptoPhp'
+import { getIsPermission, getParamsData } from '@/tools'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch, useSelector } from '@store/index'
@@ -197,7 +196,8 @@ const DemandTable = (props: Props) => {
   }
 
   const onClickItem = (item: any) => {
-    openDemandDetail(item, projectId, item.id)
+    const demandIds = props.data?.list?.map((i: any) => i.id)
+    openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id)
   }
 
   const onChangeState = async (item: any) => {

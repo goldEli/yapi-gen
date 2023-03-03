@@ -17,7 +17,7 @@ import {
 } from '@store/create-propject'
 import { postCreate, postEditCreate } from '@store/create-propject/thunks'
 import { useDispatch, useSelector } from '@store/index'
-import { Form, Input, Select, Tooltip, Upload } from 'antd'
+import { Form, Input, message, Select, Tooltip, Upload } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '../CommonModal'
@@ -72,10 +72,15 @@ const CreateAProjectForm = () => {
     }
     if (isEditId) {
       dispatch(postEditCreate({ ...obj, id: isEditId }))
+      message.success(t('common.editSuccess'))
+      setTimeout(() => {
+        dispatch(onRest(true))
+      }, 500)
       return
     }
     dispatch(postCreate(obj))
     dispatch(editProject({ visible: false, id: '' }))
+    message.success(t('common.createSuccess'))
     setTimeout(() => {
       dispatch(onRest(true))
     }, 500)
@@ -130,8 +135,11 @@ const CreateAProjectForm = () => {
 
     setAffiliations(
       result2.map((i: any) => ({
-        name: `${i.team_id === 0 ? '企业项目' : '团队项目'}/${i.name}`,
+        name: `${i.team_id === 0 ? t('enterprise_project') : t('teamwork')}/${
+          i.name
+        }`,
         id: i.team_id,
+        img: i.logo,
       })),
     )
   }
@@ -145,6 +153,7 @@ const CreateAProjectForm = () => {
       res2.map((i: any) => ({
         name: i.name,
         id: i.id,
+        img: i.avatar,
       })),
     )
     setActiveCover(res.cover)
@@ -163,10 +172,12 @@ const CreateAProjectForm = () => {
 
   const getLeader = async () => {
     const res = await getAffiliationUser(leaderId)
+
     setSelectLeaders(
       res.map((i: any) => ({
         name: i.name,
         id: i.id,
+        img: i.avatar,
       })),
     )
   }
@@ -200,7 +211,7 @@ const CreateAProjectForm = () => {
       }}
       width={832}
       isVisible={createVisible}
-      title="编辑项目"
+      title={t('edit_item')}
     >
       <div
         style={{
@@ -211,7 +222,7 @@ const CreateAProjectForm = () => {
         }}
       >
         <CoverAreaWrap>
-          <FormTitleSmall text="选择封面" />
+          <FormTitleSmall text={t('choose_the_cover')} />
           <CoverArea>
             {covers?.map((i: any) => (
               <CoverAreaImageWrap
@@ -257,7 +268,7 @@ const CreateAProjectForm = () => {
               </Upload>
             )}
           </CoverArea>
-          <FormTitleSmall text="效果预览" />
+          <FormTitleSmall text={t('effect_preview')} />
           <div
             style={{
               marginTop: '16px',
@@ -269,24 +280,27 @@ const CreateAProjectForm = () => {
         <Wrap>
           <Form form={form} layout="vertical">
             <Form.Item
-              label={<FormTitleSmall text="项目名称" />}
+              label={<FormTitleSmall text={t('project_name')} />}
               name="name"
               rules={[
                 { required: true, message: 'Please input your username!' },
               ]}
             >
-              <Input placeholder="请输入项目名称" onChange={onChange} />
+              <Input
+                placeholder={t('please_enter_a_project_name')}
+                onChange={onChange}
+              />
             </Form.Item>
 
             <Form.Item
-              label={<FormTitleSmall text="所属" />}
+              label={<FormTitleSmall text={t('affiliated')} />}
               name="team_id"
               rules={[
                 { required: true, message: 'Please input your password!' },
               ]}
             >
               <Select
-                placeholder="请选择所属"
+                placeholder={t('please_select_your_affiliation')}
                 optionLabelProp="label"
                 onChange={value => {
                   setLeaderId(value)
@@ -296,7 +310,12 @@ const CreateAProjectForm = () => {
               >
                 {affiliations.map((i: any) => (
                   <Select.Option value={i.id} key={i.id} label={i.name}>
-                    <MoreOptions type="project" name={i.name} dec={i.dec} />
+                    <MoreOptions
+                      type="project"
+                      name={i.name}
+                      dec={i.dec}
+                      img={i.logo}
+                    />
                   </Select.Option>
                 ))}
               </Select>
@@ -304,14 +323,16 @@ const CreateAProjectForm = () => {
             <Form.Item
               label={
                 <div>
-                  <FormTitleSmall text="键" />
+                  <FormTitleSmall text={t('keyboard')} />
                   <Tooltip
                     overlayStyle={{
                       fontSize: '12px',
                     }}
                     trigger={['click']}
                     placement="top"
-                    title="键用以区分项目，作为需求编号前缀使用"
+                    title={t(
+                      'the_key_is_used_to_distinguish_items_and_is_used_as_a_requirement_number_prefix',
+                    )}
                   >
                     <IconFont
                       style={{
@@ -335,42 +356,57 @@ const CreateAProjectForm = () => {
               <Input
                 onChange={e => !e.target.value && setLock(true)}
                 onFocus={() => setLock(false)}
-                placeholder="请输入键"
+                placeholder={t('please_enter_the_key')}
               />
             </Form.Item>
             <Form.Item
-              label={<FormTitleSmall text="项目负责人" />}
+              label={<FormTitleSmall text={t('project_leader')} />}
               name="leader_id"
             >
               <Select
                 disabled={canChooseLeader}
-                placeholder="请选择项目负责人"
+                placeholder={t('please_select_project_leader')}
                 optionLabelProp="label"
               >
                 {selectLeaders.map((i: any) => (
                   <Select.Option value={i.id} key={i.id} label={i.name}>
-                    <MoreOptions type="user" name={i.name} dec={i.dec} />
+                    <MoreOptions
+                      type="user"
+                      name={i.name}
+                      dec={i.dec}
+                      img={i.img}
+                    />
                   </Select.Option>
                 ))}
               </Select>
             </Form.Item>
-            <Form.Item label={<FormTitleSmall text="权限" />} name="isPublic">
-              <Select placeholder="请选择权限" optionLabelProp="label">
+            <Form.Item
+              label={<FormTitleSmall text={t('Permission')} />}
+              name="isPublic"
+            >
+              <Select
+                placeholder={t('please_select_permissions')}
+                optionLabelProp="label"
+              >
                 {[
                   {
                     name: t('project.companyOpen'),
                     id: 1,
-                    dec: '仅项目成员可查看编辑',
+                    dec: t('only_project_members_can_view_edits'),
                   },
                   {
                     name: t('common.privateProject'),
                     id: 2,
-                    dec: '企业内所有成员可见，仅项目成员可编辑',
+                    dec: t(
+                      'all_members_in_the_enterprise_can_be_seen_only_project_members_can_edit',
+                    ),
                   },
                   {
-                    name: '团队公开',
+                    name: t('the_team_is_open'),
                     id: 3,
-                    dec: '团队内所有成员可见，仅项目成员可编辑',
+                    dec: t(
+                      'all_team_members_are_visible_only_project_members_can_edit',
+                    ),
                   },
                 ].map((i: any) => (
                   <Select.Option value={i.id} key={i.id} label={i.name}>
@@ -393,9 +429,12 @@ const CreateAProjectForm = () => {
                 optionFilterProp="label"
               />
             </Form.Item>
-            <Form.Item label={<FormTitleSmall text="项目描述" />} name="info">
+            <Form.Item
+              label={<FormTitleSmall text={t('project_description')} />}
+              name="info"
+            >
               <Input.TextArea
-                placeholder="请输入项目描述"
+                placeholder={t('please_enter_project_description')}
                 autoSize={{ minRows: 3, maxRows: 5 }}
               />
             </Form.Item>

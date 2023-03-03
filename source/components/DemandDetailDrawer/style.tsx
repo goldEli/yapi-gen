@@ -88,6 +88,8 @@ export const Content = styled.div`
 
 export const ParentBox = styled(Space)`
   display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   height: 22px;
   margin-bottom: 16px;
 `
@@ -128,7 +130,6 @@ export const CollapseItemContent = styled.div<{ isOpen?: boolean }>`
 `
 
 export const Label = styled.div`
-  margin-bottom: 8px;
   font-size: var(--font14);
   color: var(--neutral-n1-d1);
 `
@@ -162,6 +163,7 @@ export const ContentWrap = styled.div<{ notHover?: any }>(
     flexDirection: 'column',
     maxWidth: '98%',
     wordBreak: 'break-all',
+    width: '100%',
   },
   ({ notHover }) => ({
     paddingLeft: notHover ? 8 : 0,
@@ -445,5 +447,28 @@ export const AddTagIcon = styled.div`
   &:hover {
     border: 1px dashed var(--primary-d2);
     color: var(--primary-d2);
+  }
+`
+
+export const CommentTitle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
+export const DrawerHeader = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  img {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+  }
+  div,
+  span {
+    font-size: var(--font14);
+    color: var(--neutral-n3);
+    margin-right: 8px;
   }
 `

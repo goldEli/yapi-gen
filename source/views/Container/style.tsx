@@ -317,6 +317,7 @@ export const CompanyCards = styled.div`
 export const CompanyCard = styled.div<{ isActive?: boolean }>`
   height: 64px;
   display: flex;
+  transition: all 0.5s;
   align-items: center;
   justify-content: space-between;
   border-radius: 6px;

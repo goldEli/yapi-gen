@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable require-unicode-regexp */
@@ -25,6 +26,7 @@ import {
   BlueCss,
   Card,
   CommentItem,
+  CommentTitle,
   Gred,
   GredParent,
   HovDiv,
@@ -39,6 +41,8 @@ interface Props {
   detail?: any
   isOpen?: boolean
   onRef?: any
+  // 是否是新开需求详情
+  isOpenInfo?: boolean
 }
 
 const DemandComment = (props: Props) => {
@@ -166,253 +170,279 @@ const DemandComment = (props: Props) => {
   }, [props.isOpen])
 
   return (
-    <div>
+    <>
       <EditComment
         visibleEdit={isVisibleComment}
         editClose={() => setIsVisibleComment(false)}
         editConfirm={onAddConfirm}
       />
-      <Label>需求评论</Label>
-      <DeleteConfirm
-        text={t('mark.cd')}
-        isVisible={isVisible}
-        onChangeVisible={() => setIsVisible(!isVisible)}
-        onConfirm={onDeleteConfirm}
-      />
-      {isComment && (
-        <CommonButton
-          onClick={() => setIsVisibleComment(true)}
-          type="primaryText"
-          iconPlacement="left"
-          icon="plus"
-        >
-          添加评论
-        </CommonButton>
-      )}
-      {!!dataList?.list &&
-        (dataList?.list?.length > 0 ? (
-          <div>
-            {dataList?.list?.map((item: any) => (
-              <CommentItem key={item.id}>
-                <CommonUserAvatar avatar={item.avatar} />
-                <TextWrap>
-                  <MyDiv>
-                    <HovDiv>
-                      {isComment && userInfo?.id === item.userId ? (
-                        <IconFont
-                          type="close"
-                          onClick={() => onDeleteComment(item)}
-                        />
-                      ) : null}
-                    </HovDiv>
+      <div>
+        <DeleteConfirm
+          text={t('mark.cd')}
+          isVisible={isVisible}
+          onChangeVisible={() => setIsVisible(!isVisible)}
+          onConfirm={onDeleteConfirm}
+        />
+        {props.isOpenInfo && (
+          <CommentTitle>
+            <Label>需求评论</Label>
+            {isComment && (
+              <CommonButton
+                onClick={() => setIsVisibleComment(true)}
+                type="primaryText"
+                iconPlacement="left"
+                icon="plus"
+              >
+                添加评论
+              </CommonButton>
+            )}
+          </CommentTitle>
+        )}
 
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <span
-                        style={{
-                          marginRight: '12px',
-                        }}
-                        className="name"
-                      >
-                        <HiddenText>
-                          <OmitText
-                            width={100}
-                            tipProps={{
-                              getPopupContainer: node => node,
-                            }}
-                          >
-                            {item.name}
-                          </OmitText>
-                        </HiddenText>
-                      </span>
-                      <span className="common">
-                        <HiddenText>
-                          <OmitText
-                            width={240}
-                            tipProps={{
-                              getPopupContainer: node => node,
-                            }}
-                          >
-                            {item.statusContent}
-                          </OmitText>
-                        </HiddenText>
-                      </span>
-                    </div>
-                  </MyDiv>
-                  <div className="common" style={{ paddingRight: 30 }}>
-                    {item.createdTime}
-                  </div>
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: /(?<start>^<p>*)|(?<end><\p>*$)/g.test(
-                        item.content,
-                      )
-                        ? item.content
-                        : `<p>${item.content}</p>`,
-                    }}
-                  />
+        {!props.isOpenInfo && (
+          <>
+            <Label>需求评论</Label>
+            {isComment && (
+              <CommonButton
+                onClick={() => setIsVisibleComment(true)}
+                type="primaryText"
+                iconPlacement="left"
+                icon="plus"
+              >
+                添加评论
+              </CommonButton>
+            )}
+          </>
+        )}
 
-                  {item.attachment?.length > 0 && (
-                    <div
-                      style={{
-                        minWidth: '300px',
-                        marginTop: '8px',
-                        display: 'flex',
-                        flexWrap: 'wrap',
-                        gap: '10px',
-                      }}
-                    >
-                      {item.attachment.map((i: any) => {
-                        return (
-                          <Card
-                            style={{
-                              margin: 0,
-                            }}
-                            key={i.id}
-                          >
-                            <div
-                              style={{
-                                display: 'flex',
+        {!!dataList?.list &&
+          (dataList?.list?.length > 0 ? (
+            <div>
+              {dataList?.list?.map((item: any) => (
+                <CommentItem key={item.id}>
+                  <CommonUserAvatar avatar={item.avatar} />
+                  <TextWrap>
+                    <MyDiv>
+                      <HovDiv>
+                        {isComment && userInfo?.id === item.userId ? (
+                          <IconFont
+                            type="close"
+                            onClick={() => onDeleteComment(item)}
+                          />
+                        ) : null}
+                      </HovDiv>
+
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <span
+                          style={{
+                            marginRight: '12px',
+                          }}
+                          className="name"
+                        >
+                          <HiddenText>
+                            <OmitText
+                              width={100}
+                              tipProps={{
+                                getPopupContainer: node => node,
                               }}
                             >
-                              <GredParent
+                              {item.name}
+                            </OmitText>
+                          </HiddenText>
+                        </span>
+                        <span className="common">
+                          <HiddenText>
+                            <OmitText
+                              width={240}
+                              tipProps={{
+                                getPopupContainer: node => node,
+                              }}
+                            >
+                              {item.statusContent}
+                            </OmitText>
+                          </HiddenText>
+                        </span>
+                      </div>
+                    </MyDiv>
+                    <div className="common" style={{ paddingRight: 30 }}>
+                      {item.createdTime}
+                    </div>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: /(?<start>^<p>*)|(?<end><\p>*$)/g.test(
+                          item.content,
+                        )
+                          ? item.content
+                          : `<p>${item.content}</p>`,
+                      }}
+                    />
+
+                    {item.attachment?.length > 0 && (
+                      <div
+                        style={{
+                          minWidth: '300px',
+                          marginTop: '8px',
+                          display: 'flex',
+                          flexWrap: 'wrap',
+                          gap: '10px',
+                        }}
+                      >
+                        {item.attachment.map((i: any) => {
+                          return (
+                            <Card
+                              style={{
+                                margin: 0,
+                              }}
+                              key={i.id}
+                            >
+                              <div
                                 style={{
-                                  marginRight: '8px',
-                                  position: 'relative',
+                                  display: 'flex',
                                 }}
                               >
-                                {imgs.includes(i.attachment.ext) && (
-                                  <img
-                                    style={{
-                                      width: '40px',
-                                      height: '40px',
-                                      borderRadius: '4px',
-                                    }}
-                                    src={i.attachment.path}
-                                    alt=""
-                                  />
-                                )}
-                                {!imgs.includes(i.attachment.ext) && (
-                                  <IconFont
-                                    style={{
-                                      fontSize: 40,
-                                      color: 'white',
-                                      borderRadius: '8px',
-                                    }}
-                                    type={
-                                      fileIconMap[i.attachment.ext] ||
-                                      'colorunknown'
-                                    }
-                                  />
-                                )}
-                                {imgs.includes(i.attachment.ext) && (
-                                  <Gred
-                                    onClick={() => {
-                                      onReview(i.attachment, item.attachment)
-                                    }}
-                                  >
+                                <GredParent
+                                  style={{
+                                    marginRight: '8px',
+                                    position: 'relative',
+                                  }}
+                                >
+                                  {imgs.includes(i.attachment.ext) && (
+                                    <img
+                                      style={{
+                                        width: '40px',
+                                        height: '40px',
+                                        borderRadius: '4px',
+                                      }}
+                                      src={i.attachment.path}
+                                      alt=""
+                                    />
+                                  )}
+                                  {!imgs.includes(i.attachment.ext) && (
                                     <IconFont
                                       style={{
-                                        fontSize: 18,
+                                        fontSize: 40,
                                         color: 'white',
+                                        borderRadius: '8px',
                                       }}
-                                      type="zoomin"
+                                      type={
+                                        fileIconMap[i.attachment.ext] ||
+                                        'colorunknown'
+                                      }
                                     />
-                                  </Gred>
-                                )}
-                                {previewOpen ? (
-                                  <Viewer
-                                    zIndex={99999}
-                                    visible={previewOpen}
-                                    images={pictureList?.imageArray}
-                                    activeIndex={pictureList?.index}
-                                    onClose={() => setPreviewOpen(false)}
-                                  />
-                                ) : null}
-                              </GredParent>
-                              <div>
-                                <div
-                                  style={{
-                                    width: '100%',
-                                    fontSize: '14px',
-                                    fontWeight: 400,
-                                    color: '#646566',
-                                    lineHeight: '22px',
-                                    wordBreak: 'break-all',
-                                  }}
-                                >
-                                  {i.attachment.name}
-                                </div>
-                                <div
-                                  style={{
-                                    height: '20px',
-                                    fontSize: '12px',
-                                    fontWeight: 400,
-                                    color: '#969799',
-                                    lineHeight: '20px',
-                                  }}
-                                >
-                                  <span>
-                                    {bytesToSize(i?.attachment.size) ?? ''}
-                                  </span>
-                                  <span
-                                    style={{
-                                      margin: '0 6px 0 6px',
-                                    }}
-                                  >
-                                    ·
-                                  </span>
-                                  <span
-                                    style={{
-                                      marginRight: '12px',
-                                    }}
-                                  >
-                                    {i.user_name}
-                                  </span>
-                                  <span>{i.created_at}</span>
-                                </div>
-                                <Second
-                                  style={{
-                                    height: '20px',
-                                  }}
-                                >
-                                  <BlueCss
-                                    onClick={() =>
-                                      onDownload(
-                                        i.attachment.path,
-                                        i.attachment.name,
-                                      )
-                                    }
-                                    style={{
-                                      cursor: 'pointer',
-                                      fontSize: '12px',
-                                      color: '#2877ff',
-                                    }}
-                                  >
-                                    {t('p2.download') as unknown as string}
-                                  </BlueCss>
-                                  {isComment && userInfo?.id === item.userId ? (
-                                    <RedCss
-                                      onClick={() => onTapRemove(item.id, i.id)}
+                                  )}
+                                  {imgs.includes(i.attachment.ext) && (
+                                    <Gred
+                                      onClick={() => {
+                                        onReview(i.attachment, item.attachment)
+                                      }}
                                     >
-                                      {t('p2.delete')}
-                                    </RedCss>
+                                      <IconFont
+                                        style={{
+                                          fontSize: 18,
+                                          color: 'white',
+                                        }}
+                                        type="zoomin"
+                                      />
+                                    </Gred>
+                                  )}
+                                  {previewOpen ? (
+                                    <Viewer
+                                      zIndex={99999}
+                                      visible={previewOpen}
+                                      images={pictureList?.imageArray}
+                                      activeIndex={pictureList?.index}
+                                      onClose={() => setPreviewOpen(false)}
+                                    />
                                   ) : null}
-                                </Second>
+                                </GredParent>
+                                <div>
+                                  <div
+                                    style={{
+                                      width: '100%',
+                                      fontSize: '14px',
+                                      fontWeight: 400,
+                                      color: '#646566',
+                                      lineHeight: '22px',
+                                      wordBreak: 'break-all',
+                                    }}
+                                  >
+                                    {i.attachment.name}
+                                  </div>
+                                  <div
+                                    style={{
+                                      height: '20px',
+                                      fontSize: '12px',
+                                      fontWeight: 400,
+                                      color: '#969799',
+                                      lineHeight: '20px',
+                                    }}
+                                  >
+                                    <span>
+                                      {bytesToSize(i?.attachment.size) ?? ''}
+                                    </span>
+                                    <span
+                                      style={{
+                                        margin: '0 6px 0 6px',
+                                      }}
+                                    >
+                                      ·
+                                    </span>
+                                    <span
+                                      style={{
+                                        marginRight: '12px',
+                                      }}
+                                    >
+                                      {i.user_name}
+                                    </span>
+                                    <span>{i.created_at}</span>
+                                  </div>
+                                  <Second
+                                    style={{
+                                      height: '20px',
+                                    }}
+                                  >
+                                    <BlueCss
+                                      onClick={() =>
+                                        onDownload(
+                                          i.attachment.path,
+                                          i.attachment.name,
+                                        )
+                                      }
+                                      style={{
+                                        cursor: 'pointer',
+                                        fontSize: '12px',
+                                        color: '#2877ff',
+                                      }}
+                                    >
+                                      {t('p2.download') as unknown as string}
+                                    </BlueCss>
+                                    {isComment &&
+                                    userInfo?.id === item.userId ? (
+                                      <RedCss
+                                        onClick={() =>
+                                          onTapRemove(item.id, i.id)
+                                        }
+                                      >
+                                        {t('p2.delete')}
+                                      </RedCss>
+                                    ) : null}
+                                  </Second>
+                                </div>
                               </div>
-                            </div>
-                          </Card>
-                        )
-                      })}
-                    </div>
-                  )}
-                </TextWrap>
-              </CommentItem>
-            ))}
-          </div>
-        ) : (
-          <NoData />
-        ))}
-    </div>
+                            </Card>
+                          )
+                        })}
+                      </div>
+                    )}
+                  </TextWrap>
+                </CommentItem>
+              ))}
+            </div>
+          ) : (
+            <NoData />
+          ))}
+      </div>
+    </>
   )
 }
 

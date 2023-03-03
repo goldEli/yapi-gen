@@ -405,7 +405,21 @@ const DemandBox = () => {
             style={{ padding: '0 20px 0 2px' }}
           >
             <Form.Item label={t('newlyAdd.beforeCategory')}>
-              <CanOperationCategory
+              <img
+                src={
+                  colorObj.category_attachment
+                    ? colorObj.category_attachment
+                    : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
+                }
+                style={{
+                  width: '18px',
+                  height: '18px',
+                  marginRight: '8px',
+                }}
+                alt=""
+              />
+              <span>{colorObj?.content}</span>
+              {/* <CanOperationCategory
                 style={{ marginRight: 8, cursor: 'pointer' }}
                 color={colorObj?.color}
                 bgColor={
@@ -414,7 +428,7 @@ const DemandBox = () => {
                 }
               >
                 <span className="title">{colorObj?.content}1</span>
-              </CanOperationCategory>
+              </CanOperationCategory> */}
             </Form.Item>
             <Form.Item
               label={t('newlyAdd.afterCategory')}

@@ -259,6 +259,7 @@ const ManageView = (props: any) => {
       <div
         style={{
           padding: '24px',
+          background: 'var(--neutral-white-d2)',
         }}
       >
         <Form form={form} component={false}>

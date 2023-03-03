@@ -24,7 +24,6 @@ const HeaderWrap = styled.div`
   img {
     width: 32px;
     height: 32px;
-    border: 1px solid red;
     border-radius: 4px;
     margin: 0 8px;
   }
@@ -73,6 +72,19 @@ const MenuStyle = styled(Menu)`
     border: none !important;
     border-right: 0 !important;
   }
+  &.ant-menu-inline.ant-menu-root .ant-menu-item > .ant-menu-title-content,
+  .ant-menu-submenu-title .anticon + span {
+    margin-left: 12px;
+  }
+  &.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background: var(--gradient-left);
+  }
+  &.ant-menu-inline.ant-menu-root
+    .ant-menu-sub
+    .ant-menu-item
+    > .ant-menu-title-content {
+    margin-left: 4px;
+  }
 `
 const IconFontStyle = styled(IconFont)`
   font-size: 18px !important;
@@ -91,13 +103,13 @@ const AdminSide = (props: any) => {
     {
       label: '公司信息',
       key: '1',
-      icon: <IconFontStyle className="icon" type="folder-open-nor" />,
+      icon: <IconFontStyle className="icon" type="file-text" />,
       path: '/AdminManagement/CompanyInfo',
     },
     {
       label: '组织信息',
       key: '2',
-      icon: <IconFontStyle className="icon" type="folder-open-nor" />,
+      icon: <IconFontStyle className="icon" type="apartment" />,
       children: [
         {
           label: '员工管理',
@@ -114,13 +126,13 @@ const AdminSide = (props: any) => {
     {
       label: '权限管理',
       key: '3',
-      icon: <IconFontStyle className="icon" type="folder-open-nor" />,
+      icon: <IconFontStyle className="icon" type="lock" />,
       path: '/AdminManagement/PermissionManagement',
     },
     {
       label: '安全管理',
       key: '4',
-      icon: <IconFontStyle className="icon" type="folder-open-nor" />,
+      icon: <IconFontStyle className="icon" type="safety-certificate" />,
       children: [
         {
           label: '安全水印',
@@ -135,7 +147,7 @@ const AdminSide = (props: any) => {
         {
           label: '登录日志',
           key: '1-14',
-          path: '/AdminManagement/LoginManagement2',
+          path: '/AdminManagement/LoginManagement',
         },
       ],
     },
@@ -150,6 +162,7 @@ const AdminSide = (props: any) => {
   const allSide = flattenDeep(
     sideList.map(i => [i, i.children ? i.children : []]),
   )
+
   const onMenuClick = (e: any) => {
     const pathObject = allSide.filter((i: any) => i.key === e.key)[0]
     pathObject.path && navigate(pathObject.path)

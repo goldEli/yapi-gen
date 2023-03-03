@@ -25,7 +25,7 @@ const Menu = styled.div`
 const MineSide = () => {
   const [t] = useTranslation()
   const { pathname } = useLocation()
-  const nowPath = pathname.split('/')[2] || ''
+  const nowPath = pathname || ''
   const navigate = useNavigate()
   const { userInfo } = useSelector(store => store.user)
 
@@ -86,6 +86,7 @@ const MineSide = () => {
       isPermission: false,
     },
   ]
+
   return (
     <div>
       {/* {getIsPermission(

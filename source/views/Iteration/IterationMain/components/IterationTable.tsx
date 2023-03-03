@@ -21,8 +21,7 @@ import { useDynamicColumns } from '@/components/CreateProjectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
-import { getIsPermission, getParamsData, openDetail } from '@/tools'
-import { encryptPhp } from '@/tools/cryptoPhp'
+import { getIsPermission, getParamsData } from '@/tools'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch, useSelector } from '@store/index'
@@ -32,6 +31,7 @@ import PaginationBox from '@/components/TablePagination'
 import FloatBatch from '@/components/FloatBatch'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 
 const Content = styled.div({
   background: 'var(--neutral-white-d1)',
@@ -94,6 +94,8 @@ const IterationTable = (props: Props) => {
   const batchDom: any = createRef()
   // 勾选的id集合
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
+  const [openDemandDetail] = useOpenDemandDetail()
+
   asyncSetTtile(`${t('title.iteration')}【${projectInfo.name}】`)
   const dispatch = useDispatch()
 
@@ -165,10 +167,7 @@ const IterationTable = (props: Props) => {
   }
 
   const onClickItem = (item: any) => {
-    const params = encryptPhp(
-      JSON.stringify({ type: 'info', id: projectId, demandId: item.id }),
-    )
-    openDetail(`/ProjectManagement/Demand?data=${params}`)
+    openDemandDetail(item, projectId, item.id)
   }
 
   const onChangePage = (page: number, size: number) => {

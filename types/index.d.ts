@@ -16,7 +16,6 @@ interface ImportMetaEnv {
   readonly __COS_SIGN_ACCESS_TOKEN__: string
   readonly __COS_SIGN_APP_ID__: string
   readonly __COS_SIGN_BUCKET_ID__: string
-  readonly __URL_ALIAS__: string
   readonly __URL_HASH__: string
 }
 

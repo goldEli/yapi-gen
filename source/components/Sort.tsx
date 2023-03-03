@@ -40,6 +40,7 @@ const Sort = (props: any) => {
         }
       }}
       show={nowKey === fixedKey}
+      style={props.style}
     >
       <Text
         style={{

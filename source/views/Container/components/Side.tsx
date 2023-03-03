@@ -25,7 +25,7 @@ const SideWrap = styled.div<{ firstMenuCollapse: boolean }>`
 
 const Line = styled.div<{ active: boolean }>`
   position: absolute;
-  width: 1px;
+  width: 2px;
   cursor: col-resize;
   overflow: hidden;
   z-index: 1;

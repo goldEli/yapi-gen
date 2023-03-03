@@ -8,11 +8,11 @@ import styled from '@emotion/styled'
 import { Space, Spin } from 'antd'
 import DemandCard from '@/components/DemandCard'
 import { useSearchParams } from 'react-router-dom'
-import { getParamsData, openDetail } from '@/tools/index'
+import { getParamsData } from '@/tools/index'
 import NoData from '@/components/NoData'
 import { useEffect, useState } from 'react'
-import { encryptPhp } from '@/tools/cryptoPhp'
 import { useSelector } from '@store/index'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 
 const Content = styled.div({
   padding: 16,
@@ -69,6 +69,7 @@ const IterationGrid = (props: Props) => {
   const { projectInfoValues } = useSelector(store => store.project)
   const [basicStatus, setBasicStatus] = useState<any>([])
   const [dataList, setDataList] = useState<any>({})
+  const [openDemandDetail] = useOpenDemandDetail()
 
   const getBasicStatus = () => {
     const arr = projectInfoValues
@@ -97,10 +98,7 @@ const IterationGrid = (props: Props) => {
   }, [props.data, projectInfoValues])
 
   const onClickItem = (item: any) => {
-    const params = encryptPhp(
-      JSON.stringify({ type: 'info', id: projectId, demandId: item.id }),
-    )
-    openDetail(`/ProjectManagement/Demand?data=${params}`)
+    openDemandDetail(item, projectId, item.id)
   }
 
   return (

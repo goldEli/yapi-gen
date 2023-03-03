@@ -1,9 +1,11 @@
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useDispatch, useSelector } from '@store/index'
+import { useNavigate } from 'react-router-dom'
 
 const useOpenDemandDetail = () => {
   const { userPreferenceConfig } = useSelector(store => store.user)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const openDemandDetail = (item: any, projectId: any, demandId: any) => {
     // 弹窗预览
@@ -24,8 +26,7 @@ const useOpenDemandDetail = () => {
           demandId,
         }),
       )
-      const url = `/ProjectManagement/Demand?data=${params}`
-      window.open(`${window.origin}/${import.meta.env.__URL_HASH__}${url}`)
+      navigate(`/ProjectManagement/Demand?data=${params}`)
     }
   }
 

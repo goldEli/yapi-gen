@@ -179,7 +179,7 @@ const WhiteDay = (props: any) => {
         style={{
           height: 'calc(90vh - 136px)',
           overflow: 'scroll',
-          paddingRight: '24px',
+          padding: ' 0 24px',
         }}
         ref={leftDom}
       >

@@ -61,7 +61,7 @@ export const MenuBox = styled.div`
   margin-bottom: 16px;
 `
 
-export const MenuItem = styled.div`
+export const MenuItem = styled.div<{ idx: boolean }>`
   height: 44px;
   display: flex;
   align-items: center;
@@ -72,12 +72,19 @@ export const MenuItem = styled.div`
   div {
     margin-left: 12px;
   }
+
+  & {
+    svg {
+      color: ${props => (props.idx ? 'var(--primary-d2) !important' : '')};
+    }
+    background: ${props => (props.idx ? 'var(--gradient-left)' : '')};
+    color: ${props => (props.idx ? 'var(--primary-d2) !important' : '')};
+  }
   &:hover {
     svg {
-      color: var(--primary-d2) !important;
+      color: var(--primary-d2);
     }
-    background: var(--gradient-left);
-    color: var(--primary-d2) !important;
+    color: var(--primary-d2);
   }
 `
 
@@ -176,7 +183,7 @@ export const TitleBox = styled.div<{ idx?: boolean; isSpace?: any }>(
   {
     height: 44,
     lineHeight: '44px',
-    color: '#323233',
+    color: 'var(--neutral-n1-d2)',
     fontWeight: 400,
     fontSize: 14,
     cursor: 'pointer',
@@ -187,14 +194,14 @@ export const TitleBox = styled.div<{ idx?: boolean; isSpace?: any }>(
   },
   ({ idx, isSpace }) => ({
     '&:hover': {
-      background: '#F4F5F5',
+      color: 'var(--primary-d2)',
+      // background: '#F4F5F5',
       '.dropdownIcon': {
         visibility: 'visible',
       },
     },
-    borderRight: idx ? '3px solid #2877FF' : '3px solid transparent',
-    color: idx ? '#2877FF' : '#323233',
-    background: idx ? '#F0F4FA!important' : 'white',
+    background: idx ? 'var(--gradient-left)' : '',
+    color: idx ? 'var(--primary-d2) !important' : '',
     justifyContent: isSpace ? 'space-between' : 'inherit',
     padding: isSpace ? '0 14px 0 24px' : '0 0 0 24px',
   }),

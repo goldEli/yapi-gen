@@ -5,12 +5,14 @@
 import { useDispatch, useSelector } from '@store/index'
 import { changeCreateVisible } from '@store/view'
 import { addViewList, getViewList } from '@store/view/thunk'
-import { Form, Input } from 'antd'
+import { Form, Input, message } from 'antd'
+import { useTranslation } from 'react-i18next'
 import CommonModal from '../CommonModal'
 import FormTitleSmall from '../FormTitleSmall'
 import { Wrap, WrapText } from './style'
 
 const CreateViewPort = (props: any) => {
+  const [t] = useTranslation()
   const [form] = Form.useForm()
   const { searchKey, valueKey, titles, sort, createVisible } = useSelector(
     state => state.view,
@@ -36,6 +38,7 @@ const CreateViewPort = (props: any) => {
     await dispatch(addViewList(data))
     await dispatch(getViewList(props.pid))
     await dispatch(changeCreateVisible(false))
+    message.success(t('common.createSuccess'))
     form.resetFields()
   }
   const onClose = () => {
@@ -46,18 +49,25 @@ const CreateViewPort = (props: any) => {
     <CommonModal
       onConfirm={onConfirm}
       onClose={onClose}
-      title="创建视图"
+      title={t('creating_a_view')}
       isVisible={createVisible}
     >
       <Wrap>
-        <WrapText>将当前筛选条件、显示字段、排序方式、保存为新的视图</WrapText>
+        <WrapText>
+          {t(
+            'saves_the_current_filter_criteria_display_fields_and_sort_as_a_new_view',
+          )}
+        </WrapText>
         <Form form={form} layout="vertical">
           <Form.Item
-            label={<FormTitleSmall text="视图名称" />}
+            label={<FormTitleSmall text={t('name_of_view')} />}
             name="name"
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
-            <Input maxLength={20} placeholder="请输入视图名称限20字" />
+            <Input
+              maxLength={20}
+              placeholder={t('please_enter_a_view_name_limited_to_20_words')}
+            />
           </Form.Item>
         </Form>
       </Wrap>

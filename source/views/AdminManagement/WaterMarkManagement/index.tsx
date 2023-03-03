@@ -3,7 +3,7 @@ import useSetTitle from '@/hooks/useSetTitle'
 import { changeWater, getWater } from '@/services/setting'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
-import { Radio } from 'antd'
+import { Radio, Switch } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { changeWaterStatus } from '../../../../store/waterState'
 import { BottomTitle } from '../CompanyInfo'
@@ -18,35 +18,62 @@ const Header = styled.div({
   span: {
     fontSize: 16,
     fontWeight: 400,
-    color: 'black',
+    color: 'var(--neutral-n1-d1)',
     paddingLeft: 24,
   },
 })
 
-const Content = styled.div({
-  padding: 16,
-  background: '#F5F7FA',
-  height: 'calc(100% - 64px)',
-})
+const Content = styled.div`
+  padding: 0 24px;
+`
+
+const SwitchWrap = styled.div`
+  display: flex;
+  align-items: center;
+  width: 600px;
+  justify-content: space-between;
+`
+
+const Text = styled.div`
+  height: 46px;
+  margin-bottom: 24px;
+  > div:nth-of-type(1) {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--neutral-n1-d1);
+    margin-bottom: 4px;
+  }
+  > div:nth-of-type(2) {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--neutral-n3);
+  }
+`
 
 const WaterMarkManagement = () => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   asyncSetTtile(t('title.c7'))
 
-  const { value: valueId } = useSelector(store => store.water)
+  const { value: checked } = useSelector(store => store.water)
   const { userInfo } = useSelector(store => store.user)
   const dispatch = useDispatch()
 
-  const onChange = async (e: any) => {
+  const onChange = async (value: boolean) => {
     const res = await getWater()
-    const res2 = await changeWater({ id: res.id, status: e.target.value })
+    const res2 = await changeWater({ id: res.id, status: value ? 1 : 2 })
 
     if (res2.code === 0) {
-      dispatch(changeWaterStatus(e.target.value))
+      dispatch(changeWaterStatus(value))
     }
   }
-
+  const configList = [
+    {
+      title: 'v2_1_1.safe',
+      des: 'v2_1_1.c1',
+      key: 'watermark',
+    },
+  ]
   return (
     <PermissionWrap
       auth="b/company/config"
@@ -54,52 +81,18 @@ const WaterMarkManagement = () => {
     >
       <div style={{ height: '100%' }}>
         <Header>
-          <span>{t('v2_1_1.configuration')}</span>
+          <span>安全水印</span>
         </Header>
         <Content>
-          <div
-            style={{
-              background: 'white',
-              height: '100%',
-              padding: '25px',
-              borderRadius: 6,
-            }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <BottomTitle
-                style={{
-                  marginBottom: '0px',
-                  marginRight: '16px',
-                }}
-              >
-                {t('v2_1_1.safe')}
-              </BottomTitle>
-              <span
-                style={{
-                  fontSize: '12px',
-                  fontWeight: 400,
-                  color: '#969799',
-                }}
-              >
-                {t('v2_1_1.c1')}
-              </span>
-            </div>
-            <div
-              style={{
-                marginTop: '17px',
-              }}
-            >
-              <Radio.Group onChange={onChange} value={valueId}>
-                <Radio value={1}>{t('v2_1_1.open')}</Radio>
-                <Radio value={2}>{t('v2_1_1.close')}</Radio>
-              </Radio.Group>
-            </div>
-          </div>
+          {configList.map(item => (
+            <SwitchWrap key={item.title}>
+              <Text>
+                <div>{t(item.title)}</div>
+                <div>{t(item.des)}</div>
+              </Text>
+              <Switch onChange={onChange} checked={checked} />
+            </SwitchWrap>
+          ))}
         </Content>
       </div>
     </PermissionWrap>

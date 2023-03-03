@@ -23,6 +23,9 @@ const ModalHeader = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
+  height: 32,
+  paddingLeft: 24,
+  paddingRight: 18,
 })
 
 const Title = styled.div`
@@ -40,16 +43,17 @@ const Title = styled.div`
 const ModalContent = styled.div({
   color: 'var(--neutral-n2)',
   fontSize: 14,
-  marginTop: 12,
-  paddingLeft: 36,
-  paddingRight: 8,
+  marginTop: 9,
+  paddingLeft: 56,
+  paddingRight: 27,
 })
 
 const ModalFooter = styled(Space)({
-  marginTop: 12,
+  marginTop: 0,
   display: 'flex',
   justifyContent: 'flex-end',
-  paddingRight: 8,
+  height: 80,
+  padding: 24,
 })
 const ModalStyle = styled(Modal)`
   .ant-modal-body {
@@ -65,7 +69,7 @@ const DeleteConfirm = (props: Props) => {
       visible={props.isVisible}
       title={false}
       footer={false}
-      bodyStyle={{ padding: '16px 16px 16px 24px' }}
+      bodyStyle={{ padding: '20px 0px 0px 0px' }}
       closable={false}
       width={420}
       maskClosable={false}

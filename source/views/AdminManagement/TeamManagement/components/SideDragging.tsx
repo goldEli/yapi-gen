@@ -215,7 +215,11 @@ const SliderList = (props: any) => {
       }}
     >
       <IconFontStyle type="move" className="icon" />
-      <ListItemStyle>
+      <ListItemStyle
+        style={{
+          color: active ? childStyle.activeTextColor : childStyle.textColor,
+        }}
+      >
         {value?.logo_info?.path ? (
           <img
             src={value?.logo_info?.path}
