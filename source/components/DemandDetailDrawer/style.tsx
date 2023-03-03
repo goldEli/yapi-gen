@@ -88,6 +88,8 @@ export const Content = styled.div`
 
 export const ParentBox = styled(Space)`
   display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   height: 22px;
   margin-bottom: 16px;
 `
@@ -452,4 +454,21 @@ export const CommentTitle = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+`
+
+export const DrawerHeader = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  img {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+  }
+  div,
+  span {
+    font-size: var(--font14);
+    color: var(--neutral-n3);
+    margin-right: 8px;
+  }
 `
