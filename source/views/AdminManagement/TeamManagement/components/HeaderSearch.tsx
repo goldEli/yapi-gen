@@ -2,6 +2,7 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useState } from 'react'
 import InputSearch from '@/components/InputSearch'
+import { useSelector } from '@store/index'
 
 const HeaderWrap = styled.div`
   width: 100%;
@@ -41,14 +42,22 @@ const HeaderSearch = (props: {
   onSetSearchVal: any
   onShowAddMemberModal(): void
 }) => {
+  const { activeTeam } = useSelector(s => s.teams)
   return (
     <HeaderWrap>
       <TitleWrap>
-        <IconFont
-          type="team-8a8gio2p"
-          style={{ fontSize: 16, color: ' #98ACE0', marginRight: 8 }}
-        />
-        <span>团队名称</span>
+        {activeTeam?.logo_info?.path ? (
+          <img
+            src={activeTeam?.logo_info?.path}
+            style={{ width: 16, height: 16, marginRight: 8 }}
+          />
+        ) : (
+          <IconFont
+            type="team-8a8gio2p"
+            style={{ fontSize: 16, color: ' #98ACE0', marginRight: 8 }}
+          />
+        )}
+        <span>{activeTeam?.name}</span>
       </TitleWrap>
       <SearchBox>
         <InputSearch

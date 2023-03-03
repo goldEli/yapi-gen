@@ -7,6 +7,7 @@ export interface CounterState {
   teamsList: any[]
   activeTeamId: string | number | null
   departmentUserList: any[]
+  activeTeam: any
 }
 
 const initialState: CounterState = {
@@ -14,6 +15,7 @@ const initialState: CounterState = {
   teamsList: [],
   activeTeamId: null,
   departmentUserList: [],
+  activeTeam: null,
 }
 
 export const counterSlice = createSlice({
@@ -26,8 +28,9 @@ export const counterSlice = createSlice({
     setTeamsList: (state, action) => {
       state.teamsList = action.payload
     },
-    setActiveTeamId: (state, action) => {
-      state.activeTeamId = action.payload
+    setActiveTeam: (state, action) => {
+      state.activeTeam = action.payload
+      state.activeTeamId = action.payload?.id
     },
   },
   extraReducers(builder) {
@@ -35,6 +38,8 @@ export const counterSlice = createSlice({
       .addCase(companyTeamsList.fulfilled, (state, action) => {
         state.teamsList = action.payload.data
         state.teamsList[0].active = true
+        state.activeTeam = state.teamsList[0]
+        state.activeTeamId = state.teamsList[0]?.id
       })
       .addCase(getMemberList.fulfilled, (state, action) => {
         state.membersList = {

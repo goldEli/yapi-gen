@@ -30,7 +30,7 @@ const OperationWrap = styled.div({
   minHeight: 32,
   minWidth: '800px',
   lineHeight: '32px',
-  background: 'white',
+  background: 'var(--neutral-white-d2)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
@@ -365,7 +365,14 @@ const Operation = (props: Props) => {
   }
 
   const moreOperation = (
-    <div style={{ padding: '4px 0', display: 'flex', flexDirection: 'column' }}>
+    <div
+      style={{
+        padding: '4px 0',
+        display: 'flex',
+        flexDirection: 'column',
+        background: 'red',
+      }}
+    >
       {hasImport || projectInfo?.status !== 1 ? null : (
         <MoreItem onClick={onImportClick}>
           <IconFont style={{ fontSize: 16, marginRight: 8 }} type="Import" />

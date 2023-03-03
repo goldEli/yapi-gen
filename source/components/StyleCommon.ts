@@ -135,6 +135,7 @@ const HasIconMenu = styled.div<{ isCheck?: boolean }>(
     },
   }),
 )
+
 // 新版移入效果例：项目列表左上方操作
 const HoverWrap = styled.div<{ isActive?: any }>(
   {
@@ -369,6 +370,7 @@ const TableWrap = styled(Table)({
     paddingBottom: 10,
   },
 })
+
 // 表格-滚动条居底
 const TableStyleBox = styled(TableWrap)<{
   isPadding?: any
@@ -531,27 +533,25 @@ const StatusWrap = styled.div<{ isShow?: boolean; state?: number }>(
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    // border: '1px solid #2877FF',
-    color: '#2877FF',
     width: 'fit-content',
   },
   ({ isShow, state }) => ({
     cursor: isShow ? 'pointer' : 'inherit',
     color:
       state === 1
-        ? '#F2F2F4'
+        ? 'var(--neutral-n7)'
         : state === 2
-        ? '#323233'
+        ? 'var(--neutral-n1-d1)'
         : state === 3
-        ? '#F2F2F4'
+        ? 'var(--neutral-n7)'
         : '',
     background:
       state === 1
-        ? '#6688FF'
+        ? 'var(--auxiliary-b1)'
         : state === 2
-        ? '#F2F2F4'
+        ? 'var(--neutral-n7)'
         : state === 3
-        ? '#43BA9A'
+        ? 'var(--function-success)'
         : '',
   }),
 )

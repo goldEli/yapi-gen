@@ -18,7 +18,7 @@ import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { GENDER_MAP } from '@/constants'
 
 const RightWrap = styled.div`
-  width: 100%;
+  flex: 1;
   padding: 0 24px;
   height: 100%;
   position: relative;
@@ -84,7 +84,7 @@ const SelectStyle = styled(Select)`
 `
 const PersonStyle = styled.div`
   width: 100%;
-  padding: 24px;
+  padding: 8px 32px 24px;
 `
 const Row = styled.div`
   display: flex;
@@ -231,7 +231,7 @@ const RightTable = () => {
       <PersonStyle>
         <Row>
           <LeftItem>头像</LeftItem>
-          <CommonUserAvatar avatar={row.avatar} size="small" />
+          <CommonUserAvatar avatar={row.avatar} size="large" />
         </Row>
         <Row>
           <LeftItem>手机号</LeftItem>
@@ -265,7 +265,7 @@ const RightTable = () => {
           <LeftItem>所在团队</LeftItem>
           <RightItem>{row.teams?.map((i: any) => i.name)?.join()}</RightItem>
         </Row>
-        <Row className="row">
+        <Row className="row" style={{ marginBottom: 0 }}>
           <LeftItem>权限组</LeftItem>
           <RightItem>
             {row.team_is_admin === 1 ? '团队管理' : '团队成员'}
@@ -312,6 +312,7 @@ const RightTable = () => {
         hasFooter={type === 'detail'}
         onClose={() => setIsVisible(false)}
         onConfirm={onEditConfirm}
+        width={420}
       />
 
       <DeleteConfirm
