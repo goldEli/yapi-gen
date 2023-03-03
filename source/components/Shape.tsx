@@ -33,7 +33,12 @@ export function setValue(res: any) {
   const form1Obj: any = {}
   for (const key in res?.fields) {
     if (res?.fields[key].content === 'users_name') {
-      form1Obj[res?.fields[key].content] = [res.originalStatusUserIds.join(',')]
+      // eslint-disable-next-line no-undefined
+      if (res.originalStatusUserIds.length >= 1) {
+        form1Obj[res?.fields[key].content] = [
+          res.originalStatusUserIds.join(','),
+        ]
+      }
     } else if (
       res?.fields[key].type === 'select' &&
       res?.fields[key].true_value !== 0 &&
@@ -563,21 +568,25 @@ export const ShapeContent = (props: any) => {
     })
 
     const ids = rightList?.originalStatusUserIds.join(',')
-    const names = newC.map((k: any) => k.name).join(' ; ')
 
-    const newD = [
-      {
-        id: ids,
-        label: names + '（原状态处理人）',
-        name: names,
-        value: ids,
-      },
-    ]
+    const names = newC.map((k: any) => k.name).join(' ; ')
+    let newD: any = []
+    if (ids) {
+      newD = [
+        {
+          id: ids,
+          label: names + '（原状态处理人）',
+          name: names,
+          value: ids,
+        },
+      ]
+    }
+
     const newB = a.filter((j: any) => {
       return j.id !== info && !rightList?.originalStatusUserIds.includes(j.id)
     })
 
-    return (newD.length >= 1 ? newD : []).concat(newA, newB)
+    return (newD ? newD : []).concat(newA, newB)
   }
 
   return (
