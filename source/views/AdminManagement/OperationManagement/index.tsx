@@ -18,20 +18,20 @@ import { getOperateLogs } from '@/services/setting'
 import { useSelector } from '@store/index'
 import PermissionWrap from '@/components/PermissionWrap'
 import PaginationBox from '@/components/TablePagination'
+import IconFont from '@/components/IconFont'
+import CommonUserAvatar from '@/components/CommonUserAvatar'
 
 const Header = styled.div({
   height: 'auto',
-  background: 'white',
-  lineHeight: '64px',
+  background: 'var(--neutral-white-d1)',
   position: 'sticky',
   top: 0,
   zIndex: 9,
+  padding: '24px 24px 20px',
   '.label': {
     fontSize: 16,
     fontWeight: 400,
-    color: 'black',
-    paddingLeft: 24,
-    height: 64,
+    color: 'var(--neutral-n1-d1)',
   },
 })
 
@@ -39,9 +39,10 @@ const SearchWrap = styled(Space)({
   display: 'flex',
   alignItems: 'center',
   minHeight: 64,
-  background: 'white',
-  padding: '0 24px',
+  background: 'var(--neutral-white-d1)',
+  padding: '20px 0',
   flexWrap: 'wrap',
+  borderBottom: '1px solid #ecedef',
 })
 
 const SelectWrap = styled(Select)`
@@ -49,15 +50,14 @@ const SelectWrap = styled(Select)`
     color: rgba(187, 189, 191, 1);
   }
   .ant-select-selector {
-    min-width: 200px;
+    min-width: 124px;
     border: none !important;
     outline: none !important;
   }
 `
 
 const Content = styled.div({
-  padding: '16px 16px 0 16px',
-  background: '#F5F7FA',
+  padding: '0px 24px 24px',
   height: 'calc(100% - 128px)',
 })
 
@@ -66,6 +66,9 @@ const DataWrap = styled.div({
   background: 'white',
   overflowX: 'auto',
   borderRadius: 4,
+  '.ant-table-thead > tr > th': {
+    border: 'none',
+  },
 })
 
 const NewSort = (sortProps: any) => {
@@ -75,6 +78,7 @@ const NewSort = (sortProps: any) => {
       onChangeKey={sortProps.onUpdateOrderKey}
       nowKey={sortProps.nowKey}
       order={sortProps.order === 'asc' ? 1 : 2}
+      style={{ height: 44 }}
     >
       {sortProps.children}
     </Sort>
@@ -173,11 +177,14 @@ const OperationManagement = () => {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          {t('setting.operationName')}
+          {t('common.nickname')}
         </NewSort>
       ),
       dataIndex: 'name',
       width: 160,
+      render: (text: string, record: any) => (
+        <CommonUserAvatar avatar={record.avatar} size="small" name={text} />
+      ),
     },
     {
       title: (
@@ -252,7 +259,7 @@ const OperationManagement = () => {
           <div className="label">{t('setting.operationLog')}</div>
           <SearchWrap size={16}>
             <SelectWrapBedeck>
-              <span style={{ margin: '0 16px', fontSize: '14px' }}>
+              <span style={{ margin: '0 12px', fontSize: '14px' }}>
                 {t('setting.operationName')}
               </span>
               <Form.Item name="userIds" noStyle>
@@ -265,6 +272,12 @@ const OperationManagement = () => {
                   options={staffList}
                   optionFilterProp="label"
                   allowClear
+                  suffixIcon={
+                    <IconFont
+                      type="down"
+                      style={{ fontSize: 16, color: 'var(--neutral-n4)' }}
+                    />
+                  }
                 />
               </Form.Item>
             </SelectWrapBedeck>
@@ -282,6 +295,12 @@ const OperationManagement = () => {
                   options={typeList}
                   optionFilterProp="label"
                   allowClear
+                  suffixIcon={
+                    <IconFont
+                      type="down"
+                      style={{ fontSize: 16, color: 'var(--neutral-n4)' }}
+                    />
+                  }
                 />
               </Form.Item>
             </SelectWrapBedeck>
