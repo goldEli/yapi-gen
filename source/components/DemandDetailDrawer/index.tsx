@@ -2,10 +2,9 @@
 /* eslint-disable react/no-danger */
 // 需求详情弹窗预览模式
 
+import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import { getDemandInfo } from '@/services/demand'
 import { getProjectInfo, getProjectInfoValues } from '@/services/project'
-import { openDetail } from '@/tools'
-import { encryptPhp } from '@/tools/cryptoPhp'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectInfo, setProjectInfoValues } from '@store/project'
@@ -57,6 +56,7 @@ const DemandDetailDrawer = () => {
   const [drawerInfo, setDrawerInfo] = useState<any>({})
   const [showState, setShowState] = useState<any>(normalState)
   const commentDom: any = createRef()
+  const [openDemandDetail] = useOpenDemandDetail()
 
   const modeList = [
     { name: '详细信息', key: 'detailInfo', content: '' },
@@ -67,7 +67,8 @@ const DemandDetailDrawer = () => {
 
   const getProjectData = async () => {
     const response = await getProjectInfo({
-      projectId: demandDetailDrawerProps.project_id,
+      projectId:
+        demandDetailDrawerProps.project_id ?? demandDetailDrawerProps.projectId,
     })
     dispatch(setProjectInfo(response))
   }
@@ -75,7 +76,8 @@ const DemandDetailDrawer = () => {
   // 获取需求详情
   const getDemandDetail = async () => {
     const info = await getDemandInfo({
-      projectId: demandDetailDrawerProps.project_id,
+      projectId:
+        demandDetailDrawerProps.project_id ?? demandDetailDrawerProps.projectId,
       id: demandDetailDrawerProps?.id,
     })
     setDrawerInfo(info)
@@ -97,14 +99,7 @@ const DemandDetailDrawer = () => {
 
   // 跳转详情页面
   const onToDetail = () => {
-    const params = encryptPhp(
-      JSON.stringify({
-        type: 'info',
-        id: drawerInfo.projectId,
-        demandId: drawerInfo.id,
-      }),
-    )
-    openDetail(`/ProjectManagement/Demand?data=${params}`)
+    openDemandDetail(drawerInfo, drawerInfo.projectId, drawerInfo.id)
   }
 
   // 点击编辑
@@ -134,7 +129,9 @@ const DemandDetailDrawer = () => {
     dispatch(setIsCreateDemandVisible(true))
     dispatch(
       setCreateDemandProps({
-        projectId: demandDetailDrawerProps.project_id,
+        projectId:
+          demandDetailDrawerProps.project_id ??
+          demandDetailDrawerProps.projectId,
         isChild: true,
         parentId: item.id,
       }),

@@ -128,7 +128,6 @@ export const CollapseItemContent = styled.div<{ isOpen?: boolean }>`
 `
 
 export const Label = styled.div`
-  margin-bottom: 8px;
   font-size: var(--font14);
   color: var(--neutral-n1-d1);
 `
@@ -162,6 +161,7 @@ export const ContentWrap = styled.div<{ notHover?: any }>(
     flexDirection: 'column',
     maxWidth: '98%',
     wordBreak: 'break-all',
+    width: '100%',
   },
   ({ notHover }) => ({
     paddingLeft: notHover ? 8 : 0,
@@ -446,4 +446,10 @@ export const AddTagIcon = styled.div`
     border: 1px dashed var(--primary-d2);
     color: var(--primary-d2);
   }
+`
+
+export const CommentTitle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `

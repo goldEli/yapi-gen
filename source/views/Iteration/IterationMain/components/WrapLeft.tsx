@@ -22,11 +22,11 @@ import {
 } from 'antd'
 import styled from '@emotion/styled'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import moment from 'moment'
-import { getIsPermission, getParamsData, openDetail } from '@/tools/index'
+import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import RangePicker from '@/components/RangePicker'
@@ -158,6 +158,7 @@ const WrapLeft = (props: Props) => {
   const { projectInfo, projectInfoValues } = useSelector(store => store.project)
   const { isRefreshList, isUpdateList } = useSelector(store => store.iterate)
   const [isSpinning, setIsSpinning] = useState(false)
+  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const hasAdd = getIsPermission(
@@ -388,11 +389,10 @@ const WrapLeft = (props: Props) => {
 
   const onClickInfo = (item: any) => {
     props.onChangeOperation?.(item)
-
     const params = encryptPhp(
       JSON.stringify({ type: 'info', id: projectId, iterateId: item.id }),
     )
-    openDetail(`/ProjectManagement/Iteration?data=${params}`)
+    navigate(`/ProjectManagement/Iteration?data=${params}`)
   }
 
   const onClickItem = (item: any) => {

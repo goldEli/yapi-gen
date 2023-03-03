@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable require-unicode-regexp */
@@ -25,6 +26,7 @@ import {
   BlueCss,
   Card,
   CommentItem,
+  CommentTitle,
   Gred,
   GredParent,
   HovDiv,
@@ -39,6 +41,8 @@ interface Props {
   detail?: any
   isOpen?: boolean
   onRef?: any
+  // 是否是新开需求详情
+  isOpenInfo?: boolean
 }
 
 const DemandComment = (props: Props) => {
@@ -172,23 +176,44 @@ const DemandComment = (props: Props) => {
         editClose={() => setIsVisibleComment(false)}
         editConfirm={onAddConfirm}
       />
-      <Label>需求评论</Label>
       <DeleteConfirm
         text={t('mark.cd')}
         isVisible={isVisible}
         onChangeVisible={() => setIsVisible(!isVisible)}
         onConfirm={onDeleteConfirm}
       />
-      {isComment && (
-        <CommonButton
-          onClick={() => setIsVisibleComment(true)}
-          type="primaryText"
-          iconPlacement="left"
-          icon="plus"
-        >
-          添加评论
-        </CommonButton>
+      {props.isOpenInfo && (
+        <CommentTitle>
+          <Label>需求评论</Label>
+          {isComment && (
+            <CommonButton
+              onClick={() => setIsVisibleComment(true)}
+              type="primaryText"
+              iconPlacement="left"
+              icon="plus"
+            >
+              添加评论
+            </CommonButton>
+          )}
+        </CommentTitle>
       )}
+
+      {!props.isOpenInfo && (
+        <>
+          <Label>需求评论</Label>
+          {isComment && (
+            <CommonButton
+              onClick={() => setIsVisibleComment(true)}
+              type="primaryText"
+              iconPlacement="left"
+              icon="plus"
+            >
+              添加评论
+            </CommonButton>
+          )}
+        </>
+      )}
+
       {!!dataList?.list &&
         (dataList?.list?.length > 0 ? (
           <div>

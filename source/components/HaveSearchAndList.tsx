@@ -254,7 +254,7 @@ const HaveSearchAndList = (props: Props) => {
   return (
     <PopoverWrap
       visible={isOpen}
-      placement="bottom"
+      placement="bottomRight"
       trigger="click"
       onVisibleChange={onVisibleOpenChange}
       content={

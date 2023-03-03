@@ -325,7 +325,9 @@ const BasicDemand = (props: Props) => {
         return (
           <InfoItem key={i.content}>
             <LimitLabel label={i.title} width={90} />
-            <ContentWrap>
+            <ContentWrap
+              style={{ width: i.content === 'schedule' ? '100%' : 'inherit' }}
+            >
               {i.isCustomize === 1
                 ? getCustomComponent(i)
                 : getBasicTypeComponent(i)}
@@ -342,7 +344,13 @@ const BasicDemand = (props: Props) => {
         foldList?.map((i: any) => (
           <InfoItem key={i.content}>
             <LimitLabel label={i.title} width={90} />
-            <ContentWrap>111</ContentWrap>
+            <ContentWrap
+              style={{ width: i.content === 'schedule' ? '100%' : 'inherit' }}
+            >
+              {i.isCustomize === 1
+                ? getCustomComponent(i)
+                : getBasicTypeComponent(i)}
+            </ContentWrap>
           </InfoItem>
         ))}
       {isShowFields && foldList?.length > 0 && (
