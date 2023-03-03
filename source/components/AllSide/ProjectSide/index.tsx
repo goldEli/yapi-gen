@@ -289,7 +289,7 @@ const MoreProjectSide = (props: Props) => {
                     isSpace
                     onClick={() => {
                       dispatch(changeGroupId(item.id))
-                      // dispatch(changeTypeId(null))
+                      dispatch(changeTypeId(null))
                     }}
                     key={item.id}
                     idx={item.id === storeGid}

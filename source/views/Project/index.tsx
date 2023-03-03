@@ -206,16 +206,20 @@ const ProjectManagementOptimization = () => {
   }
 
   useEffect(() => {
-    setGroupId(storeGid)
-    setActiveType(-1)
+    if (storeGid) {
+      setGroupId(storeGid)
+      setActiveType(-1)
+    }
   }, [storeGid])
   useEffect(() => {
-    setActiveType(typeId)
-    setGroupId(null)
-    setPageObj({
-      page: 1,
-      size: pageObj.size,
-    })
+    if (typeId || typeId === 0) {
+      setActiveType(typeId)
+      setGroupId(null)
+      setPageObj({
+        page: 1,
+        size: pageObj.size,
+      })
+    }
   }, [typeId])
 
   return (
