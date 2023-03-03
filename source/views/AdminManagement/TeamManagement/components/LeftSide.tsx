@@ -283,6 +283,8 @@ const LeftSide = (props: any) => {
     height: '44px',
     hoverColor: 'var(--hover-d2)',
     activeColor: 'var(--gradient-left)',
+    activeTextColor: 'var(--primary-d2)',
+    textColor: 'var(--neutral-n1-d1)',
   }
 
   const onChangeDragging = async (data: any) => {
