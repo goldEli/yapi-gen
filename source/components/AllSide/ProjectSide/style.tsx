@@ -183,7 +183,7 @@ export const TitleBox = styled.div<{ idx?: boolean; isSpace?: any }>(
   {
     height: 44,
     lineHeight: '44px',
-    color: '#323233',
+    color: 'var(--neutral-n1-d2)',
     fontWeight: 400,
     fontSize: 14,
     cursor: 'pointer',

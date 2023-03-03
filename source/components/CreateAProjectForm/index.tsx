@@ -72,6 +72,9 @@ const CreateAProjectForm = () => {
     }
     if (isEditId) {
       dispatch(postEditCreate({ ...obj, id: isEditId }))
+      setTimeout(() => {
+        dispatch(onRest(true))
+      }, 500)
       return
     }
     dispatch(postCreate(obj))
