@@ -54,7 +54,7 @@ const LeftSideContainer = styled.div`
   }
   .resizable:hover ~ .resize_line,
   .resizable:active ~ .resize_line {
-    border-left: 1px dashed #617ef2;
+    border-left: 1px solid #617ef2;
   }
 `
 const TeamAdd = styled.div`
