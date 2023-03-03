@@ -72,14 +72,15 @@ const Tabs = styled.div`
     height: 24px;
     line-height: 24px;
     width: 108px;
+    color: var(--neutral-n1-d1);
   }
   &:hover {
     cursor: pointer;
     color: var(--neutral-n1-d1);
   }
   .tabsActive {
-    background-color: var(--neutral-n7);
-    color: var(--neutral-n1-d1);
+    background-color: var(--hover-d1);
+    color: var(--neutral-n3);
   }
 `
 const Row = styled.div`
@@ -237,6 +238,7 @@ const CommonModal = (props: ModalProps) => {
   }, [props.isVisible])
 
   // 勾选后获取到成员
+
   let checkdFilterDataList: any = []
   const checkdFilterData = (data: any) => {
     for (const i in data) {
@@ -273,6 +275,9 @@ const CommonModal = (props: ModalProps) => {
 
     // 得到重复node需要去重
     const data = unionBy(checkdFilterData(e.checkedNodes), 'id')
+    if (e.checkedNodes.length && data.length <= personData.length) {
+      message.warning('当前部门层级下无可选成员！')
+    }
     setPersonData(data)
   }
 
