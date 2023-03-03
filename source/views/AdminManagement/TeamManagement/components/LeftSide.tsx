@@ -13,11 +13,49 @@ import { useTranslation } from 'react-i18next'
 import * as services from '@/services'
 
 const LeftSideContainer = styled.div`
-  width: 232px;
+  min-width: 232px;
+  max-width: 560px;
+  position: relative;
   height: 100%;
   border-right: 1px solid var(--neutral-n6-d2);
-  padding: 0 16px;
+  padding: 0;
+  padding-left: 16px;
   background-color: var(--neutral-white-d1);
+  .resize_save {
+    position: absolute;
+    padding: 0;
+    top: 0;
+    left: 0;
+    padding-left: 16px;
+    padding-right: 12px;
+  }
+  .resizable {
+    resize: horizontal;
+    cursor: ew-resize;
+    width: 199px;
+    min-width: 215px;
+    max-width: 543px;
+    height: 100vh;
+    overflow: scroll;
+    border: 1px solid black;
+    opacity: 0;
+  }
+  .resizable::-webkit-scrollbar {
+    width: 180px;
+    height: inherit;
+  }
+  /* 拖拽线 */
+  .resize_line {
+    position: absolute;
+    right: -2px;
+    top: 0;
+    bottom: 0;
+    border-left: 1px solid #f2f4f7;
+  }
+  .resizable:hover ~ .resize_line,
+  .resizable:active ~ .resize_line {
+    border-left: 1px dashed #617ef2;
+  }
 `
 const TeamAdd = styled.div`
   width: 100%;
@@ -136,6 +174,9 @@ const UploadTitle = styled.div`
   margin-bottom: 8px;
   margin-top: 24px;
 `
+
+const Content = styled.div``
+
 const Upload = (props: any) => {
   const [defaultIcon, setDefaultIcon] = useState(true)
   const [uploadImg, setUploadImg] = useState('')
@@ -238,7 +279,7 @@ const LeftSide = (props: any) => {
 
   // 拖拽的宽高样式
   const childStyle = {
-    width: '200px',
+    minWidth: '200px',
     height: '44px',
     hoverColor: 'var(--hover-d2)',
     activeColor: 'var(--gradient-left)',
@@ -356,39 +397,43 @@ const LeftSide = (props: any) => {
   }
   return (
     <LeftSideContainer>
-      <TeamAdd onClick={() => createTeam()}>
-        <TiamTitleText>团队管理</TiamTitleText>
-        <IconFontStyle type="plus" />
-      </TeamAdd>
-      {/* 拖拽组件 */}
-      <SideDragging
-        onChange={(item: any) => onChangeDragging(item)}
-        list={teamsList}
-        setList={setList}
-        childStyle={childStyle}
-        onChangeTeam={(key: string, child: any) => onChangeTeam(key, child)}
-      />
-      {/* <CommonModal1
+      <div className="resizable" />
+      <div className="resize_line" />
+      <Content className="resize_save">
+        <TeamAdd onClick={() => createTeam()}>
+          <TiamTitleText>团队管理</TiamTitleText>
+          <IconFontStyle type="plus" />
+        </TeamAdd>
+        {/* 拖拽组件 */}
+        <SideDragging
+          onChange={(item: any) => onChangeDragging(item)}
+          list={teamsList}
+          setList={setList}
+          childStyle={childStyle}
+          onChangeTeam={(key: string, child: any) => onChangeTeam(key, child)}
+        />
+        {/* <CommonModal1
         title={'添加成员'}
         isVisible={false}
         onClose={() => setTeamIsVisible(false)}
       /> */}
-      <CommonModal
-        title={formType === 'create' ? '创建团队' : '编辑团队'}
-        isVisible={teamIsVisible}
-        children={teamForm}
-        onConfirm={() => onConfirm()}
-        onClose={() => setTeamIsVisible(false)}
-      />
-      <DeleteConfirm
-        title={`确认解散【${activeRow?.name}】团队`}
-        text="解散后将自动移除团队成员，该团队项目将自动划分到公司且权限变更为私有"
-        isVisible={delTeamIsVisible}
-        onConfirm={() => {
-          delOnConfirm()
-        }}
-        onChangeVisible={() => setDelTeamIsVisible(false)}
-      />
+        <CommonModal
+          title={formType === 'create' ? '创建团队' : '编辑团队'}
+          isVisible={teamIsVisible}
+          children={teamForm}
+          onConfirm={() => onConfirm()}
+          onClose={() => setTeamIsVisible(false)}
+        />
+        <DeleteConfirm
+          title={`确认解散【${activeRow?.name}】团队`}
+          text="解散后将自动移除团队成员，该团队项目将自动划分到公司且权限变更为私有"
+          isVisible={delTeamIsVisible}
+          onConfirm={() => {
+            delOnConfirm()
+          }}
+          onChangeVisible={() => setDelTeamIsVisible(false)}
+        />
+      </Content>
     </LeftSideContainer>
   )
 }
