@@ -83,7 +83,7 @@ const MenuStyle = styled(Menu)`
     .ant-menu-sub
     .ant-menu-item
     > .ant-menu-title-content {
-    margin-left: 3px;
+    margin-left: 4px;
   }
 `
 const IconFontStyle = styled(IconFont)`
