@@ -39,6 +39,11 @@ const IconFontStyle = styled(IconFont)`
   font-size: 18px;
   color: var(--neutral-n2);
   border-radius: 6px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   &:hover {
     background-color: var(--hover-d1);
   }
@@ -236,7 +241,7 @@ const LeftSide = (props: any) => {
     width: '200px',
     height: '44px',
     hoverColor: 'var(--hover-d2)',
-    activeColor: 'var(--gradient)',
+    activeColor: 'var(--gradient-left)',
   }
 
   const onChangeDragging = async (data: any) => {
