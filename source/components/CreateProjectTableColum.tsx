@@ -131,7 +131,7 @@ export const useDynamicColumns = (state: any) => {
             }}
           >
             {state.isTree && state.onChangeTree(record)}
-            <Tooltip placement="top" title={record.categoryRemark}>
+            <Tooltip placement="top" title={record.category}>
               <img
                 src={
                   record.category_attachment
@@ -145,18 +145,6 @@ export const useDynamicColumns = (state: any) => {
                 }}
                 alt=""
               />
-              {/* <CategoryWrap
-                color={record.categoryColor}
-                bgColor={
-                  colorList?.filter(
-                    (k: any) => k.key === record.categoryColor,
-                  )[0]?.bgColor
-                }
-                style={{ marginLeft: 0 }}
-              >
-                {' '}
-                {record.category}
-              </CategoryWrap> */}
             </Tooltip>
             <TableQuickEdit
               type="text"

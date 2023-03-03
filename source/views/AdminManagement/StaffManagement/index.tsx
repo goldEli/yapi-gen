@@ -13,7 +13,7 @@ import { StaffPersonal } from './components/StaffPower'
 import { TableStyleBox, HoverWrap, DividerWrap } from '@/components/StyleCommon'
 import SearchList from './components/SearchList'
 import PermissionWrap from '@/components/PermissionWrap'
-import { getIsPermission, openDetail } from '@/tools/index'
+import { getIsPermission } from '@/tools/index'
 import NoData from '@/components/NoData'
 import { css } from '@emotion/css'
 import { useTranslation } from 'react-i18next'
@@ -29,6 +29,7 @@ import { setIsRefresh } from '@store/user'
 import InputSearch from '@/components/InputSearch'
 import PaginationBox from '@/components/TablePagination'
 import SetShowField from '@/components/SetShowField/indedx'
+import { useNavigate } from 'react-router-dom'
 
 export const tableWrapP = css`
   display: flex;
@@ -113,6 +114,7 @@ const StaffManagement = () => {
   ])
   const [allTitleList, setAllTitleList] = useState<any[]>([])
   const hasCheck = getIsPermission(userInfo?.company_permissions, 'b/user/info')
+  const navigate = useNavigate()
 
   const getStaffListData = async () => {
     setIsSpinning(true)
@@ -187,12 +189,12 @@ const StaffManagement = () => {
 
   const onToDetail = (row: any) => {
     if (row.id === userInfo.id) {
-      openDetail('/Mine')
+      navigate('/Mine')
     } else {
       const params = encryptPhp(
         JSON.stringify({ id: '', isMember: false, userId: row.id }),
       )
-      openDetail(`/MemberInfo/Profile?data=${params}`)
+      navigate(`/MemberInfo/Profile?data=${params}`)
     }
   }
 

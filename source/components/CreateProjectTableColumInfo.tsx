@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
 // 公用我的/他的需求列表表格
 
 /* eslint-disable react/jsx-no-leaked-render */
@@ -15,8 +17,7 @@ import Sort from '@/components/Sort'
 import ChildDemandTable from '@/components/ChildDemandTable'
 import { useTranslation } from 'react-i18next'
 import { OmitText } from '@star-yun/ui'
-import { getCustomNormalValue, openDetail } from '@/tools'
-import { encryptPhp } from '@/tools/cryptoPhp'
+import { getCustomNormalValue } from '@/tools'
 import { message, Progress, Tooltip } from 'antd'
 // import DemandProgress from '@/components/DemandProgress'
 import TableQuickEdit from './TableQuickEdit'
@@ -24,6 +25,7 @@ import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
 import ChangeStatusPopover from './ChangeStatusPopover'
 import ChangePriorityPopover from './ChangePriorityPopover'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 
 const Wrap = styled.div<{ isEdit?: any }>(
   {
@@ -39,19 +41,13 @@ export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
   const { colorList } = useSelector(store => store.project)
   const { userInfo } = useSelector(store => store.user)
+  const [openDemandDetail] = useOpenDemandDetail()
 
   const onToDetail = (item: any) => {
-    const params = encryptPhp(
-      JSON.stringify({
-        type: 'info',
-        id: item.project_id,
-        demandId: item.id,
-      }),
-    )
     if (item.project?.isPublic !== 1 && !item.project?.isUserMember) {
       message.warning(t('common.notCheckInfo'))
     } else {
-      openDetail(`/ProjectManagement/Demand?data=${params}`)
+      openDemandDetail(item, item.project_id, item.id)
     }
   }
 
@@ -115,12 +111,21 @@ export const useDynamicColumns = (state: any) => {
               alignItems: 'center',
             }}
           >
-            <Tooltip
-              placement="top"
-              getPopupContainer={node => node}
-              title={record.categoryRemark}
-            >
-              <CategoryWrap
+            <Tooltip placement="top" title={record.category}>
+              <img
+                src={
+                  record.category_attachment
+                    ? record.category_attachment
+                    : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
+                }
+                style={{
+                  width: '18px',
+                  height: '18px',
+                  marginRight: '8px',
+                }}
+                alt=""
+              />
+              {/* <CategoryWrap
                 color={record.categoryColor}
                 bgColor={
                   colorList?.filter(
@@ -130,7 +135,7 @@ export const useDynamicColumns = (state: any) => {
                 style={{ marginLeft: 0 }}
               >
                 {record.category}
-              </CategoryWrap>
+              </CategoryWrap> */}
             </Tooltip>
             <TableQuickEdit
               type="text"

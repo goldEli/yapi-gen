@@ -58,12 +58,14 @@ const BasicDemand = (props: Props) => {
   const { basicFieldList } = useSelector(store => store.global)
   const { userInfo } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
+  const [canOperationKeys, setCanOperationKeys] = useState<any>({})
 
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
       ?.length > 0
 
+  // 修改进度
   const onChangeSchedule = async () => {
     if (
       props.detail?.user?.map((i: any) => i.user.id)?.includes(userInfo?.id) &&
@@ -98,11 +100,27 @@ const BasicDemand = (props: Props) => {
     }
   }
 
+  const onChangeBasicKey = (key: any) => {
+    const needChangeList: any = {
+      class: 'class_id',
+      iterate_name: 'iterate_id',
+      users_name: 'users',
+      users_copysend_name: 'copysend',
+    }
+    return Object.keys(needChangeList).includes(key) ? needChangeList[key] : key
+  }
+
   const getFieldData = async () => {
     const result = await getCategoryConfigList({
       projectId: props.detail.projectId,
       categoryId: props.detail.category,
     })
+    // 重组数据
+    let keys: any = []
+    result?.forEach((element: any) => {
+      keys.push([onChangeBasicKey(element.content), element.isRequired])
+    }),
+      setCanOperationKeys(Object.fromEntries(keys))
     setFoldList(
       result?.filter(
         (i: any) =>
@@ -190,7 +208,10 @@ const BasicDemand = (props: Props) => {
       const defaultValues = getDefaultValue(item.content)
       nodeComponent = (
         <TableQuickEdit
-          item={props.detail}
+          item={{
+            ...props.detail,
+            ...{ categoryConfigList: canOperationKeys },
+          }}
           isInfo
           keyText={filterContent?.keyText}
           type={filterContent?.attr}
@@ -293,7 +314,10 @@ const BasicDemand = (props: Props) => {
   const getCustomComponent = (item: any) => {
     return (
       <TableQuickEdit
-        item={props.detail}
+        item={{
+          ...props.detail,
+          ...{ categoryConfigList: canOperationKeys },
+        }}
         isInfo
         keyText={item.content}
         type={item.fieldContent?.attr}
@@ -325,7 +349,9 @@ const BasicDemand = (props: Props) => {
         return (
           <InfoItem key={i.content}>
             <LimitLabel label={i.title} width={90} />
-            <ContentWrap>
+            <ContentWrap
+              style={{ width: i.content === 'schedule' ? '100%' : 'inherit' }}
+            >
               {i.isCustomize === 1
                 ? getCustomComponent(i)
                 : getBasicTypeComponent(i)}
@@ -342,7 +368,13 @@ const BasicDemand = (props: Props) => {
         foldList?.map((i: any) => (
           <InfoItem key={i.content}>
             <LimitLabel label={i.title} width={90} />
-            <ContentWrap>111</ContentWrap>
+            <ContentWrap
+              style={{ width: i.content === 'schedule' ? '100%' : 'inherit' }}
+            >
+              {i.isCustomize === 1
+                ? getCustomComponent(i)
+                : getBasicTypeComponent(i)}
+            </ContentWrap>
           </InfoItem>
         ))}
       {isShowFields && foldList?.length > 0 && (

@@ -18,8 +18,7 @@ import { useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
-import { getIsPermission, getParamsData, openDetail } from '@/tools'
-import { encryptPhp } from '@/tools/cryptoPhp'
+import { getIsPermission, getParamsData } from '@/tools'
 import MoreDropdown from '@/components/MoreDropdown'
 import DropDownMenu from '@/components/DropDownMenu'
 import { useDispatch, useSelector } from '@store/index'
@@ -39,6 +38,7 @@ import {
 import PaginationBox from '@/components/TablePagination'
 import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
 import SetShowField from '@/components/SetShowField/indedx'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 
 const Operation = styled.div({
   display: 'flex',
@@ -96,6 +96,7 @@ const ChildDemand = () => {
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
   const [isVisibleFields, setIsVisibleFields] = useState(false)
+  const [openDemandDetail] = useOpenDemandDetail()
 
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
@@ -194,10 +195,7 @@ const ChildDemand = () => {
   }
 
   const onClickItem = (item: any) => {
-    const params = encryptPhp(
-      JSON.stringify({ type: 'info', id: projectId, demandId: item.id }),
-    )
-    openDetail(`/ProjectManagement/Demand?data=${params}`)
+    openDemandDetail(item, projectId, item.id)
   }
 
   const onChangePage = (page: number, size: number) => {

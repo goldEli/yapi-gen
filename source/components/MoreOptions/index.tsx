@@ -20,7 +20,7 @@ const MoreOptions = (props: OptionsProps) => {
       )}
       {props.type === 'project' && (
         <>
-          <WrapTextImg src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg" />
+          <WrapTextImg src={props.img} />
           <WrapText>{props.name}</WrapText>
         </>
       )}

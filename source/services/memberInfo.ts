@@ -42,6 +42,8 @@ export const getUserInfoAbeyanceStory: any = async (params: any) => {
       count: k.count,
       list: k.list
         ? k.list?.map((i: any) => ({
+            category_attachment: i.category_attachment,
+            categoryConfigList: i.category_config_list,
             id: i.id,
             name: i.name,
             demand: i.child_story_count,
@@ -86,6 +88,8 @@ export const getUserInfoAbeyanceStory: any = async (params: any) => {
     return {
       list: response.data?.list
         ? response.data.list.map((i: any) => ({
+            category_attachment: i.category_attachment,
+            categoryConfigList: i.category_config_list,
             id: i.id,
             name: i.name,
             demand: i.child_story_count,
@@ -162,6 +166,8 @@ export const getUserInfoCreateStory: any = async (params: any) => {
   return {
     list: response.data?.list
       ? response.data.list.map((i: any) => ({
+          category_attachment: i.category_attachment,
+          categoryConfigList: i.category_config_list,
           id: i.id,
           name: i.name,
           demand: i.child_story_count,
@@ -237,6 +243,8 @@ export const getUserInfoFinishStory: any = async (params: any) => {
   return {
     list: response.data?.list
       ? response.data?.list?.map((i: any) => ({
+          category_attachment: i.category_attachment,
+          categoryConfigList: i.category_config_list,
           id: i.id,
           name: i.name,
           demand: i.child_story_count,
@@ -368,6 +376,8 @@ export const getMemberInfoAbeyanceStory: any = async (params: any) => {
       count: k.count,
       list: k.list
         ? k.list?.map((i: any) => ({
+            category_attachment: i.category_attachment,
+            categoryConfigList: i.category_config_list,
             id: i.id,
             name: i.name,
             demand: i.child_story_count,
@@ -412,6 +422,8 @@ export const getMemberInfoAbeyanceStory: any = async (params: any) => {
     return {
       list: response.data?.list
         ? response.data.list.map((i: any) => ({
+            category_attachment: i.category_attachment,
+            categoryConfigList: i.category_config_list,
             id: i.id,
             name: i.name,
             demand: i.child_story_count,
@@ -488,6 +500,8 @@ export const getMemberInfoCreateStory: any = async (params: any) => {
   return {
     list: response.data?.list
       ? response.data.list.map((i: any) => ({
+          category_attachment: i.category_attachment,
+          categoryConfigList: i.category_config_list,
           id: i.id,
           name: i.name,
           demand: i.child_story_count,
@@ -563,6 +577,8 @@ export const getMemberInfoFinishStory: any = async (params: any) => {
   return {
     list: response.data?.list
       ? response.data?.list?.map((i: any) => ({
+          category_attachment: i.category_attachment,
+          categoryConfigList: i.category_config_list,
           id: i.id,
           name: i.name,
           demand: i.child_story_count,

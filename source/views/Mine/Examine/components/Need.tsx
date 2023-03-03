@@ -99,6 +99,7 @@ const Need = (props: any) => {
       val ?? activeTab
         ? await getVerifyList(params)
         : await getVerifyUserList(params)
+
     setListData(result)
     setCount({
       verifyUser: val ?? activeTab ? result?.otherCount : result?.total,
@@ -185,7 +186,7 @@ const Need = (props: any) => {
         />
       )}
       <div style={{ padding: '0 24px', justifyContent: 'space-between' }}>
-        <div>
+        <div style={{ display: 'flex' }}>
           <TabsItem isActive={!activeTab} onClick={() => onChangeTab(0)}>
             <div>{t('newlyAdd.needMineExamine')}</div>
           </TabsItem>

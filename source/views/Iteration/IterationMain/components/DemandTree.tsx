@@ -26,8 +26,7 @@ import { OptionalFeld } from '@/components/OptionalFeld'
 import { useDynamicColumns } from '@/components/CreateProjectTableColum'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
-import { getIsPermission, getParamsData, openDetail } from '@/tools'
-import { encryptPhp } from '@/tools/cryptoPhp'
+import { getIsPermission, getParamsData } from '@/tools'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import FloatBatch from '@/components/FloatBatch'
@@ -40,6 +39,7 @@ import {
 import PaginationBox from '@/components/TablePagination'
 import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 
 const Content = styled.div({
   padding: '20px 12px 0 8px',
@@ -130,6 +130,7 @@ const DemandTree = (props: Props) => {
   const [computedTopId, setComputedTopId] = useState(0)
   const [delayChild, setDelayChild] = useState<any>({})
   const dispatch = useDispatch()
+  const [openDemandDetail] = useOpenDemandDetail()
 
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
   const getShowkey = () => {
@@ -170,10 +171,7 @@ const DemandTree = (props: Props) => {
 
   // 点击跳转需求详情
   const onClickItem = (item: any) => {
-    const params = encryptPhp(
-      JSON.stringify({ type: 'info', id: projectId, demandId: item.id }),
-    )
-    openDetail(`/ProjectManagement/Demand?data=${params}`)
+    openDemandDetail(item, projectId, item.id)
   }
 
   // 修改优先级
