@@ -240,11 +240,9 @@ import { Series } from 'highcharts'
 const LeftSide = (props: any) => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
-
-  const { teamsList } = useSelector(s => s.teams)
+  const { teamsList, activeTeam } = useSelector(s => s.teams)
   const [formType, setFormType] = useState('')
   const [uploadImgs, setUploadImgs] = useState<any>()
-  const [activeRow, setActiveRow] = useState<any>()
 
   // 创建和修改弹窗
   const [teamIsVisible, setTeamIsVisible] = useState(false)
@@ -270,13 +268,6 @@ const LeftSide = (props: any) => {
     getTeamsList()
   }, [])
 
-  useEffect(() => {
-    dispatch({
-      type: 'team/setActiveTeamId',
-      payload: teamsList?.[0]?.id,
-    })
-  }, [teamsList])
-
   // 拖拽的宽高样式
   const childStyle = {
     minWidth: '200px',
@@ -300,8 +291,8 @@ const LeftSide = (props: any) => {
       payload: newList,
     })
     dispatch({
-      type: 'team/setActiveTeamId',
-      payload: data.id,
+      type: 'team/setActiveTeam',
+      payload: data,
     })
   }
 
@@ -365,6 +356,7 @@ const LeftSide = (props: any) => {
     })
     setTeamForm(teamGetForm(row))
   }
+
   // 弹窗确认按钮
   // addTeams,dismissTeams,editTeams
   const onConfirm = async () => {
@@ -376,7 +368,7 @@ const LeftSide = (props: any) => {
       if (formType === 'create') {
         await addTeams({ name, logo })
       } else {
-        await editTeams(activeRow?.id, { name, logo })
+        await editTeams(activeTeam?.id, { name, logo })
       }
       props.isSpin(false)
       setTeamIsVisible(false)
@@ -388,14 +380,17 @@ const LeftSide = (props: any) => {
   }
   const delOnConfirm = async () => {
     try {
-      await dismissTeams(activeRow?.id)
+      await dismissTeams(activeTeam?.id)
       setDelTeamIsVisible(false)
       getTeamsList()
     } catch (error) {}
   }
   const onChangeTeam = (key: any, child: any) => {
     key === 'del' ? setDelTeamIsVisible(true) : editTeam(child)
-    setActiveRow(child)
+    dispatch({
+      type: 'team/setActiveTeam',
+      payload: child,
+    })
   }
   return (
     <LeftSideContainer>
@@ -427,7 +422,7 @@ const LeftSide = (props: any) => {
           onClose={() => setTeamIsVisible(false)}
         />
         <DeleteConfirm
-          title={`确认解散【${activeRow?.name}】团队`}
+          title={`确认解散【${activeTeam?.name}】团队`}
           text="解散后将自动移除团队成员，该团队项目将自动划分到公司且权限变更为私有"
           isVisible={delTeamIsVisible}
           onConfirm={() => {
