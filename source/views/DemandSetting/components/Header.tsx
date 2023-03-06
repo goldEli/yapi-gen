@@ -94,7 +94,10 @@ const Header = () => {
   const [workList, setWorkList] = useState<any>({
     list: undefined,
   })
-
+  // 需求类别侧边栏
+  const getList = async () => {
+    await dispatch(storyConfigCategoryList({ projectId: projectInfo.id }))
+  }
   useEffect(() => {
     setChecked(startUsing ? true : false)
   }, [startUsing])
@@ -105,7 +108,8 @@ const Header = () => {
       id: activeCategory.id,
       projectId: projectInfo.id,
     })
-    await dispatch(storyConfigCategoryList({ projectId: projectInfo.id }))
+    setIsDelete(false)
+    getList()
   }
 
   // 点击跳转配置工作流
@@ -124,7 +128,6 @@ const Header = () => {
   const editCategoryForm = () => {
     setIsVisible(true)
   }
-
   // 删除逻辑
   const onDelete = () => {
     if (activeCategory?.hasDemand) {
@@ -151,11 +154,11 @@ const Header = () => {
       await changeStoryConfigCategory(params)
       await onDeleteConfirm()
       onCloseHasDelete()
+      getList()
     } catch (error) {
       //
     }
   }
-
   const onChangeSelect = async (value: any) => {
     if (value) {
       const result = await getWorkflowList({
@@ -182,7 +185,7 @@ const Header = () => {
           title={t('newlyAdd.historyMove')}
           onConfirm={onConfirmHasDelete}
         >
-          <div style={{ padding: '0 16px 0 2px' }}>
+          <div style={{ padding: '0 24px' }}>
             <HasDemandText>
               {t('newlyAdd.hasMoveType', {
                 hasDemand: activeCategory?.hasDemand,
@@ -265,8 +268,9 @@ const Header = () => {
       </RightOperate>
       <EditCategory
         item={activeCategory}
+        type={'edit'}
         onClose={() => setIsVisible(false)}
-        onUpdate={() => 123}
+        onUpdate={() => getList()}
         isVisible={isVisible}
       />
     </HeaderWrap>

@@ -26,30 +26,19 @@ const FormWrap = styled(Form)({
   marginLeft: '24px',
 })
 
-const ViewWrap = styled.div<{ color: string; bgColor: string }>(
-  {
-    height: 22,
-    borderRadius: 11,
-    padding: '0 8px',
-    marginRight: 8,
-    lineHeight: '22px',
-    fontSize: 12,
-    fontWeight: 400,
-    '::before': {
-      content: "'#'",
-    },
-    '::after': {
-      content: "'#'",
-    },
-  },
-  ({ color, bgColor }) => ({
-    background: bgColor,
-    color,
-  }),
-)
+const ViewWrap = styled.div({
+  height: 22,
+  borderRadius: 11,
+  padding: '0px',
+  marginRight: 8,
+  lineHeight: '22px',
+  fontSize: 12,
+  fontWeight: 400,
+})
 
 interface EditorProps {
   isVisible: boolean
+  type?: string
   item?: any
   onClose(): void
   onUpdate(): void
@@ -77,24 +66,15 @@ const EditorCategory = (props: EditorProps) => {
     })
   }
   useEffect(() => {
-    if (props.isVisible) {
+    if (props?.type === 'edit' && props.isVisible) {
       getIconList()
-    }
-  }, [props.isVisible])
-
-  useEffect(() => {
-    if (props?.item?.id) {
       form.setFieldsValue(props?.item)
       setPath(props?.item?.path)
       setName(props?.item?.name)
-    } else {
-      form.resetFields()
-      setName('')
+    } else if (!props?.type && props.isVisible) {
+      getIconList()
     }
-    setTimeout(() => {
-      inputRefDom.current?.focus()
-    }, 50)
-  }, [props?.item])
+  }, [props.isVisible])
 
   const onReset = () => {
     props?.onClose()
@@ -117,7 +97,7 @@ const EditorCategory = (props: EditorProps) => {
     params.id = props?.item?.id
     const attachment_id = colorList.find((item: any) => item.path === path).id
     params.attachment_id = attachment_id
-    if (props?.item?.id) {
+    if (props?.type === 'edit') {
       try {
         await updateStoryConfigCategory(params)
         message.success(t('common.editSuccess'))
@@ -153,13 +133,13 @@ const EditorCategory = (props: EditorProps) => {
     <CommonModal
       isVisible={props.isVisible}
       title={
-        props?.item?.id
+        props?.type === 'edit'
           ? t('newlyAdd.editCategory')
           : t('newlyAdd.createCategory')
       }
       onClose={onClose}
       onUpdate={props.onUpdate}
-      onConfirm={onConfirm}
+      onConfirm={() => onConfirm(props)}
       confirmText={props?.item?.id ? t('common.confirm') : t('newlyAdd.create')}
     >
       <FormWrap
@@ -212,12 +192,13 @@ const EditorCategory = (props: EditorProps) => {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <ViewWrap
               color={path || '#969799'}
-              bgColor={
-                colorList?.filter((i: any) => i.key === (path || '#969799'))[0]
-                  ?.bgColor
-              }
+              // bgColor={
+              //   colorList?.filter((i: any) => i.key === (path || '#969799'))[0]
+              //     ?.bgColor
+              // }
             >
-              {name || t('newlyAdd.nothing')}
+              {/* {name || t('newlyAdd.nothing')} */}
+              {path && <img src={path} style={{ width: '20px' }} />}
             </ViewWrap>
             <span>{t('newlyAdd.viewName')}</span>
           </div>

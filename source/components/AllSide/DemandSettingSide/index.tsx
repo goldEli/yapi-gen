@@ -29,9 +29,7 @@ import { setActiveCategory } from '@store/category/index'
 
 const ProjectDetailSide = (props: { onClick(): void }) => {
   const [t] = useTranslation()
-  const { startUsing, categoryList, activeCategory } = useSelector(
-    store => store.category,
-  )
+  const { startUsing, categoryList } = useSelector(store => store.category)
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -66,35 +64,36 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
   // 监听跟新
   const watchDataList = () => {
     let dataItem = null
-    if (tabsActive) {
-      dataItem = categoryList
-        ?.filter((el: any) => el.status === 1)
-        .map((el: any, index: number) => ({
-          ...el,
-          active: index === 0 ? true : false,
-        }))
-    } else {
+    if (startUsing) {
       dataItem = categoryList
         ?.filter((el: any) => el.status !== 1)
         .map((el: any, index: number) => ({
           ...el,
           active: index === 0 ? true : false,
         }))
+    } else {
+      dataItem = categoryList
+        ?.filter((el: any) => el.status === 1)
+        .map((el: any, index: number) => ({
+          ...el,
+          active: index === 0 ? true : false,
+        }))
     }
+    dispatch(setActiveCategory(dataItem.find((el: any) => el.active)))
     setList(dataItem)
   }
   // 需求类别中间列表
   const getCategoryConfig = async (dataItem: any) => {
     const itemId = dataItem?.find((item: any) => item.active)?.id
-    itemId &&
-      projectId &&
-      (await dispatch(
+    watchDataList()
+    if (itemId && projectId) {
+      await dispatch(
         getCategoryConfigList({
           projectId: projectId,
           categoryId: itemId,
         }),
-      ))
-    watchDataList()
+      )
+    }
   }
 
   useEffect(() => {
@@ -119,30 +118,31 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
     let dataItem = null
     if (startUsing) {
       dataItem = categoryList
-        ?.filter((el: any) => el.status === 1)
+        ?.filter((el: any) => el.status !== 1)
         .map((el: any, index: number) => ({
           ...el,
           active: index === 0 ? true : false,
         }))
     } else {
       dataItem = categoryList
-        ?.filter((el: any) => el.status !== 1)
+        ?.filter((el: any) => el.status === 1)
         .map((el: any, index: number) => ({
           ...el,
           active: index === 0 ? true : false,
         }))
     }
     getCategoryConfig(dataItem)
+    dispatch(setActiveCategory(dataItem.find((el: any) => el.active)))
   }, [startUsing, categoryList])
   // 切换tab
   const getTabsActive = async (index: any) => {
     dispatch(setStartUsing(index === 0 ? true : false))
     setTabsActive(index)
+    watchDataList()
   }
   useEffect(() => {
     watchDataList()
   }, [categoryList])
-
   return (
     <AllWrap>
       <WrapSet>
@@ -202,6 +202,7 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
       <EditCategory
         onClose={() => setIsVisible(false)}
         onUpdate={() => getList()}
+        item={null}
         isVisible={isVisible}
       />
     </AllWrap>
