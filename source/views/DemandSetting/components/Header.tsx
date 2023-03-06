@@ -12,6 +12,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import { setStartUsing } from '@store/category'
 import EditCategory from '@/components/AllSide/DemandSettingSide/EditCategory'
 import { storyConfigCategoryList } from '@store/category/thunk'
+import { getMaxListeners } from 'process'
 const HeaderWrap = styled.div`
   height: 66px;
   display: flex;
@@ -99,7 +100,10 @@ const Header = () => {
   const editCategoryForm = () => {
     setIsVisible(true)
   }
-
+  // 需求类别侧边栏
+  const getList = async () => {
+    await dispatch(storyConfigCategoryList({ projectId: projectInfo.id }))
+  }
   return (
     <HeaderWrap>
       <DeleteConfirm
@@ -131,8 +135,9 @@ const Header = () => {
       </RightOperate>
       <EditCategory
         item={activeCategory}
+        type={'edit'}
         onClose={() => setIsVisible(false)}
-        onUpdate={() => 123}
+        onUpdate={() => getList()}
         isVisible={isVisible}
       />
     </HeaderWrap>
