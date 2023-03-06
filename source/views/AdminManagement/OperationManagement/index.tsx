@@ -7,7 +7,7 @@ import styled from '@emotion/styled'
 import { Select, Pagination, Form, Spin, Space } from 'antd'
 import moment from 'moment'
 import { SelectWrapBedeck, TableStyleBox } from '@/components/StyleCommon'
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import Sort from '@/components/Sort'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
@@ -20,6 +20,7 @@ import PermissionWrap from '@/components/PermissionWrap'
 import PaginationBox from '@/components/TablePagination'
 import IconFont from '@/components/IconFont'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
+import ResizeTable from '@/components/ResizeTable'
 
 const Header = styled.div({
   height: 'auto',
@@ -181,7 +182,7 @@ const OperationManagement = () => {
         </NewSort>
       ),
       dataIndex: 'name',
-      width: 160,
+      width: 200,
       render: (text: string, record: any) => (
         <CommonUserAvatar avatar={record.avatar} size="small" name={text} />
       ),
@@ -228,8 +229,8 @@ const OperationManagement = () => {
           {t('setting.operationInfo')}
         </NewSort>
       ),
+      // width: 200,
       dataIndex: 'info',
-      width: 200,
     },
   ]
 
@@ -325,7 +326,12 @@ const OperationManagement = () => {
           </SearchWrap>
         </Header>
         <Content>
-          <DataWrap ref={dataWrapRef}>
+          <ResizeTable
+            dataWrapNormalHeight="calc(100% - 64px)"
+            col={columns}
+            dataSource={dataList.list}
+          />
+          {/* <DataWrap ref={dataWrapRef}>
             <Spin spinning={isSpinning}>
               {!!dataList?.list &&
                 (dataList?.list?.length > 0 ? (
@@ -345,7 +351,7 @@ const OperationManagement = () => {
                   <NoData />
                 ))}
             </Spin>
-          </DataWrap>
+          </DataWrap> */}
 
           <PaginationBox
             total={dataList.total}

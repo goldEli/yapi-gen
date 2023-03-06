@@ -65,8 +65,6 @@ interface ResizeTableProps {
 
 // 拖拽调整table
 const ResizeTable = (props: ResizeTableProps) => {
-  // 表格列
-  const [cols, setCols] = useState<any>([])
   const [columns, setColumns] = useState<any>([])
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
@@ -76,19 +74,14 @@ const ResizeTable = (props: ResizeTableProps) => {
   const handleResize =
     (index: any) =>
     (e: any, { size }: any) => {
-      const nextColumns = [...cols]
+      const nextColumns = [...props.col]
       // 拖拽是调整宽度
       nextColumns[index] = { ...nextColumns[index], width: size.width }
-      setCols(nextColumns)
     }
 
   useEffect(() => {
-    setCols(props.col)
-  }, [])
-
-  useEffect(() => {
     setColumns(
-      (cols || []).map((col: any, index: number) => ({
+      (props.col || []).map((col: any, index: number) => ({
         ...col,
         onHeaderCell: (column: any) => ({
           width: column.width,
@@ -96,7 +89,7 @@ const ResizeTable = (props: ResizeTableProps) => {
         }),
       })),
     )
-  }, [cols])
+  }, [props.col])
 
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
@@ -114,8 +107,6 @@ const ResizeTable = (props: ResizeTableProps) => {
 
   const tableY =
     tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
-
-  // console.log(columns,'===')
 
   return (
     <DataWrap height={props.dataWrapNormalHeight} ref={dataWrapRef}>
