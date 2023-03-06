@@ -1,17 +1,24 @@
+/* eslint-disable no-undefined */
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
-import { Switch } from 'antd'
+import { Form, Select, Switch } from 'antd'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectInfoValues } from '@store/project'
 import { useEffect, useState } from 'react'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
-import { deleteStoryConfigCategory } from '@/services/project'
+import {
+  changeStoryConfigCategory,
+  deleteStoryConfigCategory,
+  getWorkflowList,
+} from '@/services/project'
 import { useNavigate } from 'react-router-dom'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { setStartUsing } from '@store/category'
 import EditCategory from '@/components/AllSide/DemandSettingSide/EditCategory'
 import { storyConfigCategoryList } from '@store/category/thunk'
+import CommonModal from '@/components/CommonModal'
+
 const HeaderWrap = styled.div`
   height: 66px;
   display: flex;
@@ -62,15 +69,32 @@ const BtnStyle = styled.div`
     cursor: pointer;
   }
 `
+
+const HasDemandText = styled.div({
+  marginTop: 8,
+  color: '#FF5C5E',
+  fontWeight: 400,
+  fontSize: 12,
+})
+
 const Header = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { startUsing, activeCategory } = useSelector(store => store.category)
+  const [form] = Form.useForm()
+  const { startUsing, activeCategory, categoryList } = useSelector(
+    store => store.category,
+  )
   const { projectInfo } = useSelector(store => store.project)
   const [checked, setChecked] = useState(startUsing)
   const [isDelete, setIsDelete] = useState(false)
+  const [hasDeleteVisible, setHasDeleteVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
+  const [disable, setDisable] = useState(true)
+  const [workList, setWorkList] = useState<any>({
+    list: undefined,
+  })
+
   useEffect(() => {
     setChecked(startUsing ? true : false)
   }, [startUsing])
@@ -95,13 +119,122 @@ const Header = () => {
     )
     navigate(`/ProjectManagement/WorkFlow?data=${params}`)
   }
+
   // 编辑
   const editCategoryForm = () => {
     setIsVisible(true)
   }
 
+  // 删除逻辑
+  const onDelete = () => {
+    if (activeCategory?.hasDemand) {
+      setHasDeleteVisible(true)
+    } else {
+      setIsDelete(true)
+    }
+  }
+
+  const onCloseHasDelete = () => {
+    setHasDeleteVisible(false)
+    setTimeout(() => {
+      form.resetFields()
+      setDisable(true)
+    }, 100)
+  }
+
+  const onConfirmHasDelete = async () => {
+    await form.validateFields()
+    const params = form.getFieldsValue()
+    params.projectId = projectInfo.id
+    params.oldId = activeCategory.id
+    try {
+      await changeStoryConfigCategory(params)
+      await onDeleteConfirm()
+      onCloseHasDelete()
+    } catch (error) {
+      //
+    }
+  }
+
+  const onChangeSelect = async (value: any) => {
+    if (value) {
+      const result = await getWorkflowList({
+        projectId: projectInfo.id,
+        categoryId: value,
+      })
+      setWorkList(result)
+      setDisable(false)
+      form.setFieldsValue({
+        statusId: '',
+      })
+    } else {
+      form.resetFields()
+      setDisable(true)
+    }
+  }
+
   return (
     <HeaderWrap>
+      {hasDeleteVisible && (
+        <CommonModal
+          isVisible={hasDeleteVisible}
+          onClose={onCloseHasDelete}
+          title={t('newlyAdd.historyMove')}
+          onConfirm={onConfirmHasDelete}
+        >
+          <div style={{ padding: '0 16px 0 2px' }}>
+            <HasDemandText>
+              {t('newlyAdd.hasMoveType', {
+                hasDemand: activeCategory?.hasDemand,
+              })}
+            </HasDemandText>
+            <Form form={form} layout="vertical">
+              <Form.Item
+                label={t('newlyAdd.afterCategory')}
+                name="newId"
+                rules={[{ required: true, message: '' }]}
+              >
+                <Select
+                  placeholder={t('common.pleaseSelect')}
+                  showArrow
+                  showSearch
+                  getPopupContainer={node => node}
+                  allowClear
+                  optionFilterProp="label"
+                  onChange={onChangeSelect}
+                  options={categoryList
+                    ?.filter(
+                      (i: any) =>
+                        i.id !== activeCategory?.id &&
+                        i?.statusCount &&
+                        i.isCheck === 1,
+                    )
+                    ?.map((k: any) => ({ label: k.name, value: k.id }))}
+                />
+              </Form.Item>
+              <Form.Item
+                label={t('newlyAdd.afterStatus')}
+                name="statusId"
+                rules={[{ required: true, message: '' }]}
+              >
+                <Select
+                  placeholder={t('common.pleaseSelect')}
+                  disabled={disable}
+                  showArrow
+                  showSearch
+                  getPopupContainer={node => node}
+                  allowClear
+                  optionFilterProp="label"
+                  options={workList?.list?.map((k: any) => ({
+                    label: k.name,
+                    value: k.statusId,
+                  }))}
+                />
+              </Form.Item>
+            </Form>
+          </div>
+        </CommonModal>
+      )}
       <DeleteConfirm
         isVisible={isDelete}
         text={t('newlyAdd.confirmDelCategory')}
@@ -127,7 +260,8 @@ const Header = () => {
         </SwitchStyle>
         <BtnStyle onClick={onSetWorkFlow}>配置工作流</BtnStyle>
         <BtnStyle onClick={() => editCategoryForm()}>编辑</BtnStyle>
-        <BtnStyle onClick={() => setIsDelete(true)}>删除</BtnStyle>
+        <BtnStyle onClick={onDelete}>删除</BtnStyle>
+        {/* <BtnStyle onClick={() => setIsDelete(true)}>删除</BtnStyle> */}
       </RightOperate>
       <EditCategory
         item={activeCategory}

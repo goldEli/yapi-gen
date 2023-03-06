@@ -17,8 +17,8 @@
   height: 28px;
   right: 0;
   cursor: col-resize;
-  z-index: 6;
-  top: 8;
+  z-index: 9;
+  top: 8px;
 }
 .react-resizable-handle:active,
 .react-resizable-handle:hover {
