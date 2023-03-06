@@ -63,6 +63,26 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
   const getList = async () => {
     await dispatch(storyConfigCategoryList({ projectId: paramsData.id }))
   }
+  // 监听跟新
+  const watchDataList = () => {
+    let dataItem = null
+    if (tabsActive) {
+      dataItem = categoryList
+        ?.filter((el: any) => el.status === 1)
+        .map((el: any, index: number) => ({
+          ...el,
+          active: index === 0 ? true : false,
+        }))
+    } else {
+      dataItem = categoryList
+        ?.filter((el: any) => el.status !== 1)
+        .map((el: any, index: number) => ({
+          ...el,
+          active: index === 0 ? true : false,
+        }))
+    }
+    setList(dataItem)
+  }
   // 需求类别中间列表
   const getCategoryConfig = async (dataItem: any) => {
     const itemId = dataItem?.find((item: any) => item.active)?.id
@@ -74,6 +94,7 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
           categoryId: itemId,
         }),
       ))
+    watchDataList()
   }
 
   useEffect(() => {
@@ -97,32 +118,17 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
     setTabsActive(startUsing ? 0 : 1)
     if (list?.length >= 1) {
       getCategoryConfig(list)
-      dispatch(setActiveCategory(list.find((item: any) => item.active)))
     }
   }, [startUsing])
+  // 切换tab
   const getTabsActive = async (index: any) => {
     dispatch(setStartUsing(index === 0 ? true : false))
     setTabsActive(index)
   }
   useEffect(() => {
-    let dataItem = null
-    if (tabsActive) {
-      dataItem = categoryList
-        ?.filter((el: any) => el.status === 1)
-        .map((el: any, index: number) => ({
-          ...el,
-          active: index === 0 ? true : false,
-        }))
-    } else {
-      dataItem = categoryList
-        ?.filter((el: any) => el.status !== 1)
-        .map((el: any, index: number) => ({
-          ...el,
-          active: index === 0 ? true : false,
-        }))
-    }
-    setList(dataItem)
+    watchDataList()
   }, [categoryList])
+
   return (
     <AllWrap>
       <WrapSet>
