@@ -26,26 +26,20 @@ const FormWrap = styled(Form)({
   marginLeft: '24px',
 })
 
-const ViewWrap = styled.div<{ color: string; bgColor: string }>(
+const ViewWrap = styled.div<{ color: string }>(
   {
     height: 22,
     borderRadius: 11,
-    padding: '0 8px',
+    padding: '0px',
     marginRight: 8,
     lineHeight: '22px',
     fontSize: 12,
     fontWeight: 400,
-    '::before': {
-      content: "'#'",
-    },
-    '::after': {
-      content: "'#'",
-    },
   },
-  ({ color, bgColor }) => ({
-    background: bgColor,
-    color,
-  }),
+  // ({ color, bgColor }) => ({
+  //   background: bgColor,
+  //   color,
+  // }),
 )
 
 interface EditorProps {
@@ -204,12 +198,13 @@ const EditorCategory = (props: EditorProps) => {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <ViewWrap
               color={path || '#969799'}
-              bgColor={
-                colorList?.filter((i: any) => i.key === (path || '#969799'))[0]
-                  ?.bgColor
-              }
+              // bgColor={
+              //   colorList?.filter((i: any) => i.key === (path || '#969799'))[0]
+              //     ?.bgColor
+              // }
             >
-              {name || t('newlyAdd.nothing')}
+              {/* {name || t('newlyAdd.nothing')} */}
+              {path && <img src={path} style={{ width: '20px' }} />}
             </ViewWrap>
             <span>{t('newlyAdd.viewName')}</span>
           </div>
