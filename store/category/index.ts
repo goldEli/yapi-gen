@@ -69,7 +69,7 @@ export const category = createSlice({
       )
     })
     builder.addCase(getProjectFieIds.fulfilled, (state, action) => {
-      const data = action.payload.data
+      action.payload.data
     })
   },
 })

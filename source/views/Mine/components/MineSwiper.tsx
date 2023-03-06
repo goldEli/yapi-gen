@@ -14,7 +14,7 @@ export const SwiperWrap = styled.div`
   justify-content: start;
   box-sizing: border-box;
   padding: 0 24px;
-  height: 144px;
+  height: 90px;
   background-color: white;
   overflow: hidden;
   & .swiper {

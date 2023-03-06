@@ -42,13 +42,10 @@ const Examine = () => {
     return <Loading />
   }
   return (
-    <>
-      <div>{t('newlyAdd.mineExamine')}</div>
-      <MainWrap>
-        <MineSwiper data={swiperData} onTap={getProjectId} />
-        <Need projectId={projectId} onChangeType={(val: any) => setType(val)} />
-      </MainWrap>
-    </>
+    <MainWrap>
+      <MineSwiper data={swiperData} onTap={getProjectId} />
+      <Need projectId={projectId} onChangeType={(val: any) => setType(val)} />
+    </MainWrap>
   )
 }
 

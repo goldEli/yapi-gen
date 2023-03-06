@@ -57,7 +57,7 @@ const SearchWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',
-  position: 'relative',
+  // position: 'relative',
 })
 
 const Need = (props: any) => {
@@ -198,7 +198,13 @@ const Need = (props: any) => {
           onUpdate={onUpdate}
         />
       )}
-      <div style={{ padding: '0 24px', justifyContent: 'space-between' }}>
+      <div
+        style={{
+          padding: '0 24px',
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
         <div style={{ display: 'flex' }}>
           <TabsItem isActive={!activeTab} onClick={() => onChangeTab(0)}>
             <div>{t('newlyAdd.needMineExamine')}</div>
@@ -215,11 +221,14 @@ const Need = (props: any) => {
           <LabNumber isActive={activeTab === 1}>{count?.verify}</LabNumber>
         </div>
         <SearchWrap>
-          <InputSearch
-            placeholder={t('common.pleaseSearchDemand')}
-            onChangeSearch={onPressEnter}
-            leftIcon
-          />
+          <div style={{ position: 'absolute', top: '20px', right: '24px' }}>
+            <InputSearch
+              placeholder={t('common.pleaseSearchDemand')}
+              onChangeSearch={onPressEnter}
+              leftIcon
+            />
+          </div>
+
           <HoverWrap
             onClick={() => setFilterState(!filterState)}
             isActive={!filterState}

@@ -25,9 +25,8 @@ const Main = (props: any) => {
   const dispatch = useDispatch()
   const [infoIcon, setInfoIcon] = useState(true)
   const [moreIcon, setMoreIcon] = useState(false)
-  const { getCategoryConfigDataList, activeCategory } = useSelector(
-    store => store.category,
-  )
+  const { getCategoryConfigDataList, activeCategory, getProjectFieIdsData } =
+    useSelector(store => store.category)
   const { projectInfo } = useSelector(store => store.project)
   const [getCategoryConfigT, setGetCategoryConfigT] = useState<any>()
   const [getCategoryConfigF, setGetCategoryConfigF] = useState<any>()
@@ -147,6 +146,14 @@ const Main = (props: any) => {
   }
   //拖动传递过来的参数
   const onDrop = (state: any, event: any, index: any) => {
+    // 自定义字段只能添加20个
+    const customizeNum = getProjectFieIdsData?.filter(
+      (el: any) => el.is_customize === 1,
+    )
+    if (customizeNum?.length === 20) {
+      message.warning('自定义字段已有20个')
+      return
+    }
     const evevtObj = JSON.parse(event.dataTransfer.getData('item'))
     evevtObj.dragtype === 'add' && setAddAndEditVisible(true),
       setFieldType(evevtObj)
@@ -166,7 +173,7 @@ const Main = (props: any) => {
   const save = async () => {
     let dataArr: any = []
     if (getCategoryConfigT.length >= 1) {
-      dataArr = [...getCategoryConfigF, getCategoryConfigT]
+      dataArr = [...getCategoryConfigF, ...getCategoryConfigT]
     } else {
       dataArr = [...getCategoryConfigF]
     }
