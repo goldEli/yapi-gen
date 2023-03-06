@@ -212,8 +212,9 @@ const MyDropdown = (props: PropsType) => {
   useEffect(() => {
     onFetchList()
   }, [tabActive])
+
   const onClick = () => {
-    navigate('/Mine/profile')
+    navigate('/ProjectManagement/Mine/profile')
   }
   const itmeMain = (item: any) => {
     return (
@@ -287,23 +288,6 @@ const MyDropdown = (props: PropsType) => {
             ))}
           {tabActive === 0 && itmeMain(noFinishList)}
           {tabActive === 1 && itmeMain(finishList)}
-          {/* 
-          {tabActive === 2 && (
-            <>
-              <OpenWrap>
-                <IconFont
-                  type={iconState ? 'down' : 'up'}
-                  style={{
-                    fontSize: 16,
-                    color: 'var(--neutral-n2)',
-                    marginBottom: '7px',
-                  }}
-                  onClick={() => setIconState(!iconState)}
-                />
-              </OpenWrap>
-              <Border />
-            </>
-          )} */}
         </ScrollWrap>
         <Footer onClick={onClick}>
           <div>查看我的工作</div>

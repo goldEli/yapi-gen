@@ -240,13 +240,7 @@ const HaveSearchAndList = (props: Props) => {
     if (props.isOperationParent) {
       onChangeParent(item)
     } else {
-      const beforeUrl = String(window.location.href)
-        .split('/ProjectManagement/')[1]
-        .split('?data')[0]
-      const params = encryptPhp(JSON.stringify({ id: item.id }))
-      navigate(`/ProjectManagement/${beforeUrl}?data=${params}`)
-      dispatch(setIsChangeProject(item.id))
-      message.success(t('version2.changeProjectSuccess'))
+      //
     }
     setIsOpen(false)
   }

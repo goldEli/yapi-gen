@@ -37,7 +37,7 @@ const MineSide = () => {
     {
       id: 1,
       name: t('mine.mineSurvey'),
-      path: '/Mine/Profile',
+      path: '/ProjectManagement/Mine/Profile',
       isPermission: getIsPermission(
         userInfo?.company_permissions,
         'b/user/overview',
@@ -46,7 +46,7 @@ const MineSide = () => {
     {
       id: 2,
       name: t('mine.mineNeedDeal'),
-      path: '/Mine/Carbon',
+      path: '/ProjectManagement/Mine/Carbon',
       isPermission: getIsPermission(
         userInfo?.company_permissions,
         'b/user/abeyance/story',
@@ -55,7 +55,7 @@ const MineSide = () => {
     {
       id: 3,
       name: t('mine.mineCreate'),
-      path: '/Mine/Create',
+      path: '/ProjectManagement/Mine/Create',
       isPermission: getIsPermission(
         userInfo?.company_permissions,
         'b/user/create/story',
@@ -64,7 +64,7 @@ const MineSide = () => {
     {
       id: 4,
       name: t('mine.mineFinish'),
-      path: '/Mine/Finished',
+      path: '/ProjectManagement/Mine/Finished',
       isPermission: getIsPermission(
         userInfo?.company_permissions,
         'b/user/finish/story',
@@ -73,7 +73,7 @@ const MineSide = () => {
     {
       id: 5,
       name: t('mine.copyMine'),
-      path: '/Mine/Agenda',
+      path: '/ProjectManagement/Mine/Agenda',
       isPermission: getIsPermission(
         userInfo?.company_permissions,
         'b/user/copysend/story',
@@ -82,7 +82,7 @@ const MineSide = () => {
     {
       id: 6,
       name: t('newlyAdd.mineExamine'),
-      path: '/Mine/Examine',
+      path: '/ProjectManagement/Mine/Examine',
       isPermission: false,
     },
   ]

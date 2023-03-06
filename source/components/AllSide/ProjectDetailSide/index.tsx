@@ -23,7 +23,7 @@ import {
   WrapCategory,
 } from './style'
 
-const ProjectDetailSide = (props: { leftWidth: number }) => {
+const ProjectDetailSide = () => {
   const [t, i18n] = useTranslation()
   const projectSide: any = useRef<HTMLInputElement>(null)
   const projectSetSide: any = useRef<HTMLInputElement>(null)
@@ -38,7 +38,11 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
 
   const menuList = [
     { name: '需求', icon: 'demand', path: '/ProjectManagement/Demand' },
-    { name: '迭代', icon: 'interation', path: '/ProjectManagement/Iteration' },
+    {
+      name: '迭代',
+      icon: 'interation',
+      path: '/ProjectManagement/Iteration',
+    },
   ]
 
   const sideList = [
@@ -85,11 +89,11 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
     dispatch(setProjectInfo(result))
   }
 
-  //   点击项目设置
+  //   点击需求设置
   const onChangeSetCategory = (isInit?: boolean) => {
     projectSide.current.style.width = '0px'
     projectSetSide.current.style.width = '0px'
-    projectSetCategory.current.style.width = `${props.leftWidth}px`
+    projectSetCategory.current.style.width = '100%'
     projectSetCategory.current.style.display = 'block'
     if (isInit) {
       const params = encryptPhp(JSON.stringify({ id: projectId }))
@@ -101,7 +105,7 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
   const onChangeSet = (isInit?: boolean) => {
     projectSide.current.style.width = '0px'
     projectSetCategory.current.style.width = '0px'
-    projectSetSide.current.style.width = `${props.leftWidth}px`
+    projectSetSide.current.style.width = '100%'
     projectSetSide.current.style.display = 'block'
     if (isInit) {
       const params = encryptPhp(
@@ -114,7 +118,7 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
   useEffect(() => {
     getInfo()
     getProjectInfoValuesData()
-    if (paramsData?.type) {
+    if ([0, 1, 2].includes(paramsData?.type)) {
       onChangeSet()
     }
     if (paramsData?.type === 3) {
@@ -125,7 +129,7 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
   //   返回上一页
   const onGoBack = () => {
     projectSetSide.current.style.width = '0px'
-    projectSide.current.style.width = `${props.leftWidth}px`
+    projectSide.current.style.width = '100%'
     const params = encryptPhp(JSON.stringify({ id: projectId }))
     navigate(`/ProjectManagement/Demand?data=${params}`)
     setTimeout(() => {
@@ -161,7 +165,7 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
         pageIdx: 'info',
       }),
     )
-    navigate(`ProjectManagement/ProjectSetting?data=${params}`)
+    navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
     onChangeSet()
   }
 
@@ -236,10 +240,7 @@ const ProjectDetailSide = (props: { leftWidth: number }) => {
       </WrapSet>
 
       <WrapCategory ref={projectSetCategory}>
-        <DemandSettingSide
-          leftWidth={props.leftWidth}
-          onClick={onCategoryBack}
-        />
+        <DemandSettingSide onClick={onCategoryBack} />
       </WrapCategory>
     </AllWrap>
   )

@@ -51,9 +51,6 @@ export const counterSlice = createSlice({
       state.userInfo = action.payload.userInfo
       state.menuPermission = action.payload.menuPermission
       state.userPreferenceConfig = action.payload.userPreferenceConfig
-      state.currentMenu = action.payload.menuPermission?.menus?.filter(
-        (i: any) => i.url === action.payload.menuPermission.priorityUrl,
-      )[0]
     })
   },
 })

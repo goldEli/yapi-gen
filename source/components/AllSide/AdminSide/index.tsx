@@ -89,7 +89,7 @@ const MenuStyle = styled(Menu)`
 const IconFontStyle = styled(IconFont)`
   font-size: 18px !important;
 `
-const AdminSide = (props: any) => {
+const AdminSide = () => {
   const navigate = useNavigate()
   const { currentMenu, userInfo } = useSelector(store => store.user)
 

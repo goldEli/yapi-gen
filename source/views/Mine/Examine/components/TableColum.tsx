@@ -36,20 +36,6 @@ const StatusWrap = styled.div({
 
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
-  const { colorList } = useSelector(store => store.project)
-  const navigate = useNavigate()
-
-  // const onToDetail = (item: any) => {
-  //   const params = encryptPhp(
-  //     JSON.stringify({
-  //       type: 'info',
-  //       id: item.projectId,
-  //       demandId: item.demandId,
-  //     }),
-  //   )
-  //   navigate(`/ProjectManagement/Demand?data=${params}`)
-  // }
-
   const NewSort = (propsSort: any) => {
     return (
       <Sort
