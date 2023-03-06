@@ -7,6 +7,7 @@ import CreatDragging from './CreatDragging'
 import { getProjectFieIds } from '@store/category/thunk'
 import { useDispatch, useSelector } from '@store/index'
 import ProjectDragging from './ProDragging'
+import { setProjectFieIdsData } from '@store/category'
 const CreateFieldWrap = styled.div`
   margin: 20px 0 0 20px;
   border-left: 1px solid var(--neutral-n6-d1);
@@ -69,46 +70,54 @@ const CreateField = () => {
   const [searchIcon, setSearchIcon] = useState(false)
   const [search, setSearch] = useState(false)
   const [createIcon, setCreateIcon] = useState(true)
-  const {
-    getCategoryConfigDataList,
-    getCategoryConfigArray,
-    getProjectFieIdsData,
-  } = useSelector(store => store.category)
+  const { getCategoryConfigDataList, getCategoryConfigArray } = useSelector(
+    store => store.category,
+  )
   const [dataList, setDataList] = useState<any>()
   const [searchDataList, setSearchDataList] = useState<any>()
   const { projectInfo } = useSelector(store => store.project)
   const [payloadDataList, setPayloadDataList] = useState<any>()
   const option = [
-    { label: t('newlyAdd.lineText'), value: '1', type: 'text' },
-    { label: t('newlyAdd.moreLineText'), value: '2', type: 'textarea' },
-    { label: t('newlyAdd.radioDropdown'), value: '3', type: 'select' },
-    { label: t('newlyAdd.multiDropdown'), value: '4', type: 'select_checkbox' },
-    { label: t('newlyAdd.checkbox'), value: '5', type: 'checkbox' },
-    { label: t('newlyAdd.radio'), value: '6', type: 'radio' },
-    { label: t('newlyAdd.time'), value: '7', type: 'date' },
-    { label: t('newlyAdd.number'), value: '8', type: 'number' },
-    { label: t('version2.personRadio'), value: '9', type: 'user_select' },
+    { label: '单行文本1', value: '1', type: 'text', icon: 'text-alone' },
+    { label: '多行文本2', value: '2', type: 'textarea', icon: 'text-more' },
+    { label: '单选下拉3', value: '3', type: 'select', icon: 'select-alone' },
     {
-      label: t('version2.personCheckbox'),
-      value: '10',
-      type: 'user_select_checkbox',
+      label: '多选下拉4',
+      value: '4',
+      type: 'select_checkbox',
+      icon: 'select-more',
+    },
+    { label: '日期', value: '7', type: 'date', icon: 'calendar' },
+    { label: '数字', value: '8', type: 'number', icon: 'number' },
+    { label: '人员单选', value: '9', type: 'user_select', icon: 'user-alone' },
+    { label: '人员复选', value: '11', type: 'user_select', icon: 'user-more' },
+    {
+      label: '确认勾选',
+      value: '12',
+      type: 'user_select',
+      icon: 'check-circle',
     },
   ]
+
   // 两个数组的比较过滤
   const filterData = (confightList: any, payloadList: any) => {
-    const filterIds = confightList.map((item: any) => item.storyId)
-    setDataList(payloadList.filter((item: any) => !filterIds.includes(item.id)))
+    if (confightList?.length < 1 && payloadList?.length < 1) return
+    const filterIds = confightList?.map((item: any) => item.storyId)
+    setDataList(
+      payloadList?.filter((item: any) => !filterIds.includes(item.id)),
+    )
     setSearchDataList(
-      payloadList.filter((item: any) => !filterIds.includes(item.id)),
+      payloadList?.filter((item: any) => !filterIds.includes(item.id)),
     )
   }
-  // 过滤数据
+  // 请求api
   const getProjectFieIdsApi = async () => {
     if (!projectInfo.id) {
       return
     }
     const data = await dispatch(getProjectFieIds(projectInfo.id))
     const payloadList: any = data.payload
+    dispatch(setProjectFieIdsData(payloadList))
     setPayloadDataList(payloadList)
     const confightList = getCategoryConfigDataList.configDataList
     filterData(confightList, payloadList)
@@ -116,14 +125,16 @@ const CreateField = () => {
   useEffect(() => {
     getProjectFieIdsApi()
   }, [])
-  // useEffect(() => {
-  //   getProjectFieIdsData.length >= 1 && getCategoryConfigArray?.length >= 1 && filterData(getCategoryConfigArray, getProjectFieIdsData)
-  // }, [getProjectFieIdsData])
-
   // 根据输入框过滤
   const onSearch = (value: string) => {
     setSearchDataList(dataList.filter((el: any) => el.title.includes(value)))
   }
+  // 监听列表被删除时过滤
+  useEffect(() => {
+    if (getCategoryConfigArray?.length) {
+      filterData(getCategoryConfigArray, payloadDataList)
+    }
+  }, [getCategoryConfigArray])
   return (
     <CreateFieldWrap>
       <TitleStyle onClick={() => setCreateIcon(!createIcon)}>
@@ -151,14 +162,16 @@ const CreateField = () => {
             style={{ display: 'flex', alignItems: 'center' }}
             onClick={() => setSearchIcon(!searchIcon)}
           >
-            <CommonIconFont
-              type={searchIcon ? 'down-icon' : 'right-icon'}
-              size={14}
-              color="var(--neutral-n3)"
-            />
+            {searchDataList?.length >= 1 && (
+              <CommonIconFont
+                type={searchIcon ? 'down-icon' : 'right-icon'}
+                size={14}
+                color="var(--neutral-n3)"
+              />
+            )}
             <span>项目已有字段 ({payloadDataList?.length})</span>
           </div>
-          {search ? (
+          {search && searchDataList?.length >= 1 ? (
             <InputStyle
               placeholder="请输入关键字"
               onInput={(e: any) => onSearch(e.target.value)}
@@ -171,14 +184,14 @@ const CreateField = () => {
                 />
               }
             />
-          ) : (
+          ) : searchDataList?.length >= 1 ? (
             <CommonIconFont
               type="search"
               size={16}
               color="var(--neutral-n2)"
               onClick={() => setSearch(true)}
             />
-          )}
+          ) : null}
         </BottomTitleStyle>
         {searchIcon && (
           <ProjectDragging

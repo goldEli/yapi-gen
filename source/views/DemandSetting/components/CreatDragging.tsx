@@ -67,8 +67,8 @@ const SliderList = (props: any) => {
     >
       <ItemList>
         <CommonIconFont
-          type="interation"
-          size={19}
+          type={children?.icon}
+          size={18}
           color="var(--neutral-n1-d1)"
         />
         <span style={{ marginLeft: '8px' }}>{children.label}</span>
