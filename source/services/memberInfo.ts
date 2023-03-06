@@ -37,11 +37,12 @@ export const getUserInfoAbeyanceStory: any = async (params: any) => {
     target_id: params?.targetId,
   })
   if (params?.all) {
-    return response.data?.map((k: any) => ({
+    return response.data?.list?.map((k: any) => ({
       status_name: k.status_name,
       count: k.count,
       list: k.list
         ? k.list?.map((i: any) => ({
+            statusName: k.status_name,
             category_attachment: i.category_attachment,
             categoryConfigList: i.category_config_list,
             id: i.id,
@@ -371,11 +372,12 @@ export const getMemberInfoAbeyanceStory: any = async (params: any) => {
     pagesize: params.pagesize,
   })
   if (params?.all) {
-    return response.data?.map((k: any) => ({
+    return response.data?.list?.map((k: any) => ({
       status_name: k.status_name,
       count: k.count,
       list: k.list
         ? k.list?.map((i: any) => ({
+            statusName: k.status_name,
             category_attachment: i.category_attachment,
             categoryConfigList: i.category_config_list,
             id: i.id,

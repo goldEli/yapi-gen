@@ -59,6 +59,7 @@ const BasicDemand = (props: Props) => {
   const { userInfo } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
   const [canOperationKeys, setCanOperationKeys] = useState<any>({})
+  const { demandDetailDrawerProps } = useSelector(store => store.demand)
 
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
@@ -218,6 +219,7 @@ const BasicDemand = (props: Props) => {
           defaultText={defaultValues.defaultText}
           value={defaultValues.valueType || null}
           onUpdate={props.onUpdate}
+          isMineOrHis={demandDetailDrawerProps?.isMineOrHis}
         >
           {defaultValues.defaultHtml}
         </TableQuickEdit>
@@ -264,6 +266,7 @@ const BasicDemand = (props: Props) => {
     } else if (item.content === 'parent_id') {
       nodeComponent = (
         <ParentDemand
+          projectId={props.detail?.projectId}
           isRight
           addWrap={
             <AddWrap>
@@ -325,6 +328,7 @@ const BasicDemand = (props: Props) => {
         isCustom
         remarks={item?.remarks}
         onUpdate={props.onUpdate}
+        isMineOrHis={demandDetailDrawerProps?.isMineOrHis}
       >
         <span>
           {getCustomNormalValue(

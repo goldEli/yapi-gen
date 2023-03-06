@@ -39,16 +39,16 @@ export const useDynamicColumns = (state: any) => {
   const { colorList } = useSelector(store => store.project)
   const navigate = useNavigate()
 
-  const onToDetail = (item: any) => {
-    const params = encryptPhp(
-      JSON.stringify({
-        type: 'info',
-        id: item.projectId,
-        demandId: item.demandId,
-      }),
-    )
-    navigate(`/ProjectManagement/Demand?data=${params}`)
-  }
+  // const onToDetail = (item: any) => {
+  //   const params = encryptPhp(
+  //     JSON.stringify({
+  //       type: 'info',
+  //       id: item.projectId,
+  //       demandId: item.demandId,
+  //     }),
+  //   )
+  //   navigate(`/ProjectManagement/Demand?data=${params}`)
+  // }
 
   const NewSort = (propsSort: any) => {
     return (
@@ -69,7 +69,11 @@ export const useDynamicColumns = (state: any) => {
       dataIndex: 'demandId',
       key: 'story_id',
       render: (text: string, record: any) => {
-        return <ClickWrap onClick={() => onToDetail(record)}>{text}</ClickWrap>
+        return (
+          <ClickWrap onClick={() => state.onClickItem(record)}>
+            {text}
+          </ClickWrap>
+        )
       },
     },
     {
@@ -93,29 +97,8 @@ export const useDynamicColumns = (state: any) => {
                 }}
                 alt=""
               />
-              {/* <CategoryWrap
-                color={record.categoryColor}
-                bgColor={
-                  colorList?.filter(
-                    (k: any) => k.key === record.categoryColor,
-                  )[0]?.bgColor
-                }
-                style={{ marginLeft: 0 }}
-              >
-                {record.category}
-              </CategoryWrap> */}
             </Tooltip>
-            {/* <CategoryWrap
-              style={{ marginLeft: 0 }}
-              color={record.categoryColor}
-              bgColor={
-                colorList?.filter((i: any) => i.key === record.categoryColor)[0]
-                  ?.bgColor
-              }
-            >
-              {record.categoryName}
-            </CategoryWrap> */}
-            <ClickWrap onClick={() => onToDetail(record)}>
+            <ClickWrap onClick={() => state.onClickItem(record)}>
               <OmitText
                 width={200}
                 tipProps={{

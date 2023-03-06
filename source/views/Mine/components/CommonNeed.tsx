@@ -46,6 +46,7 @@ import PaginationBox from '@/components/TablePagination'
 import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import SetShowField from '@/components/SetShowField/indedx'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 
 const TableBox = styled(Table)({
   '.ant-table-content': {
@@ -151,6 +152,7 @@ const MoreWrap = (props: MoreWrapProps) => {
 const CommonNeed = (props: any) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
+  const [openDemandDetail] = useOpenDemandDetail()
   const { isRefresh } = useSelector(store => store.user)
   const { isUpdateCreate } = useSelector(store => store.mine)
   const { projectInfo } = useSelector(store => store.project)
@@ -244,7 +246,7 @@ const CommonNeed = (props: any) => {
         searchGroups,
       }
       const res = await getMineNoFinishList(params)
-      setManyListData({ list: res.list })
+      setManyListData({ list: res })
       setIsSpin(false)
       dispatch(setIsUpdateCreate(false))
       setTotal(res?.total)
@@ -303,6 +305,26 @@ const CommonNeed = (props: any) => {
     setOperationItem(record)
     setIsDelVisible(true)
   }
+
+  // 点击打开详情并组装当前平级的需求id列表
+  const onClickItem = (item: any) => {
+    if (item.project?.isPublic !== 1 && !item.project?.isUserMember) {
+      message.warning(t('common.notCheckInfo'))
+    } else {
+      let demandIds: any
+
+      if (isMany) {
+        demandIds = manyListData?.list
+          ?.filter((i: any) => i.status_name === item.statusName)[0]
+          ?.list?.map((i: any) => i.id)
+      } else {
+        demandIds = listData?.list?.map((i: any) => i.id)
+      }
+      item.isMineOrHis = true
+      openDemandDetail({ ...item, ...{ demandIds } }, item.project_id, item.id)
+    }
+  }
+
   const columns = useDynamicColumns({
     orderKey,
     order,
@@ -312,6 +334,7 @@ const CommonNeed = (props: any) => {
     init,
     plainOptions3,
     projectId: props.id,
+    onClickItem,
   })
 
   const selectColum: any = useMemo(() => {
@@ -675,15 +698,6 @@ const CommonNeed = (props: any) => {
         />
       )}
 
-      {/* <EditDemand
-        visible={isVisible}
-        onChangeVisible={onChangeVisible}
-        demandId={operationItem?.id}
-        projectId={projectId}
-        onUpdate={onUpdate}
-        notGetPath
-        isAllProject={!props.id}
-      /> */}
       <DeleteConfirm
         text={t('common.confirmDelDemand')}
         isVisible={isDelVisible}

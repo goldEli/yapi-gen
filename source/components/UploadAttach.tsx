@@ -171,17 +171,6 @@ const UploadAttach = (props: any) => {
     index: 0,
   })
   const [t] = useTranslation()
-  const [searchParams] = useSearchParams()
-  let projectId: any
-  let demandId: any
-  if (props?.id) {
-    projectId = props?.id
-  } else {
-    const paramsData = getParamsData(searchParams)
-    projectId = paramsData.id
-    demandId = paramsData.demandId
-  }
-
   const [fileList, setFileList] = useState<any>([])
   const { projectInfo } = useSelector(store => store.project)
 
@@ -398,6 +387,7 @@ const UploadAttach = (props: any) => {
       cos.off('task-over', onTaskOver)
     }
   }, [])
+
   const checkList = () => {
     const state = fileList.every((i: any) => i.state === 'success')
     if (state) {
