@@ -171,7 +171,13 @@ const DemandTree = (props: Props) => {
 
   // 点击跳转需求详情
   const onClickItem = (item: any) => {
-    openDemandDetail(item, projectId, item.id)
+    const currentDemandTop = props.data?.list?.filter(
+      (i: any) => i.id === item.topId,
+    )?.[0]
+    const demandIds = currentDemandTop.allChildrenIds
+      ?.filter((i: any) => i.parent_id === item.parentId)
+      ?.map((k: any) => k.id)
+    openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id)
   }
 
   // 修改优先级
@@ -251,6 +257,46 @@ const DemandTree = (props: Props) => {
     }
   }
 
+  // 计算当前child
+  const onComputedChild = (list: any, row: any) => {
+    list.forEach((element: any) => {
+      if (element.id === row.id) {
+        element.isExpended = !element.isExpended
+        // 如果父级展开，子级也展开
+        if (!element.isExpended) {
+          element.children.forEach((k: any) => {
+            k.isExpended = true
+          })
+        }
+      } else {
+        // 判断全部子级与当前点击的匹配
+        if (
+          (element.allChildrenIds?.map((i: any) => i.id) || []).includes(row.id)
+        ) {
+          onComputedChild(element.children, row)
+        }
+      }
+    })
+  }
+
+  // 计算当前是否折叠
+  const onComputedExpended = (row: any, item: any, list: any) => {
+    let state: any = item
+    if (row.id === item.id) {
+      state.isExpended = !item.isExpended
+      state.children = row.parentId ? item.children : list
+    } else {
+      let topChildList: any = []
+      if (item.id === row.topId) {
+        topChildList = item.children
+        state = { ...item, ...{ list: onComputedChild(topChildList, row) } }
+      } else {
+        state = item
+      }
+    }
+    return state
+  }
+
   // 点击获取子需求
   const onGetChildList = async (row: any) => {
     // 如果查询列表未执行完，不执行获取子需求
@@ -293,11 +339,10 @@ const DemandTree = (props: Props) => {
     }
 
     setExpandedRowKeys([...new Set(resultList)])
-    const resultArr = resultData?.list?.map((i: any) => ({
-      ...i,
-      children: row.parentId ? row.children : dataChildren?.list,
-      isExpended: row.id === i.id ? !row.isExpended : false,
-    }))
+    // 折叠时，判断参数错误，顶级折叠使用了子级折叠
+    const resultArr = resultData?.list?.map((i: any) =>
+      onComputedExpended(row, i, dataChildren?.list),
+    )
     setData({ ...resultData, list: resultArr })
     setTimeout(() => {
       setData({ ...resultData, list: resultArr })

@@ -31,27 +31,30 @@ export const BackIcon = styled.div`
 export const ChangeIconGroup = styled.div`
   border: 1px solid var(--neutral-n6-d1);
   border-radius: 6px;
-  cursor: pointer;
   box-sizing: border-box;
   width: 64px;
   height: 32px;
   display: flex;
   overflow: hidden;
-  div {
-    width: 31px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--neutral-white-d4);
-    svg {
-      color: var(--neutral-n2);
-    }
+`
+
+export const NextWrap = styled.div<{ isDisable?: boolean }>`
+  width: 31px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--neutral-white-d4);
+  cursor: ${props => (props.isDisable ? 'no-drop' : 'pointer')};
+  svg {
+    color: var(--neutral-n2);
   }
-  div:hover {
-    background: var(--hover-d2);
+  &:hover {
+    background: ${props =>
+      props.isDisable ? 'var(--neutral-white-d4)' : 'var(--hover-d2)'};
     svg {
-      color: var(--primary-d2);
+      color: ${props =>
+        props.isDisable ? 'var(--neutral-n2)' : 'var(--primary-d2)'};
     }
   }
 `

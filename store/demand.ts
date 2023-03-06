@@ -139,6 +139,8 @@ export const {
 
   setIsCreateDemandVisible,
   setCreateDemandProps,
+  setIsDemandDetailDrawerVisible,
+  setDemandDetailDrawerProps,
   setStartUsing,
 } = demandSlice.actions
 

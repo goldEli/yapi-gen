@@ -10,6 +10,7 @@ interface Props {
   // 是否有预览模式
   notView?: boolean
   onChangeFieldVisible(): void
+  isGrid?: number
 }
 
 const SetShowField = (props: Props) => {
@@ -50,6 +51,10 @@ const SetShowField = (props: Props) => {
 
   if (props.notView) {
     menuItems = menuItems.filter((i: any) => i.key === '0')
+  }
+
+  if (props.isGrid === 1) {
+    menuItems = menuItems.filter((i: any) => i.key !== '0')
   }
 
   return (

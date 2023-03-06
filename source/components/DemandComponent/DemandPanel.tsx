@@ -101,8 +101,9 @@ const DemandGrid = (props: Props) => {
     }
   }, [props.data])
 
-  const onClickItem = (item: any) => {
-    openDemandDetail(item, projectId, item.id)
+  const onClickItem = (item: any, list: any) => {
+    const demandIds = list?.map((i: any) => i.id)
+    openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id)
   }
 
   return (
@@ -127,7 +128,14 @@ const DemandGrid = (props: Props) => {
                           onChangeDelete={props?.onDelete}
                           onChangeEdit={props?.onChangeVisible}
                           item={i}
-                          onClickItem={() => onClickItem(i)}
+                          onClickItem={() =>
+                            onClickItem(
+                              i,
+                              dataList?.filter(
+                                (item: any) => item.id === k.id,
+                              )[0]?.list,
+                            )
+                          }
                           indexVal={idx}
                           onUpdate={() => props?.onUpdate(true)}
                         />

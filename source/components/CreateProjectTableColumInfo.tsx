@@ -210,7 +210,9 @@ export const useDynamicColumns = (state: any) => {
         return (
           <ChangePriorityPopover
             isCanOperation={
-              !(record.project?.isPublic !== 1 && !record.project?.isUserMember)
+              !(
+                record.project?.isPublic !== 1 && !record.project?.isUserMember
+              ) && Object.keys(record.categoryConfigList).includes('priority')
             }
             onChangePriority={item => state.updatePriority(item, record)}
             record={record}
