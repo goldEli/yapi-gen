@@ -1,10 +1,11 @@
 // 可拖拽列宽的表格
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { Table } from 'antd'
+import { Spin, Table } from 'antd'
 import { Resizable } from 'react-resizable'
 import './index.css'
 import styled from '@emotion/styled'
+import { css } from '@emotion/css'
 
 const TableWrap = styled(Table)`
   .ant-table-thead > tr {
@@ -61,10 +62,15 @@ interface ResizeTableProps {
   col: any
   dataSource: any
   dataWrapNormalHeight: any
+  noData?: any
+  isSpinning?: boolean
+  rowSelection?: any
 }
 
 // 拖拽调整table
 const ResizeTable = (props: ResizeTableProps) => {
+  // 表格列
+  const [cols, setCols] = useState<any>([])
   const [columns, setColumns] = useState<any>([])
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
@@ -74,14 +80,19 @@ const ResizeTable = (props: ResizeTableProps) => {
   const handleResize =
     (index: any) =>
     (e: any, { size }: any) => {
-      const nextColumns = [...props.col]
+      const nextColumns = [...cols]
       // 拖拽是调整宽度
       nextColumns[index] = { ...nextColumns[index], width: size.width }
+      setCols(nextColumns)
     }
 
   useEffect(() => {
+    setCols(props.col)
+  }, [props.col])
+
+  useEffect(() => {
     setColumns(
-      (props.col || []).map((col: any, index: number) => ({
+      (cols || []).map((col: any, index: number) => ({
         ...col,
         onHeaderCell: (column: any) => ({
           width: column.width,
@@ -89,7 +100,7 @@ const ResizeTable = (props: ResizeTableProps) => {
         }),
       })),
     )
-  }, [props.col])
+  }, [cols])
 
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
@@ -114,23 +125,31 @@ const ResizeTable = (props: ResizeTableProps) => {
         style={{ height: '100%' }}
         className="components-table-resizable-column"
       >
-        <TableWrap
-          rowKey="id"
-          pagination={false}
-          components={{
-            header: {
-              cell: ResizeTitle,
-            },
-          }}
-          columns={columns}
-          dataSource={props.dataSource}
-          scroll={{
-            x: 'max-content',
-            y: tableY,
-          }}
-          tableLayout="auto"
-          showSorterTooltip={false}
-        />
+        <Spin spinning={props.isSpinning}>
+          {!!props.dataSource &&
+            (props.dataSource?.length > 0 ? (
+              <TableWrap
+                rowKey="id"
+                pagination={false}
+                components={{
+                  header: {
+                    cell: ResizeTitle,
+                  },
+                }}
+                columns={columns}
+                dataSource={props.dataSource}
+                scroll={{
+                  x: 'max-content',
+                  y: tableY,
+                }}
+                tableLayout="auto"
+                showSorterTooltip={false}
+                rowSelection={props.rowSelection}
+              />
+            ) : (
+              <div style={{ height: '100%' }}>{props.noData}</div>
+            ))}
+        </Spin>
       </div>
     </DataWrap>
   )

@@ -32,6 +32,7 @@ import FloatBatch from '../FloatBatch'
 import { DemandOperationDropdownMenu } from './DemandOperationDropdownMenu'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
+import ResizeTable from '../ResizeTable'
 
 const Content = styled.div({
   padding: '20px 12px 0 8px',
@@ -441,6 +442,33 @@ const DemandTable = (props: Props) => {
 
   return (
     <Content>
+      {/* <ResizeTable
+        isSpinning={props.isSpinning}
+        dataWrapNormalHeight="100%"
+        col={selectColum}
+        dataSource={props.data?.list}
+        rowSelection={
+          !hasBatch &&
+          ({
+            selectedRowKeys: selectedRowKeys?.map((i: any) => i.id),
+            onSelect: (record: any, selected: any) =>
+              onSelectChange(record, selected),
+            onSelectAll,
+          } as any)
+        }
+        noData={
+          <NoData
+            subText={hasCreate ? '' : t('version2.noDataCreateDemandList')}
+            haveFilter={filterKeys?.length > 0}
+          >
+            {!hasCreate && (
+              <SecondButton onClick={onClick} style={{ marginTop: 24 }}>
+                {t('common.createDemand')}
+              </SecondButton>
+            )}
+          </NoData>
+        }
+      /> */}
       <DataWrap ref={dataWrapRef}>
         <Spin spinning={props?.isSpinning}>
           {!!props.data?.list &&
@@ -489,6 +517,15 @@ const DemandTable = (props: Props) => {
           />
         )}
       </DataWrap>
+      {!hasBatch && (
+        <FloatBatch
+          isVisible={selectedRowKeys.length > 0}
+          onClose={() => onSelectAll(false)}
+          selectRows={selectedRowKeys}
+          onUpdate={props.onUpdate}
+          onRef={batchDom}
+        />
+      )}
 
       <PaginationBox
         currentPage={props.data?.currentPage}

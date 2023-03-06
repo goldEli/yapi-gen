@@ -58,18 +58,8 @@ const SelectWrap = styled(Select)`
 `
 
 const Content = styled.div({
-  padding: '0px 24px 24px',
-  height: 'calc(100% - 128px)',
-})
-
-const DataWrap = styled.div({
-  height: 'calc(100% - 64px)',
-  background: 'white',
-  overflowX: 'auto',
-  borderRadius: 4,
-  '.ant-table-thead > tr > th': {
-    border: 'none',
-  },
+  padding: '0px 24px 0px',
+  height: 'calc(100vh - 262px)',
 })
 
 const NewSort = (sortProps: any) => {
@@ -104,26 +94,6 @@ const OperationManagement = () => {
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
   const [isSpinning, setIsSpinning] = useState(false)
-  const [dataWrapHeight, setDataWrapHeight] = useState(0)
-  const [tableWrapHeight, setTableWrapHeight] = useState(0)
-  const dataWrapRef = useRef<HTMLDivElement>(null)
-
-  useLayoutEffect(() => {
-    if (dataWrapRef.current) {
-      const currentHeight = dataWrapRef.current.clientHeight
-      if (currentHeight !== dataWrapHeight) {
-        setDataWrapHeight(currentHeight)
-      }
-
-      const tableBody = dataWrapRef.current.querySelector('.ant-table-tbody')
-      if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
-        setTableWrapHeight(tableBody.clientHeight)
-      }
-    }
-  }, [dataList])
-
-  const tableY =
-    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
   const getList = async (pageObjVal?: any, orderVal?: any) => {
     setIsSpinning(true)
@@ -182,7 +152,7 @@ const OperationManagement = () => {
         </NewSort>
       ),
       dataIndex: 'name',
-      width: 200,
+      width: 400,
       render: (text: string, record: any) => (
         <CommonUserAvatar avatar={record.avatar} size="small" name={text} />
       ),
@@ -199,7 +169,7 @@ const OperationManagement = () => {
         </NewSort>
       ),
       dataIndex: 'time',
-      width: 200,
+      width: 400,
     },
     {
       title: (
@@ -213,7 +183,7 @@ const OperationManagement = () => {
         </NewSort>
       ),
       dataIndex: 'type',
-      width: 200,
+      width: 300,
       render: (text: string) => {
         return <div>{typeList.filter(i => i.value === text)[0]?.label}</div>
       },
@@ -229,7 +199,6 @@ const OperationManagement = () => {
           {t('setting.operationInfo')}
         </NewSort>
       ),
-      // width: 200,
       dataIndex: 'info',
     },
   ]
@@ -250,12 +219,20 @@ const OperationManagement = () => {
     getList({ page, size }, order)
   }
 
+  const onValuesChange = () => {
+    getList(pageObj, order)
+  }
+
   return (
     <PermissionWrap
       auth="b/company/operate_logs"
       permission={userInfo?.company_permissions}
     >
-      <Form style={{ height: '100%' }} form={form}>
+      <Form
+        style={{ height: '100%' }}
+        form={form}
+        onValuesChange={onValuesChange}
+      >
         <Header>
           <div className="label">{t('setting.operationLog')}</div>
           <SearchWrap size={16}>
@@ -327,31 +304,12 @@ const OperationManagement = () => {
         </Header>
         <Content>
           <ResizeTable
-            dataWrapNormalHeight="calc(100% - 64px)"
+            dataWrapNormalHeight="100%"
             col={columns}
             dataSource={dataList.list}
+            noData={<NoData />}
+            isSpinning={isSpinning}
           />
-          {/* <DataWrap ref={dataWrapRef}>
-            <Spin spinning={isSpinning}>
-              {!!dataList?.list &&
-                (dataList?.list?.length > 0 ? (
-                  <TableStyleBox
-                    rowKey="id"
-                    columns={columns}
-                    dataSource={dataList.list}
-                    pagination={false}
-                    scroll={{
-                      x: 'max-content',
-                      y: tableY,
-                    }}
-                    tableLayout="auto"
-                    showSorterTooltip={false}
-                  />
-                ) : (
-                  <NoData />
-                ))}
-            </Spin>
-          </DataWrap> */}
 
           <PaginationBox
             total={dataList.total}
