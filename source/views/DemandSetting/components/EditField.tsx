@@ -137,11 +137,11 @@ const EditFiled = (props: Props) => {
     },
     { label: t('newlyAdd.time'), value1: '7', value: 'date' },
     { label: t('newlyAdd.number'), value1: '8', value: 'number' },
-    { label: t('version2.personRadio') + 9, value1: '9', value: 'user_select' },
+    { label: t('version2.personRadio'), value1: '9', value: 'user_select' },
     {
       label: t('version2.personCheckbox'),
       value1: '10',
-      user_select_checkbox: 'user_select_checkbox',
+      value: 'user_select_checkbox',
     },
     {
       label: '确认勾选',
@@ -170,9 +170,7 @@ const EditFiled = (props: Props) => {
         setChecked(values[0] === 'datetime')
       } else if (type === 'number') {
         setChecked(values[0] === 'integer')
-      } else if (
-        ['user_select', 'user_select_checkbox'].includes(props?.item?.type)
-      ) {
+      } else if (['user_select', 'user_select_checkbox'].includes(type)) {
         setPersonValue(values[0])
       }
     } else {
@@ -245,7 +243,7 @@ const EditFiled = (props: Props) => {
       contentValue = [personValue]
     }
     const obj: any = {
-      projectId: paramsData.id,
+      projectId: projectInfo.id,
       name: form.getFieldValue('name'),
       remarks: form.getFieldValue('remarks') || '',
       content: {

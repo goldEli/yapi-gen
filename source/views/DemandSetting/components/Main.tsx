@@ -217,7 +217,6 @@ const Main = (props: any) => {
         />
         <span>基本信息</span>
       </TitleStyle>
-      {/*   */}
       {infoIcon && (
         <TabsDragging
           onClick={(i: any, child: any) => tabsDraggingOnClcik(1, i, child)}
