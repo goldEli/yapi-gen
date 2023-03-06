@@ -157,7 +157,7 @@ const Get = () => {
     },
 
     {
-      title: <NewSort fixedKey="role_name">{t('p2.MyReadingStatus')}</NewSort>,
+      title: <NewSort fixedKey="status">{t('p2.MyReadingStatus')}</NewSort>,
       dataIndex: 'role_name',
       key: 'role_name',
       width: 170,

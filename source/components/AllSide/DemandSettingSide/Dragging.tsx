@@ -3,7 +3,7 @@ import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { setActiveCategory } from '@store/category'
 import { useDispatch } from '@store/index'
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect } from 'react'
 import { MenuItem } from './style'
 const Container = styled.div`
   margin-bottom: 8px;
@@ -131,7 +131,6 @@ const SliderList = (props: any) => {
   }, [index, isDragging])
 
   const dispatch = useDispatch()
-
   return (
     <Container
       ref={ref}
@@ -144,18 +143,13 @@ const SliderList = (props: any) => {
     >
       <MenuItem
         onClick={() => {
-          dispatch(setActiveCategory(props.row))
-          props.onClick(index)
+          dispatch(setActiveCategory(props.row)), props.onClick(index)
         }}
         key={children.icon}
         isActive={active}
       >
-        {active}
-        <CommonIconFont
-          type={children.icon}
-          color="var(--neutral-n3)"
-          size={18}
-        />
+        {children.active}
+        <img style={{ width: '18px' }} src={children.attachmentPath} />
         <div>{children.name}</div>
       </MenuItem>
     </Container>
@@ -165,26 +159,33 @@ const SliderList = (props: any) => {
 const Sortable = (props: any) => {
   const { list, setList } = props
   return (
-    <div>
+    <div
+      style={{
+        width: '100%',
+        height: '87%',
+        overflowY: 'auto',
+        overflowX: 'hidden',
+      }}
+    >
       {list?.map((child: any, i: number) => (
-        <>
-          <SliderList
-            row={child}
-            key={child.key}
-            index={i}
-            active={child.active}
-            listLength={list.length}
-            onClick={() => props.onClick(i)}
-            onMove={(prevIndex: any, nextIndex: any) => {
-              const newList = [...list]
-              newList.splice(nextIndex, 0, newList.splice(prevIndex, 1)[0])
-              setList(newList)
-              props.onMove(newList)
-            }}
-          >
-            {child}
-          </SliderList>
-        </>
+        <SliderList
+          row={child}
+          key={child.key}
+          index={i}
+          active={child.active}
+          listLength={list.length}
+          onClick={() => {
+            props.onClick(i, child)
+          }}
+          onMove={(prevIndex: any, nextIndex: any) => {
+            const newList = [...list]
+            newList.splice(nextIndex, 0, newList.splice(prevIndex, 1)[0])
+            setList(newList)
+            props.onMove(newList)
+          }}
+        >
+          {child}
+        </SliderList>
       ))}
     </div>
   )

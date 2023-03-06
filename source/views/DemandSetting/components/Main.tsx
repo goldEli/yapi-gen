@@ -36,7 +36,7 @@ const Main = (props: any) => {
   const [fieldType, setFieldType] = useState()
   const [draggingIndex, setDraggingIndex] = useState<any>()
   const [configType, setConfigType] = useState(0)
-  const [colItem, setColItem] = useState()
+  const [colItem, setColItem] = useState<any>()
   useEffect(() => {
     setGetCategoryConfigT(getCategoryConfigDataList?.isFoldT)
     setGetCategoryConfigF(getCategoryConfigDataList?.isFoldF)
@@ -106,7 +106,9 @@ const Main = (props: any) => {
     const newItem = {
       title: item.title,
       remarks: item.remarks,
+      fieldContent: item.field_content,
       content: item.field_content.attr,
+      isCustomize: 1,
       storyId: item.id,
       is_required: 2,
       is_fold: draggingIndex === 1 ? 1 : 2,
@@ -126,18 +128,19 @@ const Main = (props: any) => {
       title: item.title,
       remarks: item.remarks,
       content: item.field_content.attr,
+      fieldContent: item.field_content,
       storyId: item.id,
+      isCustomize: 1,
       is_required: 2,
       is_fold: draggingIndex === 1 ? 1 : 2,
     }
     if (configType === 1) {
       const arrData = Array.from(getCategoryConfigF)
-      arrData[draggingIndex] = newItem
+      arrData.splice(draggingIndex, 0, newItem)
       setGetCategoryConfigF(arrData)
     } else {
-      const arrData = Array.from(getCategoryConfigF)
-      arrData[draggingIndex] = newItem
-      setGetCategoryConfigT(arrData)
+      const arrData = Array.from(getCategoryConfigT)
+      arrData.splice(draggingIndex, 0, newItem)
     }
   }
   // 更新编辑
@@ -154,10 +157,11 @@ const Main = (props: any) => {
       message.warning('自定义字段已有20个')
       return
     }
+    setColItem(null)
     const evevtObj = JSON.parse(event.dataTransfer.getData('item'))
     evevtObj.dragtype === 'add' && setAddAndEditVisible(true),
       setFieldType(evevtObj)
-    evevtObj.dragtype === 'edit' && onInsert(evevtObj)
+    evevtObj.dragtype === 'edit' && EditCategoryConfig(evevtObj)
     setDraggingIndex(index)
     setConfigType(state)
     props.onIsOperate(true)

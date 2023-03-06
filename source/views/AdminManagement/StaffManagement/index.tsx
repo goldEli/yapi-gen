@@ -345,42 +345,57 @@ const StaffManagement = () => {
     //   permission={userInfo?.company_permissions}
     // >
     <div>
-      <div>{t('staff.companyStaff')}</div>
-      <div style={{ height: 'calc(100% - 64px)', overflow: 'auto' }}>
-        <div>
-          <div style={{ display: 'flex', marginLeft: 24 }}>
-            <InputSearch
-              width={292}
-              placeholder={t('staff.pleaseKey')}
-              onChangeSearch={onPressEnter}
-            />
-          </div>
-          <div
-            style={{
-              marginRight: '12px',
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            <Reset onClick={rest}>{t('staff.refresh')}</Reset>
-            <Space size={8}>
-              <HoverWrap onClick={onChangeFilter} isActive={isShow}>
-                <IconFont className="iconMain" type="filter" />
-                <span className="label">{t('common.search')}</span>
-              </HoverWrap>
-              <DividerWrap type="vertical" />
-              <DropDownMenu
-                menu={<SetShowField notView onChangeFieldVisible={showModal} />}
-                icon="settings"
-                isVisible={isVisibleFields}
-                onChangeVisible={setIsVisibleFields}
-                isActive={isModalVisible}
-              >
-                <div>{t('common.tableFieldSet')}</div>
-              </DropDownMenu>
-            </Space>
-          </div>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          height: '72px',
+          alignItems: 'center',
+          padding: '0 24px',
+        }}
+      >
+        <div
+          style={{
+            fontSize: '16px',
+            fontWeight: 500,
+            color: '#323233',
+          }}
+        >
+          {t('staff.companyStaff')}
         </div>
+
+        <div style={{ display: 'flex', gap: '24px' }}>
+          <InputSearch
+            width={292}
+            placeholder={t('staff.pleaseKey')}
+            onChangeSearch={onPressEnter}
+          />
+
+          <Reset style={{ whiteSpace: 'nowrap' }} onClick={rest}>
+            {t('staff.refresh')}
+          </Reset>
+
+          <HoverWrap onClick={onChangeFilter} isActive={isShow}>
+            <IconFont className="iconMain" type="filter" />
+            <span style={{ whiteSpace: 'nowrap' }} className="label">
+              {t('common.search')}
+            </span>
+          </HoverWrap>
+          <DividerWrap type="vertical" />
+          <DropDownMenu
+            menu={<SetShowField notView onChangeFieldVisible={showModal} />}
+            icon="settings"
+            isVisible={isVisibleFields}
+            onChangeVisible={setIsVisibleFields}
+            isActive={isModalVisible}
+          >
+            <div style={{ whiteSpace: 'nowrap' }}>
+              {t('common.tableFieldSet')}
+            </div>
+          </DropDownMenu>
+        </div>
+      </div>
+      <div style={{ height: 'calc(100% - 104px)', overflow: 'auto' }}>
         {isShow ? <SearchList onSearch={onSearch} /> : null}
         <div className={tableWrapP} style={{ height: `calc(100% - 52px)` }}>
           <div
