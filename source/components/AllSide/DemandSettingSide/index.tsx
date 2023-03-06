@@ -95,44 +95,34 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
   }
   useEffect(() => {
     setTabsActive(startUsing ? 0 : 1)
-    if (categoryList?.length >= 1) {
-      let dataItem = null
-      if (startUsing) {
-        dataItem = categoryList
-          ?.filter((el: any) => el.status === 1)
-          .map((el: any, index: number) => ({
-            ...el,
-            active: index === 0 ? true : false,
-          }))
-      } else {
-        dataItem = categoryList
-          ?.filter((el: any) => el.status !== 1)
-          .map((el: any, index: number) => ({
-            ...el,
-            active: index === 0 ? true : false,
-          }))
-      }
-      setList(dataItem)
-      if (dataItem) {
-        getCategoryConfig(dataItem)
-      }
-      dispatch(setActiveCategory(dataItem.find((item: any) => item.active)))
+    if (list?.length >= 1) {
+      getCategoryConfig(list)
+      dispatch(setActiveCategory(list.find((item: any) => item.active)))
     }
-  }, [startUsing, categoryList])
+  }, [startUsing])
   const getTabsActive = async (index: any) => {
     dispatch(setStartUsing(index === 0 ? true : false))
     setTabsActive(index)
   }
-  // useEffect(() => {
-  //   if (activeCategory?.id && projectId) {
-  //     dispatch(
-  //       getCategoryConfigList({
-  //         projectId: projectId,
-  //         categoryId: activeCategory.id,
-  //       }),
-  //     )
-  //   }
-  // }, [activeCategory])
+  useEffect(() => {
+    let dataItem = null
+    if (tabsActive) {
+      dataItem = categoryList
+        ?.filter((el: any) => el.status === 1)
+        .map((el: any, index: number) => ({
+          ...el,
+          active: index === 0 ? true : false,
+        }))
+    } else {
+      dataItem = categoryList
+        ?.filter((el: any) => el.status !== 1)
+        .map((el: any, index: number) => ({
+          ...el,
+          active: index === 0 ? true : false,
+        }))
+    }
+    setList(dataItem)
+  }, [categoryList])
   return (
     <AllWrap>
       <WrapSet>
@@ -172,10 +162,12 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
             list={list}
             setList={setList}
             onClick={(i: number) => {
-              getCategoryConfigList({
-                projectId: projectId,
-                categoryId: activeCategory.id,
-              }),
+              dispatch(
+                getCategoryConfigList({
+                  projectId: projectId,
+                  categoryId: activeCategory.id,
+                }),
+              ),
                 setList(
                   list.map((el: any, index: any) => ({
                     ...el,
