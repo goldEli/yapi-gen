@@ -26,6 +26,7 @@ import { useSelector } from '@store/index'
 import { getVerifyList, getVerifyUserList } from '@/services/mine'
 import InputSearch from '@/components/InputSearch'
 import PaginationBox from '@/components/TablePagination'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -61,6 +62,7 @@ const SearchWrap = styled.div({
 
 const Need = (props: any) => {
   const [t] = useTranslation()
+  const [openDemandDetail] = useOpenDemandDetail()
   const [filterState, setFilterState] = useState(true)
   const [activeTab, setActiveTab] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
@@ -141,12 +143,23 @@ const Need = (props: any) => {
     getList(pageObj, { value, key }, keyword, searchParams)
   }
 
+  const onClickItem = (item: any) => {
+    const demandIds = listData?.list?.map((i: any) => i.demandId)
+    item.id = item.demandId
+    openDemandDetail(
+      { ...item, ...{ demandIds } },
+      item.projectId,
+      item.demandId,
+    )
+  }
+
   const columns = useDynamicColumns({
     orderKey: order?.key,
     order: order?.value,
     onUpdateOrderkey,
     onChangeOperation,
     activeTab,
+    onClickItem,
   })
 
   const selectColum: any = useMemo(() => {

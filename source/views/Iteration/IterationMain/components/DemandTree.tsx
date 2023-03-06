@@ -171,7 +171,19 @@ const DemandTree = (props: Props) => {
 
   // 点击跳转需求详情
   const onClickItem = (item: any) => {
-    openDemandDetail(item, projectId, item.id)
+    let demandIds: any
+    if (item.parentId) {
+      const currentDemandTop = props.data?.list?.filter(
+        (i: any) => i.id === item.topId,
+      )?.[0]
+      demandIds = currentDemandTop.allChildrenIds
+        ?.filter((i: any) => i.parent_id === item.parentId)
+        ?.map((k: any) => k.id)
+    } else {
+      demandIds = props.data?.list?.map((i: any) => i.id)
+    }
+
+    openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id)
   }
 
   // 修改优先级

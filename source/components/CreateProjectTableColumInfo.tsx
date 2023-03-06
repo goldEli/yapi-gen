@@ -41,17 +41,7 @@ const Wrap = styled.div<{ isEdit?: any }>(
 
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
-  const { colorList } = useSelector(store => store.project)
   const { userInfo } = useSelector(store => store.user)
-  const [openDemandDetail] = useOpenDemandDetail()
-
-  const onToDetail = (item: any) => {
-    if (item.project?.isPublic !== 1 && !item.project?.isUserMember) {
-      message.warning(t('common.notCheckInfo'))
-    } else {
-      openDemandDetail(item, item.project_id, item.id)
-    }
-  }
 
   const onExamine = () => {
     message.warning(t('newlyAdd.underReview'))
@@ -84,7 +74,7 @@ export const useDynamicColumns = (state: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <ClickWrap
-              onClick={() => onToDetail(record)}
+              onClick={() => state.onClickItem(record)}
               isClose={record.status?.is_end === 1}
             >
               {text}
@@ -127,17 +117,6 @@ export const useDynamicColumns = (state: any) => {
                 }}
                 alt=""
               />
-              {/* <CategoryWrap
-                color={record.categoryColor}
-                bgColor={
-                  colorList?.filter(
-                    (k: any) => k.key === record.categoryColor,
-                  )[0]?.bgColor
-                }
-                style={{ marginLeft: 0 }}
-              >
-                {record.category}
-              </CategoryWrap> */}
             </Tooltip>
             <TableQuickEdit
               type="text"
@@ -153,7 +132,7 @@ export const useDynamicColumns = (state: any) => {
                 <ListNameWrap
                   isName
                   isClose={record.status?.is_end === 1}
-                  onClick={() => onToDetail(record)}
+                  onClick={() => state.onClickItem(record)}
                 >
                   {text}
                   {record.new === 1 && (

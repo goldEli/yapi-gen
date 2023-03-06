@@ -120,7 +120,9 @@ const DemandDetailDrawer = () => {
     setDrawerInfo(info)
     // 获取当前需求的下标， 用作上一下一切换
     setCurrentIndex(
-      demandDetailDrawerProps?.demandIds.findIndex((i: any) => i === info.id),
+      (demandDetailDrawerProps?.demandIds || []).findIndex(
+        (i: any) => i === info.id,
+      ),
     )
   }
 

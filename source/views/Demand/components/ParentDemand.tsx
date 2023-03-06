@@ -39,13 +39,11 @@ const DemandCheckedItem = styled.div({
 interface Props {
   addWrap: React.ReactElement
   isRight?: any
+  projectId?: any
 }
 
 const ParentDemand = (props: Props) => {
   const [t] = useTranslation()
-  const [searchParams] = useSearchParams()
-  const paramsData = getParamsData(searchParams)
-  const projectId = paramsData.id
   const { projectInfo } = useSelector(store => store.project)
   const { demandInfo } = useSelector(store => store.demand)
   const dispatch = useDispatch()
@@ -57,13 +55,16 @@ const ParentDemand = (props: Props) => {
   const onDeleteInfoDemand = async () => {
     try {
       await deleteInfoDemand({
-        projectId,
+        projectId: props.projectId,
         demandId: demandInfo?.id,
         type: 'parent',
         targetId: demandInfo?.parentId,
       })
       message.success(t('common.deleteSuccess'))
-      const result = await getDemandInfo({ projectId, id: demandInfo?.id })
+      const result = await getDemandInfo({
+        projectId: props.projectId,
+        id: demandInfo?.id,
+      })
       dispatch(setDemandInfo(result))
     } catch (error) {
       //
@@ -94,7 +95,7 @@ const ParentDemand = (props: Props) => {
           isRight
           addWrap={props.addWrap}
           isHidden={demandInfo?.parentId}
-          projectId={projectId}
+          projectId={props.projectId}
           demandId={demandInfo?.id}
           isOperationParent
           placeholder={t('common.searchParent')}
