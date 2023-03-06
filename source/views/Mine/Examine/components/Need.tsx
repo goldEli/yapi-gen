@@ -144,8 +144,13 @@ const Need = (props: any) => {
   }
 
   const onClickItem = (item: any) => {
-    const demandIds = listData?.list?.map((i: any) => i.id)
-    openDemandDetail({ ...item, ...{ demandIds } }, item.projectId, item.id)
+    const demandIds = listData?.list?.map((i: any) => i.demandId)
+    item.id = item.demandId
+    openDemandDetail(
+      { ...item, ...{ demandIds } },
+      item.projectId,
+      item.demandId,
+    )
   }
 
   const columns = useDynamicColumns({
