@@ -4,7 +4,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable complexity */
-
+/* eslint-disable camelcase */
 import { useEffect, useState } from 'react'
 import DeleteConfirm from './DeleteConfirm'
 import CommonModal from './CommonModal'

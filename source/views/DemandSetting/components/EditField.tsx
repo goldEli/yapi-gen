@@ -6,6 +6,7 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
 import CommonModal from '@/components/CommonModal'
 import { Checkbox, Form, Input, message, Radio, Select } from 'antd'
 import IconFont from '@/components/IconFont'
@@ -126,41 +127,53 @@ const EditFiled = (props: Props) => {
   ])
 
   const option = [
-    { label: t('newlyAdd.lineText'), value: '1', type: 'text' },
-    { label: t('newlyAdd.moreLineText'), value: '2', type: 'textarea' },
-    { label: t('newlyAdd.radioDropdown'), value: '3', type: 'select' },
-    { label: t('newlyAdd.multiDropdown'), value: '4', type: 'select_checkbox' },
-    { label: t('newlyAdd.checkbox'), value: '5', type: 'checkbox' },
-    { label: t('newlyAdd.radio'), value: '6', type: 'radio' },
-    { label: t('newlyAdd.time'), value: '7', type: 'date' },
-    { label: t('newlyAdd.number'), value: '8', type: 'number' },
-    { label: t('version2.personRadio'), value: '9', type: 'user_select' },
+    { label: t('newlyAdd.lineText'), value1: '1', value: 'text' },
+    { label: t('newlyAdd.moreLineText'), value1: '2', value: 'textarea' },
+    { label: t('newlyAdd.radioDropdown'), value1: '3', value: 'select' },
+    {
+      label: t('newlyAdd.multiDropdown'),
+      value1: '4',
+      value: 'select_checkbox',
+    },
+    { label: t('newlyAdd.time'), value1: '7', value: 'date' },
+    { label: t('newlyAdd.number'), value1: '8', value: 'number' },
+    { label: t('version2.personRadio') + 9, value1: '9', value: 'user_select' },
     {
       label: t('version2.personCheckbox'),
-      value: '10',
-      type: 'user_select_checkbox',
+      value1: '10',
+      user_select_checkbox: 'user_select_checkbox',
+    },
+    {
+      label: '确认勾选',
+      value1: '11',
+      value: 'single_checkbox',
     },
   ]
 
   useEffect(() => {
     if (props?.item?.id) {
+      const type = props?.item?.fieldContent.attr
+      setValue(type)
       form.setFieldsValue({
         name: props.item.title,
+        type,
+        remarks: props?.item?.remarks,
       })
-      form.setFieldsValue(props?.item)
-      setValue(props?.item?.type)
-      if (['3', '4', '5', '6'].includes(props?.item?.type)) {
-        const values = props?.item?.values?.map((i: any, index: any) => ({
+      const values = props?.item?.fieldContent.value
+      if (['select', 'select_checkbox'].includes(type)) {
+        const val = values?.map((i: any, index: any) => ({
           value: i,
           key: new Date().getTime() * (index + 0.2),
         }))
-        setRow(values)
-      } else if (props?.item?.type === '7') {
-        setChecked(props?.item?.values[0] === 'datetime')
-      } else if (props?.item?.type === '8') {
-        setChecked(props?.item?.values[0] === 'integer')
-      } else if (['9', '10'].includes(props?.item?.type)) {
-        setPersonValue(props?.item?.values[0])
+        setRow(val)
+      } else if (type === 'date') {
+        setChecked(values[0] === 'datetime')
+      } else if (type === 'number') {
+        setChecked(values[0] === 'integer')
+      } else if (
+        ['user_select', 'user_select_checkbox'].includes(props?.item?.type)
+      ) {
+        setPersonValue(values[0])
       }
     } else {
       form.resetFields()
@@ -176,7 +189,7 @@ const EditFiled = (props: Props) => {
   useEffect(() => {
     if (props.isVisible && props.fieldType) {
       form.setFieldsValue({
-        type: props.fieldType.value,
+        type: props.fieldType.type,
       })
     }
   }, [props.isVisible])
@@ -200,14 +213,14 @@ const EditFiled = (props: Props) => {
 
   const onConfirm = async () => {
     await form.validateFields()
-    const selObj = option?.filter(
+    const selObj: any = option?.filter(
       (i: any) => i.value === form.getFieldValue('type'),
     )[0]
     let contentValue
-    if (['1', '2'].includes(selObj?.value)) {
+    if (['text', 'textarea'].includes(selObj?.value)) {
       // 文本
       contentValue = ''
-    } else if (['3', '4', '5', '6'].includes(selObj?.value)) {
+    } else if (['select', 'select_checkbox'].includes(selObj?.value)) {
       // 下拉
       const hasNull = row.filter(i => !i.value)
       if (hasNull?.length) {
@@ -215,13 +228,15 @@ const EditFiled = (props: Props) => {
         return
       }
       contentValue = row.map(i => i.value)
-    } else if (selObj?.value === '7') {
+    } else if (selObj?.value === 'date') {
       // 时间
       contentValue = checked ? ['datetime'] : ['date']
-    } else if (selObj?.value === '8') {
+    } else if (selObj?.value === 'number') {
       // 整数
       contentValue = checked ? ['integer'] : ['number']
-    } else if (['9', '10'].includes(selObj?.value)) {
+    } else if (
+      ['user_select', 'user_select_checkbox'].includes(selObj?.value)
+    ) {
       // 人员字段
       if (personValue?.length <= 0) {
         message.warning(t('version2.chooseNotNull'))
@@ -229,13 +244,12 @@ const EditFiled = (props: Props) => {
       }
       contentValue = [personValue]
     }
-
     const obj: any = {
       projectId: paramsData.id,
       name: form.getFieldValue('name'),
       remarks: form.getFieldValue('remarks') || '',
       content: {
-        attr: selObj.type,
+        attr: selObj.value,
         value: contentValue,
       },
     }
@@ -303,7 +317,7 @@ const EditFiled = (props: Props) => {
     <CommonModal
       isVisible={props?.isVisible}
       title={
-        props?.item?.id
+        props?.item
           ? t('newlyAdd.editCustomFields')
           : t('newlyAdd.createCustomFields')
       }
@@ -372,93 +386,104 @@ const EditFiled = (props: Props) => {
             <div style={{ marginTop: 4, fontSize: 12, color: '#969799' }}>
               {t('newlyAdd.pleaseFieldsType')}
             </div>
-            {value && value !== '1' && value !== '2' && (
-              <ChooseWrap>
-                {value === '7' && (
-                  <Checkbox
-                    checked={checked}
-                    onChange={e => setChecked(e.target.checked)}
-                  >
-                    {t('newlyAdd.hasShowTime')}
-                  </Checkbox>
-                )}
-                {value === '8' && (
-                  <Checkbox
-                    checked={checked}
-                    onChange={e => setChecked(e.target.checked)}
-                  >
-                    {t('newlyAdd.onlyInt')}
-                  </Checkbox>
-                )}
-                {(value === '9' || value === '10') && (
-                  <>
-                    <div
-                      style={{
-                        fontSize: 14,
-                        color: '#323233',
-                        marginBottom: 12,
-                        fontWeight: 500,
-                      }}
+            {value &&
+              value !== 'text' &&
+              value !== 'textarea' &&
+              value !== 'single_checkbox' && (
+                <ChooseWrap>
+                  {value === 'date' && (
+                    <Checkbox
+                      checked={checked}
+                      onChange={e => setChecked(e.target.checked)}
                     >
-                      {t('version2.chooseRange')}
-                    </div>
-                    <Radio.Group
-                      value={personValue}
-                      onChange={e => setPersonValue(e.target.value)}
+                      {t('newlyAdd.hasShowTime')}
+                    </Checkbox>
+                  )}
+                  {value === 'number' && (
+                    <Checkbox
+                      checked={checked}
+                      onChange={e => setChecked(e.target.checked)}
                     >
-                      <Radio value="projectMember">
-                        {t('project.projectMember')}
-                      </Radio>
-                      <Radio value="companyMember">
-                        {t('situation.companyStaff')}
-                      </Radio>
-                    </Radio.Group>
-                  </>
-                )}
-                {!['7', '8', '9', '10'].includes(value) && (
-                  <OptionsWrap>
-                    <AddWrap onClick={onAddChoose}>
-                      <IconFont type="plus" />
-                      <span>{t('newlyAdd.addChoose')}</span>
-                    </AddWrap>
-                    <SortContainer
-                      helperClass="row-dragging"
-                      useDragHandle
-                      onSortEnd={(values: any) => onSortEnd(values)}
-                    >
-                      {row.map((_i: any, idx: number) => (
-                        <SortItemLi
-                          helperClass="row-dragging"
-                          key={_i.key}
-                          index={idx}
-                        >
-                          <OptionsItemWrap key={_i.key}>
-                            <DragHandle />
-                            <Input
-                              defaultValue={row[idx].value}
-                              style={{ width: 276 }}
-                              placeholder={t('newlyAdd.pleaseParams')}
-                              onChange={e => onChangeValue(e, idx)}
-                            />
-                            <IconFont
-                              type="close"
-                              style={{
-                                fontSize: 16,
-                                cursor:
-                                  row?.length === 1 ? 'not-allowed' : 'pointer',
-                                color: '#969799',
-                                marginLeft: 12,
-                              }}
-                              onClick={() => onDelRow(_i.key)}
-                            />
-                          </OptionsItemWrap>
-                        </SortItemLi>
-                      ))}
-                    </SortContainer>
-                  </OptionsWrap>
-                )}
-              </ChooseWrap>
-            )}
+                      {t('newlyAdd.onlyInt')}
+                    </Checkbox>
+                  )}
+                  {(value === 'user_select' ||
+                    value === 'user_select_checkbox') && (
+                    <>
+                      <div
+                        style={{
+                          fontSize: 14,
+                          color: '#323233',
+                          marginBottom: 12,
+                          fontWeight: 500,
+                        }}
+                      >
+                        {t('version2.chooseRange')}
+                      </div>
+                      <Radio.Group
+                        value={personValue}
+                        onChange={e => setPersonValue(e.target.value)}
+                      >
+                        <Radio value="projectMember">
+                          {t('project.projectMember')}
+                        </Radio>
+                        <Radio value="companyMember">
+                          {t('situation.companyStaff')}
+                        </Radio>
+                      </Radio.Group>
+                    </>
+                  )}
+                  {![
+                    'date',
+                    'number',
+                    'user_select',
+                    'user_select_checkbox',
+                  ].includes(value) && (
+                    <OptionsWrap>
+                      <AddWrap onClick={onAddChoose}>
+                        <IconFont type="plus" />
+                        <span>{t('newlyAdd.addChoose')}</span>
+                      </AddWrap>
+                      <SortContainer
+                        helperClass="row-dragging"
+                        useDragHandle
+                        onSortEnd={(values: any) => onSortEnd(values)}
+                      >
+                        {row.map((_i: any, idx: number) => (
+                          <SortItemLi
+                            helperClass="row-dragging"
+                            key={_i.key}
+                            index={idx}
+                          >
+                            <OptionsItemWrap key={_i.key}>
+                              <DragHandle />
+                              <Input
+                                defaultValue={row[idx].value}
+                                style={{ width: 276 }}
+                                placeholder={t('newlyAdd.pleaseParams')}
+                                onChange={e => onChangeValue(e, idx)}
+                              />
+                              <IconFont
+                                type="close"
+                                style={{
+                                  fontSize: 16,
+                                  cursor:
+                                    row?.length === 1
+                                      ? 'not-allowed'
+                                      : 'pointer',
+                                  color: '#969799',
+                                  marginLeft: 12,
+                                }}
+                                onClick={() => onDelRow(_i.key)}
+                              />
+                            </OptionsItemWrap>
+                          </SortItemLi>
+                        ))}
+                      </SortContainer>
+                    </OptionsWrap>
+                  )}
+                </ChooseWrap>
+              )}
           </ItemWrap>
         </FormWrap>
       </div>

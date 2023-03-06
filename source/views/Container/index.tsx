@@ -131,7 +131,9 @@ export const Container = () => {
               <HeaderRight />
             </HeaderWrap>
             <Content>
-              <Side onChangeLeft={setChangeLeft} />
+              {location.pathname !== '/Situation' && (
+                <Side onChangeLeft={setChangeLeft} />
+              )}
               <Main left={changeLeft}>
                 <Outlet />
               </Main>

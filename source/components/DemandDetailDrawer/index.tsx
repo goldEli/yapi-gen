@@ -103,6 +103,7 @@ const DemandDetailDrawer = () => {
   // 获取需求详情
   const getDemandDetail = async (id?: any) => {
     setDrawerInfo({})
+    setShowState(normalState)
     const info = await getDemandInfo({
       projectId:
         demandDetailDrawerProps.project_id ?? demandDetailDrawerProps.projectId,

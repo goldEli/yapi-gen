@@ -2,8 +2,10 @@
 /* eslint-disable react/jsx-handler-names */
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
+import { setActiveCategory } from '@store/category'
 import { Checkbox, Tooltip } from 'antd'
 import React, { useEffect, useLayoutEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 const Container = styled.div`
   margin-bottom: 8px;
   &:hover {
@@ -83,6 +85,53 @@ const SliderList = (props: any) => {
   const listLengthRef = React.useRef(listLength)
   const prevRectRef = React.useRef(null)
   const animationRef: any = React.useRef(null)
+  const [t] = useTranslation()
+  const option = [
+    {
+      label: t('newlyAdd.lineText'),
+      value: '1',
+      type: 'text',
+      icon: 'text-alone',
+    },
+    {
+      label: t('newlyAdd.moreLineText'),
+      value: '2',
+      type: 'textarea',
+      icon: 'text-more',
+    },
+    {
+      label: t('newlyAdd.radioDropdown'),
+      value: '3',
+      type: 'select',
+      icon: 'select-alone',
+    },
+    {
+      label: t('newlyAdd.multiDropdown'),
+      value: '4',
+      type: 'select_checkbox',
+      icon: 'select-more',
+    },
+    { label: t('newlyAdd.time'), value: '7', type: 'date', icon: 'calendar' },
+    { label: t('newlyAdd.number'), value: '8', type: 'number', icon: 'number' },
+    {
+      label: t('version2.personRadio'),
+      value: '9',
+      type: 'user_select',
+      icon: 'user-alone',
+    },
+    {
+      label: t('version2.personCheckbox'),
+      value: '10',
+      type: 'user_select_checkbox',
+      icon: 'user-more',
+    },
+    {
+      label: '确认勾选',
+      value: '11',
+      type: 'single_checkbox',
+      icon: 'check-circle',
+    },
+  ]
   useEffect(() => {
     // 始终保持最新状态 Ref 引用
     indexRef.current = index
@@ -190,6 +239,7 @@ const SliderList = (props: any) => {
       200,
     )
   }, [index, isDragging])
+
   return (
     <Container
       ref={ref}
@@ -200,22 +250,58 @@ const SliderList = (props: any) => {
         zIndex: zIndex.toString(),
       }}
     >
-      {child.content !== 'user_name' &&
-      child.content !== 'users_name' &&
-      child.content !== 'created_at' &&
-      child.content !== 'finish_at' ? (
+      {child.isCustomize === 2 ? (
+        <Tooltip placement="topRight" title={'系统字段不可编辑'}>
+          <ItemList>
+            <div style={{ display: 'flex' }}>
+              <IconBox>
+                <CommonIconFont
+                  type={
+                    option.find(item => child?.fieldContent?.attr === item.type)
+                      ?.icon
+                  }
+                  size={24}
+                  color="var(--neutral-n3)"
+                />
+              </IconBox>
+              <ListMsg>
+                <div>{child?.title}</div>
+                <div>
+                  {
+                    option.find(item => child?.fieldContent?.attr === item.type)
+                      ?.label
+                  }
+                </div>
+              </ListMsg>
+            </div>
+            <RightOperate>
+              <CheckboxStyle disabled={true} />
+              <Text>必填</Text>
+              <DelBtn>删除</DelBtn>
+            </RightOperate>
+          </ItemList>
+        </Tooltip>
+      ) : (
         <ItemList>
           <div style={{ display: 'flex' }}>
             <IconBox>
               <CommonIconFont
-                type="down-icon"
-                size={14}
+                type={
+                  option.find(item => child?.fieldContent?.attr === item.type)
+                    ?.icon
+                }
+                size={24}
                 color="var(--neutral-n3)"
               />
             </IconBox>
             <ListMsg>
               <div>{child?.title}</div>
-              <div>数字型</div>
+              <div>
+                {
+                  option.find(item => child?.fieldContent?.attr === item.type)
+                    ?.label
+                }
+              </div>
             </ListMsg>
           </div>
           <RightOperate>
@@ -239,30 +325,6 @@ const SliderList = (props: any) => {
             </DelBtn>
           </RightOperate>
         </ItemList>
-      ) : (
-        // 创建人 处理人 完成时间 创建时间 不允许操作
-        <Tooltip placement="topRight" title={'系统字段不可编辑'}>
-          <ItemList>
-            <div style={{ display: 'flex' }}>
-              <IconBox>
-                <CommonIconFont
-                  type="down-icon"
-                  size={14}
-                  color="var(--neutral-n3)"
-                />
-              </IconBox>
-              <ListMsg>
-                <div>{child?.title}</div>
-                <div>数字型</div>
-              </ListMsg>
-            </div>
-            <RightOperate>
-              <CheckboxStyle disabled={true} />
-              <Text>必填</Text>
-              <DelBtn>删除</DelBtn>
-            </RightOperate>
-          </ItemList>
-        </Tooltip>
       )}
     </Container>
   )
@@ -274,17 +336,15 @@ const Sortable = (props: any) => {
     <div
       draggable="true"
       onDragOver={event => {
-        event.preventDefault()
+        event.preventDefault(), event.stopPropagation()
       }}
     >
       {list?.map((child: any, i: number) => (
         <div
           key={child.id}
           onDrop={(event: any) => props.onDrop(event, i)}
-          onClick={(event: any) => {
-            event.preventDefault(),
-              event.stopPropagation(),
-              child.isCustomize === 1 && props.onClick(i, child)
+          onClick={() => {
+            child.isCustomize === 1 && props.onClick(i, child)
           }}
         >
           <SliderList

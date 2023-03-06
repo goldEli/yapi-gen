@@ -70,31 +70,58 @@ const CreateField = () => {
   const [searchIcon, setSearchIcon] = useState(false)
   const [search, setSearch] = useState(false)
   const [createIcon, setCreateIcon] = useState(true)
-  const { getCategoryConfigDataList, getCategoryConfigArray } = useSelector(
-    store => store.category,
-  )
+  const {
+    getCategoryConfigDataList,
+    getCategoryConfigArray,
+    getProjectFieIdsData,
+  } = useSelector(store => store.category)
   const [dataList, setDataList] = useState<any>()
   const [searchDataList, setSearchDataList] = useState<any>()
   const { projectInfo } = useSelector(store => store.project)
   const [payloadDataList, setPayloadDataList] = useState<any>()
   const option = [
-    { label: '单行文本1', value: '1', type: 'text', icon: 'text-alone' },
-    { label: '多行文本2', value: '2', type: 'textarea', icon: 'text-more' },
-    { label: '单选下拉3', value: '3', type: 'select', icon: 'select-alone' },
     {
-      label: '多选下拉4',
+      label: t('newlyAdd.lineText'),
+      value: '1',
+      type: 'text',
+      icon: 'text-alone',
+    },
+    {
+      label: t('newlyAdd.moreLineText'),
+      value: '2',
+      type: 'textarea',
+      icon: 'text-more',
+    },
+    {
+      label: t('newlyAdd.radioDropdown'),
+      value: '3',
+      type: 'select',
+      icon: 'select-alone',
+    },
+    {
+      label: t('newlyAdd.multiDropdown'),
       value: '4',
       type: 'select_checkbox',
       icon: 'select-more',
     },
-    { label: '日期', value: '7', type: 'date', icon: 'calendar' },
-    { label: '数字', value: '8', type: 'number', icon: 'number' },
-    { label: '人员单选', value: '9', type: 'user_select', icon: 'user-alone' },
-    { label: '人员复选', value: '11', type: 'user_select', icon: 'user-more' },
+    { label: t('newlyAdd.time'), value: '7', type: 'date', icon: 'calendar' },
+    { label: t('newlyAdd.number'), value: '8', type: 'number', icon: 'number' },
+    {
+      label: t('version2.personRadio'),
+      value: '9',
+      type: 'user_select',
+      icon: 'user-alone',
+    },
+    {
+      label: t('version2.personCheckbox'),
+      value: '10',
+      type: 'user_select_checkbox',
+      icon: 'user-more',
+    },
     {
       label: '确认勾选',
-      value: '12',
-      type: 'user_select',
+      value: '11',
+      type: 'single_checkbox',
       icon: 'check-circle',
     },
   ]
@@ -104,10 +131,10 @@ const CreateField = () => {
     if (confightList?.length < 1 && payloadList?.length < 1) return
     const filterIds = confightList?.map((item: any) => item.storyId)
     setDataList(
-      payloadList?.filter((item: any) => !filterIds.includes(item.id)),
+      payloadList?.filter((item: any) => !filterIds?.includes(item.id)),
     )
     setSearchDataList(
-      payloadList?.filter((item: any) => !filterIds.includes(item.id)),
+      payloadList?.filter((item: any) => !filterIds?.includes(item.id)),
     )
   }
   // 请求api
@@ -124,16 +151,14 @@ const CreateField = () => {
   }
   useEffect(() => {
     getProjectFieIdsApi()
-  }, [])
+  }, [projectInfo.id])
   // 根据输入框过滤
   const onSearch = (value: string) => {
     setSearchDataList(dataList.filter((el: any) => el.title.includes(value)))
   }
   // 监听列表被删除时过滤
   useEffect(() => {
-    if (getCategoryConfigArray?.length) {
-      filterData(getCategoryConfigArray, payloadDataList)
-    }
+    filterData(getCategoryConfigArray, payloadDataList)
   }, [getCategoryConfigArray])
   return (
     <CreateFieldWrap>
@@ -171,7 +196,7 @@ const CreateField = () => {
             )}
             <span>项目已有字段 ({payloadDataList?.length})</span>
           </div>
-          {search && searchDataList?.length >= 1 ? (
+          {search ? (
             <InputStyle
               placeholder="请输入关键字"
               onInput={(e: any) => onSearch(e.target.value)}
@@ -184,14 +209,14 @@ const CreateField = () => {
                 />
               }
             />
-          ) : searchDataList?.length >= 1 ? (
+          ) : (
             <CommonIconFont
               type="search"
               size={16}
               color="var(--neutral-n2)"
               onClick={() => setSearch(true)}
             />
-          ) : null}
+          )}
         </BottomTitleStyle>
         {searchIcon && (
           <ProjectDragging

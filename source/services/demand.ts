@@ -589,6 +589,7 @@ export const getDemandList: any = async (params: any) => {
       categoryRemark: i.category_remark,
       category_attachment: i.category_attachment,
       isExamine: i.verify_lock === 1,
+      priority: i.priority,
     }))
   } else if (params?.isChildren) {
     return {

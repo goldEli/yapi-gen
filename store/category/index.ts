@@ -53,10 +53,7 @@ export const category = createSlice({
   extraReducers(builder) {
     builder.addCase(storyConfigCategoryList.fulfilled, (state, action) => {
       const data = action.payload.list
-      state.categoryList = data?.map((el: any, index: any) => ({
-        ...el,
-        active: index === 0 ? true : false,
-      }))
+      state.categoryList = data
     })
     builder.addCase(getCategoryConfigList.fulfilled, (state, action) => {
       const data = action.payload

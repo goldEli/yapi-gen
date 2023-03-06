@@ -131,7 +131,6 @@ const SliderList = (props: any) => {
   }, [index, isDragging])
 
   const dispatch = useDispatch()
-
   return (
     <Container
       ref={ref}
@@ -144,18 +143,13 @@ const SliderList = (props: any) => {
     >
       <MenuItem
         onClick={() => {
-          dispatch(setActiveCategory(props.row))
-          props.onClick(index)
+          dispatch(setActiveCategory(props.row)), props.onClick(index)
         }}
         key={children.icon}
         isActive={active}
       >
-        {active}
-        <CommonIconFont
-          type={children.icon}
-          color="var(--neutral-n3)"
-          size={18}
-        />
+        {children.active}
+        <img style={{ width: '18px' }} src={children.attachmentPath} />
         <div>{children.name}</div>
       </MenuItem>
     </Container>
@@ -174,7 +168,11 @@ const Sortable = (props: any) => {
             index={i}
             active={child.active}
             listLength={list.length}
-            onClick={() => props.onClick(i)}
+            onClick={(event: any) => {
+              // event.preventDefault(),
+              // event.stopPropagation(),
+              props.onClick(i)
+            }}
             onMove={(prevIndex: any, nextIndex: any) => {
               const newList = [...list]
               newList.splice(nextIndex, 0, newList.splice(prevIndex, 1)[0])

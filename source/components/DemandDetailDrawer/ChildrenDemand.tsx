@@ -6,7 +6,10 @@ import { Table } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonButton from '../CommonButton'
+import IconFont from '../IconFont'
 import NoData from '../NoData'
+import StateTag from '../StateTag'
+import { PriorityWrap } from '../StyleCommon'
 import { Label } from './style'
 
 interface Props {
@@ -26,35 +29,61 @@ const ChildrenDemand = (props: Props) => {
       title: t('common.demandName'),
       dataIndex: 'name',
       render: (text: string, record: any) => {
-        return <div>21212</div>
+        return (
+          <div>
+            {props.detail.projectPrefix}-{props.detail.prefixKey}
+          </div>
+        )
       },
     },
     {
       title: t('common.demandName'),
       dataIndex: 'name',
       render: (text: string, record: any) => {
-        return <div>21212</div>
+        return <div>{record.name}</div>
       },
     },
     {
-      title: t('common.demandName'),
-      dataIndex: 'name',
-      render: (text: string, record: any) => {
-        return <div>21212</div>
+      title: t('common.priority'),
+      dataIndex: 'priority',
+      render: (text: any, record: any) => {
+        return (
+          <PriorityWrap>
+            <IconFont
+              className="priorityIcon"
+              type={text?.icon}
+              style={{
+                fontSize: 20,
+                color: text?.color,
+              }}
+            />
+            <span>{text?.content_txt || '--'}</span>
+          </PriorityWrap>
+        )
       },
     },
     {
       title: t('common.status'),
       dataIndex: 'status',
-      width: 190,
       render: (text: any, record: any) => {
-        return <div>3333</div>
+        return (
+          <StateTag
+            state={
+              text?.is_start === 1 && text?.is_end === 2
+                ? 1
+                : text?.is_end === 1 && text?.is_start === 2
+                ? 2
+                : text?.is_start === 2 && text?.is_end === 2
+                ? 3
+                : 0
+            }
+          />
+        )
       },
     },
     {
       title: t('common.dealName'),
       dataIndex: 'dealName',
-      width: 150,
       render: (text: any) => {
         return <span>{text?.join(';') || '--'}</span>
       },
@@ -106,7 +135,6 @@ const ChildrenDemand = (props: Props) => {
             pagination={false}
             columns={columnsChild}
             dataSource={dataList?.list}
-            scroll={{ x: 'max-content', y: 259 }}
             tableLayout="auto"
             style={{ borderRadius: 4, overflow: 'hidden' }}
           />
