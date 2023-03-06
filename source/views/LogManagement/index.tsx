@@ -19,6 +19,7 @@ import { BooleanString } from 'cos-js-sdk-v5'
 const Wrap = styled.div`
   height: 100%;
   display: flex;
+  position: relative;
 `
 const Side = styled.div`
   align-self: stretch;

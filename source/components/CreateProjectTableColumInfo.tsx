@@ -135,7 +135,7 @@ export const useDynamicColumns = (state: any) => {
                   onClick={() => state.onClickItem(record)}
                 >
                   {text}
-                  {record.new === 2 && (
+                  {record.new === 1 && (
                     <IconFont
                       style={{
                         marginLeft: '4px',
