@@ -26,21 +26,15 @@ const FormWrap = styled(Form)({
   marginLeft: '24px',
 })
 
-const ViewWrap = styled.div<{ color: string }>(
-  {
-    height: 22,
-    borderRadius: 11,
-    padding: '0px',
-    marginRight: 8,
-    lineHeight: '22px',
-    fontSize: 12,
-    fontWeight: 400,
-  },
-  // ({ color, bgColor }) => ({
-  //   background: bgColor,
-  //   color,
-  // }),
-)
+const ViewWrap = styled.div({
+  height: 22,
+  borderRadius: 11,
+  padding: '0px',
+  marginRight: 8,
+  lineHeight: '22px',
+  fontSize: 12,
+  fontWeight: 400,
+})
 
 interface EditorProps {
   isVisible: boolean
