@@ -1,5 +1,5 @@
 import { Space, Drawer } from 'antd'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import CommonIconFont from '@/components/CommonIconFont'
 import MyDropdown from './MyDropdown'
 import sideLogo from '/newLogo.svg'
@@ -26,6 +26,7 @@ import { getCompanyList, updateCompany } from '@/services/user'
 import CommonModal from '@/components/CommonModal'
 import { useTranslation } from 'react-i18next'
 import ItemDropdown from './ItemDropdown'
+import { setCurrentMenu } from '@store/user'
 
 interface DrawerComponentProps {
   value: boolean
@@ -52,11 +53,14 @@ const DrawerComponent = (props: DrawerComponentProps) => {
     props.onChange(false)
     const navigateUrl =
       item.children?.length > 0 ? item.children[0].url : item.url
-    navigate(navigateUrl)
+    // 如果是日志则默认跳转
+    navigate(item.url === '/LogManagement' ? `${item.url}/Send/1` : navigateUrl)
     const resultMenu = {
       ...item,
       ...{
-        icon: menuIconList?.filter((i: any) => i.key === item.url)[0]?.normal,
+        icon: menuIconList?.filter((i: any) =>
+          String(item.url).includes(i.key),
+        )[0]?.normal,
       },
     }
     dispatch({
@@ -68,7 +72,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
   // 点击跳转后台管理
   const onToAdmin = () => {
     props.onChange(false)
-    navigate('/AdminManagement/TeamManagement')
+    navigate('/AdminManagement/CompanyInfo')
     const resultMenu = menuPermission?.menus?.filter(
       (i: any) => i.url === '/AdminManagement',
     )[0]
@@ -183,17 +187,19 @@ const DrawerComponent = (props: DrawerComponentProps) => {
               .map((i: any) => (
                 <DrawerMenuItem
                   key={i.id}
-                  isActive={currentMenu.id === i.id}
+                  isActive={currentMenu?.id === i.id}
                   onClick={() => onChangeCurrentMenu(i)}
                 >
                   <div className="menuIcon">
                     <CommonIconFont
                       type={
-                        currentMenu.id === i.id
-                          ? menuIconList?.filter((k: any) => k.key === i.url)[0]
-                              ?.active
-                          : menuIconList?.filter((k: any) => k.key === i.url)[0]
-                              ?.normal
+                        currentMenu?.id === i.id
+                          ? menuIconList?.filter((k: any) =>
+                              String(i.url).includes(k.key),
+                            )[0]?.active
+                          : menuIconList?.filter((k: any) =>
+                              String(i.url).includes(k.key),
+                            )[0]?.normal
                       }
                       size={24}
                     />
@@ -229,14 +235,47 @@ const DrawerComponent = (props: DrawerComponentProps) => {
 
 const HeaderLeft = () => {
   const [isVisible, setIsVisible] = useState(false)
-  const { currentMenu, menuIconList } = useSelector(store => store.user)
+  const { currentMenu, menuIconList, menuPermission } = useSelector(
+    store => store.user,
+  )
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const routerPath = useLocation()
 
   // 点击切换二级菜单
   const onClickMenu = (item: any) => {
-    // navigate(item.url)
+    navigate(item.url)
   }
+
+  const getActive = (item: any) => {
+    let state = false
+    if (routerPath.pathname.includes(item.url)) {
+      state = true
+    }
+    if (
+      item.url === '/ProjectManagement/Project' &&
+      routerPath.pathname !== '/ProjectManagement/Mine'
+    ) {
+      state = true
+    }
+    return state
+  }
+
+  useEffect(() => {
+    if (menuPermission.menus?.length) {
+      let resultMenu: any
+      if (location.pathname === '/') {
+        resultMenu = menuPermission?.menus?.filter(
+          (i: any) => i.url === menuPermission.priorityUrl,
+        )[0]
+      } else {
+        resultMenu = menuPermission?.menus?.filter((i: any) =>
+          location.pathname.includes(i.url),
+        )?.[0]
+      }
+      dispatch(setCurrentMenu(resultMenu))
+    }
+  }, [menuPermission])
 
   return (
     <HeaderLeftWrap>
@@ -251,13 +290,14 @@ const HeaderLeft = () => {
         <Space size={8}>
           <CommonIconFont
             type={
-              menuIconList?.filter((i: any) => i.key === currentMenu?.url)?.[0]
-                .normal
+              menuIconList?.filter((i: any) =>
+                String(currentMenu?.url).includes(i.key),
+              )?.[0]?.normal
             }
             size={24}
             color="var(--neutral-n3)"
           />
-          <MenuLabel>{currentMenu.name}</MenuLabel>
+          <MenuLabel>{currentMenu?.name}</MenuLabel>
         </Space>
       </Space>
       {currentMenu?.url === '/ProjectManagement' && (
@@ -267,12 +307,14 @@ const HeaderLeft = () => {
               key={i.id}
               size={8}
               onClick={() => onClickMenu(i)}
-              isActive={String(routerPath.pathname).includes(currentMenu?.url)}
+              isActive={getActive(i)}
             >
-              {i.url === '/ProjectManagement/Project' && (
+              {i.url === '/ProjectManagement/Mine' && (
+                <MyDropdown text={i.name} />
+              )}
+              {i.url !== '/ProjectManagement/Mine' && (
                 <ItemDropdown text={i.name} />
               )}
-              {i.url === '/Mine' && <MyDropdown text={i.name} />}
             </ChildrenMenuItem>
           ))}
         </ChildrenMenu>

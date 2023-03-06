@@ -216,7 +216,8 @@ const DemandWrap = (props: Props) => {
   }
 
   const onClickItem = (item: any) => {
-    openDemandDetail(item, projectId, item.id)
+    const demandIds = dataList?.list?.map((i: any) => i.id)
+    openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id)
   }
 
   const onChangeState = async (item: any) => {

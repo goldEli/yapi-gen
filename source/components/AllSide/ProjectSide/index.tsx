@@ -37,7 +37,6 @@ interface Props {
   activeType: number
   isPermission?: boolean
   onChangeGroup(value: any): void
-  leftWidth: number
 }
 
 const MoreProjectSide = (props: Props) => {

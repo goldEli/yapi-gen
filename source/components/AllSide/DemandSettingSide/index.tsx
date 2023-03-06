@@ -27,7 +27,7 @@ import { setStartUsing } from '@store/category'
 import { getCategoryConfigList } from '@store/category/thunk'
 import { setActiveCategory } from '@store/category/index'
 
-const ProjectDetailSide = (props: { leftWidth: number; onClick(): void }) => {
+const ProjectDetailSide = (props: { onClick(): void }) => {
   const [t] = useTranslation()
   const { startUsing, categoryList, activeCategory } = useSelector(
     store => store.category,

@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next'
 import { OmitText } from '@star-yun/ui'
 import { getCustomNormalValue } from '@/tools'
 import { message, Progress, Tooltip } from 'antd'
+
 // import DemandProgress from '@/components/DemandProgress'
 import TableQuickEdit from './TableQuickEdit'
 import styled from '@emotion/styled'
@@ -26,6 +27,7 @@ import { useSelector } from '@store/index'
 import ChangeStatusPopover from './ChangeStatusPopover'
 import ChangePriorityPopover from './ChangePriorityPopover'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
+import StateTag from './StateTag'
 
 const Wrap = styled.div<{ isEdit?: any }>(
   {
@@ -39,17 +41,7 @@ const Wrap = styled.div<{ isEdit?: any }>(
 
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
-  const { colorList } = useSelector(store => store.project)
   const { userInfo } = useSelector(store => store.user)
-  const [openDemandDetail] = useOpenDemandDetail()
-
-  const onToDetail = (item: any) => {
-    if (item.project?.isPublic !== 1 && !item.project?.isUserMember) {
-      message.warning(t('common.notCheckInfo'))
-    } else {
-      openDemandDetail(item, item.project_id, item.id)
-    }
-  }
 
   const onExamine = () => {
     message.warning(t('newlyAdd.underReview'))
@@ -82,7 +74,7 @@ export const useDynamicColumns = (state: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <ClickWrap
-              onClick={() => onToDetail(record)}
+              onClick={() => state.onClickItem(record)}
               isClose={record.status?.is_end === 1}
             >
               {text}
@@ -125,17 +117,6 @@ export const useDynamicColumns = (state: any) => {
                 }}
                 alt=""
               />
-              {/* <CategoryWrap
-                color={record.categoryColor}
-                bgColor={
-                  colorList?.filter(
-                    (k: any) => k.key === record.categoryColor,
-                  )[0]?.bgColor
-                }
-                style={{ marginLeft: 0 }}
-              >
-                {record.category}
-              </CategoryWrap> */}
             </Tooltip>
             <TableQuickEdit
               type="text"
@@ -151,30 +132,17 @@ export const useDynamicColumns = (state: any) => {
                 <ListNameWrap
                   isName
                   isClose={record.status?.is_end === 1}
-                  onClick={() => onToDetail(record)}
+                  onClick={() => state.onClickItem(record)}
                 >
                   {text}
                   {record.new === 1 && (
-                    <span
+                    <IconFont
                       style={{
-                        position: 'relative',
-                        display: 'inline-block',
-                        left: '1px',
-                        top: '-10px',
-                        padding: '0px 5px',
-                        minWidth: '28px',
-                        height: '20px',
-                        background: '#FF5C5E',
-                        borderRadius: '10px 10px 10px 10px',
-                        color: '#FFFFFF',
-                        textAlign: 'center',
-                        lineHeight: '15px',
-                        fontSize: '12px',
-                        border: '2px solid #FFFFFF',
+                        marginLeft: '4px',
+                        fontSize: '30px',
                       }}
-                    >
-                      {t('p2.new')}
-                    </span>
+                      type="tag"
+                    />
                   )}
                 </ListNameWrap>
               </Tooltip>
@@ -336,6 +304,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="status">{t('common.status')}</NewSort>,
       dataIndex: 'status',
       key: 'status',
+      // eslint-disable-next-line complexity
       render: (text: any, record: any) => {
         return (
           <ChangeStatusPopover
@@ -350,7 +319,7 @@ export const useDynamicColumns = (state: any) => {
             record={record}
             onChangeStatus={(value: any) => state.updateStatus(value, record)}
           >
-            <StyledShape
+            <StateTag
               style={{
                 width: 'fit-content',
                 cursor:
@@ -360,10 +329,16 @@ export const useDynamicColumns = (state: any) => {
                     : 'pointer',
               }}
               onClick={record.isExamine ? onExamine : void 0}
-              color={text?.status.color}
-            >
-              {text?.status.content}
-            </StyledShape>
+              state={
+                record.status?.is_start === 1 && record.status?.is_end === 2
+                  ? 1
+                  : record.status?.is_end === 1 && record.status?.is_start === 2
+                  ? 2
+                  : record.status?.is_start === 2 && record.status?.is_end === 2
+                  ? 3
+                  : 0
+              }
+            />
           </ChangeStatusPopover>
         )
       },

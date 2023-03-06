@@ -69,7 +69,7 @@ const ViewPort = (props: any) => {
 
   return (
     <Dropdown
-      trigger={['click', 'hover']}
+      trigger={['click']}
       menu={{ items, onClick }}
       getPopupContainer={(node: any) => node.parentNode}
       dropdownRender={menu => (

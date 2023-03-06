@@ -1,4 +1,5 @@
 {
+  "log_management": "Log Management",
   "saves_the_current_filter_criteria_display_fields_and_sort_as_a_new_view": "Save the current filter, display field, sort, to a new view",
   "creating_a_view": "Create a View",
   "name_of_view": "View Name",

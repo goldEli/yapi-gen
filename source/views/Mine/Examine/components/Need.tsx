@@ -26,6 +26,7 @@ import { useSelector } from '@store/index'
 import { getVerifyList, getVerifyUserList } from '@/services/mine'
 import InputSearch from '@/components/InputSearch'
 import PaginationBox from '@/components/TablePagination'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -56,11 +57,12 @@ const SearchWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',
-  position: 'relative',
+  // position: 'relative',
 })
 
 const Need = (props: any) => {
   const [t] = useTranslation()
+  const [openDemandDetail] = useOpenDemandDetail()
   const [filterState, setFilterState] = useState(true)
   const [activeTab, setActiveTab] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
@@ -141,12 +143,23 @@ const Need = (props: any) => {
     getList(pageObj, { value, key }, keyword, searchParams)
   }
 
+  const onClickItem = (item: any) => {
+    const demandIds = listData?.list?.map((i: any) => i.demandId)
+    item.id = item.demandId
+    openDemandDetail(
+      { ...item, ...{ demandIds } },
+      item.projectId,
+      item.demandId,
+    )
+  }
+
   const columns = useDynamicColumns({
     orderKey: order?.key,
     order: order?.value,
     onUpdateOrderkey,
     onChangeOperation,
     activeTab,
+    onClickItem,
   })
 
   const selectColum: any = useMemo(() => {
@@ -185,7 +198,13 @@ const Need = (props: any) => {
           onUpdate={onUpdate}
         />
       )}
-      <div style={{ padding: '0 24px', justifyContent: 'space-between' }}>
+      <div
+        style={{
+          padding: '0 24px',
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
         <div style={{ display: 'flex' }}>
           <TabsItem isActive={!activeTab} onClick={() => onChangeTab(0)}>
             <div>{t('newlyAdd.needMineExamine')}</div>
@@ -202,11 +221,14 @@ const Need = (props: any) => {
           <LabNumber isActive={activeTab === 1}>{count?.verify}</LabNumber>
         </div>
         <SearchWrap>
-          <InputSearch
-            placeholder={t('common.pleaseSearchDemand')}
-            onChangeSearch={onPressEnter}
-            leftIcon
-          />
+          <div style={{ position: 'absolute', top: '20px', right: '24px' }}>
+            <InputSearch
+              placeholder={t('common.pleaseSearchDemand')}
+              onChangeSearch={onPressEnter}
+              leftIcon
+            />
+          </div>
+
           <HoverWrap
             onClick={() => setFilterState(!filterState)}
             isActive={!filterState}

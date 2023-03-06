@@ -11,7 +11,7 @@ import DropDownMenu from './DropDownMenu'
 import { useEffect, useState } from 'react'
 import { useSelector } from '@store/index'
 import ViewPort from './ViewPort'
-import { useSearchParams } from 'react-router-dom'
+import { useLocation, useSearchParams } from 'react-router-dom'
 import SetShowField from './SetShowField/indedx'
 
 interface Props {
@@ -32,6 +32,7 @@ const SpaceWrap = styled(Space)({
 
 const OperationGroup = (props: Props) => {
   const [t] = useTranslation()
+  const location = useLocation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -112,7 +113,8 @@ const OperationGroup = (props: Props) => {
   }
   return (
     <SpaceWrap size={8} style={{ marginLeft: 8 }}>
-      <ViewPort pid={projectId} />
+      {location.pathname.includes('Demand') && <ViewPort pid={projectId} />}
+
       <DropDownMenu
         isVisible={isVisible}
         onChangeVisible={setIsVisible}

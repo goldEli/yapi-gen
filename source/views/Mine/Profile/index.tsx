@@ -71,7 +71,7 @@ const titleTextCss = css`
 `
 const StyledWrap = styled.div`
   height: 400px;
-  padding: 16px;
+
   display: flex;
   gap: 17px;
 `
@@ -94,7 +94,6 @@ const Center = styled.div`
 const CenterRight = styled.div`
   box-sizing: border-box;
   padding: 24px;
-  padding-right: 4px;
   flex: 1;
   background: rgba(255, 255, 255, 1);
   border-radius: 6px;
@@ -104,22 +103,26 @@ const InnerWrap = styled.div`
   min-height: 88px;
   background: rgba(255, 255, 255, 1);
   background-blend-mode: normal;
-  border: 1px solid rgba(235, 237, 240, 1);
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   box-sizing: border-box;
-  padding: 16px 24px 16px 24px;
+  padding: 26px 24px 26px 24px;
   border-radius: 6px;
   text-align: center;
+  box-shadow: 0px 0px 7px 1px rgba(0, 0, 0, 0.06);
 `
 
 const TimeLineWrap = styled.div`
+  border-radius: 6px;
   box-sizing: border-box;
   padding: 10px 10px;
-  margin-top: 10px;
+  margin-top: 16px;
   overflow-y: scroll;
   overflow-x: hidden;
-  height: 300px;
+  height: 320px;
+  padding-top: 25px;
+  padding-left: 16px;
+  box-shadow: 0px 0px 7px 1px rgba(0, 0, 0, 0.06);
 `
 const LineItem = styled.div`
   display: flex;
@@ -165,22 +168,42 @@ const Profile = () => {
     })
 
     setGatteData(
+      // eslint-disable-next-line complexity
       res2.list?.map((k: any) => ({
         id: k.id,
         demandText: k.text,
         text: `<div style="display: flex; align-items: center;padding-left: 16px">
-          <span style="height: 20px; line-height: 20px; font-size:12px; padding: 2px 8px; border-radius: 10px; color: ${
-            k.categoryColor
-          }; background: ${
-          colorList?.filter((i: any) => i.key === k.categoryColor)[0]?.bgColor
-        }">#${k.categoryName}#</span>
-          <span style="display:inline-block; width: 100px ;overflow:hidden;white-space: nowrap;text-overflow:ellipsis;margin-left: 8px">${
-            k.text
-          }</span>
+        <img style="height: 18px;width: 18px ;border-radius: 4px;" src="${k.category_attachment}">
+                 <span style="display:inline-block; width: 100px ;overflow:hidden;white-space: nowrap;text-overflow:ellipsis;margin-left: 8px">${k.text}</span>
         </div>`,
         start_date: k.start_date,
         end_date: k.end_date,
-        statusName: `<span style="display: inline-block;white-space: nowrap;text-overflow: ellipsis;max-width: 110px;overflow: hidden; height: 20px; line-height: 16px; font-size:12px; padding: 2px 8px; border-radius: 6px; color: ${k.statusColor}; border: 1px solid ${k.statusColor}">${k.statusName}</span>`,
+        statusName: `<span style="display: inline-block;text-align: center;
+        line-height: 20px;width:50px; white-space: nowrap;text-overflow: ellipsis;max-width: 110px;overflow: hidden; height: 20px; font-size:12px; border-radius: 6px; color: ${
+          k?.is_start === 1 && k?.is_end === 2
+            ? 'var(--neutral-n7)'
+            : k?.is_end === 1 && k?.is_start === 2
+            ? 'var(--neutral-n1-d1)'
+            : k?.is_start === 2 && k?.is_end === 2
+            ? 'var(--neutral-n7)'
+            : 0
+        }; background-color:${
+          k?.is_start === 1 && k?.is_end === 2
+            ? 'var(--auxiliary-b1)'
+            : k?.is_end === 1 && k?.is_start === 2
+            ? 'var(--neutral-n7)'
+            : k?.is_start === 2 && k?.is_end === 2
+            ? 'var(--function-success)'
+            : 0
+        };">${
+          k?.is_start === 1 && k?.is_end === 2
+            ? '待办'
+            : k?.is_end === 1 && k?.is_start === 2
+            ? '已完成'
+            : k?.is_start === 2 && k?.is_end === 2
+            ? '进行中'
+            : 0
+        }</span>`,
         statusTitle: k.statusName,
         parent: k.parent,
         render: k.render,

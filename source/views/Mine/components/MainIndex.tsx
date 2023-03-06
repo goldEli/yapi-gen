@@ -46,18 +46,15 @@ const MainIndex = (props: Props) => {
   }
 
   return (
-    <>
-      <div>{props?.title}</div>
-      <MainWrap>
-        <MineSwiper data={swiperData} onTap={getProjectId} />
-        <CommonNeed
-          id={projectId}
-          title={props?.title}
-          type={props?.type}
-          subTitle={props?.subTitle}
-        />
-      </MainWrap>
-    </>
+    <MainWrap>
+      <MineSwiper data={swiperData} onTap={getProjectId} />
+      <CommonNeed
+        id={projectId}
+        title={props?.title}
+        type={props?.type}
+        subTitle={props?.subTitle}
+      />
+    </MainWrap>
   )
 }
 

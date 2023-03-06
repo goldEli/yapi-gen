@@ -97,8 +97,9 @@ const IterationGrid = (props: Props) => {
     }
   }, [props.data, projectInfoValues])
 
-  const onClickItem = (item: any) => {
-    openDemandDetail(item, projectId, item.id)
+  const onClickItem = (item: any, list: any) => {
+    const demandIds = list?.map((i: any) => i.id)
+    openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id)
   }
 
   return (
@@ -123,7 +124,14 @@ const IterationGrid = (props: Props) => {
                             key={i.id}
                             item={i}
                             indexVal={idx}
-                            onClickItem={() => onClickItem(i)}
+                            onClickItem={() =>
+                              onClickItem(
+                                i,
+                                dataList?.filter(
+                                  (item: any) => item.id === k.id,
+                                )[0]?.list,
+                              )
+                            }
                             onChangeDelete={props?.onDelete}
                             onChangeEdit={props?.onChangeVisible}
                             onUpdate={props?.onUpdate}

@@ -65,7 +65,6 @@ const Main = styled.div<{ left: number }>`
 
 export const Container = () => {
   const location = useLocation()
-
   const dispatch = useDispatch()
   const [isNextVisible, setIsNextVisible] = useState(false)
   const [changeLeft, setChangeLeft] = useState(200)
@@ -132,7 +131,9 @@ export const Container = () => {
               <HeaderRight />
             </HeaderWrap>
             <Content>
-              <Side onChangeLeft={setChangeLeft} />
+              {location.pathname !== '/Situation' && (
+                <Side onChangeLeft={setChangeLeft} />
+              )}
               <Main left={changeLeft}>
                 <Outlet />
               </Main>
@@ -146,7 +147,6 @@ export const Container = () => {
         {userInfo?.company_permissions?.length <= 0 && <NoPermission />}
 
         <CreateAProjectForm />
-
         <CreateIteration />
         <CreateDemand />
         <DemandDetailDrawer />

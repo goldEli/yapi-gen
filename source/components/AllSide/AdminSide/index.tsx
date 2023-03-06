@@ -89,12 +89,12 @@ const MenuStyle = styled(Menu)`
 const IconFontStyle = styled(IconFont)`
   font-size: 18px !important;
 `
-const AdminSide = (props: any) => {
+const AdminSide = () => {
   const navigate = useNavigate()
   const { currentMenu, userInfo } = useSelector(store => store.user)
 
   const currentMenuMap = fromPairs(
-    currentMenu.children.map((i: any) => [i.url, i]),
+    currentMenu.children?.map((i: any) => [i.url, i]),
   )
   const onFilter = (list: any[]) => {
     return list.filter(i => (i.path ? currentMenuMap[i.path] : true))

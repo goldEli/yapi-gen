@@ -329,7 +329,7 @@ const ProjectMember = () => {
 
   const onToDetail = (row: any) => {
     if (row.id === userInfo.id) {
-      navigate('/Mine')
+      navigate('/ProjectManagement/Mine/profile')
     } else {
       const params = encryptPhp(
         JSON.stringify({ id: projectId, isMember: true, userId: row.id }),

@@ -510,6 +510,8 @@ const ListNameWrap = styled.div<{
   maxWidth?: any
 }>(
   {
+    display: 'flex',
+    alignItems: 'center',
     padding: '10px 0px',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
@@ -657,10 +659,12 @@ const StepBoxWrap = styled.div<{ active?: boolean }>(
 const SecondTitle = styled.span`
   padding-left: 8px;
   border-left: 3px solid #2877ff;
-  color: rgba(0, 0, 0, 1);
+  height: 24px;
   font-size: 16px;
-  font-weight: bold;
-  line-height: 20px;
+  font-family: PingFang SC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #323233;
+  line-height: 24px;
 `
 
 const TabsItem = styled.div<{ isActive: boolean }>(

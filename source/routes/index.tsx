@@ -32,36 +32,6 @@ const routes = [
         element: lazy(() => import('@/views/Situation')),
       },
       {
-        path: '/Mine',
-        element: lazy(() => import('@/views/Mine')),
-        children: [
-          {
-            path: 'Agenda',
-            element: lazy(() => import('@/views/Mine/Agenda')),
-          },
-          {
-            path: 'Carbon',
-            element: lazy(() => import('@/views/Mine/Carbon')),
-          },
-          {
-            path: 'Create',
-            element: lazy(() => import('@/views/Mine/Create')),
-          },
-          {
-            path: 'Finished',
-            element: lazy(() => import('@/views/Mine/Finished')),
-          },
-          {
-            path: 'Examine',
-            element: lazy(() => import('@/views/Mine/Examine')),
-          },
-          {
-            path: 'Profile',
-            element: lazy(() => import('@/views/Mine/Profile')),
-          },
-        ],
-      },
-      {
         path: '/ProjectManagement',
         element: lazy(() => import('@/views/ProjectManagement')),
         children: [
@@ -69,7 +39,36 @@ const routes = [
             path: 'Project',
             element: lazy(() => import('@/views/Project')),
           },
-
+          {
+            path: 'Mine',
+            element: lazy(() => import('@/views/Mine')),
+            children: [
+              {
+                path: 'Agenda',
+                element: lazy(() => import('@/views/Mine/Agenda')),
+              },
+              {
+                path: 'Carbon',
+                element: lazy(() => import('@/views/Mine/Carbon')),
+              },
+              {
+                path: 'Create',
+                element: lazy(() => import('@/views/Mine/Create')),
+              },
+              {
+                path: 'Finished',
+                element: lazy(() => import('@/views/Mine/Finished')),
+              },
+              {
+                path: 'Examine',
+                element: lazy(() => import('@/views/Mine/Examine')),
+              },
+              {
+                path: 'Profile',
+                element: lazy(() => import('@/views/Mine/Profile')),
+              },
+            ],
+          },
           {
             path: 'Demand',
             element: lazy(() => import('@/views/Demand')),

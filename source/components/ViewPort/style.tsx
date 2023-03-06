@@ -2,6 +2,7 @@ import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 
 export const ViewPortWrap = styled.div`
+  cursor: pointer;
   height: 32px;
   min-width: 120px;
   transition: all 0.3s;
@@ -25,6 +26,7 @@ export const Name = styled.div`
 `
 
 export const dropdowncontent = css`
+  cursor: pointer;
   background: #fff;
   box-shadow: 0 3px 6px -4px rgb(0 0 0 / 12%), 0 6px 16px 0 rgb(0 0 0 / 8%),
     0 9px 28px 8px rgb(0 0 0 / 5%);

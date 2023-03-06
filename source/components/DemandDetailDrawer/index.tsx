@@ -103,6 +103,7 @@ const DemandDetailDrawer = () => {
   // 获取需求详情
   const getDemandDetail = async (id?: any) => {
     setDrawerInfo({})
+    setShowState(normalState)
     const info = await getDemandInfo({
       projectId:
         demandDetailDrawerProps.project_id ?? demandDetailDrawerProps.projectId,
@@ -120,7 +121,9 @@ const DemandDetailDrawer = () => {
     setDrawerInfo(info)
     // 获取当前需求的下标， 用作上一下一切换
     setCurrentIndex(
-      demandDetailDrawerProps?.demandIds.findIndex((i: any) => i === info.id),
+      (demandDetailDrawerProps?.demandIds || []).findIndex(
+        (i: any) => i === info.id,
+      ),
     )
   }
 

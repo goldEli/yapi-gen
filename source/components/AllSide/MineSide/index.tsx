@@ -1,4 +1,5 @@
 import CommonButton from '@/components/CommonButton'
+import IconFont from '@/components/IconFont'
 import { getIsPermission } from '@/tools'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
@@ -19,7 +20,6 @@ const MenuItem = styled.div<{ isActive?: boolean }>`
 `
 const Menu = styled.div`
   width: 100%;
-  margin-top: 24px;
 `
 
 const MineSide = () => {
@@ -37,7 +37,7 @@ const MineSide = () => {
     {
       id: 1,
       name: t('mine.mineSurvey'),
-      path: '/Mine/Profile',
+      path: '/ProjectManagement/Mine/Profile',
       isPermission: getIsPermission(
         userInfo?.company_permissions,
         'b/user/overview',
@@ -46,7 +46,7 @@ const MineSide = () => {
     {
       id: 2,
       name: t('mine.mineNeedDeal'),
-      path: '/Mine/Carbon',
+      path: '/ProjectManagement/Mine/Carbon',
       isPermission: getIsPermission(
         userInfo?.company_permissions,
         'b/user/abeyance/story',
@@ -55,7 +55,7 @@ const MineSide = () => {
     {
       id: 3,
       name: t('mine.mineCreate'),
-      path: '/Mine/Create',
+      path: '/ProjectManagement/Mine/Create',
       isPermission: getIsPermission(
         userInfo?.company_permissions,
         'b/user/create/story',
@@ -64,7 +64,7 @@ const MineSide = () => {
     {
       id: 4,
       name: t('mine.mineFinish'),
-      path: '/Mine/Finished',
+      path: '/ProjectManagement/Mine/Finished',
       isPermission: getIsPermission(
         userInfo?.company_permissions,
         'b/user/finish/story',
@@ -73,7 +73,7 @@ const MineSide = () => {
     {
       id: 5,
       name: t('mine.copyMine'),
-      path: '/Mine/Agenda',
+      path: '/ProjectManagement/Mine/Agenda',
       isPermission: getIsPermission(
         userInfo?.company_permissions,
         'b/user/copysend/story',
@@ -82,7 +82,7 @@ const MineSide = () => {
     {
       id: 6,
       name: t('newlyAdd.mineExamine'),
-      path: '/Mine/Examine',
+      path: '/ProjectManagement/Mine/Examine',
       isPermission: false,
     },
   ]
@@ -93,9 +93,38 @@ const MineSide = () => {
           userInfo?.company_permissions,
           'b/user/fast/create',
         ) ? null : ( */}
-      <CommonButton icon="plus" iconPlacement="left" type="primary">
+      {/* <CommonButton icon="plus" iconPlacement="left" type="primary">
         {t('mine.quickCreate')}
-      </CommonButton>
+      </CommonButton> */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          height: '24px',
+          padding: '24px',
+          margin: '10px 0',
+          cursor: 'pointer',
+        }}
+      >
+        <span
+          style={{
+            height: '22px',
+            fontSize: '14px',
+            fontWeight: 500,
+            color: '#323233',
+            lineHeight: '22px',
+          }}
+        >
+          {t('container.mine')}
+        </span>
+        <IconFont
+          style={{
+            fontSize: '16px',
+          }}
+          type="plus"
+        />
+      </div>
       {/* )} */}
       <Menu>
         {menuList.map(item => (

@@ -22,6 +22,8 @@ import { DailyContext } from '.'
 import RangePicker from '@/components/RangePicker'
 import InputSearch from '@/components/InputSearch'
 import PaginationBox from '@/components/TablePagination'
+import { useDispatch, useSelector } from '@store/index'
+import { changeRest } from '@store/log'
 
 const srr = [undefined, undefined, 1, 2, 3]
 const Send = () => {
@@ -46,6 +48,8 @@ const Send = () => {
   const context: any = useContext(DailyContext)
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
+  const dispatch = useDispatch()
+  const isRest = useSelector(state => state.log.isRest)
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
       const currentHeight = dataWrapRef.current.clientHeight
@@ -308,6 +312,7 @@ const Send = () => {
     setChangeIds(res.list.map((item: any) => item.id))
     setListData(res.list)
     setTotal(res.total)
+    dispatch(changeRest(false))
   }
 
   const init2 = async () => {
@@ -354,7 +359,7 @@ const Send = () => {
 
   useEffect(() => {
     init()
-  }, [orderKey, order, pageObj, keyword, created_at])
+  }, [orderKey, order, pageObj, keyword, created_at, isRest])
 
   useEffect(() => {
     init2()
@@ -391,11 +396,19 @@ const Send = () => {
             onChange={onChangeTime}
           />
         </SelectWrapBedeck>
-        <InputSearch
-          placeholder={t('p2.search')}
-          onChangeSearch={onPressEnter}
-          leftIcon
-        />
+        <div
+          style={{
+            position: 'absolute',
+            top: '20px',
+            right: '20px',
+          }}
+        >
+          <InputSearch
+            placeholder={t('p2.search')}
+            onChangeSearch={onPressEnter}
+            leftIcon
+          />
+        </div>
       </div>
       <div style={{ height: `calc(100% - ${50}px)` }}>
         <div
