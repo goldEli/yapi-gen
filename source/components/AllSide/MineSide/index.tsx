@@ -1,4 +1,5 @@
 import CommonButton from '@/components/CommonButton'
+import IconFont from '@/components/IconFont'
 import { getIsPermission } from '@/tools'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
@@ -19,7 +20,6 @@ const MenuItem = styled.div<{ isActive?: boolean }>`
 `
 const Menu = styled.div`
   width: 100%;
-  margin-top: 24px;
 `
 
 const MineSide = () => {
@@ -93,9 +93,38 @@ const MineSide = () => {
           userInfo?.company_permissions,
           'b/user/fast/create',
         ) ? null : ( */}
-      <CommonButton icon="plus" iconPlacement="left" type="primary">
+      {/* <CommonButton icon="plus" iconPlacement="left" type="primary">
         {t('mine.quickCreate')}
-      </CommonButton>
+      </CommonButton> */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          height: '24px',
+          padding: '24px',
+          margin: '10px 0',
+          cursor: 'pointer',
+        }}
+      >
+        <span
+          style={{
+            height: '22px',
+            fontSize: '14px',
+            fontWeight: 500,
+            color: '#323233',
+            lineHeight: '22px',
+          }}
+        >
+          {t('container.mine')}
+        </span>
+        <IconFont
+          style={{
+            fontSize: '16px',
+          }}
+          type="plus"
+        />
+      </div>
       {/* )} */}
       <Menu>
         {menuList.map(item => (

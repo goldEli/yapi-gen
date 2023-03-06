@@ -388,11 +388,19 @@ const Get = () => {
           </SelectWrapBedeck>
           <Checkbox onChange={onChange}>{t('p2.OnlySee')}</Checkbox>
         </Space>
-        <InputSearch
-          placeholder={t('p2.search')}
-          onChangeSearch={onPressEnter}
-          leftIcon
-        />
+        <div
+          style={{
+            position: 'absolute',
+            top: '20px',
+            right: '20px',
+          }}
+        >
+          <InputSearch
+            placeholder={t('p2.search')}
+            onChangeSearch={onPressEnter}
+            leftIcon
+          />
+        </div>
       </div>
       <div style={{ height: `calc(100% - ${50}px)` }}>
         <div

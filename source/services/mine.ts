@@ -412,6 +412,7 @@ export const getMineGatte: any = async (params: any) => {
   return {
     pager: response.data.pager,
     list: response.data.list?.map((k: any, index: any) => ({
+      ...k,
       id: k.id || new Date().getTime() + index * 11,
       text: k.name || '',
       start_date: k.start_at,
