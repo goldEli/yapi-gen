@@ -98,9 +98,9 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
   }
 
   useEffect(() => {
+    getList()
     getInfo()
     getProjectInfoValuesData()
-    getList()
   }, [])
   //   返回上一页
   const onGoBack = () => {
@@ -116,10 +116,24 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
   }
   useEffect(() => {
     setTabsActive(startUsing ? 0 : 1)
-    if (list?.length >= 1) {
-      getCategoryConfig(list)
+    let dataItem = null
+    if (startUsing) {
+      dataItem = categoryList
+        ?.filter((el: any) => el.status === 1)
+        .map((el: any, index: number) => ({
+          ...el,
+          active: index === 0 ? true : false,
+        }))
+    } else {
+      dataItem = categoryList
+        ?.filter((el: any) => el.status !== 1)
+        .map((el: any, index: number) => ({
+          ...el,
+          active: index === 0 ? true : false,
+        }))
     }
-  }, [startUsing])
+    getCategoryConfig(dataItem)
+  }, [startUsing, categoryList])
   // 切换tab
   const getTabsActive = async (index: any) => {
     dispatch(setStartUsing(index === 0 ? true : false))
@@ -167,11 +181,11 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
           <Dragging
             list={list}
             setList={setList}
-            onClick={(i: number) => {
+            onClick={(i: number, child: any) => {
               dispatch(
                 getCategoryConfigList({
                   projectId: projectId,
-                  categoryId: activeCategory.id,
+                  categoryId: child.id,
                 }),
               ),
                 setList(

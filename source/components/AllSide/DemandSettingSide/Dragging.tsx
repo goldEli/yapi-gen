@@ -159,7 +159,14 @@ const SliderList = (props: any) => {
 const Sortable = (props: any) => {
   const { list, setList } = props
   return (
-    <div style={{ height: '87%', overflow: 'auto' }}>
+    <div
+      style={{
+        width: '100%',
+        height: '87%',
+        overflowY: 'auto',
+        overflowX: 'hidden',
+      }}
+    >
       {list?.map((child: any, i: number) => (
         <SliderList
           row={child}
@@ -168,7 +175,7 @@ const Sortable = (props: any) => {
           active={child.active}
           listLength={list.length}
           onClick={() => {
-            props.onClick(i)
+            props.onClick(i, child)
           }}
           onMove={(prevIndex: any, nextIndex: any) => {
             const newList = [...list]
