@@ -345,42 +345,35 @@ const StaffManagement = () => {
     //   permission={userInfo?.company_permissions}
     // >
     <div>
-      <div>{t('staff.companyStaff')}</div>
-      <div style={{ height: 'calc(100% - 64px)', overflow: 'auto' }}>
-        <div>
-          <div style={{ display: 'flex', marginLeft: 24 }}>
-            <InputSearch
-              width={292}
-              placeholder={t('staff.pleaseKey')}
-              onChangeSearch={onPressEnter}
-            />
-          </div>
-          <div
-            style={{
-              marginRight: '12px',
-              display: 'flex',
-              alignItems: 'center',
-            }}
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div>{t('staff.companyStaff')}</div>
+
+        <div style={{ display: 'flex', gap: '24px' }}>
+          <InputSearch
+            width={292}
+            placeholder={t('staff.pleaseKey')}
+            onChangeSearch={onPressEnter}
+          />
+
+          <Reset onClick={rest}>{t('staff.refresh')}</Reset>
+
+          <HoverWrap onClick={onChangeFilter} isActive={isShow}>
+            <IconFont className="iconMain" type="filter" />
+            <span className="label">{t('common.search')}</span>
+          </HoverWrap>
+          <DividerWrap type="vertical" />
+          <DropDownMenu
+            menu={<SetShowField notView onChangeFieldVisible={showModal} />}
+            icon="settings"
+            isVisible={isVisibleFields}
+            onChangeVisible={setIsVisibleFields}
+            isActive={isModalVisible}
           >
-            <Reset onClick={rest}>{t('staff.refresh')}</Reset>
-            <Space size={8}>
-              <HoverWrap onClick={onChangeFilter} isActive={isShow}>
-                <IconFont className="iconMain" type="filter" />
-                <span className="label">{t('common.search')}</span>
-              </HoverWrap>
-              <DividerWrap type="vertical" />
-              <DropDownMenu
-                menu={<SetShowField notView onChangeFieldVisible={showModal} />}
-                icon="settings"
-                isVisible={isVisibleFields}
-                onChangeVisible={setIsVisibleFields}
-                isActive={isModalVisible}
-              >
-                <div>{t('common.tableFieldSet')}</div>
-              </DropDownMenu>
-            </Space>
-          </div>
+            <div>{t('common.tableFieldSet')}</div>
+          </DropDownMenu>
         </div>
+      </div>
+      <div style={{ height: 'calc(100% - 64px)', overflow: 'auto' }}>
         {isShow ? <SearchList onSearch={onSearch} /> : null}
         <div className={tableWrapP} style={{ height: `calc(100% - 52px)` }}>
           <div
