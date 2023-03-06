@@ -32,8 +32,8 @@ const SliderList = (props: any) => {
   let startX = 0
   // 传值位置
   const onDragStart = (ev: any) => {
-    children.dragtype = 'add'
-    ev.dataTransfer.setData('item', JSON.stringify(children))
+    const obj = { ...children, dragtype: 'add' }
+    ev.dataTransfer.setData('item', JSON.stringify(obj))
   }
   const onDrag = (ev: any) => {
     const el: any = ref.current

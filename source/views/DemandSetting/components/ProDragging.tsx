@@ -39,7 +39,7 @@ const SearchItemList = styled.div`
 `
 
 const SliderList = (props: any) => {
-  const { children } = props
+  const { children, index } = props
   const [top, setTop] = useState(0)
   const [left, setLeft] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
@@ -50,8 +50,8 @@ const SliderList = (props: any) => {
   let startY = 0
   let startX = 0
   const onDragStart = (ev: any) => {
-    children.dragtype = 'edit'
-    ev.dataTransfer.setData('item', JSON.stringify(children))
+    const obj = { ...children, dragtype: 'edit' }
+    ev.dataTransfer.setData('item', JSON.stringify(obj))
   }
   const onDrag = (ev: any) => {
     const el: any = ref.current
@@ -128,6 +128,7 @@ const Sortable = (props: any) => {
     <div>
       {list?.map((child: any, i: number) => (
         <SliderList
+          onDrag={(ev: any) => props.onDrag(ev, i)}
           onUpdate={() => props.onUpdate()}
           onChangeTeam={(row: any) => props.onChangeTeam(row, child)}
           onChange={(item: any) => props.onChange(item)}

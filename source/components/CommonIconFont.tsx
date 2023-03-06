@@ -3,7 +3,7 @@
 import IconFont from './IconFont'
 
 interface IconProps {
-  type: string
+  type: any
   color?: string
   size?: number
   onClick?(): void
