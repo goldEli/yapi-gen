@@ -149,6 +149,17 @@ const Gantt = (props: Props) => {
         label: t('common.title'),
         width: '280',
       },
+
+      {
+        name: 'start_date',
+        label: t('common.status'),
+        width: 140,
+      },
+      {
+        name: 'end_date',
+        label: t('common.status'),
+        width: 140,
+      },
       {
         name: 'statusName',
         label: t('common.status'),

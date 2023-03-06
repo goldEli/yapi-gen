@@ -497,7 +497,13 @@ const CommonNeed = (props: any) => {
 
   return (
     <>
-      <div style={{ padding: '0 24px', justifyContent: 'space-between' }}>
+      <div
+        style={{
+          padding: '0 24px',
+          justifyContent: 'space-between',
+          display: 'flex',
+        }}
+      >
         <div
           style={{
             display: 'flex',
@@ -510,7 +516,7 @@ const CommonNeed = (props: any) => {
           <LabNumber isActive>{total ?? 0}</LabNumber>
         </div>
         <SearchWrap>
-          <div style={{ marginRight: 16 }}>
+          <div style={{ position: 'absolute', top: '20px', right: '24px' }}>
             <InputSearch
               placeholder={t('common.pleaseSearchDemand')}
               onChangeSearch={onPressEnter}
