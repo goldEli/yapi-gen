@@ -48,7 +48,7 @@ const ChildrenDemand = (props: Props) => {
       dataIndex: 'priority',
       render: (text: any, record: any) => {
         return (
-          <PriorityWrap>
+          <PriorityWrap notEdit>
             <IconFont
               className="priorityIcon"
               type={text?.icon}

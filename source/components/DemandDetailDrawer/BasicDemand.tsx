@@ -21,7 +21,6 @@ import {
   AddWrap,
   CanOperation,
   IconFontWrapEdit,
-  PriorityWrap,
   SliderWrap,
 } from '../StyleCommon'
 import TableQuickEdit from '../TableQuickEdit'
