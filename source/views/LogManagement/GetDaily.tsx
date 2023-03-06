@@ -168,7 +168,7 @@ const Get = () => {
               style={{
                 width: '8px',
                 height: '8px',
-                background: record.status === 1 ? '#43BA9A' : 'red',
+                background: record.status === 1 ? '#D5D6D9' : 'red',
                 display: 'inline-block',
                 borderRadius: '50%',
                 marginRight: '8px',

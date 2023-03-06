@@ -15,6 +15,8 @@ import { getReportDetail } from '@/services/daily'
 import { t } from 'i18next'
 import RichEditor from '@/components/RichEditor'
 import UploadAttach from '@/components/UploadAttach'
+import { useDispatch } from '@store/index'
+import { changeRest } from '@store/log'
 
 export const LabelTitle = (props: any) => {
   return (
@@ -50,6 +52,7 @@ const WhiteDay = (props: any) => {
   const [colorState, setColorState] = useState<any>(false)
   const [title, setTitle] = useState<any>([])
   const leftDom: any = useRef<HTMLInputElement>(null)
+  const dispatch = useDispatch()
 
   const close = () => {
     form.resetFields()
@@ -63,6 +66,7 @@ const WhiteDay = (props: any) => {
     const data: any = await form.validateFields()
 
     await props.editConfirm(data, props.editId)
+    dispatch(changeRest(true))
     close()
   }
 
