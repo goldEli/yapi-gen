@@ -1,7 +1,7 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { Input } from 'antd'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CreatDragging from './CreatDragging'
 import { getProjectFieIds } from '@store/category/thunk'
@@ -197,7 +197,10 @@ const CreateField = () => {
               style={{
                 marginLeft: '4px',
                 display: 'inline-block',
-                width: '111px',
+                width: search ? '111px' : '160px',
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
+                textOverflow: 'ellipsis',
               }}
             >
               项目已有字段 ({payloadDataList?.length})
