@@ -270,9 +270,7 @@ const SliderList = (props: any) => {
                 />
               </IconBox>
               <ListMsg>
-                <div>
-                  {child?.title}=={child?.fieldContent?.attr}
-                </div>
+                <div>{child?.title}</div>
                 <div>
                   {
                     option.find(item => child?.fieldContent?.attr === item.type)

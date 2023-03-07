@@ -193,7 +193,13 @@ const CreateField = () => {
                 color="var(--neutral-n3)"
               />
             )}
-            <span style={{ marginLeft: '4px' }}>
+            <span
+              style={{
+                marginLeft: '4px',
+                display: 'inline-block',
+                width: '111px',
+              }}
+            >
               项目已有字段 ({payloadDataList?.length})
             </span>
           </div>

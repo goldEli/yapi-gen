@@ -34,6 +34,10 @@ const SliderList = (props: any) => {
   const onDragStart = (ev: any) => {
     const obj = { ...children, dragtype: 'add' }
     ev.dataTransfer.setData('item', JSON.stringify(obj))
+    const imgDom = document.createElement('div')
+    //创建一个图像并且使用它作为拖动图像
+    document.body.appendChild(imgDom)
+    ev.dataTransfer.setDragImage(imgDom, 10, 10)
   }
   const onDrag = (ev: any) => {
     const el: any = ref.current
