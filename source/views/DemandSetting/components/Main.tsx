@@ -59,11 +59,15 @@ const Main = (props: any) => {
     const { state, child } = delItem
     if (state === 1) {
       setGetCategoryConfigF(
-        getCategoryConfigF.filter((item: any) => item.id !== child.id),
+        getCategoryConfigF.filter(
+          (item: any) => item.storyId !== child.storyId,
+        ),
       )
     } else {
       setGetCategoryConfigT(
-        getCategoryConfigT.filter((item: any) => item.id !== child.id),
+        getCategoryConfigT.filter(
+          (item: any) => item.storyId !== child.storyId,
+        ),
       )
     }
     setIsVisible(false)
