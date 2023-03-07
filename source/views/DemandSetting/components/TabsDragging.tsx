@@ -266,7 +266,7 @@ const SliderList = (props: any) => {
                       ?.icon
                   }
                   size={24}
-                  color="var(--neutral-n3)"
+                  color="var(--neutral-n1-d1)"
                 />
               </IconBox>
               <ListMsg>
@@ -296,7 +296,7 @@ const SliderList = (props: any) => {
                     ?.icon
                 }
                 size={24}
-                color="var(--neutral-n3)"
+                color="var(--neutral-n1-d1)"
               />
             </IconBox>
             <ListMsg>

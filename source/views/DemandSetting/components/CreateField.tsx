@@ -1,7 +1,7 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { Input } from 'antd'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CreatDragging from './CreatDragging'
 import { getProjectFieIds } from '@store/category/thunk'
@@ -162,8 +162,9 @@ const CreateField = () => {
   }, [getCategoryConfigArray])
   return (
     <CreateFieldWrap>
-      <TitleStyle onClick={() => setCreateIcon(!createIcon)}>
+      <TitleStyle>
         <CommonIconFont
+          onClick={() => setCreateIcon(!createIcon)}
           type={createIcon ? 'down-icon' : 'right-icon'}
           size={14}
           color="var(--neutral-n3)"
@@ -183,18 +184,25 @@ const CreateField = () => {
 
       <BottomList>
         <BottomTitleStyle>
-          <div
-            style={{ display: 'flex', alignItems: 'center' }}
-            onClick={() => setSearchIcon(!searchIcon)}
-          >
+          <div style={{ display: 'flex', alignItems: 'center' }}>
             {searchDataList?.length >= 1 && (
               <CommonIconFont
+                onClick={() => setSearchIcon(!searchIcon)}
                 type={searchIcon ? 'down-icon' : 'right-icon'}
                 size={14}
                 color="var(--neutral-n3)"
               />
             )}
-            <span style={{ marginLeft: '4px' }}>
+            <span
+              style={{
+                marginLeft: '4px',
+                display: 'inline-block',
+                width: search ? '111px' : '160px',
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
+                textOverflow: 'ellipsis',
+              }}
+            >
               项目已有字段 ({payloadDataList?.length})
             </span>
           </div>
