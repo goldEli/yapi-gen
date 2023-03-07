@@ -262,7 +262,13 @@ const MoreProjectSide = (props: Props) => {
         </MenuBox>
 
         <GroupBox>
-          <div>{t('version2.projectGroup')}</div>
+          <div
+            style={{
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {t('version2.projectGroup')}
+          </div>
           <CloseWrap
             width={24}
             height={24}

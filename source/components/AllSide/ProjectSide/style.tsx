@@ -191,6 +191,7 @@ export const TitleBox = styled.div<{ idx?: boolean; isSpace?: any }>(
     alignItems: 'center',
     width: '100%',
     boxSizing: 'border-box',
+    whiteSpace: 'nowrap',
   },
   ({ idx, isSpace }) => ({
     '&:hover': {

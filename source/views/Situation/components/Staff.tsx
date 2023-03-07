@@ -10,6 +10,7 @@ import {
   TextBlueWrap,
   TextWrap,
   title1Css,
+  title1Css1,
   title2Css,
   titleCss,
 } from '@/components/StyleCommon'
@@ -57,7 +58,7 @@ const Staff = (props: any) => {
       <TextWrap>
         <TextBlueWrap>
           <ChartsItem>
-            <span className={title1Css}>{data?.total ?? 0}</span>
+            <span className={title1Css1}>{data?.total ?? 0}</span>
             <span className={title2Css}>{t('situation.companyStaff')}</span>
           </ChartsItem>
         </TextBlueWrap>
