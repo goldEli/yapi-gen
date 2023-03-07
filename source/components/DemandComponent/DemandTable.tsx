@@ -32,17 +32,12 @@ import FloatBatch from '../FloatBatch'
 import { DemandOperationDropdownMenu } from './DemandOperationDropdownMenu'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
+import ResizeTable from '../ResizeTable'
 
 const Content = styled.div({
   padding: '20px 12px 0 8px',
   background: 'var(--neutral-white-d1)',
   height: 'calc(100% - 32px)',
-})
-
-const DataWrap = styled.div({
-  background: 'white',
-  overflowX: 'auto',
-  height: 'calc(100% - 64px)',
 })
 
 interface Props {
@@ -82,7 +77,6 @@ const DemandTable = (props: Props) => {
   const batchDom: any = createRef()
   // 勾选的id集合
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
-  const dataWrapRef = useRef<HTMLDivElement>(null)
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
   const dispatch = useDispatch()
   const [openDemandDetail] = useOpenDemandDetail()
@@ -226,6 +220,8 @@ const DemandTable = (props: Props) => {
   }
 
   const updateOrderkey = (key: any, val: any) => {
+    setSelectedRowKeys([])
+    onOperationCheckbox('remove')
     setOrderKey(key)
     setOrder(val)
     props.onChangeOrder?.({ value: val === 2 ? 'desc' : 'asc', key })
@@ -355,7 +351,6 @@ const DemandTable = (props: Props) => {
 
     const arrList = [
       {
-        width: 40,
         render: (text: any, record: any) => {
           return (
             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -390,26 +385,6 @@ const DemandTable = (props: Props) => {
     return [...arrList, ...newList]
   }, [titleList, titleList2, titleList3, columns, selectedRowKeys])
 
-  const [dataWrapHeight, setDataWrapHeight] = useState(0)
-  const [tableWrapHeight, setTableWrapHeight] = useState(0)
-
-  useLayoutEffect(() => {
-    if (dataWrapRef.current) {
-      const currentHeight = dataWrapRef.current.clientHeight
-      if (currentHeight !== dataWrapHeight) {
-        setDataWrapHeight(currentHeight)
-      }
-
-      const tableBody = dataWrapRef.current.querySelector('.ant-table-tbody')
-      if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
-        setTableWrapHeight(tableBody.clientHeight)
-      }
-    }
-  }, [props.data?.list])
-
-  const tableY =
-    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
-
   // 需求勾选
   const onSelectChange = (record: any, selected: any) => {
     const resultKeys = selected
@@ -441,54 +416,43 @@ const DemandTable = (props: Props) => {
 
   return (
     <Content>
-      <DataWrap ref={dataWrapRef}>
-        <Spin spinning={props?.isSpinning}>
-          {!!props.data?.list &&
-            (props.data?.list?.length > 0 ? (
-              <TableStyleBox
-                rowKey="id"
-                columns={selectColum}
-                dataSource={props.data?.list}
-                pagination={false}
-                scroll={{
-                  x: 'max-content',
-                  y: tableY,
-                }}
-                showSorterTooltip={false}
-                tableLayout="auto"
-                rowSelection={
-                  !hasBatch &&
-                  ({
-                    selectedRowKeys: selectedRowKeys?.map((i: any) => i.id),
-                    onSelect: (record: any, selected: any) =>
-                      onSelectChange(record, selected),
-                    onSelectAll,
-                  } as any)
-                }
-              />
-            ) : (
-              <NoData
-                subText={hasCreate ? '' : t('version2.noDataCreateDemandList')}
-                haveFilter={filterKeys?.length > 0}
-              >
-                {!hasCreate && (
-                  <SecondButton onClick={onClick} style={{ marginTop: 24 }}>
-                    {t('common.createDemand')}
-                  </SecondButton>
-                )}
-              </NoData>
-            ))}
-        </Spin>
-        {!hasBatch && (
-          <FloatBatch
-            isVisible={selectedRowKeys.length > 0}
-            onClose={() => onSelectAll(false)}
-            selectRows={selectedRowKeys}
-            onUpdate={props.onUpdate}
-            onRef={batchDom}
-          />
-        )}
-      </DataWrap>
+      <ResizeTable
+        isSpinning={props.isSpinning}
+        dataWrapNormalHeight="calc(100% - 64px)"
+        col={selectColum}
+        dataSource={props.data?.list}
+        rowSelection={
+          !hasBatch &&
+          ({
+            selectedRowKeys: selectedRowKeys?.map((i: any) => i.id),
+            onSelect: (record: any, selected: any) =>
+              onSelectChange(record, selected),
+            onSelectAll,
+          } as any)
+        }
+        noData={
+          <NoData
+            subText={hasCreate ? '' : t('version2.noDataCreateDemandList')}
+            haveFilter={filterKeys?.length > 0}
+          >
+            {!hasCreate && (
+              <SecondButton onClick={onClick} style={{ marginTop: 24 }}>
+                {t('common.createDemand')}
+              </SecondButton>
+            )}
+          </NoData>
+        }
+      />
+
+      {!hasBatch && (
+        <FloatBatch
+          isVisible={selectedRowKeys.length > 0}
+          onClose={() => onSelectAll(false)}
+          selectRows={selectedRowKeys}
+          onUpdate={props.onUpdate}
+          onRef={batchDom}
+        />
+      )}
 
       <PaginationBox
         currentPage={props.data?.currentPage}

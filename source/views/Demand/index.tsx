@@ -18,7 +18,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
 import { Space, Button, message, Popover, Form, Select } from 'antd'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import { getIsPermission, getParamsData } from '@/tools'
+import { copyLink, getIsPermission, getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
 import { encryptPhp } from '@/tools/cryptoPhp'
@@ -48,6 +48,7 @@ import { onTapSearchChoose } from '@store/view'
 import { changeColorText } from '@store/color-text'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
 import StateTag from '@/components/StateTag'
+import CommonButton from '@/components/CommonButton'
 
 const Wrap = styled.div`
   height: 100%;
@@ -60,8 +61,9 @@ const DemandInfoWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  height: 64,
+  height: 32,
   background: 'white',
+  margin: '20px 0 6px 0',
 })
 
 const NameWrap = styled.div({
@@ -69,16 +71,16 @@ const NameWrap = styled.div({
   alignItems: 'center',
   '.demandName': {
     fontSize: 16,
-    fontWeight: 'bold',
     color: 'black',
     marginRight: 8,
+    fontFamily: 'SiYuanMedium',
   },
 })
 
 const ContentWrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  height: 'calc(100% - 64px)',
+  height: 'calc(100% - 80px)',
 })
 
 const MainWrap = styled(Space)({
@@ -150,10 +152,26 @@ const LiWrap = styled.div<{ color: any }>(
   }),
 )
 
+const MoreItem = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  height: 32,
+  color: '#646566',
+  fontSize: 14,
+  fontWeight: 400,
+  cursor: 'pointer',
+  padding: '0 16px',
+  '&: hover': {
+    color: '#323233',
+    background: '#f4f5f5',
+  },
+})
+
 const DemandBox = () => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const [form] = Form.useForm()
+  const [isVisibleMore, setIsVisibleMore] = useState(false)
   const [isShowChange, setIsShowChange] = useState(false)
   const [isShowCategory, setIsShowCategory] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
@@ -364,18 +382,58 @@ const DemandBox = () => {
               alt=""
             />
             <span>{k.content}</span>
-            {/* <CanOperationCategory
-              style={{ marginRight: 0, cursor: 'pointer' }}
-              color={k.color}
-              bgColor={
-                colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
-              }
-            >
-              <span className="title">{k.content}1</span>
-            </CanOperationCategory> */}
           </LiWrap>
         )
       })}
+    </div>
+  )
+
+  const onClickMoreDelete = () => {
+    setIsDelVisible(true)
+    setIsVisibleMore(false)
+  }
+
+  // 复制需求id
+  const onCopyId = () => {
+    copyLink(demandInfo?.id, '复制需求ID成功！', '复制需求ID失败！')
+  }
+
+  // 复制需求链接
+  const onCopyLink = () => {
+    let text: any = ''
+    let beforeUrl: any
+    beforeUrl = window.origin
+    const params = encryptPhp(
+      JSON.stringify({
+        type: 'info',
+        id: demandInfo?.projectId,
+        demandId: demandInfo?.id,
+      }),
+    )
+    const url = `/ProjectManagement/Demand?data=${params}`
+    text += `【${demandInfo?.name}】 ${beforeUrl}${url} \n`
+    copyLink(text, '复制需求链接成功！', '复制需求链接失败！')
+  }
+
+  const moreOperation = (
+    <div
+      style={{
+        padding: '4px 0',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      {!isDelete && (
+        <MoreItem onClick={onClickMoreDelete}>
+          <span>删除</span>
+        </MoreItem>
+      )}
+      <MoreItem onClick={onCopyId}>
+        <span>复制需求编号</span>
+      </MoreItem>
+      <MoreItem onClick={onCopyLink}>
+        <span>复制标题链接</span>
+      </MoreItem>
     </div>
   )
 
@@ -407,8 +465,8 @@ const DemandBox = () => {
             <Form.Item label={t('newlyAdd.beforeCategory')}>
               <img
                 src={
-                  colorObj.category_attachment
-                    ? colorObj.category_attachment
+                  colorObj?.category_attachment
+                    ? colorObj?.category_attachment
                     : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
                 }
                 style={{
@@ -419,16 +477,6 @@ const DemandBox = () => {
                 alt=""
               />
               <span>{colorObj?.content}</span>
-              {/* <CanOperationCategory
-                style={{ marginRight: 8, cursor: 'pointer' }}
-                color={colorObj?.color}
-                bgColor={
-                  colorList?.filter((i: any) => i.key === colorObj?.color)[0]
-                    ?.bgColor
-                }
-              >
-                <span className="title">{colorObj?.content}1</span>
-              </CanOperationCategory> */}
             </Form.Item>
             <Form.Item
               label={t('newlyAdd.afterCategory')}
@@ -493,45 +541,22 @@ const DemandBox = () => {
               getPopupContainer={node => node}
               onVisibleChange={visible => setIsShowChange(visible)}
             >
-              <img
-                src={
-                  colorObj.category_attachment
-                    ? colorObj.category_attachment
-                    : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
-                }
-                style={{
-                  width: '18px',
-                  height: '18px',
-                  marginRight: '8px',
-                }}
-                alt=""
-              />
-              <span>{colorObj?.content}</span>
-              {/* <CanOperationCategory
-                style={{
-                  cursor: resultCategory?.length > 0 ? 'pointer' : 'inherit',
-                  marginRight: 8,
-                }}
-                color={colorObj?.color}
-                bgColor={
-                  colorList?.filter((i: any) => i.key === colorObj?.color)[0]
-                    ?.bgColor
-                }
-              >
-                <span className="title">{colorObj?.content}</span>
-                {resultCategory?.length > 0 && (
-                  <IconFont
-                    type="down-icon"
-                    style={{
-                      fontSize: 12,
-                      marginLeft: 4,
-                      color: '43BA9A',
-                    }}
-                  />
-                )}
-              </CanOperationCategory> */}
+              <div>
+                <img
+                  src={
+                    colorObj?.category_attachment
+                      ? colorObj?.category_attachment
+                      : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
+                  }
+                  style={{
+                    width: '18px',
+                    height: '18px',
+                    marginRight: '8px',
+                  }}
+                  alt=""
+                />
+              </div>
             </Popover>
-            <div className="demandName">【{demandInfo?.id}】</div>
             <OmitText
               width={800}
               tipProps={{
@@ -563,29 +588,32 @@ const DemandBox = () => {
                     : 0
                 }
               />
-              {/* <StatusWrap
-                onClick={demandInfo?.isExamine ? onExamine : void 0}
-                isShow={isCanEdit || demandInfo?.isExamine}
-                style={{
-                  color: demandInfo?.status?.status?.color,
-                  border: `1px solid ${demandInfo?.status?.status?.color}`,
-                }}
-              >
-                {demandInfo?.status?.status?.content}
-              </StatusWrap> */}
             </ChangeStatusPopover>
           </NameWrap>
           <Space size={16}>
             {isEdit ? null : (
-              <Button type="primary" onClick={onEdit}>
+              <CommonButton type="light" onClick={onEdit}>
                 {t('common.edit')}
-              </Button>
+              </CommonButton>
             )}
-            {isDelete ? null : (
-              <Button onClick={() => setIsDelVisible(true)}>
-                {t('common.del')}
-              </Button>
-            )}
+            <Popover
+              content={moreOperation}
+              placement="bottom"
+              getPopupContainer={node => node}
+              key={isVisibleMore.toString()}
+              visible={isVisibleMore}
+              onVisibleChange={visible => setIsVisibleMore(visible)}
+            >
+              <div>
+                <CommonButton
+                  type="light"
+                  icon={isVisibleMore ? 'up' : 'down'}
+                  iconPlacement="right"
+                >
+                  <span>{t('newlyAdd.moreOperation')}</span>
+                </CommonButton>
+              </div>
+            </Popover>
           </Space>
         </DemandInfoWrap>
         <ContentWrap>

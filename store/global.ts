@@ -15,6 +15,7 @@ export interface GlobalState {
 
   language: string
   basicFieldList: any[]
+  tagOrPriority: any[]
 }
 
 const initialState: GlobalState = {
@@ -77,6 +78,16 @@ const initialState: GlobalState = {
       keyText: 'expected_end_at',
       value: ['date'],
     },
+  ],
+  tagOrPriority: [
+    { key: 'extremely-low', backgroundColor: '--function-tag1' },
+    { key: 'middle', backgroundColor: '--function-tag5' },
+    { key: 'extremely-high', backgroundColor: '--function-tag3' },
+    { key: 'low', backgroundColor: '--function-tag2' },
+    { key: 'high', backgroundColor: '--function-tag4' },
+    { key: 'openEd', backgroundColor: '--function-tag5' },
+    { key: 'endEd', backgroundColor: '--function-tag2' },
+    { key: 'closeEd', backgroundColor: '--function-tag6' },
   ],
 }
 
