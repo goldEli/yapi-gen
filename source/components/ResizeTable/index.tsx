@@ -5,9 +5,23 @@ import { Spin, Table } from 'antd'
 import { Resizable } from 'react-resizable'
 import './index.css'
 import styled from '@emotion/styled'
-import { css } from '@emotion/css'
 
 const TableWrap = styled(Table)`
+  .ant-table-tbody .tagLength {
+    visibility: hidden;
+  }
+  .tagLength {
+    margin-left: 8px;
+    font-size: 12px;
+    color: #969799;
+  }
+  .ant-table-selection {
+    flex-direction: inherit;
+  }
+  .ant-table-selection-column {
+    text-align: left;
+    width: 70px;
+  }
   .ant-table-thead > tr {
     height: 44px;
   }
@@ -18,7 +32,7 @@ const TableWrap = styled(Table)`
     font-family: SiYuanMedium;
   }
   .ant-table-cell {
-    min-width: 100px;
+    /* min-width: 80px; */
     padding: 0 0 0 16px;
   }
   .ant-table-row {
@@ -30,6 +44,11 @@ const TableWrap = styled(Table)`
   }
   .ant-table-row-selected {
     background: var(--selected);
+  }
+  .ant-table-row:hover {
+    .dropdownIcon {
+      visibility: visible;
+    }
   }
 `
 
@@ -92,13 +111,18 @@ const ResizeTable = (props: ResizeTableProps) => {
 
   useEffect(() => {
     setColumns(
-      (cols || []).map((col: any, index: number) => ({
-        ...col,
-        onHeaderCell: (column: any) => ({
-          width: column.width,
-          onResize: handleResize(index),
-        }),
-      })),
+      (cols || []).map((col: any, index: number) => {
+        if (col === Table.SELECTION_COLUMN) {
+          return col
+        }
+        return {
+          ...col,
+          onHeaderCell: (column: any) => ({
+            width: column.width,
+            onResize: handleResize(index),
+          }),
+        }
+      }),
     )
   }, [cols])
 
@@ -130,14 +154,14 @@ const ResizeTable = (props: ResizeTableProps) => {
             (props.dataSource?.length > 0 ? (
               <TableWrap
                 rowKey="id"
+                columns={columns}
+                dataSource={props.dataSource}
                 pagination={false}
                 components={{
                   header: {
                     cell: ResizeTitle,
                   },
                 }}
-                columns={columns}
-                dataSource={props.dataSource}
                 scroll={{
                   x: 'max-content',
                   y: tableY,

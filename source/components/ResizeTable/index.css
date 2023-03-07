@@ -13,7 +13,7 @@
 /* 显示拖拽手势 */
 .react-resizable-handle {
   position: absolute;
-  width: 3px;
+  width: 6px;
   height: 28px;
   right: 0;
   cursor: col-resize;

@@ -29,6 +29,7 @@ import TableQuickEdit from './TableQuickEdit'
 import { getCustomNormalValue } from '@/tools'
 import TableColorText from './TableColorText'
 import StateTag from './StateTag'
+import DemandProgress from './DemandProgress'
 
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
   {
@@ -120,6 +121,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="name">{t('common.title')}</NewSort>,
       dataIndex: 'name',
       key: 'name',
+      width: 400,
       render: (text: string | number, record: any) => {
         return (
           <div
@@ -384,13 +386,12 @@ export const useDynamicColumns = (state: any) => {
               record.status.is_start !== 1 &&
               record.status.is_end !== 1 && (
                 <div style={{ cursor: 'pointer' }}>
-                  12
-                  {/* <DemandProgress
+                  <DemandProgress
                     value={record.schedule}
                     row={record}
                     onUpdate={() => onUpdate(record)}
                     index={index}
-                  /> */}
+                  />
                 </div>
               )}
             {!(

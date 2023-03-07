@@ -112,8 +112,8 @@ const BasicDemand = (props: Props) => {
 
   const getFieldData = async () => {
     const result = await getCategoryConfigList({
-      projectId: props.detail.projectId,
-      categoryId: props.detail.category,
+      projectId: props.detail?.projectId,
+      categoryId: props.detail?.category,
     })
     // 重组数据
     let keys: any = []

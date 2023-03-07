@@ -15,7 +15,6 @@ import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
-import { Second } from '@/components/UploadAttach'
 import { getCommentList, getDemandInfo } from '@/services/demand'
 import { setDemandInfo } from '@store/demand'
 import { useDispatch, useSelector } from '@store/index'
@@ -93,7 +92,7 @@ export const TextareaWrap = styled.div({
   },
 })
 
-const NewWrapRight = (props: { onUpdate?(): void }) => {
+const NewWrapRight = () => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -119,12 +118,13 @@ const NewWrapRight = (props: { onUpdate?(): void }) => {
   }
 
   const onUpdate = async () => {
-    const result = await getDemandInfo({ projectId, id: demandInfo?.id })
+    const result = await getDemandInfo({ projectId, id: demandId })
     dispatch(setDemandInfo(result))
   }
 
   useEffect(() => {
     getList()
+    onUpdate()
   }, [])
 
   return (

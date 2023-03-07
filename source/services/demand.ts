@@ -571,6 +571,8 @@ export const getDemandList: any = async (params: any) => {
         })),
         name: k.content_txt,
         id: k.status_id,
+        isStart: k.is_start,
+        isEnd: k.is_end,
       })),
     }
   } else if (params.all) {
