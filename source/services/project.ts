@@ -567,6 +567,7 @@ export const getWorkflowList: any = async (params: any) => {
 
   return {
     list: response.data.map((i: any) => ({
+      ...i,
       id: i.id,
       index: i.id,
       info: i.info,

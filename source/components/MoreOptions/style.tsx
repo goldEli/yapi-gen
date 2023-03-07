@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 
 export const Wrap = styled.div`
-  height: 40px;
+  height: 30px;
   padding: 8px 16px;
   display: flex;
   align-items: center;
@@ -20,7 +20,7 @@ export const WrapText = styled.div`
 export const WrapTextImg = styled.img`
   width: 20px;
   height: 20px;
-  background: #98ace0;
+
   border-radius: 4px 4px 4px 4px;
 `
 

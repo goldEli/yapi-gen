@@ -152,17 +152,22 @@ const SearchList = (props: Props) => {
             <Form.Item name="userGroup">
               <SelectWrap
                 onChange={confirm}
-                mode="multiple"
                 style={{ width: '100%' }}
                 placeholder={t('common.all')}
                 showSearch
                 optionFilterProp="label"
                 showArrow
                 allowClear
-                options={roleOptions.map((item: any) => ({
-                  label: item.content_txt,
-                  value: item.id,
-                }))}
+                options={[
+                  {
+                    label: '在职',
+                    value: '1',
+                  },
+                  {
+                    label: '离职',
+                    value: '2',
+                  },
+                ]}
               />
             </Form.Item>
           </SelectWrapBedeck>
@@ -171,17 +176,22 @@ const SearchList = (props: Props) => {
             <Form.Item name="userGroup">
               <SelectWrap
                 onChange={confirm}
-                mode="multiple"
                 style={{ width: '100%' }}
                 placeholder={t('common.all')}
                 showSearch
                 optionFilterProp="label"
                 showArrow
                 allowClear
-                options={roleOptions.map((item: any) => ({
-                  label: item.content_txt,
-                  value: item.id,
-                }))}
+                options={[
+                  {
+                    label: '正常',
+                    value: '1',
+                  },
+                  {
+                    label: '已交接',
+                    value: '2',
+                  },
+                ]}
               />
             </Form.Item>
           </SelectWrapBedeck>

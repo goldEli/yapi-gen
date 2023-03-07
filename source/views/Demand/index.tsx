@@ -549,6 +549,7 @@ const DemandBox = () => {
               <StateTag
                 onClick={demandInfo?.isExamine ? onExamine : void 0}
                 isShow={isCanEdit || demandInfo?.isExamine}
+                name={demandInfo.name}
                 state={
                   demandInfo?.status?.is_start === 1 &&
                   demandInfo?.status?.is_end === 2

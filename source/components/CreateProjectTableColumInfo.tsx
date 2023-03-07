@@ -344,6 +344,7 @@ export const useDynamicColumns = (state: any) => {
                     : 'pointer',
               }}
               onClick={record.isExamine ? onExamine : void 0}
+              name={record.name}
               state={
                 record.status?.is_start === 1 && record.status?.is_end === 2
                   ? 1

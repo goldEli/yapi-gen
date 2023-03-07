@@ -177,6 +177,8 @@ export const useDynamicColumns = (state: any) => {
       key: 'status',
       width: 190,
       render: (text: any, record: any) => {
+        console.log(record)
+
         return (
           <ChangeStatusPopover
             isCanOperation={isCanEdit && !record.isExamine}
@@ -187,6 +189,7 @@ export const useDynamicColumns = (state: any) => {
             <StateTag
               onClick={record.isExamine ? onExamine : void 0}
               isShow={isCanEdit || record.isExamine}
+              name={record.name}
               state={
                 text?.is_start === 1 && text?.is_end === 2
                   ? 1

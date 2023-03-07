@@ -19,6 +19,7 @@ import UploadAttach from '../UploadAttach'
 import { decryptPhp } from '@/tools/cryptoPhp'
 import { removeNull } from '@/tools'
 import CommonModal from '../CommonModal'
+import MoreOptions from '../MoreOptions'
 
 const LeftWrap = styled.div({
   height: '100%',
@@ -541,12 +542,13 @@ const CreateDemandLeft = (props: Props) => {
       <Form layout="vertical" form={form}>
         <div style={{ display: 'flex' }}>
           <Form.Item
-            label={t('common.createProject')}
+            label={t('common.createProject') + '1'}
             name="projectId"
             style={{ marginRight: 24, width: '50%' }}
             rules={[{ required: true, message: '' }]}
           >
             <Select
+              optionLabelProp="label"
               onSelect={onSelectProjectName}
               placeholder={t('common.searchProject')}
               allowClear
@@ -556,13 +558,28 @@ const CreateDemandLeft = (props: Props) => {
               optionFilterProp="label"
               getPopupContainer={node => node}
               showSearch
-              options={props.projectList
+              // options={props.projectList
+              //   ?.filter((i: any) => i.status === 1)
+              //   ?.map((k: any) => ({
+              //     label: k.name,
+              //     value: k.id,
+              //   }))}
+            >
+              {props.projectList
                 ?.filter((i: any) => i.status === 1)
-                ?.map((k: any) => ({
-                  label: k.name,
-                  value: k.id,
-                }))}
-            />
+                ?.map((i: any) => {
+                  return (
+                    <Select.Option value={i.id} key={i.id} label={i.name}>
+                      <MoreOptions
+                        type="project"
+                        name={i.name}
+                        dec={i.dec}
+                        img={i.cover}
+                      />
+                    </Select.Option>
+                  )
+                })}
+            </Select>
           </Form.Item>
           <Form.Item
             label="需求类别"
@@ -571,6 +588,7 @@ const CreateDemandLeft = (props: Props) => {
             rules={[{ required: true, message: '' }]}
           >
             <Select
+              optionLabelProp="label"
               onSelect={onSelectCategory}
               onClear={onClearCategory}
               placeholder={t('common.selectType')}
@@ -580,14 +598,21 @@ const CreateDemandLeft = (props: Props) => {
               getPopupContainer={node => node}
               showSearch
               value={categoryObj?.id}
-              options={props.allCategoryList
-                ?.filter((i: any) => i.status === 1)
-                ?.map((k: any) => ({
-                  label: k.content,
-                  value: k.id,
-                }))}
             >
-              <Select.Option value="need">{t('common.demand')}</Select.Option>
+              {props.allCategoryList
+                ?.filter((i: any) => i.status === 1)
+                ?.map((i: any) => {
+                  return (
+                    <Select.Option value={i.id} key={i.id} label={i.name}>
+                      <MoreOptions
+                        type="project"
+                        name={i.name}
+                        dec={i.dec}
+                        img={i.category_attachment}
+                      />
+                    </Select.Option>
+                  )
+                })}
             </Select>
           </Form.Item>
         </div>

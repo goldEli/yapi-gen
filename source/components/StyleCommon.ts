@@ -537,11 +537,11 @@ const StatusWrap = styled.div<{ isShow?: boolean; state?: number }>(
     height: 22,
     borderRadius: 6,
     fontSize: '12px',
-    display: 'flex',
+    display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '50px',
     cursor: 'pointer',
+    padding: '1px 14px',
   },
   ({ isShow, state }) => ({
     cursor: isShow ? 'pointer' : 'inherit',

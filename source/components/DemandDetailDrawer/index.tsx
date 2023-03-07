@@ -303,6 +303,7 @@ const DemandDetailDrawer = () => {
               onChangeStatus={onChangeStatus}
             >
               <StateTag
+                name={drawerInfo.name}
                 onClick={drawerInfo.isExamine ? onExamine : void 0}
                 isShow={isCanEdit || drawerInfo.isExamine}
                 state={

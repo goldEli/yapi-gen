@@ -1015,6 +1015,7 @@ export const getVerifyInfo: any = async (params: any) => {
   const response = await http.get(`/b/user/verify/${params?.id}`)
 
   return {
+    category_attachment: response.data.category_attachment,
     id: response.data.id,
     demandName: response.data.story_name,
     categoryColor: response.data.category_color,
