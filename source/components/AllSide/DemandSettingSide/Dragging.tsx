@@ -79,9 +79,9 @@ const SliderList = (props: any) => {
       clearTimeout(delayedSetZIndexTimeoutId)
       // 注册事件
       document.addEventListener('mousemove', mouseMove)
-      document.addEventListener('mouseup', mouseUp, { once: true })
+      document.addEventListener('mouseup', mouseUp)
       // 开始拖拽
-      setIsDragging(true)
+      // setIsDragging(true)
       setZIndex(1)
       // 记录开始位置
       startY = ev.clientY

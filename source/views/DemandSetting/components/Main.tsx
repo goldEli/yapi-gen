@@ -59,11 +59,15 @@ const Main = (props: any) => {
     const { state, child } = delItem
     if (state === 1) {
       setGetCategoryConfigF(
-        getCategoryConfigF.filter((item: any) => item.id !== child.id),
+        getCategoryConfigF.filter(
+          (item: any) => item.storyId !== child.storyId,
+        ),
       )
     } else {
       setGetCategoryConfigT(
-        getCategoryConfigT.filter((item: any) => item.id !== child.id),
+        getCategoryConfigT.filter(
+          (item: any) => item.storyId !== child.storyId,
+        ),
       )
     }
     setIsVisible(false)
@@ -144,10 +148,6 @@ const Main = (props: any) => {
       arrData.splice(draggingIndex, 0, newItem)
     }
   }
-  // 更新编辑
-  const onEditUpdate = (item: any) => {
-    EditCategoryConfig(item)
-  }
   //拖动传递过来的参数
   const onDrop = (state: any, event: any, index: any) => {
     setDraggingIndex(index)
@@ -208,6 +208,14 @@ const Main = (props: any) => {
       save()
     }
   }, [props.isSave])
+  const onUpDate = async () => {
+    await dispatch(
+      getCategoryConfigList({
+        projectId: projectInfo.id,
+        categoryId: activeCategory.id,
+      }),
+    )
+  }
   return (
     <div style={{ flex: 1 }}>
       <TitleStyle onClick={() => setInfoIcon(!infoIcon)}>
@@ -264,10 +272,9 @@ const Main = (props: any) => {
         fieldType={fieldType}
         item={colItem}
         isVisible={addAndEditVisible}
-        onEditUpdate={(item: any) => onEditUpdate(item)}
+        onEditUpdate={() => onUpDate()}
         onInsert={(item: any) => onInsert(item)}
         onClose={() => setAddAndEditVisible(false)}
-        onUpdate={() => 123}
       />
     </div>
   )

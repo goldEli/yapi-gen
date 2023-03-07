@@ -4,7 +4,7 @@ import Main from './components/Main'
 import CreateField from './components/CreateField'
 import CommonButton from '@/components/CommonButton'
 import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { saveScreen } from '@store/view'
 
 const Wrap = styled.div`
@@ -27,12 +27,7 @@ const DemandSetting = () => {
   const [t] = useTranslation()
   const [isOperate, setIsOperate] = useState<boolean>(false)
   const [isSave, setIsSave] = useState(false)
-  // const onClose = () => {
 
-  // }
-  // const onConfirm = () => {
-
-  // }
   const save = () => {
     setIsSave(true)
   }

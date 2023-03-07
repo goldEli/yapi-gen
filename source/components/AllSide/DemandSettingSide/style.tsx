@@ -128,6 +128,9 @@ export const BackStyle = styled.div`
   padding: 0 16px;
   color: var(--neutral-n3);
   font-size: 12px;
+  &:hover {
+    cursor: pointer;
+  }
 `
 export const TitleStyle = styled.div`
   display: flex;

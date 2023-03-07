@@ -147,6 +147,54 @@ const SearchList = (props: Props) => {
               />
             </Form.Item>
           </SelectWrapBedeck>
+          <SelectWrapBedeck>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>状态</span>
+            <Form.Item name="userGroup">
+              <SelectWrap
+                onChange={confirm}
+                style={{ width: '100%' }}
+                placeholder={t('common.all')}
+                showSearch
+                optionFilterProp="label"
+                showArrow
+                allowClear
+                options={[
+                  {
+                    label: '在职',
+                    value: '1',
+                  },
+                  {
+                    label: '离职',
+                    value: '2',
+                  },
+                ]}
+              />
+            </Form.Item>
+          </SelectWrapBedeck>
+          <SelectWrapBedeck>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>交接状态</span>
+            <Form.Item name="userGroup">
+              <SelectWrap
+                onChange={confirm}
+                style={{ width: '100%' }}
+                placeholder={t('common.all')}
+                showSearch
+                optionFilterProp="label"
+                showArrow
+                allowClear
+                options={[
+                  {
+                    label: '正常',
+                    value: '1',
+                  },
+                  {
+                    label: '已交接',
+                    value: '2',
+                  },
+                ]}
+              />
+            </Form.Item>
+          </SelectWrapBedeck>
 
           <ClearForm onClick={onClearForm}>
             <span style={{ color: '#2877FF', fontSize: 15, cursor: 'pointer' }}>

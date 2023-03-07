@@ -13,6 +13,7 @@ import { useState, useEffect, useImperativeHandle } from 'react'
 import { useTranslation } from 'react-i18next'
 import ChangePriorityPopover from '../ChangePriorityPopover'
 import IconFont from '../IconFont'
+import StateTag from '../StateTag'
 import { PriorityWrap, SliderWrap } from '../StyleCommon'
 
 const RightWrap = styled.div({
@@ -613,7 +614,6 @@ const CreateDemandRight = (props: Props) => {
       ...{ remarks: item.remarks },
     })
   }
-
   return (
     <RightWrap>
       <Form layout="vertical" form={form}>
@@ -630,12 +630,30 @@ const CreateDemandRight = (props: Props) => {
               placeholder={t('common.pleaseSelect')}
               getPopupContainer={node => node}
               allowClear
-              optionFilterProp="label"
-              options={props.workStatusList?.list?.map((i: any) => ({
-                label: i.name,
-                value: i.statusId,
-              }))}
-            />
+            >
+              {props.workStatusList?.list?.map((i: any) => {
+                return (
+                  <Select.Option
+                    value={i.statusId}
+                    key={i.statusId}
+                    label={i.name}
+                  >
+                    <StateTag
+                      name={i.name}
+                      state={
+                        i?.is_start === 1 && i?.is_end === 2
+                          ? 1
+                          : i?.is_end === 1 && i?.is_start === 2
+                          ? 2
+                          : i?.is_start === 2 && i?.is_end === 2
+                          ? 3
+                          : 0
+                      }
+                    />
+                  </Select.Option>
+                )
+              })}
+            </Select>
           </Form.Item>
         )}
         {notFoldList?.map((i: any) => (

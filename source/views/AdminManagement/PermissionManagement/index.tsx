@@ -53,7 +53,7 @@ const Header = styled.div({
 
 const Content = styled.div({
   padding: 16,
-  background: '#F5F7FA',
+  // background: '#F5F7FA',
   height: 'calc(100% - 64px)',
 })
 

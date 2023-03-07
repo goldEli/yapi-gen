@@ -1,11 +1,13 @@
 // 项目二级菜单
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
 import CommonIconFont from '@/components/CommonIconFont'
 import { getProjectInfo, getProjectInfoValues } from '@/services/project'
 import { getCategorySaveSort } from '@/services/demand'
 import { getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectInfo, setProjectInfoValues } from '@store/project'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import EditCategory from './EditCategory'
@@ -26,7 +28,18 @@ import { setStartUsing } from '@store/category'
 // eslint-disable-next-line no-duplicate-imports
 import { getCategoryConfigList } from '@store/category/thunk'
 import { setActiveCategory } from '@store/category/index'
-
+import styled from '@emotion/styled'
+import IconFont from '@/components/IconFont'
+const IconFontStyle = styled(IconFont)({
+  color: 'var(--neutral-n2)',
+  fontSize: '18px',
+  borderRadius: '6px',
+  padding: '5px',
+  '&: hover': {
+    background: 'var(--hover-d1)',
+    cursor: 'pointer',
+  },
+})
 const ProjectDetailSide = (props: { onClick(): void }) => {
   const [t] = useTranslation()
   const { startUsing, categoryList } = useSelector(store => store.category)
@@ -66,14 +79,14 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
     let dataItem = null
     if (startUsing) {
       dataItem = categoryList
-        ?.filter((el: any) => el.status !== 1)
+        ?.filter((el: any) => el.status === 1)
         .map((el: any, index: number) => ({
           ...el,
           active: index === 0 ? true : false,
         }))
     } else {
       dataItem = categoryList
-        ?.filter((el: any) => el.status === 1)
+        ?.filter((el: any) => el.status !== 1)
         .map((el: any, index: number) => ({
           ...el,
           active: index === 0 ? true : false,
@@ -101,6 +114,7 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
     getInfo()
     getProjectInfoValuesData()
   }, [])
+
   //   返回上一页
   const onGoBack = () => {
     props.onClick()
@@ -118,14 +132,14 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
     let dataItem = null
     if (startUsing) {
       dataItem = categoryList
-        ?.filter((el: any) => el.status !== 1)
+        ?.filter((el: any) => el.status === 1)
         .map((el: any, index: number) => ({
           ...el,
           active: index === 0 ? true : false,
         }))
     } else {
       dataItem = categoryList
-        ?.filter((el: any) => el.status === 1)
+        ?.filter((el: any) => el.status !== 1)
         .map((el: any, index: number) => ({
           ...el,
           active: index === 0 ? true : false,
@@ -160,11 +174,10 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
         <Provider />
         <TitleStyle onClick={() => setIsVisible(true)}>
           <span>需求类别</span>{' '}
-          <CommonIconFont
-            type="plus"
+          {/*  type="plus"
             color="var(--neutral-n2)"
-            onClick={() => 123}
-          />
+            onClick={() => 123 */}
+          <IconFontStyle type="plus" />
         </TitleStyle>
         <Tabs>
           {tabs.map((el, index) => (

@@ -8,7 +8,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 import CommonModal from '@/components/CommonModal'
-import { Checkbox, Form, Input, message, Radio, Select } from 'antd'
+import { Checkbox, Form, Input, message, Radio, Select, Tooltip } from 'antd'
 import IconFont from '@/components/IconFont'
 import { getProjectFieIds } from '@store/category/thunk'
 import styled from '@emotion/styled'
@@ -25,6 +25,7 @@ import { useTranslation } from 'react-i18next'
 import { addStoryConfigField, updateStoryConfigField } from '@/services/project'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectFieIdsData } from '@store/category/index'
+import FormTitleSmall from '@/components/FormTitleSmall'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -83,10 +84,10 @@ interface Props {
   isVisible: boolean
   onClose(): void
   item?: any
-  onUpdate(): void
+  // onUpdate(): void
   fieldType?: any
   onInsert(val: any): void
-  onEditUpdate(val: any): void
+  onEditUpdate(): void
 }
 
 const DragHandle = sortableHandle(() => (
@@ -113,8 +114,6 @@ const SortItemLi = sortableElement<any>((props: any) => (
 const EditFiled = (props: Props) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
-  const [searchParams] = useSearchParams()
-  const paramsData = getParamsData(searchParams)
   const [checked, setChecked] = useState(false)
   const [personValue, setPersonValue] = useState('')
   const ChooseDom = useRef<HTMLInputElement>(null)
@@ -149,9 +148,8 @@ const EditFiled = (props: Props) => {
       value: 'single_checkbox',
     },
   ]
-
   useEffect(() => {
-    if (props?.item?.id) {
+    if (props?.item && props.isVisible) {
       const type = props?.item?.fieldContent.attr
       setValue(type)
       form.setFieldsValue({
@@ -173,8 +171,10 @@ const EditFiled = (props: Props) => {
       } else if (['user_select', 'user_select_checkbox'].includes(type)) {
         setPersonValue(values[0])
       }
-    } else {
-      form.resetFields()
+    } else if (props.isVisible && props.fieldType) {
+      form.setFieldsValue({
+        type: props.fieldType.type,
+      })
       setValue('')
       setPersonValue('')
       setChecked(false)
@@ -183,14 +183,8 @@ const EditFiled = (props: Props) => {
         { value: '', key: new Date().getTime() + 100 },
       ])
     }
-  }, [props?.item])
-  useEffect(() => {
-    if (props.isVisible && props.fieldType) {
-      form.setFieldsValue({
-        type: props.fieldType.type,
-      })
-    }
-  }, [props.isVisible])
+  }, [props?.item, props.isVisible])
+
   const onReset = () => {
     props?.onClose()
     setTimeout(() => {
@@ -254,12 +248,11 @@ const EditFiled = (props: Props) => {
 
     if (props?.item?.id) {
       try {
-        obj.id = props?.item?.id
+        obj.id = props?.item?.storyId
         const res: any = await updateStoryConfigField(obj)
         message.success(t('common.editSuccess'))
         onReset()
-        props.onEditUpdate(res.data)
-        props?.onUpdate()
+        props.onEditUpdate()
       } catch (error) {
         //
       }
@@ -273,7 +266,6 @@ const EditFiled = (props: Props) => {
         const payloadList: any = data.payload
         dispatch(setProjectFieIdsData(payloadList))
         onReset()
-        props?.onUpdate()
       } catch (error) {
         //
       }
@@ -330,7 +322,30 @@ const EditFiled = (props: Props) => {
         <FormWrap form={form} layout="vertical">
           <ItemWrap notMargin>
             <Form.Item
-              label={t('newlyAdd.fieldsName')}
+              label={
+                <div>
+                  <FormTitleSmall text={t('newlyAdd.fieldsName')} />
+                  <Tooltip
+                    overlayStyle={{
+                      fontSize: '12px',
+                      color: '#969799',
+                    }}
+                    trigger={['click']}
+                    placement="top"
+                    title={t('newlyAdd.nameText')}
+                  >
+                    <IconFont
+                      style={{
+                        color: 'var( --neutral-n4)',
+                        position: 'absolute',
+                        left: '68px',
+                        top: '4px',
+                      }}
+                      type="question"
+                    />
+                  </Tooltip>
+                </div>
+              }
               rules={[{ required: true, message: '' }]}
               name="name"
               getValueFromEvent={event => {
@@ -344,9 +359,6 @@ const EditFiled = (props: Props) => {
                 autoFocus
               />
             </Form.Item>
-            <div style={{ marginTop: 4, fontSize: 12, color: '#969799' }}>
-              {t('newlyAdd.nameText')}
-            </div>
           </ItemWrap>
           <Form.Item
             label={t('newlyAdd.fieldsRemark')}
@@ -364,7 +376,31 @@ const EditFiled = (props: Props) => {
           </Form.Item>
           <ItemWrap>
             <Form.Item
-              label={t('newlyAdd.fieldsType')}
+              className="iconFont"
+              label={
+                <div>
+                  <FormTitleSmall text={t('newlyAdd.fieldsType')} />
+                  <Tooltip
+                    overlayStyle={{
+                      fontSize: '12px',
+                      color: '#969799',
+                    }}
+                    trigger={['click']}
+                    placement="top"
+                    title={t('newlyAdd.pleaseFieldsType')}
+                  >
+                    <IconFont
+                      style={{
+                        color: 'var( --neutral-n4)',
+                        position: 'absolute',
+                        left: '68px',
+                        top: '4px',
+                      }}
+                      type="question"
+                    />
+                  </Tooltip>
+                </div>
+              }
               rules={[{ required: true, message: '' }]}
               name="type"
             >
@@ -381,9 +417,7 @@ const EditFiled = (props: Props) => {
                 onClear={() => setValue('')}
               />
             </Form.Item>
-            <div style={{ marginTop: 4, fontSize: 12, color: '#969799' }}>
-              {t('newlyAdd.pleaseFieldsType')}
-            </div>
+
             {value &&
               value !== 'text' &&
               value !== 'textarea' &&
