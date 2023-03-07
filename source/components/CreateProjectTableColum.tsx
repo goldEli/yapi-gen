@@ -189,7 +189,7 @@ export const useDynamicColumns = (state: any) => {
             <StateTag
               onClick={record.isExamine ? onExamine : void 0}
               isShow={isCanEdit || record.isExamine}
-              name={record.name}
+              name={record.status.status.content}
               state={
                 text?.is_start === 1 && text?.is_end === 2
                   ? 1

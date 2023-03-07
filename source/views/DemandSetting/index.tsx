@@ -53,7 +53,6 @@ const DemandSetting = () => {
           </CommonButton>
         </ButtonStyle>
       )}
-
       <Wrap>
         <Main
           onIsOperate={() => setIsOperate(true)}

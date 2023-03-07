@@ -1,7 +1,6 @@
 import styled from '@emotion/styled'
 
 export const Wrap = styled.div`
-  height: 30px;
   padding: 8px 16px;
   display: flex;
   align-items: center;

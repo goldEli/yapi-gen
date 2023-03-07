@@ -358,7 +358,6 @@ const LeftSide = (props: any) => {
   }
 
   // 弹窗确认按钮
-  // addTeams,dismissTeams,editTeams
   const onConfirm = async () => {
     const value = await form.validateFields()
     const name = value.username
@@ -409,11 +408,6 @@ const LeftSide = (props: any) => {
           childStyle={childStyle}
           onChangeTeam={(key: string, child: any) => onChangeTeam(key, child)}
         />
-        {/* <CommonModal1
-        title={'添加成员'}
-        isVisible={false}
-        onClose={() => setTeamIsVisible(false)}
-      /> */}
         <CommonModal
           title={formType === 'create' ? '创建团队' : '编辑团队'}
           isVisible={teamIsVisible}

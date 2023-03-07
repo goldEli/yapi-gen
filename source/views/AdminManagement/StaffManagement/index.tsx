@@ -14,7 +14,6 @@ import { OptionalFeld } from '@/components/OptionalFeld'
 import { StaffPersonal } from './components/StaffPower'
 import { TableStyleBox, HoverWrap, DividerWrap } from '@/components/StyleCommon'
 import SearchList from './components/SearchList'
-import PermissionWrap from '@/components/PermissionWrap'
 import { getIsPermission } from '@/tools/index'
 import NoData from '@/components/NoData'
 import { css } from '@emotion/css'
@@ -44,24 +43,15 @@ export const tableWrapP = css`
 
 const Reset = styled.div`
   height: 32px;
-  background: white;
+  background: var(--hover-d2);
   border-radius: 6px;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 5px 16px 5px 16px;
   margin-right: 16px;
-  border: 1px solid #d5d6d9ff;
-  color: #646566ff;
+  color: var(--neutral-n2);
   cursor: pointer;
-  &:hover {
-    border: 1px solid rgba(40, 119, 255, 1);
-    color: rgba(40, 119, 255, 1);
-  }
-  &:focus {
-    border: 1px solid #1763e5;
-    color: #1763e5;
-  }
 `
 
 export const DataWrap = styled.div({
@@ -244,7 +234,6 @@ const StaffManagement = () => {
         title: t('newlyAdd.operation'),
         dataIndex: 'action',
         width: 120,
-        fixed: 'right',
         render: (_text: string, record: any) => {
           return (
             <>
@@ -255,7 +244,7 @@ const StaffManagement = () => {
                   onClick={() => onToDetail(record)}
                   style={{
                     fontSize: 14,
-                    color: '#2877ff',
+                    color: 'var(--primary-d2)',
                     cursor: 'pointer',
                     whiteSpace: 'nowrap',
                   }}
@@ -383,18 +372,26 @@ const StaffManagement = () => {
           {t('staff.companyStaff')}
         </div>
 
-        <div style={{ display: 'flex', gap: '24px' }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
           <InputSearch
+            leftIcon={true}
             width={292}
             placeholder={t('staff.pleaseKey')}
             onChangeSearch={onPressEnter}
           />
 
-          <Reset style={{ whiteSpace: 'nowrap' }} onClick={rest}>
+          <Reset
+            style={{ whiteSpace: 'nowrap', margin: '0 24px' }}
+            onClick={rest}
+          >
             {t('staff.refresh')}
           </Reset>
 
-          <HoverWrap onClick={onChangeFilter} isActive={isShow}>
+          <HoverWrap
+            onClick={onChangeFilter}
+            isActive={isShow}
+            style={{ marginRight: '8px' }}
+          >
             <IconFont className="iconMain" type="filter" />
             <span style={{ whiteSpace: 'nowrap' }} className="label">
               {t('common.search')}
