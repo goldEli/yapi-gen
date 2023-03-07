@@ -50,7 +50,7 @@ const Wrap = styled.div({
 
 const Header = styled.div({
   background: 'white',
-  padding: '0 24px',
+  // padding: '0 24px',
 })
 
 const HeaderTop = styled.div({
@@ -62,7 +62,7 @@ const HeaderTop = styled.div({
 })
 
 const Content = styled.div({
-  padding: 16,
+  // padding: 16,
   height: 'calc(100% - 64px)',
 })
 

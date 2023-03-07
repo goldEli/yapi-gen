@@ -65,14 +65,12 @@ const Setting = () => {
   ]
 
   return (
-    <>
-      <div>
-        <MyBreadcrumb setName={SideList[activeTabs].name} />
-      </div>
+    <div style={{ padding: '20px 24px 0 24px' }}>
+      <MyBreadcrumb setName={SideList[activeTabs].name} />
       <Wrap>
         <Content>{SideList[activeTabs].content}</Content>
       </Wrap>
-    </>
+    </div>
   )
 }
 

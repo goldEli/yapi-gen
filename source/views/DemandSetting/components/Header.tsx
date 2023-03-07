@@ -22,7 +22,7 @@ import CommonModal from '@/components/CommonModal'
 const HeaderWrap = styled.div`
   height: 66px;
   display: flex;
-  margin: 0 24px;
+  /* margin: 0 24px; */
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--neutral-n6-d1);

@@ -340,10 +340,10 @@ const BasicDemand = (props: Props) => {
   }
 
   useEffect(() => {
-    if (props.isOpen) {
+    if (props.isOpen && props.detail?.id) {
       getFieldData()
     }
-  }, [props.isOpen])
+  }, [props.isOpen, props.detail])
 
   return (
     <div>

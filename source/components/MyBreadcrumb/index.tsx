@@ -15,7 +15,6 @@ const MyBreadcrumb = (props: any) => {
       separator={
         <CommonIconFont type="right" size={14} color={'var(--neutral-n1-d1)'} />
       }
-      style={{ margin: '20px 24px' }}
     >
       <Breadcrumb.Item>
         <a
