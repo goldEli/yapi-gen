@@ -122,6 +122,7 @@ const Main = (props: any) => {
       arrData.splice(draggingIndex, 0, newItem)
       setGetCategoryConfigT(arrData)
     }
+    setDraggingIndex(null)
   }
   const EditCategoryConfig = (item: any) => {
     const newItem = {
@@ -143,12 +144,9 @@ const Main = (props: any) => {
       arrData.splice(draggingIndex, 0, newItem)
     }
   }
-  // 更新编辑
-  const onEditUpdate = (item: any) => {
-    EditCategoryConfig(item)
-  }
   //拖动传递过来的参数
   const onDrop = (state: any, event: any, index: any) => {
+    setDraggingIndex(index)
     // 自定义字段只能添加20个
     const customizeNum = getProjectFieIdsData?.filter(
       (el: any) => el.is_customize === 1,
@@ -162,7 +160,6 @@ const Main = (props: any) => {
     evevtObj.dragtype === 'add' && setAddAndEditVisible(true),
       setFieldType(evevtObj)
     evevtObj.dragtype === 'edit' && EditCategoryConfig(evevtObj)
-    setDraggingIndex(index)
     setConfigType(state)
     props.onIsOperate(true)
   }
@@ -207,6 +204,14 @@ const Main = (props: any) => {
       save()
     }
   }, [props.isSave])
+  const onUpDate = async () => {
+    await dispatch(
+      getCategoryConfigList({
+        projectId: projectInfo.id,
+        categoryId: activeCategory.id,
+      }),
+    )
+  }
   return (
     <div style={{ flex: 1 }}>
       <TitleStyle onClick={() => setInfoIcon(!infoIcon)}>
@@ -217,7 +222,6 @@ const Main = (props: any) => {
         />
         <span>基本信息</span>
       </TitleStyle>
-      {/*   */}
       {infoIcon && (
         <TabsDragging
           onClick={(i: any, child: any) => tabsDraggingOnClcik(1, i, child)}
@@ -264,10 +268,9 @@ const Main = (props: any) => {
         fieldType={fieldType}
         item={colItem}
         isVisible={addAndEditVisible}
-        onEditUpdate={(item: any) => onEditUpdate(item)}
+        onEditUpdate={() => onUpDate()}
         onInsert={(item: any) => onInsert(item)}
         onClose={() => setAddAndEditVisible(false)}
-        onUpdate={() => 123}
       />
     </div>
   )

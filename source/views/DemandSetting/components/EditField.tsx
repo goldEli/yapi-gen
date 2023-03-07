@@ -83,10 +83,10 @@ interface Props {
   isVisible: boolean
   onClose(): void
   item?: any
-  onUpdate(): void
+  // onUpdate(): void
   fieldType?: any
   onInsert(val: any): void
-  onEditUpdate(val: any): void
+  onEditUpdate(): void
 }
 
 const DragHandle = sortableHandle(() => (
@@ -114,7 +114,6 @@ const EditFiled = (props: Props) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
-  const paramsData = getParamsData(searchParams)
   const [checked, setChecked] = useState(false)
   const [personValue, setPersonValue] = useState('')
   const ChooseDom = useRef<HTMLInputElement>(null)
@@ -137,11 +136,11 @@ const EditFiled = (props: Props) => {
     },
     { label: t('newlyAdd.time'), value1: '7', value: 'date' },
     { label: t('newlyAdd.number'), value1: '8', value: 'number' },
-    { label: t('version2.personRadio') + 9, value1: '9', value: 'user_select' },
+    { label: t('version2.personRadio'), value1: '9', value: 'user_select' },
     {
       label: t('version2.personCheckbox'),
       value1: '10',
-      user_select_checkbox: 'user_select_checkbox',
+      value: 'user_select_checkbox',
     },
     {
       label: '确认勾选',
@@ -149,9 +148,8 @@ const EditFiled = (props: Props) => {
       value: 'single_checkbox',
     },
   ]
-
   useEffect(() => {
-    if (props?.item?.id) {
+    if (props?.item && props.isVisible) {
       const type = props?.item?.fieldContent.attr
       setValue(type)
       form.setFieldsValue({
@@ -170,13 +168,13 @@ const EditFiled = (props: Props) => {
         setChecked(values[0] === 'datetime')
       } else if (type === 'number') {
         setChecked(values[0] === 'integer')
-      } else if (
-        ['user_select', 'user_select_checkbox'].includes(props?.item?.type)
-      ) {
+      } else if (['user_select', 'user_select_checkbox'].includes(type)) {
         setPersonValue(values[0])
       }
-    } else {
-      form.resetFields()
+    } else if (props.isVisible && props.fieldType) {
+      form.setFieldsValue({
+        type: props.fieldType.type,
+      })
       setValue('')
       setPersonValue('')
       setChecked(false)
@@ -185,14 +183,8 @@ const EditFiled = (props: Props) => {
         { value: '', key: new Date().getTime() + 100 },
       ])
     }
-  }, [props?.item])
-  useEffect(() => {
-    if (props.isVisible && props.fieldType) {
-      form.setFieldsValue({
-        type: props.fieldType.type,
-      })
-    }
-  }, [props.isVisible])
+  }, [props?.item, props.isVisible])
+
   const onReset = () => {
     props?.onClose()
     setTimeout(() => {
@@ -245,7 +237,7 @@ const EditFiled = (props: Props) => {
       contentValue = [personValue]
     }
     const obj: any = {
-      projectId: paramsData.id,
+      projectId: projectInfo.id,
       name: form.getFieldValue('name'),
       remarks: form.getFieldValue('remarks') || '',
       content: {
@@ -256,12 +248,11 @@ const EditFiled = (props: Props) => {
 
     if (props?.item?.id) {
       try {
-        obj.id = props?.item?.id
+        obj.id = props?.item?.storyId
         const res: any = await updateStoryConfigField(obj)
         message.success(t('common.editSuccess'))
         onReset()
-        props.onEditUpdate(res.data)
-        props?.onUpdate()
+        props.onEditUpdate()
       } catch (error) {
         //
       }
@@ -275,7 +266,6 @@ const EditFiled = (props: Props) => {
         const payloadList: any = data.payload
         dispatch(setProjectFieIdsData(payloadList))
         onReset()
-        props?.onUpdate()
       } catch (error) {
         //
       }

@@ -3,7 +3,7 @@ import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { setActiveCategory } from '@store/category'
 import { useDispatch } from '@store/index'
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect } from 'react'
 import { MenuItem } from './style'
 const Container = styled.div`
   margin-bottom: 8px;
@@ -79,9 +79,9 @@ const SliderList = (props: any) => {
       clearTimeout(delayedSetZIndexTimeoutId)
       // 注册事件
       document.addEventListener('mousemove', mouseMove)
-      document.addEventListener('mouseup', mouseUp, { once: true })
+      document.addEventListener('mouseup', mouseUp)
       // 开始拖拽
-      setIsDragging(true)
+      // setIsDragging(true)
       setZIndex(1)
       // 记录开始位置
       startY = ev.clientY
@@ -159,30 +159,33 @@ const SliderList = (props: any) => {
 const Sortable = (props: any) => {
   const { list, setList } = props
   return (
-    <div>
+    <div
+      style={{
+        width: '100%',
+        height: '87%',
+        overflowY: 'auto',
+        overflowX: 'hidden',
+      }}
+    >
       {list?.map((child: any, i: number) => (
-        <>
-          <SliderList
-            row={child}
-            key={child.key}
-            index={i}
-            active={child.active}
-            listLength={list.length}
-            onClick={(event: any) => {
-              // event.preventDefault(),
-              // event.stopPropagation(),
-              props.onClick(i)
-            }}
-            onMove={(prevIndex: any, nextIndex: any) => {
-              const newList = [...list]
-              newList.splice(nextIndex, 0, newList.splice(prevIndex, 1)[0])
-              setList(newList)
-              props.onMove(newList)
-            }}
-          >
-            {child}
-          </SliderList>
-        </>
+        <SliderList
+          row={child}
+          key={child.key}
+          index={i}
+          active={child.active}
+          listLength={list.length}
+          onClick={() => {
+            props.onClick(i, child)
+          }}
+          onMove={(prevIndex: any, nextIndex: any) => {
+            const newList = [...list]
+            newList.splice(nextIndex, 0, newList.splice(prevIndex, 1)[0])
+            setList(newList)
+            props.onMove(newList)
+          }}
+        >
+          {child}
+        </SliderList>
       ))}
     </div>
   )

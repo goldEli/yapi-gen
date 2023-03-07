@@ -242,38 +242,42 @@ const AddWrap = styled.div<{ hasColor?: boolean; hasDash?: boolean }>(
   }),
 )
 
-const PriorityWrap = styled.div<{ status?: any }>({
-  display: 'flex',
-  alignItems: 'center',
-  cursor: 'pointer',
-  height: 26,
-  padding: '0 6px',
-  width: 'fit-content',
-  borderRadius: 6,
-  div: {
-    color: 'var(--neutral-n2)',
-    fontSize: 14,
-    marginLeft: 8,
-  },
-  '.icon': {
-    marginLeft: 8,
-    visibility: 'hidden',
-    fontSize: 16,
-    color: 'var(--primary-d2)',
-  },
-  '.priorityIcon': {
-    fontSize: 16,
-    svg: {
-      margin: '0!important',
+const PriorityWrap = styled.div<{ notEdit?: any }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    height: 26,
+    padding: '0 6px',
+    width: 'fit-content',
+    borderRadius: 6,
+    div: {
+      color: 'var(--neutral-n2)',
+      fontSize: 14,
+      marginLeft: 8,
     },
-  },
-  '&: hover': {
-    background: 'var(--hover-d2)',
     '.icon': {
-      visibility: 'visible',
+      marginLeft: 8,
+      visibility: 'hidden',
+      fontSize: 16,
+      color: 'var(--primary-d2)',
+    },
+    '.priorityIcon': {
+      fontSize: 16,
+      svg: {
+        margin: '0!important',
+      },
     },
   },
-})
+  ({ notEdit }) => ({
+    cursor: notEdit ? 'initial' : 'pointer',
+    '&: hover': {
+      background: notEdit ? 'transparent' : 'var(--hover-d2)',
+      '.icon': {
+        visibility: notEdit ? 'hidden' : 'visible',
+      },
+    },
+  }),
+)
 
 // ----------------- 颜色未处理
 const SliderWrap = styled(Slider)<{ isDisabled?: any }>(

@@ -1,11 +1,13 @@
 // 项目二级菜单
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
 import CommonIconFont from '@/components/CommonIconFont'
 import { getProjectInfo, getProjectInfoValues } from '@/services/project'
 import { getCategorySaveSort } from '@/services/demand'
 import { getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectInfo, setProjectInfoValues } from '@store/project'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import EditCategory from './EditCategory'
@@ -26,12 +28,21 @@ import { setStartUsing } from '@store/category'
 // eslint-disable-next-line no-duplicate-imports
 import { getCategoryConfigList } from '@store/category/thunk'
 import { setActiveCategory } from '@store/category/index'
-
+import styled from '@emotion/styled'
+import IconFont from '@/components/IconFont'
+const IconFontStyle = styled(IconFont)({
+  color: 'var(--neutral-n2)',
+  fontSize: '18px',
+  borderRadius: '6px',
+  padding: '5px',
+  '&: hover': {
+    background: 'var(--hover-d1)',
+    cursor: 'pointer',
+  },
+})
 const ProjectDetailSide = (props: { onClick(): void }) => {
   const [t] = useTranslation()
-  const { startUsing, categoryList, activeCategory } = useSelector(
-    store => store.category,
-  )
+  const { startUsing, categoryList } = useSelector(store => store.category)
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -63,24 +74,47 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
   const getList = async () => {
     await dispatch(storyConfigCategoryList({ projectId: paramsData.id }))
   }
+  // 监听跟新
+  const watchDataList = () => {
+    let dataItem = null
+    if (startUsing) {
+      dataItem = categoryList
+        ?.filter((el: any) => el.status === 1)
+        .map((el: any, index: number) => ({
+          ...el,
+          active: index === 0 ? true : false,
+        }))
+    } else {
+      dataItem = categoryList
+        ?.filter((el: any) => el.status !== 1)
+        .map((el: any, index: number) => ({
+          ...el,
+          active: index === 0 ? true : false,
+        }))
+    }
+    dispatch(setActiveCategory(dataItem.find((el: any) => el.active)))
+    setList(dataItem)
+  }
   // 需求类别中间列表
   const getCategoryConfig = async (dataItem: any) => {
     const itemId = dataItem?.find((item: any) => item.active)?.id
-    itemId &&
-      projectId &&
-      (await dispatch(
+    watchDataList()
+    if (itemId && projectId) {
+      await dispatch(
         getCategoryConfigList({
           projectId: projectId,
           categoryId: itemId,
         }),
-      ))
+      )
+    }
   }
 
   useEffect(() => {
+    getList()
     getInfo()
     getProjectInfoValuesData()
-    getList()
   }, [])
+
   //   返回上一页
   const onGoBack = () => {
     props.onClick()
@@ -95,44 +129,34 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
   }
   useEffect(() => {
     setTabsActive(startUsing ? 0 : 1)
-    if (categoryList?.length >= 1) {
-      let dataItem = null
-      if (startUsing) {
-        dataItem = categoryList
-          ?.filter((el: any) => el.status === 1)
-          .map((el: any, index: number) => ({
-            ...el,
-            active: index === 0 ? true : false,
-          }))
-      } else {
-        dataItem = categoryList
-          ?.filter((el: any) => el.status !== 1)
-          .map((el: any, index: number) => ({
-            ...el,
-            active: index === 0 ? true : false,
-          }))
-      }
-      setList(dataItem)
-      if (dataItem) {
-        getCategoryConfig(dataItem)
-      }
-      dispatch(setActiveCategory(dataItem.find((item: any) => item.active)))
+    let dataItem = null
+    if (startUsing) {
+      dataItem = categoryList
+        ?.filter((el: any) => el.status === 1)
+        .map((el: any, index: number) => ({
+          ...el,
+          active: index === 0 ? true : false,
+        }))
+    } else {
+      dataItem = categoryList
+        ?.filter((el: any) => el.status !== 1)
+        .map((el: any, index: number) => ({
+          ...el,
+          active: index === 0 ? true : false,
+        }))
     }
+    getCategoryConfig(dataItem)
+    dispatch(setActiveCategory(dataItem.find((el: any) => el.active)))
   }, [startUsing, categoryList])
+  // 切换tab
   const getTabsActive = async (index: any) => {
     dispatch(setStartUsing(index === 0 ? true : false))
     setTabsActive(index)
+    watchDataList()
   }
-  // useEffect(() => {
-  //   if (activeCategory?.id && projectId) {
-  //     dispatch(
-  //       getCategoryConfigList({
-  //         projectId: projectId,
-  //         categoryId: activeCategory.id,
-  //       }),
-  //     )
-  //   }
-  // }, [activeCategory])
+  useEffect(() => {
+    watchDataList()
+  }, [categoryList])
   return (
     <AllWrap>
       <WrapSet>
@@ -150,11 +174,10 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
         <Provider />
         <TitleStyle onClick={() => setIsVisible(true)}>
           <span>需求类别</span>{' '}
-          <CommonIconFont
-            type="plus"
+          {/*  type="plus"
             color="var(--neutral-n2)"
-            onClick={() => 123}
-          />
+            onClick={() => 123 */}
+          <IconFontStyle type="plus" />
         </TitleStyle>
         <Tabs>
           {tabs.map((el, index) => (
@@ -171,11 +194,13 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
           <Dragging
             list={list}
             setList={setList}
-            onClick={(i: number) => {
-              getCategoryConfigList({
-                projectId: projectId,
-                categoryId: activeCategory.id,
-              }),
+            onClick={(i: number, child: any) => {
+              dispatch(
+                getCategoryConfigList({
+                  projectId: projectId,
+                  categoryId: child.id,
+                }),
+              ),
                 setList(
                   list.map((el: any, index: any) => ({
                     ...el,
@@ -190,6 +215,7 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
       <EditCategory
         onClose={() => setIsVisible(false)}
         onUpdate={() => getList()}
+        item={null}
         isVisible={isVisible}
       />
     </AllWrap>

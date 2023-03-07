@@ -31,6 +31,7 @@ const ItemList = styled.div`
   padding: 0 16px;
   border-radius: 6px;
   justify-content: space-between;
+  z-index: 999;
   &:hover {
     background: var(--neutral-white-d6);
     box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
@@ -145,6 +146,7 @@ const SliderList = (props: any) => {
     let delayedSetZIndexTimeoutId: any = null
     const mouseMove = (ev: any) => {
       ev.preventDefault()
+      ev.stopPropagation()
       // 获取元素 Rect 并更新 Ref
       const rect = el.getBoundingClientRect()
       prevRectRef.current = rect
@@ -174,6 +176,7 @@ const SliderList = (props: any) => {
     }
     const mouseUp = (ev: any) => {
       ev.preventDefault()
+      ev.stopPropagation()
       document.removeEventListener('mousemove', mouseMove)
       // 重置 Top
       setTop(0)
@@ -184,14 +187,16 @@ const SliderList = (props: any) => {
         setZIndex(0)
       }, 200)
     }
+
     const mouseDown = (ev: any) => {
       ev.preventDefault()
+      ev.stopPropagation()
       clearTimeout(delayedSetZIndexTimeoutId)
       // 注册事件
       document.addEventListener('mousemove', mouseMove)
       document.addEventListener('mouseup', mouseUp, { once: true })
       // 开始拖拽
-      setIsDragging(true)
+      // setIsDragging(true)
       setZIndex(1)
       // 记录开始位置
       startY = ev.clientY
@@ -307,10 +312,8 @@ const SliderList = (props: any) => {
           <RightOperate>
             <CheckboxStyle
               checked={child?.isRequired === 1 ? true : false}
-              onChange={e => {
-                e.preventDefault(),
-                  e.stopPropagation(),
-                  props.onChangeChecked(e.target.checked)
+              onClick={(e: any) => {
+                e.stopPropagation(), props.onChangeChecked(e, e.target.checked)
               }}
             />
             <Text>必填</Text>
@@ -343,17 +346,21 @@ const Sortable = (props: any) => {
         <div
           key={child.id}
           onDrop={(event: any) => props.onDrop(event, i)}
-          onClick={() => {
-            child.isCustomize === 1 && props.onClick(i, child)
+          onClick={(event: any) => {
+            event.preventDefault(),
+              event.stopPropagation(),
+              child.isCustomize === 1 && props.onClick(i, child)
           }}
         >
           <SliderList
             key={child.id}
             index={i}
             child={child}
-            onChangeChecked={(val: boolean) =>
-              props.onChangeChecked(val, child)
-            }
+            onChangeChecked={(event: any, val: boolean) => {
+              event.stopPropagation(),
+                event.preventDefault(),
+                props.onChangeChecked(val, child)
+            }}
             onDelete={() => props.onDelete(child)}
             listLength={list.length}
             onMove={(prevIndex: any, nextIndex: any) => {

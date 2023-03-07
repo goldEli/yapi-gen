@@ -453,7 +453,7 @@ const GlobalStyle = () => {
       background-color: #d5d6d9 !important;
     }
     .ant-switch-checked {
-      background-color: #2877ff !important;
+      background-color: var(--primary-d2) !important;
     }
     .row-dragging td {
       padding: 16px;
