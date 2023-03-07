@@ -23,7 +23,6 @@ const Container = styled.div<{ color?: string; bgColor?: string }>(
   }),
 )
 const ListItemStyle = styled.div`
-  width: 108px;
   font-size: var(--font14);
   font-weight: 400;
   color: var(--neutral-n1-d1);
@@ -270,7 +269,16 @@ const Sortable = (props: any) => {
           }}
           value={child}
         >
-          {child.name}
+          <div
+            style={{
+              width: '108px',
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            {child.name}
+          </div>
         </SliderList>
       ))}
     </div>
