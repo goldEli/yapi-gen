@@ -532,11 +532,12 @@ const StatusWrap = styled.div<{ isShow?: boolean; state?: number }>(
   {
     height: 22,
     borderRadius: 6,
-    padding: '0 8px',
+    fontSize: '12px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 'fit-content',
+    width: '50px',
+    cursor: 'pointer',
   },
   ({ isShow, state }) => ({
     cursor: isShow ? 'pointer' : 'inherit',

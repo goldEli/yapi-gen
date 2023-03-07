@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-no-useless-fragment */
+/* eslint-disable no-negated-condition */
 // 公司成员主页
 
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -30,6 +32,8 @@ import InputSearch from '@/components/InputSearch'
 import PaginationBox from '@/components/TablePagination'
 import SetShowField from '@/components/SetShowField/indedx'
 import { useNavigate } from 'react-router-dom'
+import HandOverModal from '@/components/HandOverModal'
+import DeleteConfirm from '@/components/DeleteConfirm'
 
 export const tableWrapP = css`
   display: flex;
@@ -97,6 +101,9 @@ const StaffManagement = () => {
   const [isStaffPersonalVisible, setIsStaffPersonalVisible] =
     useState<boolean>(false)
   const [isVisibleFields, setIsVisibleFields] = useState(false)
+  const [isVisibleFieldsA, setIsVisibleFieldsA] = useState(false)
+  const [isVisibleFieldsB, setIsVisibleFieldsB] = useState(false)
+  const [isVisibleFieldsC, setIsVisibleFieldsC] = useState(false)
   const [titleList, setTitleList] = useState<CheckboxValueType[]>([
     'nickname',
     'name',
@@ -151,6 +158,10 @@ const StaffManagement = () => {
     setEditData(e)
     setIsStaffPersonalVisible(true)
   }
+  const controlStaffPersonalVisibleA = (e: any) => {
+    setEditData(e)
+    setIsVisibleFieldsA(true)
+  }
   const closeStaffPersonal = async (e: any) => {
     const res = await updateStaff(e)
 
@@ -180,6 +191,14 @@ const StaffManagement = () => {
           label: (
             <div onClick={() => controlStaffPersonalVisible(record)}>
               {t('staff.setPermission')}
+            </div>
+          ),
+        },
+        {
+          key: '12',
+          label: (
+            <div onClick={() => controlStaffPersonalVisibleA(record)}>
+              离职交接
             </div>
           ),
         },
@@ -213,12 +232,7 @@ const StaffManagement = () => {
         width: 40,
         render: (_text: any, record: any) => {
           return (
-            <div
-              hidden={getIsPermission(
-                userInfo?.company_permissions,
-                'b/user/update',
-              )}
-            >
+            <div>
               <MoreDropdown menu={menuTable(record)} />
             </div>
           )
@@ -234,7 +248,7 @@ const StaffManagement = () => {
         render: (_text: string, record: any) => {
           return (
             <>
-              {hasCheck ? (
+              {!hasCheck ? (
                 '--'
               ) : (
                 <span
@@ -339,6 +353,11 @@ const StaffManagement = () => {
   if (!loadingState) {
     return <Loading />
   }
+
+  const onConfirm = () => {
+    // console.log(1)
+  }
+
   return (
     // <PermissionWrap
     //   auth="b/user/list"
@@ -444,6 +463,22 @@ const StaffManagement = () => {
           isVisible={isModalVisible}
           onClose={close2}
           getCheckList={getCheckList}
+        />
+        <HandOverModal
+          close={() => setIsVisibleFieldsA(false)}
+          visible={isVisibleFieldsA}
+        />
+        <DeleteConfirm
+          title="离职交接"
+          text="张三目前未参与任何项目，确认将【张三】工作交接，交接后他的交接状态将更改为已交接；已经交接状态不可被项目添加及进行员工权限配置"
+          onConfirm={onConfirm}
+          isVisible={isVisibleFieldsB}
+        />
+        <DeleteConfirm
+          title="恢复交接状态"
+          text="确认将【张三】的交接状态更改为正常状态"
+          onConfirm={onConfirm}
+          isVisible={isVisibleFieldsC}
         />
         <StaffPersonal
           data={editData}
