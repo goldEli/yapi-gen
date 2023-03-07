@@ -266,11 +266,13 @@ const SliderList = (props: any) => {
                       ?.icon
                   }
                   size={24}
-                  color="var(--neutral-n3)"
+                  color="var(--neutral-n1-d1)"
                 />
               </IconBox>
               <ListMsg>
-                <div>{child?.title}</div>
+                <div>
+                  {child?.title}=={child?.fieldContent?.attr}
+                </div>
                 <div>
                   {
                     option.find(item => child?.fieldContent?.attr === item.type)
@@ -296,7 +298,7 @@ const SliderList = (props: any) => {
                     ?.icon
                 }
                 size={24}
-                color="var(--neutral-n3)"
+                color="var(--neutral-n1-d1)"
               />
             </IconBox>
             <ListMsg>
