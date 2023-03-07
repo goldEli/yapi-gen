@@ -299,9 +299,10 @@ const ChildDemand = () => {
     dispatch(setIsCreateDemandVisible(true))
     dispatch(
       setCreateDemandProps({
-        projectId: item.project_id,
+        projectId: item.project_id ?? item.projectId,
         isChild: true,
         parentId: item.id,
+        categoryId: item.categoryId ?? item.category,
       }),
     )
   }
@@ -356,7 +357,7 @@ const ChildDemand = () => {
           <div />
         ) : (
           <SecondButton
-            onClick={() => setIsVisible(true)}
+            onClick={() => onCreateChild(demandInfo)}
             icon={<IconFont type="plus" />}
           >
             {t('project.addChildDemand')}

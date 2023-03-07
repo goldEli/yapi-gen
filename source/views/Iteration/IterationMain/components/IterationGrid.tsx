@@ -83,6 +83,7 @@ interface Props {
   isSpinning?: boolean
   hasId: any
   onUpdate(): void
+  iterateId: any
 }
 
 const IterationGrid = (props: Props) => {

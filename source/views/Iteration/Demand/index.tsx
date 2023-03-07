@@ -183,7 +183,10 @@ const DemandWrap = (props: Props) => {
   const onEditChange = (item: any) => {
     dispatch(setIsCreateDemandVisible(true))
     dispatch(
-      setCreateDemandProps({ demandId: item.id, projectId: item.project_id }),
+      setCreateDemandProps({
+        demandId: item.id,
+        projectId: item.project_id,
+      }),
     )
   }
 
@@ -325,9 +328,8 @@ const DemandWrap = (props: Props) => {
 
   const onCreateDemand = () => {
     dispatch(setFilterParamsModal(filterParams))
-    setTimeout(() => {
-      setIsVisible(true)
-    }, 100)
+    dispatch(setIsCreateDemandVisible(true))
+    dispatch(setCreateDemandProps({ projectId, iterateId: iterateInfo?.id }))
   }
 
   return (

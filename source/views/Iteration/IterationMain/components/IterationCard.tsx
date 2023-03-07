@@ -6,11 +6,15 @@ import { useState } from 'react'
 import styled from '@emotion/styled'
 import { Menu, Progress } from 'antd'
 import { getIsPermission } from '@/tools'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { useTranslation } from 'react-i18next'
 import CommonIconFont from '@/components/CommonIconFont'
 import MoreDropdown from '@/components/MoreDropdown'
 import IterationStatus from '../../components/IterationStatus'
+import {
+  setCreateIterationParams,
+  setIsCreateIterationVisible,
+} from '@store/iterate'
 
 const DetailWrap = styled.div`
   font-size: var(--font12);
@@ -104,6 +108,7 @@ interface Props {
 
 const IterationCard = (props: Props) => {
   const [t] = useTranslation()
+  const dispatch = useDispatch()
   const [isVisible, setIsVisible] = useState(false)
   const { projectInfo } = useSelector(store => store.project)
 
@@ -123,7 +128,8 @@ const IterationCard = (props: Props) => {
   const onClickMenu = (e: any, type: any) => {
     setIsVisible(false)
     if (type === 'edit') {
-      props?.onChangeEdit(e, props?.item)
+      dispatch(setIsCreateIterationVisible(true))
+      dispatch(setCreateIterationParams(props?.item))
     } else if (type === 'del') {
       props?.onChangeDelete(e, props?.item)
     }

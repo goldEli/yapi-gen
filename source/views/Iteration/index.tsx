@@ -4,7 +4,6 @@
 /* eslint-disable complexity */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
-import EditIteration from './components/EditIteration'
 import IterationMain from './IterationMain'
 import IterationInfo from './IterationInfo'
 import ChangeRecord from './ChangeRecord'
@@ -33,7 +32,11 @@ import {
   getIterateInfo,
   updateIterateStatus,
 } from '@/services/iterate'
-import { setIterateInfo } from '@store/iterate'
+import {
+  setCreateIterationParams,
+  setIsCreateIterationVisible,
+  setIterateInfo,
+} from '@store/iterate'
 import SetShowField from '@/components/SetShowField/indedx'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
 
@@ -331,8 +334,8 @@ const Iteration = () => {
   }
 
   const onChangeEditVisible = () => {
-    setIsVisible(!isVisible)
-    setOperationDetail(iterateInfo)
+    dispatch(setIsCreateIterationVisible(true))
+    dispatch(setCreateIterationParams(iterateInfo))
   }
 
   const onChangeStatus = async (val: number) => {
@@ -533,21 +536,7 @@ const Iteration = () => {
     )
   }
 
-  const onUpdate = (value: any) => {
-    setIsUpdateState(value)
-  }
-
-  return (
-    <Wrap>
-      <EditIteration
-        visible={isVisible}
-        onChangeVisible={() => onChangeVisible('clear')}
-        id={operationDetail.id}
-        onUpdate={onUpdate}
-      />
-      {content()}
-    </Wrap>
-  )
+  return <Wrap>{content()}</Wrap>
 }
 
 export default Iteration

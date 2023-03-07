@@ -67,6 +67,7 @@ interface Props {
   isSpinning?: boolean
   hasId: any
   onUpdate(updateState?: boolean): void
+  iterateId: any
 }
 
 const IterationTable = (props: Props) => {
@@ -230,6 +231,7 @@ const IterationTable = (props: Props) => {
         projectId: item.project_id,
         isChild: true,
         parentId: item.id,
+        iterateId: props.iterateId,
       }),
     )
   }
@@ -395,9 +397,8 @@ const IterationTable = (props: Props) => {
 
   const onCreateDemand = () => {
     dispatch(setFilterParamsModal(filterParams))
-    setTimeout(() => {
-      setIsEdit(true)
-    }, 100)
+    dispatch(setIsCreateDemandVisible(true))
+    dispatch(setCreateDemandProps({ projectId, iterateId: props.iterateId }))
   }
 
   return (

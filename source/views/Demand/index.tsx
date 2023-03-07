@@ -39,7 +39,9 @@ import {
   updateDemandStatus,
 } from '@/services/demand'
 import {
+  setCreateDemandProps,
   setDemandInfo,
+  setIsCreateDemandVisible,
   setIsRefreshComment,
   setIsUpdateStatus,
 } from '@store/demand'
@@ -253,8 +255,14 @@ const DemandBox = () => {
   }
 
   const onEdit = () => {
-    setIsVisible(!isVisible)
-    setOperationItem(demandInfo)
+    dispatch(setIsCreateDemandVisible(true))
+    dispatch(
+      setCreateDemandProps({
+        demandId: demandInfo.id,
+        projectId: demandInfo.projectId,
+        isInfo: true,
+      }),
+    )
   }
 
   const onDeleteConfirm = async () => {
