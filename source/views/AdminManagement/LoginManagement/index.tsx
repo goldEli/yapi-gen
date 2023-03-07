@@ -18,6 +18,7 @@ import { useSelector } from '@store/index'
 import PermissionWrap from '@/components/PermissionWrap'
 import IconFont from '@/components/IconFont'
 import PaginationBox from '@/components/TablePagination'
+import ResizeTable from '@/components/ResizeTable'
 
 const Header = styled.div({
   height: 'auto',
@@ -55,18 +56,8 @@ const SelectWrap = styled(Select)`
 `
 
 const Content = styled.div({
-  padding: '0px 24px 24px',
-  height: 'calc(100% - 128px)',
-})
-
-const DataWrap = styled.div({
-  height: 'calc(100% - 64px)',
-  background: 'white',
-  overflowX: 'auto',
-  borderRadius: 4,
-  '.ant-table-thead > tr > th': {
-    border: 'none',
-  },
+  padding: '0px 24px 0px',
+  height: 'calc(100vh - 262px)',
 })
 
 const StatusWrap = styled.div({
@@ -188,7 +179,7 @@ const LoginManagement = () => {
         </NewSort>
       ),
       dataIndex: 'id',
-      width: 160,
+      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -205,7 +196,7 @@ const LoginManagement = () => {
         </NewSort>
       ),
       dataIndex: 'username',
-      width: 160,
+      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -222,7 +213,7 @@ const LoginManagement = () => {
         </NewSort>
       ),
       dataIndex: 'nickname',
-      width: 160,
+      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -273,7 +264,7 @@ const LoginManagement = () => {
         </NewSort>
       ),
       dataIndex: 'client',
-      width: 160,
+      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -290,7 +281,7 @@ const LoginManagement = () => {
         </NewSort>
       ),
       dataIndex: 'system',
-      width: 160,
+      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -307,7 +298,6 @@ const LoginManagement = () => {
         </NewSort>
       ),
       dataIndex: 'status',
-      width: 160,
       render: (text: number) => {
         return (
           <StatusWrap>
@@ -337,12 +327,20 @@ const LoginManagement = () => {
     getList({ page, size }, order)
   }
 
+  const onValuesChange = () => {
+    getList(pageObj, order)
+  }
+
   return (
     <PermissionWrap
       auth="b/company/login_logs"
       permission={userInfo?.company_permissions}
     >
-      <Form style={{ height: '100%' }} form={form}>
+      <Form
+        style={{ height: '100%' }}
+        form={form}
+        onValuesChange={onValuesChange}
+      >
         <Header>
           <div className="label">{t('setting.loginLog')}</div>
           <SearchWrap size={16}>
@@ -391,27 +389,13 @@ const LoginManagement = () => {
           </SearchWrap>
         </Header>
         <Content>
-          <DataWrap ref={dataWrapRef}>
-            <Spin spinning={isSpinning}>
-              {!!dataList?.list &&
-                (dataList?.list?.length > 0 ? (
-                  <TableStyleBox
-                    rowKey="id"
-                    columns={columns}
-                    dataSource={dataList.list}
-                    pagination={false}
-                    scroll={{
-                      x: 'max-content',
-                      y: tableY,
-                    }}
-                    tableLayout="auto"
-                    showSorterTooltip={false}
-                  />
-                ) : (
-                  <NoData />
-                ))}
-            </Spin>
-          </DataWrap>
+          <ResizeTable
+            dataWrapNormalHeight="100%"
+            col={columns}
+            dataSource={dataList.list}
+            noData={<NoData />}
+            isSpinning={isSpinning}
+          />
 
           <PaginationBox
             total={dataList.total}

@@ -16,7 +16,6 @@ import CommonModal from '@/components/CommonModal'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import ExportDemand from './ExportDemand'
 import ImportDemand from './ImportDemand'
-import { CanOperationCategory } from '@/components/StyleCommon'
 import { useDispatch, useSelector } from '@store/index'
 import { setFilterKeys, setFilterParamsModal } from '@store/project'
 import {
@@ -332,15 +331,6 @@ const Operation = (props: Props) => {
                 alt=""
               />
               <span>{k.content}</span>
-              {/* <CanOperationCategory
-              style={{ marginRight: 0 }}
-              color={k.color}
-              bgColor={
-                colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
-              }
-            >
-              <span className="title">{k.content}</span>1
-            </CanOperationCategory> */}
             </LiWrap>
           )
         })}
@@ -370,7 +360,6 @@ const Operation = (props: Props) => {
         padding: '4px 0',
         display: 'flex',
         flexDirection: 'column',
-        background: 'red',
       }}
     >
       {hasImport || projectInfo?.status !== 1 ? null : (

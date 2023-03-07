@@ -27,11 +27,9 @@ const DataWrap = styled.div({
 })
 
 const StatusItemsWrap = styled.div({
-  width: 316,
+  width: 302,
   height: '100%',
   background: 'white',
-  padding: '0 24px 16px 24px',
-  borderRadius: 6,
   display: 'flex',
   flexDirection: 'column',
   overflowY: 'auto',
@@ -40,17 +38,33 @@ const StatusItemsWrap = styled.div({
   },
 })
 
-const Title = styled.div({
-  fontSize: 14,
-  fontWeight: 400,
-  color: 'black',
-  position: 'sticky',
-  top: 0,
-  background: 'white',
-  paddingTop: 16,
-  zIndex: 6,
-  width: '100%',
-})
+const Title = styled.div<{ state?: number }>(
+  {
+    height: 48,
+    display: 'flex',
+    alignItems: 'center',
+    fontSize: 'var(--font14)',
+    color: 'var(--neutral-n1-d1)',
+    div: {
+      width: 8,
+      height: 8,
+      borderRadius: 2,
+      marginRight: 8,
+    },
+  },
+  ({ state }) => ({
+    div: {
+      background:
+        state === 1
+          ? 'var(--auxiliary-b1)'
+          : state === 2
+          ? 'var(--neutral-n7)'
+          : state === 3
+          ? 'var(--function-success)'
+          : '',
+    },
+  }),
+)
 
 const SpaceWrap = styled(Space)({
   display: 'flex',
@@ -60,6 +74,14 @@ const SpaceWrap = styled(Space)({
     height: '100%',
   },
 })
+
+const CardGroup = styled.div`
+  width: 100%;
+  padding: 16px;
+  background: var(--neutral-n9);
+  height: calc(100% - 48px);
+  overflow: auto;
+`
 
 interface Props {
   data: any
@@ -96,6 +118,8 @@ const DemandGrid = (props: Props) => {
           list: i.list,
           count: i.count,
           id: i.id,
+          isStart: i.isStart,
+          isEnd: i.isEnd,
         })),
       )
     }
@@ -106,6 +130,15 @@ const DemandGrid = (props: Props) => {
     openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id)
   }
 
+  const getColor = (id: any) => {
+    const current = dataList?.filter((item: any) => item.id === id)[0]
+    return current?.isStart === 1 && current?.isEnd === 2
+      ? 1
+      : current?.isEnd === 1 && current?.isStart === 2
+      ? 2
+      : 3
+  }
+
   return (
     <Content>
       <DataWrap>
@@ -113,36 +146,40 @@ const DemandGrid = (props: Props) => {
           <SpaceWrap size={20}>
             {basicStatus?.map((k: any) => (
               <StatusItemsWrap key={k.id}>
-                <Title>
+                <Title state={getColor(k.id)}>
+                  <div />
                   {k.content_txt}(
                   {dataList?.filter((item: any) => item.id === k.id)[0]?.count})
                 </Title>
-                {!!dataList?.filter((item: any) => item.id === k.id)[0]?.list &&
-                  (dataList?.filter((item: any) => item.id === k.id)[0]?.list
-                    .length > 0 ? (
-                    dataList
-                      ?.filter((item: any) => item.id === k.id)[0]
-                      ?.list?.map((i: any, idx: any) => (
-                        <DemandCard
-                          key={i.id}
-                          onChangeDelete={props?.onDelete}
-                          onChangeEdit={props?.onChangeVisible}
-                          item={i}
-                          onClickItem={() =>
-                            onClickItem(
-                              i,
-                              dataList?.filter(
-                                (item: any) => item.id === k.id,
-                              )[0]?.list,
-                            )
-                          }
-                          indexVal={idx}
-                          onUpdate={() => props?.onUpdate(true)}
-                        />
-                      ))
-                  ) : (
-                    <NoData />
-                  ))}
+                <CardGroup>
+                  {!!dataList?.filter((item: any) => item.id === k.id)[0]
+                    ?.list &&
+                    (dataList?.filter((item: any) => item.id === k.id)[0]?.list
+                      .length > 0 ? (
+                      dataList
+                        ?.filter((item: any) => item.id === k.id)[0]
+                        ?.list?.map((i: any, idx: any) => (
+                          <DemandCard
+                            key={i.id}
+                            onChangeDelete={props?.onDelete}
+                            onChangeEdit={props?.onChangeVisible}
+                            item={i}
+                            onClickItem={() =>
+                              onClickItem(
+                                i,
+                                dataList?.filter(
+                                  (item: any) => item.id === k.id,
+                                )[0]?.list,
+                              )
+                            }
+                            indexVal={idx}
+                            onUpdate={() => props?.onUpdate(true)}
+                          />
+                        ))
+                    ) : (
+                      <NoData />
+                    ))}
+                </CardGroup>
               </StatusItemsWrap>
             ))}
           </SpaceWrap>

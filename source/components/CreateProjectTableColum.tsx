@@ -29,6 +29,7 @@ import TableQuickEdit from './TableQuickEdit'
 import { getCustomNormalValue } from '@/tools'
 import TableColorText from './TableColorText'
 import StateTag from './StateTag'
+import DemandProgress from './DemandProgress'
 
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
   {
@@ -120,6 +121,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="name">{t('common.title')}</NewSort>,
       dataIndex: 'name',
       key: 'name',
+      width: 400,
       render: (text: string | number, record: any) => {
         return (
           <div
@@ -177,6 +179,8 @@ export const useDynamicColumns = (state: any) => {
       key: 'status',
       width: 190,
       render: (text: any, record: any) => {
+        console.log(record)
+
         return (
           <ChangeStatusPopover
             isCanOperation={isCanEdit && !record.isExamine}
@@ -187,6 +191,7 @@ export const useDynamicColumns = (state: any) => {
             <StateTag
               onClick={record.isExamine ? onExamine : void 0}
               isShow={isCanEdit || record.isExamine}
+              name={record.status.status.content}
               state={
                 text?.is_start === 1 && text?.is_end === 2
                   ? 1
@@ -384,13 +389,12 @@ export const useDynamicColumns = (state: any) => {
               record.status.is_start !== 1 &&
               record.status.is_end !== 1 && (
                 <div style={{ cursor: 'pointer' }}>
-                  12
-                  {/* <DemandProgress
+                  <DemandProgress
                     value={record.schedule}
                     row={record}
                     onUpdate={() => onUpdate(record)}
                     index={index}
-                  /> */}
+                  />
                 </div>
               )}
             {!(

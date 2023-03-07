@@ -37,13 +37,20 @@ import { setIterateInfo } from '@store/iterate'
 import SetShowField from '@/components/SetShowField/indedx'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
 
+const Wrap = styled.div`
+  height: 100%;
+  display: flex;
+  padding: 20px 24px 0 24px;
+  flex-direction: column;
+`
+
 const DemandInfoWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  height: 64,
+  height: 32,
   background: 'white',
-  padding: '0 24px',
+  margin: '20px 0 6px 0',
 })
 
 const NameWrap = styled.div({
@@ -60,7 +67,7 @@ const NameWrap = styled.div({
 const ContentWrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  height: 'calc(100% - 64px)',
+  height: 'calc(100% - 80px)',
 })
 
 const MainWrap = styled.div({
@@ -531,7 +538,7 @@ const Iteration = () => {
   }
 
   return (
-    <>
+    <Wrap>
       <EditIteration
         visible={isVisible}
         onChangeVisible={() => onChangeVisible('clear')}
@@ -539,7 +546,7 @@ const Iteration = () => {
         onUpdate={onUpdate}
       />
       {content()}
-    </>
+    </Wrap>
   )
 }
 

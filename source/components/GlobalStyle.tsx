@@ -71,6 +71,12 @@ const GlobalStyle = () => {
       --function-error: #ff5c5e;
       --function-warning: #fa9746;
       --neutral-transparent-n1-d1: rgba(50, 50, 51, 0.4);
+      --function-tag1: rgba(161, 118, 251, 0.1);
+      --function-tag2: rgba(67, 186, 154, 0.1);
+      --function-tag3: rgba(255, 92, 94, 0.1);
+      --function-tag4: rgba(250, 151, 70, 0.1);
+      --function-tag5: rgba(102, 136, 255, 0.1);
+      --function-tag6: rgba(150, 151, 153, 0.1);
     }
   `
   const black = css`
@@ -135,6 +141,12 @@ const GlobalStyle = () => {
       --function-error: #ff5c5e;
       --function-warning: #fa9746;
       --neutral-transparent-n1-d1: rgba(50, 50, 51, 0.4);
+      --function-tag1: rgba(161, 118, 251, 0.1);
+      --function-tag2: rgba(67, 186, 154, 0.1);
+      --function-tag3: rgba(255, 92, 94, 0.1);
+      --function-tag4: rgba(250, 151, 70, 0.1);
+      --function-tag5: rgba(102, 136, 255, 0.1);
+      --function-tag6: rgba(150, 151, 153, 0.1);
     }
   `
   const colors = [white, black]

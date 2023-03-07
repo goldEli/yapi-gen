@@ -10,6 +10,7 @@ import {
   TextBlueWrap,
   TextWrap,
   title1Css,
+  title1Css1,
   title2Css,
   titleCss,
 } from '@/components/StyleCommon'
@@ -56,7 +57,7 @@ const Iteration = (props: any) => {
       <TextWrap>
         <TextBlueWrap>
           <ChartsItem>
-            <span className={title1Css}>{data?.total ?? 0}</span>
+            <span className={title1Css1}>{data?.total ?? 0}</span>
             <span className={title2Css}>{t('common.createIterate')}</span>
           </ChartsItem>
         </TextBlueWrap>

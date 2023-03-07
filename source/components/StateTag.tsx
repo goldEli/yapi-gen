@@ -2,7 +2,7 @@ import React from 'react'
 import { StatusWrap } from './StyleCommon'
 
 const StateTag = (props: any) => {
-  const { state } = props
+  const { state, name } = props
 
   return (
     <StatusWrap
@@ -10,13 +10,7 @@ const StateTag = (props: any) => {
       isShow={props.isShow}
       state={props.state}
     >
-      {state === 1
-        ? '待办'
-        : state === 2
-        ? '已完成'
-        : state === 3
-        ? '进行中'
-        : ''}
+      {name}
     </StatusWrap>
   )
 }

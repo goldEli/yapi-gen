@@ -20,6 +20,8 @@ import IconFont from './IconFont'
 import { useDispatch, useSelector } from '@store/index'
 import { DemandOperationDropdownMenu } from './DemandComponent/DemandOperationDropdownMenu'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
+import CommonUserAvatar from './CommonUserAvatar'
+import CommonIconFont from './CommonIconFont'
 
 interface Props {
   item: any
@@ -30,39 +32,34 @@ interface Props {
   onUpdate(state: any): void
 }
 
-const Wrap = styled.div({
-  width: '100%',
-  height: 126,
-  background: 'white',
-  borderRadius: 6,
-  border: '1px solid #EBEDF0',
-  borderLeft: 'none',
-  position: 'relative',
-  marginTop: 16,
-  overflow: 'hidden',
-  '.dropdownIcon': {
-    position: 'absolute',
-    top: 16,
-    right: 0,
-  },
-  '&: hover': {
-    border: '1px solid #2877ff',
-    borderLeft: 'none',
-  },
-})
+const Wrap = styled.div`
+  height: 90px;
+  background: var(--neutral-white-d2);
+  border-radius: 6px;
+  margin-bottom: 8px;
+`
 
-const WrapBorder = styled.div({
-  position: 'absolute',
-  left: 0,
-  height: '100%',
-  width: 4,
-  background: '#BBBDBF',
-})
+const DemandNameBox = styled.div`
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 0 8px 0 16px;
+  .dropdownIcon {
+    position: absolute;
+    right: 4px;
+    z-index: 9;
+  }
+  img {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+  }
+`
 
 const MainWrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  padding: 16,
+  padding: '16px 0',
 })
 
 const AvatarWrap = styled.div({
@@ -70,49 +67,46 @@ const AvatarWrap = styled.div({
   alignItems: 'center',
   justifyContent: 'space-between',
   marginTop: 12,
+  padding: '0 16px 0 16px',
 })
 
 const NameGroup = styled.div({
   display: 'flex',
   alignItems: 'center',
-  '.item': {
-    width: 32,
-    height: 32,
-    borderRadius: '50%',
-    overflow: 'hidden',
-    boxSizing: 'border-box',
-    background: '#619BFF',
-    border: '1px solid white',
-    color: 'white',
-    fontSize: 12,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    whiteSpace: 'nowrap',
-  },
   '.more': {
-    width: 32,
-    height: 32,
+    width: 26,
+    height: 26,
     borderRadius: '50%',
     border: '1px solid white',
-    background: '#B9BAC7',
-    fontSize: 16,
-    color: 'white',
+    background: 'var(--neutral-n7)',
+    fontSize: 12,
+    color: 'var(--neutral-n2)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    marginLeft: -10,
+    marginLeft: -7,
     zIndex: 4,
   },
 })
 
+const IconBox = styled.div<{ backgroundColor: string }>`
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: ${props => `var(${props.backgroundColor})`};
+`
+
 const DemandCard = (props: Props) => {
   const [t] = useTranslation()
   const { userInfo } = useSelector(store => store.user)
+  const { tagOrPriority } = useSelector(store => store.global)
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   // 控制移入移除显示三个点
   const [isHoverVisible, setIsHoverVisible] = useState(false)
-  const { projectInfo, colorList } = useSelector(store => store.project)
+  const { projectInfo } = useSelector(store => store.project)
   const dispatch = useDispatch()
 
   const hasEdit = getIsPermission(
@@ -179,20 +173,9 @@ const DemandCard = (props: Props) => {
           setIsMoreVisible(false)
         }}
       >
-        <WrapBorder style={{ background: props.item?.priority?.color }} />
         <MainWrap>
-          <CategoryWrap
-            color={props?.item?.categoryColor}
-            bgColor={
-              colorList?.filter(
-                (i: any) => i.key === props?.item?.categoryColor,
-              )[0]?.bgColor
-            }
-            style={{ margin: '0 0 8px 0', width: 'fit-content' }}
-          >
-            {props?.item?.category}
-          </CategoryWrap>
-          <HiddenText>
+          <DemandNameBox>
+            <img src={props.item?.category_attachment} alt="" />
             <ClickWrap onClick={props.onClickItem}>
               <OmitText
                 width={200}
@@ -204,20 +187,37 @@ const DemandCard = (props: Props) => {
                 {props.item.name}
               </OmitText>
             </ClickWrap>
-          </HiddenText>
+            {!(hasDel && hasEdit) && isHoverVisible && (
+              <MoreDropdown
+                isMoreVisible={isMoreVisible}
+                menu={
+                  <DemandOperationDropdownMenu
+                    onEditChange={onEditChange}
+                    onDeleteChange={onDeleteChange}
+                    onCreateChild={onCreateChild}
+                    record={props.item}
+                  />
+                }
+                onChangeVisible={setIsMoreVisible}
+                isDemandCard
+              />
+            )}
+          </DemandNameBox>
           <AvatarWrap>
             <NameGroup>
               {props.item?.userName
                 ?.slice(0, 3)
                 ?.map((item: any, index: number) => (
                   <div
-                    className="box"
                     key={item}
-                    style={{ marginLeft: index ? -10 : 0, zIndex: index }}
+                    style={{
+                      marginLeft: index ? -7 : 0,
+                      zIndex: index,
+                      border: '1px solid white',
+                      borderRadius: '50%',
+                    }}
                   >
-                    <div className="item" style={{ background: '#A4ACF5' }}>
-                      {String(item?.trim().slice(0, 1)).toLocaleUpperCase()}
-                    </div>
+                    <CommonUserAvatar />
                   </div>
                 ))}
               <div
@@ -234,17 +234,7 @@ const DemandCard = (props: Props) => {
                 props.item.status.is_start !== 1 &&
                 props.item.status.is_end !== 1 &&
                 isHoverVisible
-              ) && (
-                <Progress
-                  strokeColor="#43BA9A"
-                  style={{ color: '#43BA9A', cursor: 'not-allowed' }}
-                  width={38}
-                  type="circle"
-                  percent={props.item.schedule}
-                  format={percent => (percent === 100 ? '100%' : `${percent}%`)}
-                  strokeWidth={8}
-                />
-              )}
+              ) && <div>{props.item?.schedule}%</div>}
               {hasEdit &&
                 props.item?.usersNameIds?.includes(userInfo?.id) &&
                 props.item.status.is_start !== 1 &&
@@ -269,24 +259,24 @@ const DemandCard = (props: Props) => {
               ) : (
                 childrenIcon()
               )}
+              {props.item.priority !== 0 && (
+                <IconBox
+                  backgroundColor={
+                    tagOrPriority?.filter(
+                      (i: any) => i.key === props.item.priority.icon,
+                    )[0].backgroundColor
+                  }
+                >
+                  <CommonIconFont
+                    color={props.item.priority.color}
+                    type={props.item.priority.icon}
+                  />
+                </IconBox>
+              )}
+              {!props.item.priority && <span>--</span>}
             </Space>
           </AvatarWrap>
         </MainWrap>
-        {!(hasDel && hasEdit) && isHoverVisible && (
-          <MoreDropdown
-            isMoreVisible={isMoreVisible}
-            menu={
-              <DemandOperationDropdownMenu
-                onEditChange={onEditChange}
-                onDeleteChange={onDeleteChange}
-                onCreateChild={onCreateChild}
-                record={props.item}
-              />
-            }
-            onChangeVisible={setIsMoreVisible}
-            isDemandCard
-          />
-        )}
       </Wrap>
     </div>
   )

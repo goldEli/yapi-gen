@@ -208,21 +208,43 @@ const EditExamine = (props: Props) => {
         style={{
           maxHeight: props?.isEdit && props?.item?.status === 1 ? 464 : 544,
           overflowY: 'auto',
-          paddingRight: 20,
+          padding: 20,
         }}
       >
         <ItemWrap>
           <div>{props?.item?.demandId}</div>
-          <CategoryWrap
-            color={verifyInfo?.categoryColor}
-            bgColor={
-              colorList?.filter(
-                (i: any) => i.key === verifyInfo?.categoryColor,
-              )[0]?.bgColor
-            }
+
+          <div
+            style={{
+              height: '24px',
+              background: '#F8F8FA',
+              borderRadius: '6px 6px 6px 6px',
+              padding: '2px 8px',
+              display: 'flex',
+              alignItems: 'center',
+              marginLeft: '16px',
+            }}
           >
-            {verifyInfo?.categoryName}
-          </CategoryWrap>
+            <img
+              style={{
+                width: '18px',
+                height: '18px',
+              }}
+              src={verifyInfo?.category_attachment}
+              alt=""
+            />
+            <span
+              style={{
+                height: '20px',
+                fontSize: '12px',
+                fontWeight: 400,
+                color: '#646566',
+                lineHeight: '20px',
+              }}
+            >
+              {verifyInfo?.categoryName}
+            </span>
+          </div>
         </ItemWrap>
         <ItemWrap>
           <LabelWrap>{t('common.title')}</LabelWrap>

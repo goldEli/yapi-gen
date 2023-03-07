@@ -115,10 +115,10 @@ const InnerWrap = styled.div`
 const TimeLineWrap = styled.div`
   border-radius: 6px;
   box-sizing: border-box;
-  padding: 10px 10px;
+  padding: 10px 0 10px 10px;
   margin-top: 16px;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  /* overflow-y: scroll; */
+  /* overflow-x: hidden; */
   height: 320px;
   padding-top: 25px;
   padding-left: 16px;
@@ -332,7 +332,14 @@ const Profile = () => {
               <NoData />
             ) : (
               <TimeLineWrap>
-                <Timeline>
+                <Timeline
+                  style={{
+                    overflowY: 'scroll',
+                    height: '280px',
+                    overflowX: 'hidden',
+                    padding: '10px 10px 0 0',
+                  }}
+                >
                   {lineData.map((item: any) => (
                     <Timeline.Item key={item.id}>
                       <LineItem>

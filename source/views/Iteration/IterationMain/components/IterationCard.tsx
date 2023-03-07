@@ -12,76 +12,85 @@ import CommonIconFont from '@/components/CommonIconFont'
 import MoreDropdown from '@/components/MoreDropdown'
 import IterationStatus from '../../components/IterationStatus'
 
-const DetailWrap = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  cursor: 'pointer',
-  color: '#BBBDBF',
-  fontSize: 12,
-})
+const DetailWrap = styled.div`
+  font-size: var(--font12);
+  color: var(--neutral-n4);
+  cursor: pointer;
+`
 
-const CardWrap = styled.div<{ active?: boolean }>(
-  {
-    padding: '0 8px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
-    height: 90,
-    borderRadius: 6,
-    background: 'white',
-    marginBottom: 8,
-    position: 'relative',
-    border: '1px solid #EBEDF0',
-    cursor: 'pointer',
-    '.dropdownIcon': {
-      position: 'absolute',
-      top: 10,
-      right: 6,
-    },
-    '&: hover': {
-      border: '1px solid #2877ff',
-      '.dropdownIcon': {
-        visibility: 'visible',
-      },
-      [DetailWrap.toString()]: {
-        color: '#2877ff',
-      },
-    },
-    '.ant-progress-circle.ant-progress-status-success .ant-progress-text': {
-      color: 'black!important',
-    },
-  },
-  ({ active }) => ({
-    border: active ? '1px solid #2877ff' : '1px solid #EBEDF0',
-    [DetailWrap.toString()]: {
-      color: active ? '#2877ff' : '#BBBDBF',
-    },
-  }),
-)
+const CardWrap = styled.div<{ active?: boolean }>`
+  height: 104px;
+  border-radius: 6px;
+  box-sizing: border-box;
+  border: ${props =>
+    props.active
+      ? '1px solid var(--primary-d1)'
+      : '1px solid var(--neutral-n6-d1)'};
+  background: var(--neutral-white-d4);
+  padding: 16px 0;
+  position: relative;
+  margin-bottom: 16px;
+  cursor: pointer;
+  .ant-progress-text {
+    font-size: var(--font12);
+    color: var(--neutral-n2);
+  }
+  .dropdownicon {
+    position: absolute;
+    top: 10;
+    right: 6;
+  }
+  &:hover {
+    border: 1px solid var(--primary-d1);
+    .dropdownIcon {
+      visibility: visible;
+    }
+    .info {
+      color: var(--primary-d1);
+    }
+  }
+`
 
-const InfoContent = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  marginLeft: 8,
-})
+const InfoContent = styled.div`
+  display: flex;
+  flex-direction: column;
+`
 
-const TitleWrap = styled.div({
-  fontSize: 14,
-  fontWeight: '400',
-  color: 'black',
-  whiteSpace: 'nowrap',
-  textOverflow: 'ellipsis',
-  overflow: 'hidden',
-  maxWidth: 130,
-})
+const TitleWrap = styled.div`
+  font-size: var(--font14);
+  color: var(--neutral-n1-d1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px 0 16px;
+  .name {
+    max-width: 130px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-family: SiYuanMedium;
+  }
+`
 
-const TimeWrap = styled.div({
-  fontSize: 12,
-  color: '#BBBDBF',
-  height: 20,
-  lineHeight: '20px',
-})
+const TimeWrap = styled.div`
+  font-size: var(--font12);
+  color: var(--neutral-n4);
+`
+
+const ToDetailBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 4px 0;
+  padding: 0 16px;
+`
+
+const StatusBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+`
 
 interface Props {
   item: any
@@ -148,41 +157,48 @@ const IterationCard = (props: Props) => {
 
   return (
     <CardWrap onClick={props.onClickItem} active={props.isActive}>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <Progress
-          strokeColor="#43BA9A"
-          style={{ color: '#43BA9A' }}
-          width={48}
-          type="circle"
-          percent={Math.trunc(
-            (props.item.finishCount / props.item.storyCount) * 100,
+      <div style={{ display: 'flex', alignItems: 'center' }}></div>
+      <InfoContent>
+        <TitleWrap>
+          <span className="name">{props.item.name}</span>
+          {!(hasDel && hasEdit && hasChangeStatus) && (
+            <MoreDropdown
+              isMoreVisible={isVisible}
+              menu={menu()}
+              onChangeVisible={setIsVisible}
+            />
           )}
-          format={percent => (percent === 100 ? '100%' : `${percent}%`)}
-          strokeWidth={8}
-        />
-        <InfoContent>
-          <TitleWrap>{props.item.name}</TitleWrap>
+        </TitleWrap>
+        <ToDetailBox>
           <TimeWrap>
             {props.item.createdTime}-{props.item.endTime}
           </TimeWrap>
+          <DetailWrap className="info" onClick={props.onClickInfo}>
+            <span>{t('common.info')}</span>
+            <CommonIconFont type="right" size={12} />
+          </DetailWrap>
+        </ToDetailBox>
+        <StatusBox>
           <IterationStatus
             iterateInfo={props.item}
             hasChangeStatus={hasChangeStatus}
             onChangeStatus={props.onChangeStatus}
           />
-        </InfoContent>
-      </div>
-      <DetailWrap onClick={props.onClickInfo}>
-        <span>{t('common.info')}</span>
-        <CommonIconFont type="right" />
-      </DetailWrap>
-      {!(hasDel && hasEdit && hasChangeStatus) && (
-        <MoreDropdown
-          isMoreVisible={isVisible}
-          menu={menu()}
-          onChangeVisible={setIsVisible}
-        />
-      )}
+          <div style={{ width: '45%' }}>
+            <Progress
+              strokeColor="#43BA9A"
+              style={{ color: '#43BA9A' }}
+              width={48}
+              type="line"
+              percent={Math.trunc(
+                (props.item.finishCount / props.item.storyCount) * 100,
+              )}
+              format={percent => (percent === 100 ? '100%' : `${percent}%`)}
+              strokeWidth={4}
+            />
+          </div>
+        </StatusBox>
+      </InfoContent>
     </CardWrap>
   )
 }

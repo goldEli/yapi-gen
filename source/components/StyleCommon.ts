@@ -41,12 +41,18 @@ const ChartsItem = styled.span`
 `
 const titleCss = css`
   color: var(--neutral-n1-d1);
+  border-left: 3px solid var(--primary-d1);
+  padding-left: 8px;
   font-size: 14px;
   font-family: SiYuanMedium;
 `
 
 const title1Css = css`
   color: var(--neutral-n1-d1);
+  font-size: 24px;
+`
+const title1Css1 = css`
+  color: var(--primary-d1);
   font-size: 24px;
 `
 
@@ -80,7 +86,8 @@ const TextWrap = styled.div`
 const TextBlueWrap = styled.div`
   width: 104px;
   height: 104px;
-  background: var(--hover-d2);
+  border: 1px solid var(--neutral-n6-d1);
+  /* background: var(--hover-d2); */
   background-blend-mode: normal;
   border-radius: 6px;
   display: flex;
@@ -537,11 +544,11 @@ const StatusWrap = styled.div<{ isShow?: boolean; state?: number }>(
     height: 22,
     borderRadius: 6,
     fontSize: '12px',
-    display: 'flex',
+    display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '50px',
     cursor: 'pointer',
+    padding: '1px 14px',
   },
   ({ isShow, state }) => ({
     cursor: isShow ? 'pointer' : 'inherit',
@@ -772,6 +779,7 @@ const ProgressWrap = styled.div({
 })
 
 export {
+  title1Css1,
   HiddenText,
   ClickWrap,
   TableStyleBox,

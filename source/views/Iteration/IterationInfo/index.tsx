@@ -63,7 +63,10 @@ const TargetWrap = styled.div({
   overflow: 'auto',
   color: '#646566',
   fontSize: 14,
-  paddingRight: 20,
+
+  background: '#F9F9FA',
+  padding: '16px',
+  borderRadius: '4px',
 })
 
 const BottomWrap = styled.div({
@@ -90,6 +93,9 @@ const StatusWrap = styled.div({
 const ChartWrap = styled.div({
   height: 340,
   marginTop: 24,
+  background: '#F9F9FA',
+  borderRadius: '4px',
+  padding: '16px',
 })
 
 const Wrap = styled.div({
@@ -185,9 +191,22 @@ const IterationInfo = () => {
       <Spin spinning={isSpinning}>
         <TopWrap>
           <SurveyWrap>
-            <Title>{t('container.survey')}</Title>
+            <Title
+              style={{
+                marginBottom: '22px',
+              }}
+            >
+              {t('container.survey')}
+            </Title>
             <SurveyContent>
-              <SurveyBox>
+              <SurveyBox
+                style={{
+                  width: '232px',
+                  height: '220px',
+                  background: 'rgba(67,186,154,0.05)',
+                  padding: '30px',
+                }}
+              >
                 <Progress
                   strokeColor="#43BA9A"
                   width={125}
@@ -204,7 +223,16 @@ const IterationInfo = () => {
                   {iterateInfo.startTime || '--'}-{iterateInfo.endTime || '--'}
                 </div>
               </SurveyBox>
-              <SurveyBox style={{ alignItems: 'flex-start' }}>
+              <SurveyBox
+                style={{
+                  width: '232px',
+                  height: '220px',
+                  background: 'rgba(250,151,70,0.05)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
                 <span style={{ color: '#000', fontSize: 14 }}>
                   {t('common.demand')}
                 </span>
