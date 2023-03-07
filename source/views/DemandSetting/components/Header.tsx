@@ -175,7 +175,6 @@ const Header = () => {
       setDisable(true)
     }
   }
-
   return (
     <HeaderWrap>
       {hasDeleteVisible && (
@@ -245,7 +244,7 @@ const Header = () => {
         onConfirm={onDeleteConfirm}
       />
       <LeftMsg>
-        <CommonIconFont type="left" size={24} />
+        <img style={{ width: '24px' }} src={activeCategory?.attachmentPath} />
         <MsgContent>
           <div>{activeCategory?.name}</div>
           <div>{activeCategory?.remark || '--'}</div>
@@ -263,8 +262,7 @@ const Header = () => {
         </SwitchStyle>
         <BtnStyle onClick={onSetWorkFlow}>配置工作流</BtnStyle>
         <BtnStyle onClick={() => editCategoryForm()}>编辑</BtnStyle>
-        <BtnStyle onClick={onDelete}>删除</BtnStyle>
-        {/* <BtnStyle onClick={() => setIsDelete(true)}>删除</BtnStyle> */}
+        <BtnStyle onClick={() => onDelete()}>删除</BtnStyle>
       </RightOperate>
       <EditCategory
         item={activeCategory}

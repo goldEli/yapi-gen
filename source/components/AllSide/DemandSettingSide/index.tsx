@@ -66,14 +66,14 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
     let dataItem = null
     if (startUsing) {
       dataItem = categoryList
-        ?.filter((el: any) => el.status !== 1)
+        ?.filter((el: any) => el.status === 1)
         .map((el: any, index: number) => ({
           ...el,
           active: index === 0 ? true : false,
         }))
     } else {
       dataItem = categoryList
-        ?.filter((el: any) => el.status === 1)
+        ?.filter((el: any) => el.status !== 1)
         .map((el: any, index: number) => ({
           ...el,
           active: index === 0 ? true : false,
@@ -101,6 +101,7 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
     getInfo()
     getProjectInfoValuesData()
   }, [])
+
   //   返回上一页
   const onGoBack = () => {
     props.onClick()
@@ -118,14 +119,14 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
     let dataItem = null
     if (startUsing) {
       dataItem = categoryList
-        ?.filter((el: any) => el.status !== 1)
+        ?.filter((el: any) => el.status === 1)
         .map((el: any, index: number) => ({
           ...el,
           active: index === 0 ? true : false,
         }))
     } else {
       dataItem = categoryList
-        ?.filter((el: any) => el.status === 1)
+        ?.filter((el: any) => el.status !== 1)
         .map((el: any, index: number) => ({
           ...el,
           active: index === 0 ? true : false,

@@ -168,7 +168,7 @@ const CreateField = () => {
           size={14}
           color="var(--neutral-n3)"
         />
-        <span>创建字段</span>
+        <span style={{ marginLeft: '4px' }}>创建字段</span>
         <span
           style={{
             fontSize: '12px',
@@ -194,7 +194,9 @@ const CreateField = () => {
                 color="var(--neutral-n3)"
               />
             )}
-            <span>项目已有字段 ({payloadDataList?.length})</span>
+            <span style={{ marginLeft: '4px' }}>
+              项目已有字段 ({payloadDataList?.length})
+            </span>
           </div>
           {search ? (
             <InputStyle

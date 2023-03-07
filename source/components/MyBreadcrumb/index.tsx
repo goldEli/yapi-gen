@@ -2,6 +2,8 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import { useSelector } from '@store/index'
 import { Breadcrumb } from 'antd'
 import { useLocation, useNavigate } from 'react-router-dom'
+import CommonIconFont from '../CommonIconFont'
+import IconFont from '../IconFont'
 
 const MyBreadcrumb = (props: any) => {
   const navigate = useNavigate()
@@ -9,9 +11,19 @@ const MyBreadcrumb = (props: any) => {
   const projectInfo = useSelector(state => state.project.projectInfo)
 
   return (
-    <Breadcrumb separator=">">
+    <Breadcrumb
+      separator={
+        <CommonIconFont type="right" size={14} color={'var(--neutral-n1-d1)'} />
+      }
+      style={{ margin: '20px 24px' }}
+    >
       <Breadcrumb.Item>
-        <a onClick={() => navigate('/ProjectManagement/Project')}>项目</a>
+        <a
+          onClick={() => navigate('/ProjectManagement/Project')}
+          style={{ color: 'var(--neutral-n1-d1)' }}
+        >
+          项目
+        </a>
       </Breadcrumb.Item>
       <Breadcrumb.Item>
         <a
@@ -31,12 +43,14 @@ const MyBreadcrumb = (props: any) => {
             src={projectInfo.cover}
             alt=""
           />
-          <span>{projectInfo.name}</span>
+          <span style={{ color: 'var(--neutral-n1-d1)' }}>
+            {projectInfo.name}
+          </span>
         </a>
       </Breadcrumb.Item>
       {location.pathname === '/ProjectManagement/ProjectSetting' && (
         <Breadcrumb.Item>
-          <a>项目设置</a>
+          <a style={{ color: 'var(--neutral-n1-d1)' }}>项目设置</a>
         </Breadcrumb.Item>
       )}
       {location.pathname === '/ProjectManagement/ProjectSetting' &&
