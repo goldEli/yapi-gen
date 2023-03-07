@@ -83,10 +83,10 @@ interface Props {
   isVisible: boolean
   onClose(): void
   item?: any
-  onUpdate(): void
+  // onUpdate(): void
   fieldType?: any
   onInsert(val: any): void
-  onEditUpdate(val: any): void
+  onEditUpdate(): void
 }
 
 const DragHandle = sortableHandle(() => (
@@ -114,7 +114,6 @@ const EditFiled = (props: Props) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
-  const paramsData = getParamsData(searchParams)
   const [checked, setChecked] = useState(false)
   const [personValue, setPersonValue] = useState('')
   const ChooseDom = useRef<HTMLInputElement>(null)
@@ -149,9 +148,8 @@ const EditFiled = (props: Props) => {
       value: 'single_checkbox',
     },
   ]
-
   useEffect(() => {
-    if (props?.item?.id) {
+    if (props?.item && props.isVisible) {
       const type = props?.item?.fieldContent.attr
       setValue(type)
       form.setFieldsValue({
@@ -173,8 +171,10 @@ const EditFiled = (props: Props) => {
       } else if (['user_select', 'user_select_checkbox'].includes(type)) {
         setPersonValue(values[0])
       }
-    } else {
-      form.resetFields()
+    } else if (props.isVisible && props.fieldType) {
+      form.setFieldsValue({
+        type: props.fieldType.type,
+      })
       setValue('')
       setPersonValue('')
       setChecked(false)
@@ -183,14 +183,8 @@ const EditFiled = (props: Props) => {
         { value: '', key: new Date().getTime() + 100 },
       ])
     }
-  }, [props?.item])
-  useEffect(() => {
-    if (props.isVisible && props.fieldType) {
-      form.setFieldsValue({
-        type: props.fieldType.type,
-      })
-    }
-  }, [props.isVisible])
+  }, [props?.item, props.isVisible])
+
   const onReset = () => {
     props?.onClose()
     setTimeout(() => {
@@ -254,12 +248,11 @@ const EditFiled = (props: Props) => {
 
     if (props?.item?.id) {
       try {
-        obj.id = props?.item?.id
+        obj.id = props?.item?.storyId
         const res: any = await updateStoryConfigField(obj)
         message.success(t('common.editSuccess'))
         onReset()
-        props.onEditUpdate(res.data)
-        props?.onUpdate()
+        props.onEditUpdate()
       } catch (error) {
         //
       }
@@ -273,7 +266,6 @@ const EditFiled = (props: Props) => {
         const payloadList: any = data.payload
         dispatch(setProjectFieIdsData(payloadList))
         onReset()
-        props?.onUpdate()
       } catch (error) {
         //
       }
