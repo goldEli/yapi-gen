@@ -147,6 +147,44 @@ const SearchList = (props: Props) => {
               />
             </Form.Item>
           </SelectWrapBedeck>
+          <SelectWrapBedeck>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>状态</span>
+            <Form.Item name="userGroup">
+              <SelectWrap
+                onChange={confirm}
+                mode="multiple"
+                style={{ width: '100%' }}
+                placeholder={t('common.all')}
+                showSearch
+                optionFilterProp="label"
+                showArrow
+                allowClear
+                options={roleOptions.map((item: any) => ({
+                  label: item.content_txt,
+                  value: item.id,
+                }))}
+              />
+            </Form.Item>
+          </SelectWrapBedeck>
+          <SelectWrapBedeck>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>交接状态</span>
+            <Form.Item name="userGroup">
+              <SelectWrap
+                onChange={confirm}
+                mode="multiple"
+                style={{ width: '100%' }}
+                placeholder={t('common.all')}
+                showSearch
+                optionFilterProp="label"
+                showArrow
+                allowClear
+                options={roleOptions.map((item: any) => ({
+                  label: item.content_txt,
+                  value: item.id,
+                }))}
+              />
+            </Form.Item>
+          </SelectWrapBedeck>
 
           <ClearForm onClick={onClearForm}>
             <span style={{ color: '#2877FF', fontSize: 15, cursor: 'pointer' }}>

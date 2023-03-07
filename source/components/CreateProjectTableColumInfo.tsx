@@ -19,7 +19,6 @@ import { useTranslation } from 'react-i18next'
 import { OmitText } from '@star-yun/ui'
 import { getCustomNormalValue } from '@/tools'
 import { message, Progress, Tooltip } from 'antd'
-
 // import DemandProgress from '@/components/DemandProgress'
 import TableQuickEdit from './TableQuickEdit'
 import styled from '@emotion/styled'
@@ -28,6 +27,7 @@ import ChangeStatusPopover from './ChangeStatusPopover'
 import ChangePriorityPopover from './ChangePriorityPopover'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import StateTag from './StateTag'
+import { divide } from 'lodash'
 
 const Wrap = styled.div<{ isEdit?: any }>(
   {
@@ -135,6 +135,21 @@ export const useDynamicColumns = (state: any) => {
                   onClick={() => state.onClickItem(record)}
                 >
                   {text}
+                  <div
+                    style={{
+                      fontSize: '12px',
+                      lineHeight: '20px',
+                      textAlign: 'center',
+                      color: '#FA9746',
+                      width: '60px',
+                      height: '20px',
+                      background: 'rgba(250,151,70,0.1)',
+                      borderRadius: '10px 6px 6px 10px',
+                      marginLeft: '4px',
+                    }}
+                  >
+                    离职交接
+                  </div>
                   {record.new === 1 && (
                     <IconFont
                       style={{

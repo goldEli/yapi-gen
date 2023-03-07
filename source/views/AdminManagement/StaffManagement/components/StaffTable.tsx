@@ -6,6 +6,7 @@ import { css } from '@emotion/css'
 import Sort from '@/components/Sort'
 import { useTranslation } from 'react-i18next'
 import { OmitText } from '@star-yun/ui'
+import { HiddenText } from '@/components/StyleCommon'
 
 const flexCss = css`
   display: flex;
@@ -69,14 +70,16 @@ export const useDynamicColumns = (state: any) => {
                 {String(record.name?.trim().slice(0, 1)).toLocaleUpperCase()}
               </SetHead>
             )}
-            <OmitText
-              width={100}
-              tipProps={{
-                getPopupContainer: node => node,
-              }}
-            >
-              {text}
-            </OmitText>
+            <HiddenText>
+              <OmitText
+                width={100}
+                tipProps={{
+                  getPopupContainer: node => node,
+                }}
+              >
+                {text}
+              </OmitText>
+            </HiddenText>
           </div>
         )
       },
