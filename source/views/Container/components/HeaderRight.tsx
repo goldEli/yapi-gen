@@ -154,9 +154,21 @@ const HeaderRight = () => {
   ]
 
   const createList = [
-    { name: '创建需求', key: 'demand', icon: 'demand' },
-    { name: '创建迭代', key: 'iteration', icon: 'interation' },
-    { name: '创建项目', key: 'project', icon: 'folder-open-nor' },
+    { name: '创建需求', key: 'demand', icon: 'demand', isPermission: true },
+    {
+      name: '创建迭代',
+      key: 'iteration',
+      icon: 'interation',
+      isPermission: true,
+    },
+    {
+      name: '创建项目',
+      key: 'project',
+      icon: 'folder-open-nor',
+      isPermission: (
+        userInfo.company_permissions?.map((i: any) => i.identity) || []
+      ).includes('b/project/save'),
+    },
   ]
 
   const labelList = [
@@ -284,7 +296,12 @@ const HeaderRight = () => {
   const content = (
     <ChangeItems>
       {createList.map((i: any) => (
-        <ChangeItem key={i.key} height={40} onClick={() => onCreate(i.key)}>
+        <ChangeItem
+          key={i.key}
+          height={40}
+          onClick={() => onCreate(i.key)}
+          hidden={!i.isPermission}
+        >
           <Space size={8}>
             <CommonIconFont type={i.icon} color="var(--neutral-n3)" />
             {i.name}

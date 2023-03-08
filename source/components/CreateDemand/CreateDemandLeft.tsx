@@ -45,6 +45,7 @@ interface Props {
   onGetDataAll(values: any, categoryId?: any): void
   // 需求类别对应的需求状态下拉列表
   onChangeWorkStatusList(values: any): void
+  onGetCreateDemand(state: boolean): void
 }
 
 const CreateDemandLeft = (props: Props) => {
@@ -74,6 +75,7 @@ const CreateDemandLeft = (props: Props) => {
   const { createDemandProps, createCategory } = useSelector(
     store => store.demand,
   )
+  let isCreateDemand = true
 
   const getStatusList = async (value: any) => {
     const result = await getWorkflowList({
@@ -186,6 +188,14 @@ const CreateDemandLeft = (props: Props) => {
   const getProjectInfoData = async (id: any) => {
     const result = await getProjectInfo({ projectId: id })
     setProjectInfo(result)
+    // 是否有创建需求权限
+    isCreateDemand = result?.projectPermissions?.filter(
+      (i: any) =>
+        i.identity ===
+        (createDemandProps?.demandId ? 'b/story/update' : 'b/story/save'),
+    )?.length
+
+    props.onGetCreateDemand(isCreateDemand)
   }
 
   // 切换项目
@@ -539,10 +549,10 @@ const CreateDemandLeft = (props: Props) => {
           </Form.Item>
         </Form>
       </CommonModal>
-      <Form layout="vertical" form={form}>
+      <Form layout="vertical" form={form} disabled={!isCreateDemand}>
         <div style={{ display: 'flex' }}>
           <Form.Item
-            label={t('common.createProject') + '1'}
+            label={t('common.createProject')}
             name="projectId"
             style={{ marginRight: 24, width: '50%' }}
             rules={[{ required: true, message: '' }]}
@@ -558,12 +568,6 @@ const CreateDemandLeft = (props: Props) => {
               optionFilterProp="label"
               getPopupContainer={node => node}
               showSearch
-              // options={props.projectList
-              //   ?.filter((i: any) => i.status === 1)
-              //   ?.map((k: any) => ({
-              //     label: k.name,
-              //     value: k.id,
-              //   }))}
             >
               {props.projectList
                 ?.filter((i: any) => i.status === 1)
@@ -637,9 +641,12 @@ const CreateDemandLeft = (props: Props) => {
         </Form.Item>
         {props.projectId &&
           projectInfo.projectPermissions?.length > 0 &&
-          projectInfo.projectPermissions?.filter(
+          (projectInfo.projectPermissions?.filter(
             (i: any) => i.name === '编辑需求',
-          )?.length > 0 && (
+          )?.length > 0 ||
+            projectInfo.projectPermissions?.filter(
+              (i: any) => i.name === '创建需求',
+            )?.length > 0) && (
             <Form.Item name="tagIds" label={t('common.tag')}>
               <TagComponent
                 defaultList={tagCheckedList}
