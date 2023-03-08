@@ -79,7 +79,11 @@ const CreateIteration = () => {
     setTimes(null)
     setHtml('')
     dispatch(setIsCreateIterationVisible(false))
-    dispatch(setCreateIterationParams({}))
+    dispatch(
+      setCreateIterationParams(
+        createIterationParams?.id ? { isUpdate: true } : {},
+      ),
+    )
   }
 
   const onConfirm = async () => {
@@ -102,7 +106,6 @@ const CreateIteration = () => {
     }
     onCancel()
     dispatch(setIsUpdateList(true))
-    dispatch(setCreateIterationParams({ isUpdate: true }))
     setTimeout(() => {
       form.resetFields()
     }, 100)

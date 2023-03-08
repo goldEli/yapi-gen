@@ -126,6 +126,7 @@ const IterationCard = (props: Props) => {
   )
 
   const onClickMenu = (e: any, type: any) => {
+    e.stopPropagation()
     setIsVisible(false)
     if (type === 'edit') {
       dispatch(setIsCreateIterationVisible(true))
