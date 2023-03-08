@@ -52,6 +52,11 @@ const MyBreadcrumb = (props: any) => {
           <a style={{ color: 'var(--neutral-n1-d1)' }}>项目设置</a>
         </Breadcrumb.Item>
       )}
+      {location.pathname.includes('ProjectManagement/MemberInfo') && (
+        <Breadcrumb.Item>
+          <a style={{ color: 'var(--neutral-n1-d1)' }}>项目设置</a>
+        </Breadcrumb.Item>
+      )}
       {location.pathname === '/ProjectManagement/ProjectSetting' &&
       props.setName ? (
         <Breadcrumb.Item>{props.setName}</Breadcrumb.Item>
@@ -70,6 +75,12 @@ const MyBreadcrumb = (props: any) => {
             alt=""
           />
           <span>{props.demand.name}</span>
+        </Breadcrumb.Item>
+      ) : null}
+      {location.pathname.includes('ProjectManagement/MemberInfo') &&
+      props.user ? (
+        <Breadcrumb.Item>
+          <span>{props.user.name}的详情</span>
         </Breadcrumb.Item>
       ) : null}
     </Breadcrumb>
