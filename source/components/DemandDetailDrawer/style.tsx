@@ -435,6 +435,7 @@ export const TagGroups = styled(Space)`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  margin-top: 4px;
 `
 
 export const AddTagIcon = styled.div`

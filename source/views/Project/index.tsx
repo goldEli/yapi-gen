@@ -88,6 +88,7 @@ const ProjectManagementOptimization = () => {
   useEffect(() => {
     getList(activeType, isGrid, isHidden, searchVal, order, pageObj, groupId)
   }, [isHidden, activeType, order, searchVal, isGrid, pageObj, groupId, isRest])
+
   useEffect(() => {
     dispatch(getProjectCover())
   }, [])

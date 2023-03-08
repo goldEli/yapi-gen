@@ -30,6 +30,7 @@ import { getCategoryConfigList } from '@store/category/thunk'
 import { setActiveCategory } from '@store/category/index'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
+
 const IconFontStyle = styled(IconFont)({
   color: 'var(--neutral-n2)',
   fontSize: '18px',
@@ -40,6 +41,7 @@ const IconFontStyle = styled(IconFont)({
     cursor: 'pointer',
   },
 })
+
 const ProjectDetailSide = (props: { onClick(): void }) => {
   const [t] = useTranslation()
   const { startUsing, categoryList } = useSelector(store => store.category)
@@ -60,20 +62,11 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
     },
   ]
 
-  const getProjectInfoValuesData = async () => {
-    const result = await getProjectInfoValues({ projectId })
-    dispatch(setProjectInfoValues(result))
-  }
-
-  // 获取项目信息
-  const getInfo = async () => {
-    const result = await getProjectInfo({ projectId })
-    dispatch(setProjectInfo(result))
-  }
   // 需求类别侧边栏
   const getList = async () => {
     await dispatch(storyConfigCategoryList({ projectId: paramsData.id }))
   }
+
   // 监听跟新
   const watchDataList = () => {
     let dataItem = null
@@ -111,8 +104,6 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
 
   useEffect(() => {
     getList()
-    getInfo()
-    getProjectInfoValuesData()
   }, [])
 
   //   返回上一页

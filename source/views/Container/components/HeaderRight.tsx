@@ -32,6 +32,7 @@ import {
 import { useTranslation } from 'react-i18next'
 import { setIsCreateIterationVisible } from '@store/iterate'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
+import helpPdf from '/Agile.pdf'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const [t] = useTranslation()
@@ -251,6 +252,10 @@ const HeaderRight = () => {
     }
   }
 
+  const onHelp = () => {
+    window.open(helpPdf)
+  }
+
   const userContent = (
     <UserInfoWrap>
       <UserInfoTop>
@@ -366,7 +371,7 @@ const HeaderRight = () => {
             <CommonIconFont type="plus" size={20} />
           </CreateWrap>
         </Popover>
-        <CloseWrap width={32} height={32}>
+        <CloseWrap width={32} height={32} onClick={onHelp}>
           <CommonIconFont type="question" size={24} />
         </CloseWrap>
         <Popover
