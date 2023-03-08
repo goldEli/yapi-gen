@@ -90,7 +90,8 @@ const TableTitle = styled.div({
 const SearchWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'flex-end',
+  justifyContent: 'space-between',
+  marginBottom: '20px',
 })
 
 const MainWrap = styled.div({
@@ -555,12 +556,6 @@ const CommonNeed = (props: any) => {
   return (
     <MainWrap>
       <div style={{ padding: '0 24px', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex' }}>
-          <TabsItem isActive>
-            <div>{props?.subTitle}</div>
-          </TabsItem>
-          <LabNumber isActive>{total ?? 0}</LabNumber>
-        </div>
         <SearchWrap>
           <div style={{ position: 'absolute', top: '20px', right: '24px' }}>
             <InputSearch
@@ -568,6 +563,12 @@ const CommonNeed = (props: any) => {
               onChangeSearch={onPressEnter}
               leftIcon
             />
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <TabsItem isActive>
+              <div>{props?.subTitle}</div>
+            </TabsItem>
+            <LabNumber isActive>{total ?? 0}</LabNumber>
           </div>
           <Space style={{ display: 'flex' }} size={8}>
             {props?.isMember ? null : (

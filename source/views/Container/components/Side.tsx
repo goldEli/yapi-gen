@@ -8,6 +8,7 @@ import AdminSide from '@/components/AllSide/AdminSide'
 import { useLocation } from 'react-router-dom'
 import MineSide from '@/components/AllSide/MineSide'
 import LogSide from '@/components/AllSide/LogSide'
+import HisSide from '@/components/AllSide/HisSide'
 
 const SideWrap = styled.div<{ firstMenuCollapse: boolean }>`
   width: ${props => (props.firstMenuCollapse ? 0 : 200)}px;
@@ -70,6 +71,7 @@ const SideMain = styled.div<{ firstMenuCollapse: boolean }>`
   height: 100%;
   width: 100%;
   overflow: hidden;
+  transition: all 0.3s;
   display: ${props => (props.firstMenuCollapse ? 'none' : 'block')};
 `
 
@@ -177,6 +179,8 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
           onChangeGroup={onChangeGroup}
         />
       )
+    } else if (String(pathname).includes('/ProjectManagement/MemberInfo')) {
+      nodeComponent = <HisSide />
     } else if (String(pathname).includes('/AdminManagement')) {
       nodeComponent = <AdminSide />
     } else if (String(pathname).includes('/ProjectManagement/Mine')) {
@@ -188,6 +192,9 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
     }
     return nodeComponent
   }
+  useEffect(() => {
+    getClassSide()
+  }, [pathname])
 
   return (
     <SideWrap

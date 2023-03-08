@@ -41,7 +41,7 @@ const Side = styled.div`
 `
 
 const Main = styled.div({
-  width: 'calc(100% - 220px)',
+  width: 'calc(100% )',
   overflow: 'auto',
 })
 
@@ -158,7 +158,7 @@ const MemberInfo = () => {
       }
     >
       <Wrap isMember={isMember}>
-        <Side>
+        {/* <Side>
           <InfoWrap>
             {mainInfo?.avatar ? (
               <img
@@ -192,7 +192,7 @@ const MemberInfo = () => {
               </MenuItem>
             ))}
           </Menu>
-        </Side>
+        </Side> */}
         <Main>
           <div
             style={{

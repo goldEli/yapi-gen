@@ -142,11 +142,12 @@ const GatteWrap = styled.div`
 
 const HasIdWrap = styled.div({
   overflow: 'auto',
-  padding: '16px 16px 0 16px',
+  padding: '0px 16px 0 16px',
 })
 
 const HeadWrap = styled.div({
   padding: 24,
+  paddingTop: 0,
   background: 'white',
   borderRadius: 6,
   marginBottom: 16,
@@ -208,19 +209,38 @@ const Profile = () => {
       res2.list?.map((k: any) => ({
         id: k.id,
         demandText: k.text,
-        text: `<div style="display: flex; align-items: center;padding-left:16px">
-        <span style="height: 20px; line-height: 20px; font-size:12px; padding: 2px 8px; border-radius: 10px; color: ${
-          k.categoryColor
-        }; background: ${
-          colorList?.filter((i: any) => i.key === k.categoryColor)[0]?.bgColor
-        }">#${k.categoryName}#</span>
-        <span style="display:inline-block; width: 100px ;overflow:hidden;white-space: nowrap;text-overflow:ellipsis;margin-left: 8px">${
-          k.text
-        }</span>
-      </div>`,
+        text: `<div style="display: flex; align-items: center;padding-left: 16px">
+        <img style="height: 18px;width: 18px ;border-radius: 4px;" src="${k.category_attachment}">
+                 <span style="display:inline-block; width: 100px ;overflow:hidden;white-space: nowrap;text-overflow:ellipsis;margin-left: 8px">${k.text}</span>
+        </div>`,
         start_date: k.start_date,
         end_date: k.end_date,
-        statusName: `<span style="display: inline-block;white-space: nowrap;text-overflow: ellipsis;max-width: 110px;overflow: hidden; height: 20px; line-height: 16px; font-size:12px; padding: 2px 8px; border-radius: 6px; color: ${k.statusColor}; border: 1px solid ${k.statusColor}">${k.statusName}</span>`,
+        statusName: `<span style="display: inline-block;text-align: center;
+        line-height: 20px;width:50px; white-space: nowrap;text-overflow: ellipsis;max-width: 110px;overflow: hidden; height: 20px; font-size:12px; border-radius: 6px; color: ${
+          k?.is_start === 1 && k?.is_end === 2
+            ? 'var(--neutral-n7)'
+            : k?.is_end === 1 && k?.is_start === 2
+            ? 'var(--neutral-n1-d1)'
+            : k?.is_start === 2 && k?.is_end === 2
+            ? 'var(--neutral-n7)'
+            : 0
+        }; background-color:${
+          k?.is_start === 1 && k?.is_end === 2
+            ? 'var(--auxiliary-b1)'
+            : k?.is_end === 1 && k?.is_start === 2
+            ? 'var(--neutral-n7)'
+            : k?.is_start === 2 && k?.is_end === 2
+            ? 'var(--function-success)'
+            : 0
+        };">${
+          k?.is_start === 1 && k?.is_end === 2
+            ? '待办'
+            : k?.is_end === 1 && k?.is_start === 2
+            ? '已完成'
+            : k?.is_start === 2 && k?.is_end === 2
+            ? '进行中'
+            : 0
+        }</span>`,
         statusTitle: k.statusName,
         parent: k.parent,
         render: k.render,
@@ -341,7 +361,7 @@ const Profile = () => {
               </TotalWrap>
             </HeadWrap>
             <GatteWrap style={{ margin: 0 }}>
-              <div style={{ padding: '28px 24px 0' }}>
+              <div style={{ padding: '0px 24px 0' }}>
                 <SecondTitle>{t('newlyAdd.hisGantt')}</SecondTitle>
                 <div className={titleWrap}>
                   <div style={{ display: 'flex', alignItems: 'center' }}>
