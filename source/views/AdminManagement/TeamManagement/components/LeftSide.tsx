@@ -391,11 +391,9 @@ const LeftSide = (props: any) => {
     })
   }
   const mousedown = (ev: any) => {
-    ev.stopPropagation()
     setDraggingWidth(ref.current?.offsetWidth)
   }
   const mouseup = (ev: any) => {
-    ev.stopPropagation()
     setDraggingWidth(ref.current?.offsetWidth)
   }
   useEffect(() => {
