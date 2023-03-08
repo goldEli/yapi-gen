@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getAsyncMember } from '@store/memberInfo'
+import MyBreadcrumb from '@/components/MyBreadcrumb'
 
 const Wrap = styled.div<{ isMember?: any }>(
   {
@@ -193,6 +194,16 @@ const MemberInfo = () => {
           </Menu>
         </Side>
         <Main>
+          <div
+            style={{
+              height: '32px',
+              display: 'flex',
+              alignItems: 'center',
+              margin: '20px',
+            }}
+          >
+            <MyBreadcrumb user={{ name: mainInfo?.name }} />
+          </div>
           <Outlet />
         </Main>
       </Wrap>
