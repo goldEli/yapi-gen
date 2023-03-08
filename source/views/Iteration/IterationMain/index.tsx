@@ -300,6 +300,7 @@ const IterationMain = (props: Props) => {
                   orderKey: '',
                 }}
                 isUpdated={isUpdated}
+                iterateId={keyRef.current?.id}
               />
             )}
             {!isGrid && (
@@ -315,6 +316,7 @@ const IterationMain = (props: Props) => {
                 isSpinning={isSpinning}
                 hasId={keyRef.current}
                 onUpdate={onUpdate}
+                iterateId={keyRef.current?.id}
               />
             )}
             {isGrid === 1 && (
@@ -325,6 +327,7 @@ const IterationMain = (props: Props) => {
                 isSpinning={isSpinning}
                 hasId={keyRef.current}
                 onUpdate={onUpdate}
+                iterateId={keyRef.current?.id}
               />
             )}
           </Right>

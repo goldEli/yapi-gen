@@ -15,13 +15,13 @@ import { getProjectInfo } from '@/services/project'
 import { setProjectInfo } from '@store/project'
 
 const Wrap = styled.div({
-  padding: 24,
   background: 'white',
   height: '100%',
   width: '100%',
   borderRadius: 6,
   display: 'flex',
   flexDirection: 'column',
+  marginTop: 24,
 })
 
 const InfoLeft = styled.div({
@@ -129,122 +129,118 @@ const ProjectInfo = () => {
     dispatch(setProjectInfo(result))
   }
   return (
-    <div style={{ padding: 16, height: '100%' }}>
-      <Wrap>
-        <InfoLeft>
-          <Title>{t('v2_1_1.projectInformation')}</Title>
-          <CardGroup size={32}>
-            <CardItem>
-              <div>{projectInfo.demandCount || 0}</div>
-              <span>{t('common.demand')}</span>
-            </CardItem>
-            <CardItem>
-              <div>{projectInfo.iterateCount || 0}</div>
-              <span>{t('project.iterateEdition')}</span>
-            </CardItem>
-            <CardItem>
-              <div>{projectInfo.memberCount || 0}</div>
-              <span>{t('project.projectMember')}</span>
-            </CardItem>
-          </CardGroup>
-        </InfoLeft>
-        <InfoRight>
-          <Title
-            style={{
-              marginBottom: 16,
+    <Wrap>
+      <InfoLeft>
+        <Title>{t('v2_1_1.projectInformation')}</Title>
+        <CardGroup size={32}>
+          <CardItem>
+            <div>{projectInfo.demandCount || 0}</div>
+            <span>{t('common.demand')}</span>
+          </CardItem>
+          <CardItem>
+            <div>{projectInfo.iterateCount || 0}</div>
+            <span>{t('project.iterateEdition')}</span>
+          </CardItem>
+          <CardItem>
+            <div>{projectInfo.memberCount || 0}</div>
+            <span>{t('project.projectMember')}</span>
+          </CardItem>
+        </CardGroup>
+      </InfoLeft>
+      <InfoRight>
+        <Title
+          style={{
+            marginBottom: 16,
+          }}
+        >
+          {t('project.projectInformation')}
+        </Title>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <OmitText
+            width={340}
+            tipProps={{
+              getPopupContainer: node => node,
             }}
           >
-            {t('project.projectInformation')}
-          </Title>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            <OmitText
-              width={340}
-              tipProps={{
-                getPopupContainer: node => node,
+            <span
+              style={{
+                fontSize: '16px',
+                fontWeight: 'bold',
+                color: '#323233',
+                lineHeight: '24px',
               }}
             >
-              <span
-                style={{
-                  fontSize: '16px',
-                  fontWeight: 'bold',
-                  color: '#323233',
-                  lineHeight: '24px',
-                }}
-              >
-                {' '}
-                {projectInfo.name}
-              </span>
-            </OmitText>
-            <ClickIcon
-              hidden={getIsPermission(
-                userInfo?.company_permissions,
-                'b/project/update',
-              )}
-              onClick={() => setVisible(true)}
-              style={{
-                marginLeft: 24,
-                cursor: 'pointer',
-              }}
-              type="edit-square"
-            />
-          </div>
-          <SubText>{projectInfo.info || '--'}</SubText>
-          <div
+              {' '}
+              {projectInfo.name}
+            </span>
+          </OmitText>
+          <ClickIcon
+            hidden={getIsPermission(
+              userInfo?.company_permissions,
+              'b/project/update',
+            )}
+            onClick={() => setVisible(true)}
             style={{
-              display: 'flex',
-              marginTop: '24px',
+              marginLeft: 24,
+              cursor: 'pointer',
             }}
-          >
-            <Line>
-              {' '}
-              <InfoItem>
-                <div>{t('project.projectId')}：</div>
-                <span>{projectInfo.id}</span>
-              </InfoItem>
-              <InfoItem>
-                <div>{t('common.createName')}：</div>
-                <span>{projectInfo.userName || '--'}</span>
-              </InfoItem>
-            </Line>
-            <Line>
-              {' '}
-              <InfoItem>
-                <div>{t('common.createTime')}：</div>
-                <span>{projectInfo.createTime || '--'}</span>
-              </InfoItem>
-              <InfoItem>
-                <div>{t('common.endTime')}：</div>
-                <span>{projectInfo.endTime || '--'}</span>
-              </InfoItem>
-            </Line>
-            <Line>
-              {' '}
-              <InfoItem>
-                <div>{t('project.projectStatus')}：</div>
-                <span>
-                  {projectInfo.status === 1
-                    ? t('common.open')
-                    : t('common.stop')}
-                </span>
-              </InfoItem>
-              <InfoItem>
-                <div>{t('common.permission')}：</div>
-                <span>
-                  {projectInfo.isPublic === 1
-                    ? t('project.companyOpen')
-                    : t('common.privateProject')}
-                </span>
-              </InfoItem>
-            </Line>
-          </div>
-        </InfoRight>
-      </Wrap>
-    </div>
+            type="edit-square"
+          />
+        </div>
+        <SubText>{projectInfo.info || '--'}</SubText>
+        <div
+          style={{
+            display: 'flex',
+            marginTop: '24px',
+          }}
+        >
+          <Line>
+            {' '}
+            <InfoItem>
+              <div>{t('project.projectId')}：</div>
+              <span>{projectInfo.id}</span>
+            </InfoItem>
+            <InfoItem>
+              <div>{t('common.createName')}：</div>
+              <span>{projectInfo.userName || '--'}</span>
+            </InfoItem>
+          </Line>
+          <Line>
+            {' '}
+            <InfoItem>
+              <div>{t('common.createTime')}：</div>
+              <span>{projectInfo.createTime || '--'}</span>
+            </InfoItem>
+            <InfoItem>
+              <div>{t('common.endTime')}：</div>
+              <span>{projectInfo.endTime || '--'}</span>
+            </InfoItem>
+          </Line>
+          <Line>
+            {' '}
+            <InfoItem>
+              <div>{t('project.projectStatus')}：</div>
+              <span>
+                {projectInfo.status === 1 ? t('common.open') : t('common.stop')}
+              </span>
+            </InfoItem>
+            <InfoItem>
+              <div>{t('common.permission')}：</div>
+              <span>
+                {projectInfo.isPublic === 1
+                  ? t('project.companyOpen')
+                  : t('common.privateProject')}
+              </span>
+            </InfoItem>
+          </Line>
+        </div>
+      </InfoRight>
+    </Wrap>
   )
 }
 

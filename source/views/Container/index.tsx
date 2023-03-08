@@ -99,6 +99,7 @@ export const Container = () => {
     dispatch(getStatus())
     dispatch(getLoginDetail())
     dispatch(getAsyncCompanyInfo())
+    dispatch(getProjectCover())
   }, [])
 
   useEffect(() => {

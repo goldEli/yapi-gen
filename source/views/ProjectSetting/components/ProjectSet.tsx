@@ -29,7 +29,7 @@ import {
 } from '@/services/project'
 
 const Warp = styled.div({
-  padding: 16,
+  // padding: 16,
   height: '100%',
 })
 

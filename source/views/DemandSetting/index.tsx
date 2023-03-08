@@ -11,7 +11,7 @@ const Wrap = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 0 24px;
+  /* padding: 0 24px; */
   overflow-x: hidden;
 `
 const ButtonStyle = styled.div`
