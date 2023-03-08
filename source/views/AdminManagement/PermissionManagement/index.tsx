@@ -271,7 +271,7 @@ const PermissionManagement = () => {
   const [isSpinning, setIsSpinning] = useState(false)
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
-  const { userInfo } = useSelector(store => store.user)
+  const { menuPermission } = useSelector(store => store.user)
   const getPermission = async (id: number) => {
     setIsSpinning(true)
     const result = await getRolePermission({ roleId: id })
@@ -411,8 +411,10 @@ const PermissionManagement = () => {
 
   return (
     <PermissionWrap
-      auth="b/company/role"
-      permission={userInfo?.company_permissions}
+      auth="/AdminManagement/PermissionManagement"
+      permission={menuPermission?.menus
+        ?.filter((k: any) => k.url === '/AdminManagement')?.[0]
+        ?.children?.map((i: any) => i.url)}
     >
       <div style={{ height: '100%' }}>
         <DeleteConfirm

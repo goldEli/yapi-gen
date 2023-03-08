@@ -100,6 +100,7 @@ const MemberInfo = () => {
   const { mainInfo } = useSelector(store => store.memberInfo)
   const { userInfo } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
+  const { menuPermission } = useSelector(store => store.user)
 
   const menuList = [
     {
@@ -148,11 +149,11 @@ const MemberInfo = () => {
 
   return (
     <PermissionWrap
-      auth={isMember ? 'b/project/member/info' : 'b/user/info'}
+      auth={isMember ? 'b/project/member/info' : 'b/companyuser/info'}
       permission={
         isMember
-          ? projectInfo?.projectPermissions
-          : userInfo?.company_permissions
+          ? projectInfo?.projectPermissions?.map((i: any) => i.identity)
+          : userInfo?.company_permissions?.map((i: any) => i.identity)
       }
     >
       <Wrap isMember={isMember}>

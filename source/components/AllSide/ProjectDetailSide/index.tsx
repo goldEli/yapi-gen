@@ -2,7 +2,7 @@
 
 import CommonIconFont from '@/components/CommonIconFont'
 import { getProjectInfo, getProjectInfoValues } from '@/services/project'
-import { getParamsData } from '@/tools'
+import { getIsPermission, getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectInfo, setProjectInfoValues } from '@store/project'
@@ -37,11 +37,21 @@ const ProjectDetailSide = () => {
   const navigate = useNavigate()
 
   const menuList = [
-    { name: '需求', icon: 'demand', path: '/ProjectManagement/Demand' },
+    {
+      name: '需求',
+      icon: 'demand',
+      path: '/ProjectManagement/Demand',
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.group_name).includes('需求'),
+      ).length,
+    },
     {
       name: '迭代',
       icon: 'interation',
       path: '/ProjectManagement/Iteration',
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.group_name).includes('迭代'),
+      ).length,
     },
   ]
 
@@ -186,6 +196,7 @@ const ProjectDetailSide = () => {
               key={i.icon}
               isActive={routerPath.pathname === i.path}
               onClick={() => onChangeRouter(i.path)}
+              hidden={!i.isPermission}
             >
               <CommonIconFont
                 type={i.icon}

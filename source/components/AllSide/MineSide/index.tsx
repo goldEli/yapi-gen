@@ -2,7 +2,8 @@ import CommonButton from '@/components/CommonButton'
 import IconFont from '@/components/IconFont'
 import { getIsPermission } from '@/tools'
 import styled from '@emotion/styled'
-import { useSelector } from '@store/index'
+import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
+import { useDispatch, useSelector } from '@store/index'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
@@ -24,10 +25,10 @@ const Menu = styled.div`
 
 const MineSide = () => {
   const [t] = useTranslation()
+  const dispatch = useDispatch()
   const { pathname } = useLocation()
   const nowPath = pathname || ''
   const navigate = useNavigate()
-  const { userInfo } = useSelector(store => store.user)
 
   const changeActive = (value: any) => {
     navigate(value.path)
@@ -38,64 +39,41 @@ const MineSide = () => {
       id: 1,
       name: t('mine.mineSurvey'),
       path: '/ProjectManagement/Mine/Profile',
-      isPermission: getIsPermission(
-        userInfo?.company_permissions,
-        'b/user/overview',
-      ),
     },
     {
       id: 2,
       name: t('mine.mineNeedDeal'),
       path: '/ProjectManagement/Mine/Carbon',
-      isPermission: getIsPermission(
-        userInfo?.company_permissions,
-        'b/user/abeyance/story',
-      ),
     },
     {
       id: 3,
       name: t('mine.mineCreate'),
       path: '/ProjectManagement/Mine/Create',
-      isPermission: getIsPermission(
-        userInfo?.company_permissions,
-        'b/user/create/story',
-      ),
     },
     {
       id: 4,
       name: t('mine.mineFinish'),
       path: '/ProjectManagement/Mine/Finished',
-      isPermission: getIsPermission(
-        userInfo?.company_permissions,
-        'b/user/finish/story',
-      ),
     },
     {
       id: 5,
       name: t('mine.copyMine'),
       path: '/ProjectManagement/Mine/Agenda',
-      isPermission: getIsPermission(
-        userInfo?.company_permissions,
-        'b/user/copysend/story',
-      ),
     },
     {
       id: 6,
       name: t('newlyAdd.mineExamine'),
       path: '/ProjectManagement/Mine/Examine',
-      isPermission: false,
     },
   ]
 
+  const onCreateDemand = () => {
+    dispatch(setIsCreateDemandVisible(true))
+    dispatch(setCreateDemandProps({ isQuickCreate: true }))
+  }
+
   return (
     <div>
-      {/* {getIsPermission(
-          userInfo?.company_permissions,
-          'b/user/fast/create',
-        ) ? null : ( */}
-      {/* <CommonButton icon="plus" iconPlacement="left" type="primary">
-        {t('mine.quickCreate')}
-      </CommonButton> */}
       <div
         style={{
           display: 'flex',
@@ -123,16 +101,15 @@ const MineSide = () => {
             fontSize: '16px',
           }}
           type="plus"
+          onClick={onCreateDemand}
         />
       </div>
-      {/* )} */}
       <Menu>
         {menuList.map(item => (
           <MenuItem
             isActive={nowPath === item.path}
             onClick={() => changeActive(item)}
             key={item.id}
-            // hidden={item.isPermission}
           >
             {item.name}
           </MenuItem>

@@ -39,6 +39,7 @@ import {
 } from '@store/iterate'
 import SetShowField from '@/components/SetShowField/indedx'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
+import PermissionWrap from '@/components/PermissionWrap'
 
 const Wrap = styled.div`
   height: 100%;
@@ -536,7 +537,16 @@ const Iteration = () => {
     )
   }
 
-  return <Wrap>{content()}</Wrap>
+  return (
+    <PermissionWrap
+      auth="迭代"
+      permission={projectInfo?.projectPermissions?.map(
+        (i: any) => i.group_name,
+      )}
+    >
+      <Wrap>{content()}</Wrap>
+    </PermissionWrap>
+  )
 }
 
 export default Iteration

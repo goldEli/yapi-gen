@@ -86,6 +86,7 @@ const OperationManagement = () => {
     { label: t('common.del'), value: 'DELETE' },
   ]
   const { userInfo } = useSelector(store => store.user)
+  const { menuPermission } = useSelector(store => store.user)
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
@@ -225,8 +226,10 @@ const OperationManagement = () => {
 
   return (
     <PermissionWrap
-      auth="b/company/operate_logs"
-      permission={userInfo?.company_permissions}
+      auth="/AdminManagement/OperationManagement"
+      permission={menuPermission?.menus
+        ?.filter((k: any) => k.url === '/AdminManagement')?.[0]
+        ?.children?.map((i: any) => i.url)}
     >
       <Form
         style={{ height: '100%' }}

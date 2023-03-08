@@ -101,8 +101,9 @@ const MainWrap = styled.div({
 
 interface MoreWrapProps {
   record: any
-  onShowEdit(): void
   onShowDel(): void
+  // 是否是所有项目
+  isAllProject?: boolean
 }
 
 const MoreWrap = (props: MoreWrapProps) => {
@@ -150,6 +151,7 @@ const MoreWrap = (props: MoreWrapProps) => {
               onDeleteChange={onDeleteChange}
               onCreateChild={onCreateChild}
               record={props?.record}
+              isAllProject={props.isAllProject}
             />
           }
         />
@@ -381,8 +383,8 @@ const CommonNeed = (props: any) => {
               !props?.record?.project?.isDelete ? (
                 <MoreWrap
                   record={record}
-                  onShowEdit={() => showEdit(record)}
                   onShowDel={() => showDel(record)}
+                  isAllProject={!props.id}
                 />
               ) : null}
             </>

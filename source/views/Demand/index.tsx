@@ -51,6 +51,7 @@ import { changeColorText } from '@store/color-text'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
 import StateTag from '@/components/StateTag'
 import CommonButton from '@/components/CommonButton'
+import PermissionWrap from '@/components/PermissionWrap'
 
 const Wrap = styled.div`
   height: 100%;
@@ -671,11 +672,21 @@ const DemandBox = () => {
     }
     setIsUpdate(true)
   }
+
   if (!loadingState) {
     return <Loading />
   }
 
-  return <Wrap>{content()}</Wrap>
+  return (
+    <PermissionWrap
+      auth="需求"
+      permission={projectInfo?.projectPermissions?.map(
+        (i: any) => i.group_name,
+      )}
+    >
+      <Wrap>{content()}</Wrap>
+    </PermissionWrap>
+  )
 }
 
 export default DemandBox

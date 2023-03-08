@@ -33,6 +33,7 @@ import SetShowField from '@/components/SetShowField/indedx'
 import { useNavigate } from 'react-router-dom'
 import HandOverModal from '@/components/HandOverModal'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import PermissionWrap from '@/components/PermissionWrap'
 
 export const tableWrapP = css`
   display: flex;
@@ -68,6 +69,7 @@ const StaffManagement = () => {
   asyncSetTtile(t('title.b5'))
   const dispatch = useDispatch()
   const { userInfo, isRefresh } = useSelector(store => store.user)
+  const { menuPermission } = useSelector(store => store.user)
   const [isShow, setIsShow] = useState<boolean>(false)
   const [loadingState, setLoadingState] = useState<boolean>(false)
   const [page, setPage] = useState<number>(1)
@@ -348,11 +350,12 @@ const StaffManagement = () => {
   }
 
   return (
-    // <PermissionWrap
-    //   auth="b/user/list"
-    //   permission={userInfo?.company_permissions}
-    // >
-    <div>
+    <PermissionWrap
+      auth="/AdminManagement/StaffManagement"
+      permission={menuPermission?.menus
+        ?.filter((k: any) => k.url === '/AdminManagement')?.[0]
+        ?.children?.map((i: any) => i.url)}
+    >
       <div
         style={{
           display: 'flex',
@@ -486,8 +489,7 @@ const StaffManagement = () => {
           onConfirm={closeStaffPersonal}
         />
       </div>
-      {/* </PermissionWrap> */}
-    </div>
+    </PermissionWrap>
   )
 }
 

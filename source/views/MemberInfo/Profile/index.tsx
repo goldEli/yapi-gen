@@ -14,7 +14,6 @@ import { css } from '@emotion/css'
 import { ChartsItem, HiddenText, SecondTitle } from '@/components/StyleCommon'
 import { Timeline, message, Pagination } from 'antd'
 import Gantt from '@/components/Gantt'
-import PermissionWrap from '@/components/PermissionWrap'
 import moment from 'moment'
 import IconFont from '@/components/IconFont'
 import NoData from '@/components/NoData'
@@ -304,10 +303,7 @@ const Profile = () => {
     return <Loading />
   }
   return (
-    <PermissionWrap
-      auth="b/user/overview"
-      permission={userInfo?.company_permissions}
-    >
+    <>
       {isMember ? (
         <>
           <HasIdWrap>
@@ -546,7 +542,7 @@ const Profile = () => {
           )}
         </>
       )}
-    </PermissionWrap>
+    </>
   )
 }
 

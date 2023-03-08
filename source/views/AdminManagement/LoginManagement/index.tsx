@@ -95,6 +95,7 @@ const LoginManagement = () => {
   const [t] = useTranslation()
   asyncSetTtile(t('title.c4'))
   const { userInfo } = useSelector(store => store.user)
+  const { menuPermission } = useSelector(store => store.user)
   const [dataList, setDataList] = useState<any>([])
   const [staffList, setStaffList] = useState<any>([])
   const [form] = Form.useForm()
@@ -333,8 +334,10 @@ const LoginManagement = () => {
 
   return (
     <PermissionWrap
-      auth="b/company/login_logs"
-      permission={userInfo?.company_permissions}
+      auth="/AdminManagement/LoginManagement"
+      permission={menuPermission?.menus
+        ?.filter((k: any) => k.url === '/AdminManagement')?.[0]
+        ?.children?.map((i: any) => i.url)}
     >
       <Form
         style={{ height: '100%' }}
