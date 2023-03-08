@@ -384,7 +384,11 @@ const LoginManagement = () => {
               </Form.Item>
             </SelectWrapBedeck>
             <div
-              style={{ color: '#2877FF', fontSize: 15, cursor: 'pointer' }}
+              style={{
+                color: 'var(--primary-d2)',
+                fontSize: 15,
+                cursor: 'pointer',
+              }}
               onClick={onReset}
             >
               {t('common.clearForm')}

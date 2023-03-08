@@ -50,8 +50,16 @@ const DropdownContainer = styled(Dropdown)`
 `
 
 const SliderList = (props: any) => {
-  const { children, index, onMove, listLength, active, childStyle, value } =
-    props
+  const {
+    children,
+    index,
+    onMove,
+    listLength,
+    active,
+    childStyle,
+    value,
+    width,
+  } = props
   const [top, setTop] = React.useState(0)
   const [isDragging, setIsDragging] = React.useState(false)
   const [zIndex, setZIndex] = React.useState(0)
@@ -205,7 +213,8 @@ const SliderList = (props: any) => {
       onClick={props.onChange}
       style={{
         background: active ? childStyle.activeColor : '',
-        width: childStyle.width,
+        width: width,
+        display: 'flex',
         height: childStyle.height,
         transform: isDragging ? 'scale(1.01)' : 'scale(1)',
         top: `${top}px`,
@@ -214,7 +223,7 @@ const SliderList = (props: any) => {
         zIndex: zIndex.toString(),
       }}
     >
-      <IconFontStyle type="move" className="icon" />
+      <IconFontStyle type="move" className="icon" style={{ marginRight: 8 }} />
       <ListItemStyle
         style={{
           color: active ? childStyle.activeTextColor : childStyle.textColor,
@@ -232,7 +241,17 @@ const SliderList = (props: any) => {
           />
         )}
 
-        {children}
+        <span
+          style={{
+            width: width - 120,
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+            display: 'inline-block',
+          }}
+        >
+          {value.name}
+        </span>
       </ListItemStyle>
       <DropdownContainer
         menu={{ items, onClick: onChangeTeam }}
@@ -250,11 +269,12 @@ const SliderList = (props: any) => {
 }
 
 const Sortable = (props: any) => {
-  const { list, setList, childStyle } = props
+  const { list, setList, childStyle, width } = props
   return (
     <div>
       {list?.map((child: any, i: number) => (
         <SliderList
+          width={width}
           onChangeTeam={(row: any) => props.onChangeTeam(row, child)}
           onChange={() => props.onChange(child)}
           childStyle={childStyle}
@@ -268,18 +288,7 @@ const Sortable = (props: any) => {
             setList(newList)
           }}
           value={child}
-        >
-          <div
-            style={{
-              width: '108px',
-              overflow: 'hidden',
-              whiteSpace: 'nowrap',
-              textOverflow: 'ellipsis',
-            }}
-          >
-            {child.name}
-          </div>
-        </SliderList>
+        ></SliderList>
       ))}
     </div>
   )

@@ -4,7 +4,7 @@
 /* eslint-disable operator-linebreak */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import { Checkbox, Input, Space, message, Menu, Spin } from 'antd'
+import { Checkbox, Input, Space, message, Menu, Spin, Tooltip } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useEffect, useState } from 'react'
@@ -26,6 +26,7 @@ import {
 } from '@/services/setting'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
+import CommonButton from '@/components/CommonButton'
 
 const GroupWrap = styled.div({
   display: 'flex',
@@ -37,23 +38,23 @@ const GroupWrap = styled.div({
 })
 
 const Header = styled.div({
-  background: 'white',
+  // background: 'white',
+  display: 'flex',
+  justifyContent: 'space-between',
   position: 'sticky',
   top: 0,
   zIndex: 1,
-  padding: '24px 0',
+  padding: '24px',
   span: {
     fontSize: 16,
     fontWeight: 400,
     color: 'var(--neutral-n1-d1)',
-    paddingLeft: 24,
     lineHeight: '24px',
   },
 })
 
 const Content = styled.div({
-  padding: 16,
-  // background: '#F5F7FA',
+  padding: '0 16px',
   height: 'calc(100% - 64px)',
 })
 
@@ -71,7 +72,6 @@ const SetLeft = styled.div({
   height: '100%',
   borderRight: '1px solid #ECEDEF',
   width: 232,
-  padding: '0 16px',
 })
 
 const SetRight = styled.div({
@@ -84,8 +84,7 @@ const SetRight = styled.div({
 const Title = styled.div({
   fontSize: 14,
   fontWeight: 400,
-  color: 'black',
-  paddingLeft: 8,
+  color: 'var(--neutral-n1-d2)',
   marginBottom: 8,
 })
 
@@ -116,11 +115,11 @@ const MenuItem = styled.div<{ isActive: boolean }>(
     },
     '.subName': {
       fontSize: 12,
-      color: '#BBBDBF',
+      color: 'var(--neutral-n3)',
       fontWeight: 400,
     },
     '&:hover': {
-      background: '#F4F5F5',
+      background: 'var(--hover-d1)',
       '.dropdownIcon': {
         visibility: 'visible',
       },
@@ -129,7 +128,7 @@ const MenuItem = styled.div<{ isActive: boolean }>(
   ({ isActive }) => ({
     background: isActive ? 'var(--gradient-left) !important' : 'white',
     '.name': {
-      color: isActive ? '#2877FF' : '#323233',
+      color: isActive ? 'var(--primary-d1)' : 'var(--neutral-n1-d1)',
     },
   }),
 )
@@ -138,7 +137,7 @@ const TitleGroup = styled.div({
   display: 'flex',
   alignItems: 'center',
   marginTop: 14,
-  color: '#BBBDBF',
+  color: 'var(--neutral-n3)',
   fontSize: 12,
 })
 
@@ -179,6 +178,7 @@ const IconFontStyle = styled(IconFont)`
 `
 
 const RowBox = styled.div`
+  padding-right: 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -451,6 +451,15 @@ const PermissionManagement = () => {
         </CommonModal>
         <Header>
           <span>{t('setting.permissionManagement')}</span>
+          {activeDetail.type !== 1 && (
+            <CommonButton
+              style={{ width: 'fit-content' }}
+              type="primary"
+              onClick={onSavePermission}
+            >
+              {t('common.save')}
+            </CommonButton>
+          )}
         </Header>
         <Content>
           <Spin spinning={isSpinning}>
@@ -460,10 +469,12 @@ const PermissionManagement = () => {
                   <Title style={{ marginBottom: 0 }}>
                     {t('setting.userGroup')}
                   </Title>
-                  <IconFontStyle
-                    type="plus"
-                    onClick={() => setIsVisible(true)}
-                  />
+                  <Tooltip placement="top" title={'添加用户组'}>
+                    <IconFontStyle
+                      type="plus"
+                      onClick={() => setIsVisible(true)}
+                    />
+                  </Tooltip>
                 </RowBox>
                 <MenuItems>
                   {dataList?.map((item: any) => (
@@ -506,14 +517,6 @@ const PermissionManagement = () => {
                     />
                   ))}
                 </MainWrap>
-                <Button
-                  hidden={activeDetail.type === 1}
-                  style={{ width: 'fit-content', marginTop: 16 }}
-                  type="primary"
-                  onClick={onSavePermission}
-                >
-                  {t('common.save')}
-                </Button>
               </SetRight>
             </SetMain>
           </Spin>
