@@ -1,11 +1,11 @@
 /* eslint-disable no-empty */
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import SideDragging from '../components/SideDragging'
 import CommonModal from '@/components/CommonModal'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import { Form, Input, message, Tooltip, Dropdown } from 'antd'
+import { Form, Input, message, Tooltip } from 'antd'
 import { uploadFileByTask } from '@/services/cos'
 import upload from 'antd/lib/upload'
 import { useDispatch, useSelector } from '@store/index'
@@ -243,18 +243,17 @@ const LeftSide = (props: any) => {
   const { teamsList, activeTeam } = useSelector(s => s.teams)
   const [formType, setFormType] = useState('')
   const [uploadImgs, setUploadImgs] = useState<any>()
+  const ref = useRef<any>(null)
 
   // 创建和修改弹窗
   const [teamIsVisible, setTeamIsVisible] = useState(false)
-
   //  创建和修改弹窗的表单
   const [teamForm, setTeamForm] = useState<any>(null)
-
   // 删除团队弹窗
   const [delTeamIsVisible, setDelTeamIsVisible] = useState(false)
   const [form] = Form.useForm()
   const covers = useSelector(state => state.cover.covers)
-
+  const [draggingWidth, setDraggingWidth] = useState(210)
   const onInitCreateModel = () => {
     setUploadImgs(null)
     form.resetFields()
@@ -391,9 +390,26 @@ const LeftSide = (props: any) => {
       payload: child,
     })
   }
+  const mousedown = (ev: any) => {
+    ev.stopPropagation()
+    setDraggingWidth(ref.current?.offsetWidth)
+  }
+  const mouseup = (ev: any) => {
+    ev.stopPropagation()
+    setDraggingWidth(ref.current?.offsetWidth)
+  }
+  useEffect(() => {
+    document.addEventListener('mousedown', mousedown, true)
+    document.addEventListener('mouseup', mouseup, true)
+    return () => {
+      document.removeEventListener('mousedown', mousedown, true)
+      document.removeEventListener('mouseup', mouseup, true)
+    }
+  }, [])
+
   return (
     <LeftSideContainer>
-      <div className="resizable" />
+      <div className="resizable" ref={ref} />
       <div className="resize_line" />
       <Content className="resize_save">
         <TeamAdd onClick={() => createTeam()}>
@@ -402,6 +418,7 @@ const LeftSide = (props: any) => {
         </TeamAdd>
         {/* 拖拽组件 */}
         <SideDragging
+          width={draggingWidth}
           onChange={(item: any) => onChangeDragging(item)}
           list={teamsList}
           setList={setList}
