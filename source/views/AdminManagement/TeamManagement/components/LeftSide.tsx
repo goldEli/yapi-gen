@@ -26,6 +26,8 @@ const LeftSideContainer = styled.div`
     left: 0;
     padding-left: 16px;
     padding-right: 12px;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
   .resizable {
     resize: horizontal;
