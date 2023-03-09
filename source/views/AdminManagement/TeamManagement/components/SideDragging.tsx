@@ -180,7 +180,7 @@ const SliderList = (props: any) => {
     },
     {
       key: 'del',
-      label: '删除团队',
+      label: '解散团队',
     },
   ]
   const onChangeTeam = (item: any) => {

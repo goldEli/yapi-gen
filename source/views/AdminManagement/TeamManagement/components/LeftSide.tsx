@@ -13,8 +13,6 @@ import { useTranslation } from 'react-i18next'
 import * as services from '@/services'
 
 const LeftSideContainer = styled.div`
-  min-width: 232px;
-  max-width: 560px;
   position: relative;
   height: 100%;
   border-right: 1px solid var(--neutral-n6-d2);
@@ -28,6 +26,8 @@ const LeftSideContainer = styled.div`
     left: 0;
     padding-left: 16px;
     padding-right: 12px;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
   .resizable {
     resize: horizontal;
@@ -245,8 +245,6 @@ const LeftSide = (props: any) => {
   const { teamsList, activeTeam } = useSelector(s => s.teams)
   const [formType, setFormType] = useState('')
   const [uploadImgs, setUploadImgs] = useState<any>()
-  const ref = useRef<any>(null)
-
   // 创建和修改弹窗
   const [teamIsVisible, setTeamIsVisible] = useState(false)
   //  创建和修改弹窗的表单
@@ -395,7 +393,7 @@ const LeftSide = (props: any) => {
 
   return (
     <LeftSideContainer>
-      <div className="resizable" ref={ref} />
+      <div className="resizable" />
       <div className="resize_line" />
       <Content className="resize_save">
         <TeamAdd onClick={() => createTeam()}>

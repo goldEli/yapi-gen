@@ -7,6 +7,34 @@ import styled from '@emotion/styled'
 import { Button, Divider, Progress, Slider, Table } from 'antd'
 import IconFont from './IconFont'
 
+const DragLine = styled.div<{ active: boolean }>`
+  position: absolute;
+  width: 2px;
+  cursor: col-resize;
+  overflow: hidden;
+  z-index: 1;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  height: 100%;
+  top: 0;
+  background-size: 100% 12px;
+  background-repeat: repeat-y;
+  background-image: ${({ active }) =>
+    active
+      ? 'linear-gradient(to bottom, #617ef2 0%, #617ef2 80%, transparent 50%)'
+      : 'none'};
+  &:hover {
+    background-image: linear-gradient(
+      to bottom,
+      #617ef2 0%,
+      #617ef2 80%,
+      transparent 50%
+    );
+  }
+`
+
 // 弹窗右上角关闭图标
 const CloseWrap = styled.div<{ width?: any; height?: any }>`
   width: ${props => props.width}px;
@@ -822,4 +850,5 @@ export {
   DelWrap,
   StatusTag,
   ProgressWrap,
+  DragLine,
 }
