@@ -159,7 +159,7 @@ const OperationGroup = (props: Props) => {
         onChangeVisible={setIsVisibleFields}
         isActive={props.settingState}
       >
-        <div>{t('common.tableFieldSet')}</div>
+        <div>{t('common.tableFieldSet')}123</div>
       </DropDownMenu>
     </SpaceWrap>
   )
