@@ -4,7 +4,11 @@ import {
   getDemandList,
   updateDemand,
 } from '@/services/demand'
-import { getProjectInfoValues, getProjectList } from '@/services/project'
+import {
+  getProjectInfoValues,
+  getProjectList,
+  getProjectRecent,
+} from '@/services/project'
 import { removeNull } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import styled from '@emotion/styled'
@@ -190,12 +194,25 @@ const CreateDemand = () => {
     setAllCategoryList(allCategory)
   }
 
+  // 获取最近项目列表 -- 使用列表的第一个
+  const getRecentlyList = async () => {
+    const data = await getProjectRecent()
+    setProjectId(data[0]?.id || '')
+    if (data[0]?.id) {
+      getInit(data[0]?.id)
+    }
+  }
+
   useEffect(() => {
     if (isCreateDemandVisible) {
       getProjectData()
       if (createDemandProps.projectId) {
         getInit(createDemandProps.projectId)
         setProjectId(createDemandProps.projectId)
+      }
+      // 全局创建和快速创建获取最近项目
+      if (!createDemandProps?.projectId) {
+        getRecentlyList()
       }
     }
   }, [isCreateDemandVisible])

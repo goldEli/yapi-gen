@@ -217,17 +217,22 @@ export const DrawerCompany = styled.div`
 export const CompanyInfo = styled.div`
   display: flex;
   align-items: center;
+  width: 94%;
   img {
     width: 32px;
     height: 32px;
     border-radius: 6px;
     margin-right: 12px;
   }
-  span {
+  div {
     color: var(--neutral-n1-d1);
     font-family: SiYuanRegular;
     font-size: 14px;
     font-weight: 400;
+    width: 70%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 `
 

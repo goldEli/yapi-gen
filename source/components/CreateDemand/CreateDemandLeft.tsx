@@ -77,6 +77,7 @@ const CreateDemandLeft = (props: Props) => {
   )
   let isCreateDemand = true
 
+  // 获取工作流列表
   const getStatusList = async (value: any) => {
     const result = await getWorkflowList({
       projectId: props.projectId,
@@ -421,6 +422,9 @@ const CreateDemandLeft = (props: Props) => {
       })
       getProjectInfoData(props.projectId)
     }
+  }, [props.projectId])
+
+  useEffect(() => {
     // 是否是快捷创建
     if (createDemandProps?.isQuickCreate) {
       getProjectData()

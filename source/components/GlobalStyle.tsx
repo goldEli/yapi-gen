@@ -653,6 +653,9 @@ const GlobalStyle = () => {
       display: flex;
       justify-content: flex-end;
       align-items: center;
+      .anticon {
+        color: var(--neutral-n4);
+      }
     }
     .ant-pagination-total-text {
       font-size: 12px;
@@ -679,9 +682,6 @@ const GlobalStyle = () => {
       font-size: 14px;
       font-weight: 400;
       color: var(--neutral-n2);
-    }
-    .anticon {
-      color: var(--neutral-n4);
     }
     .ant-pagination-item-active,
     .ant-pagination-item-active:hover a {
