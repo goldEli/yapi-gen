@@ -163,7 +163,7 @@ const DemandMain = (props: Props) => {
 
   useEffect(() => {
     getList(isGrid, searchItems, pageObj, order)
-  }, [key, isGrid, order, pageObj, searchChoose])
+  }, [key, isGrid, order, pageObj, searchChoose, projectId])
 
   useEffect(() => {
     if (isRefresh) {

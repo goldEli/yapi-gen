@@ -228,7 +228,7 @@ const DemandBox = () => {
       dispatch(changeColorText(''))
       dispatch(onTapSearchChoose({}))
     }
-  }, [])
+  }, [demandId])
 
   useEffect(() => {
     // 获取项目信息中的需求类别

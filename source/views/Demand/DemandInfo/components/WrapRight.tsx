@@ -124,7 +124,6 @@ const NewWrapRight = () => {
 
   useEffect(() => {
     getList()
-    onUpdate()
   }, [])
 
   return (
