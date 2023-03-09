@@ -299,32 +299,30 @@ const DemandDetailDrawer = () => {
                 color="var(--neutral-n1-d1)"
               />
             </BackIcon>
-            <Skeleton loading={skeletonLoading}>
-              <ChangeStatusPopover
-                isCanOperation={isCanEdit && !drawerInfo.isExamine}
-                projectId={drawerInfo.projectId}
-                record={drawerInfo}
-                onChangeStatus={onChangeStatus}
-              >
-                <StateTag
-                  name={drawerInfo.name}
-                  onClick={drawerInfo.isExamine ? onExamine : void 0}
-                  isShow={isCanEdit || drawerInfo.isExamine}
-                  state={
-                    drawerInfo?.status?.is_start === 1 &&
-                    drawerInfo?.status?.is_end === 2
-                      ? 1
-                      : drawerInfo?.status?.is_end === 1 &&
-                        drawerInfo?.status?.is_start === 2
-                      ? 2
-                      : drawerInfo?.status?.is_start === 2 &&
-                        drawerInfo?.status?.is_end === 2
-                      ? 3
-                      : 0
-                  }
-                />
-              </ChangeStatusPopover>
-            </Skeleton>
+            <ChangeStatusPopover
+              isCanOperation={isCanEdit && !drawerInfo.isExamine}
+              projectId={drawerInfo.projectId}
+              record={drawerInfo}
+              onChangeStatus={onChangeStatus}
+            >
+              <StateTag
+                name={drawerInfo.name}
+                onClick={drawerInfo.isExamine ? onExamine : void 0}
+                isShow={isCanEdit || drawerInfo.isExamine}
+                state={
+                  drawerInfo?.status?.is_start === 1 &&
+                  drawerInfo?.status?.is_end === 2
+                    ? 1
+                    : drawerInfo?.status?.is_end === 1 &&
+                      drawerInfo?.status?.is_start === 2
+                    ? 2
+                    : drawerInfo?.status?.is_start === 2 &&
+                      drawerInfo?.status?.is_end === 2
+                    ? 3
+                    : 0
+                }
+              />
+            </ChangeStatusPopover>
           </Space>
           <Space size={16}>
             <ChangeIconGroup>
