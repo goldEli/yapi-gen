@@ -142,6 +142,43 @@ export const uploadFile = (
   })
 }
 
+export const uploadFileToKey = (
+  file: File,
+  username: string,
+  space: string,
+  fileName?: any,
+  onEnd?: (data: { key: string; url: string }) => void,
+) => {
+  const key = `${import.meta.env.__COS_PREFIX__}${username}/${space}/${
+    fileName || file.name
+  }`
+  cos.uploadFile({
+    Body: file,
+    Bucket: import.meta.env.__COS_BUCKET__,
+    Region: import.meta.env.__COS_REGION__,
+    Key: key,
+    onFileFinish(error: Error, data: UploadFileItemResult) {
+      if (!error) {
+        onEnd?.({
+          key,
+          url: `https://${data.Location}`,
+        })
+        // resolve({
+        //   space,
+        //   id: getUUID(),
+        //   name: file.name,
+        //   size: file.size,
+        //   formattedSize: formatFileSize(file.size),
+        //   suffix: getFileSuffix(file.name),
+        //   url: `https://${data.Location}`,
+        //   time: moment(new Date()).format('yyyy-MM-DD HH:mm:ss'),
+        // })
+      }
+    },
+  })
+  return key
+}
+
 export const uploadFileByTask = (
   file: File,
   username: string,

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-negated-condition */
 // 公司成员主页
@@ -34,6 +35,7 @@ import { useNavigate } from 'react-router-dom'
 import HandOverModal from '@/components/HandOverModal'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import PermissionWrap from '@/components/PermissionWrap'
+import { confirmHand, restHand } from '@/services/handover'
 
 export const tableWrapP = css`
   display: flex;
@@ -107,6 +109,7 @@ const StaffManagement = () => {
     'project_num',
     'role_name',
     'status',
+    'handover_status',
   ])
   const [titleList2, setTitleList2] = useState<CheckboxValueType[]>([
     'created_at',
@@ -121,12 +124,15 @@ const StaffManagement = () => {
       jobId: searchGroups.jobId,
       departmentId: searchGroups.departmentId,
       userGroupId: searchGroups.userGroupId,
+      handover_status: searchGroups?.handover_status,
+      status: searchGroups?.status,
       keyword,
       order,
       orderkey: orderKey,
       page,
       pagesize,
     })
+
     setListData(res.list)
     setIsSpinning(false)
     setTotal(res.pager.total)
@@ -152,7 +158,16 @@ const StaffManagement = () => {
   }
   const controlStaffPersonalVisibleA = (e: any) => {
     setEditData(e)
+    if (e.project_num === 0) {
+      setIsVisibleFieldsB(true)
+      return
+    }
+
     setIsVisibleFieldsA(true)
+  }
+  const controlStaffPersonalVisibleC = (e: any) => {
+    setEditData(e)
+    setIsVisibleFieldsC(true)
   }
   const closeStaffPersonal = async (e: any) => {
     const res = await updateStaff(e)
@@ -175,28 +190,41 @@ const StaffManagement = () => {
     updateOrderkey,
   })
 
-  const menuTable = (record: any) => (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label: (
-            <div onClick={() => controlStaffPersonalVisible(record)}>
-              {t('staff.setPermission')}
-            </div>
-          ),
-        },
-        {
-          key: '12',
-          label: (
-            <div onClick={() => controlStaffPersonalVisibleA(record)}>
-              离职交接
-            </div>
-          ),
-        },
-      ]}
-    />
-  )
+  const menuTable = (record: any) => {
+    const items = [
+      {
+        key: '1',
+        label: (
+          <div onClick={() => controlStaffPersonalVisible(record)}>
+            {t('staff.setPermission')}
+          </div>
+        ),
+      },
+      {
+        key: '12',
+        label: (
+          <div onClick={() => controlStaffPersonalVisibleA(record)}>
+            离职交接
+          </div>
+        ),
+      },
+      {
+        key: '123',
+        label: (
+          <div onClick={() => controlStaffPersonalVisibleC(record)}>
+            恢复交接状态
+          </div>
+        ),
+      },
+    ]
+    let newArr: any = []
+    if (record.handover_status === 1) {
+      newArr = items.slice(0, 2)
+    } else if (record.handover_status === 2) {
+      newArr = items.slice(2, 3)
+    }
+    return <Menu items={newArr} />
+  }
 
   const onToDetail = (row: any) => {
     if (row.id === userInfo.id) {
@@ -285,6 +313,8 @@ const StaffManagement = () => {
       jobId: e.position,
       departmentId: e.department,
       userGroupId: e.userGroup,
+      handover_status: e?.handover_status,
+      status: e?.status,
     })
   }
   const onChangePage = (newPage: any) => {
@@ -345,10 +375,25 @@ const StaffManagement = () => {
     return <Loading />
   }
 
-  const onConfirm = () => {
+  const onConfirm = async () => {
     // console.log(1)
-  }
+    const res1 = await confirmHand({ id: editData.id })
 
+    if (res1.code === 0) {
+      message.success('成功')
+
+      setIsVisibleFieldsB(false)
+      getStaffListData()
+    }
+  }
+  const onConfirm2 = async () => {
+    const res = await restHand(editData.id)
+    if (res.code === 0) {
+      message.success('成功')
+      setIsVisibleFieldsC(false)
+      getStaffListData()
+    }
+  }
   return (
     <PermissionWrap
       auth="/AdminManagement/StaffManagement"
@@ -465,19 +510,23 @@ const StaffManagement = () => {
           getCheckList={getCheckList}
         />
         <HandOverModal
+          id={editData}
+          confirm={() => getStaffListData()}
           close={() => setIsVisibleFieldsA(false)}
           visible={isVisibleFieldsA}
         />
         <DeleteConfirm
           title="离职交接"
-          text="张三目前未参与任何项目，确认将【张三】工作交接，交接后他的交接状态将更改为已交接；已经交接状态不可被项目添加及进行员工权限配置"
+          text={`${editData.name}目前未参与任何项目，确认将【${editData.name}】工作交接，交接后他的交接状态将更改为已交接；已经交接状态不可被项目添加及进行员工权限配置`}
           onConfirm={onConfirm}
+          onChangeVisible={() => setIsVisibleFieldsB(false)}
           isVisible={isVisibleFieldsB}
         />
         <DeleteConfirm
           title="恢复交接状态"
-          text="确认将【张三】的交接状态更改为正常状态"
-          onConfirm={onConfirm}
+          text={`确认将【${editData.name}】的交接状态更改为正常状态`}
+          onConfirm={onConfirm2}
+          onChangeVisible={() => setIsVisibleFieldsC(false)}
           isVisible={isVisibleFieldsC}
         />
         <StaffPersonal

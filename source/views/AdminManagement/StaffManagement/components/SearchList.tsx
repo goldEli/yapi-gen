@@ -78,6 +78,7 @@ const SearchList = (props: Props) => {
 
   const confirm = async () => {
     const value = await form.validateFields()
+
     props.onSearch(value)
   }
   return (
@@ -149,7 +150,7 @@ const SearchList = (props: Props) => {
           </SelectWrapBedeck>
           <SelectWrapBedeck>
             <span style={{ margin: '0 16px', fontSize: '14px' }}>状态</span>
-            <Form.Item name="userGroup">
+            <Form.Item name="status">
               <SelectWrap
                 onChange={confirm}
                 style={{ width: '100%' }}
@@ -161,11 +162,15 @@ const SearchList = (props: Props) => {
                 options={[
                   {
                     label: '在职',
-                    value: '1',
+                    value: 1,
                   },
                   {
                     label: '离职',
-                    value: '2',
+                    value: 2,
+                  },
+                  {
+                    label: '删除',
+                    value: 3,
                   },
                 ]}
               />
@@ -173,7 +178,7 @@ const SearchList = (props: Props) => {
           </SelectWrapBedeck>
           <SelectWrapBedeck>
             <span style={{ margin: '0 16px', fontSize: '14px' }}>交接状态</span>
-            <Form.Item name="userGroup">
+            <Form.Item name="handover_status">
               <SelectWrap
                 onChange={confirm}
                 style={{ width: '100%' }}
@@ -185,11 +190,11 @@ const SearchList = (props: Props) => {
                 options={[
                   {
                     label: '正常',
-                    value: '1',
+                    value: 1,
                   },
                   {
                     label: '已交接',
-                    value: '2',
+                    value: 2,
                   },
                 ]}
               />
