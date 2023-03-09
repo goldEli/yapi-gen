@@ -126,6 +126,7 @@ const CreateField = () => {
   const filterData = (confightList: any, payloadList: any) => {
     if (confightList?.length < 1 && payloadList?.length < 1) return
     const filterIds = confightList?.map((item: any) => item.storyId)
+    // console.log(payloadList?.filter((item: any) => !filterIds?.includes(item.id)), 'guolv')
     setDataList(
       payloadList?.filter((item: any) => !filterIds?.includes(item.id)),
     )

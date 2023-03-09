@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { setActiveCategory } from '@store/category'
 import { useDispatch } from '@store/index'

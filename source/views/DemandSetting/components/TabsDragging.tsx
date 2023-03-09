@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-handler-names */
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
-import { setActiveCategory } from '@store/category'
+import { useSelector } from '@store/index'
 import { Checkbox, Tooltip } from 'antd'
 import React, { useEffect, useLayoutEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -73,52 +73,7 @@ const SliderList = (props: any) => {
   const prevRectRef = React.useRef(null)
   const animationRef: any = React.useRef(null)
   const [t] = useTranslation()
-  const option = [
-    {
-      label: t('newlyAdd.lineText'),
-      value: '1',
-      type: 'text',
-      icon: 'text-alone',
-    },
-    {
-      label: t('newlyAdd.moreLineText'),
-      value: '2',
-      type: 'textarea',
-      icon: 'text-more',
-    },
-    {
-      label: t('newlyAdd.radioDropdown'),
-      value: '3',
-      type: 'select',
-      icon: 'select-alone',
-    },
-    {
-      label: t('newlyAdd.multiDropdown'),
-      value: '4',
-      type: 'select_checkbox',
-      icon: 'select-more',
-    },
-    { label: t('newlyAdd.time'), value: '7', type: 'date', icon: 'calendar' },
-    { label: t('newlyAdd.number'), value: '8', type: 'number', icon: 'number' },
-    {
-      label: t('version2.personRadio'),
-      value: '9',
-      type: 'user_select',
-      icon: 'user-alone',
-    },
-    {
-      label: t('version2.personCheckbox'),
-      value: '10',
-      type: 'user_select_checkbox',
-      icon: 'user-more',
-    },
-    {
-      label: '确认勾选',
-      value: '11',
-      type: 'single_checkbox',
-      icon: 'check-circle',
-    },
-  ]
+  const { option } = useSelector(store => store.category)
   useEffect(() => {
     // 始终保持最新状态 Ref 引用
     indexRef.current = index
@@ -248,8 +203,9 @@ const SliderList = (props: any) => {
               <IconBox>
                 <CommonIconFont
                   type={
-                    option.find(item => child?.fieldContent?.attr === item.type)
-                      ?.icon
+                    option?.find(
+                      (item: any) => child?.fieldContent?.attr === item.type,
+                    )?.icon
                   }
                   size={24}
                   color="var(--neutral-n1-d1)"
@@ -258,10 +214,11 @@ const SliderList = (props: any) => {
               <ListMsg>
                 <div>{child?.title}</div>
                 <div>
-                  {
-                    option.find(item => child?.fieldContent?.attr === item.type)
-                      ?.label
-                  }
+                  {t(
+                    option?.find(
+                      (item: any) => child?.fieldContent?.attr === item.type,
+                    )?.label,
+                  )}
                 </div>
               </ListMsg>
             </div>
@@ -278,8 +235,9 @@ const SliderList = (props: any) => {
             <IconBox>
               <CommonIconFont
                 type={
-                  option.find(item => child?.fieldContent?.attr === item.type)
-                    ?.icon
+                  option.find(
+                    (item: any) => child?.fieldContent?.attr === item.type,
+                  )?.icon
                 }
                 size={24}
                 color="var(--neutral-n1-d1)"
@@ -288,10 +246,11 @@ const SliderList = (props: any) => {
             <ListMsg>
               <div>{child?.title}</div>
               <div>
-                {
-                  option.find(item => child?.fieldContent?.attr === item.type)
-                    ?.label
-                }
+                {t(
+                  option.find(
+                    (item: any) => child?.fieldContent?.attr === item.type,
+                  )?.label,
+                )}
               </div>
             </ListMsg>
           </div>

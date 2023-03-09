@@ -6,6 +6,8 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { deleteStoryConfigField } from '@/services/project'
 import { message } from 'antd'
 import { useSelector } from '@store/index'
+import IconFont from '@/components/IconFont'
+
 const Container = styled.div`
   border-radius: 8px;
   background-color: var(--neutral-n8);
@@ -34,10 +36,17 @@ const SearchItemList = styled.div`
     box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
     .delIcon {
       display: block;
+      color: var(--neutral-n2);
     }
   }
 `
-
+const IconFontStyle = styled(IconFont)({
+  color: 'var(--neutral-n2)',
+  fontSize: 19,
+  '&:hover': {
+    color: 'var(--primary-d2)',
+  },
+})
 const SliderList = (props: any) => {
   const { children, index } = props
   const [top, setTop] = useState(0)
@@ -47,6 +56,7 @@ const SliderList = (props: any) => {
   const { projectInfo } = useSelector(store => store.project)
   const ref: any = useRef()
   const prevRectRef = useRef(null)
+  const { option } = useSelector(store => store.category)
   let startY = 0
   let startX = 0
   const onDragStart = (ev: any) => {
@@ -99,7 +109,11 @@ const SliderList = (props: any) => {
       <SearchItemList>
         <div>
           <CommonIconFont
-            type="interation"
+            type={
+              option?.find(
+                (item: any) => children?.field_content?.attr === item.type,
+              )?.icon
+            }
             size={19}
             color="var(--neutral-n1-d1)"
           />
@@ -111,9 +125,7 @@ const SliderList = (props: any) => {
             setIsVisible(true), setDelItem(children)
           }}
         >
-          {children?.is_customize === 1 && (
-            <CommonIconFont type="delete" size={19} color="var(--primary-d2)" />
-          )}
+          {children?.is_customize === 1 && <IconFontStyle type="delete" />}
         </div>
       </SearchItemList>
       <DeleteConfirm

@@ -202,11 +202,7 @@ const Upload = (props: any) => {
     }
   }, [props.fileList])
   return (
-    <UploadStyle
-      customRequest={customRequest}
-      fileList={props.fileList || []}
-      showUploadList={false}
-    >
+    <>
       <UploadTitle>
         团队LOGO
         <Tooltip placement="top" title="支持jpg、png格式，大小80*80像素">
@@ -220,16 +216,22 @@ const Upload = (props: any) => {
           />
         </Tooltip>
       </UploadTitle>
-      {defaultIcon ? (
-        <IconFont
-          type="team-8a8gio2p"
-          style={{ fontSize: 80, color: '#98ACE0' }}
-        />
-      ) : (
-        <img src={uploadImg} />
-      )}
-      <Mask>重新上传</Mask>
-    </UploadStyle>
+      <UploadStyle
+        customRequest={customRequest}
+        fileList={props.fileList || []}
+        showUploadList={false}
+      >
+        {defaultIcon ? (
+          <IconFont
+            type="team-8a8gio2p"
+            style={{ fontSize: 80, color: '#98ACE0' }}
+          />
+        ) : (
+          <img src={uploadImg} />
+        )}
+        <Mask>重新上传</Mask>
+      </UploadStyle>
+    </>
   )
 }
 

@@ -499,6 +499,7 @@ export const getMineNoFinishList: any = async (params: any) => {
       count: k.count,
       list: k.list
         ? k.list?.map((i: any) => ({
+            ...i,
             statusName: k.status_name,
             category_attachment: i.category_attachment,
             categoryConfigList: i.category_config_list,
@@ -548,6 +549,7 @@ export const getMineNoFinishList: any = async (params: any) => {
     return {
       list: response.data?.list
         ? response.data.list.map((i: any) => ({
+            ...i,
             category_attachment: i.category_attachment,
             categoryConfigList: i.category_config_list,
             new: i.is_new,
@@ -628,6 +630,7 @@ export const getMineCreacteList: any = async (params: any) => {
   return {
     list: response.data?.list
       ? response.data.list.map((i: any) => ({
+          ...i,
           category_attachment: i.category_attachment,
           categoryConfigList: i.category_config_list,
           id: i.id,
@@ -706,6 +709,7 @@ export const getMineFinishList: any = async (params: any) => {
   return {
     list: response.data?.list
       ? response.data?.list?.map((i: any) => ({
+          ...i,
           category_attachment: i.category_attachment,
           categoryConfigList: i.category_config_list,
           id: i.id,
@@ -785,6 +789,7 @@ export const getMineNeedList: any = async (params: any) => {
   return {
     list: response.data?.list
       ? response.data.list.map((i: any) => ({
+          ...i,
           category_attachment: i.category_attachment,
           categoryConfigList: i.category_config_list,
           id: i.id,
