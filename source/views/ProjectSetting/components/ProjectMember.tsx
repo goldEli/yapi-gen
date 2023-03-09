@@ -40,6 +40,7 @@ import { setIsUpdateMember, setProjectInfo } from '@store/project'
 import InputSearch from '@/components/InputSearch'
 import CommonButton from '@/components/CommonButton'
 import PaginationBox from '@/components/TablePagination'
+import ResizeTable from '@/components/ResizeTable'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -770,29 +771,13 @@ const ProjectMember = () => {
           </FilterWrap>
         </Header>
         <Content>
-          <DataWrap ref={dataWrapRef}>
-            <Spin spinning={isSpinning}>
-              {!!memberList?.list &&
-                (memberList?.list?.length > 0 ? (
-                  <TableStyleBox
-                    isPadding
-                    isBottom
-                    rowKey="id"
-                    columns={columns as any}
-                    dataSource={memberList?.list}
-                    pagination={false}
-                    scroll={{
-                      x: 'max-content',
-                      y: tableY,
-                    }}
-                    tableLayout="auto"
-                    showSorterTooltip={false}
-                  />
-                ) : (
-                  <NoData />
-                ))}
-            </Spin>
-          </DataWrap>
+          <ResizeTable
+            isSpinning={isSpinning}
+            dataWrapNormalHeight="calc(100% - 48px)"
+            col={columns}
+            dataSource={memberList?.list}
+            noData={<NoData />}
+          />
           <PaginationBox
             total={memberList?.total}
             currentPage={memberList?.currentPage}

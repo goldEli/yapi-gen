@@ -39,6 +39,7 @@ import PaginationBox from '@/components/TablePagination'
 import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
 import SetShowField from '@/components/SetShowField/indedx'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
+import ResizeTable from '@/components/ResizeTable'
 
 const Operation = styled.div({
   display: 'flex',
@@ -381,27 +382,13 @@ const ChildDemand = () => {
           <div>{t('common.tableFieldSet')}</div>
         </DropDownMenu>
       </Operation>
-      <DataWrap ref={dataWrapRef}>
-        <Spin spinning={isSpinning}>
-          {!!dataList?.list &&
-            (dataList?.list?.length > 0 ? (
-              <TableStyleBox
-                rowKey="id"
-                columns={selectColum}
-                dataSource={dataList?.list}
-                pagination={false}
-                scroll={{
-                  x: 'max-content',
-                  y: tableY,
-                }}
-                tableLayout="auto"
-                showSorterTooltip={false}
-              />
-            ) : (
-              <NoData />
-            ))}
-        </Spin>
-      </DataWrap>
+      <ResizeTable
+        isSpinning={isSpinning}
+        dataWrapNormalHeight="calc(100% - 92px)"
+        col={selectColum}
+        dataSource={dataList?.list}
+        noData={<NoData />}
+      />
 
       <PaginationBox
         currentPage={dataList?.currentPage}

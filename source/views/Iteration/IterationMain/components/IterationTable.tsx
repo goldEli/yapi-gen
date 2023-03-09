@@ -32,6 +32,7 @@ import FloatBatch from '@/components/FloatBatch'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
+import ResizeTable from '@/components/ResizeTable'
 
 const Content = styled.div({
   background: 'var(--neutral-white-d1)',
@@ -414,56 +415,27 @@ const IterationTable = (props: Props) => {
             </SecondButton>
           </div>
         )}
-      <DataWrap
-        ref={dataWrapRef}
-        hasCreate={
+
+      <ResizeTable
+        isSpinning={props?.isSpinning}
+        dataWrapNormalHeight={
           hasCreate || props.hasId?.status !== 1 || projectInfo?.status !== 1
+            ? 'calc(100% - 44px)'
+            : 'calc(100% - 96px)'
         }
-      >
-        {typeof props?.hasId === 'object' && (
-          <Spin spinning={props?.isSpinning}>
-            {!!props.data?.list &&
-              (props.data?.list?.length > 0 ? (
-                <TableStyleBox
-                  rowKey="id"
-                  columns={selectColum}
-                  dataSource={props.data?.list}
-                  pagination={false}
-                  scroll={{
-                    x: 'max-content',
-                    y: tableY,
-                  }}
-                  showSorterTooltip={false}
-                  tableLayout="auto"
-                  rowSelection={
-                    !hasBatch &&
-                    ({
-                      selectedRowKeys: selectedRowKeys?.map((i: any) => i.id),
-                      onSelect: (record: any, selected: any) =>
-                        onSelectChange(record, selected),
-                      onSelectAll,
-                    } as any)
-                  }
-                />
-              ) : (
-                <NoData />
-              ))}
-          </Spin>
-        )}
-        {!hasBatch && (
-          <FloatBatch
-            isVisible={selectedRowKeys.length > 0}
-            onClose={() => onSelectAll(false)}
-            selectRows={selectedRowKeys}
-            onUpdate={props.onUpdate}
-            onRef={batchDom}
-          />
-        )}
-        {typeof props?.hasId !== 'object' && (
-          // 没有迭代的时候
-          <NoData />
-        )}
-      </DataWrap>
+        col={selectColum}
+        dataSource={props.data?.list}
+        noData={<NoData />}
+        rowSelection={
+          !hasBatch &&
+          ({
+            selectedRowKeys: selectedRowKeys?.map((i: any) => i.id),
+            onSelect: (record: any, selected: any) =>
+              onSelectChange(record, selected),
+            onSelectAll,
+          } as any)
+        }
+      />
       <PaginationBox
         total={props.data?.total}
         currentPage={props.data?.currentPage}

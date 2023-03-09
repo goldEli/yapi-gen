@@ -390,22 +390,6 @@ const LeftSide = (props: any) => {
       payload: child,
     })
   }
-  const mousedown = (ev: any) => {
-    ev.stopPropagation()
-    setDraggingWidth(ref.current?.offsetWidth)
-  }
-  const mouseup = (ev: any) => {
-    ev.stopPropagation()
-    setDraggingWidth(ref.current?.offsetWidth)
-  }
-  useEffect(() => {
-    document.addEventListener('mousedown', mousedown, true)
-    document.addEventListener('mouseup', mouseup, true)
-    return () => {
-      document.removeEventListener('mousedown', mousedown, true)
-      document.removeEventListener('mouseup', mouseup, true)
-    }
-  }, [])
 
   return (
     <LeftSideContainer>
@@ -418,7 +402,6 @@ const LeftSide = (props: any) => {
         </TeamAdd>
         {/* 拖拽组件 */}
         <SideDragging
-          width={draggingWidth}
           onChange={(item: any) => onChangeDragging(item)}
           list={teamsList}
           setList={setList}

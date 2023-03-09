@@ -34,6 +34,7 @@ import { useNavigate } from 'react-router-dom'
 import HandOverModal from '@/components/HandOverModal'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import PermissionWrap from '@/components/PermissionWrap'
+import ResizeTable from '@/components/ResizeTable'
 
 export const tableWrapP = css`
   display: flex;
@@ -423,27 +424,13 @@ const StaffManagement = () => {
               overflow: 'hidden',
             }}
           >
-            <DataWrap ref={dataWrapRef}>
-              <Spin spinning={isSpinning}>
-                {!!listData &&
-                  (listData?.length > 0 ? (
-                    <TableStyleBox
-                      isBottom
-                      rowKey="id"
-                      columns={selectColum}
-                      dataSource={listData}
-                      pagination={false}
-                      scroll={{
-                        x: 'max-content',
-                        y: tableY,
-                      }}
-                      tableLayout="auto"
-                    />
-                  ) : (
-                    <NoData />
-                  ))}
-              </Spin>
-            </DataWrap>
+            <ResizeTable
+              isSpinning={isSpinning}
+              dataWrapNormalHeight="100%"
+              col={selectColum}
+              dataSource={listData}
+              noData={<NoData />}
+            />
           </div>
 
           <PaginationBox

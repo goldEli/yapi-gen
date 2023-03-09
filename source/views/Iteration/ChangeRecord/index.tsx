@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
 import { getIterateChangeLog } from '@/services/iterate'
 import PaginationBox from '@/components/TablePagination'
+import ResizeTable from '@/components/ResizeTable'
 
 const ContentWrap = styled.div({
   display: 'flex',
@@ -405,28 +406,13 @@ const ChangeRecord = (props?: any) => {
           </div>
         </SpaceWrap>
       </CommonModal>
-      <DataWrap ref={dataWrapRef}>
-        <Spin spinning={isSpinning}>
-          {!!dataList?.list &&
-            (dataList?.list?.length > 0 ? (
-              <TableStyleBox
-                rowKey="id"
-                columns={columns}
-                dataSource={dataList?.list}
-                pagination={false}
-                scroll={{
-                  x: 'max-content',
-                  y: tableY,
-                }}
-                tableLayout="auto"
-                showSorterTooltip={false}
-              />
-            ) : (
-              <NoData />
-            ))}
-        </Spin>
-      </DataWrap>
-
+      <ResizeTable
+        isSpinning={isSpinning}
+        dataWrapNormalHeight="calc(100% - 64px)"
+        col={columns}
+        dataSource={dataList?.list}
+        noData={<NoData />}
+      />
       <PaginationBox
         currentPage={dataList?.currentPage}
         pageSize={pageObj?.size}

@@ -7,6 +7,13 @@ import './index.css'
 import styled from '@emotion/styled'
 
 const TableWrap = styled(Table)`
+  height: 100%;
+  .ant-table-wrapper,
+  .ant-table,
+  .ant-table-container,
+  .ant-table-content {
+    height: 100%;
+  }
   .ant-table-tbody .tagLength {
     visibility: hidden;
   }
@@ -52,7 +59,7 @@ const TableWrap = styled(Table)`
   }
 `
 
-const DataWrap = styled.div<{ height: any }>`
+const DataWrap = styled.div<{ height?: any }>`
   height: ${props => props.height};
   overflow-x: auto;
 `
@@ -84,6 +91,8 @@ interface ResizeTableProps {
   noData?: any
   isSpinning?: boolean
   rowSelection?: any
+  onRow?(): void
+  expandable?: any
 }
 
 // 拖拽调整table
@@ -168,7 +177,9 @@ const ResizeTable = (props: ResizeTableProps) => {
                 }}
                 tableLayout="auto"
                 showSorterTooltip={false}
-                rowSelection={props.rowSelection}
+                rowSelection={props?.rowSelection}
+                expandable={props?.expandable}
+                onRow={props.onRow as any}
               />
             ) : (
               <div style={{ height: '100%' }}>{props.noData}</div>

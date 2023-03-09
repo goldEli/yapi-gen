@@ -2,6 +2,8 @@ import styled from '@emotion/styled'
 import table from 'antd/lib/table'
 import { GENDER_MAP } from '@/constants'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
+import ResizeTable from '@/components/ResizeTable'
+import NoData from '@/components/NoData'
 
 const TableStyle = styled(table)`
   .ant-table-thead > tr > th,
@@ -39,53 +41,52 @@ const OperationWrap = styled.div`
 const Table = (props: any) => {
   const columns: any = [
     {
-      align: 'left',
       title: '昵称',
       dataIndex: 'nickname',
       key: 'nickname',
+      width: 160,
       render: (text: string, record: any) => (
         <CommonUserAvatar avatar={record.avatar} size="small" name={text} />
       ),
     },
     {
-      align: 'left',
       title: '真实姓名',
       dataIndex: 'name',
       key: 'name',
+      width: 160,
     },
     {
-      align: 'left',
       title: '性别',
       dataIndex: 'gender',
       key: 'gender',
+      width: 80,
       render: (text: any, record: any) => GENDER_MAP[text],
     },
     {
-      align: 'left',
       title: '邮箱',
+      width: 160,
       dataIndex: 'email',
       key: 'email',
     },
     {
-      align: 'left',
       title: '手机',
+      width: 160,
       dataIndex: 'phone',
       key: 'phone',
     },
     {
-      align: 'left',
       title: '部门',
+      width: 160,
       dataIndex: 'department_name',
       key: 'department_name',
     },
     {
-      align: 'left',
       title: '职位',
+      width: 160,
       dataIndex: 'position_name',
       key: 'position_name',
     },
     {
-      align: 'left',
       title: '团队角色',
       dataIndex: 'team_is_admin',
       key: 'team_is_admin',
@@ -93,9 +94,8 @@ const Table = (props: any) => {
         text === 1 ? '团队管理' : '团队成员',
     },
     {
-      width: 196,
-      align: 'left',
       title: '操作',
+      dataIndex: 'action',
       render: (text: string, record: any) => (
         <OperationWrap>
           <span onClick={() => props.onEditRow(record, 'edit')}>编辑</span>
@@ -106,12 +106,19 @@ const Table = (props: any) => {
     },
   ]
   return (
-    <TableStyle
-      columns={columns}
+    <ResizeTable
+      isSpinning={false}
+      dataWrapNormalHeight="100%"
+      col={columns}
       dataSource={props.dataSource}
-      pagination={false}
-      // onChange={props.onChange}
+      noData={<NoData />}
     />
+    // <TableStyle
+    //   columns={columns}
+    //   dataSource={props.dataSource}
+    //   pagination={false}
+    //   // onChange={props.onChange}
+    // />
   )
 }
 export default Table

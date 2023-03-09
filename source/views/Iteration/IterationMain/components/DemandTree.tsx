@@ -40,6 +40,7 @@ import PaginationBox from '@/components/TablePagination'
 import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
+import ResizeTable from '@/components/ResizeTable'
 
 const Content = styled.div({
   padding: '20px 12px 0 8px',
@@ -583,72 +584,51 @@ const DemandTree = (props: Props) => {
     setIsCreateChild({})
   }
 
-  // 关闭创建需求-暂无数据
-  const onClose = () => {
-    setIsAddVisible(!isAddVisible)
-  }
-
-  const onTest = () => {
-    props.onUpdate(true, isCreateChild?.topId)
-  }
-
   return (
     <Content>
-      <DataWrap ref={dataWrapRef}>
-        <Spin spinning={props?.isSpinning}>
-          {!!data?.list &&
-            (data?.list?.length > 0 ? (
-              <TableStyleBox
-                rowKey="id"
-                columns={selectColum}
-                dataSource={data?.list}
-                pagination={false}
-                scroll={{
-                  x: 'max-content',
-                  y: tableY,
-                }}
-                showSorterTooltip={false}
-                tableLayout="auto"
-                expandable={{
-                  showExpandColumn: false,
-                  expandedRowKeys,
-                }}
-                rowSelection={
-                  !hasBatch &&
-                  ({
-                    selectedRowKeys: selectedRowKeys?.map((i: any) => i.id),
-                    onSelect: (record: any, selected: any) =>
-                      onSelectChange(record, selected),
-                    onSelectAll,
-                  } as any)
-                }
-              />
-            ) : (
-              <NoData
-                subText={hasCreate ? '' : t('version2.noDataCreateDemandList')}
-                haveFilter={filterKeys?.length > 0}
+      <ResizeTable
+        isSpinning={props?.isSpinning}
+        col={selectColum}
+        dataSource={data?.list}
+        dataWrapNormalHeight="calc(100% - 64px)"
+        expandable={{
+          showExpandColumn: false,
+          expandedRowKeys,
+        }}
+        rowSelection={
+          !hasBatch &&
+          ({
+            selectedRowKeys: selectedRowKeys?.map((i: any) => i.id),
+            onSelect: (record: any, selected: any) =>
+              onSelectChange(record, selected),
+            onSelectAll,
+          } as any)
+        }
+        noData={
+          <NoData
+            subText={hasCreate ? '' : t('version2.noDataCreateDemandList')}
+            haveFilter={filterKeys?.length > 0}
+          >
+            {!hasCreate && (
+              <SecondButton
+                onClick={() => setIsAddVisible(true)}
+                style={{ marginTop: 24 }}
               >
-                {!hasCreate && (
-                  <SecondButton
-                    onClick={() => setIsAddVisible(true)}
-                    style={{ marginTop: 24 }}
-                  >
-                    {t('common.createDemand')}
-                  </SecondButton>
-                )}
-              </NoData>
-            ))}
-        </Spin>
-        {!hasBatch && (
-          <FloatBatch
-            isVisible={selectedRowKeys.length > 0}
-            onClose={() => onSelectAll(false)}
-            selectRows={selectedRowKeys}
-            onUpdate={props.onUpdate}
-            onRef={batchDom}
-          />
-        )}
-      </DataWrap>
+                {t('common.createDemand')}
+              </SecondButton>
+            )}
+          </NoData>
+        }
+      />
+      {!hasBatch && (
+        <FloatBatch
+          isVisible={selectedRowKeys.length > 0}
+          onClose={() => onSelectAll(false)}
+          selectRows={selectedRowKeys}
+          onUpdate={props.onUpdate}
+          onRef={batchDom}
+        />
+      )}
 
       <PaginationBox
         currentPage={data?.currentPage}

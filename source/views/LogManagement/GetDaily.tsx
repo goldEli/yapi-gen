@@ -21,6 +21,7 @@ import LookDay from './components/LookDay'
 import RangePicker from '@/components/RangePicker'
 import InputSearch from '@/components/InputSearch'
 import PaginationBox from '@/components/TablePagination'
+import ResizeTable from '@/components/ResizeTable'
 
 const srr = [
   undefined,
@@ -410,28 +411,13 @@ const Get = () => {
             padding: '16px 16px 0',
           }}
         >
-          <div ref={dataWrapRef}>
-            <Spin spinning={isSpinning}>
-              {!!listData &&
-                (listData?.length > 0 ? (
-                  <TableStyleBox
-                    isBottom
-                    rowKey="id"
-                    columns={columnsData}
-                    dataSource={listData}
-                    pagination={false}
-                    scroll={{
-                      x: 'max-content',
-                      y: tableY,
-                    }}
-                    tableLayout="auto"
-                    showSorterTooltip={false}
-                  />
-                ) : (
-                  <NoData />
-                ))}
-            </Spin>
-          </div>
+          <ResizeTable
+            isSpinning={isSpinning}
+            dataWrapNormalHeight="100%"
+            col={columnsData}
+            dataSource={listData}
+            noData={<NoData />}
+          />
         </div>
         <PaginationBox
           currentPage={pageObj.page}
