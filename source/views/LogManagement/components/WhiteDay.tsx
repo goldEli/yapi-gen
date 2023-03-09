@@ -18,7 +18,7 @@ import UploadAttach from '@/components/UploadAttach'
 import { useDispatch } from '@store/index'
 import { changeRest } from '@store/log'
 import { Editor, EditorRef } from '@xyfe/uikit'
-import { uploadFileByTask } from '@/services/cos'
+import { uploadFileByTask, uploadFileToKey } from '@/services/cos'
 import { getStaffListAll } from '@/services/staff'
 
 export const LabelTitle = (props: any) => {
@@ -163,6 +163,7 @@ const WhiteDay = (props: any) => {
       setDefaultValue()
     }
     getList()
+    editorRef.current?.focus()
   }, [props.editId, props.visibleEdit])
 
   const scrollToBottom = () => {
@@ -252,21 +253,17 @@ const WhiteDay = (props: any) => {
             <Editor
               ref={editorRef}
               key={Math.random()}
-              upload={async file => {
-                const response = await uploadFileByTask(
+              upload={file => {
+                const key = uploadFileToKey(
                   file,
                   file.name,
                   `richEditorFiles_${new Date().getTime()}`,
+                  false,
+                  data => {
+                    editorRef.current?.notifyUploaded(data.key, data.url)
+                  },
                 )
-
-                setTimeout(() => {
-                  editorRef.current?.notifyUploaded(
-                    file.name + file.size,
-                    response.url,
-                  )
-                }, 2000)
-
-                return file.name + file.size
+                return key
               }}
               getSuggestions={() => {
                 return new Promise(resolve => {

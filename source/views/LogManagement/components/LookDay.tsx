@@ -25,6 +25,7 @@ import { useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 import Viewer from 'react-viewer'
 import { InnerLine } from './RelatedNeed'
+import { Editor } from '@xyfe/uikit'
 
 export const GrepWrap = styled.div`
   position: fixed;
@@ -327,7 +328,19 @@ const LookDay = (props: any) => {
             >
               <LabelTitle title={texts[props.type]?.name} />
               {article1 ? (
-                <div dangerouslySetInnerHTML={{ __html: article1 }} />
+                // <div dangerouslySetInnerHTML={{ __html: article1 }} />
+                <Editor
+                  getSuggestions={() => {
+                    return new Promise(resolve => {
+                      setTimeout(() => {
+                        // resolve([])
+                        resolve([])
+                      }, 1000)
+                    })
+                  }}
+                  readonly
+                  value={article1}
+                />
               ) : (
                 <Kong />
               )}

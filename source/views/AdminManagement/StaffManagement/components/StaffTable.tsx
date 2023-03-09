@@ -175,6 +175,22 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
+      title: <NewSort fixedKey="status">离职状态</NewSort>,
+      dataIndex: 'handover_status',
+      key: 'handover_status',
+      width: 120,
+      render: (
+        text: string | number,
+        record: Record<string, string | number>,
+      ) => {
+        return (
+          <div onClick={() => state.showModal2(record)}>
+            {text === 1 ? '正常' : '已交接'}
+          </div>
+        )
+      },
+    },
+    {
       title: (
         <NewSort fixedKey="project_num">{t('staff.projectCount')}</NewSort>
       ),

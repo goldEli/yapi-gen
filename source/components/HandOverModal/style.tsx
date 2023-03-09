@@ -2,6 +2,14 @@ import styled from '@emotion/styled'
 
 const Wrap = styled.div`
   padding: 0 24px;
+  height: 500px;
+  overflow-y: scroll;
+  & .ant-form-item-label {
+    /* display: none; */
+    & ::after {
+      content: '' !important;
+    }
+  }
 `
 const PinkWrap = styled.div`
   background: rgba(250, 151, 70, 0.1);
