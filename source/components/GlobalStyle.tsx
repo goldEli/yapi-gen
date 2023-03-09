@@ -259,7 +259,7 @@ const GlobalStyle = () => {
     .ant-dropdown-menu-item {
       color: #646566;
       .ant-dropdown-menu-title-content div {
-        min-width: 80px;
+        /* min-width: 80px; */
       }
     }
     .ant-dropdown-menu-item:hover {
@@ -603,7 +603,7 @@ const GlobalStyle = () => {
     } */
 
     .ant-dropdown-menu-title-content div {
-      padding: 0 12px;
+      /* padding: 0 12px; */
       white-space: pre;
     }
 

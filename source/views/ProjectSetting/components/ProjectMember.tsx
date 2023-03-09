@@ -634,9 +634,7 @@ const ProjectMember = () => {
   return (
     <PermissionWrap
       auth="b/project/member"
-      permission={projectInfo.projectPermissions}
-      isType={2}
-      isPadding
+      permission={projectInfo?.projectPermissions?.map((i: any) => i.identity)}
     >
       <Wrap>
         <SetPermissionWrap

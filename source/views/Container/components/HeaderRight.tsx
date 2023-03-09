@@ -32,6 +32,7 @@ import {
 import { useTranslation } from 'react-i18next'
 import { setIsCreateIterationVisible } from '@store/iterate'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
+import helpPdf from '/Agile.pdf'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const [t] = useTranslation()
@@ -154,9 +155,21 @@ const HeaderRight = () => {
   ]
 
   const createList = [
-    { name: '创建需求', key: 'demand', icon: 'demand' },
-    { name: '创建迭代', key: 'iteration', icon: 'interation' },
-    { name: '创建项目', key: 'project', icon: 'folder-open-nor' },
+    { name: '创建需求', key: 'demand', icon: 'demand', isPermission: true },
+    {
+      name: '创建迭代',
+      key: 'iteration',
+      icon: 'interation',
+      isPermission: true,
+    },
+    {
+      name: '创建项目',
+      key: 'project',
+      icon: 'folder-open-nor',
+      isPermission: (
+        userInfo.company_permissions?.map((i: any) => i.identity) || []
+      ).includes('b/project/save'),
+    },
   ]
 
   const labelList = [
@@ -239,6 +252,10 @@ const HeaderRight = () => {
     }
   }
 
+  const onHelp = () => {
+    window.open(helpPdf)
+  }
+
   const userContent = (
     <UserInfoWrap>
       <UserInfoTop>
@@ -284,7 +301,12 @@ const HeaderRight = () => {
   const content = (
     <ChangeItems>
       {createList.map((i: any) => (
-        <ChangeItem key={i.key} height={40} onClick={() => onCreate(i.key)}>
+        <ChangeItem
+          key={i.key}
+          height={40}
+          onClick={() => onCreate(i.key)}
+          hidden={!i.isPermission}
+        >
           <Space size={8}>
             <CommonIconFont type={i.icon} color="var(--neutral-n3)" />
             {i.name}
@@ -349,7 +371,7 @@ const HeaderRight = () => {
             <CommonIconFont type="plus" size={20} />
           </CreateWrap>
         </Popover>
-        <CloseWrap width={32} height={32}>
+        <CloseWrap width={32} height={32} onClick={onHelp}>
           <CommonIconFont type="question" size={24} />
         </CloseWrap>
         <Popover

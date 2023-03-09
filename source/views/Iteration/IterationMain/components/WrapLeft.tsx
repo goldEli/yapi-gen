@@ -34,7 +34,11 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import { SecondButton } from '@/components/StyleCommon'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectInfoValues } from '@store/project'
-import { setIsCreateIterationVisible, setIsRefreshList } from '@store/iterate'
+import {
+  setCreateIterationParams,
+  setIsCreateIterationVisible,
+  setIsRefreshList,
+} from '@store/iterate'
 import {
   deleteIterate,
   getIterateList,
@@ -401,6 +405,7 @@ const WrapLeft = (props: Props) => {
 
   const onChangeClick = () => {
     dispatch(setIsCreateIterationVisible(true))
+    dispatch(setCreateIterationParams({ projectId }))
   }
 
   const onVisibleChange = (visible: any) => {

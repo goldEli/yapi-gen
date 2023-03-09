@@ -126,10 +126,16 @@ const IterationCard = (props: Props) => {
   )
 
   const onClickMenu = (e: any, type: any) => {
+    e.stopPropagation()
     setIsVisible(false)
     if (type === 'edit') {
       dispatch(setIsCreateIterationVisible(true))
-      dispatch(setCreateIterationParams(props?.item))
+      dispatch(
+        setCreateIterationParams({
+          ...props?.item,
+          ...{ projectId: projectInfo?.id },
+        }),
+      )
     } else if (type === 'del') {
       props?.onChangeDelete(e, props?.item)
     }

@@ -5,12 +5,13 @@ import CreateField from './components/CreateField'
 import CommonButton from '@/components/CommonButton'
 import { useTranslation } from 'react-i18next'
 import { useState } from 'react'
+import { useSelector } from '@store/index'
+import PermissionWrap from '@/components/PermissionWrap'
 
 const Wrap = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  /* padding: 0 24px; */
   overflow-x: hidden;
 `
 const ButtonStyle = styled.div`
@@ -26,12 +27,16 @@ const DemandSetting = () => {
   const [t] = useTranslation()
   const [isOperate, setIsOperate] = useState<boolean>(false)
   const [isSave, setIsSave] = useState(false)
+  const { projectInfo } = useSelector(store => store.project)
 
   const save = () => {
     setIsSave(true)
   }
   return (
-    <>
+    <PermissionWrap
+      auth="b/project/story_config"
+      permission={projectInfo?.projectPermissions?.map((i: any) => i.identity)}
+    >
       <Header />
       {isOperate && (
         <ButtonStyle>
@@ -62,7 +67,7 @@ const DemandSetting = () => {
         />
         <CreateField />
       </Wrap>
-    </>
+    </PermissionWrap>
   )
 }
 export default DemandSetting

@@ -90,7 +90,8 @@ const TableTitle = styled.div({
 const SearchWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'flex-end',
+  justifyContent: 'space-between',
+  marginBottom: '20px',
 })
 
 const MainWrap = styled.div({
@@ -101,8 +102,9 @@ const MainWrap = styled.div({
 
 interface MoreWrapProps {
   record: any
-  onShowEdit(): void
   onShowDel(): void
+  // 是否是所有项目
+  isAllProject?: boolean
 }
 
 const MoreWrap = (props: MoreWrapProps) => {
@@ -150,6 +152,7 @@ const MoreWrap = (props: MoreWrapProps) => {
               onDeleteChange={onDeleteChange}
               onCreateChild={onCreateChild}
               record={props?.record}
+              isAllProject={props.isAllProject}
             />
           }
         />
@@ -381,8 +384,8 @@ const CommonNeed = (props: any) => {
               !props?.record?.project?.isDelete ? (
                 <MoreWrap
                   record={record}
-                  onShowEdit={() => showEdit(record)}
                   onShowDel={() => showDel(record)}
+                  isAllProject={!props.id}
                 />
               ) : null}
             </>
@@ -553,19 +556,19 @@ const CommonNeed = (props: any) => {
   return (
     <MainWrap>
       <div style={{ padding: '0 24px', justifyContent: 'space-between' }}>
-        <div>
-          <TabsItem isActive>
-            <div>{props?.subTitle}</div>
-          </TabsItem>
-          <LabNumber isActive>{total ?? 0}</LabNumber>
-        </div>
         <SearchWrap>
-          <div style={{ marginRight: 16 }}>
+          <div style={{ position: 'absolute', top: '20px', right: '24px' }}>
             <InputSearch
               placeholder={t('common.pleaseSearchDemand')}
               onChangeSearch={onPressEnter}
               leftIcon
             />
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <TabsItem isActive>
+              <div>{props?.subTitle}</div>
+            </TabsItem>
+            <LabNumber isActive>{total ?? 0}</LabNumber>
           </div>
           <Space style={{ display: 'flex' }} size={8}>
             {props?.isMember ? null : (

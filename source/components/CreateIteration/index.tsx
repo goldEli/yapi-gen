@@ -1,14 +1,19 @@
 /* eslint-disable require-unicode-regexp */
+import { addIterate, getIterateInfo, updateIterate } from '@/services/iterate'
+import { getProjectList } from '@/services/project'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
 import {
   setCreateIterationParams,
   setIsCreateIterationVisible,
+  setIsUpdateList,
 } from '@store/iterate'
-import { Form, Input, Select, Space } from 'antd'
-import { useRef, useState } from 'react'
+import { Form, Input, message, Select, Space } from 'antd'
+import moment from 'moment'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '../CommonModal'
+import MoreOptions from '../MoreOptions'
 import RangePicker from '../RangePicker'
 import RichEditor from '../RichEditor'
 
@@ -30,16 +35,80 @@ const CreateIteration = () => {
   const [form] = Form.useForm()
   // 迭代时间
   const [times, setTimes] = useState<any>(null)
+  // 项目列表
+  const [projectList, setProjectList] = useState<any>([])
+  const [html, setHtml] = useState('')
+
+  // 获取项目列表
+  const getProjectData = async () => {
+    const res = await getProjectList({
+      self: 1,
+      all: 1,
+    })
+    setProjectList(res.list)
+    // 如果有需求id则获取详情
+    if (createIterationParams.id) {
+      const response = await getIterateInfo({
+        projectId: createIterationParams.projectId,
+        id: createIterationParams?.id,
+      })
+      setHtml(response?.info)
+      setTimes([
+        moment(response.createdTime || response?.startTime || 0),
+        moment(response.endTime || 1893427200),
+      ])
+      form.setFieldsValue({
+        info: response?.info,
+        iterationName: response.name,
+        time: response.endTime
+          ? [
+              moment(response.createdTime || response?.startTime || 0),
+              moment(response.endTime || 1893427200),
+            ]
+          : null,
+      })
+    }
+    form.setFieldsValue({
+      projectId: createIterationParams?.projectId || null,
+    })
+  }
 
   //   关闭弹窗
   const onCancel = () => {
     form.resetFields()
+    setTimes(null)
+    setHtml('')
     dispatch(setIsCreateIterationVisible(false))
-    dispatch(setCreateIterationParams({}))
+    dispatch(
+      setCreateIterationParams(
+        createIterationParams?.id ? { isUpdate: true } : {},
+      ),
+    )
   }
 
-  const onConfirm = () => {
-    //
+  const onConfirm = async () => {
+    await form.validateFields()
+    const values = form.getFieldsValue()
+    values.info = html
+    if (createIterationParams?.id) {
+      await updateIterate({
+        projectId: createIterationParams?.projectId,
+        id: createIterationParams?.id,
+        ...values,
+      })
+      message.success(t('common.editSuccess'))
+    } else {
+      await addIterate({
+        projectId: createIterationParams?.projectId,
+        ...values,
+      })
+      message.success(t('common.createSuccess'))
+    }
+    onCancel()
+    dispatch(setIsUpdateList(true))
+    setTimeout(() => {
+      form.resetFields()
+    }, 100)
   }
 
   const onChangePicker = (values: any) => {
@@ -48,6 +117,12 @@ const CreateIteration = () => {
       time: values,
     })
   }
+
+  useEffect(() => {
+    if (isCreateIterationVisible) {
+      getProjectData()
+    }
+  }, [isCreateIterationVisible])
 
   return (
     <CommonModal
@@ -95,7 +170,30 @@ const CreateIteration = () => {
               rules={[{ required: true, message: '' }]}
               name="projectId"
             >
-              <Select style={{ width: '100%' }} />
+              <Select
+                optionLabelProp="label"
+                placeholder={t('common.searchProject')}
+                allowClear
+                showArrow
+                optionFilterProp="label"
+                getPopupContainer={node => node}
+                showSearch
+              >
+                {projectList
+                  ?.filter((i: any) => i.status === 1)
+                  ?.map((i: any) => {
+                    return (
+                      <Select.Option value={i.id} key={i.id} label={i.name}>
+                        <MoreOptions
+                          type="project"
+                          name={i.name}
+                          dec={i.dec}
+                          img={i.cover}
+                        />
+                      </Select.Option>
+                    )
+                  })}
+              </Select>
             </Form.Item>
             <Form.Item
               label={t('project.iterateTime')}
@@ -110,7 +208,7 @@ const CreateIteration = () => {
             </Form.Item>
           </ItemWrap>
           <Form.Item label={t('project.iterateTarget')}>
-            <RichEditor />
+            <RichEditor value={html} />
           </Form.Item>
         </Form>
       </div>

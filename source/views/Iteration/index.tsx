@@ -39,6 +39,7 @@ import {
 } from '@store/iterate'
 import SetShowField from '@/components/SetShowField/indedx'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
+import PermissionWrap from '@/components/PermissionWrap'
 
 const Wrap = styled.div`
   height: 100%;
@@ -149,7 +150,9 @@ const Iteration = () => {
   const [isDelete, setIsDelete] = useState(false)
   const [isUpdateState, setIsUpdateState] = useState(false)
   const { projectInfo, projectInfoValues } = useSelector(store => store.project)
-  const { iterateInfo } = useSelector(store => store.iterate)
+  const { iterateInfo, createIterationParams } = useSelector(
+    store => store.iterate,
+  )
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -274,14 +277,15 @@ const Iteration = () => {
   const onUpdateIterateInfo = async (id: any) => {
     const result = await getIterateInfo({ projectId, id })
     dispatch(setIterateInfo(result))
+    dispatch(setCreateIterationParams({}))
   }
 
   useEffect(() => {
     // 迭代详情页面调用迭代详情
-    if (iterateId) {
+    if (iterateId && createIterationParams?.isUpdate) {
       onUpdateIterateInfo(iterateId)
     }
-  }, [])
+  }, [iterateId, createIterationParams?.isUpdate])
 
   useEffect(() => {
     if (projectInfo?.id) {
@@ -335,7 +339,12 @@ const Iteration = () => {
 
   const onChangeEditVisible = () => {
     dispatch(setIsCreateIterationVisible(true))
-    dispatch(setCreateIterationParams(iterateInfo))
+    dispatch(
+      setCreateIterationParams({
+        ...iterateInfo,
+        ...{ projectId },
+      }),
+    )
   }
 
   const onChangeStatus = async (val: number) => {
@@ -536,7 +545,16 @@ const Iteration = () => {
     )
   }
 
-  return <Wrap>{content()}</Wrap>
+  return (
+    <PermissionWrap
+      auth="迭代"
+      permission={projectInfo?.projectPermissions?.map(
+        (i: any) => i.group_name,
+      )}
+    >
+      <Wrap>{content()}</Wrap>
+    </PermissionWrap>
+  )
 }
 
 export default Iteration

@@ -169,7 +169,6 @@ const IterationGrid = (props: Props) => {
                                 )
                               }
                               onChangeDelete={props?.onDelete}
-                              onChangeEdit={props?.onChangeVisible}
                               onUpdate={props?.onUpdate}
                             />
                           ))

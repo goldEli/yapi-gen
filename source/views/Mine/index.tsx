@@ -1,4 +1,6 @@
+import PermissionWrap from '@/components/PermissionWrap'
 import styled from '@emotion/styled'
+import { useSelector } from '@store/index'
 import { t } from 'i18next'
 import { Outlet, useLocation } from 'react-router-dom'
 
@@ -15,6 +17,7 @@ const Title = styled.div`
 
 const Mine = () => {
   const location = useLocation()
+  const { menuPermission } = useSelector(store => store.user)
   const setTitle = () => {
     const nowPath = location.pathname
     const titles = [
@@ -46,11 +49,17 @@ const Mine = () => {
     const newName = titles.find((i: any) => nowPath.includes(i.path))
     return newName
   }
+
   return (
-    <div>
+    <PermissionWrap
+      auth="/ProjectManagement/Mine"
+      permission={menuPermission?.menus
+        ?.filter((k: any) => k.url === '/ProjectManagement')?.[0]
+        ?.children?.map((i: any) => i.url)}
+    >
       <Title>{setTitle()?.name}</Title>
       <Outlet />
-    </div>
+    </PermissionWrap>
   )
 }
 

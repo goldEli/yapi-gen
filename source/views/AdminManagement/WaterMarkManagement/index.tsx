@@ -57,6 +57,7 @@ const WaterMarkManagement = () => {
 
   const { value: checked } = useSelector(store => store.water)
   const { userInfo } = useSelector(store => store.user)
+  const { menuPermission } = useSelector(store => store.user)
   const dispatch = useDispatch()
 
   const onChange = async (value: boolean) => {
@@ -76,8 +77,10 @@ const WaterMarkManagement = () => {
   ]
   return (
     <PermissionWrap
-      auth="b/company/config"
-      permission={userInfo?.company_permissions}
+      auth="/AdminManagement/WaterMarkManagement"
+      permission={menuPermission?.menus
+        ?.filter((k: any) => k.url === '/AdminManagement')?.[0]
+        ?.children?.map((i: any) => i.url)}
     >
       <div style={{ height: '100%' }}>
         <Header>

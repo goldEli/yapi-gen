@@ -92,8 +92,8 @@ const SearchWrap = styled.div({
 
 interface MoreWrapProps {
   record: any
-  onShowEdit(): void
   onShowDel(): void
+  isAllProject?: boolean
 }
 
 const MoreWrap = (props: MoreWrapProps) => {
@@ -141,6 +141,7 @@ const MoreWrap = (props: MoreWrapProps) => {
               onDeleteChange={onDeleteChange}
               onCreateChild={onCreateChild}
               record={props?.record}
+              isAllProject={props.isAllProject}
             />
           }
         />
@@ -354,8 +355,8 @@ const CommonNeed = (props: any) => {
           return (
             <MoreWrap
               record={record}
-              onShowEdit={() => showEdit(record)}
               onShowDel={() => showDel(record)}
+              isAllProject={!props.id}
             />
           )
         },
@@ -539,7 +540,7 @@ const CommonNeed = (props: any) => {
           <LabNumber isActive>{total ?? 0}</LabNumber>
         </div>
         <SearchWrap>
-          <div style={{ position: 'absolute', top: '20px', right: '24px' }}>
+          <div style={{ position: 'absolute', top: '0px', right: '24px' }}>
             <InputSearch
               placeholder={t('common.pleaseSearchDemand')}
               onChangeSearch={onPressEnter}

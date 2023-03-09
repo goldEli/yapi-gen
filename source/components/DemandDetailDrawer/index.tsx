@@ -19,7 +19,7 @@ import {
 } from '@store/demand'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectInfo } from '@store/project'
-import { Drawer, message, Popover, Space } from 'antd'
+import { Drawer, message, Popover, Skeleton, Space } from 'antd'
 import { createRef, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import ChangeStatusPopover from '../ChangeStatusPopover'
@@ -73,6 +73,7 @@ const DemandDetailDrawer = () => {
   const dispatch = useDispatch()
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
+  const [skeletonLoading, setSkeletonLoading] = useState(false)
   const [deleteId, setDeleteId] = useState(0)
   const [drawerInfo, setDrawerInfo] = useState<any>({})
   const [showState, setShowState] = useState<any>(normalState)
@@ -104,6 +105,7 @@ const DemandDetailDrawer = () => {
   const getDemandDetail = async (id?: any) => {
     setDrawerInfo({})
     setShowState(normalState)
+    setSkeletonLoading(true)
     const info = await getDemandInfo({
       projectId:
         demandDetailDrawerProps.project_id ?? demandDetailDrawerProps.projectId,
@@ -119,6 +121,7 @@ const DemandDetailDrawer = () => {
       name: info.name,
     })
     setDrawerInfo(info)
+    setSkeletonLoading(false)
     // 获取当前需求的下标， 用作上一下一切换
     setCurrentIndex(
       (demandDetailDrawerProps?.demandIds || []).findIndex(
@@ -296,30 +299,32 @@ const DemandDetailDrawer = () => {
                 color="var(--neutral-n1-d1)"
               />
             </BackIcon>
-            <ChangeStatusPopover
-              isCanOperation={isCanEdit && !drawerInfo.isExamine}
-              projectId={drawerInfo.projectId}
-              record={drawerInfo}
-              onChangeStatus={onChangeStatus}
-            >
-              <StateTag
-                name={drawerInfo.name}
-                onClick={drawerInfo.isExamine ? onExamine : void 0}
-                isShow={isCanEdit || drawerInfo.isExamine}
-                state={
-                  drawerInfo?.status?.is_start === 1 &&
-                  drawerInfo?.status?.is_end === 2
-                    ? 1
-                    : drawerInfo?.status?.is_end === 1 &&
-                      drawerInfo?.status?.is_start === 2
-                    ? 2
-                    : drawerInfo?.status?.is_start === 2 &&
-                      drawerInfo?.status?.is_end === 2
-                    ? 3
-                    : 0
-                }
-              />
-            </ChangeStatusPopover>
+            <Skeleton loading={skeletonLoading}>
+              <ChangeStatusPopover
+                isCanOperation={isCanEdit && !drawerInfo.isExamine}
+                projectId={drawerInfo.projectId}
+                record={drawerInfo}
+                onChangeStatus={onChangeStatus}
+              >
+                <StateTag
+                  name={drawerInfo.name}
+                  onClick={drawerInfo.isExamine ? onExamine : void 0}
+                  isShow={isCanEdit || drawerInfo.isExamine}
+                  state={
+                    drawerInfo?.status?.is_start === 1 &&
+                    drawerInfo?.status?.is_end === 2
+                      ? 1
+                      : drawerInfo?.status?.is_end === 1 &&
+                        drawerInfo?.status?.is_start === 2
+                      ? 2
+                      : drawerInfo?.status?.is_start === 2 &&
+                        drawerInfo?.status?.is_end === 2
+                      ? 3
+                      : 0
+                  }
+                />
+              </ChangeStatusPopover>
+            </Skeleton>
           </Space>
           <Space size={16}>
             <ChangeIconGroup>
@@ -378,67 +383,69 @@ const DemandDetailDrawer = () => {
           </Space>
         </Header>
         <Content>
-          <ParentBox size={8}>
-            {drawerInfo.hierarchy?.map((i: any, index: number) => (
-              <DrawerHeader key={i.prefixKey}>
-                <img src={i.categoryAttachment} alt="" />
-                <div>
-                  {i.projectPrefix}-{i.prefixKey}
-                </div>
-                <span
-                  hidden={
-                    drawerInfo.hierarchy?.length <= 1 ||
-                    index === drawerInfo.hierarchy?.length - 1
-                  }
+          <Skeleton loading={skeletonLoading}>
+            <ParentBox size={8}>
+              {drawerInfo.hierarchy?.map((i: any, index: number) => (
+                <DrawerHeader key={i.prefixKey}>
+                  <img src={i.categoryAttachment} alt="" />
+                  <div>
+                    {i.projectPrefix}-{i.prefixKey}
+                  </div>
+                  <span
+                    hidden={
+                      drawerInfo.hierarchy?.length <= 1 ||
+                      index === drawerInfo.hierarchy?.length - 1
+                    }
+                  >
+                    /
+                  </span>
+                </DrawerHeader>
+              ))}
+            </ParentBox>
+            <DemandName>{drawerInfo.name}</DemandName>
+            {modeList.map((i: any) => (
+              <CollapseItem key={i.key}>
+                <CollapseItemTitle onClick={() => onChangeShowState(i)}>
+                  <span>{i.name}</span>
+                  <CommonIconFont
+                    type={showState[i.key].isOpen ? 'up' : 'down'}
+                    color="var(--neutral-n2)"
+                  />
+                </CollapseItemTitle>
+                <CollapseItemContent
+                  ref={showState[i.key].dom}
+                  isOpen={showState[i.key].isOpen}
                 >
-                  /
-                </span>
-              </DrawerHeader>
+                  {i.key === 'detailInfo' && (
+                    <DetailDemand
+                      detail={drawerInfo}
+                      onUpdate={getDemandDetail}
+                    />
+                  )}
+                  {i.key === 'detailDemands' && showState[i.key].isOpen && (
+                    <ChildrenDemand
+                      detail={drawerInfo}
+                      isOpen={showState[i.key].isOpen}
+                    />
+                  )}
+                  {i.key === 'basicInfo' && showState[i.key].isOpen && (
+                    <BasicDemand
+                      detail={drawerInfo}
+                      isOpen={showState[i.key].isOpen}
+                      onUpdate={getDemandDetail}
+                    />
+                  )}
+                  {i.key === 'demandComment' && (
+                    <DemandComment
+                      detail={drawerInfo}
+                      isOpen={showState[i.key].isOpen}
+                      onRef={commentDom}
+                    />
+                  )}
+                </CollapseItemContent>
+              </CollapseItem>
             ))}
-          </ParentBox>
-          <DemandName>{drawerInfo.name}</DemandName>
-          {modeList.map((i: any) => (
-            <CollapseItem key={i.key}>
-              <CollapseItemTitle onClick={() => onChangeShowState(i)}>
-                <span>{i.name}</span>
-                <CommonIconFont
-                  type={showState[i.key].isOpen ? 'up' : 'down'}
-                  color="var(--neutral-n2)"
-                />
-              </CollapseItemTitle>
-              <CollapseItemContent
-                ref={showState[i.key].dom}
-                isOpen={showState[i.key].isOpen}
-              >
-                {i.key === 'detailInfo' && (
-                  <DetailDemand
-                    detail={drawerInfo}
-                    onUpdate={getDemandDetail}
-                  />
-                )}
-                {i.key === 'detailDemands' && showState[i.key].isOpen && (
-                  <ChildrenDemand
-                    detail={drawerInfo}
-                    isOpen={showState[i.key].isOpen}
-                  />
-                )}
-                {i.key === 'basicInfo' && showState[i.key].isOpen && (
-                  <BasicDemand
-                    detail={drawerInfo}
-                    isOpen={showState[i.key].isOpen}
-                    onUpdate={getDemandDetail}
-                  />
-                )}
-                {i.key === 'demandComment' && (
-                  <DemandComment
-                    detail={drawerInfo}
-                    isOpen={showState[i.key].isOpen}
-                    onRef={commentDom}
-                  />
-                )}
-              </CollapseItemContent>
-            </CollapseItem>
-          ))}
+          </Skeleton>
         </Content>
       </Drawer>
     </>

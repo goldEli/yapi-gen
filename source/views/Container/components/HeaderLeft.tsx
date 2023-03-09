@@ -244,7 +244,11 @@ const HeaderLeft = () => {
 
   // 点击切换二级菜单
   const onClickMenu = (item: any) => {
-    navigate(item.url)
+    navigate(
+      item.url === '/ProjectManagement/Mine'
+        ? '/ProjectManagement/Mine/Profile'
+        : item.url,
+    )
   }
 
   const getActive = (item: any) => {
@@ -254,7 +258,7 @@ const HeaderLeft = () => {
     }
     if (
       item.url === '/ProjectManagement/Project' &&
-      routerPath.pathname !== '/ProjectManagement/Mine'
+      !routerPath.pathname.includes('/ProjectManagement/Mine')
     ) {
       state = true
     }

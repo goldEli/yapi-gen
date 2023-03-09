@@ -57,6 +57,7 @@ const CreateDemand = () => {
   const [demandInfo, setDemandInfo] = useState<any>({})
   const [fieldList, setFieldList] = useState<any>([])
   const [workStatusList, setWorkStatusList] = useState([])
+  const [isCreateDemand, setIsCreateDemand] = useState<any>({})
 
   // 关闭创建需求
   const onCancel = () => {
@@ -212,11 +213,19 @@ const CreateDemand = () => {
               {t('common.cancel')}
             </CommonButton>
             {!createDemandProps.demandId && (
-              <CommonButton type="secondary" onClick={() => onSaveCategory(1)}>
+              <CommonButton
+                isDisable={!isCreateDemand}
+                type="secondary"
+                onClick={() => onSaveCategory(1)}
+              >
                 {t('common.finishToAdd')}
               </CommonButton>
             )}
-            <CommonButton type="primary" onClick={() => onSaveCategory()}>
+            <CommonButton
+              isDisable={!isCreateDemand}
+              type="primary"
+              onClick={() => onSaveCategory()}
+            >
               {createDemandProps.demandId
                 ? t('common.confirm2')
                 : t('newlyAdd.create')}
@@ -243,6 +252,7 @@ const CreateDemand = () => {
           onResetForm={onResetForm}
           onGetDataAll={getInit}
           onChangeWorkStatusList={setWorkStatusList}
+          onGetCreateDemand={setIsCreateDemand}
         />
         <CreateDemandRight
           projectId={projectId}
@@ -252,6 +262,7 @@ const CreateDemand = () => {
           demandDetail={demandInfo}
           isSaveParams={isSaveParams}
           workStatusList={workStatusList}
+          isCreateDemand={isCreateDemand}
         />
       </div>
     </CommonModal>

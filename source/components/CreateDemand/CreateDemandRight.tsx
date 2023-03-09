@@ -39,6 +39,7 @@ interface Props {
   demandDetail?: any
   isSaveParams?: boolean
   workStatusList?: any
+  isCreateDemand?: boolean
 }
 
 const CreateDemandRight = (props: Props) => {
@@ -490,12 +491,12 @@ const CreateDemandRight = (props: Props) => {
           style={{ width: '100%' }}
           showArrow
           mode="multiple"
-          disabled={!props?.projectId}
           showSearch
           placeholder={t('common.pleaseSelect')}
           getPopupContainer={node => node}
           allowClear
           optionFilterProp="label"
+          disabled={!props.isCreateDemand}
           options={format(
             (item.content === 'iterate_name'
               ? removeNull(projectInfoValues, item.content)?.filter(
@@ -547,23 +548,23 @@ const CreateDemandRight = (props: Props) => {
           showSearch
           placeholder={t('newlyAdd.pleaseClass')}
           getPopupContainer={node => node}
+          disabled={!props.isCreateDemand}
           allowClear
           treeData={
             projectInfoValues?.filter((i: any) => i.key === 'class')[0]
               ?.children
           }
-          disabled={!props?.projectId}
         />
       )
     } else if (item.content === 'parent_id') {
       // 父需求
       nodeComponent = (
         <Select
+          disabled={!props.isCreateDemand}
           style={{ width: '100%' }}
           showArrow
           showSearch
           placeholder={t('common.pleaseParentDemand')}
-          disabled={!props?.projectId}
           options={
             createDemandProps?.demandId
               ? props.parentList?.filter(
@@ -582,6 +583,7 @@ const CreateDemandRight = (props: Props) => {
     } else {
       nodeComponent = (
         <DatePicker
+          disabled={!props.isCreateDemand}
           getPopupContainer={node => node}
           style={{ width: '100%' }}
         />
@@ -616,7 +618,7 @@ const CreateDemandRight = (props: Props) => {
   }
   return (
     <RightWrap>
-      <Form layout="vertical" form={form}>
+      <Form layout="vertical" form={form} disabled={!props.isCreateDemand}>
         {props?.projectId && (
           <Form.Item
             label="需求状态"

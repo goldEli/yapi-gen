@@ -27,39 +27,24 @@ const Wrap = styled.div({
 
 const PermissionWrap = ({
   auth,
-  hasWidth,
   permission,
-  isType,
   children,
 }: {
-  auth: any
-  hasWidth?: boolean
-  permission?: any
-  isType?: number
-  children?: any
-  isPadding?: boolean
+  auth: string
+  permission: any[]
+  children: any
 }) => {
   const [t] = useTranslation()
-  if (!permission?.length) {
-    return ''
-  }
-  if (permission?.length && !isType) {
-    if (!getIsPermission(permission, auth)) {
-      return permission ? children : ''
-    }
-  } else if (permission?.length && isType === 1) {
-    return permission?.filter((i: any) => i.group_name === auth).length
-      ? children
-      : ''
-  } else if (permission?.length && isType === 2) {
-    return permission?.filter((i: any) => String(i.identity).includes(auth))
-      .length
-      ? children
-      : ''
+
+  if (
+    permission?.includes(auth) ||
+    permission?.filter((i: any) => i.includes(auth))
+  ) {
+    return children
   }
 
   return (
-    <Wrap style={{ height: hasWidth ? 'calc(100vh - 64px)' : '100%' }}>
+    <Wrap style={{ height: '100%' }}>
       <IconFont type="noData" style={{ fontSize: 200 }} />
       <div>{t('components.noPermission')}</div>
     </Wrap>

@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getAsyncMember } from '@store/memberInfo'
+import MyBreadcrumb from '@/components/MyBreadcrumb'
 
 const Wrap = styled.div<{ isMember?: any }>(
   {
@@ -40,7 +41,7 @@ const Side = styled.div`
 `
 
 const Main = styled.div({
-  width: 'calc(100% - 220px)',
+  width: 'calc(100% )',
   overflow: 'auto',
 })
 
@@ -100,6 +101,7 @@ const MemberInfo = () => {
   const { mainInfo } = useSelector(store => store.memberInfo)
   const { userInfo } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
+  const { menuPermission } = useSelector(store => store.user)
 
   const menuList = [
     {
@@ -148,15 +150,15 @@ const MemberInfo = () => {
 
   return (
     <PermissionWrap
-      auth={isMember ? 'b/project/member/info' : 'b/user/info'}
+      auth={isMember ? 'b/project/member/info' : 'b/companyuser/info'}
       permission={
         isMember
-          ? projectInfo?.projectPermissions
-          : userInfo?.company_permissions
+          ? projectInfo?.projectPermissions?.map((i: any) => i.identity)
+          : userInfo?.company_permissions?.map((i: any) => i.identity)
       }
     >
       <Wrap isMember={isMember}>
-        <Side>
+        {/* <Side>
           <InfoWrap>
             {mainInfo?.avatar ? (
               <img
@@ -190,8 +192,18 @@ const MemberInfo = () => {
               </MenuItem>
             ))}
           </Menu>
-        </Side>
+        </Side> */}
         <Main>
+          <div
+            style={{
+              height: '32px',
+              display: 'flex',
+              alignItems: 'center',
+              margin: '20px',
+            }}
+          >
+            <MyBreadcrumb user={{ name: mainInfo?.name }} />
+          </div>
           <Outlet />
         </Main>
       </Wrap>

@@ -15,6 +15,8 @@ interface Props {
   onCreateChild(row: any): void
   onAddComment?(): void
   haveComment?: boolean
+  // 是否是所有项目
+  isAllProject?: boolean
 }
 
 export const DemandOperationDropdownMenu = (props: Props) => {
@@ -92,15 +94,19 @@ export const DemandOperationDropdownMenu = (props: Props) => {
       label: <div onClick={onCopyLink}>复制标题链接</div>,
     },
   ]
-  if (hasEdit) {
-    menuItems = menuItems.filter((i: any) => i.key !== '1')
+
+  if (!props.isAllProject) {
+    if (hasEdit) {
+      menuItems = menuItems.filter((i: any) => i.key !== '1')
+    }
+    if (hasDel) {
+      menuItems = menuItems.filter((i: any) => i.key !== '2')
+    }
+    if (hasCreate) {
+      menuItems = menuItems.filter((i: any) => i.key !== '3')
+    }
   }
-  if (hasDel) {
-    menuItems = menuItems.filter((i: any) => i.key !== '2')
-  }
-  if (hasCreate) {
-    menuItems = menuItems.filter((i: any) => i.key !== '3')
-  }
+
   if (!props.haveComment) {
     menuItems = menuItems.filter((i: any) => i.key !== '4')
   }

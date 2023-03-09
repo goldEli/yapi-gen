@@ -17,6 +17,9 @@ import RichEditor from '@/components/RichEditor'
 import UploadAttach from '@/components/UploadAttach'
 import { useDispatch } from '@store/index'
 import { changeRest } from '@store/log'
+import { Editor, EditorRef } from '@xyfe/uikit'
+import { uploadFileByTask } from '@/services/cos'
+import { getStaffListAll } from '@/services/staff'
 
 export const LabelTitle = (props: any) => {
   return (
@@ -45,10 +48,12 @@ const WhiteDay = (props: any) => {
     { name: t('p2.title.t2d'), name2: t('p2.title.t2t') },
     { name: t('p2.title.t3d'), name2: t('p2.title.t3t') },
   ]
+  const editorRef = useRef<EditorRef>(null)
   const [form] = Form.useForm()
   const [attachList, setAttachList] = useState<any>([])
   const [peopleValue, setPeopleValue] = useState<any>([])
   const [needValue, setNeedValue] = useState<any>([])
+  const [options, setOptions] = useState<any>([])
   const [colorState, setColorState] = useState<any>(false)
   const [title, setTitle] = useState<any>([])
   const leftDom: any = useRef<HTMLInputElement>(null)
@@ -142,11 +147,22 @@ const WhiteDay = (props: any) => {
       }),
     )
   }
+  const getList = async () => {
+    const result = await getStaffListAll({ all: 1 })
+
+    setOptions(
+      result.map((i: any) => ({
+        id: i.id,
+        label: i.name,
+      })),
+    )
+  }
 
   useEffect(() => {
     if (props.editId && props.visibleEdit) {
       setDefaultValue()
     }
+    getList()
   }, [props.editId, props.visibleEdit])
 
   const scrollToBottom = () => {
@@ -232,7 +248,35 @@ const WhiteDay = (props: any) => {
               },
             ]}
           >
-            <RichEditor height={178} autoFocus />
+            {/* <RichEditor height={178} autoFocus /> */}
+            <Editor
+              ref={editorRef}
+              key={Math.random()}
+              upload={async file => {
+                const response = await uploadFileByTask(
+                  file,
+                  file.name,
+                  `richEditorFiles_${new Date().getTime()}`,
+                )
+
+                setTimeout(() => {
+                  editorRef.current?.notifyUploaded(
+                    file.name + file.size,
+                    response.url,
+                  )
+                }, 2000)
+
+                return file.name + file.size
+              }}
+              getSuggestions={() => {
+                return new Promise(resolve => {
+                  setTimeout(() => {
+                    // resolve([])
+                    resolve(options)
+                  }, 1000)
+                })
+              }}
+            />
           </Form.Item>
           <Form.Item
             style={{
