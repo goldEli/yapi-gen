@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import * as services from '@/services'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from '@store/index'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 interface PropsType {
   text: string
@@ -92,11 +93,20 @@ const ItemDropdown = (props: PropsType) => {
     setIsOpen(false)
     dispatch({ type: 'createProject/changeCreateVisible', payload: true })
   }
+  const onRoute = (el: any) => {
+    const params = encryptPhp(
+      JSON.stringify({
+        id: el.id,
+      }),
+    )
+    setIsOpen(false)
+    navigate(`/ProjectManagement/Demand?data=${params}`)
+  }
   const itmeMain = (item: any) => {
     return item.map((el: any) => (
-      <ItemRow key={el.name}>
+      <ItemRow key={el.name} onClick={() => onRoute(el)}>
         <img src={el.cover} />
-        <ItemTitle>{el.name}</ItemTitle>
+        <ItemTitle>{el.name}123</ItemTitle>
       </ItemRow>
     ))
   }
@@ -123,7 +133,7 @@ const ItemDropdown = (props: PropsType) => {
                 color: 'var(--neutral-n3)',
               }}
             />
-            查看所有项目
+            查看所有项目123
           </div>
           <div onClick={onCreate}>
             <IconFont

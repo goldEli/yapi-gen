@@ -221,6 +221,7 @@ const MyDropdown = (props: any) => {
         demandId: el.id,
       }),
     )
+    setIsOpen(false)
     navigate(`/ProjectManagement/Demand?data=${params}`)
   }
   const itmeMain = (item: any) => {
