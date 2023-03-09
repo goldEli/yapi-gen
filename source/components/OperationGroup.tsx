@@ -146,7 +146,6 @@ const OperationGroup = (props: Props) => {
       )}
 
       <DividerWrap type="vertical" />
-
       <DropDownMenu
         menu={
           <SetShowField
@@ -159,7 +158,7 @@ const OperationGroup = (props: Props) => {
         onChangeVisible={setIsVisibleFields}
         isActive={props.settingState}
       >
-        <div>{t('common.tableFieldSet')}123</div>
+        <div>{t('common.tableFieldSet')}</div>
       </DropDownMenu>
     </SpaceWrap>
   )

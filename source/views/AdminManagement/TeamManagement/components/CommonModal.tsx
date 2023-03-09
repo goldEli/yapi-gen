@@ -265,6 +265,7 @@ const CommonModal = (props: ModalProps) => {
       .filter((item: any) => el.id !== item.id)
       ?.map((item: any) => item.department_id)
     setCheckedKeys(key)
+    key?.length < 1 && setSearchVal('')
   }
 
   // 清空成员
@@ -365,7 +366,8 @@ const CommonModal = (props: ModalProps) => {
             notFoundContent={null}
             showSearch
             style={{ width: 216 }}
-            // value={searchVal}
+            // eslint-disable-next-line no-undefined
+            value={searchVal || undefined}
             onChange={e => handleChange(e)}
             optionFilterProp="label"
             options={selectDataList}
