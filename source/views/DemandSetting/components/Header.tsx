@@ -1,7 +1,7 @@
 /* eslint-disable no-undefined */
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
-import { Form, Select, Switch } from 'antd'
+import { Form, message, Select, Switch } from 'antd'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectInfoValues } from '@store/project'
 import { useEffect, useState } from 'react'
@@ -175,6 +175,30 @@ const Header = () => {
       setDisable(true)
     }
   }
+  const filterDataItem = (num: number) => {
+    const dataItem = categoryList
+      ?.filter((el: any) => el.status === num)
+      .map((el: any, index: number) => ({
+        ...el,
+        active: index === 0 ? true : false,
+      }))
+    return dataItem
+  }
+  // 开关
+  const onChangeOpenState = async (e: boolean) => {
+    let dataItem = null
+    if (e) {
+      dataItem = filterDataItem(1)
+    } else {
+      dataItem = filterDataItem(2)
+    }
+    if (dataItem?.length < 1) {
+      message.warning(e ? '启用状态无数据' : '未启用状态无数据')
+      return
+    }
+    setChecked(e)
+    dispatch(setStartUsing(e))
+  }
   return (
     <HeaderWrap>
       {hasDeleteVisible && (
@@ -253,12 +277,7 @@ const Header = () => {
       <RightOperate>
         <SwitchStyle>
           <span style={{ marginRight: '8px' }}>启用状态</span>
-          <Switch
-            checked={checked}
-            onChange={e => {
-              setChecked(e), dispatch(setStartUsing(e))
-            }}
-          />
+          <Switch checked={checked} onChange={e => onChangeOpenState(e)} />
         </SwitchStyle>
         <BtnStyle onClick={onSetWorkFlow}>配置工作流</BtnStyle>
         <BtnStyle onClick={() => editCategoryForm()}>编辑</BtnStyle>
