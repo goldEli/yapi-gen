@@ -638,8 +638,14 @@ const GlobalStyle = () => {
       border-color: var(--primary-d1);
     }
     .ant-checkbox-checked .ant-checkbox-inner {
-      background-color: var(--primary-d1);
       border-color: var(--primary-d1);
+    }
+
+    .ant-checkbox-wrapper-checked .ant-checkbox-checked .ant-checkbox-inner {
+      background-color: var(--primary-d1);
+    }
+    .ant-checkbox-wrapper-disabled .ant-checkbox-disabled .ant-checkbox-inner {
+      background-color: var(--neutral-n7);
     }
     .ant-pagination {
       width: 100%;

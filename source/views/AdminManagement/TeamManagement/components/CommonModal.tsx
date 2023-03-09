@@ -170,10 +170,11 @@ const TreeStyle = styled(DirectoryTree)`
   .ant-tree-treenode {
     width: 216px;
     height: 44px;
-    border-radius: 6px;
     padding-left: 16px;
   }
+
   .ant-tree-treenode:hover {
+    border-radius: 6px;
     background-color: var(--hover-d2);
     .ant-tree-title div {
       color: var(--neutral-n1-d1) !important;
