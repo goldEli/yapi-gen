@@ -419,7 +419,7 @@ const CreateDemandRight = (props: Props) => {
       // 处理自定义字段中时间参数
       if (obj?.fieldContent?.attr === 'date' && values[k]) {
         values[obj.content] = moment(values[obj.content]).format(
-          obj?.fieldContent?.value[0] === 'datetime'
+          obj?.fieldContent?.value?.[0] === 'datetime'
             ? 'YYYY-MM-DD HH:mm:ss'
             : 'YYYY-MM-DD',
         )
