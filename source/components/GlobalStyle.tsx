@@ -665,7 +665,7 @@ const GlobalStyle = () => {
     input {
       background-color: var(--neutral-white-d1);
       color: var(--neutral-n2);
-      border: 1px solid var(--neutral-white-d4);
+      border: 1px solid var(--neutral-n6-d1);
     }
     .ant-pagination-item,
     .ant-select-selection-item,
@@ -692,7 +692,7 @@ const GlobalStyle = () => {
         background-color: var(--hover-d3);
         color: var(--neutral-n1-d1);
       }
-      border-color: var(--neutral-white-d4);
+      border-color: var(--neutral-n6-d1);
     }
 
     .ant-menu-light .ant-menu-item:hover,

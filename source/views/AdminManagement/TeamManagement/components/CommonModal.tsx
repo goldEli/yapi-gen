@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/no-unstable-nested-components */
-import { Input, message, Modal, Select, Space, Tree } from 'antd'
+import { message, Modal, Select, Space, Tree } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
@@ -12,7 +12,7 @@ import { CloseWrap } from '@/components/StyleCommon'
 import CommonButton from '@/components/CommonButton'
 import { useEffect, useState } from 'react'
 import Checkbox from 'antd/lib/checkbox/Checkbox'
-import CommonUserAvatar from '@/components/CommonUserAvatar'
+import CommonUserAvatar from './CommonUserAvatar'
 import { getDepartmentUserList } from '@store/teams/thunk'
 import { useDispatch, useSelector } from '@store/index'
 import { unionBy } from 'lodash'
@@ -54,7 +54,7 @@ const LeftWrap = styled.div`
   width: 264px;
   display: flex;
   flex-direction: column;
-  padding: 0 24px;
+  padding-left: 24px;
   border-right: 1px solid var(--neutral-n6-d1);
 `
 const Tabs = styled.div`
@@ -65,7 +65,7 @@ const Tabs = styled.div`
   font-size: 12px;
   font-weight: 400;
   color: var(--neutral-n3);
-  background-color: var(--neutral-white-d6);
+  background-color: var(--hover-d1);
   span {
     display: inline-block;
     text-align: center;
@@ -79,8 +79,10 @@ const Tabs = styled.div`
     color: var(--neutral-n1-d1);
   }
   .tabsActive {
-    background-color: var(--hover-d1);
+    background-color: var(--neutral-white-d6);
     color: var(--neutral-n3);
+    border-radius: 6px;
+    border: 1px solid var(--neutral-n6-d1);
   }
 `
 const Row = styled.div`
@@ -148,7 +150,8 @@ const ListItem = styled.div`
 `
 const TreeStyle = styled(DirectoryTree)`
   width: 216px;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   .ant-tree-checkbox-inner {
     width: 16px;
     height: 16px;
@@ -165,6 +168,7 @@ const TreeStyle = styled(DirectoryTree)`
     display: none !important;
   }
   .ant-tree-treenode {
+    width: 216px;
     height: 44px;
     border-radius: 6px;
     padding-left: 16px;
@@ -358,7 +362,7 @@ const CommonModal = (props: ModalProps) => {
           <SelectStyle
             notFoundContent={null}
             showSearch
-            style={{ width: '100%' }}
+            style={{ width: 216 }}
             value={searchVal}
             onChange={e => handleChange(e)}
             optionFilterProp="label"
