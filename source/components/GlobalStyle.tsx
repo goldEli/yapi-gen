@@ -684,7 +684,23 @@ const GlobalStyle = () => {
     .ant-select:not(.ant-select-disabled):hover .ant-select-selector,
     .ant-select-show-arrow,
     .ant-select-focused {
+      .ant-dropdown-menu-item:hover {
+        background-color: var(--hover-d3);
+        color: var(--neutral-n1-d1);
+      }
+      .ant-dropdown-menu-item-active {
+        background-color: var(--hover-d3);
+        color: var(--neutral-n1-d1);
+      }
       border-color: var(--neutral-white-d4);
+    }
+
+    .ant-menu-light .ant-menu-item:hover,
+    .ant-menu-light .ant-menu-item-active,
+    .ant-menu-light .ant-menu:not(.ant-menu-inline) .ant-menu-submenu-open,
+    .ant-menu-light .ant-menu-submenu-active,
+    .ant-menu-light .ant-menu-submenu-title:hover {
+      color: var(--primary-d2);
     }
   `
   return <Global styles={globalCss} />

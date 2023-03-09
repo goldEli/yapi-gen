@@ -39,17 +39,6 @@ const IconFontStyle = styled(IconFont)`
     color: var(--primary-d2);
   }
 `
-const DropdownContainer = styled(Dropdown)`
-  .ant-dropdown-menu-item:hover {
-    background-color: var(--hover-d3);
-    color: var(--neutral-n1-d1);
-  }
-  .ant-dropdown-menu-item-active {
-    background-color: var(--hover-d3);
-    color: var(--neutral-n1-d1);
-  }
-`
-
 const SliderList = (props: any) => {
   const { index, onMove, listLength, active, childStyle, value } = props
   const [top, setTop] = React.useState(0)
@@ -246,7 +235,7 @@ const SliderList = (props: any) => {
           {value.name}
         </span>
       </ListItemStyle>
-      <DropdownContainer
+      <Dropdown
         menu={{ items, onClick: onChangeTeam }}
         trigger={['click']}
         placement="bottomRight"
@@ -256,7 +245,7 @@ const SliderList = (props: any) => {
         }}
       >
         <IconFontStyle type="more" className="icon" />
-      </DropdownContainer>
+      </Dropdown>
     </Container>
   )
 }
