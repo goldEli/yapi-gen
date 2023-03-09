@@ -7,6 +7,7 @@ const Wrap = styled.div`
   display: flex;
   width: 100%;
   height: calc(100vh - 56px);
+  overflow-y: hidden;
 `
 const TeamManagement = () => {
   const [isSpinning, setIsSpinning] = useState(false)

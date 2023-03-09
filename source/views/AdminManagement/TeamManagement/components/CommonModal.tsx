@@ -171,6 +171,7 @@ const TreeStyle = styled(DirectoryTree)`
     width: 216px;
     height: 44px;
     padding-left: 16px;
+    overflow: hidden;
   }
 
   .ant-tree-treenode:hover {
@@ -364,7 +365,7 @@ const CommonModal = (props: ModalProps) => {
             notFoundContent={null}
             showSearch
             style={{ width: 216 }}
-            value={searchVal}
+            // value={searchVal}
             onChange={e => handleChange(e)}
             optionFilterProp="label"
             options={selectDataList}

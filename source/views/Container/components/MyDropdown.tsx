@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 import * as services from '@/services'
 import { isArray } from 'lodash'
 import { useNavigate } from 'react-router-dom'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 interface PropsType {
   text: string
@@ -58,14 +59,14 @@ const ScrollWrap = styled.div`
   overflow-y: auto;
 `
 const Footer = styled.div`
-  height: 56px;
-  line-height: 56px;
+  width: 100%;
+  height: 52px;
+  line-height: 52px;
   border-radius: 0px 0px 6px 6px;
   font-size: 14px;
   font-weight: 400;
   color: var(--neutral-n1-d2);
-  margin: 8px 16px;
-  border-top: 1px solid #ecedef;
+  /* margin: 8px 0px; */
   > div {
     padding-left: 24px;
   }
@@ -88,7 +89,7 @@ const Title = styled.div`
 const Row = styled.div`
   width: 100%;
   padding: 0 24px;
-  height: 56px;
+  height: 52px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -133,13 +134,7 @@ const BtnBox = styled.div`
   text-overflow: ellipsis;
   padding: 0 8px;
 `
-const OpenWrap = styled.div`
-  width: 100%;
-  padding: 0 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
+
 const Border = styled.div`
   margin: 0 16px;
   text-align: center;
@@ -150,10 +145,9 @@ const Img = styled.img`
   width: 20px;
   height: 20px;
 `
-const MyDropdown = (props: PropsType) => {
+const MyDropdown = (props: any) => {
   const navigate = useNavigate()
   const [tabActive, setTabActive] = useState(0)
-  const [iconState, setIconState] = useState(false)
   const tabs = [
     {
       label: '待办',
@@ -165,10 +159,10 @@ const MyDropdown = (props: PropsType) => {
       label: '最近',
     },
   ]
-  const [itemArr, setItemArr] = useState<any>()
   const [noFinishList, setNoFinishList] = useState<any>()
   const [finishList, setFinishList] = useState<any>()
   const [recentList, setRecentList] = useState<any>()
+  const [isOpen, setIsOpen] = useState(false)
   const box = [
     {
       title: '最近查看',
@@ -212,16 +206,30 @@ const MyDropdown = (props: PropsType) => {
   useEffect(() => {
     onFetchList()
   }, [tabActive])
-
+  const onClickIsOpen = () => {
+    setIsOpen(false)
+  }
   const onClick = () => {
+    onClickIsOpen()
     navigate('/ProjectManagement/Mine/profile')
+  }
+  const onRoute = (el: any) => {
+    const params = encryptPhp(
+      JSON.stringify({
+        type: 'info',
+        id: el.project_id,
+        demandId: el.id,
+      }),
+    )
+    setIsOpen(false)
+    navigate(`/ProjectManagement/Demand?data=${params}`)
   }
   const itmeMain = (item: any) => {
     return (
       isArray(item) &&
       item?.map((el: any) => (
         <ItemBox key={el.title}>
-          <Row>
+          <Row onClick={() => onRoute(el)}>
             <div>
               {/* <IconFont
                 type="calendar"
@@ -262,6 +270,7 @@ const MyDropdown = (props: PropsType) => {
       ))
     )
   }
+
   const dropdownRender = () => {
     return (
       <Container>
@@ -289,14 +298,21 @@ const MyDropdown = (props: PropsType) => {
           {tabActive === 0 && itmeMain(noFinishList)}
           {tabActive === 1 && itmeMain(finishList)}
         </ScrollWrap>
+        <Border />
         <Footer onClick={onClick}>
           <div>查看我的工作</div>
         </Footer>
       </Container>
     )
   }
+
   return (
-    <Dropdown dropdownRender={dropdownRender} placement="bottomLeft">
+    <Dropdown
+      dropdownRender={dropdownRender}
+      placement="bottomLeft"
+      onOpenChange={setIsOpen}
+      open={isOpen}
+    >
       <div style={{ height: '52px', lineHeight: '52px' }}>
         <span style={{ marginRight: '8px' }}>{props.text}</span>
         <CommonIconFont type="down" size={14} />

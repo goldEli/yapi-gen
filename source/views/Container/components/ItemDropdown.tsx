@@ -5,6 +5,8 @@ import { Dropdown } from 'antd'
 import { useEffect, useState } from 'react'
 import * as services from '@/services'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from '@store/index'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 interface PropsType {
   text: string
@@ -18,20 +20,21 @@ const Container = styled.div`
 `
 const ScrollWrap = styled.div``
 const Footer = styled.div`
-  padding-left: 24px;
+  /* padding-left: 24px; */
   border-radius: 0px 0px 6px 6px;
   font-size: 14px;
   font-weight: 400;
   color: var(--neutral-n1-d2);
   margin: 8px 0;
-  &:hover {
+  & div:hover {
     background-color: var(--hover-d2);
     cursor: pointer;
   }
   & div {
+    padding-left: 24px;
     display: flex;
     align-items: center;
-    height: 56px;
+    height: 52px;
   }
 `
 const Title = styled.div`
@@ -45,7 +48,7 @@ const Title = styled.div`
 const Row = styled.div`
   width: 100%;
   padding: 0 24px;
-  height: 56px;
+  height: 52px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -76,7 +79,8 @@ const Border = styled.div`
 const ItemDropdown = (props: PropsType) => {
   const navigate = useNavigate()
   const [itemArr, setItemArr] = useState([])
-
+  const dispatch = useDispatch()
+  const [isOpen, setIsOpen] = useState(false)
   const onFectProjectList = async () => {
     const data = await services.project.getProjectRecent()
     setItemArr(data)
@@ -85,11 +89,24 @@ const ItemDropdown = (props: PropsType) => {
   useEffect(() => {
     onFectProjectList()
   }, [])
+  const onCreate = () => {
+    setIsOpen(false)
+    dispatch({ type: 'createProject/changeCreateVisible', payload: true })
+  }
+  const onRoute = (el: any) => {
+    const params = encryptPhp(
+      JSON.stringify({
+        id: el.id,
+      }),
+    )
+    setIsOpen(false)
+    navigate(`/ProjectManagement/Demand?data=${params}`)
+  }
   const itmeMain = (item: any) => {
     return item.map((el: any) => (
-      <ItemRow key={el.name}>
+      <ItemRow key={el.name} onClick={() => onRoute(el)}>
         <img src={el.cover} />
-        <ItemTitle>{el.name}</ItemTitle>
+        <ItemTitle>{el.name}123</ItemTitle>
       </ItemRow>
     ))
   }
@@ -104,6 +121,7 @@ const ItemDropdown = (props: PropsType) => {
         <Footer>
           <div
             onClick={() => {
+              setIsOpen(false)
               navigate('/ProjectManagement/Project')
             }}
           >
@@ -115,9 +133,9 @@ const ItemDropdown = (props: PropsType) => {
                 color: 'var(--neutral-n3)',
               }}
             />
-            查看所有项目
+            查看所有项目123
           </div>
-          <div>
+          <div onClick={onCreate}>
             <IconFont
               type="plus"
               style={{
@@ -134,7 +152,12 @@ const ItemDropdown = (props: PropsType) => {
   }
   return (
     <>
-      <Dropdown dropdownRender={dropdownRender} placement="bottomLeft">
+      <Dropdown
+        onOpenChange={setIsOpen}
+        dropdownRender={dropdownRender}
+        placement="bottomLeft"
+        open={isOpen}
+      >
         <div style={{ height: '52px', lineHeight: '52px' }}>
           <span style={{ marginRight: '8px' }}>{props.text}</span>
           <CommonIconFont type="down" size={14} />

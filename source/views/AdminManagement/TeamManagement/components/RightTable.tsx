@@ -188,6 +188,7 @@ const RightTable = () => {
       })
       setAddMemberVisible(false)
       onFetchMemberList()
+      message.success('添加成功')
     } catch (error) {}
   }
 
