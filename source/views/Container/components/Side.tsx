@@ -9,6 +9,7 @@ import { useLocation } from 'react-router-dom'
 import MineSide from '@/components/AllSide/MineSide'
 import LogSide from '@/components/AllSide/LogSide'
 import HisSide from '@/components/AllSide/HisSide'
+import { DragLine } from '@/components/StyleCommon'
 
 const SideWrap = styled.div<{ firstMenuCollapse: boolean }>`
   width: ${props => (props.firstMenuCollapse ? 0 : 200)}px;
@@ -21,34 +22,6 @@ const SideWrap = styled.div<{ firstMenuCollapse: boolean }>`
   background: ${props =>
     props.firstMenuCollapse ? 'var(--neutral-white-d6)' : 'var(--neutral-n9)'};
   position: relative;
-`
-
-const Line = styled.div<{ active: boolean }>`
-  position: absolute;
-  width: 2px;
-  cursor: col-resize;
-  overflow: hidden;
-  z-index: 1;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  height: 100%;
-  top: 0;
-  background-size: 100% 12px;
-  background-repeat: repeat-y;
-  background-image: ${({ active }) =>
-    active
-      ? 'linear-gradient(to bottom, #617ef2 0%, #617ef2 80%, transparent 50%)'
-      : 'none'};
-  &:hover {
-    background-image: linear-gradient(
-      to bottom,
-      #617ef2 0%,
-      #617ef2 80%,
-      transparent 50%
-    );
-  }
 `
 
 const FoldIcon = styled.div`
@@ -209,7 +182,7 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
         {getClassSide()}
       </SideMain>
 
-      <Line
+      <DragLine
         onMouseDown={onDragLine}
         style={{ left: leftWidth - 1 }}
         active={focus}
