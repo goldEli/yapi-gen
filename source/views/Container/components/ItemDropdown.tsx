@@ -18,17 +18,18 @@ const Container = styled.div`
 `
 const ScrollWrap = styled.div``
 const Footer = styled.div`
-  padding-left: 24px;
+  /* padding-left: 24px; */
   border-radius: 0px 0px 6px 6px;
   font-size: 14px;
   font-weight: 400;
   color: var(--neutral-n1-d2);
   margin: 8px 0;
-  &:hover {
+  & div:hover {
     background-color: var(--hover-d2);
     cursor: pointer;
   }
   & div {
+    padding-left: 24px;
     display: flex;
     align-items: center;
     height: 56px;
@@ -126,7 +127,7 @@ const ItemDropdown = (props: PropsType) => {
                 color: 'var(--neutral-n3)',
               }}
             />
-            创建项目
+            创建项目 123
           </div>
         </Footer>
       </Container>
