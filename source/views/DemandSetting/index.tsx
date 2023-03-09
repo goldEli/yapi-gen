@@ -4,8 +4,7 @@ import Main from './components/Main'
 import CreateField from './components/CreateField'
 import CommonButton from '@/components/CommonButton'
 import { useTranslation } from 'react-i18next'
-import { useEffect, useState } from 'react'
-import { saveScreen } from '@store/view'
+import { useState } from 'react'
 
 const Wrap = styled.div`
   width: 100%;
