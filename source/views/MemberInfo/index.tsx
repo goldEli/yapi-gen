@@ -23,7 +23,7 @@ const Wrap = styled.div<{ isMember?: any }>(
     display: 'flex',
   },
   ({ isMember }) => ({
-    height: isMember ? 'calc(100% - 64px)' : '100%',
+    height: isMember ? 'calc(100% - 104px)' : '100%',
   }),
 )
 
@@ -42,7 +42,6 @@ const Side = styled.div`
 
 const Main = styled.div({
   width: 'calc(100% )',
-  overflow: 'auto',
 })
 
 const Menu = styled.div`

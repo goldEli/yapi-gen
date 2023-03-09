@@ -10,8 +10,8 @@ import { useSelector } from '@store/index'
 import { getMineProjectList } from '@/services/mine'
 
 const MainWrap = styled.div({
-  height: 'calc(100% - 64px)',
-  overflow: 'auto',
+  height: 'calc(100% - 150px)',
+  // overflow: 'auto',
 })
 
 interface Props {
