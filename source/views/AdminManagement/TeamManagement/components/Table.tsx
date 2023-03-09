@@ -5,28 +5,6 @@ import CommonUserAvatar from '@/components/CommonUserAvatar'
 import ResizeTable from '@/components/ResizeTable'
 import NoData from '@/components/NoData'
 
-const TableStyle = styled(table)`
-  .ant-table-thead > tr > th,
-  .ant-table-thead > tr .ant-table-cell {
-    border: none;
-    font-weight: 500;
-    color: var(--neutral-n3);
-    font-size: 12px;
-    background-color: var(--neutral-white-d1);
-  }
-  .ant-table-tbody > tr > td {
-    color: var(--neutral-n1-d1);
-    font-size: 14px;
-    font-weight: 400;
-    background-color: var(--neutral-white-d1);
-  }
-  .ant-table-cell-row-hover {
-    background-color: var(--hover-d2);
-  }
-  .ant-table-cell:hover {
-    cursor: pointer;
-  }
-`
 const OperationWrap = styled.div`
   font-size: 14px;
   font-weight: 400;
@@ -113,12 +91,6 @@ const Table = (props: any) => {
       dataSource={props.dataSource}
       noData={<NoData />}
     />
-    // <TableStyle
-    //   columns={columns}
-    //   dataSource={props.dataSource}
-    //   pagination={false}
-    //   // onChange={props.onChange}
-    // />
   )
 }
 export default Table

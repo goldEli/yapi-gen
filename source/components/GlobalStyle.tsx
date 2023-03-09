@@ -258,7 +258,7 @@ const GlobalStyle = () => {
     }
     .ant-dropdown-menu-item:active {
       background: #f0f4fa;
-      color: #2877ff;
+      color: var(--primary-d2);
     }
 
     ::-webkit-scrollbar {
@@ -341,7 +341,7 @@ const GlobalStyle = () => {
     .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
       background-color: transparent;
       font-weight: inherit;
-      color: #2877ff;
+      color: var(--primary-d2);
     }
     .ant-select-item-option-selected:not(.ant-select-item-option-disabled):hover {
       background-color: #f0f4fa;
@@ -640,6 +640,51 @@ const GlobalStyle = () => {
     .ant-checkbox-checked .ant-checkbox-inner {
       background-color: var(--primary-d1);
       border-color: var(--primary-d1);
+    }
+    .ant-pagination {
+      width: 100%;
+      height: 64px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    .ant-pagination-total-text {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--neutral-n2);
+    }
+    .ant-pagination-disabled .ant-pagination-item-link,
+    .ant-pagination-disabled:hover .ant-pagination-item-link,
+    .ant-pagination-item,
+    .ant-pagination-item-link {
+      border: none;
+      background-color: var(--neutral-white-d1);
+      color: var(--neutral-n2);
+    }
+    .ant-select:not(.ant-select-customize-input) .ant-select-selector,
+    input {
+      background-color: var(--neutral-white-d1);
+      color: var(--neutral-n2);
+      border: 1px solid var(--neutral-white-d4);
+    }
+    .ant-pagination-item,
+    .ant-select-selection-item,
+    .ant-pagination-options-quick-jumper {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--neutral-n2);
+    }
+    .anticon {
+      color: var(--neutral-n4);
+    }
+    .ant-pagination-item-active,
+    .ant-pagination-item-active:hover a {
+      color: var(--primary-d2);
+    }
+    .ant-select:not(.ant-select-disabled):hover .ant-select-selector,
+    .ant-select-show-arrow,
+    .ant-select-focused {
+      border-color: var(--neutral-white-d4);
     }
   `
   return <Global styles={globalCss} />

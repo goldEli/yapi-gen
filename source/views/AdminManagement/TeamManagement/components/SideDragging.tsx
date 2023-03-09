@@ -3,6 +3,7 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { Dropdown, type MenuProps } from 'antd'
 import React, { useEffect, useLayoutEffect } from 'react'
+import { callbackify } from 'util'
 
 const Container = styled.div<{ color?: string; bgColor?: string }>(
   {
@@ -235,6 +236,7 @@ const SliderList = (props: any) => {
 
         <span
           style={{
+            width: '90%',
             overflow: 'hidden',
             whiteSpace: 'nowrap',
             textOverflow: 'ellipsis',

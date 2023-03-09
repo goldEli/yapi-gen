@@ -102,18 +102,7 @@ const RightItem = styled.span`
   font-weight: 400;
   color: var(--neutral-n1-d1);
 `
-const RightItemIcon = styled.span`
-  display: inline-block;
-  width: 32px;
-  height: 32px;
-  background: #feb2a1;
-  border-radius: 50px 50px 50px 50px;
-  color: var(--neutral-white-d1);
-  text-align: center;
-  line-height: 32px;
-  font-size: 14px;
-  font-weight: 500;
-`
+
 const RightTable = () => {
   const dispatch = useDispatch()
   const { membersList, activeTeamId } = useSelector(s => s.teams)
