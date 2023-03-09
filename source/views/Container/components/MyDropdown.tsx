@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 import * as services from '@/services'
 import { isArray } from 'lodash'
 import { useNavigate } from 'react-router-dom'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 interface PropsType {
   text: string
@@ -212,12 +213,22 @@ const MyDropdown = (props: any) => {
     onClickIsOpen()
     navigate('/ProjectManagement/Mine/profile')
   }
+  const onRoute = (el: any) => {
+    const params = encryptPhp(
+      JSON.stringify({
+        type: 'info',
+        id: el.project_id,
+        demandId: el.id,
+      }),
+    )
+    navigate(`/ProjectManagement/Demand?data=${params}`)
+  }
   const itmeMain = (item: any) => {
     return (
       isArray(item) &&
       item?.map((el: any) => (
         <ItemBox key={el.title}>
-          <Row>
+          <Row onClick={() => onRoute(el)}>
             <div>
               {/* <IconFont
                 type="calendar"

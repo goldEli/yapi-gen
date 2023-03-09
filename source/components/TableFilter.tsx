@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setFilterKeys } from '@store/project'
 import { onTapSearchChoose, saveScreen, saveValue } from '@store/view'
 import MoreSelect from './MoreSelect'
+import { useGetloginInfo } from '@/hooks/useGetloginInfo'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -261,6 +262,7 @@ export const NumericInput2 = (props: any) => {
 
 const TableFilter = (props: any) => {
   const [t] = useTranslation()
+  const info = useGetloginInfo()
   const { searchChoose } = useSelector(store => store.view)
   const { list, basicsList, specialList, customList } = props
   const [form] = Form.useForm()
@@ -307,7 +309,6 @@ const TableFilter = (props: any) => {
     }
 
     const value = await form.getFieldsValue()
-
     const res = JSON.parse(JSON.stringify(value))
     const res2 = JSON.parse(JSON.stringify(value))
     const customField: any = {}
@@ -444,6 +445,23 @@ const TableFilter = (props: any) => {
     arr = [...map.values()]
     return arr
   }
+  const format = (arr: any) => {
+    const newA = arr.filter((j: any) => {
+      return j.value === info
+    })
+
+    const newB = arr.filter((j: any) => {
+      return j.value !== info
+    })
+
+    return newA
+      .map((i: any) => ({
+        id: i.id,
+        value: i.value,
+        label: `${i.label}（我自己）`,
+      }))
+      .concat(newB)
+  }
 
   return (
     <SearchLine>
@@ -469,15 +487,30 @@ const TableFilter = (props: any) => {
                     <Form.Item name={i.key}>
                       <MoreSelect
                         onConfirm={confirm}
-                        options={deWeight(
-                          projectInfoValues
-                            ?.filter((k: any) => k.key === i.key)[0]
-                            ?.children?.map((v: any) => ({
-                              label: v.content_txt,
-                              value: v.id,
-                              id: v.id,
-                            })),
-                        )}
+                        options={
+                          i.key === 'users_name' ||
+                          i.key === 'users_copysend_name'
+                            ? format(
+                                deWeight(
+                                  projectInfoValues
+                                    ?.filter((k: any) => k.key === i.key)[0]
+                                    ?.children?.map((v: any) => ({
+                                      label: v.content_txt,
+                                      value: v.id,
+                                      id: v.id,
+                                    })),
+                                ),
+                              )
+                            : deWeight(
+                                projectInfoValues
+                                  ?.filter((k: any) => k.key === i.key)[0]
+                                  ?.children?.map((v: any) => ({
+                                    label: v.content_txt,
+                                    value: v.id,
+                                    id: v.id,
+                                  })),
+                              )
+                        }
                       />
                     </Form.Item>
                     <DelButton onClick={() => delList(i.content)}>

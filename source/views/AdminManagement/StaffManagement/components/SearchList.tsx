@@ -152,6 +152,7 @@ const SearchList = (props: Props) => {
             <span style={{ margin: '0 16px', fontSize: '14px' }}>状态</span>
             <Form.Item name="status">
               <SelectWrap
+                mode="multiple"
                 onChange={confirm}
                 style={{ width: '100%' }}
                 placeholder={t('common.all')}
@@ -180,6 +181,7 @@ const SearchList = (props: Props) => {
             <span style={{ margin: '0 16px', fontSize: '14px' }}>交接状态</span>
             <Form.Item name="handover_status">
               <SelectWrap
+                mode="multiple"
                 onChange={confirm}
                 style={{ width: '100%' }}
                 placeholder={t('common.all')}
