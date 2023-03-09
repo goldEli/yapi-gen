@@ -371,7 +371,8 @@ const Send = () => {
   return (
     <div
       style={{
-        height: 'calc(100% - 64px)',
+        height: 'calc(100% - 100px)',
+        padding: '16px',
       }}
     >
       <div
