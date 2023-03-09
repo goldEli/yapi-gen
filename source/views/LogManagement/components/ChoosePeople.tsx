@@ -7,7 +7,27 @@ import IconFont from '@/components/IconFont'
 import { getStaffListAll } from '@/services/staff'
 import CommonIconFont from '@/components/CommonIconFont'
 import ChoosePerson from '@/components/ChoosePerson'
+import styled from '@emotion/styled'
 
+const IconFontWrap = styled(IconFont)({
+  fontSize: 14,
+  color: '#BBBDBF',
+  cursor: 'pointer',
+  display: 'none',
+  position: 'absolute',
+  right: -4,
+  top: -5,
+})
+const NewNameWrap = styled.div({
+  position: 'relative',
+  overflow: 'inherit',
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  '&: hover': {
+    [IconFontWrap.toString()]: {
+      display: 'block',
+    },
+  },
+})
 const ChoosePeople = (props: any) => {
   const [allMemberList, setAllMemberList] = useState<any>([])
   const [options, setOptions] = useState<any>([])
@@ -88,7 +108,7 @@ const ChoosePeople = (props: any) => {
                 alignItems: 'center',
               }}
             >
-              <div>
+              <NewNameWrap>
                 {i.avatar ? (
                   <img
                     style={{
@@ -105,11 +125,11 @@ const ChoosePeople = (props: any) => {
                     ).toLocaleUpperCase()}
                   </NameWrap>
                 )}
-                <CommonIconFont
+                <IconFontWrap
                   type="close-circle-fill"
                   onClick={() => onDelCheckPerson(i.id)}
                 />
-              </div>
+              </NewNameWrap>
               <span
                 style={{
                   marginLeft: '4px',

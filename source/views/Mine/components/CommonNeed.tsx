@@ -541,7 +541,7 @@ const CommonNeed = (props: any) => {
           <LabNumber isActive>{total ?? 0}</LabNumber>
         </div>
         <SearchWrap>
-          <div style={{ position: 'absolute', top: '20px', right: '24px' }}>
+          <div style={{ position: 'absolute', top: '0px', right: '24px' }}>
             <InputSearch
               placeholder={t('common.pleaseSearchDemand')}
               onChangeSearch={onPressEnter}

@@ -19,6 +19,7 @@ import { useDispatch } from '@store/index'
 import { changeRest } from '@store/log'
 import { Editor, EditorRef } from '@xyfe/uikit'
 import { uploadFileByTask } from '@/services/cos'
+import { getStaffListAll } from '@/services/staff'
 
 export const LabelTitle = (props: any) => {
   return (
@@ -52,6 +53,7 @@ const WhiteDay = (props: any) => {
   const [attachList, setAttachList] = useState<any>([])
   const [peopleValue, setPeopleValue] = useState<any>([])
   const [needValue, setNeedValue] = useState<any>([])
+  const [options, setOptions] = useState<any>([])
   const [colorState, setColorState] = useState<any>(false)
   const [title, setTitle] = useState<any>([])
   const leftDom: any = useRef<HTMLInputElement>(null)
@@ -145,11 +147,22 @@ const WhiteDay = (props: any) => {
       }),
     )
   }
+  const getList = async () => {
+    const result = await getStaffListAll({ all: 1 })
+
+    setOptions(
+      result.map((i: any) => ({
+        id: i.id,
+        label: i.name,
+      })),
+    )
+  }
 
   useEffect(() => {
     if (props.editId && props.visibleEdit) {
       setDefaultValue()
     }
+    getList()
   }, [props.editId, props.visibleEdit])
 
   const scrollToBottom = () => {
@@ -238,6 +251,7 @@ const WhiteDay = (props: any) => {
             {/* <RichEditor height={178} autoFocus /> */}
             <Editor
               ref={editorRef}
+              key={Math.random()}
               upload={async file => {
                 const response = await uploadFileByTask(
                   file,
@@ -258,14 +272,7 @@ const WhiteDay = (props: any) => {
                 return new Promise(resolve => {
                   setTimeout(() => {
                     // resolve([])
-                    resolve([
-                      { id: '1', label: 'bbb' },
-                      { id: '12', label: 'bbb1' },
-                      { id: '13', label: 'bbb2' },
-                      { id: '14', label: 'bbb3' },
-                      { id: '15', label: 'bbb4' },
-                      { id: '16', label: 'bbb5' },
-                    ])
+                    resolve(options)
                   }, 1000)
                 })
               }}

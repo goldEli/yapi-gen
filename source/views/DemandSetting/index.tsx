@@ -4,16 +4,14 @@ import Main from './components/Main'
 import CreateField from './components/CreateField'
 import CommonButton from '@/components/CommonButton'
 import { useTranslation } from 'react-i18next'
-import { useEffect, useState } from 'react'
-import { saveScreen } from '@store/view'
-import PermissionWrap from '@/components/PermissionWrap'
+import { useState } from 'react'
 import { useSelector } from '@store/index'
+import PermissionWrap from '@/components/PermissionWrap'
 
 const Wrap = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  /* padding: 0 24px; */
   overflow-x: hidden;
 `
 const ButtonStyle = styled.div`

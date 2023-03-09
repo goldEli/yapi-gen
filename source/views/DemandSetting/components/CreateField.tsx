@@ -4,7 +4,7 @@ import { Input } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CreatDragging from './CreatDragging'
-import { getProjectFieIds } from '@store/category/thunk'
+import * as services from '@/services'
 import { useDispatch, useSelector } from '@store/index'
 import ProjectDragging from './ProDragging'
 import { setProjectFieIdsData } from '@store/category'
@@ -37,7 +37,7 @@ const BottomList = styled.div`
 `
 const InputStyle = styled(Input)`
   border: none;
-  width: 192px;
+  width: 184px;
   height: 32px;
   background: var(--neutral-white-d4);
   border-radius: 6px;
@@ -70,11 +70,7 @@ const CreateField = () => {
   const [searchIcon, setSearchIcon] = useState(false)
   const [search, setSearch] = useState(false)
   const [createIcon, setCreateIcon] = useState(true)
-  const {
-    getCategoryConfigDataList,
-    getCategoryConfigArray,
-    getProjectFieIdsData,
-  } = useSelector(store => store.category)
+  const { getCategoryConfigArray } = useSelector(store => store.category)
   const [dataList, setDataList] = useState<any>()
   const [searchDataList, setSearchDataList] = useState<any>()
   const { projectInfo } = useSelector(store => store.project)
@@ -139,26 +135,22 @@ const CreateField = () => {
   }
   // 请求api
   const getProjectFieIdsApi = async () => {
-    if (!projectInfo.id) {
-      return
-    }
-    const data = await dispatch(getProjectFieIds(projectInfo.id))
-    const payloadList: any = data.payload
+    const payloadList = await services.demand.getProjectFieIds(projectInfo.id)
     dispatch(setProjectFieIdsData(payloadList))
     setPayloadDataList(payloadList)
-    const confightList = getCategoryConfigDataList.configDataList
-    filterData(confightList, payloadList)
+    getCategoryConfigArray.length >= 1 &&
+      payloadList &&
+      filterData(getCategoryConfigArray, payloadList)
   }
-  useEffect(() => {
-    getProjectFieIdsApi()
-  }, [projectInfo.id])
   // 根据输入框过滤
   const onSearch = (value: string) => {
     setSearchDataList(dataList.filter((el: any) => el.title.includes(value)))
   }
   // 监听列表被删除时过滤
   useEffect(() => {
-    filterData(getCategoryConfigArray, payloadDataList)
+    projectInfo.id &&
+      getCategoryConfigArray?.length >= 1 &&
+      getProjectFieIdsApi()
   }, [getCategoryConfigArray])
   return (
     <CreateFieldWrap>
@@ -208,6 +200,7 @@ const CreateField = () => {
           </div>
           {search ? (
             <InputStyle
+              width={184}
               placeholder="请输入关键字"
               onInput={(e: any) => onSearch(e.target.value)}
               allowClear
