@@ -61,22 +61,8 @@ const DelBtn = styled.span`
     cursor: pointer;
   }
 `
-const CheckboxStyle = styled(Checkbox)`
-  .ant-checkbox-checked::after {
-    border: 1px solid var(--primary-d1);
-  }
-  .ant-checkbox-wrapper:hover .ant-checkbox-inner,
-  .ant-checkbox:hover .ant-checkbox-inner,
-  .ant-checkbox-input:focus + .ant-checkbox-inner {
-    border-color: var(--primary-d1);
-  }
-  .ant-checkbox-checked .ant-checkbox-inner {
-    background-color: var(--primary-d1);
-    border-color: var(--primary-d1);
-  }
-`
 const SliderList = (props: any) => {
-  const { children, index, onMove, listLength, child } = props
+  const { index, onMove, listLength, child } = props
   const [top, setTop] = React.useState(0)
   const [isDragging, setIsDragging] = React.useState(false)
   const [zIndex, setZIndex] = React.useState(0)
@@ -280,7 +266,7 @@ const SliderList = (props: any) => {
               </ListMsg>
             </div>
             <RightOperate>
-              <CheckboxStyle disabled={true} />
+              <Checkbox disabled={true} />
               <Text>必填</Text>
               <DelBtn>删除</DelBtn>
             </RightOperate>
@@ -310,7 +296,7 @@ const SliderList = (props: any) => {
             </ListMsg>
           </div>
           <RightOperate>
-            <CheckboxStyle
+            <Checkbox
               checked={child?.isRequired === 1 ? true : false}
               onClick={(e: any) => {
                 e.stopPropagation(), props.onChangeChecked(e, e.target.checked)

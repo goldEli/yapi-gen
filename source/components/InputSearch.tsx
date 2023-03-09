@@ -8,18 +8,6 @@ import CommonIconFont from './CommonIconFont'
 const InputStyle = styled(Input)<{ bgColor: any }>`
   height: 32px;
   background: ${props => props.bgColor ?? 'var(--neutral-white-d4)'};
-  border-radius: 6px;
-  .ant-input {
-    font-size: 14px;
-  }
-  .ant-input-prefix {
-    margin-right: 10px;
-  }
-  padding: 0 12px;
-  border: 1px solid var(--neutral-n6-d1);
-  &::placeholder {
-    font-size: 14px;
-  }
   input {
     background: ${props => props.bgColor ?? 'var(--neutral-white-d4)'};
   }
