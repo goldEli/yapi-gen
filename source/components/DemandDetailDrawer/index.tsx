@@ -31,6 +31,7 @@ import BasicDemand from './BasicDemand'
 import ChildrenDemand from './ChildrenDemand'
 import DemandComment from './DemandComment'
 import DetailDemand from './DetailDemand'
+import DetailsSkeleton from './DetailsSkeleton'
 import {
   Header,
   BackIcon,
@@ -44,6 +45,7 @@ import {
   CollapseItemContent,
   DrawerHeader,
   NextWrap,
+  SkeletonStatus,
 } from './style'
 
 const DemandDetailDrawer = () => {
@@ -299,30 +301,37 @@ const DemandDetailDrawer = () => {
                 color="var(--neutral-n1-d1)"
               />
             </BackIcon>
-            <ChangeStatusPopover
-              isCanOperation={isCanEdit && !drawerInfo.isExamine}
-              projectId={drawerInfo.projectId}
-              record={drawerInfo}
-              onChangeStatus={onChangeStatus}
-            >
-              <StateTag
-                name={drawerInfo.name}
-                onClick={drawerInfo.isExamine ? onExamine : void 0}
-                isShow={isCanEdit || drawerInfo.isExamine}
-                state={
-                  drawerInfo?.status?.is_start === 1 &&
-                  drawerInfo?.status?.is_end === 2
-                    ? 1
-                    : drawerInfo?.status?.is_end === 1 &&
-                      drawerInfo?.status?.is_start === 2
-                    ? 2
-                    : drawerInfo?.status?.is_start === 2 &&
-                      drawerInfo?.status?.is_end === 2
-                    ? 3
-                    : 0
-                }
-              />
-            </ChangeStatusPopover>
+            {skeletonLoading && (
+              <SkeletonStatus>
+                <Skeleton.Input active />
+              </SkeletonStatus>
+            )}
+            {!skeletonLoading && (
+              <ChangeStatusPopover
+                isCanOperation={isCanEdit && !drawerInfo.isExamine}
+                projectId={drawerInfo.projectId}
+                record={drawerInfo}
+                onChangeStatus={onChangeStatus}
+              >
+                <StateTag
+                  name={drawerInfo.name}
+                  onClick={drawerInfo.isExamine ? onExamine : void 0}
+                  isShow={isCanEdit || drawerInfo.isExamine}
+                  state={
+                    drawerInfo?.status?.is_start === 1 &&
+                    drawerInfo?.status?.is_end === 2
+                      ? 1
+                      : drawerInfo?.status?.is_end === 1 &&
+                        drawerInfo?.status?.is_start === 2
+                      ? 2
+                      : drawerInfo?.status?.is_start === 2 &&
+                        drawerInfo?.status?.is_end === 2
+                      ? 3
+                      : 0
+                  }
+                />
+              </ChangeStatusPopover>
+            )}
           </Space>
           <Space size={16}>
             <ChangeIconGroup>
@@ -381,69 +390,72 @@ const DemandDetailDrawer = () => {
           </Space>
         </Header>
         <Content>
-          <Skeleton loading={skeletonLoading}>
-            <ParentBox size={8}>
-              {drawerInfo.hierarchy?.map((i: any, index: number) => (
-                <DrawerHeader key={i.prefixKey}>
-                  <img src={i.categoryAttachment} alt="" />
-                  <div>
-                    {i.projectPrefix}-{i.prefixKey}
-                  </div>
-                  <span
-                    hidden={
-                      drawerInfo.hierarchy?.length <= 1 ||
-                      index === drawerInfo.hierarchy?.length - 1
-                    }
+          {skeletonLoading && <DetailsSkeleton />}
+          {!skeletonLoading && (
+            <>
+              <ParentBox size={8}>
+                {drawerInfo.hierarchy?.map((i: any, index: number) => (
+                  <DrawerHeader key={i.prefixKey}>
+                    <img src={i.categoryAttachment} alt="" />
+                    <div>
+                      {i.projectPrefix}-{i.prefixKey}
+                    </div>
+                    <span
+                      hidden={
+                        drawerInfo.hierarchy?.length <= 1 ||
+                        index === drawerInfo.hierarchy?.length - 1
+                      }
+                    >
+                      /
+                    </span>
+                  </DrawerHeader>
+                ))}
+              </ParentBox>
+              <DemandName>{drawerInfo.name}</DemandName>
+              {modeList.map((i: any) => (
+                <CollapseItem key={i.key}>
+                  <CollapseItemTitle onClick={() => onChangeShowState(i)}>
+                    <span>{i.name}</span>
+                    <CommonIconFont
+                      type={showState[i.key].isOpen ? 'up' : 'down'}
+                      color="var(--neutral-n2)"
+                    />
+                  </CollapseItemTitle>
+                  <CollapseItemContent
+                    ref={showState[i.key].dom}
+                    isOpen={showState[i.key].isOpen}
                   >
-                    /
-                  </span>
-                </DrawerHeader>
+                    {i.key === 'detailInfo' && (
+                      <DetailDemand
+                        detail={drawerInfo}
+                        onUpdate={getDemandDetail}
+                      />
+                    )}
+                    {i.key === 'detailDemands' && showState[i.key].isOpen && (
+                      <ChildrenDemand
+                        detail={drawerInfo}
+                        isOpen={showState[i.key].isOpen}
+                      />
+                    )}
+                    {i.key === 'basicInfo' && showState[i.key].isOpen && (
+                      <BasicDemand
+                        detail={drawerInfo}
+                        isOpen={showState[i.key].isOpen}
+                        onUpdate={getDemandDetail}
+                      />
+                    )}
+                    {i.key === 'demandComment' && (
+                      <DemandComment
+                        detail={drawerInfo}
+                        isOpen={showState[i.key].isOpen}
+                        onRef={commentDom}
+                      />
+                    )}
+                  </CollapseItemContent>
+                </CollapseItem>
               ))}
-            </ParentBox>
-            <DemandName>{drawerInfo.name}</DemandName>
-            {modeList.map((i: any) => (
-              <CollapseItem key={i.key}>
-                <CollapseItemTitle onClick={() => onChangeShowState(i)}>
-                  <span>{i.name}</span>
-                  <CommonIconFont
-                    type={showState[i.key].isOpen ? 'up' : 'down'}
-                    color="var(--neutral-n2)"
-                  />
-                </CollapseItemTitle>
-                <CollapseItemContent
-                  ref={showState[i.key].dom}
-                  isOpen={showState[i.key].isOpen}
-                >
-                  {i.key === 'detailInfo' && (
-                    <DetailDemand
-                      detail={drawerInfo}
-                      onUpdate={getDemandDetail}
-                    />
-                  )}
-                  {i.key === 'detailDemands' && showState[i.key].isOpen && (
-                    <ChildrenDemand
-                      detail={drawerInfo}
-                      isOpen={showState[i.key].isOpen}
-                    />
-                  )}
-                  {i.key === 'basicInfo' && showState[i.key].isOpen && (
-                    <BasicDemand
-                      detail={drawerInfo}
-                      isOpen={showState[i.key].isOpen}
-                      onUpdate={getDemandDetail}
-                    />
-                  )}
-                  {i.key === 'demandComment' && (
-                    <DemandComment
-                      detail={drawerInfo}
-                      isOpen={showState[i.key].isOpen}
-                      onRef={commentDom}
-                    />
-                  )}
-                </CollapseItemContent>
-              </CollapseItem>
-            ))}
-          </Skeleton>
+            </>
+          )}
         </Content>
       </Drawer>
     </>

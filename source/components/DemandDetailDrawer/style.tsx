@@ -2,6 +2,33 @@
 import styled from '@emotion/styled'
 import { Input, Space } from 'antd'
 
+export const SkeletonGroup = styled(Space)`
+  display: flex;
+  align-items: center;
+`
+
+export const SkeletonGroups = styled.div`
+  display: flex;
+  flex-direction: column;
+  .ant-skeleton-input {
+    display: inline-block;
+    min-width: inherit;
+    border-radius: 4px;
+    background: var(--neutral-n7);
+  }
+`
+
+export const SkeletonStatus = styled.div`
+  .ant-skeleton-input {
+    height: 22px;
+    width: 52px;
+    display: inline-block;
+    min-width: inherit;
+    border-radius: 4px;
+    background: var(--neutral-n7);
+  }
+`
+
 export const Header = styled.div`
   height: 52px;
   background: var(--neutral-white-d5);
