@@ -102,6 +102,7 @@ const DemandDetailDrawer = () => {
   // 拖动线条
   const onDragLine = (e: React.MouseEvent) => {
     const moveHandler = (ev: React.MouseEvent) => {
+      setFocus(true)
       const drawer: HTMLElement = document.querySelector(
         '.drawerRoot .ant-drawer-content-wrapper',
       )!
@@ -117,6 +118,7 @@ const DemandDetailDrawer = () => {
     const debounceWrap: any = throttle(moveHandler, 60, {})
     document.addEventListener('mousemove', debounceWrap)
     document.addEventListener('mouseup', () => {
+      setFocus(false)
       document.removeEventListener('mousemove', debounceWrap)
     })
   }
