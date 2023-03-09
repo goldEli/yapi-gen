@@ -4,7 +4,7 @@ import { Input } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CreatDragging from './CreatDragging'
-import { getProjectFieIds } from '@store/category/thunk'
+import * as services from '@/services'
 import { useDispatch, useSelector } from '@store/index'
 import ProjectDragging from './ProDragging'
 import { setProjectFieIdsData } from '@store/category'
@@ -135,22 +135,22 @@ const CreateField = () => {
   }
   // 请求api
   const getProjectFieIdsApi = async () => {
-    const data = await dispatch(getProjectFieIds(projectInfo.id))
-    const payloadList: any = data.payload
+    const payloadList = await services.demand.getProjectFieIds(projectInfo.id)
     dispatch(setProjectFieIdsData(payloadList))
     setPayloadDataList(payloadList)
+    getCategoryConfigArray.length >= 1 &&
+      payloadList &&
+      filterData(getCategoryConfigArray, payloadList)
   }
-  useEffect(() => {
-    projectInfo.id && getProjectFieIdsApi()
-  }, [projectInfo.id])
   // 根据输入框过滤
   const onSearch = (value: string) => {
     setSearchDataList(dataList.filter((el: any) => el.title.includes(value)))
   }
   // 监听列表被删除时过滤
   useEffect(() => {
-    getCategoryConfigArray?.length >= 1 && getProjectFieIdsApi()
-    filterData(getCategoryConfigArray, payloadDataList)
+    projectInfo.id &&
+      getCategoryConfigArray?.length >= 1 &&
+      getProjectFieIdsApi()
   }, [getCategoryConfigArray])
   return (
     <CreateFieldWrap>
