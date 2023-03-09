@@ -242,15 +242,6 @@ const HeaderLeft = () => {
   const navigate = useNavigate()
   const routerPath = useLocation()
 
-  // 点击切换二级菜单
-  const onClickMenu = (item: any) => {
-    navigate(
-      item.url === '/ProjectManagement/Mine'
-        ? '/ProjectManagement/Mine/Profile'
-        : item.url,
-    )
-  }
-
   const getActive = (item: any) => {
     let state = false
     if (routerPath.pathname.includes(item.url)) {
@@ -307,12 +298,7 @@ const HeaderLeft = () => {
       {currentMenu?.url === '/ProjectManagement' && (
         <ChildrenMenu>
           {currentMenu?.children?.map((i: any) => (
-            <ChildrenMenuItem
-              key={i.id}
-              size={8}
-              onClick={() => onClickMenu(i)}
-              isActive={getActive(i)}
-            >
+            <ChildrenMenuItem key={i.id} size={8} isActive={getActive(i)}>
               {i.url === '/ProjectManagement/Mine' && (
                 <MyDropdown text={i.name} />
               )}

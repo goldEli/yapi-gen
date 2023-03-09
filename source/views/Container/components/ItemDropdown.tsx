@@ -5,6 +5,7 @@ import { Dropdown } from 'antd'
 import { useEffect, useState } from 'react'
 import * as services from '@/services'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from '@store/index'
 
 interface PropsType {
   text: string
@@ -32,7 +33,7 @@ const Footer = styled.div`
     padding-left: 24px;
     display: flex;
     align-items: center;
-    height: 56px;
+    height: 52px;
   }
 `
 const Title = styled.div`
@@ -46,7 +47,7 @@ const Title = styled.div`
 const Row = styled.div`
   width: 100%;
   padding: 0 24px;
-  height: 56px;
+  height: 52px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -77,7 +78,8 @@ const Border = styled.div`
 const ItemDropdown = (props: PropsType) => {
   const navigate = useNavigate()
   const [itemArr, setItemArr] = useState([])
-
+  const dispatch = useDispatch()
+  const [isOpen, setIsOpen] = useState(false)
   const onFectProjectList = async () => {
     const data = await services.project.getProjectRecent()
     setItemArr(data)
@@ -86,6 +88,10 @@ const ItemDropdown = (props: PropsType) => {
   useEffect(() => {
     onFectProjectList()
   }, [])
+  const onCreate = () => {
+    setIsOpen(false)
+    dispatch({ type: 'createProject/changeCreateVisible', payload: true })
+  }
   const itmeMain = (item: any) => {
     return item.map((el: any) => (
       <ItemRow key={el.name}>
@@ -105,6 +111,7 @@ const ItemDropdown = (props: PropsType) => {
         <Footer>
           <div
             onClick={() => {
+              setIsOpen(false)
               navigate('/ProjectManagement/Project')
             }}
           >
@@ -118,7 +125,7 @@ const ItemDropdown = (props: PropsType) => {
             />
             查看所有项目
           </div>
-          <div>
+          <div onClick={onCreate}>
             <IconFont
               type="plus"
               style={{
@@ -127,7 +134,7 @@ const ItemDropdown = (props: PropsType) => {
                 color: 'var(--neutral-n3)',
               }}
             />
-            创建项目 123
+            创建项目
           </div>
         </Footer>
       </Container>
@@ -135,7 +142,12 @@ const ItemDropdown = (props: PropsType) => {
   }
   return (
     <>
-      <Dropdown dropdownRender={dropdownRender} placement="bottomLeft">
+      <Dropdown
+        onOpenChange={setIsOpen}
+        dropdownRender={dropdownRender}
+        placement="bottomLeft"
+        open={isOpen}
+      >
         <div style={{ height: '52px', lineHeight: '52px' }}>
           <span style={{ marginRight: '8px' }}>{props.text}</span>
           <CommonIconFont type="down" size={14} />

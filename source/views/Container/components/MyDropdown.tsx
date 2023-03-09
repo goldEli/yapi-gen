@@ -59,8 +59,8 @@ const ScrollWrap = styled.div`
 `
 const Footer = styled.div`
   width: 100%;
-  height: 56px;
-  line-height: 56px;
+  height: 52px;
+  line-height: 52px;
   border-radius: 0px 0px 6px 6px;
   font-size: 14px;
   font-weight: 400;
@@ -88,7 +88,7 @@ const Title = styled.div`
 const Row = styled.div`
   width: 100%;
   padding: 0 24px;
-  height: 56px;
+  height: 52px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -144,7 +144,7 @@ const Img = styled.img`
   width: 20px;
   height: 20px;
 `
-const MyDropdown = (props: PropsType) => {
+const MyDropdown = (props: any) => {
   const navigate = useNavigate()
   const [tabActive, setTabActive] = useState(0)
   const tabs = [
@@ -161,6 +161,7 @@ const MyDropdown = (props: PropsType) => {
   const [noFinishList, setNoFinishList] = useState<any>()
   const [finishList, setFinishList] = useState<any>()
   const [recentList, setRecentList] = useState<any>()
+  const [isOpen, setIsOpen] = useState(false)
   const box = [
     {
       title: '最近查看',
@@ -204,8 +205,11 @@ const MyDropdown = (props: PropsType) => {
   useEffect(() => {
     onFetchList()
   }, [tabActive])
-
+  const onClickIsOpen = () => {
+    setIsOpen(false)
+  }
   const onClick = () => {
+    onClickIsOpen()
     navigate('/ProjectManagement/Mine/profile')
   }
   const itmeMain = (item: any) => {
@@ -254,6 +258,7 @@ const MyDropdown = (props: PropsType) => {
       ))
     )
   }
+
   const dropdownRender = () => {
     return (
       <Container>
@@ -288,8 +293,14 @@ const MyDropdown = (props: PropsType) => {
       </Container>
     )
   }
+
   return (
-    <Dropdown dropdownRender={dropdownRender} placement="bottomLeft">
+    <Dropdown
+      dropdownRender={dropdownRender}
+      placement="bottomLeft"
+      onOpenChange={setIsOpen}
+      open={isOpen}
+    >
       <div style={{ height: '52px', lineHeight: '52px' }}>
         <span style={{ marginRight: '8px' }}>{props.text}</span>
         <CommonIconFont type="down" size={14} />
