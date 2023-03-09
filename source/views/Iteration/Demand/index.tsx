@@ -34,6 +34,7 @@ import {
 import PaginationBox from '@/components/TablePagination'
 import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
+import ResizeTable from '@/components/ResizeTable'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -354,32 +355,17 @@ const DemandWrap = (props: Props) => {
           </SecondButton>
         </div>
       )}
-      <DataWrap
-        ref={dataWrapRef}
-        hasCreate={
+      <ResizeTable
+        isSpinning={isSpinning}
+        dataWrapNormalHeight={
           hasCreate || iterateInfo?.status !== 1 || projectInfo?.status !== 1
+            ? 'calc(100% - 64px)'
+            : 'calc(100% - 116px)'
         }
-      >
-        <Spin spinning={isSpinning}>
-          {!!dataList?.list &&
-            (dataList?.list?.length > 0 ? (
-              <TableStyleBox
-                rowKey="id"
-                columns={selectColum}
-                dataSource={dataList?.list}
-                pagination={false}
-                scroll={{
-                  x: 'max-content',
-                  y: tableY,
-                }}
-                showSorterTooltip={false}
-                tableLayout="auto"
-              />
-            ) : (
-              <NoData />
-            ))}
-        </Spin>
-      </DataWrap>
+        col={selectColum}
+        dataSource={dataList?.list}
+        noData={<NoData />}
+      />
       <PaginationBox
         currentPage={dataList?.currentPage}
         pageSize={dataList?.pageSize}

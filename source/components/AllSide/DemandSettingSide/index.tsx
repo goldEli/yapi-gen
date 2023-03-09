@@ -2,11 +2,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 import CommonIconFont from '@/components/CommonIconFont'
-import { getProjectInfo, getProjectInfoValues } from '@/services/project'
 import { getCategorySaveSort } from '@/services/demand'
 import { getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
-import { setProjectInfo, setProjectInfoValues } from '@store/project'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
@@ -30,6 +28,7 @@ import { getCategoryConfigList } from '@store/category/thunk'
 import { setActiveCategory } from '@store/category/index'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
+import { message } from 'antd'
 
 const IconFontStyle = styled(IconFont)({
   color: 'var(--neutral-n2)',
@@ -118,29 +117,39 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
     }))
     await getCategorySaveSort({ id: paramsData.id, data: dataSort })
   }
+  const filterDataItem = (num: number) => {
+    const dataItem = categoryList
+      ?.filter((el: any) => el.status === num)
+      .map((el: any, index: number) => ({
+        ...el,
+        active: index === 0 ? true : false,
+      }))
+    return dataItem
+  }
   useEffect(() => {
     setTabsActive(startUsing ? 0 : 1)
     let dataItem = null
     if (startUsing) {
-      dataItem = categoryList
-        ?.filter((el: any) => el.status === 1)
-        .map((el: any, index: number) => ({
-          ...el,
-          active: index === 0 ? true : false,
-        }))
+      dataItem = filterDataItem(1)
     } else {
-      dataItem = categoryList
-        ?.filter((el: any) => el.status !== 1)
-        .map((el: any, index: number) => ({
-          ...el,
-          active: index === 0 ? true : false,
-        }))
+      dataItem = filterDataItem(2)
     }
     getCategoryConfig(dataItem)
     dispatch(setActiveCategory(dataItem.find((el: any) => el.active)))
   }, [startUsing, categoryList])
+
   // 切换tab
   const getTabsActive = async (index: any) => {
+    let dataItem = null
+    if (index === 0) {
+      dataItem = filterDataItem(1)
+    } else {
+      dataItem = filterDataItem(2)
+    }
+    if (dataItem?.length < 1) {
+      message.warning(index === 0 ? '启用状态无数据' : '未启用状态无数据')
+      return
+    }
     dispatch(setStartUsing(index === 0 ? true : false))
     setTabsActive(index)
     watchDataList()

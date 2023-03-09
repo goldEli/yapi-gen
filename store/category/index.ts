@@ -6,7 +6,6 @@ import {
   getCategoryConfigList,
   getProjectFieIds,
 } from './thunk'
-
 export interface CounterState {
   // 启用状态
   startUsing?: boolean
@@ -18,6 +17,7 @@ export interface CounterState {
   // 项目已有字段
   getProjectFieIdsData: any
   getCategoryConfigArray: any
+  option: any
 }
 
 const initialState: CounterState = {
@@ -28,7 +28,54 @@ const initialState: CounterState = {
   activeCategory: {},
   // 项目已有字段
   getProjectFieIdsData: [],
+  // 存基本信息所有数据过滤用
   getCategoryConfigArray: [],
+  option: [
+    {
+      label: 'newlyAdd.lineText',
+      value: '1',
+      type: 'text',
+      icon: 'text-alone',
+    },
+    {
+      label: 'newlyAdd.moreLineText',
+      value: '2',
+      type: 'textarea',
+      icon: 'text-more',
+    },
+    {
+      label: 'newlyAdd.radioDropdown',
+      value: '3',
+      type: 'select',
+      icon: 'select-alone',
+    },
+    {
+      label: 'newlyAdd.multiDropdown',
+      value: '4',
+      type: 'select_checkbox',
+      icon: 'select-more',
+    },
+    { label: 'newlyAdd.time', value: '7', type: 'date', icon: 'calendar' },
+    { label: 'newlyAdd.number', value: '8', type: 'number', icon: 'number' },
+    {
+      label: 'version2.personRadio',
+      value: '9',
+      type: 'user_select',
+      icon: 'user-alone',
+    },
+    {
+      label: 'version2.personCheckbox',
+      value: '10',
+      type: 'user_select_checkbox',
+      icon: 'user-more',
+    },
+    {
+      label: '确认勾选',
+      value: '11',
+      type: 'single_checkbox',
+      icon: 'check-circle',
+    },
+  ],
 }
 
 export const category = createSlice({

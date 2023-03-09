@@ -24,6 +24,7 @@ import InputSearch from '@/components/InputSearch'
 import PaginationBox from '@/components/TablePagination'
 import { useDispatch, useSelector } from '@store/index'
 import { changeRest } from '@store/log'
+import ResizeTable from '@/components/ResizeTable'
 
 const srr = [undefined, undefined, 1, 2, 3]
 const Send = () => {
@@ -418,28 +419,13 @@ const Send = () => {
             padding: '16px 16px 0',
           }}
         >
-          <div ref={dataWrapRef}>
-            <Spin spinning={isSpinning}>
-              {!!listData &&
-                (listData?.length > 0 ? (
-                  <TableStyleBox
-                    isBottom
-                    rowKey="id"
-                    columns={columnsData}
-                    dataSource={listData}
-                    pagination={false}
-                    scroll={{
-                      x: 'max-content',
-                      y: tableY,
-                    }}
-                    tableLayout="auto"
-                    showSorterTooltip={false}
-                  />
-                ) : (
-                  <NoData />
-                ))}
-            </Spin>
-          </div>
+          <ResizeTable
+            isSpinning={isSpinning}
+            dataWrapNormalHeight="100%"
+            col={columnsData}
+            dataSource={listData}
+            noData={<NoData />}
+          />
         </div>
         <PaginationBox
           total={total}

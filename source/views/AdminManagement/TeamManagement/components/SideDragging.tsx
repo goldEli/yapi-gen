@@ -3,6 +3,7 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { Dropdown, type MenuProps } from 'antd'
 import React, { useEffect, useLayoutEffect } from 'react'
+import { callbackify } from 'util'
 
 const Container = styled.div<{ color?: string; bgColor?: string }>(
   {
@@ -38,28 +39,8 @@ const IconFontStyle = styled(IconFont)`
     color: var(--primary-d2);
   }
 `
-const DropdownContainer = styled(Dropdown)`
-  .ant-dropdown-menu-item:hover {
-    background-color: var(--hover-d3);
-    color: var(--neutral-n1-d1);
-  }
-  .ant-dropdown-menu-item-active {
-    background-color: var(--hover-d3);
-    color: var(--neutral-n1-d1);
-  }
-`
-
 const SliderList = (props: any) => {
-  const {
-    children,
-    index,
-    onMove,
-    listLength,
-    active,
-    childStyle,
-    value,
-    width,
-  } = props
+  const { index, onMove, listLength, active, childStyle, value } = props
   const [top, setTop] = React.useState(0)
   const [isDragging, setIsDragging] = React.useState(false)
   const [zIndex, setZIndex] = React.useState(0)
@@ -213,7 +194,7 @@ const SliderList = (props: any) => {
       onClick={props.onChange}
       style={{
         background: active ? childStyle.activeColor : '',
-        width: width,
+        width: '100%',
         display: 'flex',
         height: childStyle.height,
         transform: isDragging ? 'scale(1.01)' : 'scale(1)',
@@ -226,6 +207,7 @@ const SliderList = (props: any) => {
       <IconFontStyle type="move" className="icon" style={{ marginRight: 8 }} />
       <ListItemStyle
         style={{
+          width: '80%',
           color: active ? childStyle.activeTextColor : childStyle.textColor,
         }}
       >
@@ -243,7 +225,7 @@ const SliderList = (props: any) => {
 
         <span
           style={{
-            width: width - 120,
+            width: '90%',
             overflow: 'hidden',
             whiteSpace: 'nowrap',
             textOverflow: 'ellipsis',
@@ -253,7 +235,7 @@ const SliderList = (props: any) => {
           {value.name}
         </span>
       </ListItemStyle>
-      <DropdownContainer
+      <Dropdown
         menu={{ items, onClick: onChangeTeam }}
         trigger={['click']}
         placement="bottomRight"
@@ -263,18 +245,17 @@ const SliderList = (props: any) => {
         }}
       >
         <IconFontStyle type="more" className="icon" />
-      </DropdownContainer>
+      </Dropdown>
     </Container>
   )
 }
 
 const Sortable = (props: any) => {
-  const { list, setList, childStyle, width } = props
+  const { list, setList, childStyle } = props
   return (
-    <div>
+    <div style={{ width: '100%' }}>
       {list?.map((child: any, i: number) => (
         <SliderList
-          width={width}
           onChangeTeam={(row: any) => props.onChangeTeam(row, child)}
           onChange={() => props.onChange(child)}
           childStyle={childStyle}

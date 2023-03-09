@@ -282,7 +282,7 @@ const Iteration = () => {
 
   useEffect(() => {
     // 迭代详情页面调用迭代详情
-    if (iterateId && createIterationParams?.isUpdate) {
+    if (iterateId || (iterateId && createIterationParams?.isUpdate)) {
       onUpdateIterateInfo(iterateId)
     }
   }, [iterateId, createIterationParams?.isUpdate])

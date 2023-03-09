@@ -71,9 +71,6 @@ const Main = (props: any) => {
       )
     }
     setIsVisible(false)
-    dispatch(
-      setGetCategoryConfigArray([...getCategoryConfigF, ...getCategoryConfigT]),
-    )
     props.onIsOperate(true)
   }
   useEffect(() => {

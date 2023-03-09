@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-handler-names */
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
-import { setActiveCategory } from '@store/category'
+import { useSelector } from '@store/index'
 import { Checkbox, Tooltip } from 'antd'
 import React, { useEffect, useLayoutEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -61,22 +61,8 @@ const DelBtn = styled.span`
     cursor: pointer;
   }
 `
-const CheckboxStyle = styled(Checkbox)`
-  .ant-checkbox-checked::after {
-    border: 1px solid var(--primary-d1);
-  }
-  .ant-checkbox-wrapper:hover .ant-checkbox-inner,
-  .ant-checkbox:hover .ant-checkbox-inner,
-  .ant-checkbox-input:focus + .ant-checkbox-inner {
-    border-color: var(--primary-d1);
-  }
-  .ant-checkbox-checked .ant-checkbox-inner {
-    background-color: var(--primary-d1);
-    border-color: var(--primary-d1);
-  }
-`
 const SliderList = (props: any) => {
-  const { children, index, onMove, listLength, child } = props
+  const { index, onMove, listLength, child } = props
   const [top, setTop] = React.useState(0)
   const [isDragging, setIsDragging] = React.useState(false)
   const [zIndex, setZIndex] = React.useState(0)
@@ -87,52 +73,7 @@ const SliderList = (props: any) => {
   const prevRectRef = React.useRef(null)
   const animationRef: any = React.useRef(null)
   const [t] = useTranslation()
-  const option = [
-    {
-      label: t('newlyAdd.lineText'),
-      value: '1',
-      type: 'text',
-      icon: 'text-alone',
-    },
-    {
-      label: t('newlyAdd.moreLineText'),
-      value: '2',
-      type: 'textarea',
-      icon: 'text-more',
-    },
-    {
-      label: t('newlyAdd.radioDropdown'),
-      value: '3',
-      type: 'select',
-      icon: 'select-alone',
-    },
-    {
-      label: t('newlyAdd.multiDropdown'),
-      value: '4',
-      type: 'select_checkbox',
-      icon: 'select-more',
-    },
-    { label: t('newlyAdd.time'), value: '7', type: 'date', icon: 'calendar' },
-    { label: t('newlyAdd.number'), value: '8', type: 'number', icon: 'number' },
-    {
-      label: t('version2.personRadio'),
-      value: '9',
-      type: 'user_select',
-      icon: 'user-alone',
-    },
-    {
-      label: t('version2.personCheckbox'),
-      value: '10',
-      type: 'user_select_checkbox',
-      icon: 'user-more',
-    },
-    {
-      label: '确认勾选',
-      value: '11',
-      type: 'single_checkbox',
-      icon: 'check-circle',
-    },
-  ]
+  const { option } = useSelector(store => store.category)
   useEffect(() => {
     // 始终保持最新状态 Ref 引用
     indexRef.current = index
@@ -262,8 +203,9 @@ const SliderList = (props: any) => {
               <IconBox>
                 <CommonIconFont
                   type={
-                    option.find(item => child?.fieldContent?.attr === item.type)
-                      ?.icon
+                    option?.find(
+                      (item: any) => child?.fieldContent?.attr === item.type,
+                    )?.icon
                   }
                   size={24}
                   color="var(--neutral-n1-d1)"
@@ -272,15 +214,16 @@ const SliderList = (props: any) => {
               <ListMsg>
                 <div>{child?.title}</div>
                 <div>
-                  {
-                    option.find(item => child?.fieldContent?.attr === item.type)
-                      ?.label
-                  }
+                  {t(
+                    option?.find(
+                      (item: any) => child?.fieldContent?.attr === item.type,
+                    )?.label,
+                  )}
                 </div>
               </ListMsg>
             </div>
             <RightOperate>
-              <CheckboxStyle disabled={true} />
+              <Checkbox disabled={true} />
               <Text>必填</Text>
               <DelBtn>删除</DelBtn>
             </RightOperate>
@@ -292,8 +235,9 @@ const SliderList = (props: any) => {
             <IconBox>
               <CommonIconFont
                 type={
-                  option.find(item => child?.fieldContent?.attr === item.type)
-                    ?.icon
+                  option.find(
+                    (item: any) => child?.fieldContent?.attr === item.type,
+                  )?.icon
                 }
                 size={24}
                 color="var(--neutral-n1-d1)"
@@ -302,15 +246,16 @@ const SliderList = (props: any) => {
             <ListMsg>
               <div>{child?.title}</div>
               <div>
-                {
-                  option.find(item => child?.fieldContent?.attr === item.type)
-                    ?.label
-                }
+                {t(
+                  option.find(
+                    (item: any) => child?.fieldContent?.attr === item.type,
+                  )?.label,
+                )}
               </div>
             </ListMsg>
           </div>
           <RightOperate>
-            <CheckboxStyle
+            <Checkbox
               checked={child?.isRequired === 1 ? true : false}
               onClick={(e: any) => {
                 e.stopPropagation(), props.onChangeChecked(e, e.target.checked)

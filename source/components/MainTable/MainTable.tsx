@@ -22,6 +22,7 @@ import { OmitText } from '@star-yun/ui'
 import MoreDropdown from '@/components/MoreDropdown'
 import { useSelector } from '@store/index'
 import PaginationBox from '../TablePagination'
+import ResizeTable from '../ResizeTable'
 
 interface Props {
   onChangeOperation(type: string, item: any, e: any): void
@@ -440,39 +441,28 @@ const MainTable = (props: Props) => {
 
   return (
     <div style={{ height: '100%' }}>
-      <DataWrap ref={dataWrapRef}>
-        {!!props.projectList?.list &&
-          (props.projectList?.list?.length > 0 ? (
-            <TableStyleBox
-              isPadding
-              rowKey="id"
-              columns={columns}
-              dataSource={props.projectList?.list}
-              pagination={false}
-              scroll={{
-                x: 'max-content',
-                y: tableY,
-              }}
-              tableLayout="auto"
-              showSorterTooltip={false}
-              onRow={onTableRow}
-            />
-          ) : (
-            <NoData
-              subText={hasCreate ? '' : t('version2.noDataCreateProject')}
-              haveFilter={props?.hasFilter}
-            >
-              {!hasCreate && (
-                <SecondButton
-                  onClick={props.onAddClick}
-                  style={{ marginTop: 24 }}
-                >
-                  {t('common.createProject')}
-                </SecondButton>
-              )}
-            </NoData>
-          ))}
-      </DataWrap>
+      <ResizeTable
+        isSpinning={false}
+        dataWrapNormalHeight="calc(100% - 64px)"
+        col={columns}
+        dataSource={props.projectList?.list}
+        onRow={onTableRow as any}
+        noData={
+          <NoData
+            subText={hasCreate ? '' : t('version2.noDataCreateProject')}
+            haveFilter={props?.hasFilter}
+          >
+            {!hasCreate && (
+              <SecondButton
+                onClick={props.onAddClick}
+                style={{ marginTop: 24 }}
+              >
+                {t('common.createProject')}
+              </SecondButton>
+            )}
+          </NoData>
+        }
+      />
       <PaginationBox
         total={props.projectList?.total}
         currentPage={props.projectList?.currentPage}

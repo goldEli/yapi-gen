@@ -22,6 +22,7 @@ import { setIsRefresh } from '@store/user'
 import { setIsUpdateChangeLog } from '@store/demand'
 import { getDemandChangeLog } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
+import ResizeTable from '@/components/ResizeTable'
 
 const SpaceWrap = styled(Space)({
   '.ant-space-item': {
@@ -451,28 +452,13 @@ const ChangeRecord = () => {
           </div>
         </SpaceWrap>
       </CommonModal>
-      <DataWrap ref={dataWrapRef}>
-        <Spin spinning={isSpinning}>
-          {!!dataList?.list &&
-            (dataList?.list?.length > 0 ? (
-              <TableStyleBox
-                rowKey="id"
-                columns={columns}
-                dataSource={dataList?.list}
-                pagination={false}
-                scroll={{
-                  x: 'max-content',
-                  y: tableY,
-                }}
-                tableLayout="auto"
-                showSorterTooltip={false}
-              />
-            ) : (
-              <NoData />
-            ))}
-        </Spin>
-      </DataWrap>
-
+      <ResizeTable
+        isSpinning={isSpinning}
+        dataWrapNormalHeight="calc(100% - 40px)"
+        col={columns}
+        dataSource={dataList?.list}
+        noData={<NoData />}
+      />
       <PaginationBox
         currentPage={dataList?.currentPage}
         pageSize={pageObj?.size}

@@ -50,6 +50,7 @@ import { DemandOperationDropdownMenu } from '@/components/DemandComponent/Demand
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import SetShowField from '@/components/SetShowField/indedx'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
+import ResizeTable from '@/components/ResizeTable'
 
 const TableBox = styled(Table)({
   '.ant-table-content': {
@@ -633,23 +634,13 @@ const CommonNeed = (props: any) => {
         </div>
       )}
       {!isMany && (
-        <LoadingSpin spinning={isSpin}>
-          <div>
-            {listData?.list ? (
-              listData?.list?.length > 0 ? (
-                <TableBox
-                  rowKey="id"
-                  columns={selectColum}
-                  dataSource={listData?.list}
-                  pagination={false}
-                  scroll={{ x: 'max-content' }}
-                />
-              ) : (
-                <NoData />
-              )
-            ) : null}
-          </div>
-        </LoadingSpin>
+        <ResizeTable
+          isSpinning={isSpin}
+          dataWrapNormalHeight="100%"
+          col={selectColum}
+          dataSource={listData?.list}
+          noData={<NoData />}
+        />
       )}
 
       {isMany && (
@@ -680,19 +671,13 @@ const CommonNeed = (props: any) => {
                       </span>
                     </TableTitle>
 
-                    {item.list ? (
-                      item?.list?.length > 0 ? (
-                        <TableBox
-                          rowKey="id"
-                          columns={selectColum}
-                          dataSource={item.list}
-                          pagination={false}
-                          scroll={{ x: 'max-content' }}
-                        />
-                      ) : (
-                        <NoData />
-                      )
-                    ) : null}
+                    <ResizeTable
+                      isSpinning={false}
+                      dataWrapNormalHeight="460px"
+                      col={selectColum}
+                      dataSource={item?.list}
+                      noData={<NoData />}
+                    />
                   </div>
                 ))}
               </div>
