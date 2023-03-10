@@ -216,11 +216,13 @@ const Main = (props: any) => {
   return (
     <div style={{ flex: 1 }}>
       <TitleStyle onClick={() => setInfoIcon(!infoIcon)}>
-        <CommonIconFont
-          type={infoIcon ? 'down-icon' : 'right-icon'}
-          size={14}
-          color="var(--neutral-n3)"
-        />
+        {getCategoryConfigF?.length >= 1 && (
+          <CommonIconFont
+            type={infoIcon ? 'down-icon' : 'right-icon'}
+            size={14}
+            color="var(--neutral-n3)"
+          />
+        )}
         <span>基本信息</span>
       </TitleStyle>
       {infoIcon && (
