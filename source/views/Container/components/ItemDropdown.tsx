@@ -133,7 +133,7 @@ const ItemDropdown = (props: PropsType) => {
                 color: 'var(--neutral-n3)',
               }}
             />
-            查看所有项目123
+            查看所有项目
           </div>
           <div onClick={onCreate}>
             <IconFont
