@@ -7,7 +7,7 @@
 import { getProjectInfo, getWorkflowList } from '@/services/project'
 import { getCategoryConfigList, updateDemandCategory } from '@/services/demand'
 import styled from '@emotion/styled'
-import { useDispatch, useSelector } from '@store/index'
+import { useSelector } from '@store/index'
 import { Form, Input, Select } from 'antd'
 import { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
