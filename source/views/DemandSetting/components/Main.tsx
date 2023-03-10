@@ -158,7 +158,6 @@ const Main = (props: any) => {
       return
     }
     setColItem(null)
-
     evevtObj.dragtype === 'add' && setAddAndEditVisible(true),
       setFieldType(evevtObj)
     evevtObj.dragtype === 'edit' && EditCategoryConfig(evevtObj)

@@ -5,9 +5,9 @@ import CreateField from './components/CreateField'
 import CommonButton from '@/components/CommonButton'
 import { useTranslation } from 'react-i18next'
 import { useState } from 'react'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import PermissionWrap from '@/components/PermissionWrap'
-
+import { getCategoryConfigList } from '@store/category/thunk'
 const Wrap = styled.div`
   width: 100%;
   display: flex;
@@ -24,13 +24,23 @@ const ButtonStyle = styled.div`
 `
 
 const DemandSetting = () => {
+  const dispatch = useDispatch()
   const [t] = useTranslation()
   const [isOperate, setIsOperate] = useState<boolean>(false)
   const [isSave, setIsSave] = useState(false)
   const { projectInfo } = useSelector(store => store.project)
-
+  const { activeCategory } = useSelector(store => store.category)
   const save = () => {
     setIsSave(true)
+  }
+  const onCancel = async () => {
+    setIsSave(false), setIsOperate(false)
+    await dispatch(
+      getCategoryConfigList({
+        projectId: projectInfo.id,
+        categoryId: activeCategory.id,
+      }),
+    )
   }
   return (
     <PermissionWrap
@@ -40,12 +50,7 @@ const DemandSetting = () => {
       <Header />
       {isOperate && (
         <ButtonStyle>
-          <CommonButton
-            type="secondary"
-            onClick={() => {
-              setIsSave(false), setIsOperate(false)
-            }}
-          >
+          <CommonButton type="secondary" onClick={onCancel}>
             {t('common.cancel')}
           </CommonButton>
           <CommonButton
