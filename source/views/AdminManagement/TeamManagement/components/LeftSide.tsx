@@ -235,10 +235,9 @@ const Upload = (props: any) => {
   )
 }
 
-import { companyTeamsList, getMemberList } from '@store/teams/thunk'
+import { companyTeamsList } from '@store/teams/thunk'
 import { addTeams, dismissTeams, editTeams } from '@/services/setting'
-import { Series } from 'highcharts'
-
+import { setActiveTeam } from '@store/teams/index'
 const LeftSide = (props: any) => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
@@ -251,7 +250,6 @@ const LeftSide = (props: any) => {
   const [teamForm, setTeamForm] = useState<any>(null)
   // 删除团队弹窗
   const [delTeamIsVisible, setDelTeamIsVisible] = useState(false)
-  const [activeChild, setActiveChild] = useState<any>(null)
   const [form] = Form.useForm()
   const onInitCreateModel = () => {
     setUploadImgs(null)
@@ -285,10 +283,7 @@ const LeftSide = (props: any) => {
       type: 'team/setTeamsList',
       payload: newList,
     })
-    dispatch({
-      type: 'team/setActiveTeam',
-      payload: newList,
-    })
+    dispatch(setActiveTeam(data))
   }
   // 移动后的事件
   const onChangeMove = async (newList: any) => {
@@ -297,10 +292,6 @@ const LeftSide = (props: any) => {
     } catch (error) {}
     dispatch({
       type: 'team/setTeamsList',
-      payload: newList,
-    })
-    dispatch({
-      type: 'team/setActiveTeam',
       payload: newList,
     })
   }
@@ -389,14 +380,13 @@ const LeftSide = (props: any) => {
   }
   const delOnConfirm = async () => {
     try {
-      await dismissTeams(activeChild?.id)
+      await dismissTeams(activeTeam?.id)
       setDelTeamIsVisible(false)
       getTeamsList()
       message.success('删除成功')
     } catch (error) {}
   }
   const onChangeTeam = (key: any, child: any) => {
-    setActiveChild(child)
     key === 'del' ? setDelTeamIsVisible(true) : editTeam(child)
     dispatch({
       type: 'team/setActiveTeam',
@@ -430,7 +420,7 @@ const LeftSide = (props: any) => {
           onClose={() => setTeamIsVisible(false)}
         />
         <DeleteConfirm
-          title={`确认解散【${activeChild?.name}】团队`}
+          title={`确认解散【${activeTeam?.name}】团队`}
           text="解散后将自动移除团队成员，该团队项目将自动划分到公司且权限变更为私有"
           isVisible={delTeamIsVisible}
           onConfirm={() => {

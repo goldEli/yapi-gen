@@ -119,7 +119,6 @@ const RightTable = () => {
   const [type, setType] = useState('')
   const [activeMember, setActiveMember] = useState<any>(null)
   const [searchVal, setSearchVal] = useState('')
-  const [pageObj, setPageObj] = useState<any>({ page: 1, pageSize: 20 })
   const [addMemberVisible, setAddMemberVisible] = useState(false)
   const options = [
     {
@@ -144,14 +143,12 @@ const RightTable = () => {
     }
     await dispatch(getMemberList(param))
   }
-
   useEffect(() => {
     if (activeTeamId) {
       onFetchMemberList()
     }
   }, [activeTeamId, searchVal])
   const onChangePage = (page: number, pageSize: number) => {
-    setPageObj({ page, pageSize })
     onFetchMemberList({
       page,
       pageSize,
