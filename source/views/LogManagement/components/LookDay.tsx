@@ -347,7 +347,19 @@ const LookDay = (props: any) => {
 
               <LabelTitle title={texts[props.type]?.name2} />
               {article2 ? (
-                <div dangerouslySetInnerHTML={{ __html: article2 }} />
+                // <div dangerouslySetInnerHTML={{ __html: article2 }} />
+                <Editor
+                  getSuggestions={() => {
+                    return new Promise(resolve => {
+                      setTimeout(() => {
+                        // resolve([])
+                        resolve([])
+                      }, 1000)
+                    })
+                  }}
+                  readonly
+                  value={article2}
+                />
               ) : null}
               {!article2 && <Kong />}
 
