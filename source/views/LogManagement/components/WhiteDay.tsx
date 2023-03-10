@@ -303,7 +303,30 @@ const WhiteDay = (props: any) => {
               },
             ]}
           >
-            <RichEditor color={colorState} height={178} />
+            <Editor
+              ref={editorRef}
+              key={Math.random()}
+              upload={file => {
+                const key = uploadFileToKey(
+                  file,
+                  file.name,
+                  `richEditorFiles_${new Date().getTime()}`,
+                  false,
+                  data => {
+                    editorRef.current?.notifyUploaded(data.key, data.url)
+                  },
+                )
+                return key
+              }}
+              getSuggestions={() => {
+                return new Promise(resolve => {
+                  setTimeout(() => {
+                    // resolve([])
+                    resolve(options)
+                  }, 1000)
+                })
+              }}
+            />
           </Form.Item>
           <Form.Item
             label={<LabelTitle title={t('common.copySend')} />}

@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { Input } from 'antd'
@@ -196,7 +197,9 @@ const CreateField = () => {
                 textOverflow: 'ellipsis',
               }}
             >
-              项目已有字段 ({payloadDataList?.length})
+              项目已有字段{' '}
+              {payloadDataList?.length >= 1 &&
+                '(' + payloadDataList?.length + ')'}
             </span>
           </div>
           {search ? (
@@ -213,13 +216,15 @@ const CreateField = () => {
                 />
               }
             />
-          ) : (
+          ) : searchDataList?.length >= 1 ? (
             <CommonIconFont
               type="search"
               size={16}
               color="var(--neutral-n2)"
               onClick={() => setSearch(true)}
             />
+          ) : (
+            ''
           )}
         </BottomTitleStyle>
         {searchIcon && (

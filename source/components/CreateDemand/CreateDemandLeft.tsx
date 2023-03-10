@@ -7,12 +7,11 @@
 import { getProjectInfo, getWorkflowList } from '@/services/project'
 import { getCategoryConfigList, updateDemandCategory } from '@/services/demand'
 import styled from '@emotion/styled'
-import { useDispatch, useSelector } from '@store/index'
+import { useSelector } from '@store/index'
 import { Form, Input, Select } from 'antd'
 import { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import IconFont from '../IconFont'
-import RichEditor from '../RichEditor'
 import { AddWrap } from '../StyleCommon'
 import TagComponent from '../TagComponent'
 import UploadAttach from '../UploadAttach'
@@ -20,6 +19,8 @@ import { decryptPhp } from '@/tools/cryptoPhp'
 import { removeNull } from '@/tools'
 import CommonModal from '../CommonModal'
 import MoreOptions from '../MoreOptions'
+import { Editor, EditorRef } from '@xyfe/uikit'
+import { uploadFileToKey } from '@/services/cos'
 
 const LeftWrap = styled.div({
   height: '100%',
@@ -51,6 +52,7 @@ interface Props {
 const CreateDemandLeft = (props: Props) => {
   const [t] = useTranslation()
   const [form] = Form.useForm()
+  const editorRef = useRef<EditorRef>(null)
   const inputRefDom = useRef<HTMLInputElement>(null)
   const leftDom = useRef<HTMLInputElement>(null)
   const [attachList, setAttachList] = useState<any>([])
@@ -641,7 +643,30 @@ const CreateDemandLeft = (props: Props) => {
           />
         </Form.Item>
         <Form.Item label={t('mine.demandInfo')} name="info">
-          <RichEditor />
+          <Editor
+            ref={editorRef}
+            key={Math.random()}
+            upload={file => {
+              const key = uploadFileToKey(
+                file,
+                file.name,
+                `richEditorFiles_${new Date().getTime()}`,
+                false,
+                data => {
+                  editorRef.current?.notifyUploaded(data.key, data.url)
+                },
+              )
+              return key
+            }}
+            getSuggestions={() => {
+              return new Promise(resolve => {
+                setTimeout(() => {
+                  // resolve([])
+                  resolve([])
+                }, 1000)
+              })
+            }}
+          />
         </Form.Item>
         {props.projectId &&
           projectInfo.projectPermissions?.length > 0 &&

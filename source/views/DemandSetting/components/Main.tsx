@@ -40,6 +40,7 @@ const Main = (props: any) => {
   useEffect(() => {
     setGetCategoryConfigT(getCategoryConfigDataList?.isFoldT)
     setGetCategoryConfigF(getCategoryConfigDataList?.isFoldF)
+    setInfoIcon(true)
   }, [getCategoryConfigDataList])
   //  移动后跟新的数据
   const onMove = (state: number, data: any) => {
@@ -158,7 +159,6 @@ const Main = (props: any) => {
       return
     }
     setColItem(null)
-
     evevtObj.dragtype === 'add' && setAddAndEditVisible(true),
       setFieldType(evevtObj)
     evevtObj.dragtype === 'edit' && EditCategoryConfig(evevtObj)
@@ -217,11 +217,13 @@ const Main = (props: any) => {
   return (
     <div style={{ flex: 1 }}>
       <TitleStyle onClick={() => setInfoIcon(!infoIcon)}>
-        <CommonIconFont
-          type={infoIcon ? 'down-icon' : 'right-icon'}
-          size={14}
-          color="var(--neutral-n3)"
-        />
+        {getCategoryConfigF?.length >= 1 && (
+          <CommonIconFont
+            type={infoIcon ? 'down-icon' : 'right-icon'}
+            size={14}
+            color="var(--neutral-n3)"
+          />
+        )}
         <span>基本信息</span>
       </TitleStyle>
       {infoIcon && (

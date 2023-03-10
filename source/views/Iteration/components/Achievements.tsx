@@ -18,6 +18,8 @@ import { useDispatch, useSelector } from '@store/index'
 import { getAchieveInfo } from '@/services/iterate'
 import { setAchieveInfo } from '@store/iterate'
 import RichEditor from '@/components/RichEditor'
+import { Editor, EditorRef } from '@xyfe/uikit'
+import { uploadFileToKey } from '@/services/cos'
 
 const Wrap = styled.div<{ isModal: any }>(
   {
@@ -53,6 +55,7 @@ interface Props {
 }
 
 const Achievements = (props: Props) => {
+  const editorRef = useRef<EditorRef>(null)
   const WrapDom = useRef<HTMLInputElement>(null)
   const [attachList, setAttachList] = useState<any>([])
   const [newAttachList, setNewAttachList] = useState<any>([])
@@ -151,15 +154,50 @@ const Achievements = (props: Props) => {
       {props.isEdit ? (
         <div className={labelWrap}>
           <span className={label}>{t('p2.m1') as string}</span>
-          <RichEditor
+          <Editor
+            ref={editorRef}
+            key={Math.random()}
+            upload={file => {
+              const key = uploadFileToKey(
+                file,
+                file.name,
+                `richEditorFiles_${new Date().getTime()}`,
+                false,
+                data => {
+                  editorRef.current?.notifyUploaded(data.key, data.url)
+                },
+              )
+              return key
+            }}
+            getSuggestions={() => {
+              return new Promise(resolve => {
+                setTimeout(() => {
+                  resolve([])
+                  // resolve(options)
+                }, 1000)
+              })
+            }}
+          />
+          {/* <RichEditor
             value={html}
             onChangeValue={setHtml}
             height={280}
             placeholder={t('p2.pleaseEditText')}
-          />
+          /> */}
         </div>
       ) : html ? (
-        <div dangerouslySetInnerHTML={{ __html: html || '--' }} />
+        <Editor
+          value={html || '--'}
+          getSuggestions={() => {
+            return new Promise(resolve => {
+              setTimeout(() => {
+                resolve([])
+                // resolve(options)
+              }, 1000)
+            })
+          }}
+          readonly
+        />
       ) : null}
       {(attachList?.length || props.isEdit) && (
         <div className={labelWrap}>

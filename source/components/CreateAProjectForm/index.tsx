@@ -55,6 +55,10 @@ const CreateAProjectForm = () => {
   const [selectGroupList, setSelectGroupList] = useState<any>([])
   const [selectLeaders, setSelectLeaders] = useState<any>([])
   const [affiliations, setAffiliations] = useState<any>([])
+  const [pros, setPros] = useState<any>([])
+  const [names, setNames] = useState<any>()
+  const [pey, setPey] = useState<any>()
+  const [user, setUser] = useState<any>()
   const dispatch = useDispatch()
 
   const onCustomRequest = async (file: any) => {
@@ -116,10 +120,15 @@ const CreateAProjectForm = () => {
 
   const onChange = (e: any) => {
     const textStr = e.target.value.trim()
+    // eslint-disable-next-line no-undefined
+    setNames(textStr === '' ? undefined : textStr)
+
     if (lock) {
       form.setFieldsValue({
         prefix: transformStr(textStr),
       })
+      // eslint-disable-next-line no-undefined
+      setPey(transformStr(textStr) === '' ? undefined : transformStr(textStr))
     }
   }
 
@@ -181,8 +190,31 @@ const CreateAProjectForm = () => {
       })),
     )
   }
-
+  const pro = [
+    {
+      name: t('project.companyOpen'),
+      id: 1,
+      dec: t('only_project_members_can_view_edits'),
+    },
+    {
+      name: t('common.privateProject'),
+      id: 2,
+      dec: t(
+        'all_members_in_the_enterprise_can_be_seen_only_project_members_can_edit',
+      ),
+    },
+    {
+      name: t('the_team_is_open'),
+      id: 3,
+      dec: t('all_team_members_are_visible_only_project_members_can_edit'),
+    },
+  ]
   useEffect(() => {
+    if (leaderId === 0) {
+      setPros(pro.slice(0, 2))
+    } else {
+      setPros(pro)
+    }
     if (leaderId || leaderId === 0) {
       getLeader()
       setCanChooseLeader(false)
@@ -274,7 +306,12 @@ const CreateAProjectForm = () => {
               marginTop: '16px',
             }}
           >
-            <ProjectCardShow img={activeCover} />
+            <ProjectCardShow
+              names={names}
+              prefix={pey}
+              user={user}
+              img={activeCover}
+            />
           </div>
         </CoverAreaWrap>
         <Wrap>
@@ -364,6 +401,11 @@ const CreateAProjectForm = () => {
               name="leader_id"
             >
               <Select
+                onChange={e => {
+                  const obj = selectLeaders.find((i: any) => i.id === e)
+
+                  setUser(obj.name)
+                }}
                 disabled={canChooseLeader}
                 placeholder={t('please_select_project_leader')}
                 optionLabelProp="label"
@@ -385,30 +427,11 @@ const CreateAProjectForm = () => {
               name="isPublic"
             >
               <Select
+                disabled={canChooseLeader}
                 placeholder={t('please_select_permissions')}
                 optionLabelProp="label"
               >
-                {[
-                  {
-                    name: t('project.companyOpen'),
-                    id: 1,
-                    dec: t('only_project_members_can_view_edits'),
-                  },
-                  {
-                    name: t('common.privateProject'),
-                    id: 2,
-                    dec: t(
-                      'all_members_in_the_enterprise_can_be_seen_only_project_members_can_edit',
-                    ),
-                  },
-                  {
-                    name: t('the_team_is_open'),
-                    id: 3,
-                    dec: t(
-                      'all_team_members_are_visible_only_project_members_can_edit',
-                    ),
-                  },
-                ].map((i: any) => (
+                {pros.map((i: any) => (
                   <Select.Option value={i.id} key={i.id} label={i.name}>
                     <MoreOptions type="promise" name={i.name} dec={i.dec} />
                   </Select.Option>

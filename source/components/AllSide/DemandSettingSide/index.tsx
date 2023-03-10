@@ -25,7 +25,10 @@ import Dragging from './Dragging'
 import { setStartUsing } from '@store/category'
 // eslint-disable-next-line no-duplicate-imports
 import { getCategoryConfigList } from '@store/category/thunk'
-import { setActiveCategory } from '@store/category/index'
+import {
+  setActiveCategory,
+  setCategoryConfigDataList,
+} from '@store/category/index'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { message } from 'antd'
@@ -84,21 +87,23 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
           active: index === 0 ? true : false,
         }))
     }
+    dataItem?.length <= 1 && dispatch(setCategoryConfigDataList([]))
     dispatch(setActiveCategory(dataItem.find((el: any) => el.active)))
     setList(dataItem)
   }
   // 需求类别中间列表
   const getCategoryConfig = async (dataItem: any) => {
     const itemId = dataItem?.find((item: any) => item.active)?.id
+
     watchDataList()
-    if (itemId && projectId) {
-      await dispatch(
+    itemId &&
+      projectId &&
+      (await dispatch(
         getCategoryConfigList({
           projectId: projectId,
           categoryId: itemId,
         }),
-      )
-    }
+      ))
   }
 
   useEffect(() => {
@@ -140,16 +145,13 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
 
   // 切换tab
   const getTabsActive = async (index: any) => {
-    let dataItem = null
+    let dataItem
     if (index === 0) {
       dataItem = filterDataItem(1)
     } else {
       dataItem = filterDataItem(2)
     }
-    if (dataItem?.length < 1) {
-      message.warning(index === 0 ? '启用状态无数据' : '未启用状态无数据')
-      return
-    }
+
     dispatch(setStartUsing(index === 0 ? true : false))
     setTabsActive(index)
     watchDataList()

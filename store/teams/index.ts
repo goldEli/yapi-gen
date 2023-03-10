@@ -53,6 +53,7 @@ export const counterSlice = createSlice({
   },
 })
 
-export const { setTeamsMembersList, setTeamsList } = counterSlice.actions
+export const { setTeamsMembersList, setTeamsList, setActiveTeam } =
+  counterSlice.actions
 
 export default counterSlice.reducer

@@ -96,11 +96,17 @@ const LeftItem = styled.span`
   font-size: 14px;
   font-weight: 400;
   color: var(--neutral-n2);
+  width: 20%;
 `
 const RightItem = styled.span`
   font-size: 14px;
   font-weight: 400;
+  width: 85%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: var(--neutral-n1-d1);
+  text-align: right;
 `
 
 const RightTable = () => {
@@ -113,7 +119,6 @@ const RightTable = () => {
   const [type, setType] = useState('')
   const [activeMember, setActiveMember] = useState<any>(null)
   const [searchVal, setSearchVal] = useState('')
-  const [pageObj, setPageObj] = useState<any>({ page: 1, pageSize: 20 })
   const [addMemberVisible, setAddMemberVisible] = useState(false)
   const options = [
     {
@@ -138,14 +143,12 @@ const RightTable = () => {
     }
     await dispatch(getMemberList(param))
   }
-
   useEffect(() => {
     if (activeTeamId) {
       onFetchMemberList()
     }
   }, [activeTeamId, searchVal])
   const onChangePage = (page: number, pageSize: number) => {
-    setPageObj({ page, pageSize })
     onFetchMemberList({
       page,
       pageSize,
@@ -161,6 +164,7 @@ const RightTable = () => {
       })
       setIsVisible(false)
       onFetchMemberList()
+      message.success('编辑成员成功')
     } catch (error) {}
   }
 
@@ -177,6 +181,7 @@ const RightTable = () => {
       })
       setDelIsVisible(false)
       onFetchMemberList()
+      message.success('移出成功')
     } catch (error) {}
   }
 
