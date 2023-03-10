@@ -23,6 +23,8 @@ import MoreDropdown from '@/components/MoreDropdown'
 import { useSelector } from '@store/index'
 import PaginationBox from '../TablePagination'
 import ResizeTable from '../ResizeTable'
+import { editProject } from '@store/create-propject'
+import { useDispatch } from 'react-redux'
 
 interface Props {
   onChangeOperation(type: string, item: any, e: any): void
@@ -82,8 +84,9 @@ interface MoreProps {
   record?: any
 }
 
-const MoreContent = (props: MoreProps) => {
+const MoreContent = (props: any) => {
   const [t] = useTranslation()
+  const dispatch = useDispatch()
   const [isVisible, setIsVisible] = useState(false)
   const { userInfo } = useSelector(store => store.user)
   const hasEdit = getIsPermission(
@@ -104,13 +107,30 @@ const MoreContent = (props: MoreProps) => {
   )
 
   const onClickMore = (type: any, item: any, e: any) => {
+    if (e) {
+      e.stopPropagation()
+    }
+    if (type === 'edit') {
+      dispatch(editProject({ visible: true, id: item.id }))
+    } else {
+      props?.onChange(type, item, e)
+    }
+
     setIsVisible(false)
-    props?.onChange(type, item, e)
+
+    //
   }
 
   const menu = (record: any) => {
+    const isDel = (
+      userInfo.company_permissions?.map((i: any) => i.identity) || []
+    ).includes('b/project/delete')
+    const isEdit = (
+      userInfo.company_permissions?.map((i: any) => i.identity) || []
+    ).includes('b/project/update')
     let menuItems = [
       {
+        isHave: isEdit,
         key: '1',
         label: (
           <div onClick={e => onClickMore?.('edit', record, e)}>
@@ -119,6 +139,7 @@ const MoreContent = (props: MoreProps) => {
         ),
       },
       {
+        isHave: isEdit,
         key: '2',
         label: (
           <div onClick={e => onClickMore?.('end', record, e)}>
@@ -127,6 +148,7 @@ const MoreContent = (props: MoreProps) => {
         ),
       },
       {
+        isHave: isDel,
         key: '3',
         label: (
           <div onClick={e => onClickMore?.('delete', record, e)}>
@@ -136,36 +158,17 @@ const MoreContent = (props: MoreProps) => {
       },
     ]
 
-    if (hasEdit) {
-      menuItems = menuItems.filter((i: any) => i.key !== '1')
-    }
-
-    if (hasDelete) {
-      menuItems = menuItems.filter((i: any) => i.key !== '3')
-    }
-
-    if (record.status === 1) {
-      if (hasStop) {
-        menuItems = menuItems.filter((i: any) => i.key !== '2')
-      }
-    }
-
-    if (hasStart) {
-      menuItems = menuItems.filter((i: any) => i.key !== '2')
-    }
-
-    return <Menu items={menuItems} />
+    return <Menu items={menuItems.filter((i: any) => i.isHave)} />
   }
 
   return (
     <>
-      {!hasDelete && !hasEdit && !hasStart && !hasStop && (
-        <MoreDropdown
-          isMoreVisible={isVisible}
-          menu={menu(props?.record)}
-          onChangeVisible={setIsVisible}
-        />
-      )}
+      <MoreDropdown
+        isMoreVisible={isVisible}
+        menu={menu(props?.record)}
+        onChangeVisible={setIsVisible}
+      />
+
       {!(!hasDelete && !hasEdit && !hasStart && !hasStop) && (
         <div style={{ width: 16 }} />
       )}
