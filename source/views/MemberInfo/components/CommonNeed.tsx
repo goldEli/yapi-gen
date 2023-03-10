@@ -98,7 +98,7 @@ const SearchWrap = styled.div({
 const MainWrap = styled.div({
   padding: ' 0 16px',
   '.ant-spin-nested-loading': {
-    height: 'initial',
+    // height: 'initial',
   },
 })
 
@@ -674,7 +674,7 @@ const CommonNeed = (props: any) => {
 
                     <ResizeTable
                       isSpinning={false}
-                      dataWrapNormalHeight="460px"
+                      dataWrapNormalHeight="calc(100vh - 460px)"
                       col={selectColum}
                       dataSource={item?.list}
                       noData={<NoData />}
