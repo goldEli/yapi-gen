@@ -632,6 +632,7 @@ const CreateDemandRight = (props: Props) => {
               placeholder={t('common.pleaseSelect')}
               getPopupContainer={node => node}
               allowClear
+              disabled={createDemandProps?.demandId}
             >
               {props.workStatusList?.list?.map((i: any) => {
                 return (

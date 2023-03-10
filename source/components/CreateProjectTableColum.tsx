@@ -93,7 +93,7 @@ export const useDynamicColumns = (state: any) => {
   const arr = [
     {
       width: 100,
-      title: <NewSort fixedKey="id">ID</NewSort>,
+      title: <NewSort fixedKey="id">编号</NewSort>,
       dataIndex: 'id',
       key: 'id',
       render: (text: string, record: any) => {
@@ -103,7 +103,7 @@ export const useDynamicColumns = (state: any) => {
               onClick={() => state.onClickItem(record)}
               isClose={record.status?.is_end === 1}
             >
-              {text}
+              {record.projectPrefix}-{record.prefixKey}
             </ClickWrap>
             {record.isExamine && (
               <IconFont

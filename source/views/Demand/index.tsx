@@ -228,7 +228,7 @@ const DemandBox = () => {
       dispatch(changeColorText(''))
       dispatch(onTapSearchChoose({}))
     }
-  }, [])
+  }, [demandId])
 
   useEffect(() => {
     // 获取项目信息中的需求类别
@@ -404,7 +404,11 @@ const DemandBox = () => {
 
   // 复制需求id
   const onCopyId = () => {
-    copyLink(demandInfo?.id, '复制需求ID成功！', '复制需求ID失败！')
+    copyLink(
+      `${demandInfo?.projectPrefix}-${demandInfo?.prefixKey}`,
+      '复制需求编号成功！',
+      '复制需求编号失败！',
+    )
   }
 
   // 复制需求链接

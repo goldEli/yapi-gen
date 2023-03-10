@@ -134,7 +134,7 @@ const ProjectDetailSide = () => {
     if (paramsData?.type === 3) {
       onChangeSetCategory()
     }
-  }, [])
+  }, [projectId])
 
   //   返回上一页
   const onGoBack = () => {
