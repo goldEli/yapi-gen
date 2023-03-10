@@ -553,7 +553,5 @@ export const useDynamicColumns = (state: any) => {
 
   const endResult = getArr()
 
-  console.log(endResult, '=endResultendResult')
-
   return endResult
 }

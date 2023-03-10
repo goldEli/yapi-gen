@@ -1,4 +1,5 @@
 /* eslint-disable require-unicode-regexp */
+import { uploadFileToKey } from '@/services/cos'
 import { addIterate, getIterateInfo, updateIterate } from '@/services/iterate'
 import { getProjectList, getProjectRecent } from '@/services/project'
 import styled from '@emotion/styled'
@@ -8,6 +9,7 @@ import {
   setIsCreateIterationVisible,
   setIsUpdateList,
 } from '@store/iterate'
+import { Editor, EditorRef } from '@xyfe/uikit'
 import { Form, Input, message, Select, Space } from 'antd'
 import moment from 'moment'
 import { useEffect, useRef, useState } from 'react'
@@ -15,7 +17,6 @@ import { useTranslation } from 'react-i18next'
 import CommonModal from '../CommonModal'
 import MoreOptions from '../MoreOptions'
 import RangePicker from '../RangePicker'
-import RichEditor from '../RichEditor'
 
 const ItemWrap = styled(Space)`
   display: flex;
@@ -28,6 +29,7 @@ const ItemWrap = styled(Space)`
 const CreateIteration = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
+  const editorRef = useRef<EditorRef>(null)
   const { isCreateIterationVisible, createIterationParams } = useSelector(
     store => store.iterate,
   )
@@ -101,7 +103,7 @@ const CreateIteration = () => {
   const onConfirm = async () => {
     await form.validateFields()
     const values = form.getFieldsValue()
-    values.info = html
+    // values.info = html
     if (createIterationParams?.id) {
       await updateIterate({
         projectId: createIterationParams?.projectId,
@@ -219,8 +221,33 @@ const CreateIteration = () => {
               />
             </Form.Item>
           </ItemWrap>
-          <Form.Item label={t('project.iterateTarget')}>
-            <RichEditor value={html} />
+          <Form.Item name="info" label={t('project.iterateTarget')}>
+            {/* <RichEditor value={html} />
+             */}
+            <Editor
+              ref={editorRef}
+              key={Math.random()}
+              upload={file => {
+                const key = uploadFileToKey(
+                  file,
+                  file.name,
+                  `richEditorFiles_${new Date().getTime()}`,
+                  false,
+                  data => {
+                    editorRef.current?.notifyUploaded(data.key, data.url)
+                  },
+                )
+                return key
+              }}
+              getSuggestions={() => {
+                return new Promise(resolve => {
+                  setTimeout(() => {
+                    resolve([])
+                    // resolve(options)
+                  }, 1000)
+                })
+              }}
+            />
           </Form.Item>
         </Form>
       </div>

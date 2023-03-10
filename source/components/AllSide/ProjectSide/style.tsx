@@ -172,7 +172,7 @@ export const CloseWrap = styled.div<{ width?: any; height?: any }>(
 export const GroupItems = styled.div<{ isPermission?: boolean }>(
   {
     width: '100%',
-    overflow: 'auto',
+    // overflow: 'auto',
   },
   ({ isPermission }) => ({
     height: `calc(100% - ${isPermission ? 172 : 228}px)`,
