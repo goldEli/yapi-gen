@@ -40,6 +40,7 @@ const Main = (props: any) => {
   useEffect(() => {
     setGetCategoryConfigT(getCategoryConfigDataList?.isFoldT)
     setGetCategoryConfigF(getCategoryConfigDataList?.isFoldF)
+    setInfoIcon(true)
   }, [getCategoryConfigDataList])
   //  移动后跟新的数据
   const onMove = (state: number, data: any) => {
