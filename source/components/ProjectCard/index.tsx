@@ -1,9 +1,10 @@
 // 项目卡片 children传入右上操作
 
 import { changeCreateVisible, editProject } from '@store/create-propject'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { Dropdown, MenuProps, Progress, Tooltip } from 'antd'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import IconFont from '../IconFont'
 import {
   ProjectCard,
@@ -45,7 +46,9 @@ const TextOfIcon = (props: Props) => (
   </Tooltip>
 )
 const Index = (props: any) => {
+  const [t] = useTranslation()
   const dispatch = useDispatch()
+  const { userInfo } = useSelector(store => store.user)
   const arr = [
     {
       type: 'user-alone',
@@ -64,20 +67,39 @@ const Index = (props: any) => {
     },
   ]
 
-  const items: any = [
-    {
-      key: 'edit',
-      label: <span>编辑</span>,
-    },
-    {
-      key: 'over',
-      label: <span>结束</span>,
-    },
-    {
-      key: 'del',
-      label: <span>删除</span>,
-    },
-  ]
+  const getItems = () => {
+    const isDel = (
+      userInfo.company_permissions?.map((i: any) => i.identity) || []
+    ).includes('b/project/delete')
+    const isEdit = (
+      userInfo.company_permissions?.map((i: any) => i.identity) || []
+    ).includes('b/project/update')
+
+    const items: any = [
+      {
+        key: 'edit',
+        label: <span>编辑</span>,
+        isHave: isEdit,
+      },
+      {
+        key: 'over',
+        label: (
+          <span>
+            {props.item.status === 1 ? t('common.stop') : t('common.open')}
+          </span>
+        ),
+        isHave: isEdit,
+      },
+      {
+        key: 'del',
+        label: <span>删除</span>,
+        isHave: isDel,
+      },
+    ]
+
+    return items.filter((i: any) => i.isHave)
+  }
+
   const onClick: MenuProps['onClick'] = ({ key, domEvent }) => {
     domEvent.stopPropagation()
     switch (key) {
@@ -141,7 +163,7 @@ const Index = (props: any) => {
       <Dropdown
         trigger={['hover']}
         menu={{
-          items,
+          items: getItems(),
           onClick,
         }}
         placement="bottomRight"

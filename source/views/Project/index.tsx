@@ -270,15 +270,19 @@ const ProjectManagementOptimization = () => {
           margin: '20px 0 ',
         }}
       >
-        <CommonButton
-          type="primary"
-          onClick={() => dispatch(changeCreateVisible(true))}
-        >
-          <span>
-            <IconFont type="plus" style={{ fontSize: 15 }} />
-            创建项目
-          </span>
-        </CommonButton>
+        {(
+          userInfo.company_permissions?.map((i: any) => i.identity) || []
+        ).includes('b/project/save') && (
+          <CommonButton
+            type="primary"
+            onClick={() => dispatch(changeCreateVisible(true))}
+          >
+            <span>
+              <IconFont type="plus" style={{ fontSize: 15 }} />
+              创建项目
+            </span>
+          </CommonButton>
+        )}
 
         <CreateActionBar
           sort={order.key}
@@ -303,9 +307,7 @@ const ProjectManagementOptimization = () => {
               />
             ) : (
               <MainTable
-                onChangeOperation={(e, type, item) =>
-                  onChangeOperation(e, type, item)
-                }
+                onChangeOperation={onChangeOperation}
                 onChangePageNavigation={onChangePageNavigation}
                 onUpdateOrderKey={onUpdateOrderKey}
                 order={order}

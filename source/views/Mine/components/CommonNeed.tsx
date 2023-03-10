@@ -612,7 +612,7 @@ const CommonNeed = (props: any) => {
       {!isMany && (
         <ResizeTable
           isSpinning={isSpin}
-          dataWrapNormalHeight="80%"
+          dataWrapNormalHeight="calc(100vh - 330px)"
           col={selectColum}
           dataSource={listData?.list}
           noData={<NoData />}

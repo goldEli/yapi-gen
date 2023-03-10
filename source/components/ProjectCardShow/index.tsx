@@ -93,11 +93,11 @@ const Index = (props: any) => {
           placement="top"
           title="1"
         >
-          <CardRightFirst>项目名称XXX</CardRightFirst>
+          <CardRightFirst>{props.names ?? '项目名称XXX'}</CardRightFirst>
         </Tooltip>
 
-        <CardRightSecond>负责人：XXX</CardRightSecond>
-        <CardRightSecond>键：DXKJ</CardRightSecond>
+        <CardRightSecond>负责人：{props.user ?? 'XXX'}</CardRightSecond>
+        <CardRightSecond>键：{props.prefix ?? 'DXKJ'}</CardRightSecond>
         <TransformWrap>
           <ProgressWrap>
             <Progress
@@ -110,7 +110,7 @@ const Index = (props: any) => {
         </TransformWrap>
       </CardRight>
 
-      <EndTag>End</EndTag>
+      {/* <EndTag>End</EndTag> */}
     </ProjectCard>
   )
 }
