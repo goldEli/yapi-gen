@@ -96,6 +96,11 @@ export const category = createSlice({
     setProjectFieIdsData: (state: any, action) => {
       state.getProjectFieIdsData = action.payload
     },
+    setCategoryConfigDataList: (state: any, action) => {
+      state.getCategoryConfigDataList.configDataList = []
+      state.getCategoryConfigDataList.isFoldT = []
+      state.getCategoryConfigDataList.isFoldF = []
+    },
   },
   extraReducers(builder) {
     builder.addCase(storyConfigCategoryList.fulfilled, (state, action) => {
@@ -123,6 +128,7 @@ export const {
   setActiveCategory,
   setGetCategoryConfigArray,
   setProjectFieIdsData,
+  setCategoryConfigDataList,
 } = category.actions
 
 export default category.reducer

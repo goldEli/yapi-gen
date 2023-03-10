@@ -104,10 +104,11 @@ const Header = () => {
 
   // 删除需求类别
   const onDeleteConfirm = async () => {
-    await deleteStoryConfigCategory({
-      id: activeCategory.id,
-      projectId: projectInfo.id,
-    })
+    activeCategory?.id &&
+      (await deleteStoryConfigCategory({
+        id: activeCategory?.id,
+        projectId: projectInfo.id,
+      }))
     setIsDelete(false)
     getList()
   }
@@ -191,10 +192,6 @@ const Header = () => {
       dataItem = filterDataItem(1)
     } else {
       dataItem = filterDataItem(2)
-    }
-    if (dataItem?.length < 1) {
-      message.warning(e ? '启用状态无数据' : '未启用状态无数据')
-      return
     }
     setChecked(e)
     dispatch(setStartUsing(e))
