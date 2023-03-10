@@ -14,7 +14,8 @@ import { useTranslation } from 'react-i18next'
 import CommonModal from './CommonModal'
 import IconFont from './IconFont'
 import { AddWrap } from './StyleCommon'
-import RichEditor from './RichEditor'
+import { uploadFileToKey } from '@/services/cos'
+import { Editor, EditorRef } from '@xyfe/uikit'
 
 const EditComment = (props: any) => {
   const [form] = Form.useForm()
@@ -22,7 +23,7 @@ const EditComment = (props: any) => {
   const editable = useRef<HTMLInputElement>(null)
   const attachDom: any = createRef()
   const [t] = useTranslation()
-
+  const editorRef = useRef<EditorRef>(null)
   const init = async () => {
     const companyList = await getStaffListAll({ all: 1 })
 
@@ -168,12 +169,29 @@ const EditComment = (props: any) => {
               },
             ]}
           >
-            <RichEditor
-              at
-              staffList={arr}
-              height={178}
-              autoFocus
-              placeholder={t('new_p1.kongN')}
+            <Editor
+              ref={editorRef}
+              key={Math.random()}
+              upload={file => {
+                const key = uploadFileToKey(
+                  file,
+                  file.name,
+                  `richEditorFiles_${new Date().getTime()}`,
+                  false,
+                  data => {
+                    editorRef.current?.notifyUploaded(data.key, data.url)
+                  },
+                )
+                return key
+              }}
+              getSuggestions={() => {
+                return new Promise(resolve => {
+                  setTimeout(() => {
+                    resolve([])
+                    // resolve(options)
+                  }, 1000)
+                })
+              }}
             />
           </Form.Item>
           <Form.Item
