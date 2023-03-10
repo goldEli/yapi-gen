@@ -15,7 +15,7 @@ import {
   storyConfigField,
 } from '@/services/project'
 import { getStaffList } from '@/services/staff'
-import { message, Tooltip } from 'antd'
+import { Checkbox, message, Radio, Tooltip } from 'antd'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
 import { useDispatch, useSelector } from '@store/index'
@@ -37,6 +37,15 @@ const LimitText = styled.div`
 
 const DisableWrap = styled.div`
   cursor: no-drop;
+`
+
+const CheckboxWrap = styled(Checkbox)`
+  .ant-checkbox-inner {
+    border-radius: 50% !important;
+  }
+  .ant-checkbox-checked::after {
+    border: none !important;
+  }
 `
 
 interface Props {
@@ -305,7 +314,7 @@ const TableQuickEdit = (props: Props) => {
   }, [isShowControl])
 
   // 操作框改变
-  const onChange = async (newValue: any, type: any) => {
+  const onChange = async (newValue: any, type?: any) => {
     if (props.item.categoryConfigList[props.keyText] === 1 && !newValue) {
       message.warning(`${props.keyText}为必填字段！`)
       setIsShowControl(false)
@@ -372,7 +381,7 @@ const TableQuickEdit = (props: Props) => {
 
     try {
       await updateTableParams(obj)
-      if (props.isInfo && props.isInfoPage) {
+      if (props.isInfoPage) {
         const result = await getDemandInfo({ projectId, id: props.item?.id })
         dispatch(setDemandInfo(result))
       } else {
@@ -434,48 +443,58 @@ const TableQuickEdit = (props: Props) => {
         props.isInfo) && (
         <>
           {!isShowControl && (
-            <CanOperation
-              onClick={() =>
-                // 详情和列表上不是文本的可点击整个元素
-                canClick ? setIsShowControl(true) : void 0
-              }
-              isTable={!props.isInfo}
-              isCanEdit={isCanEdit}
-            >
-              {(!['text', 'textarea'].includes(props.type as any) ||
-                props.isDemandName) && <div>{props.children}</div>}
-
-              {['text', 'textarea'].includes(props.type as any) &&
-                !props.isDemandName && (
-                  <>
-                    {props.isInfo && <div>{props.children}</div>}
-                    {!props.isInfo && (
-                      <Tooltip
-                        title={props.children}
-                        placement="topLeft"
-                        getPopupContainer={node => node}
-                      >
-                        <LimitText>{props.children}</LimitText>
-                      </Tooltip>
-                    )}
-                  </>
-                )}
-
-              {isCanEdit && (
-                <IconFontWrapEdit
-                  onClick={() => setIsShowControl(true)}
-                  isTable={isShowIcon}
-                  type={
-                    props?.isInfo ||
-                    !['text', 'textarea', 'number', 'integer'].includes(
-                      String(props.type),
-                    )
-                      ? 'down-icon'
-                      : 'edit-square'
-                  }
+            <>
+              {props.type === 'single_checkbox' && (
+                <CheckboxWrap
+                  checked={props?.defaultText}
+                  onChange={e => onChange(e.target.checked)}
                 />
               )}
-            </CanOperation>
+              {props.type !== 'single_checkbox' && (
+                <CanOperation
+                  onClick={() =>
+                    // 详情和列表上不是文本的可点击整个元素
+                    canClick ? setIsShowControl(true) : void 0
+                  }
+                  isTable={!props.isInfo}
+                  isCanEdit={isCanEdit}
+                >
+                  {(!['text', 'textarea'].includes(props.type as any) ||
+                    props.isDemandName) && <div>{props.children}</div>}
+
+                  {['text', 'textarea'].includes(props.type as any) &&
+                    !props.isDemandName && (
+                      <>
+                        {props.isInfo && <div>{props.children}</div>}
+                        {!props.isInfo && (
+                          <Tooltip
+                            title={props.children}
+                            placement="topLeft"
+                            getPopupContainer={node => node}
+                          >
+                            <LimitText>{props.children}</LimitText>
+                          </Tooltip>
+                        )}
+                      </>
+                    )}
+
+                  {isCanEdit && (
+                    <IconFontWrapEdit
+                      onClick={() => setIsShowControl(true)}
+                      isTable={isShowIcon}
+                      type={
+                        props?.isInfo ||
+                        !['text', 'textarea', 'number', 'integer'].includes(
+                          String(props.type),
+                        )
+                          ? 'down-icon'
+                          : 'edit-square'
+                      }
+                    />
+                  )}
+                </CanOperation>
+              )}
+            </>
           )}
         </>
       )}

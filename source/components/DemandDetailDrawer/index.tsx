@@ -135,7 +135,6 @@ const DemandDetailDrawer = () => {
   // 获取需求详情
   const getDemandDetail = async (id?: any) => {
     setDrawerInfo({})
-    setShowState(normalState)
     setSkeletonLoading(true)
     const info = await getDemandInfo({
       projectId:
@@ -298,6 +297,7 @@ const DemandDetailDrawer = () => {
     if (isDemandDetailDrawerVisible || demandDetailDrawerProps?.id) {
       getDemandDetail()
       getProjectData()
+      setShowState(normalState)
     }
   }, [demandDetailDrawerProps, isDemandDetailDrawerVisible])
 
