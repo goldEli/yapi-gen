@@ -685,13 +685,16 @@ const StepBoxWrap = styled.div<{ active?: boolean }>(
       marginLeft: 5,
     },
   },
+  // var(--function-tag5)
   ({ active }) => ({
     '.circle': {
-      background: active ? '#2877ff' : '#BBBDBF',
-      border: active ? '3px solid #F0F4FA' : '3px solid white',
+      background: active ? 'var(--primary-d1)' : 'var(--neutral-n4)',
+      border: active
+        ? '3px solid rgba(40, 119, 255, 0.2)'
+        : '3px solid var(--neutral-n4)',
     },
     span: {
-      color: active ? '#2877ff' : '#646566',
+      color: active ? 'var(--primary-d1)' : 'var(--neutral-n2)',
     },
   }),
 )

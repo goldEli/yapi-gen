@@ -44,6 +44,7 @@ const TabsWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   marginBottom: 16,
+  padding: '0 24px',
 })
 
 const TabsItem = styled.div<{ active?: boolean }>(
@@ -55,18 +56,21 @@ const TabsItem = styled.div<{ active?: boolean }>(
     cursor: 'pointer',
   },
   ({ active }) => ({
-    color: active ? '#2877ff' : '#323233',
-    borderBottom: active ? '3px solid #2877ff' : '3px solid white',
+    color: active ? 'var(--primary-d2)' : 'var(--neutral-n2)',
+    borderBottom: active
+      ? '3px solid var(--primary-d2)'
+      : '3px solid  var(--neutral-white-d5)',
     fontWeight: active ? 'bold' : 400,
   }),
 )
 
 const TextWrap = styled.div({
-  color: '#969799',
+  color: 'var(--neutral-n3)',
   fontSize: 12,
   lineHeight: '20px',
   display: 'flex',
   flexDirection: 'column',
+  paddingLeft: '24px',
   div: {
     marginBottom: 8,
   },
@@ -277,7 +281,9 @@ const ImportDemand = () => {
           </TabsWrap>
           {tabs === 2 && (
             <TextWrap>
-              <div>{t('newlyAdd.importText1')}</div>
+              <div style={{ color: 'var(--neutral-n2)' }}>
+                {t('newlyAdd.importText1')}
+              </div>
               <span>{t('newlyAdd.importText2')}</span>
               <span>{t('newlyAdd.importText3')}</span>
               <span>{t('newlyAdd.importText4')}</span>
@@ -290,7 +296,9 @@ const ImportDemand = () => {
           )}
           {tabs === 1 && (
             <TextWrap>
-              <div>{t('newlyAdd.importText1')}</div>
+              <div style={{ color: 'var(--neutral-n2)' }}>
+                {t('newlyAdd.importText1')}
+              </div>
               <span>{t('newlyAdd.importText10')}</span>
               <span>{t('newlyAdd.importText4')}</span>
               <span>{t('newlyAdd.importText6')}</span>
@@ -303,7 +311,12 @@ const ImportDemand = () => {
           )}
           <Button
             onClick={() => setIsVisible(true)}
-            style={{ background: '#F0F4FA', color: '#2877ff', marginTop: 24 }}
+            style={{
+              background: 'var(--hover-d2)',
+              border: 'none',
+              color: 'var(--primary-d2)',
+              margin: '24px 0 0 24px',
+            }}
           >
             {t('newlyAdd.downloadTemplate')}
           </Button>
