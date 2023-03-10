@@ -27,6 +27,7 @@ import {
   getTreeList,
   updateTableParams,
 } from '@/services/demand'
+import { useGetloginInfo } from '@/hooks/useGetloginInfo'
 
 const LimitText = styled.div`
   width: 192px;
@@ -76,6 +77,7 @@ interface Props {
 }
 
 const TableQuickEdit = (props: Props) => {
+  const info = useGetloginInfo()
   const [t] = useTranslation()
   const [isShowControl, setIsShowControl] = useState(false)
   const inputRef = useRef<any>(null)
@@ -242,19 +244,37 @@ const TableQuickEdit = (props: Props) => {
         ?.filter((i: any) => i.key === 'users_name')[0]
         ?.children?.filter((i: any) => i.id !== -1)
 
-      resultValue.value = response?.map((i: any) => ({
-        label: i.content,
-        value: i.id,
-      }))
+      const arr1 = response
+        ?.map((i: any) => ({
+          label: i.id === info ? i.content + '（我自己）' : i.content,
+          value: i.id,
+        }))
+        .filter((i: any) => i.value === info)
+      const arr12 = response
+        ?.map((i: any) => ({
+          label: i.id === info ? i.content + '（我自己）' : i.content,
+          value: i.id,
+        }))
+        .filter((i: any) => i.value !== info)
+      resultValue.value = arr1.concat(arr12)
     } else if (props.keyText === 'copysend') {
       // 获取抄送人的下拉数据
       const response = projectInfoValues
         ?.filter((i: any) => i.key === 'users_copysend_name')[0]
         ?.children?.filter((i: any) => i.id !== -1)
-      resultValue.value = response?.map((i: any) => ({
-        label: i.content,
-        value: i.id,
-      }))
+      const arr1 = response
+        ?.map((i: any) => ({
+          label: i.id === info ? i.content + '（我自己）' : i.content,
+          value: i.id,
+        }))
+        .filter((i: any) => i.value === info)
+      const arr12 = response
+        ?.map((i: any) => ({
+          label: i.id === info ? i.content + '（我自己）' : i.content,
+          value: i.id,
+        }))
+        .filter((i: any) => i.value !== info)
+      resultValue.value = arr1.concat(arr12)
     } else if (props.keyText === 'class_id') {
       // 获取需求分类的下拉数据
       const response = projectInfoValues?.filter(

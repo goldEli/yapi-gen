@@ -27,6 +27,7 @@ import { getVerifyList, getVerifyUserList } from '@/services/mine'
 import InputSearch from '@/components/InputSearch'
 import PaginationBox from '@/components/TablePagination'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
+import ResizeTable from '@/components/ResizeTable'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -249,12 +250,11 @@ const Need = (props: any) => {
           <div>
             {listData?.list ? (
               listData?.list?.length ? (
-                <TableBox
-                  rowKey="id"
-                  columns={selectColum}
+                <ResizeTable
+                  isSpinning={false}
+                  dataWrapNormalHeight="calc(100vh - 330px)"
+                  col={selectColum}
                   dataSource={listData?.list}
-                  pagination={false}
-                  scroll={{ x: 'max-content' }}
                 />
               ) : (
                 <NoData />
