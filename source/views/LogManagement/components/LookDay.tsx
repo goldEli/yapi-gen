@@ -338,7 +338,7 @@ const LookDay = (props: any) => {
                       }, 1000)
                     })
                   }}
-                  // readonly
+                  readonly
                   value={article1}
                 />
               ) : (

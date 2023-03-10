@@ -42,7 +42,7 @@ const DemandInfo = () => {
   return (
     <Wrap>
       <WrapLeft />
-      {/* <WrapRight /> */}
+      <WrapRight />
     </Wrap>
   )
 }
