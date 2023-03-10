@@ -735,6 +735,22 @@ const GlobalStyle = () => {
         font-size: 12px;
       }
     }
+    .ant-btn-primary:hover,
+    .ant-btn-primary:focus {
+      background-color: var(--primary-d1);
+      border-color: var(--primary-d1);
+      color: var(--neutral-white-d7);
+    }
+    .ant-btn-primary {
+      background-color: var(--primary-d1);
+      border-color: var(--primary-d1);
+      color: var(--neutral-white-d7);
+    }
+    .ant-btn-default {
+      background: var(--hover-d2);
+      border: none;
+      color: var(--neutral-n2);
+    }
   `
   return <Global styles={globalCss} />
 }
