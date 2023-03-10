@@ -100,6 +100,7 @@ export const useDynamicColumns = (state: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <ClickWrap
+              className="canClickDetail"
               onClick={() => state.onClickItem(record)}
               isClose={record.status?.is_end === 1}
             >
@@ -126,6 +127,7 @@ export const useDynamicColumns = (state: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <ClickWrap
+              className="canClickDetail"
               onClick={() => state.onClickItem(record)}
               isClose={record.status?.is_end === 1}
             >
@@ -176,6 +178,7 @@ export const useDynamicColumns = (state: any) => {
             >
               <Tooltip title={text} getPopupContainer={node => node}>
                 <ListNameWrap
+                  className="canClickDetail"
                   isName
                   isClose={record.status?.is_end === 1}
                   onClick={() => state.onClickItem(record)}

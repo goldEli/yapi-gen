@@ -25,9 +25,7 @@ import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
 import ChangeStatusPopover from './ChangeStatusPopover'
 import ChangePriorityPopover from './ChangePriorityPopover'
-import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import StateTag from './StateTag'
-import { divide } from 'lodash'
 import DemandProgress from './DemandProgress'
 
 const Wrap = styled.div<{ isEdit?: any }>(
@@ -75,6 +73,7 @@ export const useDynamicColumns = (state: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <ClickWrap
+              className="canClickDetail"
               onClick={() => state.onClickItem(record)}
               isClose={record.status?.is_end === 1}
             >
@@ -101,6 +100,7 @@ export const useDynamicColumns = (state: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <ClickWrap
+              className="canClickDetail"
               onClick={() => state.onClickItem(record)}
               isClose={record.status?.is_end === 1}
             >
@@ -151,6 +151,7 @@ export const useDynamicColumns = (state: any) => {
               <Tooltip title={text} getPopupContainer={node => node}>
                 <ListNameWrap
                   isName
+                  className="canClickDetail"
                   isClose={record.status?.is_end === 1}
                   onClick={() => state.onClickItem(record)}
                 >
