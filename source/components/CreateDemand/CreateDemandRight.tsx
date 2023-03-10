@@ -7,7 +7,7 @@ import { getTypeComponent, removeNull } from '@/tools'
 import { decryptPhp } from '@/tools/cryptoPhp'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
-import { DatePicker, Form, Select, TreeSelect } from 'antd'
+import { Checkbox, DatePicker, Form, Select, TreeSelect } from 'antd'
 import moment from 'moment'
 import { useState, useEffect, useImperativeHandle } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -30,6 +30,15 @@ const ShowLabel = styled.div({
   fontWeight: 400,
   color: '#2877ff',
 })
+
+const CheckboxWrap = styled(Checkbox)`
+  .ant-checkbox-inner {
+    border-radius: 50% !important;
+  }
+  .ant-checkbox-checked::after {
+    border: none !important;
+  }
+`
 
 interface Props {
   projectId: string | number
@@ -214,6 +223,11 @@ const CreateDemandRight = (props: Props) => {
         class: props?.demandDetail.class || null,
       })
     } else {
+      form.setFieldsValue({
+        status: props?.workStatusList?.list?.filter(
+          (i: any) => i.is_start === 1,
+        )?.[0]?.statusId,
+      })
       // 子需求默认回填父需求
       if (createDemandProps.isChild) {
         form.setFieldsValue({
@@ -457,6 +471,12 @@ const CreateDemandRight = (props: Props) => {
     })
   }
 
+  const onChangeCheckBox = (e: any, key: any) => {
+    form.setFieldsValue({
+      [key]: String(e.target.checked),
+    })
+  }
+
   // 修改优先级
   const onCurrentDetail = (item: any) => {
     setPriorityDetail(item)
@@ -490,7 +510,7 @@ const CreateDemandRight = (props: Props) => {
         <Select
           style={{ width: '100%' }}
           showArrow
-          mode="multiple"
+          mode={item.content === 'iterate_name' ? (null as any) : 'multiple'}
           showSearch
           placeholder={t('common.pleaseSelect')}
           getPopupContainer={node => node}
@@ -616,6 +636,7 @@ const CreateDemandRight = (props: Props) => {
       ...{ remarks: item.remarks },
     })
   }
+
   return (
     <RightWrap>
       <Form layout="vertical" form={form} disabled={!props.isCreateDemand}>
@@ -661,18 +682,27 @@ const CreateDemandRight = (props: Props) => {
         )}
         {notFoldList?.map((i: any) => (
           <>
-            {i.content !== 'schedule' && (
-              <Form.Item
-                key={i.content}
-                label={i.title}
-                name={i.content}
-                rules={[{ required: i.isRequired === 1, message: '' }]}
-              >
-                {i.isCustomize === 1
-                  ? getCustomDom(i)
-                  : getBasicTypeComponent(i)}
+            {i.fieldContent?.attr === 'single_checkbox' && (
+              <Form.Item key={i.content} label={i.title} name={i.content}>
+                <CheckboxWrap
+                  defaultChecked={i.fieldContent?.value || false}
+                  onChange={e => onChangeCheckBox(e, i.content)}
+                />
               </Form.Item>
             )}
+            {i.content !== 'schedule' &&
+              i.fieldContent?.attr !== 'single_checkbox' && (
+                <Form.Item
+                  key={i.content}
+                  label={i.title}
+                  name={i.content}
+                  rules={[{ required: i.isRequired === 1, message: '' }]}
+                >
+                  {i.isCustomize === 1
+                    ? getCustomDom(i)
+                    : getBasicTypeComponent(i)}
+                </Form.Item>
+              )}
             {/* 需求进度 */}
             {i.content === 'schedule' && createDemandProps.demandId && (
               <Form.Item
@@ -712,8 +742,8 @@ const CreateDemandRight = (props: Props) => {
             {t('newlyAdd.open')}
           </ShowLabel>
         )}
-        {isShowFields &&
-          foldList?.map((i: any) => (
+        <div hidden={!isShowFields}>
+          {foldList?.map((i: any) => (
             <Form.Item
               key={i.content}
               label={i.title}
@@ -723,6 +753,7 @@ const CreateDemandRight = (props: Props) => {
               {i.isCustomize === 1 ? getCustomDom(i) : getBasicTypeComponent(i)}
             </Form.Item>
           ))}
+        </div>
         {isShowFields && foldList?.length > 0 && (
           <ShowLabel onClick={() => setIsShowFields(false)}>
             {t('newlyAdd.close')}

@@ -19,6 +19,7 @@ import {
   Radio,
 } from 'antd'
 import moment from 'moment'
+import styled from '@emotion/styled'
 
 // 获取权限
 function getIsPermission(arr: any, value: string) {
@@ -111,26 +112,6 @@ function getTypeComponent(
         autoComplete="off"
         style={{ width: '100%', minWidth: 192 }}
       />
-    )
-  } else if (params?.attr === 'single_checkbox') {
-    child = (
-      <Radio
-        defaultChecked={defaultValue}
-        onChange={() => onChange(!defaultValue)}
-      >
-        wwwww
-      </Radio>
-      // <Input
-      //   placeholder={params.remarks || ''}
-      //   onBlur={e => (isModal ? onBlur(e.target.value) : void 0)}
-      //   onPressEnter={(e: any) => (isModal ? onBlur(e.target.value) : void 0)}
-      //   type={params?.attr}
-      //   allowClear
-      //   defaultValue={defaultValue}
-      //   ref={inputRef}
-      //   autoComplete="off"
-      //   style={{ width: '100%', minWidth: 192 }}
-      // />
     )
   } else if (params?.attr === 'textarea') {
     child = (

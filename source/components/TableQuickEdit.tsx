@@ -444,6 +444,7 @@ const TableQuickEdit = (props: Props) => {
         <>
           {!isShowControl && (
             <>
+              {/* 快捷修改确认勾选框显示 */}
               {props.type === 'single_checkbox' && (
                 <CheckboxWrap
                   checked={props?.defaultText}
