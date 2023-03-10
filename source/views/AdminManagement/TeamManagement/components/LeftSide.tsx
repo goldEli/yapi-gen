@@ -251,9 +251,8 @@ const LeftSide = (props: any) => {
   const [teamForm, setTeamForm] = useState<any>(null)
   // 删除团队弹窗
   const [delTeamIsVisible, setDelTeamIsVisible] = useState(false)
+  const [activeChild, setActiveChild] = useState<any>(null)
   const [form] = Form.useForm()
-  const covers = useSelector(state => state.cover.covers)
-  const [draggingWidth, setDraggingWidth] = useState(210)
   const onInitCreateModel = () => {
     setUploadImgs(null)
     form.resetFields()
@@ -276,14 +275,25 @@ const LeftSide = (props: any) => {
     activeTextColor: 'var(--primary-d2)',
     textColor: 'var(--neutral-n1-d1)',
   }
-
+  // 点击时间
   const onChangeDragging = async (data: any) => {
     const newList = teamsList.map((el: any) => ({
       ...el,
       active: el.id === data.id,
     }))
+    dispatch({
+      type: 'team/setTeamsList',
+      payload: newList,
+    })
+    dispatch({
+      type: 'team/setActiveTeam',
+      payload: newList,
+    })
+  }
+  // 移动后的事件
+  const onChangeMove = async (newList: any) => {
     try {
-      await services.setting.moveTeamsList(newList.map(item => item.id))
+      await services.setting.moveTeamsList(newList.map((item: any) => item.id))
     } catch (error) {}
     dispatch({
       type: 'team/setTeamsList',
@@ -291,10 +301,9 @@ const LeftSide = (props: any) => {
     })
     dispatch({
       type: 'team/setActiveTeam',
-      payload: data,
+      payload: newList,
     })
   }
-
   const setList = (list: any[]) => {
     dispatch({
       type: 'team/setTeamsList',
@@ -365,8 +374,10 @@ const LeftSide = (props: any) => {
     try {
       if (formType === 'create') {
         await addTeams({ name, logo })
+        message.success('创建成功')
       } else {
         await editTeams(activeTeam?.id, { name, logo })
+        message.success('编辑成功')
       }
       props.isSpin(false)
       setTeamIsVisible(false)
@@ -378,12 +389,14 @@ const LeftSide = (props: any) => {
   }
   const delOnConfirm = async () => {
     try {
-      await dismissTeams(activeTeam?.id)
+      await dismissTeams(activeChild?.id)
       setDelTeamIsVisible(false)
       getTeamsList()
+      message.success('删除成功')
     } catch (error) {}
   }
   const onChangeTeam = (key: any, child: any) => {
+    setActiveChild(child)
     key === 'del' ? setDelTeamIsVisible(true) : editTeam(child)
     dispatch({
       type: 'team/setActiveTeam',
@@ -406,6 +419,7 @@ const LeftSide = (props: any) => {
           list={teamsList}
           setList={setList}
           childStyle={childStyle}
+          onChangeMove={onChangeMove}
           onChangeTeam={(key: string, child: any) => onChangeTeam(key, child)}
         />
         <CommonModal
@@ -416,7 +430,7 @@ const LeftSide = (props: any) => {
           onClose={() => setTeamIsVisible(false)}
         />
         <DeleteConfirm
-          title={`确认解散【${activeTeam?.name}】团队`}
+          title={`确认解散【${activeChild?.name}】团队`}
           text="解散后将自动移除团队成员，该团队项目将自动划分到公司且权限变更为私有"
           isVisible={delTeamIsVisible}
           onConfirm={() => {
