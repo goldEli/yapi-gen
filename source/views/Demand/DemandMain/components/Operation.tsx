@@ -87,13 +87,13 @@ export const MoreWrap = styled.div<{ type?: any }>(
     cursor: 'pointer',
   },
   ({ type }) => ({
-    background: type ? '#2877ff' : '#F0F4FA',
-    color: type ? 'white' : '#2877ff',
+    background: type ? 'var(--primary-d1)' : 'var(--hover-d2)',
+    color: type ? 'var(--neutral-white-d7)' : 'var(--primary-d2)',
     '&: hover': {
-      background: type ? '#669FFF' : '#E8F1FF',
+      background: type ? 'var(--primary-d1)' : 'var(--hover-d2)',
     },
     '&: active': {
-      background: type ? '#1763E5' : '#DBEAFF',
+      background: type ? 'var(--primary-d1)' : 'var(--hover-d2)',
     },
   }),
 )

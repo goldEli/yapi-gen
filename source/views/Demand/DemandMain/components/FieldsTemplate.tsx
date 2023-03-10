@@ -33,6 +33,7 @@ const text = css`
   font-size: 12px;
 `
 const LeftWrap = styled.div({
+  paddingLeft: '24px',
   height: 350,
   width: 'calc(100% - 227px)',
   overflowY: 'auto',
