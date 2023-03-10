@@ -152,12 +152,12 @@ const Main = (props: any) => {
     const customizeNum = getProjectFieIdsData?.filter(
       (el: any) => el.is_customize === 1,
     )
-    if (customizeNum?.length === 20) {
+    const evevtObj = JSON.parse(event.dataTransfer.getData('item'))
+    if (customizeNum?.length === 20 && evevtObj.dragtype === 'add') {
       message.warning('自定义字段已有20个')
       return
     }
     setColItem(null)
-    const evevtObj = JSON.parse(event.dataTransfer.getData('item'))
     evevtObj.dragtype === 'add' && setAddAndEditVisible(true),
       setFieldType(evevtObj)
     evevtObj.dragtype === 'edit' && EditCategoryConfig(evevtObj)

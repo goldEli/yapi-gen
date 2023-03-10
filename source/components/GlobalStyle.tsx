@@ -257,7 +257,6 @@ const GlobalStyle = () => {
       color: #323233;
     }
     .ant-dropdown-menu-item:active {
-      background: #f0f4fa;
       color: var(--primary-d2);
     }
 
@@ -653,6 +652,9 @@ const GlobalStyle = () => {
       display: flex;
       justify-content: flex-end;
       align-items: center;
+      .anticon {
+        color: var(--neutral-n4);
+      }
     }
     .ant-pagination-total-text {
       font-size: 12px;
@@ -680,9 +682,6 @@ const GlobalStyle = () => {
       font-weight: 400;
       color: var(--neutral-n2);
     }
-    .anticon {
-      color: var(--neutral-n4);
-    }
     .ant-pagination-item-active,
     .ant-pagination-item-active:hover a {
       color: var(--primary-d2);
@@ -707,6 +706,31 @@ const GlobalStyle = () => {
     .ant-menu-light .ant-menu-submenu-active,
     .ant-menu-light .ant-menu-submenu-title:hover {
       color: var(--primary-d2);
+    }
+
+    .ant-dropdown-menu-item {
+      text-align: center;
+      height: 32px;
+      background-color: var(--neutral-white-d5);
+    }
+    .ant-menu-vertical .ant-menu-submenu-selected,
+    .ant-menu-vertical-left .ant-menu-submenu-selected,
+    .ant-menu-vertical-right .ant-menu-submenu-selected {
+      color: var(--primary-d2);
+    }
+    .ant-menu-submenu:hover
+      > .ant-menu-submenu-title
+      > .ant-menu-submenu-expand-icon,
+    .ant-menu-submenu:hover
+      > .ant-menu-submenu-title
+      > .ant-menu-submenu-arrow {
+      color: var(--primary-d2);
+    }
+    .ant-dropdown-menu-submenu-selected .ant-dropdown-menu-submenu-title {
+      color: var(--neutral-n1-d1);
+      .ant-dropdown-menu-submenu-expand-icon svg {
+        font-size: 12px;
+      }
     }
   `
   return <Global styles={globalCss} />

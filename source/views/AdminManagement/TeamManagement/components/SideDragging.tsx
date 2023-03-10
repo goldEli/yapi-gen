@@ -267,6 +267,7 @@ const Sortable = (props: any) => {
             const newList = [...list]
             newList.splice(nextIndex, 0, newList.splice(prevIndex, 1)[0])
             setList(newList)
+            props.onChangeMove(newList)
           }}
           value={child}
         ></SliderList>

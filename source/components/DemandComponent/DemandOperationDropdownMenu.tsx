@@ -38,7 +38,11 @@ export const DemandOperationDropdownMenu = (props: Props) => {
 
   // 复制需求id
   const onCopyId = () => {
-    copyLink(props.record.id, '复制需求ID成功！', '复制需求ID失败！')
+    copyLink(
+      `${props?.record.projectPrefix}-${props?.record.prefixKey}`,
+      '复制需求编号成功！',
+      '复制需求编号失败！',
+    )
   }
 
   // 复制需求链接
@@ -87,7 +91,7 @@ export const DemandOperationDropdownMenu = (props: Props) => {
     },
     {
       key: '5',
-      label: <div onClick={onCopyId}>复制需求ID</div>,
+      label: <div onClick={onCopyId}>复制需求编号</div>,
     },
     {
       key: '6',

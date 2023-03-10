@@ -1,6 +1,6 @@
 /* eslint-disable require-unicode-regexp */
 import { addIterate, getIterateInfo, updateIterate } from '@/services/iterate'
-import { getProjectList } from '@/services/project'
+import { getProjectList, getProjectRecent } from '@/services/project'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
 import {
@@ -39,6 +39,14 @@ const CreateIteration = () => {
   const [projectList, setProjectList] = useState<any>([])
   const [html, setHtml] = useState('')
 
+  // 获取最近项目列表 -- 使用列表的第一个
+  const getRecentlyList = async () => {
+    const data = await getProjectRecent()
+    form.setFieldsValue({
+      projectId: data[0]?.id || null,
+    })
+  }
+
   // 获取项目列表
   const getProjectData = async () => {
     const res = await getProjectList({
@@ -68,9 +76,13 @@ const CreateIteration = () => {
           : null,
       })
     }
-    form.setFieldsValue({
-      projectId: createIterationParams?.projectId || null,
-    })
+    if (createIterationParams?.projectId) {
+      form.setFieldsValue({
+        projectId: createIterationParams?.projectId,
+      })
+    } else {
+      getRecentlyList()
+    }
   }
 
   //   关闭弹窗

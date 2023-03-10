@@ -1,4 +1,4 @@
-import { Space, Drawer } from 'antd'
+import { Space, Drawer, Tooltip } from 'antd'
 import { useEffect, useState } from 'react'
 import CommonIconFont from '@/components/CommonIconFont'
 import MyDropdown from './MyDropdown'
@@ -174,7 +174,9 @@ const DrawerComponent = (props: DrawerComponentProps) => {
         <DrawerCompany onClick={onChangeCompany}>
           <CompanyInfo>
             <img src={userInfo.company_logo} alt="" />
-            <span>{userInfo.company_name}</span>
+            <Tooltip title={userInfo.company_name} placement="bottomLeft">
+              <div>{userInfo.company_name}</div>
+            </Tooltip>
           </CompanyInfo>
           <CommonIconFont type="swap" color="var(--neutral-n2)" />
         </DrawerCompany>

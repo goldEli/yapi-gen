@@ -97,7 +97,7 @@ const ChildDemandTable = (props: {
     {
       title: (
         <NewSort
-          fixedKey="id"
+          fixedKey="story_prefix_key"
           nowKey={order.key}
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
@@ -105,7 +105,7 @@ const ChildDemandTable = (props: {
           ID
         </NewSort>
       ),
-      dataIndex: 'id',
+      dataIndex: 'story_prefix_key',
       width: 100,
       render: (text: string, record: any) => {
         return (
@@ -114,7 +114,7 @@ const ChildDemandTable = (props: {
               onClick={() => onToDetail(record)}
               isClose={record.status?.is_end === 1}
             >
-              {text}
+              {record.storyPrefixKey}
             </ClickWrap>
             {record.isExamine && (
               <IconFont

@@ -235,10 +235,9 @@ const Upload = (props: any) => {
   )
 }
 
-import { companyTeamsList, getMemberList } from '@store/teams/thunk'
+import { companyTeamsList } from '@store/teams/thunk'
 import { addTeams, dismissTeams, editTeams } from '@/services/setting'
-import { Series } from 'highcharts'
-
+import { setActiveTeam } from '@store/teams/index'
 const LeftSide = (props: any) => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
@@ -252,8 +251,6 @@ const LeftSide = (props: any) => {
   // 删除团队弹窗
   const [delTeamIsVisible, setDelTeamIsVisible] = useState(false)
   const [form] = Form.useForm()
-  const covers = useSelector(state => state.cover.covers)
-  const [draggingWidth, setDraggingWidth] = useState(210)
   const onInitCreateModel = () => {
     setUploadImgs(null)
     form.resetFields()
@@ -276,25 +273,28 @@ const LeftSide = (props: any) => {
     activeTextColor: 'var(--primary-d2)',
     textColor: 'var(--neutral-n1-d1)',
   }
-
+  // 点击时间
   const onChangeDragging = async (data: any) => {
     const newList = teamsList.map((el: any) => ({
       ...el,
       active: el.id === data.id,
     }))
+    dispatch({
+      type: 'team/setTeamsList',
+      payload: newList,
+    })
+    dispatch(setActiveTeam(data))
+  }
+  // 移动后的事件
+  const onChangeMove = async (newList: any) => {
     try {
-      await services.setting.moveTeamsList(newList.map(item => item.id))
+      await services.setting.moveTeamsList(newList.map((item: any) => item.id))
     } catch (error) {}
     dispatch({
       type: 'team/setTeamsList',
       payload: newList,
     })
-    dispatch({
-      type: 'team/setActiveTeam',
-      payload: data,
-    })
   }
-
   const setList = (list: any[]) => {
     dispatch({
       type: 'team/setTeamsList',
@@ -365,8 +365,10 @@ const LeftSide = (props: any) => {
     try {
       if (formType === 'create') {
         await addTeams({ name, logo })
+        message.success('创建成功')
       } else {
         await editTeams(activeTeam?.id, { name, logo })
+        message.success('编辑成功')
       }
       props.isSpin(false)
       setTeamIsVisible(false)
@@ -381,6 +383,7 @@ const LeftSide = (props: any) => {
       await dismissTeams(activeTeam?.id)
       setDelTeamIsVisible(false)
       getTeamsList()
+      message.success('删除成功')
     } catch (error) {}
   }
   const onChangeTeam = (key: any, child: any) => {
@@ -406,6 +409,7 @@ const LeftSide = (props: any) => {
           list={teamsList}
           setList={setList}
           childStyle={childStyle}
+          onChangeMove={onChangeMove}
           onChangeTeam={(key: string, child: any) => onChangeTeam(key, child)}
         />
         <CommonModal
