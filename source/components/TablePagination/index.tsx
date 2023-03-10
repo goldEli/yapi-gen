@@ -12,7 +12,11 @@ interface PropType {
 const PaginationBox = (props: PropType) => {
   const [t] = useTranslation()
   return (
-    <>
+    <div
+      style={{
+        paddingRight: '16px',
+      }}
+    >
       <Pagination
         current={props.currentPage}
         defaultCurrent={1}
@@ -26,7 +30,7 @@ const PaginationBox = (props: PropType) => {
         }
         showTotal={total => t('common.tableTotal', { count: total })}
       />
-    </>
+    </div>
   )
 }
 export default PaginationBox
