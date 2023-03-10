@@ -93,9 +93,9 @@ export const useDynamicColumns = (state: any) => {
   const arr = [
     {
       width: 100,
-      title: <NewSort fixedKey="id">编号</NewSort>,
-      dataIndex: 'id',
-      key: 'id',
+      title: <NewSort fixedKey="story_prefix_key">编号</NewSort>,
+      dataIndex: 'storyPrefixKey',
+      key: 'story_prefix_key',
       render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -103,7 +103,7 @@ export const useDynamicColumns = (state: any) => {
               onClick={() => state.onClickItem(record)}
               isClose={record.status?.is_end === 1}
             >
-              {record.projectPrefix}-{record.prefixKey}
+              {record.storyPrefixKey}
             </ClickWrap>
             {record.isExamine && (
               <IconFont
@@ -552,6 +552,8 @@ export const useDynamicColumns = (state: any) => {
   }
 
   const endResult = getArr()
+
+  console.log(endResult, '=endResultendResult')
 
   return endResult
 }

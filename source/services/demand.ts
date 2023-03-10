@@ -547,8 +547,7 @@ export const getDemandList: any = async (params: any) => {
       isExpended: true,
       topId: params?.parentId ?? params?.topParentId,
       categoryConfigList: i.category_config_list,
-      prefixKey: response.data.prefix_key,
-      projectPrefix: response.data.project_prefix,
+      storyPrefixKey: response.data.story_prefix_key,
     }))
   }
 
@@ -594,6 +593,7 @@ export const getDemandList: any = async (params: any) => {
       category_attachment: i.category_attachment,
       isExamine: i.verify_lock === 1,
       priority: i.priority,
+      storyPrefixKey: i.story_prefix_key,
     }))
   } else if (params?.isChildren) {
     return {
@@ -643,8 +643,7 @@ export const getDemandList: any = async (params: any) => {
         level: 1,
         topId: i.id,
         categoryConfigList: i.category_config_list,
-        prefixKey: response.data.prefix_key,
-        projectPrefix: response.data.project_prefix,
+        storyPrefixKey: response.data.story_prefix_key,
       })),
     }
   }
