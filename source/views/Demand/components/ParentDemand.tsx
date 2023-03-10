@@ -5,13 +5,10 @@
 import styled from '@emotion/styled'
 import { message } from 'antd'
 import IconFont from '@/components/IconFont'
-import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { getParamsData } from '@/tools'
 import HaveSearchAndList from '@/components/HaveSearchAndList'
-import { useDispatch, useSelector } from '@store/index'
-import { setDemandInfo } from '@store/demand'
-import { deleteInfoDemand, getDemandInfo } from '@/services/demand'
+import { useSelector } from '@store/index'
+import { deleteInfoDemand } from '@/services/demand'
 
 const DemandCheckedItem = styled.div({
   minHeight: 22,
@@ -40,13 +37,13 @@ interface Props {
   addWrap: React.ReactElement
   isRight?: any
   projectId?: any
+  detail?: any
+  onUpdate(): void
 }
 
 const ParentDemand = (props: Props) => {
   const [t] = useTranslation()
   const { projectInfo } = useSelector(store => store.project)
-  const { demandInfo } = useSelector(store => store.demand)
-  const dispatch = useDispatch()
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
@@ -56,16 +53,12 @@ const ParentDemand = (props: Props) => {
     try {
       await deleteInfoDemand({
         projectId: props.projectId,
-        demandId: demandInfo?.id,
+        demandId: props.detail?.id,
         type: 'parent',
-        targetId: demandInfo?.parentId,
+        targetId: props.detail?.parentId,
       })
       message.success(t('common.deleteSuccess'))
-      const result = await getDemandInfo({
-        projectId: props.projectId,
-        id: demandInfo?.id,
-      })
-      dispatch(setDemandInfo(result))
+      props.onUpdate()
     } catch (error) {
       //
     }
@@ -73,14 +66,14 @@ const ParentDemand = (props: Props) => {
 
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
-      <DemandCheckedItem hidden={!demandInfo?.parentId}>
+      <DemandCheckedItem hidden={!props.detail?.parentId}>
         <div
           style={{
             color: '#323233',
             fontSize: 14,
           }}
         >
-          {demandInfo?.parentName}
+          {props.detail?.parentName}
           {isCanEdit && (
             <IconFont
               onClick={isCanEdit ? onDeleteInfoDemand : void 0}
@@ -94,11 +87,12 @@ const ParentDemand = (props: Props) => {
         <HaveSearchAndList
           isRight
           addWrap={props.addWrap}
-          isHidden={demandInfo?.parentId}
+          isHidden={props.detail?.parentId}
           projectId={props.projectId}
-          demandId={demandInfo?.id}
+          demandId={props.detail?.id}
           isOperationParent
           placeholder={t('common.searchParent')}
+          onUpdate={props.onUpdate}
         />
       )}
     </div>

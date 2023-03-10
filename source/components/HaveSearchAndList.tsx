@@ -202,6 +202,7 @@ interface Props {
   placeholder: string
   //单独区分项目切换
   isProjectChange?: boolean
+  onUpdate(): void
 }
 
 const HaveSearchAndList = (props: Props) => {
@@ -226,11 +227,7 @@ const HaveSearchAndList = (props: Props) => {
         targetId: [item.value],
       })
       message.success(t('common.addSuccess'))
-      const result = await getDemandInfo({
-        projectId: props?.projectId,
-        id: props?.demandId,
-      })
-      dispatch(setDemandInfo(result))
+      props.onUpdate()
     } catch (error) {
       //
     }

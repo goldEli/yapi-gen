@@ -30,7 +30,18 @@ const useOpenDemandDetail = () => {
     }
   }
 
-  return [openDemandDetail] as const
+  const closeDemandDetail = () => {
+    dispatch({
+      type: 'demand/setIsDemandDetailDrawerVisible',
+      payload: false,
+    })
+    dispatch({
+      type: 'demand/setDemandDetailDrawerProps',
+      payload: {},
+    })
+  }
+
+  return [openDemandDetail, closeDemandDetail] as const
 }
 
 export default useOpenDemandDetail

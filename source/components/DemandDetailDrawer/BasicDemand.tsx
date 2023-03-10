@@ -79,7 +79,7 @@ const BasicDemand = (props: Props) => {
       }
       try {
         await updateTableParams(obj)
-        props.onUpdate()
+        props.onUpdate?.()
       } catch (error) {
         //
       }
@@ -265,6 +265,8 @@ const BasicDemand = (props: Props) => {
     } else if (item.content === 'parent_id') {
       nodeComponent = (
         <ParentDemand
+          onUpdate={props.onUpdate}
+          detail={props.detail}
           projectId={props.detail?.projectId}
           isRight
           addWrap={

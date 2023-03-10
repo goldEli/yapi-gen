@@ -473,7 +473,7 @@ const CreateDemandRight = (props: Props) => {
 
   const onChangeCheckBox = (e: any, key: any) => {
     form.setFieldsValue({
-      [key]: String(e.target.checked),
+      [key]: e.target.checked,
     })
   }
 
