@@ -214,7 +214,12 @@ const SliderList = (props: any) => {
         {value?.logo_info?.path ? (
           <img
             src={value?.logo_info?.path}
-            style={{ width: 16, height: 16, marginRight: 8 }}
+            style={{
+              width: 16,
+              height: 16,
+              marginRight: 8,
+              borderRadius: '3px',
+            }}
           />
         ) : (
           <IconFont
