@@ -71,7 +71,7 @@ const EditWorkflow = (props: EditorProps) => {
     setTimeout(() => {
       form.resetFields()
       setName('')
-      setNormalColor('#2877FF')
+      setNormalColor('var(--primary-d2)')
       setStatus(false)
     }, 100)
   }

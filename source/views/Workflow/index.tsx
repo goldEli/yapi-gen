@@ -36,7 +36,7 @@ const SetTitleWrap = styled.div({
 const BackWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
-  color: '#2877ff',
+  color: 'var(--primary-d2)',
   fontWeight: 400,
   cursor: 'pointer',
 })
@@ -64,7 +64,7 @@ const LabelWrap = styled.div({
   '.provider': {
     height: 16,
     width: 3,
-    background: '#2877ff',
+    background: 'var(--primary-d2)',
   },
 })
 

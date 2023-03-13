@@ -748,6 +748,15 @@ const GlobalStyle = () => {
       border: none;
       color: var(--neutral-n2);
     }
+    .ant-radio-checked::after {
+      border: 1px solid var(--primary-d1);
+    }
+    .ant-radio-checked .ant-radio-inner {
+      border-color: var(--primary-d1);
+    }
+    .ant-radio-inner::after {
+      background-color: var(--primary-d1);
+    }
   `
   return <Global styles={globalCss} />
 }

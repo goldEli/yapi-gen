@@ -139,8 +139,8 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
     } else {
       dataItem = filterDataItem(2)
     }
-    getCategoryConfig(dataItem)
     dispatch(setActiveCategory(dataItem.find((el: any) => el.active)))
+    getCategoryConfig(dataItem)
   }, [startUsing, categoryList])
 
   // 切换tab

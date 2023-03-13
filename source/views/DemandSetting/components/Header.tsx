@@ -1,9 +1,7 @@
 /* eslint-disable no-undefined */
-import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { Form, message, Select, Switch } from 'antd'
 import { useDispatch, useSelector } from '@store/index'
-import { setProjectInfoValues } from '@store/project'
 import { useEffect, useState } from 'react'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
@@ -11,6 +9,7 @@ import {
   changeStoryConfigCategory,
   deleteStoryConfigCategory,
   getWorkflowList,
+  changeCategoryStatus,
 } from '@/services/project'
 import { useNavigate } from 'react-router-dom'
 import { encryptPhp } from '@/tools/cryptoPhp'
@@ -18,7 +17,6 @@ import { setStartUsing } from '@store/category'
 import EditCategory from '@/components/AllSide/DemandSettingSide/EditCategory'
 import { storyConfigCategoryList } from '@store/category/thunk'
 import CommonModal from '@/components/CommonModal'
-
 const HeaderWrap = styled.div`
   height: 66px;
   display: flex;
@@ -187,6 +185,12 @@ const Header = () => {
   }
   // 开关
   const onChangeOpenState = async (e: boolean) => {
+    await changeCategoryStatus({
+      projectId: projectInfo.id,
+      id: activeCategory?.id,
+      status: e ? 1 : 2,
+    })
+    await dispatch(storyConfigCategoryList({ projectId: projectInfo.id }))
     let dataItem = null
     if (e) {
       dataItem = filterDataItem(1)
