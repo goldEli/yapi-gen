@@ -25,7 +25,7 @@ import { useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 import Viewer from 'react-viewer'
 import { InnerLine } from './RelatedNeed'
-import { Editor } from '@xyfe/uikit'
+import { Editor, EditorRef } from '@xyfe/uikit'
 
 export const GrepWrap = styled.div`
   position: fixed;
@@ -137,7 +137,8 @@ const LookDay = (props: any) => {
     { name: t('p2.title.t2d'), name2: t('p2.title.t2t') },
     { name: t('p2.title.t3d'), name2: t('p2.title.t3t') },
   ]
-
+  const editorRef = useRef<EditorRef>(null)
+  const editorRef2 = useRef<EditorRef>(null)
   const myArea = useRef<any>(null)
   const [left, setLeft] = useState(0)
   const [attachList, setAttachList] = useState<any>([])
@@ -172,6 +173,7 @@ const LookDay = (props: any) => {
     setName(res.data.info.user_name)
     setArticle1(res.data.info.finish_content)
     setArticle2(res.data.info.plan_content)
+
     const arr = res.data.copysend_list.map((item: any) => ({
       avatar: item.avatar,
       id: item.user_id,
@@ -327,20 +329,10 @@ const LookDay = (props: any) => {
               }}
             >
               <LabelTitle title={texts[props.type]?.name} />
+
               {article1 ? (
                 // <div dangerouslySetInnerHTML={{ __html: article1 }} />
-                <Editor
-                  getSuggestions={() => {
-                    return new Promise(resolve => {
-                      setTimeout(() => {
-                        // resolve([])
-                        resolve([])
-                      }, 1000)
-                    })
-                  }}
-                  readonly
-                  value={article1}
-                />
+                <Editor value={article1} getSuggestions={() => []} readonly />
               ) : (
                 <Kong />
               )}
@@ -348,18 +340,7 @@ const LookDay = (props: any) => {
               <LabelTitle title={texts[props.type]?.name2} />
               {article2 ? (
                 // <div dangerouslySetInnerHTML={{ __html: article2 }} />
-                <Editor
-                  getSuggestions={() => {
-                    return new Promise(resolve => {
-                      setTimeout(() => {
-                        // resolve([])
-                        resolve([])
-                      }, 1000)
-                    })
-                  }}
-                  readonly
-                  value={article2}
-                />
+                <Editor value={article2} getSuggestions={() => []} readonly />
               ) : null}
               {!article2 && <Kong />}
 

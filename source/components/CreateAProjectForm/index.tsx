@@ -243,7 +243,7 @@ const CreateAProjectForm = () => {
       }}
       width={832}
       isVisible={createVisible}
-      title={t('edit_item')}
+      title={isEditId ? t('edit_item') : t('common.createProject')}
     >
       <div
         style={{
@@ -401,11 +401,13 @@ const CreateAProjectForm = () => {
               name="leader_id"
             >
               <Select
+                optionFilterProp="label"
                 onChange={e => {
                   const obj = selectLeaders.find((i: any) => i.id === e)
 
                   setUser(obj.name)
                 }}
+                showSearch
                 disabled={canChooseLeader}
                 placeholder={t('please_select_project_leader')}
                 optionLabelProp="label"

@@ -68,6 +68,19 @@ interface Props {
   onGetCreateDemand(state: boolean): void
 }
 
+export const uploadFile = (file: File, editorRef: any) => {
+  const key = uploadFileToKey(
+    file,
+    file.name,
+    `richEditorFiles_${new Date().getTime()}`,
+    false,
+    data => {
+      editorRef?.notifyUploaded(data.key, data.url)
+    },
+  )
+  return key
+}
+
 const CreateDemandLeft = (props: Props) => {
   const [t] = useTranslation()
   const [form] = Form.useForm()
@@ -669,27 +682,8 @@ const CreateDemandLeft = (props: Props) => {
         <Form.Item label={t('mine.demandInfo')} name="info">
           <Editor
             ref={editorRef}
-            key={Math.random()}
-            upload={file => {
-              const key = uploadFileToKey(
-                file,
-                file.name,
-                `richEditorFiles_${new Date().getTime()}`,
-                false,
-                data => {
-                  editorRef.current?.notifyUploaded(data.key, data.url)
-                },
-              )
-              return key
-            }}
-            getSuggestions={() => {
-              return new Promise(resolve => {
-                setTimeout(() => {
-                  // resolve([])
-                  resolve([])
-                }, 1000)
-              })
-            }}
+            upload={uploadFile}
+            getSuggestions={() => []}
           />
         </Form.Item>
         {props.projectId &&

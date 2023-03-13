@@ -1,5 +1,4 @@
 import styled from '@emotion/styled'
-import table from 'antd/lib/table'
 import { GENDER_MAP } from '@/constants'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import ResizeTable from '@/components/ResizeTable'
