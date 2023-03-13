@@ -81,7 +81,7 @@ const index = (props: any) => {
       showArrow
       value={props.value}
       style={{ width: '100%' }}
-      mode="multiple"
+      mode={props.more ? undefined : 'multiple'}
       allowClear
       optionFilterProp="label"
       onChange={handleChange}

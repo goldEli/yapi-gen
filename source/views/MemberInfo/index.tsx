@@ -133,7 +133,9 @@ const MemberInfo = () => {
   useEffect(() => {
     // 获取当前查看人员信息
     dispatch(getAsyncMember({ userId }))
-    init()
+    if (isMember) {
+      init()
+    }
   }, [])
 
   const changeActive = (value: any) => {

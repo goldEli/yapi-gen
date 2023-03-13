@@ -100,6 +100,23 @@ export const useDynamicColumns = (state: any) => {
                 {text}
               </OmitText>
             </ClickWrap>
+            {record.is_handover === 1 && (
+              <div
+                style={{
+                  fontSize: '12px',
+                  lineHeight: '20px',
+                  textAlign: 'center',
+                  color: '#FA9746',
+                  width: '60px',
+                  height: '20px',
+                  background: 'rgba(250,151,70,0.1)',
+                  borderRadius: '10px 6px 6px 10px',
+                  marginLeft: '4px',
+                }}
+              >
+                离职交接
+              </div>
+            )}
           </div>
         )
       },
