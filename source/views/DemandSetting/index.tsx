@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from '@store/index'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getCategoryConfigList } from '@store/category/thunk'
+import NoData from '@/components/NoData'
 const Wrap = styled.div`
   width: 100%;
   display: flex;
@@ -54,33 +55,38 @@ const DemandSetting = () => {
       auth="b/project/story_config"
       permission={projectInfo?.projectPermissions?.map((i: any) => i.identity)}
     >
-      <Header />
-      {isOperate && (
-        <ButtonStyle>
-          <CommonButton type="secondary" onClick={onCancel}>
-            {t('common.cancel')}
-          </CommonButton>
-          <CommonButton
-            style={{ marginLeft: '16px' }}
-            type="primary"
-            onClick={() => save()}
-          >
-            {t('common.confirm')}
-          </CommonButton>
-        </ButtonStyle>
+      {getCategoryConfigDataList?.configDataList.length >= 1 ? (
+        <>
+          <Header />
+          {isOperate && (
+            <ButtonStyle>
+              <CommonButton type="secondary" onClick={onCancel}>
+                {t('common.cancel')}
+              </CommonButton>
+              <CommonButton
+                style={{ marginLeft: '16px' }}
+                type="primary"
+                onClick={() => save()}
+              >
+                {t('common.confirm')}
+              </CommonButton>
+            </ButtonStyle>
+          )}
+          <Wrap>
+            <Main
+              onIsOperate={() => setIsOperate(true)}
+              isSave={isSave}
+              onBack={() => {
+                setIsSave(false), setIsOperate(false)
+              }}
+            />
+
+            <CreateField />
+          </Wrap>
+        </>
+      ) : (
+        <NoData />
       )}
-      <Wrap>
-        <Main
-          onIsOperate={() => setIsOperate(true)}
-          isSave={isSave}
-          onBack={() => {
-            setIsSave(false), setIsOperate(false)
-          }}
-        />
-        {getCategoryConfigDataList?.configDataList.length >= 1 && (
-          <CreateField />
-        )}
-      </Wrap>
     </PermissionWrap>
   )
 }
