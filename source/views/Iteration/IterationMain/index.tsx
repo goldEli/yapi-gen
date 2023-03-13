@@ -10,7 +10,7 @@ import IterationTable from './components/IterationTable'
 import IterationGrid from './components/IterationGrid'
 import WrapLeft from './components/WrapLeft'
 import { message } from 'antd'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import { useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -19,7 +19,11 @@ import { getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
 import { deleteDemand, getDemandInfo, getDemandList } from '@/services/demand'
-import { setDemandInfo, setFilterParams } from '@store/demand'
+import {
+  setDemandInfo,
+  setFilterParams,
+  setIsUpdateDemand,
+} from '@store/demand'
 import { setIsRefreshList, setIsUpdateList } from '@store/iterate'
 import { Content, IterationContent } from './style'
 import ProjectCommonOperation from '@/components/ProjectCommonOperation'
@@ -66,6 +70,7 @@ const IterationMain = (props: Props) => {
   // 用于当前操作层级不折叠
   const [topParentId, setTopParentId] = useState(0)
   const { filterKeys } = useSelector(store => store.project)
+  const { isUpdateDemand } = useSelector(store => store.demand)
   const [searchVal, setSearchVal] = useState('')
 
   const getList = async (
@@ -144,6 +149,8 @@ const IterationMain = (props: Props) => {
     props.onChangeIsUpdate(false)
     setTopParentId(0)
     setIsUpdated(false)
+    // 关闭更新需求状态
+    dispatch(setIsUpdateDemand(false))
   }
 
   const onChangeGrid = (val: any) => {
@@ -217,7 +224,13 @@ const IterationMain = (props: Props) => {
   }
 
   const onUpdate = (updateState?: boolean) => {
-    getList(isGrid, { page: 1, size: pageObj.size }, searchItems, updateState)
+    getList(
+      isGrid,
+      { page: 1, size: pageObj.size },
+      searchItems,
+      updateState,
+      topParentId,
+    )
   }
 
   const onChangeCurrent = (item: any) => {
@@ -246,6 +259,12 @@ const IterationMain = (props: Props) => {
       dispatch(setFilterKeys([...new Set(keys)]))
     }
   }
+
+  useEffect(() => {
+    if (isUpdateDemand) {
+      onUpdate()
+    }
+  }, [isUpdateDemand])
 
   return (
     <>
@@ -301,6 +320,7 @@ const IterationMain = (props: Props) => {
                 }}
                 isUpdated={isUpdated}
                 iterateId={keyRef.current?.id}
+                onUpdateTopId={setTopParentId}
               />
             )}
             {!isGrid && (

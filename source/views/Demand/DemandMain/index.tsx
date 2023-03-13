@@ -18,7 +18,7 @@ import WrapLeft from './components/WrapLeft'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
 import { setFilterKeys } from '@store/project'
-import { setFilterParams, setIsUpdateDemandList } from '@store/demand'
+import { setFilterParams, setIsUpdateDemand } from '@store/demand'
 import { deleteDemand, getDemandList } from '@/services/demand'
 import ManageView from '@/components/ManageView'
 import CreateViewPort from '@/components/CreateViewPort'
@@ -69,6 +69,7 @@ const DemandMain = (props: Props) => {
   // 用于控制失焦事件与展开子需求冲突
   const [isUpdated, setIsUpdated] = useState(false)
   const { filterKeys } = useSelector(store => store.project)
+  const { isUpdateDemand } = useSelector(store => store.demand)
   const [searchVal, setSearchVal] = useState('')
   const searchChoose = useSelector(store => store.view.searchChoose)
   const dispatch = useDispatch()
@@ -154,6 +155,7 @@ const DemandMain = (props: Props) => {
     dispatch(setIsRefresh(false))
     setTopParentId(0)
     setIsUpdated(false)
+    dispatch(setIsUpdateDemand(false))
   }
 
   useEffect(() => {
@@ -166,10 +168,17 @@ const DemandMain = (props: Props) => {
   }, [key, isGrid, order, pageObj, searchChoose, projectId])
 
   useEffect(() => {
-    if (isRefresh) {
-      getList(isGrid, searchItems, { page: 1, size: pageObj.size }, order)
+    if (isRefresh || isUpdateDemand) {
+      getList(
+        isGrid,
+        searchItems,
+        { page: 1, size: pageObj.size },
+        order,
+        false,
+        topParentId,
+      )
     }
-  }, [isRefresh, setIsUpdateDemandList])
+  }, [isRefresh, isUpdateDemand])
 
   useEffect(() => {
     if (props.isUpdate) {
@@ -323,7 +332,6 @@ const DemandMain = (props: Props) => {
             />
             {isGrid === 2 && (
               <DemandTree
-                onChangeVisible={onChangeOperation}
                 onDelete={onDelete}
                 data={dataList}
                 onChangePageNavigation={onChangePageNavigation}
@@ -333,6 +341,7 @@ const DemandMain = (props: Props) => {
                 onChangeOrder={onChangeOrder}
                 isSpinning={isSpinning}
                 onUpdate={onUpdate}
+                onUpdateTopId={setTopParentId}
                 filterParams={{
                   ...searchItems,
                   projectId,

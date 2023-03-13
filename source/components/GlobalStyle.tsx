@@ -179,9 +179,6 @@ const GlobalStyle = () => {
     .ant-progress-text {
       color: var(--neutral-n2) !important;
     }
-    .ant-table-body {
-      overflow: unset !important;
-    }
     .ant-form-item {
       padding-top: 2px !important;
     }

@@ -25,7 +25,6 @@ import ManageView from '@/components/ManageView'
 import CreateIteration from '@/components/CreateIteration'
 import CreateDemand from '@/components/CreateDemand'
 import DemandDetailDrawer from '@/components/DemandDetailDrawer'
-import { setCurrentMenu } from '@store/user'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -75,6 +74,7 @@ export const Container = () => {
     currentMenu,
     userPreferenceConfig,
   } = useSelector(store => store.user)
+  const { isDemandDetailDrawerVisible } = useSelector(store => store.demand)
   const {
     i18n: { language },
   } = useTranslation()
@@ -95,12 +95,37 @@ export const Container = () => {
     }
   }
 
+  const onCloseDemandDetail = (e: any) => {
+    if (
+      !e.target?.parentElement?.className?.includes('canClickDetail') &&
+      !e.target?.className?.includes('canClickDetail')
+    ) {
+      dispatch({
+        type: 'demand/setIsDemandDetailDrawerVisible',
+        payload: false,
+      })
+      dispatch({
+        type: 'demand/setDemandDetailDrawerProps',
+        payload: {},
+      })
+    }
+  }
+
   useEffect(() => {
     dispatch(getStatus())
     dispatch(getLoginDetail())
     dispatch(getAsyncCompanyInfo())
     dispatch(getProjectCover())
   }, [])
+
+  useEffect(() => {
+    document
+      .getElementById('layoutWrap')
+      ?.addEventListener('click', onCloseDemandDetail)
+    return document
+      .getElementById('layoutWrap')
+      ?.addEventListener('click', onCloseDemandDetail)
+  }, [document.getElementById('layoutWrap')])
 
   useEffect(() => {
     const languageParams =
@@ -126,7 +151,7 @@ export const Container = () => {
       <ConfigProvider locale={antdLocal} autoInsertSpaceInButton={false}>
         <GlobalStyle />
         {userInfo?.company_permissions?.length > 0 && (
-          <LayoutWrap>
+          <LayoutWrap id="layoutWrap">
             <HeaderWrap>
               <HeaderLeft />
               <HeaderRight />

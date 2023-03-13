@@ -56,7 +56,10 @@ export const useDynamicColumns = (state: any) => {
       key: 'story_id',
       render: (text: string, record: any) => {
         return (
-          <ClickWrap onClick={() => state.onClickItem(record)}>
+          <ClickWrap
+            className="canClickDetail"
+            onClick={() => state.onClickItem(record)}
+          >
             {text}
           </ClickWrap>
         )
@@ -84,7 +87,10 @@ export const useDynamicColumns = (state: any) => {
                 alt=""
               />
             </Tooltip>
-            <ClickWrap onClick={() => state.onClickItem(record)}>
+            <ClickWrap
+              className="canClickDetail"
+              onClick={() => state.onClickItem(record)}
+            >
               <OmitText
                 width={200}
                 tipProps={{

@@ -1,7 +1,7 @@
 /* eslint-disable no-undefined */
 import { getDemandList } from '@/services/demand'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { Table } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -20,6 +20,7 @@ interface Props {
 const ChildrenDemand = (props: Props) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
+  const { isUpdateDemand } = useSelector(store => store.demand)
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
@@ -112,10 +113,10 @@ const ChildrenDemand = (props: Props) => {
   }
 
   useEffect(() => {
-    if (props.isOpen) {
+    if (props.isOpen || isUpdateDemand) {
       getList()
     }
-  }, [props.isOpen])
+  }, [props.isOpen, isUpdateDemand])
 
   return (
     <div>

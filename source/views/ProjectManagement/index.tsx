@@ -5,7 +5,7 @@ import { Outlet, useNavigate } from 'react-router-dom'
 
 const ProjectWrap = styled.div`
   position: relative;
-  /* height: 98%; */
+  height: 100%;
   background: var(--neutral-white-d1);
 `
 const Project = () => {

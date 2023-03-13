@@ -176,7 +176,7 @@ const DemandCard = (props: Props) => {
         <MainWrap>
           <DemandNameBox>
             <img src={props.item?.category_attachment} alt="" />
-            <ClickWrap onClick={props.onClickItem}>
+            <ClickWrap className="canClickDetail" onClick={props.onClickItem}>
               <OmitText
                 width={200}
                 tipProps={{

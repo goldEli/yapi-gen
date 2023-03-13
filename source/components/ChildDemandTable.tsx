@@ -105,16 +105,17 @@ const ChildDemandTable = (props: {
           ID
         </NewSort>
       ),
-      dataIndex: 'story_prefix_key',
+      dataIndex: 'storyPrefixKey',
       width: 100,
       render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <ClickWrap
+              className="canClickDetail"
               onClick={() => onToDetail(record)}
               isClose={record.status?.is_end === 1}
             >
-              {record.storyPrefixKey}
+              {text}
             </ClickWrap>
             {record.isExamine && (
               <IconFont

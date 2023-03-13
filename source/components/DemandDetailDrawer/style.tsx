@@ -120,7 +120,7 @@ export const ParentBox = styled(Space)`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  height: 22px;
+  min-height: 22px;
   margin-bottom: 16px;
 `
 

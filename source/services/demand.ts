@@ -547,7 +547,7 @@ export const getDemandList: any = async (params: any) => {
       isExpended: true,
       topId: params?.parentId ?? params?.topParentId,
       categoryConfigList: i.category_config_list,
-      storyPrefixKey: response.data.story_prefix_key,
+      storyPrefixKey: i.story_prefix_key,
     }))
   }
 
@@ -643,7 +643,7 @@ export const getDemandList: any = async (params: any) => {
         level: 1,
         topId: i.id,
         categoryConfigList: i.category_config_list,
-        storyPrefixKey: response.data.story_prefix_key,
+        storyPrefixKey: i.story_prefix_key,
       })),
     }
   }

@@ -181,7 +181,8 @@ const Upload = (props: any) => {
   const [defaultIcon, setDefaultIcon] = useState(true)
   const [uploadImg, setUploadImg] = useState('')
   const customRequest = async ({ file }: { file: any }) => {
-    if (file.type !== 'image/png') {
+    const fileType = file.type.toString()
+    if (!fileType?.includes('image')) {
       message.warning('请上传图片')
       return
     }

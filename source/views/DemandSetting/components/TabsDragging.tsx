@@ -61,6 +61,9 @@ const DelBtn = styled.span`
     cursor: pointer;
   }
 `
+const DelBtnText = styled.span`
+  color: var(--neutral-n3);
+`
 const SliderList = (props: any) => {
   const { index, onMove, listLength, child } = props
   const [top, setTop] = React.useState(0)
@@ -88,6 +91,8 @@ const SliderList = (props: any) => {
     const mouseMove = (ev: any) => {
       ev.preventDefault()
       ev.stopPropagation()
+      // ev.stopImmediatePropagation()
+      el.style.pointerEvents = 'none'
       // 获取元素 Rect 并更新 Ref
       const rect = el.getBoundingClientRect()
       prevRectRef.current = rect
@@ -118,6 +123,8 @@ const SliderList = (props: any) => {
     const mouseUp = (ev: any) => {
       ev.preventDefault()
       ev.stopPropagation()
+      ev.stopImmediatePropagation()
+      el.style.pointerEvents = null
       document.removeEventListener('mousemove', mouseMove)
       // 重置 Top
       setTop(0)
@@ -132,6 +139,7 @@ const SliderList = (props: any) => {
     const mouseDown = (ev: any) => {
       ev.preventDefault()
       ev.stopPropagation()
+      ev.stopImmediatePropagation()
       clearTimeout(delayedSetZIndexTimeoutId)
       // 注册事件
       document.addEventListener('mousemove', mouseMove)
@@ -185,7 +193,6 @@ const SliderList = (props: any) => {
       200,
     )
   }, [index, isDragging])
-
   return (
     <Container
       ref={ref}
@@ -225,7 +232,25 @@ const SliderList = (props: any) => {
             <RightOperate>
               <Checkbox disabled={true} />
               <Text>必填</Text>
-              <DelBtn>删除</DelBtn>
+              <>
+                {child.content === 'users_name' ||
+                child.content === 'user_name' ||
+                child.content === 'finish_at' ||
+                child.content === 'created_at' ? (
+                  <DelBtnText>删除</DelBtnText>
+                ) : (
+                  <DelBtn
+                    onClick={(event: any) => {
+                      ref.current.style.pointerEvents = null
+                      event.preventDefault()
+                      event.stopPropagation()
+                      props.onDelete()
+                    }}
+                  >
+                    删除
+                  </DelBtn>
+                )}
+              </>
             </RightOperate>
           </ItemList>
         </Tooltip>
@@ -256,6 +281,9 @@ const SliderList = (props: any) => {
           </div>
           <RightOperate>
             <Checkbox
+              disabled={
+                child.fieldContent.attr === 'single_checkbox' ? true : false
+              }
               checked={child?.isRequired === 1 ? true : false}
               onClick={(e: any) => {
                 e.stopPropagation(), props.onChangeChecked(e, e.target.checked)
@@ -264,9 +292,10 @@ const SliderList = (props: any) => {
             <Text>必填</Text>
             <DelBtn
               onClick={(event: any) => {
-                event.preventDefault(),
-                  event.stopPropagation(),
-                  props.onDelete()
+                ref.current.style.pointerEvents = null
+                event.preventDefault()
+                event.stopPropagation()
+                props.onDelete()
               }}
             >
               删除
@@ -282,7 +311,7 @@ const Sortable = (props: any) => {
   const { list, setList } = props
   return (
     <div
-      draggable="true"
+      draggable="false"
       onDragOver={event => {
         event.preventDefault(), event.stopPropagation()
       }}
@@ -292,8 +321,7 @@ const Sortable = (props: any) => {
           key={child.id}
           onDrop={(event: any) => props.onDrop(event, i)}
           onClick={(event: any) => {
-            event.preventDefault(),
-              event.stopPropagation(),
+            event.stopPropagation(),
               child.isCustomize === 1 && props.onClick(i, child)
           }}
         >
