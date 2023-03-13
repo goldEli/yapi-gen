@@ -243,7 +243,7 @@ const CreateAProjectForm = () => {
       }}
       width={832}
       isVisible={createVisible}
-      title={t('edit_item')}
+      title={isEditId ? t('edit_item') : t('common.createProject')}
     >
       <div
         style={{
