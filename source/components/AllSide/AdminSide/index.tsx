@@ -92,7 +92,7 @@ const IconFontStyle = styled(IconFont)`
 const AdminSide = () => {
   const navigate = useNavigate()
   const { currentMenu, userInfo } = useSelector(store => store.user)
-
+  const [defaultKey, setDefaultKey] = useState<any>()
   const currentMenuMap = fromPairs(
     currentMenu.children?.map((i: any) => [i.url, i]),
   )
@@ -167,6 +167,20 @@ const AdminSide = () => {
     const pathObject = allSide.filter((i: any) => i.key === e.key)[0]
     pathObject.path && navigate(pathObject.path)
   }
+  // 根据导航匹配父级key
+  const getDefaultKey = (data: any, parentKeys: any) => {
+    for (const i in data) {
+      if (data[i]?.path === location.pathname) {
+        setDefaultKey([parentKeys.key])
+      }
+      if (data[i].children) {
+        getDefaultKey(data[i].children, data[i])
+      }
+    }
+  }
+  useEffect(() => {
+    getDefaultKey(side, null)
+  }, [])
   return (
     <AdminSideWrap>
       <HeaderWrap>
@@ -182,11 +196,8 @@ const AdminSide = () => {
           )
         }
         defaultSelectedKeys={[location.pathname]}
-        defaultOpenKeys={[
-          location.pathname === '/AdminManagement/WaterMarkManagement'
-            ? '4'
-            : '3',
-        ]}
+        openKeys={defaultKey}
+        onOpenChange={e => setDefaultKey(e)}
         mode="inline"
         items={sideList}
         onSelect={onMenuClick}
