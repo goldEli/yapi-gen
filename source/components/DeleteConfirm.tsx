@@ -81,7 +81,17 @@ const DeleteConfirm = (props: Props) => {
       <ModalHeader>
         <Title>
           <IconFont style={{ fontSize: 24, color: '#FA9746' }} type="Warning" />
-          <div>{props.title ? props.title : '删除确认'}</div>
+          <div
+            style={{
+              width: '260px',
+              display: 'inline-block',
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {props.title ? props.title : '删除确认'}
+          </div>
         </Title>
         {!props?.notCancel && (
           <CloseWrap width={32} height={32} onClick={props?.onChangeVisible}>
