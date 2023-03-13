@@ -12,7 +12,8 @@ import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { useTranslation } from 'react-i18next'
 import { getIsPermission } from '@/tools'
 import NoData from '@/components/NoData'
-import { StaffSelect } from '@xyfe/uikit'
+import AddMemberCommonModal from '@/components/AddUser/CommonModal'
+// import { StaffSelect } from '@xyfe/uikit'
 import { getAddDepartMember } from '@/services/staff'
 import { CloseWrap } from '@/components/StyleCommon'
 import {
@@ -364,14 +365,12 @@ const Member = (props: Props) => {
     setIsVisible(false)
   }
 
-  const handleOk = async () => {
-    const values = form.getFieldsValue()
-
-    if (userDataList.length <= 0) {
+  const handleOk = async (list?: any, id?: any) => {
+    let userGroupId = id
+    if (list.length <= 0) {
       message.warning(t('project.memberNull'))
       return
     }
-    let { userGroupId } = values
     if (!form.getFieldValue('userGroupId')) {
       userGroupId = projectPermission?.filter(
         (i: any) => i.tagLabel === '参与者',
@@ -381,85 +380,30 @@ const Member = (props: Props) => {
     const params: any = {
       projectId: props.projectId,
       userGroupId,
-      userIds: userDataList,
+      userIds: list?.map((i: any) => i.id),
     }
     await addMember(params)
     message.success(t('common.addSuccess'))
-    setUserDataList([])
     getList(true)
     setIsVisible(false)
     const result = await getProjectInfo({ projectId: projectInfo.id })
     dispatch(setProjectInfo(result))
     dispatch(setIsUpdateMember(true))
-    setTimeout(() => {
-      form.resetFields()
-    }, 100)
   }
 
-  const onChangeMember = (value: any) => {
-    setUserDataList(value)
-  }
-
-  const userObj = {
-    avatar:
-      'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1531903254371954690/2022-11-15/71A2A5C7-CFB9CDD612ED.jpeg',
-    name: '杨一',
-    id: '1531903254371954690',
-    companyId: '1504303190303051778',
-    companyName: '成都定星科技',
-    phone: '18380129474',
-    remark: '',
-    admin: false,
-    gender: 1,
-  }
   return (
     <WaiWrap>
-      <StaffSelect
-        title={t('project.addMember')}
-        user={userObj as any}
-        departments={departments}
-        staffListAll={member}
-        visible={isVisible}
-        onCancel={onClickCancel}
-        value={userDataList}
-        onOk={handleOk}
-        onChange={onChangeMember}
-        plugArea={
-          <div style={{ marginBottom: '25px' }}>
-            <Form form={form}>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <span
-                  style={{ fontSize: 14, color: '#323233', marginRight: 16 }}
-                >
-                  {t('project.joinPermission')}
-                  <span style={{ fontSize: 12, color: 'red', marginLeft: 4 }}>
-                    *
-                  </span>
-                </span>
-                <Form.Item
-                  name="userGroupId"
-                  noStyle
-                  rules={[{ required: true, message: '' }]}
-                >
-                  <Select
-                    placeholder={t('project.pleasePermission')}
-                    getPopupContainer={node => node}
-                    style={{ width: 192 }}
-                    options={projectPermission}
-                    showSearch
-                    showArrow
-                    optionFilterProp="label"
-                    defaultValue={
-                      projectPermission?.filter(
-                        (i: any) => i.tagLabel === '参与者',
-                      )[0]?.value
-                    }
-                  />
-                </Form.Item>
-              </div>
-            </Form>
-          </div>
+      <AddMemberCommonModal
+        isPermisGroup
+        userGroupId={
+          projectPermission?.filter((i: any) => i.tagLabel === '参与者')[0]
+            ?.value
         }
+        title={t('project.addMember')}
+        isVisible={isVisible}
+        onClose={onClickCancel}
+        onConfirm={handleOk}
+        projectPermission={projectPermission}
       />
 
       <DrawerWrap

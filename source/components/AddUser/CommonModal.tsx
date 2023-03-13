@@ -203,13 +203,14 @@ interface ModalProps {
   title?: string
   onClose?(): void
   children?: any
-  onConfirm?(list: any[], id: number): void
+  onConfirm?(list: any[], id?: number): void
   confirmText?: string
   hasFooter?: any
   isShowFooter?: boolean
   hasTop?: any
   isPermisGroup?: boolean
   userGroupId?: number
+  projectPermission?: any
 }
 
 const CommonModal = (props: ModalProps) => {
@@ -234,30 +235,19 @@ const CommonModal = (props: ModalProps) => {
   const [tabsActive, setTabsActive] = useState(0)
   const treeData: any = departmentUserList
   const [form] = Form.useForm()
-  const [projectPermission, setProjectPermission] = useState<any>([])
   const onInit = () => {
     setPersonData([])
     setSearchVal('')
     setCheckedKeys([])
   }
-  const getPermission = async () => {
-    const res = await getProjectPermission({ projectId: projectInfo.id })
-    setProjectPermission(
-      res.list?.map((i: any) => ({
-        label: i.name,
-        value: i.id,
-        tagLabel: i.label,
-      })),
-    )
-  }
+
   useEffect(() => {
     if (props.isVisible) {
       onInit()
       props.isPermisGroup &&
-        (getPermission(),
         form.setFieldsValue({
           userGroupId: props?.userGroupId,
-        }))
+        })
     }
   }, [props.isVisible])
 
@@ -348,6 +338,15 @@ const CommonModal = (props: ModalProps) => {
     } else {
       const filterVal: any = selectDataList.filter((el: any) => el.id === value)
       setPersonData([...personData, ...filterVal])
+    }
+  }
+
+  const onConfirm = async () => {
+    if (props.isPermisGroup) {
+      await form.validateFields()
+      props?.onConfirm?.(personData, form.getFieldsValue().userGroupId)
+    } else {
+      props?.onConfirm?.(personData)
     }
   }
 
@@ -475,12 +474,12 @@ const CommonModal = (props: ModalProps) => {
                   placeholder={t('project.pleasePermission')}
                   getPopupContainer={node => node}
                   style={{ width: 192 }}
-                  options={projectPermission}
+                  options={props?.projectPermission}
                   showSearch
                   showArrow
                   optionFilterProp="label"
                   defaultValue={
-                    projectPermission?.filter(
+                    props?.projectPermission?.filter(
                       (i: any) => i.tagLabel === '参与者',
                     )[0]?.value
                   }
@@ -499,12 +498,7 @@ const CommonModal = (props: ModalProps) => {
           >
             {t('common.cancel')}
           </CommonButton>
-          <CommonButton
-            type="primary"
-            onClick={() =>
-              props?.onConfirm?.(personData, form.getFieldsValue().userGroupId)
-            }
-          >
+          <CommonButton type="primary" onClick={onConfirm}>
             {t('common.confirm')}
           </CommonButton>
         </div>
