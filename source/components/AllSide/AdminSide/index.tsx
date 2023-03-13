@@ -102,30 +102,30 @@ const AdminSide = () => {
   const side: any = [
     {
       label: '公司信息',
-      key: '1',
+      key: '/AdminManagement/CompanyInfo',
       icon: <IconFontStyle className="icon" type="file-text" />,
       path: '/AdminManagement/CompanyInfo',
     },
     {
       label: '组织信息',
-      key: '2',
+      key: '3',
       icon: <IconFontStyle className="icon" type="apartment" />,
       children: [
         {
           label: '员工管理',
-          key: '1-33',
+          key: '/AdminManagement/StaffManagement',
           path: '/AdminManagement/StaffManagement',
         },
         {
           label: '团队管理',
-          key: '12',
+          key: '/AdminManagement/TeamManagement',
           path: '/AdminManagement/TeamManagement',
         },
       ],
     },
     {
       label: '权限管理',
-      key: '3',
+      key: '/AdminManagement/PermissionManagement',
       icon: <IconFontStyle className="icon" type="lock" />,
       path: '/AdminManagement/PermissionManagement',
     },
@@ -136,17 +136,17 @@ const AdminSide = () => {
       children: [
         {
           label: '安全水印',
-          key: '1-12',
+          key: '/AdminManagement/WaterMarkManagement',
           path: '/AdminManagement/WaterMarkManagement',
         },
         {
           label: '操作日志',
-          key: '1-13',
+          key: '/AdminManagement/OperationManagement',
           path: '/AdminManagement/OperationManagement',
         },
         {
           label: '登录日志',
-          key: '1-14',
+          key: '/AdminManagement/LoginManagement',
           path: '/AdminManagement/LoginManagement',
         },
       ],
@@ -181,8 +181,12 @@ const AdminSide = () => {
             <IconFontStyle className="icon" type="down" />
           )
         }
-        defaultSelectedKeys={['1']}
-        defaultOpenKeys={['sub1']}
+        defaultSelectedKeys={[location.pathname]}
+        defaultOpenKeys={[
+          location.pathname === '/AdminManagement/WaterMarkManagement'
+            ? '4'
+            : '3',
+        ]}
         mode="inline"
         items={sideList}
         onSelect={onMenuClick}

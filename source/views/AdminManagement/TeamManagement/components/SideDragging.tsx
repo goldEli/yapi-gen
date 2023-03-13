@@ -64,7 +64,7 @@ const SliderList = (props: any) => {
     let delayedSetZIndexTimeoutId: any = null
     const mouseMove = (ev: any) => {
       ev.preventDefault()
-
+      el.style.pointerEvents = 'none'
       // 获取元素 Rect 并更新 Ref
       const rect = el.getBoundingClientRect()
       prevRectRef.current = rect
@@ -98,6 +98,7 @@ const SliderList = (props: any) => {
     }
     const mouseUp = (ev: any) => {
       ev.preventDefault()
+      el.style.pointerEvents = null
       document.removeEventListener('mousemove', mouseMove)
 
       // 重置 Top

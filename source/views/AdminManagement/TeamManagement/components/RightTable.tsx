@@ -23,6 +23,7 @@ const RightWrap = styled.div`
   height: 100%;
   position: relative;
   background-color: var(--neutral-white-d1);
+  overflow-x: auto;
 `
 const PaginationBox = styled.div`
   position: absolute;
