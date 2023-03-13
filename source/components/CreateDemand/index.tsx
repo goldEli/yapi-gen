@@ -18,6 +18,7 @@ import {
   setIsUpdateChangeLog,
   setIsUpdateStatus,
   setIsUpdateDemand,
+  setDemandDetailDrawerProps,
 } from '@store/demand'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsUpdateCreate } from '@store/mine'
@@ -62,6 +63,7 @@ const CreateDemand = () => {
   const [fieldList, setFieldList] = useState<any>([])
   const [workStatusList, setWorkStatusList] = useState([])
   const [isCreateDemand, setIsCreateDemand] = useState<any>({})
+  const { demandDetailDrawerProps } = useSelector(store => store.demand)
 
   // 关闭创建需求
   const onCancel = () => {
@@ -142,6 +144,13 @@ const CreateDemand = () => {
     } else {
       // 更新列表
       dispatch(setIsUpdateDemand(true))
+      // // 如果有创建需求或者编辑需求则清除上下需求id数组
+      // dispatch(
+      //   setDemandDetailDrawerProps({
+      //     ...demandDetailDrawerProps,
+      //     ...{ demandIds: [] },
+      //   }),
+      // )
     }
 
     // 如果是快速创建，相应数据存缓存
@@ -163,12 +172,11 @@ const CreateDemand = () => {
       setIsSaveParams(true)
     } else {
       dispatch(setCreateCategory({}))
-
+      dispatch(setIsCreateDemandVisible(false))
       setIsSaveParams(false)
       setTimeout(() => {
         leftDom.current?.reset()
         rightDom.current?.reset()
-        dispatch(setIsCreateDemandVisible(false))
         dispatch(setFilterParamsModal({}))
       }, 100)
     }

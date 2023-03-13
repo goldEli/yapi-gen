@@ -97,8 +97,8 @@ export const Container = () => {
 
   const onCloseDemandDetail = (e: any) => {
     if (
-      !e.target.parentElement.className.includes('canClickDetail') &&
-      !e.target.className.includes('canClickDetail')
+      !e.target?.parentElement?.className?.includes('canClickDetail') &&
+      !e.target?.className?.includes('canClickDetail')
     ) {
       dispatch({
         type: 'demand/setIsDemandDetailDrawerVisible',

@@ -169,7 +169,14 @@ const DemandMain = (props: Props) => {
 
   useEffect(() => {
     if (isRefresh || isUpdateDemand) {
-      getList(isGrid, searchItems, { page: 1, size: pageObj.size }, order)
+      getList(
+        isGrid,
+        searchItems,
+        { page: 1, size: pageObj.size },
+        order,
+        false,
+        topParentId,
+      )
     }
   }, [isRefresh, isUpdateDemand])
 
@@ -325,7 +332,6 @@ const DemandMain = (props: Props) => {
             />
             {isGrid === 2 && (
               <DemandTree
-                onChangeVisible={onChangeOperation}
                 onDelete={onDelete}
                 data={dataList}
                 onChangePageNavigation={onChangePageNavigation}
@@ -335,6 +341,7 @@ const DemandMain = (props: Props) => {
                 onChangeOrder={onChangeOrder}
                 isSpinning={isSpinning}
                 onUpdate={onUpdate}
+                onUpdateTopId={setTopParentId}
                 filterParams={{
                   ...searchItems,
                   projectId,

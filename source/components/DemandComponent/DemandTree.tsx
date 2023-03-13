@@ -58,7 +58,6 @@ const DataWrap = styled.div({
 
 interface Props {
   data: any
-  onChangeVisible(e: any, item: any): void
   onDelete(item: any): void
   onChangePageNavigation?(item: any): void
   onChangeRow?(topId?: any): void
@@ -69,6 +68,7 @@ interface Props {
   onUpdate(updateState?: boolean, topId?: any): void
   filterParams: any
   isUpdated?: boolean
+  onUpdateTopId?(value: any): void
 }
 
 interface TreeIconProps {
@@ -172,8 +172,11 @@ const DemandTree = (props: Props) => {
 
   // 点击跳转需求详情
   const onClickItem = (item: any) => {
-    let demandIds: any
+    setComputedTopId(item.topId)
+    props.onUpdateTopId?.(item.topId)
+    let demandIds: any = []
     if (item.parentId) {
+      // 先拿到顶级数据
       const currentDemandTop = props.data?.list?.filter(
         (i: any) => i.id === item.topId,
       )?.[0]
@@ -183,8 +186,11 @@ const DemandTree = (props: Props) => {
     } else {
       demandIds = props.data?.list?.map((i: any) => i.id)
     }
-
-    openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id)
+    openDemandDetail(
+      { ...item, ...{ demandIds: demandIds.reverse() } },
+      projectId,
+      item.id,
+    )
   }
 
   // 修改优先级
@@ -225,6 +231,7 @@ const DemandTree = (props: Props) => {
   const onEditChange = (item: any) => {
     setIsShowMore(false)
     setComputedTopId(item?.topId)
+    props.onUpdateTopId?.(item.topId)
     dispatch(setIsCreateDemandVisible(true))
     dispatch(setCreateDemandProps({ demandId: item.id, projectId }))
   }
@@ -234,11 +241,13 @@ const DemandTree = (props: Props) => {
     setIsShowMore(false)
     props.onDelete(item)
     setComputedTopId(item?.topId)
+    props.onUpdateTopId?.(item.topId)
   }
 
   // 点击创建子需求
   const onCreateChild = (item: any) => {
     setComputedTopId(item?.topId)
+    props.onUpdateTopId?.(item.topId)
     setIsShowMore(false)
     dispatch(setIsCreateDemandVisible(true))
     dispatch(
