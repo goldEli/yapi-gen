@@ -187,7 +187,7 @@ const ProjectManagementOptimization = () => {
   }
 
   const onAddClick = () => {
-    setIsVisible(true)
+    dispatch({ type: 'createProject/changeCreateVisible', payload: true })
     setOperationDetail({})
   }
 

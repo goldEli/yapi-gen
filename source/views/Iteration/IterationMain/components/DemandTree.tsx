@@ -604,21 +604,7 @@ const DemandTree = (props: Props) => {
             onSelectAll,
           } as any)
         }
-        noData={
-          <NoData
-            subText={hasCreate ? '' : t('version2.noDataCreateDemandList')}
-            haveFilter={filterKeys?.length > 0}
-          >
-            {!hasCreate && (
-              <SecondButton
-                onClick={() => setIsAddVisible(true)}
-                style={{ marginTop: 24 }}
-              >
-                {t('common.createDemand')}
-              </SecondButton>
-            )}
-          </NoData>
-        }
+        noData={<NoData />}
       />
       {!hasBatch && (
         <FloatBatch

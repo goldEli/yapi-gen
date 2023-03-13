@@ -32,6 +32,25 @@ const LeftWrap = styled.div({
   },
 })
 
+const CategoryWrap = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  height: 24px;
+  border-radius: 6px;
+  background: var(--neutral-n8);
+  width: max-content;
+  img {
+    width: 18px;
+    height: 18px;
+    margin-right: 4px;
+  }
+  span {
+    font-size: 12px;
+    color: var(--neutral-n2);
+  }
+`
+
 interface Props {
   projectList: any[]
   onRef: any
@@ -125,7 +144,6 @@ const CreateDemandLeft = (props: Props) => {
   // 提交参数后的操作
   const onSubmitUpdate = () => {
     setAttachList([])
-    setCategoryObj({})
     form.setFieldsValue({
       info: '',
       name: '',
@@ -141,10 +159,10 @@ const CreateDemandLeft = (props: Props) => {
 
   // 清空左侧参数
   const onReset = () => {
+    setCategoryObj({})
     form.resetFields()
     setAttachList([])
     setTagCheckedList([])
-    setCategoryObj({})
   }
 
   useImperativeHandle(props.onRef, () => {
@@ -210,10 +228,10 @@ const CreateDemandLeft = (props: Props) => {
     // 更新项目信息
     getProjectInfoData(value)
     props.onChangeProjectId(value)
+    props.onGetFieldList([])
     //清除右侧数据
     props.onResetForm()
     props.onGetDataAll(value)
-    props.onGetFieldList([])
   }
 
   // 删除项目
@@ -241,6 +259,9 @@ const CreateDemandLeft = (props: Props) => {
 
   // 切换需求类别
   const onSelectCategory = async (value: any) => {
+    if (value === categoryObj?.id) {
+      return
+    }
     if (createDemandProps.demandId) {
       changeCategoryForm.setFieldsValue({
         categoryId: value,
@@ -317,8 +338,8 @@ const CreateDemandLeft = (props: Props) => {
       form.setFieldsValue({
         requiredCategory: categoryObj?.id,
       })
-      getStatusList(categoryObj?.id)
       getCategoryField(categoryObj?.id)
+      getStatusList(categoryObj?.id)
     }
   }, [categoryObj])
 
@@ -507,10 +528,13 @@ const CreateDemandLeft = (props: Props) => {
         <Form
           form={changeCategoryForm}
           layout="vertical"
-          style={{ padding: '0 20px 0 2px' }}
+          style={{ padding: '0 20px 0 24px' }}
         >
           <Form.Item label={t('newlyAdd.beforeCategory')}>
-            <div>变更前的需求类别</div>
+            <CategoryWrap>
+              <img src={categoryObj?.category_attachment} alt="" />
+              <span>{categoryObj.name}</span>
+            </CategoryWrap>
           </Form.Item>
           <Form.Item
             label={t('newlyAdd.afterCategory')}
