@@ -88,6 +88,8 @@ const SliderList = (props: any) => {
     const mouseMove = (ev: any) => {
       ev.preventDefault()
       ev.stopPropagation()
+      ev.stopImmediatePropagation()
+      el.style.pointerEvents = 'none'
       // 获取元素 Rect 并更新 Ref
       const rect = el.getBoundingClientRect()
       prevRectRef.current = rect
@@ -118,6 +120,8 @@ const SliderList = (props: any) => {
     const mouseUp = (ev: any) => {
       ev.preventDefault()
       ev.stopPropagation()
+      ev.stopImmediatePropagation()
+      el.style.pointerEvents = null
       document.removeEventListener('mousemove', mouseMove)
       // 重置 Top
       setTop(0)
@@ -132,6 +136,8 @@ const SliderList = (props: any) => {
     const mouseDown = (ev: any) => {
       ev.preventDefault()
       ev.stopPropagation()
+      ev.stopImmediatePropagation()
+      el.style.pointerEvents = 'none'
       clearTimeout(delayedSetZIndexTimeoutId)
       // 注册事件
       document.addEventListener('mousemove', mouseMove)
@@ -185,7 +191,6 @@ const SliderList = (props: any) => {
       200,
     )
   }, [index, isDragging])
-
   return (
     <Container
       ref={ref}
@@ -256,6 +261,9 @@ const SliderList = (props: any) => {
           </div>
           <RightOperate>
             <Checkbox
+              disabled={
+                child.fieldContent.attr === 'single_checkbox' ? true : false
+              }
               checked={child?.isRequired === 1 ? true : false}
               onClick={(e: any) => {
                 e.stopPropagation(), props.onChangeChecked(e, e.target.checked)
@@ -282,7 +290,7 @@ const Sortable = (props: any) => {
   const { list, setList } = props
   return (
     <div
-      draggable="true"
+      draggable="false"
       onDragOver={event => {
         event.preventDefault(), event.stopPropagation()
       }}
@@ -292,8 +300,7 @@ const Sortable = (props: any) => {
           key={child.id}
           onDrop={(event: any) => props.onDrop(event, i)}
           onClick={(event: any) => {
-            event.preventDefault(),
-              event.stopPropagation(),
+            event.stopPropagation(),
               child.isCustomize === 1 && props.onClick(i, child)
           }}
         >
