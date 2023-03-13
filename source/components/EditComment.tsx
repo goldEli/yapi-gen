@@ -121,7 +121,7 @@ const EditComment = (props: any) => {
         style={{
           height: 'calc(90vh - 40vh)',
           overflow: 'scroll',
-          paddingRight: '24px',
+          padding: '0 24px',
         }}
       >
         <Form

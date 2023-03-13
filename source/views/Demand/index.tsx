@@ -481,7 +481,7 @@ const DemandBox = () => {
           <FormWrap
             form={form}
             layout="vertical"
-            style={{ padding: '0 20px 0 2px' }}
+            style={{ padding: '0 20px 0 24px' }}
           >
             <Form.Item label={t('newlyAdd.beforeCategory')}>
               <img
