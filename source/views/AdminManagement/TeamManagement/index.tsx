@@ -1,4 +1,6 @@
+import PermissionWrap from '@/components/PermissionWrap'
 import styled from '@emotion/styled'
+import { useSelector } from '@store/index'
 import { Spin } from 'antd'
 import { useState } from 'react'
 import LeftSide from './components/LeftSide'
@@ -12,13 +14,22 @@ const Wrap = styled.div`
 `
 const TeamManagement = () => {
   const [isSpinning, setIsSpinning] = useState(false)
+  const { menuPermission } = useSelector(store => store.user)
+
   return (
-    <Spin spinning={isSpinning}>
-      <Wrap>
-        <LeftSide isSpin={(value: boolean) => setIsSpinning(value)} />
-        <RightTable />
-      </Wrap>
-    </Spin>
+    <PermissionWrap
+      auth="/AdminManagement/LoginManagement"
+      permission={menuPermission?.menus
+        ?.filter((k: any) => k.url === '/AdminManagement')?.[0]
+        ?.children?.map((i: any) => i.url)}
+    >
+      <Spin spinning={isSpinning}>
+        <Wrap>
+          <LeftSide isSpin={(value: boolean) => setIsSpinning(value)} />
+          <RightTable />
+        </Wrap>
+      </Spin>
+    </PermissionWrap>
   )
 }
 

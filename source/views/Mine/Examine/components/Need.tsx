@@ -248,18 +248,15 @@ const Need = (props: any) => {
       <div>
         <LoadingSpin spinning={isSpin}>
           <div>
-            {listData?.list ? (
-              listData?.list?.length ? (
-                <ResizeTable
-                  isSpinning={false}
-                  dataWrapNormalHeight="calc(100vh - 330px)"
-                  col={selectColum}
-                  dataSource={listData?.list}
-                />
-              ) : (
-                <NoData />
-              )
-            ) : null}
+            {listData?.list && listData?.list?.length && (
+              <ResizeTable
+                isSpinning={false}
+                dataWrapNormalHeight="calc(100vh - 330px)"
+                col={selectColum}
+                dataSource={listData?.list}
+                noData={<NoData />}
+              />
+            )}
           </div>
         </LoadingSpin>
       </div>

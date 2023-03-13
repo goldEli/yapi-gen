@@ -410,7 +410,8 @@ const DemandTable = (props: Props) => {
   }
 
   const onClick = () => {
-    setIsAddVisible(!isAddVisible)
+    dispatch(setIsCreateDemandVisible(true))
+    dispatch(setCreateDemandProps({ noDataCreate: true }))
     dispatch(setFilterParamsModal(filterParams))
   }
 

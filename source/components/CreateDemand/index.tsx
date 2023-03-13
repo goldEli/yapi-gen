@@ -63,7 +63,23 @@ const CreateDemand = () => {
   const [fieldList, setFieldList] = useState<any>([])
   const [workStatusList, setWorkStatusList] = useState([])
   const [isCreateDemand, setIsCreateDemand] = useState<any>({})
-  const { demandDetailDrawerProps } = useSelector(store => store.demand)
+
+  // 获取头部标题
+  const titleText = () => {
+    let text: any
+    if (createDemandProps?.isQuickCreate) {
+      text = t('mine.quickCreate')
+    } else if (createDemandProps?.isChild) {
+      text = createDemandProps?.demandId
+        ? t('project.editChildDemand')
+        : t('common.createChildDemand')
+    } else {
+      text = createDemandProps?.demandId
+        ? t('project.editDemand')
+        : t('common.createDemand')
+    }
+    return text
+  }
 
   // 关闭创建需求
   const onCancel = () => {
@@ -144,13 +160,6 @@ const CreateDemand = () => {
     } else {
       // 更新列表
       dispatch(setIsUpdateDemand(true))
-      // // 如果有创建需求或者编辑需求则清除上下需求id数组
-      // dispatch(
-      //   setDemandDetailDrawerProps({
-      //     ...demandDetailDrawerProps,
-      //     ...{ demandIds: [] },
-      //   }),
-      // )
     }
 
     // 如果是快速创建，相应数据存缓存
@@ -193,6 +202,8 @@ const CreateDemand = () => {
 
   //   切换项目id获取初始展示数据
   const getInit = async (value?: any) => {
+    setAllCategoryList([])
+    setWorkStatusList([])
     const [projectInfoData] = await Promise.all([
       getProjectInfoValues({ projectId: value }),
       getList(value),
@@ -228,7 +239,7 @@ const CreateDemand = () => {
 
   return (
     <CommonModal
-      title="创建需求"
+      title={titleText()}
       isVisible={isCreateDemandVisible}
       onClose={onCancel}
       width="88%"

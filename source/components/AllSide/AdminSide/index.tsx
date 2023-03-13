@@ -94,7 +94,7 @@ const AdminSide = () => {
   const { currentMenu, userInfo } = useSelector(store => store.user)
   const [defaultKey, setDefaultKey] = useState<any>()
   const currentMenuMap = fromPairs(
-    currentMenu.children?.map((i: any) => [i.url, i]),
+    (currentMenu?.children || [])?.map((i: any) => [i.url, i]),
   )
   const onFilter = (list: any[]) => {
     return list.filter(i => (i.path ? currentMenuMap[i.path] : true))
