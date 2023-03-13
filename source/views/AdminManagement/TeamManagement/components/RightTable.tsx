@@ -13,7 +13,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { useDispatch, useSelector } from '@store/index'
 import { getMemberList } from '@store/teams/thunk'
 import * as services from '@/services'
-import AddMemberCommonModal from './CommonModal'
+import AddMemberCommonModal from '@/components/AddUser/CommonModal'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { GENDER_MAP } from '@/constants'
 
@@ -186,6 +186,9 @@ const RightTable = () => {
   }
 
   const onAddConfirm = async (list: any[]) => {
+    if (list?.length < 1) {
+      return
+    }
     try {
       await services.setting.teamsMember({
         id: activeTeamId,
@@ -319,10 +322,11 @@ const RightTable = () => {
       />
 
       <AddMemberCommonModal
+        isPermisGroup={false}
         title="添加成员"
         isVisible={addMemberVisible}
         onClose={() => setAddMemberVisible(false)}
-        onConfirm={onAddConfirm}
+        onConfirm={list => onAddConfirm(list)}
       />
     </RightWrap>
   )
