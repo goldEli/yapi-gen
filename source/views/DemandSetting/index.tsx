@@ -29,7 +29,10 @@ const DemandSetting = () => {
   const [isOperate, setIsOperate] = useState<boolean>(false)
   const [isSave, setIsSave] = useState(false)
   const { projectInfo } = useSelector(store => store.project)
-  const { activeCategory } = useSelector(store => store.category)
+  const { getCategoryConfigDataList, startUsing, activeCategory } = useSelector(
+    store => store.category,
+  )
+  useSelector(store => store.category)
   const save = () => {
     setIsSave(true)
   }
@@ -74,7 +77,9 @@ const DemandSetting = () => {
             setIsSave(false), setIsOperate(false)
           }}
         />
-        <CreateField />
+        {getCategoryConfigDataList?.configDataList.length >= 1 && (
+          <CreateField />
+        )}
       </Wrap>
     </PermissionWrap>
   )
