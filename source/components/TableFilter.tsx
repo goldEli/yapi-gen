@@ -555,7 +555,34 @@ const TableFilter = (props: any) => {
                     </DelButton>
                   </SelectWrapBedeck>
                 )} */}
-
+                {['single_checkbox'].includes(i.type) && (
+                  <SelectWrapBedeck key={i.key}>
+                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                      {i.contentTxt}
+                    </span>
+                    <Form.Item name={i.key}>
+                      <MoreSelect
+                        more
+                        onConfirm={confirm}
+                        options={[
+                          {
+                            label: '未勾选',
+                            value: 0,
+                            id: 0,
+                          },
+                          {
+                            label: '已勾选',
+                            value: 1,
+                            id: 1,
+                          },
+                        ]}
+                      />
+                    </Form.Item>
+                    <DelButton onClick={() => delList(i.content)}>
+                      <IconFont type="close-solid" className="icon" />
+                    </DelButton>
+                  </SelectWrapBedeck>
+                )}
                 {['time', 'date'].includes(i.type) && (
                   <SelectWrapBedeck key={i.key}>
                     <span style={{ margin: '0 16px', fontSize: '14px' }}>

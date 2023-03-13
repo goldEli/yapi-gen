@@ -152,7 +152,10 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
           onChangeGroup={onChangeGroup}
         />
       )
-    } else if (String(pathname).includes('/ProjectManagement/MemberInfo')) {
+    } else if (
+      String(pathname).includes('/ProjectManagement/MemberInfo') ||
+      String(pathname).includes('/MemberInfo')
+    ) {
       nodeComponent = <HisSide />
     } else if (String(pathname).includes('/AdminManagement')) {
       nodeComponent = <AdminSide />

@@ -464,14 +464,17 @@ const GlobalStyle = () => {
     .row-dragging .drag-visible {
       visibility: visible;
     }
-    .resize_save {
-      position: absolute;
-      top: 0;
-      right: 5px;
-      bottom: 0;
-      left: 0;
-      padding-left: 5px;
-      overflow-x: hidden;
+
+    .resize_bar2 {
+      max-width: 65vw;
+      width: 65vw;
+      min-width: 30vw;
+      height: inherit;
+      resize: horizontal;
+      cursor: ew-resize;
+      cursor: col-resize;
+      opacity: 0;
+      overflow: scroll;
     }
     .resize_save2 {
       position: absolute;
@@ -481,21 +484,11 @@ const GlobalStyle = () => {
       left: 0;
       padding-right: 0px;
     }
+
     .resize_bar {
       width: 240px;
       max-width: 700px;
       min-width: 240px;
-      height: inherit;
-      resize: horizontal;
-      cursor: ew-resize;
-      cursor: col-resize;
-      opacity: 0;
-      overflow: scroll;
-    }
-    .resize_bar2 {
-      max-width: 65vw;
-      width: 65vw;
-      min-width: 30vw;
       height: inherit;
       resize: horizontal;
       cursor: ew-resize;
@@ -512,6 +505,15 @@ const GlobalStyle = () => {
       border-right: 1px solid #f0f0f0;
       border-left: 1px solid #f0f0f0;
       pointer-events: none;
+    }
+    .resize_save {
+      position: absolute;
+      top: 0;
+      right: 5px;
+      bottom: 0;
+      left: 0;
+      padding-left: 5px;
+      overflow-x: hidden;
     }
     .resize_bar:hover ~ .resize_line,
     .resize_bar:active ~ .resize_line {

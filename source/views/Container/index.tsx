@@ -118,14 +118,14 @@ export const Container = () => {
     dispatch(getProjectCover())
   }, [])
 
-  useEffect(() => {
-    document
-      .getElementById('layoutWrap')
-      ?.addEventListener('click', onCloseDemandDetail)
-    return document
-      .getElementById('layoutWrap')
-      ?.addEventListener('click', onCloseDemandDetail)
-  }, [document.getElementById('layoutWrap')])
+  // useEffect(() => {
+  //   document
+  //     .getElementById('layoutWrap')
+  //     ?.addEventListener('click', onCloseDemandDetail)
+  //   return document
+  //     .getElementById('layoutWrap')
+  //     ?.addEventListener('click', onCloseDemandDetail)
+  // }, [document.getElementById('layoutWrap')])
 
   useEffect(() => {
     const languageParams =
