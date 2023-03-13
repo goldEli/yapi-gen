@@ -17,7 +17,7 @@ import {
   setIsCreateDemandVisible,
   setIsUpdateChangeLog,
   setIsUpdateStatus,
-  setIsUpdateDemandList,
+  setIsUpdateDemand,
 } from '@store/demand'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsUpdateCreate } from '@store/mine'
@@ -141,7 +141,7 @@ const CreateDemand = () => {
       dispatch(setIsUpdateCreate(true))
     } else {
       // 更新列表
-      dispatch(setIsUpdateDemandList(true))
+      dispatch(setIsUpdateDemand(true))
     }
 
     // 如果是快速创建，相应数据存缓存
@@ -163,13 +163,14 @@ const CreateDemand = () => {
       setIsSaveParams(true)
     } else {
       dispatch(setCreateCategory({}))
+
+      setIsSaveParams(false)
       setTimeout(() => {
         leftDom.current?.reset()
         rightDom.current?.reset()
+        dispatch(setIsCreateDemandVisible(false))
+        dispatch(setFilterParamsModal({}))
       }, 100)
-      dispatch(setIsCreateDemandVisible(false))
-      dispatch(setFilterParamsModal({}))
-      setIsSaveParams(false)
     }
   }
 

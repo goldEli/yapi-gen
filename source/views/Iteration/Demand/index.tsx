@@ -30,6 +30,7 @@ import {
   setCreateDemandProps,
   setFilterParams,
   setIsCreateDemandVisible,
+  setIsUpdateDemand,
 } from '@store/demand'
 import PaginationBox from '@/components/TablePagination'
 import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
@@ -70,6 +71,7 @@ const DemandWrap = (props: Props) => {
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
+  const { isUpdateDemand } = useSelector(store => store.demand)
   const { iterateInfo, filterParams } = useSelector(store => store.iterate)
   const [isVisible, setIsVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
@@ -159,6 +161,7 @@ const DemandWrap = (props: Props) => {
     setDataList(result)
     setIsSpinning(false)
     dispatch(setIsRefresh(false))
+    dispatch(setIsUpdateDemand(false))
   }
 
   useEffect(() => {
@@ -166,7 +169,7 @@ const DemandWrap = (props: Props) => {
   }, [props.searchGroups])
 
   useEffect(() => {
-    if (isRefresh) {
+    if (isRefresh || isUpdateDemand) {
       getList(
         { page: 1, size: pageObj.size },
         order,
@@ -174,7 +177,7 @@ const DemandWrap = (props: Props) => {
         props.searchGroups,
       )
     }
-  }, [isRefresh])
+  }, [isRefresh, isUpdateDemand])
 
   const onChangePage = (page: number, size: number) => {
     setPageObj({ page, size })

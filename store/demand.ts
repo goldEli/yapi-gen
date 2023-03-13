@@ -17,7 +17,7 @@ export interface CounterState {
   // 过滤的参数
   filterParams: any
   // 创建需求成功后是否刷新
-  isUpdateDemandList: any
+  isUpdateDemand: any
   // 是否打开创建需求弹窗
   isCreateDemandVisible: boolean
   // 创建需求弹窗传入
@@ -60,7 +60,7 @@ const initialState: CounterState = {
   isUpdateChangeLog: false,
   createCategory: {},
   filterParams: {},
-  isUpdateDemandList: false,
+  isUpdateDemand: false,
 
   isCreateDemandVisible: false,
   createDemandProps: {},
@@ -101,9 +101,9 @@ export const demandSlice = createSlice({
     setFilterParams: (state: any, action) => {
       state.filterParams = action.payload
     },
-    // 刷新需求列表
-    setIsUpdateDemandList: (state: any, action) => {
-      state.isUpdateDemandList = action.payload
+    // 刷新需求
+    setIsUpdateDemand: (state: any, action) => {
+      state.isUpdateDemand = action.payload
     },
 
     // 创建需求弹窗
@@ -135,7 +135,7 @@ export const {
   setIsUpdateChangeLog,
   setCreateCategory,
   setFilterParams,
-  setIsUpdateDemandList,
+  setIsUpdateDemand,
 
   setIsCreateDemandVisible,
   setCreateDemandProps,

@@ -163,6 +163,7 @@ export const uploadFileToKey = (
           key,
           url: `https://${data.Location}`,
         })
+
         // resolve({
         //   space,
         //   id: getUUID(),

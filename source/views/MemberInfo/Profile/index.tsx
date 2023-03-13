@@ -388,7 +388,7 @@ const Profile = () => {
               {gatteData.length >= 1 && (
                 <Mygante
                   data={gatteData}
-                  height="calc(100vh - 420px)"
+                  height="calc(100vh - 430px)"
                   minHeight={300}
                 />
               )}

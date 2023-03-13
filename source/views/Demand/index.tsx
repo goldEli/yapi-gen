@@ -43,6 +43,7 @@ import {
   setDemandInfo,
   setIsCreateDemandVisible,
   setIsRefreshComment,
+  setIsUpdateDemand,
   setIsUpdateStatus,
 } from '@store/demand'
 import { changeId } from '@store/counterSlice'
@@ -195,7 +196,7 @@ const DemandBox = () => {
   const { projectInfo, colorList, projectInfoValues } = useSelector(
     store => store.project,
   )
-  const demandInfo = useSelector(store => store.demand.demandInfo)
+  const { demandInfo, isUpdateDemand } = useSelector(store => store.demand)
   const navigate = useNavigate()
   const asyncSetTtile = useSetTitle()
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
@@ -219,6 +220,7 @@ const DemandBox = () => {
       dispatch(setDemandInfo(result))
     }
     setLoadingState(true)
+    dispatch(setIsUpdateDemand(false))
   }
 
   useEffect(() => {
@@ -229,6 +231,12 @@ const DemandBox = () => {
       dispatch(onTapSearchChoose({}))
     }
   }, [demandId])
+
+  useEffect(() => {
+    if (isUpdateDemand) {
+      init()
+    }
+  }, [isUpdateDemand])
 
   useEffect(() => {
     // 获取项目信息中的需求类别

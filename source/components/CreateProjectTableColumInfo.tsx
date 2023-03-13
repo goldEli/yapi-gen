@@ -25,9 +25,7 @@ import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
 import ChangeStatusPopover from './ChangeStatusPopover'
 import ChangePriorityPopover from './ChangePriorityPopover'
-import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import StateTag from './StateTag'
-import { divide } from 'lodash'
 import DemandProgress from './DemandProgress'
 
 const Wrap = styled.div<{ isEdit?: any }>(
@@ -68,17 +66,18 @@ export const useDynamicColumns = (state: any) => {
   const arr = [
     {
       width: 100,
-      title: <NewSort fixedKey="story_prefix_key">编号</NewSort>,
-      dataIndex: 'storyPrefixKey',
-      key: 'story_prefix_key',
+      title: <NewSort fixedKey="id">ID</NewSort>,
+      dataIndex: 'id',
+      key: 'id',
       render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <ClickWrap
+              className="canClickDetail"
               onClick={() => state.onClickItem(record)}
               isClose={record.status?.is_end === 1}
             >
-              {record.storyPrefixKey}
+              {text}
             </ClickWrap>
             {record.isExamine && (
               <IconFont
@@ -88,6 +87,25 @@ export const useDynamicColumns = (state: any) => {
                 }}
               />
             )}
+          </div>
+        )
+      },
+    },
+    {
+      width: 140,
+      title: <NewSort fixedKey="story_prefix_key">编号</NewSort>,
+      dataIndex: 'storyPrefixKey',
+      key: 'prefix_key',
+      render: (text: string, record: any) => {
+        return (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <ClickWrap
+              className="canClickDetail"
+              onClick={() => state.onClickItem(record)}
+              isClose={record.status?.is_end === 1}
+            >
+              {record.storyPrefixKey}
+            </ClickWrap>
           </div>
         )
       },
@@ -133,6 +151,7 @@ export const useDynamicColumns = (state: any) => {
               <Tooltip title={text} getPopupContainer={node => node}>
                 <ListNameWrap
                   isName
+                  className="canClickDetail"
                   isClose={record.status?.is_end === 1}
                   onClick={() => state.onClickItem(record)}
                 >
