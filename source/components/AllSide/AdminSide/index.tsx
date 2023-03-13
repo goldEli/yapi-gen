@@ -171,7 +171,7 @@ const AdminSide = () => {
   const getDefaultKey = (data: any, parentKeys: any) => {
     for (const i in data) {
       if (data[i]?.path === location.pathname) {
-        setDefaultKey([parentKeys.key])
+        setDefaultKey([parentKeys?.key])
       }
       if (data[i].children) {
         getDefaultKey(data[i].children, data[i])
