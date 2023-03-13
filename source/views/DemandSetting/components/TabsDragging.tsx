@@ -61,6 +61,9 @@ const DelBtn = styled.span`
     cursor: pointer;
   }
 `
+const DelBtnText = styled.span`
+  color: var(--neutral-n3);
+`
 const SliderList = (props: any) => {
   const { index, onMove, listLength, child } = props
   const [top, setTop] = React.useState(0)
@@ -88,7 +91,7 @@ const SliderList = (props: any) => {
     const mouseMove = (ev: any) => {
       ev.preventDefault()
       ev.stopPropagation()
-      ev.stopImmediatePropagation()
+      // ev.stopImmediatePropagation()
       el.style.pointerEvents = 'none'
       // 获取元素 Rect 并更新 Ref
       const rect = el.getBoundingClientRect()
@@ -137,7 +140,6 @@ const SliderList = (props: any) => {
       ev.preventDefault()
       ev.stopPropagation()
       ev.stopImmediatePropagation()
-      el.style.pointerEvents = 'none'
       clearTimeout(delayedSetZIndexTimeoutId)
       // 注册事件
       document.addEventListener('mousemove', mouseMove)
@@ -230,7 +232,25 @@ const SliderList = (props: any) => {
             <RightOperate>
               <Checkbox disabled={true} />
               <Text>必填</Text>
-              <DelBtn>删除</DelBtn>
+              <>
+                {child.content === 'users_name' ||
+                child.content === 'user_name' ||
+                child.content === 'finish_at' ||
+                child.content === 'created_at' ? (
+                  <DelBtnText>删除</DelBtnText>
+                ) : (
+                  <DelBtn
+                    onClick={(event: any) => {
+                      ref.current.style.pointerEvents = null
+                      event.preventDefault()
+                      event.stopPropagation()
+                      props.onDelete()
+                    }}
+                  >
+                    删除
+                  </DelBtn>
+                )}
+              </>
             </RightOperate>
           </ItemList>
         </Tooltip>
@@ -272,9 +292,10 @@ const SliderList = (props: any) => {
             <Text>必填</Text>
             <DelBtn
               onClick={(event: any) => {
-                event.preventDefault(),
-                  event.stopPropagation(),
-                  props.onDelete()
+                ref.current.style.pointerEvents = null
+                event.preventDefault()
+                event.stopPropagation()
+                props.onDelete()
               }}
             >
               删除
