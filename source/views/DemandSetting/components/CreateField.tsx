@@ -146,7 +146,11 @@ const CreateField = () => {
   }
   // 根据输入框过滤
   const onSearch = (value: string) => {
-    setSearchDataList(dataList.filter((el: any) => el.title.includes(value)))
+    if (value) {
+      setSearchDataList(dataList.filter((el: any) => el.title.includes(value)))
+    } else {
+      setSearchDataList(dataList)
+    }
   }
   // 监听列表被删除时过滤
   useEffect(() => {
