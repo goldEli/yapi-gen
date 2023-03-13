@@ -4,7 +4,7 @@ import Main from './components/Main'
 import CreateField from './components/CreateField'
 import CommonButton from '@/components/CommonButton'
 import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from '@store/index'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getCategoryConfigList } from '@store/category/thunk'
@@ -42,6 +42,10 @@ const DemandSetting = () => {
       }),
     )
   }
+  useEffect(() => {
+    setIsSave(false)
+    setIsOperate(false)
+  }, [activeCategory])
   return (
     <PermissionWrap
       auth="b/project/story_config"

@@ -145,7 +145,7 @@ const EditorCategory = (props: EditorProps) => {
       <FormWrap
         form={form}
         layout="vertical"
-        style={{ padding: '0 16px 0 2px' }}
+        style={{ padding: '0 16px 0 24px' }}
       >
         <Form.Item
           label={t('newlyAdd.categoryName')}

@@ -299,15 +299,13 @@ const DemandMain = (props: Props) => {
       <Content>
         <ProjectCommonOperation onInputSearch={onInputSearch} />
         <DemandContent>
-          {isShowLeft && (
-            <WrapLeft
-              ref={myTreeComponent}
-              projectId={projectId}
-              isShowLeft={isShowLeft}
-              onUpdate={onUpdate}
-              iKey={key}
-            />
-          )}
+          <WrapLeft
+            ref={myTreeComponent}
+            projectId={projectId}
+            isShowLeft={isShowLeft}
+            onUpdate={onUpdate}
+            iKey={key}
+          />
           <Right isShowLeft={isShowLeft}>
             <Operation
               pid={projectId}

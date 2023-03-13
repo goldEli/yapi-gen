@@ -374,13 +374,13 @@ const StepPageOne = (propsOne: Props) => {
       render: (text: string, record: any) => (
         <Space size={16}>
           <span
-            style={{ color: '#2877ff', cursor: 'pointer' }}
+            style={{ color: 'var(--primary-d2)', cursor: 'pointer' }}
             onClick={() => onClickOperation(record, 'edit')}
           >
             {t('common.edit')}
           </span>
           <span
-            style={{ color: '#2877ff', cursor: 'pointer' }}
+            style={{ color: 'var(--primary-d2)', cursor: 'pointer' }}
             onClick={() => onClickOperation(record, 'del')}
           >
             {t('common.del')}
@@ -475,7 +475,7 @@ const StepPageOne = (propsOne: Props) => {
         style={{ display: 'flex', alignItems: 'flex-end', marginBottom: 24 }}
       >
         <Button
-          style={{ background: '#F0F4FA', color: '#2877ff' }}
+          style={{ background: '#F0F4FA', color: 'var(--primary-d2)' }}
           icon={<IconFont type="plus" />}
           onClick={() => setIsAddVisible(true)}
         >

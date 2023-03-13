@@ -92,9 +92,9 @@ const IconFontStyle = styled(IconFont)`
 const AdminSide = () => {
   const navigate = useNavigate()
   const { currentMenu, userInfo } = useSelector(store => store.user)
-
+  const [defaultKey, setDefaultKey] = useState<any>()
   const currentMenuMap = fromPairs(
-    currentMenu.children?.map((i: any) => [i.url, i]),
+    (currentMenu?.children || [])?.map((i: any) => [i.url, i]),
   )
   const onFilter = (list: any[]) => {
     return list.filter(i => (i.path ? currentMenuMap[i.path] : true))
@@ -102,30 +102,30 @@ const AdminSide = () => {
   const side: any = [
     {
       label: '公司信息',
-      key: '1',
+      key: '/AdminManagement/CompanyInfo',
       icon: <IconFontStyle className="icon" type="file-text" />,
       path: '/AdminManagement/CompanyInfo',
     },
     {
       label: '组织信息',
-      key: '2',
+      key: '3',
       icon: <IconFontStyle className="icon" type="apartment" />,
       children: [
         {
           label: '员工管理',
-          key: '1-33',
+          key: '/AdminManagement/StaffManagement',
           path: '/AdminManagement/StaffManagement',
         },
         {
           label: '团队管理',
-          key: '12',
+          key: '/AdminManagement/TeamManagement',
           path: '/AdminManagement/TeamManagement',
         },
       ],
     },
     {
       label: '权限管理',
-      key: '3',
+      key: '/AdminManagement/PermissionManagement',
       icon: <IconFontStyle className="icon" type="lock" />,
       path: '/AdminManagement/PermissionManagement',
     },
@@ -136,17 +136,17 @@ const AdminSide = () => {
       children: [
         {
           label: '安全水印',
-          key: '1-12',
+          key: '/AdminManagement/WaterMarkManagement',
           path: '/AdminManagement/WaterMarkManagement',
         },
         {
           label: '操作日志',
-          key: '1-13',
+          key: '/AdminManagement/OperationManagement',
           path: '/AdminManagement/OperationManagement',
         },
         {
           label: '登录日志',
-          key: '1-14',
+          key: '/AdminManagement/LoginManagement',
           path: '/AdminManagement/LoginManagement',
         },
       ],
@@ -167,6 +167,20 @@ const AdminSide = () => {
     const pathObject = allSide.filter((i: any) => i.key === e.key)[0]
     pathObject.path && navigate(pathObject.path)
   }
+  // 根据导航匹配父级key
+  const getDefaultKey = (data: any, parentKeys: any) => {
+    for (const i in data) {
+      if (data[i]?.path === location.pathname) {
+        setDefaultKey([parentKeys?.key])
+      }
+      if (data[i].children) {
+        getDefaultKey(data[i].children, data[i])
+      }
+    }
+  }
+  useEffect(() => {
+    getDefaultKey(side, null)
+  }, [])
   return (
     <AdminSideWrap>
       <HeaderWrap>
@@ -181,8 +195,9 @@ const AdminSide = () => {
             <IconFontStyle className="icon" type="down" />
           )
         }
-        defaultSelectedKeys={['1']}
-        defaultOpenKeys={['sub1']}
+        defaultSelectedKeys={[location.pathname]}
+        openKeys={defaultKey}
+        onOpenChange={e => setDefaultKey(e)}
         mode="inline"
         items={sideList}
         onSelect={onMenuClick}

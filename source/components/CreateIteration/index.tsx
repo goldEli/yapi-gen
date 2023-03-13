@@ -39,7 +39,6 @@ const CreateIteration = () => {
   const [times, setTimes] = useState<any>(null)
   // 项目列表
   const [projectList, setProjectList] = useState<any>([])
-  const [html, setHtml] = useState('')
 
   // 获取最近项目列表 -- 使用列表的第一个
   const getRecentlyList = async () => {
@@ -62,7 +61,6 @@ const CreateIteration = () => {
         projectId: createIterationParams.projectId,
         id: createIterationParams?.id,
       })
-      setHtml(response?.info)
       setTimes([
         moment(response.createdTime || response?.startTime || 0),
         moment(response.endTime || 1893427200),
@@ -91,7 +89,6 @@ const CreateIteration = () => {
   const onCancel = () => {
     form.resetFields()
     setTimes(null)
-    setHtml('')
     dispatch(setIsCreateIterationVisible(false))
     dispatch(
       setCreateIterationParams(
@@ -103,7 +100,6 @@ const CreateIteration = () => {
   const onConfirm = async () => {
     await form.validateFields()
     const values = form.getFieldsValue()
-    // values.info = html
     if (createIterationParams?.id) {
       await updateIterate({
         projectId: createIterationParams?.projectId,
@@ -192,6 +188,7 @@ const CreateIteration = () => {
                 optionFilterProp="label"
                 getPopupContainer={node => node}
                 showSearch
+                disabled={createIterationParams.id}
               >
                 {projectList
                   ?.filter((i: any) => i.status === 1)
@@ -222,8 +219,6 @@ const CreateIteration = () => {
             </Form.Item>
           </ItemWrap>
           <Form.Item name="info" label={t('project.iterateTarget')}>
-            {/* <RichEditor value={html} />
-             */}
             <Editor
               ref={editorRef}
               key={Math.random()}

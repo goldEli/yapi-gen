@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-handler-names */
+/* eslint-disable complexity */
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
@@ -91,7 +92,6 @@ const SliderList = (props: any) => {
     const mouseMove = (ev: any) => {
       ev.preventDefault()
       ev.stopPropagation()
-      // ev.stopImmediatePropagation()
       el.style.pointerEvents = 'none'
       // 获取元素 Rect 并更新 Ref
       const rect = el.getBoundingClientRect()
@@ -123,7 +123,6 @@ const SliderList = (props: any) => {
     const mouseUp = (ev: any) => {
       ev.preventDefault()
       ev.stopPropagation()
-      ev.stopImmediatePropagation()
       el.style.pointerEvents = null
       document.removeEventListener('mousemove', mouseMove)
       // 重置 Top
@@ -139,7 +138,6 @@ const SliderList = (props: any) => {
     const mouseDown = (ev: any) => {
       ev.preventDefault()
       ev.stopPropagation()
-      ev.stopImmediatePropagation()
       clearTimeout(delayedSetZIndexTimeoutId)
       // 注册事件
       document.addEventListener('mousemove', mouseMove)
@@ -230,7 +228,21 @@ const SliderList = (props: any) => {
               </ListMsg>
             </div>
             <RightOperate>
-              <Checkbox disabled={true} />
+              {child.content === 'users_name' ||
+              child.content === 'user_name' ||
+              child.content === 'finish_at' ||
+              child.content === 'created_at' ? (
+                <Checkbox disabled={true} />
+              ) : (
+                <Checkbox
+                  checked={child?.isRequired === 1 ? true : false}
+                  onClick={(e: any) => {
+                    e.stopPropagation()
+                    props.onChangeChecked(e, e.target.checked)
+                  }}
+                />
+              )}
+
               <Text>必填</Text>
               <>
                 {child.content === 'users_name' ||
@@ -241,7 +253,6 @@ const SliderList = (props: any) => {
                 ) : (
                   <DelBtn
                     onClick={(event: any) => {
-                      ref.current.style.pointerEvents = null
                       event.preventDefault()
                       event.stopPropagation()
                       props.onDelete()
@@ -292,7 +303,6 @@ const SliderList = (props: any) => {
             <Text>必填</Text>
             <DelBtn
               onClick={(event: any) => {
-                ref.current.style.pointerEvents = null
                 event.preventDefault()
                 event.stopPropagation()
                 props.onDelete()

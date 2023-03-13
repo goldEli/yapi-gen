@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/no-unstable-nested-components */
-import { message, Modal, Select, Space, Tree } from 'antd'
+import { Form, message, Modal, Select, Space, Tree } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
@@ -12,11 +12,11 @@ import { CloseWrap } from '@/components/StyleCommon'
 import CommonButton from '@/components/CommonButton'
 import { useEffect, useState } from 'react'
 import Checkbox from 'antd/lib/checkbox/Checkbox'
-import CommonUserAvatar from './CommonUserAvatar'
+import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { getDepartmentUserList } from '@store/teams/thunk'
 import { useDispatch, useSelector } from '@store/index'
 import { unionBy } from 'lodash'
-
+import { getProjectPermission } from '@/services/project'
 const { DirectoryTree } = Tree
 const ModalHeader = styled.div`
   display: flex;
@@ -32,7 +32,7 @@ const ModalFooter = styled(Space)({
   width: '100%',
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'flex-end',
+  justifyContent: 'space-between',
   height: 80,
   padding: '0 20px 0 24px',
 })
@@ -203,17 +203,21 @@ interface ModalProps {
   title?: string
   onClose?(): void
   children?: any
-  onConfirm?(list: any[]): void
+  onConfirm?(list: any[], id?: number): void
   confirmText?: string
   hasFooter?: any
   isShowFooter?: boolean
   hasTop?: any
+  isPermisGroup?: boolean
+  userGroupId?: number
+  projectPermission?: any
 }
 
 const CommonModal = (props: ModalProps) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const { departmentUserList } = useSelector(s => s.teams)
+  const { projectInfo } = useSelector(store => store.project)
   // 添加成员拍平数组
   const [selectDataList, setSelectDataList] = useState<any>()
   const [searchVal, setSearchVal] = useState<any>('')
@@ -230,7 +234,7 @@ const CommonModal = (props: ModalProps) => {
   ]
   const [tabsActive, setTabsActive] = useState(0)
   const treeData: any = departmentUserList
-
+  const [form] = Form.useForm()
   const onInit = () => {
     setPersonData([])
     setSearchVal('')
@@ -240,6 +244,10 @@ const CommonModal = (props: ModalProps) => {
   useEffect(() => {
     if (props.isVisible) {
       onInit()
+      props.isPermisGroup &&
+        form.setFieldsValue({
+          userGroupId: props?.userGroupId,
+        })
     }
   }, [props.isVisible])
 
@@ -330,6 +338,15 @@ const CommonModal = (props: ModalProps) => {
     } else {
       const filterVal: any = selectDataList.filter((el: any) => el.id === value)
       setPersonData([...personData, ...filterVal])
+    }
+  }
+
+  const onConfirm = async () => {
+    if (props.isPermisGroup) {
+      await form.validateFields()
+      props?.onConfirm?.(personData, form.getFieldsValue().userGroupId)
+    } else {
+      props?.onConfirm?.(personData)
     }
   }
 
@@ -438,16 +455,53 @@ const CommonModal = (props: ModalProps) => {
           ))}
         </RightPerson>
       </CreatePerson>
-      <ModalFooter size={16}>
-        <CommonButton type="secondary" onClick={props?.onClose}>
-          {t('common.cancel')}
-        </CommonButton>
-        <CommonButton
-          type="primary"
-          onClick={() => props?.onConfirm?.(personData)}
-        >
-          {t('common.confirm')}
-        </CommonButton>
+      <ModalFooter>
+        {props.isPermisGroup ? (
+          <Form form={form}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <span style={{ fontSize: 14, color: '#323233', marginRight: 16 }}>
+                {t('project.joinPermission')}
+                <span style={{ fontSize: 12, color: 'red', marginLeft: 4 }}>
+                  *
+                </span>
+              </span>
+              <Form.Item
+                name="userGroupId"
+                noStyle
+                rules={[{ required: true, message: '' }]}
+              >
+                <Select
+                  placeholder={t('project.pleasePermission')}
+                  getPopupContainer={node => node}
+                  style={{ width: 192 }}
+                  options={props?.projectPermission}
+                  showSearch
+                  showArrow
+                  optionFilterProp="label"
+                  defaultValue={
+                    props?.projectPermission?.filter(
+                      (i: any) => i.tagLabel === '参与者',
+                    )[0]?.value
+                  }
+                />
+              </Form.Item>
+            </div>
+          </Form>
+        ) : (
+          <div />
+        )}
+        <div style={{ display: 'flex' }}>
+          <CommonButton
+            type="secondary"
+            onClick={props?.onClose}
+            style={{ marginRight: '16px' }}
+          >
+            {t('common.cancel')}
+          </CommonButton>
+          <CommonButton type="primary" onClick={onConfirm}>
+            {t('common.confirm')}
+          </CommonButton>
+        </div>
       </ModalFooter>
     </ModalStyle>
   )

@@ -310,7 +310,7 @@ const ExamineItem = (props: Props) => {
             <span
               style={{
                 marginLeft: 32,
-                color: isShowSelect ? '#2877ff' : '##323233',
+                color: isShowSelect ? 'var(--primary-d2)' : '##323233',
                 fontSize: 12,
               }}
             >
@@ -319,7 +319,7 @@ const ExamineItem = (props: Props) => {
             <IconFont
               style={{
                 marginLeft: 8,
-                color: isShowSelect ? '#2877ff' : '##323233',
+                color: isShowSelect ? 'var(--primary-d2)' : '##323233',
               }}
               type={isShowSelect ? 'up' : 'down'}
             />

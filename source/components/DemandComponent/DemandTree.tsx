@@ -41,6 +41,7 @@ import { DemandOperationDropdownMenu } from './DemandOperationDropdownMenu'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import ResizeTable from '../ResizeTable'
+import { setFilterParamsModal } from '@store/project'
 
 const Content = styled.div({
   padding: '20px 12px 0 8px',
@@ -132,6 +133,7 @@ const DemandTree = (props: Props) => {
   const [delayChild, setDelayChild] = useState<any>({})
   const dispatch = useDispatch()
   const [openDemandDetail] = useOpenDemandDetail()
+  const { filterParams } = useSelector(store => store.demand)
 
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
   const getShowkey = () => {
@@ -599,6 +601,12 @@ const DemandTree = (props: Props) => {
     setIsAddVisible(!isAddVisible)
   }
 
+  const onClick = () => {
+    dispatch(setIsCreateDemandVisible(true))
+    dispatch(setCreateDemandProps({ noDataCreate: true }))
+    dispatch(setFilterParamsModal(filterParams))
+  }
+
   return (
     <Content>
       <ResizeTable
@@ -625,10 +633,7 @@ const DemandTree = (props: Props) => {
             haveFilter={filterKeys?.length > 0}
           >
             {!hasCreate && (
-              <SecondButton
-                onClick={() => setIsAddVisible(true)}
-                style={{ marginTop: 24 }}
-              >
+              <SecondButton onClick={onClick} style={{ marginTop: 24 }}>
                 {t('common.createDemand')}
               </SecondButton>
             )}

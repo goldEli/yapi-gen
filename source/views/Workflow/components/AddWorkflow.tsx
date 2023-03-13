@@ -61,7 +61,7 @@ const AddWrapBox = styled.div({
   padding: '0 16px',
   height: 32,
   lineHeight: '32px',
-  color: '#2877ff',
+  color: 'var(--primary-d2)',
   width: 'fit-content',
   margin: '10px 0',
   cursor: 'pointer',
@@ -185,7 +185,7 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
         onChangeValue={val => onChangeValue(val)}
       />
       <TextWrap
-        style={{ margin: '0 16px 0 24px', color: '#2877ff' }}
+        style={{ margin: '0 16px 0 24px', color: 'var(--primary-d2)' }}
         onClick={onConfirm}
       >
         {t('container.finish')}
@@ -426,13 +426,13 @@ const AddWorkflow = (props: Props) => {
           ) : (
             <Space size={16}>
               <span
-                style={{ color: '#2877ff', cursor: 'pointer' }}
+                style={{ color: 'var(--primary-d2)', cursor: 'pointer' }}
                 onClick={() => onAddEdit(record)}
               >
                 {t('common.edit')}
               </span>
               <span
-                style={{ color: '#2877ff', cursor: 'pointer' }}
+                style={{ color: 'var(--primary-d2)', cursor: 'pointer' }}
                 onClick={() => onAddDel(record)}
               >
                 {t('common.del')}
