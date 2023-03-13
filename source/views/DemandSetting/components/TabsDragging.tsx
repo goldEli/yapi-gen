@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-handler-names */
+/* eslint-disable complexity */
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
@@ -230,7 +231,21 @@ const SliderList = (props: any) => {
               </ListMsg>
             </div>
             <RightOperate>
-              <Checkbox disabled={true} />
+              {child.content === 'users_name' ||
+              child.content === 'user_name' ||
+              child.content === 'finish_at' ||
+              child.content === 'created_at' ? (
+                <Checkbox disabled={true} />
+              ) : (
+                <Checkbox
+                  checked={child?.isRequired === 1 ? true : false}
+                  onClick={(e: any) => {
+                    e.stopPropagation()
+                    props.onChangeChecked(e, e.target.checked)
+                  }}
+                />
+              )}
+
               <Text>必填</Text>
               <>
                 {child.content === 'users_name' ||
