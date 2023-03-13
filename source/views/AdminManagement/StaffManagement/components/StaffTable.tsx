@@ -175,7 +175,7 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: <NewSort fixedKey="status">离职状态</NewSort>,
+      title: <NewSort fixedKey="handover_status">离职状态</NewSort>,
       dataIndex: 'handover_status',
       key: 'handover_status',
       width: 120,

@@ -224,7 +224,13 @@ const IterationMain = (props: Props) => {
   }
 
   const onUpdate = (updateState?: boolean) => {
-    getList(isGrid, { page: 1, size: pageObj.size }, searchItems, updateState)
+    getList(
+      isGrid,
+      { page: 1, size: pageObj.size },
+      searchItems,
+      updateState,
+      topParentId,
+    )
   }
 
   const onChangeCurrent = (item: any) => {
@@ -314,6 +320,7 @@ const IterationMain = (props: Props) => {
                 }}
                 isUpdated={isUpdated}
                 iterateId={keyRef.current?.id}
+                onUpdateTopId={setTopParentId}
               />
             )}
             {!isGrid && (

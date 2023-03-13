@@ -69,9 +69,11 @@ const DemandDetailDrawer = () => {
       dom: useRef<any>(null),
     },
   }
-  const { isDemandDetailDrawerVisible, demandDetailDrawerProps } = useSelector(
-    store => store.demand,
-  )
+  const {
+    isDemandDetailDrawerVisible,
+    demandDetailDrawerProps,
+    isUpdateDemand,
+  } = useSelector(store => store.demand)
   const { projectInfo } = useSelector(store => store.project)
   const [t] = useTranslation()
   const dispatch = useDispatch()
@@ -83,6 +85,7 @@ const DemandDetailDrawer = () => {
   const [drawerInfo, setDrawerInfo] = useState<any>({})
   const [showState, setShowState] = useState<any>(normalState)
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [demandIds, setDemandIds] = useState([])
   const commentDom: any = createRef()
 
   const isCanEdit =
@@ -152,11 +155,7 @@ const DemandDetailDrawer = () => {
     setDrawerInfo(info)
     setSkeletonLoading(false)
     // 获取当前需求的下标， 用作上一下一切换
-    setCurrentIndex(
-      (demandDetailDrawerProps?.demandIds || []).findIndex(
-        (i: any) => i === info.id,
-      ),
-    )
+    setCurrentIndex((demandIds || []).findIndex((i: any) => i === info.id))
   }
 
   // 关闭弹窗
@@ -189,7 +188,6 @@ const DemandDetailDrawer = () => {
   // 点击编辑
   const onEditChange = (item: any) => {
     setIsMoreVisible(false)
-    // setComputedTopId(demandDetailDrawerProps?.topId)
     dispatch(setIsCreateDemandVisible(true))
     dispatch(
       setCreateDemandProps({
@@ -204,13 +202,10 @@ const DemandDetailDrawer = () => {
     setIsMoreVisible(false)
     setDeleteId(item.id)
     setIsDelete(true)
-    // props.onDelete(item)
-    // setComputedTopId(item?.topId)
   }
 
   // 点击创建子需求
   const onCreateChild = (item: any) => {
-    // setComputedTopId(item?.topId)
     setIsMoreVisible(false)
     dispatch(setIsCreateDemandVisible(true))
     dispatch(
@@ -269,7 +264,7 @@ const DemandDetailDrawer = () => {
 
   // 向上查找需求
   const onUpDemand = () => {
-    const newIndex = demandDetailDrawerProps.demandIds[currentIndex - 1]
+    const newIndex = demandIds[currentIndex - 1]
     if (!currentIndex) return
     dispatch(
       setDemandDetailDrawerProps({
@@ -281,8 +276,8 @@ const DemandDetailDrawer = () => {
 
   // 向下查找需求
   const onDownDemand = () => {
-    const newIndex = demandDetailDrawerProps.demandIds[currentIndex + 1]
-    if (currentIndex === demandDetailDrawerProps.demandIds?.length - 1) return
+    const newIndex = demandIds[currentIndex + 1]
+    if (currentIndex === demandIds?.length - 1) return
 
     dispatch(
       setDemandDetailDrawerProps({
@@ -293,12 +288,28 @@ const DemandDetailDrawer = () => {
   }
 
   useEffect(() => {
+    if (demandIds?.length > 0) {
+      getDemandDetail()
+      getProjectData()
+      setShowState(normalState)
+    }
+  }, [demandIds])
+
+  useEffect(() => {
     if (isDemandDetailDrawerVisible || demandDetailDrawerProps?.id) {
+      setDemandIds(demandDetailDrawerProps?.demandIds || [])
       getDemandDetail()
       getProjectData()
       setShowState(normalState)
     }
   }, [demandDetailDrawerProps, isDemandDetailDrawerVisible])
+
+  useEffect(() => {
+    if (isUpdateDemand) {
+      setCurrentIndex(0)
+      setDemandIds([])
+    }
+  }, [isUpdateDemand])
 
   return (
     <>
@@ -344,7 +355,7 @@ const DemandDetailDrawer = () => {
                 onChangeStatus={onChangeStatus}
               >
                 <StateTag
-                  name={drawerInfo.name}
+                  name={drawerInfo?.status?.status?.content}
                   onClick={drawerInfo.isExamine ? onExamine : void 0}
                   isShow={isCanEdit || drawerInfo.isExamine}
                   state={
@@ -374,7 +385,8 @@ const DemandDetailDrawer = () => {
               </NextWrap>
               <NextWrap
                 isDisable={
-                  currentIndex === demandDetailDrawerProps.demandIds?.length - 1
+                  demandIds?.length === 0 ||
+                  currentIndex === demandIds?.length - 1
                 }
                 onClick={onDownDemand}
               >

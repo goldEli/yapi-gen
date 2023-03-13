@@ -20,6 +20,7 @@ import { changeRest } from '@store/log'
 import { Editor, EditorRef } from '@xyfe/uikit'
 import { uploadFileByTask, uploadFileToKey } from '@/services/cos'
 import { getStaffListAll } from '@/services/staff'
+import { uploadFile } from '@/components/CreateDemand/CreateDemandLeft'
 
 export const LabelTitle = (props: any) => {
   return (
@@ -49,6 +50,7 @@ const WhiteDay = (props: any) => {
     { name: t('p2.title.t3d'), name2: t('p2.title.t3t') },
   ]
   const editorRef = useRef<EditorRef>(null)
+  const editorRef2 = useRef<EditorRef>(null)
   const [form] = Form.useForm()
   const [attachList, setAttachList] = useState<any>([])
   const [peopleValue, setPeopleValue] = useState<any>([])
@@ -163,6 +165,7 @@ const WhiteDay = (props: any) => {
       setDefaultValue()
     }
     getList()
+
     editorRef.current?.focus()
   }, [props.editId, props.visibleEdit])
 
@@ -251,28 +254,9 @@ const WhiteDay = (props: any) => {
           >
             {/* <RichEditor height={178} autoFocus /> */}
             <Editor
-              ref={editorRef}
-              key={Math.random()}
-              upload={file => {
-                const key = uploadFileToKey(
-                  file,
-                  file.name,
-                  `richEditorFiles_${new Date().getTime()}`,
-                  false,
-                  data => {
-                    editorRef.current?.notifyUploaded(data.key, data.url)
-                  },
-                )
-                return key
-              }}
-              getSuggestions={() => {
-                return new Promise(resolve => {
-                  setTimeout(() => {
-                    // resolve([])
-                    resolve(options)
-                  }, 1000)
-                })
-              }}
+              ref={editorRef2}
+              upload={uploadFile}
+              getSuggestions={() => options}
             />
           </Form.Item>
           <Form.Item
@@ -305,27 +289,8 @@ const WhiteDay = (props: any) => {
           >
             <Editor
               ref={editorRef}
-              key={Math.random()}
-              upload={file => {
-                const key = uploadFileToKey(
-                  file,
-                  file.name,
-                  `richEditorFiles_${new Date().getTime()}`,
-                  false,
-                  data => {
-                    editorRef.current?.notifyUploaded(data.key, data.url)
-                  },
-                )
-                return key
-              }}
-              getSuggestions={() => {
-                return new Promise(resolve => {
-                  setTimeout(() => {
-                    // resolve([])
-                    resolve(options)
-                  }, 1000)
-                })
-              }}
+              upload={uploadFile}
+              getSuggestions={() => options}
             />
           </Form.Item>
           <Form.Item

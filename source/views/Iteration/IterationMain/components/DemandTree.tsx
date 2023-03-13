@@ -70,6 +70,7 @@ interface Props {
   filterParams: any
   isUpdated?: boolean
   iterateId: any
+  onUpdateTopId?(value: any): void
 }
 
 interface TreeIconProps {
@@ -185,7 +186,11 @@ const DemandTree = (props: Props) => {
       demandIds = props.data?.list?.map((i: any) => i.id)
     }
 
-    openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id)
+    openDemandDetail(
+      { ...item, ...{ demandIds: demandIds.reverse() } },
+      projectId,
+      item.id,
+    )
   }
 
   // 修改优先级
@@ -225,6 +230,7 @@ const DemandTree = (props: Props) => {
   const onEditChange = (e: any, item?: any) => {
     setIsShowMore(false)
     setComputedTopId(item?.topId)
+    props.onUpdateTopId?.(item.topId)
     dispatch(setIsCreateDemandVisible(true))
     dispatch(setCreateDemandProps({ demandId: item.id, projectId }))
   }
@@ -233,11 +239,13 @@ const DemandTree = (props: Props) => {
     setIsShowMore(false)
     props.onDelete(item)
     setComputedTopId(item?.topId)
+    props.onUpdateTopId?.(item.topId)
   }
 
   // 点击创建子需求
   const onCreateChild = (item: any) => {
     setComputedTopId(item?.topId)
+    props.onUpdateTopId?.(item.topId)
     setIsShowMore(false)
     dispatch(setIsCreateDemandVisible(true))
     dispatch(
@@ -401,14 +409,6 @@ const DemandTree = (props: Props) => {
     projectInfo?.projectPermissions,
     'b/story/batch',
   )
-
-  // 点击创建子需求
-  const onChangeCreateChild = (item: any) => {
-    setIsShowMore(false)
-    setIsVisible(true)
-    setIsCreateChild(item)
-    setComputedTopId(item?.topId)
-  }
 
   //  点击批量
   const onClickBatch = (e: any, type: any) => {

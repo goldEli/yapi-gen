@@ -36,7 +36,7 @@ import {
 import { changeId } from '@store/counterSlice'
 
 const Left = styled.div`
-  height: 100%;
+  height: calc(100vh - 150px);
   background-color: #fff;
   position: relative;
 `

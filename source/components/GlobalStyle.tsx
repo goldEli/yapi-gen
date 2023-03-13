@@ -179,9 +179,6 @@ const GlobalStyle = () => {
     .ant-progress-text {
       color: var(--neutral-n2) !important;
     }
-    .ant-table-body {
-      overflow: unset !important;
-    }
     .ant-form-item {
       padding-top: 2px !important;
     }
@@ -713,7 +710,7 @@ const GlobalStyle = () => {
 
     .ant-dropdown-menu-item {
       /* text-align: center; */
-      height: 32px;
+      /* height: 32px; */
       background-color: var(--neutral-white-d5);
     }
     .ant-menu-vertical .ant-menu-submenu-selected,
