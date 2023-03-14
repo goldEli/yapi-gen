@@ -170,7 +170,7 @@ const DemandMain = (props: Props) => {
   }, [key, isGrid, order, pageObj, searchChoose, projectId])
 
   useEffect(() => {
-    if (isRefresh || isUpdateDemand) {
+    if (isRefresh) {
       getList(
         isGrid,
         searchItems,
@@ -180,7 +180,13 @@ const DemandMain = (props: Props) => {
         topParentId,
       )
     }
-  }, [isRefresh, isUpdateDemand])
+  }, [isRefresh])
+
+  useEffect(() => {
+    if (isUpdateDemand) {
+      getList(isGrid, searchItems, pageObj, order, false, topParentId)
+    }
+  }, [isUpdateDemand])
 
   useEffect(() => {
     if (props.isUpdate) {

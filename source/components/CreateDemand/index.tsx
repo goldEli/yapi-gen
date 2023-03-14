@@ -18,7 +18,6 @@ import {
   setIsUpdateChangeLog,
   setIsUpdateStatus,
   setIsUpdateDemand,
-  setDemandDetailDrawerProps,
 } from '@store/demand'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsUpdateCreate } from '@store/mine'
@@ -63,6 +62,7 @@ const CreateDemand = () => {
   const [fieldList, setFieldList] = useState<any>([])
   const [workStatusList, setWorkStatusList] = useState([])
   const [isCreateDemand, setIsCreateDemand] = useState<any>({})
+  const [newCategory, setNewCategory] = useState<any>({})
 
   // 获取头部标题
   const titleText = () => {
@@ -89,6 +89,7 @@ const CreateDemand = () => {
     setIsSaveParams(false)
     setProjectId('')
     setFieldList([])
+    setNewCategory({})
     setTimeout(() => {
       leftDom.current?.reset()
       rightDom.current?.reset()
@@ -290,6 +291,7 @@ const CreateDemand = () => {
           onGetDataAll={getInit}
           onChangeWorkStatusList={setWorkStatusList}
           onGetCreateDemand={setIsCreateDemand}
+          onChangeCategory={setNewCategory}
         />
         <CreateDemandRight
           projectId={projectId}
@@ -300,6 +302,7 @@ const CreateDemand = () => {
           isSaveParams={isSaveParams}
           workStatusList={workStatusList}
           isCreateDemand={isCreateDemand}
+          newCategory={newCategory}
         />
       </div>
     </CommonModal>

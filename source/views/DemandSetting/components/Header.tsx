@@ -1,6 +1,6 @@
 /* eslint-disable no-undefined */
 import styled from '@emotion/styled'
-import { Form, message, Select, Switch } from 'antd'
+import { Form, Select, Switch } from 'antd'
 import { useDispatch, useSelector } from '@store/index'
 import { useEffect, useState } from 'react'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -11,9 +11,10 @@ import {
   getWorkflowList,
   changeCategoryStatus,
 } from '@/services/project'
+import { setActiveCategory } from '@store/category'
 import { useNavigate } from 'react-router-dom'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import { setStartUsing } from '@store/category'
+import { setStartUsing } from '@store/category/index'
 import EditCategory from '@/components/AllSide/DemandSettingSide/EditCategory'
 import { storyConfigCategoryList } from '@store/category/thunk'
 import CommonModal from '@/components/CommonModal'
@@ -109,6 +110,7 @@ const Header = () => {
       }))
     setIsDelete(false)
     getList()
+    dispatch(setActiveCategory({}))
   }
 
   // 点击跳转配置工作流

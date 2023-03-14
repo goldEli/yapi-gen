@@ -569,6 +569,7 @@ export const getDemandList: any = async (params: any) => {
           usersNameIds: i.users_name_ids,
           usersCopySendIds: i.users_copysend_name_ids,
           schedule: i.schedule,
+          categoryId: i.category_id,
         })),
         name: k.content_txt,
         id: k.status_id,
@@ -594,6 +595,7 @@ export const getDemandList: any = async (params: any) => {
       isExamine: i.verify_lock === 1,
       priority: i.priority,
       storyPrefixKey: i.story_prefix_key,
+      categoryId: i.category_id,
     }))
   } else if (params?.isChildren) {
     return {

@@ -35,13 +35,14 @@ const PermissionWrap = ({
   children: any
 }) => {
   const [t] = useTranslation()
+
   if (!permission || permission?.length <= 0) {
     return ''
   }
 
   if (
     permission?.includes(auth) ||
-    permission?.filter((i: any) => i.includes(auth))
+    permission?.filter((i: any) => i.includes(auth))?.length > 0
   ) {
     return children
   }
