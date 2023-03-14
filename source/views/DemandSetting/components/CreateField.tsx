@@ -9,6 +9,7 @@ import * as services from '@/services'
 import { useDispatch, useSelector } from '@store/index'
 import ProjectDragging from './ProDragging'
 import { setProjectFieIdsData } from '@store/category'
+
 const CreateFieldWrap = styled.div`
   margin: 20px 0 0 20px;
   border-left: 1px solid var(--neutral-n6-d1);
@@ -76,6 +77,7 @@ const CreateField = () => {
   const [searchDataList, setSearchDataList] = useState<any>()
   const { projectInfo } = useSelector(store => store.project)
   const [payloadDataList, setPayloadDataList] = useState<any>()
+  const [searchValue, setSearchValue] = useState('')
   const option = [
     {
       label: t('newlyAdd.lineText'),
@@ -127,7 +129,6 @@ const CreateField = () => {
   const filterData = (confightList: any, payloadList: any) => {
     if (confightList?.length < 1 && payloadList?.length < 1) return
     const filterIds = confightList?.map((item: any) => item.storyId)
-    // console.log(payloadList?.filter((item: any) => !filterIds?.includes(item.id)), 'guolv')
     setDataList(
       payloadList?.filter((item: any) => !filterIds?.includes(item.id)),
     )
@@ -150,7 +151,9 @@ const CreateField = () => {
       setSearchDataList(dataList.filter((el: any) => el.title.includes(value)))
     } else {
       setSearchDataList(dataList)
+      setSearch(false)
     }
+    setSearchValue(value)
   }
   // 监听列表被删除时过滤
   useEffect(() => {
@@ -210,8 +213,8 @@ const CreateField = () => {
             <InputStyle
               width={184}
               placeholder="请输入关键字"
+              value={searchValue}
               onInput={(e: any) => onSearch(e.target.value)}
-              allowClear
               prefix={
                 <CommonIconFont
                   type="search"
@@ -219,13 +222,30 @@ const CreateField = () => {
                   color="var(--neutral-n2)"
                 />
               }
+              suffix={
+                <>
+                  {searchValue && (
+                    <CommonIconFont
+                      type="close-circle-fill"
+                      onClick={() => {
+                        setSearchDataList(dataList)
+                        setSearch(false)
+                      }}
+                      size={16}
+                      color="var(--neutral-n4)"
+                    />
+                  )}
+                </>
+              }
             />
           ) : searchDataList?.length >= 1 ? (
             <CommonIconFont
               type="search"
               size={16}
               color="var(--neutral-n2)"
-              onClick={() => setSearch(true)}
+              onClick={() => {
+                setSearch(true), setSearchValue('')
+              }}
             />
           ) : (
             ''

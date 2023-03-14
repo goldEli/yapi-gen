@@ -307,7 +307,7 @@ const LeftSide = (props: any) => {
     const pic = {
       uid: '001',
       name: '',
-      url: row?.logo_info.path,
+      url: row?.logo_info?.path,
     }
     return (
       <div style={{ padding: '0 24px' }}>
@@ -346,7 +346,7 @@ const LeftSide = (props: any) => {
     setUploadImgs({
       uid: '001',
       name: '',
-      url: row?.logo_info.path,
+      url: row?.logo_info?.path || '',
     })
     setFormType('edit')
     setTeamIsVisible(true)

@@ -13,6 +13,7 @@ import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch, useSelector } from '@store/index'
 import { getProjectInfo } from '@/services/project'
 import { setProjectInfo } from '@store/project'
+import { editProject } from '@store/create-propject'
 
 const Wrap = styled.div({
   background: 'white',
@@ -184,7 +185,9 @@ const ProjectInfo = () => {
               userInfo?.company_permissions,
               'b/project/update',
             )}
-            onClick={() => setVisible(true)}
+            onClick={() => {
+              dispatch(editProject({ visible: true, id: projectInfo.id }))
+            }}
             style={{
               marginLeft: 24,
               cursor: 'pointer',

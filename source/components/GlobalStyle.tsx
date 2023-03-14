@@ -252,7 +252,7 @@ const GlobalStyle = () => {
       }
     }
     .ant-dropdown-menu-item:hover {
-      background: var(--neutral-n1-d1);
+      background: var(--hover-d3);
       color: var(--neutral-n1-d1);
     }
     .ant-dropdown-menu-item:active {
@@ -448,7 +448,7 @@ const GlobalStyle = () => {
       z-index: 10000 !important;
     }
     .ant-switch {
-      background-color: var(--neutral-n1-d1) !important;
+      background-color: var(--neutral-n8) !important;
     }
     .ant-switch-checked {
       background-color: var(--primary-d2) !important;

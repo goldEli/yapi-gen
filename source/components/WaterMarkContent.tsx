@@ -48,6 +48,7 @@ const SvgTextBg = (props: any) => {
 const WaterMarkContent = (props: any) => {
   const { text, fontSize, fillOpacity, fillColor } = props
   const { value: valueId } = useSelector(store => store.water)
+
   const memoInfo = useMemo(
     () => ({
       text,

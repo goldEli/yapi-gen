@@ -15,6 +15,8 @@ const initialState: CounterState = {
 
 export const getStatus = createAsyncThunk('nameSpace/getStatus', async () => {
   const res = await getWater()
+
+  res.status = res.status === 1 ? true : false
   return res
 })
 

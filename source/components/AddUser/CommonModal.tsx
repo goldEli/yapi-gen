@@ -186,16 +186,6 @@ const TreeStyle = styled(DirectoryTree)`
 `
 const SelectStyle = styled(Select)``
 
-const TreeTitle = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-  font-weight: 400;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: var(--neutral-n2);
-`
 interface ModalProps {
   width?: number
   isVisible: boolean
@@ -223,14 +213,16 @@ const CommonModal = (props: ModalProps) => {
   const [checkedKeys, setCheckedKeys] = useState<any>()
   const [personData, setPersonData] = useState<any>([])
   const [tabsTreeDataList, setTabsTreeDataList] = useState<any>([])
-  const tabs = [
-    {
-      label: '部门',
-    },
+  const [tabs, setTabs] = useState([
     {
       label: '团队',
+      key: '1',
     },
-  ]
+    {
+      label: '部门',
+      key: '2',
+    },
+  ])
   const [tabsActive, setTabsActive] = useState(0)
   const treeData: any = departmentUserList
   const [form] = Form.useForm()
@@ -248,10 +240,12 @@ const CommonModal = (props: ModalProps) => {
           userGroupId: props?.userGroupId,
         })
     }
+    if (projectInfo?.teamId === 0 && props.isPermisGroup) {
+      setTabs(tabs.filter(el => el.key === '1'))
+    }
   }, [props.isVisible])
 
   // 勾选后获取到成员
-
   let checkdFilterDataList: any = []
   const checkdFilterData = (data: any) => {
     for (const i in data) {
@@ -316,13 +310,15 @@ const CommonModal = (props: ModalProps) => {
       data.map((el: any) => ({ label: el.name, value: el.id, ...el })),
     )
   }, [departmentUserList])
-
   useEffect(() => {
     dispatch(
       getDepartmentUserList({
         search: {
-          project_id: '0',
-          type: tabsActive === 1 ? 'team' : 'company',
+          project_id:
+            projectInfo?.teamId === 0 && props.isPermisGroup
+              ? projectInfo?.id
+              : '0',
+          type: tabsActive === 0 ? 'team' : 'company',
         },
       }),
     )
