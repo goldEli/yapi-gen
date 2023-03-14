@@ -169,7 +169,7 @@ const DemandWrap = (props: Props) => {
   }, [props.searchGroups])
 
   useEffect(() => {
-    if (isRefresh || isUpdateDemand) {
+    if (isRefresh) {
       getList(
         { page: 1, size: pageObj.size },
         order,
@@ -177,7 +177,13 @@ const DemandWrap = (props: Props) => {
         props.searchGroups,
       )
     }
-  }, [isRefresh, isUpdateDemand])
+  }, [isRefresh])
+
+  useEffect(() => {
+    if (isUpdateDemand) {
+      getList(pageObj, order, orderKey, props.searchGroups)
+    }
+  }, [isUpdateDemand])
 
   const onChangePage = (page: number, size: number) => {
     setPageObj({ page, size })

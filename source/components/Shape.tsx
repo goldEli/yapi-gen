@@ -24,7 +24,7 @@ import moment from 'moment'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { getProjectMember } from '@/services/mine'
 import { useDispatch } from '@store/index'
-import { setIsUpdateChangeLog } from '@store/demand'
+import { setIsUpdateChangeLog, setIsUpdateDemand } from '@store/demand'
 import { CloseWrap } from './StyleCommon'
 import { getShapeLeft, getShapeRight } from '@/services/demand'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
@@ -535,6 +535,7 @@ export const ShapeContent = (props: any) => {
     await onTap(props.noleft ? putData2 : putData)
     onClear()
     dispatch(setIsUpdateChangeLog(true))
+    dispatch(setIsUpdateDemand(true))
   }
 
   const onConfirm = async () => {

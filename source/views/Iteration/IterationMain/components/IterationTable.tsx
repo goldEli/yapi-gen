@@ -33,6 +33,7 @@ import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import ResizeTable from '@/components/ResizeTable'
+import CreateDemandButton from './CreateDemandButton'
 
 const Content = styled.div({
   background: 'var(--neutral-white-d1)',
@@ -405,17 +406,15 @@ const IterationTable = (props: Props) => {
 
   return (
     <Content>
-      {!hasCreate &&
-        props.hasId &&
-        props.hasId?.status === 1 &&
-        projectInfo?.status === 1 && (
-          <div style={{ padding: '16px 0 4px 16px', background: 'white' }}>
-            <SecondButton onClick={onCreateDemand}>
-              <IconFont type="plus" />
-              <div>{t('common.createDemand')}</div>
-            </SecondButton>
-          </div>
-        )}
+      <CreateDemandButton
+        hasCreate={
+          !hasCreate &&
+          props.hasId &&
+          props.hasId?.status === 1 &&
+          projectInfo?.status === 1
+        }
+        onCreateDemand={onCreateDemand}
+      />
 
       <ResizeTable
         isSpinning={props?.isSpinning}
@@ -437,6 +436,15 @@ const IterationTable = (props: Props) => {
           } as any)
         }
       />
+      {!hasBatch && (
+        <FloatBatch
+          isVisible={selectedRowKeys.length > 0}
+          onClose={() => onSelectAll(false)}
+          selectRows={selectedRowKeys}
+          onUpdate={props.onUpdate}
+          onRef={batchDom}
+        />
+      )}
       <PaginationBox
         total={props.data?.total}
         currentPage={props.data?.currentPage}

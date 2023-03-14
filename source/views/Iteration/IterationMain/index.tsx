@@ -236,7 +236,9 @@ const IterationMain = (props: Props) => {
   const onChangeCurrent = (item: any) => {
     keyRef.current = item
     setDataList({ list: undefined })
-    getList(isGrid, { page: 1, size: pageObj.size }, searchItems)
+    if (item?.id) {
+      getList(isGrid, { page: 1, size: pageObj.size }, searchItems)
+    }
   }
 
   const onInputSearch = (keyValue: string) => {
@@ -262,7 +264,7 @@ const IterationMain = (props: Props) => {
 
   useEffect(() => {
     if (isUpdateDemand) {
-      onUpdate()
+      getList(isGrid, pageObj, searchItems, false, topParentId)
     }
   }, [isUpdateDemand])
 
@@ -321,6 +323,7 @@ const IterationMain = (props: Props) => {
                 isUpdated={isUpdated}
                 iterateId={keyRef.current?.id}
                 onUpdateTopId={setTopParentId}
+                hasId={keyRef.current}
               />
             )}
             {!isGrid && (

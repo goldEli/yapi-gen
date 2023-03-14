@@ -41,11 +41,12 @@ import { DemandOperationDropdownMenu } from '@/components/DemandComponent/Demand
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import ResizeTable from '@/components/ResizeTable'
+import CreateDemandButton from './CreateDemandButton'
+import { setFilterParamsModal } from '@store/project'
 
 const Content = styled.div({
   padding: '20px 12px 0 8px',
   background: 'var(--neutral-white-d1)',
-  height: 'calc(100% - 32px)',
 })
 
 const DataWrap = styled.div({
@@ -71,6 +72,7 @@ interface Props {
   isUpdated?: boolean
   iterateId: any
   onUpdateTopId?(value: any): void
+  hasId?: any
 }
 
 interface TreeIconProps {
@@ -107,7 +109,8 @@ const DemandTree = (props: Props) => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { projectInfo, filterKeys } = useSelector(store => store.project)
+  const { projectInfo } = useSelector(store => store.project)
+  const { filterParams } = useSelector(store => store.iterate)
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [titleList3, setTitleList3] = useState<any[]>([])
@@ -396,10 +399,11 @@ const DemandTree = (props: Props) => {
     onChangeTree: getTreeIcon,
   })
 
-  const hasCreate = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/story/save',
-  )
+  const hasCreate =
+    !getIsPermission(projectInfo?.projectPermissions, 'b/story/save') &&
+    props.hasId &&
+    props.hasId?.status === 1 &&
+    projectInfo?.status === 1
 
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
@@ -589,58 +593,74 @@ const DemandTree = (props: Props) => {
     setIsCreateChild({})
   }
 
+  const onCreateDemand = () => {
+    dispatch(setFilterParamsModal(filterParams))
+    dispatch(setIsCreateDemandVisible(true))
+    dispatch(setCreateDemandProps({ projectId, iterateId: props.iterateId }))
+  }
+
   return (
-    <Content>
-      <ResizeTable
-        isSpinning={props?.isSpinning}
-        col={selectColum}
-        dataSource={data?.list}
-        dataWrapNormalHeight="calc(100% - 64px)"
-        expandable={{
-          showExpandColumn: false,
-          expandedRowKeys,
+    <>
+      <CreateDemandButton
+        hasCreate={hasCreate}
+        onCreateDemand={onCreateDemand}
+      />
+      <Content
+        style={{
+          height: hasCreate ? 'calc(100% - 84px)' : 'calc(100% - 32px)',
         }}
-        rowSelection={
-          !hasBatch &&
-          ({
-            selectedRowKeys: selectedRowKeys?.map((i: any) => i.id),
-            onSelect: (record: any, selected: any) =>
-              onSelectChange(record, selected),
-            onSelectAll,
-          } as any)
-        }
-        noData={<NoData />}
-      />
-      {!hasBatch && (
-        <FloatBatch
-          isVisible={selectedRowKeys.length > 0}
-          onClose={() => onSelectAll(false)}
-          selectRows={selectedRowKeys}
-          onUpdate={props.onUpdate}
-          onRef={batchDom}
+      >
+        <ResizeTable
+          isSpinning={props?.isSpinning}
+          col={selectColum}
+          dataSource={data?.list}
+          dataWrapNormalHeight="calc(100% - 64px)"
+          expandable={{
+            showExpandColumn: false,
+            expandedRowKeys,
+          }}
+          rowSelection={
+            !hasBatch &&
+            ({
+              selectedRowKeys: selectedRowKeys?.map((i: any) => i.id),
+              onSelect: (record: any, selected: any) =>
+                onSelectChange(record, selected),
+              onSelectAll,
+            } as any)
+          }
+          noData={<NoData />}
         />
-      )}
+        {!hasBatch && (
+          <FloatBatch
+            isVisible={selectedRowKeys.length > 0}
+            onClose={() => onSelectAll(false)}
+            selectRows={selectedRowKeys}
+            onUpdate={props.onUpdate}
+            onRef={batchDom}
+          />
+        )}
 
-      <PaginationBox
-        currentPage={data?.currentPage}
-        pageSize={data?.pageSize}
-        total={data?.total}
-        onChange={onChangePage}
-      />
+        <PaginationBox
+          currentPage={data?.currentPage}
+          pageSize={data?.pageSize}
+          total={data?.total}
+          onChange={onChangePage}
+        />
 
-      <OptionalFeld
-        allTitleList={allTitleList}
-        plainOptions={plainOptions}
-        plainOptions2={plainOptions2}
-        plainOptions3={plainOptions3}
-        checkList={titleList}
-        checkList2={titleList2}
-        checkList3={titleList3}
-        isVisible={props.settingState}
-        onClose={() => props.onChangeSetting(false)}
-        getCheckList={getCheckList}
-      />
-    </Content>
+        <OptionalFeld
+          allTitleList={allTitleList}
+          plainOptions={plainOptions}
+          plainOptions2={plainOptions2}
+          plainOptions3={plainOptions3}
+          checkList={titleList}
+          checkList2={titleList2}
+          checkList3={titleList3}
+          isVisible={props.settingState}
+          onClose={() => props.onChangeSetting(false)}
+          getCheckList={getCheckList}
+        />
+      </Content>
+    </>
   )
 }
 
