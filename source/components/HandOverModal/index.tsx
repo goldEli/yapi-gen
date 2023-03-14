@@ -103,6 +103,10 @@ const HandOverModal = (props: any) => {
                 }}
                 placeholder="请选择交接人"
                 allowClear
+                showArrow
+                showSearch
+                getPopupContainer={node => node}
+                optionFilterProp="label"
               >
                 {i.members.map((k: any) => (
                   <Option key={k.user_id} value={k.user_id}>
