@@ -48,7 +48,7 @@ const CreateAProjectForm = () => {
   const [form] = Form.useForm()
   const [activeCover, setActiveCover] = useState<any>('')
   const [myCover, setMyCover] = useState<string>('')
-  const [leaderId, setLeaderId] = useState<any>('')
+  const [leaderId, setLeaderId] = useState<any>(0)
   const [lock, setLock] = useState(true)
   const [canChooseLeader, setCanChooseLeader] = useState(true)
   const { createVisible, isEditId } = useSelector(state => state.createProject)
@@ -125,10 +125,20 @@ const CreateAProjectForm = () => {
 
     if (lock) {
       form.setFieldsValue({
-        prefix: transformStr(textStr),
+        prefix:
+          transformStr(textStr).length > 10
+            ? transformStr(textStr).slice(0, 10)
+            : transformStr(textStr),
       })
       // eslint-disable-next-line no-undefined
-      setPey(transformStr(textStr) === '' ? undefined : transformStr(textStr))
+      setPey(
+        transformStr(textStr) === ''
+          ? // eslint-disable-next-line no-undefined
+            undefined
+          : transformStr(textStr).length > 10
+          ? transformStr(textStr).slice(0, 10)
+          : transformStr(textStr),
+      )
     }
   }
 
@@ -324,6 +334,7 @@ const CreateAProjectForm = () => {
               ]}
             >
               <Input
+                maxLength={30}
                 placeholder={t('please_enter_a_project_name')}
                 onChange={onChange}
               />
@@ -337,6 +348,7 @@ const CreateAProjectForm = () => {
               ]}
             >
               <Select
+                defaultValue={0}
                 placeholder={t('please_select_your_affiliation')}
                 optionLabelProp="label"
                 onChange={value => {
@@ -391,6 +403,7 @@ const CreateAProjectForm = () => {
               ]}
             >
               <Input
+                maxLength={10}
                 onChange={e => !e.target.value && setLock(true)}
                 onFocus={() => setLock(false)}
                 placeholder={t('please_enter_the_key')}
@@ -408,7 +421,7 @@ const CreateAProjectForm = () => {
                   setUser(obj.name)
                 }}
                 showSearch
-                disabled={canChooseLeader}
+                // disabled={canChooseLeader}
                 placeholder={t('please_select_project_leader')}
                 optionLabelProp="label"
               >
@@ -429,7 +442,7 @@ const CreateAProjectForm = () => {
               name="isPublic"
             >
               <Select
-                disabled={canChooseLeader}
+                // disabled={canChooseLeader}
                 placeholder={t('please_select_permissions')}
                 optionLabelProp="label"
               >

@@ -44,6 +44,7 @@ const HandOverModal = (props: any) => {
       }
     }
   }
+
   return (
     <CommonModal
       title="离职交接"
@@ -52,11 +53,7 @@ const HandOverModal = (props: any) => {
       onConfirm={onConfirm}
     >
       <Wrap>
-        <PinkWrap>
-          [{props.id.name}
-          ]目前参与了{list.length}
-          个项目，请指定交接项目接收人；交接后他的交接状态将更改为已交接；已经交接状态不可被项目添加及进行员工权限配置
-        </PinkWrap>
+        <PinkWrap>在本团队中参与了3个团队项目，请指定项目接收人；</PinkWrap>
         <Form form={form}>
           {list.map((i: any) => (
             <Form.Item
