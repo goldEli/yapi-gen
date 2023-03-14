@@ -2,6 +2,7 @@ import PermissionWrap from '@/components/PermissionWrap'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
 import { t } from 'i18next'
+import { useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 
 const Title = styled.div`
@@ -9,7 +10,7 @@ const Title = styled.div`
   font-size: 16px;
   font-family: PingFang SC-Medium, PingFang SC;
   font-weight: 500;
-  color: #323233;
+  color: var(--neutral-n1-d1);
   line-height: 32px;
   margin: 20px;
   margin-bottom: 0px;

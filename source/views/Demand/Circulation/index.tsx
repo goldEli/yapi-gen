@@ -33,7 +33,7 @@ const TimeLIneWrap = styled(Timeline)({
     padding: '16px 24px',
     left: '125px!important',
     width: 'calc(100% - 151px)!important',
-    background: '#F8F9FA',
+    background: 'var(--neutral-n8)',
   },
   '.ant-timeline-item-last .ant-timeline-item-content': {
     display: 'none!important',
@@ -54,10 +54,10 @@ const TimeItem = styled.div({
   fontWeight: 400,
   'span:first-child': {
     fontSize: 16,
-    color: '#323233',
+    color: 'var(--neutral-n1-d2)',
   },
   'span:last-child': {
-    color: '#646566',
+    color: 'var(--neutral-n2)',
     fontSize: 12,
   },
 })
@@ -78,7 +78,7 @@ const LineItem = styled.div<{
 )
 
 const LabelItem = styled.div({
-  color: '#969799',
+  color: 'var(--neutral-n3)',
   fontSize: 14,
   fontWeight: 400,
   width: 70,
@@ -99,13 +99,13 @@ const SpanWrap = styled.span<{ size?: any; weight?: any; color?: any }>(
 const TextWrap = styled.div({
   fontSize: 16,
   fontWeight: 'normal',
-  color: '#323233',
+  color: 'var(--neutral-n1-d2)',
 })
 
 const ContentWrap = styled.div({
   fontSize: 14,
   fontWeight: 400,
-  color: '#323233',
+  color: 'var(--neutral-n1-d2)',
   width: 'calc(100% - 70px)',
 })
 
@@ -302,14 +302,18 @@ const Circulation = () => {
                             <SpanWrap
                               size={16}
                               weight={500}
-                              color="#323233"
+                              color="var(--neutral-n1-d2)"
                               style={{
                                 marginRight: 16,
                               }}
                             >
                               {t('newlyAdd.reviewPerson')}
                             </SpanWrap>
-                            <SpanWrap size={12} weight={400} color="#969799">
+                            <SpanWrap
+                              size={12}
+                              weight={400}
+                              color="var(--neutral-n3)"
+                            >
                               {k.operator === 1
                                 ? t('newlyAdd.sequence')
                                 : k.operator === 2
@@ -330,7 +334,7 @@ const Circulation = () => {
                                     }}
                                   >
                                     <SpanWrap
-                                      color="#323233"
+                                      color="var(--neutral-n1-d2)"
                                       size={16}
                                       style={{ marginRight: 14 }}
                                     >
@@ -338,7 +342,7 @@ const Circulation = () => {
                                     </SpanWrap>
                                   </LineItem>
                                   <SpanWrap
-                                    color="#646566"
+                                    color="var(--neutral-n2)"
                                     size={12}
                                     style={{
                                       paddingRight: 25,
@@ -389,7 +393,10 @@ const Circulation = () => {
                                 )}
                               </LineItem>
                               <LineItem top={4} hidden={!m.verifyOpinion}>
-                                <SpanWrap size={14} color="#323233">
+                                <SpanWrap
+                                  size={14}
+                                  color="var(--neutral-n1-d2)"
+                                >
                                   {m.verifyOpinion}
                                 </SpanWrap>
                               </LineItem>
@@ -404,7 +411,7 @@ const Circulation = () => {
                             <SpanWrap
                               size={16}
                               weight={500}
-                              color="#323233"
+                              color="var(--neutral-n1-d2)"
                               style={{
                                 marginRight: 16,
                               }}
@@ -455,7 +462,7 @@ const Circulation = () => {
                             top={4}
                             hidden={!i.verifyAll?.verify.fixedUser.comment}
                           >
-                            <SpanWrap size={14} color="#323233">
+                            <SpanWrap size={14} color="var(--neutral-n1-d2)">
                               {i.verifyAll?.verify.fixedUser.comment}
                             </SpanWrap>
                           </LineItem>
@@ -463,7 +470,11 @@ const Circulation = () => {
                       )}
                     {i.changeType === 3 && i.verifyAll?.verifyStatus !== 1 && (
                       <LineItem top={24}>
-                        <SpanWrap size={16} color="#323233" weight={500}>
+                        <SpanWrap
+                          size={16}
+                          color="var(--neutral-n1-d2)"
+                          weight={500}
+                        >
                           {i.verifyAll?.verifyStatus === 2
                             ? t('newlyAdd.demandReviewTo')
                             : t('newlyAdd.notExamineTo')}

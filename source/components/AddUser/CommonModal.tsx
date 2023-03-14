@@ -16,7 +16,6 @@ import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { getDepartmentUserList } from '@store/teams/thunk'
 import { useDispatch, useSelector } from '@store/index'
 import { unionBy } from 'lodash'
-import { getProjectPermission } from '@/services/project'
 const { DirectoryTree } = Tree
 const ModalHeader = styled.div`
   display: flex;
@@ -137,7 +136,6 @@ const ListItem = styled.div`
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    background-color: #fffeb2a1;
     color: var(--primary-d2);
   }
   & span:last-child {
@@ -424,7 +422,7 @@ const CommonModal = (props: ModalProps) => {
             switcherIcon={
               <IconFont
                 type="down-icon"
-                style={{ color: ' #646566', fontSize: '8' }}
+                style={{ color: ' var(--auxiliary-text-t2-d1)', fontSize: '8' }}
               />
             }
             titleRender={(node: any) => (
@@ -460,9 +458,21 @@ const CommonModal = (props: ModalProps) => {
         {props.isPermisGroup ? (
           <Form form={form}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <span style={{ fontSize: 14, color: '#323233', marginRight: 16 }}>
+              <span
+                style={{
+                  fontSize: 14,
+                  color: 'var(--neutral-n1-d1)',
+                  marginRight: 16,
+                }}
+              >
                 {t('project.joinPermission')}
-                <span style={{ fontSize: 12, color: 'red', marginLeft: 4 }}>
+                <span
+                  style={{
+                    fontSize: 12,
+                    color: 'var(--function-error)',
+                    marginLeft: 4,
+                  }}
+                >
                   *
                 </span>
               </span>

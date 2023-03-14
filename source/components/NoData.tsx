@@ -16,7 +16,7 @@ const Wrap = styled.div({
   borderRadius: 6,
   padding: 16,
   div: {
-    color: '#969799',
+    color: 'var(--neutral-n3)',
     fontSize: 14,
     marginTop: 24,
   },
@@ -43,7 +43,7 @@ const NoData = (props: Props) => {
       {(props?.subText || props.haveFilter) && (
         <span
           style={{
-            color: '#969799',
+            color: 'var(--neutral-n3)',
             fontSize: 14,
             marginTop: 24,
             textAlign: 'center',

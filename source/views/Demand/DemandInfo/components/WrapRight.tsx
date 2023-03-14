@@ -52,14 +52,20 @@ const TitleWrap = styled.div<{ activeTabs?: any }>(
   },
   ({ activeTabs }) => ({
     '.leftWrap': {
-      color: activeTabs === 1 ? '#2877ff' : '#969799',
-      border: activeTabs === 1 ? '1px solid #2877ff' : '1px solid #D5D6D9',
+      color: activeTabs === 1 ? 'var(--primary-d2)' : 'var(--neutral-n3',
+      border:
+        activeTabs === 1
+          ? '1px solid var(--primary-d2)'
+          : '1px solid var(--neutral-n6-d1)',
       borderRadius: '4px 0 0 4px',
       borderRight: activeTabs === 1 ? '' : 'none',
     },
     '.rightWrap': {
-      color: activeTabs === 2 ? '#2877ff' : '#969799',
-      border: activeTabs === 2 ? '1px solid #2877ff' : '1px solid #D5D6D9',
+      color: activeTabs === 2 ? 'var(--primary-d2)' : 'var(--neutral-n3',
+      border:
+        activeTabs === 2
+          ? '1px solid var(--primary-d2)'
+          : '1px solid var(--neutral-n6-d1)',
       borderLeft: activeTabs === 2 ? '' : 'none',
       borderRadius: '0 4px 4px 0',
     },

@@ -49,6 +49,12 @@ const Index = (props: any) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const { userInfo } = useSelector(store => store.user)
+  const isDel2 = (
+    userInfo.company_permissions?.map((i: any) => i.identity) || []
+  ).includes('b/project/delete')
+  const isEdit2 = (
+    userInfo.company_permissions?.map((i: any) => i.identity) || []
+  ).includes('b/project/update')
   const arr = [
     {
       type: 'user-alone',
@@ -160,24 +166,28 @@ const Index = (props: any) => {
           </ShowWrap>
         </TransformWrap>
       </CardRight>
-      <Dropdown
-        trigger={['hover']}
-        menu={{
-          items: getItems(),
-          onClick,
-        }}
-        placement="bottomRight"
-        getPopupContainer={(i: any) => i.parentNode}
-      >
-        <HoverIcon>
-          <IconFont
-            style={{
-              color: 'var(--neutral-n3)',
-            }}
-            type="more"
-          />
-        </HoverIcon>
-      </Dropdown>
+      {(isDel2 || isEdit2) && (
+        <Dropdown
+          trigger={['hover']}
+          menu={{
+            items: getItems(),
+
+            onClick,
+          }}
+          placement="bottomRight"
+          getPopupContainer={(i: any) => i.parentNode}
+        >
+          <HoverIcon>
+            <IconFont
+              style={{
+                color: 'var(--neutral-n3)',
+              }}
+              type="more"
+            />
+          </HoverIcon>
+        </Dropdown>
+      )}
+
       {props.item.status === 2 && <EndTag>End</EndTag>}
     </ProjectCard>
   )

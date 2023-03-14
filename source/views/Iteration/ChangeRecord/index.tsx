@@ -41,10 +41,10 @@ const SpaceWrap = styled(Space)({
 
 const TitleWrap = styled(Space)({
   height: 40,
-  background: '#F8F9FA',
+  background: 'var(--neutral-n5)',
   padding: '0 24px',
   borderRadius: 6,
-  color: '#323233',
+  color: 'var(--neutral-n1-d1)',
   fontSize: 14,
   marginBottom: 24,
 })
@@ -273,7 +273,7 @@ const ChangeRecord = (props?: any) => {
               <span key={i}>
                 {i === 'info' || i === 'achieve_desc' ? (
                   <span
-                    style={{ cursor: 'pointer', color: '#2877ff' }}
+                    style={{ cursor: 'pointer', color: 'var(--primary-d2)' }}
                     onClick={() => onClickCheck(record, i)}
                   >
                     {text
@@ -326,7 +326,7 @@ const ChangeRecord = (props?: any) => {
               <span key={i}>
                 {i === 'info' || i === 'achieve_desc' ? (
                   <span
-                    style={{ cursor: 'pointer', color: '#2877ff' }}
+                    style={{ cursor: 'pointer', color: 'var(--primary-d2)' }}
                     onClick={() => onClickCheck(record, i)}
                   >
                     {text

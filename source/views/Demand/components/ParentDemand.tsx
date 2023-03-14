@@ -16,7 +16,7 @@ const DemandCheckedItem = styled.div({
   padding: '0 8px 0 0',
   fontSize: 12,
   position: 'relative',
-  color: '#323233',
+  color: 'var(--neutral-n1-d1)',
   boxSizing: 'border-box',
   borderRadius: 6,
   display: 'flex',
@@ -69,7 +69,7 @@ const ParentDemand = (props: Props) => {
       <DemandCheckedItem hidden={!props.detail?.parentId}>
         <div
           style={{
-            color: '#323233',
+            color: 'var(--neutral-n1-d1)',
             fontSize: 14,
           }}
         >

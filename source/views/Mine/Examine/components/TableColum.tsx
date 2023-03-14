@@ -24,7 +24,7 @@ const CanClick = styled.div({
   cursor: 'pointer',
   color: 'white',
   fontSize: 12,
-  background: '#2877ff',
+  background: 'var(--primary-d2)',
   lineHeight: '24px',
   width: 'fit-content',
 })

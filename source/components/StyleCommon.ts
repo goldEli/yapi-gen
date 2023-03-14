@@ -190,12 +190,12 @@ const HoverWrap = styled.div<{ isActive?: any }>(
       fontSize: 18,
     },
     '&: hover': {
-      background: '#F4F5F5',
+      background: 'var(--neutral-n9)',
       color: 'var(--neutral-n1-d1)',
     },
   },
   ({ isActive }) => ({
-    background: isActive ? '#F4F5F5' : 'white',
+    background: isActive ? 'var(--neutral-n9)' : 'var(--neutral-white-d2)',
     color: isActive ? 'var(--neutral-n1-d1)!important' : 'var(--neutral-n2)',
   }),
 )
@@ -322,16 +322,16 @@ const SliderWrap = styled(Slider)<{ isDisabled?: any }>(
       height: '8px!important',
     },
     '.ant-slider-rail': {
-      backgroundColor: '#F2F2F4!important',
+      backgroundColor: 'var(--neutral-n7)!important',
       borderRadius: 10,
     },
     '.ant-slider-track': {
-      backgroundColor: '#43BA9A!important',
+      backgroundColor: 'var(--function-success)!important',
     },
     '.ant-slider-handle': {
       width: 20,
       height: 20,
-      border: '1px solid #EBEDF0!important',
+      border: '1px solid var(--neutral-n6-d1)!important',
       marginTop: -7,
     },
     '.ant-slider-handle:focus': {
@@ -341,7 +341,7 @@ const SliderWrap = styled(Slider)<{ isDisabled?: any }>(
   ({ isDisabled }) => ({
     '.ant-slider-handle': {
       '&: hover': {
-        border: isDisabled ? '1px solid #2877FF!important' : '',
+        border: isDisabled ? '1px solid var(--primary-d2)!important' : '',
       },
     },
   }),
@@ -351,7 +351,7 @@ const SelectWrapBedeck = styled.div`
   height: 32px;
   position: relative;
   height: 32px;
-  border: 1px solid #ebedf0;
+  border: 1px solid var(--active);
   display: flex;
   align-items: center;
   border-radius: 6px;
@@ -383,10 +383,10 @@ const SearchLine = styled.div`
 const SecondButton = styled(Button)`
   height: 32px;
   border-radius: 6px;
-  background: #f0f4fa;
+  background: var(--neutral-n6-d2);
   cursor: pointer;
   padding: 0 16px;
-  color: #2877ff;
+  color: var(--primary-d2);
   display: flex;
   align-items: center;
   svg {
@@ -397,12 +397,12 @@ const SecondButton = styled(Button)`
     font-size: 14px;
   }
   &:hover {
-    background: #e8f1ff !important;
-    color: #2877ff !important;
+    background: var(--neutral-n6-d1) !important;
+    color: var(--primary-d2) !important;
   }
   &:focus {
-    background: #dbeaff;
-    color: #2877ff;
+    background: var(--neutral-n6-d2);
+    color: var(--primary-d2);
   }
 `
 const TableWrap = styled(Table)({
@@ -427,7 +427,7 @@ const TableStyleBox = styled(TableWrap)<{
     '.tagLength': {
       marginLeft: 8,
       fontSize: 12,
-      color: '#969799',
+      color: 'var(--neutral-n3)',
     },
     '.ant-table-selection': {
       flexDirection: 'inherit',
@@ -477,11 +477,11 @@ const ClickWrap = styled.div<{ isClose?: boolean; isName?: boolean }>(
   {
     cursor: 'pointer',
     '&: hover': {
-      color: '#2877ff',
+      color: 'var(--primary-d2)',
     },
   },
   ({ isClose, isName }) => ({
-    color: isClose ? '#969799' : '',
+    color: isClose ? 'var(--neutral-n3)' : '',
     textDecoration: isName && isClose ? 'line-through' : '',
   }),
 )
@@ -557,11 +557,11 @@ const ListNameWrap = styled.div<{
     overflow: 'hidden',
     cursor: 'pointer',
     '&: hover': {
-      color: '#2877ff',
+      color: 'var(--primary-d2)',
     },
   },
   ({ isClose, isName, maxWidth }) => ({
-    color: isClose ? '#969799' : '',
+    color: isClose ? 'var(--neutral-n3)' : '',
     textDecoration: isName && isClose ? 'line-through' : '',
     maxWidth: maxWidth || 500,
   }),
@@ -602,7 +602,7 @@ const StatusWrap = styled.div<{ isShow?: boolean; state?: number }>(
 const IconFontWrapEdit = styled(IconFont)<{ isTable?: any }>(
   {
     marginLeft: 16,
-    color: '#2877ff',
+    color: 'var(--primary-d2)',
     visibility: 'hidden',
   },
   ({ isTable }) => ({
@@ -626,7 +626,7 @@ const CanOperation = styled.div<{
     minWidth: isTable ? 0 : 60,
     padding: isTable ? 0 : '0 8px',
     '&: hover': {
-      background: isTable ? '' : isCanEdit ? '#f4f5f5' : '',
+      background: isTable ? '' : isCanEdit ? 'var(--neutral-n2)' : '',
       [IconFontWrapEdit.toString()]: {
         visibility: 'visible',
       },
@@ -656,13 +656,13 @@ const StyledShape = styled.div<{ color: any }>`
 // 列表的加号，获取子需求
 const ExpendedWrap = styled(IconFont)({
   marginRight: 12,
-  color: '#BBBDBF',
+  color: 'var(--neutral-n2)',
   fontSize: 16,
   cursor: 'pointer',
   background: 'white',
   zIndex: 1,
   '&: hover': {
-    color: '#2877ff',
+    color: 'var(--primary-d1)',
   },
 })
 
@@ -701,12 +701,12 @@ const StepBoxWrap = styled.div<{ active?: boolean }>(
 
 const SecondTitle = styled.span`
   padding-left: 8px;
-  border-left: 3px solid #2877ff;
+  border-left: 3px solid var(--primary-d1);
   height: 24px;
   font-size: 16px;
   font-family: PingFang SC-Medium, PingFang SC;
   font-weight: 500;
-  color: #323233;
+  color: var(--neutral-n1-d1);
   line-height: 24px;
 `
 
@@ -725,8 +725,10 @@ const TabsItem = styled.div<{ isActive: boolean }>(
   },
   ({ isActive }) => ({
     div: {
-      color: String(isActive ? '#2877FF' : '#323233'),
-      borderBottom: `3px solid ${isActive ? '#2877FF' : 'white'}`,
+      color: String(isActive ? 'var(--primary-d2)' : 'var(--neutral-n1-d1)'),
+      borderBottom: `3px solid ${
+        isActive ? 'var(--primary-d2)' : 'var(--neutral-white-d2)'
+      }`,
     },
   }),
 )
@@ -743,7 +745,7 @@ const LabNumber = styled.div<{ isActive: boolean }>`
 
   color: ${({ isActive }) => (isActive ? 'white' : 'rgba(150, 151, 153, 1)')};
   background: ${({ isActive }) =>
-    isActive ? '#2877ff' : 'rgba(242, 242, 244, 1)'};
+    isActive ? 'var(--primary-d2)' : 'rgba(242, 242, 244, 1)'};
 `
 
 const NameWrap = styled.div({
@@ -751,7 +753,7 @@ const NameWrap = styled.div({
   height: 24,
   borderRadius: 16,
   background: '#A4ACF5',
-  color: 'white',
+  color: 'var(--neutral-white-d2)',
   fontSize: 12,
   fontWeight: 400,
   display: 'flex',
@@ -782,7 +784,7 @@ const ViewWrap = styled.div<{ color: string }>(
 const DelWrap = styled.span({
   fontSize: 12,
   marginLeft: 8,
-  color: '#969799',
+  color: 'var(--neutral-n3)',
   textDecoration: 'line-through',
 })
 
@@ -798,8 +800,18 @@ const StatusTag = styled.div<{ status: number }>(
     width: 'fit-content',
   },
   ({ status }) => ({
-    color: status === 1 ? '#2877FF' : status === 2 ? '#43BA9A' : '#969799',
-    background: status === 1 ? '#F2F7FF' : status === 2 ? '#EDF7F4' : '#F2F2F4',
+    color:
+      status === 1
+        ? 'var(--primary-d2)'
+        : status === 2
+        ? 'var(--function-success)'
+        : 'var(--neutral-n3)',
+    background:
+      status === 1
+        ? 'var(--neutral-n6-d1)'
+        : status === 2
+        ? 'var(--neutral-n6-d1)'
+        : 'var(--neutral-n7)',
   }),
 )
 

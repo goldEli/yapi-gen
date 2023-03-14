@@ -1,7 +1,12 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-handler-names */
-import { confirmHand, getHandMember } from '@/services/handover'
+import {
+  confirmHand,
+  confirmTeamHand,
+  getHandMember,
+  getTeamMember,
+} from '@/services/handover'
 import { Form, message, Select } from 'antd'
 import React, { useEffect, useState } from 'react'
 import CommonModal from '../CommonModal'
@@ -14,7 +19,10 @@ const HandOverModal = (props: any) => {
   const [list, setList] = useState([])
 
   const init = async () => {
-    const res = await getHandMember(props.id.id)
+    const res = await getTeamMember({
+      team_id: props.id.team_id,
+      user_id: props.id.id,
+    })
     setList(res)
   }
   useEffect(() => {
@@ -34,7 +42,11 @@ const HandOverModal = (props: any) => {
         })
       }
 
-      const res1 = await confirmHand({ id: props.id.id, data: newObj })
+      const res1 = await confirmTeamHand({
+        id: props.id.team_id,
+        user_id: props.id.id,
+        data: newObj,
+      })
 
       if (res1.code === 0) {
         message.success('成功')
@@ -44,6 +56,7 @@ const HandOverModal = (props: any) => {
       }
     }
   }
+
   return (
     <CommonModal
       title="离职交接"
@@ -52,11 +65,7 @@ const HandOverModal = (props: any) => {
       onConfirm={onConfirm}
     >
       <Wrap>
-        <PinkWrap>
-          [{props.id.name}
-          ]目前参与了{list.length}
-          个项目，请指定交接项目接收人；交接后他的交接状态将更改为已交接；已经交接状态不可被项目添加及进行员工权限配置
-        </PinkWrap>
+        <PinkWrap>在本团队中参与了3个团队项目，请指定项目接收人；</PinkWrap>
         <Form form={form}>
           {list.map((i: any) => (
             <Form.Item

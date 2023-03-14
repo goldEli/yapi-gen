@@ -41,7 +41,7 @@ const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
   fontSize: 16,
   cursor: 'pointer',
-  color: '#2877ff',
+  color: 'var(--primary-d2)',
 })
 
 const DataWrap = styled.div<{ hasCreate: boolean }>(

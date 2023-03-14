@@ -11,7 +11,7 @@ export const ViewPortWrap = styled.div`
   padding: 0 8px;
   border-radius: 4px;
   &:hover {
-    background: #f4f5f5;
+    background: var(--neutral-n6-d1);
   }
 `
 
@@ -27,7 +27,7 @@ export const Name = styled.div`
 
 export const dropdowncontent = css`
   cursor: pointer;
-  background: #fff;
+  background: var(--neutral-white-d2);
   box-shadow: 0 3px 6px -4px rgb(0 0 0 / 12%), 0 6px 16px 0 rgb(0 0 0 / 8%),
     0 9px 28px 8px rgb(0 0 0 / 5%);
   & .ant-dropdown-menu {

@@ -97,11 +97,11 @@ const ContentWrap = styled.div<{ hasBg?: true; width: number }>(
     lineHeight: '32px',
     textAlign: 'center',
     fontSize: 12,
-    color: '#323233',
+    color: 'var(--neutral-n1-d1)',
   },
   ({ width, hasBg }) => ({
     width,
-    background: hasBg ? '#F2F2F4' : '',
+    background: hasBg ? 'var(--neutral-n7)' : '',
   }),
 )
 
@@ -112,10 +112,10 @@ const ItemWrap = styled.div({
 
 const IconFontWrap = styled(IconFont)({
   fontSize: 16,
-  color: '#969799',
+  color: 'var(--neutral-n3)',
   cursor: 'pointer',
   '&: hover': {
-    color: '#2877ff',
+    color: 'var(--primary-d2)',
   },
 })
 
@@ -249,7 +249,7 @@ const ImportDemand = () => {
           style={{
             width: i18n.language === 'zh' ? 160 : 148,
             height: 1,
-            background: '#EBEDF0',
+            background: 'var(--neutral-n6-d1)',
             margin: '0 8px',
           }}
         />
@@ -261,7 +261,7 @@ const ImportDemand = () => {
           style={{
             width: i18n.language === 'zh' ? 160 : 148,
             height: 1,
-            background: '#EBEDF0',
+            background: 'var(--neutral-n6-d1)',
             margin: '0 8px',
           }}
         />
@@ -371,19 +371,23 @@ const ImportDemand = () => {
               maxCount={1}
             >
               <IconFont
-                style={{ color: '#646566', fontSize: 40, marginBottom: 8 }}
+                style={{
+                  color: 'var(--neutral-n2)',
+                  fontSize: 40,
+                  marginBottom: 8,
+                }}
                 type="upload"
               />
               <div
                 style={{
-                  color: '#646566',
+                  color: 'var(--neutral-n2)',
                   fontSize: 14,
                   lineHeight: '14px',
                 }}
               >
                 {t('newlyAdd.clickOrDrag')}
               </div>
-              <span style={{ color: '#969799', fontSize: 12 }}>
+              <span style={{ color: 'var(--neutral-n3)', fontSize: 12 }}>
                 {t('newlyAdd.uploadLimit')}
               </span>
             </UploadDragger>
@@ -396,13 +400,19 @@ const ImportDemand = () => {
           {spinLoading ? (
             <CommonWrap style={{ height: 443 }}>
               <Spin spinning={spinLoading} />
-              <div style={{ fontSize: 18, color: '#323233', marginTop: 20 }}>
+              <div
+                style={{
+                  fontSize: 18,
+                  color: 'var(--neutral-n1-d1)',
+                  marginTop: 20,
+                }}
+              >
                 {t('newlyAdd.importIng')}
               </div>
               <span
                 style={{
                   fontSize: 14,
-                  color: '#646566',
+                  color: 'var(--neutral-n2)',
                   margin: '8px 0 56px 0',
                 }}
               >
@@ -427,10 +437,22 @@ const ImportDemand = () => {
                   type="Warning"
                   style={{ fontSize: 80, color: '#FA9746' }}
                 />
-                <div style={{ fontSize: 18, color: '#323233', marginTop: 20 }}>
+                <div
+                  style={{
+                    fontSize: 18,
+                    color: 'var(--neutral-n1-d1)',
+                    marginTop: 20,
+                  }}
+                >
                   {t('newlyAdd.importError')}
                 </div>
-                <span style={{ fontSize: 14, color: '#646566', marginTop: 8 }}>
+                <span
+                  style={{
+                    fontSize: 14,
+                    color: 'var(--neutral-n2)',
+                    marginTop: 8,
+                  }}
+                >
                   {t('newlyAdd.importSuccessTotal')}
                   {importExcel?.successCount || 0}，
                   {t('newlyAdd.importErrorTotal')}
@@ -479,16 +501,31 @@ const ImportDemand = () => {
                 type="checked-poster"
                 style={{ fontSize: 80, color: '#43BA9A' }}
               />
-              <div style={{ fontSize: 18, color: '#323233', marginTop: 20 }}>
+              <div
+                style={{
+                  fontSize: 18,
+                  color: 'var(--neutral-n1-d1)',
+                  marginTop: 20,
+                }}
+              >
                 {t('newlyAdd.importSuccess')}
               </div>
-              <span style={{ fontSize: 14, color: '#646566', marginTop: 8 }}>
+              <span
+                style={{
+                  fontSize: 14,
+                  color: 'var(--neutral-n2)',
+                  marginTop: 8,
+                }}
+              >
                 {t('newlyAdd.importSuccessTotal')}
                 {importExcel?.successCount}
               </span>
               <Space size={16} style={{ margin: '56px 0' }}>
                 <Button
-                  style={{ color: '#2877ff', background: '#F0F4FA' }}
+                  style={{
+                    color: 'var(--primary-d2)',
+                    background: 'var(--neutral-n6-d1)',
+                  }}
                   onClick={onClear}
                 >
                   {t('newlyAdd.continueImport')}

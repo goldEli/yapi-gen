@@ -27,7 +27,7 @@ const SetHead = styled.div`
   background-blend-mode: normal;
   border: 2px solid rgba(40, 119, 255, 0.16);
   border: 1px solid white;
-  color: white;
+  color: var(--neutral-white-d2);
 `
 
 export const useDynamicColumns = (state: any) => {

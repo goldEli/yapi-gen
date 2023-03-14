@@ -49,7 +49,7 @@ import CommonButton from '@/components/CommonButton'
 const Left = styled.div<{ isShowLeft: boolean }>(
   {
     width: 300,
-    borderRight: '1px solid #EBEDF0',
+    borderRight: '1px solid var(--neutral-n6-d1)',
     padding: '0px 16px 0px 0',
     background: 'white',
     height: '100%',
@@ -74,18 +74,18 @@ const TopWrap = styled.div({
 const IconWrap = styled(IconFont)<{ isActive: any }>(
   {
     fontSize: 20,
-    color: '#969799',
+    color: 'var(--neutral-n3)',
     cursor: 'pointer',
     padding: 8,
     borderRadius: 6,
     '&: hover': {
-      color: '#323233',
-      background: '#F4F5F5',
+      color: 'var(--neutral-n1-d1)',
+      background: 'var(--neutral-n6-d1)',
     },
   },
   ({ isActive }) => ({
-    color: isActive ? '#323233' : '#969799',
-    background: isActive ? '#F4F5F5' : 'white',
+    color: isActive ? 'var(--neutral-n1-d1)' : 'var(--neutral-n3)',
+    background: isActive ? 'var(--neutral-n6-d1)' : 'white',
   }),
 )
 
@@ -104,12 +104,12 @@ const SortItem = styled.div<{ isActive: boolean }>(
       marginLeft: 24,
     },
     '&:hover': {
-      color: '#323233',
-      background: '#F4F5F5',
+      color: 'var(--neutral-n1-d1)',
+      background: 'var(--neutral-n6-d1)',
     },
   },
   ({ isActive }) => ({
-    color: isActive ? '#2877ff!important' : '#646566',
+    color: isActive ? 'var(--primary-d2)!important' : 'var(--neutral-n2)',
   }),
 )
 
@@ -332,7 +332,7 @@ const WrapLeft = (props: Props) => {
           }}
         >
           <div
-            style={{ color: '#2877ff', cursor: 'pointer' }}
+            style={{ color: 'var(--primary-d2)', cursor: 'pointer' }}
             onClick={onReset}
           >
             {t('common.clear1')}

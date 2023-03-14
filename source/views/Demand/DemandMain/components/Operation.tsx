@@ -70,8 +70,8 @@ const IconWrap = styled(IconFont)({
   padding: 6,
   borderRadius: 6,
   '&: hover': {
-    color: '#323233',
-    background: '#F4F5F5',
+    color: 'var(--neutral-n1-d1)',
+    background: 'var(--neutral-n6-d1)',
   },
 })
 
@@ -102,14 +102,14 @@ const MoreItem = styled.div({
   display: 'flex',
   alignItems: 'center',
   height: 32,
-  color: '#646566',
+  color: 'var(--neutral-n2)',
   fontSize: 14,
   fontWeight: 400,
   cursor: 'pointer',
   padding: '0 16px',
   '&: hover': {
-    color: '#323233',
-    background: '#f4f5f5',
+    color: 'var(--neutral-n1-d1)',
+    background: 'var(--neutral-n6-d1)',
   },
 })
 

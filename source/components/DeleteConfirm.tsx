@@ -80,7 +80,10 @@ const DeleteConfirm = (props: Props) => {
     >
       <ModalHeader>
         <Title>
-          <IconFont style={{ fontSize: 24, color: '#FA9746' }} type="Warning" />
+          <IconFont
+            style={{ fontSize: 24, color: 'var(--function-warning)' }}
+            type="Warning"
+          />
           <div
             style={{
               width: '260px',

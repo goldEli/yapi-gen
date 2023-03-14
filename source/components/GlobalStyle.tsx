@@ -59,7 +59,6 @@ const GlobalStyle = () => {
       --neutral-n7: #f2f2f4;
       --neutral-n8: #f8f8fa;
       --neutral-n9: #f9f9fa;
-      --neutral-white-d1: #ffffff;
       --neutral-white-d2: #ffffff;
       --neutral-white-d3: #ffffff;
       --neutral-white-d4: #ffffff;
@@ -183,10 +182,10 @@ const GlobalStyle = () => {
       padding-top: 2px !important;
     }
     .ant-progress-inner {
-      background-color: #ecedef;
+      background-color: var(--neutral-n6-d1);
     }
     .ant-progress-status-success .ant-progress-text {
-      color: #43ba9a;
+      color: var(--function-success);
     }
 
     .ant-checkbox-inner {
@@ -247,14 +246,14 @@ const GlobalStyle = () => {
     //table样式 --- end
 
     .ant-dropdown-menu-item {
-      color: #646566;
+      color: var(--neutral-n2);
       .ant-dropdown-menu-title-content div {
         /* min-width: 80px; */
       }
     }
     .ant-dropdown-menu-item:hover {
-      background: #f4f5f5;
-      color: #323233;
+      background: var(--neutral-n1-d1);
+      color: var(--neutral-n1-d1);
     }
     .ant-dropdown-menu-item:active {
       color: var(--primary-d2);
@@ -266,18 +265,18 @@ const GlobalStyle = () => {
     }
 
     ::-webkit-scrollbar-thumb {
-      background: #dadada;
+      background: var(--neutral-n5);
       border-radius: 6px;
     }
 
     .rc-virtual-list-scrollbar-thumb {
-      background: #dadada !important;
+      background: var(--neutral-n5) !important;
       border-radius: 6px;
       width: 6px !important;
     }
 
     ::-webkit-scrollbar-thumb:hover {
-      background: #adadad;
+      background: var(--neutral-n4);
     }
 
     body,
@@ -289,12 +288,12 @@ const GlobalStyle = () => {
     //   margin: 0 !important;
     // }
     input:-webkit-autofill {
-      box-shadow: 0 0 0 1000px #fff inset !important;
+      box-shadow: 0 0 0 1000px var(--neutral-white-d2) inset !important;
     }
 
     input:-internal-autofill-previewed,
     input.ant-input:-internal-autofill-previewed {
-      -webkit-text-fill-color: #333 !important;
+      -webkit-text-fill-color: var(--auxiliary-b4) !important;
       transition: background-color 5000s ease-in-out 0s !important;
     }
 
@@ -329,13 +328,13 @@ const GlobalStyle = () => {
     .ant-select-item-option {
       font-weight: inherit;
 
-      color: #646566;
+      color: var(--neutral-n2);
     }
     .ant-select-item-option:hover {
       font-weight: inherit;
 
-      background: #f4f5f5;
-      color: #323233;
+      background: var(--neutral-n1-d1);
+      color: var(--neutral-n1-d1);
     }
     .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
       background-color: transparent;
@@ -343,7 +342,7 @@ const GlobalStyle = () => {
       color: var(--primary-d2);
     }
     .ant-select-item-option-selected:not(.ant-select-item-option-disabled):hover {
-      background-color: #f0f4fa;
+      background-color: var(--neutral-n6-d2);
     }
 
     .ant-popover-arrow,
@@ -378,7 +377,7 @@ const GlobalStyle = () => {
     }
 
     .ant-progress-circle.ant-progress-status-success .ant-progress-text {
-      color: black !important;
+      color: var(--neutral-black) !important;
     }
     .ant-tree .ant-tree-node-content-wrapper:hover {
       background-color: transparent;
@@ -389,7 +388,7 @@ const GlobalStyle = () => {
       width: 100%;
       &:hover {
         cursor: grab;
-        background-color: #f4f5f5;
+        background-color: var();
         [data-tree] {
           visibility: visible;
         }
@@ -434,7 +433,7 @@ const GlobalStyle = () => {
       display: none;
     }
     .ant-tree-treenode-selected {
-      background-color: #f0f4f9 !important;
+      background-color: var(--neutral-n1-d1) !important;
     }
     .ant-tree .ant-tree-treenode-draggable .ant-tree-draggable-icon {
       opacity: 1;
@@ -443,13 +442,13 @@ const GlobalStyle = () => {
     .row-dragging {
       display: flex;
       align-items: center;
-      background: #ffffff;
+      background: var(--auxiliary-text-t1-d1);
       box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
       border-radius: 6px 6px 6px 6px;
       z-index: 10000 !important;
     }
     .ant-switch {
-      background-color: #d5d6d9 !important;
+      background-color: var(--neutral-n1-d1) !important;
     }
     .ant-switch-checked {
       background-color: var(--primary-d2) !important;
@@ -502,8 +501,8 @@ const GlobalStyle = () => {
       right: 0;
       top: 0;
       bottom: 0;
-      border-right: 1px solid #f0f0f0;
-      border-left: 1px solid #f0f0f0;
+      border-right: 1px solid var(#f0f0f0);
+      border-left: 1px solid var(#f0f0f0);
       pointer-events: none;
     }
     .resize_save {
@@ -536,7 +535,7 @@ const GlobalStyle = () => {
     .ant-select:not(.ant-select-customize-input) .ant-select-selector,
     .ant-input,
     .ant-input-number {
-      border: 1px solid #ebedf0;
+      border: 1px solid var(--active);
     }
     .ant-tree .ant-tree-node-content-wrapper.ant-tree-node-selected {
       width: 0;
@@ -550,7 +549,7 @@ const GlobalStyle = () => {
       white-space: pre-wrap;
     }
     .ant-collapse-content {
-      border-top: 1px solid #ecedef;
+      border-top: 1px solid var(--neutral-n6-d1);
     }
 
     .ant-table-cell .ant-popover {
@@ -569,10 +568,10 @@ const GlobalStyle = () => {
       padding: 0 !important;
     }
     .ant-select-tree-treenode:hover {
-      background: #f4f5f5 !important;
+      background: var(--neutral-n1-d1) !important;
     }
     .ant-select-tree-treenode-selected {
-      background: #f0f4fa !important;
+      background: var(--neutral-n6-d2) !important;
     }
     .ant-select-tree-node-content-wrapper:hover,
     .ant-select-tree-node-content-wrapper.ant-select-tree-node-selected {

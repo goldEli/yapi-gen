@@ -120,7 +120,7 @@ export const SwiperCard = (props: {
               height: '20px',
               fontSize: '12px',
               fontWeight: 400,
-              color: '#646566',
+              color: 'var(--neutral-n2)',
               lineHeight: '20px',
             }}
           >

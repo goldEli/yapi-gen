@@ -16,6 +16,7 @@ import * as services from '@/services'
 import AddMemberCommonModal from '@/components/AddUser/CommonModal'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { GENDER_MAP } from '@/constants'
+import TeamOverModal from '@/components/TeamOverModal'
 
 const RightWrap = styled.div`
   flex: 1;
@@ -117,6 +118,7 @@ const RightTable = () => {
   const [isVisible, setIsVisible] = useState(false)
   const [editForm, setEditForm] = useState<any>()
   const [delIsVisible, setDelIsVisible] = useState(false)
+  const [delIsVisible2, setDelIsVisible2] = useState(false)
   const [type, setType] = useState('')
   const [activeMember, setActiveMember] = useState<any>(null)
   const [searchVal, setSearchVal] = useState('')
@@ -291,6 +293,9 @@ const RightTable = () => {
           }}
           onDelRow={(row: any) => {
             setActiveMember(row)
+            // console.log(row)
+            //
+            // setDelIsVisible2(true)
             setDelIsVisible(true)
           }}
           dataSource={membersList?.list}
@@ -322,6 +327,12 @@ const RightTable = () => {
         onChangeVisible={() => setDelIsVisible(false)}
       />
 
+      <TeamOverModal
+        confirm={() => onFetchMemberList()}
+        id={activeMember}
+        close={() => setDelIsVisible2(false)}
+        visible={delIsVisible2}
+      />
       <AddMemberCommonModal
         isPermisGroup={false}
         title="添加成员"

@@ -273,7 +273,7 @@ const TagComponent = (props: Props) => {
     projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
       ?.length > 0
 
-  const colorList = ['#FF5C5E', '#43BA9A', '#2877FF', '#969799']
+  const colorList = ['#FF5C5E', '#43BA9A', 'var(--primary-d2)', '#969799']
 
   const onAddDemandTags = (value: any) => {
     setNewTag(value)
@@ -405,7 +405,7 @@ const TagComponent = (props: Props) => {
                 position: 'absolute',
                 right: -6,
                 top: -6,
-                color: '#969799',
+                color: 'var(--neutral-n3)',
                 fontSize: 14,
               }}
               type="close-solid"

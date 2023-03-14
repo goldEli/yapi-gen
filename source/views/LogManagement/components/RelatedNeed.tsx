@@ -24,9 +24,9 @@ const rightText = css`
   visibility: hidden;
   font-size: 16px;
   margin-left: 30px;
-  color: #969799;
+  color: var(--neutral-n3);
   &:hover {
-    color: #2877ff;
+    color: var(--primary-d2);
   }
 `
 const WrapDiv = styled.div`
@@ -122,7 +122,7 @@ const RelatedNeed = (props: any) => {
       {show && (
         <WrapDiv
           style={{
-            background: '#F2F2F4',
+            background: 'var(--neutral-n7)',
             borderRadius: '6px 6px 6px 6px',
             padding: '24px',
           }}
@@ -204,7 +204,7 @@ const RelatedNeed = (props: any) => {
               style={{
                 fontSize: '14px',
                 fontWeight: 'bold',
-                color: '#2877FF',
+                color: 'var( --primary-d2)',
                 cursor: 'pointer',
               }}
             >
@@ -216,7 +216,7 @@ const RelatedNeed = (props: any) => {
                 marginLeft: '24px',
                 fontSize: '14px',
                 fontWeight: 'bold',
-                color: '#2877FF',
+                color: 'var( --primary-d2)',
                 cursor: 'pointer',
               }}
             >

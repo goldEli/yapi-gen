@@ -43,7 +43,7 @@ const SearchWrap = styled(Space)({
   background: 'var(--neutral-white-d1)',
   padding: '20px 0',
   flexWrap: 'wrap',
-  borderBottom: '1px solid #ecedef',
+  borderBottom: '1px solid var(--neutral-n6-d1)',
 })
 
 const SelectWrap = styled(Select)`

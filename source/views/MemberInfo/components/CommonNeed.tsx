@@ -74,7 +74,7 @@ const LoadingSpin = styled(Spin)({
 })
 
 const TableTitle = styled.div({
-  color: '#323233',
+  color: 'var(--neutral-n1-d2)',
   fontSize: '16px',
   height: '53px',
   display: 'flex',
@@ -82,7 +82,7 @@ const TableTitle = styled.div({
   marginLeft: '16px',
   fontWeight: '500',
   span: {
-    borderLeft: '3px solid #2877ff',
+    borderLeft: '3px solid var(--primary-d2)',
     paddingLeft: 6,
     lineHeight: '20px',
   },
@@ -624,7 +624,7 @@ const CommonNeed = (props: any) => {
       </div>
 
       {isShowSearch && props.id !== 0 && (
-        <div style={{ borderLeft: '1px solid #EBEDF0' }}>
+        <div style={{ borderLeft: '1px solid var(--neutral-n6-d1)' }}>
           <TableFilter
             onFilter={getSearchKey}
             onSearch={onSearch}

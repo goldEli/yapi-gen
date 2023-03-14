@@ -136,7 +136,7 @@ export const GroupBox = styled.div`
   width: 100%;
   div {
     font-size: 12;
-    color: #969799;
+    color: var(--neutral-n3);
   }
 `
 
@@ -148,18 +148,18 @@ export const CloseWrap = styled.div<{ width?: any; height?: any }>(
     cursor: 'pointer',
     borderRadius: 6,
     '.anticon': {
-      color: '#646566',
+      color: 'var(--neutral-n2)',
     },
     '&: hover': {
-      background: '#F4F5F5',
+      background: 'var(--neutral-n6-d1)',
       svg: {
-        color: '#323233',
+        color: 'var(--neutral-n1-d1)',
       },
     },
     '&: active ': {
-      background: '#ECEDEF',
+      background: 'var(--neutral-n6-d1)',
       svg: {
-        color: '323233',
+        color: 'var(--neutral-n1-d1)',
       },
     },
   },
@@ -212,7 +212,7 @@ export const NoDataCreateWrap = styled.div({
   marginTop: 8,
   minHeight: 68,
   borderRadius: 6,
-  background: '#F9FAFA',
+  background: 'var(--neutral-n6-d1)',
   padding: '8px 12px',
   '.top': {
     display: 'flex',
@@ -224,7 +224,7 @@ export const NoDataCreateWrap = styled.div({
       marginTop: 2,
     },
     div: {
-      color: '#646566',
+      color: 'var(--neutral-n2)',
       fontSize: 12,
       marginLeft: 8,
       flexWrap: 'wrap',
@@ -234,7 +234,7 @@ export const NoDataCreateWrap = styled.div({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    color: '#2877ff',
+    color: 'var(--primary-d1)',
     svg: {
       fontSize: 10,
     },

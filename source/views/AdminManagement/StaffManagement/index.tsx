@@ -192,6 +192,9 @@ const StaffManagement = () => {
   })
 
   const menuTable = (record: any) => {
+    const isEdit = (
+      userInfo.company_permissions?.map((i: any) => i.identity) || []
+    ).includes('b/project/update')
     const items = [
       {
         key: '1',
@@ -252,10 +255,15 @@ const StaffManagement = () => {
       {
         width: 40,
         render: (_text: any, record: any) => {
+          const isEdit = (
+            userInfo.company_permissions?.map((i: any) => i.identity) || []
+          ).includes('b/companyuser/update')
           return (
-            <div>
-              <MoreDropdown menu={menuTable(record)} />
-            </div>
+            isEdit && (
+              <div>
+                <MoreDropdown menu={menuTable(record)} />
+              </div>
+            )
           )
         },
       },
@@ -415,7 +423,7 @@ const StaffManagement = () => {
           style={{
             fontSize: '16px',
             fontWeight: 500,
-            color: '#323233',
+            color: 'var(--neutral-n1-d1)',
           }}
         >
           {t('staff.companyStaff')}

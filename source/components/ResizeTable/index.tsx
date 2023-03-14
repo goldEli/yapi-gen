@@ -20,7 +20,7 @@ const TableWrap = styled(Table)`
   .tagLength {
     margin-left: 8px;
     font-size: 12px;
-    color: #969799;
+    color: var(--neutral-n3);
   }
   .ant-table-selection {
     flex-direction: inherit;

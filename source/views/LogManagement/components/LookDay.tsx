@@ -41,7 +41,7 @@ export const GrepWrap = styled.div`
 const Kong = () => (
   <span
     style={{
-      color: '#646566',
+      color: 'var(--neutral-n2)',
     }}
   >
     {' '}
@@ -52,7 +52,7 @@ const Kong = () => (
 const FormWrap = styled.div<{ left: any }>`
   width: 784px;
   height: 90vh;
-  background: #ffffff;
+  background: var(--neutral-white-d2);
   border-radius: 8px;
   position: absolute;
   left: 50%;
@@ -91,11 +91,11 @@ const Arrow = styled.div`
   transform: translate(-50%, -50%);
   width: 40px;
   height: 40px;
-  background: #969799;
+  background: var(--neutral-n3);
   border-radius: 50%;
   cursor: pointer;
   &:hover {
-    background-color: #bbbdbf;
+    background-color: var(--neutral-n4);
   }
 `
 const Arrow2 = styled(Arrow)`
@@ -103,7 +103,7 @@ const Arrow2 = styled(Arrow)`
 `
 const hover = css`
   &:hover {
-    color: #2877ff !important;
+    color: var(--primary-d2) !important;
   }
 `
 const LabelTitle = (props: any) => {
@@ -303,7 +303,7 @@ const LookDay = (props: any) => {
                 style={{
                   fontSize: '16px',
                   fontWeight: 'bold',
-                  color: '#323233',
+                  color: 'var(--neutral-n1-d1)',
                 }}
               >
                 {title}
@@ -394,7 +394,7 @@ const LookDay = (props: any) => {
                         <span
                           style={{
                             marginLeft: '4px',
-                            color: '#646566',
+                            color: 'var(--neutral-n2)',
                           }}
                         >
                           {i.name}
@@ -464,7 +464,7 @@ const LookDay = (props: any) => {
                               width: '100%',
                               fontSize: '14px',
                               fontWeight: 400,
-                              color: '#646566',
+                              color: 'var(--neutral-n2)',
                               lineHeight: '22px',
                               wordBreak: 'break-all',
                             }}
@@ -476,7 +476,7 @@ const LookDay = (props: any) => {
                               height: '20px',
                               fontSize: '12px',
                               fontWeight: 400,
-                              color: '#969799',
+                              color: 'var(--neutral-n3)',
                               lineHeight: '20px',
                             }}
                           >
@@ -513,7 +513,7 @@ const LookDay = (props: any) => {
                                 marginRight: '12px',
                                 cursor: 'pointer',
                                 fontSize: '12px',
-                                color: '#2877ff',
+                                color: 'var(--primary-d2)',
                               }}
                             >
                               {t('p2.download') as unknown as string}
@@ -589,7 +589,7 @@ const LookDay = (props: any) => {
                           <span
                             style={{
                               marginLeft: '4px',
-                              color: '#646566',
+                              color: 'var(--neutral-n2)',
                             }}
                           >
                             {i.name}
@@ -627,10 +627,10 @@ const LookDay = (props: any) => {
                     onClick={sendComment}
                     style={{
                       height: '24px',
-                      background: '#2877FF',
+                      background: 'var(--primary-d2)',
                       fontSize: '12px',
                       fontWeight: '400',
-                      color: '#FFFFFF',
+                      color: 'var(--neutral-white-d2)',
                       marginTop: '14px',
                       border: 'none',
                       borderRadius: '5px',
@@ -684,7 +684,7 @@ const LookDay = (props: any) => {
                         </span>
                         <span
                           style={{
-                            color: '#969799',
+                            color: 'var(--neutral-n3)',
                             fontSize: '12px',
                           }}
                         >
@@ -696,7 +696,7 @@ const LookDay = (props: any) => {
                           paddingLeft: '34px',
                           width: '100%',
                           wordBreak: 'break-all',
-                          color: '#646566',
+                          color: 'var(--neutral-n2)',
                           marginTop: '-8px',
                         }}
                       >
@@ -713,10 +713,16 @@ const LookDay = (props: any) => {
       </HiddenWrap>
 
       <Arrow onClick={() => onChangeLeft(0, 1)}>
-        <IconFont type="left" style={{ color: '#FFFFFF', fontSize: 20 }} />
+        <IconFont
+          type="left"
+          style={{ color: 'var(--neutral-white-d2)', fontSize: 20 }}
+        />
       </Arrow>
       <Arrow2 onClick={() => onChangeLeft(360, 2)}>
-        <IconFont type="right" style={{ color: '#FFFFFF', fontSize: 20 }} />
+        <IconFont
+          type="right"
+          style={{ color: 'var(--neutral-white-d2)', fontSize: 20 }}
+        />
       </Arrow2>
     </GrepWrap>,
     document.body,

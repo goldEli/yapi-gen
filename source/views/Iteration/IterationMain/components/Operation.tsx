@@ -52,7 +52,7 @@ const IconWrap = styled(IconFont)<{ color?: string }>(
     marginLeft: 8,
   },
   ({ color }) => ({
-    color: color || '#969799',
+    color: color || 'var(--neutral-n3)',
   }),
 )
 
@@ -274,7 +274,13 @@ const Operation = (props: Props) => {
               <span style={{ fontSize: 14, color: 'black', margin: '0 8px' }}>
                 {props.currentDetail?.name}
               </span>
-              <span style={{ fontSize: 12, color: '#BBBDBF', marginRight: 8 }}>
+              <span
+                style={{
+                  fontSize: 12,
+                  color: 'var(--neutral-n4)',
+                  marginRight: 8,
+                }}
+              >
                 {props.currentDetail?.createdTime}-
                 {props.currentDetail?.endTime}
               </span>

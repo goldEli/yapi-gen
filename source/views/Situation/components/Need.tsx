@@ -24,7 +24,7 @@ const Need = (props: any) => {
   const { data } = props
 
   const options = {
-    colors: ['#2877FF', '#F6BD16', '#43BA9A'],
+    colors: ['var(--primary-d2)', '#F6BD16', '#43BA9A'],
     chart: {
       height: 350,
       type: 'line',

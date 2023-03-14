@@ -140,7 +140,13 @@ const SearchList = (props: Props) => {
         )}
 
         <ClearForm onClick={onClearForm}>
-          <span style={{ color: '#2877FF', fontSize: 15, cursor: 'pointer' }}>
+          <span
+            style={{
+              color: 'var(--primary-d2)',
+              fontSize: 15,
+              cursor: 'pointer',
+            }}
+          >
             {t('common.clearForm')}
           </span>
         </ClearForm>

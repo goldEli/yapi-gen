@@ -51,10 +51,10 @@ const TableTitle = styled.div({
   display: 'flex',
   alignItems: 'center',
   padding: '0 16px',
-  color: '#969799',
+  color: 'var( --neutral-n3)',
   fontSize: 14,
   fontWeight: 500,
-  borderBottom: '1px solid #EBEDF0',
+  borderBottom: '1px solid var(--neutral-n5)',
 })
 
 const AddWrapBox = styled.div({
@@ -75,7 +75,7 @@ const TextWrap = styled.div({
 
 const HasDemandText = styled.div({
   marginTop: 8,
-  color: '#FF5C5E',
+  color: 'var(--function-error)',
   fontWeight: 400,
   fontSize: 12,
 })
@@ -112,7 +112,7 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
   const [t] = useTranslation()
   const [value, setValue] = useState<any>('')
   const [errorState, setErrorState] = useState(false)
-  const [normalColor, setNormalColor] = useState<any>('#2877FF')
+  const [normalColor, setNormalColor] = useState<any>('var(--primary-d2)')
   const inputRefDom = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -128,7 +128,7 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
   const onReset = () => {
     props?.onClose?.()
     setValue('')
-    setNormalColor('#2877FF')
+    setNormalColor('var(--primary-d2)')
     setErrorState(false)
   }
 
@@ -171,7 +171,9 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
         style={{
           width: 196,
           margin: props?.hasMargin ? '0 16px' : '0 16px 0 0',
-          border: errorState ? '1px solid #FF5C5E' : '1px solid #EBEDF0',
+          border: errorState
+            ? '1px solid var(--function-error)'
+            : '1px solid var(--neutral-n6-d1)',
         }}
         placeholder={t('newlyAdd.pleaseStatusName')}
         allowClear
@@ -190,7 +192,7 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
       >
         {t('container.finish')}
       </TextWrap>
-      <TextWrap style={{ color: '#646566' }} onClick={onClose}>
+      <TextWrap style={{ color: 'var(--neutral-n2)' }} onClick={onClose}>
         {t('common.cancel')}
       </TextWrap>
     </div>

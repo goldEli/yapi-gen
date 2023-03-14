@@ -64,7 +64,7 @@ const ItemWrap = styled.div({
 })
 
 const LabelWrap = styled.div({
-  color: '#969799',
+  color: 'var(--neutral-n3)',
   fontSize: 12,
   fontWeight: 400,
   marginBottom: 8,
@@ -80,14 +80,14 @@ const CheckedItem = styled.div<{ state?: any }>(
     padding: '  0 16px',
     // eslint-disable-next-line @typescript-eslint/naming-convention
     '&: hover': {
-      background: ' #f4f5f5',
+      background: ' var(--neutral-n1-d1)',
       [ShowWrap.toString()]: {
         visibility: 'visible',
       },
     },
   },
   ({ state }) => ({
-    color: state ? '#BBBDBF' : '#323233',
+    color: state ? 'var(--neutral-n4)' : 'var(--neutral-n1-d2)',
   }),
 )
 
@@ -133,7 +133,7 @@ const DragHandle = sortableHandle(() => (
     style={{
       fontSize: 16,
       cursor: 'pointer',
-      color: '#969799',
+      color: 'var(--neutral-n3)',
       marginRight: 12,
     }}
   />
@@ -452,7 +452,11 @@ const FieldsTemplate = (props: Props) => {
         </LeftWrap>
         <Divider
           type="vertical"
-          style={{ background: '#EBEDF0', margin: '0 16px 0 4px', height: 350 }}
+          style={{
+            background: 'var(--neutral-n6-d1)',
+            margin: '0 16px 0 4px',
+            height: 350,
+          }}
         />
         <RightWrap>
           <LabelWrap>{t('components.currentFiled')}</LabelWrap>
@@ -469,7 +473,7 @@ const FieldsTemplate = (props: Props) => {
                       style={{
                         fontSize: 16,
                         marginRight: '8px',
-                        color: '#bbbdbf',
+                        color: 'var(--neutral-n4)',
                       }}
                       type="move"
                     />
@@ -509,7 +513,10 @@ const FieldsTemplate = (props: Props) => {
                         {!getItemState(item.field) && (
                           <ShowWrap style={{ marginLeft: 'auto' }}>
                             <IconFont
-                              style={{ fontSize: 16, color: '#646566' }}
+                              style={{
+                                fontSize: 16,
+                                color: 'var(--neutral-n2)',
+                              }}
                               type="close"
                               onClick={() => del(item.field)}
                             />

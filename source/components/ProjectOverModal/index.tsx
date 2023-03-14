@@ -1,20 +1,22 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-handler-names */
-import { confirmHand, getHandMember } from '@/services/handover'
+import { confirmProjectHand, getHandProjectMember } from '@/services/handover'
+import { useSelector } from '@store/index'
 import { Form, message, Select } from 'antd'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import CommonModal from '../CommonModal'
 import { PinkWrap, Wrap } from './style'
 
 const { Option } = Select
 
 const HandOverModal = (props: any) => {
+  const { projectInfo } = useSelector(store => store.project)
   const [form] = Form.useForm()
   const [list, setList] = useState([])
 
   const init = async () => {
-    const res = await getHandMember(props.id.id)
+    const res = await getHandProjectMember(props.id.id, projectInfo.id)
     setList(res)
   }
   useEffect(() => {
@@ -29,12 +31,16 @@ const HandOverModal = (props: any) => {
       const newObj = []
       for (const key in res) {
         newObj.push({
-          project_id: key,
+          project_id: Number(key),
           handover_user_id: res[key],
         })
       }
 
-      const res1 = await confirmHand({ id: props.id.id, data: newObj })
+      const res1 = await confirmProjectHand({
+        id: props.id.id,
+        data: newObj,
+        project_id: projectInfo.id,
+      })
 
       if (res1.code === 0) {
         message.success('成功')
@@ -52,11 +58,7 @@ const HandOverModal = (props: any) => {
       onConfirm={onConfirm}
     >
       <Wrap>
-        <PinkWrap>
-          [{props.id.name}
-          ]目前参与了{list.length}
-          个项目，请指定交接项目接收人；交接后他的交接状态将更改为已交接；已经交接状态不可被项目添加及进行员工权限配置
-        </PinkWrap>
+        <PinkWrap>请指定项目接收人</PinkWrap>
         <Form form={form}>
           {list.map((i: any) => (
             <Form.Item

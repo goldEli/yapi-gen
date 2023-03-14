@@ -252,8 +252,8 @@ const ChildDemandTable = (props: {
       render: (text: any) => {
         return (
           <Progress
-            strokeColor="#43BA9A"
-            style={{ color: '#43BA9A', cursor: 'not-allowed' }}
+            strokeColor="var(--function-success)"
+            style={{ color: 'var(--function-success)', cursor: 'not-allowed' }}
             width={38}
             type="line"
             percent={text}
@@ -314,7 +314,7 @@ const ChildDemandTable = (props: {
         {props?.hasIcon && (
           <IconFont
             type="apartment"
-            style={{ color: '#969799', fontSize: 16, marginRight: 8 }}
+            style={{ color: 'var(--neutral-n3)', fontSize: 16, marginRight: 8 }}
           />
         )}
         {props.value}

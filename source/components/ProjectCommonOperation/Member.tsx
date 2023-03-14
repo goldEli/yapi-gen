@@ -90,11 +90,11 @@ const ListItem = styled.div({
       display: 'flex',
       flexDirection: 'column',
       'span:first-child': {
-        color: '#323233',
+        color: 'var(--neutral-n1-d2)',
         fontSize: 14,
       },
       'span:last-child': {
-        color: '#BBBDBF',
+        color: 'var(--neutral-n4)',
         fontSize: 12,
       },
     },
@@ -104,7 +104,7 @@ const ListItem = styled.div({
     fontSize: 12,
   },
   '&:hover': {
-    backgroundColor: '#f4f5f5',
+    backgroundColor: 'var(--neutral-n6-d1)',
   },
 })
 const MoreWrap = styled.div<{ type?: any }>(
@@ -119,13 +119,13 @@ const MoreWrap = styled.div<{ type?: any }>(
     cursor: 'pointer',
   },
   ({ type }) => ({
-    background: type ? '#2877ff' : '#F0F4FA',
-    color: type ? 'white' : '#2877ff',
+    background: type ? 'var(--primary-d1)' : 'var(--neutral-n6-d1)',
+    color: type ? 'white' : 'var(--primary-d1)',
     '&: hover': {
-      background: type ? '#669FFF' : '#E8F1FF',
+      background: type ? 'var(--primary-d2)' : 'var(--neutral-n6-d2)',
     },
     '&: active': {
-      background: type ? '#1763E5' : '#DBEAFF',
+      background: type ? 'var(--primary-d2)' : 'var(--neutral-n6-d2)',
     },
   }),
 )
@@ -135,15 +135,15 @@ const MoreWrap2 = styled(MoreWrap)`
   font-size: 12px;
   .job1,
   .job {
-    color: #323233;
+    color: var(--neutral-n1-d1);
   }
   &:hover {
     background-color: transparent !important;
     .job {
-      color: #2877ff;
+      color: var(--primary-d2);
     }
     .job1 {
-      color: #2877ff;
+      color: var(--primary-d2);
       transform: rotate(180deg);
     }
   }
@@ -170,12 +170,12 @@ const HeaderWrap = styled.div({
 const Myd = styled.div<{ active: boolean }>`
   text-align: left;
   padding: 5px 16px !important;
-  color: #646566;
+  color: var(--neutral-n2);
   &:hover {
-    color: #323233;
-    background-color: #f4f5f5;
+    color: var(--neutral-n1-d1);
+    background-color: var(--neutral-n6-d1);
   }
-  color: ${({ active }) => (active ? '#2877FF !important' : '')};
+  color: ${({ active }) => (active ? 'var(--primary-d2) !important' : '')};
 `
 interface DropDownProps {
   row: any
@@ -445,7 +445,7 @@ const Member = (props: Props) => {
             onChangeSearch={onChangeSearch}
             width="100%"
             placeholder={t('project.searchMember')}
-            bgColor="#fff"
+            bgColor="var(--neutral-white-d2)"
           />
           {getIsPermission(
             projectInfo?.projectPermissions,
@@ -489,7 +489,7 @@ const Member = (props: Props) => {
                 ) : (
                   <span
                     style={{
-                      color: '#969799',
+                      color: 'var(--neutral-n3)',
                       fontSize: '12px',
                       marginRight: '18px',
                     }}

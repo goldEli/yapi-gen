@@ -21,14 +21,14 @@ const RightWrap = styled.div({
   overflow: 'auto',
   width: 406,
   padding: '0px 14px 0 24px',
-  borderLeft: '1px solid #EBEDF0',
+  borderLeft: '1px solid var(--neutral-n6-d1)',
 })
 
 const ShowLabel = styled.div({
   cursor: 'pointer',
   fontSize: 14,
   fontWeight: 400,
-  color: '#2877ff',
+  color: 'var(--primary-d1)',
 })
 
 const CheckboxWrap = styled(Checkbox)`
@@ -731,7 +731,11 @@ const CreateDemandRight = (props: Props) => {
                     }
                   />
                   <span
-                    style={{ color: '#646566', marginLeft: 8, fontSize: 14 }}
+                    style={{
+                      color: 'var(--neutral-n2)',
+                      marginLeft: 8,
+                      fontSize: 14,
+                    }}
                   >
                     {schedule}%
                   </span>

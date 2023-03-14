@@ -128,10 +128,10 @@ const LineItem = styled.div`
   display: flex;
   justify-content: space-between;
   font-size: 12px;
-  color: #646566;
+  color: var(--neutral-n2);
 `
 const GatteWrap = styled.div`
-  background: white;
+  background: var(--neutral-white-d2);
   box-sizing: border-box;
   margin: 0 16px;
   border-radius: 6px;

@@ -36,7 +36,7 @@ const EditWorkflow = (props: EditorProps) => {
   const [form] = Form.useForm()
   const [status, setStatus] = useState(false)
   const [name, setName] = useState('')
-  const [normalColor, setNormalColor] = useState<any>('#2877FF')
+  const [normalColor, setNormalColor] = useState<any>('var(--primary-d2)')
   const { colorList } = useSelector(store => store.project)
 
   useEffect(() => {
@@ -103,7 +103,7 @@ const EditWorkflow = (props: EditorProps) => {
       >
         {props?.item?.categorys?.length && (
           <>
-            <div style={{ color: '#323233', fontSize: 14 }}>
+            <div style={{ color: 'var(--neutral-n1-d1)', fontSize: 14 }}>
               {t('newlyAdd.existenceCategory')}
             </div>
             <Space
@@ -146,7 +146,9 @@ const EditWorkflow = (props: EditorProps) => {
                 onChange={e => setName(e.target.value)}
               />
             </Form.Item>
-            <span style={{ marginTop: 4, fontSize: 12, color: '#969799' }}>
+            <span
+              style={{ marginTop: 4, fontSize: 12, color: 'var(--neutral-n3)' }}
+            >
               {t('newlyAdd.pleaseStatusNameMax')}
             </span>
           </div>
