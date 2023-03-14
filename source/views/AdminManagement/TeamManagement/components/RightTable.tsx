@@ -293,9 +293,6 @@ const RightTable = () => {
           }}
           onDelRow={(row: any) => {
             setActiveMember(row)
-            // console.log(row)
-            //
-            // setDelIsVisible2(true)
             setDelIsVisible(true)
           }}
           dataSource={membersList?.list}

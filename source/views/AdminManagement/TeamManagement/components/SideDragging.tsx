@@ -243,7 +243,7 @@ const SliderList = (props: any) => {
       </ListItemStyle>
       <Dropdown
         menu={{ items, onClick: onChangeTeam }}
-        trigger={['click']}
+        trigger={['hover']}
         placement="bottomRight"
         overlayStyle={{
           width: 120,
