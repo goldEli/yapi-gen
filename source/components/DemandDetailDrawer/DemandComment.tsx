@@ -361,7 +361,7 @@ const DemandComment = (props: Props) => {
                                       width: '100%',
                                       fontSize: '14px',
                                       fontWeight: 400,
-                                      color: '#646566',
+                                      color: 'var(--neutral-n2)',
                                       lineHeight: '22px',
                                       wordBreak: 'break-all',
                                     }}
@@ -373,7 +373,7 @@ const DemandComment = (props: Props) => {
                                       height: '20px',
                                       fontSize: '12px',
                                       fontWeight: 400,
-                                      color: '#969799',
+                                      color: 'var(--neutral-n3)',
                                       lineHeight: '20px',
                                     }}
                                   >
@@ -411,7 +411,7 @@ const DemandComment = (props: Props) => {
                                       style={{
                                         cursor: 'pointer',
                                         fontSize: '12px',
-                                        color: '#2877ff',
+                                        color: 'var(--primary-d1)',
                                       }}
                                     >
                                       {t('p2.download') as unknown as string}

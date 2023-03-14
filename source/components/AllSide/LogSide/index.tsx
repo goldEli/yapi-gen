@@ -18,7 +18,7 @@ const Menu = styled.div`
 
   .provider {
     height: 1px;
-    background: #ecedef;
+    background: var(--neutral-n6-d1);
     width: calc(100% - 32px);
     margin-left: 16px;
   }
@@ -37,7 +37,7 @@ const MenuItem = styled.div<{ active?: any }>(
     cursor: 'pointer',
     paddingLeft: 52,
     '&: hover': {
-      backgroundColor: '#F4F5F5',
+      backgroundColor: 'var(--neutral-n6-d1)',
     },
   },
 )
@@ -160,8 +160,8 @@ const LogSide = () => {
     padding-right: 20px;
     height: 32px;
     &:hover {
-      background: #f0f4fa;
-      color: #2877ff;
+      background: 'var(--neutral-n6-d1)';
+      color: var(--primary-d1);
     }
   `
   const onWriteDaily = (item: any) => {
@@ -214,7 +214,7 @@ const LogSide = () => {
               height: '22px',
               fontSize: '14px',
               fontWeight: 500,
-              color: '#323233',
+              color: 'var(--neutral-n1-d1)',
               lineHeight: '22px',
             }}
           >

@@ -14,7 +14,7 @@ const TableColorText = (props: any) => {
       textArr?.forEach((i: any, index: number) => {
         const text =
           index != textArr.length - 1
-            ? `<span style="color: #617EF2">${hight}</span>`
+            ? `<span style="color: var(--primary-d2)">${hight}</span>`
             : ''
         resultDiv = resultDiv + i + text
       })

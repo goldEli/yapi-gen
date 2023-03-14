@@ -11,7 +11,7 @@ const Side = styled.div`
 
   background: rgba(255, 255, 255, 1);
   flex-shrink: 0;
-  border-right: 1px solid #ecedef;
+  border-right: 1px solid var(--neutral-n6-d1);
 `
 const InfoWrap = styled.div({
   display: 'flex',
@@ -38,12 +38,12 @@ const InfoItem = styled.div({
   display: 'flex',
   flexDirection: 'column',
   div: {
-    color: '#323233',
+    color: 'var(--neutral-n1-d1)',
     fontSize: 16,
     fontWeight: 400,
   },
   span: {
-    color: '#969799',
+    color: 'var(--neutral-n3)',
     fontSize: 14,
   },
 })
@@ -64,12 +64,12 @@ const MenuItem = styled.div<{ active?: boolean }>(
     cursor: 'pointer',
     paddingLeft: '20px',
     '&: hover': {
-      backgroundColor: '#F4F5F5',
+      backgroundColor: 'var(--neutral-n6-d1)',
     },
   },
   ({ active }) => ({
     // borderRight: active ? '3px solid #2877ff' : '3px solid transparent',
-    color: active ? '#2877ff' : '#323233',
+    color: active ? 'var( --primary-d1)' : 'var(--neutral-n1-d1)',
     background: active
       ? 'linear-gradient(90deg, #EBEFFF 0%, rgba(243,246,255,0) 100%)'
       : 'transparent',

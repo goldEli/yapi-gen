@@ -7,8 +7,6 @@
 import IconFont from '@/components/IconFont'
 import {
   ClickWrap,
-  StyledShape,
-  CategoryWrap,
   HiddenText,
   ListNameWrap,
   ShowWrap,
@@ -162,7 +160,7 @@ export const useDynamicColumns = (state: any) => {
                         fontSize: '12px',
                         lineHeight: '20px',
                         textAlign: 'center',
-                        color: '#FA9746',
+                        color: 'var( --function-warning)',
                         width: '60px',
                         height: '20px',
                         background: 'rgba(250,151,70,0.1)',
@@ -254,7 +252,10 @@ export const useDynamicColumns = (state: any) => {
                 record.project?.isPublic !== 1 && !record.project?.isUserMember
               ) && (
                 <ShowWrap>
-                  <IconFont style={{ color: '#2877ff' }} type="down-icon" />
+                  <IconFont
+                    style={{ color: 'var(--primary-d2)' }}
+                    type="down-icon"
+                  />
                 </ShowWrap>
               )}
             </Wrap>
@@ -446,8 +447,11 @@ export const useDynamicColumns = (state: any) => {
               record.status.is_end !== 1
             ) && (
               <Progress
-                strokeColor="#43BA9A"
-                style={{ color: '#43BA9A', cursor: 'not-allowed' }}
+                strokeColor="var(--function-success)"
+                style={{
+                  color: 'var(--function-success)',
+                  cursor: 'not-allowed',
+                }}
                 width={38}
                 type="line"
                 percent={record.schedule}

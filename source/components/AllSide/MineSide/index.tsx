@@ -91,7 +91,7 @@ const MineSide = () => {
             height: '22px',
             fontSize: '14px',
             fontWeight: 500,
-            color: '#323233',
+            color: 'var(--neutral-n1-d1)',
             lineHeight: '22px',
           }}
         >

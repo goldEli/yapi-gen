@@ -113,12 +113,12 @@ const DetailDemand = (props: DetailDemand) => {
                   hasColor
                   style={{
                     marginBottom: '10px',
-                    color: '#2877FF',
+                    color: 'var(--primary-d1)',
                   }}
                 >
                   <IconFont
                     style={{
-                      color: '#2877FF',
+                      color: 'var(--primary-d1)',
                     }}
                     type="plus"
                   />

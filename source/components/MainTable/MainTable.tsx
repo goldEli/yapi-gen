@@ -47,7 +47,7 @@ const StatusWrap = styled.div({
     marginRight: 8,
   },
   span: {
-    color: '#323233',
+    color: 'var(--neutral-n1-d1)',
     fontSize: 14,
     fontWeight: 400,
   },
@@ -70,7 +70,7 @@ const ImgWrap = styled.div<{ url?: string }>(
     backgroundSize: '100%',
     backgroundPosition: 'center',
     '&: hover': {
-      border: '1px solid #2877ff',
+      border: '1px solid var(--primary-d2)',
     },
   },
   ({ url }) => ({

@@ -54,12 +54,12 @@ const DemandItem = styled.div<{ isActive?: boolean }>(
     paddingLeft: 16,
     wordBreak: 'break-all',
     '&:hover': {
-      background: '#F4F5F5',
-      color: '#323233',
+      background: 'var(--neutral-n6-d1)',
+      color: 'var(--neutral-n1-d1)',
     },
   },
   ({ isActive }) => ({
-    color: isActive ? '#2877FF' : '#646566',
+    color: isActive ? 'var(--primary-d2)' : 'var(--neutral-n2',
     fontWeight: isActive ? 500 : 400,
   }),
 )
@@ -71,7 +71,7 @@ const ProjectNameWrap = styled.div({
   padding: '0 8px',
   cursor: 'pointer',
   borderRadius: 6,
-  color: '#323233',
+  color: 'var(--neutral-n1-d1)',
   fontSize: 14,
   fontWeight: 500,
   '.text': {
@@ -81,7 +81,7 @@ const ProjectNameWrap = styled.div({
     overflow: 'hidden',
   },
   '&:hover': {
-    background: '#F4F5F5',
+    background: 'var(--neutral-n6-d1)',
   },
 })
 
