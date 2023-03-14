@@ -448,7 +448,7 @@ const GlobalStyle = () => {
       z-index: 10000 !important;
     }
     .ant-switch {
-      background-color: var(--neutral-n1-d1) !important;
+      background-color: var(--neutral-n8) !important;
     }
     .ant-switch-checked {
       background-color: var(--primary-d2) !important;

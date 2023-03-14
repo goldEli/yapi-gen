@@ -46,7 +46,9 @@ const IconFontStyle = styled(IconFont)({
 
 const ProjectDetailSide = (props: { onClick(): void }) => {
   const [t] = useTranslation()
-  const { startUsing, categoryList } = useSelector(store => store.category)
+  const { startUsing, categoryList, activeCategory } = useSelector(
+    store => store.category,
+  )
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -65,27 +67,29 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
   ]
 
   // 需求类别侧边栏
-  const getList = async () => {
-    await dispatch(storyConfigCategoryList({ projectId: paramsData.id }))
+  const getList = async (type?: string) => {
+    await dispatch(storyConfigCategoryList({ projectId: paramsData.id }, type))
   }
 
   // 监听跟新
   const watchDataList = () => {
     let dataItem = null
+    let filterData = null
     if (startUsing) {
-      dataItem = categoryList
-        ?.filter((el: any) => el.status === 1)
-        .map((el: any, index: number) => ({
-          ...el,
-          active: index === 0 ? true : false,
-        }))
+      filterData = categoryList?.filter((el: any) => el.status === 1)
     } else {
-      dataItem = categoryList
-        ?.filter((el: any) => el.status !== 1)
-        .map((el: any, index: number) => ({
-          ...el,
-          active: index === 0 ? true : false,
-        }))
+      filterData = categoryList?.filter((el: any) => el.status !== 1)
+    }
+    if (activeCategory?.id) {
+      dataItem = filterData.map((el: any) => ({
+        ...el,
+        active: el.id === activeCategory?.id ? true : false,
+      }))
+    } else {
+      dataItem = filterData.map((el: any, index: number) => ({
+        ...el,
+        active: index === 0 ? true : false,
+      }))
     }
     dataItem?.length <= 1 && dispatch(setCategoryConfigDataList([]))
     dispatch(setActiveCategory(dataItem.find((el: any) => el.active)))
@@ -94,7 +98,6 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
   // 需求类别中间列表
   const getCategoryConfig = async (dataItem: any) => {
     const itemId = dataItem?.find((item: any) => item.active)?.id
-
     watchDataList()
     itemId &&
       projectId &&
@@ -123,12 +126,23 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
     await getCategorySaveSort({ id: paramsData.id, data: dataSort })
   }
   const filterDataItem = (num: number) => {
-    const dataItem = categoryList
-      ?.filter((el: any) => el.status === num)
-      .map((el: any, index: number) => ({
-        ...el,
-        active: index === 0 ? true : false,
-      }))
+    let dataItem = null
+    if (activeCategory?.id) {
+      dataItem = categoryList
+        ?.filter((el: any) => el.status === num)
+        .map((el: any, index: number) => ({
+          ...el,
+          active: el.id === activeCategory?.id ? true : false,
+        }))
+    } else {
+      dataItem = categoryList
+        ?.filter((el: any) => el.status === num)
+        .map((el: any, index: number) => ({
+          ...el,
+          active: index === 0 ? true : false,
+        }))
+    }
+    dispatch(setActiveCategory(dataItem.find((el: any) => el.active)))
     return dataItem
   }
   useEffect(() => {
@@ -139,19 +153,16 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
     } else {
       dataItem = filterDataItem(2)
     }
-    dispatch(setActiveCategory(dataItem.find((el: any) => el.active)))
     getCategoryConfig(dataItem)
   }, [startUsing, categoryList])
-
   // 切换tab
   const getTabsActive = async (index: any) => {
-    let dataItem
+    let dataItem = null
     if (index === 0) {
       dataItem = filterDataItem(1)
     } else {
       dataItem = filterDataItem(2)
     }
-
     dispatch(setStartUsing(index === 0 ? true : false))
     setTabsActive(index)
     watchDataList()
@@ -232,7 +243,7 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
       </WrapSet>
       <EditCategory
         onClose={() => setIsVisible(false)}
-        onUpdate={() => getList()}
+        onUpdate={() => getList('add')}
         item={null}
         isVisible={isVisible}
       />
