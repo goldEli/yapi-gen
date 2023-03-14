@@ -41,6 +41,7 @@ import InputSearch from '@/components/InputSearch'
 import CommonButton from '@/components/CommonButton'
 import PaginationBox from '@/components/TablePagination'
 import ResizeTable from '@/components/ResizeTable'
+import ProjectOverModal from '@/components/ProjectOverModal'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -647,12 +648,17 @@ const ProjectMember = () => {
           onConfirm={onConfirmEdit}
           projectPermission={projectPermission}
         />
-        <DeleteConfirm
+        <ProjectOverModal
+          id={operationItem}
+          visible={isDelete}
+          close={() => setIsDelete(!isDelete)}
+        />
+        {/* <DeleteConfirm
           text={t('mark.delPeople')}
           isVisible={isDelete}
           onChangeVisible={() => setIsDelete(!isDelete)}
           onConfirm={onDeleteConfirm}
-        />
+        /> */}
 
         <StaffSelect
           title={t('project.addMember')}

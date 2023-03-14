@@ -52,11 +52,7 @@ const HandOverModal = (props: any) => {
       onConfirm={onConfirm}
     >
       <Wrap>
-        <PinkWrap>
-          [{props.id.name}
-          ]目前参与了{list.length}
-          个项目，请指定交接项目接收人；交接后他的交接状态将更改为已交接；已经交接状态不可被项目添加及进行员工权限配置
-        </PinkWrap>
+        <PinkWrap>请指定项目接收人</PinkWrap>
         <Form form={form}>
           {list.map((i: any) => (
             <Form.Item

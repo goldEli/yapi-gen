@@ -16,6 +16,7 @@ import * as services from '@/services'
 import AddMemberCommonModal from '@/components/AddUser/CommonModal'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { GENDER_MAP } from '@/constants'
+import TeamOverModal from '@/components/TeamOverModal'
 
 const RightWrap = styled.div`
   flex: 1;
@@ -314,14 +315,19 @@ const RightTable = () => {
         width={420}
       />
 
-      <DeleteConfirm
+      {/* <DeleteConfirm
         title="移除确认"
         text="确认移除该成员？"
         isVisible={delIsVisible}
         onConfirm={onDelConfirm}
         onChangeVisible={() => setDelIsVisible(false)}
-      />
+      /> */}
 
+      <TeamOverModal
+        id={activeMember}
+        close={() => setDelIsVisible(false)}
+        visible={delIsVisible}
+      />
       <AddMemberCommonModal
         isPermisGroup={false}
         title="添加成员"
