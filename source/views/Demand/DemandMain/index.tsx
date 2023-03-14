@@ -27,6 +27,7 @@ import DemandGrid from '@/components/DemandComponent/DemandPanel'
 import DemandTree from '@/components/DemandComponent/DemandTree'
 import ProjectCommonOperation from '@/components/ProjectCommonOperation'
 import { Content, DemandContent } from './style'
+import { onTapInputKey, saveInputKey } from '@store/view'
 
 const Right = styled.div<{ isShowLeft: boolean }>({
   width: '100%',
@@ -70,6 +71,7 @@ const DemandMain = (props: Props) => {
   const [isUpdated, setIsUpdated] = useState(false)
   const { filterKeys } = useSelector(store => store.project)
   const { isUpdateDemand } = useSelector(store => store.demand)
+  const { tapInputKey } = useSelector(store => store.view)
   const [searchVal, setSearchVal] = useState('')
   const searchChoose = useSelector(store => store.view.searchChoose)
   const dispatch = useDispatch()
@@ -168,7 +170,7 @@ const DemandMain = (props: Props) => {
   }, [key, isGrid, order, pageObj, searchChoose, projectId])
 
   useEffect(() => {
-    if (isRefresh || isUpdateDemand) {
+    if (isRefresh) {
       getList(
         isGrid,
         searchItems,
@@ -178,7 +180,13 @@ const DemandMain = (props: Props) => {
         topParentId,
       )
     }
-  }, [isRefresh, isUpdateDemand])
+  }, [isRefresh])
+
+  useEffect(() => {
+    if (isUpdateDemand) {
+      getList(isGrid, searchItems, pageObj, order, false, topParentId)
+    }
+  }, [isUpdateDemand])
 
   useEffect(() => {
     if (props.isUpdate) {
@@ -285,7 +293,14 @@ const DemandMain = (props: Props) => {
       dispatch(setFilterKeys([...new Set(keys)]))
     },
   }
-
+  useEffect(() => {
+    if (tapInputKey) {
+      onInputSearch(tapInputKey)
+    }
+    return () => {
+      dispatch(onTapInputKey(''))
+    }
+  }, [tapInputKey])
   return (
     <TreeContext.Provider value={keyValue}>
       <DeleteConfirm

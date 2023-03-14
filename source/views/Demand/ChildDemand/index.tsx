@@ -157,10 +157,16 @@ const ChildDemand = () => {
   }, [])
 
   useEffect(() => {
-    if (isRefresh || isUpdateDemand) {
+    if (isRefresh) {
       getList({ page: 1, size: pageObj.size }, order, orderKey)
     }
-  }, [isRefresh, isUpdateDemand])
+  }, [isRefresh])
+
+  useEffect(() => {
+    if (isUpdateDemand) {
+      getList(pageObj, order, orderKey)
+    }
+  }, [isUpdateDemand])
 
   useEffect(() => {
     getShowkey()

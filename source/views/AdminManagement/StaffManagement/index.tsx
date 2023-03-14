@@ -192,6 +192,9 @@ const StaffManagement = () => {
   })
 
   const menuTable = (record: any) => {
+    const isEdit = (
+      userInfo.company_permissions?.map((i: any) => i.identity) || []
+    ).includes('b/project/update')
     const items = [
       {
         key: '1',
@@ -252,10 +255,15 @@ const StaffManagement = () => {
       {
         width: 40,
         render: (_text: any, record: any) => {
+          const isEdit = (
+            userInfo.company_permissions?.map((i: any) => i.identity) || []
+          ).includes('b/companyuser/update')
           return (
-            <div>
-              <MoreDropdown menu={menuTable(record)} />
-            </div>
+            isEdit && (
+              <div>
+                <MoreDropdown menu={menuTable(record)} />
+              </div>
+            )
           )
         },
       },
@@ -460,71 +468,67 @@ const StaffManagement = () => {
           </DropDownMenu>
         </div>
       </div>
-      <div style={{ height: 'calc(100% - 104px)', overflow: 'auto' }}>
-        {isShow ? <SearchList onSearch={onSearch} /> : null}
-        <div className={tableWrapP} style={{ height: `calc(100% - 52px)` }}>
-          <div
-            style={{
-              height: 'calc(100% - 50px)',
-              overflow: 'hidden',
-            }}
-          >
-            <ResizeTable
-              isSpinning={isSpinning}
-              dataWrapNormalHeight="100%"
-              col={selectColum}
-              dataSource={listData}
-              noData={<NoData />}
-            />
-          </div>
-
-          <PaginationBox
-            total={total}
-            pageSize={pagesize}
-            currentPage={page}
-            onChange={onChangePage}
-          />
-        </div>
-
-        <OptionalFeld
-          allTitleList={allTitleList}
-          plainOptions={plainOptions}
-          plainOptions2={plainOptions2}
-          checkList={titleList}
-          checkList2={titleList2}
-          isVisible={isModalVisible}
-          onClose={close2}
-          getCheckList={getCheckList}
-        />
-        <HandOverModal
-          id={editData}
-          confirm={() => getStaffListData()}
-          close={() => setIsVisibleFieldsA(false)}
-          visible={isVisibleFieldsA}
-        />
-        <DeleteConfirm
-          title="离职交接"
-          text={`${editData.name}目前未参与任何项目，确认将【${editData.name}】工作交接，交接后他的交接状态将更改为已交接；已经交接状态不可被项目添加及进行员工权限配置`}
-          onConfirm={onConfirm}
-          onChangeVisible={() => setIsVisibleFieldsB(false)}
-          isVisible={isVisibleFieldsB}
-        />
-        <DeleteConfirm
-          title="恢复交接状态"
-          text={`确认将【${editData.name}】的交接状态更改为正常状态`}
-          onConfirm={onConfirm2}
-          onChangeVisible={() => setIsVisibleFieldsC(false)}
-          isVisible={isVisibleFieldsC}
-        />
-        <StaffPersonal
-          data={editData}
-          isVisible={isStaffPersonalVisible}
-          onClose={() => {
-            setIsStaffPersonalVisible(false)
-          }}
-          onConfirm={closeStaffPersonal}
+      {isShow ? <SearchList onSearch={onSearch} /> : null}
+      <div
+        style={{
+          height: 'calc(100vh - 192px)',
+          overflow: 'auto',
+          padding: '0 24px',
+        }}
+      >
+        <ResizeTable
+          isSpinning={isSpinning}
+          dataWrapNormalHeight="100%"
+          col={selectColum}
+          dataSource={listData}
+          noData={<NoData />}
         />
       </div>
+      <PaginationBox
+        total={total}
+        pageSize={pagesize}
+        currentPage={page}
+        onChange={onChangePage}
+      />
+
+      <OptionalFeld
+        allTitleList={allTitleList}
+        plainOptions={plainOptions}
+        plainOptions2={plainOptions2}
+        checkList={titleList}
+        checkList2={titleList2}
+        isVisible={isModalVisible}
+        onClose={close2}
+        getCheckList={getCheckList}
+      />
+      <HandOverModal
+        id={editData}
+        confirm={() => getStaffListData()}
+        close={() => setIsVisibleFieldsA(false)}
+        visible={isVisibleFieldsA}
+      />
+      <DeleteConfirm
+        title="离职交接"
+        text={`${editData.name}目前未参与任何项目，确认将【${editData.name}】工作交接，交接后他的交接状态将更改为已交接；已经交接状态不可被项目添加及进行员工权限配置`}
+        onConfirm={onConfirm}
+        onChangeVisible={() => setIsVisibleFieldsB(false)}
+        isVisible={isVisibleFieldsB}
+      />
+      <DeleteConfirm
+        title="恢复交接状态"
+        text={`确认将【${editData.name}】的交接状态更改为正常状态`}
+        onConfirm={onConfirm2}
+        onChangeVisible={() => setIsVisibleFieldsC(false)}
+        isVisible={isVisibleFieldsC}
+      />
+      <StaffPersonal
+        data={editData}
+        isVisible={isStaffPersonalVisible}
+        onClose={() => {
+          setIsStaffPersonalVisible(false)
+        }}
+        onConfirm={closeStaffPersonal}
+      />
     </PermissionWrap>
   )
 }

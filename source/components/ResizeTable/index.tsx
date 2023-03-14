@@ -116,13 +116,11 @@ const ResizeTable = (props: ResizeTableProps) => {
 
   useEffect(() => {
     setCols(props.col)
-    // console.log('父组件的props改了')
   }, [props.col])
 
   useEffect(() => {
     setColumns(
       (cols || []).map((col: any, index: number) => {
-        // console.log(4444, col.width)
         if (col === Table.SELECTION_COLUMN) {
           return col
         }
@@ -154,8 +152,6 @@ const ResizeTable = (props: ResizeTableProps) => {
   const tableY =
     tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
-  // console.log(4234234, columns?.find((i: any) => i.key === 'name')?.width)
-
   return (
     <DataWrap height={props.dataWrapNormalHeight} ref={dataWrapRef}>
       <div
@@ -163,31 +159,31 @@ const ResizeTable = (props: ResizeTableProps) => {
         className="components-table-resizable-column"
       >
         <Spin spinning={props.isSpinning}>
-          {!!props.dataSource &&
-            (props.dataSource?.length > 0 ? (
-              <TableWrap
-                rowKey="id"
-                columns={columns}
-                dataSource={props.dataSource}
-                pagination={false}
-                components={{
-                  header: {
-                    cell: ResizeTitle,
-                  },
-                }}
-                scroll={{
-                  x: 'max-content',
-                  y: tableY,
-                }}
-                tableLayout="auto"
-                showSorterTooltip={false}
-                rowSelection={props?.rowSelection}
-                expandable={props?.expandable}
-                onRow={props.onRow as any}
-              />
-            ) : (
-              <div style={{ height: '100%' }}>{props.noData}</div>
-            ))}
+          {!!props.dataSource && props.dataSource?.length > 0 && (
+            <TableWrap
+              rowKey="id"
+              columns={columns}
+              dataSource={props.dataSource}
+              pagination={false}
+              components={{
+                header: {
+                  cell: ResizeTitle,
+                },
+              }}
+              scroll={{
+                x: 'max-content',
+                y: tableY,
+              }}
+              tableLayout="auto"
+              showSorterTooltip={false}
+              rowSelection={props?.rowSelection}
+              expandable={props?.expandable}
+              onRow={props.onRow as any}
+            />
+          )}
+          {props.dataSource && props.dataSource?.length <= 0 && (
+            <div style={{ height: '100%' }}>{props.noData}</div>
+          )}
         </Spin>
       </div>
     </DataWrap>

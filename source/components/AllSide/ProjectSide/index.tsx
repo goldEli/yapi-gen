@@ -184,6 +184,10 @@ const MoreProjectSide = (props: Props) => {
   }
   useEffect(() => {
     getGroupData()
+    return () => {
+      dispatch(changeTypeId(0))
+      dispatch(changeGroupId(null))
+    }
   }, [isRefreshGroup])
   return (
     <AllWrap>

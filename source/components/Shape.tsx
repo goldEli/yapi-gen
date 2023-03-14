@@ -24,7 +24,7 @@ import moment from 'moment'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { getProjectMember } from '@/services/mine'
 import { useDispatch } from '@store/index'
-import { setIsUpdateChangeLog } from '@store/demand'
+import { setIsUpdateChangeLog, setIsUpdateDemand } from '@store/demand'
 import { CloseWrap } from './StyleCommon'
 import { getShapeLeft, getShapeRight } from '@/services/demand'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
@@ -537,6 +537,7 @@ export const ShapeContent = (props: any) => {
     await onTap(props.noleft ? putData2 : putData)
     onClear()
     dispatch(setIsUpdateChangeLog(true))
+    dispatch(setIsUpdateDemand(true))
   }
 
   const onConfirm = async () => {
@@ -564,7 +565,7 @@ export const ShapeContent = (props: any) => {
     const newA = a.filter((j: any) => {
       return j.id === info
     })
-
+    const isMy = rightList?.originalStatusUserIds.includes(info)
     const newC = a.filter((j: any) => {
       return rightList?.originalStatusUserIds.includes(j.id)
     })
@@ -585,10 +586,11 @@ export const ShapeContent = (props: any) => {
     }
 
     const newB = a.filter((j: any) => {
-      return j.id !== info && !rightList?.originalStatusUserIds.includes(j.id)
+      // return j.id !== info && !rightList?.originalStatusUserIds.includes(j.id)
+      return j.id !== info
     })
 
-    return (newD ? newD : []).concat(newA, newB)
+    return (newD ? newD : []).concat(isMy ? [] : newA, newB)
   }
 
   return (

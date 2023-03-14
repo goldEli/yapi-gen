@@ -49,6 +49,7 @@ interface Props {
   isSaveParams?: boolean
   workStatusList?: any
   isCreateDemand?: boolean
+  newCategory?: any
 }
 
 const CreateDemandRight = (props: Props) => {
@@ -181,7 +182,8 @@ const CreateDemandRight = (props: Props) => {
       }
 
       form.setFieldsValue({
-        status: props.demandDetail?.status.status_id,
+        status:
+          props.newCategory?.statusId ?? props.demandDetail?.status.status_id,
 
         // 抄送人
         users_copysend_name: getCommonUser(
@@ -378,6 +380,7 @@ const CreateDemandRight = (props: Props) => {
     props.parentList,
     props.fieldsList,
     props.workStatusList,
+    props.newCategory,
   ])
 
   useEffect(() => {

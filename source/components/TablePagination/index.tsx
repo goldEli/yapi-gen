@@ -7,6 +7,7 @@ interface PropType {
   pageSize: number
   currentPage?: number
   onChange(page: number, pageSize: number): void
+  onShowSizeChange?: any
 }
 
 const PaginationBox = (props: PropType) => {
@@ -18,6 +19,7 @@ const PaginationBox = (props: PropType) => {
       }}
     >
       <Pagination
+        onShowSizeChange={props.onShowSizeChange}
         current={props.currentPage}
         defaultCurrent={1}
         total={props.total}

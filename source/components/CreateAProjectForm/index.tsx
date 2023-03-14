@@ -161,6 +161,9 @@ const CreateAProjectForm = () => {
         img: i.logo,
       })),
     )
+    form.setFieldsValue({
+      team_id: 0,
+    })
   }
 
   //编辑项目逻辑
@@ -181,7 +184,8 @@ const CreateAProjectForm = () => {
       name: res.name,
       team_id: res.team_id,
       prefix: res.prefix,
-      leader_id: res.leader_id,
+      // eslint-disable-next-line no-undefined
+      leader_id: res.leader_id || undefined,
       isPublic: res.is_public,
       groups: res.groups.map((i: any) => i.id),
       info: res.info,
@@ -234,6 +238,7 @@ const CreateAProjectForm = () => {
     if (createVisible) {
       getGroupData()
       setActiveCover(covers[0]?.path)
+
       if (isEditId) {
         getProjectInfo()
       }
@@ -343,12 +348,9 @@ const CreateAProjectForm = () => {
             <Form.Item
               label={<FormTitleSmall text={t('affiliated')} />}
               name="team_id"
-              rules={[
-                { required: true, message: 'Please input your password!' },
-              ]}
+              rules={[{ required: true, message: '' }]}
             >
               <Select
-                defaultValue={0}
                 placeholder={t('please_select_your_affiliation')}
                 optionLabelProp="label"
                 onChange={value => {

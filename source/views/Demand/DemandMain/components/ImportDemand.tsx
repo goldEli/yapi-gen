@@ -79,8 +79,9 @@ const TextWrap = styled.div({
 const UploadDragger = styled(Upload.Dragger)({
   height: '122px!important',
   background: 'white!important',
-  border: '1px dashed var(--neutral-n1-d1)!important',
-  marginTop: 24,
+  border: '1px dashed #D5D6D9!important',
+  margin: '24px 0px 0 24px',
+  width: '97%!important',
 })
 
 const CommonWrap = styled.div({
@@ -211,7 +212,7 @@ const ImportDemand = () => {
       const a = document.createElement('a')
       a.download = `${projectInfo?.name} - ${
         tabs === 2 ? t('newlyAdd.importCreate') : t('newlyAdd.importUpdate')
-      }`
+      }.xlsx`
       a.href = blobUrl
       a.click()
       setIsVisible(false)

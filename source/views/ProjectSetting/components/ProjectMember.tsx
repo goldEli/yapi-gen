@@ -662,6 +662,7 @@ const ProjectMember = () => {
           id={operationItem}
           visible={isDelete}
           close={() => setIsDelete(!isDelete)}
+          confirm={() => getList(order, pageObj)}
         />
         {/* <DeleteConfirm
           text={t('mark.delPeople')}

@@ -39,7 +39,7 @@ const ExportDemand = (props: Props) => {
     })
     const blobUrl = window.URL.createObjectURL(blob)
     const a = document.createElement('a')
-    a.download = projectInfo?.name
+    a.download = `${projectInfo?.name}.xlsx`
     a.href = blobUrl
     a.click()
     props.onClose(false)

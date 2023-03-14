@@ -1,7 +1,12 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-handler-names */
-import { confirmHand, getHandMember } from '@/services/handover'
+import {
+  confirmHand,
+  confirmTeamHand,
+  getHandMember,
+  getTeamMember,
+} from '@/services/handover'
 import { Form, message, Select } from 'antd'
 import React, { useEffect, useState } from 'react'
 import CommonModal from '../CommonModal'
@@ -14,7 +19,10 @@ const HandOverModal = (props: any) => {
   const [list, setList] = useState([])
 
   const init = async () => {
-    const res = await getHandMember(props.id.id)
+    const res = await getTeamMember({
+      team_id: props.id.team_id,
+      user_id: props.id.id,
+    })
     setList(res)
   }
   useEffect(() => {
@@ -34,7 +42,11 @@ const HandOverModal = (props: any) => {
         })
       }
 
-      const res1 = await confirmHand({ id: props.id.id, data: newObj })
+      const res1 = await confirmTeamHand({
+        id: props.id.team_id,
+        user_id: props.id.id,
+        data: newObj,
+      })
 
       if (res1.code === 0) {
         message.success('成功')

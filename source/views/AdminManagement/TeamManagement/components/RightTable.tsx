@@ -118,6 +118,7 @@ const RightTable = () => {
   const [isVisible, setIsVisible] = useState(false)
   const [editForm, setEditForm] = useState<any>()
   const [delIsVisible, setDelIsVisible] = useState(false)
+  const [delIsVisible2, setDelIsVisible2] = useState(false)
   const [type, setType] = useState('')
   const [activeMember, setActiveMember] = useState<any>(null)
   const [searchVal, setSearchVal] = useState('')
@@ -292,6 +293,9 @@ const RightTable = () => {
           }}
           onDelRow={(row: any) => {
             setActiveMember(row)
+            // console.log(row)
+            //
+            // setDelIsVisible2(true)
             setDelIsVisible(true)
           }}
           dataSource={membersList?.list}
@@ -315,18 +319,19 @@ const RightTable = () => {
         width={420}
       />
 
-      {/* <DeleteConfirm
+      <DeleteConfirm
         title="移除确认"
         text="确认移除该成员？"
         isVisible={delIsVisible}
         onConfirm={onDelConfirm}
         onChangeVisible={() => setDelIsVisible(false)}
-      /> */}
+      />
 
       <TeamOverModal
+        confirm={() => onFetchMemberList()}
         id={activeMember}
-        close={() => setDelIsVisible(false)}
-        visible={delIsVisible}
+        close={() => setDelIsVisible2(false)}
+        visible={delIsVisible2}
       />
       <AddMemberCommonModal
         isPermisGroup={false}

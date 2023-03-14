@@ -8,15 +8,17 @@ import styled from '@emotion/styled'
 import { Space, Spin } from 'antd'
 import DemandCard from '@/components/DemandCard'
 import { useSearchParams } from 'react-router-dom'
-import { getParamsData } from '@/tools/index'
+import { getIsPermission, getParamsData } from '@/tools/index'
 import NoData from '@/components/NoData'
 import { useEffect, useState } from 'react'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
+import { setFilterParamsModal } from '@store/project'
+import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
+import CreateDemandButton from './CreateDemandButton'
 
 const Content = styled.div({
   padding: 16,
-  height: 'calc(100% - 32px)',
 })
 
 const StatusItemsWrap = styled.div({
@@ -87,13 +89,21 @@ interface Props {
 }
 
 const IterationGrid = (props: Props) => {
+  const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { projectInfoValues } = useSelector(store => store.project)
+  const { projectInfoValues, projectInfo } = useSelector(store => store.project)
   const [basicStatus, setBasicStatus] = useState<any>([])
   const [dataList, setDataList] = useState<any>({})
   const [openDemandDetail] = useOpenDemandDetail()
+  const { filterParams } = useSelector(store => store.iterate)
+
+  const hasCreate =
+    !getIsPermission(projectInfo?.projectPermissions, 'b/story/save') &&
+    props.hasId &&
+    props.hasId?.status === 1 &&
+    projectInfo?.status === 1
 
   const getBasicStatus = () => {
     const arr = projectInfoValues
@@ -135,57 +145,77 @@ const IterationGrid = (props: Props) => {
       : 3
   }
 
+  const onCreateDemand = () => {
+    dispatch(setFilterParamsModal(filterParams))
+    dispatch(setIsCreateDemandVisible(true))
+    dispatch(setCreateDemandProps({ projectId, iterateId: props.iterateId }))
+  }
+
   return (
-    <Content>
-      <div style={{ height: '100%', overflow: 'auto' }}>
-        <Spin spinning={props?.isSpinning}>
-          <SpaceWrap size={20}>
-            {basicStatus?.map((k: any) => (
-              <StatusItemsWrap key={k.id}>
-                <Title state={getColor(k.id)}>
-                  <div />
-                  {k.content_txt}(
-                  {dataList?.filter((item: any) => item.id === k.id)[0]?.count})
-                </Title>
-                <CardGroup>
-                  {typeof props?.hasId === 'object' ? (
-                    dataList?.filter((item: any) => item.id === k.id)[0]
-                      ?.list ? (
-                      dataList?.filter((item: any) => item.id === k.id)[0]?.list
-                        .length > 0 ? (
-                        dataList
-                          ?.filter((item: any) => item.id === k.id)[0]
-                          ?.list?.map((i: any, idx: any) => (
-                            <DemandCard
-                              key={i.id}
-                              item={i}
-                              indexVal={idx}
-                              onClickItem={() =>
-                                onClickItem(
-                                  i,
-                                  dataList?.filter(
-                                    (item: any) => item.id === k.id,
-                                  )[0]?.list,
-                                )
-                              }
-                              onChangeDelete={props?.onDelete}
-                              onUpdate={props?.onUpdate}
-                            />
-                          ))
-                      ) : (
-                        <NoData />
-                      )
-                    ) : null
-                  ) : (
-                    <NoData />
-                  )}
-                </CardGroup>
-              </StatusItemsWrap>
-            ))}
-          </SpaceWrap>
-        </Spin>
-      </div>
-    </Content>
+    <>
+      <CreateDemandButton
+        hasCreate={hasCreate}
+        onCreateDemand={onCreateDemand}
+      />
+      <Content
+        style={{
+          height: hasCreate ? 'calc(100% - 84px)' : 'calc(100% - 32px)',
+        }}
+      >
+        <div style={{ height: '100%', overflow: 'auto' }}>
+          <Spin spinning={props?.isSpinning}>
+            <SpaceWrap size={20}>
+              {basicStatus?.map((k: any) => (
+                <StatusItemsWrap key={k.id}>
+                  <Title state={getColor(k.id)}>
+                    <div />
+                    {k.content_txt}(
+                    {
+                      dataList?.filter((item: any) => item.id === k.id)[0]
+                        ?.count
+                    }
+                    )
+                  </Title>
+                  <CardGroup>
+                    {typeof props?.hasId === 'object' ? (
+                      dataList?.filter((item: any) => item.id === k.id)[0]
+                        ?.list ? (
+                        dataList?.filter((item: any) => item.id === k.id)[0]
+                          ?.list.length > 0 ? (
+                          dataList
+                            ?.filter((item: any) => item.id === k.id)[0]
+                            ?.list?.map((i: any, idx: any) => (
+                              <DemandCard
+                                key={i.id}
+                                item={i}
+                                indexVal={idx}
+                                onClickItem={() =>
+                                  onClickItem(
+                                    i,
+                                    dataList?.filter(
+                                      (item: any) => item.id === k.id,
+                                    )[0]?.list,
+                                  )
+                                }
+                                onChangeDelete={props?.onDelete}
+                                onUpdate={props?.onUpdate}
+                              />
+                            ))
+                        ) : (
+                          <NoData />
+                        )
+                      ) : null
+                    ) : (
+                      <NoData />
+                    )}
+                  </CardGroup>
+                </StatusItemsWrap>
+              ))}
+            </SpaceWrap>
+          </Spin>
+        </div>
+      </Content>
+    </>
   )
 }
 
