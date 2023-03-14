@@ -233,6 +233,7 @@ const IterationTable = (props: Props) => {
         isChild: true,
         parentId: item.id,
         iterateId: props.iterateId,
+        categoryId: item.categoryId,
       }),
     )
   }

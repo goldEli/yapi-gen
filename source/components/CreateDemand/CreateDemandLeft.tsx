@@ -66,6 +66,8 @@ interface Props {
   // 需求类别对应的需求状态下拉列表
   onChangeWorkStatusList(values: any): void
   onGetCreateDemand(state: boolean): void
+  // 修改需求类别同步给右侧
+  onChangeCategory(value: any): void
 }
 
 export const uploadFile = (file: File, editorRef: any) => {
@@ -294,6 +296,7 @@ const CreateDemandLeft = (props: Props) => {
     setIsShowChangeCategory(false)
     setCategoryObj(currentCategory)
     setChangeCategoryFormData(changeCategoryForm.getFieldsValue())
+    props.onChangeCategory(changeCategoryForm.getFieldsValue())
     setTimeout(() => {
       changeCategoryForm.resetFields()
     }, 100)

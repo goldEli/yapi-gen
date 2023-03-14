@@ -213,6 +213,7 @@ const DemandDetailDrawer = () => {
         projectId: drawerInfo.projectId,
         isChild: true,
         parentId: item.id,
+        categoryId: item.categoryId,
       }),
     )
   }

@@ -15,6 +15,7 @@ import WhiteDay from './components/WhiteDay'
 import { writeDaily } from '@/services/daily'
 import useSetTitle from '@/hooks/useSetTitle'
 import { BooleanString } from 'cos-js-sdk-v5'
+import PermissionWrap from '@/components/PermissionWrap'
 
 const Wrap = styled.div`
   height: 100%;
@@ -153,6 +154,7 @@ const LogManagement = () => {
   const { pathname } = useLocation()
   const nowPath2 = Number(pathname.split('/')[3]) || ''
   const [visibleEdit, setVisibleEdit] = useState(false)
+  const { menuPermission } = useSelector(store => store.user)
   const [visibleEditText, setVisibleEditText] = useState('')
   const [id, setId] = useState(1)
   const [type, setType] = useState('')
@@ -189,35 +191,40 @@ const LogManagement = () => {
   }
   const title = menuList[(nowPath2 as number) - 1]?.name
   return (
-    <Wrap>
-      {/* 右边的表格 */}
-      <Main>
-        <div
-          style={{
-            height: '64px',
-            background: '#FFFFFF',
-            display: 'flex',
-            alignItems: 'center',
-            paddingLeft: '24px',
-            fontSize: '16px',
-            fontWeight: 'bold',
-          }}
-        >
-          {title}
-        </div>
-        <DailyContext.Provider value={keyValue}>
-          <Outlet />
-        </DailyContext.Provider>
-      </Main>
-      {/* // 写日志的表单D */}
-      <WhiteDay
-        visibleEditText={visibleEditText}
-        visibleEdit={visibleEdit}
-        editClose={editClose}
-        editConfirm={editConfirm}
-        type={type}
-      />
-    </Wrap>
+    <PermissionWrap
+      auth="/LogManagement"
+      permission={menuPermission?.menus?.map((i: any) => i.url)}
+    >
+      <Wrap>
+        {/* 右边的表格 */}
+        <Main>
+          <div
+            style={{
+              height: '64px',
+              background: '#FFFFFF',
+              display: 'flex',
+              alignItems: 'center',
+              paddingLeft: '24px',
+              fontSize: '16px',
+              fontWeight: 'bold',
+            }}
+          >
+            {title}
+          </div>
+          <DailyContext.Provider value={keyValue}>
+            <Outlet />
+          </DailyContext.Provider>
+        </Main>
+        {/* // 写日志的表单D */}
+        <WhiteDay
+          visibleEditText={visibleEditText}
+          visibleEdit={visibleEdit}
+          editClose={editClose}
+          editConfirm={editConfirm}
+          type={type}
+        />
+      </Wrap>
+    </PermissionWrap>
   )
 }
 

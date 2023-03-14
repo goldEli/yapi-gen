@@ -207,6 +207,7 @@ const DemandWrap = (props: Props) => {
         projectId: item.project_id,
         isChild: true,
         parentId: item.id,
+        categoryId: item.categoryId,
       }),
     )
   }

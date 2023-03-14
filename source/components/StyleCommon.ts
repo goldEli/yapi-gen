@@ -19,7 +19,7 @@ const DragLine = styled.div<{ active: boolean }>`
   user-select: none;
   height: 100%;
   top: 0;
-  background-size: 100% 12px;
+  background-size: 100% 2px;
   background-repeat: repeat-y;
   background-image: ${({ active }) =>
     active

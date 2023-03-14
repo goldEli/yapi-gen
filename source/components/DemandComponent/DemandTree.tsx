@@ -253,7 +253,12 @@ const DemandTree = (props: Props) => {
     setIsShowMore(false)
     dispatch(setIsCreateDemandVisible(true))
     dispatch(
-      setCreateDemandProps({ projectId, isChild: true, parentId: item.id }),
+      setCreateDemandProps({
+        projectId,
+        isChild: true,
+        parentId: item.id,
+        categoryId: item.categoryId,
+      }),
     )
   }
 

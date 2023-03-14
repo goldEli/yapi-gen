@@ -361,16 +361,18 @@ const HeaderRight = () => {
       </CommonModal>
 
       <Space size={16}>
-        <Popover
-          content={content}
-          open={isCreateVisible}
-          onOpenChange={setIsCreateVisible}
-          placement="bottomRight"
-        >
-          <CreateWrap>
-            <CommonIconFont type="plus" size={20} />
-          </CreateWrap>
-        </Popover>
+        {String(location.pathname).includes('/ProjectManagement') && (
+          <Popover
+            content={content}
+            open={isCreateVisible}
+            onOpenChange={setIsCreateVisible}
+            placement="bottomRight"
+          >
+            <CreateWrap>
+              <CommonIconFont type="plus" size={20} />
+            </CreateWrap>
+          </Popover>
+        )}
         <CloseWrap width={32} height={32} onClick={onHelp}>
           <CommonIconFont type="question" size={24} />
         </CloseWrap>

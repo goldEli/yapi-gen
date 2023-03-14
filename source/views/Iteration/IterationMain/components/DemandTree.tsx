@@ -227,7 +227,7 @@ const DemandTree = (props: Props) => {
     props.onChangeOrder?.({ value: val === 2 ? 'desc' : 'asc', key })
   }
 
-  const onEditChange = (e: any, item?: any) => {
+  const onEditChange = (item?: any) => {
     setIsShowMore(false)
     setComputedTopId(item?.topId)
     props.onUpdateTopId?.(item.topId)
@@ -249,7 +249,12 @@ const DemandTree = (props: Props) => {
     setIsShowMore(false)
     dispatch(setIsCreateDemandVisible(true))
     dispatch(
-      setCreateDemandProps({ projectId, isChild: true, parentId: item.id }),
+      setCreateDemandProps({
+        projectId,
+        isChild: true,
+        parentId: item.id,
+        categoryId: item.categoryId,
+      }),
     )
   }
 
