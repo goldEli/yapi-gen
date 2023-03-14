@@ -2,6 +2,8 @@ import { createSlice } from '@reduxjs/toolkit'
 import { getViewList } from './thunk'
 
 type SliceState = {
+  inputKey: any
+  tapInputKey: any
   searchKey: any
   valueKey: any
   searchChoose: any
@@ -33,11 +35,17 @@ const slice = createSlice({
     onTapTitles: (state, action) => {
       state.tapTitles = action.payload
     },
+    onTapInputKey: (state, action) => {
+      state.tapInputKey = action.payload
+    },
     onTapSort: (state, action) => {
       state.tapSort = action.payload
     },
     onTapSearchChoose: (state, action) => {
       state.searchChoose = action.payload
+    },
+    saveInputKey: (state, action) => {
+      state.inputKey = action.payload
     },
     saveScreen: (state, action) => {
       state.searchKey = action.payload
@@ -61,6 +69,7 @@ const slice = createSlice({
 })
 
 export const {
+  onTapInputKey,
   changeCreateVisible,
   changeViewVisible,
   saveScreen,
@@ -70,6 +79,7 @@ export const {
   onTapSearchChoose,
   saveValue,
   onTapSort,
+  saveInputKey,
 } = slice.actions
 
 export default slice.reducer

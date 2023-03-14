@@ -3,21 +3,21 @@ import { useDispatch, useSelector } from '@store/index'
 import {
   changeCreateVisible,
   changeViewVisible,
+  onTapInputKey,
   onTapSearchChoose,
   onTapSort,
   onTapTitles,
 } from '@store/view'
 import { getViewList } from '@store/view/thunk'
 import { Divider, Dropdown } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import CommonIconFont from '../CommonIconFont'
 import { dropdowncontent, Name, SetLine, TextSpan, ViewPortWrap } from './style'
 
 const ViewPort = (props: any) => {
   const dispatch = useDispatch()
   const { viewList } = useSelector(state => state.view)
-  const [name, setName] = useState('所有的')
-
+  const [nowKey, setNowKey] = useState('')
   const items: any = [
     {
       key: '1',
@@ -57,16 +57,25 @@ const ViewPort = (props: any) => {
   const onClick = (e: any) => {
     const value =
       viewList[viewList.findIndex((i: any) => String(i.id) === e.key)]
-
-    setName(value.name)
+    setNowKey(e.key)
     dispatch(onTapTitles(value.config.fields))
     dispatch(onTapSearchChoose(value.config.search))
     dispatch(onTapSort(value.config.sort))
+    if (value.config.search.keyword) {
+      dispatch(onTapInputKey(value.config.search.keyword))
+    }
   }
   useEffect(() => {
     dispatch(getViewList(props.pid))
   }, [])
 
+  const name = useMemo(() => {
+    const value = viewList?.find((i: any) => String(i.id) === nowKey)
+    if (value) {
+      return value.name
+    }
+    return '所有的'
+  }, [viewList, nowKey])
   return (
     <Dropdown
       trigger={['click']}

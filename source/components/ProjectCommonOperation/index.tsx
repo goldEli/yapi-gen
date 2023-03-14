@@ -1,11 +1,12 @@
 import { getParamsData } from '@/tools'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import CommonIconFont from '../CommonIconFont'
 import InputSearch from '../InputSearch'
 import Member from './Member'
 import { MemberIcon, SearchBox, SearchOrProjectMember } from './style'
 import MyBreadcrumb from '../MyBreadcrumb'
+import { useSelector } from '@store/index'
 
 interface Props {
   onInputSearch(value: string): void
@@ -25,6 +26,7 @@ const ProjectCommonOperation = (props: Props) => {
         </div>
         <SearchOrProjectMember size={16}>
           <InputSearch
+            isDemand
             leftIcon
             placeholder="请输入"
             onChangeSearch={props.onInputSearch}

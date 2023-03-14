@@ -1,8 +1,9 @@
 import styled from '@emotion/styled'
 import { changeColorText } from '@store/color-text'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
+import { saveInputKey } from '@store/view'
 import { Input } from 'antd'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import CommonIconFont from './CommonIconFont'
 
 const InputStyle = styled(Input)<{ bgColor: any }>`
@@ -22,12 +23,20 @@ interface Props {
   bgColor?: string
   length?: number
   leftIcon?: boolean
+  isDemand?: boolean
 }
 
 const InputSearch = (props: Props) => {
   // 用于控制输入框的删除图标
   const [value, setValue] = useState('')
   const dispatch = useDispatch()
+  const { tapInputKey } = useSelector(store => store.view)
+  useEffect(() => {
+    if (tapInputKey && props.isDemand) {
+      setValue(tapInputKey)
+      // props.onChangeSearch?.(tapInputKey)
+    }
+  }, [tapInputKey])
   return (
     <InputStyle
       ref={props?.ref}
@@ -38,6 +47,7 @@ const InputSearch = (props: Props) => {
       maxLength={props.length}
       onBlur={(e: any) => props.onChangeSearch?.(e.target.value)}
       onChange={(e: any) => {
+        dispatch(saveInputKey(e.target.value))
         setValue(e.target.value)
         dispatch(changeColorText(e.target.value))
       }}

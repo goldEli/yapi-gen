@@ -14,9 +14,8 @@ import { Wrap, WrapText } from './style'
 const CreateViewPort = (props: any) => {
   const [t] = useTranslation()
   const [form] = Form.useForm()
-  const { searchKey, valueKey, titles, sort, createVisible } = useSelector(
-    state => state.view,
-  )
+  const { searchKey, valueKey, titles, sort, createVisible, inputKey } =
+    useSelector(state => state.view)
   const dispatch = useDispatch()
   const onConfirm = async () => {
     const res = await form.validateFields()
@@ -28,7 +27,7 @@ const CreateViewPort = (props: any) => {
     const data = {
       name: res.name,
       config: {
-        search: { ...obj, ...valueKey },
+        search: { ...obj, ...valueKey, keyword: inputKey },
         fields: titles,
         sort,
       },

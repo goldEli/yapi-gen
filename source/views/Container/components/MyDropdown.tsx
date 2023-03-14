@@ -211,7 +211,7 @@ const MyDropdown = (props: any) => {
   }
   const onClick = () => {
     onClickIsOpen()
-    navigate('/ProjectManagement/Mine/profile')
+    navigate('/ProjectManagement/Mine/Profile')
   }
   const onRoute = (el: any) => {
     const params = encryptPhp(

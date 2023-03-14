@@ -44,6 +44,7 @@ const NoData = (props: Props) => {
         <span
           style={{
             color: '#969799',
+
             fontSize: 14,
             marginTop: 24,
             textAlign: 'center',
