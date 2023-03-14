@@ -85,7 +85,7 @@ const DemandSetting = () => {
           </Wrap>
         </>
       ) : (
-        <NoData />
+        <NoData subText="请添加需求状态，来配置工作流程" />
       )}
     </PermissionWrap>
   )

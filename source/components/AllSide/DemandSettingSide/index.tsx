@@ -20,6 +20,7 @@ import {
   BackStyle,
   TitleStyle,
   Tabs,
+  NoDataCreateWrap,
 } from './style'
 import Dragging from './Dragging'
 import { setStartUsing } from '@store/category'
@@ -174,12 +175,9 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
           <span>返回</span>
         </BackStyle>
         <Provider />
-        <TitleStyle onClick={() => setIsVisible(true)}>
+        <TitleStyle>
           <span>需求类别</span>{' '}
-          {/*  type="plus"
-            color="var(--neutral-n2)"
-            onClick={() => 123 */}
-          <IconFontStyle type="plus" />
+          <IconFontStyle type="plus" onClick={() => setIsVisible(true)} />
         </TitleStyle>
         <Tabs>
           {tabs.map((el, index) => (
@@ -193,25 +191,44 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
           ))}
         </Tabs>
         <MenuBox>
-          <Dragging
-            list={list}
-            setList={setList}
-            onClick={(i: number, child: any) => {
-              dispatch(
-                getCategoryConfigList({
-                  projectId: projectId,
-                  categoryId: child.id,
-                }),
-              ),
-                setList(
-                  list.map((el: any, index: any) => ({
-                    ...el,
-                    active: i === index ? true : false,
-                  })),
-                )
-            }}
-            onMove={(data: any) => onMove(data)}
-          ></Dragging>
+          {list?.length >= 1 ? (
+            <Dragging
+              list={list}
+              setList={setList}
+              onClick={(i: number, child: any) => {
+                dispatch(
+                  getCategoryConfigList({
+                    projectId: projectId,
+                    categoryId: child.id,
+                  }),
+                ),
+                  setList(
+                    list.map((el: any, index: any) => ({
+                      ...el,
+                      active: i === index ? true : false,
+                    })),
+                  )
+              }}
+              onMove={(data: any) => onMove(data)}
+            ></Dragging>
+          ) : (
+            <NoDataCreateWrap>
+              <div className="top">
+                <IconFont type="Warning" />
+                <div>暂无类别，创建一个吧~</div>
+              </div>
+              <div className="bottom">
+                <div
+                  className="bottom"
+                  onClick={() => setIsVisible(true)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <IconFont type="plus" />
+                  <div>创建类别</div>
+                </div>
+              </div>
+            </NoDataCreateWrap>
+          )}
         </MenuBox>
       </WrapSet>
       <EditCategory

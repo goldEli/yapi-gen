@@ -49,6 +49,8 @@ const ListMsg = styled.div`
   }
 `
 const RightOperate = styled.div`
+  position: absolute;
+  right: 24px;
   font-size: 14px;
 `
 const Text = styled.span`
@@ -92,7 +94,6 @@ const SliderList = (props: any) => {
     const mouseMove = (ev: any) => {
       ev.preventDefault()
       ev.stopPropagation()
-      el.style.pointerEvents = 'none'
       // 获取元素 Rect 并更新 Ref
       const rect = el.getBoundingClientRect()
       prevRectRef.current = rect
@@ -123,7 +124,6 @@ const SliderList = (props: any) => {
     const mouseUp = (ev: any) => {
       ev.preventDefault()
       ev.stopPropagation()
-      el.style.pointerEvents = null
       document.removeEventListener('mousemove', mouseMove)
       // 重置 Top
       setTop(0)
@@ -134,7 +134,6 @@ const SliderList = (props: any) => {
         setZIndex(0)
       }, 200)
     }
-
     const mouseDown = (ev: any) => {
       ev.preventDefault()
       ev.stopPropagation()
@@ -204,7 +203,7 @@ const SliderList = (props: any) => {
       {child.isCustomize === 2 ? (
         <Tooltip placement="topRight" title={'系统字段不可编辑'}>
           <ItemList>
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex', width: '100%' }}>
               <IconBox>
                 <CommonIconFont
                   type={
