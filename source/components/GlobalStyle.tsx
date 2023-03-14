@@ -252,7 +252,7 @@ const GlobalStyle = () => {
       }
     }
     .ant-dropdown-menu-item:hover {
-      background: var(--neutral-n1-d1);
+      background: var(--hover-d3);
       color: var(--neutral-n1-d1);
     }
     .ant-dropdown-menu-item:active {
