@@ -189,7 +189,7 @@ export const NoDataCreateWrap = styled.div({
       marginTop: 2,
     },
     div: {
-      color: '#646566',
+      color: 'var(--neutral-n2)',
       fontSize: 12,
       marginLeft: 8,
       flexWrap: 'wrap',

@@ -29,8 +29,8 @@ const StatusWrap = styled.div({
   borderRadius: 6,
   padding: '0 12px',
   fontSize: 14,
-  border: '1px solid #EBEDF0',
-  color: '#969799',
+  border: '1px solid var(--neutral-n6-d1)',
+  color: 'var(--neutral-n3)',
   cursor: 'pointer',
   whiteSpace: 'nowrap',
 })
@@ -103,9 +103,12 @@ const DemandStatusBox = (props: any) => {
                   }
                 }}
                 style={{
-                  color: i.id === active ? '#2877ff' : '#969799',
+                  color:
+                    i.id === active ? 'var(--primary-d2)' : 'var(--neutral-n3)',
                   border:
-                    i.id === active ? '1px solid #2877ff' : '1px solid #EBEDF0',
+                    i.id === active
+                      ? '1px solid var(--primary-d2)'
+                      : '1px solid var(--neutral-n6-d1)',
                   cursor:
                     isCanEdit && !demandInfo?.isExamine
                       ? 'pointer'
@@ -132,7 +135,7 @@ const DemandStatusBox = (props: any) => {
         {demandInfo?.isExamine && (
           <div
             style={{
-              backgroundColor: '#F9FAFA',
+              backgroundColor: 'var(--neutral-n6-d1)',
               width: '100%',
               height: '54px',
               zIndex: 1,
@@ -152,7 +155,7 @@ const DemandStatusBox = (props: any) => {
             />
             <span
               style={{
-                color: '#969799',
+                color: 'var(--neutral-n3)',
                 fontSize: '14px',
                 marginLeft: '10px',
               }}

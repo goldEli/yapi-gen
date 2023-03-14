@@ -48,7 +48,7 @@ const ItemWrap = styled.div<{ notMargin?: boolean }>(
 const ChooseWrap = styled.div({
   marginTop: 8,
   borderRadius: 6,
-  background: '#F2F2F4',
+  background: 'var(--neutral-n6-d1)',
   padding: 16,
 })
 
@@ -75,7 +75,7 @@ const OptionsItemWrap = styled.div({
 const AddWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
-  color: '#2877ff',
+  color: 'var(--primary-d2)',
   cursor: 'pointer',
   width: 'max-content',
 })
@@ -96,7 +96,7 @@ const DragHandle = sortableHandle(() => (
     style={{
       fontSize: 16,
       cursor: 'pointer',
-      color: '#969799',
+      color: 'var(--neutral-n3)',
       marginRight: 12,
     }}
   />
@@ -328,7 +328,7 @@ const EditFiled = (props: Props) => {
                   <Tooltip
                     overlayStyle={{
                       fontSize: '12px',
-                      color: '#969799',
+                      color: 'var(--neutral-n3)',
                     }}
                     trigger={['click']}
                     placement="top"
@@ -383,7 +383,7 @@ const EditFiled = (props: Props) => {
                   <Tooltip
                     overlayStyle={{
                       fontSize: '12px',
-                      color: '#969799',
+                      color: 'var(--neutral-n3)',
                     }}
                     trigger={['click']}
                     placement="top"
@@ -445,7 +445,7 @@ const EditFiled = (props: Props) => {
                       <div
                         style={{
                           fontSize: 14,
-                          color: '#323233',
+                          color: 'var(--neutral-n1-d1)',
                           marginBottom: 12,
                           fontWeight: 500,
                         }}
@@ -503,7 +503,7 @@ const EditFiled = (props: Props) => {
                                     row?.length === 1
                                       ? 'not-allowed'
                                       : 'pointer',
-                                  color: '#969799',
+                                  color: 'var(--neutral-n3)',
                                   marginLeft: 12,
                                 }}
                                 onClick={() => onDelRow(_i.key)}

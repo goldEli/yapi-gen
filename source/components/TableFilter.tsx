@@ -52,7 +52,7 @@ export const SelectWrap = styled(Select)`
   }
 
   .ant-select-selection-placeholder {
-    color: #bfbdbb;
+    color: var(--neutral-n4);
   }
 `
 
@@ -87,10 +87,10 @@ const DelButton = styled.div`
   z-index: 2;
   .icon {
     font-size: 16px;
-    color: #969799;
+    color: var(--neutral-n3);
     cursor: pointer;
     &:hover {
-      color: #2877ff;
+      color: var(--primary-d2);
     }
   }
 `
@@ -99,7 +99,7 @@ export const SelectWrapBedeck = styled.div`
   height: 32px;
   position: relative;
   height: 32px;
-  border: 1px solid #ebedf0;
+  border: 1px solid var(--active);
   display: flex;
   align-items: center;
   border-radius: 6px;
@@ -124,7 +124,7 @@ export const SelectWrapBedeck = styled.div`
 `
 
 const CollapseDiv = styled.div({
-  color: '#646566',
+  color: 'var(--neutral-n2)',
   minHeight: 35,
   fontSize: 14,
   display: 'flex',
@@ -133,7 +133,7 @@ const CollapseDiv = styled.div({
   cursor: 'pointer',
   padding: '0 16px',
   '&: hover': {
-    background: '#f4f5f5',
+    background: 'var(--neutral-n7)',
     color: 'black',
   },
 })
@@ -142,7 +142,7 @@ const danweiCss = css`
   font-size: 14px;
   font-family: PingFang SC-Regular, PingFang SC;
   font-weight: 400;
-  color: #323233;
+  color: var(--neutral-n1-d1);
   line-height: 22px;
   margin: 0 16px;
 `
@@ -164,7 +164,7 @@ const CollapseWrap = styled(Collapse)({
     direction: 'rtl',
     display: 'flex',
     justifyContent: 'space-between',
-    color: '#646566',
+    color: 'var( --neutral-n2)',
     '.ant-collapse-arrow': {
       margin: '0 0 0 8px',
     },
@@ -703,12 +703,18 @@ const TableFilter = (props: any) => {
             >
               <IconFont
                 type="plus-square"
-                style={{ fontSize: 20, color: '#BBBDBF' }}
+                style={{ fontSize: 20, color: 'var(--neutral-n4)' }}
               />
             </div>
           </PopoverWrap>
           <ClearForm onClick={onClearForm}>
-            <span style={{ color: '#2877FF', fontSize: 15, cursor: 'pointer' }}>
+            <span
+              style={{
+                color: 'var(--primary-d2)',
+                fontSize: 15,
+                cursor: 'pointer',
+              }}
+            >
               {t('common.clearForm')}
             </span>
           </ClearForm>

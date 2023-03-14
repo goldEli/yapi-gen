@@ -12,13 +12,13 @@ const PersonItemWrap = styled.div({
   height: 44,
   lineHeight: '44px',
   fontSize: 14,
-  color: '#323233',
+  color: 'var(--neutral-n1-d1)',
   display: 'flex',
   alignItems: 'center',
   cursor: 'pointer',
   padding: '0 16px',
   '&: hover': {
-    background: '#f4f5f5',
+    background: 'var(--neutral-n6-d1)',
   },
 })
 

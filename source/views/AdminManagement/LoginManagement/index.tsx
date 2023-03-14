@@ -41,12 +41,12 @@ const SearchWrap = styled(Space)({
   background: 'var(--neutral-white-d1)',
   padding: '20px 0',
   flexWrap: 'wrap',
-  borderBottom: '1px solid #ecedef',
+  borderBottom: '1px solid var(--neutral-n6-d1)',
 })
 
 const SelectWrap = styled(Select)`
   .ant-select-selection-placeholder {
-    color: black;
+    color: var(--neutral-black);
   }
   .ant-select-selector {
     min-width: 124px;
@@ -70,7 +70,7 @@ const StatusWrap = styled.div({
     marginRight: 8,
   },
   span: {
-    color: '#323233',
+    color: 'var(--neutral-n1-d2)',
     fontSize: 14,
     fontWeight: 400,
   },
@@ -302,7 +302,14 @@ const LoginManagement = () => {
       render: (text: number) => {
         return (
           <StatusWrap>
-            <div style={{ background: text === 1 ? '#43BA9A' : '#FF5C5E' }} />
+            <div
+              style={{
+                background:
+                  text === 1
+                    ? 'var(--function-success)'
+                    : 'var(--function-error)',
+              }}
+            />
             <span>
               {text === 1 ? t('setting.success') : t('setting.failed')}
             </span>

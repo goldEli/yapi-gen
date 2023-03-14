@@ -47,7 +47,7 @@ const SetLeft = styled.div({
   display: 'flex',
   flexDirection: 'column',
 
-  borderRight: '1px solid #EBEDF0',
+  borderRight: '1px solid var(--neutral-n6-d1)',
   width: 160,
 })
 
@@ -63,7 +63,7 @@ const Title = styled.div({
   fontWeight: 'bold',
   color: 'black',
   paddingLeft: 10,
-  borderLeft: '3px solid #2877FF',
+  borderLeft: '3px solid var( --primary-d2)',
   marginBottom: 16,
   lineHeight: '18px',
 })
@@ -94,21 +94,23 @@ const MenuItem = styled.div<{ isActive: boolean }>(
     },
     '.subName': {
       fontSize: 12,
-      color: '#BBBDBF',
+      color: 'var(--neutral-n4)',
       fontWeight: 400,
     },
     '&:hover': {
-      background: '#F4F5F5',
+      background: 'var(--neutral-n6-d1)',
       '.dropdownIcon': {
         visibility: 'visible',
       },
     },
   },
   ({ isActive }) => ({
-    borderRight: isActive ? '3px solid #2877FF' : '3px solid transparent',
-    background: isActive ? '#F0F4FA!important' : 'transparent',
+    borderRight: isActive
+      ? '3px solid var(--primary-d2)'
+      : '3px solid transparent',
+    background: isActive ? 'var(--neutral-n6-d1)!important' : 'transparent',
     '.name': {
-      color: isActive ? '#2877FF' : '#323233',
+      color: isActive ? 'var(--primary-d2)' : 'var(--neutral-n1-d1)',
     },
   }),
 )
@@ -117,7 +119,7 @@ const TitleGroup = styled.div({
   display: 'flex',
   alignItems: 'center',
   marginTop: 14,
-  color: '#BBBDBF',
+  color: 'var(--neutral-n4)',
   fontSize: 12,
 })
 
@@ -128,7 +130,7 @@ const MainWrap = styled.div({
 })
 
 const MainWrapItem = styled.div({
-  borderBottom: '1px solid #EBEDF0',
+  borderBottom: '1px solid var(--neutral-n6-d1)',
   padding: '24px 0',
   display: 'flex',
 
@@ -142,7 +144,7 @@ const ModalHeader = styled.div({
   alignItems: 'center',
   justifyContent: 'space-between',
   fontSize: 16,
-  color: '#323233',
+  color: 'var(--neutral-n1-d2)',
 })
 
 const ModalFooter = styled(Space)({
@@ -466,7 +468,7 @@ const ProjectSet = () => {
                   style={{
                     textAlign: 'center',
                     cursor: 'pointer',
-                    color: '#2877FF',
+                    color: 'var(--primary-d2)',
                     height: 58,
                     lineHeight: '58px',
                   }}

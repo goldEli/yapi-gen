@@ -169,7 +169,7 @@ const Get = () => {
               style={{
                 width: '8px',
                 height: '8px',
-                background: record.status === 1 ? '#D5D6D9' : 'red',
+                background: record.status === 1 ? 'var(--neutral-n5)' : 'red',
                 display: 'inline-block',
                 borderRadius: '50%',
                 marginRight: '8px',
@@ -204,7 +204,7 @@ const Get = () => {
               style={{
                 fontSize: '14px',
                 fontWeight: ' 400',
-                color: '#2877FF',
+                color: 'var(--primary-d2)',
                 cursor: 'pointer',
               }}
             >
@@ -347,7 +347,7 @@ const Get = () => {
       <div
         style={{
           height: '52px',
-          background: '#FFFFFF',
+          background: 'var(--neutral-white-d2)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',

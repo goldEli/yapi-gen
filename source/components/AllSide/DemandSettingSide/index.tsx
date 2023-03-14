@@ -32,7 +32,6 @@ import {
 } from '@store/category/index'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { message } from 'antd'
 
 const IconFontStyle = styled(IconFont)({
   color: 'var(--neutral-n2)',

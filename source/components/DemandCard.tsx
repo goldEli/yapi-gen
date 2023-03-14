@@ -157,7 +157,7 @@ const DemandCard = (props: Props) => {
       >
         <IconFont
           type="apartment"
-          style={{ color: '#969799', fontSize: 16, marginRight: 8 }}
+          style={{ color: 'var(--neutral-n3)', fontSize: 16, marginRight: 8 }}
         />
         {props.item?.childCount}
       </ClickWrap>
@@ -213,7 +213,7 @@ const DemandCard = (props: Props) => {
                     style={{
                       marginLeft: index ? -7 : 0,
                       zIndex: index,
-                      border: '1px solid white',
+                      border: '1px solid var(--neutral-white-d2)',
                       borderRadius: '50%',
                     }}
                   >

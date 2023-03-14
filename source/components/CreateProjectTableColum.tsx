@@ -10,13 +10,7 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import Sort from '@/components/Sort'
 import { OmitText } from '@star-yun/ui'
-import {
-  CategoryWrap,
-  ClickWrap,
-  HiddenText,
-  ListNameWrap,
-  StatusWrap,
-} from '@/components/StyleCommon'
+import { ClickWrap, HiddenText, ListNameWrap } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
 import ChildDemandTable from '@/components/ChildDemandTable'
 import { message, Progress, Tooltip } from 'antd'
@@ -36,7 +30,7 @@ const PriorityWrap = styled.div<{ isShow?: boolean }>(
     display: 'flex',
     alignItems: 'center',
     div: {
-      color: '#323233',
+      color: 'var(--neutral-n1-d2)',
       fontSize: 14,
       marginLeft: 8,
     },
@@ -44,7 +38,7 @@ const PriorityWrap = styled.div<{ isShow?: boolean }>(
       marginLeft: 8,
       visibility: 'hidden',
       fontSize: 16,
-      color: '#2877ff',
+      color: 'var(--primary-d2)',
     },
     '.priorityIcon': {
       fontSize: 16,
@@ -423,8 +417,11 @@ export const useDynamicColumns = (state: any) => {
               record.status.is_end !== 1
             ) && (
               <Progress
-                strokeColor="#43BA9A"
-                style={{ color: '#43BA9A', cursor: 'not-allowed' }}
+                strokeColor="var(--function-success)"
+                style={{
+                  color: 'var(--function-success)',
+                  cursor: 'not-allowed',
+                }}
                 width={38}
                 type="line"
                 percent={record.schedule}

@@ -37,7 +37,12 @@ const DrawerTagComponent = (props: Props) => {
     projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
       ?.length > 0
 
-  const colorList = ['#FF5C5E', '#43BA9A', '#2877FF', '#969799']
+  const colorList = [
+    '#FF5C5E',
+    '#43BA9A',
+    'var(--primary-d2)',
+    'var(--neutral-n3)',
+  ]
 
   useEffect(() => {
     const checks = props?.demandDetail?.tag
@@ -104,7 +109,7 @@ const DrawerTagComponent = (props: Props) => {
 
   // 颜色弹窗
   const onVisibleChange = (visible: any) => {
-    onAddInfoDemand('#969799')
+    onAddInfoDemand('var(--neutral-n3)')
     setIsChooseColor(visible)
   }
 
@@ -130,7 +135,7 @@ const DrawerTagComponent = (props: Props) => {
           key={i}
           style={{ background: i }}
         >
-          {i === '#969799' && <CommonIconFont type="check" />}
+          {i === 'var(--neutral-n3)' && <CommonIconFont type="check" />}
         </ColorWrap>
       ))}
     </Space>
@@ -197,7 +202,7 @@ const DrawerTagComponent = (props: Props) => {
                 position: 'absolute',
                 right: -6,
                 top: -6,
-                color: '#969799',
+                color: 'var(--neutral-n3)',
                 fontSize: 14,
               }}
               type="close-solid"

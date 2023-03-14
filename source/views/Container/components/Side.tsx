@@ -18,7 +18,7 @@ const SideWrap = styled.div<{ firstMenuCollapse: boolean }>`
   max-width: unset !important;
   min-width: unset !important;
   flex: unset !important;
-  border-right: 1px solid #ecedef;
+  border-right: 1px solid var(--neutral-n6-d1);
   background: ${props =>
     props.firstMenuCollapse ? 'var(--neutral-white-d6)' : 'var(--neutral-n9)'};
   position: relative;

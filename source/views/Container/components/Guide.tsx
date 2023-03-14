@@ -53,7 +53,7 @@ const ButtonWrap = styled.div({
   color: 'white',
   fontSize: 12,
   fontWeight: 400,
-  background: '#2877ff',
+  background: 'var(--primary-d2)',
   cursor: 'pointer',
 })
 
@@ -64,12 +64,12 @@ const ButtonWrapBorder = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  color: '#2877ff',
+  color: 'var(--primary-d2)',
   fontSize: 12,
   fontWeight: 400,
   background: 'white',
   cursor: 'pointer',
-  border: '1px solid #2877ff',
+  border: '1px solid var(--primary-d2)',
 })
 
 const Guide = (props: { visible: boolean; close(): void }) => {

@@ -207,7 +207,7 @@ const TinyEditor = (props: any, ref: ForwardedRef<any>) => {
     editorRef.current.execCommand(
       'mceInsertContent',
       false,
-      `<span style="color: #0089ff" class="mceNonEditable">@${item.name}</span>`,
+      `<span style="color: var(--primary-d2)" class="mceNonEditable">@${item.name}</span>`,
     )
     setIsAtPeople(false)
   }

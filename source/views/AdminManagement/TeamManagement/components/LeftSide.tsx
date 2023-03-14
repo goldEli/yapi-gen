@@ -50,11 +50,11 @@ const LeftSideContainer = styled.div`
     right: -2px;
     top: 0;
     bottom: 0;
-    border-left: 1px solid #f2f4f7;
+    border-left: 1px solid var(--neutral-n7);
   }
   .resizable:hover ~ .resize_line,
   .resizable:active ~ .resize_line {
-    border-left: 1px solid #617ef2;
+    border-left: 1px solid var(--primary-d2);
   }
 `
 const TeamAdd = styled.div`

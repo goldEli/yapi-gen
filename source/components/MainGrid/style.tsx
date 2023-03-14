@@ -22,17 +22,17 @@ const AddProject = styled.div({
   width: 220,
   cursor: 'pointer',
   div: {
-    color: '#646566',
+    color: 'var(--neutral-n2)',
   },
   svg: {
-    color: '#969799',
+    color: 'var(--neutral-n3)',
   },
   '&: hover': {
     div: {
-      color: '#2877ff',
+      color: 'var(--primary-d1)',
     },
     svg: {
-      color: '#2877ff',
+      color: 'var(--primary-d1)',
     },
   },
 })

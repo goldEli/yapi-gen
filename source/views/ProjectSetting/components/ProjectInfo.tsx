@@ -41,7 +41,7 @@ const InfoLeft = styled.div({
 
 const SubText = styled.div({
   marginTop: 4,
-  color: '#646566',
+  color: 'var( --neutral-n2)',
   fontSize: 14,
   lineHeight: '30px',
 })
@@ -55,7 +55,7 @@ const Title = styled.div({
   fontWeight: 'bold',
   color: 'black',
   paddingLeft: 10,
-  borderLeft: '3px solid #2877FF',
+  borderLeft: '3px solid var(--primary-d2)',
   lineHeight: '16px',
 })
 const InfoItem = styled.div({
@@ -64,7 +64,7 @@ const InfoItem = styled.div({
   marginBottom: 14,
   div: {
     minWidth: 120,
-    color: '#969799',
+    color: 'var(--neutral-n3)',
     fontSize: 14,
     fontWeight: 400,
   },
@@ -89,25 +89,25 @@ const CardItem = styled.div({
   justifyContent: 'center',
   alignItems: 'center',
   borderRadius: 6,
-  background: '#F9FAFA',
+  background: 'var(--neutral-n7)',
   div: {
     fontSize: 28,
-    color: '#323233',
+    color: 'var(--neutral-n1-d1)',
     fontWeight: 500,
     lineHeight: '28px',
   },
   span: {
     fontSize: 14,
-    color: '#969799',
+    color: 'var(--neutral-n3)',
   },
 })
 
 const ClickIcon = styled(IconFont)({
-  color: '#323233',
+  color: 'var(--neutral-n1-d1)',
   fontSize: 20,
   marginLeft: 8,
   '&: hover': {
-    color: '#2877ff',
+    color: 'var(--primary-d2)',
   },
 })
 
@@ -171,7 +171,7 @@ const ProjectInfo = () => {
               style={{
                 fontSize: '16px',
                 fontWeight: 'bold',
-                color: '#323233',
+                color: 'var(--neutral-n1-d1)',
                 lineHeight: '24px',
               }}
             >

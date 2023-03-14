@@ -67,7 +67,7 @@ const FormWrap = styled(Form)({
 
 const HasDemandText = styled.div({
   marginTop: 8,
-  color: '#FF5C5E',
+  color: 'var( --function-error)',
   fontWeight: 400,
   fontSize: 12,
 })
@@ -251,7 +251,7 @@ const StepPageOne = (propsOne: Props) => {
   const DragHandle = sortableHandle(() => (
     <IconFont
       type="move"
-      style={{ fontSize: 16, cursor: 'pointer', color: '#969799' }}
+      style={{ fontSize: 16, cursor: 'pointer', color: 'var(--neutral-n3)' }}
     />
   ))
 
@@ -475,13 +475,18 @@ const StepPageOne = (propsOne: Props) => {
         style={{ display: 'flex', alignItems: 'flex-end', marginBottom: 24 }}
       >
         <Button
-          style={{ background: '#F0F4FA', color: 'var(--primary-d2)' }}
+          style={{
+            background: 'var(--neutral-n6-d1)',
+            color: 'var(--primary-d2)',
+          }}
           icon={<IconFont type="plus" />}
           onClick={() => setIsAddVisible(true)}
         >
           {t('newlyAdd.addStatus')}
         </Button>
-        <span style={{ color: '#969799', fontSize: 12, marginLeft: 8 }}>
+        <span
+          style={{ color: 'var(--neutral-n3)', fontSize: 12, marginLeft: 8 }}
+        >
           {t('newlyAdd.canOperation')}
         </span>
       </div>
@@ -506,7 +511,7 @@ const StepPageOne = (propsOne: Props) => {
                 <div
                   style={{
                     marginTop: 8,
-                    color: '#969799',
+                    color: 'var(--neutral-n3)',
                     fontSize: 12,
                     display: 'flex',
                     alignItems: 'center',

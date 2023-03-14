@@ -21,7 +21,7 @@ const initialState: CounterState = {
     list: undefined,
   },
   colorList: [
-    { key: '#2877FF', bgColor: '#F2F7FF' },
+    { key: 'var(--primary-d2)', bgColor: '#F2F7FF' },
     { key: '#FF5C5E', bgColor: '#FCEEEE' },
     { key: '#43BA9A', bgColor: '#EDF7F4' },
     { key: '#FA9746', bgColor: '#FCF3EB' },

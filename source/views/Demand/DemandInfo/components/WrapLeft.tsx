@@ -44,7 +44,7 @@ const InfoItem = styled.div<{ activeState?: any }>({
 })
 
 const Label = styled.div({
-  color: '#323233',
+  color: 'var(--neutral-n1-d1)',
   fontSize: 14,
   minWidth: 120,
   height: 32,
@@ -53,7 +53,7 @@ const Label = styled.div({
 })
 
 const TextWrap = styled.div({
-  color: '#323233',
+  color: 'var(--neutral-n1-d1)',
   fontSize: 14,
   display: 'flex',
 
@@ -203,12 +203,12 @@ const WrapLeftBox = () => {
                       hasColor
                       style={{
                         marginBottom: '10px',
-                        color: '#2877FF',
+                        color: 'var(--primary-d2)F',
                       }}
                     >
                       <IconFont
                         style={{
-                          color: '#2877FF',
+                          color: 'var(--primary-d2)F',
                         }}
                         type="plus"
                       />

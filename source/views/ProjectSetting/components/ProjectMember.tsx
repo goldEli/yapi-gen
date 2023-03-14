@@ -374,7 +374,13 @@ const ProjectMember = () => {
                 {String(record.name?.trim().slice(0, 1)).toLocaleUpperCase()}
               </NameWrap>
             )}
-            <span style={{ marginLeft: 12, color: '#323233', fontSize: 14 }}>
+            <span
+              style={{
+                marginLeft: 12,
+                color: 'var(--neutral-n1-d1)',
+                fontSize: 14,
+              }}
+            >
               {text}
             </span>
           </div>
@@ -496,7 +502,11 @@ const ProjectMember = () => {
             ) : (
               <span
                 onClick={() => onToDetail(record)}
-                style={{ fontSize: 14, color: '#2877ff', cursor: 'pointer' }}
+                style={{
+                  fontSize: 14,
+                  color: 'var(--primary-d2)',
+                  cursor: 'pointer',
+                }}
               >
                 {t('project.checkInfo')}
               </span>
@@ -676,7 +686,11 @@ const ProjectMember = () => {
               <Form form={form}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <span
-                    style={{ fontSize: 14, color: '#323233', marginRight: 16 }}
+                    style={{
+                      fontSize: 14,
+                      color: 'var( --neutral-n1-d1)',
+                      marginRight: 16,
+                    }}
                   >
                     {t('project.joinPermission')}
                     <span style={{ fontSize: 12, color: 'red', marginLeft: 4 }}>
@@ -769,7 +783,11 @@ const ProjectMember = () => {
                 </Form.Item>
               </SelectWrapBedeck>
               <div
-                style={{ color: '#2877FF', fontSize: 15, cursor: 'pointer' }}
+                style={{
+                  color: 'var(--primary-d2)',
+                  fontSize: 15,
+                  cursor: 'pointer',
+                }}
                 onClick={onReset}
               >
                 {t('common.clearForm')}

@@ -285,7 +285,11 @@ const MoreProjectSide = (props: Props) => {
           >
             <IconFont
               type="plus"
-              style={{ fontSize: 16, color: '#646566', cursor: 'pointer' }}
+              style={{
+                fontSize: 16,
+                color: 'var(--neutral-n2)',
+                cursor: 'pointer',
+              }}
             />
           </CloseWrap>
         </GroupBox>
@@ -308,7 +312,7 @@ const MoreProjectSide = (props: Props) => {
                       onChangeVisible={setIsMoreVisible}
                       menu={menu(item)}
                       isMoreVisible={isMoreVisible}
-                      color="#969799"
+                      color="var(--neutral-n3)"
                     />
                   </TitleBox>
                 ))}

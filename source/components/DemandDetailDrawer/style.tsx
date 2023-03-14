@@ -168,7 +168,7 @@ export const ShowLabel = styled.div({
   cursor: 'pointer',
   fontSize: 14,
   fontWeight: 400,
-  color: '#2877ff',
+  color: 'var(--primary-d2)',
 })
 
 export const MaxLabel = styled.div<{ width: number }>`
@@ -187,7 +187,7 @@ export const InfoItem = styled.div({
 
 export const ContentWrap = styled.div<{ notHover?: any }>(
   {
-    color: '#323233',
+    color: 'var(--neutral-n1-d1)',
     fontSize: 14,
     display: 'flex',
     flexDirection: 'column',
@@ -246,7 +246,7 @@ export const TextWrap = styled.div({
       marginRight: 12,
     },
     '.anticon': {
-      color: '#969799',
+      color: 'var(--neutral-n3)',
       fontSize: 16,
       position: 'absolute',
       right: 0,
@@ -256,7 +256,7 @@ export const TextWrap = styled.div({
   },
   '.common': {
     fontSize: 12,
-    color: '#969799',
+    color: 'var(--neutral-n3)',
     whiteSpace: 'nowrap',
   },
   '.statusText': {
@@ -265,7 +265,7 @@ export const TextWrap = styled.div({
     textOverflow: 'ellipsis',
   },
   '.content': {
-    color: '#646566',
+    color: 'var(--neutral-n2)',
     fontSize: 12,
     fontWeight: 400,
     overflow: 'hidden',
@@ -305,7 +305,7 @@ export const Card = styled.div`
   position: relative;
   min-width: 290px;
   min-height: 60px;
-  background: #ffffff;
+  background: var(--neutral-white-d2);
   box-shadow: 0px 0px 7px 2px rgba(0, 0, 0, 0.04);
   border-radius: 6px 6px 6px 6px;
   opacity: 1;

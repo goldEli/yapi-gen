@@ -36,10 +36,10 @@ const SurveyWrap = styled.div({
 const Title = styled.div({
   fontSize: 16,
   lineHeight: '16px',
-  color: '#323233',
+  color: 'var(--neutral-n1-d1)',
   fontWeight: 'bold',
   paddingLeft: 8,
-  borderLeft: '3px solid #2877FF',
+  borderLeft: '3px solid var(--primary-d2)',
 })
 
 const SurveyContent = styled.div({
@@ -61,10 +61,10 @@ const TargetWrap = styled.div({
   marginTop: 22,
   height: 200,
   overflow: 'auto',
-  color: '#646566',
+  color: 'var(--neutral-n2)',
   fontSize: 14,
 
-  background: '#F9F9FA',
+  background: 'var(--neutral-n6-d1)',
   padding: '16px',
   borderRadius: '4px',
 })
@@ -93,7 +93,7 @@ const StatusWrap = styled.div({
 const ChartWrap = styled.div({
   height: 340,
   marginTop: 24,
-  background: '#F9F9FA',
+  background: 'var(--neutral-n6-d1)',
   borderRadius: '4px',
   padding: '16px',
 })
@@ -219,7 +219,13 @@ const IterationInfo = () => {
                   )}
                   strokeWidth={12}
                 />
-                <div style={{ marginTop: 16, color: '#646566', fontSize: 14 }}>
+                <div
+                  style={{
+                    marginTop: 16,
+                    color: 'var(--neutral-n2)',
+                    fontSize: 14,
+                  }}
+                >
                   {iterateInfo.startTime || '--'}-{iterateInfo.endTime || '--'}
                 </div>
               </SurveyBox>
@@ -233,10 +239,16 @@ const IterationInfo = () => {
                   justifyContent: 'center',
                 }}
               >
-                <span style={{ color: '#000', fontSize: 14 }}>
+                <span style={{ color: 'var(--neutral-black)', fontSize: 14 }}>
                   {t('common.demand')}
                 </span>
-                <span style={{ color: '#000', fontSize: 28, marginTop: 12 }}>
+                <span
+                  style={{
+                    color: 'var(--neutral-black)',
+                    fontSize: 28,
+                    marginTop: 12,
+                  }}
+                >
                   {`${iterateInfo?.finishCount || 0} / ${
                     iterateInfo?.storyCount || 0
                   }`}

@@ -79,7 +79,7 @@ const Left = styled.div`
   flex-direction: column;
 
   align-items: center;
-  border-right: 1px solid #ebedf0;
+  border-right: 1px solid var(--neutral-n6-d1);
 `
 const Right = styled.div`
   position: relative;
@@ -107,15 +107,15 @@ const StyledShape = styled.div`
   width: 100%;
   height: 25px;
   white-space: nowrap;
-  background: rgba(255, 255, 255, 1);
+  background: var(--neutral-white-d7);
   background-blend-mode: normal;
-  border: 1px solid rgba(235, 237, 240, 1);
+  border: 1px solid var(--neutral-n6-d1);
   border-radius: 6px;
   margin-bottom: 16px;
   text-align: center;
   &:hover {
-    border: 1px solid rgba(40, 119, 255, 1);
-    color: rgba(40, 119, 255, 1);
+    border: 1px solid var(--primary-d1);
+    color: var(--primary-d1);
   }
 `
 const FormWrap = styled.div`
@@ -142,14 +142,14 @@ const ExcessiveBox = styled.div`
 const StyledShape2 = styled.div`
   padding: 1px 8px 1px 8px;
   height: 22px;
-  background: #ffffff;
+  background: var(--neutral-white-d7);
   border-radius: 6px 6px 6px 6px;
   opacity: 1;
-  border: 1px solid #ebedf0;
+  border: 1px solid var(--primary-d1);
   font-size: 12px;
   font-family: PingFang SC-Regular, PingFang SC;
   font-weight: 400;
-  color: #969799;
+  color: var(--neutral-n3);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -159,7 +159,7 @@ const StyledShape3 = styled.div`
   font-size: 12px;
   font-family: PingFang SC-Regular, PingFang SC;
   font-weight: 400;
-  color: #969799;
+  color: var(--neutral-n3);
   line-height: 20px;
 `
 const AuditBox = styled.div``
@@ -171,7 +171,7 @@ const LineBoxTitle2 = styled.div`
   font-size: 14px;
   font-family: PingFang SC-Regular, PingFang SC;
   font-weight: 400;
-  color: #323233;
+  color: var(--neutral-n1-d1);
   margin-bottom: 8px;
   line-height: 22px;
 `
@@ -190,19 +190,19 @@ const arron = css`
   font-size: 12px;
   font-family: PingFang SC-Medium, PingFang SC;
   font-weight: 500;
-  color: #ffffff;
+  color: var(--neutral-white-d2);
 `
 const arrorText = css`
   height: 20px;
   font-size: 12px;
   font-family: PingFang SC-Regular, PingFang SC;
   font-weight: 400;
-  color: #646566;
+  color: var(--neutral-n2);
   line-height: 20px;
   margin-left: 10px;
 `
 const symbol = css`
-  color: #bbbdbf;
+  color: var(--neutral-n4);
   position: absolute;
   width: 16px;
   height: 16px;
@@ -346,7 +346,9 @@ const NumericInput = (props: any) => {
   }
   if (type === 'integer') {
     return (
-      <div style={{ border: '1px solid #d5d6d9', borderRadius: '6px' }}>
+      <div
+        style={{ border: '1px solid var(--neutral-n5)', borderRadius: '6px' }}
+      >
         <Input
           type="number"
           placeholder={t('newlyAdd.pleaseValue')}
@@ -363,7 +365,7 @@ const NumericInput = (props: any) => {
     )
   }
   return (
-    <div style={{ border: '1px solid #d5d6d9', borderRadius: '6px' }}>
+    <div style={{ border: '1px solid var(--neutral-n5)', borderRadius: '6px' }}>
       <Input
         type="number"
         placeholder={t('newlyAdd.pleaseValue')}
@@ -603,11 +605,14 @@ export const ShapeContent = (props: any) => {
               <StyledShape
                 style={{
                   width: 138,
-                  color: item.id === active ? '#2877ff' : '#969799',
+                  color:
+                    item.id === active
+                      ? 'var(--primary-d2)'
+                      : 'var(--neutral-n3)',
                   border:
                     item.id === active
-                      ? '1px solid #2877ff'
-                      : '1px solid #EBEDF0',
+                      ? '1px solid var(--primary-d2)'
+                      : '1px solid var(--neutral-n5)',
                 }}
               >
                 {item.status.content}
@@ -843,7 +848,7 @@ export const ShapeContent = (props: any) => {
                   style={{
                     fontSize: '50px',
                     margin: '0 8px',
-                    color: '#BBBDBF',
+                    color: 'var(--neutral-n5)',
                   }}
                   type="flow"
                 />
@@ -866,7 +871,7 @@ export const ShapeContent = (props: any) => {
                     height: '22px',
                     fontSize: '14px',
                     fontWeight: 500,
-                    color: '#323233',
+                    color: 'var(--neutral-n1-d2)',
                     lineHeight: '22px',
                     marginBottom: '20px',
                   }}
@@ -901,7 +906,7 @@ export const ShapeContent = (props: any) => {
                                   style={{
                                     fontSize: 16,
                                     margin: '0 8px',
-                                    color: '#BBBDBF',
+                                    color: 'var(--neutral-n4)',
                                     position: 'relative',
                                     top: '0px',
                                   }}

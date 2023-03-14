@@ -61,15 +61,15 @@ const IterationStatus = (props: Props) => {
         alignItems: 'flex-start',
       }}
     >
-      <LiWrap color="#F0F4FA" onClick={e => onClick(1, e)}>
+      <LiWrap color="var(--neutral-n6-d1)" onClick={e => onClick(1, e)}>
         <StatusTag status={1}>{t('common.opening1')}</StatusTag>
       </LiWrap>
 
-      <LiWrap color="#EDF7F4" onClick={e => onClick(2, e)}>
+      <LiWrap color="var(--neutral-n6-d1)" onClick={e => onClick(2, e)}>
         <StatusTag status={2}>{t('common.finished')}</StatusTag>
       </LiWrap>
 
-      <LiWrap color="#F2F2F4" onClick={e => onClick(3, e)}>
+      <LiWrap color="var(--neutral-n7)" onClick={e => onClick(3, e)}>
         <StatusTag status={3}>{t('common.Closed')}</StatusTag>
       </LiWrap>
     </div>
@@ -102,10 +102,10 @@ const IterationStatus = (props: Props) => {
                   marginLeft: 4,
                   color:
                     props.iterateInfo?.status === 1
-                      ? '#2877FF'
+                      ? 'var(--primary-d2)'
                       : props.iterateInfo?.status === 2
-                      ? '#43BA9A'
-                      : '#969799',
+                      ? 'var(--function-success)'
+                      : 'var(--neutral-n3)',
                 }}
               />
             </StatusTag>

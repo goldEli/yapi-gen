@@ -190,13 +190,7 @@ const EditorCategory = (props: EditorProps) => {
         </Form.Item>
         <Form.Item label={t('newlyAdd.view')}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <ViewWrap
-              color={path || '#969799'}
-              // bgColor={
-              //   colorList?.filter((i: any) => i.key === (path || '#969799'))[0]
-              //     ?.bgColor
-              // }
-            >
+            <ViewWrap>
               {/* {name || t('newlyAdd.nothing')} */}
               {path && <img src={path} style={{ width: '20px' }} />}
             </ViewWrap>

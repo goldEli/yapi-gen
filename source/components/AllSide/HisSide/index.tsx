@@ -90,14 +90,14 @@ const index = () => {
           height: '48px',
           display: 'flex',
           alignItems: 'center',
-          borderBottom: '1px solid #ECEDEF',
+          borderBottom: '1px solid var(--neutral-n6-d1)',
           margin: ' 0 16px',
           cursor: 'pointer',
         }}
       >
         <IconFont
           style={{
-            color: '#969799',
+            color: 'var(--neutral-n3)',
             fontSize: '16px',
           }}
           type="left-md"
@@ -106,7 +106,7 @@ const index = () => {
           style={{
             fontSize: '12px',
             fontWeight: 400,
-            color: '#969799',
+            color: 'var(--neutral-n3)',
             marginLeft: '8px',
             whiteSpace: 'nowrap',
           }}

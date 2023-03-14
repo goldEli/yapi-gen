@@ -2,10 +2,8 @@
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
-import { useGetloginInfo } from '@/hooks/useGetloginInfo'
 import {
   getCategoryConfigList,
-  getDemandList,
   updatePriority,
   updateTableParams,
 } from '@/services/demand'
@@ -257,7 +255,9 @@ const BasicDemand = (props: Props) => {
               )
             }
           />
-          <span style={{ color: '#646566', marginLeft: 16, fontSize: 14 }}>
+          <span
+            style={{ color: 'var(--neutral-n2)', marginLeft: 16, fontSize: 14 }}
+          >
             {schedule}%
           </span>
         </div>

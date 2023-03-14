@@ -11,7 +11,7 @@ import styled from '@emotion/styled'
 
 const IconFontWrap = styled(IconFont)({
   fontSize: 14,
-  color: '#BBBDBF',
+  color: 'var(--neutral-n4)',
   cursor: 'pointer',
   display: 'none',
   position: 'absolute',
@@ -133,7 +133,7 @@ const ChoosePeople = (props: any) => {
               <span
                 style={{
                   marginLeft: '4px',
-                  color: '#646566',
+                  color: 'var(--neutral-n2)',
                   fontSize: '12px',
                 }}
               >
@@ -145,7 +145,7 @@ const ChoosePeople = (props: any) => {
                 style={{
                   fontSize: 16,
                   margin: '-20px 8px 0',
-                  color: '#BBBDBF',
+                  color: 'var(--neutral-n4)',
                 }}
                 type=""
               />

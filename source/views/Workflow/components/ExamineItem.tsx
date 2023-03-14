@@ -21,15 +21,15 @@ export const AddWrap = styled.div({
   boxSizing: 'border-box',
   cursor: 'pointer',
   borderRadius: 16,
-  border: '1px dashed #969799',
+  border: '1px dashed var(--neutral-n3)',
   '.icon': {
-    color: '#969799',
+    color: 'var(--neutral-n3)',
     fontSize: 16,
   },
   '&: hover': {
-    border: '1px dashed #2877ff',
+    border: '1px dashed var(--primary-d2)',
     '.icon': {
-      color: '#2877ff!important',
+      color: 'var(--primary-d2)!important',
     },
   },
 })
@@ -38,13 +38,13 @@ const PersonItemWrap = styled.div({
   height: 44,
   lineHeight: '44px',
   fontSize: 14,
-  color: '#323233',
+  color: 'var( --neutral-n1-d1)',
   display: 'flex',
   alignItems: 'center',
   cursor: 'pointer',
   padding: '0 16px',
   '&: hover': {
-    background: '#f4f5f5',
+    background: 'var( --neutral-n7)',
   },
 })
 
@@ -64,8 +64,8 @@ const MenuItemWrap = styled.span({
   padding: '0 16px',
   lineHeight: '32px',
   '&:hover': {
-    color: '#2877ff',
-    background: '#f8f9fa',
+    color: 'var(--primary-d2)',
+    background: 'var(--neutral-n6-d1)',
   },
 })
 
@@ -74,12 +74,12 @@ const MenuWrap = styled.div({
   flexDirection: 'column',
   justifyContent: 'center',
   fontSize: 14,
-  color: '#646566',
+  color: 'var(--neutral-n2)',
 })
 
 export const IconFontWrap = styled(IconFont)({
   fontSize: 14,
-  color: '#BBBDBF',
+  color: 'var( --neutral-n4)',
   cursor: 'pointer',
   display: 'none',
   position: 'absolute',
@@ -99,7 +99,7 @@ export const NewNameWrap = styled.div({
 
 const IconfontCloseWrap = styled(IconFont)({
   fontSize: 16,
-  color: '#969799',
+  color: 'var(--neutral-n3)',
   cursor: 'pointer',
   display: 'none',
   margin: '0 0 0 12px',
@@ -110,7 +110,7 @@ export const ItemWrap = styled.div({
   alignItems: 'center',
   '.changeSize': {
     fontSize: 12,
-    color: '#646566',
+    color: 'var(--neutral-n2)',
     marginLeft: 10,
   },
   '&: hover': {
@@ -310,7 +310,9 @@ const ExamineItem = (props: Props) => {
             <span
               style={{
                 marginLeft: 32,
-                color: isShowSelect ? 'var(--primary-d2)' : '##323233',
+                color: isShowSelect
+                  ? 'var(--primary-d2)'
+                  : 'var(--neutral-n1-d2)',
                 fontSize: 12,
               }}
             >
@@ -319,7 +321,9 @@ const ExamineItem = (props: Props) => {
             <IconFont
               style={{
                 marginLeft: 8,
-                color: isShowSelect ? 'var(--primary-d2)' : '##323233',
+                color: isShowSelect
+                  ? 'var(--primary-d2)'
+                  : 'var(--neutral-n1-d2)',
               }}
               type={isShowSelect ? 'up' : 'down'}
             />
@@ -379,7 +383,7 @@ const ExamineItem = (props: Props) => {
                   style={{
                     fontSize: 16,
                     margin: '0px 8px 0',
-                    color: '#BBBDBF',
+                    color: 'var(--neutral-n4)',
                   }}
                   type={
                     menuList?.filter((k: any) => k.value === normal)[0]?.icon
