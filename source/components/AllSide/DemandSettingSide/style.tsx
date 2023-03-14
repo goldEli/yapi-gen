@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
 import styled from '@emotion/styled'
 
 export const AllWrap = styled.div`
@@ -171,3 +173,39 @@ export const Tabs = styled.div`
     box-shadow: 0px 1px 9px 0px rgba(20, 37, 98, 0.05);
   }
 `
+
+export const NoDataCreateWrap = styled.div({
+  marginTop: 8,
+  minHeight: 68,
+  borderRadius: 6,
+  padding: '8px 12px',
+  '.top': {
+    display: 'flex',
+    alignItems: 'flex-start',
+    marginBottom: 12,
+    svg: {
+      color: '#FA9746',
+      fontSize: 16,
+      marginTop: 2,
+    },
+    div: {
+      color: '#646566',
+      fontSize: 12,
+      marginLeft: 8,
+      flexWrap: 'wrap',
+    },
+  },
+  '.bottom': {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    color: ' var(--primary-d2)',
+    svg: {
+      fontSize: 10,
+    },
+    div: {
+      fontSize: 12,
+      marginLeft: 6,
+    },
+  },
+})

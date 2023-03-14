@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from '@store/index'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getCategoryConfigList } from '@store/category/thunk'
+import NoData from '@/components/NoData'
 const Wrap = styled.div`
   width: 100%;
   display: flex;
@@ -29,7 +30,10 @@ const DemandSetting = () => {
   const [isOperate, setIsOperate] = useState<boolean>(false)
   const [isSave, setIsSave] = useState(false)
   const { projectInfo } = useSelector(store => store.project)
-  const { activeCategory } = useSelector(store => store.category)
+  const { getCategoryConfigDataList, startUsing, activeCategory } = useSelector(
+    store => store.category,
+  )
+  useSelector(store => store.category)
   const save = () => {
     setIsSave(true)
   }
@@ -51,31 +55,38 @@ const DemandSetting = () => {
       auth="b/project/story_config"
       permission={projectInfo?.projectPermissions?.map((i: any) => i.identity)}
     >
-      <Header />
-      {isOperate && (
-        <ButtonStyle>
-          <CommonButton type="secondary" onClick={onCancel}>
-            {t('common.cancel')}
-          </CommonButton>
-          <CommonButton
-            style={{ marginLeft: '16px' }}
-            type="primary"
-            onClick={() => save()}
-          >
-            {t('common.confirm')}
-          </CommonButton>
-        </ButtonStyle>
+      {getCategoryConfigDataList?.configDataList.length >= 1 ? (
+        <>
+          <Header />
+          {isOperate && (
+            <ButtonStyle>
+              <CommonButton type="secondary" onClick={onCancel}>
+                {t('common.cancel')}
+              </CommonButton>
+              <CommonButton
+                style={{ marginLeft: '16px' }}
+                type="primary"
+                onClick={() => save()}
+              >
+                {t('common.confirm')}
+              </CommonButton>
+            </ButtonStyle>
+          )}
+          <Wrap>
+            <Main
+              onIsOperate={() => setIsOperate(true)}
+              isSave={isSave}
+              onBack={() => {
+                setIsSave(false), setIsOperate(false)
+              }}
+            />
+
+            <CreateField />
+          </Wrap>
+        </>
+      ) : (
+        <NoData subText="请添加需求状态，来配置工作流程" />
       )}
-      <Wrap>
-        <Main
-          onIsOperate={() => setIsOperate(true)}
-          isSave={isSave}
-          onBack={() => {
-            setIsSave(false), setIsOperate(false)
-          }}
-        />
-        <CreateField />
-      </Wrap>
     </PermissionWrap>
   )
 }
