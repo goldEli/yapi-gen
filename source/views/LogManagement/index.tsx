@@ -36,7 +36,7 @@ const AddButton = styled.button({
   height: 32,
   padding: '0 16px',
   borderRadius: 6,
-  background: '#2877FF',
+  background: 'var(--primary-d2)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -44,7 +44,7 @@ const AddButton = styled.button({
   color: 'white',
   border: 'none',
   ':hover': {
-    background: '#669FFF',
+    background: 'var(--primary-d2)',
     color: 'white',
   },
 })
@@ -54,7 +54,7 @@ const Menu = styled.div`
   margin-top: 24px;
   .provider {
     height: 1px;
-    background: #ecedef;
+    background: var(--neutral-n5);
     width: calc(100% - 32px);
     margin-left: 16px;
   }
@@ -64,9 +64,13 @@ export const DailyContext: any = React.createContext('')
 
 const MenuItem = styled.div<{ active?: any }>(
   ({ active }) => ({
-    borderRight: active ? '3px solid #2877ff' : '3px solid transparent',
-    color: active ? '#2877ff' : '#323233',
-    background: active ? '#F0F4FA !important' : 'white',
+    borderRight: active
+      ? '3px solid var(--primary-d2)'
+      : '3px solid transparent',
+    color: active ? 'var(--primary-d2)' : 'var(--neutral-n1-d1)',
+    background: active
+      ? 'var(--neutral-n7) !important'
+      : 'var(--neutral-white-d2)',
   }),
   {
     boxSizing: 'border-box',
@@ -76,7 +80,7 @@ const MenuItem = styled.div<{ active?: any }>(
     cursor: 'pointer',
     paddingLeft: 52,
     '&: hover': {
-      backgroundColor: '#F4F5F5',
+      backgroundColor: 'var(--neutral-n6-d1)',
     },
   },
 )
@@ -195,7 +199,7 @@ const LogManagement = () => {
         <div
           style={{
             height: '64px',
-            background: '#FFFFFF',
+            background: 'var(--neutral-white-d2)',
             display: 'flex',
             alignItems: 'center',
             paddingLeft: '24px',

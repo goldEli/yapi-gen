@@ -70,7 +70,7 @@ const SetLeft = styled.div({
   display: 'flex',
   flexDirection: 'column',
   height: '100%',
-  borderRight: '1px solid #ECEDEF',
+  borderRight: '1px solid var(--neutral-n6-d1)',
   width: 232,
 })
 
@@ -148,7 +148,7 @@ const MainWrap = styled.div({
 })
 
 const MainWrapItem = styled.div({
-  borderBottom: '1px solid #EBEDF0',
+  borderBottom: '1px solid var(--neutral-n6-d1)',
   padding: '24px 0 12px',
   display: 'flex',
   '.ant-checkbox-wrapper': {

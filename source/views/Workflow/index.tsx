@@ -59,7 +59,7 @@ const LabelWrap = styled.div({
     marginLeft: 8,
     fontWeight: 500,
     fontSize: 14,
-    color: '#323233',
+    color: 'var(--neutral-n1-d1)',
   },
   '.provider': {
     height: 16,
@@ -103,12 +103,20 @@ const SetBreadcrumb = () => {
         <IconFont type="return" style={{ fontSize: 16, marginRight: 6 }} />
         <span>{t('newlyAdd.back')}</span>
       </BackWrap>
-      <Divider type="vertical" style={{ background: '#BBBDBF' }} />
-      <div style={{ color: '#323233', cursor: 'pointer' }} onClick={onToSet}>
+      <Divider type="vertical" style={{ background: 'var(--neutral-n4)' }} />
+      <div
+        style={{ color: 'var(--neutral-n1-d1)', cursor: 'pointer' }}
+        onClick={onToSet}
+      >
         {t('newlyAdd.demandSet')}
       </div>
-      <IconFont type="right" style={{ color: '#323233', margin: '0 4px' }} />
-      <div style={{ color: '#969799' }}>{t('newlyAdd.workflowSet')}</div>
+      <IconFont
+        type="right"
+        style={{ color: 'var(--neutral-n1-d1)', margin: '0 4px' }}
+      />
+      <div style={{ color: 'var(--neutral-n3)' }}>
+        {t('newlyAdd.workflowSet')}
+      </div>
     </SetTitleWrap>
   )
 }
@@ -166,7 +174,7 @@ const Workflow = () => {
             style={{
               width: 160,
               height: 1,
-              background: '#EBEDF0',
+              background: 'var(--neutral-n4)',
               margin: '0 8px',
             }}
           />

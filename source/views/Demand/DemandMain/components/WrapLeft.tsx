@@ -37,7 +37,7 @@ import { changeId } from '@store/counterSlice'
 
 const Left = styled.div`
   height: calc(100vh - 150px);
-  background-color: #fff;
+  background-color: var(--neutral-white-d2);
   position: relative;
 `
 
@@ -45,7 +45,7 @@ const TitleWrap = styled.div({
   paddingLeft: '15px',
   whiteSpace: 'nowrap',
   fontSize: 14,
-  color: '#323233',
+  color: 'var(--neutral-n1-d2)',
   lineHeight: '52px',
   fontWeight: 'bold',
 })
@@ -72,10 +72,10 @@ const BtnsItemBox = styled.div`
   font-size: 14px;
   font-family: PingFang SC-Regular, PingFang SC;
   font-weight: 400;
-  color: #646566;
+  color: var(--neutral-n2);
   &:hover {
-    background: #f4f5f5;
-    color: #323233;
+    background: var(--neutral-n6-d1);
+    color: var(--neutral-n1-d2);
   }
 `
 const centerText = css`
@@ -88,9 +88,9 @@ const rightText = css`
   visibility: hidden;
   font-size: 16px;
   margin-left: auto;
-  color: #969799;
+  color: var(--neutral-n3);
   &:hover {
-    color: #2877ff;
+    color: var(--primary-d2);
   }
 `
 const TreeItem = (props: any) => {

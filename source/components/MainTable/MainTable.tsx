@@ -345,8 +345,8 @@ const MainTable = (props: Props) => {
       render: (text: string) => {
         return (
           <Progress
-            strokeColor="#43BA9A"
-            style={{ color: '#43BA9A' }}
+            strokeColor="var(--function-success)"
+            style={{ color: 'var(--function-success)' }}
             width={38}
             type="line"
             percent={Math.trunc(Number(text) * 100)}
@@ -388,7 +388,12 @@ const MainTable = (props: Props) => {
       render: (text: number) => {
         return (
           <StatusWrap>
-            <div style={{ background: text === 1 ? '#43BA9A' : '#BBBDBF' }} />
+            <div
+              style={{
+                background:
+                  text === 1 ? 'var(--function-success)' : 'var(--neutral-n4)',
+              }}
+            />
             <span>
               {text === 1 ? t('common.opening1') : t('common.Closed')}
             </span>

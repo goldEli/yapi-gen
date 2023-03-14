@@ -23,7 +23,7 @@ const Header = styled.div({
 })
 
 const Content = styled.div({
-  background: '#F5F7FA',
+  background: 'var(--neutral-n6-d1)',
   height: 'calc(100% - 64px)',
 })
 

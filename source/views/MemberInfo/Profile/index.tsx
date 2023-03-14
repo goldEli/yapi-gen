@@ -130,7 +130,7 @@ const LineItem = styled.div`
   display: flex;
   justify-content: space-between;
   font-size: 12px;
-  color: #646566;
+  color: var(--neutral-n2);
   position: relative;
 `
 const GatteWrap = styled.div`
@@ -156,7 +156,7 @@ const HeadWrap = styled.div({
 const TotalWrap = styled.div({
   height: 88,
   borderRadius: 6,
-  border: '1px solid #EBEDF0',
+  border: '1px solid var(--neutral-n6-d1)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-around',

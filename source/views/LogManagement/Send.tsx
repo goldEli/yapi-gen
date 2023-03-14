@@ -238,7 +238,7 @@ const Send = () => {
                 style={{
                   fontSize: '14px',
                   fontWeight: ' 400',
-                  color: '#2877FF',
+                  color: 'var(--primary-d2)',
                   cursor: 'pointer',
                 }}
               >
@@ -258,7 +258,7 @@ const Send = () => {
               style={{
                 fontSize: '14px',
                 fontWeight: ' 400',
-                color: '#2877FF',
+                color: 'var(--primary-d2)',
                 marginLeft: '16px',
                 cursor: 'pointer',
               }}
@@ -378,7 +378,7 @@ const Send = () => {
       <div
         style={{
           height: '52px',
-          background: '#FFFFFF',
+          background: 'var(--neutral-white-d2)',
           display: 'flex',
           alignItems: 'center',
           paddingLeft: '24px',

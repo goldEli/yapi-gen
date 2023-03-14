@@ -19,7 +19,7 @@ const PinkWrap = styled.div`
   margin-bottom: 24px;
   font-size: 12px;
   font-weight: 400;
-  color: #646566;
+  color: var(--neutral-n2);
   line-height: 20px;
 `
 

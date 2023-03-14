@@ -103,7 +103,7 @@ const Item = styled.div<{ activeIdx: boolean }>(
       fontSize: 14,
       fontWeight: 400,
       marginRight: 4,
-      color: '#323233',
+      color: 'var(--neutral-n1-d1)',
       display: 'inline-block',
       height: 50,
       lineHeight: '50px',
@@ -113,8 +113,8 @@ const Item = styled.div<{ activeIdx: boolean }>(
       height: 20,
       padding: '0 6px',
       borderRadius: 10,
-      color: '#2877FF',
-      background: '#F0F4FA',
+      color: 'var(--primary-d2)',
+      background: 'var(--neutral-n1-d1)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -122,13 +122,15 @@ const Item = styled.div<{ activeIdx: boolean }>(
   },
   ({ activeIdx }) => ({
     span: {
-      color: activeIdx ? '#2877FF' : '#323233',
-      borderBottom: activeIdx ? '2px solid #2877FF' : '2px solid white',
+      color: activeIdx ? 'var(--primary-d2)' : 'var(--neutral-n1-d1)',
+      borderBottom: activeIdx
+        ? '2px solid var(--primary-d2)'
+        : '2px solid white',
       fontWeight: activeIdx ? 'bold' : 400,
     },
     div: {
-      color: activeIdx ? 'white' : '#2877FF',
-      background: activeIdx ? '#2877FF' : '#F0F4FA',
+      color: activeIdx ? 'white' : 'var(--primary-d2)',
+      background: activeIdx ? 'var(--primary-d2)' : 'var(--neutral-n1-d1)',
     },
   }),
 )
@@ -160,14 +162,14 @@ const MoreItem = styled.div({
   display: 'flex',
   alignItems: 'center',
   height: 32,
-  color: '#646566',
+  color: 'var(--neutral-n2)',
   fontSize: 14,
   fontWeight: 400,
   cursor: 'pointer',
   padding: '0 16px',
   '&: hover': {
-    color: '#323233',
-    background: '#f4f5f5',
+    color: 'var(--neutral-n1-d1)',
+    background: 'var(--hover-d1)',
   },
 })
 

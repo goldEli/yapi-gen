@@ -37,9 +37,9 @@ const Side = styled.div`
   box-sizing: border-box;
   padding-top: 24px;
   width: 220px;
-  background: rgba(255, 255, 255, 1);
+  background: var(--neutral-white-d2);
   flex-shrink: 0;
-  border-right: 1px solid #ecedef;
+  border-right: 1px solid var(--neutral-n6-d1);
 `
 
 const Main = styled.div({
@@ -61,13 +61,15 @@ const MenuItem = styled.div<{ active?: boolean }>(
     cursor: 'pointer',
     width: 220,
     '&: hover': {
-      backgroundColor: '#F4F5F5',
+      backgroundColor: 'var(--neutral-n7)',
     },
   },
   ({ active }) => ({
-    borderRight: active ? '3px solid #2877ff' : '3px solid transparent',
-    color: active ? '#2877ff' : '#323233',
-    background: active ? '#F0F4FA !important' : 'transparent',
+    borderRight: active
+      ? '3px solid var(--primary-d2)'
+      : '3px solid transparent',
+    color: active ? 'var(--primary-d2)' : 'var(--neutral-n1-d1)',
+    background: active ? 'var(--neutral-n7) !important' : 'transparent',
   }),
 )
 
@@ -80,12 +82,12 @@ const InfoItem = styled.div({
   display: 'flex',
   flexDirection: 'column',
   div: {
-    color: '#323233',
+    color: 'var(--neutral-n1-d1)',
     fontSize: 16,
     fontWeight: 400,
   },
   span: {
-    color: '#969799',
+    color: 'var(--neutral-n3)',
     fontSize: 14,
   },
 })

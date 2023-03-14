@@ -53,7 +53,7 @@ const TableWrapTop = styled(Table)({
     padding: 0,
   },
   '.ant-table-tbody .ant-table-row:nth-child(odd) td': {
-    backgroundColor: '#fff',
+    backgroundColor: 'var(--neutral-white-d2)',
   },
 })
 
@@ -71,13 +71,16 @@ const TableWrapBottom = styled(Table)<{ tableLength?: any }>(
   },
   ({ tableLength }) => ({
     '.ant-table-tbody .ant-table-row:nth-child(odd) td': {
-      backgroundColor: tableLength % 2 === 0 ? '#f8f9fa' : '#fff',
+      backgroundColor:
+        tableLength % 2 === 0
+          ? 'var(--neutral-n6-d1)'
+          : 'var(--neutral-white-d2)',
     },
   }),
 )
 
 const LabelWrap = styled.div({
-  color: '#323233',
+  color: 'var(--neutral-n1-d1)',
   fontSize: 14,
   fontWeight: 400,
   width: 100,
@@ -103,14 +106,14 @@ const StatusWrap = styled.div<{ color?: string }>(
     padding: '0 12px',
   },
   ({ color }) => ({
-    color: color || '#969799',
-    border: `1px solid ${color || '#969799'}`,
+    color: color || 'var(--neutral-n3)',
+    border: `1px solid ${color || 'var(--neutral-n3)'}`,
   }),
 )
 
 const TextWrap = styled.div({
   fontSize: 12,
-  color: '#969799',
+  color: 'var(--neutral-n3)',
   fontWeight: 400,
   display: 'flex',
   alignItems: 'center',
@@ -129,7 +132,7 @@ const TimelineWrap = styled(Timeline)({
 const IconfontWrap = styled(IconFont)<{ active?: boolean }>(
   {
     fontSize: 12,
-    color: '#646566',
+    color: 'var(--neutral-n2)',
     marginRight: 8,
   },
   ({ active }) => ({
@@ -545,7 +548,7 @@ const SetConfig = (props: Props) => {
       style={{
         fontSize: 16,
         cursor: 'pointer',
-        color: '#969799',
+        color: 'var(--neutral-n3)',
         padding: '0 16px',
       }}
     />
@@ -689,7 +692,7 @@ const SetConfig = (props: Props) => {
               ''
             ) : (
               <span
-                style={{ color: '#2877ff', cursor: 'pointer' }}
+                style={{ color: 'var(--primary-d2)', cursor: 'pointer' }}
                 onClick={() => onDelRow(record)}
               >
                 {t('common.del')}
@@ -784,7 +787,11 @@ const SetConfig = (props: Props) => {
             </StatusWrap>
             <Divider
               type="vertical"
-              style={{ width: 48, height: 1, border: '1px dashed #D5D6D9' }}
+              style={{
+                width: 48,
+                height: 1,
+                border: '1px dashed var(--neutral-n4)',
+              }}
             />
             <StatusWrap
               color={
@@ -807,7 +814,13 @@ const SetConfig = (props: Props) => {
             onClick={() => setIsShowPermission(!isShowPermission)}
           >
             <IconfontWrap type="tableDown" active={isShowPermission} />
-            <span style={{ color: '#323233', fontSize: 14, fontWeight: 500 }}>
+            <span
+              style={{
+                color: 'var(--neutral-n1-d1)',
+                fontSize: 14,
+                fontWeight: 500,
+              }}
+            >
               {t('newlyAdd.reviewPermission')}
             </span>
           </ItemWrap>
@@ -905,7 +918,7 @@ const SetConfig = (props: Props) => {
                       <div
                         onClick={onAddExamine}
                         style={{
-                          color: '#2877ff',
+                          color: 'var(--primary-d2)',
                           cursor: 'pointer',
                           width: 'fit-content',
                         }}
@@ -925,7 +938,13 @@ const SetConfig = (props: Props) => {
             onClick={() => setIsShowField(!isShowField)}
           >
             <IconfontWrap type="tableDown" active={isShowField} />
-            <span style={{ color: '#323233', fontSize: 14, fontWeight: 500 }}>
+            <span
+              style={{
+                color: 'var(--neutral-n1-d1)',
+                fontSize: 14,
+                fontWeight: 500,
+              }}
+            >
               {t('newlyAdd.reviewFields')}
             </span>
           </ItemWrap>
@@ -937,8 +956,8 @@ const SetConfig = (props: Props) => {
             </TextWrap>
             <Button
               style={{
-                background: '#F0F4FA',
-                color: '#2877ff',
+                background: 'var(--neutral-n6-d1)',
+                color: 'var(--primary-d2)',
                 marginTop: 16,
                 marginLeft: 20,
               }}

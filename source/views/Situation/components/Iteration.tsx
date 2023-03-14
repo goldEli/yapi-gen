@@ -31,7 +31,7 @@ const DemoColumn = (props: any) => {
     label: {
       position: 'top',
       style: {
-        fill: '#000',
+        fill: 'var(--neutral-black)',
       },
     },
     xAxis: {

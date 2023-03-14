@@ -46,8 +46,8 @@ const SetHead = styled.div`
   background: #a4acf5;
   background-blend-mode: normal;
   border: 2px solid rgba(40, 119, 255, 0.16);
-  border: 1px solid white;
-  color: white;
+  border: 1px solid var(--neutral-white-d2);
+  color: var(--neutral-white-d2);
 `
 
 export const StaffPersonal = (props: {

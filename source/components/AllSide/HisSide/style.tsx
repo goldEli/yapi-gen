@@ -68,7 +68,7 @@ const MenuItem = styled.div<{ active?: boolean }>(
     },
   },
   ({ active }) => ({
-    // borderRight: active ? '3px solid #2877ff' : '3px solid transparent',
+    // borderRight: active ? '3px solid var(--primary-d2)' : '3px solid transparent',
     color: active ? 'var( --primary-d1)' : 'var(--neutral-n1-d1)',
     background: active
       ? 'linear-gradient(90deg, #EBEFFF 0%, rgba(243,246,255,0) 100%)'

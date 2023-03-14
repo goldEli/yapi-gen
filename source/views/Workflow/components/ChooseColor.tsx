@@ -14,7 +14,7 @@ const ChooseColorWrap = styled.div<{ color?: string }>(
     cursor: 'pointer',
   },
   ({ color }) => ({
-    background: color ? color : '#969799',
+    background: color ? color : 'var(--neutral-n3)',
   }),
 )
 

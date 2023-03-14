@@ -568,7 +568,7 @@ const UploadAttach = (props: any) => {
                     style={{
                       fontSize: '14px',
                       fontWeight: 400,
-                      color: '#323233',
+                      color: 'var(--neutral-n1-d1)',
                       lineHeight: '22px',
                       wordBreak: 'break-all',
                     }}
@@ -579,7 +579,7 @@ const UploadAttach = (props: any) => {
                     style={{
                       fontSize: '12px',
                       fontWeight: 400,
-                      color: '#969799',
+                      color: 'var(--neutral-n3)',
                       lineHeight: '20px',
                     }}
                   >

@@ -31,7 +31,7 @@ const ContWrap = styled.div({
 
 const TextWrap = styled.div({
   marginTop: 8,
-  color: '#969799',
+  color: 'var(--neutral-n3)',
   fontSize: 12,
   fontWeight: 400,
   display: 'flex',
@@ -39,11 +39,11 @@ const TextWrap = styled.div({
 })
 
 const IconfontWrap = styled(IconFont)({
-  color: '#BBBDBF',
+  color: 'var(--neutral-n4)',
   cursor: 'pointer',
   fontSize: 16,
   '&: hover': {
-    color: '#2877ff',
+    color: 'var(--primary-d2)',
   },
 })
 

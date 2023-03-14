@@ -415,7 +415,7 @@ const StaffManagement = () => {
           style={{
             fontSize: '16px',
             fontWeight: 500,
-            color: '#323233',
+            color: 'var(--neutral-n1-d1)',
           }}
         >
           {t('staff.companyStaff')}
