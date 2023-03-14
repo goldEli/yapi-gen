@@ -134,6 +134,7 @@ export const changeWater: any = async (params: any) => {
 // 查询配置
 export const getWater: any = async () => {
   const response = await http.get<any>('/b/company/config/info')
+
   return {
     id: response.data.list[0].id,
     status: response.data.list[0].status,
