@@ -70,6 +70,7 @@ export const EndTag = styled.div`
   border-radius: 6px 0px 6px 0px;
   line-height: 16px;
   text-align: center;
+  font-size: 12px;
   color: var(--neutral-white-d1);
 `
 
