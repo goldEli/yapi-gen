@@ -62,7 +62,7 @@ const SetRight = styled.div({
 const Title = styled.div({
   fontSize: 14,
   fontWeight: 'bold',
-  color: 'black',
+  color: 'var(--neutral-n1-d1)',
   paddingLeft: 10,
   borderLeft: '3px solid var( --primary-d2)',
   marginBottom: 16,
@@ -95,11 +95,12 @@ const MenuItem = styled.div<{ isActive: boolean }>(
     },
     '.subName': {
       fontSize: 12,
-      color: 'var(--neutral-n4)',
+      color: 'var(--neutral-n3)',
       fontWeight: 400,
     },
     '&:hover': {
-      background: 'var(--neutral-n6-d1)',
+      background:
+        'linear-gradient(90deg, #EBEFFF 0%, rgba(243,246,255,0) 100%)',
       '.dropdownIcon': {
         visibility: 'visible',
       },
@@ -109,7 +110,9 @@ const MenuItem = styled.div<{ isActive: boolean }>(
     borderRight: isActive
       ? '3px solid var(--primary-d2)'
       : '3px solid transparent',
-    background: isActive ? 'var(--neutral-n6-d1)!important' : 'transparent',
+    background: isActive
+      ? 'linear-gradient(90deg, #EBEFFF 0%, rgba(243,246,255,0) 100%)'
+      : 'transparent',
     '.name': {
       color: isActive ? 'var(--primary-d2)' : 'var(--neutral-n1-d1)',
     },
