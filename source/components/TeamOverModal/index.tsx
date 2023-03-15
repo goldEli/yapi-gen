@@ -37,7 +37,7 @@ const HandOverModal = (props: any) => {
       const newObj = []
       for (const key in res) {
         newObj.push({
-          project_id: key,
+          project_id: Number(key),
           handover_user_id: res[key],
         })
       }
@@ -65,7 +65,10 @@ const HandOverModal = (props: any) => {
       onConfirm={onConfirm}
     >
       <Wrap>
-        <PinkWrap>在本团队中参与了3个团队项目，请指定项目接收人；</PinkWrap>
+        <PinkWrap>
+          {props?.id?.name}在本团队中参与了{props?.id?.projects_count}
+          个团队项目，请指定项目接收人；
+        </PinkWrap>
         <Form form={form}>
           {list.map((i: any) => (
             <Form.Item
