@@ -32,6 +32,7 @@ export const getOperateLogs: any = async (params: any) => {
   })
   return {
     currentPage: params.page,
+    pageSize: Number(params.pageSize),
     total: response.data.pager.total,
     list: response.data.list.map((i: any) => ({
       id: i.id,
@@ -58,6 +59,7 @@ export const getLoginLogs: any = async (params: any) => {
 
   return {
     currentPage: params.page,
+    pageSize: Number(params.pageSize),
     total: response.data.pager.total,
     list: response.data.list.map((i: any) => ({
       id: i.id,
