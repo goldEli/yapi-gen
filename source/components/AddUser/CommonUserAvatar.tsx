@@ -29,6 +29,7 @@ const NameWrap = styled.div<{ fontSize?: number }>`
   font-family: SiYuanRegular;
   color: var(--neutral-n2);
   text-overflow: ellipsis;
+  width: 92px;
   overflow: hidden;
   white-space: nowrap;
 `

@@ -12,7 +12,7 @@ import { CloseWrap } from '@/components/StyleCommon'
 import CommonButton from '@/components/CommonButton'
 import { useEffect, useState } from 'react'
 import Checkbox from 'antd/lib/checkbox/Checkbox'
-import CommonUserAvatar from '@/components/CommonUserAvatar'
+import CommonUserAvatar from './CommonUserAvatar'
 import { getDepartmentUserList } from '@store/teams/thunk'
 import { useDispatch, useSelector } from '@store/index'
 import { unionBy } from 'lodash'
@@ -448,7 +448,7 @@ const CommonModal = (props: ModalProps) => {
           </Header>
           {personData.map((el: any) => (
             <ListItem key={el.id}>
-              <CommonUserAvatar name={el.name} />
+              <CommonUserAvatar name={el.name} fontSize={14} />
               <IconFont
                 type="close"
                 style={{ fontSize: 16, color: 'var(--neutral-n3)' }}

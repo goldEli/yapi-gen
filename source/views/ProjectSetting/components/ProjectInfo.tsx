@@ -54,7 +54,7 @@ const InfoRight = styled.div({
 const Title = styled.div({
   fontSize: 14,
   fontWeight: 'bold',
-  color: 'black',
+  color: 'var(--neutral-n1-d1)',
   paddingLeft: 10,
   borderLeft: '3px solid var(--primary-d2)',
   lineHeight: '16px',
@@ -70,7 +70,7 @@ const InfoItem = styled.div({
     fontWeight: 400,
   },
   span: {
-    color: 'black',
+    color: 'var(--neutral-n1-d1)',
     fontSize: 14,
     fontWeight: 400,
   },
