@@ -387,7 +387,7 @@ const GlobalStyle = () => {
       width: 100%;
       &:hover {
         cursor: grab;
-        background-color: var();
+        background-color: var(--hover-d3);
         [data-tree] {
           visibility: visible;
         }
@@ -432,7 +432,7 @@ const GlobalStyle = () => {
       display: none;
     }
     .ant-tree-treenode-selected {
-      background-color: var(--neutral-n1-d1) !important;
+      background-color: var(--hover-d3) !important;
     }
     .ant-tree .ant-tree-treenode-draggable .ant-tree-draggable-icon {
       opacity: 1;
