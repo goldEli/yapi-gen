@@ -23,6 +23,7 @@ import {
   getImportExcel,
   getImportExcelUpdate,
 } from '@/services/demand'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
 
 const Wrap = styled.div<{ language: any }>(
   {
@@ -399,7 +400,10 @@ const ImportDemand = () => {
         <>
           {spinLoading ? (
             <CommonWrap style={{ height: 443 }}>
-              <Spin spinning={spinLoading} />
+              <Spin
+                indicator={<NewLoadingTransition />}
+                spinning={spinLoading}
+              />
               <div
                 style={{
                   fontSize: 18,

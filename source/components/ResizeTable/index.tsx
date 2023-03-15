@@ -5,6 +5,7 @@ import { Spin, Table } from 'antd'
 import { Resizable } from 'react-resizable'
 import './index.css'
 import styled from '@emotion/styled'
+import NewLoadingTransition from '../NewLoadingTransition'
 
 const TableWrap = styled(Table)`
   height: 100%;
@@ -158,7 +159,7 @@ const ResizeTable = (props: ResizeTableProps) => {
         style={{ height: '100%' }}
         className="components-table-resizable-column"
       >
-        <Spin spinning={props.isSpinning}>
+        <Spin indicator={<NewLoadingTransition />} spinning={props.isSpinning}>
           {!!props.dataSource && props.dataSource?.length > 0 && (
             <TableWrap
               rowKey="id"
