@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import useSetTitle from '@/hooks/useSetTitle'
 import { Space } from 'antd'
 import { useSelector } from '@store/index'
+import PermissionWrap from '@/components/PermissionWrap'
 
 const Header = styled.div({
   background: 'white',
@@ -104,53 +105,62 @@ const CompanyInfo = () => {
   const [t] = useTranslation()
   asyncSetTtile(t('title.c1'))
   const { value: companyInfo } = useSelector(store => store.companyInfo)
+  const { menuPermission } = useSelector(store => store.user)
+
   return (
     <div style={{ height: '100%' }}>
-      <Header>
-        <span>{t('setting.companyInfo')}</span>
-      </Header>
-      <Content>
-        <InfoWrap>
-          <InfoTop>
-            <BottomTitle>{t('setting.enterpriseData')}</BottomTitle>
-            <Space
-              size={32}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                flexWrap: 'nowrap',
-              }}
-            >
-              <CardWrap>
-                <div style={{ fontSize: 32, lineHeight: '44px' }}>
-                  {companyInfo.projectCount}
-                </div>
-                <span>{t('setting.currentProject')}</span>
-              </CardWrap>
-              <CardWrap>
-                <div>{companyInfo.userCount}</div>
-                <span>{t('setting.companyStaff')}</span>
-              </CardWrap>
-            </Space>
-          </InfoTop>
-          <InfoBottom>
-            <BottomTitle>{t('setting.companyInfo')}</BottomTitle>
-            <TextWrap>
-              <Title>
-                <OmitText
-                  width={400}
-                  tipProps={{
-                    getPopupContainer: node => node,
-                  }}
-                >
-                  {companyInfo.name}
-                </OmitText>
-              </Title>
-              <Subtext>{companyInfo.info}</Subtext>
-            </TextWrap>
-          </InfoBottom>
-        </InfoWrap>
-      </Content>
+      <PermissionWrap
+        auth="/AdminManagement/CompanyInfo"
+        permission={menuPermission?.menus
+          ?.filter((k: any) => k.url === '/AdminManagement')?.[0]
+          ?.children?.map((i: any) => i.url)}
+      >
+        <Header>
+          <span>{t('setting.companyInfo')}</span>
+        </Header>
+        <Content>
+          <InfoWrap>
+            <InfoTop>
+              <BottomTitle>{t('setting.enterpriseData')}</BottomTitle>
+              <Space
+                size={32}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexWrap: 'nowrap',
+                }}
+              >
+                <CardWrap>
+                  <div style={{ fontSize: 32, lineHeight: '44px' }}>
+                    {companyInfo.projectCount}
+                  </div>
+                  <span>{t('setting.currentProject')}</span>
+                </CardWrap>
+                <CardWrap>
+                  <div>{companyInfo.userCount}</div>
+                  <span>{t('setting.companyStaff')}</span>
+                </CardWrap>
+              </Space>
+            </InfoTop>
+            <InfoBottom>
+              <BottomTitle>{t('setting.companyInfo')}</BottomTitle>
+              <TextWrap>
+                <Title>
+                  <OmitText
+                    width={400}
+                    tipProps={{
+                      getPopupContainer: node => node,
+                    }}
+                  >
+                    {companyInfo.name}
+                  </OmitText>
+                </Title>
+                <Subtext>{companyInfo.info}</Subtext>
+              </TextWrap>
+            </InfoBottom>
+          </InfoWrap>
+        </Content>
+      </PermissionWrap>
     </div>
   )
 }

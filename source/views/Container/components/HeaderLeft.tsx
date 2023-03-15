@@ -72,14 +72,16 @@ const DrawerComponent = (props: DrawerComponentProps) => {
   // 点击跳转后台管理
   const onToAdmin = () => {
     props.onChange(false)
-    navigate('/AdminManagement/CompanyInfo')
     const resultMenu = menuPermission?.menus?.filter(
       (i: any) => i.url === '/AdminManagement',
     )[0]
-    dispatch({
-      type: 'user/setCurrentMenu',
-      payload: resultMenu,
-    })
+    if (resultMenu) {
+      navigate(resultMenu?.children?.[0]?.url)
+      dispatch({
+        type: 'user/setCurrentMenu',
+        payload: resultMenu,
+      })
+    }
   }
 
   // 获取公司列表
@@ -212,9 +214,8 @@ const DrawerComponent = (props: DrawerComponentProps) => {
           </Space>
         </DrawerMenu>
         {/* 后台管理 */}
-        {menuPermission?.menus?.filter(
-          (i: any) => i.url === '/AdminManagement',
-        ) && (
+        {menuPermission?.menus?.filter((i: any) => i.url === '/AdminManagement')
+          ?.length > 0 && (
           <DrawerFooter onClick={onToAdmin}>
             <div>
               <CommonIconFont
