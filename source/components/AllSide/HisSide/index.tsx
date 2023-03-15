@@ -55,10 +55,7 @@ const index = () => {
     }
   }
   const onGoBack = () => {
-    const params = encryptPhp(
-      JSON.stringify({ id: projectInfo.id, pageIdx: 'main', type: 1 }),
-    )
-    navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
+    navigate(`/AdminManagement/StaffManagement`)
   }
   return (
     <Side>

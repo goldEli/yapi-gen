@@ -16,6 +16,7 @@ import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import { setFilterParamsModal } from '@store/project'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import CreateDemandButton from './CreateDemandButton'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
 
 const Content = styled.div({
   padding: 16,
@@ -163,7 +164,10 @@ const IterationGrid = (props: Props) => {
         }}
       >
         <div style={{ height: '100%', overflow: 'auto' }}>
-          <Spin spinning={props?.isSpinning}>
+          <Spin
+            indicator={<NewLoadingTransition />}
+            spinning={props?.isSpinning}
+          >
             <SpaceWrap size={20}>
               {basicStatus?.map((k: any) => (
                 <StatusItemsWrap key={k.id}>

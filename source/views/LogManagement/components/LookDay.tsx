@@ -26,6 +26,7 @@ import ReactDOM from 'react-dom'
 import Viewer from 'react-viewer'
 import { InnerLine } from './RelatedNeed'
 import { Editor, EditorRef } from '@xyfe/uikit'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
 
 export const GrepWrap = styled.div`
   position: fixed;
@@ -708,7 +709,11 @@ const LookDay = (props: any) => {
           </FormWrap>
         )}
         {!isSpinning && (
-          <Spin tip={t('common.loading') as unknown as string} size="large" />
+          <Spin
+            indicator={<NewLoadingTransition />}
+            tip={t('common.loading') as unknown as string}
+            size="large"
+          />
         )}
       </HiddenWrap>
 

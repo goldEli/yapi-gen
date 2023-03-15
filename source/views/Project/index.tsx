@@ -8,6 +8,7 @@ import InputSearch from '@/components/InputSearch'
 import LeftTitle from '@/components/LeftTitle'
 import MainGrid from '@/components/MainGrid/MainGrid'
 import MainTable from '@/components/MainTable/MainTable'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
 import useSetTitle from '@/hooks/useSetTitle'
 import {
   deleteProject,
@@ -296,7 +297,7 @@ const ProjectManagementOptimization = () => {
       </div>
       <Wrap>
         <Content isGrid={isGrid}>
-          <Spin spinning={isSpinning}>
+          <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
             {isGrid ? (
               <MainGrid
                 onChangeVisible={() => setIsVisible(true)}

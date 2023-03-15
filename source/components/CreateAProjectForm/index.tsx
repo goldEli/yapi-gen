@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable no-constant-binary-expression */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -77,17 +78,17 @@ const CreateAProjectForm = () => {
     if (isEditId) {
       dispatch(postEditCreate({ ...obj, id: isEditId }))
       message.success(t('common.editSuccess'))
-      setTimeout(() => {
-        dispatch(onRest(true))
-      }, 500)
+      // setTimeout(() => {
+      //   dispatch(onRest(true))
+      // }, 1000)
       return
     }
     dispatch(postCreate(obj))
     dispatch(editProject({ visible: false, id: '' }))
     message.success(t('common.createSuccess'))
-    setTimeout(() => {
-      dispatch(onRest(true))
-    }, 500)
+    // setTimeout(() => {
+    //   dispatch(onRest(true))
+    // }, 1000)
   }
 
   function upper(str: string) {
@@ -356,7 +357,10 @@ const CreateAProjectForm = () => {
                 onChange={value => {
                   setLeaderId(value)
                   // eslint-disable-next-line no-undefined
-                  form.setFieldsValue({ leader_id: undefined })
+                  form.setFieldsValue({
+                    leader_id: undefined,
+                    isPublic: undefined,
+                  })
                 }}
               >
                 {affiliations.map((i: any) => (

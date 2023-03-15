@@ -27,6 +27,7 @@ import {
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
 import CommonButton from '@/components/CommonButton'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
 
 const GroupWrap = styled.div({
   display: 'flex',
@@ -462,7 +463,7 @@ const PermissionManagement = () => {
           )}
         </Header>
         <Content>
-          <Spin spinning={isSpinning}>
+          <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
             <SetMain>
               <SetLeft>
                 <RowBox>

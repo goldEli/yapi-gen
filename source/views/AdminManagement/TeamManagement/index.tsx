@@ -1,3 +1,4 @@
+import NewLoadingTransition from '@/components/NewLoadingTransition'
 import PermissionWrap from '@/components/PermissionWrap'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
@@ -24,7 +25,7 @@ const TeamManagement = () => {
         ?.filter((k: any) => k.url === '/AdminManagement')?.[0]
         ?.children?.map((i: any) => i.url)}
     >
-      <Spin spinning={isSpinning}>
+      <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
         <Wrap>
           <LeftSide isSpin={(value: boolean) => setIsSpinning(value)} />
           <RightTable />

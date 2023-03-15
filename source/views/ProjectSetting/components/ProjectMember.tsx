@@ -25,7 +25,8 @@ import SetPermissionWrap from './SetPermission'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
-import { StaffSelect } from '@xyfe/uikit'
+// import { StaffSelect } from '@xyfe/uikit'
+import AddMemberCommonModal from '@/components/AddUser/CommonModal'
 import { getAddDepartMember, getPositionSelectList } from '@/services/staff'
 import {
   addMember,
@@ -602,24 +603,15 @@ const ProjectMember = () => {
     dispatch(setProjectInfo(result))
   }
 
-  const handleOk = async () => {
-    const values = form.getFieldsValue()
-
-    if (userDataList.length <= 0) {
+  const handleOk = async (list: any, userId: number) => {
+    if (list.length <= 0) {
       message.warning(t('project.memberNull'))
       return
     }
-    let { userGroupId } = values
-    if (!form.getFieldValue('userGroupId')) {
-      userGroupId = projectPermission?.filter(
-        (i: any) => i.tagLabel === '参与者',
-      )[0]?.value
-    }
-
     const params: any = {
       projectId,
-      userGroupId,
-      userIds: userDataList,
+      userGroupId: userId,
+      userIds: list.map((el: any) => el.id),
     }
     await addMember(params)
     message.success(t('common.addSuccess'))
@@ -670,57 +662,17 @@ const ProjectMember = () => {
           onChangeVisible={() => setIsDelete(!isDelete)}
           onConfirm={onDeleteConfirm}
         /> */}
-
-        <StaffSelect
-          title={t('project.addMember')}
-          user={userObj as any}
-          departments={departments}
-          staffListAll={member}
-          visible={isAddVisible}
-          onCancel={onClickCancel}
-          value={userDataList}
-          onOk={handleOk}
-          onChange={onChangeMember}
-          plugArea={
-            <div style={{ marginBottom: '25px' }}>
-              <Form form={form}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <span
-                    style={{
-                      fontSize: 14,
-                      color: 'var( --neutral-n1-d1)',
-                      marginRight: 16,
-                    }}
-                  >
-                    {t('project.joinPermission')}
-                    <span style={{ fontSize: 12, color: 'red', marginLeft: 4 }}>
-                      *
-                    </span>
-                  </span>
-                  <Form.Item
-                    name="userGroupId"
-                    noStyle
-                    rules={[{ required: true, message: '' }]}
-                  >
-                    <Select
-                      placeholder={t('project.pleasePermission')}
-                      getPopupContainer={node => node}
-                      style={{ width: 192 }}
-                      options={projectPermission}
-                      showSearch
-                      showArrow
-                      optionFilterProp="label"
-                      defaultValue={
-                        projectPermission?.filter(
-                          (i: any) => i.tagLabel === '参与者',
-                        )[0]?.value
-                      }
-                    />
-                  </Form.Item>
-                </div>
-              </Form>
-            </div>
+        <AddMemberCommonModal
+          isPermisGroup
+          userGroupId={
+            projectPermission?.filter((i: any) => i.tagLabel === '参与者')[0]
+              ?.value
           }
+          title={t('project.addMember')}
+          isVisible={isAddVisible}
+          onClose={onClickCancel}
+          onConfirm={handleOk}
+          projectPermission={projectPermission}
         />
         <Header>
           <HeaderTop>
