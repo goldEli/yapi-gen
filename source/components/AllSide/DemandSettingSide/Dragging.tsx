@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import { encryptPhp } from '@/tools/cryptoPhp'
 import styled from '@emotion/styled'
 import { setActiveCategory } from '@store/category'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import React, { useEffect, useLayoutEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { MenuItem } from './style'
 const Container = styled.div`
   margin-bottom: 8px;
@@ -128,8 +130,10 @@ const SliderList = (props: any) => {
       200,
     )
   }, [index, isDragging])
-
+  const navigate = useNavigate()
+  const { projectInfo } = useSelector(store => store.project)
   const dispatch = useDispatch()
+
   return (
     <Container
       ref={ref}
@@ -142,6 +146,11 @@ const SliderList = (props: any) => {
     >
       <MenuItem
         onClick={() => {
+          const params = encryptPhp(
+            JSON.stringify({ id: projectInfo?.id, pageIdx: 'main', type: 3 }),
+          )
+          location.pathname === '/ProjectManagement/WorkFlow' &&
+            navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
           dispatch(setActiveCategory(props.row)), props.onClick(index)
         }}
         key={children.icon}

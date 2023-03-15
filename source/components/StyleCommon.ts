@@ -383,7 +383,7 @@ const SearchLine = styled.div`
 const SecondButton = styled(Button)`
   height: 32px;
   border-radius: 6px;
-  background: var(--neutral-n6-d2);
+  background: var(--hover-d2);
   cursor: pointer;
   padding: 0 16px;
   color: var(--primary-d2);
