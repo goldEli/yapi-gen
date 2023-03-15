@@ -293,7 +293,12 @@ const RightTable = () => {
           }}
           onDelRow={(row: any) => {
             setActiveMember(row)
-            setDelIsVisible(true)
+
+            if (row.projects_count === 0) {
+              setDelIsVisible(true)
+            } else {
+              setDelIsVisible2(true)
+            }
           }}
           dataSource={membersList?.list}
         />

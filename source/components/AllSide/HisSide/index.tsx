@@ -11,8 +11,8 @@ import { InfoItem, InfoWrap, Menu, MenuItem, NameWrap, Side } from './style'
 const index = () => {
   const [t] = useTranslation()
   const { mainInfo } = useSelector(store => store.memberInfo)
+  const { projectInfo } = useSelector(store => store.project)
   const { pathname } = useLocation()
-
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const navigate = useNavigate()
@@ -56,7 +56,7 @@ const index = () => {
   }
   const onGoBack = () => {
     const params = encryptPhp(
-      JSON.stringify({ id: projectId, pageIdx: 'main', type: 1 }),
+      JSON.stringify({ id: projectInfo.id, pageIdx: 'main', type: 1 }),
     )
     navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
   }
