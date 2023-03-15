@@ -13,12 +13,10 @@ import { AddWrap } from '@/components/StyleCommon'
 import { useEffect, useRef, useState } from 'react'
 import { getReportDetail } from '@/services/daily'
 import { t } from 'i18next'
-import RichEditor from '@/components/RichEditor'
 import UploadAttach from '@/components/UploadAttach'
 import { useDispatch } from '@store/index'
 import { changeRest } from '@store/log'
 import { Editor, EditorRef } from '@xyfe/uikit'
-import { uploadFileByTask, uploadFileToKey } from '@/services/cos'
 import { getStaffListAll } from '@/services/staff'
 import { uploadFile } from '@/components/CreateDemand/CreateDemandLeft'
 
@@ -252,7 +250,6 @@ const WhiteDay = (props: any) => {
               },
             ]}
           >
-            {/* <RichEditor height={178} autoFocus /> */}
             <Editor
               ref={editorRef2}
               upload={uploadFile}

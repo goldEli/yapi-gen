@@ -66,6 +66,10 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
     },
   ]
 
+  const isCreate = projectInfo?.projectPermissions?.filter(
+    (i: any) => i.identity === 'b/project/story_config',
+  )?.length
+
   // 需求类别侧边栏
   const getList = async (type?: string) => {
     await dispatch(storyConfigCategoryList({ projectId: paramsData.id }, type))
@@ -124,6 +128,7 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
     }))
     await getCategorySaveSort({ id: paramsData.id, data: dataSort })
   }
+
   const filterDataItem = (num: number) => {
     let dataItem = null
     if (activeCategory?.id) {
@@ -144,6 +149,7 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
     dispatch(setActiveCategory(dataItem.find((el: any) => el.active)))
     return dataItem
   }
+
   useEffect(() => {
     setTabsActive(startUsing ? 0 : 1)
     let dataItem = null
@@ -170,6 +176,7 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
   useEffect(() => {
     watchDataList()
   }, [categoryList])
+
   return (
     <AllWrap>
       <WrapSet>
@@ -187,7 +194,9 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
         <Provider />
         <TitleStyle>
           <span>需求类别</span>{' '}
-          <IconFontStyle type="plus" onClick={() => setIsVisible(true)} />
+          {isCreate && (
+            <IconFontStyle type="plus" onClick={() => setIsVisible(true)} />
+          )}
         </TitleStyle>
         <Tabs>
           {tabs.map((el, index) => (
@@ -228,14 +237,16 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
                 <div>暂无类别，创建一个吧~</div>
               </div>
               <div className="bottom">
-                <div
-                  className="bottom"
-                  onClick={() => setIsVisible(true)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  <IconFont type="plus" />
-                  <div>创建类别</div>
-                </div>
+                {isCreate && (
+                  <div
+                    className="bottom"
+                    onClick={() => setIsVisible(true)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <IconFont type="plus" />
+                    <div>创建类别</div>
+                  </div>
+                )}
               </div>
             </NoDataCreateWrap>
           )}

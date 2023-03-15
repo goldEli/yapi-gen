@@ -60,7 +60,6 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
   const [activeType, setActiveType] = useState(0)
   const [groupId, setGroupId] = useState<any>(null)
   const [isVisible, setIsVisible] = useState(false)
-  const [isDelete, setIsDelete] = useState(false)
   const [operationDetail, setOperationDetail] = useState<any>({})
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
 
@@ -168,6 +167,7 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
     }
     return nodeComponent
   }
+
   useEffect(() => {
     getClassSide()
   }, [pathname])

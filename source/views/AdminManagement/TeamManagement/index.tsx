@@ -6,6 +6,7 @@ import { Spin } from 'antd'
 import { useState } from 'react'
 import LeftSide from './components/LeftSide'
 import RightTable from './components/RightTable'
+
 const Wrap = styled.div`
   display: flex;
   width: 100%;
@@ -19,7 +20,7 @@ const TeamManagement = () => {
 
   return (
     <PermissionWrap
-      auth="/AdminManagement/LoginManagement"
+      auth="/AdminManagement/TeamManagement"
       permission={menuPermission?.menus
         ?.filter((k: any) => k.url === '/AdminManagement')?.[0]
         ?.children?.map((i: any) => i.url)}

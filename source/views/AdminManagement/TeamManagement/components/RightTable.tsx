@@ -137,7 +137,7 @@ const RightTable = () => {
     const param = {
       order: orderVal?.value,
       orderkey: orderVal?.key,
-      pagesize: pageObjVal?.size || 20,
+      pagesize: pageObjVal?.pageSize || 20,
       page: pageObjVal?.page || 1,
       search: {
         team_id: activeTeamId,

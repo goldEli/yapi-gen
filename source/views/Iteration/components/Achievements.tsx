@@ -17,7 +17,6 @@ import NoData from '@/components/NoData'
 import { useDispatch, useSelector } from '@store/index'
 import { getAchieveInfo } from '@/services/iterate'
 import { setAchieveInfo } from '@store/iterate'
-import RichEditor from '@/components/RichEditor'
 import { Editor, EditorRef } from '@xyfe/uikit'
 import { uploadFileToKey } from '@/services/cos'
 
@@ -178,12 +177,6 @@ const Achievements = (props: Props) => {
               })
             }}
           />
-          {/* <RichEditor
-            value={html}
-            onChangeValue={setHtml}
-            height={280}
-            placeholder={t('p2.pleaseEditText')}
-          /> */}
         </div>
       ) : html ? (
         <Editor
