@@ -397,11 +397,11 @@ const SecondButton = styled(Button)`
     font-size: 14px;
   }
   &:hover {
-    background: var(--neutral-n6-d1) !important;
+    background: var(--selected) !important;
     color: var(--primary-d2) !important;
   }
   &:focus {
-    background: var(--neutral-n6-d2);
+    background: var(--auxiliary-b6);
     color: var(--primary-d2);
   }
 `
