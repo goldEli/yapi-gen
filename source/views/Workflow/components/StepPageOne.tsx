@@ -46,6 +46,7 @@ import {
 } from '@/services/project'
 import { useDispatch, useSelector } from '@store/index'
 import { setWorkList } from '@store/project'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
 
 const TableWrap = styled.div({
   width: '100%',
@@ -491,7 +492,7 @@ const StepPageOne = (propsOne: Props) => {
         </span>
       </div>
       <TableWrap>
-        <Spin spinning={isSpinning}>
+        <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
           {!!dataSource?.list &&
             (dataSource?.list?.length > 0 ? (
               <div style={{ width: '100%' }}>

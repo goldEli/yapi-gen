@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
 import { getStoryStatusLog } from '@/services/demand'
 import { setIsUpdateChangeLog } from '@store/demand'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
 
 const TimeLIneWrap = styled(Timeline)({
   marginTop: 24,
@@ -176,7 +177,7 @@ const Circulation = () => {
 
   return (
     <Wrap>
-      <Spin spinning={isSpin}>
+      <Spin indicator={<NewLoadingTransition />} spinning={isSpin}>
         {!!statusLogs?.list && (
           <>
             {statusLogs?.list?.length > 0 && (

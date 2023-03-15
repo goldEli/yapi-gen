@@ -45,6 +45,7 @@ import {
   updateIterateStatus,
 } from '@/services/iterate'
 import CommonButton from '@/components/CommonButton'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
 
 const Left = styled.div<{ isShowLeft: boolean }>(
   {
@@ -462,7 +463,7 @@ const WrapLeft = (props: Props) => {
         </Space>
       </TopWrap>
       <CardGroups>
-        <Spin spinning={isSpinning}>
+        <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
           {!!dataList?.list &&
             (dataList?.list?.length > 0 ? (
               <div>

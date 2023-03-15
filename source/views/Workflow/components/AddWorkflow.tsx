@@ -26,6 +26,7 @@ import {
 } from '@/services/project'
 import { useSelector } from '@store/index'
 import ChooseColor from './ChooseColor'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
 
 const TableWrap = styled.div({
   height: 400,
@@ -542,7 +543,7 @@ const AddWorkflow = (props: Props) => {
         )}
 
         <TableWrap style={{ paddingRight: 4 }}>
-          <Spin spinning={isSpinning}>
+          <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
             {!!statusWorkList?.list &&
               (statusWorkList?.list?.length > 0 ? (
                 <TableWrapBox

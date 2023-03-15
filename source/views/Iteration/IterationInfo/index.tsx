@@ -16,6 +16,7 @@ import NoData from '@/components/NoData'
 import { getParamsData } from '@/tools'
 import { useSelector } from '@store/index'
 import { getIterateStatistics } from '@/services/iterate'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
 
 const TopWrap = styled.div({
   display: 'flex',
@@ -188,7 +189,7 @@ const IterationInfo = () => {
 
   return (
     <Wrap>
-      <Spin spinning={isSpinning}>
+      <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
         <TopWrap>
           <SurveyWrap>
             <Title

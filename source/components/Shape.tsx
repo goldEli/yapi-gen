@@ -28,6 +28,7 @@ import { setIsUpdateChangeLog, setIsUpdateDemand } from '@store/demand'
 import { CloseWrap } from './StyleCommon'
 import { getShapeLeft, getShapeRight } from '@/services/demand'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
+import NewLoadingTransition from './NewLoadingTransition'
 
 export function setValue(res: any) {
   const form1Obj: any = {}
@@ -969,6 +970,7 @@ export const ShapeContent = (props: any) => {
 
       {!loading && (
         <Spin
+          indicator={<NewLoadingTransition />}
           style={{
             width: '100%',
             position: 'absolute',

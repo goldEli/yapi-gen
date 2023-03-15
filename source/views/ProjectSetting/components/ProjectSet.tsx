@@ -27,6 +27,7 @@ import {
   setPermission,
   updatePermission,
 } from '@/services/project'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
 
 const Warp = styled.div({
   // padding: 16,
@@ -436,7 +437,7 @@ const ProjectSet = () => {
           </ModalFooter>
         </CommonModal>
         <Warp>
-          <Spin spinning={isSpinning}>
+          <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
             <SetMain>
               <SetLeft>
                 <Title style={{ marginLeft: 24 }}>

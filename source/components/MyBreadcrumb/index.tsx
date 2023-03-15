@@ -1,5 +1,4 @@
 /* eslint-disable complexity */
-/* eslint-disable no-console */
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useSelector } from '@store/index'
 import { Breadcrumb } from 'antd'
@@ -8,8 +7,6 @@ import CommonIconFont from '../CommonIconFont'
 import IconFont from '../IconFont'
 
 const MyBreadcrumb = (props: any) => {
-  console.log(props, '面包')
-
   const navigate = useNavigate()
   const location = useLocation()
   const projectInfo = useSelector(state => state.project.projectInfo)

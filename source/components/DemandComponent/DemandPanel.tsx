@@ -14,6 +14,7 @@ import NoData from '@/components/NoData'
 import { useEffect, useState } from 'react'
 import { useSelector } from '@store/index'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
+import NewLoadingTransition from '../NewLoadingTransition'
 
 const Content = styled.div({
   height: 'calc(100% - 32px)',
@@ -142,7 +143,7 @@ const DemandGrid = (props: Props) => {
   return (
     <Content>
       <DataWrap>
-        <Spin spinning={props?.isSpinning}>
+        <Spin indicator={<NewLoadingTransition />} spinning={props?.isSpinning}>
           <SpaceWrap size={20}>
             {basicStatus?.map((k: any) => (
               <StatusItemsWrap key={k.id}>

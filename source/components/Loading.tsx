@@ -2,6 +2,7 @@
 
 import styled from '@emotion/styled'
 import { Spin } from 'antd'
+import NewLoadingTransition from './NewLoadingTransition'
 
 const Loading1 = styled.div`
   width: 100%;
@@ -14,7 +15,7 @@ const Loading1 = styled.div`
 const Loading = () => {
   return (
     <Loading1>
-      <Spin size="large" />
+      <Spin indicator={<NewLoadingTransition />} size="large" />
     </Loading1>
   )
 }
