@@ -53,7 +53,21 @@ const MyBreadcrumb = (props: any) => {
 
       {location.pathname === '/ProjectManagement/ProjectSetting' && (
         <Breadcrumb.Item>
-          <a style={{ color: 'var(--neutral-n1-d1)' }}>项目设置</a>
+          <a
+            onClick={() => {
+              const params = encryptPhp(
+                JSON.stringify({
+                  id: projectInfo.id,
+                  pageIdx: 'info',
+                  type: 0,
+                }),
+              )
+              navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
+            }}
+            style={{ color: 'var(--neutral-n1-d1)' }}
+          >
+            项目设置
+          </a>
         </Breadcrumb.Item>
       )}
       {location.pathname.includes('ProjectManagement/MemberInfo') && (

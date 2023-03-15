@@ -256,7 +256,7 @@ const ChangeRecord = () => {
                   <span key={k.field}>{k.name}</span>
                 ))
               ) : (
-                <span>{text[i]}</span>
+                <span key={Math.random()}>{text[i]}</span>
               ),
             )}
           </div>

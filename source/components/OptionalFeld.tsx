@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 // 可配置的表格字段弹窗
 
 /* eslint-disable @typescript-eslint/no-use-before-define */
