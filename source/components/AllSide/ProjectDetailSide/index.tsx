@@ -227,9 +227,20 @@ const ProjectDetailSide = () => {
             <span>{projectInfo.teamId ? '团队项目' : '企业项目'}</span>
           </SideInfo>
         </SideTop>
-        <div onClick={onGoBack}>
-          <CommonIconFont type="left" />
-          <span>返回上一页</span>
+        <div
+          onClick={onGoBack}
+          style={{
+            fontSize: '12px',
+            display: 'flex',
+            alignItems: 'center',
+            color: 'var(--neutral-n3)',
+            marginBottom: '14px',
+            marginLeft: 19,
+            cursor: 'pointer',
+          }}
+        >
+          <CommonIconFont type="left-md" />
+          <span style={{ marginLeft: '2px' }}>返回</span>
         </div>
         <Provider />
         <MenuBox>

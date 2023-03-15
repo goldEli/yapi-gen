@@ -36,7 +36,7 @@ export const WrapCategory = styled.div`
 export const SideTop = styled.div`
   display: flex;
   align-items: center;
-  padding: 24px 24px 16px;
+  padding: 24px 24px 14px;
   img {
     width: 32px;
     height: 32px;
