@@ -332,8 +332,7 @@ const GlobalStyle = () => {
     }
     .ant-select-item-option:hover {
       font-weight: inherit;
-
-      background: var(--neutral-n1-d1);
+      /* background: var(--neutral-white-d4); */
       color: var(--neutral-n1-d1);
     }
     .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
@@ -342,7 +341,7 @@ const GlobalStyle = () => {
       color: var(--primary-d2);
     }
     .ant-select-item-option-selected:not(.ant-select-item-option-disabled):hover {
-      background-color: var(--neutral-n6-d2);
+      /* background-color: var(--neutral-white-d4); */
     }
 
     .ant-popover-arrow,
