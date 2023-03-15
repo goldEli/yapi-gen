@@ -3,7 +3,7 @@
 import { changeLanguage, loadedAntdLocals } from '@/locals'
 import { login } from '@/services/user'
 import { getAsyncCompanyInfo } from '@store/companyInfo'
-import { useDispatch, useSelector } from '@store/index'
+import { useDispatch, useSelector, store as storeAll } from '@store/index'
 import { getStatus } from '@store/waterState'
 import { message, ConfigProvider } from 'antd'
 import { useEffect, useState } from 'react'
@@ -65,14 +65,12 @@ export const Container = () => {
   const dispatch = useDispatch()
   const [isNextVisible, setIsNextVisible] = useState(false)
   const [changeLeft, setChangeLeft] = useState(200)
-  const {
-    userInfo,
-    loginInfo,
-    menuPermission,
-    currentMenu,
-    userPreferenceConfig,
-  } = useSelector(store => store.user)
-  const { isDemandDetailDrawerVisible } = useSelector(store => store.demand)
+  const { userInfo, loginInfo, menuPermission } = useSelector(
+    store => store.user,
+  )
+  // const userInfo = store.getState().user.userInfo
+  // const loginInfo = store.getState().user.loginInfo
+  // const menuPermission = store.getState().user.menuPermission
   const {
     i18n: { language },
   } = useTranslation()
@@ -96,7 +94,8 @@ export const Container = () => {
   const onCloseDemandDetail = (e: any) => {
     if (
       !e.target?.parentElement?.className?.includes('canClickDetail') &&
-      !e.target?.className?.includes('canClickDetail')
+      !e.target?.className?.includes('canClickDetail') &&
+      storeAll.getState().demand.isDemandDetailDrawerVisible
     ) {
       dispatch({
         type: 'demand/setIsDemandDetailDrawerVisible',
@@ -116,14 +115,14 @@ export const Container = () => {
     dispatch(getProjectCover())
   }, [])
 
-  // useEffect(() => {
-  //   document
-  //     .getElementById('layoutWrap')
-  //     ?.addEventListener('click', onCloseDemandDetail)
-  //   return document
-  //     .getElementById('layoutWrap')
-  //     ?.addEventListener('click', onCloseDemandDetail)
-  // }, [document.getElementById('layoutWrap')])
+  useEffect(() => {
+    document
+      .getElementById('layoutWrap')
+      ?.addEventListener('click', onCloseDemandDetail)
+    return document
+      .getElementById('layoutWrap')
+      ?.addEventListener('click', onCloseDemandDetail)
+  }, [document.getElementById('layoutWrap')])
 
   useEffect(() => {
     const languageParams =
