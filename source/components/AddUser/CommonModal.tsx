@@ -13,8 +13,8 @@ import CommonButton from '@/components/CommonButton'
 import { useEffect, useState } from 'react'
 import Checkbox from 'antd/lib/checkbox/Checkbox'
 import CommonUserAvatar from './CommonUserAvatar'
-import { getDepartmentUserList } from '@store/teams/thunk'
 import { useDispatch, useSelector } from '@store/index'
+import { getDepartmentUserList } from '@/services/setting'
 import { unionBy } from 'lodash'
 const { DirectoryTree } = Tree
 const ModalHeader = styled.div`
@@ -204,7 +204,6 @@ interface ModalProps {
 
 const CommonModal = (props: ModalProps) => {
   const [t] = useTranslation()
-  const dispatch = useDispatch()
   const { departmentUserList } = useSelector(s => s.teams)
   const { projectInfo } = useSelector(store => store.project)
   // 添加成员拍平数组
@@ -224,7 +223,7 @@ const CommonModal = (props: ModalProps) => {
     },
   ])
   const [tabsActive, setTabsActive] = useState(0)
-  const treeData: any = departmentUserList
+  const [treeData, setTreeData] = useState<any>()
   const [form] = Form.useForm()
   const onInit = () => {
     setPersonData([])
@@ -255,16 +254,18 @@ const CommonModal = (props: ModalProps) => {
       ])
     }
   }, [props.isVisible])
+  const getUser = async () => {
+    const res = await getDepartmentUserList({
+      search: {
+        project_id: props.isPermisGroup ? projectInfo?.id : '0',
+        type: tabsActive === 0 ? 'team' : 'company',
+      },
+    })
+    setTreeData(res)
+  }
   useEffect(() => {
-    dispatch(
-      getDepartmentUserList({
-        search: {
-          project_id: props.isPermisGroup ? projectInfo?.id : '0',
-          type: tabsActive === 0 ? 'team' : 'company',
-        },
-      }),
-    )
-  }, [tabsActive])
+    props.isVisible && getUser()
+  }, [props.isVisible, tabsActive])
 
   // 勾选后获取到成员
   let checkdFilterDataList: any = []
