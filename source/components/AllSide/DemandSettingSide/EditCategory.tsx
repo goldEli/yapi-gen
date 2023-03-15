@@ -23,7 +23,6 @@ const FormWrap = styled(Form)({
   '.ant-form-item': {
     margin: '22px 0 0 0',
   },
-  marginLeft: '24px',
 })
 
 const ViewWrap = styled.div({
