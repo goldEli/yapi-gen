@@ -61,6 +61,7 @@ const ProjectDetailSide = () => {
       icon: 'file-text',
       path: '/ProjectManagement/ProjectSetting',
       isPermission: true,
+      key: 'info',
     },
     {
       name: t('project.projectMember'),
@@ -69,6 +70,7 @@ const ProjectDetailSide = () => {
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
         String(i.identity).includes('b/project/member'),
       ).length,
+      key: 'member',
     },
     {
       name: t('project.projectPermissionGroup'),
@@ -77,6 +79,7 @@ const ProjectDetailSide = () => {
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
         String(i.identity).includes('b/project/role'),
       ).length,
+      key: 'permission',
     },
     {
       name: t('newlyAdd.demandSet'),
@@ -85,6 +88,7 @@ const ProjectDetailSide = () => {
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
         String(i.identity).includes('b/project/story_config'),
       ).length,
+      key: 'main',
     },
   ]
 
@@ -158,7 +162,7 @@ const ProjectDetailSide = () => {
       JSON.stringify({
         type: index,
         id: projectInfo.id,
-        pageIdx: index === 3 ? 'main' : '',
+        pageIdx: item.key,
       }),
     )
     navigate(`${item.path}?data=${params}`)
@@ -178,6 +182,24 @@ const ProjectDetailSide = () => {
     navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
     onChangeSet()
   }
+
+  useEffect(() => {
+    if (paramsData?.pageIdx) {
+      if (!paramsData?.type) {
+        projectSide.current.style.width = '0px'
+        projectSetCategory.current.style.width = '0px'
+        projectSetSide.current.style.width = '100%'
+        projectSetSide.current.style.display = 'block'
+      }
+    } else {
+      projectSetSide.current.style.width = '0px'
+      projectSetCategory.current.style.width = '0px'
+      projectSide.current.style.width = '100%'
+      setTimeout(() => {
+        projectSetSide.current.style.display = 'none'
+      }, 200)
+    }
+  }, [paramsData])
 
   return (
     <AllWrap>
