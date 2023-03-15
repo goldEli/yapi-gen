@@ -240,10 +240,31 @@ const CommonModal = (props: ModalProps) => {
           userGroupId: props?.userGroupId,
         })
     }
-    if (projectInfo?.teamId === 0 && props.isPermisGroup) {
+    if (projectInfo?.teamId && props.isPermisGroup) {
       setTabs(tabs.filter(el => el.key === '1'))
+    } else {
+      setTabs([
+        {
+          label: '团队',
+          key: '1',
+        },
+        {
+          label: '部门',
+          key: '2',
+        },
+      ])
     }
   }, [props.isVisible])
+  useEffect(() => {
+    dispatch(
+      getDepartmentUserList({
+        search: {
+          project_id: props.isPermisGroup ? projectInfo?.id : '0',
+          type: tabsActive === 0 ? 'team' : 'company',
+        },
+      }),
+    )
+  }, [tabsActive])
 
   // 勾选后获取到成员
   let checkdFilterDataList: any = []
@@ -310,19 +331,6 @@ const CommonModal = (props: ModalProps) => {
       data.map((el: any) => ({ label: el.name, value: el.id, ...el })),
     )
   }, [departmentUserList])
-  useEffect(() => {
-    dispatch(
-      getDepartmentUserList({
-        search: {
-          project_id:
-            projectInfo?.teamId === 0 && props.isPermisGroup
-              ? projectInfo?.id
-              : '0',
-          type: tabsActive === 0 ? 'team' : 'company',
-        },
-      }),
-    )
-  }, [tabsActive])
 
   // 下拉框选中
   const handleChange = async (value: any) => {
