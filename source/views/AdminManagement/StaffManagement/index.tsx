@@ -326,7 +326,8 @@ const StaffManagement = () => {
       status: e?.status,
     })
   }
-  const onChangePage = (newPage: any) => {
+  const onChangePage = (newPage: any, size: any) => {
+    setPagesize(size)
     setPage(newPage)
   }
   const onShowSizeChange = (current: any, size: any) => {

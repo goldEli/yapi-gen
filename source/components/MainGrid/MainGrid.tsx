@@ -12,7 +12,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import { SecondButton } from '@/components/StyleCommon'
 import { useDispatch, useSelector } from '@store/index'
 import { DataWrap, SpaceWrap } from './style'
-import { changeCreateVisible } from '@store/view'
+import { changeCreateVisible } from '@store/create-propject'
 
 interface Props {
   onChangeOperation(type: string, id: number, e?: any): void
@@ -40,8 +40,8 @@ const MainGrid = (props: Props) => {
 
   const onAddClick = () => {
     dispatch(changeCreateVisible(true))
-    props.onChangeVisible()
-    props.onAddClear?.()
+    // props.onChangeVisible()
+    // props.onAddClear?.()
   }
 
   return (
