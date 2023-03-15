@@ -92,7 +92,6 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
       }))
     }
     dataItem?.length <= 1 && dispatch(setCategoryConfigDataList([]))
-    dispatch(setActiveCategory(dataItem.find((el: any) => el.active)))
     setList(dataItem)
   }
   // 需求类别中间列表
@@ -130,7 +129,7 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
     if (activeCategory?.id) {
       dataItem = categoryList
         ?.filter((el: any) => el.status === num)
-        .map((el: any, index: number) => ({
+        .map((el: any) => ({
           ...el,
           active: el.id === activeCategory?.id ? true : false,
         }))
@@ -158,6 +157,7 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
   // 切换tab
   const getTabsActive = async (index: any) => {
     let dataItem = null
+    dispatch(setActiveCategory({}))
     if (index === 0) {
       dataItem = filterDataItem(1)
     } else {
