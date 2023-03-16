@@ -339,6 +339,7 @@ export const CompanyCard = styled.div<{ isActive?: boolean }>`
   .info {
     display: flex;
     align-items: center;
+    width: 95%;
     img {
       border-radius: 4px;
       width: 40px;
@@ -348,10 +349,11 @@ export const CompanyCard = styled.div<{ isActive?: boolean }>`
     span {
       font-size: var(--font14);
       color: var(--neutral-n1-d1);
-      max-width: 80%;
+      max-width: 83%;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      display: inline-block;
     }
   }
   &:hover {
