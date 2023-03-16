@@ -90,6 +90,13 @@ const MenuStyle = styled(Menu)`
 const IconFontStyle = styled(IconFont)`
   font-size: 18px !important;
 `
+const UserName = styled.span`
+  display: inline-block;
+  width: 100px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`
 const AdminSide = () => {
   const navigate = useNavigate()
   const { currentMenu, userInfo } = useSelector(store => store.user)
@@ -187,7 +194,7 @@ const AdminSide = () => {
     <AdminSideWrap>
       <HeaderWrap>
         <img src={userInfo.company_logo} />
-        <span>{userInfo.company_name}</span>
+        <UserName>{userInfo.company_name}</UserName>
       </HeaderWrap>
       <MenuStyle
         expandIcon={e =>
