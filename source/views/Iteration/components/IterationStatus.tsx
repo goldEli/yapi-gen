@@ -17,11 +17,11 @@ const LiWrap = styled.div<{ color: any }>(
     height: 32,
     display: 'flex',
     alignItems: 'center',
-    background: 'white',
+    // background: 'white',
   },
   ({ color }) => ({
     '&: hover': {
-      background: 'var(--hover-d3)',
+      background: color,
     },
   }),
 )
@@ -61,15 +61,15 @@ const IterationStatus = (props: Props) => {
         alignItems: 'flex-start',
       }}
     >
-      <LiWrap color="var(--neutral-n6-d1)" onClick={e => onClick(1, e)}>
-        <StatusTag status={1}>{t('common.opening1')}</StatusTag>
+      <LiWrap color="var(--selected)" onClick={e => onClick(1, e)}>
+        <StatusTag status={1}>{t('common.opening1')}123</StatusTag>
       </LiWrap>
 
-      <LiWrap color="var(--neutral-n6-d1)" onClick={e => onClick(2, e)}>
+      <LiWrap color="var(--function-tag2)" onClick={e => onClick(2, e)}>
         <StatusTag status={2}>{t('common.finished')}</StatusTag>
       </LiWrap>
 
-      <LiWrap color="var(--neutral-n7)" onClick={e => onClick(3, e)}>
+      <LiWrap color="var( --function-tag6)" onClick={e => onClick(3, e)}>
         <StatusTag status={3}>{t('common.Closed')}</StatusTag>
       </LiWrap>
     </div>

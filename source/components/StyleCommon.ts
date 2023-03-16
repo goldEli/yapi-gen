@@ -808,10 +808,18 @@ const StatusTag = styled.div<{ status: number }>(
         : 'var(--neutral-n3)',
     background:
       status === 1
-        ? 'var(--hover-d3)'
+        ? 'var(--selected)'
         : status === 2
-        ? 'var(--hover-d3)'
-        : 'var(--hover-d3)',
+        ? 'var(--function-tag2)'
+        : 'var(--function-tag6)',
+    '&:hover': {
+      background:
+        status === 1
+          ? 'var(--selected) !important'
+          : status === 2
+          ? 'var(--function-tag2)!important'
+          : 'var(--function-tag6)!important',
+    },
   }),
 )
 
