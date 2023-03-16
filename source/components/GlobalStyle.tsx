@@ -250,7 +250,7 @@ const GlobalStyle = () => {
       }
     }
     .ant-dropdown-menu-item:hover {
-      background: var(--hover-d3);
+      background: var(--hover-d3) !important;
       color: var(--neutral-n1-d1);
     }
     .ant-dropdown-menu-item:active {
@@ -430,12 +430,26 @@ const GlobalStyle = () => {
       display: none;
     }
     .ant-tree-treenode-selected {
-      background-color: var(--hover-d3) !important;
+      background: linear-gradient(
+        90deg,
+        #ebefff 0%,
+        rgba(243, 246, 255, 0) 100%
+      );
+      .treeBox {
+        color: var(--primary-d2);
+      }
     }
     .ant-tree .ant-tree-treenode-draggable .ant-tree-draggable-icon {
       opacity: 1;
     }
-
+    .ant-tree-list {
+      .ant-tree-switcher {
+        color: var(--neutral-n3);
+      }
+      .ant-tree-draggable-icon {
+        color: var(--neutral-n3);
+      }
+    }
     .row-dragging {
       display: flex;
       align-items: center;
