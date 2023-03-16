@@ -16,8 +16,9 @@ import {
   setCreateDemandProps,
   setDemandDetailDrawerProps,
   setIsCreateDemandVisible,
+  setIsUpdateDemand,
 } from '@store/demand'
-import { useDispatch, useSelector } from '@store/index'
+import { useDispatch, useSelector, store as storeAll } from '@store/index'
 import { setProjectInfo } from '@store/project'
 import { Drawer, message, Popover, Skeleton, Space } from 'antd'
 import { createRef, useCallback, useEffect, useRef, useState } from 'react'
@@ -135,13 +136,18 @@ const DemandDetailDrawer = () => {
   }
 
   // 获取需求详情
-  const getDemandDetail = async (id?: any) => {
+  const getDemandDetail = async (id?: any, ids?: any) => {
+    const paramsProjectId =
+      storeAll.getState().demand.demandDetailDrawerProps.project_id ??
+      storeAll.getState().demand.demandDetailDrawerProps.projectId
+    if (drawerInfo?.projectId !== paramsProjectId) {
+      getProjectData()
+    }
     setDrawerInfo({})
     setSkeletonLoading(true)
     const info = await getDemandInfo({
-      projectId:
-        demandDetailDrawerProps.project_id ?? demandDetailDrawerProps.projectId,
-      id: id ? id : demandDetailDrawerProps?.id,
+      projectId: paramsProjectId,
+      id: id ? id : storeAll.getState().demand.demandDetailDrawerProps?.id,
     })
     info.hierarchy.push({
       id: info.id,
@@ -154,8 +160,14 @@ const DemandDetailDrawer = () => {
     })
     setDrawerInfo(info)
     setSkeletonLoading(false)
+    // console.log(
+    //   111111111111,
+    //   ids,
+    //   info.id,
+    //   (ids || []).findIndex((i: any) => i === info.id),
+    // )
     // 获取当前需求的下标， 用作上一下一切换
-    setCurrentIndex((demandIds || []).findIndex((i: any) => i === info.id))
+    setCurrentIndex((ids || []).findIndex((i: any) => i === info.id))
   }
 
   // 关闭弹窗
@@ -241,6 +253,7 @@ const DemandDetailDrawer = () => {
       await updateDemandStatus(value)
       message.success(t('common.statusSuccess'))
       getDemandDetail()
+      dispatch(setIsUpdateDemand(true))
     } catch (error) {
       //
     }
@@ -265,11 +278,14 @@ const DemandDetailDrawer = () => {
 
   // 向上查找需求
   const onUpDemand = () => {
-    const newIndex = demandIds[currentIndex - 1]
+    const newIndex =
+      storeAll.getState().demand.demandDetailDrawerProps.demandIds[
+        currentIndex - 1
+      ]
     if (!currentIndex) return
     dispatch(
       setDemandDetailDrawerProps({
-        ...demandDetailDrawerProps,
+        ...storeAll.getState().demand.demandDetailDrawerProps,
         ...{ id: newIndex },
       }),
     )
@@ -277,30 +293,41 @@ const DemandDetailDrawer = () => {
 
   // 向下查找需求
   const onDownDemand = () => {
-    const newIndex = demandIds[currentIndex + 1]
-    if (currentIndex === demandIds?.length - 1) return
-
+    // console.log(currentIndex)
+    const newIndex =
+      storeAll.getState().demand.demandDetailDrawerProps.demandIds[
+        currentIndex + 1
+      ]
+    if (
+      currentIndex ===
+      storeAll.getState().demand.demandDetailDrawerProps.demandIds?.length - 1
+    )
+      return
     dispatch(
       setDemandDetailDrawerProps({
-        ...demandDetailDrawerProps,
+        ...storeAll.getState().demand.demandDetailDrawerProps,
         ...{ id: newIndex },
       }),
     )
   }
 
-  useEffect(() => {
-    if (demandIds?.length > 0) {
-      getDemandDetail()
-      getProjectData()
-      setShowState(normalState)
+  const getKeyDown = (e: any) => {
+    if (storeAll.getState().demand.isDemandDetailDrawerVisible) {
+      if (e.keyCode === 38) {
+        //up
+        onUpDemand()
+      }
+      if (e.keyCode === 40) {
+        //down
+        onDownDemand()
+      }
     }
-  }, [demandIds])
+  }
 
   useEffect(() => {
     if (isDemandDetailDrawerVisible || demandDetailDrawerProps?.id) {
       setDemandIds(demandDetailDrawerProps?.demandIds || [])
-      getDemandDetail()
-      getProjectData()
+      getDemandDetail('', demandDetailDrawerProps?.demandIds || [])
       setShowState(normalState)
     }
   }, [demandDetailDrawerProps, isDemandDetailDrawerVisible])
@@ -311,6 +338,13 @@ const DemandDetailDrawer = () => {
       setDemandIds([])
     }
   }, [isUpdateDemand])
+
+  // useEffect(() => {
+  //   window.addEventListener('keydown', getKeyDown)
+  //   return () => {
+  //     window.removeEventListener('keydown', getKeyDown)
+  //   }
+  // }, [])
 
   return (
     <>

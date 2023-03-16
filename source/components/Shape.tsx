@@ -537,8 +537,9 @@ export const ShapeContent = (props: any) => {
 
     await onTap(props.noleft ? putData2 : putData)
     onClear()
-    dispatch(setIsUpdateChangeLog(true))
-    dispatch(setIsUpdateDemand(true))
+    setTimeout(() => {
+      dispatch(setIsUpdateChangeLog(true))
+    }, 0)
   }
 
   const onConfirm = async () => {

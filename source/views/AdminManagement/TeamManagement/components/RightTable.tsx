@@ -212,7 +212,7 @@ const RightTable = () => {
           <Form.Item
             label="团队角色"
             name="team_is_admin"
-            rules={[{ required: true, message: '请输入团队名称' }]}
+            rules={[{ required: true, message: '' }]}
           >
             <SelectStyle
               getPopupContainer={node => node}
