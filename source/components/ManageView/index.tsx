@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { changeViewVisible } from '@store/view'
 import { delViews, editViews } from '@/services/view'
 import { getViewList } from '@store/view/thunk'
+import { t } from 'i18next'
 
 interface Item {
   key: string
@@ -91,7 +92,7 @@ const ManageView = (props: any) => {
         return {
           key: i.id,
           name: i.name,
-          viewType: i.type === 2 ? '系统视图' : '个人视图',
+          viewType: i.type === 2 ? t('systemView') : t('personalView'),
           state: i.status === 1,
           isC: i.type,
         }
@@ -153,28 +154,28 @@ const ManageView = (props: any) => {
 
   const columns = [
     {
-      title: '视图名称',
+      title: t('name_of_view'),
       dataIndex: 'name',
       width: '30%',
       editable: true,
     },
     {
-      title: '视图类型',
+      title: t('type_of_view'),
       dataIndex: 'viewType',
       width: '20%',
       editable: false,
     },
     {
-      title: '结束状态',
+      title: t('newlyAdd.endStatus'),
       dataIndex: 'state',
       width: '30%',
       editable: true,
       render: (p: any, record: Item) => {
-        return record.state ? '开启' : '关闭'
+        return record.state ? t('common.open') : t('common.close')
       },
     },
     {
-      title: '操作',
+      title: t('newlyAdd.operation'),
       dataIndex: 'operation',
       render: (p: any, record: Item) => {
         const isC = record.isC === 2
@@ -188,10 +189,10 @@ const ManageView = (props: any) => {
               onClick={() => save(record.key)}
               style={{ marginRight: 8 }}
             >
-              完成
+              {t('container.finish') as string}
             </Typography.Link>
 
-            <a onClick={() => setEditingKey('')}>取消</a>
+            <a onClick={() => setEditingKey('')}>{t('cancel') as string}</a>
           </span>
         ) : (
           <span>
@@ -200,15 +201,15 @@ const ManageView = (props: any) => {
               disabled={editingKey !== ''}
               onClick={() => edit(record)}
             >
-              编辑
+              {t('common.edit') as string}
             </Typography.Link>
             <Popconfirm
               overlayInnerStyle={{ padding: '10px' }}
-              title="确认删除该视图？"
+              title={t('confirmDeletingTheView') as string}
               onConfirm={() => cancel(record.key)}
             >
               <Typography.Link disabled={editingKey !== ''}>
-                删除
+                {t('common.del') as string}
               </Typography.Link>
             </Popconfirm>
           </span>
@@ -248,7 +249,7 @@ const ManageView = (props: any) => {
   return (
     <CommonModal
       width={784}
-      title="视图管理"
+      title={t('view_management')}
       onClose={() => {
         dispatch(changeViewVisible(false))
         dispatch(getViewList(props.pid))

@@ -52,6 +52,7 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
+  const paramsType = paramsData.type
   const projectId = paramsData?.id
   const { projectInfo } = useSelector(store => store.project)
   const [tabsActive, setTabsActive] = useState(0)
@@ -59,10 +60,10 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
   const [list, setList] = useState<any>()
   const tabs = [
     {
-      label: '启用',
+      label: t('start_using'),
     },
     {
-      label: '未启用',
+      label: t('no_start_using'),
     },
   ]
 
@@ -111,10 +112,9 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
         }),
       ))
   }
-
   useEffect(() => {
-    getList()
-  }, [])
+    paramsType && getList()
+  }, [paramsType])
 
   //   返回上一页
   const onGoBack = () => {
@@ -184,17 +184,17 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
           <img src={projectInfo?.cover} alt="" />
           <SideInfo>
             <div>{projectInfo?.name}</div>
-            <span> 团队项目 </span>
+            <span> {t('demandSettingSide.teamProject')} </span>
           </SideInfo>
         </SideTop>
         <BackStyle onClick={onGoBack}>
           <CommonIconFont type="left-md" onClick={onGoBack} />
-          <span>返回</span>
+          <span>{t('demandSettingSide.back')}</span>
         </BackStyle>
         <Provider />
         <TitleStyle>
-          <span>需求类别</span>{' '}
-          {isCreate && (
+          <span>{t('demandSettingSide.classification')}</span>{' '}
+          {isCreate > 0 && (
             <IconFontStyle type="plus" onClick={() => setIsVisible(true)} />
           )}
         </TitleStyle>
@@ -234,17 +234,17 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
             <NoDataCreateWrap>
               <div className="top">
                 <IconFont type="Warning" />
-                <div>暂无类别，创建一个吧~</div>
+                <div>{t('demandSettingSide.noData')}</div>
               </div>
               <div className="bottom">
-                {isCreate && (
+                {isCreate > 0 && (
                   <div
                     className="bottom"
                     onClick={() => setIsVisible(true)}
                     style={{ cursor: 'pointer' }}
                   >
                     <IconFont type="plus" />
-                    <div>创建类别</div>
+                    <div>{t('demandSettingSide.addClass')}</div>
                   </div>
                 )}
               </div>

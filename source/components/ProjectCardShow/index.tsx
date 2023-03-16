@@ -3,6 +3,7 @@
 import { changeCreateVisible } from '@store/create-propject'
 import { useDispatch } from '@store/index'
 import { Dropdown, MenuProps, Progress, Tooltip } from 'antd'
+import { t } from 'i18next'
 import React from 'react'
 import IconFont from '../IconFont'
 import {
@@ -45,39 +46,6 @@ const TextOfIcon = (props: Props) => (
   </Tooltip>
 )
 const Index = (props: any) => {
-  const arr = [
-    {
-      type: 'my',
-      num: '1',
-      text: '项目人数',
-    },
-    {
-      type: '1',
-      num: '1',
-      text: '项目人数',
-    },
-    {
-      type: '1',
-      num: '1',
-      text: '项目人数',
-    },
-  ]
-
-  const items: any = [
-    {
-      key: 'edit',
-      label: <span>编辑</span>,
-    },
-    {
-      key: 'over',
-      label: <span>结束</span>,
-    },
-    {
-      key: 'del',
-      label: <span>删除</span>,
-    },
-  ]
-
   return (
     <ProjectCard>
       <Image
@@ -93,11 +61,19 @@ const Index = (props: any) => {
           placement="top"
           title="1"
         >
-          <CardRightFirst>{props.names ?? '项目名称XXX'}</CardRightFirst>
+          <CardRightFirst>
+            {props.names ?? t('project_name_xxx')}
+          </CardRightFirst>
         </Tooltip>
 
-        <CardRightSecond>负责人：{props.user ?? 'XXX'}</CardRightSecond>
-        <CardRightSecond>键：{props.prefix ?? 'DXKJ'}</CardRightSecond>
+        <CardRightSecond>
+          {t('functionary')}
+          {props.user ?? 'XXX'}
+        </CardRightSecond>
+        <CardRightSecond>
+          {t('keyM')}
+          {props.prefix ?? 'DXKJ'}
+        </CardRightSecond>
         <TransformWrap>
           <ProgressWrap>
             <Progress

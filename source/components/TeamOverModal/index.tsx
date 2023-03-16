@@ -8,6 +8,7 @@ import {
   getTeamMember,
 } from '@/services/handover'
 import { Form, message, Select } from 'antd'
+import { t } from 'i18next'
 import React, { useEffect, useState } from 'react'
 import CommonModal from '../CommonModal'
 import { PinkWrap, Wrap } from './style'
@@ -49,7 +50,7 @@ const HandOverModal = (props: any) => {
       })
 
       if (res1.code === 0) {
-        message.success('成功')
+        message.success(t('succeed') as string)
         form.resetFields()
         props.close()
         props.confirm()
@@ -59,15 +60,17 @@ const HandOverModal = (props: any) => {
 
   return (
     <CommonModal
-      title="离职交接"
+      title={t('quitAndHandover')}
       onClose={props.close}
       isVisible={props.visible}
       onConfirm={onConfirm}
     >
       <Wrap>
         <PinkWrap>
-          {props?.id?.name}在本团队中参与了{props?.id?.projects_count}
-          个团队项目，请指定项目接收人；
+          {props?.id?.name}
+          {t('participated_in_this_team')}
+          {props?.id?.projects_count}
+          {t('a_team_project_please_specify_the_project_recipient')}
         </PinkWrap>
         <Form form={form}>
           {list.map((i: any) => (
@@ -113,7 +116,7 @@ const HandOverModal = (props: any) => {
                   width: '184px',
                   marginLeft: '48px',
                 }}
-                placeholder="请选择交接人"
+                placeholder={t('pleaseSelectTheHandoverPerson') as string}
                 allowClear
               >
                 {i.members.map((k: any) => (

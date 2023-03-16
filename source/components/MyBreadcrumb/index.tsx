@@ -2,6 +2,7 @@
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useSelector } from '@store/index'
 import { Breadcrumb } from 'antd'
+import { t } from 'i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import CommonIconFont from '../CommonIconFont'
 import IconFont from '../IconFont'
@@ -22,7 +23,7 @@ const MyBreadcrumb = (props: any) => {
           onClick={() => navigate('/ProjectManagement/Project')}
           style={{ color: 'var(--neutral-n1-d1)' }}
         >
-          项目
+          {t('title.project') as string}
         </a>
       </Breadcrumb.Item>
       {projectInfo.name ? (
@@ -66,13 +67,15 @@ const MyBreadcrumb = (props: any) => {
             }}
             style={{ color: 'var(--neutral-n1-d1)' }}
           >
-            项目设置
+            {t('project.projectSet') as string}
           </a>
         </Breadcrumb.Item>
       )}
       {location.pathname.includes('ProjectManagement/MemberInfo') && (
         <Breadcrumb.Item>
-          <a style={{ color: 'var(--neutral-n1-d1)' }}>项目设置</a>
+          <a style={{ color: 'var(--neutral-n1-d1)' }}>
+            {t('project.projectSet') as string}
+          </a>
         </Breadcrumb.Item>
       )}
       {location.pathname === '/ProjectManagement/ProjectSetting' &&
@@ -98,7 +101,10 @@ const MyBreadcrumb = (props: any) => {
       {location.pathname.includes('ProjectManagement/MemberInfo') ||
       (location.pathname.includes('MemberInfo/Profile') && props.user) ? (
         <Breadcrumb.Item>
-          <span>{props.user.name}的详情</span>
+          <span>
+            {props.user.name}
+            {t('details_of')}
+          </span>
         </Breadcrumb.Item>
       ) : null}
     </Breadcrumb>

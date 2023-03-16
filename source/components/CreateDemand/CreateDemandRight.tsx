@@ -531,7 +531,7 @@ const CreateDemandRight = (props: Props) => {
                 (item.content === 'users_name' ||
                   item.content === 'users_copysend_name') &&
                 i.id === info
-                  ? `${i.content} （我自己）`
+                  ? `${i.content} （${t('myself')}）`
                   : i.content,
               value: i.id,
             })),
@@ -645,7 +645,7 @@ const CreateDemandRight = (props: Props) => {
       <Form layout="vertical" form={form} disabled={!props.isCreateDemand}>
         {props?.projectId && (
           <Form.Item
-            label="需求状态"
+            label={t('needState')}
             name="status"
             rules={[{ required: true, message: '' }]}
           >

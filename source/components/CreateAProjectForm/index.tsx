@@ -78,17 +78,12 @@ const CreateAProjectForm = () => {
     if (isEditId) {
       dispatch(postEditCreate({ ...obj, id: isEditId }))
       message.success(t('common.editSuccess'))
-      // setTimeout(() => {
-      //   dispatch(onRest(true))
-      // }, 1000)
+
       return
     }
     dispatch(postCreate(obj))
     dispatch(editProject({ visible: false, id: '' }))
     message.success(t('common.createSuccess'))
-    // setTimeout(() => {
-    //   dispatch(onRest(true))
-    // }, 1000)
   }
 
   function upper(str: string) {
@@ -335,14 +330,13 @@ const CreateAProjectForm = () => {
             <Form.Item
               label={<FormTitleSmall text={t('project_name')} />}
               name="name"
-              rules={[
-                { required: true, message: 'Please input your username!' },
-              ]}
+              rules={[{ required: true, message: '' }]}
             >
               <Input
                 maxLength={30}
                 placeholder={t('please_enter_a_project_name')}
                 onChange={onChange}
+                allowClear
               />
             </Form.Item>
 
@@ -404,7 +398,7 @@ const CreateAProjectForm = () => {
               rules={[
                 {
                   required: true,
-                  message: 'Please input your username!',
+                  message: '',
                 },
               ]}
             >

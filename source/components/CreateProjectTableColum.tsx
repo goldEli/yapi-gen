@@ -60,8 +60,9 @@ export const useDynamicColumns = (state: any) => {
   const { projectInfo, colorList } = useSelector(store => store.project)
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
-    projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
-      ?.length > 0
+    projectInfo.projectPermissions?.filter(
+      (i: any) => i.name === t('requirementsForEditing'),
+    )?.length > 0
 
   const NewSort = (props: any) => {
     return (
@@ -86,35 +87,8 @@ export const useDynamicColumns = (state: any) => {
 
   const arr = [
     {
-      width: 100,
-      title: <NewSort fixedKey="id">ID</NewSort>,
-      dataIndex: 'id',
-      key: 'id',
-      render: (text: string, record: any) => {
-        return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <ClickWrap
-              className="canClickDetail"
-              onClick={() => state.onClickItem(record)}
-              isClose={record.status?.is_end === 1}
-            >
-              {text}
-            </ClickWrap>
-            {record.isExamine && (
-              <IconFont
-                type="review"
-                style={{
-                  fontSize: 46,
-                }}
-              />
-            )}
-          </div>
-        )
-      },
-    },
-    {
       width: 140,
-      title: <NewSort fixedKey="story_prefix_key">编号</NewSort>,
+      title: <NewSort fixedKey="story_prefix_key">{t('serialNumber')}</NewSort>,
       dataIndex: 'storyPrefixKey',
       key: 'prefix_key',
       render: (text: string, record: any) => {

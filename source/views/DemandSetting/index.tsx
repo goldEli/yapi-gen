@@ -85,7 +85,9 @@ const DemandSetting = () => {
           </Wrap>
         </>
       ) : (
-        <NoData subText="请添加需求状态，来配置工作流程" />
+        <NoData
+          subText={t('add_the_requirement_state_to_configure_the_workflow')}
+        />
       )}
     </PermissionWrap>
   )

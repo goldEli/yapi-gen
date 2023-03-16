@@ -505,7 +505,9 @@ export const ShapeContent = (props: any) => {
 
         const arr = Array.from(
           new Set([
-            ...(newArr + '').split(',').map(k => Number(k)),
+            ...String(newArr)
+              .split(',')
+              .map(k => Number(k)),
             ...newArr1,
           ]),
         )
@@ -537,8 +539,9 @@ export const ShapeContent = (props: any) => {
 
     await onTap(props.noleft ? putData2 : putData)
     onClear()
-    dispatch(setIsUpdateChangeLog(true))
-    dispatch(setIsUpdateDemand(true))
+    setTimeout(() => {
+      dispatch(setIsUpdateChangeLog(true))
+    }, 0)
   }
 
   const onConfirm = async () => {
@@ -548,10 +551,10 @@ export const ShapeContent = (props: any) => {
 
   const formatName = (content: any, name: any, id: any) => {
     if (content === 'users_name' && id === info) {
-      return `${name} （我自己）`
+      return `${name} （${t('myself')}）`
     }
     if (rightList?.originalStatusUserIds.includes(id)) {
-      return `${name}（原状态处理人）`
+      return `${name}（${t('theOriginalStateHandlesThePerson')}）`
     }
     return name
   }
@@ -572,14 +575,13 @@ export const ShapeContent = (props: any) => {
     })
 
     const ids = rightList?.originalStatusUserIds.join(',')
-
     const names = newC.map((k: any) => k.name).join(' ; ')
     let newD: any = []
     if (ids) {
       newD = [
         {
           id: ids,
-          label: names + '（原状态处理人）',
+          label: `${names}（${t('theOriginalStateHandlesThePerson')}）`,
           name: names,
           value: ids,
         },

@@ -6,6 +6,7 @@ import { Menu } from 'antd'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { fromPairs, flattenDeep } from 'lodash'
+import { t } from 'i18next'
 
 const AdminSideWrap = styled.div`
   /* background-color: var(--neutral-n6-d1); */
@@ -101,51 +102,51 @@ const AdminSide = () => {
   }
   const side: any = [
     {
-      label: '公司信息',
+      label: t('corporate_information'),
       key: '/AdminManagement/CompanyInfo',
       icon: <IconFontStyle className="icon" type="file-text" />,
       path: '/AdminManagement/CompanyInfo',
     },
     {
-      label: '组织信息',
+      label: t('organizational_information'),
       key: '3',
       icon: <IconFontStyle className="icon" type="apartment" />,
       children: [
         {
-          label: '员工管理',
+          label: t('staff_management'),
           key: '/AdminManagement/StaffManagement',
           path: '/AdminManagement/StaffManagement',
         },
         {
-          label: '团队管理',
+          label: t('team_management'),
           key: '/AdminManagement/TeamManagement',
           path: '/AdminManagement/TeamManagement',
         },
       ],
     },
     {
-      label: '权限管理',
+      label: t('authority_management'),
       key: '/AdminManagement/PermissionManagement',
       icon: <IconFontStyle className="icon" type="lock" />,
       path: '/AdminManagement/PermissionManagement',
     },
     {
-      label: '安全管理',
+      label: t('safety_management'),
       key: '4',
       icon: <IconFontStyle className="icon" type="safety-certificate" />,
       children: [
         {
-          label: '安全水印',
+          label: t('secure_watermark'),
           key: '/AdminManagement/WaterMarkManagement',
           path: '/AdminManagement/WaterMarkManagement',
         },
         {
-          label: '操作日志',
+          label: t('operation_log'),
           key: '/AdminManagement/OperationManagement',
           path: '/AdminManagement/OperationManagement',
         },
         {
-          label: '登录日志',
+          label: t('log_in_log'),
           key: '/AdminManagement/LoginManagement',
           path: '/AdminManagement/LoginManagement',
         },

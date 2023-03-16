@@ -16,12 +16,18 @@ import { getGlobalGeneral } from '@/services/user'
 
 const Wrap = styled.div`
   box-sizing: border-box;
-  padding: 16px;
-  background-color: var(--neutral-n10);
+  padding: 24px;
+  background-color: var(--white-d2);
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  grid-gap: 16px;
+  grid-gap: 24px;
+`
+const Title = styled.div`
+  padding: 24px 0 0 24px;
+  color: var(--neutral-n1-d1);
+  font-size: 16px;
+  font-weight: 500;
 `
 
 const Situation = () => {
@@ -148,6 +154,7 @@ const Situation = () => {
           auth="/Situation"
           permission={menuPermission?.menus?.map((i: any) => i.url)}
         >
+          <Title>企业全部</Title>
           <Wrap>
             <Project data={generalData?.project} />
             <Staff data={generalData?.user} />

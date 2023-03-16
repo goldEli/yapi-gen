@@ -144,7 +144,7 @@ const EditFiled = (props: Props) => {
       value: 'user_select_checkbox',
     },
     {
-      label: '确认勾选',
+      label: t('confirm_that_it_is_checked'),
       value1: '11',
       value: 'single_checkbox',
     },

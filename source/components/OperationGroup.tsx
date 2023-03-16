@@ -25,6 +25,7 @@ interface Props {
 }
 
 const SpaceWrap = styled(Space)({
+  color: 'var(--neutral-n3)',
   '.ant-space-item': {
     display: 'flex',
   },

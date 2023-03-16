@@ -175,7 +175,7 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: <NewSort fixedKey="handover_status">离职状态</NewSort>,
+      title: <NewSort fixedKey="handover_status">{t('between_jobs')}</NewSort>,
       dataIndex: 'handover_status',
       key: 'handover_status',
       width: 120,
@@ -185,7 +185,7 @@ export const useDynamicColumns = (state: any) => {
       ) => {
         return (
           <div onClick={() => state.showModal2(record)}>
-            {text === 1 ? '正常' : '已交接'}
+            {text === 1 ? t('normal') : t('handed_over')}
           </div>
         )
       },

@@ -75,7 +75,7 @@ const NameWrap = styled.div({
   alignItems: 'center',
   '.demandName': {
     fontSize: 16,
-    color: 'black',
+    color: 'var(--neutral-n1-d1)',
     marginRight: 8,
     fontFamily: 'SiYuanMedium',
   },
@@ -103,7 +103,7 @@ const Item = styled.div<{ activeIdx: boolean }>(
       fontSize: 14,
       fontWeight: 400,
       marginRight: 4,
-      color: 'var(--neutral-n1-d1)',
+      color: 'var(--neutral-n2) !important',
       display: 'inline-block',
       height: 50,
       lineHeight: '50px',
@@ -113,8 +113,9 @@ const Item = styled.div<{ activeIdx: boolean }>(
       height: 20,
       padding: '0 6px',
       borderRadius: 10,
+      fontSize: 12,
       color: 'var(--primary-d2)',
-      background: 'var(--neutral-n1-d1)',
+      // background: 'var(--neutral-n1-d1)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -122,7 +123,7 @@ const Item = styled.div<{ activeIdx: boolean }>(
   },
   ({ activeIdx }) => ({
     span: {
-      color: activeIdx ? 'var(--primary-d2)' : 'var(--neutral-n1-d1)',
+      color: activeIdx ? 'var(--primary-d2) !important' : 'var(--neutral-n2)',
       borderBottom: activeIdx
         ? '2px solid var(--primary-d2)'
         : '2px solid white',
@@ -130,7 +131,7 @@ const Item = styled.div<{ activeIdx: boolean }>(
     },
     div: {
       color: activeIdx ? 'white' : 'var(--primary-d2)',
-      background: activeIdx ? 'var(--primary-d2)' : 'var(--neutral-n1-d1)',
+      background: activeIdx ? 'var(--primary-d2)' : 'rgba(102, 136, 255, 0.10)',
     },
   }),
 )
@@ -169,7 +170,7 @@ const MoreItem = styled.div({
   padding: '0 16px',
   '&: hover': {
     color: 'var(--neutral-n1-d1)',
-    background: 'var(--hover-d1)',
+    background: 'var(--hover-d3)',
   },
 })
 
@@ -448,14 +449,14 @@ const DemandBox = () => {
     >
       {!isDelete && (
         <MoreItem onClick={onClickMoreDelete}>
-          <span>删除</span>
+          <span>{t('delete')}</span>
         </MoreItem>
       )}
       <MoreItem onClick={onCopyId}>
-        <span>复制需求编号</span>
+        <span>{t('copy_requirement_number')}</span>
       </MoreItem>
       <MoreItem onClick={onCopyLink}>
-        <span>复制标题链接</span>
+        <span>{t('copy_title_link')}</span>
       </MoreItem>
     </div>
   )
@@ -693,7 +694,7 @@ const DemandBox = () => {
 
   return (
     <PermissionWrap
-      auth="需求"
+      auth={t('demand')}
       permission={projectInfo?.projectPermissions?.map(
         (i: any) => i.group_name,
       )}

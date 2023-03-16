@@ -74,7 +74,7 @@ const BtnsItemBox = styled.div`
   font-weight: 400;
   color: var(--neutral-n2);
   &:hover {
-    background: var(--neutral-n6-d1);
+    background: var(--hover-d3);
     color: var(--neutral-n1-d2);
   }
 `
@@ -88,7 +88,7 @@ const rightText = css`
   visibility: hidden;
   font-size: 16px;
   margin-left: auto;
-  color: var(--neutral-n3);
+  color: var(--neutral-n3) !important;
   &:hover {
     color: var(--primary-d2);
   }
@@ -246,7 +246,7 @@ const TreeItem = (props: any) => {
     </div>
   )
   return (
-    <TreeBox>
+    <TreeBox className="treeBox">
       <span
         style={{
           whiteSpace: 'nowrap',
@@ -254,7 +254,9 @@ const TreeItem = (props: any) => {
       >
         {props.name}
       </span>
-      <span className={centerText}>{props.story_count}</span>
+      <span className={centerText}>
+        {props.story_count > 0 && `(${props.story_count})`}
+      </span>
       {props.pid === 0 ||
       getIsPermission(
         projectInfo?.projectPermissions,

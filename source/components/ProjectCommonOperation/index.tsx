@@ -7,6 +7,7 @@ import Member from './Member'
 import { MemberIcon, SearchBox, SearchOrProjectMember } from './style'
 import MyBreadcrumb from '../MyBreadcrumb'
 import { useSelector } from '@store/index'
+import { t } from 'i18next'
 
 interface Props {
   onInputSearch(value: string): void
@@ -28,7 +29,7 @@ const ProjectCommonOperation = (props: Props) => {
           <InputSearch
             isDemand
             leftIcon
-            placeholder="请输入"
+            placeholder={t('please_enter') as string}
             onChangeSearch={props.onInputSearch}
           />
           <MemberIcon onClick={() => setMemberVisible(true)}>
