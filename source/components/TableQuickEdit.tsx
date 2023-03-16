@@ -158,9 +158,17 @@ const TableQuickEdit = (props: Props) => {
 
   // 我的模块及他的模块并且是自定义字段 --- 项目信息获取
   const getCustomValuesInfo = () => {
-    const response = projectInfoValues
-      ?.filter((i: any) => i.key === props.keyText)[0]
-      ?.children?.filter((i: any) => i.id !== -1)
+    const response = ['user_select_checkbox', 'user_select'].includes(
+      String(props.type),
+    )
+      ? props.item.fieldContentValue[0] === 'companyMember'
+        ? projectInfoValues
+            ?.filter((i: any) => i.key === 'users_copysend_name')[0]
+            ?.children?.filter((i: any) => i.id !== -1)
+        : projectInfoValues
+            ?.filter((i: any) => i.key === 'users_name')[0]
+            ?.children?.filter((i: any) => i.id !== -1)
+      : null
 
     const resultValue = {
       value: ['user_select_checkbox', 'user_select'].includes(
@@ -170,7 +178,7 @@ const TableQuickEdit = (props: Props) => {
             label: i.content,
             value: i.id,
           }))
-        : response?.map((i: any) => i.content),
+        : props.item?.fieldContentValue,
       remarks: '',
       attr: props.type,
     }
