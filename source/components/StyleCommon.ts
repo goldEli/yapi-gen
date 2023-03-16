@@ -76,7 +76,7 @@ const titleCss = css`
 `
 
 const title1Css = css`
-  color: var(--neutral-n1-d1);
+  color: var(--neutral-n2);
   font-size: 24px;
 `
 const title1Css1 = css`
@@ -85,12 +85,12 @@ const title1Css1 = css`
 `
 
 const title2Css = css`
-  color: var(--neutral-n1-d1);
+  color: var(--neutral-n2);
   font-size: 12px;
 `
 
 const chartsTitle = css`
-  color: var(--neutral-n1-d1);
+  color: var(--neutral-n2);
   font-size: 12px;
   margin-bottom: 10px;
 `
@@ -132,6 +132,7 @@ const ChartsWrap = styled.div`
   box-sizing: border-box;
   padding: 16px 24px;
   border-radius: 6px;
+  box-shadow: 0px 0px 7px 6px rgba(0, 0, 0, 0.06);
 `
 const HasIconMenu = styled.div<{ isCheck?: boolean }>(
   {
@@ -808,10 +809,18 @@ const StatusTag = styled.div<{ status: number }>(
         : 'var(--neutral-n3)',
     background:
       status === 1
-        ? 'var(--hover-d3)'
+        ? 'var(--selected)'
         : status === 2
-        ? 'var(--hover-d3)'
-        : 'var(--hover-d3)',
+        ? 'var(--function-tag2)'
+        : 'var(--function-tag6)',
+    '&:hover': {
+      background:
+        status === 1
+          ? 'var(--selected) !important'
+          : status === 2
+          ? 'var(--function-tag2)!important'
+          : 'var(--function-tag6)!important',
+    },
   }),
 )
 
