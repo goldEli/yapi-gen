@@ -208,7 +208,7 @@ const StaffManagement = () => {
         key: '12',
         label: (
           <div onClick={() => controlStaffPersonalVisibleA(record)}>
-            离职交接
+            {t('quitAndHandover')}
           </div>
         ),
       },
@@ -216,7 +216,7 @@ const StaffManagement = () => {
         key: '123',
         label: (
           <div onClick={() => controlStaffPersonalVisibleC(record)}>
-            恢复交接状态
+            {t('the_handover_state_is_restored')}
           </div>
         ),
       },
@@ -390,7 +390,7 @@ const StaffManagement = () => {
     const res1 = await confirmHand({ id: editData.id })
 
     if (res1.code === 0) {
-      message.success('成功')
+      message.success(t('succeed'))
 
       setIsVisibleFieldsB(false)
       getStaffListData()
@@ -399,7 +399,7 @@ const StaffManagement = () => {
   const onConfirm2 = async () => {
     const res = await restHand(editData.id)
     if (res.code === 0) {
-      message.success('成功')
+      message.success(t('succeed'))
       setIsVisibleFieldsC(false)
       getStaffListData()
     }
@@ -510,14 +510,18 @@ const StaffManagement = () => {
       />
       <DeleteConfirm
         title={t('quitAndHandover')}
-        text={`${editData.name}目前未参与任何项目，确认将【${editData.name}】工作交接，交接后他的交接状态将更改为已交接；已经交接状态不可被项目添加及进行员工权限配置`}
+        text={`${editData.name}${t(
+          'currently_not_involved_in_any_projects_confirm_will',
+        )}【${editData.name}】${t('work_handover')}`}
         onConfirm={onConfirm}
         onChangeVisible={() => setIsVisibleFieldsB(false)}
         isVisible={isVisibleFieldsB}
       />
       <DeleteConfirm
         title={t('the_handover_state_is_restored')}
-        text={`确认将【${editData.name}】的交接状态更改为正常状态`}
+        text={`${t('confirmation_will')}【${editData.name}】${t(
+          'the_handover_status_of_is_changed_to_the_normal_state',
+        )}`}
         onConfirm={onConfirm2}
         onChangeVisible={() => setIsVisibleFieldsC(false)}
         isVisible={isVisibleFieldsC}

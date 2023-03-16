@@ -531,7 +531,7 @@ const CreateDemandRight = (props: Props) => {
                 (item.content === 'users_name' ||
                   item.content === 'users_copysend_name') &&
                 i.id === info
-                  ? `${i.content} （我自己）`
+                  ? `${i.content} （${t('myself')}）`
                   : i.content,
               value: i.id,
             })),

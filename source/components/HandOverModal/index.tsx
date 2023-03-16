@@ -38,7 +38,7 @@ const HandOverModal = (props: any) => {
       const res1 = await confirmHand({ id: props.id.id, data: newObj })
 
       if (res1.code === 0) {
-        message.success('成功')
+        message.success(t('succeed') as string)
         form.resetFields()
         props.close()
         props.confirm()
@@ -54,9 +54,9 @@ const HandOverModal = (props: any) => {
     >
       <Wrap>
         <PinkWrap>
-          [{props.id.name}
-          ]目前参与了{list.length}
-          个项目，请指定交接项目接收人；交接后他的交接状态将更改为已交接；已经交接状态不可被项目添加及进行员工权限配置
+          [{props.id.name}]{t('currently_involved_in')}
+          {list.length}
+          {t('please_specify_the_recipient')}
         </PinkWrap>
         <Form form={form}>
           {list.map((i: any) => (

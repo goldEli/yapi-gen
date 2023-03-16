@@ -3,6 +3,7 @@ import { GENDER_MAP } from '@/constants'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import ResizeTable from '@/components/ResizeTable'
 import NoData from '@/components/NoData'
+import { t } from 'i18next'
 
 const OperationWrap = styled.div`
   font-size: 14px;
@@ -18,7 +19,7 @@ const OperationWrap = styled.div`
 const Table = (props: any) => {
   const columns: any = [
     {
-      title: '昵称',
+      title: t('nickname') as string,
       dataIndex: 'nickname',
       key: 'nickname',
       width: 160,
@@ -27,57 +28,63 @@ const Table = (props: any) => {
       ),
     },
     {
-      title: '真实姓名',
+      title: t('project.realName') as string,
       dataIndex: 'name',
       key: 'name',
       width: 160,
     },
     {
-      title: '性别',
+      title: t('project.gender0') as string,
       dataIndex: 'gender',
       key: 'gender',
       width: 80,
       render: (text: any, record: any) => GENDER_MAP[text],
     },
     {
-      title: '邮箱',
+      title: t('mailbox'),
       width: 160,
       dataIndex: 'email',
       key: 'email',
     },
     {
-      title: '手机',
+      title: t('cell_phone_number'),
       width: 160,
       dataIndex: 'phone',
       key: 'phone',
     },
     {
-      title: '部门',
+      title: t('department'),
       width: 160,
       dataIndex: 'department_name',
       key: 'department_name',
     },
     {
-      title: '职位',
+      title: t('position'),
       width: 160,
       dataIndex: 'position_name',
       key: 'position_name',
     },
     {
-      title: '团队角色',
+      title: t('team_role'),
       dataIndex: 'team_is_admin',
       key: 'team_is_admin',
       render: (text: any, record: any) =>
-        text === 1 ? '团队管理' : '团队成员',
+        text === 1 ? t('team_management') : t('team_members'),
     },
     {
-      title: '操作',
+      title: t('newlyAdd.operation'),
       dataIndex: 'action',
       render: (text: string, record: any) => (
         <OperationWrap>
-          <span onClick={() => props.onEditRow(record, 'edit')}>编辑</span>
-          <span onClick={() => props.onDelRow(record)}>移出</span>
-          <span onClick={() => props.onEditRow(record, 'detail')}>详情</span>
+          <span onClick={() => props.onEditRow(record, 'edit')}>
+            {t('common.edit') as string}
+          </span>
+          <span onClick={() => props.onDelRow(record)}>
+            {t('shift_out') as string}
+          </span>
+          <span onClick={() => props.onEditRow(record, 'detail')}>
+            {t('common.info') as string}
+          </span>
         </OperationWrap>
       ),
     },

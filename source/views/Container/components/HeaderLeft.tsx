@@ -227,7 +227,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
                 size={20}
                 color="var(--neutral-n2)"
               />
-              <div>后台管理</div>
+              <div>{t('back_stage_management')}</div>
             </div>
           </DrawerFooter>
         )}

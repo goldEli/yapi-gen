@@ -44,7 +44,7 @@ const HandOverModal = (props: any) => {
       })
 
       if (res1.code === 0) {
-        message.success('成功')
+        message.success(t('succeed') as string)
         form.resetFields()
         props.close()
         props.confirm()
@@ -59,7 +59,9 @@ const HandOverModal = (props: any) => {
       onConfirm={onConfirm}
     >
       <Wrap>
-        <PinkWrap>请指定项目接收人</PinkWrap>
+        <PinkWrap>
+          {t('please_specify_the_recipient_of_the_project') as string}
+        </PinkWrap>
         <Form form={form}>
           {list.map((i: any) => (
             <Form.Item

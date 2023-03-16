@@ -60,10 +60,10 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
   const [list, setList] = useState<any>()
   const tabs = [
     {
-      label: '启用',
+      label: t('start_using'),
     },
     {
-      label: '未启用',
+      label: t('no_start_using'),
     },
   ]
 

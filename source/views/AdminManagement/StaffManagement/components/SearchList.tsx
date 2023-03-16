@@ -149,7 +149,9 @@ const SearchList = (props: Props) => {
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '14px' }}>状态</span>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>
+              {t('common.status')}
+            </span>
             <Form.Item name="status">
               <SelectWrap
                 mode="multiple"
@@ -162,15 +164,15 @@ const SearchList = (props: Props) => {
                 allowClear
                 options={[
                   {
-                    label: '在职',
+                    label: t('common.job1'),
                     value: 1,
                   },
                   {
-                    label: '离职',
+                    label: t('common.job2'),
                     value: 2,
                   },
                   {
-                    label: '删除',
+                    label: t('common.del'),
                     value: 3,
                   },
                 ]}
@@ -178,7 +180,9 @@ const SearchList = (props: Props) => {
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '14px' }}>交接状态</span>
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>
+              {t('handover_status')}
+            </span>
             <Form.Item name="handover_status">
               <SelectWrap
                 mode="multiple"
@@ -191,11 +195,11 @@ const SearchList = (props: Props) => {
                 allowClear
                 options={[
                   {
-                    label: '正常',
+                    label: t('normal'),
                     value: 1,
                   },
                   {
-                    label: '已交接',
+                    label: t('handed_over'),
                     value: 2,
                   },
                 ]}

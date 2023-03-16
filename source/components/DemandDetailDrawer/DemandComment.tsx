@@ -185,7 +185,7 @@ const DemandComment = (props: Props) => {
         />
         {props.isOpenInfo && (
           <CommentTitle>
-            <Label>需求评论</Label>
+            <Label>{t('requirements_review')}</Label>
             {isComment && (
               <CommonButton
                 onClick={() => setIsVisibleComment(true)}
@@ -193,7 +193,7 @@ const DemandComment = (props: Props) => {
                 iconPlacement="left"
                 icon="plus"
               >
-                添加评论
+                {t('add_a_comment')}
               </CommonButton>
             )}
           </CommentTitle>
@@ -201,7 +201,7 @@ const DemandComment = (props: Props) => {
 
         {!props.isOpenInfo && (
           <>
-            <Label>需求评论</Label>
+            <Label>{t('requirements_review')}</Label>
             {isComment && (
               <CommonButton
                 onClick={() => setIsVisibleComment(true)}
@@ -209,7 +209,7 @@ const DemandComment = (props: Props) => {
                 iconPlacement="left"
                 icon="plus"
               >
-                添加评论
+                {t('add_a_comment')}
               </CommonButton>
             )}
           </>

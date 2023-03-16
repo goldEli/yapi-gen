@@ -449,14 +449,14 @@ const DemandBox = () => {
     >
       {!isDelete && (
         <MoreItem onClick={onClickMoreDelete}>
-          <span>删除</span>
+          <span>{t('delete')}</span>
         </MoreItem>
       )}
       <MoreItem onClick={onCopyId}>
-        <span>复制需求编号</span>
+        <span>{t('copy_requirement_number')}</span>
       </MoreItem>
       <MoreItem onClick={onCopyLink}>
-        <span>复制标题链接</span>
+        <span>{t('copy_title_link')}</span>
       </MoreItem>
     </div>
   )

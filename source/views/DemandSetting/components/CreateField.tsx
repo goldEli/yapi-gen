@@ -118,7 +118,7 @@ const CreateField = () => {
       icon: 'user-more',
     },
     {
-      label: '确认勾选',
+      label: t('confirm_that_it_is_checked'),
       value: '11',
       type: 'single_checkbox',
       icon: 'check-circle',
@@ -170,7 +170,7 @@ const CreateField = () => {
           size={14}
           color="var(--neutral-n3)"
         />
-        <span style={{ marginLeft: '4px' }}>创建字段</span>
+        <span style={{ marginLeft: '4px' }}>{t('creating_fields')}</span>
         <span
           style={{
             fontSize: '12px',
@@ -178,7 +178,7 @@ const CreateField = () => {
             marginLeft: '8px',
           }}
         >
-          将字段拖动左侧区域创建字段
+          {t('drag_the_field_to_the_left_area_to_create_the_field')}
         </span>
       </TitleStyle>
       {createIcon && <CreatDragging list={option} setList={[]} />}
@@ -204,7 +204,7 @@ const CreateField = () => {
                 textOverflow: 'ellipsis',
               }}
             >
-              项目已有字段{' '}
+              {t('project_existing_fields')}
               {payloadDataList?.length >= 1 &&
                 '(' + payloadDataList?.length + ')'}
             </span>

@@ -2,6 +2,7 @@
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { Dropdown, type MenuProps } from 'antd'
+import { t } from 'i18next'
 import React, { useEffect, useLayoutEffect } from 'react'
 import { callbackify } from 'util'
 
@@ -177,11 +178,11 @@ const SliderList = (props: any) => {
   const items: MenuProps['items'] = [
     {
       key: 'edit',
-      label: '编辑团队',
+      label: t('editorial_team') as string,
     },
     {
       key: 'del',
-      label: '解散团队',
+      label: t('disbanding_the_team') as string,
     },
   ]
   const onChangeTeam = (item: any) => {
