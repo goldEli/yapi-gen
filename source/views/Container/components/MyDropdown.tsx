@@ -204,8 +204,8 @@ const MyDropdown = (props: any) => {
   }
 
   useEffect(() => {
-    onFetchList()
-  }, [tabActive])
+    isOpen && onFetchList()
+  }, [isOpen, tabActive])
   const onClickIsOpen = () => {
     setIsOpen(false)
   }

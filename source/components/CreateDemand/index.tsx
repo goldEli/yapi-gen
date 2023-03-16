@@ -209,6 +209,7 @@ const CreateDemand = () => {
       getProjectInfoValues({ projectId: value }),
       getList(value),
     ])
+
     dispatch(setProjectInfoValues(projectInfoData))
     const allCategory = removeNull(projectInfoData, 'category')
     // 更新所有需求类别列表

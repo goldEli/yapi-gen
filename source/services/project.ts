@@ -6,7 +6,7 @@
 
 // 项目
 
-import { getNestedChildren } from '@/tools'
+import { getNestedChildren, transData } from '@/tools'
 import * as http from '@/tools/http'
 import { getStaffListAll } from './staff'
 
@@ -832,7 +832,16 @@ export const getProjectInfoValues: any = async (params: any) => {
                   children: [],
                 },
               ],
-              ...getNestedChildren(response.data[i], 0),
+              ...transData(
+                response.data[i]?.map((k: any) => ({
+                  ...k,
+                  title: k.name,
+                  value: k.id,
+                })),
+                'id',
+                'parent_id',
+                'children',
+              ),
             ]
           : getChildren(i, response.data[i]),
       key: i,

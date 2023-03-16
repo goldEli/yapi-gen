@@ -742,7 +742,7 @@ export const addDemand: any = async (params: any) => {
     attachment: params?.attachments,
     custom_field: params?.customField,
     category_id: params?.category_id,
-    class_id: params?.class,
+    class_id: params?.class || 0,
     schedule: params?.schedule,
     status: params?.status,
   })
@@ -781,7 +781,7 @@ export const updateDemand: any = async (params: any) => {
     attachment: params.attachments,
     id: params.id,
     custom_field: params?.customField,
-    class_id: params?.class,
+    class_id: params?.class || 0,
     schedule: params?.schedule,
   })
 }
