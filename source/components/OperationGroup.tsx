@@ -155,7 +155,7 @@ const OperationGroup = (props: Props) => {
           />
         }
         icon="settings"
-        isVisible={isVisibleFields}
+        isVisible={true}
         onChangeVisible={setIsVisibleFields}
         isActive={props.settingState}
       >

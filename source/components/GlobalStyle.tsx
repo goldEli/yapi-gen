@@ -244,10 +244,15 @@ const GlobalStyle = () => {
     //table样式 --- end
 
     .ant-dropdown-menu-item {
+      height: 32px;
       color: var(--neutral-n2);
       .ant-dropdown-menu-title-content div {
         /* min-width: 80px; */
       }
+    }
+
+    .ant-dropdown-menu-submenu {
+      height: 32px;
     }
     .ant-dropdown-menu-item:hover {
       background: var(--hover-d3) !important;
@@ -774,6 +779,9 @@ const GlobalStyle = () => {
     }
     .ant-breadcrumb li:last-child {
       color: var(--neutral-n3);
+    }
+    .ant-dropdown-menu-submenu-expand-icon svg {
+      font-size: 10px !important;
     }
   `
   return <Global styles={globalCss} />
