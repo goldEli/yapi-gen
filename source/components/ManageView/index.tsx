@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { changeViewVisible } from '@store/view'
 import { delViews, editViews } from '@/services/view'
 import { getViewList } from '@store/view/thunk'
+import { t } from 'i18next'
 
 interface Item {
   key: string
@@ -91,7 +92,7 @@ const ManageView = (props: any) => {
         return {
           key: i.id,
           name: i.name,
-          viewType: i.type === 2 ? '系统视图' : '个人视图',
+          viewType: i.type === 2 ? t('systemView') : t('personalView'),
           state: i.status === 1,
           isC: i.type,
         }
@@ -153,7 +154,7 @@ const ManageView = (props: any) => {
 
   const columns = [
     {
-      title: '视图名称',
+      title: t('name_of_view'),
       dataIndex: 'name',
       width: '30%',
       editable: true,
@@ -191,7 +192,7 @@ const ManageView = (props: any) => {
               完成
             </Typography.Link>
 
-            <a onClick={() => setEditingKey('')}>取消</a>
+            <a onClick={() => setEditingKey('')}>{t('cancel') as string}</a>
           </span>
         ) : (
           <span>
@@ -204,7 +205,7 @@ const ManageView = (props: any) => {
             </Typography.Link>
             <Popconfirm
               overlayInnerStyle={{ padding: '10px' }}
-              title="确认删除该视图？"
+              title={t('confirmDeletingTheView') as string}
               onConfirm={() => cancel(record.key)}
             >
               <Typography.Link disabled={editingKey !== ''}>
@@ -248,7 +249,7 @@ const ManageView = (props: any) => {
   return (
     <CommonModal
       width={784}
-      title="视图管理"
+      title={t('view_management')}
       onClose={() => {
         dispatch(changeViewVisible(false))
         dispatch(getViewList(props.pid))

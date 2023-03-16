@@ -51,21 +51,28 @@ const CheckboxWrap = styled(Checkbox)`
 
 interface Props {
   children: any
+
   // 修改的key
   keyText: any
+
   // 当前修改的类型
   type?: string
+
   // 1：下拉数据传入下拉数据，时间及数值类型传入例：['date'|'number']
   value?: any
+
   // 默认回填的值
   defaultText?: any
   isCustom?: boolean
   remarks?: any
+
   // 是否是详情快捷编辑 - 用于判断是否是表格
   isInfo?: any
+
   // 当前需求数据
   item?: any
   onUpdate?(): void
+
   // 是否是从我的模块或者他的模块使用
   isMineOrHis?: any
 
@@ -175,7 +182,7 @@ const TableQuickEdit = (props: Props) => {
 
   //  迭代、处理人、抄送人、需求分类、标签--- 接口获取
   const getDefaultSelectValues = async () => {
-    let resultValue: any = {
+    const resultValue: any = {
       attr: props?.type,
       value: [],
     }
@@ -231,7 +238,7 @@ const TableQuickEdit = (props: Props) => {
 
   //  迭代、处理人、抄送人、需求分类、标签--- 项目信息获取
   const getDefaultSelectValuesInfo = () => {
-    let resultValue: any = {
+    const resultValue: any = {
       attr: props?.type,
       value: [],
     }
@@ -255,13 +262,13 @@ const TableQuickEdit = (props: Props) => {
 
       const arr1 = response
         ?.map((i: any) => ({
-          label: i.id === info ? i.content + '（我自己）' : i.content,
+          label: i.id === info ? `${i.content}（${t('myself')}）` : i.content,
           value: i.id,
         }))
         .filter((i: any) => i.value === info)
       const arr12 = response
         ?.map((i: any) => ({
-          label: i.id === info ? i.content + '（我自己）' : i.content,
+          label: i.id === info ? `${i.content}（${t('myself')}）` : i.content,
           value: i.id,
         }))
         .filter((i: any) => i.value !== info)
@@ -273,13 +280,13 @@ const TableQuickEdit = (props: Props) => {
         ?.children?.filter((i: any) => i.id !== -1)
       const arr1 = response
         ?.map((i: any) => ({
-          label: i.id === info ? i.content + '（我自己）' : i.content,
+          label: i.id === info ? `${i.content}（${t('myself')}）` : i.content,
           value: i.id,
         }))
         .filter((i: any) => i.value === info)
       const arr12 = response
         ?.map((i: any) => ({
-          label: i.id === info ? i.content + '（我自己）' : i.content,
+          label: i.id === info ? `${i.content}（${t('myself')}）` : i.content,
           value: i.id,
         }))
         .filter((i: any) => i.value !== info)

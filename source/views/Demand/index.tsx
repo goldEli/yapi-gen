@@ -693,7 +693,7 @@ const DemandBox = () => {
 
   return (
     <PermissionWrap
-      auth="需求"
+      auth={t('demand')}
       permission={projectInfo?.projectPermissions?.map(
         (i: any) => i.group_name,
       )}

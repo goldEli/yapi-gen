@@ -379,8 +379,8 @@ const BatchModal = (props: Props) => {
                     getPopupContainer={node => node}
                     allowClear
                   >
-                    <Select.Option value={0}>不勾选</Select.Option>
-                    <Select.Option value={1}>勾选</Select.Option>
+                    <Select.Option value={0}>{t('untick')}</Select.Option>
+                    <Select.Option value={1}>{t('check')}</Select.Option>
                   </Select>
                 </Form.Item>
               )}

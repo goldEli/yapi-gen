@@ -91,7 +91,7 @@ export const useDynamicColumns = (state: any) => {
     },
     {
       width: 140,
-      title: <NewSort fixedKey="story_prefix_key">编号</NewSort>,
+      title: <NewSort fixedKey="story_prefix_key">{t('serialNumber')}</NewSort>,
       dataIndex: 'storyPrefixKey',
       key: 'prefix_key',
       render: (text: string, record: any) => {
@@ -168,7 +168,7 @@ export const useDynamicColumns = (state: any) => {
                         marginLeft: '4px',
                       }}
                     >
-                      离职交接
+                      {t('quitAndHandover')}
                     </div>
                   )}
 

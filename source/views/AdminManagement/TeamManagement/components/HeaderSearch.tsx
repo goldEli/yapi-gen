@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 import { useState } from 'react'
 import InputSearch from '@/components/InputSearch'
 import { useSelector } from '@store/index'
+import { t } from 'i18next'
 
 const HeaderWrap = styled.div`
   width: 100%;
@@ -64,11 +65,13 @@ const HeaderSearch = (props: {
           width={202}
           bgColor="var(--neutral-white-d4)"
           length={12}
-          placeholder="请输入昵称姓名邮箱电话"
+          placeholder={t('please_enter_your_nickname_name_email_phone_number')}
           onChangeSearch={(value: string) => props.onSetSearchVal(value)}
           leftIcon
         />
-        <ButtonStyle onClick={props.onShowAddMemberModal}>添加成员</ButtonStyle>
+        <ButtonStyle onClick={props.onShowAddMemberModal}>
+          {t('add_a_member') as string}
+        </ButtonStyle>
       </SearchBox>
     </HeaderWrap>
   )

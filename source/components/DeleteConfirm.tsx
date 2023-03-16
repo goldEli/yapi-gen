@@ -93,7 +93,7 @@ const DeleteConfirm = (props: Props) => {
               whiteSpace: 'nowrap',
             }}
           >
-            {props.title ? props.title : '删除确认'}
+            {props.title ? props.title : t('confirmationOfDeletion')}
           </div>
         </Title>
         {!props?.notCancel && (
@@ -106,11 +106,11 @@ const DeleteConfirm = (props: Props) => {
       <ModalFooter size={16}>
         {!props?.notCancel && (
           <CommonButton onClick={props.onChangeVisible} type="secondary">
-            取消
+            {t('cancel')}
           </CommonButton>
         )}
         <CommonButton type="primary" onClick={props.onConfirm}>
-          确定
+          {t('confirm')}
         </CommonButton>
       </ModalFooter>
     </ModalStyle>

@@ -458,7 +458,7 @@ const TableFilter = (props: any) => {
       .map((i: any) => ({
         id: i.id,
         value: i.value,
-        label: `${i.label}（我自己）`,
+        label: `${i.label}（${t('myself')}）`,
       }))
       .concat(newB)
   }
@@ -566,12 +566,12 @@ const TableFilter = (props: any) => {
                         onConfirm={confirm}
                         options={[
                           {
-                            label: '未勾选',
+                            label: t('notChecked'),
                             value: 0,
                             id: 0,
                           },
                           {
-                            label: '已勾选',
+                            label: t('itIsChecked'),
                             value: 1,
                             id: 1,
                           },

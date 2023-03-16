@@ -1,4 +1,131 @@
 {
+  "untick": " untick",
+
+  "check": " Check ",
+
+  "requirementsForEditing": " Edit the requirement ",
+
+  "serialNumber": " number ",
+
+  "quitAndHandover": " Quitandhandover ",
+
+  "confirmationOfDeletion": " ConfirmationofDeletion ",
+
+  "cancel": " Cancel ",
+
+  "confirm": " Confirm ",
+
+  "myself": "myself",
+
+  "TheOriginalStateHandlesThePerson": "the original state handling people",
+
+  "notChecked": " not checked ",
+
+  "itIsChecked": " checked ",
+
+  "categoryOfNeeds": " CategoryofNeeds ",
+
+  "needState": " Needstate ",
+
+  "optionProject": " Select project ",
+
+  "PleaseSelectTheHandoverPerson": "please select a delivery person",
+
+  "systemView": " System view ",
+
+  "personalView": " Personalview ",
+
+  "confirmDeletingTheView": " Confirm to delete this view?",
+
+  "view_management": " View management",
+
+  "please_enter": " Please enter",
+
+  "adding_a_user_group": " Add user group",
+
+  "the_handover_state_is_restored": " Restore handover state ",
+
+  "between_jobs": " leaving status ",
+
+  "normal": " normal",
+
+  "handed_over": " handed_over",
+
+  "please_enter_your_nickname_name_email_phone_number": " Please enter the nickname, name, email, phone number",
+
+  "add_a_member": " Add member",
+
+  "Jpg_png_format_the_size_of_8080_pixels": "support JPG, PNG format, size 80 * 80 pixels",
+
+  "team_logo": " Team LOGO",
+
+  "team_name": " Team name",
+
+  "please_enter_a_team_name": " Please enter the team name",
+
+  "after_dissolution_the_team_members_are_automatically_removed_and_the_team_project_is_automatically_incorporated_and_its _rights_are_changed_to_private": " After dissolution, team members will be automatically removed, the team project will be automatically assigned to the company and the rights will be changed to private",
+
+  "team_role": " Team role",
+
+  "set": " set",
+
+  "your_role_in_the_team": " Role in the team",
+
+  "successfully_added": " Success ",
+
+  "removal_success": " removal_success",
+
+  "team_administrators_cannot_be_removed": " Team administrator cannot be removed",
+
+  "edit_member_successfully": " Edit member successfully",
+
+  "head_portrait": " head_portrait",
+
+  "cell_phone_number": " cell phone ",
+
+  "log_in_to_a_mailbox": " Login mailbox",
+
+  "nickname": " Nickname ",
+
+  "name": " Name ",
+
+  "gender": " gender",
+
+  "department": " Department ",
+
+  "position": " position",
+
+  "team": " Team ",
+
+  "permission_group": " Permission group",
+
+  "team_management": " Team management",
+
+  "team_members": " Team members",
+
+  "personal_data": " Personal data",
+
+  "editor_member": " Edit member",
+
+  "removal_confirmation": " Remove confirmation",
+
+  "are_you_sure_to_remove_this_member": " Confirm to remove this member?",
+
+  "confirmation_prompt": " Confirm prompt",
+
+  "are_you_sure_you_want_to_log_out": " Are you sure you want to log out?",
+
+  "demand": " demand",
+
+  "add_the_requirement_state_to_configure_the_workflow": " Please add the requirement state to configure the workflow",
+
+  "pleaseEnterASearchPhrase": " Please enter the keyword ",
+
+  "system_fields_are_not_editable": " System fields are not editable",
+
+  "iteration": " iteration",
+
+  "all_enterprises": " All enterprises",
   "log_management": "Log Management",
   "saves_the_current_filter_criteria_display_fields_and_sort_as_a_new_view": "Save the current filter, display field, sort, to a new view",
   "creating_a_view": "Create a View",

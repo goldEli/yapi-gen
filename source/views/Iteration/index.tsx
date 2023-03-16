@@ -549,7 +549,7 @@ const Iteration = () => {
 
   return (
     <PermissionWrap
-      auth="迭代"
+      auth={t('iteration')}
       permission={projectInfo?.projectPermissions?.map(
         (i: any) => i.group_name,
       )}
