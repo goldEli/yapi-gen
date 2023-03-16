@@ -9,13 +9,13 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonIconFont from '../CommonIconFont'
 const ChangeItem = styled.div<{ isActive?: boolean; height?: number }>`
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-family: SiYuanRegular;
   height: ${props => props.height || 32}px;
   cursor: pointer;
-  padding: 0 16px;
   color: ${props =>
     props.isActive ? 'var(--primary-d2)' : 'var(--neutral-n2)'};
   &:hover {
@@ -24,12 +24,6 @@ const ChangeItem = styled.div<{ isActive?: boolean; height?: number }>`
       color: var(--primary-d2);
     }
   }
-`
-const ChangeItems = styled.div`
-  padding: 4px 0;
-  border-radius: 6px;
-  background: var(--neutral-white-d6);
-  width: 120px;
 `
 interface Props {
   // 是否有预览模式
@@ -56,7 +50,6 @@ const SetShowField = (props: Props) => {
       }),
     )
   }
-
   let menuItems = [
     {
       key: '0',
@@ -73,10 +66,12 @@ const SetShowField = (props: Props) => {
           label: (
             <ChangeItem
               onClick={() => onChangeViewMode(1)}
-              isActive={active === '1'}
+              isActive={
+                active === '1' || userPreferenceConfig.previewModel === 1
+              }
             >
               <span style={{ paddingRight: 10 }}>弹窗预览</span>
-              {active === '1' && (
+              {(active === '1' || userPreferenceConfig.previewModel === 1) && (
                 <CommonIconFont type="check" color={'var(--primary-d2)'} />
               )}
             </ChangeItem>
@@ -87,10 +82,12 @@ const SetShowField = (props: Props) => {
           label: (
             <ChangeItem
               onClick={() => onChangeViewMode(2)}
-              isActive={active === '2'}
+              isActive={
+                active === '2' || userPreferenceConfig.previewModel === 2
+              }
             >
               <span style={{ paddingRight: 10 }}>详情预览</span>
-              {active === '2' && (
+              {(active === '2' || userPreferenceConfig.previewModel === 2) && (
                 <CommonIconFont type="check" color={'var(--primary-d2)'} />
               )}
             </ChangeItem>
@@ -112,6 +109,7 @@ const SetShowField = (props: Props) => {
   }
   return (
     <Menu
+      getPopupContainer={node => node}
       selectedKeys={[String(userPreferenceConfig?.previewModel)]}
       onClick={(e: any) => onClick(e)}
       items={menuItems}

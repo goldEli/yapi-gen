@@ -81,12 +81,12 @@ const IconWrap = styled(IconFont)<{ isActive: any }>(
     borderRadius: 6,
     '&: hover': {
       color: 'var(--neutral-n1-d1)',
-      background: 'var(--neutral-n6-d1)',
+      background: 'var(--hover-d3)',
     },
   },
   ({ isActive }) => ({
     color: isActive ? 'var(--neutral-n1-d1)' : 'var(--neutral-n3)',
-    background: isActive ? 'var(--neutral-n6-d1)' : 'white',
+    background: isActive ? 'var(--hover-d3)' : 'white',
   }),
 )
 
@@ -106,7 +106,7 @@ const SortItem = styled.div<{ isActive: boolean }>(
     },
     '&:hover': {
       color: 'var(--neutral-n1-d1)',
-      background: 'var(--neutral-n6-d1)',
+      background: 'var(--hover-d3)',
     },
   },
   ({ isActive }) => ({

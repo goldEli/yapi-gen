@@ -244,13 +244,18 @@ const GlobalStyle = () => {
     //table样式 --- end
 
     .ant-dropdown-menu-item {
+      height: 32px;
       color: var(--neutral-n2);
       .ant-dropdown-menu-title-content div {
         /* min-width: 80px; */
       }
     }
+
+    .ant-dropdown-menu-submenu {
+      height: 32px;
+    }
     .ant-dropdown-menu-item:hover {
-      background: var(--hover-d3);
+      background: var(--hover-d3) !important;
       color: var(--neutral-n1-d1);
     }
     .ant-dropdown-menu-item:active {
@@ -338,9 +343,7 @@ const GlobalStyle = () => {
       font-weight: inherit;
       color: var(--primary-d2);
     }
-    .ant-select-item-option-selected:not(
-        .ant-select-item-option-disabled
-      ):hover {
+    .ant-select-item-option-selected:not(.ant-select-item-option-disabled):hover {
       /* background-color: var(--neutral-white-d4); */
     }
 
@@ -409,9 +412,7 @@ const GlobalStyle = () => {
       -webkit-appearance: none;
     }
     .ant-form-item-label
-      > label.ant-form-item-required:not(
-        .ant-form-item-required-mark-optional
-      )::after {
+      > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::after {
       display: inline-block;
       margin-right: 4px;
       color: #ff4d4f;
@@ -421,9 +422,7 @@ const GlobalStyle = () => {
       content: '*';
     }
     .ant-form-item-label
-      > label.ant-form-item-required:not(
-        .ant-form-item-required-mark-optional
-      )::before {
+      > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before {
       display: none;
       margin-right: 4px;
       color: #ff4d4f;
@@ -436,12 +435,26 @@ const GlobalStyle = () => {
       display: none;
     }
     .ant-tree-treenode-selected {
-      background-color: var(--hover-d3) !important;
+      background: linear-gradient(
+        90deg,
+        #ebefff 0%,
+        rgba(243, 246, 255, 0) 100%
+      );
+      .treeBox {
+        color: var(--primary-d2);
+      }
     }
     .ant-tree .ant-tree-treenode-draggable .ant-tree-draggable-icon {
       opacity: 1;
     }
-
+    .ant-tree-list {
+      .ant-tree-switcher {
+        color: var(--neutral-n3);
+      }
+      .ant-tree-draggable-icon {
+        color: var(--neutral-n3);
+      }
+    }
     .row-dragging {
       display: flex;
       align-items: center;
@@ -760,6 +773,15 @@ const GlobalStyle = () => {
     }
     .ant-radio-inner::after {
       background-color: var(--primary-d1);
+    }
+    .ant-breadcrumb {
+      font-size: 12px;
+    }
+    .ant-breadcrumb li:last-child {
+      color: var(--neutral-n3);
+    }
+    .ant-dropdown-menu-submenu-expand-icon svg {
+      font-size: 10px !important;
     }
   `
   return <Global styles={globalCss} />

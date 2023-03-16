@@ -9,9 +9,10 @@ export const ViewPortWrap = styled.div`
   display: inline-flex;
   align-items: center;
   padding: 0 8px;
-  border-radius: 4px;
+  border-radius: 6px;
+  color: var(--neutral-n3);
   &:hover {
-    background: var(--neutral-n6-d1);
+    background: var(--neutral-n9);
   }
 `
 
@@ -21,7 +22,7 @@ export const Name = styled.div`
   font-size: 14px;
   font-family: PingFang SC-Regular, PingFang SC;
   font-weight: 400;
-  color: var(--neutral-n1-d1);
+  color: var(--neutral-n3);
   line-height: 23px;
 `
 

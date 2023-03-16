@@ -21,7 +21,7 @@ const LiWrap = styled.div<{ color: any }>(
   },
   ({ color }) => ({
     '&: hover': {
-      background: color,
+      background: 'var(--hover-d3)',
     },
   }),
 )
