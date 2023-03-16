@@ -76,7 +76,7 @@ const titleCss = css`
 `
 
 const title1Css = css`
-  color: var(--neutral-n1-d1);
+  color: var(--neutral-n2);
   font-size: 24px;
 `
 const title1Css1 = css`
@@ -85,12 +85,12 @@ const title1Css1 = css`
 `
 
 const title2Css = css`
-  color: var(--neutral-n1-d1);
+  color: var(--neutral-n2);
   font-size: 12px;
 `
 
 const chartsTitle = css`
-  color: var(--neutral-n1-d1);
+  color: var(--neutral-n2);
   font-size: 12px;
   margin-bottom: 10px;
 `
@@ -132,6 +132,7 @@ const ChartsWrap = styled.div`
   box-sizing: border-box;
   padding: 16px 24px;
   border-radius: 6px;
+  box-shadow: 0px 0px 7px 6px rgba(0, 0, 0, 0.06);
 `
 const HasIconMenu = styled.div<{ isCheck?: boolean }>(
   {
