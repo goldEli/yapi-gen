@@ -78,17 +78,12 @@ const CreateAProjectForm = () => {
     if (isEditId) {
       dispatch(postEditCreate({ ...obj, id: isEditId }))
       message.success(t('common.editSuccess'))
-      // setTimeout(() => {
-      //   dispatch(onRest(true))
-      // }, 1000)
+
       return
     }
     dispatch(postCreate(obj))
     dispatch(editProject({ visible: false, id: '' }))
     message.success(t('common.createSuccess'))
-    // setTimeout(() => {
-    //   dispatch(onRest(true))
-    // }, 1000)
   }
 
   function upper(str: string) {
@@ -404,7 +399,7 @@ const CreateAProjectForm = () => {
               rules={[
                 {
                   required: true,
-                  message: 'Please input your username!',
+                  message: '',
                 },
               ]}
             >
