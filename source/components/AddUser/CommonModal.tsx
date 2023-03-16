@@ -4,6 +4,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import { Form, message, Modal, Select, Space, Tree } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
@@ -254,19 +255,6 @@ const CommonModal = (props: ModalProps) => {
       ])
     }
   }, [props.isVisible])
-  const getUser = async () => {
-    const res = await getDepartmentUserList({
-      search: {
-        project_id: props.isPermisGroup ? projectInfo?.id : '0',
-        type: tabsActive === 0 ? 'team' : 'company',
-      },
-    })
-    setTreeData(res)
-  }
-  useEffect(() => {
-    props.isVisible && getUser()
-  }, [props.isVisible, tabsActive])
-
   // 勾选后获取到成员
   let checkdFilterDataList: any = []
   const checkdFilterData = (data: any) => {
@@ -280,6 +268,26 @@ const CommonModal = (props: ModalProps) => {
     }
     return checkdFilterDataList
   }
+  const getUser = async () => {
+    const res = await getDepartmentUserList({
+      search: {
+        project_id: props.isPermisGroup ? projectInfo?.id : '0',
+        type: tabsActive === 0 ? 'team' : 'company',
+      },
+    })
+    setTreeData(res)
+    // 拍平数组
+    const data = unionBy(checkdFilterData(res), 'id')
+    setTabsTreeDataList(
+      data.map((el: any) => ({ label: el.name, value: el.id, ...el })),
+    )
+    setSelectDataList(
+      data.map((el: any) => ({ label: el.name, value: el.id, ...el })),
+    )
+  }
+  useEffect(() => {
+    props.isVisible && getUser()
+  }, [props.isVisible, tabsActive])
 
   // 删除成员
   const delPersonDataList = (el: any) => {
@@ -322,16 +330,6 @@ const CommonModal = (props: ModalProps) => {
       setPersonData([])
     }
   }
-  // 拍平数组
-  useEffect(() => {
-    const data = unionBy(checkdFilterData(treeData), 'id')
-    setTabsTreeDataList(
-      data.map((el: any) => ({ label: el.name, value: el.id, ...el })),
-    )
-    setSelectDataList(
-      data.map((el: any) => ({ label: el.name, value: el.id, ...el })),
-    )
-  }, [departmentUserList])
 
   // 下拉框选中
   const handleChange = async (value: any) => {
@@ -344,7 +342,6 @@ const CommonModal = (props: ModalProps) => {
       setPersonData([...personData, ...filterVal])
     }
   }
-
   const onConfirm = async () => {
     if (props.isPermisGroup) {
       await form.validateFields()
