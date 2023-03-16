@@ -18,7 +18,7 @@ import {
   setIsCreateDemandVisible,
   setIsUpdateDemand,
 } from '@store/demand'
-import { useDispatch, useSelector, store as storeAll } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { setProjectInfo } from '@store/project'
 import { Drawer, message, Popover, Skeleton, Space } from 'antd'
 import { createRef, useCallback, useEffect, useRef, useState } from 'react'
@@ -95,10 +95,10 @@ const DemandDetailDrawer = () => {
       ?.length > 0
 
   const modeList = [
-    { name: t('detailed_information'), key: 'detailInfo', content: '' },
-    { name: t('subrequirements'), key: 'detailDemands', content: '' },
-    { name: t('newlyAdd.basicInfo'), key: 'basicInfo', content: '' },
-    { name: t('requirements_review'), key: 'demandComment', content: '' },
+    { name: '详细信息', key: 'detailInfo', content: '' },
+    { name: '子需求', key: 'detailDemands', content: '' },
+    { name: '基本信息', key: 'basicInfo', content: '' },
+    { name: '需求评论', key: 'demandComment', content: '' },
   ]
   const leftWidth = 640
 
@@ -138,16 +138,15 @@ const DemandDetailDrawer = () => {
   // 获取需求详情
   const getDemandDetail = async (id?: any, ids?: any) => {
     const paramsProjectId =
-      storeAll.getState().demand.demandDetailDrawerProps.project_id ??
-      storeAll.getState().demand.demandDetailDrawerProps.projectId
-    if (drawerInfo?.projectId !== paramsProjectId) {
+      demandDetailDrawerProps.project_id ?? demandDetailDrawerProps.projectId
+    if (drawerInfo?.projectId === paramsProjectId) {
       getProjectData()
     }
     setDrawerInfo({})
     setSkeletonLoading(true)
     const info = await getDemandInfo({
       projectId: paramsProjectId,
-      id: id ? id : storeAll.getState().demand.demandDetailDrawerProps?.id,
+      id: id ? id : demandDetailDrawerProps?.id,
     })
     info.hierarchy.push({
       id: info.id,
@@ -160,12 +159,6 @@ const DemandDetailDrawer = () => {
     })
     setDrawerInfo(info)
     setSkeletonLoading(false)
-    // console.log(
-    //   111111111111,
-    //   ids,
-    //   info.id,
-    //   (ids || []).findIndex((i: any) => i === info.id),
-    // )
     // 获取当前需求的下标， 用作上一下一切换
     setCurrentIndex((ids || []).findIndex((i: any) => i === info.id))
   }
@@ -278,14 +271,11 @@ const DemandDetailDrawer = () => {
 
   // 向上查找需求
   const onUpDemand = () => {
-    const newIndex =
-      storeAll.getState().demand.demandDetailDrawerProps.demandIds[
-        currentIndex - 1
-      ]
+    const newIndex = demandIds[currentIndex - 1]
     if (!currentIndex) return
     dispatch(
       setDemandDetailDrawerProps({
-        ...storeAll.getState().demand.demandDetailDrawerProps,
+        ...demandDetailDrawerProps,
         ...{ id: newIndex },
       }),
     )
@@ -293,33 +283,26 @@ const DemandDetailDrawer = () => {
 
   // 向下查找需求
   const onDownDemand = () => {
-    // console.log(currentIndex)
-    const newIndex =
-      storeAll.getState().demand.demandDetailDrawerProps.demandIds[
-        currentIndex + 1
-      ]
-    if (
-      currentIndex ===
-      storeAll.getState().demand.demandDetailDrawerProps.demandIds?.length - 1
-    )
-      return
+    const newIndex = demandIds[currentIndex + 1]
+    if (currentIndex === demandIds?.length - 1) return
+
     dispatch(
       setDemandDetailDrawerProps({
-        ...storeAll.getState().demand.demandDetailDrawerProps,
+        ...demandDetailDrawerProps,
         ...{ id: newIndex },
       }),
     )
   }
 
   const getKeyDown = (e: any) => {
-    if (storeAll.getState().demand.isDemandDetailDrawerVisible) {
+    if (isDemandDetailDrawerVisible) {
       if (e.keyCode === 38) {
         //up
-        onUpDemand()
+        document.getElementById('upIcon')?.click()
       }
       if (e.keyCode === 40) {
         //down
-        onDownDemand()
+        document.getElementById('downIcon')?.click()
       }
     }
   }
@@ -339,12 +322,12 @@ const DemandDetailDrawer = () => {
     }
   }, [isUpdateDemand])
 
-  // useEffect(() => {
-  //   window.addEventListener('keydown', getKeyDown)
-  //   return () => {
-  //     window.removeEventListener('keydown', getKeyDown)
-  //   }
-  // }, [])
+  useEffect(() => {
+    document.addEventListener('keydown', getKeyDown)
+    return () => {
+      document.removeEventListener('keydown', getKeyDown)
+    }
+  }, [])
 
   return (
     <>
@@ -411,7 +394,11 @@ const DemandDetailDrawer = () => {
           </Space>
           <Space size={16}>
             <ChangeIconGroup>
-              <NextWrap isDisable={!currentIndex} onClick={onUpDemand}>
+              <NextWrap
+                isDisable={!currentIndex}
+                onClick={onUpDemand}
+                id="upIcon"
+              >
                 <CommonIconFont
                   type="up"
                   size={20}
@@ -424,6 +411,7 @@ const DemandDetailDrawer = () => {
                   currentIndex === demandIds?.length - 1
                 }
                 onClick={onDownDemand}
+                id="downIcon"
               >
                 <CommonIconFont
                   type="down"
