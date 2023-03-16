@@ -170,7 +170,7 @@ const MoreItem = styled.div({
   padding: '0 16px',
   '&: hover': {
     color: 'var(--neutral-n1-d1)',
-    background: 'var(--hover-d1)',
+    background: 'var(--hover-d3)',
   },
 })
 
