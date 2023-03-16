@@ -627,7 +627,7 @@ const CanOperation = styled.div<{
     minWidth: isTable ? 0 : 60,
     padding: isTable ? 0 : '0 8px',
     '&: hover': {
-      background: isTable ? '' : isCanEdit ? 'var(--neutral-n2)' : '',
+      background: isTable ? '' : isCanEdit ? 'var(--hover-d3)' : '',
       [IconFontWrapEdit.toString()]: {
         visibility: 'visible',
       },
