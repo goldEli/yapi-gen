@@ -3,6 +3,7 @@
 /* eslint-disable react/jsx-handler-names */
 import { confirmHand, getHandMember } from '@/services/handover'
 import { Form, message, Select } from 'antd'
+import { t } from 'i18next'
 import React, { useEffect, useState } from 'react'
 import CommonModal from '../CommonModal'
 import { PinkWrap, Wrap } from './style'
@@ -37,7 +38,7 @@ const HandOverModal = (props: any) => {
       const res1 = await confirmHand({ id: props.id.id, data: newObj })
 
       if (res1.code === 0) {
-        message.success('成功')
+        message.success(t('succeed') as string)
         form.resetFields()
         props.close()
         props.confirm()
@@ -46,16 +47,16 @@ const HandOverModal = (props: any) => {
   }
   return (
     <CommonModal
-      title="离职交接"
+      title={t('quitAndHandover')}
       onClose={props.close}
       isVisible={props.visible}
       onConfirm={onConfirm}
     >
       <Wrap>
         <PinkWrap>
-          [{props.id.name}
-          ]目前参与了{list.length}
-          个项目，请指定交接项目接收人；交接后他的交接状态将更改为已交接；已经交接状态不可被项目添加及进行员工权限配置
+          [{props.id.name}]{t('currently_involved_in')}
+          {list.length}
+          {t('please_specify_the_recipient')}
         </PinkWrap>
         <Form form={form}>
           {list.map((i: any) => (
@@ -101,7 +102,7 @@ const HandOverModal = (props: any) => {
                   width: '184px',
                   marginLeft: '48px',
                 }}
-                placeholder="请选择交接人"
+                placeholder={t('pleaseSelectTheHandoverPerson') as string}
                 allowClear
                 showArrow
                 showSearch

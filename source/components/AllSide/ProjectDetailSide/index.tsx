@@ -38,7 +38,7 @@ const ProjectDetailSide = () => {
 
   const menuList = [
     {
-      name: '需求',
+      name: t('demand'),
       icon: 'demand',
       path: '/ProjectManagement/Demand',
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
@@ -46,7 +46,7 @@ const ProjectDetailSide = () => {
       ).length,
     },
     {
-      name: '迭代',
+      name: t('iteration'),
       icon: 'interation',
       path: '/ProjectManagement/Iteration',
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
@@ -208,7 +208,9 @@ const ProjectDetailSide = () => {
           <img src={projectInfo.cover} alt="" />
           <SideInfo>
             <div>{projectInfo.name}</div>
-            <span>{projectInfo.teamId ? '团队项目' : '企业项目'}</span>
+            <span>
+              {projectInfo.teamId ? t('teamwork') : t('enterprise_project')}
+            </span>
           </SideInfo>
         </SideTop>
         <Provider />
@@ -236,7 +238,7 @@ const ProjectDetailSide = () => {
               color="var(--neutral-n3)"
               size={18}
             />
-            <div>项目设置</div>
+            <div>{t('project.projectSet')}</div>
           </div>
         </SideFooter>
       </WrapDetail>
@@ -246,7 +248,9 @@ const ProjectDetailSide = () => {
           <img src={projectInfo.cover} alt="" />
           <SideInfo>
             <div>{projectInfo.name}</div>
-            <span>{projectInfo.teamId ? '团队项目' : '企业项目'}</span>
+            <span>
+              {projectInfo.teamId ? t('teamwork') : t('enterprise_project')}
+            </span>
           </SideInfo>
         </SideTop>
         <div
@@ -262,7 +266,7 @@ const ProjectDetailSide = () => {
           }}
         >
           <CommonIconFont type="left-md" />
-          <span style={{ marginLeft: '2px' }}>返回</span>
+          <span style={{ marginLeft: '2px' }}>{t('back')}</span>
         </div>
         <Provider />
         <MenuBox>

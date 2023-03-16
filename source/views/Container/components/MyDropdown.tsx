@@ -9,6 +9,7 @@ import * as services from '@/services'
 import { isArray } from 'lodash'
 import { useNavigate } from 'react-router-dom'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { t } from 'i18next'
 
 interface PropsType {
   text: string
@@ -150,13 +151,13 @@ const MyDropdown = (props: any) => {
   const [tabActive, setTabActive] = useState(0)
   const tabs = [
     {
-      label: '待办',
+      label: t('mine.needDeal'),
     },
     {
-      label: '已办',
+      label: t('have_done'),
     },
     {
-      label: '最近',
+      label: t('recently'),
     },
   ]
   const [noFinishList, setNoFinishList] = useState<any>()
@@ -165,11 +166,11 @@ const MyDropdown = (props: any) => {
   const [isOpen, setIsOpen] = useState(false)
   const box = [
     {
-      title: '最近查看',
+      title: t('last_viewed'),
       name: 'recent_see',
     },
     {
-      title: '最近创建',
+      title: t('recently_created'),
       name: 'recent_create',
     },
   ]
@@ -300,7 +301,7 @@ const MyDropdown = (props: any) => {
         </ScrollWrap>
         <Border />
         <Footer onClick={onClick}>
-          <div>查看我的工作</div>
+          <div>{t('Check_out_my_work') as string}</div>
         </Footer>
       </Container>
     )

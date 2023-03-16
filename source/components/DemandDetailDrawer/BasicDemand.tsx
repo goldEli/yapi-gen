@@ -349,7 +349,7 @@ const BasicDemand = (props: Props) => {
 
   return (
     <div>
-      <Label>基本信息</Label>
+      <Label>{t('newlyAdd.basicInfo')}</Label>
       {notFoldList?.map((i: any) => {
         return (
           <InfoItem key={i.content}>

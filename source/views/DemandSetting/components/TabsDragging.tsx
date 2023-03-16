@@ -201,7 +201,10 @@ const SliderList = (props: any) => {
       }}
     >
       {child.isCustomize === 2 ? (
-        <Tooltip placement="topRight" title={'系统字段不可编辑'}>
+        <Tooltip
+          placement="topRight"
+          title={t('system_fields_are_not_editable')}
+        >
           <ItemList>
             <div style={{ display: 'flex', width: '100%' }}>
               <IconBox>

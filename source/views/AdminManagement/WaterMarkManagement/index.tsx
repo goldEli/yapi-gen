@@ -83,7 +83,7 @@ const WaterMarkManagement = () => {
     >
       <div style={{ height: '100%' }}>
         <Header>
-          <span>安全水印</span>
+          <span>{t('secure_watermark')}</span>
         </Header>
         <Content>
           {configList.map(item => (

@@ -3,10 +3,13 @@ import styled from '@emotion/styled'
 import { Space } from 'antd'
 
 const SpaceWrap = styled(Space)({
+  width: '100%',
   display: 'flex',
   flexWrap: 'wrap',
-  justifyContent: 'center',
+  justifyContent: 'flex-start',
   padding: '10px 0',
+  position: 'absolute',
+  transition: 'translate(-50%,-50%)',
 })
 
 const AddProject = styled.div({

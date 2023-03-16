@@ -121,14 +121,14 @@ const ChildrenDemand = (props: Props) => {
 
   return (
     <div>
-      <Label>子需求</Label>
+      <Label>{t('subrequirements')}</Label>
       <CommonButton
         onClick={onCreateChild}
         type="primaryText"
         iconPlacement="left"
         icon="plus"
       >
-        创建子需求
+        {t('create_sub_requirements')}
       </CommonButton>
       {!!dataList?.list &&
         (dataList?.list?.length > 0 ? (

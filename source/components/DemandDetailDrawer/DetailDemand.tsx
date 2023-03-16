@@ -78,18 +78,18 @@ const DetailDemand = (props: DetailDemand) => {
         onConfirm={onDeleteConfirm}
       />
       <ContentItem>
-        <Label>需求描述</Label>
+        <Label>{t('requirement_description')}</Label>
         <div dangerouslySetInnerHTML={{ __html: props.detail.info }} />
       </ContentItem>
       <ContentItem>
-        <Label>标签</Label>
+        <Label>{t('label')}</Label>
         <DrawerTagComponent
           demandDetail={props.detail}
           onUpdate={props.onUpdate}
         />
       </ContentItem>
       <ContentItem>
-        <Label>附件</Label>
+        <Label>{t('common.attachment')}</Label>
         <div>
           {projectInfo?.projectPermissions?.filter(
             (i: any) => i.name === '附件上传',

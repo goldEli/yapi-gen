@@ -33,9 +33,9 @@ import { useTranslation } from 'react-i18next'
 import { setIsCreateIterationVisible } from '@store/iterate'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import helpPdf from '/Agile.pdf'
+import { t } from 'i18next'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
-  const [t] = useTranslation()
   const { language, theme } = useSelector(store => store.global)
   const dispatch = useDispatch()
   const [isChangeVisible, setIsChangeVisible] = useState(false)
@@ -62,7 +62,7 @@ const ChangeComponent = (props: { item: any; onClose(): void }) => {
       if (type === language) return
       onClose()
       await changeLanguage(type as LocaleKeys)
-      message.success(t('common.localsSwitching'))
+      message.success(t('common.localsSwitching') as string)
       dispatch({
         type: 'global/setLanguage',
         payload: type,
@@ -148,22 +148,27 @@ const HeaderRight = () => {
   const [isConfirmLogout, setIsConfirmLogout] = useState(false)
 
   const userList = [
-    { name: '语言', isRight: true, icon: 'earth', key: 0 },
-    { name: '主题切换', isRight: true, icon: 'theme', key: 1 },
-    { name: '个人资料', isRight: false, icon: 'user', key: 2 },
-    { name: '退出登录', isRight: false, icon: 'login', key: 3 },
+    { name: t('language'), isRight: true, icon: 'earth', key: 0 },
+    { name: t('theme_switching'), isRight: true, icon: 'theme', key: 1 },
+    { name: t('personal_data'), isRight: false, icon: 'user', key: 2 },
+    { name: t('container.logout'), isRight: false, icon: 'login', key: 3 },
   ]
 
   const createList = [
-    { name: '创建需求', key: 'demand', icon: 'demand', isPermission: true },
     {
-      name: '创建迭代',
+      name: t('common.createDemand'),
+      key: 'demand',
+      icon: 'demand',
+      isPermission: true,
+    },
+    {
+      name: t('common.createIterate'),
       key: 'iteration',
       icon: 'interation',
       isPermission: true,
     },
     {
-      name: '创建项目',
+      name: t('common.createProject'),
       key: 'project',
       icon: 'folder-open-nor',
       isPermission: (
@@ -320,8 +325,8 @@ const HeaderRight = () => {
     <>
       {/* 退出登录 */}
       <DeleteConfirm
-        title="确认提示"
-        text="确定要退出登录吗？"
+        title={t('confirmation_prompt') as string}
+        text={t('are_you_sure_you_want_to_log_out') as string}
         isVisible={isConfirmLogout}
         onChangeVisible={() => setIsConfirmLogout(!isConfirmLogout)}
         onConfirm={toLoginOut}
@@ -333,7 +338,7 @@ const HeaderRight = () => {
           setIsVisible(false)
         }}
         isVisible={isInfoVisible}
-        title="个人资料"
+        title={t('are_you_sure_you_want_to_log_out') as string}
         isShowFooter
         width={420}
       >

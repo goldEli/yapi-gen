@@ -161,7 +161,7 @@ export const CollapseItemContent = styled.div<{ isOpen?: boolean }>`
 
 export const Label = styled.div`
   font-size: var(--font14);
-  color: var(--neutral-n1-d1);
+  color: var(--neutral-n3);
 `
 
 export const ShowLabel = styled.div({

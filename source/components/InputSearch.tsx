@@ -54,7 +54,6 @@ const InputSearch = (props: Props) => {
       onPressEnter={(e: any) => props.onChangeSearch?.(e.target.value)}
       suffix={
         <>
-          {/* 删除按钮 */}
           {value && (
             <CommonIconFont
               type="close-circle-fill"

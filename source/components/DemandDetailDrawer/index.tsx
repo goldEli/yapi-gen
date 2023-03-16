@@ -95,10 +95,10 @@ const DemandDetailDrawer = () => {
       ?.length > 0
 
   const modeList = [
-    { name: '详细信息', key: 'detailInfo', content: '' },
-    { name: '子需求', key: 'detailDemands', content: '' },
-    { name: '基本信息', key: 'basicInfo', content: '' },
-    { name: '需求评论', key: 'demandComment', content: '' },
+    { name: t('detailed_information'), key: 'detailInfo', content: '' },
+    { name: t('subrequirements'), key: 'detailDemands', content: '' },
+    { name: t('newlyAdd.basicInfo'), key: 'basicInfo', content: '' },
+    { name: t('requirements_review'), key: 'demandComment', content: '' },
   ]
   const leftWidth = 640
 

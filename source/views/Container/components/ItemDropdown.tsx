@@ -7,6 +7,7 @@ import * as services from '@/services'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from '@store/index'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { t } from 'i18next'
 
 interface PropsType {
   text: string
@@ -114,7 +115,7 @@ const ItemDropdown = (props: PropsType) => {
     return (
       <Container>
         <ScrollWrap>
-          <Title>最近项目</Title>
+          <Title>{t('recent_projects') as string}</Title>
           {itmeMain(itemArr)}
         </ScrollWrap>
         <Border />
@@ -133,7 +134,7 @@ const ItemDropdown = (props: PropsType) => {
                 color: 'var(--neutral-n3)',
               }}
             />
-            查看所有项目
+            {t('view_all_projects') as string}
           </div>
           <div onClick={onCreate}>
             <IconFont
@@ -144,7 +145,7 @@ const ItemDropdown = (props: PropsType) => {
                 color: 'var(--neutral-n3)',
               }}
             />
-            创建项目
+            {t('common.createProject') as string}
           </div>
         </Footer>
       </Container>

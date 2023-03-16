@@ -5,6 +5,7 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { Popover, Space } from 'antd'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const ChooseColorWrap = styled.div({
   width: 80,
@@ -66,7 +67,7 @@ interface ChooseColorProps {
 
 const ChooseColor = (props: ChooseColorProps) => {
   const [isChooseColor, setIsChooseColor] = useState(false)
-
+  const [t] = useTranslation()
   const onChangeColor = (val: string) => {
     props?.onChangeValue?.(val)
     props?.onChange?.(val)
@@ -105,7 +106,7 @@ const ChooseColor = (props: ChooseColorProps) => {
     >
       <ChooseColorWrap onClick={() => setIsChooseColor(true)}>
         <img src={props?.color} />
-        <TextStyle>更换图标</TextStyle>
+        <TextStyle>{t('demandSettingSide.iconText')}</TextStyle>
       </ChooseColorWrap>
     </Popover>
   )

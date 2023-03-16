@@ -118,7 +118,9 @@ export const Card = styled.div`
   box-sizing: border-box;
   padding: 8px 12px;
   &:hover {
-    box-shadow: 0px 0px 7px 2px rgba(40, 119, 255, 20%);
+    /* box-shadow: 0px 0px 7px 2px rgba(40, 119, 255, 20%); */
+    box-shadow: none;
+    background: var(--neutral-n8);
     ${Second} {
       visibility: visible;
       opacity: 1;

@@ -10,6 +10,7 @@ import {
 } from '@store/view'
 import { getViewList } from '@store/view/thunk'
 import { Divider, Dropdown } from 'antd'
+import { t } from 'i18next'
 import { useEffect, useMemo, useState } from 'react'
 import CommonIconFont from '../CommonIconFont'
 import { dropdowncontent, Name, SetLine, TextSpan, ViewPortWrap } from './style'
@@ -22,7 +23,7 @@ const ViewPort = (props: any) => {
     {
       key: '1',
       type: 'group',
-      label: '个人视图',
+      label: t('personalView'),
       children: viewList
         ?.filter((i: any) => {
           return i.type !== 2
@@ -40,7 +41,7 @@ const ViewPort = (props: any) => {
     {
       key: '2',
       type: 'group',
-      label: '系统',
+      label: t('setting.system'),
       children: viewList
         ?.filter((i: any) => {
           return i.type === 2
@@ -74,7 +75,7 @@ const ViewPort = (props: any) => {
     if (value) {
       return value.name
     }
-    return '所有的'
+    return t('whole')
   }, [viewList, nowKey])
   return (
     <Dropdown
@@ -86,17 +87,19 @@ const ViewPort = (props: any) => {
           {menu}
           <Divider style={{ margin: 0 }} />
           <SetLine onClick={() => dispatch(changeCreateVisible(true))}>
-            <TextSpan>创建视图</TextSpan>
+            <TextSpan>{t('creating_a_view') as string}</TextSpan>
           </SetLine>
           <SetLine onClick={() => dispatch(changeViewVisible(true))}>
-            <TextSpan>管理视图</TextSpan>
+            <TextSpan>{t('view_of_administration') as string}</TextSpan>
           </SetLine>
         </div>
       )}
     >
       <ViewPortWrap>
         <CommonIconFont size={18} type="view-n" />
-        <Name>视图：{name} </Name>
+        <Name>
+          {t('view')}：{name}{' '}
+        </Name>
       </ViewPortWrap>
     </Dropdown>
   )

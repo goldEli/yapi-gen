@@ -249,13 +249,15 @@ const ProjectManagementOptimization = () => {
           marginBottom: '20px',
         }}
       >
-        <LeftTitle title="企业全部" />
+        <LeftTitle title={t('all_enterprises')} />
         <div>
           <InputSearch
             width={184}
             bgColor="var(--neutral-white-d4)"
             length={12}
-            placeholder="请输入昵称姓名邮箱电话"
+            placeholder={t(
+              'please_enter_your_nickname_name_email_phone_number',
+            )}
             onChangeSearch={(value: string) => setSearchVal(value)}
             leftIcon
           />

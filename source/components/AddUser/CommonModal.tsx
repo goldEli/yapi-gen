@@ -4,6 +4,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import { Form, message, Modal, Select, Space, Tree } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
@@ -13,8 +14,8 @@ import CommonButton from '@/components/CommonButton'
 import { useEffect, useState } from 'react'
 import Checkbox from 'antd/lib/checkbox/Checkbox'
 import CommonUserAvatar from './CommonUserAvatar'
-import { getDepartmentUserList } from '@store/teams/thunk'
 import { useDispatch, useSelector } from '@store/index'
+import { getDepartmentUserList } from '@/services/setting'
 import { unionBy } from 'lodash'
 const { DirectoryTree } = Tree
 const ModalHeader = styled.div`
@@ -204,7 +205,6 @@ interface ModalProps {
 
 const CommonModal = (props: ModalProps) => {
   const [t] = useTranslation()
-  const dispatch = useDispatch()
   const { departmentUserList } = useSelector(s => s.teams)
   const { projectInfo } = useSelector(store => store.project)
   // 添加成员拍平数组
@@ -215,16 +215,16 @@ const CommonModal = (props: ModalProps) => {
   const [tabsTreeDataList, setTabsTreeDataList] = useState<any>([])
   const [tabs, setTabs] = useState([
     {
-      label: '团队',
+      label: t('commonModal.labelTitle'),
       key: '1',
     },
     {
-      label: '部门',
+      label: t('commonModal.labelTitle1'),
       key: '2',
     },
   ])
   const [tabsActive, setTabsActive] = useState(0)
-  const treeData: any = departmentUserList
+  const [treeData, setTreeData] = useState<any>()
   const [form] = Form.useForm()
   const onInit = () => {
     setPersonData([])
@@ -245,27 +245,16 @@ const CommonModal = (props: ModalProps) => {
     } else {
       setTabs([
         {
-          label: '团队',
+          label: t('commonModal.labelTitle'),
           key: '1',
         },
         {
-          label: '部门',
+          label: t('commonModal.labelTitle1'),
           key: '2',
         },
       ])
     }
   }, [props.isVisible])
-  useEffect(() => {
-    dispatch(
-      getDepartmentUserList({
-        search: {
-          project_id: props.isPermisGroup ? projectInfo?.id : '0',
-          type: tabsActive === 0 ? 'team' : 'company',
-        },
-      }),
-    )
-  }, [tabsActive])
-
   // 勾选后获取到成员
   let checkdFilterDataList: any = []
   const checkdFilterData = (data: any) => {
@@ -279,6 +268,26 @@ const CommonModal = (props: ModalProps) => {
     }
     return checkdFilterDataList
   }
+  const getUser = async () => {
+    const res = await getDepartmentUserList({
+      search: {
+        project_id: props.isPermisGroup ? projectInfo?.id : '0',
+        type: tabsActive === 0 ? 'team' : 'company',
+      },
+    })
+    setTreeData(res)
+    // 拍平数组
+    const data = unionBy(checkdFilterData(res), 'id')
+    setTabsTreeDataList(
+      data.map((el: any) => ({ label: el.name, value: el.id, ...el })),
+    )
+    setSelectDataList(
+      data.map((el: any) => ({ label: el.name, value: el.id, ...el })),
+    )
+  }
+  useEffect(() => {
+    props.isVisible && getUser()
+  }, [props.isVisible, tabsActive])
 
   // 删除成员
   const delPersonDataList = (el: any) => {
@@ -305,7 +314,7 @@ const CommonModal = (props: ModalProps) => {
     // 得到重复node需要去重
     const data = unionBy(checkdFilterData(e.checkedNodes), 'id')
     if (e.checkedNodes.length && data.length <= personData.length) {
-      message.warning('当前部门层级下无可选成员！')
+      message.warning(t('commonModal.warnningMsg'))
     }
     setPersonData(data)
   }
@@ -321,29 +330,18 @@ const CommonModal = (props: ModalProps) => {
       setPersonData([])
     }
   }
-  // 拍平数组
-  useEffect(() => {
-    const data = unionBy(checkdFilterData(treeData), 'id')
-    setTabsTreeDataList(
-      data.map((el: any) => ({ label: el.name, value: el.id, ...el })),
-    )
-    setSelectDataList(
-      data.map((el: any) => ({ label: el.name, value: el.id, ...el })),
-    )
-  }, [departmentUserList])
 
   // 下拉框选中
   const handleChange = async (value: any) => {
     setSearchVal(value)
     const hasVal = personData.filter((el: any) => el.id === value)
     if (hasVal.length >= 1) {
-      message.warning('已存在该联系人')
+      message.warning(t('commonModal.warnningMsg1'))
     } else {
       const filterVal: any = selectDataList.filter((el: any) => el.id === value)
       setPersonData([...personData, ...filterVal])
     }
   }
-
   const onConfirm = async () => {
     if (props.isPermisGroup) {
       await form.validateFields()
@@ -391,7 +389,7 @@ const CommonModal = (props: ModalProps) => {
             onChange={e => handleChange(e)}
             optionFilterProp="label"
             options={selectDataList}
-            placeholder="搜索联系人"
+            placeholder={t('commonModal.placeMsg')}
             suffixIcon={<IconFont type="down" style={{ fontSize: 16 }} />}
           />
           {/* 部门团队切换 */}
@@ -414,7 +412,7 @@ const CommonModal = (props: ModalProps) => {
               checked={personData?.length === tabsTreeDataList?.length}
               onChange={(e: any) => checkAllChange(e)}
             >
-              全选
+              {t('commonModal.checkBoxTitle')}
             </Checkbox>
           </Row>
           <TreeStyle
@@ -442,9 +440,10 @@ const CommonModal = (props: ModalProps) => {
         <RightPerson>
           <Header>
             <span>
-              已选{personData?.length}/{tabsTreeDataList?.length}
+              {t('commonModal.selected')}
+              {personData?.length}/{tabsTreeDataList?.length}
             </span>
-            <span onClick={() => clearPerson()}>清空</span>
+            <span onClick={() => clearPerson()}>{t('commonModal.clear')}</span>
           </Header>
           {personData.map((el: any) => (
             <ListItem key={el.id}>

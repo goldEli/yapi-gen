@@ -76,7 +76,7 @@ const titleCss = css`
 `
 
 const title1Css = css`
-  color: var(--neutral-n1-d1);
+  color: var(--neutral-n2);
   font-size: 24px;
 `
 const title1Css1 = css`
@@ -85,12 +85,12 @@ const title1Css1 = css`
 `
 
 const title2Css = css`
-  color: var(--neutral-n1-d1);
+  color: var(--neutral-n2);
   font-size: 12px;
 `
 
 const chartsTitle = css`
-  color: var(--neutral-n1-d1);
+  color: var(--neutral-n2);
   font-size: 12px;
   margin-bottom: 10px;
 `
@@ -132,6 +132,7 @@ const ChartsWrap = styled.div`
   box-sizing: border-box;
   padding: 16px 24px;
   border-radius: 6px;
+  box-shadow: 0px 0px 7px 6px rgba(0, 0, 0, 0.06);
 `
 const HasIconMenu = styled.div<{ isCheck?: boolean }>(
   {
@@ -154,19 +155,19 @@ const HasIconMenu = styled.div<{ isCheck?: boolean }>(
     },
     '&: hover': {
       '.label': {
-        color: 'var(--neutral-n1-d1)',
+        color: 'var(--neutral-n3)',
       },
       '.icon': {
-        color: 'var(--neutral-n1-d1)',
+        color: 'var(--neutral-n3)',
       },
     },
   },
   ({ isCheck }) => ({
     '.label': {
-      color: isCheck ? 'var(--auxiliary-b1)!important' : 'var(--neutral-n2)',
+      color: isCheck ? 'var(--auxiliary-b1)!important' : 'var(--neutral-n3)',
     },
     '.icon': {
-      color: isCheck ? 'var(--auxiliary-b1)!important' : 'var(--neutral-n2)',
+      color: isCheck ? 'var(--auxiliary-b1)!important' : 'var(--neutral-n3)',
     },
   }),
 )
@@ -181,7 +182,7 @@ const HoverWrap = styled.div<{ isActive?: any }>(
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
-    color: 'var(--neutral-n2)',
+    color: 'var(--neutral-n3) !important',
     '.iconMain': {
       marginRight: 8,
       fontSize: 18,
@@ -191,12 +192,12 @@ const HoverWrap = styled.div<{ isActive?: any }>(
     },
     '&: hover': {
       background: 'var(--neutral-n9)',
-      color: 'var(--neutral-n1-d1)',
+      color: 'var(--neutral-n3)',
     },
   },
   ({ isActive }) => ({
     background: isActive ? 'var(--neutral-n9)' : 'var(--neutral-white-d2)',
-    color: isActive ? 'var(--neutral-n1-d1)!important' : 'var(--neutral-n2)',
+    color: isActive ? 'var(--neutral-n3)!important' : 'var(--neutral-n3)',
   }),
 )
 
@@ -582,11 +583,11 @@ const StatusWrap = styled.div<{ isShow?: boolean; state?: number }>(
     cursor: isShow ? 'pointer' : 'inherit',
     color:
       state === 1
-        ? 'var(--neutral-n7)'
+        ? 'var(--neutral-white-d7)'
         : state === 2
         ? 'var(--neutral-n1-d1)'
         : state === 3
-        ? 'var(--neutral-n7)'
+        ? 'var(--neutral-white-d7)'
         : '',
     background:
       state === 1
@@ -808,10 +809,18 @@ const StatusTag = styled.div<{ status: number }>(
         : 'var(--neutral-n3)',
     background:
       status === 1
-        ? 'var(--neutral-n6-d1)'
+        ? 'var(--selected)'
         : status === 2
-        ? 'var(--neutral-n6-d1)'
-        : 'var(--neutral-n7)',
+        ? 'var(--function-tag2)'
+        : 'var(--function-tag6)',
+    '&:hover': {
+      background:
+        status === 1
+          ? 'var(--selected) !important'
+          : status === 2
+          ? 'var(--function-tag2)!important'
+          : 'var(--function-tag6)!important',
+    },
   }),
 )
 

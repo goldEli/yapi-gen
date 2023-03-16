@@ -176,7 +176,7 @@ const CreateIteration = () => {
           </Form.Item>
           <ItemWrap size={24}>
             <Form.Item
-              label="选择项目"
+              label={t('optionProject')}
               rules={[{ required: true, message: '' }]}
               name="projectId"
             >

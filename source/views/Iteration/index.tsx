@@ -105,7 +105,7 @@ const Item = styled.div<{ activeIdx: boolean }>(
       fontSize: 14,
       fontWeight: 400,
       marginRight: 4,
-      color: 'var(--neutral-n1-d2)',
+      color: 'var(--neutral-n2)',
       display: 'inline-block',
       height: 50,
       lineHeight: '50px',
@@ -549,7 +549,7 @@ const Iteration = () => {
 
   return (
     <PermissionWrap
-      auth="迭代"
+      auth={t('iteration')}
       permission={projectInfo?.projectPermissions?.map(
         (i: any) => i.group_name,
       )}
