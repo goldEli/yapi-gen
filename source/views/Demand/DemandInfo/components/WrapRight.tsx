@@ -52,7 +52,7 @@ const TitleWrap = styled.div<{ activeTabs?: any }>(
   },
   ({ activeTabs }) => ({
     '.leftWrap': {
-      color: activeTabs === 1 ? 'var(--primary-d2)' : 'var(--neutral-n3',
+      color: activeTabs === 1 ? 'var(--primary-d2)' : 'var(--neutral-n3)',
       border:
         activeTabs === 1
           ? '1px solid var(--primary-d2)'
@@ -61,7 +61,7 @@ const TitleWrap = styled.div<{ activeTabs?: any }>(
       borderRight: activeTabs === 1 ? '' : 'none',
     },
     '.rightWrap': {
-      color: activeTabs === 2 ? 'var(--primary-d2)' : 'var(--neutral-n3',
+      color: activeTabs === 2 ? 'var(--primary-d2)' : 'var(--neutral-n3)',
       border:
         activeTabs === 2
           ? '1px solid var(--primary-d2)'

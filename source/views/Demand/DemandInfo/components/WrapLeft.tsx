@@ -208,11 +208,17 @@ const WrapLeftBox = () => {
                     >
                       <IconFont
                         style={{
-                          color: 'var(--primary-d2)F',
+                          color: 'var(--primary-d2)',
                         }}
                         type="plus"
                       />
-                      <div>{t('p2.addAdjunct')}</div>
+                      <div
+                        style={{
+                          color: 'var(--primary-d2)',
+                        }}
+                      >
+                        {t('p2.addAdjunct')}
+                      </div>
                     </AddWrap>
                   }
                 />

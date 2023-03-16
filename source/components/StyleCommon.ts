@@ -582,11 +582,11 @@ const StatusWrap = styled.div<{ isShow?: boolean; state?: number }>(
     cursor: isShow ? 'pointer' : 'inherit',
     color:
       state === 1
-        ? 'var(--neutral-n7)'
+        ? 'var(--neutral-white-d7)'
         : state === 2
         ? 'var(--neutral-n1-d1)'
         : state === 3
-        ? 'var(--neutral-n7)'
+        ? 'var(--neutral-white-d7)'
         : '',
     background:
       state === 1
