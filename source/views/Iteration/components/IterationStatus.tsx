@@ -62,7 +62,7 @@ const IterationStatus = (props: Props) => {
       }}
     >
       <LiWrap color="var(--selected)" onClick={e => onClick(1, e)}>
-        <StatusTag status={1}>{t('common.opening1')}123</StatusTag>
+        <StatusTag status={1}>{t('common.opening1')}</StatusTag>
       </LiWrap>
 
       <LiWrap color="var(--function-tag2)" onClick={e => onClick(2, e)}>
