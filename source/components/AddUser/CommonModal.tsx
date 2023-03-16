@@ -214,11 +214,11 @@ const CommonModal = (props: ModalProps) => {
   const [tabsTreeDataList, setTabsTreeDataList] = useState<any>([])
   const [tabs, setTabs] = useState([
     {
-      label: '团队',
+      label: t('commonModal.labelTitle'),
       key: '1',
     },
     {
-      label: '部门',
+      label: t('commonModal.labelTitle1'),
       key: '2',
     },
   ])
@@ -244,11 +244,11 @@ const CommonModal = (props: ModalProps) => {
     } else {
       setTabs([
         {
-          label: '团队',
+          label: t('commonModal.labelTitle'),
           key: '1',
         },
         {
-          label: '部门',
+          label: t('commonModal.labelTitle1'),
           key: '2',
         },
       ])
@@ -306,7 +306,7 @@ const CommonModal = (props: ModalProps) => {
     // 得到重复node需要去重
     const data = unionBy(checkdFilterData(e.checkedNodes), 'id')
     if (e.checkedNodes.length && data.length <= personData.length) {
-      message.warning('当前部门层级下无可选成员！')
+      message.warning(t('commonModal.warnningMsg'))
     }
     setPersonData(data)
   }
@@ -338,7 +338,7 @@ const CommonModal = (props: ModalProps) => {
     setSearchVal(value)
     const hasVal = personData.filter((el: any) => el.id === value)
     if (hasVal.length >= 1) {
-      message.warning('已存在该联系人')
+      message.warning(t('commonModal.warnningMsg1'))
     } else {
       const filterVal: any = selectDataList.filter((el: any) => el.id === value)
       setPersonData([...personData, ...filterVal])
@@ -392,7 +392,7 @@ const CommonModal = (props: ModalProps) => {
             onChange={e => handleChange(e)}
             optionFilterProp="label"
             options={selectDataList}
-            placeholder="搜索联系人"
+            placeholder={t('commonModal.placeMsg')}
             suffixIcon={<IconFont type="down" style={{ fontSize: 16 }} />}
           />
           {/* 部门团队切换 */}
@@ -415,7 +415,7 @@ const CommonModal = (props: ModalProps) => {
               checked={personData?.length === tabsTreeDataList?.length}
               onChange={(e: any) => checkAllChange(e)}
             >
-              全选
+              {t('commonModal.checkBoxTitle')}
             </Checkbox>
           </Row>
           <TreeStyle
@@ -443,9 +443,10 @@ const CommonModal = (props: ModalProps) => {
         <RightPerson>
           <Header>
             <span>
-              已选{personData?.length}/{tabsTreeDataList?.length}
+              {t('commonModal.selected')}
+              {personData?.length}/{tabsTreeDataList?.length}
             </span>
-            <span onClick={() => clearPerson()}>清空</span>
+            <span onClick={() => clearPerson()}>{t('commonModal.clear')}</span>
           </Header>
           {personData.map((el: any) => (
             <ListItem key={el.id}>

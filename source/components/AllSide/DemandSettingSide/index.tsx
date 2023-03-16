@@ -184,16 +184,16 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
           <img src={projectInfo?.cover} alt="" />
           <SideInfo>
             <div>{projectInfo?.name}</div>
-            <span> 团队项目 </span>
+            <span> {t('demandSettingSide.teamProject')} </span>
           </SideInfo>
         </SideTop>
         <BackStyle onClick={onGoBack}>
           <CommonIconFont type="left-md" onClick={onGoBack} />
-          <span>返回</span>
+          <span>{t('demandSettingSide.back')}</span>
         </BackStyle>
         <Provider />
         <TitleStyle>
-          <span>需求类别</span>{' '}
+          <span>{t('demandSettingSide.classification')}</span>{' '}
           {isCreate && (
             <IconFontStyle type="plus" onClick={() => setIsVisible(true)} />
           )}
@@ -234,7 +234,7 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
             <NoDataCreateWrap>
               <div className="top">
                 <IconFont type="Warning" />
-                <div>暂无类别，创建一个吧~</div>
+                <div>{t('demandSettingSide.noData')}</div>
               </div>
               <div className="bottom">
                 {isCreate && (
@@ -244,7 +244,7 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
                     style={{ cursor: 'pointer' }}
                   >
                     <IconFont type="plus" />
-                    <div>创建类别</div>
+                    <div>{t('demandSettingSide.addClass')}</div>
                   </div>
                 )}
               </div>

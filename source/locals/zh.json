@@ -26,7 +26,6 @@
   "all_team_members_are_visible_only_project_members_can_edit": "团队内所有成员可见，仅项目成员可编辑",
   "project_description": "项目描述",
   "please_enter_project_description": "请输入项目描述",
-
   "new_p1": {
     "a1": "评论",
     "a2": "添加评论",
@@ -800,5 +799,23 @@
     "delPeople": "确认要删除当前成员？",
     "change": "更改状态成功",
     "waring": "禁止特殊字符"
+  },
+  "commonModal": {
+    "labelTitle": "团队",
+    "labelTitle1": "部门",
+    "warnningMsg": "当前部门层级下无可选成员！",
+    "warnningMsg1": "已存在该联系人",
+    "placeMsg": "搜索联系人",
+    "checkBoxTitle": "全选",
+    "selected": "已选",
+    "clear": "清空"
+  },
+  "demandSettingSide": {
+    "iconText": "更换图标",
+    "teamProject": "团队项目",
+    "back": "返回",
+    "classification": "需求类别",
+    "noData": "暂无类别，创建一个吧~",
+    "addClass": "创建类别"
   }
 }

@@ -798,5 +798,23 @@
     "delPeople": "Are you sure you want to delete the current member?",
     "change": "Status changed successfully",
     "waring": "no special characters"
+  },
+  "commonModal": {
+    "labelTitle": "Team",
+    "labelTitle1": "Department",
+    "warnningMsg": "There is no optional member under the current department level!",
+    "warnningMsg1": "This contact already exists",
+    "placeMsg": "Search contacts",
+    "checkBoxTitle": "Select All",
+    "selected": "Selected",
+    "clear": "Empty"
+  },
+  "demandSettingSide": {
+    "iconText": "Change icon",
+    "teamProject": "Team project",
+    "back": "Back",
+    "classification": "Demand category",
+    "noData": "There is no category. Create one~",
+    "addClass": "Create Category"
   }
 }
