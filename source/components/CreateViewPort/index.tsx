@@ -61,7 +61,7 @@ const CreateViewPort = (props: any) => {
           <Form.Item
             label={<FormTitleSmall text={t('name_of_view')} />}
             name="name"
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            rules={[{ required: true, message: '' }]}
           >
             <Input
               maxLength={20}

@@ -330,14 +330,13 @@ const CreateAProjectForm = () => {
             <Form.Item
               label={<FormTitleSmall text={t('project_name')} />}
               name="name"
-              rules={[
-                { required: true, message: 'Please input your username!' },
-              ]}
+              rules={[{ required: true, message: '' }]}
             >
               <Input
                 maxLength={30}
                 placeholder={t('please_enter_a_project_name')}
                 onChange={onChange}
+                allowClear
               />
             </Form.Item>
 

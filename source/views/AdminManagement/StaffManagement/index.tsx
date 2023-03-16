@@ -118,6 +118,9 @@ const StaffManagement = () => {
   const [allTitleList, setAllTitleList] = useState<any[]>([])
   const hasCheck = getIsPermission(userInfo?.company_permissions, 'b/user/info')
   const navigate = useNavigate()
+  const isHaveCheck = userInfo?.company_permissions?.filter(
+    (i: any) => i.identity === 'b/companyuser/info',
+  )?.length
 
   const getStaffListData = async () => {
     setIsSpinning(true)
@@ -296,7 +299,8 @@ const StaffManagement = () => {
         },
       },
     ]
-    return [...arrList, ...newList, ...lastList]
+    const resultLast = isHaveCheck ? lastList : []
+    return [...arrList, ...newList, ...resultLast]
   }, [titleList, titleList2, columns])
 
   const showModal = () => {

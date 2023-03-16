@@ -324,7 +324,7 @@ const LeftSide = (props: any) => {
           <Form.Item
             label={t('team_name') as string}
             name="username"
-            rules={[{ required: true, message: t('please_enter_a_team_name') }]}
+            rules={[{ required: true, message: '' }]}
           >
             <InputStyle
               placeholder={t('please_enter_a_team_name')}

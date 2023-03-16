@@ -215,7 +215,7 @@ const RightTable = () => {
           <Form.Item
             label={t('team_role') as string}
             name="team_is_admin"
-            rules={[{ required: true, message: t('please_enter_a_team_name') }]}
+            rules={[{ required: true, message: '' }]}
           >
             <SelectStyle
               getPopupContainer={node => node}
