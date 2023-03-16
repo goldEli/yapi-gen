@@ -183,6 +183,8 @@ const EditFiled = (props: Props) => {
         { value: '', key: new Date().getTime() },
         { value: '', key: new Date().getTime() + 100 },
       ])
+      const type = props.fieldType.type
+      setValue(type)
     }
   }, [props?.item, props.isVisible])
 
