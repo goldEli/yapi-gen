@@ -1,7 +1,6 @@
 // 我的模块所有页面公用布局
 
 import { useEffect, useState } from 'react'
-import { StaffHeader } from '@/components/StyleCommon'
 import CommonNeed from './CommonNeed'
 import MineSwiper from '../components/MineSwiper'
 import PermissionWrap from '@/components/PermissionWrap'
@@ -11,15 +10,15 @@ import { useSelector } from '@store/index'
 import { getMineProjectList } from '@/services/mine'
 
 const MainWrap = styled.div({
-  height: 'calc(100% - 64px)',
-  overflow: 'auto',
+  height: 'calc(100% - 190px)',
+  // overflow: 'auto',
+  padding: '0px  16px',
 })
 
 interface Props {
   title: any
   type: any
   subTitle: any
-  auth: any
 }
 
 const MainIndex = (props: Props) => {
@@ -48,21 +47,15 @@ const MainIndex = (props: Props) => {
   }
 
   return (
-    <PermissionWrap
-      auth={props?.auth}
-      permission={userInfo?.company_permissions}
-    >
-      <StaffHeader>{props?.title}</StaffHeader>
-      <MainWrap>
-        <MineSwiper data={swiperData} onTap={getProjectId} />
-        <CommonNeed
-          id={projectId}
-          title={props?.title}
-          type={props?.type}
-          subTitle={props?.subTitle}
-        />
-      </MainWrap>
-    </PermissionWrap>
+    <MainWrap>
+      <MineSwiper data={swiperData} onTap={getProjectId} />
+      <CommonNeed
+        id={projectId}
+        title={props?.title}
+        type={props?.type}
+        subTitle={props?.subTitle}
+      />
+    </MainWrap>
   )
 }
 

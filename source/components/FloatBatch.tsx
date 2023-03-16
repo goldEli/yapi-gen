@@ -85,16 +85,12 @@ const FloatBatch = (props: Props) => {
   const onCopy = () => {
     let text: any = ''
     let beforeUrl: any
-    if (import.meta.env.MODE === 'production') {
-      beforeUrl = window.origin
-    } else {
-      beforeUrl = `${window.origin}${import.meta.env.__URL_ALIAS__}`
-    }
+    beforeUrl = `${window.origin}${import.meta.env.__URL_HASH__}`
     props.selectRows?.forEach((element: any) => {
       const params = encryptPhp(
         JSON.stringify({ type: 'info', id: projectId, demandId: element.id }),
       )
-      const url = `/Detail/Demand?data=${params}`
+      const url = `/ProjectManagement/Demand?data=${params}`
       text += `【${element.name}】 ${beforeUrl}${url} \n`
     })
     copyLink(text, t('version2.copyLinkSuccess'), t('version2.copyLinkError'))

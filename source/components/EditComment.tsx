@@ -5,16 +5,17 @@
 /* eslint-disable camelcase */
 
 /* eslint-disable no-cond-assign */
-import { getStaffList2 } from '@/services/staff'
-import { LabelTitle } from '@/views/Information/components/WhiteDay'
-import UploadAttach from '@/views/Project/Detail/Demand/components/UploadAttach'
+import { getStaffListAll } from '@/services/staff'
+import { LabelTitle } from '@/views/LogManagement/components/WhiteDay'
+import UploadAttach from '@/components/UploadAttach'
 import { Form, message } from 'antd'
 import { createRef, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonModal from './CommonModal'
-import Editor from './Editor'
 import IconFont from './IconFont'
 import { AddWrap } from './StyleCommon'
+import { uploadFileToKey } from '@/services/cos'
+import { Editor, EditorRef } from '@xyfe/uikit'
 
 const EditComment = (props: any) => {
   const [form] = Form.useForm()
@@ -22,9 +23,9 @@ const EditComment = (props: any) => {
   const editable = useRef<HTMLInputElement>(null)
   const attachDom: any = createRef()
   const [t] = useTranslation()
-
+  const editorRef = useRef<EditorRef>(null)
   const init = async () => {
-    const companyList = await getStaffList2({ all: 1 })
+    const companyList = await getStaffListAll({ all: 1 })
 
     const filterCompanyList = companyList.map((item: any) => ({
       id: item.id,
@@ -120,7 +121,7 @@ const EditComment = (props: any) => {
         style={{
           height: 'calc(90vh - 40vh)',
           overflow: 'scroll',
-          paddingRight: '24px',
+          padding: '0 24px',
         }}
       >
         <Form
@@ -169,11 +170,28 @@ const EditComment = (props: any) => {
             ]}
           >
             <Editor
-              at
-              staffList={arr}
-              height={178}
-              autoFocus
-              placeholder={t('new_p1.kongN')}
+              ref={editorRef}
+              key={Math.random()}
+              upload={file => {
+                const key = uploadFileToKey(
+                  file,
+                  file.name,
+                  `richEditorFiles_${new Date().getTime()}`,
+                  false,
+                  data => {
+                    editorRef.current?.notifyUploaded(data.key, data.url)
+                  },
+                )
+                return key
+              }}
+              getSuggestions={() => {
+                return new Promise(resolve => {
+                  setTimeout(() => {
+                    resolve([])
+                    // resolve(options)
+                  }, 1000)
+                })
+              }}
             />
           </Form.Item>
           <Form.Item

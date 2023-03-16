@@ -8,11 +8,19 @@ import counterReducer from './counterSlice'
 import waterReducer from './waterState'
 import companyInfo from './companyInfo'
 import user from './user'
-import member from './member'
+import memberInfo from './memberInfo'
 import mine from './mine'
 import project from './project'
 import demand from './demand'
 import iterate from './iterate'
+import global from './global'
+import cover from './cover/index'
+import view from './view/index'
+import createProject from './create-propject/index'
+import teams from './teams'
+import colorText from './color-text'
+import category from './category'
+import log from './log'
 
 export const store = configureStore({
   reducer: {
@@ -20,11 +28,19 @@ export const store = configureStore({
     water: waterReducer,
     user,
     companyInfo,
-    member,
+    memberInfo,
     mine,
     project,
     demand,
     iterate,
+    global,
+    cover,
+    view,
+    createProject,
+    teams,
+    category,
+    colorText,
+    log,
   },
 })
 

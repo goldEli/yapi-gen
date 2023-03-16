@@ -1,4 +1,3 @@
-import useWatchLine from '@/hooks/useWatchLine'
 /* eslint-disable no-undefined */
 /* eslint-disable no-lonely-if */
 /* eslint-disable require-atomic-updates */
@@ -200,10 +199,12 @@ export const post = <Payload, Result = any>(
 export const put = <Payload, Result = any>(
   key: UrlKeys | string,
   data?: any,
+  options?: any,
 ) => {
-  return client.put<Payload, Result>(urls[key as UrlKeys] || key, data)
+  return client.put<Payload, Result>(urls[key as UrlKeys] || key, data, {
+    search: options,
+  })
 }
-
 export const patch = <Payload, Result = any>(
   key: UrlKeys | string,
   data?: any,

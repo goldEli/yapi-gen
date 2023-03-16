@@ -1,52 +1,33 @@
-/* eslint-disable no-undefined */
-// 项目主页
-/* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable max-params */
-/* eslint-disable react-hooks/exhaustive-deps */
-import styled from '@emotion/styled'
-import Filter from './components/Filter'
-import MainGrid from './components/MainGrid'
-import MainTable from './components/MainTable'
-import EditProject from './components/EditProject'
-import { useEffect, useState } from 'react'
+/* eslint-disable no-undefined */
+import CommonButton from '@/components/CommonButton'
+import CreateActionBar from '@/components/CreateActionBar'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import { message, Spin } from 'antd'
-import PermissionWrap from '@/components/PermissionWrap'
-import { getIsPermission } from '@/tools/index'
-import { useTranslation } from 'react-i18next'
-import WrapLeftBox from './components/WrapLeft'
+import IconFont from '@/components/IconFont'
+import InputSearch from '@/components/InputSearch'
+import LeftTitle from '@/components/LeftTitle'
+import MainGrid from '@/components/MainGrid/MainGrid'
+import MainTable from '@/components/MainTable/MainTable'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
 import useSetTitle from '@/hooks/useSetTitle'
-import { useDispatch, useSelector } from '@store/index'
 import {
   deleteProject,
   getProjectList,
   openProject,
   stopProject,
 } from '@/services/project'
+import { getProjectCover } from '@store/cover/thunks'
+import { changeCreateVisible, onRest } from '@store/create-propject'
+import { useDispatch, useSelector } from '@store/index'
 import { setIsRefreshGroup } from '@store/project'
+import { message, Spin } from 'antd'
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Content, Wrap } from './style'
 
-const Content = styled.div<{ isGrid: boolean }>(
-  {
-    background: '#F5F7FA',
-    height: 'calc(100% - 64px)',
-  },
-  ({ isGrid }) => ({
-    padding: isGrid ? '24px 24px 24px 16px' : '16px 16px 0 16px',
-  }),
-)
-
-const Wrap = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
-`
-
-const WrapRight = styled.div`
-  width: calc(100% - 220px);
-`
-
-const Project = () => {
+const ProjectManagementOptimization = () => {
   const [t] = useTranslation()
+  const dispatch = useDispatch()
   const asyncSetTtile = useSetTitle()
   asyncSetTtile(t('title.project'))
   const [isGrid, setIsGrid] = useState(true)
@@ -65,8 +46,10 @@ const Project = () => {
   const [projectList, setProjectList] = useState<any>({
     list: undefined,
   })
-  const dispatch = useDispatch()
-
+  const isRest = useSelector(state => state.createProject.isRest)
+  const { groupId: storeGid, typeId } = useSelector(
+    state => state.createProject,
+  )
   const getList = async (
     active: number,
     isTable: boolean,
@@ -100,24 +83,20 @@ const Project = () => {
     const result = await getProjectList(params)
     setProjectList(result)
     setIsSpinning(false)
+    dispatch(onRest(false))
   }
 
   useEffect(() => {
     getList(activeType, isGrid, isHidden, searchVal, order, pageObj, groupId)
-  }, [isHidden, activeType, order, searchVal, isGrid, pageObj, groupId])
+  }, [isHidden, activeType, order, searchVal, isGrid, pageObj, groupId, isRest])
+
+  useEffect(() => {
+    dispatch(getProjectCover())
+  }, [])
 
   // 更新列表
   const onUpdate = () => {
     getList(activeType, isGrid, isHidden, searchVal, order, pageObj, groupId)
-  }
-
-  const onChangeType = (type: number) => {
-    setActiveType(type)
-    setGroupId(null)
-    setPageObj({
-      page: 1,
-      size: pageObj.size,
-    })
   }
 
   const onChangeHidden = (hidden: boolean) => {
@@ -209,7 +188,7 @@ const Project = () => {
   }
 
   const onAddClick = () => {
-    setIsVisible(true)
+    dispatch({ type: 'createProject/changeCreateVisible', payload: true })
     setOperationDetail({})
   }
 
@@ -228,14 +207,31 @@ const Project = () => {
     })
   }
 
-  // 切换分组查询列表
-  const onChangeGroup = (id: number) => {
-    setGroupId(id)
-    setActiveType(-1)
-  }
+  useEffect(() => {
+    if (storeGid) {
+      setGroupId(storeGid)
+      setActiveType(-1)
+    }
+  }, [storeGid])
+  useEffect(() => {
+    if (typeId || typeId === 0) {
+      setActiveType(typeId)
+      setGroupId(null)
+      setPageObj({
+        page: 1,
+        size: pageObj.size,
+      })
+    }
+  }, [typeId])
 
   return (
-    <div style={{ height: '100%', overflow: 'auto' }}>
+    <div>
+      <DeleteConfirm
+        text={t('mark.delP')}
+        isVisible={isDelete}
+        onChangeVisible={() => setIsDelete(!isDelete)}
+        onConfirm={onDeleteConfirm}
+      />
       <DeleteConfirm
         title={t('mark.endP')}
         text={t('common.stopProjectToast', { name: operationDetail?.name })}
@@ -243,77 +239,89 @@ const Project = () => {
         onChangeVisible={() => setIsStop(!isStop)}
         onConfirm={onStopProject}
       />
-      <PermissionWrap
-        auth="b/project/get"
-        permission={userInfo?.company_permissions}
+
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          height: '32px',
+          padding: '20px 24px',
+          marginBottom: '20px',
+        }}
       >
-        <DeleteConfirm
-          text={t('mark.delP')}
-          isVisible={isDelete}
-          onChangeVisible={() => setIsDelete(!isDelete)}
-          onConfirm={onDeleteConfirm}
-        />
-
-        <EditProject
-          activeType={activeType}
-          groupId={groupId}
-          visible={isVisible}
-          onChangeVisible={() => setIsVisible(!isVisible)}
-          details={operationDetail}
-          onUpdate={onUpdate}
-        />
-
-        <Wrap>
-          <WrapLeftBox
-            onAddClick={onAddClick}
-            onChangeType={onChangeType}
-            activeType={activeType}
-            onChangeGroup={onChangeGroup}
-            isPermission={getIsPermission(
-              userInfo?.company_permissions,
-              'b/project/save',
-            )}
+        <LeftTitle title="企业全部" />
+        <div>
+          <InputSearch
+            width={184}
+            bgColor="var(--neutral-white-d4)"
+            length={12}
+            placeholder="请输入昵称姓名邮箱电话"
+            onChangeSearch={(value: string) => setSearchVal(value)}
+            leftIcon
           />
-          <WrapRight>
-            <Filter
-              sort={order.key}
-              isGrid={isGrid}
-              activeType={activeType}
-              onChangeSort={onChangeSort}
-              onChangeFormat={onChangeGrid}
-              onChangeHidden={onChangeHidden}
-              onChangeSearch={onChangeSearch}
-            />
-            <Content isGrid={isGrid}>
-              <Spin spinning={isSpinning}>
-                {isGrid ? (
-                  <MainGrid
-                    onChangeVisible={() => setIsVisible(true)}
-                    onChangeOperation={onChangeOperation}
-                    onAddClear={() => setOperationDetail({})}
-                    hasFilter={searchVal.length > 0 || isHidden}
-                    projectList={projectList}
-                  />
-                ) : (
-                  <MainTable
-                    onChangeOperation={(e, type, item) =>
-                      onChangeOperation(e, type, item)
-                    }
-                    onChangePageNavigation={onChangePageNavigation}
-                    onUpdateOrderKey={onUpdateOrderKey}
-                    order={order}
-                    onAddClick={onAddClick}
-                    hasFilter={searchVal.length > 0 || isHidden}
-                    projectList={projectList}
-                  />
-                )}
-              </Spin>
-            </Content>
-          </WrapRight>
-        </Wrap>
-      </PermissionWrap>
+        </div>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          height: '32px',
+          padding: '20px 24px',
+          margin: '20px 0 ',
+        }}
+      >
+        {(
+          userInfo.company_permissions?.map((i: any) => i.identity) || []
+        ).includes('b/project/save') && (
+          <CommonButton
+            type="primary"
+            onClick={() => dispatch(changeCreateVisible(true))}
+          >
+            <span>
+              <IconFont type="plus" style={{ fontSize: 15 }} />
+              创建项目
+            </span>
+          </CommonButton>
+        )}
+
+        <CreateActionBar
+          sort={order.key}
+          isGrid={isGrid}
+          activeType={activeType}
+          onChangeSort={onChangeSort}
+          onChangeFormat={onChangeGrid}
+          onChangeHidden={onChangeHidden}
+          onChangeSearch={onChangeSearch}
+        />
+      </div>
+      <Wrap>
+        <Content isGrid={isGrid}>
+          <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
+            {isGrid ? (
+              <MainGrid
+                onChangeVisible={() => setIsVisible(true)}
+                onChangeOperation={onChangeOperation}
+                onAddClear={() => setOperationDetail({})}
+                hasFilter={searchVal.length > 0 || isHidden}
+                projectList={projectList}
+              />
+            ) : (
+              <MainTable
+                onChangeOperation={onChangeOperation}
+                onChangePageNavigation={onChangePageNavigation}
+                onUpdateOrderKey={onUpdateOrderKey}
+                order={order}
+                onAddClick={onAddClick}
+                hasFilter={searchVal.length > 0 || isHidden}
+                projectList={projectList}
+              />
+            )}
+          </Spin>
+        </Content>
+      </Wrap>
     </div>
   )
 }
 
-export default Project
+export default ProjectManagementOptimization

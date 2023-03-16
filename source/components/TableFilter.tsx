@@ -1,3 +1,4 @@
+/* eslint-disable no-delete-var */
 // 公用列表筛选组件
 
 /* eslint-disable no-param-reassign */
@@ -10,12 +11,15 @@ import styled from '@emotion/styled'
 import { Form, Select, Popover, Collapse, Input, TreeSelect } from 'antd'
 import IconFont from './IconFont'
 import moment from 'moment'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { SearchLine } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
 import RangePicker from './RangePicker'
 import { useDispatch, useSelector } from '@store/index'
 import { setFilterKeys } from '@store/project'
+import { onTapSearchChoose, saveScreen, saveValue } from '@store/view'
+import MoreSelect from './MoreSelect'
+import { useGetloginInfo } from '@/hooks/useGetloginInfo'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -48,7 +52,7 @@ export const SelectWrap = styled(Select)`
   }
 
   .ant-select-selection-placeholder {
-    color: #bfbdbb;
+    color: var(--neutral-n4);
   }
 `
 
@@ -83,10 +87,10 @@ const DelButton = styled.div`
   z-index: 2;
   .icon {
     font-size: 16px;
-    color: #969799;
+    color: var(--neutral-n3);
     cursor: pointer;
     &:hover {
-      color: #2877ff;
+      color: var(--primary-d2);
     }
   }
 `
@@ -95,7 +99,7 @@ export const SelectWrapBedeck = styled.div`
   height: 32px;
   position: relative;
   height: 32px;
-  border: 1px solid #ebedf0;
+  border: 1px solid var(--active);
   display: flex;
   align-items: center;
   border-radius: 6px;
@@ -120,7 +124,7 @@ export const SelectWrapBedeck = styled.div`
 `
 
 const CollapseDiv = styled.div({
-  color: '#646566',
+  color: 'var(--neutral-n2)',
   minHeight: 35,
   fontSize: 14,
   display: 'flex',
@@ -129,7 +133,7 @@ const CollapseDiv = styled.div({
   cursor: 'pointer',
   padding: '0 16px',
   '&: hover': {
-    background: '#f4f5f5',
+    background: 'var(--neutral-n7)',
     color: 'black',
   },
 })
@@ -138,7 +142,7 @@ const danweiCss = css`
   font-size: 14px;
   font-family: PingFang SC-Regular, PingFang SC;
   font-weight: 400;
-  color: #323233;
+  color: var(--neutral-n1-d1);
   line-height: 22px;
   margin: 0 16px;
 `
@@ -160,7 +164,7 @@ const CollapseWrap = styled(Collapse)({
     direction: 'rtl',
     display: 'flex',
     justifyContent: 'space-between',
-    color: '#646566',
+    color: 'var( --neutral-n2)',
     '.ant-collapse-arrow': {
       margin: '0 0 0 8px',
     },
@@ -258,6 +262,8 @@ export const NumericInput2 = (props: any) => {
 
 const TableFilter = (props: any) => {
   const [t] = useTranslation()
+  const info = useGetloginInfo()
+  const { searchChoose } = useSelector(store => store.view)
   const { list, basicsList, specialList, customList } = props
   const [form] = Form.useForm()
   const { filterKeys, projectInfoValues } = useSelector(store => store.project)
@@ -294,7 +300,7 @@ const TableFilter = (props: any) => {
 
   // 查询筛选值，operationKey： 记录当前查询的key,delKey: 删除的key, type: 类型值1位字符串，2是时间
   const confirm = async (operationKey?: any, delKey?: any, type?: any) => {
-    //当前查询的存入计数
+    // 当前查询的存入计数
     if (operationKey) {
       const keys = [...filterKeys, ...[operationKey]]
       dispatch(setFilterKeys([...new Set(keys)]))
@@ -334,6 +340,8 @@ const TableFilter = (props: any) => {
       dispatch(setFilterKeys([...new Set(keys)]))
     }
     props.onSearch(res, customField)
+
+    dispatch(saveValue(res))
   }
 
   // 点击删除按钮
@@ -350,6 +358,12 @@ const TableFilter = (props: any) => {
     form.resetFields()
     confirm()
   }
+
+  useEffect(() => {
+    form.resetFields()
+    form.setFieldsValue(props.defaultValue)
+    confirm()
+  }, [props.defaultValue])
 
   // 折叠图标
   const expandIcon = (e: any) => {
@@ -431,6 +445,23 @@ const TableFilter = (props: any) => {
     arr = [...map.values()]
     return arr
   }
+  const format = (arr: any) => {
+    const newA = arr.filter((j: any) => {
+      return j.value === info
+    })
+
+    const newB = arr.filter((j: any) => {
+      return j.value !== info
+    })
+
+    return newA
+      .map((i: any) => ({
+        id: i.id,
+        value: i.value,
+        label: `${i.label}（我自己）`,
+      }))
+      .concat(newB)
+  }
 
   return (
     <SearchLine>
@@ -443,6 +474,51 @@ const TableFilter = (props: any) => {
             ?.map((i: any) => (
               <div key={i.key}>
                 {[
+                  'select_checkbox',
+                  'checkbox',
+                  'select',
+                  'radio',
+                  'dan',
+                ].includes(i.type) && (
+                  <SelectWrapBedeck key={i.key}>
+                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                      {i.contentTxt}
+                    </span>
+                    <Form.Item name={i.key}>
+                      <MoreSelect
+                        onConfirm={confirm}
+                        options={
+                          i.key === 'users_name' ||
+                          i.key === 'users_copysend_name'
+                            ? format(
+                                deWeight(
+                                  projectInfoValues
+                                    ?.filter((k: any) => k.key === i.key)[0]
+                                    ?.children?.map((v: any) => ({
+                                      label: v.content_txt,
+                                      value: v.id,
+                                      id: v.id,
+                                    })),
+                                ),
+                              )
+                            : deWeight(
+                                projectInfoValues
+                                  ?.filter((k: any) => k.key === i.key)[0]
+                                  ?.children?.map((v: any) => ({
+                                    label: v.content_txt,
+                                    value: v.id,
+                                    id: v.id,
+                                  })),
+                              )
+                        }
+                      />
+                    </Form.Item>
+                    <DelButton onClick={() => delList(i.content)}>
+                      <IconFont type="close-solid" className="icon" />
+                    </DelButton>
+                  </SelectWrapBedeck>
+                )}
+                {/* {[
                   'select_checkbox',
                   'checkbox',
                   'select',
@@ -478,8 +554,35 @@ const TableFilter = (props: any) => {
                       <IconFont type="close-solid" className="icon" />
                     </DelButton>
                   </SelectWrapBedeck>
+                )} */}
+                {['single_checkbox'].includes(i.type) && (
+                  <SelectWrapBedeck key={i.key}>
+                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                      {i.contentTxt}
+                    </span>
+                    <Form.Item name={i.key}>
+                      <MoreSelect
+                        more
+                        onConfirm={confirm}
+                        options={[
+                          {
+                            label: '未勾选',
+                            value: 0,
+                            id: 0,
+                          },
+                          {
+                            label: '已勾选',
+                            value: 1,
+                            id: 1,
+                          },
+                        ]}
+                      />
+                    </Form.Item>
+                    <DelButton onClick={() => delList(i.content)}>
+                      <IconFont type="close-solid" className="icon" />
+                    </DelButton>
+                  </SelectWrapBedeck>
                 )}
-
                 {['time', 'date'].includes(i.type) && (
                   <SelectWrapBedeck key={i.key}>
                     <span style={{ margin: '0 16px', fontSize: '14px' }}>
@@ -600,12 +703,18 @@ const TableFilter = (props: any) => {
             >
               <IconFont
                 type="plus-square"
-                style={{ fontSize: 20, color: '#BBBDBF' }}
+                style={{ fontSize: 20, color: 'var(--neutral-n4)' }}
               />
             </div>
           </PopoverWrap>
           <ClearForm onClick={onClearForm}>
-            <span style={{ color: '#2877FF', fontSize: 15, cursor: 'pointer' }}>
+            <span
+              style={{
+                color: 'var(--primary-d2)',
+                fontSize: 15,
+                cursor: 'pointer',
+              }}
+            >
               {t('common.clearForm')}
             </span>
           </ClearForm>

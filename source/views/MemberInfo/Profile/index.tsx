@@ -9,23 +9,17 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { css } from '@emotion/css'
-import {
-  ChartsItem,
-  HiddenText,
-  PaginationWrap,
-  SecondTitle,
-} from '@/components/StyleCommon'
+import { ChartsItem, HiddenText, SecondTitle } from '@/components/StyleCommon'
 import { Timeline, message, Pagination } from 'antd'
 import Gantt from '@/components/Gantt'
-import PermissionWrap from '@/components/PermissionWrap'
 import moment from 'moment'
 import IconFont from '@/components/IconFont'
 import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
-import { getParamsData, openDetail } from '@/tools'
+import { getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { OmitText } from '@star-yun/ui'
 import useSetTitle from '@/hooks/useSetTitle'
@@ -36,7 +30,8 @@ import {
   getUserGantt,
   getUserInfoOverviewFeed,
   getUserInfoOverviewStatistics,
-} from '@/services/member'
+} from '@/services/memberInfo'
+import PaginationBox from '@/components/TablePagination'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 
@@ -135,7 +130,7 @@ const LineItem = styled.div`
   display: flex;
   justify-content: space-between;
   font-size: 12px;
-  color: #646566;
+  color: var(--neutral-n2);
   position: relative;
 `
 const GatteWrap = styled.div`
@@ -147,11 +142,12 @@ const GatteWrap = styled.div`
 
 const HasIdWrap = styled.div({
   overflow: 'auto',
-  padding: '16px 16px 0 16px',
+  padding: '0px 16px 0 16px',
 })
 
 const HeadWrap = styled.div({
   padding: 24,
+  paddingTop: 0,
   background: 'white',
   borderRadius: 6,
   marginBottom: 16,
@@ -160,7 +156,7 @@ const HeadWrap = styled.div({
 const TotalWrap = styled.div({
   height: 88,
   borderRadius: 6,
-  border: '1px solid #EBEDF0',
+  border: '1px solid var(--neutral-n6-d1)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-around',
@@ -169,18 +165,18 @@ const TotalWrap = styled.div({
 const Profile = () => {
   const asyncSetTtile = useSetTitle()
   const [t, i18n] = useTranslation()
-  const { mainInfo } = useSelector(store => store.member)
+  const { mainInfo } = useSelector(store => store.memberInfo)
   const { userInfo } = useSelector(store => store.user)
   const { projectInfo, colorList } = useSelector(store => store.project)
   const [data, setData] = useState<any>({})
   const [gatteData, setGatteData] = useState<any>([])
   const [lineData, setLineData] = useState<any>([])
   const [monthIndex, setMonthIndex] = useState<any>(moment().month())
-  const [page, setPage] = useState<number>(1)
-  const [pagesize, setPagesize] = useState<number>(20)
-  const [total, setTotal] = useState<number>()
+  const [pageObj, setPageObj] = useState({ page: 1, size: 20 })
+  const [total, setTotal] = useState<number>(0)
   const [loadingState, setLoadingState] = useState<boolean>(false)
   const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
   const paramsData = getParamsData(searchParams)
   const { isMember, userId, id } = paramsData
   asyncSetTtile(
@@ -198,8 +194,8 @@ const Profile = () => {
         .endOf('month')
         .month(monthIndex)
         .format('YYYY-MM-DD 23:59:59'),
-      page,
-      pagesize,
+      page: pageObj.page,
+      pagesize: pageObj.size,
       targetId: userId,
     }
     if (isMember) {
@@ -213,19 +209,38 @@ const Profile = () => {
       res2.list?.map((k: any) => ({
         id: k.id,
         demandText: k.text,
-        text: `<div style="display: flex; align-items: center;padding-left:16px">
-        <span style="height: 20px; line-height: 20px; font-size:12px; padding: 2px 8px; border-radius: 10px; color: ${
-          k.categoryColor
-        }; background: ${
-          colorList?.filter((i: any) => i.key === k.categoryColor)[0]?.bgColor
-        }">#${k.categoryName}#</span>
-        <span style="display:inline-block; width: 100px ;overflow:hidden;white-space: nowrap;text-overflow:ellipsis;margin-left: 8px">${
-          k.text
-        }</span>
-      </div>`,
+        text: `<div style="display: flex; align-items: center;padding-left: 16px">
+        <img style="height: 18px;width: 18px ;border-radius: 4px;" src="${k.category_attachment}">
+                 <span style="display:inline-block; width: 100px ;overflow:hidden;white-space: nowrap;text-overflow:ellipsis;margin-left: 8px">${k.text}</span>
+        </div>`,
         start_date: k.start_date,
         end_date: k.end_date,
-        statusName: `<span style="display: inline-block;white-space: nowrap;text-overflow: ellipsis;max-width: 110px;overflow: hidden; height: 20px; line-height: 16px; font-size:12px; padding: 2px 8px; border-radius: 6px; color: ${k.statusColor}; border: 1px solid ${k.statusColor}">${k.statusName}</span>`,
+        statusName: `<span style="display: inline-block;text-align: center;
+        line-height: 20px;width:50px; white-space: nowrap;text-overflow: ellipsis;max-width: 110px;overflow: hidden; height: 20px; font-size:12px; border-radius: 6px; color: ${
+          k?.is_start === 1 && k?.is_end === 2
+            ? 'var(--neutral-n7)'
+            : k?.is_end === 1 && k?.is_start === 2
+            ? 'var(--neutral-n1-d1)'
+            : k?.is_start === 2 && k?.is_end === 2
+            ? 'var(--neutral-n7)'
+            : 0
+        }; background-color:${
+          k?.is_start === 1 && k?.is_end === 2
+            ? 'var(--auxiliary-b1)'
+            : k?.is_end === 1 && k?.is_start === 2
+            ? 'var(--neutral-n7)'
+            : k?.is_start === 2 && k?.is_end === 2
+            ? 'var(--function-success)'
+            : 0
+        };">${
+          k?.is_start === 1 && k?.is_end === 2
+            ? '待办'
+            : k?.is_end === 1 && k?.is_start === 2
+            ? '已完成'
+            : k?.is_start === 2 && k?.is_end === 2
+            ? '进行中'
+            : 0
+        }</span>`,
         statusTitle: k.statusName,
         parent: k.parent,
         render: k.render,
@@ -260,7 +275,7 @@ const Profile = () => {
   useEffect(() => {
     init()
     changeMonth()
-  }, [monthIndex, page, pagesize])
+  }, [monthIndex, pageObj])
 
   const forMateMonth = useMemo(() => {
     const newDate = moment()
@@ -293,7 +308,7 @@ const Profile = () => {
       }),
     )
 
-    openDetail(`/Detail/Demand?data=${params}`)
+    navigate(`/ProjectManagement/Demand?data=${params}`)
   }
   const nextMonth = async () => {
     setMonthIndex(monthIndex - 1)
@@ -301,20 +316,14 @@ const Profile = () => {
   const prevMonth = async () => {
     setMonthIndex(monthIndex + 1)
   }
-  const onChangePage = (newPage: any) => {
-    setPage(newPage)
-  }
-  const onShowSizeChange = (current: any, size: any) => {
-    setPagesize(size)
+  const onChangePage = (page: any, size: number) => {
+    setPageObj({ page, size })
   }
   if (!loadingState) {
     return <Loading />
   }
   return (
-    <PermissionWrap
-      auth="b/user/overview"
-      permission={userInfo?.company_permissions}
-    >
+    <>
       {isMember ? (
         <>
           <HasIdWrap>
@@ -352,7 +361,7 @@ const Profile = () => {
               </TotalWrap>
             </HeadWrap>
             <GatteWrap style={{ margin: 0 }}>
-              <div style={{ padding: '28px 24px 0' }}>
+              <div style={{ padding: '0px 24px 0' }}>
                 <SecondTitle>{t('newlyAdd.hisGantt')}</SecondTitle>
                 <div className={titleWrap}>
                   <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -379,7 +388,7 @@ const Profile = () => {
               {gatteData.length >= 1 && (
                 <Mygante
                   data={gatteData}
-                  height="calc(100vh - 420px)"
+                  height="calc(100vh - 430px)"
                   minHeight={300}
                 />
               )}
@@ -391,22 +400,12 @@ const Profile = () => {
             </GatteWrap>
           </HasIdWrap>
           {gatteData.length >= 1 && (
-            <PaginationWrap>
-              <Pagination
-                defaultCurrent={1}
-                current={page}
-                pageSize={pagesize}
-                showSizeChanger
-                showQuickJumper
-                total={total}
-                showTotal={newTotal =>
-                  t('common.tableTotal', { count: newTotal })
-                }
-                pageSizeOptions={['10', '20', '50']}
-                onChange={onChangePage}
-                onShowSizeChange={onShowSizeChange}
-              />
-            </PaginationWrap>
+            <PaginationBox
+              total={total}
+              currentPage={pageObj.page}
+              pageSize={pageObj.size}
+              onChange={onChangePage}
+            />
           )}
         </>
       ) : (
@@ -554,26 +553,16 @@ const Profile = () => {
             )}
           </GatteWrap>
           {gatteData.length >= 1 && (
-            <PaginationWrap>
-              <Pagination
-                defaultCurrent={1}
-                current={page}
-                pageSize={pagesize}
-                showSizeChanger
-                showQuickJumper
-                total={total}
-                showTotal={newTotal =>
-                  t('common.tableTotal', { count: newTotal })
-                }
-                pageSizeOptions={['10', '20', '50']}
-                onChange={onChangePage}
-                onShowSizeChange={onShowSizeChange}
-              />
-            </PaginationWrap>
+            <PaginationBox
+              total={total}
+              currentPage={pageObj.page}
+              pageSize={pageObj.size}
+              onChange={onChangePage}
+            />
           )}
         </>
       )}
-    </PermissionWrap>
+    </>
   )
 }
 

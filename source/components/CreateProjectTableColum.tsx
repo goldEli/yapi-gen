@@ -1,3 +1,5 @@
+/* eslint-disable complexity */
+/* eslint-disable no-console */
 // 公用需求列表表格
 
 /* eslint-disable react/jsx-no-leaked-render */
@@ -8,29 +10,27 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import Sort from '@/components/Sort'
 import { OmitText } from '@star-yun/ui'
-import {
-  CategoryWrap,
-  ClickWrap,
-  HiddenText,
-  ListNameWrap,
-  StatusWrap,
-} from '@/components/StyleCommon'
+import { ClickWrap, HiddenText, ListNameWrap } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
 import ChildDemandTable from '@/components/ChildDemandTable'
 import { message, Progress, Tooltip } from 'antd'
-import DemandProgress from './DemandProgress'
-import TableQuickEdit from './TableQuickEdit'
+// import DemandProgress from './DemandProgress'
+// import TableQuickEdit from './TableQuickEdit'
 import ChangeStatusPopover from './ChangeStatusPopover'
 import ChangePriorityPopover from './ChangePriorityPopover'
 import { useSelector } from '@store/index'
+import TableQuickEdit from './TableQuickEdit'
 import { getCustomNormalValue } from '@/tools'
+import TableColorText from './TableColorText'
+import StateTag from './StateTag'
+import DemandProgress from './DemandProgress'
 
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
   {
     display: 'flex',
     alignItems: 'center',
     div: {
-      color: '#323233',
+      color: 'var(--neutral-n1-d2)',
       fontSize: 14,
       marginLeft: 8,
     },
@@ -38,7 +38,7 @@ const PriorityWrap = styled.div<{ isShow?: boolean }>(
       marginLeft: 8,
       visibility: 'hidden',
       fontSize: 16,
-      color: '#2877ff',
+      color: 'var(--primary-d2)',
     },
     '.priorityIcon': {
       fontSize: 16,
@@ -94,6 +94,7 @@ export const useDynamicColumns = (state: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <ClickWrap
+              className="canClickDetail"
               onClick={() => state.onClickItem(record)}
               isClose={record.status?.is_end === 1}
             >
@@ -112,9 +113,29 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
+      width: 140,
+      title: <NewSort fixedKey="story_prefix_key">编号</NewSort>,
+      dataIndex: 'storyPrefixKey',
+      key: 'prefix_key',
+      render: (text: string, record: any) => {
+        return (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <ClickWrap
+              className="canClickDetail"
+              onClick={() => state.onClickItem(record)}
+              isClose={record.status?.is_end === 1}
+            >
+              {record.storyPrefixKey}
+            </ClickWrap>
+          </div>
+        )
+      },
+    },
+    {
       title: <NewSort fixedKey="name">{t('common.title')}</NewSort>,
       dataIndex: 'name',
       key: 'name',
+      width: 400,
       render: (text: string | number, record: any) => {
         return (
           <div
@@ -126,22 +147,20 @@ export const useDynamicColumns = (state: any) => {
             }}
           >
             {state.isTree && state.onChangeTree(record)}
-            <Tooltip
-              placement="top"
-              getPopupContainer={node => node}
-              title={record.categoryRemark}
-            >
-              <CategoryWrap
-                color={record.categoryColor}
-                bgColor={
-                  colorList?.filter(
-                    (k: any) => k.key === record.categoryColor,
-                  )[0]?.bgColor
+            <Tooltip placement="top" title={record.category}>
+              <img
+                src={
+                  record.category_attachment
+                    ? record.category_attachment
+                    : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
                 }
-                style={{ marginLeft: 0 }}
-              >
-                {record.category}
-              </CategoryWrap>
+                style={{
+                  width: '18px',
+                  height: '18px',
+                  marginRight: '8px',
+                }}
+                alt=""
+              />
             </Tooltip>
             <TableQuickEdit
               type="text"
@@ -153,6 +172,7 @@ export const useDynamicColumns = (state: any) => {
             >
               <Tooltip title={text} getPopupContainer={node => node}>
                 <ListNameWrap
+                  className="canClickDetail"
                   isName
                   isClose={record.status?.is_end === 1}
                   onClick={() => state.onClickItem(record)}
@@ -160,7 +180,7 @@ export const useDynamicColumns = (state: any) => {
                     state.isTree ? 500 - (Number(record.level) - 1) * 24 : 500
                   }
                 >
-                  {text}
+                  <TableColorText text={text} />
                 </ListNameWrap>
               </Tooltip>
             </TableQuickEdit>
@@ -181,16 +201,20 @@ export const useDynamicColumns = (state: any) => {
             record={record}
             onChangeStatus={item => state.onChangeStatus(item, record)}
           >
-            <StatusWrap
+            <StateTag
               onClick={record.isExamine ? onExamine : void 0}
               isShow={isCanEdit || record.isExamine}
-              style={{
-                color: text?.status.color,
-                border: `1px solid ${text?.status.color}`,
-              }}
-            >
-              {text?.status.content}
-            </StatusWrap>
+              name={record.status.status.content}
+              state={
+                text?.is_start === 1 && text?.is_end === 2
+                  ? 1
+                  : text?.is_end === 1 && text?.is_start === 2
+                  ? 2
+                  : text?.is_start === 2 && text?.is_end === 2
+                  ? 3
+                  : 0
+              }
+            />
           </ChangeStatusPopover>
         )
       },
@@ -203,7 +227,10 @@ export const useDynamicColumns = (state: any) => {
       render: (text: any, record: Record<string, string | number>) => {
         return (
           <ChangePriorityPopover
-            isCanOperation={isCanEdit}
+            isCanOperation={
+              isCanEdit &&
+              Object.keys(record.categoryConfigList).includes('priority')
+            }
             onChangePriority={item => state.onChangeState(item, record)}
             record={{ project_id: state.projectId, id: record.id }}
           >
@@ -390,8 +417,11 @@ export const useDynamicColumns = (state: any) => {
               record.status.is_end !== 1
             ) && (
               <Progress
-                strokeColor="#43BA9A"
-                style={{ color: '#43BA9A', cursor: 'not-allowed' }}
+                strokeColor="var(--function-success)"
+                style={{
+                  color: 'var(--function-success)',
+                  cursor: 'not-allowed',
+                }}
                 width={38}
                 type="line"
                 percent={record.schedule}

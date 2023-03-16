@@ -40,10 +40,11 @@ const Sort = (props: any) => {
         }
       }}
       show={nowKey === fixedKey}
+      style={props.style}
     >
       <Text
         style={{
-          color: nowKey === fixedKey ? '#2877ff' : '',
+          color: nowKey === fixedKey ? 'var(--primary-d1)' : '',
           lineHeight: '14px',
         }}
       >
@@ -54,7 +55,7 @@ const Sort = (props: any) => {
           type="tableUp"
           style={{
             color:
-              order === 1 && nowKey === fixedKey ? 'rgba(40, 119, 255, 1)' : '',
+              order === 1 && nowKey === fixedKey ? 'var(--primary-d1)' : '',
             fontSize: 8,
           }}
         />
@@ -62,7 +63,7 @@ const Sort = (props: any) => {
           type="tableDown"
           style={{
             color:
-              order === 2 && nowKey === fixedKey ? 'rgba(40, 119, 255, 1)' : '',
+              order === 2 && nowKey === fixedKey ? 'var(--primary-d1)' : '',
             fontSize: 8,
           }}
         />

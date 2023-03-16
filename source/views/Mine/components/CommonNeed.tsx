@@ -8,33 +8,26 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useMemo, useState } from 'react'
 import {
-  PaginationWrap,
-  StaffTableWrap,
-  tabCss,
-  TabsHehavior,
   TabsItem,
   LabNumber,
-  StaffTableWrap2,
   ShowWrap,
-  TableWrap,
   HoverWrap,
   DividerWrap,
   HasIconMenu,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Menu, message, Pagination, Space, Spin } from 'antd'
+import { Menu, message, Pagination, Space, Spin, Table } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from '@/components/CreateProjectTableColumInfo'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import TableFilter from '@/components/TableFilter'
-import EditDemand from '@/components/EditDemandNew/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
 import NoData from '@/components/NoData'
-import CommonInput from '@/components/CommonInput'
 import MoreDropdown from '@/components/MoreDropdown'
 import DropDownMenu from '@/components/DropDownMenu'
+import InputSearch from '@/components/InputSearch'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
 import { setIsUpdateCreate } from '@store/mine'
@@ -48,9 +41,15 @@ import {
 } from '@/services/mine'
 import { getProjectInfo, getProjectInfoValues } from '@/services/project'
 import { setProjectInfo, setProjectInfoValues } from '@store/project'
-import { deleteDemand } from '@/services/project/demand'
+import { deleteDemand } from '@/services/demand'
+import PaginationBox from '@/components/TablePagination'
+import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
+import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
+import SetShowField from '@/components/SetShowField/indedx'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
+import ResizeTable from '@/components/ResizeTable'
 
-const TableBox = styled(TableWrap)({
+const TableBox = styled(Table)({
   '.ant-table-content': {
     minHeight: '460px',
   },
@@ -72,7 +71,7 @@ const LoadingSpin = styled(Spin)({
 })
 
 const TableTitle = styled.div({
-  color: '#323233',
+  color: 'var(--neutral-n1-d1)',
   fontSize: '16px',
   height: '53px',
   display: 'flex',
@@ -80,7 +79,7 @@ const TableTitle = styled.div({
   marginLeft: '16px',
   fontWeight: '500',
   span: {
-    borderLeft: '3px solid #2877ff',
+    borderLeft: '3px solid var(--primary-d2)',
     paddingLeft: 6,
     lineHeight: '20px',
   },
@@ -94,56 +93,69 @@ const SearchWrap = styled.div({
 
 interface MoreWrapProps {
   record: any
-  onShowEdit(): void
   onShowDel(): void
+  isAllProject?: boolean
 }
 
 const MoreWrap = (props: MoreWrapProps) => {
   const [t] = useTranslation()
   const [isMoreVisible, setIsMoreVisible] = useState(false)
-  const onClickMenu = (type?: any) => {
+  const dispatch = useDispatch()
+
+  // 点击编辑
+  const onEditChange = (item: any) => {
     setIsMoreVisible(false)
-    if (type === 'edit') {
-      props.onShowEdit()
-    } else {
-      props.onShowDel()
-    }
+    dispatch(setIsCreateDemandVisible(true))
+    dispatch(
+      setCreateDemandProps({ demandId: item.id, projectId: item.project_id }),
+    )
   }
-  const menu = (
-    <Menu
-      style={{ minWidth: 56 }}
-      items={[
-        {
-          key: '1',
-          label: (
-            <div onClick={() => onClickMenu('edit')}>{t('common.edit')}</div>
-          ),
-        },
-        {
-          key: '2',
-          label: (
-            <div onClick={() => onClickMenu('del')}>{t('common.del')}</div>
-          ),
-        },
-      ]}
-    />
-  )
+
+  // 点击删除
+  const onDeleteChange = (item: any) => {
+    setIsMoreVisible(false)
+    props.onShowDel()
+  }
+
+  // 点击创建子需求
+  const onCreateChild = (item: any) => {
+    setIsMoreVisible(false)
+    dispatch(setIsCreateDemandVisible(true))
+    dispatch(
+      setCreateDemandProps({
+        projectId: item.project_id,
+        isChild: true,
+        parentId: item.id,
+        categoryId: item.categoryId,
+      }),
+    )
+  }
+
   return (
-    <ShowWrap>
+    <>
       {(props?.record?.project?.isEdit || props?.record?.project?.isDelete) && (
         <MoreDropdown
           isMoreVisible={isMoreVisible}
           onChangeVisible={setIsMoreVisible}
-          menu={menu}
+          menu={
+            <DemandOperationDropdownMenu
+              onEditChange={onEditChange}
+              onDeleteChange={onDeleteChange}
+              onCreateChild={onCreateChild}
+              record={props?.record}
+              isAllProject={props.isAllProject}
+            />
+          }
         />
       )}
-    </ShowWrap>
+    </>
   )
 }
 
 const CommonNeed = (props: any) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
+  const [openDemandDetail] = useOpenDemandDetail()
   const { isRefresh } = useSelector(store => store.user)
   const { isUpdateCreate } = useSelector(store => store.mine)
   const { projectInfo } = useSelector(store => store.project)
@@ -161,9 +173,8 @@ const CommonNeed = (props: any) => {
   const [plainOptions, setPlainOptions] = useState<any>([])
   const [plainOptions2, setPlainOptions2] = useState<any>([])
   const [plainOptions3, setPlainOptions3] = useState<any>([])
-  const [page, setPage] = useState<number>(1)
-  const [pagesize, setPagesize] = useState<number>(20)
-  const [total, setTotal] = useState<number>()
+  const [pageObj, setPageObj] = useState({ page: 1, size: 20 })
+  const [total, setTotal] = useState<number>(0)
   const [orderKey, setOrderKey] = useState<any>()
   const [order, setOrder] = useState<any>(3)
   const [keyword, setKeyword] = useState<string>('')
@@ -195,7 +206,7 @@ const CommonNeed = (props: any) => {
     finishAt: [],
   })
   const onSearch = (e: any, customField: any) => {
-    setPage(1)
+    setPageObj({ page: 1, size: pageObj.size })
     setSearchGroups({
       statusId: e.status,
       priorityId: e.priority,
@@ -219,7 +230,7 @@ const CommonNeed = (props: any) => {
   const updateOrderkey = (key: any, orderVal: any) => {
     setOrderKey(key)
     setOrder(orderVal)
-    setPage(1)
+    setPageObj({ page: 1, size: pageObj.size })
   }
   const init = async (updateState?: boolean) => {
     if (!updateState) {
@@ -251,8 +262,8 @@ const CommonNeed = (props: any) => {
         searchGroups,
         order,
         orderkey: orderKey,
-        page,
-        pagesize,
+        page: pageObj.page,
+        pagesize: pageObj.size,
       }
 
       const res =
@@ -297,6 +308,26 @@ const CommonNeed = (props: any) => {
     setOperationItem(record)
     setIsDelVisible(true)
   }
+
+  // 点击打开详情并组装当前平级的需求id列表
+  const onClickItem = (item: any) => {
+    if (item.project?.isPublic !== 1 && !item.project?.isUserMember) {
+      message.warning(t('common.notCheckInfo'))
+    } else {
+      let demandIds: any
+
+      if (isMany) {
+        demandIds = manyListData?.list
+          ?.filter((i: any) => i.status_name === item.statusName)[0]
+          ?.list?.map((i: any) => i.id)
+      } else {
+        demandIds = listData?.list?.map((i: any) => i.id)
+      }
+      item.isMineOrHis = true
+      openDemandDetail({ ...item, ...{ demandIds } }, item.project_id, item.id)
+    }
+  }
+
   const columns = useDynamicColumns({
     orderKey,
     order,
@@ -306,6 +337,7 @@ const CommonNeed = (props: any) => {
     init,
     plainOptions3,
     projectId: props.id,
+    onClickItem,
   })
 
   const selectColum: any = useMemo(() => {
@@ -325,8 +357,8 @@ const CommonNeed = (props: any) => {
           return (
             <MoreWrap
               record={record}
-              onShowEdit={() => showEdit(record)}
               onShowDel={() => showDel(record)}
+              isAllProject={!props.id}
             />
           )
         },
@@ -374,29 +406,26 @@ const CommonNeed = (props: any) => {
     dispatch(setProjectInfo(res2))
   }
 
-  const onChangePage = (newPage: any) => {
-    setPage(newPage)
-  }
-  const onShowSizeChange = (current: any, size: any) => {
-    setPagesize(size)
+  const onChangePage = (page: any, size: number) => {
+    setPageObj({ page, size })
   }
   const onPressEnter = (value: any) => {
-    setPage(1)
+    setPageObj({ page: 1, size: pageObj.size })
     setKeyword(value)
   }
 
   useEffect(() => {
     init(false)
-  }, [keyword, orderKey, order, searchGroups, isMany, page, pagesize])
+  }, [keyword, orderKey, order, searchGroups, isMany, pageObj])
 
   // 监听项目id变化，更新项目信息
   useEffect(() => {
     // 如果分页为1则调用接口
-    if (page === 1) {
+    if (pageObj.page === 1) {
       init(false)
     } else {
       // 如果分页改变则，重置分页
-      setPage(1)
+      setPageObj({ page: 1, size: pageObj.size })
     }
     getShowkey()
   }, [props.id])
@@ -454,22 +483,11 @@ const CommonNeed = (props: any) => {
     }
   }
 
-  const menu = (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label: <div onClick={showModal}>{t('common.setField')}</div>,
-        },
-      ]}
-    />
-  )
-
   const onChangeMany = (state: boolean) => {
     message.success(t('version2.reviewModeChangeSuccess'))
     setIsMany(state)
     setIsVisibleFormat(false)
-    setPage(1)
+    setPageObj({ page: 1, size: pageObj.size })
   }
 
   const menuType = (
@@ -505,20 +523,30 @@ const CommonNeed = (props: any) => {
 
   return (
     <>
-      <TabsHehavior
-        style={{ padding: '0 24px', justifyContent: 'space-between' }}
+      <div
+        style={{
+          padding: '0 24px',
+          justifyContent: 'space-between',
+          display: 'flex',
+        }}
       >
-        <div className={tabCss}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
           <TabsItem isActive>
             <div>{props?.subTitle}</div>
           </TabsItem>
           <LabNumber isActive>{total ?? 0}</LabNumber>
         </div>
         <SearchWrap>
-          <div style={{ marginRight: 16 }}>
-            <CommonInput
+          <div style={{ position: 'absolute', top: '0px', right: '24px' }}>
+            <InputSearch
               placeholder={t('common.pleaseSearchDemand')}
               onChangeSearch={onPressEnter}
+              leftIcon
             />
           </div>
           <Space style={{ display: 'flex' }} size={8}>
@@ -557,7 +585,7 @@ const CommonNeed = (props: any) => {
               <>
                 <DividerWrap type="vertical" />
                 <DropDownMenu
-                  menu={menu}
+                  menu={<SetShowField onChangeFieldVisible={showModal} />}
                   icon="settings"
                   isVisible={isVisibleFields}
                   onChangeVisible={setIsVisibleFields}
@@ -569,9 +597,9 @@ const CommonNeed = (props: any) => {
             )}
           </Space>
         </SearchWrap>
-      </TabsHehavior>
+      </div>
       {isShowSearch && props.id !== 0 ? (
-        <div style={{ borderLeft: '1px solid #EBEDF0' }}>
+        <div style={{ borderLeft: '1px solid var(--neutral-n6-d1)' }}>
           <TableFilter
             onFilter={getSearchKey}
             onSearch={onSearch}
@@ -583,35 +611,20 @@ const CommonNeed = (props: any) => {
         </div>
       ) : null}
       {!isMany && (
-        <div>
-          <LoadingSpin spinning={isSpin}>
-            <StaffTableWrap>
-              {listData?.list ? (
-                listData?.list?.length > 0 ? (
-                  <TableBox
-                    scroll={{
-                      x: 'max-content',
-                    }}
-                    tableLayout="auto"
-                    rowKey="id"
-                    columns={selectColum}
-                    dataSource={listData?.list}
-                    pagination={false}
-                  />
-                ) : (
-                  <NoData />
-                )
-              ) : null}
-            </StaffTableWrap>
-          </LoadingSpin>
-        </div>
+        <ResizeTable
+          isSpinning={isSpin}
+          dataWrapNormalHeight="calc(100vh - 330px)"
+          col={selectColum}
+          dataSource={listData?.list}
+          noData={<NoData />}
+        />
       )}
 
       {isMany ? (
         <div>
           <LoadingSpin spinning={isSpin}>
             {manyListData?.list?.filter((i: any) => i.count)?.length > 0 && (
-              <StaffTableWrap2>
+              <div>
                 {manyListData.list?.map((item: any, index: any) => (
                   // eslint-disable-next-line react/no-array-index-key
                   <div
@@ -628,23 +641,16 @@ const CommonNeed = (props: any) => {
                         {item.status_name}（{item.list.length}）
                       </span>
                     </TableTitle>
-
-                    {item.list ? (
-                      item?.list?.length > 0 ? (
-                        <TableBox
-                          rowKey="id"
-                          columns={selectColum}
-                          dataSource={item.list}
-                          pagination={false}
-                          scroll={{ x: 'max-content' }}
-                        />
-                      ) : (
-                        <NoData />
-                      )
-                    ) : null}
+                    <ResizeTable
+                      isSpinning={false}
+                      dataWrapNormalHeight="460px"
+                      col={selectColum}
+                      dataSource={item?.list}
+                      noData={<NoData />}
+                    />
                   </div>
                 ))}
-              </StaffTableWrap2>
+              </div>
             )}
             {manyListData?.list?.filter((i: any) => i.count)?.length <= 0 && (
               <div style={{ padding: 16 }}>
@@ -656,20 +662,12 @@ const CommonNeed = (props: any) => {
       ) : null}
 
       {!isMany && listData?.list?.length > 0 && (
-        <PaginationWrap style={{ paddingRight: 24 }}>
-          <Pagination
-            defaultCurrent={1}
-            current={page}
-            pageSize={pagesize}
-            showSizeChanger
-            showQuickJumper
-            total={total}
-            showTotal={newTotal => t('common.tableTotal', { count: newTotal })}
-            pageSizeOptions={['10', '20', '50']}
-            onChange={onChangePage}
-            onShowSizeChange={onShowSizeChange}
-          />
-        </PaginationWrap>
+        <PaginationBox
+          total={total}
+          pageSize={pageObj.size}
+          currentPage={pageObj.page}
+          onChange={onChangePage}
+        />
       )}
 
       {props.id > 0 && (
@@ -687,15 +685,6 @@ const CommonNeed = (props: any) => {
         />
       )}
 
-      <EditDemand
-        visible={isVisible}
-        onChangeVisible={onChangeVisible}
-        demandId={operationItem?.id}
-        projectId={projectId}
-        onUpdate={onUpdate}
-        notGetPath
-        isAllProject={!props.id}
-      />
       <DeleteConfirm
         text={t('common.confirmDelDemand')}
         isVisible={isDelVisible}

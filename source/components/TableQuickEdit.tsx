@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 // 需求列表快捷编辑组件
 
 /* eslint-disable react/jsx-no-leaked-render */
@@ -8,27 +9,44 @@ import { useEffect, useRef, useState } from 'react'
 import { CanOperation, IconFontWrapEdit } from '@/components/StyleCommon'
 import { getNestedChildren, getParamsData, getTypeComponent } from '@/tools'
 import { useSearchParams } from 'react-router-dom'
-import { getIterateList } from '@/services/project/iterate'
 import {
   getProjectMember,
   getTagList,
   storyConfigField,
 } from '@/services/project'
 import { getStaffList } from '@/services/staff'
-import { getTreeList } from '@/services/project/tree'
-import { message, Tooltip } from 'antd'
+import { Checkbox, message, Radio, Tooltip } from 'antd'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
 import { useDispatch, useSelector } from '@store/index'
-import { getDemandInfo, updateTableParams } from '@/services/project/demand'
 import { setDemandInfo } from '@store/demand'
 import styled from '@emotion/styled'
+import { getIterateList } from '@/services/iterate'
+import {
+  getDemandInfo,
+  getTreeList,
+  updateTableParams,
+} from '@/services/demand'
+import { useGetloginInfo } from '@/hooks/useGetloginInfo'
 
 const LimitText = styled.div`
   width: 192px;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+`
+
+const DisableWrap = styled.div`
+  cursor: no-drop;
+`
+
+const CheckboxWrap = styled(Checkbox)`
+  .ant-checkbox-inner {
+    border-radius: 50% !important;
+  }
+  .ant-checkbox-checked::after {
+    border: none !important;
+  }
 `
 
 interface Props {
@@ -62,9 +80,13 @@ interface Props {
 
   // 是否需求标题 -- 是则不加tooltip并取消padding
   isDemandName?: boolean
+
+  // 是否是详情页面
+  isInfoPage?: boolean
 }
 
 const TableQuickEdit = (props: Props) => {
+  const info = useGetloginInfo()
   const [t] = useTranslation()
   const [isShowControl, setIsShowControl] = useState(false)
   const inputRef = useRef<any>(null)
@@ -76,6 +98,7 @@ const TableQuickEdit = (props: Props) => {
   let projectId: any
   let canClick: any
   const dispatch = useDispatch()
+
   const isCan =
     props.isInfo ||
     !['text', 'textarea', 'number', 'integer'].includes(String(props.type))
@@ -131,6 +154,7 @@ const TableQuickEdit = (props: Props) => {
     const response = projectInfoValues
       ?.filter((i: any) => i.key === props.keyText)[0]
       ?.children?.filter((i: any) => i.id !== -1)
+
     const resultValue = {
       value: ['user_select_checkbox', 'user_select'].includes(
         String(props.type),
@@ -229,19 +253,37 @@ const TableQuickEdit = (props: Props) => {
         ?.filter((i: any) => i.key === 'users_name')[0]
         ?.children?.filter((i: any) => i.id !== -1)
 
-      resultValue.value = response?.map((i: any) => ({
-        label: i.content,
-        value: i.id,
-      }))
+      const arr1 = response
+        ?.map((i: any) => ({
+          label: i.id === info ? i.content + '（我自己）' : i.content,
+          value: i.id,
+        }))
+        .filter((i: any) => i.value === info)
+      const arr12 = response
+        ?.map((i: any) => ({
+          label: i.id === info ? i.content + '（我自己）' : i.content,
+          value: i.id,
+        }))
+        .filter((i: any) => i.value !== info)
+      resultValue.value = arr1.concat(arr12)
     } else if (props.keyText === 'copysend') {
       // 获取抄送人的下拉数据
       const response = projectInfoValues
         ?.filter((i: any) => i.key === 'users_copysend_name')[0]
         ?.children?.filter((i: any) => i.id !== -1)
-      resultValue.value = response?.map((i: any) => ({
-        label: i.content,
-        value: i.id,
-      }))
+      const arr1 = response
+        ?.map((i: any) => ({
+          label: i.id === info ? i.content + '（我自己）' : i.content,
+          value: i.id,
+        }))
+        .filter((i: any) => i.value === info)
+      const arr12 = response
+        ?.map((i: any) => ({
+          label: i.id === info ? i.content + '（我自己）' : i.content,
+          value: i.id,
+        }))
+        .filter((i: any) => i.value !== info)
+      resultValue.value = arr1.concat(arr12)
     } else if (props.keyText === 'class_id') {
       // 获取需求分类的下拉数据
       const response = projectInfoValues?.filter(
@@ -292,7 +334,13 @@ const TableQuickEdit = (props: Props) => {
   }, [isShowControl])
 
   // 操作框改变
-  const onChange = async (newValue: any, type: any) => {
+  const onChange = async (newValue: any, type?: any) => {
+    if (props.item.categoryConfigList[props.keyText] === 1 && !newValue) {
+      message.warning(`${props.keyText}为必填字段！`)
+      setIsShowControl(false)
+      return
+    }
+
     if (props.keyText === 'name' && newValue.length <= 0) {
       message.warning(t('p2.nameNotNull'))
       setIsShowControl(false)
@@ -324,6 +372,7 @@ const TableQuickEdit = (props: Props) => {
         return
       }
     }
+
     const obj: any = {
       projectId,
       id: props.item?.id,
@@ -352,7 +401,7 @@ const TableQuickEdit = (props: Props) => {
 
     try {
       await updateTableParams(obj)
-      if (props.isInfo) {
+      if (props.isInfoPage) {
         const result = await getDemandInfo({ projectId, id: props.item?.id })
         dispatch(setDemandInfo(result))
       } else {
@@ -369,6 +418,12 @@ const TableQuickEdit = (props: Props) => {
 
   // 操作框失焦
   const onBlur = (val: any) => {
+    if (props.item.categoryConfigList[props.keyText] === 1 && !val) {
+      message.warning(`${props.keyText}为必填字段！`)
+      setIsShowControl(false)
+      return
+    }
+
     if (val === props?.defaultText) {
       setIsShowControl(false)
     } else {
@@ -402,50 +457,93 @@ const TableQuickEdit = (props: Props) => {
           inputRef,
           onBlur,
         )}
-      {!isShowControl && (
-        <CanOperation
-          onClick={() =>
-            // 详情和列表上不是文本的可点击整个元素
-            canClick ? setIsShowControl(true) : void 0
-          }
-          isTable={!props.isInfo}
-          isCanEdit={isCanEdit}
-        >
-          {(!['text', 'textarea'].includes(props.type as any) ||
-            props.isDemandName) && <div>{props.children}</div>}
 
-          {['text', 'textarea'].includes(props.type as any) &&
-            !props.isDemandName && (
-              <>
-                {props.isInfo && <div>{props.children}</div>}
-                {!props.isInfo && (
-                  <Tooltip
-                    title={props.children}
-                    placement="topLeft"
-                    getPopupContainer={node => node}
-                  >
-                    <LimitText>{props.children}</LimitText>
-                  </Tooltip>
-                )}
-              </>
-            )}
+      {/* 如果是详情或者是表格上可编辑字段 */}
+      {(Object.keys(props.item.categoryConfigList).includes(props.keyText) ||
+        props.isInfo) && (
+        <>
+          {!isShowControl && (
+            <>
+              {/* 快捷修改确认勾选框显示 */}
+              {props.type === 'single_checkbox' && (
+                <CheckboxWrap
+                  checked={props?.defaultText}
+                  onChange={e => onChange(e.target.checked)}
+                />
+              )}
+              {props.type !== 'single_checkbox' && (
+                <CanOperation
+                  onClick={() =>
+                    // 详情和列表上不是文本的可点击整个元素
+                    canClick ? setIsShowControl(true) : void 0
+                  }
+                  isTable={!props.isInfo}
+                  isCanEdit={isCanEdit}
+                >
+                  {(!['text', 'textarea'].includes(props.type as any) ||
+                    props.isDemandName) && <div>{props.children}</div>}
 
-          {isCanEdit && (
-            <IconFontWrapEdit
-              onClick={() => setIsShowControl(true)}
-              isTable={isShowIcon}
-              type={
-                props?.isInfo ||
-                !['text', 'textarea', 'number', 'integer'].includes(
-                  String(props.type),
-                )
-                  ? 'down-icon'
-                  : 'edit-square'
-              }
-            />
+                  {['text', 'textarea'].includes(props.type as any) &&
+                    !props.isDemandName && (
+                      <>
+                        {props.isInfo && <div>{props.children}</div>}
+                        {!props.isInfo && (
+                          <Tooltip
+                            title={props.children}
+                            placement="topLeft"
+                            getPopupContainer={node => node}
+                          >
+                            <LimitText>{props.children}</LimitText>
+                          </Tooltip>
+                        )}
+                      </>
+                    )}
+
+                  {isCanEdit && (
+                    <IconFontWrapEdit
+                      onClick={() => setIsShowControl(true)}
+                      isTable={isShowIcon}
+                      type={
+                        props?.isInfo ||
+                        !['text', 'textarea', 'number', 'integer'].includes(
+                          String(props.type),
+                        )
+                          ? 'down-icon'
+                          : 'edit-square'
+                      }
+                    />
+                  )}
+                </CanOperation>
+              )}
+            </>
           )}
-        </CanOperation>
+        </>
       )}
+
+      {/* 不能操作的并且不是详情快捷操作，只展示 */}
+      {!Object.keys(props.item.categoryConfigList).includes(props.keyText) &&
+        !props.isInfo && (
+          <DisableWrap>
+            {(!['text', 'textarea'].includes(props.type as any) ||
+              props.isDemandName) && <div>{props.children}</div>}
+
+            {['text', 'textarea'].includes(props.type as any) &&
+              !props.isDemandName && (
+                <>
+                  {props.isInfo && <div>{props.children}</div>}
+                  {!props.isInfo && (
+                    <Tooltip
+                      title={props.children}
+                      placement="topLeft"
+                      getPopupContainer={node => node}
+                    >
+                      <LimitText>{props.children}</LimitText>
+                    </Tooltip>
+                  )}
+                </>
+              )}
+          </DisableWrap>
+        )}
     </div>
   )
 }

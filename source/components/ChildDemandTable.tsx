@@ -7,10 +7,9 @@
 /* eslint-disable no-undefined */
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
-import { getParamsData, openDetail } from '@/tools'
+import { getParamsData } from '@/tools'
 import { useState } from 'react'
 import { message, Popover, Progress, Table, Tooltip } from 'antd'
-import { encryptPhp } from '@/tools/cryptoPhp'
 import Sort from '@/components/Sort'
 import {
   CategoryWrap,
@@ -23,7 +22,8 @@ import { OmitText } from '@star-yun/ui'
 import NoData from '@/components/NoData'
 import IconFont from './IconFont'
 import { useSelector } from '@store/index'
-import { getDemandList } from '@/services/project/demand'
+import { getDemandList } from '@/services/demand'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 
 const NewSort = (sortProps: any) => {
   return (
@@ -61,6 +61,7 @@ const ChildDemandTable = (props: {
   })
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const { colorList } = useSelector(store => store.project)
+  const [openDemandDetail] = useOpenDemandDetail()
   let isCanEdit: any
 
   const getList = async (item: any) => {
@@ -85,10 +86,7 @@ const ChildDemandTable = (props: {
   }
 
   const onToDetail = (item: any) => {
-    const params = encryptPhp(
-      JSON.stringify({ type: 'info', id: projectId, demandId: item.id }),
-    )
-    openDetail(`/Detail/Demand?data=${params}`)
+    openDemandDetail(item, projectId, item.id)
   }
 
   const onExamine = () => {
@@ -99,7 +97,7 @@ const ChildDemandTable = (props: {
     {
       title: (
         <NewSort
-          fixedKey="id"
+          fixedKey="story_prefix_key"
           nowKey={order.key}
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
@@ -107,12 +105,13 @@ const ChildDemandTable = (props: {
           ID
         </NewSort>
       ),
-      dataIndex: 'id',
+      dataIndex: 'storyPrefixKey',
       width: 100,
       render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <ClickWrap
+              className="canClickDetail"
               onClick={() => onToDetail(record)}
               isClose={record.status?.is_end === 1}
             >
@@ -253,8 +252,8 @@ const ChildDemandTable = (props: {
       render: (text: any) => {
         return (
           <Progress
-            strokeColor="#43BA9A"
-            style={{ color: '#43BA9A', cursor: 'not-allowed' }}
+            strokeColor="var(--function-success)"
+            style={{ color: 'var(--function-success)', cursor: 'not-allowed' }}
             width={38}
             type="line"
             percent={text}
@@ -315,7 +314,7 @@ const ChildDemandTable = (props: {
         {props?.hasIcon && (
           <IconFont
             type="apartment"
-            style={{ color: '#969799', fontSize: 16, marginRight: 8 }}
+            style={{ color: 'var(--neutral-n3)', fontSize: 16, marginRight: 8 }}
           />
         )}
         {props.value}

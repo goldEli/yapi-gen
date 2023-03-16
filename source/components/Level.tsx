@@ -14,11 +14,11 @@ const flexCss = css`
   padding: 0px 16px;
   display: flex;
   align-items: center;
-  color: #646566;
+  color: var(--neutral-n2);
   cursor: pointer;
   &:hover {
-    background-color: #f4f5f5;
-    color: #323233;
+    background-color: var(--hover-d2);
+    color: var(--neutral-n1-d1);
   }
 `
 const Contain = styled.div`

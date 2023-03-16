@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
 // 公用我的/他的需求列表表格
 
 /* eslint-disable react/jsx-no-leaked-render */
@@ -5,8 +7,6 @@
 import IconFont from '@/components/IconFont'
 import {
   ClickWrap,
-  StyledShape,
-  CategoryWrap,
   HiddenText,
   ListNameWrap,
   ShowWrap,
@@ -15,15 +15,16 @@ import Sort from '@/components/Sort'
 import ChildDemandTable from '@/components/ChildDemandTable'
 import { useTranslation } from 'react-i18next'
 import { OmitText } from '@star-yun/ui'
-import { getCustomNormalValue, openDetail } from '@/tools'
-import { encryptPhp } from '@/tools/cryptoPhp'
+import { getCustomNormalValue } from '@/tools'
 import { message, Progress, Tooltip } from 'antd'
-import DemandProgress from '@/components/DemandProgress'
+// import DemandProgress from '@/components/DemandProgress'
 import TableQuickEdit from './TableQuickEdit'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
 import ChangeStatusPopover from './ChangeStatusPopover'
 import ChangePriorityPopover from './ChangePriorityPopover'
+import StateTag from './StateTag'
+import DemandProgress from './DemandProgress'
 
 const Wrap = styled.div<{ isEdit?: any }>(
   {
@@ -37,23 +38,7 @@ const Wrap = styled.div<{ isEdit?: any }>(
 
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
-  const { colorList } = useSelector(store => store.project)
   const { userInfo } = useSelector(store => store.user)
-
-  const onToDetail = (item: any) => {
-    const params = encryptPhp(
-      JSON.stringify({
-        type: 'info',
-        id: item.project_id,
-        demandId: item.id,
-      }),
-    )
-    if (item.project?.isPublic !== 1 && !item.project?.isUserMember) {
-      message.warning(t('common.notCheckInfo'))
-    } else {
-      openDetail(`/Detail/Demand?data=${params}`)
-    }
-  }
 
   const onExamine = () => {
     message.warning(t('newlyAdd.underReview'))
@@ -86,7 +71,8 @@ export const useDynamicColumns = (state: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <ClickWrap
-              onClick={() => onToDetail(record)}
+              className="canClickDetail"
+              onClick={() => state.onClickItem(record)}
               isClose={record.status?.is_end === 1}
             >
               {text}
@@ -104,9 +90,29 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
+      width: 140,
+      title: <NewSort fixedKey="story_prefix_key">编号</NewSort>,
+      dataIndex: 'storyPrefixKey',
+      key: 'prefix_key',
+      render: (text: string, record: any) => {
+        return (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <ClickWrap
+              className="canClickDetail"
+              onClick={() => state.onClickItem(record)}
+              isClose={record.status?.is_end === 1}
+            >
+              {record.storyPrefixKey}
+            </ClickWrap>
+          </div>
+        )
+      },
+    },
+    {
       title: <NewSort fixedKey="name">{t('common.title')}</NewSort>,
       dataIndex: 'name',
       key: 'name',
+      width: 400,
       render: (text: string | number, record: any) => {
         return (
           <div
@@ -115,22 +121,20 @@ export const useDynamicColumns = (state: any) => {
               alignItems: 'center',
             }}
           >
-            <Tooltip
-              placement="top"
-              getPopupContainer={node => node}
-              title={record.categoryRemark}
-            >
-              <CategoryWrap
-                color={record.categoryColor}
-                bgColor={
-                  colorList?.filter(
-                    (k: any) => k.key === record.categoryColor,
-                  )[0]?.bgColor
+            <Tooltip placement="top" title={record.category}>
+              <img
+                src={
+                  record.category_attachment
+                    ? record.category_attachment
+                    : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
                 }
-                style={{ marginLeft: 0 }}
-              >
-                {record.category}
-              </CategoryWrap>
+                style={{
+                  width: '18px',
+                  height: '18px',
+                  marginRight: '8px',
+                }}
+                alt=""
+              />
             </Tooltip>
             <TableQuickEdit
               type="text"
@@ -145,31 +149,37 @@ export const useDynamicColumns = (state: any) => {
               <Tooltip title={text} getPopupContainer={node => node}>
                 <ListNameWrap
                   isName
+                  className="canClickDetail"
                   isClose={record.status?.is_end === 1}
-                  onClick={() => onToDetail(record)}
+                  onClick={() => state.onClickItem(record)}
                 >
                   {text}
-                  {record.new === 1 && (
-                    <span
+                  {record.is_handover === 1 && (
+                    <div
                       style={{
-                        position: 'relative',
-                        display: 'inline-block',
-                        left: '1px',
-                        top: '-10px',
-                        padding: '0px 5px',
-                        minWidth: '28px',
-                        height: '20px',
-                        background: '#FF5C5E',
-                        borderRadius: '10px 10px 10px 10px',
-                        color: '#FFFFFF',
-                        textAlign: 'center',
-                        lineHeight: '15px',
                         fontSize: '12px',
-                        border: '2px solid #FFFFFF',
+                        lineHeight: '20px',
+                        textAlign: 'center',
+                        color: 'var( --function-warning)',
+                        width: '60px',
+                        height: '20px',
+                        background: 'rgba(250,151,70,0.1)',
+                        borderRadius: '10px 6px 6px 10px',
+                        marginLeft: '4px',
                       }}
                     >
-                      {t('p2.new')}
-                    </span>
+                      离职交接
+                    </div>
+                  )}
+
+                  {record.new === 1 && (
+                    <IconFont
+                      style={{
+                        marginLeft: '4px',
+                        fontSize: '30px',
+                      }}
+                      type="tag"
+                    />
                   )}
                 </ListNameWrap>
               </Tooltip>
@@ -186,6 +196,7 @@ export const useDynamicColumns = (state: any) => {
       ),
       dataIndex: 'demand',
       key: 'child_story_count',
+      width: 120,
       render: (text: string, record: any) => {
         return (
           <ChildDemandTable
@@ -201,11 +212,14 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="priority">{t('common.priority')}</NewSort>,
       dataIndex: 'priority',
       key: 'priority',
+      width: 180,
       render: (text: any, record: any) => {
         return (
           <ChangePriorityPopover
             isCanOperation={
-              !(record.project?.isPublic !== 1 && !record.project?.isUserMember)
+              !(
+                record.project?.isPublic !== 1 && !record.project?.isUserMember
+              ) && Object.keys(record.categoryConfigList).includes('priority')
             }
             onChangePriority={item => state.updatePriority(item, record)}
             record={record}
@@ -238,7 +252,10 @@ export const useDynamicColumns = (state: any) => {
                 record.project?.isPublic !== 1 && !record.project?.isUserMember
               ) && (
                 <ShowWrap>
-                  <IconFont style={{ color: '#2877ff' }} type="down-icon" />
+                  <IconFont
+                    style={{ color: 'var(--primary-d2)' }}
+                    type="down-icon"
+                  />
                 </ShowWrap>
               )}
             </Wrap>
@@ -250,6 +267,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="iterate_name">{t('common.iterate')}</NewSort>,
       dataIndex: 'iteration',
       key: 'iterate_name',
+      width: 120,
       render: (text: string, record: any) => {
         return (
           <TableQuickEdit
@@ -300,6 +318,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="tag">{t('common.tag')}</NewSort>,
       dataIndex: 'tag',
       key: 'tag',
+      width: 120,
       render: (text: string, record: any) => {
         return (
           <TableQuickEdit
@@ -329,6 +348,8 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="status">{t('common.status')}</NewSort>,
       dataIndex: 'status',
       key: 'status',
+      width: 190,
+      // eslint-disable-next-line complexity
       render: (text: any, record: any) => {
         return (
           <ChangeStatusPopover
@@ -343,7 +364,7 @@ export const useDynamicColumns = (state: any) => {
             record={record}
             onChangeStatus={(value: any) => state.updateStatus(value, record)}
           >
-            <StyledShape
+            <StateTag
               style={{
                 width: 'fit-content',
                 cursor:
@@ -353,10 +374,17 @@ export const useDynamicColumns = (state: any) => {
                     : 'pointer',
               }}
               onClick={record.isExamine ? onExamine : void 0}
-              color={text?.status.color}
-            >
-              {text?.status.content}
-            </StyledShape>
+              name={record.status.status.content}
+              state={
+                record.status?.is_start === 1 && record.status?.is_end === 2
+                  ? 1
+                  : record.status?.is_end === 1 && record.status?.is_start === 2
+                  ? 2
+                  : record.status?.is_start === 2 && record.status?.is_end === 2
+                  ? 3
+                  : 0
+              }
+            />
           </ChangeStatusPopover>
         )
       },
@@ -365,6 +393,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="user_name">{t('common.createName')}</NewSort>,
       dataIndex: 'userName',
       key: 'user_name',
+      width: 120,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -373,6 +402,7 @@ export const useDynamicColumns = (state: any) => {
       title: t('common.dealName'),
       dataIndex: 'dealName',
       key: 'users_name',
+      width: 180,
       render: (text: any, record: any) => {
         return (
           <TableQuickEdit
@@ -417,8 +447,11 @@ export const useDynamicColumns = (state: any) => {
               record.status.is_end !== 1
             ) && (
               <Progress
-                strokeColor="#43BA9A"
-                style={{ color: '#43BA9A', cursor: 'not-allowed' }}
+                strokeColor="var(--function-success)"
+                style={{
+                  color: 'var(--function-success)',
+                  cursor: 'not-allowed',
+                }}
                 width={38}
                 type="line"
                 percent={record.schedule}
@@ -434,6 +467,7 @@ export const useDynamicColumns = (state: any) => {
       title: t('common.copySend'),
       dataIndex: 'usersCopySendName',
       key: 'users_copysend_name',
+      width: 200,
       render: (text: string, record: any) => {
         return (
           <TableQuickEdit
@@ -454,6 +488,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="created_at">{t('common.createTime')}</NewSort>,
       dataIndex: 'time',
       key: 'created_at',
+      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -466,6 +501,7 @@ export const useDynamicColumns = (state: any) => {
       ),
       dataIndex: 'expectedStart',
       key: 'expected_start_at',
+      width: 200,
       render: (text: string, record: any) => {
         return (
           <TableQuickEdit
@@ -489,6 +525,7 @@ export const useDynamicColumns = (state: any) => {
       ),
       dataIndex: 'expectedEnd',
       key: 'expected_end_at',
+      width: 200,
       render: (text: string, record: any) => {
         return (
           <TableQuickEdit
@@ -510,6 +547,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="updated_at">{t('common.lastTime')}</NewSort>,
       dataIndex: 'updatedTime',
       key: 'updated_at',
+      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -518,6 +556,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="finish_at">{t('common.finishTime')}</NewSort>,
       dataIndex: 'finishTime',
       key: 'finish_at',
+      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },

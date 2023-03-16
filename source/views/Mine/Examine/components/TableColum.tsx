@@ -6,8 +6,9 @@ import { OmitText } from '@star-yun/ui'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import { openDetail } from '@/tools'
 import { useSelector } from '@store/index'
+import { Tooltip } from 'antd'
+import { useNavigate } from 'react-router-dom'
 
 const CircleWrap = styled.div({
   width: 8,
@@ -23,7 +24,7 @@ const CanClick = styled.div({
   cursor: 'pointer',
   color: 'white',
   fontSize: 12,
-  background: '#2877ff',
+  background: 'var(--primary-d2)',
   lineHeight: '24px',
   width: 'fit-content',
 })
@@ -35,19 +36,6 @@ const StatusWrap = styled.div({
 
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
-  const { colorList } = useSelector(store => store.project)
-
-  const onToDetail = (item: any) => {
-    const params = encryptPhp(
-      JSON.stringify({
-        type: 'info',
-        id: item.projectId,
-        demandId: item.demandId,
-      }),
-    )
-    openDetail(`/Detail/Demand?data=${params}`)
-  }
-
   const NewSort = (propsSort: any) => {
     return (
       <Sort
@@ -67,7 +55,14 @@ export const useDynamicColumns = (state: any) => {
       dataIndex: 'demandId',
       key: 'story_id',
       render: (text: string, record: any) => {
-        return <ClickWrap onClick={() => onToDetail(record)}>{text}</ClickWrap>
+        return (
+          <ClickWrap
+            className="canClickDetail"
+            onClick={() => state.onClickItem(record)}
+          >
+            {text}
+          </ClickWrap>
+        )
       },
     },
     {
@@ -77,17 +72,25 @@ export const useDynamicColumns = (state: any) => {
       render: (text: string | number, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <CategoryWrap
-              style={{ marginLeft: 0 }}
-              color={record.categoryColor}
-              bgColor={
-                colorList?.filter((i: any) => i.key === record.categoryColor)[0]
-                  ?.bgColor
-              }
+            <Tooltip placement="top" title={record.categoryName}>
+              <img
+                src={
+                  record.category_attachment
+                    ? record.category_attachment
+                    : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
+                }
+                style={{
+                  width: '18px',
+                  height: '18px',
+                  marginRight: '8px',
+                }}
+                alt=""
+              />
+            </Tooltip>
+            <ClickWrap
+              className="canClickDetail"
+              onClick={() => state.onClickItem(record)}
             >
-              {record.categoryName}
-            </CategoryWrap>
-            <ClickWrap onClick={() => onToDetail(record)}>
               <OmitText
                 width={200}
                 tipProps={{
@@ -97,6 +100,23 @@ export const useDynamicColumns = (state: any) => {
                 {text}
               </OmitText>
             </ClickWrap>
+            {record.is_handover === 1 && (
+              <div
+                style={{
+                  fontSize: '12px',
+                  lineHeight: '20px',
+                  textAlign: 'center',
+                  color: '#FA9746',
+                  width: '60px',
+                  height: '20px',
+                  background: 'rgba(250,151,70,0.1)',
+                  borderRadius: '10px 6px 6px 10px',
+                  marginLeft: '4px',
+                }}
+              >
+                离职交接
+              </div>
+            )}
           </div>
         )
       },

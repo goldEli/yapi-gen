@@ -1,51 +1,85 @@
-// 整体页面结构
-
-/* eslint-disable react/jsx-no-leaked-render */
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { useEffect, useState } from 'react'
-import styled from '@emotion/styled'
-import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { Side } from './components/Side'
-import Next from './components/Next'
 import { changeLanguage, loadedAntdLocals } from '@/locals'
-import NoPermission from './components/NoPermission'
-import { useTranslation } from 'react-i18next'
-import { ConfigProvider, message } from 'antd'
-import { useDispatch, useSelector } from '../../../store'
-import { getStatus } from '../../../store/waterState'
-import { getLoginDetail } from '../../../store/user/user.thunk'
-import { ConfigProvider as KitConfigProvider } from '@xyfe/uikit'
 import { login } from '@/services/user'
 import { getAsyncCompanyInfo } from '@store/companyInfo'
+import { useDispatch, useSelector, store as storeAll } from '@store/index'
+import { getStatus } from '@store/waterState'
+import { message, ConfigProvider } from 'antd'
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { ConfigProvider as KitConfigProvider } from '@xyfe/uikit'
+import NoPermission from './components/NoPermission'
+import styled from '@emotion/styled'
+import Side from './components/Side'
+import { getLoginDetail } from '@store/user/user.thunk'
+import HeaderLeft from './components/HeaderLeft'
+import HeaderRight from './components/HeaderRight'
+import GlobalStyle from '@/components/GlobalStyle'
+import Guide from './components/Guide'
+import { getProjectCover } from '@store/cover/thunks'
+import CreateAProjectForm from '@/components/CreateAProjectForm'
+import CreateIteration from '@/components/CreateIteration'
+import CreateDemand from '@/components/CreateDemand'
+import DemandDetailDrawer from '@/components/DemandDetailDrawer'
 
-const Wrap = styled.div`
-  display: flex;
-  width: 100vw;
+const LayoutWrap = styled.div`
+  width: 100%;
   height: 100vh;
-  flex: 1;
-  overflow-x: auto;
+  display: flex;
+  flex-direction: column;
 `
 
-const Main = styled.div`
-  background: rgba(245, 247, 250, 1);
+const HeaderWrap = styled.div`
+  width: 100%;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  box-shadow: 0px 1px 9px 0px rgba(20, 37, 98, 0.05);
+  background: var(--neutral-white-d2);
+  z-index: 2;
+`
+
+const Content = styled.div`
+  height: calc(100vh - 56px);
+  width: 100%;
+  overflow: auto;
+  display: flex;
+  z-index: 1;
+`
+
+const Main = styled.div<{ left: number }>`
+  height: 100%;
+  width: ${props => `calc(100% - ${props.left}px)`};
   flex: 1;
-  min-width: 1440px;
-  padding-left: 80px;
+  position: relative;
+  overflow: auto;
+  background: var(--neutral-white-d1);
 `
 
 export const Container = () => {
   const location = useLocation()
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const [isNextVisible, setIsNextVisible] = useState(false)
-  const { userInfo, loginInfo } = useSelector(store => store.user)
+  const [changeLeft, setChangeLeft] = useState(200)
+  const { userInfo, loginInfo, menuPermission } = useSelector(
+    store => store.user,
+  )
+  // const userInfo = store.getState().user.userInfo
+  // const loginInfo = store.getState().user.loginInfo
+  // const menuPermission = store.getState().user.menuPermission
   const {
     i18n: { language },
   } = useTranslation()
   const antdLocal = loadedAntdLocals[language]
+  const navigate = useNavigate()
+
+  // 没有二级菜单的
+  const notHaveSide = ['/Situation']
+
   message.config({
     duration: 0.8,
     maxCount: 1,
@@ -57,11 +91,38 @@ export const Container = () => {
     }
   }
 
+  const onCloseDemandDetail = (e: any) => {
+    if (
+      !e.target?.parentElement?.className?.includes('canClickDetail') &&
+      !e.target?.className?.includes('canClickDetail') &&
+      storeAll.getState().demand.isDemandDetailDrawerVisible
+    ) {
+      dispatch({
+        type: 'demand/setIsDemandDetailDrawerVisible',
+        payload: false,
+      })
+      dispatch({
+        type: 'demand/setDemandDetailDrawerProps',
+        payload: {},
+      })
+    }
+  }
+
   useEffect(() => {
     dispatch(getStatus())
     dispatch(getLoginDetail())
     dispatch(getAsyncCompanyInfo())
+    dispatch(getProjectCover())
   }, [])
+
+  useEffect(() => {
+    document
+      .getElementById('layoutWrap')
+      ?.addEventListener('click', onCloseDemandDetail)
+    return document
+      .getElementById('layoutWrap')
+      ?.addEventListener('click', onCloseDemandDetail)
+  }, [document.getElementById('layoutWrap')])
 
   useEffect(() => {
     const languageParams =
@@ -71,80 +132,47 @@ export const Container = () => {
         | 'en')
     localStorage.setItem('language', languageParams)
     changeLanguage(languageParams)
-
     init()
   }, [])
-  const jumpList = [
-    {
-      name: '概况',
-      path: '/Situation',
-    },
-    {
-      name: '项目',
-      path: '/Project',
-    },
-    {
-      name: '我的',
-      path: '/mine',
-    },
-    {
-      name: '员工',
-      path: '/staff',
-    },
-    {
-      name: '消息',
-      path: '/Situation',
-    },
-
-    {
-      name: '公司管理',
-      path: '/Setting',
-    },
-    {
-      name: '日志',
-      path: '/Situation',
-    },
-  ]
 
   useEffect(() => {
-    setIsNextVisible(loginInfo.admin_first_login)
-    const { company_permissions } = userInfo
-
-    const routerMap = Array.from(
-      new Set(company_permissions?.map((i: any) => i.group_name)),
-    )
+    // 如果没带路由则跳转优先路由
     if (location.pathname === '/') {
-      if (routerMap.length >= 1) {
-        routerMap.concat('日志')
-        if (!sessionStorage.getItem('saveRouter')) {
-          for (let i = 0; i <= jumpList.length; i++) {
-            if (routerMap?.includes(jumpList[i].name)) {
-              sessionStorage.setItem('saveRouter', '首次登录')
-              navigate(jumpList[i].path)
-              break
-            }
-          }
-        }
-      }
+      navigate(menuPermission.priorityUrl)
     }
-  }, [loginInfo, userInfo])
+    setIsNextVisible(loginInfo.admin_first_login)
+  }, [loginInfo, menuPermission])
 
   return (
     <KitConfigProvider local={language as any}>
       <ConfigProvider locale={antdLocal} autoInsertSpaceInButton={false}>
+        <GlobalStyle />
         {userInfo?.company_permissions?.length > 0 && (
-          <Wrap>
-            <Side />
-            <Main>
-              <Outlet />
-            </Main>
-            <Next
+          <LayoutWrap id="layoutWrap">
+            <HeaderWrap>
+              <HeaderLeft />
+              <HeaderRight />
+            </HeaderWrap>
+            <Content>
+              {location.pathname !== '/Situation' && (
+                <Side onChangeLeft={setChangeLeft} />
+              )}
+              <Main left={changeLeft}>
+                <Outlet />
+              </Main>
+            </Content>
+            <Guide
               visible={isNextVisible}
               close={() => setIsNextVisible(false)}
             />
-          </Wrap>
+          </LayoutWrap>
         )}
         {userInfo?.company_permissions?.length <= 0 && <NoPermission />}
+
+        <CreateAProjectForm />
+        <CreateIteration />
+        <CreateDemand />
+        <DemandDetailDrawer />
       </ConfigProvider>
     </KitConfigProvider>
   )

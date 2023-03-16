@@ -20,15 +20,23 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 import { css } from '@emotion/css'
-import { getShapeRight } from '@/services/project/shape'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import moment from 'moment'
 import { getProjectMember } from '@/services/mine'
+import { getShapeRight } from '@/services/demand'
+import { useGetloginInfo } from '@/hooks/useGetloginInfo'
 
 export function setValue(res: any) {
   const form1Obj: any = {}
   for (const key in res?.fields) {
-    if (
+    if (res?.fields[key].content === 'users_name') {
+      // eslint-disable-next-line no-undefined
+      if (res.originalStatusUserIds.length >= 1) {
+        form1Obj[res?.fields[key].content] = [
+          res.originalStatusUserIds.join(','),
+        ]
+      }
+    } else if (
       res?.fields[key].type === 'select' &&
       res?.fields[key].true_value !== 0 &&
       res?.fields[key].true_value !== ''
@@ -72,7 +80,7 @@ const Right = styled.div`
 `
 const Contain = styled.div`
   margin-top: 15px;
-  background: #f9fafa;
+  background: var(--neutral-n6-d1);
   border-radius: 6px 6px 6px 6px;
   position: relative;
   width: 100%;
@@ -80,27 +88,7 @@ const Contain = styled.div`
   min-height: 316px;
   display: flex;
 `
-const StyledShape = styled.div`
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  padding: 1px 8px 1px 8px;
-  width: 100%;
-  height: 25px;
-  white-space: nowrap;
-  background: rgba(255, 255, 255, 1);
-  background-blend-mode: normal;
-  border: 1px solid rgba(235, 237, 240, 1);
-  border-radius: 6px;
-  margin-bottom: 16px;
-  text-align: center;
-  &:hover {
-    border: 1px solid rgba(40, 119, 255, 1);
-    color: rgba(40, 119, 255, 1);
-  }
-`
+
 const FormWrap = styled.div`
   box-sizing: border-box;
   padding-right: 24px;
@@ -125,14 +113,14 @@ const ExcessiveBox = styled.div`
 const StyledShape2 = styled.div`
   padding: 1px 8px 1px 8px;
   height: 22px;
-  background: #ffffff;
+  background: var(--neutral-white-d7);
   border-radius: 6px 6px 6px 6px;
   opacity: 1;
-  border: 1px solid #ebedf0;
+  border: 1px solid var(--neutral-n9);
   font-size: 12px;
   font-family: PingFang SC-Regular, PingFang SC;
   font-weight: 400;
-  color: #969799;
+  color: var(--neutral-n3);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -142,7 +130,7 @@ const StyledShape3 = styled.div`
   font-size: 12px;
   font-family: PingFang SC-Regular, PingFang SC;
   font-weight: 400;
-  color: #969799;
+  color: var(--neutral-n3);
   line-height: 20px;
 `
 const AuditBox = styled.div``
@@ -154,7 +142,7 @@ const LineBoxTitle2 = styled.div`
   font-size: 14px;
   font-family: PingFang SC-Regular, PingFang SC;
   font-weight: 400;
-  color: #323233;
+  color: var(--neutral-n1-d1);
   margin-bottom: 8px;
   line-height: 22px;
 `
@@ -173,19 +161,19 @@ const arron = css`
   font-size: 12px;
   font-family: PingFang SC-Medium, PingFang SC;
   font-weight: 500;
-  color: #ffffff;
+  color: var(--neutral-white-d2);
 `
 const arrorText = css`
   height: 20px;
   font-size: 12px;
   font-family: PingFang SC-Regular, PingFang SC;
   font-weight: 400;
-  color: #323233;
+  color: var(--neutral-n1-d1);
   line-height: 20px;
   margin-left: 5px;
 `
 const symbol = css`
-  color: #bbbdbf;
+  color: var(--neutral-n4);
   position: absolute;
   width: 16px;
   height: 16px;
@@ -321,7 +309,7 @@ const NumericInput = (props: any) => {
   }
   if (type === 'integer') {
     return (
-      <div style={{ border: '1px solid #ebedf0', borderRadius: '6px' }}>
+      <div style={{ border: '1px solid var( --active)', borderRadius: '6px' }}>
         <Input
           type="number"
           placeholder={t('newlyAdd.pleaseValue')}
@@ -338,7 +326,7 @@ const NumericInput = (props: any) => {
     )
   }
   return (
-    <div style={{ border: '1px solid #d5d6d9', borderRadius: '6px' }}>
+    <div style={{ border: '1px solid var(--active)', borderRadius: '6px' }}>
       <Input
         type="number"
         placeholder={t('newlyAdd.pleaseValue')}
@@ -377,6 +365,7 @@ const ShapeContentForDetail = (props: any) => {
   const [activeStatus, setActiveStatus] = useState<any>({})
   const [active, setActive] = useState(activeID)
   const [reviewerValue, setReviewerValue] = useState('')
+  const info = useGetloginInfo()
 
   const handleChange = (value: string) => {
     setReviewerValue(value)
@@ -416,6 +405,25 @@ const ShapeContentForDetail = (props: any) => {
     const res2 = await form.validateFields()
     const res = JSON.parse(JSON.stringify(res2))
     for (const key in res) {
+      if (key === 'users_name') {
+        const newArr = res[key].filter((i: any) => {
+          return typeof i === 'string'
+        })
+        const newArr1 = res[key].filter((i: any) => {
+          return typeof i !== 'string'
+        })
+
+        const arr = Array.from(
+          new Set([
+            ...(newArr + '').split(',').map(k => Number(k)),
+            ...newArr1,
+          ]),
+        )
+        if (newArr.length >= 1) {
+          res[key] = arr
+        }
+      }
+
       if (typeof res[key] === 'undefined') {
         res[key] = null
       }
@@ -442,6 +450,52 @@ const ShapeContentForDetail = (props: any) => {
 
   const onConfirm = async () => {
     await confirm()
+  }
+  const formatName = (content: any, name: any, id: any) => {
+    if (content === 'users_name' && id === info) {
+      return `${name} （我自己）`
+    }
+    if (rightList?.originalStatusUserIds.includes(id)) {
+      return `${name}（原状态处理人）`
+    }
+    return name
+  }
+
+  const format = (i: any) => {
+    const a = i.children?.map((item: any) => ({
+      ...item,
+      label: formatName(i.content, item.name, item.id),
+
+      value: item.id,
+    }))
+    const newA = a.filter((j: any) => {
+      return j.id === info
+    })
+
+    const newC = a.filter((j: any) => {
+      return rightList?.originalStatusUserIds.includes(j.id)
+    })
+
+    const ids = rightList?.originalStatusUserIds.join(',')
+
+    const names = newC.map((k: any) => k.name).join(' ; ')
+    let newD: any = []
+    if (ids) {
+      newD = [
+        {
+          id: ids,
+          label: names + '（原状态处理人）',
+          name: names,
+          value: ids,
+        },
+      ]
+    }
+
+    const newB = a.filter((j: any) => {
+      return j.id !== info && !rightList?.originalStatusUserIds.includes(j.id)
+    })
+
+    return (newD ? newD : []).concat(newA, newB)
   }
 
   return (
@@ -535,10 +589,7 @@ const ShapeContentForDetail = (props: any) => {
                           mode="multiple"
                           placeholder={t('common.pleaseSelect')}
                           allowClear
-                          options={i.children?.map((item: any) => ({
-                            label: item.name,
-                            value: item.id,
-                          }))}
+                          options={format(i)}
                           optionFilterProp="label"
                         />
                       </Form.Item>
@@ -647,7 +698,7 @@ const ShapeContentForDetail = (props: any) => {
                   style={{
                     fontSize: '50px',
                     margin: '0 8px',
-                    color: '#BBBDBF',
+                    color: 'var(--neutral-n4)',
                   }}
                   type="flow"
                 />
@@ -670,7 +721,7 @@ const ShapeContentForDetail = (props: any) => {
                     height: '22px',
                     fontSize: '14px',
                     fontWeight: 500,
-                    color: '#323233',
+                    color: 'var(--neutral-n1-d1)',
                     lineHeight: '22px',
                     marginBottom: '20px',
                   }}
@@ -705,7 +756,7 @@ const ShapeContentForDetail = (props: any) => {
                                   style={{
                                     fontSize: 16,
                                     margin: '0 8px',
-                                    color: '#BBBDBF',
+                                    color: 'var(--neutral-n4)',
                                     position: 'relative',
                                     top: '0px',
                                   }}

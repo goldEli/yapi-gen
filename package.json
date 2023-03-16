@@ -23,11 +23,10 @@
     "@star-yun/ui": "^0.0.3",
     "@staryuntech/ant-pro": "0.0.22",
     "@types/react-router-dom": "^5.3.3",
-    "@wangeditor/editor": "^5.1.11",
-    "@wangeditor/editor-for-react": "^1.0.4",
-    "@xyfe/uikit": "^0.0.1-beta.52",
+    "@xyfe/uikit": "^0.1.0-alpha.14",
     "antd": "^4.24.0",
     "array-move": "^4.0.0",
+    "caret-pos": "^2.0.0",
     "cos-js-sdk-v5": "^1.4.15",
     "crypto-js": "^4.1.1",
     "dayjs": "^1.11.0",
@@ -44,6 +43,7 @@
     "react-dom": "^18.2.0",
     "react-i18next": "^12.0.0",
     "react-redux": "^8.0.5",
+    "react-resizable": "^3.0.4",
     "react-router-dom": "^6.6.0",
     "react-sortable-hoc": "^2.0.0",
     "react-viewer": "^3.2.2",
@@ -66,7 +66,7 @@
     "husky": "^8.0.1",
     "lint-staged": "^13.0.2",
     "typescript": "^4.9.4",
-    "vite": "^4.0.0",
+    "vite": "^4.1.4",
     "vite-plugin-prefetch-inject": "^0.1.0"
   },
   "name": "@jihe/template-react",
@@ -85,6 +85,8 @@
       ]
     },
     "rules": {
+      "padding-line-between-statements": 0,
+      "naming-convention": 0,
       "object-property-newline": [
         1,
         {
@@ -102,8 +104,12 @@
           "offsetTernaryExpressions": true
         }
       ],
+      " react/no-unstable-nested-components": 0,
+      "react/no-children-prop": 0,
+      "@typescript-eslint/no-unused-expressions": 0,
       "@typescript-eslint/no-explicit-any": 0,
       "@typescript-eslint/member-delimiter-style": 0,
+      "react/jsx-no-literals": 0,
       "complexity": [
         2,
         10

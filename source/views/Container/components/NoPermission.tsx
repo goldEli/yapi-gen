@@ -1,4 +1,4 @@
-// 暂无权限页面
+// 暂无权限页面 -- 可切换公司
 
 /* eslint-disable @typescript-eslint/naming-convention */
 import IconFont from '@/components/IconFont'
@@ -17,7 +17,7 @@ import { useSelector } from '@store/index'
 const Wrap = styled.div({
   height: '100vh',
   width: '100vw',
-  background: '#F5F7FA',
+  background: 'var(--hover-d1)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -43,8 +43,8 @@ const SetHead = styled.div`
   font-size: 14px;
   background: #a4acf5;
   background-blend-mode: normal;
-  border: 1px solid #f0f2fd;
-  color: white;
+  border: 1px solid var(--hover-d1);
+  color: var(--auxiliary-text-t1-d1);
   margin-right: 8px;
   margin-top: 24;
 `
@@ -52,13 +52,13 @@ const SetHead = styled.div`
 const NameWrap = styled.div({
   marginTop: 16,
   fontSize: 14,
-  color: '#323233',
+  color: 'var(--neutral-n1-d1)',
 })
 
 const PhoneWrap = styled.div({
   marginTop: 4,
   fontSize: 12,
-  color: '#646566',
+  color: 'var(--neutral-n2)',
 })
 
 const CompanyWrap = styled.div<{ active: boolean }>(
@@ -69,7 +69,7 @@ const CompanyWrap = styled.div<{ active: boolean }>(
     position: 'relative',
     '.name': {
       fontSize: 12,
-      color: '#646566',
+      color: 'var(--neutral-n2)',
       marginRight: 8,
     },
     '.ant-popover-inner-content': {
@@ -77,13 +77,13 @@ const CompanyWrap = styled.div<{ active: boolean }>(
     },
     '.icon': {
       svg: {
-        color: '#323233',
+        color: 'var(--neutral-n1-d1)',
       },
     },
     '&: hover': {
       '.icon': {
         svg: {
-          color: '#2877ff',
+          color: 'var(--primary-d2)',
         },
       },
     },
@@ -91,7 +91,7 @@ const CompanyWrap = styled.div<{ active: boolean }>(
   ({ active }) => ({
     '.icon': {
       svg: {
-        color: active ? '#2877ff' : '#323233',
+        color: active ? 'var(--primary-d2)' : 'var(--neutral-n1-d1)',
       },
     },
   }),
@@ -106,10 +106,10 @@ const IconFontWrap = styled(IconFont)<{ 'data-active'?: boolean }>`
   justify-content: center;
   cursor: pointer;
   &:hover {
-    background: #f0f4fa;
+    background: var(--neutral-n5);
   }
   ${props => ({
-    background: props['data-active'] ? '#f0f4fa' : 'white',
+    background: props['data-active'] ? 'var(--neutral-n5)' : 'white',
   })}
 `
 
@@ -127,17 +127,17 @@ const Item = styled.div<{ active: boolean }>(
       marginLeft: 16,
     },
     '&: hover': {
-      background: '#f0f4fa',
+      background: 'var(--neutral-n5)',
     },
   },
   ({ active }) => ({
-    background: active ? '#f0f4fa' : 'white',
+    background: active ? 'var(--hover-d1)' : 'var(--auxiliary-text-t1-d1)',
   }),
 )
 
 const ToastWrap = styled.div({
   fontSize: 12,
-  color: '#000',
+  color: 'var(--neutral-black)',
   margin: '55px 0 16px 0',
   maxWidth: 280,
   textAlign: 'center',
@@ -201,7 +201,10 @@ const NoPermission = () => {
         >
           <div>{i.name}</div>
           {i.id === activeId && (
-            <IconFont type="check" style={{ fontSize: 15, color: '#4186fe' }} />
+            <IconFont
+              type="check"
+              style={{ fontSize: 15, color: 'var(--primary-d2)' }}
+            />
           )}
         </Item>
       ))}

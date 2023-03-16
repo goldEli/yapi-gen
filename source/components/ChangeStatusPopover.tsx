@@ -39,13 +39,13 @@ const ChangeStatusPopover = (props: Props) => {
           <ShapeContent
             onTap={onChangeStatus}
             onClosePopover={() => setPopoverVisible(false)}
-            row={props.record}
+            row={props?.record}
             record={{
-              id: props.record.id,
-              project_id: props.projectId,
+              id: props.record?.id,
+              project_id: props?.projectId,
               status: {
-                id: props.record.status.id,
-                can_changes: props.record.status.can_changes,
+                id: props.record?.status?.id,
+                can_changes: props?.record?.status?.can_changes,
               },
             }}
           />

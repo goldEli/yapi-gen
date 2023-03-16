@@ -75,8 +75,8 @@ const GanttWrap = styled.div({
   '#status': {
     padding: '4px 8px',
     borderRadius: 6,
-    border: '1px solid #2877ff',
-    color: '#2877ff',
+    border: '1px solid var(--primary-d2)',
+    color: 'var(--primary-d2)',
     fontSize: 12,
   },
 })
@@ -118,7 +118,7 @@ const Gantt = (props: Props) => {
         String(
           task.statusTitle
             ? `<span style="color: ${task.statusColor}">${task.statusTitle}</span>`
-            : `<span style="color: #969799;text-decoration:line-through">${t(
+            : `<span style="color: var(--neutral-n3);text-decoration:line-through">${t(
                 'newlyAdd.statusDel',
               )}</span>`,
         ) +
@@ -148,6 +148,17 @@ const Gantt = (props: Props) => {
         name: 'text',
         label: t('common.title'),
         width: '280',
+      },
+
+      {
+        name: 'start_date',
+        label: t('common.status'),
+        width: 140,
+      },
+      {
+        name: 'end_date',
+        label: t('common.status'),
+        width: 140,
       },
       {
         name: 'statusName',

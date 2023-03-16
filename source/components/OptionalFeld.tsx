@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 // 可配置的表格字段弹窗
 
 /* eslint-disable @typescript-eslint/no-use-before-define */
@@ -37,7 +38,7 @@ const CheckedItem = styled.div({
   borderRadius: 4,
   padding: '  0 16px',
   '&: hover': {
-    background: ' #f4f5f5',
+    background: 'var(--neutral-n6-d1)',
     [ShowWrap.toString()]: {
       visibility: 'visible',
     },
@@ -45,6 +46,7 @@ const CheckedItem = styled.div({
 })
 const Wrap = styled.div`
   display: flex;
+  padding: 0 24px;
 `
 const Left = styled.div`
   width: 624px;
@@ -115,7 +117,7 @@ const DragHandle = sortableHandle(() => (
     style={{
       fontSize: 16,
       cursor: 'pointer',
-      color: '#969799',
+      color: 'var(--neutral-n3)',
       marginRight: 12,
     }}
   />
@@ -368,7 +370,11 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
         </Left>
         <Divider
           type="vertical"
-          style={{ background: '#EBEDF0', margin: '0 16px 0 4px', height: 350 }}
+          style={{
+            background: 'var(--neutral-n6-d1)',
+            margin: '0 16px 0 4px',
+            height: 350,
+          }}
         />
         <Right>
           <div className={text}>{t('components.currentFiled')}</div>
@@ -389,7 +395,7 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
                   {item.value !== 'name' && (
                     <ShowWrap style={{ marginLeft: 'auto' }}>
                       <IconFont
-                        style={{ fontSize: 16, color: '#646566' }}
+                        style={{ fontSize: 16, color: 'var(--neutral-n2)' }}
                         type="close"
                         onClick={() => del(item.value)}
                       />

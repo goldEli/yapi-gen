@@ -2,10 +2,10 @@ import * as user from './user'
 import * as staff from './staff'
 import * as mine from './mine'
 import * as setting from './setting'
-import * as demand from './project/demand'
-import * as iterate from './project/iterate'
-import * as project from './project/index'
+import * as demand from './demand'
+import * as iterate from './iterate'
+import * as project from './project'
 import * as cos from './cos'
-import * as member from './member'
+import * as memberInfo from './memberInfo'
 
-export { user, setting, staff, demand, iterate, project, cos, mine, member }
+export { user, setting, staff, demand, iterate, project, cos, mine, memberInfo }

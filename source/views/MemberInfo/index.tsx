@@ -13,16 +13,19 @@ import { getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { getAsyncMember } from '@store/member'
 import { useDispatch, useSelector } from '@store/index'
 import PermissionWrap from '@/components/PermissionWrap'
+import { getAsyncMember } from '@store/memberInfo'
+import MyBreadcrumb from '@/components/MyBreadcrumb'
+import { getProjectInfo } from '@/services/project'
+import { setProjectInfo } from '@store/project'
 
 const Wrap = styled.div<{ isMember?: any }>(
   {
     display: 'flex',
   },
   ({ isMember }) => ({
-    height: isMember ? 'calc(100% - 64px)' : '100%',
+    height: isMember ? 'calc(100% - 104px)' : '100%',
   }),
 )
 
@@ -34,14 +37,13 @@ const Side = styled.div`
   box-sizing: border-box;
   padding-top: 24px;
   width: 220px;
-  background: rgba(255, 255, 255, 1);
+  background: var(--neutral-white-d2);
   flex-shrink: 0;
-  border-right: 1px solid #ecedef;
+  border-right: 1px solid var(--neutral-n6-d1);
 `
 
 const Main = styled.div({
-  width: 'calc(100% - 220px)',
-  overflow: 'auto',
+  width: 'calc(100% )',
 })
 
 const Menu = styled.div`
@@ -59,13 +61,15 @@ const MenuItem = styled.div<{ active?: boolean }>(
     cursor: 'pointer',
     width: 220,
     '&: hover': {
-      backgroundColor: '#F4F5F5',
+      backgroundColor: 'var(--neutral-n7)',
     },
   },
   ({ active }) => ({
-    borderRight: active ? '3px solid #2877ff' : '3px solid transparent',
-    color: active ? '#2877ff' : '#323233',
-    background: active ? '#F0F4FA !important' : 'transparent',
+    borderRight: active
+      ? '3px solid var(--primary-d2)'
+      : '3px solid transparent',
+    color: active ? 'var(--primary-d2)' : 'var(--neutral-n1-d1)',
+    background: active ? 'var(--neutral-n7) !important' : 'transparent',
   }),
 )
 
@@ -78,12 +82,12 @@ const InfoItem = styled.div({
   display: 'flex',
   flexDirection: 'column',
   div: {
-    color: '#323233',
+    color: 'var(--neutral-n1-d1)',
     fontSize: 16,
     fontWeight: 400,
   },
   span: {
-    color: '#969799',
+    color: 'var(--neutral-n3)',
     fontSize: 14,
   },
 })
@@ -97,35 +101,43 @@ const MemberInfo = () => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { isMember, userId } = paramsData
-  const { mainInfo } = useSelector(store => store.member)
+  const { mainInfo } = useSelector(store => store.memberInfo)
   const { userInfo } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
+  const { menuPermission } = useSelector(store => store.user)
 
   const menuList = [
     {
       id: 1,
       name: t('newlyAdd.hisSurvey'),
-      path: 'profile',
+      path: 'Profile',
     },
     {
       id: 2,
       name: t('newlyAdd.hisAbeyance'),
-      path: 'carbon',
+      path: 'Carbon',
     },
     {
       id: 3,
       name: t('newlyAdd.hisCreate'),
-      path: 'create',
+      path: 'Create',
     },
     {
       id: 4,
       name: t('newlyAdd.hisFinish'),
-      path: 'finished',
+      path: 'Finished',
     },
   ]
+  const init = async () => {
+    const result = await getProjectInfo({ projectId })
+    dispatch(setProjectInfo(result))
+  }
   useEffect(() => {
     // 获取当前查看人员信息
     dispatch(getAsyncMember({ userId }))
+    if (isMember) {
+      init()
+    }
   }, [])
 
   const changeActive = (value: any) => {
@@ -133,7 +145,7 @@ const MemberInfo = () => {
       const params = encryptPhp(
         JSON.stringify({ id: projectId, isMember, userId }),
       )
-      navigate(`/Detail/MemberInfo/${value.path}?data=${params}`)
+      navigate(`/ProjectManagement/MemberInfo/${value.path}?data=${params}`)
     } else {
       const params = encryptPhp(
         JSON.stringify({ userId, isMember: false, id: '' }),
@@ -148,50 +160,25 @@ const MemberInfo = () => {
 
   return (
     <PermissionWrap
-      auth={isMember ? 'b/project/member/info' : 'b/user/info'}
+      auth={isMember ? 'b/project/member/info' : 'b/companyuser/info'}
       permission={
         isMember
-          ? projectInfo?.projectPermissions
-          : userInfo?.company_permissions
+          ? projectInfo?.projectPermissions?.map((i: any) => i.identity)
+          : userInfo?.company_permissions?.map((i: any) => i.identity)
       }
     >
       <Wrap isMember={isMember}>
-        <Side>
-          <InfoWrap>
-            {mainInfo?.avatar ? (
-              <img
-                src={mainInfo?.avatar}
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: '50%',
-                  marginRight: 8,
-                }}
-                alt=""
-              />
-            ) : (
-              <NameWrap style={{ margin: '0 8px 0 0 ', width: 32, height: 32 }}>
-                {String(mainInfo?.name?.trim().slice(0, 1)).toLocaleUpperCase()}
-              </NameWrap>
-            )}
-            <InfoItem>
-              <div>{mainInfo?.name}</div>
-              <span>{mainInfo?.phone}</span>
-            </InfoItem>
-          </InfoWrap>
-          <Menu>
-            {menuList.map(item => (
-              <MenuItem
-                active={pathname.includes(item.path)}
-                onClick={() => changeActive(item)}
-                key={item.id}
-              >
-                {item.name}
-              </MenuItem>
-            ))}
-          </Menu>
-        </Side>
         <Main>
+          <div
+            style={{
+              height: '32px',
+              display: 'flex',
+              alignItems: 'center',
+              margin: '20px',
+            }}
+          >
+            <MyBreadcrumb user={{ name: mainInfo?.name }} />
+          </div>
           <Outlet />
         </Main>
       </Wrap>

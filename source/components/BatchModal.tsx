@@ -4,12 +4,11 @@
 /* eslint-disable camelcase */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable complexity */
-
+/* eslint-disable camelcase */
 import { useEffect, useState } from 'react'
 import DeleteConfirm from './DeleteConfirm'
 import CommonModal from './CommonModal'
 import { Checkbox, DatePicker, Form, message, Select, TreeSelect } from 'antd'
-import { FormWrapDemand } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import {
@@ -20,11 +19,7 @@ import {
 } from '@/tools'
 import moment from 'moment'
 import { useSelector } from '@store/index'
-import {
-  batchDelete,
-  batchEdit,
-  getBatchEditConfig,
-} from '@/services/project/demand'
+import { batchDelete, batchEdit, getBatchEditConfig } from '@/services/demand'
 
 interface Props {
   isVisible: boolean
@@ -166,6 +161,7 @@ const BatchModal = (props: Props) => {
   // 批量编辑的确认事件
   const onConfirmEdit = async () => {
     await form.validateFields()
+
     let params: any = {
       projectId,
       demandIds: props.selectRows?.map((i: any) => i.id),
@@ -268,10 +264,10 @@ const BatchModal = (props: Props) => {
           title={t('version2.editTitle', { count: props.selectRows?.length })}
           onConfirm={onConfirmEdit}
         >
-          <FormWrapDemand
+          <Form
             form={form}
             layout="vertical"
-            style={{ padding: '0 20px 0 2px' }}
+            style={{ padding: '0 20px 0 24px' }}
           >
             <Form.Item
               label={t('version2.chooseUpdate')}
@@ -347,28 +343,47 @@ const BatchModal = (props: Props) => {
                   {/* )} */}
                 </Form.Item>
               )}
-            {chooseType && String(chooseType).includes('custom_') && (
-              <Form.Item label={t('version2.updateAfter')} name="target">
-                {getTypeComponent(
-                  {
-                    attr: chooseAfter.attr,
-                    remarks: [
-                      'select_checkbox',
-                      'radio',
-                      'checkbox',
-                      'select',
-                      'user_select',
-                      'user_select_checkbox',
-                      'date',
-                    ].includes(chooseAfter.attr)
-                      ? t('common.pleaseSelect')
-                      : t('common.pleaseEnter'),
-                    value: chooseAfter.selectList,
-                  },
-                  void 0,
-                )}
-              </Form.Item>
-            )}
+            {chooseType &&
+              String(chooseType).includes('custom_') &&
+              chooseAfter.attr !== 'single_checkbox' && (
+                <Form.Item label={t('version2.updateAfter')} name="target">
+                  {getTypeComponent(
+                    {
+                      attr: chooseAfter.attr,
+                      remarks: [
+                        'select_checkbox',
+                        'radio',
+                        'checkbox',
+                        'select',
+                        'user_select',
+                        'user_select_checkbox',
+                        'date',
+                      ].includes(chooseAfter.attr)
+                        ? t('common.pleaseSelect')
+                        : t('common.pleaseEnter'),
+                      value: chooseAfter.selectList,
+                    },
+                    void 0,
+                  )}
+                </Form.Item>
+              )}
+            {chooseType &&
+              String(chooseType).includes('custom_') &&
+              chooseAfter.attr === 'single_checkbox' && (
+                <Form.Item label={t('version2.updateAfter')} name="target">
+                  <Select
+                    placeholder={t('common.pleaseSelect')}
+                    showSearch
+                    showArrow
+                    optionFilterProp="label"
+                    getPopupContainer={node => node}
+                    allowClear
+                  >
+                    <Select.Option value={0}>不勾选</Select.Option>
+                    <Select.Option value={1}>勾选</Select.Option>
+                  </Select>
+                </Form.Item>
+              )}
             {chooseType === 'category_id' && (
               <Form.Item
                 label={t('version2.updateAfterStatus')}
@@ -386,7 +401,7 @@ const BatchModal = (props: Props) => {
                 />
               </Form.Item>
             )}
-          </FormWrapDemand>
+          </Form>
         </CommonModal>
       )}
     </>

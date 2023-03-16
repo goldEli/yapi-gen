@@ -9,36 +9,34 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useEffect, useMemo, useState } from 'react'
 import {
-  PaginationWrap,
-  StaffTableWrap,
-  tabCss,
-  TabsHehavior,
   TabsItem,
   LabNumber,
   ShowWrap,
-  TableWrap,
   HoverWrap,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Pagination, Spin } from 'antd'
+import { Pagination, Spin, Table } from 'antd'
 import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
 import SearchList from './Filter'
 import EditExamine from './EditExamine'
 import { useDynamicColumns } from './TableColum'
-import CommonInput from '@/components/CommonInput'
 import { useSelector } from '@store/index'
 import { getVerifyList, getVerifyUserList } from '@/services/mine'
+import InputSearch from '@/components/InputSearch'
+import PaginationBox from '@/components/TablePagination'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
+import ResizeTable from '@/components/ResizeTable'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
   fontSize: 16,
   cursor: 'pointer',
-  color: '#2877ff',
+  color: 'var(--primary-d2)',
 })
 
-const TableBox = styled(TableWrap)({
+const TableBox = styled(Table)({
   '.ant-table-row:hover': {
     [RowIconFont.toString()]: {
       visibility: 'visible',
@@ -60,11 +58,12 @@ const SearchWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',
-  position: 'relative',
+  // position: 'relative',
 })
 
 const Need = (props: any) => {
   const [t] = useTranslation()
+  const [openDemandDetail] = useOpenDemandDetail()
   const [filterState, setFilterState] = useState(true)
   const [activeTab, setActiveTab] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
@@ -103,6 +102,7 @@ const Need = (props: any) => {
       val ?? activeTab
         ? await getVerifyList(params)
         : await getVerifyUserList(params)
+
     setListData(result)
     setCount({
       verifyUser: val ?? activeTab ? result?.otherCount : result?.total,
@@ -116,11 +116,6 @@ const Need = (props: any) => {
   }, [props?.projectId])
 
   const onChangePage = (page: number, size: number) => {
-    setPageObj({ page, size })
-    getList({ page, size }, order, keyword, searchParams)
-  }
-
-  const onShowSizeChange = (page: number, size: number) => {
     setPageObj({ page, size })
     getList({ page, size }, order, keyword, searchParams)
   }
@@ -149,12 +144,23 @@ const Need = (props: any) => {
     getList(pageObj, { value, key }, keyword, searchParams)
   }
 
+  const onClickItem = (item: any) => {
+    const demandIds = listData?.list?.map((i: any) => i.demandId)
+    item.id = item.demandId
+    openDemandDetail(
+      { ...item, ...{ demandIds } },
+      item.projectId,
+      item.demandId,
+    )
+  }
+
   const columns = useDynamicColumns({
     orderKey: order?.key,
     order: order?.value,
     onUpdateOrderkey,
     onChangeOperation,
     activeTab,
+    onClickItem,
   })
 
   const selectColum: any = useMemo(() => {
@@ -193,10 +199,14 @@ const Need = (props: any) => {
           onUpdate={onUpdate}
         />
       )}
-      <TabsHehavior
-        style={{ padding: '0 24px', justifyContent: 'space-between' }}
+      <div
+        style={{
+          padding: '0 24px',
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
       >
-        <div className={tabCss}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
           <TabsItem isActive={!activeTab} onClick={() => onChangeTab(0)}>
             <div>{t('newlyAdd.needMineExamine')}</div>
           </TabsItem>
@@ -212,10 +222,14 @@ const Need = (props: any) => {
           <LabNumber isActive={activeTab === 1}>{count?.verify}</LabNumber>
         </div>
         <SearchWrap>
-          <CommonInput
-            placeholder={t('common.pleaseSearchDemand')}
-            onChangeSearch={onPressEnter}
-          />
+          <div style={{ position: 'absolute', top: '0px', right: '24px' }}>
+            <InputSearch
+              placeholder={t('common.pleaseSearchDemand')}
+              onChangeSearch={onPressEnter}
+              leftIcon
+            />
+          </div>
+
           <HoverWrap
             onClick={() => setFilterState(!filterState)}
             isActive={!filterState}
@@ -225,7 +239,7 @@ const Need = (props: any) => {
             <span className="label">{t('common.search')}</span>
           </HoverWrap>
         </SearchWrap>
-      </TabsHehavior>
+      </div>
 
       {!filterState && (
         <SearchList activeTab={activeTab} onFilterChange={onFilterChange} />
@@ -233,38 +247,25 @@ const Need = (props: any) => {
 
       <div>
         <LoadingSpin spinning={isSpin}>
-          <StaffTableWrap>
-            {listData?.list ? (
-              listData?.list?.length ? (
-                <TableBox
-                  rowKey="id"
-                  columns={selectColum}
-                  dataSource={listData?.list}
-                  pagination={false}
-                  scroll={{ x: 'max-content' }}
-                />
-              ) : (
-                <NoData />
-              )
-            ) : null}
-          </StaffTableWrap>
+          <div>
+            {listData?.list && listData?.list?.length && (
+              <ResizeTable
+                isSpinning={false}
+                dataWrapNormalHeight="calc(100vh - 330px)"
+                col={selectColum}
+                dataSource={listData?.list}
+                noData={<NoData />}
+              />
+            )}
+          </div>
         </LoadingSpin>
       </div>
-
-      <PaginationWrap style={{ paddingRight: 24 }}>
-        <Pagination
-          defaultCurrent={1}
-          current={listData?.currentPage}
-          pageSize={pageObj?.size}
-          showSizeChanger
-          showQuickJumper
-          total={listData?.total}
-          showTotal={newTotal => t('common.tableTotal', { count: newTotal })}
-          pageSizeOptions={['10', '20', '50']}
-          onChange={onChangePage}
-          onShowSizeChange={onShowSizeChange}
-        />
-      </PaginationWrap>
+      <PaginationBox
+        total={listData?.total}
+        pageSize={pageObj?.size}
+        currentPage={listData?.currentPage}
+        onChange={onChangePage}
+      />
     </>
   )
 }

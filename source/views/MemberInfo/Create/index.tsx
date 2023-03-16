@@ -8,7 +8,7 @@ import MainIndex from '../components/MainIndex'
 const Create = () => {
   const [t] = useTranslation()
   const asyncSetTtile = useSetTitle()
-  const { mainInfo } = useSelector(store => store.member)
+  const { mainInfo } = useSelector(store => store.memberInfo)
   const { projectInfo } = useSelector(store => store.project)
   asyncSetTtile(
     `${t('title.a5')}【${mainInfo.name}】${

@@ -3,12 +3,54 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 export interface CounterState {
+  // 启用状态
+  startUsing?: boolean
   demandInfo: any
+  // 是否刷新评论
   isRefreshComment: boolean
+  // 是否更新状态 -- 需求详情使用
   isUpdateStatus: boolean
+  // 是否更新变更记录
   isUpdateChangeLog: boolean
+  // 需求创建选择的需求类别
   createCategory: any
+  // 过滤的参数
   filterParams: any
+  // 创建需求成功后是否刷新
+  isUpdateDemand: any
+  // 是否打开创建需求弹窗
+  isCreateDemandVisible: boolean
+  // 创建需求弹窗传入
+  createDemandProps: {
+    // 编辑需求传入的id
+    demandId?: any
+    // 迭代-需求列表带入迭代id
+    iterateId?: any
+    // 编辑带入项目id
+    projectId?: any
+    // 是否为子需求
+    isChild?: any
+    // 父需求id --- 和isChild一起使用
+    parentId?: any
+    // 我的-快速创建
+    isQuickCreate?: any
+    // 是否是所有项目
+    isAllProject?: boolean
+    // 是否是需求详情，用于更新需求状态
+    isInfo?: any
+    // 子需求列表
+    childList?: any
+    // 子需求延用父需求类别
+    categoryId?: any
+    // 无数据创建
+    noDataCreate?: any
+    // 是否是全局创建
+    overallCreate?: boolean
+  }
+  // 需求详情弹窗预览
+  isDemandDetailDrawerVisible: boolean
+  // 需求详情弹窗预览参数
+  demandDetailDrawerProps: any
 }
 
 const initialState: CounterState = {
@@ -18,12 +60,23 @@ const initialState: CounterState = {
   isUpdateChangeLog: false,
   createCategory: {},
   filterParams: {},
+  isUpdateDemand: false,
+
+  isCreateDemandVisible: false,
+  createDemandProps: {},
+  startUsing: true,
+  isDemandDetailDrawerVisible: false,
+  demandDetailDrawerProps: {},
 }
 
 export const demandSlice = createSlice({
   name: 'demand',
   initialState,
   reducers: {
+    // 启用状态
+    setStartUsing: (state: any, action) => {
+      state.startUsing = action.payload
+    },
     // 需求详情
     setDemandInfo: (state: any, action) => {
       state.demandInfo = action.payload
@@ -48,6 +101,27 @@ export const demandSlice = createSlice({
     setFilterParams: (state: any, action) => {
       state.filterParams = action.payload
     },
+    // 刷新需求
+    setIsUpdateDemand: (state: any, action) => {
+      state.isUpdateDemand = action.payload
+    },
+
+    // 创建需求弹窗
+    setIsCreateDemandVisible: (state: any, action) => {
+      state.isCreateDemandVisible = action.payload
+    },
+    // 创建弹窗传入的props
+    setCreateDemandProps: (state: any, action) => {
+      state.createDemandProps = action.payload
+    },
+    // 需求详情弹窗
+    setIsDemandDetailDrawerVisible: (state: any, action) => {
+      state.isDemandDetailDrawerVisible = action.payload
+    },
+    // 需求详情弹窗传入的props
+    setDemandDetailDrawerProps: (state: any, action) => {
+      state.demandDetailDrawerProps = action.payload
+    },
   },
   extraReducers(builder) {
     //
@@ -61,6 +135,13 @@ export const {
   setIsUpdateChangeLog,
   setCreateCategory,
   setFilterParams,
+  setIsUpdateDemand,
+
+  setIsCreateDemandVisible,
+  setCreateDemandProps,
+  setIsDemandDetailDrawerVisible,
+  setDemandDetailDrawerProps,
+  setStartUsing,
 } = demandSlice.actions
 
 export default demandSlice.reducer

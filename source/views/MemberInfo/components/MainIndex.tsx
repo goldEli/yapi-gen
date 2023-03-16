@@ -2,14 +2,13 @@
 
 /* eslint-disable react/jsx-no-useless-fragment */
 import { useEffect, useState } from 'react'
-import { StaffHeader } from '@/components/StyleCommon'
 import CommonNeed from './CommonNeed'
 import MineSwiper from '../components/MineSwiper'
 import Loading from '@/components/Loading'
 import styled from '@emotion/styled'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
-import { getUserInfoProject } from '@/services/member'
+import { getUserInfoProject } from '@/services/memberInfo'
 
 const MainWrap = styled.div({
   height: 'calc(100% - 64px)',
@@ -64,7 +63,7 @@ const MainIndex = (props: Props) => {
       )}
       {!isMember && (
         <>
-          <StaffHeader>{props?.title}</StaffHeader>
+          <div>{props?.title}</div>
           <MainWrap>
             <MineSwiper data={swiperData} onTap={getProjectId} />
             <CommonNeed

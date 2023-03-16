@@ -4,10 +4,13 @@
 /* eslint-disable no-else-return */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
+
+// 我的
+
 import * as http from '../tools/http'
-import { getTreeList } from '@/services/project/tree'
+import { getTreeList } from '@/services/demand'
 import { storyConfigCategoryList } from '@/services/project'
-import { getStaffList2 } from './staff'
+import { getStaffListAll } from './staff'
 
 function filterTreeData(data: any) {
   const newData = data.map((item: any) => ({
@@ -20,6 +23,7 @@ function filterTreeData(data: any) {
   }))
   return newData
 }
+
 const filArr = (data: any) => {
   return data?.map((item: any) => {
     return {
@@ -28,6 +32,7 @@ const filArr = (data: any) => {
     }
   })
 }
+
 const filArr2 = (data: any) => {
   return data?.map((item: any) => {
     return {
@@ -55,7 +60,7 @@ export const getSearchField: any = async (params: any) => {
 
   // 公司
 
-  const companyList = await getStaffList2({ all: 1 })
+  const companyList = await getStaffListAll({ all: 1 })
 
   const filterCompanyList = companyList.map((item: any) => ({
     id: item.id,
@@ -409,6 +414,7 @@ export const getMineGatte: any = async (params: any) => {
   return {
     pager: response.data.pager,
     list: response.data.list?.map((k: any, index: any) => ({
+      ...k,
       id: k.id || new Date().getTime() + index * 11,
       text: k.name || '',
       start_date: k.start_at,
@@ -488,60 +494,66 @@ export const getMineNoFinishList: any = async (params: any) => {
     pagesize: params.pagesize,
   })
   if (params?.all) {
-    return {
-      list: response.data?.list?.map((k: any) => ({
-        status_name: k.status_name,
-        count: k.count,
-        list: k.list
-          ? k.list?.map((i: any) => ({
-              new: i.is_new,
-              id: i.id,
-              name: i.name,
-              demand: i.child_story_count,
-              priority: i.priority,
-              iteration: i.iterate_name || '--',
-              status: i.status,
-              dealName: i.users_name || '--',
-              time: i.created_at,
-              expectedStart: i.expected_start_at,
-              expectedEnd: i.expected_end_at,
-              info: i.info,
-              userIds: i.user_id,
-              iterateId: i.iterate_id,
-              parentId: i.parent_id,
-              finishTime: i.finish_at,
-              updatedTime: i.updated_at,
-              usersCopySendName: i.users_copysend_name,
-              userName: i.user_name,
-              tag: i.tag,
-              project_id: i.project_id,
-              schedule: i.schedule,
-              isExamine: i.verify_lock === 1,
-              category: i.category,
-              categoryColor: i.category_color,
-              ...i.custom_field,
-              usersNameIds: i.users_name_ids,
-              usersCopySendIds: i.users_copysend_name_ids,
-              class: i.class,
-              project: {
-                isPublic: i.project.is_public,
-                isUserMember: i.project.user_ismember,
-                isEdit: Object.values(i.project.permissions).includes(
-                  'b/story/update',
-                ),
-                isDelete: Object.values(i.project.permissions).includes(
-                  'b/story/delete',
-                ),
-              },
-            }))
-          : [],
-      })),
-      total: response.data?.total,
-    }
+    return response.data?.list?.map((k: any) => ({
+      status_name: k.status_name,
+      count: k.count,
+      list: k.list
+        ? k.list?.map((i: any) => ({
+            ...i,
+            statusName: k.status_name,
+            category_attachment: i.category_attachment,
+            categoryConfigList: i.category_config_list,
+            storyPrefixKey: i.story_prefix_key,
+            new: i.is_new,
+            id: i.id,
+            name: i.name,
+            demand: i.child_story_count,
+            priority: i.priority,
+            iteration: i.iterate_name || '--',
+            status: i.status,
+            dealName: i.users_name || '--',
+            time: i.created_at,
+            expectedStart: i.expected_start_at,
+            expectedEnd: i.expected_end_at,
+            info: i.info,
+            userIds: i.user_id,
+            iterateId: i.iterate_id,
+            parentId: i.parent_id,
+            finishTime: i.finish_at,
+            updatedTime: i.updated_at,
+            usersCopySendName: i.users_copysend_name,
+            userName: i.user_name,
+            tag: i.tag,
+            project_id: i.project_id,
+            schedule: i.schedule,
+            isExamine: i.verify_lock === 1,
+            category: i.category,
+            categoryColor: i.category_color,
+            ...i.custom_field,
+            usersNameIds: i.users_name_ids,
+            usersCopySendIds: i.users_copysend_name_ids,
+            class: i.class,
+            project: {
+              isPublic: i.project.is_public,
+              isUserMember: i.project.user_ismember,
+              isEdit: Object.values(i.project.permissions).includes(
+                'b/story/update',
+              ),
+              isDelete: Object.values(i.project.permissions).includes(
+                'b/story/delete',
+              ),
+            },
+          }))
+        : [],
+    }))
   } else {
     return {
       list: response.data?.list
         ? response.data.list.map((i: any) => ({
+            ...i,
+            category_attachment: i.category_attachment,
+            categoryConfigList: i.category_config_list,
+            storyPrefixKey: i.story_prefix_key,
             new: i.is_new,
             id: i.id,
             name: i.name,
@@ -620,6 +632,10 @@ export const getMineCreacteList: any = async (params: any) => {
   return {
     list: response.data?.list
       ? response.data.list.map((i: any) => ({
+          ...i,
+          category_attachment: i.category_attachment,
+          categoryConfigList: i.category_config_list,
+          storyPrefixKey: i.story_prefix_key,
           id: i.id,
           name: i.name,
           demand: i.child_story_count,
@@ -696,6 +712,10 @@ export const getMineFinishList: any = async (params: any) => {
   return {
     list: response.data?.list
       ? response.data?.list?.map((i: any) => ({
+          ...i,
+          category_attachment: i.category_attachment,
+          categoryConfigList: i.category_config_list,
+          storyPrefixKey: i.story_prefix_key,
           id: i.id,
           name: i.name,
           demand: i.child_story_count,
@@ -773,6 +793,10 @@ export const getMineNeedList: any = async (params: any) => {
   return {
     list: response.data?.list
       ? response.data.list.map((i: any) => ({
+          ...i,
+          category_attachment: i.category_attachment,
+          categoryConfigList: i.category_config_list,
+          storyPrefixKey: i.story_prefix_key,
           id: i.id,
           name: i.name,
           demand: i.child_story_count,
@@ -943,6 +967,8 @@ export const getVerifyUserList: any = async (params: any) => {
     total: response.data.pager.total,
     otherCount: response.data.otherCount,
     list: response.data.list.map((i: any) => ({
+      ...i,
+      category_attachment: i.category_attachment,
       id: i.id,
       storyVerifyId: i.story_verify_id,
       status: i.verify_status,
@@ -1000,6 +1026,7 @@ export const getVerifyInfo: any = async (params: any) => {
   const response = await http.get(`/b/user/verify/${params?.id}`)
 
   return {
+    category_attachment: response.data.category_attachment,
     id: response.data.id,
     demandName: response.data.story_name,
     categoryColor: response.data.category_color,

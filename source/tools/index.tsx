@@ -16,21 +16,15 @@ import {
   InputNumber,
   TreeSelect,
   message,
+  Checkbox,
+  Radio,
 } from 'antd'
 import moment from 'moment'
+import styled from '@emotion/styled'
 
 // 获取权限
 function getIsPermission(arr: any, value: string) {
   return !arr?.filter((i: any) => i.identity === value).length
-}
-
-// 新开页面
-function openDetail(url: string) {
-  if (import.meta.env.MODE === 'production') {
-    window.open(`${window.origin}${url}`)
-  } else {
-    window.open(`${window.origin}${import.meta.env.__URL_ALIAS__}${url}`)
-  }
 }
 
 // 解密地址栏参数
@@ -49,6 +43,20 @@ function filterTreeData(data: any) {
         : null,
   }))
   return newData
+}
+
+function arrayFlagLevel(array: any, grade: any) {
+  if (!array || !array.length) {
+    return ''
+  }
+  array.forEach((item: any) => {
+    item.grade = grade
+
+    if (item.children && item.children.length) {
+      arrayFlagLevel(item.children, grade + 1)
+    }
+  })
+  return array
 }
 
 // 自定义字段返回相应组件和快捷编辑的组件
@@ -225,20 +233,6 @@ function getTypeComponent(
   return child
 }
 
-function arrayFlagLevel(array: any, grade: any) {
-  if (!array || !array.length) {
-    return ''
-  }
-  array.forEach((item: any) => {
-    item.grade = grade
-
-    if (item.children && item.children.length) {
-      arrayFlagLevel(item.children, grade + 1)
-    }
-  })
-  return array
-}
-
 const transData = (jsonArr: any, idStr: any, pidStr: any, childrenStr: any) => {
   const result = []
   const id: any = idStr
@@ -304,104 +298,13 @@ function bytesToSize(fileByte: any) {
   return fileSizeMsg
 }
 
-// 14.24GB
-// 定义粘贴函数
-const onPaste = (event: any) => {
-  // 剪贴板没数据，则直接返回
-  if (!event.clipboardData || !event.clipboardData.items) {
-    return
-  }
-  return new Promise((resovle, reject) => {
-    for (let i = 0, len = event.clipboardData.items.length; i < len; i++) {
-      const item = event.clipboardData.items[i]
-
-      if (item.kind === 'file') {
-        const file = item.getAsFile()
-        if (item.type.match('^image/')) {
-          // 处理图片
-          handleImage(file, (data: any) => {
-            resovle(data)
-          })
-        } else {
-          // 其他文件直接返回
-          resovle({
-            data: file,
-            type: 'file',
-          })
-        }
-      } else if (item.kind === 'string') {
-        let str = event.clipboardData.getData('text')
-        resovle({
-          data: str,
-          type: 'string',
-        })
-      } else {
-        message.error('不支持粘贴该类型')
-        reject(new Error('不支持粘贴该类型'))
-      }
-    }
-  })
-}
-
-function handleImage(file: any, callback: any, maxWidth = 200) {
-  if (!file || !/(?:png|jpg|jpeg|gif)/i.test(file.type)) {
-    return
-  }
-  const reader = new FileReader()
-  reader.onload = function () {
-    const { result } = this
-    let img: any = new Image()
-    img.onload = function () {
-      const compressedDataUrl = compress(img, file.type, maxWidth, true)
-      const url = compress(img, file.type, maxWidth, false)
-      img = null
-      callback({
-        data: file,
-        compressedDataUrl,
-        url,
-        type: 'image',
-      })
-    }
-    img.src = result
-  }
-  reader.readAsDataURL(file)
-}
-
-function compress(img: any, type: any, maxHeight: any, flag: any) {
-  let canvas: any = document.createElement('canvas')
-  let ctx2: any = canvas.getContext('2d')
-  const ratio = img.width / img.height
-  let { width } = img,
-    { height } = img
-
-  // 根据flag判断是否压缩图片
-  if (flag) {
-    // 压缩后的图片展示在输入框
-    height = maxHeight
-    width = maxHeight * ratio
-  }
-  canvas.width = width
-  canvas.height = height
-  ctx2.fillStyle = '#fff'
-  ctx2.fillRect(0, 0, canvas.width, canvas.height)
-  ctx2.drawImage(img, 0, 0, width, height)
-  let base64Data = canvas.toDataURL(type, 0.75)
-  if (type === 'image/gif') {
-    const regx = /(?<=data:image).*?(?=;base64)/
-    base64Data = base64Data.replace(regx, '/gif')
-  }
-  canvas = null
-  ctx2 = null
-  return base64Data
-}
-
 // 复制
 function copyLink(text: any, successText: string, errorText: string) {
   navigator.clipboard.writeText(text).then(
-    function () {
+    () => {
       message.success(successText)
     },
-    function (err) {
+    err => {
       message.error(errorText)
     },
   )
@@ -432,19 +335,15 @@ function getCustomNormalValue(attr: any, text: any) {
   return result || '--'
 }
 
-export default onPaste
-
 export {
   getIsPermission,
-  openDetail,
   getParamsData,
   transData,
   getTypeComponent,
   getNestedChildren,
   filterTreeData,
   bytesToSize,
-  onPaste,
-  copyLink,
   removeNull,
   getCustomNormalValue,
+  copyLink,
 }

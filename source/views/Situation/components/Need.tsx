@@ -13,6 +13,7 @@ import {
   TextBlueWrap,
   TextWrap,
   title1Css,
+  title1Css1,
   title2Css,
   titleCss,
 } from '@/components/StyleCommon'
@@ -23,7 +24,7 @@ const Need = (props: any) => {
   const { data } = props
 
   const options = {
-    colors: ['#2877FF', '#F6BD16', '#43BA9A'],
+    colors: ['var(--primary-d2)', '#F6BD16', '#43BA9A'],
     chart: {
       height: 350,
       type: 'line',
@@ -76,7 +77,7 @@ const Need = (props: any) => {
       <TextWrap>
         <TextBlueWrap>
           <ChartsItem>
-            <span className={title1Css}>{data?.total ?? 0}</span>
+            <span className={title1Css1}>{data?.total ?? 0}</span>
             <span className={title2Css}>{t('common.createDemand')}</span>
           </ChartsItem>
         </TextBlueWrap>

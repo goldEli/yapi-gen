@@ -8,18 +8,14 @@ import { message, Popover, Tooltip } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import CommonInput from './CommonInput'
 import IconFont from './IconFont'
 import NoData from './NoData'
 import { getProjectList } from '@/services/project'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsChangeProject } from '@store/project'
-import {
-  addInfoDemand,
-  getDemandInfo,
-  getDemandList,
-} from '@/services/project/demand'
+import { addInfoDemand, getDemandInfo, getDemandList } from '@/services/demand'
 import { setDemandInfo } from '@store/demand'
+import InputSearch from './InputSearch'
 
 const PopoverWrap = styled(Popover)<{ isRight?: any }>({}, ({ isRight }) => ({
   '.ant-popover-placement-bottom': {
@@ -58,12 +54,12 @@ const DemandItem = styled.div<{ isActive?: boolean }>(
     paddingLeft: 16,
     wordBreak: 'break-all',
     '&:hover': {
-      background: '#F4F5F5',
-      color: '#323233',
+      background: 'var(--neutral-n6-d1)',
+      color: 'var(--neutral-n1-d1)',
     },
   },
   ({ isActive }) => ({
-    color: isActive ? '#2877FF' : '#646566',
+    color: isActive ? 'var(--primary-d2)' : 'var(--neutral-n2',
     fontWeight: isActive ? 500 : 400,
   }),
 )
@@ -75,7 +71,7 @@ const ProjectNameWrap = styled.div({
   padding: '0 8px',
   cursor: 'pointer',
   borderRadius: 6,
-  color: '#323233',
+  color: 'var(--neutral-n1-d1)',
   fontSize: 14,
   fontWeight: 500,
   '.text': {
@@ -85,7 +81,7 @@ const ProjectNameWrap = styled.div({
     overflow: 'hidden',
   },
   '&:hover': {
-    background: '#F4F5F5',
+    background: 'var(--neutral-n6-d1)',
   },
 })
 
@@ -135,7 +131,7 @@ const ChooseItems = (props: DemandProps) => {
   return (
     <DemandWrap>
       <div style={{ padding: '16px 16px 4px 16px' }}>
-        <CommonInput
+        <InputSearch
           placeholder={props.placeholder}
           width={210}
           autoFocus
@@ -206,6 +202,7 @@ interface Props {
   placeholder: string
   //单独区分项目切换
   isProjectChange?: boolean
+  onUpdate(): void
 }
 
 const HaveSearchAndList = (props: Props) => {
@@ -230,11 +227,7 @@ const HaveSearchAndList = (props: Props) => {
         targetId: [item.value],
       })
       message.success(t('common.addSuccess'))
-      const result = await getDemandInfo({
-        projectId: props?.projectId,
-        id: props?.demandId,
-      })
-      dispatch(setDemandInfo(result))
+      props.onUpdate()
     } catch (error) {
       //
     }
@@ -244,13 +237,7 @@ const HaveSearchAndList = (props: Props) => {
     if (props.isOperationParent) {
       onChangeParent(item)
     } else {
-      const beforeUrl = String(window.location.href)
-        .split('/Detail/')[1]
-        .split('?data')[0]
-      const params = encryptPhp(JSON.stringify({ id: item.id }))
-      navigate(`/Detail/${beforeUrl}?data=${params}`)
-      dispatch(setIsChangeProject(item.id))
-      message.success(t('version2.changeProjectSuccess'))
+      //
     }
     setIsOpen(false)
   }
@@ -258,7 +245,7 @@ const HaveSearchAndList = (props: Props) => {
   return (
     <PopoverWrap
       visible={isOpen}
-      placement="bottom"
+      placement="bottomRight"
       trigger="click"
       onVisibleChange={onVisibleOpenChange}
       content={

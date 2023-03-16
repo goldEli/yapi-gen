@@ -46,7 +46,7 @@ const ItemWrap = styled.div({
 })
 
 const LabelWrap = styled.div({
-  color: '#646566',
+  color: 'var(--neutral-n2)',
   fontSize: 14,
   fontWeight: 400,
   width: 100,
@@ -59,7 +59,7 @@ const WrapBox = styled.div<{
   left?: any
   top?: any
 }>({}, ({ color, size, right, left, top }) => ({
-  color: color || '#969799',
+  color: color || 'var(--neutral-n3)',
   fontSize: size || 12,
   marginRight: right || 0,
   marginLeft: left || 0,
@@ -208,21 +208,43 @@ const EditExamine = (props: Props) => {
         style={{
           maxHeight: props?.isEdit && props?.item?.status === 1 ? 464 : 544,
           overflowY: 'auto',
-          paddingRight: 20,
+          padding: 20,
         }}
       >
         <ItemWrap>
           <div>{props?.item?.demandId}</div>
-          <CategoryWrap
-            color={verifyInfo?.categoryColor}
-            bgColor={
-              colorList?.filter(
-                (i: any) => i.key === verifyInfo?.categoryColor,
-              )[0]?.bgColor
-            }
+
+          <div
+            style={{
+              height: '24px',
+              background: 'var(--neutral-n8)',
+              borderRadius: '6px 6px 6px 6px',
+              padding: '2px 8px',
+              display: 'flex',
+              alignItems: 'center',
+              marginLeft: '16px',
+            }}
           >
-            {verifyInfo?.categoryName}
-          </CategoryWrap>
+            <img
+              style={{
+                width: '18px',
+                height: '18px',
+              }}
+              src={verifyInfo?.category_attachment}
+              alt=""
+            />
+            <span
+              style={{
+                height: '20px',
+                fontSize: '12px',
+                fontWeight: 400,
+                color: 'var(--neutral-n2)',
+                lineHeight: '20px',
+              }}
+            >
+              {verifyInfo?.categoryName}
+            </span>
+          </div>
         </ItemWrap>
         <ItemWrap>
           <LabelWrap>{t('common.title')}</LabelWrap>
@@ -328,7 +350,7 @@ const EditExamine = (props: Props) => {
         )}
         <div
           style={{
-            color: '#323233',
+            color: 'var(--neutral-n1-d1)',
             fontSize: 14,
             marginBottom: 16,
             fontWeight: 500,
@@ -343,7 +365,11 @@ const EditExamine = (props: Props) => {
                 {verifyInfo?.verify?.process?.map((k: any, index: any) => (
                   <Timeline.Item key={index}>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <WrapBox size={16} color="#323233" right={16}>
+                      <WrapBox
+                        size={16}
+                        color="var(--neutral-n1-d1)"
+                        right={16}
+                      >
                         {t('newlyAdd.reviewPerson')}
                       </WrapBox>
                       <WrapBox>
@@ -375,7 +401,7 @@ const EditExamine = (props: Props) => {
                               marginLeft: 8,
                             }}
                           >
-                            <WrapBox size={14} color="#323233">
+                            <WrapBox size={14} color="var(--neutral-n1-d1)">
                               {i.userName}
                             </WrapBox>
                             <div
@@ -406,7 +432,7 @@ const EditExamine = (props: Props) => {
             {verifyInfo?.verify?.verifyType !== 1 && (
               <Timeline.Item>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <WrapBox size={16} color="#323233" right={16}>
+                  <WrapBox size={16} color="var(--neutral-n1-d1)" right={16}>
                     {t('newlyAdd.reviewPerson')}
                   </WrapBox>
                 </div>
@@ -431,7 +457,7 @@ const EditExamine = (props: Props) => {
                           marginLeft: 8,
                         }}
                       >
-                        <WrapBox size={14} color="#323233">
+                        <WrapBox size={14} color="var(--neutral-n1-d1)">
                           {k.userName}
                         </WrapBox>
                         <div
@@ -471,7 +497,7 @@ const EditExamine = (props: Props) => {
 
             <Timeline.Item style={{ marginBottom: 16 }}>
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <WrapBox size={16} color="#323233" right={8}>
+                <WrapBox size={16} color="var(--neutral-n1-d1)" right={8}>
                   {t('newlyAdd.circulationTo')}
                 </WrapBox>
                 {verifyInfo?.to ? (

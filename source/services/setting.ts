@@ -1,6 +1,9 @@
 /* eslint-disable no-useless-computed-key */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
+
+// 大设置
+
 import * as http from '@/tools/http'
 
 export const getCompanyInfo: any = async () => {
@@ -29,6 +32,7 @@ export const getOperateLogs: any = async (params: any) => {
   })
   return {
     currentPage: params.page,
+    pageSize: Number(params.pageSize),
     total: response.data.pager.total,
     list: response.data.list.map((i: any) => ({
       id: i.id,
@@ -36,6 +40,7 @@ export const getOperateLogs: any = async (params: any) => {
       time: i.created_at,
       info: i.content,
       type: i.method,
+      avatar: i.avatar,
     })),
   }
 }
@@ -54,6 +59,7 @@ export const getLoginLogs: any = async (params: any) => {
 
   return {
     currentPage: params.page,
+    pageSize: Number(params.pageSize),
     total: response.data.pager.total,
     list: response.data.list.map((i: any) => ({
       id: i.id,
@@ -130,8 +136,69 @@ export const changeWater: any = async (params: any) => {
 // 查询配置
 export const getWater: any = async () => {
   const response = await http.get<any>('/b/company/config/info')
+
   return {
     id: response.data.list[0].id,
     status: response.data.list[0].status,
   }
+}
+
+// 新增团队
+export const addTeams: any = async (params: any) => {
+  const response = await http.post<any>('/b/company/teams', params)
+  return response
+}
+
+// 添加成员弹窗
+export const getDepartmentUserList: any = async (params: any) => {
+  const response = await http.get<any>('/b/user/department_user_list', params)
+  return response?.data
+}
+
+// 解散团队
+export const dismissTeams: any = async (id: any) => {
+  const response = await http.delete<any>(`/b/company/teams/${id}`)
+  return response
+}
+
+// 编辑团队
+export const editTeams: any = async (id: any, params: any) => {
+  const response = await http.patch<any>(`/b/company/teams/${id}`, params)
+  return response
+}
+
+// 团队列表
+export const companyTeamsList: any = async () => {
+  const response = await http.get<any>('/b/company/teams')
+  return response
+}
+
+// 拖拽排序
+export const moveTeamsList: any = async (ids: string | number[]) => {
+  const response = await http.put<any>('/b/company/teams/move_sort', { ids })
+  return response
+}
+
+// 添加团队成员
+export const teamsMember: any = async (parmas: any) => {
+  const response = await http.post<any>('/b/company/teams/member', parmas)
+  return response
+}
+
+// 移出团队成员
+export const deleteMemberList: any = async (parmas: any) => {
+  const response = await http.delete<any>('/b/company/teams/member', parmas)
+  return response
+}
+
+// 团队成员列表
+export const getMemberList: any = async (parmas: any) => {
+  const response = await http.get<any>('/b/company/teams/member', parmas)
+  return response
+}
+
+// 团队成员权限变更
+export const changeMemberRole: any = async (parmas: any) => {
+  const response = await http.put<any>('/b/company/teams/member_change', parmas)
+  return response
 }

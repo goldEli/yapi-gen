@@ -6,13 +6,14 @@ import { useSelector } from '../../store'
 
 const SvgTextBg = (props: any) => {
   const { userInfo } = useSelector(store => store.user)
+  const { theme } = useSelector(store => store.global)
   const {
     text = ` ${userInfo?.company_name}  
     `,
     text2 = ` ${userInfo.name}  ${userInfo.phone} `,
     fontSize = 12,
     fillOpacity = '0.5',
-    fillColor = '#D5D6D9',
+    fillColor = theme ? 'var(--auxiliary-t4)' : 'var(--neutral-n5)',
   } = props
   const res = `
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="400px" height="180px" viewBox="0 0 180 180">
@@ -47,6 +48,7 @@ const SvgTextBg = (props: any) => {
 const WaterMarkContent = (props: any) => {
   const { text, fontSize, fillOpacity, fillColor } = props
   const { value: valueId } = useSelector(store => store.water)
+
   const memoInfo = useMemo(
     () => ({
       text,
@@ -59,7 +61,7 @@ const WaterMarkContent = (props: any) => {
   return (
     <div style={{ position: 'relative', width: '100%', height: ' 100%' }}>
       {props.children}
-      {valueId === 1 && <SvgTextBg {...memoInfo} />}
+      {valueId ? <SvgTextBg {...memoInfo} /> : null}
     </div>
   )
 }

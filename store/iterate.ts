@@ -8,6 +8,10 @@ export interface CounterState {
   isUpdateList: boolean
   achieveInfo: any
   filterParams: any
+  // 新增
+  isCreateIterationVisible: boolean
+  // 创建或编辑的参数
+  createIterationParams: any
 }
 
 const initialState: CounterState = {
@@ -16,6 +20,9 @@ const initialState: CounterState = {
   isUpdateList: false,
   achieveInfo: {},
   filterParams: {},
+
+  isCreateIterationVisible: false,
+  createIterationParams: {},
 }
 
 export const iterateSlice = createSlice({
@@ -42,6 +49,15 @@ export const iterateSlice = createSlice({
     setFilterParams: (state: any, action) => {
       state.filterParams = action.payload
     },
+
+    // 创建迭代或者是编辑迭代
+    setIsCreateIterationVisible: (state: any, action) => {
+      state.isCreateIterationVisible = action.payload
+    },
+    // 创建迭代或者是编辑迭代
+    setCreateIterationParams: (state: any, action) => {
+      state.createIterationParams = action.payload
+    },
   },
   extraReducers(builder) {
     //
@@ -54,6 +70,9 @@ export const {
   setIsUpdateList,
   setAchieveInfo,
   setFilterParams,
+
+  setIsCreateIterationVisible,
+  setCreateIterationParams,
 } = iterateSlice.actions
 
 export default iterateSlice.reducer

@@ -1,19 +1,39 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { store } from '../../store'
-import { decrypt, encrypt } from '../tools/crypto'
 import * as http from '../tools/http'
 
+// 获取登录信息
 export const getLoginDetail: any = async (isLogin?: boolean) => {
   const response = await http.get('getLoginDetail', {}, { extra: { isLogin } })
   return response
 }
 
+// 获取登录者偏好设置 -- 个人预览模式
+export const getCompanyUserPreferenceConfig: any = async () => {
+  const response = await http.get('getCompanyUserPreferenceConfig')
+  return {
+    id: response.data.id,
+    companyId: response.data.company_id,
+    previewModel: response.data.preview_model,
+  }
+}
+
+// 修改登录者偏好设置 -- 个人预览模式
+export const updateCompanyUserPreferenceConfig: any = async (params: any) => {
+  await http.post('updateCompanyUserPreferenceConfig', {
+    id: params.id,
+    preview_model: params.previewModel,
+  })
+}
+
+// 退出登录
 export const loginOut: any = async () => {
   const response = await http.get('loginOut')
   return response
 }
 
+// 跳转登录
 export const getTicket = () => {
   const url = new URL(import.meta.env.__SSO_URL__)
   url.searchParams.set('type', '0')
@@ -25,12 +45,14 @@ export const getTicket = () => {
   location.href = url.href
 }
 
+// 获取登录者信息
 export const getUserDetail: any = async () => {
   const response = await http.get('getUserDetail')
 
   return response.data
 }
 
+// 登录
 export const login = async () => {
   const ticket: any = new URLSearchParams(location.search).get('ticket')
 
@@ -56,11 +78,13 @@ export const login = async () => {
   return data
 }
 
+// 获取公司信息
 export const getCompanyList: any = async () => {
   const response = await http.get('getCompanyList')
   return response
 }
 
+// 切换公司
 export const updateCompany: any = async (params: any) => {
   await http.put('changeCompany', {
     company_id: params.companyId,
@@ -77,5 +101,26 @@ export const getGlobalGeneral: any = async () => {
 // 删除评论下的附件
 export const delCommonAt: any = async (params: any) => {
   const response = await http.delete('/b/story/comment/delete_att', params)
+  return response.data
+}
+
+// 获取登录人的菜单权限
+export const getMenuPermission: any = async () => {
+  const response = await http.get('getMenuPermission')
+  return {
+    menus: response.data.menus?.map((i: any) => ({
+      id: i.id,
+      url: i.url,
+      permission: i.permission,
+      name: i.name,
+      children: i.children,
+    })),
+    priorityUrl: response.data.priority_url,
+  }
+}
+
+// 我的最近列表
+export const getMyRecent: any = async () => {
+  const response = await http.get('/b/user/recent')
   return response.data
 }

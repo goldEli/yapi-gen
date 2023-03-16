@@ -1,11 +1,11 @@
-import { Navigate, useRoutes } from 'react-router-dom'
+import { useRoutes } from 'react-router-dom'
 import { Container } from '@/views/Container'
 import React from 'react'
 import Loading from '@/components/Loading'
 
 const lazy = (
   component: () => Promise<{
-    default: React.ComponentType<unknown>
+    default: any
   }>,
 ) => {
   const LazyComponent = React.lazy(component)
@@ -22,164 +22,176 @@ const routes = [
     element: <Container />,
     children: [
       {
-        path: '/',
-        element: <Navigate to="/staff" />,
-      },
-      {
-        path: '/staff',
-        element: lazy(() => import('@/views/staff')),
-      },
-      {
-        path: '/mine',
-        element: lazy(() => import('@/views/Mine')),
-        children: [
-          {
-            path: 'agenda',
-            element: lazy(() => import('@/views/Mine/Agenda')),
-          },
-          {
-            path: 'carbon',
-            element: lazy(() => import('@/views/Mine/Carbon')),
-          },
-          {
-            path: 'create',
-            element: lazy(() => import('@/views/Mine/Create/index')),
-          },
-          {
-            path: 'finished',
-            element: lazy(() => import('@/views/Mine/Finished')),
-          },
-          {
-            path: 'examine',
-            element: lazy(() => import('@/views/Mine/Examine')),
-          },
-          {
-            path: '',
-            element: lazy(() => import('@/views/Mine/Profile')),
-          },
-        ],
-      },
-      {
-        path: '/Project',
-        element: lazy(() => import('@/views/Project')),
-      },
-      {
         path: 'PrivatePermission',
         element: lazy(
-          () => import('@/views/Project/Detail/components/PrivatePermission'),
+          () => import('@/views/ProjectManagement/PrivatePermission'),
         ),
-      },
-      {
-        path: '/Detail',
-        element: lazy(() => import('@/views/Project/Detail')),
-        children: [
-          {
-            path: 'Demand',
-            element: lazy(() => import('@/views/Project/Detail/Demand')),
-          },
-          {
-            path: 'Iteration',
-            element: lazy(() => import('@/views/Project/Detail/Iteration')),
-          },
-          {
-            path: 'Set',
-            element: lazy(() => import('@/views/Project/Detail/Setting')),
-          },
-          {
-            path: 'MemberInfo',
-            element: lazy(() => import('@/views/MemberInfo')),
-            children: [
-              {
-                path: 'carbon',
-                element: lazy(() => import('@/views/MemberInfo/Carbon')),
-              },
-              {
-                path: 'create',
-                element: lazy(() => import('@/views/MemberInfo/Create')),
-              },
-              {
-                path: 'finished',
-                element: lazy(() => import('@/views/MemberInfo/Finished')),
-              },
-              {
-                path: 'profile',
-                element: lazy(() => import('@/views/MemberInfo/Profile')),
-              },
-            ],
-          },
-          {
-            path: 'Defect',
-            element: lazy(() => import('@/views/Project/Detail/Defect')),
-          },
-          {
-            path: 'Report',
-            element: lazy(() => import('@/views/Project/Detail/Report')),
-          },
-        ],
       },
       {
         path: '/Situation',
         element: lazy(() => import('@/views/Situation')),
       },
       {
-        path: '/Information',
-        element: lazy(() => import('@/views/Information')),
+        path: '/ProjectManagement',
+        element: lazy(() => import('@/views/ProjectManagement')),
         children: [
           {
-            path: 'send/:id',
-            element: lazy(() => import('@/views/Information/Send')),
+            path: 'Project',
+            element: lazy(() => import('@/views/Project')),
           },
           {
-            path: 'get/:id',
-            element: lazy(() => import('@/views/Information/GetDaily')),
+            path: 'Mine',
+            element: lazy(() => import('@/views/Mine')),
+            children: [
+              {
+                path: 'Agenda',
+                element: lazy(() => import('@/views/Mine/Agenda')),
+              },
+              {
+                path: 'Carbon',
+                element: lazy(() => import('@/views/Mine/Carbon')),
+              },
+              {
+                path: 'Create',
+                element: lazy(() => import('@/views/Mine/Create')),
+              },
+              {
+                path: 'Finished',
+                element: lazy(() => import('@/views/Mine/Finished')),
+              },
+              {
+                path: 'Examine',
+                element: lazy(() => import('@/views/Mine/Examine')),
+              },
+              {
+                path: 'Profile',
+                element: lazy(() => import('@/views/Mine/Profile')),
+              },
+            ],
+          },
+          {
+            path: 'Demand',
+            element: lazy(() => import('@/views/Demand')),
+          },
+          {
+            path: 'Iteration',
+            element: lazy(() => import('@/views/Iteration')),
+          },
+          {
+            path: 'ProjectSetting',
+            element: lazy(() => import('@/views/ProjectSetting')),
+          },
+          {
+            path: 'DemandSetting',
+            element: lazy(() => import('@/views/DemandSetting')),
+          },
+          {
+            path: 'WorkFlow',
+            element: lazy(() => import('@/views/Workflow')),
+          },
+          {
+            path: 'MemberInfo',
+            element: lazy(() => import('@/views/MemberInfo')),
+            children: [
+              {
+                path: 'Carbon',
+                element: lazy(() => import('@/views/MemberInfo/Carbon')),
+              },
+              {
+                path: 'Create',
+                element: lazy(() => import('@/views/MemberInfo/Create')),
+              },
+              {
+                path: 'Finished',
+                element: lazy(() => import('@/views/MemberInfo/Finished')),
+              },
+              {
+                path: 'Profile',
+                element: lazy(() => import('@/views/MemberInfo/Profile')),
+              },
+            ],
           },
         ],
       },
       {
-        path: '/Setting',
-        element: lazy(() => import('@/views/Setting')),
+        path: '/AdminManagement',
+        element: lazy(() => import('@/views/AdminManagement')),
         children: [
           {
-            path: '',
-            element: lazy(() => import('@/views/Setting/CompanyInfo')),
+            path: 'CompanyInfo',
+            element: lazy(() => import('@/views/AdminManagement/CompanyInfo')),
           },
           {
-            path: 'permission',
-            element: lazy(() => import('@/views/Setting/Permission')),
+            path: 'StaffManagement',
+            element: lazy(
+              () => import('@/views/AdminManagement/StaffManagement'),
+            ),
           },
           {
-            path: 'operation',
-            element: lazy(() => import('@/views/Setting/Operation')),
+            path: 'TeamManagement',
+            element: lazy(
+              () => import('@/views/AdminManagement/TeamManagement'),
+            ),
           },
           {
-            path: 'loginLog',
-            element: lazy(() => import('@/views/Setting/LoginLog')),
+            path: 'PermissionManagement',
+            element: lazy(
+              () => import('@/views/AdminManagement/PermissionManagement'),
+            ),
           },
           {
-            path: 'universal',
-            element: lazy(() => import('@/views/Setting/Universal')),
+            path: 'WaterMarkManagement',
+            element: lazy(
+              () => import('@/views/AdminManagement/WaterMarkManagement'),
+            ),
+          },
+          {
+            path: 'OperationManagement',
+            element: lazy(
+              () => import('@/views/AdminManagement/OperationManagement'),
+            ),
+          },
+          {
+            path: 'LoginManagement',
+            element: lazy(
+              () => import('@/views/AdminManagement/LoginManagement'),
+            ),
           },
         ],
       },
       {
-        path: 'MemberInfo',
+        path: '/MemberInfo',
         element: lazy(() => import('@/views/MemberInfo')),
         children: [
           {
-            path: 'carbon',
+            path: 'Carbon',
             element: lazy(() => import('@/views/MemberInfo/Carbon')),
           },
           {
-            path: 'create',
+            path: 'Create',
             element: lazy(() => import('@/views/MemberInfo/Create')),
           },
           {
-            path: 'finished',
+            path: 'Finished',
             element: lazy(() => import('@/views/MemberInfo/Finished')),
           },
           {
-            path: 'profile',
+            path: 'Profile',
             element: lazy(() => import('@/views/MemberInfo/Profile')),
+          },
+        ],
+      },
+      {
+        path: '/LogManagement',
+        element: lazy(() => import('@/views/LogManagement')),
+        children: [
+          {
+            path: 'send/:id',
+            element: lazy(() => import('@/views/LogManagement/Send')),
+          },
+          {
+            path: 'get/:id',
+            element: lazy(() => import('@/views/LogManagement/GetDaily')),
           },
         ],
       },
