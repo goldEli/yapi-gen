@@ -148,22 +148,27 @@ const HeaderRight = () => {
   const [isConfirmLogout, setIsConfirmLogout] = useState(false)
 
   const userList = [
-    { name: '语言', isRight: true, icon: 'earth', key: 0 },
-    { name: '主题切换', isRight: true, icon: 'theme', key: 1 },
-    { name: '个人资料', isRight: false, icon: 'user', key: 2 },
-    { name: '退出登录', isRight: false, icon: 'login', key: 3 },
+    { name: t('language'), isRight: true, icon: 'earth', key: 0 },
+    { name: t('theme_switching'), isRight: true, icon: 'theme', key: 1 },
+    { name: t('personal_data'), isRight: false, icon: 'user', key: 2 },
+    { name: t('container.logout'), isRight: false, icon: 'login', key: 3 },
   ]
 
   const createList = [
-    { name: '创建需求', key: 'demand', icon: 'demand', isPermission: true },
     {
-      name: '创建迭代',
+      name: t('common.createDemand'),
+      key: 'demand',
+      icon: 'demand',
+      isPermission: true,
+    },
+    {
+      name: t('common.createIterate'),
       key: 'iteration',
       icon: 'interation',
       isPermission: true,
     },
     {
-      name: '创建项目',
+      name: t('common.createProject'),
       key: 'project',
       icon: 'folder-open-nor',
       isPermission: (
