@@ -569,6 +569,7 @@ export const ShapeContent = (props: any) => {
       return j.id === info
     })
     const isMy = rightList?.originalStatusUserIds.includes(info)
+
     const newC = a.filter((j: any) => {
       return rightList?.originalStatusUserIds.includes(j.id)
     })
@@ -588,8 +589,8 @@ export const ShapeContent = (props: any) => {
     }
 
     const newB = a.filter((j: any) => {
-      // return j.id !== info && !rightList?.originalStatusUserIds.includes(j.id)
-      return j.id !== info
+      return j.id !== info && !rightList?.originalStatusUserIds.includes(j.id)
+      // return j.id !== info
     })
 
     return (newD ? newD : []).concat(isMy ? [] : newA, newB)
