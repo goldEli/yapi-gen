@@ -63,33 +63,6 @@ export const useDynamicColumns = (state: any) => {
 
   const arr = [
     {
-      width: 100,
-      title: <NewSort fixedKey="id">ID</NewSort>,
-      dataIndex: 'id',
-      key: 'id',
-      render: (text: string, record: any) => {
-        return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <ClickWrap
-              className="canClickDetail"
-              onClick={() => state.onClickItem(record)}
-              isClose={record.status?.is_end === 1}
-            >
-              {text}
-            </ClickWrap>
-            {record.isExamine && (
-              <IconFont
-                type="review"
-                style={{
-                  fontSize: 46,
-                }}
-              />
-            )}
-          </div>
-        )
-      },
-    },
-    {
       width: 140,
       title: <NewSort fixedKey="story_prefix_key">{t('serialNumber')}</NewSort>,
       dataIndex: 'storyPrefixKey',

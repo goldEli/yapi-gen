@@ -96,6 +96,7 @@ export const getRolePermission: any = async (params: any) => {
         label: k.content_txt,
         value: k.id,
         checked: k.checked,
+        isShow: k.is_show,
       })),
     })),
   }

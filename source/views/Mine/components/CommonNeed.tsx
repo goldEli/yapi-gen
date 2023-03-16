@@ -249,7 +249,7 @@ const CommonNeed = (props: any) => {
         searchGroups,
       }
       const res = await getMineNoFinishList(params)
-      setManyListData({ list: res })
+      setManyListData({ list: res.list })
       setIsSpin(false)
       dispatch(setIsUpdateCreate(false))
       setTotal(res?.total)

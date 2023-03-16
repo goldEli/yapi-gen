@@ -10,7 +10,6 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { ConfigProvider as KitConfigProvider } from '@xyfe/uikit'
-import NoPermission from './components/NoPermission'
 import styled from '@emotion/styled'
 import Side from './components/Side'
 import { getLoginDetail } from '@store/user/user.thunk'
@@ -167,7 +166,6 @@ export const Container = () => {
             />
           </LayoutWrap>
         )}
-        {userInfo?.company_permissions?.length <= 0 && <NoPermission />}
 
         <CreateAProjectForm />
         <CreateIteration />

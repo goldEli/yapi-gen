@@ -16,6 +16,7 @@ import {
   setCreateDemandProps,
   setDemandDetailDrawerProps,
   setIsCreateDemandVisible,
+  setIsUpdateDemand,
 } from '@store/demand'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectInfo } from '@store/project'
@@ -94,10 +95,10 @@ const DemandDetailDrawer = () => {
       ?.length > 0
 
   const modeList = [
-    { name: t('detailed_information'), key: 'detailInfo', content: '' },
-    { name: t('subrequirements'), key: 'detailDemands', content: '' },
-    { name: t('newlyAdd.basicInfo'), key: 'basicInfo', content: '' },
-    { name: t('requirements_review'), key: 'demandComment', content: '' },
+    { name: '详细信息', key: 'detailInfo', content: '' },
+    { name: '子需求', key: 'detailDemands', content: '' },
+    { name: '基本信息', key: 'basicInfo', content: '' },
+    { name: '需求评论', key: 'demandComment', content: '' },
   ]
   const leftWidth = 640
 
@@ -135,12 +136,16 @@ const DemandDetailDrawer = () => {
   }
 
   // 获取需求详情
-  const getDemandDetail = async (id?: any) => {
+  const getDemandDetail = async (id?: any, ids?: any) => {
+    const paramsProjectId =
+      demandDetailDrawerProps.project_id ?? demandDetailDrawerProps.projectId
+    if (drawerInfo?.projectId === paramsProjectId) {
+      getProjectData()
+    }
     setDrawerInfo({})
     setSkeletonLoading(true)
     const info = await getDemandInfo({
-      projectId:
-        demandDetailDrawerProps.project_id ?? demandDetailDrawerProps.projectId,
+      projectId: paramsProjectId,
       id: id ? id : demandDetailDrawerProps?.id,
     })
     info.hierarchy.push({
@@ -155,7 +160,7 @@ const DemandDetailDrawer = () => {
     setDrawerInfo(info)
     setSkeletonLoading(false)
     // 获取当前需求的下标， 用作上一下一切换
-    setCurrentIndex((demandIds || []).findIndex((i: any) => i === info.id))
+    setCurrentIndex((ids || []).findIndex((i: any) => i === info.id))
   }
 
   // 关闭弹窗
@@ -241,6 +246,7 @@ const DemandDetailDrawer = () => {
       await updateDemandStatus(value)
       message.success(t('common.statusSuccess'))
       getDemandDetail()
+      dispatch(setIsUpdateDemand(true))
     } catch (error) {
       //
     }
@@ -288,19 +294,23 @@ const DemandDetailDrawer = () => {
     )
   }
 
-  useEffect(() => {
-    if (demandIds?.length > 0) {
-      getDemandDetail()
-      getProjectData()
-      setShowState(normalState)
+  const getKeyDown = (e: any) => {
+    if (isDemandDetailDrawerVisible) {
+      if (e.keyCode === 38) {
+        //up
+        document.getElementById('upIcon')?.click()
+      }
+      if (e.keyCode === 40) {
+        //down
+        document.getElementById('downIcon')?.click()
+      }
     }
-  }, [demandIds])
+  }
 
   useEffect(() => {
     if (isDemandDetailDrawerVisible || demandDetailDrawerProps?.id) {
       setDemandIds(demandDetailDrawerProps?.demandIds || [])
-      getDemandDetail()
-      getProjectData()
+      getDemandDetail('', demandDetailDrawerProps?.demandIds || [])
       setShowState(normalState)
     }
   }, [demandDetailDrawerProps, isDemandDetailDrawerVisible])
@@ -311,6 +321,13 @@ const DemandDetailDrawer = () => {
       setDemandIds([])
     }
   }, [isUpdateDemand])
+
+  useEffect(() => {
+    document.addEventListener('keydown', getKeyDown)
+    return () => {
+      document.removeEventListener('keydown', getKeyDown)
+    }
+  }, [])
 
   return (
     <>
@@ -377,7 +394,11 @@ const DemandDetailDrawer = () => {
           </Space>
           <Space size={16}>
             <ChangeIconGroup>
-              <NextWrap isDisable={!currentIndex} onClick={onUpDemand}>
+              <NextWrap
+                isDisable={!currentIndex}
+                onClick={onUpDemand}
+                id="upIcon"
+              >
                 <CommonIconFont
                   type="up"
                   size={20}
@@ -390,6 +411,7 @@ const DemandDetailDrawer = () => {
                   currentIndex === demandIds?.length - 1
                 }
                 onClick={onDownDemand}
+                id="downIcon"
               >
                 <CommonIconFont
                   type="down"
