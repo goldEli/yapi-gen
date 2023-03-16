@@ -91,8 +91,8 @@ const index = (props: any) => {
           {menu}
           <Divider style={{ margin: '8px 0' }} />
           <div>
-            <Btn onClick={onClear}>清空所有选项</Btn>
-            <Btn onClick={invertSelection}>反选</Btn>
+            <Btn onClick={onClear}>{t('clear_all_options')}</Btn>
+            <Btn onClick={invertSelection}>{t('invert_selection')}</Btn>
           </div>
         </>
       )}

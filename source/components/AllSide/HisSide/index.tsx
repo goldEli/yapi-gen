@@ -108,7 +108,7 @@ const index = () => {
             whiteSpace: 'nowrap',
           }}
         >
-          返回
+          {t('back')}
         </span>
       </div>
       <Menu>

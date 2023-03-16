@@ -127,11 +127,11 @@ const RightTable = () => {
   const options = [
     {
       value: 1,
-      label: '团队管理',
+      label: t('team_management'),
     },
     {
       value: 2,
-      label: '团队成员',
+      label: t('team_members'),
     },
   ]
   const onFetchMemberList = async (pageObjVal?: any, orderVal?: any) => {

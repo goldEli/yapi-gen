@@ -42,7 +42,7 @@ const SetShowField = (props: Props) => {
       previewModel: type,
       id: userPreferenceConfig?.id,
     })
-    message.success('切换预览模式成功！')
+    message.success(t('switch_preview_mode_successfully'))
     dispatch(
       setUserPreferenceConfig({
         ...userPreferenceConfig,
@@ -59,7 +59,7 @@ const SetShowField = (props: Props) => {
     },
     {
       key: '1-1',
-      label: '需求打开方式',
+      label: t('requirement_opening_mode'),
       children: [
         {
           key: '1',
@@ -70,7 +70,7 @@ const SetShowField = (props: Props) => {
                 active === '1' || userPreferenceConfig.previewModel === 1
               }
             >
-              <span style={{ paddingRight: 10 }}>弹窗预览</span>
+              <span style={{ paddingRight: 10 }}>{t('popup_preview')}</span>
               {(active === '1' || userPreferenceConfig.previewModel === 1) && (
                 <CommonIconFont type="check" color={'var(--primary-d2)'} />
               )}
@@ -86,7 +86,7 @@ const SetShowField = (props: Props) => {
                 active === '2' || userPreferenceConfig.previewModel === 2
               }
             >
-              <span style={{ paddingRight: 10 }}>详情预览</span>
+              <span style={{ paddingRight: 10 }}>{t('details_preview')}</span>
               {(active === '2' || userPreferenceConfig.previewModel === 2) && (
                 <CommonIconFont type="check" color={'var(--primary-d2)'} />
               )}

@@ -82,20 +82,22 @@ export const DemandOperationDropdownMenu = (props: Props) => {
     {
       key: '3',
       label: (
-        <div onClick={() => props.onCreateChild(props.record)}>添加子需求</div>
+        <div onClick={() => props.onCreateChild(props.record)}>
+          {t('add_sub_requirements')}
+        </div>
       ),
     },
     {
       key: '4',
-      label: <div onClick={props.onAddComment}>添加评论</div>,
+      label: <div onClick={props.onAddComment}>{t('add_a_comment')}</div>,
     },
     {
       key: '5',
-      label: <div onClick={onCopyId}>复制需求编号</div>,
+      label: <div onClick={onCopyId}>{t('copy_requirement_number')}</div>,
     },
     {
       key: '6',
-      label: <div onClick={onCopyLink}>复制标题链接</div>,
+      label: <div onClick={onCopyLink}>{t('copy_title_link')}</div>,
     },
   ]
 

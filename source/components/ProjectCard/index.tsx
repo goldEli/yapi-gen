@@ -59,17 +59,17 @@ const Index = (props: any) => {
     {
       type: 'user-alone',
       num: props.item.memberCount,
-      text: '项目人数',
+      text: t('project.projectCount'),
     },
     {
       type: 'demand',
       num: props.item.iterateCount,
-      text: '需求数',
+      text: t('project.demandCount'),
     },
     {
       type: 'interation',
       num: props.item.storyCount,
-      text: '迭代数',
+      text: t('project.iterateCount'),
     },
   ]
 
@@ -84,7 +84,7 @@ const Index = (props: any) => {
     const items: any = [
       {
         key: 'edit',
-        label: <span>编辑</span>,
+        label: <span>{t('common.edit')}</span>,
         isHave: isEdit,
       },
       {
@@ -98,7 +98,7 @@ const Index = (props: any) => {
       },
       {
         key: 'del',
-        label: <span>删除</span>,
+        label: <span>{t('common.del')}</span>,
         isHave: isDel,
       },
     ]
@@ -142,8 +142,14 @@ const Index = (props: any) => {
           <CardRightFirst>{props.item.name}</CardRightFirst>
         </Tooltip>
 
-        <CardRightSecond>负责人：{props.item.leaderName}</CardRightSecond>
-        <CardRightSecond>键：{props.item.prefix}</CardRightSecond>
+        <CardRightSecond>
+          {t('functionary')}
+          {props.item.leaderName}
+        </CardRightSecond>
+        <CardRightSecond>
+          {t('keyM')}
+          {props.item.prefix}
+        </CardRightSecond>
         <TransformWrap>
           <ProgressWrap>
             <Progress

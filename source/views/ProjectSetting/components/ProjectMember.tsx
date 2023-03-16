@@ -532,18 +532,6 @@ const ProjectMember = () => {
     setIsVisible(!isVisible)
   }
 
-  const userObj = {
-    avatar:
-      'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1531903254371954690/2022-11-15/71A2A5C7-CFB9CDD612ED.jpeg',
-    name: '杨一',
-    id: '1531903254371954690',
-    companyId: '1504303190303051778',
-    companyName: '成都定星科技',
-    phone: '18380129474',
-    remark: '',
-    admin: false,
-    gender: 1,
-  }
   const init = async () => {
     const res2 = await getAddDepartMember(projectId)
 

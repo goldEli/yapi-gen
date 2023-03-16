@@ -1,4 +1,135 @@
 {
+  "corporate_information": " corporate information",
+
+  "organizational_information": " Organization information",
+
+  "staff_management": " Staff management",
+
+  "authority_management": " authority management",
+
+  "safety_management": " Safety management",
+
+  "secure_watermark": " Secure watermark",
+
+  "operation_log": " operation log",
+
+  "log_in_log": " Login log",
+
+  "start_using": " Enable ",
+
+  "no_start_using": " Not enabled ",
+
+  "back": " back",
+
+  "copy_requirement_number_successfully": " Copy the requirement number successfully!",
+
+  "add_sub_requirements": " Add subrequirements ",
+
+  "add_a_comment": " Add a comment",
+
+  "copy_requirement_number": " Copy requirement number",
+
+  "copy_title_link": " Copy the title link",
+
+  "subrequirements": " subrequirements",
+
+  "create_sub_requirements": " Create subrequirements ",
+
+  "requirements_review": " requirements review",
+
+  "requirement_description": " Requirements description",
+
+  "label": " label",
+
+  "detailed_information": " detail information",
+
+  "succeed": "succeed",
+
+  "currently_involved_in": " Currently involved in",
+
+  "please_specify_the_recipient": " please_specify_the_recipient. After the handover, his handover status will change to handover. The handover state cannot be added by the project and configured for employee permissions.",
+
+  "type_of_view": " type of view",
+
+  "clear_all_options": " Clear all options",
+
+  "invert_selection": " reverse selection",
+
+  "details_of": " detail ",
+
+  "functionary": " Responsible person :",
+
+  "keyM": " Key :",
+
+  "project_name_xxx": " Project name XXX",
+
+  "please_specify_the_recipient_of_the_project": " Please specify who is the recipient of this project",
+
+  "switch_preview_mode_successfully": " Switched preview_mode successfully!",
+
+  "requirement_opening_mode": " Requirement opening mode",
+
+  "popup_preview": " popover preview",
+
+  "details_preview": " detail preview",
+
+  "participated_in_this_team": " Participated in this team",
+
+  "a_team_project_please_specify_the_project_recipient": " Please specify the recipient of a team project ",
+
+  "whole": " whole",
+
+  "view_of_administration": " Administration view ",
+
+  "view": " view",
+
+  "currently_not_involved_in_any_projects_confirm_will": " Not currently involved in any project, confirm_will",
+
+  "work_handover": " The job is handed over, after which his handover status will change to handover; The handover state cannot be added by the project and configured for employee permissions.",
+
+  "confirmation_will": " confirmation_will",
+
+  "the_handover_status_of_is_changed_to_the_normal_state": " The handover state has changed to normal ",
+
+  "handover_status": " handoff status",
+
+  "reupload": " re-upload ",
+
+  "set_up_a_team": " Create a team",
+
+  "editorial_team": " Edit team",
+
+  "confirmation_of_dissolution": " Confirmation of dissolution",
+
+  "disbanding_the_team": " Disband the team",
+
+  "mailbox": " mailbox",
+
+  "shift_out": " shift_out",
+
+  "back_stage_management": " Background management",
+
+  "recent_projects": " recent projects",
+
+  "view_all_projects": " View all projects",
+
+  "have_done": " done",
+
+  "recently": " recently",
+
+  "last_viewed": " last viewed",
+
+  "recently_created": " Newly created",
+
+  "Check_out_my_work": " Check my work",
+
+  "confirm_that_it_is_checked": " Confirm this is checked",
+
+  "creating_fields": " Create fields",
+
+  "drag_the_field_to_the_left_area_to_create_the_field": " Drag the field to the left area to create the field",
+
+  "project_existing_fields": " Existing fields in the project ",
   "untick": " untick",
 
   "check": " Check ",

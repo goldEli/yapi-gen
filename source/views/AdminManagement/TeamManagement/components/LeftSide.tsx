@@ -238,7 +238,7 @@ const Upload = (props: any) => {
         ) : (
           <img src={uploadImg} />
         )}
-        <Mask>重新上传</Mask>
+        <Mask>{t('reupload')}</Mask>
       </UploadStyle>
     </>
   )
@@ -410,7 +410,7 @@ const LeftSide = (props: any) => {
       <div className="resize_line" />
       <Content className="resize_save">
         <TeamAdd onClick={() => createTeam()}>
-          <TiamTitleText>团队管理</TiamTitleText>
+          <TiamTitleText>{t('team_management') as string}</TiamTitleText>
           <IconFontStyle type="plus" />
         </TeamAdd>
         {/* 拖拽组件 */}
@@ -423,14 +423,18 @@ const LeftSide = (props: any) => {
           onChangeTeam={(key: string, child: any) => onChangeTeam(key, child)}
         />
         <CommonModal
-          title={formType === 'create' ? '创建团队' : '编辑团队'}
+          title={
+            formType === 'create' ? t('set_up_a_team') : t('editorial_team')
+          }
           isVisible={teamIsVisible}
           children={teamForm}
           onConfirm={() => onConfirm()}
           onClose={() => setTeamIsVisible(false)}
         />
         <DeleteConfirm
-          title={`确认解散【${activeTeam?.name}】团队`}
+          title={`${t('confirmation_of_dissolution')}【${activeTeam?.name}】${t(
+            'commonModal.labelTitle',
+          )}`}
           text={t(
             'after_dissolution_the_team_members_are_automatically_removed_and_the_team_project_is_automatically_incorporated_and_its_rights_are_changed_to_private',
           )}
