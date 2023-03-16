@@ -509,14 +509,14 @@ const StaffManagement = () => {
         visible={isVisibleFieldsA}
       />
       <DeleteConfirm
-        title="离职交接"
+        title={t('quitAndHandover')}
         text={`${editData.name}目前未参与任何项目，确认将【${editData.name}】工作交接，交接后他的交接状态将更改为已交接；已经交接状态不可被项目添加及进行员工权限配置`}
         onConfirm={onConfirm}
         onChangeVisible={() => setIsVisibleFieldsB(false)}
         isVisible={isVisibleFieldsB}
       />
       <DeleteConfirm
-        title="恢复交接状态"
+        title={t('the_handover_state_is_restored')}
         text={`确认将【${editData.name}】的交接状态更改为正常状态`}
         onConfirm={onConfirm2}
         onChangeVisible={() => setIsVisibleFieldsC(false)}

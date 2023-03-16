@@ -645,7 +645,7 @@ const CreateDemandRight = (props: Props) => {
       <Form layout="vertical" form={form} disabled={!props.isCreateDemand}>
         {props?.projectId && (
           <Form.Item
-            label="需求状态"
+            label={t('needState')}
             name="status"
             rules={[{ required: true, message: '' }]}
           >

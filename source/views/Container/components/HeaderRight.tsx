@@ -33,9 +33,9 @@ import { useTranslation } from 'react-i18next'
 import { setIsCreateIterationVisible } from '@store/iterate'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import helpPdf from '/Agile.pdf'
+import { t } from 'i18next'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
-  const [t] = useTranslation()
   const { language, theme } = useSelector(store => store.global)
   const dispatch = useDispatch()
   const [isChangeVisible, setIsChangeVisible] = useState(false)
@@ -62,7 +62,7 @@ const ChangeComponent = (props: { item: any; onClose(): void }) => {
       if (type === language) return
       onClose()
       await changeLanguage(type as LocaleKeys)
-      message.success(t('common.localsSwitching'))
+      message.success(t('common.localsSwitching') as string)
       dispatch({
         type: 'global/setLanguage',
         payload: type,
@@ -320,8 +320,8 @@ const HeaderRight = () => {
     <>
       {/* 退出登录 */}
       <DeleteConfirm
-        title="确认提示"
-        text="确定要退出登录吗？"
+        title={t('confirmation_prompt') as string}
+        text={t('are_you_sure_you_want_to_log_out') as string}
         isVisible={isConfirmLogout}
         onChangeVisible={() => setIsConfirmLogout(!isConfirmLogout)}
         onConfirm={toLoginOut}
@@ -333,7 +333,7 @@ const HeaderRight = () => {
           setIsVisible(false)
         }}
         isVisible={isInfoVisible}
-        title="个人资料"
+        title={t('are_you_sure_you_want_to_log_out') as string}
         isShowFooter
         width={420}
       >

@@ -470,7 +470,7 @@ const PermissionManagement = () => {
                   <Title style={{ marginBottom: 0 }}>
                     {t('setting.userGroup')}
                   </Title>
-                  <Tooltip placement="top" title={'添加用户组'}>
+                  <Tooltip placement="top" title={t('adding_a_user_group')}>
                     <IconFontStyle
                       type="plus"
                       onClick={() => setIsVisible(true)}

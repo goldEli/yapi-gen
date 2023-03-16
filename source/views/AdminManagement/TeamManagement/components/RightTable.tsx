@@ -17,6 +17,7 @@ import AddMemberCommonModal from '@/components/AddUser/CommonModal'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { GENDER_MAP } from '@/constants'
 import TeamOverModal from '@/components/TeamOverModal'
+import { t } from 'i18next'
 
 const RightWrap = styled.div`
   flex: 1;
@@ -167,13 +168,13 @@ const RightTable = () => {
       })
       setIsVisible(false)
       onFetchMemberList()
-      message.success('编辑成员成功')
+      message.success(t('edit_member_successfully') as string)
     } catch (error) {}
   }
 
   const onDelConfirm = async () => {
     if (activeMember?.team_is_admin === 1) {
-      message.warning('团队管理员不能被移除')
+      message.warning(t('team_administrators_cannot_be_removed') as string)
       setDelIsVisible(false)
       return
     }
@@ -184,7 +185,7 @@ const RightTable = () => {
       })
       setDelIsVisible(false)
       onFetchMemberList()
-      message.success('移出成功')
+      message.success(t('removal_success') as string)
     } catch (error) {}
   }
 
@@ -199,7 +200,7 @@ const RightTable = () => {
       })
       setAddMemberVisible(false)
       onFetchMemberList()
-      message.success('添加成功')
+      message.success(t('successfully_added') as string)
     } catch (error) {}
   }
 
@@ -207,16 +208,18 @@ const RightTable = () => {
     form.setFieldsValue(row)
     return (
       <div style={{ margin: '0 24px' }}>
-        <TitleStyle>设置【{row.name}】在团队中的角色</TitleStyle>
+        <TitleStyle>
+          {t('set')}【{row.name}】{t('your_role_in_the_team')}
+        </TitleStyle>
         <FormStyle name="basic" form={form} initialValues={{ remember: true }}>
           <Form.Item
-            label="团队角色"
+            label={t('team_role') as string}
             name="team_is_admin"
-            rules={[{ required: true, message: '请输入团队名称' }]}
+            rules={[{ required: true, message: t('please_enter_a_team_name') }]}
           >
             <SelectStyle
               getPopupContainer={node => node}
-              placeholder="请输入团队名称"
+              placeholder={t('please_enter_a_team_name') as string}
               style={{ width: '100%' }}
               options={options}
               suffixIcon={<IconFont type="down" style={{ fontSize: 16 }} />}
@@ -231,45 +234,47 @@ const RightTable = () => {
     return (
       <PersonStyle>
         <Row>
-          <LeftItem>头像</LeftItem>
+          <LeftItem>{t('head_portrait') as string}</LeftItem>
           <CommonUserAvatar avatar={row.avatar} size="large" />
         </Row>
         <Row>
-          <LeftItem>手机号</LeftItem>
+          <LeftItem>{t('cell_phone_number') as string}</LeftItem>
           <RightItem>{row.phone}</RightItem>
         </Row>
         <Row>
-          <LeftItem>登录邮箱</LeftItem>
+          <LeftItem>{t('log_in_to_a_mailbox') as string}</LeftItem>
           <RightItem>{row.email}</RightItem>
         </Row>
         <Row>
-          <LeftItem>昵称</LeftItem>
+          <LeftItem>{t('nickname') as string}</LeftItem>
           <RightItem>{row.nickname}</RightItem>
         </Row>
         <Row>
-          <LeftItem>姓名</LeftItem>
+          <LeftItem>{t('name') as string}</LeftItem>
           <RightItem>{row.name}</RightItem>
         </Row>
         <Row>
-          <LeftItem>性别</LeftItem>
+          <LeftItem>{t('gender') as string}</LeftItem>
           <RightItem>{GENDER_MAP[row.gender]}</RightItem>
         </Row>
         <Row>
-          <LeftItem>所属部门</LeftItem>
+          <LeftItem>{t('department') as string}</LeftItem>
           <RightItem>{row.department_name}</RightItem>
         </Row>
         <Row>
-          <LeftItem>职位</LeftItem>
+          <LeftItem>{t('position') as string}</LeftItem>
           <RightItem>{row.position_name}</RightItem>
         </Row>
         <Row>
-          <LeftItem>所在团队</LeftItem>
+          <LeftItem>{t('team') as string}</LeftItem>
           <RightItem>{row.teams?.map((i: any) => i.name)?.join()}</RightItem>
         </Row>
         <Row className="row" style={{ marginBottom: 0 }}>
-          <LeftItem>权限组</LeftItem>
+          <LeftItem>{t('permission_group') as string}</LeftItem>
           <RightItem>
-            {row.team_is_admin === 1 ? '团队管理' : '团队成员'}
+            {row.team_is_admin === 1
+              ? (t('team_management') as string)
+              : (t('team_members') as string)}
           </RightItem>
         </Row>
       </PersonStyle>
@@ -312,7 +317,7 @@ const RightTable = () => {
         />
       </PaginationBox>
       <CommonModal
-        title={type === 'detail' ? '个人资料' : '编辑成员'}
+        title={type === 'detail' ? t('personal_data') : t('editor_member')}
         isVisible={isVisible}
         children={editForm}
         hasFooter={type === 'detail'}
@@ -322,8 +327,8 @@ const RightTable = () => {
       />
 
       <DeleteConfirm
-        title="移除确认"
-        text="确认移除该成员？"
+        title={t('removal_confirmation')}
+        text={t('are_you_sure_to_remove_this_member')}
         isVisible={delIsVisible}
         onConfirm={onDelConfirm}
         onChangeVisible={() => setDelIsVisible(false)}
@@ -337,7 +342,7 @@ const RightTable = () => {
       />
       <AddMemberCommonModal
         isPermisGroup={false}
-        title="添加成员"
+        title={t('add_a_member')}
         isVisible={addMemberVisible}
         onClose={() => setAddMemberVisible(false)}
         onConfirm={list => onAddConfirm(list)}

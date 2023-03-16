@@ -127,8 +127,12 @@ const FormStyle = styled(Form)`
   & .ant-form-item-control-input-content {
     background-color: var(--neutral-white-d5) !important;
   }
-  .ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper,
-  .ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:hover {
+  .ant-input-affix-wrapper-status-error:not(
+      .ant-input-affix-wrapper-disabled
+    ):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper,
+  .ant-input-affix-wrapper-status-error:not(
+      .ant-input-affix-wrapper-disabled
+    ):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:hover {
     background-color: var(--neutral-white-d5) !important;
   }
 `
@@ -178,6 +182,7 @@ const UploadTitle = styled.div`
 const Content = styled.div``
 
 const Upload = (props: any) => {
+  const [t] = useTranslation()
   const [defaultIcon, setDefaultIcon] = useState(true)
   const [uploadImg, setUploadImg] = useState('')
   const customRequest = async ({ file }: { file: any }) => {
@@ -205,8 +210,11 @@ const Upload = (props: any) => {
   return (
     <>
       <UploadTitle>
-        团队LOGO
-        <Tooltip placement="top" title="支持jpg、png格式，大小80*80像素">
+        {t('team_logo')}
+        <Tooltip
+          placement="top"
+          title={t('jpg_png_format_the_size_of_8080_pixels') as string}
+        >
           <IconFont
             type="question"
             style={{
@@ -239,9 +247,10 @@ const Upload = (props: any) => {
 import { companyTeamsList } from '@store/teams/thunk'
 import { addTeams, dismissTeams, editTeams } from '@/services/setting'
 import { setActiveTeam } from '@store/teams/index'
+import { t } from 'i18next'
 const LeftSide = (props: any) => {
   const dispatch = useDispatch()
-  const [t] = useTranslation()
+
   const { teamsList, activeTeam } = useSelector(s => s.teams)
   const [formType, setFormType] = useState('')
   const [uploadImgs, setUploadImgs] = useState<any>()
@@ -313,12 +322,12 @@ const LeftSide = (props: any) => {
       <div style={{ padding: '0 24px' }}>
         <FormStyle name="basic" form={form} initialValues={{ remember: true }}>
           <Form.Item
-            label="团队名称"
+            label={t('team_name') as string}
             name="username"
-            rules={[{ required: true, message: '请输入团队名称' }]}
+            rules={[{ required: true, message: t('please_enter_a_team_name') }]}
           >
             <InputStyle
-              placeholder="请输入团队名称"
+              placeholder={t('please_enter_a_team_name')}
               maxLength={20}
               allowClear
             />
@@ -422,7 +431,9 @@ const LeftSide = (props: any) => {
         />
         <DeleteConfirm
           title={`确认解散【${activeTeam?.name}】团队`}
-          text="解散后将自动移除团队成员，该团队项目将自动划分到公司且权限变更为私有"
+          text={t(
+            'after_dissolution_the_team_members_are_automatically_removed_and_the_team_project_is_automatically_incorporated_and_its_rights_are_changed_to_private',
+          )}
           isVisible={delTeamIsVisible}
           onConfirm={() => {
             delOnConfirm()

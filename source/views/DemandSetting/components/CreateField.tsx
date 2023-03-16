@@ -212,7 +212,7 @@ const CreateField = () => {
           {search ? (
             <InputStyle
               width={184}
-              placeholder="请输入关键字"
+              placeholder={t('pleaseEnterASearchPhrase')}
               value={searchValue}
               onInput={(e: any) => onSearch(e.target.value)}
               prefix={

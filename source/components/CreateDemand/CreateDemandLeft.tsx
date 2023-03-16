@@ -632,7 +632,7 @@ const CreateDemandLeft = (props: Props) => {
             </Select>
           </Form.Item>
           <Form.Item
-            label="需求类别"
+            label={t('categoryOfNeeds')}
             name="requiredCategory"
             style={{ width: '50%' }}
             rules={[{ required: true, message: '' }]}

@@ -8,6 +8,7 @@ import {
   getTeamMember,
 } from '@/services/handover'
 import { Form, message, Select } from 'antd'
+import { t } from 'i18next'
 import React, { useEffect, useState } from 'react'
 import CommonModal from '../CommonModal'
 import { PinkWrap, Wrap } from './style'
@@ -59,7 +60,7 @@ const HandOverModal = (props: any) => {
 
   return (
     <CommonModal
-      title="离职交接"
+      title={t('quitAndHandover')}
       onClose={props.close}
       isVisible={props.visible}
       onConfirm={onConfirm}
@@ -113,7 +114,7 @@ const HandOverModal = (props: any) => {
                   width: '184px',
                   marginLeft: '48px',
                 }}
-                placeholder="请选择交接人"
+                placeholder={t('pleaseSelectTheHandoverPerson') as string}
                 allowClear
               >
                 {i.members.map((k: any) => (
