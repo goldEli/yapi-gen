@@ -52,6 +52,7 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
+  const paramsType = paramsData.type
   const projectId = paramsData?.id
   const { projectInfo } = useSelector(store => store.project)
   const [tabsActive, setTabsActive] = useState(0)
@@ -111,10 +112,9 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
         }),
       ))
   }
-
   useEffect(() => {
-    getList()
-  }, [])
+    paramsType && getList()
+  }, [paramsType])
 
   //   返回上一页
   const onGoBack = () => {
@@ -194,7 +194,7 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
         <Provider />
         <TitleStyle>
           <span>{t('demandSettingSide.classification')}</span>{' '}
-          {isCreate && (
+          {isCreate > 0 && (
             <IconFontStyle type="plus" onClick={() => setIsVisible(true)} />
           )}
         </TitleStyle>
@@ -237,7 +237,7 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
                 <div>{t('demandSettingSide.noData')}</div>
               </div>
               <div className="bottom">
-                {isCreate && (
+                {isCreate > 0 && (
                   <div
                     className="bottom"
                     onClick={() => setIsVisible(true)}
