@@ -23,7 +23,7 @@ import {
   WrapCategory,
 } from './style'
 
-const ProjectDetailSide = () => {
+const ProjectDetailSide = (props: { onGetPermission(value: any): void }) => {
   const [t, i18n] = useTranslation()
   const projectSide: any = useRef<HTMLInputElement>(null)
   const projectSetSide: any = useRef<HTMLInputElement>(null)
@@ -101,6 +101,20 @@ const ProjectDetailSide = () => {
   const getInfo = async () => {
     const result = await getProjectInfo({ projectId })
     dispatch(setProjectInfo(result))
+    const list = [
+      { key: 'Demand', name: '需求' },
+      { key: 'Iteration', name: '迭代' },
+      { key: 'ProjectSetting', name: '项目设置' },
+    ]
+
+    // 获取当前地址的权限组名称
+    const currentKey = list?.filter(
+      (k: any) => `/ProjectManagement/${k.key}` === location.pathname,
+    )?.[0]?.name
+    const hasPermission = projectInfo?.projectPermissions?.filter(
+      (i: any) => i.group_name === currentKey,
+    )?.length
+    props.onGetPermission(hasPermission > 0)
   }
 
   //   点击需求设置

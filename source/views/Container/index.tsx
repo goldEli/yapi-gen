@@ -66,10 +66,12 @@ export const Container = () => {
   const location = useLocation()
   const dispatch = useDispatch()
   const [isNextVisible, setIsNextVisible] = useState(false)
+  const [isPermission, setIsPermission] = useState(false)
   const [changeLeft, setChangeLeft] = useState(200)
   const { userInfo, loginInfo, menuPermission } = useSelector(
     store => store.user,
   )
+  const { projectInfo } = useSelector(store => store.project)
   const {
     i18n: { language },
   } = useTranslation()
@@ -107,12 +109,30 @@ export const Container = () => {
     }
   }
 
-  useEffect(() => {
-    dispatch(getStatus())
-    dispatch(getLoginDetail())
-    dispatch(getAsyncCompanyInfo())
-    dispatch(getProjectCover())
-  }, [])
+  const getSide = () => {
+    let hasPermission
+
+    // 是否是公司成员详情
+    const isStaffMemberInfo =
+      String(location.pathname).includes('/MemberInfo') &&
+      !String(location.pathname).includes('/ProjectManagement')
+
+    if (isStaffMemberInfo) {
+      hasPermission = userInfo?.company_permissions?.filter(
+        (i: any) => i.identity === 'b/companyuser/info',
+      )?.length
+    } else if (String(location.pathname) === '/ProjectManagement/Project') {
+      // 判断项目列表是否有权限
+      hasPermission = menuPermission?.menus
+        ?.filter((l: any) => l.url === '/ProjectManagement')?.[0]
+        ?.children?.filter((i: any) => i.url === location.pathname)?.length
+    } else {
+      hasPermission = menuPermission?.menus?.filter((l: any) =>
+        location.pathname.includes(l.url),
+      )?.length
+    }
+    setIsPermission(hasPermission > 0)
+  }
 
   useEffect(() => {
     document
@@ -132,6 +152,10 @@ export const Container = () => {
     localStorage.setItem('language', languageParams)
     changeLanguage(languageParams)
     init()
+    dispatch(getStatus())
+    dispatch(getLoginDetail())
+    dispatch(getAsyncCompanyInfo())
+    dispatch(getProjectCover())
   }, [])
 
   useEffect(() => {
@@ -140,32 +164,31 @@ export const Container = () => {
       navigate(menuPermission.priorityUrl)
     }
     setIsNextVisible(loginInfo.admin_first_login)
+    getSide()
   }, [loginInfo, menuPermission])
 
   return (
     <KitConfigProvider local={language as any}>
       <ConfigProvider locale={antdLocal} autoInsertSpaceInButton={false}>
         <GlobalStyle />
-        {userInfo?.company_permissions?.length > 0 && (
-          <LayoutWrap id="layoutWrap">
-            <HeaderWrap>
-              <HeaderLeft />
-              <HeaderRight />
-            </HeaderWrap>
-            <Content>
-              {location.pathname !== '/Situation' && (
-                <Side onChangeLeft={setChangeLeft} />
-              )}
-              <Main left={changeLeft}>
-                <Outlet />
-              </Main>
-            </Content>
-            <Guide
-              visible={isNextVisible}
-              close={() => setIsNextVisible(false)}
-            />
-          </LayoutWrap>
-        )}
+        <LayoutWrap id="layoutWrap">
+          <HeaderWrap>
+            <HeaderLeft />
+            <HeaderRight />
+          </HeaderWrap>
+          <Content>
+            {location.pathname !== '/Situation' && isPermission && (
+              <Side onChangeLeft={setChangeLeft} />
+            )}
+            <Main left={changeLeft}>
+              <Outlet />
+            </Main>
+          </Content>
+          <Guide
+            visible={isNextVisible}
+            close={() => setIsNextVisible(false)}
+          />
+        </LayoutWrap>
 
         <CreateAProjectForm />
         <CreateIteration />

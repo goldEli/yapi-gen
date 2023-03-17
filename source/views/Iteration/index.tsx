@@ -152,6 +152,7 @@ const Iteration = () => {
   const [isDelete, setIsDelete] = useState(false)
   const [isUpdateState, setIsUpdateState] = useState(false)
   const { projectInfo, projectInfoValues } = useSelector(store => store.project)
+  const { currentMenu } = useSelector(store => store.user)
   const { iterateInfo, createIterationParams } = useSelector(
     store => store.iterate,
   )
@@ -209,6 +210,11 @@ const Iteration = () => {
     projectInfo?.projectPermissions,
     'b/iterate/achieve/info',
   )
+
+  // 计算当前选中下是否有项目管理权限
+  const resultAuth = currentMenu?.children?.filter(
+    (i: any) => i.url === '/ProjectManagement/Project',
+  )?.length
 
   const onFilterSearch = (e: any, customField: any) => {
     const params = {
@@ -549,10 +555,12 @@ const Iteration = () => {
 
   return (
     <PermissionWrap
-      auth={t('iteration')}
-      permission={projectInfo?.projectPermissions?.map(
-        (i: any) => i.group_name,
-      )}
+      auth={resultAuth ? '迭代' : '/ProjectManagement/Project'}
+      permission={
+        resultAuth
+          ? projectInfo?.projectPermissions?.map((i: any) => i.group_name)
+          : currentMenu?.children?.map((i: any) => i.url)
+      }
     >
       <Wrap>{content()}</Wrap>
     </PermissionWrap>

@@ -3,12 +3,12 @@ import IconFont from '@/components/IconFont'
 import { getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useSelector } from '@store/index'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { InfoItem, InfoWrap, Menu, MenuItem, NameWrap, Side } from './style'
 
-const index = () => {
+const index = (props: { onGetPermission(value: any): void }) => {
   const [t] = useTranslation()
   const { mainInfo } = useSelector(store => store.memberInfo)
   const { projectInfo } = useSelector(store => store.project)
@@ -54,9 +54,21 @@ const index = () => {
       navigate(`/MemberInfo/${value.path}?data=${params}`)
     }
   }
+
   const onGoBack = () => {
     navigate(`/AdminManagement/StaffManagement`)
   }
+
+  useEffect(() => {
+    if (isMember) {
+      props.onGetPermission(
+        projectInfo?.projectPermissions?.filter(
+          (i: any) => i.identity === 'b/project/member/info',
+        )?.length > 0,
+      )
+    }
+  }, [])
+
   return (
     <Side>
       <InfoWrap>
