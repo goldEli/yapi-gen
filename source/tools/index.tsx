@@ -320,10 +320,9 @@ function removeNull(list: any, key: string) {
 // 获取自定义字段默认值
 function getCustomNormalValue(attr: any, text: any) {
   let result: any
-
-  if (Array.isArray(text?.value)) {
+  if (Array.isArray(text?.value) && !text?.true_value) {
     result = text?.value?.join(';')
-  } else if (typeof text?.value === 'object') {
+  } else if (typeof text?.value === 'object' && !text?.true_value) {
     result = text?.value.content
   } else if (['user_select_checkbox', 'user_select'].includes(attr)) {
     result = text?.true_value || '--'
