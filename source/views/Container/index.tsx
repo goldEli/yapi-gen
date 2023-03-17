@@ -164,7 +164,26 @@ export const Container = () => {
   useEffect(() => {
     // 如果没带路由则跳转优先路由
     if (location.pathname === '/') {
-      navigate(menuPermission.priorityUrl)
+      let navigateUrl = menuPermission.priorityUrl
+      // 如果是项目管理
+      if (menuPermission.priorityUrl === '/ProjectManagement') {
+        const children = menuPermission?.menus?.filter(
+          (i: any) => i.url === '/ProjectManagement',
+        )
+        const firstUrl = children?.[0]?.url
+        if (firstUrl === '/ProjectManagement/Mine') {
+          navigateUrl = '/ProjectManagement/Mine/Profile'
+        }
+      } else if (menuPermission.priorityUrl === '/LogManagement') {
+        // 如果是日志
+        navigateUrl = '/LogManagement/Send/1'
+      } else if (menuPermission.priorityUrl === '/AdminManagement') {
+        const children = menuPermission?.menus?.filter(
+          (i: any) => i.url === '/AdminManagement',
+        )
+        navigateUrl = children?.[0]?.url
+      }
+      navigate(navigateUrl)
     }
     setIsNextVisible(loginInfo.admin_first_login)
   }, [loginInfo, menuPermission])
