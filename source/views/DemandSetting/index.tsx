@@ -30,7 +30,7 @@ const DemandSetting = () => {
   const [isOperate, setIsOperate] = useState<boolean>(false)
   const [isSave, setIsSave] = useState(false)
   const { projectInfo } = useSelector(store => store.project)
-  const { getCategoryConfigDataList, startUsing, activeCategory } = useSelector(
+  const { getCategoryConfigDataList, activeCategory } = useSelector(
     store => store.category,
   )
   useSelector(store => store.category)
