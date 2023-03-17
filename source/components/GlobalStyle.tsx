@@ -244,7 +244,7 @@ const GlobalStyle = () => {
     //table样式 --- end
 
     .ant-dropdown-menu-item {
-      height: 32px;
+      /* height: 32px; */
       color: var(--neutral-n2);
       .ant-dropdown-menu-title-content div {
         /* min-width: 80px; */
@@ -733,7 +733,7 @@ const GlobalStyle = () => {
 
     .ant-dropdown-menu-item {
       /* text-align: center; */
-      /* height: 32px; */
+
       background-color: var(--neutral-white-d5);
     }
     .ant-menu-vertical .ant-menu-submenu-selected,
