@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
 import { useSelector } from '@store/index'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
+import PermissionWrap from '@/components/PermissionWrap'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -30,6 +31,12 @@ const Setting = () => {
   const { projectInfo } = useSelector(store => store.project)
   const paramsData = getParamsData(searchParams)
   const activeTabs = Number(paramsData.type) || 0
+  const { currentMenu } = useSelector(store => store.user)
+  // 计算当前选中下是否有项目管理权限
+  const resultAuth =
+    currentMenu?.children?.filter(
+      (i: any) => i.url === '/ProjectManagement/Project',
+    )?.length > 0
 
   const SideList = [
     {
@@ -65,12 +72,23 @@ const Setting = () => {
   ]
 
   return (
-    <div style={{ padding: '20px 24px 0 24px' }}>
-      <MyBreadcrumb setName={SideList[activeTabs].name} />
-      <Wrap>
-        <Content>{SideList[activeTabs].content}</Content>
-      </Wrap>
-    </div>
+    <PermissionWrap
+      auth={
+        resultAuth ? 'b/project/story_config' : '/ProjectManagement/Project'
+      }
+      permission={
+        resultAuth
+          ? projectInfo?.projectPermissions?.map((i: any) => i.identity)
+          : currentMenu?.children?.map((i: any) => i.url)
+      }
+    >
+      <div style={{ padding: '20px 24px 0 24px' }}>
+        <MyBreadcrumb setName={SideList[activeTabs].name} />
+        <Wrap>
+          <Content>{SideList[activeTabs].content}</Content>
+        </Wrap>
+      </div>
+    </PermissionWrap>
   )
 }
 

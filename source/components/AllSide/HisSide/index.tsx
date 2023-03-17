@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { InfoItem, InfoWrap, Menu, MenuItem, NameWrap, Side } from './style'
 
-const index = (props: { onGetPermission(value: any): void }) => {
+const index = () => {
   const [t] = useTranslation()
   const { mainInfo } = useSelector(store => store.memberInfo)
   const { projectInfo } = useSelector(store => store.project)
@@ -58,16 +58,6 @@ const index = (props: { onGetPermission(value: any): void }) => {
   const onGoBack = () => {
     navigate(`/AdminManagement/StaffManagement`)
   }
-
-  useEffect(() => {
-    if (isMember) {
-      props.onGetPermission(
-        projectInfo?.projectPermissions?.filter(
-          (i: any) => i.identity === 'b/project/member/info',
-        )?.length > 0,
-      )
-    }
-  }, [])
 
   return (
     <Side>

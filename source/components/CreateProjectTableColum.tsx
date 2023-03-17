@@ -506,16 +506,16 @@ export const useDynamicColumns = (state: any) => {
     projectInfo?.plainOptions3?.forEach((element: any) => {
       const currentFields = projectInfo?.filterCustomList?.filter(
         (i: any) => i.content === element.value,
-      )[0]
+      )?.[0]
       result.push({
         width: 200,
         title: (
           <div>
             {!['user_select_checkbox', 'select_checkbox', 'checkbox'].includes(
-              currentFields.attr,
+              currentFields?.attr,
             ) && <NewSort fixedKey={element.value}>{element.label}</NewSort>}
             {['user_select_checkbox', 'select_checkbox', 'checkbox'].includes(
-              currentFields.attr,
+              currentFields?.attr,
             ) && element.label}
           </div>
         ),
@@ -524,7 +524,7 @@ export const useDynamicColumns = (state: any) => {
         render: (text: any, record: any) => {
           return (
             <TableQuickEdit
-              type={currentFields.attr}
+              type={currentFields?.attr}
               defaultText={text?.value}
               keyText={element.value}
               item={record}
@@ -533,7 +533,7 @@ export const useDynamicColumns = (state: any) => {
               isCustom
               defaultTextValues={text?.true_value}
             >
-              <span>{getCustomNormalValue(currentFields.attr, text)}</span>
+              <span>{getCustomNormalValue(currentFields?.attr, text)}</span>
             </TableQuickEdit>
           )
         },

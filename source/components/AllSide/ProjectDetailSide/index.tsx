@@ -6,7 +6,7 @@ import { getIsPermission, getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectInfo, setProjectInfoValues } from '@store/project'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import DemandSettingSide from '../DemandSettingSide'
@@ -23,7 +23,7 @@ import {
   WrapCategory,
 } from './style'
 
-const ProjectDetailSide = (props: { onGetPermission(value: any): void }) => {
+const ProjectDetailSide = () => {
   const [t, i18n] = useTranslation()
   const projectSide: any = useRef<HTMLInputElement>(null)
   const projectSetSide: any = useRef<HTMLInputElement>(null)
@@ -101,20 +101,6 @@ const ProjectDetailSide = (props: { onGetPermission(value: any): void }) => {
   const getInfo = async () => {
     const result = await getProjectInfo({ projectId })
     dispatch(setProjectInfo(result))
-    const list = [
-      { key: 'Demand', name: '需求' },
-      { key: 'Iteration', name: '迭代' },
-      { key: 'ProjectSetting', name: '项目设置' },
-    ]
-
-    // 获取当前地址的权限组名称
-    const currentKey = list?.filter(
-      (k: any) => `/ProjectManagement/${k.key}` === location.pathname,
-    )?.[0]?.name
-    const hasPermission = projectInfo?.projectPermissions?.filter(
-      (i: any) => i.group_name === currentKey,
-    )?.length
-    props.onGetPermission(hasPermission > 0)
   }
 
   //   点击需求设置
@@ -217,96 +203,98 @@ const ProjectDetailSide = (props: { onGetPermission(value: any): void }) => {
   }, [paramsData])
 
   return (
-    <AllWrap>
-      <WrapDetail ref={projectSide}>
-        <SideTop>
-          <img src={projectInfo.cover} alt="" />
-          <SideInfo>
-            <div>{projectInfo.name}</div>
-            <span>
-              {projectInfo.teamId ? t('teamwork') : t('enterprise_project')}
-            </span>
-          </SideInfo>
-        </SideTop>
-        <Provider />
-        <MenuBox>
-          {menuList.map((i: any) => (
-            <MenuItem
-              key={i.icon}
-              isActive={routerPath.pathname === i.path}
-              onClick={() => onChangeRouter(i.path)}
-              hidden={!i.isPermission}
-            >
+    <>
+      <AllWrap>
+        <WrapDetail ref={projectSide}>
+          <SideTop>
+            <img src={projectInfo.cover} alt="" />
+            <SideInfo>
+              <div>{projectInfo.name}</div>
+              <span>
+                {projectInfo.teamId ? t('teamwork') : t('enterprise_project')}
+              </span>
+            </SideInfo>
+          </SideTop>
+          <Provider />
+          <MenuBox>
+            {menuList.map((i: any) => (
+              <MenuItem
+                key={i.icon}
+                isActive={routerPath.pathname === i.path}
+                onClick={() => onChangeRouter(i.path)}
+                hidden={!i.isPermission}
+              >
+                <CommonIconFont
+                  type={i.icon}
+                  color="var(--neutral-n3)"
+                  size={18}
+                />
+                <div>{i.name}</div>
+              </MenuItem>
+            ))}
+          </MenuBox>
+          <SideFooter onClick={() => onChangeSet(true)}>
+            <div>
               <CommonIconFont
-                type={i.icon}
+                type="settings"
                 color="var(--neutral-n3)"
                 size={18}
               />
-              <div>{i.name}</div>
-            </MenuItem>
-          ))}
-        </MenuBox>
-        <SideFooter onClick={() => onChangeSet(true)}>
-          <div>
-            <CommonIconFont
-              type="settings"
-              color="var(--neutral-n3)"
-              size={18}
-            />
-            <div>{t('project.projectSet')}</div>
+              <div>{t('project.projectSet')}</div>
+            </div>
+          </SideFooter>
+        </WrapDetail>
+
+        <WrapSet ref={projectSetSide}>
+          <SideTop>
+            <img src={projectInfo.cover} alt="" />
+            <SideInfo>
+              <div>{projectInfo.name}</div>
+              <span>
+                {projectInfo.teamId ? t('teamwork') : t('enterprise_project')}
+              </span>
+            </SideInfo>
+          </SideTop>
+          <div
+            onClick={onGoBack}
+            style={{
+              fontSize: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              color: 'var(--neutral-n3)',
+              marginBottom: '14px',
+              marginLeft: 19,
+              cursor: 'pointer',
+            }}
+          >
+            <CommonIconFont type="left-md" />
+            <span style={{ marginLeft: '2px' }}>{t('back')}</span>
           </div>
-        </SideFooter>
-      </WrapDetail>
+          <Provider />
+          <MenuBox>
+            {sideList.map((i: any, index: number) => (
+              <MenuItem
+                key={i.icon}
+                isActive={paramsData?.type === index}
+                onClick={() => onToInfo(i, index)}
+                hidden={!i.isPermission}
+              >
+                <CommonIconFont
+                  type={i.icon}
+                  color="var(--neutral-n3)"
+                  size={18}
+                />
+                <div>{i.name}</div>
+              </MenuItem>
+            ))}
+          </MenuBox>
+        </WrapSet>
 
-      <WrapSet ref={projectSetSide}>
-        <SideTop>
-          <img src={projectInfo.cover} alt="" />
-          <SideInfo>
-            <div>{projectInfo.name}</div>
-            <span>
-              {projectInfo.teamId ? t('teamwork') : t('enterprise_project')}
-            </span>
-          </SideInfo>
-        </SideTop>
-        <div
-          onClick={onGoBack}
-          style={{
-            fontSize: '12px',
-            display: 'flex',
-            alignItems: 'center',
-            color: 'var(--neutral-n3)',
-            marginBottom: '14px',
-            marginLeft: 19,
-            cursor: 'pointer',
-          }}
-        >
-          <CommonIconFont type="left-md" />
-          <span style={{ marginLeft: '2px' }}>{t('back')}</span>
-        </div>
-        <Provider />
-        <MenuBox>
-          {sideList.map((i: any, index: number) => (
-            <MenuItem
-              key={i.icon}
-              isActive={paramsData?.type === index}
-              onClick={() => onToInfo(i, index)}
-              hidden={!i.isPermission}
-            >
-              <CommonIconFont
-                type={i.icon}
-                color="var(--neutral-n3)"
-                size={18}
-              />
-              <div>{i.name}</div>
-            </MenuItem>
-          ))}
-        </MenuBox>
-      </WrapSet>
-
-      <WrapCategory ref={projectSetCategory}>
-        <DemandSettingSide onClick={onCategoryBack} />
-      </WrapCategory>
-    </AllWrap>
+        <WrapCategory ref={projectSetCategory}>
+          <DemandSettingSide onClick={onCategoryBack} />
+        </WrapCategory>
+      </AllWrap>
+    </>
   )
 }
 

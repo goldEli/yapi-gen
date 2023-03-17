@@ -30,9 +30,15 @@ const DemandSetting = () => {
   const [isOperate, setIsOperate] = useState<boolean>(false)
   const [isSave, setIsSave] = useState(false)
   const { projectInfo } = useSelector(store => store.project)
+  const { currentMenu } = useSelector(store => store.user)
   const { getCategoryConfigDataList, startUsing, activeCategory } = useSelector(
     store => store.category,
   )
+  // 计算当前选中下是否有项目管理权限
+  const resultAuth =
+    currentMenu?.children?.filter(
+      (i: any) => i.url === '/ProjectManagement/Project',
+    )?.length > 0
   useSelector(store => store.category)
   const save = () => {
     setIsSave(true)
@@ -50,10 +56,17 @@ const DemandSetting = () => {
     setIsSave(false)
     setIsOperate(false)
   }, [activeCategory])
+
   return (
     <PermissionWrap
-      auth="b/project/story_config"
-      permission={projectInfo?.projectPermissions?.map((i: any) => i.identity)}
+      auth={
+        resultAuth ? 'b/project/story_config' : '/ProjectManagement/Project'
+      }
+      permission={
+        resultAuth
+          ? projectInfo?.projectPermissions?.map((i: any) => i.identity)
+          : currentMenu?.children?.map((i: any) => i.url)
+      }
     >
       {getCategoryConfigDataList?.configDataList.length >= 1 ? (
         <>

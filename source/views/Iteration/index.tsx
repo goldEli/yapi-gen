@@ -212,9 +212,10 @@ const Iteration = () => {
   )
 
   // 计算当前选中下是否有项目管理权限
-  const resultAuth = currentMenu?.children?.filter(
-    (i: any) => i.url === '/ProjectManagement/Project',
-  )?.length
+  const resultAuth =
+    currentMenu?.children?.filter(
+      (i: any) => i.url === '/ProjectManagement/Project',
+    )?.length > 0
 
   const onFilterSearch = (e: any, customField: any) => {
     const params = {
