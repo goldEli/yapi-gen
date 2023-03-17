@@ -439,7 +439,7 @@ const PermissionManagement = () => {
           onClose={onClose}
           isShowFooter
         >
-          <div style={{ margin: '0 16px 24px 0' }}>
+          <div style={{ margin: '0 16px 24px 24px' }}>
             <Input
               autoComplete="off"
               value={addValue}
