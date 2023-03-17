@@ -113,7 +113,11 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
       ))
   }
   useEffect(() => {
-    paramsType && getList()
+    if (paramsType) {
+      getList()
+    } else {
+      getList()
+    }
   }, [paramsType])
 
   //   返回上一页
