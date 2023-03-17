@@ -42,7 +42,7 @@ export const Second = styled.div`
   top: 8px;
   opacity: 0;
   transition: all 1s;
-  background-color: var(--neutral-white-d6);
+  /* background-color: var(--neutral-white-d6); */
 `
 
 export const Third = styled.div`
@@ -529,11 +529,7 @@ const UploadAttach = (props: any) => {
                     </>
                   )}
                   {i.state === 'success' && (
-                    <span
-                      style={{
-                        background: 'white',
-                      }}
-                    >
+                    <span>
                       {!!isDownload && (
                         <BlueCss
                           onClick={() => onDownload(i.file.url, i.file.name)}
