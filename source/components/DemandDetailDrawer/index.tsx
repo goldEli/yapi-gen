@@ -18,7 +18,7 @@ import {
   setIsCreateDemandVisible,
   setIsUpdateDemand,
 } from '@store/demand'
-import { useDispatch, useSelector } from '@store/index'
+import { useDispatch, useSelector, store as storeAll } from '@store/index'
 import { setProjectInfo } from '@store/project'
 import { Drawer, message, Popover, Skeleton, Space } from 'antd'
 import { createRef, useCallback, useEffect, useRef, useState } from 'react'
@@ -295,7 +295,7 @@ const DemandDetailDrawer = () => {
   }
 
   const getKeyDown = (e: any) => {
-    if (isDemandDetailDrawerVisible) {
+    if (storeAll.getState().demand.isDemandDetailDrawerVisible) {
       if (e.keyCode === 38) {
         //up
         document.getElementById('upIcon')?.click()

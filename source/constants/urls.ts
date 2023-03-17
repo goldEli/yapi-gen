@@ -128,8 +128,8 @@ const urls = {
   batchEdit: '/b/story/batch_update',
   getBatchEditConfig: '/b/story/batch_fields',
   getMenuPermission: '/b/user_menu_list',
-  getCompanyUserPreferenceConfig: '/b/companyuser/preference/config',
-  updateCompanyUserPreferenceConfig: '/b/companyuser/preference/config',
+  getCompanyUserPreferenceConfig: '/b/preference/config',
+  updateCompanyUserPreferenceConfig: '/b/preference/config',
 }
 
 export default urls

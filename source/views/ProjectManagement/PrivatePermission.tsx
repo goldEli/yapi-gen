@@ -26,9 +26,10 @@ const Wrap = styled.div({
 const PrivatePermission = () => {
   const [t] = useTranslation()
   const navigate = useNavigate()
+
   // 点击跳转到项目页面
   const onToProject = () => {
-    navigate('/Project')
+    navigate('/ProjectManagement/Mine/Profile')
   }
   return (
     <Wrap>

@@ -200,6 +200,7 @@ const DemandBox = () => {
     store => store.project,
   )
   const { demandInfo, isUpdateDemand } = useSelector(store => store.demand)
+  const { currentMenu } = useSelector(store => store.user)
   const navigate = useNavigate()
   const asyncSetTtile = useSetTitle()
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
@@ -211,6 +212,11 @@ const DemandBox = () => {
     projectInfo?.projectPermissions,
     'b/story/delete',
   )
+
+  // 计算当前选中下是否有项目管理权限
+  const resultAuth = currentMenu?.children?.filter(
+    (i: any) => i.url === '/ProjectManagement/Project',
+  )?.length
 
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
@@ -675,29 +681,18 @@ const DemandBox = () => {
     )
   }
 
-  const onChangeVisible = () => {
-    setIsVisible(!isVisible)
-    setOperationItem({})
-  }
-
-  const onUpdate = async () => {
-    if (demandId) {
-      const result = await getDemandInfo({ projectId, id: demandId })
-      dispatch(setDemandInfo(result))
-    }
-    setIsUpdate(true)
-  }
-
   if (!loadingState) {
     return <Loading />
   }
 
   return (
     <PermissionWrap
-      auth={t('demand')}
-      permission={projectInfo?.projectPermissions?.map(
-        (i: any) => i.group_name,
-      )}
+      auth={resultAuth ? '需求' : '/ProjectManagement/Project'}
+      permission={
+        resultAuth
+          ? projectInfo?.projectPermissions?.map((i: any) => i.group_name)
+          : currentMenu?.children?.map((i: any) => i.url)
+      }
     >
       <Wrap>{content()}</Wrap>
     </PermissionWrap>
