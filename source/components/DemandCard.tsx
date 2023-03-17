@@ -118,6 +118,11 @@ const DemandCard = (props: Props) => {
     'b/story/delete',
   )
 
+  const hasCreate = getIsPermission(
+    projectInfo?.projectPermissions,
+    'b/story/save',
+  )
+
   // 点击编辑
   const onEditChange = (item: any) => {
     setIsMoreVisible(false)
@@ -188,7 +193,7 @@ const DemandCard = (props: Props) => {
                 {props.item.name}
               </OmitText>
             </ClickWrap>
-            {!(hasDel && hasEdit) && isHoverVisible && (
+            {!(hasDel && hasEdit && hasCreate) && isHoverVisible && (
               <MoreDropdown
                 isMoreVisible={isMoreVisible}
                 menu={

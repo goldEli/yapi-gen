@@ -222,7 +222,7 @@ const Operation = (props: Props) => {
         <div
           style={{
             overflow: 'auto',
-            padding: '0 20px 16px 0',
+            padding: '0 20px 16px 24px',
             height: '60vh',
           }}
         >

@@ -9,6 +9,7 @@ import LeftTitle from '@/components/LeftTitle'
 import MainGrid from '@/components/MainGrid/MainGrid'
 import MainTable from '@/components/MainTable/MainTable'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
+import PermissionWrap from '@/components/PermissionWrap'
 import useSetTitle from '@/hooks/useSetTitle'
 import {
   deleteProject,
@@ -41,7 +42,7 @@ const ProjectManagementOptimization = () => {
   const [operationDetail, setOperationDetail] = useState<any>({})
   const [order, setOrder] = useState<any>({ value: 'asc', key: 'name' })
   const [groupId, setGroupId] = useState<any>(null)
-  const { userInfo } = useSelector(store => store.user)
+  const { userInfo, currentMenu } = useSelector(store => store.user)
   const [isSpinning, setIsSpinning] = useState(false)
   const [projectList, setProjectList] = useState<any>({
     list: undefined,
@@ -225,7 +226,10 @@ const ProjectManagementOptimization = () => {
   }, [typeId])
 
   return (
-    <div>
+    <PermissionWrap
+      auth="/ProjectManagement/Project"
+      permission={currentMenu?.children?.map((i: any) => i.url)}
+    >
       <DeleteConfirm
         text={t('mark.delP')}
         isVisible={isDelete}
@@ -322,7 +326,7 @@ const ProjectManagementOptimization = () => {
           </Spin>
         </Content>
       </Wrap>
-    </div>
+    </PermissionWrap>
   )
 }
 

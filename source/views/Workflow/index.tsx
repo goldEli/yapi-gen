@@ -17,6 +17,7 @@ import StepPageOne from './components/StepPageOne'
 import StepPageTwo from './components/StepPageTwo'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from '@store/index'
+import PermissionWrap from '@/components/PermissionWrap'
 
 const Wrap = styled.div({
   padding: 16,
@@ -123,12 +124,17 @@ const SetBreadcrumb = () => {
 
 const Workflow = () => {
   const [t] = useTranslation()
-  const { colorList } = useSelector(store => store.project)
+  const { colorList, projectInfo } = useSelector(store => store.project)
+  const { menuPermission, currentMenu } = useSelector(store => store.user)
   const [step, setStep] = useState(1)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { categoryItem } = paramsData
   const ChildRef: any = createRef()
+  // 计算当前选中下是否有项目管理权限
+  const resultAuth = currentMenu?.children?.filter(
+    (i: any) => i.url === '/ProjectManagement/Project',
+  )?.length
 
   const onChangeStep = (val: number) => {
     if (step === val) {
@@ -145,55 +151,66 @@ const Workflow = () => {
   }
 
   return (
-    <Wrap>
-      <SetBreadcrumb />
-      <ContentWrap>
-        <LabelWrap>
-          <div className="provider" />
-          <span>{t('newlyAdd.workflowSet')}</span>
-          <CategoryWrap
-            color={categoryItem.color}
-            bgColor={
-              colorList?.filter((i: any) => i.key === categoryItem.color)[0]
-                ?.bgColor
-            }
-          >
-            {categoryItem.name}
-          </CategoryWrap>
-        </LabelWrap>
-        <StepWrap>
-          <StepBoxWrap
-            style={{ cursor: 'pointer' }}
-            active={step === 1}
-            onClick={() => onChangeStep(1)}
-          >
-            <div className="circle">1</div>
-            <span>{t('newlyAdd.definitionStatus')}</span>
-          </StepBoxWrap>
-          <div
-            style={{
-              width: 160,
-              height: 1,
-              background: 'var(--neutral-n4)',
-              margin: '0 8px',
-            }}
-          />
-          <StepBoxWrap
-            style={{ cursor: 'pointer' }}
-            active={step === 2}
-            onClick={() => onChangeStep(2)}
-          >
-            <div className="circle">2</div>
-            <span>{t('newlyAdd.reviewSet')}</span>
-          </StepBoxWrap>
-        </StepWrap>
-        {step === 1 ? (
-          <StepPageOne onRef={ChildRef} onChangeStep={onChangeStep} />
-        ) : (
-          <StepPageTwo />
-        )}
-      </ContentWrap>
-    </Wrap>
+    <PermissionWrap
+      auth={
+        resultAuth ? 'b/project/story_config' : '/ProjectManagement/Project'
+      }
+      permission={
+        resultAuth
+          ? projectInfo?.projectPermissions?.map((i: any) => i.identity)
+          : currentMenu?.children?.map((i: any) => i.url)
+      }
+    >
+      <Wrap>
+        <SetBreadcrumb />
+        <ContentWrap>
+          <LabelWrap>
+            <div className="provider" />
+            <span>{t('newlyAdd.workflowSet')}</span>
+            <CategoryWrap
+              color={categoryItem.color}
+              bgColor={
+                colorList?.filter((i: any) => i.key === categoryItem.color)[0]
+                  ?.bgColor
+              }
+            >
+              {categoryItem.name}
+            </CategoryWrap>
+          </LabelWrap>
+          <StepWrap>
+            <StepBoxWrap
+              style={{ cursor: 'pointer' }}
+              active={step === 1}
+              onClick={() => onChangeStep(1)}
+            >
+              <div className="circle">1</div>
+              <span>{t('newlyAdd.definitionStatus')}</span>
+            </StepBoxWrap>
+            <div
+              style={{
+                width: 160,
+                height: 1,
+                background: 'var(--neutral-n4)',
+                margin: '0 8px',
+              }}
+            />
+            <StepBoxWrap
+              style={{ cursor: 'pointer' }}
+              active={step === 2}
+              onClick={() => onChangeStep(2)}
+            >
+              <div className="circle">2</div>
+              <span>{t('newlyAdd.reviewSet')}</span>
+            </StepBoxWrap>
+          </StepWrap>
+          {step === 1 ? (
+            <StepPageOne onRef={ChildRef} onChangeStep={onChangeStep} />
+          ) : (
+            <StepPageTwo />
+          )}
+        </ContentWrap>
+      </Wrap>
+    </PermissionWrap>
   )
 }
 

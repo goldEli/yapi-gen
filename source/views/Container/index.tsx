@@ -57,6 +57,9 @@ const Main = styled.div<{ left: number }>`
   position: relative;
   overflow: auto;
   background: var(--neutral-white-d1);
+  > div:first-child {
+    height: 100%;
+  }
 `
 
 export const Container = () => {
@@ -67,9 +70,6 @@ export const Container = () => {
   const { userInfo, loginInfo, menuPermission } = useSelector(
     store => store.user,
   )
-  // const userInfo = store.getState().user.userInfo
-  // const loginInfo = store.getState().user.loginInfo
-  // const menuPermission = store.getState().user.menuPermission
   const {
     i18n: { language },
   } = useTranslation()

@@ -355,7 +355,7 @@ const DemandTable = (props: Props) => {
         render: (text: any, record: any) => {
           return (
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              {hasEdit && hasDel ? null : (
+              {hasEdit && hasDel && hasCreate ? null : (
                 <MoreDropdown
                   isMoreVisible={isShowMore}
                   menu={

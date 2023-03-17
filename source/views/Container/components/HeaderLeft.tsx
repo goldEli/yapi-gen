@@ -52,7 +52,11 @@ const DrawerComponent = (props: DrawerComponentProps) => {
   const onChangeCurrentMenu = (item: any) => {
     props.onChange(false)
     const navigateUrl =
-      item.children?.length > 0 ? item.children[0].url : item.url
+      item.children?.length > 0
+        ? item.children[0].url === '/ProjectManagement/Mine'
+          ? `${item.children[0].url}/Profile`
+          : item.children[0].url
+        : item.url
     // 如果是日志则默认跳转
     navigate(item.url === '/LogManagement' ? `${item.url}/Send/1` : navigateUrl)
     const resultMenu = {

@@ -421,7 +421,7 @@ const ProjectSet = () => {
           onClose={onClose}
           isShowFooter
         >
-          <div style={{ margin: ' 0 20px 24px 0' }}>
+          <div style={{ margin: ' 0 20px 24px 24px' }}>
             <Input
               ref={inputRefDom as any}
               autoFocus

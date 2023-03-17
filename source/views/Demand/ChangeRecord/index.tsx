@@ -55,7 +55,7 @@ const ContentWrap = styled.div({
   flexDirection: 'column',
   height: '60vh',
   overflow: 'auto',
-  padding: '0 24px 16px',
+  padding: '0 24px 16px 24px',
 })
 
 const NewSort = (sortProps: any) => {

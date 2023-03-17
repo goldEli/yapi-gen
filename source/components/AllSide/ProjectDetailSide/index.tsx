@@ -135,7 +135,7 @@ const ProjectDetailSide = () => {
     if ([0, 1, 2].includes(paramsData?.type)) {
       onChangeSet()
     }
-    if (paramsData?.type === 3) {
+    if (paramsData?.type === 3 || paramsData?.pageIdx === 'work') {
       onChangeSetCategory()
     }
   }, [projectId])
@@ -185,7 +185,8 @@ const ProjectDetailSide = () => {
 
   useEffect(() => {
     if (paramsData?.pageIdx) {
-      if (!paramsData?.type) {
+      // 配置工作流或者是没有type的，跳转需求/迭代侧边栏
+      if (!paramsData?.type && paramsData.pageIdx !== 'work') {
         projectSide.current.style.width = '0px'
         projectSetCategory.current.style.width = '0px'
         projectSetSide.current.style.width = '100%'
@@ -275,6 +276,7 @@ const ProjectDetailSide = () => {
               key={i.icon}
               isActive={paramsData?.type === index}
               onClick={() => onToInfo(i, index)}
+              hidden={!i.isPermission}
             >
               <CommonIconFont
                 type={i.icon}

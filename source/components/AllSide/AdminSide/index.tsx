@@ -104,9 +104,7 @@ const AdminSide = () => {
   const currentMenuMap = fromPairs(
     (currentMenu?.children || [])?.map((i: any) => [i.url, i]),
   )
-  const onFilter = (list: any[]) => {
-    return list.filter(i => (i.path ? currentMenuMap[i.path] : true))
-  }
+
   const side: any = [
     {
       label: t('corporate_information'),
@@ -160,6 +158,11 @@ const AdminSide = () => {
       ],
     },
   ]
+
+  const onFilter = (list: any[]) => {
+    return list.filter(i => (i.path ? currentMenuMap[i.path] : true))
+  }
+
   const sideList = onFilter(side).map(item => {
     return {
       ...item,
@@ -175,6 +178,7 @@ const AdminSide = () => {
     const pathObject = allSide.filter((i: any) => i.key === e.key)[0]
     pathObject.path && navigate(pathObject.path)
   }
+
   // 根据导航匹配父级key
   const getDefaultKey = (data: any, parentKeys: any) => {
     for (const i in data) {
@@ -190,6 +194,7 @@ const AdminSide = () => {
   useEffect(() => {
     getDefaultKey(side, null)
   }, [])
+
   return (
     <AdminSideWrap>
       <HeaderWrap>
@@ -208,7 +213,9 @@ const AdminSide = () => {
         openKeys={defaultKey}
         onOpenChange={e => setDefaultKey(e)}
         mode="inline"
-        items={sideList}
+        items={sideList?.filter(
+          (i: any) => !(['3', '4'].includes(i.key) && !i.children?.length),
+        )}
         onSelect={onMenuClick}
       />
     </AdminSideWrap>

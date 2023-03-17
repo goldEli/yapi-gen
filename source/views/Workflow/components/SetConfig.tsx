@@ -770,7 +770,7 @@ const SetConfig = (props: Props) => {
       width={820}
       confirmText={t('newlyAdd.submit')}
     >
-      <div style={{ height: 544, overflowY: 'auto', paddingRight: 16 }}>
+      <div style={{ height: 544, overflowY: 'auto', padding: '0 16px 0 24px' }}>
         <ItemWrap style={{ marginTop: 8 }}>
           <LabelWrap>{t('newlyAdd.currentReview')}</LabelWrap>
           <ItemWrap>
