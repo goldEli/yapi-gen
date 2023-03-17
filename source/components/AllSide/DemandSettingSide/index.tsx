@@ -55,11 +55,11 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
   const paramsData = getParamsData(searchParams)
   const paramsType = paramsData.type
   const projectId = paramsData?.id
-  let categoryItem = paramsData?.categoryItem
   const { projectInfo } = useSelector(store => store.project)
   const [tabsActive, setTabsActive] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   const [list, setList] = useState<any>()
+  const [categoryItem, setCategoryItem] = useState(paramsData?.categoryItem)
   const tabs = [
     {
       label: t('start_using'),
@@ -118,10 +118,9 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
   useEffect(() => {
     if (paramsType) {
       getList()
+    } else {
+      getList()
     }
-    // else {
-    //   getList()
-    // }
   }, [paramsType])
   useEffect(() => {
     if (categoryItem) {
@@ -180,7 +179,7 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
   // 切换tab
   const getTabsActive = async (index: any) => {
     let dataItem = null
-    categoryItem = {}
+    setCategoryItem({})
     dispatch(setActiveCategory({}))
     if (index === 0) {
       dataItem = filterDataItem(1)
