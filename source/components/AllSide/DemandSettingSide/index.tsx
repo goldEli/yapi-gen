@@ -32,6 +32,7 @@ import {
 } from '@store/category/index'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
+import { cos } from '@/services/cos'
 
 const IconFontStyle = styled(IconFont)({
   color: 'var(--neutral-n2)',
@@ -54,6 +55,7 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
   const paramsData = getParamsData(searchParams)
   const paramsType = paramsData.type
   const projectId = paramsData?.id
+  let categoryItem = paramsData?.categoryItem
   const { projectInfo } = useSelector(store => store.project)
   const [tabsActive, setTabsActive] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
@@ -85,10 +87,11 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
     } else {
       filterData = categoryList?.filter((el: any) => el.status !== 1)
     }
-    if (activeCategory?.id) {
+    if (activeCategory?.id || categoryItem?.id) {
       dataItem = filterData.map((el: any) => ({
         ...el,
-        active: el.id === activeCategory?.id ? true : false,
+        active:
+          el.id === (activeCategory?.id || categoryItem?.id) ? true : false,
       }))
     } else {
       dataItem = filterData.map((el: any, index: number) => ({
@@ -120,6 +123,13 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
     //   getList()
     // }
   }, [paramsType])
+  useEffect(() => {
+    if (categoryItem) {
+      dispatch(setStartUsing(categoryItem.status === 1 ? true : false))
+      setTabsActive(categoryItem.status)
+      dispatch(setActiveCategory(categoryItem))
+    }
+  }, [])
 
   //   返回上一页
   const onGoBack = () => {
@@ -136,12 +146,13 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
 
   const filterDataItem = (num: number) => {
     let dataItem = null
-    if (activeCategory?.id) {
+    if (activeCategory?.id || categoryItem?.id) {
       dataItem = categoryList
         ?.filter((el: any) => el.status === num)
         .map((el: any) => ({
           ...el,
-          active: el.id === activeCategory?.id ? true : false,
+          active:
+            el.id === (activeCategory?.id || categoryItem?.id) ? true : false,
         }))
     } else {
       dataItem = categoryList
@@ -169,6 +180,7 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
   // 切换tab
   const getTabsActive = async (index: any) => {
     let dataItem = null
+    categoryItem = {}
     dispatch(setActiveCategory({}))
     if (index === 0) {
       dataItem = filterDataItem(1)

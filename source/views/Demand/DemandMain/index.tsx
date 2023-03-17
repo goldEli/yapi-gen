@@ -293,14 +293,14 @@ const DemandMain = (props: Props) => {
       dispatch(setFilterKeys([...new Set(keys)]))
     },
   }
-  useEffect(() => {
-    if (tapInputKey) {
-      onInputSearch(tapInputKey)
-    }
-    return () => {
-      dispatch(onTapInputKey(''))
-    }
-  }, [tapInputKey])
+  // useEffect(() => {
+  //   if (tapInputKey) {
+  //     onInputSearch(tapInputKey)
+  //   }
+  //   return () => {
+  //     dispatch(onTapInputKey(''))
+  //   }
+  // }, [tapInputKey])
   return (
     <TreeContext.Provider value={keyValue}>
       <DeleteConfirm
