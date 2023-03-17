@@ -214,9 +214,10 @@ const DemandBox = () => {
   )
 
   // 计算当前选中下是否有项目管理权限
-  const resultAuth = currentMenu?.children?.filter(
-    (i: any) => i.url === '/ProjectManagement/Project',
-  )?.length
+  const resultAuth =
+    currentMenu?.children?.filter(
+      (i: any) => i.url === '/ProjectManagement/Project',
+    )?.length > 0
 
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&

@@ -25,7 +25,6 @@ const SideWrap = styled.div<{
   background: ${props =>
     props.firstMenuCollapse ? 'var(--neutral-white-d6)' : 'var(--neutral-n9)'};
   position: relative;
-  display: ${props => (props.permission ? 'block' : 'none')};
 `
 
 const FoldIcon = styled.div`
@@ -66,7 +65,6 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
   const [isVisible, setIsVisible] = useState(false)
   const [operationDetail, setOperationDetail] = useState<any>({})
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
-  const [permission, setPermission] = useState(true)
 
   useEffect(() => {
     props.onChangeLeft(leftWidth)
@@ -160,7 +158,7 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
       String(pathname).includes('/ProjectManagement/MemberInfo') ||
       String(pathname).includes('/MemberInfo')
     ) {
-      nodeComponent = <HisSide onGetPermission={setPermission} />
+      nodeComponent = <HisSide />
     } else if (String(pathname).includes('/AdminManagement')) {
       nodeComponent = <AdminSide />
     } else if (String(pathname).includes('/ProjectManagement/Mine')) {
@@ -168,7 +166,7 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
     } else if (String(pathname).includes('/LogManagement')) {
       nodeComponent = <LogSide />
     } else if (String(pathname).includes('/ProjectManagement/')) {
-      nodeComponent = <ProjectDetailSide onGetPermission={setPermission} />
+      nodeComponent = <ProjectDetailSide />
     }
     return nodeComponent
   }
@@ -180,7 +178,6 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
   return (
     <SideWrap
       firstMenuCollapse={firstMenuCollapse}
-      permission={permission}
       ref={sliderRef}
       style={{
         width: firstMenuCollapse ? 26 : leftWidth,

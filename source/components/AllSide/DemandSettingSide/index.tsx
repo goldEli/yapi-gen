@@ -118,9 +118,10 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
   useEffect(() => {
     if (paramsType) {
       getList()
-    } else {
-      getList()
     }
+    // else {
+    //   getList()
+    // }
   }, [paramsType])
   useEffect(() => {
     if (categoryItem) {
@@ -175,6 +176,7 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
     }
     getCategoryConfig(dataItem)
   }, [startUsing, categoryList])
+
   // 切换tab
   const getTabsActive = async (index: any) => {
     let dataItem = null
@@ -189,6 +191,7 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
     setTabsActive(index)
     watchDataList()
   }
+
   useEffect(() => {
     watchDataList()
   }, [categoryList])

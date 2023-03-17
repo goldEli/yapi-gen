@@ -66,12 +66,10 @@ export const Container = () => {
   const location = useLocation()
   const dispatch = useDispatch()
   const [isNextVisible, setIsNextVisible] = useState(false)
-  const [isPermission, setIsPermission] = useState(false)
   const [changeLeft, setChangeLeft] = useState(200)
   const { userInfo, loginInfo, menuPermission } = useSelector(
     store => store.user,
   )
-  const { projectInfo } = useSelector(store => store.project)
   const {
     i18n: { language },
   } = useTranslation()
@@ -121,17 +119,22 @@ export const Container = () => {
       hasPermission = userInfo?.company_permissions?.filter(
         (i: any) => i.identity === 'b/companyuser/info',
       )?.length
-    } else if (String(location.pathname) === '/ProjectManagement/Project') {
+    } else if (
+      String(location.pathname).includes('/ProjectManagement') &&
+      !String(location.pathname).includes('/ProjectManagement/Mine')
+    ) {
       // 判断项目列表是否有权限
       hasPermission = menuPermission?.menus
         ?.filter((l: any) => l.url === '/ProjectManagement')?.[0]
-        ?.children?.filter((i: any) => i.url === location.pathname)?.length
+        ?.children?.filter(
+          (i: any) => i.url === '/ProjectManagement/Project',
+        )?.length
     } else {
       hasPermission = menuPermission?.menus?.filter((l: any) =>
         location.pathname.includes(l.url),
       )?.length
     }
-    setIsPermission(hasPermission > 0)
+    return hasPermission > 0
   }
 
   useEffect(() => {
@@ -164,7 +167,6 @@ export const Container = () => {
       navigate(menuPermission.priorityUrl)
     }
     setIsNextVisible(loginInfo.admin_first_login)
-    getSide()
   }, [loginInfo, menuPermission])
 
   return (
@@ -177,7 +179,7 @@ export const Container = () => {
             <HeaderRight />
           </HeaderWrap>
           <Content>
-            {location.pathname !== '/Situation' && isPermission && (
+            {location.pathname !== '/Situation' && getSide() && (
               <Side onChangeLeft={setChangeLeft} />
             )}
             <Main left={changeLeft}>

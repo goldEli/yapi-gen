@@ -125,16 +125,17 @@ const SetBreadcrumb = () => {
 const Workflow = () => {
   const [t] = useTranslation()
   const { colorList, projectInfo } = useSelector(store => store.project)
-  const { menuPermission, currentMenu } = useSelector(store => store.user)
+  const { currentMenu } = useSelector(store => store.user)
   const [step, setStep] = useState(1)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { categoryItem } = paramsData
   const ChildRef: any = createRef()
   // 计算当前选中下是否有项目管理权限
-  const resultAuth = currentMenu?.children?.filter(
-    (i: any) => i.url === '/ProjectManagement/Project',
-  )?.length
+  const resultAuth =
+    currentMenu?.children?.filter(
+      (i: any) => i.url === '/ProjectManagement/Project',
+    )?.length > 0
 
   const onChangeStep = (val: number) => {
     if (step === val) {
