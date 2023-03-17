@@ -31,12 +31,12 @@ const InputSearch = (props: Props) => {
   const [value, setValue] = useState('')
   const dispatch = useDispatch()
   const { tapInputKey } = useSelector(store => store.view)
-  useEffect(() => {
-    if (tapInputKey && props.isDemand) {
-      setValue(tapInputKey)
-      // props.onChangeSearch?.(tapInputKey)
-    }
-  }, [tapInputKey])
+  // useEffect(() => {
+  //   if (tapInputKey && props.isDemand) {
+  //     setValue(tapInputKey)
+  //     // props.onChangeSearch?.(tapInputKey)
+  //   }
+  // }, [tapInputKey])
   return (
     <InputStyle
       ref={props?.ref}
