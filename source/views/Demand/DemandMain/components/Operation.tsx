@@ -489,7 +489,9 @@ const Operation = (props: Props) => {
           noNeed
           defaultValue={defaultValue}
           onFilter={getSearchKey}
-          onSearch={() => onFilterSearch}
+          onSearch={(e: any, customField: any) =>
+            onFilterSearch(e, customField)
+          }
           list={searchList}
           basicsList={filterBasicsList}
           specialList={filterSpecialList}

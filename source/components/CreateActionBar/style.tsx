@@ -8,6 +8,7 @@ export const MainTitle = styled.div({
 })
 
 export const WrapRight = styled.div({
+  marginLeft: 'auto',
   display: 'flex',
   alignItems: 'center',
   position: 'relative',
