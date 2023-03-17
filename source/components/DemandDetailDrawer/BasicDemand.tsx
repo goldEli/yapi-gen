@@ -321,6 +321,7 @@ const BasicDemand = (props: Props) => {
         item={{
           ...props.detail,
           ...{ categoryConfigList: canOperationKeys },
+          ...{ fieldContentValue: item.fieldContent.value },
         }}
         isInfo
         keyText={item.content}
