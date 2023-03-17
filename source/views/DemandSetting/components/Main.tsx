@@ -12,6 +12,7 @@ import { configSave } from '@/services/demand'
 import { message } from 'antd'
 import { getCategoryConfigList } from '@store/category/thunk'
 import { setGetCategoryConfigArray } from '@store/category'
+import { t } from 'i18next'
 const TitleStyle = styled.div`
   display: flex;
   align-items: center;
@@ -224,7 +225,7 @@ const Main = (props: any) => {
             color="var(--neutral-n3)"
           />
         )}
-        <span>基本信息</span>
+        <span>{t('newlyAdd.basicInfo') as string}</span>
       </TitleStyle>
       {infoIcon && (
         <TabsDragging
@@ -246,7 +247,7 @@ const Main = (props: any) => {
             size={14}
             color="var(--neutral-n3)"
           />
-          <span>更多折叠</span>
+          <span>{t('more_folding') as string}</span>
         </TitleStyle>
       )}
       {getCategoryConfigDataList?.isFoldT?.length >= 1 && moreIcon && (

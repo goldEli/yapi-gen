@@ -5,6 +5,7 @@
 import styled from '@emotion/styled'
 import projectImg from '/projectImg.png'
 import { Dropdown } from 'antd'
+import { t } from 'i18next'
 
 const DropdownWrap = styled(Dropdown)({
   display: 'none',
@@ -124,7 +125,7 @@ export const SwiperCard = (props: {
               lineHeight: '20px',
             }}
           >
-            团队项目
+            {t('demandSettingSide.teamProject') as string}
           </div>
         )}
       </TextWarp>

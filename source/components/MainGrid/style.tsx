@@ -2,13 +2,17 @@
 import styled from '@emotion/styled'
 import { Space } from 'antd'
 
-const SpaceWrap = styled(Space)({
-  width: '100%',
-  display: 'flex',
-  flexWrap: 'wrap',
-  justifyContent: 'center',
-  padding: '10px 0',
-})
+const SpaceWrap = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 280px); //自动填充，每个单元270
+  grid-gap: 16px; //间距10
+  justify-content: center;
+`
+const SpaceWrapItem = styled.div`
+  /* width: 100px; height:100px; */
+  /* background-color: skyblue; */
+  /* margin: 10px; */
+`
 
 const AddProject = styled.div({
   height: 144,
@@ -40,7 +44,8 @@ const AddProject = styled.div({
 
 const DataWrap = styled.div({
   height: '100%',
-  overflowX: 'auto',
+  // overflowX: 'auto',
+  margin: 'auto',
 })
 
-export { SpaceWrap, AddProject, DataWrap }
+export { SpaceWrap, AddProject, DataWrap, SpaceWrapItem }

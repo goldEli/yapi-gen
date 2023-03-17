@@ -279,12 +279,16 @@ const Header = () => {
       </LeftMsg>
       <RightOperate>
         <SwitchStyle>
-          <span style={{ marginRight: '8px' }}>启用状态</span>
+          <span style={{ marginRight: '8px' }}>{t('initial_model')}</span>
           <Switch checked={checked} onChange={e => onChangeOpenState(e)} />
         </SwitchStyle>
-        <BtnStyle onClick={onSetWorkFlow}>配置工作流</BtnStyle>
-        <BtnStyle onClick={() => editCategoryForm()}>编辑</BtnStyle>
-        <BtnStyle onClick={() => onDelete()}>删除</BtnStyle>
+        <BtnStyle onClick={onSetWorkFlow}>
+          {t('configuring_the_workflow')}
+        </BtnStyle>
+        <BtnStyle onClick={() => editCategoryForm()}>
+          {t('common.edit')}
+        </BtnStyle>
+        <BtnStyle onClick={() => onDelete()}>{t('common.del')}</BtnStyle>
       </RightOperate>
       <EditCategory
         item={activeCategory}

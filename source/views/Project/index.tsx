@@ -270,7 +270,7 @@ const ProjectManagementOptimization = () => {
       <div
         style={{
           display: 'flex',
-          justifyContent: 'space-between',
+          // justifyContent: 'space-between',
           alignItems: 'center',
           height: '32px',
           padding: '20px 24px',
@@ -286,7 +286,7 @@ const ProjectManagementOptimization = () => {
           >
             <span>
               <IconFont type="plus" style={{ fontSize: 15 }} />
-              创建项目
+              {t('common.createProject')}
             </span>
           </CommonButton>
         )}

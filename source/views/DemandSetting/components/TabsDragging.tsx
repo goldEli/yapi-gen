@@ -245,13 +245,13 @@ const SliderList = (props: any) => {
                 />
               )}
 
-              <Text>必填</Text>
+              <Text>{t('must')}</Text>
               <>
                 {child.content === 'users_name' ||
                 child.content === 'user_name' ||
                 child.content === 'finish_at' ||
                 child.content === 'created_at' ? (
-                  <DelBtnText>删除</DelBtnText>
+                  <DelBtnText> {t('p2.delete')}</DelBtnText>
                 ) : (
                   <DelBtn
                     onClick={(event: any) => {
@@ -260,7 +260,7 @@ const SliderList = (props: any) => {
                       props.onDelete()
                     }}
                   >
-                    删除
+                    {t('p2.delete')}
                   </DelBtn>
                 )}
               </>
@@ -302,7 +302,7 @@ const SliderList = (props: any) => {
                 e.stopPropagation(), props.onChangeChecked(e, e.target.checked)
               }}
             />
-            <Text>必填</Text>
+            <Text>{t('must')}</Text>
             <DelBtn
               onClick={(event: any) => {
                 event.preventDefault()
@@ -310,7 +310,7 @@ const SliderList = (props: any) => {
                 props.onDelete()
               }}
             >
-              删除
+              {t('p2.delete')}
             </DelBtn>
           </RightOperate>
         </ItemList>

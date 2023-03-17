@@ -11,7 +11,7 @@ import NoData from '@/components/NoData'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { SecondButton } from '@/components/StyleCommon'
 import { useDispatch, useSelector } from '@store/index'
-import { DataWrap, SpaceWrap } from './style'
+import { DataWrap, SpaceWrap, SpaceWrapItem } from './style'
 import { changeCreateVisible } from '@store/create-propject'
 
 interface Props {
@@ -48,15 +48,15 @@ const MainGrid = (props: Props) => {
     <DataWrap>
       {!!props.projectList?.list &&
         (props.projectList?.list?.length > 0 ? (
-          <SpaceWrap size={24}>
+          <SpaceWrap>
             {props.projectList.list?.map((item: any) => (
-              <div key={item.id} onClick={() => onToDetail(item)}>
+              <SpaceWrapItem key={item.id} onClick={() => onToDetail(item)}>
                 <ProjectCard
                   onChangeOperation={props.onChangeOperation}
                   item={item}
                   key={item.id}
                 ></ProjectCard>
-              </div>
+              </SpaceWrapItem>
             ))}
           </SpaceWrap>
         ) : isPermission ? (
