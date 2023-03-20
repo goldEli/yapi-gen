@@ -411,7 +411,6 @@ const StepPageOne = (propsOne: Props) => {
   const onUpdateEdit = () => {
     onSaveMethod()
   }
-
   return (
     <>
       <AddWorkflow
@@ -464,8 +463,8 @@ const StepPageOne = (propsOne: Props) => {
                     <>
                       <img
                         style={{ width: 20 }}
-                        src={operationObj?.deleteData?.item?.attachmentPath}
-                      />{' '}
+                        src={operationObj?.deleteData?.item?.attachment_path}
+                      />
                       {operationObj?.deleteData?.item?.category_name}
                     </>
                   </CategoryWrap>

@@ -65,7 +65,7 @@ const MenuItemWrap = styled.span({
   lineHeight: '32px',
   '&:hover': {
     color: 'var(--primary-d2)',
-    background: 'var(--neutral-n6-d1)',
+    background: 'var(--hover-d2)',
   },
 })
 

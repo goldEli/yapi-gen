@@ -203,10 +203,12 @@ const Need = (props: any) => {
         style={{
           padding: '0 24px',
           display: 'flex',
+          width: '100%',
           justifyContent: 'space-between',
+          borderBottom: '1px solid var(--neutral-n6-d1)',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ width: '100%', display: 'flex', alignItems: 'center' }}>
           <TabsItem isActive={!activeTab} onClick={() => onChangeTab(0)}>
             <div>{t('newlyAdd.needMineExamine')}</div>
           </TabsItem>
@@ -260,12 +262,14 @@ const Need = (props: any) => {
           </div>
         </LoadingSpin>
       </div>
-      <PaginationBox
-        total={listData?.total}
-        pageSize={pageObj?.size}
-        currentPage={listData?.currentPage}
-        onChange={onChangePage}
-      />
+      {listData?.list?.length >= 1 && (
+        <PaginationBox
+          total={listData?.total}
+          pageSize={pageObj?.size}
+          currentPage={listData?.currentPage}
+          onChange={onChangePage}
+        />
+      )}
     </>
   )
 }

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
@@ -21,7 +23,16 @@ const MenuItem = styled.div<{ isActive?: boolean }>`
 const Menu = styled.div`
   width: 100%;
 `
-
+const IconFontStyle = styled(IconFont)({
+  color: 'var(--neutral-n2)',
+  fontSize: '18px',
+  borderRadius: '6px',
+  padding: '5px',
+  '&: hover': {
+    background: 'var(--hover-d1)',
+    cursor: 'pointer',
+  },
+})
 const MineSide = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
@@ -95,7 +106,7 @@ const MineSide = () => {
         >
           {t('container.mine')}
         </span>
-        <IconFont
+        <IconFontStyle
           style={{
             fontSize: '16px',
           }}
