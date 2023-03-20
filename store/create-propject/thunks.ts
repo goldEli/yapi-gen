@@ -7,10 +7,6 @@ export const postCreate = createAsyncThunk(
   'create/postCreate',
   async (value: any) => {
     const res = await addProject(value)
-    // if (res.code === 0) {
-    //   store.dispatch(onRest(true))
-
-    // }
     return res
   },
 )

@@ -83,7 +83,7 @@ const SetRight = styled.div({
 
 const Title = styled.div({
   fontSize: 14,
-  fontWeight: 400,
+  fontWeight: 500,
   color: 'var(--neutral-n1-d2)',
   marginBottom: 8,
 })

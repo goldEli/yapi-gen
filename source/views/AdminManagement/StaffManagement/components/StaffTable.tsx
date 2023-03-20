@@ -169,6 +169,16 @@ export const useDynamicColumns = (state: any) => {
       ) => {
         return (
           <div onClick={() => state.showModal2(record)}>
+            <span
+              style={{
+                display: 'inline-block',
+                width: 8,
+                height: 8,
+                borderRadius: '50%',
+                background:
+                  text === 1 ? 'var(--function-success)' : 'var(--neutral-n5)',
+              }}
+            />{' '}
             {text === 1 ? t('common.job1') : t('common.job2')}
           </div>
         )
@@ -185,6 +195,16 @@ export const useDynamicColumns = (state: any) => {
       ) => {
         return (
           <div onClick={() => state.showModal2(record)}>
+            <span
+              style={{
+                display: 'inline-block',
+                width: 8,
+                height: 8,
+                borderRadius: '50%',
+                background:
+                  text === 1 ? 'var(--function-success)' : 'var(--neutral-n5)',
+              }}
+            />{' '}
             {text === 1 ? t('normal') : t('handed_over')}
           </div>
         )

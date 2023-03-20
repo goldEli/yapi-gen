@@ -14,12 +14,12 @@ const primary = css`
   color: var(--auxiliary-text-t1-d1) !important;
   border: 1px solid transparent !important;
   &:hover {
-    background: var(--auxiliary-b2) !important;
-    color: var(--auxiliary-text-t1-d1) !important;
+    background: var(--auxiliary-b2);
+    color: var(--auxiliary-text-t1-d1);
   }
   &:active {
-    background: var(--auxiliary-b3) !important;
-    color: var(--auxiliary-text-t1-d1) !important;
+    background: var(--auxiliary-b3);
+    color: var(--auxiliary-text-t1-d1);
   }
 `
 const light = css`
@@ -27,80 +27,80 @@ const light = css`
   color: var(--auxiliary-text-t2-d1) !important;
   border: 1px solid transparent !important;
   &:hover {
-    background: var(--auxiliary-b4) !important;
-    color: var(--auxiliary-text-t2-d2) !important;
+    background: var(--auxiliary-b4);
+    color: var(--auxiliary-text-t2-d2);
   }
   &:active {
-    background: var(--auxiliary-b5) !important;
-    color: var(--auxiliary-text-t2-d2) !important;
+    background: var(--auxiliary-b5);
+    color: var(--auxiliary-text-t2-d2);
   }
 `
 const secondary = css`
   background: var(--auxiliary-b4) !important;
-  color: var(--auxiliary-text-t2-d2) !important;
+  color: var(--neutral-n2) !important ;
   border: 1px solid transparent !important;
   &:hover {
-    background: var(--auxiliary-b5) !important;
-    color: var(--auxiliary-text-t2-d2) !important;
+    background: var(--auxiliary-b5);
+    color: var(--auxiliary-text-t2-d2);
   }
   &:active {
-    background: var(--auxiliary-b6) !important;
-    color: var(--auxiliary-text-t2-d2) !important;
+    background: var(--auxiliary-b6);
+    color: var(--auxiliary-text-t2-d2);
   }
 `
 const danger = css`
-  background: var(--auxiliary-b7) !important;
-  color: var(--auxiliary-text-t3) !important;
-  border: 1px solid transparent !important;
+  background: var(--auxiliary-b7);
+  color: var(--auxiliary-text-t3);
+  border: 1px solid transparent;
   &:hover {
-    background: var(--auxiliary-b8) !important;
-    color: var(--auxiliary-text-t3) !important;
+    background: var(--auxiliary-b8);
+    color: var(--auxiliary-text-t3);
   }
   &:active {
-    background: var(--auxiliary-b9) !important;
-    color: var(--auxiliary-text-t3) !important;
+    background: var(--auxiliary-b9);
+    color: var(--auxiliary-text-t3);
   }
 `
 const primaryText = css`
-  background: transparent !important;
-  color: var(--auxiliary-text-t2-d2) !important;
-  border: 1px solid transparent !important;
+  background: transparent;
+  color: var(--auxiliary-text-t2-d2);
+  border: 1px solid transparent;
   &:hover {
-    background: var(--auxiliary-b4) !important;
-    color: var(--auxiliary-text-t2-d2) !important;
+    background: var(--auxiliary-b4);
+    color: var(--auxiliary-text-t2-d2);
   }
   &:active {
-    background: var(--auxiliary-b5) !important;
-    color: var(--auxiliary-text-t2-d2) !important;
+    background: var(--auxiliary-b5);
+    color: var(--auxiliary-text-t2-d2);
   }
 `
 const secondaryText = css`
-  background: transparent !important;
-  color: var(--auxiliary-text-t2-d1) !important;
-  border: 1px solid transparent !important;
+  background: transparent;
+  color: var(--auxiliary-text-t2-d1);
+  border: 1px solid transparent;
   &:hover {
-    background: var(--auxiliary-b4) !important;
-    color: var(--auxiliary-text-t2-d1) !important;
+    background: var(--auxiliary-b4);
+    color: var(--auxiliary-text-t2-d1);
   }
   &:active {
-    background: var(--auxiliary-b5) !important;
-    color: var(--auxiliary-text-t2-d2) !important;
+    background: var(--auxiliary-b5);
+    color: var(--auxiliary-text-t2-d2);
   }
 `
 const icon = css`
-  background: transparent !important;
-  color: var(--auxiliary-text-t2-d1) !important;
-  border: 1px solid var(--neutral-n9) !important;
-  padding: 0 6px !important;
+  background: transparent;
+  color: var(--auxiliary-text-t2-d1);
+  border: 1px solid var(--neutral-n9);
+  padding: 0 6px;
   &:hover {
-    background: var(--auxiliary-b4) !important;
-    color: var(--auxiliary-text-t2-d2) !important;
-    border: 1px solid transparent !important;
+    background: var(--auxiliary-b4);
+    color: var(--auxiliary-text-t2-d2);
+    border: 1px solid transparent;
   }
   &:active {
-    background: var(--auxiliary-b5) !important;
-    color: var(--auxiliary-text-t2-d2) !important;
-    border: 1px solid transparent !important;
+    background: var(--auxiliary-b5);
+    color: var(--auxiliary-text-t2-d2);
+    border: 1px solid transparent;
   }
 `
 
