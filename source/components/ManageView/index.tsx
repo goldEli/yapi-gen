@@ -4,15 +4,7 @@ import { useEffect, useState } from 'react'
 // eslint-disable-next-line no-duplicate-imports
 import type React from 'react'
 import CommonModal from '../CommonModal'
-import {
-  Form,
-  Input,
-  InputNumber,
-  Popconfirm,
-  Switch,
-  Table,
-  Typography,
-} from 'antd'
+import { Form, Input, Popconfirm, Switch, Table, Typography } from 'antd'
 import { useDispatch, useSelector } from '@store/index'
 import { changeViewVisible } from '@store/view'
 import { delViews, editViews } from '@/services/view'

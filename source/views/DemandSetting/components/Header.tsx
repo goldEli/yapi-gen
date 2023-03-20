@@ -18,10 +18,10 @@ import { setStartUsing } from '@store/category/index'
 import EditCategory from '@/components/AllSide/DemandSettingSide/EditCategory'
 import { storyConfigCategoryList } from '@store/category/thunk'
 import CommonModal from '@/components/CommonModal'
+
 const HeaderWrap = styled.div`
   height: 66px;
   display: flex;
-  /* margin: 0 24px; */
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--neutral-n6-d1);

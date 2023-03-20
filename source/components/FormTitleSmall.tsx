@@ -1,5 +1,4 @@
 import { css } from '@emotion/css'
-import React from 'react'
 
 const titleCss = css`
   height: 22px;

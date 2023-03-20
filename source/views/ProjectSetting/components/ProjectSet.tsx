@@ -160,6 +160,7 @@ const ModalFooter = styled(Space)({
 
 const CheckboxWrap = styled.div({ width: 100 })
 const OperationWrap = styled.div({ width: 100 })
+
 export const GroupWrap = styled.div({
   display: 'flex',
   alignItems: 'center',

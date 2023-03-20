@@ -20,8 +20,6 @@ import {
   SortableElement as sortableElement,
   SortableHandle as sortableHandle,
 } from 'react-sortable-hoc'
-import { getParamsData } from '@/tools'
-import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { addStoryConfigField, updateStoryConfigField } from '@/services/project'
 import { useDispatch, useSelector } from '@store/index'
@@ -85,7 +83,6 @@ interface Props {
   isVisible: boolean
   onClose(): void
   item?: any
-  // onUpdate(): void
   fieldType?: any
   onInsert(val: any): void
   onEditUpdate(): void

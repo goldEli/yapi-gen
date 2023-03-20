@@ -138,8 +138,6 @@ const LookDay = (props: any) => {
     { name: t('p2.title.t2d'), name2: t('p2.title.t2t') },
     { name: t('p2.title.t3d'), name2: t('p2.title.t3t') },
   ]
-  const editorRef = useRef<EditorRef>(null)
-  const editorRef2 = useRef<EditorRef>(null)
   const myArea = useRef<any>(null)
   const [left, setLeft] = useState(0)
   const [attachList, setAttachList] = useState<any>([])

@@ -2,6 +2,7 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { useRef, useState } from 'react'
+
 const Container = styled.div`
   border-radius: 8px;
   background-color: var(--neutral-n8);

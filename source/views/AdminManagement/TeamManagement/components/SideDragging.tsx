@@ -4,7 +4,6 @@ import styled from '@emotion/styled'
 import { Dropdown, type MenuProps } from 'antd'
 import { t } from 'i18next'
 import React, { useEffect, useLayoutEffect } from 'react'
-import { callbackify } from 'util'
 
 const Container = styled.div<{ color?: string; bgColor?: string }>(
   {

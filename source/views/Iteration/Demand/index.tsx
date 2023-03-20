@@ -6,10 +6,10 @@
 /* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/naming-convention */
 import IconFont from '@/components/IconFont'
-import { Menu, Pagination, message, Spin } from 'antd'
+import { message } from 'antd'
 import styled from '@emotion/styled'
-import { TableStyleBox, SecondButton } from '@/components/StyleCommon'
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { SecondButton } from '@/components/StyleCommon'
+import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { getIsPermission, getParamsData } from '@/tools/index'
@@ -44,17 +44,6 @@ const RowIconFont = styled(IconFont)({
   color: 'var(--primary-d2)',
 })
 
-const DataWrap = styled.div<{ hasCreate: boolean }>(
-  {
-    background: 'white',
-    overflowX: 'auto',
-    borderRadius: 6,
-  },
-  ({ hasCreate }) => ({
-    height: hasCreate ? 'calc(100% - 64px)' : 'calc(100% - 118px)',
-  }),
-)
-
 interface Props {
   searchGroups: any
   checkList: any
@@ -79,32 +68,11 @@ const DemandWrap = (props: Props) => {
     list: undefined,
   })
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
-  const [demandItem, setDemandItem] = useState<any>({})
   const [deleteId, setDeleteId] = useState(0)
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
   const [isSpinning, setIsSpinning] = useState(false)
-  const [dataWrapHeight, setDataWrapHeight] = useState(0)
-  const [tableWrapHeight, setTableWrapHeight] = useState(0)
-  const dataWrapRef = useRef<HTMLDivElement>(null)
   const [openDemandDetail] = useOpenDemandDetail()
-
-  useLayoutEffect(() => {
-    if (dataWrapRef.current) {
-      const currentHeight = dataWrapRef.current.clientHeight
-      if (currentHeight !== dataWrapHeight) {
-        setDataWrapHeight(currentHeight)
-      }
-
-      const tableBody = dataWrapRef.current.querySelector('.ant-table-tbody')
-      if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
-        setTableWrapHeight(tableBody.clientHeight)
-      }
-    }
-  }, [dataList])
-
-  const tableY =
-    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
@@ -278,11 +246,6 @@ const DemandWrap = (props: Props) => {
     showChildCOntent: true,
     onUpdate,
   })
-
-  const onChangeVisible = () => {
-    setIsVisible(!isVisible)
-    setDemandItem({})
-  }
 
   const onDeleteConfirm = async () => {
     try {

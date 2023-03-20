@@ -7,6 +7,7 @@ import { deleteStoryConfigField } from '@/services/project'
 import { message } from 'antd'
 import { useSelector } from '@store/index'
 import IconFont from '@/components/IconFont'
+import { useTranslation } from 'react-i18next'
 
 const Container = styled.div`
   border-radius: 8px;
@@ -48,6 +49,7 @@ const IconFontStyle = styled(IconFont)({
   },
 })
 const SliderList = (props: any) => {
+  const [t] = useTranslation()
   const { children, index } = props
   const [top, setTop] = useState(0)
   const [left, setLeft] = useState(0)
@@ -88,7 +90,7 @@ const SliderList = (props: any) => {
       id: delItem?.id,
       projectId: projectInfo.id,
     })
-    message.success('删除成功')
+    message.success(t('common.deleteSuccess'))
     setIsVisible(false)
     props.onUpdate()
   }

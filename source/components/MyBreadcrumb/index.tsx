@@ -5,7 +5,6 @@ import { Breadcrumb } from 'antd'
 import { t } from 'i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import CommonIconFont from '../CommonIconFont'
-import IconFont from '../IconFont'
 
 const MyBreadcrumb = (props: any) => {
   const navigate = useNavigate()

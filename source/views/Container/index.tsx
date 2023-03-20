@@ -76,9 +76,6 @@ export const Container = () => {
   const antdLocal = loadedAntdLocals[language]
   const navigate = useNavigate()
 
-  // 没有二级菜单的
-  const notHaveSide = ['/Situation']
-
   message.config({
     duration: 0.8,
     maxCount: 1,
@@ -91,6 +88,9 @@ export const Container = () => {
   }
 
   const onCloseDemandDetail = (e: any) => {
+    if (!storeAll.getState().demand.isDemandDetailDrawerVisible) {
+      return
+    }
     if (
       !e.target?.parentElement?.className?.includes('canClickDetail') &&
       !e.target?.className?.includes('canClickDetail') &&

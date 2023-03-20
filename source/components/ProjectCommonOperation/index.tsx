@@ -1,12 +1,11 @@
 import { getParamsData } from '@/tools'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import CommonIconFont from '../CommonIconFont'
 import InputSearch from '../InputSearch'
 import Member from './Member'
 import { MemberIcon, SearchBox, SearchOrProjectMember } from './style'
 import MyBreadcrumb from '../MyBreadcrumb'
-import { useSelector } from '@store/index'
 import { t } from 'i18next'
 
 interface Props {

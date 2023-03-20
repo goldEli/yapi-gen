@@ -2,11 +2,11 @@
 
 import CommonIconFont from '@/components/CommonIconFont'
 import { getProjectInfo, getProjectInfoValues } from '@/services/project'
-import { getIsPermission, getParamsData } from '@/tools'
+import { getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectInfo, setProjectInfoValues } from '@store/project'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import DemandSettingSide from '../DemandSettingSide'
@@ -24,7 +24,7 @@ import {
 } from './style'
 
 const ProjectDetailSide = () => {
-  const [t, i18n] = useTranslation()
+  const [t] = useTranslation()
   const projectSide: any = useRef<HTMLInputElement>(null)
   const projectSetSide: any = useRef<HTMLInputElement>(null)
   const projectSetCategory: any = useRef<HTMLInputElement>(null)
@@ -203,98 +203,96 @@ const ProjectDetailSide = () => {
   }, [paramsData])
 
   return (
-    <>
-      <AllWrap>
-        <WrapDetail ref={projectSide}>
-          <SideTop>
-            <img src={projectInfo.cover} alt="" />
-            <SideInfo>
-              <div>{projectInfo.name}</div>
-              <span>
-                {projectInfo.teamId ? t('teamwork') : t('enterprise_project')}
-              </span>
-            </SideInfo>
-          </SideTop>
-          <Provider />
-          <MenuBox>
-            {menuList.map((i: any) => (
-              <MenuItem
-                key={i.icon}
-                isActive={routerPath.pathname === i.path}
-                onClick={() => onChangeRouter(i.path)}
-                hidden={!i.isPermission}
-              >
-                <CommonIconFont
-                  type={i.icon}
-                  color="var(--neutral-n3)"
-                  size={18}
-                />
-                <div>{i.name}</div>
-              </MenuItem>
-            ))}
-          </MenuBox>
-          <SideFooter onClick={() => onChangeSet(true)}>
-            <div>
+    <AllWrap>
+      <WrapDetail ref={projectSide}>
+        <SideTop>
+          <img src={projectInfo.cover} alt="" />
+          <SideInfo>
+            <div>{projectInfo.name}</div>
+            <span>
+              {projectInfo.teamId ? t('teamwork') : t('enterprise_project')}
+            </span>
+          </SideInfo>
+        </SideTop>
+        <Provider />
+        <MenuBox>
+          {menuList.map((i: any) => (
+            <MenuItem
+              key={i.icon}
+              isActive={routerPath.pathname === i.path}
+              onClick={() => onChangeRouter(i.path)}
+              hidden={!i.isPermission}
+            >
               <CommonIconFont
-                type="settings"
+                type={i.icon}
                 color="var(--neutral-n3)"
                 size={18}
               />
-              <div>{t('project.projectSet')}</div>
-            </div>
-          </SideFooter>
-        </WrapDetail>
-
-        <WrapSet ref={projectSetSide}>
-          <SideTop>
-            <img src={projectInfo.cover} alt="" />
-            <SideInfo>
-              <div>{projectInfo.name}</div>
-              <span>
-                {projectInfo.teamId ? t('teamwork') : t('enterprise_project')}
-              </span>
-            </SideInfo>
-          </SideTop>
-          <div
-            onClick={onGoBack}
-            style={{
-              fontSize: '12px',
-              display: 'flex',
-              alignItems: 'center',
-              color: 'var(--neutral-n3)',
-              marginBottom: '14px',
-              marginLeft: 19,
-              cursor: 'pointer',
-            }}
-          >
-            <CommonIconFont type="left-md" />
-            <span style={{ marginLeft: '2px' }}>{t('back')}</span>
+              <div>{i.name}</div>
+            </MenuItem>
+          ))}
+        </MenuBox>
+        <SideFooter onClick={() => onChangeSet(true)}>
+          <div>
+            <CommonIconFont
+              type="settings"
+              color="var(--neutral-n3)"
+              size={18}
+            />
+            <div>{t('project.projectSet')}</div>
           </div>
-          <Provider />
-          <MenuBox>
-            {sideList.map((i: any, index: number) => (
-              <MenuItem
-                key={i.icon}
-                isActive={paramsData?.type === index}
-                onClick={() => onToInfo(i, index)}
-                hidden={!i.isPermission}
-              >
-                <CommonIconFont
-                  type={i.icon}
-                  color="var(--neutral-n3)"
-                  size={18}
-                />
-                <div>{i.name}</div>
-              </MenuItem>
-            ))}
-          </MenuBox>
-        </WrapSet>
+        </SideFooter>
+      </WrapDetail>
 
-        <WrapCategory ref={projectSetCategory}>
-          <DemandSettingSide onClick={onCategoryBack} />
-        </WrapCategory>
-      </AllWrap>
-    </>
+      <WrapSet ref={projectSetSide}>
+        <SideTop>
+          <img src={projectInfo.cover} alt="" />
+          <SideInfo>
+            <div>{projectInfo.name}</div>
+            <span>
+              {projectInfo.teamId ? t('teamwork') : t('enterprise_project')}
+            </span>
+          </SideInfo>
+        </SideTop>
+        <div
+          onClick={onGoBack}
+          style={{
+            fontSize: '12px',
+            display: 'flex',
+            alignItems: 'center',
+            color: 'var(--neutral-n3)',
+            marginBottom: '14px',
+            marginLeft: 19,
+            cursor: 'pointer',
+          }}
+        >
+          <CommonIconFont type="left-md" />
+          <span style={{ marginLeft: '2px' }}>{t('back')}</span>
+        </div>
+        <Provider />
+        <MenuBox>
+          {sideList.map((i: any, index: number) => (
+            <MenuItem
+              key={i.icon}
+              isActive={paramsData?.type === index}
+              onClick={() => onToInfo(i, index)}
+              hidden={!i.isPermission}
+            >
+              <CommonIconFont
+                type={i.icon}
+                color="var(--neutral-n3)"
+                size={18}
+              />
+              <div>{i.name}</div>
+            </MenuItem>
+          ))}
+        </MenuBox>
+      </WrapSet>
+
+      <WrapCategory ref={projectSetCategory}>
+        <DemandSettingSide onClick={onCategoryBack} />
+      </WrapCategory>
+    </AllWrap>
   )
 }
 

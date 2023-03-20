@@ -3,7 +3,7 @@ import { changeColorText } from '@store/color-text'
 import { useDispatch, useSelector } from '@store/index'
 import { saveInputKey } from '@store/view'
 import { Input } from 'antd'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import CommonIconFont from './CommonIconFont'
 
 const InputStyle = styled(Input)<{ bgColor: any }>`
@@ -30,13 +30,6 @@ const InputSearch = (props: Props) => {
   // 用于控制输入框的删除图标
   const [value, setValue] = useState('')
   const dispatch = useDispatch()
-  const { tapInputKey } = useSelector(store => store.view)
-  // useEffect(() => {
-  //   if (tapInputKey && props.isDemand) {
-  //     setValue(tapInputKey)
-  //     // props.onChangeSearch?.(tapInputKey)
-  //   }
-  // }, [tapInputKey])
   return (
     <InputStyle
       ref={props?.ref}

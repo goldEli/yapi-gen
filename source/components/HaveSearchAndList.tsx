@@ -2,19 +2,15 @@
 
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-no-leaked-render */
-import { encryptPhp } from '@/tools/cryptoPhp'
 import styled from '@emotion/styled'
 import { message, Popover, Tooltip } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
 import IconFont from './IconFont'
 import NoData from './NoData'
 import { getProjectList } from '@/services/project'
-import { useDispatch, useSelector } from '@store/index'
-import { setIsChangeProject } from '@store/project'
-import { addInfoDemand, getDemandInfo, getDemandList } from '@/services/demand'
-import { setDemandInfo } from '@store/demand'
+import { useSelector } from '@store/index'
+import { addInfoDemand, getDemandList } from '@/services/demand'
 import InputSearch from './InputSearch'
 
 const PopoverWrap = styled(Popover)<{ isRight?: any }>({}, ({ isRight }) => ({
@@ -207,11 +203,9 @@ interface Props {
 
 const HaveSearchAndList = (props: Props) => {
   const [t] = useTranslation()
-  const navigate = useNavigate()
   const { projectInfo } = useSelector(store => store.project)
   const [isOpen, setIsOpen] = useState(false)
   const [hoverState, setHoverState] = useState(false)
-  const dispatch = useDispatch()
 
   const onVisibleOpenChange = (visible: any) => {
     setIsOpen(visible)

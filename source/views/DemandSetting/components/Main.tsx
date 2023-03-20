@@ -12,7 +12,8 @@ import { configSave } from '@/services/demand'
 import { message } from 'antd'
 import { getCategoryConfigList } from '@store/category/thunk'
 import { setGetCategoryConfigArray } from '@store/category'
-import { t } from 'i18next'
+import { useTranslation } from 'react-i18next'
+
 const TitleStyle = styled.div`
   display: flex;
   align-items: center;
@@ -23,6 +24,7 @@ const TitleStyle = styled.div`
   }
 `
 const Main = (props: any) => {
+  const [t] = useTranslation()
   const dispatch = useDispatch()
   const [infoIcon, setInfoIcon] = useState(true)
   const [moreIcon, setMoreIcon] = useState(false)
@@ -156,7 +158,7 @@ const Main = (props: any) => {
     )
     const evevtObj = JSON.parse(event.dataTransfer.getData('item'))
     if (customizeNum?.length === 20 && evevtObj.dragtype === 'add') {
-      message.warning('自定义字段已有20个')
+      message.warning(t('newlyAdd.maxAddFields'))
       return
     }
     setColItem(null)
@@ -193,7 +195,7 @@ const Main = (props: any) => {
       project_id: projectInfo.id,
       data: newData,
     })
-    message.success('保存成功')
+    message.success(t('common.saveSuccess'))
     await dispatch(
       getCategoryConfigList({
         projectId: projectInfo.id,

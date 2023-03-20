@@ -1,14 +1,11 @@
 // 审核列表字段
 
 import Sort from '@/components/Sort'
-import { CategoryWrap, ClickWrap } from '@/components/StyleCommon'
+import { ClickWrap } from '@/components/StyleCommon'
 import { OmitText } from '@star-yun/ui'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
-import { encryptPhp } from '@/tools/cryptoPhp'
-import { useSelector } from '@store/index'
 import { Tooltip } from 'antd'
-import { useNavigate } from 'react-router-dom'
 
 const CircleWrap = styled.div({
   width: 8,

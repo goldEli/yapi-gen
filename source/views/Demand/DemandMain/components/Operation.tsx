@@ -178,22 +178,6 @@ const Operation = (props: Props) => {
     'b/story/export',
   )
 
-  const onChangeSearch = (value: string) => {
-    if (searchVal !== value) {
-      setSearchVal(value)
-      const params = searchGroups
-      params.searchValue = value
-      setSearchGroups(params)
-      props.onSearch(params)
-
-      // 添加搜索项 计数
-      const keys = value
-        ? [...filterKeys, ...['searchVal']]
-        : filterKeys?.filter((i: any) => i !== 'searchVal')
-      dispatch(setFilterKeys([...new Set(keys)]))
-    }
-  }
-
   const onFilterSearch = (e: any, customField: any) => {
     const params = {
       statusId: e.status,
@@ -364,13 +348,13 @@ const Operation = (props: Props) => {
     >
       {hasImport || projectInfo?.status !== 1 ? null : (
         <MoreItem onClick={onImportClick}>
-          <IconFont style={{ fontSize: 16, marginRight: 8 }} type="Import" />
+          <IconFont style={{ fontSize: 16, marginRight: 8 }} type="export" />
           <span>{t('newlyAdd.importDemand')}</span>
         </MoreItem>
       )}
       {hasExport ? null : (
         <MoreItem onClick={onExportClick}>
-          <IconFont style={{ fontSize: 16, marginRight: 8 }} type="export" />
+          <IconFont style={{ fontSize: 16, marginRight: 8 }} type="Import" />
           <span>{t('newlyAdd.exportDemand')}</span>
         </MoreItem>
       )}

@@ -29,7 +29,6 @@ import {
   UserInfoTop,
   UserInfoWrap,
 } from './../style'
-import { useTranslation } from 'react-i18next'
 import { setIsCreateIterationVisible } from '@store/iterate'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import helpPdf from '/Agile.pdf'
@@ -45,10 +44,10 @@ const ChangeComponent = (props: { item: any; onClose(): void }) => {
     { name: 'English', key: 'en' },
   ]
 
-  const themeList = [
-    { name: '亮色主题', key: 'light', type: 0 },
-    { name: '暗色主题', key: 'black', type: 1 },
-  ]
+  // const themeList = [
+  //   { name: '亮色主题', key: 'light', type: 0 },
+  //   { name: '暗色主题', key: 'black', type: 1 },
+  // ]
 
   const onClose = () => {
     props.onClose()
@@ -69,15 +68,15 @@ const ChangeComponent = (props: { item: any; onClose(): void }) => {
       })
     }
 
-    // 切换主题
-    const onChangeTheme = (type: number) => {
-      if (type === theme) return
-      onClose()
-      dispatch({
-        type: 'global/setTheme',
-        payload: type,
-      })
-    }
+    // // 切换主题
+    // const onChangeTheme = (type: number) => {
+    //   if (type === theme) return
+    //   onClose()
+    //   dispatch({
+    //     type: 'global/setTheme',
+    //     payload: type,
+    //   })
+    // }
 
     return (
       <>
@@ -95,7 +94,7 @@ const ChangeComponent = (props: { item: any; onClose(): void }) => {
             ))}
           </ChangeItems>
         )}
-        {key !== 0 && (
+        {/* {key !== 0 && (
           <ChangeItems>
             {themeList.map((i: any) => (
               <ChangeItem
@@ -108,7 +107,7 @@ const ChangeComponent = (props: { item: any; onClose(): void }) => {
               </ChangeItem>
             ))}
           </ChangeItems>
-        )}
+        )} */}
       </>
     )
   }
@@ -149,7 +148,7 @@ const HeaderRight = () => {
 
   const userList = [
     { name: t('language'), isRight: true, icon: 'earth', key: 0 },
-    { name: t('theme_switching'), isRight: true, icon: 'theme', key: 1 },
+    // { name: t('theme_switching'), isRight: true, icon: 'theme', key: 1 },
     { name: t('personal_data'), isRight: false, icon: 'user', key: 2 },
     { name: t('container.logout'), isRight: false, icon: 'login', key: 3 },
   ]
@@ -179,39 +178,39 @@ const HeaderRight = () => {
 
   const labelList = [
     {
-      label: '手机号',
+      label: t('common.phone'),
       value: userInfo.account,
     },
     {
-      label: '登录邮箱',
+      label: t('common.email'),
       value: userInfo.email,
     },
     {
-      label: '昵称',
+      label: t('common.nickname'),
       value: userInfo.nickname,
     },
     {
-      label: '姓名',
+      label: t('common.name'),
       value: userInfo.name,
     },
     {
-      label: 'sex',
-      value: userInfo.gender === 1 ? '男' : '女',
+      label: t('common.sex'),
+      value: userInfo.gender === 1 ? t('common.male') : t('common.female'),
     },
     {
-      label: '所属部门',
+      label: t('container.department'),
       value: userInfo.department_name,
     },
     {
-      label: '职位',
+      label: t('common.job'),
       value: userInfo.position_name,
     },
     {
-      label: '所在团队',
-      value: '啊啊婚纱和水果',
+      label: t('team'),
+      value: userInfo?.teams?.join(';') + userInfo?.teams?.join(';'),
     },
     {
-      label: '权限组',
+      label: t('permission_group'),
       value: userInfo.group_name,
     },
   ]
@@ -338,7 +337,7 @@ const HeaderRight = () => {
           setIsVisible(false)
         }}
         isVisible={isInfoVisible}
-        title={t('are_you_sure_you_want_to_log_out') as string}
+        title={t('personal_data') as string}
         isShowFooter
         width={420}
       >

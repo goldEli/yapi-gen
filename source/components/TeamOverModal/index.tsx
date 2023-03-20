@@ -1,15 +1,10 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-handler-names */
-import {
-  confirmHand,
-  confirmTeamHand,
-  getHandMember,
-  getTeamMember,
-} from '@/services/handover'
+import { confirmTeamHand, getTeamMember } from '@/services/handover'
 import { Form, message, Select } from 'antd'
 import { t } from 'i18next'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import CommonModal from '../CommonModal'
 import { PinkWrap, Wrap } from './style'
 

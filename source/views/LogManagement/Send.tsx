@@ -6,8 +6,7 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { TableStyleBox } from '@/components/StyleCommon'
-import { message, Pagination, Spin, Tooltip } from 'antd'
+import { message, Tooltip } from 'antd'
 import { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
@@ -28,7 +27,6 @@ import ResizeTable from '@/components/ResizeTable'
 
 const srr = [undefined, undefined, 1, 2, 3]
 const Send = () => {
-  const dataWrapRef = useRef<HTMLDivElement>(null)
   const [t] = useTranslation()
   const [keyword, setKeyword] = useState<string>('')
   const { id: urlId = '' } = useParams<any>()
@@ -47,23 +45,8 @@ const Send = () => {
   const [visibleLook, setVisibleLook] = useState(false)
   const [type, setType] = useState('')
   const context: any = useContext(DailyContext)
-  const [dataWrapHeight, setDataWrapHeight] = useState(0)
-  const [tableWrapHeight, setTableWrapHeight] = useState(0)
   const dispatch = useDispatch()
   const isRest = useSelector(state => state.log.isRest)
-  useLayoutEffect(() => {
-    if (dataWrapRef.current) {
-      const currentHeight = dataWrapRef.current.clientHeight
-      if (currentHeight !== dataWrapHeight) {
-        setDataWrapHeight(currentHeight)
-      }
-
-      const tableBody = dataWrapRef.current.querySelector('.ant-table-tbody')
-      if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
-        setTableWrapHeight(tableBody.clientHeight)
-      }
-    }
-  }, [listData])
   const editClose = () => {
     setVisibleEdit(false)
   }
@@ -366,8 +349,6 @@ const Send = () => {
     init2()
   }, [urlId, context.id])
 
-  const tableY =
-    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
   return (
     <div
       style={{

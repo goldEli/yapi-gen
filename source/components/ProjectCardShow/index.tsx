@@ -1,22 +1,16 @@
 // 项目卡片 children传入右上操作
 
-import { changeCreateVisible } from '@store/create-propject'
-import { useDispatch } from '@store/index'
-import { Dropdown, MenuProps, Progress, Tooltip } from 'antd'
+import { Progress, Tooltip } from 'antd'
 import { t } from 'i18next'
-import React from 'react'
 import IconFont from '../IconFont'
 import {
   ProjectCard,
   Image,
   CardRight,
   TransformWrap,
-  ShowWrap,
   ProgressWrap,
   CardRightFirst,
   CardRightSecond,
-  HoverIcon,
-  EndTag,
 } from './style'
 
 type Props = {
@@ -25,26 +19,6 @@ type Props = {
   text: string
 }
 
-const TextOfIcon = (props: Props) => (
-  <Tooltip placement="bottom" title={props.text}>
-    <div>
-      <IconFont
-        style={{
-          color: 'var(--neutral-n4)',
-        }}
-        type={props.type}
-      />
-      <span
-        style={{
-          marginLeft: '5px',
-          color: 'var(--neutral-n4)',
-        }}
-      >
-        {props.num}
-      </span>
-    </div>
-  </Tooltip>
-)
 const Index = (props: any) => {
   return (
     <ProjectCard>
@@ -85,8 +59,6 @@ const Index = (props: any) => {
           </ProgressWrap>
         </TransformWrap>
       </CardRight>
-
-      {/* <EndTag>End</EndTag> */}
     </ProjectCard>
   )
 }

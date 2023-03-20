@@ -4,15 +4,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Menu, Pagination, Progress } from 'antd'
-import {
-  TableStyleBox,
-  ClickWrap,
-  HiddenText,
-  SecondButton,
-} from '@/components/StyleCommon'
+import { Menu, Progress } from 'antd'
+import { ClickWrap, HiddenText, SecondButton } from '@/components/StyleCommon'
 import { useNavigate } from 'react-router-dom'
-import { useCallback, useLayoutEffect, useRef, useState } from 'react'
+import { useCallback, useState } from 'react'
 import Sort from '@/components/Sort'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
@@ -53,12 +48,6 @@ const StatusWrap = styled.div({
   },
 })
 
-const DataWrap = styled.div({
-  height: 'calc(100% - 64px)',
-  overflowX: 'auto',
-  background: 'white',
-})
-
 const ImgWrap = styled.div<{ url?: string }>(
   {
     width: 60,
@@ -77,12 +66,6 @@ const ImgWrap = styled.div<{ url?: string }>(
     backgroundImage: `url(${url})`,
   }),
 )
-
-interface MoreProps {
-  onChange(type: string, item: any, e: any): void
-  text: string
-  record?: any
-}
 
 const MoreContent = (props: any) => {
   const [t] = useTranslation()
@@ -192,31 +175,11 @@ const NewSort = (sortProps: any) => {
 const MainTable = (props: Props) => {
   const [t] = useTranslation()
   const navigate = useNavigate()
-  const [dataWrapHeight, setDataWrapHeight] = useState(0)
-  const [tableWrapHeight, setTableWrapHeight] = useState(0)
-  const dataWrapRef = useRef<HTMLDivElement>(null)
   const { userInfo } = useSelector(store => store.user)
   const hasCreate = getIsPermission(
     userInfo?.company_permissions,
     'b/project/save',
   )
-
-  useLayoutEffect(() => {
-    if (dataWrapRef.current) {
-      const currentHeight = dataWrapRef.current.clientHeight
-      if (currentHeight !== dataWrapHeight) {
-        setDataWrapHeight(currentHeight)
-      }
-
-      const tableBody = dataWrapRef.current.querySelector('.ant-table-tbody')
-      if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
-        setTableWrapHeight(tableBody.clientHeight)
-      }
-    }
-  }, [props.projectList?.list])
-
-  const tableY =
-    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
   const onUpdateOrderKey = (key: any, val: any) => {
     props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })

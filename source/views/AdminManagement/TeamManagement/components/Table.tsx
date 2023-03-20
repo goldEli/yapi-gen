@@ -38,7 +38,7 @@ const Table = (props: any) => {
       dataIndex: 'gender',
       key: 'gender',
       width: 80,
-      render: (text: any, record: any) => GENDER_MAP[text],
+      render: (text: any) => GENDER_MAP[text],
     },
     {
       title: t('mailbox'),
@@ -68,7 +68,7 @@ const Table = (props: any) => {
       title: t('team_role'),
       dataIndex: 'team_is_admin',
       key: 'team_is_admin',
-      render: (text: any, record: any) =>
+      render: (text: any) =>
         text === 1 ? t('team_management') : t('team_members'),
     },
     {

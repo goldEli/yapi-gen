@@ -17,10 +17,9 @@ import {
   useState,
 } from 'react'
 import styled from '@emotion/styled'
-import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import type { Task } from 'cos-js-sdk-v5'
-import { bytesToSize, getParamsData } from '@/tools'
+import { bytesToSize } from '@/tools'
 import IconFont from '@/components/IconFont'
 import Viewer from 'react-viewer'
 import myImg from '/er.png'

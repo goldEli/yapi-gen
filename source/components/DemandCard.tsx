@@ -7,12 +7,11 @@
 /* eslint-disable react/jsx-no-literals */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Menu, Progress, Space } from 'antd'
+import { Space } from 'antd'
 import { OmitText } from '@star-yun/ui'
 import { useState } from 'react'
 import { getIsPermission } from '@/tools'
-import { CategoryWrap, ClickWrap, HiddenText } from './StyleCommon'
-import { useTranslation } from 'react-i18next'
+import { ClickWrap } from './StyleCommon'
 import ChildDemandTable from '@/components/ChildDemandTable'
 import DemandProgress from './DemandProgress'
 import MoreDropdown from './MoreDropdown'
@@ -100,7 +99,6 @@ const IconBox = styled.div<{ backgroundColor: string }>`
 `
 
 const DemandCard = (props: Props) => {
-  const [t] = useTranslation()
   const { userInfo } = useSelector(store => store.user)
   const { tagOrPriority } = useSelector(store => store.global)
   const [isMoreVisible, setIsMoreVisible] = useState(false)
