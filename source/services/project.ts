@@ -226,6 +226,10 @@ export const getProjectInfo: any = async (params: any) => {
     groupIds: response.data?.groups?.map((i: any) => i.id),
     isMember: response.data.user_ismember,
     teamId: response.data.team_id,
+    prefix: response.data.prefix,
+    stopTime: response.data.stop_at,
+    affiliation: response.data.affiliation,
+    leaderName: response.data.leader_name,
   }
 }
 

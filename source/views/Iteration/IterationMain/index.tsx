@@ -313,6 +313,7 @@ const IterationMain = (props: Props) => {
                   pageSize: 100,
                   order: '',
                   orderKey: '',
+                  iterateIds: [keyRef.current?.id],
                 }}
                 isUpdated={isUpdated}
                 iterateId={keyRef.current?.id}
