@@ -70,7 +70,6 @@ const Setting = () => {
       ).length,
     },
   ]
-
   return (
     <PermissionWrap
       auth={

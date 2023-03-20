@@ -29,7 +29,9 @@ import ChooseColor from './ChooseColor'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 
 const TableWrap = styled.div({
-  height: 400,
+  width: '780px',
+  padding: '0',
+  height: 'auto',
   overflowY: 'auto',
   display: 'flex',
   alignItems: 'center',
@@ -183,19 +185,17 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
         maxLength={10}
         autoFocus
       />
-      <ChooseColor
-        color={normalColor}
-        onChangeValue={val => onChangeValue(val)}
-      />
-      <TextWrap
-        style={{ margin: '0 16px 0 24px', color: 'var(--primary-d2)' }}
-        onClick={onConfirm}
-      >
-        {t('container.finish')}
-      </TextWrap>
-      <TextWrap style={{ color: 'var(--neutral-n2)' }} onClick={onClose}>
-        {t('common.cancel')}
-      </TextWrap>
+      <>
+        <TextWrap
+          style={{ margin: '0 16px 0 24px', color: 'var(--primary-d2)' }}
+          onClick={onConfirm}
+        >
+          {t('container.finish')}
+        </TextWrap>
+        <TextWrap style={{ color: 'var(--neutral-n2)' }} onClick={onClose}>
+          {t('common.cancel')}
+        </TextWrap>
+      </>
     </div>
   )
 }
@@ -494,7 +494,7 @@ const AddWorkflow = (props: Props) => {
                     >
                       {i.category_name}
                     </CategoryWrap>
-                    {t('newlyAdd.appointStatus')}
+                    {t('newlyAdd.appointStatus')}1234455
                   </div>
                 }
               >
@@ -542,7 +542,7 @@ const AddWorkflow = (props: Props) => {
           </div>
         )}
 
-        <TableWrap style={{ paddingRight: 4 }}>
+        <TableWrap>
           <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
             {!!statusWorkList?.list &&
               (statusWorkList?.list?.length > 0 ? (

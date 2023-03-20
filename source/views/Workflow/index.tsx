@@ -18,6 +18,7 @@ import StepPageTwo from './components/StepPageTwo'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from '@store/index'
 import PermissionWrap from '@/components/PermissionWrap'
+import MyBreadcrumb from '@/components/MyBreadcrumb'
 
 const Wrap = styled.div({
   padding: 16,
@@ -57,7 +58,7 @@ const LabelWrap = styled.div({
   alignItems: 'center',
   marginBottom: 24,
   span: {
-    marginLeft: 8,
+    // marginLeft: 8,
     fontWeight: 500,
     fontSize: 14,
     color: 'var(--neutral-n1-d1)',
@@ -98,9 +99,11 @@ const SetBreadcrumb = () => {
     )
     navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
   }
+
   return (
     <SetTitleWrap>
-      <BackWrap onClick={onBack}>
+      <MyBreadcrumb setName={'配置工作流'} />
+      {/* <BackWrap onClick={onBack}>
         <IconFont type="return" style={{ fontSize: 16, marginRight: 6 }} />
         <span>{t('newlyAdd.back')}</span>
       </BackWrap>
@@ -117,7 +120,7 @@ const SetBreadcrumb = () => {
       />
       <div style={{ color: 'var(--neutral-n3)' }}>
         {t('newlyAdd.workflowSet')}
-      </div>
+      </div> */}
     </SetTitleWrap>
   )
 }
@@ -150,7 +153,6 @@ const Workflow = () => {
       }
     }
   }
-
   return (
     <PermissionWrap
       auth={
@@ -166,7 +168,6 @@ const Workflow = () => {
         <SetBreadcrumb />
         <ContentWrap>
           <LabelWrap>
-            <div className="provider" />
             <span>{t('newlyAdd.workflowSet')}</span>
             <CategoryWrap
               color={categoryItem.color}
@@ -175,16 +176,25 @@ const Workflow = () => {
                   ?.bgColor
               }
             >
-              {categoryItem.name}
+              <>
+                <img
+                  src={categoryItem.attachmentPath}
+                  style={{ width: 20, marginRight: 4 }}
+                />
+                {categoryItem.name}
+              </>
             </CategoryWrap>
           </LabelWrap>
+          123456
           <StepWrap>
             <StepBoxWrap
               style={{ cursor: 'pointer' }}
               active={step === 1}
               onClick={() => onChangeStep(1)}
             >
-              <div className="circle">1</div>
+              <div className="border">
+                <div className="circle">1</div>
+              </div>
               <span>{t('newlyAdd.definitionStatus')}</span>
             </StepBoxWrap>
             <div
@@ -200,7 +210,9 @@ const Workflow = () => {
               active={step === 2}
               onClick={() => onChangeStep(2)}
             >
-              <div className="circle">2</div>
+              <div className="border">
+                <div className="circle">2</div>
+              </div>
               <span>{t('newlyAdd.reviewSet')}</span>
             </StepBoxWrap>
           </StepWrap>

@@ -3,7 +3,6 @@ import { StatusWrap } from './StyleCommon'
 
 const StateTag = (props: any) => {
   const { state, name } = props
-
   return (
     <StatusWrap
       onClick={props.onClick}
