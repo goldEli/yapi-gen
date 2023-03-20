@@ -11,7 +11,11 @@ import {
   getGroupList,
   getProjectInfoOnly,
 } from '@/services/project'
-import { changeCreateVisible, editProject } from '@store/create-propject'
+import {
+  changeCreateVisible,
+  editProject,
+  onRest,
+} from '@store/create-propject'
 import { postCreate, postEditCreate } from '@store/create-propject/thunks'
 import { useDispatch, useSelector } from '@store/index'
 import { Form, Input, message, Select, Tooltip, Upload } from 'antd'
@@ -73,13 +77,11 @@ const CreateAProjectForm = () => {
     }
     if (isEditId) {
       dispatch(postEditCreate({ ...obj, id: isEditId }))
-      message.success(t('common.editSuccess'))
-
+      setLeaderId(0)
       return
     }
     dispatch(postCreate(obj))
-    dispatch(editProject({ visible: false, id: '' }))
-    message.success(t('common.createSuccess'))
+    setLeaderId(0)
   }
 
   function upper(str: string) {
@@ -167,7 +169,7 @@ const CreateAProjectForm = () => {
       res2.map((i: any) => ({
         name: i.name,
         id: i.id,
-        img: i.avatar,
+        img: i.img,
       })),
     )
     setActiveCover(res.cover)
@@ -182,6 +184,7 @@ const CreateAProjectForm = () => {
       groups: res.groups.map((i: any) => i.id),
       info: res.info,
     })
+    setLeaderId(res.team_id)
     setCanChooseLeader(false)
   }
 
@@ -223,9 +226,9 @@ const CreateAProjectForm = () => {
     }
     if (leaderId || leaderId === 0) {
       getLeader()
-      setCanChooseLeader(false)
     }
   }, [leaderId])
+
   useEffect(() => {
     if (createVisible) {
       getGroupData()
@@ -237,8 +240,11 @@ const CreateAProjectForm = () => {
     }
 
     form.resetFields()
-
+    setLock(true)
     setMyCover('')
+    // return () => {
+    //   dispatch(editProject({ visible: false, id: '' }))
+    // }
   }, [createVisible])
 
   return (

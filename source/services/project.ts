@@ -8,6 +8,10 @@
 
 import { getNestedChildren, transData } from '@/tools'
 import * as http from '@/tools/http'
+import { onRest } from '@store/create-propject'
+import { store } from '@store/index'
+import { message } from 'antd'
+import { t } from 'i18next'
 import { getStaffListAll } from './staff'
 
 export const getProjectList: any = async (params: any) => {
@@ -226,7 +230,7 @@ export const getProjectInfo: any = async (params: any) => {
 }
 
 export const addProject: any = async (params: any) => {
-  await http.post<any>('addProject', {
+  const res = await http.post<any>('addProject', {
     is_public: params?.isPublic,
     name: params.name,
     info: params?.info,
@@ -236,10 +240,16 @@ export const addProject: any = async (params: any) => {
     groups: params?.groups,
     leader_id: params?.leader_id,
   })
+  if (res.code === 0) {
+    message.success(t('common.createSuccess') as string)
+    store.dispatch(onRest(true))
+  }
+
+  return res
 }
 
 export const updateProject: any = async (params: any) => {
-  await http.put<any>('updateProject', {
+  const res = await http.put<any>('updateProject', {
     is_public: params?.isPublic,
     name: params.name,
     info: params?.info,
@@ -250,6 +260,12 @@ export const updateProject: any = async (params: any) => {
     leader_id: params?.leader_id,
     id: params.id,
   })
+  if (res.code === 0) {
+    message.success(t('common.editSuccess') as string)
+    store.dispatch(onRest(true))
+  }
+
+  return res
 }
 
 export const deleteProject: any = async (params: any) => {
@@ -860,6 +876,7 @@ export const getAffiliation = async () => {
 export const getAffiliationUser = async (id: any) => {
   const response = await http.get<any>('/b/project/affiliation_user', {
     team_id: id,
+    limit: 1000,
   })
 
   // console.log(response)
