@@ -339,10 +339,12 @@ const WrapLeft = (props: Props) => {
             {t('common.clear1')}
           </div>
           <Space size={16}>
-            <Button onClick={onClose}>{t('common.cancel')}</Button>
-            <Button type="primary" onClick={onConfirmFilter}>
+            <CommonButton type="secondary" onClick={onClose}>
+              {t('common.cancel')}
+            </CommonButton>
+            <CommonButton type="primary" onClick={onConfirmFilter}>
               {t('common.search2')}
-            </Button>
+            </CommonButton>
           </Space>
         </div>
       </Form>

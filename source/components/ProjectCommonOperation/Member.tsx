@@ -29,6 +29,7 @@ import {
   setIsUpdateMember,
 } from '@store/project'
 import InputSearch from '../InputSearch'
+import CommonButton from '../CommonButton'
 
 interface Props {
   visible: boolean

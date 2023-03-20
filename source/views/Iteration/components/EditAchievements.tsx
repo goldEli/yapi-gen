@@ -14,6 +14,7 @@ import {
   updateAchieve,
 } from '@/services/iterate'
 import { setIterateInfo } from '@store/iterate'
+import CommonButton from '@/components/CommonButton'
 
 const ModalFooter = styled(Space)({
   width: '100%',
@@ -87,9 +88,9 @@ const EditAchievements = (props: Props) => {
   const getFooter =
     !isEdit && !isCanEdit ? (
       <ModalFooter size={16}>
-        <Button onClick={() => setIsEdit(true)} type="primary">
+        <CommonButton onClick={() => setIsEdit(true)} type="primary">
           {t('common.edit')}
-        </Button>
+        </CommonButton>
       </ModalFooter>
     ) : null
 

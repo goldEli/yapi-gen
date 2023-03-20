@@ -20,11 +20,11 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 import { css } from '@emotion/css'
-import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import moment from 'moment'
 import { getProjectMember } from '@/services/mine'
 import { getShapeRight } from '@/services/demand'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
+import CommonButton from './CommonButton'
 
 export function setValue(res: any) {
   const form1Obj: any = {}
@@ -843,15 +843,15 @@ const ShapeContentForDetail = (props: any) => {
           </div>
 
           <ButtonFooter>
-            <Button
-              disabled={!rightList.user_has_auth}
+            <CommonButton
+              isDisable={!rightList.user_has_auth}
               onClick={onConfirm}
               type="primary"
             >
               {rightList.is_verify
                 ? t('newlyAdd.submitReview')
                 : t('common.circulation')}
-            </Button>
+            </CommonButton>
           </ButtonFooter>
         </Right>
       )}

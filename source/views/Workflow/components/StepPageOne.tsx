@@ -27,7 +27,7 @@ import EditWorkflow from './EditWorkflow'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import CommonModal from '@/components/CommonModal'
 import AddWorkflow from './AddWorkflow'
-import { CategoryWrap, HiddenText, ViewWrap } from '@/components/StyleCommon'
+import { CategoryWrap, HiddenText } from '@/components/StyleCommon'
 import { arrayMoveImmutable } from 'array-move'
 import {
   SortableContainer as sortableContainer,
@@ -48,6 +48,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setWorkList } from '@store/project'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import StateTag from '@/components/StateTag'
+import CommonButton from '@/components/CommonButton'
 
 const TableWrap = styled.div({
   width: '100%',
@@ -550,9 +551,9 @@ const StepPageOne = (propsOne: Props) => {
       </TableWrap>
       {dataSource?.list?.length > 0 && (
         <Space size={16} style={{ position: 'absolute', bottom: 24, left: 24 }}>
-          <Button type="primary" onClick={onSave}>
+          <CommonButton type="primary" onClick={onSave}>
             {t('newlyAdd.saveAndNext')}
-          </Button>
+          </CommonButton>
         </Space>
       )}
     </>

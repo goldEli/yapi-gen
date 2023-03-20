@@ -28,6 +28,7 @@ import {
   updatePermission,
 } from '@/services/project'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
+import CommonButton from '@/components/CommonButton'
 
 const Warp = styled.div({
   // padding: 16,
@@ -434,10 +435,16 @@ const ProjectSet = () => {
             />
           </div>
           <ModalFooter size={16} style={{ padding: '0 20px 24px 0' }}>
-            <Button onClick={onClose}>{t('common.cancel')}</Button>
-            <Button disabled={!addValue} onClick={onSaveGroup} type="primary">
+            <CommonButton type="secondary" onClick={onClose}>
+              {t('common.cancel')}
+            </CommonButton>
+            <CommonButton
+              isDisable={!addValue}
+              onClick={onSaveGroup}
+              type="primary"
+            >
               {t('common.confirm2')}
-            </Button>
+            </CommonButton>
           </ModalFooter>
         </CommonModal>
         <Warp>
