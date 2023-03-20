@@ -781,16 +781,16 @@ const GlobalStyle = () => {
       border-color: var(--primary-d1);
       color: var(--neutral-white-d7);
     }
-    .ant-btn-primary {
+    /* .ant-btn-primary {
       background-color: var(--primary-d1);
       border-color: var(--primary-d1);
-      color: var(--neutral-white-d7);
+      color: var(--neutral-white-d7) ;
     }
     .ant-btn-default {
       background: var(--hover-d2);
       border: none;
       color: var(--neutral-n2);
-    }
+    } */
     .ant-radio-checked::after {
       border: 1px solid var(--primary-d1);
     }
