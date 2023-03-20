@@ -3,12 +3,11 @@
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import IconFont from '@/components/IconFont'
 import ProjectInfo from './components/ProjectInfo'
 import ProjectMember from './components/ProjectMember'
 import ProjectSet from './components/ProjectSet'
 import DemandSetting from '../DemandSetting'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
 import { useSelector } from '@store/index'
@@ -26,7 +25,7 @@ const Content = styled.div({
 })
 
 const Setting = () => {
-  const [t, i18n] = useTranslation()
+  const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const { projectInfo } = useSelector(store => store.project)
   const paramsData = getParamsData(searchParams)

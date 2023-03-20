@@ -6,9 +6,8 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { TableStyleBox } from '@/components/StyleCommon'
-import { Checkbox, Pagination, Space, Spin, Tooltip } from 'antd'
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { Checkbox, Space, Tooltip } from 'antd'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
 import { SelectWrap, SelectWrapBedeck } from '@/components/TableFilter'
@@ -35,7 +34,6 @@ const srr = [
   3,
 ]
 const Get = () => {
-  const dataWrapRef = useRef<HTMLDivElement>(null)
   const [t] = useTranslation()
   const [keyword, setKeyword] = useState<string>('')
   const { id: urlId = '' } = useParams<any>()
@@ -53,21 +51,6 @@ const Get = () => {
   const [showId, setShowId] = useState('')
   const [visibleLook, setVisibleLook] = useState(false)
   const [type, setType] = useState('')
-  const [dataWrapHeight, setDataWrapHeight] = useState(0)
-  const [tableWrapHeight, setTableWrapHeight] = useState(0)
-  useLayoutEffect(() => {
-    if (dataWrapRef.current) {
-      const currentHeight = dataWrapRef.current.clientHeight
-      if (currentHeight !== dataWrapHeight) {
-        setDataWrapHeight(currentHeight)
-      }
-
-      const tableBody = dataWrapRef.current.querySelector('.ant-table-tbody')
-      if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
-        setTableWrapHeight(tableBody.clientHeight)
-      }
-    }
-  }, [listData])
   const NewSort = (props: any) => {
     return (
       <Sort
@@ -335,8 +318,7 @@ const Get = () => {
   useEffect(() => {
     getList()
   }, [])
-  const tableY =
-    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
+
   return (
     <div
       style={{

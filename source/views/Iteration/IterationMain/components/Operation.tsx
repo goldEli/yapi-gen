@@ -195,21 +195,6 @@ const Operation = (props: Props) => {
     props?.onChangeIsShowLeft?.()
   }
 
-  const onChangeSearch = (value: string) => {
-    if (searchVal !== value) {
-      setSearchVal(value)
-      const params = searchGroups
-      params.searchValue = value
-      setSearchGroups(params)
-      props.onSearch(params)
-      // 添加搜索项 计数
-      const keys = value
-        ? [...filterKeys, ...['searchVal']]
-        : filterKeys?.filter((i: any) => i !== 'searchVal')
-      dispatch(setFilterKeys([...new Set(keys)]))
-    }
-  }
-
   return (
     <StickyWrap ref={stickyWrapDom}>
       <CommonModal
@@ -233,7 +218,6 @@ const Operation = (props: Props) => {
               }}
             />
           ) : (
-            // <EditorInfoReview info={props.currentDetail?.info || '--'} />
             <NoData />
           )}
         </div>

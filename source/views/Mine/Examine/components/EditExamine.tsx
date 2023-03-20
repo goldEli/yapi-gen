@@ -6,12 +6,7 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Input, message, Space, Timeline } from 'antd'
-import {
-  CategoryWrap,
-  ViewWrap,
-  NameWrap,
-  DelWrap,
-} from '@/components/StyleCommon'
+import { ViewWrap, NameWrap, DelWrap } from '@/components/StyleCommon'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import CommonModal from '@/components/CommonModal'
 import styled from '@emotion/styled'
@@ -86,7 +81,6 @@ interface Props {
 const EditExamine = (props: Props) => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
-  const { colorList } = useSelector(store => store.project)
   const { verifyInfo } = useSelector(store => store.mine)
   const [value, setValue] = useState('')
 

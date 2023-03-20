@@ -5,17 +5,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
-import {
-  TableStyleBox,
-  SelectWrapBedeck,
-  HoverWrap,
-} from '@/components/StyleCommon'
+import { SelectWrapBedeck, HoverWrap } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useState, useEffect, useRef, useLayoutEffect } from 'react'
-import { Menu, Pagination, message, Select, Form, Spin, Space } from 'antd'
+import { Menu, message, Select, Form, Space } from 'antd'
 import { useSearchParams, useNavigate } from 'react-router-dom'
-import DeleteConfirm from '@/components/DeleteConfirm'
 import Sort from '@/components/Sort'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getIsPermission, getParamsData } from '@/tools'
@@ -25,7 +20,6 @@ import SetPermissionWrap from './SetPermission'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
-// import { StaffSelect } from '@xyfe/uikit'
 import AddMemberCommonModal from '@/components/AddUser/CommonModal'
 import { getAddDepartMember, getPositionSelectList } from '@/services/staff'
 import {
@@ -106,12 +100,6 @@ const NameWrap = styled.span({
   marginLeft: 32,
 })
 
-const DataWrap = styled.div({
-  background: 'white',
-  overflowX: 'auto',
-  height: 'calc(100% - 48px)',
-})
-
 const NewSort = (sortProps: any) => {
   return (
     <Sort
@@ -148,31 +136,11 @@ const ProjectMember = () => {
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
   const [isSpinning, setIsSpinning] = useState(false)
   const [isEditVisible, setIsEditVisible] = useState(false)
-  const [dataWrapHeight, setDataWrapHeight] = useState(0)
-  const [tableWrapHeight, setTableWrapHeight] = useState(0)
   const [departments, setDepartments] = useState([])
   const [member, setMember] = useState<any>()
   const [userDataList, setUserDataList] = useState<any[]>([])
-  const dataWrapRef = useRef<HTMLDivElement>(null)
   asyncSetTtile(`${t('title.a2')}【${projectInfo.name ?? ''}】`)
   const dispatch = useDispatch()
-
-  useLayoutEffect(() => {
-    if (dataWrapRef.current) {
-      const currentHeight = dataWrapRef.current.clientHeight
-      if (currentHeight !== dataWrapHeight) {
-        setDataWrapHeight(currentHeight)
-      }
-
-      const tableBody = dataWrapRef.current.querySelector('.ant-table-tbody')
-      if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
-        setTableWrapHeight(tableBody.clientHeight)
-      }
-    }
-  }, [memberList])
-
-  const tableY =
-    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
   const hasAdd = getIsPermission(
     projectInfo?.projectPermissions,
@@ -247,22 +215,6 @@ const ProjectMember = () => {
       setIsDelete(true)
     } else {
       setIsEditVisible(true)
-    }
-  }
-
-  const onDeleteConfirm = async () => {
-    try {
-      await deleteMember({ projectId, userId: operationItem.id })
-      message.success(t('common.deleteSuccess'))
-      setIsDelete(false)
-      setOperationItem({})
-      if (operationItem.id === userInfo?.id) {
-        navigate('/Project')
-      } else {
-        getList(order, pageObj)
-      }
-    } catch (error) {
-      //
     }
   }
 
@@ -564,9 +516,7 @@ const ProjectMember = () => {
   const onClickCancel = () => {
     setIsAddVisible(false)
   }
-  const onChangeMember = (value: any) => {
-    setUserDataList(value)
-  }
+
   const onConfirmEdit = async (roleId: any) => {
     const params: any = {
       projectId,
@@ -644,12 +594,6 @@ const ProjectMember = () => {
           close={() => setIsDelete(!isDelete)}
           confirm={() => getList(order, pageObj)}
         />
-        {/* <DeleteConfirm
-          text={t('mark.delPeople')}
-          isVisible={isDelete}
-          onChangeVisible={() => setIsDelete(!isDelete)}
-          onConfirm={onDeleteConfirm}
-        /> */}
         <AddMemberCommonModal
           isPermisGroup
           userGroupId={

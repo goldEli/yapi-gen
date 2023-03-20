@@ -5,7 +5,6 @@ import { NameWrap } from '@/components/StyleCommon'
 import { Popover } from 'antd'
 import IconFont from '@/components/IconFont'
 import { getStaffListAll } from '@/services/staff'
-import CommonIconFont from '@/components/CommonIconFont'
 import ChoosePerson from '@/components/ChoosePerson'
 import styled from '@emotion/styled'
 

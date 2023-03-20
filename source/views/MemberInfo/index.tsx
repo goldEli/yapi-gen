@@ -8,7 +8,6 @@ import {
   useNavigate,
   useSearchParams,
 } from 'react-router-dom'
-import { NameWrap } from '@/components/StyleCommon'
 import { getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useEffect } from 'react'
@@ -28,74 +27,13 @@ const Wrap = styled.div<{ isMember?: any }>(
     height: isMember ? 'calc(100% - 104px)' : '100%',
   }),
 )
-
-const Side = styled.div`
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-sizing: border-box;
-  padding-top: 24px;
-  width: 220px;
-  background: var(--neutral-white-d2);
-  flex-shrink: 0;
-  border-right: 1px solid var(--neutral-n6-d1);
-`
-
 const Main = styled.div({
   width: 'calc(100% )',
-})
-
-const Menu = styled.div`
-  width: 100%;
-  margin-top: 24px;
-`
-
-const MenuItem = styled.div<{ active?: boolean }>(
-  {
-    boxSizing: 'border-box',
-    justifyContent: 'center',
-    height: 44,
-    display: 'flex',
-    alignItems: 'center',
-    cursor: 'pointer',
-    width: 220,
-    '&: hover': {
-      backgroundColor: 'var(--neutral-n7)',
-    },
-  },
-  ({ active }) => ({
-    borderRight: active
-      ? '3px solid var(--primary-d2)'
-      : '3px solid transparent',
-    color: active ? 'var(--primary-d2)' : 'var(--neutral-n1-d1)',
-    background: active ? 'var(--neutral-n7) !important' : 'transparent',
-  }),
-)
-
-const InfoWrap = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-})
-
-const InfoItem = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  div: {
-    color: 'var(--neutral-n1-d1)',
-    fontSize: 16,
-    fontWeight: 400,
-  },
-  span: {
-    color: 'var(--neutral-n3)',
-    fontSize: 14,
-  },
 })
 
 const MemberInfo = () => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
-  const { pathname } = useLocation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -104,30 +42,7 @@ const MemberInfo = () => {
   const { mainInfo } = useSelector(store => store.memberInfo)
   const { userInfo } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
-  const { menuPermission } = useSelector(store => store.user)
 
-  const menuList = [
-    {
-      id: 1,
-      name: t('newlyAdd.hisSurvey'),
-      path: 'Profile',
-    },
-    {
-      id: 2,
-      name: t('newlyAdd.hisAbeyance'),
-      path: 'Carbon',
-    },
-    {
-      id: 3,
-      name: t('newlyAdd.hisCreate'),
-      path: 'Create',
-    },
-    {
-      id: 4,
-      name: t('newlyAdd.hisFinish'),
-      path: 'Finished',
-    },
-  ]
   const init = async () => {
     const result = await getProjectInfo({ projectId })
     dispatch(setProjectInfo(result))
@@ -139,20 +54,6 @@ const MemberInfo = () => {
       init()
     }
   }, [])
-
-  const changeActive = (value: any) => {
-    if (isMember) {
-      const params = encryptPhp(
-        JSON.stringify({ id: projectId, isMember, userId }),
-      )
-      navigate(`/ProjectManagement/MemberInfo/${value.path}?data=${params}`)
-    } else {
-      const params = encryptPhp(
-        JSON.stringify({ userId, isMember: false, id: '' }),
-      )
-      navigate(`/MemberInfo/${value.path}?data=${params}`)
-    }
-  }
 
   if (!mainInfo) {
     return null

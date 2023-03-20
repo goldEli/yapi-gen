@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react'
 import CommonNeed from './CommonNeed'
 import MineSwiper from '../components/MineSwiper'
-import PermissionWrap from '@/components/PermissionWrap'
 import Loading from '@/components/Loading'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'

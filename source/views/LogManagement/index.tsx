@@ -5,16 +5,13 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { useState } from 'react'
 import styled from '@emotion/styled'
-import { useNavigate, Outlet, useLocation } from 'react-router-dom'
-import IconFont from '@/components/IconFont'
-import { getIsPermission } from '@/tools/index'
+import { Outlet, useLocation } from 'react-router-dom'
 import { useSelector } from '@store/index'
 import { useTranslation } from 'react-i18next'
-import { message, Popover } from 'antd'
+import { message } from 'antd'
 import WhiteDay from './components/WhiteDay'
 import { writeDaily } from '@/services/daily'
 import useSetTitle from '@/hooks/useSetTitle'
-import { BooleanString } from 'cos-js-sdk-v5'
 import PermissionWrap from '@/components/PermissionWrap'
 
 const Wrap = styled.div`
@@ -22,69 +19,9 @@ const Wrap = styled.div`
   display: flex;
   position: relative;
 `
-const Side = styled.div`
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-sizing: border-box;
-  padding-top: 24px;
-  width: 220px;
-  background: rgba(255, 255, 255, 1);
-  flex-shrink: 0;
-`
-const AddButton = styled.button({
-  height: 32,
-  padding: '0 16px',
-  borderRadius: 6,
-  background: 'var(--primary-d2)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  cursor: 'pointer',
-  color: 'white',
-  border: 'none',
-  ':hover': {
-    background: 'var(--primary-d2)',
-    color: 'white',
-  },
-})
-
-const Menu = styled.div`
-  width: 100%;
-  margin-top: 24px;
-  .provider {
-    height: 1px;
-    background: var(--neutral-n5);
-    width: calc(100% - 32px);
-    margin-left: 16px;
-  }
-`
 
 export const DailyContext: any = React.createContext('')
 
-const MenuItem = styled.div<{ active?: any }>(
-  ({ active }) => ({
-    borderRight: active
-      ? '3px solid var(--primary-d2)'
-      : '3px solid transparent',
-    color: active ? 'var(--primary-d2)' : 'var(--neutral-n1-d1)',
-    background: active
-      ? 'var(--neutral-n7) !important'
-      : 'var(--neutral-white-d2)',
-  }),
-  {
-    boxSizing: 'border-box',
-    height: 44,
-    display: 'flex',
-    alignItems: 'center',
-    cursor: 'pointer',
-    paddingLeft: 52,
-    '&: hover': {
-      backgroundColor: 'var(--neutral-n6-d1)',
-    },
-  },
-)
 const Main = styled.div({
   width: '100%',
   overflow: 'auto',
