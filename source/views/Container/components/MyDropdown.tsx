@@ -218,8 +218,17 @@ const MyDropdown = (props: any) => {
         demandId: el.id,
       }),
     )
-    setIsOpen(false)
-    navigate(`/ProjectManagement/Demand?data=${params}`)
+    const iterParmas = encryptPhp(
+      JSON.stringify({
+        type: 'info',
+        id: el.project_id || el.feedable.project_id,
+        iterateId: el.id,
+      }),
+    )
+    const str = `/ProjectManagement/${
+      el?.status ? 'Demand' : 'Iteration'
+    }?data=${el?.status ? params : iterParmas}`
+    navigate(str)
   }
   const itmeMain = (item: any) => {
     return (
