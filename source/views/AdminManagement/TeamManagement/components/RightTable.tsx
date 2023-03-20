@@ -7,7 +7,7 @@ import Table from './Table'
 import Pagination from '@/components/TablePagination'
 import CommonModal from '@/components/CommonModal'
 import { useState, useEffect } from 'react'
-import { Form, Select, message } from 'antd'
+import { Form, Select, message, Tooltip } from 'antd'
 import IconFont from '@/components/IconFont'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useDispatch, useSelector } from '@store/index'
@@ -265,8 +265,10 @@ const RightTable = () => {
           <LeftItem>{t('position') as string}</LeftItem>
           <RightItem>{row.position_name}</RightItem>
         </Row>
-        <Row>
-          <LeftItem>{t('team') as string}</LeftItem>
+        <Row style={{ cursor: 'pointer' }}>
+          <Tooltip title={row.teams?.map((i: any) => i.name)?.join()}>
+            <LeftItem>{t('team') as string}</LeftItem>
+          </Tooltip>
           <RightItem>{row.teams?.map((i: any) => i.name)?.join()}</RightItem>
         </Row>
         <Row className="row" style={{ marginBottom: 0 }}>
