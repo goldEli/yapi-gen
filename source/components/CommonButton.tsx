@@ -6,99 +6,100 @@ import { useThrottle } from '@/hooks/useThrottle'
 import { css } from '@emotion/css'
 import { Space } from 'antd'
 import IconFont from './IconFont'
+import { AsyncButton as Button } from '@staryuntech/ant-pro'
 
 const primary = css`
-  background: var(--auxiliary-b1);
-  color: var(--auxiliary-text-t1-d1);
-  border: 1px solid transparent;
+  background: var(--auxiliary-b1) !important;
+  color: var(--auxiliary-text-t1-d1) !important;
+  border: 1px solid transparent !important;
   &:hover {
-    background: var(--auxiliary-b2);
-    color: var(--auxiliary-text-t1-d1);
+    background: var(--auxiliary-b2) !important;
+    color: var(--auxiliary-text-t1-d1) !important;
   }
   &:active {
-    background: var(--auxiliary-b3);
-    color: var(--auxiliary-text-t1-d1);
+    background: var(--auxiliary-b3) !important;
+    color: var(--auxiliary-text-t1-d1) !important;
   }
 `
 const light = css`
-  background: var(--auxiliary-b4);
-  color: var(--auxiliary-text-t2-d1);
-  border: 1px solid transparent;
+  background: var(--auxiliary-b4) !important;
+  color: var(--auxiliary-text-t2-d1) !important;
+  border: 1px solid transparent !important;
   &:hover {
-    background: var(--auxiliary-b4);
-    color: var(--auxiliary-text-t2-d2);
+    background: var(--auxiliary-b4) !important;
+    color: var(--auxiliary-text-t2-d2) !important;
   }
   &:active {
-    background: var(--auxiliary-b5);
-    color: var(--auxiliary-text-t2-d2);
+    background: var(--auxiliary-b5) !important;
+    color: var(--auxiliary-text-t2-d2) !important;
   }
 `
 const secondary = css`
-  background: var(--auxiliary-b4);
-  color: var(--auxiliary-text-t2-d2);
-  border: 1px solid transparent;
+  background: var(--auxiliary-b4) !important;
+  color: var(--auxiliary-text-t2-d2) !important;
+  border: 1px solid transparent !important;
   &:hover {
-    background: var(--auxiliary-b5);
-    color: var(--auxiliary-text-t2-d2);
+    background: var(--auxiliary-b5) !important;
+    color: var(--auxiliary-text-t2-d2) !important;
   }
   &:active {
-    background: var(--auxiliary-b6);
-    color: var(--auxiliary-text-t2-d2);
+    background: var(--auxiliary-b6) !important;
+    color: var(--auxiliary-text-t2-d2) !important;
   }
 `
 const danger = css`
-  background: var(--auxiliary-b7);
-  color: var(--auxiliary-text-t3);
-  border: 1px solid transparent;
+  background: var(--auxiliary-b7) !important;
+  color: var(--auxiliary-text-t3) !important;
+  border: 1px solid transparent !important;
   &:hover {
-    background: var(--auxiliary-b8);
-    color: var(--auxiliary-text-t3);
+    background: var(--auxiliary-b8) !important;
+    color: var(--auxiliary-text-t3) !important;
   }
   &:active {
-    background: var(--auxiliary-b9);
-    color: var(--auxiliary-text-t3);
+    background: var(--auxiliary-b9) !important;
+    color: var(--auxiliary-text-t3) !important;
   }
 `
 const primaryText = css`
-  background: transparent;
-  color: var(--auxiliary-text-t2-d2);
-  border: 1px solid transparent;
+  background: transparent !important;
+  color: var(--auxiliary-text-t2-d2) !important;
+  border: 1px solid transparent !important;
   &:hover {
-    background: var(--auxiliary-b4);
-    color: var(--auxiliary-text-t2-d2);
+    background: var(--auxiliary-b4) !important;
+    color: var(--auxiliary-text-t2-d2) !important;
   }
   &:active {
-    background: var(--auxiliary-b5);
-    color: var(--auxiliary-text-t2-d2);
+    background: var(--auxiliary-b5) !important;
+    color: var(--auxiliary-text-t2-d2) !important;
   }
 `
 const secondaryText = css`
-  background: transparent;
-  color: var(--auxiliary-text-t2-d1);
-  border: 1px solid transparent;
+  background: transparent !important;
+  color: var(--auxiliary-text-t2-d1) !important;
+  border: 1px solid transparent !important;
   &:hover {
-    background: var(--auxiliary-b4);
-    color: var(--auxiliary-text-t2-d1);
+    background: var(--auxiliary-b4) !important;
+    color: var(--auxiliary-text-t2-d1) !important;
   }
   &:active {
-    background: var(--auxiliary-b5);
-    color: var(--auxiliary-text-t2-d2);
+    background: var(--auxiliary-b5) !important;
+    color: var(--auxiliary-text-t2-d2) !important;
   }
 `
 const icon = css`
-  background: transparent;
-  color: var(--auxiliary-text-t2-d1);
-  border: 1px solid var(--neutral-n9);
+  background: transparent !important;
+  color: var(--auxiliary-text-t2-d1) !important;
+  border: 1px solid var(--neutral-n9) !important;
   padding: 0 6px !important;
   &:hover {
-    background: var(--auxiliary-b4);
-    color: var(--auxiliary-text-t2-d2);
-    border: 1px solid transparent;
+    background: var(--auxiliary-b4) !important;
+    color: var(--auxiliary-text-t2-d2) !important;
+    border: 1px solid transparent !important;
   }
   &:active {
-    background: var(--auxiliary-b5);
-    color: var(--auxiliary-text-t2-d2);
-    border: 1px solid transparent;
+    background: var(--auxiliary-b5) !important;
+    color: var(--auxiliary-text-t2-d2) !important;
+    border: 1px solid transparent !important;
   }
 `
 
@@ -164,7 +165,7 @@ const CommonButton = (props: Props) => {
   //   如果有图标
   if (props.icon && props.type !== 'icon') {
     return (
-      <button
+      <Button
         className={commonCss}
         onClick={throttleClick}
         disabled={props.isDisable}
@@ -181,32 +182,32 @@ const CommonButton = (props: Props) => {
             <IconFont type={props.icon} />
           </Space>
         )}
-      </button>
+      </Button>
     )
   }
 
   //   如果有图标没有内容
   if (props.type === 'icon') {
     return (
-      <button
+      <Button
         className={commonCss}
         onClick={throttleClick}
         disabled={props.isDisable}
       >
         <IconFont type={props.icon || ''} style={{ fontSize: 20 }} />
-      </button>
+      </Button>
     )
   }
 
   return (
-    <button
+    <Button
       style={props?.style}
       className={commonCss}
       onClick={throttleClick}
       disabled={props.isDisable}
     >
       {props.children}
-    </button>
+    </Button>
   )
 }
 

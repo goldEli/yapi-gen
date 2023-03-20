@@ -686,12 +686,8 @@ const DemandBox = () => {
 
   return (
     <PermissionWrap
-      auth={resultAuth ? '需求' : '/ProjectManagement/Project'}
-      permission={
-        resultAuth
-          ? projectInfo?.projectPermissions?.map((i: any) => i.group_name)
-          : currentMenu?.children?.map((i: any) => i.url)
-      }
+      auth="/ProjectManagement/Project"
+      permission={currentMenu?.children?.map((i: any) => i.url)}
     >
       <Wrap>{content()}</Wrap>
     </PermissionWrap>

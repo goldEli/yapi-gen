@@ -69,16 +69,11 @@ const Setting = () => {
       ).length,
     },
   ]
+
   return (
     <PermissionWrap
-      auth={
-        resultAuth ? 'b/project/story_config' : '/ProjectManagement/Project'
-      }
-      permission={
-        resultAuth
-          ? projectInfo?.projectPermissions?.map((i: any) => i.identity)
-          : currentMenu?.children?.map((i: any) => i.url)
-      }
+      auth="/ProjectManagement/Project"
+      permission={currentMenu?.children?.map((i: any) => i.url)}
     >
       <div style={{ padding: '20px 24px 0 24px' }}>
         <MyBreadcrumb setName={SideList[activeTabs].name} />

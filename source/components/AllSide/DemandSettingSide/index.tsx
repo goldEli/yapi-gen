@@ -101,6 +101,7 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
     dataItem?.length <= 1 && dispatch(setCategoryConfigDataList([]))
     setList(dataItem)
   }
+
   // 需求类别中间列表
   const getCategoryConfig = async (dataItem: any) => {
     const itemId = dataItem?.find((item: any) => item.active)?.id
@@ -114,6 +115,7 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
         }),
       ))
   }
+
   useEffect(() => {
     if (paramsType) {
       getList()
@@ -121,6 +123,7 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
       getList()
     }
   }, [paramsType])
+
   useEffect(() => {
     if (categoryItem) {
       dispatch(setStartUsing(categoryItem.status === 1 ? true : false))
@@ -189,6 +192,17 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
     setTabsActive(index)
     watchDataList()
   }
+
+  useEffect(() => {
+    if (
+      projectInfo?.projectPermissions?.length <= 0 ||
+      projectInfo?.projectPermissions?.filter(
+        (i: any) => i.identity === 'b/project/story_config',
+      )?.length <= 0
+    ) {
+      onGoBack()
+    }
+  }, [projectInfo])
 
   useEffect(() => {
     watchDataList()
