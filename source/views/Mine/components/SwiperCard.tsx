@@ -34,16 +34,15 @@ const Warp = styled.div<{ show?: boolean }>(
     transition: 'all .3s',
     cursor: 'pointer',
     '&: hover': {
-      transform: 'translate(0, -6%)',
-      boxShadow: '0px 2px 8px rgba(170, 193, 227, 1)',
       [DropdownWrap.toString()]: {
         display: 'block',
       },
     },
   },
   ({ show }) => ({
-    transform: show ? 'translate(0, -6%)' : '',
-    boxShadow: show ? ' 0px 2px 8px rgba(170, 193, 227, 1)' : '',
+    border: show
+      ? '1px solid var(--primary-d1) !important'
+      : '1px solid var(--neutral-n6-d1)',
     [Triangle.toString()]: {
       visibility: show ? 'visible' : 'hidden',
     },
@@ -75,10 +74,10 @@ const NameWrap = styled.div<{ show?: boolean }>(
     overflow: 'hidden',
     fontSize: 14,
     fontWeight: 400,
-    color: 'black',
+    color: 'var(--neutral-n1-d1)',
   },
   ({ show }) => ({
-    color: String(show ? 'rgba(40, 119, 255, 1)' : ''),
+    // color: String(show ? 'var(--primary-d1)' : ''),
   }),
 )
 

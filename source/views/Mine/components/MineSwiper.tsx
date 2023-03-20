@@ -15,7 +15,7 @@ export const SwiperWrap = styled.div`
   box-sizing: border-box;
   padding: 0 24px;
   height: 90px;
-  background-color: white;
+  background-color: var(--neutral-white-d2);
   overflow: hidden;
   & .swiper {
     overflow: visible;
@@ -28,6 +28,8 @@ export const SwiperWrap = styled.div`
   }
   & .swiper-slide {
     width: auto !important;
+    /* border:1px solid var(--neutral-n6-d1); */
+    border-radius: 6px;
   }
 `
 

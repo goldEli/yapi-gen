@@ -1,273 +1,140 @@
 {
   "please_upload_a_picture": "Please upload a picture!",
   "configuring_the_workflow": " Configure the workflow",
-
   "initial_model": " enabled state ",
-
   "more_folding": " more folding",
-
   "must": " must",
   "corporate_information": " corporate information",
-
   "organizational_information": " Organization information",
-
   "staff_management": " Staff management",
-
   "authority_management": " authority management",
-
   "safety_management": " Safety management",
-
   "secure_watermark": " Secure watermark",
-
   "operation_log": " operation log",
-
   "log_in_log": " Login log",
-
   "start_using": " Enable ",
-
   "no_start_using": " Not enabled ",
-
   "back": " back",
-
   "copy_requirement_number_successfully": " Copy the requirement number successfully!",
-
   "add_sub_requirements": " Add subrequirements ",
-
   "add_a_comment": " Add a comment",
-
   "copy_requirement_number": " Copy requirement number",
-
   "copy_title_link": " Copy the title link",
-
   "subrequirements": " subrequirements",
-
   "create_sub_requirements": " Create subrequirements ",
-
   "requirements_review": " requirements review",
-
   "requirement_description": " Requirements description",
-
   "label": " label",
-
   "detailed_information": " detail information",
-
   "succeed": "succeed",
-
   "currently_involved_in": " Currently involved in",
-
   "please_specify_the_recipient": " please_specify_the_recipient. After the handover, his handover status will change to handover. The handover state cannot be added by the project and configured for employee permissions.",
-
   "type_of_view": " type of view",
-
   "clear_all_options": " Clear all options",
-
   "invert_selection": " reverse selection",
-
   "details_of": " detail ",
-
   "functionary": " Responsible person :",
-
   "keyM": " Key :",
-
   "project_name_xxx": " Project name XXX",
-
   "please_specify_the_recipient_of_the_project": " Please specify who is the recipient of this project",
-
   "switch_preview_mode_successfully": " Switched preview_mode successfully!",
-
   "requirement_opening_mode": " Requirement opening mode",
-
   "popup_preview": " popover preview",
-
   "details_preview": " detail preview",
-
   "participated_in_this_team": " Participated in this team",
-
   "a_team_project_please_specify_the_project_recipient": " Please specify the recipient of a team project ",
-
   "whole": " whole",
-
   "view_of_administration": " Administration view ",
-
   "view": " view",
-
   "currently_not_involved_in_any_projects_confirm_will": " Not currently involved in any project, confirm_will",
-
   "work_handover": " The job is handed over, after which his handover status will change to handover; The handover state cannot be added by the project and configured for employee permissions.",
-
   "confirmation_will": " confirmation_will",
-
   "the_handover_status_of_is_changed_to_the_normal_state": " The handover state has changed to normal ",
-
   "handover_status": " handoff status",
-
   "reupload": " re-upload ",
-
   "set_up_a_team": " Create a team",
-
   "editorial_team": " Edit team",
-
   "confirmation_of_dissolution": " Confirmation of dissolution",
-
   "disbanding_the_team": " Disband the team",
-
   "mailbox": " mailbox",
-
   "shift_out": " shift_out",
-
   "back_stage_management": " Background management",
-
   "recent_projects": " recent projects",
-
   "view_all_projects": " View all projects",
-
   "have_done": " done",
-
   "recently": " recently",
-
   "last_viewed": " last viewed",
-
   "recently_created": " Newly created",
-
   "Check_out_my_work": " Check my work",
-
   "confirm_that_it_is_checked": " Confirm this is checked",
-
   "creating_fields": " Create fields",
-
   "drag_the_field_to_the_left_area_to_create_the_field": " Drag the field to the left area to create the field",
-
   "project_existing_fields": " Existing fields in the project ",
   "language": "language",
-
   "theme_switching": "theme switching",
-
   "untick": " untick",
-
   "check": " Check ",
-
   "requirementsForEditing": " Edit the requirement ",
-
   "serialNumber": " number ",
-
   "quitAndHandover": " Quitandhandover ",
-
   "confirmationOfDeletion": " ConfirmationofDeletion ",
-
   "cancel": " Cancel ",
-
   "confirm": " Confirm ",
-
   "myself": "myself",
-
   "TheOriginalStateHandlesThePerson": "the original state handling people",
-
   "notChecked": " not checked ",
-
   "itIsChecked": " checked ",
-
   "categoryOfNeeds": " CategoryofNeeds ",
-
   "needState": " Needstate ",
-
   "optionProject": " Select project ",
-
   "PleaseSelectTheHandoverPerson": "please select a delivery person",
-
   "systemView": " System view ",
-
   "personalView": " Personalview ",
-
   "confirmDeletingTheView": " Confirm to delete this view?",
-
   "view_management": " View management",
-
   "please_enter": " Please enter",
-
   "adding_a_user_group": " Add user group",
-
   "the_handover_state_is_restored": " Restore handover state ",
-
   "between_jobs": " leaving status ",
-
   "normal": " normal",
-
   "handed_over": " handed_over",
-
   "please_enter_your_nickname_name_email_phone_number": " Please enter the nickname, name, email, phone number",
-
   "add_a_member": " Add member",
-
   "Jpg_png_format_the_size_of_8080_pixels": "support JPG, PNG format, size 80 * 80 pixels",
-
   "team_logo": " Team LOGO",
-
   "team_name": " Team name",
-
   "please_enter_a_team_name": " Please enter the team name",
-
   "after_dissolution_the_team_members_are_automatically_removed_and_the_team_project_is_automatically_incorporated_and_its _rights_are_changed_to_private": " After dissolution, team members will be automatically removed, the team project will be automatically assigned to the company and the rights will be changed to private",
-
   "team_role": " Team role",
-
   "set": " set",
-
   "your_role_in_the_team": " Role in the team",
-
   "successfully_added": " Success ",
-
   "removal_success": " removal_success",
-
   "team_administrators_cannot_be_removed": " Team administrator cannot be removed",
-
   "edit_member_successfully": " Edit member successfully",
-
   "head_portrait": " head_portrait",
-
   "cell_phone_number": " cell phone ",
-
   "log_in_to_a_mailbox": " Login mailbox",
-
   "nickname": " Nickname ",
-
   "name": " Name ",
-
   "gender": " gender",
-
   "department": " Department ",
-
   "position": " position",
-
   "team": " Team ",
-
   "permission_group": " Permission group",
-
   "team_management": " Team management",
-
   "team_members": " Team members",
-
   "personal_data": " Personal data",
-
   "editor_member": " Edit member",
-
   "removal_confirmation": " Remove confirmation",
-
   "are_you_sure_to_remove_this_member": " Confirm to remove this member?",
-
   "confirmation_prompt": " Confirm prompt",
-
   "are_you_sure_you_want_to_log_out": " Are you sure you want to log out?",
-
   "demand": " demand",
-
   "add_the_requirement_state_to_configure_the_workflow": " Please add the requirement state to configure the workflow",
-
   "pleaseEnterASearchPhrase": " Please enter the keyword ",
-
   "system_fields_are_not_editable": " System fields are not editable",
-
   "iteration": " iteration",
-
   "all_enterprises": " All enterprises",
   "log_management": "Log Management",
   "saves_the_current_filter_criteria_display_fields_and_sort_as_a_new_view": "Save the current filter, display field, sort, to a new view",
@@ -894,6 +761,7 @@
     "mineFinish": "Done"
   },
   "project": {
+    "gender0": "gender",
     "memberNull": "Member cannot be null!",
     "permissionNull": "Permission cannot be null!",
     "editMember": "Edit project member",
