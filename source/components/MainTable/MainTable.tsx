@@ -50,8 +50,9 @@ const StatusWrap = styled.div({
 
 const ImgWrap = styled.div<{ url?: string }>(
   {
-    width: 60,
-    height: 28,
+    width: 32,
+    height: 32,
+    marginRight: '8px',
     borderRadius: 4,
     boxSizing: 'border-box',
     border: '1px solid white',
@@ -220,12 +221,7 @@ const MainTable = (props: Props) => {
         return <ClickWrap isClose={record.status === 2}>{text}</ClickWrap>
       },
     },
-    {
-      title: t('project.img'),
-      dataIndex: 'cover',
-      width: 120,
-      render: (text: string) => <ImgWrap url={text} />,
-    },
+
     {
       dataIndex: 'name',
       title: (
@@ -242,6 +238,7 @@ const MainTable = (props: Props) => {
       render: (text: string, record: any) => {
         return (
           <HiddenText>
+            <ImgWrap url={record.cover} />
             <ClickWrap isName isClose={record.status === 2}>
               <OmitText
                 width={160}
@@ -255,6 +252,11 @@ const MainTable = (props: Props) => {
           </HiddenText>
         )
       },
+    },
+    {
+      title: '键',
+      dataIndex: 'prefix',
+      width: 160,
     },
     {
       title: (
