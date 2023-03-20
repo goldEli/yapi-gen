@@ -1,9 +1,8 @@
 // 项目卡片 children传入右上操作
 
-import { changeCreateVisible, editProject } from '@store/create-propject'
+import { editProject } from '@store/create-propject'
 import { useDispatch, useSelector } from '@store/index'
 import { Dropdown, MenuProps, Progress, Tooltip } from 'antd'
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 import IconFont from '../IconFont'
 import {

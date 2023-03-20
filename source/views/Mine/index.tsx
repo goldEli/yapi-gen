@@ -2,7 +2,6 @@ import PermissionWrap from '@/components/PermissionWrap'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
 import { t } from 'i18next'
-import { useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 
 const Title = styled.div`

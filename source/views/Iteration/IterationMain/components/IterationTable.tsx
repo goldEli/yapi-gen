@@ -3,19 +3,11 @@
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable complexity */
-import { Pagination, Menu, message, Spin, Table } from 'antd'
+import { Menu, message, Table } from 'antd'
 import styled from '@emotion/styled'
-import { TableStyleBox, SecondButton } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { useSearchParams } from 'react-router-dom'
-import {
-  createRef,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import { createRef, useEffect, useMemo, useState } from 'react'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from '@/components/CreateProjectTableColum'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -46,17 +38,6 @@ const RowIconFont = styled(IconFont)({
   cursor: 'pointer',
   color: 'var(--primary-d2)',
 })
-
-const DataWrap = styled.div<{ hasCreate: boolean }>(
-  {
-    background: 'white',
-    overflowX: 'auto',
-  },
-  ({ hasCreate }) => ({
-    height: hasCreate ? 'calc(100% - 44px)' : 'calc(100% - 88px)',
-  }),
-)
-
 interface Props {
   data: any
   onChangeVisible(e: any, item: any): void
@@ -89,11 +70,7 @@ const IterationTable = (props: Props) => {
   const [plainOptions3, setPlainOptions3] = useState<any>([])
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
-  const [dataWrapHeight, setDataWrapHeight] = useState(0)
-  const [tableWrapHeight, setTableWrapHeight] = useState(0)
-  const dataWrapRef = useRef<HTMLDivElement>(null)
   const [isShowMore, setIsShowMore] = useState(false)
-  const [isEdit, setIsEdit] = useState(false)
   const batchDom: any = createRef()
   // 勾选的id集合
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
@@ -101,23 +78,6 @@ const IterationTable = (props: Props) => {
 
   asyncSetTtile(`${t('title.iteration')}【${projectInfo.name}】`)
   const dispatch = useDispatch()
-
-  useLayoutEffect(() => {
-    if (dataWrapRef.current) {
-      const currentHeight = dataWrapRef.current.clientHeight
-      if (currentHeight !== dataWrapHeight) {
-        setDataWrapHeight(currentHeight)
-      }
-
-      const tableBody = dataWrapRef.current.querySelector('.ant-table-tbody')
-      if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
-        setTableWrapHeight(tableBody.clientHeight)
-      }
-    }
-  }, [props.data?.list])
-
-  const tableY =
-    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
   const getShowkey = () => {
     setPlainOptions(projectInfo?.plainOptions || [])

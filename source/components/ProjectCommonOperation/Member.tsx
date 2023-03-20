@@ -4,7 +4,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Drawer, Dropdown, Form, Input, Menu, message, Select } from 'antd'
+import { Drawer, Dropdown, Form, Menu, message } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useEffect, useState } from 'react'
@@ -13,7 +13,6 @@ import { useTranslation } from 'react-i18next'
 import { getIsPermission } from '@/tools'
 import NoData from '@/components/NoData'
 import AddMemberCommonModal from '@/components/AddUser/CommonModal'
-// import { StaffSelect } from '@xyfe/uikit'
 import { getAddDepartMember } from '@/services/staff'
 import { CloseWrap } from '@/components/StyleCommon'
 import {
@@ -252,7 +251,6 @@ const Member = (props: Props) => {
   const [member, setMember] = useState<any>()
   const [search, setSearch] = useState<any>()
   const [memberList, setMemberList] = useState<any>([])
-  const [userDataList, setUserDataList] = useState<any[]>([])
   const [projectPermission, setProjectPermission] = useState<any>([])
   const [form] = Form.useForm()
   const dispatch = useDispatch()

@@ -129,12 +129,6 @@ const MoreProjectSide = (props: Props) => {
     props.onChangeType(value)
   }
 
-  // 点击切分组
-  const onChangeGroup = (item: any) => {
-    props.onChangeGroup(item.id)
-    setGroupId(item.id)
-  }
-
   // 操作成功后，清除
   const onUpdateGroup = (isChange?: boolean) => {
     setIsDeleteVisible(false)

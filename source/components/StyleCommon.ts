@@ -520,29 +520,18 @@ const ShowWrap = styled.div`
   visibility: hidden;
 `
 
-const CategoryWrap = styled.div<{ color: string; bgColor: string }>(
-  {
-    height: 22,
-    borderRadius: 11,
-    padding: '0 8px',
-    marginRight: 8,
-    lineHeight: '22px',
-    fontSize: 12,
-    fontWeight: 400,
-    marginLeft: 8,
-    flexShrink: 0,
-    '::before': {
-      content: "'#'",
-    },
-    '::after': {
-      content: "'#'",
-    },
-  },
-  ({ color, bgColor }) => ({
-    background: bgColor,
-    color,
-  }),
-)
+const CategoryWrap = styled.div<{ color: string; bgColor: string }>({
+  height: 22,
+  borderRadius: 11,
+  padding: '0 8px',
+  marginRight: 8,
+  lineHeight: '22px',
+  fontSize: 14,
+  fontWeight: 400,
+  marginLeft: 8,
+  flexShrink: 0,
+  color: 'var(--neutral-n1-d1)',
+})
 
 const ListNameWrap = styled.div<{
   isClose?: boolean
@@ -686,13 +675,17 @@ const StepBoxWrap = styled.div<{ active?: boolean }>(
       marginLeft: 5,
     },
   },
-  // var(--function-tag5)
+
   ({ active }) => ({
+    '.border': {
+      borderRadius: '50%',
+      border: active ? '3px solid rgba(40, 119, 255, 0.2)' : '',
+    },
     '.circle': {
       background: active ? 'var(--primary-d1)' : 'var(--neutral-n4)',
-      border: active
-        ? '3px solid rgba(40, 119, 255, 0.2)'
-        : '3px solid var(--neutral-n4)',
+      // border: active
+      //   ? '3px solid rgba(40, 119, 255, 0.2)'
+      //   : '3px solid var(--neutral-n4)',
     },
     span: {
       color: active ? 'var(--primary-d1)' : 'var(--neutral-n2)',

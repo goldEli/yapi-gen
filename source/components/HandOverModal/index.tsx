@@ -4,7 +4,7 @@
 import { confirmHand, getHandMember } from '@/services/handover'
 import { Form, message, Select } from 'antd'
 import { t } from 'i18next'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import CommonModal from '../CommonModal'
 import { PinkWrap, Wrap } from './style'
 

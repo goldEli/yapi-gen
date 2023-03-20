@@ -70,7 +70,6 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
   const [activeType, setActiveType] = useState(0)
   const [groupId, setGroupId] = useState<any>(null)
   const [isVisible, setIsVisible] = useState(false)
-  const [operationDetail, setOperationDetail] = useState<any>({})
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
 
   useEffect(() => {
@@ -78,7 +77,7 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
   }, [leftWidth])
 
   // 拖动线条
-  const onDragLine = (event: any) => {
+  const onDragLine = () => {
     let width = sliderRef.current?.clientWidth
     document.onmousemove = e => {
       setEndWidth(200)
@@ -146,7 +145,6 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
 
   const onAddClick = () => {
     setIsVisible(true)
-    setOperationDetail({})
   }
 
   const getClassSide = () => {

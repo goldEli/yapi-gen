@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from '@store/index'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getCategoryConfigList } from '@store/category/thunk'
 import NoData from '@/components/NoData'
+
 const Wrap = styled.div`
   width: 100%;
   display: flex;

@@ -4,10 +4,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Select, Pagination, Form, Spin, Space } from 'antd'
+import { Select, Form, Space } from 'antd'
 import moment from 'moment'
-import { SelectWrapBedeck, TableStyleBox } from '@/components/StyleCommon'
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { SelectWrapBedeck } from '@/components/StyleCommon'
+import { useEffect, useState } from 'react'
 import Sort from '@/components/Sort'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'

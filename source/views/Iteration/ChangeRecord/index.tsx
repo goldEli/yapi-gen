@@ -5,10 +5,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Pagination, Space, Spin } from 'antd'
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { Space } from 'antd'
+import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import { HiddenText, TableStyleBox } from '@/components/StyleCommon'
+import { HiddenText } from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
 import Sort from '@/components/Sort'
 import { OmitText } from '@star-yun/ui'
@@ -49,13 +49,6 @@ const TitleWrap = styled(Space)({
   marginBottom: 24,
 })
 
-const DataWrap = styled.div({
-  height: 'calc(100% - 64px)',
-  background: 'white',
-  overflowX: 'auto',
-  borderRadius: 4,
-})
-
 const NewSort = (sortProps: any) => {
   return (
     <Sort
@@ -85,26 +78,6 @@ const ChangeRecord = (props?: any) => {
   const [isSpinning, setIsSpinning] = useState(false)
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
-  const [dataWrapHeight, setDataWrapHeight] = useState(0)
-  const [tableWrapHeight, setTableWrapHeight] = useState(0)
-  const dataWrapRef = useRef<HTMLDivElement>(null)
-
-  useLayoutEffect(() => {
-    if (dataWrapRef.current) {
-      const currentHeight = dataWrapRef.current.clientHeight
-      if (currentHeight !== dataWrapHeight) {
-        setDataWrapHeight(currentHeight)
-      }
-
-      const tableBody = dataWrapRef.current.querySelector('.ant-table-tbody')
-      if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
-        setTableWrapHeight(tableBody.clientHeight)
-      }
-    }
-  }, [dataList])
-
-  const tableY =
-    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
   const getList = async (item?: any, orderVal?: any) => {
     setIsSpinning(true)

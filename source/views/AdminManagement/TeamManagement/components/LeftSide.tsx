@@ -1,7 +1,7 @@
 /* eslint-disable no-empty */
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import SideDragging from '../components/SideDragging'
 import CommonModal from '@/components/CommonModal'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -11,6 +11,9 @@ import upload from 'antd/lib/upload'
 import { useDispatch, useSelector } from '@store/index'
 import { useTranslation } from 'react-i18next'
 import * as services from '@/services'
+import { companyTeamsList } from '@store/teams/thunk'
+import { addTeams, dismissTeams, editTeams } from '@/services/setting'
+import { setActiveTeam } from '@store/teams/index'
 
 const LeftSideContainer = styled.div`
   position: relative;
@@ -188,7 +191,7 @@ const Upload = (props: any) => {
   const customRequest = async ({ file }: { file: any }) => {
     const fileType = file.type.toString()
     if (!fileType?.includes('image')) {
-      message.warning('请上传图片')
+      message.warning(t('please_upload_a_picture'))
       return
     }
     const response = await uploadFileByTask(
@@ -244,13 +247,9 @@ const Upload = (props: any) => {
   )
 }
 
-import { companyTeamsList } from '@store/teams/thunk'
-import { addTeams, dismissTeams, editTeams } from '@/services/setting'
-import { setActiveTeam } from '@store/teams/index'
-import { t } from 'i18next'
 const LeftSide = (props: any) => {
   const dispatch = useDispatch()
-
+  const [t] = useTranslation()
   const { teamsList, activeTeam } = useSelector(s => s.teams)
   const [formType, setFormType] = useState('')
   const [uploadImgs, setUploadImgs] = useState<any>()

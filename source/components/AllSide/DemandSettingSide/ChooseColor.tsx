@@ -4,7 +4,7 @@
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { Popover, Space } from 'antd'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 const ChooseColorWrap = styled.div({

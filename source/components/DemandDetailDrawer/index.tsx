@@ -21,7 +21,7 @@ import {
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
 import { setProjectInfo } from '@store/project'
 import { Drawer, message, Popover, Skeleton, Space } from 'antd'
-import { createRef, useCallback, useEffect, useRef, useState } from 'react'
+import { createRef, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import ChangeStatusPopover from '../ChangeStatusPopover'
 import CommonIconFont from '../CommonIconFont'
@@ -95,10 +95,10 @@ const DemandDetailDrawer = () => {
       ?.length > 0
 
   const modeList = [
-    { name: '详细信息', key: 'detailInfo', content: '' },
-    { name: '子需求', key: 'detailDemands', content: '' },
-    { name: '基本信息', key: 'basicInfo', content: '' },
-    { name: '需求评论', key: 'demandComment', content: '' },
+    { name: t('project.detailInfo'), key: 'detailInfo', content: '' },
+    { name: t('common.childDemand'), key: 'detailDemands', content: '' },
+    { name: t('newlyAdd.basicInfo'), key: 'basicInfo', content: '' },
+    { name: t('requirements_review'), key: 'demandComment', content: '' },
   ]
   const leftWidth = 640
 
@@ -186,7 +186,7 @@ const DemandDetailDrawer = () => {
         demandId: drawerInfo.id,
       }),
     )
-    const url = `/ProjectManagement/Demand?data=${params}`
+    const url = `ProjectManagement/Demand?data=${params}`
     window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
   }
 

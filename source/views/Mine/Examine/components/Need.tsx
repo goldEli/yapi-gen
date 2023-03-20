@@ -15,7 +15,7 @@ import {
   HoverWrap,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Pagination, Spin, Table } from 'antd'
+import { Spin, Table } from 'antd'
 import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'

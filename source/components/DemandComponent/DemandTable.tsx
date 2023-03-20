@@ -3,17 +3,10 @@
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-no-leaked-render */
-import {
-  createRef,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
-import { message, Spin, Menu, Table } from 'antd'
+import { createRef, useEffect, useMemo, useState } from 'react'
+import { message, Menu, Table } from 'antd'
 import styled from '@emotion/styled'
-import { TableStyleBox, SecondButton } from '@/components/StyleCommon'
+import { SecondButton } from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -27,7 +20,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setFilterParamsModal } from '@store/project'
 import { updateDemandStatus, updatePriority } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
-import { onTapSearchChoose, saveSort, saveTitles } from '@store/view'
+import { saveSort, saveTitles } from '@store/view'
 import FloatBatch from '../FloatBatch'
 import { DemandOperationDropdownMenu } from './DemandOperationDropdownMenu'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
@@ -73,7 +66,6 @@ const DemandTable = (props: Props) => {
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
   const [isShowMore, setIsShowMore] = useState(false)
-  const [isAddVisible, setIsAddVisible] = useState(false)
   const batchDom: any = createRef()
   // 勾选的id集合
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])

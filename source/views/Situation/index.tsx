@@ -34,7 +34,6 @@ const Situation = () => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   asyncSetTtile(t('title.general'))
-  const { userInfo } = useSelector(store => store.user)
   const { menuPermission } = useSelector(store => store.user)
   const [generalData, setGeneralData] = useState<any>()
   const init = async () => {
@@ -154,7 +153,7 @@ const Situation = () => {
           auth="/Situation"
           permission={menuPermission?.menus?.map((i: any) => i.url)}
         >
-          <Title>企业全部</Title>
+          <Title>{t('project.companyAll')}</Title>
           <Wrap>
             <Project data={generalData?.project} />
             <Staff data={generalData?.user} />

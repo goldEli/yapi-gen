@@ -17,7 +17,8 @@ const Project = () => {
   if (
     !(
       String(location.pathname).includes('/ProjectManagement/Mine') ||
-      String(location.pathname) === '/ProjectManagement/Project'
+      String(location.pathname) === '/ProjectManagement/Project' ||
+      String(location.pathname) === '/ProjectManagement'
     )
   ) {
     paramsData = getParamsData(searchParams)

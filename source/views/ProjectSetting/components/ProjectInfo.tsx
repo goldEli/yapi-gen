@@ -118,17 +118,12 @@ const Line = styled.div`
 const ProjectInfo = () => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
-  const [visible, setVisible] = useState(false)
   const { projectInfo } = useSelector(store => store.project)
   const { userInfo } = useSelector(store => store.user)
   asyncSetTtile(`${t('title.a1')}【${projectInfo.name}】`)
   localStorage.setItem('memberId', projectInfo.id)
   const dispatch = useDispatch()
 
-  const onUpdate = async () => {
-    const result = await getProjectInfo({ projectId: projectInfo.id })
-    dispatch(setProjectInfo(result))
-  }
   return (
     <Wrap>
       <InfoLeft>

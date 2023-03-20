@@ -1,8 +1,6 @@
 // 暂无权限页面
 
-/* eslint-disable complexity */
 import styled from '@emotion/styled'
-import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from './IconFont'
 
@@ -42,7 +40,7 @@ const PermissionWrap = ({
 
   if (
     permission?.includes(auth) ||
-    permission?.filter((i: any) => i.includes(auth))?.length > 0
+    permission?.filter((i: any) => i?.includes(auth))?.length > 0
   ) {
     return children
   }

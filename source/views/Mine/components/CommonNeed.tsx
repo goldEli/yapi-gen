@@ -16,7 +16,7 @@ import {
   HasIconMenu,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Menu, message, Pagination, Space, Spin, Table } from 'antd'
+import { Menu, message, Space, Spin, Table } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from '@/components/CreateProjectTableColumInfo'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -48,20 +48,6 @@ import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import SetShowField from '@/components/SetShowField/indedx'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import ResizeTable from '@/components/ResizeTable'
-
-const TableBox = styled(Table)({
-  '.ant-table-content': {
-    minHeight: '460px',
-  },
-  '.ant-table-row:hover': {
-    [ShowWrap.toString()]: {
-      visibility: 'visible',
-    },
-    '.dropdownIcon': {
-      visibility: 'visible',
-    },
-  },
-})
 
 const LoadingSpin = styled(Spin)({
   minHeight: 300,
@@ -298,11 +284,7 @@ const CommonNeed = (props: any) => {
     }
     init()
   }
-  const showEdit = async (record: any) => {
-    setProjectId(record.project_id)
-    setOperationItem(record)
-    setIsVisible(true)
-  }
+
   const showDel = (record: any) => {
     setProjectId(record.project_id)
     setOperationItem(record)
@@ -462,14 +444,6 @@ const CommonNeed = (props: any) => {
     setTitleList2(list2)
     setTitleList3(list3)
     setAllTitleList(all)
-  }
-
-  const onChangeVisible = () => {
-    setIsVisible(false)
-  }
-
-  const onUpdate = () => {
-    init()
   }
 
   const onDeleteConfirm = async () => {

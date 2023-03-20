@@ -8,9 +8,8 @@ import { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { ChartsItem, HiddenText, SecondTitle } from '@/components/StyleCommon'
-import { Timeline, message, Pagination } from 'antd'
+import { Timeline, message } from 'antd'
 import Gantt from '@/components/Gantt'
-import PermissionWrap from '@/components/PermissionWrap'
 import moment from 'moment'
 import IconFont from '@/components/IconFont'
 import NoData from '@/components/NoData'
@@ -143,8 +142,6 @@ const Profile = () => {
 
   const dispatch = useDispatch()
   const { isUpdateCreate } = useSelector(store => store.mine)
-  const { userInfo } = useSelector(store => store.user)
-  const { colorList } = useSelector(store => store.project)
   const [data, setData] = useState<any>({})
   const [gatteData, setGatteData] = useState<any>([])
   const [lineData, setLineData] = useState<any>([])

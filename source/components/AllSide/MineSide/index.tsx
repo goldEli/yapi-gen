@@ -1,11 +1,9 @@
-import CommonButton from '@/components/CommonButton'
 import IconFont from '@/components/IconFont'
-import { getIsPermission } from '@/tools'
 import styled from '@emotion/styled'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
-import { useDispatch, useSelector } from '@store/index'
+import { useDispatch } from '@store/index'
 import { useTranslation } from 'react-i18next'
-import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const MenuItem = styled.div<{ isActive?: boolean }>`
   height: 44px;

@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react'
 import Need from './components/Need'
 import MineSwiper from '../components/MineSwiper'
-import PermissionWrap from '@/components/PermissionWrap'
 import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
 import styled from '@emotion/styled'
@@ -22,7 +21,6 @@ const Examine = () => {
   asyncSetTtile(t('title.b4'))
   const [swiperData, setSwiperData] = useState([])
   const [projectId, setProjectId] = useState(0)
-  const { userInfo } = useSelector(store => store.user)
   const [loadingState, setLoadingState] = useState<boolean>(false)
   const [type, setType] = useState('verify')
 

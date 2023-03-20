@@ -27,9 +27,12 @@ import {
 import { useSelector } from '@store/index'
 import ChooseColor from './ChooseColor'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
+import StateTag from '@/components/StateTag'
 
 const TableWrap = styled.div({
-  height: 400,
+  width: '780px',
+  padding: '0',
+  height: 'auto',
   overflowY: 'auto',
   display: 'flex',
   alignItems: 'center',
@@ -55,7 +58,6 @@ const TableTitle = styled.div({
   color: 'var( --neutral-n3)',
   fontSize: 14,
   fontWeight: 500,
-  borderBottom: '1px solid var(--neutral-n5)',
 })
 
 const AddWrapBox = styled.div({
@@ -183,19 +185,17 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
         maxLength={10}
         autoFocus
       />
-      <ChooseColor
-        color={normalColor}
-        onChangeValue={val => onChangeValue(val)}
-      />
-      <TextWrap
-        style={{ margin: '0 16px 0 24px', color: 'var(--primary-d2)' }}
-        onClick={onConfirm}
-      >
-        {t('container.finish')}
-      </TextWrap>
-      <TextWrap style={{ color: 'var(--neutral-n2)' }} onClick={onClose}>
-        {t('common.cancel')}
-      </TextWrap>
+      <>
+        <TextWrap
+          style={{ margin: '0 16px 0 24px', color: 'var(--primary-d2)' }}
+          onClick={onConfirm}
+        >
+          {t('container.finish')}
+        </TextWrap>
+        <TextWrap style={{ color: 'var(--neutral-n2)' }} onClick={onClose}>
+          {t('common.cancel')}
+        </TextWrap>
+      </>
     </div>
   )
 }
@@ -220,7 +220,7 @@ const ChangeTableName = (props: ChangeTableNameProps) => {
           />
         </div>
       ) : null}
-      <ViewWrap color={props?.record?.color}>{props?.text}</ViewWrap>
+      <StateTag name={props?.text} />
     </div>
   )
 }
@@ -246,6 +246,8 @@ const AddWorkflow = (props: Props) => {
     const result = await storyConfigStatusList({
       projectId: paramsData.id,
       categoryId: categoryItem?.id,
+      orderKey: 'id',
+      order: 'asc',
     })
     setStatusWorkList(result)
     const arr = result?.list?.filter((i: any) => i.isCheck)
@@ -542,7 +544,7 @@ const AddWorkflow = (props: Props) => {
           </div>
         )}
 
-        <TableWrap style={{ paddingRight: 4 }}>
+        <TableWrap>
           <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
             {!!statusWorkList?.list &&
               (statusWorkList?.list?.length > 0 ? (

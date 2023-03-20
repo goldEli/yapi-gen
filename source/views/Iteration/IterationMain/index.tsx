@@ -58,7 +58,6 @@ const IterationMain = (props: Props) => {
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const { iterateId } = paramsData
   const dispatch = useDispatch()
   const [deleteId, setDeleteId] = useState(0)
   const [isSettingState, setIsSettingState] = useState(false)
@@ -200,11 +199,6 @@ const IterationMain = (props: Props) => {
     setDataList({ list: undefined })
     getList(isGrid, pageObj, searchItems)
     dispatch(setIsRefreshList(true))
-  }
-
-  const onChangeVisible = () => {
-    setIsDemandVisible(!isDemandVisible)
-    setDemandItem({})
   }
 
   const onChangeOrder = (item: any) => {

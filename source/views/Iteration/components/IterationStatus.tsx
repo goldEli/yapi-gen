@@ -17,7 +17,6 @@ const LiWrap = styled.div<{ color: any }>(
     height: 32,
     display: 'flex',
     alignItems: 'center',
-    // background: 'white',
   },
   ({ color }) => ({
     '&: hover': {

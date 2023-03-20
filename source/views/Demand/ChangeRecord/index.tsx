@@ -6,10 +6,10 @@
 /* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
-import { Pagination, Space, Spin } from 'antd'
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { Space } from 'antd'
+import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import { HiddenText, TableStyleBox } from '@/components/StyleCommon'
+import { HiddenText } from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
 import Sort from '@/components/Sort'
 import { OmitText } from '@star-yun/ui'
@@ -41,13 +41,6 @@ const TitleWrap = styled(Space)({
   color: 'var(--neutral-n1-d1)',
   fontSize: 14,
   marginBottom: 24,
-})
-
-const DataWrap = styled.div({
-  height: 'calc(100% - 40px)',
-  background: 'white',
-  overflowX: 'auto',
-  borderRadius: 6,
 })
 
 const ContentWrap = styled.div({
@@ -87,27 +80,7 @@ const ChangeRecord = () => {
   const [isSpinning, setIsSpinning] = useState(false)
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
-  const [dataWrapHeight, setDataWrapHeight] = useState(0)
-  const [tableWrapHeight, setTableWrapHeight] = useState(0)
-  const dataWrapRef = useRef<HTMLDivElement>(null)
   const { isUpdateChangeLog } = useSelector(store => store.demand)
-
-  useLayoutEffect(() => {
-    if (dataWrapRef.current) {
-      const currentHeight = dataWrapRef.current.clientHeight
-      if (currentHeight !== dataWrapHeight) {
-        setDataWrapHeight(currentHeight)
-      }
-
-      const tableBody = dataWrapRef.current.querySelector('.ant-table-tbody')
-      if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
-        setTableWrapHeight(tableBody.clientHeight)
-      }
-    }
-  }, [dataList])
-
-  const tableY =
-    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
   const getList = async (item?: any, orderVal?: any) => {
     setIsSpinning(true)
@@ -408,10 +381,6 @@ const ChangeRecord = () => {
     getList({ page, size }, order)
   }
 
-  const onShowSizeChange = (page: number, size: number) => {
-    setPageObj({ page, size })
-    getList({ page, size }, order)
-  }
   return (
     <div style={{ height: 'calc(100% - 74px)' }}>
       <CommonModal

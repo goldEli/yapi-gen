@@ -99,11 +99,7 @@ const ButtonFooter = styled.div`
   align-items: center;
   box-sizing: border-box;
 `
-const Close = styled.span`
-  position: absolute;
-  right: 10px;
-  top: 10px;
-`
+
 const ExcessiveBox = styled.div`
   display: flex;
   align-items: center;

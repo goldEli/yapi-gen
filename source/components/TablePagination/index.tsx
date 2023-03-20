@@ -1,4 +1,3 @@
-import styled from '@emotion/styled'
 import { Pagination } from 'antd'
 import { useTranslation } from 'react-i18next'
 

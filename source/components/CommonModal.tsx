@@ -35,18 +35,6 @@ const ModalStyle = styled(Modal)`
     box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
   }
 `
-interface ModalProps {
-  width?: number | string
-  isVisible: boolean
-  title?: string
-  onClose?(): void
-  children?: any
-  onConfirm?(): any
-  confirmText?: string
-  hasFooter?: any
-  isShowFooter?: boolean
-  hasTop?: any
-}
 
 const CommonModal = (props: any) => {
   const [t] = useTranslation()

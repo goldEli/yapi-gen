@@ -7,10 +7,10 @@ import {
   updatePriority,
   updateTableParams,
 } from '@/services/demand'
-import { getCustomNormalValue, removeNull } from '@/tools'
+import { getCustomNormalValue } from '@/tools'
 import ParentDemand from '@/views/Demand/components/ParentDemand'
 import { useSelector } from '@store/index'
-import { DatePicker, message, Select, Tooltip, TreeSelect } from 'antd'
+import { message, Tooltip } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import ChangePriorityPopover from '../ChangePriorityPopover'

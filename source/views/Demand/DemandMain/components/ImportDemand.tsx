@@ -243,7 +243,9 @@ const ImportDemand = () => {
 
       <StepWrap>
         <StepBoxWrap active={step === 1}>
-          <div className="circle">1</div>
+          <div className="border">
+            <div className="circle">1</div>
+          </div>
           <span>{t('newlyAdd.uploadDemand')}</span>
         </StepBoxWrap>
         <div
@@ -255,7 +257,9 @@ const ImportDemand = () => {
           }}
         />
         <StepBoxWrap active={step === 2}>
-          <div className="circle">2</div>
+          <div className="border">
+            <div className="circle">2</div>
+          </div>
           <span>{t('newlyAdd.systemImport')}</span>
         </StepBoxWrap>
         <div
@@ -267,7 +271,9 @@ const ImportDemand = () => {
           }}
         />
         <StepBoxWrap active={step === 3}>
-          <div className="circle">3</div>
+          <div className="border">
+            <div className="circle">3</div>
+          </div>
           <span>{t('newlyAdd.importSuccess')}</span>
         </StepBoxWrap>
       </StepWrap>

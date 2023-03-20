@@ -47,6 +47,7 @@ import {
 import { useDispatch, useSelector } from '@store/index'
 import { setWorkList } from '@store/project'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
+import StateTag from '@/components/StateTag'
 
 const TableWrap = styled.div({
   width: '100%',
@@ -306,7 +307,18 @@ const StepPageOne = (propsOne: Props) => {
       width: 180,
       dataIndex: 'name',
       render: (text: any, record: any) => (
-        <ViewWrap color={record?.color}>{text}</ViewWrap>
+        <StateTag
+          name={record?.name}
+          state={
+            record?.is_start === 1 && record?.is_end === 2
+              ? 1
+              : record?.is_end === 1 && record?.is_start === 2
+              ? 2
+              : record?.is_start === 2 && record?.is_end === 2
+              ? 3
+              : 0
+          }
+        />
       ),
     },
     {
@@ -360,8 +372,6 @@ const StepPageOne = (propsOne: Props) => {
       dataIndex: 'endStatus',
       render: (text: any, record: any) => (
         <Switch
-          checkedChildren={t('newlyAdd.yes')}
-          unCheckedChildren={t('newlyAdd.no')}
           checked={text}
           disabled={record.startStatus}
           onChange={checked => onChangeListStatus(checked, record)}
@@ -427,7 +437,7 @@ const StepPageOne = (propsOne: Props) => {
         title={t('newlyAdd.historyMove')}
         onConfirm={onConfirmHasDelete}
       >
-        <div style={{ padding: '0 16px 0 2px' }}>
+        <div style={{ padding: '0 16px 0 24px' }}>
           <HasDemandText>
             {t('newlyAdd.changeNewStatus', {
               count: operationObj?.deleteData?.story_count,
@@ -451,7 +461,13 @@ const StepPageOne = (propsOne: Props) => {
                       )[0]?.bgColor
                     }
                   >
-                    {operationObj?.deleteData?.item?.category_name}
+                    <>
+                      <img
+                        style={{ width: 20 }}
+                        src={operationObj?.deleteData?.item?.attachmentPath}
+                      />{' '}
+                      {operationObj?.deleteData?.item?.category_name}
+                    </>
                   </CategoryWrap>
                   {t('newlyAdd.appointStatus')}
                 </div>
@@ -477,7 +493,7 @@ const StepPageOne = (propsOne: Props) => {
       >
         <Button
           style={{
-            background: 'var(--neutral-n6-d1)',
+            background: 'var( --hover-d2)',
             color: 'var(--primary-d2)',
           }}
           icon={<IconFont type="plus" />}

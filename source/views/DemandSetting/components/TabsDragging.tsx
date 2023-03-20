@@ -7,6 +7,7 @@ import { useSelector } from '@store/index'
 import { Checkbox, Tooltip } from 'antd'
 import React, { useEffect, useLayoutEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+
 const Container = styled.div`
   margin-bottom: 8px;
   &:hover {

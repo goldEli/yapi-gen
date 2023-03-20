@@ -5,7 +5,6 @@ import { Breadcrumb } from 'antd'
 import { t } from 'i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import CommonIconFont from '../CommonIconFont'
-import IconFont from '../IconFont'
 
 const MyBreadcrumb = (props: any) => {
   const navigate = useNavigate()
@@ -77,6 +76,21 @@ const MyBreadcrumb = (props: any) => {
             {t('project.projectSet') as string}
           </a>
         </Breadcrumb.Item>
+      )}
+      {location.pathname.includes('ProjectManagement/WorkFlow') && (
+        <>
+          <Breadcrumb.Item>
+            <a
+              style={{ color: 'var(--neutral-n1-d1)' }}
+              onClick={() => navigate(-1)}
+            >
+              需求设置
+            </a>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>
+            <a style={{ color: 'var(--neutral-n3)' }}>配置工作流</a>
+          </Breadcrumb.Item>
+        </>
       )}
       {location.pathname === '/ProjectManagement/ProjectSetting' &&
       props.setName ? (

@@ -1,4 +1,3 @@
-import React from 'react'
 import spingImg from '/newLoading.gif'
 
 const NewLoadingTransition = (props: any) => {

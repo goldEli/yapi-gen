@@ -29,6 +29,7 @@ function getIsPermission(arr: any, value: string) {
 
 // 解密地址栏参数
 function getParamsData(params: any) {
+  if (!params.get('data')) return
   return JSON.parse(decryptPhp(params.get('data') as string))
 }
 

@@ -3,10 +3,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Select, Pagination, Form, Spin, Space } from 'antd'
+import { Select, Form, Space } from 'antd'
 import moment from 'moment'
-import { SelectWrapBedeck, TableStyleBox } from '@/components/StyleCommon'
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { SelectWrapBedeck } from '@/components/StyleCommon'
+import { useEffect, useState } from 'react'
 import Sort from '@/components/Sort'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
@@ -102,26 +102,6 @@ const LoginManagement = () => {
   const [order, setOrder] = useState<any>({ value: '', key: '' })
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
   const [isSpinning, setIsSpinning] = useState(false)
-  const [dataWrapHeight, setDataWrapHeight] = useState(0)
-  const [tableWrapHeight, setTableWrapHeight] = useState(0)
-  const dataWrapRef = useRef<HTMLDivElement>(null)
-
-  useLayoutEffect(() => {
-    if (dataWrapRef.current) {
-      const currentHeight = dataWrapRef.current.clientHeight
-      if (currentHeight !== dataWrapHeight) {
-        setDataWrapHeight(currentHeight)
-      }
-
-      const tableBody = dataWrapRef.current.querySelector('.ant-table-tbody')
-      if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
-        setTableWrapHeight(tableBody.clientHeight)
-      }
-    }
-  }, [dataList])
-
-  const tableY =
-    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
   const getList = async (pageObjVal?: any, orderVal?: any) => {
     setIsSpinning(true)

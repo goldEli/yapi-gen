@@ -1,7 +1,6 @@
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/indent */
 import CommonIconFont from '@/components/CommonIconFont'
-import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { Dropdown } from 'antd'
 import { useEffect, useState } from 'react'
@@ -11,9 +10,6 @@ import { useNavigate } from 'react-router-dom'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { t } from 'i18next'
 
-interface PropsType {
-  text: string
-}
 const Container = styled.div`
   width: 320px;
   max-height: calc(100vh - 120px);
@@ -232,10 +228,6 @@ const MyDropdown = (props: any) => {
         <ItemBox key={el.title}>
           <Row onClick={() => onRoute(el)}>
             <div>
-              {/* <IconFont
-                type="calendar"
-                style={{ fontSize: 20, color: '#323233' }}
-              /> */}
               <Img src={el.category_attachment} />
             </div>
             <ItemCenter>
