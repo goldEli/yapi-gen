@@ -130,12 +130,8 @@ const FormStyle = styled(Form)`
   & .ant-form-item-control-input-content {
     background-color: var(--neutral-white-d5) !important;
   }
-  .ant-input-affix-wrapper-status-error:not(
-      .ant-input-affix-wrapper-disabled
-    ):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper,
-  .ant-input-affix-wrapper-status-error:not(
-      .ant-input-affix-wrapper-disabled
-    ):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:hover {
+  .ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper,
+  .ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:hover {
     background-color: var(--neutral-white-d5) !important;
   }
 `
@@ -147,18 +143,18 @@ const Mask = styled.div`
   line-height: 24px;
   background-color: var(--neutral-transparent-n1-d1);
   color: var(--neutral-white-d7);
-  border-radius: 0 0px 14px 14px;
+  border-radius: 0 0px 6px 6px;
   position: absolute;
   bottom: 0;
 `
 const UploadStyle = styled(upload)`
   width: 80px;
   height: 80px;
-  border-radius: 14px;
+  border-radius: 6px;
   img {
     width: 80px;
     height: 80px;
-    border-radius: 14px;
+    border-radius: 6px;
   }
   &:hover {
     cursor: pointer;
@@ -166,6 +162,12 @@ const UploadStyle = styled(upload)`
   &:hover {
     cursor: pointer;
   }
+`
+const UploadBoxImg = styled.div`
+  width: 80px;
+  height: 80px;
+  border-radius: 6px;
+  background-color: rgba(152, 172, 224, 1);
 `
 const UploadBox = styled.div`
   position: relative;
@@ -234,10 +236,12 @@ const Upload = (props: any) => {
         showUploadList={false}
       >
         {defaultIcon ? (
-          <IconFont
-            type="team-8a8gio2p"
-            style={{ fontSize: 80, color: '#98ACE0' }}
-          />
+          <UploadBoxImg>
+            <IconFont
+              type="team-8a8gio2p"
+              style={{ fontSize: 80, color: '#98ACE0' }}
+            />
+          </UploadBoxImg>
         ) : (
           <img src={uploadImg} />
         )}
