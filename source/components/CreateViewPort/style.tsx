@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 
 export const Wrap = styled.div`
-  padding: 24px;
+  padding: 8px 24px;
 `
 
 export const WrapText = styled.div`

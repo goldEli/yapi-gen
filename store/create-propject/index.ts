@@ -40,13 +40,15 @@ const slice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(postCreate.fulfilled, (state, action) => {
-        message.success('创建成功')
-        state.createVisible = false
+        if (action.payload.code === 0) {
+          state.createVisible = false
+        }
       })
       .addCase(postEditCreate.fulfilled, (state, action) => {
-        message.success('编辑成功')
-        state.createVisible = false
-        state.isEditId = ''
+        if (action.payload.code === 0) {
+          state.createVisible = false
+          state.isEditId = ''
+        }
       })
   },
 })
