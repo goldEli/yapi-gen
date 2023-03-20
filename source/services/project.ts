@@ -59,6 +59,7 @@ export const getProjectList: any = async (params: any) => {
     pageSize: params.pageSize,
     total: response.data.pager.total,
     list: response.data.list.map((i: any) => ({
+      ...i,
       id: i.id,
       status: i.status,
       cover: i.cover,
