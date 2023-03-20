@@ -22,6 +22,7 @@ const HeaderWrap = styled.div`
   display: flex;
   align-items: center;
   border-bottom: 1px solid var(--neutral-n6-d1);
+  margin-bottom: 20px;
   img {
     width: 32px;
     height: 32px;

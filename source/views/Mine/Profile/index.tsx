@@ -61,7 +61,7 @@ const titleNumberCss2 = css`
   font-size: 24px;
 `
 const titleNumberCss3 = css`
-  color: rgba(40, 119, 255, 1);
+  color: var(--primary-d1);
   font-size: 24px;
 `
 const titleTextCss = css`
@@ -364,7 +364,7 @@ const Profile = () => {
                             <span
                               onClick={() => onToDetail(item)}
                               style={{
-                                color: 'rgba(40, 119, 255, 1)',
+                                color: 'var(--primary-d1)',
                                 cursor: 'pointer',
                               }}
                             >

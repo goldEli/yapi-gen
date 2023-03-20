@@ -556,12 +556,8 @@ const Iteration = () => {
 
   return (
     <PermissionWrap
-      auth={resultAuth ? '迭代' : '/ProjectManagement/Project'}
-      permission={
-        resultAuth
-          ? projectInfo?.projectPermissions?.map((i: any) => i.group_name)
-          : currentMenu?.children?.map((i: any) => i.url)
-      }
+      auth="/ProjectManagement/Project"
+      permission={currentMenu?.children?.map((i: any) => i.url)}
     >
       <Wrap>{content()}</Wrap>
     </PermissionWrap>

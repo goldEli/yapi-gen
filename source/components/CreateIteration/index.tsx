@@ -1,7 +1,11 @@
 /* eslint-disable require-unicode-regexp */
 import { uploadFileToKey } from '@/services/cos'
 import { addIterate, getIterateInfo, updateIterate } from '@/services/iterate'
-import { getProjectList, getProjectRecent } from '@/services/project'
+import {
+  getProjectInfo,
+  getProjectList,
+  getProjectRecent,
+} from '@/services/project'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
 import {
@@ -40,12 +44,25 @@ const CreateIteration = () => {
   // 项目列表
   const [projectList, setProjectList] = useState<any>([])
 
+  // 获取项目信息
+  const getProjectInfoData = async (id: any) => {
+    const result = await getProjectInfo({ projectId: id })
+    if (
+      result?.projectPermissions?.length > 0 &&
+      result?.projectPermissions?.filter(
+        (i: any) => i.identity === 'b/iterate/store',
+      )?.length > 0
+    ) {
+      form.setFieldsValue({
+        projectId: id || null,
+      })
+    }
+  }
+
   // 获取最近项目列表 -- 使用列表的第一个
   const getRecentlyList = async () => {
     const data = await getProjectRecent()
-    form.setFieldsValue({
-      projectId: data[0]?.id || null,
-    })
+    getProjectInfoData(data[0]?.id)
   }
 
   // 获取项目列表

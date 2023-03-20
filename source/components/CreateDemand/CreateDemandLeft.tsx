@@ -220,18 +220,30 @@ const CreateDemandLeft = (props: Props) => {
     dom.scrollTop = dom.scrollHeight
   }
 
+  // 删除项目
+  const onClearProjectId = () => {
+    onReset()
+    props.onChangeProjectId('')
+    props.onResetForm()
+    props.onGetFieldList([])
+  }
+
   // 获取项目信息
   const getProjectInfoData = async (id: any) => {
     const result = await getProjectInfo({ projectId: id })
     setProjectInfo(result)
-    // 是否有创建需求权限
-    isCreateDemand = result?.projectPermissions?.filter(
-      (i: any) =>
-        i.identity ===
-        (createDemandProps?.demandId ? 'b/story/update' : 'b/story/save'),
-    )?.length
+    if (result?.projectPermissions?.length <= 0) {
+      onClearProjectId()
+    } else {
+      // 是否有创建需求权限
+      isCreateDemand = result?.projectPermissions?.filter(
+        (i: any) =>
+          i.identity ===
+          (createDemandProps?.demandId ? 'b/story/update' : 'b/story/save'),
+      )?.length
 
-    props.onGetCreateDemand(isCreateDemand)
+      props.onGetCreateDemand(isCreateDemand)
+    }
   }
 
   // 切换项目
@@ -247,14 +259,6 @@ const CreateDemandLeft = (props: Props) => {
     //清除右侧数据
     props.onResetForm()
     props.onGetDataAll(value)
-  }
-
-  // 删除项目
-  const onClearProjectId = () => {
-    onReset()
-    props.onChangeProjectId('')
-    props.onResetForm()
-    props.onGetFieldList([])
   }
 
   // 选择新的需求类别后，获取他的工作流列表

@@ -98,7 +98,7 @@ const CreateDemand = () => {
 
   // 左侧项目切换清除右侧form表单
   const onResetForm = () => {
-    rightDom?.current.reset()
+    rightDom?.current?.reset()
   }
 
   // 获取父需求列表

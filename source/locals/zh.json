@@ -762,6 +762,7 @@
     "mineFinish": "我的已办"
   },
   "project": {
+    "gender0": "性别",
     "memberNull": "成员不能为空！",
     "permissionNull": "权限不能为空！",
     "editMember": "编辑项目成员",

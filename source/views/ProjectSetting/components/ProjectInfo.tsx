@@ -232,7 +232,9 @@ const ProjectInfo = () => {
               <span>
                 {projectInfo.isPublic === 1
                   ? t('project.companyOpen')
-                  : t('common.privateProject')}
+                  : projectInfo?.isPublic === 2
+                  ? t('common.privateProject')
+                  : t('teamwork')}
               </span>
             </InfoItem>
           </Line>

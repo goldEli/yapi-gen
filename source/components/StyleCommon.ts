@@ -175,6 +175,7 @@ const HasIconMenu = styled.div<{ isCheck?: boolean }>(
 // 新版移入效果例：项目列表左上方操作
 const HoverWrap = styled.div<{ isActive?: any }>(
   {
+    minWidth: '80px',
     transition: 'all .5s',
     padding: '0 8px',
     height: 32,
@@ -695,13 +696,23 @@ const StepBoxWrap = styled.div<{ active?: boolean }>(
 
 const SecondTitle = styled.span`
   padding-left: 8px;
-  border-left: 3px solid var(--primary-d1);
+  /* border-left: 9px solid var(--primary-d1); */
   height: 24px;
   font-size: 16px;
   font-family: PingFang SC-Medium, PingFang SC;
   font-weight: 500;
   color: var(--neutral-n1-d1);
   line-height: 24px;
+  position: relative;
+  &::before {
+    content: '';
+    height: 16px;
+    position: absolute;
+    left: 0px;
+    top: 3px;
+    width: 3px;
+    background-color: var(--primary-d1);
+  }
 `
 
 const TabsItem = styled.div<{ isActive: boolean }>(

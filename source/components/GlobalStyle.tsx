@@ -800,6 +800,9 @@ const GlobalStyle = () => {
     .ant-dropdown-menu-submenu-expand-icon svg {
       font-size: 10px !important;
     }
+    .ant-timeline-item-head-blue {
+      border-color: var(--primary-d1);
+    }
   `
   return <Global styles={globalCss} />
 }

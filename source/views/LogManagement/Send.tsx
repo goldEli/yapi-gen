@@ -353,18 +353,20 @@ const Send = () => {
     <div
       style={{
         height: 'calc(100% - 100px)',
-        padding: '16px',
+        // padding: '16px',
       }}
     >
       <div
         style={{
-          height: '52px',
+          width: '100%',
           background: 'var(--neutral-white-d2)',
           display: 'flex',
           alignItems: 'center',
-          paddingLeft: '24px',
           paddingRight: '24px',
+          paddingBottom: '20px',
+          marginLeft: '24px',
           justifyContent: 'space-between',
+          borderBottom: '1px solid var(--neutral-n6-d1)',
         }}
       >
         <SelectWrapBedeck>

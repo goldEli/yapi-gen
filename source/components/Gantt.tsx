@@ -47,7 +47,7 @@ const GanttWrap = styled.div({
   },
   '.gantt_task_line': {
     border: 'none',
-    backgroundColor: ' rgba(40, 119, 255, 0.6)',
+    backgroundColor: ' var(--primary-d1)',
     borderRadius: 3,
   },
   '.gantt_row, .gantt_task_row': {
