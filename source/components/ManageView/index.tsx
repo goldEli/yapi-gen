@@ -251,7 +251,7 @@ const ManageView = (props: any) => {
     >
       <div
         style={{
-          padding: '24px',
+          padding: ' 8px 24px',
           background: 'var(--neutral-white-d2)',
           height: '500px',
           overflow: 'auto',

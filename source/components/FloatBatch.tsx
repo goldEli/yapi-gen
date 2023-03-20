@@ -22,6 +22,7 @@ const batchAllBox = css`
 `
 
 const batchBox = css`
+  backdrop-filter: blur(3px);
   display: flex;
   align-items: center;
   padding: 0 32px;

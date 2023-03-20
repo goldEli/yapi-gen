@@ -647,7 +647,7 @@ const StyledShape = styled.div<{ color: any }>`
 // 列表的加号，获取子需求
 const ExpendedWrap = styled(IconFont)({
   marginRight: 12,
-  color: 'var(--neutral-n2)',
+  color: 'var( --neutral-n4)',
   fontSize: 16,
   cursor: 'pointer',
   background: 'white',

@@ -7,6 +7,7 @@ import { css } from '@emotion/css'
 import { Space } from 'antd'
 import IconFont from './IconFont'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
+import styled from '@emotion/styled'
 
 const primary = css`
   background: var(--auxiliary-b1) !important;
@@ -103,6 +104,11 @@ const icon = css`
   }
 `
 
+const ButtonWrap = styled(Button)`
+  display: flex;
+  align-items: center;
+`
+
 interface Props {
   onClick?(): void
   // 按钮文本
@@ -127,9 +133,9 @@ interface Props {
 }
 
 const CommonButton = (props: Props) => {
-  const throttleClick = useThrottle(() => {
-    props.onClick?.()
-  }, 1000)
+  // const throttleClick = useThrottle(() => {
+  //   props.onClick?.()
+  // }, 1000)
 
   const allButton = {
     primary,
@@ -165,9 +171,9 @@ const CommonButton = (props: Props) => {
   //   如果有图标
   if (props.icon && props.type !== 'icon') {
     return (
-      <Button
+      <ButtonWrap
         className={commonCss}
-        onClick={throttleClick}
+        onClick={props.onClick}
         disabled={props.isDisable}
       >
         {props.iconPlacement !== 'right' && (
@@ -182,32 +188,32 @@ const CommonButton = (props: Props) => {
             <IconFont type={props.icon} />
           </Space>
         )}
-      </Button>
+      </ButtonWrap>
     )
   }
 
   //   如果有图标没有内容
   if (props.type === 'icon') {
     return (
-      <Button
+      <ButtonWrap
         className={commonCss}
-        onClick={throttleClick}
+        onClick={props.onClick}
         disabled={props.isDisable}
       >
         <IconFont type={props.icon || ''} style={{ fontSize: 20 }} />
-      </Button>
+      </ButtonWrap>
     )
   }
 
   return (
-    <Button
+    <ButtonWrap
       style={props?.style}
       className={commonCss}
-      onClick={throttleClick}
+      onClick={props.onClick}
       disabled={props.isDisable}
     >
       {props.children}
-    </Button>
+    </ButtonWrap>
   )
 }
 

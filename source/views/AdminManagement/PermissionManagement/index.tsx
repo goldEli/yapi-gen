@@ -3,7 +3,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable operator-linebreak */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { Checkbox, Input, Space, message, Menu, Spin, Tooltip } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
@@ -448,10 +447,16 @@ const PermissionManagement = () => {
             />
           </div>
           <ModalFooter size={16} style={{ padding: '0 16px 24px 0' }}>
-            <Button onClick={onClose}>{t('common.cancel')}</Button>
-            <Button disabled={!addValue} onClick={onSaveGroup} type="primary">
+            <CommonButton type="secondary" onClick={onClose}>
+              {t('common.cancel')}
+            </CommonButton>
+            <CommonButton
+              isDisable={!addValue}
+              onClick={onSaveGroup}
+              type="primary"
+            >
               {t('common.confirm2')}
-            </Button>
+            </CommonButton>
           </ModalFooter>
         </CommonModal>
         <Header>

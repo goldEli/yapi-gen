@@ -9,7 +9,6 @@ import { Table, Space, Checkbox, message } from 'antd'
 import IconFont from '@/components/IconFont'
 import { OmitText } from '@star-yun/ui'
 import { useMemo, useState } from 'react'
-import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import SetConfig from './SetConfig'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
@@ -17,6 +16,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
 import { setWorkList } from '@store/project'
 import { saveWorkflowStatus } from '@/services/project'
+import CommonButton from '@/components/CommonButton'
 
 const TableWrap = styled.div({
   width: '100%',
@@ -173,9 +173,9 @@ const StepPageTwo = () => {
       </ContWrap>
 
       <Space size={16} style={{ position: 'absolute', bottom: 24, left: 24 }}>
-        <Button type="primary" onClick={onSave}>
+        <CommonButton type="primary" onClick={onSave}>
           {t('common.save')}
-        </Button>
+        </CommonButton>
       </Space>
     </>
   )
