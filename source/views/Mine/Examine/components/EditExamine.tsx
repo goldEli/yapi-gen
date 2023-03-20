@@ -16,6 +16,7 @@ import { OmitText } from '@star-yun/ui'
 import { useDispatch, useSelector } from '@store/index'
 import { getAsyncVerifyInfo } from '@store/mine'
 import { updateVerifyOperation } from '@/services/mine'
+import CommonButton from '@/components/CommonButton'
 
 const TimelineWrap = styled(Timeline)({
   '.ant-timeline-item-last > .ant-timeline-item-content': {
@@ -186,11 +187,15 @@ const EditExamine = (props: Props) => {
         props?.isEdit &&
         props?.item?.status === 1 && (
           <FooterWrap size={16}>
-            <Button onClick={onClose}>{t('common.cancel')}</Button>
-            <Button onClick={onRefuse}>{t('newlyAdd.refuse')}</Button>
-            <Button type="primary" onClick={onConfirm}>
+            <CommonButton type="secondary" onClick={onClose}>
+              {t('common.cancel')}
+            </CommonButton>
+            <CommonButton type="secondary" onClick={onRefuse}>
+              {t('newlyAdd.refuse')}
+            </CommonButton>
+            <CommonButton type="primary" onClick={onConfirm}>
               {t('newlyAdd.adopt')}
-            </Button>
+            </CommonButton>
           </FooterWrap>
         )
       }

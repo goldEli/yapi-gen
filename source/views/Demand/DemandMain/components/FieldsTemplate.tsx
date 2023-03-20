@@ -5,7 +5,8 @@
 
 /* eslint-disable react/jsx-no-leaked-render */
 import CommonModal from '@/components/CommonModal'
-import { Checkbox, Space, Divider, Button, Row, Col, Collapse } from 'antd'
+import CommonButton from '@/components/CommonButton'
+import { Checkbox, Space, Divider, Row, Col, Collapse } from 'antd'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
@@ -344,10 +345,12 @@ const FieldsTemplate = (props: Props) => {
       hasFooter={
         props.isExport && (
           <ModalFooter size={16}>
-            <Button onClick={props?.onClose}>{t('common.cancel')}</Button>
-            <Button loading={props.isSpin} onClick={onConfirm} type="primary">
+            <CommonButton type="secondary" onClick={props?.onClose}>
+              {t('common.cancel')}
+            </CommonButton>
+            <CommonButton onClick={onConfirm} type="primary">
               {t('newlyAdd.exportDemand')}
-            </Button>
+            </CommonButton>
           </ModalFooter>
         )
       }

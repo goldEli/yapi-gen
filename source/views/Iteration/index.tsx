@@ -40,6 +40,7 @@ import {
 import SetShowField from '@/components/SetShowField/indedx'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
 import PermissionWrap from '@/components/PermissionWrap'
+import CommonButton from '@/components/CommonButton'
 
 const Wrap = styled.div`
   height: 100%;
@@ -441,14 +442,17 @@ const Iteration = () => {
           </NameWrap>
           <Space size={16}>
             {hasEdit ? null : (
-              <Button type="primary" onClick={onChangeEditVisible}>
+              <CommonButton type="primary" onClick={onChangeEditVisible}>
                 {t('common.edit')}
-              </Button>
+              </CommonButton>
             )}
             {hasDel ? null : (
-              <Button onClick={() => setIsDelete(!isDelete)}>
+              <CommonButton
+                type="secondary"
+                onClick={() => setIsDelete(!isDelete)}
+              >
                 {t('common.del')}
-              </Button>
+              </CommonButton>
             )}
           </Space>
         </DemandInfoWrap>

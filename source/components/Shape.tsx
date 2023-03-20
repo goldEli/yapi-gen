@@ -21,7 +21,6 @@ import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 import { css } from '@emotion/css'
 import moment from 'moment'
-import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { getProjectMember } from '@/services/mine'
 import { useDispatch } from '@store/index'
 import { setIsUpdateChangeLog } from '@store/demand'
@@ -29,6 +28,7 @@ import { CloseWrap } from './StyleCommon'
 import { getShapeLeft, getShapeRight } from '@/services/demand'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
 import NewLoadingTransition from './NewLoadingTransition'
+import CommonButton from './CommonButton'
 
 export function setValue(res: any) {
   const form1Obj: any = {}
@@ -955,18 +955,20 @@ export const ShapeContent = (props: any) => {
           </div>
 
           <ButtonFooter>
-            <Button
-              disabled={!rightList.user_has_auth}
+            <CommonButton
+              type="primary"
+              isDisable={!rightList.user_has_auth}
               onClick={onConfirm}
               style={{ marginLeft: '16px' }}
-              type="primary"
             >
               {rightList.is_verify
                 ? t('newlyAdd.submitReview')
                 : t('common.circulation')}
-            </Button>
+            </CommonButton>
 
-            <Button onClick={() => onClear()}>{t('common.cancel')}</Button>
+            <CommonButton type="secondary" onClick={() => onClear()}>
+              {t('common.cancel')}
+            </CommonButton>
           </ButtonFooter>
         </Right>
       )}
