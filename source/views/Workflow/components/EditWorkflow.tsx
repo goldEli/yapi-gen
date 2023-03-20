@@ -5,7 +5,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import CommonModal from '@/components/CommonModal'
-import { Input, Form, Switch, Space, message } from 'antd'
+import { Input, Form, Switch, Space, message, Tooltip } from 'antd'
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import { ViewWrap, CategoryWrap } from '@/components/StyleCommon'
@@ -14,7 +14,8 @@ import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from '@store/index'
 import { updateStoryConfigWorkflow } from '@/services/project'
-import ChooseColor from './ChooseColor'
+import FormTitleSmall from '@/components/FormTitleSmall'
+import IconFont from '@/components/IconFont'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -90,7 +91,6 @@ const EditWorkflow = (props: EditorProps) => {
     }
     setStatus(checked)
   }
-
   return (
     <CommonModal
       isVisible={props.isVisible}
@@ -99,7 +99,11 @@ const EditWorkflow = (props: EditorProps) => {
       onConfirm={onConfirm}
     >
       <div
-        style={{ maxHeight: 464, overflowY: 'auto', padding: '0 16px 0 2px' }}
+        style={{
+          maxHeight: 464,
+          overflowY: 'auto',
+          padding: '0 16px 24px 24px',
+        }}
       >
         {props?.item?.categorys?.length && (
           <>
@@ -123,19 +127,45 @@ const EditWorkflow = (props: EditorProps) => {
                   }
                   key={i.id}
                 >
-                  {i.name}
+                  <>
+                    <img src={i.attachmentPath} style={{ width: 20 }} />{' '}
+                    {i.name}
+                  </>
                 </CategoryWrap>
               ))}
             </Space>
           </>
         )}
+
         <FormWrap form={form} layout="vertical">
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <Form.Item
               getValueFromEvent={event => {
                 return event.target.value.replace(/(?<start>^\s*)/g, '')
               }}
-              label={t('newlyAdd.statusName')}
+              label={
+                <div>
+                  <span>{t('newlyAdd.statusName')} </span>
+                  <Tooltip
+                    overlayStyle={{
+                      fontSize: '12px',
+                    }}
+                    trigger={['click']}
+                    placement="top"
+                    title={t('newlyAdd.pleaseStatusNameMax')}
+                  >
+                    <IconFont
+                      style={{
+                        position: 'absolute',
+                        color: 'var(--neutral-n4)',
+                        left: '62px',
+                        top: '3px',
+                      }}
+                      type="question"
+                    />
+                  </Tooltip>
+                </div>
+              }
               name="name"
             >
               <Input
@@ -146,11 +176,6 @@ const EditWorkflow = (props: EditorProps) => {
                 onChange={e => setName(e.target.value)}
               />
             </Form.Item>
-            <span
-              style={{ marginTop: 4, fontSize: 12, color: 'var(--neutral-n3)' }}
-            >
-              {t('newlyAdd.pleaseStatusNameMax')}
-            </span>
           </div>
           <Form.Item
             getValueFromEvent={event => {
@@ -166,12 +191,12 @@ const EditWorkflow = (props: EditorProps) => {
               maxLength={100}
             />
           </Form.Item>
-          <Form.Item label={t('newlyAdd.chooseColor')} name="color">
+          {/* <Form.Item label={t('newlyAdd.chooseColor')} name="color">
             <ChooseColor
               color={normalColor}
               onChangeValue={val => onChangeValue(val)}
             />
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item label={t('newlyAdd.statusView')}>
             <ViewWrap color={normalColor}>
               {name || t('newlyAdd.nothing')}

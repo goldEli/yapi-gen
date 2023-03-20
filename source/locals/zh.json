@@ -1,7 +1,6 @@
 {
   "please_upload_a_picture": "请上传图片!",
   "configuring_the_workflow": "配置工作流",
-
   "initial_model": "启用状态",
   "more_folding": "更多折叠",
   "must": "必填",
@@ -137,7 +136,6 @@
   "system_fields_are_not_editable": "系统字段不可编辑",
   "iteration": "迭代",
   "all_enterprises": "企业全部",
-
   "log_management": "日志管理",
   "saves_the_current_filter_criteria_display_fields_and_sort_as_a_new_view": "将当前筛选条件、显示字段、排序方式、保存为新的视图",
   "creating_a_view": "创建视图",

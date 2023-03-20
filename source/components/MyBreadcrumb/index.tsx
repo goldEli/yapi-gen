@@ -77,6 +77,21 @@ const MyBreadcrumb = (props: any) => {
           </a>
         </Breadcrumb.Item>
       )}
+      {location.pathname.includes('ProjectManagement/WorkFlow') && (
+        <>
+          <Breadcrumb.Item>
+            <a
+              style={{ color: 'var(--neutral-n1-d1)' }}
+              onClick={() => navigate(-1)}
+            >
+              需求设置
+            </a>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>
+            <a style={{ color: 'var(--neutral-n3)' }}>配置工作流</a>
+          </Breadcrumb.Item>
+        </>
+      )}
       {location.pathname === '/ProjectManagement/ProjectSetting' &&
       props.setName ? (
         <Breadcrumb.Item>{props.setName}</Breadcrumb.Item>
