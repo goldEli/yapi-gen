@@ -385,8 +385,17 @@ const GlobalStyle = () => {
     .ant-input-affix-wrapper:focus,
     .ant-input-affix-wrapper-focused {
       box-shadow: initial !important;
+      border: 1px solid var(--neutral-n6-d1);
     }
-
+    .ant-input-affix-wrapper {
+      border: 1px solid var(--neutral-n6-d1);
+    }
+    input {
+      &::placeholder {
+        font-size: 14px;
+        color: var(--neutral-n4) !important;
+      }
+    }
     .ant-table-sticky-scroll {
       display: none;
     }
@@ -802,6 +811,10 @@ const GlobalStyle = () => {
     }
     .ant-timeline-item-head-blue {
       border-color: var(--primary-d1);
+    }
+    .ant-pagination-prev .ant-pagination-item-link,
+    .ant-pagination-next .ant-pagination-item-link {
+      border: none;
     }
   `
   return <Global styles={globalCss} />

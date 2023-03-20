@@ -29,7 +29,7 @@ const Header = styled.div({
   padding: '24px 24px 20px',
   '.label': {
     fontSize: 16,
-    fontWeight: 400,
+    fontWeight: 500,
     color: 'var(--neutral-n1-d1)',
   },
 })

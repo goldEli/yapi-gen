@@ -273,6 +273,7 @@ const StaffManagement = () => {
         title: t('newlyAdd.operation'),
         dataIndex: 'action',
         width: 120,
+        fixed: 'right',
         render: (_text: string, record: any) => {
           return (
             <>
