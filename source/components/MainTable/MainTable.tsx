@@ -7,7 +7,7 @@ import styled from '@emotion/styled'
 import { Menu, Progress } from 'antd'
 import { ClickWrap, HiddenText, SecondButton } from '@/components/StyleCommon'
 import { useNavigate } from 'react-router-dom'
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import Sort from '@/components/Sort'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
@@ -181,6 +181,23 @@ const MainTable = (props: Props) => {
     'b/project/save',
   )
 
+  const hasEdit = getIsPermission(
+    userInfo?.company_permissions,
+    'b/project/update',
+  )
+  const hasDelete = getIsPermission(
+    userInfo?.company_permissions,
+    'b/project/delete',
+  )
+  const hasStop = getIsPermission(
+    userInfo?.company_permissions,
+    'b/project/stop',
+  )
+  const hasStart = getIsPermission(
+    userInfo?.company_permissions,
+    'b/project/start',
+  )
+
   const onUpdateOrderKey = (key: any, val: any) => {
     props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
   }
@@ -200,18 +217,7 @@ const MainTable = (props: Props) => {
       ),
       width: 160,
       render: (text: string, record: any) => {
-        return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <MoreContent
-              onChange={props?.onChangeOperation}
-              text={text}
-              record={record}
-            />
-            <ClickWrap isClose={record.status === 2} style={{ marginLeft: 16 }}>
-              {text}
-            </ClickWrap>
-          </div>
-        )
+        return <ClickWrap isClose={record.status === 2}>{text}</ClickWrap>
       },
     },
     {
@@ -397,6 +403,29 @@ const MainTable = (props: Props) => {
     },
   ]
 
+  const selectColum: any = useMemo(() => {
+    const arr = columns
+
+    const arrList = [
+      {
+        render: (text: any, record: any) => {
+          return (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              {hasEdit && hasDelete && hasStop && hasStart ? null : (
+                <MoreContent
+                  onChange={props?.onChangeOperation}
+                  text={text}
+                  record={record}
+                />
+              )}
+            </div>
+          )
+        },
+      },
+    ]
+    return [...arrList, ...arr]
+  }, [columns])
+
   const onChangePage = (page: number, size: number) => {
     props.onChangePageNavigation({ page, size })
   }
@@ -414,8 +443,8 @@ const MainTable = (props: Props) => {
     <div>
       <ResizeTable
         isSpinning={false}
-        dataWrapNormalHeight="calc(100vh - 294px)"
-        col={columns}
+        dataWrapNormalHeight="calc(100vh - 256px)"
+        col={selectColum}
         dataSource={props.projectList?.list}
         onRow={onTableRow as any}
         noData={

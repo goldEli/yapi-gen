@@ -246,6 +246,8 @@ const AddWorkflow = (props: Props) => {
     const result = await storyConfigStatusList({
       projectId: paramsData.id,
       categoryId: categoryItem?.id,
+      orderKey: 'id',
+      order: 'asc',
     })
     setStatusWorkList(result)
     const arr = result?.list?.filter((i: any) => i.isCheck)
