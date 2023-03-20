@@ -1,4 +1,3 @@
-import React from 'react'
 import { StatusWrap } from './StyleCommon'
 
 const StateTag = (props: any) => {

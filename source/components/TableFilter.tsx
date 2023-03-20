@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next'
 import RangePicker from './RangePicker'
 import { useDispatch, useSelector } from '@store/index'
 import { setFilterKeys } from '@store/project'
-import { onTapSearchChoose, saveScreen, saveValue } from '@store/view'
+import { saveValue } from '@store/view'
 import MoreSelect from './MoreSelect'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
 
@@ -263,7 +263,6 @@ export const NumericInput2 = (props: any) => {
 const TableFilter = (props: any) => {
   const [t] = useTranslation()
   const info = useGetloginInfo()
-  const { searchChoose } = useSelector(store => store.view)
   const { list, basicsList, specialList, customList } = props
   const [form] = Form.useForm()
   const { filterKeys, projectInfoValues } = useSelector(store => store.project)
@@ -518,43 +517,6 @@ const TableFilter = (props: any) => {
                     </DelButton>
                   </SelectWrapBedeck>
                 )}
-                {/* {[
-                  'select_checkbox',
-                  'checkbox',
-                  'select',
-                  'radio',
-                  'dan',
-                ].includes(i.type) && (
-                  <SelectWrapBedeck key={i.key}>
-                    <span style={{ margin: '0 16px', fontSize: '14px' }}>
-                      {i.contentTxt}
-                    </span>
-                    <Form.Item name={i.key}>
-                      <SelectWrap
-                        showArrow
-                        mode="multiple"
-                        style={{ width: '100%' }}
-                        placeholder={t('common.pleaseSelect')}
-                        showSearch
-                        onChange={() => confirm(i.key)}
-                        allowClear
-                        optionFilterProp="label"
-                        options={deWeight(
-                          projectInfoValues
-                            ?.filter((k: any) => k.key === i.key)[0]
-                            ?.children?.map((v: any) => ({
-                              label: v.content_txt,
-                              value: v.id,
-                              id: v.id,
-                            })),
-                        )}
-                      />
-                    </Form.Item>
-                    <DelButton onClick={() => delList(i.content)}>
-                      <IconFont type="close-solid" className="icon" />
-                    </DelButton>
-                  </SelectWrapBedeck>
-                )} */}
                 {['single_checkbox'].includes(i.type) && (
                   <SelectWrapBedeck key={i.key}>
                     <span style={{ margin: '0 16px', fontSize: '14px' }}>

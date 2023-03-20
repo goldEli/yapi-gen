@@ -29,7 +29,7 @@ const ChildrenDemand = (props: Props) => {
     {
       title: t('common.demandName'),
       dataIndex: 'name',
-      render: (text: string, record: any) => {
+      render: () => {
         return (
           <div>
             {props.detail.projectPrefix}-{props.detail.prefixKey}
@@ -47,7 +47,7 @@ const ChildrenDemand = (props: Props) => {
     {
       title: t('common.priority'),
       dataIndex: 'priority',
-      render: (text: any, record: any) => {
+      render: (text: any) => {
         return (
           <PriorityWrap notEdit>
             <IconFont

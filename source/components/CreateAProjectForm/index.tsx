@@ -11,11 +11,7 @@ import {
   getGroupList,
   getProjectInfoOnly,
 } from '@/services/project'
-import {
-  changeCreateVisible,
-  editProject,
-  onRest,
-} from '@store/create-propject'
+import { changeCreateVisible, editProject } from '@store/create-propject'
 import { postCreate, postEditCreate } from '@store/create-propject/thunks'
 import { useDispatch, useSelector } from '@store/index'
 import { Form, Input, message, Select, Tooltip, Upload } from 'antd'

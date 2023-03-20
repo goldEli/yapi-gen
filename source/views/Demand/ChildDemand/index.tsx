@@ -7,9 +7,9 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import IconFont from '@/components/IconFont'
-import { Menu, Pagination, message, Spin } from 'antd'
+import { message } from 'antd'
 import styled from '@emotion/styled'
-import { TableStyleBox, SecondButton } from '@/components/StyleCommon'
+import { SecondButton } from '@/components/StyleCommon'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useDynamicColumns } from '@/components/CreateProjectTableColum'
@@ -55,13 +55,6 @@ const RowIconFont = styled(IconFont)({
   fontSize: 16,
   cursor: 'pointer',
   color: 'var(--primary-d2)',
-})
-
-const DataWrap = styled.div({
-  height: 'calc(100% - 92px)',
-  background: 'white',
-  overflowX: 'auto',
-  borderRadius: 6,
 })
 
 const ChildDemand = () => {
@@ -112,9 +105,6 @@ const ChildDemand = () => {
       }
     }
   }, [dataList])
-
-  const tableY =
-    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
   const getShowkey = () => {
     setPlainOptions(projectInfo?.plainOptions || [])
@@ -184,11 +174,6 @@ const ChildDemand = () => {
     setAllTitleList(all)
   }
 
-  const onEdit = (e: any, item: any) => {
-    setOperationItem(item)
-    setIsVisible(true)
-  }
-
   const onUpdate = async (updateState?: boolean) => {
     const result = await getDemandInfo({ projectId, id: demandId })
     dispatch(setDemandInfo(result))
@@ -209,16 +194,6 @@ const ChildDemand = () => {
   const onChangePage = (page: number, size: number) => {
     setPageObj({ page, size })
     getList({ page, size }, order, orderKey)
-  }
-
-  const onShowSizeChange = (page: number, size: number) => {
-    setPageObj({ page, size })
-    getList({ page, size }, order, orderKey)
-  }
-
-  const onChangeVisible = () => {
-    setIsVisible(false)
-    setOperationItem({})
   }
 
   const onChangeState = async (item: any) => {
@@ -243,11 +218,6 @@ const ChildDemand = () => {
     } catch (error) {
       //
     }
-  }
-
-  const onDelete = (item: any) => {
-    setDeleteId(item.id)
-    setIsDelete(true)
   }
 
   const onDeleteConfirm = async () => {

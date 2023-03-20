@@ -55,7 +55,6 @@ const WaterMarkManagement = () => {
   asyncSetTtile(t('title.c7'))
 
   const { value: checked } = useSelector(store => store.water)
-  const { userInfo } = useSelector(store => store.user)
   const { menuPermission } = useSelector(store => store.user)
   const dispatch = useDispatch()
 

@@ -3,9 +3,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Select, Pagination, Form, Spin, Space } from 'antd'
+import { Select, Form, Space } from 'antd'
 import moment from 'moment'
-import { SelectWrapBedeck, TableStyleBox } from '@/components/StyleCommon'
+import { SelectWrapBedeck } from '@/components/StyleCommon'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import Sort from '@/components/Sort'
 import { useTranslation } from 'react-i18next'
@@ -119,9 +119,6 @@ const LoginManagement = () => {
       }
     }
   }, [dataList])
-
-  const tableY =
-    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
   const getList = async (pageObjVal?: any, orderVal?: any) => {
     setIsSpinning(true)

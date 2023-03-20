@@ -14,9 +14,10 @@ import CommonButton from '@/components/CommonButton'
 import { useEffect, useState } from 'react'
 import Checkbox from 'antd/lib/checkbox/Checkbox'
 import CommonUserAvatar from './CommonUserAvatar'
-import { useDispatch, useSelector } from '@store/index'
+import { useSelector } from '@store/index'
 import { getDepartmentUserList } from '@/services/setting'
 import { unionBy } from 'lodash'
+
 const { DirectoryTree } = Tree
 const ModalHeader = styled.div`
   display: flex;
@@ -205,7 +206,6 @@ interface ModalProps {
 
 const CommonModal = (props: ModalProps) => {
   const [t] = useTranslation()
-  const { departmentUserList } = useSelector(s => s.teams)
   const { projectInfo } = useSelector(store => store.project)
   // 添加成员拍平数组
   const [selectDataList, setSelectDataList] = useState<any>()

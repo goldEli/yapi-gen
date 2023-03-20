@@ -6,10 +6,10 @@
 /* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
-import { Pagination, Space, Spin } from 'antd'
+import { Space } from 'antd'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
-import { HiddenText, TableStyleBox } from '@/components/StyleCommon'
+import { HiddenText } from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
 import Sort from '@/components/Sort'
 import { OmitText } from '@star-yun/ui'
@@ -41,13 +41,6 @@ const TitleWrap = styled(Space)({
   color: 'var(--neutral-n1-d1)',
   fontSize: 14,
   marginBottom: 24,
-})
-
-const DataWrap = styled.div({
-  height: 'calc(100% - 40px)',
-  background: 'white',
-  overflowX: 'auto',
-  borderRadius: 6,
 })
 
 const ContentWrap = styled.div({
@@ -105,9 +98,6 @@ const ChangeRecord = () => {
       }
     }
   }, [dataList])
-
-  const tableY =
-    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
   const getList = async (item?: any, orderVal?: any) => {
     setIsSpinning(true)
@@ -408,10 +398,6 @@ const ChangeRecord = () => {
     getList({ page, size }, order)
   }
 
-  const onShowSizeChange = (page: number, size: number) => {
-    setPageObj({ page, size })
-    getList({ page, size }, order)
-  }
   return (
     <div style={{ height: 'calc(100% - 74px)' }}>
       <CommonModal

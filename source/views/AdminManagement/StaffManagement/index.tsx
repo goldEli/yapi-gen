@@ -8,12 +8,12 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { Menu, message, Pagination, Space, Spin } from 'antd'
+import { Menu, message } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './components/StaffTable'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { StaffPersonal } from './components/StaffPower'
-import { TableStyleBox, HoverWrap, DividerWrap } from '@/components/StyleCommon'
+import { HoverWrap, DividerWrap } from '@/components/StyleCommon'
 import SearchList from './components/SearchList'
 import { getIsPermission } from '@/tools/index'
 import NoData from '@/components/NoData'
@@ -195,9 +195,6 @@ const StaffManagement = () => {
   })
 
   const menuTable = (record: any) => {
-    const isEdit = (
-      userInfo.company_permissions?.map((i: any) => i.identity) || []
-    ).includes('b/project/update')
     const items = [
       {
         key: '1',
@@ -334,9 +331,7 @@ const StaffManagement = () => {
     setPagesize(size)
     setPage(newPage)
   }
-  const onShowSizeChange = (current: any, size: any) => {
-    setPagesize(size)
-  }
+
   const onPressEnter = (value: any) => {
     setPage(1)
     setKeyword(value)
@@ -382,15 +377,11 @@ const StaffManagement = () => {
     }
   }, [listData])
 
-  const tableY =
-    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
-
   if (!loadingState) {
     return <Loading />
   }
 
   const onConfirm = async () => {
-    // console.log(1)
     const res1 = await confirmHand({ id: editData.id })
 
     if (res1.code === 0) {

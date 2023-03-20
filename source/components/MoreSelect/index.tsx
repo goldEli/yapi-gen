@@ -24,12 +24,6 @@ type List = {
   dec?: string
 }
 
-type Props = {
-  type: 'promise' | 'user' | 'project'
-  options: List[]
-  onChange?(values: string[]): void
-}
-
 const index = (props: any) => {
   const [t] = useTranslation()
 

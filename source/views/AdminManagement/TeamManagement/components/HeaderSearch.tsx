@@ -1,6 +1,5 @@
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
-import { useState } from 'react'
 import InputSearch from '@/components/InputSearch'
 import { useSelector } from '@store/index'
 import { t } from 'i18next'

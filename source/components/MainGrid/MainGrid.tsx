@@ -40,8 +40,6 @@ const MainGrid = (props: Props) => {
 
   const onAddClick = () => {
     dispatch(changeCreateVisible(true))
-    // props.onChangeVisible()
-    // props.onAddClear?.()
   }
 
   return (

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import React from 'react'
+
 const Tag = styled.div`
   height: 24px;
   font-size: 16px;

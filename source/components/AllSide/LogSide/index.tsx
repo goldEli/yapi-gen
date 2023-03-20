@@ -1,10 +1,8 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-import CommonButton from '@/components/CommonButton'
 import IconFont from '@/components/IconFont'
 import useSetTitle from '@/hooks/useSetTitle'
 import { writeDaily } from '@/services/daily'
-import { getIsPermission } from '@/tools'
 import WhiteDay from '@/views/LogManagement/components/WhiteDay'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
@@ -110,7 +108,6 @@ const LogSide = () => {
   const { pathname } = useLocation()
   const nowPath2 = Number(pathname.split('/')[3]) || ''
   const navigate = useNavigate()
-  const { userInfo } = useSelector(store => store.user)
   const [visibleEdit, setVisibleEdit] = useState(false)
   const [visibleEditText, setVisibleEditText] = useState('')
   const [showPop, setShowPop] = useState(false)
@@ -183,13 +180,8 @@ const LogSide = () => {
       ))}
     </div>
   )
-  const title = menuList[(nowPath2 as number) - 1]?.name
   return (
     <div>
-      {/* {getIsPermission(
-          userInfo?.company_permissions,
-          'b/user/fast/create',
-        ) ? null : ( */}
       <Popover
         placement="bottomRight"
         trigger="hover"

@@ -246,7 +246,6 @@ const HeaderLeft = () => {
     store => store.user,
   )
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const routerPath = useLocation()
 
   const getActive = (item: any) => {

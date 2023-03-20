@@ -15,7 +15,7 @@ import {
   storyConfigField,
 } from '@/services/project'
 import { getStaffList } from '@/services/staff'
-import { Checkbox, message, Radio, Tooltip } from 'antd'
+import { Checkbox, message, Tooltip } from 'antd'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
 import { useDispatch, useSelector } from '@store/index'

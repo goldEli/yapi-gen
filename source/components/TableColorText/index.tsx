@@ -2,7 +2,6 @@
 /* eslint-disable no-negated-condition */
 /* eslint-disable react/no-danger */
 import { useSelector } from '@store/index'
-import { startCase } from 'lodash'
 
 const TableColorText = (props: any) => {
   const hight = useSelector(state => state.colorText.text)

@@ -1,4 +1,3 @@
-import React, { useMemo } from 'react'
 import CommonUserAvatar from '../CommonUserAvatar'
 import { Wrap, WrapFirst, WrapSecond, WrapText, WrapTextImg } from './style'
 

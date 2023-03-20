@@ -5,21 +5,10 @@
 /* eslint-disable no-constant-binary-expression */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
-import {
-  createRef,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
-import { Pagination, message, Spin, Menu, Table } from 'antd'
+import { createRef, useEffect, useMemo, useRef, useState } from 'react'
+import { message, Menu, Table } from 'antd'
 import styled from '@emotion/styled'
-import {
-  TableStyleBox,
-  ExpendedWrap,
-  SecondButton,
-} from '@/components/StyleCommon'
+import { ExpendedWrap, SecondButton } from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -47,14 +36,6 @@ const Content = styled.div({
   padding: '20px 12px 0 8px',
   background: 'var(--neutral-white-d1)',
   height: 'calc(100% - 32px)',
-})
-
-const DataWrap = styled.div({
-  background: 'white',
-  overflowX: 'auto',
-  height: 'calc(100% - 64px)',
-  width: '100%',
-  position: 'relative',
 })
 
 interface Props {
@@ -117,16 +98,11 @@ const DemandTree = (props: Props) => {
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
   const [isShowMore, setIsShowMore] = useState(false)
-  const dataWrapRef = useRef<HTMLDivElement>(null)
   const [data, setData] = useState<any>({})
   // 展开的id集合
   const [expandedRowKeys, setExpandedRowKeys] = useState<any>([])
   // 勾选的id集合
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
-  const [isVisible, setIsVisible] = useState(false)
-  // 创建子需求数据
-  const [isCreateChild, setIsCreateChild] = useState<any>({})
-  const [isAddVisible, setIsAddVisible] = useState(false)
   const batchDom: any = createRef()
   // 用于获取数据更新后的展开key
   const [computedTopId, setComputedTopId] = useState(0)
@@ -419,14 +395,6 @@ const DemandTree = (props: Props) => {
     'b/story/batch',
   )
 
-  // 点击创建子需求
-  const onChangeCreateChild = (item: any) => {
-    setIsShowMore(false)
-    setIsVisible(true)
-    setIsCreateChild(item)
-    setComputedTopId(item?.topId)
-  }
-
   //  点击批量
   const onClickBatch = (e: any, type: any) => {
     setIsShowMore(false)
@@ -527,9 +495,6 @@ const DemandTree = (props: Props) => {
     return [...arrList, ...newList]
   }, [titleList, titleList2, titleList3, columns, selectedRowKeys])
 
-  const [dataWrapHeight, setDataWrapHeight] = useState(0)
-  const [tableWrapHeight, setTableWrapHeight] = useState(0)
-
   useEffect(() => {
     setData(props.data)
     // 如果有顶层id，则更新展开的key数组
@@ -549,27 +514,6 @@ const DemandTree = (props: Props) => {
       }
     }
   }, [props.data?.list])
-
-  useLayoutEffect(() => {
-    if (dataWrapRef.current) {
-      const currentHeight = dataWrapRef.current.clientHeight
-      if (currentHeight !== dataWrapHeight) {
-        setDataWrapHeight(currentHeight)
-      }
-
-      const tableBody = dataWrapRef.current.querySelector('.ant-table-tbody')
-      if (tableBody && tableBody.clientHeight !== tableWrapHeight) {
-        setTableWrapHeight(tableBody.clientHeight)
-      }
-    }
-    // 判断列表数据更新完成并且有延时id则调用获取子需求列表
-    if (!props.isUpdated && delayChild?.id) {
-      onGetChildList(delayChild)
-    }
-  }, [data?.list])
-
-  const tableY: any =
-    tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
   // 需求勾选
   const onSelectChange = (record: any, selected: any) => {
@@ -593,17 +537,6 @@ const DemandTree = (props: Props) => {
       setSelectedRowKeys([])
       onOperationCheckbox('remove')
     }
-  }
-
-  // 关闭创建子需求
-  const onCloseCreateChild = () => {
-    setIsVisible(!isVisible)
-    setIsCreateChild({})
-  }
-
-  // 关闭创建需求-暂无数据
-  const onClose = () => {
-    setIsAddVisible(!isAddVisible)
   }
 
   const onClick = () => {
