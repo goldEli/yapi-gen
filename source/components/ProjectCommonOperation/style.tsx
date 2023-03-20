@@ -18,6 +18,12 @@ export const MemberIcon = styled.div`
   border: 1px solid var(--neutral-n6-d1);
   cursor: pointer;
   background: var(--neutral-white-d4);
+  :hover {
+    background: var(--hover-d2);
+  }
+  :hover svg {
+    color: var(--primary-d1);
+  }
 `
 
 export const SearchOrProjectMember = styled(Space)`

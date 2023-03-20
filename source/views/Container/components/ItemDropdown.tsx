@@ -18,6 +18,7 @@ const Container = styled.div`
   background-color: var(--neutral-white-d6);
   box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
   border-radius: 0px 0px 6px 6px;
+  padding-bottom: 8px;
 `
 const ScrollWrap = styled.div``
 const Footer = styled.div`

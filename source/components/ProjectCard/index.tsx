@@ -17,6 +17,7 @@ import {
   CardRightSecond,
   HoverIcon,
   EndTag,
+  HoverDiv,
 } from './style'
 
 type Props = {
@@ -27,22 +28,22 @@ type Props = {
 
 const TextOfIcon = (props: Props) => (
   <Tooltip placement="bottom" title={props.text}>
-    <div>
+    <HoverDiv>
       <IconFont
         style={{
-          color: 'var(--neutral-n4)',
+          color: 'inherit',
         }}
         type={props.type}
       />
       <span
         style={{
           marginLeft: '5px',
-          color: 'var(--neutral-n4)',
+          color: 'inherit',
         }}
       >
         {props.num}
       </span>
-    </div>
+    </HoverDiv>
   </Tooltip>
 )
 const Index = (props: any) => {

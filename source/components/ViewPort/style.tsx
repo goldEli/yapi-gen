@@ -1,7 +1,7 @@
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 
-export const ViewPortWrap = styled.div`
+export const ViewPortWrap = styled.div<{ show: boolean }>`
   cursor: pointer;
   height: 32px;
   min-width: 120px;
@@ -10,6 +10,7 @@ export const ViewPortWrap = styled.div`
   align-items: center;
   padding: 0 8px;
   border-radius: 6px;
+  background: ${props => (props.show ? 'var(--neutral-n9)' : '')};
   color: var(--neutral-n3);
   &:hover {
     background: var(--neutral-n9);
@@ -27,12 +28,16 @@ export const Name = styled.div`
 `
 
 export const dropdowncontent = css`
+  padding: 5px;
   cursor: pointer;
   background: var(--neutral-white-d2);
   box-shadow: 0 3px 6px -4px rgb(0 0 0 / 12%), 0 6px 16px 0 rgb(0 0 0 / 8%),
     0 9px 28px 8px rgb(0 0 0 / 5%);
   & .ant-dropdown-menu {
     box-shadow: none;
+  }
+  .ant-dropdown-menu-item-group-list li {
+    border-radius: 6px;
   }
 `
 export const TextSpan = styled.span`
@@ -45,6 +50,11 @@ export const TextSpan = styled.span`
 `
 
 export const SetLine = styled.div`
-  padding: 5px 18px;
+  margin: 5px 8px;
+  padding: 5px 10px;
   cursor: pointer;
+  :hover {
+    background: var(--hover-d3) !important;
+    border-radius: 6px;
+  }
 `

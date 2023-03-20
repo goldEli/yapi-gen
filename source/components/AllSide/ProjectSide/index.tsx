@@ -237,7 +237,7 @@ const MoreProjectSide = (props: Props) => {
             }}
           >
             <CommonIconFont
-              type="settings"
+              type="user-check"
               color="var(--neutral-n3)"
               size={18}
             />
@@ -254,7 +254,7 @@ const MoreProjectSide = (props: Props) => {
             }}
           >
             <CommonIconFont
-              type="settings"
+              type="records-center"
               color="var(--neutral-n3)"
               size={18}
             />
@@ -269,6 +269,7 @@ const MoreProjectSide = (props: Props) => {
           <div
             style={{
               whiteSpace: 'nowrap',
+              fontSize: '12px',
             }}
           >
             {t('version2.projectGroup')}

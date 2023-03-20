@@ -159,19 +159,35 @@ const GlobalStyle = () => {
     }
 
     :root {
-      --blue: linear-gradient(180deg, rgba(183, 218, 238, 0) 0%, #00a3ff 100%);
-      --green: linear-gradient(180deg, rgba(183, 218, 238, 0) 0%, #009b56 100%);
+      --blue: linear-gradient(
+        180deg,
+        rgba(183, 218, 238, 0) 0%,
+        rgba(0, 163, 255, 0.4) 100%
+      );
+      --green: linear-gradient(
+        180deg,
+        rgba(194, 241, 235, 0.2) 0%,
+        rgba(0, 155, 86, 0.2) 100%
+      );
       --purple: linear-gradient(
         180deg,
         rgba(215, 152, 254, 0) 0%,
-        #4200ff 100%
+        rgba(66, 0, 255, 0.2) 100%
       );
       --orange: linear-gradient(
         180deg,
         rgba(238, 209, 183, 0) 0%,
-        #c34600 100%,
-        #dd5000 100%
+        rgba(221, 80, 0, 0.2) 100%
       );
+    }
+    .ant-input {
+      input {
+        font-family: SiYuanRegular;
+      }
+      &::placeholder {
+        /* color: red; */
+        font-family: SiYuanRegular;
+      }
     }
     .ant-progress-text {
       color: var(--neutral-n2) !important;
