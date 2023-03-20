@@ -185,7 +185,6 @@ const Workflow = () => {
               </>
             </CategoryWrap>
           </LabelWrap>
-          123456
           <StepWrap>
             <StepBoxWrap
               style={{ cursor: 'pointer' }}

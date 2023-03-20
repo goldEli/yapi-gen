@@ -27,6 +27,7 @@ import {
 import { useSelector } from '@store/index'
 import ChooseColor from './ChooseColor'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
+import StateTag from '@/components/StateTag'
 
 const TableWrap = styled.div({
   width: '780px',
@@ -57,7 +58,6 @@ const TableTitle = styled.div({
   color: 'var( --neutral-n3)',
   fontSize: 14,
   fontWeight: 500,
-  borderBottom: '1px solid var(--neutral-n5)',
 })
 
 const AddWrapBox = styled.div({
@@ -220,7 +220,7 @@ const ChangeTableName = (props: ChangeTableNameProps) => {
           />
         </div>
       ) : null}
-      <ViewWrap color={props?.record?.color}>{props?.text}</ViewWrap>
+      <StateTag name={props?.text} />
     </div>
   )
 }
@@ -494,7 +494,7 @@ const AddWorkflow = (props: Props) => {
                     >
                       {i.category_name}
                     </CategoryWrap>
-                    {t('newlyAdd.appointStatus')}1234455
+                    {t('newlyAdd.appointStatus')}
                   </div>
                 }
               >

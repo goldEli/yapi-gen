@@ -956,8 +956,8 @@ const SetConfig = (props: Props) => {
             </TextWrap>
             <Button
               style={{
-                background: 'var(--neutral-n6-d1)',
-                color: 'var(--primary-d2)',
+                background: 'var(--hover-d2)',
+                color: 'var(--neutral-n2)',
                 marginTop: 16,
                 marginLeft: 20,
               }}
