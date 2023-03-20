@@ -41,17 +41,23 @@ const ProjectDetailSide = () => {
       name: t('demand'),
       icon: 'demand',
       path: '/ProjectManagement/Demand',
-      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-        String(i.group_name).includes('需求'),
-      ).length,
+      isPermission:
+        projectInfo?.isPublic === 1
+          ? true
+          : projectInfo?.projectPermissions?.filter((i: any) =>
+              String(i.group_name).includes('需求'),
+            ).length,
     },
     {
       name: t('iteration'),
       icon: 'interation',
       path: '/ProjectManagement/Iteration',
-      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-        String(i.group_name).includes('迭代'),
-      ).length,
+      isPermission:
+        projectInfo?.isPublic === 1
+          ? true
+          : projectInfo?.projectPermissions?.filter((i: any) =>
+              String(i.group_name).includes('迭代'),
+            ).length,
     },
   ]
 

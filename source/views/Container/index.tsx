@@ -167,12 +167,15 @@ export const Container = () => {
       let navigateUrl = menuPermission.priorityUrl
       // 如果是项目管理
       if (menuPermission.priorityUrl === '/ProjectManagement') {
-        const children = menuPermission?.menus?.filter(
+        const currentObject = menuPermission?.menus?.filter(
           (i: any) => i.url === '/ProjectManagement',
-        )
-        const firstUrl = children?.[0]?.url
+        )?.[0]
+
+        const firstUrl = currentObject?.children?.[0]?.url
         if (firstUrl === '/ProjectManagement/Mine') {
           navigateUrl = '/ProjectManagement/Mine/Profile'
+        } else {
+          navigateUrl = firstUrl
         }
       } else if (menuPermission.priorityUrl === '/LogManagement') {
         // 如果是日志
