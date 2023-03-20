@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 
 export const MainTitle = styled.div({
   fontSize: 14,
-  color: 'var(--auxiliary-text-t2-d1)',
+  color: 'var(--neutral-n3)',
   fontWeight: 400,
 })
 

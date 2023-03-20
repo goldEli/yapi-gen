@@ -41,6 +41,13 @@ const FoldIcon = styled.div`
   z-index: 2;
   right: -12px;
   cursor: pointer;
+
+  :hover {
+    border: 1px solid var(--primary-d1);
+  }
+  :hover svg {
+    color: var(--primary-d1);
+  }
 `
 
 const SideMain = styled.div<{ firstMenuCollapse: boolean }>`

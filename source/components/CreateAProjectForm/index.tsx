@@ -200,14 +200,14 @@ const CreateAProjectForm = () => {
     {
       name: t('project.companyOpen'),
       id: 1,
-      dec: t('only_project_members_can_view_edits'),
+      dec: t(
+        'all_members_in_the_enterprise_can_be_seen_only_project_members_can_edit',
+      ),
     },
     {
       name: t('common.privateProject'),
       id: 2,
-      dec: t(
-        'all_members_in_the_enterprise_can_be_seen_only_project_members_can_edit',
-      ),
+      dec: t('only_project_members_can_view_edits'),
     },
     {
       name: t('the_team_is_open'),
@@ -255,9 +255,7 @@ const CreateAProjectForm = () => {
       <div
         style={{
           display: 'flex',
-          padding: '0 16px 0 24px',
-          maxHeight: 536,
-          overflowY: 'auto',
+          padding: '0 0px 0 24px',
         }}
       >
         <CoverAreaWrap>
@@ -353,16 +351,18 @@ const CreateAProjectForm = () => {
                   })
                 }}
               >
-                {affiliations.map((i: any) => (
-                  <Select.Option value={i.id} key={i.id} label={i.name}>
-                    <MoreOptions
-                      type="project"
-                      name={i.name}
-                      dec={i.dec}
-                      img={i.logo}
-                    />
-                  </Select.Option>
-                ))}
+                {affiliations.map((i: any) => {
+                  return (
+                    <Select.Option value={i.id} key={i.id} label={i.name}>
+                      <MoreOptions
+                        type="project"
+                        name={i.name}
+                        dec={i.dec}
+                        img={i.img}
+                      />
+                    </Select.Option>
+                  )
+                })}
               </Select>
             </Form.Item>
             <Form.Item
@@ -384,6 +384,7 @@ const CreateAProjectForm = () => {
                         position: 'absolute',
                         left: '26px',
                         top: '5px',
+                        color: 'var(--neutral-n3)',
                       }}
                       type="question"
                     />
@@ -406,6 +407,7 @@ const CreateAProjectForm = () => {
               />
             </Form.Item>
             <Form.Item
+              rules={[{ required: true, message: '' }]}
               label={<FormTitleSmall text={t('project_leader')} />}
               name="leader_id"
             >

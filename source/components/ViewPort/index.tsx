@@ -16,6 +16,7 @@ import CommonIconFont from '../CommonIconFont'
 import { dropdowncontent, Name, SetLine, TextSpan, ViewPortWrap } from './style'
 
 const ViewPort = (props: any) => {
+  const [show, setShow] = useState(false)
   const dispatch = useDispatch()
   const { viewList } = useSelector(state => state.view)
   const [nowKey, setNowKey] = useState('')
@@ -77,8 +78,12 @@ const ViewPort = (props: any) => {
     }
     return t('whole')
   }, [viewList, nowKey])
+  const onOpenChange = (open: boolean) => {
+    setShow(open)
+  }
   return (
     <Dropdown
+      onOpenChange={onOpenChange}
       trigger={['click']}
       menu={{ items, onClick }}
       getPopupContainer={(node: any) => node.parentNode}
@@ -95,7 +100,7 @@ const ViewPort = (props: any) => {
         </div>
       )}
     >
-      <ViewPortWrap>
+      <ViewPortWrap show={show}>
         <CommonIconFont size={18} type="view-n" />
         <Name>
           {t('view')}：{name}{' '}

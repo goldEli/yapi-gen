@@ -67,7 +67,14 @@ const OperationGroup = (props: Props) => {
           <HasIconMenu onClick={() => onClickMenu(0)} isCheck={!props.isGrid}>
             <div className="left">
               <IconFont className="icon" type="unorderedlist" />
-              <span className="label">{t('common.list')}</span>
+              <span
+                style={{
+                  color: 'var(--neutral-n2)',
+                }}
+                className="label"
+              >
+                {t('common.list')}
+              </span>
             </div>
             <IconFont className="checked" type={props.isGrid ? '' : 'check'} />
           </HasIconMenu>
@@ -82,7 +89,14 @@ const OperationGroup = (props: Props) => {
           >
             <div className="left">
               <IconFont className="icon" type="layout" />
-              <span className="label">{t('common.board')}</span>
+              <span
+                style={{
+                  color: 'var(--neutral-n2)',
+                }}
+                className="label"
+              >
+                {t('common.board')}
+              </span>
             </div>
             <IconFont
               className="checked"
@@ -100,7 +114,14 @@ const OperationGroup = (props: Props) => {
           >
             <div className="left">
               <IconFont className="icon" type="tree-list" />
-              <span className="label">{t('version2.tree')}</span>
+              <span
+                style={{
+                  color: 'var(--neutral-n2)',
+                }}
+                className="label"
+              >
+                {t('version2.tree')}
+              </span>
             </div>
             <IconFont
               className="checked"

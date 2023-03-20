@@ -1,16 +1,20 @@
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
+import IconFont from '../IconFont'
 
 export const Wrap = styled.div`
-  width: 388px;
+  width: 410px;
   padding-left: 24px;
+  max-height: 536px;
+  overflow-y: auto;
+  padding-right: 24px;
 `
 
 export const CoverAreaWrap = styled.div`
   box-sizing: content-box;
   width: 368px;
   padding-right: 24px;
-  border-right: 1px solid var(--neutral-n6-d1);
+  border-right: 1px solid var(--neutral-n6-d2);
 `
 
 export const CoverArea = styled.div`
@@ -73,6 +77,17 @@ export const CoverAreaImageWrap = styled.div<{ color?: string }>`
       width: 80px;
       height: 40px;
       transition: all 0.3s;
+      border-bottom: 2px solid
+        ${props =>
+          props.color === '#009BF2'
+            ? '#009BF2'
+            : props.color === '#534BFF'
+            ? '#534BFF'
+            : props.color === '#E86013'
+            ? '#E86013'
+            : props.color === '#01AF85'
+            ? '#01AF85'
+            : ''};
       background: ${props =>
         props.color === '#009BF2'
           ? 'var(--blue)'
@@ -93,11 +108,18 @@ export const CoverAreaAdd = styled.div`
   width: 80px;
   height: 80px;
   border-radius: 6px 6px 6px 6px;
-  background: var(--hover-d3);
+  background: var(--neutral-n6-d2);
   opacity: 1;
   border: 1px solid var(--neutral-n6-d2);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+
+  &:hover {
+    background: var(--hover-d3);
+  }
+  &:hover svg {
+    color: var(--primary-d2);
+  }
 `

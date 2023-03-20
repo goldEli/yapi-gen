@@ -25,6 +25,10 @@ export const CardRightFirst = styled.div`
 `
 
 export const CardRightSecond = styled.div`
+  width: 128px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
   height: 20px;
   font-size: 12px;
   font-family: PingFang SC-Regular, PingFang SC;
@@ -87,6 +91,7 @@ export const ProjectCard = styled.div`
   gap: 16px;
   transition: all 0.3s;
   &:hover {
+    background-color: var(--neutral-white-d4);
     transition: all 0.3s;
     transform: translate(0, -10px);
     box-shadow: 0px 4px 8px 0px rgba(102, 136, 255, 0.12),
@@ -101,5 +106,12 @@ export const ProjectCard = styled.div`
   }
   &:hover ${HoverIcon} {
     visibility: visible;
+  }
+`
+
+export const HoverDiv = styled.div`
+  color: var(--neutral-n4);
+  &:hover {
+    color: var(--neutral-n2) !important;
   }
 `

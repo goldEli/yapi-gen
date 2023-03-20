@@ -40,7 +40,6 @@ const MoreOptions = (props: OptionsProps) => {
           style={{
             display: 'flex',
             flexDirection: 'column',
-            height: '45px',
           }}
         >
           <WrapFirst>{props.name}</WrapFirst>
