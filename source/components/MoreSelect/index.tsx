@@ -45,10 +45,12 @@ const index = (props: any) => {
       .filter((v, i, arr) => {
         return arr.indexOf(v) === arr.lastIndexOf(v)
       })
+      .filter((i: any) => i !== undefined)
   }
 
   const invertSelection = () => {
     const invertSelectionArray = getArrDifference(props.options, props.value)
+
     props.onChange(invertSelectionArray)
     props.onConfirm(props.id)
   }

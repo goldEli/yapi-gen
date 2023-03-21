@@ -234,7 +234,8 @@ const SliderList = (props: any) => {
               {child.content === 'users_name' ||
               child.content === 'user_name' ||
               child.content === 'finish_at' ||
-              child.content === 'created_at' ? (
+              child.content === 'created_at' ||
+              child.content === 'schedule' ? (
                 <Checkbox disabled={true} />
               ) : (
                 <Checkbox
@@ -321,7 +322,7 @@ const SliderList = (props: any) => {
 }
 const Empty = styled.div`
   width: 100%;
-  height: 150px;
+  height: 300px;
 `
 const Sortable = (props: any) => {
   const { list, setList } = props
@@ -333,7 +334,7 @@ const Sortable = (props: any) => {
       }}
     >
       {list?.length < 1 && (
-        <Empty onDrop={(event: any) => props.onDrop(event, 0)}>888787</Empty>
+        <Empty onDrop={(event: any) => props.onDrop(event, 0)} />
       )}
       {list?.length >= 1 &&
         list?.map((child: any, i: number) => (
