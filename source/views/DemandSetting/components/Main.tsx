@@ -138,7 +138,7 @@ const Main = (props: any) => {
       storyId: item.id,
       isCustomize: 1,
       is_required: 2,
-      is_fold: draggingIndex === 1 ? 1 : 2,
+      is_fold: configType === 1 ? 1 : 2,
     }
     if (configType === 1) {
       const arrData = Array.from(getCategoryConfigF)
@@ -178,12 +178,7 @@ const Main = (props: any) => {
 
   // 保存排序
   const save = async () => {
-    let dataArr: any = []
-    if (getCategoryConfigT.length >= 1) {
-      dataArr = [...getCategoryConfigF, ...getCategoryConfigT]
-    } else {
-      dataArr = [...getCategoryConfigF]
-    }
+    let dataArr = [...getCategoryConfigF, ...getCategoryConfigT]
     const newData = dataArr.map((el: any, i: number) => ({
       id: el.id,
       story_config_id: el.storyId,
