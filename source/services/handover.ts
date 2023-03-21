@@ -3,14 +3,14 @@
 import * as http from '../tools/http'
 
 export const getHandMember = async (id: any) => {
-  const response = await http.get(`/b/companyuser/join_projects/${id}`)
+  const response = await http.get(`/b/companyuser/update_join_projects/${id}`)
 
   return response.data
 }
 
 export const confirmHand = async (params: any) => {
   const response = await http.post(
-    `/b/companyuser/leave_handover/${params.id}`,
+    `/b/companyuser/update_leave_handover/${params.id}`,
     {
       user_id: params.id,
       projects: params.data,
@@ -61,7 +61,9 @@ export const confirmProjectHand = async (params: any) => {
 
 // --------------------------------------------
 export const restHand = async (id: any) => {
-  const response = await http.post(`/b/companyuser/recover_handover/${id}`)
+  const response = await http.post(
+    `/b/companyuser/update_recover_handover/${id}`,
+  )
 
   return response
 }
