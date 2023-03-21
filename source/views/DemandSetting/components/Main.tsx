@@ -268,7 +268,7 @@ const Main = (props: any) => {
           list={getCategoryConfigT}
           onDelete={(child: any) => onDelete(2, child)}
           onChangeChecked={(val: boolean, child: any) =>
-            onChangeChecked(1, val, child)
+            onChangeChecked(2, val, child)
           }
           setList={setGetCategoryConfigT}
         />
