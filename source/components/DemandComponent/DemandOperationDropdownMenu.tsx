@@ -39,9 +39,9 @@ export const DemandOperationDropdownMenu = (props: Props) => {
   // 复制需求id
   const onCopyId = () => {
     copyLink(
-      `${props?.record.projectPrefix}-${props?.record.prefixKey}`,
-      '复制需求编号成功！',
-      '复制需求编号失败！',
+      `${props?.record.storyPrefixKey}`,
+      t('copy_requirement_number_successfully'),
+      t('copy_requirement_number_failed'),
     )
   }
 
@@ -59,7 +59,11 @@ export const DemandOperationDropdownMenu = (props: Props) => {
     )
     const url = `/ProjectManagement/Demand?data=${params}`
     text += `【${props.record.name}】 ${beforeUrl}${url} \n`
-    copyLink(text, '复制需求链接成功！', '复制需求链接失败！')
+    copyLink(
+      text,
+      t('successfully_copied_requirement_link'),
+      t('failed_copied_requirement_link'),
+    )
   }
 
   let menuItems = [
