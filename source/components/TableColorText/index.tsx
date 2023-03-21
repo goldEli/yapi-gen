@@ -7,9 +7,10 @@ const TableColorText = (props: any) => {
   const hight = useSelector(state => state.colorText.text)
 
   const lightText = (item: any) => {
+    const newStr = item.replace('<', '&lt;').replace('>', '&gt;')
     let resultDiv = ''
-    if (hight && item.includes(hight)) {
-      const textArr = item.split(hight)
+    if (hight && newStr.includes(hight)) {
+      const textArr = newStr.split(hight)
       textArr?.forEach((i: any, index: number) => {
         const text =
           index != textArr.length - 1
@@ -19,7 +20,7 @@ const TableColorText = (props: any) => {
       })
       return resultDiv
     }
-    return item
+    return newStr
   }
 
   return <span dangerouslySetInnerHTML={{ __html: lightText(props.text) }} />
