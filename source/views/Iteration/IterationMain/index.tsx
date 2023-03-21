@@ -138,6 +138,7 @@ const IterationMain = (props: Props) => {
     if (state === 2) {
       params.tree = 1
       params.topParentId = topId ?? topParentId
+      params.iterateIds = [keyRef.current?.id]
     }
     dispatch(setFilterParams(params))
     const result = await getDemandList(params)

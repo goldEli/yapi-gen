@@ -58,7 +58,7 @@ const TreeBox = styled.div`
   align-items: center;
 `
 const FormBox = styled.div`
-  padding-right: 20px;
+  padding: 0 20px 0 24px;
 `
 const BtnsItemBox = styled.div`
   cursor: pointer;

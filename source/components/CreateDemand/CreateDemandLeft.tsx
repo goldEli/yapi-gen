@@ -653,6 +653,7 @@ const CreateDemandLeft = (props: Props) => {
               getPopupContainer={(node: any) => node}
               showSearch
               value={categoryObj?.id}
+              disabled={!props.projectId}
             >
               {props.allCategoryList
                 ?.filter((i: any) => i.status === 1)
