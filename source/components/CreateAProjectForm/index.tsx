@@ -346,6 +346,7 @@ const CreateAProjectForm = () => {
               rules={[{ required: true, message: '' }]}
             >
               <Select
+                disabled={!!isEditId}
                 placeholder={t('please_select_your_affiliation')}
                 optionLabelProp="label"
                 onChange={value => {
