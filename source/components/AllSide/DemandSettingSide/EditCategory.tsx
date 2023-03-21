@@ -66,15 +66,7 @@ const EditorCategory = (props: EditorProps) => {
       color: list.data[0].path,
     })
   }
-  const onCustomRequest = async (file: any) => {
-    if (!file.file.type?.includes('image')) {
-      message.warning(t('please_upload_a_picture'))
-      return
-    }
-    const data = await uploadFileByTask(file.file, '2', '2')
-    data && setColorList([...colorList, { id: Math.random(), path: data?.url }])
-    setHiddenUpload(true)
-  }
+
   useEffect(() => {
     if (props?.type === 'edit' && props.isVisible) {
       getIconList()
@@ -134,8 +126,9 @@ const EditorCategory = (props: EditorProps) => {
     }, 100)
   }
 
-  const onChangeValue = (val: { id: number; path: string }) => {
+  const onChangeValue = (val: { id: number; path: string }, state: any) => {
     setPath(val.path)
+    state === 1 ? setHiddenUpload(true) : setHiddenUpload(false)
   }
 
   return (
@@ -191,11 +184,10 @@ const EditorCategory = (props: EditorProps) => {
         </Form.Item>
         <Form.Item label={t('newlyAdd.chooseIcon')} name="attachment_id">
           <ChooseColor
-            onCustomRequest={(file: any) => onCustomRequest(file)}
             color={path}
             hiddenUpload={hiddenUpload}
             colorList={colorList}
-            onChangeValue={(val: any) => onChangeValue(val)}
+            onChangeValue={(val: any, state) => onChangeValue(val, state)}
           />
         </Form.Item>
         <Form.Item label={t('newlyAdd.view')}>
