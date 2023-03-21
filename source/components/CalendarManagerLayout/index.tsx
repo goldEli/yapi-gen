@@ -1,23 +1,26 @@
+import { Calendar } from 'antd'
 import React from 'react'
 import CommonButton from '../CommonButton'
 import IconFont from '../IconFont'
+import DXCalendar from './components/DXCalendar'
 import {
   CalenderBox,
   CalenderBoxLeftArea,
   CalenderBoxRightArea,
   CreateScheduleBtn,
+  StyledCalendar,
 } from './styles'
 
-type CalendarProps = {
+type CalendarManagerLayoutProps = {
   // num: string
 }
-type CalendarHandle = {
+type CalendarManagerLayoutHandle = {
   open(): void
 }
 
-const Calendar: React.ForwardRefRenderFunction<
-  CalendarHandle,
-  CalendarProps
+const CalendarManagerLayout: React.ForwardRefRenderFunction<
+  CalendarManagerLayoutHandle,
+  CalendarManagerLayoutProps
 > = (props, forwardedRef) => {
   React.useImperativeHandle(forwardedRef, () => ({
     open() {
@@ -33,10 +36,11 @@ const Calendar: React.ForwardRefRenderFunction<
             <span className="btnText">创建日程</span>
           </CreateScheduleBtn>
         </CommonButton>
+        <DXCalendar />
       </CalenderBoxLeftArea>
       <CalenderBoxRightArea></CalenderBoxRightArea>
     </CalenderBox>
   )
 }
 
-export default React.forwardRef(Calendar)
+export default React.forwardRef(CalendarManagerLayout)

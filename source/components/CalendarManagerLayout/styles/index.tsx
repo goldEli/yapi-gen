@@ -1,5 +1,6 @@
 import CommonButton from '@/components/CommonButton'
 import styled from '@emotion/styled'
+import { Calendar } from 'antd'
 
 export const CalenderBox = styled.div`
   display: flex;
@@ -30,5 +31,15 @@ export const CreateScheduleBtn = styled.span`
   justify-content: center;
   .btnText {
     line-height: 31px;
+  }
+`
+
+export const StyledCalendar = styled(Calendar)`
+  .ant-picker-cell .ant-picker-cell-inner {
+    border-radius: 50%;
+  }
+  .ant-picker-cell-in-view.ant-picker-cell-today
+    .ant-picker-cell-inner::before {
+    border-radius: 50%;
   }
 `
