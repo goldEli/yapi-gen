@@ -20,6 +20,7 @@ import {
 import moment from 'moment'
 import { useSelector } from '@store/index'
 import { batchDelete, batchEdit, getBatchEditConfig } from '@/services/demand'
+import CustomSelect from './CustomSelect'
 
 interface Props {
   isVisible: boolean
@@ -274,11 +275,11 @@ const BatchModal = (props: Props) => {
               name="type"
               rules={[{ required: true, message: '' }]}
             >
-              <Select
+              <CustomSelect
                 placeholder={t('common.pleaseSelect')}
                 showArrow
                 showSearch
-                getPopupContainer={node => node}
+                getPopupContainer={(node: any) => node}
                 allowClear
                 optionFilterProp="label"
                 options={chooseSelect}
@@ -317,12 +318,12 @@ const BatchModal = (props: Props) => {
                     { required: chooseType === 'category_id', message: '' },
                   ]}
                 >
-                  <Select
+                  <CustomSelect
                     placeholder={t('common.pleaseSelect')}
                     showSearch
                     showArrow
                     optionFilterProp="label"
-                    getPopupContainer={node => node}
+                    getPopupContainer={(node: any) => node}
                     allowClear
                     options={chooseAfter.selectList}
                     onChange={
@@ -340,7 +341,6 @@ const BatchModal = (props: Props) => {
                         : 'multiple'
                     }
                   />
-                  {/* )} */}
                 </Form.Item>
               )}
             {chooseType &&
@@ -371,17 +371,17 @@ const BatchModal = (props: Props) => {
               String(chooseType).includes('custom_') &&
               chooseAfter.attr === 'single_checkbox' && (
                 <Form.Item label={t('version2.updateAfter')} name="target">
-                  <Select
+                  <CustomSelect
                     placeholder={t('common.pleaseSelect')}
                     showSearch
                     showArrow
                     optionFilterProp="label"
-                    getPopupContainer={node => node}
+                    getPopupContainer={(node: any) => node}
                     allowClear
                   >
                     <Select.Option value={0}>{t('untick')}</Select.Option>
                     <Select.Option value={1}>{t('check')}</Select.Option>
-                  </Select>
+                  </CustomSelect>
                 </Form.Item>
               )}
             {chooseType === 'category_id' && (
@@ -390,11 +390,11 @@ const BatchModal = (props: Props) => {
                 name="status"
                 rules={[{ required: true, message: '' }]}
               >
-                <Select
+                <CustomSelect
                   placeholder={t('common.pleaseSelect')}
                   showArrow
                   showSearch
-                  getPopupContainer={node => node}
+                  getPopupContainer={(node: any) => node}
                   allowClear
                   optionFilterProp="label"
                   options={categoryStatusList}

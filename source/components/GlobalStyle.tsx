@@ -347,13 +347,14 @@ const GlobalStyle = () => {
 
     .ant-select-item-option {
       font-weight: inherit;
-
       color: var(--neutral-n2);
+      display: flex;
+      align-items: center;
     }
     .ant-select-item-option:hover {
       font-weight: inherit;
-      /* background: var(--neutral-white-d4); */
-      color: var(--neutral-n1-d1);
+      background: var(--hover-d3) !important;
+      color: var(--neutral-n1-d1) !important;
     }
     .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
       background-color: transparent;

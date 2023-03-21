@@ -3,7 +3,11 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { Form, Select } from 'antd'
-import { SearchLine, SelectWrapBedeck } from '@/components/StyleCommon'
+import {
+  SearchLine,
+  SelectWrap,
+  SelectWrapBedeck,
+} from '@/components/StyleCommon'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
@@ -11,6 +15,7 @@ import {
   getPositionSelectList,
   getRoleList,
 } from '@/services/staff'
+import CustomSelect from '@/components/CustomSelect'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -33,16 +38,6 @@ const FormWrap = styled(Form)({
   },
 })
 
-const SelectWrap = styled(Select)`
-  .ant-select-selection-placeholder {
-    color: black;
-  }
-  .ant-select-selector {
-    min-width: 160px;
-    border: none !important;
-    outline: none !important;
-  }
-`
 interface Props {
   onChangeForm?(value: any): void
   showForm?: boolean

@@ -12,7 +12,7 @@ import Achieve from './Achieve'
 import { useEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
-import { Space, Button, message } from 'antd'
+import { Space, message } from 'antd'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { getIsPermission, getParamsData } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
@@ -211,12 +211,6 @@ const Iteration = () => {
     projectInfo?.projectPermissions,
     'b/iterate/achieve/info',
   )
-
-  // 计算当前选中下是否有项目管理权限
-  const resultAuth =
-    currentMenu?.children?.filter(
-      (i: any) => i.url === '/ProjectManagement/Project',
-    )?.length > 0
 
   const onFilterSearch = (e: any, customField: any) => {
     const params = {

@@ -7,10 +7,9 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { message, Tooltip } from 'antd'
-import { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
-import { SelectWrapBedeck } from '@/components/TableFilter'
 import NoData from '@/components/NoData'
 import Sort from '@/components/Sort'
 import WhiteDay from './components/WhiteDay'
@@ -24,6 +23,7 @@ import PaginationBox from '@/components/TablePagination'
 import { useDispatch, useSelector } from '@store/index'
 import { changeRest } from '@store/log'
 import ResizeTable from '@/components/ResizeTable'
+import { SelectWrapBedeck } from '@/components/StyleCommon'
 
 const srr = [undefined, undefined, 1, 2, 3]
 const Send = () => {

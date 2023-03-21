@@ -18,6 +18,7 @@ import { setStartUsing } from '@store/category/index'
 import EditCategory from '@/components/AllSide/DemandSettingSide/EditCategory'
 import { storyConfigCategoryList } from '@store/category/thunk'
 import CommonModal from '@/components/CommonModal'
+import CustomSelect from '@/components/CustomSelect'
 
 const HeaderWrap = styled.div`
   height: 66px;
@@ -223,11 +224,11 @@ const Header = () => {
                 name="newId"
                 rules={[{ required: true, message: '' }]}
               >
-                <Select
+                <CustomSelect
                   placeholder={t('common.pleaseSelect')}
                   showArrow
                   showSearch
-                  getPopupContainer={node => node}
+                  getPopupContainer={(node: any) => node}
                   allowClear
                   optionFilterProp="label"
                   onChange={onChangeSelect}
@@ -246,12 +247,12 @@ const Header = () => {
                 name="statusId"
                 rules={[{ required: true, message: '' }]}
               >
-                <Select
+                <CustomSelect
                   placeholder={t('common.pleaseSelect')}
                   disabled={disable}
                   showArrow
                   showSearch
-                  getPopupContainer={node => node}
+                  getPopupContainer={(node: any) => node}
                   allowClear
                   optionFilterProp="label"
                   options={workList?.list?.map((k: any) => ({

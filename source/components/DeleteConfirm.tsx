@@ -26,6 +26,7 @@ const ModalHeader = styled.div({
   height: 32,
   paddingLeft: 24,
   paddingRight: 18,
+  fontFamily: 'SiYuanMedium',
 })
 
 const Title = styled.div`
