@@ -53,6 +53,7 @@ const ChooseColor = (props: ChooseColorProps) => {
         padding: 16,
         flexWrap: 'wrap',
         maxWidth: 248,
+        justifyContent: 'center',
       }}
       size={8}
     >

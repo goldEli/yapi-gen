@@ -23,6 +23,7 @@ const ButtonStyle = styled.div`
   justify-content: flex-end;
   align-items: center;
   padding: 0 24px;
+  background-color: var(--neutral-n10);
 `
 
 const DemandSetting = () => {

@@ -105,7 +105,7 @@ const Contain = styled.div`
   min-height: 316px;
   display: flex;
 `
-const MyDiv = styled.div`
+const MyDiv = styled.div<{ show?: boolean }>`
   display: flex;
   align-items: center;
   border-radius: 2px;
@@ -113,6 +113,7 @@ const MyDiv = styled.div`
   transition: all 0.3s;
   /* height: 32px; */
   cursor: pointer;
+  background-color: ${props => (props.show ? 'var(--auxiliary-b6)' : '')};
   &:hover {
     background-color: #f5f5f5;
   }
@@ -637,7 +638,7 @@ export const ShapeContent = (props: any) => {
 
       const names = newC.map((k: any) => k.name).join(' ; ')
 
-      return `${names}（${t('theOriginalStateHandlesThePerson')}）`
+      return names ? `${names}（${t('theOriginalStateHandlesThePerson')}）` : ''
     }
   }
   const setMyValue = () => {
@@ -653,6 +654,12 @@ export const ShapeContent = (props: any) => {
     form.setFieldsValue({
       users_name: Array.from(new Set([...arr, ...arr2])),
     })
+  }
+  const valid = () => {
+    const str1 = form.getFieldsValue()?.users_name?.join(',')
+    const str2 = rightList?.originalStatusUserIds?.join(',')
+
+    return str1?.includes(str2)
   }
   return (
     <Contain>
@@ -781,10 +788,21 @@ export const ShapeContent = (props: any) => {
                                     padding: '8px ',
                                   }}
                                 >
-                                  <MyDiv onClick={setMyValue}>
-                                    {format2(i, 2)}
-                                  </MyDiv>
-                                  <MyDiv onClick={setMyValue2}>
+                                  {format2(i, 2) && (
+                                    <MyDiv
+                                      show={valid() as unknown as boolean}
+                                      onClick={setMyValue}
+                                    >
+                                      {format2(i, 2)}
+                                    </MyDiv>
+                                  )}
+
+                                  <MyDiv
+                                    show={form
+                                      .getFieldsValue()
+                                      ?.users_name?.includes(info)}
+                                    onClick={setMyValue2}
+                                  >
                                     {format2(i, 1)}
                                   </MyDiv>
                                   <Divider style={{ margin: '8px 0' }} />
@@ -818,7 +836,10 @@ export const ShapeContent = (props: any) => {
                             mode="multiple"
                             placeholder={t('common.pleaseSelect')}
                             allowClear
-                            options={format(i)}
+                            options={i.children?.map((item: any) => ({
+                              label: item.name,
+                              value: item.id,
+                            }))}
                             optionFilterProp="name"
                           />
                         </Form.Item>
