@@ -198,29 +198,10 @@ const ProjectInfo = () => {
           }}
         >
           <Line>
-            {' '}
             <InfoItem>
-              <div>{t('project.projectId')}：</div>
-              <span>{projectInfo.id}</span>
+              <div>{t('project_leader')}：</div>
+              <span>{projectInfo.leaderName || '--'}</span>
             </InfoItem>
-            <InfoItem>
-              <div>{t('common.createName')}：</div>
-              <span>{projectInfo.userName || '--'}</span>
-            </InfoItem>
-          </Line>
-          <Line>
-            {' '}
-            <InfoItem>
-              <div>{t('common.createTime')}：</div>
-              <span>{projectInfo.createTime || '--'}</span>
-            </InfoItem>
-            <InfoItem>
-              <div>{t('common.endTime')}：</div>
-              <span>{projectInfo.endTime || '--'}</span>
-            </InfoItem>
-          </Line>
-          <Line>
-            {' '}
             <InfoItem>
               <div>{t('project.projectStatus')}：</div>
               <span>
@@ -228,7 +209,7 @@ const ProjectInfo = () => {
               </span>
             </InfoItem>
             <InfoItem>
-              <div>{t('common.permission')}：</div>
+              <div>{t('project_type')}：</div>
               <span>
                 {projectInfo.isPublic === 1
                   ? t('project.companyOpen')
@@ -236,6 +217,30 @@ const ProjectInfo = () => {
                   ? t('common.privateProject')
                   : t('teamwork')}
               </span>
+            </InfoItem>
+          </Line>
+          <Line>
+            <InfoItem>
+              <div>{t('new_p1.a8')}：</div>
+              <span>{projectInfo.userName || '--'}</span>
+            </InfoItem>
+            <InfoItem>
+              <div>{t('project_creation_time')}：</div>
+              <span>{projectInfo.createTime || '--'}</span>
+            </InfoItem>
+            <InfoItem>
+              <div>{t('project_belong')}：</div>
+              <span>{projectInfo.affiliation || '--'}</span>
+            </InfoItem>
+          </Line>
+          <Line>
+            <InfoItem>
+              <div>{t('keyboard')}：</div>
+              <span>{projectInfo.prefix || '--'}</span>
+            </InfoItem>
+            <InfoItem>
+              <div>{t('project_completion_time')}：</div>
+              <span>{projectInfo.stopTime || '--'}</span>
             </InfoItem>
           </Line>
         </div>

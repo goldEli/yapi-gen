@@ -210,16 +210,48 @@ const MyDropdown = (props: any) => {
     onClickIsOpen()
     navigate('/ProjectManagement/Mine/Profile')
   }
+  // 接口上下接口不同，取值不同，需要加判断取
   const onRoute = (el: any) => {
-    const params = encryptPhp(
-      JSON.stringify({
-        type: 'info',
-        id: el.project_id,
-        demandId: el.id,
-      }),
-    )
-    setIsOpen(false)
-    navigate(`/ProjectManagement/Demand?data=${params}`)
+    let iterParmas = null
+    let router = ''
+    if (el?.actionable_type === 'iterate') {
+      iterParmas = encryptPhp(
+        JSON.stringify({
+          type: 'info',
+          id: el.project_id,
+          iterateId: el.id,
+        }),
+      )
+      router = `/ProjectManagement/Iteration?data=${iterParmas}`
+    } else if (el?.feedable_type === 'iterate') {
+      iterParmas = encryptPhp(
+        JSON.stringify({
+          type: 'info',
+          id: el?.feedable?.project_id,
+          iterateId: el.feedable_id,
+        }),
+      )
+      router = `/ProjectManagement/Iteration?data=${iterParmas}`
+    } else if (el?.actionable_type === 'story') {
+      iterParmas = encryptPhp(
+        JSON.stringify({
+          type: 'info',
+          id: el.project_id,
+          demandId: el.id,
+        }),
+      )
+      router = `/ProjectManagement/Demand?data=${iterParmas}`
+    } else if (el?.feedable_type === 'story') {
+      iterParmas = encryptPhp(
+        JSON.stringify({
+          type: 'info',
+          id: el?.feedable?.project_id,
+          demandId: el.feedable_id,
+        }),
+      )
+      router = `/ProjectManagement/Demand?data=${iterParmas}`
+    }
+    navigate(router)
   }
   const itmeMain = (item: any) => {
     return (
@@ -228,7 +260,11 @@ const MyDropdown = (props: any) => {
         <ItemBox key={el.title}>
           <Row onClick={() => onRoute(el)}>
             <div>
-              <Img src={el.category_attachment} />
+              {(el?.category_attachment || el?.feedable?.attachment) && (
+                <Img
+                  src={el?.category_attachment || el?.feedable?.attachment}
+                />
+              )}
             </div>
             <ItemCenter>
               <ItemTitle>{el.feedable?.name || el.name}</ItemTitle>
