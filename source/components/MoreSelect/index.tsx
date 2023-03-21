@@ -4,7 +4,7 @@ import styled from '@emotion/styled'
 import { Divider, Select } from 'antd'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { SelectWrap } from '../TableFilter'
+import { SelectWrap } from '../StyleCommon'
 
 const Btn = styled.div`
   height: 32px;
@@ -80,7 +80,7 @@ const index = (props: any) => {
       optionFilterProp="label"
       onChange={handleChange}
       placeholder={t('common.pleaseSelect')}
-      dropdownRender={menu => (
+      dropdownRender={(menu: any) => (
         <>
           {menu}
           <Divider style={{ margin: '8px 0' }} />

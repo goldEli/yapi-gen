@@ -28,6 +28,7 @@ import { useSelector } from '@store/index'
 import ChooseColor from './ChooseColor'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import StateTag from '@/components/StateTag'
+import CustomSelect from '@/components/CustomSelect'
 
 const TableWrap = styled.div({
   width: '780px',
@@ -500,11 +501,11 @@ const AddWorkflow = (props: Props) => {
                   </div>
                 }
               >
-                <Select
+                <CustomSelect
                   placeholder={t('common.pleaseSelect')}
                   showArrow
                   showSearch
-                  getPopupContainer={node => node}
+                  getPopupContainer={(node: any) => node}
                   allowClear
                   optionFilterProp="label"
                   options={i.status?.map((k: any) => ({

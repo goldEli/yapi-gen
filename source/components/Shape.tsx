@@ -29,6 +29,7 @@ import { getShapeLeft, getShapeRight } from '@/services/demand'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
 import NewLoadingTransition from './NewLoadingTransition'
 import CommonButton from './CommonButton'
+import CustomSelect from './CustomSelect'
 
 export function setValue(res: any) {
   const form1Obj: any = {}
@@ -325,7 +326,7 @@ const TagSelect = (props: any) => {
   }, [])
 
   return (
-    <Select
+    <CustomSelect
       defaultValue={props.dvalue}
       onChange={onSelect}
       mode="multiple"
@@ -692,7 +693,7 @@ export const ShapeContent = (props: any) => {
                           },
                         ]}
                       >
-                        <Select
+                        <CustomSelect
                           placeholder={t('common.pleaseSelect')}
                           allowClear
                           options={i.children?.map((item: any) => ({
@@ -714,7 +715,7 @@ export const ShapeContent = (props: any) => {
                           },
                         ]}
                       >
-                        <Select
+                        <CustomSelect
                           mode="multiple"
                           placeholder={t('common.pleaseSelect')}
                           allowClear
@@ -821,11 +822,11 @@ export const ShapeContent = (props: any) => {
                       },
                     ]}
                   >
-                    <Select
+                    <CustomSelect
                       onChange={handleChange}
                       placeholder={t('common.pleaseSelect')}
                       allowClear
-                      getPopupContainer={node => node}
+                      getPopupContainer={(node: any) => node}
                       options={optionsList?.map((item: any) => ({
                         label: item.name,
                         value: item.id,

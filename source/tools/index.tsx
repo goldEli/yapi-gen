@@ -21,6 +21,7 @@ import {
 } from 'antd'
 import moment from 'moment'
 import styled from '@emotion/styled'
+import CustomSelect from '@/components/CustomSelect'
 
 // 获取权限
 function getIsPermission(arr: any, value: string) {
@@ -164,18 +165,18 @@ function getTypeComponent(
   } else if (String(params?.attr)?.includes('fixed_')) {
     // 之前固定字段的修改
     child = (
-      <Select
+      <CustomSelect
         placeholder={params.remarks}
         style={{ width: '100%', minWidth: 192 }}
         showSearch
         showArrow
         optionFilterProp="label"
-        getPopupContainer={node => node}
+        getPopupContainer={(node: any) => node}
         allowClear
         value={defaultValue}
         ref={inputRef}
         onBlur={() => (isModal ? onBlur?.(defaultValue) : void 0)}
-        onChange={value =>
+        onChange={(value: any) =>
           onChange?.(value, params.attr === 'fixed_select' ? '' : 1)
         }
         options={params?.value}
@@ -194,18 +195,18 @@ function getTypeComponent(
     ].includes(String(params?.attr))
   ) {
     child = (
-      <Select
+      <CustomSelect
         placeholder={params.remarks || ''}
         style={{ width: '100%', minWidth: 192 }}
         showSearch
         showArrow
         optionFilterProp="label"
-        getPopupContainer={node => node}
+        getPopupContainer={(node: any) => node}
         allowClear
         value={defaultValue}
         ref={inputRef}
         onBlur={() => (isModal ? onBlur?.(defaultValue) : void 0)}
-        onChange={value =>
+        onChange={(value: any) =>
           onChange?.(
             value,
             ['select_checkbox', 'checkbox', 'user_select_checkbox'].includes(

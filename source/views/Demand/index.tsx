@@ -51,6 +51,7 @@ import MyBreadcrumb from '@/components/MyBreadcrumb'
 import StateTag from '@/components/StateTag'
 import CommonButton from '@/components/CommonButton'
 import PermissionWrap from '@/components/PermissionWrap'
+import CustomSelect from '@/components/CustomSelect'
 
 const Wrap = styled.div`
   height: 100%;
@@ -512,11 +513,11 @@ const DemandBox = () => {
               name="categoryId"
               rules={[{ required: true, message: '' }]}
             >
-              <Select
+              <CustomSelect
                 placeholder={t('common.pleaseSelect')}
                 showArrow
                 showSearch
-                getPopupContainer={node => node}
+                getPopupContainer={(node: any) => node}
                 allowClear
                 optionFilterProp="label"
                 onChange={onChangeSelect}
@@ -531,11 +532,11 @@ const DemandBox = () => {
               name="statusId"
               rules={[{ required: true, message: '' }]}
             >
-              <Select
+              <CustomSelect
                 placeholder={t('common.pleaseSelect')}
                 showArrow
                 showSearch
-                getPopupContainer={node => node}
+                getPopupContainer={(node: any) => node}
                 allowClear
                 optionFilterProp="label"
                 options={workList?.list?.map((k: any) => ({

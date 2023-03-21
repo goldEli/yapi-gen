@@ -12,6 +12,7 @@ import moment from 'moment'
 import { useState, useEffect, useImperativeHandle } from 'react'
 import { useTranslation } from 'react-i18next'
 import ChangePriorityPopover from '../ChangePriorityPopover'
+import CustomSelect from '../CustomSelect'
 import IconFont from '../IconFont'
 import StateTag from '../StateTag'
 import { PriorityWrap, SliderWrap } from '../StyleCommon'
@@ -510,13 +511,13 @@ const CreateDemandRight = (props: Props) => {
       )
     ) {
       nodeComponent = (
-        <Select
+        <CustomSelect
           style={{ width: '100%' }}
           showArrow
           mode={item.content === 'iterate_name' ? (null as any) : 'multiple'}
           showSearch
           placeholder={t('common.pleaseSelect')}
-          getPopupContainer={node => node}
+          getPopupContainer={(node: any) => node}
           allowClear
           optionFilterProp="label"
           disabled={!props.isCreateDemand}
@@ -582,7 +583,7 @@ const CreateDemandRight = (props: Props) => {
     } else if (item.content === 'parent_id') {
       // 父需求
       nodeComponent = (
-        <Select
+        <CustomSelect
           disabled={!props.isCreateDemand}
           style={{ width: '100%' }}
           showArrow
@@ -598,7 +599,7 @@ const CreateDemandRight = (props: Props) => {
                 )
               : props.parentList
           }
-          getPopupContainer={node => node}
+          getPopupContainer={(node: any) => node}
           optionFilterProp="label"
           allowClear
         />
@@ -649,12 +650,12 @@ const CreateDemandRight = (props: Props) => {
             name="status"
             rules={[{ required: true, message: '' }]}
           >
-            <Select
+            <CustomSelect
               style={{ width: '100%' }}
               showArrow
               showSearch
               placeholder={t('common.pleaseSelect')}
-              getPopupContainer={node => node}
+              getPopupContainer={(node: any) => node}
               allowClear
               disabled={createDemandProps?.demandId}
             >
@@ -680,7 +681,7 @@ const CreateDemandRight = (props: Props) => {
                   </Select.Option>
                 )
               })}
-            </Select>
+            </CustomSelect>
           </Form.Item>
         )}
         {notFoldList?.map((i: any) => (

@@ -8,11 +8,11 @@
 /* eslint-disable complexity */
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import { Form, Select, Popover, Collapse, Input, TreeSelect } from 'antd'
+import { Form, Popover, Collapse, Input, TreeSelect } from 'antd'
 import IconFont from './IconFont'
 import moment from 'moment'
 import { useEffect, useMemo } from 'react'
-import { SearchLine } from './StyleCommon'
+import { DelButton, SearchLine, SelectWrapBedeck } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
 import RangePicker from './RangePicker'
 import { useDispatch, useSelector } from '@store/index'
@@ -41,21 +41,6 @@ const FormWrap = styled(Form)({
   },
 })
 
-export const SelectWrap = styled(Select)`
-  .ant-select-selection-placeholder {
-    color: black;
-  }
-  .ant-select-selector {
-    min-width: 140px;
-    border: none !important;
-    outline: none !important;
-  }
-
-  .ant-select-selection-placeholder {
-    color: var(--neutral-n4);
-  }
-`
-
 export const rangPicker = css`
   .ant-picker-panel-container {
     display: flex;
@@ -71,55 +56,6 @@ export const rangPicker = css`
   }
   .ant-tag {
     margin-right: 0;
-  }
-`
-
-const DelButton = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  right: -7px;
-  top: -7px;
-  width: 15px;
-  height: 15px;
-  visibility: hidden;
-  z-index: 2;
-  .icon {
-    font-size: 16px;
-    color: var(--neutral-n3);
-    cursor: pointer;
-    &:hover {
-      color: var(--primary-d2);
-    }
-  }
-`
-
-export const SelectWrapBedeck = styled.div`
-  height: 32px;
-  position: relative;
-  height: 32px;
-  border: 1px solid var(--active);
-  display: flex;
-  align-items: center;
-  border-radius: 6px;
-  &:hover ${DelButton} {
-    visibility: visible;
-  }
-
-  span {
-    white-space: nowrap;
-  }
-  .ant-form-item {
-    margin-bottom: 0;
-    padding-top: 0 !important;
-  }
-  .ant-picker {
-    border: none;
-  }
-  .ant-select-selector {
-    border: none !important;
-    background-color: transparent !important;
   }
 `
 
