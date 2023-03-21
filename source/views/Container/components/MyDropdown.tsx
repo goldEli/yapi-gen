@@ -260,7 +260,7 @@ const MyDropdown = (props: any) => {
         <ItemBox key={el.title}>
           <Row onClick={() => onRoute(el)}>
             <div>
-              <Img src={el.category_attachment} />
+              {el.category_attachment && <Img src={el.category_attachment} />}
             </div>
             <ItemCenter>
               <ItemTitle>{el.feedable?.name || el.name}</ItemTitle>
