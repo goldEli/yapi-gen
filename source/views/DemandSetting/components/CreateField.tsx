@@ -11,9 +11,11 @@ import ProjectDragging from './ProDragging'
 import { setProjectFieIdsData } from '@store/category'
 
 const CreateFieldWrap = styled.div`
-  margin: 20px 0 0 20px;
+  margin: 20px 0 0 0px;
   border-left: 1px solid var(--neutral-n6-d1);
   padding-left: 24px;
+  overflow-y: auto;
+  height: calc(100vh - 180px);
 `
 const TitleStyle = styled.div`
   display: flex;

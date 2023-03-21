@@ -64,7 +64,6 @@ const CreateAProjectForm = () => {
 
   const onCustomRequest = async (file: any) => {
     const data = await uploadFileByTask(file.file, '2', '2')
-
     setMyCover(data.url)
   }
 

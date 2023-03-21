@@ -319,7 +319,10 @@ const SliderList = (props: any) => {
     </Container>
   )
 }
-
+const Empty = styled.div`
+  width: 100%;
+  height: 150px;
+`
 const Sortable = (props: any) => {
   const { list, setList } = props
   return (
@@ -329,37 +332,41 @@ const Sortable = (props: any) => {
         event.preventDefault(), event.stopPropagation()
       }}
     >
-      {list?.map((child: any, i: number) => (
-        <div
-          key={child.id}
-          onDrop={(event: any) => props.onDrop(event, i)}
-          onClick={(event: any) => {
-            event.stopPropagation(),
-              child.isCustomize === 1 && props.onClick(i, child)
-          }}
-        >
-          <SliderList
+      {list?.length < 1 && (
+        <Empty onDrop={(event: any) => props.onDrop(event, 0)}>888787</Empty>
+      )}
+      {list?.length >= 1 &&
+        list?.map((child: any, i: number) => (
+          <div
             key={child.id}
-            index={i}
-            child={child}
-            onChangeChecked={(event: any, val: boolean) => {
+            onDrop={(event: any) => props.onDrop(event, i)}
+            onClick={(event: any) => {
               event.stopPropagation(),
-                event.preventDefault(),
-                props.onChangeChecked(val, child)
-            }}
-            onDelete={() => props.onDelete(child)}
-            listLength={list.length}
-            onMove={(prevIndex: any, nextIndex: any) => {
-              const newList = [...list]
-              newList.splice(nextIndex, 0, newList.splice(prevIndex, 1)[0])
-              setList(newList)
-              props.onMove(newList)
+                child.isCustomize === 1 && props.onClick(i, child)
             }}
           >
-            {child.children}
-          </SliderList>
-        </div>
-      ))}
+            <SliderList
+              key={child.id}
+              index={i}
+              child={child}
+              onChangeChecked={(event: any, val: boolean) => {
+                event.stopPropagation(),
+                  event.preventDefault(),
+                  props.onChangeChecked(val, child)
+              }}
+              onDelete={() => props.onDelete(child)}
+              listLength={list.length}
+              onMove={(prevIndex: any, nextIndex: any) => {
+                const newList = [...list]
+                newList.splice(nextIndex, 0, newList.splice(prevIndex, 1)[0])
+                setList(newList)
+                props.onMove(newList)
+              }}
+            >
+              {child.children}
+            </SliderList>
+          </div>
+        ))}
     </div>
   )
 }
