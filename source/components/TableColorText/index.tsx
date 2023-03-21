@@ -1,3 +1,4 @@
+/* eslint-disable require-unicode-regexp */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-negated-condition */
 /* eslint-disable react/no-danger */
@@ -7,7 +8,7 @@ const TableColorText = (props: any) => {
   const hight = useSelector(state => state.colorText.text)
 
   const lightText = (item: any) => {
-    const newStr = item.replace('<', '&lt;').replace('>', '&gt;')
+    const newStr = item.replace(/</g, '&lt;').replace(/>/g, '&gt;')
     let resultDiv = ''
     if (hight && newStr.includes(hight)) {
       const textArr = newStr.split(hight)
