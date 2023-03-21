@@ -636,7 +636,7 @@ export const ShapeContent = (props: any) => {
 
       const names = newC.map((k: any) => k.name).join(' ; ')
 
-      return `${names}（${t('theOriginalStateHandlesThePerson')}）`
+      return names ? `${names}（${t('theOriginalStateHandlesThePerson')}）` : ''
     }
   }
   const setMyValue = () => {
@@ -780,9 +780,12 @@ export const ShapeContent = (props: any) => {
                                     padding: '8px ',
                                   }}
                                 >
-                                  <MyDiv onClick={setMyValue}>
-                                    {format2(i, 2)}
-                                  </MyDiv>
+                                  {format2(i, 2) && (
+                                    <MyDiv onClick={setMyValue}>
+                                      {format2(i, 2)}
+                                    </MyDiv>
+                                  )}
+
                                   <MyDiv onClick={setMyValue2}>
                                     {format2(i, 1)}
                                   </MyDiv>
