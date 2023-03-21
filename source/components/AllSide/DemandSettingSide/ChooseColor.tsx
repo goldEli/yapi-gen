@@ -189,7 +189,7 @@ const ChooseColor = (props: ChooseColorProps) => {
           <ColorWrapIcon>
             <IconFont
               type="plus"
-              style={{ color: 'var(--neutral-n2)', fontSize: 15 }}
+              style={{ color: 'var(--neutral-n2)', fontSize: 20 }}
             />
           </ColorWrapIcon>
         </Upload>
