@@ -32,6 +32,10 @@ const routes = [
         element: lazy(() => import('@/views/Situation')),
       },
       {
+        path: '/CalendarManager',
+        element: lazy(() => import('@/views/CalendarManager')),
+      },
+      {
         path: '/ProjectManagement',
         element: lazy(() => import('@/views/ProjectManagement')),
         children: [
