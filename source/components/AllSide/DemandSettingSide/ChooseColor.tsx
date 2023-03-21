@@ -187,7 +187,10 @@ const ChooseColor = (props: ChooseColorProps) => {
           customRequest={(file: any) => onCustomRequest(file)}
         >
           <ColorWrapIcon>
-            <IconFont type="plus" />
+            <IconFont
+              type="plus"
+              style={{ color: 'var(--neutral-n2)', fontSize: 15 }}
+            />
           </ColorWrapIcon>
         </Upload>
       )}
