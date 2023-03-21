@@ -296,7 +296,7 @@ const ProjectDetailSide = () => {
       </WrapSet>
 
       <WrapCategory ref={projectSetCategory}>
-        <DemandSettingSide onClick={onCategoryBack} />
+        <DemandSettingSide onClick={onCategoryBack} onBack={onGoBack} />
       </WrapCategory>
     </AllWrap>
   )
