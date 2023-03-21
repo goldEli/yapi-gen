@@ -234,7 +234,8 @@ const SliderList = (props: any) => {
               {child.content === 'users_name' ||
               child.content === 'user_name' ||
               child.content === 'finish_at' ||
-              child.content === 'created_at' ? (
+              child.content === 'created_at' ||
+              child.content === 'schedule' ? (
                 <Checkbox disabled={true} />
               ) : (
                 <Checkbox
