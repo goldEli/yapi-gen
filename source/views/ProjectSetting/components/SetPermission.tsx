@@ -6,6 +6,7 @@ import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
+import CustomSelect from '@/components/CustomSelect'
 
 const PersonalHead = styled.div`
   display: flex;
@@ -112,11 +113,11 @@ const SetPermissionWrap = (props: {
           <RightLine>{data.name ? data.name : '--'}</RightLine>
           <RightLine>{data.nickname ? data.nickname : '--'}</RightLine>
           <RightLine>
-            <Select
+            <CustomSelect
               value={infoId}
               style={{ width: 120 }}
               onChange={handleChange}
-              getPopupContainer={node => node}
+              getPopupContainer={(node: any) => node}
               showSearch
               optionFilterProp="label"
               options={props?.projectPermission}

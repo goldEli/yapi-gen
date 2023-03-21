@@ -10,7 +10,6 @@ import { Checkbox, Space, Tooltip } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
-import { SelectWrap, SelectWrapBedeck } from '@/components/TableFilter'
 import NoData from '@/components/NoData'
 import Sort from '@/components/Sort'
 import { getReceiveList } from '@/services/daily'
@@ -21,6 +20,7 @@ import RangePicker from '@/components/RangePicker'
 import InputSearch from '@/components/InputSearch'
 import PaginationBox from '@/components/TablePagination'
 import ResizeTable from '@/components/ResizeTable'
+import { SelectWrap, SelectWrapBedeck } from '@/components/StyleCommon'
 
 const srr = [
   undefined,

@@ -21,6 +21,7 @@ import CommonModal from '../CommonModal'
 import MoreOptions from '../MoreOptions'
 import { Editor, EditorRef } from '@xyfe/uikit'
 import { uploadFileToKey } from '@/services/cos'
+import CustomSelect from '../CustomSelect'
 
 const LeftWrap = styled.div({
   height: '100%',
@@ -561,11 +562,11 @@ const CreateDemandLeft = (props: Props) => {
             name="categoryId"
             rules={[{ required: true, message: '' }]}
           >
-            <Select
+            <CustomSelect
               placeholder={t('common.pleaseSelect')}
               showArrow
               showSearch
-              getPopupContainer={node => node}
+              getPopupContainer={(node: any) => node}
               allowClear
               optionFilterProp="label"
               onChange={onChangeSelect}
@@ -583,11 +584,11 @@ const CreateDemandLeft = (props: Props) => {
             name="statusId"
             rules={[{ required: true, message: '' }]}
           >
-            <Select
+            <CustomSelect
               placeholder={t('common.pleaseSelect')}
               showArrow
               showSearch
-              getPopupContainer={node => node}
+              getPopupContainer={(node: any) => node}
               allowClear
               disabled={!currentCategory.id}
               optionFilterProp="label"
@@ -607,7 +608,7 @@ const CreateDemandLeft = (props: Props) => {
             style={{ marginRight: 24, width: '50%' }}
             rules={[{ required: true, message: '' }]}
           >
-            <Select
+            <CustomSelect
               optionLabelProp="label"
               onSelect={onSelectProjectName}
               placeholder={t('common.searchProject')}
@@ -616,7 +617,7 @@ const CreateDemandLeft = (props: Props) => {
               disabled={createDemandProps.projectId}
               onClear={onClearProjectId}
               optionFilterProp="label"
-              getPopupContainer={node => node}
+              getPopupContainer={(node: any) => node}
               showSearch
             >
               {props.projectList
@@ -633,7 +634,7 @@ const CreateDemandLeft = (props: Props) => {
                     </Select.Option>
                   )
                 })}
-            </Select>
+            </CustomSelect>
           </Form.Item>
           <Form.Item
             label={t('categoryOfNeeds')}
@@ -641,7 +642,7 @@ const CreateDemandLeft = (props: Props) => {
             style={{ width: '50%' }}
             rules={[{ required: true, message: '' }]}
           >
-            <Select
+            <CustomSelect
               optionLabelProp="label"
               onSelect={onSelectCategory}
               onClear={onClearCategory}
@@ -649,9 +650,10 @@ const CreateDemandLeft = (props: Props) => {
               allowClear
               showArrow
               optionFilterProp="label"
-              getPopupContainer={node => node}
+              getPopupContainer={(node: any) => node}
               showSearch
               value={categoryObj?.id}
+              disabled={!props.projectId}
             >
               {props.allCategoryList
                 ?.filter((i: any) => i.status === 1)
@@ -667,7 +669,7 @@ const CreateDemandLeft = (props: Props) => {
                     </Select.Option>
                   )
                 })}
-            </Select>
+            </CustomSelect>
           </Form.Item>
         </div>
         <Form.Item

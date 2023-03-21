@@ -47,6 +47,7 @@ import {
   saveWorkflowConfig,
 } from '@/services/project'
 import { useSelector } from '@store/index'
+import CustomSelect from '@/components/CustomSelect'
 
 const TableWrapTop = styled(Table)({
   '.ant-table-cell': {
@@ -421,7 +422,7 @@ const SetConfig = (props: Props) => {
       )
     ) {
       child = (
-        <Select
+        <CustomSelect
           style={{ width: 148 }}
           showArrow
           showSearch
@@ -456,7 +457,7 @@ const SetConfig = (props: Props) => {
       const optionValues =
         optionsType === 'projectMember' ? memberList : staffList
       child = (
-        <Select
+        <CustomSelect
           style={{ width: 148 }}
           showArrow
           showSearch
@@ -618,12 +619,12 @@ const SetConfig = (props: Props) => {
       width: i18n.language === 'zh' ? 180 : 160,
       dataIndex: 'title',
       render: (text: any, record: any) => (
-        <Select
+        <CustomSelect
           style={{ width: 148 }}
           showArrow
           showSearch
           optionFilterProp="label"
-          onChange={value => onChangeName(value, record)}
+          onChange={(value: any) => onChangeName(value, record)}
           value={text}
           disabled={
             record?.content === 'comment' || record?.content === 'users_name'
@@ -644,13 +645,13 @@ const SetConfig = (props: Props) => {
       width: i18n.language === 'zh' ? 180 : 160,
       dataIndex: 'default_type',
       render: (text: any, record: any) => (
-        <Select
+        <CustomSelect
           style={{ width: 148 }}
           showArrow
           showSearch
           value={text}
           optionFilterProp="value"
-          onChange={value => onChangeValue(value, record)}
+          onChange={(value: any) => onChangeValue(value, record)}
           options={
             record.content === 'comment'
               ? [{ label: t('newlyAdd.fixedValue'), value: 2 }]
@@ -832,12 +833,12 @@ const SetConfig = (props: Props) => {
               <ItemWrap style={{ marginTop: 16 }}>
                 <LabelWrap>{t('setting.userGroup')}</LabelWrap>
                 <Form.Item noStyle name="roles">
-                  <Select
+                  <CustomSelect
                     style={{ minWidth: 186 }}
                     showSearch
                     mode="multiple"
                     optionFilterProp="label"
-                    getPopupContainer={node => node}
+                    getPopupContainer={(node: any) => node}
                     showArrow
                     options={info?.roles?.map((i: any) => ({
                       label: i.name,
@@ -849,13 +850,13 @@ const SetConfig = (props: Props) => {
               <ItemWrap style={{ marginTop: 24 }}>
                 <LabelWrap>{t('newlyAdd.userFields')}</LabelWrap>
                 <Form.Item noStyle name="user_fields">
-                  <Select
+                  <CustomSelect
                     style={{ minWidth: 186 }}
                     showSearch
                     mode="multiple"
                     showArrow
                     optionFilterProp="label"
-                    getPopupContainer={node => node}
+                    getPopupContainer={(node: any) => node}
                     options={info?.authUserFields?.map((i: any) => ({
                       label: i.title,
                       value: i.content,
@@ -866,13 +867,13 @@ const SetConfig = (props: Props) => {
               <ItemWrap style={{ marginTop: 24 }}>
                 <LabelWrap>{t('newlyAdd.otherUser')}</LabelWrap>
                 <Form.Item noStyle name="other_users">
-                  <Select
+                  <CustomSelect
                     style={{ minWidth: 186 }}
                     showSearch
                     mode="multiple"
                     optionFilterProp="label"
                     showArrow
-                    getPopupContainer={node => node}
+                    getPopupContainer={(node: any) => node}
                     options={memberList}
                     allowClear
                   />

@@ -11,17 +11,14 @@ import {
   getGroupList,
   getProjectInfoOnly,
 } from '@/services/project'
-import {
-  changeCreateVisible,
-  editProject,
-  onRest,
-} from '@store/create-propject'
+import { changeCreateVisible, editProject } from '@store/create-propject'
 import { postCreate, postEditCreate } from '@store/create-propject/thunks'
 import { useDispatch, useSelector } from '@store/index'
-import { Form, Input, message, Select, Tooltip, Upload } from 'antd'
+import { Form, Input, Select, Tooltip, Upload } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '../CommonModal'
+import CustomSelect from '../CustomSelect'
 import FormTitleSmall from '../FormTitleSmall'
 import IconFont from '../IconFont'
 import MoreOptions from '../MoreOptions'
@@ -64,7 +61,6 @@ const CreateAProjectForm = () => {
 
   const onCustomRequest = async (file: any) => {
     const data = await uploadFileByTask(file.file, '2', '2')
-
     setMyCover(data.url)
   }
 
@@ -345,11 +341,11 @@ const CreateAProjectForm = () => {
               name="team_id"
               rules={[{ required: true, message: '' }]}
             >
-              <Select
+              <CustomSelect
                 disabled={!!isEditId}
                 placeholder={t('please_select_your_affiliation')}
                 optionLabelProp="label"
-                onChange={value => {
+                onChange={(value: any) => {
                   setLeaderId(value)
                   // eslint-disable-next-line no-undefined
                   form.setFieldsValue({
@@ -370,7 +366,7 @@ const CreateAProjectForm = () => {
                     </Select.Option>
                   )
                 })}
-              </Select>
+              </CustomSelect>
             </Form.Item>
             <Form.Item
               label={
@@ -418,9 +414,9 @@ const CreateAProjectForm = () => {
               label={<FormTitleSmall text={t('project_leader')} />}
               name="leader_id"
             >
-              <Select
+              <CustomSelect
                 optionFilterProp="label"
-                onChange={e => {
+                onChange={(e: any) => {
                   const obj = selectLeaders.find((i: any) => i.id === e)
 
                   setUser(obj.name)
@@ -440,13 +436,13 @@ const CreateAProjectForm = () => {
                     />
                   </Select.Option>
                 ))}
-              </Select>
+              </CustomSelect>
             </Form.Item>
             <Form.Item
               label={<FormTitleSmall text={t('Permission')} />}
               name="isPublic"
             >
-              <Select
+              <CustomSelect
                 // disabled={canChooseLeader}
                 placeholder={t('please_select_permissions')}
                 optionLabelProp="label"
@@ -456,13 +452,13 @@ const CreateAProjectForm = () => {
                     <MoreOptions type="promise" name={i.name} dec={i.dec} />
                   </Select.Option>
                 ))}
-              </Select>
+              </CustomSelect>
             </Form.Item>
             <Form.Item
               label={<FormTitleSmall text={t('version2.projectGroup')} />}
               name="groups"
             >
-              <Select
+              <CustomSelect
                 placeholder={t('common.pleaseSelect')}
                 mode="multiple"
                 options={selectGroupList}

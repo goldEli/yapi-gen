@@ -1,9 +1,10 @@
 // 颜色选择组件
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
+/* eslint-disable react/jsx-handler-names */
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
-import { Popover, Space } from 'antd'
+import { Popover, Space, Upload } from 'antd'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -33,6 +34,7 @@ const TextStyle = styled.span`
   color: var(--neutral-white-d7);
   position: absolute;
   bottom: 0;
+  opacity: 0.4;
 `
 const ColorWrap = styled.div({
   width: '56px',
@@ -44,8 +46,21 @@ const ColorWrap = styled.div({
   cursor: 'pointer',
   border: '1px solid var(--neutral-n6-d2)',
   position: 'relative',
-  svg: {
-    color: 'white',
+})
+const ColorWrapIcon = styled.div({
+  width: '56px',
+  height: '56px',
+  borderRadius: '6px 6px 6px 6px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  cursor: 'pointer',
+  border: '1px solid var(--neutral-n6-d2)',
+  position: 'relative',
+  '&:hover': {
+    background: 'var(--neutral-n6-d2)',
+    color: 'var(--primary-d2)',
+    border: '1px solid var(--neutral-n6-d2)',
   },
 })
 const ImgStyle = styled.img`
@@ -62,7 +77,9 @@ interface ChooseColorProps {
   color?: any
   onChange?(value?: string): void
   onChangeValue?(value?: string): void
+  onCustomRequest(file: any): void
   colorList: any
+  hiddenUpload: boolean
 }
 
 const ChooseColor = (props: ChooseColorProps) => {
@@ -80,7 +97,7 @@ const ChooseColor = (props: ChooseColorProps) => {
         alignItems: 'center',
         padding: 16,
         flexWrap: 'wrap',
-        maxWidth: 248,
+        maxWidth: 349,
       }}
       size={8}
     >
@@ -90,6 +107,16 @@ const ChooseColor = (props: ChooseColorProps) => {
           <IconFontStyle hidden={i.path !== props?.color} type="anglemark" />
         </ColorWrap>
       ))}
+      {!props.hiddenUpload && (
+        <Upload
+          fileList={[]}
+          customRequest={(file: any) => props.onCustomRequest(file)}
+        >
+          <ColorWrapIcon>
+            <IconFont type="plus" />
+          </ColorWrapIcon>
+        </Upload>
+      )}
     </Space>
   )
 

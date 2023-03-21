@@ -1,6 +1,7 @@
 // 写日志中的关联需求
 
 /* eslint-disable react/jsx-no-leaked-render */
+import CustomSelect from '@/components/CustomSelect'
 import IconFont from '@/components/IconFont'
 import { AddWrap } from '@/components/StyleCommon'
 import { getDemandList, getProjectList } from '@/services/daily'
@@ -146,7 +147,7 @@ const RelatedNeed = (props: any) => {
               name="project"
               label={t('common.chooseProject')}
             >
-              <Select
+              <CustomSelect
                 optionFilterProp="label"
                 showSearch
                 onSelect={onSelect}
@@ -176,7 +177,7 @@ const RelatedNeed = (props: any) => {
               name="needs"
               label={t('p2.managingDemand')}
             >
-              <Select
+              <CustomSelect
                 disabled={showNeed}
                 optionFilterProp="label"
                 showSearch

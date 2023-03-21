@@ -18,6 +18,7 @@ const ModalHeader = styled.div`
   font-weight: 500;
   height: 56px;
   padding: 0 13px 0 24px;
+  font-family: SiYuanMedium;
 `
 
 const ModalFooter = styled(Space)({

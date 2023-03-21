@@ -5,11 +5,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
-import { SelectWrapBedeck, HoverWrap } from '@/components/StyleCommon'
+import {
+  SelectWrapBedeck,
+  HoverWrap,
+  SelectWrap,
+} from '@/components/StyleCommon'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { useState, useEffect, useRef, useLayoutEffect } from 'react'
-import { Menu, message, Select, Form, Space } from 'antd'
+import { useState, useEffect } from 'react'
+import { Menu, message, Form, Space } from 'antd'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import Sort from '@/components/Sort'
 import PermissionWrap from '@/components/PermissionWrap'
@@ -24,7 +28,6 @@ import AddMemberCommonModal from '@/components/AddUser/CommonModal'
 import { getAddDepartMember, getPositionSelectList } from '@/services/staff'
 import {
   addMember,
-  deleteMember,
   getProjectInfo,
   getProjectMember,
   getProjectPermission,
@@ -37,6 +40,7 @@ import CommonButton from '@/components/CommonButton'
 import PaginationBox from '@/components/TablePagination'
 import ResizeTable from '@/components/ResizeTable'
 import ProjectOverModal from '@/components/ProjectOverModal'
+import CustomSelect from '@/components/CustomSelect'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -76,17 +80,6 @@ const SearchWrap = styled(Space)({
   background: 'white',
   flexWrap: 'wrap',
 })
-
-const SelectWrap = styled(Select)`
-  .ant-select-selection-placeholder {
-    color: black;
-  }
-  .ant-select-selector {
-    min-width: 200px;
-    border: none !important;
-    outline: none !important;
-  }
-`
 
 const NameWrap = styled.span({
   width: 32,
