@@ -82,7 +82,7 @@ const CheckedItem = styled.div<{ state?: any }>(
     padding: '  0 16px',
     // eslint-disable-next-line @typescript-eslint/naming-convention
     '&: hover': {
-      background: ' var(--neutral-n1-d1)',
+      background: 'var(--hover-d1)',
       [ShowWrap.toString()]: {
         visibility: 'visible',
       },

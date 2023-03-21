@@ -46,22 +46,18 @@ const StickyWrap = styled.div({
   background: 'white',
 })
 
-const LiWrap = styled.div<{ color: any }>(
-  {
-    cursor: 'pointer',
-    padding: '0 16px',
-    width: '100%',
-    height: 32,
-    display: 'flex',
-    alignItems: 'center',
-    background: 'white',
+const LiWrap = styled.div({
+  cursor: 'pointer',
+  padding: '0 16px',
+  width: '100%',
+  height: 32,
+  display: 'flex',
+  alignItems: 'center',
+  background: 'var(--neutral-white-d3)',
+  '&: hover': {
+    background: 'var(--hover-d3)',
   },
-  ({ color }) => ({
-    '&: hover': {
-      background: color,
-    },
-  }),
-)
+})
 
 const IconWrap = styled(IconFont)({
   fontSize: 20,
@@ -294,13 +290,7 @@ const Operation = (props: Props) => {
         ?.children?.filter((i: any) => i.status === 1)
         ?.map((k: any) => {
           return (
-            <LiWrap
-              key={k.id}
-              color={
-                colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor
-              }
-              onClick={(e: any) => onChangeCategory(e, k)}
-            >
+            <LiWrap key={k.id} onClick={(e: any) => onChangeCategory(e, k)}>
               <img
                 src={
                   k.category_attachment

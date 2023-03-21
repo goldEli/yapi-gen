@@ -38,7 +38,7 @@ const CheckedItem = styled.div({
   borderRadius: 4,
   padding: '  0 16px',
   '&: hover': {
-    background: 'var(--neutral-n6-d1)',
+    background: 'var(--hover-d1)',
     [ShowWrap.toString()]: {
       visibility: 'visible',
     },
@@ -386,18 +386,18 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
             {allList.map((item: any, idx: number) => (
               <SortItemLi
                 helperClass="row-dragging"
-                key={item.value}
+                key={item?.value}
                 index={idx}
               >
-                <CheckedItem key={item.value}>
+                <CheckedItem key={item?.value}>
                   <DragHandle />
-                  <span>{item.labelTxt}</span>
-                  {item.value !== 'name' && (
+                  <span>{item?.labelTxt}</span>
+                  {item?.value !== 'name' && (
                     <ShowWrap style={{ marginLeft: 'auto' }}>
                       <IconFont
                         style={{ fontSize: 16, color: 'var(--neutral-n2)' }}
                         type="close"
-                        onClick={() => del(item.value)}
+                        onClick={() => del(item?.value)}
                       />
                     </ShowWrap>
                   )}
