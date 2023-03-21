@@ -1,9 +1,11 @@
 import React from 'react'
 import CommonButton from '../CommonButton'
+import IconFont from '../IconFont'
 import {
   CalenderBox,
   CalenderBoxLeftArea,
   CalenderBoxRightArea,
+  CreateScheduleBtn,
 } from './styles'
 
 type CalendarProps = {
@@ -25,7 +27,12 @@ const Calendar: React.ForwardRefRenderFunction<
   return (
     <CalenderBox>
       <CalenderBoxLeftArea>
-        <CommonButton type="primary">123</CommonButton>
+        <CommonButton type="primary">
+          <CreateScheduleBtn>
+            <IconFont type="plus" style={{ fontSize: 15 }} />
+            <span className="btnText">创建日程</span>
+          </CreateScheduleBtn>
+        </CommonButton>
       </CalenderBoxLeftArea>
       <CalenderBoxRightArea></CalenderBoxRightArea>
     </CalenderBox>
