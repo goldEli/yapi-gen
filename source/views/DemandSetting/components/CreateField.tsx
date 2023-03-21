@@ -214,6 +214,7 @@ const CreateField = () => {
               width={184}
               placeholder={t('pleaseEnterASearchPhrase')}
               value={searchValue}
+              onClick={() => setSearch(false)}
               onInput={(e: any) => onSearch(e.target.value)}
               prefix={
                 <CommonIconFont
