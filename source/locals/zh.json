@@ -1,4 +1,10 @@
 {
+  "failed_copied_requirement_link": "复制需求链接失败！",
+  "successfully_copied_requirement_link": "复制需求链接成功！",
+  "project_creation_time": "项目创建时间",
+  "project_type": "项目类型",
+  "project_belong": "项目所属",
+  "project_completion_time": "项目完成时间",
   "please_upload_a_picture": "请上传图片!",
   "configuring_the_workflow": "配置工作流",
   "initial_model": "启用状态",
@@ -16,6 +22,7 @@
   "no_start_using": "未启用",
   "back": "返回",
   "copy_requirement_number_successfully": "复制需求编号成功！",
+  "copy_requirement_number_failed": "复制需求编号失败！",
   "add_sub_requirements": "添加子需求",
   "add_a_comment": "添加评论",
   "copy_requirement_number": "复制需求编号",

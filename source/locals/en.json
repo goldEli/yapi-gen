@@ -1,4 +1,10 @@
 {
+  "failed_copied_requirement_link": "Failed to copy requirement link",
+  "successfully_copied_requirement_link": "Successfully copied requirement link",
+  "project_creation_time": "Project creation time",
+  "project_type": "Project type",
+  "project_belong": "Project belong",
+  "project_completion_time": "Project completion time",
   "please_upload_a_picture": "Please upload a picture!",
   "configuring_the_workflow": " Configure the workflow",
   "initial_model": " enabled state ",
@@ -16,6 +22,7 @@
   "no_start_using": " Not enabled ",
   "back": " back",
   "copy_requirement_number_successfully": " Copy the requirement number successfully!",
+  "copy_requirement_number_failed": "Failed to copy the requirement number!",
   "add_sub_requirements": " Add subrequirements ",
   "add_a_comment": " Add a comment",
   "copy_requirement_number": " Copy requirement number",
