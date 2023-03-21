@@ -2,6 +2,8 @@ import { Calendar } from 'antd'
 import React from 'react'
 import CommonButton from '../CommonButton'
 import IconFont from '../IconFont'
+import InputSearch from '../InputSearch'
+import CalendarList from './components/CalendarList'
 import DXCalendar from './components/DXCalendar'
 import {
   CalenderBox,
@@ -37,6 +39,10 @@ const CalendarManagerLayout: React.ForwardRefRenderFunction<
           </CreateScheduleBtn>
         </CommonButton>
         <DXCalendar />
+        <InputSearch placeholder={'搜索日历'} width={210} autoFocus />
+        <CalendarList />
+        <CalendarList />
+        <div>日历设置</div>
       </CalenderBoxLeftArea>
       <CalenderBoxRightArea></CalenderBoxRightArea>
     </CalenderBox>
