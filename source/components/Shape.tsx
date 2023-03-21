@@ -820,7 +820,10 @@ export const ShapeContent = (props: any) => {
                             mode="multiple"
                             placeholder={t('common.pleaseSelect')}
                             allowClear
-                            options={format(i)}
+                            options={i.children?.map((item: any) => ({
+                              label: item.name,
+                              value: item.id,
+                            }))}
                             optionFilterProp="name"
                           />
                         </Form.Item>
