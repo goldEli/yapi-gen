@@ -51,7 +51,7 @@ const Left = styled.div<{ isShowLeft: boolean }>(
   {
     width: 300,
     borderRight: '1px solid var(--neutral-n6-d1)',
-    padding: '0px 16px 0px 0',
+    padding: '0px 24px 0px 0',
     background: 'white',
     height: '100%',
     '.ant-space-item': {

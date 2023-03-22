@@ -60,13 +60,21 @@ const Text = styled.span`
   margin-right: 24px;
 `
 const DelBtn = styled.span`
+  min-width: 20px;
+  display: inline-block;
   color: var(--primary-d1);
+  margin: 0;
+  padding: 0;
   &:hover {
     cursor: pointer;
   }
 `
 const DelBtnText = styled.span`
+  display: inline-block;
+  min-width: 20px;
   color: var(--neutral-n3);
+  margin: 0;
+  padding: 0;
 `
 const SliderList = (props: any) => {
   const { index, onMove, listLength, child } = props
