@@ -1087,7 +1087,7 @@ export const ShapeContent = (props: any) => {
                 : t('common.circulation')}
             </CommonButton>
 
-            <CommonButton type="secondary" onClick={() => onClear()}>
+            <CommonButton type="light" onClick={() => onClear()}>
               {t('common.cancel')}
             </CommonButton>
           </ButtonFooter>

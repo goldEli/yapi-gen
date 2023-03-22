@@ -75,7 +75,7 @@ const DemandSetting = () => {
           <Header />
           {isOperate && (
             <ButtonStyle>
-              <CommonButton type="secondary" onClick={onCancel}>
+              <CommonButton type="light" onClick={onCancel}>
                 {t('common.cancel')}
               </CommonButton>
               <CommonButton

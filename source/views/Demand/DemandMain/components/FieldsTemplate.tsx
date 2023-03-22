@@ -345,7 +345,7 @@ const FieldsTemplate = (props: Props) => {
       hasFooter={
         props.isExport && (
           <ModalFooter size={16}>
-            <CommonButton type="secondary" onClick={props?.onClose}>
+            <CommonButton type="light" onClick={props?.onClose}>
               {t('common.cancel')}
             </CommonButton>
             <CommonButton onClick={onConfirm} type="primary">

@@ -187,10 +187,10 @@ const EditExamine = (props: Props) => {
         props?.isEdit &&
         props?.item?.status === 1 && (
           <FooterWrap size={16}>
-            <CommonButton type="secondary" onClick={onClose}>
+            <CommonButton type="light" onClick={onClose}>
               {t('common.cancel')}
             </CommonButton>
-            <CommonButton type="secondary" onClick={onRefuse}>
+            <CommonButton type="light" onClick={onRefuse}>
               {t('newlyAdd.refuse')}
             </CommonButton>
             <CommonButton type="primary" onClick={onConfirm}>

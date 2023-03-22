@@ -299,7 +299,8 @@ const CreateAProjectForm = () => {
                 <CoverAreaAdd>
                   <IconFont
                     style={{
-                      fontSize: 18,
+                      fontSize: 24,
+                      color: 'var(--neutral-n2)',
                     }}
                     type="plus"
                   />
@@ -386,7 +387,7 @@ const CreateAProjectForm = () => {
                       style={{
                         position: 'absolute',
                         left: '26px',
-                        top: '5px',
+                        top: '4px',
                         color: 'var(--neutral-n3)',
                       }}
                       type="question"

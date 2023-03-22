@@ -339,7 +339,7 @@ const WrapLeft = (props: Props) => {
             {t('common.clear1')}
           </div>
           <Space size={16}>
-            <CommonButton type="secondary" onClick={onClose}>
+            <CommonButton type="light" onClick={onClose}>
               {t('common.cancel')}
             </CommonButton>
             <CommonButton type="primary" onClick={onConfirmFilter}>
@@ -427,7 +427,7 @@ const WrapLeft = (props: Props) => {
         {hasAdd || projectInfo?.status !== 1 ? (
           <div />
         ) : (
-          <CommonButton type="secondary" icon="plus" onClick={onChangeClick}>
+          <CommonButton type="light" icon="plus" onClick={onChangeClick}>
             {t('common.createIterate')}
           </CommonButton>
         )}
