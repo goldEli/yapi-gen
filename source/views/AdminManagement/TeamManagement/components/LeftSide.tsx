@@ -44,7 +44,7 @@ const LeftSideContainer = styled.div`
     opacity: 0;
   }
   .resizable::-webkit-scrollbar {
-    width: 180px;
+    width: 220px;
     height: inherit;
   }
   /* 拖拽线 */
