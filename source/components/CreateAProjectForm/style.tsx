@@ -118,6 +118,7 @@ export const CoverAreaAdd = styled.div`
 
   &:hover {
     background: var(--hover-d3);
+    border: none;
   }
   &:hover svg {
     color: var(--primary-d2);
