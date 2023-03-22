@@ -615,6 +615,7 @@ export const ShapeContent = (props: any) => {
 
     return str1?.includes(str2)
   }
+
   return (
     <Contain>
       {!props.noleft && (
