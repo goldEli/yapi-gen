@@ -47,7 +47,7 @@ const TitleWrap = styled.div({
   fontSize: 14,
   color: 'var(--neutral-n1-d2)',
   // lineHeight: '52px',
-  fontWeight: 'bold',
+  fontWeight: 500,
 })
 
 const TreeBox = styled.div`
