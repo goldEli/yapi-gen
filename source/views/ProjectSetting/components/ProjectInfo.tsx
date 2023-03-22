@@ -90,7 +90,7 @@ const CardItem = styled.div({
   justifyContent: 'center',
   alignItems: 'center',
   borderRadius: 6,
-  background: 'var(--neutral-n7)',
+  background: 'var(--hover-d2)',
   div: {
     fontSize: 28,
     color: 'var(--neutral-n1-d1)',

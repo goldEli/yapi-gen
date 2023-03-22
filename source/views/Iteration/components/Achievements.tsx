@@ -23,10 +23,10 @@ import { uploadFileToKey } from '@/services/cos'
 const Wrap = styled.div<{ isModal: any }>(
   {
     overflowY: 'auto',
-    padding: '0 16px 0 24px',
   },
   ({ isModal }) => ({
     height: isModal ? '60vh' : 'calc(100% - 40px)',
+    padding: isModal ? '0 16px 0 24px' : '0 16px 0 0px',
   }),
 )
 
