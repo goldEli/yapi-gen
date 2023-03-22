@@ -152,12 +152,12 @@ const Gantt = (props: Props) => {
 
       {
         name: 'start_date',
-        label: t('common.status'),
+        label: t('common.startTime'),
         width: 140,
       },
       {
         name: 'end_date',
-        label: t('common.status'),
+        label: t('common.endTime'),
         width: 140,
       },
       {

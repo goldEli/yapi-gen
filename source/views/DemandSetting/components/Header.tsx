@@ -26,6 +26,7 @@ const HeaderWrap = styled.div`
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--neutral-n6-d1);
+  padding: 0 24px;
 `
 const LeftMsg = styled.div`
   display: flex;

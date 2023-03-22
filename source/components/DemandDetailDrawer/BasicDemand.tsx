@@ -22,7 +22,14 @@ import {
   SliderWrap,
 } from '../StyleCommon'
 import TableQuickEdit from '../TableQuickEdit'
-import { ContentWrap, InfoItem, Label, MaxLabel, ShowLabel } from './style'
+import {
+  ContentWrap,
+  InfoItem,
+  Label,
+  LabelItem,
+  MaxLabel,
+  ShowLabel,
+} from './style'
 
 interface Props {
   detail?: any
@@ -32,7 +39,7 @@ interface Props {
 
 const LimitLabel = (props: { label: string; width: number }) => {
   return (
-    <Label>
+    <LabelItem>
       <Tooltip
         title={props.label}
         getPopupContainer={node => node}
@@ -40,7 +47,7 @@ const LimitLabel = (props: { label: string; width: number }) => {
       >
         <MaxLabel width={props.width}>{props.label}</MaxLabel>
       </Tooltip>
-    </Label>
+    </LabelItem>
   )
 }
 

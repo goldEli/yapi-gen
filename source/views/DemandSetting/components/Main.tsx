@@ -217,9 +217,9 @@ const Main = (props: any) => {
     <div
       style={{
         flex: 1,
-        height: 'calc(100vh - 200px)',
+        height: 'calc(100vh - 220px)',
         overflowY: 'auto',
-        paddingRight: 24,
+        padding: '0 24px',
       }}
     >
       <TitleStyle onClick={() => setInfoIcon(!infoIcon)}>

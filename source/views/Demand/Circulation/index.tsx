@@ -54,7 +54,7 @@ const TimeItem = styled.div({
   flexDirection: 'column',
   fontWeight: 400,
   'span:first-child': {
-    fontSize: 16,
+    fontSize: 14,
     color: 'var(--neutral-n1-d2)',
   },
   'span:last-child': {
@@ -98,7 +98,7 @@ const SpanWrap = styled.span<{ size?: any; weight?: any; color?: any }>(
 )
 
 const TextWrap = styled.div({
-  fontSize: 16,
+  fontSize: 14,
   fontWeight: 'normal',
   color: 'var(--neutral-n1-d2)',
 })

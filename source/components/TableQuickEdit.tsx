@@ -483,7 +483,7 @@ const TableQuickEdit = (props: Props) => {
               {props.type === 'single_checkbox' && (
                 <CheckboxWrap
                   checked={props?.defaultText}
-                  onChange={e => onChange(e.target.checked)}
+                  onChange={e => onChange(e.target.checked ? 1 : 0)}
                 />
               )}
               {props.type !== 'single_checkbox' && (

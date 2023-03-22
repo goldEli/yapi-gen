@@ -306,6 +306,7 @@ const CommonNeed = (props: any) => {
         demandIds = listData?.list?.map((i: any) => i.id)
       }
       item.isMineOrHis = true
+      item.isAllProject = props.id === 0
       openDemandDetail({ ...item, ...{ demandIds } }, item.project_id, item.id)
     }
   }
@@ -573,16 +574,15 @@ const CommonNeed = (props: any) => {
         </SearchWrap>
       </div>
       {isShowSearch && props.id !== 0 ? (
-        <div style={{ borderLeft: '1px solid var(--neutral-n6-d1)' }}>
-          <TableFilter
-            onFilter={getSearchKey}
-            onSearch={onSearch}
-            list={searchList}
-            basicsList={filterBasicsList}
-            specialList={filterSpecialList}
-            customList={filterCustomList}
-          />
-        </div>
+        <TableFilter
+          onFilter={getSearchKey}
+          onSearch={onSearch}
+          list={searchList}
+          basicsList={filterBasicsList}
+          specialList={filterSpecialList}
+          customList={filterCustomList}
+          hasLeft
+        />
       ) : null}
       {!isMany && (
         <ResizeTable

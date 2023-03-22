@@ -43,6 +43,7 @@ import ProjectOverModal from '@/components/ProjectOverModal'
 import CustomSelect from '@/components/CustomSelect'
 
 const Wrap = styled.div({
+  padding: '0 24px',
   display: 'flex',
   flexDirection: 'column',
   height: '100%',

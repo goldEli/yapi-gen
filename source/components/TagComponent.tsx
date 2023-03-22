@@ -97,9 +97,8 @@ const SearchInput = styled(Input)`
   mix-blend-mode: normal;
   display: flex;
   justify-content: flex-start;
-
+  border: 1px solid var(--neutral-n6-d2);
   padding: 5px 12px 5px 12px;
-  border: none;
   input {
     background: var(--neutral-white-d4);
     &::placeholder {

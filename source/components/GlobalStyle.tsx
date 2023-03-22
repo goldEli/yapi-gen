@@ -348,6 +348,10 @@ const GlobalStyle = () => {
       // visibility: hidden;
     }
 
+    .ant-select-item {
+      padding: 5px 16px !important;
+    }
+
     .ant-select-item-option {
       font-weight: inherit;
       color: var(--neutral-n2);
@@ -553,8 +557,8 @@ const GlobalStyle = () => {
       right: 0;
       top: 0;
       bottom: 0;
-      border-right: 1px solid var(#f0f0f0);
-      border-left: 1px solid var(#f0f0f0);
+      border-right: 1px solid var(--neutral-n6-d1);
+      border-left: 1px solid var(--neutral-n6-d1);
       pointer-events: none;
     }
     .resize_save {
@@ -820,6 +824,9 @@ const GlobalStyle = () => {
       background-color: var(--hover-d3) !important;
     }
     .ant-btn {
+      box-shadow: none;
+    }
+    .ant-dropdown {
       box-shadow: none;
     }
   `

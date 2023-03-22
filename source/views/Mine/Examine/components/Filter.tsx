@@ -65,7 +65,7 @@ const SearchList = (props: Props) => {
   }
 
   return (
-    <SearchLine>
+    <SearchLine hasLeft>
       <FormWrap form={form}>
         <SelectWrapBedeck>
           <span style={{ margin: '0 16px', fontSize: '14px' }}>

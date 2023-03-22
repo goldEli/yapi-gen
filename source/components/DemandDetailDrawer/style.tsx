@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Input, Space } from 'antd'
+import { Input, Popover, Space } from 'antd'
 
 export const SkeletonGroup = styled(Space)`
   display: flex;
@@ -59,7 +59,6 @@ export const ChangeIconGroup = styled.div`
   border: 1px solid var(--neutral-n6-d1);
   border-radius: 6px;
   box-sizing: border-box;
-  width: 64px;
   height: 32px;
   display: flex;
   overflow: hidden;
@@ -142,6 +141,7 @@ export const CollapseItemTitle = styled.div`
   cursor: pointer;
   height: 28px;
   background: var(--hover-d2);
+  border-radius: 4px;
   span {
     font-size: var(--font12);
     color: var(--neutral-n2);
@@ -160,6 +160,12 @@ export const CollapseItemContent = styled.div<{ isOpen?: boolean }>`
 `
 
 export const Label = styled.div`
+  font-size: var(--font14);
+  color: var(--neutral-n1-d1);
+  font-family: SiYuanMedium;
+`
+
+export const LabelItem = styled.div`
   font-size: var(--font14);
   color: var(--neutral-n3);
 `
