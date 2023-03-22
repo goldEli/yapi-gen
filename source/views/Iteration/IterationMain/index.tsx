@@ -34,6 +34,7 @@ const Right = styled.div({
   width: '100%',
   height: '100%',
   overflowY: 'auto',
+  paddingLeft: '24px',
 })
 
 interface Props {
