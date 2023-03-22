@@ -141,7 +141,7 @@ const Mask = styled.div`
   text-align: center;
   font-size: 12px;
   line-height: 24px;
-  background-color: var(--neutral-transparent-n1-d1);
+  background-color: rgba(0, 0, 0, 0.4);
   color: var(--neutral-white-d7);
   border-radius: 0 0px 6px 6px;
   position: absolute;

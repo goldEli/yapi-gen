@@ -553,6 +553,7 @@ const ShowWrap = styled.div`
 const CategoryWrap = styled.div<{ color: string; bgColor: string }>({
   height: 22,
   borderRadius: 11,
+  display: 'flex',
   padding: '0 8px',
   marginRight: 8,
   lineHeight: '22px',
