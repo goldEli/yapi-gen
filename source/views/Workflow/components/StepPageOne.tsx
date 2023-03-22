@@ -58,6 +58,9 @@ const TableWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  '.ant-table-thead > tr > th': {
+    border: 'none',
+  },
   '.ant-spin-nested-loading': {
     width: '100%',
   },
@@ -492,16 +495,16 @@ const StepPageOne = (propsOne: Props) => {
       <div
         style={{ display: 'flex', alignItems: 'flex-end', marginBottom: 24 }}
       >
-        <Button
+        <CommonButton
+          type="light"
           style={{
             background: 'var( --hover-d2)',
             color: 'var(--primary-d2)',
           }}
-          icon={<IconFont type="plus" />}
           onClick={() => setIsAddVisible(true)}
         >
-          {t('newlyAdd.addStatus')}
-        </Button>
+          <IconFont type="plus" /> {t('newlyAdd.addStatus')}
+        </CommonButton>
         <span
           style={{ color: 'var(--neutral-n3)', fontSize: 12, marginLeft: 8 }}
         >

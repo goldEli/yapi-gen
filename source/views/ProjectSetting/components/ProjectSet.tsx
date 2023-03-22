@@ -435,7 +435,7 @@ const ProjectSet = () => {
             />
           </div>
           <ModalFooter size={16} style={{ padding: '0 20px 24px 0' }}>
-            <CommonButton type="secondary" onClick={onClose}>
+            <CommonButton type="light" onClick={onClose}>
               {t('common.cancel')}
             </CommonButton>
             <CommonButton

@@ -108,7 +108,7 @@ export const CoverAreaAdd = styled.div`
   width: 80px;
   height: 80px;
   border-radius: 6px 6px 6px 6px;
-  background: var(--neutral-n6-d2);
+  /* background: var(--neutral-n6-d2); */
   opacity: 1;
   border: 1px solid var(--neutral-n6-d2);
   display: flex;

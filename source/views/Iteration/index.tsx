@@ -441,10 +441,7 @@ const Iteration = () => {
               </CommonButton>
             )}
             {hasDel ? null : (
-              <CommonButton
-                type="secondary"
-                onClick={() => setIsDelete(!isDelete)}
-              >
+              <CommonButton type="light" onClick={() => setIsDelete(!isDelete)}>
                 {t('common.del')}
               </CommonButton>
             )}

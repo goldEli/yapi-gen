@@ -121,24 +121,29 @@ export const ChangeItem = styled.div<{ isActive?: boolean; height?: number }>`
 `
 
 export const PersonalHead = styled.div`
-  display: flex;
-  justify-content: center;
+  /* display: flex; */
+  /* justify-content: center; */
 `
 
 export const PersonalFooter = styled.div`
   display: flex;
-  justify-content: space-around;
-  padding-right: 20px;
+  justify-content: space-between;
+  /* padding-right: 20px; */
 `
 
 export const imgCss = css`
-  width: 104px;
-  height: 104px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
 `
 
 export const Line = styled.div`
   margin-top: 24px;
+  color: var(--neutral-n2);
+`
+export const Line2 = styled.div`
+  margin-top: 24px;
+  color: var(--neutral-n1-d1);
 `
 
 // 头部操作栏左侧

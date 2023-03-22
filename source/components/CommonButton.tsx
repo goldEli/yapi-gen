@@ -13,6 +13,9 @@ const primary = css`
   background: var(--auxiliary-b1) !important;
   color: var(--auxiliary-text-t1-d1) !important;
   border: 1px solid transparent !important;
+  span {
+    color: var(--auxiliary-text-t1-d1) !important;
+  }
   &:hover {
     background: var(--auxiliary-b2) !important;
     color: var(--auxiliary-text-t1-d1) !important;
@@ -22,6 +25,7 @@ const primary = css`
     color: var(--auxiliary-text-t1-d1) !important;
   }
 `
+
 const light = css`
   background: var(--auxiliary-b4) !important;
   color: var(--auxiliary-text-t2-d1) !important;

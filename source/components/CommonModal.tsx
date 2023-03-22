@@ -71,7 +71,7 @@ const CommonModal = (props: any) => {
           {props?.hasFooter}
           {!props.hasFooter && (
             <ModalFooter size={16}>
-              <CommonButton type="secondary" onClick={props?.onClose}>
+              <CommonButton type="light" onClick={props?.onClose}>
                 {t('common.cancel')}
               </CommonButton>
               <CommonButton type="primary" onClick={props?.onConfirm}>

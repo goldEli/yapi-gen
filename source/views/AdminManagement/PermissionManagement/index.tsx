@@ -69,9 +69,11 @@ const SetMain = styled.div({
 const SetLeft = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  height: '100%',
+  height: 'calc(100vh - 180px)',
+  overflowY: 'auto',
   borderRight: '1px solid var(--neutral-n6-d1)',
   width: 232,
+  paddingRight: '16px',
 })
 
 const SetRight = styled.div({
@@ -450,7 +452,7 @@ const PermissionManagement = () => {
             />
           </div>
           <ModalFooter size={16} style={{ padding: '0 16px 24px 0' }}>
-            <CommonButton type="secondary" onClick={onClose}>
+            <CommonButton type="light" onClick={onClose}>
               {t('common.cancel')}
             </CommonButton>
             <CommonButton

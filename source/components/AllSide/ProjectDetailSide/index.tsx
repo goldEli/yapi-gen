@@ -4,6 +4,7 @@ import CommonIconFont from '@/components/CommonIconFont'
 import { getProjectInfo, getProjectInfoValues } from '@/services/project'
 import { getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectInfo, setProjectInfoValues } from '@store/project'
 import { useEffect, useRef } from 'react'
@@ -22,7 +23,18 @@ import {
   WrapDetail,
   WrapCategory,
 } from './style'
-
+const Back = styled.div`
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  color: var(--neutral-n3);
+  margin-bottom: 14px;
+  margin-left: 19px;
+  &:hover {
+    cursor: pointer;
+    color: var(--primary-d1);
+  }
+`
 const ProjectDetailSide = () => {
   const [t] = useTranslation()
   const projectSide: any = useRef<HTMLInputElement>(null)
@@ -260,21 +272,10 @@ const ProjectDetailSide = () => {
             </span>
           </SideInfo>
         </SideTop>
-        <div
-          onClick={onGoBack}
-          style={{
-            fontSize: '12px',
-            display: 'flex',
-            alignItems: 'center',
-            color: 'var(--neutral-n3)',
-            marginBottom: '14px',
-            marginLeft: 19,
-            cursor: 'pointer',
-          }}
-        >
+        <Back onClick={onGoBack}>
           <CommonIconFont type="left-md" />
           <span style={{ marginLeft: '2px' }}>{t('back')}</span>
-        </div>
+        </Back>
         <Provider />
         <MenuBox>
           {sideList.map((i: any, index: number) => (
