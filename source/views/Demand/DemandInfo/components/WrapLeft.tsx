@@ -33,7 +33,7 @@ const WrapLeft = styled.div({
   width: '100%',
   height: '100%',
   overflow: 'auto',
-  padding: '0 20px 24px 0',
+  padding: '0 20px 24px 24px',
   borderRight: '1px solid var(--neutral-n6-d1)',
 })
 

@@ -56,7 +56,7 @@ import CustomSelect from '@/components/CustomSelect'
 const Wrap = styled.div`
   height: 100%;
   display: flex;
-  padding: 20px 24px 0 24px;
+  padding: 20px 16px 0 0px;
   flex-direction: column;
 `
 
@@ -66,7 +66,7 @@ const DemandInfoWrap = styled.div({
   justifyContent: 'space-between',
   height: 32,
   background: 'white',
-  margin: '20px 0 6px 0',
+  margin: '20px 0 6px 24px',
 })
 
 const NameWrap = styled.div({
@@ -92,6 +92,7 @@ const MainWrap = styled(Space)({
   width: '100%',
   position: 'relative',
   borderBottom: '1px solid var(--neutral-n6-d1)',
+  marginLeft: '24px',
 })
 
 const Item = styled.div<{ activeIdx: boolean }>(

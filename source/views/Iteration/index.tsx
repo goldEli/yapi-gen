@@ -45,7 +45,7 @@ import CommonButton from '@/components/CommonButton'
 const Wrap = styled.div`
   height: 100%;
   display: flex;
-  padding: 20px 24px 0 24px;
+  padding: 20px 24px 0 0px;
   flex-direction: column;
 `
 
