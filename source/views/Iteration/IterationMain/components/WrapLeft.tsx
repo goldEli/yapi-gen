@@ -67,9 +67,7 @@ const TopWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  height: 52,
   background: 'white',
-  marginBottom: 8,
 })
 
 const IconWrap = styled(IconFont)<{ isActive: any }>(
@@ -339,7 +337,7 @@ const WrapLeft = (props: Props) => {
             {t('common.clear1')}
           </div>
           <Space size={16}>
-            <CommonButton type="secondary" onClick={onClose}>
+            <CommonButton type="light" onClick={onClose}>
               {t('common.cancel')}
             </CommonButton>
             <CommonButton type="primary" onClick={onConfirmFilter}>
