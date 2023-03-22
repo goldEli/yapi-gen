@@ -353,10 +353,10 @@ const DelButton = styled.div`
   z-index: 2;
   .icon {
     font-size: 16px;
-    color: var(--neutral-n3);
+    color: var(--neutral-n4);
     cursor: pointer;
     &:hover {
-      color: var(--primary-d2);
+      color: var(--neutral-n3);
     }
   }
 `
