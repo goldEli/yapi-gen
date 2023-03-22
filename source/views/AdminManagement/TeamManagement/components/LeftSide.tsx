@@ -20,17 +20,15 @@ const LeftSideContainer = styled.div`
   height: 100%;
   border-right: 1px solid var(--neutral-n6-d2);
   padding: 0;
-  padding-left: 16px;
   background-color: var(--neutral-white-d1);
   .resize_save {
     position: absolute;
     padding: 0;
     top: 0;
     left: 0;
-    padding-left: 16px;
-    padding-right: 12px;
     overflow-y: auto;
     overflow-x: hidden;
+    margin: 0 16px;
   }
   .resizable {
     resize: horizontal;
@@ -62,7 +60,6 @@ const LeftSideContainer = styled.div`
 `
 const TeamAdd = styled.div`
   width: 100%;
-  padding: 0 16px;
   height: 72px;
   display: flex;
   align-items: center;
