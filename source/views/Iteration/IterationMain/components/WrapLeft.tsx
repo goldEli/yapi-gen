@@ -425,7 +425,7 @@ const WrapLeft = (props: Props) => {
         {hasAdd || projectInfo?.status !== 1 ? (
           <div />
         ) : (
-          <CommonButton type="light" icon="plus" onClick={onChangeClick}>
+          <CommonButton type="primary" icon="plus" onClick={onChangeClick}>
             {t('common.createIterate')}
           </CommonButton>
         )}
