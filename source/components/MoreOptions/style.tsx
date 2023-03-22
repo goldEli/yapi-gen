@@ -24,19 +24,19 @@ export const WrapTextImg = styled.img`
 `
 
 export const WrapFirst = styled.div`
-  height: 22px;
+  height: 18px;
   font-size: 14px;
   font-family: PingFang SC-Regular, PingFang SC;
   font-weight: 400;
   color: var(--neutral-n1-d1);
-  line-height: 22px;
+  line-height: 18px;
 `
 
 export const WrapSecond = styled.div`
-  height: 20px;
+  height: 18px;
   font-size: 12px;
   font-family: PingFang SC-Regular, PingFang SC;
   font-weight: 400;
   color: var(--neutral-n4);
-  line-height: 20px;
+  line-height: 18px;
 `

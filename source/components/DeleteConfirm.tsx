@@ -106,7 +106,7 @@ const DeleteConfirm = (props: Props) => {
       <ModalContent>{props.children ?? props.text}</ModalContent>
       <ModalFooter size={16}>
         {!props?.notCancel && (
-          <CommonButton onClick={props.onChangeVisible} type="secondary">
+          <CommonButton onClick={props.onChangeVisible} type="light">
             {t('cancel')}
           </CommonButton>
         )}

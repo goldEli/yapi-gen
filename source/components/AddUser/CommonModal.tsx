@@ -507,7 +507,7 @@ const CommonModal = (props: ModalProps) => {
         )}
         <div style={{ display: 'flex' }}>
           <CommonButton
-            type="secondary"
+            type="light"
             onClick={props?.onClose}
             style={{ marginRight: '16px' }}
           >
