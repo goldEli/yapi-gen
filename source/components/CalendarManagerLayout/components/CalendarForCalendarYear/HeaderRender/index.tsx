@@ -13,7 +13,7 @@ const CalendarHeader = styled.div`
 `
 
 const HeaderRender: React.FC<HeaderRenderProps> = props => {
-  return <CalendarHeader>{`${props.month}月`}</CalendarHeader>
+  return <CalendarHeader>{`${props.month + 1}月`}</CalendarHeader>
 }
 
 export default HeaderRender
