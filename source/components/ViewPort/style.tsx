@@ -25,6 +25,9 @@ export const ViewPortWrap = styled.div<{ show: boolean }>`
     background: var(--hover-d1);
     color: var(--neutral-n1-d1);
   }
+  &:active {
+    background: var(--neutral-n6-d1);
+  }
 `
 
 export const Name = styled.div`
