@@ -366,7 +366,10 @@ const GlobalStyle = () => {
     .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
       background-color: transparent;
       font-weight: inherit;
-      color: var(--primary-d2);
+      color: var(--primary-d2) !important;
+      .selectText {
+        color: var(--primary-d2) !important;
+      }
     }
     .ant-select-item-option-selected:not(
         .ant-select-item-option-disabled

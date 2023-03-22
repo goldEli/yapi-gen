@@ -72,7 +72,7 @@ const NameWrap = styled.div({
 const ContentWrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  height: 'calc(100% - 80px)',
+  height: 'calc(100% - 90px)',
 })
 
 const MainWrap = styled.div({
@@ -425,16 +425,19 @@ const Iteration = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
+            height: 32,
           }}
         >
           <MyBreadcrumb />
-          <div>
-            <InputSearch
-              placeholder={t('common.pleaseSearchDemand')}
-              onChangeSearch={onPressEnter}
-              leftIcon
-            />
-          </div>
+          {type === 'demand' && (
+            <div>
+              <InputSearch
+                placeholder={t('common.pleaseSearchDemand')}
+                onChangeSearch={onPressEnter}
+                leftIcon
+              />
+            </div>
+          )}
         </div>
         <DemandInfoWrap>
           <NameWrap>

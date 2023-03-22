@@ -308,7 +308,7 @@ const DemandWrap = (props: Props) => {
   }
 
   return (
-    <div style={{ height: 'calc(100% - 61px)' }}>
+    <div style={{ height: 'calc(100% - 53px)' }}>
       <DeleteConfirm
         text={t('mark.del')}
         isVisible={isDelete}

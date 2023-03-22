@@ -21,7 +21,7 @@ const MoreOptions = (props: OptionsProps) => {
           }}
         >
           <CommonUserAvatar avatar={props.img ?? erp} size="small" />
-          <WrapText>{props.name}</WrapText>
+          <WrapText className="selectText">{props.name}</WrapText>
         </div>
       )}
       {props.type === 'project' && (
@@ -33,7 +33,7 @@ const MoreOptions = (props: OptionsProps) => {
           }}
         >
           <WrapTextImg src={props.img ?? erp} />
-          <WrapText>{props.name}</WrapText>
+          <WrapText className="selectText">{props.name}</WrapText>
         </div>
       )}
       {props.type === 'promise' && (

@@ -342,12 +342,12 @@ const DemandTree = (props: Props) => {
       ]
       resultList = [...expandedRowKeys, ...lists]
     }
-
     setExpandedRowKeys([...new Set(resultList)])
     // 折叠时，判断参数错误，顶级折叠使用了子级折叠
     const resultArr = resultData?.list?.map((i: any) =>
       onComputedExpended(row, i, dataChildren?.list),
     )
+
     setData({ ...resultData, list: resultArr })
     setTimeout(() => {
       setData({ ...resultData, list: resultArr })
