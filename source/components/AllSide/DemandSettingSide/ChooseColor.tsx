@@ -97,9 +97,9 @@ const ColorWrapIcon = styled.div({
   border: '1px solid var(--neutral-n6-d2)',
   position: 'relative',
   '&:hover': {
-    background: 'var(--neutral-n6-d2)',
+    background: 'var(--hover-d2)',
     color: 'var(--primary-d2)',
-    border: '1px solid var(--neutral-n6-d2)',
+    border: '1px solid var(--hover-d2)',
   },
 })
 const ImgStyle = styled.img`
@@ -187,7 +187,10 @@ const ChooseColor = (props: ChooseColorProps) => {
           customRequest={(file: any) => onCustomRequest(file)}
         >
           <ColorWrapIcon>
-            <IconFont type="plus" />
+            <IconFont
+              type="plus"
+              style={{ color: 'var(--neutral-n2)', fontSize: 20 }}
+            />
           </ColorWrapIcon>
         </Upload>
       )}
