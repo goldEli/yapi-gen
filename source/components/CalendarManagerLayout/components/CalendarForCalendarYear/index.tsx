@@ -43,9 +43,8 @@ const CalendarForCalendarYear: React.FC<
   return (
     <StyledCalendar
       dateFullCellRender={date => {
-        const today = dayjs(dayjs().format('DD/MM/YYYY')).isSame(
-          dayjs(date).format('DD/MM/YYYY'),
-        )
+        const today =
+          dayjs().format('DD/MM/YYYY') === dayjs(date).format('DD/MM/YYYY')
         return (
           <DayBox className={today ? dayActive : ''}>
             {dayjs(date).date()}
