@@ -1,26 +1,8 @@
 // 更多的点点、列表每列的操作图标，加宽hover区域
 
 /* eslint-disable @typescript-eslint/naming-convention */
-import styled from '@emotion/styled'
-import { Dropdown } from 'antd'
 import IconFont from './IconFont'
-
-const DropdownWrap = styled(Dropdown)<{ isDemandCard?: any }>(
-  {
-    cursor: 'pointer',
-    '&: hover': {
-      svg: {
-        color: 'var(--auxiliary-b1)',
-      },
-    },
-    '.ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title': {
-      textAlign: 'left',
-    },
-  },
-  ({ isDemandCard }) => ({
-    visibility: isDemandCard ? 'visible' : 'hidden',
-  }),
-)
+import { DropdownWrap } from './StyleCommon'
 
 interface Props {
   isMoreVisible?: any

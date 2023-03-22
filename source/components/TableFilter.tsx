@@ -399,7 +399,7 @@ const TableFilter = (props: any) => {
   }
 
   return (
-    <SearchLine>
+    <SearchLine hasLeft={props?.hasLeft}>
       <Wrap hidden={props.showForm} style={{ userSelect: 'none' }}>
         <FormWrap form={form}>
           {list

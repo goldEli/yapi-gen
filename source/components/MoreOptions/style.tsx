@@ -16,8 +16,8 @@ export const WrapText = styled.div`
 `
 
 export const WrapTextImg = styled.img`
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   border-radius: 4px 4px 4px 4px;
 `
 

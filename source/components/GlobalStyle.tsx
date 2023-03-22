@@ -557,8 +557,8 @@ const GlobalStyle = () => {
       right: 0;
       top: 0;
       bottom: 0;
-      border-right: 1px solid var(#f0f0f0);
-      border-left: 1px solid var(#f0f0f0);
+      border-right: 1px solid var(--neutral-n6-d1);
+      border-left: 1px solid var(--neutral-n6-d1);
       pointer-events: none;
     }
     .resize_save {
@@ -572,7 +572,7 @@ const GlobalStyle = () => {
     }
     .resize_bar:hover ~ .resize_line,
     .resize_bar:active ~ .resize_line {
-      border-left: 1px dashed skyblue;
+      border-left: 1px solid var(--primary-d2);
     }
     .resize_bar::-webkit-scrollbar {
       width: 200px;
@@ -580,7 +580,7 @@ const GlobalStyle = () => {
     }
     .resize_bar2:hover ~ .resize_line,
     .resize_bar2:active ~ .resize_line {
-      border-left: 1px dashed skyblue;
+      border-left: 1px solid var(--primary-d2);
     }
     .resize_bar2::-webkit-scrollbar {
       width: 200px;

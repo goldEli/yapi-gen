@@ -598,16 +598,15 @@ const CommonNeed = (props: any) => {
       </div>
 
       {isShowSearch && props.id !== 0 && (
-        <div style={{ borderLeft: '1px solid var(--neutral-n6-d1)' }}>
-          <TableFilter
-            onFilter={getSearchKey}
-            onSearch={onSearch}
-            list={searchList}
-            basicsList={filterBasicsList}
-            specialList={filterSpecialList}
-            customList={filterCustomList}
-          />
-        </div>
+        <TableFilter
+          onFilter={getSearchKey}
+          onSearch={onSearch}
+          list={searchList}
+          basicsList={filterBasicsList}
+          specialList={filterSpecialList}
+          customList={filterCustomList}
+          hasLeft
+        />
       )}
       {!isMany && (
         <ResizeTable

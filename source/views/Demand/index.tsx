@@ -16,7 +16,7 @@ import ChildDemand from './ChildDemand'
 import { useEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
-import { Space, message, Popover, Form, Select } from 'antd'
+import { Space, message, Popover, Form, Select, Tooltip } from 'antd'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { copyLink, getIsPermission, getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
@@ -91,6 +91,7 @@ const MainWrap = styled(Space)({
   background: 'white',
   width: '100%',
   position: 'relative',
+  borderBottom: '1px solid var(--neutral-n6-d1)',
 })
 
 const Item = styled.div<{ activeIdx: boolean }>(
@@ -141,22 +142,18 @@ const FormWrap = styled(Form)({
   },
 })
 
-const LiWrap = styled.div<{ color: any }>(
-  {
-    cursor: 'pointer',
-    padding: '0 16px',
-    width: '100%',
-    height: 32,
-    display: 'flex',
-    alignItems: 'center',
-    background: 'white',
+const LiWrap = styled.div({
+  cursor: 'pointer',
+  padding: '0 16px',
+  width: '100%',
+  height: 32,
+  display: 'flex',
+  alignItems: 'center',
+  background: 'var(--neutral-white-d3)',
+  '&: hover': {
+    background: 'var(--hover-d3)',
   },
-  ({ color }) => ({
-    '&: hover': {
-      background: color,
-    },
-  }),
-)
+})
 
 const MoreItem = styled.div({
   display: 'flex',
@@ -389,11 +386,7 @@ const DemandBox = () => {
     >
       {resultCategory?.map((k: any) => {
         return (
-          <LiWrap
-            key={k.id}
-            color={colorList?.filter((i: any) => i.key === k.color)[0]?.bgColor}
-            onClick={() => onClickCategory(k)}
-          >
+          <LiWrap key={k.id} onClick={() => onClickCategory(k)}>
             <img
               src={
                 k.category_attachment
@@ -455,7 +448,7 @@ const DemandBox = () => {
     >
       {!isDelete && (
         <MoreItem onClick={onClickMoreDelete}>
-          <span>{t('delete')}</span>
+          <span>{t('p2.delete')}</span>
         </MoreItem>
       )}
       <MoreItem onClick={onCopyId}>
@@ -563,30 +556,32 @@ const DemandBox = () => {
         </div>
         <DemandInfoWrap>
           <NameWrap>
-            <Popover
-              trigger={['hover']}
-              visible={isShowChange}
-              placement="bottomLeft"
-              content={changeStatus}
-              getPopupContainer={node => node}
-              onVisibleChange={visible => setIsShowChange(visible)}
-            >
-              <div>
-                <img
-                  src={
-                    colorObj?.category_attachment
-                      ? colorObj?.category_attachment
-                      : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
-                  }
-                  style={{
-                    width: '18px',
-                    height: '18px',
-                    marginRight: '8px',
-                  }}
-                  alt=""
-                />
-              </div>
-            </Popover>
+            <Tooltip title={colorObj?.content}>
+              <Popover
+                trigger={['hover']}
+                visible={isShowChange}
+                placement="bottomLeft"
+                content={changeStatus}
+                getPopupContainer={node => node}
+                onVisibleChange={visible => setIsShowChange(visible)}
+              >
+                <div>
+                  <img
+                    src={
+                      colorObj?.category_attachment
+                        ? colorObj?.category_attachment
+                        : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
+                    }
+                    style={{
+                      width: '18px',
+                      height: '18px',
+                      marginRight: '8px',
+                    }}
+                    alt=""
+                  />
+                </div>
+              </Popover>
+            </Tooltip>
             <OmitText
               width={800}
               tipProps={{
@@ -640,7 +635,7 @@ const DemandBox = () => {
                   icon={isVisibleMore ? 'up' : 'down'}
                   iconPlacement="right"
                 >
-                  <span>{t('newlyAdd.moreOperation')}</span>
+                  <span>{t('moreInfo')}</span>
                 </CommonButton>
               </div>
             </Popover>

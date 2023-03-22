@@ -26,7 +26,7 @@ const MoreOptions = (props: OptionsProps) => {
       {props.type === 'project' && (
         <div
           style={{
-            height: '15px',
+            height: '20px',
             display: 'flex',
             alignItems: 'center',
           }}
