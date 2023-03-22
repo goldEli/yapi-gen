@@ -5,7 +5,7 @@ import { Space } from 'antd'
 const SpaceWrap = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, 280px); //自动填充，每个单元270
-  grid-gap: 16px; //间距10
+  grid-gap: 24px; //间距10
   justify-content: center;
 `
 const SpaceWrapItem = styled.div`
@@ -44,7 +44,7 @@ const AddProject = styled.div({
 
 const DataWrap = styled.div({
   paddingTop: '16px',
-  height: 'calc(100vh - 205px)',
+  height: 'calc(100vh - 180px)',
   overflowY: 'scroll',
   margin: 'auto',
 })

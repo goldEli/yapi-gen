@@ -420,8 +420,21 @@ const Iteration = () => {
           onChangeVisible={() => setIsDelete(!isDelete)}
           onConfirm={onDeleteConfirm}
         />
-        <div>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
           <MyBreadcrumb />
+          <div>
+            <InputSearch
+              placeholder={t('common.pleaseSearchDemand')}
+              onChangeSearch={onPressEnter}
+              leftIcon
+            />
+          </div>
         </div>
         <DemandInfoWrap>
           <NameWrap>
@@ -480,13 +493,6 @@ const Iteration = () => {
             </TitleWrap>
             {type === 'demand' && (
               <OperationWrap size={16}>
-                <InputSearch
-                  placeholder={t('common.pleaseSearchDemand')}
-                  onChangeSearch={onPressEnter}
-                  leftIcon
-                />
-                {hasFilter ? null : <DividerWrap type="vertical" />}
-
                 {hasFilter ? null : (
                   <HoverWrap
                     onClick={() => setFilterState(!filterState)}

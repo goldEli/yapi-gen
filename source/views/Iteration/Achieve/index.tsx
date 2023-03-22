@@ -10,13 +10,14 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
 import { getAchieveInfo } from '@/services/iterate'
 import { setAchieveInfo } from '@store/iterate'
+import CommonButton from '@/components/CommonButton'
 
 const wrap = css`
   height: calc(100% - 24px);
   background: white;
   border-radius: 6px;
   overflow-x: auto;
-  padding: 24px 4px 24px 24px;
+  /* padding: 24px 4px 24px 24px; */
 `
 
 const Achieve = () => {
@@ -48,19 +49,19 @@ const Achieve = () => {
   }, [])
 
   return (
-    <div style={{ height: 'calc(100% - 50px)', padding: '16px 16px 0' }}>
+    <div style={{ height: 'calc(100% - 50px)' }}>
       <div className={wrap}>
         {isCanEdit ? null : (
           <div
             style={{
               display: 'flex',
-              justifyContent: 'flex-end',
-              paddingRight: 20,
+              justifyContent: 'flex-start',
+              margin: '8px 0',
             }}
           >
-            <span onClick={() => setIsEdit(true)}>
+            <CommonButton type="primaryText" onClick={() => setIsEdit(true)}>
               {t('p2.editAchievements')}
-            </span>
+            </CommonButton>
           </div>
         )}
         <Achievements

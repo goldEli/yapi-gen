@@ -20,7 +20,7 @@ export const MemberIcon = styled.div`
   background: var(--neutral-white-d4);
   :hover {
     background: var(--hover-d2);
-    /* border: 1px solid var(--primary-d1); */
+    border: none;
   }
   :hover svg {
     color: var(--primary-d1);

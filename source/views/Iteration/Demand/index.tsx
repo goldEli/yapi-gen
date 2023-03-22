@@ -36,6 +36,7 @@ import PaginationBox from '@/components/TablePagination'
 import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import ResizeTable from '@/components/ResizeTable'
+import CommonButton from '@/components/CommonButton'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -307,7 +308,7 @@ const DemandWrap = (props: Props) => {
   }
 
   return (
-    <div style={{ height: 'calc(100% - 50px)', padding: '16px 16px 0' }}>
+    <div style={{ height: 'calc(100% - 61px)' }}>
       <DeleteConfirm
         text={t('mark.del')}
         isVisible={isDelete}
@@ -317,23 +318,27 @@ const DemandWrap = (props: Props) => {
       {!hasCreate && iterateInfo?.status === 1 && projectInfo?.status === 1 && (
         <div
           style={{
-            padding: '16px 0 4px 16px',
+            padding: '10px 0 0',
             background: 'white',
             borderRadius: '6px 6px 0 0',
           }}
         >
-          <SecondButton onClick={onCreateDemand}>
-            <IconFont type="plus" />
-            <div>{t('common.createDemand')}</div>
-          </SecondButton>
+          <CommonButton
+            type="primaryText"
+            icon="plus"
+            iconPlacement="left"
+            onClick={onCreateDemand}
+          >
+            {t('common.createDemand')}
+          </CommonButton>
         </div>
       )}
       <ResizeTable
         isSpinning={isSpinning}
         dataWrapNormalHeight={
           hasCreate || iterateInfo?.status !== 1 || projectInfo?.status !== 1
-            ? 'calc(100% - 64px)'
-            : 'calc(100% - 116px)'
+            ? 'calc(100% - 52px)'
+            : 'calc(100% - 104px)'
         }
         col={selectColum}
         dataSource={dataList?.list}
