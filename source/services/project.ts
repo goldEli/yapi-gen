@@ -231,6 +231,7 @@ export const getProjectInfo: any = async (params: any) => {
     stopTime: response.data.stop_at,
     affiliation: response.data.affiliation,
     leaderName: response.data.leader_name,
+    permissionType: response.data.permission_type,
   }
 }
 

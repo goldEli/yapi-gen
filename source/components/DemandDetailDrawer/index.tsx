@@ -139,7 +139,7 @@ const DemandDetailDrawer = () => {
   const getDemandDetail = async (id?: any, ids?: any) => {
     const paramsProjectId =
       demandDetailDrawerProps.project_id ?? demandDetailDrawerProps.projectId
-    if (drawerInfo?.projectId === paramsProjectId) {
+    if (demandDetailDrawerProps?.isAllProject) {
       getProjectData()
     }
     setDrawerInfo({})

@@ -333,6 +333,7 @@ const CommonNeed = (props: any) => {
         demandIds = listData?.list?.map((i: any) => i.id)
       }
       item.isMineOrHis = true
+      item.isAllProject = props.id === 0
       openDemandDetail({ ...item, ...{ demandIds } }, item.project_id, item.id)
     }
   }

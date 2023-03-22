@@ -28,13 +28,9 @@ const ChildrenDemand = (props: Props) => {
   const columnsChild = [
     {
       title: t('common.demandName'),
-      dataIndex: 'name',
-      render: () => {
-        return (
-          <div>
-            {props.detail.projectPrefix}-{props.detail.prefixKey}
-          </div>
-        )
+      dataIndex: 'storyPrefixKey',
+      render: (text: string) => {
+        return <div>{text}</div>
       },
     },
     {
