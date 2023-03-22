@@ -22,7 +22,7 @@ const Wrap = styled.div({
   borderRadius: 6,
   display: 'flex',
   flexDirection: 'column',
-  marginTop: 24,
+  padding: '24px 0 24px 24px',
 })
 
 const InfoLeft = styled.div({

@@ -76,7 +76,9 @@ const Setting = () => {
       permission={currentMenu?.children?.map((i: any) => i.url)}
     >
       <div>
-        <MyBreadcrumb setName={SideList[activeTabs].name} />
+        <div style={{ padding: '24px' }}>
+          <MyBreadcrumb setName={SideList[activeTabs].name} />
+        </div>
         <Wrap>
           <Content>{SideList[activeTabs].content}</Content>
         </Wrap>
