@@ -7,6 +7,7 @@ import { Form, message, Select } from 'antd'
 import { t } from 'i18next'
 import { useEffect, useState } from 'react'
 import CommonModal from '../CommonModal'
+import CustomSelect from '../CustomSelect'
 import { PinkWrap, Wrap } from './style'
 
 const { Option } = Select
@@ -101,7 +102,7 @@ const HandOverModal = (props: any) => {
                 </div>
               }
             >
-              <Select
+              <CustomSelect
                 style={{
                   width: '184px',
                   marginLeft: '48px',
@@ -114,7 +115,7 @@ const HandOverModal = (props: any) => {
                     {k.user_name}
                   </Option>
                 ))}
-              </Select>
+              </CustomSelect>
             </Form.Item>
           ))}
         </Form>

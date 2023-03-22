@@ -63,7 +63,6 @@ const ItemRow = styled(Row)`
   > img {
     width: 32px;
     height: 32px;
-    margin-right: 12px;
   }
 `
 const ItemTitle = styled.div`

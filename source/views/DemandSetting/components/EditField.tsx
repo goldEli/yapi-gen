@@ -25,6 +25,7 @@ import { addStoryConfigField, updateStoryConfigField } from '@/services/project'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectFieIdsData } from '@store/category/index'
 import FormTitleSmall from '@/components/FormTitleSmall'
+import CustomSelect from '@/components/CustomSelect'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -404,12 +405,12 @@ const EditFiled = (props: Props) => {
               rules={[{ required: true, message: '' }]}
               name="type"
             >
-              <Select
+              <CustomSelect
                 placeholder={t('common.pleaseSelect')}
                 allowClear
                 showArrow
                 optionFilterProp="label"
-                getPopupContainer={node => node}
+                getPopupContainer={(node: any) => node}
                 showSearch
                 disabled={props?.item?.id}
                 options={option}

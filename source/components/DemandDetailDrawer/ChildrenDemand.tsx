@@ -69,7 +69,7 @@ const ChildrenDemand = (props: Props) => {
       render: (text: any, record: any) => {
         return (
           <StateTag
-            name={record.name}
+            name={text.status.content}
             state={
               text?.is_start === 1 && text?.is_end === 2
                 ? 1

@@ -1,12 +1,52 @@
 // 颜色选择组件
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
+/* eslint-disable react/jsx-handler-names */
 import IconFont from '@/components/IconFont'
+import { uploadFileByTask } from '@/services/cos'
 import styled from '@emotion/styled'
-import { Popover, Space } from 'antd'
-import { useState } from 'react'
+import { message, Popover, Space, Upload } from 'antd'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-
+const ChooseColorUpload = styled.div({
+  width: 56,
+  height: 56,
+  borderRadius: 6,
+  cursor: 'pointer',
+  border: '1px solid var(--neutral-n6-d2)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  position: 'relative',
+  zIndex: 888,
+  '.ant-upload.ant-upload-select': {
+    width: '56px',
+    height: '24px',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    zIndex: 999,
+  },
+  '& img': {
+    width: '32px',
+    height: '32px',
+  },
+})
+const TextStyle1 = styled.span`
+  width: 56px;
+  text-align: center;
+  line-height: 24px;
+  border-radius: 0 0 6px 6px;
+  display: inline-block;
+  height: 24px;
+  background-color: var(--neutral-n2);
+  font-size: 12px;
+  color: var(--neutral-white-d7);
+  position: absolute;
+  bottom: -0px;
+  left: -0px;
+  opacity: 0.4;
+`
 const ChooseColorWrap = styled.div({
   width: 80,
   height: 80,
@@ -33,6 +73,7 @@ const TextStyle = styled.span`
   color: var(--neutral-white-d7);
   position: absolute;
   bottom: 0;
+  opacity: 0.4;
 `
 const ColorWrap = styled.div({
   width: '56px',
@@ -44,8 +85,21 @@ const ColorWrap = styled.div({
   cursor: 'pointer',
   border: '1px solid var(--neutral-n6-d2)',
   position: 'relative',
-  svg: {
-    color: 'white',
+})
+const ColorWrapIcon = styled.div({
+  width: '56px',
+  height: '56px',
+  borderRadius: '6px 6px 6px 6px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  cursor: 'pointer',
+  border: '1px solid var(--neutral-n6-d2)',
+  position: 'relative',
+  '&:hover': {
+    background: 'var(--hover-d2)',
+    color: 'var(--primary-d2)',
+    border: '1px solid var(--hover-d2)',
   },
 })
 const ImgStyle = styled.img`
@@ -58,20 +112,45 @@ const IconFontStyle = styled(IconFont)({
   top: 0,
   fontSize: 22,
 })
+const IconFontStyle1 = styled(IconFont)({
+  position: 'absolute',
+  right: 0,
+  top: 0,
+  fontSize: 22,
+})
 interface ChooseColorProps {
   color?: any
   onChange?(value?: string): void
-  onChangeValue?(value?: string): void
+  onChangeValue?(value?: any, state?: any): void
   colorList: any
+  hiddenUpload: boolean
 }
-
 const ChooseColor = (props: ChooseColorProps) => {
   const [isChooseColor, setIsChooseColor] = useState(false)
   const [t] = useTranslation()
-  const onChangeColor = (val: string) => {
-    props?.onChangeValue?.(val)
-    props?.onChange?.(val)
+  const [cover, setCover] = useState()
+  useEffect(() => {
+    props.hiddenUpload && setIsChooseColor(false)
+  }, [props.hiddenUpload])
+  const onChangeColor = (val: any) => {
+    props?.onChangeValue?.(val, 2)
     setIsChooseColor(false)
+  }
+  const onCustomRequest = async (file: any) => {
+    if (!file.file.type?.includes('image')) {
+      message.warning(t('please_upload_a_picture'))
+      return
+    }
+    const data: any = await uploadFileByTask(file.file, '2', '2')
+    data && setCover(data.url)
+  }
+  const activeChoose = (event: any, img: any) => {
+    event.preventDefault()
+    event.stopPropagation()
+    const obj = {
+      path: img,
+    }
+    props?.onChangeValue?.(obj, 1)
   }
   const colorStatus = (
     <Space
@@ -80,7 +159,7 @@ const ChooseColor = (props: ChooseColorProps) => {
         alignItems: 'center',
         padding: 16,
         flexWrap: 'wrap',
-        maxWidth: 248,
+        maxWidth: 349,
       }}
       size={8}
     >
@@ -90,6 +169,31 @@ const ChooseColor = (props: ChooseColorProps) => {
           <IconFontStyle hidden={i.path !== props?.color} type="anglemark" />
         </ColorWrap>
       ))}
+
+      {cover ? (
+        <ChooseColorUpload onClick={e => activeChoose(e, cover)}>
+          <img src={cover} />
+          <IconFontStyle1 hidden={cover !== props?.color} type="anglemark" />
+          <Upload
+            fileList={[]}
+            customRequest={(file: any) => onCustomRequest(file)}
+          >
+            <TextStyle1>重新上传</TextStyle1>
+          </Upload>
+        </ChooseColorUpload>
+      ) : (
+        <Upload
+          fileList={[]}
+          customRequest={(file: any) => onCustomRequest(file)}
+        >
+          <ColorWrapIcon>
+            <IconFont
+              type="plus"
+              style={{ color: 'var(--neutral-n2)', fontSize: 20 }}
+            />
+          </ColorWrapIcon>
+        </Upload>
+      )}
     </Space>
   )
 

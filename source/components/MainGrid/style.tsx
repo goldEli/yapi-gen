@@ -43,6 +43,7 @@ const AddProject = styled.div({
 })
 
 const DataWrap = styled.div({
+  paddingTop: '16px',
   height: 'calc(100vh - 205px)',
   overflowY: 'scroll',
   margin: 'auto',

@@ -18,6 +18,7 @@ const ModalHeader = styled.div`
   font-weight: 500;
   height: 56px;
   padding: 0 13px 0 24px;
+  font-family: SiYuanMedium;
 `
 
 const ModalFooter = styled(Space)({
@@ -70,7 +71,7 @@ const CommonModal = (props: any) => {
           {props?.hasFooter}
           {!props.hasFooter && (
             <ModalFooter size={16}>
-              <CommonButton type="secondary" onClick={props?.onClose}>
+              <CommonButton type="light" onClick={props?.onClose}>
                 {t('common.cancel')}
               </CommonButton>
               <CommonButton type="primary" onClick={props?.onConfirm}>

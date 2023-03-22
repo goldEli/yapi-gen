@@ -263,20 +263,20 @@ const HeaderLeft = () => {
   }
 
   useEffect(() => {
-    if (menuPermission.menus?.length) {
+    if (menuPermission.menus?.length || routerPath) {
       let resultMenu: any
-      if (location.pathname === '/') {
+      if (routerPath.pathname === '/') {
         resultMenu = menuPermission?.menus?.filter(
           (i: any) => i.url === menuPermission.priorityUrl,
         )[0]
       } else {
         resultMenu = menuPermission?.menus?.filter((i: any) =>
-          location.pathname.includes(i.url),
+          routerPath.pathname.includes(i.url),
         )?.[0]
       }
       dispatch(setCurrentMenu(resultMenu))
     }
-  }, [menuPermission])
+  }, [menuPermission, routerPath])
 
   return (
     <HeaderLeftWrap>

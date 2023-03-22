@@ -254,7 +254,7 @@ const CreateDemand = () => {
             {!createDemandProps.demandId && (
               <CommonButton
                 isDisable={!isCreateDemand}
-                type="secondary"
+                type="light"
                 onClick={() => onSaveCategory(1)}
               >
                 {t('common.finishToAdd')}

@@ -24,6 +24,8 @@ import IconFont from './IconFont'
 import { useSelector } from '@store/index'
 import { getDemandList } from '@/services/demand'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
+import StateTag from './StateTag'
+import TableColorText from './TableColorText'
 
 const NewSort = (sortProps: any) => {
   return (
@@ -102,7 +104,7 @@ const ChildDemandTable = (props: {
           order={order.value}
           onUpdateOrderKey={onUpdateOrderKey}
         >
-          ID
+          {t('serialNumber')}
         </NewSort>
       ),
       dataIndex: 'storyPrefixKey',
@@ -154,25 +156,29 @@ const ChildDemandTable = (props: {
               getPopupContainer={node => node}
               title={record.categoryRemark}
             >
-              <CategoryWrap
-                color={record.categoryColor}
-                bgColor={
-                  colorList?.filter(
-                    (k: any) => k.key === record.categoryColor,
-                  )[0]?.bgColor
+              <img
+                src={
+                  record.category_attachment
+                    ? record.category_attachment
+                    : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
                 }
-                style={{ marginLeft: 0 }}
-              >
-                {record.category}
-              </CategoryWrap>
+                style={{
+                  width: '18px',
+                  height: '18px',
+                  marginRight: '8px',
+                }}
+                alt=""
+              />
             </Tooltip>
+
             <Tooltip title={text} getPopupContainer={node => node}>
               <ListNameWrap
+                className="canClickDetail"
                 isName
                 isClose={record.status?.is_end === 1}
                 onClick={() => onToDetail(record)}
               >
-                {text}
+                <TableColorText text={text} />
               </ListNameWrap>
             </Tooltip>
           </div>
@@ -222,16 +228,18 @@ const ChildDemandTable = (props: {
       width: 190,
       render: (text: any, record: any) => {
         return (
-          <StatusWrap
-            onClick={record.isExamine ? onExamine : void 0}
-            isShow={isCanEdit || record.isExamine}
-            style={{
-              color: text?.status.color,
-              border: `1px solid ${text?.status.color}`,
-            }}
-          >
-            {text?.status.content}
-          </StatusWrap>
+          <StateTag
+            name={text.status.content}
+            state={
+              text?.is_start === 1 && text?.is_end === 2
+                ? 1
+                : text?.is_end === 1 && text?.is_start === 2
+                ? 2
+                : text?.is_start === 2 && text?.is_end === 2
+                ? 3
+                : 0
+            }
+          />
         )
       },
     },

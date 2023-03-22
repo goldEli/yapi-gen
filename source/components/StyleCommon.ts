@@ -5,6 +5,7 @@
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import { Button, Divider, Progress, Slider, Table } from 'antd'
+import CustomSelect from './CustomSelect'
 import IconFont from './IconFont'
 
 const DragLine = styled.div<{ active: boolean }>`
@@ -349,6 +350,27 @@ const SliderWrap = styled(Slider)<{ isDisabled?: any }>(
   }),
 )
 
+const DelButton = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: -7px;
+  top: -7px;
+  width: 15px;
+  height: 15px;
+  visibility: hidden;
+  z-index: 2;
+  .icon {
+    font-size: 16px;
+    color: var(--neutral-n3);
+    cursor: pointer;
+    &:hover {
+      color: var(--primary-d2);
+    }
+  }
+`
+
 const SelectWrapBedeck = styled.div`
   height: 32px;
   position: relative;
@@ -357,6 +379,9 @@ const SelectWrapBedeck = styled.div`
   display: flex;
   align-items: center;
   border-radius: 6px;
+  &:hover ${DelButton} {
+    visibility: visible;
+  }
   span {
     white-space: nowrap;
   }
@@ -366,6 +391,10 @@ const SelectWrapBedeck = styled.div`
   }
   .ant-picker {
     border: none;
+  }
+  .ant-select-selector {
+    border: none !important;
+    background-color: transparent !important;
   }
   .ant-select-selection-placeholder {
     color: black;
@@ -834,6 +863,21 @@ const ProgressWrap = styled.div({
   borderRadius: 6,
 })
 
+const SelectWrap = styled(CustomSelect)`
+  .ant-select-selection-placeholder {
+    color: var(--neutral-black);
+  }
+  .ant-select-selector {
+    min-width: 140px;
+    border: none !important;
+    outline: none !important;
+  }
+
+  .ant-select-selection-placeholder {
+    color: var(--neutral-n4);
+  }
+`
+
 export {
   title1Css1,
   HiddenText,
@@ -856,6 +900,7 @@ export {
   AddWrap,
   PriorityWrap,
   SliderWrap,
+  DelButton,
   SelectWrapBedeck,
   SearchLine,
   SecondButton,
@@ -879,4 +924,5 @@ export {
   StatusTag,
   ProgressWrap,
   DragLine,
+  SelectWrap,
 }

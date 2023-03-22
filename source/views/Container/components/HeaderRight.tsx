@@ -28,6 +28,7 @@ import {
   UserInfoBox,
   UserInfoTop,
   UserInfoWrap,
+  Line2,
 } from './../style'
 import { setIsCreateIterationVisible } from '@store/iterate'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
@@ -203,11 +204,12 @@ const HeaderRight = () => {
     },
     {
       label: t('common.job'),
-      value: userInfo.position_name,
+      value: userInfo?.position_name,
     },
     {
       label: t('team'),
-      value: userInfo?.teams?.join(';') + userInfo?.teams?.join(';'),
+      // value: userInfo?.teams?.join(';') + userInfo?.teams?.join(';'),
+      value: '123',
     },
     {
       label: t('permission_group'),
@@ -341,23 +343,34 @@ const HeaderRight = () => {
         isShowFooter
         width={420}
       >
-        <div style={{ paddingBottom: 16 }}>
-          <PersonalHead>
-            {userInfo.avatar ? (
-              <img className={imgCss} src={userInfo.avatar} />
-            ) : (
-              <UserAvatar />
-            )}
-          </PersonalHead>
+        <div style={{ padding: '24px 32px' }}>
           <PersonalFooter>
             <div>
+              <Line>头像</Line>
               {labelList.map(item => (
-                <Line key={item.label}>{item.label ? item.label : '-'}</Line>
+                <Line style={{}} key={item.label}>
+                  {item.label ? item.label : '-'}
+                </Line>
               ))}
             </div>
-            <div>
+            <div
+              style={{
+                textAlign: 'right',
+              }}
+            >
+              <Line>
+                <PersonalHead>
+                  {userInfo.avatar ? (
+                    <img className={imgCss} src={userInfo.avatar} />
+                  ) : (
+                    <UserAvatar />
+                  )}
+                </PersonalHead>
+              </Line>
               {labelList.map(item => (
-                <Line key={item.label}>{item.value ? item.value : '-'}</Line>
+                <Line2 style={{}} key={item.label}>
+                  {item.value ? item.value : '-'}
+                </Line2>
               ))}
             </div>
           </PersonalFooter>

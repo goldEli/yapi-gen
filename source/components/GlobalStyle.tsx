@@ -185,9 +185,12 @@ const GlobalStyle = () => {
         font-family: SiYuanRegular;
       }
       &::placeholder {
-        /* color: red; */
         font-family: SiYuanRegular;
       }
+    }
+    .ant-input:focus,
+    .ant-input-focused {
+      box-shadow: inherit !important;
     }
     .ant-progress-text {
       color: var(--neutral-n2) !important;
@@ -347,13 +350,14 @@ const GlobalStyle = () => {
 
     .ant-select-item-option {
       font-weight: inherit;
-
       color: var(--neutral-n2);
+      display: flex;
+      align-items: center;
     }
     .ant-select-item-option:hover {
       font-weight: inherit;
-      /* background: var(--neutral-white-d4); */
-      color: var(--neutral-n1-d1);
+      background: var(--hover-d3) !important;
+      color: var(--neutral-n1-d1) !important;
     }
     .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
       background-color: transparent;
@@ -631,15 +635,7 @@ const GlobalStyle = () => {
       height: 32px !important;
     }
 
-    /* .ant-dropdown-menu-item,
-    .ant-dropdown-menu-submenu-title {
-      padding: 5px 0;
-      text-align: center;
-      min-width: 60px;
-    } */
-
     .ant-dropdown-menu-title-content div {
-      /* padding: 0 12px; */
       white-space: pre;
     }
 
@@ -737,7 +733,12 @@ const GlobalStyle = () => {
     }
     .ant-select:not(.ant-select-disabled):hover .ant-select-selector,
     .ant-select-show-arrow,
-    .ant-select-focused {
+    .ant-select-focused,
+    .ant-picker-focused,
+    .ant-input-number-focused,
+    .ant-select-selector,
+    .ant-select:hover {
+      box-shadow: inherit !important;
       .ant-dropdown-menu-item:hover {
         background-color: var(--hover-d3);
         color: var(--neutral-n1-d1);
@@ -758,8 +759,7 @@ const GlobalStyle = () => {
     }
 
     .ant-dropdown-menu-item {
-      /* text-align: center; */
-
+      min-width: 120px;
       background-color: var(--neutral-white-d5);
     }
     .ant-menu-vertical .ant-menu-submenu-selected,
@@ -787,16 +787,6 @@ const GlobalStyle = () => {
       border-color: var(--primary-d1);
       color: var(--neutral-white-d7);
     }
-    /* .ant-btn-primary {
-      background-color: var(--primary-d1);
-      border-color: var(--primary-d1);
-      color: var(--neutral-white-d7) ;
-    }
-    .ant-btn-default {
-      background: var(--hover-d2);
-      border: none;
-      color: var(--neutral-n2);
-    } */
     .ant-radio-checked::after {
       border: 1px solid var(--primary-d1);
     }
@@ -821,6 +811,9 @@ const GlobalStyle = () => {
     .ant-pagination-prev .ant-pagination-item-link,
     .ant-pagination-next .ant-pagination-item-link {
       border: none;
+    }
+    .ant-select-tree-treenode:hover {
+      background-color: var(--hover-d3) !important;
     }
   `
   return <Global styles={globalCss} />

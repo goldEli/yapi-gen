@@ -171,6 +171,7 @@ export const Tabs = styled.div`
     background-color: var(--neutral-white-d6);
     color: var(--neutral-n3);
     box-shadow: 0px 1px 9px 0px rgba(20, 37, 98, 0.05);
+    border: 1px solid var(--neutral-n6-d1);
   }
 `
 

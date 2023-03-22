@@ -212,7 +212,6 @@ const PermissionItem = (props: ItemProps) => {
       e.target.checked ? props.item.children.map((i: any) => i.value) : [],
     )
   }
-
   return (
     <MainWrapItem>
       <CheckboxWrap>
@@ -279,13 +278,17 @@ const PermissionManagement = () => {
   const getPermission = async (id: number) => {
     setIsSpinning(true)
     const result = await getRolePermission({ roleId: id })
-    setPermission(result)
     setIsSpinning(false)
     let keys: any[] = []
     result.list.forEach((i: any) => {
       const a = i.children.filter((j: any) => j.checked)
       keys = [...keys, ...a.map((k: any) => k.value)]
     })
+    const filterArr = result.list.map((el: any) => ({
+      ...el,
+      children: el.children.filter((item: any) => item.isShow !== 2),
+    }))
+    setPermission(filterArr)
     setSelectKeys(keys)
     dispatch(setIsRefresh(false))
   }
@@ -447,7 +450,7 @@ const PermissionManagement = () => {
             />
           </div>
           <ModalFooter size={16} style={{ padding: '0 16px 24px 0' }}>
-            <CommonButton type="secondary" onClick={onClose}>
+            <CommonButton type="light" onClick={onClose}>
               {t('common.cancel')}
             </CommonButton>
             <CommonButton
@@ -517,7 +520,7 @@ const PermissionManagement = () => {
                   <span>{t('common.permission')}</span>
                 </TitleGroup>
                 <MainWrap>
-                  {permission.list?.map((i: any) => (
+                  {permission?.map((i: any) => (
                     <PermissionItem
                       key={i.id}
                       item={i}

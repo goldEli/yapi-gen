@@ -56,6 +56,7 @@ export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
   const { userInfo } = useSelector(store => store.user)
   const { projectInfo, colorList } = useSelector(store => store.project)
+  const hight = useSelector(store => store.colorText.text)
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
@@ -152,6 +153,7 @@ export const useDynamicColumns = (state: any) => {
                     state.isTree ? 500 - (Number(record.level) - 1) * 24 : 500
                   }
                 >
+                  {/* {hight?<TableColorText text={text} />:text} */}
                   <TableColorText text={text} />
                 </ListNameWrap>
               </Tooltip>

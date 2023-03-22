@@ -6,7 +6,7 @@
 import styled from '@emotion/styled'
 import { Select, Form, Space } from 'antd'
 import moment from 'moment'
-import { SelectWrapBedeck } from '@/components/StyleCommon'
+import { SelectWrap, SelectWrapBedeck } from '@/components/StyleCommon'
 import { useEffect, useState } from 'react'
 import Sort from '@/components/Sort'
 import { useTranslation } from 'react-i18next'
@@ -21,6 +21,7 @@ import PaginationBox from '@/components/TablePagination'
 import IconFont from '@/components/IconFont'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import ResizeTable from '@/components/ResizeTable'
+import CustomSelect from '@/components/CustomSelect'
 
 const Header = styled.div({
   height: 'auto',
@@ -45,17 +46,6 @@ const SearchWrap = styled(Space)({
   flexWrap: 'wrap',
   borderBottom: '1px solid var(--neutral-n6-d1)',
 })
-
-const SelectWrap = styled(Select)`
-  .ant-select-selection-placeholder {
-    color: rgba(187, 189, 191, 1);
-  }
-  .ant-select-selector {
-    min-width: 124px;
-    border: none !important;
-    outline: none !important;
-  }
-`
 
 const Content = styled.div({
   padding: '0px 24px 0px',

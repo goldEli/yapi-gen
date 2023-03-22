@@ -18,6 +18,7 @@ import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { GENDER_MAP } from '@/constants'
 import TeamOverModal from '@/components/TeamOverModal'
 import { t } from 'i18next'
+import CustomSelect from '@/components/CustomSelect'
 
 const RightWrap = styled.div`
   flex: 1;
@@ -79,7 +80,7 @@ const TitleStyle = styled.div`
   font-size: 14px;
   color: var(--neutral-n2);
 `
-const SelectStyle = styled(Select)`
+const SelectStyle = styled(CustomSelect)`
   .ant-select:not(.ant-select-customize-input) .ant-select-selector {
     border: 1px solid var(--neutral-n6-d1) !important;
     background-color: var(--neutral-white-d4) !important;
@@ -218,7 +219,7 @@ const RightTable = () => {
             rules={[{ required: true, message: '' }]}
           >
             <SelectStyle
-              getPopupContainer={node => node}
+              getPopupContainer={(node: any) => node}
               placeholder={t('please_enter_a_team_name') as string}
               style={{ width: '100%' }}
               options={options}

@@ -18,6 +18,7 @@ import {
   updateStoryConfigCategory,
 } from '@/services/project'
 import { useSearchParams } from 'react-router-dom'
+import { uploadFileByTask } from '@/services/cos'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -45,13 +46,14 @@ interface EditorProps {
 
 const EditorCategory = (props: EditorProps) => {
   const [t] = useTranslation()
-  const [name, setName] = useState<any>('')
   const [path, setPath] = useState<any>('')
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const inputRefDom = useRef<HTMLInputElement>(null)
   const [colorList, setColorList] = useState<any>()
+  const [hiddenUpload, setHiddenUpload] = useState(false)
+  // 图标icon
   const getIconList = async () => {
     const list: any = await getCategoryIconList()
     setColorList(list.data)
@@ -64,13 +66,13 @@ const EditorCategory = (props: EditorProps) => {
       color: list.data[0].path,
     })
   }
+
   useEffect(() => {
     if (props?.type === 'edit' && props.isVisible) {
       getIconList()
       form.setFieldsValue(props?.item)
       setPath(props?.item?.path)
-      setName(props?.item?.name)
-    } else if (!props?.type && props.isVisible) {
+    } else if (props.isVisible) {
       getIconList()
     }
   }, [props.isVisible])
@@ -81,7 +83,6 @@ const EditorCategory = (props: EditorProps) => {
     setTimeout(() => {
       form.resetFields()
       setPath('')
-      setName('')
     }, 100)
   }
 
@@ -94,7 +95,7 @@ const EditorCategory = (props: EditorProps) => {
     const params = form.getFieldsValue()
     params.projectId = paramsData.id
     params.id = props?.item?.id
-    const attachment_id = colorList.find((item: any) => item.path === path).id
+    const attachment_id = colorList.find((item: any) => item.path === path).path
     params.attachment_id = attachment_id
     if (props?.type === 'edit') {
       try {
@@ -113,19 +114,21 @@ const EditorCategory = (props: EditorProps) => {
         //
       }
     }
+    setHiddenUpload(false)
   }
 
   const onClose = () => {
     props.onClose()
+    setHiddenUpload(false)
     setTimeout(() => {
       form.resetFields()
-      setName('')
       setPath('')
     }, 100)
   }
 
-  const onChangeValue = (val: { id: number; path: string }) => {
+  const onChangeValue = (val: { id: number; path: string }, state: any) => {
     setPath(val.path)
+    state === 1 ? setHiddenUpload(true) : setHiddenUpload(false)
   }
 
   return (
@@ -161,7 +164,6 @@ const EditorCategory = (props: EditorProps) => {
             placeholder={t('newlyAdd.pleaseCategory')}
             allowClear
             maxLength={10}
-            onChange={e => setName(e.target.value)}
             autoFocus
           />
         </Form.Item>
@@ -183,8 +185,9 @@ const EditorCategory = (props: EditorProps) => {
         <Form.Item label={t('newlyAdd.chooseIcon')} name="attachment_id">
           <ChooseColor
             color={path}
+            hiddenUpload={hiddenUpload}
             colorList={colorList}
-            onChangeValue={(val: any) => onChangeValue(val)}
+            onChangeValue={(val: any, state) => onChangeValue(val, state)}
           />
         </Form.Item>
         <Form.Item label={t('newlyAdd.view')}>

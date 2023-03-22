@@ -12,6 +12,7 @@ import moment from 'moment'
 import { useState, useEffect, useImperativeHandle } from 'react'
 import { useTranslation } from 'react-i18next'
 import ChangePriorityPopover from '../ChangePriorityPopover'
+import CustomSelect from '../CustomSelect'
 import IconFont from '../IconFont'
 import StateTag from '../StateTag'
 import { PriorityWrap, SliderWrap } from '../StyleCommon'
@@ -84,42 +85,45 @@ const CreateDemandRight = (props: Props) => {
     const customArr = props.fieldsList?.filter((i: any) =>
       Object.keys(params).some((k: any) => k === i.content),
     )
-    customArr?.forEach((element: any) => {
-      const customValue: any = params[element.content]
-      if (
-        [
-          'select_checkbox',
-          'select',
-          'checkbox',
-          'radio',
-          'user_select_checkbox',
-          'user_select',
-        ].includes(element.type.attr)
-      ) {
-        // 判断是否是下拉框，是则去除空选项
-        const values = customValue?.filter((i: any) => i !== -1)
 
-        // 判断是否是单选，是则取第一个
-        const resultValue = ['select', 'radio', 'user_select'].includes(
-          element.type.attr,
-        )
-          ? values[0]
-          : values
-        resultCustom[element.content] = isFilter ? resultValue : customValue
-      } else if (['number'].includes(element.type.attr)) {
-        // 判断是否是数字类型，是则获取start
-        resultCustom[element.content] = isFilter
-          ? Number(customValue?.start)
-          : customValue
-      } else if (['date'].includes(element.type.attr)) {
-        // 判断是否是时间类型，是则获取第一个时间
-        resultCustom[element.content] = isFilter
-          ? moment(customValue[0])
-          : moment(customValue)
-      } else if (['text', 'textarea'].includes(element.type.attr)) {
-        resultCustom[element.content] = customValue
-      }
-    })
+    if (customArr?.length > 0) {
+      customArr?.forEach((element: any) => {
+        const customValue: any = params[element.content]
+        if (
+          [
+            'select_checkbox',
+            'select',
+            'checkbox',
+            'radio',
+            'user_select_checkbox',
+            'user_select',
+          ].includes(element?.fieldContent?.attr)
+        ) {
+          // 判断是否是下拉框，是则去除空选项
+          const values = customValue?.filter((i: any) => i !== -1)
+
+          // 判断是否是单选，是则取第一个
+          const resultValue = ['select', 'radio', 'user_select'].includes(
+            element?.fieldContent?.attr,
+          )
+            ? values[0]
+            : values
+          resultCustom[element.content] = isFilter ? resultValue : customValue
+        } else if (['number'].includes(element?.fieldContent?.attr)) {
+          // 判断是否是数字类型，是则获取start
+          resultCustom[element?.content] = isFilter
+            ? Number(customValue?.start)
+            : customValue
+        } else if (['date'].includes(element?.fieldContent?.attr)) {
+          // 判断是否是时间类型，是则获取第一个时间
+          resultCustom[element?.content] = isFilter
+            ? moment(customValue[0])
+            : moment(customValue)
+        } else if (['text', 'textarea'].includes(element?.fieldContent?.attr)) {
+          resultCustom[element?.content] = customValue
+        }
+      })
+    }
     form.setFieldsValue({ ...form, ...resultCustom })
   }
 
@@ -510,13 +514,13 @@ const CreateDemandRight = (props: Props) => {
       )
     ) {
       nodeComponent = (
-        <Select
+        <CustomSelect
           style={{ width: '100%' }}
           showArrow
           mode={item.content === 'iterate_name' ? (null as any) : 'multiple'}
           showSearch
           placeholder={t('common.pleaseSelect')}
-          getPopupContainer={node => node}
+          getPopupContainer={(node: any) => node}
           allowClear
           optionFilterProp="label"
           disabled={!props.isCreateDemand}
@@ -582,7 +586,7 @@ const CreateDemandRight = (props: Props) => {
     } else if (item.content === 'parent_id') {
       // 父需求
       nodeComponent = (
-        <Select
+        <CustomSelect
           disabled={!props.isCreateDemand}
           style={{ width: '100%' }}
           showArrow
@@ -598,7 +602,7 @@ const CreateDemandRight = (props: Props) => {
                 )
               : props.parentList
           }
-          getPopupContainer={node => node}
+          getPopupContainer={(node: any) => node}
           optionFilterProp="label"
           allowClear
         />
@@ -649,12 +653,12 @@ const CreateDemandRight = (props: Props) => {
             name="status"
             rules={[{ required: true, message: '' }]}
           >
-            <Select
+            <CustomSelect
               style={{ width: '100%' }}
               showArrow
               showSearch
               placeholder={t('common.pleaseSelect')}
-              getPopupContainer={node => node}
+              getPopupContainer={(node: any) => node}
               allowClear
               disabled={createDemandProps?.demandId}
             >
@@ -680,7 +684,7 @@ const CreateDemandRight = (props: Props) => {
                   </Select.Option>
                 )
               })}
-            </Select>
+            </CustomSelect>
           </Form.Item>
         )}
         {notFoldList?.map((i: any) => (
@@ -751,14 +755,65 @@ const CreateDemandRight = (props: Props) => {
         )}
         <div hidden={!isShowFields}>
           {foldList?.map((i: any) => (
-            <Form.Item
-              key={i.content}
-              label={i.title}
-              name={i.content}
-              rules={[{ required: i.isRequired === 1, message: '' }]}
-            >
-              {i.isCustomize === 1 ? getCustomDom(i) : getBasicTypeComponent(i)}
-            </Form.Item>
+            <>
+              {i.fieldContent?.attr === 'single_checkbox' && (
+                <Form.Item key={i.content} label={i.title} name={i.content}>
+                  <CheckboxWrap
+                    defaultChecked={i.fieldContent?.value || false}
+                    onChange={e => onChangeCheckBox(e, i.content)}
+                  />
+                </Form.Item>
+              )}
+              {i.content !== 'schedule' &&
+                i.fieldContent?.attr !== 'single_checkbox' && (
+                  <Form.Item
+                    key={i.content}
+                    label={i.title}
+                    name={i.content}
+                    rules={[{ required: i.isRequired === 1, message: '' }]}
+                  >
+                    {i.isCustomize === 1
+                      ? getCustomDom(i)
+                      : getBasicTypeComponent(i)}
+                  </Form.Item>
+                )}
+              {/* 需求进度 */}
+              {i.content === 'schedule' && createDemandProps.demandId && (
+                <Form.Item
+                  key={i.content}
+                  label={i.title}
+                  name={i.content}
+                  rules={[{ required: i.isRequired === 1, message: '' }]}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <SliderWrap
+                      style={{ width: 330 }}
+                      value={schedule}
+                      tipFormatter={(value: any) => `${value}%`}
+                      onChange={value => onChangeSetSchedule(value)}
+                      disabled={
+                        !(
+                          props?.demandDetail?.user
+                            ?.map((k: any) => k.user.id)
+                            ?.includes(userInfo?.id) &&
+                          props?.demandDetail.status.is_start !== 1 &&
+                          props?.demandDetail.status.is_end !== 1
+                        )
+                      }
+                    />
+                    <span
+                      style={{
+                        color: 'var(--neutral-n2)',
+                        marginLeft: 8,
+                        fontSize: 14,
+                      }}
+                    >
+                      {schedule}%
+                    </span>
+                  </div>
+                </Form.Item>
+              )}
+            </>
           ))}
         </div>
         {isShowFields && foldList?.length > 0 && (

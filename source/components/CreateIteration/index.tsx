@@ -19,6 +19,7 @@ import moment from 'moment'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '../CommonModal'
+import CustomSelect from '../CustomSelect'
 import MoreOptions from '../MoreOptions'
 import RangePicker from '../RangePicker'
 
@@ -197,13 +198,13 @@ const CreateIteration = () => {
               rules={[{ required: true, message: '' }]}
               name="projectId"
             >
-              <Select
+              <CustomSelect
                 optionLabelProp="label"
                 placeholder={t('common.searchProject')}
                 allowClear
                 showArrow
                 optionFilterProp="label"
-                getPopupContainer={node => node}
+                getPopupContainer={(node: any) => node}
                 showSearch
                 disabled={createIterationParams.id}
               >
@@ -221,7 +222,7 @@ const CreateIteration = () => {
                       </Select.Option>
                     )
                   })}
-              </Select>
+              </CustomSelect>
             </Form.Item>
             <Form.Item
               label={t('project.iterateTime')}

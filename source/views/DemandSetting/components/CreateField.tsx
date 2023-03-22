@@ -11,9 +11,11 @@ import ProjectDragging from './ProDragging'
 import { setProjectFieIdsData } from '@store/category'
 
 const CreateFieldWrap = styled.div`
-  margin: 20px 0 0 20px;
+  margin: 20px 0 0 0px;
   border-left: 1px solid var(--neutral-n6-d1);
   padding-left: 24px;
+  overflow-y: auto;
+  height: calc(100vh - 180px);
 `
 const TitleStyle = styled.div`
   display: flex;
@@ -214,6 +216,7 @@ const CreateField = () => {
               width={184}
               placeholder={t('pleaseEnterASearchPhrase')}
               value={searchValue}
+              onClick={() => setSearch(false)}
               onInput={(e: any) => onSearch(e.target.value)}
               prefix={
                 <CommonIconFont

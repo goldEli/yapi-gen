@@ -138,7 +138,7 @@ const Main = (props: any) => {
       storyId: item.id,
       isCustomize: 1,
       is_required: 2,
-      is_fold: draggingIndex === 1 ? 1 : 2,
+      is_fold: configType === 1 ? 1 : 2,
     }
     if (configType === 1) {
       const arrData = Array.from(getCategoryConfigF)
@@ -147,6 +147,7 @@ const Main = (props: any) => {
     } else {
       const arrData = Array.from(getCategoryConfigT)
       arrData.splice(draggingIndex, 0, newItem)
+      setGetCategoryConfigT(arrData)
     }
   }
   //拖动传递过来的参数
@@ -177,18 +178,13 @@ const Main = (props: any) => {
 
   // 保存排序
   const save = async () => {
-    let dataArr: any = []
-    if (getCategoryConfigT.length >= 1) {
-      dataArr = [...getCategoryConfigF, ...getCategoryConfigT]
-    } else {
-      dataArr = [...getCategoryConfigF]
-    }
+    let dataArr = [...getCategoryConfigF, ...getCategoryConfigT]
     const newData = dataArr.map((el: any, i: number) => ({
       id: el.id,
       story_config_id: el.storyId,
       sort: i,
-      is_fold: el.isFold,
-      is_required: el.isRequired,
+      is_fold: el.isFold || el.is_fold,
+      is_required: el.isRequired || el.is_required,
     }))
     await configSave({
       id: activeCategory.id,
@@ -218,7 +214,14 @@ const Main = (props: any) => {
     )
   }
   return (
-    <div style={{ flex: 1 }}>
+    <div
+      style={{
+        flex: 1,
+        height: 'calc(100vh - 220px)',
+        overflowY: 'auto',
+        paddingRight: 24,
+      }}
+    >
       <TitleStyle onClick={() => setInfoIcon(!infoIcon)}>
         {getCategoryConfigF?.length >= 1 && (
           <CommonIconFont
@@ -234,6 +237,7 @@ const Main = (props: any) => {
           onClick={(i: any, child: any) => tabsDraggingOnClcik(1, i, child)}
           onDrop={(event: any, index: any) => onDrop(1, event, index)}
           onMove={(data: any) => onMove(1, data)}
+          state={1}
           list={getCategoryConfigF}
           onChangeChecked={(val: boolean, child: any) =>
             onChangeChecked(1, val, child)
@@ -242,25 +246,24 @@ const Main = (props: any) => {
           setList={setGetCategoryConfigF}
         />
       )}
-      {getCategoryConfigDataList?.isFoldT?.length >= 1 && (
-        <TitleStyle onClick={() => setMoreIcon(!moreIcon)}>
-          <CommonIconFont
-            type={moreIcon ? 'down-icon' : 'right-icon'}
-            size={14}
-            color="var(--neutral-n3)"
-          />
-          <span>{t('more_folding') as string}</span>
-        </TitleStyle>
-      )}
-      {getCategoryConfigDataList?.isFoldT?.length >= 1 && moreIcon && (
+      <TitleStyle onClick={() => setMoreIcon(!moreIcon)}>
+        <CommonIconFont
+          type={moreIcon ? 'down-icon' : 'right-icon'}
+          size={14}
+          color="var(--neutral-n3)"
+        />
+        <span>{t('more_folding') as string}</span>
+      </TitleStyle>
+      {moreIcon && (
         <TabsDragging
+          state={2}
           onClick={(i: any, child: any) => tabsDraggingOnClcik(1, i, child)}
           onDrop={(event: any, index: any) => onDrop(2, event, index)}
           onMove={(data: any) => onMove(2, data)}
           list={getCategoryConfigT}
           onDelete={(child: any) => onDelete(2, child)}
           onChangeChecked={(val: boolean, child: any) =>
-            onChangeChecked(1, val, child)
+            onChangeChecked(2, val, child)
           }
           setList={setGetCategoryConfigT}
         />

@@ -44,7 +44,7 @@ const IconFontStyle = styled(IconFont)({
   },
 })
 
-const ProjectDetailSide = (props: { onClick(): void }) => {
+const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   const [t] = useTranslation()
   const { startUsing, categoryList, activeCategory } = useSelector(
     store => store.category,
@@ -200,7 +200,7 @@ const ProjectDetailSide = (props: { onClick(): void }) => {
         (i: any) => i.identity === 'b/project/story_config',
       )?.length <= 0
     ) {
-      onGoBack()
+      props.onBack()
     }
   }, [projectInfo])
 

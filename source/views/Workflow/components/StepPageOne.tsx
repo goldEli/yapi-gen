@@ -49,6 +49,7 @@ import { setWorkList } from '@store/project'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import StateTag from '@/components/StateTag'
 import CommonButton from '@/components/CommonButton'
+import CustomSelect from '@/components/CustomSelect'
 
 const TableWrap = styled.div({
   width: '100%',
@@ -473,11 +474,11 @@ const StepPageOne = (propsOne: Props) => {
                 </div>
               }
             >
-              <Select
+              <CustomSelect
                 placeholder={t('common.pleaseSelect')}
                 showArrow
                 showSearch
-                getPopupContainer={node => node}
+                getPopupContainer={(node: any) => node}
                 allowClear
                 optionFilterProp="label"
                 options={operationObj?.deleteData?.item?.status?.map(

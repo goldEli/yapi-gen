@@ -17,6 +17,7 @@ import CommonUserAvatar from './CommonUserAvatar'
 import { useSelector } from '@store/index'
 import { getDepartmentUserList } from '@/services/setting'
 import { unionBy } from 'lodash'
+import CustomSelect from '../CustomSelect'
 
 const { DirectoryTree } = Tree
 const ModalHeader = styled.div`
@@ -186,7 +187,7 @@ const TreeStyle = styled(DirectoryTree)`
     background-color: none;
   }
 `
-const SelectStyle = styled(Select)``
+const SelectStyle = styled(CustomSelect)``
 
 interface ModalProps {
   width?: number
@@ -386,7 +387,7 @@ const CommonModal = (props: ModalProps) => {
             style={{ width: 216 }}
             // eslint-disable-next-line no-undefined
             value={searchVal || undefined}
-            onChange={e => handleChange(e)}
+            onChange={(e: any) => handleChange(e)}
             optionFilterProp="label"
             options={selectDataList}
             placeholder={t('commonModal.placeMsg')}
@@ -484,9 +485,9 @@ const CommonModal = (props: ModalProps) => {
                 noStyle
                 rules={[{ required: true, message: '' }]}
               >
-                <Select
+                <CustomSelect
                   placeholder={t('project.pleasePermission')}
-                  getPopupContainer={node => node}
+                  getPopupContainer={(node: any) => node}
                   style={{ width: 192 }}
                   options={props?.projectPermission}
                   showSearch
@@ -506,7 +507,7 @@ const CommonModal = (props: ModalProps) => {
         )}
         <div style={{ display: 'flex' }}>
           <CommonButton
-            type="secondary"
+            type="light"
             onClick={props?.onClose}
             style={{ marginRight: '16px' }}
           >
