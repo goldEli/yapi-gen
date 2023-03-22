@@ -9,10 +9,7 @@ import HeaderRender from './HeaderRender'
 import { css } from '@emotion/css'
 
 dayjs.extend(dayLocaleData)
-const CalendarHeader = styled.div`
-  width: 100%;
-  height: 40px;
-`
+
 const DayBox = styled.div`
   width: 24px;
   height: 24px;
@@ -58,8 +55,6 @@ const CalendarForCalendarYear: React.FC<
         console.log(value.format('YYYY-MM-DD'), mode)
       }}
       headerRender={({ value, type, onChange, onTypeChange }) => {
-        const month = value.month()
-        console.log(month, 123)
         return <HeaderRender month={props.month} onChange={onChange} />
       }}
     />

@@ -6,7 +6,7 @@ interface CalendarYearProps {}
 
 const Box = styled.div`
   display: flex;
-  gap: 24px;
+  gap: 68px;
   flex-wrap: wrap;
 `
 
