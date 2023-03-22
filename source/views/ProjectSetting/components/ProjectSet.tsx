@@ -48,7 +48,7 @@ const SetMain = styled.div({
 const SetLeft = styled.div({
   display: 'flex',
   flexDirection: 'column',
-
+  paddingRight: '16px',
   borderRight: '1px solid var(--neutral-n6-d1)',
   width: 160,
 })
@@ -64,10 +64,12 @@ const Title = styled.div({
   fontSize: 14,
   fontWeight: 'bold',
   color: 'var(--neutral-n1-d1)',
-  paddingLeft: 10,
-  borderLeft: '3px solid var( --primary-d2)',
-  marginBottom: 16,
+  marginBottom: 20,
   lineHeight: '18px',
+  display: 'flex',
+  alignItems: 'center',
+  padding: '0 16px',
+  justifyContent: 'space-between',
 })
 
 const MenuItems = styled.div({
@@ -79,22 +81,29 @@ const MenuItem = styled.div<{ isActive: boolean }>(
   {
     display: 'flex',
     flexDirection: 'column',
-    height: 58,
+    height: 52,
     alignItems: 'center',
     justifyContent: 'center',
     cursor: 'pointer',
     boxSizing: 'border-box',
     position: 'relative',
+    margin: 0,
     '.dropdownIcon': {
       position: 'absolute',
       right: 0,
     },
     '.name': {
+      width: '100%',
+      textAlign: 'left',
+      paddingLeft: '24px',
       fontSize: 14,
-      color: 'black',
+      color: 'var(--neutral-n1-d2)',
       fontWeight: 400,
     },
     '.subName': {
+      paddingLeft: '24px',
+      width: '100%',
+      textAlign: 'left',
       fontSize: 12,
       color: 'var(--neutral-n3)',
       fontWeight: 400,
@@ -108,9 +117,6 @@ const MenuItem = styled.div<{ isActive: boolean }>(
     },
   },
   ({ isActive }) => ({
-    borderRight: isActive
-      ? '3px solid var(--primary-d2)'
-      : '3px solid transparent',
     background: isActive
       ? 'linear-gradient(90deg, #EBEFFF 0%, rgba(243,246,255,0) 100%)'
       : 'transparent',
@@ -448,11 +454,13 @@ const ProjectSet = () => {
           </ModalFooter>
         </CommonModal>
         <Warp>
+          888888888888888888
           <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
             <SetMain>
               <SetLeft>
-                <Title style={{ marginLeft: 24 }}>
+                <Title>
                   {t('setting.userGroup')}
+                  <IconFont type="plus" />
                 </Title>
                 <MenuItems>
                   {dataList?.map((item: any) => (
