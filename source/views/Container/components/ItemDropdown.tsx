@@ -19,8 +19,12 @@ const Container = styled.div`
   box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
   border-radius: 0px 0px 6px 6px;
   padding-bottom: 8px;
+  max-height: calc(100vh - 120px);
 `
-const ScrollWrap = styled.div``
+const ScrollWrap = styled.div`
+  height: calc(100vh - 256px);
+  overflow-y: auto;
+`
 const Footer = styled.div`
   /* padding-left: 24px; */
   border-radius: 0px 0px 6px 6px;

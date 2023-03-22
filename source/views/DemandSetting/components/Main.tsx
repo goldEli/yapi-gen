@@ -217,7 +217,7 @@ const Main = (props: any) => {
     <div
       style={{
         flex: 1,
-        height: 'calc(100vh - 220px)',
+        height: 'calc(100vh - 200px)',
         overflowY: 'auto',
         paddingRight: 24,
       }}

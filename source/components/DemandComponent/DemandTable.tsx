@@ -26,6 +26,7 @@ import { DemandOperationDropdownMenu } from './DemandOperationDropdownMenu'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import ResizeTable from '../ResizeTable'
+import CommonButton from '../CommonButton'
 
 const Content = styled.div({
   padding: '20px 12px 0 8px',
@@ -430,9 +431,13 @@ const DemandTable = (props: Props) => {
             haveFilter={filterKeys?.length > 0}
           >
             {!hasCreate && (
-              <SecondButton onClick={onClick} style={{ marginTop: 24 }}>
+              <CommonButton
+                type="secondary"
+                onClick={onClick}
+                style={{ marginTop: 24 }}
+              >
                 {t('common.createDemand')}
-              </SecondButton>
+              </CommonButton>
             )}
           </NoData>
         }

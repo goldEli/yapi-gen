@@ -91,6 +91,7 @@ const MainWrap = styled(Space)({
   background: 'white',
   width: '100%',
   position: 'relative',
+  borderBottom: '1px solid var(--neutral-n6-d1)',
 })
 
 const Item = styled.div<{ activeIdx: boolean }>(

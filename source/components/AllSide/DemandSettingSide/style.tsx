@@ -132,6 +132,7 @@ export const BackStyle = styled.div`
   font-size: 12px;
   &:hover {
     cursor: pointer;
+    color: var(--primary-d2);
   }
 `
 export const TitleStyle = styled.div`

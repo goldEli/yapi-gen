@@ -29,6 +29,7 @@ import ChooseColor from './ChooseColor'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import StateTag from '@/components/StateTag'
 import CustomSelect from '@/components/CustomSelect'
+import CommonButton from '@/components/CommonButton'
 
 const TableWrap = styled.div({
   width: '780px',
@@ -42,6 +43,7 @@ const TableWrap = styled.div({
 })
 
 const TableWrapBox = styled(Table)({
+  padding: '0 24px',
   '.ant-checkbox-wrapper': {
     marginLeft: 8,
   },
@@ -55,14 +57,14 @@ const TableTitle = styled.div({
   height: 44,
   display: 'flex',
   alignItems: 'center',
-  padding: '0 16px',
+  padding: '0 24px',
   color: 'var( --neutral-n3)',
   fontSize: 14,
   fontWeight: 500,
 })
 
 const AddWrapBox = styled.div({
-  padding: '0 16px',
+  padding: '0 24px',
   height: 32,
   lineHeight: '32px',
   color: 'var(--primary-d2)',
@@ -99,8 +101,9 @@ const AddWrap = () => {
   const [t] = useTranslation()
   return (
     <AddWrapBox>
-      <IconFont style={{ fontSize: 16, marginRight: 8 }} type="plus" />
-      <span style={{ fontSize: 14 }}>{t('newlyAdd.addStatus')}</span>
+      <CommonButton type="primaryText">
+        <IconFont type="plus" /> {t('newlyAdd.addStatus')}
+      </CommonButton>
     </AddWrapBox>
   )
 }
@@ -544,7 +547,6 @@ const AddWorkflow = (props: Props) => {
             <AddWrap />
           </div>
         )}
-
         <TableWrap>
           <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
             {!!statusWorkList?.list &&

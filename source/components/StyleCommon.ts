@@ -390,10 +390,10 @@ const DelButton = styled.div`
   z-index: 2;
   .icon {
     font-size: 16px;
-    color: var(--neutral-n3);
+    color: var(--neutral-n4);
     cursor: pointer;
     &:hover {
-      color: var(--primary-d2);
+      color: var(--neutral-n3);
     }
   }
 `
@@ -580,6 +580,7 @@ const ShowWrap = styled.div`
 const CategoryWrap = styled.div<{ color: string; bgColor: string }>({
   height: 22,
   borderRadius: 11,
+  display: 'flex',
   padding: '0 8px',
   marginRight: 8,
   lineHeight: '22px',

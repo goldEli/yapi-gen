@@ -164,7 +164,7 @@ const HeaderRight = () => {
     {
       name: t('common.createIterate'),
       key: 'iteration',
-      icon: 'interation',
+      icon: 'interation-2',
       isPermission: true,
     },
     {

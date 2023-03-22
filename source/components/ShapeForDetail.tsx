@@ -81,8 +81,8 @@ const Right = styled.div`
 `
 const Contain = styled.div`
   margin-top: 15px;
-  background: var(--neutral-n6-d1);
-  border-radius: 6px 6px 6px 6px;
+  background: var(--neutral-n8);
+  border-radius: 6px;
   position: relative;
   width: 100%;
   padding-right: 4px;

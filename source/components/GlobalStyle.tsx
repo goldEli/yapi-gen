@@ -715,6 +715,9 @@ const GlobalStyle = () => {
       background-color: var(--neutral-white-d1);
       color: var(--neutral-n2);
     }
+    .ant-pagination-item-link svg:hover {
+      color: var(--primary-d2);
+    }
     .ant-select:not(.ant-select-customize-input) .ant-select-selector,
     input {
       background-color: var(--neutral-white-d1);
@@ -815,6 +818,9 @@ const GlobalStyle = () => {
     }
     .ant-select-tree-treenode:hover {
       background-color: var(--hover-d3) !important;
+    }
+    .ant-btn {
+      box-shadow: none;
     }
   `
   return <Global styles={globalCss} />
