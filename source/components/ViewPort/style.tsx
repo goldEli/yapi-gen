@@ -13,7 +13,7 @@ export const ViewPortWrap = styled.div<{ show: boolean }>`
   background: ${props => (props.show ? 'var(--hover-d1)' : '')};
   color: ${props =>
     props.show ? 'var(--neutral-n1-d1)' : 'var(--neutral-n3)'};
-  & div {
+  & span {
     color: ${props =>
       props.show ? 'var(--neutral-n1-d1)' : 'var(--neutral-n3)'};
   }
@@ -21,8 +21,8 @@ export const ViewPortWrap = styled.div<{ show: boolean }>`
     background: var(--hover-d1);
     color: var(--neutral-n1-d1);
   }
-  &:hover div {
-    background: var(--hover-d1);
+  &:hover span {
+    /* background: var(--hover-d1); */
     color: var(--neutral-n1-d1);
   }
   &:active {
@@ -30,7 +30,7 @@ export const ViewPortWrap = styled.div<{ show: boolean }>`
   }
 `
 
-export const Name = styled.div`
+export const Name = styled.span`
   margin-left: 8px;
   height: 22px;
   font-size: 14px;
