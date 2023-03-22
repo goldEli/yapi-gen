@@ -3,8 +3,9 @@
 import privatePermission from '/privatePermission.png'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
-import { SecondButton } from '@/components/StyleCommon'
+// import { SecondButton } from '@/components/StyleCommon'
 import { useNavigate } from 'react-router-dom'
+import CommonButton from '@/components/CommonButton'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -35,9 +36,13 @@ const PrivatePermission = () => {
     <Wrap>
       <img src={privatePermission} style={{ width: 240 }} alt="" />
       <div>{t('new_p1.kongT')}</div>
-      <SecondButton style={{ marginTop: 24 }} onClick={onToProject}>
+      <CommonButton
+        style={{ marginTop: 24 }}
+        onClick={onToProject}
+        type="secondary"
+      >
         {t('new_p1.kongP')}
-      </SecondButton>
+      </CommonButton>
     </Wrap>
   )
 }

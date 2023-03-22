@@ -114,6 +114,7 @@ export const ChangeItem = styled.div<{ isActive?: boolean; height?: number }>`
     props.isActive ? 'var(--primary-d2)' : 'var(--neutral-n2)'};
   &:hover {
     color: var(--primary-d2);
+    background-color: var(--hover-d3);
     svg {
       color: var(--primary-d2);
     }
@@ -121,6 +122,7 @@ export const ChangeItem = styled.div<{ isActive?: boolean; height?: number }>`
 `
 
 export const PersonalHead = styled.div`
+  margin-top: 15px;
   /* display: flex; */
   /* justify-content: center; */
 `

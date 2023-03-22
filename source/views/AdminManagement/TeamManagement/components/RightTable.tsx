@@ -267,10 +267,10 @@ const RightTable = () => {
           <RightItem>{row.position_name}</RightItem>
         </Row>
         <Row style={{ cursor: 'pointer' }}>
+          <LeftItem>{t('team') as string}</LeftItem>
           <Tooltip title={row.teams?.map((i: any) => i.name)?.join()}>
-            <LeftItem>{t('team') as string}</LeftItem>
+            <RightItem>{row.teams?.map((i: any) => i.name)?.join()}</RightItem>
           </Tooltip>
-          <RightItem>{row.teams?.map((i: any) => i.name)?.join()}</RightItem>
         </Row>
         <Row className="row" style={{ marginBottom: 0 }}>
           <LeftItem>{t('permission_group') as string}</LeftItem>

@@ -46,7 +46,7 @@ const TitleWrap = styled.div({
   whiteSpace: 'nowrap',
   fontSize: 14,
   color: 'var(--neutral-n1-d2)',
-  lineHeight: '52px',
+  // lineHeight: '52px',
   fontWeight: 'bold',
 })
 
@@ -200,7 +200,7 @@ const TreeItem = (props: any) => {
   const content = (
     <div
       style={{
-        padding: '10px 0px',
+        padding: '4px 0px',
         whiteSpace: 'nowrap',
       }}
     >
@@ -426,9 +426,12 @@ const WrapLeft = (props: any, ref: any) => {
     const isDropToGap = info.dropToGap
 
     if (start.pid === 0 || end.id === -1) {
-      return
+      // console.log(1);
+      // return
     }
     if (end.grade === 4 && !isDropToGap) {
+      // console.log(2);
+
       return
     }
 
@@ -501,7 +504,9 @@ const WrapLeft = (props: any, ref: any) => {
         <div className="resize_bar" />
         <div className="resize_line" />
         <div className="resize_save">
-          <TitleWrap>{t('newlyAdd.demandClass')}</TitleWrap>
+          <TitleWrap style={{ paddingBottom: '10px' }}>
+            {t('newlyAdd.demandClass')}
+          </TitleWrap>
           {treeData.length > 0 && show ? (
             <Tree
               selectedKeys={[valueId]}

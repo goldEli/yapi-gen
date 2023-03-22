@@ -27,6 +27,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
 import CommonButton from '@/components/CommonButton'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
+import { DelButton } from '@/components/StyleCommon'
 
 const GroupWrap = styled.div({
   display: 'flex',
@@ -69,9 +70,11 @@ const SetMain = styled.div({
 const SetLeft = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  height: '100%',
+  height: 'calc(100vh - 180px)',
+  overflowY: 'auto',
   borderRight: '1px solid var(--neutral-n6-d1)',
   width: 232,
+  paddingRight: '16px',
 })
 
 const SetRight = styled.div({
@@ -286,7 +289,9 @@ const PermissionManagement = () => {
     })
     const filterArr = result.list.map((el: any) => ({
       ...el,
-      children: el.children.filter((item: any) => item.isShow !== 2),
+      children: el.children.filter(
+        (item: any) => item.isShow !== 2 || item.groupName === '日志管理',
+      ),
     }))
     setPermission(filterArr)
     setSelectKeys(keys)

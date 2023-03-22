@@ -558,6 +558,7 @@ const GlobalStyle = () => {
       pointer-events: none;
     }
     .resize_save {
+      margin-left: -30px;
       position: absolute;
       top: 0;
       right: 5px;
@@ -568,7 +569,7 @@ const GlobalStyle = () => {
     }
     .resize_bar:hover ~ .resize_line,
     .resize_bar:active ~ .resize_line {
-      border-left: 1px dashed skyblue;
+      border-left: 2px solid var(--primary-d1);
     }
     .resize_bar::-webkit-scrollbar {
       width: 200px;
@@ -576,7 +577,7 @@ const GlobalStyle = () => {
     }
     .resize_bar2:hover ~ .resize_line,
     .resize_bar2:active ~ .resize_line {
-      border-left: 1px dashed skyblue;
+      border-left: 2px solid var(--primary-d1);
     }
     .resize_bar2::-webkit-scrollbar {
       width: 200px;
@@ -714,6 +715,9 @@ const GlobalStyle = () => {
       background-color: var(--neutral-white-d1);
       color: var(--neutral-n2);
     }
+    .ant-pagination-item-link svg:hover {
+      color: var(--primary-d2);
+    }
     .ant-select:not(.ant-select-customize-input) .ant-select-selector,
     input {
       background-color: var(--neutral-white-d1);
@@ -814,6 +818,9 @@ const GlobalStyle = () => {
     }
     .ant-select-tree-treenode:hover {
       background-color: var(--hover-d3) !important;
+    }
+    .ant-btn {
+      box-shadow: none;
     }
   `
   return <Global styles={globalCss} />
