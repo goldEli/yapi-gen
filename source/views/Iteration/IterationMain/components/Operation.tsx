@@ -49,7 +49,6 @@ const IconWrap = styled(IconFont)<{ color?: string }>(
   {
     fontSize: 20,
     cursor: 'pointer',
-    marginLeft: 8,
   },
   ({ color }) => ({
     color: color || 'var(--neutral-n3)',

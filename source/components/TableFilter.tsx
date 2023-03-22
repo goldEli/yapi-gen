@@ -119,7 +119,13 @@ const PopoverWrap = styled(Popover)({
     minWidth: 188,
   },
 })
-
+const IconFontStyle = styled(IconFont)({
+  fontSize: 20,
+  color: 'var(--neutral-n4)',
+  '&:hover': {
+    color: 'var(--primary-d2)',
+  },
+})
 export const NumericInput = (props: any) => {
   const [t] = useTranslation()
   const { value, onChange, onPress } = props
@@ -599,10 +605,7 @@ const TableFilter = (props: any) => {
                 cursor: 'pointer',
               }}
             >
-              <IconFont
-                type="plus-square"
-                style={{ fontSize: 20, color: 'var(--neutral-n4)' }}
-              />
+              <IconFontStyle type="plus-square" />
             </div>
           </PopoverWrap>
           <ClearForm onClick={onClearForm}>

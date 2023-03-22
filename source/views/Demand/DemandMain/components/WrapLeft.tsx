@@ -47,7 +47,7 @@ const TitleWrap = styled.div({
   fontSize: 14,
   color: 'var(--neutral-n1-d2)',
   // lineHeight: '52px',
-  fontWeight: 'bold',
+  fontWeight: 500,
 })
 
 const TreeBox = styled.div`
@@ -93,6 +93,13 @@ const rightText = css`
     color: var(--primary-d2);
   }
 `
+const TreeStyle = styled(Tree)({
+  '& .ant-tree-treenode:hover': {
+    background: 'var(--white-d6)',
+    boxShadow: '0px 0px 15px 6px rgba(0,0,0,0.12)',
+    borderRadius: '6px',
+  },
+})
 const TreeItem = (props: any) => {
   const context: any = useContext(TreeContext)
   const inputRefDom = useRef<HTMLInputElement>(null)
@@ -417,6 +424,16 @@ const WrapLeft = (props: any, ref: any) => {
     }))
     return newData
   }
+  const ResizeSave = styled.div`
+    position: absolute;
+    top: 0;
+    right: 5px;
+    bottom: 0;
+    left: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 0 16px;
+  `
 
   const onDrop = async (info: any) => {
     const onlyID: any = treeData[0].children[0].title.props.id
@@ -503,12 +520,12 @@ const WrapLeft = (props: any, ref: any) => {
       <Left>
         <div className="resize_bar" />
         <div className="resize_line" />
-        <div className="resize_save">
+        <ResizeSave>
           <TitleWrap style={{ paddingBottom: '10px' }}>
             {t('newlyAdd.demandClass')}
           </TitleWrap>
           {treeData.length > 0 && show ? (
-            <Tree
+            <TreeStyle
               selectedKeys={[valueId]}
               allowDrop={(dropNode: any) => {
                 if (dropNode.dropNode.title.props.grade === 4) {
@@ -535,7 +552,7 @@ const WrapLeft = (props: any, ref: any) => {
               treeData={treeData}
             />
           ) : null}
-        </div>
+        </ResizeSave>
       </Left>
     )
   }

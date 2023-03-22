@@ -11,7 +11,7 @@ const CreateDemandButton = (props: Props) => {
   return (
     <>
       {props.hasCreate && (
-        <div style={{ padding: '16px 0 4px 16px', background: 'white' }}>
+        <div style={{ margin: '16px 0' }}>
           <CommonButton type="primaryText" icon="plus" iconPlacement="left">
             <div>{t('common.createDemand')}</div>
           </CommonButton>
