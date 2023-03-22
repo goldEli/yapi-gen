@@ -15,7 +15,7 @@ const MoreOptions = (props: OptionsProps) => {
       {props.type === 'user' && (
         <div
           style={{
-            height: '15px',
+            height: '27px',
             display: 'flex',
             alignItems: 'center',
           }}
@@ -27,7 +27,7 @@ const MoreOptions = (props: OptionsProps) => {
       {props.type === 'project' && (
         <div
           style={{
-            height: '20px',
+            height: '27px',
             display: 'flex',
             alignItems: 'center',
           }}
