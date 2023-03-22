@@ -56,6 +56,7 @@ const Main = styled.div<{ left: number }>`
   flex: 1;
   position: relative;
   background: var(--neutral-white-d1);
+  overflow: auto;
   > div:first-child {
     height: 100%;
   }
@@ -204,7 +205,9 @@ export const Container = () => {
               <Side onChangeLeft={setChangeLeft} />
             )}
             <Main left={changeLeft}>
-              <Outlet />
+              <div style={{ height: '100%', minWidth: '1440px' }}>
+                <Outlet />
+              </div>
             </Main>
           </Content>
           <Guide

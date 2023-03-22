@@ -34,7 +34,7 @@ import CommonButton from '@/components/CommonButton'
 const TableWrap = styled.div({
   width: '780px',
   padding: '0',
-  height: 'auto',
+  maxHeight: '40vh',
   overflowY: 'auto',
   display: 'flex',
   alignItems: 'center',
@@ -527,6 +527,7 @@ const AddWorkflow = (props: Props) => {
         onClose={onClose}
         onConfirm={onConfirm}
         width={784}
+        bodyStyle={{ maxHeight: '80vh' }}
       >
         <div style={{ paddingRight: 20 }}>
           <TableTitle>
