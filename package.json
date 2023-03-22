@@ -85,6 +85,8 @@
       ]
     },
     "rules": {
+      "react/no-array-index-key": 0,
+      "@typescript-eslint/no-empty-interface": 0,
       "react/no-unstable-nested-components": 0,
       "lines-around-comment": 0,
       "no-console": 0,

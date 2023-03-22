@@ -4,6 +4,7 @@ import CommonButton from '../CommonButton'
 import IconFont from '../IconFont'
 import InputSearch from '../InputSearch'
 import CalendarList from './components/CalendarList'
+import CalendarPanel from './components/CalendarPanel'
 import DXCalendar from './components/DXCalendar'
 import {
   CalenderBox,
@@ -44,7 +45,9 @@ const CalendarManagerLayout: React.ForwardRefRenderFunction<
         <CalendarList />
         <div>日历设置</div>
       </CalenderBoxLeftArea>
-      <CalenderBoxRightArea></CalenderBoxRightArea>
+      <CalenderBoxRightArea>
+        <CalendarPanel />
+      </CalenderBoxRightArea>
     </CalenderBox>
   )
 }

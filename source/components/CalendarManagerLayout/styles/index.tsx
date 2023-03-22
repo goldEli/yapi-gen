@@ -1,6 +1,10 @@
 import CommonButton from '@/components/CommonButton'
 import styled from '@emotion/styled'
-import { Calendar } from 'antd'
+import dayjsGenerateConfig from 'rc-picker/es/generate/dayjs'
+import generateCalendar from 'antd/es/calendar/generateCalendar'
+import { Dayjs } from 'dayjs'
+
+const Calendar = generateCalendar<Dayjs>(dayjsGenerateConfig)
 
 export const CalenderBox = styled.div`
   display: flex;
@@ -41,5 +45,8 @@ export const StyledCalendar = styled(Calendar)`
   .ant-picker-cell-in-view.ant-picker-cell-today
     .ant-picker-cell-inner::before {
     border-radius: 50%;
+  }
+  .ant-picker-date-panel .ant-picker-content th {
+    width: 24px;
   }
 `

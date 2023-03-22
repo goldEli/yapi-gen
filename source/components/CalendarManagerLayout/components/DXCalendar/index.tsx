@@ -4,8 +4,6 @@ import { StyledCalendar } from '../../styles'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
 import dayLocaleData from 'dayjs/plugin/localeData'
-
-import { Calendar, Col, Radio, Row, Select, Typography, theme } from 'antd'
 import styled from '@emotion/styled'
 
 dayjs.extend(dayLocaleData)
