@@ -208,8 +208,8 @@ const HeaderRight = () => {
     },
     {
       label: t('team'),
-      // value: userInfo?.teams?.join(';') + userInfo?.teams?.join(';'),
-      value: '123',
+      value: userInfo?.teams?.join(';'),
+      // value: '123',
     },
     {
       label: t('permission_group'),
@@ -343,14 +343,12 @@ const HeaderRight = () => {
         isShowFooter
         width={420}
       >
-        <div style={{ padding: '24px 32px' }}>
+        <div style={{ padding: '0 24px 32px' }}>
           <PersonalFooter>
             <div>
               <Line>头像</Line>
               {labelList.map(item => (
-                <Line style={{}} key={item.label}>
-                  {item.label ? item.label : '-'}
-                </Line>
+                <Line key={item.label}>{item.label ? item.label : '-'}</Line>
               ))}
             </div>
             <div
@@ -358,15 +356,14 @@ const HeaderRight = () => {
                 textAlign: 'right',
               }}
             >
-              <Line>
-                <PersonalHead>
-                  {userInfo.avatar ? (
-                    <img className={imgCss} src={userInfo.avatar} />
-                  ) : (
-                    <UserAvatar />
-                  )}
-                </PersonalHead>
-              </Line>
+              <PersonalHead>
+                {userInfo.avatar ? (
+                  <img className={imgCss} src={userInfo.avatar} />
+                ) : (
+                  <UserAvatar />
+                )}
+              </PersonalHead>
+
               {labelList.map(item => (
                 <Line2 style={{}} key={item.label}>
                   {item.value ? item.value : '-'}

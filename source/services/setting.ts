@@ -94,6 +94,7 @@ export const getRolePermission: any = async (params: any) => {
       name: i.group_content_txt,
       children: i.permissions.map((k: any) => ({
         label: k.content_txt,
+        groupName: k.group_name,
         value: k.id,
         checked: k.checked,
         isShow: k.is_show,

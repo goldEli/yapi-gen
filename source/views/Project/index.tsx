@@ -259,9 +259,7 @@ const ProjectManagementOptimization = () => {
             width={184}
             bgColor="var(--neutral-white-d4)"
             length={12}
-            placeholder={t(
-              'please_enter_your_nickname_name_email_phone_number',
-            )}
+            placeholder={t('please_enter_the_project')}
             onChangeSearch={(value: string) => setSearchVal(value)}
             leftIcon
           />

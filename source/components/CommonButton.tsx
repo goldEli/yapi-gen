@@ -114,6 +114,7 @@ const ButtonWrap = styled(Button)`
 `
 
 interface Props {
+  hidden?: any
   onClick?(): void
   // 按钮文本
   children?: React.ReactNode
@@ -215,6 +216,7 @@ const CommonButton = (props: Props) => {
       className={commonCss}
       onClick={props.onClick}
       disabled={props.isDisable}
+      hidden={props.hidden}
     >
       {props.children}
     </ButtonWrap>

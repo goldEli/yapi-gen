@@ -13,7 +13,7 @@ const SvgTextBg = (props: any) => {
     text2 = ` ${userInfo.name}  ${userInfo.phone} `,
     fontSize = 12,
     fillOpacity = '0.5',
-    fillColor = theme ? 'var(--auxiliary-t4)' : 'var(--neutral-n6-d1)',
+    fillColor = theme ? '#3d4251' : '#d5d6d9',
   } = props
   const res = `
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="400px" height="180px" viewBox="0 0 180 180">

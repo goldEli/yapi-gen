@@ -122,6 +122,7 @@ export const ChangeItem = styled.div<{ isActive?: boolean; height?: number }>`
 `
 
 export const PersonalHead = styled.div`
+  margin-top: 15px;
   /* display: flex; */
   /* justify-content: center; */
 `

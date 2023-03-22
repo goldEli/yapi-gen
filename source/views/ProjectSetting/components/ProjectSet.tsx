@@ -36,7 +36,6 @@ const Warp = styled.div({
 })
 
 const SetMain = styled.div({
-  padding: '24px 0',
   paddingBottom: '0px',
   background: 'white',
   borderRadius: 6,
@@ -48,53 +47,77 @@ const SetMain = styled.div({
 const SetLeft = styled.div({
   display: 'flex',
   flexDirection: 'column',
-
   borderRight: '1px solid var(--neutral-n6-d1)',
-  width: 160,
+  width: 232,
 })
-
+const RightHeader = styled.div`
+  display: flex;
+`
 const SetRight = styled.div({
   display: 'flex',
   flexDirection: 'column',
   marginLeft: 24,
   width: 'calc(100% - 184px)',
 })
-
+const IconFontStyle = styled(IconFont)({
+  color: 'var(--neutral-n2)',
+  fontSize: '18px',
+  borderRadius: '6px',
+  padding: '5px',
+  '&: hover': {
+    background: 'var(--hover-d1)',
+    cursor: 'pointer',
+  },
+})
 const Title = styled.div({
   fontSize: 14,
   fontWeight: 'bold',
   color: 'var(--neutral-n1-d1)',
-  paddingLeft: 10,
-  borderLeft: '3px solid var( --primary-d2)',
-  marginBottom: 16,
+  marginBottom: 20,
   lineHeight: '18px',
+  display: 'flex',
+  alignItems: 'center',
+  padding: '0 16px',
+  justifyContent: 'space-between',
 })
-
+const BtnHeader = styled.div`
+  position: absolute;
+  right: 24px;
+  top: -59px;
+`
 const MenuItems = styled.div({
   display: 'flex',
   flexDirection: 'column',
+  padding: '0 16px',
 })
 
 const MenuItem = styled.div<{ isActive: boolean }>(
   {
     display: 'flex',
     flexDirection: 'column',
-    height: 58,
+    height: 52,
     alignItems: 'center',
     justifyContent: 'center',
     cursor: 'pointer',
     boxSizing: 'border-box',
     position: 'relative',
+    margin: 0,
     '.dropdownIcon': {
       position: 'absolute',
       right: 0,
     },
     '.name': {
+      width: '100%',
+      textAlign: 'left',
+      paddingLeft: '24px',
       fontSize: 14,
-      color: 'black',
+      color: 'var(--neutral-n1-d2)',
       fontWeight: 400,
     },
     '.subName': {
+      paddingLeft: '24px',
+      width: '100%',
+      textAlign: 'left',
       fontSize: 12,
       color: 'var(--neutral-n3)',
       fontWeight: 400,
@@ -108,9 +131,6 @@ const MenuItem = styled.div<{ isActive: boolean }>(
     },
   },
   ({ isActive }) => ({
-    borderRight: isActive
-      ? '3px solid var(--primary-d2)'
-      : '3px solid transparent',
     background: isActive
       ? 'linear-gradient(90deg, #EBEFFF 0%, rgba(243,246,255,0) 100%)'
       : 'transparent',
@@ -451,8 +471,17 @@ const ProjectSet = () => {
           <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
             <SetMain>
               <SetLeft>
-                <Title style={{ marginLeft: 24 }}>
+                <Title>
                   {t('setting.userGroup')}
+                  <IconFontStyle
+                    type="plus"
+                    onClick={() => {
+                      setIsVisible(true)
+                      setTimeout(() => {
+                        inputRefDom.current?.focus()
+                      }, 100)
+                    }}
+                  />
                 </Title>
                 <MenuItems>
                   {dataList?.map((item: any) => (
@@ -476,27 +505,21 @@ const ProjectSet = () => {
                     </MenuItem>
                   ))}
                 </MenuItems>
-                <div
-                  style={{
-                    textAlign: 'center',
-                    cursor: 'pointer',
-                    color: 'var(--primary-d2)',
-                    height: 58,
-                    lineHeight: '58px',
-                  }}
-                  onClick={() => {
-                    setIsVisible(true)
-                    setTimeout(() => {
-                      inputRefDom.current?.focus()
-                    }, 100)
-                  }}
-                >
-                  <IconFont type="plus" />
-                  <span>{t('setting.addUserGroup')}</span>
-                </div>
               </SetLeft>
               <SetRight>
-                <Title>{activeDetail.name}</Title>
+                <RightHeader>
+                  <Title style={{ padding: '0' }}>{activeDetail.name}</Title>
+                  <BtnHeader>
+                    <CommonButton
+                      hidden={activeDetail?.type === 1}
+                      style={{ width: 'fit-content', marginTop: 16 }}
+                      type="primary"
+                      onClick={onSavePermission}
+                    >
+                      {t('common.save')}
+                    </CommonButton>
+                  </BtnHeader>
+                </RightHeader>
                 <TitleGroup>
                   <CheckboxWrap>{t('setting.all')}</CheckboxWrap>
                   <OperationWrap>{t('setting.operationObject')}</OperationWrap>
@@ -513,14 +536,6 @@ const ProjectSet = () => {
                     />
                   ))}
                 </MainWrap>
-                <Button
-                  hidden={activeDetail.type === 1}
-                  style={{ width: 'fit-content', marginTop: 16 }}
-                  type="primary"
-                  onClick={onSavePermission}
-                >
-                  {t('common.save')}
-                </Button>
               </SetRight>
             </SetMain>
           </Spin>

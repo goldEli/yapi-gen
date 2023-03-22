@@ -75,8 +75,10 @@ const Setting = () => {
       auth="/ProjectManagement/Project"
       permission={currentMenu?.children?.map((i: any) => i.url)}
     >
-      <div style={{ padding: '20px 24px 0 24px' }}>
-        <MyBreadcrumb setName={SideList[activeTabs].name} />
+      <div>
+        <div style={{ padding: '24px' }}>
+          <MyBreadcrumb setName={SideList[activeTabs].name} />
+        </div>
         <Wrap>
           <Content>{SideList[activeTabs].content}</Content>
         </Wrap>
