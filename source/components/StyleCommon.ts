@@ -4,7 +4,7 @@
 
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import { Button, Divider, Progress, Slider, Table } from 'antd'
+import { Button, Divider, Slider, Table } from 'antd'
 import CustomSelect from './CustomSelect'
 import IconFont from './IconFont'
 
