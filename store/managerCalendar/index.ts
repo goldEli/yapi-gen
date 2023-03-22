@@ -3,10 +3,18 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 type SliceState = {
   // 日历面板类型
   calendarPanelType: Model.Calendar.CalendarPanelType
+  // 默认日程时长
+  defaultScheduleDuration: number
+  // 最小日程时长
+  minScheduleDuration: number
 }
 
 const initialState: SliceState = {
   calendarPanelType: 'day',
+  // 默认日程时长
+  defaultScheduleDuration: 30,
+  // 最小日程时长
+  minScheduleDuration: 15,
 }
 
 const slice = createSlice({

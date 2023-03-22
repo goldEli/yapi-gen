@@ -1,5 +1,9 @@
 import styled from '@emotion/styled'
 import React, { useMemo } from 'react'
+import { DndProvider, useDrag, useDrop } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import DropArea from './DropArea'
+import ScheduleCard from './ScheduleCard'
 
 interface CalendarDayProps {}
 
@@ -9,9 +13,14 @@ const CalendarDayBox = styled.div`
   display: flex;
   flex-direction: column;
 `
+
+const oneHourHeight = 52
+
 const Table = styled.table`
+  /* user-select: none; */
+  box-sizing: border-box;
   tr {
-    height: 26px;
+    height: ${oneHourHeight / 2}px;
     box-sizing: border-box;
   }
   td {
@@ -35,8 +44,19 @@ const Table = styled.table`
     left: 16px;
   }
 `
+// const DropArea = styled.div`
+//   position: relative;
+// `
 
 const CalendarDay: React.FC<CalendarDayProps> = props => {
+  // const [{ isOver }, drop] = useDrop(() => ({
+  //   accept: dragItemTypes.scheduleCard,
+  //   // drop: () => moveKnight(x, y),
+  //   collect: monitor => ({
+  //     isOver: !!monitor.isOver(),
+  //   }),
+  // }))
+
   const content = useMemo(() => {
     return Array(22)
       .fill(0)
@@ -66,7 +86,12 @@ const CalendarDay: React.FC<CalendarDayProps> = props => {
 
   return (
     <CalendarDayBox>
-      <Table>{content}</Table>
+      <DndProvider backend={HTML5Backend}>
+        <DropArea>
+          <Table>{content}</Table>
+          <ScheduleCard />
+        </DropArea>
+      </DndProvider>
     </CalendarDayBox>
   )
 }
