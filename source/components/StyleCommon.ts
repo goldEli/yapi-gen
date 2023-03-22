@@ -156,10 +156,10 @@ const HasIconMenu = styled.div<{ isCheck?: boolean }>(
     },
     '&: hover': {
       '.label': {
-        color: 'var(--neutral-n3)',
+        // color: 'var(--neutral-n3)',
       },
       '.icon': {
-        color: 'var(--neutral-n3)',
+        // color: 'var(--neutral-n3)',
       },
     },
   },
@@ -174,34 +174,61 @@ const HasIconMenu = styled.div<{ isCheck?: boolean }>(
 )
 
 // 新版移入效果例：项目列表左上方操作
-const HoverWrap = styled.div<{ isActive?: any }>(
-  {
-    minWidth: '80px',
-    transition: 'all .5s',
-    padding: '0 8px',
-    height: 32,
-    borderRadius: 6,
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    color: 'var(--neutral-n3) !important',
-    '.iconMain': {
-      marginRight: 8,
-      fontSize: 18,
-    },
-    svg: {
-      fontSize: 18,
-    },
-    '&: hover': {
-      background: 'var(--neutral-n9)',
-      color: 'var(--neutral-n3)',
-    },
-  },
-  ({ isActive }) => ({
-    background: isActive ? 'var(--neutral-n9)' : 'var(--neutral-white-d2)',
-    color: isActive ? 'var(--neutral-n3)!important' : 'var(--neutral-n3)',
-  }),
-)
+// const HoverWrap = styled.div<{ isActive?: any }>(
+//   {
+//     minWidth: '80px',
+//     transition: 'all .5s',
+//     padding: '0 8px',
+//     height: 32,
+//     borderRadius: 6,
+//     cursor: 'pointer',
+//     display: 'flex',
+//     alignItems: 'center',
+//     color: 'var(--neutral-n3) !important',
+//     '.iconMain': {
+//       marginRight: 8,
+//       fontSize: 18,
+//     },
+//     svg: {
+//       fontSize: 18,
+//     },
+//     '&: hover': {
+//       background: 'var(--hover-d1)',
+//       color: 'var(--neutral-n1-d1)',
+//     },
+//   },
+//   ({ isActive }) => ({
+//     background: isActive ? 'var(--neutral-n9)' : 'var(--neutral-white-d2)',
+//     color: isActive ? 'var(--neutral-n3)!important' : 'var(--neutral-n3)',
+//   }),
+// )
+const HoverWrap = styled.div<{ isActive?: any }>`
+  min-width: 80px;
+  padding: 0 8px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s;
+  & .iconMain {
+    margin-right: 8px;
+    font-size: 18px;
+  }
+  background: ${props => (props.isActive ? 'var(--hover-d1)' : '')};
+  color: ${props =>
+    props.isActive ? 'var(--neutral-n1-d1)' : 'var(--neutral-n3)'};
+  &:active {
+    background-color: red;
+  }
+  &:hover {
+    background: var(--hover-d1);
+    color: var(--neutral-n1-d1);
+  }
+  &:hover .label {
+    color: var(--neutral-n1-d1);
+  }
+`
 
 const DateQuickWrap = styled.div<{ isActive?: any }>(
   {

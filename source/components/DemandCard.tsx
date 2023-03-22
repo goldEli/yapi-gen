@@ -238,7 +238,15 @@ const DemandCard = (props: Props) => {
                 props.item.status.is_start !== 1 &&
                 props.item.status.is_end !== 1 &&
                 isHoverVisible
-              ) && <div>{props.item?.schedule}%</div>}
+              ) && (
+                <div
+                  style={{
+                    color: 'var(--neutral-n2)',
+                  }}
+                >
+                  {props.item?.schedule}%
+                </div>
+              )}
               {hasEdit &&
                 props.item?.usersNameIds?.includes(userInfo?.id) &&
                 props.item.status.is_start !== 1 &&
