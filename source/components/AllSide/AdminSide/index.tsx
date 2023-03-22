@@ -47,12 +47,6 @@ const MenuStyle = styled(Menu)`
       color: var(--neutral-n3);
     }
   }
-  .ant-menu-submenu-open .ant-menu-submenu-title {
-    color: var(--primary-d2) !important;
-    .icon {
-      color: var(--primary-d2);
-    }
-  }
   & .ant-menu-submenu:hover,
   & .ant-menu-item:hover {
     color: var(--primary-d2) !important;
@@ -86,6 +80,12 @@ const MenuStyle = styled(Menu)`
     .ant-menu-item
     > .ant-menu-title-content {
     margin-left: 4px;
+  }
+  .ant-menu-vertical .ant-menu-item:not(:last-child),
+  .ant-menu-vertical-left .ant-menu-item:not(:last-child),
+  .ant-menu-vertical-right .ant-menu-item:not(:last-child),
+  .ant-menu-inline .ant-menu-item:not(:last-child) {
+    margin-bottom: 0;
   }
 `
 const IconFontStyle = styled(IconFont)`
