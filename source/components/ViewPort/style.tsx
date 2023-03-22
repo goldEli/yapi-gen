@@ -10,10 +10,20 @@ export const ViewPortWrap = styled.div<{ show: boolean }>`
   align-items: center;
   padding: 0 8px;
   border-radius: 6px;
-  background: ${props => (props.show ? 'var(--neutral-n9)' : '')};
-  color: var(--neutral-n3);
+  background: ${props => (props.show ? 'var(--hover-d1)' : '')};
+  color: ${props =>
+    props.show ? 'var(--neutral-n1-d1)' : 'var(--neutral-n3)'};
+  & div {
+    color: ${props =>
+      props.show ? 'var(--neutral-n1-d1)' : 'var(--neutral-n3)'};
+  }
   &:hover {
-    background: var(--neutral-n9);
+    background: var(--hover-d1);
+    color: var(--neutral-n1-d1);
+  }
+  &:hover div {
+    background: var(--hover-d1);
+    color: var(--neutral-n1-d1);
   }
 `
 
