@@ -6,7 +6,7 @@ type SliceState = {
 }
 
 const initialState: SliceState = {
-  calendarPanelType: 'year',
+  calendarPanelType: 'day',
 }
 
 const slice = createSlice({
