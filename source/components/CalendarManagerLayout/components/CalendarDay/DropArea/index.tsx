@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 import React from 'react'
 import { useDrop } from 'react-dnd'
 import { dragItemTypes } from '../config'
+import CustomDragLayer from '../CustomDraglayer'
 
 interface DropAreaProps {
   children?: React.ReactNode
@@ -17,8 +18,16 @@ const DropArea: React.FC<DropAreaProps> = props => {
     collect: monitor => ({
       isOver: !!monitor.isOver(),
     }),
+    hover(item, monitor) {
+      // console.log(item)
+    },
   }))
-  return <Box ref={drop}>{props.children}</Box>
+  return (
+    <Box ref={drop}>
+      {props.children}
+      <CustomDragLayer />
+    </Box>
+  )
 }
 
 export default DropArea

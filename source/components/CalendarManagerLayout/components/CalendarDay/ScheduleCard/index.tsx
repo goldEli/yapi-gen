@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDrag } from 'react-dnd'
+import { getEmptyImage } from 'react-dnd-html5-backend'
 import { dragItemTypes } from '../config'
 
 interface ScheduleCardProps {}
@@ -15,12 +16,16 @@ const Box = styled.div`
 `
 
 const ScheduleCard: React.FC<ScheduleCardProps> = props => {
-  const [{ isDragging }, drag] = useDrag(() => ({
+  const [{ isDragging }, drag, preview] = useDrag(() => ({
     type: dragItemTypes.scheduleCard,
     collect: monitor => ({
       isDragging: !!monitor.isDragging(),
     }),
   }))
+
+  useEffect(() => {
+    preview(getEmptyImage(), { captureDraggingState: true })
+  }, [])
   return (
     <Box
       ref={drag}
