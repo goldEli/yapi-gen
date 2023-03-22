@@ -55,7 +55,7 @@ const DemandInfoWrap = styled.div({
   justifyContent: 'space-between',
   height: 32,
   background: 'white',
-  margin: '20px 0 6px 0',
+  margin: '20px 0 6px 24px',
 })
 
 const NameWrap = styled.div({
@@ -73,6 +73,7 @@ const ContentWrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
   height: 'calc(100% - 90px)',
+  padding: '0 0 0 24px',
 })
 
 const MainWrap = styled.div({
@@ -426,6 +427,7 @@ const Iteration = () => {
             alignItems: 'center',
             justifyContent: 'space-between',
             height: 32,
+            paddingLeft: 24,
           }}
         >
           <MyBreadcrumb />
