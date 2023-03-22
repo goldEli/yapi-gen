@@ -8,10 +8,7 @@ const Side = styled.div`
   /* align-items: center; */
   box-sizing: border-box;
   padding-top: 24px;
-
-  background: rgba(255, 255, 255, 1);
   flex-shrink: 0;
-  border-right: 1px solid var(--neutral-n6-d1);
 `
 const InfoWrap = styled.div({
   display: 'flex',

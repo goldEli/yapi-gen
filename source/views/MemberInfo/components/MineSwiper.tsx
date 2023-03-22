@@ -6,7 +6,32 @@ import 'swiper/css'
 import SwiperCard from './SwiperCard'
 import { useTranslation } from 'react-i18next'
 import { message } from 'antd'
-import { SwiperWrap } from '@/views/Mine/components/MineSwiper'
+import styled from '@emotion/styled'
+
+const SwiperWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  box-sizing: border-box;
+  padding: 0 24px;
+  height: 90px;
+  background-color: var(--neutral-white-d2);
+  overflow: hidden;
+  & .swiper {
+    overflow: visible;
+    margin: 0;
+  }
+  & .swiper-wrapper {
+    max-width: 1400px;
+    width: 100%;
+    display: flex;
+  }
+  & .swiper-slide {
+    width: auto !important;
+    /* border:1px solid var(--neutral-n6-d1); */
+    border-radius: 6px;
+  }
+`
 
 const SwiperCardMove = (props: any) => {
   const [t] = useTranslation()
@@ -34,6 +59,7 @@ const SwiperCardMove = (props: any) => {
       >
         <SwiperSlide key={1}>
           <SwiperCard
+            all
             name={t('mine.allProject')}
             avtar=""
             tap={() => {

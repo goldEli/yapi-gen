@@ -39,14 +39,6 @@ import CustomSelect from './CustomSelect'
 export function setValue(res: any) {
   const form1Obj: any = {}
   for (const key in res?.fields) {
-    // if (res?.fields[key].content === 'users_name') {
-    //   // eslint-disable-next-line no-undefined
-    //   if (res.originalStatusUserIds.length >= 1) {
-    //     form1Obj[res?.fields[key].content] = [
-    //       res.originalStatusUserIds.join(','),
-    //     ]
-    //   }
-    // } else
     if (
       res?.fields[key].type === 'select' &&
       res?.fields[key].true_value !== 0 &&
@@ -579,44 +571,6 @@ export const ShapeContent = (props: any) => {
     return name
   }
 
-  const format = (i: any) => {
-    const a = i.children?.map((item: any) => ({
-      ...item,
-      label: formatName(i.content, item.name, item.id),
-
-      value: item.id,
-    }))
-    const newA = a.filter((j: any) => {
-      return j.id === info
-    })
-    const isMy = rightList?.originalStatusUserIds.includes(info)
-
-    const newC = a.filter((j: any) => {
-      return rightList?.originalStatusUserIds.includes(j.id)
-    })
-
-    const ids = rightList?.originalStatusUserIds.join(',')
-    const names = newC.map((k: any) => k.name).join(' ; ')
-    let newD: any = []
-    if (ids) {
-      newD = [
-        {
-          id: ids,
-          label: `${names}（${t('theOriginalStateHandlesThePerson')}）`,
-          name: names,
-          value: ids,
-        },
-      ]
-    }
-
-    const newB = a.filter((j: any) => {
-      return j.id !== info && !rightList?.originalStatusUserIds.includes(j.id)
-
-      // return j.id !== info
-    })
-
-    return (newD ? newD : []).concat(isMy ? [] : newA, newB)
-  }
   const format2 = (i: any, type: any) => {
     const a = i.children?.map((item: any) => ({
       ...item,

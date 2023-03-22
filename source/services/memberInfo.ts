@@ -72,6 +72,7 @@ export const getUserInfoAbeyanceStory: any = async (params: any) => {
             category: i.category,
             categoryColor: i.category_color,
             class: i.class,
+            storyPrefixKey: i.story_prefix_key,
             project: {
               isPublic: i.project.is_public,
               isUserMember: i.project.user_ismember,
@@ -118,6 +119,7 @@ export const getUserInfoAbeyanceStory: any = async (params: any) => {
             category: i.category,
             categoryColor: i.category_color,
             class: i.class,
+            storyPrefixKey: i.story_prefix_key,
             project: {
               isPublic: i.project.is_public,
               isUserMember: i.project.user_ismember,
@@ -196,6 +198,7 @@ export const getUserInfoCreateStory: any = async (params: any) => {
           category: i.category,
           categoryColor: i.category_color,
           class: i.class,
+          storyPrefixKey: i.story_prefix_key,
           project: {
             isPublic: i.project.is_public,
             isUserMember: i.project.user_ismember,
@@ -273,6 +276,7 @@ export const getUserInfoFinishStory: any = async (params: any) => {
           category: i.category,
           categoryColor: i.category_color,
           class: i.class,
+          storyPrefixKey: i.story_prefix_key,
           project: {
             isPublic: i.project.is_public,
             isUserMember: i.project.user_ismember,
@@ -407,6 +411,7 @@ export const getMemberInfoAbeyanceStory: any = async (params: any) => {
             category: i.category,
             categoryColor: i.category_color,
             class: i.class,
+            storyPrefixKey: i.story_prefix_key,
             project: {
               isPublic: i.project.is_public,
               isUserMember: i.project.user_ismember,
@@ -453,6 +458,7 @@ export const getMemberInfoAbeyanceStory: any = async (params: any) => {
             category: i.category,
             categoryColor: i.category_color,
             class: i.class,
+            storyPrefixKey: i.story_prefix_key,
             project: {
               isPublic: i.project.is_public,
               isUserMember: i.project.user_ismember,
@@ -531,6 +537,7 @@ export const getMemberInfoCreateStory: any = async (params: any) => {
           category: i.category,
           categoryColor: i.category_color,
           class: i.class,
+          storyPrefixKey: i.story_prefix_key,
           project: {
             isPublic: i.project.is_public,
             isUserMember: i.project.user_ismember,
@@ -608,6 +615,7 @@ export const getMemberInfoFinishStory: any = async (params: any) => {
           category: i.category,
           categoryColor: i.category_color,
           class: i.class,
+          storyPrefixKey: i.story_prefix_key,
           project: {
             isPublic: i.project.is_public,
             isUserMember: i.project.user_ismember,

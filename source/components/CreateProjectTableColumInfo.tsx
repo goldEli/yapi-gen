@@ -208,17 +208,17 @@ export const useDynamicColumns = (state: any) => {
                   !record.project?.isUserMember
                 }
               >
-                <IconFont
-                  type={text?.icon}
-                  style={{
-                    fontSize: 20,
-                    marginRight: '8px',
-                    color: text?.color,
-                  }}
-                />
-                <span style={{ marginRight: '5px' }}>
-                  {text?.content_txt || '--'}
-                </span>
+                {text?.icon && (
+                  <IconFont
+                    className="priorityIcon"
+                    type={text?.icon}
+                    style={{
+                      fontSize: 20,
+                      color: text?.color,
+                    }}
+                  />
+                )}
+                {!text?.icon && <span style={{ marginLeft: '5px' }}>--</span>}
               </Wrap>
               {!(
                 record.project?.isPublic !== 1 && !record.project?.isUserMember
