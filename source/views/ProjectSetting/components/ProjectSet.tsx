@@ -31,8 +31,7 @@ import NewLoadingTransition from '@/components/NewLoadingTransition'
 import CommonButton from '@/components/CommonButton'
 
 const Warp = styled.div({
-  // padding: 16,
-  height: '100%',
+  height: 'calc(100vh - 123px)',
 })
 
 const SetMain = styled.div({
@@ -89,6 +88,8 @@ const MenuItems = styled.div({
   display: 'flex',
   flexDirection: 'column',
   padding: '0 16px',
+  height: 'calc(100% - 28px)',
+  overflow: 'scroll',
 })
 
 const MenuItem = styled.div<{ isActive: boolean }>(
