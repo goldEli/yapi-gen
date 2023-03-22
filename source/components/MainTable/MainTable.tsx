@@ -254,7 +254,7 @@ const MainTable = (props: Props) => {
       },
     },
     {
-      title: '键',
+      title: t('keyboard'),
       dataIndex: 'prefix',
       width: 160,
     },
@@ -332,6 +332,20 @@ const MainTable = (props: Props) => {
     {
       title: (
         <NewSort
+          fixedKey="leader_name"
+          nowKey={props.order.key}
+          order={props.order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          {t('project_leader')}
+        </NewSort>
+      ),
+      dataIndex: 'leader_name',
+      width: 160,
+    },
+    {
+      title: (
+        <NewSort
           fixedKey="user_name"
           nowKey={props.order.key}
           order={props.order.value}
@@ -369,6 +383,25 @@ const MainTable = (props: Props) => {
               {text === 1 ? t('common.opening1') : t('common.Closed')}
             </span>
           </StatusWrap>
+        )
+      },
+    },
+    {
+      title: (
+        <NewSort
+          fixedKey="team_id"
+          nowKey={props.order.key}
+          order={props.order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          {t('project_type')}
+        </NewSort>
+      ),
+      dataIndex: 'team_id',
+      width: 160,
+      render: (text: number) => {
+        return (
+          <span>{text === 0 ? t('enterprise_project') : t('teamwork')}</span>
         )
       },
     },
