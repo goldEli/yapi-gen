@@ -70,10 +70,19 @@ const ChartsItem = styled.span`
 `
 const titleCss = css`
   color: var(--neutral-n1-d1);
-  border-left: 3px solid var(--primary-d1);
   padding-left: 8px;
   font-size: 14px;
   font-family: SiYuanMedium;
+  position: relative;
+  &::before {
+    content: '';
+    height: 16px;
+    position: absolute;
+    left: 0px;
+    top: 3px;
+    width: 3px;
+    background-color: var(--primary-d1);
+  }
 `
 
 const title1Css = css`
