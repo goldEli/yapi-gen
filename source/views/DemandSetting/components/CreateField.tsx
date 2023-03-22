@@ -18,6 +18,7 @@ const CreateFieldWrap = styled.div`
   height: calc(100vh - 220px);
 `
 const TitleStyle = styled.div`
+  width: 352px;
   display: flex;
   align-items: center;
   color: var(--neutral-n1-d1);
@@ -165,9 +166,8 @@ const CreateField = () => {
   }, [getCategoryConfigArray])
   return (
     <CreateFieldWrap>
-      <TitleStyle>
+      <TitleStyle onClick={() => setCreateIcon(!createIcon)}>
         <CommonIconFont
-          onClick={() => setCreateIcon(!createIcon)}
           type={createIcon ? 'down-icon' : 'right-icon'}
           size={14}
           color="var(--neutral-n3)"
@@ -187,10 +187,12 @@ const CreateField = () => {
 
       <BottomList>
         <BottomTitleStyle>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div
+            style={{ display: 'flex', alignItems: 'center' }}
+            onClick={() => setSearchIcon(!searchIcon)}
+          >
             {searchDataList?.length >= 1 && (
               <CommonIconFont
-                onClick={() => setSearchIcon(!searchIcon)}
                 type={searchIcon ? 'down-icon' : 'right-icon'}
                 size={14}
                 color="var(--neutral-n3)"

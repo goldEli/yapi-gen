@@ -227,6 +227,9 @@ const HoverWrap = styled.div<{ isActive?: any }>`
   &:hover .label {
     color: var(--neutral-n1-d1);
   }
+  &:active {
+    background: var(--neutral-n6-d1);
+  }
 `
 
 const DateQuickWrap = styled.div<{ isActive?: any }>(

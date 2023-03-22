@@ -1,5 +1,6 @@
 import CommonUserAvatar from '../CommonUserAvatar'
 import { Wrap, WrapFirst, WrapSecond, WrapText, WrapTextImg } from './style'
+import erp from '/er.png'
 
 type OptionsProps = {
   type: 'user' | 'project' | 'promise'
@@ -19,7 +20,7 @@ const MoreOptions = (props: OptionsProps) => {
             alignItems: 'center',
           }}
         >
-          <CommonUserAvatar avatar={props.img} size="small" />
+          <CommonUserAvatar avatar={props.img ?? erp} size="small" />
           <WrapText>{props.name}</WrapText>
         </div>
       )}
@@ -31,7 +32,7 @@ const MoreOptions = (props: OptionsProps) => {
             alignItems: 'center',
           }}
         >
-          <WrapTextImg src={props.img} />
+          <WrapTextImg src={props.img ?? erp} />
           <WrapText>{props.name}</WrapText>
         </div>
       )}
