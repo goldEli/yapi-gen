@@ -127,8 +127,12 @@ const FormStyle = styled(Form)`
   & .ant-form-item-control-input-content {
     background-color: var(--neutral-white-d5) !important;
   }
-  .ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper,
-  .ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:hover {
+  .ant-input-affix-wrapper-status-error:not(
+      .ant-input-affix-wrapper-disabled
+    ):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper,
+  .ant-input-affix-wrapper-status-error:not(
+      .ant-input-affix-wrapper-disabled
+    ):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:hover {
     background-color: var(--neutral-white-d5) !important;
   }
 `

@@ -570,6 +570,7 @@ export const getDemandList: any = async (params: any) => {
           usersCopySendIds: i.users_copysend_name_ids,
           schedule: i.schedule,
           categoryId: i.category_id,
+          storyPrefixKey: i.story_prefix_key,
         })),
         name: k.content_txt,
         id: k.status_id,

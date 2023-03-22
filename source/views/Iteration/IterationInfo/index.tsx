@@ -30,13 +30,11 @@ const SurveyWrap = styled.div({
   background: 'white',
   display: 'flex',
   flexDirection: 'column',
-  padding: 24,
-  width: '49.6%',
 })
 
 const Title = styled.div({
-  fontSize: 16,
-  lineHeight: '16px',
+  fontSize: 14,
+  lineHeight: '14px',
   color: 'var(--neutral-n1-d1)',
   fontWeight: 'bold',
   paddingLeft: 8,
@@ -45,27 +43,29 @@ const Title = styled.div({
 
 const SurveyContent = styled.div({
   width: '100%',
-  height: 200,
+  height: 220,
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'space-around',
+  justifyContent: 'space-between',
   overflow: 'auto',
 })
 
 const SurveyBox = styled.div({
   display: 'flex',
   alignItems: 'center',
+  justifyContent: 'center',
   flexDirection: 'column',
+  borderRadius: 6,
 })
 
 const TargetWrap = styled.div({
   marginTop: 22,
-  height: 200,
+  height: 220,
   overflow: 'auto',
   color: 'var(--neutral-n2)',
   fontSize: 14,
 
-  background: 'var(--neutral-n6-d1)',
+  background: 'var(--neutral-n9)',
   padding: '16px',
   borderRadius: '4px',
 })
@@ -73,28 +73,25 @@ const TargetWrap = styled.div({
 const BottomWrap = styled.div({
   display: 'flex',
   justifyContent: 'space-between',
+  marginTop: 12,
 })
 
 const DiagramWrap = styled.div({
   width: '60%',
   height: 430,
   borderRadius: 6,
-  background: 'white',
-  padding: 24,
 })
 
 const StatusWrap = styled.div({
   width: '39.2%',
   height: 430,
   borderRadius: 6,
-  background: 'white',
-  padding: 24,
 })
 
 const ChartWrap = styled.div({
   height: 340,
   marginTop: 24,
-  background: 'var(--neutral-n6-d1)',
+  background: 'var(--neutral-n9)',
   borderRadius: '4px',
   padding: '16px',
 })
@@ -102,7 +99,6 @@ const ChartWrap = styled.div({
 const Wrap = styled.div({
   overflow: 'auto',
   height: 'calc(100% - 50px)',
-  padding: '0 16px',
   '.ant-spin-nested-loading, .ant-spin-container': {
     height: 'auto!important',
   },
@@ -191,7 +187,7 @@ const IterationInfo = () => {
     <Wrap>
       <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
         <TopWrap>
-          <SurveyWrap>
+          <SurveyWrap style={{ width: 486 }}>
             <Title
               style={{
                 marginBottom: '22px',
@@ -209,6 +205,7 @@ const IterationInfo = () => {
                 }}
               >
                 <Progress
+                  trailColor="var(--neutral-n6-d1)"
                   strokeColor="#43BA9A"
                   width={125}
                   type="circle"
@@ -240,24 +237,31 @@ const IterationInfo = () => {
                   justifyContent: 'center',
                 }}
               >
-                <span style={{ color: 'var(--neutral-black)', fontSize: 14 }}>
-                  {t('common.demand')}
-                </span>
                 <span
                   style={{
                     color: 'var(--neutral-black)',
                     fontSize: 28,
-                    marginTop: 12,
+                    marginTop: 40,
                   }}
                 >
-                  {`${iterateInfo?.finishCount || 0} / ${
-                    iterateInfo?.storyCount || 0
-                  }`}
+                  <span style={{ color: '#FA9746' }}>
+                    {iterateInfo?.finishCount || 0}
+                  </span>
+                  <span>/{iterateInfo?.storyCount || 0}</span>
+                </span>
+                <span
+                  style={{
+                    color: 'var(--neutral-black)',
+                    fontSize: 14,
+                    marginTop: 54,
+                  }}
+                >
+                  {t('common.demand')}
                 </span>
               </SurveyBox>
             </SurveyContent>
           </SurveyWrap>
-          <SurveyWrap style={{ paddingRight: 4 }}>
+          <SurveyWrap style={{ width: 'calc(100% - 510px)' }}>
             <Title>{t('project.iterateTarget')}</Title>
             {iterateInfo?.info ? (
               <TargetWrap>

@@ -76,12 +76,12 @@ const ContentWrap = styled.div({
 })
 
 const MainWrap = styled.div({
-  padding: '0 24px',
   background: 'white',
   width: '100%',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
+  borderBottom: '1px solid var(--neutral-n6-d1)',
   '.ant-space-item': {
     display: 'flex',
   },
@@ -116,8 +116,6 @@ const Item = styled.div<{ activeIdx: boolean }>(
       height: 20,
       padding: '0 6px',
       borderRadius: 10,
-      color: 'var(--primary-d2)',
-      background: 'var(--neutral-n5)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -133,7 +131,7 @@ const Item = styled.div<{ activeIdx: boolean }>(
     },
     div: {
       color: activeIdx ? 'white' : 'var(--primary-d2)',
-      background: activeIdx ? 'var(--primary-d2)' : 'var(--neutral-n5)',
+      background: activeIdx ? 'var(--primary-d2)' : 'var(--selected)',
     },
   }),
 )
@@ -436,7 +434,7 @@ const Iteration = () => {
           </NameWrap>
           <Space size={16}>
             {hasEdit ? null : (
-              <CommonButton type="primary" onClick={onChangeEditVisible}>
+              <CommonButton type="light" onClick={onChangeEditVisible}>
                 {t('common.edit')}
               </CommonButton>
             )}

@@ -4,7 +4,7 @@
 
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import { Button, Divider, Progress, Slider, Table } from 'antd'
+import { Button, Divider, Dropdown, Slider, Table } from 'antd'
 import CustomSelect from './CustomSelect'
 import IconFont from './IconFont'
 
@@ -20,19 +20,9 @@ const DragLine = styled.div<{ active: boolean }>`
   user-select: none;
   height: 100%;
   top: 0;
-  background-size: 100% 2px;
-  background-repeat: repeat-y;
-  background-image: ${({ active }) =>
-    active
-      ? 'linear-gradient(to bottom, #617ef2 0%, #617ef2 80%, transparent 50%)'
-      : 'none'};
+  background: ${props => (props.active ? 'var(--primary-d2)' : 'transparent')};
   &:hover {
-    background-image: linear-gradient(
-      to bottom,
-      #617ef2 0%,
-      #617ef2 80%,
-      transparent 50%
-    );
+    background: var(--primary-d2);
   }
 `
 
@@ -437,13 +427,14 @@ const SelectWrapBedeck = styled.div`
   }
 `
 
-const SearchLine = styled.div`
+const SearchLine = styled.div<{ hasLeft?: boolean }>`
   box-sizing: border-box;
   padding: 16px 0;
   display: flex;
   gap: 16px;
-  padding-left: 24px;
+  padding-left: ${props => (props.hasLeft ? 24 : 0)}px;
   background: rgba(255, 255, 255, 1);
+  border-bottom: 1px solid var(--neutral-n6-d1);
 `
 
 // 次按钮样式
@@ -915,6 +906,23 @@ const SelectWrap = styled(CustomSelect)`
   }
 `
 
+const DropdownWrap = styled(Dropdown)<{ isDemandCard?: any }>(
+  {
+    cursor: 'pointer',
+    '&: hover': {
+      svg: {
+        color: 'var(--auxiliary-b1)',
+      },
+    },
+    '.ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title': {
+      textAlign: 'left',
+    },
+  },
+  ({ isDemandCard }) => ({
+    visibility: isDemandCard ? 'visible' : 'hidden',
+  }),
+)
+
 export {
   title1Css1,
   HiddenText,
@@ -962,4 +970,5 @@ export {
   ProgressWrap,
   DragLine,
   SelectWrap,
+  DropdownWrap,
 }

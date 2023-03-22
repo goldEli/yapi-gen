@@ -62,7 +62,7 @@ const ProjectDetailSide = () => {
     },
     {
       name: t('iteration'),
-      icon: 'interation',
+      icon: 'interation-2',
       path: '/ProjectManagement/Iteration',
       isPermission:
         projectInfo?.isPublic === 1

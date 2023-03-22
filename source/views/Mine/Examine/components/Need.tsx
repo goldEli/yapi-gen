@@ -147,6 +147,7 @@ const Need = (props: any) => {
   const onClickItem = (item: any) => {
     const demandIds = listData?.list?.map((i: any) => i.demandId)
     item.id = item.demandId
+    item.isAllProject = props.projectId === 0
     openDemandDetail(
       { ...item, ...{ demandIds } },
       item.projectId,

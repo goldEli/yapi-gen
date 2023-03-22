@@ -1,5 +1,4 @@
-import IconFont from '@/components/IconFont'
-import { SecondButton } from '@/components/StyleCommon'
+import CommonButton from '@/components/CommonButton'
 import { useTranslation } from 'react-i18next'
 
 interface Props {
@@ -13,10 +12,9 @@ const CreateDemandButton = (props: Props) => {
     <>
       {props.hasCreate && (
         <div style={{ padding: '16px 0 4px 16px', background: 'white' }}>
-          <SecondButton onClick={props.onCreateDemand}>
-            <IconFont type="plus" />
+          <CommonButton type="primaryText" icon="plus" iconPlacement="left">
             <div>{t('common.createDemand')}</div>
-          </SecondButton>
+          </CommonButton>
         </div>
       )}
     </>

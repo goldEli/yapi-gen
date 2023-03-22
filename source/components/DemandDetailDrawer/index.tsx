@@ -139,7 +139,7 @@ const DemandDetailDrawer = () => {
   const getDemandDetail = async (id?: any, ids?: any) => {
     const paramsProjectId =
       demandDetailDrawerProps.project_id ?? demandDetailDrawerProps.projectId
-    if (drawerInfo?.projectId === paramsProjectId) {
+    if (demandDetailDrawerProps?.isAllProject) {
       getProjectData()
     }
     setDrawerInfo({})
@@ -394,31 +394,38 @@ const DemandDetailDrawer = () => {
           </Space>
           <Space size={16}>
             <ChangeIconGroup>
-              <NextWrap
-                isDisable={!currentIndex}
-                onClick={onUpDemand}
-                id="upIcon"
-              >
-                <CommonIconFont
-                  type="up"
-                  size={20}
-                  color="var(--neutral-n1-d1)"
-                />
-              </NextWrap>
-              <NextWrap
-                isDisable={
-                  demandIds?.length === 0 ||
-                  currentIndex === demandIds?.length - 1
-                }
-                onClick={onDownDemand}
-                id="downIcon"
-              >
-                <CommonIconFont
-                  type="down"
-                  size={20}
-                  color="var(--neutral-n1-d1)"
-                />
-              </NextWrap>
+              {currentIndex > 0 && (
+                <NextWrap
+                  isDisable={!currentIndex}
+                  onClick={onUpDemand}
+                  id="upIcon"
+                >
+                  <CommonIconFont
+                    type="up"
+                    size={20}
+                    color="var(--neutral-n1-d1)"
+                  />
+                </NextWrap>
+              )}
+              {!(
+                demandIds?.length === 0 ||
+                currentIndex === demandIds?.length - 1
+              ) && (
+                <NextWrap
+                  isDisable={
+                    demandIds?.length === 0 ||
+                    currentIndex === demandIds?.length - 1
+                  }
+                  onClick={onDownDemand}
+                  id="downIcon"
+                >
+                  <CommonIconFont
+                    type="down"
+                    size={20}
+                    color="var(--neutral-n1-d1)"
+                  />
+                </NextWrap>
+              )}
             </ChangeIconGroup>
             <ChangeIconBox onClick={onToDetail}>
               <CommonIconFont

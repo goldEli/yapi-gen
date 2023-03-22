@@ -211,10 +211,8 @@ const ProjectInfo = () => {
             <InfoItem>
               <div>{t('project_type')}：</div>
               <span>
-                {projectInfo.isPublic === 1
-                  ? t('project.companyOpen')
-                  : projectInfo?.isPublic === 2
-                  ? t('common.privateProject')
+                {projectInfo.permissionType === 1
+                  ? t('enterprise_project')
                   : t('teamwork')}
               </span>
             </InfoItem>

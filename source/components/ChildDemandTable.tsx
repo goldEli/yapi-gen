@@ -87,14 +87,6 @@ const ChildDemandTable = (props: {
     getList({ value: val === 2 ? 'desc' : 'asc', key })
   }
 
-  const onToDetail = (item: any) => {
-    openDemandDetail(item, projectId, item.id)
-  }
-
-  const onExamine = () => {
-    message.warning(t('newlyAdd.underReview'))
-  }
-
   const columnsChild = [
     {
       title: (
@@ -114,7 +106,6 @@ const ChildDemandTable = (props: {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <ClickWrap
               className="canClickDetail"
-              onClick={() => onToDetail(record)}
               isClose={record.status?.is_end === 1}
             >
               {text}
@@ -176,7 +167,6 @@ const ChildDemandTable = (props: {
                 className="canClickDetail"
                 isName
                 isClose={record.status?.is_end === 1}
-                onClick={() => onToDetail(record)}
               >
                 <TableColorText text={text} />
               </ListNameWrap>

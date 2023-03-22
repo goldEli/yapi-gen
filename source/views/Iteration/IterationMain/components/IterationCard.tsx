@@ -33,7 +33,7 @@ const CardWrap = styled.div<{ active?: boolean }>`
   background: var(--neutral-white-d4);
   padding: 16px 0;
   position: relative;
-  margin-bottom: 16px;
+  margin-top: 16px;
   cursor: pointer;
   .ant-progress-text {
     font-size: var(--font12);

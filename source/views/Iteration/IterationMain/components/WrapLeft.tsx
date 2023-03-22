@@ -67,9 +67,7 @@ const TopWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  height: 52,
   background: 'white',
-  marginBottom: 8,
 })
 
 const IconWrap = styled(IconFont)<{ isActive: any }>(
@@ -427,7 +425,7 @@ const WrapLeft = (props: Props) => {
         {hasAdd || projectInfo?.status !== 1 ? (
           <div />
         ) : (
-          <CommonButton type="light" icon="plus" onClick={onChangeClick}>
+          <CommonButton type="primary" icon="plus" onClick={onChangeClick}>
             {t('common.createIterate')}
           </CommonButton>
         )}
