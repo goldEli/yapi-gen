@@ -7,7 +7,7 @@ import { CloseWrap } from '@/components/StyleCommon'
 import { getTicket, loginOut } from '@/services/user'
 import { useDispatch, useSelector } from '@store/index'
 import { changeLanguage, type LocaleKeys } from '@/locals'
-import { message, Popover, Space } from 'antd'
+import { message, Popover, Space, Tooltip } from 'antd'
 import { useState } from 'react'
 import {
   ChangeItem,
@@ -29,6 +29,7 @@ import {
   UserInfoTop,
   UserInfoWrap,
   Line2,
+  LineBox,
 } from './../style'
 import { setIsCreateIterationVisible } from '@store/iterate'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
@@ -178,6 +179,11 @@ const HeaderRight = () => {
   ]
 
   const labelList = [
+    {
+      label: t('head_portrait'),
+      key: 'avatar',
+      value: userInfo.avatar,
+    },
     {
       label: t('common.phone'),
       value: userInfo.account,
@@ -345,31 +351,25 @@ const HeaderRight = () => {
       >
         <div style={{ padding: '0 24px 32px' }}>
           <PersonalFooter>
-            <div>
-              <Line>头像</Line>
-              {labelList.map(item => (
-                <Line key={item.label}>{item.label ? item.label : '-'}</Line>
-              ))}
-            </div>
-            <div
-              style={{
-                textAlign: 'right',
-              }}
-            >
-              <PersonalHead>
-                {userInfo.avatar ? (
-                  <img className={imgCss} src={userInfo.avatar} />
-                ) : (
-                  <UserAvatar />
+            {labelList?.map((i: any) => (
+              <LineBox key={i.label}>
+                <Line key={i.label}>{i.label ? i.label : '-'}</Line>
+                {i.key === 'avatar' && (
+                  <PersonalHead>
+                    {userInfo.avatar ? (
+                      <img className={imgCss} src={userInfo.avatar} />
+                    ) : (
+                      <UserAvatar />
+                    )}
+                  </PersonalHead>
                 )}
-              </PersonalHead>
-
-              {labelList.map(item => (
-                <Line2 style={{}} key={item.label}>
-                  {item.value ? item.value : '-'}
-                </Line2>
-              ))}
-            </div>
+                {i.key !== 'avatar' && (
+                  <Tooltip title={i.value} placement="topRight">
+                    <Line2 key={i.label}>{i.value || '--'}</Line2>
+                  </Tooltip>
+                )}
+              </LineBox>
+            ))}
           </PersonalFooter>
         </div>
       </CommonModal>
