@@ -5,7 +5,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { Menu, Progress } from 'antd'
-import { ClickWrap, HiddenText, SecondButton } from '@/components/StyleCommon'
+import { ClickWrap, HiddenText } from '@/components/StyleCommon'
 import { useNavigate } from 'react-router-dom'
 import { useCallback, useMemo, useState } from 'react'
 import Sort from '@/components/Sort'

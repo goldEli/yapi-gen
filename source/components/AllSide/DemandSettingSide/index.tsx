@@ -19,7 +19,6 @@ import {
   WrapSet,
   BackStyle,
   TitleStyle,
-  Tabs,
   NoDataCreateWrap,
 } from './style'
 import Dragging from './Dragging'
@@ -44,7 +43,34 @@ const IconFontStyle = styled(IconFont)({
     cursor: 'pointer',
   },
 })
+const Tabs = styled.div`
+  height: 24px;
+  border-radius: 4px;
+  margin: 16px 0;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--neutral-n3);
+  background-color: var(--hover-d1);
+  span {
+    display: inline-block;
+    width: 50%;
+    text-align: center;
+    height: 24px;
+    line-height: 24px;
+    color: var(--neutral-n3);
+  }
+  &:hover {
+    cursor: pointer;
+    color: var(--neutral-n1-d1);
+  }
+  .tabsActive {
+    background-color: var(--neutral-white-d6);
+    color: var(--neutral-n1-d1);
 
+    border-radius: 6px;
+    border: 1px solid var(--neutral-n6-d1);
+  }
+`
 const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   const [t] = useTranslation()
   const { startUsing, categoryList, activeCategory } = useSelector(

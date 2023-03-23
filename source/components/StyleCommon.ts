@@ -440,32 +440,6 @@ const SearchLine = styled.div<{ hasLeft?: boolean }>`
   border-bottom: 1px solid var(--neutral-n6-d1);
 `
 
-// 次按钮样式
-const SecondButton = styled(Button)`
-  height: 32px;
-  border-radius: 6px;
-  background: var(--hover-d2);
-  cursor: pointer;
-  padding: 0 16px;
-  color: var(--primary-d2);
-  display: flex;
-  align-items: center;
-  svg {
-    font-size: 16px;
-  }
-  div {
-    margin-left: 8px;
-    font-size: 14px;
-  }
-  &:hover {
-    background: var(--selected) !important;
-    color: var(--primary-d2) !important;
-  }
-  &:focus {
-    background: var(--auxiliary-b6);
-    color: var(--primary-d2);
-  }
-`
 const TableWrap = styled(Table)({
   '.ant-table table': {
     paddingBottom: 10,
@@ -580,19 +554,26 @@ const ShowWrap = styled.div`
   visibility: hidden;
 `
 
-const CategoryWrap = styled.div<{ color: string; bgColor: string }>({
-  height: 22,
-  borderRadius: 11,
-  display: 'flex',
-  padding: '0 8px',
-  marginRight: 8,
-  lineHeight: '22px',
-  fontSize: 14,
-  fontWeight: 400,
-  marginLeft: 8,
-  flexShrink: 0,
-  color: 'var(--neutral-n1-d1)',
-})
+const CategoryWrap = styled.div<{ color: string; bgColor: string }>(
+  {
+    minWidth: 86,
+    height: 24,
+    borderRadius: 6,
+    display: 'flex',
+    padding: '0 8px',
+    marginRight: 8,
+    lineHeight: '22px',
+    alignItems: 'center',
+    fontSize: 14,
+    fontWeight: 400,
+    marginLeft: 8,
+    flexShrink: 0,
+    color: 'var(--neutral-n1-d1)',
+  },
+  ({ bgColor }) => ({
+    background: bgColor,
+  }),
+)
 
 const ListNameWrap = styled.div<{
   isClose?: boolean
@@ -951,7 +932,6 @@ export {
   DelButton,
   SelectWrapBedeck,
   SearchLine,
-  SecondButton,
   CanOperationCategory,
   DividerWrap,
   ShowWrap,

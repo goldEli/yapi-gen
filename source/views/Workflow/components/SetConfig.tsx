@@ -48,6 +48,7 @@ import {
 } from '@/services/project'
 import { useSelector } from '@store/index'
 import CustomSelect from '@/components/CustomSelect'
+import CommonButton from '@/components/CommonButton'
 
 const TableWrapTop = styled(Table)({
   '.ant-table-cell': {
@@ -955,18 +956,17 @@ const SetConfig = (props: Props) => {
             <TextWrap style={{ paddingLeft: 20 }}>
               {t('newlyAdd.reviewFieldsText')}
             </TextWrap>
-            <Button
+
+            <CommonButton
               style={{
-                background: 'var(--hover-d2)',
-                color: 'var(--neutral-n2)',
                 marginTop: 16,
                 marginLeft: 20,
               }}
-              icon={<IconFont type="plus" />}
+              type={'light'}
               onClick={onClickAddField}
             >
-              {t('newlyAdd.addFields')}
-            </Button>
+              <IconFont type="plus" /> {t('newlyAdd.addFields')}
+            </CommonButton>
             <TableWrapTop
               pagination={false}
               dataSource={dataSource?.filter(

@@ -31,7 +31,6 @@ import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import RangePicker from '@/components/RangePicker'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import { SecondButton } from '@/components/StyleCommon'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectInfoValues } from '@store/project'
 import {
@@ -491,12 +490,13 @@ const WrapLeft = (props: Props) => {
                 }
               >
                 {!hasAdd && (
-                  <SecondButton
+                  <CommonButton
+                    type="light"
                     onClick={onChangeClick}
                     style={{ marginTop: 24 }}
                   >
                     {t('common.createIterate')}
-                  </SecondButton>
+                  </CommonButton>
                 )}
               </NoData>
             ))}

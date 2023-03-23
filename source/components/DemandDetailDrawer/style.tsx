@@ -56,33 +56,48 @@ export const BackIcon = styled.div`
 `
 
 export const ChangeIconGroup = styled.div`
-  border: 1px solid var(--neutral-n6-d1);
-  border-radius: 6px;
+  /* border: 1px solid var(--neutral-n6-d1); */
+  /* border-radius: 6px; */
   box-sizing: border-box;
   height: 32px;
   display: flex;
-  overflow: hidden;
+  /* overflow: hidden; */
 `
 
-export const NextWrap = styled.div<{ isDisable?: boolean }>`
+export const NextWrap = styled.div`
   width: 31px;
-  height: 30px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--neutral-white-d4);
-  cursor: ${props => (props.isDisable ? 'no-drop' : 'pointer')};
+  border: 1px solid var(--neutral-n6-d1);
+  border-radius: 6px;
+  cursor: pointer;
   svg {
     color: var(--neutral-n2);
   }
   &:hover {
-    background: ${props =>
-      props.isDisable ? 'var(--neutral-white-d4)' : 'var(--hover-d2)'};
+    background: var(--hover-d2);
+    border: 1px solid var(--hover-d2);
     svg {
-      color: ${props =>
-        props.isDisable ? 'var(--neutral-n2)' : 'var(--primary-d2)'};
+      color: var(--primary-d2);
     }
   }
+`
+
+export const UpWrap = styled(NextWrap)<{ isOnly?: boolean }>`
+  border-right: ${props =>
+    props.isOnly ? '1px solid var(--neutral-n6-d1)' : '1px solid transparent'};
+  border-top-right-radius: ${props => (props.isOnly ? '6' : '0')}px;
+  border-bottom-right-radius: ${props => (props.isOnly ? '6' : '0')}px;
+`
+
+export const DownWrap = styled(NextWrap)<{ isOnly?: boolean }>`
+  border-left: ${props =>
+    props.isOnly ? '1px solid var(--neutral-n6-d1)' : '1px solid transparent'};
+  border-top-left-radius: ${props => (props.isOnly ? '6' : '0')}px;
+  border-bottom-left-radius: ${props => (props.isOnly ? '6' : '0')}px;
 `
 
 export const ChangeIconBox = styled.div`

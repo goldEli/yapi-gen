@@ -202,7 +202,7 @@ const Need = (props: any) => {
       )}
       <div
         style={{
-          padding: '0 24px',
+          margin: '0 24px',
           display: 'flex',
           width: '100%',
           justifyContent: 'space-between',

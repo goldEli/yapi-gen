@@ -82,7 +82,7 @@ const SetPermissionWrap = (props: {
 
   return (
     <CommonModal
-      width={420}
+      width={528}
       onClose={() => props.onClose()}
       title={t('setting.editPermission1')}
       isVisible={props.isVisible}

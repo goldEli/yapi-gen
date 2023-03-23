@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom'
 import { MenuItem } from './style'
 
 const Container = styled.div`
-  margin-bottom: 8px;
   &:hover {
     cursor: pointer;
   }

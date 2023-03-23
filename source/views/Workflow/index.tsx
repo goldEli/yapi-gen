@@ -169,13 +169,7 @@ const Workflow = () => {
         <ContentWrap>
           <LabelWrap>
             <span>{t('newlyAdd.workflowSet')}</span>
-            <CategoryWrap
-              color={categoryItem.color}
-              bgColor={
-                colorList?.filter((i: any) => i.key === categoryItem.color)[0]
-                  ?.bgColor
-              }
-            >
+            <CategoryWrap color={categoryItem.color} bgColor={''}>
               <>
                 <img
                   src={categoryItem.attachmentPath}
@@ -200,7 +194,7 @@ const Workflow = () => {
               style={{
                 width: 160,
                 height: 1,
-                background: 'var(--neutral-n4)',
+                background: 'var(--neutral-n6-d2)',
                 margin: '0 8px',
               }}
             />

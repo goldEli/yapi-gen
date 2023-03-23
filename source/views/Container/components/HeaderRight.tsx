@@ -347,7 +347,7 @@ const HeaderRight = () => {
         isVisible={isInfoVisible}
         title={t('personal_data') as string}
         isShowFooter
-        width={420}
+        width={528}
       >
         <div style={{ padding: '0 24px 32px' }}>
           <div>
