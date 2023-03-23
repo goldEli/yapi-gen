@@ -18,44 +18,52 @@ const Box = styled.div`
 const DropArea: React.FC<DropAreaProps> = props => {
   const dispatch = useDispatch()
   const scheduleList = useSelector(store => store.managerCalendar.scheduleList)
-  const [{ isOver }, drop] = useDrop(() => ({
-    accept: dragItemTypes.scheduleCard,
-    drop: (item: any, monitor) => {
-      const schedule = scheduleList.find(i => i.id === item?.id)
-      if (!schedule) {
-        return
-      }
-      const { startTime, endTime } = schedule || {}
-      const delta = monitor.getDifferenceFromInitialOffset()
-      const offsetTop = Math.round(delta?.y ?? 0)
-      const offsetMinute = Math.floor(offsetTop / (oneHourHeight / 60))
+  const [{ isOver }, drop] = useDrop(
+    () => ({
+      accept: dragItemTypes.scheduleCard,
+      drop: (item: any, monitor) => {
+        const schedule = scheduleList.find(i => i.id === item?.id)
+        if (!schedule) {
+          return
+        }
+        const { startTime, endTime } = schedule || {}
+        const delta = monitor.getDifferenceFromInitialOffset()
+        const offsetTop = Math.round(delta?.y ?? 0)
+        const offsetMinute = Math.floor(offsetTop / (oneHourHeight / 60))
 
-      const newStartTime = dayjs(startTime).add(offsetMinute, 'minute')
-      const newEndTime = dayjs(endTime).add(offsetMinute, 'minute')
+        // 每次移动是15分钟的倍数
+        const step = Math.ceil(offsetMinute / 15)
+        const moveMinute = step * 15
 
-      console.log(
-        '{ delta }',
-        delta?.y,
-        offsetMinute,
-        newStartTime.format(),
-        newEndTime.format(),
-      )
-      dispatch(
-        setScheduleList({
-          ...schedule,
-          startTime: newStartTime.valueOf(),
-          endTime: newEndTime.valueOf(),
-        }),
-      )
-    },
-    collect: monitor => ({
-      isOver: !!monitor.isOver(),
+        const newStartTime = dayjs(startTime).add(moveMinute, 'minute')
+        const newEndTime = dayjs(endTime).add(moveMinute, 'minute')
+
+        console.log(
+          '{ delta }',
+          delta?.y,
+          offsetMinute,
+          dayjs(startTime).format('hh:mm:ss'),
+          newStartTime.format('hh:mm:ss'),
+          newEndTime.format('hh:mm:ss'),
+        )
+        dispatch(
+          setScheduleList({
+            ...schedule,
+            startTime: newStartTime.valueOf(),
+            endTime: newEndTime.valueOf(),
+          }),
+        )
+      },
+      collect: monitor => ({
+        isOver: !!monitor.isOver(),
+      }),
+      hover(item, monitor) {
+        // console.log(item)
+        // 获取每一次放置相对于上一次的偏移量
+      },
     }),
-    hover(item, monitor) {
-      // console.log(item)
-      // 获取每一次放置相对于上一次的偏移量
-    },
-  }))
+    [scheduleList],
+  )
   return (
     <Box ref={drop}>
       {props.children}

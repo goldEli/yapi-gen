@@ -48,13 +48,16 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     return (allMinutes * oneHourHeight) / 60
   }, [startTime, endTime])
 
-  const [{ isDragging }, drag, preview] = useDrag(() => ({
-    type: dragItemTypes.scheduleCard,
-    item: { id: props.data.id },
-    collect: monitor => ({
-      isDragging: !!monitor.isDragging(),
+  const [{ isDragging }, drag, preview] = useDrag(
+    () => ({
+      type: dragItemTypes.scheduleCard,
+      item: { id: props.data.id },
+      collect: monitor => ({
+        isDragging: !!monitor.isDragging(),
+      }),
     }),
-  }))
+    [props.data.id],
+  )
 
   useEffect(() => {
     preview(getEmptyImage(), { captureDraggingState: true })

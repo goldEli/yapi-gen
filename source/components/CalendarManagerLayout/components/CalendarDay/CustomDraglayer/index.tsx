@@ -55,8 +55,8 @@ function getItemStyles(
   // const distance = y
   console.log('current initial', y - initialOffset.y)
 
-  // const transform = `translate(${initialOffset.x}px, ${distance}px)`
-  const transform = `translate(${initialOffset.x}px, ${y}px)`
+  const transform = `translate(${initialOffset.x}px, ${distance}px)`
+  // const transform = `translate(${initialOffset.x}px, ${y}px)`
   return {
     transform,
     // WebkitTransform: transform,
