@@ -105,7 +105,7 @@ const Contain = styled.div`
   min-height: 316px;
   display: flex;
 `
-const MyDiv = styled.div<{ show?: boolean }>`
+export const MyDiv = styled.div<{ show?: boolean }>`
   display: flex;
   align-items: center;
   border-radius: 2px;

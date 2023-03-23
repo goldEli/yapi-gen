@@ -1,3 +1,7 @@
+/* eslint-disable consistent-return */
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable require-unicode-regexp */
 // 状态流转弹窗 -- 需求详情
 
@@ -15,6 +19,7 @@ import {
   TreeSelect,
   Spin,
   Tooltip,
+  Divider,
 } from 'antd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
@@ -26,18 +31,20 @@ import { getShapeRight } from '@/services/demand'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
 import CommonButton from './CommonButton'
 import CustomSelect from './CustomSelect'
+import { MyDiv } from './Shape'
 
 export function setValue(res: any) {
   const form1Obj: any = {}
   for (const key in res?.fields) {
-    if (res?.fields[key].content === 'users_name') {
-      // eslint-disable-next-line no-undefined
-      if (res.originalStatusUserIds.length >= 1) {
-        form1Obj[res?.fields[key].content] = [
-          res.originalStatusUserIds.join(','),
-        ]
-      }
-    } else if (
+    // if (res?.fields[key].content === 'users_name') {
+    //   // eslint-disable-next-line no-undefined
+    //   if (res.originalStatusUserIds.length >= 1) {
+    //     form1Obj[res?.fields[key].content] = [
+    //       res.originalStatusUserIds.join(','),
+    //     ]
+    //   }
+    // } else
+    if (
       res?.fields[key].type === 'select' &&
       res?.fields[key].true_value !== 0 &&
       res?.fields[key].true_value !== ''
@@ -402,26 +409,26 @@ const ShapeContentForDetail = (props: any) => {
     const res2 = await form.validateFields()
     const res = JSON.parse(JSON.stringify(res2))
     for (const key in res) {
-      if (key === 'users_name') {
-        const newArr = res[key].filter((i: any) => {
-          return typeof i === 'string'
-        })
-        const newArr1 = res[key].filter((i: any) => {
-          return typeof i !== 'string'
-        })
+      // if (key === 'users_name') {
+      //   const newArr = res[key].filter((i: any) => {
+      //     return typeof i === 'string'
+      //   })
+      //   const newArr1 = res[key].filter((i: any) => {
+      //     return typeof i !== 'string'
+      //   })
 
-        const arr = Array.from(
-          new Set([
-            ...String(newArr)
-              .split(',')
-              .map(k => Number(k)),
-            ...newArr1,
-          ]),
-        )
-        if (newArr.length >= 1) {
-          res[key] = arr
-        }
-      }
+      //   const arr = Array.from(
+      //     new Set([
+      //       ...String(newArr)
+      //         .split(',')
+      //         .map(k => Number(k)),
+      //       ...newArr1,
+      //     ]),
+      //   )
+      //   if (newArr.length >= 1) {
+      //     res[key] = arr
+      //   }
+      // }
 
       if (typeof res[key] === 'undefined') {
         res[key] = null
@@ -495,7 +502,50 @@ const ShapeContentForDetail = (props: any) => {
 
     return (newD ? newD : []).concat(newA, newB)
   }
+  const format2 = (i: any, type: any) => {
+    const a = i.children?.map((item: any) => ({
+      ...item,
+      label: formatName(i.content, item.name, item.id),
 
+      value: item.id,
+    }))
+    const newA = a.filter((j: any) => {
+      return j.id === info
+    })
+
+    if (type === 1) {
+      return newA[0].label
+    }
+    if (type === 2) {
+      const newC = a.filter((j: any) => {
+        return rightList?.originalStatusUserIds.includes(j.id)
+      })
+
+      const names = newC.map((k: any) => k.name).join(' ; ')
+
+      return names ? `${names}（${t('theOriginalStateHandlesThePerson')}）` : ''
+    }
+  }
+  const setMyValue = () => {
+    const arr = form.getFieldsValue().users_name
+    const arr2 = rightList?.originalStatusUserIds
+    form.setFieldsValue({
+      users_name: Array.from(new Set([...arr, ...arr2])),
+    })
+  }
+  const setMyValue2 = () => {
+    const arr = form.getFieldsValue().users_name
+    const arr2 = [info]
+    form.setFieldsValue({
+      users_name: Array.from(new Set([...arr, ...arr2])),
+    })
+  }
+  const valid = () => {
+    const str1 = form.getFieldsValue()?.users_name?.join(',')
+    const str2 = rightList?.originalStatusUserIds?.join(',')
+
+    return str1?.includes(str2)
+  }
   return (
     <Contain>
       {loading && (
@@ -571,27 +621,81 @@ const ShapeContentForDetail = (props: any) => {
                         />
                       </Form.Item>
                     )}
-                    {['select_checkbox', 'checkbox'].includes(i.type) && (
-                      <Form.Item
-                        initialValue={i.true_value ?? []}
-                        label={<LabelComponent title={i.title} />}
-                        name={i.content}
-                        rules={[
-                          {
-                            required: i.is_must === 1,
-                            message: '',
-                          },
-                        ]}
-                      >
-                        <CustomSelect
-                          mode="multiple"
-                          placeholder={t('common.pleaseSelect')}
-                          allowClear
-                          options={format(i)}
-                          optionFilterProp="label"
-                        />
-                      </Form.Item>
-                    )}
+                    {['select_checkbox', 'checkbox'].includes(i.type) &&
+                      i.content === 'users_name' && (
+                        <Form.Item
+                          label={<LabelComponent title={i.title} />}
+                          name={i.content}
+                          rules={[
+                            {
+                              required: i.is_must === 1,
+                              message: '',
+                            },
+                          ]}
+                        >
+                          <CustomSelect
+                            mode="multiple"
+                            dropdownRender={(menu: any) => {
+                              return (
+                                <div
+                                  style={{
+                                    padding: '8px ',
+                                  }}
+                                >
+                                  {format2(i, 2) && (
+                                    <MyDiv
+                                      show={valid() as unknown as boolean}
+                                      onClick={setMyValue}
+                                    >
+                                      {format2(i, 2)}
+                                    </MyDiv>
+                                  )}
+
+                                  <MyDiv
+                                    show={form
+                                      .getFieldsValue()
+                                      ?.users_name?.includes(info)}
+                                    onClick={setMyValue2}
+                                  >
+                                    {format2(i, 1)}
+                                  </MyDiv>
+                                  <Divider style={{ margin: '8px 0' }} />
+                                  {menu}
+                                </div>
+                              )
+                            }}
+                            placeholder={t('common.pleaseSelect')}
+                            allowClear
+                            options={i.children?.map((item: any) => ({
+                              label: item.name,
+                              value: item.id,
+                            }))}
+                            optionFilterProp="name"
+                          />
+                        </Form.Item>
+                      )}
+                    {['select_checkbox', 'checkbox'].includes(i.type) &&
+                      i.content !== 'users_name' && (
+                        <Form.Item
+                          initialValue={i.true_value ?? []}
+                          label={<LabelComponent title={i.title} />}
+                          name={i.content}
+                          rules={[
+                            {
+                              required: i.is_must === 1,
+                              message: '',
+                            },
+                          ]}
+                        >
+                          <CustomSelect
+                            mode="multiple"
+                            placeholder={t('common.pleaseSelect')}
+                            allowClear
+                            options={format(i)}
+                            optionFilterProp="label"
+                          />
+                        </Form.Item>
+                      )}
                     {['date', 'time', 'datetime'].includes(i.type) && (
                       <Form.Item
                         label={<LabelComponent title={i.title} />}
