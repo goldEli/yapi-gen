@@ -194,7 +194,7 @@ const Workflow = () => {
               style={{
                 width: 160,
                 height: 1,
-                background: 'var(--neutral-n4)',
+                background: 'var(--neutral-n6-d2)',
                 margin: '0 8px',
               }}
             />

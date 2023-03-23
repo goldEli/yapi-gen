@@ -589,6 +589,7 @@ const CategoryWrap = styled.div<{ color: string; bgColor: string }>(
     padding: '0 8px',
     marginRight: 8,
     lineHeight: '22px',
+    alignItems: 'center',
     fontSize: 14,
     fontWeight: 400,
     marginLeft: 8,
