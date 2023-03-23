@@ -15,7 +15,7 @@ const HeaderWrap = styled.div`
 `
 const TitleWrap = styled.div`
   font-size: var(--font14);
-  font-weight: 500;
+  font-family: siyuanmedium;
   color: var(--neutral-n1-d1);
   display: flex;
   align-items: center;

@@ -37,7 +37,7 @@ const Title = styled.div`
 
   div {
     margin-left: 12px;
-    font-weight: 500;
+    font-family: siyuanmedium;
   }
 `
 

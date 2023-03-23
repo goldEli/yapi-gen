@@ -741,7 +741,7 @@ const SecondTitle = styled.span`
   height: 24px;
   font-size: 16px;
   font-family: PingFang SC-Medium, PingFang SC;
-  font-weight: 500;
+  font-family: siyuanmedium;
   color: var(--neutral-n1-d1);
   line-height: 24px;
   position: relative;

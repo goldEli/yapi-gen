@@ -147,7 +147,7 @@ const LogManagement = () => {
               alignItems: 'center',
               paddingLeft: '24px',
               fontSize: '16px',
-              fontWeight: 'bold',
+              fontFamily: 'SiYuanMedium',
             }}
           >
             {title}

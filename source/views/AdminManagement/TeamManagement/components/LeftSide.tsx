@@ -70,7 +70,7 @@ const TeamAdd = styled.div`
 `
 const TiamTitleText = styled.span`
   font-size: var(--font14);
-  font-weight: 500;
+  font-family: siyuanmedium;
   color: var(--neutral-n1-d1);
 `
 const IconFontStyle = styled(IconFont)`

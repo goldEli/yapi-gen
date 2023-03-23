@@ -36,7 +36,7 @@ const Title = styled.div({
   fontSize: 14,
   lineHeight: '14px',
   color: 'var(--neutral-n1-d1)',
-  fontWeight: 'bold',
+  fontFamily: 'SiYuanMedium',
   paddingLeft: 8,
   borderLeft: '3px solid var(--primary-d2)',
 })

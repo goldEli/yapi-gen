@@ -30,7 +30,7 @@ export const LabelTitle = (props: any) => {
     >
       <span
         style={{
-          fontWeight: 'bold',
+          fontFamily: 'SiYuanMedium',
           fontSize: '14px',
         }}
       >
