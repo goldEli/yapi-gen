@@ -440,32 +440,6 @@ const SearchLine = styled.div<{ hasLeft?: boolean }>`
   border-bottom: 1px solid var(--neutral-n6-d1);
 `
 
-// 次按钮样式
-const SecondButton = styled(Button)`
-  height: 32px;
-  border-radius: 6px;
-  background: var(--hover-d2);
-  cursor: pointer;
-  padding: 0 16px;
-  color: var(--primary-d2);
-  display: flex;
-  align-items: center;
-  svg {
-    font-size: 16px;
-  }
-  div {
-    margin-left: 8px;
-    font-size: 14px;
-  }
-  &:hover {
-    background: var(--selected) !important;
-    color: var(--primary-d2) !important;
-  }
-  &:focus {
-    background: var(--auxiliary-b6);
-    color: var(--primary-d2);
-  }
-`
 const TableWrap = styled(Table)({
   '.ant-table table': {
     paddingBottom: 10,
@@ -958,7 +932,6 @@ export {
   DelButton,
   SelectWrapBedeck,
   SearchLine,
-  SecondButton,
   CanOperationCategory,
   DividerWrap,
   ShowWrap,

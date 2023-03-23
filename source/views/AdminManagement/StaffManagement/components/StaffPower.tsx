@@ -96,24 +96,15 @@ export const StaffPersonal = (props: {
 
   return (
     <CommonModal
-      width={420}
+      width={528}
       onClose={() => props.onClose()}
       title={t('staff.setPermission')}
       isVisible={props.isVisible}
       onConfirm={onConfirm}
     >
-      {/* <PersonalHead>
-        {data?.avatar ? (
-          <img className={imgCss} src={data?.avatar} alt="" />
-        ) : (
-          <SetHead>
-            {String(data?.name?.trim().slice(0, 1)).toLocaleUpperCase()}
-          </SetHead>
-        )}
-      </PersonalHead> */}
       <PersonalFooter>
         <Left>
-          <Line>头像</Line>
+          <Line>{t('head_portrait')}</Line>
           <Line>{t('common.phone')}</Line>
           <Line>{t('common.email')}</Line>
           <Line>{t('common.name')}</Line>
