@@ -8,6 +8,7 @@ import styled from '@emotion/styled'
 import NewLoadingTransition from '../NewLoadingTransition'
 
 const TableWrap = styled(Table)`
+  user-select: none;
   height: 100%;
   .ant-table-wrapper,
   .ant-table,
@@ -95,7 +96,6 @@ interface ResizeTableProps {
   onRow?(): void
   expandable?: any
 }
-
 // 拖拽调整table
 const ResizeTable = (props: ResizeTableProps) => {
   // 表格列
@@ -104,11 +104,19 @@ const ResizeTable = (props: ResizeTableProps) => {
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
   const dataWrapRef = useRef<HTMLDivElement>(null)
+  const canRun = useRef(true)
 
   // 处理拖拽
   const handleResize =
     (index: any) =>
     (e: any, { size }: any) => {
+      if (!canRun.current) {
+        return
+      }
+      setTimeout(() => {
+        canRun.current = true
+      }, 1000 / 70)
+      canRun.current = false
       const nextColumns = [...cols]
       // 拖拽是调整宽度
       nextColumns[index] = { ...nextColumns[index], width: size.width }
@@ -116,6 +124,7 @@ const ResizeTable = (props: ResizeTableProps) => {
     }
 
   useEffect(() => {
+    console.log(props.col, 'props.col')
     setCols(props.col)
   }, [props.col])
 

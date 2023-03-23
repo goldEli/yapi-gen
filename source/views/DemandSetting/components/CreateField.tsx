@@ -73,7 +73,7 @@ const CreateField = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const [searchIcon, setSearchIcon] = useState(false)
-  const [search, setSearch] = useState(false)
+  const [search, setSearch] = useState(true)
   const [createIcon, setCreateIcon] = useState(true)
   const { getCategoryConfigArray } = useSelector(store => store.category)
   const [dataList, setDataList] = useState<any>()
@@ -154,7 +154,6 @@ const CreateField = () => {
       setSearchDataList(dataList.filter((el: any) => el.title.includes(value)))
     } else {
       setSearchDataList(dataList)
-      setSearch(false)
     }
     setSearchValue(value)
   }
@@ -213,12 +212,11 @@ const CreateField = () => {
                 '(' + payloadDataList?.length + ')'}
             </span>
           </div>
-          {search ? (
+          {search && (
             <InputStyle
               width={184}
               placeholder={t('pleaseEnterASearchPhrase')}
               value={searchValue}
-              onClick={() => setSearch(false)}
               onInput={(e: any) => onSearch(e.target.value)}
               prefix={
                 <CommonIconFont
@@ -234,7 +232,7 @@ const CreateField = () => {
                       type="close-circle-fill"
                       onClick={() => {
                         setSearchDataList(dataList)
-                        setSearch(false)
+                        setSearchValue('')
                       }}
                       size={16}
                       color="var(--neutral-n4)"
@@ -243,17 +241,6 @@ const CreateField = () => {
                 </>
               }
             />
-          ) : searchDataList?.length >= 1 ? (
-            <CommonIconFont
-              type="search"
-              size={16}
-              color="var(--neutral-n2)"
-              onClick={() => {
-                setSearch(true), setSearchValue('')
-              }}
-            />
-          ) : (
-            ''
           )}
         </BottomTitleStyle>
         {searchIcon && (

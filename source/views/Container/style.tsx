@@ -128,8 +128,8 @@ export const PersonalHead = styled.div`
 `
 
 export const PersonalFooter = styled.div`
-  display: flex;
-  justify-content: space-between;
+  /* display: flex; */
+  /* justify-content: space-between; */
   /* padding-right: 20px; */
 `
 

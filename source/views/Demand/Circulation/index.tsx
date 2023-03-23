@@ -20,6 +20,7 @@ import { setIsRefresh } from '@store/user'
 import { getStoryStatusLog } from '@/services/demand'
 import { setIsUpdateChangeLog } from '@store/demand'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
+import StateTag from '@/components/StateTag'
 
 const TimeLIneWrap = styled(Timeline)({
   marginTop: 24,
@@ -198,7 +199,6 @@ const Circulation = () => {
                         {String(
                           i?.operationName?.trim().slice(0, 1),
                         ).toLocaleUpperCase()}
-                        777777777777
                       </NameWrap>
                       <TextWrap style={{ marginLeft: 8 }}>
                         {i?.operationName}
@@ -211,18 +211,24 @@ const Circulation = () => {
                           : t('newlyAdd.applyReviewTo')}
                       </TextWrap>
                       {i.statusTo ? (
-                        <>
+                        <div style={{ marginLeft: 8 }}>
                           {i.changeType === 3 ? (
                             `【${i.statusTo?.name}】`
                           ) : (
-                            <ViewWrap
-                              style={{ marginLeft: 8 }}
-                              color={i.statusTo?.color}
-                            >
-                              {i.statusTo?.name}2334
-                            </ViewWrap>
+                            <StateTag
+                              name={i.statusTo?.name}
+                              state={
+                                i?.is_start === 1 && i?.is_end === 2
+                                  ? 1
+                                  : i?.is_end === 1 && i?.is_start === 2
+                                  ? 2
+                                  : i?.is_start === 2 && i?.is_end === 2
+                                  ? 3
+                                  : 0
+                              }
+                            />
                           )}
-                        </>
+                        </div>
                       ) : (
                         <DelWrap>{t('newlyAdd.statusDel')}</DelWrap>
                       )}
