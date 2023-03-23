@@ -8,6 +8,7 @@ import { Menu, message } from 'antd'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonIconFont from '../CommonIconFont'
+import IconFont from '../IconFont'
 
 const ChangeItem = styled.div<{ isActive?: boolean; height?: number }>`
   width: 100%;
@@ -20,9 +21,9 @@ const ChangeItem = styled.div<{ isActive?: boolean; height?: number }>`
   color: ${props =>
     props.isActive ? 'var(--primary-d2)' : 'var(--neutral-n2)'};
   &:hover {
-    color: var(--primary-d2);
+    /* color: var(--primary-d2); */
     svg {
-      color: var(--primary-d2);
+      /* color: var(--primary-d2); */
     }
   }
 `
@@ -114,6 +115,14 @@ const SetShowField = (props: Props) => {
       selectedKeys={[String(userPreferenceConfig?.previewModel)]}
       onClick={(e: any) => onClick(e)}
       items={menuItems}
+      expandIcon={
+        <IconFont
+          style={{
+            marginTop: '5px',
+          }}
+          type="right"
+        />
+      }
     />
   )
 }

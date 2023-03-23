@@ -17,8 +17,8 @@ const PersonalHead = styled.div`
 `
 const PersonalFooter = styled.div`
   display: flex;
-  justify-content: space-around;
-  padding-right: 20px;
+  justify-content: space-between;
+  padding: 0 20px;
 `
 const Left = styled.div``
 const Line = styled.div`
@@ -46,7 +46,7 @@ const SetHead = styled.div`
   justify-content: center;
   box-sizing: border-box;
   border-radius: 50%;
-  font-size: 32px;
+  font-size: 16px;
   background: #a4acf5;
   background-blend-mode: normal;
   border: 2px solid rgba(40, 119, 255, 0.16);

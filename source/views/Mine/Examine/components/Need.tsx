@@ -251,7 +251,7 @@ const Need = (props: any) => {
       <div>
         <LoadingSpin spinning={isSpin}>
           <div>
-            {listData?.list && listData?.list?.length && (
+            {listData?.list && listData?.list?.length > 0 && (
               <ResizeTable
                 isSpinning={false}
                 dataWrapNormalHeight="calc(100vh - 330px)"
