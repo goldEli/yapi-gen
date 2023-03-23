@@ -29,13 +29,22 @@ const DropArea: React.FC<DropAreaProps> = props => {
       const delta = monitor.getDifferenceFromInitialOffset()
       const offsetTop = Math.round(delta?.y ?? 0)
       const offsetMinute = Math.floor(offsetTop / (oneHourHeight / 60))
+
       const newStartTime = dayjs(startTime).add(offsetMinute, 'minute')
       const newEndTime = dayjs(endTime).add(offsetMinute, 'minute')
+
+      console.log(
+        '{ delta }',
+        delta?.y,
+        offsetMinute,
+        newStartTime.format(),
+        newEndTime.format(),
+      )
       dispatch(
         setScheduleList({
           ...schedule,
-          startTime: newStartTime.format(),
-          endTime: newEndTime.format(),
+          startTime: newStartTime.valueOf(),
+          endTime: newEndTime.valueOf(),
         }),
       )
     },

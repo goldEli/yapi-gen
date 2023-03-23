@@ -5,12 +5,6 @@ import React, { useMemo } from 'react'
 import { useDragLayer, XYCoord } from 'react-dnd'
 import { oneHourHeight } from '../config'
 
-function snapToGrid(x: number, y: number): [number, number] {
-  const snappedX = Math.round(x / 32) * 32
-  const snappedY = Math.round(y / 32) * 32
-  return [snappedX, snappedY]
-}
-
 interface CustomDragLayerProps {}
 const Box = styled.div`
   width: calc(100% - 58px - 288px - 24px - 24px);
@@ -47,6 +41,21 @@ function getItemStyles(
   //     y += initialOffset.y
   //   }
 
+  // 15分钟对应的高度
+  const minHeight = Math.floor((oneHourHeight / 60) * 15)
+
+  // 提取y的负号
+  const direction = y >= 0 ? 1 : -1
+
+  // 移动了多少个15分钟, 不足一个，算一个
+  const step = Math.ceil(Math.abs(y) / minHeight)
+
+  // y方向移动距离
+  const distance = step * minHeight * direction
+  // const distance = y
+  console.log('current initial', y - initialOffset.y)
+
+  // const transform = `translate(${initialOffset.x}px, ${distance}px)`
   const transform = `translate(${initialOffset.x}px, ${y}px)`
   return {
     transform,
@@ -81,6 +90,7 @@ const CustomDragLayer: React.FC<CustomDragLayerProps> = props => {
     const allMinutes = hour * 60 + minute
     return (allMinutes * oneHourHeight) / 60
   }, [startTime, endTime])
+
   return (
     <Box
       height={height}

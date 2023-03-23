@@ -21,20 +21,20 @@ const initialState: SliceState = {
     {
       id: '1',
       title: '吃早饭',
-      startTime: '2023-3-23 4:15:00',
-      endTime: '2023-3-23 5:15:00',
+      startTime: Date.parse('2023-3-23 4:15:00'),
+      endTime: Date.parse('2023-3-23 5:15:00'),
     },
     {
       id: '2',
       title: '做作业',
-      startTime: '2023-3-23 2:15:00',
-      endTime: '2023-3-23 2:45:00',
+      startTime: Date.parse('2023-3-23 2:15:00'),
+      endTime: Date.parse('2023-3-23 2:45:00'),
     },
     {
       id: '3',
       title: '睡觉',
-      startTime: '2023-3-23 1:15:00',
-      endTime: '2023-3-23 1:30:00',
+      startTime: Date.parse('2023-3-23 1:15:00'),
+      endTime: Date.parse('2023-3-23 1:30:00'),
     },
   ],
 }

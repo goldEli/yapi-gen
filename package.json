@@ -7,6 +7,7 @@
     "build:test": "npm run lint && vite build --mode test",
     "build:production": "npm run lint && vite build",
     "lint": "tsc && eslint --ext .ts,.tsx,.vue source",
+    "checkType": "tsc --noEmit",
     "preview": "vite preview",
     "prepare": "husky install"
   },
@@ -87,6 +88,7 @@
       ]
     },
     "rules": {
+      "@typescript-eslint/padding-line-between-statements": 0,
       "@typescript-eslint/indent": 0,
       "react/no-array-index-key": 0,
       "@typescript-eslint/no-empty-interface": 0,

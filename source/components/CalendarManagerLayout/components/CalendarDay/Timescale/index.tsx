@@ -35,7 +35,7 @@ const Table = styled.table`
 
 const Timescale: React.FC<TimescaleProps> = props => {
   const content = useMemo(() => {
-    return Array(22)
+    return Array(24)
       .fill(0)
       .map((item, idx) => {
         let str = String(idx)
