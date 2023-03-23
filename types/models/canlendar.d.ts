@@ -4,6 +4,9 @@ declare namespace Model.Calendar {
   }
   interface Schedule {
     id: string
+    title?: string
+    startTime: string
+    endTime: string
   }
   interface Calendar {
     id: string

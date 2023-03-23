@@ -10,7 +10,7 @@ function snapToGrid(x: number, y: number): [number, number] {
 
 interface CustomDragLayerProps {}
 const Box = styled.div`
-  width: calc(100% - 58px);
+  width: calc(100% - 58px - 288px - 24px - 24px);
   height: 102px;
   background: var(--primary-d1);
   border-radius: 6px 6px 6px 6px;

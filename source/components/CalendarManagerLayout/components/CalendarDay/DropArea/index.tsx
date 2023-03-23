@@ -8,6 +8,7 @@ interface DropAreaProps {
   children?: React.ReactNode
 }
 const Box = styled.div`
+  width: 100%;
   position: relative;
 `
 

@@ -36,7 +36,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
         cursor: 'move',
       }}
     >
-      ScheduleCard
+      <span>无标题</span>
     </Box>
   )
 }
