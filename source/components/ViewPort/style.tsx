@@ -41,7 +41,7 @@ export const Name = styled.span`
 `
 
 export const dropdowncontent = css`
-  padding: 5px;
+  padding: 5px 0;
   cursor: pointer;
   background: var(--neutral-white-d2);
   box-shadow: 0 3px 6px -4px rgb(0 0 0 / 12%), 0 6px 16px 0 rgb(0 0 0 / 8%),
@@ -49,8 +49,11 @@ export const dropdowncontent = css`
   & .ant-dropdown-menu {
     box-shadow: none;
   }
+  .ant-dropdown-menu-item-group-list {
+    margin: 0;
+  }
   .ant-dropdown-menu-item-group-list li {
-    border-radius: 6px;
+    /* border-radius: 6px; */
   }
 `
 export const TextSpan = styled.span`
@@ -63,11 +66,12 @@ export const TextSpan = styled.span`
 `
 
 export const SetLine = styled.div`
-  margin: 5px 8px;
-  padding: 5px 10px;
+  margin: 5px 0px;
+  padding: 5px 12px;
   cursor: pointer;
   :hover {
     background: var(--hover-d3) !important;
-    border-radius: 6px;
+    color: var();
+    /* border-radius: 6px; */
   }
 `
