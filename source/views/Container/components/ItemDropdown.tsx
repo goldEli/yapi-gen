@@ -162,6 +162,7 @@ const ItemDropdown = (props: PropsType) => {
         dropdownRender={dropdownRender}
         placement="bottomLeft"
         open={isOpen}
+        // open={true}
       >
         <div style={{ height: '52px', lineHeight: '52px' }}>
           <span style={{ marginRight: '8px' }}>{props.text}</span>
