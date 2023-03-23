@@ -11,6 +11,7 @@ const HeaderWrap = styled.div`
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--neutral-n6-d1);
+  margin-bottom: 20px;
 `
 const TitleWrap = styled.div`
   font-size: var(--font14);

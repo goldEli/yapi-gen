@@ -74,15 +74,15 @@ const Tabs = styled.div`
     height: 24px;
     line-height: 24px;
     width: 108px;
-    color: var(--neutral-n1-d1);
+    color: var(--neutral-n3);
   }
   &:hover {
     cursor: pointer;
     color: var(--neutral-n1-d1);
   }
   .tabsActive {
+    color: var(--neutral-n1-d1);
     background-color: var(--neutral-white-d6);
-    color: var(--neutral-n3);
     border-radius: 6px;
     border: 1px solid var(--neutral-n6-d1);
   }

@@ -184,7 +184,7 @@ const LogSide = () => {
     <div>
       <Popover
         placement="bottomRight"
-        trigger="hover"
+        trigger="click"
         onVisibleChange={visible => setShowPop(visible)}
         visible={showPop}
         content={content}
