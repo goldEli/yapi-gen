@@ -85,6 +85,12 @@
       ]
     },
     "rules": {
+      "@typescript-eslint/indent": 0,
+      "react/no-array-index-key": 0,
+      "@typescript-eslint/no-empty-interface": 0,
+      "react/no-unstable-nested-components": 0,
+      "lines-around-comment": 0,
+      "no-console": 0,
       "padding-line-between-statements": 0,
       "naming-convention": 0,
       "object-property-newline": [
@@ -96,13 +102,6 @@
       "function-call-argument-newline": [
         1,
         "consistent"
-      ],
-      "@typescript-eslint/indent": [
-        1,
-        2,
-        {
-          "offsetTernaryExpressions": true
-        }
       ],
       " react/no-unstable-nested-components": 0,
       "react/no-children-prop": 0,
