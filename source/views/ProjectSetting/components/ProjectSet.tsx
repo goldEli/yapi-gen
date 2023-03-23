@@ -440,7 +440,7 @@ const ProjectSet = () => {
               ? t('setting.editPermission')
               : t('setting.createPermission')
           }
-          width={420}
+          width={528}
           onClose={onClose}
           isShowFooter
         >

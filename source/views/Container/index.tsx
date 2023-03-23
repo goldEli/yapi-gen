@@ -92,9 +92,11 @@ export const Container = () => {
       return
     }
     if (
-      !e.target?.parentElement?.className?.includes('canClickDetail') &&
-      !e.target?.className?.includes('canClickDetail') &&
-      storeAll.getState().demand.isDemandDetailDrawerVisible
+      typeof e.target?.parentElement?.className !== 'string' ||
+      typeof e.target?.className !== 'string' ||
+      (!e.target?.parentElement?.className?.includes('canClickDetail') &&
+        !e.target?.className?.includes('canClickDetail') &&
+        storeAll.getState().demand.isDemandDetailDrawerVisible)
     ) {
       dispatch({
         type: 'demand/setIsDemandDetailDrawerVisible',

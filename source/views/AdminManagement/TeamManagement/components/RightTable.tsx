@@ -326,7 +326,7 @@ const RightTable = () => {
         hasFooter={type === 'detail'}
         onClose={() => setIsVisible(false)}
         onConfirm={onEditConfirm}
-        width={420}
+        width={528}
       />
 
       <DeleteConfirm
