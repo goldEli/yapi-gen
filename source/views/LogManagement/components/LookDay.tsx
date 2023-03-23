@@ -119,7 +119,7 @@ const LabelTitle = (props: any) => {
     >
       <span
         style={{
-          fontWeight: 'bold',
+          fontFamily: 'SiYuanMedium',
           fontSize: '14px',
         }}
       >
@@ -301,7 +301,7 @@ const LookDay = (props: any) => {
               <span
                 style={{
                   fontSize: '16px',
-                  fontWeight: 'bold',
+                  fontFamily: 'SiYuanMedium',
                   color: 'var(--neutral-n1-d1)',
                 }}
               >

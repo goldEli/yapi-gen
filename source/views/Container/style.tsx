@@ -169,7 +169,7 @@ export const HeaderLeftWrap = styled.div`
 export const MenuLabel = styled.span`
   color: var(--neutral-n1-d1);
   font-family: SiYuanMedium;
-  font-weight: 500;
+  font-family: siyuanmedium;
   font-size: var(--font16);
 `
 
@@ -215,7 +215,7 @@ export const LogoBox = styled.div`
     color: var(--neutral-n1-d1);
     font-family: SiYuanMedium;
     font-size: 16px;
-    font-weight: 500;
+    font-family: siyuanmedium;
   }
 `
 

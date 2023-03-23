@@ -70,7 +70,7 @@ const IconFontStyle = styled(IconFont)({
 })
 const Title = styled.div({
   fontSize: 14,
-  fontWeight: 'bold',
+  fontFamily: 'SiYuanMedium',
   color: 'var(--neutral-n1-d1)',
   marginBottom: 20,
   lineHeight: '18px',

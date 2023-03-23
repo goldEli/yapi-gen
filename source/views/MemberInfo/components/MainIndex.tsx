@@ -19,7 +19,7 @@ const Title = styled.div`
   height: 32px;
   font-size: 16px;
   font-family: PingFang SC-Medium, PingFang SC;
-  font-weight: 500;
+  font-family: siyuanmedium;
   color: var(--neutral-n1-d1);
   line-height: 32px;
   margin: 20px;

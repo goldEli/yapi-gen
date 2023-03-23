@@ -53,7 +53,7 @@ const InfoRight = styled.div({
 })
 const Title = styled.div({
   fontSize: 14,
-  fontWeight: 'bold',
+  fontFamily: 'SiYuanMedium',
   color: 'var(--neutral-n1-d1)',
   paddingLeft: 10,
   borderLeft: '3px solid var(--primary-d2)',
@@ -166,7 +166,7 @@ const ProjectInfo = () => {
             <span
               style={{
                 fontSize: '16px',
-                fontWeight: 'bold',
+                fontFamily: 'SiYuanMedium',
                 color: 'var(--neutral-n1-d1)',
                 lineHeight: '24px',
               }}

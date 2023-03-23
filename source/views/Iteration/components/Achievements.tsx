@@ -38,7 +38,7 @@ const labelWrap = css`
 
 const label = css`
   font-size: 16px;
-  font-weight: 500;
+  font-family: siyuanmedium;
   margin-bottom: 8px;
   margin-top: 24px;
 `

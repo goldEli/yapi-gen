@@ -27,7 +27,7 @@ const Title = styled.div`
   padding: 24px 0 0 24px;
   color: var(--neutral-n1-d1);
   font-size: 16px;
-  font-weight: 500;
+  font-family: siyuanmedium;
 `
 
 const Situation = () => {

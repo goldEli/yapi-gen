@@ -164,7 +164,7 @@ const arron = css`
   border-radius: 16px 16px 16px 16px;
   font-size: 12px;
   font-family: PingFang SC-Medium, PingFang SC;
-  font-weight: 500;
+  font-family: siyuanmedium;
   color: var(--neutral-white-d2);
 `
 const arrorText = css`
