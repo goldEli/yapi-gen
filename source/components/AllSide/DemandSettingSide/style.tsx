@@ -138,7 +138,7 @@ export const BackStyle = styled.div`
 export const TitleStyle = styled.div`
   display: flex;
   width: 100%;
-  padding: 0 16px 16px 16px;
+  padding: 0 16px 0px 16px;
   align-items: center;
   font-size: 14px;
   color: var(--neutral-n3);

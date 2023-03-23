@@ -40,6 +40,7 @@ const IconFontStyle = styled(IconFont)({
   padding: '5px',
   '&: hover': {
     background: 'var(--hover-d1)',
+    color: 'var(--neutral-n1-d1)',
     cursor: 'pointer',
   },
 })
