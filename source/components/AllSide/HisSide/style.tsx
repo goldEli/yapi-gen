@@ -32,6 +32,7 @@ const NameWrap = styled.div({
 })
 
 const InfoItem = styled.div({
+  marginLeft: '8px',
   display: 'flex',
   flexDirection: 'column',
   div: {

@@ -105,6 +105,7 @@ const MyBreadcrumb = (props: any) => {
               height: '16px',
               borderRadius: '4px',
               marginRight: '4px',
+              marginBottom: '4px',
               verticalAlign: 'middle',
             }}
             src={props.demand.cover}

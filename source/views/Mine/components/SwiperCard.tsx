@@ -122,6 +122,7 @@ export const SwiperCard = (props: {
               fontWeight: 400,
               color: 'var(--neutral-n2)',
               lineHeight: '20px',
+              whiteSpace: 'nowrap',
             }}
           >
             {t('demandSettingSide.teamProject') as string}

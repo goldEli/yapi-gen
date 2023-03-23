@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import CommonUserAvatar from '@/components/CommonUserAvatar'
 import IconFont from '@/components/IconFont'
 import { getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
@@ -69,18 +70,19 @@ const index = () => {
     <Side>
       <InfoWrap>
         {mainInfo?.avatar ? (
-          <img
-            src={mainInfo?.avatar}
-            style={{
-              width: 40,
-              height: 40,
-              borderRadius: '50%',
-              marginRight: 8,
-            }}
-            alt=""
-          />
+          // <img
+          //   src={mainInfo?.avatar}
+          //   style={{
+          //     width: 40,
+          //     height: 40,
+          //     borderRadius: '50%',
+          //     marginRight: 8,
+          //   }}
+          //   alt=""
+          // />
+          <CommonUserAvatar size="large" avatar={mainInfo?.avatar} />
         ) : (
-          <NameWrap style={{ margin: '0 8px 0 0 ', width: 32, height: 32 }}>
+          <NameWrap style={{ margin: '0px', width: 32, height: 32 }}>
             {String(mainInfo?.name?.trim().slice(0, 1)).toLocaleUpperCase()}
           </NameWrap>
         )}
