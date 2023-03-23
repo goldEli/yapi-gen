@@ -87,6 +87,7 @@
       ]
     },
     "rules": {
+      "@typescript-eslint/indent": 0,
       "react/no-array-index-key": 0,
       "@typescript-eslint/no-empty-interface": 0,
       "react/no-unstable-nested-components": 0,
@@ -103,13 +104,6 @@
       "function-call-argument-newline": [
         1,
         "consistent"
-      ],
-      "@typescript-eslint/indent": [
-        1,
-        2,
-        {
-          "offsetTernaryExpressions": true
-        }
       ],
       " react/no-unstable-nested-components": 0,
       "react/no-children-prop": 0,
