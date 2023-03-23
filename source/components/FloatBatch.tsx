@@ -3,7 +3,7 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/jsx-no-leaked-render */
 import { css } from '@emotion/css'
-import { Space } from 'antd'
+import { Space, Tooltip } from 'antd'
 import { useTranslation } from 'react-i18next'
 import IconFont from './IconFont'
 import BatchModal from './BatchModal'
@@ -37,7 +37,7 @@ const boxItem = css`
   flex-direction: column;
   justify-content: center;
   padding: 0 12px;
-  height: 50px;
+  height: 52px;
   cursor: pointer;
   color: white;
   border-radius: 12px;
@@ -119,18 +119,33 @@ const FloatBatch = (props: Props) => {
         <div className={batchAllBox}>
           <div className={batchBox}>
             <Space size={8}>
-              <div className={boxItem} onClick={() => onClickItem('edit')}>
-                <IconFont type="edit-square" />
-                <div>{t('common.edit')}</div>
-              </div>
-              <div className={boxItem} onClick={() => onClickItem('delete')}>
-                <IconFont type="delete" />
-                <div>{t('common.del')}</div>
-              </div>
-              <div className={boxItem} onClick={onCopy}>
-                <IconFont type="attachment" />
-                <div>{t('version2.link')}</div>
-              </div>
+              <Tooltip
+                placement="top"
+                getPopupContainer={node => node}
+                title={t('common.edit')}
+              >
+                <div className={boxItem} onClick={() => onClickItem('edit')}>
+                  <IconFont type="edit-square" />
+                </div>
+              </Tooltip>
+              <Tooltip
+                placement="top"
+                getPopupContainer={node => node}
+                title={t('common.del')}
+              >
+                <div className={boxItem} onClick={() => onClickItem('delete')}>
+                  <IconFont type="delete" />
+                </div>
+              </Tooltip>
+              <Tooltip
+                placement="top"
+                getPopupContainer={node => node}
+                title={t('version2.link')}
+              >
+                <div className={boxItem} onClick={onCopy}>
+                  <IconFont type="attachment" />
+                </div>
+              </Tooltip>
             </Space>
             <IconFont
               onClick={props.onClose}

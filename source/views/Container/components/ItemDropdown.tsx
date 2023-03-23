@@ -16,9 +16,8 @@ const Container = styled.div`
   width: 320px;
   height: auto;
   background-color: var(--neutral-white-d6);
-  box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
-  border-radius: 0px 0px 6px 6px;
-  padding-bottom: 8px;
+  box-shadow: 0px 7px 13px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
   max-height: calc(100vh - 120px);
 `
 const ScrollWrap = styled.div`
@@ -94,6 +93,7 @@ const ItemDropdown = (props: PropsType) => {
   useEffect(() => {
     isOpen && onFectProjectList()
   }, [isOpen])
+
   const onCreate = () => {
     setIsOpen(false)
     dispatch({ type: 'createProject/changeCreateVisible', payload: true })
@@ -161,11 +161,24 @@ const ItemDropdown = (props: PropsType) => {
         onOpenChange={setIsOpen}
         dropdownRender={dropdownRender}
         placement="bottomLeft"
+        trigger={['click']}
         open={isOpen}
+        // open={true}
       >
         <div style={{ height: '52px', lineHeight: '52px' }}>
-          <span style={{ marginRight: '8px' }}>{props.text}</span>
-          <CommonIconFont type="down" size={14} />
+          <span
+            style={{
+              marginRight: '8px',
+              color: isOpen ? 'var(--primary-d2)' : '',
+            }}
+          >
+            {props.text}
+          </span>
+          <CommonIconFont
+            type="down"
+            size={14}
+            color={isOpen ? 'var(--primary-d2)' : ''}
+          />
         </div>
       </Dropdown>
       {dropdownRender}

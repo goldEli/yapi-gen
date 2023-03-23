@@ -20,7 +20,7 @@ const Triangle = styled.div`
   width: 0;
   height: 0;
   border: 8px solid transparent;
-  border-bottom: 10px solid rgba(40, 119, 255, 1);
+  border-bottom: 10px solid var(--primary-d1);
 `
 const Warp = styled.div<{ show?: boolean }>(
   {
@@ -34,6 +34,7 @@ const Warp = styled.div<{ show?: boolean }>(
     transition: 'all .3s',
     cursor: 'pointer',
     '&: hover': {
+      border: '1px solid var(--primary-d1) !important',
       [DropdownWrap.toString()]: {
         display: 'block',
       },
