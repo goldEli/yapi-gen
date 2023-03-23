@@ -269,7 +269,7 @@ const DemandTree = (props: Props) => {
         element.isExpended = !element.isExpended
         // 如果父级展开，子级也展开
         if (!element.isExpended) {
-          element.children.forEach((k: any) => {
+          element.children?.forEach((k: any) => {
             k.isExpended = true
           })
         }
@@ -519,7 +519,7 @@ const DemandTree = (props: Props) => {
         )
         setExpandedRowKeys([
           ...[list[0]?.id],
-          ...(list[0]?.allChildrenIds?.map((i: any) => i.id) || []),
+          ...(getForAllId(list[0]?.children) || []),
         ])
       } else {
         setComputedTopId(0)

@@ -49,7 +49,7 @@ const Label = styled.div({
   minWidth: 120,
   height: 32,
   lineHeight: '32px',
-  fontWeight: 'bold',
+  fontFamily: 'SiYuanMedium',
 })
 
 const TextWrap = styled.div({
