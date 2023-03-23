@@ -21,7 +21,20 @@ const Menu = styled.div`
     margin-left: 16px;
   }
 `
+const MySpan = styled.div`
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
 
+  border-radius: 6px 6px 6px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    background: var(--hover-d1);
+    color: var(--primary-d1);
+  }
+`
 const MenuItem = styled.div<{ active?: any }>(
   ({ active }) => ({
     background: active ? 'var(--gradient-left)' : '',
@@ -182,44 +195,46 @@ const LogSide = () => {
   )
   return (
     <div>
-      <Popover
-        placement="bottomRight"
-        trigger="click"
-        onVisibleChange={visible => setShowPop(visible)}
-        visible={showPop}
-        content={content}
-        getPopupContainer={node => node}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          height: '24px',
+          padding: '24px',
+          margin: '10px 0',
+          // cursor: 'pointer',
+        }}
       >
-        <div
+        <span
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            height: '24px',
-            padding: '24px',
-            margin: '10px 0',
-            cursor: 'pointer',
+            height: '22px',
+            fontSize: '14px',
+            fontWeight: 500,
+            color: 'var(--neutral-n1-d1)',
+            lineHeight: '22px',
           }}
         >
-          <span
-            style={{
-              height: '22px',
-              fontSize: '14px',
-              fontWeight: 500,
-              color: 'var(--neutral-n1-d1)',
-              lineHeight: '22px',
-            }}
-          >
-            {t('log_management')}
-          </span>
-          <IconFont
-            style={{
-              fontSize: '16px',
-            }}
-            type="plus"
-          />
-        </div>
-      </Popover>
+          {t('log_management')}
+        </span>
+        <Popover
+          placement="bottomRight"
+          trigger="hover"
+          onVisibleChange={visible => setShowPop(visible)}
+          visible={showPop}
+          content={content}
+          getPopupContainer={node => node}
+        >
+          <MySpan>
+            <IconFont
+              style={{
+                fontSize: '16px',
+              }}
+              type="plus"
+            />
+          </MySpan>
+        </Popover>
+      </div>
 
       <Menu>
         {menuList.map((item: any, index: number) => (
