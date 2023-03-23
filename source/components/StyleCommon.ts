@@ -580,19 +580,25 @@ const ShowWrap = styled.div`
   visibility: hidden;
 `
 
-const CategoryWrap = styled.div<{ color: string; bgColor: string }>({
-  height: 22,
-  borderRadius: 11,
-  display: 'flex',
-  padding: '0 8px',
-  marginRight: 8,
-  lineHeight: '22px',
-  fontSize: 14,
-  fontWeight: 400,
-  marginLeft: 8,
-  flexShrink: 0,
-  color: 'var(--neutral-n1-d1)',
-})
+const CategoryWrap = styled.div<{ color: string; bgColor: string }>(
+  {
+    minWidth: 86,
+    height: 24,
+    borderRadius: 6,
+    display: 'flex',
+    padding: '0 8px',
+    marginRight: 8,
+    lineHeight: '22px',
+    fontSize: 14,
+    fontWeight: 400,
+    marginLeft: 8,
+    flexShrink: 0,
+    color: 'var(--neutral-n1-d1)',
+  },
+  ({ bgColor }) => ({
+    background: bgColor,
+  }),
+)
 
 const ListNameWrap = styled.div<{
   isClose?: boolean

@@ -492,11 +492,7 @@ const AddWorkflow = (props: Props) => {
                     <CategoryWrap
                       style={{ marginRight: 8, marginLeft: 0 }}
                       color={i.category_color}
-                      bgColor={
-                        colorList?.filter(
-                          (k: any) => k.key === i.category_color,
-                        )[0]?.bgColor
-                      }
+                      bgColor={''}
                     >
                       {i.category_name}
                     </CategoryWrap>

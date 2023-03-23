@@ -457,13 +457,7 @@ const StepPageOne = (propsOne: Props) => {
                   <CategoryWrap
                     style={{ marginRight: 8, marginLeft: 0 }}
                     color={operationObj?.deleteData?.item?.category_color}
-                    bgColor={
-                      colorList?.filter(
-                        (k: any) =>
-                          k.key ===
-                          operationObj?.deleteData?.item?.category_color,
-                      )[0]?.bgColor
-                    }
+                    bgColor={''}
                   >
                     <>
                       <img

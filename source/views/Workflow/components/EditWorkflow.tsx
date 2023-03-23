@@ -122,9 +122,7 @@ const EditWorkflow = (props: EditorProps) => {
                 <CategoryWrap
                   style={{ margin: 0, marginTop: 8 }}
                   color={i.color}
-                  bgColor={
-                    colorList?.filter((k: any) => k.key === i.color)[0]?.bgColor
-                  }
+                  bgColor="var(--neutral-n8)"
                   key={i.id}
                 >
                   <>
@@ -191,17 +189,11 @@ const EditWorkflow = (props: EditorProps) => {
               maxLength={100}
             />
           </Form.Item>
-          {/* <Form.Item label={t('newlyAdd.chooseColor')} name="color">
-            <ChooseColor
-              color={normalColor}
-              onChangeValue={val => onChangeValue(val)}
-            />
-          </Form.Item> */}
-          <Form.Item label={t('newlyAdd.statusView')}>
+          {/* <Form.Item label={t('newlyAdd.statusView')}>
             <ViewWrap color={normalColor}>
               {name || t('newlyAdd.nothing')}
             </ViewWrap>
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item label={t('newlyAdd.endStatus')} name="endStatus">
             <Switch
               checkedChildren={t('newlyAdd.yes')}
