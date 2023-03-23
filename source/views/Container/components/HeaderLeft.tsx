@@ -91,6 +91,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
   // 获取公司列表
   const getCompanyData = async () => {
     const res2 = await getCompanyList()
+
     setActiveId(userInfo.company_id)
     setCompanyList(res2.data)
   }
