@@ -8,7 +8,6 @@
 import IconFont from '@/components/IconFont'
 import { message } from 'antd'
 import styled from '@emotion/styled'
-import { SecondButton } from '@/components/StyleCommon'
 import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
