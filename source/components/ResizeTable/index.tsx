@@ -96,7 +96,6 @@ interface ResizeTableProps {
   onRow?(): void
   expandable?: any
 }
-let timer: NodeJS.Timeout | null = null
 // 拖拽调整table
 const ResizeTable = (props: ResizeTableProps) => {
   // 表格列
@@ -114,7 +113,7 @@ const ResizeTable = (props: ResizeTableProps) => {
       if (!canRun.current) {
         return
       }
-      timer = setTimeout(() => {
+      setTimeout(() => {
         canRun.current = true
       }, 1000 / 70)
       canRun.current = false
