@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
 import dayjs from 'dayjs'
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useDragLayer, XYCoord } from 'react-dnd'
 import { oneHourHeight } from '../config'
 
@@ -18,6 +18,12 @@ const Box = styled.div`
   min-height: 20px;
   left: 0;
   top: 0;
+`
+
+const Title = styled.span`
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--neutral-white-d7);
 `
 
 function getItemStyles(
@@ -64,22 +70,25 @@ function getItemStyles(
 }
 
 const CustomDragLayer: React.FC<CustomDragLayerProps> = props => {
-  const { itemType, isDragging, item, initialOffset, currentOffset } =
+  const { itemType, isDragging, item, initialOffset, currentOffset, delta } =
     useDragLayer(monitor => ({
       item: monitor.getItem(),
       itemType: monitor.getItemType(),
       initialOffset: monitor.getInitialSourceClientOffset(),
       currentOffset: monitor.getSourceClientOffset(),
       isDragging: monitor.isDragging(),
+      delta: monitor.getDifferenceFromInitialOffset(),
     }))
   const scheduleList = useSelector(store => store.managerCalendar.scheduleList)
   const schedule = useMemo(() => {
     return scheduleList.find(i => i.id === item?.id)
   }, [scheduleList, item])
 
-  const { startTime, endTime } = schedule ?? {}
+  const [startStr, setStartStr] = useState('')
+  const [endStr, setEndStr] = useState('')
 
   const height = useMemo(() => {
+    const { startTime, endTime } = schedule ?? {}
     if (!startTime || !endTime) {
       return 0
     }
@@ -89,7 +98,22 @@ const CustomDragLayer: React.FC<CustomDragLayerProps> = props => {
     const minute = endTimeDayjs.minute() - startTimeDayjs.minute()
     const allMinutes = hour * 60 + minute
     return (allMinutes * oneHourHeight) / 60
-  }, [startTime, endTime])
+  }, [schedule])
+
+  useEffect(() => {
+    const { startTime, endTime } = schedule ?? {}
+
+    const offsetTop = Math.round(delta?.y ?? 0)
+    const offsetMinute = Math.floor(offsetTop / (oneHourHeight / 60))
+
+    // 每次移动是15分钟的倍数
+    const step = Math.ceil(offsetMinute / 15)
+    const moveMinute = step * 15
+
+    console.log(step, 123)
+    setStartStr(dayjs(startTime).add(moveMinute, 'minute').format('hh:mm'))
+    setEndStr(dayjs(endTime).add(moveMinute, 'minute').format('hh:mm'))
+  }, [schedule, delta])
 
   return (
     <Box
@@ -97,7 +121,8 @@ const CustomDragLayer: React.FC<CustomDragLayerProps> = props => {
       className="custom_drag_layer"
       style={getItemStyles(initialOffset, currentOffset)}
     >
-      <span>{schedule?.title}</span>
+      <Title>{schedule?.title}</Title>
+      <Title>{`${startStr} - ${endStr}`}</Title>
     </Box>
   )
 }
