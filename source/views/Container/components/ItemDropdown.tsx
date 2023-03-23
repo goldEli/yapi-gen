@@ -164,6 +164,7 @@ const ItemDropdown = (props: PropsType) => {
         placement="bottomLeft"
         trigger={['click']}
         open={isOpen}
+        // open={true}
       >
         <div style={{ height: '52px', lineHeight: '52px' }}>
           <span

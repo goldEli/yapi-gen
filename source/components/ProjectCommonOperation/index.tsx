@@ -28,7 +28,9 @@ const ProjectCommonOperation = (props: Props) => {
           <InputSearch
             isDemand
             leftIcon
-            placeholder={t('please_enter') as string}
+            placeholder={
+              t('search_for_the_requirement_name_or_number') as string
+            }
             onChangeSearch={props.onInputSearch}
           />
           <MemberIcon onClick={() => setMemberVisible(true)}>
