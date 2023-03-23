@@ -14,7 +14,7 @@ const Container = styled.div`
   width: 320px;
   max-height: calc(100vh - 120px);
   background-color: var(--neutral-white-d6);
-  box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 7px 13px 0px rgba(0, 0, 0, 0.1);
   border-radius: 6px;
 `
 const HeraderTabs = styled.div`
