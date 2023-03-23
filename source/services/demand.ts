@@ -852,6 +852,8 @@ export const getStoryStatusLog: any = async (params: any) => {
     operationName: i.user_name,
     time: i.created_at,
     id: i.id,
+    is_end: i.is_end,
+    is_start: i.is_end,
     statusTo: i.statusto
       ? {
           color: i.statusto?.color,
