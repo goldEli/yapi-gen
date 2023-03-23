@@ -1,6 +1,9 @@
 import styled from '@emotion/styled'
-import React from 'react'
+import { useSelector } from '@store/index'
+import dayjs from 'dayjs'
+import React, { useMemo } from 'react'
 import { useDragLayer, XYCoord } from 'react-dnd'
+import { oneHourHeight } from '../config'
 
 function snapToGrid(x: number, y: number): [number, number] {
   const snappedX = Math.round(x / 32) * 32
@@ -11,12 +14,14 @@ function snapToGrid(x: number, y: number): [number, number] {
 interface CustomDragLayerProps {}
 const Box = styled.div`
   width: calc(100% - 58px - 288px - 24px - 24px);
-  height: 102px;
+  height: ${(props: { height: number }) => props.height + 'px'};
+  /* height: 102px; */
   background: var(--primary-d1);
   border-radius: 6px 6px 6px 6px;
   position: fixed;
   pointer-events: none;
   z-index: 100;
+  min-height: 20px;
   left: 0;
   top: 0;
 `
@@ -58,13 +63,31 @@ const CustomDragLayer: React.FC<CustomDragLayerProps> = props => {
       currentOffset: monitor.getSourceClientOffset(),
       isDragging: monitor.isDragging(),
     }))
-  console.log(currentOffset)
+  const scheduleList = useSelector(store => store.managerCalendar.scheduleList)
+  const schedule = useMemo(() => {
+    return scheduleList.find(i => i.id === item?.id)
+  }, [scheduleList, item])
+
+  const { startTime, endTime } = schedule ?? {}
+
+  const height = useMemo(() => {
+    if (!startTime || !endTime) {
+      return 0
+    }
+    const startTimeDayjs = dayjs(startTime)
+    const endTimeDayjs = dayjs(endTime)
+    const hour = endTimeDayjs.hour() - startTimeDayjs.hour()
+    const minute = endTimeDayjs.minute() - startTimeDayjs.minute()
+    const allMinutes = hour * 60 + minute
+    return (allMinutes * oneHourHeight) / 60
+  }, [startTime, endTime])
   return (
     <Box
+      height={height}
       className="custom_drag_layer"
       style={getItemStyles(initialOffset, currentOffset)}
     >
-      CustomDragLayer
+      <span>{schedule?.title}</span>
     </Box>
   )
 }

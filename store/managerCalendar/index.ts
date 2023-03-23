@@ -30,6 +30,12 @@ const initialState: SliceState = {
       startTime: '2023-3-23 2:15:00',
       endTime: '2023-3-23 2:45:00',
     },
+    {
+      id: '3',
+      title: '睡觉',
+      startTime: '2023-3-23 1:15:00',
+      endTime: '2023-3-23 1:30:00',
+    },
   ],
 }
 
@@ -44,11 +50,20 @@ const slice = createSlice({
       console.log(action.payload)
       state.calendarPanelType = action.payload
     },
+    setScheduleList(state, action: PayloadAction<Model.Calendar.Schedule>) {
+      state.scheduleList = state.scheduleList.map(item => {
+        if (action.payload.id === item.id) {
+          return action.payload
+        }
+
+        return item
+      })
+    },
   },
 })
 
 const managerCalendar = slice.reducer
 
-export const { setCalendarPanelType } = slice.actions
+export const { setCalendarPanelType, setScheduleList } = slice.actions
 
 export default managerCalendar

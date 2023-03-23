@@ -38,7 +38,7 @@ const Timescale: React.FC<TimescaleProps> = props => {
     return Array(22)
       .fill(0)
       .map((item, idx) => {
-        let str = String(idx + 1)
+        let str = String(idx)
         console.log(str.length)
         if (str.length === 1) {
           str = '0' + str

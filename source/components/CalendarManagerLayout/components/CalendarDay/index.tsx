@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import { DndProvider, useDrag, useDrop } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import DropArea from './DropArea'
-import ScheduleCard from './ScheduleCard'
+import ScheduleCardList from './ScheduleCardList'
 import Timescale from './Timescale'
 
 interface CalendarDayProps {}
@@ -21,7 +21,7 @@ const CalendarDay: React.FC<CalendarDayProps> = props => {
       <DndProvider backend={HTML5Backend}>
         <DropArea>
           <Timescale />
-          <ScheduleCard />
+          <ScheduleCardList />
         </DropArea>
       </DndProvider>
     </CalendarDayBox>
