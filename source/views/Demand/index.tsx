@@ -627,7 +627,7 @@ const DemandBox = () => {
             )}
             <Popover
               content={moreOperation}
-              placement="bottom"
+              placement="bottomRight"
               getPopupContainer={node => node}
               key={isVisibleMore.toString()}
               visible={isVisibleMore}

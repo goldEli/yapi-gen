@@ -8,7 +8,7 @@
 import { createRef, useEffect, useMemo, useRef, useState } from 'react'
 import { message, Menu, Table } from 'antd'
 import styled from '@emotion/styled'
-import { ExpendedWrap, SecondButton } from '@/components/StyleCommon'
+import { ExpendedWrap } from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -31,6 +31,7 @@ import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import ResizeTable from '../ResizeTable'
 import { setFilterParamsModal } from '@store/project'
+import CommonButton from '../CommonButton'
 
 const Content = styled.div({
   padding: '20px 12px 0 8px',
@@ -567,9 +568,13 @@ const DemandTree = (props: Props) => {
             haveFilter={filterKeys?.length > 0}
           >
             {!hasCreate && (
-              <SecondButton onClick={onClick} style={{ marginTop: 24 }}>
+              <CommonButton
+                type="light"
+                onClick={onClick}
+                style={{ marginTop: 24 }}
+              >
                 {t('common.createDemand')}
-              </SecondButton>
+              </CommonButton>
             )}
           </NoData>
         }

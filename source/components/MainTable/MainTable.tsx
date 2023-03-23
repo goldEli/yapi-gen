@@ -20,6 +20,7 @@ import PaginationBox from '../TablePagination'
 import ResizeTable from '../ResizeTable'
 import { editProject } from '@store/create-propject'
 import { useDispatch } from 'react-redux'
+import CommonButton from '../CommonButton'
 
 interface Props {
   onChangeOperation(type: string, item: any, e: any): void
@@ -488,12 +489,13 @@ const MainTable = (props: Props) => {
             haveFilter={props?.hasFilter}
           >
             {!hasCreate && (
-              <SecondButton
+              <CommonButton
+                type="light"
                 onClick={props.onAddClick}
                 style={{ marginTop: 24 }}
               >
                 {t('common.createProject')}
-              </SecondButton>
+              </CommonButton>
             )}
           </NoData>
         }
