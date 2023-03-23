@@ -350,7 +350,7 @@ const HeaderRight = () => {
         width={420}
       >
         <div style={{ padding: '0 24px 32px' }}>
-          <PersonalFooter>
+          <div>
             {labelList?.map((i: any) => (
               <LineBox key={i.label}>
                 <Line key={i.label}>{i.label ? i.label : '-'}</Line>
@@ -370,7 +370,7 @@ const HeaderRight = () => {
                 )}
               </LineBox>
             ))}
-          </PersonalFooter>
+          </div>
         </div>
       </CommonModal>
 
