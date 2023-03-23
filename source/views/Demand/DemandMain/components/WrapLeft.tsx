@@ -51,11 +51,15 @@ const TitleWrap = styled.div({
 })
 
 const TreeBox = styled.div`
-  width: 100% !important;
+  width: 70% !important;
+  overflow: hidden;
   height: 40px;
   border-radius: 0px 0px 0px 0px;
   display: flex;
   align-items: center;
+  .nameTitle {
+    display: inline-block;
+  }
 `
 const FormBox = styled.div`
   padding: 0 20px 0 24px;
@@ -99,7 +103,28 @@ const TreeStyle = styled(Tree)({
     boxShadow: '0px 0px 15px 6px rgba(0,0,0,0.12)',
     borderRadius: '6px',
   },
+  '& .ant-tree-title .treeBox .titleName': {
+    width: '70% !important',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
+  '.ant-tree-switcher-noop': {
+    display: 'none',
+  },
+  '.ant-tree-treenode': {
+    position: 'relative',
+  },
+  '.ant-tree-list .ant-tree-switcher': {
+    position: 'relative',
+    marginLeft: '5px',
+  },
+  '& .ant-tree-draggable-icon': {
+    position: 'absolute',
+    left: '5px',
+  },
 })
+const IconFontStyle = styled(IconFont)({})
 const TreeItem = (props: any) => {
   const context: any = useContext(TreeContext)
   const inputRefDom = useRef<HTMLInputElement>(null)
@@ -253,17 +278,87 @@ const TreeItem = (props: any) => {
     </div>
   )
   return (
-    <TreeBox className="treeBox">
-      <span
-        style={{
-          whiteSpace: 'nowrap',
-        }}
-      >
-        {props.name}
-      </span>
-      <span className={centerText}>
-        {props.story_count > 0 && `(${props.story_count})`}
-      </span>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <TreeBox className="treeBox">
+        <span
+          className="titleName"
+          style={{
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {props.name}--{props.pid}
+        </span>
+        <span className={centerText}>
+          {props.story_count > 0 && `(${props.story_count})`}
+        </span>
+        {}
+
+        <div
+          onClick={(e: any) => {
+            e.stopPropagation()
+          }}
+        >
+          <DeleteConfirm
+            isVisible={visible}
+            onChangeVisible={onChangeVisible}
+            onConfirm={onConfirm}
+            text={t('newlyAdd.confirmDelClass')}
+          />
+        </div>
+        <div
+          onClick={(e: any) => {
+            e.stopPropagation()
+          }}
+        >
+          <CommonModal
+            title={
+              visibleEditText === 'add'
+                ? t('newlyAdd.createChildClass')
+                : t('newlyAdd.editChildClass')
+            }
+            isVisible={visibleEdit}
+            onClose={editClose}
+            onConfirm={editConfirm}
+          >
+            <FormBox>
+              <Form form={form} layout="vertical">
+                <Form.Item
+                  label={t('newlyAdd.className')}
+                  name="name"
+                  rules={[{ required: true, message: '' }]}
+                  getValueFromEvent={event => {
+                    // eslint-disable-next-line require-unicode-regexp
+                    return event.target.value.replace(/(?<start>^\s*)/g, '')
+                  }}
+                >
+                  <Input
+                    ref={inputRefDom as any}
+                    allowClear
+                    autoComplete="off"
+                    maxLength={10}
+                    placeholder={t('newlyAdd.pleaseClassName')}
+                  />
+                </Form.Item>
+                <Form.Item
+                  getValueFromEvent={event => {
+                    return event.target.value.replace(/(?<start>^\s*)/g, '')
+                  }}
+                  name="remark"
+                  label={t('newlyAdd.classRemark')}
+                >
+                  <Input.TextArea
+                    maxLength={100}
+                    showCount
+                    allowClear
+                    placeholder={t('newlyAdd.pleaseClassRemark')}
+                    autoSize={{ minRows: 3, maxRows: 5 }}
+                  />
+                </Form.Item>
+              </Form>
+            </FormBox>
+          </CommonModal>
+        </div>
+      </TreeBox>
       {props.pid === 0 ||
       getIsPermission(
         projectInfo?.projectPermissions,
@@ -279,7 +374,7 @@ const TreeItem = (props: any) => {
           content={content}
           trigger="hover"
         >
-          <IconFont
+          <IconFontStyle
             onClick={(e: any) => {
               e.stopPropagation()
               setVisiblePop(true)
@@ -290,73 +385,7 @@ const TreeItem = (props: any) => {
           />
         </Popover>
       )}
-
-      <div
-        onClick={(e: any) => {
-          e.stopPropagation()
-        }}
-      >
-        <DeleteConfirm
-          isVisible={visible}
-          onChangeVisible={onChangeVisible}
-          onConfirm={onConfirm}
-          text={t('newlyAdd.confirmDelClass')}
-        />
-      </div>
-      <div
-        onClick={(e: any) => {
-          e.stopPropagation()
-        }}
-      >
-        <CommonModal
-          title={
-            visibleEditText === 'add'
-              ? t('newlyAdd.createChildClass')
-              : t('newlyAdd.editChildClass')
-          }
-          isVisible={visibleEdit}
-          onClose={editClose}
-          onConfirm={editConfirm}
-        >
-          <FormBox>
-            <Form form={form} layout="vertical">
-              <Form.Item
-                label={t('newlyAdd.className')}
-                name="name"
-                rules={[{ required: true, message: '' }]}
-                getValueFromEvent={event => {
-                  // eslint-disable-next-line require-unicode-regexp
-                  return event.target.value.replace(/(?<start>^\s*)/g, '')
-                }}
-              >
-                <Input
-                  ref={inputRefDom as any}
-                  allowClear
-                  autoComplete="off"
-                  maxLength={10}
-                  placeholder={t('newlyAdd.pleaseClassName')}
-                />
-              </Form.Item>
-              <Form.Item
-                getValueFromEvent={event => {
-                  return event.target.value.replace(/(?<start>^\s*)/g, '')
-                }}
-                name="remark"
-                label={t('newlyAdd.classRemark')}
-              >
-                <Input.TextArea
-                  maxLength={100}
-                  showCount
-                  allowClear
-                  placeholder={t('newlyAdd.pleaseClassRemark')}
-                  autoSize={{ minRows: 3, maxRows: 5 }}
-                />
-              </Form.Item>
-            </Form>
-          </FormBox>
-        </CommonModal>
-      </div>
-    </TreeBox>
+    </div>
   )
 }
 
