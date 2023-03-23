@@ -15,13 +15,14 @@ const Container = styled.div`
   max-height: calc(100vh - 120px);
   background-color: var(--neutral-white-d6);
   box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
-  border-radius: 0px 0px 6px 6px;
+  border-radius: 6px;
   padding-bottom: 8px;
 `
 const HeraderTabs = styled.div`
   width: 100%;
   background-color: var(--neutral-white-d6);
   padding: 16px;
+  border-radius: 6px 6px 0 0;
 `
 const Tabs = styled.div`
   width: 100%;
@@ -203,6 +204,7 @@ const MyDropdown = (props: any) => {
   useEffect(() => {
     isOpen && onFetchList()
   }, [isOpen, tabActive])
+
   const onClickIsOpen = () => {
     setIsOpen(false)
   }
@@ -339,12 +341,24 @@ const MyDropdown = (props: any) => {
     <Dropdown
       dropdownRender={dropdownRender}
       placement="bottomLeft"
+      trigger={['click']}
       onOpenChange={setIsOpen}
       open={isOpen}
     >
       <div style={{ height: '52px', lineHeight: '52px' }}>
-        <span style={{ marginRight: '8px' }}>{props.text}</span>
-        <CommonIconFont type="down" size={14} />
+        <span
+          style={{
+            marginRight: '8px',
+            color: isOpen ? 'var(--primary-d2)' : '',
+          }}
+        >
+          {props.text}
+        </span>
+        <CommonIconFont
+          type="down"
+          size={14}
+          color={isOpen ? 'var(--primary-d2)' : ''}
+        />
       </div>
     </Dropdown>
   )
