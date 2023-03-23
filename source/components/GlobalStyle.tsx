@@ -371,9 +371,7 @@ const GlobalStyle = () => {
         color: var(--primary-d2) !important;
       }
     }
-    .ant-select-item-option-selected:not(
-        .ant-select-item-option-disabled
-      ):hover {
+    .ant-select-item-option-selected:not(.ant-select-item-option-disabled):hover {
       /* background-color: var(--neutral-white-d4); */
     }
 
@@ -424,7 +422,7 @@ const GlobalStyle = () => {
       background-color: transparent;
     }
     .ant-tree .ant-tree-treenode {
-      padding-right: 20px;
+      /* padding-right: 20px; */
       box-sizing: border-box;
       width: 100%;
       &:hover {
@@ -451,9 +449,7 @@ const GlobalStyle = () => {
       -webkit-appearance: none;
     }
     .ant-form-item-label
-      > label.ant-form-item-required:not(
-        .ant-form-item-required-mark-optional
-      )::after {
+      > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::after {
       display: inline-block;
       margin-right: 4px;
       color: #ff4d4f;
@@ -463,9 +459,7 @@ const GlobalStyle = () => {
       content: '*';
     }
     .ant-form-item-label
-      > label.ant-form-item-required:not(
-        .ant-form-item-required-mark-optional
-      )::before {
+      > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before {
       display: none;
       margin-right: 4px;
       color: #ff4d4f;
