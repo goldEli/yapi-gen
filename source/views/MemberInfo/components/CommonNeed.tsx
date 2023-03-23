@@ -82,6 +82,8 @@ const SearchWrap = styled.div({
 })
 
 const MainWrap = styled.div({
+  height: 'calc(100vh - 128px)',
+  overflow: 'scroll',
   padding: ' 0 16px',
   '.ant-spin-nested-loading': {
     // height: 'initial',
@@ -533,7 +535,7 @@ const CommonNeed = (props: any) => {
 
   return (
     <MainWrap>
-      <div style={{ padding: '0 24px', justifyContent: 'space-between' }}>
+      <div style={{ justifyContent: 'space-between' }}>
         <SearchWrap>
           <div style={{ position: 'absolute', top: '20px', right: '24px' }}>
             <InputSearch
@@ -612,7 +614,7 @@ const CommonNeed = (props: any) => {
       {!isMany && (
         <ResizeTable
           isSpinning={isSpin}
-          dataWrapNormalHeight="calc(100vh - 330px)"
+          dataWrapNormalHeight="calc(100vh - 280px)"
           col={selectColum}
           dataSource={listData?.list}
           noData={<NoData />}

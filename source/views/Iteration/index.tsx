@@ -45,7 +45,7 @@ import CommonButton from '@/components/CommonButton'
 const Wrap = styled.div`
   height: 100%;
   display: flex;
-  padding: 20px 24px 0 24px;
+  padding: 20px 24px 0 0px;
   flex-direction: column;
 `
 
@@ -55,7 +55,7 @@ const DemandInfoWrap = styled.div({
   justifyContent: 'space-between',
   height: 32,
   background: 'white',
-  margin: '20px 0 6px 0',
+  margin: '20px 0 6px 24px',
 })
 
 const NameWrap = styled.div({
@@ -72,7 +72,8 @@ const NameWrap = styled.div({
 const ContentWrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  height: 'calc(100% - 80px)',
+  height: 'calc(100% - 90px)',
+  padding: '0 0 0 24px',
 })
 
 const MainWrap = styled.div({
@@ -425,16 +426,20 @@ const Iteration = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
+            height: 32,
+            paddingLeft: 24,
           }}
         >
           <MyBreadcrumb />
-          <div>
-            <InputSearch
-              placeholder={t('common.pleaseSearchDemand')}
-              onChangeSearch={onPressEnter}
-              leftIcon
-            />
-          </div>
+          {type === 'demand' && (
+            <div>
+              <InputSearch
+                placeholder={t('common.pleaseSearchDemand')}
+                onChangeSearch={onPressEnter}
+                leftIcon
+              />
+            </div>
+          )}
         </div>
         <DemandInfoWrap>
           <NameWrap>

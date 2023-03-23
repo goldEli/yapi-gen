@@ -35,6 +35,11 @@ import PaginationBox from '@/components/TablePagination'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 
+const Wrap = styled.div`
+  height: calc(100vh - 128px);
+  overflow: scroll;
+`
+
 const Mygante = styled(Gantt)`
   min-width: 1000px;
   .highcharts-tick {
@@ -83,7 +88,6 @@ const StyledWrap = styled.div`
 `
 const Head = styled.div`
   box-sizing: border-box;
-  padding: 24px;
   background: rgba(255, 255, 255, 1);
   border-radius: 6px;
   display: flex;
@@ -99,7 +103,6 @@ const Center = styled.div`
 
 const CenterRight = styled.div`
   box-sizing: border-box;
-  padding: 24px;
   flex: 1;
   background: rgba(255, 255, 255, 1);
   border-radius: 6px;
@@ -409,7 +412,7 @@ const Profile = () => {
           )}
         </>
       ) : (
-        <>
+        <Wrap>
           <StyledWrap>
             <Head>
               <div>
@@ -520,7 +523,7 @@ const Profile = () => {
             </Center>
           </StyledWrap>
           <GatteWrap>
-            <div style={{ padding: '28px 24px 0' }}>
+            <div style={{ padding: '28px 0px 0' }}>
               <SecondTitle>{t('newlyAdd.hisGantt')}</SecondTitle>
               <div className={titleWrap}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -560,7 +563,7 @@ const Profile = () => {
               onChange={onChangePage}
             />
           )}
-        </>
+        </Wrap>
       )}
     </>
   )

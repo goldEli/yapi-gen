@@ -139,13 +139,25 @@ export const imgCss = css`
   border-radius: 50%;
 `
 
+export const LineBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
 export const Line = styled.div`
   margin-top: 24px;
   color: var(--neutral-n2);
+  white-space: nowrap;
 `
 export const Line2 = styled.div`
   margin-top: 24px;
   color: var(--neutral-n1-d1);
+  max-width: 70%;
+  text-align: right;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 `
 
 // 头部操作栏左侧

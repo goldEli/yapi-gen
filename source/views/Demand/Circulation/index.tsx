@@ -174,7 +174,6 @@ const Circulation = () => {
       </span>
     )
   }
-
   return (
     <Wrap>
       <Spin indicator={<NewLoadingTransition />} spinning={isSpin}>
@@ -199,6 +198,7 @@ const Circulation = () => {
                         {String(
                           i?.operationName?.trim().slice(0, 1),
                         ).toLocaleUpperCase()}
+                        777777777777
                       </NameWrap>
                       <TextWrap style={{ marginLeft: 8 }}>
                         {i?.operationName}
@@ -219,7 +219,7 @@ const Circulation = () => {
                               style={{ marginLeft: 8 }}
                               color={i.statusTo?.color}
                             >
-                              {i.statusTo?.name}
+                              {i.statusTo?.name}2334
                             </ViewWrap>
                           )}
                         </>

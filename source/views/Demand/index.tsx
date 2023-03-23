@@ -56,7 +56,7 @@ import CustomSelect from '@/components/CustomSelect'
 const Wrap = styled.div`
   height: 100%;
   display: flex;
-  padding: 20px 24px 0 24px;
+  padding: 20px 16px 0 0px;
   flex-direction: column;
 `
 
@@ -66,7 +66,7 @@ const DemandInfoWrap = styled.div({
   justifyContent: 'space-between',
   height: 32,
   background: 'white',
-  margin: '20px 0 6px 0',
+  margin: '20px 0 6px 24px',
 })
 
 const NameWrap = styled.div({
@@ -84,6 +84,7 @@ const ContentWrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
   height: 'calc(100% - 80px)',
+  padding: '0 0 0 24px',
 })
 
 const MainWrap = styled(Space)({
@@ -411,13 +412,12 @@ const DemandBox = () => {
     setIsDelVisible(true)
     setIsVisibleMore(false)
   }
-
   // 复制需求id
   const onCopyId = () => {
     copyLink(
-      `${demandInfo?.projectPrefix}-${demandInfo?.prefixKey}`,
-      '复制需求编号成功！',
-      '复制需求编号失败！',
+      `${demandInfo?.storyPrefixKey}`,
+      t('copy_requirement_number_successfully'),
+      t('copy_requirement_number_failed'),
     )
   }
 
@@ -435,7 +435,11 @@ const DemandBox = () => {
     )
     const url = `/ProjectManagement/Demand?data=${params}`
     text += `【${demandInfo?.name}】 ${beforeUrl}${url} \n`
-    copyLink(text, '复制需求链接成功！', '复制需求链接失败！')
+    copyLink(
+      text,
+      t('successfully_copied_requirement_link'),
+      t('failed_copied_requirement_link'),
+    )
   }
 
   const moreOperation = (
@@ -546,7 +550,7 @@ const DemandBox = () => {
           onChangeVisible={() => setIsDelVisible(!isDelVisible)}
           onConfirm={onDeleteConfirm}
         />
-        <div>
+        <div style={{ paddingLeft: 24 }}>
           <MyBreadcrumb
             demand={{
               name: demandInfo?.name,

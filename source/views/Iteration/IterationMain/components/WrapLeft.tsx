@@ -49,9 +49,9 @@ import NewLoadingTransition from '@/components/NewLoadingTransition'
 
 const Left = styled.div<{ isShowLeft: boolean }>(
   {
-    width: 300,
+    width: 348,
     borderRight: '1px solid var(--neutral-n6-d1)',
-    padding: '0px 24px 0px 0',
+    padding: '0px 24px 0px 24px',
     background: 'white',
     height: '100%',
     '.ant-space-item': {
