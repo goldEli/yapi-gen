@@ -16,7 +16,7 @@ const Box = styled.div`
   top: 0px;
   left: 58px;
   font-size: 25;
-  min-height: 20px;
+  min-height: 22px;
   cursor: move;
   box-sizing: border-box;
   padding: 0 4px;
