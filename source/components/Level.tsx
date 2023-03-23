@@ -73,6 +73,7 @@ export const LevelContent = (props: LevelProps) => {
     props.onCurrentDetail?.(showData.filter((i: any) => i.id === value)[0])
     onHide()
   }
+
   return (
     <Contain>
       {showData.map((item: any) => (

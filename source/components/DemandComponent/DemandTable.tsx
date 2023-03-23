@@ -29,7 +29,7 @@ import ResizeTable from '../ResizeTable'
 import CommonButton from '../CommonButton'
 
 const Content = styled.div({
-  padding: '20px 12px 0 8px',
+  padding: '20px 12px 0 0px',
   background: 'var(--neutral-white-d1)',
   height: 'calc(100% - 32px)',
 })
@@ -432,7 +432,7 @@ const DemandTable = (props: Props) => {
           >
             {!hasCreate && (
               <CommonButton
-                type="secondary"
+                type="light"
                 onClick={onClick}
                 style={{ marginTop: 24 }}
               >

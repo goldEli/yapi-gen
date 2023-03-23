@@ -124,7 +124,6 @@ const ResizeTable = (props: ResizeTableProps) => {
     }
 
   useEffect(() => {
-    console.log(props.col, 'props.col')
     setCols(props.col)
   }, [props.col])
 

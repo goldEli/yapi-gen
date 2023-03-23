@@ -8,7 +8,7 @@
 import { createRef, useEffect, useMemo, useRef, useState } from 'react'
 import { message, Menu, Table } from 'antd'
 import styled from '@emotion/styled'
-import { ExpendedWrap, SecondButton } from '@/components/StyleCommon'
+import { ExpendedWrap } from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -31,6 +31,7 @@ import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import ResizeTable from '../ResizeTable'
 import { setFilterParamsModal } from '@store/project'
+import CommonButton from '../CommonButton'
 
 const Content = styled.div({
   padding: '20px 12px 0 8px',
@@ -259,7 +260,7 @@ const DemandTree = (props: Props) => {
         element.isExpended = !element.isExpended
         // 如果父级展开，子级也展开
         if (!element.isExpended) {
-          element.children.forEach((k: any) => {
+          element.children?.forEach((k: any) => {
             k.isExpended = true
           })
         }
@@ -292,6 +293,16 @@ const DemandTree = (props: Props) => {
     return state
   }
 
+  // 获取子级下所有的id
+  const getForAllId = (childrenList: any = [], arr: any = []) => {
+    childrenList?.forEach((element: any) => {
+      arr.push(element.id)
+      if (element.children && element.children.length)
+        getForAllId(element.children, arr)
+    })
+    return arr
+  }
+
   // 点击获取子需求
   const onGetChildList = async (row: any) => {
     // 如果查询列表未执行完，不执行获取子需求
@@ -318,18 +329,12 @@ const DemandTree = (props: Props) => {
 
     // 如果折叠起来，则在已勾选的数组中删掉，反之合并
     if (row.isExpended) {
-      const lists = [
-        ...[row.id],
-        ...(row.allChildrenIds?.map((i: any) => i.id) || []),
-      ]
+      const lists = [...[row.id], ...(getForAllId(dataChildren?.list) || [])]
       resultList = expandedRowKeys?.filter(
         (i: any) => !lists.some((k: any) => k === i),
       )
     } else {
-      const lists = [
-        ...[row.id],
-        ...(row.allChildrenIds?.map((i: any) => i.id) || []),
-      ]
+      const lists = [...[row.id], ...(getForAllId(dataChildren?.list) || [])]
       resultList = [...expandedRowKeys, ...lists]
     }
 
@@ -503,7 +508,7 @@ const DemandTree = (props: Props) => {
         )
         setExpandedRowKeys([
           ...[list[0]?.id],
-          ...(list[0]?.allChildrenIds?.map((i: any) => i.id) || []),
+          ...(getForAllId(list[0]?.children) || []),
         ])
       } else {
         setComputedTopId(0)
@@ -567,9 +572,13 @@ const DemandTree = (props: Props) => {
             haveFilter={filterKeys?.length > 0}
           >
             {!hasCreate && (
-              <SecondButton onClick={onClick} style={{ marginTop: 24 }}>
+              <CommonButton
+                type="light"
+                onClick={onClick}
+                style={{ marginTop: 24 }}
+              >
                 {t('common.createDemand')}
-              </SecondButton>
+              </CommonButton>
             )}
           </NoData>
         }
