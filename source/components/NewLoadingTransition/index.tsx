@@ -5,8 +5,8 @@ const NewLoadingTransition = (props: any) => {
     <img
       src={spingImg}
       style={{
-        width: props.size ? props.size : 100,
-        height: props.size ? props.size : 100,
+        width: props.size ? props.size : 50,
+        height: props.size ? props.size : 50,
       }}
       alt=""
     />
