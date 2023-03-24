@@ -457,11 +457,11 @@ const StepPageOne = (propsOne: Props) => {
                   <CategoryWrap
                     style={{ marginRight: 8, marginLeft: 0 }}
                     color={operationObj?.deleteData?.item?.category_color}
-                    bgColor={''}
+                    bgColor="var(--neutral-n8)"
                   >
                     <>
                       <img
-                        style={{ width: 20 }}
+                        style={{ width: 20, marginRight: '4px' }}
                         src={operationObj?.deleteData?.item?.attachment_path}
                       />
                       {operationObj?.deleteData?.item?.category_name}
