@@ -105,7 +105,7 @@ const SliderList = (props: any) => {
         top: `${top}px`,
         left: `${left}px`,
         position: top > 0 && left > 0 ? 'fixed' : 'relative',
-        zIndex: 9999,
+        zIndex: top > 0 && left > 0 ? 90 : 9,
       }}
     >
       <SearchItemList>
