@@ -12,7 +12,12 @@ const CreateDemandButton = (props: Props) => {
     <>
       {props.hasCreate && (
         <div style={{ margin: '16px 0' }}>
-          <CommonButton type="primaryText" icon="plus" iconPlacement="left">
+          <CommonButton
+            type="primaryText"
+            icon="plus"
+            iconPlacement="left"
+            onClick={props.onCreateDemand}
+          >
             <div>{t('common.createDemand')}</div>
           </CommonButton>
         </div>

@@ -17,7 +17,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import ExportDemand from './ExportDemand'
 import ImportDemand from './ImportDemand'
 import { useDispatch, useSelector } from '@store/index'
-import { setFilterKeys, setFilterParamsModal } from '@store/project'
+import { setFilterParamsModal } from '@store/project'
 import {
   setCreateCategory,
   setCreateDemandProps,

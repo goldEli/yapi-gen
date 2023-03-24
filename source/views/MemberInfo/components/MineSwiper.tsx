@@ -13,7 +13,7 @@ const SwiperWrap = styled.div`
   align-items: center;
   justify-content: start;
   box-sizing: border-box;
-  padding: 0 24px;
+  padding: 0 16px;
   height: 90px;
   background-color: var(--neutral-white-d2);
   overflow: hidden;
