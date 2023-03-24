@@ -152,6 +152,7 @@ const Main = (props: any) => {
   }
   //拖动传递过来的参数
   const onDrop = (state: any, event: any, index: any) => {
+    console.log(state, 'ppp')
     setDraggingIndex(index)
     // 自定义字段只能添加20个
     const customizeNum = getProjectFieIdsData?.filter(
@@ -205,13 +206,24 @@ const Main = (props: any) => {
       save()
     }
   }, [props.isSave])
-  const onUpDate = async () => {
-    await dispatch(
-      getCategoryConfigList({
-        projectId: projectInfo.id,
-        categoryId: activeCategory.id,
-      }),
-    )
+  const onUpDate = async (res: any) => {
+    const newItem = {
+      title: res.name,
+      remarks: res.remarks,
+      fieldContent: res.content,
+      is_fold: configType === 1 ? 1 : 2,
+    }
+    if (configType === 1) {
+      const arrData = Array.from(getCategoryConfigF)
+      const item: any = arrData[draggingIndex]
+      arrData[draggingIndex] = { ...item, ...newItem }
+      setGetCategoryConfigF(arrData)
+    } else {
+      const arrData = Array.from(getCategoryConfigT)
+      const item: any = arrData[draggingIndex]
+      arrData[draggingIndex] = { ...item, ...newItem }
+      setGetCategoryConfigT(arrData)
+    }
   }
   return (
     <div
@@ -278,7 +290,7 @@ const Main = (props: any) => {
         fieldType={fieldType}
         item={colItem}
         isVisible={addAndEditVisible}
-        onEditUpdate={() => onUpDate()}
+        onEditUpdate={res => onUpDate(res)}
         onInsert={(item: any) => onInsert(item)}
         onClose={() => setAddAndEditVisible(false)}
       />
