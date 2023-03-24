@@ -15,7 +15,7 @@ interface PropsType {
 const Container = styled.div`
   width: 320px;
   height: auto;
-  background-color: var(--neutral-white-d6);
+  background-color: var(--neutral-white-d5);
   box-shadow: 0px 7px 13px 0px rgba(0, 0, 0, 0.1);
   border-radius: 6px;
   max-height: calc(100vh - 120px);
@@ -32,7 +32,7 @@ const Footer = styled.div`
   color: var(--neutral-n1-d2);
   margin: 8px 0;
   & div:hover {
-    background-color: var(--hover-d2);
+    background-color: var(--hover-d3);
     cursor: pointer;
   }
   & div {
@@ -78,7 +78,7 @@ const ItemTitle = styled.div`
 const Border = styled.div`
   margin: 0 16px;
   text-align: center;
-  border-bottom: 1px solid var(--neutral-n6-d1);
+  border-bottom: 1px solid var(--neutral-n6-d2);
 `
 const ItemDropdown = (props: PropsType) => {
   const navigate = useNavigate()

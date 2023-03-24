@@ -63,7 +63,7 @@ const TableTitle = styled.div({
   display: 'flex',
   alignItems: 'center',
   marginLeft: '16px',
-  fontWeight: '500',
+  fontFamily: 'SiYuanMedium',
   span: {
     borderLeft: '3px solid var(--primary-d2)',
     paddingLeft: 6,

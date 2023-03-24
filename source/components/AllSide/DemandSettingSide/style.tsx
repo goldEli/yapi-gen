@@ -89,7 +89,7 @@ export const Provider = styled.div`
   height: 1px;
   width: 88%;
   margin-left: 6%;
-  background: var(--neutral-n6-d1);
+  background: var(--neutral-n6-d2);
   margin-bottom: 16px;
 `
 
