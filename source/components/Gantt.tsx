@@ -24,7 +24,7 @@ const GanttWrap = styled.div({
     textAlign: 'left',
     paddingLeft: 10,
     fontSize: 14,
-    fontWeight: '500',
+    fontFamily: 'SiYuanMedium',
   },
   '.gantt_cell': {
     padding: 0,
