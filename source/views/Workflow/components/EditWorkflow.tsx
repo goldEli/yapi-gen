@@ -199,8 +199,6 @@ const EditWorkflow = (props: EditorProps) => {
           </Form.Item> */}
           <Form.Item label={t('newlyAdd.endStatus')} name="endStatus">
             <Switch
-              checkedChildren={t('newlyAdd.yes')}
-              unCheckedChildren={t('newlyAdd.no')}
               checked={status}
               onChange={checked => onChangeStatus(checked)}
             />
