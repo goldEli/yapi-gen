@@ -951,7 +951,7 @@ export const ShapeContent = (props: any) => {
                   style={{
                     height: '22px',
                     fontSize: '14px',
-                    fontWeight: 500,
+                    fontFamily: 'SiYuanMedium',
                     color: 'var(--neutral-n1-d2)',
                     lineHeight: '22px',
                     marginBottom: '20px',

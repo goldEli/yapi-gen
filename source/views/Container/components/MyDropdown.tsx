@@ -68,7 +68,7 @@ const Footer = styled.div`
     padding-left: 24px;
   }
   > div:hover {
-    background-color: var(--hover-d2);
+    background-color: var(--hover-d3);
     cursor: pointer;
   }
 `
@@ -268,7 +268,7 @@ const MyDropdown = (props: any) => {
               )}
             </div>
             <ItemCenter>
-              <ItemTitle>{el.feedable?.name || el.name}</ItemTitle>
+              <ItemTitle>{el.feedable?.name || el?.name}</ItemTitle>
               <ItemMsg>
                 {el.feedable?.project?.name || el.project?.name}
               </ItemMsg>

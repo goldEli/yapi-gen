@@ -448,7 +448,7 @@ const EditFiled = (props: Props) => {
                           fontSize: 14,
                           color: 'var(--neutral-n1-d1)',
                           marginBottom: 12,
-                          fontWeight: 500,
+                          fontFamily: 'SiYuanMedium',
                         }}
                       >
                         {t('version2.chooseRange')}

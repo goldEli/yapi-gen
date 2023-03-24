@@ -46,8 +46,7 @@ const TitleWrap = styled.div({
   whiteSpace: 'nowrap',
   fontSize: 14,
   color: 'var(--neutral-n1-d2)',
-  // lineHeight: '52px',
-  fontWeight: 500,
+  fontFamily: 'SiYuanMedium',
 })
 
 const TreeBox = styled.div`
@@ -104,7 +103,7 @@ const TreeStyle = styled(Tree)({
     borderRadius: '6px',
   },
   '& .ant-tree-title .treeBox .titleName': {
-    width: '70% !important',
+    width: '60% !important',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',

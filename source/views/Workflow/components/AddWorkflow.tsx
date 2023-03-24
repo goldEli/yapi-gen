@@ -60,7 +60,7 @@ const TableTitle = styled.div({
   padding: '0 24px',
   color: 'var( --neutral-n3)',
   fontSize: 14,
-  fontWeight: 500,
+  fontFamily: 'SiYuanMedium',
 })
 
 const AddWrapBox = styled.div({

@@ -35,7 +35,7 @@ const TimeLIneWrap = styled(Timeline)({
     padding: '16px 24px',
     left: '125px!important',
     width: 'calc(100% - 151px)!important',
-    background: 'var(--neutral-n8)',
+    background: 'var(--hover-d2)',
   },
   '.ant-timeline-item-last .ant-timeline-item-content': {
     display: 'none!important',

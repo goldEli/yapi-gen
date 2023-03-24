@@ -514,7 +514,7 @@ const ShapeContentForDetail = (props: any) => {
     })
 
     if (type === 1) {
-      return newA[0].label
+      return newA[0]?.label
     }
     if (type === 2) {
       const newC = a.filter((j: any) => {
@@ -822,7 +822,7 @@ const ShapeContentForDetail = (props: any) => {
                   style={{
                     height: '22px',
                     fontSize: '14px',
-                    fontWeight: 500,
+                    fontFamily: 'SiYuanMedium',
                     color: 'var(--neutral-n1-d1)',
                     lineHeight: '22px',
                     marginBottom: '20px',

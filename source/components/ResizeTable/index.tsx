@@ -64,7 +64,6 @@ const TableWrap = styled(Table)`
 const DataWrap = styled.div<{ height?: any }>`
   height: ${props => props.height};
   overflow-x: auto;
-  margin-left: 24px;
 `
 
 // 调整table表头

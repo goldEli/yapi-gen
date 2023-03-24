@@ -82,9 +82,9 @@ const Tabs = styled.div`
   }
   .tabsActive {
     color: var(--neutral-n1-d1);
-    background-color: var(--neutral-white-d6);
+    background-color: var(--neutral-white-d3);
     border-radius: 6px;
-    border: 1px solid var(--neutral-n6-d1);
+    border: 1px solid var(--neutral-n6-d2);
   }
 `
 const Row = styled.div`

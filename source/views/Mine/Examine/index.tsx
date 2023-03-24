@@ -12,6 +12,7 @@ import { getMineProjectList } from '@/services/mine'
 
 const MainWrap = styled.div({
   height: 'calc(100% - 190px)',
+  // paddingLeft: 24,
   // overflow: 'auto',
 })
 
@@ -41,7 +42,9 @@ const Examine = () => {
   }
   return (
     <MainWrap>
-      <MineSwiper data={swiperData} onTap={getProjectId} />
+      <div style={{ paddingLeft: 16 }}>
+        <MineSwiper data={swiperData} onTap={getProjectId} />
+      </div>
       <Need projectId={projectId} onChangeType={(val: any) => setType(val)} />
     </MainWrap>
   )

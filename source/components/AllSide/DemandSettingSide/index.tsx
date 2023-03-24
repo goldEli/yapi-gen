@@ -51,6 +51,7 @@ const Tabs = styled.div`
   font-weight: 400;
   color: var(--neutral-n3);
   background-color: var(--hover-d1);
+  margin: 16px;
   span {
     display: inline-block;
     width: 50%;

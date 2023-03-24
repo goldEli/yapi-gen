@@ -88,7 +88,7 @@ const SetRight = styled.div({
 
 const Title = styled.div({
   fontSize: 14,
-  fontWeight: 500,
+  fontFamily: 'SiYuanMedium',
   color: 'var(--neutral-n1-d2)',
   marginBottom: 8,
 })

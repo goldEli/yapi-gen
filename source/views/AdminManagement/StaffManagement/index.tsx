@@ -403,7 +403,7 @@ const StaffManagement = () => {
         <div
           style={{
             fontSize: '16px',
-            fontWeight: 500,
+            fontFamily: 'SiYuanMedium',
             color: 'var(--neutral-n1-d1)',
           }}
         >

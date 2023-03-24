@@ -90,7 +90,7 @@ const CardWrap = styled.div({
   div: {
     color: 'var(--neutral-n1-d1)',
     fontSize: 28,
-    fontWeight: 500,
+    fontFamily: 'SiYuanMedium',
     lineHeight: '28px',
   },
   span: {

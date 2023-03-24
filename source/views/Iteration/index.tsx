@@ -128,7 +128,7 @@ const Item = styled.div<{ activeIdx: boolean }>(
       borderBottom: activeIdx
         ? '2px solid var(--primary-d2)'
         : '2px solid white',
-      fontWeight: activeIdx ? 'bold' : 400,
+      fontFamily: activeIdx ? 'SiYuanMedium' : '',
     },
     div: {
       color: activeIdx ? 'white' : 'var(--primary-d2)',

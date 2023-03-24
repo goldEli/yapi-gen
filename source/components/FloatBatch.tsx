@@ -40,13 +40,13 @@ const boxItem = css`
   height: 52px;
   cursor: pointer;
   color: white;
-  border-radius: 12px;
+  /* border-radius: 12px; */
   div {
     font-size: 12px;
     font-weight: 400;
   }
   svg {
-    font-size: 20px;
+    font-size: 24px;
   }
   &:hover {
     background: rgba(255, 255, 255, 0.1);

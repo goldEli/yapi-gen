@@ -556,7 +556,6 @@ const ShowWrap = styled.div`
 
 const CategoryWrap = styled.div<{ color: string; bgColor: string }>(
   {
-    // minWidth: 86,
     height: 24,
     borderRadius: 6,
     display: 'inline-flex',
@@ -702,7 +701,7 @@ const StepBoxWrap = styled.div<{ active?: boolean }>(
   {
     display: 'flex',
     alignItems: 'center',
-    fontWeight: 500,
+    fontFamily: 'SiYuanMedium',
     fontSize: 14,
     '.circle': {
       color: 'white',

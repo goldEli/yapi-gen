@@ -34,7 +34,7 @@ const GanttWrap = styled.div({
   '.gantt_layout_cell, .gantt_scale_cell': {
     border: 'none!important',
     fontSize: '14px!important',
-    fontWeight: '500!important',
+    fontFamily: 'SiYuanMedium !important',
   },
   '.gantt_task_line.gantt_selected': {
     boxShadow: 'none',

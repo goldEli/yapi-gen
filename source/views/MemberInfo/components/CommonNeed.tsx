@@ -79,6 +79,7 @@ const SearchWrap = styled.div({
   alignItems: 'center',
   justifyContent: 'space-between',
   marginBottom: '20px',
+  borderBottom: '1px solid var(--neutral-n6-d1)',
 })
 
 const MainWrap = styled.div({
@@ -612,13 +613,20 @@ const CommonNeed = (props: any) => {
         />
       )}
       {!isMany && (
-        <ResizeTable
-          isSpinning={isSpin}
-          dataWrapNormalHeight="calc(100vh - 280px)"
-          col={selectColum}
-          dataSource={listData?.list}
-          noData={<NoData />}
-        />
+        <div
+          style={{
+            boxShadow: '0px 0px 7px 6px rgba(0,0,0,0.06)',
+            borderRadius: '6px',
+          }}
+        >
+          <ResizeTable
+            isSpinning={isSpin}
+            dataWrapNormalHeight="calc(100vh - 280px)"
+            col={selectColum}
+            dataSource={listData?.list}
+            noData={<NoData />}
+          />
+        </div>
       )}
 
       {isMany && (
