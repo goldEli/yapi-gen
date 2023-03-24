@@ -556,7 +556,6 @@ const ShowWrap = styled.div`
 
 const CategoryWrap = styled.div<{ color: string; bgColor: string }>(
   {
-    minWidth: 86,
     height: 24,
     borderRadius: 6,
     display: 'flex',

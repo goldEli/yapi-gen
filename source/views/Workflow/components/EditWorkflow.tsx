@@ -126,7 +126,10 @@ const EditWorkflow = (props: EditorProps) => {
                   key={i.id}
                 >
                   <>
-                    <img src={i.attachment_path} style={{ width: 20 }} />{' '}
+                    <img
+                      src={i.attachment_path}
+                      style={{ width: 20, marginRight: 4 }}
+                    />{' '}
                     {i.name}
                   </>
                 </CategoryWrap>
