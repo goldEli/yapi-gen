@@ -4,6 +4,7 @@ import dayjs from 'dayjs'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDragLayer, XYCoord } from 'react-dnd'
 import { oneHourHeight } from '../config'
+import { handleOffsetDistance } from '../utils'
 
 interface CustomDragLayerProps {}
 const Box = styled.div`
@@ -102,17 +103,22 @@ const CustomDragLayer: React.FC<CustomDragLayerProps> = props => {
 
   useEffect(() => {
     const { startTime, endTime } = schedule ?? {}
+    if (!startTime || !endTime || !delta) {
+      return
+    }
+    // const offsetTop = Math.round(delta?.y ?? 0)
+    // const offsetMinute = Math.floor(offsetTop / (oneHourHeight / 60))
 
-    const offsetTop = Math.round(delta?.y ?? 0)
-    const offsetMinute = Math.floor(offsetTop / (oneHourHeight / 60))
-
-    // 每次移动是15分钟的倍数
-    const step = Math.ceil(offsetMinute / 15)
-    const moveMinute = step * 15
-
-    console.log(step, 123)
-    setStartStr(dayjs(startTime).add(moveMinute, 'minute').format('hh:mm'))
-    setEndStr(dayjs(endTime).add(moveMinute, 'minute').format('hh:mm'))
+    // // 每次移动是15分钟的倍数
+    // const step = Math.ceil(offsetMinute / 15)
+    // const moveMinute = step * 15
+    const { newEndTime, newStartTime } = handleOffsetDistance(
+      startTime,
+      endTime,
+      delta,
+    )
+    setStartStr(newStartTime.format('hh:mm'))
+    setEndStr(newEndTime.format('hh:mm'))
   }, [schedule, delta])
 
   return (

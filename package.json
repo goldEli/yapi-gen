@@ -88,6 +88,7 @@
       ]
     },
     "rules": {
+      "@typescript-eslint/consistent-type-imports": 0,
       "@typescript-eslint/padding-line-between-statements": 0,
       "@typescript-eslint/indent": 0,
       "react/no-array-index-key": 0,

@@ -6,6 +6,7 @@ import React from 'react'
 import { useDrop } from 'react-dnd'
 import { dragItemTypes, oneHourHeight } from '../config'
 import CustomDragLayer from '../CustomDraglayer'
+import { handleOffsetDistance } from '../utils'
 
 interface DropAreaProps {
   children?: React.ReactNode
@@ -28,24 +29,15 @@ const DropArea: React.FC<DropAreaProps> = props => {
         }
         const { startTime, endTime } = schedule || {}
         const delta = monitor.getDifferenceFromInitialOffset()
-        const offsetTop = Math.round(delta?.y ?? 0)
-        const offsetMinute = Math.floor(offsetTop / (oneHourHeight / 60))
-
-        // 每次移动是15分钟的倍数
-        const step = Math.ceil(offsetMinute / 15)
-        const moveMinute = step * 15
-
-        const newStartTime = dayjs(startTime).add(moveMinute, 'minute')
-        const newEndTime = dayjs(endTime).add(moveMinute, 'minute')
-
-        console.log(
-          '{ delta }',
-          delta?.y,
-          offsetMinute,
-          dayjs(startTime).format('hh:mm:ss'),
-          newStartTime.format('hh:mm:ss'),
-          newEndTime.format('hh:mm:ss'),
+        if (delta === null) {
+          return
+        }
+        const { newStartTime, newEndTime } = handleOffsetDistance(
+          startTime,
+          endTime,
+          delta,
         )
+
         dispatch(
           setScheduleList({
             ...schedule,
