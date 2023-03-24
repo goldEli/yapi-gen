@@ -32,6 +32,7 @@ const Warp = styled.div<{ show?: boolean }>(
     height: 64,
     width: 200,
     transition: 'all .3s',
+    background: 'var(--neutral-white-d2)',
     cursor: 'pointer',
     '&: hover': {
       border: '1px solid var(--primary-d1) !important',

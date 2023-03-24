@@ -123,7 +123,6 @@ const SliderList = (props: any) => {
       // 开始拖拽
       // setIsDragging(true)
       setZIndex(1)
-
       // 记录开始位置
       startY = ev.clientY
     }

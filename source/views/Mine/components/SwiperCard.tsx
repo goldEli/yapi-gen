@@ -33,6 +33,7 @@ const Warp = styled.div<{ show?: boolean }>(
     width: 200,
     transition: 'all .3s',
     cursor: 'pointer',
+    background: 'var(--neutral-white-d2)',
     '&: hover': {
       border: '1px solid var(--primary-d1) !important',
       [DropdownWrap.toString()]: {
