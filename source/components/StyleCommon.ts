@@ -690,7 +690,6 @@ const ExpendedWrap = styled(IconFont)({
   color: 'var( --neutral-n4)',
   fontSize: 16,
   cursor: 'pointer',
-  background: 'white',
   zIndex: 1,
   '&: hover': {
     color: 'var(--primary-d1)',
