@@ -155,13 +155,10 @@ const DemandTree = (props: Props) => {
     props.onUpdateTopId?.(item.topId)
     let demandIds: any = []
     if (item.parentId) {
-      // 先拿到顶级数据
       const currentDemandTop = props.data?.list?.filter(
         (i: any) => i.id === item.topId,
       )?.[0]
-      demandIds = currentDemandTop.allChildrenIds
-        ?.filter((i: any) => i.parent_id === item.parentId)
-        ?.map((k: any) => k.id)
+      demandIds = currentDemandTop.children?.map((k: any) => k.id)
     } else {
       demandIds = props.data?.list?.map((i: any) => i.id)
     }
@@ -231,6 +228,7 @@ const DemandTree = (props: Props) => {
         isChild: true,
         parentId: item.id,
         categoryId: item.categoryId,
+        iterateId: item.iterateId,
       }),
     )
   }

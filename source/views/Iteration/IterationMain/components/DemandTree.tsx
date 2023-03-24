@@ -169,12 +169,12 @@ const DemandTree = (props: Props) => {
       const currentDemandTop = props.data?.list?.filter(
         (i: any) => i.id === item.topId,
       )?.[0]
-      demandIds = currentDemandTop.allChildrenIds
-        ?.filter((i: any) => i.parent_id === item.parentId)
-        ?.map((k: any) => k.id)
+      demandIds = currentDemandTop.children?.map((k: any) => k.id)
     } else {
       demandIds = props.data?.list?.map((i: any) => i.id)
     }
+
+    console.log(demandIds, '222222')
 
     openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id)
   }
@@ -240,6 +240,7 @@ const DemandTree = (props: Props) => {
         isChild: true,
         parentId: item.id,
         categoryId: item.categoryId,
+        iterateId: item.iterateId,
       }),
     )
   }
