@@ -37,10 +37,11 @@ const boxItem = css`
   flex-direction: column;
   justify-content: center;
   padding: 0 12px;
+  width: 52px;
   height: 52px;
   cursor: pointer;
   color: white;
-  /* border-radius: 12px; */
+  border-radius: 12px;
   div {
     font-size: 12px;
     font-weight: 400;
