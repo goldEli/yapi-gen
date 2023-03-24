@@ -87,6 +87,7 @@ const EditorCategory = (props: EditorProps) => {
   }
 
   const onConfirm = async (props: any) => {
+    console.log('ces')
     await form.validateFields()
     if (!form.getFieldValue('color')) {
       message.warning(t('newlyAdd.pleaseChooseColor'))
