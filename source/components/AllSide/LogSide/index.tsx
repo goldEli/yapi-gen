@@ -203,7 +203,6 @@ const LogSide = () => {
           height: '24px',
           padding: '24px',
           margin: '10px 0',
-          // cursor: 'pointer',
         }}
       >
         <span

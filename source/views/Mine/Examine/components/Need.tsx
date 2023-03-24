@@ -58,7 +58,6 @@ const SearchWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',
-  // position: 'relative',
   marginRight: '24px',
 })
 
