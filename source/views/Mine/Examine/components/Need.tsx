@@ -202,7 +202,7 @@ const Need = (props: any) => {
       )}
       <div
         style={{
-          margin: '0 24px',
+          margin: '0 16px',
           display: 'flex',
           width: '100%',
           justifyContent: 'space-between',
@@ -250,7 +250,7 @@ const Need = (props: any) => {
 
       <div>
         <LoadingSpin spinning={isSpin}>
-          <div>
+          <div style={{ paddingLeft: 16 }}>
             {listData?.list && listData?.list?.length > 0 && (
               <ResizeTable
                 isSpinning={false}
