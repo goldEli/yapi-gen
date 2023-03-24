@@ -48,7 +48,7 @@ const ItemWrap = styled.div<{ notMargin?: boolean }>(
 const ChooseWrap = styled.div({
   marginTop: 8,
   borderRadius: 6,
-  background: 'var(--neutral-n6-d1)',
+  background: 'var(--neutral-n8)',
   padding: 16,
 })
 
