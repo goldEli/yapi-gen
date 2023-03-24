@@ -14,6 +14,8 @@ const Box = styled.div`
   background: var(--primary-d1);
   border-radius: 6px 6px 6px 6px;
   position: fixed;
+  box-sizing: border-box;
+  padding: 0 4px;
   pointer-events: none;
   z-index: 100;
   min-height: 20px;
