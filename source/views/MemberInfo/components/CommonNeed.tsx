@@ -615,7 +615,7 @@ const CommonNeed = (props: any) => {
       {!isMany && (
         <div
           style={{
-            boxShadow: '0px 0px 7px 6px rgba(0,0,0,0.06)',
+            // boxShadow: '0px 0px 7px 6px rgba(0,0,0,0.06)',
             borderRadius: '6px',
           }}
         >

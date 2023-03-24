@@ -504,6 +504,7 @@ const CommonNeed = (props: any) => {
           justifyContent: 'space-between',
           display: 'flex',
           borderBottom: '1px solid var(--neutral-n6-d1)',
+          // paddingLeft: '24px',
         }}
       >
         <div

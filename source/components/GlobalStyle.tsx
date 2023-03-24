@@ -208,7 +208,9 @@ const GlobalStyle = () => {
     .ant-checkbox-inner {
       border-radius: 4px !important;
     }
-
+    .ant-timeline-item-tail {
+      border-left: 2px solid var(--neutral-n6-d2);
+    }
     .react-viewer-transition {
       transition: inherit !important;
     }
