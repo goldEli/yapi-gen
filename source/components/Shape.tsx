@@ -929,7 +929,7 @@ export const ShapeContent = (props: any) => {
                   style={{
                     fontSize: '50px',
                     margin: '0 8px',
-                    color: 'var(--neutral-n5)',
+                    color: 'var(--neutral-n4)',
                   }}
                   type="flow"
                 />

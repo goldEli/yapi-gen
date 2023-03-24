@@ -42,7 +42,7 @@ const Examine = () => {
   }
   return (
     <MainWrap>
-      <div style={{ paddingLeft: 16 }}>
+      <div>
         <MineSwiper data={swiperData} onTap={getProjectId} />
       </div>
       <Need projectId={projectId} onChangeType={(val: any) => setType(val)} />

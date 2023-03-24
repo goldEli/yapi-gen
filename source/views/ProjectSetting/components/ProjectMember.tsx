@@ -285,6 +285,14 @@ const ProjectMember = (props: { searchValue?: string }) => {
 
   const columns = [
     {
+      title: '',
+      dataIndex: 'name',
+      width: 10,
+      render: (text: string, record: any) => {
+        return hasDel && hasEdit ? null : <MoreDropdown menu={menu(record)} />
+      },
+    },
+    {
       title: (
         <NewSort
           fixedKey="nickname"
@@ -300,7 +308,6 @@ const ProjectMember = (props: { searchValue?: string }) => {
       render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            {hasDel && hasEdit ? null : <MoreDropdown menu={menu(record)} />}
             {record.avatar ? (
               <img
                 src={record.avatar}

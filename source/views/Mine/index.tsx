@@ -11,7 +11,7 @@ const Title = styled.div`
   font-family: siyuanmedium;
   color: var(--neutral-n1-d1);
   line-height: 32px;
-  margin: 20px 16px 20px 16px;
+  margin: 20px 16px 20px 24px;
   margin-bottom: 0px;
 `
 
