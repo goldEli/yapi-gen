@@ -89,6 +89,9 @@ const SliderList = (props: any) => {
   const animationRef: any = React.useRef(null)
   const [t] = useTranslation()
   const { option } = useSelector(store => store.category)
+  const [isMove, setIsMove] = React.useState(false)
+  let firstTime: number
+  let lastTime: number
   useEffect(() => {
     // 始终保持最新状态 Ref 引用
     indexRef.current = index
@@ -133,6 +136,8 @@ const SliderList = (props: any) => {
     const mouseUp = (ev: any) => {
       ev.preventDefault()
       ev.stopPropagation()
+      lastTime = new Date().getTime()
+      setIsMove(lastTime - firstTime > 200)
       document.removeEventListener('mousemove', mouseMove)
       // 重置 Top
       setTop(0)
@@ -146,6 +151,7 @@ const SliderList = (props: any) => {
     const mouseDown = (ev: any) => {
       ev.preventDefault()
       ev.stopPropagation()
+      firstTime = new Date().getTime()
       clearTimeout(delayedSetZIndexTimeoutId)
       // 注册事件
       document.addEventListener('mousemove', mouseMove)
@@ -199,6 +205,7 @@ const SliderList = (props: any) => {
       200,
     )
   }, [index, isDragging])
+  // !isMove ? props.onClick : undefined
   return (
     <Container
       ref={ref}
@@ -208,6 +215,7 @@ const SliderList = (props: any) => {
         position: 'relative',
         zIndex: zIndex.toString(),
       }}
+      onClick={() => !isMove && props.onClickFn()}
     >
       {child.isCustomize === 2 ? (
         <Tooltip
@@ -346,14 +354,7 @@ const Sortable = (props: any) => {
       )}
       {list?.length >= 1 &&
         list?.map((child: any, i: number) => (
-          <div
-            key={child.id}
-            onDrop={(event: any) => props.onDrop(event, i)}
-            onClick={(event: any) => {
-              event.stopPropagation(),
-                child.isCustomize === 1 && props.onClick(i, child)
-            }}
-          >
+          <div key={child.id} onDrop={(event: any) => props.onDrop(event, i)}>
             <SliderList
               key={child.id}
               index={i}
@@ -370,6 +371,9 @@ const Sortable = (props: any) => {
                 newList.splice(nextIndex, 0, newList.splice(prevIndex, 1)[0])
                 setList(newList)
                 props.onMove(newList)
+              }}
+              onClickFn={() => {
+                child.isCustomize === 1 && props.onClick(i, child)
               }}
             >
               {child.children}

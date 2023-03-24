@@ -50,7 +50,7 @@ const IconFontStyle = styled(IconFont)({
 })
 const SliderList = (props: any) => {
   const [t] = useTranslation()
-  const { children, index } = props
+  const { children } = props
   const [top, setTop] = useState(0)
   const [left, setLeft] = useState(0)
   const [isVisible, setIsVisible] = useState(false)

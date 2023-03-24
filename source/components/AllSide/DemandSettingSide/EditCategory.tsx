@@ -19,6 +19,7 @@ import {
 } from '@/services/project'
 import { useSearchParams } from 'react-router-dom'
 import { uploadFileByTask } from '@/services/cos'
+import { DelButton } from '@/components/StyleCommon'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -95,8 +96,10 @@ const EditorCategory = (props: EditorProps) => {
     const params = form.getFieldsValue()
     params.projectId = paramsData.id
     params.id = props?.item?.id
-    const attachment_id = colorList.find((item: any) => item.path === path).path
-    params.attachment_id = attachment_id
+    const attachment_id = colorList.find(
+      (item: any) => item.path === path,
+    )?.path
+    params.attachment_id = attachment_id ? attachment_id : path
     if (props?.type === 'edit') {
       try {
         await updateStoryConfigCategory(params)
