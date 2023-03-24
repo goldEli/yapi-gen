@@ -535,22 +535,33 @@ const DemandTree = (props: Props) => {
     }
   }, [data?.list])
 
+  // 获取所有的子级
+  const getAllItems = (childrenList: any = [], arr: any = []) => {
+    childrenList?.forEach((element: any) => {
+      arr.push(element)
+      if (element.children && element.children.length)
+        getAllItems(element.children, arr)
+    })
+    return arr
+  }
+
   // 需求勾选
   const onSelectChange = (record: any, selected: any) => {
     const resultKeys = selected
       ? [...selectedRowKeys, ...[record], ...(record.allChildrenIds || [])]
       : selectedRowKeys?.filter((i: any) => i.id !== record.id)
-    setSelectedRowKeys([...new Set(resultKeys)])
-    onOperationCheckbox('add', [...new Set(resultKeys)])
+    const map = new Map()
+    const newArr = resultKeys.filter(
+      (v: any) => !map.has(v.id) && map.set(v.id, 1),
+    )
+    setSelectedRowKeys([...new Set(newArr)])
+    onOperationCheckbox('add', [...new Set(newArr)])
   }
 
   // 全选
   const onSelectAll = (selected: any) => {
     if (selected) {
-      let childKeys: any = []
-      data?.list?.forEach((element: any) => {
-        childKeys = [...childKeys, ...[element], ...element.allChildrenIds]
-      })
+      const childKeys: any = getAllItems(data?.list)
       setSelectedRowKeys([...new Set(childKeys)])
       onOperationCheckbox('add', [...new Set(childKeys)])
     } else {
