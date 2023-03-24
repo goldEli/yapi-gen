@@ -35,11 +35,11 @@ const PriorityWrap = styled.div<{ isShow?: boolean }>(
     '.icon': {
       marginLeft: 8,
       visibility: 'hidden',
-      fontSize: 16,
+      fontSize: 14,
       color: 'var(--primary-d2)',
     },
     '.priorityIcon': {
-      fontSize: 16,
+      fontSize: 14,
     },
   },
   ({ isShow }) => ({

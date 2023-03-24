@@ -41,6 +41,7 @@ export const Name = styled.span`
 `
 
 export const dropdowncontent = css`
+  border-radius: 6px;
   padding: 5px 0;
   cursor: pointer;
   background: var(--neutral-white-d2);
