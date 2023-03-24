@@ -59,6 +59,7 @@ const SearchWrap = styled.div({
   alignItems: 'center',
   justifyContent: 'flex-end',
   // position: 'relative',
+  marginRight: '24px',
 })
 
 const Need = (props: any) => {
@@ -208,10 +209,10 @@ const Need = (props: any) => {
         style={{
           // margin: '0 24px',
           display: 'flex',
-          width: '100%',
+          width: 'calc(100% - 24px)',
           justifyContent: 'space-between',
           borderBottom: '1px solid var(--neutral-n6-d1)',
-          padding: '0 24px',
+          marginLeft: '24px',
         }}
       >
         <div
