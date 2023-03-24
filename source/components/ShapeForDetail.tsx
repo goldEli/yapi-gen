@@ -514,7 +514,7 @@ const ShapeContentForDetail = (props: any) => {
     })
 
     if (type === 1) {
-      return newA[0].label
+      return newA[0]?.label
     }
     if (type === 2) {
       const newC = a.filter((j: any) => {
