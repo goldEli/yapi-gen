@@ -690,7 +690,6 @@ const ExpendedWrap = styled(IconFont)({
   color: 'var( --neutral-n4)',
   fontSize: 16,
   cursor: 'pointer',
-  background: 'white',
   zIndex: 1,
   '&: hover': {
     color: 'var(--primary-d1)',
@@ -770,9 +769,9 @@ const TabsItem = styled.div<{ isActive: boolean }>(
   },
   ({ isActive }) => ({
     div: {
-      color: String(isActive ? 'var(--primary-d2)' : 'var(--neutral-n1-d1)'),
+      color: String(isActive ? 'var(--primary-d1)' : 'var(--neutral-n1-d1)'),
       borderBottom: `3px solid ${
-        isActive ? 'var(--primary-d2)' : 'var(--neutral-white-d2)'
+        isActive ? 'var(--primary-d1)' : 'var(--neutral-white-d2)'
       }`,
     },
   }),

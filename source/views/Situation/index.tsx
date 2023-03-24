@@ -17,7 +17,7 @@ import { getGlobalGeneral } from '@/services/user'
 const Wrap = styled.div`
   box-sizing: border-box;
   padding: 24px;
-  background-color: var(--white-d2);
+  background-color: var(--neutral-white-d2);
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
