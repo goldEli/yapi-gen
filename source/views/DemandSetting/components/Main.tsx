@@ -116,7 +116,7 @@ const Main = (props: any) => {
       isCustomize: 1,
       storyId: item.id,
       is_required: 2,
-      is_fold: draggingIndex === 1 ? 1 : 2,
+      is_fold: configType === 1 ? 1 : 2,
     }
     if (configType === 1) {
       const arrData = Array.from(getCategoryConfigF)
@@ -257,7 +257,7 @@ const Main = (props: any) => {
       {moreIcon && (
         <TabsDragging
           state={2}
-          onClick={(i: any, child: any) => tabsDraggingOnClcik(1, i, child)}
+          onClick={(i: any, child: any) => tabsDraggingOnClcik(2, i, child)}
           onDrop={(event: any, index: any) => onDrop(2, event, index)}
           onMove={(data: any) => onMove(2, data)}
           list={getCategoryConfigT}

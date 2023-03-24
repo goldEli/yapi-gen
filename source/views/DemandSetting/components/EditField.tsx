@@ -247,7 +247,7 @@ const EditFiled = (props: Props) => {
       },
     }
 
-    if (props?.item?.id) {
+    if (props?.item?.storyId) {
       try {
         obj.id = props?.item?.storyId
         const res: any = await updateStoryConfigField(obj)
