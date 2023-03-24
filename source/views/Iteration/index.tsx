@@ -132,7 +132,7 @@ const Item = styled.div<{ activeIdx: boolean }>(
     },
     div: {
       color: activeIdx ? 'white' : 'var(--primary-d2)',
-      background: activeIdx ? 'var(--primary-d2)' : 'var(--selected)',
+      background: activeIdx ? 'var(--primary-d2)' : 'var(--function-tag5)',
     },
   }),
 )
