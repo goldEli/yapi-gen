@@ -352,7 +352,7 @@ const EditExamine = (props: Props) => {
             color: 'var(--neutral-n1-d1)',
             fontSize: 14,
             marginBottom: 16,
-            fontWeight: 500,
+            fontFamily: 'SiYuanMedium',
           }}
         >
           {t('newlyAdd.reviewProcess')}

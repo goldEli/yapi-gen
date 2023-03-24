@@ -99,7 +99,7 @@ const MineSide = () => {
           style={{
             height: '22px',
             fontSize: '14px',
-            fontWeight: 500,
+            fontFamily: 'SiYuanMedium',
             color: 'var(--neutral-n1-d1)',
             lineHeight: '22px',
           }}

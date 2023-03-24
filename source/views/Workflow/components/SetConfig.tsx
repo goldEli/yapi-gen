@@ -820,7 +820,7 @@ const SetConfig = (props: Props) => {
               style={{
                 color: 'var(--neutral-n1-d1)',
                 fontSize: 14,
-                fontWeight: 500,
+                fontFamily: 'SiYuanMedium',
               }}
             >
               {t('newlyAdd.reviewPermission')}
@@ -944,7 +944,7 @@ const SetConfig = (props: Props) => {
               style={{
                 color: 'var(--neutral-n1-d1)',
                 fontSize: 14,
-                fontWeight: 500,
+                fontFamily: 'SiYuanMedium',
               }}
             >
               {t('newlyAdd.reviewFields')}

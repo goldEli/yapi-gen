@@ -701,7 +701,7 @@ const StepBoxWrap = styled.div<{ active?: boolean }>(
   {
     display: 'flex',
     alignItems: 'center',
-    fontWeight: 500,
+    fontFamily: 'SiYuanMedium',
     fontSize: 14,
     '.circle': {
       color: 'white',

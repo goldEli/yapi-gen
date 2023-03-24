@@ -94,7 +94,7 @@ const CardItem = styled.div({
   div: {
     fontSize: 28,
     color: 'var(--neutral-n1-d1)',
-    fontWeight: 500,
+    fontFamily: 'SiYuanMedium',
     lineHeight: '28px',
   },
   span: {

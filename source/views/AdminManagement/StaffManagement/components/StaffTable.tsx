@@ -168,13 +168,17 @@ export const useDynamicColumns = (state: any) => {
         record: Record<string, string | number>,
       ) => {
         return (
-          <div onClick={() => state.showModal2(record)}>
+          <div
+            style={{ display: 'flex', alignItems: 'center' }}
+            onClick={() => state.showModal2(record)}
+          >
             <span
               style={{
                 display: 'inline-block',
                 width: 8,
                 height: 8,
                 borderRadius: '50%',
+                marginRight: 8,
                 background:
                   text === 1 ? 'var(--function-success)' : 'var(--neutral-n5)',
               }}
@@ -194,12 +198,16 @@ export const useDynamicColumns = (state: any) => {
         record: Record<string, string | number>,
       ) => {
         return (
-          <div onClick={() => state.showModal2(record)}>
+          <div
+            style={{ display: 'flex', alignItems: 'center' }}
+            onClick={() => state.showModal2(record)}
+          >
             <span
               style={{
                 display: 'inline-block',
                 width: 8,
                 height: 8,
+                marginRight: 8,
                 borderRadius: '50%',
                 background:
                   text === 1 ? 'var(--function-success)' : 'var(--neutral-n5)',

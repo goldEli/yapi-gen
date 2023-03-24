@@ -46,7 +46,7 @@ const TitleWrap = styled.div({
   whiteSpace: 'nowrap',
   fontSize: 14,
   color: 'var(--neutral-n1-d2)',
-  fontWeight: 500,
+  fontFamily: 'SiYuanMedium',
 })
 
 const TreeBox = styled.div`

@@ -59,7 +59,7 @@ const LabelWrap = styled.div({
   marginBottom: 24,
   span: {
     // marginLeft: 8,
-    fontWeight: 500,
+    fontFamily: 'SiYuanMedium',
     fontSize: 14,
     color: 'var(--neutral-n1-d1)',
   },
