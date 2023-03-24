@@ -13,13 +13,13 @@ import { t } from 'i18next'
 const Container = styled.div`
   width: 320px;
   max-height: calc(100vh - 120px);
-  background-color: var(--neutral-white-d6);
+  background-color: var(--neutral-white-d5);
   box-shadow: 0px 7px 13px 0px rgba(0, 0, 0, 0.1);
   border-radius: 6px;
 `
 const HeraderTabs = styled.div`
   width: 100%;
-  background-color: var(--neutral-white-d6);
+  background-color: var(--neutral-white-d5);
   padding: 16px;
   border-radius: 6px 6px 0 0;
 `
@@ -35,7 +35,7 @@ const Tabs = styled.div`
   font-size: 12px;
   font-weight: 400;
   .tabsActive {
-    background-color: var(--neutral-white-d6);
+    background-color: var(--neutral-white-d5);
     color: var(--primary-d2);
   }
   span {
@@ -135,7 +135,7 @@ const BtnBox = styled.div`
 const Border = styled.div`
   margin: 0 16px;
   text-align: center;
-  border-bottom: 1px solid var(--neutral-n6-d1);
+  border-bottom: 1px solid var(--neutral-n6-d2);
 `
 
 const Img = styled.img`
