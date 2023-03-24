@@ -113,6 +113,7 @@ const IconFontStyle = styled(IconFont)({
   right: 0,
   top: 0,
   fontSize: 22,
+  color: 'var(--neutral-n3)',
 })
 const IconFontStyle1 = styled(IconFont)({
   position: 'absolute',

@@ -29,7 +29,7 @@ const ItemList = styled.div`
   align-items: center;
   flex: 1;
   height: 64px;
-  background: var(--neutral-n8);
+  background: var(--hover-d2);
   padding: 0 16px;
   border-radius: 6px;
   justify-content: space-between;
@@ -55,7 +55,7 @@ const RightOperate = styled.div`
   font-size: 14px;
 `
 const Text = styled.span`
-  color: var(--neutral-n3);
+  color: var(--neutral-n4);
   margin-left: 8px;
   margin-right: 24px;
 `
@@ -224,7 +224,7 @@ const SliderList = (props: any) => {
                     )?.icon
                   }
                   size={24}
-                  color="var(--neutral-n1-d1)"
+                  color="var(--neutral-n2-d2)"
                 />
               </IconBox>
               <ListMsg>
