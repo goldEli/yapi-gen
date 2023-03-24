@@ -125,10 +125,11 @@ const EditWorkflow = (props: EditorProps) => {
                   bgColor="var(--neutral-n8)"
                   key={i.id}
                 >
-                  <>
-                    <img src={i.attachment_path} style={{ width: 20 }} />{' '}
-                    {i.name}
-                  </>
+                  <img
+                    src={i.attachment_path}
+                    style={{ width: 20, height: 20, marginRight: '4px' }}
+                  />
+                  <span>{i.name}</span>
                 </CategoryWrap>
               ))}
             </Space>

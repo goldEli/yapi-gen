@@ -190,7 +190,11 @@ const Need = (props: any) => {
   }
 
   return (
-    <>
+    <div
+      style={{
+        width: '100%',
+      }}
+    >
       {isVisible && (
         <EditExamine
           isVisible={isVisible}
@@ -202,14 +206,20 @@ const Need = (props: any) => {
       )}
       <div
         style={{
-          margin: '0 24px',
           display: 'flex',
           width: '100%',
           justifyContent: 'space-between',
           borderBottom: '1px solid var(--neutral-n6-d1)',
+          padding: '0 24px 0 24px',
         }}
       >
-        <div style={{ width: '100%', display: 'flex', alignItems: 'center' }}>
+        <div
+          style={{
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
           <TabsItem isActive={!activeTab} onClick={() => onChangeTab(0)}>
             <div>{t('newlyAdd.needMineExamine')}</div>
           </TabsItem>
@@ -271,7 +281,7 @@ const Need = (props: any) => {
           onChange={onChangePage}
         />
       )}
-    </>
+    </div>
   )
 }
 

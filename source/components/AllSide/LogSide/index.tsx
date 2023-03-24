@@ -21,18 +21,18 @@ const Menu = styled.div`
     margin-left: 16px;
   }
 `
-const MySpan = styled.div`
+export const MySpan = styled.div`
   cursor: pointer;
   width: 24px;
   height: 24px;
-
+  color: var(--neutral-n2);
   border-radius: 6px 6px 6px 6px;
   display: flex;
   align-items: center;
   justify-content: center;
   &:hover {
     background: var(--hover-d1);
-    color: var(--primary-d1);
+    color: var(--neutral-n1-d1);
   }
 `
 const MenuItem = styled.div<{ active?: any }>(
