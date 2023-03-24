@@ -22,7 +22,7 @@ const RightWrap = styled.div({
   overflow: 'auto',
   width: 406,
   padding: '0px 14px 0 24px',
-  borderLeft: '1px solid var(--neutral-n6-d1)',
+  borderLeft: '1px solid var(--neutral-n6-d2)',
 })
 
 const ShowLabel = styled.div({
