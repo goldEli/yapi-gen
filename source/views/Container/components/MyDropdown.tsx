@@ -68,7 +68,7 @@ const Footer = styled.div`
     padding-left: 24px;
   }
   > div:hover {
-    background-color: var(--hover-d2);
+    background-color: var(--hover-d3);
     cursor: pointer;
   }
 `

@@ -32,7 +32,7 @@ const Footer = styled.div`
   color: var(--neutral-n1-d2);
   margin: 8px 0;
   & div:hover {
-    background-color: var(--hover-d2);
+    background-color: var(--hover-d3);
     cursor: pointer;
   }
   & div {
