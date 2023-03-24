@@ -86,7 +86,7 @@ interface Props {
   item?: any
   fieldType?: any
   onInsert(val: any): void
-  onEditUpdate(): void
+  onEditUpdate(val: any): void
 }
 
 const DragHandle = sortableHandle(() => (
@@ -253,7 +253,7 @@ const EditFiled = (props: Props) => {
         const res: any = await updateStoryConfigField(obj)
         message.success(t('common.editSuccess'))
         onReset()
-        props.onEditUpdate()
+        res.data.res && props.onEditUpdate(res.data.res)
       } catch (error) {
         //
       }

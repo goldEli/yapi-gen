@@ -56,14 +56,16 @@ const ScrollWrap = styled.div`
   overflow-y: auto;
 `
 const Footer = styled.div`
-  width: 100%;
-  height: 52px;
-  line-height: 52px;
-  border-radius: 0px 0px 6px 6px;
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--neutral-n1-d2);
-  /* margin: 8px 0px; */
+  div:nth-child(1) {
+    height: 52px;
+    width: 100%;
+    line-height: 52px;
+    border-radius: 0px 0px 6px 6px;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--neutral-n1-d2);
+  }
+  padding-bottom: 8px;
   > div {
     padding-left: 24px;
   }
