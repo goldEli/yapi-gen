@@ -36,7 +36,7 @@ const PriorityWrap = styled.div<{ isShow?: boolean }>(
       marginLeft: 8,
       visibility: 'hidden',
       fontSize: 14,
-      color: 'var(--primary-d2)',
+      color: 'var(--neutral-n4)',
     },
     '.priorityIcon': {
       fontSize: 14,
