@@ -46,7 +46,7 @@ const IconFontStyle = styled(IconFont)({
 const Tabs = styled.div`
   height: 24px;
   border-radius: 4px;
-  margin: 16px 0;
+  margin: 16px;
   font-size: 12px;
   font-weight: 400;
   color: var(--neutral-n3);

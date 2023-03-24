@@ -558,7 +558,7 @@ const CategoryWrap = styled.div<{ color: string; bgColor: string }>(
   {
     height: 24,
     borderRadius: 6,
-    display: 'flex',
+    display: 'inline-flex',
     padding: '0 8px',
     marginRight: 8,
     lineHeight: '22px',

@@ -20,6 +20,7 @@ import { setFilterKeys } from '@store/project'
 import { saveValue } from '@store/view'
 import MoreSelect from './MoreSelect'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
+import { MySpan } from './AllSide/LogSide'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -121,10 +122,7 @@ const PopoverWrap = styled(Popover)({
 })
 const IconFontStyle = styled(IconFont)({
   fontSize: 20,
-  color: 'var(--neutral-n4)',
-  '&:hover': {
-    color: 'var(--primary-d2)',
-  },
+  // color: 'var(--neutral-n4)',
 })
 export const NumericInput = (props: any) => {
   const [t] = useTranslation()
@@ -598,15 +596,13 @@ const TableFilter = (props: any) => {
             trigger={['click']}
             getPopupContainer={node => node}
           >
-            <div
+            <MySpan
               style={{
-                display: 'flex',
-                alignItems: 'center',
-                cursor: 'pointer',
+                marginTop: '4px',
               }}
             >
               <IconFontStyle type="plus-square" />
-            </div>
+            </MySpan>
           </PopoverWrap>
           <ClearForm onClick={onClearForm}>
             <span

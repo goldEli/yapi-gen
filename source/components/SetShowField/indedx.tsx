@@ -67,6 +67,7 @@ const SetShowField = (props: Props) => {
           key: '1',
           label: (
             <ChangeItem
+              height={22}
               onClick={() => onChangeViewMode(1)}
               isActive={
                 active === '1' || userPreferenceConfig.previewModel === 1
@@ -83,6 +84,7 @@ const SetShowField = (props: Props) => {
           key: '2',
           label: (
             <ChangeItem
+              height={22}
               onClick={() => onChangeViewMode(2)}
               isActive={
                 active === '2' || userPreferenceConfig.previewModel === 2

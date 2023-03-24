@@ -71,6 +71,7 @@ const FilterWrap = styled(Form)({
   display: 'flex',
   minHeight: 64,
   alignItems: 'center',
+  borderBottom: '1px solid var(--neutral-n6-d1)',
 })
 
 const SearchWrap = styled(Space)({
@@ -90,7 +91,7 @@ const NameWrap = styled.span({
   lineHeight: '32px',
   background: '#A4ACF5',
   color: 'white',
-  marginLeft: 32,
+  // marginLeft: 32,
 })
 
 const NewSort = (sortProps: any) => {
@@ -295,7 +296,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
         </NewSort>
       ),
       dataIndex: 'nickname',
-      width: 240,
+      width: 210,
       render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -305,7 +306,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
                 src={record.avatar}
                 alt=""
                 style={{
-                  marginLeft: 32,
+                  // marginLeft: 32,
                   width: 32,
                   height: 32,
                   borderRadius: '50%',

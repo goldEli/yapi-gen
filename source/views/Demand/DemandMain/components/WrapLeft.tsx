@@ -42,7 +42,7 @@ const Left = styled.div`
 `
 
 const TitleWrap = styled.div({
-  paddingLeft: '15px',
+  // paddingLeft: '15px',
   whiteSpace: 'nowrap',
   fontSize: 14,
   color: 'var(--neutral-n1-d2)',

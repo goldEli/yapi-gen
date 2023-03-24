@@ -200,7 +200,7 @@ const MoreProjectSide = (props: Props) => {
         onClose={() => onClose('edit')}
         onConfirm={onConfirm}
       >
-        <Form form={form} layout="vertical" style={{ padding: '24px' }}>
+        <Form form={form} layout="vertical" style={{ padding: ' 0 24px' }}>
           <Form.Item
             label={t('version2.groupName')}
             name="name"
@@ -212,7 +212,7 @@ const MoreProjectSide = (props: Props) => {
           >
             <Input
               placeholder={t('version2.pleaseGroupName')}
-              autoComplete="off"
+              // autoComplete="off"
               maxLength={10}
               autoFocus
               allowClear

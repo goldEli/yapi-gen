@@ -11,7 +11,7 @@ import { getMineProjectList } from '@/services/mine'
 const MainWrap = styled.div({
   height: 'calc(100% - 190px)',
   // overflow: 'auto',
-  padding: '0px  16px',
+  padding: '0px  0px',
 })
 
 interface Props {

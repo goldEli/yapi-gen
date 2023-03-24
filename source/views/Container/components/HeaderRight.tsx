@@ -1,3 +1,4 @@
+/* eslint-disable no-negated-condition */
 /* eslint-disable react/jsx-no-leaked-render */
 import CommonIconFont from '@/components/CommonIconFont'
 import CommonModal from '@/components/CommonModal'
@@ -359,7 +360,7 @@ const HeaderRight = () => {
                     {userInfo.avatar ? (
                       <img className={imgCss} src={userInfo.avatar} />
                     ) : (
-                      <UserAvatar />
+                      <CommonUserAvatar size="large" />
                     )}
                   </PersonalHead>
                 )}

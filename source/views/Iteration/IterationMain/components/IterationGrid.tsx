@@ -19,7 +19,7 @@ import CreateDemandButton from './CreateDemandButton'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 
 const Content = styled.div({
-  padding: 16,
+  paddingBottom: 24,
 })
 
 const StatusItemsWrap = styled.div({
