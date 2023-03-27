@@ -89,6 +89,7 @@ export const ProjectCard = styled.div`
   opacity: 1;
   display: flex;
   gap: 16px;
+  cursor: pointer;
   transition: all 0.3s;
   &:hover {
     background-color: var(--neutral-white-d4);

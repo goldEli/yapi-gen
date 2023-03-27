@@ -70,7 +70,7 @@ const TableTitle = styled.div({
   span: {
     borderLeft: '3px solid var(--primary-d2)',
     paddingLeft: 6,
-    lineHeight: '20px',
+    lineHeight: '16px',
   },
 })
 
@@ -85,7 +85,7 @@ const SearchWrap = styled.div({
 const MainWrap = styled.div({
   height: 'calc(100vh - 128px)',
   overflow: 'scroll',
-  padding: ' 0 16px',
+  padding: ' 0 24px',
   '.ant-spin-nested-loading': {
     // height: 'initial',
   },
@@ -656,14 +656,20 @@ const CommonNeed = (props: any) => {
                         {item.status_name}（{item.list.length}）
                       </span>
                     </TableTitle>
-
-                    <ResizeTable
-                      isSpinning={false}
-                      dataWrapNormalHeight="calc(100vh - 460px)"
-                      col={selectColum}
-                      dataSource={item?.list}
-                      noData={<NoData />}
-                    />
+                    <div
+                      style={{
+                        boxShadow: '0px 0px 9px 3px rgba(0,0,0,0.03)',
+                        borderRadius: '6px',
+                      }}
+                    >
+                      <ResizeTable
+                        isSpinning={false}
+                        dataWrapNormalHeight="calc(100vh - 460px)"
+                        col={selectColum}
+                        dataSource={item?.list}
+                        noData={<NoData />}
+                      />
+                    </div>
                   </div>
                 ))}
               </div>

@@ -212,7 +212,6 @@ export const NoDataCreateWrap = styled.div({
   marginTop: 8,
   minHeight: 68,
   borderRadius: 6,
-  background: 'var(--neutral-n6-d1)',
   padding: '8px 12px',
   '.top': {
     display: 'flex',

@@ -29,7 +29,8 @@ const Wrap = styled.div({
 })
 
 const SetTitleWrap = styled.div({
-  marginBottom: 16,
+  margin: '8px 24px 20px 8px',
+
   display: 'flex',
   alignItems: 'center',
   fontSize: 12,
@@ -166,6 +167,7 @@ const Workflow = () => {
     >
       <Wrap>
         <SetBreadcrumb />
+
         <ContentWrap>
           <LabelWrap>
             <span>{t('newlyAdd.workflowSet')}</span>

@@ -34,9 +34,10 @@ const ItemList = styled.div`
   border-radius: 6px;
   justify-content: space-between;
   z-index: 999;
+  transition: all 0.3s;
   &:hover {
     background: var(--neutral-white-d6);
-    box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+    box-shadow: 0px 0px 9px 3px rgba(0, 0, 0, 0.03);
   }
 `
 const ListMsg = styled.div`

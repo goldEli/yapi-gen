@@ -33,7 +33,7 @@ const Index = (props: any) => {
           arrowPointAtCenter
           autoAdjustOverflow={false}
           placement="top"
-          title="1"
+          title={props.names ?? t('project_name_xxx')}
         >
           <CardRightFirst>
             {props.names ?? t('project_name_xxx')}

@@ -112,7 +112,8 @@ const InnerWrap = styled.div`
   min-height: 88px;
   background: rgba(255, 255, 255, 1);
   background-blend-mode: normal;
-  border: 1px solid rgba(235, 237, 240, 1);
+  /* border: 1px solid rgba(235, 237, 240, 1); */
+  box-shadow: 0px 0px 7px 1px rgba(0, 0, 0, 0.06);
   display: flex;
   justify-content: space-between;
   box-sizing: border-box;
@@ -145,12 +146,12 @@ const GatteWrap = styled.div`
 
 const HasIdWrap = styled.div({
   overflow: 'auto',
-  padding: '0px 16px 0 16px',
+  padding: '0px 16px 0 24px',
 })
 
 const HeadWrap = styled.div({
-  padding: 24,
-  paddingTop: 0,
+  paddingBottom: '0px',
+
   background: 'white',
   borderRadius: 6,
   marginBottom: 16,
@@ -159,7 +160,8 @@ const HeadWrap = styled.div({
 const TotalWrap = styled.div({
   height: 88,
   borderRadius: 6,
-  border: '1px solid var(--neutral-n6-d1)',
+  boxShadow: '0px 0px 7px 1px rgba(0,0,0,0.06)',
+  // border: '1px solid var(--neutral-n6-d1)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-around',
@@ -364,7 +366,7 @@ const Profile = () => {
               </TotalWrap>
             </HeadWrap>
             <GatteWrap style={{ margin: 0 }}>
-              <div style={{ padding: '0px 24px 0' }}>
+              <div>
                 <SecondTitle>{t('newlyAdd.hisGantt')}</SecondTitle>
                 <div className={titleWrap}>
                   <div style={{ display: 'flex', alignItems: 'center' }}>

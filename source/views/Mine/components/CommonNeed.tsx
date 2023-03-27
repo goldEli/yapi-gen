@@ -500,7 +500,7 @@ const CommonNeed = (props: any) => {
     <>
       <div
         style={{
-          marginLeft: '24px',
+          margin: '0 24px 16px 24px',
           justifyContent: 'space-between',
           display: 'flex',
           borderBottom: '1px solid var(--neutral-n6-d1)',

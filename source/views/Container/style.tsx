@@ -376,8 +376,8 @@ export const CompanyCard = styled.div<{ isActive?: boolean }>`
     }
   }
   &:hover {
-    box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
-    background: var(--hover-d2);
+    box-shadow: 0px 0px 9px 3px rgba(0, 0, 0, 0.07);
+    background: var(--neutral-white-d6);
     border: 1px solid transparent;
   }
 `

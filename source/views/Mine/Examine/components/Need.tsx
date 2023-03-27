@@ -208,10 +208,10 @@ const Need = (props: any) => {
         style={{
           // margin: '0 24px',
           display: 'flex',
-          width: 'calc(100% - 24px)',
+          width: 'calc(100% - 48px)',
           justifyContent: 'space-between',
           borderBottom: '1px solid var(--neutral-n6-d1)',
-          marginLeft: '24px',
+          margin: '0 24px',
         }}
       >
         <div

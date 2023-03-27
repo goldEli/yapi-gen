@@ -7,6 +7,7 @@ import IconFont from '@/components/IconFont'
 import { getStaffListAll } from '@/services/staff'
 import ChoosePerson from '@/components/ChoosePerson'
 import styled from '@emotion/styled'
+import CommonUserAvatar from '@/components/CommonUserAvatar'
 
 const IconFontWrap = styled(IconFont)({
   fontSize: 14,
@@ -118,11 +119,13 @@ const ChoosePeople = (props: any) => {
                     src={i.avatar}
                   />
                 ) : (
-                  <NameWrap style={{ margin: 0, width: 24, height: 24 }}>
-                    {String(
-                      i?.name?.substring(0, 1).trim().slice(0, 1),
-                    ).toLocaleUpperCase()}
-                  </NameWrap>
+                  <div
+                    style={{
+                      marginRight: 8,
+                    }}
+                  >
+                    <CommonUserAvatar size="small" />
+                  </div>
                 )}
                 <IconFontWrap
                   type="close-circle-fill"

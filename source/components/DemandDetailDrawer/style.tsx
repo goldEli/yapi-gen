@@ -32,7 +32,7 @@ export const SkeletonStatus = styled.div`
 export const Header = styled.div`
   height: 52px;
   background: var(--neutral-white-d5);
-  border-bottom: 1px solid var(--neutral-n6-d1);
+  border-bottom: 1px solid var(--neutral-n6-d2);
   padding: 0 24px;
   display: flex;
   align-items: center;
