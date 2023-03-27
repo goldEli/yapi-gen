@@ -83,50 +83,6 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     return (allMinutes * oneHourHeight) / 60
   }, [startTime])
 
-  // const height = useMemo(() => {
-  // }, [startTime, endTime])
-
-  // const [{ isDragging }, drag, preview] = useDrag(
-  //   () => ({
-  //     type: dragItemTypes.scheduleCard,
-  //     item: { id: props.data.id },
-  //     collect: monitor => ({
-  //       isDragging: !!monitor.isDragging(),
-  //     }),
-  //   }),
-  //   [props.data.id],
-  // )
-
-  // useEffect(() => {
-  //   preview(getEmptyImage(), { captureDraggingState: true })
-  // }, [])
-
-  // const onFinish = useCallback(
-  //   (direction: TDirection) => {
-  //     if (direction === 'bottom') {
-  //       console.log('height', height)
-  //       dispatch(
-  //         setSchedule({
-  //           ...props.data,
-  //           endTime: getEndTimeByHeight(props.data.startTime, height).valueOf(),
-  //         }),
-  //       )
-  //     }
-  //   },
-  //   [height],
-  // )
-  // const onFinish = (direction: TDirection) => {
-  //   if (direction === 'bottom') {
-  //     console.log('height onFinish', props.data.id, height)
-  //     dispatch(
-  //       setSchedule({
-  //         ...props.data,
-  //         endTime: getEndTimeByHeight(props.data.startTime, height).valueOf(),
-  //       }),
-  //     )
-  //   }
-  // }
-
   const onDrag = (e: DraggableEvent, draggableData: DraggableData) => {
     const { node, y, deltaY, lastY } = draggableData
     const time = getTimeByOffsetDistance(startTime, endTime, y - top)
@@ -146,7 +102,8 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
   const onDragStop = (e: DraggableEvent, draggableData: DraggableData) => {
     const { node, y, deltaY, lastY } = draggableData
     const time = getTimeByOffsetDistance(startTime, endTime, y - top)
-    // console.log(' y, deltaY, lastY', y, deltaY, lastY)
+    console.log('time top', dispatch)
+
     dispatch(
       setSchedule({
         ...props.data,
@@ -159,68 +116,41 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
 
   const gridHeight = (oneHourHeight / 60) * 15
   return (
-    <>
-      <Rnd
-        // id={props.data.id}
-        className={dragBox}
-        // key={props.data.id}
-        size={{
-          width: 1300,
-          height,
-        }}
-        dragGrid={[gridHeight, gridHeight]}
-        resizeGrid={[gridHeight, gridHeight]}
-        position={{
-          x: 58,
-          y: top,
-        }}
-        dragAxis="y"
-        enableResizing={{
-          bottom: true,
-          bottomLeft: false,
-          bottomRight: false,
-          left: false,
-          right: false,
-          top: true,
-          topLeft: false,
-          topRight: false,
-        }}
-        bounds={document.querySelector('.calendar-day-box') as Element}
-        onDragStart={onDragStart}
-        onDrag={onDrag}
-        onDragStop={onDragStop}
-      >
-        <Title>
-          {timeRange && `${timeRange?.startTime} - ${timeRange?.endTime}`}
-        </Title>
-        <Title>{props.data.title}</Title>
-      </Rnd>
-      {/* <Resizer
-        data={props.data}
-        top={top}
-        height={height}
-        onFinish={onFinish}
-        onResize={(direction, movementX, movementY) => {
-          const dragBox = document.getElementById(props.data.id)
-          if (!dragBox) {
-            return
-          }
-          const { height: h, x, y } = dragBox.getBoundingClientRect()
-
-          if (direction === 'top') {
-            return
-          }
-          if (direction === 'bottom') {
-            const newHeight = h + movementY
-
-            if (newHeight < halfHourHeight) {
-              return
-            }
-            setHeight(newHeight)
-          }
-        }}
-      /> */}
-    </>
+    <Rnd
+      // id={props.data.id}
+      className={dragBox}
+      key={props.data.id}
+      size={{
+        width: 1300,
+        height,
+      }}
+      dragGrid={[gridHeight, gridHeight]}
+      resizeGrid={[gridHeight, gridHeight]}
+      position={{
+        x: 58,
+        y: top,
+      }}
+      dragAxis="y"
+      enableResizing={{
+        bottom: true,
+        bottomLeft: false,
+        bottomRight: false,
+        left: false,
+        right: false,
+        top: true,
+        topLeft: false,
+        topRight: false,
+      }}
+      // bounds={document.querySelector('.calendar-day-box') as Element}
+      onDragStart={onDragStart}
+      onDrag={onDrag}
+      onDragStop={onDragStop}
+    >
+      <Title>
+        {timeRange && `${timeRange?.startTime} - ${timeRange?.endTime}`}
+      </Title>
+      <Title>{props.data.title}</Title>
+    </Rnd>
   )
 }
 
