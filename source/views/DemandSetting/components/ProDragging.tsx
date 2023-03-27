@@ -64,9 +64,9 @@ const SliderList = (props: any) => {
   const onDragStart = (ev: any) => {
     const obj = { ...children, dragtype: 'edit' }
     ev.dataTransfer.setData('item', JSON.stringify(obj))
-    const imgDom = document.createElement('div')
-    document.body.appendChild(imgDom)
-    ev.dataTransfer.setDragImage(imgDom, 0, 0)
+    // const imgDom = document.createElement('div')
+    // document.body.appendChild(imgDom)
+    // ev.dataTransfer.setDragImage(imgDom, 0, 0)
   }
   const onDrag = (ev: any) => {
     const el: any = ref.current
@@ -94,10 +94,14 @@ const SliderList = (props: any) => {
     setIsVisible(false)
     props.onUpdate()
   }
+  const allowDrop = (ev: any) => {
+    ev.preventDefault()
+  }
   return (
     <Container
       ref={ref}
       draggable="true"
+      onDragOver={allowDrop}
       onDragStart={event => onDragStart(event)}
       onDrag={(ev: any) => onDrag(ev)}
       onDragEnd={() => onDragEnd()}
@@ -123,8 +127,8 @@ const SliderList = (props: any) => {
         </div>
         <div
           className="delIcon"
-          onClick={() => {
-            setIsVisible(true), setDelItem(children)
+          onClick={e => {
+            e.stopPropagation(), setIsVisible(true), setDelItem(children)
           }}
         >
           {children?.is_customize === 1 && <IconFontStyle type="delete" />}
