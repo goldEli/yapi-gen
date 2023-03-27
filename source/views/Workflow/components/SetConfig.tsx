@@ -133,7 +133,7 @@ const TimelineWrap = styled(Timeline)({
 
 const IconfontWrap = styled(IconFont)<{ active?: boolean }>(
   {
-    fontSize: 14,
+    fontSize: 10,
     color: 'var(--neutral-n3)',
     marginRight: 8,
   },

@@ -31,6 +31,13 @@ const NameWrap = styled.div({
   overflow: 'hidden',
 })
 
+export const MyDiv = styled.div`
+  color: var(--neutral-n3);
+  :hover {
+    color: var(--primary-d2);
+  }
+`
+
 const InfoItem = styled.div({
   marginLeft: '8px',
   display: 'flex',

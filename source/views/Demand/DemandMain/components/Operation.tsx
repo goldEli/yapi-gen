@@ -62,13 +62,13 @@ const LiWrap = styled.div({
 
 const IconWrap = styled(IconFont)({
   fontSize: 20,
-  color: 'black',
   cursor: 'pointer',
   padding: 6,
   borderRadius: 6,
+  color: 'var(--neutral-n2)',
   '&: hover': {
     color: 'var(--neutral-n1-d1)',
-    background: 'var(--neutral-n6-d1)',
+    background: 'var(--hover-d3)',
   },
 })
 

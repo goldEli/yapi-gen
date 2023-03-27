@@ -6,7 +6,15 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import { useSelector } from '@store/index'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
-import { InfoItem, InfoWrap, Menu, MenuItem, NameWrap, Side } from './style'
+import {
+  InfoItem,
+  InfoWrap,
+  Menu,
+  MenuItem,
+  MyDiv,
+  NameWrap,
+  Side,
+} from './style'
 
 const index = () => {
   const [t] = useTranslation()
@@ -89,7 +97,7 @@ const index = () => {
           <span>{mainInfo?.phone}</span>
         </InfoItem>
       </InfoWrap>
-      <div
+      <MyDiv
         onClick={onGoBack}
         style={{
           height: '48px',
@@ -102,7 +110,6 @@ const index = () => {
       >
         <IconFont
           style={{
-            color: 'var(--neutral-n3)',
             fontSize: '16px',
           }}
           type="left-md"
@@ -111,14 +118,14 @@ const index = () => {
           style={{
             fontSize: '12px',
             fontWeight: 400,
-            color: 'var(--neutral-n3)',
+
             marginLeft: '8px',
             whiteSpace: 'nowrap',
           }}
         >
           {t('back')}
         </span>
-      </div>
+      </MyDiv>
       <Menu>
         {menuList.map(item => (
           <MenuItem

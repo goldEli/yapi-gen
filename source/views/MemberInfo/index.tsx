@@ -76,6 +76,7 @@ const MemberInfo = () => {
               display: 'flex',
               alignItems: 'center',
               margin: '20px',
+              marginLeft: '24px',
             }}
           >
             <MyBreadcrumb user={{ name: mainInfo?.name }} />

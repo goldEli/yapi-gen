@@ -70,7 +70,7 @@ const TableTitle = styled.div({
   span: {
     borderLeft: '3px solid var(--primary-d2)',
     paddingLeft: 6,
-    lineHeight: '20px',
+    lineHeight: '16px',
   },
 })
 
@@ -85,7 +85,7 @@ const SearchWrap = styled.div({
 const MainWrap = styled.div({
   height: 'calc(100vh - 128px)',
   overflow: 'scroll',
-  padding: ' 0 16px',
+  padding: ' 0 24px',
   '.ant-spin-nested-loading': {
     // height: 'initial',
   },
@@ -658,7 +658,7 @@ const CommonNeed = (props: any) => {
                     </TableTitle>
                     <div
                       style={{
-                        boxShadow: '0px 0px 15px 6px rgba(0,0,0,0.12)',
+                        boxShadow: '0px 0px 9px 3px rgba(0,0,0,0.03)',
                         borderRadius: '6px',
                       }}
                     >
