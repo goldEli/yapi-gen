@@ -260,12 +260,19 @@ const MyDropdown = (props: any) => {
     return (
       isArray(item) &&
       item?.map((el: any) => (
-        <ItemBox key={el.title}>
+        <ItemBox key={el.id}>
           <Row onClick={() => onRoute(el)}>
             <div>
-              {(el?.category_attachment || el?.feedable?.attachment) && (
+              {el?.actionable_type === 'story' && (
                 <Img
                   src={el?.category_attachment || el?.feedable?.attachment}
+                />
+              )}
+              {el?.actionable_type === 'iterate' && (
+                <CommonIconFont
+                  type="interation-2"
+                  color="var(--neutral-n2)"
+                  size={20}
                 />
               )}
             </div>

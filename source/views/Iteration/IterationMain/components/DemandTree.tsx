@@ -547,8 +547,17 @@ const DemandTree = (props: Props) => {
 
   // 需求勾选
   const onSelectChange = (record: any, selected: any) => {
+    let resultList: any = []
+    if (record.parentId) {
+      resultList = getAllItems(
+        data?.list?.filter((i: any) => i.id === record.topId)[0]?.children,
+      )?.filter((i: any) => i.id === record.id)[0]?.children
+    } else {
+      resultList = data?.list?.filter((i: any) => i.id === record.topId)
+    }
+
     const resultKeys = selected
-      ? [...selectedRowKeys, ...[record], ...(record.allChildrenIds || [])]
+      ? [...selectedRowKeys, ...[record], ...getAllItems(resultList || [])]
       : selectedRowKeys?.filter((i: any) => i.id !== record.id)
     const map = new Map()
     const newArr = resultKeys.filter(
@@ -561,7 +570,7 @@ const DemandTree = (props: Props) => {
   // 全选
   const onSelectAll = (selected: any) => {
     if (selected) {
-      const childKeys: any = getAllItems(data?.list)
+      const childKeys: any = getAllItems(data?.list || [])
       setSelectedRowKeys([...new Set(childKeys)])
       onOperationCheckbox('add', [...new Set(childKeys)])
     } else {

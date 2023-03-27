@@ -475,7 +475,8 @@ const TableQuickEdit = (props: Props) => {
 
       {/* 如果是详情或者是表格上可编辑字段 */}
       {(Object.keys(props.item.categoryConfigList).includes(props.keyText) ||
-        props.isInfo) && (
+        props.isInfo ||
+        props.keyText === 'name') && (
         <>
           {!isShowControl && (
             <>
@@ -537,7 +538,8 @@ const TableQuickEdit = (props: Props) => {
 
       {/* 不能操作的并且不是详情快捷操作，只展示 */}
       {!Object.keys(props.item.categoryConfigList).includes(props.keyText) &&
-        !props.isInfo && (
+        !props.isInfo &&
+        props.keyText !== 'name' && (
           <DisableWrap>
             {(!['text', 'textarea'].includes(props.type as any) ||
               props.isDemandName) && <div>{props.children}</div>}
