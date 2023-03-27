@@ -17,13 +17,13 @@ const CalendarDayBox = styled.div`
 
 const CalendarDay: React.FC<CalendarDayProps> = props => {
   return (
-    <CalendarDayBox>
-      <DndProvider backend={HTML5Backend}>
-        <DropArea>
-          <Timescale />
-          <ScheduleCardList />
-        </DropArea>
-      </DndProvider>
+    <CalendarDayBox className="calendar-day-box">
+      {/* <DndProvider backend={HTML5Backend}> */}
+      {/* <DropArea> */}
+      <Timescale />
+      <ScheduleCardList />
+      {/* </DropArea> */}
+      {/* </DndProvider> */}
     </CalendarDayBox>
   )
 }

@@ -50,6 +50,29 @@ export const getEndTimeByHeight = (startTime: number, height: number) => {
   )
   return newEndTime
 }
+
+export const getMinutesByDistance = (height: number) => {
+  return (oneHourHeight / 60) * height
+}
+
+export const addMinutes = (time: number, minutes: number) => {
+  return dayjs(time).add(minutes, 'minute')
+}
+
+export const getTimeByOffsetDistance = (
+  startTime: number,
+  endTime: number,
+  distance: number,
+) => {
+  const offset = getMinutesByDistance(distance)
+  const newStartTime = addMinutes(startTime, offset)
+  const newEndTime = addMinutes(endTime, offset)
+  return {
+    startTime: newStartTime,
+    endTime: newEndTime,
+  }
+}
+
 // 获取元素属性
 export function getStyleValue(dom: Element, attr: keyof CSSStyleDeclaration) {
   return parseFloat(getComputedStyle(dom)[attr] + '')

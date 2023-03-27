@@ -4,5 +4,5 @@ export const dragItemTypes = {
   resizeBarBottom: 'resizeBarBottom',
 }
 
-export const oneHourHeight = 52
-export const halfHourHeight = 52 / 2
+export const oneHourHeight = 60
+export const halfHourHeight = oneHourHeight / 2
