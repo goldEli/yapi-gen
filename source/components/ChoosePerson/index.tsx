@@ -5,6 +5,7 @@ import styled from '@emotion/styled'
 import { Input } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import CommonUserAvatar from '../CommonUserAvatar'
 import NoData from '../NoData'
 import { NameWrap } from '../StyleCommon'
 
@@ -87,11 +88,13 @@ const ChoosePerson = (props: ChoosePersonProps) => {
                     alt=""
                   />
                 ) : (
-                  <NameWrap style={{ margin: '0 8px 0 0' }}>
-                    {String(
-                      i?.name?.substring(0, 1)?.trim().slice(0, 1),
-                    ).toLocaleUpperCase()}
-                  </NameWrap>
+                  <span
+                    style={{
+                      marginRight: 8,
+                    }}
+                  >
+                    <CommonUserAvatar size="small" />
+                  </span>
                 )}
                 {i.name}
               </PersonItemWrap>
