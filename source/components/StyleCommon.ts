@@ -563,11 +563,11 @@ const CategoryWrap = styled.div<{ color: string; bgColor: string }>(
     marginRight: 8,
     lineHeight: '22px',
     alignItems: 'center',
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: 400,
     marginLeft: 8,
     flexShrink: 0,
-    color: 'var(--neutral-n1-d1)',
+    color: 'var(--neutral-n2)',
   },
   ({ bgColor }) => ({
     background: bgColor,
