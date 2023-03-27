@@ -4,7 +4,7 @@ import { oneHourHeight } from '../config'
 
 interface TimescaleProps {}
 const Table = styled.table`
-  /* user-select: none; */
+  user-select: none;
   width: 100%;
   box-sizing: border-box;
   tr {

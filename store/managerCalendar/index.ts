@@ -50,7 +50,7 @@ const slice = createSlice({
       console.log(action.payload)
       state.calendarPanelType = action.payload
     },
-    setScheduleList(state, action: PayloadAction<Model.Calendar.Schedule>) {
+    setSchedule(state, action: PayloadAction<Model.Calendar.Schedule>) {
       state.scheduleList = state.scheduleList.map(item => {
         if (action.payload.id === item.id) {
           return action.payload
@@ -64,6 +64,6 @@ const slice = createSlice({
 
 const managerCalendar = slice.reducer
 
-export const { setCalendarPanelType, setScheduleList } = slice.actions
+export const { setCalendarPanelType, setSchedule } = slice.actions
 
 export default managerCalendar

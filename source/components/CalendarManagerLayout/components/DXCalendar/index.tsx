@@ -27,7 +27,6 @@ const DXCalendar: React.FC = () => {
       }}
       headerRender={({ value, type, onChange, onTypeChange }) => {
         const month = value.month()
-        console.log(month, 123)
         return (
           <CalendarHeader>
             <span

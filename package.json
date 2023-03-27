@@ -47,6 +47,7 @@
     "react-i18next": "^12.0.0",
     "react-redux": "^8.0.5",
     "react-resizable": "^3.0.4",
+    "react-rnd": "^10.4.1",
     "react-router-dom": "^6.6.0",
     "react-sortable-hoc": "^2.0.0",
     "react-viewer": "^3.2.2",
@@ -88,6 +89,7 @@
       ]
     },
     "rules": {
+      "react/self-closing-comp": 0,
       "@typescript-eslint/consistent-type-imports": 0,
       "@typescript-eslint/padding-line-between-statements": 0,
       "@typescript-eslint/indent": 0,

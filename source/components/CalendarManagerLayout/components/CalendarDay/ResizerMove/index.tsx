@@ -8,17 +8,17 @@ import { handleOffsetDistance } from '../utils'
 
 interface CustomDragLayerProps {}
 const Box = styled.div`
-  width: calc(100% - 58px - 288px - 24px - 24px);
-  height: ${(props: { height: number }) => props.height + 'px'};
+  /* width: calc(100% - 58px - 288px - 24px - 24px);
+  height: ${(props: { height: number }) => props.height + 'px'}; */
   /* height: 102px; */
-  background: var(--primary-d1);
+  /* background: var(--primary-d1);
   border-radius: 6px 6px 6px 6px;
   position: fixed;
   box-sizing: border-box;
   padding: 0 4px;
   pointer-events: none;
   z-index: 100;
-  min-height: 20px;
+  min-height: 20px; */
   left: 0;
   top: 0;
 `
@@ -62,7 +62,7 @@ function getItemStyles(
   // y方向移动距离
   const distance = step * minHeight * direction
   // const distance = y
-  // console.log('current initial', y - initialOffset.y)
+  console.log('current initial', y - initialOffset.y)
 
   const transform = `translate(${initialOffset.x}px, ${distance}px)`
   // const transform = `translate(${initialOffset.x}px, ${y}px)`
@@ -72,10 +72,10 @@ function getItemStyles(
   }
 }
 
-const CustomDragLayer: React.FC<CustomDragLayerProps> = props => {
+const ResizerMove: React.FC<CustomDragLayerProps> = props => {
   const { itemType, isDragging, item, initialOffset, currentOffset, delta } =
     useDragLayer(monitor => ({
-      accept: dragItemTypes.scheduleCard,
+      accept: dragItemTypes.resizeBarBottom,
       item: monitor.getItem(),
       itemType: monitor.getItemType(),
       initialOffset: monitor.getInitialSourceClientOffset(),
@@ -109,33 +109,33 @@ const CustomDragLayer: React.FC<CustomDragLayerProps> = props => {
     if (!startTime || !endTime || !delta) {
       return
     }
-    console.log('itemType', itemType)
-
+    console.log('delta', delta)
     // const offsetTop = Math.round(delta?.y ?? 0)
     // const offsetMinute = Math.floor(offsetTop / (oneHourHeight / 60))
 
     // // 每次移动是15分钟的倍数
     // const step = Math.ceil(offsetMinute / 15)
     // const moveMinute = step * 15
-    const { newEndTime, newStartTime } = handleOffsetDistance(
-      startTime,
-      endTime,
-      delta,
-    )
-    setStartStr(newStartTime.format('hh:mm'))
-    setEndStr(newEndTime.format('hh:mm'))
-  }, [schedule, delta, itemType])
+    // const { newEndTime, newStartTime } = handleOffsetDistance(
+    //   startTime,
+    //   endTime,
+    //   delta,
+    // )
+    // setStartStr(newStartTime.format('hh:mm'))
+    // setEndStr(newEndTime.format('hh:mm'))
+  }, [schedule, delta])
 
   return (
     <Box
       height={height}
-      className="custom_drag_layer"
-      style={getItemStyles(initialOffset, currentOffset)}
+      className="resizer-move"
+      //   style={getItemStyles(initialOffset, currentOffset)}
     >
-      <Title>{schedule?.title}</Title>
-      <Title>{`${startStr} - ${endStr}`}</Title>
+      123
+      {/* <Title>{schedule?.title}</Title>
+      <Title>{`${startStr} - ${endStr}`}</Title> */}
     </Box>
   )
 }
 
-export default CustomDragLayer
+export default ResizerMove

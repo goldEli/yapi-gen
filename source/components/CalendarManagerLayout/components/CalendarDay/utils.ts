@@ -27,3 +27,30 @@ export const handleOffsetDistance = (
     newEndTime,
   }
 }
+export const getEndTimeByHeight = (startTime: number, height: number) => {
+  // console.log('==================')
+  // const offsetTop = Math.round(delta?.y ?? 0)
+  // console.log('offsetTop', offsetTop)
+  const offsetMinute = Math.floor(height / (oneHourHeight / 60))
+  // console.log('offsetMinute', offsetMinute)
+  // const direction = offsetMinute < 0 ? -1 : 1
+  // console.log('direction', direction)
+  // 每次移动是15分钟的倍数
+  const step = Math.ceil(offsetMinute / 15)
+  const moveMinute = step * 15
+  // console.log('moveMinute', moveMinute)
+
+  // const newStartTime = dayjs(startTime).add(moveMinute, 'minute')
+  // console.log('newStartTime', newStartTime.format('hh:mm'))
+  const newEndTime = dayjs(startTime).add(moveMinute, 'minute')
+  console.log(
+    'newEndTime',
+    dayjs(startTime).format('hh:mm'),
+    newEndTime.format('hh:mm'),
+  )
+  return newEndTime
+}
+// 获取元素属性
+export function getStyleValue(dom: Element, attr: keyof CSSStyleDeclaration) {
+  return parseFloat(getComputedStyle(dom)[attr] + '')
+}
