@@ -135,6 +135,16 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
           y: top,
         }}
         dragAxis="y"
+        enableResizing={{
+          bottom: true,
+          bottomLeft: false,
+          bottomRight: false,
+          left: false,
+          right: false,
+          top: true,
+          topLeft: false,
+          topRight: false,
+        }}
         // style={{
         //   top,
         //   width: '100%',
