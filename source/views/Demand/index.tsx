@@ -580,6 +580,8 @@ const DemandBox = () => {
                       width: '18px',
                       height: '18px',
                       marginRight: '8px',
+                      marginBottom: '3px',
+                      borderRadius: '6px',
                     }}
                     alt=""
                   />

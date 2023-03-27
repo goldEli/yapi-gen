@@ -31,8 +31,8 @@ export const MySpan = styled.div`
   align-items: center;
   justify-content: center;
   &:hover {
-    background: var(--hover-d1);
-    color: var(--neutral-n1-d1);
+    /* background: var(--hover-d1); */
+    color: var(--primary-d2);
   }
 `
 const MenuItem = styled.div<{ active?: any }>(
@@ -48,7 +48,7 @@ const MenuItem = styled.div<{ active?: any }>(
     cursor: 'pointer',
     paddingLeft: 52,
     '&: hover': {
-      backgroundColor: 'var(--neutral-n6-d1)',
+      color: 'var(--primary-d2)',
     },
   },
 )
