@@ -141,7 +141,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
         topLeft: false,
         topRight: false,
       }}
-      // bounds={document.querySelector('.calendar-day-box') as Element}
+      bounds={document.getElementById('querySelector') as Element}
       onDragStart={onDragStart}
       onDrag={onDrag}
       onDragStop={onDragStop}

@@ -17,7 +17,7 @@ const CalendarDayBox = styled.div`
 
 const CalendarDay: React.FC<CalendarDayProps> = props => {
   return (
-    <CalendarDayBox className="calendar-day-box">
+    <CalendarDayBox id="calendarDayBox">
       {/* <DndProvider backend={HTML5Backend}> */}
       {/* <DropArea> */}
       <Timescale />
