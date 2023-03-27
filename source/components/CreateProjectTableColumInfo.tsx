@@ -84,7 +84,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="name">{t('common.title')}</NewSort>,
       dataIndex: 'name',
       key: 'name',
-      width: 400,
+      width: 200,
       render: (text: string | number, record: any) => {
         return (
           <div
@@ -118,43 +118,43 @@ export const useDynamicColumns = (state: any) => {
               projectId={state.projectId}
               isDemandName
             >
-              <Tooltip title={text} getPopupContainer={node => node}>
-                <ListNameWrap
-                  isName
-                  className="canClickDetail"
-                  isClose={record.status?.is_end === 1}
-                  onClick={() => state.onClickItem(record)}
-                >
+              <ListNameWrap
+                isName
+                className="canClickDetail"
+                isClose={record.status?.is_end === 1}
+                onClick={() => state.onClickItem(record)}
+              >
+                <Tooltip title={text} getPopupContainer={node => node}>
                   {text}
-                  {record.is_handover === 1 && (
-                    <div
-                      style={{
-                        fontSize: '12px',
-                        lineHeight: '20px',
-                        textAlign: 'center',
-                        color: 'var( --function-warning)',
-                        width: '60px',
-                        height: '20px',
-                        background: 'rgba(250,151,70,0.1)',
-                        borderRadius: '10px 6px 6px 10px',
-                        marginLeft: '4px',
-                      }}
-                    >
-                      {t('quitAndHandover')}
-                    </div>
-                  )}
+                </Tooltip>
+                {record.is_handover === 1 && (
+                  <div
+                    style={{
+                      fontSize: '12px',
+                      lineHeight: '20px',
+                      textAlign: 'center',
+                      color: 'var( --function-warning)',
+                      width: '60px',
+                      height: '20px',
+                      background: 'rgba(250,151,70,0.1)',
+                      borderRadius: '10px 6px 6px 10px',
+                      marginLeft: '4px',
+                    }}
+                  >
+                    {t('quitAndHandover')}
+                  </div>
+                )}
 
-                  {record.new === 1 && (
-                    <IconFont
-                      style={{
-                        marginLeft: '4px',
-                        fontSize: '30px',
-                      }}
-                      type="tag"
-                    />
-                  )}
-                </ListNameWrap>
-              </Tooltip>
+                {record.new === 1 && (
+                  <IconFont
+                    style={{
+                      marginLeft: '4px',
+                      fontSize: '30px',
+                    }}
+                    type="tag"
+                  />
+                )}
+              </ListNameWrap>
             </TableQuickEdit>
           </div>
         )

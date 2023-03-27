@@ -458,13 +458,17 @@ export const deleteStoryConfigField: any = async (params: any) => {
 }
 
 export const updateStoryConfigField: any = async (params: any) => {
-  await http.put<any>(`/b/project/story_config/field/${params.id}`, {
-    project_id: params.projectId,
-    name: params.name,
-    remarks: params.remarks,
-    content: params.content,
-    id: params.id,
-  })
+  const response: any = await http.put<any>(
+    `/b/project/story_config/field/${params.id}`,
+    {
+      project_id: params.projectId,
+      name: params.name,
+      remarks: params.remarks,
+      content: params.content,
+      id: params.id,
+    },
+  )
+  return response
 }
 
 export const storyConfigCategoryList: any = async (params: any) => {

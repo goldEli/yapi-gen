@@ -62,7 +62,7 @@ const MenuItem = styled.div<{ active?: boolean }>(
     cursor: 'pointer',
     paddingLeft: '20px',
     '&: hover': {
-      backgroundColor: 'var(--neutral-n6-d1)',
+      color: 'var( --primary-d1)',
     },
   },
   ({ active }) => ({
