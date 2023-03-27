@@ -82,9 +82,7 @@ const index = () => {
           // />
           <CommonUserAvatar size="large" avatar={mainInfo?.avatar} />
         ) : (
-          <NameWrap style={{ margin: '0px', width: 32, height: 32 }}>
-            {String(mainInfo?.name?.trim().slice(0, 1)).toLocaleUpperCase()}
-          </NameWrap>
+          <CommonUserAvatar size="large" avatar={mainInfo?.avatar} />
         )}
         <InfoItem>
           <div>{mainInfo?.name}</div>
