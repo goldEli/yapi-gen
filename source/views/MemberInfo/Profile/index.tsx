@@ -160,7 +160,8 @@ const HeadWrap = styled.div({
 const TotalWrap = styled.div({
   height: 88,
   borderRadius: 6,
-  border: '1px solid var(--neutral-n6-d1)',
+  boxShadow: '0px 0px 7px 1px rgba(0,0,0,0.06)',
+  // border: '1px solid var(--neutral-n6-d1)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-around',
