@@ -656,14 +656,20 @@ const CommonNeed = (props: any) => {
                         {item.status_name}（{item.list.length}）
                       </span>
                     </TableTitle>
-
-                    <ResizeTable
-                      isSpinning={false}
-                      dataWrapNormalHeight="calc(100vh - 460px)"
-                      col={selectColum}
-                      dataSource={item?.list}
-                      noData={<NoData />}
-                    />
+                    <div
+                      style={{
+                        boxShadow: '0px 0px 15px 6px rgba(0,0,0,0.12)',
+                        borderRadius: '6px',
+                      }}
+                    >
+                      <ResizeTable
+                        isSpinning={false}
+                        dataWrapNormalHeight="calc(100vh - 460px)"
+                        col={selectColum}
+                        dataSource={item?.list}
+                        noData={<NoData />}
+                      />
+                    </div>
                   </div>
                 ))}
               </div>
