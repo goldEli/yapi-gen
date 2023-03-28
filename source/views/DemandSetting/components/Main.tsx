@@ -146,6 +146,7 @@ const Main = (props: any) => {
       remarks: item.remarks,
       content: item.content,
       fieldContent: item?.field_content || item?.fieldContent,
+      id: item.dragtype === 'move' ? item.id : item.storyId,
       storyId: item.dragtype !== 'move' ? item.id : item.storyId,
       isCustomize: item?.is_customize || item?.isCustomize,
       is_required: item.dragtype !== 'move' ? 2 : item?.isRequired,
@@ -221,6 +222,7 @@ const Main = (props: any) => {
       is_fold: el.isFold || el.is_fold,
       is_required: el.isRequired || el.is_required,
     }))
+    console.log(newData, 'oo')
     await configSave({
       id: activeCategory.id,
       project_id: projectInfo.id,
