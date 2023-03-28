@@ -49,6 +49,12 @@ const Main = (props: any) => {
     setGetCategoryConfigT(getCategoryConfigDataList?.isFoldT)
     setGetCategoryConfigF(getCategoryConfigDataList?.isFoldF)
     setInfoIcon(true)
+    dispatch(
+      setGetCategoryConfigArray([
+        ...getCategoryConfigDataList?.isFoldF,
+        ...getCategoryConfigDataList?.isFoldT,
+      ]),
+    )
   }, [getCategoryConfigDataList])
   //  移动后跟新的数据
   const onMove = (state: number, data: any) => {
@@ -138,14 +144,15 @@ const Main = (props: any) => {
     const newItem = {
       title: item.title,
       remarks: item.remarks,
-      content: item?.field_content?.attr || item?.fieldContent?.attr,
+      content: item.content,
       fieldContent: item?.field_content || item?.fieldContent,
+      id: item.dragtype === 'move' ? item.id : item.storyId,
       storyId: item.dragtype !== 'move' ? item.id : item.storyId,
       isCustomize: item?.is_customize || item?.isCustomize,
       is_required: item.dragtype !== 'move' ? 2 : item?.isRequired,
       is_fold: type === 1 ? 1 : 2,
     }
-    if (type === 1) {
+    if (type === 1 && index !== -1) {
       const arrData = Array.from(getCategoryConfigF)
       arrData.splice(index, 0, newItem)
       setGetCategoryConfigF(arrData)
@@ -156,7 +163,7 @@ const Main = (props: any) => {
         data && setGetCategoryConfigT(data)
       }
       dispatch(setGetCategoryConfigArray([...arrData, ...getCategoryConfigT]))
-    } else if (type === 2) {
+    } else if (type === 2 && index !== -1) {
       const arrData = Array.from(getCategoryConfigT)
       arrData.splice(index, 0, newItem)
       setGetCategoryConfigT(arrData)
@@ -167,10 +174,18 @@ const Main = (props: any) => {
         data && setGetCategoryConfigF(data)
       }
       dispatch(setGetCategoryConfigArray([...arrData, ...getCategoryConfigF]))
+    } else if (type === 2 && index === -1) {
+      const arrData = [...getCategoryConfigT, newItem]
+      setGetCategoryConfigT(arrData)
+      const data = getCategoryConfigF.filter(
+        (el: any) => el.storyId !== newItem.storyId,
+      )
+      data && setGetCategoryConfigF(data)
+      dispatch(setGetCategoryConfigArray([...arrData, ...data]))
     }
   }
   //拖动传递过来的参数
-  const onDrop = (state: any, event: any, index: any, num: any) => {
+  const onDrop = (state: any, event: any, index: any) => {
     setConfigType(state)
     setDraggingIndex(index)
     // 自定义字段只能添加20个
@@ -215,6 +230,7 @@ const Main = (props: any) => {
       is_fold: el.isFold || el.is_fold,
       is_required: el.isRequired || el.is_required,
     }))
+    console.log(newData, 'oo')
     await configSave({
       id: activeCategory.id,
       project_id: projectInfo.id,
@@ -255,14 +271,6 @@ const Main = (props: any) => {
       setGetCategoryConfigT(arrData)
     }
   }
-  useEffect(() => {
-    dispatch(
-      setGetCategoryConfigArray([
-        ...getCategoryConfigDataList?.isFoldT,
-        ...getCategoryConfigDataList?.isFoldF,
-      ]),
-    )
-  }, [])
   const onChangeMove = (list: any, type: any) => {
     type === 1 ? setGetCategoryConfigF(list) : setGetCategoryConfigT(list)
     props.onIsOperate(true)
@@ -289,9 +297,7 @@ const Main = (props: any) => {
       {infoIcon && (
         <TabsDragging
           onClick={(i: any, child: any) => tabsDraggingOnclick(1, i, child)}
-          onDrop={(event: any, index: any, state: any) =>
-            onDrop(1, event, index, state)
-          }
+          onDrop={(event: any, index: any) => onDrop(1, event, index)}
           onMove={(data: any) => onMove(1, data)}
           state={1}
           positionType="top"
@@ -318,9 +324,7 @@ const Main = (props: any) => {
           positionType="bottom"
           onChangeMove={(list: any) => onChangeMove(list, 2)}
           onClick={(i: any, child: any) => tabsDraggingOnclick(2, i, child)}
-          onDrop={(event: any, index: any, state: any) =>
-            onDrop(2, event, index, state)
-          }
+          onDrop={(event: any, index: any) => onDrop(2, event, index)}
           onMove={(data: any) => onMove(2, data)}
           list={getCategoryConfigT}
           onDelete={(child: any) => onDelete(2, child)}

@@ -125,6 +125,20 @@ const Sortable = (props: any) => {
       localStorage.className = ''
     }
   }
+  const onDrop2 = (event: any) => {
+    event.preventDefault()
+    // const drapClassName = ref?.current?.className
+    // console.log(localStorage.className, drapClassName, 'ppp')
+    // if (localStorage.className === drapClassName) {
+    //   return
+    // }
+    if (list.length < 1) {
+      props.onDrop(event, 0)
+    } else {
+      props.onDrop(event, -1)
+    }
+  }
+
   return (
     <div
       draggable="false"
@@ -132,25 +146,17 @@ const Sortable = (props: any) => {
         event.preventDefault(), event.stopPropagation()
       }}
     >
-      {list?.length < 1 && (
-        <Empty
-          onDragOver={allowDrop}
-          onDrop={(event: any) => {
-            event.preventDefault(), props.onDrop(event, 0)
-          }}
-        />
-      )}
       {list?.length >= 1 &&
         list?.map((child: any, i: number) => (
           <div
             ref={ref}
-            key={child.storyId}
+            key={child?.storyId}
             className={props.positionType + '_' + props.positionType}
             onDragOver={allowDrop}
             onDrop={event => onDrop(event, i)}
           >
             <Container
-              key={child.storyId}
+              key={child?.storyId}
               draggable="true"
               onDragStart={(ev: any) => onDragStart(ev, i, child, props.state)}
               onDragOver={() => onDragOver(i)}
@@ -162,7 +168,7 @@ const Sortable = (props: any) => {
               }}
               onClick={() => props.onClick(i, child)}
             >
-              {child.isCustomize === 2 ? (
+              {child?.isCustomize === 2 ? (
                 <Tooltip
                   placement="topRight"
                   title={t('system_fields_are_not_editable')}
@@ -194,11 +200,11 @@ const Sortable = (props: any) => {
                       </ListMsg>
                     </div>
                     <RightOperate>
-                      {child.content === 'users_name' ||
-                      child.content === 'user_name' ||
-                      child.content === 'finish_at' ||
-                      child.content === 'created_at' ||
-                      child.content === 'schedule' ? (
+                      {child?.content === 'users_name' ||
+                      child?.content === 'user_name' ||
+                      child?.content === 'finish_at' ||
+                      child?.content === 'created_at' ||
+                      child?.content === 'schedule' ? (
                         <Checkbox disabled={true} />
                       ) : (
                         <Checkbox
@@ -212,10 +218,10 @@ const Sortable = (props: any) => {
 
                       <Text>{t('must')}</Text>
                       <>
-                        {child.content === 'users_name' ||
-                        child.content === 'user_name' ||
-                        child.content === 'finish_at' ||
-                        child.content === 'created_at' ? (
+                        {child?.content === 'users_name' ||
+                        child?.content === 'user_name' ||
+                        child?.content === 'finish_at' ||
+                        child?.content === 'created_at' ? (
                           <DelBtnText> {t('p2.delete')}</DelBtnText>
                         ) : (
                           <DelBtn
@@ -261,7 +267,7 @@ const Sortable = (props: any) => {
                   <RightOperate>
                     <Checkbox
                       disabled={
-                        child.fieldContent.attr === 'single_checkbox'
+                        child?.fieldContent.attr === 'single_checkbox'
                           ? true
                           : false
                       }
@@ -286,6 +292,16 @@ const Sortable = (props: any) => {
             </Container>
           </div>
         ))}
+      {props.state === 2 && (
+        <Empty
+          ref={ref}
+          className={props.positionType + '_' + props.positionType}
+          onDragOver={allowDrop}
+          onDrop={(event: any) => {
+            onDrop2(event)
+          }}
+        />
+      )}
     </div>
   )
 }

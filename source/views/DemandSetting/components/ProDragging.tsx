@@ -64,9 +64,9 @@ const SliderList = (props: any) => {
   const onDragStart = (ev: any) => {
     const obj = { ...children, dragtype: 'edit' }
     ev.dataTransfer.setData('item', JSON.stringify(obj))
-    // const imgDom = document.createElement('div')
-    // document.body.appendChild(imgDom)
-    // ev.dataTransfer.setDragImage(imgDom, 0, 0)
+    const imgDom = document.createElement('div')
+    document.body.appendChild(imgDom)
+    ev.dataTransfer.setDragImage(imgDom, 0, 0)
   }
   const onDrag = (ev: any) => {
     const el: any = ref.current
