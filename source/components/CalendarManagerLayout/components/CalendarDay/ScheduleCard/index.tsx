@@ -10,13 +10,15 @@ import {
   addMinutes,
   getEndTimeByHeight,
   getMinutesByDistance,
+  getTimeByAddDistance,
   getTimeByOffsetDistance,
   hexToRgba,
 } from '../utils'
-import { DraggableData, Rnd } from 'react-rnd'
+import { DraggableData, Position, ResizableDelta, Rnd } from 'react-rnd'
 import { css } from '@emotion/css'
 import { DraggableEvent } from 'react-draggable'
 import { setSchedule } from '@store/schedule'
+import { ResizeDirection } from 're-resizable'
 
 interface ScheduleCardProps {
   data: Model.Schedule.Info
@@ -118,7 +120,56 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     setTimeRange(null)
   }
 
+  const onResize = (
+    e: MouseEvent | TouchEvent,
+    dir: ResizeDirection,
+    elementRef: HTMLElement,
+    delta: ResizableDelta,
+    position: Position,
+  ) => {
+    console.log('resize dir ,delta ,position', { dir }, delta.height, position)
+    if (dir === 'bottom') {
+      const time = getTimeByAddDistance(endTime, delta.height)
+      setTimeRange({
+        startTime: dayjs(startTime).format('hh:mm'),
+        endTime: time.format('hh:mm'),
+      })
+    }
+  }
+
+  const onResizeStart = (
+    e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>,
+    dir: ResizeDirection,
+    elementRef: HTMLElement,
+  ) => {
+    const time = getTimeByOffsetDistance(startTime, endTime, 0)
+    setTimeRange({
+      startTime: time.startTime.format('hh:mm'),
+      endTime: time.endTime.format('hh:mm'),
+    })
+  }
+
+  const onResizeStop = (
+    e: MouseEvent | TouchEvent,
+    dir: ResizeDirection,
+    elementRef: HTMLElement,
+    delta: ResizableDelta,
+    position: Position,
+  ) => {
+    if (dir === 'bottom') {
+      const time = getTimeByAddDistance(endTime, delta.height)
+      dispatch(
+        setSchedule({
+          ...props.data,
+          endTime: time.valueOf(),
+        }),
+      )
+    }
+    setTimeRange(null)
+  }
+
   const gridHeight = useMemo(() => (oneHourHeight / 60) * 15, [outerHeight])
+
   return (
     <Rnd
       // id={props.data.id}
@@ -152,6 +203,9 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
       onDragStart={onDragStart}
       onDrag={onDrag}
       onDragStop={onDragStop}
+      onResizeStart={onResizeStart}
+      onResize={onResize}
+      onResizeStop={onResizeStop}
     >
       <Title>
         {timeRange && `${timeRange?.startTime} - ${timeRange?.endTime}`}

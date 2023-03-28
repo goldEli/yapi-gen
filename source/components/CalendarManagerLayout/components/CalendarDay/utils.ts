@@ -73,6 +73,12 @@ export const getTimeByOffsetDistance = (
   }
 }
 
+export const getTimeByAddDistance = (time: number, distance: number) => {
+  const offset = getMinutesByDistance(distance)
+  const newTime = addMinutes(time, offset)
+  return newTime
+}
+
 // 获取元素属性
 export function getStyleValue(dom: Element, attr: keyof CSSStyleDeclaration) {
   return parseFloat(getComputedStyle(dom)[attr] + '')
