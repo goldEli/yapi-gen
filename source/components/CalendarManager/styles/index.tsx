@@ -18,6 +18,7 @@ export const CalenderBoxLeftArea = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
+  min-width: 288px;
 `
 
 export const CalenderBoxRightArea = styled.div`
@@ -121,4 +122,28 @@ export const CalendarSidebarMain = styled.div<{ firstMenuCollapse: boolean }>`
   overflow: hidden;
   transition: all 0.3s;
   display: ${props => (props.firstMenuCollapse ? 'none' : 'block')};
+`
+
+export const CalendarSetBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 44px;
+  cursor: pointer;
+  background: var(--neutral-n9);
+  position: absolute;
+  bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  div {
+    margin-left: 12px;
+    font-size: 14px;
+    color: var(--neutral-n1-d2);
+  }
+  &:hover {
+    div,
+    svg {
+      color: var(--primary-d2) !important;
+    }
+  }
 `

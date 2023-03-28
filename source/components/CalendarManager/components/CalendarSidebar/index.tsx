@@ -6,6 +6,7 @@ import { DragLine } from '@/components/StyleCommon'
 import { useDispatch, useSelector } from '@store/index'
 import { useRef, useState } from 'react'
 import {
+  CalendarSetBox,
   CalendarSidebarBox,
   CalendarSidebarMain,
   CalenderBoxLeftArea,
@@ -106,7 +107,13 @@ const CalendarSidebar: React.FC<CalendarSidebarProps> = props => {
           />
           <CalendarManagerList />
           <CalendarManagerList />
-          <div>日历设置</div>
+          <CalendarSetBox>
+            <IconFont
+              type="settings"
+              style={{ fontSize: 18, color: 'var(--neutral-n3)' }}
+            />
+            <div>日历设置</div>
+          </CalendarSetBox>
         </CalenderBoxLeftArea>
       </CalendarSidebarMain>
 

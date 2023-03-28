@@ -7,10 +7,13 @@ import IconFont from '@/components/IconFont'
 const { Panel } = Collapse
 
 const CollapseWrap = styled(Collapse)`
-  .ant-collapse-header {
+  .ant-collapse-item > .ant-collapse-header {
     display: flex;
     align-items: center;
     padding: 0;
+  }
+  .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow {
+    margin-right: 8px;
   }
 `
 
@@ -76,6 +79,10 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
           }
           key="1"
         >
+          <CalendarManagerListItem>
+            <CheckBox />
+            <span className="name">张三</span>
+          </CalendarManagerListItem>
           <CalendarManagerListItem>
             <CheckBox />
             <span className="name">张三</span>
