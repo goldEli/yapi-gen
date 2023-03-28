@@ -152,7 +152,7 @@ const Main = (props: any) => {
       is_required: item.dragtype !== 'move' ? 2 : item?.isRequired,
       is_fold: type === 1 ? 1 : 2,
     }
-    if (type === 1 && index !== -1) {
+    if (type === 1 && index >= 1) {
       const arrData = Array.from(getCategoryConfigF)
       arrData.splice(index, 0, newItem)
       setGetCategoryConfigF(arrData)
@@ -163,7 +163,7 @@ const Main = (props: any) => {
         data && setGetCategoryConfigT(data)
       }
       dispatch(setGetCategoryConfigArray([...arrData, ...getCategoryConfigT]))
-    } else if (type === 2 && index !== -1) {
+    } else if (type === 2 && index >= 0) {
       const arrData = Array.from(getCategoryConfigT)
       arrData.splice(index, 0, newItem)
       setGetCategoryConfigT(arrData)
@@ -182,6 +182,13 @@ const Main = (props: any) => {
       )
       data && setGetCategoryConfigF(data)
       dispatch(setGetCategoryConfigArray([...arrData, ...data]))
+    } else if (index == -2) {
+      const data = getCategoryConfigT.filter(
+        (el: any) => el.storyId !== newItem.storyId,
+      )
+      const arrData = [...data, newItem]
+      setGetCategoryConfigT(arrData)
+      dispatch(setGetCategoryConfigArray([...arrData, ...getCategoryConfigF]))
     }
   }
   //拖动传递过来的参数
@@ -230,7 +237,6 @@ const Main = (props: any) => {
       is_fold: el.isFold || el.is_fold,
       is_required: el.isRequired || el.is_required,
     }))
-    console.log(newData, 'oo')
     await configSave({
       id: activeCategory.id,
       project_id: projectInfo.id,
@@ -262,12 +268,12 @@ const Main = (props: any) => {
       const item: any = arrData[draggingIndex]
       arrData[draggingIndex] = { ...item, ...newItem }
       setGetCategoryConfigF(arrData)
-      dispatch(setGetCategoryConfigArray([...arrData, getCategoryConfigT]))
+      dispatch(setGetCategoryConfigArray([...arrData, ...getCategoryConfigT]))
     } else {
       const arrData = Array.from(getCategoryConfigT)
       const item: any = arrData[draggingIndex]
       arrData[draggingIndex] = { ...item, ...newItem }
-      dispatch(setGetCategoryConfigArray([...arrData, getCategoryConfigF]))
+      dispatch(setGetCategoryConfigArray([...arrData, ...getCategoryConfigF]))
       setGetCategoryConfigT(arrData)
     }
   }

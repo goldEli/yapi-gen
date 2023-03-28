@@ -214,37 +214,52 @@ const MyDropdown = (props: any) => {
     navigate('/ProjectManagement/Mine/Profile')
   }
   // 接口上下接口不同，取值不同，需要加判断取
-  const onRoute = (el: any) => {
+  const onRoute = (el: any, type: string) => {
     let iterParmas = null
     let router = ''
-    if (el?.actionable_type === 'iterate' || el?.feedable_type === 'iterate') {
+    if (type == 'story') {
       iterParmas = encryptPhp(
         JSON.stringify({
           type: 'info',
-          id: el?.feedable?.project_id ?? el.project_id,
-          iterateId: el.feedable_id ?? el.id,
+          id: el.project_id,
+          demandId: el.id,
         }),
       )
-      router = `/ProjectManagement/Iteration?data=${iterParmas}`
     } else {
-      iterParmas = encryptPhp(
-        JSON.stringify({
+      const resultType = el?.feedable_type ?? el?.actionable_type
+      if (resultType === 'project') {
+        iterParmas = encryptPhp(
+          JSON.stringify({
+            id: el.feedable_id,
+          }),
+        )
+        router = `/ProjectManagement/Demand?data=${iterParmas}`
+      } else {
+        const params: any = {
           type: 'info',
           id: el?.feedable?.project_id ?? el.project_id,
-          demandId: el.feedable_id ?? el.id,
-        }),
-      )
-      router = `/ProjectManagement/Demand?data=${iterParmas}`
+        }
+        if (resultType === 'iterate') {
+          params.iterateId = el.id
+        }
+        if (resultType === 'story') {
+          params.demandId = el?.feedable_id ?? el.id
+        }
+        iterParmas = encryptPhp(JSON.stringify(params))
+        router = `/ProjectManagement/${
+          resultType === 'iterate' ? 'Iteration' : 'Demand'
+        }?data=${iterParmas}`
+      }
     }
     setIsOpen(false)
     navigate(router)
   }
-  const itmeMain = (item: any) => {
+  const itmeMain = (item: any, type: any) => {
     return (
       isArray(item) &&
       item?.map((el: any) => (
         <ItemBox key={el.id}>
-          <Row onClick={() => onRoute(el)}>
+          <Row onClick={() => onRoute(el, type)}>
             <div>
               {(el?.category_attachment || el?.feedable?.attachment) && (
                 <Img
@@ -314,11 +329,11 @@ const MyDropdown = (props: any) => {
             box.map(el => (
               <div style={{ marginBottom: '16px' }} key={el.title}>
                 <Title>{el.title}</Title>
-                {itmeMain(recentList?.[el.name])}
+                {itmeMain(recentList?.[el.name], el.name)}
               </div>
             ))}
-          {tabActive === 0 && itmeMain(noFinishList)}
-          {tabActive === 1 && itmeMain(finishList)}
+          {tabActive === 0 && itmeMain(noFinishList, 'story')}
+          {tabActive === 1 && itmeMain(finishList, 'story')}
         </ScrollWrap>
         <Border />
         <Footer onClick={onClick}>

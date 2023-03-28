@@ -19,6 +19,7 @@ import moment from 'moment'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '../CommonModal'
+import { uploadFile } from '../CreateDemand/CreateDemandLeft'
 import CustomSelect from '../CustomSelect'
 import MoreOptions from '../MoreOptions'
 import RangePicker from '../RangePicker'
@@ -240,18 +241,7 @@ const CreateIteration = () => {
             <Editor
               ref={editorRef}
               key={Math.random()}
-              upload={file => {
-                const key = uploadFileToKey(
-                  file,
-                  file.name,
-                  `richEditorFiles_${new Date().getTime()}`,
-                  false,
-                  data => {
-                    editorRef.current?.notifyUploaded(data.key, data.url)
-                  },
-                )
-                return key
-              }}
+              upload={uploadFile}
               getSuggestions={() => {
                 return new Promise(resolve => {
                   setTimeout(() => {

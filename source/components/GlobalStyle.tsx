@@ -573,7 +573,7 @@ const GlobalStyle = () => {
       right: 5px;
       bottom: 0;
       left: 0;
-      padding-left: 5px;
+      padding-left: 30px;
       overflow-x: hidden;
     }
     .resize_bar:hover ~ .resize_line,
