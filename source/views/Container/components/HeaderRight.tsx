@@ -1,3 +1,4 @@
+/* eslint-disable no-negated-condition */
 /* eslint-disable react/jsx-no-leaked-render */
 import CommonIconFont from '@/components/CommonIconFont'
 import CommonModal from '@/components/CommonModal'
@@ -7,7 +8,7 @@ import { CloseWrap } from '@/components/StyleCommon'
 import { getTicket, loginOut } from '@/services/user'
 import { useDispatch, useSelector } from '@store/index'
 import { changeLanguage, type LocaleKeys } from '@/locals'
-import { message, Popover, Space } from 'antd'
+import { message, Popover, Space, Tooltip } from 'antd'
 import { useState } from 'react'
 import {
   ChangeItem,
@@ -21,17 +22,17 @@ import {
   MenuLeft,
   MenuRight,
   NameWrap,
-  PersonalFooter,
   PersonalHead,
   PhoneWrap,
-  UserAvatar,
   UserInfoBox,
   UserInfoTop,
   UserInfoWrap,
   Line2,
+  LineBox,
 } from './../style'
 import { setIsCreateIterationVisible } from '@store/iterate'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
+import { getLoginDetail } from '@store/user/user.thunk'
 import helpPdf from '/Agile.pdf'
 import { t } from 'i18next'
 
@@ -67,6 +68,7 @@ const ChangeComponent = (props: { item: any; onClose(): void }) => {
         type: 'global/setLanguage',
         payload: type,
       })
+      dispatch(getLoginDetail())
     }
 
     // // 切换主题
@@ -178,6 +180,11 @@ const HeaderRight = () => {
   ]
 
   const labelList = [
+    {
+      label: t('head_portrait'),
+      key: 'avatar',
+      value: userInfo.avatar,
+    },
     {
       label: t('common.phone'),
       value: userInfo.account,
@@ -344,33 +351,27 @@ const HeaderRight = () => {
         width={420}
       >
         <div style={{ padding: '0 24px 32px' }}>
-          <PersonalFooter>
-            <div>
-              <Line>头像</Line>
-              {labelList.map(item => (
-                <Line key={item.label}>{item.label ? item.label : '-'}</Line>
-              ))}
-            </div>
-            <div
-              style={{
-                textAlign: 'right',
-              }}
-            >
-              <PersonalHead>
-                {userInfo.avatar ? (
-                  <img className={imgCss} src={userInfo.avatar} />
-                ) : (
-                  <UserAvatar />
+          <div>
+            {labelList?.map((i: any) => (
+              <LineBox key={i.label}>
+                <Line key={i.label}>{i.label ? i.label : '-'}</Line>
+                {i.key === 'avatar' && (
+                  <PersonalHead>
+                    {userInfo.avatar ? (
+                      <img className={imgCss} src={userInfo.avatar} />
+                    ) : (
+                      <CommonUserAvatar size="large" />
+                    )}
+                  </PersonalHead>
                 )}
-              </PersonalHead>
-
-              {labelList.map(item => (
-                <Line2 style={{}} key={item.label}>
-                  {item.value ? item.value : '-'}
-                </Line2>
-              ))}
-            </div>
-          </PersonalFooter>
+                {i.key !== 'avatar' && (
+                  <Tooltip title={i.value} placement="topRight">
+                    <Line2 key={i.label}>{i.value || '--'}</Line2>
+                  </Tooltip>
+                )}
+              </LineBox>
+            ))}
+          </div>
         </div>
       </CommonModal>
 

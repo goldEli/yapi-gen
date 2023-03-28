@@ -4,6 +4,7 @@ import styled from '@emotion/styled'
 import { Divider, Select } from 'antd'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import IconFont from '../IconFont'
 import { SelectWrap } from '../StyleCommon'
 
 const Btn = styled.div`
@@ -82,6 +83,12 @@ const index = (props: any) => {
       optionFilterProp="label"
       onChange={handleChange}
       placeholder={t('common.pleaseSelect')}
+      suffixIcon={
+        <IconFont
+          type="down"
+          style={{ fontSize: 16, color: 'var(--neutral-n4)' }}
+        />
+      }
       dropdownRender={(menu: any) => (
         <>
           {menu}

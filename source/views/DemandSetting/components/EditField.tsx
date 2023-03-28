@@ -48,7 +48,7 @@ const ItemWrap = styled.div<{ notMargin?: boolean }>(
 const ChooseWrap = styled.div({
   marginTop: 8,
   borderRadius: 6,
-  background: 'var(--neutral-n6-d1)',
+  background: 'var(--neutral-n8)',
   padding: 16,
 })
 
@@ -86,7 +86,7 @@ interface Props {
   item?: any
   fieldType?: any
   onInsert(val: any): void
-  onEditUpdate(): void
+  onEditUpdate(val: any): void
 }
 
 const DragHandle = sortableHandle(() => (
@@ -247,13 +247,13 @@ const EditFiled = (props: Props) => {
       },
     }
 
-    if (props?.item?.id) {
+    if (props?.item?.storyId) {
       try {
         obj.id = props?.item?.storyId
         const res: any = await updateStoryConfigField(obj)
         message.success(t('common.editSuccess'))
         onReset()
-        props.onEditUpdate()
+        res.data.res && props.onEditUpdate(res.data.res)
       } catch (error) {
         //
       }
@@ -448,7 +448,7 @@ const EditFiled = (props: Props) => {
                           fontSize: 14,
                           color: 'var(--neutral-n1-d1)',
                           marginBottom: 12,
-                          fontWeight: 500,
+                          fontFamily: 'SiYuanMedium',
                         }}
                       >
                         {t('version2.chooseRange')}

@@ -40,9 +40,9 @@ import CommonButton from '@/components/CommonButton'
 import PaginationBox from '@/components/TablePagination'
 import ResizeTable from '@/components/ResizeTable'
 import ProjectOverModal from '@/components/ProjectOverModal'
-import CustomSelect from '@/components/CustomSelect'
 
 const Wrap = styled.div({
+  padding: '0 24px',
   display: 'flex',
   flexDirection: 'column',
   height: '100%',
@@ -55,22 +55,23 @@ const Header = styled.div({
 })
 
 const HeaderTop = styled.div({
-  height: 64,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
   zIndex: 1,
+  marginBottom: 20,
 })
 
 const Content = styled.div({
   // padding: 16,
-  height: 'calc(100% - 64px)',
+  height: 'calc(100% - 52px)',
 })
 
 const FilterWrap = styled(Form)({
   display: 'flex',
   minHeight: 64,
   alignItems: 'center',
+  borderBottom: '1px solid var(--neutral-n6-d1)',
 })
 
 const SearchWrap = styled(Space)({
@@ -90,7 +91,7 @@ const NameWrap = styled.span({
   lineHeight: '32px',
   background: '#A4ACF5',
   color: 'white',
-  marginLeft: 32,
+  // marginLeft: 32,
 })
 
 const NewSort = (sortProps: any) => {
@@ -106,7 +107,7 @@ const NewSort = (sortProps: any) => {
   )
 }
 
-const ProjectMember = () => {
+const ProjectMember = (props: { searchValue?: string }) => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   const navigate = useNavigate()
@@ -164,6 +165,7 @@ const ProjectMember = () => {
       page: pagePrams?.page,
       pageSize: pagePrams?.size,
       ...values,
+      searchValue: props?.searchValue,
     })
     setMemberList(result)
     setIsSpinning(false)
@@ -192,10 +194,13 @@ const ProjectMember = () => {
   }
 
   useEffect(() => {
-    getList(order, pageObj)
     getJobList()
     getPermission()
   }, [])
+
+  useEffect(() => {
+    getList(order, pageObj)
+  }, [props?.searchValue])
 
   const onChangePage = (page: number, size: number) => {
     setPageObj({ page, size })
@@ -218,14 +223,6 @@ const ProjectMember = () => {
 
   const onValuesChange = () => {
     getList(order, { page: 1, size: pageObj.size })
-  }
-
-  const onChangeSearch = (value: string) => {
-    // 不相同的才更新
-    if (form.getFieldValue('searchValue') !== value) {
-      form.setFieldsValue({ searchValue: value })
-      getList(order, { page: 1, size: pageObj.size })
-    }
   }
 
   const menu = (item: any) => {
@@ -288,6 +285,14 @@ const ProjectMember = () => {
 
   const columns = [
     {
+      title: '',
+      dataIndex: 'name',
+      width: 10,
+      render: (text: string, record: any) => {
+        return hasDel && hasEdit ? null : <MoreDropdown menu={menu(record)} />
+      },
+    },
+    {
       title: (
         <NewSort
           fixedKey="nickname"
@@ -299,17 +304,16 @@ const ProjectMember = () => {
         </NewSort>
       ),
       dataIndex: 'nickname',
-      width: 240,
+      width: 210,
       render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            {hasDel && hasEdit ? null : <MoreDropdown menu={menu(record)} />}
             {record.avatar ? (
               <img
                 src={record.avatar}
                 alt=""
                 style={{
-                  marginLeft: 32,
+                  // marginLeft: 32,
                   width: 32,
                   height: 32,
                   borderRadius: '50%',
@@ -603,15 +607,15 @@ const ProjectMember = () => {
           <HeaderTop>
             <Space size={24}>
               {!hasAdd && (
-                <CommonButton type="primary" onClick={onChangeValue}>
+                <CommonButton
+                  type="primary"
+                  icon="plus"
+                  iconPlacement="left"
+                  onClick={onChangeValue}
+                >
                   {t('project.addMember1')}
                 </CommonButton>
               )}
-              <InputSearch
-                onChangeSearch={onChangeSearch}
-                placeholder={t('project.pleaseNickname')}
-                leftIcon
-              />
             </Space>
             <HoverWrap onClick={onChangeFilter} isActive={!isVisible}>
               <IconFont className="iconMain" type="filter" />
@@ -675,7 +679,7 @@ const ProjectMember = () => {
         <Content>
           <ResizeTable
             isSpinning={isSpinning}
-            dataWrapNormalHeight="calc(100% - 48px)"
+            dataWrapNormalHeight="calc(100% - 64px)"
             col={columns}
             dataSource={memberList?.list}
             noData={<NoData />}

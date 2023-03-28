@@ -45,17 +45,17 @@ const IterationInfo = styled.div({
   position: 'relative',
 })
 
-const IconWrap = styled(IconFont)<{ color?: string }>(
-  {
-    fontSize: 20,
-    cursor: 'pointer',
-    marginLeft: 8,
+const IconWrap = styled(IconFont)({
+  fontSize: 20,
+  color: 'var(--neutral-n3)',
+  cursor: 'pointer',
+  padding: 6,
+  borderRadius: 6,
+  '&: hover': {
+    color: 'var(--neutral-n1-d1)',
+    background: 'var(--hover-d3)',
   },
-  ({ color }) => ({
-    color: color || 'var(--neutral-n3)',
-  }),
-)
-
+})
 interface Props {
   isGrid: any
   onChangeGrid(val: boolean): void

@@ -237,7 +237,7 @@ const StaffManagement = () => {
       const params = encryptPhp(
         JSON.stringify({ id: '', isMember: false, userId: row.id }),
       )
-      navigate(`/MemberInfo/Profile?data=${params}`)
+      navigate(`/AdminManagement/MemberInfo/Profile?data=${params}`)
     }
   }
 
@@ -403,7 +403,7 @@ const StaffManagement = () => {
         <div
           style={{
             fontSize: '16px',
-            fontWeight: 500,
+            fontFamily: 'SiYuanMedium',
             color: 'var(--neutral-n1-d1)',
           }}
         >

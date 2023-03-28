@@ -61,7 +61,7 @@ const TabsItem = styled.div<{ active?: boolean }>(
     borderBottom: active
       ? '3px solid var(--primary-d2)'
       : '3px solid  var(--neutral-white-d5)',
-    fontWeight: active ? 'bold' : 400,
+    fontFamily: active ? 'SiYuanMedium' : '',
   }),
 )
 

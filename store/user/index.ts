@@ -49,6 +49,7 @@ export const counterSlice = createSlice({
     builder.addCase(getLoginDetail.fulfilled, (state, action) => {
       state.loginInfo = action.payload.loginInfo
       state.userInfo = action.payload.userInfo
+
       state.menuPermission = action.payload.menuPermission
       state.userPreferenceConfig = action.payload.userPreferenceConfig
     })

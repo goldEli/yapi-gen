@@ -204,7 +204,7 @@ const RelatedNeed = (props: any) => {
               }}
               style={{
                 fontSize: '14px',
-                fontWeight: 'bold',
+                fontFamily: 'SiYuanMedium',
                 color: 'var( --primary-d2)',
                 cursor: 'pointer',
               }}
@@ -216,7 +216,7 @@ const RelatedNeed = (props: any) => {
               style={{
                 marginLeft: '24px',
                 fontSize: '14px',
-                fontWeight: 'bold',
+                fontFamily: 'SiYuanMedium',
                 color: 'var( --primary-d2)',
                 cursor: 'pointer',
               }}

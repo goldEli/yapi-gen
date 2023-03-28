@@ -3,7 +3,6 @@
 import privatePermission from '/privatePermission.png'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
-// import { SecondButton } from '@/components/StyleCommon'
 import { useNavigate } from 'react-router-dom'
 import CommonButton from '@/components/CommonButton'
 

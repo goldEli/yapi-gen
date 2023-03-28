@@ -10,13 +10,15 @@ import { getRoleList } from '@/services/staff'
 import CustomSelect from '@/components/CustomSelect'
 
 const PersonalHead = styled.div`
+  margin-top: 13px;
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
+  justify-content: end;
 `
 const PersonalFooter = styled.div`
   display: flex;
-  justify-content: space-around;
-  padding-right: 20px;
+  justify-content: space-between;
+  padding: 0 20px;
 `
 const Left = styled.div``
 const Line = styled.div`
@@ -24,26 +26,27 @@ const Line = styled.div`
   margin-top: 24px;
 `
 const RightLine = styled(Line)`
+  text-align: right;
   margin-top: 24px;
   color: rgba(50, 50, 51, 1);
 `
 
 const Right = styled.div``
 const imgCss = css`
-  width: 104px;
-  height: 104px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
 `
 
 const SetHead = styled.div`
-  width: 104px;
-  height: 104px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
   border-radius: 50%;
-  font-size: 32px;
+  font-size: 16px;
   background: #a4acf5;
   background-blend-mode: normal;
   border: 2px solid rgba(40, 119, 255, 0.16);
@@ -93,23 +96,15 @@ export const StaffPersonal = (props: {
 
   return (
     <CommonModal
-      width={420}
+      width={528}
       onClose={() => props.onClose()}
       title={t('staff.setPermission')}
       isVisible={props.isVisible}
       onConfirm={onConfirm}
     >
-      <PersonalHead>
-        {data?.avatar ? (
-          <img className={imgCss} src={data?.avatar} alt="" />
-        ) : (
-          <SetHead>
-            {String(data?.name?.trim().slice(0, 1)).toLocaleUpperCase()}
-          </SetHead>
-        )}
-      </PersonalHead>
       <PersonalFooter>
         <Left>
+          <Line>{t('head_portrait')}</Line>
           <Line>{t('common.phone')}</Line>
           <Line>{t('common.email')}</Line>
           <Line>{t('common.name')}</Line>
@@ -117,6 +112,15 @@ export const StaffPersonal = (props: {
           <Line>{t('common.permissionGroup')}</Line>
         </Left>
         <Right>
+          <PersonalHead>
+            {data?.avatar ? (
+              <img className={imgCss} src={data?.avatar} alt="" />
+            ) : (
+              <SetHead>
+                {String(data?.name?.trim().slice(0, 1)).toLocaleUpperCase()}
+              </SetHead>
+            )}
+          </PersonalHead>
           <RightLine>{data.phone ? data.phone : '-'}</RightLine>
           <RightLine>{data.email ? data.email : '-'}</RightLine>
           <RightLine>{data.name ? data.name : '-'}</RightLine>

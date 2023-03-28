@@ -4,9 +4,26 @@
 
 import { copyLink, getIsPermission } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
 import { Menu } from 'antd'
 import { useTranslation } from 'react-i18next'
+
+const MenuWrap = styled(Menu)`
+  border-radius: 6px;
+  padding: 4px 0;
+  li {
+    height: 32px !important;
+    line-height: 32px !important;
+    margin: 0 !important;
+    color: var(--neutral-n2) !important;
+    background: var(---neutral-white-d3) !important;
+  }
+  li:hover {
+    color: var(--neutral-n1-d1) !important;
+    background: var(--hover-d3) !important;
+  }
+`
 
 interface Props {
   record: any
@@ -121,5 +138,5 @@ export const DemandOperationDropdownMenu = (props: Props) => {
     menuItems = menuItems.filter((i: any) => i.key !== '4')
   }
 
-  return <Menu style={{ minWidth: 56 }} items={menuItems} />
+  return <MenuWrap style={{ minWidth: 56 }} items={menuItems} />
 }

@@ -34,7 +34,6 @@ const WrapLeft = styled.div({
   height: '100%',
   overflow: 'auto',
   padding: '0 20px 24px 0',
-  borderRight: '1px solid var(--neutral-n6-d1)',
 })
 
 const InfoItem = styled.div<{ activeState?: any }>({
@@ -50,7 +49,7 @@ const Label = styled.div({
   minWidth: 120,
   height: 32,
   lineHeight: '32px',
-  fontWeight: 'bold',
+  fontFamily: 'SiYuanMedium',
 })
 
 const TextWrap = styled.div({

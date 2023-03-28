@@ -2,7 +2,7 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import InputSearch from '@/components/InputSearch'
 import { useSelector } from '@store/index'
-import { t } from 'i18next'
+import { useTranslation } from 'react-i18next'
 
 const HeaderWrap = styled.div`
   width: 100%;
@@ -11,10 +11,11 @@ const HeaderWrap = styled.div`
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--neutral-n6-d1);
+  margin-bottom: 20px;
 `
 const TitleWrap = styled.div`
   font-size: var(--font14);
-  font-weight: 500;
+  font-family: siyuanmedium;
   color: var(--neutral-n1-d1);
   display: flex;
   align-items: center;
@@ -23,7 +24,8 @@ const SearchBox = styled.div`
   display: flex;
 `
 const ButtonStyle = styled.div`
-  min-width: 88px;
+  white-space: nowrap;
+  /* min-width: 88px; */
   height: 32px;
   font-size: var(--font14);
   color: var(--neutral-white-d7);
@@ -43,6 +45,7 @@ const HeaderSearch = (props: {
   onShowAddMemberModal(): void
 }) => {
   const { activeTeam } = useSelector(s => s.teams)
+  const [t] = useTranslation()
   return (
     <HeaderWrap>
       <TitleWrap>

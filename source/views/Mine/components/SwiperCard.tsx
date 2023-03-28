@@ -33,12 +33,15 @@ const Warp = styled.div<{ show?: boolean }>(
     width: 200,
     transition: 'all .3s',
     cursor: 'pointer',
+    background: 'var(--neutral-white-d2)',
     '&: hover': {
+      border: '1px solid var(--primary-d1) !important',
       [DropdownWrap.toString()]: {
         display: 'block',
       },
     },
   },
+
   ({ show }) => ({
     border: show
       ? '1px solid var(--primary-d1) !important'
@@ -122,6 +125,7 @@ export const SwiperCard = (props: {
               fontWeight: 400,
               color: 'var(--neutral-n2)',
               lineHeight: '20px',
+              whiteSpace: 'nowrap',
             }}
           >
             {t('demandSettingSide.teamProject') as string}

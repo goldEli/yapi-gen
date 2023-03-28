@@ -24,7 +24,7 @@ const GanttWrap = styled.div({
     textAlign: 'left',
     paddingLeft: 10,
     fontSize: 14,
-    fontWeight: '500',
+    fontFamily: 'SiYuanMedium',
   },
   '.gantt_cell': {
     padding: 0,
@@ -34,7 +34,7 @@ const GanttWrap = styled.div({
   '.gantt_layout_cell, .gantt_scale_cell': {
     border: 'none!important',
     fontSize: '14px!important',
-    fontWeight: '500!important',
+    fontFamily: 'SiYuanMedium !important',
   },
   '.gantt_task_line.gantt_selected': {
     boxShadow: 'none',
@@ -152,12 +152,12 @@ const Gantt = (props: Props) => {
 
       {
         name: 'start_date',
-        label: t('common.status'),
+        label: t('common.startTime'),
         width: 140,
       },
       {
         name: 'end_date',
-        label: t('common.status'),
+        label: t('common.endTime'),
         width: 140,
       },
       {

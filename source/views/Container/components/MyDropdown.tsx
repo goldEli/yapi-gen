@@ -13,15 +13,15 @@ import { t } from 'i18next'
 const Container = styled.div`
   width: 320px;
   max-height: calc(100vh - 120px);
-  background-color: var(--neutral-white-d6);
-  box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
-  border-radius: 0px 0px 6px 6px;
-  padding-bottom: 8px;
+  background-color: var(--neutral-white-d5);
+  box-shadow: 0px 7px 13px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
 `
 const HeraderTabs = styled.div`
   width: 100%;
-  background-color: var(--neutral-white-d6);
+  background-color: var(--neutral-white-d5);
   padding: 16px;
+  border-radius: 6px 6px 0 0;
 `
 const Tabs = styled.div`
   width: 100%;
@@ -35,7 +35,7 @@ const Tabs = styled.div`
   font-size: 12px;
   font-weight: 400;
   .tabsActive {
-    background-color: var(--neutral-white-d6);
+    background-color: var(--neutral-white-d5);
     color: var(--primary-d2);
   }
   span {
@@ -56,19 +56,21 @@ const ScrollWrap = styled.div`
   overflow-y: auto;
 `
 const Footer = styled.div`
-  width: 100%;
-  height: 52px;
-  line-height: 52px;
-  border-radius: 0px 0px 6px 6px;
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--neutral-n1-d2);
-  /* margin: 8px 0px; */
+  div:nth-child(1) {
+    height: 52px;
+    width: 100%;
+    line-height: 52px;
+    border-radius: 0px 0px 6px 6px;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--neutral-n1-d2);
+  }
+  padding-bottom: 8px;
   > div {
     padding-left: 24px;
   }
   > div:hover {
-    background-color: var(--hover-d2);
+    background-color: var(--hover-d3);
     cursor: pointer;
   }
 `
@@ -135,7 +137,7 @@ const BtnBox = styled.div`
 const Border = styled.div`
   margin: 0 16px;
   text-align: center;
-  border-bottom: 1px solid var(--neutral-n6-d1);
+  border-bottom: 1px solid var(--neutral-n6-d2);
 `
 
 const Img = styled.img`
@@ -203,6 +205,7 @@ const MyDropdown = (props: any) => {
   useEffect(() => {
     isOpen && onFetchList()
   }, [isOpen, tabActive])
+
   const onClickIsOpen = () => {
     setIsOpen(false)
   }
@@ -257,17 +260,24 @@ const MyDropdown = (props: any) => {
     return (
       isArray(item) &&
       item?.map((el: any) => (
-        <ItemBox key={el.title}>
+        <ItemBox key={el.id}>
           <Row onClick={() => onRoute(el)}>
             <div>
-              {(el?.category_attachment || el?.feedable?.attachment) && (
+              {el?.actionable_type === 'story' && (
                 <Img
                   src={el?.category_attachment || el?.feedable?.attachment}
                 />
               )}
+              {el?.actionable_type === 'iterate' && (
+                <CommonIconFont
+                  type="interation-2"
+                  color="var(--neutral-n2)"
+                  size={20}
+                />
+              )}
             </div>
             <ItemCenter>
-              <ItemTitle>{el.feedable?.name || el.name}</ItemTitle>
+              <ItemTitle>{el.feedable?.name || el?.name}</ItemTitle>
               <ItemMsg>
                 {el.feedable?.project?.name || el.project?.name}
               </ItemMsg>
@@ -339,12 +349,24 @@ const MyDropdown = (props: any) => {
     <Dropdown
       dropdownRender={dropdownRender}
       placement="bottomLeft"
+      trigger={['click']}
       onOpenChange={setIsOpen}
       open={isOpen}
     >
       <div style={{ height: '52px', lineHeight: '52px' }}>
-        <span style={{ marginRight: '8px' }}>{props.text}</span>
-        <CommonIconFont type="down" size={14} />
+        <span
+          style={{
+            marginRight: '8px',
+            color: isOpen ? 'var(--primary-d2)' : '',
+          }}
+        >
+          {props.text}
+        </span>
+        <CommonIconFont
+          type="down"
+          size={14}
+          color={isOpen ? 'var(--primary-d2)' : ''}
+        />
       </div>
     </Dropdown>
   )

@@ -22,7 +22,7 @@ const RightWrap = styled.div({
   overflow: 'auto',
   width: 406,
   padding: '0px 14px 0 24px',
-  borderLeft: '1px solid var(--neutral-n6-d1)',
+  borderLeft: '1px solid var(--neutral-n6-d2)',
 })
 
 const ShowLabel = styled.div({
@@ -121,6 +121,8 @@ const CreateDemandRight = (props: Props) => {
             : moment(customValue)
         } else if (['text', 'textarea'].includes(element?.fieldContent?.attr)) {
           resultCustom[element?.content] = customValue
+        } else if (['single_checkbox'].includes(element?.fieldContent?.attr)) {
+          resultCustom[element?.content] = customValue === 1
         }
       })
     }
@@ -480,7 +482,7 @@ const CreateDemandRight = (props: Props) => {
 
   const onChangeCheckBox = (e: any, key: any) => {
     form.setFieldsValue({
-      [key]: e.target.checked,
+      [key]: e.target.checked ? 1 : 0,
     })
   }
 
@@ -692,7 +694,7 @@ const CreateDemandRight = (props: Props) => {
             {i.fieldContent?.attr === 'single_checkbox' && (
               <Form.Item key={i.content} label={i.title} name={i.content}>
                 <CheckboxWrap
-                  defaultChecked={i.fieldContent?.value || false}
+                  defaultChecked={form.getFieldValue(i.content) || false}
                   onChange={e => onChangeCheckBox(e, i.content)}
                 />
               </Form.Item>
@@ -759,7 +761,7 @@ const CreateDemandRight = (props: Props) => {
               {i.fieldContent?.attr === 'single_checkbox' && (
                 <Form.Item key={i.content} label={i.title} name={i.content}>
                   <CheckboxWrap
-                    defaultChecked={i.fieldContent?.value || false}
+                    defaultChecked={form.getFieldValue(i.content) || false}
                     onChange={e => onChangeCheckBox(e, i.content)}
                   />
                 </Form.Item>

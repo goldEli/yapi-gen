@@ -4,7 +4,7 @@
 
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import { Button, Divider, Progress, Slider, Table } from 'antd'
+import { Button, Divider, Dropdown, Slider, Table } from 'antd'
 import CustomSelect from './CustomSelect'
 import IconFont from './IconFont'
 
@@ -20,19 +20,9 @@ const DragLine = styled.div<{ active: boolean }>`
   user-select: none;
   height: 100%;
   top: 0;
-  background-size: 100% 2px;
-  background-repeat: repeat-y;
-  background-image: ${({ active }) =>
-    active
-      ? 'linear-gradient(to bottom, #617ef2 0%, #617ef2 80%, transparent 50%)'
-      : 'none'};
+  background: ${props => (props.active ? 'var(--primary-d2)' : 'transparent')};
   &:hover {
-    background-image: linear-gradient(
-      to bottom,
-      #617ef2 0%,
-      #617ef2 80%,
-      transparent 50%
-    );
+    background: var(--primary-d2);
   }
 `
 
@@ -70,10 +60,19 @@ const ChartsItem = styled.span`
 `
 const titleCss = css`
   color: var(--neutral-n1-d1);
-  border-left: 3px solid var(--primary-d1);
   padding-left: 8px;
   font-size: 14px;
   font-family: SiYuanMedium;
+  position: relative;
+  &::before {
+    content: '';
+    height: 16px;
+    position: absolute;
+    left: 0px;
+    top: 3px;
+    width: 3px;
+    background-color: var(--primary-d1);
+  }
 `
 
 const title1Css = css`
@@ -227,6 +226,9 @@ const HoverWrap = styled.div<{ isActive?: any }>`
   }
   &:hover .label {
     color: var(--neutral-n1-d1);
+  }
+  &:active {
+    background: var(--neutral-n6-d1);
   }
 `
 
@@ -428,41 +430,16 @@ const SelectWrapBedeck = styled.div`
   }
 `
 
-const SearchLine = styled.div`
+const SearchLine = styled.div<{ hasLeft?: boolean }>`
   box-sizing: border-box;
   padding: 16px 0;
   display: flex;
   gap: 16px;
-  padding-left: 24px;
+  padding-left: ${props => (props.hasLeft ? 24 : 0)}px;
   background: rgba(255, 255, 255, 1);
+  border-bottom: 1px solid var(--neutral-n6-d1);
 `
 
-// 次按钮样式
-const SecondButton = styled(Button)`
-  height: 32px;
-  border-radius: 6px;
-  background: var(--hover-d2);
-  cursor: pointer;
-  padding: 0 16px;
-  color: var(--primary-d2);
-  display: flex;
-  align-items: center;
-  svg {
-    font-size: 16px;
-  }
-  div {
-    margin-left: 8px;
-    font-size: 14px;
-  }
-  &:hover {
-    background: var(--selected) !important;
-    color: var(--primary-d2) !important;
-  }
-  &:focus {
-    background: var(--auxiliary-b6);
-    color: var(--primary-d2);
-  }
-`
 const TableWrap = styled(Table)({
   '.ant-table table': {
     paddingBottom: 10,
@@ -577,19 +554,25 @@ const ShowWrap = styled.div`
   visibility: hidden;
 `
 
-const CategoryWrap = styled.div<{ color: string; bgColor: string }>({
-  height: 22,
-  borderRadius: 11,
-  display: 'flex',
-  padding: '0 8px',
-  marginRight: 8,
-  lineHeight: '22px',
-  fontSize: 14,
-  fontWeight: 400,
-  marginLeft: 8,
-  flexShrink: 0,
-  color: 'var(--neutral-n1-d1)',
-})
+const CategoryWrap = styled.div<{ color: string; bgColor: string }>(
+  {
+    height: 24,
+    borderRadius: 6,
+    display: 'inline-flex',
+    padding: '0 8px',
+    marginRight: 8,
+    lineHeight: '22px',
+    alignItems: 'center',
+    fontSize: 12,
+    fontWeight: 400,
+    marginLeft: 8,
+    flexShrink: 0,
+    color: 'var(--neutral-n2)',
+  },
+  ({ bgColor }) => ({
+    background: bgColor,
+  }),
+)
 
 const ListNameWrap = styled.div<{
   isClose?: boolean
@@ -707,7 +690,6 @@ const ExpendedWrap = styled(IconFont)({
   color: 'var( --neutral-n4)',
   fontSize: 16,
   cursor: 'pointer',
-  background: 'white',
   zIndex: 1,
   '&: hover': {
     color: 'var(--primary-d1)',
@@ -718,7 +700,7 @@ const StepBoxWrap = styled.div<{ active?: boolean }>(
   {
     display: 'flex',
     alignItems: 'center',
-    fontWeight: 500,
+    fontFamily: 'SiYuanMedium',
     fontSize: 14,
     '.circle': {
       color: 'white',
@@ -757,7 +739,7 @@ const SecondTitle = styled.span`
   height: 24px;
   font-size: 16px;
   font-family: PingFang SC-Medium, PingFang SC;
-  font-weight: 500;
+  font-family: siyuanmedium;
   color: var(--neutral-n1-d1);
   line-height: 24px;
   position: relative;
@@ -787,9 +769,9 @@ const TabsItem = styled.div<{ isActive: boolean }>(
   },
   ({ isActive }) => ({
     div: {
-      color: String(isActive ? 'var(--primary-d2)' : 'var(--neutral-n1-d1)'),
+      color: String(isActive ? 'var(--primary-d1)' : 'var(--neutral-n1-d1)'),
       borderBottom: `3px solid ${
-        isActive ? 'var(--primary-d2)' : 'var(--neutral-white-d2)'
+        isActive ? 'var(--primary-d1)' : 'var(--neutral-white-d2)'
       }`,
     },
   }),
@@ -906,6 +888,23 @@ const SelectWrap = styled(CustomSelect)`
   }
 `
 
+const DropdownWrap = styled(Dropdown)<{ isDemandCard?: any }>(
+  {
+    cursor: 'pointer',
+    '&: hover': {
+      svg: {
+        color: 'var(--auxiliary-b1)',
+      },
+    },
+    '.ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title': {
+      textAlign: 'left',
+    },
+  },
+  ({ isDemandCard }) => ({
+    visibility: isDemandCard ? 'visible' : 'hidden',
+  }),
+)
+
 export {
   title1Css1,
   HiddenText,
@@ -931,7 +930,6 @@ export {
   DelButton,
   SelectWrapBedeck,
   SearchLine,
-  SecondButton,
   CanOperationCategory,
   DividerWrap,
   ShowWrap,
@@ -953,4 +951,5 @@ export {
   ProgressWrap,
   DragLine,
   SelectWrap,
+  DropdownWrap,
 }

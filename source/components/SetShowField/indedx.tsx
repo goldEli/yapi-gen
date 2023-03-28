@@ -8,6 +8,7 @@ import { Menu, message } from 'antd'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonIconFont from '../CommonIconFont'
+import IconFont from '../IconFont'
 
 const ChangeItem = styled.div<{ isActive?: boolean; height?: number }>`
   width: 100%;
@@ -15,14 +16,14 @@ const ChangeItem = styled.div<{ isActive?: boolean; height?: number }>`
   align-items: center;
   justify-content: space-between;
   font-family: SiYuanRegular;
-  height: ${props => props.height || 32}px;
+  /* height: ${props => props.height || 32}px; */
   cursor: pointer;
   color: ${props =>
     props.isActive ? 'var(--primary-d2)' : 'var(--neutral-n2)'};
   &:hover {
-    color: var(--primary-d2);
+    /* color: var(--primary-d2); */
     svg {
-      color: var(--primary-d2);
+      /* color: var(--primary-d2); */
     }
   }
 `
@@ -66,6 +67,7 @@ const SetShowField = (props: Props) => {
           key: '1',
           label: (
             <ChangeItem
+              height={22}
               onClick={() => onChangeViewMode(1)}
               isActive={
                 active === '1' || userPreferenceConfig.previewModel === 1
@@ -82,6 +84,7 @@ const SetShowField = (props: Props) => {
           key: '2',
           label: (
             <ChangeItem
+              height={22}
               onClick={() => onChangeViewMode(2)}
               isActive={
                 active === '2' || userPreferenceConfig.previewModel === 2
@@ -114,6 +117,16 @@ const SetShowField = (props: Props) => {
       selectedKeys={[String(userPreferenceConfig?.previewModel)]}
       onClick={(e: any) => onClick(e)}
       items={menuItems}
+      expandIcon={
+        <IconFont
+          style={{
+            marginTop: '5px',
+            fontSize: '16px!important',
+            color: 'var(--neutral-n3)',
+          }}
+          type="right"
+        />
+      }
     />
   )
 }

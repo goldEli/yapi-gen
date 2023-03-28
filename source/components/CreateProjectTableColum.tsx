@@ -35,11 +35,11 @@ const PriorityWrap = styled.div<{ isShow?: boolean }>(
     '.icon': {
       marginLeft: 8,
       visibility: 'hidden',
-      fontSize: 16,
-      color: 'var(--primary-d2)',
+      fontSize: 14,
+      color: 'var(--neutral-n4)',
     },
     '.priorityIcon': {
-      fontSize: 16,
+      fontSize: 14,
     },
   },
   ({ isShow }) => ({
@@ -209,18 +209,20 @@ export const useDynamicColumns = (state: any) => {
             record={{ project_id: state.projectId, id: record.id }}
           >
             <PriorityWrap isShow={isCanEdit}>
-              <IconFont
-                className="priorityIcon"
-                type={text?.icon}
-                style={{
-                  fontSize: 20,
-                  color: text?.color,
-                }}
-              />
-              <div>
-                <span>{text?.content_txt || '--'}</span>
+              {text?.icon && (
+                <IconFont
+                  className="priorityIcon"
+                  type={text?.icon}
+                  style={{
+                    fontSize: 20,
+                    color: text?.color,
+                  }}
+                />
+              )}
+              <span style={{ marginLeft: '5px' }}>
+                {!text?.icon && <span>--</span>}
                 <IconFont className="icon" type="down-icon" />
-              </div>
+              </span>
             </PriorityWrap>
           </ChangePriorityPopover>
         )

@@ -1,5 +1,6 @@
 import CommonUserAvatar from '../CommonUserAvatar'
 import { Wrap, WrapFirst, WrapSecond, WrapText, WrapTextImg } from './style'
+import erp from '/er.png'
 
 type OptionsProps = {
   type: 'user' | 'project' | 'promise'
@@ -14,25 +15,25 @@ const MoreOptions = (props: OptionsProps) => {
       {props.type === 'user' && (
         <div
           style={{
-            height: '15px',
+            height: '27px',
             display: 'flex',
             alignItems: 'center',
           }}
         >
-          <CommonUserAvatar avatar={props.img} size="small" />
-          <WrapText>{props.name}</WrapText>
+          <CommonUserAvatar avatar={props.img ?? erp} size="small" />
+          <WrapText className="selectText">{props.name}</WrapText>
         </div>
       )}
       {props.type === 'project' && (
         <div
           style={{
-            height: '15px',
+            height: '27px',
             display: 'flex',
             alignItems: 'center',
           }}
         >
-          <WrapTextImg src={props.img} />
-          <WrapText>{props.name}</WrapText>
+          <WrapTextImg src={props.img ?? erp} />
+          <WrapText className="selectText">{props.name}</WrapText>
         </div>
       )}
       {props.type === 'promise' && (

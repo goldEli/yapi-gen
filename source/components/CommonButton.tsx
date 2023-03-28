@@ -92,9 +92,11 @@ const secondaryText = css`
   }
 `
 const icon = css`
+  width: auto !important;
+  padding: 0 6px !important;
   background: transparent !important;
   color: var(--auxiliary-text-t2-d1) !important;
-  border: 1px solid var(--neutral-n9) !important;
+  border: 1px solid var(--neutral-n6-d1) !important;
   padding: 0 6px;
   &:hover {
     background: var(--auxiliary-b4) !important;
@@ -114,6 +116,7 @@ const ButtonWrap = styled(Button)`
 `
 
 interface Props {
+  hidden?: any
   onClick?(): void
   // 按钮文本
   children?: React.ReactNode
@@ -215,6 +218,7 @@ const CommonButton = (props: Props) => {
       className={commonCss}
       onClick={props.onClick}
       disabled={props.isDisable}
+      hidden={props.hidden}
     >
       {props.children}
     </ButtonWrap>

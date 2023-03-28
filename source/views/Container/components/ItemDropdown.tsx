@@ -15,10 +15,9 @@ interface PropsType {
 const Container = styled.div`
   width: 320px;
   height: auto;
-  background-color: var(--neutral-white-d6);
-  box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
-  border-radius: 0px 0px 6px 6px;
-  padding-bottom: 8px;
+  background-color: var(--neutral-white-d5);
+  box-shadow: 0px 7px 13px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
   max-height: calc(100vh - 120px);
 `
 const ScrollWrap = styled.div`
@@ -32,8 +31,9 @@ const Footer = styled.div`
   font-weight: 400;
   color: var(--neutral-n1-d2);
   margin: 8px 0;
+  padding-bottom: 8px;
   & div:hover {
-    background-color: var(--hover-d2);
+    background-color: var(--hover-d3);
     cursor: pointer;
   }
   & div {
@@ -79,7 +79,7 @@ const ItemTitle = styled.div`
 const Border = styled.div`
   margin: 0 16px;
   text-align: center;
-  border-bottom: 1px solid var(--neutral-n6-d1);
+  border-bottom: 1px solid var(--neutral-n6-d2);
 `
 const ItemDropdown = (props: PropsType) => {
   const navigate = useNavigate()
@@ -94,6 +94,7 @@ const ItemDropdown = (props: PropsType) => {
   useEffect(() => {
     isOpen && onFectProjectList()
   }, [isOpen])
+
   const onCreate = () => {
     setIsOpen(false)
     dispatch({ type: 'createProject/changeCreateVisible', payload: true })
@@ -161,11 +162,24 @@ const ItemDropdown = (props: PropsType) => {
         onOpenChange={setIsOpen}
         dropdownRender={dropdownRender}
         placement="bottomLeft"
+        trigger={['click']}
         open={isOpen}
+        // open={true}
       >
         <div style={{ height: '52px', lineHeight: '52px' }}>
-          <span style={{ marginRight: '8px' }}>{props.text}</span>
-          <CommonIconFont type="down" size={14} />
+          <span
+            style={{
+              marginRight: '8px',
+              color: isOpen ? 'var(--primary-d2)' : '',
+            }}
+          >
+            {props.text}
+          </span>
+          <CommonIconFont
+            type="down"
+            size={14}
+            color={isOpen ? 'var(--primary-d2)' : ''}
+          />
         </div>
       </Dropdown>
       {dropdownRender}

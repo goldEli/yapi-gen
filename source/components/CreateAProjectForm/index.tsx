@@ -15,7 +15,7 @@ import { changeCreateVisible, editProject } from '@store/create-propject'
 import { postCreate, postEditCreate } from '@store/create-propject/thunks'
 import { useDispatch, useSelector } from '@store/index'
 import { Form, Input, Select, Tooltip, Upload } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '../CommonModal'
 import CustomSelect from '../CustomSelect'
@@ -58,13 +58,14 @@ const CreateAProjectForm = () => {
   const [pey, setPey] = useState<any>()
   const [user, setUser] = useState<any>()
   const dispatch = useDispatch()
+  const inputRefDom = useRef<HTMLInputElement>(null)
 
   const onCustomRequest = async (file: any) => {
     const data = await uploadFileByTask(file.file, '2', '2')
     setMyCover(data.url)
   }
 
-  const onConfirm = async () => {
+  const confirm = async () => {
     const formData = await form.validateFields()
 
     const obj = {
@@ -79,7 +80,10 @@ const CreateAProjectForm = () => {
     dispatch(postCreate(obj))
     setLeaderId(0)
   }
-
+  const onConfirm = async () => {
+    form.submit()
+    await confirm()
+  }
   function upper(str: string) {
     // eslint-disable-next-line prefer-regex-literals
     const pattern = new RegExp('[\u4E00-\u9FA5]+')
@@ -241,6 +245,9 @@ const CreateAProjectForm = () => {
     // return () => {
     //   dispatch(editProject({ visible: false, id: '' }))
     // }
+    setTimeout(() => {
+      inputRefDom.current?.focus()
+    }, 100)
   }, [createVisible])
 
   return (
@@ -323,17 +330,36 @@ const CreateAProjectForm = () => {
           </div>
         </CoverAreaWrap>
         <Wrap>
-          <Form form={form} layout="vertical">
+          <Form
+            onFinish={confirm}
+            form={form}
+            layout="vertical"
+            onFinishFailed={() => {
+              setTimeout(() => {
+                const errorList = (document as any).querySelectorAll(
+                  '.ant-form-item-has-error',
+                )
+
+                errorList[0]?.scrollIntoView({
+                  block: 'center',
+                  behavior: 'smooth',
+                })
+              }, 100)
+            }}
+          >
             <Form.Item
               label={<FormTitleSmall text={t('project_name')} />}
               name="name"
               rules={[{ required: true, message: '' }]}
             >
               <Input
+                ref={inputRefDom as any}
                 maxLength={30}
                 placeholder={t('please_enter_a_project_name')}
                 onChange={onChange}
                 allowClear
+                autoFocus
+                autoComplete="off"
               />
             </Form.Item>
 

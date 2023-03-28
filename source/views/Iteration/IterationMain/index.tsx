@@ -33,7 +33,8 @@ import { setFilterKeys } from '@store/project'
 const Right = styled.div({
   width: '100%',
   height: '100%',
-  overflowY: 'auto',
+  overflowY: 'hidden',
+  paddingLeft: '24px',
 })
 
 interface Props {

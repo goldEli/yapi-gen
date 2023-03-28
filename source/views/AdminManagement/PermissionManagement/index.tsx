@@ -56,7 +56,7 @@ const Header = styled.div({
 
 const Content = styled.div({
   padding: '0 16px',
-  height: 'calc(100% - 64px)',
+  // height: 'calc(100% - 64px)',
 })
 
 const SetMain = styled.div({
@@ -70,7 +70,7 @@ const SetMain = styled.div({
 const SetLeft = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  height: 'calc(100vh - 180px)',
+  height: 'calc(100vh - 130px)',
   overflowY: 'auto',
   borderRight: '1px solid var(--neutral-n6-d1)',
   width: 232,
@@ -82,11 +82,13 @@ const SetRight = styled.div({
   flexDirection: 'column',
   padding: '0 24px',
   width: 'calc(100% - 184px)',
+  height: 'calc(100vh - 180px)',
+  overflowY: 'auto',
 })
 
 const Title = styled.div({
   fontSize: 14,
-  fontWeight: 500,
+  fontFamily: 'SiYuanMedium',
   color: 'var(--neutral-n1-d2)',
   marginBottom: 8,
 })
@@ -188,7 +190,7 @@ const RowBox = styled.div`
   margin-bottom: 20px;
 `
 
-const CheckboxWrap = styled.div({ width: 100 })
+const CheckboxWrap = styled.div({ width: 100, height: 32 })
 const OperationWrap = styled.div({ width: 100 })
 
 interface ItemProps {
@@ -442,7 +444,7 @@ const PermissionManagement = () => {
               ? t('setting.editPermission')
               : t('setting.createPermission')
           }
-          width={420}
+          width={528}
           onClose={onClose}
           isShowFooter
         >

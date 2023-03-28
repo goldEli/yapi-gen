@@ -26,7 +26,7 @@ const ModalHeader = styled.div`
   justify-content: space-between;
   font-size: 16px;
   color: var(--neutral-n1-d1);
-  font-weight: 500;
+  font-family: siyuanmedium;
   height: 56px;
   padding: 0 13px 0 24px;
 `
@@ -74,17 +74,17 @@ const Tabs = styled.div`
     height: 24px;
     line-height: 24px;
     width: 108px;
-    color: var(--neutral-n1-d1);
+    color: var(--neutral-n3);
   }
   &:hover {
     cursor: pointer;
     color: var(--neutral-n1-d1);
   }
   .tabsActive {
-    background-color: var(--neutral-white-d6);
-    color: var(--neutral-n3);
+    color: var(--neutral-n1-d1);
+    background-color: var(--neutral-white-d3);
     border-radius: 6px;
-    border: 1px solid var(--neutral-n6-d1);
+    border: 1px solid var(--neutral-n6-d2);
   }
 `
 const Row = styled.div`

@@ -24,11 +24,11 @@ const Wrap = styled.div<{ isMember?: any }>(
     display: 'flex',
   },
   ({ isMember }) => ({
-    height: isMember ? 'calc(100% - 104px)' : '100%',
+    height: isMember ? 'calc(100vh - 56px)' : '100%',
   }),
 )
 const Main = styled.div({
-  width: 'calc(100% )',
+  width: '100%',
 })
 
 const MemberInfo = () => {
@@ -76,6 +76,7 @@ const MemberInfo = () => {
               display: 'flex',
               alignItems: 'center',
               margin: '20px',
+              marginLeft: '24px',
             }}
           >
             <MyBreadcrumb user={{ name: mainInfo?.name }} />

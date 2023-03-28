@@ -27,6 +27,7 @@ import Viewer from 'react-viewer'
 import { InnerLine } from './RelatedNeed'
 import { Editor, EditorRef } from '@xyfe/uikit'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
+import CommonUserAvatar from '@/components/CommonUserAvatar'
 
 export const GrepWrap = styled.div`
   position: fixed;
@@ -119,7 +120,7 @@ const LabelTitle = (props: any) => {
     >
       <span
         style={{
-          fontWeight: 'bold',
+          fontFamily: 'SiYuanMedium',
           fontSize: '14px',
         }}
       >
@@ -301,7 +302,7 @@ const LookDay = (props: any) => {
               <span
                 style={{
                   fontSize: '16px',
-                  fontWeight: 'bold',
+                  fontFamily: 'SiYuanMedium',
                   color: 'var(--neutral-n1-d1)',
                 }}
               >
@@ -381,13 +382,13 @@ const LookDay = (props: any) => {
                               src={i.avatar}
                             />
                           ) : (
-                            <NameWrap
-                              style={{ margin: 0, width: 24, height: 24 }}
+                            <div
+                              style={{
+                                marginRight: 8,
+                              }}
                             >
-                              {String(
-                                i.name.substring(0, 1).trim().slice(0, 1),
-                              ).toLocaleUpperCase()}
-                            </NameWrap>
+                              <CommonUserAvatar size="small" />
+                            </div>
                           )}
                         </div>
                         <span
@@ -576,13 +577,13 @@ const LookDay = (props: any) => {
                                 src={i.avatar}
                               />
                             ) : (
-                              <NameWrap
-                                style={{ margin: 0, width: 24, height: 24 }}
+                              <span
+                                style={{
+                                  marginRight: 8,
+                                }}
                               >
-                                {String(
-                                  i.name.substring(0, 1).trim().slice(0, 1),
-                                ).toLocaleUpperCase()}
-                              </NameWrap>
+                                <CommonUserAvatar size="small" />
+                              </span>
                             )}
                           </div>
                           <span
@@ -666,13 +667,9 @@ const LookDay = (props: any) => {
                             src={item.avatar}
                           />
                         ) : (
-                          <NameWrap
-                            style={{ margin: 0, width: 24, height: 24 }}
-                          >
-                            {String(
-                              item.name.substring(0, 1).trim().slice(0, 1),
-                            ).toLocaleUpperCase()}
-                          </NameWrap>
+                          <div style={{}}>
+                            <CommonUserAvatar size="small" />
+                          </div>
                         )}
                         <span
                           style={{

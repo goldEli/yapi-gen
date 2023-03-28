@@ -69,7 +69,7 @@ const ProjectNameWrap = styled.div({
   borderRadius: 6,
   color: 'var(--neutral-n1-d1)',
   fontSize: 14,
-  fontWeight: 500,
+  fontFamily: 'SiYuanMedium',
   '.text': {
     maxWidth: 240,
     textOverflow: 'ellipsis',

@@ -113,10 +113,10 @@ export const ChangeItem = styled.div<{ isActive?: boolean; height?: number }>`
   color: ${props =>
     props.isActive ? 'var(--primary-d2)' : 'var(--neutral-n2)'};
   &:hover {
-    color: var(--primary-d2);
+    color: var(--neutral-n1-d1);
     background-color: var(--hover-d3);
     svg {
-      color: var(--primary-d2);
+      color: var(--neutral-n1-d1);
     }
   }
 `
@@ -128,8 +128,8 @@ export const PersonalHead = styled.div`
 `
 
 export const PersonalFooter = styled.div`
-  display: flex;
-  justify-content: space-between;
+  /* display: flex; */
+  /* justify-content: space-between; */
   /* padding-right: 20px; */
 `
 
@@ -139,13 +139,25 @@ export const imgCss = css`
   border-radius: 50%;
 `
 
+export const LineBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
 export const Line = styled.div`
   margin-top: 24px;
   color: var(--neutral-n2);
+  white-space: nowrap;
 `
 export const Line2 = styled.div`
   margin-top: 24px;
   color: var(--neutral-n1-d1);
+  max-width: 70%;
+  text-align: right;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 `
 
 // 头部操作栏左侧
@@ -157,7 +169,7 @@ export const HeaderLeftWrap = styled.div`
 export const MenuLabel = styled.span`
   color: var(--neutral-n1-d1);
   font-family: SiYuanMedium;
-  font-weight: 500;
+  font-family: siyuanmedium;
   font-size: var(--font16);
 `
 
@@ -203,7 +215,7 @@ export const LogoBox = styled.div`
     color: var(--neutral-n1-d1);
     font-family: SiYuanMedium;
     font-size: 16px;
-    font-weight: 500;
+    font-family: siyuanmedium;
   }
 `
 
@@ -364,8 +376,39 @@ export const CompanyCard = styled.div<{ isActive?: boolean }>`
     }
   }
   &:hover {
-    box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
-    background: var(--hover-d2);
+    box-shadow: 0px 0px 9px 3px rgba(0, 0, 0, 0.07);
+    background: var(--neutral-white-d6);
     border: 1px solid transparent;
+  }
+`
+
+export const WaitingMenu = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: no-drop;
+  margin-top: 8px;
+  width: 88px;
+  padding: 5px 0;
+  .menuIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    width: 48px;
+    border-radius: 6px;
+    background: var(--hover-d2);
+    color: var(--neutral-n3);
+  }
+  .label {
+    margin-top: 8px;
+    color: var(--neutral-n3);
+  }
+  .menuTag {
+    position: absolute;
+    top: 5px;
+    right: -9px;
   }
 `

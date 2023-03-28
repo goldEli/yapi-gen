@@ -570,6 +570,7 @@ export const getDemandList: any = async (params: any) => {
           usersCopySendIds: i.users_copysend_name_ids,
           schedule: i.schedule,
           categoryId: i.category_id,
+          storyPrefixKey: i.story_prefix_key,
         })),
         name: k.content_txt,
         id: k.status_id,
@@ -851,6 +852,8 @@ export const getStoryStatusLog: any = async (params: any) => {
     operationName: i.user_name,
     time: i.created_at,
     id: i.id,
+    is_end: i.is_end,
+    is_start: i.is_end,
     statusTo: i.statusto
       ? {
           color: i.statusto?.color,

@@ -21,14 +21,16 @@ const ProjectCommonOperation = (props: Props) => {
   return (
     <>
       <SearchBox>
-        <div>
+        <div style={{ paddingLeft: '24px' }}>
           <MyBreadcrumb />
         </div>
         <SearchOrProjectMember size={16}>
           <InputSearch
             isDemand
             leftIcon
-            placeholder={t('please_enter') as string}
+            placeholder={
+              t('search_for_the_requirement_name_or_number') as string
+            }
             onChangeSearch={props.onInputSearch}
           />
           <MemberIcon onClick={() => setMemberVisible(true)}>

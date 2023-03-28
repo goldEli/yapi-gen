@@ -31,7 +31,6 @@ import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import RangePicker from '@/components/RangePicker'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import { SecondButton } from '@/components/StyleCommon'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectInfoValues } from '@store/project'
 import {
@@ -49,9 +48,9 @@ import NewLoadingTransition from '@/components/NewLoadingTransition'
 
 const Left = styled.div<{ isShowLeft: boolean }>(
   {
-    width: 300,
+    width: 348,
     borderRight: '1px solid var(--neutral-n6-d1)',
-    padding: '0px 16px 0px 0',
+    padding: '0px 24px 0px 24px',
     background: 'white',
     height: '100%',
     '.ant-space-item': {
@@ -67,9 +66,7 @@ const TopWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  height: 52,
   background: 'white',
-  marginBottom: 8,
 })
 
 const IconWrap = styled(IconFont)<{ isActive: any }>(
@@ -427,7 +424,7 @@ const WrapLeft = (props: Props) => {
         {hasAdd || projectInfo?.status !== 1 ? (
           <div />
         ) : (
-          <CommonButton type="light" icon="plus" onClick={onChangeClick}>
+          <CommonButton type="primary" icon="plus" onClick={onChangeClick}>
             {t('common.createIterate')}
           </CommonButton>
         )}
@@ -493,12 +490,13 @@ const WrapLeft = (props: Props) => {
                 }
               >
                 {!hasAdd && (
-                  <SecondButton
+                  <CommonButton
+                    type="light"
                     onClick={onChangeClick}
                     style={{ marginTop: 24 }}
                   >
                     {t('common.createIterate')}
-                  </SecondButton>
+                  </CommonButton>
                 )}
               </NoData>
             ))}

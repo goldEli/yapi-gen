@@ -79,7 +79,11 @@ const DetailDemand = (props: DetailDemand) => {
       />
       <ContentItem>
         <Label>{t('requirement_description')}</Label>
-        <div dangerouslySetInnerHTML={{ __html: props.detail.info }} />
+        {props.detail.info ? (
+          <div dangerouslySetInnerHTML={{ __html: props.detail.info }} />
+        ) : (
+          '--'
+        )}
       </ContentItem>
       <ContentItem>
         <Label>{t('label')}</Label>
@@ -88,7 +92,7 @@ const DetailDemand = (props: DetailDemand) => {
           onUpdate={props.onUpdate}
         />
       </ContentItem>
-      <ContentItem>
+      <ContentItem style={{ marginBottom: 0 }}>
         <Label>{t('common.attachment')}</Label>
         <div>
           {projectInfo?.projectPermissions?.filter(

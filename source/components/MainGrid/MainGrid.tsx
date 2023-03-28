@@ -9,10 +9,10 @@ import { getIsPermission } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import { SecondButton } from '@/components/StyleCommon'
 import { useDispatch, useSelector } from '@store/index'
 import { DataWrap, SpaceWrap, SpaceWrapItem } from './style'
 import { changeCreateVisible } from '@store/create-propject'
+import CommonButton from '../CommonButton'
 
 interface Props {
   onChangeOperation(type: string, id: number, e?: any): void
@@ -65,9 +65,13 @@ const MainGrid = (props: Props) => {
             haveFilter={props?.hasFilter}
           >
             {!isPermission && (
-              <SecondButton onClick={onAddClick} style={{ marginTop: 24 }}>
+              <CommonButton
+                type="light"
+                onClick={onAddClick}
+                style={{ marginTop: 24 }}
+              >
                 {t('common.createProject')}
-              </SecondButton>
+              </CommonButton>
             )}
           </NoData>
         ))}

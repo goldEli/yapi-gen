@@ -272,7 +272,6 @@ const ProjectManagementOptimization = () => {
           alignItems: 'center',
           height: '32px',
           padding: '20px 24px',
-          margin: '20px 0 ',
         }}
       >
         {(

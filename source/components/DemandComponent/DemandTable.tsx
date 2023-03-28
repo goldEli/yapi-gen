@@ -6,7 +6,6 @@
 import { createRef, useEffect, useMemo, useState } from 'react'
 import { message, Menu, Table } from 'antd'
 import styled from '@emotion/styled'
-import { SecondButton } from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -29,7 +28,7 @@ import ResizeTable from '../ResizeTable'
 import CommonButton from '../CommonButton'
 
 const Content = styled.div({
-  padding: '20px 12px 0 8px',
+  padding: '20px 12px 0 0px',
   background: 'var(--neutral-white-d1)',
   height: 'calc(100% - 32px)',
 })
@@ -432,7 +431,7 @@ const DemandTable = (props: Props) => {
           >
             {!hasCreate && (
               <CommonButton
-                type="secondary"
+                type="light"
                 onClick={onClick}
                 style={{ marginTop: 24 }}
               >

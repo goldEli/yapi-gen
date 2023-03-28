@@ -34,7 +34,7 @@ import CommonButton from '@/components/CommonButton'
 const TableWrap = styled.div({
   width: '780px',
   padding: '0',
-  height: 'auto',
+  maxHeight: '40vh',
   overflowY: 'auto',
   display: 'flex',
   alignItems: 'center',
@@ -60,7 +60,7 @@ const TableTitle = styled.div({
   padding: '0 24px',
   color: 'var( --neutral-n3)',
   fontSize: 14,
-  fontWeight: 500,
+  fontFamily: 'SiYuanMedium',
 })
 
 const AddWrapBox = styled.div({
@@ -492,11 +492,7 @@ const AddWorkflow = (props: Props) => {
                     <CategoryWrap
                       style={{ marginRight: 8, marginLeft: 0 }}
                       color={i.category_color}
-                      bgColor={
-                        colorList?.filter(
-                          (k: any) => k.key === i.category_color,
-                        )[0]?.bgColor
-                      }
+                      bgColor={''}
                     >
                       {i.category_name}
                     </CategoryWrap>
@@ -527,6 +523,7 @@ const AddWorkflow = (props: Props) => {
         onClose={onClose}
         onConfirm={onConfirm}
         width={784}
+        bodyStyle={{ maxHeight: '80vh' }}
       >
         <div style={{ paddingRight: 20 }}>
           <TableTitle>

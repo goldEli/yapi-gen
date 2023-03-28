@@ -9,7 +9,6 @@
 import IconFont from '@/components/IconFont'
 import { message } from 'antd'
 import styled from '@emotion/styled'
-import { SecondButton } from '@/components/StyleCommon'
 import { useEffect, useMemo, useState } from 'react'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useDynamicColumns } from '@/components/CreateProjectTableColum'
@@ -40,6 +39,7 @@ import { DemandOperationDropdownMenu } from '@/components/DemandComponent/Demand
 import SetShowField from '@/components/SetShowField/indedx'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import ResizeTable from '@/components/ResizeTable'
+import CommonButton from '@/components/CommonButton'
 
 const Operation = styled.div({
   display: 'flex',
@@ -316,12 +316,14 @@ const ChildDemand = () => {
         projectInfo?.status !== 1 ? (
           <div />
         ) : (
-          <SecondButton
+          <CommonButton
+            type="primaryText"
             onClick={() => onCreateChild(demandInfo)}
-            icon={<IconFont type="plus" />}
+            icon="plus"
+            iconPlacement="left"
           >
             {t('project.addChildDemand')}
-          </SecondButton>
+          </CommonButton>
         )}
 
         <DropDownMenu

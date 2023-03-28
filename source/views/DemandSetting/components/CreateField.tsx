@@ -13,11 +13,12 @@ import { setProjectFieIdsData } from '@store/category'
 const CreateFieldWrap = styled.div`
   margin: 20px 0 0 0px;
   border-left: 1px solid var(--neutral-n6-d1);
-  padding-left: 24px;
+  padding: 0 24px;
   overflow-y: auto;
-  height: calc(100vh - 200px);
+  height: calc(100vh - 220px);
 `
 const TitleStyle = styled.div`
+  width: 352px;
   display: flex;
   align-items: center;
   color: var(--neutral-n1-d1);
@@ -72,7 +73,7 @@ const CreateField = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const [searchIcon, setSearchIcon] = useState(false)
-  const [search, setSearch] = useState(false)
+  const [search, setSearch] = useState(true)
   const [createIcon, setCreateIcon] = useState(true)
   const { getCategoryConfigArray } = useSelector(store => store.category)
   const [dataList, setDataList] = useState<any>()
@@ -143,6 +144,7 @@ const CreateField = () => {
     const payloadList = await services.demand.getProjectFieIds(projectInfo.id)
     dispatch(setProjectFieIdsData(payloadList))
     setPayloadDataList(payloadList)
+    setDataList(payloadList)
     getCategoryConfigArray.length >= 1 &&
       payloadList &&
       filterData(getCategoryConfigArray, payloadList)
@@ -153,21 +155,20 @@ const CreateField = () => {
       setSearchDataList(dataList.filter((el: any) => el.title.includes(value)))
     } else {
       setSearchDataList(dataList)
-      setSearch(false)
     }
     setSearchValue(value)
   }
   // 监听列表被删除时过滤
   useEffect(() => {
-    projectInfo.id &&
-      getCategoryConfigArray?.length >= 1 &&
-      getProjectFieIdsApi()
+    getProjectFieIdsApi()
+  }, [])
+  useEffect(() => {
+    getCategoryConfigArray?.length >= 1 && getProjectFieIdsApi()
   }, [getCategoryConfigArray])
   return (
     <CreateFieldWrap>
-      <TitleStyle>
+      <TitleStyle onClick={() => setCreateIcon(!createIcon)}>
         <CommonIconFont
-          onClick={() => setCreateIcon(!createIcon)}
           type={createIcon ? 'down-icon' : 'right-icon'}
           size={14}
           color="var(--neutral-n3)"
@@ -187,10 +188,12 @@ const CreateField = () => {
 
       <BottomList>
         <BottomTitleStyle>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div
+            style={{ display: 'flex', alignItems: 'center' }}
+            onClick={() => setSearchIcon(!searchIcon)}
+          >
             {searchDataList?.length >= 1 && (
               <CommonIconFont
-                onClick={() => setSearchIcon(!searchIcon)}
                 type={searchIcon ? 'down-icon' : 'right-icon'}
                 size={14}
                 color="var(--neutral-n3)"
@@ -211,12 +214,11 @@ const CreateField = () => {
                 '(' + payloadDataList?.length + ')'}
             </span>
           </div>
-          {search ? (
+          {search && (
             <InputStyle
               width={184}
               placeholder={t('pleaseEnterASearchPhrase')}
               value={searchValue}
-              onClick={() => setSearch(false)}
               onInput={(e: any) => onSearch(e.target.value)}
               prefix={
                 <CommonIconFont
@@ -232,7 +234,7 @@ const CreateField = () => {
                       type="close-circle-fill"
                       onClick={() => {
                         setSearchDataList(dataList)
-                        setSearch(false)
+                        setSearchValue('')
                       }}
                       size={16}
                       color="var(--neutral-n4)"
@@ -241,17 +243,6 @@ const CreateField = () => {
                 </>
               }
             />
-          ) : searchDataList?.length >= 1 ? (
-            <CommonIconFont
-              type="search"
-              size={16}
-              color="var(--neutral-n2)"
-              onClick={() => {
-                setSearch(true), setSearchValue('')
-              }}
-            />
-          ) : (
-            ''
           )}
         </BottomTitleStyle>
         {searchIcon && (

@@ -5,7 +5,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { Menu, Progress } from 'antd'
-import { ClickWrap, HiddenText, SecondButton } from '@/components/StyleCommon'
+import { ClickWrap, HiddenText } from '@/components/StyleCommon'
 import { useNavigate } from 'react-router-dom'
 import { useCallback, useMemo, useState } from 'react'
 import Sort from '@/components/Sort'
@@ -20,6 +20,7 @@ import PaginationBox from '../TablePagination'
 import ResizeTable from '../ResizeTable'
 import { editProject } from '@store/create-propject'
 import { useDispatch } from 'react-redux'
+import CommonButton from '../CommonButton'
 
 interface Props {
   onChangeOperation(type: string, item: any, e: any): void
@@ -254,7 +255,7 @@ const MainTable = (props: Props) => {
       },
     },
     {
-      title: '键',
+      title: t('keyboard'),
       dataIndex: 'prefix',
       width: 160,
     },
@@ -332,6 +333,20 @@ const MainTable = (props: Props) => {
     {
       title: (
         <NewSort
+          fixedKey="leader_name"
+          nowKey={props.order.key}
+          order={props.order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          {t('project_leader')}
+        </NewSort>
+      ),
+      dataIndex: 'leader_name',
+      width: 160,
+    },
+    {
+      title: (
+        <NewSort
           fixedKey="user_name"
           nowKey={props.order.key}
           order={props.order.value}
@@ -369,6 +384,25 @@ const MainTable = (props: Props) => {
               {text === 1 ? t('common.opening1') : t('common.Closed')}
             </span>
           </StatusWrap>
+        )
+      },
+    },
+    {
+      title: (
+        <NewSort
+          fixedKey="team_id"
+          nowKey={props.order.key}
+          order={props.order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          {t('project_type')}
+        </NewSort>
+      ),
+      dataIndex: 'team_id',
+      width: 160,
+      render: (text: number) => {
+        return (
+          <span>{text === 0 ? t('enterprise_project') : t('teamwork')}</span>
         )
       },
     },
@@ -445,7 +479,7 @@ const MainTable = (props: Props) => {
     <div>
       <ResizeTable
         isSpinning={false}
-        dataWrapNormalHeight="calc(100vh - 256px)"
+        dataWrapNormalHeight="calc(100vh - 236px)"
         col={selectColum}
         dataSource={props.projectList?.list}
         onRow={onTableRow as any}
@@ -455,12 +489,13 @@ const MainTable = (props: Props) => {
             haveFilter={props?.hasFilter}
           >
             {!hasCreate && (
-              <SecondButton
+              <CommonButton
+                type="light"
                 onClick={props.onAddClick}
                 style={{ marginTop: 24 }}
               >
                 {t('common.createProject')}
-              </SecondButton>
+              </CommonButton>
             )}
           </NoData>
         }

@@ -13,7 +13,7 @@ export const ViewPortWrap = styled.div<{ show: boolean }>`
   background: ${props => (props.show ? 'var(--hover-d1)' : '')};
   color: ${props =>
     props.show ? 'var(--neutral-n1-d1)' : 'var(--neutral-n3)'};
-  & div {
+  & span {
     color: ${props =>
       props.show ? 'var(--neutral-n1-d1)' : 'var(--neutral-n3)'};
   }
@@ -21,13 +21,16 @@ export const ViewPortWrap = styled.div<{ show: boolean }>`
     background: var(--hover-d1);
     color: var(--neutral-n1-d1);
   }
-  &:hover div {
-    background: var(--hover-d1);
+  &:hover span {
+    /* background: var(--hover-d1); */
     color: var(--neutral-n1-d1);
+  }
+  &:active {
+    background: var(--neutral-n6-d1);
   }
 `
 
-export const Name = styled.div`
+export const Name = styled.span`
   margin-left: 8px;
   height: 22px;
   font-size: 14px;
@@ -38,7 +41,8 @@ export const Name = styled.div`
 `
 
 export const dropdowncontent = css`
-  padding: 5px;
+  border-radius: 6px;
+  padding: 5px 0;
   cursor: pointer;
   background: var(--neutral-white-d2);
   box-shadow: 0 3px 6px -4px rgb(0 0 0 / 12%), 0 6px 16px 0 rgb(0 0 0 / 8%),
@@ -46,8 +50,11 @@ export const dropdowncontent = css`
   & .ant-dropdown-menu {
     box-shadow: none;
   }
+  .ant-dropdown-menu-item-group-list {
+    margin: 0;
+  }
   .ant-dropdown-menu-item-group-list li {
-    border-radius: 6px;
+    /* border-radius: 6px; */
   }
 `
 export const TextSpan = styled.span`
@@ -60,11 +67,12 @@ export const TextSpan = styled.span`
 `
 
 export const SetLine = styled.div`
-  margin: 5px 8px;
-  padding: 5px 10px;
+  margin: 5px 0px;
+  padding: 5px 12px;
   cursor: pointer;
   :hover {
     background: var(--hover-d3) !important;
-    border-radius: 6px;
+    color: var();
+    /* border-radius: 6px; */
   }
 `

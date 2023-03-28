@@ -22,7 +22,7 @@ const Wrap = styled.div({
   borderRadius: 6,
   display: 'flex',
   flexDirection: 'column',
-  marginTop: 24,
+  padding: '24px 0 24px 24px',
 })
 
 const InfoLeft = styled.div({
@@ -53,7 +53,7 @@ const InfoRight = styled.div({
 })
 const Title = styled.div({
   fontSize: 14,
-  fontWeight: 'bold',
+  fontFamily: 'SiYuanMedium',
   color: 'var(--neutral-n1-d1)',
   paddingLeft: 10,
   borderLeft: '3px solid var(--primary-d2)',
@@ -90,11 +90,11 @@ const CardItem = styled.div({
   justifyContent: 'center',
   alignItems: 'center',
   borderRadius: 6,
-  background: 'var(--neutral-n7)',
+  background: 'var(--hover-d2)',
   div: {
     fontSize: 28,
     color: 'var(--neutral-n1-d1)',
-    fontWeight: 500,
+    fontFamily: 'SiYuanMedium',
     lineHeight: '28px',
   },
   span: {
@@ -166,7 +166,7 @@ const ProjectInfo = () => {
             <span
               style={{
                 fontSize: '16px',
-                fontWeight: 'bold',
+                fontFamily: 'SiYuanMedium',
                 color: 'var(--neutral-n1-d1)',
                 lineHeight: '24px',
               }}
@@ -211,10 +211,8 @@ const ProjectInfo = () => {
             <InfoItem>
               <div>{t('project_type')}：</div>
               <span>
-                {projectInfo.isPublic === 1
-                  ? t('project.companyOpen')
-                  : projectInfo?.isPublic === 2
-                  ? t('common.privateProject')
+                {projectInfo.permissionType === 1
+                  ? t('enterprise_project')
                   : t('teamwork')}
               </span>
             </InfoItem>

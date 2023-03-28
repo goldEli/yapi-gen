@@ -40,6 +40,7 @@ const HeaderWrap = styled.div`
   box-shadow: 0px 1px 9px 0px rgba(20, 37, 98, 0.05);
   background: var(--neutral-white-d2);
   z-index: 2;
+  min-width: 1440px;
 `
 
 const Content = styled.div`
@@ -56,6 +57,7 @@ const Main = styled.div<{ left: number }>`
   flex: 1;
   position: relative;
   background: var(--neutral-white-d1);
+  overflow: auto;
   > div:first-child {
     height: 100%;
   }
@@ -66,7 +68,7 @@ export const Container = () => {
   const dispatch = useDispatch()
   const [isNextVisible, setIsNextVisible] = useState(false)
   const [changeLeft, setChangeLeft] = useState(200)
-  const { userInfo, loginInfo, menuPermission } = useSelector(
+  const { userInfo, loginInfo, menuPermission, isRefresh } = useSelector(
     store => store.user,
   )
   const {
@@ -91,9 +93,11 @@ export const Container = () => {
       return
     }
     if (
-      !e.target?.parentElement?.className?.includes('canClickDetail') &&
-      !e.target?.className?.includes('canClickDetail') &&
-      storeAll.getState().demand.isDemandDetailDrawerVisible
+      typeof e.target?.parentElement?.className !== 'string' ||
+      typeof e.target?.className !== 'string' ||
+      (!e.target?.parentElement?.className?.includes('canClickDetail') &&
+        !e.target?.className?.includes('canClickDetail') &&
+        storeAll.getState().demand.isDemandDetailDrawerVisible)
     ) {
       dispatch({
         type: 'demand/setIsDemandDetailDrawerVisible',
@@ -204,7 +208,11 @@ export const Container = () => {
               <Side onChangeLeft={setChangeLeft} />
             )}
             <Main left={changeLeft}>
-              <Outlet />
+              <div
+                style={{ height: '100%', minWidth: `${1440 - changeLeft}px` }}
+              >
+                <Outlet />
+              </div>
             </Main>
           </Content>
           <Guide

@@ -48,6 +48,7 @@ import {
 } from '@/services/project'
 import { useSelector } from '@store/index'
 import CustomSelect from '@/components/CustomSelect'
+import CommonButton from '@/components/CommonButton'
 
 const TableWrapTop = styled(Table)({
   '.ant-table-cell': {
@@ -132,8 +133,8 @@ const TimelineWrap = styled(Timeline)({
 
 const IconfontWrap = styled(IconFont)<{ active?: boolean }>(
   {
-    fontSize: 12,
-    color: 'var(--neutral-n2)',
+    fontSize: 10,
+    color: 'var(--neutral-n3)',
     marginRight: 8,
   },
   ({ active }) => ({
@@ -819,7 +820,7 @@ const SetConfig = (props: Props) => {
               style={{
                 color: 'var(--neutral-n1-d1)',
                 fontSize: 14,
-                fontWeight: 500,
+                fontFamily: 'SiYuanMedium',
               }}
             >
               {t('newlyAdd.reviewPermission')}
@@ -943,7 +944,7 @@ const SetConfig = (props: Props) => {
               style={{
                 color: 'var(--neutral-n1-d1)',
                 fontSize: 14,
-                fontWeight: 500,
+                fontFamily: 'SiYuanMedium',
               }}
             >
               {t('newlyAdd.reviewFields')}
@@ -955,18 +956,17 @@ const SetConfig = (props: Props) => {
             <TextWrap style={{ paddingLeft: 20 }}>
               {t('newlyAdd.reviewFieldsText')}
             </TextWrap>
-            <Button
+
+            <CommonButton
               style={{
-                background: 'var(--hover-d2)',
-                color: 'var(--neutral-n2)',
                 marginTop: 16,
                 marginLeft: 20,
               }}
-              icon={<IconFont type="plus" />}
+              type={'light'}
               onClick={onClickAddField}
             >
-              {t('newlyAdd.addFields')}
-            </Button>
+              <IconFont type="plus" /> {t('newlyAdd.addFields')}
+            </CommonButton>
             <TableWrapTop
               pagination={false}
               dataSource={dataSource?.filter(

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Input, Space } from 'antd'
+import { Input, Popover, Space } from 'antd'
 
 export const SkeletonGroup = styled(Space)`
   display: flex;
@@ -32,7 +32,7 @@ export const SkeletonStatus = styled.div`
 export const Header = styled.div`
   height: 52px;
   background: var(--neutral-white-d5);
-  border-bottom: 1px solid var(--neutral-n6-d1);
+  border-bottom: 1px solid var(--neutral-n6-d2);
   padding: 0 24px;
   display: flex;
   align-items: center;
@@ -56,34 +56,48 @@ export const BackIcon = styled.div`
 `
 
 export const ChangeIconGroup = styled.div`
-  border: 1px solid var(--neutral-n6-d1);
-  border-radius: 6px;
+  /* border: 1px solid var(--neutral-n6-d1); */
+  /* border-radius: 6px; */
   box-sizing: border-box;
-  width: 64px;
   height: 32px;
   display: flex;
-  overflow: hidden;
+  /* overflow: hidden; */
 `
 
-export const NextWrap = styled.div<{ isDisable?: boolean }>`
+export const NextWrap = styled.div`
   width: 31px;
-  height: 30px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--neutral-white-d4);
-  cursor: ${props => (props.isDisable ? 'no-drop' : 'pointer')};
+  border: 1px solid var(--neutral-n6-d1);
+  border-radius: 6px;
+  cursor: pointer;
   svg {
     color: var(--neutral-n2);
   }
   &:hover {
-    background: ${props =>
-      props.isDisable ? 'var(--neutral-white-d4)' : 'var(--hover-d2)'};
+    background: var(--hover-d2);
+    border: 1px solid var(--hover-d2);
     svg {
-      color: ${props =>
-        props.isDisable ? 'var(--neutral-n2)' : 'var(--primary-d2)'};
+      color: var(--primary-d2);
     }
   }
+`
+
+export const UpWrap = styled(NextWrap)<{ isOnly?: boolean }>`
+  border-right: ${props =>
+    props.isOnly ? '1px solid var(--neutral-n6-d1)' : '1px solid transparent'};
+  border-top-right-radius: ${props => (props.isOnly ? '6' : '0')}px;
+  border-bottom-right-radius: ${props => (props.isOnly ? '6' : '0')}px;
+`
+
+export const DownWrap = styled(NextWrap)<{ isOnly?: boolean }>`
+  border-left: ${props =>
+    props.isOnly ? '1px solid var(--neutral-n6-d1)' : '1px solid transparent'};
+  border-top-left-radius: ${props => (props.isOnly ? '6' : '0')}px;
+  border-bottom-left-radius: ${props => (props.isOnly ? '6' : '0')}px;
 `
 
 export const ChangeIconBox = styled.div`
@@ -142,6 +156,7 @@ export const CollapseItemTitle = styled.div`
   cursor: pointer;
   height: 28px;
   background: var(--hover-d2);
+  border-radius: 4px;
   span {
     font-size: var(--font12);
     color: var(--neutral-n2);
@@ -160,6 +175,12 @@ export const CollapseItemContent = styled.div<{ isOpen?: boolean }>`
 `
 
 export const Label = styled.div`
+  font-size: var(--font14);
+  color: var(--neutral-n1-d1);
+  font-family: SiYuanMedium;
+`
+
+export const LabelItem = styled.div`
   font-size: var(--font14);
   color: var(--neutral-n3);
 `

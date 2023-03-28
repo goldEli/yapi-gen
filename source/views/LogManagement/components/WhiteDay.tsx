@@ -30,7 +30,7 @@ export const LabelTitle = (props: any) => {
     >
       <span
         style={{
-          fontWeight: 'bold',
+          fontFamily: 'SiYuanMedium',
           fontSize: '14px',
         }}
       >
@@ -250,11 +250,7 @@ const WhiteDay = (props: any) => {
               },
             ]}
           >
-            <Editor
-              ref={editorRef2}
-              upload={uploadFile}
-              getSuggestions={() => options}
-            />
+            <Editor upload={uploadFile} getSuggestions={() => options} />
           </Form.Item>
           <Form.Item
             style={{
@@ -284,11 +280,7 @@ const WhiteDay = (props: any) => {
               },
             ]}
           >
-            <Editor
-              ref={editorRef}
-              upload={uploadFile}
-              getSuggestions={() => options}
-            />
+            <Editor upload={uploadFile} getSuggestions={() => options} />
           </Form.Item>
           <Form.Item
             label={<LabelTitle title={t('common.copySend')} />}

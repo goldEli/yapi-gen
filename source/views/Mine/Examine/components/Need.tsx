@@ -58,7 +58,7 @@ const SearchWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',
-  // position: 'relative',
+  marginRight: '24px',
 })
 
 const Need = (props: any) => {
@@ -147,6 +147,7 @@ const Need = (props: any) => {
   const onClickItem = (item: any) => {
     const demandIds = listData?.list?.map((i: any) => i.demandId)
     item.id = item.demandId
+    item.isAllProject = props.projectId === 0
     openDemandDetail(
       { ...item, ...{ demandIds } },
       item.projectId,
@@ -189,7 +190,11 @@ const Need = (props: any) => {
   }
 
   return (
-    <>
+    <div
+      style={{
+        width: '100%',
+      }}
+    >
       {isVisible && (
         <EditExamine
           isVisible={isVisible}
@@ -201,14 +206,21 @@ const Need = (props: any) => {
       )}
       <div
         style={{
-          padding: '0 24px',
+          // margin: '0 24px',
           display: 'flex',
-          width: '100%',
+          width: 'calc(100% - 48px)',
           justifyContent: 'space-between',
           borderBottom: '1px solid var(--neutral-n6-d1)',
+          margin: '0 24px',
         }}
       >
-        <div style={{ width: '100%', display: 'flex', alignItems: 'center' }}>
+        <div
+          style={{
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
           <TabsItem isActive={!activeTab} onClick={() => onChangeTab(0)}>
             <div>{t('newlyAdd.needMineExamine')}</div>
           </TabsItem>
@@ -249,8 +261,8 @@ const Need = (props: any) => {
 
       <div>
         <LoadingSpin spinning={isSpin}>
-          <div>
-            {listData?.list && listData?.list?.length && (
+          <div style={{ paddingLeft: 16 }}>
+            {listData?.list && listData?.list?.length > 0 && (
               <ResizeTable
                 isSpinning={false}
                 dataWrapNormalHeight="calc(100vh - 330px)"
@@ -270,7 +282,7 @@ const Need = (props: any) => {
           onChange={onChangePage}
         />
       )}
-    </>
+    </div>
   )
 }
 

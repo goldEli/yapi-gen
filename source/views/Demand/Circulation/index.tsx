@@ -20,6 +20,7 @@ import { setIsRefresh } from '@store/user'
 import { getStoryStatusLog } from '@/services/demand'
 import { setIsUpdateChangeLog } from '@store/demand'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
+import StateTag from '@/components/StateTag'
 
 const TimeLIneWrap = styled(Timeline)({
   marginTop: 24,
@@ -34,7 +35,7 @@ const TimeLIneWrap = styled(Timeline)({
     padding: '16px 24px',
     left: '125px!important',
     width: 'calc(100% - 151px)!important',
-    background: 'var(--neutral-n8)',
+    background: 'var(--hover-d2)',
   },
   '.ant-timeline-item-last .ant-timeline-item-content': {
     display: 'none!important',
@@ -54,7 +55,7 @@ const TimeItem = styled.div({
   flexDirection: 'column',
   fontWeight: 400,
   'span:first-child': {
-    fontSize: 16,
+    fontSize: 14,
     color: 'var(--neutral-n1-d2)',
   },
   'span:last-child': {
@@ -73,7 +74,7 @@ const LineItem = styled.div<{
   },
   ({ top, bottom, hasTop }) => ({
     marginTop: top || 0,
-    marginBottom: bottom || 0,
+
     alignItems: hasTop ? 'flex-start' : 'center',
   }),
 )
@@ -98,7 +99,7 @@ const SpanWrap = styled.span<{ size?: any; weight?: any; color?: any }>(
 )
 
 const TextWrap = styled.div({
-  fontSize: 16,
+  fontSize: 14,
   fontWeight: 'normal',
   color: 'var(--neutral-n1-d2)',
 })
@@ -174,7 +175,6 @@ const Circulation = () => {
       </span>
     )
   }
-
   return (
     <Wrap>
       <Spin indicator={<NewLoadingTransition />} spinning={isSpin}>
@@ -211,18 +211,24 @@ const Circulation = () => {
                           : t('newlyAdd.applyReviewTo')}
                       </TextWrap>
                       {i.statusTo ? (
-                        <>
+                        <div style={{ marginLeft: 8 }}>
                           {i.changeType === 3 ? (
                             `【${i.statusTo?.name}】`
                           ) : (
-                            <ViewWrap
-                              style={{ marginLeft: 8 }}
-                              color={i.statusTo?.color}
-                            >
-                              {i.statusTo?.name}
-                            </ViewWrap>
+                            <StateTag
+                              name={i.statusTo?.name}
+                              state={
+                                i?.is_start === 1 && i?.is_end === 2
+                                  ? 1
+                                  : i?.is_end === 1 && i?.is_start === 2
+                                  ? 2
+                                  : i?.is_start === 2 && i?.is_end === 2
+                                  ? 3
+                                  : 0
+                              }
+                            />
                           )}
-                        </>
+                        </div>
                       ) : (
                         <DelWrap>{t('newlyAdd.statusDel')}</DelWrap>
                       )}

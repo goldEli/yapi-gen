@@ -23,10 +23,10 @@ import { uploadFileToKey } from '@/services/cos'
 const Wrap = styled.div<{ isModal: any }>(
   {
     overflowY: 'auto',
-    padding: '0 16px 0 24px',
   },
   ({ isModal }) => ({
     height: isModal ? '60vh' : 'calc(100% - 40px)',
+    padding: isModal ? '0 16px 0 24px' : '0 16px 0 0px',
   }),
 )
 
@@ -38,7 +38,7 @@ const labelWrap = css`
 
 const label = css`
   font-size: 16px;
-  font-weight: 500;
+  font-family: siyuanmedium;
   margin-bottom: 8px;
   margin-top: 24px;
 `

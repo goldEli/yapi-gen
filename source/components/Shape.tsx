@@ -39,14 +39,6 @@ import CustomSelect from './CustomSelect'
 export function setValue(res: any) {
   const form1Obj: any = {}
   for (const key in res?.fields) {
-    // if (res?.fields[key].content === 'users_name') {
-    //   // eslint-disable-next-line no-undefined
-    //   if (res.originalStatusUserIds.length >= 1) {
-    //     form1Obj[res?.fields[key].content] = [
-    //       res.originalStatusUserIds.join(','),
-    //     ]
-    //   }
-    // } else
     if (
       res?.fields[key].type === 'select' &&
       res?.fields[key].true_value !== 0 &&
@@ -105,7 +97,7 @@ const Contain = styled.div`
   min-height: 316px;
   display: flex;
 `
-const MyDiv = styled.div<{ show?: boolean }>`
+export const MyDiv = styled.div<{ show?: boolean }>`
   display: flex;
   align-items: center;
   border-radius: 2px;
@@ -210,7 +202,7 @@ const arron = css`
   border-radius: 16px 16px 16px 16px;
   font-size: 12px;
   font-family: PingFang SC-Medium, PingFang SC;
-  font-weight: 500;
+  font-family: siyuanmedium;
   color: var(--neutral-white-d2);
 `
 const arrorText = css`
@@ -579,44 +571,6 @@ export const ShapeContent = (props: any) => {
     return name
   }
 
-  const format = (i: any) => {
-    const a = i.children?.map((item: any) => ({
-      ...item,
-      label: formatName(i.content, item.name, item.id),
-
-      value: item.id,
-    }))
-    const newA = a.filter((j: any) => {
-      return j.id === info
-    })
-    const isMy = rightList?.originalStatusUserIds.includes(info)
-
-    const newC = a.filter((j: any) => {
-      return rightList?.originalStatusUserIds.includes(j.id)
-    })
-
-    const ids = rightList?.originalStatusUserIds.join(',')
-    const names = newC.map((k: any) => k.name).join(' ; ')
-    let newD: any = []
-    if (ids) {
-      newD = [
-        {
-          id: ids,
-          label: `${names}（${t('theOriginalStateHandlesThePerson')}）`,
-          name: names,
-          value: ids,
-        },
-      ]
-    }
-
-    const newB = a.filter((j: any) => {
-      return j.id !== info && !rightList?.originalStatusUserIds.includes(j.id)
-
-      // return j.id !== info
-    })
-
-    return (newD ? newD : []).concat(isMy ? [] : newA, newB)
-  }
   const format2 = (i: any, type: any) => {
     const a = i.children?.map((item: any) => ({
       ...item,
@@ -661,6 +615,7 @@ export const ShapeContent = (props: any) => {
 
     return str1?.includes(str2)
   }
+
   return (
     <Contain>
       {!props.noleft && (
@@ -974,7 +929,7 @@ export const ShapeContent = (props: any) => {
                   style={{
                     fontSize: '50px',
                     margin: '0 8px',
-                    color: 'var(--neutral-n5)',
+                    color: 'var(--neutral-n4)',
                   }}
                   type="flow"
                 />
@@ -996,7 +951,7 @@ export const ShapeContent = (props: any) => {
                   style={{
                     height: '22px',
                     fontSize: '14px',
-                    fontWeight: 500,
+                    fontFamily: 'SiYuanMedium',
                     color: 'var(--neutral-n1-d2)',
                     lineHeight: '22px',
                     marginBottom: '20px',

@@ -45,7 +45,7 @@ import CommonButton from '@/components/CommonButton'
 const Wrap = styled.div`
   height: 100%;
   display: flex;
-  padding: 20px 24px 0 24px;
+  padding: 20px 24px 0 0px;
   flex-direction: column;
 `
 
@@ -55,7 +55,7 @@ const DemandInfoWrap = styled.div({
   justifyContent: 'space-between',
   height: 32,
   background: 'white',
-  margin: '20px 0 6px 0',
+  margin: '20px 0 6px 24px',
 })
 
 const NameWrap = styled.div({
@@ -72,16 +72,17 @@ const NameWrap = styled.div({
 const ContentWrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  height: 'calc(100% - 80px)',
+  height: 'calc(100% - 90px)',
+  padding: '0 0 0 24px',
 })
 
 const MainWrap = styled.div({
-  padding: '0 24px',
   background: 'white',
   width: '100%',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
+  borderBottom: '1px solid var(--neutral-n6-d1)',
   '.ant-space-item': {
     display: 'flex',
   },
@@ -116,8 +117,6 @@ const Item = styled.div<{ activeIdx: boolean }>(
       height: 20,
       padding: '0 6px',
       borderRadius: 10,
-      color: 'var(--primary-d2)',
-      background: 'var(--neutral-n5)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -129,11 +128,11 @@ const Item = styled.div<{ activeIdx: boolean }>(
       borderBottom: activeIdx
         ? '2px solid var(--primary-d2)'
         : '2px solid white',
-      fontWeight: activeIdx ? 'bold' : 400,
+      fontFamily: activeIdx ? 'SiYuanMedium' : '',
     },
     div: {
       color: activeIdx ? 'white' : 'var(--primary-d2)',
-      background: activeIdx ? 'var(--primary-d2)' : 'var(--neutral-n5)',
+      background: activeIdx ? 'var(--primary-d2)' : 'var(--function-tag5)',
     },
   }),
 )
@@ -422,8 +421,25 @@ const Iteration = () => {
           onChangeVisible={() => setIsDelete(!isDelete)}
           onConfirm={onDeleteConfirm}
         />
-        <div>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            height: 32,
+            paddingLeft: 24,
+          }}
+        >
           <MyBreadcrumb />
+          {type === 'demand' && (
+            <div>
+              <InputSearch
+                placeholder={t('common.pleaseSearchDemand')}
+                onChangeSearch={onPressEnter}
+                leftIcon
+              />
+            </div>
+          )}
         </div>
         <DemandInfoWrap>
           <NameWrap>
@@ -436,7 +452,7 @@ const Iteration = () => {
           </NameWrap>
           <Space size={16}>
             {hasEdit ? null : (
-              <CommonButton type="primary" onClick={onChangeEditVisible}>
+              <CommonButton type="light" onClick={onChangeEditVisible}>
                 {t('common.edit')}
               </CommonButton>
             )}
@@ -482,13 +498,6 @@ const Iteration = () => {
             </TitleWrap>
             {type === 'demand' && (
               <OperationWrap size={16}>
-                <InputSearch
-                  placeholder={t('common.pleaseSearchDemand')}
-                  onChangeSearch={onPressEnter}
-                  leftIcon
-                />
-                {hasFilter ? null : <DividerWrap type="vertical" />}
-
                 {hasFilter ? null : (
                   <HoverWrap
                     onClick={() => setFilterState(!filterState)}

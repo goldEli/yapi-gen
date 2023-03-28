@@ -92,7 +92,7 @@ export const Provider = styled.div`
   height: 1px;
   width: 88%;
   margin-left: 6%;
-  background: var(--neutral-n6-d1);
+  background: var(--neutral-n6-d2);
   margin-bottom: 16px;
 `
 
@@ -212,7 +212,6 @@ export const NoDataCreateWrap = styled.div({
   marginTop: 8,
   minHeight: 68,
   borderRadius: 6,
-  background: 'var(--neutral-n6-d1)',
   padding: '8px 12px',
   '.top': {
     display: 'flex',

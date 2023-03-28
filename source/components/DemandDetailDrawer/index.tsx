@@ -39,7 +39,6 @@ import {
   Header,
   BackIcon,
   ChangeIconGroup,
-  ChangeIconBox,
   Content,
   ParentBox,
   DemandName,
@@ -49,7 +48,10 @@ import {
   DrawerHeader,
   NextWrap,
   SkeletonStatus,
+  UpWrap,
+  DownWrap,
 } from './style'
+import CommonButton from '../CommonButton'
 
 const DemandDetailDrawer = () => {
   const normalState = {
@@ -139,7 +141,7 @@ const DemandDetailDrawer = () => {
   const getDemandDetail = async (id?: any, ids?: any) => {
     const paramsProjectId =
       demandDetailDrawerProps.project_id ?? demandDetailDrawerProps.projectId
-    if (drawerInfo?.projectId === paramsProjectId) {
+    if (demandDetailDrawerProps?.isAllProject) {
       getProjectData()
     }
     setDrawerInfo({})
@@ -394,39 +396,42 @@ const DemandDetailDrawer = () => {
           </Space>
           <Space size={16}>
             <ChangeIconGroup>
-              <NextWrap
-                isDisable={!currentIndex}
-                onClick={onUpDemand}
-                id="upIcon"
-              >
-                <CommonIconFont
-                  type="up"
-                  size={20}
-                  color="var(--neutral-n1-d1)"
-                />
-              </NextWrap>
-              <NextWrap
-                isDisable={
-                  demandIds?.length === 0 ||
-                  currentIndex === demandIds?.length - 1
-                }
-                onClick={onDownDemand}
-                id="downIcon"
-              >
-                <CommonIconFont
-                  type="down"
-                  size={20}
-                  color="var(--neutral-n1-d1)"
-                />
-              </NextWrap>
+              {currentIndex > 0 && (
+                <UpWrap
+                  onClick={onUpDemand}
+                  id="upIcon"
+                  isOnly={
+                    demandIds?.length === 0 ||
+                    currentIndex === demandIds?.length - 1
+                  }
+                >
+                  <CommonIconFont
+                    type="up"
+                    size={20}
+                    color="var(--neutral-n1-d1)"
+                  />
+                </UpWrap>
+              )}
+              {!(
+                demandIds?.length === 0 ||
+                currentIndex === demandIds?.length - 1
+              ) && (
+                <DownWrap
+                  onClick={onDownDemand}
+                  id="downIcon"
+                  isOnly={currentIndex <= 0}
+                >
+                  <CommonIconFont
+                    type="down"
+                    size={20}
+                    color="var(--neutral-n1-d1)"
+                  />
+                </DownWrap>
+              )}
             </ChangeIconGroup>
-            <ChangeIconBox onClick={onToDetail}>
-              <CommonIconFont
-                type="full-screen"
-                size={20}
-                color="var(--neutral-n1-d1)"
-              />
-            </ChangeIconBox>
+            <div onClick={onToDetail}>
+              <CommonButton type="icon" icon="full-screen" />
+            </div>
             <Popover
               open={isMoreVisible}
               onOpenChange={setIsMoreVisible}
@@ -444,13 +449,9 @@ const DemandDetailDrawer = () => {
                 />
               }
             >
-              <ChangeIconBox>
-                <CommonIconFont
-                  type="more"
-                  size={20}
-                  color="var(--neutral-n2)"
-                />
-              </ChangeIconBox>
+              <div>
+                <CommonButton type="icon" icon="more" />
+              </div>
             </Popover>
           </Space>
         </Header>

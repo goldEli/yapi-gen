@@ -29,7 +29,6 @@ import {
   setIsUpdateMember,
 } from '@store/project'
 import InputSearch from '../InputSearch'
-import CommonButton from '../CommonButton'
 
 interface Props {
   visible: boolean
@@ -104,7 +103,7 @@ const ListItem = styled.div({
     fontSize: 12,
   },
   '&:hover': {
-    backgroundColor: 'var(--neutral-n6-d1)',
+    backgroundColor: 'var(--hover-d3)',
   },
 })
 const MoreWrap = styled.div<{ type?: any }>(
@@ -138,7 +137,7 @@ const MoreWrap2 = styled(MoreWrap)`
     color: var(--neutral-n1-d1);
   }
   &:hover {
-    background-color: transparent !important;
+    background-color: var(--hover-d3) !important;
     .job {
       color: var(--primary-d2);
     }

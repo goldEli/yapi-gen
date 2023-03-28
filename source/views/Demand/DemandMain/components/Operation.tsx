@@ -17,13 +17,14 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import ExportDemand from './ExportDemand'
 import ImportDemand from './ImportDemand'
 import { useDispatch, useSelector } from '@store/index'
-import { setFilterKeys, setFilterParamsModal } from '@store/project'
+import { setFilterParamsModal } from '@store/project'
 import {
   setCreateCategory,
   setCreateDemandProps,
   setIsCreateDemandVisible,
 } from '@store/demand'
 import { saveScreen } from '@store/view'
+import CommonIconFont from '@/components/CommonIconFont'
 
 const OperationWrap = styled.div({
   minHeight: 32,
@@ -61,13 +62,13 @@ const LiWrap = styled.div({
 
 const IconWrap = styled(IconFont)({
   fontSize: 20,
-  color: 'black',
   cursor: 'pointer',
   padding: 6,
   borderRadius: 6,
+  color: 'var(--neutral-n2)',
   '&: hover': {
     color: 'var(--neutral-n1-d1)',
-    background: 'var(--neutral-n6-d1)',
+    background: 'var(--hover-d3)',
   },
 })
 
@@ -103,9 +104,15 @@ const MoreItem = styled.div({
   fontWeight: 400,
   cursor: 'pointer',
   padding: '0 16px',
+  svg: {
+    color: 'var(--neutral-n3)',
+  },
   '&: hover': {
-    color: 'var(--neutral-n1-d1)',
+    color: 'var(--neutral-n1-d1)!important',
     background: 'var(--hover-d3)',
+    svg: {
+      color: 'var(--neutral-n1-d1)!important',
+    },
   },
 })
 
@@ -338,14 +345,14 @@ const Operation = (props: Props) => {
     >
       {hasImport || projectInfo?.status !== 1 ? null : (
         <MoreItem onClick={onImportClick}>
-          <IconFont style={{ fontSize: 16, marginRight: 8 }} type="export" />
-          <span>{t('newlyAdd.importDemand')}</span>
+          <CommonIconFont type="export" />
+          <span style={{ marginLeft: 8 }}>{t('newlyAdd.importDemand')}</span>
         </MoreItem>
       )}
       {hasExport ? null : (
         <MoreItem onClick={onExportClick}>
-          <IconFont style={{ fontSize: 16, marginRight: 8 }} type="Import" />
-          <span>{t('newlyAdd.exportDemand')}</span>
+          <CommonIconFont type="Import" />
+          <span style={{ marginLeft: 8 }}>{t('newlyAdd.exportDemand')}</span>
         </MoreItem>
       )}
     </div>

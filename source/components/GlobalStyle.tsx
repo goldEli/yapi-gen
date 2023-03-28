@@ -208,7 +208,9 @@ const GlobalStyle = () => {
     .ant-checkbox-inner {
       border-radius: 4px !important;
     }
-
+    .ant-timeline-item-tail {
+      border-left: 2px solid var(--neutral-n6-d2);
+    }
     .react-viewer-transition {
       transition: inherit !important;
     }
@@ -324,7 +326,7 @@ const GlobalStyle = () => {
       padding: 0;
     }
     .ant-modal-title {
-      font-weight: bold;
+      font-family: siyuanmedium;
     }
     textarea {
       resize: none;
@@ -348,6 +350,10 @@ const GlobalStyle = () => {
       // visibility: hidden;
     }
 
+    .ant-select-item {
+      padding: 5px 16px !important;
+    }
+
     .ant-select-item-option {
       font-weight: inherit;
       color: var(--neutral-n2);
@@ -362,7 +368,10 @@ const GlobalStyle = () => {
     .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
       background-color: transparent;
       font-weight: inherit;
-      color: var(--primary-d2);
+      color: var(--primary-d2) !important;
+      .selectText {
+        color: var(--primary-d2) !important;
+      }
     }
     .ant-select-item-option-selected:not(
         .ant-select-item-option-disabled
@@ -388,14 +397,14 @@ const GlobalStyle = () => {
       background: none;
     }
 
-    .ant-input-affix-wrapper:focus,
+    /* .ant-input-affix-wrapper:focus,
     .ant-input-affix-wrapper-focused {
       box-shadow: initial !important;
-      border: 1px solid var(--neutral-n6-d1);
+      border: 1px solid var(--primary-d2);
     }
     .ant-input-affix-wrapper {
       border: 1px solid var(--neutral-n6-d1);
-    }
+    } */
     input {
       &::placeholder {
         font-size: 14px;
@@ -417,7 +426,7 @@ const GlobalStyle = () => {
       background-color: transparent;
     }
     .ant-tree .ant-tree-treenode {
-      padding-right: 20px;
+      /* padding-right: 20px; */
       box-sizing: border-box;
       width: 100%;
       &:hover {
@@ -553,8 +562,8 @@ const GlobalStyle = () => {
       right: 0;
       top: 0;
       bottom: 0;
-      border-right: 1px solid var(#f0f0f0);
-      border-left: 1px solid var(#f0f0f0);
+      border-right: 1px solid var(--neutral-n6-d1);
+      border-left: 1px solid var(--neutral-n6-d1);
       pointer-events: none;
     }
     .resize_save {
@@ -806,9 +815,9 @@ const GlobalStyle = () => {
     .ant-breadcrumb li:last-child {
       color: var(--neutral-n3);
     }
-    .ant-dropdown-menu-submenu-expand-icon svg {
+    /* .ant-dropdown-menu-submenu-expand-icon svg {
       font-size: 10px !important;
-    }
+    } */
     .ant-timeline-item-head-blue {
       border-color: var(--primary-d1);
     }
@@ -821,6 +830,21 @@ const GlobalStyle = () => {
     }
     .ant-btn {
       box-shadow: none;
+    }
+    .ant-dropdown {
+      box-shadow: none;
+    }
+    .drag-up {
+      animation: dragup ease 0.2s 1;
+      animation-fill-mode: forwards;
+      border: solid 2px #cccccc;
+    }
+
+    .drag-item {
+      height: 64px;
+      animation: dragdown ease 0.2s 1;
+      animation-fill-mode: forwards;
+      border: solid 2px #cccccc;
     }
   `
   return <Global styles={globalCss} />

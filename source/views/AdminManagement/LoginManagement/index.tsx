@@ -30,7 +30,7 @@ const Header = styled.div({
   padding: '24px 24px 20px',
   '.label': {
     fontSize: 16,
-    fontWeight: 500,
+    fontFamily: 'SiYuanMedium',
     color: 'var(--neutral-n1-d1)',
   },
 })

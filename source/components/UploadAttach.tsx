@@ -86,7 +86,7 @@ export const BlueCss = styled.span`
   color: var(--primary-d1);
   cursor: pointer;
   margin-left: 5px;
-  background-color: var(--neutral-white-d6);
+  background-color: var(--neutral-white-d3);
   padding: 5px 8px;
   border-radius: 6px;
   box-shadow: 0px 0px 6px rgb(0 0 0 / 10%);
@@ -116,8 +116,8 @@ export const Card = styled.div`
   margin: 0 16px 16px 10px;
   box-sizing: border-box;
   padding: 8px 12px;
+  transition: all 0.3s;
   &:hover {
-    /* box-shadow: 0px 0px 7px 2px rgba(40, 119, 255, 20%); */
     box-shadow: none;
     background: var(--neutral-n8);
     ${Second} {

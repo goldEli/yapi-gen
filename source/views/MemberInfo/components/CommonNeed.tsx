@@ -66,11 +66,11 @@ const TableTitle = styled.div({
   display: 'flex',
   alignItems: 'center',
   marginLeft: '16px',
-  fontWeight: '500',
+  fontFamily: 'SiYuanMedium',
   span: {
     borderLeft: '3px solid var(--primary-d2)',
     paddingLeft: 6,
-    lineHeight: '20px',
+    lineHeight: '16px',
   },
 })
 
@@ -79,10 +79,13 @@ const SearchWrap = styled.div({
   alignItems: 'center',
   justifyContent: 'space-between',
   marginBottom: '20px',
+  borderBottom: '1px solid var(--neutral-n6-d1)',
 })
 
 const MainWrap = styled.div({
-  padding: ' 0 16px',
+  height: 'calc(100vh - 128px)',
+  overflow: 'scroll',
+  padding: ' 0 24px',
   '.ant-spin-nested-loading': {
     // height: 'initial',
   },
@@ -333,6 +336,7 @@ const CommonNeed = (props: any) => {
         demandIds = listData?.list?.map((i: any) => i.id)
       }
       item.isMineOrHis = true
+      item.isAllProject = props.id === 0
       openDemandDetail({ ...item, ...{ demandIds } }, item.project_id, item.id)
     }
   }
@@ -532,7 +536,7 @@ const CommonNeed = (props: any) => {
 
   return (
     <MainWrap>
-      <div style={{ padding: '0 24px', justifyContent: 'space-between' }}>
+      <div style={{ justifyContent: 'space-between' }}>
         <SearchWrap>
           <div style={{ position: 'absolute', top: '20px', right: '24px' }}>
             <InputSearch
@@ -598,25 +602,31 @@ const CommonNeed = (props: any) => {
       </div>
 
       {isShowSearch && props.id !== 0 && (
-        <div style={{ borderLeft: '1px solid var(--neutral-n6-d1)' }}>
-          <TableFilter
-            onFilter={getSearchKey}
-            onSearch={onSearch}
-            list={searchList}
-            basicsList={filterBasicsList}
-            specialList={filterSpecialList}
-            customList={filterCustomList}
-          />
-        </div>
+        <TableFilter
+          onFilter={getSearchKey}
+          onSearch={onSearch}
+          list={searchList}
+          basicsList={filterBasicsList}
+          specialList={filterSpecialList}
+          customList={filterCustomList}
+          hasLeft
+        />
       )}
       {!isMany && (
-        <ResizeTable
-          isSpinning={isSpin}
-          dataWrapNormalHeight="calc(100vh - 330px)"
-          col={selectColum}
-          dataSource={listData?.list}
-          noData={<NoData />}
-        />
+        <div
+          style={{
+            // boxShadow: '0px 0px 7px 6px rgba(0,0,0,0.06)',
+            borderRadius: '6px',
+          }}
+        >
+          <ResizeTable
+            isSpinning={isSpin}
+            dataWrapNormalHeight="calc(100vh - 280px)"
+            col={selectColum}
+            dataSource={listData?.list}
+            noData={<NoData />}
+          />
+        </div>
       )}
 
       {isMany && (
@@ -646,14 +656,20 @@ const CommonNeed = (props: any) => {
                         {item.status_name}（{item.list.length}）
                       </span>
                     </TableTitle>
-
-                    <ResizeTable
-                      isSpinning={false}
-                      dataWrapNormalHeight="calc(100vh - 460px)"
-                      col={selectColum}
-                      dataSource={item?.list}
-                      noData={<NoData />}
-                    />
+                    <div
+                      style={{
+                        boxShadow: '0px 0px 9px 3px rgba(0,0,0,0.03)',
+                        borderRadius: '6px',
+                      }}
+                    >
+                      <ResizeTable
+                        isSpinning={false}
+                        dataWrapNormalHeight="calc(100vh - 460px)"
+                        col={selectColum}
+                        dataSource={item?.list}
+                        noData={<NoData />}
+                      />
+                    </div>
                   </div>
                 ))}
               </div>

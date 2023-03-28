@@ -23,6 +23,7 @@ import {
   WrapDetail,
   WrapCategory,
 } from './style'
+
 const Back = styled.div`
   font-size: 12px;
   display: flex;
@@ -62,7 +63,7 @@ const ProjectDetailSide = () => {
     },
     {
       name: t('iteration'),
-      icon: 'interation',
+      icon: 'interation-2',
       path: '/ProjectManagement/Iteration',
       isPermission:
         projectInfo?.isPublic === 1

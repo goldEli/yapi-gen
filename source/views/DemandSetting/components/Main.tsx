@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 /* eslint-disable new-cap */
+/* eslint-disable require-unicode-regexp */
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable no-negated-condition */
+/* eslint-disable react/no-danger */
+/* eslint-disable complexity */
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
@@ -62,32 +67,29 @@ const Main = (props: any) => {
   const delConfig = () => {
     const { state, child } = delItem
     if (state === 1) {
-      setGetCategoryConfigF(
-        getCategoryConfigF.filter(
-          (item: any) => item.storyId !== child.storyId,
-        ),
+      const filterData: any = getCategoryConfigF.filter(
+        (item: any) => item.storyId !== child.storyId,
+      )
+      setGetCategoryConfigF(filterData)
+      dispatch(
+        setGetCategoryConfigArray([...filterData, ...getCategoryConfigT]),
       )
     } else {
-      setGetCategoryConfigT(
-        getCategoryConfigT.filter(
-          (item: any) => item.storyId !== child.storyId,
-        ),
+      const filterData: any = getCategoryConfigT.filter(
+        (item: any) => item.storyId !== child.storyId,
       )
+      setGetCategoryConfigT(filterData)
+      dispatch(
+        setGetCategoryConfigArray([...filterData, ...getCategoryConfigF]),
+      )
+      setGetCategoryConfigT(filterData)
     }
+
     setIsVisible(false)
     props.onIsOperate(true)
   }
-  useEffect(() => {
-    if (getCategoryConfigF?.length >= 1 || getCategoryConfigT?.length >= 1)
-      dispatch(
-        setGetCategoryConfigArray([
-          ...getCategoryConfigF,
-          ...getCategoryConfigT,
-        ]),
-      )
-  }, [getCategoryConfigF, getCategoryConfigT])
   // 必填
-  const onChangeChecked = (state: any, val: boolean, child: any) => {
+  function onChangeChecked(state: any, val: boolean, child: any) {
     const checked = val ? 1 : 2
     if (state === 1) {
       setGetCategoryConfigF(
@@ -104,6 +106,9 @@ const Main = (props: any) => {
         })),
       )
     }
+    dispatch(
+      setGetCategoryConfigArray([...getCategoryConfigF, ...getCategoryConfigT]),
+    )
     props.onIsOperate(true)
   }
   // 插入
@@ -116,7 +121,7 @@ const Main = (props: any) => {
       isCustomize: 1,
       storyId: item.id,
       is_required: 2,
-      is_fold: draggingIndex === 1 ? 1 : 2,
+      is_fold: configType === 1 ? 1 : 2,
     }
     if (configType === 1) {
       const arrData = Array.from(getCategoryConfigF)
@@ -129,47 +134,71 @@ const Main = (props: any) => {
     }
     setDraggingIndex(null)
   }
-  const EditCategoryConfig = (item: any) => {
+  const editCategoryConfig = (item: any, type: any, index: any) => {
     const newItem = {
       title: item.title,
       remarks: item.remarks,
-      content: item.field_content.attr,
-      fieldContent: item.field_content,
-      storyId: item.id,
-      isCustomize: 1,
-      is_required: 2,
-      is_fold: configType === 1 ? 1 : 2,
+      content: item?.field_content?.attr || item?.fieldContent?.attr,
+      fieldContent: item?.field_content || item?.fieldContent,
+      storyId: item.dragtype !== 'move' ? item.id : item.storyId,
+      isCustomize: item?.is_customize || item?.isCustomize,
+      is_required: item.dragtype !== 'move' ? 2 : item?.isRequired,
+      is_fold: type === 1 ? 1 : 2,
     }
-    if (configType === 1) {
+    if (type === 1) {
       const arrData = Array.from(getCategoryConfigF)
-      arrData.splice(draggingIndex, 0, newItem)
+      arrData.splice(index, 0, newItem)
       setGetCategoryConfigF(arrData)
-    } else {
+      if (item.dragtype === 'move') {
+        const data = getCategoryConfigT.filter(
+          (el: any) => el.storyId !== newItem.storyId,
+        )
+        data && setGetCategoryConfigT(data)
+      }
+      dispatch(setGetCategoryConfigArray([...arrData, ...getCategoryConfigT]))
+    } else if (type === 2) {
       const arrData = Array.from(getCategoryConfigT)
-      arrData.splice(draggingIndex, 0, newItem)
+      arrData.splice(index, 0, newItem)
       setGetCategoryConfigT(arrData)
+      if (item.dragtype === 'move') {
+        const data = getCategoryConfigF.filter(
+          (el: any) => el.storyId !== newItem.storyId,
+        )
+        data && setGetCategoryConfigF(data)
+      }
+      dispatch(setGetCategoryConfigArray([...arrData, ...getCategoryConfigF]))
     }
   }
   //拖动传递过来的参数
-  const onDrop = (state: any, event: any, index: any) => {
+  const onDrop = (state: any, event: any, index: any, num: any) => {
+    setConfigType(state)
     setDraggingIndex(index)
     // 自定义字段只能添加20个
     const customizeNum = getProjectFieIdsData?.filter(
       (el: any) => el.is_customize === 1,
     )
-    const evevtObj = JSON.parse(event.dataTransfer.getData('item'))
-    if (customizeNum?.length === 20 && evevtObj.dragtype === 'add') {
+    const evevtObj: any =
+      event.dataTransfer.getData('item') &&
+      JSON.parse(event.dataTransfer.getData('item'))
+    const dragItem =
+      event.dataTransfer.getData('DragItem') &&
+      JSON.parse(event.dataTransfer.getData('DragItem'))
+    if (customizeNum?.length === 20 && evevtObj?.dragtype === 'add') {
       message.warning(t('newlyAdd.maxAddFields'))
       return
+    } else {
+      setColItem(null)
+      evevtObj?.dragtype === 'add' && setAddAndEditVisible(true),
+        setFieldType(evevtObj)
+      evevtObj?.dragtype === 'edit' &&
+        editCategoryConfig(evevtObj, state, index)
+      dragItem?.dragtype === 'move' &&
+        editCategoryConfig(dragItem, state, index)
+      props.onIsOperate(true)
     }
-    setColItem(null)
-    evevtObj.dragtype === 'add' && setAddAndEditVisible(true),
-      setFieldType(evevtObj)
-    evevtObj.dragtype === 'edit' && EditCategoryConfig(evevtObj)
-    setConfigType(state)
-    props.onIsOperate(true)
   }
-  const tabsDraggingOnClcik = (state: any, index: any, child: any) => {
+  // 每一行的点击事件
+  const tabsDraggingOnclick = (state: any, index: any, child: any) => {
     setConfigType(state)
     setDraggingIndex(index)
     setColItem(child)
@@ -205,21 +234,46 @@ const Main = (props: any) => {
       save()
     }
   }, [props.isSave])
-  const onUpDate = async () => {
-    await dispatch(
-      getCategoryConfigList({
-        projectId: projectInfo.id,
-        categoryId: activeCategory.id,
-      }),
+  const onUpDate = async (res: any) => {
+    const newItem = {
+      title: res.name,
+      remarks: res.remarks,
+      fieldContent: res.content,
+      is_fold: configType === 1 ? 1 : 2,
+    }
+    if (configType === 1) {
+      const arrData = Array.from(getCategoryConfigF)
+      const item: any = arrData[draggingIndex]
+      arrData[draggingIndex] = { ...item, ...newItem }
+      setGetCategoryConfigF(arrData)
+      dispatch(setGetCategoryConfigArray([...arrData, getCategoryConfigT]))
+    } else {
+      const arrData = Array.from(getCategoryConfigT)
+      const item: any = arrData[draggingIndex]
+      arrData[draggingIndex] = { ...item, ...newItem }
+      dispatch(setGetCategoryConfigArray([...arrData, getCategoryConfigF]))
+      setGetCategoryConfigT(arrData)
+    }
+  }
+  useEffect(() => {
+    dispatch(
+      setGetCategoryConfigArray([
+        ...getCategoryConfigDataList?.isFoldT,
+        ...getCategoryConfigDataList?.isFoldF,
+      ]),
     )
+  }, [])
+  const onChangeMove = (list: any, type: any) => {
+    type === 1 ? setGetCategoryConfigF(list) : setGetCategoryConfigT(list)
+    props.onIsOperate(true)
   }
   return (
     <div
       style={{
         flex: 1,
-        height: 'calc(100vh - 200px)',
+        height: 'calc(100vh - 220px)',
         overflowY: 'auto',
-        paddingRight: 24,
+        padding: '0 24px',
       }}
     >
       <TitleStyle onClick={() => setInfoIcon(!infoIcon)}>
@@ -234,10 +288,14 @@ const Main = (props: any) => {
       </TitleStyle>
       {infoIcon && (
         <TabsDragging
-          onClick={(i: any, child: any) => tabsDraggingOnClcik(1, i, child)}
-          onDrop={(event: any, index: any) => onDrop(1, event, index)}
+          onClick={(i: any, child: any) => tabsDraggingOnclick(1, i, child)}
+          onDrop={(event: any, index: any, state: any) =>
+            onDrop(1, event, index, state)
+          }
           onMove={(data: any) => onMove(1, data)}
           state={1}
+          positionType="top"
+          onChangeMove={(list: any) => onChangeMove(list, 1)}
           list={getCategoryConfigF}
           onChangeChecked={(val: boolean, child: any) =>
             onChangeChecked(1, val, child)
@@ -257,8 +315,12 @@ const Main = (props: any) => {
       {moreIcon && (
         <TabsDragging
           state={2}
-          onClick={(i: any, child: any) => tabsDraggingOnClcik(1, i, child)}
-          onDrop={(event: any, index: any) => onDrop(2, event, index)}
+          positionType="bottom"
+          onChangeMove={(list: any) => onChangeMove(list, 2)}
+          onClick={(i: any, child: any) => tabsDraggingOnclick(2, i, child)}
+          onDrop={(event: any, index: any, state: any) =>
+            onDrop(2, event, index, state)
+          }
           onMove={(data: any) => onMove(2, data)}
           list={getCategoryConfigT}
           onDelete={(child: any) => onDelete(2, child)}
@@ -278,7 +340,7 @@ const Main = (props: any) => {
         fieldType={fieldType}
         item={colItem}
         isVisible={addAndEditVisible}
-        onEditUpdate={() => onUpDate()}
+        onEditUpdate={res => onUpDate(res)}
         onInsert={(item: any) => onInsert(item)}
         onClose={() => setAddAndEditVisible(false)}
       />

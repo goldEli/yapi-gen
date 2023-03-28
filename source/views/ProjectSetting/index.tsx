@@ -13,16 +13,26 @@ import { getParamsData } from '@/tools'
 import { useSelector } from '@store/index'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
 import PermissionWrap from '@/components/PermissionWrap'
+import InputSearch from '@/components/InputSearch'
+import { useState } from 'react'
 
 const Wrap = styled.div({
   display: 'flex',
-  height: 'calc(100% - 64px)',
+  height: 'calc(100vh - 128px)',
 })
 
 const Content = styled.div({
   width: '100%',
   height: '100%',
 })
+
+const SearchBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+  padding: 20px 24px 20px 24px;
+`
 
 const Setting = () => {
   const [t] = useTranslation()
@@ -31,12 +41,7 @@ const Setting = () => {
   const paramsData = getParamsData(searchParams)
   const activeTabs = Number(paramsData.type) || 0
   const { currentMenu } = useSelector(store => store.user)
-  // 计算当前选中下是否有项目管理权限
-  const resultAuth =
-    currentMenu?.children?.filter(
-      (i: any) => i.url === '/ProjectManagement/Project',
-    )?.length > 0
-
+  const [searchValue, setSearchValue] = useState('')
   const SideList = [
     {
       name: t('project.projectInformation'),
@@ -47,7 +52,7 @@ const Setting = () => {
     {
       name: t('project.projectMember'),
       icon: 'team',
-      content: <ProjectMember />,
+      content: <ProjectMember searchValue={searchValue} />,
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
         String(i.identity).includes('b/project/member'),
       ).length,
@@ -75,8 +80,19 @@ const Setting = () => {
       auth="/ProjectManagement/Project"
       permission={currentMenu?.children?.map((i: any) => i.url)}
     >
-      <div>
-        <MyBreadcrumb setName={SideList[activeTabs].name} />
+      <div style={{ height: '100%' }}>
+        <SearchBox>
+          <MyBreadcrumb setName={SideList[activeTabs].name} />
+          {activeTabs === 1 && (
+            <div>
+              <InputSearch
+                onChangeSearch={setSearchValue}
+                placeholder={t('project.pleaseNickname')}
+                leftIcon
+              />
+            </div>
+          )}
+        </SearchBox>
         <Wrap>
           <Content>{SideList[activeTabs].content}</Content>
         </Wrap>

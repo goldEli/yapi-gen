@@ -63,7 +63,7 @@ const TableTitle = styled.div({
   display: 'flex',
   alignItems: 'center',
   marginLeft: '16px',
-  fontWeight: '500',
+  fontFamily: 'SiYuanMedium',
   span: {
     borderLeft: '3px solid var(--primary-d2)',
     paddingLeft: 6,
@@ -306,6 +306,7 @@ const CommonNeed = (props: any) => {
         demandIds = listData?.list?.map((i: any) => i.id)
       }
       item.isMineOrHis = true
+      item.isAllProject = props.id === 0
       openDemandDetail({ ...item, ...{ demandIds } }, item.project_id, item.id)
     }
   }
@@ -499,9 +500,11 @@ const CommonNeed = (props: any) => {
     <>
       <div
         style={{
-          padding: '0 24px',
+          margin: '0 24px 16px 24px',
           justifyContent: 'space-between',
           display: 'flex',
+          borderBottom: '1px solid var(--neutral-n6-d1)',
+          // paddingLeft: '24px',
         }}
       >
         <div
@@ -573,16 +576,15 @@ const CommonNeed = (props: any) => {
         </SearchWrap>
       </div>
       {isShowSearch && props.id !== 0 ? (
-        <div style={{ borderLeft: '1px solid var(--neutral-n6-d1)' }}>
-          <TableFilter
-            onFilter={getSearchKey}
-            onSearch={onSearch}
-            list={searchList}
-            basicsList={filterBasicsList}
-            specialList={filterSpecialList}
-            customList={filterCustomList}
-          />
-        </div>
+        <TableFilter
+          onFilter={getSearchKey}
+          onSearch={onSearch}
+          list={searchList}
+          basicsList={filterBasicsList}
+          specialList={filterSpecialList}
+          customList={filterCustomList}
+          hasLeft
+        />
       ) : null}
       {!isMany && (
         <ResizeTable

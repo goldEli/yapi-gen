@@ -161,30 +161,31 @@ const routes = [
               () => import('@/views/AdminManagement/LoginManagement'),
             ),
           },
+          {
+            path: 'MemberInfo',
+            element: lazy(() => import('@/views/MemberInfo')),
+            children: [
+              {
+                path: 'Carbon',
+                element: lazy(() => import('@/views/MemberInfo/Carbon')),
+              },
+              {
+                path: 'Create',
+                element: lazy(() => import('@/views/MemberInfo/Create')),
+              },
+              {
+                path: 'Finished',
+                element: lazy(() => import('@/views/MemberInfo/Finished')),
+              },
+              {
+                path: 'Profile',
+                element: lazy(() => import('@/views/MemberInfo/Profile')),
+              },
+            ],
+          },
         ],
       },
-      {
-        path: '/MemberInfo',
-        element: lazy(() => import('@/views/MemberInfo')),
-        children: [
-          {
-            path: 'Carbon',
-            element: lazy(() => import('@/views/MemberInfo/Carbon')),
-          },
-          {
-            path: 'Create',
-            element: lazy(() => import('@/views/MemberInfo/Create')),
-          },
-          {
-            path: 'Finished',
-            element: lazy(() => import('@/views/MemberInfo/Finished')),
-          },
-          {
-            path: 'Profile',
-            element: lazy(() => import('@/views/MemberInfo/Profile')),
-          },
-        ],
-      },
+
       {
         path: '/LogManagement',
         element: lazy(() => import('@/views/LogManagement')),
