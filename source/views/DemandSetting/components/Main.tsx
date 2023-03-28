@@ -183,6 +183,15 @@ const Main = (props: any) => {
       data && setGetCategoryConfigF(data)
       dispatch(setGetCategoryConfigArray([...arrData, ...data]))
     }
+    // else if(index == -2){
+    //   const data = getCategoryConfigT.filter(
+    //     (el: any) => el.storyId !== newItem.storyId,
+    //   )
+    //   const arrData = [...data, newItem]
+    //   setGetCategoryConfigT(arrData)
+    //   data && setGetCategoryConfigF(data)
+    //   dispatch(setGetCategoryConfigArray([...arrData, ...data]))
+    // }
   }
   //拖动传递过来的参数
   const onDrop = (state: any, event: any, index: any) => {
