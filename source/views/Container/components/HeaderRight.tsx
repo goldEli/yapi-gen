@@ -22,10 +22,8 @@ import {
   MenuLeft,
   MenuRight,
   NameWrap,
-  PersonalFooter,
   PersonalHead,
   PhoneWrap,
-  UserAvatar,
   UserInfoBox,
   UserInfoTop,
   UserInfoWrap,
@@ -34,6 +32,7 @@ import {
 } from './../style'
 import { setIsCreateIterationVisible } from '@store/iterate'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
+import { getLoginDetail } from '@store/user/user.thunk'
 import helpPdf from '/Agile.pdf'
 import { t } from 'i18next'
 
@@ -69,6 +68,7 @@ const ChangeComponent = (props: { item: any; onClose(): void }) => {
         type: 'global/setLanguage',
         payload: type,
       })
+      dispatch(getLoginDetail())
     }
 
     // // 切换主题

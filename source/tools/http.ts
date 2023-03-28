@@ -172,12 +172,29 @@ client.config({
   ],
 })
 
+type ResponseData<T> = {
+  code:
+    | 'A0204'
+    | 'A0203'
+    | 'A0202'
+    | 'A0201'
+    | 'A0200'
+    | 'A0100'
+    | 'A0001'
+    | 'A0301'
+    | 0
+    | 1
+    | '00000'
+  msg: string
+  data: T
+}
+
 export const get = <SearchParams extends HttpRequestSearch, Result = any>(
   key: UrlKeys | string,
   data?: any,
   options?: any,
 ) => {
-  return client.get<SearchParams, Result>(
+  return client.get<SearchParams, ResponseData<Result>>(
     urls[key as UrlKeys] || key,
     data,
     options,
@@ -189,7 +206,7 @@ export const post = <Payload, Result = any>(
   data?: any,
   options?: any,
 ) => {
-  return client.post<Payload, Result>(
+  return client.post<Payload, ResponseData<Result>>(
     urls[key as UrlKeys] || key,
     data,
     options,
@@ -201,22 +218,32 @@ export const put = <Payload, Result = any>(
   data?: any,
   options?: any,
 ) => {
-  return client.put<Payload, Result>(urls[key as UrlKeys] || key, data, {
-    search: options,
-  })
+  return client.put<Payload, ResponseData<Result>>(
+    urls[key as UrlKeys] || key,
+    data,
+    {
+      search: options,
+    },
+  )
 }
 export const patch = <Payload, Result = any>(
   key: UrlKeys | string,
   data?: any,
 ) => {
-  return client.patch<Payload, Result>(urls[key as UrlKeys] || key, data)
+  return client.patch<Payload, ResponseData<Result>>(
+    urls[key as UrlKeys] || key,
+    data,
+  )
 }
 
 const deleteMethod = <Payload, Result = any>(
   key: UrlKeys | string,
   data?: any,
 ) => {
-  return client.delete<Payload, Result>(urls[key as UrlKeys] || key, data)
+  return client.delete<Payload, ResponseData<Result>>(
+    urls[key as UrlKeys] || key,
+    data,
+  )
 }
 
 export { deleteMethod as delete }

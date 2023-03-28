@@ -1,4 +1,5 @@
 {
+  "menu_word": "Word",
   "search_for_the_requirement_name_or_number": "Search for the requirement name or number",
   "moreInfo": "More",
   "please_enter_the_project": "Please enter a project name",
@@ -85,7 +86,7 @@
   "untick": " untick",
   "check": " Check ",
   "requirementsForEditing": " Edit the requirement ",
-  "serialNumber": " number ",
+  "serialNumber": "Number ",
   "quitAndHandover": " Quitandhandover ",
   "confirmationOfDeletion": " ConfirmationofDeletion ",
   "cancel": " Cancel ",

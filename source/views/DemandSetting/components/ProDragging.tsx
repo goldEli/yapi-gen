@@ -94,10 +94,14 @@ const SliderList = (props: any) => {
     setIsVisible(false)
     props.onUpdate()
   }
+  const allowDrop = (ev: any) => {
+    ev.preventDefault()
+  }
   return (
     <Container
       ref={ref}
       draggable="true"
+      onDragOver={allowDrop}
       onDragStart={event => onDragStart(event)}
       onDrag={(ev: any) => onDrag(ev)}
       onDragEnd={() => onDragEnd()}
@@ -123,8 +127,8 @@ const SliderList = (props: any) => {
         </div>
         <div
           className="delIcon"
-          onClick={() => {
-            setIsVisible(true), setDelItem(children)
+          onClick={e => {
+            e.stopPropagation(), setIsVisible(true), setDelItem(children)
           }}
         >
           {children?.is_customize === 1 && <IconFontStyle type="delete" />}

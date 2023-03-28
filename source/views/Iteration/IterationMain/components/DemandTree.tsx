@@ -169,12 +169,12 @@ const DemandTree = (props: Props) => {
       const currentDemandTop = props.data?.list?.filter(
         (i: any) => i.id === item.topId,
       )?.[0]
-      demandIds = currentDemandTop.allChildrenIds
-        ?.filter((i: any) => i.parent_id === item.parentId)
-        ?.map((k: any) => k.id)
+      demandIds = currentDemandTop.children?.map((k: any) => k.id)
     } else {
       demandIds = props.data?.list?.map((i: any) => i.id)
     }
+
+    console.log(demandIds, '222222')
 
     openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id)
   }
@@ -240,6 +240,7 @@ const DemandTree = (props: Props) => {
         isChild: true,
         parentId: item.id,
         categoryId: item.categoryId,
+        iterateId: item.iterateId,
       }),
     )
   }
@@ -534,22 +535,42 @@ const DemandTree = (props: Props) => {
     }
   }, [data?.list])
 
+  // 获取所有的子级
+  const getAllItems = (childrenList: any = [], arr: any = []) => {
+    childrenList?.forEach((element: any) => {
+      arr.push(element)
+      if (element.children && element.children.length)
+        getAllItems(element.children, arr)
+    })
+    return arr
+  }
+
   // 需求勾选
   const onSelectChange = (record: any, selected: any) => {
+    let resultList: any = []
+    if (record.parentId) {
+      resultList = getAllItems(
+        data?.list?.filter((i: any) => i.id === record.topId)[0]?.children,
+      )?.filter((i: any) => i.id === record.id)[0]?.children
+    } else {
+      resultList = data?.list?.filter((i: any) => i.id === record.topId)
+    }
+
     const resultKeys = selected
-      ? [...selectedRowKeys, ...[record], ...(record.allChildrenIds || [])]
+      ? [...selectedRowKeys, ...[record], ...getAllItems(resultList || [])]
       : selectedRowKeys?.filter((i: any) => i.id !== record.id)
-    setSelectedRowKeys([...new Set(resultKeys)])
-    onOperationCheckbox('add', [...new Set(resultKeys)])
+    const map = new Map()
+    const newArr = resultKeys.filter(
+      (v: any) => !map.has(v.id) && map.set(v.id, 1),
+    )
+    setSelectedRowKeys([...new Set(newArr)])
+    onOperationCheckbox('add', [...new Set(newArr)])
   }
 
   // 全选
   const onSelectAll = (selected: any) => {
     if (selected) {
-      let childKeys: any = []
-      data?.list?.forEach((element: any) => {
-        childKeys = [...childKeys, ...[element], ...element.allChildrenIds]
-      })
+      const childKeys: any = getAllItems(data?.list || [])
       setSelectedRowKeys([...new Set(childKeys)])
       onOperationCheckbox('add', [...new Set(childKeys)])
     } else {
