@@ -170,7 +170,7 @@ const Main = (props: any) => {
     }
   }
   //拖动传递过来的参数
-  const onDrop = (state: any, event: any, index: any, num: any) => {
+  const onDrop = (state: any, event: any, index: any) => {
     setConfigType(state)
     setDraggingIndex(index)
     // 自定义字段只能添加20个
@@ -289,9 +289,7 @@ const Main = (props: any) => {
       {infoIcon && (
         <TabsDragging
           onClick={(i: any, child: any) => tabsDraggingOnclick(1, i, child)}
-          onDrop={(event: any, index: any, state: any) =>
-            onDrop(1, event, index, state)
-          }
+          onDrop={(event: any, index: any) => onDrop(1, event, index)}
           onMove={(data: any) => onMove(1, data)}
           state={1}
           positionType="top"
@@ -318,9 +316,7 @@ const Main = (props: any) => {
           positionType="bottom"
           onChangeMove={(list: any) => onChangeMove(list, 2)}
           onClick={(i: any, child: any) => tabsDraggingOnclick(2, i, child)}
-          onDrop={(event: any, index: any, state: any) =>
-            onDrop(2, event, index, state)
-          }
+          onDrop={(event: any, index: any) => onDrop(2, event, index)}
           onMove={(data: any) => onMove(2, data)}
           list={getCategoryConfigT}
           onDelete={(child: any) => onDelete(2, child)}
