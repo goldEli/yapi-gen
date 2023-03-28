@@ -3,11 +3,23 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 type SliceState = {
   // 日历面板类型
   calendarPanelType: Model.Calendar.CalendarPanelType
+  list: Model.Calendar.Info[]
 }
 
 const initialState: SliceState = {
   calendarPanelType: 'day',
-  // 默认日程时长
+  list: [
+    {
+      id: 1,
+      color: '#FA9746',
+      is_default: 1,
+    },
+    {
+      id: 2,
+      color: '#6688FF',
+      is_default: 0,
+    },
+  ],
 }
 
 const slice = createSlice({

@@ -1,6 +1,9 @@
 declare namespace Model.Calendar {
   interface Info {
-    id: string
+    id: number
+    color: string
+    // 1 是默认的日历
+    is_default: 0 | 1
   }
 
   /**

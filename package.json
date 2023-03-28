@@ -89,6 +89,9 @@
       ]
     },
     "rules": {
+      "max-params": 0,
+      "camelcase": 0,
+      "@typescript-eslint/naming-convention": 0,
       "react/self-closing-comp": 0,
       "@typescript-eslint/consistent-type-imports": 0,
       "@typescript-eslint/padding-line-between-statements": 0,

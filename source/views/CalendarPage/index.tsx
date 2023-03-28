@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next'
 import Loading from '@/components/Loading'
 import useSetTitle from '@/hooks/useSetTitle'
 import { getGlobalGeneral } from '@/services/user'
-import CalendarManagerLayout from '@/components/CalendarManagerLayout'
+import CalendarManager from '@/components/CalendarManager'
 
 const Wrap = styled.div`
   box-sizing: border-box;
@@ -31,7 +31,7 @@ const Title = styled.div`
   font-weight: 500;
 `
 
-const CalendarManager = () => {
+const CalendarPage = () => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   asyncSetTtile('日历')
@@ -161,7 +161,7 @@ const CalendarManager = () => {
             <Need data={generalData?.need} />
             <Iteration data={generalData?.iterate} />
           </Wrap> */}
-      <CalendarManagerLayout />
+      <CalendarManager />
       {/* </PermissionWrap> */}
     </div>
   )
@@ -169,4 +169,4 @@ const CalendarManager = () => {
   //   return <Loading />
 }
 
-export default CalendarManager
+export default CalendarPage

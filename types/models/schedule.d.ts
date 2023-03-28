@@ -1,8 +1,9 @@
 declare namespace Model.Schedule {
   interface Info {
-    id: string
+    id: number
     title?: string
     startTime: number
     endTime: number
+    color: string
   }
 }

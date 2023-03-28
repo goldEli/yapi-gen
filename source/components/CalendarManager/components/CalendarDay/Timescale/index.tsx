@@ -60,7 +60,7 @@ const Timescale: React.FC<TimescaleProps> = props => {
         )
       })
   }, [])
-  return <Table>{content}</Table>
+  return <Table className="time-scale">{content}</Table>
 }
 
 export default Timescale

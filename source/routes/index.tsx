@@ -33,7 +33,7 @@ const routes = [
       },
       {
         path: '/CalendarManager',
-        element: lazy(() => import('@/views/CalendarManager')),
+        element: lazy(() => import('@/views/CalendarPage')),
       },
       {
         path: '/ProjectManagement',

@@ -10,7 +10,7 @@ type CalendarManagerLayoutHandle = {
   open(): void
 }
 
-const CalendarManagerLayout: React.ForwardRefRenderFunction<
+const CalendarManager: React.ForwardRefRenderFunction<
   CalendarManagerLayoutHandle,
   CalendarManagerLayoutProps
 > = (props, forwardedRef) => {
@@ -29,4 +29,4 @@ const CalendarManagerLayout: React.ForwardRefRenderFunction<
   )
 }
 
-export default React.forwardRef(CalendarManagerLayout)
+export default React.forwardRef(CalendarManager)
