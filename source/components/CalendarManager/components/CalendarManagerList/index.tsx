@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Collapse } from 'antd'
 import styled from '@emotion/styled'
 import { CloseWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
+import MoreDropdown from '@/components/MoreDropdown'
 
 const { Panel } = Collapse
 
@@ -14,6 +15,9 @@ const CollapseWrap = styled(Collapse)`
   }
   .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow {
     margin-right: 8px;
+  }
+  .ant-collapse-item > .ant-collapse-content > .ant-collapse-content-box {
+    padding: 12px 16px 0;
   }
 `
 
@@ -35,23 +39,35 @@ const CalendarManagerListItem = styled.div`
   display: flex;
   gap: 8px;
   align-items: center;
+  justify-content: space-between;
+  height: 32px;
+  cursor: pointer;
   .name {
+    font-size: 14px;
+    color: var(--neutral-n2);
+    margin-left: 8px;
+  }
+  &:hover {
+    .name {
+      color: var(--primary-d2);
+    }
+    .dropdownIcon {
+      visibility: visible;
+    }
   }
 `
-const CheckBox = styled.div`
-  width: 12px;
-  height: 12px;
-  box-sizing: border-box;
-  border-radius: 3px;
-  border: 1px solid gray;
-  cursor: pointer;
+
+const ItemBox = styled.div`
+  display: flex;
+  align-items: center;
 `
 
 interface CalendarManagerListProps {
-  children?: React.ReactNode
+  title: string
 }
 
 const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
+  const [isMoreVisible, setIsMoreVisible] = useState(false)
   return (
     <div>
       <CollapseWrap
@@ -71,7 +87,7 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
         <Panel
           header={
             <Title>
-              <span className="name">我管理的</span>
+              <span className="name">{props.title}</span>
               <CloseWrap width={24} height={24}>
                 <IconFont className="icon" type="plus" />
               </CloseWrap>
@@ -80,12 +96,18 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
           key="1"
         >
           <CalendarManagerListItem>
-            <CheckBox />
-            <span className="name">张三</span>
-          </CalendarManagerListItem>
-          <CalendarManagerListItem>
-            <CheckBox />
-            <span className="name">张三</span>
+            <ItemBox>
+              <IconFont
+                type="put"
+                style={{ fontSize: 16, color: 'var(--neutral-n3)' }}
+              />
+              <span className="name">张三</span>
+            </ItemBox>
+            <MoreDropdown
+              isMoreVisible={isMoreVisible}
+              menu={<div>1121</div>}
+              onChangeVisible={setIsMoreVisible}
+            />
           </CalendarManagerListItem>
         </Panel>
       </CollapseWrap>
