@@ -144,6 +144,7 @@ const CreateField = () => {
     const payloadList = await services.demand.getProjectFieIds(projectInfo.id)
     dispatch(setProjectFieIdsData(payloadList))
     setPayloadDataList(payloadList)
+    setDataList(payloadList)
     getCategoryConfigArray.length >= 1 &&
       payloadList &&
       filterData(getCategoryConfigArray, payloadList)
@@ -159,9 +160,10 @@ const CreateField = () => {
   }
   // 监听列表被删除时过滤
   useEffect(() => {
-    projectInfo.id &&
-      getCategoryConfigArray?.length >= 1 &&
-      getProjectFieIdsApi()
+    getProjectFieIdsApi()
+  }, [])
+  useEffect(() => {
+    getCategoryConfigArray?.length >= 1 && getProjectFieIdsApi()
   }, [getCategoryConfigArray])
   return (
     <CreateFieldWrap>

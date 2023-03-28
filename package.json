@@ -93,6 +93,10 @@
       "no-console": 0,
       "padding-line-between-statements": 0,
       "naming-convention": 0,
+      "no-unsafe-finally": 0,
+      "no-plusplus": 0,
+      "no-constant-condition": 0,
+      "no-unsafe-optional-chaining": 0,
       "object-property-newline": [
         1,
         {
