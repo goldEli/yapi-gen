@@ -482,7 +482,7 @@ const EditFiled = (props: Props) => {
                         useDragHandle
                         onSortEnd={(values: any) => onSortEnd(values)}
                       >
-                        {row.map((_i: any, idx: number) => (
+                        {row?.map((_i: any, idx: number) => (
                           <SortItemLi
                             helperClass="row-dragging"
                             key={_i.key}
