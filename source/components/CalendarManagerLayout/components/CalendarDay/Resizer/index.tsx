@@ -18,7 +18,7 @@ interface ResizerProps {
   onFinish(direction: TDirection): void
   top: number
   height: number
-  data: Model.Calendar.Schedule
+  data: Model.Schedule.Info
 }
 
 const Top = styled.div`

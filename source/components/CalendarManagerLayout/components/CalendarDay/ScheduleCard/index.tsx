@@ -1,6 +1,5 @@
 import styled from '@emotion/styled'
 import { useDispatch } from '@store/index'
-import { setSchedule } from '@store/managerCalendar'
 import dayjs from 'dayjs'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useDrag } from 'react-dnd'
@@ -16,9 +15,10 @@ import {
 import { DraggableData, Rnd } from 'react-rnd'
 import { css } from '@emotion/css'
 import { DraggableEvent } from 'react-draggable'
+import { setSchedule } from '@store/schedule'
 
 interface ScheduleCardProps {
-  data: Model.Calendar.Schedule
+  data: Model.Schedule.Info
 }
 const ScheduleContainer = styled.div`
   /* position: relative; */

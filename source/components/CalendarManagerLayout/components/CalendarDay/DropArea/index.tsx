@@ -1,6 +1,5 @@
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
-import { setSchedule } from '@store/managerCalendar'
 import dayjs from 'dayjs'
 import React from 'react'
 import { useDrop } from 'react-dnd'
@@ -19,7 +18,7 @@ const Box = styled.div`
 
 const DropArea: React.FC<DropAreaProps> = props => {
   const dispatch = useDispatch()
-  const scheduleList = useSelector(store => store.managerCalendar.scheduleList)
+  const scheduleList = useSelector(store => store.schedule.scheduleList)
   // const [{ isOver }, drop] = useDrop(
   //   () => ({
   //     accept: [

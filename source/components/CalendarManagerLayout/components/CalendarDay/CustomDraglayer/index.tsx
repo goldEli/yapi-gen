@@ -83,7 +83,7 @@ const CustomDragLayer: React.FC<CustomDragLayerProps> = props => {
       isDragging: monitor.isDragging(),
       delta: monitor.getDifferenceFromInitialOffset(),
     }))
-  const scheduleList = useSelector(store => store.managerCalendar.scheduleList)
+  const scheduleList = useSelector(store => store.schedule.scheduleList)
   const schedule = useMemo(() => {
     return scheduleList.find(i => i.id === item?.id)
   }, [scheduleList, item])

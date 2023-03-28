@@ -5,7 +5,7 @@ import ScheduleCard from '../ScheduleCard'
 interface ScheduleCardListProps {}
 
 const ScheduleCardList: React.FC<ScheduleCardListProps> = props => {
-  const scheduleList = useSelector(store => store.managerCalendar.scheduleList)
+  const scheduleList = useSelector(store => store.schedule.scheduleList)
   const content = useMemo(() => {
     return scheduleList.map(item => {
       return <ScheduleCard key={item.id} data={item} />

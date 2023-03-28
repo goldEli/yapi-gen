@@ -22,6 +22,7 @@ import colorText from './color-text'
 import category from './category'
 import log from './log'
 import managerCalendar from './managerCalendar'
+import schedule from './schedule'
 
 export const store = configureStore({
   reducer: {
@@ -43,6 +44,7 @@ export const store = configureStore({
     colorText,
     log,
     managerCalendar,
+    schedule,
   },
 })
 
