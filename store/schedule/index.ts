@@ -25,8 +25,8 @@ const initialState: SliceState = {
     {
       id: 2,
       title: '做作业',
-      startTime: Date.parse('2023-3-23 2:15:00'),
-      endTime: Date.parse('2023-3-23 2:45:00'),
+      startTime: Date.parse('2023-3-23 3:15:00'),
+      endTime: Date.parse('2023-3-23 4:45:00'),
       color: '#A176FB',
     },
     {
