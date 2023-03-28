@@ -16,19 +16,19 @@ const initialState: SliceState = {
   minScheduleDuration: 15,
   scheduleList: [
     {
-      id: '1',
+      id: 1,
       title: '吃早饭',
       startTime: Date.parse('2023-3-23 4:00:00'),
       endTime: Date.parse('2023-3-23 5:00:00'),
     },
     {
-      id: '2',
+      id: 2,
       title: '做作业',
       startTime: Date.parse('2023-3-23 2:15:00'),
       endTime: Date.parse('2023-3-23 2:45:00'),
     },
     {
-      id: '3',
+      id: 3,
       title: '睡觉',
       startTime: Date.parse('2023-3-23 1:15:00'),
       endTime: Date.parse('2023-3-23 1:30:00'),
