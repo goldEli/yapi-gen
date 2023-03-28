@@ -19,6 +19,7 @@ import { getAchieveInfo } from '@/services/iterate'
 import { setAchieveInfo } from '@store/iterate'
 import { Editor, EditorRef } from '@xyfe/uikit'
 import { uploadFileToKey } from '@/services/cos'
+import { uploadFile } from '@/components/CreateDemand/CreateDemandLeft'
 
 const Wrap = styled.div<{ isModal: any }>(
   {
@@ -156,18 +157,7 @@ const Achievements = (props: Props) => {
           <Editor
             ref={editorRef}
             key={Math.random()}
-            upload={file => {
-              const key = uploadFileToKey(
-                file,
-                file.name,
-                `richEditorFiles_${new Date().getTime()}`,
-                false,
-                data => {
-                  editorRef.current?.notifyUploaded(data.key, data.url)
-                },
-              )
-              return key
-            }}
+            upload={uploadFile}
             getSuggestions={() => {
               return new Promise(resolve => {
                 setTimeout(() => {

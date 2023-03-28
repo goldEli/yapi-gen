@@ -16,6 +16,7 @@ import IconFont from './IconFont'
 import { AddWrap } from './StyleCommon'
 import { uploadFileToKey } from '@/services/cos'
 import { Editor, EditorRef } from '@xyfe/uikit'
+import { uploadFile } from './CreateDemand/CreateDemandLeft'
 
 const EditComment = (props: any) => {
   const [form] = Form.useForm()
@@ -172,18 +173,7 @@ const EditComment = (props: any) => {
             <Editor
               ref={editorRef}
               key={Math.random()}
-              upload={file => {
-                const key = uploadFileToKey(
-                  file,
-                  file.name,
-                  `richEditorFiles_${new Date().getTime()}`,
-                  false,
-                  data => {
-                    editorRef.current?.notifyUploaded(data.key, data.url)
-                  },
-                )
-                return key
-              }}
+              upload={uploadFile}
               getSuggestions={() => {
                 return new Promise(resolve => {
                   setTimeout(() => {
