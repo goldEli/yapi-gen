@@ -89,9 +89,9 @@ export const uploadFile = (
       Body: file,
       Bucket: import.meta.env.__COS_BUCKET__,
       Region: import.meta.env.__COS_REGION__,
-      Key: `${import.meta.env.__COS_PREFIX__}${username}/${space}/${
-        fileName || file.name
-      }`,
+      Key: `${
+        import.meta.env.__COS_PREFIX__
+      }${username}/${space}/${new Date().getTime()}/${fileName || file.name}`,
       onTaskReady(taskId) {
         id = taskId
       },
@@ -149,9 +149,9 @@ export const uploadFileToKey = (
   fileName?: any,
   onEnd?: (data: { key: string; url: string }) => void,
 ) => {
-  const key = `${import.meta.env.__COS_PREFIX__}${username}/${space}/${
-    fileName || file.name
-  }`
+  const key = `${
+    import.meta.env.__COS_PREFIX__
+  }${username}/${space}/${new Date().getTime()}/${fileName || file.name}`
   cos.uploadFile({
     Body: file,
     Bucket: import.meta.env.__COS_BUCKET__,
@@ -191,9 +191,9 @@ export const uploadFileByTask = (
       Body: file,
       Bucket: import.meta.env.__COS_BUCKET__,
       Region: import.meta.env.__COS_REGION__,
-      Key: `${import.meta.env.__COS_PREFIX__}${username}/${space}/${
-        fileName || file.name
-      }`,
+      Key: `${
+        import.meta.env.__COS_PREFIX__
+      }${username}/${space}/${new Date().getTime()}/${fileName || file.name}`,
       onFileFinish(error: Error, data: UploadFileItemResult) {
         if (error) {
           reject(error)

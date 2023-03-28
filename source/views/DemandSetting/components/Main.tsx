@@ -146,12 +146,13 @@ const Main = (props: any) => {
       remarks: item.remarks,
       content: item.content,
       fieldContent: item?.field_content || item?.fieldContent,
+      id: item.dragtype === 'move' ? item.id : item.storyId,
       storyId: item.dragtype !== 'move' ? item.id : item.storyId,
       isCustomize: item?.is_customize || item?.isCustomize,
       is_required: item.dragtype !== 'move' ? 2 : item?.isRequired,
       is_fold: type === 1 ? 1 : 2,
     }
-    if (type === 1) {
+    if (type === 1 && index !== -1) {
       const arrData = Array.from(getCategoryConfigF)
       arrData.splice(index, 0, newItem)
       setGetCategoryConfigF(arrData)
@@ -162,7 +163,7 @@ const Main = (props: any) => {
         data && setGetCategoryConfigT(data)
       }
       dispatch(setGetCategoryConfigArray([...arrData, ...getCategoryConfigT]))
-    } else if (type === 2) {
+    } else if (type === 2 && index !== -1) {
       const arrData = Array.from(getCategoryConfigT)
       arrData.splice(index, 0, newItem)
       setGetCategoryConfigT(arrData)
@@ -173,6 +174,14 @@ const Main = (props: any) => {
         data && setGetCategoryConfigF(data)
       }
       dispatch(setGetCategoryConfigArray([...arrData, ...getCategoryConfigF]))
+    } else if (type === 2 && index === -1) {
+      const arrData = [...getCategoryConfigT, newItem]
+      setGetCategoryConfigT(arrData)
+      const data = getCategoryConfigF.filter(
+        (el: any) => el.storyId !== newItem.storyId,
+      )
+      data && setGetCategoryConfigF(data)
+      dispatch(setGetCategoryConfigArray([...arrData, ...data]))
     }
   }
   //拖动传递过来的参数
@@ -221,6 +230,7 @@ const Main = (props: any) => {
       is_fold: el.isFold || el.is_fold,
       is_required: el.isRequired || el.is_required,
     }))
+    console.log(newData, 'oo')
     await configSave({
       id: activeCategory.id,
       project_id: projectInfo.id,
