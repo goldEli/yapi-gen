@@ -34,7 +34,7 @@ const ItemList = styled.div`
   padding: 0 16px;
   border-radius: 6px;
   justify-content: space-between;
-  z-index: 999;
+  z-index: 5;
   transition: all 0.3s;
   position: relative;
   &:hover {
@@ -130,17 +130,18 @@ const Sortable = (props: any) => {
   const onDrop2 = (event: any) => {
     event.preventDefault()
     const drapClassName = ref?.current?.className
-    console.log(localStorage.className, drapClassName, 'ppp')
     if (localStorage.className === drapClassName) {
       props.onDrop(event, -2)
+      localStorage.className = ''
+      return
     }
     if (list.length < 1) {
       props.onDrop(event, 0)
     } else {
       props.onDrop(event, -1)
     }
+    localStorage.className = ''
   }
-
   return (
     <div
       draggable="false"
@@ -163,12 +164,7 @@ const Sortable = (props: any) => {
               onDragStart={(ev: any) => onDragStart(ev, i, child, props.state)}
               onDragOver={() => onDragOver(i)}
               onDragEnd={e => onDragEnd(e, i)}
-              style={{
-                top: `${top}px`,
-                transition: 'transform .2s, box-shadow .2s',
-                position: 'relative',
-              }}
-              onClick={() => props.onClick(i, child)}
+              onClick={() => child?.isCustomize != 2 && props.onClick(i, child)}
             >
               {child?.isCustomize === 2 ? (
                 <Tooltip
