@@ -23,6 +23,8 @@ import usePosition from '../hooks/usePosition'
 
 interface ScheduleCardProps {
   data: Model.Schedule.Info
+  width: number
+  left: number
 }
 
 const dragBoxClassName = css`
@@ -158,13 +160,13 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
       className={dragBoxClassName}
       key={props.data.id}
       size={{
-        width: 1300,
+        width: props.width,
         height,
       }}
       dragGrid={[gridHeight, gridHeight]}
       resizeGrid={[gridHeight, gridHeight]}
       position={{
-        x: 58,
+        x: props.left,
         y: top,
       }}
       dragAxis="y"

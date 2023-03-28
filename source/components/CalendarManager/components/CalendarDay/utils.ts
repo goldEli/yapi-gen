@@ -1,6 +1,9 @@
 import dayjs from 'dayjs'
+import _ from 'lodash'
 import { XYCoord } from 'react-dnd'
 import { oneHourHeight } from './config'
+import { v4 as uuidv4 } from 'uuid'
+
 export const handleOffsetDistance = (
   startTime: number,
   endTime: number,
@@ -90,4 +93,138 @@ export function hexToRgba(hex: string, alpha: number): string {
   const b = parseInt(hex.substring(5, 7), 16)
 
   return `rgba(${r}, ${g}, ${b}, ${alpha})`
+}
+
+function findConflicts(events: Model.Schedule.Info[]) {
+  const conflicts = []
+
+  for (let i = 0; i < events.length; i++) {
+    for (let j = i + 1; j < events.length; j++) {
+      if (
+        events[i].startTime < events[j].endTime &&
+        events[i].endTime > events[j].startTime
+      ) {
+        conflicts.push([events[i], events[j]])
+      }
+    }
+  }
+
+  return conflicts
+}
+
+type Item = {
+  id: string
+  startTime: number
+  endTime: number
+  conflicts: Model.Schedule.Info[]
+}
+function findConflictsClassify(events: Item[]) {
+  const conflicts: Item[] = []
+  const usedIds: string[] = []
+
+  for (let i = 0; i < events.length; i++) {
+    for (let j = i + 1; j < events.length; j++) {
+      const one = events[i]
+      const two = events[j]
+      if (one.startTime < two.endTime && one.endTime > two.startTime) {
+        // conflicts.push([events[i], events[j]])
+        usedIds.push(one.id, two.id)
+        const res = {
+          id: uuidv4(),
+          startTime: Math.min(one.startTime, two.startTime),
+          endTime: Math.max(one.endTime, two.endTime),
+          conflicts: _.unionBy(one.conflicts.concat(two.conflicts), 'id'),
+        }
+        // res.start = dayjs(res.startTime).format('hh:mm')
+        // res.end = dayjs(res.endTime).format('hh:mm')
+        conflicts.push(res)
+      }
+    }
+  }
+  const unConflicts = events.filter(item => !usedIds.includes(item.id))
+
+  return conflicts.concat(unConflicts)
+}
+
+export function getConflicts(events: Model.Schedule.Info[]) {
+  const conflicts = getClassifyConflicts(events)
+
+  let combineConflicts = findConflictsClassify(conflicts)
+  let resultLen = combineConflicts.length
+
+  while (true) {
+    const newCombineConflicts = findConflictsClassify(combineConflicts)
+    if (newCombineConflicts.length === resultLen) {
+      break
+    }
+    combineConflicts = newCombineConflicts
+    resultLen = newCombineConflicts.length
+  }
+  // console.log({ conflicts, combineConflicts })
+  return combineConflicts.map(item => item.conflicts)
+}
+
+// export function getClassifyConflicts(events:  Item[]) {
+//   const conflicts = findConflictsClassify(events)
+//   const classified = []
+
+//   for (const conflict of conflicts) {
+//     let found = false
+
+//     for (const category of classified) {
+//       if (
+//         conflict[0].startTime >= category.startTime &&
+//         conflict[0].endTime <= category.endTime &&
+//         conflict[1].startTime >= category.startTime &&
+//         conflict[1].endTime <= category.endTime
+//       ) {
+//         category.conflicts.push(conflict)
+//         found = true
+//         break
+//       }
+//     }
+
+//     if (!found) {
+//       classified.push({
+//         startTime: Math.min(conflict[0].startTime, conflict[1].startTime),
+//         endTime: Math.max(conflict[0].endTime, conflict[1].endTime),
+//         conflicts: [conflict],
+//       })
+//     }
+//   }
+
+//   return classified
+// }
+
+export function getClassifyConflicts(events: Model.Schedule.Info[]) {
+  const conflicts = findConflicts(events)
+  const classified: Item[] = []
+
+  for (const conflict of conflicts) {
+    let found = false
+
+    for (const category of classified) {
+      if (
+        conflict[0].startTime >= category.startTime &&
+        conflict[0].endTime <= category.endTime &&
+        conflict[1].startTime >= category.startTime &&
+        conflict[1].endTime <= category.endTime
+      ) {
+        category.conflicts.push(...conflict)
+        found = true
+        break
+      }
+    }
+
+    if (!found) {
+      classified.push({
+        id: uuidv4(),
+        startTime: Math.min(conflict[0].startTime, conflict[1].startTime),
+        endTime: Math.max(conflict[0].endTime, conflict[1].endTime),
+        conflicts: [...conflict],
+      })
+    }
+  }
+
+  return classified
 }

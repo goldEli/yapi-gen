@@ -8,7 +8,7 @@ const Table = styled.table`
   width: 100%;
   box-sizing: border-box;
   tr {
-    height: ${oneHourHeight / 2}px;
+    height: ${oneHourHeight / 4}px;
     box-sizing: border-box;
   }
   td {
@@ -51,6 +51,14 @@ const Timescale: React.FC<TimescaleProps> = props => {
                 <span className="time">{`${str}:00`}</span>
               </td>
               <td className="borderTop"></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
             </tr>
             <tr>
               <td></td>

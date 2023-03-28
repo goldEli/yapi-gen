@@ -6,4 +6,8 @@ declare namespace Model.Schedule {
     endTime: number
     color: string
   }
+  type InfoWithPosition = Info & {
+    width: number
+    left: number
+  }
 }
