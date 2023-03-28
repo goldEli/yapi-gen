@@ -81,6 +81,7 @@ const CreateField = () => {
   const { projectInfo } = useSelector(store => store.project)
   const [payloadDataList, setPayloadDataList] = useState<any>()
   const [searchValue, setSearchValue] = useState('')
+  const { activeCategory } = useSelector(store => store.category)
   const option = [
     {
       label: t('newlyAdd.lineText'),
@@ -164,7 +165,7 @@ const CreateField = () => {
   }, [])
   useEffect(() => {
     getCategoryConfigArray?.length >= 1 && getProjectFieIdsApi()
-  }, [getCategoryConfigArray])
+  }, [getCategoryConfigArray, activeCategory])
   return (
     <CreateFieldWrap>
       <TitleStyle onClick={() => setCreateIcon(!createIcon)}>

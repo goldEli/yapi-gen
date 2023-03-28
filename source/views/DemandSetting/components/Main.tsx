@@ -49,6 +49,12 @@ const Main = (props: any) => {
     setGetCategoryConfigT(getCategoryConfigDataList?.isFoldT)
     setGetCategoryConfigF(getCategoryConfigDataList?.isFoldF)
     setInfoIcon(true)
+    dispatch(
+      setGetCategoryConfigArray([
+        ...getCategoryConfigDataList?.isFoldF,
+        ...getCategoryConfigDataList?.isFoldT,
+      ]),
+    )
   }, [getCategoryConfigDataList])
   //  移动后跟新的数据
   const onMove = (state: number, data: any) => {
@@ -255,14 +261,6 @@ const Main = (props: any) => {
       setGetCategoryConfigT(arrData)
     }
   }
-  useEffect(() => {
-    dispatch(
-      setGetCategoryConfigArray([
-        ...getCategoryConfigDataList?.isFoldT,
-        ...getCategoryConfigDataList?.isFoldF,
-      ]),
-    )
-  }, [])
   const onChangeMove = (list: any, type: any) => {
     type === 1 ? setGetCategoryConfigF(list) : setGetCategoryConfigT(list)
     props.onIsOperate(true)
