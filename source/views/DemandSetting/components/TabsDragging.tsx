@@ -30,14 +30,16 @@ const ItemList = styled.div`
   flex: 1;
   height: 64px;
   background: var(--hover-d2);
+  /* background: #615f5f; */
   padding: 0 16px;
   border-radius: 6px;
   justify-content: space-between;
   z-index: 999;
   transition: all 0.3s;
+  position: relative;
   &:hover {
-    background: var(--neutral-white-d6);
-    box-shadow: 0px 0px 9px 3px rgba(0, 0, 0, 0.03);
+    /* background: var(--neutral-white-d6); */
+    /* box-shadow: 0px 0px 9px 3px rgba(0, 0, 0, 0.03); */
   }
 `
 const ListMsg = styled.div`
@@ -127,11 +129,11 @@ const Sortable = (props: any) => {
   }
   const onDrop2 = (event: any) => {
     event.preventDefault()
-    // const drapClassName = ref?.current?.className
-    // console.log(localStorage.className, drapClassName, 'ppp')
-    // if (localStorage.className === drapClassName) {
-    //   return
-    // }
+    const drapClassName = ref?.current?.className
+    console.log(localStorage.className, drapClassName, 'ppp')
+    if (localStorage.className === drapClassName) {
+      props.onDrop(event, -2)
+    }
     if (list.length < 1) {
       props.onDrop(event, 0)
     } else {
