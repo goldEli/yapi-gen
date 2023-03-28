@@ -144,7 +144,7 @@ const Main = (props: any) => {
     const newItem = {
       title: item.title,
       remarks: item.remarks,
-      content: item?.field_content?.attr || item?.fieldContent?.attr,
+      content: item.content,
       fieldContent: item?.field_content || item?.fieldContent,
       storyId: item.dragtype !== 'move' ? item.id : item.storyId,
       isCustomize: item?.is_customize || item?.isCustomize,
