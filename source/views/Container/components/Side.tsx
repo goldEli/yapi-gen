@@ -11,11 +11,8 @@ import LogSide from '@/components/AllSide/LogSide'
 import HisSide from '@/components/AllSide/HisSide'
 import { DragLine } from '@/components/StyleCommon'
 
-const SideWrap = styled.div<{
-  firstMenuCollapse: boolean
-  permission?: boolean
-}>`
-  width: ${props => (props.firstMenuCollapse ? 0 : 200)}px;
+const SideWrap = styled.div<{ collapse: boolean; permission?: boolean }>`
+  width: ${props => (props.collapse ? 0 : 200)}px;
   height: 100%;
   align-items: center;
   max-width: unset !important;
@@ -23,7 +20,7 @@ const SideWrap = styled.div<{
   flex: unset !important;
   border-right: 1px solid var(--neutral-n6-d1);
   background: ${props =>
-    props.firstMenuCollapse ? 'var(--neutral-white-d6)' : 'var(--neutral-n9)'};
+    props.collapse ? 'var(--neutral-white-d6)' : 'var(--neutral-n9)'};
   position: relative;
 `
 
@@ -178,7 +175,7 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
 
   return (
     <SideWrap
-      firstMenuCollapse={firstMenuCollapse}
+      collapse={firstMenuCollapse}
       ref={sliderRef}
       style={{
         width: firstMenuCollapse ? 26 : leftWidth,

@@ -1,15 +1,31 @@
 import React from 'react'
 import { Collapse } from 'antd'
 import styled from '@emotion/styled'
+import { CloseWrap } from '@/components/StyleCommon'
+import IconFont from '@/components/IconFont'
 
 const { Panel } = Collapse
 
+const CollapseWrap = styled(Collapse)`
+  .ant-collapse-header {
+    display: flex;
+    align-items: center;
+    padding: 0;
+  }
+`
+
 const Title = styled.div`
   display: flex;
+  align-items: center;
   justify-content: space-between;
   .name {
+    font-size: 14px;
+    color: var(--neutral-n1-d1);
+    font-family: SiYuanMedium;
   }
   .icon {
+    font-size: 18px;
+    color: var(--neutral-n2);
   }
 `
 const CalendarManagerListItem = styled.div`
@@ -35,12 +51,27 @@ interface CalendarManagerListProps {
 const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
   return (
     <div>
-      <Collapse defaultActiveKey={['1']} ghost>
+      <CollapseWrap
+        defaultActiveKey={['1']}
+        ghost
+        expandIcon={({ isActive }) => (
+          <IconFont
+            style={{
+              fontSize: 14,
+              color: 'var(--neutral-n3)',
+            }}
+            type="down-icon"
+            rotate={isActive ? 0 : -90}
+          />
+        )}
+      >
         <Panel
           header={
             <Title>
-              <span className="name">CalendarManagerList</span>
-              <span className="icon">+</span>
+              <span className="name">我管理的</span>
+              <CloseWrap width={24} height={24}>
+                <IconFont className="icon" type="plus" />
+              </CloseWrap>
             </Title>
           }
           key="1"
@@ -50,7 +81,7 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
             <span className="name">张三</span>
           </CalendarManagerListItem>
         </Panel>
-      </Collapse>
+      </CollapseWrap>
     </div>
   )
 }
