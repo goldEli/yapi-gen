@@ -130,6 +130,10 @@ const urls = {
   getMenuPermission: '/b/user_menu_list',
   getCompanyUserPreferenceConfig: '/b/preference/config',
   updateCompanyUserPreferenceConfig: '/b/preference/config',
+  /**
+   * 日历管理
+   */
+  getScheduleList: '/b/schedule_list',
 }
 
 export default urls

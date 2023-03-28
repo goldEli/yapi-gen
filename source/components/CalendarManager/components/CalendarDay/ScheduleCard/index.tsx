@@ -25,7 +25,7 @@ interface ScheduleCardProps {
   data: Model.Schedule.Info
 }
 
-const dragBox = css`
+const dragBoxClassName = css`
   /* width: calc(100% - 58px); */
   border-radius: 6px 6px 6px 6px;
   /* position: absolute;
@@ -73,7 +73,6 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
   const onDragStop = (e: DraggableEvent, draggableData: DraggableData) => {
     const { node, y, deltaY, lastY } = draggableData
     const time = getTimeByOffsetDistance(startTime, endTime, y - top)
-    console.log('time top', dispatch)
 
     dispatch(
       setSchedule({
@@ -153,11 +152,10 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
 
   return (
     <Rnd
-      // id={props.data.id}
       style={{
         background: hexToRgba(data.color, 0.1),
       }}
-      className={dragBox}
+      className={dragBoxClassName}
       key={props.data.id}
       size={{
         width: 1300,
