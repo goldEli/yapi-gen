@@ -169,4 +169,4 @@ const CalendarPage = () => {
   //   return <Loading />
 }
 
-export default CalendarManager
+export default CalendarPage
