@@ -23,23 +23,7 @@ import { ResizeDirection } from 're-resizable'
 interface ScheduleCardProps {
   data: Model.Schedule.Info
 }
-const ScheduleContainer = styled.div`
-  /* position: relative; */
-  /* position: absolute; */
-`
-// const DragBox = styled.div`
-//   width: calc(100% - 58px);
-//   background: var(--primary-d1);
-//   border-radius: 6px 6px 6px 6px;
-//   position: absolute;
-//   top: 0px;
-//   left: 58px;
-//   font-size: 25;
-//   min-height: 22px;
-//   cursor: move;
-//   box-sizing: border-box;
-//   padding: 0 4px;
-// `
+
 const dragBox = css`
   /* width: calc(100% - 58px); */
   border-radius: 6px 6px 6px 6px;
@@ -66,10 +50,6 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     startTime: string
     endTime: string
   } | null>(null)
-  // const { list } = useSelector(store => store.calendar)
-  // const bgColor = useMemo(() => {
-  //   return list.find(item => item.is_default === 1)?.color
-  // }, [list])
 
   const height = useMemo(() => {
     const startTimeDayjs = dayjs(startTime)
@@ -79,7 +59,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     const allMinutes = hour * 60 + minute
     const newHeight = (allMinutes * oneHourHeight) / 60
     return newHeight
-  }, [endTime])
+  }, [startTime, endTime])
 
   const top = useMemo(() => {
     const time = dayjs(startTime)
@@ -127,12 +107,18 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     delta: ResizableDelta,
     position: Position,
   ) => {
-    console.log('resize dir ,delta ,position', { dir }, delta.height, position)
     if (dir === 'bottom') {
       const time = getTimeByAddDistance(endTime, delta.height)
       setTimeRange({
         startTime: dayjs(startTime).format('hh:mm'),
         endTime: time.format('hh:mm'),
+      })
+    }
+    if (dir === 'top') {
+      const time = getTimeByAddDistance(startTime, delta.height * -1)
+      setTimeRange({
+        startTime: time.format('hh:mm'),
+        endTime: dayjs(endTime).format('hh:mm'),
       })
     }
   }
@@ -162,6 +148,16 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
         setSchedule({
           ...props.data,
           endTime: time.valueOf(),
+        }),
+      )
+    }
+    if (dir === 'top') {
+      const sTime = getTimeByAddDistance(startTime, delta.height * -1)
+      // const eTime = getTimeByAddDistance(endTime, delta.height)
+      dispatch(
+        setSchedule({
+          ...props.data,
+          startTime: sTime.valueOf(),
         }),
       )
     }
