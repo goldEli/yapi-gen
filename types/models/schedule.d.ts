@@ -4,5 +4,6 @@ declare namespace Model.Schedule {
     title?: string
     startTime: number
     endTime: number
+    color: string
   }
 }

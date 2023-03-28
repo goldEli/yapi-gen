@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import dayjs from 'dayjs'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useDrag } from 'react-dnd'
@@ -11,6 +11,7 @@ import {
   getEndTimeByHeight,
   getMinutesByDistance,
   getTimeByOffsetDistance,
+  hexToRgba,
 } from '../utils'
 import { DraggableData, Rnd } from 'react-rnd'
 import { css } from '@emotion/css'
@@ -39,7 +40,6 @@ const ScheduleContainer = styled.div`
 // `
 const dragBox = css`
   /* width: calc(100% - 58px); */
-  background: var(--primary-d1);
   border-radius: 6px 6px 6px 6px;
   /* position: absolute;
   top: 0px;
@@ -53,7 +53,7 @@ const dragBox = css`
 const Title = styled.span`
   font-size: 12px;
   line-height: 20px;
-  color: var(--neutral-white-d7);
+  color: var(--neutral-n1-d1);
 `
 
 const ScheduleCard: React.FC<ScheduleCardProps> = props => {
@@ -64,6 +64,10 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     startTime: string
     endTime: string
   } | null>(null)
+  // const { list } = useSelector(store => store.calendar)
+  // const bgColor = useMemo(() => {
+  //   return list.find(item => item.is_default === 1)?.color
+  // }, [list])
 
   const height = useMemo(() => {
     const startTimeDayjs = dayjs(startTime)
@@ -118,6 +122,9 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
   return (
     <Rnd
       // id={props.data.id}
+      style={{
+        background: hexToRgba(data.color, 0.1),
+      }}
       className={dragBox}
       key={props.data.id}
       size={{
