@@ -114,7 +114,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     setTimeRange(null)
   }
 
-  const gridHeight = (oneHourHeight / 60) * 15
+  const gridHeight = useMemo(() => (oneHourHeight / 60) * 15, [outerHeight])
   return (
     <Rnd
       // id={props.data.id}
