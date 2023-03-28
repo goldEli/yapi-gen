@@ -16,7 +16,7 @@ const Box = styled.div`
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  padding: 24px;
+  padding: 20px 24px;
   display: flex;
   flex-direction: column;
   gap: 20px;

@@ -217,43 +217,26 @@ const MyDropdown = (props: any) => {
   const onRoute = (el: any) => {
     let iterParmas = null
     let router = ''
-    if (el?.actionable_type === 'iterate') {
+    if (el?.actionable_type === 'iterate' || el?.feedable_type === 'iterate') {
       iterParmas = encryptPhp(
         JSON.stringify({
           type: 'info',
-          id: el.project_id,
-          iterateId: el.id,
+          id: el?.feedable?.project_id ?? el.project_id,
+          iterateId: el.feedable_id ?? el.id,
         }),
       )
       router = `/ProjectManagement/Iteration?data=${iterParmas}`
-    } else if (el?.feedable_type === 'iterate') {
+    } else {
       iterParmas = encryptPhp(
         JSON.stringify({
           type: 'info',
-          id: el?.feedable?.project_id,
-          iterateId: el.feedable_id,
-        }),
-      )
-      router = `/ProjectManagement/Iteration?data=${iterParmas}`
-    } else if (el?.actionable_type === 'story') {
-      iterParmas = encryptPhp(
-        JSON.stringify({
-          type: 'info',
-          id: el.project_id,
-          demandId: el.id,
-        }),
-      )
-      router = `/ProjectManagement/Demand?data=${iterParmas}`
-    } else if (el?.feedable_type === 'story') {
-      iterParmas = encryptPhp(
-        JSON.stringify({
-          type: 'info',
-          id: el?.feedable?.project_id,
-          demandId: el.feedable_id,
+          id: el?.feedable?.project_id ?? el.project_id,
+          demandId: el.feedable_id ?? el.id,
         }),
       )
       router = `/ProjectManagement/Demand?data=${iterParmas}`
     }
+    setIsOpen(false)
     navigate(router)
   }
   const itmeMain = (item: any) => {
@@ -263,12 +246,12 @@ const MyDropdown = (props: any) => {
         <ItemBox key={el.id}>
           <Row onClick={() => onRoute(el)}>
             <div>
-              {el?.actionable_type === 'story' && (
+              {(el?.category_attachment || el?.feedable?.attachment) && (
                 <Img
                   src={el?.category_attachment || el?.feedable?.attachment}
                 />
               )}
-              {el?.actionable_type === 'iterate' && (
+              {!(el?.category_attachment || el?.feedable?.attachment) && (
                 <CommonIconFont
                   type="interation-2"
                   color="var(--neutral-n2)"

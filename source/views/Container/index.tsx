@@ -68,9 +68,10 @@ export const Container = () => {
   const dispatch = useDispatch()
   const [isNextVisible, setIsNextVisible] = useState(false)
   const [changeLeft, setChangeLeft] = useState(200)
-  const { userInfo, loginInfo, menuPermission, isRefresh } = useSelector(
+  const { userInfo, loginInfo, menuPermission } = useSelector(
     store => store.user,
   )
+  const { firstMenuCollapse } = useSelector(store => store.global)
   const {
     i18n: { language },
   } = useTranslation()
@@ -209,7 +210,10 @@ export const Container = () => {
             )}
             <Main left={changeLeft}>
               <div
-                style={{ height: '100%', minWidth: `${1440 - changeLeft}px` }}
+                style={{
+                  height: '100%',
+                  minWidth: `${1440 - (firstMenuCollapse ? changeLeft : 0)}px`,
+                }}
               >
                 <Outlet />
               </div>
