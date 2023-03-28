@@ -92,7 +92,7 @@ const ItemDropdown = (props: PropsType) => {
   }
 
   useEffect(() => {
-    isOpen && onFectProjectList()
+    onFectProjectList()
   }, [isOpen])
 
   const onCreate = () => {
@@ -110,7 +110,7 @@ const ItemDropdown = (props: PropsType) => {
   }
   const itmeMain = (item: any) => {
     return item.map((el: any) => (
-      <ItemRow key={el.name} onClick={() => onRoute(el)}>
+      <ItemRow key={el.id} onClick={() => onRoute(el)}>
         <img src={el.cover} />
         <ItemTitle>{el.name}</ItemTitle>
       </ItemRow>

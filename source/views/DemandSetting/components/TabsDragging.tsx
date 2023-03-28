@@ -132,14 +132,6 @@ const Sortable = (props: any) => {
         event.preventDefault(), event.stopPropagation()
       }}
     >
-      {list?.length < 1 && (
-        <Empty
-          onDragOver={allowDrop}
-          onDrop={(event: any) => {
-            event.preventDefault(), props.onDrop(event, 0)
-          }}
-        />
-      )}
       {list?.length >= 1 &&
         list?.map((child: any, i: number) => (
           <div
@@ -286,6 +278,14 @@ const Sortable = (props: any) => {
             </Container>
           </div>
         ))}
+      {list?.length < 1 && (
+        <Empty
+          onDragOver={allowDrop}
+          onDrop={(event: any) => {
+            event.preventDefault(), props.onDrop(event, 0)
+          }}
+        />
+      )}
     </div>
   )
 }
