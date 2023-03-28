@@ -31,6 +31,13 @@ const NameWrap = styled.div({
   overflow: 'hidden',
 })
 
+export const MyDiv = styled.div`
+  color: var(--neutral-n3);
+  :hover {
+    color: var(--primary-d2);
+  }
+`
+
 const InfoItem = styled.div({
   marginLeft: '8px',
   display: 'flex',
@@ -62,7 +69,7 @@ const MenuItem = styled.div<{ active?: boolean }>(
     cursor: 'pointer',
     paddingLeft: '20px',
     '&: hover': {
-      backgroundColor: 'var(--neutral-n6-d1)',
+      color: 'var( --primary-d1)',
     },
   },
   ({ active }) => ({

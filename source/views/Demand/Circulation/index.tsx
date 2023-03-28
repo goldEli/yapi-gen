@@ -74,7 +74,7 @@ const LineItem = styled.div<{
   },
   ({ top, bottom, hasTop }) => ({
     marginTop: top || 0,
-    marginBottom: bottom || 0,
+
     alignItems: hasTop ? 'flex-start' : 'center',
   }),
 )

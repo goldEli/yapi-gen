@@ -70,7 +70,7 @@ const SetMain = styled.div({
 const SetLeft = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  height: 'calc(100vh - 180px)',
+  height: 'calc(100vh - 130px)',
   overflowY: 'auto',
   borderRight: '1px solid var(--neutral-n6-d1)',
   width: 232,

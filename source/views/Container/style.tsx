@@ -376,8 +376,39 @@ export const CompanyCard = styled.div<{ isActive?: boolean }>`
     }
   }
   &:hover {
-    box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
-    background: var(--hover-d2);
+    box-shadow: 0px 0px 9px 3px rgba(0, 0, 0, 0.07);
+    background: var(--neutral-white-d6);
     border: 1px solid transparent;
+  }
+`
+
+export const WaitingMenu = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: no-drop;
+  margin-top: 8px;
+  width: 88px;
+  padding: 5px 0;
+  .menuIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    width: 48px;
+    border-radius: 6px;
+    background: var(--hover-d2);
+    color: var(--neutral-n3);
+  }
+  .label {
+    margin-top: 8px;
+    color: var(--neutral-n3);
+  }
+  .menuTag {
+    position: absolute;
+    top: 5px;
+    right: -9px;
   }
 `

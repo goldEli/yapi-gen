@@ -18,6 +18,7 @@ import {
   MenuLabel,
   CompanyCard,
   CompanyCards,
+  WaitingMenu,
 } from '../style'
 import { CloseWrap } from '@/components/StyleCommon'
 import { useDispatch, useSelector } from '@store/index'
@@ -27,6 +28,7 @@ import CommonModal from '@/components/CommonModal'
 import { useTranslation } from 'react-i18next'
 import ItemDropdown from './ItemDropdown'
 import { setCurrentMenu } from '@store/user'
+import menuTag from '/menuTag.svg'
 
 interface DrawerComponentProps {
   value: boolean
@@ -216,6 +218,13 @@ const DrawerComponent = (props: DrawerComponentProps) => {
                   <div className="label">{i.name}</div>
                 </DrawerMenuItem>
               ))}
+            <WaitingMenu>
+              <img src={menuTag} className="menuTag" />
+              <div className="menuIcon">
+                <CommonIconFont type="draft" size={24} />
+              </div>
+              <div className="label">{t('menu_word')}</div>
+            </WaitingMenu>
           </Space>
         </DrawerMenu>
         {/* 后台管理 */}

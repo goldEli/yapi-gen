@@ -40,6 +40,7 @@ const HeaderWrap = styled.div`
   box-shadow: 0px 1px 9px 0px rgba(20, 37, 98, 0.05);
   background: var(--neutral-white-d2);
   z-index: 2;
+  min-width: 1440px;
 `
 
 const Content = styled.div`
@@ -67,7 +68,7 @@ export const Container = () => {
   const dispatch = useDispatch()
   const [isNextVisible, setIsNextVisible] = useState(false)
   const [changeLeft, setChangeLeft] = useState(200)
-  const { userInfo, loginInfo, menuPermission } = useSelector(
+  const { userInfo, loginInfo, menuPermission, isRefresh } = useSelector(
     store => store.user,
   )
   const {
@@ -207,7 +208,9 @@ export const Container = () => {
               <Side onChangeLeft={setChangeLeft} />
             )}
             <Main left={changeLeft}>
-              <div style={{ height: '100%', minWidth: '1440px' }}>
+              <div
+                style={{ height: '100%', minWidth: `${1440 - changeLeft}px` }}
+              >
                 <Outlet />
               </div>
             </Main>

@@ -7,27 +7,11 @@ import Sort from '@/components/Sort'
 import { useTranslation } from 'react-i18next'
 import { OmitText } from '@star-yun/ui'
 import { HiddenText } from '@/components/StyleCommon'
+import CommonUserAvatar from '@/components/CommonUserAvatar'
 
 const flexCss = css`
   display: flex;
   align-items: center;
-`
-
-const SetHead = styled.div`
-  margin-right: 12px;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  border-radius: 50%;
-  font-size: 14px;
-  background: #a4acf5;
-  background-blend-mode: normal;
-  border: 2px solid rgba(40, 119, 255, 0.16);
-  border: 1px solid white;
-  color: var(--neutral-white-d2);
 `
 
 export const useDynamicColumns = (state: any) => {
@@ -66,9 +50,13 @@ export const useDynamicColumns = (state: any) => {
                 alt=""
               />
             ) : (
-              <SetHead style={{ marginRight: 8 }}>
-                {String(record.name?.trim().slice(0, 1)).toLocaleUpperCase()}
-              </SetHead>
+              <span
+                style={{
+                  marginRight: 8,
+                }}
+              >
+                <CommonUserAvatar size="small" />
+              </span>
             )}
             <HiddenText>
               <OmitText
