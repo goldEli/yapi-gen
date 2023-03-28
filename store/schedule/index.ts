@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { getScheduleList } from './schedule.thunk'
 
 type SliceState = {
   // 默认日程时长
@@ -30,6 +31,11 @@ const slice = createSlice({
         return item
       })
     },
+  },
+  extraReducers(builder) {
+    builder.addCase(getScheduleList.fulfilled, (state, action) => {
+      state.scheduleList = action.payload
+    })
   },
 })
 
