@@ -21,7 +21,7 @@ import teams from './teams'
 import colorText from './color-text'
 import category from './category'
 import log from './log'
-import managerCalendar from './managerCalendar'
+import calendar from './calendar'
 import schedule from './schedule'
 
 export const store = configureStore({
@@ -43,7 +43,7 @@ export const store = configureStore({
     category,
     colorText,
     log,
-    managerCalendar,
+    calendar,
     schedule,
   },
 })

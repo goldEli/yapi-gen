@@ -11,7 +11,7 @@ const initialState: SliceState = {
 }
 
 const slice = createSlice({
-  name: 'managerCalendar',
+  name: 'calendar',
   initialState,
   reducers: {
     setCalendarPanelType(
@@ -24,8 +24,8 @@ const slice = createSlice({
   },
 })
 
-const managerCalendar = slice.reducer
+const calendar = slice.reducer
 
 export const { setCalendarPanelType } = slice.actions
 
-export default managerCalendar
+export default calendar
