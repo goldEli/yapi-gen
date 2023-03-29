@@ -28,6 +28,7 @@ import { message } from 'antd'
 import { setDemandInfo } from '@store/demand'
 import { useDispatch, useSelector } from '@store/index'
 import TagComponent from '@/components/TagComponent'
+import { Editor } from '@xyfe/uikit'
 
 const WrapLeft = styled.div({
   width: '100%',
@@ -160,8 +161,13 @@ const WrapLeftBox = () => {
           >
             <Label>{t('mine.demandInfo')}</Label>
             {demandInfo?.info ? (
-              <div dangerouslySetInnerHTML={{ __html: demandInfo?.info }} />
+              <Editor
+                value={demandInfo?.info}
+                getSuggestions={() => []}
+                readonly
+              />
             ) : (
+              // <div dangerouslySetInnerHTML={{ __html: demandInfo?.info }} />
               <TextWrap>--</TextWrap>
             )}
           </InfoItem>
