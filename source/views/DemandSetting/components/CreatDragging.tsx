@@ -2,7 +2,7 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { throttle } from 'lodash'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const Container = styled.div`
   border-radius: 8px;
@@ -32,14 +32,16 @@ const SliderList = (props: any) => {
   const prevRectRef = useRef(null)
   let startY = 0
   let startX = 0
+  const [dragItem, setDragItem] = useState<any>()
   // 传值位置
   const onDragStart = (ev: any) => {
     const obj = { ...children, dragtype: 'add' }
+    setDragItem(obj)
     ev.dataTransfer.setData('item', JSON.stringify(obj))
     const imgDom = document.createElement('div')
     //创建一个图像并且使用它作为拖动图像
     document.body.appendChild(imgDom)
-    // ev.dataTransfer.setDragImage(imgDom, 10, 10)
+    ev.dataTransfer.setDragImage(imgDom, 10, 10)
   }
   const onDrag = throttle(e => {
     const el: any = ref.current
@@ -55,34 +57,63 @@ const SliderList = (props: any) => {
     document
       .getElementById('father')!
       .scrollTo({ top: e.pageY, behavior: 'smooth' })
-  }, 500)
+  }, 10)
   const onDragEnd = () => {
     setTop(0)
     setLeft(0)
   }
+
+  const allowDrop = (ev: any) => {
+    ev.preventDefault()
+    setTop(0)
+    setLeft(0)
+  }
   return (
-    <Container
-      ref={ref}
-      draggable="true"
-      onDragStart={event => onDragStart(event)}
-      onDrag={onDrag}
-      onDragEnd={() => onDragEnd()}
-      style={{
-        top: `${top}px`,
-        left: `${left}px`,
-        position: top > 0 && left > 0 ? 'fixed' : 'relative',
-        zIndex: top > 0 && left > 0 ? 90 : 9,
-      }}
-    >
-      <ItemList>
-        <CommonIconFont
-          type={children?.icon}
-          size={18}
-          color="var(--neutral-n1-d1)"
-        />
-        <span style={{ marginLeft: '8px' }}>{children.label}</span>
-      </ItemList>
-    </Container>
+    <div draggable="false">
+      {top > 0 ? (
+        <Container
+          style={{
+            top: `${top}px`,
+            left: `${left}px`,
+            width: '352px',
+            height: '44px',
+            background: 'var(--neutral-white-d6)',
+            boxShadow: '0px 0px 15px 6px rgba(0,0,0,0.12)',
+            position: top > 0 && left > 0 ? 'fixed' : 'relative',
+            zIndex: top > 0 && left > 0 ? 990 : 9,
+          }}
+          onDragOver={allowDrop}
+          onDragEnd={() => onDragEnd()}
+          draggable="true"
+        >
+          <ItemList>
+            <CommonIconFont
+              type={dragItem?.icon}
+              size={18}
+              color="var(--neutral-n1-d1)"
+            />
+            <span style={{ marginLeft: '8px' }}>{dragItem.label}</span>
+          </ItemList>
+        </Container>
+      ) : null}
+      <Container
+        ref={ref}
+        draggable="true"
+        onDragStart={event => onDragStart(event)}
+        onDrag={onDrag}
+        onDragOver={allowDrop}
+        onDragEnd={() => onDragEnd()}
+      >
+        <ItemList>
+          <CommonIconFont
+            type={children?.icon}
+            size={18}
+            color="var(--neutral-n1-d1)"
+          />
+          <span style={{ marginLeft: '8px' }}>{children.label}</span>
+        </ItemList>
+      </Container>
+    </div>
   )
 }
 

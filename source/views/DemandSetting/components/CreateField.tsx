@@ -167,8 +167,8 @@ const CreateField = () => {
     getCategoryConfigArray?.length >= 1 && getProjectFieIdsApi()
   }, [getCategoryConfigArray])
   return (
-    <CreateFieldWrap>
-      <TitleStyle onClick={() => setCreateIcon(!createIcon)}>
+    <CreateFieldWrap draggable="false">
+      <TitleStyle draggable="false" onClick={() => setCreateIcon(!createIcon)}>
         <CommonIconFont
           type={createIcon ? 'down-icon' : 'right-icon'}
           size={14}
