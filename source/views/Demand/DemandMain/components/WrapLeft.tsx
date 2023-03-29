@@ -380,8 +380,6 @@ const WrapLeft = (props: any, ref: any) => {
   const init = async (isUpdateProjectInfoValues?: boolean) => {
     setShow(false)
     const res = await getTreeList({ id: props.projectId })
-    console.log(props.projectId, '项目ID')
-
     setTreeData(filterTreeData(res))
     setShow(true)
     // 更新项目成员下拉

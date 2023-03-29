@@ -80,6 +80,7 @@ const SliderList = (props: any) => {
     setDragItem(obj)
     ev.dataTransfer.setData('item', JSON.stringify(obj))
     const imgDom = document.createElement('div')
+    // ev.target.style.opacity = 0.3
     document.body.appendChild(imgDom)
     ev.dataTransfer.setDragImage(imgDom, 0, 0)
   }
@@ -94,9 +95,9 @@ const SliderList = (props: any) => {
       setTop(e.pageY)
       setLeft(e.pageX)
     }
-    document
-      .getElementById('father')!
-      .scrollTo({ top: e.pageY, behavior: 'smooth' })
+    // document
+    //   .getElementById('father')!
+    //   .scrollTo({ top: e.pageY, behavior: 'smooth' })
   }, 10)
 
   const onDragEnd = () => {
