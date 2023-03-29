@@ -846,6 +846,10 @@ const GlobalStyle = () => {
       animation-fill-mode: forwards;
       border: solid 2px #cccccc;
     }
+    .ant-tree.ant-tree-directory .ant-tree-treenode-selected:hover::before,
+    .ant-tree.ant-tree-directory .ant-tree-treenode-selected::before {
+      background: none;
+    }
   `
   return <Global styles={globalCss} />
 }

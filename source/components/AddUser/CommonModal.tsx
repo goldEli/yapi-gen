@@ -63,7 +63,7 @@ const Tabs = styled.div`
   width: 216px;
   height: 24px;
   border-radius: 4px;
-  margin: 16px 0;
+  margin-top: 16px;
   font-size: 12px;
   font-weight: 400;
   color: var(--neutral-n3);
@@ -93,6 +93,7 @@ const Row = styled.div`
   display: flex;
   align-items: center;
   padding-left: 16px;
+  margin-top: 16px;
   & .ant-checkbox-checked .ant-checkbox-inner {
     background-color: var(--primary-d1);
     border-color: var(--primary-d1);
@@ -394,20 +395,22 @@ const CommonModal = (props: ModalProps) => {
             suffixIcon={<IconFont type="down" style={{ fontSize: 16 }} />}
           />
           {/* 部门团队切换 */}
-          <Tabs>
-            {tabs.map((el, index) => (
-              <span
-                className={tabsActive === index ? 'tabsActive' : ''}
-                onClick={() => {
-                  setSearchVal('')
-                  setTabsActive(index)
-                }}
-                key={el.label}
-              >
-                {el.label}
-              </span>
-            ))}
-          </Tabs>
+          {tabs.length >= 2 ? (
+            <Tabs>
+              {tabs?.map((el, index) => (
+                <span
+                  className={tabsActive === index ? 'tabsActive' : ''}
+                  onClick={() => {
+                    setSearchVal('')
+                    setTabsActive(index)
+                  }}
+                  key={el.label}
+                >
+                  {el.label}
+                </span>
+              ))}
+            </Tabs>
+          ) : null}
           <Row>
             <Checkbox
               checked={personData?.length === tabsTreeDataList?.length}
