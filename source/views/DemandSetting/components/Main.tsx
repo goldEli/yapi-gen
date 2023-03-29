@@ -299,7 +299,9 @@ const Main = (props: any) => {
             color="var(--neutral-n3)"
           />
         )}
-        <span>{t('newlyAdd.basicInfo') as string}</span>
+        <span style={{ marginLeft: '8px' }}>
+          {t('newlyAdd.basicInfo') as string}
+        </span>
       </TitleStyle>
       {infoIcon && (
         <TabsDragging
