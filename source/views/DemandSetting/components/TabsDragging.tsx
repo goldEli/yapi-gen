@@ -184,9 +184,9 @@ const Sortable = (props: any) => {
       setTop(e.pageY)
       setLeft(e.pageX)
     }
-    document
-      .getElementById('father')!
-      .scrollTo({ top: e.pageY, behavior: 'smooth' })
+    // document
+    //   .getElementById('father')!
+    //   .scrollTo({ top: e.pageY, behavior: 'smooth' })
   }, 10)
 
   return (

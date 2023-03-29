@@ -5,6 +5,7 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable no-constant-binary-expression */
 import { Form, message, Modal, Select, Space, Tree } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
@@ -274,7 +275,6 @@ const CommonModal = (props: ModalProps) => {
     }
     return checkdFilterDataList
   }
-  console.log(treeData, 'TreeData')
   const getCompany = async () => {
     const res = await getDepartmentUserList1({
       search: {
@@ -283,7 +283,6 @@ const CommonModal = (props: ModalProps) => {
       },
     })
     setTreeData2(res)
-    console.log(res)
     // 拍平数组
     const data = unionBy(checkdFilterData(res), 'id')
     setTabsTreeDataList(
@@ -300,25 +299,16 @@ const CommonModal = (props: ModalProps) => {
         type: 'team',
       },
     })
-    // const data2 = res.map((el: any) => ({
-    //   ...el,
-    //   children: el.staffs.map((v: any) => {
-    //     const temp = { ...v }
-    //     v.staffs = temp
-    //     return v
-    //   })
-    // }))
-    console.log(res, 'data2')
     setTreeData(res)
-    // console.log(data2);
+    let data: any = []
+    res.forEach((el: any) => {
+      el.children.forEach((item: any) => {
+        data.push({ ...item, label: item.name, value: item.id })
+      })
+    })
     // 拍平数组
-    const data = unionBy(checkdFilterData(res), 'id')
-    setTabsTreeDataList(
-      data.map((el: any) => ({ label: el.name, value: el.id, ...el })),
-    )
-    setSelectDataList(
-      data.map((el: any) => ({ label: el.name, value: el.id, ...el })),
-    )
+    setTabsTreeDataList(fitlerDataList(data))
+    setSelectDataList(fitlerDataList(data))
   }
   useEffect(() => {
     if (tabsActive === 0) {
@@ -331,13 +321,20 @@ const CommonModal = (props: ModalProps) => {
   // 删除成员
   const delPersonDataList = (el: any) => {
     setPersonData(personData.filter((item: any) => el.id !== item.id))
-    const key: any = personData
-      .filter((item: any) => el.id !== item.id)
-      ?.map((item: any) => item.department_id)
-    setCheckedKeys(key)
+    let key: any = []
+    if (tabsActive === 1) {
+      key = personData
+        .filter((item: any) => el.id !== item.id)
+        ?.map((item: any) => item.department_id)
+      setCheckedKeys(key)
+      setCheckedKeys(
+        personData
+          .filter((item: any) => item.id !== el.id && !item.children)
+          .map((item: any) => item.id),
+      )
+    }
     key?.length < 1 && setSearchVal('')
   }
-
   // 清空成员
   const clearPerson = () => {
     setPersonData([])
@@ -348,22 +345,32 @@ const CommonModal = (props: ModalProps) => {
   // 勾选复选框
   const onCheck = (checkedKey: any, e: any) => {
     checkdFilterDataList = []
-    setCheckedKeys(checkedKey)
-
-    // 得到重复node需要去重
-    const data = unionBy(checkdFilterData(e.checkedNodes), 'id')
-    if (e.checkedNodes.length && data.length <= personData.length) {
-      message.warning(t('commonModal.warnningMsg'))
+    if (tabsActive === 1) {
+      setCheckedKeys(checkedKey)
+      // 得到重复node需要去重
+      const data = unionBy(checkdFilterData(e.checkedNodes), 'id')
+      if (e.checkedNodes.length && data.length <= personData.length) {
+        message.warning(t('commonModal.warnningMsg'))
+      }
+      setPersonData(data)
+    } else {
+      setCheckedKeys(checkedKey)
+      setPersonData(e.checkedNodes)
     }
-    setPersonData(data)
   }
 
   // 全选
   const checkAllChange = (e: any) => {
     if (e.target.checked) {
-      const keys = treeData.map((el: any) => el.id)
-      setCheckedKeys(keys)
-      setPersonData(tabsTreeDataList?.map((item: any) => item))
+      if (tabsActive === 1) {
+        const keys = treeData2.map((el: any) => el.id)
+        setCheckedKeys(keys)
+      } else {
+        const keys = treeData.map((el: any) => el.id)
+        setCheckedKeys(keys)
+      }
+      const data = tabsTreeDataList?.map((item: any) => item)
+      setPersonData(data)
     } else {
       setCheckedKeys([])
       setPersonData([])
@@ -389,8 +396,21 @@ const CommonModal = (props: ModalProps) => {
       props?.onConfirm?.(personData)
     }
   }
-
-  console.log(treeData, 'data0-li')
+  useEffect(() => {
+    if (personData.length >= 1) {
+      setPersonData(fitlerDataList(personData))
+    } else {
+      setPersonData([])
+    }
+  }, [personData])
+  const fitlerDataList = (data: any) => {
+    let obj: any = {}
+    let set: any = data?.reduce((cur: any, next: any) => {
+      obj[next.id] ? '' : (obj[next.id] = true && cur.push(next))
+      return cur
+    }, [])
+    return set
+  }
   return (
     <ModalStyle
       footer={false}
@@ -487,16 +507,18 @@ const CommonModal = (props: ModalProps) => {
             </span>
             <span onClick={() => clearPerson()}>{t('commonModal.clear')}</span>
           </Header>
-          {personData.map((el: any) => (
-            <ListItem key={el.id}>
-              <CommonUserAvatar name={el.name} fontSize={14} />
-              <IconFont
-                type="close"
-                style={{ fontSize: 16, color: 'var(--neutral-n3)' }}
-                onClick={() => delPersonDataList(el)}
-              />
-            </ListItem>
-          ))}
+          {personData.length >= 1
+            ? personData.map((el: any) => (
+                <ListItem key={el.id}>
+                  <CommonUserAvatar name={el.name} fontSize={14} />
+                  <IconFont
+                    type="close"
+                    style={{ fontSize: 16, color: 'var(--neutral-n3)' }}
+                    onClick={() => delPersonDataList(el)}
+                  />
+                </ListItem>
+              ))
+            : null}
         </RightPerson>
       </CreatePerson>
       <ModalFooter>
