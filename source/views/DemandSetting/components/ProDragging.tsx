@@ -8,6 +8,7 @@ import { message } from 'antd'
 import { useSelector } from '@store/index'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
+import { throttle } from 'lodash'
 
 const Container = styled.div`
   border-radius: 8px;
@@ -68,18 +69,21 @@ const SliderList = (props: any) => {
     document.body.appendChild(imgDom)
     ev.dataTransfer.setDragImage(imgDom, 0, 0)
   }
-  const onDrag = (ev: any) => {
+  const onDrag = throttle(e => {
     const el: any = ref.current
     const rect = el.getBoundingClientRect()
     prevRectRef.current = rect
     // 计算最新 Top Left位置
-    let latestTop = ev.clientY - startY
-    let latestLeft = ev.clientX - startX
+    let latestTop = e.clientY - startY
+    let latestLeft = e.clientX - startX
     if (latestTop > 0 || latestLeft > 0) {
-      setTop(ev.pageY)
-      setLeft(ev.pageX)
+      setTop(e.pageY)
+      setLeft(e.pageX)
     }
-  }
+    document
+      .getElementById('father')!
+      .scrollTo({ top: e.pageY, behavior: 'smooth' })
+  }, 500)
   const onDragEnd = () => {
     setTop(0)
     setLeft(0)
@@ -103,7 +107,7 @@ const SliderList = (props: any) => {
       draggable="true"
       onDragOver={allowDrop}
       onDragStart={event => onDragStart(event)}
-      onDrag={(ev: any) => onDrag(ev)}
+      onDrag={onDrag}
       onDragEnd={() => onDragEnd()}
       style={{
         top: `${top}px`,

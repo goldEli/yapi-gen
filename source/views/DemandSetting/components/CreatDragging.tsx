@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
+import { throttle } from 'lodash'
 import { useRef, useState } from 'react'
 
 const Container = styled.div`
@@ -38,20 +39,23 @@ const SliderList = (props: any) => {
     const imgDom = document.createElement('div')
     //创建一个图像并且使用它作为拖动图像
     document.body.appendChild(imgDom)
-    ev.dataTransfer.setDragImage(imgDom, 10, 10)
+    // ev.dataTransfer.setDragImage(imgDom, 10, 10)
   }
-  const onDrag = (ev: any) => {
+  const onDrag = throttle(e => {
     const el: any = ref.current
     const rect = el.getBoundingClientRect()
     prevRectRef.current = rect
     // 计算最新 Top Left位置
-    let latestTop = ev.clientY - startY
-    let latestLeft = ev.clientX - startX
+    let latestTop = e.clientY - startY
+    let latestLeft = e.clientX - startX
     if (latestTop > 0 || latestLeft > 0) {
-      setTop(ev.pageY)
-      setLeft(ev.pageX)
+      setTop(e.pageY)
+      setLeft(e.pageX)
     }
-  }
+    document
+      .getElementById('father')!
+      .scrollTo({ top: e.pageY, behavior: 'smooth' })
+  }, 500)
   const onDragEnd = () => {
     setTop(0)
     setLeft(0)
@@ -61,7 +65,7 @@ const SliderList = (props: any) => {
       ref={ref}
       draggable="true"
       onDragStart={event => onDragStart(event)}
-      onDrag={(ev: any) => onDrag(ev)}
+      onDrag={onDrag}
       onDragEnd={() => onDragEnd()}
       style={{
         top: `${top}px`,
