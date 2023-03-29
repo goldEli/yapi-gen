@@ -23,7 +23,7 @@ import IconFont from '@/components/IconFont'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import CommonModal from '@/components/CommonModal'
 import { css } from '@emotion/css'
-import { getIsPermission } from '@/tools'
+import { getIsPermission, getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import { setProjectInfoValues } from '@store/project'
 import { useDispatch, useSelector } from '@store/index'
@@ -34,6 +34,7 @@ import {
   moveTreeList,
 } from '@/services/demand'
 import { changeId } from '@store/counterSlice'
+import { useSearchParams } from 'react-router-dom'
 
 const Left = styled.div`
   height: calc(100vh - 150px);
@@ -354,6 +355,9 @@ const TreeItem = (props: any) => {
 }
 
 const WrapLeft = (props: any, ref: any) => {
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
   const { value: valueId } = useSelector(store => store.counter)
   const dispatch = useDispatch()
   const [t] = useTranslation()
@@ -377,6 +381,8 @@ const WrapLeft = (props: any, ref: any) => {
   const init = async (isUpdateProjectInfoValues?: boolean) => {
     setShow(false)
     const res = await getTreeList({ id: props.projectId })
+    console.log(props.projectId, '项目ID')
+
     setTreeData(filterTreeData(res))
     setShow(true)
     // 更新项目成员下拉
@@ -490,7 +496,7 @@ const WrapLeft = (props: any, ref: any) => {
     if (props.isShowLeft) {
       init()
     }
-  }, [props.isShowLeft])
+  }, [props.isShowLeft, projectId])
 
   useImperativeHandle(ref, () => {
     return {
