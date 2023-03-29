@@ -5,6 +5,7 @@ import CurrentTimeLine from '../../CurrentTimeLine'
 import { oneHourHeight } from '../../../config'
 import { useSelector } from '@store/index'
 import classNames from 'classnames'
+import NewCalendarArea from '../../NewCalendarArea'
 
 interface TimescaleProps {}
 const Table = styled.table`
@@ -15,9 +16,11 @@ const Table = styled.table`
   tr {
     height: ${oneHourHeight / 4}px;
     box-sizing: border-box;
+    /* all: unset; */
   }
   td {
     box-sizing: border-box;
+    /* all: unset; */
   }
   .firstTr {
   }
@@ -45,30 +48,102 @@ const Tr = styled.tr`
   }
 `
 
+const NewCalendar = styled.div`
+  width: calc(100% - 58px);
+  /* background: ${(props: { bg?: string }) => {
+    return props.bg
+  }}; */
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--neutral-n1-d1);
+  position: relative;
+  top: 0px;
+  left: 58px;
+`
+
 const Timescale: React.FC<TimescaleProps> = props => {
   const { list } = useSelector(store => store.calendar)
   const currentColor = useMemo(() => {
     return list.find(item => item.is_default === 1)?.color
   }, [list])
-  const [timeZone, setTimeZone] = React.useState<string[]>(['0-1', '0-2'])
+  const [timeZone, setTimeZone] = React.useState<string[]>([])
+  const [distance, setDistance] = React.useState(0)
 
-  const onSelectTimeZone = React.useCallback((id: string) => {
-    let first = parseInt(id.split('-')[0], 10)
-    let second = parseInt(id.split('-')[1], 10)
-    const result: string[] = [id]
-    // 选择最少半小时
-    for (let i = 1; i <= 1; ++i) {
-      if (second === 3) {
-        first += 1
-        second = 0
-      } else {
-        second++
+  const onSelectTimeZone = React.useCallback(
+    (e: React.MouseEvent, id: string) => {
+      // 点击空白重置
+      if (timeZone.length) {
+        setTimeZone([])
+        return
       }
-      result.push(`${first}-${second}`)
-    }
 
-    setTimeZone(result)
-  }, [])
+      // let first = parseInt(id.split('-')[0], 10)
+      // let second = parseInt(id.split('-')[1], 10)
+      // const result: string[] = [id]
+      // 选择最少半小时
+      // for (let i = 1; i <= 1; ++i) {
+      //   if (second === 3) {
+      //     first += 1
+      //     second = 0
+      //   } else {
+      //     second++
+      //   }
+      //   result.push(`${first}-${second}`)
+      // }
+      // const trs = document.querySelectorAll('.time-scale tr')
+      // trs.forEach(tr => {
+      //   tr.addEventListener('mouseenter', onSelectTimeZoneByMove)
+      // })
+      // document.addEventListener('mouseup', () => {
+      //   trs.forEach(tr => {
+      //     tr.removeEventListener('mouseenter', onSelectTimeZoneByMove)
+      //   })
+      // })
+      // let startX = 0
+      let startY = e.screenY
+      let dis = 0
+      function onMousemove(event: MouseEvent) {
+        const deltaY = event.screenY - startY
+        setDistance(deltaY)
+        // if (startX === 0 && startY === 0) {
+        //   startX = event.screenX
+        //   startY = event.screenY
+        // } else {
+        //   const deltaX = event.screenX - startX
+        //   const deltaY = event.screenY - startY
+        //   dis += deltaY
+        //   startX = event.screenX
+        //   startY = event.screenY
+        // }
+      }
+      function onMouseUp(event: MouseEvent) {
+        // setDistance(dis)
+        document.removeEventListener('mousemove', onMousemove)
+      }
+      document.removeEventListener('mousemove', onMousemove)
+      document.addEventListener('mousemove', onMousemove)
+      document.removeEventListener('mouseup', onMouseUp)
+      document.addEventListener('mouseup', onMouseUp)
+
+      setTimeZone([id])
+    },
+    [timeZone],
+  )
+
+  // const onSelectTimeZoneByMove = React.useCallback((e: Event) => {
+  //   const target = e.target as HTMLElement
+  //   const id = target.getAttribute('data-id') as string
+  //   if (!id) {
+  //     return
+  //   }
+
+  //   setTimeZone(prev => {
+  //     // if (prev.some(item => item === id)) {
+  //     //   return prev.filter(item => item !== id)
+  //     // }
+  //     return [...new Set([...prev, id])]
+  //   })
+  // }, [])
 
   const content = useMemo(() => {
     return Array(24)
@@ -80,10 +155,9 @@ const Timescale: React.FC<TimescaleProps> = props => {
           str = '0' + str
         }
 
-        const dataId = `${idx}-0`
         return (
           <>
-            <Tr
+            {/* <Tr
               data-id={dataId}
               bg={timeZone.includes(dataId) ? currentColor : ''}
               onMouseDown={() => onSelectTimeZone(dataId)}
@@ -93,20 +167,28 @@ const Timescale: React.FC<TimescaleProps> = props => {
                 <span className="time">{`${str}:00`}</span>
               </td>
               <td className="borderTop bg"></td>
-            </Tr>
-            {Array(3)
+            </Tr> */}
+            {Array(4)
               .fill(0)
               .map((i, index) => {
-                const id = `${idx}-${index + 1}`
+                const id = `2023-03-29 ${str}:${15 * index}00`
                 return (
                   <Tr
                     key={index}
-                    bg={timeZone.includes(id) ? currentColor : ''}
+                    // bg={timeZone.includes(id) ? currentColor : ''}
                     data-id={id}
-                    onMouseDown={() => onSelectTimeZone(id)}
+                    onMouseDown={e => onSelectTimeZone(e, id)}
                   >
-                    <td></td>
-                    <td className="bg"></td>
+                    <td className="firstTd">
+                      {index === 0 && (
+                        <span className="time">{`${str}:00`}</span>
+                      )}
+                    </td>
+                    <td
+                      className={classNames('bg', {
+                        borderTop: index === 0,
+                      })}
+                    ></td>
                   </Tr>
                 )
               })}
@@ -118,6 +200,11 @@ const Timescale: React.FC<TimescaleProps> = props => {
     <Table className="time-scale">
       {content}
       <CurrentTimeLine time={dayjs('2023-3-29 02:35:00').valueOf()} />
+      <NewCalendarArea
+        color={currentColor ?? ''}
+        timeZone={timeZone}
+        distance={distance}
+      />
     </Table>
   )
 }
