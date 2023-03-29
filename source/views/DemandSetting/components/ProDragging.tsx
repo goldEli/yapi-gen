@@ -42,6 +42,18 @@ const SearchItemList = styled.div`
     }
   }
 `
+const ItemList = styled.div`
+  width: 352px;
+  height: 44px;
+  border-radius: 8px;
+  background-color: var(--neutral-n8);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  font-size: 14px;
+  margin-bottom: 8px;
+`
 const IconFontStyle = styled(IconFont)({
   color: 'var(--neutral-n2)',
   fontSize: 19,
@@ -62,8 +74,10 @@ const SliderList = (props: any) => {
   const { option } = useSelector(store => store.category)
   let startY = 0
   let startX = 0
+  const [dragItem, setDragItem] = useState<any>()
   const onDragStart = (ev: any) => {
     const obj = { ...children, dragtype: 'edit' }
+    setDragItem(obj)
     ev.dataTransfer.setData('item', JSON.stringify(obj))
     const imgDom = document.createElement('div')
     document.body.appendChild(imgDom)
@@ -83,7 +97,8 @@ const SliderList = (props: any) => {
     document
       .getElementById('father')!
       .scrollTo({ top: e.pageY, behavior: 'smooth' })
-  }, 500)
+  }, 10)
+
   const onDragEnd = () => {
     setTop(0)
     setLeft(0)
@@ -102,48 +117,78 @@ const SliderList = (props: any) => {
     ev.preventDefault()
   }
   return (
-    <Container
-      ref={ref}
-      draggable="true"
-      onDragOver={allowDrop}
-      onDragStart={event => onDragStart(event)}
-      onDrag={onDrag}
-      onDragEnd={() => onDragEnd()}
-      style={{
-        top: `${top}px`,
-        left: `${left}px`,
-        position: top > 0 && left > 0 ? 'fixed' : 'relative',
-        zIndex: top > 0 && left > 0 ? 90 : 9,
-      }}
-    >
-      <SearchItemList>
-        <div>
-          <CommonIconFont
-            type={
-              option?.find(
-                (item: any) => children?.field_content?.attr === item.type,
-              )?.icon
-            }
-            size={19}
-            color="var(--neutral-n1-d1)"
-          />
-          <span style={{ marginLeft: '8px' }}>{children.title}</span>
-        </div>
-        <div
-          className="delIcon"
-          onClick={e => {
-            e.stopPropagation(), setIsVisible(true), setDelItem(children)
+    <>
+      {top > 0 ? (
+        <Container
+          style={{
+            top: `${top}px`,
+            left: `${left}px`,
+            width: '352px',
+            height: '44px',
+            background: 'var(--neutral-white-d6)',
+            boxShadow: '0px 0px 15px 6px rgba(0,0,0,0.12)',
+            position: top > 0 && left > 0 ? 'fixed' : 'relative',
+            zIndex: top > 0 && left > 0 ? 90 : 9,
           }}
+          onDragOver={allowDrop}
+          draggable="true"
         >
-          {children?.is_customize === 1 && <IconFontStyle type="delete" />}
-        </div>
-      </SearchItemList>
-      <DeleteConfirm
-        isVisible={isVisible}
-        onChangeVisible={() => setIsVisible(false)}
-        onConfirm={() => delConfig()}
-      />
-    </Container>
+          <ItemList>
+            <div>
+              <CommonIconFont
+                type={
+                  option?.find(
+                    (item: any) => dragItem?.field_content?.attr === item.type,
+                  )?.icon
+                }
+                size={19}
+                color="var(--neutral-n1-d1)"
+              />
+              <span style={{ marginLeft: '8px' }}>{dragItem.title}</span>
+            </div>
+            <div className="delIcon">
+              {dragItem?.is_customize === 1 && <IconFontStyle type="delete" />}
+            </div>
+          </ItemList>
+        </Container>
+      ) : null}
+      <Container
+        ref={ref}
+        draggable="true"
+        onDragOver={allowDrop}
+        onDragStart={event => onDragStart(event)}
+        onDrag={onDrag}
+        onDragEnd={() => onDragEnd()}
+      >
+        <SearchItemList>
+          <div>
+            <CommonIconFont
+              type={
+                option?.find(
+                  (item: any) => children?.field_content?.attr === item.type,
+                )?.icon
+              }
+              size={19}
+              color="var(--neutral-n1-d1)"
+            />
+            <span style={{ marginLeft: '8px' }}>{children.title}</span>
+          </div>
+          <div
+            className="delIcon"
+            onClick={e => {
+              e.stopPropagation(), setIsVisible(true), setDelItem(children)
+            }}
+          >
+            {children?.is_customize === 1 && <IconFontStyle type="delete" />}
+          </div>
+        </SearchItemList>
+        <DeleteConfirm
+          isVisible={isVisible}
+          onChangeVisible={() => setIsVisible(false)}
+          onConfirm={() => delConfig()}
+        />
+      </Container>
+    </>
   )
 }
 
