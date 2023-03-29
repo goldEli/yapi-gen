@@ -7,6 +7,7 @@ import { useSelector } from '@store/index'
 import { Checkbox, Tooltip } from 'antd'
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { throttle } from 'lodash'
 
 const Container = styled.div`
   margin-bottom: 8px;
@@ -90,7 +91,9 @@ const Sortable = (props: any) => {
   const [current, setCurrent] = useState<any>(null)
   const [endIndex, setEndIndex] = useState<any>(null)
   const ref: any = useRef()
-  const onDragStart = (ev: any, index: number, item: any, number: any) => {
+  const container: any = useRef()
+  // 拖动传值
+  const onDragStart = (ev: any, index: number, item: any) => {
     localStorage.className = ref?.current?.className
     const moveItem = {
       ...item,
@@ -99,13 +102,14 @@ const Sortable = (props: any) => {
     ev.dataTransfer.setData('DragItem', JSON.stringify(moveItem))
     setCurrent(index)
   }
+  // 拖动排序
   const onDragEnd = (e: any, index: number) => {
     if (endIndex !== index) {
       let _list: any = [...props.list]
       _list[endIndex] = props.list[current]
       _list[current] = props.list[endIndex]
       // 使用的key值用来筛选
-      props.onChangeMove(_list)
+      props.onChangeMove(_list.filter((el: any) => el?.title))
     }
     setEndIndex(null)
     setCurrent(null)
@@ -116,10 +120,12 @@ const Sortable = (props: any) => {
   const allowDrop = (ev: any) => {
     ev.preventDefault()
   }
+  // 父级拖动
   const onDrop = (ev: any, index: number) => {
     const drapClassName = ref?.current?.className
     ev.preventDefault()
     ev.stopPropagation()
+    // 判断是否在同一块区域拖动
     if (localStorage.className === drapClassName) {
       return
     } else {
@@ -127,6 +133,7 @@ const Sortable = (props: any) => {
       localStorage.className = ''
     }
   }
+  // 空白区域拖动
   const onDrop2 = (event: any) => {
     event.preventDefault()
     const drapClassName = ref?.current?.className
@@ -142,6 +149,13 @@ const Sortable = (props: any) => {
     }
     localStorage.className = ''
   }
+  // item拖动滚动条移动
+  const onItemDrag = throttle(e => {
+    document
+      .getElementById('father')!
+      .scrollTo({ top: e.pageY, behavior: 'smooth' })
+  }, 500)
+
   return (
     <div
       draggable="false"
@@ -159,11 +173,13 @@ const Sortable = (props: any) => {
             onDrop={event => onDrop(event, i)}
           >
             <Container
+              ref={container}
               key={child?.storyId}
               draggable="true"
-              onDragStart={(ev: any) => onDragStart(ev, i, child, props.state)}
+              onDragStart={(ev: any) => onDragStart(ev, i, child)}
               onDragOver={() => onDragOver(i)}
               onDragEnd={e => onDragEnd(e, i)}
+              onDrag={onItemDrag}
               onClick={() => child?.isCustomize != 2 && props.onClick(i, child)}
             >
               {child?.isCustomize === 2 ? (
