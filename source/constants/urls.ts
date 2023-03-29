@@ -134,6 +134,7 @@ const urls = {
    * 日历管理
    */
   getScheduleList: '/b/schedule_list',
+  getCalendarList: '/b/calendar_list',
 }
 
 export default urls

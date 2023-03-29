@@ -1,9 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Collapse } from 'antd'
 import styled from '@emotion/styled'
 import { CloseWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import MoreDropdown from '@/components/MoreDropdown'
+import { useDispatch, useSelector } from '@store/index'
+import { getCalendarList } from '@store/calendar/calendar.thunk'
+import { setCalendarData, setCheckedCalendarList } from '@store/calendar'
+import CalendarColor from '../CalendarColor'
 
 const { Panel } = Collapse
 
@@ -64,10 +68,63 @@ const ItemBox = styled.div`
 
 interface CalendarManagerListProps {
   title: string
+  type: string
 }
 
 const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
+  const dispatch = useDispatch()
   const [isMoreVisible, setIsMoreVisible] = useState(false)
+  const { calendarData, checkedCalendarList } = useSelector(
+    store => store.calendar,
+  )
+  const calendarList = calendarData[props.type as keyof typeof calendarData]
+
+  // 改变日历的选中状态
+  const onChangeCheck = (item: Model.Calendar.Info) => {
+    // 还缺少一个修改保存选中数据的接口
+    // 改变原始数据
+    const newCalendarData = calendarList?.map((i: Model.Calendar.Info) => ({
+      ...i,
+      is_check: i.id === item.id ? (i.is_check ? 0 : 1) : i.is_check,
+    }))
+    let resultCheck: Model.Calendar.Info[]
+    // 如果当前是选中，则选中数组过滤
+    if (item.is_check) {
+      resultCheck = checkedCalendarList?.filter(
+        (i: Model.Calendar.Info) => i.id !== item.id,
+      )
+    } else {
+      resultCheck = [...checkedCalendarList, ...[item]]
+    }
+    dispatch(setCheckedCalendarList(resultCheck))
+    dispatch(
+      setCalendarData({
+        ...calendarData,
+        ...{ [props.type]: newCalendarData },
+      }),
+    )
+  }
+
+  // 改变颜色
+  const onChangeColor = (color: string, item: Model.Calendar.Info) => {
+    // 走编辑接口
+    // 改变原始数据
+    const newCalendarData = calendarList?.map((i: Model.Calendar.Info) => ({
+      ...i,
+      color: i.id === item.id ? color : i.color,
+    }))
+    dispatch(
+      setCalendarData({
+        ...calendarData,
+        ...{ [props.type]: newCalendarData },
+      }),
+    )
+  }
+
+  useEffect(() => {
+    dispatch(getCalendarList())
+  }, [props.type])
+
   return (
     <div>
       <CollapseWrap
@@ -95,20 +152,30 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
           }
           key="1"
         >
-          <CalendarManagerListItem>
-            <ItemBox>
-              <IconFont
-                type="put"
-                style={{ fontSize: 16, color: 'var(--neutral-n3)' }}
+          {calendarList?.map((i: any) => (
+            <CalendarManagerListItem
+              key={i.id}
+              onClick={() => onChangeCheck(i)}
+            >
+              <ItemBox key={i.id}>
+                <IconFont
+                  type={i.is_check ? 'pput-sel' : 'put'}
+                  style={{ fontSize: 16, color: i.color }}
+                />
+                <span className="name">{i.name}</span>
+              </ItemBox>
+              <MoreDropdown
+                isMoreVisible={isMoreVisible}
+                menu={
+                  <CalendarColor
+                    color={i.color}
+                    onChangeColor={color => onChangeColor(color, i)}
+                  />
+                }
+                onChangeVisible={setIsMoreVisible}
               />
-              <span className="name">张三</span>
-            </ItemBox>
-            <MoreDropdown
-              isMoreVisible={isMoreVisible}
-              menu={<div>1121</div>}
-              onChangeVisible={setIsMoreVisible}
-            />
-          </CalendarManagerListItem>
+            </CalendarManagerListItem>
+          ))}
         </Panel>
       </CollapseWrap>
     </div>

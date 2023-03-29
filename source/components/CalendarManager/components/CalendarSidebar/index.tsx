@@ -105,8 +105,8 @@ const CalendarSidebar: React.FC<CalendarSidebarProps> = props => {
             autoFocus
             leftIcon
           />
-          <CalendarManagerList title="我管理的" />
-          <CalendarManagerList title="我订阅的" />
+          <CalendarManagerList title="我管理的" type="manage" />
+          <CalendarManagerList title="我订阅的" type="sub" />
           <CalendarSetBox>
             <IconFont
               type="settings"

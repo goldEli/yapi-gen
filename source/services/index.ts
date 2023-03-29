@@ -8,6 +8,7 @@ import * as project from './project'
 import * as cos from './cos'
 import * as memberInfo from './memberInfo'
 import * as schedule from './schedule'
+import * as calendar from './calendar'
 
 export {
   user,
@@ -20,4 +21,5 @@ export {
   mine,
   memberInfo,
   schedule,
+  calendar,
 }
