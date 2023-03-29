@@ -434,7 +434,7 @@ const TableQuickEdit = (props: Props) => {
   // 操作框失焦
   const onBlur = (val: any) => {
     if (props.item.categoryConfigList[props.keyText] === 1 && !val) {
-      message.warning(`${props.keyText}为必填字段！`)
+      message.warning(`${props.keyText}${t('is_required')}`)
       setIsShowControl(false)
       return
     }

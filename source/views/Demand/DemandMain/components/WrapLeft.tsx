@@ -23,7 +23,7 @@ import IconFont from '@/components/IconFont'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import CommonModal from '@/components/CommonModal'
 import { css } from '@emotion/css'
-import { getIsPermission } from '@/tools'
+import { getIsPermission, getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import { setProjectInfoValues } from '@store/project'
 import { useDispatch, useSelector } from '@store/index'
@@ -34,6 +34,7 @@ import {
   moveTreeList,
 } from '@/services/demand'
 import { changeId } from '@store/counterSlice'
+import { useSearchParams } from 'react-router-dom'
 
 const Left = styled.div`
   height: calc(100vh - 150px);
@@ -46,8 +47,7 @@ const TitleWrap = styled.div({
   whiteSpace: 'nowrap',
   fontSize: 14,
   color: 'var(--neutral-n1-d2)',
-  // lineHeight: '52px',
-  fontWeight: 500,
+  fontFamily: 'SiYuanMedium',
 })
 
 const TreeBox = styled.div`
@@ -354,6 +354,9 @@ const TreeItem = (props: any) => {
 }
 
 const WrapLeft = (props: any, ref: any) => {
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
   const { value: valueId } = useSelector(store => store.counter)
   const dispatch = useDispatch()
   const [t] = useTranslation()
@@ -490,7 +493,7 @@ const WrapLeft = (props: any, ref: any) => {
     if (props.isShowLeft) {
       init()
     }
-  }, [props.isShowLeft])
+  }, [props.isShowLeft, projectId])
 
   useImperativeHandle(ref, () => {
     return {

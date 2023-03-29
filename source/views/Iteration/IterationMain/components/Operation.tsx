@@ -22,6 +22,7 @@ import { DividerWrap, HoverWrap } from '@/components/StyleCommon'
 import { useDispatch, useSelector } from '@store/index'
 import { setFilterKeys, setProjectInfoValues } from '@store/project'
 import { updateIterateStatus } from '@/services/iterate'
+import { Editor } from '@xyfe/uikit'
 
 const OperationWrap = styled.div<{ isShowLeft?: boolean }>(
   {
@@ -212,12 +213,17 @@ const Operation = (props: Props) => {
           }}
         >
           {props.currentDetail?.info ? (
-            <div
-              dangerouslySetInnerHTML={{
-                __html: props.currentDetail?.info || '--',
-              }}
+            <Editor
+              value={props.currentDetail?.info || '--'}
+              getSuggestions={() => []}
+              readonly
             />
           ) : (
+            // <div
+            //   dangerouslySetInnerHTML={{
+            //     __html: props.currentDetail?.info || '--',
+            //   }}
+            // />
             <NoData />
           )}
         </div>

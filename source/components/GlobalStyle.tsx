@@ -321,7 +321,10 @@ const GlobalStyle = () => {
       -webkit-text-fill-color: var(--auxiliary-b4) !important;
       transition: background-color 5000s ease-in-out 0s !important;
     }
-
+    .ant-input-affix-wrapper:focus,
+    .ant-input-affix-wrapper-focused {
+      box-shadow: none;
+    }
     .ant-popover-inner-content {
       padding: 0;
     }
@@ -845,6 +848,10 @@ const GlobalStyle = () => {
       animation: dragdown ease 0.2s 1;
       animation-fill-mode: forwards;
       border: solid 2px #cccccc;
+    }
+    .ant-tree.ant-tree-directory .ant-tree-treenode-selected:hover::before,
+    .ant-tree.ant-tree-directory .ant-tree-treenode-selected::before {
+      background: none;
     }
   `
   return <Global styles={globalCss} />

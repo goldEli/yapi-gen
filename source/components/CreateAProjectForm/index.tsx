@@ -173,7 +173,7 @@ const CreateAProjectForm = () => {
       })),
     )
     setActiveCover(res.cover)
-    setMyCover(res.cover)
+    // setMyCover(res.cover)
     form.setFieldsValue({
       name: res.name,
       team_id: res.team_id,
@@ -412,7 +412,7 @@ const CreateAProjectForm = () => {
                     <IconFont
                       style={{
                         position: 'absolute',
-                        left: '26px',
+                        left: '36px',
                         top: '4px',
                         color: 'var(--neutral-n3)',
                       }}

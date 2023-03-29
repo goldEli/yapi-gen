@@ -217,7 +217,7 @@ const MyDropdown = (props: any) => {
   const onRoute = (el: any, type: string) => {
     let iterParmas = null
     let router = ''
-    if (type == 'story') {
+    if (type === 'story') {
       iterParmas = encryptPhp(
         JSON.stringify({
           type: 'info',
@@ -225,6 +225,7 @@ const MyDropdown = (props: any) => {
           demandId: el.id,
         }),
       )
+      router = `/ProjectManagement/Demand?data=${iterParmas}`
     } else {
       const resultType = el?.feedable_type ?? el?.actionable_type
       if (resultType === 'project') {

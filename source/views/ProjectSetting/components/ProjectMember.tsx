@@ -59,7 +59,7 @@ const HeaderTop = styled.div({
   alignItems: 'center',
   justifyContent: 'space-between',
   zIndex: 1,
-  marginBottom: 20,
+  // marginBottom: 20,
 })
 
 const Content = styled.div({

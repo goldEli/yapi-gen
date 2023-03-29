@@ -32,7 +32,7 @@ const Main = (props: any) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const [infoIcon, setInfoIcon] = useState(true)
-  const [moreIcon, setMoreIcon] = useState(false)
+  const [moreIcon, setMoreIcon] = useState(true)
   const { getCategoryConfigDataList, activeCategory, getProjectFieIdsData } =
     useSelector(store => store.category)
   const { projectInfo } = useSelector(store => store.project)
@@ -199,12 +199,12 @@ const Main = (props: any) => {
     const customizeNum = getProjectFieIdsData?.filter(
       (el: any) => el.is_customize === 1,
     )
-    const evevtObj: any =
-      event.dataTransfer.getData('item') &&
-      JSON.parse(event.dataTransfer.getData('item'))
-    const dragItem =
-      event.dataTransfer.getData('DragItem') &&
-      JSON.parse(event.dataTransfer.getData('DragItem'))
+    const evevtObj: any = event.dataTransfer.getData('item')
+      ? JSON.parse(event.dataTransfer.getData('item'))
+      : null
+    const dragItem = event.dataTransfer.getData('DragItem')
+      ? JSON.parse(event.dataTransfer.getData('DragItem'))
+      : null
     if (customizeNum?.length === 20 && evevtObj?.dragtype === 'add') {
       message.warning(t('newlyAdd.maxAddFields'))
       return
@@ -283,6 +283,7 @@ const Main = (props: any) => {
   }
   return (
     <div
+      id="father"
       style={{
         flex: 1,
         height: 'calc(100vh - 220px)',
@@ -290,7 +291,7 @@ const Main = (props: any) => {
         padding: '0 24px',
       }}
     >
-      <TitleStyle onClick={() => setInfoIcon(!infoIcon)}>
+      <TitleStyle draggable="false" onClick={() => setInfoIcon(!infoIcon)}>
         {getCategoryConfigF?.length >= 1 && (
           <CommonIconFont
             type={infoIcon ? 'down-icon' : 'right-icon'}
@@ -298,7 +299,9 @@ const Main = (props: any) => {
             color="var(--neutral-n3)"
           />
         )}
-        <span>{t('newlyAdd.basicInfo') as string}</span>
+        <span style={{ marginLeft: '8px' }}>
+          {t('newlyAdd.basicInfo') as string}
+        </span>
       </TitleStyle>
       {infoIcon && (
         <TabsDragging
@@ -316,7 +319,7 @@ const Main = (props: any) => {
           setList={setGetCategoryConfigF}
         />
       )}
-      <TitleStyle onClick={() => setMoreIcon(!moreIcon)}>
+      <TitleStyle draggable="false" onClick={() => setMoreIcon(!moreIcon)}>
         <CommonIconFont
           type={moreIcon ? 'down-icon' : 'right-icon'}
           size={14}

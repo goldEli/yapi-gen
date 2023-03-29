@@ -157,6 +157,9 @@ export const CollapseItemTitle = styled.div`
   height: 28px;
   background: var(--hover-d2);
   border-radius: 4px;
+  &:hover {
+    background: var(--hover-d1);
+  }
   span {
     font-size: var(--font12);
     color: var(--neutral-n2);
