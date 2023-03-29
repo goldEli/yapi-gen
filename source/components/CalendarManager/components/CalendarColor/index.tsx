@@ -5,7 +5,8 @@ import { Space } from 'antd'
 const ColorGroups = styled(Space)`
   display: flex;
   align-items: center;
-  /* flex-wrap: wrap; */
+  flex-wrap: wrap;
+  width: 100%;
 `
 
 const ColorItem = styled.div<{ color: string }>`
@@ -42,14 +43,14 @@ const calendarColorList = [
 ]
 
 const CalendarColor = (props: CalendarColorProps) => {
-  const onChangeColor = (e: any, color: string) => {
-    e.stopPropagation()
+  const onChangeColor = (color: string) => {
     props.onChangeColor(color)
   }
+
   return (
     <ColorGroups>
       {calendarColorList?.map((i: string) => (
-        <ColorItem key={i} color={i} onClick={e => onChangeColor(e, i)}>
+        <ColorItem key={i} color={i} onClick={() => onChangeColor(i)}>
           {props.color === i && <IconFont type="check" />}
         </ColorItem>
       ))}

@@ -7,7 +7,7 @@ import MoreDropdown from '@/components/MoreDropdown'
 import { useDispatch, useSelector } from '@store/index'
 import { getCalendarList } from '@store/calendar/calendar.thunk'
 import { setCalendarData, setCheckedCalendarList } from '@store/calendar'
-import CalendarColor from '../CalendarColor'
+import CalendarMoreDropdown from './CalendarMoreDropdown'
 
 const { Panel } = Collapse
 
@@ -46,6 +46,7 @@ const CalendarManagerListItem = styled.div`
   justify-content: space-between;
   height: 32px;
   cursor: pointer;
+  width: 100%;
   .name {
     font-size: 14px;
     color: var(--neutral-n2);
@@ -64,6 +65,7 @@ const CalendarManagerListItem = styled.div`
 const ItemBox = styled.div`
   display: flex;
   align-items: center;
+  width: 100%;
 `
 
 interface CalendarManagerListProps {
@@ -82,6 +84,7 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
   // 改变日历的选中状态
   const onChangeCheck = (item: Model.Calendar.Info) => {
     // 还缺少一个修改保存选中数据的接口
+
     // 改变原始数据
     const newCalendarData = calendarList?.map((i: Model.Calendar.Info) => ({
       ...i,
@@ -105,25 +108,9 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
     )
   }
 
-  // 改变颜色
-  const onChangeColor = (color: string, item: Model.Calendar.Info) => {
-    // 走编辑接口
-    // 改变原始数据
-    const newCalendarData = calendarList?.map((i: Model.Calendar.Info) => ({
-      ...i,
-      color: i.id === item.id ? color : i.color,
-    }))
-    dispatch(
-      setCalendarData({
-        ...calendarData,
-        ...{ [props.type]: newCalendarData },
-      }),
-    )
-  }
-
   useEffect(() => {
     dispatch(getCalendarList())
-  }, [props.type])
+  }, [])
 
   return (
     <div>
@@ -153,11 +140,8 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
           key="1"
         >
           {calendarList?.map((i: any) => (
-            <CalendarManagerListItem
-              key={i.id}
-              onClick={() => onChangeCheck(i)}
-            >
-              <ItemBox key={i.id}>
+            <CalendarManagerListItem key={i.id}>
+              <ItemBox key={i.id} onClick={() => onChangeCheck(i)}>
                 <IconFont
                   type={i.is_check ? 'pput-sel' : 'put'}
                   style={{ fontSize: 16, color: i.color }}
@@ -167,9 +151,10 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
               <MoreDropdown
                 isMoreVisible={isMoreVisible}
                 menu={
-                  <CalendarColor
-                    color={i.color}
-                    onChangeColor={color => onChangeColor(color, i)}
+                  <CalendarMoreDropdown
+                    item={i}
+                    type={props.type}
+                    onCancel={() => setIsMoreVisible(false)}
                   />
                 }
                 onChangeVisible={setIsMoreVisible}
