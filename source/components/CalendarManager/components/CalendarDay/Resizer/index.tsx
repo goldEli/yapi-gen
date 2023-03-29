@@ -1,15 +1,6 @@
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import React, {
-  MouseEvent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
-import { useDrag } from 'react-dnd'
-import { getEmptyImage } from 'react-dnd-html5-backend'
-import { dragItemTypes } from '../config'
+import React, { useCallback, useRef, useState } from 'react'
 import { getStyleValue } from '../utils'
 
 export type TDirection = 'top' | 'bottom'

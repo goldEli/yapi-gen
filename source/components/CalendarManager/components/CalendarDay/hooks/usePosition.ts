@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import { useMemo } from 'react'
-import { oneHourHeight } from '../config'
+import { oneHourHeight } from '../../../config'
 
 const usePosition = (startTime: number, endTime: number) => {
   const height = useMemo(() => {

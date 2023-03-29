@@ -2,14 +2,8 @@ import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
 import dayjs from 'dayjs'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useDrag } from 'react-dnd'
-import { getEmptyImage } from 'react-dnd-html5-backend'
-import { dragItemTypes, halfHourHeight, oneHourHeight } from '../config'
-import Resizer, { TDirection } from '../Resizer'
+import { oneHourHeight } from '../../../config'
 import {
-  addMinutes,
-  getEndTimeByHeight,
-  getMinutesByDistance,
   getTimeByAddDistance,
   getTimeByOffsetDistance,
   hexToRgba,

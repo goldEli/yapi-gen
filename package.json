@@ -28,6 +28,7 @@
     "antd": "^4.24.0",
     "array-move": "^4.0.0",
     "caret-pos": "^2.0.0",
+    "classnames": "^2.3.2",
     "cos-js-sdk-v5": "^1.4.15",
     "crypto-js": "^4.1.1",
     "dayjs": "^1.11.0",
@@ -91,6 +92,9 @@
       ]
     },
     "rules": {
+      "complexity": 0,
+      "@typescript-eslint/no-empty-function": 0,
+      "no-empty-function": 0,
       "@typescript-eslint/no-use-before-define": 0,
       "max-params": 0,
       "camelcase": 0,
@@ -126,10 +130,6 @@
       "@typescript-eslint/no-explicit-any": 0,
       "@typescript-eslint/member-delimiter-style": 0,
       "react/jsx-no-literals": 0,
-      "complexity": [
-        2,
-        10
-      ],
       "react-hooks/exhaustive-deps": 0,
       "max-lines": [
         2,
