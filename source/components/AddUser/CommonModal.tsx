@@ -15,7 +15,10 @@ import { useEffect, useState } from 'react'
 import Checkbox from 'antd/lib/checkbox/Checkbox'
 import CommonUserAvatar from './CommonUserAvatar'
 import { useSelector } from '@store/index'
-import { getDepartmentUserList } from '@/services/setting'
+import {
+  getDepartmentUserList,
+  getDepartmentUserList1,
+} from '@/services/setting'
 import { unionBy } from 'lodash'
 import CustomSelect from '../CustomSelect'
 
@@ -227,6 +230,7 @@ const CommonModal = (props: ModalProps) => {
   ])
   const [tabsActive, setTabsActive] = useState(0)
   const [treeData, setTreeData] = useState<any>()
+  const [treeData2, setTreeData2] = useState<any>()
   const [form] = Form.useForm()
   const onInit = () => {
     setPersonData([])
@@ -270,14 +274,43 @@ const CommonModal = (props: ModalProps) => {
     }
     return checkdFilterDataList
   }
-  const getUser = async () => {
+  console.log(treeData, 'TreeData')
+  const getCompany = async () => {
+    const res = await getDepartmentUserList1({
+      search: {
+        project_id: props.isPermisGroup ? projectInfo?.id : '0',
+        type: 'company',
+      },
+    })
+    setTreeData2(res)
+    console.log(res)
+    // 拍平数组
+    const data = unionBy(checkdFilterData(res), 'id')
+    setTabsTreeDataList(
+      data.map((el: any) => ({ label: el.name, value: el.id, ...el })),
+    )
+    setSelectDataList(
+      data.map((el: any) => ({ label: el.name, value: el.id, ...el })),
+    )
+  }
+  const getTeam = async () => {
     const res = await getDepartmentUserList({
       search: {
         project_id: props.isPermisGroup ? projectInfo?.id : '0',
-        type: tabsActive === 0 ? 'team' : 'company',
+        type: 'team',
       },
     })
+    // const data2 = res.map((el: any) => ({
+    //   ...el,
+    //   children: el.staffs.map((v: any) => {
+    //     const temp = { ...v }
+    //     v.staffs = temp
+    //     return v
+    //   })
+    // }))
+    console.log(res, 'data2')
     setTreeData(res)
+    // console.log(data2);
     // 拍平数组
     const data = unionBy(checkdFilterData(res), 'id')
     setTabsTreeDataList(
@@ -288,8 +321,12 @@ const CommonModal = (props: ModalProps) => {
     )
   }
   useEffect(() => {
-    props.isVisible && getUser()
-  }, [props.isVisible, tabsActive])
+    if (tabsActive === 0) {
+      getTeam()
+    } else {
+      getCompany()
+    }
+  }, [tabsActive])
 
   // 删除成员
   const delPersonDataList = (el: any) => {
@@ -353,6 +390,7 @@ const CommonModal = (props: ModalProps) => {
     }
   }
 
+  console.log(treeData, 'data0-li')
   return (
     <ModalStyle
       footer={false}
@@ -434,7 +472,7 @@ const CommonModal = (props: ModalProps) => {
             titleRender={(node: any) => (
               <CommonUserAvatar avatar={node.avatar} name={node.name} />
             )}
-            treeData={treeData}
+            treeData={tabsActive === 0 ? treeData : treeData2}
             fieldNames={{
               title: 'name',
               key: 'id',
