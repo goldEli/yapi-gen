@@ -403,7 +403,7 @@ const TableFilter = (props: any) => {
   }
 
   return (
-    <SearchLine style={{ paddingTop: '0px' }} hasLeft={props?.hasLeft}>
+    <SearchLine hasLeft={props?.hasLeft}>
       <Wrap hidden={props.showForm} style={{ userSelect: 'none' }}>
         <FormWrap form={form}>
           {list
