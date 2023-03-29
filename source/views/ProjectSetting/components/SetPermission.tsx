@@ -7,10 +7,12 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
 import CustomSelect from '@/components/CustomSelect'
+import CommonUserAvatar from '@/components/CommonUserAvatar'
 
-const PersonalHead = styled.div`
+const PersonalHead = styled.span`
   display: flex;
-  justify-content: center;
+  justify-content: end;
+  margin-top: 20px;
 `
 const PersonalFooter = styled.div`
   display: flex;
@@ -23,6 +25,7 @@ const Line = styled.div`
   margin-top: 24px;
 `
 const RightLine = styled(Line)`
+  text-align: right;
   margin-top: 24px;
   color: rgba(50, 50, 51, 1);
 `
@@ -88,19 +91,9 @@ const SetPermissionWrap = (props: {
       isVisible={props.isVisible}
       onConfirm={onConfirm}
     >
-      <PersonalHead>
-        {data?.avatar ? (
-          <img className={imgCss} src={data?.avatar} alt="" />
-        ) : (
-          <SetHead>
-            {String(
-              data?.name?.substring(0, 1)?.trim().slice(0, 1),
-            ).toLocaleUpperCase()}
-          </SetHead>
-        )}
-      </PersonalHead>
       <PersonalFooter>
         <Left>
+          <Line>{t('head_portrait')}</Line>
           <Line>{t('common.phone')}</Line>
           <Line>{t('common.email')}</Line>
           <Line>{t('common.name')}</Line>
@@ -108,6 +101,13 @@ const SetPermissionWrap = (props: {
           <Line>{t('common.permissionGroup')}</Line>
         </Left>
         <Right>
+          <PersonalHead>
+            {data?.avatar ? (
+              <img className={imgCss} src={data?.avatar} alt="" />
+            ) : (
+              <CommonUserAvatar />
+            )}
+          </PersonalHead>
           <RightLine>{data.phone ? data.phone : '--'}</RightLine>
           <RightLine>{data.email ? data.email : '--'}</RightLine>
           <RightLine>{data.name ? data.name : '--'}</RightLine>
