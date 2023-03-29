@@ -1,12 +1,6 @@
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
-import dayjs from 'dayjs'
 import React from 'react'
-import { useDrop } from 'react-dnd'
-import { dragItemTypes, oneHourHeight } from '../config'
-import CustomDragLayer from '../CustomDraglayer'
-import ResizerMove from '../ResizerMove'
-import { handleOffsetDistance } from '../utils'
 
 interface DropAreaProps {
   children?: React.ReactNode

@@ -1,6 +1,8 @@
 import styled from '@emotion/styled'
+import dayjs from 'dayjs'
 import React, { useMemo } from 'react'
-import { oneHourHeight } from '../config'
+import CurrentTimeLine from '../../CurrentTimeLine'
+import { oneHourHeight } from '../../../config'
 
 interface TimescaleProps {}
 const Table = styled.table`
@@ -80,15 +82,15 @@ const Timescale: React.FC<TimescaleProps> = props => {
             </tr>
             <tr>
               <td></td>
-              <td>{`${str}:15`}</td>
+              <td></td>
             </tr>
             <tr>
               <td></td>
-              <td>{`${str}:35`}</td>
+              <td></td>
             </tr>
             <tr>
               <td></td>
-              <td>{`${str}:45`}</td>
+              <td></td>
             </tr>
           </>
         )
@@ -97,9 +99,7 @@ const Timescale: React.FC<TimescaleProps> = props => {
   return (
     <Table className="time-scale">
       {content}
-      <CurrentLine>
-        <span className="time">03:15</span>
-      </CurrentLine>
+      <CurrentTimeLine time={dayjs('2023-3-29 02:35:00').valueOf()} />
     </Table>
   )
 }

@@ -91,6 +91,8 @@
       ]
     },
     "rules": {
+      "@typescript-eslint/no-empty-function": 0,
+      "no-empty-function": 0,
       "@typescript-eslint/no-use-before-define": 0,
       "max-params": 0,
       "camelcase": 0,

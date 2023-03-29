@@ -3,7 +3,7 @@ import { useSelector } from '@store/index'
 import dayjs from 'dayjs'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDragLayer, XYCoord } from 'react-dnd'
-import { dragItemTypes, oneHourHeight } from '../config'
+import { dragItemTypes, oneHourHeight } from '../../../config'
 import { handleOffsetDistance } from '../utils'
 
 interface CustomDragLayerProps {}

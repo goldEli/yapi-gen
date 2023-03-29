@@ -3,7 +3,7 @@ import { useSelector } from '@store/index'
 import dayjs from 'dayjs'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDragLayer, XYCoord } from 'react-dnd'
-import { dragItemTypes, oneHourHeight } from '../config'
+import { oneHourHeight } from '../../../config'
 import { handleOffsetDistance } from '../utils'
 
 interface CustomDragLayerProps {}
@@ -75,7 +75,7 @@ function getItemStyles(
 const ResizerMove: React.FC<CustomDragLayerProps> = props => {
   const { itemType, isDragging, item, initialOffset, currentOffset, delta } =
     useDragLayer(monitor => ({
-      accept: dragItemTypes.resizeBarBottom,
+      // accept: dragItemTypes.resizeBarBottom,
       item: monitor.getItem(),
       itemType: monitor.getItemType(),
       initialOffset: monitor.getInitialSourceClientOffset(),
