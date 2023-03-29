@@ -18,9 +18,11 @@ export const getScheduleList = async (
         },
         {
           id: 2,
-          title: '做作业',
-          startTime: Date.parse('2023-3-23 3:15:00'),
-          endTime: Date.parse('2023-3-23 4:45:00'),
+          title: '做作业1',
+          // startTime: Date.parse('2023-3-23 3:15:00'),
+          // endTime: Date.parse('2023-3-23 4:45:00'),
+          startTime: Date.parse('2023-3-23 5:45:00'),
+          endTime: Date.parse('2023-3-23 7:00:00'),
           color: '#A176FB',
         },
         {
@@ -46,7 +48,7 @@ export const getScheduleList = async (
         },
         {
           id: 6,
-          title: '睡觉4',
+          title: '做作业2',
           startTime: Date.parse('2023-3-23 6:45:00'),
           endTime: Date.parse('2023-3-23 7:30:00'),
           color: '#00D2C5',

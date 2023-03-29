@@ -5,7 +5,12 @@
 
 import { useSelector } from '@store/index'
 import { useEffect, useState } from 'react'
-import { getClassifyConflicts, getConflicts, getStyleValue } from '../utils'
+import {
+  getClassifyConflicts,
+  getConflicts,
+  getConflictsTimeRange,
+  getStyleValue,
+} from '../utils'
 
 const minLeft = 58
 const useCalculationConflict = () => {
@@ -28,7 +33,7 @@ const useCalculationConflict = () => {
     if (!maxWidth) {
       return
     }
-    const conflicts = getConflicts(list)
+    const conflicts = getConflictsTimeRange(list)
 
     const conflictsWithSize = conflicts
       .map(con => {

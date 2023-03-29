@@ -112,6 +112,25 @@ function findConflicts(events: Model.Schedule.Info[]) {
   return conflicts
 }
 
+function findConflictsList(events: TimeRange[]) {
+  const conflicts = []
+
+  for (let i = 0; i < events.length; i++) {
+    for (let j = i + 1; j < events.length; j++) {
+      if (
+        events[i].startTime < events[j].endTime &&
+        events[i].endTime > events[j].startTime
+      ) {
+        conflicts.push({})
+      }
+    }
+  }
+
+  return {
+    conflicts,
+  }
+}
+
 type Item = {
   id: string
   startTime: number
@@ -141,8 +160,8 @@ function findConflictsClassify(events: Item[]) {
       }
     }
   }
-  const unConflicts = events.filter(item => !usedIds.includes(item.id))
 
+  const unConflicts = events.filter(item => !usedIds.includes(item.id))
   return conflicts.concat(unConflicts)
 }
 
@@ -227,4 +246,113 @@ export function getClassifyConflicts(events: Model.Schedule.Info[]) {
   }
 
   return classified
+}
+
+interface TimeRange {
+  startTime: number
+  endTime: number
+}
+function print(list: TimeRange[]) {
+  console.log(
+    list.map(item => ({
+      startTime: dayjs(item.startTime).format('hh:mm'),
+      endTime: dayjs(item.endTime).format('hh:mm'),
+    })),
+  )
+}
+function combineTimeRange(list: TimeRange[], originList: TimeRange[]) {
+  const conflicts: TimeRange[] = []
+  console.log('============')
+  print(list)
+
+  for (let i = 0; i < list.length; i++) {
+    for (let j = i + 1; j < list.length; j++) {
+      if (
+        list[i].startTime < list[j].endTime &&
+        list[i].endTime > list[j].startTime
+      ) {
+        conflicts.push({
+          startTime: Math.min(list[i].startTime, list[j].startTime),
+          endTime: Math.max(list[i].endTime, list[j].endTime),
+        })
+        break
+      }
+      if (list[i].endTime === list[j].endTime) {
+        conflicts.push({
+          startTime: Math.min(list[i].startTime, list[j].startTime),
+          endTime: Math.max(list[i].endTime, list[j].endTime),
+        })
+
+        break
+      }
+      if (list[i].startTime === list[j].startTime) {
+        conflicts.push({
+          startTime: Math.min(list[i].startTime, list[j].startTime),
+          endTime: Math.max(list[i].endTime, list[j].endTime),
+        })
+
+        break
+      }
+    }
+  }
+
+  // const unUsed = originList.filter(item => {
+  //   if (
+  //     used.some(
+  //       i => i.startTime === item.startTime && i.endTime === item.endTime,
+  //     )
+  //   ) {
+  //     return false
+  //   }
+  //   return true
+  // })
+  const unUsed = originList.filter(item => {
+    if (
+      conflicts.some(i => {
+        return i.startTime <= item.startTime && i.endTime >= item.endTime
+      })
+    ) {
+      return false
+    }
+    return true
+  })
+  print(conflicts)
+  print(unUsed)
+  const res = conflicts.concat(unUsed)
+  return res
+}
+
+function combine(list: TimeRange[][]): TimeRange[] {
+  return list.map(item => {
+    return {
+      startTime: Math.min(item[0].startTime, item[1].startTime),
+      endTime: Math.max(item[0].endTime, item[1].endTime),
+    }
+  })
+}
+
+export function getConflictsTimeRange(list: Model.Schedule.Info[]) {
+  const res: Model.Schedule.Info[][] = []
+  for (let i = 0; i < list.length; ++i) {
+    for (let j = i + 1; j < list.length; ++j) {
+      if (
+        list[i].startTime < list[j].endTime &&
+        list[i].endTime > list[j].startTime
+      ) {
+        res.push([list[i], list[j]])
+      }
+    }
+  }
+
+  for (let i = 0; i < res.length; ++i) {
+    const first = res[i]
+    for (let j = 0; j < res.length; ++j) {
+      const two = res[j]
+      if (first.some(item => two.includes(item))) {
+        res[i] = []
+        res[j] = [...new Set(first.concat(two))]
+      }
+    }
+  }
+  return res.filter(item => item.length)
 }

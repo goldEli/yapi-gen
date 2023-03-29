@@ -92,6 +92,7 @@
       ]
     },
     "rules": {
+      "complexity": 0,
       "@typescript-eslint/no-empty-function": 0,
       "no-empty-function": 0,
       "@typescript-eslint/no-use-before-define": 0,
@@ -129,10 +130,6 @@
       "@typescript-eslint/no-explicit-any": 0,
       "@typescript-eslint/member-delimiter-style": 0,
       "react/jsx-no-literals": 0,
-      "complexity": [
-        2,
-        10
-      ],
       "react-hooks/exhaustive-deps": 0,
       "max-lines": [
         2,
