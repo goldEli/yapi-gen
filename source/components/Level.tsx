@@ -55,8 +55,7 @@ export const LevelContent = (props: LevelProps) => {
       setShowData(
         projectInfoValues
           ?.filter((i: any) => i.key === 'priority')[0]
-          ?.children?.filter((k: any) => k.id !== -1)
-          .sort((a: any, b: any) => a.sort - b.sort),
+          ?.children?.filter((k: any) => k.id !== -1),
       )
     }
   }
