@@ -62,10 +62,10 @@ const NewCalendar = styled.div`
 `
 
 const Timescale: React.FC<TimescaleProps> = props => {
-  const { list } = useSelector(store => store.calendar)
+  const { calendarData } = useSelector(store => store.calendar)
   const currentColor = useMemo(() => {
-    return list.find(item => item.is_default === 1)?.color
-  }, [list])
+    return calendarData.manage.find(item => item.is_default === 1)?.color
+  }, [calendarData])
   const [timeZone, setTimeZone] = React.useState<string[]>([])
   const [distance, setDistance] = React.useState(0)
 
