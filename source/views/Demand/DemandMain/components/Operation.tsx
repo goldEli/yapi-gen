@@ -65,7 +65,7 @@ const IconWrap = styled(IconFont)({
   cursor: 'pointer',
   padding: 6,
   borderRadius: 6,
-  color: 'var(--neutral-n2)',
+  color: 'var(--neutral-n3)',
   '&: hover': {
     color: 'var(--neutral-n1-d1)',
     background: 'var(--hover-d3)',

@@ -321,7 +321,10 @@ const GlobalStyle = () => {
       -webkit-text-fill-color: var(--auxiliary-b4) !important;
       transition: background-color 5000s ease-in-out 0s !important;
     }
-
+    .ant-input-affix-wrapper:focus,
+    .ant-input-affix-wrapper-focused {
+      box-shadow: none;
+    }
     .ant-popover-inner-content {
       padding: 0;
     }
