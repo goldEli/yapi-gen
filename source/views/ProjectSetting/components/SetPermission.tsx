@@ -16,8 +16,8 @@ const PersonalHead = styled.span`
 `
 const PersonalFooter = styled.div`
   display: flex;
-  justify-content: space-around;
-  padding-right: 20px;
+  justify-content: space-between;
+  padding: 0px 24px;
 `
 const Left = styled.div``
 const Line = styled.div`
