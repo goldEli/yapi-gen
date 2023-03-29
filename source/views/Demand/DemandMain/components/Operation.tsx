@@ -465,7 +465,13 @@ const Operation = (props: Props) => {
           onChangeSetting={() => props.onChangeSetting(!props.settingState)}
         />
       </OperationWrap>
-      {!filterState && (
+
+      <div
+        style={{
+          height: filterState ? '0px' : 'initial',
+          visibility: filterState ? 'hidden' : 'visible',
+        }}
+      >
         <TableFilter
           noNeed
           defaultValue={defaultValue}
@@ -478,7 +484,7 @@ const Operation = (props: Props) => {
           specialList={filterSpecialList}
           customList={filterCustomList}
         />
-      )}
+      </div>
     </StickyWrap>
   )
 }
