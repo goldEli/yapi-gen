@@ -43,6 +43,9 @@ const Table = styled.table`
     top: -9px;
     left: 16px;
   }
+  .borderRight {
+    border-right: 1px solid var(--neutral-n6-d1);
+  }
 `
 
 const Timescale: React.FC<TimescaleProps> = props => {
@@ -130,11 +133,18 @@ const Timescale: React.FC<TimescaleProps> = props => {
                         <span className="time">{`${str}:00`}</span>
                       )}
                     </td>
-                    <td
-                      className={classNames('bg', {
-                        borderTop: index === 0,
+                    {Array(7)
+                      .fill(0)
+                      .map((_, tdIndex) => {
+                        return (
+                          <td
+                            key={tdIndex}
+                            className={classNames('borderRight', {
+                              borderTop: index === 0,
+                            })}
+                          ></td>
+                        )
                       })}
-                    ></td>
                   </tr>
                 )
               })}
@@ -147,11 +157,11 @@ const Timescale: React.FC<TimescaleProps> = props => {
     <Table ref={tableRef} className="time-scale">
       {content}
       <CurrentTimeLine />
-      <NewCalendarArea
+      {/* <NewCalendarArea
         color={currentColor ?? ''}
         timeZone={timeZone}
         distance={distance}
-      />
+      /> */}
       <QuickCreateScheduleModel />
       <ScheduleInfoDropdown />
     </Table>
