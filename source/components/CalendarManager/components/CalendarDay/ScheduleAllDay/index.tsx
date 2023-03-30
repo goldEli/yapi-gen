@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
-import { useSelector } from '@store/index'
+import { setScheduleInfoDropdown } from '@store/calendarPanle'
+import { useDispatch, useSelector } from '@store/index'
 import React from 'react'
 import { hexToRgba } from '../utils'
 
@@ -85,6 +86,7 @@ const ScheduleAllDay: React.FC<ScheduleAllDayProps> = props => {
     () => scheduleList.filter(item => item.is_all_day === 1),
     [scheduleList],
   )
+  const dispatch = useDispatch()
   return (
     <ScheduleAllDayBox>
       <TimeZone>GTM+08</TimeZone>
@@ -96,7 +98,19 @@ const ScheduleAllDay: React.FC<ScheduleAllDayProps> = props => {
         <ScheduleListScroll>
           {list.map(item => {
             return (
-              <ScheduleItem key={item.id} bg={hexToRgba(item.color, 0.1)}>
+              <ScheduleItem
+                onClick={() => {
+                  dispatch(
+                    setScheduleInfoDropdown({
+                      visible: true,
+                      y: 0,
+                      x: 300,
+                    }),
+                  )
+                }}
+                key={item.id}
+                bg={hexToRgba(item.color, 0.1)}
+              >
                 {item.title}
               </ScheduleItem>
             )
