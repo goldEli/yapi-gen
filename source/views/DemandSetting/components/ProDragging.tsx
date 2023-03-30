@@ -80,9 +80,9 @@ const SliderList = (props: any) => {
     setDragItem(obj)
     ev.dataTransfer.setData('item', JSON.stringify(obj))
     const imgDom = document.createElement('div')
-    // ev.target.style.opacity = 0.3
     document.body.appendChild(imgDom)
     ev.dataTransfer.setDragImage(imgDom, 0, 0)
+    localStorage.className = ''
   }
   const onDrag = throttle(e => {
     const el: any = ref.current
@@ -95,9 +95,15 @@ const SliderList = (props: any) => {
       setTop(e.pageY)
       setLeft(e.pageX)
     }
-    // document
-    //   .getElementById('father')!
-    //   .scrollTo({ top: e.pageY, behavior: 'smooth' })
+    if (e.pageY >= window.screen?.availHeight - 300) {
+      document
+        .getElementById('father')!
+        .scrollTo({ top: e.pageY, behavior: 'smooth' })
+    } else if (e.pageY <= Number(localStorage.topTitleTop)) {
+      document
+        .getElementById('father')!
+        .scrollTo({ top: Number(0), behavior: 'smooth' })
+    }
   }, 10)
 
   const onDragEnd = () => {
