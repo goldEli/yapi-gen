@@ -10,7 +10,7 @@ import { Form, message, Modal, Select, Space, Tree } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
-import { CloseWrap } from '@/components/StyleCommon'
+import { CloseWrap, DelButton } from '@/components/StyleCommon'
 import CommonButton from '@/components/CommonButton'
 import { useEffect, useState } from 'react'
 import Checkbox from 'antd/lib/checkbox/Checkbox'
@@ -320,7 +320,6 @@ const CommonModal = (props: ModalProps) => {
 
   // 删除成员
   const delPersonDataList = (el: any) => {
-    setPersonData(personData.filter((item: any) => el.id !== item.id))
     let key: any = []
     if (tabsActive === 1) {
       key = personData
@@ -332,6 +331,13 @@ const CommonModal = (props: ModalProps) => {
           .filter((item: any) => item.id !== el.id && !item.children)
           .map((item: any) => item.id),
       )
+    } else {
+      setCheckedKeys(
+        personData
+          .filter((item: any) => item.id !== el.id && !item.children)
+          .map((item: any) => item.id),
+      )
+      setPersonData(personData.filter((item: any) => el.id !== item.id))
     }
     key?.length < 1 && setSearchVal('')
   }
@@ -355,10 +361,11 @@ const CommonModal = (props: ModalProps) => {
       setPersonData(data)
     } else {
       setCheckedKeys(checkedKey)
-      setPersonData(e.checkedNodes)
+      setPersonData(
+        e.checkedNodes.filter((el: any) => !String(el.id).includes('team_id')),
+      )
     }
   }
-
   // 全选
   const checkAllChange = (e: any) => {
     if (e.target.checked) {
@@ -396,13 +403,7 @@ const CommonModal = (props: ModalProps) => {
       props?.onConfirm?.(personData)
     }
   }
-  useEffect(() => {
-    if (personData.length >= 1) {
-      setPersonData(fitlerDataList(personData))
-    } else {
-      setPersonData([])
-    }
-  }, [personData])
+  // 去重，团队有重复人员
   const fitlerDataList = (data: any) => {
     let obj: any = {}
     let set: any = data?.reduce((cur: any, next: any) => {
