@@ -8,7 +8,7 @@
 /* eslint-disable complexity */
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import TabsDragging from './TabsDragging'
 import { useDispatch, useSelector } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -32,7 +32,7 @@ const Main = (props: any) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const [infoIcon, setInfoIcon] = useState(true)
-  const [moreIcon, setMoreIcon] = useState(false)
+  const [moreIcon, setMoreIcon] = useState(true)
   const { getCategoryConfigDataList, activeCategory, getProjectFieIdsData } =
     useSelector(store => store.category)
   const { projectInfo } = useSelector(store => store.project)
@@ -45,6 +45,9 @@ const Main = (props: any) => {
   const [draggingIndex, setDraggingIndex] = useState<any>()
   const [configType, setConfigType] = useState(0)
   const [colItem, setColItem] = useState<any>()
+  const topTitleRef: any = useRef()
+  const bottomTitleRef: any = useRef()
+  const [dragState, setDragState] = useState(true)
   useEffect(() => {
     setGetCategoryConfigT(getCategoryConfigDataList?.isFoldT)
     setGetCategoryConfigF(getCategoryConfigDataList?.isFoldF)
@@ -55,6 +58,9 @@ const Main = (props: any) => {
         ...getCategoryConfigDataList?.isFoldT,
       ]),
     )
+    localStorage.bottomTitleTop =
+      bottomTitleRef?.current?.getBoundingClientRect().top
+    localStorage.topTitleTop = topTitleRef?.current?.getBoundingClientRect().top
   }, [getCategoryConfigDataList])
   //  移动后跟新的数据
   const onMove = (state: number, data: any) => {
@@ -190,6 +196,7 @@ const Main = (props: any) => {
       setGetCategoryConfigT(arrData)
       dispatch(setGetCategoryConfigArray([...arrData, ...getCategoryConfigF]))
     }
+    setDragState(false)
   }
   //拖动传递过来的参数
   const onDrop = (state: any, event: any, index: any) => {
@@ -199,12 +206,12 @@ const Main = (props: any) => {
     const customizeNum = getProjectFieIdsData?.filter(
       (el: any) => el.is_customize === 1,
     )
-    const evevtObj: any =
-      event.dataTransfer.getData('item') &&
-      JSON.parse(event.dataTransfer.getData('item'))
-    const dragItem =
-      event.dataTransfer.getData('DragItem') &&
-      JSON.parse(event.dataTransfer.getData('DragItem'))
+    const evevtObj: any = event.dataTransfer.getData('item')
+      ? JSON.parse(event.dataTransfer.getData('item'))
+      : null
+    const dragItem = event.dataTransfer.getData('DragItem')
+      ? JSON.parse(event.dataTransfer.getData('DragItem'))
+      : null
     if (customizeNum?.length === 20 && evevtObj?.dragtype === 'add') {
       message.warning(t('newlyAdd.maxAddFields'))
       return
@@ -281,8 +288,10 @@ const Main = (props: any) => {
     type === 1 ? setGetCategoryConfigF(list) : setGetCategoryConfigT(list)
     props.onIsOperate(true)
   }
+
   return (
     <div
+      id="father"
       style={{
         flex: 1,
         height: 'calc(100vh - 220px)',
@@ -290,7 +299,11 @@ const Main = (props: any) => {
         padding: '0 24px',
       }}
     >
-      <TitleStyle onClick={() => setInfoIcon(!infoIcon)}>
+      <TitleStyle
+        ref={topTitleRef}
+        draggable="false"
+        onClick={() => setInfoIcon(!infoIcon)}
+      >
         {getCategoryConfigF?.length >= 1 && (
           <CommonIconFont
             type={infoIcon ? 'down-icon' : 'right-icon'}
@@ -298,10 +311,13 @@ const Main = (props: any) => {
             color="var(--neutral-n3)"
           />
         )}
-        <span>{t('newlyAdd.basicInfo') as string}</span>
+        <span style={{ marginLeft: '8px' }}>
+          {t('newlyAdd.basicInfo') as string}
+        </span>
       </TitleStyle>
       {infoIcon && (
         <TabsDragging
+          dragState={dragState}
           onClick={(i: any, child: any) => tabsDraggingOnclick(1, i, child)}
           onDrop={(event: any, index: any) => onDrop(1, event, index)}
           onMove={(data: any) => onMove(1, data)}
@@ -316,7 +332,11 @@ const Main = (props: any) => {
           setList={setGetCategoryConfigF}
         />
       )}
-      <TitleStyle onClick={() => setMoreIcon(!moreIcon)}>
+      <TitleStyle
+        ref={bottomTitleRef}
+        draggable="false"
+        onClick={() => setMoreIcon(!moreIcon)}
+      >
         <CommonIconFont
           type={moreIcon ? 'down-icon' : 'right-icon'}
           size={14}
@@ -326,6 +346,7 @@ const Main = (props: any) => {
       </TitleStyle>
       {moreIcon && (
         <TabsDragging
+          dragState={dragState}
           state={2}
           positionType="bottom"
           onChangeMove={(list: any) => onChangeMove(list, 2)}

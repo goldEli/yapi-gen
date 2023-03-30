@@ -10,6 +10,7 @@ import { bytesToSize } from '@/tools'
 import { imgs } from '@/views/LogManagement/components/LookDay'
 import { OmitText } from '@star-yun/ui'
 import { useSelector } from '@store/index'
+import { Editor } from '@xyfe/uikit'
 import { message } from 'antd'
 import { useEffect, useImperativeHandle, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -267,7 +268,16 @@ const DemandComment = (props: Props) => {
                     <div className="common" style={{ paddingRight: 30 }}>
                       {item.createdTime}
                     </div>
-                    <div
+                    <Editor
+                      value={
+                        /(?<start>^<p>*)|(?<end><\p>*$)/g.test(item.content)
+                          ? item.content
+                          : `<p>${item.content}</p>`
+                      }
+                      getSuggestions={() => []}
+                      readonly
+                    />
+                    {/* <div
                       dangerouslySetInnerHTML={{
                         __html: /(?<start>^<p>*)|(?<end><\p>*$)/g.test(
                           item.content,
@@ -275,7 +285,7 @@ const DemandComment = (props: Props) => {
                           ? item.content
                           : `<p>${item.content}</p>`,
                       }}
-                    />
+                    /> */}
 
                     {item.attachment?.length > 0 && (
                       <div

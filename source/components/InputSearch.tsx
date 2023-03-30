@@ -7,12 +7,13 @@ import { useEffect, useImperativeHandle, useState } from 'react'
 import CommonIconFont from './CommonIconFont'
 
 const InputStyle = styled(Input)<{ bgColor: any }>`
-  border: 1px solid var(--neutral-n6-d1);
+  /* border: 1px solid var(--neutral-n6-d1);
   height: 32px;
   background: ${props => props.bgColor ?? 'var(--neutral-white-d4)'};
   input {
     background: ${props => props.bgColor ?? 'var(--neutral-white-d4)'};
-  }
+  } */
+  outline: none;
 `
 
 interface Props {

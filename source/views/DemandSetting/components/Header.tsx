@@ -19,6 +19,7 @@ import EditCategory from '@/components/AllSide/DemandSettingSide/EditCategory'
 import { storyConfigCategoryList } from '@store/category/thunk'
 import CommonModal from '@/components/CommonModal'
 import CustomSelect from '@/components/CustomSelect'
+import CommonButton from '@/components/CommonButton'
 
 const HeaderWrap = styled.div`
   height: 66px;
@@ -36,6 +37,7 @@ const LeftMsg = styled.div`
 const RightOperate = styled.div`
   display: flex;
   align-items: center;
+  gap: 16px;
 `
 const MsgContent = styled.div`
   display: flex;
@@ -285,13 +287,15 @@ const Header = () => {
           <span style={{ marginRight: '8px' }}>{t('initial_model')}</span>
           <Switch checked={checked} onChange={e => onChangeOpenState(e)} />
         </SwitchStyle>
-        <BtnStyle onClick={onSetWorkFlow}>
+        <CommonButton type="light" onClick={onSetWorkFlow}>
           {t('configuring_the_workflow')}
-        </BtnStyle>
-        <BtnStyle onClick={() => editCategoryForm()}>
+        </CommonButton>
+        <CommonButton type="light" onClick={() => editCategoryForm()}>
           {t('common.edit')}
-        </BtnStyle>
-        <BtnStyle onClick={() => onDelete()}>{t('common.del')}</BtnStyle>
+        </CommonButton>
+        <CommonButton type="light" onClick={() => onDelete()}>
+          {t('common.del')}
+        </CommonButton>
       </RightOperate>
       <EditCategory
         item={activeCategory}

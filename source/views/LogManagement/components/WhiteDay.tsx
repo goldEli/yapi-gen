@@ -163,8 +163,9 @@ const WhiteDay = (props: any) => {
       setDefaultValue()
     }
     getList()
-
-    editorRef.current?.focus()
+    setTimeout(() => {
+      editorRef.current?.focus()
+    }, 100)
   }, [props.editId, props.visibleEdit])
 
   const scrollToBottom = () => {
@@ -250,7 +251,11 @@ const WhiteDay = (props: any) => {
               },
             ]}
           >
-            <Editor upload={uploadFile} getSuggestions={() => options} />
+            <Editor
+              ref={editorRef}
+              upload={uploadFile}
+              getSuggestions={() => options}
+            />
           </Form.Item>
           <Form.Item
             style={{
