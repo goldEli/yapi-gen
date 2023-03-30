@@ -612,14 +612,12 @@ const CreateDemandLeft = (props: Props) => {
             rules={[{ required: true, message: '' }]}
           >
             <CustomSelect
-              optionLabelProp="label"
               onSelect={onSelectProjectName}
               placeholder={t('common.searchProject')}
               allowClear
               showArrow
               disabled={createDemandProps.projectId}
               onClear={onClearProjectId}
-              optionFilterProp="label"
               getPopupContainer={(node: any) => node}
               showSearch
             >
@@ -646,13 +644,11 @@ const CreateDemandLeft = (props: Props) => {
             rules={[{ required: true, message: '' }]}
           >
             <CustomSelect
-              optionLabelProp="label"
               onSelect={onSelectCategory}
               onClear={onClearCategory}
               placeholder={t('common.selectType')}
               allowClear
               showArrow
-              optionFilterProp="label"
               getPopupContainer={(node: any) => node}
               showSearch
               value={categoryObj?.id}
