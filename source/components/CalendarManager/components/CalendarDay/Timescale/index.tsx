@@ -40,26 +40,6 @@ const Table = styled.table`
     left: 16px;
   }
 `
-const Tr = styled.tr`
-  .bg {
-    background: ${(props: { bg?: string }) => {
-      return props.bg
-    }};
-  }
-`
-
-const NewCalendar = styled.div`
-  width: calc(100% - 58px);
-  /* background: ${(props: { bg?: string }) => {
-    return props.bg
-  }}; */
-  font-size: 12px;
-  line-height: 20px;
-  color: var(--neutral-n1-d1);
-  position: relative;
-  top: 0px;
-  left: 58px;
-`
 
 const Timescale: React.FC<TimescaleProps> = props => {
   const { calendarData } = useSelector(store => store.calendar)
@@ -130,21 +110,6 @@ const Timescale: React.FC<TimescaleProps> = props => {
     [timeZone],
   )
 
-  // const onSelectTimeZoneByMove = React.useCallback((e: Event) => {
-  //   const target = e.target as HTMLElement
-  //   const id = target.getAttribute('data-id') as string
-  //   if (!id) {
-  //     return
-  //   }
-
-  //   setTimeZone(prev => {
-  //     // if (prev.some(item => item === id)) {
-  //     //   return prev.filter(item => item !== id)
-  //     // }
-  //     return [...new Set([...prev, id])]
-  //   })
-  // }, [])
-
   const content = useMemo(() => {
     return Array(24)
       .fill(0)
@@ -157,25 +122,13 @@ const Timescale: React.FC<TimescaleProps> = props => {
 
         return (
           <>
-            {/* <Tr
-              data-id={dataId}
-              bg={timeZone.includes(dataId) ? currentColor : ''}
-              onMouseDown={() => onSelectTimeZone(dataId)}
-              className="firstTr"
-            >
-              <td className="firstTd">
-                <span className="time">{`${str}:00`}</span>
-              </td>
-              <td className="borderTop bg"></td>
-            </Tr> */}
             {Array(4)
               .fill(0)
               .map((i, index) => {
                 const id = `2023-03-29 ${str}:${15 * index}00`
                 return (
-                  <Tr
+                  <tr
                     key={index}
-                    // bg={timeZone.includes(id) ? currentColor : ''}
                     data-id={id}
                     onMouseDown={e => onSelectTimeZone(e, id)}
                   >
@@ -189,7 +142,7 @@ const Timescale: React.FC<TimescaleProps> = props => {
                         borderTop: index === 0,
                       })}
                     ></td>
-                  </Tr>
+                  </tr>
                 )
               })}
           </>
