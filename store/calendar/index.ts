@@ -9,6 +9,10 @@ type SliceState = {
   checkedCalendarList: Model.Calendar.Info[]
   // 选择的日期
   selectedDay: number
+  // 选择的周
+  selectedWeek: {
+    date: number
+  }[]
 }
 
 const initialState: SliceState = {
@@ -18,6 +22,29 @@ const initialState: SliceState = {
   },
   checkedCalendarList: [],
   selectedDay: dayjs('2023-3-30 13:10:00').valueOf(),
+  selectedWeek: [
+    {
+      date: dayjs('2023-3-26 00:00:00').valueOf(),
+    },
+    {
+      date: dayjs('2023-3-27 00:00:00').valueOf(),
+    },
+    {
+      date: dayjs('2023-3-28 00:00:00').valueOf(),
+    },
+    {
+      date: dayjs('2023-3-29 00:00:00').valueOf(),
+    },
+    {
+      date: dayjs('2023-3-30 00:00:00').valueOf(),
+    },
+    {
+      date: dayjs('2023-3-31 00:00:00').valueOf(),
+    },
+    {
+      date: dayjs('2023-4-1 00:00:00').valueOf(),
+    },
+  ],
 }
 
 const slice = createSlice({
