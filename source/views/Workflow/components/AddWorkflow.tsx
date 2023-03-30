@@ -34,12 +34,14 @@ import CommonButton from '@/components/CommonButton'
 const TableWrap = styled.div({
   width: '780px',
   padding: '0',
-  maxHeight: '40vh',
   overflowY: 'auto',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   overflowX: 'hidden',
+  '.ant-table-content': {
+    maxHeight: '40vh',
+  },
 })
 
 const TableWrapBox = styled(Table)({
