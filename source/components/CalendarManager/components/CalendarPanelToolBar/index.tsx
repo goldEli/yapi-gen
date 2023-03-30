@@ -1,7 +1,7 @@
 import CustomSelect from '@/components/CustomSelect'
 import styled from '@emotion/styled'
+import { setCalendarPanelType } from '@store/calendarPanle'
 import { useDispatch, useSelector } from '@store/index'
-import { setCalendarPanelType } from '@store/calendar'
 import { Select } from 'antd'
 import React from 'react'
 
@@ -28,7 +28,7 @@ const selectOptions: {
 
 const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
   const calendarPanelType = useSelector(
-    state => state.calendar.calendarPanelType,
+    state => state.calendarPanel.calendarPanelType,
   )
   const dispatch = useDispatch()
 

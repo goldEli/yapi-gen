@@ -2,8 +2,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { getCalendarList } from './calendar.thunk'
 
 type SliceState = {
-  // 日历面板类型
-  calendarPanelType: Model.Calendar.CalendarPanelType
   // 左侧-日历列表
   calendarData: Model.Calendar.CalendarData
   // 左侧-日历列表-选中的日历
@@ -11,7 +9,6 @@ type SliceState = {
 }
 
 const initialState: SliceState = {
-  calendarPanelType: 'day',
   calendarData: {
     manage: [],
     sub: [],
@@ -23,13 +20,6 @@ const slice = createSlice({
   name: 'calendar',
   initialState,
   reducers: {
-    setCalendarPanelType(
-      state,
-      action: PayloadAction<SliceState['calendarPanelType']>,
-    ) {
-      console.log(action.payload)
-      state.calendarPanelType = action.payload
-    },
     setCalendarData(state, action: PayloadAction<SliceState['calendarData']>) {
       state.calendarData = action.payload
     },
@@ -57,7 +47,6 @@ const slice = createSlice({
 
 const calendar = slice.reducer
 
-export const { setCalendarPanelType, setCheckedCalendarList, setCalendarData } =
-  slice.actions
+export const { setCheckedCalendarList, setCalendarData } = slice.actions
 
 export default calendar

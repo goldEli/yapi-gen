@@ -29,7 +29,7 @@ const Content = styled.div`
 
 const CalendarPanel: React.FC<CalendarPanelProps> = props => {
   const calendarPanelType = useSelector(
-    store => store.calendar.calendarPanelType,
+    store => store.calendarPanel.calendarPanelType,
   )
   const content = useMemo(() => {
     if (calendarPanelType === 'day') {

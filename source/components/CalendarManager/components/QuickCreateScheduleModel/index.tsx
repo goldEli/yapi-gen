@@ -1,13 +1,8 @@
 import styled from '@emotion/styled'
+import { useSelector } from '@store/index'
 import React from 'react'
 
-interface QuickCreateScheduleModelProps {
-  visible: boolean
-  pointerPosition: {
-    x: number
-    y: number
-  }
-}
+interface QuickCreateScheduleModelProps {}
 interface Props {
   top: number
   left: number
@@ -28,12 +23,10 @@ const DropdownContainer = styled.div`
 const QuickCreateScheduleModel: React.FC<
   QuickCreateScheduleModelProps
 > = props => {
+  const { quickCreateScheduleModel } = useSelector(store => store.calendarPanel)
+  const { visible, x, y } = quickCreateScheduleModel
   return (
-    <DropdownContainer
-      top={props.pointerPosition.y}
-      left={props.pointerPosition.x}
-      visible={props.visible}
-    >
+    <DropdownContainer top={y} left={x} visible={visible}>
       QuickCreateScheduleModel
     </DropdownContainer>
   )

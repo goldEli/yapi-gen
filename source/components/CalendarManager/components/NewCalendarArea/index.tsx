@@ -10,7 +10,6 @@ interface NewCalendarAreaProps {
   timeZone: string[]
   color: string
   distance: number
-  onChangeVisible(bool: boolean): void
 }
 
 const Box = styled.div`

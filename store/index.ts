@@ -23,6 +23,7 @@ import category from './category'
 import log from './log'
 import calendar from './calendar'
 import schedule from './schedule'
+import calendarPanel from './calendarPanle'
 
 export const store = configureStore({
   reducer: {
@@ -45,6 +46,7 @@ export const store = configureStore({
     log,
     calendar,
     schedule,
+    calendarPanel,
   },
 })
 

@@ -3,11 +3,13 @@ import dayjs from 'dayjs'
 import React, { useMemo } from 'react'
 import CurrentTimeLine from '../../CurrentTimeLine'
 import { oneHourHeight } from '../../../config'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import classNames from 'classnames'
 import NewCalendarArea from '../../NewCalendarArea'
 import { Dropdown, Popover } from 'antd'
 import QuickCreateScheduleModel from '../../QuickCreateScheduleModel'
+import { setQuickCreateScheduleModel } from '@store/calendarPanle'
+import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
 
 interface TimescaleProps {}
 const Table = styled.table`
@@ -50,20 +52,19 @@ const Timescale: React.FC<TimescaleProps> = props => {
   }, [calendarData])
   const [timeZone, setTimeZone] = React.useState<string[]>([])
   const [distance, setDistance] = React.useState(0)
-  const [pointerPosition, setPointerPosition] = React.useState({ x: 0, y: 0 })
-  const [visible, setVisible] = React.useState(false)
   const tableRef = React.useRef<HTMLTableElement>(null)
-
-  const onChangeVisible = (bool: boolean) => {
-    setVisible(bool)
-  }
+  const dispatch = useDispatch()
 
   const onSelectTimeZone = React.useCallback(
     (e: React.MouseEvent, id: string) => {
       // 点击空白重置
       if (timeZone.length) {
         setTimeZone([])
-        onChangeVisible(false)
+        dispatch(
+          setQuickCreateScheduleModel({
+            visible: false,
+          }),
+        )
         return
       }
 
@@ -83,11 +84,13 @@ const Timescale: React.FC<TimescaleProps> = props => {
           '#calenderBoxRightArea',
         ) as Element
         dom.removeEventListener('mousemove', onMousemove)
-        setPointerPosition({
-          x: event.offsetX,
-          y: event.screenY - 630 + calenderBoxRightArea.scrollTop,
-        })
-        onChangeVisible(true)
+        dispatch(
+          setQuickCreateScheduleModel({
+            visible: true,
+            x: event.offsetX,
+            y: event.screenY - 630 + calenderBoxRightArea.scrollTop,
+          }),
+        )
         dom.removeEventListener('mouseup', onMouseUp)
       }
       dom.removeEventListener('mousemove', onMousemove)
@@ -139,22 +142,18 @@ const Timescale: React.FC<TimescaleProps> = props => {
         )
       })
   }, [currentColor, timeZone])
-  console.table(pointerPosition)
   return (
     // <Popover trigger={['contextMenu']} content={popoverContent} title="Title">
     <Table ref={tableRef} className="time-scale">
       {content}
       <CurrentTimeLine />
       <NewCalendarArea
-        onChangeVisible={onChangeVisible}
         color={currentColor ?? ''}
         timeZone={timeZone}
         distance={distance}
       />
-      <QuickCreateScheduleModel
-        pointerPosition={pointerPosition}
-        visible={visible}
-      />
+      <QuickCreateScheduleModel />
+      <ScheduleInfoDropdown />
     </Table>
     // </Popover>
   )

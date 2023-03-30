@@ -14,6 +14,9 @@ import { DraggableEvent } from 'react-draggable'
 import { setSchedule } from '@store/schedule'
 import { ResizeDirection } from 're-resizable'
 import usePosition from '../hooks/usePosition'
+import { Dropdown } from 'antd'
+import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
+import { setScheduleInfoDropdown } from '@store/calendarPanle'
 
 interface ScheduleCardProps {
   data: Model.Schedule.Info
@@ -32,6 +35,8 @@ const dragBoxClassName = css`
   cursor: move;
   box-sizing: border-box;
   padding: 0 4px;
+  position: relative;
+  z-index: 2;
 `
 const Title = styled.span`
   font-size: 12px;
@@ -67,7 +72,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     })
   }
   const onDragStop = (e: DraggableEvent, draggableData: DraggableData) => {
-    const { node, y, deltaY, lastY } = draggableData
+    const { x, node, y, deltaY, lastY } = draggableData
     const time = getTimeByOffsetDistance(startTime, endTime, y - top)
 
     dispatch(
@@ -78,6 +83,16 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
       }),
     )
     setTimeRange(null)
+    const calenderBoxRightArea = document.querySelector(
+      '#calenderBoxRightArea',
+    ) as Element
+    dispatch(
+      setScheduleInfoDropdown({
+        visible: true,
+        x: x,
+        y: y,
+      }),
+    )
   }
 
   const onResize = (
