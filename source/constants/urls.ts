@@ -135,6 +135,7 @@ const urls = {
    */
   getScheduleList: '/b/schedule_list',
   getCalendarList: '/b/calendar_list',
+  getSubscribeList: '/b/subscribe_list',
 }
 
 export default urls

@@ -12,6 +12,7 @@ const MoreWrap = styled.div`
   background: var(--neutral-white-d6);
   border-radius: 6px;
   min-width: 120px;
+  box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
 `
 
 const Item = styled.div`

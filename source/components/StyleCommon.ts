@@ -4,7 +4,7 @@
 
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import { Button, Divider, Dropdown, Slider, Table } from 'antd'
+import { Button, Divider, Dropdown, Slider, Space, Table } from 'antd'
 import CustomSelect from './CustomSelect'
 import IconFont from './IconFont'
 
@@ -905,6 +905,15 @@ const DropdownWrap = styled(Dropdown)<{ isDemandCard?: any }>(
   }),
 )
 
+const ModalFooter = styled(Space)({
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+  height: 80,
+  padding: '0 20px 0 24px',
+})
+
 export {
   title1Css1,
   HiddenText,
@@ -952,4 +961,5 @@ export {
   DragLine,
   SelectWrap,
   DropdownWrap,
+  ModalFooter,
 }

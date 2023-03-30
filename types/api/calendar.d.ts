@@ -5,4 +5,13 @@ declare namespace API.Calendar {
       sub: Model.Calendar.Info[]
     }
   }
+
+  namespace GetSubscribeList {
+    type Params = {
+      type: string
+    }
+    type Result = {
+      list: Model.Calendar.SubscribeInfo[]
+    }
+  }
 }

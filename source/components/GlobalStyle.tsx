@@ -77,6 +77,7 @@ const GlobalStyle = () => {
       --function-tag4: rgba(250, 151, 70, 0.1);
       --function-tag5: rgba(102, 136, 255, 0.1);
       --function-tag6: rgba(150, 151, 153, 0.1);
+      --avatar-border: #dde3f3;
     }
   `
   const black = css`
@@ -147,6 +148,7 @@ const GlobalStyle = () => {
       --function-tag4: rgba(250, 151, 70, 0.1);
       --function-tag5: rgba(102, 136, 255, 0.1);
       --function-tag6: rgba(150, 151, 153, 0.1);
+      --avatar-border: #57617d;
     }
   `
   const colors = [white, black]

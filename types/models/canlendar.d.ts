@@ -14,6 +14,21 @@ declare namespace Model.Calendar {
     sub: Info[]
   }
 
+  interface SubscribeInfo {
+    id: number
+    avatar?: string
+    name: string
+    phone?: string
+    email?: string
+    // 1是订阅
+    is_subscribe: 0 | 1
+    department?: string
+    creator?: string
+    number?: number | string
+    describe?: string
+    icon?: string
+  }
+
   /**
    * 日历面板按照不同类型展示
    */

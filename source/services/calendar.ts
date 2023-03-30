@@ -45,3 +45,113 @@ export const getCalendarList = async () => {
   )
   return response
 }
+
+// 订阅日历列表
+export const getSubscribeList = async (
+  params: API.Calendar.GetSubscribeList.Params,
+) => {
+  const subList = [
+    {
+      id: 1,
+      name: '日历名称',
+      phone: '121212121',
+      email: 'hjkhksdhds@.com',
+      is_subscribe: 1,
+      department: '产品部-产品',
+    },
+    {
+      id: 2,
+      name: '日历名称1111',
+      phone: '121212121',
+      email: 'hjkhksdhds@.com',
+      is_subscribe: 0,
+      department: '产品部-产品',
+    },
+  ] as Model.Calendar.SubscribeInfo[]
+  const publicList = [
+    {
+      id: 1,
+      name: '日历名称',
+      is_subscribe: 1,
+      creator: '张三',
+      number: 1000,
+      describe:
+        '假数据啥啥假数据啥啥假数据啥啥假数据啥啥假数据啥啥假数据啥啥假数据啥啥假数据啥啥假数据啥啥假数据啥啥假数据啥啥',
+      icon: 'dfdf',
+    },
+    {
+      id: 2,
+      name: '日历名称121212',
+      is_subscribe: 0,
+      creator: '张三',
+      number: 1000,
+      describe: '假数据啥啥',
+      icon: 'dfdf',
+    },
+    {
+      id: 3,
+      name: '日历名称121212',
+      is_subscribe: 0,
+      creator: '张三',
+      number: 1000,
+      describe: '假数据啥啥',
+      icon: 'dfdf',
+    },
+    {
+      id: 4,
+      name: '日历名称121212',
+      is_subscribe: 0,
+      creator: '张三',
+      number: 1000,
+      describe: '假数据啥啥',
+      icon: 'dfdf',
+    },
+    {
+      id: 5,
+      name: '日历名称121212',
+      is_subscribe: 0,
+      creator: '张三',
+      number: 1000,
+      describe: '假数据啥啥',
+      icon: 'dfdf',
+    },
+    {
+      id: 6,
+      name: '日历名称121212',
+      is_subscribe: 0,
+      creator: '张三',
+      number: 1000,
+      describe: '假数据啥啥',
+      icon: 'dfdf',
+    },
+    {
+      id: 7,
+      name: '日历名称121212',
+      is_subscribe: 0,
+      creator: '张三',
+      number: 1000,
+      describe: '假数据啥啥',
+      icon: 'dfdf',
+    },
+    {
+      id: 8,
+      name: '日历名称121212',
+      is_subscribe: 0,
+      creator: '张三',
+      number: 1000,
+      describe: '假数据啥啥',
+      icon: 'dfdf',
+    },
+  ] as Model.Calendar.SubscribeInfo[]
+  return {
+    code: '',
+    msg: '',
+    data: {
+      list: params.type === '0' ? subList : publicList,
+    },
+  }
+  const response = await http.get<any, API.Calendar.GetSubscribeList.Result>(
+    'getSubscribeList',
+  )
+  return response
+}
