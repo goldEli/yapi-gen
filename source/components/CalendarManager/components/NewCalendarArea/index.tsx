@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 import React from 'react'
 import { oneMinuteHeight } from '../../config'
 import usePosition from '../CalendarDay/hooks/usePosition'
-import { getTimeByAddDistance } from '../CalendarDay/utils'
+import { getTimeByAddDistance, hexToRgba } from '../CalendarDay/utils'
 
 interface NewCalendarAreaProps {
   timeZone: string[]
@@ -34,7 +34,8 @@ const NewCalendarArea: React.FC<NewCalendarAreaProps> = props => {
       return dayjs(startTime)
     }
     const step = Math.ceil(props.distance / oneMinuteHeight / 15)
-    const dis = step * 15
+    // 起步30分钟
+    const dis = Math.max(step * 15, oneMinuteHeight * 15)
     const time = getTimeByAddDistance(startTime.valueOf(), dis)
     return dayjs(time)
   }, [props.distance, startTime])
@@ -43,7 +44,7 @@ const NewCalendarArea: React.FC<NewCalendarAreaProps> = props => {
 
   return (
     <Box
-      style={{ background: props.color, top, height }}
+      style={{ background: hexToRgba(props.color, 0.1), top, height }}
       visible={!!props.timeZone.length}
     >
       {`${startTime.format('hh:mm')}-${endTime?.format('hh:mm')}`}
