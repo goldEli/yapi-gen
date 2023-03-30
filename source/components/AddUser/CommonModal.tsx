@@ -352,14 +352,15 @@ const CommonModal = (props: ModalProps) => {
 
   // 勾选复选框
   const onCheck = (checkedKey: any, e: any) => {
+    console.log(checkedKey)
     checkdFilterDataList = []
     if (tabsActive === 1) {
       setCheckedKeys(checkedKey)
       // 得到重复node需要去重
       const data = unionBy(checkdFilterData(e.checkedNodes), 'id')
-      if (e.checkedNodes.length && data.length <= personData.length) {
-        message.warning(t('commonModal.warnningMsg'))
-      }
+      // if (e.checkedNodes.length && data.length <= personData.length) {
+      //   message.warning(t('commonModal.warnningMsg'))
+      // }
       setPersonData(data)
     } else {
       setCheckedKeys(checkedKey)
@@ -375,7 +376,7 @@ const CommonModal = (props: ModalProps) => {
         const keys = treeData2.map((el: any) => el.id)
         setCheckedKeys(keys)
       } else {
-        const keys = treeData.map((el: any) => el.id)
+        const keys = tabsTreeDataList?.map((item: any) => item.id)
         setCheckedKeys(keys)
       }
       const data = tabsTreeDataList?.map((item: any) => item)

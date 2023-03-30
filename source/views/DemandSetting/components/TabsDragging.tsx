@@ -215,9 +215,10 @@ const Sortable = (props: any) => {
               ref={container}
               id="container"
               style={{
-                transition: dragItem?.id === child?.id ? 'all .1s' : '',
+                transition:
+                  dragItem?.storyId === child?.storyId ? 'all .1s' : '',
                 transform:
-                  dragItem?.id === child?.id
+                  dragItem?.storyId === child?.storyId
                     ? 'translateY(10px)'
                     : 'translateY(0)',
               }}
