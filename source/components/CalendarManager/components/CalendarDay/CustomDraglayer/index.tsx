@@ -122,8 +122,8 @@ const CustomDragLayer: React.FC<CustomDragLayerProps> = props => {
       endTime,
       delta,
     )
-    setStartStr(newStartTime.format('hh:mm'))
-    setEndStr(newEndTime.format('hh:mm'))
+    setStartStr(newStartTime.format('HH:mm'))
+    setEndStr(newEndTime.format('HH:mm'))
   }, [schedule, delta, itemType])
 
   return (

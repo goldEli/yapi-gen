@@ -144,7 +144,7 @@ const Timescale: React.FC<TimescaleProps> = props => {
     // <Popover trigger={['contextMenu']} content={popoverContent} title="Title">
     <Table ref={tableRef} className="time-scale">
       {content}
-      <CurrentTimeLine time={dayjs('2023-3-29 02:35:00').valueOf()} />
+      <CurrentTimeLine />
       <NewCalendarArea
         onChangeVisible={onChangeVisible}
         color={currentColor ?? ''}

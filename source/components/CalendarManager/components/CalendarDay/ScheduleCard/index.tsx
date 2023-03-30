@@ -54,16 +54,16 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     const { node, y, deltaY, lastY } = draggableData
     const time = getTimeByOffsetDistance(startTime, endTime, y - top)
     setTimeRange({
-      startTime: time.startTime.format('hh:mm'),
-      endTime: time.endTime.format('hh:mm'),
+      startTime: time.startTime.format('HH:mm'),
+      endTime: time.endTime.format('HH:mm'),
     })
   }
   const onDragStart = (e: DraggableEvent, draggableData: DraggableData) => {
     // const { node, y, deltaY, lastY } = draggableData
     const time = getTimeByOffsetDistance(startTime, endTime, 0)
     setTimeRange({
-      startTime: time.startTime.format('hh:mm'),
-      endTime: time.endTime.format('hh:mm'),
+      startTime: time.startTime.format('HH:mm'),
+      endTime: time.endTime.format('HH:mm'),
     })
   }
   const onDragStop = (e: DraggableEvent, draggableData: DraggableData) => {
@@ -90,15 +90,15 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     if (dir === 'bottom') {
       const time = getTimeByAddDistance(endTime, delta.height)
       setTimeRange({
-        startTime: dayjs(startTime).format('hh:mm'),
-        endTime: time.format('hh:mm'),
+        startTime: dayjs(startTime).format('HH:mm'),
+        endTime: time.format('HH:mm'),
       })
     }
     if (dir === 'top') {
       const time = getTimeByAddDistance(startTime, delta.height * -1)
       setTimeRange({
-        startTime: time.format('hh:mm'),
-        endTime: dayjs(endTime).format('hh:mm'),
+        startTime: time.format('HH:mm'),
+        endTime: dayjs(endTime).format('HH:mm'),
       })
     }
   }
@@ -110,8 +110,8 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
   ) => {
     const time = getTimeByOffsetDistance(startTime, endTime, 0)
     setTimeRange({
-      startTime: time.startTime.format('hh:mm'),
-      endTime: time.endTime.format('hh:mm'),
+      startTime: time.startTime.format('HH:mm'),
+      endTime: time.endTime.format('HH:mm'),
     })
   }
 

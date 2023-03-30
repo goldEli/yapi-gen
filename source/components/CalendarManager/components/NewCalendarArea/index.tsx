@@ -74,8 +74,8 @@ const NewCalendarArea: React.FC<NewCalendarAreaProps> = props => {
       className="new-calendar-area"
       visible={!!props.timeZone.length}
     >
-      <Title>{`${startTime.format('hh:mm')}-${endTime?.format(
-        'hh:mm',
+      <Title>{`${startTime.format('HH:mm')}-${endTime?.format(
+        'HH:mm',
       )}`}</Title>
     </Box>
     // </Dropdown>
