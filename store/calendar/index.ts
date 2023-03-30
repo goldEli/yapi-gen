@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import dayjs from 'dayjs'
 import { getCalendarList } from './calendar.thunk'
 
 type SliceState = {
@@ -6,6 +7,8 @@ type SliceState = {
   calendarData: Model.Calendar.CalendarData
   // 左侧-日历列表-选中的日历
   checkedCalendarList: Model.Calendar.Info[]
+  // 选择的日期
+  selectedDay: number
 }
 
 const initialState: SliceState = {
@@ -14,6 +17,7 @@ const initialState: SliceState = {
     sub: [],
   },
   checkedCalendarList: [],
+  selectedDay: dayjs('2023-3-30 13:10:00').valueOf(),
 }
 
 const slice = createSlice({
@@ -28,6 +32,9 @@ const slice = createSlice({
       action: PayloadAction<SliceState['checkedCalendarList']>,
     ) {
       state.checkedCalendarList = action.payload
+    },
+    setSelectedDay(state, action: PayloadAction<SliceState['selectedDay']>) {
+      state.selectedDay = action.payload
     },
   },
   extraReducers(builder) {
