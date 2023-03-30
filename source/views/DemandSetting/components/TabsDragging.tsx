@@ -10,6 +10,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 const Container = styled.div`
+  position: relative;
   margin-bottom: 8px;
   &:hover {
     cursor: pointer;
@@ -114,7 +115,6 @@ const Sortable = (props: any) => {
       ...item,
       dragtype: 'move',
     }
-    setDragItem(moveItem)
     ev.dataTransfer.setData('DragItem', JSON.stringify(moveItem))
     setCurrent(index)
     const imgDom = document.createElement('div')
@@ -132,7 +132,7 @@ const Sortable = (props: any) => {
   }
   // 拖动排序
   const onDragEnd = (e: any, index: number) => {
-    console.log('end')
+    setDragItem(null)
     if (endIndex !== index) {
       let _list: any = [...props.list]
       _list[endIndex] = props.list[current]
@@ -146,7 +146,8 @@ const Sortable = (props: any) => {
     setTop(0)
   }
 
-  const onDragOver = (e: any, index: number) => {
+  const onDragOver = (e: any, index: number, child: any) => {
+    setDragItem(child)
     setEndIndex(index)
     if (e.pageY >= window.screen?.availHeight - 300) {
       document
@@ -171,6 +172,7 @@ const Sortable = (props: any) => {
       return
     } else {
       props.onDrop(ev, index)
+      setDragItem(null)
       localStorage.className = ''
     }
   }
@@ -180,6 +182,7 @@ const Sortable = (props: any) => {
     const drapClassName = ref?.current?.className
     if (localStorage.className === drapClassName) {
       props.onDrop(event, -2)
+      setDragItem(null)
       localStorage.className = ''
       return
     }
@@ -188,14 +191,9 @@ const Sortable = (props: any) => {
     } else {
       props.onDrop(event, -1)
     }
+    setDragItem(null)
     localStorage.className = ''
   }
-
-  const onItemDrag = (e: any) => {
-    console.log(77)
-    setTop(e.pageY)
-  }
-
   return (
     <div
       draggable="false"
@@ -203,66 +201,6 @@ const Sortable = (props: any) => {
         event.preventDefault(), event.stopPropagation()
       }}
     >
-      {/* {top > 0 ? (
-        <ItemList1
-          draggable="false"
-          style={{
-            top: `${top}px`,
-            width: width,
-            display: top > 0 ? 'flex' : 'none',
-            height: '64px',
-            position: top > 0 ? 'fixed' : 'relative',
-            zIndex: top > 0 ? 90 : 9,
-          }}
-        >
-          <div style={{ display: 'flex', width: '100%' }}>
-            <IconBox>
-              <CommonIconFont
-                type={
-                  option?.find(
-                    (item: any) => dragItem?.fieldContent?.attr === item.type,
-                  )?.icon
-                }
-                size={24}
-                color="var(--neutral-n2-d2)"
-              />
-            </IconBox>
-            <ListMsg>
-              <div>{dragItem?.title}</div>
-              <div>
-                {t(
-                  option?.find(
-                    (item: any) => dragItem?.fieldContent?.attr === item.type,
-                  )?.label,
-                )}
-              </div>
-            </ListMsg>
-          </div>
-          <RightOperate>
-            {dragItem?.content === 'users_name' ||
-              dragItem?.content === 'user_name' ||
-              dragItem?.content === 'finish_at' ||
-              dragItem?.content === 'created_at' ||
-              dragItem?.content === 'schedule' ? (
-              <Checkbox disabled={true} />
-            ) : (
-              <Checkbox checked={dragItem?.isRequired === 1 ? true : false} />
-            )}
-
-            <Text>{t('must')}</Text>
-            <>
-              {dragItem?.content === 'users_name' ||
-                dragItem?.content === 'user_name' ||
-                dragItem?.content === 'finish_at' ||
-                dragItem?.content === 'created_at' ? (
-                <DelBtnText> {t('p2.delete')}</DelBtnText>
-              ) : (
-                <DelBtn>{t('p2.delete')}</DelBtn>
-              )}
-            </>
-          </RightOperate>
-        </ItemList1>
-      ) : null} */}
       {list?.length >= 1 &&
         list?.map((child: any, i: number) => (
           <div
@@ -276,13 +214,18 @@ const Sortable = (props: any) => {
             <Container
               ref={container}
               id="container"
+              style={{
+                transition: dragItem?.id === child?.id ? 'all .1s' : '',
+                transform:
+                  dragItem?.id === child?.id
+                    ? 'translateY(10px)'
+                    : 'translateY(0)',
+              }}
               key={child?.storyId}
               draggable="true"
-              onDragLeave={() => console.log('lk')}
               onDragStart={(ev: any) => onDragStart(ev, i, child)}
-              onDragOver={e => onDragOver(e, i)}
+              onDragOver={e => onDragOver(e, i, child)}
               onDragEnd={e => onDragEnd(e, i)}
-              // onDrop={(e) => onItemDrag(e)}
               onClick={() => child?.isCustomize != 2 && props.onClick(i, child)}
             >
               {child?.isCustomize === 2 ? (
