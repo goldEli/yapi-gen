@@ -9,6 +9,7 @@ import { getCalendarList } from '@store/calendar/calendar.thunk'
 import { setCalendarData, setCheckedCalendarList } from '@store/calendar'
 import CalendarMoreDropdown from './CalendarMoreDropdown'
 import CalendarSubscribe from './CalendarSubscribe'
+import CalendarFormModal from './CalendarFormModal'
 
 const { Panel } = Collapse
 
@@ -77,7 +78,10 @@ interface CalendarManagerListProps {
 const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
   const dispatch = useDispatch()
   const [isMoreVisible, setIsMoreVisible] = useState(false)
+  // 订阅日历
   const [isSubscribeVisible, setIsSubscribeVisible] = useState(false)
+  // 创建日历
+  const [isCalendarVisible, setIsCalendarVisible] = useState(false)
   const { calendarData, checkedCalendarList } = useSelector(
     store => store.calendar,
   )
@@ -111,8 +115,11 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
   }
 
   const onOpenSub = (e: any) => {
+    console.log(props.type)
     e.stopPropagation()
-    setIsSubscribeVisible(true)
+    props.type === 'sub'
+      ? setIsSubscribeVisible(true)
+      : setIsCalendarVisible(true)
   }
 
   useEffect(() => {
@@ -124,6 +131,10 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
       <CalendarSubscribe
         visible={isSubscribeVisible}
         onCancel={() => setIsSubscribeVisible(false)}
+      />
+      <CalendarFormModal
+        visible={isCalendarVisible}
+        onCancel={() => setIsCalendarVisible(false)}
       />
       <CollapseWrap
         defaultActiveKey={['1']}

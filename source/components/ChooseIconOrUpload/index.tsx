@@ -128,7 +128,7 @@ interface ChooseColorProps {
   colorList: any
   hiddenUpload: boolean
 }
-const ChooseColor = (props: ChooseColorProps) => {
+const ChooseIconOrUpload = (props: ChooseColorProps) => {
   const [isChooseColor, setIsChooseColor] = useState(false)
   const [t] = useTranslation()
   const [cover, setCover] = useState()
@@ -216,4 +216,4 @@ const ChooseColor = (props: ChooseColorProps) => {
   )
 }
 
-export default ChooseColor
+export default ChooseIconOrUpload

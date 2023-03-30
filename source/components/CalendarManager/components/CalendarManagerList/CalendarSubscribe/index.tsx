@@ -59,6 +59,7 @@ const TabsItemLeft = styled.div`
   display: flex;
   justify-content: flex-start;
   width: 83%;
+  position: relative;
   .icon {
     width: 32px;
     height: 32px;
@@ -176,7 +177,11 @@ const TabsContent = (props: TabsContentProps) => {
                         <span>创建人：{i.creator}</span>
                         <span>订阅量：{i.number}</span>
                       </div>
-                      <Tooltip title={i.describe} placement="topLeft">
+                      <Tooltip
+                        title={i.describe}
+                        placement="topLeft"
+                        getPopupContainer={n => n}
+                      >
                         <div className="describe">{i.describe}</div>
                       </Tooltip>
                     </div>

@@ -6,7 +6,7 @@ import { Modal, Space } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from './IconFont'
 import { useTranslation } from 'react-i18next'
-import { CloseWrap } from './StyleCommon'
+import { CloseWrap, ModalFooter } from './StyleCommon'
 import CommonButton from './CommonButton'
 
 const ModalHeader = styled.div`
@@ -21,14 +21,6 @@ const ModalHeader = styled.div`
   font-family: SiYuanMedium;
 `
 
-const ModalFooter = styled(Space)({
-  width: '100%',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
-  height: 80,
-  padding: '0 20px 0 24px',
-})
 const ModalStyle = styled(Modal)`
   .ant-modal-body {
     background-color: var(--neutral-white-d5);

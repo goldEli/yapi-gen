@@ -9,7 +9,6 @@ import CommonModal from '@/components/CommonModal'
 import { Input, Form, message } from 'antd'
 import styled from '@emotion/styled'
 import { useEffect, useRef, useState } from 'react'
-import ChooseColor from './ChooseColor'
 import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import { getCategoryIconList } from '@/services/demand'
@@ -20,6 +19,7 @@ import {
 import { useSearchParams } from 'react-router-dom'
 import { uploadFileByTask } from '@/services/cos'
 import { DelButton } from '@/components/StyleCommon'
+import ChooseIconOrUpload from '@/components/ChooseIconOrUpload'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -186,7 +186,7 @@ const EditorCategory = (props: EditorProps) => {
           />
         </Form.Item>
         <Form.Item label={t('newlyAdd.chooseIcon')} name="attachment_id">
-          <ChooseColor
+          <ChooseIconOrUpload
             color={path}
             hiddenUpload={hiddenUpload}
             colorList={colorList}
