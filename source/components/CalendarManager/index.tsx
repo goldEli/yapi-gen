@@ -22,7 +22,7 @@ const CalendarManager: React.ForwardRefRenderFunction<
   return (
     <CalenderBox>
       <CalendarSidebar />
-      <CalenderBoxRightArea>
+      <CalenderBoxRightArea id="calenderBoxRightArea">
         <CalendarPanel />
       </CalenderBoxRightArea>
     </CalenderBox>

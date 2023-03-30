@@ -6,6 +6,8 @@ import { oneHourHeight } from '../../../config'
 import { useSelector } from '@store/index'
 import classNames from 'classnames'
 import NewCalendarArea from '../../NewCalendarArea'
+import { Dropdown, Popover } from 'antd'
+import QuickCreateScheduleModel from '../../QuickCreateScheduleModel'
 
 interface TimescaleProps {}
 const Table = styled.table`
@@ -48,62 +50,50 @@ const Timescale: React.FC<TimescaleProps> = props => {
   }, [calendarData])
   const [timeZone, setTimeZone] = React.useState<string[]>([])
   const [distance, setDistance] = React.useState(0)
+  const [pointerPosition, setPointerPosition] = React.useState({ x: 0, y: 0 })
+  const [visible, setVisible] = React.useState(false)
+  const tableRef = React.useRef<HTMLTableElement>(null)
+
+  const onChangeVisible = (bool: boolean) => {
+    setVisible(bool)
+  }
 
   const onSelectTimeZone = React.useCallback(
     (e: React.MouseEvent, id: string) => {
       // 点击空白重置
       if (timeZone.length) {
         setTimeZone([])
+        onChangeVisible(false)
         return
       }
 
-      // let first = parseInt(id.split('-')[0], 10)
-      // let second = parseInt(id.split('-')[1], 10)
-      // const result: string[] = [id]
-      // 选择最少半小时
-      // for (let i = 1; i <= 1; ++i) {
-      //   if (second === 3) {
-      //     first += 1
-      //     second = 0
-      //   } else {
-      //     second++
-      //   }
-      //   result.push(`${first}-${second}`)
-      // }
-      // const trs = document.querySelectorAll('.time-scale tr')
-      // trs.forEach(tr => {
-      //   tr.addEventListener('mouseenter', onSelectTimeZoneByMove)
-      // })
-      // document.addEventListener('mouseup', () => {
-      //   trs.forEach(tr => {
-      //     tr.removeEventListener('mouseenter', onSelectTimeZoneByMove)
-      //   })
-      // })
-      // let startX = 0
       let startY = e.screenY
       let dis = 0
       function onMousemove(event: MouseEvent) {
         const deltaY = event.screenY - startY
         setDistance(deltaY)
-        // if (startX === 0 && startY === 0) {
-        //   startX = event.screenX
-        //   startY = event.screenY
-        // } else {
-        //   const deltaX = event.screenX - startX
-        //   const deltaY = event.screenY - startY
-        //   dis += deltaY
-        //   startX = event.screenX
-        //   startY = event.screenY
-        // }
       }
+      if (tableRef.current === null) {
+        return
+      }
+      const dom = tableRef.current
       function onMouseUp(event: MouseEvent) {
         // setDistance(dis)
-        document.removeEventListener('mousemove', onMousemove)
+        const calenderBoxRightArea = document.querySelector(
+          '#calenderBoxRightArea',
+        ) as Element
+        dom.removeEventListener('mousemove', onMousemove)
+        setPointerPosition({
+          x: event.offsetX,
+          y: event.screenY - 340 + calenderBoxRightArea.scrollTop,
+        })
+        onChangeVisible(true)
+        dom.removeEventListener('mouseup', onMouseUp)
       }
-      document.removeEventListener('mousemove', onMousemove)
-      document.addEventListener('mousemove', onMousemove)
-      document.removeEventListener('mouseup', onMouseUp)
-      document.addEventListener('mouseup', onMouseUp)
+      dom.removeEventListener('mousemove', onMousemove)
+      dom.addEventListener('mousemove', onMousemove)
+      dom.removeEventListener('mouseup', onMouseUp)
+      dom.addEventListener('mouseup', onMouseUp)
 
       setTimeZone([id])
     },
@@ -149,16 +139,24 @@ const Timescale: React.FC<TimescaleProps> = props => {
         )
       })
   }, [currentColor, timeZone])
+  console.table(pointerPosition)
   return (
-    <Table className="time-scale">
+    // <Popover trigger={['contextMenu']} content={popoverContent} title="Title">
+    <Table ref={tableRef} className="time-scale">
       {content}
       <CurrentTimeLine time={dayjs('2023-3-29 02:35:00').valueOf()} />
       <NewCalendarArea
+        onChangeVisible={onChangeVisible}
         color={currentColor ?? ''}
         timeZone={timeZone}
         distance={distance}
       />
+      <QuickCreateScheduleModel
+        pointerPosition={pointerPosition}
+        visible={visible}
+      />
     </Table>
+    // </Popover>
   )
 }
 
