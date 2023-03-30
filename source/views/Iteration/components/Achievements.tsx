@@ -155,8 +155,6 @@ const Achievements = (props: Props) => {
         <div className={labelWrap}>
           <span className={label}>{t('p2.m1') as string}</span>
           <Editor
-            ref={editorRef}
-            key={Math.random()}
             upload={uploadFile}
             getSuggestions={() => {
               return new Promise(resolve => {

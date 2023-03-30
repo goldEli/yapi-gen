@@ -169,7 +169,7 @@ const CreateAProjectForm = () => {
       res2.map((i: any) => ({
         name: i.name,
         id: i.id,
-        img: i.img,
+        img: i.avatar,
       })),
     )
     setActiveCover(res.cover)
@@ -371,7 +371,6 @@ const CreateAProjectForm = () => {
               <CustomSelect
                 disabled={!!isEditId}
                 placeholder={t('please_select_your_affiliation')}
-                optionLabelProp="label"
                 onChange={(value: any) => {
                   setLeaderId(value)
                   // eslint-disable-next-line no-undefined
@@ -451,7 +450,6 @@ const CreateAProjectForm = () => {
                 showSearch
                 // disabled={canChooseLeader}
                 placeholder={t('please_select_project_leader')}
-                optionLabelProp="label"
               >
                 {selectLeaders.map((i: any) => (
                   <Select.Option value={i.id} key={i.id} label={i.name}>
