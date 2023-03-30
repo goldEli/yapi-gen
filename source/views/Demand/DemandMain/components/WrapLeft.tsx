@@ -47,8 +47,7 @@ const TitleWrap = styled.div({
   whiteSpace: 'nowrap',
   fontSize: 14,
   color: 'var(--neutral-n1-d2)',
-  // lineHeight: '52px',
-  fontWeight: 500,
+  fontFamily: 'SiYuanMedium',
 })
 
 const TreeBox = styled.div`
@@ -381,8 +380,6 @@ const WrapLeft = (props: any, ref: any) => {
   const init = async (isUpdateProjectInfoValues?: boolean) => {
     setShow(false)
     const res = await getTreeList({ id: props.projectId })
-    console.log(props.projectId, '项目ID')
-
     setTreeData(filterTreeData(res))
     setShow(true)
     // 更新项目成员下拉
