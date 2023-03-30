@@ -391,18 +391,20 @@ const Member = (props: Props) => {
 
   return (
     <WaiWrap>
-      <AddMemberCommonModal
-        isPermisGroup
-        userGroupId={
-          projectPermission?.filter((i: any) => i.tagLabel === '参与者')[0]
-            ?.value
-        }
-        title={t('project.addMember')}
-        isVisible={isVisible}
-        onClose={onClickCancel}
-        onConfirm={handleOk}
-        projectPermission={projectPermission}
-      />
+      {props.visible && (
+        <AddMemberCommonModal
+          isPermisGroup
+          userGroupId={
+            projectPermission?.filter((i: any) => i.tagLabel === '参与者')[0]
+              ?.value
+          }
+          title={t('project.addMember')}
+          isVisible={isVisible}
+          onClose={onClickCancel}
+          onConfirm={handleOk}
+          projectPermission={projectPermission}
+        />
+      )}
 
       <DrawerWrap
         title={

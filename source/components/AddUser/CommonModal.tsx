@@ -313,6 +313,7 @@ const CommonModal = (props: ModalProps) => {
   useEffect(() => {
     if (tabsActive === 0) {
       getTeam()
+      console.log(121212)
     } else {
       getCompany()
     }

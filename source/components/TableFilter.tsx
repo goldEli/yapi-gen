@@ -306,7 +306,7 @@ const TableFilter = (props: any) => {
   }, [props.defaultValue])
 
   useEffect(() => {
-    if (Object.hasOwn(searchChoose, 'system_view')) {
+    if (Object.hasOwn(searchChoose || {}, 'system_view')) {
       form.resetFields()
       confirm()
     }
@@ -384,7 +384,7 @@ const TableFilter = (props: any) => {
 
   function deWeight(arr: any) {
     const map = new Map()
-    for (const item of arr) {
+    for (const item of arr || []) {
       if (!map.has(item.id)) {
         map.set(item.id, item)
       }
