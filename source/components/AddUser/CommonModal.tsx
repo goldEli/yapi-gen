@@ -313,6 +313,7 @@ const CommonModal = (props: ModalProps) => {
   useEffect(() => {
     if (tabsActive === 0) {
       getTeam()
+      console.log(121212)
     } else {
       getCompany()
     }
@@ -331,6 +332,7 @@ const CommonModal = (props: ModalProps) => {
           .filter((item: any) => item.id !== el.id && !item.children)
           .map((item: any) => item.id),
       )
+      setPersonData(personData.filter((item: any) => el.id !== item.id))
     } else {
       setCheckedKeys(
         personData
@@ -460,6 +462,8 @@ const CommonModal = (props: ModalProps) => {
                 <span
                   className={tabsActive === index ? 'tabsActive' : ''}
                   onClick={() => {
+                    setCheckedKeys([])
+                    setPersonData([])
                     setSearchVal('')
                     setTabsActive(index)
                   }}

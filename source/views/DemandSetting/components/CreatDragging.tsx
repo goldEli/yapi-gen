@@ -39,12 +39,12 @@ const SliderList = (props: any) => {
     setDragItem(obj)
     ev.dataTransfer.setData('item', JSON.stringify(obj))
     const imgDom = document.createElement('div')
-    // ev.target.style.opacity = 0.3
     //创建一个图像并且使用它作为拖动图像
     document.body.appendChild(imgDom)
     ev.dataTransfer.setDragImage(imgDom, 0, 0)
   }
-  const onDrag = throttle(e => {
+  const onDrag = (e: any) => {
+    localStorage.className = ''
     const el: any = ref.current
     const rect = el.getBoundingClientRect()
     prevRectRef.current = rect
@@ -55,10 +55,16 @@ const SliderList = (props: any) => {
       setTop(e.pageY)
       setLeft(e.pageX)
     }
-    // document
-    //   .getElementById('father')!
-    //   .scrollTo({ top: e.pageY, behavior: 'smooth' })
-  }, 10)
+    if (e.pageY >= window.screen?.availHeight - 300) {
+      document
+        .getElementById('father')!
+        .scrollTo({ top: e.pageY, behavior: 'smooth' })
+    } else if (e.pageY <= Number(localStorage.topTitleTop)) {
+      document
+        .getElementById('father')!
+        .scrollTo({ top: Number(0), behavior: 'smooth' })
+    }
+  }
   const onDragEnd = () => {
     setTop(0)
     setLeft(0)
