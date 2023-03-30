@@ -5,12 +5,17 @@ import { hexToRgba } from '../utils'
 
 interface ScheduleAllDayProps {}
 const ScheduleAllDayBox = styled.div`
+  width: 100%;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   gap: 16px;
   box-sizing: border-box;
   overflow: hidden;
   height: 52px;
+  position: absolute;
+  top: -55px;
+  left: 0;
 `
 
 const TimeZone = styled.span`

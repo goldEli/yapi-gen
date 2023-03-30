@@ -85,7 +85,7 @@ const Timescale: React.FC<TimescaleProps> = props => {
         dom.removeEventListener('mousemove', onMousemove)
         setPointerPosition({
           x: event.offsetX,
-          y: event.screenY - 340 + calenderBoxRightArea.scrollTop,
+          y: event.screenY - 630 + calenderBoxRightArea.scrollTop,
         })
         onChangeVisible(true)
         dom.removeEventListener('mouseup', onMouseUp)

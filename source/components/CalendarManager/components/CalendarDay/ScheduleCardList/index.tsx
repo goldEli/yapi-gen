@@ -3,8 +3,12 @@ import { useDispatch, useSelector } from '@store/index'
 import ScheduleCard from '../ScheduleCard'
 import { getScheduleList } from '@store/schedule/schedule.thunk'
 import useCalculationConflict from '../hooks/useCalculationConflict'
+import styled from '@emotion/styled'
 
 interface ScheduleCardListProps {}
+const ScheduleCardListBox = styled.div`
+  /* position: relative; */
+`
 
 const ScheduleCardList: React.FC<ScheduleCardListProps> = props => {
   // const scheduleList = useSelector(store => store.schedule.scheduleList)

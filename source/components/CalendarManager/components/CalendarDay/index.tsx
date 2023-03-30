@@ -15,6 +15,7 @@ const CalendarDayBox = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
+  margin-top: 58px;
 `
 
 const CalendarDay: React.FC<CalendarDayProps> = props => {
