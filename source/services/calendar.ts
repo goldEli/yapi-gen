@@ -155,3 +155,31 @@ export const getSubscribeList = async (
   )
   return response
 }
+
+// 日历系统图标
+export const getCalendarIconList = async () => {
+  return {
+    code: '',
+    msg: '',
+    data: {
+      list: [
+        {
+          id: 1,
+          path: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/prod/undefined/richEditorFiles_1679911209757/image.png',
+        },
+        {
+          id: 2,
+          path: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/prod/logoFullName.png/file/logoFullName.png',
+        },
+        {
+          id: 3,
+          path: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/prod/nature_10-032.jpg/file/nature_10-032.jpg',
+        },
+      ],
+    },
+  }
+  const response = await http.get<any, API.Calendar.GetCalendarIconList.Result>(
+    'getCalendarIconList',
+  )
+  return response
+}

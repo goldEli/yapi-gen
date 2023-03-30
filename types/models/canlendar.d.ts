@@ -29,6 +29,11 @@ declare namespace Model.Calendar {
     icon?: string
   }
 
+  interface CalendarIcon {
+    id: number
+    path: string
+  }
+
   /**
    * 日历面板按照不同类型展示
    */

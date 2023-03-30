@@ -14,4 +14,10 @@ declare namespace API.Calendar {
       list: Model.Calendar.SubscribeInfo[]
     }
   }
+
+  namespace GetCalendarIconList {
+    type Result = {
+      list: Model.Calendar.CalendarIcon[]
+    }
+  }
 }
