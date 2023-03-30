@@ -6,12 +6,13 @@ import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
 import { Checkbox, Tooltip } from 'antd'
+import { throttle } from 'lodash'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 const Container = styled.div`
   position: relative;
-  margin-bottom: 8px;
+  height: 72px;
   &:hover {
     cursor: pointer;
   }
@@ -106,8 +107,8 @@ const Sortable = (props: any) => {
   const [endIndex, setEndIndex] = useState<any>(null)
   const ref: any = useRef()
   const container: any = useRef()
-  const [top, setTop] = useState(0)
   const [dragItem, setDragItem] = useState<any>()
+  let timer: any = null
   // 拖动传值
   const onDragStart = (ev: any, index: number, item: any) => {
     localStorage.className = ref?.current?.className
@@ -143,22 +144,24 @@ const Sortable = (props: any) => {
     }
     setEndIndex(null)
     setCurrent(null)
-    setTop(0)
   }
 
-  const onDragOver = (e: any, index: number, child: any) => {
+  const onDragOver = throttle((e: any, index: number, child: any) => {
     setDragItem(child)
     setEndIndex(index)
     if (e.pageY >= window.screen?.availHeight - 300) {
       document
         .getElementById('father')!
         .scrollTo({ top: e.pageY, behavior: 'smooth' })
-    } else if (e.pageY <= Number(localStorage.topTitleTop)) {
+    } else if (e.pageY < Number(localStorage.topTitleTop)) {
       document
         .getElementById('father')!
         .scrollTo({ top: Number(0), behavior: 'smooth' })
     }
-  }
+    timer = setTimeout(() => {
+      setDragItem(null)
+    }, 500)
+  }, 100)
   const allowDrop = (ev: any) => {
     ev.preventDefault()
   }
@@ -172,7 +175,6 @@ const Sortable = (props: any) => {
       return
     } else {
       props.onDrop(ev, index)
-      setDragItem(null)
       localStorage.className = ''
     }
   }
@@ -194,6 +196,11 @@ const Sortable = (props: any) => {
     setDragItem(null)
     localStorage.className = ''
   }
+  useEffect(() => {
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [])
   return (
     <div
       draggable="false"
