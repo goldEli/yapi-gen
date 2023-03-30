@@ -207,6 +207,7 @@ const TableFilter = (props: any) => {
   const [form] = Form.useForm()
   const { filterKeys, projectInfoValues } = useSelector(store => store.project)
   const dispatch = useDispatch()
+  const searchChoose = useSelector(store => store.view.searchChoose)
 
   const filterBasicsList = useMemo(() => {
     const newKeys = list?.map((item: { content: any }) => item.content)
@@ -303,6 +304,13 @@ const TableFilter = (props: any) => {
     form.setFieldsValue(props.defaultValue)
     confirm()
   }, [props.defaultValue])
+
+  useEffect(() => {
+    if (Object.hasOwn(searchChoose, 'system_view')) {
+      form.resetFields()
+      confirm()
+    }
+  }, [searchChoose])
 
   // 折叠图标
   const expandIcon = (e: any) => {
