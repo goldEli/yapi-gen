@@ -49,7 +49,7 @@ const Week = styled.span`
 const Lunar = styled.span`
   font-size: 14px;
   font-weight: 400;
-  color: var(--neutral-n6-d1);
+  color: var(--neutral-n3);
 `
 const ScheduleList = styled.div`
   flex: 1;
