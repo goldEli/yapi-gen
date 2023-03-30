@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { getCalendarList } from '@store/calendar/calendar.thunk'
 import { setCalendarData, setCheckedCalendarList } from '@store/calendar'
 import CalendarMoreDropdown from './CalendarMoreDropdown'
+import CalendarSubscribe from './CalendarSubscribe'
 
 const { Panel } = Collapse
 
@@ -76,6 +77,7 @@ interface CalendarManagerListProps {
 const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
   const dispatch = useDispatch()
   const [isMoreVisible, setIsMoreVisible] = useState(false)
+  const [isSubscribeVisible, setIsSubscribeVisible] = useState(false)
   const { calendarData, checkedCalendarList } = useSelector(
     store => store.calendar,
   )
@@ -108,12 +110,21 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
     )
   }
 
+  const onOpenSub = (e: any) => {
+    e.stopPropagation()
+    setIsSubscribeVisible(true)
+  }
+
   useEffect(() => {
     dispatch(getCalendarList())
   }, [])
 
   return (
     <div>
+      <CalendarSubscribe
+        visible={isSubscribeVisible}
+        onCancel={() => setIsSubscribeVisible(false)}
+      />
       <CollapseWrap
         defaultActiveKey={['1']}
         ghost
@@ -132,7 +143,7 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
           header={
             <Title>
               <span className="name">{props.title}</span>
-              <CloseWrap width={24} height={24}>
+              <CloseWrap width={24} height={24} onClick={e => onOpenSub(e)}>
                 <IconFont className="icon" type="plus" />
               </CloseWrap>
             </Title>
