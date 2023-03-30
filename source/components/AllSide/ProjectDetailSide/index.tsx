@@ -166,6 +166,7 @@ const ProjectDetailSide = () => {
     const params = encryptPhp(JSON.stringify({ id: projectId }))
     navigate(`/ProjectManagement/Demand?data=${params}`)
     setTimeout(() => {
+      console.log(projectSetSide.current, '=====projectSetSide.current')
       projectSetSide.current.style.display = 'none'
     }, 200)
   }
