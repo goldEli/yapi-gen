@@ -2,9 +2,8 @@
  * 计算日程冲突
  * 得到冲突日程的宽度 以及  left位置
  */
-
 import { useSelector } from '@store/index'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import {
   getClassifyConflicts,
   getConflicts,
@@ -14,11 +13,15 @@ import {
 
 const minLeft = 58
 const useCalculationConflict = () => {
-  const list = useSelector(store => store.schedule.scheduleList)
+  const scheduleList = useSelector(store => store.schedule.scheduleList)
   const [maxWidth, setMaxWidth] = useState(0)
   const [data, setData] = useState<
     { info: Model.Schedule.Info; width: number; left: number }[]
   >([])
+  const list = useMemo(
+    () => scheduleList.filter(item => item.is_all_day !== 1),
+    [scheduleList],
+  )
 
   useEffect(() => {
     const timeScale = document.querySelector('.time-scale')
