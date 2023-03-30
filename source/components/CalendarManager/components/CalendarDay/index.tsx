@@ -3,6 +3,7 @@ import React, { useMemo } from 'react'
 import { DndProvider, useDrag, useDrop } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import DropArea from './DropArea'
+import ScheduleAllDay from './ScheduleAllDay'
 import ScheduleCardList from './ScheduleCardList'
 import Timescale from './Timescale'
 
@@ -14,6 +15,7 @@ const CalendarDayBox = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
+  margin-top: 58px;
 `
 
 const CalendarDay: React.FC<CalendarDayProps> = props => {
@@ -21,6 +23,7 @@ const CalendarDay: React.FC<CalendarDayProps> = props => {
     <CalendarDayBox className="calendar-day-box">
       {/* <DndProvider backend={HTML5Backend}> */}
       {/* <DropArea> */}
+      <ScheduleAllDay />
       <Timescale />
       <ScheduleCardList />
       {/* </DropArea> */}

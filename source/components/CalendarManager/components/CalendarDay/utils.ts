@@ -22,9 +22,9 @@ export const handleOffsetDistance = (
   console.log('moveMinute', moveMinute)
 
   const newStartTime = dayjs(startTime).add(moveMinute, 'minute')
-  console.log('newStartTime', newStartTime.format('hh:mm'))
+  console.log('newStartTime', newStartTime.format('HH:mm'))
   const newEndTime = dayjs(endTime).add(moveMinute, 'minute')
-  console.log('newEndTime', newEndTime.format('hh:mm'))
+  console.log('newEndTime', newEndTime.format('HH:mm'))
   return {
     newStartTime,
     newEndTime,
@@ -44,12 +44,12 @@ export const getEndTimeByHeight = (startTime: number, height: number) => {
   // console.log('moveMinute', moveMinute)
 
   // const newStartTime = dayjs(startTime).add(moveMinute, 'minute')
-  // console.log('newStartTime', newStartTime.format('hh:mm'))
+  // console.log('newStartTime', newStartTime.format('HH:mm'))
   const newEndTime = dayjs(startTime).add(moveMinute, 'minute')
   console.log(
     'newEndTime',
-    dayjs(startTime).format('hh:mm'),
-    newEndTime.format('hh:mm'),
+    dayjs(startTime).format('HH:mm'),
+    newEndTime.format('HH:mm'),
   )
   return newEndTime
 }
@@ -154,8 +154,8 @@ function findConflictsClassify(events: Item[]) {
           endTime: Math.max(one.endTime, two.endTime),
           conflicts: _.unionBy(one.conflicts.concat(two.conflicts), 'id'),
         }
-        // res.start = dayjs(res.startTime).format('hh:mm')
-        // res.end = dayjs(res.endTime).format('hh:mm')
+        // res.start = dayjs(res.startTime).format('HH:mm')
+        // res.end = dayjs(res.endTime).format('HH:mm')
         conflicts.push(res)
       }
     }
@@ -255,8 +255,8 @@ interface TimeRange {
 function print(list: TimeRange[]) {
   console.log(
     list.map(item => ({
-      startTime: dayjs(item.startTime).format('hh:mm'),
-      endTime: dayjs(item.endTime).format('hh:mm'),
+      startTime: dayjs(item.startTime).format('HH:mm'),
+      endTime: dayjs(item.endTime).format('HH:mm'),
     })),
   )
 }

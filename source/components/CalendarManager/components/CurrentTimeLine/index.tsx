@@ -1,10 +1,11 @@
 import styled from '@emotion/styled'
 import dayjs from 'dayjs'
 import React, { memo, useMemo } from 'react'
+import useCurrentTime from '../../hooks/useCurrentTime'
 import { getDistanceByTime } from '../../utils'
 
 interface CurrentTimeLineProps {
-  time: number
+  // time: number
 }
 
 const CurrentLine = styled.div`
@@ -34,13 +35,13 @@ const CurrentLine = styled.div`
 `
 
 const CurrentTimeLine: React.FC<CurrentTimeLineProps> = props => {
+  const { currentTime } = useCurrentTime()
   const time = useMemo(() => {
-    return dayjs(props.time).format('hh:mm')
-  }, [props.time])
+    return currentTime.format('HH:mm')
+  }, [currentTime])
   const top = useMemo(() => {
-    return getDistanceByTime(props.time)
-  }, [props.time])
-  console.log({ top }, props.time)
+    return getDistanceByTime(currentTime.valueOf())
+  }, [currentTime])
   return (
     <CurrentLine top={top}>
       <span className="time">{time}</span>

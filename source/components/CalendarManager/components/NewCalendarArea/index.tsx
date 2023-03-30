@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import { Dropdown } from 'antd'
 import dayjs from 'dayjs'
 import React from 'react'
 import { oneMinuteHeight } from '../../config'
@@ -9,6 +10,7 @@ interface NewCalendarAreaProps {
   timeZone: string[]
   color: string
   distance: number
+  onChangeVisible(bool: boolean): void
 }
 
 const Box = styled.div`
@@ -21,9 +23,22 @@ const Box = styled.div`
   display: ${(props: { visible: boolean }) =>
     props.visible ? 'block' : 'none'};
 `
+const Title = styled.span`
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--neutral-n1-d1);
+`
+
+const DropdownContainer = styled.div`
+  width: 528px;
+  height: 636px;
+  background-color: var(--neutral-white-d1);
+  box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+`
 
 const NewCalendarArea: React.FC<NewCalendarAreaProps> = props => {
-  console.log(props.distance, props.timeZone)
+  // console.table(props.pointerPosition)
+
   const startTime = React.useMemo(() => {
     const key = props.timeZone[0]
     return dayjs(key)
@@ -43,12 +58,27 @@ const NewCalendarArea: React.FC<NewCalendarAreaProps> = props => {
   const { top, height } = usePosition(startTime.valueOf(), endTime.valueOf())
 
   return (
+    // <Dropdown
+    //   open={props.visible}
+    //   // trigger={['click']}
+    //   onOpenChange={bool => {
+    //     props.onChangeVisible(bool)
+    //   }}
+    //   align={{ offset: [-props.pointerPosition.x, -props.pointerPosition.y] }}
+    //   dropdownRender={() => {
+    //     return <DropdownContainer>123123123</DropdownContainer>
+    //   }}
+    // >
     <Box
       style={{ background: hexToRgba(props.color, 0.1), top, height }}
+      className="new-calendar-area"
       visible={!!props.timeZone.length}
     >
-      {`${startTime.format('hh:mm')}-${endTime?.format('hh:mm')}`}
+      <Title>{`${startTime.format('HH:mm')}-${endTime?.format(
+        'HH:mm',
+      )}`}</Title>
     </Box>
+    // </Dropdown>
   )
 }
 
