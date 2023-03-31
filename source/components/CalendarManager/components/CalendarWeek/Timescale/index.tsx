@@ -7,9 +7,10 @@ import { useDispatch, useSelector } from '@store/index'
 import classNames from 'classnames'
 import NewCalendarArea from '../../NewCalendarArea'
 import { Dropdown, Popover } from 'antd'
-import QuickCreateScheduleModel from '../../QuickCreateScheduleModel'
+// import QuickCreateScheduleModel from '../../QuickCreateScheduleModel'
 import { setQuickCreateScheduleModel } from '@store/calendarPanle'
-import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
+// import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
+import ScheduleCardList from '../ScheduleCardList'
 
 interface TimescaleProps {}
 const Table = styled.table`
@@ -162,8 +163,9 @@ const Timescale: React.FC<TimescaleProps> = props => {
         timeZone={timeZone}
         distance={distance}
       /> */}
-      <QuickCreateScheduleModel />
-      <ScheduleInfoDropdown />
+      <ScheduleCardList />
+      {/* <QuickCreateScheduleModel />
+      <ScheduleInfoDropdown /> */}
     </Table>
     // </Popover>
   )

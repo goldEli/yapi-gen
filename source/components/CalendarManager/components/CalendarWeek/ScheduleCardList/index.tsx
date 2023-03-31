@@ -1,0 +1,49 @@
+import React, { useEffect, useMemo } from 'react'
+import { useDispatch, useSelector } from '@store/index'
+import ScheduleCard from '../ScheduleCard'
+import { getScheduleList } from '@store/schedule/schedule.thunk'
+import useCalculationConflict from '../hooks/useCalculationConflict'
+import styled from '@emotion/styled'
+
+interface ScheduleCardListProps {}
+const ScheduleCardListBox = styled.div`
+  position: absolute;
+  width: calc(100% - 58px);
+  top: 0px;
+  left: 58px;
+  height: 100%;
+`
+const Container = styled.div`
+  position: relative;
+  width: 100%;
+`
+
+const ScheduleCardList: React.FC<ScheduleCardListProps> = props => {
+  // const scheduleList = useSelector(store => store.schedule.scheduleList)
+  const { data } = useCalculationConflict()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getScheduleList({ id: 1 }))
+  }, [])
+
+  const content = useMemo(() => {
+    return data.map(item => {
+      return (
+        <ScheduleCard
+          key={item.info.id}
+          data={item.info}
+          width={item.width}
+          left={item.left}
+        />
+      )
+    })
+  }, [data])
+  return (
+    <ScheduleCardListBox className="schedule-card-list-box">
+      <Container>{content}</Container>
+    </ScheduleCardListBox>
+  )
+}
+
+export default ScheduleCardList
