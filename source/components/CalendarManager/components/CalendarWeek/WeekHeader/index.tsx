@@ -55,12 +55,15 @@ const WeekListItem = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--neutral-white-d7);
+    color: var(--neutral-white-d7) !important;
   }
   .bottom {
     display: flex;
     gap: 9px;
     align-items: center;
+  }
+  .weekend {
+    color: var(--neutral-n4);
   }
 `
 
@@ -74,17 +77,34 @@ const WeekHeader: React.FC<WeekHeaderProps> = props => {
           const date = dayjs(item.date)
           const weekDay = date.format('ddd')
           const monthDay = date.format('DD')
+          const currentWeekDayNum = date.format('d')
+          // 周六周日
+          const weekDayNums = ['0', '6']
           const classname = classnames('monthDay', {
+            weekend: weekDayNums.includes(currentWeekDayNum),
             selectedDay:
               date.format('DD/MM/YYYY') ===
               dayjs(selectedDay).format('DD/MM/YYYY'),
           })
+
           return (
             <WeekListItem key={date.valueOf()}>
-              <span className="weekDay">{weekDay}</span>
+              <span
+                className={classnames('weekDay', {
+                  weekend: weekDayNums.includes(currentWeekDayNum),
+                })}
+              >
+                {weekDay}
+              </span>
               <div className="bottom">
                 <span className={classname}>{monthDay}</span>
-                <span className="lunar">初一</span>
+                <span
+                  className={classnames('lunar', {
+                    weekend: weekDayNums.includes(currentWeekDayNum),
+                  })}
+                >
+                  初一
+                </span>
               </div>
             </WeekListItem>
           )
