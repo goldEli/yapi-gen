@@ -2,13 +2,14 @@
 /* eslint-disable @typescript-eslint/indent */
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
-import { Dropdown } from 'antd'
+import { Dropdown, Spin } from 'antd'
 import { useEffect, useState } from 'react'
 import * as services from '@/services'
 import { isArray } from 'lodash'
 import { useNavigate } from 'react-router-dom'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { t } from 'i18next'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
 
 const Container = styled.div`
   width: 320px;
@@ -163,6 +164,7 @@ const MyDropdown = (props: any) => {
   const [finishList, setFinishList] = useState<any>()
   const [recentList, setRecentList] = useState<any>()
   const [isOpen, setIsOpen] = useState(false)
+  const [isSpinning, setIsSpinning] = useState(false)
   const box = [
     {
       title: t('last_viewed'),
@@ -174,22 +176,28 @@ const MyDropdown = (props: any) => {
     },
   ]
   const onGetMyRecent = async () => {
+    setIsSpinning(true)
     const res = await services.user.getMyRecent()
     setRecentList(res)
+    setIsSpinning(false)
   }
   const onGetMineFinishList = async () => {
+    setIsSpinning(true)
     const res = await services.mine.getMineFinishList({
       page: 1,
       pagesize: 10,
     })
     setFinishList(res.list)
+    setIsSpinning(false)
   }
   const onGetMineNoFinishList = async () => {
+    setIsSpinning(true)
     const res = await services.mine.getMineNoFinishList({
       page: 1,
       pagesize: 10,
     })
     setNoFinishList(res.list)
+    setIsSpinning(false)
   }
   const onFetchList = async () => {
     if (tabActive === 2) {
@@ -327,15 +335,17 @@ const MyDropdown = (props: any) => {
           </Tabs>
         </HeraderTabs>
         <ScrollWrap>
-          {tabActive === 2 &&
-            box.map(el => (
-              <div style={{ marginBottom: '16px' }} key={el.title}>
-                <Title>{el.title}</Title>
-                {itmeMain(recentList?.[el.name], el.name)}
-              </div>
-            ))}
-          {tabActive === 0 && itmeMain(noFinishList, 'story')}
-          {tabActive === 1 && itmeMain(finishList, 'story')}
+          <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
+            {tabActive === 2 &&
+              box.map(el => (
+                <div style={{ marginBottom: '16px' }} key={el.title}>
+                  <Title>{el.title}</Title>
+                  {itmeMain(recentList?.[el.name], el.name)}
+                </div>
+              ))}
+            {tabActive === 0 && itmeMain(noFinishList, 'story')}
+            {tabActive === 1 && itmeMain(finishList, 'story')}
+          </Spin>
         </ScrollWrap>
         <Border />
         <Footer onClick={onClick}>
