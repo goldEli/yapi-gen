@@ -128,7 +128,7 @@ const Timescale: React.FC<TimescaleProps> = props => {
                     data-id={id}
                     onMouseDown={e => onSelectTimeZone(e, id)}
                   >
-                    <td className="firstTd">
+                    <td className="firstTd borderRight">
                       {index === 0 && idx !== 0 && (
                         <span className="time">{`${str}:00`}</span>
                       )}
