@@ -93,6 +93,7 @@ const Row = styled.div`
   align-items: center;
   justify-content: space-between;
   &:hover {
+    cursor: pointer;
     background-color: var(--hover-d3);
   }
 `
