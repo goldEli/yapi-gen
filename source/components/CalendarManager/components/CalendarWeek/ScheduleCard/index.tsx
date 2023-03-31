@@ -18,6 +18,7 @@ import { Dropdown } from 'antd'
 import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
 import useMaxWidth from '../hooks/useMaxWidth'
+import useWeeks from '../hooks/useWeeks'
 
 interface ScheduleCardProps {
   data: Model.Schedule.Info
@@ -57,6 +58,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
   const { height, top } = usePosition(startTime, endTime)
 
   const { maxWidth } = useMaxWidth()
+  const { getCurrentWeekDayByLeft } = useWeeks()
 
   const onDrag = (e: DraggableEvent, draggableData: DraggableData) => {
     const { node, y, deltaY, lastY } = draggableData
@@ -77,13 +79,21 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
   const onDragStop = (e: DraggableEvent, draggableData: DraggableData) => {
     const { x, node, y, deltaX, lastY } = draggableData
     const time = getTimeByOffsetDistance(startTime, endTime, y - top)
-    console.log('x, deltaX', x, deltaX)
+
+    // 基于当前的日期更新
+    const weekDay = getCurrentWeekDayByLeft(x)
+    const newStartTime = dayjs(
+      `${weekDay} ${time.startTime.format('HH:mm:ss')}`,
+    ).valueOf()
+    const newEndTime = dayjs(
+      `${weekDay} ${time.endTime.format('HH:mm:ss')}`,
+    ).valueOf()
 
     dispatch(
       setSchedule({
         ...props.data,
-        startTime: time.startTime.valueOf(),
-        endTime: time.endTime.valueOf(),
+        startTime: newStartTime,
+        endTime: newEndTime,
       }),
     )
     setTimeRange(null)

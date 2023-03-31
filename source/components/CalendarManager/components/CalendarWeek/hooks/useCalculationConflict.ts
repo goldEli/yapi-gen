@@ -7,18 +7,13 @@ import dayjs from 'dayjs'
 import { useEffect, useState, useMemo } from 'react'
 import { getConflictsTimeRange, getStyleValue } from '../utils'
 import useMaxWidth from './useMaxWidth'
+import useWeeks from './useWeeks'
 
 const format = 'YYYY-MM-DD'
 const useCalculationConflict = () => {
   const scheduleList = useSelector(store => store.schedule.scheduleList)
-  const { selectedWeek } = useSelector(store => store.calendar)
-  const weeks = useMemo(
-    () => selectedWeek.map(item => dayjs(item.date).format(format)),
-    [selectedWeek],
-  )
-  // const scheduleList = useMemo(() => {
-  //   return list.filter(item => dayjs(item.startTime).format())
-  // }, [list])
+
+  const { weeks } = useWeeks()
   const { maxWidth } = useMaxWidth()
 
   const [data, setData] = useState<
