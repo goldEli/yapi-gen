@@ -17,6 +17,7 @@ import usePosition from '../hooks/usePosition'
 import { Dropdown } from 'antd'
 import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
+import useMaxWidth from '../hooks/useMaxWidth'
 
 interface ScheduleCardProps {
   data: Model.Schedule.Info
@@ -55,6 +56,8 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
 
   const { height, top } = usePosition(startTime, endTime)
 
+  const { maxWidth } = useMaxWidth()
+
   const onDrag = (e: DraggableEvent, draggableData: DraggableData) => {
     const { node, y, deltaY, lastY } = draggableData
     const time = getTimeByOffsetDistance(startTime, endTime, y - top)
@@ -72,8 +75,9 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     })
   }
   const onDragStop = (e: DraggableEvent, draggableData: DraggableData) => {
-    const { x, node, y, deltaY, lastY } = draggableData
+    const { x, node, y, deltaX, lastY } = draggableData
     const time = getTimeByOffsetDistance(startTime, endTime, y - top)
+    console.log('x, deltaX', x, deltaX)
 
     dispatch(
       setSchedule({
@@ -172,13 +176,12 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
         width: props.width,
         height,
       }}
-      dragGrid={[gridHeight, gridHeight]}
+      dragGrid={[maxWidth, gridHeight]}
       resizeGrid={[gridHeight, gridHeight]}
       position={{
         x: props.left,
         y: top,
       }}
-      dragAxis="y"
       enableResizing={{
         bottom: true,
         bottomLeft: false,

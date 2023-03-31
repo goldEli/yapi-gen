@@ -6,6 +6,7 @@ import { useSelector } from '@store/index'
 import dayjs from 'dayjs'
 import { useEffect, useState, useMemo } from 'react'
 import { getConflictsTimeRange, getStyleValue } from '../utils'
+import useMaxWidth from './useMaxWidth'
 
 const format = 'YYYY-MM-DD'
 const useCalculationConflict = () => {
@@ -18,8 +19,8 @@ const useCalculationConflict = () => {
   // const scheduleList = useMemo(() => {
   //   return list.filter(item => dayjs(item.startTime).format())
   // }, [list])
+  const { maxWidth } = useMaxWidth()
 
-  const [maxWidth, setMaxWidth] = useState(0)
   const [data, setData] = useState<
     { info: Model.Schedule.Info; width: number; left: number }[]
   >([])
@@ -30,15 +31,6 @@ const useCalculationConflict = () => {
         .filter(item => weeks.includes(dayjs(item.startTime).format(format))),
     [scheduleList, weeks],
   )
-
-  useEffect(() => {
-    const timeScale = document.querySelector('.schedule-card-list-box')
-    if (!timeScale) {
-      return
-    }
-    const width = Math.floor(getStyleValue(timeScale, 'width')) / 7
-    setMaxWidth(width)
-  }, [])
 
   useEffect(() => {
     if (!maxWidth) {
