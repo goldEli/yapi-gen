@@ -157,7 +157,6 @@ const Timescale: React.FC<TimescaleProps> = props => {
     // <Popover trigger={['contextMenu']} content={popoverContent} title="Title">
     <Table ref={tableRef} className="time-scale">
       {content}
-      <CurrentTimeLine />
       {/* <NewCalendarArea
         color={currentColor ?? ''}
         timeZone={timeZone}

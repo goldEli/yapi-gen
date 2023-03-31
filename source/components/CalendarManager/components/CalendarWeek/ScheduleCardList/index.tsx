@@ -4,6 +4,7 @@ import ScheduleCard from '../ScheduleCard'
 import { getScheduleList } from '@store/schedule/schedule.thunk'
 import useCalculationConflict from '../hooks/useCalculationConflict'
 import styled from '@emotion/styled'
+import CurrentTimeLine from '../CurrentTimeLine'
 
 interface ScheduleCardListProps {}
 const ScheduleCardListBox = styled.div`
@@ -41,6 +42,7 @@ const ScheduleCardList: React.FC<ScheduleCardListProps> = props => {
   }, [data])
   return (
     <ScheduleCardListBox className="schedule-card-list-box">
+      <CurrentTimeLine />
       <Container>{content}</Container>
     </ScheduleCardListBox>
   )

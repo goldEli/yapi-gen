@@ -28,7 +28,15 @@ const useWeeks = () => {
       ++index
     }
   }
-  return { weeks, getCurrentWeekDayByLeft }
+
+  const getLeftByCurrentWeekDay = (time: number) => {
+    const index = selectedWeek.findIndex(item =>
+      dayjs(item.date).isSame(dayjs(time), 'day'),
+    )
+    return index * maxWidth
+  }
+
+  return { weeks, getCurrentWeekDayByLeft, getLeftByCurrentWeekDay }
 }
 
 export default useWeeks

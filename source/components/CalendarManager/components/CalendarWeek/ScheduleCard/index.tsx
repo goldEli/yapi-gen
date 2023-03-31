@@ -100,13 +100,13 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     const calenderBoxRightArea = document.querySelector(
       '#calenderBoxRightArea',
     ) as Element
-    dispatch(
-      setScheduleInfoDropdown({
-        visible: true,
-        x: x,
-        y: y,
-      }),
-    )
+    // dispatch(
+    //   setScheduleInfoDropdown({
+    //     visible: true,
+    //     x: x,
+    //     y: y,
+    //   }),
+    // )
   }
 
   const onResize = (
