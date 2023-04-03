@@ -10,17 +10,23 @@ import {
   getConflictsTimeRange,
   getStyleValue,
 } from '../utils'
+import dayjs from 'dayjs'
 
 const minLeft = 58
 const useCalculationConflict = () => {
   const scheduleList = useSelector(store => store.schedule.scheduleList)
+  const { selectedDay } = useSelector(store => store.calendar)
   const [maxWidth, setMaxWidth] = useState(0)
   const [data, setData] = useState<
     { info: Model.Schedule.Info; width: number; left: number }[]
   >([])
+  const key = dayjs(selectedDay).format('YYYY-MM-DD')
   const list = useMemo(
-    () => scheduleList.filter(item => item.is_all_day !== 1),
-    [scheduleList],
+    () =>
+      scheduleList[key]?.filter(
+        item => item.is_all_day !== 1 && !item.is_span_day,
+      ),
+    [scheduleList, selectedDay],
   )
 
   useEffect(() => {
@@ -44,7 +50,7 @@ const useCalculationConflict = () => {
         const width = Math.floor((maxWidth - 20) / len)
         return con.map((item, idx) => {
           return {
-            id: item.id,
+            id: item.schedule_id,
             width,
             left: minLeft + width * idx,
           }
@@ -53,7 +59,7 @@ const useCalculationConflict = () => {
       .flat()
 
     const d = list.map(item => {
-      const cur = conflictsWithSize.find(i => i.id === item.id)
+      const cur = conflictsWithSize.find(i => i.id === item.schedule_id)
       if (cur) {
         return {
           info: item,

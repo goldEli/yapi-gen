@@ -101,8 +101,8 @@ function findConflicts(events: Model.Schedule.Info[]) {
   for (let i = 0; i < events.length; i++) {
     for (let j = i + 1; j < events.length; j++) {
       if (
-        events[i].startTime < events[j].endTime &&
-        events[i].endTime > events[j].startTime
+        events[i].start_timestamp < events[j].end_timestamp &&
+        events[i].end_timestamp > events[j].start_timestamp
       ) {
         conflicts.push([events[i], events[j]])
       }
@@ -224,10 +224,10 @@ export function getClassifyConflicts(events: Model.Schedule.Info[]) {
 
     for (const category of classified) {
       if (
-        conflict[0].startTime >= category.startTime &&
-        conflict[0].endTime <= category.endTime &&
-        conflict[1].startTime >= category.startTime &&
-        conflict[1].endTime <= category.endTime
+        conflict[0].start_timestamp >= category.startTime &&
+        conflict[0].end_timestamp <= category.endTime &&
+        conflict[1].start_timestamp >= category.startTime &&
+        conflict[1].end_timestamp <= category.endTime
       ) {
         category.conflicts.push(...conflict)
         found = true
@@ -238,8 +238,11 @@ export function getClassifyConflicts(events: Model.Schedule.Info[]) {
     if (!found) {
       classified.push({
         id: uuidv4(),
-        startTime: Math.min(conflict[0].startTime, conflict[1].startTime),
-        endTime: Math.max(conflict[0].endTime, conflict[1].endTime),
+        startTime: Math.min(
+          conflict[0].start_timestamp,
+          conflict[1].start_timestamp,
+        ),
+        endTime: Math.max(conflict[0].end_timestamp, conflict[1].end_timestamp),
         conflicts: [...conflict],
       })
     }
@@ -336,8 +339,8 @@ export function getConflictsTimeRange(list: Model.Schedule.Info[]) {
   for (let i = 0; i < list.length; ++i) {
     for (let j = i + 1; j < list.length; ++j) {
       if (
-        list[i].startTime < list[j].endTime &&
-        list[i].endTime > list[j].startTime
+        list[i].start_timestamp < list[j].end_timestamp &&
+        list[i].end_timestamp > list[j].start_timestamp
       ) {
         res.push([list[i], list[j]])
       }

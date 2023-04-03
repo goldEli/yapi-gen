@@ -3,6 +3,9 @@ import { setScheduleInfoDropdown } from '@store/calendarPanle'
 import { useDispatch, useSelector } from '@store/index'
 import React from 'react'
 import { hexToRgba } from '../utils'
+import useScheduleListBySelectedDay from '@/components/CalendarManager/hooks/useScheduleListBySelectedDay'
+import { getColorWithOpacityPointOne } from '@/components/CalendarManager/utils'
+import useScheduleAllDayList from '../hooks/useScheduleAllDayList'
 
 interface ScheduleAllDayProps {}
 const ScheduleAllDayBox = styled.div`
@@ -81,11 +84,7 @@ const ScheduleItem = styled.div`
 `
 
 const ScheduleAllDay: React.FC<ScheduleAllDayProps> = props => {
-  const scheduleList = useSelector(store => store.schedule.scheduleList)
-  const list = React.useMemo(
-    () => scheduleList.filter(item => item.is_all_day === 1),
-    [scheduleList],
-  )
+  const { list } = useScheduleAllDayList()
   const dispatch = useDispatch()
   return (
     <ScheduleAllDayBox>
@@ -96,7 +95,7 @@ const ScheduleAllDay: React.FC<ScheduleAllDayProps> = props => {
       <Lunar>二十一</Lunar>
       <ScheduleList>
         <ScheduleListScroll>
-          {list.map(item => {
+          {list?.map(item => {
             return (
               <ScheduleItem
                 onClick={() => {
@@ -108,10 +107,10 @@ const ScheduleAllDay: React.FC<ScheduleAllDayProps> = props => {
                     }),
                   )
                 }}
-                key={item.id}
-                bg={hexToRgba(item.color, 0.1)}
+                key={item.schedule_id}
+                bg={getColorWithOpacityPointOne(item.color)}
               >
-                {item.title}
+                {item.subject}
               </ScheduleItem>
             )
           })}

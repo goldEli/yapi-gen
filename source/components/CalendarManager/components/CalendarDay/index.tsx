@@ -2,7 +2,6 @@ import styled from '@emotion/styled'
 import React, { useMemo } from 'react'
 import { DndProvider, useDrag, useDrop } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import DropArea from './DropArea'
 import ScheduleAllDay from './ScheduleAllDay'
 import ScheduleCardList from './ScheduleCardList'
 import Timescale from './Timescale'
@@ -21,13 +20,9 @@ const CalendarDayBox = styled.div`
 const CalendarDay: React.FC<CalendarDayProps> = props => {
   return (
     <CalendarDayBox className="calendar-day-box">
-      {/* <DndProvider backend={HTML5Backend}> */}
-      {/* <DropArea> */}
       <ScheduleAllDay />
       <Timescale />
       <ScheduleCardList />
-      {/* </DropArea> */}
-      {/* </DndProvider> */}
     </CalendarDayBox>
   )
 }

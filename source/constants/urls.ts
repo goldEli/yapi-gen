@@ -133,6 +133,7 @@ const urls = {
   /**
    * 日历管理
    */
+  saveSchedule: '/b/save_schedule',
   getScheduleList: '/b/schedule_list',
   getCalendarList: '/b/calendar_list',
   getSubscribeList: '/b/subscribe_list',

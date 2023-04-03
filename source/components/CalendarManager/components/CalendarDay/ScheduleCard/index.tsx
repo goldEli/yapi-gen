@@ -11,12 +11,13 @@ import {
 import { DraggableData, Position, ResizableDelta, Rnd } from 'react-rnd'
 import { css } from '@emotion/css'
 import { DraggableEvent } from 'react-draggable'
-import { setSchedule } from '@store/schedule'
 import { ResizeDirection } from 're-resizable'
 import usePosition from '../hooks/usePosition'
 import { Dropdown } from 'antd'
 import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
+import { saveSchedule } from '@store/schedule/schedule.thunk'
+import { getColorWithOpacityPointOne } from '@/components/CalendarManager/utils'
 
 interface ScheduleCardProps {
   data: Model.Schedule.Info
@@ -46,18 +47,22 @@ const Title = styled.span`
 
 const ScheduleCard: React.FC<ScheduleCardProps> = props => {
   const { data } = props
-  const { startTime, endTime } = data
+  const { start_timestamp, end_timestamp } = data
   const dispatch = useDispatch()
   const [timeRange, setTimeRange] = useState<{
     startTime: string
     endTime: string
   } | null>(null)
 
-  const { height, top } = usePosition(startTime, endTime)
+  const { height, top } = usePosition(start_timestamp, end_timestamp)
 
   const onDrag = (e: DraggableEvent, draggableData: DraggableData) => {
     const { node, y, deltaY, lastY } = draggableData
-    const time = getTimeByOffsetDistance(startTime, endTime, y - top)
+    const time = getTimeByOffsetDistance(
+      start_timestamp,
+      end_timestamp,
+      y - top,
+    )
     setTimeRange({
       startTime: time.startTime.format('HH:mm'),
       endTime: time.endTime.format('HH:mm'),
@@ -65,7 +70,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
   }
   const onDragStart = (e: DraggableEvent, draggableData: DraggableData) => {
     // const { node, y, deltaY, lastY } = draggableData
-    const time = getTimeByOffsetDistance(startTime, endTime, 0)
+    const time = getTimeByOffsetDistance(start_timestamp, end_timestamp, 0)
     setTimeRange({
       startTime: time.startTime.format('HH:mm'),
       endTime: time.endTime.format('HH:mm'),
@@ -73,13 +78,17 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
   }
   const onDragStop = (e: DraggableEvent, draggableData: DraggableData) => {
     const { x, node, y, deltaY, lastY } = draggableData
-    const time = getTimeByOffsetDistance(startTime, endTime, y - top)
+    const time = getTimeByOffsetDistance(
+      start_timestamp,
+      end_timestamp,
+      y - top,
+    )
 
     dispatch(
-      setSchedule({
+      saveSchedule({
         ...props.data,
-        startTime: time.startTime.valueOf(),
-        endTime: time.endTime.valueOf(),
+        start_timestamp: time.startTime.valueOf(),
+        end_timestamp: time.endTime.valueOf(),
       }),
     )
     setTimeRange(null)
@@ -103,17 +112,17 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     position: Position,
   ) => {
     if (dir === 'bottom') {
-      const time = getTimeByAddDistance(endTime, delta.height)
+      const time = getTimeByAddDistance(end_timestamp, delta.height)
       setTimeRange({
-        startTime: dayjs(startTime).format('HH:mm'),
+        startTime: dayjs(start_timestamp).format('HH:mm'),
         endTime: time.format('HH:mm'),
       })
     }
     if (dir === 'top') {
-      const time = getTimeByAddDistance(startTime, delta.height * -1)
+      const time = getTimeByAddDistance(start_timestamp, delta.height * -1)
       setTimeRange({
         startTime: time.format('HH:mm'),
-        endTime: dayjs(endTime).format('HH:mm'),
+        endTime: dayjs(end_timestamp).format('HH:mm'),
       })
     }
   }
@@ -123,7 +132,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     dir: ResizeDirection,
     elementRef: HTMLElement,
   ) => {
-    const time = getTimeByOffsetDistance(startTime, endTime, 0)
+    const time = getTimeByOffsetDistance(start_timestamp, end_timestamp, 0)
     setTimeRange({
       startTime: time.startTime.format('HH:mm'),
       endTime: time.endTime.format('HH:mm'),
@@ -138,21 +147,33 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     position: Position,
   ) => {
     if (dir === 'bottom') {
-      const time = getTimeByAddDistance(endTime, delta.height)
+      const time = getTimeByAddDistance(end_timestamp, delta.height)
+      // dispatch(
+      //   setSchedule({
+      //     ...props.data,
+      //     endTime: time.valueOf(),
+      //   }),
+      // )
       dispatch(
-        setSchedule({
+        saveSchedule({
           ...props.data,
-          endTime: time.valueOf(),
+          end_timestamp: time.valueOf(),
         }),
       )
     }
     if (dir === 'top') {
-      const sTime = getTimeByAddDistance(startTime, delta.height * -1)
+      const sTime = getTimeByAddDistance(start_timestamp, delta.height * -1)
       // const eTime = getTimeByAddDistance(endTime, delta.height)
+      // dispatch(
+      //   setSchedule({
+      //     ...props.data,
+      //     startTime: sTime.valueOf(),
+      //   }),
+      // )
       dispatch(
-        setSchedule({
+        saveSchedule({
           ...props.data,
-          startTime: sTime.valueOf(),
+          start_timestamp: sTime.valueOf(),
         }),
       )
     }
@@ -164,10 +185,10 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
   return (
     <Rnd
       style={{
-        background: hexToRgba(data.color, 0.1),
+        background: getColorWithOpacityPointOne(data.color),
       }}
       className={dragBoxClassName}
-      key={props.data.id}
+      key={props.data.schedule_id}
       size={{
         width: props.width,
         height,
@@ -200,7 +221,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
       <Title>
         {timeRange && `${timeRange?.startTime} - ${timeRange?.endTime}`}
       </Title>
-      <Title>{props.data.title}</Title>
+      <Title>{props.data.subject}</Title>
     </Rnd>
   )
 }
