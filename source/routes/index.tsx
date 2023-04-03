@@ -39,6 +39,7 @@ const routes = [
             path: 'Project',
             element: lazy(() => import('@/views/Project')),
           },
+
           {
             path: 'Mine',
             element: lazy(() => import('@/views/Mine')),
@@ -181,7 +182,24 @@ const routes = [
           },
         ],
       },
-
+      {
+        path: 'SiteNotifications',
+        element: lazy(() => import('@/views/SiteNotifications')),
+        children: [
+          {
+            path: 'Setting',
+            element: lazy(
+              () => import('../views/SiteNotifications/Setting/index'),
+            ),
+          },
+          {
+            path: 'AllNote/:id',
+            element: lazy(
+              () => import('../views/SiteNotifications/AllNotes/index'),
+            ),
+          },
+        ],
+      },
       {
         path: '/LogManagement',
         element: lazy(() => import('@/views/LogManagement')),

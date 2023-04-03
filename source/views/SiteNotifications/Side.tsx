@@ -10,7 +10,8 @@ import MineSide from '@/components/AllSide/MineSide'
 import LogSide from '@/components/AllSide/LogSide'
 import HisSide from '@/components/AllSide/HisSide'
 import { DragLine } from '@/components/StyleCommon'
-import SiteNotificationSide from '@/views/SiteNotifications/components/SiteNotificationSide/SiteNotificationSide'
+import SiteNotificationSide from './components/SiteNotificationSide/SiteNotificationSide'
+import AllSide from './components/AllSide/AllSide'
 
 const SideWrap = styled.div<{
   firstMenuCollapse: boolean
@@ -65,9 +66,6 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
   const [focus, setFocus] = useState(false)
   const { pathname } = useLocation()
   const [activeType, setActiveType] = useState(0)
-  const [groupId, setGroupId] = useState<any>(null)
-  const [isVisible, setIsVisible] = useState(false)
-  const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
 
   useEffect(() => {
     props.onChangeLeft(leftWidth)
@@ -125,50 +123,13 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
     })
   }
 
-  // 切换分组查询列表
-  const onChangeGroup = (id: number) => {
-    setGroupId(id)
-    setActiveType(-1)
-  }
-
-  const onChangeType = (type: number) => {
-    setActiveType(type)
-    setGroupId(null)
-    setPageObj({
-      page: 1,
-      size: pageObj.size,
-    })
-  }
-
-  const onAddClick = () => {
-    setIsVisible(true)
-  }
-
   const getClassSide = () => {
     let nodeComponent: any
 
-    if (pathname === '/ProjectManagement/Project') {
-      nodeComponent = (
-        <ProjectSide
-          onAddClick={onAddClick}
-          onChangeType={onChangeType}
-          activeType={activeType}
-          onChangeGroup={onChangeGroup}
-        />
-      )
-    } else if (
-      String(pathname).includes('/ProjectManagement/MemberInfo') ||
-      String(pathname).includes('/MemberInfo')
-    ) {
-      nodeComponent = <HisSide />
-    } else if (String(pathname).includes('/AdminManagement')) {
-      nodeComponent = <AdminSide />
-    } else if (String(pathname).includes('/ProjectManagement/Mine')) {
-      nodeComponent = <MineSide />
-    } else if (String(pathname).includes('/LogManagement')) {
-      nodeComponent = <LogSide />
-    } else if (String(pathname).includes('/ProjectManagement/')) {
-      nodeComponent = <ProjectDetailSide />
+    if (String(pathname).includes('Setting')) {
+      nodeComponent = <SiteNotificationSide />
+    } else if (String(pathname).includes('AllNote')) {
+      nodeComponent = <AllSide />
     }
 
     return nodeComponent
