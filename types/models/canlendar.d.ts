@@ -1,4 +1,17 @@
 declare namespace Model.Calendar {
+  /**
+   * 可订阅人群type
+   */
+  type ChooseAddType = 'member' | 'team' | 'department' | undefined | 'all' | ''
+
+  interface MemberItem {
+    id: number
+    name: string
+    avatar?: string
+    // 1是选中
+    is_checked?: 0 | 1
+    type?: ChooseAddType
+  }
   interface Info {
     id: number
     color: string

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-leaked-render */
 import ChooseIconOrUpload from '@/components/ChooseIconOrUpload'
 import CommonButton from '@/components/CommonButton'
 import CommonModal from '@/components/CommonModal'
@@ -5,7 +6,14 @@ import CustomSelect from '@/components/CustomSelect'
 import FormTitleSmall from '@/components/FormTitleSmall'
 import MoreOptions from '@/components/MoreOptions'
 import { getCalendarIconList } from '@/services/calendar'
-import { Form, Input, Popover, Select } from 'antd'
+import {
+  Form,
+  Input,
+  Popover,
+  Radio,
+  type RadioChangeEvent,
+  Select,
+} from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import CalendarColor from '../../CalendarColor'
 import AddMemberCommonModal from '@/components/AddUser/CommonModal'
@@ -13,26 +21,52 @@ import CommonUserAvatar from '@/components/CommonUserAvatar'
 import IconFont from '@/components/IconFont'
 import {
   ColorWrap,
+  DepartmentIcon,
   FormWrap,
+  ItemProvider,
   MenuItem,
   PermissionBox,
   PermissionDropBox,
   PermissionDropItem,
   ShareMemberItem,
+  SubscribedItem,
+  SubscribedItems,
+  TeamIcon,
+  TransferContent,
 } from './style'
+import AddDepartmentOrTeamModal from '@/components/AddDepartmentOrTeamModal'
+import DeleteConfirm from '@/components/DeleteConfirm'
 
 interface PermissionDropProps {
-  //
+  onUpdateShare(list: Model.Calendar.MemberItem[]): void
+  item: Model.Calendar.MemberItem
 }
 
 const PermissionDrop = (props: PermissionDropProps) => {
   const [isVisible, setIsVisible] = useState(false)
+  // 移除成员
+  const [isDeleteVisible, setIsDeleteVisible] = useState(false)
+  // 转让日历
+  const [isTransferVisible, setIsTransferVisible] = useState(false)
+  // 转让日历选中的值
+  const [transferValue, setTransferValue] = useState(1)
   const permissionList = [
     { name: '管理员', sub: '管理日历及共享设置', id: 1 },
     { name: '编辑者', sub: '创建及修改日程', id: 2 },
     { name: '订阅者', sub: '查看所有日程详情', id: 3 },
     { name: '游客', sub: '只能查看日程忙碌空闲状态', id: 4 },
   ]
+
+  // 转让日历
+  const onTransferCalendar = () => {
+    // 调用转让日历接口并更新
+  }
+
+  //  移除成员
+  const onDeleteMember = () => {
+    // 删除成员并更新
+    setIsDeleteVisible(false)
+  }
 
   const operation = (
     <PermissionDropBox>
@@ -42,35 +76,65 @@ const PermissionDrop = (props: PermissionDropProps) => {
           <span className="sub">{i.sub}</span>
         </PermissionDropItem>
       ))}
+      <ItemProvider />
+      <PermissionDropItem onClick={() => setIsTransferVisible(true)}>
+        转让日历
+      </PermissionDropItem>
+      <PermissionDropItem
+        onClick={() => setIsDeleteVisible(true)}
+        style={{ color: 'var(--function-error)' }}
+      >
+        移除成员
+      </PermissionDropItem>
     </PermissionDropBox>
   )
 
   return (
-    <Popover
-      open={isVisible}
-      onOpenChange={setIsVisible}
-      trigger={['click', 'hover']}
-      placement="bottomRight"
-      content={operation}
-      getPopupContainer={n => n}
-    >
-      <div className="canOperation">
-        <span className="name">参与者</span>
-        <IconFont className="icon" type={isVisible ? 'up' : 'down'} />
-      </div>
-    </Popover>
+    <>
+      <DeleteConfirm
+        isVisible={isDeleteVisible}
+        title="移除成员"
+        onConfirm={onDeleteMember}
+        onChangeVisible={() => setIsDeleteVisible(false)}
+        text="确认移除成员"
+      />
+
+      <CommonModal
+        isVisible={isTransferVisible}
+        onClose={() => setIsTransferVisible(false)}
+        onConfirm={onTransferCalendar}
+        title="转让日历"
+      >
+        <TransferContent>
+          <Radio.Group
+            onChange={(e: RadioChangeEvent) => setTransferValue(e.target.value)}
+            value={transferValue}
+          >
+            <Radio value={1}>转让我退出该日历</Radio>
+            <Radio value={2}>转让我变为管理员</Radio>
+          </Radio.Group>
+        </TransferContent>
+      </CommonModal>
+      <Popover
+        open={isVisible}
+        onOpenChange={setIsVisible}
+        trigger={['click', 'hover']}
+        placement="bottomRight"
+        content={operation}
+        getPopupContainer={n => n}
+      >
+        <div className="canOperation">
+          <span className="name">参与者</span>
+          <IconFont className="icon" type={isVisible ? 'up' : 'down'} />
+        </div>
+      </Popover>
+    </>
   )
 }
 
 interface CalendarFormModalProps {
   visible: boolean
   onCancel(): void
-}
-
-interface MemberItem {
-  id: number
-  name: string
-  avatar: string
 }
 
 const CalendarFormModal = (props: CalendarFormModalProps) => {
@@ -85,19 +149,18 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
   const [pathList, setPathList] = useState<any>()
   // 选择成员显示
   const [isChooseVisible, setIsChooseVisible] = useState(false)
-  // 选择部门显示
-  const [isChooseDepartmentVisible, setIsChooseDepartmentVisible] =
-    useState(false)
-  // 选择团队显示
-  const [isChooseTeamVisible, setIsChooseTeamVisible] = useState(false)
-  // 选择是否全员
-  const [isAll, setIsAll] = useState(false)
-  // 当前是哪个key添加人员
+  // 选择其他显示
+  const [isChooseOtherVisible, setIsChooseOtherVisible] = useState(false)
+  // 当前选中的下拉key
+  const [isActiveKey, setIsActiveKey] = useState<Model.Calendar.ChooseAddType>()
+  // 当前是哪个key添加人员 例：共享或者是可订阅
   const [currentKey, setCurrentKey] = useState('')
   // 共享成员数组
-  const [shareList, setShareList] = useState<MemberItem[]>([])
-  // 订阅成员数组
-  const [subscribeableList, setSubscribeableList] = useState<MemberItem[]>([])
+  const [shareList, setShareList] = useState<Model.Calendar.MemberItem[]>([])
+  // 订阅成员数组 --- 人员数组
+  const [subscribedList, setSubscribedList] = useState<
+    Model.Calendar.MemberItem[]
+  >([])
   // 可订阅人群下拉选择
   const [isAddVisible, setIsAddVisible] = useState(false)
 
@@ -110,6 +173,16 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
       dec: '可被搜索到，仅向他人显示日程忙碌空闲',
     },
   ]
+
+  // 关闭创建日历弹窗
+  const onClose = () => {
+    setNormalColor('#6688FF')
+    setIsActiveKey('')
+    setCurrentKey('')
+    setShareList([])
+    setSubscribedList([])
+    props.onCancel()
+  }
 
   // 切换图标
   const onChangePath = (val: { id: number; path: string }, state: number) => {
@@ -131,26 +204,39 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
   }
 
   // 选中的共享成员
-  const onAddConfirm = (list: MemberItem[]) => {
-    setShareList(list)
+  const onAddConfirm = (list: Model.Calendar.MemberItem[]) => {
+    const resultList = list.map((i: Model.Calendar.MemberItem) => ({
+      ...i,
+      type: isActiveKey,
+    }))
+    currentKey === 'share'
+      ? setShareList(resultList)
+      : setSubscribedList([...new Set([...subscribedList, ...resultList])])
     setIsChooseVisible(false)
   }
 
   // 订阅人群选择的key
   const onChooseKeys = (key: string) => {
     setIsAddVisible(false)
+    setIsActiveKey(key as 'member' | 'team' | 'department')
     switch (key) {
       case 'all':
-        setIsAll(true)
+        setSubscribedList([
+          ...[
+            {
+              id: 0,
+              name: '全员',
+              type: 'all' as Model.Calendar.ChooseAddType,
+            },
+          ],
+          ...subscribedList,
+        ])
         break
       case 'member':
         onAddMember('subscribeable')
         break
-      case 'department':
-        setIsChooseDepartmentVisible(true)
-        break
-      case 'team':
-        setIsChooseTeamVisible(true)
+      default:
+        setIsChooseOtherVisible(true)
         break
     }
   }
@@ -171,8 +257,8 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
         label: '添加部门',
       },
       {
-        key: '添加团队',
-        label: '团队',
+        key: 'team',
+        label: '添加团队',
       },
     ]
     return (
@@ -184,6 +270,24 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
         ))}
       </div>
     )
+  }
+
+  // 其他弹窗确认 - 部门或团队数组
+  const onAddOtherConfirm = (list: Model.Calendar.MemberItem[]) => {
+    const resultList = list.map((i: Model.Calendar.MemberItem) => ({
+      ...i,
+      type: isActiveKey,
+    }))
+    console.log(resultList)
+    setSubscribedList([...new Set([...subscribedList, ...resultList])])
+  }
+
+  // 删除选择的可订阅人群
+  const onDeleteItem = (item: Model.Calendar.MemberItem) => {
+    const resultList = subscribedList.filter(
+      (i: Model.Calendar.MemberItem) => i.id !== item.id,
+    )
+    setSubscribedList(resultList)
   }
 
   useEffect(() => {
@@ -202,11 +306,17 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
           onConfirm={onAddConfirm}
         />
       )}
+      <AddDepartmentOrTeamModal
+        isVisible={isChooseOtherVisible}
+        onClose={() => setIsChooseOtherVisible(false)}
+        onConfirm={onAddOtherConfirm}
+        type={isActiveKey}
+      />
       <CommonModal
         isVisible={props.visible}
         title="创建日历"
         width={528}
-        onClose={props.onCancel}
+        onClose={onClose}
         confirmText="创建"
       >
         <FormWrap layout="vertical" form={form}>
@@ -276,11 +386,11 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
             >
               添加成员
             </CommonButton>
-            {shareList.map((i: MemberItem) => (
+            {shareList.map((i: Model.Calendar.MemberItem) => (
               <ShareMemberItem key={i.id}>
                 <CommonUserAvatar avatar={i.avatar} name={i.name} />
                 {/* <div className="notCanOperation">管理员</div> */}
-                <PermissionDrop />
+                <PermissionDrop onUpdateShare={setShareList} item={i} />
               </ShareMemberItem>
             ))}
           </Form.Item>
@@ -303,6 +413,32 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
                 </CommonButton>
               </div>
             </Popover>
+            <SubscribedItems size={16}>
+              {subscribedList.map((i: Model.Calendar.MemberItem) => (
+                <SubscribedItem key={i.id} size={8}>
+                  {i.type === 'member' && (
+                    <CommonUserAvatar size="small" avatar={i.avatar} />
+                  )}
+                  {i.type === 'department' && (
+                    <DepartmentIcon>
+                      <IconFont type="branch" />
+                    </DepartmentIcon>
+                  )}
+                  {i.type === 'team' && (
+                    <TeamIcon>
+                      <IconFont type="team-2" />
+                    </TeamIcon>
+                  )}
+                  {i.type === 'all' && (
+                    <TeamIcon>
+                      <IconFont type="userAll" />
+                    </TeamIcon>
+                  )}
+                  <span>{i.name}</span>
+                  <IconFont type="close" onClick={() => onDeleteItem(i)} />
+                </SubscribedItem>
+              ))}
+            </SubscribedItems>
           </Form.Item>
           <Form.Item label="选择图标">
             <ChooseIconOrUpload

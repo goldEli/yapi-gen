@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Form } from 'antd'
+import { Form, Space } from 'antd'
 
 export const FormWrap = styled(Form)`
   height: 60vh;
@@ -96,4 +96,80 @@ export const MenuItem = styled.div`
     background: var(--hover-d3);
     color: var(--neutral-n1-d1);
   }
+`
+export const ItemProvider = styled.div`
+  height: 1px;
+  background: var(--neutral-n6-d1);
+  margin: 8px 0;
+`
+
+export const TransferContent = styled.div`
+  padding: 0 24px;
+  min-height: 136px;
+  .ant-radio-wrapper {
+    margin-right: 0;
+  }
+  .ant-radio-wrapper:last-child {
+    margin-left: 48px;
+  }
+`
+
+export const SubscribedItems = styled(Space)`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+`
+
+export const SubscribedItem = styled(Space)`
+  border-radius: 6px;
+  height: 32px;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  color: var(--neutral-n2);
+  background: var(--neutral-n8);
+  font-size: 12px;
+  svg {
+    cursor: pointer;
+  }
+  &:hover {
+    background: var(--neutral-white-d4);
+    box-shadow: 0px 0px 10px 0px rgba(9, 9, 9, 0.09);
+  }
+`
+
+export const DepartmentIcon = styled.div`
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--neutral-white-d7);
+  font-size: 16px;
+  background: #79d1c1 !important;
+`
+
+export const TeamIcon = styled.div`
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--neutral-white-d7);
+  font-size: 16px;
+  background: #98ace0 !important;
+`
+
+export const AllIcon = styled.div`
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--neutral-white-d7);
+  font-size: 16px;
+  background: #7dbde1 !important;
 `
