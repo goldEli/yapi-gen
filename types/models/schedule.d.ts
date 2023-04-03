@@ -37,11 +37,12 @@ declare namespace Model.Schedule {
     // 1677772799
     timestamp: number
     // '2023-03-02'
-    first_start_date: string
+    first_start_date?: string
     // '2023-03-03 16:33:00'
-    first_start_datetime: string
+    first_start_datetime?: string
     // 1677745980
-    first_start_timestamp: number
+    first_start_timestamp?: number
+    last_start_timestamp?: number
   }
   type InfoWithPosition = Info & {
     width: number

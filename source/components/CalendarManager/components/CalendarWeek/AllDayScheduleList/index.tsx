@@ -41,15 +41,16 @@ const AllDayScheduleList: React.FC<AllDayScheduleListProps> = props => {
   const { maxWidth } = useMaxWidth()
   const { getLeftByCurrentWeekDay, weeks } = useWeeks()
 
-  // const [schedulePosition, setSchedulePosition] = useState<
-  //   {
-  //     id: Model.Schedule.Info['id']
-  //     width: number
-  //     top: number
-  //     left: number
-  //   }[]
-  // >([])
-  const schedulePosition = useMemo(() => {
+  const [schedulePosition, setSchedulePosition] = useState<
+    {
+      id: Model.Schedule.Info['id']
+      width: number
+      top: number
+      left: number
+    }[]
+  >([])
+
+  useEffect(() => {
     const res: {
       id: Model.Schedule.Info['id']
       width: number
@@ -68,7 +69,8 @@ const AllDayScheduleList: React.FC<AllDayScheduleListProps> = props => {
         })
       })
     }
-    return res
+
+    setSchedulePosition(res)
   }, [allDayScheduleList, maxWidth])
 
   // useEffect(() => {

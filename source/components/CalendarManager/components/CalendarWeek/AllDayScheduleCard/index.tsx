@@ -7,6 +7,7 @@ import {
   getTimeByAddDistance,
   getTimeByOffsetDistance,
   hexToRgba,
+  isSameTime,
 } from '../utils'
 import { DraggableData, Position, ResizableDelta, Rnd } from 'react-rnd'
 import { css } from '@emotion/css'
@@ -119,6 +120,23 @@ const AllDayScheduleCard: React.FC<ScheduleCardProps> = props => {
   }
 
   const gridHeight = useMemo(() => (oneHourHeight / 60) * 15, [outerHeight])
+  const title = React.useMemo(() => {
+    const { start_timestamp, end_timestamp, first_start_timestamp } = props.data
+    if (props.data.is_span_day) {
+      const isFirstDay = isSameTime(start_timestamp, first_start_timestamp ?? 0)
+      if (!isFirstDay) {
+        return ''
+      }
+    }
+    return props.data.subject
+  }, [props.data])
+
+  // 跨天不是第一天的日程不能拖拽
+  const disableDragging = useMemo(() => {
+    const { start_timestamp, end_timestamp, first_start_timestamp } = props.data
+    const isFirstDay = isSameTime(start_timestamp, first_start_timestamp ?? 0)
+    return props.data.is_span_day && !isFirstDay
+  }, [props.data])
 
   return (
     <Rnd
@@ -134,6 +152,7 @@ const AllDayScheduleCard: React.FC<ScheduleCardProps> = props => {
       dragGrid={[maxWidth, gridHeight]}
       // resizeGrid={[gridHeight, gridHeight]}
       dragAxis="x"
+      disableDragging={disableDragging}
       position={{
         x: props.left,
         y: top,
@@ -157,10 +176,10 @@ const AllDayScheduleCard: React.FC<ScheduleCardProps> = props => {
       // onResizeStop={onResizeStop}
     >
       <Title>
-        {timeRange &&
-          `${timeRange?.start_timestamp} - ${timeRange?.end_timestamp}`}
+        {/* {timeRange &&
+          `${timeRange?.start_timestamp} - ${timeRange?.end_timestamp}`} */}
       </Title>
-      <Title>{props.data.subject}</Title>
+      <Title>{title}</Title>
     </Rnd>
   )
 }
