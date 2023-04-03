@@ -38,7 +38,7 @@ import AddDepartmentOrTeamModal from '@/components/AddDepartmentOrTeamModal'
 import DeleteConfirm from '@/components/DeleteConfirm'
 
 interface PermissionDropProps {
-  onUpdateShare(list: Model.Calendar.MemberItem[]): void
+  onUpdateShare(item: Model.Calendar.MemberItem): void
   item: Model.Calendar.MemberItem
 }
 
@@ -50,6 +50,7 @@ const PermissionDrop = (props: PermissionDropProps) => {
   const [isTransferVisible, setIsTransferVisible] = useState(false)
   // 转让日历选中的值
   const [transferValue, setTransferValue] = useState(1)
+
   const permissionList = [
     { name: '管理员', sub: '管理日历及共享设置', id: 1 },
     { name: '编辑者', sub: '创建及修改日程', id: 2 },
@@ -68,10 +69,17 @@ const PermissionDrop = (props: PermissionDropProps) => {
     setIsDeleteVisible(false)
   }
 
+  // 改变权限
+  const onChangePermission = (i: { id: number; name: string; sub: string }) => {
+    const newItem = { ...props.item, permission: i.id }
+    props.onUpdateShare(newItem)
+    setIsVisible(false)
+  }
+
   const operation = (
     <PermissionDropBox>
       {permissionList.map((i: { id: number; name: string; sub: string }) => (
-        <PermissionDropItem key={i.id}>
+        <PermissionDropItem key={i.id} onClick={() => onChangePermission(i)}>
           <span className="title">{i.name}</span>
           <span className="sub">{i.sub}</span>
         </PermissionDropItem>
@@ -124,7 +132,14 @@ const PermissionDrop = (props: PermissionDropProps) => {
         getPopupContainer={n => n}
       >
         <div className="canOperation">
-          <span className="name">参与者</span>
+          <span className="name">
+            {
+              permissionList.filter(
+                (i: Model.Calendar.MemberItem) =>
+                  i.id === props.item.permission,
+              )[0]?.name
+            }
+          </span>
           <IconFont className="icon" type={isVisible ? 'up' : 'down'} />
         </div>
       </Popover>
@@ -163,6 +178,7 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
   >([])
   // 可订阅人群下拉选择
   const [isAddVisible, setIsAddVisible] = useState(false)
+  const [currentPermission, setCurrentPermission] = useState(null)
 
   const permissionList = [
     { id: 0, name: '私密', dec: '仅共享成员可访问' },
@@ -181,6 +197,7 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
     setCurrentKey('')
     setShareList([])
     setSubscribedList([])
+    setCurrentPermission(null)
     props.onCancel()
   }
 
@@ -208,9 +225,10 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
     const resultList = list.map((i: Model.Calendar.MemberItem) => ({
       ...i,
       type: isActiveKey,
+      permission: 4,
     }))
     currentKey === 'share'
-      ? setShareList(resultList)
+      ? setShareList([...new Set([...shareList, ...resultList])])
       : setSubscribedList([...new Set([...subscribedList, ...resultList])])
     setIsChooseVisible(false)
   }
@@ -224,7 +242,7 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
         setSubscribedList([
           ...[
             {
-              id: 0,
+              id: -1,
               name: '全员',
               type: 'all' as Model.Calendar.ChooseAddType,
             },
@@ -278,7 +296,6 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
       ...i,
       type: isActiveKey,
     }))
-    console.log(resultList)
     setSubscribedList([...new Set([...subscribedList, ...resultList])])
   }
 
@@ -288,6 +305,32 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
       (i: Model.Calendar.MemberItem) => i.id !== item.id,
     )
     setSubscribedList(resultList)
+  }
+
+  // 创建日历确认事件
+  const onCreateConfirm = async () => {
+    await form.validateFields()
+    const values = form.getFieldsValue()
+    values.color = normalColor
+    values.shareIds = shareList.map((i: Model.Calendar.MemberItem) => ({
+      id: i.id,
+      permission: i.permission,
+    }))
+    values.subscribedIds = subscribedList.map(
+      (i: Model.Calendar.MemberItem) => i.id,
+    )
+    values.path = path
+    values.permission = currentPermission
+    // console.log(values)
+  }
+
+  // 修改共享成员的权限
+  const onUpdateShare = (item: Model.Calendar.MemberItem) => {
+    const resultList = shareList.map((i: Model.Calendar.MemberItem) => ({
+      ...i,
+      permission: i.id === item.id ? item.permission : i.permission,
+    }))
+    setShareList(resultList)
   }
 
   useEffect(() => {
@@ -317,6 +360,7 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
         title="创建日历"
         width={528}
         onClose={onClose}
+        onConfirm={onCreateConfirm}
         confirmText="创建"
       >
         <FormWrap layout="vertical" form={form}>
@@ -347,10 +391,14 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
               autoFocus
             />
           </Form.Item>
-          <Form.Item label={<FormTitleSmall text="权限" />} name="permission">
+          <Form.Item label={<FormTitleSmall text="权限" />}>
             <PermissionBox>
               <div className="select">
-                <CustomSelect placeholder="请选择权限" optionLabelProp="label">
+                <CustomSelect
+                  onChange={setCurrentPermission}
+                  placeholder="请选择权限"
+                  optionLabelProp="label"
+                >
                   {permissionList.map((i: any) => (
                     <Select.Option value={i.id} key={i.id} label={i.name}>
                       <MoreOptions type="promise" name={i.name} dec={i.dec} />
@@ -390,7 +438,7 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
               <ShareMemberItem key={i.id}>
                 <CommonUserAvatar avatar={i.avatar} name={i.name} />
                 {/* <div className="notCanOperation">管理员</div> */}
-                <PermissionDrop onUpdateShare={setShareList} item={i} />
+                <PermissionDrop onUpdateShare={onUpdateShare} item={i} />
               </ShareMemberItem>
             ))}
           </Form.Item>

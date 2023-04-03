@@ -11,6 +11,7 @@ declare namespace Model.Calendar {
     // 1是选中
     is_checked?: 0 | 1
     type?: ChooseAddType
+    permission?: number
   }
   interface Info {
     id: number
