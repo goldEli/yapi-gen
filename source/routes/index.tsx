@@ -40,6 +40,10 @@ const routes = [
             element: lazy(() => import('@/views/Project')),
           },
           {
+            path: 'FormWork',
+            element: lazy(() => import('@/views/FormWork')),
+          },
+          {
             path: 'Mine',
             element: lazy(() => import('@/views/Mine')),
             children: [
@@ -91,7 +95,7 @@ const routes = [
           },
           {
             path: 'MemberInfo',
-            element: lazy(() => import('@/views/MemberInfo')),
+            element: lazy(() => import('@/views/FormWork')),
             children: [
               {
                 path: 'Carbon',

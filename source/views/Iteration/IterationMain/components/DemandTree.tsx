@@ -174,8 +174,6 @@ const DemandTree = (props: Props) => {
       demandIds = props.data?.list?.map((i: any) => i.id)
     }
 
-    console.log(demandIds, '222222')
-
     openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id)
   }
 

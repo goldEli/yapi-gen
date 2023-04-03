@@ -11,6 +11,7 @@ import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import DemandSettingSide from '../DemandSettingSide'
+import FormWorkSide from '../FormWorkSide'
 import {
   AllWrap,
   MenuBox,
