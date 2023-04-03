@@ -11,7 +11,7 @@ import {
 import { DraggableData, Position, ResizableDelta, Rnd } from 'react-rnd'
 import { css } from '@emotion/css'
 import { DraggableEvent } from 'react-draggable'
-import { setSchedule } from '@store/schedule'
+// import { setSchedule } from '@store/schedule'
 import { ResizeDirection } from 're-resizable'
 import useAllDayPosition from '../hooks/useAllDayPosition'
 import { Dropdown } from 'antd'
@@ -19,11 +19,14 @@ import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
 import useMaxWidth from '../hooks/useMaxWidth'
 import useWeeks from '../hooks/useWeeks'
+import { saveSchedule } from '@store/schedule/schedule.thunk'
+import { getColorWithOpacityPointOne } from '@/components/CalendarManager/utils'
 
 interface ScheduleCardProps {
   data: Model.Schedule.Info
   width: number
   left: number
+  top: number
 }
 
 const dragBoxClassName = css`
@@ -47,53 +50,59 @@ const Title = styled.span`
 `
 
 const AllDayScheduleCard: React.FC<ScheduleCardProps> = props => {
-  const { data } = props
-  const { startTime, endTime } = data
+  const { data, top } = props
+  const { start_timestamp, end_timestamp } = data
   const dispatch = useDispatch()
   const [timeRange, setTimeRange] = useState<{
-    startTime: string
-    endTime: string
+    start_timestamp: string
+    end_timestamp: string
   } | null>(null)
-
-  const { height, top } = useAllDayPosition(startTime, endTime)
 
   const { maxWidth } = useMaxWidth()
   const { getCurrentWeekDayByLeft } = useWeeks()
 
   const onDrag = (e: DraggableEvent, draggableData: DraggableData) => {
     const { node, y, deltaY, lastY } = draggableData
-    const time = getTimeByOffsetDistance(startTime, endTime, y - top)
+    const time = getTimeByOffsetDistance(
+      start_timestamp,
+      end_timestamp,
+      y - top,
+    )
     setTimeRange({
-      startTime: time.startTime.format('HH:mm'),
-      endTime: time.endTime.format('HH:mm'),
+      start_timestamp: time.start_timestamp.format('HH:mm'),
+      end_timestamp: time.end_timestamp.format('HH:mm'),
     })
   }
   const onDragStart = (e: DraggableEvent, draggableData: DraggableData) => {
     // const { node, y, deltaY, lastY } = draggableData
-    const time = getTimeByOffsetDistance(startTime, endTime, 0)
+    const time = getTimeByOffsetDistance(start_timestamp, end_timestamp, 0)
     setTimeRange({
-      startTime: time.startTime.format('HH:mm'),
-      endTime: time.endTime.format('HH:mm'),
+      start_timestamp: time.start_timestamp.format('HH:mm'),
+      end_timestamp: time.end_timestamp.format('HH:mm'),
     })
   }
   const onDragStop = (e: DraggableEvent, draggableData: DraggableData) => {
     const { x, node, y, deltaX, lastY } = draggableData
-    const time = getTimeByOffsetDistance(startTime, endTime, y - top)
+    const time = getTimeByOffsetDistance(
+      start_timestamp,
+      end_timestamp,
+      y - top,
+    )
 
     // 基于当前的日期更新
     const weekDay = getCurrentWeekDayByLeft(x)
     const newStartTime = dayjs(
-      `${weekDay} ${time.startTime.format('HH:mm:ss')}`,
+      `${weekDay} ${time.start_timestamp.format('HH:mm:ss')}`,
     ).valueOf()
     const newEndTime = dayjs(
-      `${weekDay} ${time.endTime.format('HH:mm:ss')}`,
+      `${weekDay} ${time.end_timestamp.format('HH:mm:ss')}`,
     ).valueOf()
 
     dispatch(
-      setSchedule({
+      saveSchedule({
         ...props.data,
-        startTime: newStartTime,
-        endTime: newEndTime,
+        start_timestamp: newStartTime,
+        end_timestamp: newEndTime,
       }),
     )
     setTimeRange(null)
@@ -114,16 +123,17 @@ const AllDayScheduleCard: React.FC<ScheduleCardProps> = props => {
   return (
     <Rnd
       style={{
-        background: hexToRgba(data.color, 0.1),
+        background: getColorWithOpacityPointOne(data.color),
       }}
       className={dragBoxClassName}
       key={props.data.id}
       size={{
         width: props.width,
-        height,
+        height: 20,
       }}
       dragGrid={[maxWidth, gridHeight]}
       // resizeGrid={[gridHeight, gridHeight]}
+      dragAxis="x"
       position={{
         x: props.left,
         y: top,
@@ -147,9 +157,10 @@ const AllDayScheduleCard: React.FC<ScheduleCardProps> = props => {
       // onResizeStop={onResizeStop}
     >
       <Title>
-        {timeRange && `${timeRange?.startTime} - ${timeRange?.endTime}`}
+        {timeRange &&
+          `${timeRange?.start_timestamp} - ${timeRange?.end_timestamp}`}
       </Title>
-      <Title>{props.data.title}</Title>
+      <Title>{props.data.subject}</Title>
     </Rnd>
   )
 }

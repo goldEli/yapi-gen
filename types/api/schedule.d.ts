@@ -4,7 +4,13 @@ declare namespace API.Schedule {
       id: number
     }
     type Result = {
-      list: Model.Schedule.Info[]
+      [key in string]: Model.Schedule.Info[]
+    }
+  }
+  namespace SaveSchedule {
+    type Params = Model.Schedule.Info
+    type Result = {
+      [key in string]: Model.Schedule.Info[]
     }
   }
 }

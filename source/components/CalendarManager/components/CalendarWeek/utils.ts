@@ -5,8 +5,8 @@ import { oneHourHeight } from '../../config'
 import { v4 as uuidv4 } from 'uuid'
 
 export const handleOffsetDistance = (
-  startTime: number,
-  endTime: number,
+  start_timestamp: number,
+  end_timestamp: number,
   delta: XYCoord,
 ) => {
   console.log('==================')
@@ -21,16 +21,16 @@ export const handleOffsetDistance = (
   const moveMinute = step * 15
   console.log('moveMinute', moveMinute)
 
-  const newStartTime = dayjs(startTime).add(moveMinute, 'minute')
+  const newStartTime = dayjs(start_timestamp).add(moveMinute, 'minute')
   console.log('newStartTime', newStartTime.format('HH:mm'))
-  const newEndTime = dayjs(endTime).add(moveMinute, 'minute')
+  const newEndTime = dayjs(end_timestamp).add(moveMinute, 'minute')
   console.log('newEndTime', newEndTime.format('HH:mm'))
   return {
     newStartTime,
     newEndTime,
   }
 }
-export const getEndTimeByHeight = (startTime: number, height: number) => {
+export const getEndTimeByHeight = (start_timestamp: number, height: number) => {
   // console.log('==================')
   // const offsetTop = Math.round(delta?.y ?? 0)
   // console.log('offsetTop', offsetTop)
@@ -43,12 +43,12 @@ export const getEndTimeByHeight = (startTime: number, height: number) => {
   const moveMinute = step * 15
   // console.log('moveMinute', moveMinute)
 
-  // const newStartTime = dayjs(startTime).add(moveMinute, 'minute')
+  // const newStartTime = dayjs(start_timestamp).add(moveMinute, 'minute')
   // console.log('newStartTime', newStartTime.format('HH:mm'))
-  const newEndTime = dayjs(startTime).add(moveMinute, 'minute')
+  const newEndTime = dayjs(start_timestamp).add(moveMinute, 'minute')
   console.log(
     'newEndTime',
-    dayjs(startTime).format('HH:mm'),
+    dayjs(start_timestamp).format('HH:mm'),
     newEndTime.format('HH:mm'),
   )
   return newEndTime
@@ -63,16 +63,16 @@ export const addMinutes = (time: number, minutes: number) => {
 }
 
 export const getTimeByOffsetDistance = (
-  startTime: number,
-  endTime: number,
+  start_timestamp: number,
+  end_timestamp: number,
   distance: number,
 ) => {
   const offset = getMinutesByDistance(distance)
-  const newStartTime = addMinutes(startTime, offset)
-  const newEndTime = addMinutes(endTime, offset)
+  const newStartTime = addMinutes(start_timestamp, offset)
+  const newEndTime = addMinutes(end_timestamp, offset)
   return {
-    startTime: newStartTime,
-    endTime: newEndTime,
+    start_timestamp: newStartTime,
+    end_timestamp: newEndTime,
   }
 }
 
@@ -101,8 +101,8 @@ function findConflicts(events: Model.Schedule.Info[]) {
   for (let i = 0; i < events.length; i++) {
     for (let j = i + 1; j < events.length; j++) {
       if (
-        events[i].startTime < events[j].endTime &&
-        events[i].endTime > events[j].startTime
+        events[i].start_timestamp < events[j].end_timestamp &&
+        events[i].end_timestamp > events[j].start_timestamp
       ) {
         conflicts.push([events[i], events[j]])
       }
@@ -118,8 +118,8 @@ function findConflictsList(events: TimeRange[]) {
   for (let i = 0; i < events.length; i++) {
     for (let j = i + 1; j < events.length; j++) {
       if (
-        events[i].startTime < events[j].endTime &&
-        events[i].endTime > events[j].startTime
+        events[i].start_timestamp < events[j].end_timestamp &&
+        events[i].end_timestamp > events[j].start_timestamp
       ) {
         conflicts.push({})
       }
@@ -133,8 +133,8 @@ function findConflictsList(events: TimeRange[]) {
 
 type Item = {
   id: string
-  startTime: number
-  endTime: number
+  start_timestamp: number
+  end_timestamp: number
   conflicts: Model.Schedule.Info[]
 }
 function findConflictsClassify(events: Item[]) {
@@ -145,17 +145,20 @@ function findConflictsClassify(events: Item[]) {
     for (let j = i + 1; j < events.length; j++) {
       const one = events[i]
       const two = events[j]
-      if (one.startTime < two.endTime && one.endTime > two.startTime) {
+      if (
+        one.start_timestamp < two.end_timestamp &&
+        one.end_timestamp > two.start_timestamp
+      ) {
         // conflicts.push([events[i], events[j]])
         usedIds.push(one.id, two.id)
         const res = {
           id: uuidv4(),
-          startTime: Math.min(one.startTime, two.startTime),
-          endTime: Math.max(one.endTime, two.endTime),
+          start_timestamp: Math.min(one.start_timestamp, two.start_timestamp),
+          end_timestamp: Math.max(one.end_timestamp, two.end_timestamp),
           conflicts: _.unionBy(one.conflicts.concat(two.conflicts), 'id'),
         }
-        // res.start = dayjs(res.startTime).format('HH:mm')
-        // res.end = dayjs(res.endTime).format('HH:mm')
+        // res.start = dayjs(res.start_timestamp).format('HH:mm')
+        // res.end = dayjs(res.end_timestamp).format('HH:mm')
         conflicts.push(res)
       }
     }
@@ -192,10 +195,10 @@ export function getConflicts(events: Model.Schedule.Info[]) {
 
 //     for (const category of classified) {
 //       if (
-//         conflict[0].startTime >= category.startTime &&
-//         conflict[0].endTime <= category.endTime &&
-//         conflict[1].startTime >= category.startTime &&
-//         conflict[1].endTime <= category.endTime
+//         conflict[0].start_timestamp >= category.start_timestamp &&
+//         conflict[0].end_timestamp <= category.end_timestamp &&
+//         conflict[1].start_timestamp >= category.start_timestamp &&
+//         conflict[1].end_timestamp <= category.end_timestamp
 //       ) {
 //         category.conflicts.push(conflict)
 //         found = true
@@ -205,8 +208,8 @@ export function getConflicts(events: Model.Schedule.Info[]) {
 
 //     if (!found) {
 //       classified.push({
-//         startTime: Math.min(conflict[0].startTime, conflict[1].startTime),
-//         endTime: Math.max(conflict[0].endTime, conflict[1].endTime),
+//         start_timestamp: Math.min(conflict[0].start_timestamp, conflict[1].start_timestamp),
+//         end_timestamp: Math.max(conflict[0].end_timestamp, conflict[1].end_timestamp),
 //         conflicts: [conflict],
 //       })
 //     }
@@ -224,10 +227,10 @@ export function getClassifyConflicts(events: Model.Schedule.Info[]) {
 
     for (const category of classified) {
       if (
-        conflict[0].startTime >= category.startTime &&
-        conflict[0].endTime <= category.endTime &&
-        conflict[1].startTime >= category.startTime &&
-        conflict[1].endTime <= category.endTime
+        conflict[0].start_timestamp >= category.start_timestamp &&
+        conflict[0].end_timestamp <= category.end_timestamp &&
+        conflict[1].start_timestamp >= category.start_timestamp &&
+        conflict[1].end_timestamp <= category.end_timestamp
       ) {
         category.conflicts.push(...conflict)
         found = true
@@ -238,8 +241,14 @@ export function getClassifyConflicts(events: Model.Schedule.Info[]) {
     if (!found) {
       classified.push({
         id: uuidv4(),
-        startTime: Math.min(conflict[0].startTime, conflict[1].startTime),
-        endTime: Math.max(conflict[0].endTime, conflict[1].endTime),
+        start_timestamp: Math.min(
+          conflict[0].start_timestamp,
+          conflict[1].start_timestamp,
+        ),
+        end_timestamp: Math.max(
+          conflict[0].end_timestamp,
+          conflict[1].end_timestamp,
+        ),
         conflicts: [...conflict],
       })
     }
@@ -249,14 +258,14 @@ export function getClassifyConflicts(events: Model.Schedule.Info[]) {
 }
 
 interface TimeRange {
-  startTime: number
-  endTime: number
+  start_timestamp: number
+  end_timestamp: number
 }
 function print(list: TimeRange[]) {
   console.log(
     list.map(item => ({
-      startTime: dayjs(item.startTime).format('HH:mm'),
-      endTime: dayjs(item.endTime).format('HH:mm'),
+      start_timestamp: dayjs(item.start_timestamp).format('HH:mm'),
+      end_timestamp: dayjs(item.end_timestamp).format('HH:mm'),
     })),
   )
 }
@@ -268,27 +277,36 @@ function combineTimeRange(list: TimeRange[], originList: TimeRange[]) {
   for (let i = 0; i < list.length; i++) {
     for (let j = i + 1; j < list.length; j++) {
       if (
-        list[i].startTime < list[j].endTime &&
-        list[i].endTime > list[j].startTime
+        list[i].start_timestamp < list[j].end_timestamp &&
+        list[i].end_timestamp > list[j].start_timestamp
       ) {
         conflicts.push({
-          startTime: Math.min(list[i].startTime, list[j].startTime),
-          endTime: Math.max(list[i].endTime, list[j].endTime),
+          start_timestamp: Math.min(
+            list[i].start_timestamp,
+            list[j].start_timestamp,
+          ),
+          end_timestamp: Math.max(list[i].end_timestamp, list[j].end_timestamp),
         })
         break
       }
-      if (list[i].endTime === list[j].endTime) {
+      if (list[i].end_timestamp === list[j].end_timestamp) {
         conflicts.push({
-          startTime: Math.min(list[i].startTime, list[j].startTime),
-          endTime: Math.max(list[i].endTime, list[j].endTime),
+          start_timestamp: Math.min(
+            list[i].start_timestamp,
+            list[j].start_timestamp,
+          ),
+          end_timestamp: Math.max(list[i].end_timestamp, list[j].end_timestamp),
         })
 
         break
       }
-      if (list[i].startTime === list[j].startTime) {
+      if (list[i].start_timestamp === list[j].start_timestamp) {
         conflicts.push({
-          startTime: Math.min(list[i].startTime, list[j].startTime),
-          endTime: Math.max(list[i].endTime, list[j].endTime),
+          start_timestamp: Math.min(
+            list[i].start_timestamp,
+            list[j].start_timestamp,
+          ),
+          end_timestamp: Math.max(list[i].end_timestamp, list[j].end_timestamp),
         })
 
         break
@@ -299,7 +317,7 @@ function combineTimeRange(list: TimeRange[], originList: TimeRange[]) {
   // const unUsed = originList.filter(item => {
   //   if (
   //     used.some(
-  //       i => i.startTime === item.startTime && i.endTime === item.endTime,
+  //       i => i.start_timestamp === item.start_timestamp && i.end_timestamp === item.end_timestamp,
   //     )
   //   ) {
   //     return false
@@ -309,7 +327,10 @@ function combineTimeRange(list: TimeRange[], originList: TimeRange[]) {
   const unUsed = originList.filter(item => {
     if (
       conflicts.some(i => {
-        return i.startTime <= item.startTime && i.endTime >= item.endTime
+        return (
+          i.start_timestamp <= item.start_timestamp &&
+          i.end_timestamp >= item.end_timestamp
+        )
       })
     ) {
       return false
@@ -325,8 +346,11 @@ function combineTimeRange(list: TimeRange[], originList: TimeRange[]) {
 function combine(list: TimeRange[][]): TimeRange[] {
   return list.map(item => {
     return {
-      startTime: Math.min(item[0].startTime, item[1].startTime),
-      endTime: Math.max(item[0].endTime, item[1].endTime),
+      start_timestamp: Math.min(
+        item[0].start_timestamp,
+        item[1].start_timestamp,
+      ),
+      end_timestamp: Math.max(item[0].end_timestamp, item[1].end_timestamp),
     }
   })
 }
@@ -336,8 +360,8 @@ export function getConflictsTimeRange(list: Model.Schedule.Info[]) {
   for (let i = 0; i < list.length; ++i) {
     for (let j = i + 1; j < list.length; ++j) {
       if (
-        list[i].startTime < list[j].endTime &&
-        list[i].endTime > list[j].startTime
+        list[i].start_timestamp < list[j].end_timestamp &&
+        list[i].end_timestamp > list[j].start_timestamp
       ) {
         res.push([list[i], list[j]])
       }

@@ -8,6 +8,7 @@ import { useEffect, useState, useMemo } from 'react'
 import { getConflictsTimeRange, getStyleValue } from '../utils'
 import useMaxWidth from './useMaxWidth'
 import useWeeks from './useWeeks'
+import useList from './useList'
 
 const format = 'YYYY-MM-DD'
 const useCalculationConflict = () => {
@@ -19,13 +20,14 @@ const useCalculationConflict = () => {
   const [data, setData] = useState<
     { info: Model.Schedule.Info; width: number; left: number }[]
   >([])
-  const list = useMemo(
-    () =>
-      scheduleList
-        .filter(item => item.is_all_day !== 1)
-        .filter(item => weeks.includes(dayjs(item.startTime).format(format))),
-    [scheduleList, weeks],
-  )
+  // const list = useMemo(
+  //   () =>
+  //     scheduleList
+  //       .filter(item => item.is_all_day !== 1)
+  //       .filter(item => weeks.includes(dayjs(item.startTime).format(format))),
+  //   [scheduleList, weeks],
+  // )
+  const { list } = useList()
 
   useEffect(() => {
     if (!maxWidth) {
@@ -52,7 +54,7 @@ const useCalculationConflict = () => {
     // 设置所有日程的left 和 width
     const d = list.map(item => {
       const cur = conflictsWithSize.find(i => i.id === item.id)
-      const str = dayjs(item.startTime).format(format)
+      const str = dayjs(item.start_timestamp).format(format)
       // 根据日期计算出left
       const baseLeft = weeks.findIndex(i => i === str) * maxWidth
       if (cur) {
