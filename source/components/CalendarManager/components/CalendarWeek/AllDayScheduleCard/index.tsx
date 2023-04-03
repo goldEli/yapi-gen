@@ -24,6 +24,7 @@ interface ScheduleCardProps {
   data: Model.Schedule.Info
   width: number
   left: number
+  top: number
 }
 
 const dragBoxClassName = css`
@@ -47,15 +48,13 @@ const Title = styled.span`
 `
 
 const AllDayScheduleCard: React.FC<ScheduleCardProps> = props => {
-  const { data } = props
+  const { data, top } = props
   const { startTime, endTime } = data
   const dispatch = useDispatch()
   const [timeRange, setTimeRange] = useState<{
     startTime: string
     endTime: string
   } | null>(null)
-
-  const { height, top } = useAllDayPosition(startTime, endTime)
 
   const { maxWidth } = useMaxWidth()
   const { getCurrentWeekDayByLeft } = useWeeks()
@@ -120,10 +119,11 @@ const AllDayScheduleCard: React.FC<ScheduleCardProps> = props => {
       key={props.data.id}
       size={{
         width: props.width,
-        height,
+        height: 20,
       }}
       dragGrid={[maxWidth, gridHeight]}
       // resizeGrid={[gridHeight, gridHeight]}
+      dragAxis="x"
       position={{
         x: props.left,
         y: top,

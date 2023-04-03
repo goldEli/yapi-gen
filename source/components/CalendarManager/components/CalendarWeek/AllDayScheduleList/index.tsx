@@ -4,7 +4,6 @@ import { useSelector } from '@store/index'
 import useMaxWidth from '../hooks/useMaxWidth'
 import AllDayScheduleCard from '../AllDayScheduleCard'
 import useWeeks from '../hooks/useWeeks'
-import { position } from 'caret-pos'
 
 interface AllDayScheduleListProps {}
 
@@ -43,7 +42,26 @@ const AllDayScheduleList: React.FC<AllDayScheduleListProps> = props => {
       }
     })
 
-    setSchedulePosition(data)
+    // 相同left， 处理top 避免重贴
+    const leftTopMap: { [key in string]: number } = data.reduce((pre, cur) => {
+      const key = cur.left + ''
+      return {
+        ...pre,
+        [key]: 0,
+      }
+    }, {})
+    const dataWithTop = data.map(item => {
+      const key = item.left + ''
+      const value = leftTopMap[key]
+      leftTopMap[key] += 20
+      return {
+        ...item,
+        top: value,
+      }
+    })
+    console.log({ dataWithTop })
+
+    setSchedulePosition(dataWithTop)
   }, [list, maxWidth])
 
   return (
@@ -54,6 +72,7 @@ const AllDayScheduleList: React.FC<AllDayScheduleListProps> = props => {
             schedulePosition.find(i => item.id === i.id) ?? {}
           return (
             <AllDayScheduleCard
+              top={top ?? 0}
               key={item.id}
               width={width ?? 0}
               left={left ?? 0}
