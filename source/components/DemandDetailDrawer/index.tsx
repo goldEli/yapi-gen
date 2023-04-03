@@ -321,6 +321,9 @@ const DemandDetailDrawer = () => {
     if (isUpdateDemand) {
       setCurrentIndex(0)
       setDemandIds([])
+      if (isDemandDetailDrawerVisible) {
+        getDemandDetail()
+      }
     }
   }, [isUpdateDemand])
 

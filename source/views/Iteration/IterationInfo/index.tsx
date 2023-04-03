@@ -17,6 +17,7 @@ import { getParamsData } from '@/tools'
 import { useSelector } from '@store/index'
 import { getIterateStatistics } from '@/services/iterate'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
+import { Editor } from '@xyfe/uikit'
 
 const TopWrap = styled.div({
   display: 'flex',
@@ -265,9 +266,14 @@ const IterationInfo = () => {
             <Title>{t('project.iterateTarget')}</Title>
             {iterateInfo?.info ? (
               <TargetWrap>
-                <div
-                  dangerouslySetInnerHTML={{ __html: iterateInfo.info || '--' }}
+                <Editor
+                  value={iterateInfo.info || '--'}
+                  getSuggestions={() => []}
+                  readonly
                 />
+                {/* <div
+                  dangerouslySetInnerHTML={{ __html: iterateInfo.info || '--' }}
+                /> */}
               </TargetWrap>
             ) : (
               <NoData />

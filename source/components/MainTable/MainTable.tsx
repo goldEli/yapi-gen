@@ -206,24 +206,6 @@ const MainTable = (props: Props) => {
 
   const columns = [
     {
-      dataIndex: 'id',
-      title: (
-        <NewSort
-          fixedKey="id"
-          nowKey={props.order.key}
-          order={props.order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('project.projectId')}
-        </NewSort>
-      ),
-      width: 160,
-      render: (text: string, record: any) => {
-        return <ClickWrap isClose={record.status === 2}>{text}</ClickWrap>
-      },
-    },
-
-    {
       dataIndex: 'name',
       title: (
         <NewSort

@@ -173,7 +173,6 @@ const DemandTree = (props: Props) => {
     } else {
       demandIds = props.data?.list?.map((i: any) => i.id)
     }
-
     openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id)
   }
 

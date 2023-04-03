@@ -83,7 +83,7 @@ export const MenuItem = styled.div<{ isActive?: boolean }>`
   }
   svg {
     color: ${props =>
-      props.isActive ? 'var(--primary-d2)' : 'var(--neutral-n1-d2)'};
+      props.isActive ? 'var(--primary-d2)' : 'var(--neutral-n3'};
   }
   background: ${props =>
     props.isActive ? 'var(--gradient-left)' : 'transparent'};

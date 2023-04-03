@@ -22,6 +22,7 @@ import CreateAProjectForm from '@/components/CreateAProjectForm'
 import CreateIteration from '@/components/CreateIteration'
 import CreateDemand from '@/components/CreateDemand'
 import DemandDetailDrawer from '@/components/DemandDetailDrawer'
+import SiteDrawer from '../SiteNotifications/components/SiteDrawer/SiteDrawer'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -43,7 +44,7 @@ const HeaderWrap = styled.div`
   min-width: 1440px;
 `
 
-const Content = styled.div`
+export const Content = styled.div`
   height: calc(100vh - 56px);
   width: 100%;
   overflow: auto;
@@ -225,6 +226,7 @@ export const Container = () => {
         <CreateIteration />
         <CreateDemand />
         <DemandDetailDrawer />
+        <SiteDrawer />
       </ConfigProvider>
     </KitConfigProvider>
   )

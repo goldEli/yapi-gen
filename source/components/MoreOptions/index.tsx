@@ -10,12 +10,14 @@ type OptionsProps = {
 }
 
 const MoreOptions = (props: OptionsProps) => {
+  console.log(props.img)
+
   return (
     <Wrap>
       {props.type === 'user' && (
         <div
           style={{
-            height: '27px',
+            height: '30px',
             display: 'flex',
             alignItems: 'center',
           }}
@@ -27,7 +29,7 @@ const MoreOptions = (props: OptionsProps) => {
       {props.type === 'project' && (
         <div
           style={{
-            height: '27px',
+            height: '30px',
             display: 'flex',
             alignItems: 'center',
           }}

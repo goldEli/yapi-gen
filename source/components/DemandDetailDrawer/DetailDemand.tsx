@@ -13,6 +13,7 @@ import { AddWrap } from '../StyleCommon'
 import UploadAttach from '../UploadAttach'
 import { ContentItem, Label } from './style'
 import DrawerTagComponent from './DrawerTagComponent'
+import { Editor } from '@xyfe/uikit'
 
 interface DetailDemand {
   detail: any
@@ -80,8 +81,13 @@ const DetailDemand = (props: DetailDemand) => {
       <ContentItem>
         <Label>{t('requirement_description')}</Label>
         {props.detail.info ? (
-          <div dangerouslySetInnerHTML={{ __html: props.detail.info }} />
+          <Editor
+            value={props.detail.info}
+            getSuggestions={() => []}
+            readonly
+          />
         ) : (
+          // <div dangerouslySetInnerHTML={{ __html: props.detail.info }} />
           '--'
         )}
       </ContentItem>
