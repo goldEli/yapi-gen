@@ -22,7 +22,7 @@ const AllDayScheduleList: React.FC<AllDayScheduleListProps> = props => {
     return scheduleList.filter(item => item.is_all_day === 1)
   }, [scheduleList])
   const { maxWidth } = useMaxWidth()
-  const { getLeftByCurrentWeekDay } = useWeeks()
+  const { getLeftByCurrentWeekDay, weeks } = useWeeks()
 
   const [schedulePosition, setSchedulePosition] = useState<
     {
@@ -33,6 +33,9 @@ const AllDayScheduleList: React.FC<AllDayScheduleListProps> = props => {
     }[]
   >([])
   useEffect(() => {
+    if (!maxWidth) {
+      return
+    }
     const data = list.map(item => {
       return {
         id: item.id,
@@ -43,17 +46,17 @@ const AllDayScheduleList: React.FC<AllDayScheduleListProps> = props => {
     })
 
     // 相同left， 处理top 避免重贴
-    const leftTopMap: { [key in string]: number } = data.reduce((pre, cur) => {
-      const key = cur.left + ''
+    const leftTopMap = weeks.map((item, idx) => {
       return {
-        ...pre,
-        [key]: 0,
+        left: idx * maxWidth,
+        top: 0,
       }
-    }, {})
+    })
     const dataWithTop = data.map(item => {
-      const key = item.left + ''
-      const value = leftTopMap[key]
-      leftTopMap[key] += 20
+      const index = Math.floor(item.left / maxWidth)
+      console.log(item, index, maxWidth)
+      const value = leftTopMap[index].top
+      leftTopMap[index].top += 20
       return {
         ...item,
         top: value,
@@ -62,7 +65,7 @@ const AllDayScheduleList: React.FC<AllDayScheduleListProps> = props => {
     console.log({ dataWithTop })
 
     setSchedulePosition(dataWithTop)
-  }, [list, maxWidth])
+  }, [list, maxWidth, weeks])
 
   return (
     <AllDayScheduleListBox className="all-day-schedule-list">
