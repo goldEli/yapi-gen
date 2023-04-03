@@ -4,7 +4,7 @@ import { useSelector } from '@store/index'
 import useMaxWidth from '../hooks/useMaxWidth'
 import AllDayScheduleCard from '../AllDayScheduleCard'
 import useWeeks from '../hooks/useWeeks'
-import useList from '../hooks/useList'
+import useAllDayList from '../hooks/useAllDayList'
 
 interface AllDayScheduleListProps {}
 
@@ -37,7 +37,7 @@ const AllDayScheduleList: React.FC<AllDayScheduleListProps> = props => {
 
   //   return res
   // }, [allDayScheduleList])
-  const { list, allDayScheduleList } = useList()
+  const { list, allDayScheduleList } = useAllDayList()
   const { maxWidth } = useMaxWidth()
   const { getLeftByCurrentWeekDay, weeks } = useWeeks()
 

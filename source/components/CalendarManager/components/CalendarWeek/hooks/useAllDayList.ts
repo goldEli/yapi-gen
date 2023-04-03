@@ -7,7 +7,7 @@ const useList = () => {
     const res = { ...scheduleList }
     for (const key in res) {
       const item = res[key]
-      res[key] = item.filter(i => i.is_all_day !== 1 && !i.is_span_day)
+      res[key] = item.filter(i => i.is_all_day === 1 || i.is_span_day)
     }
     return res
     // return scheduleList.filter(item => item.is_all_day === 1)

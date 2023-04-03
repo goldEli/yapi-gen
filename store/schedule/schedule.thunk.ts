@@ -11,7 +11,6 @@ export const getScheduleList = createAsyncThunk(
     return res.data
   },
 )
-
 // export const saveSchedule = createAsyncThunk(
 //   `${name}/getScheduleList`,
 //   async (params: API.Schedule.GetScheduleList.Params) => {
@@ -19,6 +18,7 @@ export const getScheduleList = createAsyncThunk(
 //     return res.data
 //   },
 // )
+
 export const saveSchedule =
   (params: API.Schedule.SaveSchedule.Params) =>
   async (dispatch: AppDispatch) => {
