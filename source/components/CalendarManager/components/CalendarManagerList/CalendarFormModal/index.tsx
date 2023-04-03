@@ -4,98 +4,22 @@ import CommonModal from '@/components/CommonModal'
 import CustomSelect from '@/components/CustomSelect'
 import FormTitleSmall from '@/components/FormTitleSmall'
 import MoreOptions from '@/components/MoreOptions'
-import { ModalFooter } from '@/components/StyleCommon'
 import { getCalendarIconList } from '@/services/calendar'
-import styled from '@emotion/styled'
 import { Form, Input, Popover, Select } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import CalendarColor from '../../CalendarColor'
 import AddMemberCommonModal from '@/components/AddUser/CommonModal'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import IconFont from '@/components/IconFont'
-
-const FormWrap = styled(Form)`
-  height: 60vh;
-  overflow: auto;
-  padding: 0 16px 0 24px;
-`
-
-const PermissionBox = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  .select {
-    width: 92%;
-  }
-  .color {
-    width: 24px;
-    height: 24px;
-    border-radius: 4px;
-  }
-`
-
-const ColorWrap = styled.div`
-  padding: 16px;
-  width: 192px;
-`
-
-const ShareMemberItem = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 8px;
-  height: 32px;
-  border-radius: 6px;
-  padding: 0 16px;
-  background: var(--neutral-n8);
-  &:hover {
-    background: var(--hover-d2);
-  }
-  .notCanOperation {
-    font-size: 12px;
-    color: var(--neutral-n3);
-  }
-  .canOperation {
-    display: flex;
-    align-items: center;
-    color: var(--neutral-n1-d1);
-    font-size: 12px;
-    cursor: pointer;
-    .icon {
-      margin-left: 4px;
-      font-size: 14px;
-    }
-    &:hover {
-      color: var(--primary-d2);
-    }
-  }
-`
-
-const PermissionDropBox = styled.div`
-  border-radius: 6px;
-  box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
-  padding: 4px 0;
-  background: var(--neutral-white-d6);
-  position: relative;
-`
-
-const PermissionDropItem = styled.div`
-  padding: 5px 16px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  .title {
-    font-size: 14px;
-    color: var(--neutral-n1-d1);
-  }
-  .sub {
-    font-size: 12px;
-    color: var(--neutral-n4);
-  }
-  &:hover {
-    background: var(--hover-d3);
-  }
-`
+import {
+  ColorWrap,
+  FormWrap,
+  MenuItem,
+  PermissionBox,
+  PermissionDropBox,
+  PermissionDropItem,
+  ShareMemberItem,
+} from './style'
 
 interface PermissionDropProps {
   //
@@ -159,9 +83,23 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
   const [hiddenUpload, setHiddenUpload] = useState(false)
   const [path, setPath] = useState<string>('')
   const [pathList, setPathList] = useState<any>()
+  // 选择成员显示
   const [isChooseVisible, setIsChooseVisible] = useState(false)
+  // 选择部门显示
+  const [isChooseDepartmentVisible, setIsChooseDepartmentVisible] =
+    useState(false)
+  // 选择团队显示
+  const [isChooseTeamVisible, setIsChooseTeamVisible] = useState(false)
+  // 选择是否全员
+  const [isAll, setIsAll] = useState(false)
+  // 当前是哪个key添加人员
   const [currentKey, setCurrentKey] = useState('')
+  // 共享成员数组
   const [shareList, setShareList] = useState<MemberItem[]>([])
+  // 订阅成员数组
+  const [subscribeableList, setSubscribeableList] = useState<MemberItem[]>([])
+  // 可订阅人群下拉选择
+  const [isAddVisible, setIsAddVisible] = useState(false)
 
   const permissionList = [
     { id: 0, name: '私密', dec: '仅共享成员可访问' },
@@ -198,6 +136,56 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
     setIsChooseVisible(false)
   }
 
+  // 订阅人群选择的key
+  const onChooseKeys = (key: string) => {
+    setIsAddVisible(false)
+    switch (key) {
+      case 'all':
+        setIsAll(true)
+        break
+      case 'member':
+        onAddMember('subscribeable')
+        break
+      case 'department':
+        setIsChooseDepartmentVisible(true)
+        break
+      case 'team':
+        setIsChooseTeamVisible(true)
+        break
+    }
+  }
+
+  // 订阅成员下拉
+  const chooseMemberType = () => {
+    const menuItems = [
+      {
+        key: 'all',
+        label: '全员',
+      },
+      {
+        key: 'member',
+        label: '添加成员',
+      },
+      {
+        key: 'department',
+        label: '添加部门',
+      },
+      {
+        key: '添加团队',
+        label: '团队',
+      },
+    ]
+    return (
+      <div style={{ padding: '4px 0' }}>
+        {menuItems.map((i: { key: string; label: string }) => (
+          <MenuItem key={i.key} onClick={() => onChooseKeys(i.key)}>
+            {i.label}
+          </MenuItem>
+        ))}
+      </div>
+    )
+  }
+
   useEffect(() => {
     if (props.visible) {
       getPathList()
@@ -219,14 +207,7 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
         title="创建日历"
         width={528}
         onClose={props.onCancel}
-        hasFooter={
-          <ModalFooter size={16}>
-            <CommonButton type="light" onClick={props.onCancel}>
-              取消
-            </CommonButton>
-            <CommonButton type="primary">创建</CommonButton>
-          </ModalFooter>
-        }
+        confirmText="创建"
       >
         <FormWrap layout="vertical" form={form}>
           <Form.Item
@@ -268,7 +249,7 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
                 </CustomSelect>
               </div>
               <Popover
-                trigger={['click', 'hover']}
+                trigger={['hover']}
                 placement="bottomRight"
                 open={isVisible}
                 onOpenChange={setIsVisible}
@@ -304,14 +285,24 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
             ))}
           </Form.Item>
           <Form.Item label="可订阅人群">
-            <CommonButton
-              icon="plus"
-              type="primaryText"
-              iconPlacement="left"
-              onClick={() => onAddMember('subscribeable')}
+            <Popover
+              trigger={['hover']}
+              content={chooseMemberType}
+              placement="bottomLeft"
+              getPopupContainer={node => node}
+              visible={isAddVisible}
+              onVisibleChange={visible => setIsAddVisible(visible)}
             >
-              添加成员
-            </CommonButton>
+              <div style={{ width: 'max-content' }}>
+                <CommonButton
+                  icon="plus"
+                  type="primaryText"
+                  iconPlacement="left"
+                >
+                  添加成员
+                </CommonButton>
+              </div>
+            </Popover>
           </Form.Item>
           <Form.Item label="选择图标">
             <ChooseIconOrUpload

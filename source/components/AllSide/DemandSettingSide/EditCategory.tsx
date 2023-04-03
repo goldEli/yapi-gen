@@ -143,7 +143,6 @@ const EditorCategory = (props: EditorProps) => {
           : t('newlyAdd.createCategory')
       }
       onClose={onClose}
-      onUpdate={props.onUpdate}
       onConfirm={() => onConfirm(props)}
       confirmText={props?.item?.id ? t('common.confirm') : t('newlyAdd.create')}
     >

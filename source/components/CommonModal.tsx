@@ -29,7 +29,29 @@ const ModalStyle = styled(Modal)`
   }
 `
 
-const CommonModal = (props: any) => {
+interface CommonModalProps {
+  // 是否显示
+  isVisible: boolean
+  // 弹窗宽度
+  width?: number | string
+  // 标题
+  title?: string
+  hasTop?: any
+  // 关闭事件
+  onClose?(): void
+  children: React.ReactNode
+  // 是否展示底部操作
+  isShowFooter?: boolean
+  // 自定义底部
+  hasFooter?: React.ReactNode
+  // 确认事件
+  onConfirm?(): void
+  // 确认按钮文字
+  confirmText?: string
+  bodyStyle?: any
+}
+
+const CommonModal = (props: CommonModalProps) => {
   const [t] = useTranslation()
   return (
     <ModalStyle
@@ -37,7 +59,7 @@ const CommonModal = (props: any) => {
       open={props?.isVisible}
       title={false}
       closable={false}
-      bodyStyle={{ padding: '0 4px 0 0' }}
+      bodyStyle={{ padding: '0 4px 0 0', ...props.bodyStyle }}
       width={props?.width || 528}
       maskClosable={false}
       destroyOnClose
@@ -67,7 +89,7 @@ const CommonModal = (props: any) => {
                 {t('common.cancel')}
               </CommonButton>
               <CommonButton type="primary" onClick={props?.onConfirm}>
-                {t('common.confirm')}
+                {props.confirmText ? props.confirmText : t('common.confirm')}
               </CommonButton>
             </ModalFooter>
           )}
