@@ -65,7 +65,7 @@ const IconWrap = styled(IconFont)({
   cursor: 'pointer',
   padding: 6,
   borderRadius: 6,
-  color: 'var(--neutral-n2)',
+  color: 'var(--neutral-n3)',
   '&: hover': {
     color: 'var(--neutral-n1-d1)',
     background: 'var(--hover-d3)',
@@ -465,7 +465,13 @@ const Operation = (props: Props) => {
           onChangeSetting={() => props.onChangeSetting(!props.settingState)}
         />
       </OperationWrap>
-      {!filterState && (
+
+      <div
+        style={{
+          height: filterState ? '0px' : 'initial',
+          visibility: filterState ? 'hidden' : 'visible',
+        }}
+      >
         <TableFilter
           noNeed
           defaultValue={defaultValue}
@@ -478,7 +484,7 @@ const Operation = (props: Props) => {
           specialList={filterSpecialList}
           customList={filterCustomList}
         />
-      )}
+      </div>
     </StickyWrap>
   )
 }

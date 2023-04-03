@@ -71,13 +71,16 @@ interface Props {
   onChangeCategory(value: any): void
 }
 
-export const uploadFile = (file: File, editorRef: any) => {
+export const uploadFile = (file: File, editorRef: any, key2: any) => {
   const key = uploadFileToKey(
     file,
     file.name,
     `richEditorFiles_${new Date().getTime()}`,
     false,
     data => {
+      if (key2 === 'copy') {
+        editorRef.past(data.url)
+      }
       editorRef?.notifyUploaded(data.key, data.url)
     },
   )
@@ -609,14 +612,12 @@ const CreateDemandLeft = (props: Props) => {
             rules={[{ required: true, message: '' }]}
           >
             <CustomSelect
-              optionLabelProp="label"
               onSelect={onSelectProjectName}
               placeholder={t('common.searchProject')}
               allowClear
               showArrow
               disabled={createDemandProps.projectId}
               onClear={onClearProjectId}
-              optionFilterProp="label"
               getPopupContainer={(node: any) => node}
               showSearch
             >
@@ -643,13 +644,11 @@ const CreateDemandLeft = (props: Props) => {
             rules={[{ required: true, message: '' }]}
           >
             <CustomSelect
-              optionLabelProp="label"
               onSelect={onSelectCategory}
               onClear={onClearCategory}
               placeholder={t('common.selectType')}
               allowClear
               showArrow
-              optionFilterProp="label"
               getPopupContainer={(node: any) => node}
               showSearch
               value={categoryObj?.id}

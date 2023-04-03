@@ -23,7 +23,7 @@ import IconFont from '@/components/IconFont'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import CommonModal from '@/components/CommonModal'
 import { css } from '@emotion/css'
-import { getIsPermission } from '@/tools'
+import { getIsPermission, getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
 import { setProjectInfoValues } from '@store/project'
 import { useDispatch, useSelector } from '@store/index'
@@ -34,6 +34,7 @@ import {
   moveTreeList,
 } from '@/services/demand'
 import { changeId } from '@store/counterSlice'
+import { useSearchParams } from 'react-router-dom'
 
 const Left = styled.div`
   height: calc(100vh - 150px);
@@ -42,7 +43,7 @@ const Left = styled.div`
 `
 
 const TitleWrap = styled.div({
-  // paddingLeft: '15px',
+  paddingLeft: '15px',
   whiteSpace: 'nowrap',
   fontSize: 14,
   color: 'var(--neutral-n1-d2)',
@@ -50,15 +51,11 @@ const TitleWrap = styled.div({
 })
 
 const TreeBox = styled.div`
-  width: 70% !important;
-  overflow: hidden;
+  width: 100% !important;
   height: 40px;
   border-radius: 0px 0px 0px 0px;
   display: flex;
   align-items: center;
-  .nameTitle {
-    display: inline-block;
-  }
 `
 const FormBox = styled.div`
   padding: 0 20px 0 24px;
@@ -96,34 +93,6 @@ const rightText = css`
     color: var(--primary-d2);
   }
 `
-const TreeStyle = styled(Tree)({
-  '& .ant-tree-treenode:hover': {
-    background: 'var(--white-d6)',
-    boxShadow: '0px 0px 15px 6px rgba(0,0,0,0.12)',
-    borderRadius: '6px',
-  },
-  '& .ant-tree-title .treeBox .titleName': {
-    width: '60% !important',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-  },
-  '.ant-tree-switcher-noop': {
-    display: 'none',
-  },
-  '.ant-tree-treenode': {
-    position: 'relative',
-  },
-  '.ant-tree-list .ant-tree-switcher': {
-    position: 'relative',
-    marginLeft: '5px',
-  },
-  '& .ant-tree-draggable-icon': {
-    position: 'absolute',
-    left: '5px',
-  },
-})
-const IconFontStyle = styled(IconFont)({})
 const TreeItem = (props: any) => {
   const context: any = useContext(TreeContext)
   const inputRefDom = useRef<HTMLInputElement>(null)
@@ -277,87 +246,17 @@ const TreeItem = (props: any) => {
     </div>
   )
   return (
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-      <TreeBox className="treeBox">
-        <span
-          className="titleName"
-          style={{
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {props.name}--{props.pid}
-        </span>
-        <span className={centerText}>
-          {props.story_count > 0 && `(${props.story_count})`}
-        </span>
-        {}
-
-        <div
-          onClick={(e: any) => {
-            e.stopPropagation()
-          }}
-        >
-          <DeleteConfirm
-            isVisible={visible}
-            onChangeVisible={onChangeVisible}
-            onConfirm={onConfirm}
-            text={t('newlyAdd.confirmDelClass')}
-          />
-        </div>
-        <div
-          onClick={(e: any) => {
-            e.stopPropagation()
-          }}
-        >
-          <CommonModal
-            title={
-              visibleEditText === 'add'
-                ? t('newlyAdd.createChildClass')
-                : t('newlyAdd.editChildClass')
-            }
-            isVisible={visibleEdit}
-            onClose={editClose}
-            onConfirm={editConfirm}
-          >
-            <FormBox>
-              <Form form={form} layout="vertical">
-                <Form.Item
-                  label={t('newlyAdd.className')}
-                  name="name"
-                  rules={[{ required: true, message: '' }]}
-                  getValueFromEvent={event => {
-                    // eslint-disable-next-line require-unicode-regexp
-                    return event.target.value.replace(/(?<start>^\s*)/g, '')
-                  }}
-                >
-                  <Input
-                    ref={inputRefDom as any}
-                    allowClear
-                    autoComplete="off"
-                    maxLength={10}
-                    placeholder={t('newlyAdd.pleaseClassName')}
-                  />
-                </Form.Item>
-                <Form.Item
-                  getValueFromEvent={event => {
-                    return event.target.value.replace(/(?<start>^\s*)/g, '')
-                  }}
-                  name="remark"
-                  label={t('newlyAdd.classRemark')}
-                >
-                  <Input.TextArea
-                    maxLength={100}
-                    showCount
-                    allowClear
-                    placeholder={t('newlyAdd.pleaseClassRemark')}
-                    autoSize={{ minRows: 3, maxRows: 5 }}
-                  />
-                </Form.Item>
-              </Form>
-            </FormBox>
-          </CommonModal>
-        </div>
-      </TreeBox>
+    <TreeBox className="treeBox">
+      <span
+        style={{
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {props.name}
+      </span>
+      <span className={centerText}>
+        {props.story_count > 0 && `(${props.story_count})`}
+      </span>
       {props.pid === 0 ||
       getIsPermission(
         projectInfo?.projectPermissions,
@@ -373,7 +272,7 @@ const TreeItem = (props: any) => {
           content={content}
           trigger="hover"
         >
-          <IconFontStyle
+          <IconFont
             onClick={(e: any) => {
               e.stopPropagation()
               setVisiblePop(true)
@@ -384,11 +283,80 @@ const TreeItem = (props: any) => {
           />
         </Popover>
       )}
-    </div>
+
+      <div
+        onClick={(e: any) => {
+          e.stopPropagation()
+        }}
+      >
+        <DeleteConfirm
+          isVisible={visible}
+          onChangeVisible={onChangeVisible}
+          onConfirm={onConfirm}
+          text={t('newlyAdd.confirmDelClass')}
+        />
+      </div>
+      <div
+        onClick={(e: any) => {
+          e.stopPropagation()
+        }}
+      >
+        <CommonModal
+          title={
+            visibleEditText === 'add'
+              ? t('newlyAdd.createChildClass')
+              : t('newlyAdd.editChildClass')
+          }
+          isVisible={visibleEdit}
+          onClose={editClose}
+          onConfirm={editConfirm}
+        >
+          <FormBox>
+            <Form form={form} layout="vertical">
+              <Form.Item
+                label={t('newlyAdd.className')}
+                name="name"
+                rules={[{ required: true, message: '' }]}
+                getValueFromEvent={event => {
+                  // eslint-disable-next-line require-unicode-regexp
+                  return event.target.value.replace(/(?<start>^\s*)/g, '')
+                }}
+              >
+                <Input
+                  ref={inputRefDom as any}
+                  allowClear
+                  autoComplete="off"
+                  maxLength={10}
+                  placeholder={t('newlyAdd.pleaseClassName')}
+                />
+              </Form.Item>
+              <Form.Item
+                getValueFromEvent={event => {
+                  return event.target.value.replace(/(?<start>^\s*)/g, '')
+                }}
+                name="remark"
+                label={t('newlyAdd.classRemark')}
+              >
+                <Input.TextArea
+                  maxLength={100}
+                  showCount
+                  allowClear
+                  placeholder={t('newlyAdd.pleaseClassRemark')}
+                  autoSize={{ minRows: 3, maxRows: 5 }}
+                />
+              </Form.Item>
+            </Form>
+          </FormBox>
+        </CommonModal>
+      </div>
+    </TreeBox>
   )
 }
 
 const WrapLeft = (props: any, ref: any) => {
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
   const { value: valueId } = useSelector(store => store.counter)
   const dispatch = useDispatch()
   const [t] = useTranslation()
@@ -452,16 +420,6 @@ const WrapLeft = (props: any, ref: any) => {
     }))
     return newData
   }
-  const ResizeSave = styled.div`
-    position: absolute;
-    top: 0;
-    right: 5px;
-    bottom: 0;
-    left: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-    padding: 0 16px;
-  `
 
   const onDrop = async (info: any) => {
     const onlyID: any = treeData[0].children[0].title.props.id
@@ -535,7 +493,7 @@ const WrapLeft = (props: any, ref: any) => {
     if (props.isShowLeft) {
       init()
     }
-  }, [props.isShowLeft])
+  }, [props.isShowLeft, projectId])
 
   useImperativeHandle(ref, () => {
     return {
@@ -548,12 +506,12 @@ const WrapLeft = (props: any, ref: any) => {
       <Left>
         <div className="resize_bar" />
         <div className="resize_line" />
-        <ResizeSave>
+        <div className="resize_save">
           <TitleWrap style={{ paddingBottom: '10px' }}>
             {t('newlyAdd.demandClass')}
           </TitleWrap>
           {treeData.length > 0 && show ? (
-            <TreeStyle
+            <Tree
               selectedKeys={[valueId]}
               allowDrop={(dropNode: any) => {
                 if (dropNode.dropNode.title.props.grade === 4) {
@@ -580,7 +538,7 @@ const WrapLeft = (props: any, ref: any) => {
               treeData={treeData}
             />
           ) : null}
-        </ResizeSave>
+        </div>
       </Left>
     )
   }

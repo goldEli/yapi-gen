@@ -22,6 +22,7 @@ import colorText from './color-text'
 import category from './category'
 import log from './log'
 import siteNotifications from './SiteNotifications'
+import scroll from './scroll'
 
 export const store = configureStore({
   reducer: {
@@ -43,6 +44,7 @@ export const store = configureStore({
     colorText,
     log,
     siteNotifications,
+    scroll,
   },
 })
 

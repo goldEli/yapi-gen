@@ -156,7 +156,7 @@ const EditFiled = (props: Props) => {
         type,
         remarks: props?.item?.remarks,
       })
-      const values = props?.item?.fieldContent.value
+      const values = props?.item?.fieldContent?.value
       if (['select', 'select_checkbox'].includes(type)) {
         const val = values?.map((i: any, index: any) => ({
           value: i,
@@ -164,11 +164,11 @@ const EditFiled = (props: Props) => {
         }))
         setRow(val)
       } else if (type === 'date') {
-        setChecked(values[0] === 'datetime')
+        values && setChecked(values[0] === 'datetime')
       } else if (type === 'number') {
-        setChecked(values[0] === 'integer')
+        values && setChecked(values[0] === 'integer')
       } else if (['user_select', 'user_select_checkbox'].includes(type)) {
-        setPersonValue(values[0])
+        values && setPersonValue(values[0])
       }
     } else if (props.isVisible && props.fieldType) {
       form.setFieldsValue({
@@ -482,7 +482,7 @@ const EditFiled = (props: Props) => {
                         useDragHandle
                         onSortEnd={(values: any) => onSortEnd(values)}
                       >
-                        {row.map((_i: any, idx: number) => (
+                        {row?.map((_i: any, idx: number) => (
                           <SortItemLi
                             helperClass="row-dragging"
                             key={_i.key}

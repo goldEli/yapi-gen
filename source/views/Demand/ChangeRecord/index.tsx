@@ -23,6 +23,7 @@ import { setIsUpdateChangeLog } from '@store/demand'
 import { getDemandChangeLog } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
 import ResizeTable from '@/components/ResizeTable'
+import { Editor } from '@xyfe/uikit'
 
 const SpaceWrap = styled(Space)({
   '.ant-space-item': {
@@ -402,21 +403,31 @@ const ChangeRecord = () => {
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <TitleWrap>{t('project.changeBefore')}</TitleWrap>
             <ContentWrap>
-              <div
+              <Editor
+                value={checkDetail?.beforeField?.info}
+                getSuggestions={() => []}
+                readonly
+              />
+              {/* <div
                 dangerouslySetInnerHTML={{
                   __html: checkDetail?.beforeField?.info,
                 }}
-              />
+              /> */}
             </ContentWrap>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <TitleWrap>{t('project.changeAfter')}</TitleWrap>
             <ContentWrap>
-              <div
+              <Editor
+                value={checkDetail?.afterField?.info}
+                getSuggestions={() => []}
+                readonly
+              />
+              {/* <div
                 dangerouslySetInnerHTML={{
                   __html: checkDetail?.afterField?.info,
                 }}
-              />
+              /> */}
             </ContentWrap>
           </div>
         </SpaceWrap>
