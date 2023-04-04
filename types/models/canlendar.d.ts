@@ -15,7 +15,7 @@ declare namespace Model.Calendar {
   }
   interface Info {
     id: number
-    color: string
+    color: number
     // 1 是默认的日历，用于判断删除权限
     is_default: 0 | 1
     name: string

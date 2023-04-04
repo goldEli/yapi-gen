@@ -36,6 +36,7 @@ import {
 } from './style'
 import AddDepartmentOrTeamModal from '@/components/AddDepartmentOrTeamModal'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import { colorMap } from '@/components/CalendarManager/config'
 
 interface PermissionDropProps {
   onUpdateShare(item: Model.Calendar.MemberItem): void
@@ -156,7 +157,7 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
   const [form] = Form.useForm()
   const inputRefDom = useRef<HTMLInputElement>(null)
   // 创建日历默认主题色
-  const [normalColor, setNormalColor] = useState('#6688FF')
+  const [normalColor, setNormalColor] = useState(0)
   // 是否显示选择颜色
   const [isVisible, setIsVisible] = useState(false)
   const [hiddenUpload, setHiddenUpload] = useState(false)
@@ -192,7 +193,7 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
 
   // 关闭创建日历弹窗
   const onClose = () => {
-    setNormalColor('#6688FF')
+    setNormalColor(0)
     setIsActiveKey('')
     setCurrentKey('')
     setShareList([])
@@ -421,73 +422,81 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
                   </ColorWrap>
                 }
               >
-                <div className="color" style={{ background: normalColor }} />
+                <div
+                  className="color"
+                  style={{ background: colorMap[normalColor] }}
+                />
               </Popover>
             </PermissionBox>
           </Form.Item>
-          <Form.Item label="共享日历成员">
-            <CommonButton
-              icon="plus"
-              type="primaryText"
-              iconPlacement="left"
-              onClick={() => onAddMember('share')}
-            >
-              添加成员
-            </CommonButton>
-            {shareList.map((i: Model.Calendar.MemberItem) => (
-              <ShareMemberItem key={i.id}>
-                <CommonUserAvatar avatar={i.avatar} name={i.name} />
-                {/* <div className="notCanOperation">管理员</div> */}
-                <PermissionDrop onUpdateShare={onUpdateShare} item={i} />
-              </ShareMemberItem>
-            ))}
-          </Form.Item>
-          <Form.Item label="可订阅人群">
-            <Popover
-              trigger={['hover']}
-              content={chooseMemberType}
-              placement="bottomLeft"
-              getPopupContainer={node => node}
-              visible={isAddVisible}
-              onVisibleChange={visible => setIsAddVisible(visible)}
-            >
-              <div style={{ width: 'max-content' }}>
+          {currentPermission !== 0 && (
+            <>
+              <Form.Item label="共享日历成员">
                 <CommonButton
                   icon="plus"
                   type="primaryText"
                   iconPlacement="left"
+                  onClick={() => onAddMember('share')}
                 >
                   添加成员
                 </CommonButton>
-              </div>
-            </Popover>
-            <SubscribedItems size={16}>
-              {subscribedList.map((i: Model.Calendar.MemberItem) => (
-                <SubscribedItem key={i.id} size={8}>
-                  {i.type === 'member' && (
-                    <CommonUserAvatar size="small" avatar={i.avatar} />
-                  )}
-                  {i.type === 'department' && (
-                    <DepartmentIcon>
-                      <IconFont type="branch" />
-                    </DepartmentIcon>
-                  )}
-                  {i.type === 'team' && (
-                    <TeamIcon>
-                      <IconFont type="team-2" />
-                    </TeamIcon>
-                  )}
-                  {i.type === 'all' && (
-                    <TeamIcon>
-                      <IconFont type="userAll" />
-                    </TeamIcon>
-                  )}
-                  <span>{i.name}</span>
-                  <IconFont type="close" onClick={() => onDeleteItem(i)} />
-                </SubscribedItem>
-              ))}
-            </SubscribedItems>
-          </Form.Item>
+                {shareList.map((i: Model.Calendar.MemberItem) => (
+                  <ShareMemberItem key={i.id}>
+                    <CommonUserAvatar avatar={i.avatar} name={i.name} />
+                    {/* <div className="notCanOperation">管理员</div> */}
+                    <PermissionDrop onUpdateShare={onUpdateShare} item={i} />
+                  </ShareMemberItem>
+                ))}
+              </Form.Item>
+              <Form.Item label="可订阅人群">
+                <Popover
+                  trigger={['hover']}
+                  content={chooseMemberType}
+                  placement="bottomLeft"
+                  getPopupContainer={node => node}
+                  visible={isAddVisible}
+                  onVisibleChange={visible => setIsAddVisible(visible)}
+                >
+                  <div style={{ width: 'max-content' }}>
+                    <CommonButton
+                      icon="plus"
+                      type="primaryText"
+                      iconPlacement="left"
+                    >
+                      添加成员
+                    </CommonButton>
+                  </div>
+                </Popover>
+                <SubscribedItems size={16}>
+                  {subscribedList.map((i: Model.Calendar.MemberItem) => (
+                    <SubscribedItem key={i.id} size={8}>
+                      {i.type === 'member' && (
+                        <CommonUserAvatar size="small" avatar={i.avatar} />
+                      )}
+                      {i.type === 'department' && (
+                        <DepartmentIcon>
+                          <IconFont type="branch" />
+                        </DepartmentIcon>
+                      )}
+                      {i.type === 'team' && (
+                        <TeamIcon>
+                          <IconFont type="team-2" />
+                        </TeamIcon>
+                      )}
+                      {i.type === 'all' && (
+                        <TeamIcon>
+                          <IconFont type="userAll" />
+                        </TeamIcon>
+                      )}
+                      <span>{i.name}</span>
+                      <IconFont type="close" onClick={() => onDeleteItem(i)} />
+                    </SubscribedItem>
+                  ))}
+                </SubscribedItems>
+              </Form.Item>
+            </>
+          )}
+
           <Form.Item label="选择图标">
             <ChooseIconOrUpload
               color={path}

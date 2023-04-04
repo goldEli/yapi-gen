@@ -10,6 +10,7 @@ import { setCalendarData, setCheckedCalendarList } from '@store/calendar'
 import CalendarMoreDropdown from './CalendarMoreDropdown'
 import CalendarSubscribe from './CalendarSubscribe'
 import CalendarFormModal from './CalendarFormModal'
+import { colorMap } from '../../config'
 
 const { Panel } = Collapse
 
@@ -166,7 +167,7 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
               <ItemBox key={i.id} onClick={() => onChangeCheck(i)}>
                 <IconFont
                   type={i.is_check ? 'pput-sel' : 'put'}
-                  style={{ fontSize: 16, color: i.color }}
+                  style={{ fontSize: 16, color: colorMap[i.color] }}
                 />
                 <span className="name">{i.name}</span>
               </ItemBox>

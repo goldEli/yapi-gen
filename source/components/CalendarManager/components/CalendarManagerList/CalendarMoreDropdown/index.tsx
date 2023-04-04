@@ -1,3 +1,4 @@
+import { colorMap } from '@/components/CalendarManager/config'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import styled from '@emotion/styled'
 import { setCalendarData, setCheckedCalendarList } from '@store/calendar'
@@ -94,13 +95,13 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
   }
 
   // 改变颜色
-  const onChangeColor = (color: string) => {
+  const onChangeColor = (color: number) => {
     // 走编辑接口
 
     // 改变原始数据
     const newCalendarData = calendarList?.map((i: Model.Calendar.Info) => ({
       ...i,
-      color: i.id === props.item.id ? color : i.color,
+      color: i.id === props.item.id ? colorMap[color] : colorMap[i.color],
     }))
     dispatch(
       setCalendarData({
