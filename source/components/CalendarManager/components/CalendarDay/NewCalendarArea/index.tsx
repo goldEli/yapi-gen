@@ -1,10 +1,10 @@
 import styled from '@emotion/styled'
 import dayjs from 'dayjs'
 import React from 'react'
-import { oneMinuteHeight } from '../../config'
-import usePosition from '../CalendarDay/hooks/usePosition'
-import { getTimeByAddDistance } from '../CalendarDay/utils'
-import { getColorWithOpacityPointOne } from '../../utils'
+import { oneMinuteHeight } from '../../../config'
+import usePosition from '../hooks/usePosition'
+import { getTimeByAddDistance } from '../utils'
+import { getColorWithOpacityPointOne } from '../../../utils'
 import { useSelector } from '@store/index'
 
 interface NewCalendarAreaProps {
