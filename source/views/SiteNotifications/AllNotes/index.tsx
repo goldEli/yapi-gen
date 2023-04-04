@@ -1,11 +1,16 @@
 import CommonButton from '@/components/CommonButton'
 import LeftTitle from '@/components/LeftTitle'
+import { useDispatch } from '@store/index'
+import { changeVisibleFilter } from '@store/SiteNotifications'
 import React from 'react'
+import AllSideFilter from '../components/AllSideFilter/AllSideFilter'
 import ContentItem from '../components/ContentItem/ContentItem'
 
 const Index = () => {
+  const dispatch = useDispatch()
   return (
     <div>
+      <AllSideFilter />
       <div
         style={{
           display: 'flex',
@@ -16,7 +21,12 @@ const Index = () => {
       >
         <LeftTitle title="全部通知" />
         <div style={{ display: 'flex', gap: '16px' }}>
-          <CommonButton type="light">筛选通知</CommonButton>
+          <CommonButton
+            onClick={() => dispatch(changeVisibleFilter(true))}
+            type="light"
+          >
+            筛选通知
+          </CommonButton>
           <CommonButton type="light">全部已读</CommonButton>
         </div>
       </div>
