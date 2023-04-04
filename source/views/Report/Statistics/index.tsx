@@ -6,10 +6,12 @@ import { css } from '@emotion/css'
 import ResizeTable from '@/components/ResizeTable'
 import NoData from '@/components/NoData'
 import { useState } from 'react'
-import { ColumnsType } from 'antd/lib/table'
+import type { ColumnsType } from 'antd/lib/table'
+import CommonUserAvatar from '@/components/CommonUserAvatar'
+import PaginationBox from '@/components/TablePagination'
 
 const StyledWrap = styled.div`
-  height: 400px;
+  max-height: 800px;
   display: flex;
   gap: 17px;
 `
@@ -24,6 +26,12 @@ const Head = styled.div`
   gap: 24px;
   flex: 8;
 `
+
+const NameColumn = styled.div`
+  display: flex;
+  justify-content: start;
+`
+
 const Center = styled.div`
   display: flex;
   flex: 7;
@@ -40,9 +48,15 @@ const cardTitle = css`
   align-items: center;
   justify-content: space-between;
 `
-const data: any[] = []
+
+const data: any = {
+  currentPage: 1,
+  pageSize: 10,
+  total: 0,
+  list: [],
+}
 for (let i = 0; i < 100; i++) {
-  data.push({
+  data.list.push({
     name: '李钟硕',
     onTimeCount: 146,
     delayTimes: 82,
@@ -50,6 +64,7 @@ for (let i = 0; i < 100; i++) {
     currentNoSubmitTimes: 17,
   })
 }
+data.total = data.list.length
 
 const Statistics = () => {
   const [t] = useTranslation()
@@ -63,6 +78,14 @@ const Statistics = () => {
       title: '姓名',
       dataIndex: 'name',
       width: 150,
+      render: (value: string) => {
+        return (
+          <NameColumn>
+            <CommonUserAvatar size="small" />
+            <span>{value} </span>
+          </NameColumn>
+        )
+      },
     },
     {
       title: '按时提交',
@@ -84,6 +107,11 @@ const Statistics = () => {
       dataIndex: 'currentNoSubmitTimes',
     },
   ]
+
+  const onChangePage = (page: any, size: any) => {
+    console.log('onChangePage', page, size)
+  }
+
   return (
     <StyledWrap>
       <Head>
@@ -98,8 +126,14 @@ const Statistics = () => {
           isSpinning={isSpinning}
           dataWrapNormalHeight="calc(100% - 92px)"
           col={columns}
-          dataSource={data}
+          dataSource={data.list}
           noData={<NoData />}
+        />
+        <PaginationBox
+          currentPage={data?.currentPage}
+          pageSize={data?.pageSize}
+          total={data?.total}
+          onChange={onChangePage}
         />
       </Head>
       <Center>
