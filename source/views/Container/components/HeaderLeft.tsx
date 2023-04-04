@@ -215,7 +215,9 @@ const DrawerComponent = (props: DrawerComponentProps) => {
                       size={24}
                     />
                   </div>
-                  <div className="label">{i.name}</div>
+                  <div style={{ textAlign: 'center' }} className="label">
+                    {i.name}
+                  </div>
                 </DrawerMenuItem>
               ))}
             <WaitingMenu>

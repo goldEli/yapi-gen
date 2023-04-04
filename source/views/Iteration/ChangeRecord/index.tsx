@@ -21,6 +21,7 @@ import { setIsRefresh } from '@store/user'
 import { getIterateChangeLog } from '@/services/iterate'
 import PaginationBox from '@/components/TablePagination'
 import ResizeTable from '@/components/ResizeTable'
+import { Editor } from '@xyfe/uikit'
 
 const ContentWrap = styled.div({
   display: 'flex',
@@ -354,27 +355,45 @@ const ChangeRecord = (props?: any) => {
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <TitleWrap>{t('project.changeBefore')}</TitleWrap>
             <ContentWrap>
-              <div
+              <Editor
+                value={
+                  checkDetail.key === 'info'
+                    ? checkDetail?.beforeField?.info
+                    : checkDetail?.beforeField?.achieve_desc
+                }
+                getSuggestions={() => []}
+                readonly
+              />
+              {/* <div
                 dangerouslySetInnerHTML={{
                   __html:
                     checkDetail.key === 'info'
                       ? checkDetail?.beforeField?.info
                       : checkDetail?.beforeField?.achieve_desc,
                 }}
-              />
+              /> */}
             </ContentWrap>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <TitleWrap>{t('project.changeAfter')}</TitleWrap>
             <ContentWrap>
-              <div
+              <Editor
+                value={
+                  checkDetail.key === 'info'
+                    ? checkDetail?.afterField?.info
+                    : checkDetail?.afterField?.achieve_desc
+                }
+                getSuggestions={() => []}
+                readonly
+              />
+              {/* <div
                 dangerouslySetInnerHTML={{
                   __html:
                     checkDetail.key === 'info'
                       ? checkDetail?.afterField?.info
                       : checkDetail?.afterField?.achieve_desc,
                 }}
-              />
+              /> */}
             </ContentWrap>
           </div>
         </SpaceWrap>

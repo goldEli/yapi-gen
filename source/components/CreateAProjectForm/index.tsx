@@ -169,11 +169,11 @@ const CreateAProjectForm = () => {
       res2.map((i: any) => ({
         name: i.name,
         id: i.id,
-        img: i.img,
+        img: i.avatar,
       })),
     )
     setActiveCover(res.cover)
-    setMyCover(res.cover)
+    // setMyCover(res.cover)
     form.setFieldsValue({
       name: res.name,
       team_id: res.team_id,
@@ -371,7 +371,6 @@ const CreateAProjectForm = () => {
               <CustomSelect
                 disabled={!!isEditId}
                 placeholder={t('please_select_your_affiliation')}
-                optionLabelProp="label"
                 onChange={(value: any) => {
                   setLeaderId(value)
                   // eslint-disable-next-line no-undefined
@@ -412,7 +411,7 @@ const CreateAProjectForm = () => {
                     <IconFont
                       style={{
                         position: 'absolute',
-                        left: '26px',
+                        left: '36px',
                         top: '4px',
                         color: 'var(--neutral-n3)',
                       }}
@@ -451,7 +450,6 @@ const CreateAProjectForm = () => {
                 showSearch
                 // disabled={canChooseLeader}
                 placeholder={t('please_select_project_leader')}
-                optionLabelProp="label"
               >
                 {selectLeaders.map((i: any) => (
                   <Select.Option value={i.id} key={i.id} label={i.name}>

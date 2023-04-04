@@ -8,12 +8,14 @@ import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
 import { getRoleList } from '@/services/staff'
 import CustomSelect from '@/components/CustomSelect'
+import CommonUserAvatar from '@/components/CommonUserAvatar'
 
 const PersonalHead = styled.div`
   margin-top: 13px;
   display: flex;
   /* justify-content: center; */
   justify-content: end;
+  margin-top: 20px;
 `
 const PersonalFooter = styled.div`
   display: flex;
@@ -116,9 +118,7 @@ export const StaffPersonal = (props: {
             {data?.avatar ? (
               <img className={imgCss} src={data?.avatar} alt="" />
             ) : (
-              <SetHead>
-                {String(data?.name?.trim().slice(0, 1)).toLocaleUpperCase()}
-              </SetHead>
+              <CommonUserAvatar />
             )}
           </PersonalHead>
           <RightLine>{data.phone ? data.phone : '-'}</RightLine>

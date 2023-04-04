@@ -207,6 +207,7 @@ const TableFilter = (props: any) => {
   const [form] = Form.useForm()
   const { filterKeys, projectInfoValues } = useSelector(store => store.project)
   const dispatch = useDispatch()
+  const searchChoose = useSelector(store => store.view.searchChoose)
 
   const filterBasicsList = useMemo(() => {
     const newKeys = list?.map((item: { content: any }) => item.content)
@@ -304,6 +305,13 @@ const TableFilter = (props: any) => {
     confirm()
   }, [props.defaultValue])
 
+  useEffect(() => {
+    if (Object.hasOwn(searchChoose || {}, 'system_view')) {
+      form.resetFields()
+      confirm()
+    }
+  }, [searchChoose])
+
   // 折叠图标
   const expandIcon = (e: any) => {
     return (
@@ -376,7 +384,7 @@ const TableFilter = (props: any) => {
 
   function deWeight(arr: any) {
     const map = new Map()
-    for (const item of arr) {
+    for (const item of arr || []) {
       if (!map.has(item.id)) {
         map.set(item.id, item)
       }
@@ -403,7 +411,7 @@ const TableFilter = (props: any) => {
   }
 
   return (
-    <SearchLine style={{ paddingTop: '0px' }} hasLeft={props?.hasLeft}>
+    <SearchLine hasLeft={props?.hasLeft}>
       <Wrap hidden={props.showForm} style={{ userSelect: 'none' }}>
         <FormWrap form={form}>
           {list

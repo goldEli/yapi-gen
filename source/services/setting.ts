@@ -156,6 +156,10 @@ export const getDepartmentUserList: any = async (params: any) => {
   const response = await http.get<any>('/b/user/department_user_list', params)
   return response?.data
 }
+export const getDepartmentUserList1: any = async (params: any) => {
+  const response = await http.get<any>('/b/user/department_user_list', params)
+  return response?.data
+}
 
 // 解散团队
 export const dismissTeams: any = async (id: any) => {

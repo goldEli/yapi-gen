@@ -16,6 +16,9 @@ import IconFont from './IconFont'
 import { AddWrap } from './StyleCommon'
 import { uploadFileToKey } from '@/services/cos'
 import { Editor, EditorRef } from '@xyfe/uikit'
+import { uploadFile } from './CreateDemand/CreateDemandLeft'
+import { useDispatch } from '@store/index'
+import { changeRestScroll } from '@store/scroll'
 
 const EditComment = (props: any) => {
   const [form] = Form.useForm()
@@ -23,6 +26,7 @@ const EditComment = (props: any) => {
   const editable = useRef<HTMLInputElement>(null)
   const attachDom: any = createRef()
   const [t] = useTranslation()
+  const dispatch = useDispatch()
   const editorRef = useRef<EditorRef>(null)
   const init = async () => {
     const companyList = await getStaffListAll({ all: 1 })
@@ -93,6 +97,7 @@ const EditComment = (props: any) => {
       content: form.getFieldsValue().info,
       attachment: form.getFieldsValue().attachments,
     })
+    dispatch(changeRestScroll(true))
   }
 
   useEffect(() => {
@@ -170,20 +175,7 @@ const EditComment = (props: any) => {
             ]}
           >
             <Editor
-              ref={editorRef}
-              key={Math.random()}
-              upload={file => {
-                const key = uploadFileToKey(
-                  file,
-                  file.name,
-                  `richEditorFiles_${new Date().getTime()}`,
-                  false,
-                  data => {
-                    editorRef.current?.notifyUploaded(data.key, data.url)
-                  },
-                )
-                return key
-              }}
+              upload={uploadFile}
               getSuggestions={() => {
                 return new Promise(resolve => {
                   setTimeout(() => {

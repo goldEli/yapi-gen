@@ -35,6 +35,7 @@ import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import { getLoginDetail } from '@store/user/user.thunk'
 import helpPdf from '/Agile.pdf'
 import { t } from 'i18next'
+import SiteNotifications from '@/views/SiteNotifications/SiteNotifications'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const { language, theme } = useSelector(store => store.global)
@@ -388,6 +389,7 @@ const HeaderRight = () => {
             </CreateWrap>
           </Popover>
         )}
+        <SiteNotifications />
         <CloseWrap width={32} height={32} onClick={onHelp}>
           <CommonIconFont type="question" size={24} />
         </CloseWrap>

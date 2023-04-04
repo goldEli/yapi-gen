@@ -11,7 +11,7 @@
 /* eslint-disable react/no-danger */
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
@@ -20,6 +20,7 @@ import { setDemandInfo } from '@store/demand'
 import { useDispatch, useSelector } from '@store/index'
 import BasicDemand from '@/components/DemandDetailDrawer/BasicDemand'
 import DemandComment from '@/components/DemandDetailDrawer/DemandComment'
+import { changeRestScroll } from '@store/scroll'
 
 const WrapRight = styled.div({
   width: '100%',
@@ -108,7 +109,8 @@ const NewWrapRight = () => {
   const { demandInfo } = useSelector(store => store.demand)
   const [commentTotal, setCommentTotal] = useState(0)
   const dispatch = useDispatch()
-
+  const isRest = useSelector(store => store.scroll.isRest)
+  const rf = useRef()
   const getList = async () => {
     const result = await getCommentList({
       projectId,
@@ -131,6 +133,15 @@ const NewWrapRight = () => {
   useEffect(() => {
     getList()
   }, [])
+
+  const onScrollBottom = () => {
+    // console.log(rf.current)
+    // rf.current.scrollTop = rf.current.scrollHeight
+    dispatch(changeRestScroll(false))
+  }
+  useEffect(() => {
+    isRest ? onScrollBottom() : null
+  }, [isRest])
 
   return (
     <div

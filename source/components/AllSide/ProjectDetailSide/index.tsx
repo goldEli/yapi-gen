@@ -11,6 +11,7 @@ import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import DemandSettingSide from '../DemandSettingSide'
+import FormWorkSide from '../FormWorkSide'
 import {
   AllWrap,
   MenuBox,
@@ -166,6 +167,7 @@ const ProjectDetailSide = () => {
     const params = encryptPhp(JSON.stringify({ id: projectId }))
     navigate(`/ProjectManagement/Demand?data=${params}`)
     setTimeout(() => {
+      console.log(projectSetSide.current, '=====projectSetSide.current')
       projectSetSide.current.style.display = 'none'
     }, 200)
   }
@@ -242,11 +244,7 @@ const ProjectDetailSide = () => {
               onClick={() => onChangeRouter(i.path)}
               hidden={!i.isPermission}
             >
-              <CommonIconFont
-                type={i.icon}
-                color="var(--neutral-n3)"
-                size={18}
-              />
+              <CommonIconFont type={i.icon} size={18} />
               <div>{i.name}</div>
             </MenuItem>
           ))}

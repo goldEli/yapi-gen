@@ -45,7 +45,7 @@ const ModalContent = styled.div({
   color: 'var(--neutral-n2)',
   fontSize: 14,
   marginTop: 9,
-  paddingLeft: 56,
+  paddingLeft: 60,
   paddingRight: 27,
 })
 

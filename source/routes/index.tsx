@@ -39,6 +39,11 @@ const routes = [
             path: 'Project',
             element: lazy(() => import('@/views/Project')),
           },
+
+          {
+            path: 'FormWork',
+            element: lazy(() => import('@/views/FormWork')),
+          },
           {
             path: 'Mine',
             element: lazy(() => import('@/views/Mine')),
@@ -91,7 +96,7 @@ const routes = [
           },
           {
             path: 'MemberInfo',
-            element: lazy(() => import('@/views/MemberInfo')),
+            element: lazy(() => import('@/views/FormWork')),
             children: [
               {
                 path: 'Carbon',
@@ -178,6 +183,24 @@ const routes = [
                 element: lazy(() => import('@/views/MemberInfo/Profile')),
               },
             ],
+          },
+        ],
+      },
+      {
+        path: 'SiteNotifications',
+        element: lazy(() => import('@/views/SiteNotifications')),
+        children: [
+          {
+            path: 'Setting',
+            element: lazy(
+              () => import('../views/SiteNotifications/Setting/index'),
+            ),
+          },
+          {
+            path: 'AllNote/:id',
+            element: lazy(
+              () => import('../views/SiteNotifications/AllNotes/index'),
+            ),
           },
         ],
       },
