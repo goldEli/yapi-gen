@@ -47,7 +47,7 @@ const Title = styled.div<{ left: number }>`
 `
 
 const TimeScale: React.FC<WeekHeaderProps> = props => {
-  const [current, setCurrent] = React.useState<number>()
+  const [current, setCurrent] = React.useState<number | null>(null)
   const onCreate = (idx: number) => {
     setCurrent(idx)
   }
@@ -80,8 +80,9 @@ const TimeScale: React.FC<WeekHeaderProps> = props => {
             </tr>
           )
         })}
-
-      <Title left={58 + maxWidth * ((current ?? 0) - 1)}>新建日程</Title>
+      {current !== null && (
+        <Title left={58 + maxWidth * ((current ?? 0) - 1)}>新建日程</Title>
+      )}
     </Table>
   )
 }
