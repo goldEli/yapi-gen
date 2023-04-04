@@ -90,12 +90,6 @@ const Timescale: React.FC<TimescaleProps> = props => {
         dom.removeEventListener('mousemove', onMousemove)
         const target = event.target as HTMLDivElement
         // 打开创建日程弹窗
-        console.log(
-          'event.offsetX, event.offsetY',
-          event.offsetX + 58,
-          target.offsetTop,
-        )
-        const { x } = target.getBoundingClientRect()
         dispatch(
           setQuickCreateScheduleModel({
             visible: true,
