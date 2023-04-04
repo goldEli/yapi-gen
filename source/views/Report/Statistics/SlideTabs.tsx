@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { Tabs } from 'antd'
 import styled from '@emotion/styled'
 import { DoubleRightOutlined, DoubleLeftOutlined } from '@ant-design/icons'
