@@ -1,8 +1,10 @@
 import styled from '@emotion/styled'
-import React from 'react'
+import React, { useEffect, useMemo } from 'react'
 import classnames from 'classnames'
 import { css } from '@emotion/css'
 import useMaxWidth from '../hooks/useMaxWidth'
+import { useDispatch, useSelector } from '@store/index'
+import { setQuickCreateScheduleModel } from '@store/calendarPanle'
 
 interface WeekHeaderProps {}
 
@@ -48,10 +50,27 @@ const Title = styled.div<{ left: number }>`
 
 const TimeScale: React.FC<WeekHeaderProps> = props => {
   const [current, setCurrent] = React.useState<number | null>(null)
+  const { quickCreateScheduleModel } = useSelector(store => store.calendarPanel)
+  const dispatch = useDispatch()
+  const { maxWidth } = useMaxWidth()
+  const left = useMemo(() => {
+    return 58 + maxWidth * ((current ?? 0) - 1)
+  }, [current, maxWidth])
+  useEffect(() => {
+    if (!quickCreateScheduleModel.visible) {
+      setCurrent(null)
+    }
+  }, [quickCreateScheduleModel])
   const onCreate = (idx: number) => {
     setCurrent(idx)
+    dispatch(
+      setQuickCreateScheduleModel({
+        visible: true,
+        x: 58 + maxWidth * (idx - 1),
+        y: 0,
+      }),
+    )
   }
-  const { maxWidth } = useMaxWidth()
   return (
     <Table>
       {Array(4)
@@ -80,9 +99,7 @@ const TimeScale: React.FC<WeekHeaderProps> = props => {
             </tr>
           )
         })}
-      {current !== null && (
-        <Title left={58 + maxWidth * ((current ?? 0) - 1)}>新建日程</Title>
-      )}
+      {current !== null && <Title left={left}>新建日程</Title>}
     </Table>
   )
 }
