@@ -212,7 +212,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
         topLeft: false,
         topRight: false,
       }}
-      bounds=".schedule-card-list-box"
+      bounds=".time-scale"
       onDragStart={onDragStart}
       onDrag={onDrag}
       onDragStop={onDragStop}

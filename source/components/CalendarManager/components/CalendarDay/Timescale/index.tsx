@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import dayjs from 'dayjs'
 import React, { useMemo } from 'react'
 import CurrentTimeLine from '../../CurrentTimeLine'
-import { colorMap, oneHourHeight } from '../../../config'
+import { colorMap, formatYYYYMMDD, oneHourHeight } from '../../../config'
 import { useDispatch, useSelector } from '@store/index'
 import classNames from 'classnames'
 import NewCalendarArea from '../NewCalendarArea'
@@ -47,7 +47,7 @@ const Table = styled.table`
 `
 
 const Timescale: React.FC<TimescaleProps> = props => {
-  const { calendarData } = useSelector(store => store.calendar)
+  const { calendarData, selectedDay } = useSelector(store => store.calendar)
   const currentColor = useMemo(() => {
     const colorIdx = calendarData.manage.find(
       item => item.is_default === 1,
@@ -124,7 +124,9 @@ const Timescale: React.FC<TimescaleProps> = props => {
             {Array(4)
               .fill(0)
               .map((i, index) => {
-                const id = `2023-03-29 ${str}:${15 * index}00`
+                const id = `${dayjs(selectedDay).format(
+                  formatYYYYMMDD,
+                )} ${str}:${15 * index}:00`
                 return (
                   <tr
                     key={index}
@@ -147,7 +149,7 @@ const Timescale: React.FC<TimescaleProps> = props => {
           </>
         )
       })
-  }, [timeZone])
+  }, [timeZone, selectedDay])
   return (
     // <Popover trigger={['contextMenu']} content={popoverContent} title="Title">
     <Table ref={tableRef} className="time-scale">

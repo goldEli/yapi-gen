@@ -2,15 +2,16 @@ import styled from '@emotion/styled'
 import dayjs from 'dayjs'
 import React, { useMemo } from 'react'
 import CurrentTimeLine from '../../CurrentTimeLine'
-import { oneHourHeight } from '../../../config'
+import { formatYYYYMMDD, oneHourHeight } from '../../../config'
 import { useDispatch, useSelector } from '@store/index'
 import classNames from 'classnames'
-import NewCalendarArea from '../../CalendarDay/NewCalendarArea'
 import { Dropdown, Popover } from 'antd'
 // import QuickCreateScheduleModel from '../../QuickCreateScheduleModel'
 import { setQuickCreateScheduleModel } from '@store/calendarPanle'
 // import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
 import ScheduleCardList from '../ScheduleCardList'
+import NewCalendarArea from '../NewCalendarArea'
+import useWeeks from '../hooks/useWeeks'
 
 interface TimescaleProps {}
 const Table = styled.table`
@@ -50,17 +51,20 @@ const Table = styled.table`
 `
 
 const Timescale: React.FC<TimescaleProps> = props => {
-  const { calendarData } = useSelector(store => store.calendar)
+  const { calendarData, selectedDay } = useSelector(store => store.calendar)
   const currentColor = useMemo(() => {
     return calendarData.manage.find(item => item.is_default === 1)?.color
   }, [calendarData])
   const [timeZone, setTimeZone] = React.useState<string[]>([])
   const [distance, setDistance] = React.useState(0)
   const tableRef = React.useRef<HTMLTableElement>(null)
+  const { weeks } = useWeeks()
   const dispatch = useDispatch()
+  console.log('timeZone', timeZone)
 
   const onSelectTimeZone = React.useCallback(
     (e: React.MouseEvent, id: string) => {
+      console.log('mousedown', id)
       // 点击空白重置
       if (timeZone.length) {
         setTimeZone([])
@@ -73,7 +77,6 @@ const Timescale: React.FC<TimescaleProps> = props => {
       }
 
       let startY = e.screenY
-      let dis = 0
       function onMousemove(event: MouseEvent) {
         const deltaY = event.screenY - startY
         setDistance(deltaY)
@@ -122,12 +125,11 @@ const Timescale: React.FC<TimescaleProps> = props => {
             {Array(4)
               .fill(0)
               .map((i, index) => {
-                const id = `2023-03-29 ${str}:${15 * index}00`
                 return (
                   <tr
                     key={index}
-                    data-id={id}
-                    onMouseDown={e => onSelectTimeZone(e, id)}
+                    // data-id={id}
+                    // onMouseDown={e => onSelectTimeZone(e, id)}
                   >
                     <td className="firstTd borderRight">
                       {index === 0 && idx !== 0 && (
@@ -137,8 +139,14 @@ const Timescale: React.FC<TimescaleProps> = props => {
                     {Array(7)
                       .fill(0)
                       .map((_, tdIndex) => {
+                        const weedDay = weeks[tdIndex]
+                        const id = `${dayjs(weedDay).format(
+                          formatYYYYMMDD,
+                        )} ${str}:${15 * index}:00`
                         return (
                           <td
+                            data-id={id}
+                            onMouseDown={e => onSelectTimeZone(e, id)}
                             key={tdIndex}
                             className={classNames('borderRight', {
                               borderTop: index === 0,
@@ -152,16 +160,12 @@ const Timescale: React.FC<TimescaleProps> = props => {
           </>
         )
       })
-  }, [currentColor, timeZone])
+  }, [currentColor, timeZone, selectedDay, weeks])
   return (
     // <Popover trigger={['contextMenu']} content={popoverContent} title="Title">
     <Table ref={tableRef} className="time-scale">
       {content}
-      {/* <NewCalendarArea
-        color={currentColor ?? ''}
-        timeZone={timeZone}
-        distance={distance}
-      /> */}
+      <NewCalendarArea timeZone={timeZone} distance={distance} />
       <ScheduleCardList />
       {/* <QuickCreateScheduleModel />
       <ScheduleInfoDropdown /> */}
