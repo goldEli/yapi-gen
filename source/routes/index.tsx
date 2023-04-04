@@ -36,6 +36,10 @@ const routes = [
         element: lazy(() => import('@/views/Report')),
         children: [
           {
+            path: 'Statistics',
+            element: lazy(() => import('@/views/Report/Statistics')),
+          },
+          {
             path: 'Formwork',
             element: lazy(() => import('@/views/FormWork')),
           },
@@ -49,7 +53,6 @@ const routes = [
             path: 'Project',
             element: lazy(() => import('@/views/Project')),
           },
-
           {
             path: 'FormWork',
             element: lazy(() => import('@/views/FormWork')),
@@ -225,18 +228,6 @@ const routes = [
           {
             path: 'get/:id',
             element: lazy(() => import('@/views/LogManagement/GetDaily')),
-          },
-          {
-            path: 'Report',
-            element: lazy(() => import('@/views/Project')),
-          },
-          {
-            path: 'Statistics',
-            element: lazy(() => import('@/views/LogManagement/Statistics')),
-          },
-          {
-            path: 'Template',
-            element: lazy(() => import('@/views/Project')),
           },
         ],
       },
