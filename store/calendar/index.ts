@@ -7,6 +7,9 @@ type SliceState = {
   calendarData: Model.Calendar.CalendarData
   // 左侧-日历列表-选中的日历
   checkedCalendarList: Model.Calendar.Info[]
+  // 日历路由记录
+  routerMenu: Model.Calendar.RouterMenu
+  menuList: Model.Calendar.RouterMenu[]
   // 选择的日期
   selectedDay: number
   // 选择的周
@@ -21,6 +24,17 @@ const initialState: SliceState = {
     sub: [],
   },
   checkedCalendarList: [],
+  menuList: [
+    { name: '视图选项', key: 'view' },
+    { name: '日程设置', key: 'schedule' },
+    { name: '通知设置', key: 'notice' },
+    { name: '日历导入', key: 'import' },
+    { name: '日历导出', key: 'export' },
+  ],
+  routerMenu: {
+    name: '',
+    key: '',
+  },
   selectedDay: dayjs('2023-3-30 13:10:00').valueOf(),
   selectedWeek: [
     {
@@ -60,6 +74,9 @@ const slice = createSlice({
     ) {
       state.checkedCalendarList = action.payload
     },
+    setRouterMenu(state, action: PayloadAction<SliceState['routerMenu']>) {
+      state.routerMenu = action.payload
+    },
     setSelectedDay(state, action: PayloadAction<SliceState['selectedDay']>) {
       state.selectedDay = action.payload
     },
@@ -81,6 +98,7 @@ const slice = createSlice({
 
 const calendar = slice.reducer
 
-export const { setCheckedCalendarList, setCalendarData } = slice.actions
+export const { setCheckedCalendarList, setCalendarData, setRouterMenu } =
+  slice.actions
 
 export default calendar

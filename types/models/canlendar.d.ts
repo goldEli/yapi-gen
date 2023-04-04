@@ -4,6 +4,11 @@ declare namespace Model.Calendar {
    */
   type ChooseAddType = 'member' | 'team' | 'department' | undefined | 'all' | ''
 
+  interface RouterMenu {
+    name: string
+    key: string
+  }
+
   interface MemberItem {
     id: number
     name: string

@@ -12,7 +12,6 @@ export const CalenderBox = styled.div`
 
 export const CalenderBoxLeftArea = styled.div`
   box-sizing: border-box;
-  padding: 24px 24px 8px;
   background: var(--neutral-n9);
   height: 100%;
   display: flex;

@@ -38,9 +38,9 @@ const Back = styled.div`
 `
 const ProjectDetailSide = () => {
   const [t] = useTranslation()
-  const projectSide: any = useRef<HTMLInputElement>(null)
-  const projectSetSide: any = useRef<HTMLInputElement>(null)
-  const projectSetCategory: any = useRef<HTMLInputElement>(null)
+  const projectSide: any = useRef<HTMLElement>(null)
+  const projectSetSide: any = useRef<HTMLElement>(null)
+  const projectSetCategory: any = useRef<HTMLElement>(null)
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -166,7 +166,6 @@ const ProjectDetailSide = () => {
     const params = encryptPhp(JSON.stringify({ id: projectId }))
     navigate(`/ProjectManagement/Demand?data=${params}`)
     setTimeout(() => {
-      console.log(projectSetSide.current, '=====projectSetSide.current')
       projectSetSide.current.style.display = 'none'
     }, 200)
   }

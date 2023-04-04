@@ -5,10 +5,20 @@ import {
 import CommonButton from '@/components/CommonButton'
 import IconFont from '@/components/IconFont'
 import InputSearch from '@/components/InputSearch'
+import { setRouterMenu } from '@store/calendar'
+import { useDispatch } from '@store/index'
 import CalendarManagerList from '../../CalendarManagerList'
 import DXCalendar from '../../DXCalendar'
 
 const CalendarMainSide = () => {
+  const dispatch = useDispatch()
+
+  // 改变路由
+  const onChangeRouter = () => {
+    localStorage.setItem('calendarSetKey', 'view')
+    dispatch(setRouterMenu({ name: '视图选项', key: 'view' }))
+  }
+
   return (
     <>
       <CommonButton type="primary">
@@ -21,7 +31,7 @@ const CalendarMainSide = () => {
       <InputSearch placeholder={'搜索日历'} width={210} autoFocus leftIcon />
       <CalendarManagerList title="我管理的" type="manage" />
       <CalendarManagerList title="我订阅的" type="sub" />
-      <CalendarSetBox>
+      <CalendarSetBox onClick={onChangeRouter}>
         <IconFont
           type="settings"
           style={{ fontSize: 18, color: 'var(--neutral-n3)' }}

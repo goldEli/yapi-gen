@@ -3,8 +3,9 @@ import CommonIconFont from '@/components/CommonIconFont'
 import IconFont from '@/components/IconFont'
 import InputSearch from '@/components/InputSearch'
 import { DragLine } from '@/components/StyleCommon'
+import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   CalendarSetBox,
   CalendarSidebarBox,
@@ -16,6 +17,20 @@ import {
 import CalendarManagerList from '../CalendarManagerList'
 import DXCalendar from '../DXCalendar'
 import CalendarMainSide from './CalendarMainSide'
+import CalendarSetSide from './CalendarSetSide'
+
+const SetWrap = styled.div`
+  padding: 24px 0px 8px;
+  white-space: nowrap;
+  transition: 0.2s;
+  display: none;
+`
+
+const MainWrap = styled.div`
+  padding: 24px 24px 8px;
+  white-space: nowrap;
+  transition: 0.2s;
+`
 
 interface CalendarSidebarProps {
   children?: React.ReactDOM
@@ -24,6 +39,9 @@ interface CalendarSidebarProps {
 const CalendarSidebar: React.FC<CalendarSidebarProps> = props => {
   const dispatch = useDispatch()
   const { firstMenuCollapse } = useSelector(state => state.global)
+  const { routerMenu } = useSelector(store => store.calendar)
+  const calendarMainSideDom: any = useRef<HTMLElement>(null)
+  const calendarSideDom: any = useRef<HTMLElement>(null)
   const sliderRef = useRef<any>(null)
   const maxWidth = 422
   const [leftWidth, setLeftWidth] = useState(288)
@@ -82,6 +100,20 @@ const CalendarSidebar: React.FC<CalendarSidebarProps> = props => {
     })
   }
 
+  useEffect(() => {
+    if (routerMenu.key) {
+      calendarMainSideDom.current.style.width = '0px'
+      calendarSideDom.current.style.width = '100%'
+      calendarSideDom.current.style.display = 'block'
+      calendarMainSideDom.current.style.display = 'none'
+    } else {
+      calendarSideDom.current.style.width = '0px'
+      calendarMainSideDom.current.style.width = '100%'
+      calendarMainSideDom.current.style.display = 'block'
+      calendarSideDom.current.style.display = 'none'
+    }
+  }, [routerMenu])
+
   return (
     <CalendarSidebarBox
       collapse={firstMenuCollapse}
@@ -93,7 +125,12 @@ const CalendarSidebar: React.FC<CalendarSidebarProps> = props => {
     >
       <CalendarSidebarMain firstMenuCollapse={firstMenuCollapse}>
         <CalenderBoxLeftArea>
-          <CalendarMainSide />
+          <MainWrap ref={calendarMainSideDom}>
+            <CalendarMainSide />
+          </MainWrap>
+          <SetWrap ref={calendarSideDom}>
+            <CalendarSetSide />
+          </SetWrap>
         </CalenderBoxLeftArea>
       </CalendarSidebarMain>
 
