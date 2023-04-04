@@ -22,6 +22,7 @@ import useMaxWidth from '../hooks/useMaxWidth'
 import useWeeks from '../hooks/useWeeks'
 import { saveSchedule } from '@store/schedule/schedule.thunk'
 import { getColorWithOpacityPointOne } from '@/components/CalendarManager/utils'
+import { allDayScheduleListClassName } from '../AllDayScheduleList'
 
 interface ScheduleCardProps {
   data: Model.Schedule.Info
@@ -167,7 +168,7 @@ const AllDayScheduleCard: React.FC<ScheduleCardProps> = props => {
         topLeft: false,
         topRight: false,
       }}
-      bounds=".all-day-schedule-list"
+      bounds={`.${allDayScheduleListClassName}`}
       onDragStart={onDragStart}
       onDrag={onDrag}
       onDragStop={onDragStop}
@@ -175,10 +176,10 @@ const AllDayScheduleCard: React.FC<ScheduleCardProps> = props => {
       // onResize={onResize}
       // onResizeStop={onResizeStop}
     >
-      <Title>
-        {/* {timeRange &&
-          `${timeRange?.start_timestamp} - ${timeRange?.end_timestamp}`} */}
-      </Title>
+      {/* <Title>
+        {timeRange &&
+          `${timeRange?.start_timestamp} - ${timeRange?.end_timestamp}`}
+      </Title> */}
       <Title>{title}</Title>
     </Rnd>
   )
