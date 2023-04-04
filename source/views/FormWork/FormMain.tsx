@@ -1,11 +1,19 @@
 /* eslint-disable react/jsx-handler-names */
-import { Checkbox, Switch, Form, TimePicker, Dropdown, MenuProps } from 'antd'
+import {
+  Checkbox,
+  Switch,
+  Form,
+  TimePicker,
+  Dropdown,
+  MenuProps,
+  DatePicker,
+} from 'antd'
 import { useEffect, useState } from 'react'
-import dayjs from 'dayjs'
 import styled from '@emotion/styled'
 import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
-
+import Picker from './Picker'
+import dayjs from 'dayjs'
 const Text = styled.div`
   color: var(--neutral-n1-d1);
   font-size: 14px;
@@ -289,6 +297,7 @@ const FormMain = (props: FormType) => {
           </Form.Item>
         </>
       ) : null}
+      {/* 不重复是时间插件*/}
       <Form.Item
         style={{
           marginBottom: '32px',
@@ -296,7 +305,13 @@ const FormMain = (props: FormType) => {
         label="开始时间"
         name="3"
       >
-        <TimePicker />
+        {props.type === 'day' ||
+        props.type === 'week' ||
+        props.type === 'month' ? (
+          <Picker type={props.type} pickerType="start" />
+        ) : (
+          <DatePicker format="YYYY-MM-DD HH:mm:ss" />
+        )}
       </Form.Item>
       <Form.Item
         style={{
@@ -305,7 +320,13 @@ const FormMain = (props: FormType) => {
         label="截止时间"
         name="4"
       >
-        <TimePicker />
+        {props.type === 'day' ||
+        props.type === 'week' ||
+        props.type === 'month' ? (
+          <Picker type={props.type} pickerType="end" />
+        ) : (
+          <DatePicker format="YYYY-MM-DD HH:mm:ss" />
+        )}
       </Form.Item>
       <RowStyle>
         <Form.Item style={{ marginRight: 48 }} label="" name="5">
@@ -340,7 +361,7 @@ const FormMain = (props: FormType) => {
         label="提醒时间"
         name="9"
       >
-        <TimePicker />
+        <Picker type={props.type} pickerType="remind" />
       </Form.Item>
     </>
   )

@@ -84,11 +84,11 @@ const PermissionConfig = () => {
       {report ? (
         <>
           {/* 谁可以写 */}
-          <Addperson data={person} title="谁可以写" isShow={true} />
+          <Addperson data={person} title="谁可以写" isShow={true} state="1" />
           {/* 汇报对象*/}
-          <Addperson data={person} title="汇报对象" isShow={false} />
+          <Addperson data={person} title="汇报对象" isShow={false} state="2" />
           {/* 谁可以看 */}
-          <Addperson data={person} title="谁可以看" isShow={false} />
+          <Addperson data={person} title="谁可以看" isShow={false} state="3" />
         </>
       ) : null}
       {/* 填写要求 */}
