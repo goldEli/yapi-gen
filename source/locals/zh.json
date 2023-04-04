@@ -966,5 +966,9 @@
     "classification": "需求类别",
     "noData": "暂无类别，创建一个吧~",
     "addClass": "创建类别"
+  },
+  "report": {
+    "statistics": "汇报统计",
+    "mine": "我的汇报"
   }
 }

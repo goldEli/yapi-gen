@@ -181,7 +181,6 @@ const routes = [
           },
         ],
       },
-
       {
         path: '/LogManagement',
         element: lazy(() => import('@/views/LogManagement')),
@@ -193,6 +192,18 @@ const routes = [
           {
             path: 'get/:id',
             element: lazy(() => import('@/views/LogManagement/GetDaily')),
+          },
+          {
+            path: 'Report',
+            element: lazy(() => import('@/views/Project')),
+          },
+          {
+            path: 'Statistics',
+            element: lazy(() => import('@/views/LogManagement/Statistics')),
+          },
+          {
+            path: 'Template',
+            element: lazy(() => import('@/views/Project')),
           },
         ],
       },
