@@ -10,6 +10,7 @@ import type { ColumnsType } from 'antd/lib/table'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import PaginationBox from '@/components/TablePagination'
 import { Space } from 'antd'
+import SlideTabs from './SlideTabs'
 
 const data: any = {
   currentPage: 1,
@@ -53,11 +54,10 @@ const Head = styled.div`
   flex-direction: column;
   justify-content: space-between;
   gap: 24px;
-  flex: 8;
+  flex: 1;
 `
 const Center = styled.div`
-  display: flex;
-  flex: 2;
+  width: 488px;
   border-left: 1px solid #ecedef;
 `
 const NameColumn = styled.div({
@@ -70,7 +70,7 @@ const NameColumn = styled.div({
 
 const CenterRight = styled.div`
   box-sizing: border-box;
-  padding: 24px;
+  padding: 24px 0 24px 24px;
   flex: 1;
   background: rgba(255, 255, 255, 1);
   border-radius: 6px;
@@ -118,7 +118,7 @@ const Statistics = () => {
 
   const onConfirm = (values: any) => {
     console.log('values', values)
-    setIsSpinning(true)
+    // setIsSpinning(true)
   }
   const columns: ColumnsType<any> = [
     {
@@ -177,6 +177,31 @@ const Statistics = () => {
   const onChangePage = (page: any, size: any) => {
     console.log('onChangePage', page, size)
   }
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  const items = new Array(30).fill(null).map((_: any, i) => {
+    const id = String(i + 1)
+    return {
+      label: `工作周报${i}`,
+      key: id,
+      children: (
+        <>
+          <ResizeTable
+            isSpinning={isSpinning}
+            dataWrapNormalHeight="calc(100vh - 292px)"
+            col={columns}
+            dataSource={data.list}
+            noData={<NoData />}
+          />
+          <PaginationBox
+            currentPage={data?.currentPage}
+            pageSize={data?.pageSize}
+            total={data?.total}
+            onChange={onChangePage}
+          />
+        </>
+      ),
+    }
+  })
 
   return (
     <StyledWrap>
@@ -188,19 +213,7 @@ const Statistics = () => {
             <RangePicker isShowQuick onChange={onConfirm} />
           </SelectWrapBedeck>
         </div>
-        <ResizeTable
-          isSpinning={isSpinning}
-          dataWrapNormalHeight="calc(100% - 92px)"
-          col={columns}
-          dataSource={data.list}
-          noData={<NoData />}
-        />
-        <PaginationBox
-          currentPage={data?.currentPage}
-          pageSize={data?.pageSize}
-          total={data?.total}
-          onChange={onChangePage}
-        />
+        <SlideTabs items={items} />
       </Head>
       <Center>
         <CenterRight>
