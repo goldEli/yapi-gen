@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import dayjs from 'dayjs'
 import React, { useMemo } from 'react'
 import CurrentTimeLine from '../../CurrentTimeLine'
-import { oneHourHeight } from '../../../config'
+import { colorMap, oneHourHeight } from '../../../config'
 import { useDispatch, useSelector } from '@store/index'
 import classNames from 'classnames'
 import NewCalendarArea from '../../NewCalendarArea'
@@ -48,7 +48,10 @@ const Table = styled.table`
 const Timescale: React.FC<TimescaleProps> = props => {
   const { calendarData } = useSelector(store => store.calendar)
   const currentColor = useMemo(() => {
-    return calendarData.manage.find(item => item.is_default === 1)?.color
+    const colorIdx = calendarData.manage.find(
+      item => item.is_default === 1,
+    )?.color
+    return colorIdx ? colorMap[colorIdx] : ''
   }, [calendarData])
   const [timeZone, setTimeZone] = React.useState<string[]>([])
   const [distance, setDistance] = React.useState(0)
