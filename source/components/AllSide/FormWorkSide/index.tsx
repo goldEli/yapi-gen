@@ -3,7 +3,10 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useState } from 'react'
 import AddFormWork from '@/components/AllSide/FormWorkSide/AddFormWork'
-
+const FormWorkSideStyle = styled.div`
+  width: 200px;
+  min-width: 200px;
+`
 export const TitleStyle = styled.div`
   display: flex;
   width: 100%;
@@ -54,7 +57,7 @@ const FormWorkSide = () => {
   const [isActive, setIsActive] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   return (
-    <>
+    <FormWorkSideStyle>
       <TitleStyle>
         <span>模板</span>
         <IconFontStyle type="plus" onClick={() => setIsVisible(true)} />
@@ -80,7 +83,7 @@ const FormWorkSide = () => {
         isVisible={isVisible}
         onConfirm={() => 12}
       />
-    </>
+    </FormWorkSideStyle>
   )
 }
 export default FormWorkSide

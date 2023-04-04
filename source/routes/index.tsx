@@ -32,6 +32,16 @@ const routes = [
         element: lazy(() => import('@/views/Situation')),
       },
       {
+        path: '/Report',
+        element: lazy(() => import('@/views/Report')),
+        children: [
+          {
+            path: 'Formwork',
+            element: lazy(() => import('@/views/FormWork')),
+          },
+        ],
+      },
+      {
         path: '/ProjectManagement',
         element: lazy(() => import('@/views/ProjectManagement')),
         children: [
