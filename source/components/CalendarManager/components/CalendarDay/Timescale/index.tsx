@@ -10,6 +10,7 @@ import { Dropdown, Popover } from 'antd'
 import QuickCreateScheduleModel from '../../QuickCreateScheduleModel'
 import { setQuickCreateScheduleModel } from '@store/calendarPanle'
 import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
+import ScheduleCardList from '../ScheduleCardList'
 
 interface TimescaleProps {}
 const Table = styled.table`
@@ -144,17 +145,14 @@ const Timescale: React.FC<TimescaleProps> = props => {
           </>
         )
       })
-  }, [currentColor, timeZone])
+  }, [timeZone])
   return (
     // <Popover trigger={['contextMenu']} content={popoverContent} title="Title">
     <Table ref={tableRef} className="time-scale">
       {content}
       <CurrentTimeLine />
-      <NewCalendarArea
-        color={currentColor ?? ''}
-        timeZone={timeZone}
-        distance={distance}
-      />
+      <NewCalendarArea timeZone={timeZone} distance={distance} />
+      <ScheduleCardList />
       <QuickCreateScheduleModel />
       <ScheduleInfoDropdown />
     </Table>

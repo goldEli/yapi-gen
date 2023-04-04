@@ -5,10 +5,11 @@ import React from 'react'
 import { oneMinuteHeight } from '../../config'
 import usePosition from '../CalendarDay/hooks/usePosition'
 import { getTimeByAddDistance, hexToRgba } from '../CalendarDay/utils'
+import { getColorWithOpacityPointOne } from '../../utils'
+import { useSelector } from '@store/index'
 
 interface NewCalendarAreaProps {
   timeZone: string[]
-  color: string
   distance: number
 }
 
@@ -37,6 +38,13 @@ const DropdownContainer = styled.div`
 
 const NewCalendarArea: React.FC<NewCalendarAreaProps> = props => {
   // console.table(props.pointerPosition)
+  const { calendarData } = useSelector(store => store.calendar)
+  const currentColor = React.useMemo(() => {
+    const colorIdx = calendarData.manage.find(
+      item => item.is_default === 1,
+    )?.color
+    return colorIdx
+  }, [calendarData])
 
   const startTime = React.useMemo(() => {
     const key = props.timeZone[0]
@@ -69,7 +77,11 @@ const NewCalendarArea: React.FC<NewCalendarAreaProps> = props => {
     //   }}
     // >
     <Box
-      style={{ background: hexToRgba(props.color, 0.1), top, height }}
+      style={{
+        background: getColorWithOpacityPointOne(currentColor ?? 0),
+        top,
+        height,
+      }}
       className="new-calendar-area"
       visible={!!props.timeZone.length}
     >

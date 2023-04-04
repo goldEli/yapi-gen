@@ -22,7 +22,6 @@ const CalendarDay: React.FC<CalendarDayProps> = props => {
     <CalendarDayBox className="calendar-day-box">
       <ScheduleAllDay />
       <Timescale />
-      <ScheduleCardList />
     </CalendarDayBox>
   )
 }
