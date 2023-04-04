@@ -7,26 +7,23 @@ import {
   getTimeByAddDistance,
   getTimeByOffsetDistance,
   hexToRgba,
+  isSameTime,
 } from '../utils'
 import { DraggableData, Position, ResizableDelta, Rnd } from 'react-rnd'
 import { css } from '@emotion/css'
 import { DraggableEvent } from 'react-draggable'
-// import { setSchedule } from '@store/schedule'
-import { ResizeDirection } from 're-resizable'
-import useAllDayPosition from '../hooks/useAllDayPosition'
-import { Dropdown } from 'antd'
-import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
-import { setScheduleInfoDropdown } from '@store/calendarPanle'
 import useMaxWidth from '../hooks/useMaxWidth'
-import useWeeks from '../hooks/useWeeks'
 import { saveSchedule } from '@store/schedule/schedule.thunk'
 import { getColorWithOpacityPointOne } from '@/components/CalendarManager/utils'
+import { allDayScheduleListClassName } from '../AllDayScheduleList'
+import useUpdateAllDayTime from '../hooks/useUpdateAllDayTime'
 
-interface ScheduleCardProps {
+export interface ScheduleCardProps {
   data: Model.Schedule.Info
   width: number
   left: number
   top: number
+  onChange(data: Model.Schedule.Info, x: number): void
 }
 
 const dragBoxClassName = css`
@@ -59,10 +56,10 @@ const AllDayScheduleCard: React.FC<ScheduleCardProps> = props => {
   } | null>(null)
 
   const { maxWidth } = useMaxWidth()
-  const { getCurrentWeekDayByLeft } = useWeeks()
+  const { updateAllDayTime } = useUpdateAllDayTime()
 
   const onDrag = (e: DraggableEvent, draggableData: DraggableData) => {
-    const { node, y, deltaY, lastY } = draggableData
+    const { x, y, deltaY, lastY } = draggableData
     const time = getTimeByOffsetDistance(
       start_timestamp,
       end_timestamp,
@@ -72,6 +69,13 @@ const AllDayScheduleCard: React.FC<ScheduleCardProps> = props => {
       start_timestamp: time.start_timestamp.format('HH:mm'),
       end_timestamp: time.end_timestamp.format('HH:mm'),
     })
+    // 基于当前的日期更新
+    const { startTime, endTime } = updateAllDayTime({
+      x,
+      startTime: time.start_timestamp.valueOf(),
+      endTime: time.end_timestamp.valueOf(),
+    })
+    props.onChange(props.data, x)
   }
   const onDragStart = (e: DraggableEvent, draggableData: DraggableData) => {
     // const { node, y, deltaY, lastY } = draggableData
@@ -90,25 +94,30 @@ const AllDayScheduleCard: React.FC<ScheduleCardProps> = props => {
     )
 
     // 基于当前的日期更新
-    const weekDay = getCurrentWeekDayByLeft(x)
-    const newStartTime = dayjs(
-      `${weekDay} ${time.start_timestamp.format('HH:mm:ss')}`,
-    ).valueOf()
-    const newEndTime = dayjs(
-      `${weekDay} ${time.end_timestamp.format('HH:mm:ss')}`,
-    ).valueOf()
+    const { startTime, endTime } = updateAllDayTime({
+      x,
+      startTime: time.start_timestamp.valueOf(),
+      endTime: time.end_timestamp.valueOf(),
+    })
+    // const weekDay = getCurrentWeekDayByLeft(x)
+    // const newStartTime = dayjs(
+    //   `${weekDay} ${time.start_timestamp.format('HH:mm:ss')}`,
+    // ).valueOf()
+    // const newEndTime = dayjs(
+    //   `${weekDay} ${time.end_timestamp.format('HH:mm:ss')}`,
+    // ).valueOf()
 
     dispatch(
       saveSchedule({
         ...props.data,
-        start_timestamp: newStartTime,
-        end_timestamp: newEndTime,
+        start_timestamp: startTime,
+        end_timestamp: endTime,
       }),
     )
     setTimeRange(null)
-    const calenderBoxRightArea = document.querySelector(
-      '#calenderBoxRightArea',
-    ) as Element
+    // const calenderBoxRightArea = document.querySelector(
+    //   '#calenderBoxRightArea',
+    // ) as Element
     // dispatch(
     //   setScheduleInfoDropdown({
     //     visible: true,
@@ -119,6 +128,23 @@ const AllDayScheduleCard: React.FC<ScheduleCardProps> = props => {
   }
 
   const gridHeight = useMemo(() => (oneHourHeight / 60) * 15, [outerHeight])
+  const title = React.useMemo(() => {
+    const { start_timestamp, end_timestamp, first_start_timestamp } = props.data
+    if (props.data.is_span_day) {
+      const isFirstDay = isSameTime(start_timestamp, first_start_timestamp ?? 0)
+      if (!isFirstDay) {
+        return ''
+      }
+    }
+    return props.data.subject
+  }, [props.data])
+
+  // 跨天不是第一天的日程不能拖拽
+  const disableDragging = useMemo(() => {
+    const { start_timestamp, end_timestamp, first_start_timestamp } = props.data
+    const isFirstDay = isSameTime(start_timestamp, first_start_timestamp ?? 0)
+    return props.data.is_span_day && !isFirstDay
+  }, [props.data])
 
   return (
     <Rnd
@@ -134,6 +160,7 @@ const AllDayScheduleCard: React.FC<ScheduleCardProps> = props => {
       dragGrid={[maxWidth, gridHeight]}
       // resizeGrid={[gridHeight, gridHeight]}
       dragAxis="x"
+      disableDragging={disableDragging}
       position={{
         x: props.left,
         y: top,
@@ -148,7 +175,7 @@ const AllDayScheduleCard: React.FC<ScheduleCardProps> = props => {
         topLeft: false,
         topRight: false,
       }}
-      bounds=".all-day-schedule-list"
+      bounds={`.${allDayScheduleListClassName}`}
       onDragStart={onDragStart}
       onDrag={onDrag}
       onDragStop={onDragStop}
@@ -156,11 +183,11 @@ const AllDayScheduleCard: React.FC<ScheduleCardProps> = props => {
       // onResize={onResize}
       // onResizeStop={onResizeStop}
     >
-      <Title>
+      {/* <Title>
         {timeRange &&
           `${timeRange?.start_timestamp} - ${timeRange?.end_timestamp}`}
-      </Title>
-      <Title>{props.data.subject}</Title>
+      </Title> */}
+      <Title>{title}</Title>
     </Rnd>
   )
 }

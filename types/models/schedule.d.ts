@@ -24,6 +24,12 @@ declare namespace Model.Schedule {
     end_time?: string
     // 1677750240
     end_timestamp: number
+    // "2023-03-29 16:33:00"
+    schedule_start_datetime?: string
+    schedule_start_timestamp?: number
+    // '2023-04-01 17:44:00'
+    schedule_end_datetime?: string
+    schedule_end_timestamp?: number
     // 1 是 2 否
     is_busy: 1 | 2
     //
@@ -37,11 +43,12 @@ declare namespace Model.Schedule {
     // 1677772799
     timestamp: number
     // '2023-03-02'
-    first_start_date: string
+    first_start_date?: string
     // '2023-03-03 16:33:00'
-    first_start_datetime: string
+    first_start_datetime?: string
     // 1677745980
-    first_start_timestamp: number
+    first_start_timestamp?: number
+    last_start_timestamp?: number
   }
   type InfoWithPosition = Info & {
     width: number

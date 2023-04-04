@@ -92,6 +92,7 @@
       ]
     },
     "rules": {
+      "@typescript-eslint/no-shadow": 0,
       "complexity": 0,
       "@typescript-eslint/no-empty-function": 0,
       "no-empty-function": 0,

@@ -31,7 +31,8 @@ export const getScheduleList = async (
           timestamp: 1677772799,
           first_start_date: '2023-03-30',
           first_start_datetime: '2023-03-03 16:33:00',
-          first_start_timestamp: dayjs('2023-03-30').valueOf(),
+          first_start_timestamp: dayjs('2023-03-30 00:00:00').valueOf(),
+          last_start_timestamp: dayjs('2023-03-31 23:59:59').valueOf(),
         },
         {
           schedule_id: 27,
@@ -102,7 +103,8 @@ export const getScheduleList = async (
           timestamp: 1677772799,
           first_start_date: '2023-03-31',
           first_start_datetime: '2023-03-02 16:33:00',
-          first_start_timestamp: 1677745980,
+          first_start_timestamp: dayjs('2023-03-30 00:00:00').valueOf(),
+          last_start_timestamp: dayjs('2023-03-31 23:59:59').valueOf(),
         },
         {
           schedule_id: 27,
