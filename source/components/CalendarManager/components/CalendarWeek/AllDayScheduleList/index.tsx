@@ -18,6 +18,7 @@ const AllDayScheduleListBox = styled.div`
 `
 interface SchedulePosition {
   id: Model.Schedule.Info['id']
+  schedule_id: Model.Schedule.Info['schedule_id']
   width: number
   top: number
   left: number
@@ -42,6 +43,7 @@ const AllDayScheduleList: React.FC<AllDayScheduleListProps> = props => {
       item.forEach((schedule, idx) => {
         res.push({
           id: schedule.id,
+          schedule_id: schedule.schedule_id,
           width: maxWidth,
           top: 20 * idx,
           left: getLeftByCurrentWeekDay(schedule.start_timestamp),
@@ -56,10 +58,29 @@ const AllDayScheduleList: React.FC<AllDayScheduleListProps> = props => {
     <AllDayScheduleListBox className={allDayScheduleListClassName}>
       <div style={{ position: 'relative' }}>
         {list.map(item => {
-          const { width, top, left } =
-            schedulePosition.find(i => item.id === i.id) ?? {}
+          const {
+            width,
+            top,
+            left = 0,
+          } = schedulePosition.find(i => item.id === i.id) ?? {}
           return (
             <AllDayScheduleCard
+              onChange={(data, x) => {
+                const { schedule_id } = data
+                console.log({ maxWidth, left, x }, left - x)
+                const distance = left - x
+                setSchedulePosition(prev => {
+                  return prev.map(position => {
+                    if (schedule_id === position.schedule_id) {
+                      return {
+                        ...position,
+                        left: position.left - distance,
+                      }
+                    }
+                    return position
+                  })
+                })
+              }}
               top={top ?? 0}
               key={item.id}
               width={width ?? 0}
