@@ -67,7 +67,7 @@ const AllDayScheduleList: React.FC<AllDayScheduleListProps> = props => {
             <AllDayScheduleCard
               onChange={(data, x) => {
                 const { schedule_id } = data
-                console.log({ maxWidth, left, x }, left - x)
+                // console.log({ maxWidth, left, x }, left - x)
                 const distance = left - x
                 setSchedulePosition(prev => {
                   return prev.map(position => {
