@@ -6,9 +6,9 @@ import { formatYYYYMMDD, oneHourHeight } from '../../../config'
 import { useDispatch, useSelector } from '@store/index'
 import classNames from 'classnames'
 import { Dropdown, Popover } from 'antd'
-// import QuickCreateScheduleModel from '../../QuickCreateScheduleModel'
+import QuickCreateScheduleModel from '../../QuickCreateScheduleModel'
 import { setQuickCreateScheduleModel } from '@store/calendarPanle'
-// import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
+import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
 import ScheduleCardList from '../ScheduleCardList'
 import NewCalendarArea from '../NewCalendarArea'
 import useWeeks from '../hooks/useWeeks'
@@ -60,7 +60,6 @@ const Timescale: React.FC<TimescaleProps> = props => {
   const tableRef = React.useRef<HTMLTableElement>(null)
   const { weeks } = useWeeks()
   const dispatch = useDispatch()
-  console.log('timeZone', timeZone)
 
   const onSelectTimeZone = React.useCallback(
     (e: React.MouseEvent, id: string) => {
@@ -87,6 +86,7 @@ const Timescale: React.FC<TimescaleProps> = props => {
       const dom = tableRef.current
       function onMouseUp(event: MouseEvent) {
         // setDistance(dis)
+        const target = event.target as HTMLDivElement
         const calenderBoxRightArea = document.querySelector(
           '#calenderBoxRightArea',
         ) as Element
@@ -94,8 +94,8 @@ const Timescale: React.FC<TimescaleProps> = props => {
         dispatch(
           setQuickCreateScheduleModel({
             visible: true,
-            x: event.offsetX,
-            y: event.screenY - 630 + calenderBoxRightArea.scrollTop,
+            x: target.offsetLeft + 58,
+            y: target.offsetTop,
           }),
         )
         dom.removeEventListener('mouseup', onMouseUp)
@@ -167,8 +167,8 @@ const Timescale: React.FC<TimescaleProps> = props => {
       {content}
       <NewCalendarArea timeZone={timeZone} distance={distance} />
       <ScheduleCardList />
-      {/* <QuickCreateScheduleModel />
-      <ScheduleInfoDropdown /> */}
+      <QuickCreateScheduleModel />
+      <ScheduleInfoDropdown />
     </Table>
     // </Popover>
   )

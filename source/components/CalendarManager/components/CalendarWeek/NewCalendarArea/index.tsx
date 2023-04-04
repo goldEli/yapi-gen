@@ -51,8 +51,7 @@ const NewCalendarArea: React.FC<NewCalendarAreaProps> = props => {
     return colorIdx
   }, [calendarData])
 
-  const { maxWidth } = useMaxWidth()
-  const { weeks, getLeftByCurrentWeekDay } = useWeeks()
+  const { getLeftByCurrentWeekDay } = useWeeks()
 
   const startTime = React.useMemo(() => {
     const key = props.timeZone[0]
