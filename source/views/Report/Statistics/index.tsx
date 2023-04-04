@@ -3,6 +3,10 @@ import { useTranslation } from 'react-i18next'
 import { SecondTitle, SelectWrapBedeck } from '@/components/StyleCommon'
 import RangePicker from '@/components/RangePicker'
 import { css } from '@emotion/css'
+import ResizeTable from '@/components/ResizeTable'
+import NoData from '@/components/NoData'
+import { useState } from 'react'
+import { ColumnsType } from 'antd/lib/table'
 
 const StyledWrap = styled.div`
   height: 400px;
@@ -36,13 +40,50 @@ const cardTitle = css`
   align-items: center;
   justify-content: space-between;
 `
+const data: any[] = []
+for (let i = 0; i < 100; i++) {
+  data.push({
+    name: '李钟硕',
+    onTimeCount: 146,
+    delayTimes: 82,
+    totalNoSubmitTimes: 69,
+    currentNoSubmitTimes: 17,
+  })
+}
+
 const Statistics = () => {
   const [t] = useTranslation()
+  const [isSpinning, setIsSpinning] = useState(false)
 
   const onConfirm = (values: any) => {
     console.log('values', values)
   }
-
+  const columns: ColumnsType<any> = [
+    {
+      title: '姓名',
+      dataIndex: 'name',
+      width: 150,
+    },
+    {
+      title: '按时提交',
+      dataIndex: 'onTimeCount',
+      width: 150,
+    },
+    {
+      title: '补交',
+      dataIndex: 'delayTimes',
+      width: 150,
+    },
+    {
+      title: '累计未提交',
+      dataIndex: 'totalNoSubmitTimes',
+      width: 150,
+    },
+    {
+      title: '当前未提交',
+      dataIndex: 'currentNoSubmitTimes',
+    },
+  ]
   return (
     <StyledWrap>
       <Head>
@@ -53,6 +94,13 @@ const Statistics = () => {
             <RangePicker isShowQuick onChange={onConfirm} />
           </SelectWrapBedeck>
         </div>
+        <ResizeTable
+          isSpinning={isSpinning}
+          dataWrapNormalHeight="calc(100% - 92px)"
+          col={columns}
+          dataSource={data}
+          noData={<NoData />}
+        />
       </Head>
       <Center>
         <CenterRight>
