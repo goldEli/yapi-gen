@@ -1,20 +1,14 @@
 import styled from '@emotion/styled'
-import { useDispatch, useSelector } from '@store/index'
+import { useDispatch } from '@store/index'
 import dayjs from 'dayjs'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { oneHourHeight } from '../../../config'
-import {
-  getTimeByAddDistance,
-  getTimeByOffsetDistance,
-  hexToRgba,
-} from '../utils'
+import { getTimeByAddDistance, getTimeByOffsetDistance } from '../utils'
 import { DraggableData, Position, ResizableDelta, Rnd } from 'react-rnd'
 import { css } from '@emotion/css'
 import { DraggableEvent } from 'react-draggable'
 import { ResizeDirection } from 're-resizable'
 import usePosition from '../hooks/usePosition'
-import { Dropdown } from 'antd'
-import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
 import { saveSchedule } from '@store/schedule/schedule.thunk'
 import { getColorWithOpacityPointOne } from '@/components/CalendarManager/utils'
@@ -95,11 +89,12 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     const calenderBoxRightArea = document.querySelector(
       '#calenderBoxRightArea',
     ) as Element
+    // 打开详情弹窗
     dispatch(
       setScheduleInfoDropdown({
         visible: true,
-        x: x,
-        y: y,
+        x: x + 100,
+        y: y + 20,
       }),
     )
   }

@@ -1,14 +1,14 @@
 import styled from '@emotion/styled'
-import { Dropdown } from 'antd'
 import dayjs from 'dayjs'
 import React from 'react'
-import { oneMinuteHeight } from '../../config'
-import usePosition from '../CalendarDay/hooks/usePosition'
-import { getTimeByAddDistance, hexToRgba } from '../CalendarDay/utils'
+import { oneMinuteHeight } from '../../../config'
+import usePosition from '../hooks/usePosition'
+import { getTimeByAddDistance } from '../utils'
+import { getColorWithOpacityPointOne } from '../../../utils'
+import { useSelector } from '@store/index'
 
 interface NewCalendarAreaProps {
   timeZone: string[]
-  color: string
   distance: number
 }
 
@@ -28,15 +28,15 @@ const Title = styled.span`
   color: var(--neutral-n1-d1);
 `
 
-const DropdownContainer = styled.div`
-  width: 528px;
-  height: 636px;
-  background-color: var(--neutral-white-d1);
-  box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
-`
-
 const NewCalendarArea: React.FC<NewCalendarAreaProps> = props => {
   // console.table(props.pointerPosition)
+  const { calendarData } = useSelector(store => store.calendar)
+  const currentColor = React.useMemo(() => {
+    const colorIdx = calendarData.manage.find(
+      item => item.is_default === 1,
+    )?.color
+    return colorIdx
+  }, [calendarData])
 
   const startTime = React.useMemo(() => {
     const key = props.timeZone[0]
@@ -57,19 +57,12 @@ const NewCalendarArea: React.FC<NewCalendarAreaProps> = props => {
   const { top, height } = usePosition(startTime.valueOf(), endTime.valueOf())
 
   return (
-    // <Dropdown
-    //   open={props.visible}
-    //   // trigger={['click']}
-    //   onOpenChange={bool => {
-    //     props.onChangeVisible(bool)
-    //   }}
-    //   align={{ offset: [-props.pointerPosition.x, -props.pointerPosition.y] }}
-    //   dropdownRender={() => {
-    //     return <DropdownContainer>123123123</DropdownContainer>
-    //   }}
-    // >
     <Box
-      style={{ background: hexToRgba(props.color, 0.1), top, height }}
+      style={{
+        background: getColorWithOpacityPointOne(currentColor ?? 0),
+        top,
+        height,
+      }}
       className="new-calendar-area"
       visible={!!props.timeZone.length}
     >
@@ -77,7 +70,6 @@ const NewCalendarArea: React.FC<NewCalendarAreaProps> = props => {
         'HH:mm',
       )}`}</Title>
     </Box>
-    // </Dropdown>
   )
 }
 

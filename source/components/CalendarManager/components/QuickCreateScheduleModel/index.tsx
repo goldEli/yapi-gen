@@ -27,7 +27,7 @@ const QuickCreateScheduleModel: React.FC<
   const { visible, x, y } = quickCreateScheduleModel
   return (
     <DropdownContainer top={y} left={x} visible={visible}>
-      QuickCreateScheduleModel
+      quick create schedule
     </DropdownContainer>
   )
 }

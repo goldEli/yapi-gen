@@ -9,7 +9,7 @@ import CurrentTimeLine from '../CurrentTimeLine'
 interface ScheduleCardListProps {}
 const ScheduleCardListBox = styled.div`
   position: absolute;
-  width: calc(100% - 58px);
+  /* width: calc(100% - 58px); */
   top: 0px;
   left: 58px;
   height: 100%;
