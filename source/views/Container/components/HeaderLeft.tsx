@@ -58,7 +58,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
         id: 'log',
         url: '/Report',
         permission: '',
-        name: '日志管理',
+        name: '工作汇报',
         children: [
           {
             // company_id: 1504303190303051800,
@@ -69,7 +69,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
             permission: '',
             status: 1,
             // updated_at: '2023-02-20 15:03:10',
-            url: '/Report',
+            url: '/Report/Statistics',
           },
           {
             // company_id: 1504303190303051800,
@@ -314,6 +314,58 @@ const HeaderLeft = () => {
   const dispatch = useDispatch()
   const routerPath = useLocation()
 
+  const mockMenuPermission = useMemo(() => {
+    if (menuPermission.menus) {
+      const menus = menuPermission?.menus && cloneDeep(menuPermission.menus)
+      menus.push({
+        id: 'log',
+        url: '/Report',
+        permission: '',
+        name: '日志管理',
+        children: [
+          {
+            // company_id: 1504303190303051800,
+            // created_at: '-0001-11-30 00:00:00',
+            id: 'log-1',
+            name: '汇报',
+            // p_menu: '日志管理',
+            permission: '',
+            status: 1,
+            // updated_at: '2023-02-20 15:03:10',
+            url: '/Report/Statistics',
+          },
+          {
+            // company_id: 1504303190303051800,
+            // created_at: '-0001-11-30 00:00:00',
+            id: 'log-1',
+            name: '统计',
+            // p_menu: '日志管理',
+            permission: '',
+            status: 1,
+            // updated_at: '2023-02-20 15:03:10',
+            url: '/Report/Statistics',
+          },
+          {
+            // company_id: 1504303190303051800,
+            // created_at: '-0001-11-30 00:00:00',
+            id: 'log-1',
+            name: '模板',
+            // p_menu: '日志管理',
+            permission: '',
+            status: 1,
+            // updated_at: '2023-02-20 15:03:10',
+            url: '/Report/FormWork',
+          },
+        ],
+      })
+      return {
+        priorityUrl: '"/ProjectManagement"',
+        menus,
+      }
+    }
+    return {}
+  }, [menuPermission])
+
   const getActive = (item: any) => {
     let state = false
     if (routerPath.pathname.includes(item.url)) {
@@ -329,20 +381,20 @@ const HeaderLeft = () => {
   }
 
   useEffect(() => {
-    if (menuPermission.menus?.length || routerPath) {
+    if (mockMenuPermission.menus?.length || routerPath) {
       let resultMenu: any
       if (routerPath.pathname === '/') {
-        resultMenu = menuPermission?.menus?.filter(
-          (i: any) => i.url === menuPermission.priorityUrl,
+        resultMenu = mockMenuPermission?.menus?.filter(
+          (i: any) => i.url === mockMenuPermission.priorityUrl,
         )[0]
       } else {
-        resultMenu = menuPermission?.menus?.filter((i: any) =>
+        resultMenu = mockMenuPermission?.menus?.filter((i: any) =>
           routerPath.pathname.includes(i.url),
         )?.[0]
       }
       dispatch(setCurrentMenu(resultMenu))
     }
-  }, [menuPermission, routerPath])
+  }, [mockMenuPermission, routerPath])
 
   return (
     <HeaderLeftWrap>
