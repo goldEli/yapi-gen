@@ -1,8 +1,11 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import AddFormWork from '@/components/AllSide/FormWorkSide/AddFormWork'
+import { setActiveItem } from '@store/formWork/index'
+import { useDispatch } from '@store/index'
+import DeleteConfirm from '@/components/DeleteConfirm'
 const FormWorkSideStyle = styled.div`
   width: 200px;
   min-width: 200px;
@@ -56,6 +59,11 @@ const a = [
 const FormWorkSide = () => {
   const [isActive, setIsActive] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
+  const dispatch = useDispatch()
+  const [delIsVisible, setDelIsVisible] = useState(false)
+  useEffect(() => {
+    dispatch(setActiveItem(a.find((el, index) => index === isActive)))
+  }, [isActive])
   return (
     <FormWorkSideStyle>
       <TitleStyle>
@@ -68,6 +76,10 @@ const FormWorkSide = () => {
             key={el.id}
             onClick={() => setIsActive(index)}
             style={{
+              color:
+                isActive == index
+                  ? 'var(--primary-d2)'
+                  : 'var(--neutral-n1-d2)',
               background:
                 isActive == index
                   ? 'linear-gradient(90deg, #EBEFFF 0%, rgba(243,246,255,0) 100%)'
@@ -82,6 +94,14 @@ const FormWorkSide = () => {
         onClose={() => setIsVisible(false)}
         isVisible={isVisible}
         onConfirm={() => 12}
+      />
+      {/* 未保存的弹窗 */}
+      <DeleteConfirm
+        title={'保存提示'}
+        text="【模版名称】还未保存，是否保存编辑内容？"
+        isVisible={delIsVisible}
+        onConfirm={() => setDelIsVisible(false)}
+        notCancel
       />
     </FormWorkSideStyle>
   )
