@@ -55,7 +55,7 @@ const AllSide = () => {
           marginTop: 'auto',
         }}
         idx={false}
-        onClick={() => navigate('/SiteNotifications/Setting')}
+        onClick={() => navigate('/SiteNotifications/Setting/1')}
       >
         <CommonIconFont type="settings" color="var(--neutral-n3)" size={18} />
         <div>通知设置</div>

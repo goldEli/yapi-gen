@@ -44,7 +44,6 @@ const ItemList = styled.div`
     box-shadow: 0px 0px 9px 3px rgba(0, 0, 0, 0.03);
   }
 `
-
 const ListMsg = styled.div`
   div:nth-child(1) {
     font-size: 14px;
@@ -109,15 +108,6 @@ const Sortable = (props: any) => {
     document.body.appendChild(imgDom)
     // ev.dataTransfer.setDragImage(imgDom, 0, 0)
   }
-  // 去重
-  const fitlerDataList = (data: any) => {
-    let obj: any = {}
-    let set: any = data?.reduce((cur: any, next: any) => {
-      obj[next.id] ? '' : (obj[next.id] = true && cur.push(next))
-      return cur
-    }, [])
-    return set
-  }
   // 拖动排序
   const onDragEnd = (e: any, index: number) => {
     setDragItem(null)
@@ -126,8 +116,8 @@ const Sortable = (props: any) => {
       _list[endIndex] = props.list[current]
       _list[current] = props.list[endIndex]
       // 使用的key值用来筛选
-      const data = _list.filter((el: any) => el?.title)
-      props.onChangeMove(fitlerDataList(data))
+      console.log(_list, 99)
+      props.onChangeMove(_list)
     }
     setEndIndex(null)
     setCurrent(null)
@@ -152,36 +142,9 @@ const Sortable = (props: any) => {
   const allowDrop = (ev: any) => {
     ev.preventDefault()
   }
-  // 父级拖动
+  // 右边拖动到左边触发
   const onDrop = (ev: any, index: number) => {
-    const drapClassName = ref?.current?.className
-    ev.preventDefault()
-    ev.stopPropagation()
-    // 判断是否在同一块区域拖动
-    if (localStorage.className === drapClassName) {
-      return
-    } else {
-      props.onDrop(ev, index)
-      localStorage.className = ''
-    }
-  }
-  // 空白区域拖动
-  const onDrop2 = (event: any) => {
-    event.preventDefault()
-    const drapClassName = ref?.current?.className
-    if (localStorage.className === drapClassName) {
-      props.onDrop(event, -2)
-      setDragItem(null)
-      localStorage.className = ''
-      return
-    }
-    if (list.length < 1) {
-      props.onDrop(event, 0)
-    } else {
-      props.onDrop(event, -1)
-    }
-    setDragItem(null)
-    localStorage.className = ''
+    props.onDrop(ev, index)
   }
   useEffect(() => {
     return () => {
@@ -201,7 +164,6 @@ const Sortable = (props: any) => {
             ref={ref}
             draggable="false"
             key={child?.storyId}
-            className={props.positionType + '_' + props.positionType}
             onDragOver={allowDrop}
             onDrop={event => onDrop(event, i)}
           >
@@ -347,16 +309,6 @@ const Sortable = (props: any) => {
             </Container>
           </div>
         ))}
-      {props.state === 2 && (
-        <Empty
-          ref={ref}
-          className={props.positionType + '_' + props.positionType}
-          onDragOver={allowDrop}
-          onDrop={(event: any) => {
-            onDrop2(event)
-          }}
-        />
-      )}
     </div>
   )
 }

@@ -130,6 +130,8 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
       nodeComponent = <SiteNotificationSide />
     } else if (String(pathname).includes('AllNote')) {
       nodeComponent = <AllSide />
+    } else if (String(pathname).includes('Email')) {
+      nodeComponent = <SiteNotificationSide />
     }
 
     return nodeComponent

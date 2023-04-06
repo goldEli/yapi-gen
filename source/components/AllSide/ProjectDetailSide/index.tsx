@@ -25,7 +25,7 @@ import {
   WrapCategory,
 } from './style'
 
-const Back = styled.div`
+export const Back = styled.div`
   font-size: 12px;
   display: flex;
   align-items: center;

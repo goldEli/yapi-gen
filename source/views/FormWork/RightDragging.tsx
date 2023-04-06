@@ -71,7 +71,6 @@ const SliderList = (props: any) => {
   const { projectInfo } = useSelector(store => store.project)
   const ref: any = useRef()
   const prevRectRef = useRef(null)
-  const { option } = useSelector(store => store.category)
   let startY = 0
   let startX = 0
   const [dragItem, setDragItem] = useState<any>()
@@ -110,16 +109,6 @@ const SliderList = (props: any) => {
     setTop(0)
     setLeft(0)
   }
-  // 删除
-  const delConfig = async () => {
-    await deleteStoryConfigField({
-      id: delItem?.id,
-      projectId: projectInfo.id,
-    })
-    message.success(t('common.deleteSuccess'))
-    setIsVisible(false)
-    props.onUpdate()
-  }
   const allowDrop = (ev: any) => {
     ev.preventDefault()
   }
@@ -143,18 +132,11 @@ const SliderList = (props: any) => {
           <ItemList>
             <div>
               <CommonIconFont
-                type={
-                  option?.find(
-                    (item: any) => dragItem?.field_content?.attr === item.type,
-                  )?.icon
-                }
+                type="sort"
                 size={19}
                 color="var(--neutral-n1-d1)"
               />
               <span style={{ marginLeft: '8px' }}>{dragItem.title}</span>
-            </div>
-            <div className="delIcon">
-              {dragItem?.is_customize === 1 && <IconFontStyle type="delete" />}
             </div>
           </ItemList>
         </Container>
@@ -170,45 +152,37 @@ const SliderList = (props: any) => {
         <SearchItemList>
           <div>
             <CommonIconFont
-              type={
-                option?.find(
-                  (item: any) => children?.field_content?.attr === item.type,
-                )?.icon
-              }
+              type="sort"
               size={19}
               color="var(--neutral-n1-d1)"
             />
             <span style={{ marginLeft: '8px' }}>{children.title}</span>
           </div>
-          <div
-            className="delIcon"
-            onClick={e => {
-              e.stopPropagation(), setIsVisible(true), setDelItem(children)
-            }}
-          >
-            {children?.is_customize === 1 && <IconFontStyle type="delete" />}
-          </div>
         </SearchItemList>
-        <DeleteConfirm
-          isVisible={isVisible}
-          onChangeVisible={() => setIsVisible(false)}
-          onConfirm={() => delConfig()}
-        />
       </Container>
     </>
   )
 }
 
-const Sortable = (props: any) => {
-  const { list, setList } = props
+const Sortable = () => {
+  const option = [
+    {
+      title: '富文本编辑器',
+      icon: '',
+    },
+    {
+      title: '附件',
+      icon: '',
+    },
+    {
+      title: '关联需求',
+      icon: 'attachment',
+    },
+  ]
   return (
     <div>
-      {list?.map((child: any, i: number) => (
-        <SliderList
-          onUpdate={() => props.onUpdate()}
-          key={child.label}
-          index={i}
-        >
+      {option?.map((child: any, i: number) => (
+        <SliderList key={child.label} index={i}>
           {child}
         </SliderList>
       ))}
