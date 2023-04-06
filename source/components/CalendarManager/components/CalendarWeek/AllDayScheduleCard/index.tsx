@@ -17,6 +17,7 @@ import { saveSchedule } from '@store/schedule/schedule.thunk'
 import { getColorWithOpacityPointOne } from '@/components/CalendarManager/utils'
 import { allDayScheduleListClassName } from '../AllDayScheduleList'
 import useUpdateAllDayTime from '../hooks/useUpdateAllDayTime'
+import { setScheduleInfoDropdown } from '@store/calendarPanle'
 
 export interface ScheduleCardProps {
   data: Model.Schedule.Info
@@ -118,13 +119,13 @@ const AllDayScheduleCard: React.FC<ScheduleCardProps> = props => {
     // const calenderBoxRightArea = document.querySelector(
     //   '#calenderBoxRightArea',
     // ) as Element
-    // dispatch(
-    //   setScheduleInfoDropdown({
-    //     visible: true,
-    //     x: x,
-    //     y: y,
-    //   }),
-    // )
+    dispatch(
+      setScheduleInfoDropdown({
+        visible: true,
+        x: x + 58,
+        y: 0,
+      }),
+    )
   }
 
   const gridHeight = useMemo(() => (oneHourHeight / 60) * 15, [outerHeight])
