@@ -321,7 +321,7 @@ const CalendarSet = () => {
 
   useEffect(() => {
     if (routerMenu.key) {
-      const dom = document.getElementById(routerMenu.key)
+      const dom = document.getElementById(`calendar-${routerMenu.key}`)
       dom?.scrollIntoView({
         behavior: 'smooth',
       })
@@ -342,151 +342,163 @@ const CalendarSet = () => {
         </div>
       </CrumbsWrap>
       <ContentWrap>
-        <Title id="view">
-          <div>视图选项</div>
-        </Title>
-        <CheckBoxWrap
-          value={formParams.views}
-          options={options}
-          onChange={checkedValues => onChangeSet('views', checkedValues)}
-        />
-        <Label style={{ marginTop: 24 }}>一周的第一天</Label>
-        <Select
-          onChange={time => onChangeSet('time', time)}
-          value={formParams.time}
-          options={timeOption}
-          style={{ width: 320 }}
-          getPopupContainer={n => n}
-        />
-        <Title id="schedule">
-          <div>日程设置</div>
-        </Title>
-        <Label style={{ marginTop: 8 }}>日程颜色</Label>
-        <ScheduleColorWrap size={56}>
-          {colorList.map(
-            (i: {
-              name: string
-              value: number
-              background: string
-              color: string
-            }) => (
-              <div
-                className="box"
-                key={i.value}
-                onClick={() => onChangeSet('color', i.value)}
-              >
+        <div id="calendar-view">
+          <Title>
+            <div>视图选项</div>
+          </Title>
+          <CheckBoxWrap
+            value={formParams.views}
+            options={options}
+            onChange={checkedValues => onChangeSet('views', checkedValues)}
+          />
+          <Label style={{ marginTop: 24 }}>一周的第一天</Label>
+          <Select
+            onChange={time => onChangeSet('time', time)}
+            value={formParams.time}
+            options={timeOption}
+            style={{ width: 320 }}
+            getPopupContainer={n => n}
+          />
+        </div>
+        <div id="calendar-schedule">
+          <Title>
+            <div>日程设置</div>
+          </Title>
+          <Label style={{ marginTop: 8 }}>日程颜色</Label>
+          <ScheduleColorWrap size={56}>
+            {colorList.map(
+              (i: {
+                name: string
+                value: number
+                background: string
+                color: string
+              }) => (
                 <div
-                  className="colorBox"
-                  style={{ background: i.background, color: i.color }}
+                  className="box"
+                  key={i.value}
+                  onClick={() => onChangeSet('color', i.value)}
                 >
-                  <span>会议</span>
-                  <span>10:00-12:00</span>
-                </div>
-                <div className="radio">
                   <div
-                    className={
-                      formParams.color === i.value ? 'active' : 'normal'
-                    }
+                    className="colorBox"
+                    style={{ background: i.background, color: i.color }}
                   >
-                    <div />
+                    <span>会议</span>
+                    <span>10:00-12:00</span>
                   </div>
-                  <div className="name">现代（彩色文字）</div>
+                  <div className="radio">
+                    <div
+                      className={
+                        formParams.color === i.value ? 'active' : 'normal'
+                      }
+                    >
+                      <div />
+                    </div>
+                    <div className="name">现代（彩色文字）</div>
+                  </div>
                 </div>
-              </div>
-            ),
+              ),
+            )}
+          </ScheduleColorWrap>
+          <Label style={{ marginTop: 24 }}>日程默认时长</Label>
+          <Select
+            onChange={normalValue => onChangeSet('normalValue', normalValue)}
+            value={formParams.normalValue}
+            options={normalTimeOption}
+            style={{ width: 320 }}
+            getPopupContainer={n => n}
+          />
+        </div>
+        <div id="calendar-notice">
+          <Title>
+            <div>通知设置</div>
+          </Title>
+          <LineForm size={56}>
+            <NotificationWrap>
+              <Label>非全天日程默认提醒时间</Label>
+              <Select
+                onChange={partialDayValue =>
+                  onChangeSet('partialDayValue', partialDayValue)
+                }
+                value={formParams.partialDayValue}
+                options={partialDayTimeOption}
+                style={{ width: 320 }}
+                getPopupContainer={n => n}
+              />
+            </NotificationWrap>
+            <NotificationWrap>
+              <Label>全天日程默认提醒时间</Label>
+              <Select
+                onChange={allDayValue =>
+                  onChangeSet('allDayValue', allDayValue)
+                }
+                value={formParams.allDayValue}
+                options={allDayTimeOption}
+                style={{ width: 320 }}
+                getPopupContainer={n => n}
+              />
+            </NotificationWrap>
+          </LineForm>
+          <Checkbox
+            checked={formParams.remindMeAccepted}
+            onChange={e => onChangeSet('remindMeAccepted', e.target.checked)}
+          >
+            仅提醒我已接受的日程
+          </Checkbox>
+        </div>
+        <div id="calendar-import">
+          <Title>
+            <div>日历导入</div>
+            <Tooltip title="您可以导入 iCal 或 VCS (MS Outlook) 格式的活动信息。">
+              <TitleIcon className="icon" type="question" />
+            </Tooltip>
+            <Upload fileList={[]} customRequest={onCustomRequest}>
+              <CommonButton type="primaryText">导入</CommonButton>
+            </Upload>
+          </Title>
+          <Label style={{ marginTop: 8 }}>添加至日历</Label>
+          <Select
+            getPopupContainer={n => n}
+            onChange={importCalendar =>
+              onChangeSet('importCalendar', importCalendar)
+            }
+            value={formParams.importCalendar}
+            options={exportList}
+            style={{ width: 320 }}
+          />
+          {importList.length > 0 && (
+            <ImportBox>
+              {importList.map((i: { name: string; id: string | number }) => (
+                <ImportItem key={i.id}>
+                  <Tooltip
+                    title={i.name}
+                    placement="topLeft"
+                    getPopupContainer={n => n}
+                  >
+                    <div className="name">{i.name}</div>
+                  </Tooltip>
+                  <IconFont
+                    onClick={() => onDeleteImport(i.id)}
+                    className="icon"
+                    type="close"
+                  />
+                </ImportItem>
+              ))}
+            </ImportBox>
           )}
-        </ScheduleColorWrap>
-        <Label style={{ marginTop: 24 }}>日程默认时长</Label>
-        <Select
-          onChange={normalValue => onChangeSet('normalValue', normalValue)}
-          value={formParams.normalValue}
-          options={normalTimeOption}
-          style={{ width: 320 }}
-          getPopupContainer={n => n}
-        />
-        <Title id="notice">
-          <div>通知设置</div>
-        </Title>
-        <LineForm size={56}>
-          <NotificationWrap>
-            <Label>非全天日程默认提醒时间</Label>
-            <Select
-              onChange={partialDayValue =>
-                onChangeSet('partialDayValue', partialDayValue)
-              }
-              value={formParams.partialDayValue}
-              options={partialDayTimeOption}
-              style={{ width: 320 }}
-              getPopupContainer={n => n}
-            />
-          </NotificationWrap>
-          <NotificationWrap>
-            <Label>全天日程默认提醒时间</Label>
-            <Select
-              onChange={allDayValue => onChangeSet('allDayValue', allDayValue)}
-              value={formParams.allDayValue}
-              options={allDayTimeOption}
-              style={{ width: 320 }}
-              getPopupContainer={n => n}
-            />
-          </NotificationWrap>
-        </LineForm>
-        <Checkbox
-          checked={formParams.remindMeAccepted}
-          onChange={e => onChangeSet('remindMeAccepted', e.target.checked)}
-        >
-          仅提醒我已接受的日程
-        </Checkbox>
-        <Title id="import">
-          <div>日历导入</div>
-          <Tooltip title="您可以导入 iCal 或 VCS (MS Outlook) 格式的活动信息。">
-            <TitleIcon className="icon" type="question" />
-          </Tooltip>
-          <Upload fileList={[]} customRequest={onCustomRequest}>
-            <CommonButton type="primaryText">导入</CommonButton>
-          </Upload>
-        </Title>
-        <Label style={{ marginTop: 8 }}>添加至日历</Label>
-        <Select
-          getPopupContainer={n => n}
-          onChange={importCalendar =>
-            onChangeSet('importCalendar', importCalendar)
-          }
-          value={formParams.importCalendar}
-          options={exportList}
-          style={{ width: 320 }}
-        />
-        {importList.length > 0 && (
-          <ImportBox>
-            {importList.map((i: { name: string; id: string | number }) => (
-              <ImportItem key={i.id}>
-                <Tooltip
-                  title={i.name}
-                  placement="topLeft"
-                  getPopupContainer={n => n}
-                >
-                  <div className="name">{i.name}</div>
-                </Tooltip>
-                <IconFont
-                  onClick={() => onDeleteImport(i.id)}
-                  className="icon"
-                  type="close"
-                />
-              </ImportItem>
-            ))}
-          </ImportBox>
-        )}
-        <Title id="export">
-          <div style={{ marginRight: 16 }}>日历导出</div>
-          <CommonButton type="primaryText">导出</CommonButton>
-        </Title>
-        <Label style={{ marginTop: 8 }}>选择导出日历</Label>
-        <CheckBoxWrap
-          style={{ margin: 0 }}
-          value={formParams.exportIds}
-          options={exportList}
-          onChange={exportIds => onChangeSet('exportIds', exportIds)}
-        />
+        </div>
+        <div id="calendar-export">
+          <Title>
+            <div style={{ marginRight: 16 }}>日历导出</div>
+            <CommonButton type="primaryText">导出</CommonButton>
+          </Title>
+          <Label style={{ marginTop: 8 }}>选择导出日历</Label>
+          <CheckBoxWrap
+            style={{ margin: 0 }}
+            value={formParams.exportIds}
+            options={exportList}
+            onChange={exportIds => onChangeSet('exportIds', exportIds)}
+          />
+        </div>
       </ContentWrap>
     </CalendarSetWrap>
   )
