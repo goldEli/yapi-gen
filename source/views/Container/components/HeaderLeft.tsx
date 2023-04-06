@@ -394,6 +394,18 @@ const HeaderLeft = () => {
     )
   }, [currentMenu])
 
+  const getMenuItemElement = (i: any) => {
+    const url = ['/Report/Statistics', '/Report/Formwork']
+    if (url.includes(i.url)) {
+      return <span>{i.name}</span>
+    }
+    switch (i.url) {
+      case '/ProjectManagement/Mine':
+        return <MyDropdown text={i.name} />
+      default:
+        return <ItemDropdown text={i.name} />
+    }
+  }
   return (
     <HeaderLeftWrap>
       <DrawerComponent value={isVisible} onChange={setIsVisible} />
@@ -427,11 +439,7 @@ const HeaderLeft = () => {
         <ChildrenMenu>
           {currentMenu.children.map((i: any) => (
             <ChildrenMenuItem key={i.id} size={8} isActive={getActive(i)}>
-              {i.url === '/ProjectManagement/Mine' ? (
-                <MyDropdown text={i.name} />
-              ) : (
-                <ItemDropdown text={i.name} />
-              )}
+              {getMenuItemElement(i)}
             </ChildrenMenuItem>
           ))}
         </ChildrenMenu>
