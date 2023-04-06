@@ -8,7 +8,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { Menu, message } from 'antd'
+import { Checkbox, Menu, message } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './components/StaffTable'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -27,7 +27,7 @@ import useSetTitle from '@/hooks/useSetTitle'
 import DropDownMenu from '@/components/DropDownMenu'
 import { getStaffList, refreshStaff, updateStaff } from '@/services/staff'
 import { useDispatch, useSelector } from '@store/index'
-import { setCurrentMenu, setIsRefresh } from '@store/user'
+import { setIsRefresh } from '@store/user'
 import InputSearch from '@/components/InputSearch'
 import PaginationBox from '@/components/TablePagination'
 import SetShowField from '@/components/SetShowField/indedx'
@@ -37,6 +37,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import PermissionWrap from '@/components/PermissionWrap'
 import { confirmHand, restHand } from '@/services/handover'
 import ResizeTable from '@/components/ResizeTable'
+import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
 
 export const tableWrapP = css`
   display: flex;
@@ -121,6 +122,8 @@ const StaffManagement = () => {
   const isHaveCheck = userInfo?.company_permissions?.filter(
     (i: any) => i.identity === 'b/companyuser/info',
   )?.length
+
+  const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([])
 
   const getStaffListData = async () => {
     setIsSpinning(true)
@@ -241,6 +244,26 @@ const StaffManagement = () => {
     }
   }
 
+  // TODO: API
+  const onSelectChange = (e: CheckboxChangeEvent, record: any) => {
+    if (e.target.checked) {
+      setSelectedRowKeys(prev => [...prev, record.id])
+      return
+    }
+    setSelectedRowKeys(prev => {
+      return prev.filter(v => v !== record.id)
+    })
+  }
+  const onCheckAll = (e: CheckboxChangeEvent) => {
+    if (e.target.checked) {
+      setSelectedRowKeys(
+        listData.map((record: Record<string, any>) => record.id),
+      )
+      return
+    }
+    setSelectedRowKeys([])
+  }
+
   const selectColum: any = useMemo(() => {
     const arr = allTitleList
     const newList = []
@@ -251,6 +274,26 @@ const StaffManagement = () => {
         }
       }
     }
+    const checkboxColumn = {
+      title: (
+        <Checkbox
+          onChange={onCheckAll}
+          checked={selectedRowKeys.length === listData?.length}
+        />
+      ),
+      dataIndex: 'check',
+      width: 48,
+      key: 'check',
+      render: (text: string, record: any) => {
+        return (
+          <Checkbox
+            checked={selectedRowKeys.indexOf(record.id) > -1}
+            onChange={e => onSelectChange(e, record)}
+          />
+        )
+      },
+    }
+
     const arrList = [
       {
         width: 40,
@@ -268,6 +311,9 @@ const StaffManagement = () => {
         },
       },
     ]
+
+    arrList.push(checkboxColumn)
+
     const lastList = [
       {
         title: t('newlyAdd.operation'),
@@ -297,6 +343,7 @@ const StaffManagement = () => {
         },
       },
     ]
+
     const resultLast = isHaveCheck ? lastList : []
     return [...arrList, ...newList, ...resultLast]
   }, [titleList, titleList2, columns])
