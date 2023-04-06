@@ -1,5 +1,5 @@
 import { Space, Drawer, Tooltip } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import CommonIconFont from '@/components/CommonIconFont'
 import MyDropdown from './MyDropdown'
 import sideLogo from '/newLogo.svg'
@@ -29,6 +29,7 @@ import { useTranslation } from 'react-i18next'
 import ItemDropdown from './ItemDropdown'
 import { setCurrentMenu } from '@store/user'
 import menuTag from '/menuTag.svg'
+import { cloneDeep } from 'lodash'
 
 interface DrawerComponentProps {
   value: boolean
@@ -49,6 +50,58 @@ const DrawerComponent = (props: DrawerComponentProps) => {
     companyId: '',
     companyUserId: '',
   })
+
+  const mockMenuPermission = useMemo(() => {
+    if (menuPermission.menus) {
+      const menus = menuPermission?.menus && cloneDeep(menuPermission.menus)
+      menus.push({
+        id: 'log',
+        url: '/Report',
+        permission: '',
+        name: '日志管理',
+        children: [
+          {
+            // company_id: 1504303190303051800,
+            // created_at: '-0001-11-30 00:00:00',
+            id: 'log-1',
+            name: '汇报',
+            // p_menu: '日志管理',
+            permission: '',
+            status: 1,
+            // updated_at: '2023-02-20 15:03:10',
+            url: '/Report',
+          },
+          {
+            // company_id: 1504303190303051800,
+            // created_at: '-0001-11-30 00:00:00',
+            id: 'log-1',
+            name: '统计',
+            // p_menu: '日志管理',
+            permission: '',
+            status: 1,
+            // updated_at: '2023-02-20 15:03:10',
+            url: '/Report/Statistics',
+          },
+          {
+            // company_id: 1504303190303051800,
+            // created_at: '-0001-11-30 00:00:00',
+            id: 'log-1',
+            name: '模板',
+            // p_menu: '日志管理',
+            permission: '',
+            status: 1,
+            // updated_at: '2023-02-20 15:03:10',
+            url: '/Report/FormWork',
+          },
+        ],
+      })
+      return {
+        priorityUrl: '"/ProjectManagement"',
+        menus,
+      }
+    }
+    return {}
+  }, [menuPermission])
 
   // 点击菜单
   const onChangeCurrentMenu = (item: any) => {
@@ -78,7 +131,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
   // 点击跳转后台管理
   const onToAdmin = () => {
     props.onChange(false)
-    const resultMenu = menuPermission?.menus?.filter(
+    const resultMenu = mockMenuPermission?.menus?.filter(
       (i: any) => i.url === '/AdminManagement',
     )[0]
     if (resultMenu) {
@@ -193,7 +246,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
         {/* 其他菜单 */}
         <DrawerMenu>
           <Space size={12} style={{ flexWrap: 'wrap' }}>
-            {menuPermission?.menus
+            {mockMenuPermission?.menus
               ?.filter((k: any) => k.url !== '/AdminManagement')
               .map((i: any) => (
                 <DrawerMenuItem
@@ -230,8 +283,9 @@ const DrawerComponent = (props: DrawerComponentProps) => {
           </Space>
         </DrawerMenu>
         {/* 后台管理 */}
-        {menuPermission?.menus?.filter((i: any) => i.url === '/AdminManagement')
-          ?.length > 0 && (
+        {mockMenuPermission?.menus?.filter(
+          (i: any) => i.url === '/AdminManagement',
+        )?.length > 0 && (
           <DrawerFooter onClick={onToAdmin}>
             <div>
               <CommonIconFont
