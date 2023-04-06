@@ -71,7 +71,6 @@ const NameColumn = styled.div({
 const CenterRight = styled.div`
   box-sizing: border-box;
   padding: 24px 0 24px 24px;
-  flex: 1;
   background: rgba(255, 255, 255, 1);
   border-radius: 6px;
 `
@@ -91,6 +90,7 @@ const CardGroup = styled(Space)({
   flexWrap: 'wrap',
   margin: '16px 0 48px',
 })
+
 const CardItem = styled.div({
   height: 104,
   width: 208,
@@ -100,7 +100,6 @@ const CardItem = styled.div({
   justifyContent: 'center',
   alignItems: 'start',
   borderRadius: 6,
-  background: 'var(--hover-d2)',
   span: {
     fontSize: 12,
     color: 'var(--neutral-n2)',
@@ -219,20 +218,20 @@ const Statistics = () => {
         <CenterRight>
           <SecondTitle>{t('report.mine')}</SecondTitle>
           <CardGroup size={24}>
-            <CardItem>
-              <span>{t('common.demand')}</span>
+            <CardItem style={{ backgroundColor: 'rgba(102, 136, 255, 0.1)' }}>
+              <span>累计汇报</span>
               <div>{100}</div>
             </CardItem>
-            <CardItem>
-              <span>{t('project.iterateEdition')}</span>
+            <CardItem style={{ backgroundColor: 'rgba(67, 186, 154, 0.10)' }}>
+              <span>按时汇报</span>
               <div>{100}</div>
             </CardItem>
-            <CardItem>
-              <span>{t('project.projectMember')}</span>
+            <CardItem style={{ backgroundColor: 'rgba(250, 151, 70, 0.1)' }}>
+              <span>补交</span>
               <div>{0}</div>
             </CardItem>
-            <CardItem>
-              <span>{t('project.projectMember')}</span>
+            <CardItem style={{ backgroundColor: 'rgba(255, 92, 94, 0.1)' }}>
+              <span>未提交</span>
               <div>{0}</div>
             </CardItem>
           </CardGroup>

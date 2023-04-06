@@ -63,6 +63,7 @@ const Main = styled.div<{ left: number }>`
     height: 100%;
   }
 `
+const NONE_SIDE_PATH = ['/Situation', '/Report/Statistics']
 
 export const Container = () => {
   const location = useLocation()
@@ -119,6 +120,7 @@ export const Container = () => {
       String(location.pathname).includes('/MemberInfo') &&
       !String(location.pathname).includes('/ProjectManagement')
 
+    console.log('first', menuPermission)
     if (isStaffMemberInfo) {
       hasPermission = userInfo?.company_permissions?.filter(
         (i: any) => i.identity === 'b/companyuser/info',
@@ -205,7 +207,7 @@ export const Container = () => {
             <HeaderRight />
           </HeaderWrap>
           <Content>
-            {location.pathname !== '/Situation' && getSide() && (
+            {!NONE_SIDE_PATH.includes(location.pathname) && getSide() && (
               <Side onChangeLeft={setChangeLeft} />
             )}
             <Main left={changeLeft}>
