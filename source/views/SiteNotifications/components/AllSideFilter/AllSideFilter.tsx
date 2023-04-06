@@ -20,8 +20,8 @@ import {
 const items = [
   {
     id: '1',
-    icon: '',
-    icon2: '',
+    icon: 'package-nor',
+    icon2: 'package-sel',
     text: '产品管理',
   },
   {
@@ -33,13 +33,13 @@ const items = [
   {
     id: '3',
     icon: 'bell',
-    icon2: '',
+    icon2: 'bell-sel',
     text: '系统通知',
   },
   {
     id: '4',
     icon: 'database',
-    icon2: '',
+    icon2: 'calendar-sel',
     text: '日程管理',
   },
   {
@@ -61,7 +61,7 @@ const AllSideFilter = () => {
   }
 
   const onChange = (checkedValues: any) => {
-    console.log('checked = ', checkedValues)
+    // console.log('checked = ', checkedValues)
   }
 
   return (
