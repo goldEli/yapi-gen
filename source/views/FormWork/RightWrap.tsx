@@ -13,7 +13,6 @@ const RightFormWorkStyle = styled.div`
   flex: 1;
   overflow: hidden;
   overflow-y: auto;
-  border-left: 1px solid var(--neutral-n6-d1);
   padding-right: 24px;
 `
 const Title = styled.div`

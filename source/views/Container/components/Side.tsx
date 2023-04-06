@@ -11,8 +11,8 @@ import MineSide from '@/components/AllSide/MineSide'
 import LogSide from '@/components/AllSide/LogSide'
 import HisSide from '@/components/AllSide/HisSide'
 import { DragLine } from '@/components/StyleCommon'
+import FormWorkSide from '@/components/AllSide/FormWorkSide'
 import SiteNotificationSide from '@/views/SiteNotifications/components/SiteNotificationSide/SiteNotificationSide'
-
 const SideWrap = styled.div<{
   firstMenuCollapse: boolean
   permission?: boolean
@@ -170,8 +170,9 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
       nodeComponent = <LogSide />
     } else if (String(pathname).includes('/ProjectManagement/')) {
       nodeComponent = <ProjectDetailSide />
+    } else if (String(pathname).includes('/Report/')) {
+      nodeComponent = <FormWorkSide />
     }
-
     return nodeComponent
   }
 
