@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import dayjs from 'dayjs'
 
 type SliceState = {
   // 日历面板类型
@@ -14,7 +15,9 @@ type SliceState = {
     visible: boolean
     x: number
     y: number
-  }
+  },
+  calenderYearValue:number,
+  calenderYearType: Model.Calendar.CalendarYearType,
 }
 
 const initialState: SliceState = {
@@ -29,6 +32,8 @@ const initialState: SliceState = {
     x: 0,
     y: 0,
   },
+  calenderYearValue:dayjs().year(),
+  calenderYearType:0
 }
 
 const slice = createSlice({
@@ -68,6 +73,12 @@ const slice = createSlice({
         ...action.payload,
       }
     },
+    setCalenderYearValue(state,action:PayloadAction<SliceState['calenderYearValue']>){
+      state.calenderYearValue=action.payload
+    },
+    setCalenderYearType(state,action:PayloadAction<SliceState['calenderYearType']>){
+      state.calenderYearType=action.payload
+    }
   },
 })
 
@@ -77,6 +88,8 @@ export const {
   setCalendarPanelType,
   setQuickCreateScheduleModel,
   setScheduleInfoDropdown,
+  setCalenderYearValue,
+  setCalenderYearType
 } = slice.actions
 
 export default calendarPanel
