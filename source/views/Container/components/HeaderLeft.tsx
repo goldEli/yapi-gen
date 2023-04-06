@@ -321,7 +321,7 @@ const HeaderLeft = () => {
         id: 'log',
         url: '/Report',
         permission: '',
-        name: '日志管理',
+        name: '工作汇报',
         children: [
           {
             // company_id: 1504303190303051800,
@@ -396,6 +396,14 @@ const HeaderLeft = () => {
     }
   }, [mockMenuPermission, routerPath])
 
+  const showTopNav = useMemo(() => {
+    return (
+      currentMenu?.children &&
+      currentMenu?.children.length > 0 &&
+      currentMenu?.url !== '/AdminManagement'
+    )
+  }, [currentMenu])
+
   return (
     <HeaderLeftWrap>
       <DrawerComponent value={isVisible} onChange={setIsVisible} />
@@ -425,7 +433,7 @@ const HeaderLeft = () => {
           )}
         </Space>
       </Space>
-      {currentMenu?.url === '/ProjectManagement' && (
+      {showTopNav ? (
         <ChildrenMenu>
           {currentMenu?.children?.map((i: any) => (
             <ChildrenMenuItem key={i.id} size={8} isActive={getActive(i)}>
@@ -438,7 +446,7 @@ const HeaderLeft = () => {
             </ChildrenMenuItem>
           ))}
         </ChildrenMenu>
-      )}
+      ) : null}
     </HeaderLeftWrap>
   )
 }
