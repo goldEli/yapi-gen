@@ -37,10 +37,11 @@ const Title = styled.div`
 `
 
 const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
+  const { data } = props
   return (
     <ScheduleListItemBox>
       <Dot />
-      <Time className="text">00:00</Time>
+      <Time className="text">{data.start_time}</Time>
       <Title className="text">{props.data.subject}</Title>
     </ScheduleListItemBox>
   )
