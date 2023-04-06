@@ -16,6 +16,11 @@ type SliceState = {
   selectedWeek: {
     date: number
   }[]
+  // 选择的月信息
+  selectedMonth: {
+    date: number
+    Lunar: string
+  }[]
 }
 
 const initialState: SliceState = {
@@ -57,6 +62,177 @@ const initialState: SliceState = {
     },
     {
       date: dayjs('2023-4-1 00:00:00').valueOf(),
+    },
+  ],
+  selectedMonth: [
+    {
+      date: dayjs('2023-3-26 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-3-27 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-3-28 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-3-29 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-3-30 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-3-31 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+
+    {
+      date: dayjs('2023-4-1 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-2 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-3 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-4 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-5 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-6 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-7 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-8 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-9 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-10 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-11 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-12 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-13 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-14 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-15 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-16 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-17 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-18 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-19 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-20 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-21 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-22 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-23 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-24 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-25 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-26 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-27 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-28 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-29 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-4-30 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-5-1 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-5-2 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-5-3 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-5-4 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-5-5 00:00:00').valueOf(),
+      Lunar: '初一',
+    },
+    {
+      date: dayjs('2023-5-6 00:00:00').valueOf(),
+      Lunar: '初一',
     },
   ],
 }
