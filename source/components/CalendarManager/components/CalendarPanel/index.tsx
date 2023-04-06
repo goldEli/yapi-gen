@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { useSelector } from '@store/index'
+import { useSelector, useDispatch } from '@store/index'
 import React, { useMemo } from 'react'
 import CalendarDay from '../CalendarDay'
 import CalendarList from '../CalendarList'
@@ -7,8 +7,7 @@ import CalendarMonth from '../CalendarMonth'
 import CalendarPanelToolBar from '../CalendarPanelToolBar'
 import CalendarWeek from '../CalendarWeek'
 import CalendarYear from '../CalendarYear'
-import {useDispatch} from '@store/index'
-import {setScheduleListMoadl} from '@store/schedule'
+import { setScheduleListMoadl } from '@store/schedule'
 interface CalendarPanelProps {
   children?: React.ReactDOM
 }
@@ -35,7 +34,7 @@ const CalendarPanel: React.FC<CalendarPanelProps> = props => {
   const calenderYearValue = useSelector(
     store => store.calendarPanel.calenderYearValue,
   )
-  const dispatch=useDispatch()
+  const dispatch = useDispatch()
   const content = useMemo(() => {
     if (calendarPanelType === 'day') {
       return <CalendarDay />
@@ -50,12 +49,14 @@ const CalendarPanel: React.FC<CalendarPanelProps> = props => {
       return <CalendarList />
     }
     return <CalendarYear />
-  }, [calendarPanelType,calenderYearValue])
+  }, [calendarPanelType, calenderYearValue])
 
   return (
-    <Box onClick={()=>{
-      dispatch(setScheduleListMoadl({visible:false,top:0,left:0}))
-    }}>
+    <Box
+      onClick={() => {
+        dispatch(setScheduleListMoadl({ visible: false, top: 0, left: 0 }))
+      }}
+    >
       <CalendarPanelToolBar />
       <Content>{content}</Content>
     </Box>

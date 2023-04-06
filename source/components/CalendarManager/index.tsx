@@ -5,6 +5,7 @@ import CalendarPanel from './components/CalendarPanel'
 import CalendarSet from './components/CalendarSet'
 import CalendarSidebar from './components/CalendarSidebar'
 import { CalenderBox, CalenderBoxRightArea } from './styles'
+import CreateSchedule from './components/CreateSchedule'
 
 type CalendarManagerLayoutProps = {
   // num: string
@@ -34,6 +35,7 @@ const CalendarManager: React.ForwardRefRenderFunction<
   }))
   return (
     <CalenderBox>
+      <CreateSchedule />
       <CalendarSidebar />
       <CalenderBoxRightArea id="calenderBoxRightArea">
         {!routerMenu.key && <CalendarPanel />}

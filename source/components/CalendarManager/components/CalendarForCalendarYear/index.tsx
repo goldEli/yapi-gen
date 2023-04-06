@@ -26,7 +26,7 @@ const dayActive = css`
   color: var(--neutral-white-d7);
 `
 interface CalendarForCalendarYearProps {
-  month: number,
+  month: number
 }
 const wrapperStyle: React.CSSProperties = {
   width: 240,
@@ -40,10 +40,11 @@ const CalendarForCalendarYear: React.FC<
   const onCallBack = (date: Dayjs) => {
     setDate(date)
   }
-  const dateClick = (e:any) => {
-    let month=props.month;
+  const dateClick = (e: any) => {
+    let month = props.month
     e.stopPropagation()
-    disPatch(setScheduleListMoadl({ visible: true, top: 76, left: 100 }))// setScheduleDate
+    // setScheduleDate
+    disPatch(setScheduleListMoadl({ visible: true, top: 76, left: 100 }))
     disPatch(setScheduleDate(month))
   }
   const disPatch = useDispatch()
@@ -51,7 +52,8 @@ const CalendarForCalendarYear: React.FC<
     <div style={{ position: 'relative' }}>
       <StyledCalendar
         dateFullCellRender={date => {
-          const today = dayjs().format('DD/MM/YYYY') === dayjs(date).format('DD/MM/YYYY');
+          const today =
+            dayjs().format('DD/MM/YYYY') === dayjs(date).format('DD/MM/YYYY')
           return (
             <DayBox className={today ? dayActive : ''} onClick={dateClick}>
               {dayjs(date).date()}
@@ -61,14 +63,18 @@ const CalendarForCalendarYear: React.FC<
         value={date.month(props.month)}
         style={wrapperStyle}
         fullscreen={false}
-        onPanelChange={(value, mode) => {
-        }}
-
+        onPanelChange={(value, mode) => {}}
         headerRender={({ value, type, onChange, onTypeChange }) => {
-          return <HeaderRender  month={props.month} value={value} onChange={onChange} onCallBack={onCallBack} />
+          return (
+            <HeaderRender
+              month={props.month}
+              value={value}
+              onChange={onChange}
+              onCallBack={onCallBack}
+            />
+          )
         }}
       />
-
     </div>
   )
 }

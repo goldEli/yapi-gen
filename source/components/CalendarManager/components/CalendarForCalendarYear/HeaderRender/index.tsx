@@ -5,9 +5,9 @@ import { useSelector } from '@store/index'
 import ScheduListModal from '../../ScheduleList'
 interface HeaderRenderProps {
   onChange(date: dayjs.Dayjs): void
-  month: number,
-  value: Dayjs,
-  onCallBack(data: Dayjs): void,
+  month: number
+  value: Dayjs
+  onCallBack(data: Dayjs): void
 }
 
 const CalendarHeader = styled.div`
@@ -16,26 +16,34 @@ const CalendarHeader = styled.div`
   position: relative;
 `
 const HeaderRender: React.FC<HeaderRenderProps> = props => {
+  const calenderYearValue = useSelector(
+    state => state.calendarPanel.calenderYearValue,
+  )
 
-  const calenderYearValue = useSelector(state => state.calendarPanel.calenderYearValue)
+  const calenderYearType = useSelector(
+    state => state.calendarPanel.calenderYearType,
+  )
 
-  const calenderYearType = useSelector( state => state.calendarPanel.calenderYearType)
-
-  const date=useSelector(state=>state.schedule.scheduleDate);
+  const date = useSelector(state => state.schedule.scheduleDate)
 
   useEffect(() => {
     const maps = new Map([
       [1, dayjs(props.value).add(1, 'year')],
       [0, dayjs()],
-      [-1, dayjs(props.value).subtract(1, 'year')]
+      [-1, dayjs(props.value).subtract(1, 'year')],
     ])
     let years = maps.get(calenderYearType) as Dayjs
     props.onCallBack(years)
     props.onChange(years)
   }, [calenderYearValue])
-  return <CalendarHeader>{`${props.month + 1}月`}
-    {props.month===date ? <ScheduListModal month={props.month + 1} /> : null}
-  </CalendarHeader>
+  return (
+    <CalendarHeader>
+      {`${props.month + 1}月`}
+      {props.month === date ? (
+        <ScheduListModal month={props.month + 1} />
+      ) : null}
+    </CalendarHeader>
+  )
 }
 
 export default HeaderRender

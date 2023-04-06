@@ -15,9 +15,9 @@ type SliceState = {
     visible: boolean
     x: number
     y: number
-  },
-  calenderYearValue:number,
-  calenderYearType: Model.Calendar.CalendarYearType,
+  }
+  calenderYearValue: number
+  calenderYearType: Model.Calendar.CalendarYearType
 }
 
 const initialState: SliceState = {
@@ -32,8 +32,8 @@ const initialState: SliceState = {
     x: 0,
     y: 0,
   },
-  calenderYearValue:dayjs().year(),
-  calenderYearType:0
+  calenderYearValue: dayjs().year(),
+  calenderYearType: 0,
 }
 
 const slice = createSlice({
@@ -73,12 +73,18 @@ const slice = createSlice({
         ...action.payload,
       }
     },
-    setCalenderYearValue(state,action:PayloadAction<SliceState['calenderYearValue']>){
-      state.calenderYearValue=action.payload
+    setCalenderYearValue(
+      state,
+      action: PayloadAction<SliceState['calenderYearValue']>,
+    ) {
+      state.calenderYearValue = action.payload
     },
-    setCalenderYearType(state,action:PayloadAction<SliceState['calenderYearType']>){
-      state.calenderYearType=action.payload
-    }
+    setCalenderYearType(
+      state,
+      action: PayloadAction<SliceState['calenderYearType']>,
+    ) {
+      state.calenderYearType = action.payload
+    },
   },
 })
 
@@ -89,7 +95,7 @@ export const {
   setQuickCreateScheduleModel,
   setScheduleInfoDropdown,
   setCalenderYearValue,
-  setCalenderYearType
+  setCalenderYearType,
 } = slice.actions
 
 export default calendarPanel

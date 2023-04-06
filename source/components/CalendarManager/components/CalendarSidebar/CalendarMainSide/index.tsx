@@ -6,7 +6,11 @@ import {
 import CommonButton from '@/components/CommonButton'
 import IconFont from '@/components/IconFont'
 import InputSearch from '@/components/InputSearch'
-import { setRouterMenu } from '@store/calendar'
+import {
+  setIsShowScheduleVisible,
+  setRouterMenu,
+  setShowScheduleParams,
+} from '@store/calendar'
 import { useDispatch } from '@store/index'
 import CalendarManagerList from '../../CalendarManagerList'
 import DXCalendar from '../../DXCalendar'
@@ -20,10 +24,16 @@ const CalendarMainSide = () => {
     dispatch(setRouterMenu({ name: '视图选项', key: 'view' }))
   }
 
+  // 创建日程
+  const onCreate = () => {
+    dispatch(setIsShowScheduleVisible(true))
+    dispatch(setShowScheduleParams({ hasRight: true, width: 1056 }))
+  }
+
   return (
     <>
       <CommonButton type="primary" style={{ width: '100%', marginBottom: 24 }}>
-        <CreateScheduleBtn>
+        <CreateScheduleBtn onClick={onCreate}>
           <IconFont type="plus" style={{ fontSize: 16 }} />
           <span className="btnText">创建日程</span>
         </CreateScheduleBtn>

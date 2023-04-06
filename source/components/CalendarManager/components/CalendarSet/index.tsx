@@ -179,7 +179,9 @@ const ImportItem = styled.div`
 `
 
 const CalendarSet = () => {
-  const { menuList, routerMenu } = useSelector(store => store.calendar)
+  const { menuList, routerMenu, partialDayTimeOption } = useSelector(
+    store => store.calendar,
+  )
   // 配置选项默认值
   const [formParams, setFormParams] = useState<any>({
     // 视图选项
@@ -244,20 +246,6 @@ const CalendarSet = () => {
     { label: '60分钟', value: 3 },
     { label: '90分钟', value: 4 },
     { label: '120分钟', value: 5 },
-  ]
-
-  // 非全天日程默认提醒时间
-  const partialDayTimeOption = [
-    { label: '日程开始时', value: 0 },
-    { label: '提前5分钟', value: 1 },
-    { label: '提前15分钟', value: 2 },
-    { label: '提前30分钟', value: 3 },
-    { label: '提前1小时', value: 4 },
-    { label: '提前2小时', value: 5 },
-    { label: '提前3小时', value: 6 },
-    { label: '提前1天', value: 7 },
-    { label: '提前2天', value: 8 },
-    { label: '提前1周', value: 9 },
   ]
 
   // 全天日程默认提醒时间
