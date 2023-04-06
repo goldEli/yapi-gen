@@ -110,13 +110,13 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     const calenderBoxRightArea = document.querySelector(
       '#calenderBoxRightArea',
     ) as Element
-    // dispatch(
-    //   setScheduleInfoDropdown({
-    //     visible: true,
-    //     x: x,
-    //     y: y,
-    //   }),
-    // )
+    dispatch(
+      setScheduleInfoDropdown({
+        visible: true,
+        x: x + 58 + 20,
+        y: y + 20,
+      }),
+    )
   }
 
   const onResize = (
@@ -212,7 +212,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
         topLeft: false,
         topRight: false,
       }}
-      bounds=".schedule-card-list-box"
+      bounds=".time-scale"
       onDragStart={onDragStart}
       onDrag={onDrag}
       onDragStop={onDragStop}

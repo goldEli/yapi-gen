@@ -3,8 +3,9 @@ import CommonIconFont from '@/components/CommonIconFont'
 import IconFont from '@/components/IconFont'
 import InputSearch from '@/components/InputSearch'
 import { DragLine } from '@/components/StyleCommon'
+import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   CalendarSetBox,
   CalendarSidebarBox,
@@ -15,6 +16,25 @@ import {
 } from '../../styles'
 import CalendarManagerList from '../CalendarManagerList'
 import DXCalendar from '../DXCalendar'
+import CalendarMainSide from './CalendarMainSide'
+import CalendarSetSide from './CalendarSetSide'
+
+const SetWrap = styled.div`
+  padding: 24px 0px 8px;
+  white-space: nowrap;
+  transition: 0.2s;
+  display: none;
+`
+
+const MainWrap = styled.div`
+  padding: 24px 24px 0px;
+  white-space: nowrap;
+  transition: 0.2s;
+  gap: 24px;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+`
 
 interface CalendarSidebarProps {
   children?: React.ReactDOM
@@ -23,6 +43,9 @@ interface CalendarSidebarProps {
 const CalendarSidebar: React.FC<CalendarSidebarProps> = props => {
   const dispatch = useDispatch()
   const { firstMenuCollapse } = useSelector(state => state.global)
+  const { routerMenu } = useSelector(store => store.calendar)
+  const calendarMainSideDom: any = useRef<HTMLElement>(null)
+  const calendarSideDom: any = useRef<HTMLElement>(null)
   const sliderRef = useRef<any>(null)
   const maxWidth = 422
   const [leftWidth, setLeftWidth] = useState(288)
@@ -81,6 +104,24 @@ const CalendarSidebar: React.FC<CalendarSidebarProps> = props => {
     })
   }
 
+  useEffect(() => {
+    if (routerMenu.key || localStorage.getItem('calendarSetKey')) {
+      calendarMainSideDom.current.style.width = '0px'
+      calendarSideDom.current.style.width = '100%'
+      calendarSideDom.current.style.display = 'block'
+      setTimeout(() => {
+        calendarMainSideDom.current.style.display = 'none'
+      }, 100)
+    } else {
+      calendarSideDom.current.style.width = '0px'
+      calendarMainSideDom.current.style.width = '100%'
+      calendarMainSideDom.current.style.display = 'block'
+      setTimeout(() => {
+        calendarSideDom.current.style.display = 'none'
+      }, 100)
+    }
+  }, [routerMenu, localStorage.getItem('calendarSetKey')])
+
   return (
     <CalendarSidebarBox
       collapse={firstMenuCollapse}
@@ -92,28 +133,12 @@ const CalendarSidebar: React.FC<CalendarSidebarProps> = props => {
     >
       <CalendarSidebarMain firstMenuCollapse={firstMenuCollapse}>
         <CalenderBoxLeftArea>
-          <CommonButton type="primary">
-            <CreateScheduleBtn>
-              <IconFont type="plus" style={{ fontSize: 16 }} />
-              <span className="btnText">创建日程</span>
-            </CreateScheduleBtn>
-          </CommonButton>
-          <DXCalendar />
-          <InputSearch
-            placeholder={'搜索日历'}
-            width={210}
-            autoFocus
-            leftIcon
-          />
-          <CalendarManagerList title="我管理的" type="manage" />
-          <CalendarManagerList title="我订阅的" type="sub" />
-          <CalendarSetBox>
-            <IconFont
-              type="settings"
-              style={{ fontSize: 18, color: 'var(--neutral-n3)' }}
-            />
-            <div>日历设置</div>
-          </CalendarSetBox>
+          <MainWrap ref={calendarMainSideDom}>
+            <CalendarMainSide />
+          </MainWrap>
+          <SetWrap ref={calendarSideDom}>
+            <CalendarSetSide />
+          </SetWrap>
         </CalenderBoxLeftArea>
       </CalendarSidebarMain>
 

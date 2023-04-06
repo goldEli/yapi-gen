@@ -1,6 +1,7 @@
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { Space } from 'antd'
+import { colorMap } from '../../config'
 
 const ColorGroups = styled(Space)`
   display: flex;
@@ -23,35 +24,20 @@ const ColorItem = styled.div<{ color: string }>`
 `
 
 interface CalendarColorProps {
-  onChangeColor(color: string): void
-  color: string
+  onChangeColor(color: number): void
+  color: number
 }
 
-const calendarColorList = [
-  '#FF5C5E',
-  '#FA9746',
-  '#43BA9A',
-  '#6688FF',
-  '#A176FB',
-  '#FA89EA',
-  '#FF8B8B',
-  '#269758',
-  '#3AA7FF',
-  '#00ADD2',
-  '#ED7303',
-  '#4D5EFF',
-]
-
 const CalendarColor = (props: CalendarColorProps) => {
-  const onChangeColor = (color: string) => {
+  const onChangeColor = (color: number) => {
     props.onChangeColor(color)
   }
 
   return (
     <ColorGroups>
-      {calendarColorList?.map((i: string) => (
-        <ColorItem key={i} color={i} onClick={() => onChangeColor(i)}>
-          {props.color === i && <IconFont type="check" />}
+      {colorMap?.map((i: string, idx: number) => (
+        <ColorItem key={i} color={i} onClick={() => onChangeColor(idx)}>
+          {props.color === idx && <IconFont type="check" />}
         </ColorItem>
       ))}
     </ColorGroups>

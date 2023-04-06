@@ -1,5 +1,8 @@
-import React from 'react'
+import { setRouterMenu } from '@store/calendar'
+import { useDispatch, useSelector } from '@store/index'
+import React, { useEffect } from 'react'
 import CalendarPanel from './components/CalendarPanel'
+import CalendarSet from './components/CalendarSet'
 import CalendarSidebar from './components/CalendarSidebar'
 import { CalenderBox, CalenderBoxRightArea } from './styles'
 
@@ -14,6 +17,16 @@ const CalendarManager: React.ForwardRefRenderFunction<
   CalendarManagerLayoutHandle,
   CalendarManagerLayoutProps
 > = (props, forwardedRef) => {
+  const { routerMenu } = useSelector(store => store.calendar)
+  const dispatch = useDispatch()
+
+  // 初始化获取当前是设置页还是看板页
+  useEffect(() => {
+    const calendarSet = localStorage.getItem('calendarSetKey')
+    const resultMenu = { name: '', key: calendarSet ?? '' }
+    dispatch(setRouterMenu(resultMenu))
+  }, [])
+
   React.useImperativeHandle(forwardedRef, () => ({
     open() {
       alert('open')
@@ -23,7 +36,8 @@ const CalendarManager: React.ForwardRefRenderFunction<
     <CalenderBox>
       <CalendarSidebar />
       <CalenderBoxRightArea id="calenderBoxRightArea">
-        <CalendarPanel />
+        {!routerMenu.key && <CalendarPanel />}
+        {routerMenu.key && <CalendarSet />}
       </CalenderBoxRightArea>
     </CalenderBox>
   )

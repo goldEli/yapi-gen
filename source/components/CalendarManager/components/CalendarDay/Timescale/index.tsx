@@ -2,14 +2,15 @@ import styled from '@emotion/styled'
 import dayjs from 'dayjs'
 import React, { useMemo } from 'react'
 import CurrentTimeLine from '../../CurrentTimeLine'
-import { oneHourHeight } from '../../../config'
+import { colorMap, formatYYYYMMDD, oneHourHeight } from '../../../config'
 import { useDispatch, useSelector } from '@store/index'
 import classNames from 'classnames'
-import NewCalendarArea from '../../NewCalendarArea'
+import NewCalendarArea from '../NewCalendarArea'
 import { Dropdown, Popover } from 'antd'
 import QuickCreateScheduleModel from '../../QuickCreateScheduleModel'
 import { setQuickCreateScheduleModel } from '@store/calendarPanle'
 import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
+import ScheduleCardList from '../ScheduleCardList'
 
 interface TimescaleProps {}
 const Table = styled.table`
@@ -46,10 +47,8 @@ const Table = styled.table`
 `
 
 const Timescale: React.FC<TimescaleProps> = props => {
-  const { calendarData } = useSelector(store => store.calendar)
-  const currentColor = useMemo(() => {
-    return calendarData.manage.find(item => item.is_default === 1)?.color
-  }, [calendarData])
+  const { selectedDay } = useSelector(store => store.calendar)
+
   const [timeZone, setTimeZone] = React.useState<string[]>([])
   const [distance, setDistance] = React.useState(0)
   const tableRef = React.useRef<HTMLTableElement>(null)
@@ -84,11 +83,13 @@ const Timescale: React.FC<TimescaleProps> = props => {
           '#calenderBoxRightArea',
         ) as Element
         dom.removeEventListener('mousemove', onMousemove)
+        const target = event.target as HTMLDivElement
+        // 打开创建日程弹窗
         dispatch(
           setQuickCreateScheduleModel({
             visible: true,
-            x: event.offsetX,
-            y: event.screenY - 630 + calenderBoxRightArea.scrollTop,
+            x: event.offsetX + 58,
+            y: target.offsetTop,
           }),
         )
         dom.removeEventListener('mouseup', onMouseUp)
@@ -118,7 +119,9 @@ const Timescale: React.FC<TimescaleProps> = props => {
             {Array(4)
               .fill(0)
               .map((i, index) => {
-                const id = `2023-03-29 ${str}:${15 * index}00`
+                const id = `${dayjs(selectedDay).format(
+                  formatYYYYMMDD,
+                )} ${str}:${15 * index}:00`
                 return (
                   <tr
                     key={index}
@@ -141,17 +144,14 @@ const Timescale: React.FC<TimescaleProps> = props => {
           </>
         )
       })
-  }, [currentColor, timeZone])
+  }, [timeZone, selectedDay])
   return (
     // <Popover trigger={['contextMenu']} content={popoverContent} title="Title">
     <Table ref={tableRef} className="time-scale">
       {content}
       <CurrentTimeLine />
-      <NewCalendarArea
-        color={currentColor ?? ''}
-        timeZone={timeZone}
-        distance={distance}
-      />
+      <NewCalendarArea timeZone={timeZone} distance={distance} />
+      <ScheduleCardList />
       <QuickCreateScheduleModel />
       <ScheduleInfoDropdown />
     </Table>

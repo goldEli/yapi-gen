@@ -7,6 +7,7 @@ const name = 'schedule'
 export const getScheduleList = createAsyncThunk(
   `${name}/getScheduleList`,
   async (params: API.Schedule.GetScheduleList.Params) => {
+    console.log('getScheduleList', params)
     const res = await services.schedule.getScheduleList(params)
     return res.data
   },

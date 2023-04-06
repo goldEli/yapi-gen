@@ -4,6 +4,11 @@ declare namespace Model.Calendar {
    */
   type ChooseAddType = 'member' | 'team' | 'department' | undefined | 'all' | ''
 
+  interface RouterMenu {
+    name: string
+    key: string
+  }
+
   interface MemberItem {
     id: number
     name: string
@@ -15,7 +20,7 @@ declare namespace Model.Calendar {
   }
   interface Info {
     id: number
-    color: string
+    color: number
     // 1 是默认的日历，用于判断删除权限
     is_default: 0 | 1
     name: string
@@ -53,4 +58,28 @@ declare namespace Model.Calendar {
    */
   type CalendarPanelType = 'year' | 'day' | 'week' | 'month' | 'list'
   type CalendarYearType = -1 | 0 | 1 // 1下一年  -1上一年 0 当前年份
+
+  interface DayOfMonth {
+    lunar_year_chinese: string
+    lunar_month_chinese: string
+    lunar_day_chinese: string
+    term: string
+    week_no: number
+    week_name: string
+    // '金牛'
+    constellation: string
+    is_current_month: boolean
+    year: number
+    month: number
+    day: number
+    week_num: number
+    date: string
+    // '2023-05-04 00:00:00'
+    datetime: string
+    // '2023-05-05T16:00:00.000000Z'
+    date_object: string
+    timestamp: number
+    // 'PRC'
+    timezone_name: string
+  }
 }

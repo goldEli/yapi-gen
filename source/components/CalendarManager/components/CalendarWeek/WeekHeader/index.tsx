@@ -13,7 +13,7 @@ const WeekHeaderBox = styled.div`
   top: 0px;
   left: 0px;
   background: var(--neutral-white-d1);
-  z-index: 1;
+  z-index: 100;
 `
 
 const WeekHeader: React.FC<WeekHeaderProps> = props => {

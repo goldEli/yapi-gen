@@ -21,7 +21,7 @@ type SliceState = {
 }
 
 const initialState: SliceState = {
-  calendarPanelType: 'week',
+  calendarPanelType: 'month',
   quickCreateScheduleModel: {
     visible: false,
     x: 0,

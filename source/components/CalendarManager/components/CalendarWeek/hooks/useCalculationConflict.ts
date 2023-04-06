@@ -2,7 +2,7 @@
  * 计算日程冲突
  * 得到冲突日程的宽度 以及  left位置
  */
-import { useSelector } from '@store/index'
+// import { useSelector } from '@store/index'
 import dayjs from 'dayjs'
 import { useEffect, useState, useMemo } from 'react'
 import { getConflictsTimeRange, getStyleValue } from '../utils'
@@ -12,7 +12,7 @@ import useList from './useList'
 
 const format = 'YYYY-MM-DD'
 const useCalculationConflict = () => {
-  const scheduleList = useSelector(store => store.schedule.scheduleList)
+  // const scheduleList = useSelector(store => store.schedule.scheduleList)
 
   const { weeks } = useWeeks()
   const { maxWidth } = useMaxWidth()

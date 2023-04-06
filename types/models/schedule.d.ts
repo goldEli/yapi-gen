@@ -6,7 +6,8 @@ declare namespace Model.Schedule {
     // endTime: number
     // color: string
     id?: string
-
+    // 是否展示到面板中
+    hidden?: boolean
     schedule_id: number
     subject: string
     is_span_day: boolean
@@ -24,6 +25,12 @@ declare namespace Model.Schedule {
     end_time?: string
     // 1677750240
     end_timestamp: number
+    // "2023-03-29 16:33:00"
+    schedule_start_datetime?: string
+    schedule_start_timestamp?: number
+    // '2023-04-01 17:44:00'
+    schedule_end_datetime?: string
+    schedule_end_timestamp?: number
     // 1 是 2 否
     is_busy: 1 | 2
     //

@@ -9,14 +9,14 @@ export const getCalendarList = async () => {
       manage: [
         {
           id: 1,
-          color: '#6688FF',
+          color: 0,
           is_default: 1,
           name: '工作日历',
           is_check: 1,
         },
         {
           id: 2,
-          color: '#43BA9A',
+          color: 1,
           is_default: 0,
           name: '团队日历',
           is_check: 0,
@@ -25,14 +25,14 @@ export const getCalendarList = async () => {
       sub: [
         {
           id: 1,
-          color: '#6688FF',
+          color: 2,
           is_default: 1,
           name: '哈哈哈日历',
           is_check: 0,
         },
         {
           id: 2,
-          color: '#43BA9A',
+          color: 3,
           is_default: 0,
           name: '啦啦啦日历',
           is_check: 1,

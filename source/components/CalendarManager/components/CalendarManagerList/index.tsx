@@ -10,6 +10,7 @@ import { setCalendarData, setCheckedCalendarList } from '@store/calendar'
 import CalendarMoreDropdown from './CalendarMoreDropdown'
 import CalendarSubscribe from './CalendarSubscribe'
 import CalendarFormModal from './CalendarFormModal'
+import { colorMap } from '../../config'
 
 const { Panel } = Collapse
 
@@ -49,10 +50,16 @@ const CalendarManagerListItem = styled.div`
   height: 32px;
   cursor: pointer;
   width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
   .name {
     font-size: 14px;
     color: var(--neutral-n2);
     margin-left: 8px;
+    max-width: 86%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
   &:hover {
     .name {
@@ -67,7 +74,7 @@ const CalendarManagerListItem = styled.div`
 const ItemBox = styled.div`
   display: flex;
   align-items: center;
-  width: 100%;
+  width: 96%;
 `
 
 interface CalendarManagerListProps {
@@ -127,7 +134,7 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
   }, [])
 
   return (
-    <div>
+    <div style={{ marginBottom: 24 }}>
       <CalendarSubscribe
         visible={isSubscribeVisible}
         onCancel={() => setIsSubscribeVisible(false)}
@@ -166,7 +173,7 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
               <ItemBox key={i.id} onClick={() => onChangeCheck(i)}>
                 <IconFont
                   type={i.is_check ? 'pput-sel' : 'put'}
-                  style={{ fontSize: 16, color: i.color }}
+                  style={{ fontSize: 16, color: colorMap[i.color] }}
                 />
                 <span className="name">{i.name}</span>
               </ItemBox>

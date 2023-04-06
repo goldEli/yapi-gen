@@ -12,11 +12,9 @@ export const CalenderBox = styled.div`
 
 export const CalenderBoxLeftArea = styled.div`
   box-sizing: border-box;
-  padding: 24px 24px 8px;
   background: var(--neutral-n9);
   height: 100%;
   display: flex;
-  flex-direction: column;
   gap: 24px;
   min-width: 288px;
 `
@@ -125,25 +123,37 @@ export const CalendarSidebarMain = styled.div<{ firstMenuCollapse: boolean }>`
 `
 
 export const CalendarSetBox = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  width: 90%;
   height: 44px;
   cursor: pointer;
   background: var(--neutral-n9);
   position: absolute;
-  bottom: 8px;
+  bottom: 0px;
   white-space: nowrap;
   overflow: hidden;
-  div {
-    margin-left: 12px;
-    font-size: 14px;
-    color: var(--neutral-n1-d2);
-  }
-  &:hover {
-    div,
-    svg {
-      color: var(--primary-d2) !important;
+  padding-bottom: 8px;
+  .box {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    div {
+      font-size: 14px;
+      color: var(--neutral-n1-d2);
+      margin-left: 12px;
+    }
+    &:hover {
+      div,
+      svg {
+        color: var(--primary-d2) !important;
+      }
     }
   }
+`
+
+export const ManagerListBox = styled.div`
+  min-height: 120px;
+  height: calc(100% - 476px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 52px;
 `

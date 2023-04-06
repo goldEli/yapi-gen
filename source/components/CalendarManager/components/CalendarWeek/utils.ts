@@ -112,25 +112,6 @@ function findConflicts(events: Model.Schedule.Info[]) {
   return conflicts
 }
 
-function findConflictsList(events: TimeRange[]) {
-  const conflicts = []
-
-  for (let i = 0; i < events.length; i++) {
-    for (let j = i + 1; j < events.length; j++) {
-      if (
-        events[i].start_timestamp < events[j].end_timestamp &&
-        events[i].end_timestamp > events[j].start_timestamp
-      ) {
-        conflicts.push({})
-      }
-    }
-  }
-
-  return {
-    conflicts,
-  }
-}
-
 type Item = {
   id: string
   start_timestamp: number
@@ -260,99 +241,6 @@ export function getClassifyConflicts(events: Model.Schedule.Info[]) {
 interface TimeRange {
   start_timestamp: number
   end_timestamp: number
-}
-function print(list: TimeRange[]) {
-  console.log(
-    list.map(item => ({
-      start_timestamp: dayjs(item.start_timestamp).format('HH:mm'),
-      end_timestamp: dayjs(item.end_timestamp).format('HH:mm'),
-    })),
-  )
-}
-function combineTimeRange(list: TimeRange[], originList: TimeRange[]) {
-  const conflicts: TimeRange[] = []
-  console.log('============')
-  print(list)
-
-  for (let i = 0; i < list.length; i++) {
-    for (let j = i + 1; j < list.length; j++) {
-      if (
-        list[i].start_timestamp < list[j].end_timestamp &&
-        list[i].end_timestamp > list[j].start_timestamp
-      ) {
-        conflicts.push({
-          start_timestamp: Math.min(
-            list[i].start_timestamp,
-            list[j].start_timestamp,
-          ),
-          end_timestamp: Math.max(list[i].end_timestamp, list[j].end_timestamp),
-        })
-        break
-      }
-      if (list[i].end_timestamp === list[j].end_timestamp) {
-        conflicts.push({
-          start_timestamp: Math.min(
-            list[i].start_timestamp,
-            list[j].start_timestamp,
-          ),
-          end_timestamp: Math.max(list[i].end_timestamp, list[j].end_timestamp),
-        })
-
-        break
-      }
-      if (list[i].start_timestamp === list[j].start_timestamp) {
-        conflicts.push({
-          start_timestamp: Math.min(
-            list[i].start_timestamp,
-            list[j].start_timestamp,
-          ),
-          end_timestamp: Math.max(list[i].end_timestamp, list[j].end_timestamp),
-        })
-
-        break
-      }
-    }
-  }
-
-  // const unUsed = originList.filter(item => {
-  //   if (
-  //     used.some(
-  //       i => i.start_timestamp === item.start_timestamp && i.end_timestamp === item.end_timestamp,
-  //     )
-  //   ) {
-  //     return false
-  //   }
-  //   return true
-  // })
-  const unUsed = originList.filter(item => {
-    if (
-      conflicts.some(i => {
-        return (
-          i.start_timestamp <= item.start_timestamp &&
-          i.end_timestamp >= item.end_timestamp
-        )
-      })
-    ) {
-      return false
-    }
-    return true
-  })
-  print(conflicts)
-  print(unUsed)
-  const res = conflicts.concat(unUsed)
-  return res
-}
-
-function combine(list: TimeRange[][]): TimeRange[] {
-  return list.map(item => {
-    return {
-      start_timestamp: Math.min(
-        item[0].start_timestamp,
-        item[1].start_timestamp,
-      ),
-      end_timestamp: Math.max(item[0].end_timestamp, item[1].end_timestamp),
-    }
-  })
 }
 
 export function getConflictsTimeRange(list: Model.Schedule.Info[]) {
