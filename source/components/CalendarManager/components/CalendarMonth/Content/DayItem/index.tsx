@@ -5,14 +5,16 @@ import classNames from 'classnames'
 import { css } from '@emotion/css'
 import dayjs from 'dayjs'
 import useCurrentTime from '@/components/CalendarManager/hooks/useCurrentTime'
+import ScheduleList from '../../ScheduleList'
 
 interface DayItemProps {
   idx: number
 }
 
 const DayItemBox = styled.div`
+  user-select: none;
   width: 100%;
-  padding: 12px;
+  padding: 12px 0;
   box-sizing: border-box;
   border-color: var(--neutral-n6-d1);
   border-style: solid;
@@ -20,10 +22,16 @@ const DayItemBox = styled.div`
   border-top-width: 1px;
   border-right-width: 0px;
   border-bottom-width: 0px;
+  min-height: 142px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
   .dayBox {
     display: flex;
     gap: 4px;
     align-items: center;
+    padding: 0 12px;
+    box-sizing: border-box;
   }
   .day {
     font-size: 18px;
@@ -54,6 +62,7 @@ const DayItemBox = styled.div`
     color: var(--neutral-n4);
   }
 `
+
 const selectedBg = css`
   background-color: var(--neutral-n6-d1);
 `
@@ -94,6 +103,7 @@ const DayItem: React.FC<DayItemProps> = props => {
         </span>
         <span className="lunar">{info.lunar_day_chinese}</span>
       </div>
+      <ScheduleList data={info} />
     </DayItemBox>
   )
 }

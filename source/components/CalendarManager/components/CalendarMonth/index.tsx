@@ -2,6 +2,8 @@ import styled from '@emotion/styled'
 import React from 'react'
 import CalendarMonthHeader from './CalendarMonthHeader'
 import Content from './Content'
+import { useDispatch } from '@store/index'
+import { getScheduleList } from '@store/schedule/schedule.thunk'
 
 interface CalendarMonthProps {}
 
@@ -13,6 +15,11 @@ const CalendarMonthBox = styled.div`
 `
 
 const CalendarMonth: React.FC<CalendarMonthProps> = props => {
+  const dispatch = useDispatch()
+
+  React.useEffect(() => {
+    dispatch(getScheduleList({ id: 1 }))
+  }, [])
   return (
     <CalendarMonthBox>
       <CalendarMonthHeader />

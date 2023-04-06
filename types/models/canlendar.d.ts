@@ -57,4 +57,28 @@ declare namespace Model.Calendar {
    * 日历面板按照不同类型展示
    */
   type CalendarPanelType = 'year' | 'day' | 'week' | 'month' | 'list'
+
+  interface DayOfMonth {
+    lunar_year_chinese: string
+    lunar_month_chinese: string
+    lunar_day_chinese: string
+    term: string
+    week_no: number
+    week_name: string
+    // '金牛'
+    constellation: string
+    is_current_month: boolean
+    year: number
+    month: number
+    day: number
+    week_num: number
+    date: string
+    // '2023-05-04 00:00:00'
+    datetime: string
+    // '2023-05-05T16:00:00.000000Z'
+    date_object: string
+    timestamp: number
+    // 'PRC'
+    timezone_name: string
+  }
 }

@@ -213,7 +213,7 @@ export const getScheduleList = async (
   //     id:
   //   }
   // }) as API.Schedule.GetScheduleList.Result
-  return res
+  return Promise.resolve(res)
   const response = await http.get<any, API.Schedule.GetScheduleList.Result>(
     'getScheduleList',
     params,
