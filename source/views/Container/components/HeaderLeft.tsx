@@ -63,34 +63,28 @@ const DrawerComponent = (props: DrawerComponentProps) => {
           {
             // company_id: 1504303190303051800,
             // created_at: '-0001-11-30 00:00:00',
-            id: 'log-1',
+            id: 100,
             name: '汇报',
-            // p_menu: '日志管理',
             permission: '',
             status: 1,
-            // updated_at: '2023-02-20 15:03:10',
             url: '/Report/Statistics',
           },
           {
             // company_id: 1504303190303051800,
             // created_at: '-0001-11-30 00:00:00',
-            id: 'log-1',
+            id: 88,
             name: '统计',
-            // p_menu: '日志管理',
             permission: '',
             status: 1,
-            // updated_at: '2023-02-20 15:03:10',
             url: '/Report/Statistics',
           },
           {
             // company_id: 1504303190303051800,
             // created_at: '-0001-11-30 00:00:00',
-            id: 'log-1',
+            id: 99,
             name: '模板',
-            // p_menu: '日志管理',
             permission: '',
             status: 1,
-            // updated_at: '2023-02-20 15:03:10',
             url: '/Report/FormWork',
           },
         ],
@@ -315,59 +309,55 @@ const HeaderLeft = () => {
   const routerPath = useLocation()
 
   const mockMenuPermission = useMemo(() => {
+    let menus = { priorityUrl: '', menus: [] }
     if (menuPermission.menus) {
-      const menus = menuPermission?.menus && cloneDeep(menuPermission.menus)
-      menus.push({
-        id: 'log',
-        url: '/Report',
-        permission: '',
-        name: '工作汇报',
-        children: [
-          {
-            // company_id: 1504303190303051800,
-            // created_at: '-0001-11-30 00:00:00',
-            id: 'log-1',
-            name: '汇报',
-            // p_menu: '日志管理',
-            permission: '',
-            status: 1,
-            // updated_at: '2023-02-20 15:03:10',
-            url: '/Report/Statistics',
-          },
-          {
-            // company_id: 1504303190303051800,
-            // created_at: '-0001-11-30 00:00:00',
-            id: 'log-1',
-            name: '统计',
-            // p_menu: '日志管理',
-            permission: '',
-            status: 1,
-            // updated_at: '2023-02-20 15:03:10',
-            url: '/Report/Statistics',
-          },
-          {
-            // company_id: 1504303190303051800,
-            // created_at: '-0001-11-30 00:00:00',
-            id: 'log-1',
-            name: '模板',
-            // p_menu: '日志管理',
-            permission: '',
-            status: 1,
-            // updated_at: '2023-02-20 15:03:10',
-            url: '/Report/FormWork',
-          },
-        ],
-      })
-      return {
+      const data =
+        menuPermission?.menus &&
+        cloneDeep(menuPermission.menus).map((i: any) => {
+          if (i.url === '/Report' && i.children.length <= 0) {
+            i.children = [
+              {
+                // company_id: 1504303190303051800,
+                // created_at: '-0001-11-30 00:00:00',
+                id: 100,
+                name: '汇报',
+                permission: '',
+                status: 1,
+                url: '/Report/Statistics',
+              },
+              {
+                // company_id: 1504303190303051800,
+                // created_at: '-0001-11-30 00:00:00',
+                id: 88,
+                name: '统计',
+                permission: '',
+                status: 1,
+                url: '/Report/Statistics',
+              },
+              {
+                // company_id: 1504303190303051800,
+                // created_at: '-0001-11-30 00:00:00',
+                id: 99,
+                name: '模板',
+                permission: '',
+                status: 1,
+                url: '/Report/FormWork',
+              },
+            ]
+          }
+          return i
+        })
+      menus = {
         priorityUrl: '"/ProjectManagement"',
-        menus,
+        menus: data,
       }
     }
-    return {}
+    return menus
   }, [menuPermission])
 
   const getActive = (item: any) => {
     let state = false
+
     if (routerPath.pathname.includes(item.url)) {
       state = true
     }
@@ -435,12 +425,11 @@ const HeaderLeft = () => {
       </Space>
       {showTopNav ? (
         <ChildrenMenu>
-          {currentMenu?.children?.map((i: any) => (
+          {currentMenu.children.map((i: any) => (
             <ChildrenMenuItem key={i.id} size={8} isActive={getActive(i)}>
-              {i.url === '/ProjectManagement/Mine' && (
+              {i.url === '/ProjectManagement/Mine' ? (
                 <MyDropdown text={i.name} />
-              )}
-              {i.url !== '/ProjectManagement/Mine' && (
+              ) : (
                 <ItemDropdown text={i.name} />
               )}
             </ChildrenMenuItem>
