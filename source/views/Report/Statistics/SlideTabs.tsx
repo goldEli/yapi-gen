@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Tabs } from 'antd'
 import styled from '@emotion/styled'
 import { DoubleRightOutlined, DoubleLeftOutlined } from '@ant-design/icons'
@@ -17,66 +17,107 @@ const ArrowIconBox = styled.div`
 
 const tabsWrap = css`
   width: calc(100vw - 560px);
-  .ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap {
+  .ant-tabs > .ant-tabs-nav {
+    .ant-tabs-nav-wrap {
+      margin: 0 16px;
+    }
+    .ant-tabs-nav-operations {
+      display: none;
+    }
   }
 `
-// display: none;
 
 interface SlideTabsProps {
   items: any[]
 }
 
+const STEP = 1
+
+const TAB_MARGIN = 32
+
 const SlideTabs: React.FC<SlideTabsProps> = ({ items }: SlideTabsProps) => {
-  const [position, setPosition] = useState<PositionType[]>(['left', 'right'])
-  const [leftDisable, setLeftDisable] = useState<boolean>(true)
-  const [rightDisable, setRightDisable] = useState<boolean>(false)
-  const xAxis = useRef(0)
+  const [xAxis, setXAxis] = useState<number>(0)
+  const [showRight, setShowRight] = useState<boolean>(false)
 
-  const handlePrev = () => {
-    const nav: any = document.getElementsByClassName('ant-tabs-nav-list')
-    const nodeCount = document.querySelectorAll('.ant-tabs-tab').length
-    const nodeWidth = nav[0].firstChild?.offsetWidth
+  const nodes = useRef<Array<any>>([])
+  const nodeIndex = useRef(0)
+  const navWraptWidth = useRef(0)
+  const navListWidth = useRef(0)
 
-    if (xAxis.current + nodeCount * nodeWidth <= 0) {
-      setLeftDisable(true)
+  const showLeft = useMemo(() => !!(xAxis < 0), [xAxis])
+
+  useLayoutEffect(() => {
+    nodes.current = Array.from(document.querySelectorAll('.ant-tabs-tab'))
+    navWraptWidth.current =
+      document.getElementsByClassName('ant-tabs-nav-wrap')[0].clientWidth
+    navListWidth.current =
+      document.getElementsByClassName('ant-tabs-nav-list')[0].clientWidth
+  }, [])
+
+  useEffect(() => {
+    if (navListWidth.current <= navWraptWidth.current) {
+      setShowRight(false)
       return
     }
-    xAxis.current -= nodeWidth * 5
+    setShowRight(nodeIndex.current + STEP < nodes.current.length)
+  }, [
+    nodeIndex.current,
+    nodes.current,
+    navListWidth.current,
+    navWraptWidth.current,
+  ])
 
-    nav[0].style.transform = `translateX(${xAxis.current}px)`
-  }
-
-  const handleNext = () => {
-    const nav: any = document.getElementsByClassName('ant-tabs-nav-list')
-    const nodeCount = document.querySelectorAll('.ant-tabs-tab').length
-    const nodeWidth = nav[0].firstChild?.offsetWidth
-
-    setLeftDisable(false)
-
-    if (xAxis.current + nodeCount * nodeWidth <= 0) {
-      return
+  const prev = () => {
+    const fragment = nodes.current.slice(
+      nodeIndex.current - STEP,
+      nodeIndex.current,
+    )
+    nodeIndex.current -= STEP
+    let nodeWidth = 0
+    for (let index = 0; index < fragment.length; index++) {
+      nodeWidth += fragment[index].clientWidth + TAB_MARGIN
     }
 
-    xAxis.current -= nodeWidth * 5
-
-    nav[0].style.transform = `translateX(${xAxis.current}px)`
+    setXAxis(current => {
+      return current + nodeWidth
+    })
   }
+
+  const next = () => {
+    const fragment = nodes.current.slice(
+      nodeIndex.current,
+      nodeIndex.current + STEP,
+    )
+    nodeIndex.current += STEP
+    let nodeWidth = 0
+    for (let index = 0; index < fragment.length; index++) {
+      nodeWidth += fragment[index].clientWidth + TAB_MARGIN
+    }
+    setXAxis(current => {
+      return current - nodeWidth
+    })
+  }
+
+  useEffect(() => {
+    const slider: any = document.getElementsByClassName('ant-tabs-nav-list')[0]
+    slider.style.transform = `translateX(${xAxis}px)`
+  }, [xAxis])
 
   const operateSlot: Record<PositionType, React.ReactNode> = {
     left: (
       <>
-        {!leftDisable && (
+        {showLeft && (
           <ArrowIconBox>
-            <DoubleLeftOutlined onClick={handlePrev} />
+            <DoubleLeftOutlined onClick={prev} />
           </ArrowIconBox>
         )}
       </>
     ),
     right: (
       <>
-        {!rightDisable && (
+        {showRight && (
           <ArrowIconBox>
-            <DoubleRightOutlined onClick={handleNext} />
+            <DoubleRightOutlined onClick={next} />
           </ArrowIconBox>
         )}
       </>
