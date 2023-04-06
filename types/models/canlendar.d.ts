@@ -57,6 +57,7 @@ declare namespace Model.Calendar {
    * 日历面板按照不同类型展示
    */
   type CalendarPanelType = 'year' | 'day' | 'week' | 'month' | 'list'
+  type CalendarYearType = -1 | 0 | 1 // 1下一年  -1上一年 0 当前年份
 
   interface DayOfMonth {
     lunar_year_chinese: string
