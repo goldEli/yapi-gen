@@ -130,9 +130,13 @@ const AllDayScheduleCard: React.FC<ScheduleCardProps> = props => {
 
   const gridHeight = useMemo(() => (oneHourHeight / 60) * 15, [outerHeight])
   const title = React.useMemo(() => {
-    const { start_timestamp, end_timestamp, first_start_timestamp } = props.data
+    const { start_timestamp, end_timestamp, schedule_start_datetime } =
+      props.data
     if (props.data.is_span_day) {
-      const isFirstDay = isSameTime(start_timestamp, first_start_timestamp ?? 0)
+      const isFirstDay = isSameTime(
+        start_timestamp,
+        schedule_start_datetime ?? '',
+      )
       if (!isFirstDay) {
         return ''
       }
@@ -142,8 +146,12 @@ const AllDayScheduleCard: React.FC<ScheduleCardProps> = props => {
 
   // 跨天不是第一天的日程不能拖拽
   const disableDragging = useMemo(() => {
-    const { start_timestamp, end_timestamp, first_start_timestamp } = props.data
-    const isFirstDay = isSameTime(start_timestamp, first_start_timestamp ?? 0)
+    const { start_timestamp, end_timestamp, schedule_start_datetime } =
+      props.data
+    const isFirstDay = isSameTime(
+      start_timestamp,
+      schedule_start_datetime ?? '',
+    )
     return props.data.is_span_day && !isFirstDay
   }, [props.data])
 

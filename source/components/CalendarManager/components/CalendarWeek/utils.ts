@@ -269,6 +269,6 @@ export function getConflictsTimeRange(list: Model.Schedule.Info[]) {
   return res.filter(item => item.length)
 }
 
-export const isSameTime = (time1: number, time2: number) => {
+export const isSameTime = (time1: number, time2: number | string) => {
   return dayjs(time1).isSame(dayjs(time2), 'day')
 }

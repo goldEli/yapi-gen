@@ -4,6 +4,8 @@ import {
   getColorWithOpacityPointOne,
   getColor,
 } from '@/components/CalendarManager/utils'
+import { isSameTime } from '../../CalendarWeek/utils'
+import dayjs from 'dayjs'
 
 interface ScheduleListItemProps {
   data: Model.Schedule.Info
@@ -17,6 +19,7 @@ const ScheduleListItemBox = styled.div<{
   width: calc(100% - 4px);
   margin-left: 2px;
   margin-right: 2px;
+  height: 22px;
   background: ${props => props.bg};
   .text {
   }
@@ -50,18 +53,36 @@ const Title = styled.div`
 
 const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
   const { data } = props
+  const { start_timestamp, schedule_start_datetime } = props.data
   const isAllDay = data.is_all_day === 1 || data.is_span_day
+  const isAllDayFirstDay =
+    isAllDay && isSameTime(start_timestamp, schedule_start_datetime ?? 0)
+  const isAllDayButNotFirstDay =
+    data.is_span_day &&
+    !isSameTime(start_timestamp, schedule_start_datetime ?? 0)
   // 如果是跨天或者全天任务显示全天
   const time = isAllDay ? '全天' : data.start_time
+  console.log(
+    {
+      schedule_start_datetime,
+      start_timestamp: dayjs(start_timestamp).format('YYYY-MM-DD'),
+    },
+    data.is_span_day,
+    isAllDayButNotFirstDay,
+  )
   return (
     <ScheduleListItemBox
       bg={isAllDay ? getColorWithOpacityPointOne(data.color) : void 0}
       hoverBg={getColorWithOpacityPointOne(data.color)}
       color={getColor(data.color)}
     >
-      <Dot bg={getColor(data.color)} />
-      <Time className="text">{time}</Time>
-      <Title className="text">{props.data.subject}</Title>
+      {!isAllDayButNotFirstDay && (
+        <>
+          <Dot bg={getColor(data.color)} />
+          <Time className="text">{time}</Time>
+          <Title className="text">{props.data.subject}</Title>
+        </>
+      )}
     </ScheduleListItemBox>
   )
 }
