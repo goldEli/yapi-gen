@@ -4,9 +4,8 @@ import { useState, useRef, useEffect } from 'react'
 
 const useWebsocket = () => {
   const ws = useRef<WebSocket | null>(null)
-
   // socket 数据
-  const [wsData, setWsData] = useState({})
+  const [wsData, setWsData] = useState<any>()
 
   //  socket 状态
   const [readyState, setReadyState] = useState<any>({
@@ -55,8 +54,10 @@ const useWebsocket = () => {
       setReadyState(stateArr[ws.current?.readyState ?? 0])
     }
     ws.current.onmessage = (e: any) => {
-      console.log(e)
-      setWsData(e)
+      setWsData({
+        key: Math.random(),
+        data: e.data,
+      })
       //  const { data, type } = (...JSON.parse(e.data)) || {};
       // switch (
       //   type // type 是跟后端约定的
