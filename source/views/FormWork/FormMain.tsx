@@ -1,23 +1,16 @@
 /* eslint-disable react/jsx-handler-names */
-import {
-  Checkbox,
-  Switch,
-  Form,
-  TimePicker,
-  Dropdown,
-  MenuProps,
-  DatePicker,
-} from 'antd'
+/* eslint-disable @typescript-eslint/naming-convention */
+import { Checkbox, Switch, Form, Dropdown, DatePicker } from 'antd'
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
 import Picker from './Picker'
-import dayjs from 'dayjs'
 const Text = styled.div`
   color: var(--neutral-n1-d1);
   font-size: 14px;
 `
+const BtnStyle = styled.div``
 const RowStyle = styled.div`
   display: flex;
   align-items: center;
@@ -154,14 +147,18 @@ const SupScope = (props: SupScopeType) => {
           background: 'var(--neutral-white-d1)',
         }}
       >
-        <CommonButton type="primaryText" onClick={() => setIsOpen(!isOpen)}>
+        <BtnStyle
+          onClick={e => {
+            setIsOpen(!isOpen)
+          }}
+        >
           {label}
           <CommonIconFont
             type={isOpen ? 'up' : 'down'}
             size={14}
             color="var(--primary-d2)"
           />
-        </CommonButton>
+        </BtnStyle>
       </Dropdown>
     </RowStyle>
   )
