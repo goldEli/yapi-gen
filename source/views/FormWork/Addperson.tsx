@@ -2,8 +2,8 @@ import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { Dropdown } from 'antd'
-import { useState } from 'react'
-
+import { useEffect, useState } from 'react'
+import { seleData1, seleData2, seleData3 } from './DataList'
 const AddPersonText = styled.div`
   margin-left: 26px;
   display: flex;
@@ -45,24 +45,7 @@ const Col = styled.div`
 const NameText = styled.div`
   padding: 0 10px;
 `
-const items = [
-  {
-    key: 1,
-    label: '全员',
-  },
-  {
-    key: 2,
-    label: '添加成员',
-  },
-  {
-    key: 3,
-    label: '添加部门',
-  },
-  {
-    key: 4,
-    label: '添加团队',
-  },
-]
+
 interface RowsItem {
   label: string
   id: number
@@ -74,10 +57,17 @@ interface Props {
   title: string
   // 红色必选
   isShow: boolean
+  // 类型
+  state: string
+}
+interface Item {
+  label: string
+  key: string
 }
 const Addperson = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false)
   const [member, setMember] = useState(props.data)
+  const [items, setItems] = useState<Array<Item>>()
   // 下拉
   const onOpenChange = (e: { key: string }) => {
     setIsOpen(false)
@@ -86,6 +76,19 @@ const Addperson = (props: Props) => {
   const delPerson = (el: { id: number }) => {
     setMember(member.filter(item => item.id !== el.id))
   }
+  useEffect(() => {
+    switch (props.state) {
+      case '1':
+        setItems(seleData1)
+        break
+      case '2':
+        setItems(seleData2)
+        break
+      case '3':
+        setItems(seleData3)
+        break
+    }
+  }, [props.state])
   return (
     <>
       <AddPersonText>

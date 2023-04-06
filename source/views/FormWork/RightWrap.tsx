@@ -103,6 +103,7 @@ const EditFormWorkStyle = styled(Input)({
     color: 'var(--neutral-n4)',
   },
 })
+
 const RightFormWork = () => {
   const [isActive, setIsActive] = useState(0)
   return (
@@ -128,7 +129,7 @@ const RightFormWork = () => {
           <CommonButton
             type="light"
             onClick={() => 133}
-            style={{ margin: '0 24px 0 16px' }}
+            style={{ margin: '0 0px 0 16px' }}
           >
             删除
           </CommonButton>
