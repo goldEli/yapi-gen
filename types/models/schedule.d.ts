@@ -6,7 +6,8 @@ declare namespace Model.Schedule {
     // endTime: number
     // color: string
     id?: string
-
+    // 是否展示到面板中
+    hidden?: boolean
     schedule_id: number
     subject: string
     is_span_day: boolean

@@ -146,6 +146,10 @@ const AllDayScheduleCard: React.FC<ScheduleCardProps> = props => {
     return props.data.is_span_day && !isFirstDay
   }, [props.data])
 
+  if (props.data.hidden) {
+    return <></>
+  }
+
   return (
     <Rnd
       style={{
