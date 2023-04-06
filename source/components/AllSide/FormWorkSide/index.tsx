@@ -6,6 +6,7 @@ import AddFormWork from '@/components/AllSide/FormWorkSide/AddFormWork'
 import { setActiveItem } from '@store/formWork/index'
 import { useDispatch } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import SupplementaryIntercourse from './SupplementaryIntercourse'
 const FormWorkSideStyle = styled.div`
   width: 200px;
   min-width: 200px;
@@ -102,6 +103,12 @@ const FormWorkSide = () => {
         isVisible={delIsVisible}
         onConfirm={() => setDelIsVisible(false)}
         notCancel
+      />
+      {/* 补交汇报弹窗 */}
+      <SupplementaryIntercourse
+        isVisible={true}
+        onConfirm={() => 123}
+        onClose={() => 123}
       />
     </FormWorkSideStyle>
   )
