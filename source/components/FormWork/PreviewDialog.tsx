@@ -290,11 +290,7 @@ const WhiteDay = (props: Props) => {
               },
             ]}
           >
-            <Editor
-              readonly
-              upload={uploadFile}
-              getSuggestions={() => options}
-            />
+            <Editor upload={uploadFile} getSuggestions={() => options} />
           </Form.Item>
           <Form.Item label={<LabelTitle title={'汇报对象'} />} name="people">
             {props.isVisible ? (
