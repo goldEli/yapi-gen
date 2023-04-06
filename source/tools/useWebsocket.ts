@@ -6,7 +6,7 @@ const useWebsocket = () => {
   const ws = useRef<WebSocket | null>(null)
 
   // socket 数据
-  // const [wsData, setMessage] = useState({})
+  const [wsData, setWsData] = useState({})
 
   //  socket 状态
   const [readyState, setReadyState] = useState<any>({
@@ -46,7 +46,7 @@ const useWebsocket = () => {
 
     ws.current.onopen = () => {
       setReadyState(stateArr[ws.current?.readyState ?? 0])
-      heartCheck.reset().start()
+      // heartCheck.reset().start()
     }
     ws.current.onclose = () => {
       setReadyState(stateArr[ws.current?.readyState ?? 0])
@@ -55,6 +55,8 @@ const useWebsocket = () => {
       setReadyState(stateArr[ws.current?.readyState ?? 0])
     }
     ws.current.onmessage = (e: any) => {
+      console.log(e)
+      setWsData(e)
       //  const { data, type } = (...JSON.parse(e.data)) || {};
       // switch (
       //   type // type 是跟后端约定的
@@ -105,6 +107,7 @@ const useWebsocket = () => {
   //    wsData （获得的 socket 数据）、readyState（当前 socket 状态）、closeWebSocket （关闭 socket）、reconnect（重连）
 
   return {
+    wsData,
     readyState,
     closeWebSocket,
     reconnect,
