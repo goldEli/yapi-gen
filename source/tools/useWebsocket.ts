@@ -4,9 +4,8 @@ import { useState, useRef, useEffect } from 'react'
 
 const useWebsocket = () => {
   const ws = useRef<WebSocket | null>(null)
-
   // socket 数据
-  const [wsData, setWsData] = useState({})
+  const [wsData, setWsData] = useState<any>()
 
   //  socket 状态
   const [readyState, setReadyState] = useState<any>({
