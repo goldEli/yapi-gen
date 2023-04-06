@@ -1,8 +1,6 @@
 import { useSelector } from '@store/index'
 import { useState, useEffect } from 'react'
 import useWeeks from './useWeeks'
-import dayjs from 'dayjs'
-import { formatYYYYMMDD } from '@/components/CalendarManager/config'
 
 type ShowInfo = {
   show: boolean
