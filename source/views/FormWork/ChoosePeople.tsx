@@ -182,7 +182,7 @@ const ChoosePeople = (props: any) => {
               style={{
                 width: '24px',
                 height: '24px',
-                border: '2px dashed var(--neutral-n3)',
+                border: '1px dashed var(--neutral-n3)',
                 borderRadius: '50%',
                 display: 'flex',
                 justifyContent: 'center',
