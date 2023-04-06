@@ -50,10 +50,16 @@ const CalendarManagerListItem = styled.div`
   height: 32px;
   cursor: pointer;
   width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
   .name {
     font-size: 14px;
     color: var(--neutral-n2);
     margin-left: 8px;
+    max-width: 86%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
   &:hover {
     .name {
@@ -68,7 +74,7 @@ const CalendarManagerListItem = styled.div`
 const ItemBox = styled.div`
   display: flex;
   align-items: center;
-  width: 100%;
+  width: 96%;
 `
 
 interface CalendarManagerListProps {
@@ -128,7 +134,7 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
   }, [])
 
   return (
-    <div>
+    <div style={{ marginBottom: 24 }}>
       <CalendarSubscribe
         visible={isSubscribeVisible}
         onCancel={() => setIsSubscribeVisible(false)}

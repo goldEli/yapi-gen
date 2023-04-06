@@ -27,9 +27,13 @@ const SetWrap = styled.div`
 `
 
 const MainWrap = styled.div`
-  padding: 24px 24px 8px;
+  padding: 24px 24px 0px;
   white-space: nowrap;
   transition: 0.2s;
+  gap: 24px;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
 `
 
 interface CalendarSidebarProps {
@@ -101,18 +105,22 @@ const CalendarSidebar: React.FC<CalendarSidebarProps> = props => {
   }
 
   useEffect(() => {
-    if (routerMenu.key) {
+    if (routerMenu.key || localStorage.getItem('calendarSetKey')) {
       calendarMainSideDom.current.style.width = '0px'
       calendarSideDom.current.style.width = '100%'
       calendarSideDom.current.style.display = 'block'
-      calendarMainSideDom.current.style.display = 'none'
+      setTimeout(() => {
+        calendarMainSideDom.current.style.display = 'none'
+      }, 100)
     } else {
       calendarSideDom.current.style.width = '0px'
       calendarMainSideDom.current.style.width = '100%'
       calendarMainSideDom.current.style.display = 'block'
-      calendarSideDom.current.style.display = 'none'
+      setTimeout(() => {
+        calendarSideDom.current.style.display = 'none'
+      }, 100)
     }
-  }, [routerMenu])
+  }, [routerMenu, localStorage.getItem('calendarSetKey')])
 
   return (
     <CalendarSidebarBox
