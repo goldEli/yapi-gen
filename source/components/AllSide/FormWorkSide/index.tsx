@@ -62,7 +62,6 @@ const FormWorkSide = () => {
   const dispatch = useDispatch()
   const [delIsVisible, setDelIsVisible] = useState(false)
   useEffect(() => {
-    console.log(isActive, 'isActive')
     dispatch(setActiveItem(a.find((el, index) => index === isActive)))
   }, [isActive])
   return (
@@ -77,6 +76,10 @@ const FormWorkSide = () => {
             key={el.id}
             onClick={() => setIsActive(index)}
             style={{
+              color:
+                isActive == index
+                  ? 'var(--primary-d2)'
+                  : 'var(--neutral-n1-d2)',
               background:
                 isActive == index
                   ? 'linear-gradient(90deg, #EBEFFF 0%, rgba(243,246,255,0) 100%)'
