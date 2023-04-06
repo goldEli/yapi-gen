@@ -74,7 +74,6 @@ const Picker = (props: PropsType) => {
   const [leftActive, setLeftActive] = useState<number>(-1)
   const [centerActive, setCenterActive] = useState<number>(-1)
   const [rightActive, setRightActive] = useState<number>(-1)
-  const [isOpen, setIsOpen] = useState<boolean>(false)
   const [leftDataList, setLeftDataList] = useState<Array<Item>>()
   const [rightDataList, setRightDataList] = useState<Array<Item>>()
   const [centerDataList, setCenterDataList] = useState<Array<Item>>()
@@ -146,7 +145,7 @@ const Picker = (props: PropsType) => {
       setCenterDataList(hourData)
       setRightDataList(minuteData)
     }
-  }, [isOpen])
+  }, [props.type])
 
   const content = () => {
     return (
@@ -212,23 +211,14 @@ const Picker = (props: PropsType) => {
     <div>
       <InputStyle
         type="text"
-        onBlur={() => setIsOpen(false)}
         suffix={
           <Popover
-            open={isOpen}
             placement="bottomRight"
             title={''}
             content={content}
             trigger="click"
           >
-            <CommonIconFont
-              type="alarm"
-              onClick={() => {
-                setIsOpen(!isOpen)
-              }}
-              size={16}
-              color="var(--neutral-n4)"
-            />
+            <CommonIconFont type="alarm" size={16} color="var(--neutral-n4)" />
           </Popover>
         }
       />

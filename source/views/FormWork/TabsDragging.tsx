@@ -81,10 +81,7 @@ const DelBtnText = styled.span`
   margin: 0;
   padding: 0;
 `
-const Empty = styled.div`
-  width: 100%;
-  height: 300px;
-`
+
 const Sortable = (props: any) => {
   const [t] = useTranslation()
   const { list } = props
@@ -144,6 +141,8 @@ const Sortable = (props: any) => {
   }
   // 右边拖动到左边触发
   const onDrop = (ev: any, index: number) => {
+    ev.preventDefault()
+    ev.stopPropagation()
     props.onDrop(ev, index)
   }
   useEffect(() => {
