@@ -27,6 +27,7 @@ const initialState: CounterState = {
       active: 'folder-open-sel',
     },
     { key: '/LogManagement', normal: 'log-nor', active: 'log-sel' },
+    { key: '/Report', normal: 'log-nor', active: 'log-sel' },
     { key: '/AdminManagement', normal: 'management', active: '' },
   ],
 }

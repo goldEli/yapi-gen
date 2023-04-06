@@ -4,6 +4,7 @@ import styled from '@emotion/styled'
 import { Input } from 'antd'
 import { useState } from 'react'
 import PermissionConfig from './PermissionConfig'
+import EditWork from './EditWork'
 const RightFormWorkStyle = styled.div`
   flex: 1;
   overflow: hidden;
@@ -139,8 +140,8 @@ const RightFormWork = () => {
       <EditFormWorkBox>
         <EditFormWorkStyle placeholder="请输入模板标题"></EditFormWorkStyle>
       </EditFormWorkBox>
-      {/* 权限配置 */}
-      <PermissionConfig />
+      {/* 编辑模板 */}
+      {isActive === 0 ? <EditWork /> : <PermissionConfig />}
     </RightFormWorkStyle>
   )
 }
