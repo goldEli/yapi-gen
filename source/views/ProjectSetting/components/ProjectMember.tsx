@@ -13,7 +13,7 @@ import {
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useState, useEffect } from 'react'
-import { Menu, message, Form, Space } from 'antd'
+import { Menu, message, Form, Space, Checkbox } from 'antd'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import Sort from '@/components/Sort'
 import PermissionWrap from '@/components/PermissionWrap'
@@ -40,6 +40,7 @@ import CommonButton from '@/components/CommonButton'
 import PaginationBox from '@/components/TablePagination'
 import ResizeTable from '@/components/ResizeTable'
 import ProjectOverModal from '@/components/ProjectOverModal'
+import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
 
 const Wrap = styled.div({
   padding: '0 24px',
@@ -134,6 +135,9 @@ const ProjectMember = (props: { searchValue?: string }) => {
   const [member, setMember] = useState<any>()
   const [userDataList, setUserDataList] = useState<any[]>([])
   asyncSetTtile(`${t('title.a2')}【${projectInfo.name ?? ''}】`)
+
+  const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([])
+
   const dispatch = useDispatch()
 
   const hasAdd = getIsPermission(
@@ -282,6 +286,24 @@ const ProjectMember = (props: { searchValue?: string }) => {
       navigate(`/ProjectManagement/MemberInfo/Profile?data=${params}`)
     }
   }
+  const onSelectChange = (e: CheckboxChangeEvent, record: any) => {
+    if (e.target.checked) {
+      setSelectedRowKeys(prev => [...prev, record.id])
+      return
+    }
+    setSelectedRowKeys(prev => {
+      return prev.filter(v => v !== record.id)
+    })
+  }
+  const onCheckAll = (e: CheckboxChangeEvent) => {
+    if (e.target.checked) {
+      setSelectedRowKeys(
+        memberList?.list.map((record: Record<string, any>) => record.id),
+      )
+      return
+    }
+    setSelectedRowKeys([])
+  }
 
   const columns = [
     {
@@ -292,6 +314,25 @@ const ProjectMember = (props: { searchValue?: string }) => {
         return hasDel && hasEdit ? null : <MoreDropdown menu={menu(record)} />
       },
     },
+    {
+      title: (
+        <Checkbox
+          onChange={onCheckAll}
+          checked={selectedRowKeys.length === memberList?.list?.length}
+        />
+      ),
+      dataIndex: 'check',
+      width: 48,
+      render: (text: string, record: any) => {
+        return (
+          <Checkbox
+            checked={selectedRowKeys.indexOf(record.id) > -1}
+            onChange={e => onSelectChange(e, record)}
+          />
+        )
+      },
+    },
+
     {
       title: (
         <NewSort

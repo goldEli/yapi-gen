@@ -5,6 +5,7 @@ import { Input } from 'antd'
 import { useState } from 'react'
 import PermissionConfig from './PermissionConfig'
 import EditWork from './EditWork'
+import PreviewDialog from '@/components/FormWork/PreviewDialog'
 const RightFormWorkStyle = styled.div`
   flex: 1;
   overflow: hidden;
@@ -107,6 +108,7 @@ const EditFormWorkStyle = styled(Input)({
 
 const RightFormWork = () => {
   const [isActive, setIsActive] = useState(0)
+  const [isVisible, setIsVisible] = useState(false)
   return (
     <RightFormWorkStyle>
       <Title>工作日报</Title>
@@ -124,7 +126,7 @@ const RightFormWork = () => {
           </Col2>
         </RowStyle>
         <BtnRight>
-          <CommonButton type="light" onClick={() => 133}>
+          <CommonButton type="light" onClick={() => setIsVisible(true)}>
             预览
           </CommonButton>
           <CommonButton
@@ -142,6 +144,14 @@ const RightFormWork = () => {
       </EditFormWorkBox>
       {/* 编辑模板 */}
       {isActive === 0 ? <EditWork /> : <PermissionConfig />}
+      {/* 预览 */}
+      <PreviewDialog
+        type={'formWork'}
+        title="工作周报预览"
+        onClose={() => setIsVisible(false)}
+        onConfirm={() => setIsVisible(false)}
+        isVisible={isVisible}
+      />
     </RightFormWorkStyle>
   )
 }

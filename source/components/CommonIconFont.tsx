@@ -7,6 +7,7 @@ interface IconProps {
   color?: string
   size?: number
   onClick?(): void
+  transform?: string
 }
 
 export const CommonIconFont = (props: IconProps) => {
@@ -17,6 +18,7 @@ export const CommonIconFont = (props: IconProps) => {
       style={{
         color: props.color,
         fontSize: props.size || 16,
+        transform: props?.transform,
       }}
     />
   )
