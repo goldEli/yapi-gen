@@ -10,7 +10,7 @@ interface IconProps {
   transform?: string
 }
 
-const CommonIconFont = (props: IconProps) => {
+export const CommonIconFont = (props: IconProps) => {
   return (
     <IconFont
       type={props.type}
