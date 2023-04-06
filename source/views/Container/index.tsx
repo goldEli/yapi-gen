@@ -120,7 +120,6 @@ export const Container = () => {
       String(location.pathname).includes('/MemberInfo') &&
       !String(location.pathname).includes('/ProjectManagement')
 
-    console.log('first', menuPermission)
     if (isStaffMemberInfo) {
       hasPermission = userInfo?.company_permissions?.filter(
         (i: any) => i.identity === 'b/companyuser/info',
