@@ -204,9 +204,15 @@ const routes = [
         element: lazy(() => import('@/views/SiteNotifications')),
         children: [
           {
-            path: 'Setting',
+            path: 'Setting/:id',
             element: lazy(
               () => import('../views/SiteNotifications/Setting/index'),
+            ),
+          },
+          {
+            path: 'Email/:id',
+            element: lazy(
+              () => import('@/views/SiteNotifications/Email/index'),
             ),
           },
           {

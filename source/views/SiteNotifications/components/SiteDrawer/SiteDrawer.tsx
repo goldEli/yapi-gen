@@ -116,7 +116,7 @@ const SiteDrawer = () => {
                   style={{
                     margin: '0 4px',
                   }}
-                  onClick={() => navigate('/SiteNotifications/Setting')}
+                  onClick={() => navigate('/SiteNotifications/Setting/1')}
                   width={32}
                   height={32}
                 >

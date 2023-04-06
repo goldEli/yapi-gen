@@ -9,7 +9,7 @@ interface IconProps {
   onClick?(): void
 }
 
-const CommonIconFont = (props: IconProps) => {
+export const CommonIconFont = (props: IconProps) => {
   return (
     <IconFont
       type={props.type}
