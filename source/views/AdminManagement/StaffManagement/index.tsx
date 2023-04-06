@@ -8,7 +8,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { Checkbox, Menu, message } from 'antd'
+import { Checkbox, Menu, message, Space } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './components/StaffTable'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -66,6 +66,14 @@ export const DataWrap = styled.div({
   overflow: 'hidden',
   borderRadius: '6px',
 })
+
+const inputSearch = css`
+  margin-right: 24px;
+`
+
+const settingWrap = css`
+  margin: 0 8px;
+`
 
 const StaffManagement = () => {
   const asyncSetTtile = useSetTitle()
@@ -458,19 +466,14 @@ const StaffManagement = () => {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <InputSearch
-            leftIcon={true}
-            width={292}
-            placeholder={t('staff.pleaseKey')}
-            onChangeSearch={onPressEnter}
-          />
-
-          <Reset
-            style={{ whiteSpace: 'nowrap', margin: '0 24px' }}
-            onClick={rest}
-          >
-            {t('staff.refresh')}
-          </Reset>
+          <div className={inputSearch}>
+            <InputSearch
+              leftIcon
+              width={292}
+              placeholder={t('staff.pleaseKey')}
+              onChangeSearch={onPressEnter}
+            />
+          </div>
 
           <HoverWrap
             onClick={onChangeFilter}
@@ -482,18 +485,30 @@ const StaffManagement = () => {
               {t('common.search')}
             </span>
           </HoverWrap>
+
           <DividerWrap type="vertical" />
-          <DropDownMenu
-            menu={<SetShowField notView onChangeFieldVisible={showModal} />}
-            icon="settings"
-            isVisible={isVisibleFields}
-            onChangeVisible={setIsVisibleFields}
-            isActive={isModalVisible}
-          >
-            <div style={{ whiteSpace: 'nowrap' }}>
-              {t('common.tableFieldSet')}
-            </div>
-          </DropDownMenu>
+
+          <HoverWrap style={{ margin: '0 8px' }} onClick={rest}>
+            <IconFont className="iconMain" type="sync" />
+            <span style={{ whiteSpace: 'nowrap' }} className="label">
+              {t('staff.refresh')}
+            </span>
+          </HoverWrap>
+
+          <DividerWrap type="vertical" />
+          <div className={settingWrap}>
+            <DropDownMenu
+              menu={<SetShowField notView onChangeFieldVisible={showModal} />}
+              icon="settings"
+              isVisible={isVisibleFields}
+              onChangeVisible={setIsVisibleFields}
+              isActive={isModalVisible}
+            >
+              <div style={{ whiteSpace: 'nowrap', marginLeft: '8px' }}>
+                {t('common.tableFieldSet')}
+              </div>
+            </DropDownMenu>
+          </div>
         </div>
       </div>
       {isShow ? <SearchList onSearch={onSearch} /> : null}
