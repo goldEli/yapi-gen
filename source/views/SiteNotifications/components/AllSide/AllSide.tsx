@@ -29,7 +29,6 @@ const items = [
 const AllSide = () => {
   const navigate = useNavigate()
   const { id } = useParams<any>()
-  console.log(id)
 
   return (
     <div
