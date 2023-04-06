@@ -55,8 +55,10 @@ const useWebsocket = () => {
       setReadyState(stateArr[ws.current?.readyState ?? 0])
     }
     ws.current.onmessage = (e: any) => {
-      console.log(e)
-      setWsData(e)
+      setWsData({
+        key: Math.random(),
+        data: e.data,
+      })
       //  const { data, type } = (...JSON.parse(e.data)) || {};
       // switch (
       //   type // type 是跟后端约定的

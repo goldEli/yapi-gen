@@ -4,12 +4,10 @@ import useWebsocket from '@/tools/useWebsocket'
 import { useDispatch, useSelector } from '@store/index'
 import { changeVisible } from '@store/SiteNotifications'
 import { Badge } from 'antd'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const SiteNotifications = () => {
   const { sendMessage, wsData } = useWebsocket()
-  console.log(wsData)
-
   const dispatch = useDispatch()
   const isVisible = useSelector(store => store.siteNotifications.isVisible)
   const sendMsg = () => {
@@ -23,6 +21,10 @@ const SiteNotifications = () => {
       })
     }
   }
+  useEffect(() => {
+    sendMsg()
+  }, [wsData])
+
   return (
     <Badge size="small" offset={[-2, 1]} count={5}>
       <CommonIconFont

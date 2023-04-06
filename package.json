@@ -47,7 +47,8 @@
     "react-router-dom": "^6.6.0",
     "react-sortable-hoc": "^2.0.0",
     "react-viewer": "^3.2.2",
-    "swiper": "^8.3.1"
+    "swiper": "^8.3.1",
+    "ws": "^8.13.0"
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.9.2",
@@ -90,7 +91,6 @@
       "@typescript-eslint/no-empty-interface": 0,
       "react/no-unstable-nested-components": 0,
       "lines-around-comment": 0,
-      "no-console": 0,
       "padding-line-between-statements": 0,
       "naming-convention": 0,
       "no-unsafe-finally": 0,
