@@ -1,14 +1,31 @@
 declare namespace Model.Calendar {
+  interface ShowScheduleParams {
+    // 用于编辑日程详情查询
+    id?: string | number
+    // 简易创建与完整创建弹窗宽度
+    width?: string | number
+    // 是否有右侧可视化操作
+    hasRight?: boolean
+    // 日程时间
+    time?: string
+    // 是否全天
+    isAll?: boolean
+  }
+
   /**
    * 可订阅人群type
    */
   type ChooseAddType = 'member' | 'team' | 'department' | undefined | 'all' | ''
 
+  /**
+   * 日程设置当前选中的锚点
+   */
   interface RouterMenu {
     name: string
     key: string
   }
 
+  // 添加成员/部门/团队
   interface MemberItem {
     id: number
     name: string
@@ -18,6 +35,7 @@ declare namespace Model.Calendar {
     type?: ChooseAddType
     permission?: number
   }
+  // 日历列表返回数据
   interface Info {
     id: number
     color: number
@@ -28,11 +46,13 @@ declare namespace Model.Calendar {
     is_check: 0 | 1
   }
 
+  // 订阅日历数据 我管理的和我订阅的
   interface CalendarData {
     manage: Info[]
     sub: Info[]
   }
 
+  // 订阅列表数据 节假日、公开日历、订阅联系人
   interface SubscribeInfo {
     id: number
     avatar?: string
@@ -48,6 +68,7 @@ declare namespace Model.Calendar {
     icon?: string
   }
 
+  // 日历图标列表
   interface CalendarIcon {
     id: number
     path: string

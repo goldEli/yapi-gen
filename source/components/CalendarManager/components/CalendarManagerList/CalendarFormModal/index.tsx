@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-binary-expression */
 /* eslint-disable react/jsx-no-leaked-render */
 import ChooseIconOrUpload from '@/components/ChooseIconOrUpload'
 import CommonButton from '@/components/CommonButton'
@@ -228,9 +229,19 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
       type: isActiveKey,
       permission: 4,
     }))
-    currentKey === 'share'
-      ? setShareList([...new Set([...shareList, ...resultList])])
-      : setSubscribedList([...new Set([...subscribedList, ...resultList])])
+    const newList = [
+      ...(currentKey === 'share' ? shareList : subscribedList),
+      ...resultList,
+    ]
+    let obj: any = {}
+    const result: Model.Calendar.MemberItem[] = newList.reduce(
+      (cur: Model.Calendar.MemberItem[], next: Model.Calendar.MemberItem) => {
+        obj[next.id] ? '' : (obj[next.id] = true && cur.push(next))
+        return cur
+      },
+      [],
+    )
+    currentKey === 'share' ? setShareList(result) : setSubscribedList(result)
     setIsChooseVisible(false)
   }
 
