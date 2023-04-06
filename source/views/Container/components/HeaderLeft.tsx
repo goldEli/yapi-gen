@@ -50,7 +50,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
     companyId: '',
     companyUserId: '',
   })
-
+  // TODO: mock 数据
   const mockMenuPermission = useMemo(() => {
     if (menuPermission.menus) {
       const menus = menuPermission?.menus && cloneDeep(menuPermission.menus)
@@ -67,7 +67,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
             name: '汇报',
             permission: '',
             status: 1,
-            url: '/Report/Statistics',
+            url: '/Report/FormWork',
           },
           {
             // company_id: 1504303190303051800,
@@ -307,6 +307,7 @@ const HeaderLeft = () => {
   )
   const dispatch = useDispatch()
   const routerPath = useLocation()
+  const navigate = useNavigate()
 
   const mockMenuPermission = useMemo(() => {
     let menus = { priorityUrl: '', menus: [] }
@@ -323,7 +324,7 @@ const HeaderLeft = () => {
                 name: '汇报',
                 permission: '',
                 status: 1,
-                url: '/Report/Statistics',
+                url: '/Report/FormWork',
               },
               {
                 // company_id: 1504303190303051800,
@@ -395,9 +396,10 @@ const HeaderLeft = () => {
   }, [currentMenu])
 
   const getMenuItemElement = (i: any) => {
-    const url = ['/Report/Statistics', '/Report/Formwork']
-    if (url.includes(i.url)) {
-      return <span>{i.name}</span>
+    const unDropdownUrl = ['/Report/Statistics', '/Report/FormWork']
+
+    if (unDropdownUrl.indexOf(i.url) !== -1) {
+      return <span onClick={() => navigate(i.url)}>{i.name}</span>
     }
     switch (i.url) {
       case '/ProjectManagement/Mine':
