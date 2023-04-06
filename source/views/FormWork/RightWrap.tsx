@@ -2,10 +2,13 @@
 import CommonButton from '@/components/CommonButton'
 import styled from '@emotion/styled'
 import { Input } from 'antd'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import PermissionConfig from './PermissionConfig'
 import EditWork from './EditWork'
 import PreviewDialog from '@/components/FormWork/PreviewDialog'
+import { useDispatch, useSelector } from '@store/index'
+import { setEditSave } from '@store/formWork'
+import DeleteConfirm from '@/components/DeleteConfirm'
 const RightFormWorkStyle = styled.div`
   flex: 1;
   overflow: hidden;
@@ -100,6 +103,8 @@ const EditFormWorkBox = styled.div`
 const EditFormWorkStyle = styled(Input)({
   border: 'none',
   marginBottom: '14px',
+  color: 'var(--neutral-n1-d1)',
+  fontFamily: 'SiYuanMedium',
   '&::placeholder': {
     fontSize: '18px',
     color: 'var(--neutral-n4)',
@@ -109,6 +114,13 @@ const EditFormWorkStyle = styled(Input)({
 const RightFormWork = () => {
   const [isActive, setIsActive] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
+  const [value, setValue] = useState('')
+  const dispatch = useDispatch()
+  const [delIsVisible, setDelIsVisible] = useState(false)
+  const { activeItem } = useSelector(store => store.formWork)
+  useEffect(() => {
+    activeItem && setValue(activeItem.label)
+  }, [activeItem])
   return (
     <RightFormWorkStyle>
       <Title>工作日报</Title>
@@ -131,7 +143,7 @@ const RightFormWork = () => {
           </CommonButton>
           <CommonButton
             type="light"
-            onClick={() => 133}
+            onClick={() => setDelIsVisible(true)}
             style={{ margin: '0 0px 0 16px' }}
           >
             删除
@@ -139,11 +151,23 @@ const RightFormWork = () => {
         </BtnRight>
       </HeaderOperate>
       {/* 编辑 */}
-      <EditFormWorkBox>
-        <EditFormWorkStyle placeholder="请输入模板标题"></EditFormWorkStyle>
-      </EditFormWorkBox>
+      {isActive === 0 ? (
+        <EditFormWorkBox>
+          <EditFormWorkStyle
+            placeholder="请输入模板标题"
+            value={value}
+            onInput={(e: any) => {
+              setValue(e.target.value), dispatch(setEditSave(false))
+            }}
+          ></EditFormWorkStyle>
+        </EditFormWorkBox>
+      ) : null}
       {/* 编辑模板 */}
-      {isActive === 0 ? <EditWork /> : <PermissionConfig />}
+      {isActive === 0 ? (
+        <EditWork back={() => setIsActive(1)} />
+      ) : (
+        <PermissionConfig back={() => setIsActive(0)} />
+      )}
       {/* 预览 */}
       <PreviewDialog
         type={'formWork'}
@@ -151,6 +175,14 @@ const RightFormWork = () => {
         onClose={() => setIsVisible(false)}
         onConfirm={() => setIsVisible(false)}
         isVisible={isVisible}
+      />
+      {/* 删除模板 */}
+      <DeleteConfirm
+        title={'删除模板'}
+        text="确认删除模版，删除后将无法汇报"
+        isVisible={delIsVisible}
+        onConfirm={() => setDelIsVisible(false)}
+        notCancel
       />
     </RightFormWorkStyle>
   )
