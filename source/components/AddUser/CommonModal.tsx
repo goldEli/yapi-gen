@@ -313,7 +313,6 @@ const CommonModal = (props: ModalProps) => {
   useEffect(() => {
     if (tabsActive === 0) {
       getTeam()
-      console.log(121212)
     } else {
       getCompany()
     }
@@ -352,7 +351,6 @@ const CommonModal = (props: ModalProps) => {
 
   // 勾选复选框
   const onCheck = (checkedKey: any, e: any) => {
-    console.log(checkedKey)
     checkdFilterDataList = []
     if (tabsActive === 1) {
       setCheckedKeys(checkedKey)
