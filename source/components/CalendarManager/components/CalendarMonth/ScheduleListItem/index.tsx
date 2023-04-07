@@ -6,6 +6,8 @@ import {
 } from '@/components/CalendarManager/utils'
 import { isSameTime } from '../../CalendarWeek/utils'
 import dayjs from 'dayjs'
+import { css } from '@emotion/css'
+import classNames from 'classnames'
 
 interface ScheduleListItemProps {
   data: Model.Schedule.Info
@@ -16,9 +18,6 @@ const ScheduleListItemBox = styled.div<{
   hoverBg: string
   color: string
 }>`
-  width: calc(100% - 4px);
-  margin-left: 2px;
-  margin-right: 2px;
   height: 22px;
   background: ${props => props.bg};
   .text {
@@ -31,9 +30,17 @@ const ScheduleListItemBox = styled.div<{
   }
   display: flex;
   gap: 7px;
-  align-items: center;
   cursor: pointer;
+  align-items: center;
 `
+const marginLeft = css`
+  margin-left: 2px;
+`
+
+const marginRight = css`
+  margin-right: 2px;
+`
+
 const Dot = styled.div<{ bg: string }>`
   width: 6px;
   height: 6px;
@@ -66,12 +73,17 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
     {
       schedule_start_datetime,
       start_timestamp: dayjs(start_timestamp).format('YYYY-MM-DD'),
+      isAllDayFirstDay,
+      isAllDayButNotFirstDay,
     },
     data.is_span_day,
-    isAllDayButNotFirstDay,
   )
   return (
     <ScheduleListItemBox
+      className={classNames({
+        [marginLeft]: !isAllDayButNotFirstDay,
+        [marginRight]: !(isAllDayButNotFirstDay || isAllDayFirstDay),
+      })}
       bg={isAllDay ? getColorWithOpacityPointOne(data.color) : void 0}
       hoverBg={getColorWithOpacityPointOne(data.color)}
       color={getColor(data.color)}
