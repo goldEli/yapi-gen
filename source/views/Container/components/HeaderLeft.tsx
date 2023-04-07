@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-leaked-render */
 import { Space, Drawer, Tooltip } from 'antd'
 import { useEffect, useMemo, useState } from 'react'
 import CommonIconFont from '@/components/CommonIconFont'
@@ -50,47 +51,27 @@ const DrawerComponent = (props: DrawerComponentProps) => {
     companyId: '',
     companyUserId: '',
   })
+
   // TODO: mock 数据
   const mockMenuPermission = useMemo(() => {
     if (menuPermission.menus) {
-      const menus = menuPermission?.menus && cloneDeep(menuPermission.menus)
+      const menus = menuPermission?.menus && cloneDeep(menuPermission?.menus)
       menus.push({
-        id: 'log',
-        url: '/Report',
+        id: 999,
+        url: '/SiteNotifications',
         permission: '',
-        name: '工作汇报',
+        name: '通知中心',
         children: [
           {
-            // company_id: 1504303190303051800,
-            // created_at: '-0001-11-30 00:00:00',
-            id: 100,
-            name: '汇报',
+            id: 1000,
+            url: '/SiteNotifications/AllNote/1',
             permission: '',
-            status: 1,
-            url: '/Report/FormWork',
-          },
-          {
-            // company_id: 1504303190303051800,
-            // created_at: '-0001-11-30 00:00:00',
-            id: 88,
-            name: '统计',
-            permission: '',
-            status: 1,
-            url: '/Report/Statistics',
-          },
-          {
-            // company_id: 1504303190303051800,
-            // created_at: '-0001-11-30 00:00:00',
-            id: 99,
-            name: '模板',
-            permission: '',
-            status: 1,
-            url: '/Report/FormWork',
+            name: '通知中心',
           },
         ],
       })
       return {
-        priorityUrl: '"/ProjectManagement"',
+        priorityUrl: menuPermission.priorityUrl,
         menus,
       }
     }
@@ -125,7 +106,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
   // 点击跳转后台管理
   const onToAdmin = () => {
     props.onChange(false)
-    const resultMenu = mockMenuPermission?.menus?.filter(
+    const resultMenu = menuPermission?.menus?.filter(
       (i: any) => i.url === '/AdminManagement',
     )[0]
     if (resultMenu) {
@@ -309,53 +290,6 @@ const HeaderLeft = () => {
   const routerPath = useLocation()
   const navigate = useNavigate()
 
-  const mockMenuPermission = useMemo(() => {
-    let menus = { priorityUrl: '', menus: [] }
-    if (menuPermission.menus) {
-      const data =
-        menuPermission?.menus &&
-        cloneDeep(menuPermission.menus).map((i: any) => {
-          if (i.url === '/Report' && i.children.length <= 0) {
-            i.children = [
-              {
-                // company_id: 1504303190303051800,
-                // created_at: '-0001-11-30 00:00:00',
-                id: 100,
-                name: '汇报',
-                permission: '',
-                status: 1,
-                url: '/Report/FormWork',
-              },
-              {
-                // company_id: 1504303190303051800,
-                // created_at: '-0001-11-30 00:00:00',
-                id: 88,
-                name: '统计',
-                permission: '',
-                status: 1,
-                url: '/Report/Statistics',
-              },
-              {
-                // company_id: 1504303190303051800,
-                // created_at: '-0001-11-30 00:00:00',
-                id: 99,
-                name: '模板',
-                permission: '',
-                status: 1,
-                url: '/Report/FormWork',
-              },
-            ]
-          }
-          return i
-        })
-      menus = {
-        priorityUrl: '"/ProjectManagement"',
-        menus: data,
-      }
-    }
-    return menus
-  }, [menuPermission])
-
   const getActive = (item: any) => {
     let state = false
 
@@ -370,6 +304,24 @@ const HeaderLeft = () => {
     }
     return state
   }
+
+  // TODO: mock 数据
+  const mockMenuPermission = useMemo(() => {
+    if (menuPermission.menus) {
+      const menus = menuPermission?.menus && cloneDeep(menuPermission?.menus)
+      menus.push({
+        id: 999,
+        url: '/SiteNotifications',
+        permission: '',
+        name: '通知中心',
+      })
+      return {
+        priorityUrl: menuPermission.priorityUrl,
+        menus,
+      }
+    }
+    return {}
+  }, [menuPermission])
 
   useEffect(() => {
     if (mockMenuPermission.menus?.length || routerPath) {
@@ -396,18 +348,24 @@ const HeaderLeft = () => {
   }, [currentMenu])
 
   const getMenuItemElement = (i: any) => {
-    const unDropdownUrl = ['/Report/Statistics', '/Report/FormWork']
-
-    if (unDropdownUrl.indexOf(i.url) !== -1) {
+    const unDropdownUrl = [
+      '/Report/Review',
+      '/Report/Statistics',
+      '/Report/Formwork',
+    ]
+    if (unDropdownUrl.includes(i.url)) {
       return <span onClick={() => navigate(i.url)}>{i.name}</span>
     }
     switch (i.url) {
       case '/ProjectManagement/Mine':
         return <MyDropdown text={i.name} />
-      default:
+      case '/ProjectManagement/Project':
         return <ItemDropdown text={i.name} />
+      default:
+        return ''
     }
   }
+
   return (
     <HeaderLeftWrap>
       <DrawerComponent value={isVisible} onChange={setIsVisible} />
@@ -429,15 +387,9 @@ const HeaderLeft = () => {
             color="var(--neutral-n3)"
           />
           <MenuLabel>{currentMenu?.name}</MenuLabel>
-          {routerPath.pathname.includes('SiteNotifications') && (
-            <Space size={8}>
-              <CommonIconFont type="bell" size={24} color="var(--neutral-n3)" />
-              <MenuLabel>通知中心</MenuLabel>
-            </Space>
-          )}
         </Space>
       </Space>
-      {showTopNav ? (
+      {showTopNav && (
         <ChildrenMenu>
           {currentMenu.children.map((i: any) => (
             <ChildrenMenuItem key={i.id} size={8} isActive={getActive(i)}>
@@ -445,7 +397,7 @@ const HeaderLeft = () => {
             </ChildrenMenuItem>
           ))}
         </ChildrenMenu>
-      ) : null}
+      )}
     </HeaderLeftWrap>
   )
 }

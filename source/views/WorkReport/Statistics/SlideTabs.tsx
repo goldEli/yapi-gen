@@ -6,7 +6,7 @@ import { css } from '@emotion/css'
 
 type PositionType = 'left' | 'right'
 
-const IconContainer = styled.div`
+const ArrowIconBox = styled.div`
   width: 40px;
   height: 52px;
   box-shadow: 5px 0px 7px -3px rgba(0, 0, 0, 0.12);
@@ -18,38 +18,54 @@ const IconContainer = styled.div`
 const tabsWrap = css`
   width: calc(100vw - 560px);
   .ant-tabs > .ant-tabs-nav {
+    .ant-tabs-nav-wrap {
+      margin: 0 16px;
+    }
     .ant-tabs-nav-operations {
       display: none;
     }
   }
 `
-// .ant-tabs-nav-wrap {
-//   // margin-left: 16px;
-// }
-// .ant-tabs-nav-wrap::after {
-//   box-shadow: none;
-// }
+
 interface SlideTabsProps {
   items: any[]
 }
 
 const STEP = 1
+
 const TAB_MARGIN = 32
+
 const SlideTabs: React.FC<SlideTabsProps> = ({ items }: SlideTabsProps) => {
   const [xAxis, setXAxis] = useState<number>(0)
-  const [viewRight, setViewRight] = useState<number>(0)
-  const [slidRight, setSlidRight] = useState<number>(0)
+  const [showRight, setShowRight] = useState<boolean>(false)
+
   const nodes = useRef<Array<any>>([])
   const nodeIndex = useRef(0)
-  const showLeft = useMemo(() => !!(xAxis < 0), [xAxis])
+  const navWraptWidth = useRef(0)
+  const navListWidth = useRef(0)
 
-  const showRight = useMemo(() => {
-    return slidRight > viewRight
-  }, [viewRight, slidRight])
+  const showLeft = useMemo(() => !!(xAxis < 0), [xAxis])
 
   useLayoutEffect(() => {
     nodes.current = Array.from(document.querySelectorAll('.ant-tabs-tab'))
+    navWraptWidth.current =
+      document.getElementsByClassName('ant-tabs-nav-wrap')[0].clientWidth
+    navListWidth.current =
+      document.getElementsByClassName('ant-tabs-nav-list')[0].clientWidth
   }, [])
+
+  useEffect(() => {
+    if (navListWidth.current <= navWraptWidth.current) {
+      setShowRight(false)
+      return
+    }
+    setShowRight(nodeIndex.current + STEP < nodes.current.length)
+  }, [
+    nodeIndex.current,
+    nodes.current,
+    navListWidth.current,
+    navWraptWidth.current,
+  ])
 
   const prev = () => {
     const fragment = nodes.current.slice(
@@ -61,6 +77,7 @@ const SlideTabs: React.FC<SlideTabsProps> = ({ items }: SlideTabsProps) => {
     for (let index = 0; index < fragment.length; index++) {
       nodeWidth += fragment[index].clientWidth + TAB_MARGIN
     }
+
     setXAxis(current => {
       return current + nodeWidth
     })
@@ -81,49 +98,27 @@ const SlideTabs: React.FC<SlideTabsProps> = ({ items }: SlideTabsProps) => {
     })
   }
 
-  const resize = () => {
-    const { right } = document
-      .getElementsByClassName('ant-tabs-nav-wrap')[0]
-      .getBoundingClientRect()
-    const { right: sliderRight } = document
-      .getElementsByClassName('ant-tabs-nav-list')[0]
-      .getBoundingClientRect()
-    setViewRight(right)
-    setSlidRight(sliderRight)
-  }
   useEffect(() => {
-    // eslint-disable-next-line prefer-destructuring
     const slider: any = document.getElementsByClassName('ant-tabs-nav-list')[0]
     slider.style.transform = `translateX(${xAxis}px)`
-    resize()
   }, [xAxis])
-
-  useEffect(() => {
-    resize()
-  }, [])
-  useLayoutEffect(() => {
-    window.addEventListener('resize', resize)
-    return () => {
-      window.removeEventListener('resize', resize)
-    }
-  }, [])
 
   const operateSlot: Record<PositionType, React.ReactNode> = {
     left: (
       <>
         {showLeft && (
-          <IconContainer>
+          <ArrowIconBox>
             <DoubleLeftOutlined onClick={prev} />
-          </IconContainer>
+          </ArrowIconBox>
         )}
       </>
     ),
     right: (
       <>
         {showRight && (
-          <IconContainer>
+          <ArrowIconBox>
             <DoubleRightOutlined onClick={next} />
-          </IconContainer>
+          </ArrowIconBox>
         )}
       </>
     ),
