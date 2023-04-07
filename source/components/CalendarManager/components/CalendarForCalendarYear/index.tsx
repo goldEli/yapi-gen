@@ -8,6 +8,7 @@ import styled from '@emotion/styled'
 import HeaderRender from './HeaderRender'
 import { css } from '@emotion/css'
 import { setScheduleListMoadl, setScheduleDate } from '@store/schedule'
+import { setScheduleInfoDropdown } from '@store/calendarPanle'
 import { useDispatch, useSelector } from '@store/index'
 import ScheduListModal from '../ScheduleList'
 dayjs.extend(dayLocaleData)
@@ -15,7 +16,7 @@ dayjs.extend(dayLocaleData)
 const DayBox = styled.div`
   width: 24px;
   height: 24px;
-  font-size: 14px;
+  font-size: var(--font14);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,6 +25,21 @@ const dayActive = css`
   border-radius: 50%;
   background: var(--primary-d1);
   color: var(--neutral-white-d7);
+  position: relative;
+  
+`
+const hasScheduleClass = css`
+  position: relative;
+    &::after{
+      position: absolute;
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--primary-d1);
+      bottom: -8px;
+      left: 10px;;
+      border-radius: 50%;
+    }
 `
 interface CalendarForCalendarYearProps {
   month: number
@@ -46,6 +62,7 @@ const CalendarForCalendarYear: React.FC<
     // setScheduleDate
     disPatch(setScheduleListMoadl({ visible: true, top: 76, left: 100 }))
     disPatch(setScheduleDate(month))
+    disPatch(setScheduleInfoDropdown({ visible: false }));
   }
   const disPatch = useDispatch()
   return (
@@ -53,9 +70,10 @@ const CalendarForCalendarYear: React.FC<
       <StyledCalendar
         dateFullCellRender={date => {
           const today =
-            dayjs().format('DD/MM/YYYY') === dayjs(date).format('DD/MM/YYYY')
+            dayjs().format('DD/MM/YYYY') === dayjs(date).format('DD/MM/YYYY');
+          const hasSchedule = ['21/03/2023', '18/02/2023', '16/02/2023'].includes(dayjs(date).format('DD/MM/YYYY'));
           return (
-            <DayBox className={today ? dayActive : ''} onClick={dateClick}>
+            <DayBox className={today ? dayActive : hasSchedule ? hasScheduleClass : ''} onClick={dateClick}>
               {dayjs(date).date()}
             </DayBox>
           )
@@ -63,7 +81,7 @@ const CalendarForCalendarYear: React.FC<
         value={date.month(props.month)}
         style={wrapperStyle}
         fullscreen={false}
-        onPanelChange={(value, mode) => {}}
+        onPanelChange={(value, mode) => { }}
         headerRender={({ value, type, onChange, onTypeChange }) => {
           return (
             <HeaderRender
