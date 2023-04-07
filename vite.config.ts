@@ -53,11 +53,11 @@ export default defineConfig(config => {
       },
     },
     esbuild: {
-      drop: ['console', 'debugger'],
+      // drop: ['console', 'debugger'],
     },
     build: {
       modulePreload: true,
-      minify: 'esbuild',
+      // minify: 'esbuild',
     },
     envDir: './environments/',
     envPrefix: '__',
