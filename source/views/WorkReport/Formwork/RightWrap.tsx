@@ -170,7 +170,7 @@ const RightFormWork = () => {
       {/* 预览 */}
       <PreviewDialog
         dataList={[]}
-        type={'formWork1'}
+        type={'formWork'}
         title="工作周报预览"
         onClose={() => setIsVisible(false)}
         onConfirm={() => setIsVisible(false)}
