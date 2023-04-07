@@ -32,7 +32,6 @@ interface Props {
 }
 
 const RangePicker = (props: Props) => {
-  console.log('render', props)
   const [t] = useTranslation()
   const valuesArr = [
     [
