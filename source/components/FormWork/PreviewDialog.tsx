@@ -102,6 +102,8 @@ interface EditorPropsType {
   // 类型 formWork 禁用掉所有
   type: string
   isVisible: boolean
+  onChange?(e: string): void
+  value?: string
 }
 const EditorMain = (props: EditorPropsType) => {
   const editorRef = useRef<EditorRef>(null)
@@ -120,6 +122,8 @@ const EditorMain = (props: EditorPropsType) => {
       }}
     >
       <Editor
+        value={props.value}
+        onChange={(e: string) => props.onChange?.(e)}
         ref={editorRef}
         upload={uploadFile}
         getSuggestions={() => options}
@@ -132,9 +136,7 @@ const WhiteDay = (props: Props) => {
   const [attachList, setAttachList] = useState<any>([])
   const [peopleValue, setPeopleValue] = useState<any>([])
   const [needValue, setNeedValue] = useState<any>([])
-  const [options, setOptions] = useState<any>([])
   const leftDom: any = useRef<HTMLInputElement>(null)
-
   const onChangeAttachment = (result: any) => {
     const arr = result.map((i: any) => {
       return {
@@ -177,16 +179,17 @@ const WhiteDay = (props: Props) => {
   if (!props.isVisible) {
     return null
   }
-  const confirm = () => {
+  const onConfirm = () => {
     const values = form.getFieldsValue()
+    console.log(values)
   }
   return (
     <CommonModal
       width={784}
       title={props.title}
       isVisible={props.isVisible}
-      onClose={() => 123}
-      onConfirm={() => 123}
+      onClose={props.onClose}
+      onConfirm={() => onConfirm()}
       confirmText={t('newlyAdd.submit')}
     >
       {props.type === 'formWork' ? null : (
@@ -251,35 +254,6 @@ const WhiteDay = (props: Props) => {
             }}
             label={<LabelTitle title={'今日工作'} />}
             name="info"
-            rules={[
-              {
-                validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
-                required: true,
-                message: (
-                  <div
-                    style={{
-                      margin: '5px 0',
-                      fontSize: '12px',
-                      display: 'flex',
-                      alignItems: 'center',
-                    }}
-                  >
-                    请输入
-                  </div>
-                ),
-                whitespace: true,
-                validator: onValidator,
-              },
-            ]}
-          >
-            <EditorMain isVisible={props.isVisible} type={props.type} />
-          </Form.Item>
-          <Form.Item
-            style={{
-              marginBottom: '30px',
-            }}
-            label={<LabelTitle title={'明日工作'} />}
-            name="info2"
             rules={[
               {
                 validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
