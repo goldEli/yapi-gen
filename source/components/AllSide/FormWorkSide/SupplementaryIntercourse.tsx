@@ -4,6 +4,7 @@ interface Props {
   isVisible: boolean
   onClose(): void
   onConfirm(): void
+  title: string
 }
 const ItemList = styled.div`
   margin: 0 auto;
@@ -48,7 +49,7 @@ const SupplementaryIntercourse = (props: Props) => {
   return (
     <CommonModal
       width={640}
-      title={'补交汇报'}
+      title={props.title}
       isVisible={props.isVisible}
       onClose={props.onClose}
       onConfirm={props.onConfirm}

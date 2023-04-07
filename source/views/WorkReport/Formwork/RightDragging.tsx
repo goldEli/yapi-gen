@@ -66,9 +66,6 @@ const SliderList = (props: any) => {
   const { children } = props
   const [top, setTop] = useState(0)
   const [left, setLeft] = useState(0)
-  const [isVisible, setIsVisible] = useState(false)
-  const [delItem, setDelItem] = useState<any>()
-  const { projectInfo } = useSelector(store => store.project)
   const ref: any = useRef()
   const prevRectRef = useRef(null)
   let startY = 0
@@ -132,7 +129,7 @@ const SliderList = (props: any) => {
           <ItemList>
             <div>
               <CommonIconFont
-                type="sort"
+                type={dragItem.icon}
                 size={19}
                 color="var(--neutral-n1-d1)"
               />
@@ -152,7 +149,7 @@ const SliderList = (props: any) => {
         <SearchItemList>
           <div>
             <CommonIconFont
-              type="sort"
+              type={children.icon}
               size={19}
               color="var(--neutral-n1-d1)"
             />
@@ -168,15 +165,15 @@ const Sortable = () => {
   const option = [
     {
       title: '富文本编辑器',
-      icon: '',
+      icon: 'text',
     },
     {
       title: '附件',
-      icon: '',
+      icon: 'attachment',
     },
     {
       title: '关联需求',
-      icon: 'attachment',
+      icon: 'horizontal',
     },
   ]
   return (

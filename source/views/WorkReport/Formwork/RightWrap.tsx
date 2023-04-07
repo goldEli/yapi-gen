@@ -36,7 +36,7 @@ export const Col2 = styled.div`
   height: 32px;
   display: flex;
   position: absolute;
-  right: -177px;
+  right: -147px;
   &:hover {
     cursor: pointer;
   }
@@ -52,7 +52,7 @@ export const Col = styled.div`
 export const Text = styled.div<{ bgc: any }>(
   {
     padding: '0 24px 0 0',
-    minWidth: '136px',
+    minWidth: '99px',
     height: '32px',
     lineHeight: '32px',
     textAlign: 'center',
@@ -169,6 +169,7 @@ const RightFormWork = () => {
       )}
       {/* 预览 */}
       <PreviewDialog
+        dataList={[]}
         type={'formWork'}
         title="工作周报预览"
         onClose={() => setIsVisible(false)}

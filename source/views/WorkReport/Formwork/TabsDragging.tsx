@@ -113,7 +113,6 @@ const Sortable = (props: any) => {
       _list[endIndex] = props.list[current]
       _list[current] = props.list[endIndex]
       // 使用的key值用来筛选
-      console.log(_list, 99)
       props.onChangeMove(_list)
     }
     setEndIndex(null)

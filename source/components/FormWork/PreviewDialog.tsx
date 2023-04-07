@@ -11,13 +11,9 @@ import RelatedNeed from './RelatedNeed'
 import IconFont from '@/components/IconFont'
 import { AddWrap } from '@/components/StyleCommon'
 import { useEffect, useRef, useState } from 'react'
-import { getReportDetail } from '@/services/daily'
 import { t } from 'i18next'
 import UploadAttach from '@/components/FormWork/UploadAttach'
-import { useDispatch } from '@store/index'
-import { changeRest } from '@store/log'
 import { Editor, EditorRef } from '@xyfe/uikit'
-import { getStaffListAll } from '@/services/staff'
 import { uploadFile } from '@/components/CreateDemand/CreateDemandLeft'
 import styled from '@emotion/styled'
 import CommonIconFont from '../CommonIconFont'
@@ -28,13 +24,7 @@ const HeaderWrap = styled.div`
   align-items: center;
   padding: 0 24px 24px 24px;
 `
-const Shade = styled.div`
-  position: absolute;
-  /* width: 100%; */
-  height: 100%;
-  background-color: red;
-  z-index: 99989999999999999999999999999999999999;
-`
+
 const LeftWrap = styled.div`
   display: flex;
   align-items: center;
@@ -88,6 +78,14 @@ export const LabelTitle = (props: any) => {
     </div>
   )
 }
+interface UserDetail {
+  // 名称
+  title: string
+  // 时间
+  time: string
+  // 提交时间
+  submitTime: string
+}
 interface Props {
   title: string
   isVisible: boolean
@@ -95,15 +93,18 @@ interface Props {
   onConfirm(): void
   // 类型 formWork 禁用掉所有
   type: string
+  // 头部用户信息
+  userDetail?: UserDetail
+  // 表单是配置出来的不是写死的，传值传过来
+  dataList: []
 }
 const WhiteDay = (props: Props) => {
-  const texts: any = [
-    '',
-    { name: t('p2.title.t1d'), name2: t('p2.title.t1t') },
-    { name: t('p2.title.t2d'), name2: t('p2.title.t2t') },
-    { name: t('p2.title.t3d'), name2: t('p2.title.t3t') },
-  ]
-  console.log(texts, 'texts')
+  // const texts: any = [
+  //   '',
+  //   { name: t('p2.title.t1d'), name2: t('p2.title.t1t') },
+  //   { name: t('p2.title.t2d'), name2: t('p2.title.t2t') },
+  //   { name: t('p2.title.t3d'), name2: t('p2.title.t3t') },
+  // ]
   const editorRef = useRef<EditorRef>(null)
   const editorRef2 = useRef<EditorRef>(null)
   const [form] = Form.useForm()
@@ -142,7 +143,6 @@ const WhiteDay = (props: Props) => {
         editorRef.current?.focus()
       }, 100)
     }
-    console.log(editorRef.current)
   }, [props.isVisible])
 
   const scrollToBottom = () => {
@@ -180,12 +180,12 @@ const WhiteDay = (props: Props) => {
             <ImgWrap src="" />
             <div>
               <TopWrap>
-                <span>李四的工作日报</span>
-                <span>(2022-08-22)</span>
+                <span>{props.userDetail?.title}</span>
+                <span>{props.userDetail?.title}</span>
               </TopWrap>
               <BottomWrap>
-                <span>李四的工作日报</span>
-                <span>(2022-08-22)</span>
+                <span>上次提交时间：</span>
+                <span>{props.userDetail?.submitTime}</span>
               </BottomWrap>
             </div>
           </LeftWrap>

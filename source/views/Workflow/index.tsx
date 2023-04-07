@@ -26,7 +26,7 @@ import {
   StyleLeft,
   StyleRight,
   Text,
-} from '../FormWork/RightWrap'
+} from '../WorkReport/Formwork/RightWrap'
 
 const Wrap = styled.div({
   padding: 16,

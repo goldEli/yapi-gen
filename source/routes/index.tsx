@@ -37,11 +37,15 @@ const routes = [
         children: [
           {
             path: 'Statistics',
-            element: lazy(() => import('@/views/Report/Statistics')),
+            element: lazy(() => import('@/views/WorkReport/Statistics')),
           },
           {
             path: 'Formwork',
-            element: lazy(() => import('@/views/FormWork')),
+            element: lazy(() => import('@/views/WorkReport/Formwork')),
+          },
+          {
+            path: 'Review',
+            element: lazy(() => import('@/views/WorkReport/Review')),
           },
         ],
       },
@@ -52,10 +56,6 @@ const routes = [
           {
             path: 'Project',
             element: lazy(() => import('@/views/Project')),
-          },
-          {
-            path: 'FormWork',
-            element: lazy(() => import('@/views/FormWork')),
           },
           {
             path: 'Mine',
@@ -109,7 +109,7 @@ const routes = [
           },
           {
             path: 'MemberInfo',
-            element: lazy(() => import('@/views/FormWork')),
+            element: lazy(() => import('@/views/MemberInfo')),
             children: [
               {
                 path: 'Carbon',
