@@ -78,36 +78,28 @@ const slice = createSlice({
         visibleList: list,
       }
     },
-    // moveMonthSchedule(
-    //   state,
-    //   action: PayloadAction<SliceState['monthMoveScheduleActiveInfo']>,
-    // ) {
-    //   if (!state.monthMoveScheduleActiveInfo.visibleList?.length) {
-    //     return
-    //   }
-    //   const newState = {
-    //     ...state.monthMoveScheduleActiveInfo,
-    //     ...action.payload,
-    //   }
-    //   // const { scheduleList } = all.schedule
-    //   const { startIndex, endIndex } = newState
-    //   if (startIndex === void 0) {
-    //     return
-    //   }
-    //   if (endIndex === void 0) {
-    //     return
-    //   }
-    //   const len = newState.length ?? 0
+    resizeMonthSchedule(
+      state,
+      action: PayloadAction<SliceState['monthMoveScheduleActiveInfo']>,
+    ) {
+      // const all = store.getState()
+      const newState = {
+        ...state.monthMoveScheduleActiveInfo,
+        ...action.payload,
+      }
+      const { startIndex = 0, endIndex = 0, length = 0 } = newState
+      const len = length
 
-    //   const min = newState.endIndex ?? 0
-    //   const max = min + len
+      const min = endIndex ?? 0
+      const max = startIndex + len
 
-    //   const list = Array.from(Array(35).keys()).slice(min, max)
-    //   state.monthMoveScheduleActiveInfo = {
-    //     ...newState,
-    //     visibleList: list,
-    //   }
-    // },
+      const list = Array.from(Array(35).keys()).slice(min, max)
+      state.monthMoveScheduleActiveInfo = {
+        ...newState,
+        visibleList: list,
+      }
+    },
+
     setCalendarPanelType(
       state,
       action: PayloadAction<SliceState['calendarPanelType']>,
@@ -166,7 +158,7 @@ export const {
   setCalenderYearType,
   startMoveMonthSchedule,
   clearMonthMoveScheduleActiveInfo,
-  // moveMonthSchedule,
+  resizeMonthSchedule,
 } = slice.actions
 
 export default calendarPanel

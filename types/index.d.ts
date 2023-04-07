@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /// <reference types="vite/client" />
-
 declare const __VERSION__: string
 declare module 'react-resizable'
 

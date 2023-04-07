@@ -7,10 +7,10 @@ import dayjs from 'dayjs'
 import useCurrentTime from '@/components/CalendarManager/hooks/useCurrentTime'
 import ScheduleList from '../../ScheduleList'
 import {
+  resizeMonthSchedule,
   // moveMonthSchedule,
   startMoveMonthSchedule,
 } from '@store/calendarPanle'
-import MoveActiveItem from '../../MoveActiveItem'
 
 interface DayItemProps {
   idx: number
@@ -97,12 +97,21 @@ const DayItem: React.FC<DayItemProps> = props => {
       })}
       key={idx}
       onMouseEnter={e => {
-        console.log('onMouseEnter', props.idx)
-        dispatch(
-          startMoveMonthSchedule({
-            endIndex: props.idx,
-          }),
-        )
+        console.log('window.calendarPanel.type', window.calendarMonthPanelType)
+        if (window.calendarMonthPanelType === 'move') {
+          dispatch(
+            startMoveMonthSchedule({
+              endIndex: props.idx,
+            }),
+          )
+        }
+        if (window.calendarMonthPanelType === 'resize') {
+          dispatch(
+            resizeMonthSchedule({
+              endIndex: props.idx,
+            }),
+          )
+        }
       }}
     >
       <div className="dayBox">

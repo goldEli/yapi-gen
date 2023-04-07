@@ -18,6 +18,7 @@ import {
 import { useDispatch, useSelector } from '@store/index'
 import {
   clearMonthMoveScheduleActiveInfo,
+  resizeMonthSchedule,
   // moveMonthSchedule,
   startMoveMonthSchedule,
 } from '@store/calendarPanle'
@@ -53,6 +54,7 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
       }
       onMouseDown={e => {
         // e.stopPropagation()
+        window.calendarMonthPanelType = 'move'
         dispatch(
           startMoveMonthSchedule({
             startSchedule: props.data,
@@ -75,7 +77,24 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
     >
       {!isAllDayButNotFirstDay && (
         <>
-          <Dot bg={getColor(data.color)} />
+          <Dot
+            onMouseDown={e => {
+              e.stopPropagation()
+              window.calendarMonthPanelType = 'resize'
+              dispatch(
+                resizeMonthSchedule({
+                  startSchedule: props.data,
+                  startIndex: props.idx,
+                  endIndex: props.idx,
+                  length: len,
+                }),
+              )
+              window.addEventListener('mouseup', () => {
+                dispatch(clearMonthMoveScheduleActiveInfo())
+              })
+            }}
+            bg={getColor(data.color)}
+          />
           <Time className="text">{time}</Time>
           <Title className="text">{props.data.subject}</Title>
         </>
