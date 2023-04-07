@@ -487,17 +487,11 @@ const StepPageOne = (propsOne: Props) => {
         </div>
       </CommonModal>
       <div
-        style={{ display: 'flex', alignItems: 'flex-end', margin: '24px 0px' }}
+        style={{ display: 'flex', alignItems: 'center', margin: '24px 0px' }}
       >
-        <span
-          style={{
-            color: 'var(--primary-d2)',
-            fontSize: 12,
-          }}
-          onClick={() => setIsAddVisible(true)}
-        >
-          <IconFont type="plus" /> {t('newlyAdd.addStatus')}
-        </span>
+        <CommonButton type="primaryText" icon="plus" iconPlacement="left">
+          {t('newlyAdd.addStatus')}
+        </CommonButton>
         <span
           style={{ color: 'var(--neutral-n3)', fontSize: 12, marginLeft: 8 }}
         >

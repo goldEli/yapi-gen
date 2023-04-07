@@ -82,6 +82,7 @@ const Operation = (props: Props) => {
   const { projectInfo, filterKeys, projectInfoValues } = useSelector(
     store => store.project,
   )
+  const { screenMin } = useSelector(store => store.global)
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
