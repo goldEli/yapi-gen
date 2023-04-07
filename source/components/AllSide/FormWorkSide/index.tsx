@@ -7,6 +7,7 @@ import { setActiveItem } from '@store/formWork/index'
 import { useDispatch } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import SupplementaryIntercourse from './SupplementaryIntercourse'
+import WriteReport from './WriteReport'
 const FormWorkSideStyle = styled.div`
   width: 200px;
   min-width: 200px;
@@ -106,7 +107,15 @@ const FormWorkSide = () => {
       />
       {/* 补交汇报弹窗 */}
       <SupplementaryIntercourse
-        isVisible={true}
+        title="补交汇报"
+        isVisible={false}
+        onConfirm={() => 123}
+        onClose={() => 123}
+      />
+      {/* 写汇报 */}
+      <WriteReport
+        title="写汇报"
+        isVisible={false}
         onConfirm={() => 123}
         onClose={() => 123}
       />
