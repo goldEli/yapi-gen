@@ -140,6 +140,9 @@ const ListItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  .del {
+    display: none;
+  }
   & span:first-child {
     width: 24px;
     height: 24px;
@@ -152,6 +155,9 @@ const ListItem = styled.div`
   &:hover {
     background: var(--hover-d2);
     cursor: pointer;
+  }
+  &:hover .del {
+    display: block;
   }
 `
 const TreeStyle = styled(DirectoryTree)`
@@ -313,7 +319,6 @@ const CommonModal = (props: ModalProps) => {
   useEffect(() => {
     if (tabsActive === 0) {
       getTeam()
-      console.log(121212)
     } else {
       getCompany()
     }
@@ -352,7 +357,6 @@ const CommonModal = (props: ModalProps) => {
 
   // 勾选复选框
   const onCheck = (checkedKey: any, e: any) => {
-    console.log(checkedKey)
     checkdFilterDataList = []
     if (tabsActive === 1) {
       setCheckedKeys(checkedKey)
@@ -518,6 +522,7 @@ const CommonModal = (props: ModalProps) => {
                 <ListItem key={el.id}>
                   <CommonUserAvatar name={el.name} fontSize={14} />
                   <IconFont
+                    className="del"
                     type="close"
                     style={{ fontSize: 16, color: 'var(--neutral-n3)' }}
                     onClick={() => delPersonDataList(el)}
