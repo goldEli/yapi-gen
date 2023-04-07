@@ -99,12 +99,6 @@ interface Props {
   dataList: []
 }
 const WhiteDay = (props: Props) => {
-  // const texts: any = [
-  //   '',
-  //   { name: t('p2.title.t1d'), name2: t('p2.title.t1t') },
-  //   { name: t('p2.title.t2d'), name2: t('p2.title.t2t') },
-  //   { name: t('p2.title.t3d'), name2: t('p2.title.t3t') },
-  // ]
   const editorRef = useRef<EditorRef>(null)
   const editorRef2 = useRef<EditorRef>(null)
   const [form] = Form.useForm()
