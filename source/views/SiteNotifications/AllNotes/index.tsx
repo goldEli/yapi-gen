@@ -1,13 +1,26 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import CommonButton from '@/components/CommonButton'
 import LeftTitle from '@/components/LeftTitle'
 import { useDispatch } from '@store/index'
 import { changeVisibleFilter } from '@store/SiteNotifications'
-import React from 'react'
+import { useParams } from 'react-router'
 import AllSideFilter from '../components/AllSideFilter/AllSideFilter'
 import ContentItem from '../components/ContentItem/ContentItem'
 
+interface ZoomRatioType {
+  [MapZoom: string]: string
+}
 const Index = () => {
+  // const titles =
   const dispatch = useDispatch()
+  const { id } = useParams()
+  const titles: ZoomRatioType = {
+    1: '全部通知',
+    2: '未读通知',
+    3: '已读通知',
+    4: '提及我的',
+  }
+
   return (
     <div>
       <AllSideFilter />
@@ -19,7 +32,7 @@ const Index = () => {
           alignItems: 'center',
         }}
       >
-        <LeftTitle title="全部通知" />
+        <LeftTitle title={titles[id as string]} />
         <div style={{ display: 'flex', gap: '16px' }}>
           <CommonButton
             onClick={() => dispatch(changeVisibleFilter(true))}
@@ -27,7 +40,7 @@ const Index = () => {
           >
             筛选通知
           </CommonButton>
-          <CommonButton type="light">全部已读</CommonButton>
+          {id !== '3' && <CommonButton type="light">全部已读</CommonButton>}
         </div>
       </div>
 

@@ -27,21 +27,21 @@ const HeaderOperate = styled.div`
   display: flex;
   justify-content: space-between;
 `
-const RowStyle = styled.div`
+export const RowStyle = styled.div`
   position: relative;
   display: flex;
 `
-const Col2 = styled.div`
+export const Col2 = styled.div`
   max-width: 200px;
   height: 32px;
   display: flex;
   position: absolute;
-  right: -177px;
+  right: -147px;
   &:hover {
     cursor: pointer;
   }
 `
-const Col = styled.div`
+export const Col = styled.div`
   max-width: 200px;
   height: 32px;
   display: flex;
@@ -49,10 +49,10 @@ const Col = styled.div`
     cursor: pointer;
   }
 `
-const Text = styled.div<{ bgc: any }>(
+export const Text = styled.div<{ bgc: any }>(
   {
     padding: '0 24px 0 0',
-    minWidth: '136px',
+    minWidth: '99px',
     height: '32px',
     lineHeight: '32px',
     textAlign: 'center',
@@ -64,7 +64,7 @@ const Text = styled.div<{ bgc: any }>(
     color: bgc ? 'var(--primary-d1)' : 'var(--neutral-n2)',
   }),
 )
-const StyleRight = styled.div<{ bgc?: any }>(
+export const StyleRight = styled.div<{ bgc?: any }>(
   {
     width: 0,
     height: 0,
@@ -78,7 +78,7 @@ const StyleRight = styled.div<{ bgc?: any }>(
       : ' transparent transparent  transparent  var(--neutral-n8) ',
   }),
 )
-const StyleLeft = styled.div<{ bgc?: any }>(
+export const StyleLeft = styled.div<{ bgc?: any }>(
   {
     width: 0,
     height: 0,

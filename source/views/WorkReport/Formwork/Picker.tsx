@@ -218,7 +218,7 @@ const Picker = (props: PropsType) => {
             content={content}
             trigger="click"
           >
-            <CommonIconFont type="alarm" size={16} color="var(--neutral-n4)" />
+            <CommonIconFont type="time" size={16} color="var(--neutral-n4)" />
           </Popover>
         }
       />
