@@ -8,7 +8,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { Checkbox, Menu, message, Space } from 'antd'
+import { Checkbox, Menu, message, Space, Tooltip } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './components/StaffTable'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -38,6 +38,7 @@ import PermissionWrap from '@/components/PermissionWrap'
 import { confirmHand, restHand } from '@/services/handover'
 import ResizeTable from '@/components/ResizeTable'
 import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
+import BatchAction, { boxItem } from '@/components/BatchAction'
 
 export const tableWrapP = css`
   display: flex;
@@ -74,6 +75,11 @@ const inputSearch = css`
 const settingWrap = css`
   margin: 0 8px;
 `
+
+type actionRefType = {
+  onClose(): void
+  open(): void
+}
 
 const StaffManagement = () => {
   const asyncSetTtile = useSetTitle()
@@ -132,6 +138,7 @@ const StaffManagement = () => {
   )?.length
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([])
+  const actionRef = useRef<actionRefType>(null)
 
   const getStaffListData = async () => {
     setIsSpinning(true)
@@ -271,6 +278,19 @@ const StaffManagement = () => {
     }
     setSelectedRowKeys([])
   }
+  // TODO: API
+  const handleLock = () => {
+    // eslint-disable-next-line no-console
+    console.log(111)
+  }
+
+  useEffect(() => {
+    if (selectedRowKeys.length > 0) {
+      actionRef.current?.open()
+    } else {
+      actionRef.current?.onClose()
+    }
+  }, [selectedRowKeys])
 
   const selectColum: any = useMemo(() => {
     const arr = allTitleList
@@ -576,6 +596,13 @@ const StaffManagement = () => {
         }}
         onConfirm={closeStaffPersonal}
       />
+      <BatchAction ref={actionRef}>
+        <Tooltip placement="top" getPopupContainer={node => node} title="解锁">
+          <div className={boxItem} onClick={handleLock}>
+            <IconFont type="lock" />
+          </div>
+        </Tooltip>
+      </BatchAction>
     </PermissionWrap>
   )
 }
