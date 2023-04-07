@@ -10,13 +10,13 @@ type SliceState = {
   // 日程列表
   scheduleList: {
     [key in string]: Model.Schedule.Info[]
-  },
+  }
   scheduleListModal: {
-    visible: boolean,
-    top: number,
-    left: number,
-  },
-  scheduleDate?:number,
+    visible: boolean
+    top: number
+    left: number
+  }
+  scheduleDate?: number
 }
 
 const initialState: SliceState = {
@@ -31,7 +31,7 @@ const initialState: SliceState = {
     top: 0,
     left: 20,
   },
-  scheduleDate:0
+  scheduleDate: 0,
 }
 
 const slice = createSlice({
@@ -46,12 +46,18 @@ const slice = createSlice({
     //     return item
     //   })
     // },
-    setScheduleListMoadl(state, action: PayloadAction<Model.Schedule.ScheduleList>) {
-      state.scheduleListModal = { ...state.scheduleListModal, ...action.payload, }
+    setScheduleListMoadl(
+      state,
+      action: PayloadAction<Model.Schedule.ScheduleList>,
+    ) {
+      state.scheduleListModal = {
+        ...state.scheduleListModal,
+        ...action.payload,
+      }
     },
     setScheduleDate(state, action: PayloadAction<number>) {
-      state.scheduleDate =action.payload
-    }
+      state.scheduleDate = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addCase(getScheduleList.fulfilled, (state, action) => {
@@ -62,6 +68,6 @@ const slice = createSlice({
 
 const schedule = slice.reducer
 
-export const { setScheduleListMoadl,setScheduleDate } = slice.actions
+export const { setScheduleListMoadl, setScheduleDate } = slice.actions
 
 export default schedule

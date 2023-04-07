@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 import dayjsGenerateConfig from 'rc-picker/es/generate/dayjs'
 import generateCalendar from 'antd/es/calendar/generateCalendar'
 import { Dayjs } from 'dayjs'
+import { Form, Space } from 'antd'
 
 const Calendar = generateCalendar<Dayjs>(dayjsGenerateConfig)
 
@@ -156,4 +157,135 @@ export const ManagerListBox = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   padding-bottom: 52px;
+`
+
+export const CreateContent = styled.div`
+  display: flex;
+  height: 100%;
+  .haveRight {
+    width: 524px;
+  }
+  .notRight {
+    width: 100%;
+  }
+`
+
+export const CreateForm = styled(Form)`
+  padding: 0 16px 0 24px;
+  max-height: 60vh;
+  overflow: auto;
+`
+
+export const CreateFormItemWrap = styled.div`
+  display: flex;
+  align-items: center;
+  .icon {
+    font-size: 16px;
+    color: var(--neutral-n3);
+    margin-right: 4px;
+  }
+  div {
+    font-size: 14px;
+    color: var(--neutral-n1-d1);
+  }
+`
+
+export const TimeWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  .ant-checkbox-wrapper {
+    margin-bottom: 5px;
+  }
+`
+
+export const ItemFlex = styled.div`
+  width: 100%;
+  .box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .ant-select {
+    width: 80%;
+  }
+  .select {
+    margin-top: 8px;
+  }
+  .color {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+`
+
+export const ProviderForm = styled.div`
+  height: 100%;
+  background: var(--neutral-n6-d1);
+  width: 1px;
+  margin: 0 24px;
+`
+
+export const CreateVisualization = styled.div`
+  width: 524px;
+  max-height: 60vh;
+  padding: 0 16px 0 24px;
+  border-left: 1px solid var(--neutral-n6-d1);
+  margin-left: 4px;
+  overflow-y: auto;
+`
+
+export const ParticipantItems = styled(Space)`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 8px;
+`
+
+export const ParticipantItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 32px;
+  border-radius: 6px;
+  padding: 0 16px;
+  background: var(--neutral-n8);
+  .icon {
+    margin-left: 8px;
+    cursor: pointer;
+  }
+`
+
+export const CreateScheduleChecks = styled(Space)`
+  margin-top: 8px;
+  display: flex;
+`
+
+export const RepeatModalCheck = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  padding: 4px 16px 16px;
+  border-radius: 6px;
+  background: var(--neutral-n8);
+  margin-bottom: 24px;
+  .ant-checkbox-group-item {
+    margin-right: 32px;
+    margin-top: 12px;
+  }
+`
+
+export const NoticeBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+  .ant-select {
+    width: 95%;
+  }
+  .icon {
+    font-size: 16px;
+    color: var(--neutral-n3);
+    cursor: pointer;
+  }
 `

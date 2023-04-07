@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import React from 'react'
 import { useSelector,useDispatch } from '@store/index'
@@ -7,13 +7,13 @@ import {setScheduleListMoadl} from '@store/schedule'
 import ScheduleInfoDropdown from "../ScheduleInfoDropdown";
 import dayjs from "dayjs";
 interface ScheduleListProps {
-    month: number
+  month: number
 }
 interface ScheduleListBoxProps {
-    visible: boolean
-    top: number
-    left: number,
-    month: number
+  visible: boolean
+  top: number
+  left: number
+  month: number
 }
 const ScheduListBox = styled.div`
     width:260px;
@@ -32,18 +32,18 @@ const ScheduListBox = styled.div`
     box-sizing: border-box;
 `
 const ScheduleItem = styled.div`
-    font-size: 12px;
-    font-family: PingFang SC-Regular, PingFang SC;
-    font-weight: 400;
-    color: #646566;
-    margin-bottom: 4px;
-    padding-left: 6px;
-    box-sizing: border-box;
-    cursor: pointer;
-    &:hover{
-        background: rgba(102,136,255,0.1);
-        border-radius: 6px;
-    }
+  font-size: 12px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #646566;
+  margin-bottom: 4px;
+  padding-left: 6px;
+  box-sizing: border-box;
+  cursor: pointer;
+  &:hover {
+    background: rgba(102, 136, 255, 0.1);
+    border-radius: 6px;
+  }
 `
 const ScheduleTitle = styled.div`
     display: flex;
@@ -51,30 +51,30 @@ const ScheduleTitle = styled.div`
     margin-right: 8px;
 `
 const labelTime = css`
-    font-size: 12px;
-    font-family: PingFang SC-Regular, PingFang SC;
-    font-weight: 400;
-    color: var(---neutral-n4);
-    margin-right: 8px;
-    position: relative;
-    &::before{
+  font-size: 12px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: var(---neutral-n4);
+  margin-right: 8px;
+  position: relative;
+  &::before {
     width: 6px;
     height: 6px;
     background: var(--primary-d1);
     border-radius: 2px 2px 2px 2px;
     display: inline-block;
-    content:'';
+    content: '';
     margin-right: 8px;
     position: relative;
     top: -2px;
     }
 `
 const labelContent = css`
-font-size: 12px;
-font-family: PingFang SC-Regular, PingFang SC;
-font-weight: 400;
-color: var(--neutral-n2);
-line-height: 20px;
+  font-size: 12px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: var(--neutral-n2);
+  line-height: 20px;
 `
 const dateClass = css`
     color: var(--neutral-n1-d1);

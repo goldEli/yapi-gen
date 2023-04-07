@@ -1,6 +1,10 @@
 import CustomSelect from '@/components/CustomSelect'
 import styled from '@emotion/styled'
-import { setCalendarPanelType, setCalenderYearValue,setCalenderYearType } from '@store/calendarPanle'
+import {
+  setCalendarPanelType,
+  setCalenderYearValue,
+  setCalenderYearType,
+} from '@store/calendarPanle'
 import { useDispatch, useSelector } from '@store/index'
 import { Select } from 'antd'
 import React, { useState } from 'react'
@@ -22,12 +26,12 @@ const selectOptions: {
   value: Model.Calendar.CalendarPanelType
   label: string
 }[] = [
-    { value: 'day', label: '日' },
-    { value: 'week', label: '周' },
-    { value: 'month', label: '月' },
-    { value: 'year', label: '年' },
-    { value: 'list', label: '列表' },
-  ]
+  { value: 'day', label: '日' },
+  { value: 'week', label: '周' },
+  { value: 'month', label: '月' },
+  { value: 'year', label: '年' },
+  { value: 'list', label: '列表' },
+]
 
 const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
   const calendarPanelType = useSelector(
@@ -35,10 +39,10 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
   )
   const [currentYear, setCurrentYear] = useState(() => dayjs().year())
 
-  const dispatch = useDispatch();
-  
+  const dispatch = useDispatch()
+
   const prevYearClick = () => {
-    setCurrentYear(currentYear - 1);
+    setCurrentYear(currentYear - 1)
     dispatch(setCalenderYearValue(currentYear - 1))
     dispatch(setCalenderYearType(-1))
   }
@@ -47,29 +51,40 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
     dispatch(setCalenderYearValue(currentYear + 1))
     dispatch(setCalenderYearType(1))
   }
-  const todayClick=()=>{
-    setCurrentYear(dayjs().year());
+  const todayClick = () => {
+    setCurrentYear(dayjs().year())
     dispatch(setCalenderYearValue(dayjs().year()))
     dispatch(setCalenderYearType(0))
   }
   return (
     <Box>
-      <div style={{
-        display: 'flex',
-        cursor: 'pointer'
-      }}>
-        <div onClick={todayClick} style={{
-          margin: '0px 10px'
-        }}>今天</div>
+      <div
+        style={{
+          display: 'flex',
+          cursor: 'pointer',
+        }}
+      >
+        <div
+          onClick={todayClick}
+          style={{
+            margin: '0px 10px',
+          }}
+        >
+          今天
+        </div>
         <div>
           <span>
             <IconFont type="left" onClick={prevYearClick} />
           </span>
-          <span style={{
-            margin: '0px 20px',
-            fontSize: '16px',
-            color: '#323233'
-          }}>{currentYear}年</span>
+          <span
+            style={{
+              margin: '0px 20px',
+              fontSize: '16px',
+              color: '#323233',
+            }}
+          >
+            {currentYear}年
+          </span>
           <span>
             <IconFont type="right" onClick={nextYearClick} />
           </span>

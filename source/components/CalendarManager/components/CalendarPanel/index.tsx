@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { useSelector } from '@store/index'
+import { useSelector, useDispatch } from '@store/index'
 import React, { useMemo } from 'react'
 import CalendarDay from '../CalendarDay'
 import CalendarList from '../CalendarList'
@@ -7,7 +7,6 @@ import CalendarMonth from '../CalendarMonth'
 import CalendarPanelToolBar from '../CalendarPanelToolBar'
 import CalendarWeek from '../CalendarWeek'
 import CalendarYear from '../CalendarYear'
-import {useDispatch} from '@store/index'
 import {setScheduleListMoadl} from '@store/schedule'
 import {setScheduleInfoDropdown} from '@store/calendarPanle'
 interface CalendarPanelProps {
@@ -51,7 +50,7 @@ const CalendarPanel: React.FC<CalendarPanelProps> = props => {
       return <CalendarList />
     }
     return <CalendarYear />
-  }, [calendarPanelType,calenderYearValue])
+  }, [calendarPanelType, calenderYearValue])
 
   return (
     <Box onClick={()=>{
