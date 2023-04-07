@@ -3,6 +3,7 @@ import dayjs, { Dayjs } from 'dayjs'
 import React, { useState, useEffect } from 'react'
 import { useSelector } from '@store/index'
 import ScheduListModal from '../../ScheduleList'
+import ScheduleInfoDropdown from "../../ScheduleInfoDropdown";
 interface HeaderRenderProps {
   onChange(date: dayjs.Dayjs): void
   month: number
@@ -20,11 +21,9 @@ const HeaderRender: React.FC<HeaderRenderProps> = props => {
     state => state.calendarPanel.calenderYearValue,
   )
 
-  const calenderYearType = useSelector(
-    state => state.calendarPanel.calenderYearType,
-  )
-
-  const date = useSelector(state => state.schedule.scheduleDate)
+  const calenderYearType = useSelector( state => state.calendarPanel.calenderYearType)
+  const scheduleInfo=useSelector(state=>state.calendarPanel.scheduleInfoDropdown)
+  const date=useSelector(state=>state.schedule.scheduleDate);
 
   useEffect(() => {
     const maps = new Map([
@@ -36,14 +35,10 @@ const HeaderRender: React.FC<HeaderRenderProps> = props => {
     props.onCallBack(years)
     props.onChange(years)
   }, [calenderYearValue])
-  return (
-    <CalendarHeader>
-      {`${props.month + 1}月`}
-      {props.month === date ? (
-        <ScheduListModal month={props.month + 1} />
-      ) : null}
-    </CalendarHeader>
-  )
+  return <CalendarHeader>{`${props.month + 1}月`}
+    {props.month===date ? <ScheduListModal month={props.month + 1} /> : null}
+    {scheduleInfo.visible && props.month===date?<ScheduleInfoDropdown />:null}
+  </CalendarHeader>
 }
 
 export default HeaderRender

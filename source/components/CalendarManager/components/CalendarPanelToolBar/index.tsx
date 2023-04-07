@@ -20,7 +20,7 @@ const Box = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 4px;
+  margin-top:4px;
 `
 const selectOptions: {
   value: Model.Calendar.CalendarPanelType
@@ -32,7 +32,6 @@ const selectOptions: {
   { value: 'year', label: '年' },
   { value: 'list', label: '列表' },
 ]
-
 const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
   const calendarPanelType = useSelector(
     state => state.calendarPanel.calendarPanelType,
