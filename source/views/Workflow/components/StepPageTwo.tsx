@@ -25,6 +25,7 @@ const TableWrap = styled.div({
 })
 
 const ContWrap = styled.div({
+  marginTop: '24px',
   width: '100%',
   height: 'calc(100% - 148px)',
 })
@@ -172,7 +173,7 @@ const StepPageTwo = () => {
         </TextWrap>
       </ContWrap>
 
-      <Space size={16} style={{ position: 'absolute', bottom: 24, left: 24 }}>
+      <Space size={16} style={{ position: 'absolute', top: 68, right: 24 }}>
         <CommonButton type="primary" onClick={onSave}>
           {t('common.save')}
         </CommonButton>

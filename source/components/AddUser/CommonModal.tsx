@@ -140,6 +140,9 @@ const ListItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  .del {
+    display: none;
+  }
   & span:first-child {
     width: 24px;
     height: 24px;
@@ -152,6 +155,9 @@ const ListItem = styled.div`
   &:hover {
     background: var(--hover-d2);
     cursor: pointer;
+  }
+  &:hover .del {
+    display: block;
   }
 `
 const TreeStyle = styled(DirectoryTree)`
@@ -313,7 +319,6 @@ const CommonModal = (props: ModalProps) => {
   useEffect(() => {
     if (tabsActive === 0) {
       getTeam()
-      console.log(121212)
     } else {
       getCompany()
     }
@@ -357,9 +362,9 @@ const CommonModal = (props: ModalProps) => {
       setCheckedKeys(checkedKey)
       // 得到重复node需要去重
       const data = unionBy(checkdFilterData(e.checkedNodes), 'id')
-      if (e.checkedNodes.length && data.length <= personData.length) {
-        message.warning(t('commonModal.warnningMsg'))
-      }
+      // if (e.checkedNodes.length && data.length <= personData.length) {
+      //   message.warning(t('commonModal.warnningMsg'))
+      // }
       setPersonData(data)
     } else {
       setCheckedKeys(checkedKey)
@@ -375,7 +380,7 @@ const CommonModal = (props: ModalProps) => {
         const keys = treeData2.map((el: any) => el.id)
         setCheckedKeys(keys)
       } else {
-        const keys = treeData.map((el: any) => el.id)
+        const keys = tabsTreeDataList?.map((item: any) => item.id)
         setCheckedKeys(keys)
       }
       const data = tabsTreeDataList?.map((item: any) => item)
@@ -517,6 +522,7 @@ const CommonModal = (props: ModalProps) => {
                 <ListItem key={el.id}>
                   <CommonUserAvatar name={el.name} fontSize={14} />
                   <IconFont
+                    className="del"
                     type="close"
                     style={{ fontSize: 16, color: 'var(--neutral-n3)' }}
                     onClick={() => delPersonDataList(el)}

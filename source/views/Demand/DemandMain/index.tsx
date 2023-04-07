@@ -33,6 +33,7 @@ const Right = styled.div<{ isShowLeft: boolean }>({
   height: '100%',
   overflowY: 'auto',
   paddingLeft: '24px',
+  minWidth: 800,
 })
 
 interface Props {
@@ -166,7 +167,7 @@ const DemandMain = (props: Props) => {
 
   useEffect(() => {
     getList(isGrid, searchItems, pageObj, order)
-  }, [key, isGrid, order, pageObj, searchChoose, projectId])
+  }, [key, isGrid, order, pageObj, projectId])
 
   useEffect(() => {
     if (isRefresh) {

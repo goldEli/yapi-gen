@@ -487,17 +487,10 @@ const StepPageOne = (propsOne: Props) => {
         </div>
       </CommonModal>
       <div
-        style={{ display: 'flex', alignItems: 'flex-end', marginBottom: 24 }}
+        style={{ display: 'flex', alignItems: 'center', margin: '24px 0px' }}
       >
-        <CommonButton
-          type="light"
-          style={{
-            background: 'var( --hover-d2)',
-            color: 'var(--primary-d2)',
-          }}
-          onClick={() => setIsAddVisible(true)}
-        >
-          <IconFont type="plus" /> {t('newlyAdd.addStatus')}
+        <CommonButton type="primaryText" icon="plus" iconPlacement="left">
+          {t('newlyAdd.addStatus')}
         </CommonButton>
         <span
           style={{ color: 'var(--neutral-n3)', fontSize: 12, marginLeft: 8 }}
@@ -548,7 +541,7 @@ const StepPageOne = (propsOne: Props) => {
         </Spin>
       </TableWrap>
       {dataSource?.list?.length > 0 && (
-        <Space size={16} style={{ position: 'absolute', bottom: 24, left: 24 }}>
+        <Space size={16} style={{ position: 'absolute', top: 68, right: 24 }}>
           <CommonButton type="primary" onClick={onSave}>
             {t('newlyAdd.saveAndNext')}
           </CommonButton>

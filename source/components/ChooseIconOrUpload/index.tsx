@@ -181,7 +181,7 @@ const ChooseIconOrUpload = (props: ChooseColorProps) => {
             fileList={[]}
             customRequest={(file: any) => onCustomRequest(file)}
           >
-            <TextStyle1>重新上传</TextStyle1>
+            <TextStyle1>{t('reupload')}</TextStyle1>
           </Upload>
         </ChooseColorUpload>
       ) : (

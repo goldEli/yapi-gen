@@ -3,6 +3,8 @@ import styled from '@emotion/styled'
 import InputSearch from '@/components/InputSearch'
 import { useSelector } from '@store/index'
 import { useTranslation } from 'react-i18next'
+import { DividerWrap, HoverWrap } from '@/components/StyleCommon'
+import ScreenMinHover from '@/components/ScreenMinHover'
 
 const HeaderWrap = styled.div`
   width: 100%;
@@ -40,6 +42,11 @@ const ButtonStyle = styled.div`
     cursor: pointer;
   }
 `
+
+const refresh = () => {
+  console.log('refresh')
+}
+
 const HeaderSearch = (props: {
   onSetSearchVal: any
   onShowAddMemberModal(): void
@@ -63,6 +70,15 @@ const HeaderSearch = (props: {
         <span>{activeTeam?.name}</span>
       </TitleWrap>
       <SearchBox>
+        {/* //TODO: 列表刷新处 */}
+        {/* <ScreenMinHover
+          label={t('staff.refresh')}
+          icon="sync"
+          onClick={refresh}
+        /> */}
+
+        <DividerWrap type="vertical" />
+
         <InputSearch
           width={202}
           bgColor="var(--neutral-white-d4)"
@@ -71,6 +87,7 @@ const HeaderSearch = (props: {
           onChangeSearch={(value: string) => props.onSetSearchVal(value)}
           leftIcon
         />
+        <DividerWrap type="vertical" />
         <ButtonStyle onClick={props.onShowAddMemberModal}>
           {t('add_a_member') as string}
         </ButtonStyle>

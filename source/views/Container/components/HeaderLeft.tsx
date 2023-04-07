@@ -1,5 +1,6 @@
+/* eslint-disable react/jsx-no-leaked-render */
 import { Space, Drawer, Tooltip } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import CommonIconFont from '@/components/CommonIconFont'
 import MyDropdown from './MyDropdown'
 import sideLogo from '/newLogo.svg'
@@ -29,6 +30,7 @@ import { useTranslation } from 'react-i18next'
 import ItemDropdown from './ItemDropdown'
 import { setCurrentMenu } from '@store/user'
 import menuTag from '/menuTag.svg'
+import { cloneDeep } from 'lodash'
 
 interface DrawerComponentProps {
   value: boolean
@@ -49,6 +51,32 @@ const DrawerComponent = (props: DrawerComponentProps) => {
     companyId: '',
     companyUserId: '',
   })
+
+  // TODO: mock 数据
+  const mockMenuPermission = useMemo(() => {
+    if (menuPermission.menus) {
+      const menus = menuPermission?.menus && cloneDeep(menuPermission?.menus)
+      menus.push({
+        id: 999,
+        url: '/SiteNotifications',
+        permission: '',
+        name: '通知中心',
+        children: [
+          {
+            id: 1000,
+            url: '/SiteNotifications/AllNote/1',
+            permission: '',
+            name: '通知中心',
+          },
+        ],
+      })
+      return {
+        priorityUrl: menuPermission.priorityUrl,
+        menus,
+      }
+    }
+    return {}
+  }, [menuPermission])
 
   // 点击菜单
   const onChangeCurrentMenu = (item: any) => {
@@ -193,7 +221,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
         {/* 其他菜单 */}
         <DrawerMenu>
           <Space size={12} style={{ flexWrap: 'wrap' }}>
-            {menuPermission?.menus
+            {mockMenuPermission?.menus
               ?.filter((k: any) => k.url !== '/AdminManagement')
               .map((i: any) => (
                 <DrawerMenuItem
@@ -230,8 +258,9 @@ const DrawerComponent = (props: DrawerComponentProps) => {
           </Space>
         </DrawerMenu>
         {/* 后台管理 */}
-        {menuPermission?.menus?.filter((i: any) => i.url === '/AdminManagement')
-          ?.length > 0 && (
+        {mockMenuPermission?.menus?.filter(
+          (i: any) => i.url === '/AdminManagement',
+        )?.length > 0 && (
           <DrawerFooter onClick={onToAdmin}>
             <div>
               <CommonIconFont
@@ -259,9 +288,11 @@ const HeaderLeft = () => {
   )
   const dispatch = useDispatch()
   const routerPath = useLocation()
+  const navigate = useNavigate()
 
   const getActive = (item: any) => {
     let state = false
+
     if (routerPath.pathname.includes(item.url)) {
       state = true
     }
@@ -274,21 +305,66 @@ const HeaderLeft = () => {
     return state
   }
 
+  // TODO: mock 数据
+  const mockMenuPermission = useMemo(() => {
+    if (menuPermission.menus) {
+      const menus = menuPermission?.menus && cloneDeep(menuPermission?.menus)
+      menus.push({
+        id: 999,
+        url: '/SiteNotifications',
+        permission: '',
+        name: '通知中心',
+      })
+      return {
+        priorityUrl: menuPermission.priorityUrl,
+        menus,
+      }
+    }
+    return {}
+  }, [menuPermission])
+
   useEffect(() => {
-    if (menuPermission.menus?.length || routerPath) {
+    if (mockMenuPermission.menus?.length || routerPath) {
       let resultMenu: any
       if (routerPath.pathname === '/') {
-        resultMenu = menuPermission?.menus?.filter(
-          (i: any) => i.url === menuPermission.priorityUrl,
+        resultMenu = mockMenuPermission?.menus?.filter(
+          (i: any) => i.url === mockMenuPermission.priorityUrl,
         )[0]
       } else {
-        resultMenu = menuPermission?.menus?.filter((i: any) =>
+        resultMenu = mockMenuPermission?.menus?.filter((i: any) =>
           routerPath.pathname.includes(i.url),
         )?.[0]
       }
       dispatch(setCurrentMenu(resultMenu))
     }
-  }, [menuPermission, routerPath])
+  }, [mockMenuPermission, routerPath])
+
+  const showTopNav = useMemo(() => {
+    return (
+      currentMenu?.children &&
+      currentMenu?.children.length > 0 &&
+      currentMenu?.url !== '/AdminManagement'
+    )
+  }, [currentMenu])
+
+  const getMenuItemElement = (i: any) => {
+    const unDropdownUrl = [
+      '/Report/Review',
+      '/Report/Statistics',
+      '/Report/Formwork',
+    ]
+    if (unDropdownUrl.includes(i.url)) {
+      return <span onClick={() => navigate(i.url)}>{i.name}</span>
+    }
+    switch (i.url) {
+      case '/ProjectManagement/Mine':
+        return <MyDropdown text={i.name} />
+      case '/ProjectManagement/Project':
+        return <ItemDropdown text={i.name} />
+      default:
+        return ''
+    }
+  }
 
   return (
     <HeaderLeftWrap>
@@ -313,16 +389,11 @@ const HeaderLeft = () => {
           <MenuLabel>{currentMenu?.name}</MenuLabel>
         </Space>
       </Space>
-      {currentMenu?.url === '/ProjectManagement' && (
+      {showTopNav && (
         <ChildrenMenu>
-          {currentMenu?.children?.map((i: any) => (
+          {currentMenu.children.map((i: any) => (
             <ChildrenMenuItem key={i.id} size={8} isActive={getActive(i)}>
-              {i.url === '/ProjectManagement/Mine' && (
-                <MyDropdown text={i.name} />
-              )}
-              {i.url !== '/ProjectManagement/Mine' && (
-                <ItemDropdown text={i.name} />
-              )}
+              {getMenuItemElement(i)}
             </ChildrenMenuItem>
           ))}
         </ChildrenMenu>

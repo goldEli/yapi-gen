@@ -6,7 +6,11 @@
 import styled from '@emotion/styled'
 import { Select, Form, Space } from 'antd'
 import moment from 'moment'
-import { SelectWrap, SelectWrapBedeck } from '@/components/StyleCommon'
+import {
+  HoverWrap,
+  SelectWrap,
+  SelectWrapBedeck,
+} from '@/components/StyleCommon'
 import { useEffect, useState } from 'react'
 import Sort from '@/components/Sort'
 import { useTranslation } from 'react-i18next'
@@ -21,7 +25,7 @@ import PaginationBox from '@/components/TablePagination'
 import IconFont from '@/components/IconFont'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import ResizeTable from '@/components/ResizeTable'
-import CustomSelect from '@/components/CustomSelect'
+import ScreenMinHover from '@/components/ScreenMinHover'
 
 const Header = styled.div({
   height: 'auto',
@@ -30,7 +34,7 @@ const Header = styled.div({
   top: 0,
   zIndex: 9,
   padding: '24px 24px 20px',
-  '.label': {
+  '.title': {
     fontSize: 16,
     fontFamily: 'SiYuanMedium',
     color: 'var(--neutral-n1-d1)',
@@ -214,6 +218,10 @@ const OperationManagement = () => {
     getList(pageObj, order)
   }
 
+  const refresh = () => {
+    console.log('refresh')
+  }
+
   return (
     <PermissionWrap
       auth="/AdminManagement/OperationManagement"
@@ -227,7 +235,8 @@ const OperationManagement = () => {
         onValuesChange={onValuesChange}
       >
         <Header>
-          <div className="label">{t('setting.operationLog')}</div>
+          <div className="title">{t('setting.operationLog')}</div>
+
           <SearchWrap size={16}>
             <SelectWrapBedeck>
               <span style={{ margin: '0 12px', fontSize: '14px' }}>
@@ -297,6 +306,13 @@ const OperationManagement = () => {
             >
               {t('common.clearForm')}
             </div>
+
+            {/* //TODO: 列表刷新处 */}
+            <ScreenMinHover
+              label={t('staff.refresh')}
+              icon="sync"
+              onClick={refresh}
+            />
           </SearchWrap>
         </Header>
         <Content>

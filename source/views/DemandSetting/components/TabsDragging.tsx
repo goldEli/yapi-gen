@@ -6,11 +6,13 @@ import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
 import { Checkbox, Tooltip } from 'antd'
+import { throttle } from 'lodash'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 const Container = styled.div`
-  margin-bottom: 8px;
+  position: relative;
+  height: 72px;
   &:hover {
     cursor: pointer;
   }
@@ -42,20 +44,7 @@ const ItemList = styled.div`
     box-shadow: 0px 0px 9px 3px rgba(0, 0, 0, 0.03);
   }
 `
-const ItemList1 = styled.div`
-  display: flex;
-  align-items: center;
-  height: 64px;
-  padding: 0 16px;
-  border-radius: 6px;
-  justify-content: space-between;
-  z-index: 5;
-  transition: all 0.3s;
-  display: none;
-  z-index: 999;
-  background: var(--neutral-white-d6);
-  box-shadow: 0px 0px 9px 3px rgba(0, 0, 0, 0.03);
-`
+
 const ListMsg = styled.div`
   div:nth-child(1) {
     font-size: 14px;
@@ -105,8 +94,8 @@ const Sortable = (props: any) => {
   const [endIndex, setEndIndex] = useState<any>(null)
   const ref: any = useRef()
   const container: any = useRef()
-  const [top, setTop] = useState(0)
   const [dragItem, setDragItem] = useState<any>()
+  let timer: any = null
   // 拖动传值
   const onDragStart = (ev: any, index: number, item: any) => {
     localStorage.className = ref?.current?.className
@@ -114,7 +103,6 @@ const Sortable = (props: any) => {
       ...item,
       dragtype: 'move',
     }
-    setDragItem(moveItem)
     ev.dataTransfer.setData('DragItem', JSON.stringify(moveItem))
     setCurrent(index)
     const imgDom = document.createElement('div')
@@ -132,7 +120,7 @@ const Sortable = (props: any) => {
   }
   // 拖动排序
   const onDragEnd = (e: any, index: number) => {
-    console.log('end')
+    setDragItem(null)
     if (endIndex !== index) {
       let _list: any = [...props.list]
       _list[endIndex] = props.list[current]
@@ -143,21 +131,24 @@ const Sortable = (props: any) => {
     }
     setEndIndex(null)
     setCurrent(null)
-    setTop(0)
   }
 
-  const onDragOver = (e: any, index: number) => {
+  const onDragOver = throttle((e: any, index: number, child: any) => {
+    setDragItem(child)
     setEndIndex(index)
     if (e.pageY >= window.screen?.availHeight - 300) {
       document
         .getElementById('father')!
         .scrollTo({ top: e.pageY, behavior: 'smooth' })
-    } else if (e.pageY <= Number(localStorage.topTitleTop)) {
+    } else if (e.pageY < Number(localStorage.topTitleTop)) {
       document
         .getElementById('father')!
         .scrollTo({ top: Number(0), behavior: 'smooth' })
     }
-  }
+    timer = setTimeout(() => {
+      setDragItem(null)
+    }, 500)
+  }, 100)
   const allowDrop = (ev: any) => {
     ev.preventDefault()
   }
@@ -180,6 +171,7 @@ const Sortable = (props: any) => {
     const drapClassName = ref?.current?.className
     if (localStorage.className === drapClassName) {
       props.onDrop(event, -2)
+      setDragItem(null)
       localStorage.className = ''
       return
     }
@@ -188,14 +180,14 @@ const Sortable = (props: any) => {
     } else {
       props.onDrop(event, -1)
     }
+    setDragItem(null)
     localStorage.className = ''
   }
-
-  const onItemDrag = (e: any) => {
-    console.log(77)
-    setTop(e.pageY)
-  }
-
+  useEffect(() => {
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [])
   return (
     <div
       draggable="false"
@@ -203,66 +195,6 @@ const Sortable = (props: any) => {
         event.preventDefault(), event.stopPropagation()
       }}
     >
-      {/* {top > 0 ? (
-        <ItemList1
-          draggable="false"
-          style={{
-            top: `${top}px`,
-            width: width,
-            display: top > 0 ? 'flex' : 'none',
-            height: '64px',
-            position: top > 0 ? 'fixed' : 'relative',
-            zIndex: top > 0 ? 90 : 9,
-          }}
-        >
-          <div style={{ display: 'flex', width: '100%' }}>
-            <IconBox>
-              <CommonIconFont
-                type={
-                  option?.find(
-                    (item: any) => dragItem?.fieldContent?.attr === item.type,
-                  )?.icon
-                }
-                size={24}
-                color="var(--neutral-n2-d2)"
-              />
-            </IconBox>
-            <ListMsg>
-              <div>{dragItem?.title}</div>
-              <div>
-                {t(
-                  option?.find(
-                    (item: any) => dragItem?.fieldContent?.attr === item.type,
-                  )?.label,
-                )}
-              </div>
-            </ListMsg>
-          </div>
-          <RightOperate>
-            {dragItem?.content === 'users_name' ||
-              dragItem?.content === 'user_name' ||
-              dragItem?.content === 'finish_at' ||
-              dragItem?.content === 'created_at' ||
-              dragItem?.content === 'schedule' ? (
-              <Checkbox disabled={true} />
-            ) : (
-              <Checkbox checked={dragItem?.isRequired === 1 ? true : false} />
-            )}
-
-            <Text>{t('must')}</Text>
-            <>
-              {dragItem?.content === 'users_name' ||
-                dragItem?.content === 'user_name' ||
-                dragItem?.content === 'finish_at' ||
-                dragItem?.content === 'created_at' ? (
-                <DelBtnText> {t('p2.delete')}</DelBtnText>
-              ) : (
-                <DelBtn>{t('p2.delete')}</DelBtn>
-              )}
-            </>
-          </RightOperate>
-        </ItemList1>
-      ) : null} */}
       {list?.length >= 1 &&
         list?.map((child: any, i: number) => (
           <div
@@ -276,13 +208,19 @@ const Sortable = (props: any) => {
             <Container
               ref={container}
               id="container"
+              style={{
+                transition:
+                  dragItem?.storyId === child?.storyId ? 'all .1s' : '',
+                transform:
+                  dragItem?.storyId === child?.storyId
+                    ? 'translateY(10px)'
+                    : 'translateY(0)',
+              }}
               key={child?.storyId}
               draggable="true"
-              onDragLeave={() => console.log('lk')}
               onDragStart={(ev: any) => onDragStart(ev, i, child)}
-              onDragOver={e => onDragOver(e, i)}
+              onDragOver={e => onDragOver(e, i, child)}
               onDragEnd={e => onDragEnd(e, i)}
-              // onDrop={(e) => onItemDrag(e)}
               onClick={() => child?.isCustomize != 2 && props.onClick(i, child)}
             >
               {child?.isCustomize === 2 ? (

@@ -182,6 +182,9 @@ const GlobalStyle = () => {
         rgba(221, 80, 0, 0.2) 100%
       );
     }
+    .ant-badge-multiple-words {
+      padding: 0 2px;
+    }
     .ant-input {
       input {
         font-family: SiYuanRegular;
@@ -402,14 +405,9 @@ const GlobalStyle = () => {
       background: none;
     }
 
-    /* .ant-input-affix-wrapper:focus,
-    .ant-input-affix-wrapper-focused {
-      box-shadow: initial !important;
-      border: 1px solid var(--primary-d2);
-    }
     .ant-input-affix-wrapper {
       border: 1px solid var(--neutral-n6-d1);
-    } */
+    }
     input {
       &::placeholder {
         font-size: 14px;
