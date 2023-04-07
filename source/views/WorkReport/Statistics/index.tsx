@@ -5,7 +5,7 @@ import { SecondTitle, SelectWrapBedeck } from '@/components/StyleCommon'
 import { css } from '@emotion/css'
 import ResizeTable from '@/components/ResizeTable'
 import NoData from '@/components/NoData'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { ColumnsType } from 'antd/lib/table'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import PaginationBox from '@/components/TablePagination'
@@ -14,6 +14,8 @@ import SlideTabs from './SlideTabs'
 import PermissionWrap from '@/components/PermissionWrap'
 import { useSelector } from '@store/index'
 import RangePicker from '@/components/RangePicker'
+import { use } from 'i18next'
+import moment from 'moment'
 
 const data: any = {
   currentPage: 1,
@@ -119,12 +121,11 @@ const CardItem = styled.div({
 const Statistics = () => {
   const [t] = useTranslation()
   const { currentMenu } = useSelector(store => store.user)
-  const [isSpinning, setIsSpinning] = useState(false)
+  const [isSpinning, setIsSpinning] = useState<boolean>(false)
+  const [dataList, setDataList] = useState<any>([])
+  const [tabKey, setTabKey] = useState<string>('1')
+  const [queryParams, setQueryParams] = useState<any>({})
 
-  const onConfirm = (values: any) => {
-    console.log('values', values)
-    // setIsSpinning(true)
-  }
   const columns: ColumnsType<any> = [
     {
       title: '姓名',
@@ -179,8 +180,16 @@ const Statistics = () => {
     },
   ]
 
-  const onChangePage = (page: any, size: any) => {
-    // console.log('onChangePage', page, size)
+  const getData = () => {
+    console.log('getData')
+  }
+
+  useEffect(() => {
+    getData()
+  }, [queryParams])
+
+  const onChangePage = (current: number, pageSize: number) => {
+    setQueryParams({ pageNumber: current, pageSize })
   }
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const items = new Array(30).fill(null).map((_: any, i) => {
@@ -208,6 +217,16 @@ const Statistics = () => {
     }
   })
 
+  const onChangeDate = (values: any) => {
+    const startTime = moment(values[0]).format('YYYY-MM-DD')
+    const endTime = moment(values[1]).format('YYYY-MM-DD')
+    setQueryParams({ startTime, endTime, pageSize: queryParams.pageSize })
+  }
+
+  const handleChange = (value: string) => {
+    setTabKey(value)
+  }
+
   return (
     <PermissionWrap
       auth="/Report/Statistics"
@@ -221,10 +240,14 @@ const Statistics = () => {
               <span style={{ margin: '0 16px', fontSize: '14px' }}>
                 提交时间
               </span>
-              <RangePicker isShowQuick onChange={onConfirm} />
+              <RangePicker isShowQuick onChange={onChangeDate} />
             </SelectWrapBedeck>
           </div>
-          {/* <SlideTabs items={items} /> */}
+          <SlideTabs
+            items={items}
+            defaultValue={tabKey}
+            onChange={handleChange}
+          />
         </Head>
         <Center>
           <CenterRight>

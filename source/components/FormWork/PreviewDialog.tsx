@@ -98,16 +98,45 @@ interface Props {
   // 表单是配置出来的不是写死的，传值传过来
   dataList: []
 }
-const WhiteDay = (props: Props) => {
+interface EditorPropsType {
+  // 类型 formWork 禁用掉所有
+  type: string
+  isVisible: boolean
+  onChange?(e: string): void
+  value?: string
+}
+const EditorMain = (props: EditorPropsType) => {
   const editorRef = useRef<EditorRef>(null)
-  const editorRef2 = useRef<EditorRef>(null)
+  const [options, setOptions] = useState<any>([])
+  useEffect(() => {
+    if (props.type !== 'formWork') {
+      setTimeout(() => {
+        editorRef.current?.focus()
+      }, 100)
+    }
+  }, [props.isVisible])
+  return (
+    <div
+      style={{
+        pointerEvents: props.type === 'formWork' ? 'none' : 'all',
+      }}
+    >
+      <Editor
+        value={props.value}
+        onChange={(e: string) => props.onChange?.(e)}
+        ref={editorRef}
+        upload={uploadFile}
+        getSuggestions={() => options}
+      />
+    </div>
+  )
+}
+const WhiteDay = (props: Props) => {
   const [form] = Form.useForm()
   const [attachList, setAttachList] = useState<any>([])
   const [peopleValue, setPeopleValue] = useState<any>([])
   const [needValue, setNeedValue] = useState<any>([])
-  const [options, setOptions] = useState<any>([])
   const leftDom: any = useRef<HTMLInputElement>(null)
-
   const onChangeAttachment = (result: any) => {
     const arr = result.map((i: any) => {
       return {
@@ -131,14 +160,6 @@ const WhiteDay = (props: Props) => {
     dom.scrollTop = dom.scrollHeight
   }
 
-  useEffect(() => {
-    if (props.type !== 'formWork') {
-      setTimeout(() => {
-        editorRef.current?.focus()
-      }, 100)
-    }
-  }, [props.isVisible])
-
   const scrollToBottom = () => {
     setTimeout(() => {
       leftDom.current.scrollTo({
@@ -158,14 +179,17 @@ const WhiteDay = (props: Props) => {
   if (!props.isVisible) {
     return null
   }
-
+  const onConfirm = () => {
+    const values = form.getFieldsValue()
+    console.log(values)
+  }
   return (
     <CommonModal
       width={784}
       title={props.title}
       isVisible={props.isVisible}
       onClose={props.onClose}
-      onConfirm={props.onConfirm}
+      onConfirm={() => onConfirm()}
       confirmText={t('newlyAdd.submit')}
     >
       {props.type === 'formWork' ? null : (
@@ -251,40 +275,7 @@ const WhiteDay = (props: Props) => {
               },
             ]}
           >
-            <Editor
-              ref={editorRef}
-              upload={uploadFile}
-              getSuggestions={() => options}
-            />
-          </Form.Item>
-          <Form.Item
-            style={{
-              marginBottom: '30px',
-            }}
-            label={<LabelTitle title={'明日工作'} />}
-            name="info2"
-            rules={[
-              {
-                validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
-                required: true,
-                message: (
-                  <div
-                    style={{
-                      margin: '5px 0',
-                      fontSize: '12px',
-                      display: 'flex',
-                      alignItems: 'center',
-                    }}
-                  >
-                    请输入
-                  </div>
-                ),
-                whitespace: true,
-                validator: onValidator,
-              },
-            ]}
-          >
-            <Editor upload={uploadFile} getSuggestions={() => options} />
+            <EditorMain isVisible={props.isVisible} type={props.type} />
           </Form.Item>
           <Form.Item label={<LabelTitle title={'汇报对象'} />} name="people">
             {props.isVisible ? (
