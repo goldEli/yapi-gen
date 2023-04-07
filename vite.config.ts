@@ -52,8 +52,12 @@ export default defineConfig(config => {
         'Cache-Control': 'public, max-age=31536000',
       },
     },
+    esbuild: {
+      drop: ['console', 'debugger'],
+    },
     build: {
       modulePreload: true,
+      minify: 'esbuild',
     },
     envDir: './environments/',
     envPrefix: '__',

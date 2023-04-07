@@ -11,6 +11,8 @@ import CommonUserAvatar from '@/components/CommonUserAvatar'
 import PaginationBox from '@/components/TablePagination'
 import { Space } from 'antd'
 import SlideTabs from './SlideTabs'
+import PermissionWrap from '@/components/PermissionWrap'
+import { useSelector } from '@store/index'
 
 const data: any = {
   currentPage: 1,
@@ -113,6 +115,7 @@ const CardItem = styled.div({
 })
 const Statistics = () => {
   const [t] = useTranslation()
+  const { currentMenu } = useSelector(store => store.user)
   const [isSpinning, setIsSpinning] = useState(false)
 
   const onConfirm = (values: any) => {
@@ -203,53 +206,60 @@ const Statistics = () => {
   })
 
   return (
-    <StyledWrap>
-      <Head>
-        <div className={cardTitle}>
-          <SecondTitle>{t('report.statistics')}</SecondTitle>
-          <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '14px' }}>提交时间</span>
-            <RangePicker isShowQuick onChange={onConfirm} />
-          </SelectWrapBedeck>
-        </div>
-        <SlideTabs items={items} />
-      </Head>
-      <Center>
-        <CenterRight>
-          <SecondTitle>{t('report.mine')}</SecondTitle>
-          <CardGroup size={24}>
-            <CardItem style={{ backgroundColor: 'rgba(102, 136, 255, 0.1)' }}>
-              <span>累计汇报</span>
-              <div>{100}</div>
-            </CardItem>
-            <CardItem style={{ backgroundColor: 'rgba(67, 186, 154, 0.10)' }}>
-              <span>按时汇报</span>
-              <div>{100}</div>
-            </CardItem>
-            <CardItem style={{ backgroundColor: 'rgba(250, 151, 70, 0.1)' }}>
-              <span>补交</span>
-              <div>{0}</div>
-            </CardItem>
-            <CardItem style={{ backgroundColor: 'rgba(255, 92, 94, 0.1)' }}>
-              <span>未提交</span>
-              <div>{0}</div>
-            </CardItem>
-          </CardGroup>
-
-          <SecondTitle>汇报模版使用情况</SecondTitle>
-
-          <div className={rightBottom}>
-            <ResizeTable
-              isSpinning={isSpinning}
-              dataWrapNormalHeight="304px"
-              col={usageColumns}
-              dataSource={formWorkUsageData.list}
-              noData={<NoData />}
-            />
+    <PermissionWrap
+      auth="/Report/Statistics"
+      permission={currentMenu?.children?.map((i: any) => i.url)}
+    >
+      <StyledWrap>
+        <Head>
+          <div className={cardTitle}>
+            <SecondTitle>{t('report.statistics')}</SecondTitle>
+            <SelectWrapBedeck>
+              <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                提交时间
+              </span>
+              <RangePicker isShowQuick onChange={onConfirm} />
+            </SelectWrapBedeck>
           </div>
-        </CenterRight>
-      </Center>
-    </StyledWrap>
+          <SlideTabs items={items} />
+        </Head>
+        <Center>
+          <CenterRight>
+            <SecondTitle>{t('report.mine')}</SecondTitle>
+            <CardGroup size={24}>
+              <CardItem style={{ backgroundColor: 'rgba(102, 136, 255, 0.1)' }}>
+                <span>累计汇报</span>
+                <div>{100}</div>
+              </CardItem>
+              <CardItem style={{ backgroundColor: 'rgba(67, 186, 154, 0.10)' }}>
+                <span>按时汇报</span>
+                <div>{100}</div>
+              </CardItem>
+              <CardItem style={{ backgroundColor: 'rgba(250, 151, 70, 0.1)' }}>
+                <span>补交</span>
+                <div>{0}</div>
+              </CardItem>
+              <CardItem style={{ backgroundColor: 'rgba(255, 92, 94, 0.1)' }}>
+                <span>未提交</span>
+                <div>{0}</div>
+              </CardItem>
+            </CardGroup>
+
+            <SecondTitle>汇报模版使用情况</SecondTitle>
+
+            <div className={rightBottom}>
+              <ResizeTable
+                isSpinning={isSpinning}
+                dataWrapNormalHeight="304px"
+                col={usageColumns}
+                dataSource={formWorkUsageData.list}
+                noData={<NoData />}
+              />
+            </div>
+          </CenterRight>
+        </Center>
+      </StyledWrap>
+    </PermissionWrap>
   )
 }
 
