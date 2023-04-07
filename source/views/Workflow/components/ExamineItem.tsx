@@ -6,8 +6,9 @@
 import IconFont from '@/components/IconFont'
 import NoData from '@/components/NoData'
 import { NameWrap } from '@/components/StyleCommon'
+import { css } from '@emotion/css'
 import styled from '@emotion/styled'
-import { Input, Popover, Space, Timeline } from 'antd'
+import { Input, Popover, Space, Timeline, Tooltip } from 'antd'
 import { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -120,6 +121,11 @@ export const ItemWrap = styled.div({
   },
 })
 
+const tooltipStyle = css`
+  margin: 2px 0 0 5px;
+  font-size: 15px;
+  cursor: pointer;
+`
 interface ChoosePersonProps {
   onChangeValue(obj: any): void
   options: any
@@ -211,9 +217,24 @@ const ExamineItem = (props: Props) => {
   const [normal, setNormal] = useState(1)
 
   const menuList = [
-    { name: t('newlyAdd.sequence'), value: 1, icon: 'right' },
-    { name: t('newlyAdd.andExamine'), value: 2, icon: 'and' },
-    { name: t('newlyAdd.orExamine'), value: 3, icon: 'line' },
+    {
+      name: t('newlyAdd.sequence'),
+      value: 1,
+      icon: 'right',
+      tips: '需要按添加审核人的顺序依次审核“通过”后才能向下流转',
+    },
+    {
+      name: t('newlyAdd.andExamine'),
+      value: 2,
+      icon: 'and',
+      tips: '多个审核人会同时收到该审核需求，需要每个人都“通过”后向下流转',
+    },
+    {
+      name: t('newlyAdd.orExamine'),
+      value: 3,
+      icon: 'line',
+      tips: '多个审核人会同时收到该审核需求，任意一人“通过”后向下流转',
+    },
   ]
 
   useEffect(() => {
@@ -316,7 +337,24 @@ const ExamineItem = (props: Props) => {
                 fontSize: 12,
               }}
             >
-              {menuList?.filter((i: any) => i.value === normal)[0]?.name}
+              <span>
+                <span>
+                  {menuList?.filter((i: any) => i.value === normal)[0]?.name}
+                </span>
+                <Tooltip
+                  title={
+                    menuList?.filter((i: any) => i.value === normal)[0]?.tips
+                  }
+                >
+                  <IconFont
+                    style={{
+                      color: 'var(--neutral-n3)',
+                    }}
+                    className={tooltipStyle}
+                    type="question"
+                  />
+                </Tooltip>
+              </span>
             </span>
             <IconFont
               style={{
