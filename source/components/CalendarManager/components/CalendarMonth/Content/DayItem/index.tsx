@@ -1,11 +1,16 @@
 import React from 'react'
 import styled from '@emotion/styled'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import classNames from 'classnames'
 import { css } from '@emotion/css'
 import dayjs from 'dayjs'
 import useCurrentTime from '@/components/CalendarManager/hooks/useCurrentTime'
 import ScheduleList from '../../ScheduleList'
+import {
+  // moveMonthSchedule,
+  startMoveMonthSchedule,
+} from '@store/calendarPanle'
+import MoveActiveItem from '../../MoveActiveItem'
 
 interface DayItemProps {
   idx: number
@@ -82,6 +87,7 @@ const DayItem: React.FC<DayItemProps> = props => {
   const isSelected = dayjs(selectedDay).isSame(dayjs(info.date), 'day')
   const { currentTime } = useCurrentTime()
   const isCurrent = currentTime.isSame(dayjs(info.datetime), 'day')
+  const dispatch = useDispatch()
   return (
     <DayItemBox
       className={classNames({
@@ -90,6 +96,14 @@ const DayItem: React.FC<DayItemProps> = props => {
         [borderBottom]: idx > 27,
       })}
       key={idx}
+      onMouseEnter={e => {
+        console.log('onMouseEnter', props.idx)
+        dispatch(
+          startMoveMonthSchedule({
+            endIndex: props.idx,
+          }),
+        )
+      }}
     >
       <div className="dayBox">
         <span
@@ -103,7 +117,7 @@ const DayItem: React.FC<DayItemProps> = props => {
         </span>
         <span className="lunar">{info.lunar_day_chinese}</span>
       </div>
-      <ScheduleList data={info} />
+      <ScheduleList idx={idx} data={info} />
     </DayItemBox>
   )
 }
