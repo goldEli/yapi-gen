@@ -25,6 +25,7 @@ const TableWrap = styled.div({
 })
 
 const ContWrap = styled.div({
+  marginTop: '24px',
   width: '100%',
   height: 'calc(100% - 148px)',
 })

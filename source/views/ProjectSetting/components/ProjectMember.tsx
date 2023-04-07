@@ -9,6 +9,7 @@ import {
   SelectWrapBedeck,
   HoverWrap,
   SelectWrap,
+  DividerWrap,
 } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
@@ -630,6 +631,10 @@ const ProjectMember = (props: { searchValue?: string }) => {
     }
   }, [isUpdateMember])
 
+  const refresh = () => {
+    console.log('refresh')
+  }
+
   return (
     <PermissionWrap
       auth="b/project/member"
@@ -690,10 +695,20 @@ const ProjectMember = (props: { searchValue?: string }) => {
                 </CommonButton>
               )}
             </Space>
-            <HoverWrap onClick={onChangeFilter} isActive={!isVisible}>
-              <IconFont className="iconMain" type="filter" />
-              <span className="label">{t('common.search')}</span>
-            </HoverWrap>
+            <Space size={8}>
+              <HoverWrap onClick={onChangeFilter} isActive={!isVisible}>
+                <IconFont className="iconMain" type="filter" />
+                <span className="label">{t('common.search')}</span>
+              </HoverWrap>
+              <DividerWrap type="vertical" />
+              {/* //TODO: 列表刷新处 */}
+              <HoverWrap onClick={refresh}>
+                <IconFont className="iconMain" type="sync" />
+                <span style={{ whiteSpace: 'nowrap' }} className="label">
+                  {t('staff.refresh')}
+                </span>
+              </HoverWrap>
+            </Space>
           </HeaderTop>
           <FilterWrap
             hidden={isVisible}

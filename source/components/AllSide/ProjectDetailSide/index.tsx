@@ -110,6 +110,15 @@ const ProjectDetailSide = () => {
       ).length,
       key: 'main',
     },
+    {
+      name: '通知设置',
+      icon: 'settings',
+      path: '/ProjectManagement/ProjectSetting',
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.identity).includes('b/project/story_config'),
+      ).length,
+      key: 'note',
+    },
   ]
 
   const getProjectInfoValuesData = async () => {

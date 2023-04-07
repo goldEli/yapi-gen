@@ -15,6 +15,7 @@ import MyBreadcrumb from '@/components/MyBreadcrumb'
 import PermissionWrap from '@/components/PermissionWrap'
 import InputSearch from '@/components/InputSearch'
 import { useState } from 'react'
+import ProjectNote from './components/ProjectNote'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -69,6 +70,14 @@ const Setting = () => {
       name: t('newlyAdd.demandSet'),
       icon: 'settings',
       content: <DemandSetting />,
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.identity).includes('b/project/story_config'),
+      ).length,
+    },
+    {
+      name: '通知设置',
+      icon: 'settings',
+      content: <ProjectNote />,
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
         String(i.identity).includes('b/project/story_config'),
       ).length,
