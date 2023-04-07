@@ -29,6 +29,7 @@ interface Props {
   isWidth?: boolean
   dateValue?: any
   isShowQuick?: boolean
+  placement?: any
 }
 
 const RangePicker = (props: Props) => {
@@ -124,6 +125,7 @@ const RangePicker = (props: Props) => {
 
   return (
     <DatePicker.RangePicker
+      placement={props?.placement}
       value={props.dateValue}
       allowClear
       style={{ width: props.isWidth ? '' : '100%' }}
