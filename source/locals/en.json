@@ -966,5 +966,9 @@
     "classification": "Demand category",
     "noData": "There is no category. Create one~",
     "addClass": "Create Category"
+  },
+  "report": {
+    "statistics": "Reporting statistics",
+    "mine": "My Report"
   }
 }

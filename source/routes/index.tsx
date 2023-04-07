@@ -36,6 +36,24 @@ const routes = [
         element: lazy(() => import('@/views/CalendarPage')),
       },
       {
+        path: '/Report',
+        element: lazy(() => import('@/views/WorkReport')),
+        children: [
+          {
+            path: 'Statistics',
+            element: lazy(() => import('@/views/WorkReport/Statistics')),
+          },
+          {
+            path: 'Formwork',
+            element: lazy(() => import('@/views/WorkReport/Formwork')),
+          },
+          {
+            path: 'Review',
+            element: lazy(() => import('@/views/WorkReport/Review')),
+          },
+        ],
+      },
+      {
         path: '/ProjectManagement',
         element: lazy(() => import('@/views/ProjectManagement')),
         children: [
@@ -185,7 +203,30 @@ const routes = [
           },
         ],
       },
-
+      {
+        path: 'SiteNotifications',
+        element: lazy(() => import('@/views/SiteNotifications')),
+        children: [
+          {
+            path: 'Setting/:id',
+            element: lazy(
+              () => import('../views/SiteNotifications/Setting/index'),
+            ),
+          },
+          {
+            path: 'Email/:id',
+            element: lazy(
+              () => import('@/views/SiteNotifications/Email/index'),
+            ),
+          },
+          {
+            path: 'AllNote/:id',
+            element: lazy(
+              () => import('../views/SiteNotifications/AllNotes/index'),
+            ),
+          },
+        ],
+      },
       {
         path: '/LogManagement',
         element: lazy(() => import('@/views/LogManagement')),

@@ -13,6 +13,7 @@ import { useSelector } from '@store/index'
 import ViewPort from './ViewPort'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import SetShowField from './SetShowField/indedx'
+import ScreenMinHover from './ScreenMinHover'
 
 interface Props {
   onChangeFilter?(): void
@@ -57,6 +58,10 @@ const OperationGroup = (props: Props) => {
   const onClickMenuFields = () => {
     props.onChangeSetting?.()
     setIsVisibleFields(false)
+  }
+
+  const refresh = () => {
+    console.log('refresh')
   }
 
   const menuType = () => {
@@ -161,13 +166,24 @@ const OperationGroup = (props: Props) => {
       {!hasFilter && <DividerWrap type="vertical" />}
 
       {!hasFilter && (
-        <HoverWrap onClick={props.onChangeFilter} isActive={!props.filterState}>
-          <IconFont className="iconMain" type="filter" />
-          <span className="label">{t('common.search')}</span>
-        </HoverWrap>
+        <ScreenMinHover
+          label={t('common.search')}
+          icon="filter"
+          onClick={props.onChangeFilter}
+          isActive={!props.filterState}
+        />
       )}
 
       <DividerWrap type="vertical" />
+      {/* //TODO: 列表刷新处 */}
+      <ScreenMinHover
+        label={t('staff.refresh')}
+        icon="sync"
+        onClick={refresh}
+      />
+
+      <DividerWrap type="vertical" />
+
       <DropDownMenu
         menu={
           <SetShowField

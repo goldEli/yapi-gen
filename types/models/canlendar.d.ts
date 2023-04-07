@@ -1,4 +1,11 @@
 declare namespace Model.Calendar {
+  // 创建日历弹窗传入参数
+  interface ShowCalendarParams {
+    // 用于编辑日历详情查询
+    id?: string | number
+  }
+
+  // 创建日程弹窗传入参数
   interface ShowScheduleParams {
     // 用于编辑日程详情查询
     id?: string | number

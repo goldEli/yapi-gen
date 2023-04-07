@@ -71,7 +71,7 @@ interface Props {
   onChangeCategory(value: any): void
 }
 
-export const uploadFile = (file: File, editorRef: any, key2: any) => {
+export const uploadFile = (file: File, editorRef: any, key2?: any) => {
   const key = uploadFileToKey(
     file,
     file.name,

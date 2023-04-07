@@ -38,6 +38,11 @@ import {
 import AddDepartmentOrTeamModal from '@/components/AddDepartmentOrTeamModal'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { colorMap } from '@/components/CalendarManager/config'
+import { useDispatch, useSelector } from '@store/index'
+import {
+  setIsShowCalendarVisible,
+  setShowCalendarParams,
+} from '@store/calendar'
 
 interface PermissionDropProps {
   onUpdateShare(item: Model.Calendar.MemberItem): void
@@ -149,13 +154,12 @@ const PermissionDrop = (props: PermissionDropProps) => {
   )
 }
 
-interface CalendarFormModalProps {
-  visible: boolean
-  onCancel(): void
-}
-
-const CalendarFormModal = (props: CalendarFormModalProps) => {
+const CalendarFormModal = () => {
   const [form] = Form.useForm()
+  const dispatch = useDispatch()
+  const { isShowCalendarVisible, showCalendarParams } = useSelector(
+    store => store.calendar,
+  )
   const inputRefDom = useRef<HTMLInputElement>(null)
   // 创建日历默认主题色
   const [normalColor, setNormalColor] = useState(0)
@@ -200,7 +204,8 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
     setShareList([])
     setSubscribedList([])
     setCurrentPermission(null)
-    props.onCancel()
+    dispatch(setIsShowCalendarVisible(false))
+    dispatch(setShowCalendarParams({}))
   }
 
   // 切换图标
@@ -346,10 +351,10 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
   }
 
   useEffect(() => {
-    if (props.visible) {
+    if (isShowCalendarVisible) {
       getPathList()
     }
-  }, [props.visible])
+  }, [isShowCalendarVisible])
 
   return (
     <>
@@ -368,7 +373,7 @@ const CalendarFormModal = (props: CalendarFormModalProps) => {
         type={isActiveKey}
       />
       <CommonModal
-        isVisible={props.visible}
+        isVisible={isShowCalendarVisible}
         title="创建日历"
         width={528}
         onClose={onClose}

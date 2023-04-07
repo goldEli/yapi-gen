@@ -141,7 +141,7 @@ const MenuItem = styled.div<{ isActive: boolean }>(
   }),
 )
 
-const TitleGroup = styled.div({
+export const TitleGroup = styled.div({
   display: 'flex',
   alignItems: 'center',
   marginTop: 14,
@@ -149,7 +149,7 @@ const TitleGroup = styled.div({
   fontSize: 12,
 })
 
-const MainWrap = styled.div({
+export const MainWrap = styled.div({
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
@@ -180,8 +180,8 @@ const ModalFooter = styled(Space)({
   justifyContent: 'flex-end',
 })
 
-const CheckboxWrap = styled.div({ width: 100 })
-const OperationWrap = styled.div({ width: 100 })
+export const CheckboxWrap = styled.div({ width: 100 })
+export const OperationWrap = styled.div({ width: 100 })
 
 export const GroupWrap = styled.div({
   display: 'flex',
@@ -199,7 +199,7 @@ interface ItemProps {
   activeDetail?: any
 }
 
-const PermissionItem = (props: ItemProps) => {
+export const PermissionItem = (props: ItemProps) => {
   const keys =
     props.value?.filter(
       (i: any) => !!props.item.children.find((item: any) => item.value === i),
@@ -283,6 +283,8 @@ const ProjectSet = () => {
   const getPermissionList = async (id: number) => {
     setIsSpinning(true)
     const result = await getPermission({ projectId, roleId: id })
+    console.log(result)
+
     setPermissionList(result)
     setIsSpinning(false)
     let keys: any[] = []

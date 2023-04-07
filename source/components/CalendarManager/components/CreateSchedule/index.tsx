@@ -452,7 +452,6 @@ const CreateSchedule = () => {
                 name="attachment"
               >
                 <UploadAttach
-                  power
                   defaultList={attachList}
                   onChangeAttachment={onChangeAttachment}
                   addWrap={

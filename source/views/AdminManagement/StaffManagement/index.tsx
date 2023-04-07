@@ -8,7 +8,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { Menu, message } from 'antd'
+import { Checkbox, Menu, message, Space, Tooltip } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './components/StaffTable'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -27,7 +27,7 @@ import useSetTitle from '@/hooks/useSetTitle'
 import DropDownMenu from '@/components/DropDownMenu'
 import { getStaffList, refreshStaff, updateStaff } from '@/services/staff'
 import { useDispatch, useSelector } from '@store/index'
-import { setCurrentMenu, setIsRefresh } from '@store/user'
+import { setIsRefresh } from '@store/user'
 import InputSearch from '@/components/InputSearch'
 import PaginationBox from '@/components/TablePagination'
 import SetShowField from '@/components/SetShowField/indedx'
@@ -37,6 +37,9 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import PermissionWrap from '@/components/PermissionWrap'
 import { confirmHand, restHand } from '@/services/handover'
 import ResizeTable from '@/components/ResizeTable'
+import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
+import BatchAction, { boxItem } from '@/components/BatchAction'
+import ScreenMinHover from '@/components/ScreenMinHover'
 
 export const tableWrapP = css`
   display: flex;
@@ -65,6 +68,19 @@ export const DataWrap = styled.div({
   overflow: 'hidden',
   borderRadius: '6px',
 })
+
+const inputSearch = css`
+  margin-right: 24px;
+`
+
+const settingWrap = css`
+  margin: 0 8px;
+`
+
+type actionRefType = {
+  onClose(): void
+  open(): void
+}
 
 const StaffManagement = () => {
   const asyncSetTtile = useSetTitle()
@@ -121,6 +137,9 @@ const StaffManagement = () => {
   const isHaveCheck = userInfo?.company_permissions?.filter(
     (i: any) => i.identity === 'b/companyuser/info',
   )?.length
+
+  const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([])
+  const actionRef = useRef<actionRefType>(null)
 
   const getStaffListData = async () => {
     setIsSpinning(true)
@@ -241,6 +260,39 @@ const StaffManagement = () => {
     }
   }
 
+  // TODO: API
+  const onSelectChange = (e: CheckboxChangeEvent, record: any) => {
+    if (e.target.checked) {
+      setSelectedRowKeys(prev => [...prev, record.id])
+      return
+    }
+    setSelectedRowKeys(prev => {
+      return prev.filter(v => v !== record.id)
+    })
+  }
+  const onCheckAll = (e: CheckboxChangeEvent) => {
+    if (e.target.checked) {
+      setSelectedRowKeys(
+        listData.map((record: Record<string, any>) => record.id),
+      )
+      return
+    }
+    setSelectedRowKeys([])
+  }
+  // TODO: API
+  const handleLock = () => {
+    // eslint-disable-next-line no-console
+    console.log(111)
+  }
+
+  useEffect(() => {
+    if (selectedRowKeys.length > 0) {
+      actionRef.current?.open()
+    } else {
+      actionRef.current?.onClose()
+    }
+  }, [selectedRowKeys])
+
   const selectColum: any = useMemo(() => {
     const arr = allTitleList
     const newList = []
@@ -251,6 +303,26 @@ const StaffManagement = () => {
         }
       }
     }
+    const checkboxColumn = {
+      title: (
+        <Checkbox
+          onChange={onCheckAll}
+          checked={selectedRowKeys.length === listData?.length}
+        />
+      ),
+      dataIndex: 'check',
+      width: 48,
+      key: 'check',
+      render: (text: string, record: any) => {
+        return (
+          <Checkbox
+            checked={selectedRowKeys.indexOf(record.id) > -1}
+            onChange={e => onSelectChange(e, record)}
+          />
+        )
+      },
+    }
+
     const arrList = [
       {
         width: 40,
@@ -268,6 +340,9 @@ const StaffManagement = () => {
         },
       },
     ]
+
+    arrList.push(checkboxColumn)
+
     const lastList = [
       {
         title: t('newlyAdd.operation'),
@@ -297,6 +372,7 @@ const StaffManagement = () => {
         },
       },
     ]
+
     const resultLast = isHaveCheck ? lastList : []
     return [...arrList, ...newList, ...resultLast]
   }, [titleList, titleList2, columns])
@@ -343,7 +419,7 @@ const StaffManagement = () => {
     init()
   }, [keyword, searchGroups, orderKey, order, page, pagesize])
 
-  const rest = debounce(
+  const refresh = debounce(
     async () => {
       const res = await refreshStaff()
       if (res.code === 0) {
@@ -409,44 +485,47 @@ const StaffManagement = () => {
         >
           {t('staff.companyStaff')}
         </div>
-
+        {/* //TODO: 列表刷新处 */}
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <InputSearch
-            leftIcon={true}
-            width={292}
-            placeholder={t('staff.pleaseKey')}
-            onChangeSearch={onPressEnter}
-          />
-
-          <Reset
-            style={{ whiteSpace: 'nowrap', margin: '0 24px' }}
-            onClick={rest}
-          >
-            {t('staff.refresh')}
-          </Reset>
-
-          <HoverWrap
+          <div className={inputSearch}>
+            <InputSearch
+              leftIcon
+              width={292}
+              placeholder={t('staff.pleaseKey')}
+              onChangeSearch={onPressEnter}
+            />
+          </div>
+          <ScreenMinHover
+            label={t('common.search')}
+            icon="filter"
             onClick={onChangeFilter}
             isActive={isShow}
             style={{ marginRight: '8px' }}
-          >
-            <IconFont className="iconMain" type="filter" />
-            <span style={{ whiteSpace: 'nowrap' }} className="label">
-              {t('common.search')}
-            </span>
-          </HoverWrap>
+          />
+
           <DividerWrap type="vertical" />
-          <DropDownMenu
-            menu={<SetShowField notView onChangeFieldVisible={showModal} />}
-            icon="settings"
-            isVisible={isVisibleFields}
-            onChangeVisible={setIsVisibleFields}
-            isActive={isModalVisible}
-          >
-            <div style={{ whiteSpace: 'nowrap' }}>
-              {t('common.tableFieldSet')}
-            </div>
-          </DropDownMenu>
+
+          <ScreenMinHover
+            label={t('staff.refresh')}
+            icon="sync"
+            onClick={refresh}
+            style={{ margin: '0 8px' }}
+          />
+
+          <DividerWrap type="vertical" />
+          <div className={settingWrap}>
+            <DropDownMenu
+              menu={<SetShowField notView onChangeFieldVisible={showModal} />}
+              icon="settings"
+              isVisible={isVisibleFields}
+              onChangeVisible={setIsVisibleFields}
+              isActive={isModalVisible}
+            >
+              <div style={{ whiteSpace: 'nowrap', marginLeft: '8px' }}>
+                {t('common.tableFieldSet')}
+              </div>
+            </DropDownMenu>
+          </div>
         </div>
       </div>
       {isShow ? <SearchList onSearch={onSearch} /> : null}
@@ -514,6 +593,13 @@ const StaffManagement = () => {
         }}
         onConfirm={closeStaffPersonal}
       />
+      <BatchAction ref={actionRef}>
+        <Tooltip placement="top" getPopupContainer={node => node} title="解锁">
+          <div className={boxItem} onClick={handleLock}>
+            <IconFont type="lock" />
+          </div>
+        </Tooltip>
+      </BatchAction>
     </PermissionWrap>
   )
 }

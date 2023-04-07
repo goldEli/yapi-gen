@@ -19,6 +19,14 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from '@store/index'
 import PermissionWrap from '@/components/PermissionWrap'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
+import {
+  Col,
+  Col2,
+  RowStyle,
+  StyleLeft,
+  StyleRight,
+  Text,
+} from '../WorkReport/Formwork/RightWrap'
 
 const Wrap = styled.div({
   padding: 16,
@@ -181,7 +189,22 @@ const Workflow = () => {
               </>
             </CategoryWrap>
           </LabelWrap>
-          <StepWrap>
+          <RowStyle>
+            <Col onClick={() => onChangeStep(1)}>
+              <StyleLeft bgc={step === 1} />
+              <Text bgc={step === 1}>编辑模板</Text>
+              <StyleRight bgc={step === 1} />
+            </Col>
+            <Col
+              style={{ transform: 'translate(-10px, 10px)' }}
+              onClick={() => onChangeStep(2)}
+            >
+              <StyleLeft bgc={step === 2} />
+              <Text bgc={step === 2}>权限配置</Text>
+              <StyleRight bgc={step === 2} />
+            </Col>
+          </RowStyle>
+          {/* <StepWrap>
             <StepBoxWrap
               style={{ cursor: 'pointer' }}
               active={step === 1}
@@ -210,7 +233,7 @@ const Workflow = () => {
               </div>
               <span>{t('newlyAdd.reviewSet')}</span>
             </StepBoxWrap>
-          </StepWrap>
+          </StepWrap> */}
           {step === 1 ? (
             <StepPageOne onRef={ChildRef} onChangeStep={onChangeStep} />
           ) : (

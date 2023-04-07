@@ -28,6 +28,7 @@ import InputSearch from '@/components/InputSearch'
 import PaginationBox from '@/components/TablePagination'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import ResizeTable from '@/components/ResizeTable'
+import ScreenMinHover from '@/components/ScreenMinHover'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -58,7 +59,6 @@ const SearchWrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',
-  marginRight: '24px',
 })
 
 const Need = (props: any) => {
@@ -243,15 +243,13 @@ const Need = (props: any) => {
               leftIcon
             />
           </div>
-
-          <HoverWrap
+          <ScreenMinHover
+            label={t('common.search')}
+            icon="filter"
             onClick={() => setFilterState(!filterState)}
             isActive={!filterState}
             style={{ marginLeft: 8 }}
-          >
-            <IconFont className="iconMain" type="filter" />
-            <span className="label">{t('common.search')}</span>
-          </HoverWrap>
+          />
         </SearchWrap>
       </div>
 
@@ -261,7 +259,7 @@ const Need = (props: any) => {
 
       <div>
         <LoadingSpin spinning={isSpin}>
-          <div style={{ paddingLeft: 16 }}>
+          <div style={{ padding: '0 24px' }}>
             {listData?.list && listData?.list?.length > 0 && (
               <ResizeTable
                 isSpinning={false}

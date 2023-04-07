@@ -9,11 +9,12 @@ import {
   SelectWrapBedeck,
   HoverWrap,
   SelectWrap,
+  DividerWrap,
 } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { useState, useEffect } from 'react'
-import { Menu, message, Form, Space } from 'antd'
+import { useState, useEffect, useRef } from 'react'
+import { Menu, message, Form, Space, Checkbox, Tooltip } from 'antd'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import Sort from '@/components/Sort'
 import PermissionWrap from '@/components/PermissionWrap'
@@ -40,6 +41,9 @@ import CommonButton from '@/components/CommonButton'
 import PaginationBox from '@/components/TablePagination'
 import ResizeTable from '@/components/ResizeTable'
 import ProjectOverModal from '@/components/ProjectOverModal'
+import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
+import BatchAction, { boxItem } from '@/components/BatchAction'
+import ScreenMinHover from '@/components/ScreenMinHover'
 
 const Wrap = styled.div({
   padding: '0 24px',
@@ -107,6 +111,11 @@ const NewSort = (sortProps: any) => {
   )
 }
 
+type actionRefType = {
+  onClose(): void
+  open(): void
+}
+
 const ProjectMember = (props: { searchValue?: string }) => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
@@ -134,7 +143,9 @@ const ProjectMember = (props: { searchValue?: string }) => {
   const [member, setMember] = useState<any>()
   const [userDataList, setUserDataList] = useState<any[]>([])
   asyncSetTtile(`${t('title.a2')}【${projectInfo.name ?? ''}】`)
+  const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([])
   const dispatch = useDispatch()
+  const actionRef = useRef<actionRefType>(null)
 
   const hasAdd = getIsPermission(
     projectInfo?.projectPermissions,
@@ -283,6 +294,38 @@ const ProjectMember = (props: { searchValue?: string }) => {
     }
   }
 
+  const onSelectChange = (e: CheckboxChangeEvent, record: any) => {
+    if (e.target.checked) {
+      setSelectedRowKeys(prev => [...prev, record.id])
+      return
+    }
+    setSelectedRowKeys(prev => {
+      return prev.filter(v => v !== record.id)
+    })
+  }
+  const onCheckAll = (e: CheckboxChangeEvent) => {
+    if (e.target.checked) {
+      setSelectedRowKeys(
+        memberList?.list.map((record: Record<string, any>) => record.id),
+      )
+      return
+    }
+    setSelectedRowKeys([])
+  }
+  // TODO: API
+  const handleLock = () => {
+    // eslint-disable-next-line no-console
+    console.log(111)
+  }
+
+  useEffect(() => {
+    if (selectedRowKeys.length > 0) {
+      actionRef.current?.open()
+    } else {
+      actionRef.current?.onClose()
+    }
+  }, [selectedRowKeys])
+
   const columns = [
     {
       title: '',
@@ -292,6 +335,25 @@ const ProjectMember = (props: { searchValue?: string }) => {
         return hasDel && hasEdit ? null : <MoreDropdown menu={menu(record)} />
       },
     },
+    {
+      title: (
+        <Checkbox
+          onChange={onCheckAll}
+          checked={selectedRowKeys.length === memberList?.list?.length}
+        />
+      ),
+      dataIndex: 'check',
+      width: 48,
+      render: (text: string, record: any) => {
+        return (
+          <Checkbox
+            checked={selectedRowKeys.indexOf(record.id) > -1}
+            onChange={e => onSelectChange(e, record)}
+          />
+        )
+      },
+    },
+
     {
       title: (
         <NewSort
@@ -570,6 +632,10 @@ const ProjectMember = (props: { searchValue?: string }) => {
     }
   }, [isUpdateMember])
 
+  const refresh = () => {
+    console.log('refresh')
+  }
+
   return (
     <PermissionWrap
       auth="b/project/member"
@@ -603,6 +669,19 @@ const ProjectMember = (props: { searchValue?: string }) => {
           onConfirm={handleOk}
           projectPermission={projectPermission}
         />
+
+        <BatchAction ref={actionRef}>
+          <Tooltip
+            placement="top"
+            getPopupContainer={node => node}
+            title="解锁"
+          >
+            <div className={boxItem} onClick={handleLock}>
+              <IconFont type="lock" />
+            </div>
+          </Tooltip>
+        </BatchAction>
+
         <Header>
           <HeaderTop>
             <Space size={24}>
@@ -617,10 +696,21 @@ const ProjectMember = (props: { searchValue?: string }) => {
                 </CommonButton>
               )}
             </Space>
-            <HoverWrap onClick={onChangeFilter} isActive={!isVisible}>
-              <IconFont className="iconMain" type="filter" />
-              <span className="label">{t('common.search')}</span>
-            </HoverWrap>
+            <Space size={8}>
+              <ScreenMinHover
+                label={t('common.search')}
+                icon="filter"
+                onClick={onChangeFilter}
+                isActive={!isVisible}
+              />
+              <DividerWrap type="vertical" />
+              {/* //TODO: 列表刷新处 */}
+              <ScreenMinHover
+                label={t('staff.refresh')}
+                icon="sync"
+                onClick={refresh}
+              />
+            </Space>
           </HeaderTop>
           <FilterWrap
             hidden={isVisible}

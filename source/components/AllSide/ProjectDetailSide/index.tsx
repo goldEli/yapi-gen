@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/padding-line-between-statements */
 // 项目二级菜单
 
 import CommonIconFont from '@/components/CommonIconFont'
@@ -24,7 +25,7 @@ import {
   WrapCategory,
 } from './style'
 
-const Back = styled.div`
+export const Back = styled.div`
   font-size: 12px;
   display: flex;
   align-items: center;
@@ -108,6 +109,15 @@ const ProjectDetailSide = () => {
         String(i.identity).includes('b/project/story_config'),
       ).length,
       key: 'main',
+    },
+    {
+      name: '通知设置',
+      icon: 'settings',
+      path: '/ProjectManagement/ProjectSetting',
+      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+        String(i.identity).includes('b/project/story_config'),
+      ).length,
+      key: 'note',
     },
   ]
 

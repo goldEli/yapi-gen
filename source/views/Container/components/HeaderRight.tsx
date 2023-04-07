@@ -35,6 +35,13 @@ import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import { getLoginDetail } from '@store/user/user.thunk'
 import helpPdf from '/Agile.pdf'
 import { t } from 'i18next'
+import SiteNotifications from '@/views/SiteNotifications/SiteNotifications'
+import {
+  setIsShowCalendarVisible,
+  setIsShowScheduleVisible,
+  setIsShowSubscribeVisible,
+  setShowScheduleParams,
+} from '@store/calendar'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const { language, theme } = useSelector(store => store.global)
@@ -179,6 +186,27 @@ const HeaderRight = () => {
     },
   ]
 
+  const createCalendarList = [
+    {
+      name: '创建日程',
+      key: 'schedule',
+      icon: 'database',
+      isPermission: true,
+    },
+    {
+      name: '创建日历',
+      key: 'calendar',
+      icon: 'calendar-days',
+      isPermission: true,
+    },
+    {
+      name: '订阅日历',
+      key: 'subscribe',
+      icon: 'carryout',
+      isPermission: true,
+    },
+  ]
+
   const labelList = [
     {
       label: t('head_portrait'),
@@ -262,6 +290,16 @@ const HeaderRight = () => {
       case 'demand':
         dispatch(setIsCreateDemandVisible(true))
         dispatch(setCreateDemandProps({ overallCreate: true }))
+        return
+      case 'schedule':
+        dispatch(setIsShowScheduleVisible(true))
+        dispatch(setShowScheduleParams({ hasRight: true, width: 1056 }))
+        return
+      case 'calendar':
+        dispatch(setIsShowCalendarVisible(true))
+        return
+      case 'subscribe':
+        dispatch(setIsShowSubscribeVisible(true))
     }
   }
 
@@ -311,23 +349,25 @@ const HeaderRight = () => {
     </UserInfoWrap>
   )
 
-  const content = (
-    <ChangeItems>
-      {createList.map((i: any) => (
-        <ChangeItem
-          key={i.key}
-          height={40}
-          onClick={() => onCreate(i.key)}
-          hidden={!i.isPermission}
-        >
-          <Space size={8}>
-            <CommonIconFont type={i.icon} color="var(--neutral-n3)" />
-            {i.name}
-          </Space>
-        </ChangeItem>
-      ))}
-    </ChangeItems>
-  )
+  const content = (list: any) => {
+    return (
+      <ChangeItems>
+        {list.map((i: any) => (
+          <ChangeItem
+            key={i.key}
+            height={40}
+            onClick={() => onCreate(i.key)}
+            hidden={!i.isPermission}
+          >
+            <Space size={8}>
+              <CommonIconFont type={i.icon} color="var(--neutral-n3)" />
+              {i.name}
+            </Space>
+          </ChangeItem>
+        ))}
+      </ChangeItems>
+    )
+  }
 
   return (
     <>
@@ -378,7 +418,7 @@ const HeaderRight = () => {
       <Space size={16}>
         {String(location.pathname).includes('/ProjectManagement') && (
           <Popover
-            content={content}
+            content={content(createList)}
             open={isCreateVisible}
             onOpenChange={setIsCreateVisible}
             placement="bottomRight"
@@ -388,6 +428,19 @@ const HeaderRight = () => {
             </CreateWrap>
           </Popover>
         )}
+        {String(location.pathname).includes('/CalendarManager') && (
+          <Popover
+            content={content(createCalendarList)}
+            open={isCreateVisible}
+            onOpenChange={setIsCreateVisible}
+            placement="bottomRight"
+          >
+            <CreateWrap>
+              <CommonIconFont type="plus" size={20} />
+            </CreateWrap>
+          </Popover>
+        )}
+        <SiteNotifications />
         <CloseWrap width={32} height={32} onClick={onHelp}>
           <CommonIconFont type="question" size={24} />
         </CloseWrap>

@@ -16,6 +16,9 @@ const Project = () => {
   let paramsData: any
   if (
     !(
+      String(location.pathname).includes(
+        '/ProjectManagement/SiteNotifications',
+      ) ||
       String(location.pathname).includes('/ProjectManagement/Mine') ||
       String(location.pathname) === '/ProjectManagement/Project' ||
       String(location.pathname) === '/ProjectManagement'

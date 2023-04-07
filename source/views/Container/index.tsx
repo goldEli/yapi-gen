@@ -22,6 +22,7 @@ import CreateAProjectForm from '@/components/CreateAProjectForm'
 import CreateIteration from '@/components/CreateIteration'
 import CreateDemand from '@/components/CreateDemand'
 import DemandDetailDrawer from '@/components/DemandDetailDrawer'
+import SiteDrawer from '../SiteNotifications/components/SiteDrawer/SiteDrawer'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -43,7 +44,7 @@ const HeaderWrap = styled.div`
   min-width: 1440px;
 `
 
-const Content = styled.div`
+export const Content = styled.div`
   height: calc(100vh - 56px);
   width: 100%;
   overflow: auto;
@@ -62,6 +63,7 @@ const Main = styled.div<{ left: number }>`
     height: 100%;
   }
 `
+const NONE_SIDE_PATH = ['/Situation', '/Report/Statistics']
 
 export const Container = () => {
   const location = useLocation()
@@ -205,7 +207,7 @@ export const Container = () => {
             <HeaderRight />
           </HeaderWrap>
           <Content>
-            {location.pathname !== '/Situation' && getSide() && (
+            {!NONE_SIDE_PATH.includes(location.pathname) && getSide() && (
               <Side onChangeLeft={setChangeLeft} />
             )}
             <Main left={changeLeft}>
@@ -229,6 +231,7 @@ export const Container = () => {
         <CreateIteration />
         <CreateDemand />
         <DemandDetailDrawer />
+        <SiteDrawer />
       </ConfigProvider>
     </KitConfigProvider>
   )

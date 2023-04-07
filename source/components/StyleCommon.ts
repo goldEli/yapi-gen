@@ -202,7 +202,7 @@ const HasIconMenu = styled.div<{ isCheck?: boolean }>(
 //   }),
 // )
 const HoverWrap = styled.div<{ isActive?: any }>`
-  min-width: 80px;
+  /* min-width: 80px; */
   padding: 0 8px;
   height: 32px;
   border-radius: 6px;
@@ -210,9 +210,12 @@ const HoverWrap = styled.div<{ isActive?: any }>`
   display: flex;
   align-items: center;
   transition: all 0.3s;
+  white-space: nowrap;
   & .iconMain {
-    margin-right: 8px;
     font-size: 18px;
+  }
+  .label {
+    margin-left: 8px;
   }
   background: ${props => (props.isActive ? 'var(--hover-d1)' : '')};
   color: ${props =>

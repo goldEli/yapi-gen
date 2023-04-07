@@ -125,22 +125,11 @@ const SliderList = (props: any) => {
 }
 
 const Sortable = (props: any) => {
-  const { list, setList } = props
+  const { list } = props
   return (
     <div>
       {list?.map((child: any, i: number) => (
-        <SliderList
-          onUpdate={() => props.onUpdate()}
-          onChangeTeam={(row: any) => props.onChangeTeam(row, child)}
-          onChange={(item: any) => props.onChange(item)}
-          key={child.label}
-          index={i}
-          onMove={(prevIndex: any, nextIndex: any) => {
-            const newList = [...list]
-            newList.splice(nextIndex, 0, newList.splice(prevIndex, 1)[0])
-            setList(newList)
-          }}
-        >
+        <SliderList key={child.label} index={i}>
           {child}
         </SliderList>
       ))}

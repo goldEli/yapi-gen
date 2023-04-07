@@ -23,7 +23,7 @@ const TitleStyle = styled.div`
   display: flex;
   align-items: center;
   color: var(--neutral-n1-d1);
-  margin: 20px 0 16px 0;
+  padding: 20px 0 16px 0;
   &:hover {
     cursor: pointer;
   }
