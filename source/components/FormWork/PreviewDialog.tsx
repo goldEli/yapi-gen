@@ -98,9 +98,36 @@ interface Props {
   // 表单是配置出来的不是写死的，传值传过来
   dataList: []
 }
-const WhiteDay = (props: Props) => {
+interface EditorPropsType {
+  // 类型 formWork 禁用掉所有
+  type: string
+  isVisible: boolean
+}
+const EditorMain = (props: EditorPropsType) => {
   const editorRef = useRef<EditorRef>(null)
-  const editorRef2 = useRef<EditorRef>(null)
+  const [options, setOptions] = useState<any>([])
+  useEffect(() => {
+    if (props.type !== 'formWork') {
+      setTimeout(() => {
+        editorRef.current?.focus()
+      }, 100)
+    }
+  }, [props.isVisible])
+  return (
+    <div
+      style={{
+        pointerEvents: props.type === 'formWork' ? 'none' : 'all',
+      }}
+    >
+      <Editor
+        ref={editorRef}
+        upload={uploadFile}
+        getSuggestions={() => options}
+      />
+    </div>
+  )
+}
+const WhiteDay = (props: Props) => {
   const [form] = Form.useForm()
   const [attachList, setAttachList] = useState<any>([])
   const [peopleValue, setPeopleValue] = useState<any>([])
@@ -131,14 +158,6 @@ const WhiteDay = (props: Props) => {
     dom.scrollTop = dom.scrollHeight
   }
 
-  useEffect(() => {
-    if (props.type !== 'formWork') {
-      setTimeout(() => {
-        editorRef.current?.focus()
-      }, 100)
-    }
-  }, [props.isVisible])
-
   const scrollToBottom = () => {
     setTimeout(() => {
       leftDom.current.scrollTo({
@@ -158,14 +177,16 @@ const WhiteDay = (props: Props) => {
   if (!props.isVisible) {
     return null
   }
-
+  const confirm = () => {
+    const values = form.getFieldsValue()
+  }
   return (
     <CommonModal
       width={784}
       title={props.title}
       isVisible={props.isVisible}
-      onClose={props.onClose}
-      onConfirm={props.onConfirm}
+      onClose={() => 123}
+      onConfirm={() => 123}
       confirmText={t('newlyAdd.submit')}
     >
       {props.type === 'formWork' ? null : (
@@ -251,11 +272,7 @@ const WhiteDay = (props: Props) => {
               },
             ]}
           >
-            <Editor
-              ref={editorRef}
-              upload={uploadFile}
-              getSuggestions={() => options}
-            />
+            <EditorMain isVisible={props.isVisible} type={props.type} />
           </Form.Item>
           <Form.Item
             style={{
@@ -284,7 +301,7 @@ const WhiteDay = (props: Props) => {
               },
             ]}
           >
-            <Editor upload={uploadFile} getSuggestions={() => options} />
+            <EditorMain isVisible={props.isVisible} type={props.type} />
           </Form.Item>
           <Form.Item label={<LabelTitle title={'汇报对象'} />} name="people">
             {props.isVisible ? (
