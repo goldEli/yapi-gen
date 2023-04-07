@@ -291,6 +291,7 @@ const ProjectManagementOptimization = () => {
           sort={order.key}
           isGrid={isGrid}
           activeType={activeType}
+          onRefresh={onUpdate}
           onChangeSort={onChangeSort}
           onChangeFormat={onChangeGrid}
           onChangeHidden={onChangeHidden}

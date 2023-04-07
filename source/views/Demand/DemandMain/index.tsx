@@ -289,21 +289,22 @@ const DemandMain = (props: Props) => {
   //   }
   // }, [tapInputKey])
 
-  const refresh = () => {
-    getList(
-      isGrid,
-      searchItems,
-      { page: 1, size: pageObj.size },
-      order,
-      false,
-      topParentId,
-    )
-  }
   useEffect(() => {
     if (isRefresh) {
-      refresh()
+      getList(
+        isGrid,
+        searchItems,
+        { page: 1, size: pageObj.size },
+        order,
+        false,
+        topParentId,
+      )
     }
   }, [isRefresh])
+
+  const refresh = () => {
+    getList(isGrid, searchItems, pageObj, order, false, topParentId)
+  }
   return (
     <TreeContext.Provider value={keyValue}>
       <DeleteConfirm

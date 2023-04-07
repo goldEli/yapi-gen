@@ -15,6 +15,7 @@ interface Props {
   onChangeFormat(val: boolean): void
   onChangeHidden(val: boolean): void
   onChangeSearch?(val: string): void
+  onRefresh?(): void
 }
 
 const CreateActionBar = (props: Props) => {
@@ -107,10 +108,6 @@ const CreateActionBar = (props: Props) => {
     />
   )
 
-  const refresh = () => {
-    console.log('CreateActionBar')
-  }
-
   return (
     <WrapRight>
       <Space size={8}>
@@ -144,9 +141,9 @@ const CreateActionBar = (props: Props) => {
           <Divider style={{ height: 16, margin: 0 }} type="vertical" />
         ) : null}
 
-        {/* //TODO: 列表刷新处 */}
+        {/* //TODO: 项目列表刷新处 */}
         <ScreenMinHover
-          onClick={refresh}
+          onClick={props.onRefresh}
           icon="sync"
           label={t('staff.refresh')}
         />

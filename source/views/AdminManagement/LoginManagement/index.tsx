@@ -313,10 +313,6 @@ const LoginManagement = () => {
     getList(pageObj, order)
   }
 
-  const refresh = () => {
-    console.log('refresh')
-  }
-
   return (
     <PermissionWrap
       auth="/AdminManagement/LoginManagement"
@@ -378,11 +374,11 @@ const LoginManagement = () => {
             >
               {t('common.clearForm')}
             </div>
-            {/* //TODO: 列表刷新处 */}
+            {/* //TODO: 登录日志刷新处 */}
             <ScreenMinHover
               label={t('staff.refresh')}
               icon="sync"
-              onClick={refresh}
+              onClick={onValuesChange}
             />
           </SearchWrap>
         </Header>
