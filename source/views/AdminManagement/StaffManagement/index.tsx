@@ -418,7 +418,7 @@ const StaffManagement = () => {
     init()
   }, [keyword, searchGroups, orderKey, order, page, pagesize])
 
-  const rest = debounce(
+  const refresh = debounce(
     async () => {
       const res = await refreshStaff()
       if (res.code === 0) {
@@ -484,7 +484,7 @@ const StaffManagement = () => {
         >
           {t('staff.companyStaff')}
         </div>
-
+        {/* //TODO: 列表刷新处 */}
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <div className={inputSearch}>
             <InputSearch
@@ -508,7 +508,7 @@ const StaffManagement = () => {
 
           <DividerWrap type="vertical" />
 
-          <HoverWrap style={{ margin: '0 8px' }} onClick={rest}>
+          <HoverWrap style={{ margin: '0 8px' }} onClick={refresh}>
             <IconFont className="iconMain" type="sync" />
             <span style={{ whiteSpace: 'nowrap' }} className="label">
               {t('staff.refresh')}

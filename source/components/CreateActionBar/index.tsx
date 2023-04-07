@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import DropDownMenu from '../DropDownMenu'
 import IconFont from '../IconFont'
-import { HasIconMenu } from '../StyleCommon'
+import { DividerWrap, HasIconMenu, HoverWrap } from '../StyleCommon'
 import { MainTitle, WrapRight } from './style'
 
 interface Props {
@@ -105,6 +105,11 @@ const CreateActionBar = (props: Props) => {
       ]}
     />
   )
+
+  const refresh = () => {
+    console.log('refresh')
+  }
+
   return (
     <WrapRight>
       <Space size={8}>
@@ -137,6 +142,17 @@ const CreateActionBar = (props: Props) => {
         {props.isGrid ? (
           <Divider style={{ height: 16, margin: 0 }} type="vertical" />
         ) : null}
+
+        {/* //TODO: 列表刷新处 */}
+        <HoverWrap onClick={refresh}>
+          <IconFont className="iconMain" type="sync" />
+          <span style={{ whiteSpace: 'nowrap' }} className="label">
+            {t('staff.refresh')}
+          </span>
+        </HoverWrap>
+
+        <DividerWrap type="vertical" />
+
         <DropDownMenu
           isVisible={isVisibleFormat}
           onChangeVisible={setIsVisibleFormat}
