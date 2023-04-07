@@ -139,6 +139,10 @@ export const Container = () => {
         location.pathname.includes(l.url),
       )?.length
     }
+    // 临时开放左侧栏
+    if (location.pathname.includes('/Report/Review')) {
+      hasPermission = 1
+    }
     return hasPermission > 0
   }
 

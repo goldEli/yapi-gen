@@ -32,4 +32,5 @@ const PaginationBox = (props: PropType) => {
     </div>
   )
 }
+
 export default PaginationBox
