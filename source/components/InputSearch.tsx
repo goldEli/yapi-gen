@@ -36,8 +36,10 @@ const InputSearch = (props: Props) => {
     <InputStyle
       ref={props?.ref}
       bgColor={props.bgColor}
-      width={props.width}
       value={value}
+      style={{
+        width: props.width,
+      }}
       placeholder={props.placeholder}
       maxLength={props.length}
       onBlur={(e: any) => props.onChangeSearch?.(e.target.value)}
