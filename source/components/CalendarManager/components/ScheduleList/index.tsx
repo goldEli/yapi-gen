@@ -1,7 +1,10 @@
 import styled from "@emotion/styled";
 import { css } from '@emotion/css'
 import React from 'react'
-import { useSelector } from '@store/index'
+import { useSelector,useDispatch } from '@store/index'
+import {setScheduleInfoDropdown} from '@store/calendarPanle'
+import {setScheduleListMoadl} from '@store/schedule'
+import ScheduleInfoDropdown from "../ScheduleInfoDropdown";
 import dayjs from "dayjs";
 interface ScheduleListProps {
     month: number
@@ -22,7 +25,7 @@ const ScheduListBox = styled.div`
     background: #fff;
     box-shadow: 0px 0px 15px 6px rgba(0,0,0,0.12);
     border-radius: 6px 6px 6px 6px;
-    z-index: 1;
+    z-index: 999;
     padding-left: 16px;
     padding-top: 4px;
     padding-bottom: 4px;
@@ -42,7 +45,7 @@ const ScheduleItem = styled.div`
         border-radius: 6px;
     }
 `
-const ScheduleTitle=styled.div`
+const ScheduleTitle = styled.div`
     display: flex;
     align-items: center;
     margin-right: 8px;
@@ -63,7 +66,7 @@ const labelTime = css`
     content:'';
     margin-right: 8px;
     position: relative;
-    top: -1px;
+    top: -2px;
     }
 `
 const labelContent = css`
@@ -73,18 +76,26 @@ font-weight: 400;
 color: var(--neutral-n2);
 line-height: 20px;
 `
-const dateClass=css`
+const dateClass = css`
     color: var(--neutral-n1-d1);
     font-size: 16px;
     margin-right: 8px;
 `
-const gregorianDateClass=css`
+const gregorianDateClass = css`
     color: var(--neutral-n3);
     font-size: 12px;
 `
 const ScheduListModal: React.FC<ScheduleListProps> = props => {
     const scheduList = useSelector(state => state.schedule.scheduleListModal);
+    const scheduleInfo=useSelector(state=>state.calendarPanel.scheduleInfoDropdown)
+    const disPatch=useDispatch()
     const { visible, top, left } = scheduList;
+    const scheduleInfoClick = (e: any) => {
+        console.log(e,scheduleInfo)
+        e.stopPropagation()
+        disPatch(setScheduleInfoDropdown({visible:true}));
+        disPatch(setScheduleListMoadl({ visible: false }))
+    }
     return (
         <ScheduListBox visible={visible} top={top} left={left} month={props.month}>
             <ScheduleTitle>
@@ -92,12 +103,13 @@ const ScheduListModal: React.FC<ScheduleListProps> = props => {
                 <span className={gregorianDateClass}>甘五</span>
             </ScheduleTitle>
             {
-                [1, 2, 3, 4].map(item => <ScheduleItem key={item}>
-                    <span className={labelTime}>06:00</span>
-                    <span className={labelContent}>这是一个日程标题内容</span>
-                </ScheduleItem>)
+                [1, 2, 3, 4].map(item =>
+                    <ScheduleItem key={item} onClick={(e) => scheduleInfoClick(e)}>
+                        <span className={labelTime}>06:00</span>
+                        <span className={labelContent}>这是一个日程标题内容</span>
+                    </ScheduleItem>)
             }
-
+            
         </ScheduListBox>
     )
 }

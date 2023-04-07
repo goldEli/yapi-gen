@@ -8,6 +8,7 @@ import styled from '@emotion/styled'
 import HeaderRender from './HeaderRender'
 import { css } from '@emotion/css'
 import { setScheduleListMoadl, setScheduleDate } from '@store/schedule'
+import {setScheduleInfoDropdown} from '@store/calendarPanle'
 import { useDispatch, useSelector } from '@store/index'
 import ScheduListModal from '../ScheduleList'
 dayjs.extend(dayLocaleData)
@@ -15,7 +16,7 @@ dayjs.extend(dayLocaleData)
 const DayBox = styled.div`
   width: 24px;
   height: 24px;
-  font-size: 14px;
+  font-size: var(--font14);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,9 +43,11 @@ const CalendarForCalendarYear: React.FC<
   }
   const dateClick = (e:any) => {
     let month=props.month;
+    console.log(1111111)
     e.stopPropagation()
     disPatch(setScheduleListMoadl({ visible: true, top: 76, left: 100 }))// setScheduleDate
     disPatch(setScheduleDate(month))
+    disPatch(setScheduleInfoDropdown({visible:false}));
   }
   const disPatch = useDispatch()
   return (

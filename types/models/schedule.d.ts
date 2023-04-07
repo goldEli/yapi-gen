@@ -57,7 +57,7 @@ declare namespace Model.Schedule {
   }
   interface ScheduleList{
     visible:boolean,
-    top:number,
-    left:number
+    top?:number,
+    left?:number
   }
 }

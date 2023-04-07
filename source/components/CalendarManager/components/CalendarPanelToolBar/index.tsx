@@ -16,7 +16,7 @@ const Box = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top:4px,
+  margin-top:4px;
 `
 const selectOptions: {
   value: Model.Calendar.CalendarPanelType
