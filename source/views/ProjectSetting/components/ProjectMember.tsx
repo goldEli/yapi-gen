@@ -633,7 +633,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
   }, [isUpdateMember])
 
   const refresh = () => {
-    console.log('refresh')
+    console.log('ProjectMember')
   }
 
   return (

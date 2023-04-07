@@ -108,7 +108,7 @@ const CreateActionBar = (props: Props) => {
   )
 
   const refresh = () => {
-    console.log('refresh')
+    console.log('CreateActionBar')
   }
 
   return (

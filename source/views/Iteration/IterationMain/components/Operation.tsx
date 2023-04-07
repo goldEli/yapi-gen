@@ -67,6 +67,7 @@ interface Props {
   settingState: boolean
   onChangeSetting(val: boolean): void
   onSearch(params: any): void
+  onRefresh(): void
   isShowLeft?: boolean
 }
 
@@ -303,9 +304,11 @@ const Operation = (props: Props) => {
             </>
           )}
         </IterationInfo>
+
         <OperationGroup
           onChangeFilter={onChangeFilter}
           onChangeGrid={props.onChangeGrid}
+          onRefresh={props.onRefresh}
           isGrid={props.isGrid}
           filterState={filterState}
           settingState={props.settingState}

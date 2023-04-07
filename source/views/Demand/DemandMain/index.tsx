@@ -170,19 +170,6 @@ const DemandMain = (props: Props) => {
   }, [key, isGrid, order, pageObj, projectId])
 
   useEffect(() => {
-    if (isRefresh) {
-      getList(
-        isGrid,
-        searchItems,
-        { page: 1, size: pageObj.size },
-        order,
-        false,
-        topParentId,
-      )
-    }
-  }, [isRefresh])
-
-  useEffect(() => {
     if (isUpdateDemand) {
       getList(isGrid, searchItems, pageObj, order, false, topParentId)
     }
@@ -301,6 +288,22 @@ const DemandMain = (props: Props) => {
   //     dispatch(onTapInputKey(''))
   //   }
   // }, [tapInputKey])
+
+  const refresh = () => {
+    getList(
+      isGrid,
+      searchItems,
+      { page: 1, size: pageObj.size },
+      order,
+      false,
+      topParentId,
+    )
+  }
+  useEffect(() => {
+    if (isRefresh) {
+      refresh()
+    }
+  }, [isRefresh])
   return (
     <TreeContext.Provider value={keyValue}>
       <DeleteConfirm
@@ -322,12 +325,14 @@ const DemandMain = (props: Props) => {
             iKey={key}
           />
           <Right isShowLeft={isShowLeft}>
+            {/* TODO: 需求刷新 */}
             <Operation
               pid={projectId}
               isGrid={isGrid}
               onChangeGrid={val => onChangeGrid(val)}
               onChangeIsShowLeft={() => setIsShowLeft(!isShowLeft)}
               onChangeVisible={(e: any) => props.onChangeVisible(e)}
+              onRefresh={refresh}
               onSearch={onSearch}
               settingState={isSettingState}
               onChangeSetting={setIsSettingState}
