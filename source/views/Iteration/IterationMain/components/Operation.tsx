@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setFilterKeys, setProjectInfoValues } from '@store/project'
 import { updateIterateStatus } from '@/services/iterate'
 import { Editor } from '@xyfe/uikit'
+import ScreenMinHover from '@/components/ScreenMinHover'
 
 const OperationWrap = styled.div<{ isShowLeft?: boolean }>(
   {
@@ -82,7 +83,7 @@ const Operation = (props: Props) => {
   const { projectInfo, filterKeys, projectInfoValues } = useSelector(
     store => store.project,
   )
-  const { screenMin } = useSelector(store => store.global)
+  // const { screenMin } = useSelector(store => store.global)
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -281,20 +282,21 @@ const Operation = (props: Props) => {
                 onChangeStatus={onChangeStatus}
               />
               <Space size={8} style={{ marginLeft: 8 }}>
-                <HoverWrap onClick={() => setVisible(true)} isActive={visible}>
-                  <IconFont className="iconMain" type="detail" />
-                  <span className="label">{t('project.iterateTarget')}</span>
-                </HoverWrap>
+                <ScreenMinHover
+                  label={t('project.iterateTarget')}
+                  icon="detail"
+                  onClick={() => setVisible(true)}
+                  isActive={visible}
+                />
                 {isCanCheck ? null : (
                   <>
                     <DividerWrap type="vertical" />
-                    <HoverWrap
+                    <ScreenMinHover
+                      label={t('p2.d2')}
+                      icon="iteration"
                       onClick={() => setIsAchievements(true)}
                       isActive={isAchievements}
-                    >
-                      <IconFont className="iconMain" type="iteration" />
-                      <span className="label">{t('p2.d2')}</span>
-                    </HoverWrap>
+                    />
                   </>
                 )}
               </Space>

@@ -210,6 +210,7 @@ const HoverWrap = styled.div<{ isActive?: any }>`
   display: flex;
   align-items: center;
   transition: all 0.3s;
+  white-space: nowrap;
   & .iconMain {
     font-size: 18px;
   }

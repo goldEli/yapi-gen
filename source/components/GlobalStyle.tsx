@@ -403,14 +403,9 @@ const GlobalStyle = () => {
       background: none;
     }
 
-    /* .ant-input-affix-wrapper:focus,
-    .ant-input-affix-wrapper-focused {
-      box-shadow: initial !important;
-      border: 1px solid var(--primary-d2);
-    }
     .ant-input-affix-wrapper {
       border: 1px solid var(--neutral-n6-d1);
-    } */
+    }
     input {
       &::placeholder {
         font-size: 14px;

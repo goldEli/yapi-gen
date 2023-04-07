@@ -33,6 +33,7 @@ const Right = styled.div<{ isShowLeft: boolean }>({
   height: '100%',
   overflowY: 'auto',
   paddingLeft: '24px',
+  minWidth: 800,
 })
 
 interface Props {

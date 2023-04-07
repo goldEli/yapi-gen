@@ -48,6 +48,7 @@ import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import SetShowField from '@/components/SetShowField/indedx'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import ResizeTable from '@/components/ResizeTable'
+import ScreenMinHover from '@/components/ScreenMinHover'
 
 const LoadingSpin = styled(Spin)({
   minHeight: 300,
@@ -549,13 +550,12 @@ const CommonNeed = (props: any) => {
             {props.id !== 0 && (
               <>
                 <DividerWrap type="vertical" />
-                <HoverWrap
+                <ScreenMinHover
+                  label={t('common.search')}
+                  icon="filter"
                   onClick={() => setIsShowSearch(!isShowSearch)}
                   isActive={isShowSearch}
-                >
-                  <IconFont className="iconMain" type="filter" />
-                  <span className="label">{t('common.search')}</span>
-                </HoverWrap>
+                />
               </>
             )}
             {props.id !== 0 && (
@@ -587,13 +587,15 @@ const CommonNeed = (props: any) => {
         />
       ) : null}
       {!isMany && (
-        <ResizeTable
-          isSpinning={isSpin}
-          dataWrapNormalHeight="calc(100vh - 330px)"
-          col={selectColum}
-          dataSource={listData?.list}
-          noData={<NoData />}
-        />
+        <div style={{ padding: '0 24px' }}>
+          <ResizeTable
+            isSpinning={isSpin}
+            dataWrapNormalHeight="calc(100vh - 330px)"
+            col={selectColum}
+            dataSource={listData?.list}
+            noData={<NoData />}
+          />
+        </div>
       )}
 
       {isMany ? (
