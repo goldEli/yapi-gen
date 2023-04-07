@@ -4,6 +4,7 @@ import InputSearch from '@/components/InputSearch'
 import { useSelector } from '@store/index'
 import { useTranslation } from 'react-i18next'
 import { DividerWrap, HoverWrap } from '@/components/StyleCommon'
+import ScreenMinHover from '@/components/ScreenMinHover'
 
 const HeaderWrap = styled.div`
   width: 100%;
@@ -70,12 +71,11 @@ const HeaderSearch = (props: {
       </TitleWrap>
       <SearchBox>
         {/* //TODO: 列表刷新处 */}
-        {/* <HoverWrap onClick={refresh}>
-          <IconFont className="iconMain" type="sync" />
-          <span style={{ whiteSpace: 'nowrap' }} className="label">
-            {t('staff.refresh')}
-          </span>
-        </HoverWrap> */}
+        {/* <ScreenMinHover
+          label={t('staff.refresh')}
+          icon="sync"
+          onClick={refresh}
+        /> */}
 
         <DividerWrap type="vertical" />
 

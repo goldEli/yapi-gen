@@ -5,6 +5,7 @@ import DropDownMenu from '../DropDownMenu'
 import IconFont from '../IconFont'
 import { DividerWrap, HasIconMenu, HoverWrap } from '../StyleCommon'
 import { MainTitle, WrapRight } from './style'
+import ScreenMinHover from '../ScreenMinHover'
 
 interface Props {
   sort: string
@@ -107,7 +108,7 @@ const CreateActionBar = (props: Props) => {
   )
 
   const refresh = () => {
-    console.log('refresh')
+    console.log('CreateActionBar')
   }
 
   return (
@@ -144,12 +145,11 @@ const CreateActionBar = (props: Props) => {
         ) : null}
 
         {/* //TODO: 列表刷新处 */}
-        <HoverWrap onClick={refresh}>
-          <IconFont className="iconMain" type="sync" />
-          <span style={{ whiteSpace: 'nowrap' }} className="label">
-            {t('staff.refresh')}
-          </span>
-        </HoverWrap>
+        <ScreenMinHover
+          onClick={refresh}
+          icon="sync"
+          label={t('staff.refresh')}
+        />
 
         <DividerWrap type="vertical" />
 

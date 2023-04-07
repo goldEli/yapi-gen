@@ -23,6 +23,7 @@ import PermissionWrap from '@/components/PermissionWrap'
 import IconFont from '@/components/IconFont'
 import PaginationBox from '@/components/TablePagination'
 import ResizeTable from '@/components/ResizeTable'
+import ScreenMinHover from '@/components/ScreenMinHover'
 
 const Header = styled.div({
   height: 'auto',
@@ -378,12 +379,11 @@ const LoginManagement = () => {
               {t('common.clearForm')}
             </div>
             {/* //TODO: 列表刷新处 */}
-            <HoverWrap onClick={refresh}>
-              <IconFont className="iconMain" type="sync" />
-              <span style={{ whiteSpace: 'nowrap' }} className="label">
-                {t('staff.refresh')}
-              </span>
-            </HoverWrap>
+            <ScreenMinHover
+              label={t('staff.refresh')}
+              icon="sync"
+              onClick={refresh}
+            />
           </SearchWrap>
         </Header>
         <Content>

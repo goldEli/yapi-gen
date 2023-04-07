@@ -30,13 +30,19 @@ const tabsWrap = css`
 //   box-shadow: none;
 // }
 interface SlideTabsProps {
+  onChange?(value: string): void
+  defaultValue: string
   items: any[]
 }
 
 const STEP = 1
 const TAB_MARGIN = 32
 
-const SlideTabs: React.FC<SlideTabsProps> = ({ items }: SlideTabsProps) => {
+const SlideTabs: React.FC<SlideTabsProps> = ({
+  items,
+  defaultValue,
+  onChange,
+}: SlideTabsProps) => {
   const [xAxis, setXAxis] = useState<number>(0)
   const [viewRight, setViewRight] = useState<number>(0)
   const [slidRight, setSlidRight] = useState<number>(0)
@@ -108,6 +114,10 @@ const SlideTabs: React.FC<SlideTabsProps> = ({ items }: SlideTabsProps) => {
     }
   }, [])
 
+  const handleChange = (key: string) => {
+    onChange?.(key)
+  }
+
   const operateSlot: Record<PositionType, React.ReactNode> = {
     left: (
       <>
@@ -131,7 +141,12 @@ const SlideTabs: React.FC<SlideTabsProps> = ({ items }: SlideTabsProps) => {
 
   return (
     <div className={tabsWrap}>
-      <Tabs tabBarExtraContent={operateSlot} items={items} />
+      <Tabs
+        tabBarExtraContent={operateSlot}
+        items={items}
+        defaultActiveKey={defaultValue}
+        onChange={handleChange}
+      />
     </div>
   )
 }

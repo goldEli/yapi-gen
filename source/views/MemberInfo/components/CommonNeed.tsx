@@ -51,6 +51,7 @@ import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import SetShowField from '@/components/SetShowField/indedx'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import ResizeTable from '@/components/ResizeTable'
+import ScreenMinHover from '@/components/ScreenMinHover'
 
 const LoadingSpin = styled(Spin)({
   minHeight: 300,
@@ -574,13 +575,12 @@ const CommonNeed = (props: any) => {
             {props.id !== 0 && (
               <>
                 <DividerWrap type="vertical" />
-                <HoverWrap
+                <ScreenMinHover
+                  label={t('common.search')}
+                  icon="filter"
                   onClick={() => setIsShowSearch(!isShowSearch)}
                   isActive={isShowSearch}
-                >
-                  <IconFont className="iconMain" type="filter" />
-                  <span className="label">{t('common.search')}</span>
-                </HoverWrap>
+                />
               </>
             )}
             {props.id !== 0 && (
