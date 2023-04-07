@@ -121,6 +121,7 @@ interface Props {
   onChangeGrid(val: any): void
   onChangeVisible?(e?: any): void
   onSearch(params: any): void
+  onRefresh(): void
   settingState: boolean
   onChangeSetting(val: boolean): void
   onChangeIsShowLeft?(): void
@@ -459,6 +460,7 @@ const Operation = (props: Props) => {
         <OperationGroup
           onChangeFilter={onChangeFilter}
           onChangeGrid={props.onChangeGrid}
+          onRefresh={props.onRefresh}
           isGrid={props.isGrid}
           filterState={filterState}
           settingState={props.settingState}
