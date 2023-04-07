@@ -59,6 +59,10 @@ const OperationGroup = (props: Props) => {
     setIsVisibleFields(false)
   }
 
+  const refresh = () => {
+    console.log('refresh')
+  }
+
   const menuType = () => {
     let menuItems = [
       {
@@ -168,6 +172,16 @@ const OperationGroup = (props: Props) => {
       )}
 
       <DividerWrap type="vertical" />
+      {/* //TODO: 列表刷新处 */}
+      <HoverWrap onClick={refresh}>
+        <IconFont className="iconMain" type="sync" />
+        <span style={{ whiteSpace: 'nowrap' }} className="label">
+          {t('staff.refresh')}
+        </span>
+      </HoverWrap>
+
+      <DividerWrap type="vertical" />
+
       <DropDownMenu
         menu={
           <SetShowField

@@ -5,7 +5,11 @@
 import styled from '@emotion/styled'
 import { Form, Space } from 'antd'
 import moment from 'moment'
-import { SelectWrap, SelectWrapBedeck } from '@/components/StyleCommon'
+import {
+  HoverWrap,
+  SelectWrap,
+  SelectWrapBedeck,
+} from '@/components/StyleCommon'
 import { useEffect, useState } from 'react'
 import Sort from '@/components/Sort'
 import { useTranslation } from 'react-i18next'
@@ -19,7 +23,6 @@ import PermissionWrap from '@/components/PermissionWrap'
 import IconFont from '@/components/IconFont'
 import PaginationBox from '@/components/TablePagination'
 import ResizeTable from '@/components/ResizeTable'
-import CustomSelect from '@/components/CustomSelect'
 
 const Header = styled.div({
   height: 'auto',
@@ -28,7 +31,7 @@ const Header = styled.div({
   top: 0,
   zIndex: 9,
   padding: '24px 24px 20px',
-  '.label': {
+  '.title': {
     fontSize: 16,
     fontFamily: 'SiYuanMedium',
     color: 'var(--neutral-n1-d1)',
@@ -309,6 +312,10 @@ const LoginManagement = () => {
     getList(pageObj, order)
   }
 
+  const refresh = () => {
+    console.log('refresh')
+  }
+
   return (
     <PermissionWrap
       auth="/AdminManagement/LoginManagement"
@@ -322,7 +329,7 @@ const LoginManagement = () => {
         onValuesChange={onValuesChange}
       >
         <Header>
-          <div className="label">{t('setting.loginLog')}</div>
+          <div className="title">{t('setting.loginLog')}</div>
           <SearchWrap size={16}>
             <SelectWrapBedeck>
               <span style={{ margin: '0 12px', fontSize: '14px' }}>
@@ -370,6 +377,13 @@ const LoginManagement = () => {
             >
               {t('common.clearForm')}
             </div>
+            {/* //TODO: 列表刷新处 */}
+            <HoverWrap onClick={refresh}>
+              <IconFont className="iconMain" type="sync" />
+              <span style={{ whiteSpace: 'nowrap' }} className="label">
+                {t('staff.refresh')}
+              </span>
+            </HoverWrap>
           </SearchWrap>
         </Header>
         <Content>
