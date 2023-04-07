@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 import { SecondTitle, SelectWrapBedeck } from '@/components/StyleCommon'
-import RangePicker from '@/components/RangePicker'
+
 import { css } from '@emotion/css'
 import ResizeTable from '@/components/ResizeTable'
 import NoData from '@/components/NoData'
@@ -13,6 +13,7 @@ import { Space } from 'antd'
 import SlideTabs from './SlideTabs'
 import PermissionWrap from '@/components/PermissionWrap'
 import { useSelector } from '@store/index'
+import RangePicker from '@/components/RangePicker'
 
 const data: any = {
   currentPage: 1,
@@ -22,6 +23,7 @@ const data: any = {
 }
 for (let i = 0; i < 100; i++) {
   data.list.push({
+    id: String(i),
     name: '李钟硕',
     onTimeCount: 146,
     delayTimes: 82,
@@ -36,6 +38,7 @@ const formWorkUsageData: any = {
 }
 for (let i = 0; i < 100; i++) {
   formWorkUsageData.list.push({
+    id: String(i),
     name: '工作日志',
     userCount: 146,
     totalReportCount: 82,
@@ -119,7 +122,7 @@ const Statistics = () => {
   const [isSpinning, setIsSpinning] = useState(false)
 
   const onConfirm = (values: any) => {
-    // console.log('values', values)
+    console.log('values', values)
     // setIsSpinning(true)
   }
   const columns: ColumnsType<any> = [
@@ -221,7 +224,7 @@ const Statistics = () => {
               <RangePicker isShowQuick onChange={onConfirm} />
             </SelectWrapBedeck>
           </div>
-          <SlideTabs items={items} />
+          {/* <SlideTabs items={items} /> */}
         </Head>
         <Center>
           <CenterRight>

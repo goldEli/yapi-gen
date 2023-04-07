@@ -33,7 +33,7 @@ const routes = [
       },
       {
         path: '/Report',
-        element: lazy(() => import('@/views/Report')),
+        element: lazy(() => import('@/views/WorkReport')),
         children: [
           {
             path: 'Statistics',

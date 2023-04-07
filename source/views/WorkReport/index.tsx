@@ -1,16 +1,17 @@
 import styled from '@emotion/styled'
 import { Outlet } from 'react-router-dom'
 
-const ReportWrap = styled.div`
+const WorkReportWrap = styled.div`
   position: relative;
   height: 100%;
   background: var(--neutral-white-d1);
 `
-const Report = () => {
+const WorkReport = () => {
   return (
-    <ReportWrap>
+    <WorkReportWrap>
       <Outlet />
-    </ReportWrap>
+    </WorkReportWrap>
   )
 }
-export default Report
+
+export default WorkReport
