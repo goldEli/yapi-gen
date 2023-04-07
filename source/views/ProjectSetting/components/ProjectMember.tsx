@@ -633,7 +633,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
   }, [isUpdateMember])
 
   const refresh = () => {
-    console.log('ProjectMember')
+    getList(order, pageObj)
   }
 
   return (
@@ -704,7 +704,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
                 isActive={!isVisible}
               />
               <DividerWrap type="vertical" />
-              {/* //TODO: 列表刷新处 */}
+              {/* //TODO: 项目成员刷新处 */}
               <ScreenMinHover
                 label={t('staff.refresh')}
                 icon="sync"

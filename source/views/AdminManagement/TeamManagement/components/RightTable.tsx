@@ -285,8 +285,10 @@ const RightTable = () => {
   }
   return (
     <RightWrap>
+      {/* //TODO: 团队成员刷新处 */}
       <HeaderSearch
         onSetSearchVal={setSearchVal}
+        onRefresh={onFetchMemberList}
         onShowAddMemberModal={() => setAddMemberVisible(true)}
       />
       <TableBox>
