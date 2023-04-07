@@ -19,6 +19,11 @@ type SliceState = {
   // 是否打开创建或者是编辑日程弹窗
   isShowScheduleVisible: boolean
   showScheduleParams: Model.Calendar.ShowScheduleParams
+  // 是否打开创建或者是编辑日历弹窗
+  isShowCalendarVisible: boolean
+  showCalendarParams: Model.Calendar.ShowCalendarParams
+  // 是否打开订阅日历弹窗
+  isShowSubscribeVisible: boolean
   partialDayTimeOption: { label: string; value: number }[]
   // 选择的月信息
   selectedMonth: Model.Calendar.DayOfMonth[]
@@ -67,6 +72,9 @@ const initialState: SliceState = {
   ],
   isShowScheduleVisible: false,
   showScheduleParams: {},
+  isShowCalendarVisible: false,
+  showCalendarParams: {},
+  isShowSubscribeVisible: false,
   partialDayTimeOption: [
     { label: '日程开始时', value: 0 },
     { label: '提前5分钟', value: 1 },
@@ -912,6 +920,24 @@ const slice = createSlice({
     ) {
       state.showScheduleParams = action.payload
     },
+    setIsShowCalendarVisible(
+      state,
+      action: PayloadAction<SliceState['isShowCalendarVisible']>,
+    ) {
+      state.isShowCalendarVisible = action.payload
+    },
+    setShowCalendarParams(
+      state,
+      action: PayloadAction<SliceState['showCalendarParams']>,
+    ) {
+      state.showCalendarParams = action.payload
+    },
+    setIsShowSubscribeVisible(
+      state,
+      action: PayloadAction<SliceState['isShowSubscribeVisible']>,
+    ) {
+      state.isShowSubscribeVisible = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addCase(getCalendarList.fulfilled, (state, action) => {
@@ -936,6 +962,9 @@ export const {
   setRouterMenu,
   setIsShowScheduleVisible,
   setShowScheduleParams,
+  setIsShowCalendarVisible,
+  setShowCalendarParams,
+  setIsShowSubscribeVisible,
 } = slice.actions
 
 export default calendar

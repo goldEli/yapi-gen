@@ -7,6 +7,8 @@ import InputSearch from '@/components/InputSearch'
 import NoData from '@/components/NoData'
 import { getSubscribeList } from '@/services/calendar'
 import styled from '@emotion/styled'
+import { setIsShowSubscribeVisible } from '@store/calendar'
+import { useDispatch, useSelector } from '@store/index'
 import { Tabs, Tooltip } from 'antd'
 import { createRef, useEffect, useMemo, useRef, useState } from 'react'
 
@@ -252,12 +254,9 @@ const TabsContent = (props: TabsContentProps) => {
   )
 }
 
-interface CalendarSubscribeProps {
-  visible: boolean
-  onCancel(): void
-}
-
-const CalendarSubscribe = (props: CalendarSubscribeProps) => {
+const CalendarSubscribe = () => {
+  const dispatch = useDispatch()
+  const { isShowSubscribeVisible } = useSelector(store => store.calendar)
   const [activeKey, setActiveKey] = useState('0')
   const [searchValue, setSearchValue] = useState('')
   const items = [
@@ -293,13 +292,17 @@ const CalendarSubscribe = (props: CalendarSubscribeProps) => {
     setSearchValue('')
   }
 
+  const onClose = () => {
+    dispatch(setIsShowSubscribeVisible(false))
+  }
+
   return (
     <CommonModal
-      isVisible={props.visible}
+      isVisible={isShowSubscribeVisible}
       isShowFooter
       title="订阅日历"
       width={784}
-      onClose={props.onCancel}
+      onClose={onClose}
     >
       <ContentWrap>
         <TabsWrap
