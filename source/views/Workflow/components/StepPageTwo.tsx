@@ -172,7 +172,7 @@ const StepPageTwo = () => {
         </TextWrap>
       </ContWrap>
 
-      <Space size={16} style={{ position: 'absolute', bottom: 24, left: 24 }}>
+      <Space size={16} style={{ position: 'absolute', top: 68, right: 24 }}>
         <CommonButton type="primary" onClick={onSave}>
           {t('common.save')}
         </CommonButton>

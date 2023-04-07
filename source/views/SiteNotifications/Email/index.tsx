@@ -48,9 +48,7 @@ const Email = () => {
   const onChange = (checked: boolean) => {
     setActive(checked)
   }
-  const handleChange = (value: string) => {
-    console.log(`selected ${value}`)
-  }
+
   const onChoose = (id: any) => {
     if (choose.includes(id)) {
       setChoose(choose.filter((i: any) => i !== id))
@@ -74,7 +72,7 @@ const Email = () => {
           <Breadcrumb.Item>
             <span style={{ color: 'var(--neutral-n1-d1)' }}>通知</span>
           </Breadcrumb.Item>
-          <Breadcrumb.Item>通知设置</Breadcrumb.Item>
+          <Breadcrumb.Item>邮件通知</Breadcrumb.Item>
         </Breadcrumb>
         {active ? (
           <CommonButton type="primary">
@@ -99,7 +97,6 @@ const Email = () => {
               <Select
                 defaultValue="lucy"
                 style={{ width: 320 }}
-                onChange={handleChange}
                 options={[
                   {
                     value: 'jack',
