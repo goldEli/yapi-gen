@@ -195,7 +195,10 @@ const Workflow = () => {
               <Text bgc={step === 1}>编辑模板</Text>
               <StyleRight bgc={step === 1} />
             </Col>
-            <Col style={{}} onClick={() => onChangeStep(2)}>
+            <Col
+              style={{ transform: 'translate(-10px, 10px)' }}
+              onClick={() => onChangeStep(2)}
+            >
               <StyleLeft bgc={step === 2} />
               <Text bgc={step === 2}>权限配置</Text>
               <StyleRight bgc={step === 2} />
