@@ -32,7 +32,6 @@ const selectOptions: {
   { value: 'year', label: '年' },
   { value: 'list', label: '列表' },
 ]
-
 const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
   const calendarPanelType = useSelector(
     state => state.calendarPanel.calendarPanelType,

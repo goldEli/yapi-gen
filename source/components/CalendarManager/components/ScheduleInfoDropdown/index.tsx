@@ -14,6 +14,7 @@ interface ScheduleInfoDropdownBoxProps {
 }
 const ScheduleInfoDropdownBox = styled.div`
   width: 320px;
+  overflow-y: scroll;
   background-color: var(--neutral-white-d1);
   box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
   z-index: 10;
@@ -23,6 +24,7 @@ const ScheduleInfoDropdownBox = styled.div`
   top: ${(props: ScheduleInfoDropdownBoxProps) => props.top + 'px'};
   left: ${(props: ScheduleInfoDropdownBoxProps) => props.left + 'px'};
   padding-bottom: 24px;
+  border-radius: 6px;
 `
 const ScheduleInfoDropdown: React.FC<ScheduleInfoDropdownProps> = props => {
   const { scheduleInfoDropdown } = useSelector(store => store.calendarPanel)

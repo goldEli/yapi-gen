@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
-import { useSelector } from '@store/index'
+import { useSelector,useDispatch } from '@store/index'
+import { setIsShowScheduleVisible} from '@store/calendar'
 import { Dropdown } from 'antd'
 import React from 'react'
 import ScheduleInfoIcon from './../ScheduleInfoIcon'
@@ -10,6 +11,7 @@ const ScheduleInfoHeader = styled.div`
   background-color: var(--primary-d1);
   padding: 16px;
   box-sizing: border-box;
+  border-radius: 6px 6px 0 0;
 `
 const ScheduleInfoHeaderBtns = styled.div`
   display: flex;
@@ -59,12 +61,16 @@ const iconBox=css`
   }
 `
 const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
+  const disPatch=useDispatch()
   return (
       <ScheduleInfoHeader>
         <ScheduleInfoHeaderBtns>
           <span className={statusClass}>忙碌</span>
           <div className={iconBox}>
-            <span><ScheduleInfoIcon type='edit' /></span><span><ScheduleInfoIcon type='delete' /></span><span>...</span><span><ScheduleInfoIcon type='close' /></span>
+            <span onClick={()=>{
+              console.log(1)
+              disPatch(setIsShowScheduleVisible(true))
+            }}><ScheduleInfoIcon type='edit' /></span><span><ScheduleInfoIcon type='delete' /></span><span>...</span><span><ScheduleInfoIcon type='close' /></span>
           </div>
         </ScheduleInfoHeaderBtns>
         <ScheduleInfoHeaderContent>

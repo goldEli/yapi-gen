@@ -5,6 +5,8 @@ import React from 'react'
 import ScheduleInfoIcon from '../ScheduleInfoIcon'
 const ScheduleInfoContentBox = styled.div`
     padding: 16px;
+    max-height: 400px;
+    overflow-y: scroll;
 `
 const ScheduleInfoContentItem = styled.div`
   display: flex;
@@ -80,7 +82,7 @@ const ScheduleInfoContent: React.FC = props => {
       <ScheduleInfoContentItem>
         <span><ScheduleInfoIcon type="database" /></span>
         <div className={tip}>
-          <span><img src='https://img0.baidu.com/it/u=1684532727,1424929765&fm=253&fmt=auto&app=120&f=JPEG?w=1200&h=675' />易烊千玺（所有者）</span></div>
+          <span><img src='https://img95.699pic.com/photo/50133/0843.jpg_wh300.jpg' />易烊千玺（所有者）</span></div>
       </ScheduleInfoContentItem>
       <ScheduleInfoContentItem>
         <span><ScheduleInfoIcon type="team" /></span>
@@ -92,7 +94,7 @@ const ScheduleInfoContent: React.FC = props => {
       <PersonList>
         {
           [1, 2, 3].map((item, idx) => <PersonItem key={idx}>
-            <span><img src='https://img0.baidu.com/it/u=1684532727,1424929765&fm=253&fmt=auto&app=120&f=JPEG?w=1200&h=675' />胡歌</span>
+            <span><img src='https://img95.699pic.com/photo/50133/0843.jpg_wh300.jpg' />胡歌</span>
             <span>未回复</span>
           </PersonItem>)
         }
@@ -109,7 +111,7 @@ const ScheduleInfoContent: React.FC = props => {
        <FileList>
         {
           [1,2].map((item,index)=><FileItem key={index}>
-             <span><img src='https://img0.baidu.com/it/u=1684532727,1424929765&fm=253&fmt=auto&app=120&f=JPEG?w=1200&h=675' /></span>
+             <span><img src='https://img95.699pic.com/photo/50133/0843.jpg_wh300.jpg' /></span>
               <FileItemInfo>
                 <span>这是一个图片.jpg</span>
                 <span>张三 2020-11-12 10:40:00</span>
