@@ -6,6 +6,7 @@ import AddFormWork from '@/components/AllSide/FormWorkSide/AddFormWork'
 import { setActiveItem } from '@store/formWork/index'
 import { useDispatch } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import SupplementaryIntercourse from './SupplementaryIntercourse'
 const FormWorkSideStyle = styled.div`
   width: 200px;
   min-width: 200px;
@@ -62,7 +63,6 @@ const FormWorkSide = () => {
   const dispatch = useDispatch()
   const [delIsVisible, setDelIsVisible] = useState(false)
   useEffect(() => {
-    console.log(isActive, 'isActive')
     dispatch(setActiveItem(a.find((el, index) => index === isActive)))
   }, [isActive])
   return (
@@ -77,6 +77,10 @@ const FormWorkSide = () => {
             key={el.id}
             onClick={() => setIsActive(index)}
             style={{
+              color:
+                isActive == index
+                  ? 'var(--primary-d2)'
+                  : 'var(--neutral-n1-d2)',
               background:
                 isActive == index
                   ? 'linear-gradient(90deg, #EBEFFF 0%, rgba(243,246,255,0) 100%)'
@@ -99,6 +103,12 @@ const FormWorkSide = () => {
         isVisible={delIsVisible}
         onConfirm={() => setDelIsVisible(false)}
         notCancel
+      />
+      {/* 补交汇报弹窗 */}
+      <SupplementaryIntercourse
+        isVisible={true}
+        onConfirm={() => 123}
+        onClose={() => 123}
       />
     </FormWorkSideStyle>
   )
