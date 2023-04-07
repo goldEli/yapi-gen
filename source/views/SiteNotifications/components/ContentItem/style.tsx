@@ -29,7 +29,7 @@ export const Wrap = styled.div`
   /* filter: drop-shadow(5px 5px 5px black);
   filter: saturate(50%);  */
   :hover {
-    box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.12);
     ${Time2} {
       display: block;
     }
