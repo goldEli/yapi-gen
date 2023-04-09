@@ -1,6 +1,8 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
+import { useSelector } from '@store/index'
+import dayjs from 'dayjs'
 interface CalendarListProps { }
 const CalendarListBox = styled.div`
     background-color: #fff;
@@ -92,10 +94,14 @@ const CalendarList: React.FC<CalendarListProps> = props => {
     { id: 2, list: [{ text: '这是一个日程标题内容', date: '09-10' },] },
     { id: 3, list: [{ text: '这是一个日程标题内容', date: '09-10' },] },
   ]
+  const canendarListValue=useSelector(state=>state.calendarPanel.calenderListValue);
+  useEffect(()=>{
+    console.log(11,canendarListValue,dayjs(canendarListValue).valueOf())
+  },[canendarListValue])
   return <CalendarListBox>
     {
       data.map((item, index) =>
-        <CalendarListItem className={CalendarListClass}>
+        <CalendarListItem key={index} className={CalendarListClass}>
           <div style={{width:'40px'}}>
             <DateBox className={index === 0 ? currentClass : ''}>{18 + index}</DateBox>
           </div>

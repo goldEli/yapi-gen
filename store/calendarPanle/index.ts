@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 import { store } from '..'
 
 type SliceState = {
@@ -17,7 +17,16 @@ type SliceState = {
     x: number
     y: number
   }
-  calenderYearValue: number
+  //日视图
+  calenderDayValue: string,
+  //周视图
+  calenderWeekValue: string,
+  //月视图
+  calenderMonthValue: string,
+  //年视图
+  calenderYearValue: string,
+  // 列表视图
+  calenderListValue: string,
   calenderYearType: Model.Calendar.CalendarYearType
   // 月视图拖拽日程时，控制显示
   monthMoveScheduleActiveInfo: {
@@ -45,7 +54,11 @@ const initialState: SliceState = {
     x: 0,
     y: 0,
   },
-  calenderYearValue: dayjs().year(),
+  calenderDayValue:dayjs().format('YYYY-M-D'),
+  calenderWeekValue:dayjs().format('YYYY-M'),
+  calenderMonthValue:dayjs().format('YYYY-M'),
+  calenderYearValue: dayjs().format('YYYY'),
+  calenderListValue: dayjs().format('YYYY-M-D'),
   calenderYearType: 0,
   monthMoveScheduleActiveInfo: defaultMonthMoveScheduleActiveInfo,
 }
@@ -133,11 +146,37 @@ const slice = createSlice({
         ...action.payload,
       }
     },
+    setCalenderDayValue(
+      state,
+      action: PayloadAction<SliceState['calenderDayValue']>,
+    ) {
+      state.calenderDayValue = action.payload
+    },
+    setCalenderWeekValue(
+      state,
+      action: PayloadAction<SliceState['calenderWeekValue']>,
+    ) {
+      console.log('payload-----',action.payload)
+      state.calenderWeekValue = action.payload
+    },
+    setCalenderMonthValue(
+      state,
+      action: PayloadAction<SliceState['calenderMonthValue']>,
+    ) {
+      state.calenderMonthValue = action.payload
+    },
     setCalenderYearValue(
       state,
       action: PayloadAction<SliceState['calenderYearValue']>,
     ) {
       state.calenderYearValue = action.payload
+    },
+    setCalenderListValue(
+      state,
+      action: PayloadAction<SliceState['calenderListValue']>,
+    ) {
+      //console.log('payload--',action.payload)
+      state.calenderListValue = action.payload
     },
     setCalenderYearType(
       state,
@@ -154,8 +193,12 @@ export const {
   setCalendarPanelType,
   setQuickCreateScheduleModel,
   setScheduleInfoDropdown,
+  setCalenderDayValue,
+  setCalenderWeekValue,
+  setCalenderMonthValue,
   setCalenderYearValue,
   setCalenderYearType,
+  setCalenderListValue,
   startMoveMonthSchedule,
   clearMonthMoveScheduleActiveInfo,
   resizeMonthSchedule,
