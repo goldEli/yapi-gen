@@ -139,7 +139,7 @@ export const Container = () => {
         location.pathname.includes(l.url),
       )?.length
     }
-    // 临时开放左侧栏
+    // 临时开放左侧栏 需要删除
     if (location.pathname.includes('/Report/Review')) {
       hasPermission = 1
     }

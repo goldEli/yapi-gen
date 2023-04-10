@@ -989,7 +989,12 @@
       "makeup": "补交",
       "submitter": "提交人",
       "informant": "汇报人",
-      "status": "状态"
+      "status": "状态",
+      "import": "导入上篇",
+      "todayWork": "今日完成工作",
+      "tomorrowWork": "明日计划工作",
+      "reportPerson": "汇报对象",
+      "associatedRequirement": "关联需求"
     },
     "statistics": "汇报统计",
     "mine": "我的汇报"

@@ -64,4 +64,5 @@ const SupplementaryIntercourse = (props: Props) => {
     </CommonModal>
   )
 }
+
 export default SupplementaryIntercourse

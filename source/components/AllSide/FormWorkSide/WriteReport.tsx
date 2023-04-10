@@ -2,10 +2,13 @@ import CommonButton from '@/components/CommonButton'
 import CommonModal from '@/components/CommonModal'
 import CustomSelect from '@/components/CustomSelect'
 import InputSearch from '@/components/InputSearch'
+import SupplementaryIntercourseModal from './SupplementaryIntercourse'
+import HandleReport from '@/views/WorkReport/Review/components/HandleReport'
 import styled from '@emotion/styled'
 import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Bgc from './img/bgc.png'
+
 interface Props {
   isVisible: boolean
   onClose(): void
@@ -101,65 +104,82 @@ const WriteReport = (props: Props) => {
   const navigate = useNavigate()
   const [searchVal, setSearchVal] = useState('')
   const inputRefDom = useRef<HTMLInputElement>(null)
-
+  const [visibleMakeUp, setVisibleMakeUp] = useState(false)
+  const [visibleEdit, setVisibleEdit] = useState(false)
   return (
-    <CommonModal
-      width={784}
-      title={props.title}
-      isVisible={props.isVisible}
-      onClose={props.onClose}
-      onConfirm={props.onConfirm}
-      confirmText=""
-    >
-      <HeaderWrap>
-        <BtnRow>
-          <CommonButton
-            type="light"
-            onClick={() => navigate('/Report/Formwork')}
-          >
-            创建模板
-          </CommonButton>
-          <CommonButton
-            style={{ marginLeft: 16 }}
-            type="light"
-            onClick={() => 123}
-          >
-            补交汇报
-          </CommonButton>
-        </BtnRow>
-        <InputSearch
-          leftIcon={true}
-          placeholder={'搜索汇报标题或内容'}
-          width={184}
-          autoFocus
-          onChangeSearch={setSearchVal}
-          ref={inputRefDom as any}
-        />
-      </HeaderWrap>
-      <MainWrap>
-        <TitleWrap>最近使用</TitleWrap>
-        <WrapBox>
-          <ColWrap>
-            <CarWrap>
-              <img src={Bgc} />
-              <CarItem>
-                <CarTitle>工作日报</CarTitle>
-                {/* 只展示两个 */}
-                <FormWrap>
-                  <div>今日完成</div>
-                  <div>请填写</div>
-                </FormWrap>
-                <FormWrap>
-                  <div>明日完成</div>
-                  <div>请填写</div>
-                </FormWrap>
-              </CarItem>
-            </CarWrap>
-            <TimeText>3月2日已提交</TimeText>
-          </ColWrap>
-        </WrapBox>
-      </MainWrap>
-    </CommonModal>
+    <>
+      <CommonModal
+        width={784}
+        title={props.title}
+        isVisible={props.isVisible}
+        onClose={props.onClose}
+        onConfirm={props.onConfirm}
+        confirmText=""
+      >
+        <HeaderWrap>
+          <BtnRow>
+            <CommonButton
+              type="light"
+              onClick={() => navigate('/Report/Formwork')}
+            >
+              创建模板
+            </CommonButton>
+            <CommonButton
+              style={{ marginLeft: 16 }}
+              type="light"
+              onClick={() => setVisibleMakeUp(true)}
+            >
+              补交汇报
+            </CommonButton>
+          </BtnRow>
+          <InputSearch
+            leftIcon
+            placeholder="搜索汇报标题或内容"
+            width={184}
+            autoFocus
+            onChangeSearch={setSearchVal}
+            ref={inputRefDom as any}
+          />
+        </HeaderWrap>
+        <MainWrap>
+          <TitleWrap>最近使用</TitleWrap>
+          <WrapBox>
+            <ColWrap>
+              <CarWrap onClick={() => setVisibleEdit(true)}>
+                <img src={Bgc} />
+                <CarItem>
+                  <CarTitle>工作日报</CarTitle>
+                  {/* 只展示两个 */}
+                  <FormWrap>
+                    <div>今日完成</div>
+                    <div>请填写</div>
+                  </FormWrap>
+                  <FormWrap>
+                    <div>明日完成</div>
+                    <div>请填写</div>
+                  </FormWrap>
+                </CarItem>
+              </CarWrap>
+              <TimeText>3月2日已提交</TimeText>
+            </ColWrap>
+          </WrapBox>
+        </MainWrap>
+      </CommonModal>
+      <SupplementaryIntercourseModal
+        isVisible={visibleMakeUp}
+        onClose={() => setVisibleMakeUp(false)}
+        onConfirm={function (): void {
+          throw new Error('Function not implemented.')
+        }}
+        title="补交汇报"
+      />
+      <HandleReport
+        visibleEdit={visibleEdit}
+        editClose={() => setVisibleEdit(false)}
+        visibleEditText="写汇报"
+      />
+    </>
   )
 }
+
 export default WriteReport

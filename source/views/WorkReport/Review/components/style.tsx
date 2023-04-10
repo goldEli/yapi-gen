@@ -70,8 +70,7 @@ export const NextWrap = styled.div`
   align-items: center;
   justify-content: center;
   background: var(--neutral-white-d4);
-  border: 1px solid var(--neutral-n6-d1);
-  border-radius: 6px;
+
   cursor: pointer;
   svg {
     color: var(--neutral-n2);

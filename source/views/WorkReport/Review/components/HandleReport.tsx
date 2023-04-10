@@ -1,0 +1,398 @@
+// 写日志
+/* eslint-disable no-duplicate-imports */
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable react/jsx-handler-names */
+import { Form, Modal } from 'antd'
+import { ExclamationCircleFilled } from '@ant-design/icons'
+import CommonModal from '@/components/CommonModal'
+import ChoosePeople from '@/views/LogManagement/components/ChoosePeople'
+import RelatedNeed from '@/views/LogManagement/components//RelatedNeed'
+import IconFont from '@/components/IconFont'
+import { AddWrap } from '@/components/StyleCommon'
+import styled from '@emotion/styled'
+import { useEffect, useRef, useState } from 'react'
+import { getReportDetail } from '@/services/daily'
+import { useTranslation } from 'react-i18next'
+import UploadAttach from '@/components/UploadAttach'
+import { useDispatch } from '@store/index'
+import { changeRest } from '@store/log'
+import type { EditorRef } from '@xyfe/uikit'
+import { Editor } from '@xyfe/uikit'
+import { getStaffListAll } from '@/services/staff'
+import { uploadFile } from '@/components/CreateDemand/CreateDemandLeft'
+import CommonUserAvatar from '@/components/CommonUserAvatar'
+
+const LabelTitle = styled.span`
+  font-size: 14px;
+  font-family: SiYuanMedium;
+  font-weight: 500;
+  color: #323233;
+  line-height: 22px;
+`
+const HeadWrap = styled.div`
+  height: 44px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  .titleText {
+    height: 24px;
+    font-size: 16px;
+    font-family: SiYuanMedium;
+    font-weight: 500;
+    color: #323233;
+    line-height: 24px;
+    margin-left: 12px;
+    .dateText {
+      font-size: 12px;
+    }
+  }
+  .importText {
+    font-size: 12px;
+    font-family: MiSans-Regular, MiSans;
+    font-weight: 400;
+    color: #bbbdbf;
+    cursor: pointer;
+  }
+`
+
+const HandleReport = (props: any) => {
+  const editorRef = useRef<EditorRef>(null)
+  const [form] = Form.useForm()
+  const [attachList, setAttachList] = useState<any>([])
+  const [peopleValue, setPeopleValue] = useState<any>([])
+  const [needValue, setNeedValue] = useState<any>([])
+  const [options, setOptions] = useState<any>([])
+  const leftDom: any = useRef<HTMLInputElement>(null)
+  const dispatch = useDispatch()
+  const [t] = useTranslation()
+
+  const close = () => {
+    form.resetFields()
+    props.editClose()
+    setAttachList([])
+    setPeopleValue([])
+    setNeedValue([])
+  }
+
+  const confirm = async () => {
+    const data: any = await form.validateFields()
+
+    await props.editConfirm(data, props.editId)
+    dispatch(changeRest(true))
+    close()
+  }
+
+  const onChangeAttachment = (result: any) => {
+    const arr = result.map((i: any) => {
+      return {
+        url: i.url,
+        created_at: i.ctime,
+        configurations: {
+          name: i.name,
+          ext: i.ext,
+          size: i.size,
+        },
+      }
+    })
+
+    form.setFieldsValue({
+      attachments: arr,
+    })
+  }
+
+  const onBottom = () => {
+    const dom: any = leftDom?.current
+    dom.scrollTop = dom.scrollHeight
+  }
+  const importPreviousArticle = () => {
+    Modal.confirm({
+      width: 450,
+      title: (
+        <span
+          style={{
+            fontSize: 16,
+            fontFamily: 'SiYuanMedium',
+            fontWeight: 500,
+            color: '#323233',
+          }}
+        >
+          导入上一篇
+        </span>
+      ),
+      content: (
+        <span style={{ color: '#646566' }}>
+          确认导入上一篇汇报内容，导入后将覆盖当前编辑内容
+        </span>
+      ),
+      icon: <ExclamationCircleFilled />,
+      okText: '确定',
+      cancelText: '取消',
+      centered: true,
+      closable: true,
+      onOk: () => {
+        console.log(2222222)
+      },
+    })
+  }
+
+  const setDefaultValue = async () => {
+    const res = await getReportDetail(props.editId)
+    form.setFieldsValue({
+      info: res.data.info.finish_content,
+      info2: res.data.info.plan_content,
+    })
+
+    setAttachList(
+      res.data.files.map((item: any) => {
+        return {
+          url: item.associate,
+          id: item.id,
+          size: item.configurations.size,
+          time: item.created_at,
+          name: item.configurations.name,
+          suffix: item.configurations.ext,
+          username: res.data.info.user_name,
+        }
+      }),
+    )
+    setPeopleValue(
+      res.data.copysend_list.map((item: any) => {
+        return {
+          avatar: item.avatar,
+          id: item.user_id,
+          name: item.name,
+          nickname: '',
+          positionName: null,
+          roleName: '',
+        }
+      }),
+    )
+    setNeedValue(
+      res.data.story_list.map((item: any) => {
+        return {
+          key: item.associate,
+          value: Number(item.associate),
+          label: item.name,
+        }
+      }),
+    )
+  }
+  const getList = async () => {
+    const result = await getStaffListAll({ all: 1 })
+    setOptions(
+      result.map((i: any) => ({
+        id: i.id,
+        label: i.name,
+      })),
+    )
+  }
+
+  useEffect(() => {
+    if (props.editId && props.visibleEdit) {
+      setDefaultValue()
+    }
+    getList()
+    setTimeout(() => {
+      editorRef.current?.focus()
+    }, 100)
+  }, [props.editId, props.visibleEdit])
+
+  const scrollToBottom = () => {
+    setTimeout(() => {
+      leftDom.current.scrollTo({
+        top: leftDom.current.scrollHeight,
+        behavior: 'smooth',
+      })
+    })
+  }
+  const onValidator = (rule: any, value: any) => {
+    if (value === '<p><br></p>' || value.trim() === '') {
+      return Promise.reject(
+        new Error('The two passwords that you entered do not match!'),
+      )
+    }
+    return Promise.resolve()
+  }
+  if (!props.visibleEdit) {
+    return null
+  }
+  return (
+    <CommonModal
+      width={784}
+      title={props.visibleEditText}
+      isVisible={props.visibleEdit}
+      onClose={close}
+      onConfirm={confirm}
+      confirmText={t('newlyAdd.submit')}
+    >
+      <div
+        style={{
+          height: 'calc(90vh - 136px)',
+          overflow: 'scroll',
+          padding: ' 0 24px',
+        }}
+        ref={leftDom}
+      >
+        <HeadWrap>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            {false ? (
+              <img
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: 16,
+                }}
+                // src={i.avatar}
+              />
+            ) : (
+              <span>
+                <CommonUserAvatar size="large" />
+              </span>
+            )}
+            <div className="titleText">
+              李四的工作日报
+              <span className="dateText">（2022-08-21至2022-08-27）</span>
+            </div>
+          </div>
+          <div className="importText" onClick={importPreviousArticle}>
+            <IconFont
+              style={{ transform: 'rotate(180deg)', marginRight: 4 }}
+              type="Import"
+            />
+            <span>{t('report.list.import')}</span>
+          </div>
+        </HeadWrap>
+        <Form
+          form={form}
+          onFinish={confirm}
+          layout="vertical"
+          onFinishFailed={() => {
+            setTimeout(() => {
+              const errorList = (document as any).querySelectorAll(
+                '.ant-form-item-has-error',
+              )
+
+              errorList[0].scrollIntoView({
+                block: 'center',
+                behavior: 'smooth',
+              })
+            }, 100)
+          }}
+        >
+          <Form.Item
+            style={{
+              marginBottom: '30px',
+            }}
+            label={<LabelTitle>{t('report.list.todayWork')}</LabelTitle>}
+            name="info"
+            rules={[
+              {
+                validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
+                required: true,
+                message: (
+                  <div
+                    style={{
+                      margin: '5px 0',
+                      fontSize: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {t('p2.only1')}
+                  </div>
+                ),
+                whitespace: true,
+                validator: onValidator,
+              },
+            ]}
+          >
+            <Editor
+              ref={editorRef}
+              upload={uploadFile}
+              getSuggestions={() => options}
+            />
+          </Form.Item>
+          <Form.Item
+            style={{
+              marginBottom: '30px',
+            }}
+            label={<LabelTitle>{t('report.list.tomorrowWork')}</LabelTitle>}
+            name="info2"
+            rules={[
+              {
+                validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
+                required: true,
+                message: (
+                  <div
+                    style={{
+                      margin: '5px 0',
+                      fontSize: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {t('p2.only1')}
+                  </div>
+                ),
+                whitespace: true,
+                validator: onValidator,
+              },
+            ]}
+          >
+            <Editor upload={uploadFile} getSuggestions={() => options} />
+          </Form.Item>
+          <Form.Item
+            label={<LabelTitle>{t('report.list.reportPerson')}</LabelTitle>}
+            name="people"
+          >
+            {props.visibleEdit ? (
+              <ChoosePeople initValue={peopleValue} />
+            ) : null}
+          </Form.Item>
+          <Form.Item
+            label={<LabelTitle>{t('common.attachment')}</LabelTitle>}
+            name="attachments"
+          >
+            <UploadAttach
+              power
+              defaultList={attachList}
+              onChangeAttachment={onChangeAttachment}
+              onBottom={onBottom}
+              addWrap={
+                <AddWrap
+                  style={{
+                    marginBottom: '20px',
+                  }}
+                  hasColor
+                >
+                  <IconFont type="plus" />
+                  <div>{t('p2.addAdjunct') as unknown as string}</div>
+                </AddWrap>
+              }
+            />
+          </Form.Item>
+          <Form.Item
+            label={
+              <LabelTitle>{t('report.list.associatedRequirement')}</LabelTitle>
+            }
+            name="needs"
+          >
+            {props.visibleEdit ? (
+              <RelatedNeed onBootom={scrollToBottom} initValue={needValue} />
+            ) : null}
+          </Form.Item>
+        </Form>
+      </div>
+    </CommonModal>
+  )
+}
+
+export default HandleReport

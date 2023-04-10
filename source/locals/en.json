@@ -988,7 +988,12 @@
       "makeup": "Make up",
       "submitter": "submitter",
       "informant": "informant",
-      "status": "status"
+      "status": "status",
+      "import": "Import the previous part",
+      "todayWork": "Finish work today",
+      "tomorrowWork": "Planned work for tomorrow",
+      "reportPerson": "Report person",
+      "associatedRequirement": "Associated requirement"
     },
     "statistics": "Reporting statistics",
     "mine": "My Report"
