@@ -29,7 +29,6 @@ const ScheduleInfoDropdownBox = styled.div`
 const ScheduleInfoDropdown: React.FC<ScheduleInfoDropdownProps> = props => {
   const { scheduleInfoDropdown } = useSelector(store => store.calendarPanel)
   const { visible, x, y } = scheduleInfoDropdown
-  console.log({ scheduleInfoDropdown })
   return (
     <ScheduleInfoDropdownBox
       className="schedule-info-dropdown-box"
