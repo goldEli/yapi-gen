@@ -5,6 +5,7 @@ import { Dropdown } from 'antd'
 import { useEffect, useState } from 'react'
 import { seleData1, seleData2, seleData3 } from './DataList'
 import CommonModal from '@/components/AddUser/CommonModal'
+import IconFont from '@/components/IconFont'
 const AddPersonText = styled.div`
   margin-left: 26px;
   display: flex;
@@ -40,13 +41,21 @@ const Col = styled.div`
   img {
     width: 24px;
     height: 24px;
-    border: 1px solid red;
+    border-radius: 50%;
   }
 `
 const NameText = styled.div`
   padding: 0 10px;
 `
-
+const DefalutIcon = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: rgba(125, 189, 225, 1);
+`
 interface RowsItem {
   label: string
   id: number
@@ -67,7 +76,7 @@ interface Item {
 }
 const Addperson = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [member, setMember] = useState(props.data)
+  const [member, setMember] = useState<any>()
   const [items, setItems] = useState<Array<Item>>()
   const [isVisible, setIsVisible] = useState(false)
   // 下拉
@@ -76,8 +85,8 @@ const Addperson = (props: Props) => {
     setIsVisible(e.key === 'user' ? true : false)
   }
   // 删除添加的成员
-  const delPerson = (el: { id: number }) => {
-    setMember(member.filter(item => item.id !== el.id))
+  const delPerson = (el: { id: number | string }) => {
+    setMember(member.filter((item: any) => item.id !== el.id))
   }
   useEffect(() => {
     switch (props.state) {
@@ -92,6 +101,11 @@ const Addperson = (props: Props) => {
         break
     }
   }, [props.state])
+  const onConfirm = (data: any) => {
+    console.log(data, 'pp')
+    setMember(data)
+    setIsVisible(false)
+  }
   return (
     <>
       <AddPersonText>
@@ -120,25 +134,38 @@ const Addperson = (props: Props) => {
         </Dropdown>
       </AddPersonText>
       <PersonContainer>
-        {member.map(el => (
-          <Col key={el.id}>
-            <img src="" />
-            <NameText>{el.label}</NameText>
-            <CommonIconFont
-              onClick={() => delPerson(el)}
-              type="close"
-              size={14}
-              color="var(--neutral-n3)"
-            />
-          </Col>
-        ))}
+        {member?.map(
+          (el: { avatar: string; id: string | number; name: string }) => (
+            <Col key={el.id}>
+              {el.avatar ? (
+                <img src={el.avatar} />
+              ) : (
+                <DefalutIcon>
+                  <CommonIconFont
+                    type="userAll"
+                    size={16}
+                    color="var(--neutral-white-d7)"
+                  />
+                </DefalutIcon>
+              )}
+
+              <NameText>{el.name}</NameText>
+              <CommonIconFont
+                onClick={() => delPerson(el)}
+                type="close"
+                size={14}
+                color="var(--neutral-n3)"
+              />
+            </Col>
+          ),
+        )}
       </PersonContainer>
       {/* 添加成员弹窗 */}
       <CommonModal
         title={'添加成员'}
         state={2}
         isVisible={isVisible}
-        onConfirm={() => 12}
+        onConfirm={onConfirm}
         onClose={() => setIsVisible(false)}
       />
     </>
