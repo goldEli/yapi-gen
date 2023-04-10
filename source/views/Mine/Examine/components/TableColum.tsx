@@ -31,7 +31,7 @@ const StatusWrap = styled.div({
   alignItems: 'center',
 })
 
-const statusColor = ['#FF5C5E', '#FA9746', '#43BA9A']
+const statusColor = ['#FA9746', '#43BA9A', '#FF5C5E']
 
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
@@ -163,7 +163,7 @@ export const useDynamicColumns = (state: any) => {
               <StatusWrap>
                 <CircleWrap
                   style={{
-                    background: statusColor[text],
+                    background: statusColor[text - 1],
                   }}
                 />
                 <ClickWrap style={{ display: 'inline' }}>
