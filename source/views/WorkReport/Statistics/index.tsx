@@ -102,12 +102,12 @@ const CardGroup = styled(Space)({
 const CardItem = styled.div({
   height: 104,
   width: 208,
-  padding: 24,
+  padding: '0 24px',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'start',
-  borderRadius: 6,
+  borderRadius: 16,
   span: {
     fontSize: 12,
     color: 'var(--neutral-n2)',
@@ -255,20 +255,28 @@ const Statistics = () => {
             <SecondTitle>{t('report.mine')}</SecondTitle>
             <CardGroup size={24}>
               <CardItem style={{ backgroundColor: 'rgba(102, 136, 255, 0.1)' }}>
-                <span>累计汇报</span>
-                <div>{100}</div>
+                <Space size={8} direction="vertical">
+                  <span>累计汇报</span>
+                  <div>{100}</div>
+                </Space>
               </CardItem>
               <CardItem style={{ backgroundColor: 'rgba(67, 186, 154, 0.10)' }}>
-                <span>按时汇报</span>
-                <div>{100}</div>
+                <Space size={8} direction="vertical">
+                  <span>按时汇报</span>
+                  <div>{100}</div>
+                </Space>
               </CardItem>
               <CardItem style={{ backgroundColor: 'rgba(250, 151, 70, 0.1)' }}>
-                <span>补交</span>
-                <div>{0}</div>
+                <Space size={8} direction="vertical">
+                  <span>补交</span>
+                  <div>{100}</div>
+                </Space>
               </CardItem>
               <CardItem style={{ backgroundColor: 'rgba(255, 92, 94, 0.1)' }}>
-                <span>未提交</span>
-                <div>{0}</div>
+                <Space size={8} direction="vertical">
+                  <span>未提交</span>
+                  <div>{0}</div>
+                </Space>
               </CardItem>
             </CardGroup>
 
