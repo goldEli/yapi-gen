@@ -1,4 +1,6 @@
 /* eslint-disable react/jsx-handler-names */
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import TabsDragging from './TabsDragging'
@@ -40,56 +42,63 @@ const RightTabs = styled.div`
   padding-left: 24px;
   border-left: 1px solid var(--neutral-n6-d1);
 `
-const BtnRow = styled.div`
-  width: 100%;
-  height: 80px;
-  display: flex;
-  justify-content: flex-end;
-`
+
 interface PropsType {
   back(): void
   value: string
+}
+interface DragItem {
+  type: number
+  title: string
+  icon: string
 }
 const EditWork = (props: PropsType) => {
   const dispatch = useDispatch()
   const [isVisible, setIsVisible] = useState(false)
   const [delIsVisible, setDelIsVisible] = useState(false)
-  const { editSave } = useSelector(store => store.formWork)
-  const [save, setSave] = useState(editSave)
-  const [list1, setList1] = useState([
+  const [dragItem, setDragItem] = useState<any>()
+  const [index, setIndex] = useState(0)
+  const [dataList, setDataList] = useState([
     {
-      title: 'q',
-      fieldContent: {
-        attr: 'text',
-      },
-      storyId: 1,
-    },
-    {
-      title: 'q1',
-      fieldContent: {
-        attr: 'text',
-      },
-      storyId: 2,
+      name: '汇报对象',
+      is_required: 2,
+      tips: '',
+      type: 1,
     },
   ])
-  const onDrag = (event: any, index: number) => {
-    setIsVisible(true)
-  }
-  const back = () => {
-    if (editSave) {
-      props.back()
+  const onDrag = (event: any, i: number) => {
+    const evevtObj: any = event.dataTransfer.getData('item')
+      ? JSON.parse(event.dataTransfer.getData('item'))
+      : null
+    console.log(evevtObj)
+    if (evevtObj.type === 4) {
+      const configs = {
+        type: evevtObj.type,
+        tips: evevtObj.tips || '',
+        name: evevtObj.title,
+        is_required: 2,
+      }
+      const arrData = Array.from(dataList)
+      arrData.splice(i, 0, configs)
+      setDataList(arrData)
     } else {
-      setDelIsVisible(true)
+      setIndex(index)
+      setDragItem(evevtObj)
+      evevtObj && setIsVisible(true)
     }
   }
-  useEffect(() => {
-    setSave(editSave)
-  }, [editSave])
-  const saveApi = async () => {
-    dispatch(setEditSave(true))
-    await upDateTemplate({ name: props.value })
-    message.success('编辑成功')
-    await dispatch(getTemplateList())
+  // 组件参数配置
+  const ParmasDialogOnConfirm = (obj: any, type: number) => {
+    const configs = {
+      type: type,
+      tips: obj.tips || '',
+      name: obj.name,
+      is_required: 2,
+    }
+    setIsVisible(false)
+    const arrData = Array.from(dataList)
+    arrData.splice(index, 0, configs)
+    setDataList(arrData)
   }
   return (
     <>
@@ -102,15 +111,15 @@ const EditWork = (props: PropsType) => {
             <TabsDragging
               positionType="top"
               onClick={(i: any, child: any) => console.log('click')}
-              onDrop={(event: any, index: any) => onDrag(event, index)}
+              onDrop={(event: any, i: any) => onDrag(event, i)}
               onMove={(data: any) => console.log('move')}
-              onChangeMove={(list: any) => setList1(list)}
-              list={list1}
+              // onChangeMove={(list: any) => setList1(list)}
+              list={dataList}
               onChangeChecked={(val: boolean, child: any) =>
                 console.log('checked')
               }
               onDelete={(child: any) => console.log('sc')}
-              setList={setList1}
+              setList={setDataList}
             />
           </div>
         </LeftTabs>
@@ -124,34 +133,13 @@ const EditWork = (props: PropsType) => {
 
         {/* 组件配置弹窗 */}
         <ParmasDialog
+          dragItem={dragItem}
           isVisible={isVisible}
           onClose={() => setIsVisible(false)}
-          onConfirm={() => 123}
+          onConfirm={ParmasDialogOnConfirm}
         />
       </div>
-      {/* 底部保存 */}
-      <BtnRow>
-        <CommonButton type="light" onClick={() => back()}>
-          下一步
-        </CommonButton>
-        {save ? (
-          <CommonButton
-            type="primary"
-            onClick={() => console.log(123)}
-            style={{ margin: '0 0px 0 16px' }}
-          >
-            已保存
-          </CommonButton>
-        ) : (
-          <CommonButton
-            type="primary"
-            onClick={() => saveApi()}
-            style={{ margin: '0 0px 0 16px' }}
-          >
-            保存
-          </CommonButton>
-        )}
-      </BtnRow>
+
       {/* 未保存的弹窗 */}
       <DeleteConfirm
         title={'保存提示'}
