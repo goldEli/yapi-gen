@@ -70,7 +70,7 @@ const initialState: CounterState = {
       icon: 'user-more',
     },
     {
-      label: '确认勾选',
+      label: 'confirm_that_it_is_checked',
       value: '11',
       type: 'single_checkbox',
       icon: 'check-circle',
