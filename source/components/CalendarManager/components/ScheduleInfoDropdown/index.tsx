@@ -6,7 +6,7 @@ import React from 'react'
 import ScheduleInfoHeaderBox from './ScheduleInfoHeader'
 import ScheduleInfoContent from './SCheduleInfoContent'
 import ScheduleInfoFooter from './ScheduleInfoFooter'
-interface ScheduleInfoDropdownProps { }
+interface ScheduleInfoDropdownProps {}
 interface ScheduleInfoDropdownBoxProps {
   visible: boolean
   top: number
@@ -29,11 +29,20 @@ const ScheduleInfoDropdownBox = styled.div`
 const ScheduleInfoDropdown: React.FC<ScheduleInfoDropdownProps> = props => {
   const { scheduleInfoDropdown } = useSelector(store => store.calendarPanel)
   const { visible, x, y } = scheduleInfoDropdown
+  console.log({ scheduleInfoDropdown })
   return (
-    <ScheduleInfoDropdownBox visible={visible} top={y} left={x} onClick={(e)=>e.stopPropagation()}>
+    <ScheduleInfoDropdownBox
+      className="schedule-info-dropdown-box"
+      visible={visible}
+      top={y}
+      left={x}
+      onClick={e => {
+        e.stopPropagation()
+      }}
+    >
       <ScheduleInfoHeaderBox></ScheduleInfoHeaderBox>
-       <ScheduleInfoContent></ScheduleInfoContent>
-       <ScheduleInfoFooter></ScheduleInfoFooter>
+      <ScheduleInfoContent></ScheduleInfoContent>
+      <ScheduleInfoFooter></ScheduleInfoFooter>
     </ScheduleInfoDropdownBox>
   )
 }

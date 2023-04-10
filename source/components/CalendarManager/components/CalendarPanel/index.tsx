@@ -7,8 +7,8 @@ import CalendarMonth from '../CalendarMonth'
 import CalendarPanelToolBar from '../CalendarPanelToolBar'
 import CalendarWeek from '../CalendarWeek'
 import CalendarYear from '../CalendarYear'
-import {setScheduleListMoadl} from '@store/schedule'
-import {setScheduleInfoDropdown} from '@store/calendarPanle'
+import { setScheduleListMoadl } from '@store/schedule'
+import { setScheduleInfoDropdown } from '@store/calendarPanle'
 interface CalendarPanelProps {
   children?: React.ReactDOM
 }
@@ -35,7 +35,7 @@ const CalendarPanel: React.FC<CalendarPanelProps> = props => {
   const calenderYearValue = useSelector(
     store => store.calendarPanel.calenderYearValue,
   )
-  const disPatch=useDispatch()
+  const disPatch = useDispatch()
   const content = useMemo(() => {
     if (calendarPanelType === 'day') {
       return <CalendarDay />
@@ -53,10 +53,12 @@ const CalendarPanel: React.FC<CalendarPanelProps> = props => {
   }, [calendarPanelType, calenderYearValue])
 
   return (
-    <Box onClick={()=>{
-      disPatch(setScheduleListMoadl({visible:false,top:0,left:0}))
-      disPatch(setScheduleInfoDropdown({visible:false}));
-    }}>
+    <Box
+      onClick={() => {
+        disPatch(setScheduleListMoadl({ visible: false, top: 0, left: 0 }))
+        disPatch(setScheduleInfoDropdown({ visible: false }))
+      }}
+    >
       <CalendarPanelToolBar />
       <Content>{content}</Content>
     </Box>

@@ -15,8 +15,8 @@ type SliceState = {
   scheduleInfoDropdown: {
     visible: boolean
     x: number
-    y: number,
-    id:Model.Schedule.Info['schedule_id']
+    y: number
+    id: Model.Schedule.Info['schedule_id']
   }
   //日视图
   calenderDayValue: string
@@ -37,17 +37,16 @@ type SliceState = {
     visibleList?: number[]
     // 包含几个日程
     length?: number
-  },
+  }
   //搜索日程关键字
-  scheduleSearchKey?:string
-
+  scheduleSearchKey?: string
 }
 const defaultMonthMoveScheduleActiveInfo = {
   visibleList: [],
 }
 
 const initialState: SliceState = {
-  calendarPanelType: 'month',
+  calendarPanelType: 'day',
   quickCreateScheduleModel: {
     visible: false,
     x: 0,
@@ -57,7 +56,7 @@ const initialState: SliceState = {
     visible: false,
     x: 0,
     y: 0,
-    id:0
+    id: 0,
   },
   calenderDayValue: dayjs().format('YYYY-M-D'),
   calenderWeekValue: dayjs().format('YYYY-M'),
@@ -134,14 +133,14 @@ const slice = createSlice({
       state,
       action: PayloadAction<Partial<SliceState['quickCreateScheduleModel']>>,
     ) {
-      state.scheduleInfoDropdown = {
-        ...state.scheduleInfoDropdown,
-        visible: false,
-      }
-      state.quickCreateScheduleModel = {
-        ...state.quickCreateScheduleModel,
-        ...action.payload,
-      }
+      // state.scheduleInfoDropdown = {
+      //   ...state.scheduleInfoDropdown,
+      //   visible: false,
+      // }
+      // state.quickCreateScheduleModel = {
+      //   ...state.quickCreateScheduleModel,
+      //   ...action.payload,
+      // }
     },
     setScheduleInfoDropdown(
       state,
@@ -194,9 +193,9 @@ const slice = createSlice({
     ) {
       state.calenderYearType = action.payload
     },
-    setScheduleSearchKey(state,action:PayloadAction<string>){
-      state.scheduleSearchKey=action.payload
-    }
+    setScheduleSearchKey(state, action: PayloadAction<string>) {
+      state.scheduleSearchKey = action.payload
+    },
   },
 })
 
