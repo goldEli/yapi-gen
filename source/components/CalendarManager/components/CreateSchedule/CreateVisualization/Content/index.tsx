@@ -1,5 +1,7 @@
 import React from 'react'
 import styled from '@emotion/styled'
+import Timescale from '../Timescale'
+import AllDayScheduleBoxBox from '../AllDayScheduleBox'
 
 interface ContentProps {}
 
@@ -9,7 +11,12 @@ const ContentBox = styled.div`
 `
 
 const Content: React.FC<ContentProps> = props => {
-  return <ContentBox>Content</ContentBox>
+  return (
+    <ContentBox>
+      <AllDayScheduleBoxBox />
+      <Timescale />
+    </ContentBox>
+  )
 }
 
 export default Content

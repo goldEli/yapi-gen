@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from '@emotion/styled'
-import CommonButton from '@/components/CommonButton'
 import { useDispatch, useSelector } from '@store/index'
 import dayjs from 'dayjs'
 import { formatYYYYMMDD } from '@/components/CalendarManager/config'
