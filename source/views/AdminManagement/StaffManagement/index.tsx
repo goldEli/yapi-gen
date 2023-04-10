@@ -30,6 +30,7 @@ import {
   refreshStaff,
   updateStaff,
   getRoleList,
+  batchUpdateStaff,
 } from '@/services/staff'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
@@ -106,7 +107,6 @@ const StaffManagement = () => {
     departmentId: [],
     userGroupId: [],
   })
-  const dataWrapRef = useRef<HTMLDivElement>(null)
   const [listData, setListData] = useState<any>(undefined)
   const [editData, setEditData] = useState<any>({})
   const [plainOptions, setPlainOptions] = useState<any>([])
@@ -221,21 +221,20 @@ const StaffManagement = () => {
       setIsStaffPersonalVisible(false)
     }
   }
-  // TODO: API
+
   const onConfirmBatchEdit = async (roleId: any) => {
-    const params: any = {
-      userGroupId: roleId,
-      userIds: selectedRowKeys,
+    try {
+      await batchUpdateStaff({
+        roleId,
+        userIds: selectedRowKeys.map(i => Number(i)),
+      })
+      message.success('操作成功')
+      setSelectedRowKeys([])
+      getStaffListData()
+      setBatchEditVisible(false)
+    } catch (error) {
+      //
     }
-    console.log('onConfirmBatchEdit', params)
-    // try {
-    //   await updateMember(params)
-    //   message.success(t('common.editSuccess'))
-    //   getList(order, pageObj)
-    //   setBatchEditVisible(false)
-    // } catch (error) {
-    //   //
-    // }
   }
 
   const updateOrderkey = (key: any, orderVal: any) => {
