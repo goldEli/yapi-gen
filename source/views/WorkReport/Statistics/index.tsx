@@ -167,17 +167,17 @@ const Statistics = () => {
     {
       title: '汇报类别',
       dataIndex: 'name',
-      width: 150,
+      width: 130,
     },
     {
       title: '使用人数',
       dataIndex: 'userCount',
-      width: 150,
+      width: 88,
     },
     {
       title: '累计汇报数',
       dataIndex: 'totalReportCount',
-      width: 150,
+      width: 88,
     },
   ]
 
