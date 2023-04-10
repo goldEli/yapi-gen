@@ -280,3 +280,16 @@ export const NoticeBox = styled.div`
     cursor: pointer;
   }
 `
+
+export const AllDayScheduleItem = styled.div`
+  width: 100%;
+  box-sizing: border-box;
+  padding-left: 8px;
+  background-color: ${(props: { bg: string }) => props.bg};
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--neutral-n1-d1);
+  display: flex;
+  align-items: center;
+  height: 20px;
+`
