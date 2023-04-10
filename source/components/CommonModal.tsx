@@ -49,6 +49,8 @@ interface CommonModalProps {
   // 确认按钮文字
   confirmText?: string
   bodyStyle?: any
+  // 是否显示遮罩层
+  isShowMask?: boolean
 }
 
 const CommonModal = (props: CommonModalProps) => {
@@ -66,6 +68,7 @@ const CommonModal = (props: CommonModalProps) => {
       keyboard={false}
       wrapClassName="vertical-center-modal"
       focusTriggerAfterClose={false}
+      mask={props.isShowMask}
     >
       <ModalHeader>
         <span>{props?.title}</span>

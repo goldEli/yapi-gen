@@ -40,7 +40,6 @@ import {
   setIsShowCalendarVisible,
   setIsShowScheduleVisible,
   setIsShowSubscribeVisible,
-  setShowScheduleParams,
 } from '@store/calendar'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
@@ -293,7 +292,6 @@ const HeaderRight = () => {
         return
       case 'schedule':
         dispatch(setIsShowScheduleVisible(true))
-        dispatch(setShowScheduleParams({ hasRight: true, width: 1056 }))
         return
       case 'calendar':
         dispatch(setIsShowCalendarVisible(true))
