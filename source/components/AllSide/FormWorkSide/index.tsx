@@ -4,15 +4,19 @@ import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import AddFormWork from '@/components/AllSide/FormWorkSide/AddFormWork'
 import { setActiveItem } from '@store/formWork/index'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import SupplementaryIntercourse from './SupplementaryIntercourse'
 import WriteReport from './WriteReport'
+import { createTemplate } from '@/services/formwork'
+import { getTemplateList } from '@store/formWork/thunk'
+import { message } from 'antd'
+// getTemplateList
 const FormWorkSideStyle = styled.div`
   width: 200px;
   min-width: 200px;
 `
-export const TitleStyle = styled.div`
+const TitleStyle = styled.div`
   display: flex;
   width: 100%;
   padding: 24px 24px 20px 24px;
@@ -63,16 +67,32 @@ const FormWorkSide = () => {
   const [isVisible, setIsVisible] = useState(false)
   const dispatch = useDispatch()
   const [delIsVisible, setDelIsVisible] = useState(false)
+  const { dataList } = useSelector(store => store.formWork)
   useEffect(() => {
     dispatch(setActiveItem(a.find((el, index) => index === isActive)))
   }, [isActive])
+  const onConfirm = async (name: string) => {
+    const res = await createTemplate({ name })
+    message.success('创建成功')
+    await dispatch(getTemplateList())
+  }
+  const getDataList = async () => {
+    await dispatch(getTemplateList())
+  }
+  useEffect(() => {
+    getDataList()
+  }, [])
+
+  useEffect(() => {
+    console.log(dataList)
+  }, [dataList])
   return (
     <FormWorkSideStyle>
       <TitleStyle>
         <span>模板</span>
         <IconFontStyle type="plus" onClick={() => setIsVisible(true)} />
       </TitleStyle>
-      {a.map((el, index) => {
+      {dataList.map((el: { name: string; id: number }, index: number) => {
         return (
           <Slide
             key={el.id}
@@ -88,7 +108,7 @@ const FormWorkSide = () => {
                   : 'none',
             }}
           >
-            {el.label}
+            {el.name}
           </Slide>
         )
       })}
@@ -96,7 +116,7 @@ const FormWorkSide = () => {
       <AddFormWork
         onClose={() => setIsVisible(false)}
         isVisible={isVisible}
-        onConfirm={() => 12}
+        onConfirm={onConfirm}
       />
       {/* 未保存的弹窗 */}
       <DeleteConfirm
