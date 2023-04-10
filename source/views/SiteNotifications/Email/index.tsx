@@ -10,6 +10,7 @@ import {
   ContentEmail,
   ContentEmail2,
 } from './style'
+import { useTranslation } from 'react-i18next'
 
 const items = [
   {
@@ -43,6 +44,7 @@ const items = [
 ]
 
 const Email = () => {
+  const [t] = useTranslation()
   const [choose, setChoose] = useState<any>([])
   const [active, setActive] = useState<any>(true)
   const onChange = (checked: boolean) => {
@@ -70,19 +72,24 @@ const Email = () => {
           }
         >
           <Breadcrumb.Item>
-            <span style={{ color: 'var(--neutral-n1-d1)' }}>通知</span>
+            <span style={{ color: 'var(--neutral-n1-d1)' }}>
+              {' '}
+              {t('notification')}
+            </span>
           </Breadcrumb.Item>
-          <Breadcrumb.Item>邮件通知</Breadcrumb.Item>
+          <Breadcrumb.Item>{t('email_notification')}</Breadcrumb.Item>
         </Breadcrumb>
         {active ? (
           <CommonButton type="primary">
-            <span>保存</span>
+            <span>{t('common.save')}</span>
           </CommonButton>
         ) : null}
       </First>
       <Content>
         <Content1>
-          接收有关您关注项目的提及、邀请和评论的电子邮件更新
+          {t(
+            'ReceiveEmailUpdatesWithMentionsInvitationsAndCommentsAboutItemsYouCareAbout',
+          )}
           <span style={{ marginLeft: '250px' }}>
             <Switch checked={active} onChange={onChange} />
           </span>
@@ -90,9 +97,10 @@ const Email = () => {
         {active ? (
           <ActiveContentEmail2 active={active}>
             <Content1>
-              使用此邮箱接收 <ContentEmail>XXXX@ifudsds n.com</ContentEmail>
+              {t('use_this_email_to_receive')}
+              <ContentEmail>XXXX@ifudsds n.com</ContentEmail>
             </Content1>
-            <Content1>接收格式</Content1>
+            <Content1>{t('receive_format')}</Content1>
             <div>
               <Select
                 defaultValue="lucy"
@@ -109,7 +117,9 @@ const Email = () => {
                 ]}
               />
             </div>
-            <Content1>什么情况需要电子邮件通知</Content1>
+            <Content1>
+              {t('what_situations_require_email_notification')}
+            </Content1>
             <div>
               {items.map((i: any) => (
                 <ContentEmail2
