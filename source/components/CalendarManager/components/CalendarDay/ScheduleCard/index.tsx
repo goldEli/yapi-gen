@@ -49,8 +49,11 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
   } | null>(null)
 
   const { height, top } = usePosition(start_timestamp, end_timestamp)
+  const isDrag = React.useRef(false)
 
   const onDrag = (e: DraggableEvent, draggableData: DraggableData) => {
+    isDrag.current = true
+    e.stopPropagation()
     const { node, y, deltaY, lastY } = draggableData
     const time = getTimeByOffsetDistance(
       start_timestamp,
@@ -64,6 +67,8 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
   }
   const onDragStart = (e: DraggableEvent, draggableData: DraggableData) => {
     // const { node, y, deltaY, lastY } = draggableData
+    isDrag.current = false
+    e.stopPropagation()
     const time = getTimeByOffsetDistance(start_timestamp, end_timestamp, 0)
     setTimeRange({
       startTime: time.startTime.format('HH:mm'),
@@ -71,7 +76,8 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     })
   }
   const onDragStop = (e: DraggableEvent, draggableData: DraggableData) => {
-    const { x, node, y, deltaY, lastY } = draggableData
+    e.stopPropagation()
+    const { x, node, y, deltaX, deltaY, lastY } = draggableData
     const time = getTimeByOffsetDistance(
       start_timestamp,
       end_timestamp,
@@ -89,14 +95,18 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     const calenderBoxRightArea = document.querySelector(
       '#calenderBoxRightArea',
     ) as Element
-    // 打开详情弹窗
-    dispatch(
-      setScheduleInfoDropdown({
-        visible: true,
-        x: x + 100,
-        y: y + 20,
-      }),
-    )
+
+    // 点击打开详情弹窗, 如果是拖动不打开
+    if (!isDrag.current) {
+      dispatch(
+        setScheduleInfoDropdown({
+          id: props.data.schedule_id,
+          visible: true,
+          x: x + 100,
+          y: y + 20,
+        }),
+      )
+    }
   }
 
   const onResize = (
@@ -179,6 +189,9 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
 
   return (
     <Rnd
+      onClick={(e: any) => {
+        e.stopPropagation()
+      }}
       style={{
         background: getColorWithOpacityPointOne(data.color),
       }}
