@@ -76,7 +76,6 @@ function VirtualScrollList<T>({
     }
     return 0
   }
-  console.log(rowNodeHeight, 'rowNodeHeight++')
 
   const handleTableScroll = (e: React.UIEvent<HTMLDivElement>): void => {
     const scrollTop: number = (e.target as HTMLDivElement).scrollTop
@@ -152,8 +151,6 @@ function VirtualScrollList<T>({
         style={{ transform: `translateY(${offSetY}px)` }}
       >
         {renderList.map((item: T, index) => {
-          console.log(item)
-
           return (
             <div
               className="virtual_scroll_row"
