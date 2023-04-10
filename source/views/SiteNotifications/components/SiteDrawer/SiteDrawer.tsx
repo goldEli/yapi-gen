@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable no-duplicate-imports */
+/* eslint-disable react/jsx-no-undef */
 import IconFont from '@/components/IconFont'
 import { useDispatch, useSelector } from '@store/index'
 import { changeVisible } from '@store/SiteNotifications'
@@ -14,6 +17,8 @@ import {
   Tips,
   Wrap,
 } from './style'
+import VirtualList from '../VittualNode/VittualNode'
+import VirtualScrollList from '../VittualNode/VittualNode'
 
 const tabsValue = [
   {
@@ -42,6 +47,7 @@ const SiteDrawer = () => {
   const changeActive = (id: string) => {
     setActive(id)
   }
+
   return (
     <Drawer
       bodyStyle={{ padding: 16, paddingBottom: '8px', boxSizing: 'border-box' }}
@@ -97,6 +103,13 @@ const SiteDrawer = () => {
           {new Array(30).fill(null).map((i: any) => (
             <ContentItem key={i} />
           ))}
+          {/* <VirtualScrollList
+            onScrollBottom={() => {
+              console.log(1)
+            }}
+            dataList={new Array(30).fill(null)}
+            renderItem={() => <ContentItem />}
+          /> */}
         </div>
 
         <div
