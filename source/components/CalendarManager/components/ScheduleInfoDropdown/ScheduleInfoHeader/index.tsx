@@ -15,7 +15,7 @@ const ScheduleInfoHeader = styled.div`
   box-sizing: border-box;
   border-radius: 6px 6px 0 0;
 `
-const ScheduleInfoHeaderBtns = styled.div`
+const ScheduleInfoHeaderBtn = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 8px;
@@ -85,7 +85,7 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
   }
   return (
     <ScheduleInfoHeader>
-      <ScheduleInfoHeaderBtns>
+      <ScheduleInfoHeaderBtn>
         <span className={statusClass}>忙碌</span>
         <div className={iconBox}>
           <span onClick={() => {
@@ -101,7 +101,7 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
             disPatch(setScheduleInfoDropdown({visible:false}))
           }}><ScheduleInfoIcon type='close' /></span>
         </div>
-      </ScheduleInfoHeaderBtns>
+      </ScheduleInfoHeaderBtn>
       <ScheduleInfoHeaderContent>
         日程标题日程标题日程标题日程标题日程标题dsadsadasdsadsadsad
         日程标题日程标题日程标题日程标题日程标.dsadhsadsaadsadasdsadsadsadsas

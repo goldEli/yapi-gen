@@ -56,7 +56,7 @@ const isCheckTicket = async (isPass: boolean) => {
 }
 
 client.config({
-  base:'https://dev.staryuntech.com:8443' ||  import.meta.env.__API_BASE_URL__,
+  base:import.meta.env.__API_BASE_URL__,
   headers: {
     'Content-Type': 'application/json; charset=UTF-8',
   },

@@ -46,7 +46,7 @@ const slice = createSlice({
     //     return item
     //   })
     // },
-    setScheduleListMoadl(
+    setScheduleListModal(
       state,
       action: PayloadAction<Model.Schedule.ScheduleList>,
     ) {
@@ -71,6 +71,6 @@ const slice = createSlice({
 
 const schedule = slice.reducer
 
-export const { setScheduleListMoadl, setScheduleDate} = slice.actions
+export const { setScheduleListModal, setScheduleDate} = slice.actions
 
 export default schedule

@@ -7,7 +7,7 @@ import dayLocaleData from 'dayjs/plugin/localeData'
 import styled from '@emotion/styled'
 import HeaderRender from './HeaderRender'
 import { css } from '@emotion/css'
-import { setScheduleListMoadl, setScheduleDate } from '@store/schedule'
+import { setScheduleListModal, setScheduleDate } from '@store/schedule'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
 import { useDispatch, useSelector } from '@store/index'
 dayjs.extend(dayLocaleData)
@@ -59,7 +59,7 @@ const CalendarForCalendarYear: React.FC<
     let month = props.month
     e.stopPropagation()
     // setScheduleDate
-    disPatch(setScheduleListMoadl({ visible: true, top: 76, left: 100 }))
+    disPatch(setScheduleListModal({ visible: true, top: 76, left: 100 }))
     disPatch(setScheduleDate(month))
     disPatch(setScheduleInfoDropdown({ visible: false }));
   }

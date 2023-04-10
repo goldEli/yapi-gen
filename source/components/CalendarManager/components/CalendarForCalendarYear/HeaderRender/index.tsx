@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import dayjs, { Dayjs } from 'dayjs'
 import React, { useState, useEffect } from 'react'
 import { useSelector } from '@store/index'
-import ScheduListModal from '../../ScheduleList'
+import ScheduleListModal from '../../ScheduleList'
 import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
 interface HeaderRenderProps {
   onChange(date: dayjs.Dayjs): void
@@ -34,7 +34,7 @@ const HeaderRender: React.FC<HeaderRenderProps> = props => {
     <CalendarHeader>
       {`${props.month + 1}月`}
       {props.month === date ? (
-        <ScheduListModal month={props.month + 1} />
+        <ScheduleListModal month={props.month + 1} />
       ) : null}
       {scheduleInfo.visible && props.month === date ? (
         <ScheduleInfoDropdown />
