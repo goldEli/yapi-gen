@@ -7,13 +7,8 @@ import CalendarMonth from '../CalendarMonth'
 import CalendarPanelToolBar from '../CalendarPanelToolBar'
 import CalendarWeek from '../CalendarWeek'
 import CalendarYear from '../CalendarYear'
-<<<<<<< HEAD
 import {setScheduleListModal} from '@store/schedule'
 import {setScheduleInfoDropdown} from '@store/calendarPanle'
-=======
-import { setScheduleListMoadl } from '@store/schedule'
-import { setScheduleInfoDropdown } from '@store/calendarPanle'
->>>>>>> 17bf198b10603a2c76a5bcf0fafcf2c13f662d3c
 interface CalendarPanelProps {
   children?: React.ReactDOM
 }
