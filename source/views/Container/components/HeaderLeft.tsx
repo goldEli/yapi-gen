@@ -30,7 +30,6 @@ import { useTranslation } from 'react-i18next'
 import ItemDropdown from './ItemDropdown'
 import { setCurrentMenu } from '@store/user'
 import menuTag from '/menuTag.svg'
-import { cloneDeep } from 'lodash'
 
 interface DrawerComponentProps {
   value: boolean
@@ -51,32 +50,6 @@ const DrawerComponent = (props: DrawerComponentProps) => {
     companyId: '',
     companyUserId: '',
   })
-
-  // TODO: mock 数据
-  const mockMenuPermission = useMemo(() => {
-    if (menuPermission.menus) {
-      const menus = menuPermission?.menus && cloneDeep(menuPermission?.menus)
-      menus.push({
-        id: 999,
-        url: '/SiteNotifications',
-        permission: '',
-        name: '通知中心',
-        children: [
-          {
-            id: 1000,
-            url: '/SiteNotifications/AllNote/1',
-            permission: '',
-            name: '通知中心',
-          },
-        ],
-      })
-      return {
-        priorityUrl: menuPermission.priorityUrl,
-        menus,
-      }
-    }
-    return {}
-  }, [menuPermission])
 
   // 点击菜单
   const onChangeCurrentMenu = (item: any) => {
@@ -221,7 +194,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
         {/* 其他菜单 */}
         <DrawerMenu>
           <Space size={12} style={{ flexWrap: 'wrap' }}>
-            {mockMenuPermission?.menus
+            {menuPermission?.menus
               ?.filter((k: any) => k.url !== '/AdminManagement')
               .map((i: any) => (
                 <DrawerMenuItem
@@ -258,9 +231,8 @@ const DrawerComponent = (props: DrawerComponentProps) => {
           </Space>
         </DrawerMenu>
         {/* 后台管理 */}
-        {mockMenuPermission?.menus?.filter(
-          (i: any) => i.url === '/AdminManagement',
-        )?.length > 0 && (
+        {menuPermission?.menus?.filter((i: any) => i.url === '/AdminManagement')
+          ?.length > 0 && (
           <DrawerFooter onClick={onToAdmin}>
             <div>
               <CommonIconFont
@@ -305,39 +277,21 @@ const HeaderLeft = () => {
     return state
   }
 
-  // TODO: mock 数据
-  const mockMenuPermission = useMemo(() => {
-    if (menuPermission.menus) {
-      const menus = menuPermission?.menus && cloneDeep(menuPermission?.menus)
-      menus.push({
-        id: 999,
-        url: '/SiteNotifications',
-        permission: '',
-        name: '通知中心',
-      })
-      return {
-        priorityUrl: menuPermission.priorityUrl,
-        menus,
-      }
-    }
-    return {}
-  }, [menuPermission])
-
   useEffect(() => {
-    if (mockMenuPermission.menus?.length || routerPath) {
+    if (menuPermission.menus?.length || routerPath) {
       let resultMenu: any
       if (routerPath.pathname === '/') {
-        resultMenu = mockMenuPermission?.menus?.filter(
-          (i: any) => i.url === mockMenuPermission.priorityUrl,
+        resultMenu = menuPermission?.menus?.filter(
+          (i: any) => i.url === menuPermission.priorityUrl,
         )[0]
       } else {
-        resultMenu = mockMenuPermission?.menus?.filter((i: any) =>
+        resultMenu = menuPermission?.menus?.filter((i: any) =>
           routerPath.pathname.includes(i.url),
         )?.[0]
       }
       dispatch(setCurrentMenu(resultMenu))
     }
-  }, [mockMenuPermission, routerPath])
+  }, [menuPermission, routerPath])
 
   const showTopNav = useMemo(() => {
     return (

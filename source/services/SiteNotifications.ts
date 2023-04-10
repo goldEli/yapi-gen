@@ -3,8 +3,8 @@
 
 import * as http from '@/tools/http'
 
-export const getViews: any = async (params: any) => {
-  const response: any = await http.get<any>('/b/story/views', {
+export const getNotes: any = async (params: any) => {
+  const response: any = await http.get<any>('/b/tipconf', {
     project_id: params,
   })
 
@@ -12,7 +12,7 @@ export const getViews: any = async (params: any) => {
 }
 
 export const addViews: any = async (params: any) => {
-  const response: any = await http.post<any>('/b/story/views', params)
+  const response: any = await http.get<any>('/b/tipusrconf', params)
 
   return response
 }

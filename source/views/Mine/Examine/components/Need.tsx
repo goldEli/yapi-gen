@@ -29,6 +29,7 @@ import PaginationBox from '@/components/TablePagination'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import ResizeTable from '@/components/ResizeTable'
 import ScreenMinHover from '@/components/ScreenMinHover'
+import DeleteConfirm from '@/components/DeleteConfirm'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -78,6 +79,7 @@ const Need = (props: any) => {
   const [keyword, setKeyword] = useState<string>('')
   const [searchParams, setSearchParams] = useState<any>({})
   const [isSpin, setIsSpin] = useState<boolean>(false)
+  const [delIsVisible, setDelIsVisible] = useState<boolean>(false)
 
   const getList = async (
     item?: any,
@@ -163,9 +165,14 @@ const Need = (props: any) => {
     activeTab,
     onClickItem,
   })
-  // TODO://API
+  const onUpdate = () => {
+    getList(pageObj, order, keyword, searchParams)
+  }
+
+  // TODO: API
   const handleCancel = () => {
     console.log('取消审核')
+    // onUpdate()
   }
 
   const selectColum: any = useMemo(() => {
@@ -182,7 +189,7 @@ const Need = (props: any) => {
                   <Button
                     type="link"
                     style={{ padding: 0 }}
-                    onClick={handleCancel}
+                    onClick={() => setDelIsVisible(true)}
                   >
                     取消审核
                   </Button>
@@ -211,10 +218,6 @@ const Need = (props: any) => {
       {},
       val,
     )
-  }
-
-  const onUpdate = () => {
-    getList(pageObj, order, keyword, searchParams)
   }
 
   return (
@@ -300,6 +303,7 @@ const Need = (props: any) => {
           </div>
         </LoadingSpin>
       </div>
+
       {listData?.list?.length >= 1 && (
         <PaginationBox
           total={listData?.total}
@@ -308,6 +312,14 @@ const Need = (props: any) => {
           onChange={onChangePage}
         />
       )}
+
+      <DeleteConfirm
+        title="取消审核"
+        text="确认取消当前需求审核，取消后提交需求将在我提交的列表中移除"
+        isVisible={delIsVisible}
+        onConfirm={handleCancel}
+        onChangeVisible={() => setDelIsVisible(false)}
+      />
     </div>
   )
 }
