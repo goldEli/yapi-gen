@@ -23,6 +23,7 @@ interface Props {
   filterState: boolean | undefined
   settingState: boolean | undefined
   isDemand?: boolean
+  onRefresh?(): void
 }
 
 const SpaceWrap = styled(Space)({
@@ -58,10 +59,6 @@ const OperationGroup = (props: Props) => {
   const onClickMenuFields = () => {
     props.onChangeSetting?.()
     setIsVisibleFields(false)
-  }
-
-  const refresh = () => {
-    console.log('refresh')
   }
 
   const menuType = () => {
@@ -175,11 +172,11 @@ const OperationGroup = (props: Props) => {
       )}
 
       <DividerWrap type="vertical" />
-      {/* //TODO: 列表刷新处 */}
+
       <ScreenMinHover
         label={t('staff.refresh')}
         icon="sync"
-        onClick={refresh}
+        onClick={props.onRefresh}
       />
 
       <DividerWrap type="vertical" />

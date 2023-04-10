@@ -227,15 +227,6 @@ export const ProviderForm = styled.div`
   margin: 0 24px;
 `
 
-export const CreateVisualization = styled.div`
-  width: 524px;
-  max-height: 60vh;
-  padding: 0 16px 0 24px;
-  border-left: 1px solid var(--neutral-n6-d1);
-  margin-left: 4px;
-  overflow-y: auto;
-`
-
 export const ParticipantItems = styled(Space)`
   display: flex;
   align-items: center;
@@ -288,4 +279,17 @@ export const NoticeBox = styled.div`
     color: var(--neutral-n3);
     cursor: pointer;
   }
+`
+
+export const AllDayScheduleItem = styled.div`
+  width: 100%;
+  box-sizing: border-box;
+  padding-left: 8px;
+  background-color: ${(props: { bg: string }) => props.bg};
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--neutral-n1-d1);
+  display: flex;
+  align-items: center;
+  height: 20px;
 `

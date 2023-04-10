@@ -18,15 +18,15 @@ type SliceState = {
     y: number
   }
   //日视图
-  calenderDayValue: string,
+  calenderDayValue: string
   //周视图
-  calenderWeekValue: string,
+  calenderWeekValue: string
   //月视图
-  calenderMonthValue: string,
+  calenderMonthValue: string
   //年视图
-  calenderYearValue: string,
+  calenderYearValue: string
   // 列表视图
-  calenderListValue: string,
+  calenderListValue: string
   calenderYearType: Model.Calendar.CalendarYearType
   // 月视图拖拽日程时，控制显示
   monthMoveScheduleActiveInfo: {
@@ -57,9 +57,9 @@ const initialState: SliceState = {
     x: 0,
     y: 0,
   },
-  calenderDayValue:dayjs().format('YYYY-M-D'),
-  calenderWeekValue:dayjs().format('YYYY-M'),
-  calenderMonthValue:dayjs().format('YYYY-M'),
+  calenderDayValue: dayjs().format('YYYY-M-D'),
+  calenderWeekValue: dayjs().format('YYYY-M'),
+  calenderMonthValue: dayjs().format('YYYY-M'),
   calenderYearValue: dayjs().format('YYYY'),
   calenderListValue: dayjs().format('YYYY-M-D'),
   calenderYearType: 0,
@@ -108,6 +108,11 @@ const slice = createSlice({
 
       const min = endIndex ?? 0
       const max = startIndex + len
+      console.log({ min, max })
+      // 往前扩大天数时，往后拉的最大极限是不能小于最后一天
+      if (min >= max) {
+        return
+      }
 
       const list = Array.from(Array(35).keys()).slice(min, max)
       state.monthMoveScheduleActiveInfo = {
@@ -159,7 +164,7 @@ const slice = createSlice({
       state,
       action: PayloadAction<SliceState['calenderWeekValue']>,
     ) {
-      console.log('payload-----',action.payload)
+      console.log('payload-----', action.payload)
       state.calenderWeekValue = action.payload
     },
     setCalenderMonthValue(

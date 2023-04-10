@@ -264,6 +264,10 @@ const IterationMain = (props: Props) => {
     }
   }, [isUpdateDemand])
 
+  const refresh = () => {
+    getList(isGrid, searchItems, pageObj, false, topParentId)
+  }
+
   return (
     <>
       <DeleteConfirm
@@ -285,11 +289,13 @@ const IterationMain = (props: Props) => {
             updateState={props.updateState}
           />
           <Right>
+            {/* TODO: 迭代刷新 */}
             <Operation
               isGrid={isGrid}
               onChangeGrid={val => onChangeGrid(val)}
               onChangeIsShowLeft={() => setIsShowLeft(!isShowLeft)}
               onIsUpdateList={value => dispatch(setIsUpdateList(value))}
+              onRefresh={refresh}
               currentDetail={keyRef.current}
               settingState={isSettingState}
               onChangeSetting={setIsSettingState}

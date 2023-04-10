@@ -43,12 +43,9 @@ const ButtonStyle = styled.div`
   }
 `
 
-const refresh = () => {
-  console.log('refresh')
-}
-
 const HeaderSearch = (props: {
   onSetSearchVal: any
+  onRefresh(): void
   onShowAddMemberModal(): void
 }) => {
   const { activeTeam } = useSelector(s => s.teams)
@@ -70,12 +67,11 @@ const HeaderSearch = (props: {
         <span>{activeTeam?.name}</span>
       </TitleWrap>
       <SearchBox>
-        {/* //TODO: 列表刷新处 */}
-        {/* <ScreenMinHover
+        <ScreenMinHover
           label={t('staff.refresh')}
           icon="sync"
-          onClick={refresh}
-        /> */}
+          onClick={props.onRefresh}
+        />
 
         <DividerWrap type="vertical" />
 

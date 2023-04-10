@@ -1,11 +1,11 @@
-import React,{useEffect} from 'react'
+import React, { useEffect } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { useSelector } from '@store/index'
 import dayjs from 'dayjs'
-interface CalendarListProps { }
+interface CalendarListProps {}
 const CalendarListBox = styled.div`
-    background-color: #fff;
+  background-color: #fff;
 `
 const CalendarListItem = styled.div`
   border-top: 1px solid var(--neutral-n6-d1);
@@ -20,12 +20,12 @@ const DateBox = styled.div`
   width: 40px;
 `
 const MonthWeekBox = styled.div`
-  color:var(--neutral-n1-d1);
+  color: var(--neutral-n1-d1);
   font-size: var(--font16);
 `
 // 农历日期组件
 const LunarDate = styled.div`
-   color:var(--neutral-n3);
+  color: var(--neutral-n3);
   font-size: var(--font12);
   margin-left: 4px;
 `
@@ -43,7 +43,7 @@ const TimeItem = styled.div`
   margin-left: 115px;
   position: relative;
   margin-bottom: 8px;
-  &:before{
+  &:before {
     position: absolute;
     content: '';
     left: -12px;
@@ -53,11 +53,10 @@ const TimeItem = styled.div`
     border-radius: 50%;
     background: var(--primary-d1);
   }
-
 `
 const CalendarListClass = css`
-  :last-child{
-    border-bottom: 1px solid  var(--neutral-n6-d1);
+  :last-child {
+    border-bottom: 1px solid var(--neutral-n6-d1);
   }
 `
 const dateClass = css`
@@ -74,27 +73,27 @@ const currentClass = css`
   display: inline-block;
   width: 28px !important;
   height: 28px !important;
-
 `
 const CalendarList: React.FC<CalendarListProps> = props => {
   const data = [
     {
-      id: 1, list: [
+      id: 1,
+      list: [
         { text: '这是一个日程标题内容', date: '全天' },
         { text: '这是一个日程标题内容', date: '09-10' },
-        { text: '这是一个日程标题内容', date: '11-12' }
-      ]
+        { text: '这是一个日程标题内容', date: '11-12' },
+      ],
     },
-    { id: 2, list: [{ text: '这是一个日程标题内容', date: '09-10' },] },
-    { id: 3, list: [{ text: '这是一个日程标题内容', date: '09-10' },] },
-    { id: 2, list: [{ text: '这是一个日程标题内容', date: '09-10' },] },
-    { id: 3, list: [{ text: '这是一个日程标题内容', date: '09-10' },] },
-    { id: 2, list: [{ text: '这是一个日程标题内容', date: '09-10' },] },
-    { id: 3, list: [{ text: '这是一个日程标题内容', date: '09-10' },] },
-    { id: 2, list: [{ text: '这是一个日程标题内容', date: '09-10' },] },
-    { id: 3, list: [{ text: '这是一个日程标题内容', date: '09-10' },] },
-    { id: 2, list: [{ text: '这是一个日程标题内容', date: '09-10' },] },
-    { id: 3, list: [{ text: '这是一个日程标题内容', date: '09-10' },] },
+    { id: 2, list: [{ text: '这是一个日程标题内容', date: '09-10' }] },
+    { id: 3, list: [{ text: '这是一个日程标题内容', date: '09-10' }] },
+    { id: 2, list: [{ text: '这是一个日程标题内容', date: '09-10' }] },
+    { id: 3, list: [{ text: '这是一个日程标题内容', date: '09-10' }] },
+    { id: 2, list: [{ text: '这是一个日程标题内容', date: '09-10' }] },
+    { id: 3, list: [{ text: '这是一个日程标题内容', date: '09-10' }] },
+    { id: 2, list: [{ text: '这是一个日程标题内容', date: '09-10' }] },
+    { id: 3, list: [{ text: '这是一个日程标题内容', date: '09-10' }] },
+    { id: 2, list: [{ text: '这是一个日程标题内容', date: '09-10' }] },
+    { id: 3, list: [{ text: '这是一个日程标题内容', date: '09-10' }] },
   ]
   const canendarListValue=useSelector(state=>state.calendarPanel.calenderListValue);
   const scheduleSearchKey=useSelector(state=>state.calendarPanel.scheduleSearchKey)
@@ -105,24 +104,26 @@ const CalendarList: React.FC<CalendarListProps> = props => {
     {
       data.map((item, index) =>
         <CalendarListItem key={index} className={CalendarListClass}>
-          <div style={{width:'40px'}}>
-            <DateBox className={index === 0 ? currentClass : ''}>{18 + index}</DateBox>
+          <div style={{ width: '40px' }}>
+            <DateBox className={index === 0 ? currentClass : ''}>
+              {18 + index}
+            </DateBox>
           </div>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <MonthWeekBox>3月 周日</MonthWeekBox>
             <LunarDate>廿四 </LunarDate>
           </div>
           <CalendarListInfo>
-            {
-              item.list.map((ele, idx) => <TimeItem>
+            {item.list.map((ele, idx) => (
+              <TimeItem key={ele.date}>
                 <span className={dateClass}>{ele.date}</span>
                 <span>{ele.text}</span>
-              </TimeItem>)
-            }
+              </TimeItem>
+            ))}
           </CalendarListInfo>
-        </CalendarListItem>)
-    }
-  </CalendarListBox>
+        </CalendarListItem>
+      )}
+    </CalendarListBox>
 }
 
 export default CalendarList
