@@ -250,7 +250,7 @@ const MyDropdown = (props: any) => {
           id: el?.feedable?.project_id ?? el.project_id,
         }
         if (resultType === 'iterate') {
-          params.iterateId = el.id
+          params.iterateId = el?.feedable_id ?? el.id
         }
         if (resultType === 'story') {
           params.demandId = el?.feedable_id ?? el.id
