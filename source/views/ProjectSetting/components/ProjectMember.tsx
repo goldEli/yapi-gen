@@ -43,6 +43,7 @@ import ResizeTable from '@/components/ResizeTable'
 import ProjectOverModal from '@/components/ProjectOverModal'
 import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import BatchAction, { boxItem } from '@/components/BatchAction'
+import ScreenMinHover from '@/components/ScreenMinHover'
 
 const Wrap = styled.div({
   padding: '0 24px',
@@ -632,7 +633,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
   }, [isUpdateMember])
 
   const refresh = () => {
-    console.log('refresh')
+    getList(order, pageObj)
   }
 
   return (
@@ -696,18 +697,19 @@ const ProjectMember = (props: { searchValue?: string }) => {
               )}
             </Space>
             <Space size={8}>
-              <HoverWrap onClick={onChangeFilter} isActive={!isVisible}>
-                <IconFont className="iconMain" type="filter" />
-                <span className="label">{t('common.search')}</span>
-              </HoverWrap>
+              <ScreenMinHover
+                label={t('common.search')}
+                icon="filter"
+                onClick={onChangeFilter}
+                isActive={!isVisible}
+              />
               <DividerWrap type="vertical" />
-              {/* //TODO: 列表刷新处 */}
-              <HoverWrap onClick={refresh}>
-                <IconFont className="iconMain" type="sync" />
-                <span style={{ whiteSpace: 'nowrap' }} className="label">
-                  {t('staff.refresh')}
-                </span>
-              </HoverWrap>
+              {/* //TODO: 项目成员刷新处 */}
+              <ScreenMinHover
+                label={t('staff.refresh')}
+                icon="sync"
+                onClick={refresh}
+              />
             </Space>
           </HeaderTop>
           <FilterWrap

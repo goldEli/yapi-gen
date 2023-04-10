@@ -33,6 +33,7 @@ const Right = styled.div<{ isShowLeft: boolean }>({
   height: '100%',
   overflowY: 'auto',
   paddingLeft: '24px',
+  minWidth: 800,
 })
 
 interface Props {
@@ -169,19 +170,6 @@ const DemandMain = (props: Props) => {
   }, [key, isGrid, order, pageObj, projectId])
 
   useEffect(() => {
-    if (isRefresh) {
-      getList(
-        isGrid,
-        searchItems,
-        { page: 1, size: pageObj.size },
-        order,
-        false,
-        topParentId,
-      )
-    }
-  }, [isRefresh])
-
-  useEffect(() => {
     if (isUpdateDemand) {
       getList(isGrid, searchItems, pageObj, order, false, topParentId)
     }
@@ -300,6 +288,23 @@ const DemandMain = (props: Props) => {
   //     dispatch(onTapInputKey(''))
   //   }
   // }, [tapInputKey])
+
+  useEffect(() => {
+    if (isRefresh) {
+      getList(
+        isGrid,
+        searchItems,
+        { page: 1, size: pageObj.size },
+        order,
+        false,
+        topParentId,
+      )
+    }
+  }, [isRefresh])
+
+  const refresh = () => {
+    getList(isGrid, searchItems, pageObj, order, false, topParentId)
+  }
   return (
     <TreeContext.Provider value={keyValue}>
       <DeleteConfirm
@@ -321,12 +326,14 @@ const DemandMain = (props: Props) => {
             iKey={key}
           />
           <Right isShowLeft={isShowLeft}>
+            {/* TODO: 需求刷新 */}
             <Operation
               pid={projectId}
               isGrid={isGrid}
               onChangeGrid={val => onChangeGrid(val)}
               onChangeIsShowLeft={() => setIsShowLeft(!isShowLeft)}
               onChangeVisible={(e: any) => props.onChangeVisible(e)}
+              onRefresh={refresh}
               onSearch={onSearch}
               settingState={isSettingState}
               onChangeSetting={setIsSettingState}

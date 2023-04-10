@@ -16,8 +16,8 @@ export interface GlobalState {
   language: string
   basicFieldList: any[]
   tagOrPriority: any[]
-  // 最小宽度 -- 用于搜索栏按钮展示
-  screenMin: boolean
+  // // 最小宽度 -- 用于搜索栏按钮展示
+  // screenMin: boolean
 }
 
 const initialState: GlobalState = {
@@ -91,7 +91,7 @@ const initialState: GlobalState = {
     { key: 'endEd', backgroundColor: '--function-tag2' },
     { key: 'closeEd', backgroundColor: '--function-tag6' },
   ],
-  screenMin: window.innerWidth <= 1440,
+  // screenMin: window.innerWidth <= 1440,
 }
 
 export const globalSlice = createSlice({

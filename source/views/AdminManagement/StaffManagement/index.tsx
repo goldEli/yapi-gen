@@ -39,6 +39,7 @@ import { confirmHand, restHand } from '@/services/handover'
 import ResizeTable from '@/components/ResizeTable'
 import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import BatchAction, { boxItem } from '@/components/BatchAction'
+import ScreenMinHover from '@/components/ScreenMinHover'
 
 export const tableWrapP = css`
   display: flex;
@@ -484,7 +485,7 @@ const StaffManagement = () => {
         >
           {t('staff.companyStaff')}
         </div>
-        {/* //TODO: 列表刷新处 */}
+
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <div className={inputSearch}>
             <InputSearch
@@ -494,26 +495,22 @@ const StaffManagement = () => {
               onChangeSearch={onPressEnter}
             />
           </div>
-
-          <HoverWrap
+          <ScreenMinHover
+            label={t('common.search')}
+            icon="filter"
             onClick={onChangeFilter}
             isActive={isShow}
             style={{ marginRight: '8px' }}
-          >
-            <IconFont className="iconMain" type="filter" />
-            <span style={{ whiteSpace: 'nowrap' }} className="label">
-              {t('common.search')}
-            </span>
-          </HoverWrap>
+          />
 
           <DividerWrap type="vertical" />
-
-          <HoverWrap style={{ margin: '0 8px' }} onClick={refresh}>
-            <IconFont className="iconMain" type="sync" />
-            <span style={{ whiteSpace: 'nowrap' }} className="label">
-              {t('staff.refresh')}
-            </span>
-          </HoverWrap>
+          {/* //TODO: 员工刷新处 */}
+          <ScreenMinHover
+            label={t('staff.refresh')}
+            icon="sync"
+            onClick={refresh}
+            style={{ margin: '0 8px' }}
+          />
 
           <DividerWrap type="vertical" />
           <div className={settingWrap}>

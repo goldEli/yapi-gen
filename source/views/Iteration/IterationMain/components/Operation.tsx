@@ -23,18 +23,14 @@ import { useDispatch, useSelector } from '@store/index'
 import { setFilterKeys, setProjectInfoValues } from '@store/project'
 import { updateIterateStatus } from '@/services/iterate'
 import { Editor } from '@xyfe/uikit'
+import ScreenMinHover from '@/components/ScreenMinHover'
 
-const OperationWrap = styled.div<{ isShowLeft?: boolean }>(
-  {
-    background: 'white',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  ({ isShowLeft }) => ({
-    flexWrap: isShowLeft ? 'wrap' : 'initial',
-  }),
-)
+const OperationWrap = styled.div({
+  background: 'white',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+})
 
 const StickyWrap = styled.div({
   background: 'white',
@@ -44,6 +40,16 @@ const IterationInfo = styled.div({
   display: 'flex',
   alignItems: 'center',
   position: 'relative',
+  width: '70%',
+  '.iterationName': {
+    fontSize: 14,
+    color: 'var(--neutral-n1-d1)',
+    margin: '0 8px',
+    maxWidth: '26%',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+  },
 })
 
 const IconWrap = styled(IconFont)({
@@ -66,6 +72,7 @@ interface Props {
   settingState: boolean
   onChangeSetting(val: boolean): void
   onSearch(params: any): void
+  onRefresh(): void
   isShowLeft?: boolean
 }
 
@@ -82,7 +89,7 @@ const Operation = (props: Props) => {
   const { projectInfo, filterKeys, projectInfoValues } = useSelector(
     store => store.project,
   )
-  const { screenMin } = useSelector(store => store.global)
+  // const { screenMin } = useSelector(store => store.global)
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
   const [filterSpecialList, setFilterSpecialList] = useState<any[]>([])
@@ -229,7 +236,7 @@ const Operation = (props: Props) => {
           )}
         </div>
       </CommonModal>
-      <OperationWrap isShowLeft={props.isShowLeft}>
+      <OperationWrap>
         <IterationInfo>
           {props.isShowLeft ? (
             <Tooltip
@@ -262,9 +269,11 @@ const Operation = (props: Props) => {
           )}
           {props.currentDetail?.id && (
             <>
-              <span style={{ fontSize: 14, color: 'black', margin: '0 8px' }}>
-                {props.currentDetail?.name}
-              </span>
+              <Tooltip title={props.currentDetail?.name}>
+                <span className="iterationName">
+                  {props.currentDetail?.name}
+                </span>
+              </Tooltip>
               <span
                 style={{
                   fontSize: 12,
@@ -281,29 +290,32 @@ const Operation = (props: Props) => {
                 onChangeStatus={onChangeStatus}
               />
               <Space size={8} style={{ marginLeft: 8 }}>
-                <HoverWrap onClick={() => setVisible(true)} isActive={visible}>
-                  <IconFont className="iconMain" type="detail" />
-                  <span className="label">{t('project.iterateTarget')}</span>
-                </HoverWrap>
+                <ScreenMinHover
+                  label={t('project.iterateTarget')}
+                  icon="detail"
+                  onClick={() => setVisible(true)}
+                  isActive={visible}
+                />
                 {isCanCheck ? null : (
                   <>
                     <DividerWrap type="vertical" />
-                    <HoverWrap
+                    <ScreenMinHover
+                      label={t('p2.d2')}
+                      icon="iteration"
                       onClick={() => setIsAchievements(true)}
                       isActive={isAchievements}
-                    >
-                      <IconFont className="iconMain" type="iteration" />
-                      <span className="label">{t('p2.d2')}</span>
-                    </HoverWrap>
+                    />
                   </>
                 )}
               </Space>
             </>
           )}
         </IterationInfo>
+
         <OperationGroup
           onChangeFilter={onChangeFilter}
           onChangeGrid={props.onChangeGrid}
+          onRefresh={props.onRefresh}
           isGrid={props.isGrid}
           filterState={filterState}
           settingState={props.settingState}

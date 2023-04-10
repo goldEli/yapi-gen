@@ -280,11 +280,10 @@ const ProjectManagementOptimization = () => {
           <CommonButton
             type="primary"
             onClick={() => dispatch(changeCreateVisible(true))}
+            icon="plus"
+            iconPlacement="left"
           >
-            <span>
-              <IconFont type="plus" style={{ fontSize: 15 }} />
-              {t('common.createProject')}
-            </span>
+            {t('common.createProject')}
           </CommonButton>
         )}
 
@@ -292,6 +291,7 @@ const ProjectManagementOptimization = () => {
           sort={order.key}
           isGrid={isGrid}
           activeType={activeType}
+          onRefresh={onUpdate}
           onChangeSort={onChangeSort}
           onChangeFormat={onChangeGrid}
           onChangeHidden={onChangeHidden}

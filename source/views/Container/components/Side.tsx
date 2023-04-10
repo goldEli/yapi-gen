@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
 import { useRef, useState, useEffect } from 'react'
 import ProjectDetailSide from '@/components/AllSide/ProjectDetailSide'
-
+import ReviewSide from '@/components/AllSide/ReviewSide'
 import ProjectSide from '@/components/AllSide/ProjectSide'
 import AdminSide from '@/components/AllSide/AdminSide'
 import { useLocation } from 'react-router-dom'
@@ -13,6 +13,7 @@ import HisSide from '@/components/AllSide/HisSide'
 import { DragLine } from '@/components/StyleCommon'
 import FormWorkSide from '@/components/AllSide/FormWorkSide'
 import SiteNotificationSide from '@/views/SiteNotifications/components/SiteNotificationSide/SiteNotificationSide'
+
 const SideWrap = styled.div<{
   firstMenuCollapse: boolean
   permission?: boolean
@@ -172,6 +173,8 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
       nodeComponent = <ProjectDetailSide />
     } else if (String(pathname).includes('/Report/')) {
       nodeComponent = <FormWorkSide />
+    } else if (String(pathname).includes('/Report/Review/')) {
+      nodeComponent = <ReviewSide />
     }
     return nodeComponent
   }

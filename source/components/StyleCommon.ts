@@ -210,6 +210,7 @@ const HoverWrap = styled.div<{ isActive?: any }>`
   display: flex;
   align-items: center;
   transition: all 0.3s;
+  white-space: nowrap;
   & .iconMain {
     font-size: 18px;
   }
@@ -405,7 +406,6 @@ const DelButton = styled.div`
 const SelectWrapBedeck = styled.div`
   height: 32px;
   position: relative;
-  height: 32px;
   border: 1px solid var(--active);
   display: flex;
   align-items: center;

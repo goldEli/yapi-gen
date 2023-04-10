@@ -4,6 +4,7 @@
 import { Dropdown } from 'antd'
 import IconFont from './IconFont'
 import { HoverWrap } from './StyleCommon'
+import ScreenMinHover from './ScreenMinHover'
 
 interface Props {
   menu: any
@@ -25,16 +26,11 @@ const DropDownMenu = (props: Props) => {
       placement={props.icon === 'settings' ? 'bottomRight' : 'bottomLeft'}
       onOpenChange={visible => props.onChangeVisible?.(visible)}
     >
-      <HoverWrap isActive={props.isActive}>
-        <IconFont
-          style={{
-            marginRight: 8,
-            fontSize: 18,
-          }}
-          type={props?.icon}
-        />
-        {props.children}
-      </HoverWrap>
+      <div>
+        <ScreenMinHover isActive={props.isActive} icon={props?.icon}>
+          {props.children}
+        </ScreenMinHover>
+      </div>
     </Dropdown>
   )
 }

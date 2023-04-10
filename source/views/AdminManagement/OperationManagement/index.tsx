@@ -25,6 +25,7 @@ import PaginationBox from '@/components/TablePagination'
 import IconFont from '@/components/IconFont'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import ResizeTable from '@/components/ResizeTable'
+import ScreenMinHover from '@/components/ScreenMinHover'
 
 const Header = styled.div({
   height: 'auto',
@@ -217,10 +218,6 @@ const OperationManagement = () => {
     getList(pageObj, order)
   }
 
-  const refresh = () => {
-    console.log('refresh')
-  }
-
   return (
     <PermissionWrap
       auth="/AdminManagement/OperationManagement"
@@ -306,13 +303,12 @@ const OperationManagement = () => {
               {t('common.clearForm')}
             </div>
 
-            {/* //TODO: 列表刷新处 */}
-            <HoverWrap onClick={refresh}>
-              <IconFont className="iconMain" type="sync" />
-              <span style={{ whiteSpace: 'nowrap' }} className="label">
-                {t('staff.refresh')}
-              </span>
-            </HoverWrap>
+            {/* //TODO: 操作日志刷新处 */}
+            <ScreenMinHover
+              label={t('staff.refresh')}
+              icon="sync"
+              onClick={onValuesChange}
+            />
           </SearchWrap>
         </Header>
         <Content>

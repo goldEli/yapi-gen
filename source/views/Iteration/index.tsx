@@ -41,6 +41,7 @@ import SetShowField from '@/components/SetShowField/indedx'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
 import PermissionWrap from '@/components/PermissionWrap'
 import CommonButton from '@/components/CommonButton'
+import ScreenMinHover from '@/components/ScreenMinHover'
 
 const Wrap = styled.div`
   height: 100%;
@@ -499,13 +500,12 @@ const Iteration = () => {
             {type === 'demand' && (
               <OperationWrap size={16}>
                 {hasFilter ? null : (
-                  <HoverWrap
+                  <ScreenMinHover
+                    label={t('common.search')}
+                    icon="filter"
                     onClick={() => setFilterState(!filterState)}
                     isActive={!filterState}
-                  >
-                    <IconFont className="iconMain" type="filter" />
-                    <span className="label">{t('common.search')}</span>
-                  </HoverWrap>
+                  />
                 )}
                 <DividerWrap type="vertical" />
                 <DropDownMenu
