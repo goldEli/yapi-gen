@@ -33,6 +33,8 @@ const CalendarListInfo = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+  top: 6px;
   
 `
 const TimeItem = styled.div`
@@ -95,9 +97,10 @@ const CalendarList: React.FC<CalendarListProps> = props => {
     { id: 3, list: [{ text: '这是一个日程标题内容', date: '09-10' },] },
   ]
   const canendarListValue=useSelector(state=>state.calendarPanel.calenderListValue);
+  const scheduleSearchKey=useSelector(state=>state.calendarPanel.scheduleSearchKey)
   useEffect(()=>{
-    console.log(11,canendarListValue,dayjs(canendarListValue).valueOf())
-  },[canendarListValue])
+    console.log('list----')
+  },[canendarListValue,scheduleSearchKey])
   return <CalendarListBox>
     {
       data.map((item, index) =>
