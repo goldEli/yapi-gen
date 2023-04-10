@@ -1,8 +1,20 @@
+/* eslint-disable max-lines */
+/* eslint-disable no-undefined */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import dayjs from 'dayjs'
-import { getCalendarList } from './calendar.thunk'
+import {
+  getCalendarConfig,
+  getCalendarList,
+  getRelateConfig,
+  updateCalendarConfig,
+} from './calendar.thunk'
 
 type SliceState = {
+  // 左侧-选中的时间
+  checkedTime: string
+  relateConfig: Model.Calendar.GetRelateConfig
+  // 日历设置配置
+  calendarConfig: Model.Calendar.UpdateCalendarConfigParams
   // 左侧-日历列表
   calendarData: Model.Calendar.CalendarData
   // 左侧-日历列表-选中的日历
@@ -30,9 +42,33 @@ type SliceState = {
 }
 
 const initialState: SliceState = {
+  checkedTime: '',
+  relateConfig: {
+    calendar: {
+      permission_types: [],
+      user_group_ids: [],
+      subscribe_types: [],
+      calendar_types: [],
+      icon_path: [],
+    },
+    schedule: {
+      permission_types: [],
+      repeat_types: [],
+      repeat_end_types: [],
+      remind_types: [],
+      all_day_remind: [],
+      un_all_day_remind: [],
+      default_duration: [],
+    },
+  },
+  calendarConfig: {
+    view_options: undefined,
+    schedule_configs: undefined,
+    notification_configs: undefined,
+  },
   calendarData: {
     manage: [],
-    sub: [],
+    subscribe: [],
   },
   checkedCalendarList: [],
   menuList: [
@@ -893,6 +929,9 @@ const slice = createSlice({
   name: 'calendar',
   initialState,
   reducers: {
+    setCheckedTime(state, action: PayloadAction<SliceState['checkedTime']>) {
+      state.checkedTime = action.payload
+    },
     setCalendarData(state, action: PayloadAction<SliceState['calendarData']>) {
       state.calendarData = action.payload
     },
@@ -945,11 +984,23 @@ const slice = createSlice({
       const checkManageList = action.payload.manage?.filter(
         (i: Model.Calendar.Info) => i.is_check,
       )
-      const checkSubList = action.payload.sub?.filter(
+      const checkSubList = action.payload.subscribe?.filter(
         (i: Model.Calendar.Info) => i.is_check,
       )
       // 获取当前数据默认选择的日历
       state.checkedCalendarList = [...checkManageList, ...checkSubList]
+    })
+    // 获取日历相关配置下拉
+    builder.addCase(getRelateConfig.fulfilled, (state, action) => {
+      state.relateConfig = action.payload
+    })
+    // 获取日历配置
+    builder.addCase(getCalendarConfig.fulfilled, (state, action) => {
+      state.calendarConfig = action.payload
+    })
+    // 修改日历配置
+    builder.addCase(updateCalendarConfig.fulfilled, (state, action) => {
+      state.calendarConfig = action.payload
     })
   },
 })
@@ -957,6 +1008,7 @@ const slice = createSlice({
 const calendar = slice.reducer
 
 export const {
+  setCheckedTime,
   setCheckedCalendarList,
   setCalendarData,
   setRouterMenu,

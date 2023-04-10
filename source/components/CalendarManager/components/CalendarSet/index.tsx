@@ -2,7 +2,11 @@ import CommonButton from '@/components/CommonButton'
 import IconFont from '@/components/IconFont'
 import { uploadFileByTask } from '@/services/cos'
 import styled from '@emotion/styled'
-import { useSelector } from '@store/index'
+import {
+  getCalendarConfig,
+  updateCalendarConfig,
+} from '@store/calendar/calendar.thunk'
+import { useDispatch, useSelector } from '@store/index'
 import { Checkbox, message, Select, Space, Tooltip, Upload } from 'antd'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useEffect, useState } from 'react'
@@ -49,7 +53,7 @@ const Title = styled.div`
   margin-top: 48px;
   display: flex;
   align-items: center;
-  div {
+  .name {
     font-family: SiYuanMedium;
     font-size: 16px;
     color: var(--neutral-n1-d1);
@@ -57,6 +61,13 @@ const Title = styled.div`
 `
 
 const CheckBoxWrap = styled(Checkbox.Group)`
+  margin-top: 8px;
+  .ant-checkbox-group-item {
+    margin-right: 56px;
+  }
+`
+
+const CheckBoxViewWrap = styled(Space)`
   margin-top: 8px;
   .ant-checkbox-group-item {
     margin-right: 56px;
@@ -179,30 +190,23 @@ const ImportItem = styled.div`
 `
 
 const CalendarSet = () => {
-  const { menuList, routerMenu, partialDayTimeOption } = useSelector(
-    store => store.calendar,
-  )
+  const dispatch = useDispatch()
+  const { menuList, routerMenu, partialDayTimeOption, calendarConfig } =
+    useSelector(store => store.calendar)
   // 配置选项默认值
   const [formParams, setFormParams] = useState<any>({
-    // 视图选项
-    views: null,
-    // 一周的第一天 - 星期日
-    time: [0],
-    // 日程颜色 - 现代
-    color: 0,
-    // 日程默认时长 - 30
-    normalValue: 1,
-    // 非全天日程默认提醒时间 -- 提前5分钟
-    partialDayValue: 1,
-    // 全天日程默认提醒时间 -- 当天08：00
-    allDayValue: 0,
-    // 仅提醒我已接受的日程
-    remindMeAccepted: true,
-    // 导出的日历
-    exportIds: [],
-    // 默认导入的日历
-    importCalendar: 0,
+    view_options: {
+      hide_reject_schedule: 2,
+      reduce_finish_schedule_light: 2,
+      show_lunar_calendar: 2,
+    },
+    schedule_configs: {},
+    notification_configs: {},
   })
+  // 默认导入的日历
+  const [importCalendar, setImportCalendar] = useState(0)
+  // 导出的日历
+  const [exportIds, setExportIds] = useState<CheckboxValueType[]>([])
   // 导入的日历数组
   const [importList, setImportList] = useState<
     { name: string; id: string | number }[]
@@ -210,29 +214,33 @@ const CalendarSet = () => {
 
   // 视图选项
   const options = [
-    { label: '隐藏已拒绝的日程', value: 0 },
-    { label: '降低已结束的日程的亮度', value: 1 },
-    { label: '显示农历', value: 2 },
+    { label: '隐藏已拒绝的日程', value: 0, key: 'hide_reject_schedule' },
+    {
+      label: '降低已结束的日程的亮度',
+      value: 1,
+      key: 'reduce_finish_schedule_light',
+    },
+    { label: '显示农历', value: 2, key: 'show_lunar_calendar' },
   ]
 
   // 一周的第一天
   const timeOption = [
     { label: '星期日', value: 0 },
-    { label: '星期六', value: 1 },
-    { label: '星期一', value: 2 },
+    { label: '星期六', value: 6 },
+    { label: '星期一', value: 1 },
   ]
 
   // 日程颜色
   const colorList = [
     {
       name: '现代（彩色文字）',
-      value: 0,
+      value: 1,
       background: 'var(--function-tag5)',
       color: 'var(--neutral-n1-d1)',
     },
     {
       name: '经典（白色文字）',
-      value: 1,
+      value: 2,
       background: 'var(--primary-d1)',
       color: 'var(--neutral-white-d7)',
     },
@@ -276,12 +284,11 @@ const CalendarSet = () => {
     { label: '6666日历', value: 4 },
   ]
 
-  // 修改配置 key： 表单对应的key, value：修改的值
-  const onChangeSet = (
-    key: string,
-    value: number | string | CheckboxValueType[] | boolean,
-  ) => {
-    setFormParams({ ...formParams, ...{ [key]: value } })
+  // 修改配置 key： 表单对应的key, value：修改的值 outKey: 最外层的key
+  const onChangeSet = (value: number, key: string, outKey: string) => {
+    const params = formParams[outKey]
+    params[key] = value
+    setFormParams({ ...formParams, ...{ [outKey]: params } })
   }
 
   const onCustomRequest = async (file: any) => {
@@ -307,6 +314,21 @@ const CalendarSet = () => {
     setImportList(resultList)
   }
 
+  // 设置默认值
+  const getNormalForm = () => {
+    // setFormParams(calendarConfig)
+  }
+
+  useEffect(() => {
+    getNormalForm()
+    // 获取日历列表
+  }, [calendarConfig])
+
+  useEffect(() => {
+    // console.log(formParams, '=formParamsformParams')
+    dispatch(updateCalendarConfig(formParams))
+  }, [formParams])
+
   useEffect(() => {
     if (routerMenu.key) {
       const dom = document.getElementById(`calendar-${routerMenu.key}`)
@@ -314,6 +336,7 @@ const CalendarSet = () => {
         behavior: 'smooth',
       })
     }
+    dispatch(getCalendarConfig())
   }, [routerMenu])
 
   return (
@@ -332,17 +355,27 @@ const CalendarSet = () => {
       <ContentWrap>
         <div id="calendar-view">
           <Title>
-            <div>视图选项</div>
+            <div className="name">视图选项</div>
           </Title>
-          <CheckBoxWrap
-            value={formParams.views}
-            options={options}
-            onChange={checkedValues => onChangeSet('views', checkedValues)}
-          />
+          <CheckBoxViewWrap>
+            {options.map((i: any) => (
+              <Checkbox
+                key={i.key}
+                checked={formParams.view_options[i.key] === 1}
+                onChange={e =>
+                  onChangeSet(e.target.checked ? 1 : 2, i.key, 'view_options')
+                }
+              >
+                {i.label}
+              </Checkbox>
+            ))}
+          </CheckBoxViewWrap>
           <Label style={{ marginTop: 24 }}>一周的第一天</Label>
           <Select
-            onChange={time => onChangeSet('time', time)}
-            value={formParams.time}
+            onChange={time =>
+              onChangeSet(time, 'week_first_day', 'view_options')
+            }
+            value={formParams.view_options.week_first_day}
             options={timeOption}
             style={{ width: 320 }}
             getPopupContainer={n => n}
@@ -350,7 +383,7 @@ const CalendarSet = () => {
         </div>
         <div id="calendar-schedule">
           <Title>
-            <div>日程设置</div>
+            <div className="name">日程设置</div>
           </Title>
           <Label style={{ marginTop: 8 }}>日程颜色</Label>
           <ScheduleColorWrap size={56}>
@@ -364,7 +397,9 @@ const CalendarSet = () => {
                 <div
                   className="box"
                   key={i.value}
-                  onClick={() => onChangeSet('color', i.value)}
+                  onClick={() =>
+                    onChangeSet(i.value, 'schedule_color', 'schedule_configs')
+                  }
                 >
                   <div
                     className="colorBox"
@@ -376,7 +411,9 @@ const CalendarSet = () => {
                   <div className="radio">
                     <div
                       className={
-                        formParams.color === i.value ? 'active' : 'normal'
+                        formParams.schedule_configs.schedule_color === i.value
+                          ? 'active'
+                          : 'normal'
                       }
                     >
                       <div />
@@ -389,8 +426,14 @@ const CalendarSet = () => {
           </ScheduleColorWrap>
           <Label style={{ marginTop: 24 }}>日程默认时长</Label>
           <Select
-            onChange={normalValue => onChangeSet('normalValue', normalValue)}
-            value={formParams.normalValue}
+            onChange={normalValue =>
+              onChangeSet(
+                normalValue,
+                'schedule_default_duration',
+                'schedule_configs',
+              )
+            }
+            value={formParams.schedule_configs.schedule_default_duration}
             options={normalTimeOption}
             style={{ width: 320 }}
             getPopupContainer={n => n}
@@ -398,16 +441,20 @@ const CalendarSet = () => {
         </div>
         <div id="calendar-notice">
           <Title>
-            <div>通知设置</div>
+            <div className="name">通知设置</div>
           </Title>
           <LineForm size={56}>
             <NotificationWrap>
               <Label>非全天日程默认提醒时间</Label>
               <Select
                 onChange={partialDayValue =>
-                  onChangeSet('partialDayValue', partialDayValue)
+                  onChangeSet(
+                    partialDayValue,
+                    'not_all_day_remind',
+                    'notification_configs',
+                  )
                 }
-                value={formParams.partialDayValue}
+                value={formParams.notification_configs.not_all_day_remind}
                 options={partialDayTimeOption}
                 style={{ width: 320 }}
                 getPopupContainer={n => n}
@@ -417,9 +464,13 @@ const CalendarSet = () => {
               <Label>全天日程默认提醒时间</Label>
               <Select
                 onChange={allDayValue =>
-                  onChangeSet('allDayValue', allDayValue)
+                  onChangeSet(
+                    allDayValue,
+                    'all_day_remind',
+                    'notification_configs',
+                  )
                 }
-                value={formParams.allDayValue}
+                value={formParams.notification_configs.all_day_remind}
                 options={allDayTimeOption}
                 style={{ width: 320 }}
                 getPopupContainer={n => n}
@@ -427,15 +478,21 @@ const CalendarSet = () => {
             </NotificationWrap>
           </LineForm>
           <Checkbox
-            checked={formParams.remindMeAccepted}
-            onChange={e => onChangeSet('remindMeAccepted', e.target.checked)}
+            checked={formParams.notification_configs.only_remind_accept === 1}
+            onChange={e =>
+              onChangeSet(
+                e.target.checked ? 1 : 2,
+                'only_remind_accept',
+                'notification_configs',
+              )
+            }
           >
             仅提醒我已接受的日程
           </Checkbox>
         </div>
         <div id="calendar-import">
           <Title>
-            <div>日历导入</div>
+            <div className="name">日历导入</div>
             <Tooltip title="您可以导入 iCal 或 VCS (MS Outlook) 格式的活动信息。">
               <TitleIcon className="icon" type="question" />
             </Tooltip>
@@ -446,10 +503,8 @@ const CalendarSet = () => {
           <Label style={{ marginTop: 8 }}>添加至日历</Label>
           <Select
             getPopupContainer={n => n}
-            onChange={importCalendar =>
-              onChangeSet('importCalendar', importCalendar)
-            }
-            value={formParams.importCalendar}
+            onChange={setImportCalendar}
+            value={importCalendar}
             options={exportList}
             style={{ width: 320 }}
           />
@@ -476,15 +531,17 @@ const CalendarSet = () => {
         </div>
         <div id="calendar-export">
           <Title>
-            <div style={{ marginRight: 16 }}>日历导出</div>
+            <div className="name" style={{ marginRight: 16 }}>
+              日历导出
+            </div>
             <CommonButton type="primaryText">导出</CommonButton>
           </Title>
           <Label style={{ marginTop: 8 }}>选择导出日历</Label>
           <CheckBoxWrap
             style={{ margin: 0 }}
-            value={formParams.exportIds}
+            value={exportIds}
             options={exportList}
-            onChange={exportIds => onChangeSet('exportIds', exportIds)}
+            onChange={setExportIds}
           />
         </div>
       </ContentWrap>

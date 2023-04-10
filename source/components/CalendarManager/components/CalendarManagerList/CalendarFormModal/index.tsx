@@ -6,7 +6,6 @@ import CommonModal from '@/components/CommonModal'
 import CustomSelect from '@/components/CustomSelect'
 import FormTitleSmall from '@/components/FormTitleSmall'
 import MoreOptions from '@/components/MoreOptions'
-import { getCalendarIconList } from '@/services/calendar'
 import {
   Form,
   Input,
@@ -216,9 +215,9 @@ const CalendarFormModal = () => {
 
   // 获取日历图标列表
   const getPathList = async () => {
-    const response = await getCalendarIconList()
-    setPathList(response.data.list)
-    setPath(response.data.list[0].path)
+    // const response = await getCalendarIconList()
+    // setPathList(response.data.list)
+    // setPath(response.data.list[0].path)
   }
 
   // 点击添加成员
@@ -329,16 +328,20 @@ const CalendarFormModal = () => {
     await form.validateFields()
     const values = form.getFieldsValue()
     values.color = normalColor
-    values.shareIds = shareList.map((i: Model.Calendar.MemberItem) => ({
-      id: i.id,
-      permission: i.permission,
+    values.share_members = shareList.map((i: Model.Calendar.MemberItem) => ({
+      user_id: i.id,
+      user_group_id: i.permission,
     }))
-    values.subscribedIds = subscribedList.map(
-      (i: Model.Calendar.MemberItem) => i.id,
+    values.subscribe_members = subscribedList.map(
+      (i: Model.Calendar.MemberItem) => ({
+        object_id: i.id,
+        object_type: i.type,
+      }),
     )
-    values.path = path
+    values.icon = path
     values.permission = currentPermission
-    // console.log(values)
+
+    // console.log(values, 'valuesvaluesvalues')
   }
 
   // 修改共享成员的权限

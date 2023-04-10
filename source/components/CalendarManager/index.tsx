@@ -6,6 +6,7 @@ import CalendarSet from './components/CalendarSet'
 import CalendarSidebar from './components/CalendarSidebar'
 import { CalenderBox, CalenderBoxRightArea } from './styles'
 import CreateSchedule from './components/CreateSchedule'
+import { getRelateConfig } from '@store/calendar/calendar.thunk'
 
 type CalendarManagerLayoutProps = {
   // num: string
@@ -26,6 +27,8 @@ const CalendarManager: React.ForwardRefRenderFunction<
     const calendarSet = localStorage.getItem('calendarSetKey')
     const resultMenu = { name: '', key: calendarSet ?? '' }
     dispatch(setRouterMenu(resultMenu))
+    // 获取相应配置
+    dispatch(getRelateConfig())
   }, [])
 
   React.useImperativeHandle(forwardedRef, () => ({

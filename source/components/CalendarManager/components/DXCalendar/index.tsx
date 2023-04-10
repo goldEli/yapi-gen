@@ -6,6 +6,9 @@ import 'dayjs/locale/zh-cn'
 import dayLocaleData from 'dayjs/plugin/localeData'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
+import { useDispatch, useSelector } from '@store/index'
+import { setCheckedTime } from '@store/calendar'
+import { getNowDate } from '@/tools'
 
 dayjs.extend(dayLocaleData)
 const CalendarHeader = styled.div`
@@ -27,19 +30,27 @@ const CalendarHeader = styled.div`
 `
 
 const DXCalendar: React.FC = () => {
+  const dispatch = useDispatch()
+  const { checkedTime } = useSelector(store => store.calendar)
+
   const wrapperStyle: React.CSSProperties = {
     // width: 240,
     background: 'var(--neutral-n9)',
     //  border: `1px solid ${token.colorBorderSecondary}`,
     //  borderRadius: token.borderRadiusLG,
   }
+
   return (
     <StyledCalendar
       style={wrapperStyle}
       fullscreen={false}
-      onPanelChange={(value, mode) => {
-        console.log(value.format('YYYY-MM-DD'), mode)
+      value={dayjs(checkedTime ? checkedTime : getNowDate())}
+      onChange={value => {
+        dispatch(setCheckedTime(value.format('YYYY-MM-DD')))
       }}
+      // onPanelChange={(value, mode) => {
+      //   console.log(value.format('YYYY-MM-DD'), mode)
+      // }}
       headerRender={({ value, type, onChange, onTypeChange }) => {
         const month = value.month()
         return (

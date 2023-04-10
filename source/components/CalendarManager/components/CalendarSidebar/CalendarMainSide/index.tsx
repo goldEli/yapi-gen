@@ -44,7 +44,7 @@ const CalendarMainSide = () => {
       </div>
       <ManagerListBox>
         <CalendarManagerList title="我管理的" type="manage" />
-        <CalendarManagerList title="我订阅的" type="sub" />
+        <CalendarManagerList title="我订阅的" type="subscribe" />
       </ManagerListBox>
       <CalendarSetBox onClick={onChangeRouter}>
         <div className="box">
