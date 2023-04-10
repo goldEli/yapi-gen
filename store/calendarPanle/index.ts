@@ -36,7 +36,10 @@ type SliceState = {
     visibleList?: number[]
     // 包含几个日程
     length?: number
-  }
+  },
+  //搜索日程关键字
+  scheduleSearchKey?:string
+
 }
 const defaultMonthMoveScheduleActiveInfo = {
   visibleList: [],
@@ -105,6 +108,11 @@ const slice = createSlice({
 
       const min = endIndex ?? 0
       const max = startIndex + len
+      console.log({ min, max })
+      // 往前扩大天数时，往后拉的最大极限是不能小于最后一天
+      if (min >= max) {
+        return
+      }
 
       const list = Array.from(Array(35).keys()).slice(min, max)
       state.monthMoveScheduleActiveInfo = {
@@ -184,6 +192,9 @@ const slice = createSlice({
     ) {
       state.calenderYearType = action.payload
     },
+    setScheduleSearchKey(state,action:PayloadAction<string>){
+      state.scheduleSearchKey=action.payload
+    }
   },
 })
 
@@ -200,6 +211,7 @@ export const {
   setCalenderYearType,
   setCalenderListValue,
   startMoveMonthSchedule,
+  setScheduleSearchKey,
   clearMonthMoveScheduleActiveInfo,
   resizeMonthSchedule,
 } = slice.actions

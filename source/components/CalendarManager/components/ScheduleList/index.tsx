@@ -1,9 +1,9 @@
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import React from 'react'
-import { useSelector,useDispatch } from '@store/index'
-import {setScheduleInfoDropdown} from '@store/calendarPanle'
-import {setScheduleListMoadl} from '@store/schedule'
+import { useSelector, useDispatch } from '@store/index'
+import { setScheduleInfoDropdown } from '@store/calendarPanle'
+import { setScheduleListMoadl } from '@store/schedule'
 import ScheduleInfoDropdown from "../ScheduleInfoDropdown";
 import dayjs from "dayjs";
 interface ScheduleListProps {
@@ -86,31 +86,31 @@ const gregorianDateClass = css`
     font-size: 12px;
 `
 const ScheduListModal: React.FC<ScheduleListProps> = props => {
-    const scheduList = useSelector(state => state.schedule.scheduleListModal);
-    const scheduleInfo=useSelector(state=>state.calendarPanel.scheduleInfoDropdown)
-    const disPatch=useDispatch()
-    const { visible, top, left } = scheduList;
-    const scheduleInfoClick = (e: any) => {
-        console.log(e,scheduleInfo)
-        e.stopPropagation()
-        disPatch(setScheduleInfoDropdown({visible:true}));
-        disPatch(setScheduleListMoadl({ visible: false }))
-    }
-    return (
-        <ScheduListBox visible={visible} top={top} left={left} month={props.month}>
-            <ScheduleTitle>
-                <span className={dateClass}>16</span>
-                <span className={gregorianDateClass}>甘五</span>
-            </ScheduleTitle>
-            {
-                [1, 2, 3, 4].map(item =>
-                    <ScheduleItem key={item} onClick={(e) => scheduleInfoClick(e)}>
-                        <span className={labelTime}>06:00</span>
-                        <span className={labelContent}>这是一个日程标题内容</span>
-                    </ScheduleItem>)
-            }
-            
-        </ScheduListBox>
-    )
+  const scheduList = useSelector(state => state.schedule.scheduleListModal);
+  const scheduleInfo = useSelector(state => state.calendarPanel.scheduleInfoDropdown)
+  const disPatch = useDispatch()
+  const { visible, top, left } = scheduList;
+  const scheduleInfoClick = (e: any) => {
+    console.log(e, scheduleInfo)
+    e.stopPropagation()
+    disPatch(setScheduleInfoDropdown({ visible: true }));
+    disPatch(setScheduleListMoadl({ visible: false }))
+  }
+  return (
+    <ScheduListBox visible={visible} top={top} left={left} month={props.month}>
+      <ScheduleTitle>
+        <span className={dateClass}>16</span>
+        <span className={gregorianDateClass}>甘五</span>
+      </ScheduleTitle>
+      {
+        [1, 2, 3, 4, 5, 6].map(item =>
+          <ScheduleItem key={item} onClick={(e) => scheduleInfoClick(e)}>
+            <span className={labelTime}>06:00</span>
+            <span className={labelContent}>这是一个日程标题内容</span>
+          </ScheduleItem>)
+      }
+
+    </ScheduListBox>
+  )
 }
 export default ScheduListModal

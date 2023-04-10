@@ -6,6 +6,7 @@ import { hexToRgba } from '../utils'
 import useScheduleListBySelectedDay from '@/components/CalendarManager/hooks/useScheduleListBySelectedDay'
 import { getColorWithOpacityPointOne } from '@/components/CalendarManager/utils'
 import useScheduleAllDayList from '../hooks/useScheduleAllDayList'
+import { AllDayScheduleItem } from '@/components/CalendarManager/styles'
 
 interface ScheduleAllDayProps {}
 const ScheduleAllDayBox = styled.div`
@@ -70,19 +71,6 @@ const ScheduleListScroll = styled.div`
   overflow-y: scroll;
 `
 
-const ScheduleItem = styled.div`
-  width: 100%;
-  box-sizing: border-box;
-  padding-left: 8px;
-  background-color: ${(props: { bg: string }) => props.bg};
-  font-size: 12px;
-  font-weight: 400;
-  color: var(--neutral-n1-d1);
-  display: flex;
-  align-items: center;
-  height: 20px;
-`
-
 const ScheduleAllDay: React.FC<ScheduleAllDayProps> = props => {
   const { list } = useScheduleAllDayList()
   const dispatch = useDispatch()
@@ -97,7 +85,7 @@ const ScheduleAllDay: React.FC<ScheduleAllDayProps> = props => {
         <ScheduleListScroll>
           {list?.map(item => {
             return (
-              <ScheduleItem
+              <AllDayScheduleItem
                 onClick={() => {
                   dispatch(
                     setScheduleInfoDropdown({
@@ -111,7 +99,7 @@ const ScheduleAllDay: React.FC<ScheduleAllDayProps> = props => {
                 bg={getColorWithOpacityPointOne(item.color)}
               >
                 {item.subject}
-              </ScheduleItem>
+              </AllDayScheduleItem>
             )
           })}
         </ScheduleListScroll>
