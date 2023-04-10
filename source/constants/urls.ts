@@ -138,6 +138,7 @@ const urls = {
   getCalendarList: '/b/calendar_list',
   getSubscribeList: '/b/subscribe_list',
   getCalendarIconList: '/b/calendar_icon_list',
+  getCalendarDaysOfYeaList:'/b/schedule/daysOfYear'
 }
 
 export default urls

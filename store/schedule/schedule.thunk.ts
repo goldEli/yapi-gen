@@ -26,3 +26,12 @@ export const saveSchedule =
     const r = await services.schedule.saveScheduleList(params)
     dispatch(getScheduleList({ id: 1 }))
   }
+
+
+export const getCalendarDaysOfYeaList = createAsyncThunk(
+  `${name}/getCalendarDaysOfYeaList`,
+  async () => {
+    const res = await services.schedule.getCalendarDaysOfYeaList()
+    return res
+  },
+)

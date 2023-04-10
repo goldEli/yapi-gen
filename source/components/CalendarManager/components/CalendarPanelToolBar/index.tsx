@@ -71,7 +71,7 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
       ['year', dayjs(calenderYearValue).format('YYYY年')],
       ['list', dayjs(calenderListValue).format('YYYY年M月D日')],
     ])
-    setDateText(maps.get(calendarPanelType) as any)
+    setDateText(maps.get(calendarPanelType) as string)
   }, [
     calendarPanelType,
     calenderListValue,
