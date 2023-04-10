@@ -4,6 +4,7 @@ import styled from '@emotion/styled'
 import { Dropdown } from 'antd'
 import { useEffect, useState } from 'react'
 import { seleData1, seleData2, seleData3 } from './DataList'
+import CommonModal from '@/components/AddUser/CommonModal'
 const AddPersonText = styled.div`
   margin-left: 26px;
   display: flex;
@@ -68,9 +69,11 @@ const Addperson = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false)
   const [member, setMember] = useState(props.data)
   const [items, setItems] = useState<Array<Item>>()
+  const [isVisible, setIsVisible] = useState(false)
   // 下拉
   const onOpenChange = (e: { key: string }) => {
     setIsOpen(false)
+    setIsVisible(e.key === 'user' ? true : false)
   }
   // 删除添加的成员
   const delPerson = (el: { id: number }) => {
@@ -130,6 +133,14 @@ const Addperson = (props: Props) => {
           </Col>
         ))}
       </PersonContainer>
+      {/* 添加成员弹窗 */}
+      <CommonModal
+        title={'添加成员'}
+        state={2}
+        isVisible={isVisible}
+        onConfirm={() => 12}
+        onClose={() => setIsVisible(false)}
+      />
     </>
   )
 }

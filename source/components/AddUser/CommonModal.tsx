@@ -215,6 +215,8 @@ interface ModalProps {
   isPermisGroup?: boolean
   userGroupId?: number
   projectPermission?: any
+  // 展示某一个
+  state?: number
 }
 
 const CommonModal = (props: ModalProps) => {
@@ -256,17 +258,7 @@ const CommonModal = (props: ModalProps) => {
     }
     if (projectInfo?.teamId && props.isPermisGroup) {
       setTabs(tabs.filter(el => el.key === '1'))
-    } else {
-      setTabs([
-        {
-          label: t('commonModal.labelTitle'),
-          key: '1',
-        },
-        {
-          label: t('commonModal.labelTitle1'),
-          key: '2',
-        },
-      ])
+      setTabsActive(1)
     }
   }, [props.isVisible])
   // 勾选后获取到成员
@@ -308,6 +300,7 @@ const CommonModal = (props: ModalProps) => {
     }
     return res
   }
+  // 部门api
   const getCompany = async () => {
     const res = await getDepartmentUserList1({
       search: {
@@ -326,6 +319,7 @@ const CommonModal = (props: ModalProps) => {
       data.map((el: any) => ({ label: el.name, value: el.id, ...el })),
     )
   }
+  // 团队
   const getTeam = async () => {
     const res = await getDepartmentUserList({
       search: {
@@ -351,6 +345,24 @@ const CommonModal = (props: ModalProps) => {
       getCompany()
     }
   }, [tabsActive])
+  useEffect(() => {
+    switch (props.state) {
+      case 2:
+        setTabsActive(0)
+        setTabs([
+          {
+            label: t('commonModal.labelTitle'),
+            key: '1',
+          },
+          {
+            label: t('commonModal.labelTitle1'),
+            key: '2',
+          },
+        ])
+        break
+    }
+    console.log(props.state)
+  }, [props.state])
 
   // 删除成员
   const delPersonDataList = (el: any) => {

@@ -365,25 +365,25 @@ interface Item {
 }
 export const seleData1: Array<Item> = [
   {
-    key: '1',
+    key: 'all',
     label: '全员',
   },
   {
-    key: '2',
+    key: 'user',
     label: '添加成员',
   },
   {
-    key: '3',
+    key: 'department',
     label: '添加部门',
   },
   {
-    key: '4',
+    key: 'team',
     label: '添加团队',
   },
 ]
 export const seleData2: Array<Item> = [
   {
-    key: '1',
+    key: 'user',
     label: '添加成员',
   },
   {
@@ -401,11 +401,11 @@ export const seleData2: Array<Item> = [
 ]
 export const seleData3: Array<Item> = [
   {
-    key: '1',
+    key: 'member',
     label: '添加成员',
   },
   {
-    key: '2',
+    key: 'all',
     label: '全部',
   },
   {
