@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 import { store } from '..'
 
 type SliceState = {
@@ -17,7 +17,16 @@ type SliceState = {
     x: number
     y: number
   }
-  calenderYearValue: number
+  //日视图
+  calenderDayValue: string
+  //周视图
+  calenderWeekValue: string
+  //月视图
+  calenderMonthValue: string
+  //年视图
+  calenderYearValue: string
+  // 列表视图
+  calenderListValue: string
   calenderYearType: Model.Calendar.CalendarYearType
   // 月视图拖拽日程时，控制显示
   monthMoveScheduleActiveInfo: {
@@ -45,7 +54,11 @@ const initialState: SliceState = {
     x: 0,
     y: 0,
   },
-  calenderYearValue: dayjs().year(),
+  calenderDayValue: dayjs().format('YYYY-M-D'),
+  calenderWeekValue: dayjs().format('YYYY-M'),
+  calenderMonthValue: dayjs().format('YYYY-M'),
+  calenderYearValue: dayjs().format('YYYY'),
+  calenderListValue: dayjs().format('YYYY-M-D'),
   calenderYearType: 0,
   monthMoveScheduleActiveInfo: defaultMonthMoveScheduleActiveInfo,
 }
@@ -78,36 +91,28 @@ const slice = createSlice({
         visibleList: list,
       }
     },
-    // moveMonthSchedule(
-    //   state,
-    //   action: PayloadAction<SliceState['monthMoveScheduleActiveInfo']>,
-    // ) {
-    //   if (!state.monthMoveScheduleActiveInfo.visibleList?.length) {
-    //     return
-    //   }
-    //   const newState = {
-    //     ...state.monthMoveScheduleActiveInfo,
-    //     ...action.payload,
-    //   }
-    //   // const { scheduleList } = all.schedule
-    //   const { startIndex, endIndex } = newState
-    //   if (startIndex === void 0) {
-    //     return
-    //   }
-    //   if (endIndex === void 0) {
-    //     return
-    //   }
-    //   const len = newState.length ?? 0
+    resizeMonthSchedule(
+      state,
+      action: PayloadAction<SliceState['monthMoveScheduleActiveInfo']>,
+    ) {
+      // const all = store.getState()
+      const newState = {
+        ...state.monthMoveScheduleActiveInfo,
+        ...action.payload,
+      }
+      const { startIndex = 0, endIndex = 0, length = 0 } = newState
+      const len = length
 
-    //   const min = newState.endIndex ?? 0
-    //   const max = min + len
+      const min = endIndex ?? 0
+      const max = startIndex + len
 
-    //   const list = Array.from(Array(35).keys()).slice(min, max)
-    //   state.monthMoveScheduleActiveInfo = {
-    //     ...newState,
-    //     visibleList: list,
-    //   }
-    // },
+      const list = Array.from(Array(35).keys()).slice(min, max)
+      state.monthMoveScheduleActiveInfo = {
+        ...newState,
+        visibleList: list,
+      }
+    },
+
     setCalendarPanelType(
       state,
       action: PayloadAction<SliceState['calendarPanelType']>,
@@ -141,11 +146,37 @@ const slice = createSlice({
         ...action.payload,
       }
     },
+    setCalenderDayValue(
+      state,
+      action: PayloadAction<SliceState['calenderDayValue']>,
+    ) {
+      state.calenderDayValue = action.payload
+    },
+    setCalenderWeekValue(
+      state,
+      action: PayloadAction<SliceState['calenderWeekValue']>,
+    ) {
+      console.log('payload-----', action.payload)
+      state.calenderWeekValue = action.payload
+    },
+    setCalenderMonthValue(
+      state,
+      action: PayloadAction<SliceState['calenderMonthValue']>,
+    ) {
+      state.calenderMonthValue = action.payload
+    },
     setCalenderYearValue(
       state,
       action: PayloadAction<SliceState['calenderYearValue']>,
     ) {
       state.calenderYearValue = action.payload
+    },
+    setCalenderListValue(
+      state,
+      action: PayloadAction<SliceState['calenderListValue']>,
+    ) {
+      //console.log('payload--',action.payload)
+      state.calenderListValue = action.payload
     },
     setCalenderYearType(
       state,
@@ -162,11 +193,15 @@ export const {
   setCalendarPanelType,
   setQuickCreateScheduleModel,
   setScheduleInfoDropdown,
+  setCalenderDayValue,
+  setCalenderWeekValue,
+  setCalenderMonthValue,
   setCalenderYearValue,
   setCalenderYearType,
+  setCalenderListValue,
   startMoveMonthSchedule,
   clearMonthMoveScheduleActiveInfo,
-  // moveMonthSchedule,
+  resizeMonthSchedule,
 } = slice.actions
 
 export default calendarPanel

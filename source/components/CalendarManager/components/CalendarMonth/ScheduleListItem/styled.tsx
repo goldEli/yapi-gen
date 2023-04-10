@@ -36,6 +36,9 @@ export const Dot = styled.div<{ bg: string }>`
   height: 6px;
   background: ${props => props.bg};
   border-radius: 2px 2px 2px 2px;
+  &:hover {
+    cursor: col-resize;
+  }
 `
 export const Time = styled.div`
   color: var(--neutral-n4);
