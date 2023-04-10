@@ -123,7 +123,6 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
   }
 
   const onOpenSub = (e: any) => {
-    console.log(props.type)
     e.stopPropagation()
     props.type === 'sub'
       ? dispatch(setIsShowSubscribeVisible(true))

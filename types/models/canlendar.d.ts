@@ -1,4 +1,55 @@
 declare namespace Model.Calendar {
+  interface GetRelateConfigCommonInfo {
+    value: number
+    text: string
+  }
+
+  // 日历相关下拉配置
+  interface GetRelateConfig {
+    calendar: {
+      permission_types: GetRelateConfigCommonInfo[]
+      user_group_ids: GetRelateConfigCommonInfo[]
+      subscribe_types: GetRelateConfigCommonInfo[]
+      calendar_types: GetRelateConfigCommonInfo[]
+      icon_path: string[]
+    }
+    schedule: {
+      permission_types: GetRelateConfigCommonInfo[]
+      repeat_types: GetRelateConfigCommonInfo[]
+      repeat_end_types: GetRelateConfigCommonInfo[]
+      remind_types: GetRelateConfigCommonInfo[]
+      all_day_remind: GetRelateConfigCommonInfo[]
+      un_all_day_remind: GetRelateConfigCommonInfo[]
+      default_duration: GetRelateConfigCommonInfo[]
+    }
+  }
+
+  // 日历设置-视图设置
+  interface ViewOptionsInfo {
+    hide_reject_schedule: number
+    reduce_finish_schedule_light: number
+    show_lunar_calendar: number
+    week_first_day: number
+  }
+  // 日历设置-日程设置
+  interface ScheduleConfigsInfo {
+    schedule_color: number
+    schedule_default_duration: number
+  }
+
+  // 日历设置-通知设置
+  interface NotificationConfigsInfo {
+    not_all_day_remind: number
+    all_day_remind: number
+    only_remind_accept: number
+  }
+
+  interface UpdateCalendarConfigParams {
+    view_options: ViewOptionsInfo | undefined
+    schedule_configs: ScheduleConfigsInfo | undefined
+    notification_configs: NotificationConfigsInfo | undefined
+  }
+
   // 创建日历弹窗传入参数
   interface ShowCalendarParams {
     // 用于编辑日历详情查询

@@ -183,3 +183,46 @@ export const getCalendarIconList = async () => {
   )
   return response
 }
+
+// 获取日历相关配置下拉
+export const getRelateConfig = async () => {
+  const response = await http.get<any, API.Calendar.GetRelateConfig.Result>(
+    'getRelateConfig',
+  )
+  return response
+}
+
+// 创建日历
+export const addCalendar = async (params: API.Calendar.AddCalendar.Params) => {
+  await http.post<any, API.Calendar.GetRelateConfig.Result>(
+    'addCalendar',
+    params,
+  )
+}
+
+// 获取日历设置接口
+export const getCalendarConfig = async () => {
+  const response = await http.get<any, API.Calendar.GetCalendarConfig.Result>(
+    'getCalendarConfig',
+  )
+  return {
+    view_options: response.data.view_options,
+    schedule_configs: response.data.schedule_configs,
+    notification_configs: response.data.notification_configs,
+  }
+}
+
+// 修改日历设置
+export const updateCalendarConfig = async (
+  params: Model.Calendar.UpdateCalendarConfigParams,
+) => {
+  const response = await http.patch<any, API.Calendar.GetCalendarConfig.Result>(
+    'updateCalendarConfig',
+    params,
+  )
+  return {
+    view_options: response.data.view_options,
+    schedule_configs: response.data.schedule_configs,
+    notification_configs: response.data.notification_configs,
+  }
+}
