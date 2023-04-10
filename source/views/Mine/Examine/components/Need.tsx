@@ -15,7 +15,7 @@ import {
   HoverWrap,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Spin, Table } from 'antd'
+import { Button, Spin, Table } from 'antd'
 import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
@@ -163,8 +163,36 @@ const Need = (props: any) => {
     activeTab,
     onClickItem,
   })
+  // TODO://API
+  const handleCancel = () => {
+    console.log('取消审核')
+  }
 
   const selectColum: any = useMemo(() => {
+    if (activeTab === 1) {
+      return columns.concat([
+        {
+          title: '操作',
+          dataIndex: 'action',
+          key: 'action',
+          render: (_: string, record: any) => {
+            return (
+              <>
+                {record.status === 1 && (
+                  <Button
+                    type="link"
+                    style={{ padding: 0 }}
+                    onClick={handleCancel}
+                  >
+                    取消审核
+                  </Button>
+                )}
+              </>
+            )
+          },
+        },
+      ])
+    }
     return columns
   }, [columns])
 

@@ -31,8 +31,11 @@ const StatusWrap = styled.div({
   alignItems: 'center',
 })
 
+const statusColor = ['#FF5C5E', '#FA9746', '#43BA9A']
+
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
+
   const NewSort = (propsSort: any) => {
     return (
       <Sort
@@ -160,12 +163,7 @@ export const useDynamicColumns = (state: any) => {
               <StatusWrap>
                 <CircleWrap
                   style={{
-                    background:
-                      text === 1
-                        ? '#FA9746'
-                        : text === 2
-                        ? '#43BA9A'
-                        : '#FF5C5E',
+                    background: statusColor[text],
                   }}
                 />
                 <ClickWrap style={{ display: 'inline' }}>
