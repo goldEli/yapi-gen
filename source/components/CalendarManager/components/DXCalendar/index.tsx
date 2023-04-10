@@ -8,6 +8,7 @@ import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useDispatch, useSelector } from '@store/index'
 import { setCheckedTime } from '@store/calendar'
+import { getNowDate } from '@/tools'
 
 dayjs.extend(dayLocaleData)
 const CalendarHeader = styled.div`
@@ -39,18 +40,11 @@ const DXCalendar: React.FC = () => {
     //  borderRadius: token.borderRadiusLG,
   }
 
-  console.log(
-    checkedTime,
-    '=checkedTimecheckedTime',
-    new Date().getDate(),
-    dayjs('2023-04-09'),
-  )
-
   return (
     <StyledCalendar
       style={wrapperStyle}
       fullscreen={false}
-      value={dayjs(checkedTime ? checkedTime : '2023-04-08')}
+      value={dayjs(checkedTime ? checkedTime : getNowDate())}
       onChange={value => {
         dispatch(setCheckedTime(value.format('YYYY-MM-DD')))
       }}

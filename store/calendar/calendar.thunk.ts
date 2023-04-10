@@ -17,6 +17,7 @@ export const getRelateConfig = createAsyncThunk(
   `${name}/getRelateConfig`,
   async () => {
     const res = await services.calendar.getRelateConfig()
+    console.log(res, '=11212')
     return res.data
   },
 )

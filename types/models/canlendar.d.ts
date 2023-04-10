@@ -65,9 +65,14 @@ declare namespace Model.Calendar {
     // 是否有右侧可视化操作
     hasRight?: boolean
     // 日程时间
-    time?: string
+    time?: {
+      startTime: string
+      endTime: string
+    }
     // 是否全天
     isAll?: boolean
+    // 小弹窗位置
+    position?: { x: number; y: number }
   }
 
   /**

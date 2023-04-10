@@ -23,6 +23,22 @@ import moment from 'moment'
 import styled from '@emotion/styled'
 import CustomSelect from '@/components/CustomSelect'
 
+// 格式化日对象
+function getNowDate() {
+  const date = new Date()
+  const year = date.getFullYear()
+  let month: string | number = date.getMonth() + 1
+  let day: string | number = date.getDate()
+  // 给一位数的数据前面加 “0”
+  if (month >= 1 && month <= 9) {
+    month = '0' + month
+  }
+  if (day >= 0 && day <= 9) {
+    day = '0' + day
+  }
+  return year + '-' + month + '-' + day
+}
+
 // 获取权限
 function getIsPermission(arr: any, value: string) {
   return !arr?.filter((i: any) => i.identity === value).length
@@ -345,4 +361,5 @@ export {
   removeNull,
   getCustomNormalValue,
   copyLink,
+  getNowDate,
 }
