@@ -25,7 +25,12 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import DropDownMenu from '@/components/DropDownMenu'
-import { getStaffList, refreshStaff, updateStaff } from '@/services/staff'
+import {
+  getStaffList,
+  refreshStaff,
+  updateStaff,
+  getRoleList,
+} from '@/services/staff'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
 import InputSearch from '@/components/InputSearch'
@@ -40,6 +45,7 @@ import ResizeTable from '@/components/ResizeTable'
 import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import BatchAction, { boxItem } from '@/components/BatchAction'
 import ScreenMinHover from '@/components/ScreenMinHover'
+import BatchSetPermGroup from '@/views/ProjectSetting/components/BatchSetPermGroup'
 
 export const tableWrapP = css`
   display: flex;
@@ -111,6 +117,7 @@ const StaffManagement = () => {
   const [isSpinning, setIsSpinning] = useState(false)
   const [isStaffPersonalVisible, setIsStaffPersonalVisible] =
     useState<boolean>(false)
+  const [batchEditVisible, setBatchEditVisible] = useState(false)
   const [isVisibleFields, setIsVisibleFields] = useState(false)
   const [isVisibleFieldsA, setIsVisibleFieldsA] = useState(false)
   const [isVisibleFieldsB, setIsVisibleFieldsB] = useState(false)
@@ -139,6 +146,7 @@ const StaffManagement = () => {
   )?.length
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([])
+  const [roleOptions, setRoleOptions] = useState<number[]>([])
   const actionRef = useRef<actionRefType>(null)
 
   const getStaffListData = async () => {
@@ -165,6 +173,17 @@ const StaffManagement = () => {
     dispatch(setIsRefresh(false))
   }
 
+  const queryRoleList = async () => {
+    const res = await getRoleList()
+    setRoleOptions(
+      res.data.map((v: any) => {
+        return {
+          label: v.content_txt,
+          value: v.id,
+        }
+      }),
+    )
+  }
   const init = () => {
     getStaffListData()
   }
@@ -173,6 +192,7 @@ const StaffManagement = () => {
     if (isRefresh) {
       init()
     }
+    queryRoleList()
   }, [isRefresh])
 
   const controlStaffPersonalVisible = (e: any) => {
@@ -201,6 +221,23 @@ const StaffManagement = () => {
       setIsStaffPersonalVisible(false)
     }
   }
+  // TODO: API
+  const onConfirmBatchEdit = async (roleId: any) => {
+    const params: any = {
+      userGroupId: roleId,
+      userIds: selectedRowKeys,
+    }
+    console.log('onConfirmBatchEdit', params)
+    // try {
+    //   await updateMember(params)
+    //   message.success(t('common.editSuccess'))
+    //   getList(order, pageObj)
+    //   setBatchEditVisible(false)
+    // } catch (error) {
+    //   //
+    // }
+  }
+
   const updateOrderkey = (key: any, orderVal: any) => {
     setOrderKey(key)
     setOrder(orderVal)
@@ -260,7 +297,6 @@ const StaffManagement = () => {
     }
   }
 
-  // TODO: API
   const onSelectChange = (e: CheckboxChangeEvent, record: any) => {
     if (e.target.checked) {
       setSelectedRowKeys(prev => [...prev, record.id])
@@ -278,11 +314,6 @@ const StaffManagement = () => {
       return
     }
     setSelectedRowKeys([])
-  }
-  // TODO: API
-  const handleLock = () => {
-    // eslint-disable-next-line no-console
-    console.log(111)
   }
 
   useEffect(() => {
@@ -593,9 +624,21 @@ const StaffManagement = () => {
         }}
         onConfirm={closeStaffPersonal}
       />
+      <BatchSetPermGroup
+        isVisible={batchEditVisible}
+        onClose={() => {
+          setBatchEditVisible(false)
+        }}
+        onConfirm={onConfirmBatchEdit}
+        projectPermission={roleOptions}
+      />
       <BatchAction ref={actionRef} onCancel={() => setSelectedRowKeys([])}>
-        <Tooltip placement="top" getPopupContainer={node => node} title="解锁">
-          <div className={boxItem} onClick={handleLock}>
+        <Tooltip
+          placement="top"
+          getPopupContainer={node => node}
+          title="权限组"
+        >
+          <div className={boxItem} onClick={() => setBatchEditVisible(true)}>
             <IconFont type="lock" />
           </div>
         </Tooltip>
