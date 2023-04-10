@@ -6,7 +6,6 @@ import CommonModal from '@/components/CommonModal'
 import CustomSelect from '@/components/CustomSelect'
 import FormTitleSmall from '@/components/FormTitleSmall'
 import MoreOptions from '@/components/MoreOptions'
-import { getCalendarIconList } from '@/services/calendar'
 import {
   Form,
   Input,
@@ -216,9 +215,9 @@ const CalendarFormModal = () => {
 
   // 获取日历图标列表
   const getPathList = async () => {
-    const response = await getCalendarIconList()
-    setPathList(response.data.list)
-    setPath(response.data.list[0].path)
+    // const response = await getCalendarIconList()
+    // setPathList(response.data.list)
+    // setPath(response.data.list[0].path)
   }
 
   // 点击添加成员
@@ -341,6 +340,7 @@ const CalendarFormModal = () => {
     )
     values.icon = path
     values.permission = currentPermission
+
     // console.log(values, 'valuesvaluesvalues')
   }
 

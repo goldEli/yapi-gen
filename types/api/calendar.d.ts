@@ -1,8 +1,26 @@
 declare namespace API.Calendar {
+  namespace CalendarInfo {
+    type Result = {
+      id: number
+      type: number
+      name: string
+      describe: string
+      icon: string
+      permission: 1 | 2 | 3
+      color: number
+      is_default: 1 | 2
+      status: number
+      subscribe_num: number
+      share_members: []
+      subscribe_members: []
+      user: []
+    }
+  }
+
   namespace GetCalendarList {
     type Result = {
       manage: Model.Calendar.Info[]
-      sub: Model.Calendar.Info[]
+      subscribe: Model.Calendar.Info[]
     }
   }
 
@@ -52,12 +70,17 @@ declare namespace API.Calendar {
 
   namespace AddCalendar {
     type Params = {
+      id?: number
       name: string
       describe?: string
       icon: string
       permission: 1 | 2 | 3
       color: number
-      share_members: { user_id: number; user_group_id: 1 | 2 | 3 | 4 }[]
+      share_members: {
+        user_id: number
+        user_group_id: 1 | 2 | 3 | 4
+        is_owner: 1 | 2
+      }[]
       subscribe_members: { object_id: number; object_type: 1 | 2 | 3 | 4 }[]
     }
     type Result = {

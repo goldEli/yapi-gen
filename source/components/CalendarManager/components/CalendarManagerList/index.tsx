@@ -93,6 +93,8 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
   const { calendarData, checkedCalendarList } = useSelector(
     store => store.calendar,
   )
+
+  console.log(calendarData, '=calendarData')
   const calendarList = calendarData[props.type as keyof typeof calendarData]
 
   // 改变日历的选中状态
@@ -124,7 +126,7 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
 
   const onOpenSub = (e: any) => {
     e.stopPropagation()
-    props.type === 'sub'
+    props.type === 'subscribe'
       ? dispatch(setIsShowSubscribeVisible(true))
       : dispatch(setIsShowCalendarVisible(true))
   }

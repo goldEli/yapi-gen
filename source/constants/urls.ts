@@ -135,14 +135,13 @@ const urls = {
    */
   saveSchedule: '/b/save_schedule',
   getScheduleList: '/b/schedule_list',
-  getCalendarList: '/b/calendar_list',
   getSubscribeList: '/b/subscribe_list',
-  getCalendarIconList: '/b/calendar_icon_list',
   // 完整地址
   getCalendarConfig: '/b/calendar/getConfig',
   updateCalendarConfig: '/b/calendar/setConfig',
   getRelateConfig: '/b/calendar/enum',
   addCalendar: '/b/calendar',
+  getUserCalendars: '/b/calendar/getUserCalendars',
 }
 
 export default urls

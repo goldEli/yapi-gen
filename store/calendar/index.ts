@@ -68,7 +68,7 @@ const initialState: SliceState = {
   },
   calendarData: {
     manage: [],
-    sub: [],
+    subscribe: [],
   },
   checkedCalendarList: [],
   menuList: [
@@ -984,7 +984,7 @@ const slice = createSlice({
       const checkManageList = action.payload.manage?.filter(
         (i: Model.Calendar.Info) => i.is_check,
       )
-      const checkSubList = action.payload.sub?.filter(
+      const checkSubList = action.payload.subscribe?.filter(
         (i: Model.Calendar.Info) => i.is_check,
       )
       // 获取当前数据默认选择的日历

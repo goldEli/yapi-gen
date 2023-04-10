@@ -22,7 +22,7 @@ export const getCalendarList = async () => {
           is_check: 0,
         },
       ] as Model.Calendar.Info[],
-      sub: [
+      subscribe: [
         {
           id: 1,
           color: 2,
@@ -41,7 +41,7 @@ export const getCalendarList = async () => {
     },
   }
   const response = await http.get<any, API.Calendar.GetCalendarList.Result>(
-    'getCalendarList',
+    'getUserCalendars',
   )
   return response
 }
@@ -151,35 +151,7 @@ export const getSubscribeList = async (
     },
   }
   const response = await http.get<any, API.Calendar.GetSubscribeList.Result>(
-    'getSubscribeList',
-  )
-  return response
-}
-
-// 日历系统图标
-export const getCalendarIconList = async () => {
-  return {
-    code: '',
-    msg: '',
-    data: {
-      list: [
-        {
-          id: 1,
-          path: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/prod/undefined/richEditorFiles_1679911209757/image.png',
-        },
-        {
-          id: 2,
-          path: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/prod/logoFullName.png/file/logoFullName.png',
-        },
-        {
-          id: 3,
-          path: 'https://mj-system-1308485183.cos.ap-chengdu.myqcloud.com/22669459/prod/nature_10-032.jpg/file/nature_10-032.jpg',
-        },
-      ],
-    },
-  }
-  const response = await http.get<any, API.Calendar.GetCalendarIconList.Result>(
-    'getCalendarIconList',
+    `/b/calendar/{params.type}/getAllCalendarList`,
   )
   return response
 }
@@ -194,10 +166,36 @@ export const getRelateConfig = async () => {
 
 // 创建日历
 export const addCalendar = async (params: API.Calendar.AddCalendar.Params) => {
-  await http.post<any, API.Calendar.GetRelateConfig.Result>(
-    'addCalendar',
-    params,
+  await http.post<any, any>('addCalendar', params)
+}
+
+// 编辑日历
+export const editCalendar = async (params: API.Calendar.AddCalendar.Params) => {
+  await http.put<any, any>(`/b/calendar/${params.id}`, params)
+}
+
+// 删除日历
+export const deleteCalendar = async (params: { id: number }) => {
+  await http.delete<any, any>(`/b/calendar/${params.id}`)
+}
+
+// 订阅日历
+export const subscribeCalendar = async (params: { id: number }) => {
+  await http.post<any, any>(`/b/calendar/${params.id}/subscribe`)
+}
+
+// 取消订阅日历
+export const unsubscribeCalendar = async (params: { id: number }) => {
+  await http.post<any, any>(`/b/calendar/${params.id}/unsubscribe`)
+}
+
+// 获取日历详情
+export const getCalendarInfo = async (params: { id: number }) => {
+  const response = await http.get<any, API.Calendar.CalendarInfo.Result>(
+    `/b/calendar/${params.id}`,
   )
+
+  return response
 }
 
 // 获取日历设置接口

@@ -107,7 +107,7 @@ declare namespace Model.Calendar {
   // 订阅日历数据 我管理的和我订阅的
   interface CalendarData {
     manage: Info[]
-    sub: Info[]
+    subscribe: Info[]
   }
 
   // 订阅列表数据 节假日、公开日历、订阅联系人
