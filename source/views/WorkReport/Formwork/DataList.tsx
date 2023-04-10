@@ -401,7 +401,7 @@ export const seleData2: Array<Item> = [
 ]
 export const seleData3: Array<Item> = [
   {
-    key: 'member',
+    key: 'user',
     label: '添加成员',
   },
   {

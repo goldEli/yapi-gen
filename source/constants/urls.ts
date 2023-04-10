@@ -130,6 +130,11 @@ const urls = {
   getMenuPermission: '/b/user_menu_list',
   getCompanyUserPreferenceConfig: '/b/preference/config',
   updateCompanyUserPreferenceConfig: '/b/preference/config',
+  createTemplate: '/report/template/create',
+  upDateTemplate: '/report/template/update/',
+  templateDetail: '/report/template',
+  deleteTemplate: '/report/template/delete',
+  templateList: '/report/template/list',
 }
 
 export default urls
