@@ -3,7 +3,7 @@ import { css } from '@emotion/css'
 import React from 'react'
 import { useSelector, useDispatch } from '@store/index'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
-import { setScheduleListMoadl } from '@store/schedule'
+import { setScheduleListModal } from '@store/schedule'
 import ScheduleInfoDropdown from "../ScheduleInfoDropdown";
 import dayjs from "dayjs";
 interface ScheduleListProps {
@@ -85,16 +85,15 @@ const gregorianDateClass = css`
     color: var(--neutral-n3);
     font-size: 12px;
 `
-const ScheduListModal: React.FC<ScheduleListProps> = props => {
+const ScheduleListModal: React.FC<ScheduleListProps> = props => {
   const scheduList = useSelector(state => state.schedule.scheduleListModal);
   const scheduleInfo = useSelector(state => state.calendarPanel.scheduleInfoDropdown)
   const disPatch = useDispatch()
   const { visible, top, left } = scheduList;
   const scheduleInfoClick = (e: any) => {
-    console.log(e, scheduleInfo)
     e.stopPropagation()
     disPatch(setScheduleInfoDropdown({ visible: true }));
-    disPatch(setScheduleListMoadl({ visible: false }))
+    disPatch(setScheduleListModal({ visible: false }))
   }
   return (
     <ScheduListBox visible={visible} top={top} left={left} month={props.month}>
@@ -109,8 +108,8 @@ const ScheduListModal: React.FC<ScheduleListProps> = props => {
             <span className={labelContent}>这是一个日程标题内容</span>
           </ScheduleItem>)
       }
-
+      <ScheduleInfoDropdown></ScheduleInfoDropdown>
     </ScheduListBox>
   )
 }
-export default ScheduListModal
+export default ScheduleListModal

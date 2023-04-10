@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { getScheduleList } from './schedule.thunk'
+import { getCalendarDaysOfYeaList, getScheduleList } from './schedule.thunk'
 import dayjs, { Dayjs } from 'dayjs'
 
 type SliceState = {
@@ -46,7 +46,7 @@ const slice = createSlice({
     //     return item
     //   })
     // },
-    setScheduleListMoadl(
+    setScheduleListModal(
       state,
       action: PayloadAction<Model.Schedule.ScheduleList>,
     ) {
@@ -63,11 +63,14 @@ const slice = createSlice({
     builder.addCase(getScheduleList.fulfilled, (state, action) => {
       state.scheduleList = action.payload
     })
+    builder.addCase(getCalendarDaysOfYeaList.fulfilled,(state,action)=>{
+      console.log('action-----',action)
+    })
   },
 })
 
 const schedule = slice.reducer
 
-export const { setScheduleListMoadl, setScheduleDate } = slice.actions
+export const { setScheduleListModal, setScheduleDate} = slice.actions
 
 export default schedule

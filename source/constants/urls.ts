@@ -136,6 +136,8 @@ const urls = {
   saveSchedule: '/b/save_schedule',
   getScheduleList: '/b/schedule_list',
   getSubscribeList: '/b/subscribe_list',
+  getCalendarIconList: '/b/calendar_icon_list',
+  getCalendarDaysOfYeaList:'/b/schedule/daysOfYear',
   // 完整地址
   getCalendarConfig: '/b/calendar/getConfig',
   updateCalendarConfig: '/b/calendar/setConfig',

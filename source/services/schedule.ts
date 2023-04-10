@@ -307,3 +307,8 @@ export const saveScheduleList = async (
   )
   return response
 }
+
+export const getCalendarDaysOfYeaList=async ()=>{
+  const res=await http.get('getCalendarDaysOfYeaList')
+  return res
+}
