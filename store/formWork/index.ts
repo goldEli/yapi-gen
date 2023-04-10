@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { getTemplateList } from './thunk'
 
 type SliceState = {
   // 编辑的状态
@@ -6,6 +7,7 @@ type SliceState = {
   activeItem: any
   // 权限配置的状态
   disposeSave: boolean
+  dataList: any
 }
 
 const formWork = createSlice({
@@ -14,6 +16,12 @@ const formWork = createSlice({
     editSave: true,
     activeItem: null,
     disposeSave: true,
+    dataList: [
+      {
+        name: 123,
+        id: 1,
+      },
+    ],
   } as SliceState,
   reducers: {
     // 是否保存
@@ -27,6 +35,12 @@ const formWork = createSlice({
     setDisposeSave: (state: any, action) => {
       state.disposeSave = action.payload
     },
+  },
+  extraReducers(builder) {
+    builder.addCase(getTemplateList.fulfilled, (state, action) => {
+      const data = action.payload.list
+      state.dataList = data
+    })
   },
 })
 

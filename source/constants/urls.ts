@@ -132,7 +132,7 @@ const urls = {
   updateCompanyUserPreferenceConfig: '/b/preference/config',
   createTemplate: '/report/template/create',
   upDateTemplate: '/report/template/update/',
-  templateDetail: '/report/template',
+  templateDetail: '/report/template/info',
   deleteTemplate: '/report/template/delete',
   templateList: '/report/template/list',
 }

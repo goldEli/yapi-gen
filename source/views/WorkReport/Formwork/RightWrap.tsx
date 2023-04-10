@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import CommonButton from '@/components/CommonButton'
 import styled from '@emotion/styled'
-import { Input } from 'antd'
+import { Input, message } from 'antd'
 import { useEffect, useState } from 'react'
 import PermissionConfig from './PermissionConfig'
 import EditWork from './EditWork'
@@ -9,6 +9,8 @@ import PreviewDialog from '@/components/FormWork/PreviewDialog'
 import { useDispatch, useSelector } from '@store/index'
 import { setEditSave } from '@store/formWork'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import { deleteTemplate } from '@/services/formwork'
+import { getTemplateList } from '@store/formWork/thunk'
 const RightFormWorkStyle = styled.div`
   flex: 1;
   overflow: hidden;
@@ -120,6 +122,13 @@ const RightFormWork = () => {
   useEffect(() => {
     activeItem && setValue(activeItem.label)
   }, [activeItem])
+  // 删除模板
+  const deleteActiveItem = async () => {
+    setDelIsVisible(false)
+    await deleteTemplate({ id: activeItem.id })
+    message.success('删除成功')
+    await dispatch(getTemplateList())
+  }
   return (
     <RightFormWorkStyle>
       <Title>工作日报</Title>
@@ -155,6 +164,7 @@ const RightFormWork = () => {
           <EditFormWorkStyle
             placeholder="请输入模板标题"
             value={value}
+            maxLength={50}
             onInput={(e: any) => {
               setValue(e.target.value), dispatch(setEditSave(false))
             }}
@@ -163,7 +173,7 @@ const RightFormWork = () => {
       ) : null}
       {/* 编辑模板 */}
       {isActive === 0 ? (
-        <EditWork back={() => setIsActive(1)} />
+        <EditWork value={value} back={() => setIsActive(1)} />
       ) : (
         <PermissionConfig back={() => setIsActive(0)} />
       )}
@@ -181,7 +191,7 @@ const RightFormWork = () => {
         title={'删除模板'}
         text="确认删除模版，删除后将无法汇报"
         isVisible={delIsVisible}
-        onConfirm={() => setDelIsVisible(false)}
+        onConfirm={deleteActiveItem}
         notCancel
       />
     </RightFormWorkStyle>

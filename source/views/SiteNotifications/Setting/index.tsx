@@ -174,19 +174,21 @@ const Setting = () => {
           }
         >
           <Breadcrumb.Item>
-            <span style={{ color: 'var(--neutral-n1-d1)' }}>通知</span>
+            <span style={{ color: 'var(--neutral-n1-d1)' }}>
+              {t('notification')}
+            </span>
           </Breadcrumb.Item>
-          <Breadcrumb.Item>通知设置</Breadcrumb.Item>
+          <Breadcrumb.Item>{t('notification_settings')}</Breadcrumb.Item>
         </Breadcrumb>
         <CommonButton type="primary">
-          <span>保存</span>
+          <span>{t('common.save')}</span>
         </CommonButton>
       </First>
       <div>
         <TitleGroup>
           <CheckboxWrap>{t('setting.all')}</CheckboxWrap>
-          <OperationWrap>操作对象</OperationWrap>
-          <span>权限</span>
+          <OperationWrap>{t('operand')}</OperationWrap>
+          <span>{t('permission')}</span>
         </TitleGroup>
         <MainWrap>
           {obj.list?.map((i: any) => (

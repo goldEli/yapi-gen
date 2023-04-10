@@ -8,6 +8,9 @@ import CommonButton from '@/components/CommonButton'
 import { useDispatch, useSelector } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { setEditSave } from '@store/formWork'
+import { upDateTemplate } from '@/services/formwork'
+import { getTemplateList } from '@store/formWork/thunk'
+import { message } from 'antd'
 const TitleStyle = styled.div`
   display: flex;
   width: 100%;
@@ -45,6 +48,7 @@ const BtnRow = styled.div`
 `
 interface PropsType {
   back(): void
+  value: string
 }
 const EditWork = (props: PropsType) => {
   const dispatch = useDispatch()
@@ -81,6 +85,12 @@ const EditWork = (props: PropsType) => {
   useEffect(() => {
     setSave(editSave)
   }, [editSave])
+  const saveApi = async () => {
+    dispatch(setEditSave(true))
+    await upDateTemplate({ name: props.value })
+    message.success('编辑成功')
+    await dispatch(getTemplateList())
+  }
   return (
     <>
       <div id="father" style={{ display: 'flex' }}>
@@ -135,9 +145,7 @@ const EditWork = (props: PropsType) => {
         ) : (
           <CommonButton
             type="primary"
-            onClick={() => {
-              dispatch(setEditSave(true))
-            }}
+            onClick={() => saveApi()}
             style={{ margin: '0 0px 0 16px' }}
           >
             保存
