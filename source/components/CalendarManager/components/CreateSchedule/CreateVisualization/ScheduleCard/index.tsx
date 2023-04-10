@@ -214,9 +214,9 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
       // onResize={onResize}
       // onResizeStop={onResizeStop}
     >
-      <Title>
+      {/* <Title>
         {timeRange && `${timeRange?.startTime} - ${timeRange?.endTime}`}
-      </Title>
+      </Title> */}
       <Title>{props.data.subject}</Title>
     </Rnd>
   )

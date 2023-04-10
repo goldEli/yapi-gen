@@ -10,6 +10,7 @@ import { Dropdown, Popover } from 'antd'
 // import QuickCreateScheduleModel from '../../QuickCreateScheduleModel'
 import { setQuickCreateScheduleModel } from '@store/calendarPanle'
 import ScheduleList from '../ScheduleList'
+import NewCalendarArea from '../NewCalendarArea'
 // import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
 // import ScheduleCardList from '../ScheduleCardList'
 
@@ -152,6 +153,7 @@ const Timescale: React.FC<TimescaleProps> = props => {
       {content}
       <CurrentTimeLine />
       <ScheduleList />
+      <NewCalendarArea />
       {/* <NewCalendarArea timeZone={timeZone} distance={distance} />
       <ScheduleCardList />
       <QuickCreateScheduleModel />
