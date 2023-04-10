@@ -86,9 +86,11 @@ const ScheduleAllDay: React.FC<ScheduleAllDayProps> = props => {
           {list?.map(item => {
             return (
               <AllDayScheduleItem
-                onClick={() => {
+                onClick={e => {
+                  e.stopPropagation()
                   dispatch(
                     setScheduleInfoDropdown({
+                      id: item.schedule_id,
                       visible: true,
                       y: 0,
                       x: 300,
