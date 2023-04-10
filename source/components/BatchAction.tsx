@@ -1,4 +1,4 @@
-import { forwardRef, ReactNode, Ref } from 'react'
+import { forwardRef, ReactNode } from 'react'
 // eslint-disable-next-line no-duplicate-imports
 import { useImperativeHandle, useState } from 'react'
 import IconFont from '@/components/IconFont'
@@ -48,14 +48,16 @@ export const boxItem = css`
 `
 
 interface BatchActionProps {
+  onCancel(): void
   children: ReactNode
 }
 
-const BatchAction = ({ children }: BatchActionProps, ref: any) => {
+const BatchAction = ({ children, onCancel }: BatchActionProps, ref: any) => {
   const [visible, setVisible] = useState(false)
 
   const onClose = () => {
     setVisible(false)
+    onCancel()
   }
   const open = () => {
     setVisible(true)

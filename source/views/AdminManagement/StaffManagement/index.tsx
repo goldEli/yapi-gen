@@ -593,7 +593,7 @@ const StaffManagement = () => {
         }}
         onConfirm={closeStaffPersonal}
       />
-      <BatchAction ref={actionRef}>
+      <BatchAction ref={actionRef} onCancel={() => setSelectedRowKeys([])}>
         <Tooltip placement="top" getPopupContainer={node => node} title="解锁">
           <div className={boxItem} onClick={handleLock}>
             <IconFont type="lock" />

@@ -7,5 +7,17 @@ import * as iterate from './iterate'
 import * as project from './project'
 import * as cos from './cos'
 import * as memberInfo from './memberInfo'
+import * as formwork from './formwork'
 
-export { user, setting, staff, demand, iterate, project, cos, mine, memberInfo }
+export {
+  formwork,
+  user,
+  setting,
+  staff,
+  demand,
+  iterate,
+  project,
+  cos,
+  mine,
+  memberInfo,
+}
