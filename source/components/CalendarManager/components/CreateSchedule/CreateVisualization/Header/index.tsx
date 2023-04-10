@@ -1,6 +1,14 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import CommonButton from '@/components/CommonButton'
+import { useDispatch, useSelector } from '@store/index'
+import dayjs from 'dayjs'
+import { formatYYYYMMDD } from '@/components/CalendarManager/config'
+import {
+  onNextDay,
+  onPrevDay,
+  setToday,
+} from '@store/createScheduleVisualization'
 
 interface HeaderProps {}
 
@@ -43,13 +51,36 @@ const TimeBox = styled.div`
 `
 
 const Header: React.FC<HeaderProps> = props => {
+  const { currentDate } = useSelector(
+    store => store.createScheduleVisualization,
+  )
+  const dispatch = useDispatch()
+
   return (
     <HeaderBox>
-      <Button>今天</Button>
+      <Button
+        onClick={() => {
+          dispatch(setToday())
+        }}
+      >
+        今天
+      </Button>
       <TimeBox>
-        <span className="icon">{`<`}</span>
-        <span>2023年3月16日 周五</span>
-        <span className="icon">{`>`}</span>
+        <span
+          className="icon"
+          onClick={() => {
+            dispatch(onPrevDay())
+          }}
+        >{`<`}</span>
+        <span>{`${dayjs(currentDate).format(formatYYYYMMDD)} ${dayjs(
+          currentDate,
+        ).format('ddd')}`}</span>
+        <span
+          className="icon"
+          onClick={() => {
+            dispatch(onNextDay())
+          }}
+        >{`>`}</span>
       </TimeBox>
     </HeaderBox>
   )

@@ -11,6 +11,11 @@ interface State {
 }
 
 const initialState: Partial<State> = {
+  selectedDate: {
+    startTime: dayjs('2023-03-30 16:30:00').valueOf(),
+    endTime: dayjs('2023-03-30 17:15:00').valueOf(),
+  },
+  currentDate: dayjs('2023-03-30 16:30:00').valueOf(),
   scheduleList: [
     {
       schedule_id: 26,

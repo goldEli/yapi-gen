@@ -13,6 +13,10 @@ const CreateVisualizationBox = styled.div`
   border-left: 1px solid var(--neutral-n6-d1);
   margin-left: 4px;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  user-select: none;
 `
 
 const CreateVisualization: React.FC<CreateVisualizationProps> = props => {
