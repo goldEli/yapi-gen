@@ -10,7 +10,7 @@
 import type React from 'react'
 import { useState, useEffect, useRef } from 'react'
 
-const redundancy = 4 // 冗余量 渲染节点数 = 一页能渲染多少个节点 + 冗余量
+const redundancy = 1 // 冗余量 渲染节点数 = 一页能渲染多少个节点 + 冗余量
 
 // 获取虚拟列表展示的数据
 const getRenderList: <T>(
@@ -151,14 +151,18 @@ function VirtualScrollList<T>({
         className="virtual_scroll"
         style={{ transform: `translateY(${offSetY}px)` }}
       >
-        {renderList.map((item: T, index) => (
-          <div
-            className="virtual_scroll_row"
-            key={'virtual_scroll_row' + index}
-          >
-            {renderItem(item, index)}
-          </div>
-        ))}
+        {renderList.map((item: T, index) => {
+          console.log(item)
+
+          return (
+            <div
+              className="virtual_scroll_row"
+              key={'virtual_scroll_row' + index}
+            >
+              {renderItem(item, index)}
+            </div>
+          )
+        })}
       </div>
     </div>
   )
