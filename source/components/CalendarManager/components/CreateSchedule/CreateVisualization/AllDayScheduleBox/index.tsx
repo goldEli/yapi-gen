@@ -8,7 +8,7 @@ interface AllDayScheduleBoxProps {}
 
 const AllDayScheduleBoxBox = styled.div`
   width: 100%;
-  min-height: 52px;
+  height: 52px;
   align-items: center;
   box-sizing: border-box;
   display: flex;
@@ -17,10 +17,12 @@ const AllDayScheduleBoxBox = styled.div`
     width: 58px;
   }
   .list {
-    height: 100%;
-    flex: 1;
     display: flex;
     flex-direction: column;
+    flex: 1;
+    height: 100%;
+    gap: 2px;
+    overflow-y: scroll;
   }
 `
 
