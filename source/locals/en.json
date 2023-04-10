@@ -222,7 +222,8 @@
     "c4": "Login log ",
     "c5": "Message center",
     "c6": "Log",
-    "c7": "Configuration"
+    "c7": "Configuration",
+    "c8": "Report"
   },
   "v2_1_1": {
     "configuration": "General configuration",
@@ -968,6 +969,27 @@
     "addClass": "Create Category"
   },
   "report": {
+    "list": {
+      "workReport": "Work report",
+      "review": "I reported",
+      "reviewMe": "Report to me",
+      "openReview": "Public reporting",
+      "search": "Search for report title or content",
+      "dateReport": "Date of report",
+      "dateSubmit": "Submission time",
+      "reportType": "Reporting type",
+      "summary": "Content summary",
+      "submitTime": "Submission time",
+      "reportTime": "Date of report",
+      "readState": "Reading state",
+      "modify": "modify",
+      "operation": "operation",
+      "update": "update",
+      "makeup": "Make up",
+      "submitter": "submitter",
+      "informant": "informant",
+      "status": "status"
+    },
     "statistics": "Reporting statistics",
     "mine": "My Report"
   }

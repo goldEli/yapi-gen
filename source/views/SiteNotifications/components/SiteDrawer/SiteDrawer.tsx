@@ -84,7 +84,21 @@ const SiteDrawer = () => {
           <GrepTitle>今天</GrepTitle>
           <GrepTitle>全部已读</GrepTitle>
         </div>
-        <ContentItem />
+        <div
+          style={{
+            overflow: 'scroll',
+            height: 'calc(100vh - 230px)',
+            padding: '10px 16px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '16px',
+          }}
+        >
+          {new Array(30).fill(null).map((i: any) => (
+            <ContentItem key={i} />
+          ))}
+        </div>
+
         <div
           style={{
             position: 'absolute',
