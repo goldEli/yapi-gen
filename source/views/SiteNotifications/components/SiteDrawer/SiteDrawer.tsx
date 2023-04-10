@@ -5,7 +5,7 @@ import IconFont from '@/components/IconFont'
 import { useDispatch, useSelector } from '@store/index'
 import { changeVisible } from '@store/SiteNotifications'
 import { Checkbox, Drawer, Tooltip } from 'antd'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ContentItem from '../ContentItem/ContentItem'
 import {
@@ -20,6 +20,7 @@ import {
 import VirtualList from '../VittualNode/VittualNode'
 import VirtualScrollList from '../VittualNode/VittualNode'
 import { useTranslation } from 'react-i18next'
+import { addViews, getNotes } from '@/services/SiteNotifications'
 
 const formWorkUsageData: any = {
   list: [],
@@ -55,6 +56,14 @@ const SiteDrawer = () => {
   const changeActive = (id: string) => {
     setActive(id)
   }
+  const init = async () => {
+    const res = await getNotes()
+    addViews()
+    console.log(res)
+  }
+  useEffect(() => {
+    init()
+  }, [])
 
   return (
     <Drawer
