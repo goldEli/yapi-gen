@@ -227,15 +227,6 @@ export const ProviderForm = styled.div`
   margin: 0 24px;
 `
 
-export const CreateVisualization = styled.div`
-  width: 524px;
-  max-height: 60vh;
-  padding: 0 16px 0 24px;
-  border-left: 1px solid var(--neutral-n6-d1);
-  margin-left: 4px;
-  overflow-y: auto;
-`
-
 export const ParticipantItems = styled(Space)`
   display: flex;
   align-items: center;
