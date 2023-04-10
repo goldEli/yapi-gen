@@ -6,25 +6,25 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import { First, Title, Wrap } from './style'
 
-const items = [
-  {
-    id: '1',
-    title: '通知项设置',
-    icon: 'bell',
-    path: '/SiteNotifications/Setting/',
-  },
-  {
-    id: '2',
-    title: '邮件通知',
-    icon: 'bell-notification',
-    path: '/SiteNotifications/Email/',
-  },
-]
-
 const SiteNotificationSide = () => {
   const navigate = useNavigate()
   const { id } = useParams<any>()
   const [t] = useTranslation()
+  const items = [
+    {
+      id: '1',
+      title: t('notification_item_settings'),
+      icon: 'bell',
+      path: '/SiteNotifications/Setting/',
+    },
+    {
+      id: '2',
+      title: t('email_notification'),
+      icon: 'bell-notification',
+      path: '/SiteNotifications/Email/',
+    },
+  ]
+
   const onGoBack = () => {
     navigate('/SiteNotifications/AllNote/1')
   }
@@ -32,7 +32,7 @@ const SiteNotificationSide = () => {
   return (
     <Wrap>
       <First>
-        <Title>通知设置</Title>
+        <Title>{t('notification_settings')}</Title>
         <Back style={{ margin: '14px 0 0 0' }} onClick={onGoBack}>
           <CommonIconFont type="left-md" />
           <span style={{ marginLeft: '2px' }}>{t('back')}</span>
