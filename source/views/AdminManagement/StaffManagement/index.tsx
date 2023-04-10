@@ -630,7 +630,7 @@ const StaffManagement = () => {
           setBatchEditVisible(false)
         }}
         onConfirm={onConfirmBatchEdit}
-        projectPermission={roleOptions}
+        roleOptions={roleOptions}
       />
       <BatchAction ref={actionRef} onCancel={() => setSelectedRowKeys([])}>
         <Tooltip
