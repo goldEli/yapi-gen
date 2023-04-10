@@ -1,4 +1,4 @@
-import { useRoutes } from 'react-router-dom'
+import { useRoutes, Navigate } from 'react-router-dom'
 import { Container } from '@/views/Container'
 import React from 'react'
 import Loading from '@/components/Loading'
@@ -39,6 +39,23 @@ const routes = [
         path: '/Report',
         element: lazy(() => import('@/views/WorkReport')),
         children: [
+          {
+            // 汇报
+            path: 'Review',
+            element: lazy(() => import('@/views/WorkReport/Review/index')),
+            children: [
+              {
+                path: '',
+                element: <Navigate to="/Report/Review/List/1" />,
+              },
+              {
+                path: 'List/:id',
+                element: lazy(
+                  () => import('@/views/WorkReport/Review/components/List'),
+                ),
+              },
+            ],
+          },
           {
             path: 'Statistics',
             element: lazy(() => import('@/views/WorkReport/Statistics')),

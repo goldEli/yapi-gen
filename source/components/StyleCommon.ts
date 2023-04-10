@@ -406,7 +406,6 @@ const DelButton = styled.div`
 const SelectWrapBedeck = styled.div`
   height: 32px;
   position: relative;
-  height: 32px;
   border: 1px solid var(--active);
   display: flex;
   align-items: center;
