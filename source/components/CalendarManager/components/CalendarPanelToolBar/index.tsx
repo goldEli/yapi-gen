@@ -8,12 +8,14 @@ import {
   setCalenderMonthValue,
   setCalenderYearValue,
   setCalenderListValue,
+  setScheduleSearchKey
 } from '@store/calendarPanle'
 import { useDispatch, useSelector } from '@store/index'
 import React, { useState, useRef, useEffect } from 'react'
 import dayjs, { Dayjs } from 'dayjs'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
 import IconFont from '@/components/IconFont'
+import InputSearch from '@/components/InputSearch'
 dayjs.extend(weekOfYear)
 
 interface CalendarPanelToolBarProps {
@@ -41,7 +43,8 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
   const calendarPanelType = useSelector(
     state => state.calendarPanel.calendarPanelType,
   )
-  const [dateText, setDateText] = useState<string>()
+  const [dateText, setDateText] = useState<string>();
+  const [inputDefaultValue,setInputDefaultValue]=useState('')
   //日视图
   const calenderDayValue = useSelector(
     state => state.calendarPanel.calenderDayValue,
@@ -59,9 +62,7 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
     state => state.calendarPanel.calenderYearValue,
   )
   // 列表视图初始值
-  const calenderListValue = useSelector(
-    state => state.calendarPanel.calenderListValue,
-  )
+  const calenderListValue = useSelector(state => state.calendarPanel.calenderListValue);
   useEffect(() => {
     const maps = new Map([
       ['day', dayjs(calenderDayValue).format('YYYY年M月D日')],
@@ -232,18 +233,25 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
           <IconFont type="right" onClick={nextYearClick} />
         </IconBox>
       </div>
-      <CustomSelect
-        value={calendarPanelType}
-        style={{
-          width: '100px',
-          marginLeft: '48px',
-        }}
-        onChange={(value: Model.Calendar.CalendarPanelType) => {
-          dispatch(setCalendarPanelType(value))
-        }}
-        options={selectOptions}
-        allowClear
-      />
+      <div style={{display:'flex'}}>
+        <CustomSelect
+          value={calendarPanelType}
+          style={{
+            width: '80px',
+            marginRight:'10px'
+          }}
+          onChange={(value: Model.Calendar.CalendarPanelType) => {
+            setInputDefaultValue('')
+            dispatch(setCalendarPanelType(value))
+          }}
+          options={selectOptions}
+          allowClear
+        />
+        <InputSearch placeholder='搜索日程' defaultValue={inputDefaultValue}  width={184}  onChangeSearch={(value)=>{
+          setInputDefaultValue(value)
+          dispatch(setScheduleSearchKey(value))
+        }} ></InputSearch>
+      </div>
     </Box>
   )
 }

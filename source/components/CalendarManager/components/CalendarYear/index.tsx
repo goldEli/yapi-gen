@@ -12,7 +12,7 @@ const Box = styled.div`
 const CalendarYear: React.FC<CalendarYearProps> = props => {
   return (
     <Box>
-      {Array(11)
+      {Array(12)
         .fill(0)
         .map((item, idx) => {
           return <CalendarForCalendarYear month={idx} key={idx} />

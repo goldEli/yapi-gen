@@ -1,10 +1,12 @@
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
-import { useSelector,useDispatch } from '@store/index'
-import { setIsShowScheduleVisible} from '@store/calendar'
-import { Dropdown } from 'antd'
-import React from 'react'
+import { useSelector, useDispatch } from '@store/index'
+import { setIsShowScheduleVisible } from '@store/calendar'
+import {setScheduleInfoDropdown} from '@store/calendarPanle'
+import { Dropdown, Checkbox } from 'antd'
+import React, { useState } from 'react'
 import ScheduleInfoIcon from './../ScheduleInfoIcon'
+import DeleteConfirm from '@/components/DeleteConfirm'
 interface ScheduleInfoDropdownProps { }
 const ScheduleInfoHeader = styled.div`
   height: 136px;
@@ -49,7 +51,7 @@ const statusClass = css`
   line-height: 22px;
   ;
 `
-const iconBox=css`
+const iconBox = css`
   display: flex;
   span{
     margin-left: 6px;
@@ -60,27 +62,60 @@ const iconBox=css`
     top: -4px;
   }
 `
+const confirmText = css`
+  color: var(--neutral-n2);
+  font-size: var(--font14);
+  margin-bottom: 8px;
+`
+const confirmSure = css`
+  color: var(--neutral-n2);
+  font-size: var(--font14);
+  margin-left: 8px;
+`
 const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
-  const disPatch=useDispatch()
+  const [isVisible, setIsVisible] = useState(false);
+  const [checked, setChecked] = useState(false);
+  const disPatch = useDispatch()
+  const onConfirm = () => {
+    console.log(checked)
+    setIsVisible(false)
+  }
+  const onChangeVisible = () => {
+    setIsVisible(false)
+  }
   return (
-      <ScheduleInfoHeader>
-        <ScheduleInfoHeaderBtns>
-          <span className={statusClass}>忙碌</span>
-          <div className={iconBox}>
-            <span onClick={()=>{
-              console.log(1)
-              disPatch(setIsShowScheduleVisible(true))
-            }}><ScheduleInfoIcon type='edit' /></span><span><ScheduleInfoIcon type='delete' /></span><span>...</span><span><ScheduleInfoIcon type='close' /></span>
-          </div>
-        </ScheduleInfoHeaderBtns>
-        <ScheduleInfoHeaderContent>
-          日程标题日程标题日程标题日程标题日程标题dsadsadasdsadsadsad
-          日程标题日程标题日程标题日程标题日程标.dsadhsadsaadsadasdsadsadsadsas
-        </ScheduleInfoHeaderContent>
-        <ScheduleInfoHeaderDate>
-          3月16 (周三) 15:09 - 3月17 (周五) 16:00
-        </ScheduleInfoHeaderDate>
-      </ScheduleInfoHeader>
+    <ScheduleInfoHeader>
+      <ScheduleInfoHeaderBtns>
+        <span className={statusClass}>忙碌</span>
+        <div className={iconBox}>
+          <span onClick={() => {
+            console.log(1)
+            disPatch(setIsShowScheduleVisible(true))
+          }}><ScheduleInfoIcon type='edit' />
+          </span>
+          <span onClick={() => {
+            setIsVisible(true)
+          }}><ScheduleInfoIcon type='delete' /></span>
+          <span>...</span>
+          <span onClick={()=>{
+            disPatch(setScheduleInfoDropdown({visible:false}))
+          }}><ScheduleInfoIcon type='close' /></span>
+        </div>
+      </ScheduleInfoHeaderBtns>
+      <ScheduleInfoHeaderContent>
+        日程标题日程标题日程标题日程标题日程标题dsadsadasdsadsadsad
+        日程标题日程标题日程标题日程标题日程标.dsadhsadsaadsadasdsadsadsadsas
+      </ScheduleInfoHeaderContent>
+      <ScheduleInfoHeaderDate>
+        3月16 (周三) 15:09 - 3月17 (周五) 16:00
+      </ScheduleInfoHeaderDate>
+      <DeleteConfirm isVisible={isVisible} onConfirm={onConfirm} onChangeVisible={onChangeVisible} title='删除日程'>
+        <div className={confirmText}>日程将删除，该日程同时会从参与者日历中移除</div>
+        <div><Checkbox onChange={(e) => {
+          setChecked(e.target.checked)
+        }}></Checkbox><span className={confirmSure}>删除后通知参与者</span></div>
+      </DeleteConfirm>
+    </ScheduleInfoHeader>
   )
 }
 

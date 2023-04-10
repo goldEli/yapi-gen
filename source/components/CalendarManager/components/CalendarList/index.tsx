@@ -33,6 +33,9 @@ const CalendarListInfo = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+  top: 6px;
+  
 `
 const TimeItem = styled.div`
   color: var(--neutral-n1-d1);
@@ -92,15 +95,14 @@ const CalendarList: React.FC<CalendarListProps> = props => {
     { id: 2, list: [{ text: '这是一个日程标题内容', date: '09-10' }] },
     { id: 3, list: [{ text: '这是一个日程标题内容', date: '09-10' }] },
   ]
-  const canendarListValue = useSelector(
-    state => state.calendarPanel.calenderListValue,
-  )
-  useEffect(() => {
-    console.log(11, canendarListValue, dayjs(canendarListValue).valueOf())
-  }, [canendarListValue])
-  return (
-    <CalendarListBox>
-      {data.map((item, index) => (
+  const canendarListValue=useSelector(state=>state.calendarPanel.calenderListValue);
+  const scheduleSearchKey=useSelector(state=>state.calendarPanel.scheduleSearchKey)
+  useEffect(()=>{
+    console.log('list----')
+  },[canendarListValue,scheduleSearchKey])
+  return <CalendarListBox>
+    {
+      data.map((item, index) =>
         <CalendarListItem key={index} className={CalendarListClass}>
           <div style={{ width: '40px' }}>
             <DateBox className={index === 0 ? currentClass : ''}>
@@ -120,9 +122,8 @@ const CalendarList: React.FC<CalendarListProps> = props => {
             ))}
           </CalendarListInfo>
         </CalendarListItem>
-      ))}
+      )}
     </CalendarListBox>
-  )
 }
 
 export default CalendarList
