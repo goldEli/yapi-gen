@@ -25,17 +25,12 @@ import { updateIterateStatus } from '@/services/iterate'
 import { Editor } from '@xyfe/uikit'
 import ScreenMinHover from '@/components/ScreenMinHover'
 
-const OperationWrap = styled.div<{ isShowLeft?: boolean }>(
-  {
-    background: 'white',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  ({ isShowLeft }) => ({
-    flexWrap: isShowLeft ? 'wrap' : 'initial',
-  }),
-)
+const OperationWrap = styled.div({
+  background: 'white',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+})
 
 const StickyWrap = styled.div({
   background: 'white',
@@ -45,6 +40,16 @@ const IterationInfo = styled.div({
   display: 'flex',
   alignItems: 'center',
   position: 'relative',
+  width: '70%',
+  '.iterationName': {
+    fontSize: 14,
+    color: 'var(--neutral-n1-d1)',
+    margin: '0 8px',
+    maxWidth: '26%',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+  },
 })
 
 const IconWrap = styled(IconFont)({
@@ -231,7 +236,7 @@ const Operation = (props: Props) => {
           )}
         </div>
       </CommonModal>
-      <OperationWrap isShowLeft={props.isShowLeft}>
+      <OperationWrap>
         <IterationInfo>
           {props.isShowLeft ? (
             <Tooltip
@@ -264,9 +269,11 @@ const Operation = (props: Props) => {
           )}
           {props.currentDetail?.id && (
             <>
-              <span style={{ fontSize: 14, color: 'black', margin: '0 8px' }}>
-                {props.currentDetail?.name}
-              </span>
+              <Tooltip title={props.currentDetail?.name}>
+                <span className="iterationName">
+                  {props.currentDetail?.name}
+                </span>
+              </Tooltip>
               <span
                 style={{
                   fontSize: 12,

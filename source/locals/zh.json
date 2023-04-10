@@ -222,7 +222,8 @@
     "c4": "登录日志",
     "c5": "消息中心",
     "c6": "日志",
-    "c7": "通用配置"
+    "c7": "通用配置",
+    "c8": "汇报"
   },
   "v2_1_1": {
     "configuration": "通用配置",
@@ -969,6 +970,27 @@
     "addClass": "创建类别"
   },
   "report": {
+    "list": {
+      "workReport": "工作汇报",
+      "review": "我汇报的",
+      "reviewMe": "汇报我的",
+      "openReview": "公开汇报",
+      "search": "搜索汇报标题或内容",
+      "dateReport": "汇报日期",
+      "dateSubmit": "提交时间",
+      "reportType": "汇报类型",
+      "summary": "内容概要",
+      "submitTime": "提交时间",
+      "reportTime": "汇报日期",
+      "readState": "阅读状态",
+      "modify": "修改",
+      "operation": "操作",
+      "update": "更新",
+      "makeup": "补交",
+      "submitter": "提交人",
+      "informant": "汇报人",
+      "status": "状态"
+    },
     "statistics": "汇报统计",
     "mine": "我的汇报"
   }
