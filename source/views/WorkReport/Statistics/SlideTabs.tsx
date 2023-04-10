@@ -16,7 +16,7 @@ const IconContainer = styled.div`
 `
 
 const tabsWrap = css`
-  width: calc(100vw - 560px);
+  width: 100%;
   .ant-tabs > .ant-tabs-nav {
     .ant-tabs-nav-operations {
       display: none;

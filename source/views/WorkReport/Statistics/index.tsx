@@ -50,9 +50,10 @@ for (let i = 0; i < 100; i++) {
 const StyledWrap = styled.div`
   height: calc(100vh - 56px);
   display: flex;
-  gap: 17px;
+  gap: 16px;
 `
 const Head = styled.div`
+  width: calc(100% - 504px);
   box-sizing: border-box;
   padding: 24px;
   background: rgba(255, 255, 255, 1);
