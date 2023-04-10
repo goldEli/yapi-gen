@@ -22,6 +22,7 @@ import {
 } from '@/services/setting'
 import { unionBy } from 'lodash'
 import CustomSelect from '../CustomSelect'
+import { cos } from '@/services/cos'
 
 const { DirectoryTree } = Tree
 const ModalHeader = styled.div`
@@ -163,7 +164,7 @@ const ListItem = styled.div`
 const TreeStyle = styled(DirectoryTree)`
   width: 216px;
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: auto;
   .ant-tree-checkbox-inner {
     width: 16px;
     height: 16px;
@@ -180,10 +181,10 @@ const TreeStyle = styled(DirectoryTree)`
     display: none !important;
   }
   .ant-tree-treenode {
-    width: 216px;
+    min-width: 216px;
     height: 44px;
     padding-left: 16px;
-    overflow: hidden;
+    /* overflow: hidden; */
   }
 
   .ant-tree-treenode:hover {
@@ -281,6 +282,32 @@ const CommonModal = (props: ModalProps) => {
     }
     return checkdFilterDataList
   }
+  // 重新组装数据
+  const newTreeData = (res: any) => {
+    for (const i in res) {
+      if (res[i].staffs?.length >= 1) {
+        const data = res[i].staffs?.map((el: any) => ({
+          ...el,
+          staffs: { ...el, id: 'team_id_' + el.id },
+          id: 'team_id_' + el.id,
+        }))
+        if (res[i].children) {
+          res[i].children = [...res[i]?.children, ...data]
+        } else {
+          res[i].children = [...data]
+        }
+      }
+      if (res[i].children) {
+        newTreeData(res[i].children)
+        res[i].staffs = res[i].staffs?.map((el: any) => ({
+          ...el,
+          staffs: { ...el, id: 'team_id_' + el.id },
+          id: 'team_id_' + el.id,
+        }))
+      }
+    }
+    return res
+  }
   const getCompany = async () => {
     const res = await getDepartmentUserList1({
       search: {
@@ -288,7 +315,8 @@ const CommonModal = (props: ModalProps) => {
         type: 'company',
       },
     })
-    setTreeData2(res)
+    const data1 = newTreeData(res)
+    setTreeData2(data1)
     // 拍平数组
     const data = unionBy(checkdFilterData(res), 'id')
     setTabsTreeDataList(
@@ -313,8 +341,8 @@ const CommonModal = (props: ModalProps) => {
       })
     })
     // 拍平数组
-    setTabsTreeDataList(fitlerDataList(data))
-    setSelectDataList(fitlerDataList(data))
+    setTabsTreeDataList(deleteDeep(data))
+    setSelectDataList(deleteDeep(data))
   }
   useEffect(() => {
     if (tabsActive === 0) {
@@ -354,18 +382,44 @@ const CommonModal = (props: ModalProps) => {
     setCheckedKeys([])
     setSearchVal('')
   }
-
+  // 勾选去获取成员数据
+  const getStaffs = (res: any) => {
+    let data: any = []
+    for (const i in res) {
+      if (res[i].staffs.length >= 1) {
+        data = [...data, ...res[i]?.staffs]
+      } else if (res[i].staffs) {
+        data = [...data, res[i]?.staffs]
+      }
+      if (res[i].children) {
+        getStaffs(res[i].children)
+      }
+    }
+    return data
+  }
+  // 去重，团队有重复人员
+  function deleteDeep(arr: any) {
+    let set = new Set()
+    let newArr = []
+    for (let i = 0; i < arr.length; i++) {
+      if (!set.has(arr[i].id)) {
+        set.add(arr[i].id)
+        newArr.push(arr[i])
+      }
+    }
+    return newArr
+  }
   // 勾选复选框
   const onCheck = (checkedKey: any, e: any) => {
     checkdFilterDataList = []
     if (tabsActive === 1) {
+      const data = getStaffs(e.checkedNodes)
+      const filterArr = data.filter((el: any) =>
+        String(el.id).includes('team_id'),
+      )
+      const emptyData = filterArr.filter((el: any) => el?.length !== 0)
+      setPersonData(deleteDeep(emptyData))
       setCheckedKeys(checkedKey)
-      // 得到重复node需要去重
-      const data = unionBy(checkdFilterData(e.checkedNodes), 'id')
-      // if (e.checkedNodes.length && data.length <= personData.length) {
-      //   message.warning(t('commonModal.warnningMsg'))
-      // }
-      setPersonData(data)
     } else {
       setCheckedKeys(checkedKey)
       setPersonData(
@@ -390,7 +444,6 @@ const CommonModal = (props: ModalProps) => {
       setPersonData([])
     }
   }
-
   // 下拉框选中
   const handleChange = async (value: any) => {
     setSearchVal(value)
@@ -399,6 +452,7 @@ const CommonModal = (props: ModalProps) => {
       message.warning(t('commonModal.warnningMsg1'))
     } else {
       const filterVal: any = selectDataList.filter((el: any) => el.id === value)
+      setCheckedKeys([...checkedKeys, filterVal.find((item: any) => item).id])
       setPersonData([...personData, ...filterVal])
     }
   }
@@ -410,15 +464,7 @@ const CommonModal = (props: ModalProps) => {
       props?.onConfirm?.(personData)
     }
   }
-  // 去重，团队有重复人员
-  const fitlerDataList = (data: any) => {
-    let obj: any = {}
-    let set: any = data?.reduce((cur: any, next: any) => {
-      obj[next.id] ? '' : (obj[next.id] = true && cur.push(next))
-      return cur
-    }, [])
-    return set
-  }
+
   return (
     <ModalStyle
       footer={false}
