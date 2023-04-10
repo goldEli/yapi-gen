@@ -20,6 +20,12 @@ import {
 import VirtualList from '../VittualNode/VittualNode'
 import VirtualScrollList from '../VittualNode/VittualNode'
 
+const formWorkUsageData: any = {
+  list: [],
+}
+for (let i = 0; i < 100; i++) {
+  formWorkUsageData.list.push(i)
+}
 const tabsValue = [
   {
     id: '1',
@@ -91,25 +97,22 @@ const SiteDrawer = () => {
           <GrepTitle>全部已读</GrepTitle>
         </div>
         <div
-          style={{
-            overflow: 'scroll',
-            height: 'calc(100vh - 230px)',
-            padding: '10px 16px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '16px',
-          }}
+        // style={{
+        //   overflow: 'scroll',
+        //   height: 'calc(100vh - 230px)',
+        //   padding: '10px 16px',
+        //   display: 'flex',
+        //   flexDirection: 'column',
+        //   gap: '16px',
+        // }}
         >
-          {new Array(30).fill(null).map((i: any) => (
+          {/* {new Array(30).fill(null).map((i: any) => (
             <ContentItem key={i} />
-          ))}
-          {/* <VirtualScrollList
-            onScrollBottom={() => {
-              console.log(1)
-            }}
-            dataList={new Array(30).fill(null)}
-            renderItem={() => <ContentItem />}
-          /> */}
+          ))} */}
+          <VirtualScrollList
+            dataList={formWorkUsageData.list}
+            renderItem={(i, index) => <ContentItem name={i} />}
+          />
         </div>
 
         <div
