@@ -6,6 +6,8 @@ import React from 'react'
 import ScheduleInfoHeaderBox from './ScheduleInfoHeader'
 import ScheduleInfoContent from './SCheduleInfoContent'
 import ScheduleInfoFooter from './ScheduleInfoFooter'
+import { getStyleValue } from '../CalendarWeek/utils'
+import useModalPosition from '../../hooks/useModalPosition'
 interface ScheduleInfoDropdownProps {}
 interface ScheduleInfoDropdownBoxProps {
   visible: boolean
@@ -28,13 +30,19 @@ const ScheduleInfoDropdownBox = styled.div`
 `
 const ScheduleInfoDropdown: React.FC<ScheduleInfoDropdownProps> = props => {
   const { scheduleInfoDropdown } = useSelector(store => store.calendarPanel)
-  const { visible, x, y } = scheduleInfoDropdown
+  const { visible } = scheduleInfoDropdown
+  const { position } = useModalPosition({
+    ...scheduleInfoDropdown,
+    containerClassName: '.time-scale',
+    modalClassName: '.schedule-info-dropdown-box',
+  })
+
   return (
     <ScheduleInfoDropdownBox
       className="schedule-info-dropdown-box"
-      visible={visible}
-      top={y}
-      left={x}
+      visible={visible && !!position}
+      top={position?.y ?? 0}
+      left={position?.x ?? 0}
       onClick={e => {
         e.stopPropagation()
       }}
