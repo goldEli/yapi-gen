@@ -1070,3 +1070,11 @@ export const updateVerifyOperation: any = async (params: any) => {
     verify_opinion: params.remark,
   })
 }
+
+export const cancelVerify = async (id: any) => {
+  await http.post(`/b/user/verify/cancel/${id}`, undefined, {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+  })
+}

@@ -1,7 +1,7 @@
 import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
-import { Breadcrumb, Select, Switch } from 'antd'
-import React, { useState } from 'react'
+import { Breadcrumb, Select, Switch, message } from 'antd'
+import React, { useEffect, useState } from 'react'
 import { First, Wrap } from '../Setting/style'
 import {
   ActiveContentEmail2,
@@ -11,42 +11,28 @@ import {
   ContentEmail2,
 } from './style'
 import { useTranslation } from 'react-i18next'
-
-const items = [
-  {
-    id: '1',
-    text: '待办',
-  },
-  {
-    id: '2',
-    text: '待办',
-  },
-  {
-    id: '3',
-    text: '待办',
-  },
-  {
-    id: '4',
-    text: '待办',
-  },
-  {
-    id: '5',
-    text: '待办',
-  },
-  {
-    id: '6',
-    text: '待办',
-  },
-  {
-    id: '7',
-    text: '待办',
-  },
-]
+import { useDispatch, useSelector } from '@store/index'
+import { editMyAllNoteSet } from '@/services/SiteNotifications'
+import {
+  setMyConfiguration,
+  setMyEmailConfiguration,
+} from '@store/SiteNotifications'
 
 const Email = () => {
   const [t] = useTranslation()
+  const dispatch = useDispatch()
   const [choose, setChoose] = useState<any>([])
   const [active, setActive] = useState<any>(true)
+  const email = useSelector(store => store.user.loginInfo.email)
+  const myConfiguration = useSelector(
+    store => store.siteNotifications.myConfiguration,
+  )
+  const emailConfigurations = useSelector(
+    store => store.siteNotifications.emailConfiguration,
+  )
+  const myEmailConfiguration = useSelector(
+    store => store.siteNotifications.myEmailConfiguration,
+  )
   const onChange = (checked: boolean) => {
     setActive(checked)
   }
@@ -58,6 +44,20 @@ const Email = () => {
       setChoose([...choose, id])
     }
   }
+  const onSave = async () => {
+    const res = await editMyAllNoteSet(
+      Array.from(new Set([...myConfiguration, ...choose])),
+    )
+
+    if (res.code === 0) {
+      message.success(t('succeed'))
+    }
+    dispatch(setMyEmailConfiguration(choose))
+  }
+
+  useEffect(() => {
+    setChoose(myEmailConfiguration)
+  }, [myEmailConfiguration])
 
   return (
     <Wrap>
@@ -80,7 +80,7 @@ const Email = () => {
           <Breadcrumb.Item>{t('email_notification')}</Breadcrumb.Item>
         </Breadcrumb>
         {active ? (
-          <CommonButton type="primary">
+          <CommonButton onClick={onSave} type="primary">
             <span>{t('common.save')}</span>
           </CommonButton>
         ) : null}
@@ -98,7 +98,7 @@ const Email = () => {
           <ActiveContentEmail2 active={active}>
             <Content1>
               {t('use_this_email_to_receive')}
-              <ContentEmail>XXXX@ifudsds n.com</ContentEmail>
+              <ContentEmail>{email}</ContentEmail>
             </Content1>
             <Content1>{t('receive_format')}</Content1>
             <div>
@@ -121,7 +121,7 @@ const Email = () => {
               {t('what_situations_require_email_notification')}
             </Content1>
             <div>
-              {items.map((i: any) => (
+              {emailConfigurations.map((i: any) => (
                 <ContentEmail2
                   active={choose.includes(i.id)}
                   onClick={() => onChoose(i.id)}

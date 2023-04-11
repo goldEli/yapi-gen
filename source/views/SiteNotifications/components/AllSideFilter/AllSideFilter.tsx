@@ -2,7 +2,7 @@ import IconFont from '@/components/IconFont'
 import LeftTitle from '@/components/LeftTitle'
 import { useDispatch, useSelector } from '@store/index'
 import { changeVisibleFilter } from '@store/SiteNotifications'
-import { Checkbox, Drawer } from 'antd'
+import { Badge, Checkbox, Drawer } from 'antd'
 import React, { useState } from 'react'
 import { CloseWrap } from '../SiteDrawer/style'
 import {
@@ -88,15 +88,17 @@ const AllSideFilter = () => {
         </MyHead>
         <MyIconModeTextWrap>
           {items.map((i: any) => (
-            <MyIconModeWrap onClick={() => setActive(i.id)} key={i.id}>
-              <MyIconMode active={active === i.id}>
-                <IconFont
-                  style={{ fontSize: 20 }}
-                  type={active === i.id ? i.icon2 : i.icon}
-                />
-              </MyIconMode>
-              <MyIconModeText>{i.text}</MyIconModeText>
-            </MyIconModeWrap>
+            <Badge key={i.id} size="small" offset={[-22, 6]} count={5}>
+              <MyIconModeWrap onClick={() => setActive(i.id)}>
+                <MyIconMode active={active === i.id}>
+                  <IconFont
+                    style={{ fontSize: 20 }}
+                    type={active === i.id ? i.icon2 : i.icon}
+                  />
+                </MyIconMode>
+                <MyIconModeText>{i.text}</MyIconModeText>
+              </MyIconModeWrap>
+            </Badge>
           ))}
         </MyIconModeTextWrap>
         <MyHead>
