@@ -42,7 +42,7 @@ const defaultMonthMoveScheduleActiveInfo = {
 }
 
 const initialState: SliceState = {
-  calendarPanelType: 'month',
+  calendarPanelType: 'day',
 
   scheduleInfoDropdown: {
     visible: false,

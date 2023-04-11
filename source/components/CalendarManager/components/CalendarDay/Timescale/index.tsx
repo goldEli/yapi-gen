@@ -8,6 +8,8 @@ import classNames from 'classnames'
 import NewCalendarArea from '../NewCalendarArea'
 import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
 import ScheduleCardList from '../ScheduleCardList'
+import CreateEasySchedule from '../../CreateEasySchedule'
+import { setCreateEasyScheduleModal } from '@store/calendar'
 
 interface TimescaleProps {}
 const Table = styled.table`
@@ -82,13 +84,24 @@ const Timescale: React.FC<TimescaleProps> = props => {
         dom.removeEventListener('mousemove', onMousemove)
         const target = event.target as HTMLDivElement
         // 打开创建日程弹窗
-        // dispatch(
-        //   setQuickCreateScheduleModel({
-        //     visible: true,
-        //     x: event.offsetX + 58,
-        //     y: target.offsetTop,
-        //   }),
-        // )
+        dispatch(
+          setCreateEasyScheduleModal({
+            visible: true,
+            position: {
+              x: event.offsetX + 58,
+              y: target.offsetTop,
+            },
+            time: {
+              startTime: dayjs(timeZone[0]).format(formatYYYYMMDD),
+              endTime: dayjs(timeZone[0]).format(formatYYYYMMDD),
+            },
+          }),
+          // setQuickCreateScheduleModel({
+          //   visible: true,
+          //   x: event.offsetX + 58,
+          //   y: target.offsetTop,
+          // }),
+        )
         dom.removeEventListener('mouseup', onMouseUp)
       }
       dom.removeEventListener('mousemove', onMousemove)
@@ -149,6 +162,7 @@ const Timescale: React.FC<TimescaleProps> = props => {
       <NewCalendarArea timeZone={timeZone} distance={distance} />
       <ScheduleCardList />
       <ScheduleInfoDropdown containerClassName=".time-scale" />
+      <CreateEasySchedule />
     </Table>
   )
 }
