@@ -137,7 +137,8 @@ const urls = {
   getScheduleList: '/b/schedule_list',
   getSubscribeList: '/b/subscribe_list',
   getCalendarIconList: '/b/calendar_icon_list',
-  getCalendarDaysOfYeaList:'/b/schedule/daysOfYear',
+  getCalendarDaysOfYearList:'/b/schedule/daysOfYear',
+  getCalendarDaysOfMonthList:'/b/schedule/daysOfMonth',
   // 完整地址
   getCalendarConfig: '/b/calendar/getConfig',
   updateCalendarConfig: '/b/calendar/setConfig',

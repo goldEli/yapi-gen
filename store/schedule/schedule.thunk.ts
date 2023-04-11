@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as services from '@/services'
-import { AppDispatch } from '..'
+import { AppDispatch } from '@store/index'
 
 const name = 'schedule'
 
@@ -28,15 +28,26 @@ export const saveSchedule =
     }
 
 
-export const getCalendarDaysOfYeaList = createAsyncThunk(
-  `${name}/getCalendarDaysOfYeaList`,
+export const getCalendarDaysOfYearList = createAsyncThunk(
+  `${name}/getCalendarDaysOfYearList`,
   async (params: API.Schedule.ScheduleInfoList.Params) => {
     try {
-      const res = await services.schedule.getCalendarDaysOfYeaList(params)
+      const res = await services.schedule.getCalendarDaysOfYearList(params)
       return res.data
     } catch (error) {
 
     }
+  },
+)
 
+export const getCalendarDaysOfMonthList = createAsyncThunk(
+  `${name}/getCalendarDaysOfMonthList`,
+  async (params: API.Schedule.ScheduleInfoList.Params) => {
+    try {
+      const res = await services.schedule.getCalendarDaysOfMonthList(params)
+      return res.data
+    } catch (error) {
+
+    }
   },
 )

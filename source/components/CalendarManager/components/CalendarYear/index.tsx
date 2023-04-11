@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import React,{useEffect} from 'react'
 import CalendarForCalendarYear from '../CalendarForCalendarYear'
 import { useDispatch, useSelector } from '@store/index'
-import {getCalendarDaysOfYeaList} from '@store/schedule/schedule.thunk'
+import {getCalendarDaysOfYearList} from '@store/schedule/schedule.thunk'
 import dayjs from 'dayjs'
 interface CalendarYearProps {}
 
@@ -22,7 +22,7 @@ const CalendarYear: React.FC<CalendarYearProps> = props => {
       year:dayjs(calendarYear).year(),
       calendar_ids:data.map(item=>item.calendar_id)
     }
-    disPatch(getCalendarDaysOfYeaList(params))
+    disPatch(getCalendarDaysOfYearList(params))
   },[calendarYear])
   return (
     <Box>

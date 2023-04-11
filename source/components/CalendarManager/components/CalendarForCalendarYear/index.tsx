@@ -51,18 +51,11 @@ const CalendarForCalendarYear: React.FC<
   CalendarForCalendarYearProps
 > = props => {
   //const current = React.useMemo(() => dayjs().month(props.month), [props.month])
-  const allScheduleList=useSelector(state=>state.schedule.allScheduleList);
+  const {yearViewScheduleList}=useSelector(state=>state.schedule);
+  console.log('yearViewScheduleList',yearViewScheduleList)
   const [date, setDate] = useState<Dayjs>(dayjs())
   const onCallBack = (date: Dayjs) => {
     setDate(date)
-  }
-  const dateClick = (e: any) => {
-    let month = props.month
-    e.stopPropagation()
-    // setScheduleDate
-    disPatch(setScheduleListModal({ visible: true, top: 76, left: 100 }))
-    disPatch(setScheduleDate(month))
-    disPatch(setScheduleInfoDropdown({ visible: false }));
   }
   const disPatch = useDispatch();
   return (
@@ -73,7 +66,14 @@ const CalendarForCalendarYear: React.FC<
             dayjs().format('DD/MM/YYYY') === dayjs(date).format('DD/MM/YYYY');
           const hasSchedule = ['21/03/2023', '18/02/2023', '16/02/2023'].includes(dayjs(date).format('DD/MM/YYYY'));
           return (
-            <DayBox className={today ? dayActive : hasSchedule ? hasScheduleClass : ''} onClick={dateClick}>
+            <DayBox className={today ? dayActive : hasSchedule ? hasScheduleClass : ''} onClick={(e)=>{
+              let month = props.month
+              e.stopPropagation()
+              // setScheduleDate
+              disPatch(setScheduleListModal({ visible: true, top: 76, left: 100,date:dayjs(date).date() }))
+              disPatch(setScheduleDate(month))
+              disPatch(setScheduleInfoDropdown({ visible: false }));
+            }}>
               {dayjs(date).date()}
             </DayBox>
           )

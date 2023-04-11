@@ -22,6 +22,8 @@ type SliceState = {
   calenderDayValue: string
   //周视图
   calenderWeekValue: string
+  //拼接周视图
+  calenderYearWeekValue:string
   //月视图
   calenderMonthValue: string
   //年视图
@@ -64,6 +66,7 @@ const initialState: SliceState = {
   calenderYearValue: dayjs().format('YYYY'),
   calenderListValue: dayjs().format('YYYY-M-D'),
   calenderYearType: 0,
+  calenderYearWeekValue:'',
   monthMoveScheduleActiveInfo: defaultMonthMoveScheduleActiveInfo,
 }
 
@@ -184,7 +187,12 @@ const slice = createSlice({
       state,
       action: PayloadAction<SliceState['calenderListValue']>,
     ) {
-      //console.log('payload--',action.payload)
+      state.calenderListValue = action.payload
+    },
+    setCalenderYearWeekValue(
+      state,
+      action: PayloadAction<SliceState['calenderYearWeekValue']>,
+    ) {
       state.calenderListValue = action.payload
     },
     setCalenderYearType(
@@ -213,6 +221,7 @@ export const {
   setCalenderListValue,
   startMoveMonthSchedule,
   setScheduleSearchKey,
+  setCalenderYearWeekValue,
   clearMonthMoveScheduleActiveInfo,
   resizeMonthSchedule,
 } = slice.actions

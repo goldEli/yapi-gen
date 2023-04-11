@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { useSelector, useDispatch } from '@store/index'
-import { setIsShowScheduleVisible } from '@store/calendar'
+import { setIsShowScheduleVisible,setShowScheduleParams } from '@store/calendar'
 import {setScheduleInfoDropdown} from '@store/calendarPanle'
 import { Dropdown, Checkbox } from 'antd'
 import React, { useState } from 'react'
@@ -89,8 +89,8 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
         <span className={statusClass}>忙碌</span>
         <div className={iconBox}>
           <span onClick={() => {
-            console.log(1)
             disPatch(setIsShowScheduleVisible(true))
+            disPatch(setShowScheduleParams({id:1}))
           }}><ScheduleInfoIcon type='edit' />
           </span>
           <span onClick={() => {
