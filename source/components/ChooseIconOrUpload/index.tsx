@@ -132,9 +132,11 @@ const ChooseIconOrUpload = (props: ChooseColorProps) => {
   const [isChooseColor, setIsChooseColor] = useState(false)
   const [t] = useTranslation()
   const [cover, setCover] = useState()
+
   useEffect(() => {
     props.hiddenUpload && setIsChooseColor(false)
   }, [props.hiddenUpload])
+
   const onChangeColor = (val: any) => {
     props?.onChangeValue?.(val, 2)
     setIsChooseColor(false)
@@ -147,6 +149,7 @@ const ChooseIconOrUpload = (props: ChooseColorProps) => {
     const data: any = await uploadFileByTask(file.file, '2', '2')
     data && setCover(data.url)
   }
+
   const activeChoose = (event: any, img: any) => {
     event.preventDefault()
     event.stopPropagation()
@@ -155,6 +158,7 @@ const ChooseIconOrUpload = (props: ChooseColorProps) => {
     }
     props?.onChangeValue?.(obj, 1)
   }
+
   const colorStatus = (
     <Space
       style={{
@@ -167,9 +171,12 @@ const ChooseIconOrUpload = (props: ChooseColorProps) => {
       size={8}
     >
       {props.colorList?.map((i: any) => (
-        <ColorWrap key={i.id} onClick={() => onChangeColor(i)}>
-          <ImgStyle src={i.path} />
-          <IconFontStyle hidden={i.path !== props?.color} type="anglemark" />
+        <ColorWrap key={i.id ?? i} onClick={() => onChangeColor(i)}>
+          <ImgStyle src={i.path ?? i} />
+          <IconFontStyle
+            hidden={i.path ?? i !== props?.color}
+            type="anglemark"
+          />
         </ColorWrap>
       ))}
 
@@ -200,6 +207,7 @@ const ChooseIconOrUpload = (props: ChooseColorProps) => {
   const onVisibleChange = (visible: any) => {
     setIsChooseColor(visible)
   }
+
   return (
     <Popover
       visible={isChooseColor}

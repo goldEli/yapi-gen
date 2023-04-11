@@ -18,6 +18,7 @@ export const PermissionBox = styled.div`
     width: 24px;
     height: 24px;
     border-radius: 4px;
+    cursor: pointer;
   }
 `
 
@@ -118,6 +119,7 @@ export const SubscribedItems = styled(Space)`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  margin-top: 8px;
 `
 
 export const SubscribedItem = styled(Space)`

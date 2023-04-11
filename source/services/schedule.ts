@@ -329,7 +329,7 @@ export const saveScheduleList = async (
   return response
 }
 
-export const getCalendarDaysOfYeaList = async () => {
-  const res = await http.get('getCalendarDaysOfYeaList')
+export const getCalendarDaysOfYeaList=async (params:API.Schedule.ScheduleInfoList.Params)=>{
+  const res=await http.post('getCalendarDaysOfYeaList',params)
   return res
 }

@@ -53,7 +53,7 @@ const Table = styled.table`
 const Timescale: React.FC<TimescaleProps> = props => {
   const { calendarData, selectedDay } = useSelector(store => store.calendar)
   const currentColor = useMemo(() => {
-    return calendarData.manage.find(item => item.is_default === 1)?.color
+    return calendarData.manager.find(item => item.is_default === 1)?.color
   }, [calendarData])
   const [timeZone, setTimeZone] = React.useState<string[]>([])
   const [distance, setDistance] = React.useState(0)

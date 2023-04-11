@@ -3,6 +3,7 @@ import React,{useEffect} from 'react'
 import CalendarForCalendarYear from '../CalendarForCalendarYear'
 import { useDispatch, useSelector } from '@store/index'
 import {getCalendarDaysOfYeaList} from '@store/schedule/schedule.thunk'
+import dayjs from 'dayjs'
 interface CalendarYearProps {}
 
 const Box = styled.div`
@@ -12,11 +13,17 @@ const Box = styled.div`
 `
 
 const CalendarYear: React.FC<CalendarYearProps> = props => {
-  const disPatch=useDispatch()
+  const disPatch=useDispatch();
+  const calendarData=useSelector(state=>state.calendar.calendarData);
+  const calendarYear=useSelector(state=>state.calendarPanel.calenderYearValue)
+  let data=calendarData?.manager.concat(calendarData?.subscribe);
   useEffect(()=>{
-    console.log(11111)
-    disPatch(getCalendarDaysOfYeaList())
-  },[])
+    let params={
+      year:dayjs(calendarYear).year(),
+      calendar_ids:data.map(item=>item.calendar_id)
+    }
+    disPatch(getCalendarDaysOfYeaList(params))
+  },[calendarYear])
   return (
     <Box>
       {Array(12)

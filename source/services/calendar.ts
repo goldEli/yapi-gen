@@ -1,45 +1,7 @@
 import * as http from '@/tools/http'
 
-// 日历列表 我管理的、我订阅的
+// 日历列表 我管理的、我订阅的 -- finish
 export const getCalendarList = async () => {
-  return {
-    code: '',
-    msg: '',
-    data: {
-      manage: [
-        {
-          id: 1,
-          color: 0,
-          is_default: 1,
-          name: '工作日历',
-          is_check: 1,
-        },
-        {
-          id: 2,
-          color: 1,
-          is_default: 0,
-          name: '团队日历',
-          is_check: 0,
-        },
-      ] as Model.Calendar.Info[],
-      subscribe: [
-        {
-          id: 1,
-          color: 2,
-          is_default: 1,
-          name: '哈哈哈日历',
-          is_check: 0,
-        },
-        {
-          id: 2,
-          color: 3,
-          is_default: 0,
-          name: '啦啦啦日历',
-          is_check: 1,
-        },
-      ] as Model.Calendar.Info[],
-    },
-  }
   const response = await http.get<any, API.Calendar.GetCalendarList.Result>(
     'getUserCalendars',
   )
@@ -156,7 +118,7 @@ export const getSubscribeList = async (
   return response
 }
 
-// 获取日历相关配置下拉
+// 获取日历相关配置下拉 -- finish
 export const getRelateConfig = async () => {
   const response = await http.get<any, API.Calendar.GetRelateConfig.Result>(
     'getRelateConfig',
@@ -164,9 +126,10 @@ export const getRelateConfig = async () => {
   return response
 }
 
-// 创建日历
+// 创建日历 -- finish
 export const addCalendar = async (params: API.Calendar.AddCalendar.Params) => {
-  await http.post<any, any>('addCalendar', params)
+  const response = await http.post<any, any>('addCalendar', params)
+  return response.data
 }
 
 // 编辑日历

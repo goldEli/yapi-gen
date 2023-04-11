@@ -94,7 +94,7 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
     store => store.calendar,
   )
 
-  // console.log(calendarData, '=calendarData')
+  console.log(calendarData, '=calendarData')
   const calendarList = calendarData[props.type as keyof typeof calendarData]
 
   // 改变日历的选中状态
@@ -164,14 +164,16 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
           }
           key="1"
         >
-          {calendarList?.map((i: any) => (
+          {calendarList?.map((i: Model.Calendar.Info) => (
             <CalendarManagerListItem key={i.id}>
               <ItemBox key={i.id} onClick={() => onChangeCheck(i)}>
                 <IconFont
                   type={i.is_check ? 'pput-sel' : 'put'}
                   style={{ fontSize: 16, color: colorMap[i.color] }}
                 />
-                <span className="name">{i.name}</span>
+                <span className="name">
+                  {i.is_default === 1 ? i.user.name : i.name}
+                </span>
               </ItemBox>
               <MoreDropdown
                 isMoreVisible={isMoreVisible}
