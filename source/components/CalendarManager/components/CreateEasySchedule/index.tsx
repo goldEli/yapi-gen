@@ -58,11 +58,8 @@ const CreateEasySchedule = () => {
   const dispatch = useDispatch()
   const leftDom: any = useRef<HTMLDivElement>(null)
   const inputDom: any = useRef<HTMLInputElement>(null)
-  const {
-    isShowScheduleEasyVisible,
-    showScheduleEasyParams,
-    partialDayTimeOption,
-  } = useSelector(store => store.calendar)
+  const { isShowScheduleEasyVisible, showScheduleEasyParams, relateConfig } =
+    useSelector(store => store.calendar)
   const [form] = Form.useForm()
   const [isVisible, setIsVisible] = useState(false)
   // 创建日历默认主题色
@@ -324,7 +321,7 @@ const CreateEasySchedule = () => {
                   <Select
                     className="select"
                     value={i.value}
-                    options={partialDayTimeOption}
+                    options={relateConfig.schedule.remind_types}
                     onChange={value => onChangeNotice(value, i.id)}
                     getPopupContainer={n => n}
                     style={{ width: '92%' }}

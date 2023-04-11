@@ -140,9 +140,9 @@ const AddDepartmentModal = (props: AddDepartmentModalProps) => {
     <CommonModal
       isVisible={props.isVisible}
       title={
-        props.type === 'team'
+        props.type === 3
           ? '添加团队'
-          : props.type === 'member'
+          : props.type === 2
           ? '添加成员'
           : '添加部门'
       }
@@ -157,11 +157,7 @@ const AddDepartmentModal = (props: AddDepartmentModalProps) => {
               allowClear
               onChange={e => setSearchValue(e.target.value)}
               placeholder={`搜索${
-                props.type === 'team'
-                  ? '团队'
-                  : props.type === 'member'
-                  ? '联系人'
-                  : '部门'
+                props.type === 3 ? '团队' : props.type === 2 ? '联系人' : '部门'
               }`}
             />
           </div>
@@ -204,21 +200,21 @@ const AddDepartmentModal = (props: AddDepartmentModalProps) => {
             {checkedList.length > 0 &&
               checkedList.map((i: Model.Calendar.MemberItem) => (
                 <ListItem key={i.id}>
-                  {props.type === 'member' && (
+                  {props.type === 2 && (
                     <>
                       <CommonUserAvatar avatar={i.avatar} fontSize={14} />
                       <div className="name">{i.name}</div>
                     </>
                   )}
                   <div className="otherType">
-                    {props.type !== 'member' && (
+                    {props.type !== 2 && (
                       <IconWrap
                         className={
-                          props.type === 'team' ? 'teamIcon' : 'departmentIcon '
+                          props.type === 3 ? 'teamIcon' : 'departmentIcon '
                         }
                       >
                         <IconFont
-                          type={props.type === 'team' ? 'team-2' : 'branch'}
+                          type={props.type === 3 ? 'team-2' : 'branch'}
                         />
                       </IconWrap>
                     )}

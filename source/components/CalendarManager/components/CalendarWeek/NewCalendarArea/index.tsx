@@ -45,7 +45,7 @@ const NewCalendarArea: React.FC<NewCalendarAreaProps> = props => {
   // console.table(props.pointerPosition)
   const { calendarData } = useSelector(store => store.calendar)
   const currentColor = React.useMemo(() => {
-    const colorIdx = calendarData.manage.find(
+    const colorIdx = calendarData.manager.find(
       item => item.is_default === 1,
     )?.color
     return colorIdx

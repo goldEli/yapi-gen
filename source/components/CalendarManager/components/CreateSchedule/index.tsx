@@ -63,7 +63,7 @@ const CreateSchedule = () => {
   const dispatch = useDispatch()
   const leftDom: any = useRef<HTMLDivElement>(null)
   const inputDom: any = useRef<HTMLInputElement>(null)
-  const { isShowScheduleVisible, showScheduleParams, partialDayTimeOption } =
+  const { isShowScheduleVisible, showScheduleParams, relateConfig } =
     useSelector(store => store.calendar)
   const [form] = Form.useForm()
   const [isVisible, setIsVisible] = useState(false)
@@ -105,25 +105,10 @@ const CreateSchedule = () => {
   //   附件
   const [attachList, setAttachList] = useState<any>([])
 
-  // 日程时间是否重复
-  const repeatOption = [
-    { label: '不重复', value: 0 },
-    { label: '每天重复', value: 1 },
-    { label: '每周重复', value: 2 },
-    { label: '每月重复', value: 3 },
-    { label: '每年重复', value: 4 },
-  ]
-
   // 参与者的权限
   const checkboxOptions = [
     { label: '可修改日程', value: 0 },
     { label: '邀请参与者', value: 1 },
-  ]
-
-  const publicOptions = [
-    { label: '默认的公开范围', value: 0 },
-    { label: '公开', value: 1 },
-    { label: '私密', value: 2 },
   ]
 
   // 关闭弹窗
@@ -230,7 +215,7 @@ const CreateSchedule = () => {
     <>
       <RepeatModal
         isVisible={isRepeatVisible}
-        title={repeatOption[currentRepeat].label}
+        title={relateConfig.schedule.repeat_types[currentRepeat]?.label}
         currentRepeat={currentRepeat}
         onRepeatConfirm={onRepeatConfirm}
         onClose={() => {
@@ -304,7 +289,7 @@ const CreateSchedule = () => {
               <Select
                 className="select"
                 value={repeatValue.value}
-                options={repeatOption}
+                options={relateConfig.schedule.repeat_types}
                 onChange={onChangeRepeat}
                 getPopupContainer={n => n}
               />
@@ -391,15 +376,23 @@ const CreateSchedule = () => {
               name="public"
               style={{ margin: 0 }}
             >
-              <Select options={publicOptions} getPopupContainer={n => n} />
+              <Select
+                options={relateConfig.schedule.permission_types}
+                getPopupContainer={n => n}
+              />
             </Form.Item>
             <Form.Item>
               <Radio.Group
                 value={status}
                 onChange={e => setStatus(e.target.value)}
               >
-                <Radio value={1}>忙碌</Radio>
-                <Radio value={2}>空闲</Radio>
+                {relateConfig.schedule.busy_status.map(
+                  (i: Model.Calendar.GetRelateConfigCommonInfo) => (
+                    <Radio key={i.value} value={i.value}>
+                      {i.label}
+                    </Radio>
+                  ),
+                )}
               </Radio.Group>
             </Form.Item>
             <Form.Item
@@ -419,7 +412,7 @@ const CreateSchedule = () => {
                   <Select
                     className="select"
                     value={i.value}
-                    options={partialDayTimeOption}
+                    options={relateConfig.schedule.remind_types}
                     onChange={value => onChangeNotice(value, i.id)}
                     getPopupContainer={n => n}
                   />

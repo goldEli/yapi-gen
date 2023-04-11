@@ -1,7 +1,8 @@
 declare namespace Model.Calendar {
   interface GetRelateConfigCommonInfo {
     value: number
-    text: string
+    label: string
+    describe?: string
   }
 
   // 日历相关下拉配置
@@ -21,6 +22,7 @@ declare namespace Model.Calendar {
       all_day_remind: GetRelateConfigCommonInfo[]
       un_all_day_remind: GetRelateConfigCommonInfo[]
       default_duration: GetRelateConfigCommonInfo[]
+      busy_status: GetRelateConfigCommonInfo[]
     }
   }
 
@@ -74,7 +76,7 @@ declare namespace Model.Calendar {
   /**
    * 可订阅人群type
    */
-  type ChooseAddType = 'member' | 'team' | 'department' | undefined | 'all' | ''
+  type ChooseAddType = 1 | 2 | 3 | undefined | 4 | null
 
   /**
    * 日程设置当前选中的锚点
@@ -96,18 +98,25 @@ declare namespace Model.Calendar {
   }
   // 日历列表返回数据
   interface Info {
+    calendar_id: number
     id: number
     color: number
+    is_owner: number
     // 1 是默认的日历，用于判断删除权限
     is_default: 0 | 1
     name: string
     // 1是选中的日历
-    is_check: 0 | 1
+    is_check?: 0 | 1
+    user_group_id: 1 | 2 | 3 | 4
+    user: {
+      id: number
+      name: string
+    }
   }
 
   // 订阅日历数据 我管理的和我订阅的
   interface CalendarData {
-    manage: Info[]
+    manager: Info[]
     subscribe: Info[]
   }
 

@@ -112,6 +112,21 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
     props.onCancel()
   }
 
+  // 我管理的日历下拉菜单 -- 根据状态判断
+  const getResultManageMenu = () => {
+    let resultList: string[] = []
+    if (props.item.is_default) {
+      resultList = ['edit', 'only']
+    } else if (props.item.is_owner) {
+      resultList = ['edit', 'only', 'delete']
+    } else if (props.item.user_group_id === 1) {
+      resultList = ['edit', 'only', 'unsubscribe']
+    }
+    return manageMenu.filter((i: { name: string; type: string }) =>
+      resultList.includes(i.type),
+    )
+  }
+
   return (
     <>
       <DeleteConfirm
@@ -129,7 +144,7 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
         onChangeVisible={() => setIsUnsubscribeVisible(false)}
       />
       <MoreWrap>
-        {(props.type === 'sub' ? subMenu : manageMenu).map(
+        {(props.type === 'sub' ? subMenu : getResultManageMenu()).map(
           (i: { name: string; type: string }) => (
             <Item key={i.name} onClick={() => onClickMenu(i.type)}>
               {i.name}

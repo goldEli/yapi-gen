@@ -38,7 +38,7 @@ const CalendarMainSide = () => {
         <InputSearch placeholder={'搜索日历'} width={210} autoFocus leftIcon />
       </div>
       <ManagerListBox>
-        <CalendarManagerList title="我管理的" type="manage" />
+        <CalendarManagerList title="我管理的" type="manager" />
         <CalendarManagerList title="我订阅的" type="subscribe" />
       </ManagerListBox>
       <CalendarSetBox onClick={onChangeRouter}>
