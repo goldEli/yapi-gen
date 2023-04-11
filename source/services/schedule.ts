@@ -329,10 +329,18 @@ export const saveScheduleList = async (
   )
   return response
 }
-
-export const getCalendarDaysOfYeaList = async (
+// 获取年日程数据列表
+export const getCalendarDaysOfYearList = async (
   params: API.Schedule.ScheduleInfoList.Params,
 ) => {
-  const res = await http.post('getCalendarDaysOfYeaList', params)
+  const res = await http.post('getCalendarDaysOfYearList', params)
+  return res
+}
+
+// 获取列表日历日程
+export const getCalendarDaysOfMonthList = async (
+  params: API.Schedule.ScheduleInfoList.Params,
+) => {
+  const res = await http.post('getCalendarDaysOfMonthList', params)
   return res
 }

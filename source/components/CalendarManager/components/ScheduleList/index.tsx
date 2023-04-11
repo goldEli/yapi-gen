@@ -4,32 +4,33 @@ import React from 'react'
 import { useSelector, useDispatch } from '@store/index'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
 import { setScheduleListModal } from '@store/schedule'
-import ScheduleInfoDropdown from "../ScheduleInfoDropdown";
-import dayjs from "dayjs";
+import ScheduleInfoDropdown from '../ScheduleInfoDropdown'
+import dayjs from 'dayjs'
 interface ScheduleListProps {
   month: number
 }
 interface ScheduleListBoxProps {
   visible: boolean
-  top: number
-  left: number
+  top?: number
+  left?: number
   month: number
 }
-const ScheduListBox = styled.div`
-    width:260px;
-    //height:200px;
-    position: absolute;
-    top: ${(props: ScheduleListBoxProps) => props.top + 'px'};
-    left: ${(props: ScheduleListBoxProps) => props.left + 'px'};
-    display: ${(props: ScheduleListBoxProps) => props.visible ? 'block' : 'none'};
-    background: #fff;
-    box-shadow: 0px 0px 15px 6px rgba(0,0,0,0.12);
-    border-radius: 6px 6px 6px 6px;
-    z-index: 999;
-    padding-left: 16px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    box-sizing: border-box;
+const ScheduleListBox = styled.div`
+  width: 260px;
+  //height:200px;
+  position: absolute;
+  top: ${(props: ScheduleListBoxProps) => props.top + 'px'};
+  left: ${(props: ScheduleListBoxProps) => props.left + 'px'};
+  display: ${(props: ScheduleListBoxProps) =>
+    props.visible ? 'block' : 'none'};
+  background: #fff;
+  box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+  border-radius: 6px 6px 6px 6px;
+  z-index: 999;
+  padding-left: 16px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  box-sizing: border-box;
 `
 const ScheduleItem = styled.div`
   font-size: 12px;
@@ -46,9 +47,9 @@ const ScheduleItem = styled.div`
   }
 `
 const ScheduleTitle = styled.div`
-    display: flex;
-    align-items: center;
-    margin-right: 8px;
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
 `
 const labelTime = css`
   font-size: 12px;
@@ -67,7 +68,7 @@ const labelTime = css`
     margin-right: 8px;
     position: relative;
     top: -2px;
-    }
+  }
 `
 const labelContent = css`
   font-size: 12px;
@@ -77,39 +78,46 @@ const labelContent = css`
   line-height: 20px;
 `
 const dateClass = css`
-    color: var(--neutral-n1-d1);
-    font-size: 16px;
-    margin-right: 8px;
+  color: var(--neutral-n1-d1);
+  font-size: 16px;
+  margin-right: 8px;
 `
 const gregorianDateClass = css`
-    color: var(--neutral-n3);
-    font-size: 12px;
+  color: var(--neutral-n3);
+  font-size: 12px;
 `
 const ScheduleListModal: React.FC<ScheduleListProps> = props => {
-  const scheduList = useSelector(state => state.schedule.scheduleListModal);
-  const scheduleInfo = useSelector(state => state.calendarPanel.scheduleInfoDropdown)
+  const { scheduleListModal } = useSelector(state => state.schedule)
+  const scheduleInfo = useSelector(
+    state => state.calendarPanel.scheduleInfoDropdown,
+  )
   const disPatch = useDispatch()
-  const { visible, top, left } = scheduList;
+  const { visible, top, left, date } = scheduleListModal
+  console.log('scheduleListModal----', scheduleListModal)
   const scheduleInfoClick = (e: any) => {
     e.stopPropagation()
-    disPatch(setScheduleInfoDropdown({ visible: true }));
+    disPatch(setScheduleInfoDropdown({ visible: true }))
     disPatch(setScheduleListModal({ visible: false }))
   }
   return (
-    <ScheduListBox visible={visible} top={top} left={left} month={props.month}>
+    <ScheduleListBox
+      visible={visible}
+      top={top}
+      left={left}
+      month={props.month}
+    >
       <ScheduleTitle>
         <span className={dateClass}>16</span>
         <span className={gregorianDateClass}>甘五</span>
       </ScheduleTitle>
-      {
-        [1, 2, 3, 4, 5, 6].map(item =>
-          <ScheduleItem key={item} onClick={(e) => scheduleInfoClick(e)}>
-            <span className={labelTime}>06:00</span>
-            <span className={labelContent}>这是一个日程标题内容</span>
-          </ScheduleItem>)
-      }
+      {[1, 2, 3, 4, 5, 6].map(item => (
+        <ScheduleItem key={item} onClick={e => scheduleInfoClick(e)}>
+          <span className={labelTime}>06:00</span>
+          <span className={labelContent}>这是一个日程标题内容</span>
+        </ScheduleItem>
+      ))}
       <ScheduleInfoDropdown></ScheduleInfoDropdown>
-    </ScheduListBox>
+    </ScheduleListBox>
   )
 }
 export default ScheduleListModal

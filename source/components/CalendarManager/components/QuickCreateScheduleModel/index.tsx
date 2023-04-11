@@ -80,7 +80,7 @@ const CreateFormItem = (props: CreateFormItemProps) => {
   )
 }
 
-const CreateEasySchedule: React.FC<CreateScheduleBoxProps> = props => {
+const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
   const { relateConfig, calendarConfig, calendarData } = useSelector(
     store => store.calendar,
   )
@@ -262,7 +262,7 @@ const CreateEasySchedule: React.FC<CreateScheduleBoxProps> = props => {
   return (
     <>
       <AddMemberCommonModal
-        isVisible={isChooseVisible}
+        isVisible={isChooseVisible && !!position}
         title="添加成员"
         onClose={() => setIsChooseVisible(false)}
         onConfirm={onAddConfirm}
@@ -464,4 +464,4 @@ const CreateEasySchedule: React.FC<CreateScheduleBoxProps> = props => {
   )
 }
 
-export default CreateEasySchedule
+export default QuickCreateScheduleModel

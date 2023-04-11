@@ -1,11 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
+import { getCalendarDaysOfMonthList } from '@store/schedule/schedule.thunk'
 import dayjs from 'dayjs'
 interface CalendarListProps {}
 const CalendarListBox = styled.div`
   background-color: #fff;
+  max-height: 600px;
+  overflow-y: scroll;
 `
 const CalendarListItem = styled.div`
   border-top: 1px solid var(--neutral-n6-d1);
@@ -35,7 +38,6 @@ const CalendarListInfo = styled.div`
   align-items: center;
   position: relative;
   top: 6px;
-  
 `
 const TimeItem = styled.div`
   color: var(--neutral-n1-d1);
@@ -95,14 +97,37 @@ const CalendarList: React.FC<CalendarListProps> = props => {
     { id: 2, list: [{ text: '这是一个日程标题内容', date: '09-10' }] },
     { id: 3, list: [{ text: '这是一个日程标题内容', date: '09-10' }] },
   ]
-  const canendarListValue=useSelector(state=>state.calendarPanel.calenderListValue);
-  const scheduleSearchKey=useSelector(state=>state.calendarPanel.scheduleSearchKey)
-  useEffect(()=>{
-    console.log('list----')
-  },[canendarListValue,scheduleSearchKey])
-  return <CalendarListBox>
-    {
-      data.map((item, index) =>
+  const CalendarListBoxRef = useRef<HTMLDivElement>(null)
+  const { calenderListValue } = useSelector(state => state.calendarPanel)
+  const { scheduleSearchKey } = useSelector(state => state.calendarPanel)
+  const { calendarData } = useSelector(state => state.calendar)
+  const { monthViewScheduleList } = useSelector(state => state.schedule)
+  const { checkedTime } = useSelector(state => state.calendar)
+  console.log(
+    'monthViewScheduleList---',
+    monthViewScheduleList,
+    calenderListValue,
+  )
+  let data1 = calendarData?.manager.concat(calendarData?.subscribe)
+  const disPatch = useDispatch()
+  useEffect(() => {
+    console.log('列表视图', calenderListValue, CalendarListBoxRef, checkedTime)
+    let params = {
+      month: dayjs(calenderListValue).month(),
+      calendar_ids: data1.map(item => item.calendar_id),
+    }
+    disPatch(getCalendarDaysOfMonthList(params))
+  }, [calenderListValue, scheduleSearchKey])
+  useEffect(() => {
+    if (CalendarListBoxRef.current) {
+      CalendarListBoxRef.current.scrollTo({
+        top: 300,
+      })
+    }
+  }, [checkedTime])
+  return (
+    <CalendarListBox ref={CalendarListBoxRef}>
+      {data.map((item, index) => (
         <CalendarListItem key={index} className={CalendarListClass}>
           <div style={{ width: '40px' }}>
             <DateBox className={index === 0 ? currentClass : ''}>
@@ -122,8 +147,9 @@ const CalendarList: React.FC<CalendarListProps> = props => {
             ))}
           </CalendarListInfo>
         </CalendarListItem>
-      )}
+      ))}
     </CalendarListBox>
+  )
 }
 
 export default CalendarList

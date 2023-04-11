@@ -89,18 +89,10 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
         <div className={iconBox}>
           <span
             onClick={() => {
-              console.log(1)
-              disPatch(setScheduleModal({ visible: true }))
+              disPatch(setScheduleModal({ visible: true, params: { id: 1 } }))
             }}
           >
             <ScheduleInfoIcon type="edit" />
-          </span>
-          <span
-            onClick={() => {
-              setIsVisible(true)
-            }}
-          >
-            <ScheduleInfoIcon type="delete" />
           </span>
           <span>...</span>
           <span
