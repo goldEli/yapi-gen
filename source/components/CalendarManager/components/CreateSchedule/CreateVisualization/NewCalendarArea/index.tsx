@@ -35,7 +35,7 @@ const NewCalendarArea: React.FC<NewCalendarAreaProps> = props => {
     store => store.createScheduleVisualization,
   )
   const currentColor = React.useMemo(() => {
-    const colorIdx = calendarData.manage.find(
+    const colorIdx = calendarData.manager.find(
       item => item.is_default === 1,
     )?.color
     return colorIdx

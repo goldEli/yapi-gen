@@ -51,6 +51,7 @@ const CalendarForCalendarYear: React.FC<
   CalendarForCalendarYearProps
 > = props => {
   //const current = React.useMemo(() => dayjs().month(props.month), [props.month])
+  const allScheduleList=useSelector(state=>state.schedule.allScheduleList);
   const [date, setDate] = useState<Dayjs>(dayjs())
   const onCallBack = (date: Dayjs) => {
     setDate(date)

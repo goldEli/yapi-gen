@@ -1,5 +1,6 @@
 import { RepeatModalCheck } from '@/components/CalendarManager/styles'
 import CommonModal from '@/components/CommonModal'
+import { useSelector } from '@store/index'
 import {
   Checkbox,
   DatePicker,
@@ -21,6 +22,7 @@ interface RepeatModalProps {
 }
 
 const RepeatModal = (props: RepeatModalProps) => {
+  const { relateConfig } = useSelector(store => store.calendar)
   const [repeatForm] = Form.useForm()
   //   每多少重复
   const [repeat, setRepeat] = useState<number>(1)
@@ -33,11 +35,6 @@ const RepeatModal = (props: RepeatModalProps) => {
   // 结束次数
   const [number, setNumber] = useState<number>(1)
   const unit = ['天', '周', '月', '年']
-  const endOption = [
-    { label: '无限制', value: 0 },
-    { label: '终于日期', value: 1 },
-    { label: '终于次数', value: 2 },
-  ]
 
   const checkboxOptions = [
     { label: '周一', value: 0 },
@@ -93,14 +90,12 @@ const RepeatModal = (props: RepeatModalProps) => {
           <Form.Item label="从">
             <Select
               style={{ width: 140, marginRight: 16 }}
-              options={endOption}
               value={endType}
               onChange={setEndType}
             />
             -
             <Select
               style={{ width: 140, marginLeft: 16 }}
-              options={endOption}
               value={endType}
               onChange={setEndType}
             />
@@ -109,7 +104,7 @@ const RepeatModal = (props: RepeatModalProps) => {
         <Form.Item label="结束重复">
           <Select
             style={{ width: 140, marginRight: 16 }}
-            options={endOption}
+            options={relateConfig.schedule.repeat_end_types}
             value={endType}
             onChange={setEndType}
           />

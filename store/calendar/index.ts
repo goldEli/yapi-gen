@@ -39,7 +39,6 @@ type SliceState = {
   showCalendarParams: Model.Calendar.ShowCalendarParams
   // 是否打开订阅日历弹窗
   isShowSubscribeVisible: boolean
-  partialDayTimeOption: { label: string; value: number }[]
   // 选择的月信息
   selectedMonth: Model.Calendar.DayOfMonth[]
 }
@@ -62,6 +61,7 @@ const initialState: SliceState = {
       all_day_remind: [],
       un_all_day_remind: [],
       default_duration: [],
+      busy_status: [],
     },
   },
   calendarConfig: {
@@ -70,7 +70,7 @@ const initialState: SliceState = {
     notification_configs: undefined,
   },
   calendarData: {
-    manage: [],
+    manager: [],
     subscribe: [],
   },
   checkedCalendarList: [],
@@ -116,18 +116,6 @@ const initialState: SliceState = {
   isShowCalendarVisible: false,
   showCalendarParams: {},
   isShowSubscribeVisible: false,
-  partialDayTimeOption: [
-    { label: '日程开始时', value: 0 },
-    { label: '提前5分钟', value: 1 },
-    { label: '提前15分钟', value: 2 },
-    { label: '提前30分钟', value: 3 },
-    { label: '提前1小时', value: 4 },
-    { label: '提前2小时', value: 5 },
-    { label: '提前3小时', value: 6 },
-    { label: '提前1天', value: 7 },
-    { label: '提前2天', value: 8 },
-    { label: '提前1周', value: 9 },
-  ],
   selectedMonth: [
     {
       lunar_year_chinese: '二零二三',
@@ -998,7 +986,7 @@ const slice = createSlice({
   extraReducers(builder) {
     builder.addCase(getCalendarList.fulfilled, (state, action) => {
       state.calendarData = action.payload
-      const checkManageList = action.payload.manage?.filter(
+      const checkManageList = action.payload.manager?.filter(
         (i: Model.Calendar.Info) => i.is_check,
       )
       const checkSubList = action.payload.subscribe?.filter(

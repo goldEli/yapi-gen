@@ -19,7 +19,7 @@ declare namespace API.Calendar {
 
   namespace GetCalendarList {
     type Result = {
-      manage: Model.Calendar.Info[]
+      manager: Model.Calendar.Info[]
       subscribe: Model.Calendar.Info[]
     }
   }
@@ -64,6 +64,7 @@ declare namespace API.Calendar {
         all_day_remind: GetRelateConfigCommonInfo
         un_all_day_remind: GetRelateConfigCommonInfo
         default_duration: GetRelateConfigCommonInfo
+        busy_status: GetRelateConfigCommonInfo
       }
     }
   }

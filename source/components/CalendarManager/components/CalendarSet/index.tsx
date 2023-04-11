@@ -191,8 +191,9 @@ const ImportItem = styled.div`
 
 const CalendarSet = () => {
   const dispatch = useDispatch()
-  const { menuList, routerMenu, partialDayTimeOption, calendarConfig } =
-    useSelector(store => store.calendar)
+  const { menuList, routerMenu, calendarConfig, relateConfig } = useSelector(
+    store => store.calendar,
+  )
   // 配置选项默认值
   const [formParams, setFormParams] = useState<any>({
     view_options: {
@@ -244,35 +245,6 @@ const CalendarSet = () => {
       background: 'var(--primary-d1)',
       color: 'var(--neutral-white-d7)',
     },
-  ]
-
-  // 日程默认时长
-  const normalTimeOption = [
-    { label: '15分钟', value: 0 },
-    { label: '30分钟', value: 1 },
-    { label: '45分钟', value: 2 },
-    { label: '60分钟', value: 3 },
-    { label: '90分钟', value: 4 },
-    { label: '120分钟', value: 5 },
-  ]
-
-  // 全天日程默认提醒时间
-  const allDayTimeOption = [
-    { label: '当天08：00', value: 0 },
-    { label: '当天09：00', value: 1 },
-    { label: '当天10：00', value: 2 },
-    { label: '提前1天08：00', value: 3 },
-    { label: '提前1天09：00', value: 4 },
-    { label: '提前1天10：00', value: 5 },
-    { label: '提前2天08：00', value: 6 },
-    { label: '提前2天09：00', value: 7 },
-    { label: '提前2天10：00', value: 8 },
-    { label: '提前3天08：00', value: 9 },
-    { label: '提前3天09：00', value: 10 },
-    { label: '提前3天10：00', value: 11 },
-    { label: '提前1周08：00', value: 12 },
-    { label: '提前1周09：00', value: 13 },
-    { label: '提前1周10：00', value: 14 },
   ]
 
   // 可导出的日历列表
@@ -434,7 +406,7 @@ const CalendarSet = () => {
               )
             }
             value={formParams.schedule_configs.schedule_default_duration}
-            options={normalTimeOption}
+            options={relateConfig.schedule.default_duration}
             style={{ width: 320 }}
             getPopupContainer={n => n}
           />
@@ -455,7 +427,7 @@ const CalendarSet = () => {
                   )
                 }
                 value={formParams.notification_configs.not_all_day_remind}
-                options={partialDayTimeOption}
+                options={relateConfig.schedule.remind_types}
                 style={{ width: 320 }}
                 getPopupContainer={n => n}
               />
@@ -471,7 +443,7 @@ const CalendarSet = () => {
                   )
                 }
                 value={formParams.notification_configs.all_day_remind}
-                options={allDayTimeOption}
+                options={relateConfig.schedule.all_day_remind}
                 style={{ width: 320 }}
                 getPopupContainer={n => n}
               />

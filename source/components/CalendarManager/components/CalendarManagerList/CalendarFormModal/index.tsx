@@ -13,6 +13,7 @@ import {
   Radio,
   type RadioChangeEvent,
   Select,
+  message,
 } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import CalendarColor from '../../CalendarColor'
@@ -41,7 +42,9 @@ import { useDispatch, useSelector } from '@store/index'
 import {
   setIsShowCalendarVisible,
   setShowCalendarParams,
+  setCalendarData,
 } from '@store/calendar'
+import { addCalendar } from '@/services/calendar'
 
 interface PermissionDropProps {
   onUpdateShare(item: Model.Calendar.MemberItem): void
@@ -49,6 +52,7 @@ interface PermissionDropProps {
 }
 
 const PermissionDrop = (props: PermissionDropProps) => {
+  const { relateConfig } = useSelector(store => store.calendar)
   const [isVisible, setIsVisible] = useState(false)
   // 移除成员
   const [isDeleteVisible, setIsDeleteVisible] = useState(false)
@@ -56,13 +60,6 @@ const PermissionDrop = (props: PermissionDropProps) => {
   const [isTransferVisible, setIsTransferVisible] = useState(false)
   // 转让日历选中的值
   const [transferValue, setTransferValue] = useState(1)
-
-  const permissionList = [
-    { name: '管理员', sub: '管理日历及共享设置', id: 1 },
-    { name: '编辑者', sub: '创建及修改日程', id: 2 },
-    { name: '订阅者', sub: '查看所有日程详情', id: 3 },
-    { name: '游客', sub: '只能查看日程忙碌空闲状态', id: 4 },
-  ]
 
   // 转让日历
   const onTransferCalendar = () => {
@@ -76,20 +73,25 @@ const PermissionDrop = (props: PermissionDropProps) => {
   }
 
   // 改变权限
-  const onChangePermission = (i: { id: number; name: string; sub: string }) => {
-    const newItem = { ...props.item, permission: i.id }
+  const onChangePermission = (i: Model.Calendar.GetRelateConfigCommonInfo) => {
+    const newItem = { ...props.item, permission: i.value }
     props.onUpdateShare(newItem)
     setIsVisible(false)
   }
 
   const operation = (
     <PermissionDropBox>
-      {permissionList.map((i: { id: number; name: string; sub: string }) => (
-        <PermissionDropItem key={i.id} onClick={() => onChangePermission(i)}>
-          <span className="title">{i.name}</span>
-          <span className="sub">{i.sub}</span>
-        </PermissionDropItem>
-      ))}
+      {relateConfig.calendar.user_group_ids.map(
+        (i: Model.Calendar.GetRelateConfigCommonInfo) => (
+          <PermissionDropItem
+            key={i.value}
+            onClick={() => onChangePermission(i)}
+          >
+            <span className="title">{i.label}</span>
+            <span className="sub">{i.describe}</span>
+          </PermissionDropItem>
+        ),
+      )}
       <ItemProvider />
       <PermissionDropItem onClick={() => setIsTransferVisible(true)}>
         转让日历
@@ -140,10 +142,10 @@ const PermissionDrop = (props: PermissionDropProps) => {
         <div className="canOperation">
           <span className="name">
             {
-              permissionList.filter(
-                (i: Model.Calendar.MemberItem) =>
-                  i.id === props.item.permission,
-              )[0]?.name
+              relateConfig.calendar.user_group_ids.filter(
+                (i: Model.Calendar.GetRelateConfigCommonInfo) =>
+                  i.value === props.item.permission,
+              )[0]?.label
             }
           </span>
           <IconFont className="icon" type={isVisible ? 'up' : 'down'} />
@@ -156,9 +158,12 @@ const PermissionDrop = (props: PermissionDropProps) => {
 const CalendarFormModal = () => {
   const [form] = Form.useForm()
   const dispatch = useDispatch()
-  const { isShowCalendarVisible, showCalendarParams } = useSelector(
-    store => store.calendar,
-  )
+  const {
+    isShowCalendarVisible,
+    showCalendarParams,
+    relateConfig,
+    calendarData,
+  } = useSelector(store => store.calendar)
   const inputRefDom = useRef<HTMLInputElement>(null)
   // 创建日历默认主题色
   const [normalColor, setNormalColor] = useState(0)
@@ -166,13 +171,13 @@ const CalendarFormModal = () => {
   const [isVisible, setIsVisible] = useState(false)
   const [hiddenUpload, setHiddenUpload] = useState(false)
   const [path, setPath] = useState<string>('')
-  const [pathList, setPathList] = useState<any>()
   // 选择成员显示
   const [isChooseVisible, setIsChooseVisible] = useState(false)
   // 选择其他显示
   const [isChooseOtherVisible, setIsChooseOtherVisible] = useState(false)
   // 当前选中的下拉key
-  const [isActiveKey, setIsActiveKey] = useState<Model.Calendar.ChooseAddType>()
+  const [isActiveKey, setIsActiveKey] =
+    useState<Model.Calendar.ChooseAddType>(null)
   // 当前是哪个key添加人员 例：共享或者是可订阅
   const [currentKey, setCurrentKey] = useState('')
   // 共享成员数组
@@ -183,41 +188,24 @@ const CalendarFormModal = () => {
   >([])
   // 可订阅人群下拉选择
   const [isAddVisible, setIsAddVisible] = useState(false)
-  const [currentPermission, setCurrentPermission] = useState(null)
-
-  const permissionList = [
-    { id: 0, name: '私密', dec: '仅共享成员可访问' },
-    { id: 1, name: '公开', dec: '可被搜索到，显示日程详情' },
-    {
-      id: 3,
-      name: '仅显示忙碌状态',
-      dec: '可被搜索到，仅向他人显示日程忙碌空闲',
-    },
-  ]
+  const [currentPermission, setCurrentPermission] = useState<number>()
 
   // 关闭创建日历弹窗
   const onClose = () => {
     setNormalColor(0)
-    setIsActiveKey('')
+    setIsActiveKey(null)
     setCurrentKey('')
     setShareList([])
     setSubscribedList([])
-    setCurrentPermission(null)
+    setCurrentPermission(relateConfig.calendar.permission_types[0].value)
     dispatch(setIsShowCalendarVisible(false))
     dispatch(setShowCalendarParams({}))
   }
 
   // 切换图标
-  const onChangePath = (val: { id: number; path: string }, state: number) => {
-    setPath(val.path)
+  const onChangePath = (val: string, state: number) => {
+    setPath(val)
     state === 1 ? setHiddenUpload(true) : setHiddenUpload(false)
-  }
-
-  // 获取日历图标列表
-  const getPathList = async () => {
-    // const response = await getCalendarIconList()
-    // setPathList(response.data.list)
-    // setPath(response.data.list[0].path)
   }
 
   // 点击添加成员
@@ -227,11 +215,11 @@ const CalendarFormModal = () => {
   }
 
   // 选中的共享成员
-  const onAddConfirm = (list: Model.Calendar.MemberItem[]) => {
+  const onAddConfirm = (list: Model.Calendar.MemberItem[], id: number) => {
     const resultList = list.map((i: Model.Calendar.MemberItem) => ({
       ...i,
       type: isActiveKey,
-      permission: 4,
+      permission: id,
     }))
     const newList = [
       ...(currentKey === 'share' ? shareList : subscribedList),
@@ -250,23 +238,23 @@ const CalendarFormModal = () => {
   }
 
   // 订阅人群选择的key
-  const onChooseKeys = (key: string) => {
+  const onChooseKeys = (key: number) => {
     setIsAddVisible(false)
-    setIsActiveKey(key as 'member' | 'team' | 'department')
+    setIsActiveKey(key as Model.Calendar.ChooseAddType)
     switch (key) {
-      case 'all':
+      case 1:
         setSubscribedList([
           ...[
             {
               id: -1,
               name: '全员',
-              type: 'all' as Model.Calendar.ChooseAddType,
+              type: 1 as Model.Calendar.ChooseAddType,
             },
           ],
           ...subscribedList,
         ])
         break
-      case 'member':
+      case 2:
         onAddMember('subscribeable')
         break
       default:
@@ -277,31 +265,15 @@ const CalendarFormModal = () => {
 
   // 订阅成员下拉
   const chooseMemberType = () => {
-    const menuItems = [
-      {
-        key: 'all',
-        label: '全员',
-      },
-      {
-        key: 'member',
-        label: '添加成员',
-      },
-      {
-        key: 'department',
-        label: '添加部门',
-      },
-      {
-        key: 'team',
-        label: '添加团队',
-      },
-    ]
     return (
       <div style={{ padding: '4px 0' }}>
-        {menuItems.map((i: { key: string; label: string }) => (
-          <MenuItem key={i.key} onClick={() => onChooseKeys(i.key)}>
-            {i.label}
-          </MenuItem>
-        ))}
+        {relateConfig.calendar.subscribe_types.map(
+          (i: Model.Calendar.GetRelateConfigCommonInfo) => (
+            <MenuItem key={i.value} onClick={() => onChooseKeys(i.value)}>
+              {i.label}
+            </MenuItem>
+          ),
+        )}
       </div>
     )
   }
@@ -341,7 +313,16 @@ const CalendarFormModal = () => {
     values.icon = path
     values.permission = currentPermission
 
-    // console.log(values, 'valuesvaluesvalues')
+    const response = await addCalendar(values)
+    response.is_check = 2
+    dispatch(
+      setCalendarData({
+        ...calendarData,
+        ...{ manager: [...calendarData.manager, ...[response]] },
+      }),
+    )
+    onClose()
+    message.success(showCalendarParams.id ? '编辑成功!' : '创建成功!')
   }
 
   // 修改共享成员的权限
@@ -355,9 +336,10 @@ const CalendarFormModal = () => {
 
   useEffect(() => {
     if (isShowCalendarVisible) {
-      getPathList()
+      setPath(relateConfig.calendar.icon_path[0])
+      setCurrentPermission(relateConfig.calendar.permission_types[0].value)
     }
-  }, [isShowCalendarVisible])
+  }, [isShowCalendarVisible, relateConfig])
 
   return (
     <>
@@ -367,6 +349,10 @@ const CalendarFormModal = () => {
           title="添加成员"
           onClose={() => setIsChooseVisible(false)}
           onConfirm={onAddConfirm}
+          isCalendar
+          isPermisGroup
+          projectPermission={relateConfig.calendar.user_group_ids}
+          userGroupId={3}
         />
       )}
       <AddDepartmentOrTeamModal
@@ -418,12 +404,23 @@ const CalendarFormModal = () => {
                   onChange={setCurrentPermission}
                   placeholder="请选择权限"
                   optionLabelProp="label"
+                  value={currentPermission}
                 >
-                  {permissionList.map((i: any) => (
-                    <Select.Option value={i.id} key={i.id} label={i.name}>
-                      <MoreOptions type="promise" name={i.name} dec={i.dec} />
-                    </Select.Option>
-                  ))}
+                  {relateConfig.calendar.permission_types.map(
+                    (i: Model.Calendar.GetRelateConfigCommonInfo) => (
+                      <Select.Option
+                        value={i.value}
+                        key={i.value}
+                        label={i.label}
+                      >
+                        <MoreOptions
+                          type="promise"
+                          name={i.label}
+                          dec={i.describe}
+                        />
+                      </Select.Option>
+                    ),
+                  )}
                 </CustomSelect>
               </div>
               <Popover
@@ -448,7 +445,7 @@ const CalendarFormModal = () => {
               </Popover>
             </PermissionBox>
           </Form.Item>
-          {currentPermission !== 0 && (
+          {currentPermission !== 1 && (
             <>
               <Form.Item label="共享日历成员">
                 <CommonButton
@@ -489,20 +486,20 @@ const CalendarFormModal = () => {
                 <SubscribedItems size={16}>
                   {subscribedList.map((i: Model.Calendar.MemberItem) => (
                     <SubscribedItem key={i.id} size={8}>
-                      {i.type === 'member' && (
+                      {i.type === 2 && (
                         <CommonUserAvatar size="small" avatar={i.avatar} />
                       )}
-                      {i.type === 'department' && (
+                      {i.type === 4 && (
                         <DepartmentIcon>
                           <IconFont type="branch" />
                         </DepartmentIcon>
                       )}
-                      {i.type === 'team' && (
+                      {i.type === 3 && (
                         <TeamIcon>
                           <IconFont type="team-2" />
                         </TeamIcon>
                       )}
-                      {i.type === 'all' && (
+                      {i.type === 1 && (
                         <TeamIcon>
                           <IconFont type="userAll" />
                         </TeamIcon>
@@ -520,7 +517,7 @@ const CalendarFormModal = () => {
             <ChooseIconOrUpload
               color={path}
               hiddenUpload={hiddenUpload}
-              colorList={pathList}
+              colorList={relateConfig.calendar.icon_path}
               onChangeValue={(val: any, state) => onChangePath(val, state)}
             />
           </Form.Item>

@@ -58,8 +58,10 @@ const AllDayScheduleCard: React.FC<ScheduleCardProps> = props => {
 
   const { maxWidth } = useMaxWidth()
   const { updateAllDayTime } = useUpdateAllDayTime()
+  const isDrag = React.useRef(false)
 
   const onDrag = (e: DraggableEvent, draggableData: DraggableData) => {
+    isDrag.current = true
     const { x, y, deltaY, lastY } = draggableData
     const time = getTimeByOffsetDistance(
       start_timestamp,
@@ -80,6 +82,8 @@ const AllDayScheduleCard: React.FC<ScheduleCardProps> = props => {
   }
   const onDragStart = (e: DraggableEvent, draggableData: DraggableData) => {
     // const { node, y, deltaY, lastY } = draggableData
+
+    isDrag.current = false
     const time = getTimeByOffsetDistance(start_timestamp, end_timestamp, 0)
     setTimeRange({
       start_timestamp: time.start_timestamp.format('HH:mm'),
@@ -119,13 +123,16 @@ const AllDayScheduleCard: React.FC<ScheduleCardProps> = props => {
     // const calenderBoxRightArea = document.querySelector(
     //   '#calenderBoxRightArea',
     // ) as Element
-    // dispatch(
-    //   setScheduleInfoDropdown({
-    //     visible: true,
-    //     x: x + 58,
-    //     y: 0,
-    //   }),
-    // )
+    if (!isDrag.current) {
+      dispatch(
+        setScheduleInfoDropdown({
+          id: props.data.schedule_id,
+          visible: true,
+          x: x + 58 + 20,
+          y: y + 20,
+        }),
+      )
+    }
   }
 
   const gridHeight = useMemo(() => (oneHourHeight / 60) * 15, [outerHeight])
@@ -161,6 +168,9 @@ const AllDayScheduleCard: React.FC<ScheduleCardProps> = props => {
 
   return (
     <Rnd
+      onClick={(e: any) => {
+        e.stopPropagation()
+      }}
       style={{
         background: getColorWithOpacityPointOne(data.color),
       }}

@@ -20,7 +20,7 @@ const ScheduleInfoDropdownBox = styled.div<{
   overflow-y: scroll;
   background-color: var(--neutral-white-d1);
   box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
-  z-index: 10;
+  z-index: 100;
   display: ${props => (props.visible ? 'block' : 'none')};
   position: absolute;
   top: ${props => props.top + 'px'};
@@ -36,6 +36,7 @@ const ScheduleInfoDropdown: React.FC<ScheduleInfoDropdownProps> = props => {
     containerClassName: props.containerClassName,
     modalClassName: '.schedule-info-dropdown-box',
   })
+  console.log({ scheduleInfoDropdown })
 
   return (
     <ScheduleInfoDropdownBox

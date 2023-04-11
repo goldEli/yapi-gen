@@ -214,6 +214,7 @@ interface ModalProps {
   isPermisGroup?: boolean
   userGroupId?: number
   projectPermission?: any
+  isCalendar?: boolean
 }
 
 const CommonModal = (props: ModalProps) => {
@@ -284,7 +285,8 @@ const CommonModal = (props: ModalProps) => {
   const getCompany = async () => {
     const res = await getDepartmentUserList1({
       search: {
-        project_id: props.isPermisGroup ? projectInfo?.id : '0',
+        project_id:
+          props.isPermisGroup && !props.isCalendar ? projectInfo?.id : '0',
         type: 'company',
       },
     })
@@ -301,7 +303,8 @@ const CommonModal = (props: ModalProps) => {
   const getTeam = async () => {
     const res = await getDepartmentUserList({
       search: {
-        project_id: props.isPermisGroup ? projectInfo?.id : '0',
+        project_id:
+          props.isPermisGroup && !props.isCalendar ? projectInfo?.id : '0',
         type: 'team',
       },
     })
