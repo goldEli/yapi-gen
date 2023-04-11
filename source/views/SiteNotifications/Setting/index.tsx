@@ -19,12 +19,15 @@ import { setMyConfiguration } from '@store/SiteNotifications'
 const Setting = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
-  const [selectKeys, setSelectKeys] = useState<CheckboxValueType[]>()
+  const [selectKeys, setSelectKeys] = useState<any>()
   const configurations = useSelector(
     store => store.siteNotifications.configuration,
   )
   const myConfiguration = useSelector(
     store => store.siteNotifications.myConfiguration,
+  )
+  const myEmailConfiguration = useSelector(
+    store => store.siteNotifications.myEmailConfiguration,
   )
   const [activeDetail, setActiveDetail] = useState<any>({})
   // const obj = {
@@ -173,7 +176,9 @@ const Setting = () => {
   // }
 
   const onSave = async () => {
-    const res = await editMyAllNoteSet(selectKeys)
+    const res = await editMyAllNoteSet(
+      Array.from(new Set([...myEmailConfiguration, ...selectKeys])),
+    )
 
     if (res.code === 0) {
       message.success(t('succeed'))
@@ -181,6 +186,8 @@ const Setting = () => {
     dispatch(setMyConfiguration(selectKeys))
   }
   useEffect(() => {
+    console.log(myConfiguration)
+
     setSelectKeys(myConfiguration)
   }, [myConfiguration])
 

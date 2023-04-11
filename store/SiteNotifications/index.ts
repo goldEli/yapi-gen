@@ -5,6 +5,8 @@ type SliceState = {
   isVisibleFilter: boolean
   configuration: any
   myConfiguration: any
+  myEmailConfiguration: any
+  emailConfiguration: any
 }
 
 const slice = createSlice({
@@ -23,6 +25,12 @@ const slice = createSlice({
     setMyConfiguration: (state, action) => {
       state.myConfiguration = action.payload
     },
+    setMyEmailConfiguration: (state, action) => {
+      state.myEmailConfiguration = action.payload
+    },
+    setEmailConfiguration: (state, action) => {
+      state.emailConfiguration = action.payload
+    },
   },
 
   //   extraReducers(builder) {},
@@ -33,6 +41,8 @@ export const {
   changeVisibleFilter,
   setConfiguration,
   setMyConfiguration,
+  setEmailConfiguration,
+  setMyEmailConfiguration,
 } = slice.actions
 
 export default slice.reducer

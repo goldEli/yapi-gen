@@ -7,7 +7,9 @@ import { useDispatch, useSelector } from '@store/index'
 import {
   changeVisible,
   setConfiguration,
+  setEmailConfiguration,
   setMyConfiguration,
+  setMyEmailConfiguration,
 } from '@store/SiteNotifications'
 import { Badge, notification } from 'antd'
 import React, { useEffect } from 'react'
@@ -115,6 +117,38 @@ const SiteNotifications = () => {
           break
       }
     }
+    if (type === 'email') {
+      switch (code) {
+        case 201:
+          name = '待办'
+          break
+        case 202:
+          name = '评论中@我'
+          break
+        case 203:
+          name = '待我审批'
+          break
+        case 204:
+          name = '简报催缴'
+          break
+        case 205:
+          name = '谁提交了简报'
+          break
+        case 206:
+          name = '日程提醒'
+          break
+        case 207:
+          name = '邀请我参与的日程'
+          break
+        case 208:
+          name = '系统公告'
+          break
+
+        default:
+          name = ''
+          break
+      }
+    }
     return name
   }
 
@@ -177,13 +211,33 @@ const SiteNotifications = () => {
     })
     return arr
   }
+  const initEmailSet = (values: any) => {
+    return values.map((i: any) => ({
+      id: i.rule,
+      text: setNewName('email', i.rule),
+    }))
+  }
   const init = async () => {
     const res = await getAllNoteSet()
     dispatch(setConfiguration(initSet(res.im)))
+    dispatch(setEmailConfiguration(initEmailSet(res.mail)))
 
     const res2 = await getMyAllNoteSet()
 
-    dispatch(setMyConfiguration(res2.list))
+    dispatch(
+      setMyConfiguration(
+        res2.list.filter((i: any) => {
+          return !String(i).startsWith('2')
+        }),
+      ),
+    )
+    dispatch(
+      setMyEmailConfiguration(
+        res2.list.filter((i: any) => {
+          return String(i).startsWith('2')
+        }),
+      ),
+    )
   }
   useEffect(() => {
     init()
