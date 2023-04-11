@@ -19,6 +19,7 @@ const urls = {
   getProjectMember: '/b/project/member/getList',
   addProjectMember: '/b/project/member/save',
   updateMember: '/b/project/member/update',
+  batchUpdateMember: '/b/project/member/update_batch',
   deleteMember: '/b/project/member/delete',
   getProjectPermission: '/b/project/role',
   addPermission: '/b/project/role',
@@ -52,6 +53,7 @@ const urls = {
   changeCompany: '/b/user_change_company',
   getStaffList: '/b/companyuser/list',
   editStaff: '/b/companyuser/update',
+  batchEditStaff: '/b/companyuser/update_batch',
   refreshStaff: '/b/companyuser/update/refresh',
   getDepartmentSelectList: '/b/user/department/list',
   getPositionSelectList: '/b/user/position/list',
@@ -130,6 +132,11 @@ const urls = {
   getMenuPermission: '/b/user_menu_list',
   getCompanyUserPreferenceConfig: '/b/preference/config',
   updateCompanyUserPreferenceConfig: '/b/preference/config',
+  createTemplate: '/report/template/create',
+  upDateTemplate: '/report/template/update/',
+  templateDetail: '/report/template/info',
+  deleteTemplate: '/report/template/delete',
+  templateList: '/report/template/list',
 }
 
 export default urls

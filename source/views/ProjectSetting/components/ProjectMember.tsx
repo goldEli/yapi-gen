@@ -33,6 +33,7 @@ import {
   getProjectMember,
   getProjectPermission,
   updateMember,
+  batchUpdateMember,
 } from '@/services/project'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsUpdateMember, setProjectInfo } from '@store/project'
@@ -44,6 +45,7 @@ import ProjectOverModal from '@/components/ProjectOverModal'
 import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import BatchAction, { boxItem } from '@/components/BatchAction'
 import ScreenMinHover from '@/components/ScreenMinHover'
+import BatchSetPermGroup from './BatchSetPermGroup'
 
 const Wrap = styled.div({
   padding: '0 24px',
@@ -139,6 +141,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
   const [isSpinning, setIsSpinning] = useState(false)
   const [isEditVisible, setIsEditVisible] = useState(false)
+  const [batchEditVisible, setBatchEditVisible] = useState(false)
   const [departments, setDepartments] = useState([])
   const [member, setMember] = useState<any>()
   const [userDataList, setUserDataList] = useState<any[]>([])
@@ -311,11 +314,6 @@ const ProjectMember = (props: { searchValue?: string }) => {
       return
     }
     setSelectedRowKeys([])
-  }
-  // TODO: API
-  const handleLock = () => {
-    // eslint-disable-next-line no-console
-    console.log(111)
   }
 
   useEffect(() => {
@@ -593,6 +591,21 @@ const ProjectMember = (props: { searchValue?: string }) => {
       //
     }
   }
+  const onConfirmBatchEdit = async (roleId: any) => {
+    try {
+      await batchUpdateMember({
+        projectId,
+        userGroupId: roleId,
+        userIds: selectedRowKeys.map(i => Number(i)),
+      })
+      message.success('操作成功')
+      setSelectedRowKeys([])
+      getList(order, pageObj)
+      setBatchEditVisible(false)
+    } catch (error) {
+      //
+    }
+  }
 
   // 更新项目信息
   const onUpdate = async () => {
@@ -651,6 +664,14 @@ const ProjectMember = (props: { searchValue?: string }) => {
           onConfirm={onConfirmEdit}
           projectPermission={projectPermission}
         />
+        <BatchSetPermGroup
+          isVisible={batchEditVisible}
+          onClose={() => {
+            setBatchEditVisible(false)
+          }}
+          onConfirm={onConfirmBatchEdit}
+          roleOptions={projectPermission}
+        />
         <ProjectOverModal
           id={operationItem}
           visible={isDelete}
@@ -670,13 +691,13 @@ const ProjectMember = (props: { searchValue?: string }) => {
           projectPermission={projectPermission}
         />
 
-        <BatchAction ref={actionRef}>
+        <BatchAction ref={actionRef} onCancel={() => setSelectedRowKeys([])}>
           <Tooltip
             placement="top"
             getPopupContainer={node => node}
-            title="解锁"
+            title="权限组"
           >
-            <div className={boxItem} onClick={handleLock}>
+            <div className={boxItem} onClick={() => setBatchEditVisible(true)}>
               <IconFont type="lock" />
             </div>
           </Tooltip>

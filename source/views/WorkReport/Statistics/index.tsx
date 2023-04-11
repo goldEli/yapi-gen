@@ -50,9 +50,10 @@ for (let i = 0; i < 100; i++) {
 const StyledWrap = styled.div`
   height: calc(100vh - 56px);
   display: flex;
-  gap: 17px;
+  gap: 16px;
 `
 const Head = styled.div`
+  width: calc(100% - 504px);
   box-sizing: border-box;
   padding: 24px;
   background: rgba(255, 255, 255, 1);
@@ -101,12 +102,12 @@ const CardGroup = styled(Space)({
 const CardItem = styled.div({
   height: 104,
   width: 208,
-  padding: 24,
+  padding: '0 24px',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'start',
-  borderRadius: 6,
+  borderRadius: 16,
   span: {
     fontSize: 12,
     color: 'var(--neutral-n2)',
@@ -166,17 +167,17 @@ const Statistics = () => {
     {
       title: '汇报类别',
       dataIndex: 'name',
-      width: 150,
+      width: 130,
     },
     {
       title: '使用人数',
       dataIndex: 'userCount',
-      width: 150,
+      width: 88,
     },
     {
       title: '累计汇报数',
       dataIndex: 'totalReportCount',
-      width: 150,
+      width: 88,
     },
   ]
 
@@ -254,20 +255,28 @@ const Statistics = () => {
             <SecondTitle>{t('report.mine')}</SecondTitle>
             <CardGroup size={24}>
               <CardItem style={{ backgroundColor: 'rgba(102, 136, 255, 0.1)' }}>
-                <span>累计汇报</span>
-                <div>{100}</div>
+                <Space size={8} direction="vertical">
+                  <span>累计汇报</span>
+                  <div>{100}</div>
+                </Space>
               </CardItem>
               <CardItem style={{ backgroundColor: 'rgba(67, 186, 154, 0.10)' }}>
-                <span>按时汇报</span>
-                <div>{100}</div>
+                <Space size={8} direction="vertical">
+                  <span>按时汇报</span>
+                  <div>{100}</div>
+                </Space>
               </CardItem>
               <CardItem style={{ backgroundColor: 'rgba(250, 151, 70, 0.1)' }}>
-                <span>补交</span>
-                <div>{0}</div>
+                <Space size={8} direction="vertical">
+                  <span>补交</span>
+                  <div>{100}</div>
+                </Space>
               </CardItem>
               <CardItem style={{ backgroundColor: 'rgba(255, 92, 94, 0.1)' }}>
-                <span>未提交</span>
-                <div>{0}</div>
+                <Space size={8} direction="vertical">
+                  <span>未提交</span>
+                  <div>{0}</div>
+                </Space>
               </CardItem>
             </CardGroup>
 

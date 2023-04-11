@@ -312,7 +312,7 @@ const FormMain = (props: FormType) => {
       </Form.Item>
       <Form.Item
         style={{
-          margin: '32px 0',
+          margin: '32px 0 16px 0',
         }}
         label="截止时间"
         name="4"

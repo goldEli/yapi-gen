@@ -164,14 +164,17 @@ const SliderList = (props: any) => {
 const Sortable = () => {
   const option = [
     {
+      type: 3,
       title: '富文本编辑器',
       icon: 'text',
     },
     {
+      type: 2,
       title: '附件',
       icon: 'attachment',
     },
     {
+      type: 4,
       title: '关联需求',
       icon: 'horizontal',
     },
