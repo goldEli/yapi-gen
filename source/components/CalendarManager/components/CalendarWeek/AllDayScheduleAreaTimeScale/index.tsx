@@ -6,6 +6,7 @@ import useMaxWidth from '../hooks/useMaxWidth'
 import { useDispatch, useSelector } from '@store/index'
 import { setQuickCreateScheduleModel } from '@store/calendarPanle'
 import useAllDayMoreTitleShowInfo from '../hooks/useAllDayMoreTitleShowInfoList'
+import MoreScheduleButton from '../../MoreScheduleButton'
 
 interface WeekHeaderProps {}
 
@@ -51,13 +52,6 @@ const Title = styled.div<{ left: number }>`
   z-index: 100;
 `
 const MoreTitle = styled.span`
-  font-size: 12px;
-  font-weight: 400;
-  color: var(--neutral-n3);
-  display: flex;
-  height: 20px;
-  overflow: hidden;
-  cursor: pointer;
   position: absolute;
   bottom: 0;
   left: 8px;
@@ -98,7 +92,9 @@ const TimeScale: React.FC<WeekHeaderProps> = props => {
           onClick={e => {
             e.stopPropagation()
           }}
-        >{`还有${showInfo.hiddenNum}项目...`}</MoreTitle>
+        >
+          <MoreScheduleButton hiddenNum={showInfo.hiddenNum ?? 0} />
+        </MoreTitle>
       )
     )
   }
