@@ -7,9 +7,13 @@ type SliceState = {
   calendarPanelType: Model.Calendar.CalendarPanelType
   // 快速创建日程弹窗
   quickCreateScheduleModel: {
+    isAll: boolean
+    startTime: string
+    endTime: string
     visible: boolean
     x: number
     y: number
+    id: Model.Schedule.Info['schedule_id']
   }
   // 查看日程详情弹窗
   scheduleInfoDropdown: {
@@ -48,9 +52,13 @@ const defaultMonthMoveScheduleActiveInfo = {
 const initialState: SliceState = {
   calendarPanelType: 'month',
   quickCreateScheduleModel: {
+    isAll: false,
+    startTime: '',
+    endTime: '',
     visible: false,
     x: 0,
     y: 0,
+    id: 0,
   },
   scheduleInfoDropdown: {
     visible: false,
@@ -133,14 +141,14 @@ const slice = createSlice({
       state,
       action: PayloadAction<Partial<SliceState['quickCreateScheduleModel']>>,
     ) {
-      // state.scheduleInfoDropdown = {
-      //   ...state.scheduleInfoDropdown,
-      //   visible: false,
-      // }
-      // state.quickCreateScheduleModel = {
-      //   ...state.quickCreateScheduleModel,
-      //   ...action.payload,
-      // }
+      state.scheduleInfoDropdown = {
+        ...state.scheduleInfoDropdown,
+        visible: false,
+      }
+      state.quickCreateScheduleModel = {
+        ...state.quickCreateScheduleModel,
+        ...action.payload,
+      }
     },
     setScheduleInfoDropdown(
       state,

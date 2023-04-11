@@ -133,11 +133,11 @@ const urls = {
   /**
    * 日历管理
    */
-  saveSchedule: '/b/save_schedule',
+  saveSchedule: '/b/schedule',
   getScheduleList: '/b/schedule_list',
   getSubscribeList: '/b/subscribe_list',
   getCalendarIconList: '/b/calendar_icon_list',
-  getCalendarDaysOfYeaList:'/b/schedule/daysOfYear',
+  getCalendarDaysOfYeaList: '/b/schedule/daysOfYear',
   // 完整地址
   getCalendarConfig: '/b/calendar/getConfig',
   updateCalendarConfig: '/b/calendar/setConfig',

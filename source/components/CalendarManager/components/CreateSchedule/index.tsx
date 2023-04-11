@@ -39,11 +39,15 @@ import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { RangePickerProps } from 'antd/lib/date-picker'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox'
-import { Moment } from 'moment'
+import moment, { Moment } from 'moment'
 import RepeatModal from './RepeatModal'
 import UploadAttach from '@/components/UploadAttach'
 import CreateVisualization from './CreateVisualization'
-import dayjs from 'dayjs'
+
+interface DefaultTime {
+  value: number | undefined
+  id: number
+}
 
 interface CreateFormItemProps {
   type: string
@@ -63,12 +67,23 @@ const CreateSchedule = () => {
   const dispatch = useDispatch()
   const leftDom: any = useRef<HTMLDivElement>(null)
   const inputDom: any = useRef<HTMLInputElement>(null)
-  const { isShowScheduleVisible, showScheduleParams, relateConfig } =
-    useSelector(store => store.calendar)
+  const {
+    isShowScheduleVisible,
+    showScheduleParams,
+    relateConfig,
+    calendarData,
+    calendarConfig,
+  } = useSelector(store => store.calendar)
   const [form] = Form.useForm()
+  const [calendarCategory, setCalendarCategory] = useState<
+    Model.Calendar.Info[]
+  >([])
   const [isVisible, setIsVisible] = useState(false)
   // 创建日历默认主题色
-  const [normalColor, setNormalColor] = useState(0)
+  const [normalCategory, setNormalCategory] = useState({
+    color: 0,
+    calendar_id: 0,
+  })
   // 选择成员显示
   const [isChooseVisible, setIsChooseVisible] = useState(false)
   // 忙碌或者空闲
@@ -96,12 +111,10 @@ const CreateSchedule = () => {
     permission: CheckboxValueType[]
   }>({
     list: [],
-    permission: [],
+    permission: [0],
   })
   // 提醒
-  const [noticeList, setNoticeList] = useState<{ id: number; value: number }[]>(
-    [],
-  )
+  const [noticeList, setNoticeList] = useState<DefaultTime[]>([])
   //   附件
   const [attachList, setAttachList] = useState<any>([])
 
@@ -120,7 +133,22 @@ const CreateSchedule = () => {
   // 保存
   const onConfirm = async () => {
     await form.validateFields()
-    console.log(form.getFieldsValue())
+    let values = form.getFieldsValue()
+    values.is_busy = status
+    values.repeat_type = repeatValue.value
+    values.members = participant.list.map((i: Model.Calendar.MemberItem) => ({
+      user_id: i.id,
+    }))
+    values.reminds = noticeList.map((i: DefaultTime) => i.value)
+    if (participant.list.length > 0) {
+      values.permission_update = participant.permission.includes(0) ? 1 : 2
+      values.permission_invite = participant.permission.includes(1) ? 1 : 2
+    }
+    const resultParams = { ...values, ...normalCategory, ...repeatValue.params }
+    resultParams.start_datetime = moment(values.time[0]).format('YYYY-MM-DD')
+    resultParams.end_datetime = moment(values.time[1]).format('YYYY-MM-DD')
+    delete resultParams.time
+    console.log(resultParams)
   }
 
   // 选中的共享成员
@@ -146,14 +174,6 @@ const CreateSchedule = () => {
     setParticipant({ ...participant, ...{ list: resultList } })
   }
 
-  // 修改日程时间
-  const onChangeTime = (
-    value: DatePickerProps['value'] | RangePickerProps['value'],
-    _dateString: [string, string] | string,
-  ) => {
-    setTime(value)
-  }
-
   // 是否是全天
   const onChangeIsAll = (e: CheckboxChangeEvent) => {
     setIsAll(e.target.checked)
@@ -165,32 +185,45 @@ const CreateSchedule = () => {
 
   //   修改重复
   const onChangeRepeat = (value: number) => {
-    setIsRepeatVisible(true)
-    setCurrentRepeat(value)
+    if (value === 0) {
+      setRepeatValue({ value, params: {} })
+    } else {
+      setIsRepeatVisible(true)
+      setCurrentRepeat(value)
+    }
   }
 
   // 重复小弹窗确认事件
   const onRepeatConfirm = (params: any) => {
-    //
+    setRepeatValue({ value: currentRepeat, params })
   }
 
   // 添加提醒
   const onAddNotice = () => {
-    const list = [...[{ id: new Date().getTime(), value: 2 }], ...noticeList]
+    console.log(calendarConfig, relateConfig)
+    const list = [
+      ...[
+        {
+          id: new Date().getTime(),
+          value: isAll
+            ? calendarConfig.notification_configs?.all_day_remind
+            : calendarConfig.notification_configs?.not_all_day_remind,
+        },
+      ],
+      ...noticeList,
+    ]
     setNoticeList(list)
   }
 
   // 删除添加的提醒
   const onDeleteNotice = (id: number) => {
-    const result = noticeList.filter(
-      (i: { id: number; value: number }) => i.id !== id,
-    )
+    const result = noticeList.filter((i: DefaultTime) => i.id !== id)
     setNoticeList(result)
   }
 
   // 修改提醒
   const onChangeNotice = (value: number, id: number) => {
-    const result = noticeList.map((i: { id: number; value: number }) => ({
+    const result = noticeList.map((i: DefaultTime) => ({
       ...i,
       value: i.id === id ? value : i.value,
     }))
@@ -199,12 +232,25 @@ const CreateSchedule = () => {
 
   //   修改附件
   const onChangeAttachment = (result: any) => {
-    console.log(result)
-    setAttachList(result)
+    form.setFieldsValue({
+      files: result?.map((i: any) => i.url),
+    })
   }
 
   useEffect(() => {
     if (isShowScheduleVisible) {
+      // 获取日历列表，并且过滤出可创建日程的日历
+      const result = [
+        ...calendarData.manager,
+        ...calendarData.subscribe,
+      ].filter((i: Model.Calendar.Info) => [1, 2].includes(i.user_group_id))
+      setCalendarCategory(result)
+      // 默认日历列表第一条
+      setNormalCategory(result[0])
+      // 公开范围默认 为默认
+      form.setFieldsValue({
+        permission: 1,
+      })
       setTimeout(() => {
         inputDom.current.focus()
       }, 100)
@@ -256,7 +302,7 @@ const CreateSchedule = () => {
           >
             <Form.Item
               label={<CreateFormItem label="主题" type="database" />}
-              name="name"
+              name="subject"
               rules={[{ required: true, message: '' }]}
             >
               <Input
@@ -272,12 +318,12 @@ const CreateSchedule = () => {
                 label={<CreateFormItem label="时间" type="time" />}
                 name="time"
                 rules={[{ required: true, message: '' }]}
-                style={{ margin: 0, width: '80%' }}
+                style={{ margin: 0, width: '84%' }}
               >
-                <DatePicker
+                <DatePicker.RangePicker
                   style={{ width: '100%' }}
                   showTime
-                  onChange={onChangeTime}
+                  onChange={setTime}
                   allowClear={false}
                 />
               </Form.Item>
@@ -347,7 +393,22 @@ const CreateSchedule = () => {
             >
               <ItemFlex>
                 <div className="box">
-                  <Select style={{ width: '90%' }} getPopupContainer={n => n} />
+                  <Select
+                    value={normalCategory.calendar_id}
+                    onChange={value =>
+                      setNormalCategory(
+                        calendarCategory.filter(
+                          (i: Model.Calendar.Info) => i.calendar_id === value,
+                        )[0],
+                      )
+                    }
+                    style={{ width: '90%' }}
+                    getPopupContainer={n => n}
+                    options={calendarCategory.map((i: Model.Calendar.Info) => ({
+                      label: i.is_default === 1 ? i.user.name : i.name,
+                      value: i.calendar_id,
+                    }))}
+                  />
                   <Popover
                     trigger={['hover']}
                     placement="bottomRight"
@@ -357,15 +418,21 @@ const CreateSchedule = () => {
                     content={
                       <ColorWrap>
                         <CalendarColor
-                          color={normalColor}
-                          onChangeColor={setNormalColor}
+                          color={normalCategory.color}
+                          onChangeColor={color => {
+                            setNormalCategory({
+                              calendar_id: normalCategory.calendar_id,
+                              color,
+                            })
+                            setIsVisible(false)
+                          }}
                         />
                       </ColorWrap>
                     }
                   >
                     <div
                       className="color"
-                      style={{ background: colorMap[normalColor] }}
+                      style={{ background: colorMap[normalCategory.color] }}
                     />
                   </Popover>
                 </div>
@@ -373,7 +440,7 @@ const CreateSchedule = () => {
             </Form.Item>
             <Form.Item
               label={<CreateFormItem label="公开范围" type="lock" />}
-              name="public"
+              name="permission"
               style={{ margin: 0 }}
             >
               <Select
@@ -397,7 +464,7 @@ const CreateSchedule = () => {
             </Form.Item>
             <Form.Item
               label={<CreateFormItem label="提醒" type="alarm" />}
-              name="notice"
+              name="reminds"
             >
               <CommonButton
                 type="primaryText"
@@ -407,12 +474,16 @@ const CreateSchedule = () => {
               >
                 添加提醒
               </CommonButton>
-              {noticeList.map((i: { id: number; value: number }) => (
+              {noticeList.map((i: DefaultTime) => (
                 <NoticeBox key={i.id}>
                   <Select
                     className="select"
                     value={i.value}
-                    options={relateConfig.schedule.remind_types}
+                    options={
+                      isAll
+                        ? relateConfig.schedule.all_day_remind
+                        : relateConfig.schedule.un_all_day_remind
+                    }
                     onChange={value => onChangeNotice(value, i.id)}
                     getPopupContainer={n => n}
                   />
@@ -426,9 +497,10 @@ const CreateSchedule = () => {
             </Form.Item>
             <Form.Item
               label={<CreateFormItem label="附件" type="attachment" />}
-              name="attachment"
+              name="files"
             >
               <UploadAttach
+                power
                 defaultList={attachList}
                 onChangeAttachment={onChangeAttachment}
                 addWrap={

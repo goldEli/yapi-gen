@@ -293,3 +293,15 @@ export const AllDayScheduleItem = styled.div`
   align-items: center;
   height: 20px;
 `
+
+export const EasyScheduleHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 16px;
+  color: var(--neutral-n1-d1);
+  font-family: siyuanmedium;
+  height: 56px;
+  padding: 0 13px 0 24px;
+  font-family: SiYuanMedium;
+`
