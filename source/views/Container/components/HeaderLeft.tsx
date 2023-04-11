@@ -341,8 +341,15 @@ const HeaderLeft = () => {
             color="var(--neutral-n3)"
           />
           <MenuLabel>{currentMenu?.name}</MenuLabel>
+          {routerPath.pathname.includes('SiteNotifications') && (
+            <Space size={8}>
+              <CommonIconFont type="bell" size={24} color="var(--neutral-n3)" />
+              <MenuLabel>通知中心</MenuLabel>
+            </Space>
+          )}
         </Space>
       </Space>
+
       {showTopNav && (
         <ChildrenMenu>
           {currentMenu.children.map((i: any) => (
