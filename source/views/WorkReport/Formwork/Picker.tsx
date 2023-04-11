@@ -261,9 +261,7 @@ const Picker = (props: PropsType) => {
               <Item
                 key={el.label}
                 onClick={() => {
-                  setLeftActive(index),
-                    console.log(el.key),
-                    setLeftActiveVal(el.key)
+                  setLeftActive(index), setLeftActiveVal(el.key)
                 }}
                 style={{
                   color:

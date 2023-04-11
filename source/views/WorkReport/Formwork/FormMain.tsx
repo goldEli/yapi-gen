@@ -8,7 +8,6 @@
 import { Checkbox, Switch, Form, Dropdown, DatePicker, message } from 'antd'
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
 import Picker from './Picker'
 const Text = styled.div`
