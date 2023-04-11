@@ -23,7 +23,7 @@ import SearchList from './Filter'
 import EditExamine from './EditExamine'
 import { useDynamicColumns } from './TableColum'
 import { useSelector } from '@store/index'
-import { getVerifyList, getVerifyUserList } from '@/services/mine'
+import { getVerifyList, getVerifyUserList, cancelVerify } from '@/services/mine'
 import InputSearch from '@/components/InputSearch'
 import PaginationBox from '@/components/TablePagination'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
@@ -80,6 +80,7 @@ const Need = (props: any) => {
   const [searchParams, setSearchParams] = useState<any>({})
   const [isSpin, setIsSpin] = useState<boolean>(false)
   const [delIsVisible, setDelIsVisible] = useState<boolean>(false)
+  const [currentItem, setCurrentItem] = useState<any>({})
 
   const getList = async (
     item?: any,
@@ -169,10 +170,11 @@ const Need = (props: any) => {
     getList(pageObj, order, keyword, searchParams)
   }
 
-  // TODO: API
-  const handleCancel = () => {
-    console.log('取消审核')
-    // onUpdate()
+  const handleCancel = async () => {
+    await cancelVerify(currentItem.id)
+    setDelIsVisible(false)
+    setCurrentItem({})
+    onUpdate()
   }
 
   const selectColum: any = useMemo(() => {
@@ -189,7 +191,10 @@ const Need = (props: any) => {
                   <Button
                     type="link"
                     style={{ padding: 0 }}
-                    onClick={() => setDelIsVisible(true)}
+                    onClick={() => {
+                      setDelIsVisible(true)
+                      setCurrentItem(record)
+                    }}
                   >
                     取消审核
                   </Button>
@@ -318,7 +323,10 @@ const Need = (props: any) => {
         text="确认取消当前需求审核，取消后提交需求将在我提交的列表中移除"
         isVisible={delIsVisible}
         onConfirm={handleCancel}
-        onChangeVisible={() => setDelIsVisible(false)}
+        onChangeVisible={() => {
+          setDelIsVisible(false)
+          setCurrentItem({})
+        }}
       />
     </div>
   )
