@@ -70,12 +70,12 @@ const initialState: SliceState = {
     id: 0,
   },
   calenderDayValue: dayjs().format('YYYY-M-D'),
-  calenderWeekValue: dayjs().format('YYYY-M'),
+  calenderWeekValue: dayjs().format('YYYY-M-D'),
   calenderMonthValue: dayjs().format('YYYY-M'),
   calenderYearValue: dayjs().format('YYYY'),
   calenderListValue: dayjs().format('YYYY-M-D'),
   calenderYearType: 0,
-  calenderYearWeekValue: dayjs()+'/'+dayjs().week(),
+  calenderYearWeekValue: dayjs().year()+'/'+dayjs().week(),
   monthMoveScheduleActiveInfo: defaultMonthMoveScheduleActiveInfo,
 }
 
@@ -173,7 +173,6 @@ const slice = createSlice({
       state,
       action: PayloadAction<SliceState['calenderWeekValue']>,
     ) {
-      console.log('payload-----', action.payload)
       state.calenderWeekValue = action.payload
     },
     setCalenderMonthValue(
