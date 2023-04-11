@@ -5,17 +5,33 @@ type SliceState = {
   // 编辑的状态
   editSave: boolean
   activeItem: any
-  // 权限配置的状态
-  disposeSave: boolean
   dataList: any
+  option: any
 }
 
 const formWork = createSlice({
   name: 'formWork',
   initialState: {
-    editSave: true,
+    editSave: false,
     activeItem: null,
-    disposeSave: true,
+    option: [
+      {
+        type: 1,
+        icon: 'user-more',
+      },
+      {
+        type: 2,
+        icon: 'attachment',
+      },
+      {
+        type: 3,
+        icon: 'text',
+      },
+      {
+        type: 4,
+        icon: 'horizontal',
+      },
+    ],
     dataList: [
       {
         name: 123,
@@ -32,9 +48,6 @@ const formWork = createSlice({
     setActiveItem: (state: any, action) => {
       state.activeItem = action.payload
     },
-    setDisposeSave: (state: any, action) => {
-      state.disposeSave = action.payload
-    },
   },
   extraReducers(builder) {
     builder.addCase(getTemplateList.fulfilled, (state, action) => {
@@ -44,6 +57,6 @@ const formWork = createSlice({
   },
 })
 
-export const { setEditSave, setActiveItem, setDisposeSave } = formWork.actions
+export const { setEditSave, setActiveItem } = formWork.actions
 
 export default formWork.reducer

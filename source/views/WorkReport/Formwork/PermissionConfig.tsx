@@ -7,9 +7,7 @@ import Addperson from './Addperson'
 import Title from './Title'
 import FormMain from './FormMain'
 import { Form, Radio } from 'antd'
-import CommonButton from '@/components/CommonButton'
 import { useDispatch, useSelector } from '@store/index'
-import { setDisposeSave } from '@store/formWork'
 import DeleteConfirm from '@/components/DeleteConfirm'
 const PermissionConfigStyle = styled.div`
   padding: 0 24px;
@@ -29,12 +27,6 @@ const DayFormBox = styled(Form)({
     width: '320px',
   },
 })
-const BtnRow = styled.div`
-  width: 100%;
-  height: 80px;
-  display: flex;
-  justify-content: flex-end;
-`
 const person = [
   {
     label: 'zcm88888888888888888888888',
@@ -80,20 +72,7 @@ const PermissionConfig = (props: PropsType) => {
   // 每天 day ,每周 week , 每月 month , 不重复doNot
   const [type, setType] = useState<string>('day')
   const [form] = Form.useForm()
-  const { disposeSave } = useSelector(store => store.formWork)
-  const [save, setSave] = useState(disposeSave)
   const [delIsVisible, setDelIsVisible] = useState(false)
-  const back = () => {
-    if (disposeSave) {
-      props.back()
-    } else {
-      setDelIsVisible(true)
-    }
-  }
-  useEffect(() => {
-    console.log(disposeSave, 'DisposeSave')
-    setSave(disposeSave)
-  }, [disposeSave])
   return (
     <PermissionConfigStyle>
       {/* 汇报内容 */}
@@ -135,27 +114,7 @@ const PermissionConfig = (props: PropsType) => {
           </DayFormBox>
         </div>
       ) : null}
-      {/* 底部保存 */}
-      <BtnRow>
-        <CommonButton type="light" onClick={() => back()}>
-          上一步
-        </CommonButton>
-        {save ? (
-          <CommonButton type="primary" style={{ margin: '0 0px 0 16px' }}>
-            已保存
-          </CommonButton>
-        ) : (
-          <CommonButton
-            type="primary"
-            onClick={() => {
-              dispatch(setDisposeSave(true))
-            }}
-            style={{ margin: '0 0px 0 16px' }}
-          >
-            保存
-          </CommonButton>
-        )}
-      </BtnRow>
+
       {/* 未保存的弹窗 */}
       <DeleteConfirm
         title={'保存提示'}

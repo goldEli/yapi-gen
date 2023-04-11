@@ -33,6 +33,7 @@ import {
   getProjectMember,
   getProjectPermission,
   updateMember,
+  batchUpdateMember,
 } from '@/services/project'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsUpdateMember, setProjectInfo } from '@store/project'
@@ -590,22 +591,20 @@ const ProjectMember = (props: { searchValue?: string }) => {
       //
     }
   }
-  // TODO: API
   const onConfirmBatchEdit = async (roleId: any) => {
-    const params: any = {
-      projectId,
-      userGroupId: roleId,
-      userIds: selectedRowKeys,
+    try {
+      await batchUpdateMember({
+        projectId,
+        userGroupId: roleId,
+        userIds: selectedRowKeys.map(i => Number(i)),
+      })
+      message.success('操作成功')
+      setSelectedRowKeys([])
+      getList(order, pageObj)
+      setBatchEditVisible(false)
+    } catch (error) {
+      //
     }
-    console.log('onConfirmBatchEdit', params)
-    // try {
-    //   await updateMember(params)
-    //   message.success(t('common.editSuccess'))
-    //   getList(order, pageObj)
-    //   setBatchEditVisible(false)
-    // } catch (error) {
-    //   //
-    // }
   }
 
   // 更新项目信息
@@ -671,7 +670,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
             setBatchEditVisible(false)
           }}
           onConfirm={onConfirmBatchEdit}
-          projectPermission={projectPermission}
+          roleOptions={projectPermission}
         />
         <ProjectOverModal
           id={operationItem}

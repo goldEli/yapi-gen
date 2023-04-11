@@ -7,7 +7,7 @@ const BatchSetPermGroup = (props: {
   isVisible: boolean
   onClose(): void
   onConfirm(roleId: string): void
-  projectPermission?: number[]
+  roleOptions?: number[]
 }) => {
   const [form] = Form.useForm()
 
@@ -47,7 +47,7 @@ const BatchSetPermGroup = (props: {
             getPopupContainer={(node: any) => node}
             showSearch
             optionFilterProp="label"
-            options={props?.projectPermission}
+            options={props?.roleOptions}
           />
         </Form.Item>
       </Form>

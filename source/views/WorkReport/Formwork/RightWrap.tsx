@@ -111,11 +111,18 @@ const EditFormWorkStyle = styled(Input)({
     color: 'var(--neutral-n4)',
   },
 })
-
+const BtnRow = styled.div`
+  width: 100%;
+  height: 80px;
+  display: flex;
+  justify-content: flex-end;
+`
 const RightFormWork = () => {
   const [isActive, setIsActive] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   const [value, setValue] = useState('')
+  const { editSave } = useSelector(store => store.formWork)
+  const [save, setSave] = useState(editSave)
   const dispatch = useDispatch()
   const [delIsVisible, setDelIsVisible] = useState(false)
   const { activeItem } = useSelector(store => store.formWork)
@@ -128,6 +135,15 @@ const RightFormWork = () => {
     await deleteTemplate({ id: activeItem.id })
     message.success('删除成功')
     await dispatch(getTemplateList())
+  }
+  useEffect(() => {
+    setSave(editSave)
+  }, [editSave])
+  const saveApi = async () => {
+    dispatch(setEditSave(true))
+    // await upDateTemplate({ name: props.value })
+    message.success('编辑成功')
+    // await dispatch(getTemplateList())
   }
   return (
     <RightFormWorkStyle>
@@ -177,6 +193,31 @@ const RightFormWork = () => {
       ) : (
         <PermissionConfig back={() => setIsActive(0)} />
       )}
+      {/* 底部保存 */}
+      <BtnRow>
+        {isActive === 0 ? (
+          <CommonButton type="light" onClick={() => setIsActive(1)}>
+            下一步
+          </CommonButton>
+        ) : (
+          <CommonButton type="light" onClick={() => setIsActive(1)}>
+            上一步
+          </CommonButton>
+        )}
+        {save ? (
+          <CommonButton type="primary" style={{ margin: '0 0px 0 16px' }}>
+            已保存
+          </CommonButton>
+        ) : (
+          <CommonButton
+            type="primary"
+            onClick={() => saveApi()}
+            style={{ margin: '0 0px 0 16px' }}
+          >
+            保存
+          </CommonButton>
+        )}
+      </BtnRow>
       {/* 预览 */}
       <PreviewDialog
         dataList={[]}
