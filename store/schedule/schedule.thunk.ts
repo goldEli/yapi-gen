@@ -22,11 +22,10 @@ export const getScheduleList = createAsyncThunk(
 
 export const saveSchedule =
   (params: API.Schedule.SaveSchedule.Params) =>
-    async (dispatch: AppDispatch) => {
-      const r = await services.schedule.saveScheduleList(params)
-      dispatch(getScheduleList({ id: 1 }))
-    }
-
+  async (dispatch: AppDispatch) => {
+    await services.schedule.saveScheduleList(params)
+    dispatch(getScheduleList({ id: 1 }))
+  }
 
 export const getCalendarDaysOfYearList = createAsyncThunk(
   `${name}/getCalendarDaysOfYearList`,
@@ -35,7 +34,7 @@ export const getCalendarDaysOfYearList = createAsyncThunk(
       const res = await services.schedule.getCalendarDaysOfYearList(params)
       return res.data
     } catch (error) {
-
+      //
     }
   },
 )

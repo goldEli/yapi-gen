@@ -6,8 +6,6 @@ import { formatYYYYMMDD, oneHourHeight } from '../../../config'
 import { useDispatch, useSelector } from '@store/index'
 import classNames from 'classnames'
 import { Dropdown, Popover } from 'antd'
-import QuickCreateScheduleModel from '../../QuickCreateScheduleModel'
-import { setQuickCreateScheduleModel } from '@store/calendarPanle'
 import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
 import ScheduleCardList from '../ScheduleCardList'
 import NewCalendarArea from '../NewCalendarArea'
@@ -67,11 +65,11 @@ const Timescale: React.FC<TimescaleProps> = props => {
       // 点击空白重置
       if (timeZone.length) {
         setTimeZone([])
-        dispatch(
-          setQuickCreateScheduleModel({
-            visible: false,
-          }),
-        )
+        // dispatch(
+        //   setQuickCreateScheduleModel({
+        //     visible: false,
+        //   }),
+        // )
         return
       }
 
@@ -91,13 +89,13 @@ const Timescale: React.FC<TimescaleProps> = props => {
           '#calenderBoxRightArea',
         ) as Element
         dom.removeEventListener('mousemove', onMousemove)
-        dispatch(
-          setQuickCreateScheduleModel({
-            visible: true,
-            x: target.offsetLeft + 58,
-            y: target.offsetTop,
-          }),
-        )
+        // dispatch(
+        //   setQuickCreateScheduleModel({
+        //     visible: true,
+        //     x: target.offsetLeft + 58,
+        //     y: target.offsetTop,
+        //   }),
+        // )
         dom.removeEventListener('mouseup', onMouseUp)
       }
       dom.removeEventListener('mousemove', onMousemove)
@@ -167,7 +165,7 @@ const Timescale: React.FC<TimescaleProps> = props => {
       {content}
       <NewCalendarArea timeZone={timeZone} distance={distance} />
       <ScheduleCardList />
-      <QuickCreateScheduleModel />
+      {/* <QuickCreateScheduleModel /> */}
       <ScheduleInfoDropdown containerClassName=".time-scale" />
     </Table>
     // </Popover>

@@ -940,6 +940,29 @@ const slice = createSlice({
     setSelectedDay(state, action: PayloadAction<SliceState['selectedDay']>) {
       state.selectedDay = action.payload
     },
+    setCreateEasyScheduleModal(
+      state,
+      action: PayloadAction<
+        SliceState['showScheduleEasyParams'] & {
+          visible: SliceState['isShowScheduleEasyVisible']
+        }
+      >,
+    ) {
+      if (state.isShowCalendarVisible === action.payload.visible) {
+        return
+      }
+      state.isShowCalendarVisible = action.payload.visible
+      const { id, time, isAll, position } = action.payload
+      state.showScheduleEasyParams = {
+        id,
+        // 日程时间
+        time,
+        // 是否全天
+        isAll,
+        // 小弹窗位置
+        position,
+      }
+    },
     setIsShowScheduleVisible(
       state,
       action: PayloadAction<SliceState['isShowScheduleVisible']>,
@@ -1024,6 +1047,7 @@ export const {
   setIsShowCalendarVisible,
   setShowCalendarParams,
   setIsShowSubscribeVisible,
+  setCreateEasyScheduleModal,
 } = slice.actions
 
 export default calendar

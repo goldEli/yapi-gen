@@ -7,9 +7,13 @@ type SliceState = {
   calendarPanelType: Model.Calendar.CalendarPanelType
   // 快速创建日程弹窗
   quickCreateScheduleModel: {
+    isAll: boolean
+    startTime: string
+    endTime: string
     visible: boolean
     x: number
     y: number
+    id: Model.Schedule.Info['schedule_id']
   }
   // 查看日程详情弹窗
   scheduleInfoDropdown: {
@@ -18,11 +22,11 @@ type SliceState = {
     y: number
     id: Model.Schedule.Info['schedule_id']
   }
-  //日视图
+  //日视图  2023-01-11
   calenderDayValue: string
-  //周视图
+  //周视图 2023/12
   calenderWeekValue: string
-  //拼接周视图
+  //获取一年的哪一周 2023/12
   calenderYearWeekValue:string
   //月视图
   calenderMonthValue: string
@@ -48,11 +52,15 @@ const defaultMonthMoveScheduleActiveInfo = {
 }
 
 const initialState: SliceState = {
-  calendarPanelType: 'week',
+  calendarPanelType: 'month',
   quickCreateScheduleModel: {
+    isAll: false,
+    startTime: '',
+    endTime: '',
     visible: false,
     x: 0,
     y: 0,
+    id: 0,
   },
   scheduleInfoDropdown: {
     visible: false,
@@ -136,23 +144,19 @@ const slice = createSlice({
       state,
       action: PayloadAction<Partial<SliceState['quickCreateScheduleModel']>>,
     ) {
-      // state.scheduleInfoDropdown = {
-      //   ...state.scheduleInfoDropdown,
-      //   visible: false,
-      // }
-      // state.quickCreateScheduleModel = {
-      //   ...state.quickCreateScheduleModel,
-      //   ...action.payload,
-      // }
+      state.scheduleInfoDropdown = {
+        ...state.scheduleInfoDropdown,
+        visible: false,
+      }
+      state.quickCreateScheduleModel = {
+        ...state.quickCreateScheduleModel,
+        ...action.payload,
+      }
     },
     setScheduleInfoDropdown(
       state,
       action: PayloadAction<Partial<SliceState['scheduleInfoDropdown']>>,
     ) {
-      state.quickCreateScheduleModel = {
-        ...state.quickCreateScheduleModel,
-        visible: false,
-      }
       state.scheduleInfoDropdown = {
         ...state.scheduleInfoDropdown,
         ...action.payload,
@@ -211,7 +215,6 @@ const calendarPanel = slice.reducer
 
 export const {
   setCalendarPanelType,
-  setQuickCreateScheduleModel,
   setScheduleInfoDropdown,
   setCalenderDayValue,
   setCalenderWeekValue,
@@ -224,6 +227,7 @@ export const {
   setCalenderYearWeekValue,
   clearMonthMoveScheduleActiveInfo,
   resizeMonthSchedule,
+  setQuickCreateScheduleModel,
 } = slice.actions
 
 export default calendarPanel

@@ -1,10 +1,12 @@
 import styled from '@emotion/styled'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
 import { useDispatch, useSelector } from '@store/index'
-import React from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { getColorWithOpacityPointOne } from '@/components/CalendarManager/utils'
 import useScheduleAllDayList from '../hooks/useScheduleAllDayList'
 import { AllDayScheduleItem } from '@/components/CalendarManager/styles'
+import dayjs from 'dayjs'
+import { getDaysOfWeekList } from '@/services/calendar'
 
 interface ScheduleAllDayProps {}
 const ScheduleAllDayBox = styled.div`
@@ -72,13 +74,37 @@ const ScheduleListScroll = styled.div`
 const ScheduleAllDay: React.FC<ScheduleAllDayProps> = props => {
   const { list } = useScheduleAllDayList()
   const dispatch = useDispatch()
+  const { calenderDayValue } = useSelector(store => store.calendarPanel)
+  const [weekDay, setWeekDay] = useState<Model.Calendar.DaysOfWeek>()
+
+  const time = useMemo(() => {
+    return dayjs(calenderDayValue)
+  }, [calenderDayValue])
+
+  useEffect(() => {
+    if (!calenderDayValue) {
+      return
+    }
+    const t = dayjs(calenderDayValue)
+    const year = t.year()
+    const week = t.week()
+    const weekNum = t.day()
+    async function getData() {
+      const res = await getDaysOfWeekList({ year, week })
+      const d = res.data.find(item => item.week_no === weekNum)
+      setWeekDay(d)
+    }
+    getData()
+    //
+  }, [calenderDayValue])
+
   return (
     <ScheduleAllDayBox>
       <TimeZone>GTM+08</TimeZone>
-      <Day>16</Day>
-      <Month>3月</Month>
-      <Week>周四</Week>
-      <Lunar>二十一</Lunar>
+      <Day>{time.format('DD')}</Day>
+      <Month>{time.format('MMM')}</Month>
+      <Week>{time.format('ddd')}</Week>
+      <Lunar>{weekDay?.lunar_day_chinese}</Lunar>
       <ScheduleList>
         <ScheduleListScroll>
           {list?.map(item => {

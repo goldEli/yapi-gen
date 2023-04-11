@@ -133,7 +133,7 @@ const urls = {
   /**
    * 日历管理
    */
-  saveSchedule: '/b/save_schedule',
+  saveSchedule: '/b/schedule',
   getScheduleList: '/b/schedule_list',
   getSubscribeList: '/b/subscribe_list',
   getCalendarIconList: '/b/calendar_icon_list',
@@ -145,6 +145,7 @@ const urls = {
   getRelateConfig: '/b/calendar/enum',
   addCalendar: '/b/calendar',
   getUserCalendars: '/b/calendar/getUserCalendars',
+  getDaysOfWeekList: '/b/calendar/daysOfWeek',
 }
 
 export default urls

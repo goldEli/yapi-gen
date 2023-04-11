@@ -10,6 +10,13 @@ import { setIsShowScheduleVisible, setRouterMenu } from '@store/calendar'
 import { useDispatch } from '@store/index'
 import CalendarManagerList from '../../CalendarManagerList'
 import DXCalendar from '../../DXCalendar'
+import {
+  getCalendarConfig,
+  getCalendarList,
+} from '@store/calendar/calendar.thunk'
+import { useEffect } from 'react'
+import CalendarSubscribe from '../CalendarSubscribe'
+import CalendarFormModal from '../CalendarFormModal'
 
 const CalendarMainSide = () => {
   const dispatch = useDispatch()
@@ -25,8 +32,15 @@ const CalendarMainSide = () => {
     dispatch(setIsShowScheduleVisible(true))
   }
 
+  useEffect(() => {
+    dispatch(getCalendarList())
+    dispatch(getCalendarConfig())
+  }, [])
+
   return (
     <>
+      <CalendarSubscribe />
+      <CalendarFormModal />
       <CommonButton type="primary" style={{ width: '100%', marginBottom: 24 }}>
         <CreateScheduleBtn onClick={onCreate}>
           <IconFont type="plus" style={{ fontSize: 16 }} />

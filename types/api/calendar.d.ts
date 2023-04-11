@@ -1,4 +1,11 @@
 declare namespace API.Calendar {
+  namespace GetDaysOfWeekList {
+    type Params = {
+      week: number
+      year: number
+    }
+    type Result = Model.Calendar.DaysOfWeek[]
+  }
   namespace CalendarInfo {
     type Result = {
       id: number

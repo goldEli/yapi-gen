@@ -10,6 +10,7 @@ import {
   InputNumber,
   Select,
 } from 'antd'
+import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { RangePickerProps } from 'antd/lib/date-picker'
 import { useState } from 'react'
 
@@ -23,48 +24,74 @@ interface RepeatModalProps {
 
 const RepeatModal = (props: RepeatModalProps) => {
   const { relateConfig } = useSelector(store => store.calendar)
-  const [repeatForm] = Form.useForm()
-  //   每多少重复
+  //  每多少重复
   const [repeat, setRepeat] = useState<number>(1)
   // 结束重复类型
   const [endType, setEndType] = useState(0)
   // 结束日期
-  const [endDate, setEndDate] = useState<
-    DatePickerProps['value'] | RangePickerProps['value']
-  >()
+  const [endDate, setEndDate] = useState<[string, string] | string>()
   // 结束次数
   const [number, setNumber] = useState<number>(1)
+  // 选择周期
+  const [chooseRepeat, setChooseRepeat] = useState<CheckboxValueType[]>([])
+  // 当月共有多少天
+  const [currentDate, setCurrentDate] = useState([])
+  // 当年共有多少月
+  const [currentMonth, setCurrentMonth] = useState([])
   const unit = ['天', '周', '月', '年']
 
   const checkboxOptions = [
-    { label: '周一', value: 0 },
-    { label: '周二', value: 1 },
-    { label: '周三', value: 2 },
-    { label: '周四', value: 3 },
-    { label: '周五', value: 4 },
-    { label: '周六', value: 5 },
-    { label: '周日', value: 6 },
+    { label: '周一', value: 1 },
+    { label: '周二', value: 2 },
+    { label: '周三', value: 3 },
+    { label: '周四', value: 4 },
+    { label: '周五', value: 5 },
+    { label: '周六', value: 6 },
+    { label: '周日', value: 0 },
   ]
+
+  const onClose = () => {
+    setChooseRepeat([])
+    setNumber(1)
+    setEndDate('')
+    setRepeat(1)
+    setEndType(0)
+    props.onClose()
+  }
 
   // 修改日程时间
   const onChangeTime = (
-    value: DatePickerProps['value'] | RangePickerProps['value'],
-    _dateString: [string, string] | string,
+    _value: DatePickerProps['value'] | RangePickerProps['value'],
+    dateString: [string, string] | string,
   ) => {
-    setEndDate(value)
+    setEndDate(dateString)
   }
 
   // 重复小弹窗确认事件
-  const onRepeatConfirm = () => {}
+  const onRepeatConfirm = () => {
+    const params = {
+      repeat_interval: repeat,
+      repeat_end_type: endType,
+      repeat_end_date: endDate,
+      repeat_end_num: number,
+      repeat_choose: chooseRepeat,
+      repeat_start: '',
+      repeat_end: '',
+    }
+    props.onRepeatConfirm(params)
+    onClose()
+  }
+
+  console.log()
+
   return (
     <CommonModal
       isVisible={props.isVisible}
       title={props.title}
-      onClose={props.onClose}
+      onClose={onClose}
       onConfirm={onRepeatConfirm}
     >
       <Form
-        form={repeatForm}
         style={{ padding: '0 20px 0 24px' }}
         labelCol={{ span: 4 }}
         labelAlign="left"
@@ -83,7 +110,10 @@ const RepeatModal = (props: RepeatModalProps) => {
         </Form.Item>
         {props.currentRepeat === 2 && (
           <RepeatModalCheck>
-            <Checkbox.Group options={checkboxOptions} />
+            <Checkbox.Group
+              options={checkboxOptions}
+              onChange={setChooseRepeat}
+            />
           </RepeatModalCheck>
         )}
         {[3, 4].includes(props.currentRepeat) && (

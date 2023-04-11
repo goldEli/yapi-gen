@@ -1,10 +1,18 @@
 import { colorMap } from '@/components/CalendarManager/config'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import styled from '@emotion/styled'
-import { setCalendarData, setCheckedCalendarList } from '@store/calendar'
+import {
+  setCalendarData,
+  setCheckedCalendarList,
+  setIsShowCalendarVisible,
+  setShowCalendarParams,
+} from '@store/calendar'
 import { useDispatch, useSelector } from '@store/index'
 import { useState } from 'react'
 import CalendarColor from '../../CalendarColor'
+import { deleteCalendar, unsubscribeCalendar } from '@/services/calendar'
+import { message } from 'antd'
+import { getCalendarList } from '@store/calendar/calendar.thunk'
 
 const MoreWrap = styled.div`
   padding: 4px 0 10px;
@@ -42,7 +50,7 @@ const ColorWrap = styled.div`
 
 interface CalendarMoreDropdownProps {
   item: Model.Calendar.Info
-  type: string
+  type: 'manager' | 'subscribe'
   onCancel(): void
 }
 
@@ -65,20 +73,24 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
 
   // 仅显示此日历
   const showOnlyCalendar = () => {
-    // 还缺少一个修改保存选中数据的接口
-    // 保存接口后，更新列表
     const resultItem: Model.Calendar.Info = { ...props.item, is_check: 1 }
     dispatch(setCheckedCalendarList([resultItem]))
   }
 
   // 删除日历确认事件
-  const onDeleteConfirm = () => {
-    //
+  const onDeleteConfirm = async () => {
+    await deleteCalendar({ id: props.item.calendar_id })
+    dispatch(getCalendarList())
+    setIsDeleteVisible(false)
+    message.success('删除成功！')
   }
 
   // 退订日历确认事件
-  const onUnsubscribeConfirm = () => {
-    //
+  const onUnsubscribeConfirm = async () => {
+    await unsubscribeCalendar({ id: props.item.calendar_id })
+    dispatch(getCalendarList())
+    setIsUnsubscribeVisible(false)
+    message.success('退订日历成功！')
   }
 
   // 点击菜单事件
@@ -86,7 +98,8 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
     if (type === 'only') {
       showOnlyCalendar()
     } else if (type === 'edit') {
-      setIsUnsubscribeVisible(true)
+      dispatch(setIsShowCalendarVisible(true))
+      dispatch(setShowCalendarParams({ id: props.item.calendar_id }))
     } else if (type === 'delete') {
       setIsDeleteVisible(true)
     } else {
@@ -115,12 +128,12 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
   // 我管理的日历下拉菜单 -- 根据状态判断
   const getResultManageMenu = () => {
     let resultList: string[] = []
-    if (props.item.is_default) {
+    if (props.item.is_default === 1) {
       resultList = ['edit', 'only']
-    } else if (props.item.is_owner) {
+    } else if (props.item.is_owner === 1) {
       resultList = ['edit', 'only', 'delete']
     } else if (props.item.user_group_id === 1) {
-      resultList = ['edit', 'only', 'unsubscribe']
+      resultList = ['edit', 'only', 'unsubscribe', 'delete']
     }
     return manageMenu.filter((i: { name: string; type: string }) =>
       resultList.includes(i.type),
@@ -144,7 +157,7 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
         onChangeVisible={() => setIsUnsubscribeVisible(false)}
       />
       <MoreWrap>
-        {(props.type === 'sub' ? subMenu : getResultManageMenu()).map(
+        {(props.type === 'subscribe' ? subMenu : getResultManageMenu()).map(
           (i: { name: string; type: string }) => (
             <Item key={i.name} onClick={() => onClickMenu(i.type)}>
               {i.name}

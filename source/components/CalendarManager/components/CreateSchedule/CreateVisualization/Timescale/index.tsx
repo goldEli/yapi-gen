@@ -7,8 +7,6 @@ import { useDispatch, useSelector } from '@store/index'
 import classNames from 'classnames'
 // import NewCalendarArea from '../NewCalendarArea'
 import { Dropdown, Popover } from 'antd'
-// import QuickCreateScheduleModel from '../../QuickCreateScheduleModel'
-import { setQuickCreateScheduleModel } from '@store/calendarPanle'
 import ScheduleList from '../ScheduleList'
 import NewCalendarArea from '../NewCalendarArea'
 // import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
@@ -61,11 +59,11 @@ const Timescale: React.FC<TimescaleProps> = props => {
       // 点击空白重置
       if (timeZone.length) {
         setTimeZone([])
-        dispatch(
-          setQuickCreateScheduleModel({
-            visible: false,
-          }),
-        )
+        // dispatch(
+        //   setQuickCreateScheduleModel({
+        //     visible: false,
+        //   }),
+        // )
         return
       }
 
@@ -87,13 +85,13 @@ const Timescale: React.FC<TimescaleProps> = props => {
         dom.removeEventListener('mousemove', onMousemove)
         const target = event.target as HTMLDivElement
         // 打开创建日程弹窗
-        dispatch(
-          setQuickCreateScheduleModel({
-            visible: true,
-            x: event.offsetX + 58,
-            y: target.offsetTop,
-          }),
-        )
+        // dispatch(
+        //   setQuickCreateScheduleModel({
+        //     visible: true,
+        //     x: event.offsetX + 58,
+        //     y: target.offsetTop,
+        //   }),
+        // )
         dom.removeEventListener('mouseup', onMouseUp)
       }
       dom.removeEventListener('mousemove', onMousemove)

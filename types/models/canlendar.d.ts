@@ -55,7 +55,7 @@ declare namespace Model.Calendar {
   // 创建日历弹窗传入参数
   interface ShowCalendarParams {
     // 用于编辑日历详情查询
-    id?: string | number
+    id?: number
   }
 
   // 创建日程弹窗传入参数
@@ -92,16 +92,17 @@ declare namespace Model.Calendar {
     name: string
     avatar?: string
     // 1是选中
-    is_checked?: 0 | 1
+    is_checked?: 1 | 2
     type?: ChooseAddType
     permission?: number
+    is_owner?: 1 | 2
   }
   // 日历列表返回数据
   interface Info {
     calendar_id: number
     id: number
     color: number
-    is_owner: number
+    is_owner: 1 | 2
     // 1 是默认的日历，用于判断删除权限
     is_default: 0 | 1
     name: string
@@ -170,6 +171,32 @@ declare namespace Model.Calendar {
     date_object: string
     timestamp: number
     // 'PRC'
+    timezone_name: string
+  }
+  interface DaysOfWeek {
+    // 必须 农历月
+    lunar_month_chinese: string
+    // 必须 农历日
+    lunar_day_chinese: string
+    // 必须 节日
+    term: string
+    // 必须 周索引，0-6分别是周日到周六
+    week_no: 0 | 1 | 2 | 3 | 4 | 5 | 6
+    // 必须 周名称
+    week_name: string
+    // 必须 星座
+    constellation: string
+    // 必须 是否是当前月
+    is_current_month: boolean
+    // 必须 年
+    year: number
+    month: number
+    day: number
+    week_num: number
+    date: string
+    datetime: string
+    date_object: string
+    timestamp: number
     timezone_name: string
   }
 }

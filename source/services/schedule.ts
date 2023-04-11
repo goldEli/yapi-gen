@@ -319,11 +319,12 @@ export const getScheduleList = async (
   return response
 }
 
+// 创建日程
 export const saveScheduleList = async (
   params: API.Schedule.SaveSchedule.Params,
 ) => {
-  const response = await http.get<any, API.Schedule.SaveSchedule.Result>(
-    'SaveSchedule',
+  const response = await http.post<any, API.Schedule.SaveSchedule.Result>(
+    'saveSchedule',
     params,
   )
   return response
