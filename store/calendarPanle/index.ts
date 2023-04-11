@@ -26,7 +26,9 @@ type SliceState = {
   calenderDayValue: string
   //周视图 2023/12
   calenderWeekValue: string
-  //月视图 2023/2
+  //获取一年的哪一周 2023/12
+  calenderYearWeekValue:string
+  //月视图
   calenderMonthValue: string
   //年视图
   calenderYearValue: string
@@ -72,6 +74,7 @@ const initialState: SliceState = {
   calenderYearValue: dayjs().format('YYYY'),
   calenderListValue: dayjs().format('YYYY-M-D'),
   calenderYearType: 0,
+  calenderYearWeekValue:'',
   monthMoveScheduleActiveInfo: defaultMonthMoveScheduleActiveInfo,
 }
 
@@ -188,7 +191,12 @@ const slice = createSlice({
       state,
       action: PayloadAction<SliceState['calenderListValue']>,
     ) {
-      //console.log('payload--',action.payload)
+      state.calenderListValue = action.payload
+    },
+    setCalenderYearWeekValue(
+      state,
+      action: PayloadAction<SliceState['calenderYearWeekValue']>,
+    ) {
       state.calenderListValue = action.payload
     },
     setCalenderYearType(
@@ -216,6 +224,7 @@ export const {
   setCalenderListValue,
   startMoveMonthSchedule,
   setScheduleSearchKey,
+  setCalenderYearWeekValue,
   clearMonthMoveScheduleActiveInfo,
   resizeMonthSchedule,
   setQuickCreateScheduleModel,

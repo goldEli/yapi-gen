@@ -11,11 +11,11 @@ interface ScheduleListProps {
 }
 interface ScheduleListBoxProps {
   visible: boolean
-  top: number
-  left: number
+  top?: number
+  left?: number
   month: number
 }
-const ScheduListBox = styled.div`
+const ScheduleListBox = styled.div`
     width:260px;
     //height:200px;
     position: absolute;
@@ -86,17 +86,18 @@ const gregorianDateClass = css`
     font-size: 12px;
 `
 const ScheduleListModal: React.FC<ScheduleListProps> = props => {
-  const scheduList = useSelector(state => state.schedule.scheduleListModal);
+  const { scheduleListModal } = useSelector(state => state.schedule);
   const scheduleInfo = useSelector(state => state.calendarPanel.scheduleInfoDropdown)
   const disPatch = useDispatch()
-  const { visible, top, left } = scheduList;
+  const { visible, top, left, date } = scheduleListModal;
+  console.log('scheduleListModal----', scheduleListModal)
   const scheduleInfoClick = (e: any) => {
     e.stopPropagation()
     disPatch(setScheduleInfoDropdown({ visible: true }));
     disPatch(setScheduleListModal({ visible: false }))
   }
   return (
-    <ScheduListBox visible={visible} top={top} left={left} month={props.month}>
+    <ScheduleListBox visible={visible} top={top} left={left} month={props.month}>
       <ScheduleTitle>
         <span className={dateClass}>16</span>
         <span className={gregorianDateClass}>甘五</span>
@@ -109,7 +110,7 @@ const ScheduleListModal: React.FC<ScheduleListProps> = props => {
           </ScheduleItem>)
       }
       <ScheduleInfoDropdown></ScheduleInfoDropdown>
-    </ScheduListBox>
+    </ScheduleListBox>
   )
 }
 export default ScheduleListModal

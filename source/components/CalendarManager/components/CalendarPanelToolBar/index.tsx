@@ -8,7 +8,8 @@ import {
   setCalenderMonthValue,
   setCalenderYearValue,
   setCalenderListValue,
-  setScheduleSearchKey
+  setScheduleSearchKey,
+  setCalenderYearWeekValue
 } from '@store/calendarPanle'
 import { useDispatch, useSelector } from '@store/index'
 import React, { useState, useRef, useEffect } from 'react'
@@ -65,6 +66,7 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
   const calenderListValue = useSelector(state => state.calendarPanel.calenderListValue);
   // 左侧日历切换的值
   const checkedTime=useSelector(state=>state.calendar.checkedTime);
+
   useEffect(()=>{
     console.log('check-time',checkedTime,dayjs(checkedTime).format('YYYY-MM-DD'))
     if(!checkedTime){
@@ -87,9 +89,8 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
       ['week', dayjs(calenderWeekValue).format('YYYY年M月')],
       ['month', dayjs(calenderMonthValue).format('YYYY年M月')],
       ['year', dayjs(calenderYearValue).format('YYYY年')],
-      ['list', dayjs(calenderListValue).format('YYYY年M月D日')],
-    ])
-    console.log(111,calendarPanelType)
+      ['list',dayjs(calenderListValue).format('YYYY年M月') ], 
+    ]);
     setDateText(maps.get(calendarPanelType) as string)
   }, [
     calendarPanelType,
@@ -137,22 +138,27 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
     }
   }
   const listenWeek = (): void => {
-    const { current } = iconTypeRef
+    const { current } = iconTypeRef;
+    console.log('dayjs(calenderWeekValue).week()',dayjs(calenderWeekValue).year()+'/'+dayjs(calenderWeekValue).week(),calenderWeekValue)
     if (current === 1) {
       dispatch(
         setCalenderWeekValue(
-          dayjs(calenderWeekValue).add(1, 'month').format('YYYY-M-D'),
+          dayjs(calenderWeekValue).add(1, 'week').format('YYYY-M-D'), //dayjs('2018-06-27').week()
         ),
       )
     } else if (current === -1) {
       dispatch(
         setCalenderWeekValue(
-          dayjs(calenderWeekValue).subtract(1, 'month').format('YYYY-M-D'),
+          dayjs(calenderWeekValue).subtract(1, 'week').format('YYYY-M-D'),
         ),
       )
     } else {
       dispatch(setCalenderWeekValue(dayjs().format('YYYY-M-D')))
     }
+    let yearWeekValue=dayjs(calenderWeekValue).year()+'/'+dayjs(calenderWeekValue).week();
+    console.log('yearWeekValue----',yearWeekValue)
+    dispatch(setCalenderYearWeekValue(yearWeekValue));
+
   }
   const listenMonth = (): void => {
     const { current } = iconTypeRef;  
@@ -195,17 +201,17 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
     if (current === 1) {
       dispatch(
         setCalenderListValue(
-          dayjs(calenderListValue).add(1, 'day').format('YYYY-MM-DD'),
+           dayjs(calenderListValue).add(1, 'month').format('YYYY-MM'), 
         ),
       )
     } else if (current === -1) {
       dispatch(
         setCalenderListValue(
-          dayjs(calenderListValue).subtract(1, 'day').format('YYYY-MM-DD'),
+          dayjs(calenderListValue).subtract(1, 'month').format('YYYY-MM'),
         ),
       )
     } else {
-      dispatch(setCalenderListValue(dayjs().format('YYYY-MM-DD')))
+      dispatch(setCalenderListValue(dayjs().format('YYYY-MM')))
     }
   }
   const maps = new Map([

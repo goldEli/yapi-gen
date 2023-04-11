@@ -15,7 +15,7 @@ declare namespace API.Schedule {
   }
   namespace ScheduleInfoList {
     type Params ={
-      year:number,
+      [key,index]:number,
       calendar_ids:number[]
     }
     type Result = {
