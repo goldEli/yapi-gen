@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable consistent-return */
 /* eslint-disable complexity */
 import CommonIconFont from '@/components/CommonIconFont'
@@ -13,7 +14,14 @@ import {
 } from '@store/SiteNotifications'
 import { Badge, notification } from 'antd'
 import React, { useEffect } from 'react'
-import { getAllNoteSet, getMyAllNoteSet } from '@/services/SiteNotifications'
+import {
+  getAllNoteSet,
+  getContactList,
+  getContactStatistics,
+  getDetail,
+  getMsg_list,
+  getMyAllNoteSet,
+} from '@/services/SiteNotifications'
 
 const SiteNotifications = () => {
   const { sendMessage, wsData } = useWebsocket()
@@ -218,12 +226,14 @@ const SiteNotifications = () => {
     }))
   }
   const init = async () => {
+    getContactStatistics()
+    getContactList()
+    getDetail()
+    getMsg_list()
     const res = await getAllNoteSet()
     dispatch(setConfiguration(initSet(res.im)))
     dispatch(setEmailConfiguration(initEmailSet(res.mail)))
-
     const res2 = await getMyAllNoteSet()
-
     dispatch(
       setMyConfiguration(
         res2.list.filter((i: any) => {
