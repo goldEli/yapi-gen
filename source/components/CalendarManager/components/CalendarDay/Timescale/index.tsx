@@ -2,13 +2,10 @@ import styled from '@emotion/styled'
 import dayjs from 'dayjs'
 import React, { useMemo } from 'react'
 import CurrentTimeLine from '../../CurrentTimeLine'
-import { colorMap, formatYYYYMMDD, oneHourHeight } from '../../../config'
+import { formatYYYYMMDD, oneHourHeight } from '../../../config'
 import { useDispatch, useSelector } from '@store/index'
 import classNames from 'classnames'
 import NewCalendarArea from '../NewCalendarArea'
-import { Dropdown, Popover } from 'antd'
-import QuickCreateScheduleModel from '../../QuickCreateScheduleModel'
-import { setQuickCreateScheduleModel } from '@store/calendarPanle'
 import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
 import ScheduleCardList from '../ScheduleCardList'
 
@@ -59,11 +56,11 @@ const Timescale: React.FC<TimescaleProps> = props => {
       // 点击空白重置
       if (timeZone.length) {
         setTimeZone([])
-        dispatch(
-          setQuickCreateScheduleModel({
-            visible: false,
-          }),
-        )
+        // dispatch(
+        //   setQuickCreateScheduleModel({
+        //     visible: false,
+        //   }),
+        // )
         return
       }
 
@@ -85,13 +82,13 @@ const Timescale: React.FC<TimescaleProps> = props => {
         dom.removeEventListener('mousemove', onMousemove)
         const target = event.target as HTMLDivElement
         // 打开创建日程弹窗
-        dispatch(
-          setQuickCreateScheduleModel({
-            visible: true,
-            x: event.offsetX + 58,
-            y: target.offsetTop,
-          }),
-        )
+        // dispatch(
+        //   setQuickCreateScheduleModel({
+        //     visible: true,
+        //     x: event.offsetX + 58,
+        //     y: target.offsetTop,
+        //   }),
+        // )
         dom.removeEventListener('mouseup', onMouseUp)
       }
       dom.removeEventListener('mousemove', onMousemove)
@@ -146,16 +143,13 @@ const Timescale: React.FC<TimescaleProps> = props => {
       })
   }, [timeZone, selectedDay])
   return (
-    // <Popover trigger={['contextMenu']} content={popoverContent} title="Title">
     <Table ref={tableRef} className="time-scale">
       {content}
       <CurrentTimeLine />
       <NewCalendarArea timeZone={timeZone} distance={distance} />
       <ScheduleCardList />
-      <QuickCreateScheduleModel />
       <ScheduleInfoDropdown containerClassName=".time-scale" />
     </Table>
-    // </Popover>
   )
 }
 
