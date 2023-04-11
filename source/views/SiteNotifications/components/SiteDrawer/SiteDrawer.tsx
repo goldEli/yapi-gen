@@ -1,3 +1,5 @@
+/* eslint-disable complexity */
+/* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-duplicate-imports */
 /* eslint-disable react/jsx-no-undef */
@@ -20,7 +22,6 @@ import {
 import VirtualList from '../VittualNode/VittualNode'
 import VirtualScrollList from '../VittualNode/VittualNode'
 import { useTranslation } from 'react-i18next'
-import { addViews, getNotes } from '@/services/SiteNotifications'
 
 const formWorkUsageData: any = {
   list: [],
@@ -56,14 +57,6 @@ const SiteDrawer = () => {
   const changeActive = (id: string) => {
     setActive(id)
   }
-  const init = async () => {
-    const res = await getNotes()
-    addViews()
-    console.log(res)
-  }
-  useEffect(() => {
-    init()
-  }, [])
 
   return (
     <Drawer
