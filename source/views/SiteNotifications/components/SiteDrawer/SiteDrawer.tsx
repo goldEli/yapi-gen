@@ -6,7 +6,7 @@
 import IconFont from '@/components/IconFont'
 import { useDispatch, useSelector } from '@store/index'
 import { changeVisible } from '@store/SiteNotifications'
-import { Checkbox, Drawer, Tooltip } from 'antd'
+import { Checkbox, Divider, Drawer, Skeleton, Tooltip } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ContentItem from '../ContentItem/ContentItem'
@@ -24,12 +24,6 @@ import VirtualScrollList from '../VittualNode/VittualNode'
 import { useTranslation } from 'react-i18next'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
-const formWorkUsageData: any = {
-  list: [],
-}
-for (let i = 0; i < 100; i++) {
-  formWorkUsageData.list.push(i)
-}
 const tabsValue = [
   {
     id: '1',
@@ -61,15 +55,12 @@ const SiteDrawer = () => {
     setActive(id)
   }
   const fetchMoreData = () => {
-    console.log(1)
-    if (list.length >= 100) {
+    if (list.length >= 50) {
       setHasMore(false)
       return
     }
-    // a fake async api call like which sends
-    // 20 more records in 1.5 secs
     setTimeout(() => {
-      setList(list.concat(Array.from({ length: 20 })))
+      setList(list.concat(Array.from({ length: 10 })))
     }, 1500)
   }
   return (
@@ -128,23 +119,14 @@ const SiteDrawer = () => {
           }}
           hasMore={hasMore}
           height={document.body.clientHeight - 230}
-          loader={<h4>Loading...</h4>}
+          loader={<Skeleton avatar paragraph={{ rows: 2 }} active />}
           scrollableTarget="scrollableDiv"
-          endMessage={
-            <p style={{ textAlign: 'center' }}>
-              <b>Yay! You have seen it all</b>
-            </p>
-          }
+          endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
         >
           {list.map((i: any, index: any) => (
             <ContentItem name={index} key={i} />
           ))}
         </InfiniteScroll>
-
-        {/* <VirtualScrollList
-            dataList={formWorkUsageData.list}
-            renderItem={(i, index) => <ContentItem  />}
-          /> */}
 
         <div
           style={{
