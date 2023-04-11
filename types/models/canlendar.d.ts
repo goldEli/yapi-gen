@@ -173,4 +173,30 @@ declare namespace Model.Calendar {
     // 'PRC'
     timezone_name: string
   }
+  interface DaysOfWeek {
+    // 必须 农历月
+    lunar_month_chinese: string
+    // 必须 农历日
+    lunar_day_chinese: string
+    // 必须 节日
+    term: string
+    // 必须 周索引，0-6分别是周日到周六
+    week_no: 0 | 1 | 2 | 3 | 4 | 5 | 6
+    // 必须 周名称
+    week_name: string
+    // 必须 星座
+    constellation: string
+    // 必须 是否是当前月
+    is_current_month: boolean
+    // 必须 年
+    year: number
+    month: number
+    day: number
+    week_num: number
+    date: string
+    datetime: string
+    date_object: string
+    timestamp: number
+    timezone_name: string
+  }
 }

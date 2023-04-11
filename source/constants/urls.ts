@@ -144,6 +144,7 @@ const urls = {
   getRelateConfig: '/b/calendar/enum',
   addCalendar: '/b/calendar',
   getUserCalendars: '/b/calendar/getUserCalendars',
+  getDaysOfWeekList: '/b/calendar/daysOfWeek',
 }
 
 export default urls
