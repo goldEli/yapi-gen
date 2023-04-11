@@ -70,7 +70,6 @@ const EditWork = (props: PropsType) => {
     const evevtObj: any = event.dataTransfer.getData('item')
       ? JSON.parse(event.dataTransfer.getData('item'))
       : null
-    console.log(evevtObj)
     if (evevtObj.type === 4) {
       const configs = {
         type: evevtObj.type,

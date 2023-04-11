@@ -1,6 +1,11 @@
 /* eslint-disable react/jsx-handler-names */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Checkbox, Switch, Form, Dropdown, DatePicker } from 'antd'
+/* eslint-disable camelcase */
+/* eslint-disable new-cap */
+/* eslint-disable require-unicode-regexp */
+/* eslint-disable no-negated-condition */
+/* eslint-disable complexity */
+import { Checkbox, Switch, Form, Dropdown, DatePicker, message } from 'antd'
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import CommonButton from '@/components/CommonButton'
@@ -165,7 +170,7 @@ const SupScope = (props: SupScopeType) => {
 }
 interface ValueType {
   label: string
-  id: number
+  key: number
   value: boolean
 }
 interface CheckBoxGroupType {
@@ -175,37 +180,37 @@ interface CheckBoxGroupType {
 const options: Array<ValueType> = [
   {
     label: '周一',
-    id: 1,
+    key: 0,
     value: false,
   },
   {
     label: '周二',
-    id: 2,
+    key: 1,
     value: false,
   },
   {
     label: '周三',
-    id: 3,
+    key: 2,
     value: false,
   },
   {
     label: '周四',
-    id: 4,
+    key: 3,
     value: false,
   },
   {
     label: '周五',
-    id: 5,
+    key: 4,
     value: false,
   },
   {
     label: '周六',
-    id: 6,
+    key: 5,
     value: false,
   },
   {
     label: '周日',
-    id: 7,
+    key: 6,
     value: false,
   },
 ]
@@ -216,27 +221,28 @@ const CheckBoxGroup = (props: CheckBoxGroupType) => {
       props.onChange?.(options)
     }
   }, [])
-  const onChange = (value: boolean, el: { value: boolean; id: number }) => {
-    console.log(el, value)
+  const onChange = (value: boolean, el: { value: boolean; key: number }) => {
     const filterVal = props?.value.map(
-      (item: { value: boolean; id: number }) => ({
+      (item: { value: boolean; key: number }) => ({
         ...item,
-        value: el.id === item.id ? value : item.value,
+        value: el.key === item.key ? value : item.value,
       }),
     )
     props.onChange?.(filterVal)
   }
   return (
     <>
-      {props.value?.map((el: { value: boolean; id: number; label: string }) => (
-        <Checkbox
-          key={el.id}
-          onChange={e => onChange(e.target.checked, el)}
-          checked={el.value}
-        >
-          {el.label}
-        </Checkbox>
-      ))}
+      {props.value?.map(
+        (el: { value: boolean; key: number; label: string }) => (
+          <Checkbox
+            key={el.key}
+            onChange={e => onChange(e.target.checked, el)}
+            checked={el.value}
+          >
+            {el.label}
+          </Checkbox>
+        ),
+      )}
     </>
   )
 }
@@ -261,6 +267,7 @@ interface CheckBoxType {
   value?: boolean
   onChange?(val: boolean): void
 }
+
 const CheckBox = (props: CheckBoxType) => {
   return (
     <Checkbox
@@ -274,13 +281,98 @@ const CheckBox = (props: CheckBoxType) => {
 interface FormType {
   // 每周每月每日补交范围不同，不重复没有补交范围
   type: string
+  backValues(s: any, e: any, r: any): void
 }
+let startTime: any = null
+let endTime: any = null
+let remindTime: any = null
 const FormMain = (props: FormType) => {
+  const [startTimes, setStartTimes] = useState<any>()
+  const [endTimes, setEndTimes] = useState<any>()
+  const [remindTimes, setRemindTimes] = useState<any>()
+  // 每天选择不能大于24小时
+  const dayJudgeTime = () => {
+    if (!startTime && !endTime) {
+      return
+    }
+    if (
+      (startTime?.v1 === 1 && endTime?.v1 === 1) ||
+      (startTime?.v1 === 2 && endTime?.v1 === 2)
+    ) {
+      // 判断结束必须大于开始
+      if (endTime?.v2 < startTime?.v2) {
+        message.warning('结束时间不能小于开始时间')
+      } else if (endTime?.v2 === startTime?.v2) {
+        if (endTime?.v3 < startTime?.v3) {
+          message.warning('结束时间不能小于开始时间')
+        }
+      }
+    } else if (startTime?.v1 === 1 && endTime?.v1 === 2) {
+      if (endTime?.v2 > startTime?.v2) {
+        message.warning('结束时间不能大于24小时')
+      } else if (startTime?.v2 === endTime?.v2) {
+        if (endTime?.v3 > startTime?.v3) {
+          message.warning('结束时间不能大于24小时')
+        }
+      }
+    } else if (startTime?.v1 === 2 && endTime?.v1 === 1) {
+      message.warning('开始时间不能小于结束时间')
+    }
+  }
+  // 不能超过一周
+  const WeekJudgeTime = () => {
+    if (endTime.v1 > startTime.v1 + 7) {
+      message.warning('开始时间不允许超过一周')
+    } else if (endTime.v1 === startTime.v1 + 7) {
+      if (endTime.v2 > startTime.v2) {
+        message.warning('开始时间不允许超过一周')
+      } else if (endTime.v2 === startTime.v2) {
+        if (endTime.v3 > startTime.v3) message.warning('开始时间不允许超过一周')
+      }
+    }
+  }
+  const getValues = (type: string, v1: number, v2: number, v3: number) => {
+    if (type === 'start') {
+      startTime = {
+        v1,
+        v2,
+        v3,
+      }
+      setStartTimes(startTime)
+    } else if (type === 'end') {
+      endTime = {
+        v1,
+        v2,
+        v3,
+      }
+      setEndTimes(endTime)
+    } else if (type === 'remind') {
+      if (props.type === 'day') {
+        remindTime = {
+          v2,
+          v3,
+        }
+      } else if (props.type === 'week' || props.type === 'month') {
+        remindTime = {
+          v1,
+          v2,
+          v3,
+        }
+      }
+      setRemindTimes(remindTime)
+    }
+    if (props.type === 'day') {
+      dayJudgeTime()
+    } else if (props.type === 'week') {
+      WeekJudgeTime()
+    }
+    props.backValues(startTime, endTime, remindTime)
+  }
   return (
     <>
       {props.type === 'day' ? (
         <>
-          <Form.Item label="" name="1">
+          <Form.Item label="" name="is_holiday">
             <Checkbox>跟随中国法定节假日自动调整 </Checkbox>
           </Form.Item>
           <Form.Item
@@ -295,32 +387,45 @@ const FormMain = (props: FormType) => {
         </>
       ) : null}
       {/* 不重复是时间插件*/}
-      <Form.Item
-        style={{
-          marginBottom: '32px',
-        }}
-        label="开始时间"
-        name="3"
-      >
-        {props.type === 'day' ||
-        props.type === 'week' ||
-        props.type === 'month' ? (
-          <Picker type={props.type} pickerType="start" />
-        ) : (
-          <DatePicker format="YYYY-MM-DD HH:mm:ss" />
-        )}
-      </Form.Item>
+      {props.type === 'doNot' ? null : (
+        <Form.Item
+          style={{
+            marginBottom: '32px',
+          }}
+          label="开始时间"
+          name="start_time"
+        >
+          {props.type === 'day' ||
+          props.type === 'week' ||
+          props.type === 'month' ? (
+            <Picker
+              valuerObj={startTimes}
+              type={props.type}
+              pickerType="start"
+              getValues={(v1: number, v2: number, v3: number) =>
+                getValues('start', v1, v2, v3)
+              }
+            />
+          ) : null}
+        </Form.Item>
+      )}
+
       <Form.Item
         style={{
           margin: '32px 0 16px 0',
         }}
         label="截止时间"
-        name="4"
+        name="end_time"
       >
         {props.type === 'day' ||
         props.type === 'week' ||
         props.type === 'month' ? (
-          <Picker type={props.type} pickerType="end" />
+          <Picker
+            getValues={(v1, v2, v3) => getValues('end', v1, v2, v3)}
+            type={props.type}
+            pickerType="end"
+            valuerObj={endTimes}
+          />
         ) : (
           <DatePicker format="YYYY-MM-DD HH:mm:ss" />
         )}
@@ -356,9 +461,14 @@ const FormMain = (props: FormType) => {
           marginBottom: '44px',
         }}
         label="提醒时间"
-        name="9"
+        name="reminder_time"
       >
-        <Picker type={props.type} pickerType="remind" />
+        <Picker
+          getValues={(v1, v2, v3) => getValues('remind', v1, v2, v3)}
+          valuerObj={remindTimes}
+          type={props.type}
+          pickerType="remind"
+        />
       </Form.Item>
     </>
   )
