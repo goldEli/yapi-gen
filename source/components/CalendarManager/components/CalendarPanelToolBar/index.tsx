@@ -9,8 +9,9 @@ import {
   setCalenderYearValue,
   setCalenderListValue,
   setScheduleSearchKey,
-  setCalenderYearWeekValue
+  setCalenderYearWeekValue,
 } from '@store/calendarPanle'
+import { setCheckedTime } from '@store/calendar'
 import { useDispatch, useSelector } from '@store/index'
 import React, { useState, useRef, useEffect } from 'react'
 import dayjs, { Dayjs } from 'dayjs'
@@ -34,18 +35,18 @@ const selectOptions: {
   value: Model.Calendar.CalendarPanelType
   label: string
 }[] = [
-  { value: 'day', label: '日' },
-  { value: 'week', label: '周' },
-  { value: 'month', label: '月' },
-  { value: 'year', label: '年' },
-  { value: 'list', label: '列表' },
-]
+    { value: 'day', label: '日' },
+    { value: 'week', label: '周' },
+    { value: 'month', label: '月' },
+    { value: 'year', label: '年' },
+    { value: 'list', label: '列表' },
+  ]
 const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
   const calendarPanelType = useSelector(
     state => state.calendarPanel.calendarPanelType,
   )
   const [dateText, setDateText] = useState<string>();
-  const [inputDefaultValue,setInputDefaultValue]=useState('')
+  const [inputDefaultValue, setInputDefaultValue] = useState('')
   //日视图
   const calenderDayValue = useSelector(
     state => state.calendarPanel.calenderDayValue,
@@ -65,31 +66,31 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
   // 列表视图初始值
   const calenderListValue = useSelector(state => state.calendarPanel.calenderListValue);
   // 左侧日历切换的值
-  const checkedTime=useSelector(state=>state.calendar.checkedTime);
+  const checkedTime = useSelector(state => state.calendar.checkedTime);
 
-  useEffect(()=>{
-    console.log('check-time',checkedTime,dayjs(checkedTime).format('YYYY-MM-DD'))
-    if(!checkedTime){
+  useEffect(() => {
+    console.log('check-time', checkedTime, dayjs().week())
+    if (!checkedTime) {
       dispatch(setCalenderDayValue(dayjs().format('YYYY-MM-DD')))
       return
     }
-    const selectedMonth=dayjs(checkedTime);
-    const firstDay= dayjs(selectedMonth).startOf('month').format('YYYY-MM-DD');
-    if(calendarPanelType==='day'){
-       dispatch(setCalenderDayValue(firstDay))
-    }else if(calendarPanelType==='month'){
+    const selectedMonth = dayjs(checkedTime);
+    const firstDay = dayjs(selectedMonth).startOf('month').format('YYYY-MM-DD');
+    if (calendarPanelType === 'day') {
+      dispatch(setCalenderDayValue(firstDay))
+    } else if (calendarPanelType === 'month') {
       dispatch(setCalenderMonthValue(dayjs(checkedTime).format('YYYY-MM')))
-    }else if(calendarPanelType==='list'){
+    } else if (calendarPanelType === 'list') {
       dispatch(setCalenderListValue(firstDay))
     }
-  },[checkedTime])
+  }, [checkedTime])
   useEffect(() => {
     const maps = new Map([
       ['day', dayjs(calenderDayValue).format('YYYY年M月D日')],
       ['week', dayjs(calenderWeekValue).format('YYYY年M月')],
       ['month', dayjs(calenderMonthValue).format('YYYY年M月')],
       ['year', dayjs(calenderYearValue).format('YYYY年')],
-      ['list',dayjs(calenderListValue).format('YYYY年M月') ], 
+      ['list', dayjs(calenderListValue).format('YYYY年M月')],
     ]);
     setDateText(maps.get(calendarPanelType) as string)
   }, [
@@ -99,9 +100,9 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
     calenderDayValue,
     calenderWeekValue,
     calenderMonthValue,
-   // checkedTime,
+    // checkedTime,
   ])
-  
+
   const iconTypeRef = useRef<number>()
 
   const dispatch = useDispatch()
@@ -136,10 +137,12 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
     } else {
       dispatch(setCalenderDayValue(dayjs().format('YYYY-MM-DD')))
     }
+    console.log('calenderDayValue', calenderDayValue)
+    dispatch(setCheckedTime(calenderDayValue))
   }
   const listenWeek = (): void => {
     const { current } = iconTypeRef;
-    console.log('dayjs(calenderWeekValue).week()',dayjs(calenderWeekValue).year()+'/'+dayjs(calenderWeekValue).week(),calenderWeekValue)
+    console.log('listenWeek', calenderWeekValue)
     if (current === 1) {
       dispatch(
         setCalenderWeekValue(
@@ -155,13 +158,13 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
     } else {
       dispatch(setCalenderWeekValue(dayjs().format('YYYY-M-D')))
     }
-    let yearWeekValue=dayjs(calenderWeekValue).year()+'/'+dayjs(calenderWeekValue).week();
-    console.log('yearWeekValue----',yearWeekValue)
+    let yearWeekValue = dayjs(calenderWeekValue).year() + '/' + dayjs(calenderWeekValue).week();
+    console.log('yearWeekValue----', yearWeekValue)
     dispatch(setCalenderYearWeekValue(yearWeekValue));
 
   }
   const listenMonth = (): void => {
-    const { current } = iconTypeRef;  
+    const { current } = iconTypeRef;
     if (current === 1) {
       dispatch(
         setCalenderMonthValue(
@@ -201,7 +204,7 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
     if (current === 1) {
       dispatch(
         setCalenderListValue(
-           dayjs(calenderListValue).add(1, 'month').format('YYYY-MM'), 
+          dayjs(calenderListValue).add(1, 'month').format('YYYY-MM'),
         ),
       )
     } else if (current === -1) {
@@ -259,12 +262,12 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
           <IconFont type="right" onClick={nextYearClick} />
         </IconBox>
       </div>
-      <div style={{display:'flex'}}>
+      <div style={{ display: 'flex' }}>
         <CustomSelect
           value={calendarPanelType}
           style={{
             width: '80px',
-            marginRight:'10px'
+            marginRight: '10px'
           }}
           onChange={(value: Model.Calendar.CalendarPanelType) => {
             setInputDefaultValue('')
@@ -273,7 +276,7 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
           options={selectOptions}
           allowClear
         />
-        <InputSearch placeholder='搜索日程' defaultValue={inputDefaultValue}  width={184}  onChangeSearch={(value)=>{
+        <InputSearch placeholder='搜索日程' defaultValue={inputDefaultValue} width={184} onChangeSearch={(value) => {
           setInputDefaultValue(value)
           dispatch(setScheduleSearchKey(value))
         }} ></InputSearch>
