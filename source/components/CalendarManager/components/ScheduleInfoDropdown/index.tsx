@@ -36,7 +36,7 @@ const ScheduleInfoDropdown: React.FC<ScheduleInfoDropdownProps> = props => {
     containerClassName: props.containerClassName,
     modalClassName: '.schedule-info-dropdown-box',
   })
-  console.log({ scheduleInfoDropdown })
+  // console.log({ scheduleInfoDropdown })
 
   return (
     <ScheduleInfoDropdownBox
