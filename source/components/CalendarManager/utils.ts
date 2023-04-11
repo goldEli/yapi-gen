@@ -24,3 +24,8 @@ export const getColor = (index: number, opacity = 1) => {
 export const getColorWithOpacityPointOne = (index: number) => {
   return getColor(index, 0.1)
 }
+
+// 获取元素属性
+export function getStyleValue(dom: Element, attr: keyof CSSStyleDeclaration) {
+  return parseFloat(getComputedStyle(dom)[attr] + '')
+}

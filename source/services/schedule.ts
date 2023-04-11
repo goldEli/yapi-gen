@@ -252,6 +252,27 @@ export const getScheduleList = async (
           timestamp: 1677772799,
           schedule_start_datetime: '2023-03-29 16:33:00',
         },
+        {
+          schedule_id: 27,
+          subject: '这是一个跨天日程',
+          is_span_day: false,
+          is_all_day: 2,
+          start_datetime: '2023-04-01 16:33:00',
+          start_time: '16:33',
+          start_timestamp: dayjs('2023-04-01 16:33:00').valueOf(),
+          end_datetime: '2023-04-01 17:44:00',
+          end_time: '17:44',
+          end_timestamp: dayjs('2023-04-01 17:44:00').valueOf(),
+          is_busy: 1,
+          color: 0,
+          is_busy_text: '忙碌',
+          year: 2023,
+          month: 3,
+          day: 2,
+          datetime: '2023-03-02',
+          timestamp: 1677772799,
+          schedule_start_datetime: '2023-03-29 16:33:00',
+        },
       ],
       '2023-04-02': [
         {
@@ -308,7 +329,7 @@ export const saveScheduleList = async (
   return response
 }
 
-export const getCalendarDaysOfYeaList=async (params:any)=>{
+export const getCalendarDaysOfYeaList=async (params:API.Schedule.ScheduleInfoList.Params)=>{
   const res=await http.post('getCalendarDaysOfYeaList',params)
   return res
 }

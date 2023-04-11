@@ -119,13 +119,13 @@ const AllDayScheduleCard: React.FC<ScheduleCardProps> = props => {
     // const calenderBoxRightArea = document.querySelector(
     //   '#calenderBoxRightArea',
     // ) as Element
-    dispatch(
-      setScheduleInfoDropdown({
-        visible: true,
-        x: x + 58,
-        y: 0,
-      }),
-    )
+    // dispatch(
+    //   setScheduleInfoDropdown({
+    //     visible: true,
+    //     x: x + 58,
+    //     y: 0,
+    //   }),
+    // )
   }
 
   const gridHeight = useMemo(() => (oneHourHeight / 60) * 15, [outerHeight])

@@ -61,8 +61,11 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
 
   const { maxWidth } = useMaxWidth()
   const { getCurrentWeekDayByLeft } = useWeeks()
+  const isDrag = React.useRef(false)
 
   const onDrag = (e: DraggableEvent, draggableData: DraggableData) => {
+    e.stopPropagation()
+    isDrag.current = true
     const { node, y, deltaY, lastY } = draggableData
     const time = getTimeByOffsetDistance(
       start_timestamp,
@@ -75,6 +78,8 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     })
   }
   const onDragStart = (e: DraggableEvent, draggableData: DraggableData) => {
+    e.stopPropagation()
+    isDrag.current = false
     // const { node, y, deltaY, lastY } = draggableData
     const time = getTimeByOffsetDistance(start_timestamp, end_timestamp, 0)
     setTimeRange({
@@ -83,6 +88,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     })
   }
   const onDragStop = (e: DraggableEvent, draggableData: DraggableData) => {
+    e.stopPropagation()
     const { x, node, y, deltaX, lastY } = draggableData
     const time = getTimeByOffsetDistance(
       start_timestamp,
@@ -110,13 +116,17 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     const calenderBoxRightArea = document.querySelector(
       '#calenderBoxRightArea',
     ) as Element
-    dispatch(
-      setScheduleInfoDropdown({
-        visible: true,
-        x: x + 58 + 20,
-        y: y + 20,
-      }),
-    )
+    // 点击打开详情弹窗, 如果是拖动不打开
+    if (!isDrag.current) {
+      dispatch(
+        setScheduleInfoDropdown({
+          id: props.data.schedule_id,
+          visible: true,
+          x: x + 58 + 20,
+          y: y + 20,
+        }),
+      )
+    }
   }
 
   const onResize = (
@@ -126,6 +136,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     delta: ResizableDelta,
     position: Position,
   ) => {
+    e.stopPropagation()
     if (dir === 'bottom') {
       const time = getTimeByAddDistance(end_timestamp, delta.height)
       setTimeRange({
@@ -147,6 +158,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     dir: ResizeDirection,
     elementRef: HTMLElement,
   ) => {
+    e.stopPropagation()
     const time = getTimeByOffsetDistance(start_timestamp, end_timestamp, 0)
     setTimeRange({
       start_timestamp: time.start_timestamp.format('HH:mm'),
@@ -161,6 +173,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     delta: ResizableDelta,
     position: Position,
   ) => {
+    e.stopPropagation()
     if (dir === 'bottom') {
       const time = getTimeByAddDistance(end_timestamp, delta.height)
       dispatch(
@@ -187,6 +200,9 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
 
   return (
     <Rnd
+      onClick={(e: any) => {
+        e.stopPropagation()
+      }}
       style={{
         background: getColorWithOpacityPointOne(data.color),
       }}
