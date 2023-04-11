@@ -175,6 +175,7 @@ const Circulation = () => {
       </span>
     )
   }
+  console.log('statusLogs', statusLogs)
   return (
     <Wrap>
       <Spin indicator={<NewLoadingTransition />} spinning={isSpin}>
@@ -235,6 +236,7 @@ const Circulation = () => {
                     </LineItem>
                     {Object.keys(i.fields)?.map((m: any) => (
                       <LineItem key={m} top={16} hasTop hidden={!i?.fields[m]}>
+                        {/* field */}
                         <LabelItem>
                           <OmitText
                             width={70}
@@ -243,6 +245,7 @@ const Circulation = () => {
                             {i.fields[m]?.content_txt}：
                           </OmitText>
                         </LabelItem>
+                        {/* 时间评论字段值 */}
                         {(typeof i.fields[m]?.value === 'string' ||
                           i.fields[m]?.value === null) &&
                           m !== 'priority' && (
@@ -254,6 +257,7 @@ const Circulation = () => {
                                 : '--'}
                             </ContentWrap>
                           )}
+                        {/* 用户数组 */}
                         {Array.isArray(i.fields[m]?.value) &&
                           (m === 'tag' ? (
                             <ContentWrap>

@@ -92,6 +92,7 @@ const EditExamine = (props: Props) => {
       }),
     )
   }
+  console.log('verifyInfo', verifyInfo)
 
   useEffect(() => {
     getInfo()
@@ -496,6 +497,7 @@ const EditExamine = (props: Props) => {
 
             <Timeline.Item style={{ marginBottom: 16 }}>
               <div style={{ display: 'flex', alignItems: 'center' }}>
+                {/* TODO:   */}
                 <WrapBox size={16} color="var(--neutral-n1-d1)" right={8}>
                   {t('newlyAdd.circulationTo')}
                 </WrapBox>
