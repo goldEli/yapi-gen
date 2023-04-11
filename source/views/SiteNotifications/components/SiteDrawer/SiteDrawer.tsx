@@ -1,3 +1,5 @@
+/* eslint-disable complexity */
+/* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-duplicate-imports */
 /* eslint-disable react/jsx-no-undef */
@@ -20,7 +22,7 @@ import {
 import VirtualList from '../VittualNode/VittualNode'
 import VirtualScrollList from '../VittualNode/VittualNode'
 import { useTranslation } from 'react-i18next'
-import { addViews, getNotes } from '@/services/SiteNotifications'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 const formWorkUsageData: any = {
   list: [],
@@ -49,6 +51,8 @@ const SiteDrawer = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const isVisible = useSelector(store => store.siteNotifications.isVisible)
+  const [list, setList] = useState(Array.from({ length: 10 }))
+  const [hasMore, setHasMore] = useState(true)
 
   const onClose = () => {
     dispatch(changeVisible(false))
@@ -56,15 +60,18 @@ const SiteDrawer = () => {
   const changeActive = (id: string) => {
     setActive(id)
   }
-  const init = async () => {
-    const res = await getNotes()
-    addViews()
-    console.log(res)
+  const fetchMoreData = () => {
+    console.log(1)
+    if (list.length >= 100) {
+      setHasMore(false)
+      return
+    }
+    // a fake async api call like which sends
+    // 20 more records in 1.5 secs
+    setTimeout(() => {
+      setList(list.concat(Array.from({ length: 20 })))
+    }, 1500)
   }
-  useEffect(() => {
-    init()
-  }, [])
-
   return (
     <Drawer
       bodyStyle={{ padding: 16, paddingBottom: '8px', boxSizing: 'border-box' }}
@@ -107,24 +114,37 @@ const SiteDrawer = () => {
           <GrepTitle>{t('today')}</GrepTitle>
           <GrepTitle>{t('all_read')}</GrepTitle>
         </div>
-        <div
-        // style={{
-        //   overflow: 'scroll',
-        //   height: 'calc(100vh - 230px)',
-        //   padding: '10px 16px',
-        //   display: 'flex',
-        //   flexDirection: 'column',
-        //   gap: '16px',
-        // }}
+
+        <InfiniteScroll
+          dataLength={list.length}
+          next={fetchMoreData}
+          style={{
+            overflow: 'auto',
+            height: 'calc(100vh - 230px)',
+            padding: '10px 16px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '16px',
+          }}
+          hasMore={hasMore}
+          height={document.body.clientHeight - 230}
+          loader={<h4>Loading...</h4>}
+          scrollableTarget="scrollableDiv"
+          endMessage={
+            <p style={{ textAlign: 'center' }}>
+              <b>Yay! You have seen it all</b>
+            </p>
+          }
         >
-          {/* {new Array(30).fill(null).map((i: any) => (
-            <ContentItem key={i} />
-          ))} */}
-          <VirtualScrollList
+          {list.map((i: any, index: any) => (
+            <ContentItem name={index} key={i} />
+          ))}
+        </InfiniteScroll>
+
+        {/* <VirtualScrollList
             dataList={formWorkUsageData.list}
-            renderItem={(i, index) => <ContentItem name={i} />}
-          />
-        </div>
+            renderItem={(i, index) => <ContentItem  />}
+          /> */}
 
         <div
           style={{
