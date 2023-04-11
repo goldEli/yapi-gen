@@ -320,7 +320,9 @@ const Circulation = () => {
                             取消审核时间：
                           </OmitText>
                         </LabelItem>
-                        <SpanWrap color="var(--neutral-n3)">{i.time}</SpanWrap>
+                        <SpanWrap size={14} color="var(--neutral-n3)">
+                          {i.time}
+                        </SpanWrap>
                       </LineItem>
                     )}
                     {i.changeType === 3 &&
