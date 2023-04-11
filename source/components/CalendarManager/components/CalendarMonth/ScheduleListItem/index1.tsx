@@ -19,12 +19,10 @@ import { useDispatch, useSelector } from '@store/index'
 import {
   clearMonthMoveScheduleActiveInfo,
   resizeMonthSchedule,
-  setScheduleInfoDropdown,
   // moveMonthSchedule,
   startMoveMonthSchedule,
 } from '@store/calendarPanle'
 import useScheduleListArr from '../hooks/useScheduleListArr'
-import useRelativePosition from '@/components/CalendarManager/hooks/useRelativePosition'
 
 interface ScheduleListItemProps {
   data: Model.Schedule.Info
@@ -45,60 +43,30 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
     !isSameTime(start_timestamp, schedule_start_datetime ?? 0)
   // 如果是跨天或者全天任务显示全天
   const time = isAllDay ? '全天' : data.start_time
-  const isDrag = React.useRef(false)
-  const domRef = React.useRef(null)
 
   const { len } = useScheduleListArr(data.schedule_id)
   const dispatch = useDispatch()
-  const { position } = useRelativePosition(
-    `${props.data.id}`,
-    '.calendar-month-content-box',
-  )
-
   return (
     <ScheduleListItemBox
-      ref={domRef}
-      onClick={e => {
-        e.stopPropagation()
-      }}
       visible={
         monthMoveScheduleActiveInfo?.startSchedule?.schedule_id !==
         data.schedule_id
       }
       onMouseDown={e => {
         // e.stopPropagation()
-        isDrag.current = false
         window.calendarMonthPanelType = 'move'
-        const handleMove = (e: MouseEvent) => {
-          isDrag.current = true
-          dispatch(
-            startMoveMonthSchedule({
-              startSchedule: props.data,
-              startIndex: props.idx,
-              endIndex: props.idx,
-              length: len,
-            }),
-          )
-        }
-        window.addEventListener('mousemove', handleMove)
-        window.addEventListener('mouseup', e => {
-          // e.stopPropagation()
+        dispatch(
+          startMoveMonthSchedule({
+            startSchedule: props.data,
+            startIndex: props.idx,
+            endIndex: props.idx,
+            length: len,
+          }),
+        )
+        window.addEventListener('mouseup', () => {
           dispatch(clearMonthMoveScheduleActiveInfo())
-          window.calendarMonthPanelType = null
-          window.removeEventListener('mousemove', handleMove)
-          if (!isDrag.current && !isAllDayButNotFirstDay) {
-            dispatch(
-              setScheduleInfoDropdown({
-                id: props.data.schedule_id,
-                visible: true,
-                x: position?.x,
-                y: position?.y,
-              }),
-            )
-          }
         })
       }}
-      id={props.data.id}
       className={classNames({
         [marginLeft]: !isAllDayButNotFirstDay,
         [marginRight]: !(isAllDayButNotFirstDay || isAllDayFirstDay),
@@ -123,7 +91,6 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
               )
               window.addEventListener('mouseup', () => {
                 dispatch(clearMonthMoveScheduleActiveInfo())
-                window.calendarMonthPanelType = null
               })
             }}
             bg={getColor(data.color)}

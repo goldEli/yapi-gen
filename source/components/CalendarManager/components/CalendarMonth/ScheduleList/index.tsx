@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import styled from '@emotion/styled'
 import ScheduleListItem from '../ScheduleListItem'
 import { useSelector } from '@store/index'
 import MoveActiveItem from '../MoveActiveItem'
+import MoreScheduleButton from '../../MoreScheduleButton'
 
 interface ScheduleListProps {
   data: Model.Calendar.DayOfMonth
@@ -22,13 +23,20 @@ const ScheduleList: React.FC<ScheduleListProps> = props => {
   const list = scheduleList[key]
 
   // console.log({list}, scheduleList)
+  const hiddenNum = useMemo(() => {
+    if (!list?.length) {
+      return 0
+    }
+    const len = list?.length
+    return len > 3 ? len - 3 : 0
+  }, [list])
 
   return (
     <ScheduleListBox>
-      {list?.map(item => {
+      {list?.slice(0, 3).map(item => {
         return <ScheduleListItem idx={props.idx} data={item} key={item.id} />
       })}
-
+      <MoreScheduleButton hiddenNum={hiddenNum} />
       <MoveActiveItem idx={props.idx} />
     </ScheduleListBox>
   )

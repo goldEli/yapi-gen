@@ -43,7 +43,8 @@ const useModalPosition = (props: {
       // 如果元素超出下边浏览器区域，top 向上移动自身高度
       const delta = {
         x: x + props.x + width - totalWidth,
-        y: y + props.y + height - totalHeight,
+        // y: y + props.y + height - totalHeight,
+        y: 0,
       }
 
       const offset = {

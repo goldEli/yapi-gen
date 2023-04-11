@@ -16,7 +16,8 @@ type SliceState = {
     top: number
     left: number
   }
-  scheduleDate?: number
+  scheduleDate?: number,
+  allScheduleList:[]
 }
 
 const initialState: SliceState = {
@@ -32,6 +33,7 @@ const initialState: SliceState = {
     left: 20,
   },
   scheduleDate: 0,
+  allScheduleList:[]
 }
 
 const slice = createSlice({
@@ -64,7 +66,8 @@ const slice = createSlice({
       state.scheduleList = action.payload
     })
     builder.addCase(getCalendarDaysOfYeaList.fulfilled,(state,action)=>{
-      console.log('action-----',action)
+      console.log('action-----',action.payload)
+      state.allScheduleList=action.payload
     })
   },
 })
