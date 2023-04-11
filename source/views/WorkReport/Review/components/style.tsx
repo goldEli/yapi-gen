@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { Input, Popover, Space } from 'antd'
+import { css } from '@emotion/css'
 
 export const SkeletonGroup = styled(Space)`
   display: flex;
@@ -70,7 +71,8 @@ export const NextWrap = styled.div`
   align-items: center;
   justify-content: center;
   background: var(--neutral-white-d4);
-
+  border: 1px solid var(--neutral-n6-d1);
+  border-radius: 6px;
   cursor: pointer;
   svg {
     color: var(--neutral-n2);
@@ -85,17 +87,15 @@ export const NextWrap = styled.div`
 `
 
 export const UpWrap = styled(NextWrap)<{ isOnly?: boolean }>`
-  border-right: ${props =>
-    props.isOnly ? '1px solid var(--neutral-n6-d1)' : '1px solid transparent'};
-  border-top-right-radius: ${props => (props.isOnly ? '6' : '0')}px;
-  border-bottom-right-radius: ${props => (props.isOnly ? '6' : '0')}px;
+  border: 0px;
+  border-radius: 0px;
+  background: none;
 `
 
 export const DownWrap = styled(NextWrap)<{ isOnly?: boolean }>`
-  border-left: ${props =>
-    props.isOnly ? '1px solid var(--neutral-n6-d1)' : '1px solid transparent'};
-  border-top-left-radius: ${props => (props.isOnly ? '6' : '0')}px;
-  border-bottom-left-radius: ${props => (props.isOnly ? '6' : '0')}px;
+  border: 0px;
+  border-radius: 0px;
+  background: none;
 `
 
 export const ChangeIconBox = styled.div`
@@ -121,11 +121,83 @@ export const ChangeIconBox = styled.div`
   }
 `
 
-export const Content = styled.div`
+export const Content = styled.div<{ isReview?: boolean }>`
   height: calc(100% - 53px);
   overflow: auto;
   padding: 16px 24px;
+  padding-bottom: ${props => (props.isReview ? '280px' : '80px')};
   position: relative;
+`
+
+export const ContentHeadWrap = styled.div`
+  height: 44px;
+  display: flex;
+  margin-bottom: 24px;
+  flex-direction: column;
+  justify-content: center;
+  .titleText {
+    height: 24px;
+    font-size: 16px;
+    font-family: SiYuanMedium;
+    font-weight: 500;
+    color: #323233;
+    line-height: 24px;
+    margin-left: 12px;
+    .dateText {
+      font-size: 12px;
+    }
+  }
+  .reportTitleWrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .submitTimeText {
+    font-size: 12px;
+    font-family: MiSans-Regular, MiSans;
+    font-weight: 400;
+    color: #969799;
+    margin-left: 12px;
+  }
+`
+
+export const LabelTitle = styled.span`
+  font-size: 14px;
+  font-family: SiYuanMedium;
+  font-weight: 500;
+  color: var(--neutral-n1-d1);
+  line-height: 22px;
+`
+
+export const LabelMessage = css`
+  font-size: 14px;
+  font-family: SiYuanMedium;
+  font-weight: 500;
+  color: var(--neutral-n1-d1);
+  line-height: 22px;
+`
+
+export const LabelMessageRead = css`
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--neutral-n3);
+  line-height: 22px;
+  margin-left: 16px;
+`
+
+export const CommentFooter = styled.div<{ isReview?: boolean }>`
+  width: 100%;
+  height: ${props => (props.isReview ? '280px' : '80px')};
+  box-sizing: border-box;
+  padding: 24px 24px 0px 24px;
+  background: var(--neutral-white-d5);
+  position: absolute;
+  bottom: 0px;
+  .buttonBox {
+    margin-top: 12px;
+    display: flex;
+    justify-content: flex-end;
+  }
 `
 
 export const ParentBox = styled(Space)`

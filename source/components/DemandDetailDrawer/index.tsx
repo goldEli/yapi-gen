@@ -518,6 +518,7 @@ const DemandDetailDrawer = () => {
                         detail={drawerInfo}
                         isOpen={showState[i.key].isOpen}
                         onRef={commentDom}
+                        isOpenInfo
                       />
                     )}
                   </CollapseItemContent>
