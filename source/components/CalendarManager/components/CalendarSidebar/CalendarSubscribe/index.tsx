@@ -7,7 +7,7 @@ import InputSearch from '@/components/InputSearch'
 import NoData from '@/components/NoData'
 import { getSubscribeList } from '@/services/calendar'
 import styled from '@emotion/styled'
-import { setIsShowSubscribeVisible } from '@store/calendar'
+import { setSubscribeModal } from '@store/calendar'
 import { useDispatch, useSelector } from '@store/index'
 import { Tabs, Tooltip } from 'antd'
 import { createRef, useEffect, useMemo, useRef, useState } from 'react'
@@ -256,7 +256,7 @@ const TabsContent = (props: TabsContentProps) => {
 
 const CalendarSubscribe = () => {
   const dispatch = useDispatch()
-  const { isShowSubscribeVisible } = useSelector(store => store.calendar)
+  const { subscribeModal } = useSelector(store => store.calendar)
   const [activeKey, setActiveKey] = useState('0')
   const [searchValue, setSearchValue] = useState('')
   const items = [
@@ -293,12 +293,12 @@ const CalendarSubscribe = () => {
   }
 
   const onClose = () => {
-    dispatch(setIsShowSubscribeVisible(false))
+    dispatch(setSubscribeModal(false))
   }
 
   return (
     <CommonModal
-      isVisible={isShowSubscribeVisible}
+      isVisible={subscribeModal}
       isShowFooter
       title="订阅日历"
       width={784}

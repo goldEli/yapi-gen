@@ -8,7 +8,7 @@ import classNames from 'classnames'
 import NewCalendarArea from '../NewCalendarArea'
 import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
 import ScheduleCardList from '../ScheduleCardList'
-import { setCreateEasyScheduleModal } from '@store/calendar'
+import { setQuickCreateScheduleModel } from '@store/calendarPanle'
 
 interface TimescaleProps {}
 const Table = styled.table`
@@ -84,22 +84,11 @@ const Timescale: React.FC<TimescaleProps> = props => {
         const target = event.target as HTMLDivElement
         // 打开创建日程弹窗
         dispatch(
-          setCreateEasyScheduleModal({
+          setQuickCreateScheduleModel({
             visible: true,
-            position: {
-              x: event.offsetX + 58,
-              y: target.offsetTop,
-            },
-            time: {
-              startTime: dayjs(timeZone[0]).format(formatYYYYMMDD),
-              endTime: dayjs(timeZone[0]).format(formatYYYYMMDD),
-            },
+            x: event.offsetX + 58,
+            y: target.offsetTop,
           }),
-          // setQuickCreateScheduleModel({
-          //   visible: true,
-          //   x: event.offsetX + 58,
-          //   y: target.offsetTop,
-          // }),
         )
         dom.removeEventListener('mouseup', onMouseUp)
       }

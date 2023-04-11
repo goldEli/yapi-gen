@@ -6,7 +6,7 @@ import {
 import CommonButton from '@/components/CommonButton'
 import IconFont from '@/components/IconFont'
 import InputSearch from '@/components/InputSearch'
-import { setIsShowScheduleVisible, setRouterMenu } from '@store/calendar'
+import { setScheduleModal, setRouterMenu } from '@store/calendar'
 import { useDispatch } from '@store/index'
 import CalendarManagerList from '../../CalendarManagerList'
 import DXCalendar from '../../DXCalendar'
@@ -29,7 +29,7 @@ const CalendarMainSide = () => {
 
   // 创建日程
   const onCreate = () => {
-    dispatch(setIsShowScheduleVisible(true))
+    dispatch(setScheduleModal({ visible: true }))
   }
 
   useEffect(() => {

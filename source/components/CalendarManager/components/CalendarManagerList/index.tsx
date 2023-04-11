@@ -8,8 +8,8 @@ import { useDispatch, useSelector } from '@store/index'
 import {
   setCalendarData,
   setCheckedCalendarList,
-  setIsShowCalendarVisible,
-  setIsShowSubscribeVisible,
+  setCalendarModal,
+  setSubscribeModal,
 } from '@store/calendar'
 import CalendarMoreDropdown from './CalendarMoreDropdown'
 import { colorMap } from '../../config'
@@ -122,10 +122,11 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
   }
 
   const onOpenSub = (e: any) => {
+    console.log(props.type)
     e.stopPropagation()
     props.type === 'subscribe'
-      ? dispatch(setIsShowSubscribeVisible(true))
-      : dispatch(setIsShowCalendarVisible(true))
+      ? dispatch(setSubscribeModal(true))
+      : dispatch(setCalendarModal({ visible: true }))
   }
 
   return (

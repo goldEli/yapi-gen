@@ -38,10 +38,7 @@ import moment, { Moment } from 'moment'
 import { RangePickerProps } from 'antd/lib/date-picker'
 import { colorMap } from '../../config'
 import { setQuickCreateScheduleModel } from '@store/calendarPanle'
-import {
-  setIsShowScheduleVisible,
-  setShowScheduleParams,
-} from '@store/calendar'
+import { setScheduleModal } from '@store/calendar'
 interface CreateScheduleBoxProps {
   containerClassName?: string
 }
@@ -236,8 +233,7 @@ const CreateEasySchedule: React.FC<CreateScheduleBoxProps> = props => {
   // 跳转更多选项
   const onToMore = async () => {
     const params = await onGetParams()
-    dispatch(setIsShowScheduleVisible(true))
-    dispatch(setShowScheduleParams(params))
+    dispatch(setScheduleModal({ visible: true, params }))
     setTimeout(() => {
       onClose()
     }, 10)
@@ -380,7 +376,7 @@ const CreateEasySchedule: React.FC<CreateScheduleBoxProps> = props => {
             <ItemFlex>
               <div className="box">
                 <Select
-                  value={normalCategory.calendar_id}
+                  value={normalCategory?.calendar_id}
                   onChange={value =>
                     setNormalCategory(
                       calendarCategory.filter(
@@ -407,7 +403,7 @@ const CreateEasySchedule: React.FC<CreateScheduleBoxProps> = props => {
                         color={normalCategory.color}
                         onChangeColor={color => {
                           setNormalCategory({
-                            calendar_id: normalCategory.calendar_id,
+                            calendar_id: normalCategory?.calendar_id,
                             color,
                           })
                           setIsVisible(false)

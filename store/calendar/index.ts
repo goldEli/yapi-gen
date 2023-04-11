@@ -29,16 +29,17 @@ type SliceState = {
     date: number
   }[]
   // 是否打开创建或者是编辑日程弹窗
-  isShowScheduleVisible: boolean
-  showScheduleParams: Model.Calendar.ShowScheduleParams
-  // 是否打开创建或者是编辑日程弹窗 -- 简易
-  isShowScheduleEasyVisible: boolean
-  showScheduleEasyParams: Model.Calendar.ShowScheduleParams
+  scheduleModal: {
+    visible: boolean
+    params?: Model.Calendar.ShowScheduleParams
+  }
   // 是否打开创建或者是编辑日历弹窗
-  isShowCalendarVisible: boolean
-  showCalendarParams: Model.Calendar.ShowCalendarParams
+  calendarModal: {
+    visible: boolean
+    params?: Model.Calendar.ShowCalendarParams
+  }
   // 是否打开订阅日历弹窗
-  isShowSubscribeVisible: boolean
+  subscribeModal: boolean
   // 选择的月信息
   selectedMonth: Model.Calendar.DayOfMonth[]
 }
@@ -109,13 +110,15 @@ const initialState: SliceState = {
       date: dayjs('2023-4-1 00:00:00').valueOf(),
     },
   ],
-  isShowScheduleVisible: false,
-  showScheduleParams: {},
-  isShowScheduleEasyVisible: false,
-  showScheduleEasyParams: {},
-  isShowCalendarVisible: false,
-  showCalendarParams: {},
-  isShowSubscribeVisible: false,
+  scheduleModal: {
+    visible: false,
+    params: {},
+  },
+  calendarModal: {
+    visible: false,
+    params: {},
+  },
+  subscribeModal: false,
   selectedMonth: [
     {
       lunar_year_chinese: '二零二三',
@@ -940,70 +943,29 @@ const slice = createSlice({
     setSelectedDay(state, action: PayloadAction<SliceState['selectedDay']>) {
       state.selectedDay = action.payload
     },
-    setCreateEasyScheduleModal(
+    setScheduleModal(
       state,
-      action: PayloadAction<
-        SliceState['showScheduleEasyParams'] & {
-          visible: SliceState['isShowScheduleEasyVisible']
-        }
-      >,
+      action: PayloadAction<SliceState['scheduleModal']>,
     ) {
-      if (state.isShowCalendarVisible === action.payload.visible) {
-        return
-      }
-      state.isShowCalendarVisible = action.payload.visible
-      const { id, time, isAll, position } = action.payload
-      state.showScheduleEasyParams = {
-        id,
-        // 日程时间
-        time,
-        // 是否全天
-        isAll,
-        // 小弹窗位置
-        position,
+      state.scheduleModal = {
+        ...state.scheduleModal,
+        ...action.payload,
       }
     },
-    setIsShowScheduleVisible(
+    setCalendarModal(
       state,
-      action: PayloadAction<SliceState['isShowScheduleVisible']>,
+      action: PayloadAction<SliceState['calendarModal']>,
     ) {
-      state.isShowScheduleVisible = action.payload
+      state.calendarModal = {
+        ...state.calendarModal,
+        ...action.payload,
+      }
     },
-    setShowScheduleParams(
+    setSubscribeModal(
       state,
-      action: PayloadAction<SliceState['showScheduleParams']>,
+      action: PayloadAction<SliceState['subscribeModal']>,
     ) {
-      state.showScheduleParams = action.payload
-    },
-    setIsShowScheduleEasyVisible(
-      state,
-      action: PayloadAction<SliceState['isShowScheduleEasyVisible']>,
-    ) {
-      state.isShowScheduleEasyVisible = action.payload
-    },
-    setShowScheduleEasyParams(
-      state,
-      action: PayloadAction<SliceState['showScheduleEasyParams']>,
-    ) {
-      state.showScheduleEasyParams = action.payload
-    },
-    setIsShowCalendarVisible(
-      state,
-      action: PayloadAction<SliceState['isShowCalendarVisible']>,
-    ) {
-      state.isShowCalendarVisible = action.payload
-    },
-    setShowCalendarParams(
-      state,
-      action: PayloadAction<SliceState['showCalendarParams']>,
-    ) {
-      state.showCalendarParams = action.payload
-    },
-    setIsShowSubscribeVisible(
-      state,
-      action: PayloadAction<SliceState['isShowSubscribeVisible']>,
-    ) {
-      state.isShowSubscribeVisible = action.payload
+      state.subscribeModal = action.payload
     },
   },
   extraReducers(builder) {
@@ -1040,14 +1002,9 @@ export const {
   setCheckedCalendarList,
   setCalendarData,
   setRouterMenu,
-  setIsShowScheduleVisible,
-  setShowScheduleParams,
-  setIsShowScheduleEasyVisible,
-  setShowScheduleEasyParams,
-  setIsShowCalendarVisible,
-  setShowCalendarParams,
-  setIsShowSubscribeVisible,
-  setCreateEasyScheduleModal,
+  setCalendarModal,
+  setScheduleModal,
+  setSubscribeModal,
 } = slice.actions
 
 export default calendar

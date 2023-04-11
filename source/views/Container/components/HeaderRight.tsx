@@ -37,9 +37,9 @@ import helpPdf from '/Agile.pdf'
 import { t } from 'i18next'
 import SiteNotifications from '@/views/SiteNotifications/SiteNotifications'
 import {
-  setIsShowCalendarVisible,
-  setIsShowScheduleVisible,
-  setIsShowSubscribeVisible,
+  setCalendarModal,
+  setScheduleModal,
+  setSubscribeModal,
 } from '@store/calendar'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
@@ -291,13 +291,13 @@ const HeaderRight = () => {
         dispatch(setCreateDemandProps({ overallCreate: true }))
         return
       case 'schedule':
-        dispatch(setIsShowScheduleVisible(true))
+        dispatch(setScheduleModal({ visible: true }))
         return
       case 'calendar':
-        dispatch(setIsShowCalendarVisible(true))
+        dispatch(setCalendarModal({ visible: true }))
         return
       case 'subscribe':
-        dispatch(setIsShowSubscribeVisible(true))
+        dispatch(setSubscribeModal(true))
     }
   }
 
