@@ -18,6 +18,7 @@ const ColorItem = styled.div<{ color: string }>`
   align-items: center;
   justify-content: center;
   background: ${props => props.color};
+  cursor: pointer;
   svg {
     color: var(--neutral-white-d1) !important;
   }

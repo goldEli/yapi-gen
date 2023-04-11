@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Collapse } from 'antd'
 import styled from '@emotion/styled'
 import { CloseWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import MoreDropdown from '@/components/MoreDropdown'
 import { useDispatch, useSelector } from '@store/index'
-import { getCalendarList } from '@store/calendar/calendar.thunk'
 import {
   setCalendarData,
   setCheckedCalendarList,
@@ -13,8 +12,6 @@ import {
   setIsShowSubscribeVisible,
 } from '@store/calendar'
 import CalendarMoreDropdown from './CalendarMoreDropdown'
-import CalendarSubscribe from './CalendarSubscribe'
-import CalendarFormModal from './CalendarFormModal'
 import { colorMap } from '../../config'
 
 const { Panel } = Collapse
@@ -84,7 +81,7 @@ const ItemBox = styled.div`
 
 interface CalendarManagerListProps {
   title: string
-  type: string
+  type: 'manager' | 'subscribe'
 }
 
 const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
@@ -131,14 +128,8 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
       : dispatch(setIsShowCalendarVisible(true))
   }
 
-  useEffect(() => {
-    dispatch(getCalendarList())
-  }, [])
-
   return (
     <div style={{ marginBottom: 24 }}>
-      <CalendarSubscribe />
-      <CalendarFormModal />
       <CollapseWrap
         defaultActiveKey={['1']}
         ghost
@@ -168,7 +159,7 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
             <CalendarManagerListItem key={i.id}>
               <ItemBox key={i.id} onClick={() => onChangeCheck(i)}>
                 <IconFont
-                  type={i.is_check ? 'pput-sel' : 'put'}
+                  type={i.is_check === 1 ? 'pput-sel' : 'put'}
                   style={{ fontSize: 16, color: colorMap[i.color] }}
                 />
                 <span className="name">

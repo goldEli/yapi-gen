@@ -32,7 +32,7 @@ import {
 import IconFont from '@/components/IconFont'
 import { useEffect, useRef, useState } from 'react'
 import CalendarColor from '../CalendarColor'
-import { ColorWrap } from '../CalendarManagerList/CalendarFormModal/style'
+import { ColorWrap } from '../CalendarSidebar/CalendarFormModal/style'
 import { colorMap } from '../../config'
 import AddMemberCommonModal from '@/components/AddUser/CommonModal'
 import CommonUserAvatar from '@/components/CommonUserAvatar'

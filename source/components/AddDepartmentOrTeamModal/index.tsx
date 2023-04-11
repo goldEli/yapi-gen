@@ -25,27 +25,11 @@ interface AddDepartmentModalProps {
   type: Model.Calendar.ChooseAddType
 }
 
-const data: Model.Calendar.MemberItem[] = [
-  { name: '哈哈哈', id: 0, is_checked: 1 },
-  { name: '12121', id: 2, is_checked: 0 },
-  { name: '哈哈1212哈', id: 3, is_checked: 0 },
-  { name: '44444', id: 4, is_checked: 0 },
-  { name: '哈哈222哈', id: 5, is_checked: 0 },
-  { name: '1222222121', id: 6, is_checked: 0 },
-  { name: '哈哈12222212哈', id: 7, is_checked: 0 },
-  { name: '44222222222224442222222222', id: 8, is_checked: 0 },
-  { name: '44444', id: 9, is_checked: 0 },
-  { name: '哈哈222哈', id: 10, is_checked: 0 },
-  { name: '1222222121', id: 11, is_checked: 0 },
-  { name: '哈哈12222212哈', id: 12, is_checked: 0 },
-  { name: '44222222222224442222222222', id: 13, is_checked: 0 },
-]
-
 const AddDepartmentModal = (props: AddDepartmentModalProps) => {
   const [checkedList, setCheckedList] = useState<Model.Calendar.MemberItem[]>(
     [],
   )
-  const [dataList, setDataList] = useState<Model.Calendar.MemberItem[]>(data)
+  const [dataList, setDataList] = useState<Model.Calendar.MemberItem[]>([])
   const [searchValue, setSearchValue] = useState('')
 
   useEffect(() => {
@@ -73,12 +57,12 @@ const AddDepartmentModal = (props: AddDepartmentModalProps) => {
     const result: Model.Calendar.MemberItem[] = dataList.map(
       (i: Model.Calendar.MemberItem) => ({
         ...i,
-        is_checked: e.target.checked ? 1 : 0,
+        is_checked: e.target.checked ? 1 : 2,
       }),
     )
     setDataList(result)
     if (e.target.checked) {
-      setCheckedList(data)
+      // setCheckedList([])
     } else {
       setCheckedList([])
     }
@@ -89,7 +73,7 @@ const AddDepartmentModal = (props: AddDepartmentModalProps) => {
     const result: Model.Calendar.MemberItem[] = dataList.map(
       (i: Model.Calendar.MemberItem) => ({
         ...i,
-        is_checked: 0,
+        is_checked: 2,
       }),
     )
     setDataList(result)
@@ -115,7 +99,7 @@ const AddDepartmentModal = (props: AddDepartmentModalProps) => {
       )
       newDataList = dataList.map((i: Model.Calendar.MemberItem) => ({
         ...i,
-        is_checked: i.id === item.id ? 0 : i.is_checked,
+        is_checked: i.id === item.id ? 2 : i.is_checked,
       }))
     }
     setDataList(newDataList)
@@ -129,7 +113,7 @@ const AddDepartmentModal = (props: AddDepartmentModalProps) => {
     )
     const newDataList = dataList.map((i: Model.Calendar.MemberItem) => ({
       ...i,
-      is_checked: i.id === item.id ? 0 : i.is_checked,
+      is_checked: i.id === item.id ? 2 : i.is_checked,
     }))
 
     setDataList(newDataList)

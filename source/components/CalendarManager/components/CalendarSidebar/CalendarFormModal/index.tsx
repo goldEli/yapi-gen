@@ -42,12 +42,12 @@ import { useDispatch, useSelector } from '@store/index'
 import {
   setIsShowCalendarVisible,
   setShowCalendarParams,
-  setCalendarData,
 } from '@store/calendar'
-import { addCalendar } from '@/services/calendar'
+import { addCalendar, editCalendar, getCalendarInfo } from '@/services/calendar'
+import { getCalendarList } from '@store/calendar/calendar.thunk'
 
 interface PermissionDropProps {
-  onUpdateShare(item: Model.Calendar.MemberItem): void
+  onUpdateShare(item: Model.Calendar.MemberItem, type: string): void
   item: Model.Calendar.MemberItem
 }
 
@@ -68,14 +68,14 @@ const PermissionDrop = (props: PermissionDropProps) => {
 
   //  移除成员
   const onDeleteMember = () => {
-    // 删除成员并更新
+    props.onUpdateShare(props.item, 'delete')
     setIsDeleteVisible(false)
   }
 
   // 改变权限
   const onChangePermission = (i: Model.Calendar.GetRelateConfigCommonInfo) => {
     const newItem = { ...props.item, permission: i.value }
-    props.onUpdateShare(newItem)
+    props.onUpdateShare(newItem, 'update')
     setIsVisible(false)
   }
 
@@ -158,12 +158,8 @@ const PermissionDrop = (props: PermissionDropProps) => {
 const CalendarFormModal = () => {
   const [form] = Form.useForm()
   const dispatch = useDispatch()
-  const {
-    isShowCalendarVisible,
-    showCalendarParams,
-    relateConfig,
-    calendarData,
-  } = useSelector(store => store.calendar)
+  const { isShowCalendarVisible, showCalendarParams, relateConfig } =
+    useSelector(store => store.calendar)
   const inputRefDom = useRef<HTMLInputElement>(null)
   // 创建日历默认主题色
   const [normalColor, setNormalColor] = useState(0)
@@ -200,6 +196,7 @@ const CalendarFormModal = () => {
     setCurrentPermission(relateConfig.calendar.permission_types[0].value)
     dispatch(setIsShowCalendarVisible(false))
     dispatch(setShowCalendarParams({}))
+    form.resetFields()
   }
 
   // 切换图标
@@ -303,6 +300,7 @@ const CalendarFormModal = () => {
     values.share_members = shareList.map((i: Model.Calendar.MemberItem) => ({
       user_id: i.id,
       user_group_id: i.permission,
+      is_owner: i.is_owner ?? 2,
     }))
     values.subscribe_members = subscribedList.map(
       (i: Model.Calendar.MemberItem) => ({
@@ -312,34 +310,66 @@ const CalendarFormModal = () => {
     )
     values.icon = path
     values.permission = currentPermission
-
-    const response = await addCalendar(values)
-    response.is_check = 2
-    dispatch(
-      setCalendarData({
-        ...calendarData,
-        ...{ manager: [...calendarData.manager, ...[response]] },
-      }),
-    )
+    if (showCalendarParams.id) {
+      await editCalendar(values, showCalendarParams.id)
+    } else {
+      await addCalendar(values)
+    }
+    dispatch(getCalendarList())
     onClose()
     message.success(showCalendarParams.id ? '编辑成功!' : '创建成功!')
   }
 
-  // 修改共享成员的权限
-  const onUpdateShare = (item: Model.Calendar.MemberItem) => {
-    const resultList = shareList.map((i: Model.Calendar.MemberItem) => ({
-      ...i,
-      permission: i.id === item.id ? item.permission : i.permission,
-    }))
+  // 更新共享成员
+  const onUpdateShare = (item: Model.Calendar.MemberItem, type: string) => {
+    let resultList
+    if (type === 'update') {
+      resultList = shareList.map((i: Model.Calendar.MemberItem) => ({
+        ...i,
+        permission: i.id === item.id ? item.permission : i.permission,
+      }))
+    } else {
+      resultList = shareList.filter(
+        (i: Model.Calendar.MemberItem) => i.id !== item.id,
+      )
+    }
     setShareList(resultList)
   }
 
+  // 获取日历详情
+  const getCalendarInfoData = async () => {
+    const response = await getCalendarInfo({ id: showCalendarParams.id })
+    form.setFieldsValue(response)
+    setNormalColor(response.color)
+    setPath(response.icon)
+    setCurrentPermission(response.permission)
+    setShareList(
+      response.share_members.map((i: any) => ({
+        id: i.user_id,
+        name: i.user.name,
+        permission: i.user_group_id,
+        is_owner: i.is_owner,
+      })),
+    )
+    setSubscribedList(
+      response.subscribe_members.map((i: any) => ({
+        id: i.object_id,
+        name: i.object.name,
+        type: i.object_type,
+      })),
+    )
+  }
+
   useEffect(() => {
-    if (isShowCalendarVisible) {
-      setPath(relateConfig.calendar.icon_path[0])
-      setCurrentPermission(relateConfig.calendar.permission_types[0].value)
+    if (showCalendarParams.id) {
+      getCalendarInfoData()
     }
-  }, [isShowCalendarVisible, relateConfig])
+  }, [showCalendarParams])
+
+  useEffect(() => {
+    setPath(relateConfig.calendar.icon_path?.[0])
+    setCurrentPermission(relateConfig.calendar.permission_types[0]?.value)
+  }, [relateConfig])
 
   return (
     <>
@@ -363,11 +393,11 @@ const CalendarFormModal = () => {
       />
       <CommonModal
         isVisible={isShowCalendarVisible}
-        title="创建日历"
+        title={showCalendarParams.id ? '编辑日历' : '创建日历'}
         width={528}
         onClose={onClose}
         onConfirm={onCreateConfirm}
-        confirmText="创建"
+        confirmText={showCalendarParams.id ? '确认' : '创建'}
       >
         <FormWrap layout="vertical" form={form}>
           <Form.Item
@@ -433,7 +463,10 @@ const CalendarFormModal = () => {
                   <ColorWrap>
                     <CalendarColor
                       color={normalColor}
-                      onChangeColor={setNormalColor}
+                      onChangeColor={val => {
+                        setNormalColor(val)
+                        setIsVisible(false)
+                      }}
                     />
                   </ColorWrap>
                 }
@@ -459,8 +492,12 @@ const CalendarFormModal = () => {
                 {shareList.map((i: Model.Calendar.MemberItem) => (
                   <ShareMemberItem key={i.id}>
                     <CommonUserAvatar avatar={i.avatar} name={i.name} />
-                    {/* <div className="notCanOperation">管理员</div> */}
-                    <PermissionDrop onUpdateShare={onUpdateShare} item={i} />
+                    {i.is_owner === 1 && (
+                      <div className="notCanOperation">管理员</div>
+                    )}
+                    {i.is_owner !== 1 && (
+                      <PermissionDrop onUpdateShare={onUpdateShare} item={i} />
+                    )}
                   </ShareMemberItem>
                 ))}
               </Form.Item>

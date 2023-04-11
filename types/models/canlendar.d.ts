@@ -55,7 +55,7 @@ declare namespace Model.Calendar {
   // 创建日历弹窗传入参数
   interface ShowCalendarParams {
     // 用于编辑日历详情查询
-    id?: string | number
+    id?: number
   }
 
   // 创建日程弹窗传入参数
@@ -92,16 +92,17 @@ declare namespace Model.Calendar {
     name: string
     avatar?: string
     // 1是选中
-    is_checked?: 0 | 1
+    is_checked?: 1 | 2
     type?: ChooseAddType
     permission?: number
+    is_owner?: 1 | 2
   }
   // 日历列表返回数据
   interface Info {
     calendar_id: number
     id: number
     color: number
-    is_owner: number
+    is_owner: 1 | 2
     // 1 是默认的日历，用于判断删除权限
     is_default: 0 | 1
     name: string

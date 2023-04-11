@@ -1,13 +1,5 @@
 import * as http from '@/tools/http'
 
-// 日历列表 我管理的、我订阅的 -- finish
-export const getCalendarList = async () => {
-  const response = await http.get<any, API.Calendar.GetCalendarList.Result>(
-    'getUserCalendars',
-  )
-  return response
-}
-
 // 订阅日历列表
 export const getSubscribeList = async (
   params: API.Calendar.GetSubscribeList.Params,
@@ -118,6 +110,14 @@ export const getSubscribeList = async (
   return response
 }
 
+// 日历列表 我管理的、我订阅的 -- finish
+export const getCalendarList = async () => {
+  const response = await http.get<any, API.Calendar.GetCalendarList.Result>(
+    'getUserCalendars',
+  )
+  return response
+}
+
 // 获取日历相关配置下拉 -- finish
 export const getRelateConfig = async () => {
   const response = await http.get<any, API.Calendar.GetRelateConfig.Result>(
@@ -128,18 +128,29 @@ export const getRelateConfig = async () => {
 
 // 创建日历 -- finish
 export const addCalendar = async (params: API.Calendar.AddCalendar.Params) => {
-  const response = await http.post<any, any>('addCalendar', params)
-  return response.data
+  await http.post<any, any>('addCalendar', params)
 }
 
-// 编辑日历
-export const editCalendar = async (params: API.Calendar.AddCalendar.Params) => {
-  await http.put<any, any>(`/b/calendar/${params.id}`, params)
+// 编辑日历 -- finish
+export const editCalendar = async (
+  params: API.Calendar.AddCalendar.Params,
+  id: number,
+) => {
+  await http.put<any, any>(`/b/calendar/${id}`, params)
 }
 
-// 删除日历
+// 删除日历 -- finish
 export const deleteCalendar = async (params: { id: number }) => {
   await http.delete<any, any>(`/b/calendar/${params.id}`)
+}
+
+// 获取日历详情  -- finish
+export const getCalendarInfo = async (params: { id: number | undefined }) => {
+  const response = await http.get<any, API.Calendar.CalendarInfo.Result>(
+    `/b/calendar/${params.id}`,
+  )
+
+  return response.data
 }
 
 // 订阅日历
@@ -150,15 +161,6 @@ export const subscribeCalendar = async (params: { id: number }) => {
 // 取消订阅日历
 export const unsubscribeCalendar = async (params: { id: number }) => {
   await http.post<any, any>(`/b/calendar/${params.id}/unsubscribe`)
-}
-
-// 获取日历详情
-export const getCalendarInfo = async (params: { id: number }) => {
-  const response = await http.get<any, API.Calendar.CalendarInfo.Result>(
-    `/b/calendar/${params.id}`,
-  )
-
-  return response
 }
 
 // 获取日历设置接口
