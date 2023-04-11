@@ -60,10 +60,6 @@ declare namespace Model.Calendar {
   interface ShowScheduleParams {
     // 用于编辑日程详情查询
     id?: string | number
-    // 简易创建与完整创建弹窗宽度
-    width?: string | number
-    // 是否有右侧可视化操作
-    hasRight?: boolean
     // 日程时间
     time?: {
       startTime: string

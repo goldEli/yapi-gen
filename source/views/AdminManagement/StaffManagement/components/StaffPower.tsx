@@ -24,13 +24,15 @@ const PersonalFooter = styled.div`
 `
 const Left = styled.div``
 const Line = styled.div`
-  color: rgba(100, 101, 102, 1);
+  color: var(--neutral-n2);
   margin-top: 24px;
+  line-height: 32px;
 `
 const RightLine = styled(Line)`
-  text-align: right;
   margin-top: 24px;
-  color: rgba(50, 50, 51, 1);
+  color: var(--neutral-n1-d1);
+  display: flex;
+  justify-content: flex-end;
 `
 
 const Right = styled.div``
@@ -38,22 +40,6 @@ const imgCss = css`
   width: 32px;
   height: 32px;
   border-radius: 50%;
-`
-
-const SetHead = styled.div`
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  border-radius: 50%;
-  font-size: 16px;
-  background: #a4acf5;
-  background-blend-mode: normal;
-  border: 2px solid rgba(40, 119, 255, 0.16);
-  border: 1px solid var(--neutral-white-d2);
-  color: var(--neutral-white-d2);
 `
 
 export const StaffPersonal = (props: {
@@ -115,11 +101,7 @@ export const StaffPersonal = (props: {
         </Left>
         <Right>
           <PersonalHead>
-            {data?.avatar ? (
-              <img className={imgCss} src={data?.avatar} alt="" />
-            ) : (
-              <CommonUserAvatar />
-            )}
+            <CommonUserAvatar avatar={data?.avatar} size="large" />
           </PersonalHead>
           <RightLine>{data.phone ? data.phone : '-'}</RightLine>
           <RightLine>{data.email ? data.email : '-'}</RightLine>

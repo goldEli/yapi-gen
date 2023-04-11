@@ -4,8 +4,8 @@ import CommonButton from '@/components/CommonButton'
 import CommonModal from '@/components/CommonModal'
 import { CloseWrap, ModalFooter } from '@/components/StyleCommon'
 import {
-  setIsShowScheduleVisible,
-  setShowScheduleParams,
+  setIsShowScheduleEasyVisible,
+  setShowScheduleEasyParams,
 } from '@store/calendar'
 import { useDispatch, useSelector } from '@store/index'
 import {
@@ -15,7 +15,6 @@ import {
   Form,
   Input,
   Popover,
-  Radio,
   Select,
 } from 'antd'
 import {
@@ -40,10 +39,6 @@ import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { RangePickerProps } from 'antd/lib/date-picker'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import { Moment } from 'moment'
-import RepeatModal from './RepeatModal'
-import UploadAttach from '@/components/UploadAttach'
-import CreateVisualization from './CreateVisualization'
-import dayjs from 'dayjs'
 
 interface CreateFormItemProps {
   type: string
@@ -59,34 +54,24 @@ const CreateFormItem = (props: CreateFormItemProps) => {
   )
 }
 
-const CreateSchedule = () => {
+const CreateEasySchedule = () => {
   const dispatch = useDispatch()
   const leftDom: any = useRef<HTMLDivElement>(null)
   const inputDom: any = useRef<HTMLInputElement>(null)
-  const { isShowScheduleVisible, showScheduleParams, partialDayTimeOption } =
-    useSelector(store => store.calendar)
+  const {
+    isShowScheduleEasyVisible,
+    showScheduleEasyParams,
+    partialDayTimeOption,
+  } = useSelector(store => store.calendar)
   const [form] = Form.useForm()
   const [isVisible, setIsVisible] = useState(false)
   // 创建日历默认主题色
   const [normalColor, setNormalColor] = useState(0)
   // 选择成员显示
   const [isChooseVisible, setIsChooseVisible] = useState(false)
-  // 忙碌或者空闲
-  const [status, setStatus] = useState(1)
+
   // 是否是全天
   const [isAll, setIsAll] = useState(false)
-  //   重复
-  const [repeatValue, setRepeatValue] = useState<{
-    value: number
-    params: any
-  }>({
-    value: 0,
-    params: {},
-  })
-  // 重复弹窗
-  const [isRepeatVisible, setIsRepeatVisible] = useState(false)
-  // 当前选择的重复值
-  const [currentRepeat, setCurrentRepeat] = useState<number>(0)
   const [time, setTime] = useState<
     Moment | undefined | DatePickerProps['value'] | RangePickerProps['value']
   >()
@@ -102,17 +87,6 @@ const CreateSchedule = () => {
   const [noticeList, setNoticeList] = useState<{ id: number; value: number }[]>(
     [],
   )
-  //   附件
-  const [attachList, setAttachList] = useState<any>([])
-
-  // 日程时间是否重复
-  const repeatOption = [
-    { label: '不重复', value: 0 },
-    { label: '每天重复', value: 1 },
-    { label: '每周重复', value: 2 },
-    { label: '每月重复', value: 3 },
-    { label: '每年重复', value: 4 },
-  ]
 
   // 参与者的权限
   const checkboxOptions = [
@@ -120,16 +94,11 @@ const CreateSchedule = () => {
     { label: '邀请参与者', value: 1 },
   ]
 
-  const publicOptions = [
-    { label: '默认的公开范围', value: 0 },
-    { label: '公开', value: 1 },
-    { label: '私密', value: 2 },
-  ]
-
   // 关闭弹窗
   const onClose = () => {
-    dispatch(setShowScheduleParams({}))
-    dispatch(setIsShowScheduleVisible(false))
+    console.log(1111)
+    dispatch(setShowScheduleEasyParams({}))
+    dispatch(setIsShowScheduleEasyVisible(false))
   }
 
   // 保存
@@ -161,14 +130,6 @@ const CreateSchedule = () => {
     setParticipant({ ...participant, ...{ list: resultList } })
   }
 
-  // 修改日程时间
-  const onChangeTime = (
-    value: DatePickerProps['value'] | RangePickerProps['value'],
-    _dateString: [string, string] | string,
-  ) => {
-    setTime(value)
-  }
-
   // 是否是全天
   const onChangeIsAll = (e: CheckboxChangeEvent) => {
     setIsAll(e.target.checked)
@@ -176,17 +137,6 @@ const CreateSchedule = () => {
       isAll: e.target.checked,
       time,
     })
-  }
-
-  //   修改重复
-  const onChangeRepeat = (value: number) => {
-    setIsRepeatVisible(true)
-    setCurrentRepeat(value)
-  }
-
-  // 重复小弹窗确认事件
-  const onRepeatConfirm = (params: any) => {
-    //
   }
 
   // 添加提醒
@@ -212,32 +162,16 @@ const CreateSchedule = () => {
     setNoticeList(result)
   }
 
-  //   修改附件
-  const onChangeAttachment = (result: any) => {
-    console.log(result)
-    setAttachList(result)
-  }
-
   useEffect(() => {
-    if (isShowScheduleVisible) {
+    if (isShowScheduleEasyVisible) {
       setTimeout(() => {
         inputDom.current.focus()
       }, 100)
     }
-  }, [isShowScheduleVisible])
+  }, [isShowScheduleEasyVisible])
 
   return (
     <>
-      <RepeatModal
-        isVisible={isRepeatVisible}
-        title={repeatOption[currentRepeat].label}
-        currentRepeat={currentRepeat}
-        onRepeatConfirm={onRepeatConfirm}
-        onClose={() => {
-          setIsRepeatVisible(false)
-          setCurrentRepeat(0)
-        }}
-      />
       <AddMemberCommonModal
         isVisible={isChooseVisible}
         title="添加成员"
@@ -245,19 +179,15 @@ const CreateSchedule = () => {
         onConfirm={onAddConfirm}
       />
       <CommonModal
-        isVisible={isShowScheduleVisible}
-        title={showScheduleParams.id ? '编辑日程' : '创建日程'}
-        width={1056}
+        isShowMask={false}
+        isVisible={isShowScheduleEasyVisible}
+        title={showScheduleEasyParams.id ? '编辑日程' : '创建日程'}
+        width={480}
         onClose={onClose}
         hasFooter={
           <ModalFooter>
-            <CommonButton type="light" onClick={onClose}>
-              取消
-            </CommonButton>
-            <CommonButton type="secondary">完成并创建下一个</CommonButton>
-            <CommonButton type="primary" onClick={onConfirm}>
-              创建
-            </CommonButton>
+            <CommonButton type="light">更多选项</CommonButton>
+            <CommonButton type="primary">创建</CommonButton>
           </ModalFooter>
         }
       >
@@ -289,10 +219,10 @@ const CreateSchedule = () => {
                 rules={[{ required: true, message: '' }]}
                 style={{ margin: 0, width: '80%' }}
               >
-                <DatePicker
+                <DatePicker.RangePicker
                   style={{ width: '100%' }}
                   showTime
-                  onChange={onChangeTime}
+                  onChange={setTime}
                   allowClear={false}
                 />
               </Form.Item>
@@ -300,15 +230,6 @@ const CreateSchedule = () => {
                 全天
               </Checkbox>
             </TimeWrap>
-            <Form.Item style={{ width: '80%', marginTop: 8 }}>
-              <Select
-                className="select"
-                value={repeatValue.value}
-                options={repeatOption}
-                onChange={onChangeRepeat}
-                getPopupContainer={n => n}
-              />
-            </Form.Item>
             <ItemFlex style={{ margin: '24px 0' }}>
               <div className="box">
                 <CreateFormItem type="team" label="参与者" />
@@ -387,22 +308,6 @@ const CreateSchedule = () => {
               </ItemFlex>
             </Form.Item>
             <Form.Item
-              label={<CreateFormItem label="公开范围" type="lock" />}
-              name="public"
-              style={{ margin: 0 }}
-            >
-              <Select options={publicOptions} getPopupContainer={n => n} />
-            </Form.Item>
-            <Form.Item>
-              <Radio.Group
-                value={status}
-                onChange={e => setStatus(e.target.value)}
-              >
-                <Radio value={1}>忙碌</Radio>
-                <Radio value={2}>空闲</Radio>
-              </Radio.Group>
-            </Form.Item>
-            <Form.Item
               label={<CreateFormItem label="提醒" type="alarm" />}
               name="notice"
             >
@@ -422,6 +327,7 @@ const CreateSchedule = () => {
                     options={partialDayTimeOption}
                     onChange={value => onChangeNotice(value, i.id)}
                     getPopupContainer={n => n}
+                    style={{ width: '92%' }}
                   />
                   <IconFont
                     onClick={() => onDeleteNotice(i.id)}
@@ -431,32 +337,11 @@ const CreateSchedule = () => {
                 </NoticeBox>
               ))}
             </Form.Item>
-            <Form.Item
-              label={<CreateFormItem label="附件" type="attachment" />}
-              name="attachment"
-            >
-              <UploadAttach
-                defaultList={attachList}
-                onChangeAttachment={onChangeAttachment}
-                addWrap={
-                  <div style={{ marginBottom: 8 }}>
-                    <CommonButton
-                      type="primaryText"
-                      icon="plus"
-                      iconPlacement="left"
-                    >
-                      添加附件
-                    </CommonButton>
-                  </div>
-                }
-              />
-            </Form.Item>
           </CreateForm>
-          <CreateVisualization />
         </CreateContent>
       </CommonModal>
     </>
   )
 }
 
-export default CreateSchedule
+export default CreateEasySchedule

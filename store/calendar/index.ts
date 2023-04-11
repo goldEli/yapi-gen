@@ -31,6 +31,9 @@ type SliceState = {
   // 是否打开创建或者是编辑日程弹窗
   isShowScheduleVisible: boolean
   showScheduleParams: Model.Calendar.ShowScheduleParams
+  // 是否打开创建或者是编辑日程弹窗 -- 简易
+  isShowScheduleEasyVisible: boolean
+  showScheduleEasyParams: Model.Calendar.ShowScheduleParams
   // 是否打开创建或者是编辑日历弹窗
   isShowCalendarVisible: boolean
   showCalendarParams: Model.Calendar.ShowCalendarParams
@@ -108,6 +111,8 @@ const initialState: SliceState = {
   ],
   isShowScheduleVisible: false,
   showScheduleParams: {},
+  isShowScheduleEasyVisible: false,
+  showScheduleEasyParams: {},
   isShowCalendarVisible: false,
   showCalendarParams: {},
   isShowSubscribeVisible: false,
@@ -959,6 +964,18 @@ const slice = createSlice({
     ) {
       state.showScheduleParams = action.payload
     },
+    setIsShowScheduleEasyVisible(
+      state,
+      action: PayloadAction<SliceState['isShowScheduleEasyVisible']>,
+    ) {
+      state.isShowScheduleEasyVisible = action.payload
+    },
+    setShowScheduleEasyParams(
+      state,
+      action: PayloadAction<SliceState['showScheduleEasyParams']>,
+    ) {
+      state.showScheduleEasyParams = action.payload
+    },
     setIsShowCalendarVisible(
       state,
       action: PayloadAction<SliceState['isShowCalendarVisible']>,
@@ -1014,6 +1031,8 @@ export const {
   setRouterMenu,
   setIsShowScheduleVisible,
   setShowScheduleParams,
+  setIsShowScheduleEasyVisible,
+  setShowScheduleEasyParams,
   setIsShowCalendarVisible,
   setShowCalendarParams,
   setIsShowSubscribeVisible,
