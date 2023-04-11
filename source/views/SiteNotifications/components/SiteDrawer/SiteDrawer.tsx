@@ -6,7 +6,7 @@
 import IconFont from '@/components/IconFont'
 import { useDispatch, useSelector } from '@store/index'
 import { changeVisible } from '@store/SiteNotifications'
-import { Checkbox, Drawer, Tooltip } from 'antd'
+import { Checkbox, Divider, Drawer, Skeleton, Tooltip } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ContentItem from '../ContentItem/ContentItem'
@@ -119,13 +119,9 @@ const SiteDrawer = () => {
           }}
           hasMore={hasMore}
           height={document.body.clientHeight - 230}
-          loader={<h4 style={{ textAlign: 'center' }}>Loading...</h4>}
+          loader={<Skeleton avatar paragraph={{ rows: 2 }} active />}
           scrollableTarget="scrollableDiv"
-          endMessage={
-            <p style={{ textAlign: 'center' }}>
-              <b>Yay! You have seen it all</b>
-            </p>
-          }
+          endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
         >
           {list.map((i: any, index: any) => (
             <ContentItem name={index} key={i} />
