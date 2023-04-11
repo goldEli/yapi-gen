@@ -13,4 +13,12 @@ declare namespace API.Schedule {
       [key in string]: Model.Schedule.Info[]
     }
   }
+  namespace ScheduleInfoList {
+    type Params ={
+      
+    }
+    type Result = {
+      [key in string]: Model.Schedule.Info[]
+    }
+  }
 }

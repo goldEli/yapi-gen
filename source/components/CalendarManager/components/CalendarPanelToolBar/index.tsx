@@ -63,6 +63,24 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
   )
   // 列表视图初始值
   const calenderListValue = useSelector(state => state.calendarPanel.calenderListValue);
+  // 左侧日历切换的值
+  const checkedTime=useSelector(state=>state.calendar.checkedTime);
+  useEffect(()=>{
+    console.log('check-time',checkedTime,dayjs(checkedTime).format('YYYY-MM-DD'))
+    if(!checkedTime){
+      dispatch(setCalenderDayValue(dayjs().format('YYYY-MM-DD')))
+      return
+    }
+    const selectedMonth=dayjs(checkedTime);
+    const firstDay= dayjs(selectedMonth).startOf('month').format('YYYY-MM-DD');
+    if(calendarPanelType==='day'){
+       dispatch(setCalenderDayValue(firstDay))
+    }else if(calendarPanelType==='month'){
+      dispatch(setCalenderMonthValue(dayjs(checkedTime).format('YYYY-MM')))
+    }else if(calendarPanelType==='list'){
+      dispatch(setCalenderListValue(firstDay))
+    }
+  },[checkedTime])
   useEffect(() => {
     const maps = new Map([
       ['day', dayjs(calenderDayValue).format('YYYY年M月D日')],
@@ -71,6 +89,7 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
       ['year', dayjs(calenderYearValue).format('YYYY年')],
       ['list', dayjs(calenderListValue).format('YYYY年M月D日')],
     ])
+    console.log(111,calendarPanelType)
     setDateText(maps.get(calendarPanelType) as string)
   }, [
     calendarPanelType,
@@ -79,8 +98,9 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
     calenderDayValue,
     calenderWeekValue,
     calenderMonthValue,
+   // checkedTime,
   ])
-
+  
   const iconTypeRef = useRef<number>()
 
   const dispatch = useDispatch()
@@ -135,7 +155,7 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
     }
   }
   const listenMonth = (): void => {
-    const { current } = iconTypeRef
+    const { current } = iconTypeRef;  
     if (current === 1) {
       dispatch(
         setCalenderMonthValue(

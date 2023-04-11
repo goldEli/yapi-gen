@@ -30,8 +30,9 @@ export const saveSchedule =
 
 export const getCalendarDaysOfYeaList = createAsyncThunk(
   `${name}/getCalendarDaysOfYeaList`,
-  async () => {
-    const res = await services.schedule.getCalendarDaysOfYeaList()
+  async (params:API.Schedule.ScheduleInfoList.Params) => {
+    console.log('params----',params)
+    const res = await services.schedule.getCalendarDaysOfYeaList(params)
     return res
   },
 )

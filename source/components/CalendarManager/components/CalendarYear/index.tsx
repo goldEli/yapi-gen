@@ -12,10 +12,16 @@ const Box = styled.div`
 `
 
 const CalendarYear: React.FC<CalendarYearProps> = props => {
-  const disPatch=useDispatch()
+  const disPatch=useDispatch();
+  const calendarData=useSelector(state=>state.calendar.calendarData);
+  console.log('calendarData-------',calendarData)
   useEffect(()=>{
     console.log(11111)
-    disPatch(getCalendarDaysOfYeaList())
+    let params={
+      year:2023,
+      calendar_ids:['2023']
+    }
+    disPatch(getCalendarDaysOfYeaList(params))
   },[])
   return (
     <Box>
