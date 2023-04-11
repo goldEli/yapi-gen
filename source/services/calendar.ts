@@ -1,3 +1,4 @@
+import urls from '@/constants/urls'
 import * as http from '@/tools/http'
 
 // 订阅日历列表
@@ -156,6 +157,17 @@ export const getCalendarInfo = async (params: { id: number | undefined }) => {
 // 订阅日历
 export const subscribeCalendar = async (params: { id: number }) => {
   await http.post<any, any>(`/b/calendar/${params.id}/subscribe`)
+}
+
+// 获取日历周列表
+export const getDaysOfWeekList = async (
+  params: API.Calendar.GetDaysOfWeekList.Params,
+) => {
+  const res = await http.post<any, API.Calendar.GetDaysOfWeekList.Result>(
+    urls.getDaysOfWeekList,
+    params,
+  )
+  return res
 }
 
 // 取消订阅日历

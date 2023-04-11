@@ -14,11 +14,11 @@ type SliceState = {
     y: number
     id: Model.Schedule.Info['schedule_id']
   }
-  //日视图
+  //日视图  2023-01-11
   calenderDayValue: string
-  //周视图
+  //周视图 2023/12
   calenderWeekValue: string
-  //月视图
+  //月视图 2023/2
   calenderMonthValue: string
   //年视图
   calenderYearValue: string

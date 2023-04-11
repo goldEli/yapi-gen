@@ -137,13 +137,14 @@ const urls = {
   getScheduleList: '/b/schedule_list',
   getSubscribeList: '/b/subscribe_list',
   getCalendarIconList: '/b/calendar_icon_list',
-  getCalendarDaysOfYeaList:'/b/schedule/daysOfYear',
+  getCalendarDaysOfYeaList: '/b/schedule/daysOfYear',
   // 完整地址
   getCalendarConfig: '/b/calendar/getConfig',
   updateCalendarConfig: '/b/calendar/setConfig',
   getRelateConfig: '/b/calendar/enum',
   addCalendar: '/b/calendar',
   getUserCalendars: '/b/calendar/getUserCalendars',
+  getDaysOfWeekList: '/b/calendar/daysOfWeek',
 }
 
 export default urls
