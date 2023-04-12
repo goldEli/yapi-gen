@@ -1,10 +1,15 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { Tabs } from 'antd'
-import styled from '@emotion/styled'
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { DoubleRightOutlined, DoubleLeftOutlined } from '@ant-design/icons'
+import { Space } from 'antd'
+import styled from '@emotion/styled'
 import { css } from '@emotion/css'
-
-type PositionType = 'left' | 'right'
 
 const IconContainer = styled.div`
   width: 40px;
@@ -15,32 +20,38 @@ const IconContainer = styled.div`
   justify-content: center;
 `
 
+const tabsContainer = css`
+  display: flex;
+`
 const tabsWrap = css`
   width: 100%;
-  .ant-tabs > .ant-tabs-nav {
-    .ant-tabs-nav-wrap {
-      background: pink;
-    }
-    .ant-tabs-nav-list {
-      background: #6688ff;
-      .ant-tabs-tab {
-        color: #ffffff;
-      }
-      .ant-tabs-tab.ant-tabs-tab-active {
-        color: #323233;
-      }
-    }
-    .ant-tabs-nav-operations {
-      display: none;
-    }
-  }
+  height: 52px;
+  display: flex;
+  flex: auto;
+  align-self: stretch;
+  overflow: hidden;
+  white-space: nowrap;
+  transform: translate(0);
+  border-bottom: 1px solid #f0f0f0;
 `
-// .ant-tabs-nav-wrap {
-//   // margin-left: 16px;
-// }
-// .ant-tabs-nav-wrap::after {
-//   box-shadow: none;
-// }
+const tabsList = css`
+  position: relative;
+  display: flex;
+  transition: opacity 0.3s;
+`
+
+const TabItem = styled.div`
+  height: 52px;
+  padding: 12px 0;
+  cursor: pointer;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  color: ${(props: any) => (props.theme ? '#6688FF' : '#646566')};
+  border-bottom: ${(props: any) =>
+    props.theme ? '2px solid #6688FF' : 'none'};
+`
+
 interface SlideTabsProps {
   onChange?(value: string): void
   defaultValue: string
@@ -52,23 +63,22 @@ const TAB_MARGIN = 32
 
 const SlideTabs: React.FC<SlideTabsProps> = ({
   items,
-  defaultValue,
   onChange,
 }: SlideTabsProps) => {
   const [xAxis, setXAxis] = useState<number>(0)
   const [activeKey, setActiveKey] = useState<string>('1')
-  const [viewRight, setViewRight] = useState<number>(0)
-  const [slidRight, setSlidRight] = useState<number>(0)
+  const [viewRectOffset, setViewRectOffset] = useState<number>(0)
+  const [sliderRectOffset, setSliderRectOffset] = useState<number>(0)
   const nodes = useRef<Array<any>>([])
   const nodeIndex = useRef(0)
   const showLeft = useMemo(() => !!(xAxis < 0), [xAxis])
 
   const showRight = useMemo(() => {
-    return slidRight > viewRight
-  }, [viewRight, slidRight])
+    return sliderRectOffset > viewRectOffset
+  }, [viewRectOffset, sliderRectOffset])
 
   useLayoutEffect(() => {
-    nodes.current = Array.from(document.querySelectorAll('.ant-tabs-tab'))
+    nodes.current = Array.from(document.querySelectorAll('.tab-item'))
   }, [])
 
   const prev = () => {
@@ -103,23 +113,18 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
 
   const resize = () => {
     const { right } = document
-      .getElementsByClassName('ant-tabs-nav-wrap')[0]
+      .getElementsByClassName('tabs-wrap')[0]
       .getBoundingClientRect()
     const { right: sliderRight } = document
-      .getElementsByClassName('ant-tabs-nav-list')[0]
+      .getElementsByClassName('tabs-list')[0]
       .getBoundingClientRect()
-    setViewRight(right)
-    setSlidRight(sliderRight)
+    setViewRectOffset(right)
+    setSliderRectOffset(sliderRight)
   }
-  useEffect(() => {
-    const slider: any = document.getElementsByClassName('ant-tabs-nav-list')[0]
-    slider.style.transform = `translateX(${xAxis}px)`
-    resize()
-  }, [xAxis])
 
   useEffect(() => {
     resize()
-  }, [])
+  }, [xAxis])
 
   useLayoutEffect(() => {
     window.addEventListener('resize', resize)
@@ -128,45 +133,49 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
     }
   }, [])
 
-  const handleChange = (key: string) => {
+  const handleClick = (key: string) => {
     setActiveKey(key)
     onChange?.(key)
   }
 
-  const onTabScroll = (val: any) => {
-    // console.log('val', val)
-  }
-
-  const operateSlot: Record<PositionType, React.ReactNode> = {
-    left: (
-      <>
-        {showLeft && (
-          <IconContainer>
-            <DoubleLeftOutlined onClick={prev} />
-          </IconContainer>
-        )}
-      </>
-    ),
-    right: (
-      <>
-        {showRight && (
-          <IconContainer>
-            <DoubleRightOutlined onClick={next} />
-          </IconContainer>
-        )}
-      </>
-    ),
-  }
+  const isActive = useCallback(
+    (key: string) => {
+      return activeKey === key
+    },
+    [activeKey],
+  )
 
   return (
-    <div className={tabsWrap}>
-      <Tabs
-        tabBarExtraContent={operateSlot}
-        items={items}
-        activeKey={activeKey}
-        onChange={handleChange}
-        onTabScroll={onTabScroll}
-      />
+    <div className={tabsContainer}>
+      {showLeft ? (
+        <IconContainer>
+          <DoubleLeftOutlined onClick={prev} />
+        </IconContainer>
+      ) : null}
+      <div className={`${tabsWrap} tabs-wrap`}>
+        <div
+          className={`${tabsList} tabs-list`}
+          style={{ transform: `translateX(${xAxis}px` }}
+        >
+          <Space size={32}>
+            {items.map(item => (
+              <TabItem
+                className="tab-item"
+                theme={isActive(item.key)}
+                key={item.key}
+                onClick={() => handleClick(item.key)}
+              >
+                {item.label}
+              </TabItem>
+            ))}
+          </Space>
+        </div>
+      </div>
+      {showRight ? (
+        <IconContainer>
+          <DoubleRightOutlined onClick={next} />
+        </IconContainer>
+      ) : null}
     </div>
   )
 }
