@@ -195,7 +195,6 @@ const Addperson = (props: Props) => {
     }))
     const values = fitlerDataList([...member, ...setData])
     setMember(values)
-    // const arrData = fitlerIdsDataList([...member, ...data])
     props.onChangeValues(values)
     setIsVisible(false)
   }

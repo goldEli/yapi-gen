@@ -7,6 +7,12 @@ type SliceState = {
   activeItem: any
   dataList: any
   option: any
+  // 装模板的参数
+  templateContentConfigs: any
+  // 装表单的参数 填写要求的表单内容
+  fillingRequirements: any
+  // 装汇报内容的参数
+  reportContent: any
 }
 
 const formWork = createSlice({
@@ -38,6 +44,9 @@ const formWork = createSlice({
         id: 1,
       },
     ],
+    fillingRequirements: {},
+    reportContent: [],
+    templateContentConfigs: [],
   } as SliceState,
   reducers: {
     // 是否保存
@@ -48,6 +57,18 @@ const formWork = createSlice({
     setActiveItem: (state: any, action) => {
       state.activeItem = action.payload
     },
+    // 装表单的参数 填写要求的表单内容
+    setFillingRequirements: (state: any, action) => {
+      state.fillingRequirements = action.payload
+    },
+    // 装汇报内容的参数
+    setReportContent: (state: any, action) => {
+      state.reportContent = action.payload
+    },
+    // 装模板的参数
+    setTemplateContentConfigs: (state: any, action) => {
+      state.templateContentConfigs = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addCase(getTemplateList.fulfilled, (state, action) => {
@@ -57,6 +78,11 @@ const formWork = createSlice({
   },
 })
 
-export const { setEditSave, setActiveItem } = formWork.actions
-
+export const {
+  setEditSave,
+  setActiveItem,
+  setFillingRequirements,
+  setReportContent,
+  setTemplateContentConfigs,
+} = formWork.actions
 export default formWork.reducer
