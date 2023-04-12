@@ -37,4 +37,4 @@ const CalendarYear: React.FC<CalendarYearProps> = props => {
   )
 }
 
-export default CalendarYear
+export default React.memo(CalendarYear)

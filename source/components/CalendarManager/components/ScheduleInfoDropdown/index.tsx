@@ -1,12 +1,13 @@
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
-import { useSelector } from '@store/index'
+import { useSelector,useDispatch } from '@store/index'
 import { Dropdown } from 'antd'
-import React from 'react'
+import React,{useEffect} from 'react'
 import ScheduleInfoHeaderBox from './ScheduleInfoHeader'
 import ScheduleInfoContent from './SCheduleInfoContent'
 import ScheduleInfoFooter from './ScheduleInfoFooter'
 import useModalPosition from '../../hooks/useModalPosition'
+import {getScheduleInfo} from '@store/schedule/schedule.thunk'
 interface ScheduleInfoDropdownProps {
   containerClassName?: string
 }
@@ -28,7 +29,9 @@ const ScheduleInfoDropdownBox = styled.div<{
   border-radius: 6px;
 `
 const ScheduleInfoDropdown: React.FC<ScheduleInfoDropdownProps> = props => {
-  const { scheduleInfoDropdown } = useSelector(store => store.calendarPanel)
+  const { scheduleInfoDropdown } = useSelector(store => store.calendarPanel);
+  const {schedule_id}=scheduleInfoDropdown
+  console.log('scheduleInfoDropdown----',scheduleInfoDropdown)
   const { visible } = scheduleInfoDropdown
   const { position } = useModalPosition({
     ...scheduleInfoDropdown,
@@ -36,7 +39,12 @@ const ScheduleInfoDropdown: React.FC<ScheduleInfoDropdownProps> = props => {
     modalClassName: '.schedule-info-dropdown-box',
   })
   // console.log({ scheduleInfoDropdown })
-
+  const disPatch=useDispatch()
+  useEffect(() => {
+    if(!schedule_id) return
+    disPatch(getScheduleInfo({id:schedule_id}))
+  }, [schedule_id])
+  
   return (
     <ScheduleInfoDropdownBox
       className="schedule-info-dropdown-box"

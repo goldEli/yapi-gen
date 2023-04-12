@@ -7,7 +7,7 @@ import { Dropdown, Checkbox } from 'antd'
 import React, { useState } from 'react'
 import ScheduleInfoIcon from './../ScheduleInfoIcon'
 import DeleteConfirm from '@/components/DeleteConfirm'
-interface ScheduleInfoDropdownProps {}
+interface ScheduleInfoDropdownProps { }
 const ScheduleInfoHeader = styled.div`
   height: 136px;
   background-color: var(--primary-d1);
@@ -73,7 +73,9 @@ const confirmSure = css`
 `
 const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
   const [isVisible, setIsVisible] = useState(false)
-  const [checked, setChecked] = useState(false)
+  const [checked, setChecked] = useState(false);
+  const {scheduleInfo}=useSelector(state=>state.schedule);
+  console.log('scheduleInfo-----',scheduleInfo)
   const disPatch = useDispatch()
   const onConfirm = () => {
     console.log(checked)
@@ -94,6 +96,13 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
           >
             <ScheduleInfoIcon type="edit" />
           </span>
+          <span
+            onClick={() => {
+              setIsVisible(true)
+            }}
+          >
+            <ScheduleInfoIcon type="delete" />
+          </span>
           <span>...</span>
           <span
             onClick={() => {
@@ -105,8 +114,7 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
         </div>
       </ScheduleInfoHeaderBtn>
       <ScheduleInfoHeaderContent>
-        日程标题日程标题日程标题日程标题日程标题dsadsadasdsadsadsad
-        日程标题日程标题日程标题日程标题日程标.dsadhsadsaadsadasdsadsadsadsas
+      {scheduleInfo.subject}
       </ScheduleInfoHeaderContent>
       <ScheduleInfoHeaderDate>
         3月16 (周三) 15:09 - 3月17 (周五) 16:00

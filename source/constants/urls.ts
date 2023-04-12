@@ -159,7 +159,6 @@ const urls = {
   getScheduleListDaysOfMonth: '/b/schedule/daysOfMonth',
   getScheduleListDay: '/b/schedule/days',
 }
-
 export default urls
 
 export type Urls = typeof urls

@@ -17,7 +17,7 @@ interface ScheduleListBoxProps {
 }
 const ScheduleListBox = styled.div`
   width: 260px;
-  //height:200px;
+  height:200px;
   position: absolute;
   top: ${(props: ScheduleListBoxProps) => props.top + 'px'};
   left: ${(props: ScheduleListBoxProps) => props.left + 'px'};
@@ -92,11 +92,11 @@ const ScheduleListModal: React.FC<ScheduleListProps> = props => {
     state => state.calendarPanel.scheduleInfoDropdown,
   )
   const disPatch = useDispatch()
-  const { visible, top, left, date } = scheduleListModal
-  console.log('scheduleListModal----', scheduleListModal)
-  const scheduleInfoClick = (e: any) => {
+  const { visible, top, left, date,scheduleListData=[] } = scheduleListModal
+  //console.log('scheduleListModal----',scheduleListData,date)
+  const scheduleInfoClick = (e: any,schedule_id:number) => {
     e.stopPropagation()
-    disPatch(setScheduleInfoDropdown({ visible: true }))
+    disPatch(setScheduleInfoDropdown({ visible: true,schedule_id }))
     disPatch(setScheduleListModal({ visible: false }))
   }
   return (
@@ -107,13 +107,13 @@ const ScheduleListModal: React.FC<ScheduleListProps> = props => {
       month={props.month}
     >
       <ScheduleTitle>
-        <span className={dateClass}>16</span>
-        <span className={gregorianDateClass}>甘五</span>
+        <span className={dateClass}>{date}</span>
+        <span className={gregorianDateClass}>{scheduleListData[0]?.lunar_day_chinese}</span>
       </ScheduleTitle>
-      {[1, 2, 3, 4, 5, 6].map(item => (
-        <ScheduleItem key={item} onClick={e => scheduleInfoClick(e)}>
-          <span className={labelTime}>06:00</span>
-          <span className={labelContent}>这是一个日程标题内容</span>
+      {scheduleListData.map((item:Model.Schedule.Info) => (
+        <ScheduleItem key={item.schedule_id} onClick={e => scheduleInfoClick(e,item.schedule_id)}>
+          <span className={labelTime}>{item.start_time}-{item.end_time}</span>
+          <span className={labelContent}>{item.subject}</span>
         </ScheduleItem>
       ))}
       <ScheduleInfoDropdown></ScheduleInfoDropdown>
