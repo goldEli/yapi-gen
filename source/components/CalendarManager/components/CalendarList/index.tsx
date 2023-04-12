@@ -7,7 +7,7 @@ import dayjs from 'dayjs'
 interface CalendarListProps { }
 const CalendarListBox = styled.div`
   background-color: #fff;
-  max-height: 600px;
+  max-height: 500px;
   overflow-y: scroll;
 `
 const CalendarListItem = styled.div`
@@ -86,17 +86,17 @@ const CalendarList: React.FC<CalendarListProps> = props => {
         { text: '这是一个日程标题内容', date: '09-10' },
         { text: '这是一个日程标题内容', date: '11-12' },
       ],
+      time: '2023-04-18'
     },
-    { id: 2, list: [{ text: '这是一个日程标题内容', date: '09-10' }] },
-    { id: 3, list: [{ text: '这是一个日程标题内容', date: '09-10' }] },
-    { id: 2, list: [{ text: '这是一个日程标题内容', date: '09-10' }] },
-    { id: 3, list: [{ text: '这是一个日程标题内容', date: '09-10' }] },
-    { id: 2, list: [{ text: '这是一个日程标题内容', date: '09-10' }] },
-    { id: 3, list: [{ text: '这是一个日程标题内容', date: '09-10' }] },
-    { id: 2, list: [{ text: '这是一个日程标题内容', date: '09-10' }] },
-    { id: 3, list: [{ text: '这是一个日程标题内容', date: '09-10' }] },
-    { id: 2, list: [{ text: '这是一个日程标题内容', date: '09-10' }] },
-    { id: 3, list: [{ text: '这是一个日程标题内容', date: '09-10' }] },
+    { id: 2, time: '2023-04-19', list: [{ text: '这是一个日程标题内容', date: '2023-04-18' }] },
+    { id: 3, time: '2023-04-20', list: [{ text: '这是一个日程标题内容', date: '2023-04-19' }] },
+    { id: 2, time: '2023-04-21', list: [{ text: '这是一个日程标题内容', date: '2023-04-20' }] },
+    { id: 3, time: '2023-04-22', list: [{ text: '这是一个日程标题内容', date: '2023-04-21' }] },
+    { id: 2, time: '2023-04-23', list: [{ text: '这是一个日程标题内容', date: '2023-04-22' }] },
+    { id: 3, time: '2023-04-24', list: [{ text: '这是一个日程标题内容', date: '2023-04-23' }] },
+    { id: 2, time: '2023-04-25', list: [{ text: '这是一个日程标题内容', date: '2023-04-24' }] },
+    { id: 3, time: '2023-04-16', list: [{ text: '这是一个日程标题内容', date: '2023-04-15' }] },
+    { id: 2, time: '2023-04-15', list: [{ text: '这是一个日程标题内容', date: '2023-04-16' }] },
   ]
   const CalendarListBoxRef = useRef<HTMLDivElement>(null)
   const { calenderListValue } = useSelector(state => state.calendarPanel);
@@ -108,27 +108,31 @@ const CalendarList: React.FC<CalendarListProps> = props => {
   let data1 = calendarData?.manager.concat(calendarData?.subscribe);
   const disPatch = useDispatch()
   useEffect(() => {
-    console.log('列表视图', calenderListValue, CalendarListBoxRef,checkedTime)
+    console.log('列表视图', calenderListValue, CalendarListBoxRef, checkedTime)
     let params = {
+      year:dayjs(calenderListValue).year(),
       month: dayjs(calenderListValue).month(),
       calendar_ids: data1.map(item => item.calendar_id)
     }
     disPatch(getCalendarDaysOfMonthList(params))
   }, [calenderListValue, scheduleSearchKey])
-  useEffect(()=>{
+  useEffect(() => {
+    let childrenKeys = [...CalendarListBoxRef.current?.children as any].map((item => item.getAttribute('datatype')));
+    let index=childrenKeys.indexOf(checkedTime);
     if (CalendarListBoxRef.current) {
       CalendarListBoxRef.current.scrollTo({
-        top: 300
+        top: 60*index,
+        behavior: 'smooth'
       })
     }
-  },[checkedTime])
+  }, [checkedTime])
   return <CalendarListBox ref={CalendarListBoxRef}>
     {
       data.map((item, index) =>
-        <CalendarListItem key={index} className={CalendarListClass}>
+        <CalendarListItem key={index} className={CalendarListClass} datatype={item.time}>
           <div style={{ width: '40px' }}>
             <DateBox className={index === 0 ? currentClass : ''}>
-              {18 + index}
+              {dayjs().date()+index }
             </DateBox>
           </div>
           <div style={{ display: 'flex', alignItems: 'center' }}>
