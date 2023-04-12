@@ -1,4 +1,3 @@
-
 declare namespace Model.Schedule {
   interface Info {
     // id: number
@@ -52,10 +51,10 @@ declare namespace Model.Schedule {
     width: number
     left: number
   }
-  interface ScheduleList{
-    visible:boolean,
-    top?:number,
-    left?:number,
+  interface ScheduleList {
+    visible: boolean
+    top?: number
+    left?: number
     date?: number
   }
 }

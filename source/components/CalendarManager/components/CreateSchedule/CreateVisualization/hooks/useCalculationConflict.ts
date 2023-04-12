@@ -4,13 +4,8 @@
  */
 import { useSelector } from '@store/index'
 import { useEffect, useState, useMemo } from 'react'
-import {
-  getClassifyConflicts,
-  getConflicts,
-  getConflictsTimeRange,
-  getStyleValue,
-} from '../utils'
-import dayjs from 'dayjs'
+import { getStyleValue } from '../utils'
+import { getConflictsTimeRange } from '@/components/CalendarManager/utils'
 
 const minLeft = 58
 const useCalculationConflict = () => {
@@ -45,6 +40,9 @@ const useCalculationConflict = () => {
       return
     }
     const conflicts = getConflictsTimeRange(list)
+    if (!conflicts.length) {
+      return
+    }
 
     const conflictsWithSize = conflicts
       .map(con => {

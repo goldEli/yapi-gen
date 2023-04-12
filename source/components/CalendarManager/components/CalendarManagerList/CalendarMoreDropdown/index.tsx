@@ -4,8 +4,7 @@ import styled from '@emotion/styled'
 import {
   setCalendarData,
   setCheckedCalendarList,
-  setIsShowCalendarVisible,
-  setShowCalendarParams,
+  setCalendarModal,
 } from '@store/calendar'
 import { useDispatch, useSelector } from '@store/index'
 import { useState } from 'react'
@@ -98,8 +97,12 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
     if (type === 'only') {
       showOnlyCalendar()
     } else if (type === 'edit') {
-      dispatch(setIsShowCalendarVisible(true))
-      dispatch(setShowCalendarParams({ id: props.item.calendar_id }))
+      dispatch(
+        setCalendarModal({
+          visible: true,
+          params: { id: props.item.calendar_id },
+        }),
+      )
     } else if (type === 'delete') {
       setIsDeleteVisible(true)
     } else {

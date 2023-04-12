@@ -38,7 +38,6 @@ const CalendarListInfo = styled.div`
   align-items: center;
   position: relative;
   top: 6px;
-  
 `
 const TimeItem = styled.div`
   color: var(--neutral-n1-d1);
@@ -99,29 +98,33 @@ const CalendarList: React.FC<CalendarListProps> = props => {
     { id: 2, time: '2023-04-15', list: [{ text: '这是一个日程标题内容', date: '2023-04-16' }] },
   ]
   const CalendarListBoxRef = useRef<HTMLDivElement>(null)
-  const { calenderListValue } = useSelector(state => state.calendarPanel);
-  const { scheduleSearchKey } = useSelector(state => state.calendarPanel);
-  const { calendarData } = useSelector(state => state.calendar);
-  const { monthViewScheduleList } = useSelector(state => state.schedule);
+  const { calenderListValue } = useSelector(state => state.calendarPanel)
+  const { scheduleSearchKey } = useSelector(state => state.calendarPanel)
+  const { calendarData } = useSelector(state => state.calendar)
+  const { monthViewScheduleList } = useSelector(state => state.schedule)
   const { checkedTime } = useSelector(state => state.calendar)
-  console.log('monthViewScheduleList---', monthViewScheduleList, calenderListValue)
-  let data1 = calendarData?.manager.concat(calendarData?.subscribe);
+  console.log(
+    'monthViewScheduleList---',
+    monthViewScheduleList,
+    calenderListValue,
+  )
+  let data1 = calendarData?.manager.concat(calendarData?.subscribe)
   const disPatch = useDispatch()
   useEffect(() => {
     console.log('列表视图', calenderListValue, CalendarListBoxRef, checkedTime)
     let params = {
-      year:dayjs(calenderListValue).year(),
+      year: dayjs(calenderListValue).year(),
       month: dayjs(calenderListValue).month(),
-      calendar_ids: data1.map(item => item.calendar_id)
+      calendar_ids: data1.map(item => item.calendar_id),
     }
     disPatch(getCalendarDaysOfMonthList(params))
   }, [calenderListValue, scheduleSearchKey])
   useEffect(() => {
     let childrenKeys = [...CalendarListBoxRef.current?.children as any].map((item => item.getAttribute('datatype')));
-    let index=childrenKeys.indexOf(checkedTime);
+    let index = childrenKeys.indexOf(checkedTime);
     if (CalendarListBoxRef.current) {
       CalendarListBoxRef.current.scrollTo({
-        top: 60*index,
+        top: 60 * index,
         behavior: 'smooth'
       })
     }
@@ -132,7 +135,7 @@ const CalendarList: React.FC<CalendarListProps> = props => {
         <CalendarListItem key={index} className={CalendarListClass} datatype={item.time}>
           <div style={{ width: '40px' }}>
             <DateBox className={index === 0 ? currentClass : ''}>
-              {dayjs().date()+index }
+              {dayjs().date() + index}
             </DateBox>
           </div>
           <div style={{ display: 'flex', alignItems: 'center' }}>

@@ -39,10 +39,7 @@ import AddDepartmentOrTeamModal from '@/components/AddDepartmentOrTeamModal'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { colorMap } from '@/components/CalendarManager/config'
 import { useDispatch, useSelector } from '@store/index'
-import {
-  setIsShowCalendarVisible,
-  setShowCalendarParams,
-} from '@store/calendar'
+import { setCalendarModal } from '@store/calendar'
 import { addCalendar, editCalendar, getCalendarInfo } from '@/services/calendar'
 import { getCalendarList } from '@store/calendar/calendar.thunk'
 
@@ -158,8 +155,7 @@ const PermissionDrop = (props: PermissionDropProps) => {
 const CalendarFormModal = () => {
   const [form] = Form.useForm()
   const dispatch = useDispatch()
-  const { isShowCalendarVisible, showCalendarParams, relateConfig } =
-    useSelector(store => store.calendar)
+  const { calendarModal, relateConfig } = useSelector(store => store.calendar)
   const inputRefDom = useRef<HTMLInputElement>(null)
   // 创建日历默认主题色
   const [normalColor, setNormalColor] = useState(0)
@@ -194,8 +190,7 @@ const CalendarFormModal = () => {
     setShareList([])
     setSubscribedList([])
     setCurrentPermission(relateConfig.calendar.permission_types[0].value)
-    dispatch(setIsShowCalendarVisible(false))
-    dispatch(setShowCalendarParams({}))
+    dispatch(setCalendarModal({ visible: false, params: {} }))
     form.resetFields()
   }
 
@@ -310,14 +305,14 @@ const CalendarFormModal = () => {
     )
     values.icon = path
     values.permission = currentPermission
-    if (showCalendarParams.id) {
-      await editCalendar(values, showCalendarParams.id)
+    if (calendarModal?.params?.id) {
+      await editCalendar(values, calendarModal?.params?.id)
     } else {
       await addCalendar(values)
     }
     dispatch(getCalendarList())
     onClose()
-    message.success(showCalendarParams.id ? '编辑成功!' : '创建成功!')
+    message.success(calendarModal?.params?.id ? '编辑成功!' : '创建成功!')
   }
 
   // 更新共享成员
@@ -338,7 +333,9 @@ const CalendarFormModal = () => {
 
   // 获取日历详情
   const getCalendarInfoData = async () => {
-    const response = await getCalendarInfo({ id: showCalendarParams.id })
+    const response = await getCalendarInfo({
+      id: calendarModal?.params?.id,
+    })
     form.setFieldsValue(response)
     setNormalColor(response.color)
     setPath(response.icon)
@@ -361,10 +358,10 @@ const CalendarFormModal = () => {
   }
 
   useEffect(() => {
-    if (showCalendarParams.id) {
+    if (calendarModal?.params?.id) {
       getCalendarInfoData()
     }
-  }, [showCalendarParams])
+  }, [calendarModal])
 
   useEffect(() => {
     setPath(relateConfig.calendar.icon_path?.[0])
@@ -392,12 +389,12 @@ const CalendarFormModal = () => {
         type={isActiveKey}
       />
       <CommonModal
-        isVisible={isShowCalendarVisible}
-        title={showCalendarParams.id ? '编辑日历' : '创建日历'}
+        isVisible={calendarModal.visible}
+        title={calendarModal?.params?.id ? '编辑日历' : '创建日历'}
         width={528}
         onClose={onClose}
         onConfirm={onCreateConfirm}
-        confirmText={showCalendarParams.id ? '确认' : '创建'}
+        confirmText={calendarModal?.params?.id ? '确认' : '创建'}
       >
         <FormWrap layout="vertical" form={form}>
           <Form.Item

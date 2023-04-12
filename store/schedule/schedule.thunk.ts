@@ -36,6 +36,7 @@ export const getCalendarDaysOfYearList = createAsyncThunk(
     } catch (error) {
       //
     }
+    return ''
   },
 )
 
@@ -46,7 +47,8 @@ export const getCalendarDaysOfMonthList = createAsyncThunk(
       const res = await services.schedule.getCalendarDaysOfMonthList(params)
       return res.data
     } catch (error) {
-
+      //
     }
+    return ''
   },
 )

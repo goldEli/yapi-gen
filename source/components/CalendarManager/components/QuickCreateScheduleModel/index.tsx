@@ -38,10 +38,7 @@ import moment, { Moment } from 'moment'
 import { RangePickerProps } from 'antd/lib/date-picker'
 import { colorMap } from '../../config'
 import { setQuickCreateScheduleModel } from '@store/calendarPanle'
-import {
-  setIsShowScheduleVisible,
-  setShowScheduleParams,
-} from '@store/calendar'
+import { setScheduleModal } from '@store/calendar'
 interface CreateScheduleBoxProps {
   containerClassName?: string
 }
@@ -60,7 +57,6 @@ const CreateSchedule = styled.div<{
   position: absolute;
   top: ${props => props.top + 'px'};
   left: ${props => props.left + 'px'};
-  padding-bottom: 24px;
   border-radius: 6px;
 `
 
@@ -93,6 +89,10 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
     ...quickCreateScheduleModel,
     containerClassName: props.containerClassName,
     modalClassName: '.schedule-info-dropdown-box',
+    modalInfo: {
+      width: 528,
+      height: 544,
+    },
   })
   const dispatch = useDispatch()
   const [form] = Form.useForm()
@@ -126,6 +126,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
 
   // 关闭弹窗
   const onClose = () => {
+    form.resetFields()
     dispatch(setQuickCreateScheduleModel({ visible: false }))
     setNoticeList([])
     setParticipant({
@@ -236,8 +237,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
   // 跳转更多选项
   const onToMore = async () => {
     const params = await onGetParams()
-    dispatch(setIsShowScheduleVisible(true))
-    dispatch(setShowScheduleParams(params))
+    dispatch(setScheduleModal({ visible: true, params }))
     setTimeout(() => {
       onClose()
     }, 10)
@@ -263,6 +263,10 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
     }
   }, [quickCreateScheduleModel])
 
+  if (!position) {
+    return <></>
+  }
+
   return (
     <>
       <AddMemberCommonModal
@@ -272,7 +276,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
         onConfirm={onAddConfirm}
       />
       <CreateSchedule
-        className="schedule-info-dropdown-box"
+        className="quick-create-schedule-model"
         visible={visible && !!position}
         top={position?.y ?? 0}
         left={position?.x ?? 0}
@@ -380,7 +384,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
             <ItemFlex>
               <div className="box">
                 <Select
-                  value={normalCategory.calendar_id}
+                  value={normalCategory?.calendar_id}
                   onChange={value =>
                     setNormalCategory(
                       calendarCategory.filter(
@@ -407,7 +411,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
                         color={normalCategory.color}
                         onChangeColor={color => {
                           setNormalCategory({
-                            calendar_id: normalCategory.calendar_id,
+                            calendar_id: normalCategory?.calendar_id,
                             color,
                           })
                           setIsVisible(false)

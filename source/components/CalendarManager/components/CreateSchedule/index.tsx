@@ -3,10 +3,7 @@
 import CommonButton from '@/components/CommonButton'
 import CommonModal from '@/components/CommonModal'
 import { CloseWrap, ModalFooter } from '@/components/StyleCommon'
-import {
-  setIsShowScheduleVisible,
-  setShowScheduleParams,
-} from '@store/calendar'
+import { setScheduleModal } from '@store/calendar'
 import { useDispatch, useSelector } from '@store/index'
 import {
   Checkbox,
@@ -67,13 +64,8 @@ const CreateSchedule = () => {
   const dispatch = useDispatch()
   const leftDom: any = useRef<HTMLDivElement>(null)
   const inputDom: any = useRef<HTMLInputElement>(null)
-  const {
-    isShowScheduleVisible,
-    showScheduleParams,
-    relateConfig,
-    calendarData,
-    calendarConfig,
-  } = useSelector(store => store.calendar)
+  const { scheduleModal, relateConfig, calendarData, calendarConfig } =
+    useSelector(store => store.calendar)
   const [form] = Form.useForm()
   const [calendarCategory, setCalendarCategory] = useState<
     Model.Calendar.Info[]
@@ -126,8 +118,7 @@ const CreateSchedule = () => {
 
   // 关闭弹窗
   const onClose = () => {
-    dispatch(setShowScheduleParams({}))
-    dispatch(setIsShowScheduleVisible(false))
+    dispatch(setScheduleModal({ visible: false, params: {} }))
   }
 
   // 保存
@@ -238,7 +229,7 @@ const CreateSchedule = () => {
   }
 
   useEffect(() => {
-    if (isShowScheduleVisible) {
+    if (scheduleModal.visible) {
       // 获取日历列表，并且过滤出可创建日程的日历
       const result = [
         ...calendarData.manager,
@@ -255,7 +246,7 @@ const CreateSchedule = () => {
         inputDom.current.focus()
       }, 100)
     }
-  }, [isShowScheduleVisible])
+  }, [scheduleModal])
 
   return (
     <>
@@ -276,8 +267,8 @@ const CreateSchedule = () => {
         onConfirm={onAddConfirm}
       />
       <CommonModal
-        isVisible={isShowScheduleVisible}
-        title={showScheduleParams.id ? '编辑日程' : '创建日程'}
+        isVisible={scheduleModal.visible}
+        title={scheduleModal?.params?.id ? '编辑日程' : '创建日程'}
         width={1056}
         onClose={onClose}
         hasFooter={
@@ -394,7 +385,7 @@ const CreateSchedule = () => {
               <ItemFlex>
                 <div className="box">
                   <Select
-                    value={normalCategory.calendar_id}
+                    value={normalCategory?.calendar_id}
                     onChange={value =>
                       setNormalCategory(
                         calendarCategory.filter(
@@ -421,7 +412,7 @@ const CreateSchedule = () => {
                           color={normalCategory.color}
                           onChangeColor={color => {
                             setNormalCategory({
-                              calendar_id: normalCategory.calendar_id,
+                              calendar_id: normalCategory?.calendar_id,
                               color,
                             })
                             setIsVisible(false)

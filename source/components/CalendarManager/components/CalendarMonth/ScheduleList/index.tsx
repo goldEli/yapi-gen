@@ -6,7 +6,7 @@ import MoveActiveItem from '../MoveActiveItem'
 import MoreScheduleButton from '../../MoreScheduleButton'
 
 interface ScheduleListProps {
-  data: Model.Calendar.DayOfMonth
+  data: Model.Calendar.DaysOfMonth
   idx: number
 }
 
@@ -20,7 +20,7 @@ const ScheduleList: React.FC<ScheduleListProps> = props => {
 
   const { data } = props
   const key = data.date
-  const list = scheduleList[key]
+  const list = scheduleList?.[key]
 
   // console.log({list}, scheduleList)
   const hiddenNum = useMemo(() => {

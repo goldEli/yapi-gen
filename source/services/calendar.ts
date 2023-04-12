@@ -159,6 +159,17 @@ export const subscribeCalendar = async (params: { id: number }) => {
   await http.post<any, any>(`/b/calendar/${params.id}/subscribe`)
 }
 
+// 获取日历月列表
+export const getDaysOfMonthList = async (
+  params: API.Calendar.GetDaysOfMonthList.Params,
+) => {
+  const res = await http.post<any, API.Calendar.GetDaysOfMonthList.Result>(
+    urls.getDaysOfMonthList,
+    params,
+  )
+  return res
+}
+
 // 获取日历周列表
 export const getDaysOfWeekList = async (
   params: API.Calendar.GetDaysOfWeekList.Params,

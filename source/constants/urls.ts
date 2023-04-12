@@ -137,15 +137,15 @@ const urls = {
   getScheduleList: '/b/schedule_list',
   getSubscribeList: '/b/subscribe_list',
   getCalendarIconList: '/b/calendar_icon_list',
-  getCalendarDaysOfYearList:'/b/schedule/daysOfYear',
-  getCalendarDaysOfMonthList:'/b/schedule/daysOfMonth',
-  // 完整地址
+  getCalendarDaysOfYearList: '/b/schedule/daysOfYear',
+  getCalendarDaysOfMonthList: '/b/schedule/daysOfMonth',
   getCalendarConfig: '/b/calendar/getConfig',
   updateCalendarConfig: '/b/calendar/setConfig',
   getRelateConfig: '/b/calendar/enum',
   addCalendar: '/b/calendar',
   getUserCalendars: '/b/calendar/getUserCalendars',
   getDaysOfWeekList: '/b/calendar/daysOfWeek',
+  getDaysOfMonthList: '/b/calendar/daysOfMonth',
 }
 
 export default urls

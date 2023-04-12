@@ -1,5 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { getCalendarDaysOfYearList, getScheduleList,getCalendarDaysOfMonthList} from './schedule.thunk'
+import {
+  getCalendarDaysOfYearList,
+  getScheduleList,
+  getCalendarDaysOfMonthList,
+} from './schedule.thunk'
 
 type SliceState = {
   // 默认日程时长
@@ -10,11 +14,10 @@ type SliceState = {
   scheduleList: {
     [key in string]: Model.Schedule.Info[]
   }
-  scheduleListModal:Model.Schedule.ScheduleList
-  scheduleDate?: number,
-  yearViewScheduleList: Model.Schedule.Info[],
-  monthViewScheduleList: Model.Schedule.Info[],
-
+  scheduleListModal: Model.Schedule.ScheduleList
+  scheduleDate?: number
+  yearViewScheduleList: Model.Schedule.Info[]
+  monthViewScheduleList: Model.Schedule.Info[]
 }
 
 const initialState: SliceState = {
@@ -30,8 +33,8 @@ const initialState: SliceState = {
     left: 20,
   },
   scheduleDate: 0,
-  yearViewScheduleList:[],
-  monthViewScheduleList:[]
+  yearViewScheduleList: [],
+  monthViewScheduleList: [],
 }
 
 const slice = createSlice({
@@ -63,17 +66,17 @@ const slice = createSlice({
     builder.addCase(getScheduleList.fulfilled, (state, action) => {
       state.scheduleList = action.payload
     })
-    builder.addCase(getCalendarDaysOfYearList.fulfilled,(state,action)=>{
-      state.yearViewScheduleList=action.payload
+    builder.addCase(getCalendarDaysOfYearList.fulfilled, (state, action) => {
+      state.yearViewScheduleList = action.payload
     })
-    builder.addCase(getCalendarDaysOfMonthList.fulfilled,(state,action)=>{
-      state.monthViewScheduleList=action.payload
+    builder.addCase(getCalendarDaysOfMonthList.fulfilled, (state, action) => {
+      state.monthViewScheduleList = action.payload
     })
   },
 })
 
 const schedule = slice.reducer
 
-export const { setScheduleListModal, setScheduleDate} = slice.actions
+export const { setScheduleListModal, setScheduleDate } = slice.actions
 
 export default schedule

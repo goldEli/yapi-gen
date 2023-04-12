@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import dayjs, { Dayjs } from 'dayjs'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
-import { store } from '..'
 dayjs.extend(weekOfYear)
 type SliceState = {
   // 日历面板类型
@@ -28,7 +27,7 @@ type SliceState = {
   //周视图 2023/12
   calenderWeekValue: string
   //获取一年的哪一周 2023/12
-  calenderYearWeekValue:string
+  calenderYearWeekValue: string
   //月视图
   calenderMonthValue: string
   //年视图
@@ -75,7 +74,7 @@ const initialState: SliceState = {
   calenderYearValue: dayjs().format('YYYY'),
   calenderListValue: dayjs().format('YYYY-M-D'),
   calenderYearType: 0,
-  calenderYearWeekValue: dayjs().year()+'/'+dayjs().week(),
+  calenderYearWeekValue: dayjs().year() + '/' + dayjs().week(),
   monthMoveScheduleActiveInfo: defaultMonthMoveScheduleActiveInfo,
 }
 
