@@ -23,7 +23,7 @@ const IconContainer = styled.div`
 const tabsContainer = css`
   display: flex;
 `
-const tabsWrap = css`
+const TabsWrap = styled.div`
   width: 100%;
   height: 52px;
   display: flex;
@@ -34,7 +34,7 @@ const tabsWrap = css`
   transform: translate(0);
   border-bottom: 1px solid #f0f0f0;
 `
-const tabsList = css`
+const TabSlider = styled.div`
   position: relative;
   display: flex;
   transition: opacity 0.3s;
@@ -47,14 +47,15 @@ const TabItem = styled.div`
   position: relative;
   display: inline-flex;
   align-items: center;
-  color: ${(props: any) => (props.theme ? '#6688FF' : '#646566')};
+  color: ${(props: any) =>
+    props.theme ? 'var(--primary-d1)' : 'var(--neutral-n2)'};
   border-bottom: ${(props: any) =>
-    props.theme ? '2px solid #6688FF' : 'none'};
+    props.theme ? '2px solid var(--primary-d1)' : 'none'};
 `
 
 interface SlideTabsProps {
   onChange?(value: string): void
-  defaultValue: string
+  defaultValue?: string
   items: any[]
 }
 
@@ -63,14 +64,15 @@ const TAB_MARGIN = 32
 
 const SlideTabs: React.FC<SlideTabsProps> = ({
   items,
+  defaultValue = '1',
   onChange,
 }: SlideTabsProps) => {
   const [xAxis, setXAxis] = useState<number>(0)
-  const [activeKey, setActiveKey] = useState<string>('1')
+  const [activeKey, setActiveKey] = useState<string>(defaultValue)
   const [viewRectOffset, setViewRectOffset] = useState<number>(0)
   const [sliderRectOffset, setSliderRectOffset] = useState<number>(0)
   const nodes = useRef<Array<any>>([])
-  const nodeIndex = useRef(0)
+  const nodeIndex = useRef<number>(0)
   const showLeft = useMemo(() => !!(xAxis < 0), [xAxis])
 
   const showRight = useMemo(() => {
@@ -111,7 +113,7 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
     })
   }
 
-  const resize = () => {
+  const updateBounding = () => {
     const { right } = document
       .getElementsByClassName('tabs-wrap')[0]
       .getBoundingClientRect()
@@ -123,13 +125,13 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
   }
 
   useEffect(() => {
-    resize()
+    updateBounding()
   }, [xAxis])
 
   useLayoutEffect(() => {
-    window.addEventListener('resize', resize)
+    window.addEventListener('resize', updateBounding)
     return () => {
-      window.removeEventListener('resize', resize)
+      window.removeEventListener('resize', updateBounding)
     }
   }, [])
 
@@ -152,9 +154,9 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
           <DoubleLeftOutlined onClick={prev} />
         </IconContainer>
       ) : null}
-      <div className={`${tabsWrap} tabs-wrap`}>
-        <div
-          className={`${tabsList} tabs-list`}
+      <TabsWrap className="tabs-wrap">
+        <TabSlider
+          className="tabs-list"
           style={{ transform: `translateX(${xAxis}px` }}
         >
           <Space size={TAB_MARGIN}>
@@ -169,8 +171,8 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
               </TabItem>
             ))}
           </Space>
-        </div>
-      </div>
+        </TabSlider>
+      </TabsWrap>
       {showRight ? (
         <IconContainer>
           <DoubleRightOutlined onClick={next} />
