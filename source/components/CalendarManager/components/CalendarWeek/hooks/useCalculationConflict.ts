@@ -5,10 +5,10 @@
 // import { useSelector } from '@store/index'
 import dayjs from 'dayjs'
 import { useEffect, useState, useMemo } from 'react'
-import { getConflictsTimeRange, getStyleValue } from '../utils'
 import useMaxWidth from './useMaxWidth'
 import useWeeks from './useWeeks'
 import useList from './useList'
+import { getConflictsTimeRange } from '@/components/CalendarManager/utils'
 
 const format = 'YYYY-MM-DD'
 const useCalculationConflict = () => {
