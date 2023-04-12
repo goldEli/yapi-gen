@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import dayjs from 'dayjs'
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import CurrentTimeLine from '../CurrentTimeLine'
 import { formatYYYYMMDD, oneHourHeight } from '../../../config'
 import { useDispatch, useSelector } from '@store/index'
@@ -10,6 +10,7 @@ import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
 import ScheduleCardList from '../ScheduleCardList'
 import QuickCreateScheduleModel from '../../QuickCreateScheduleModel'
 import { setQuickCreateScheduleModel } from '@store/calendarPanle'
+import { EventBus } from '@/components/CalendarManager/eventBus'
 
 interface TimescaleProps {}
 const Table = styled.table`
@@ -54,11 +55,21 @@ const Timescale: React.FC<TimescaleProps> = props => {
   const tableRef = React.useRef<HTMLTableElement>(null)
   const dispatch = useDispatch()
 
+  const cancelCreateSchedule = () => {
+    setTimeZone([])
+  }
+
+  useEffect(() => {
+    EventBus.getInstance().register('cancelCreateSchedule', () => {
+      cancelCreateSchedule()
+    })
+  }, [])
+
   const onSelectTimeZone = React.useCallback(
     (e: React.MouseEvent, id: string) => {
       // 点击空白重置
       if (timeZone.length) {
-        setTimeZone([])
+        cancelCreateSchedule()
         dispatch(
           setQuickCreateScheduleModel({
             visible: false,

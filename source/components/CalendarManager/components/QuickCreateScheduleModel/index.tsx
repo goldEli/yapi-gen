@@ -41,6 +41,7 @@ import { colorMap } from '../../config'
 import { setQuickCreateScheduleModel } from '@store/calendarPanle'
 import { setScheduleModal } from '@store/calendar'
 import { saveSchedule } from '@store/schedule/schedule.thunk'
+import { EventBus } from '../../eventBus'
 interface CreateScheduleBoxProps {
   containerClassName?: string
 }
@@ -129,6 +130,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
 
   // 关闭弹窗
   const onClose = () => {
+    EventBus.getInstance().dispatch('cancelCreateSchedule')
     form.resetFields()
     dispatch(setQuickCreateScheduleModel({ visible: false }))
     setNoticeList([])
@@ -289,7 +291,10 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
       <AddMemberCommonModal
         isVisible={isChooseVisible && !!position}
         title="添加成员"
-        onClose={() => setIsChooseVisible(false)}
+        onClose={() => {
+          setIsChooseVisible(false)
+          EventBus.getInstance().dispatch('cancelCreateSchedule')
+        }}
         onConfirm={onAddConfirm}
       />
       <CreateSchedule
