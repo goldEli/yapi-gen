@@ -45,7 +45,7 @@ const CalendarMainSide = () => {
       </CommonButton>
       <DXCalendar />
       <div style={{ width: '100%', margin: '24px 0' }}>
-        <InputSearch placeholder={'搜索日历'} width={210} autoFocus leftIcon />
+        <InputSearch placeholder={'搜索日历'} width="100%" autoFocus leftIcon />
       </div>
       <ManagerListBox>
         <CalendarManagerList title="我管理的" type="manager" />
