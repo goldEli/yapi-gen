@@ -160,7 +160,6 @@ const Addperson = (props: Props) => {
             target_type: 4,
             name: getName(e.key, ''),
             avatar: '',
-            id: -props.state + '' + getName(e.key, ''),
             target_id: getName(e.key, 'id'),
             target_value: {
               user_type: props.state,

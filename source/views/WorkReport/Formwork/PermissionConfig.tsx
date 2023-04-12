@@ -115,7 +115,6 @@ const PermissionConfig = (props: PropsType) => {
     )
     // 最终的大数组-- 人员
     const configsData = [...setData, ...setData1, ...setData2]
-
     dispatch(
       setReportContent({
         is_all_view: isAllView,
