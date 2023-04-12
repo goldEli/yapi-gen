@@ -43,7 +43,7 @@ import { setScheduleModal } from '@store/calendar'
 import { saveSchedule } from '@store/schedule/schedule.thunk'
 import { EventBus } from '../../eventBus'
 interface CreateScheduleBoxProps {
-  containerClassName?: string
+  containerClassName: string
 }
 
 const CreateSchedule = styled.div<{
@@ -92,7 +92,6 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
   const { position } = useModalPosition({
     ...quickCreateScheduleModel,
     containerClassName: props.containerClassName,
-    modalClassName: '.schedule-info-dropdown-box',
     modalInfo: {
       width: 528,
       height: 544,

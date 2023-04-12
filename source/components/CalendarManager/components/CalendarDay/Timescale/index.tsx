@@ -183,7 +183,7 @@ const Timescale: React.FC<TimescaleProps> = props => {
       <NewCalendarArea timeZone={timeZone} distance={distance} />
       <ScheduleCardList />
       <ScheduleInfoDropdown containerClassName=".time-scale" />
-      <QuickCreateScheduleModel />
+      <QuickCreateScheduleModel containerClassName=".time-scale" />
     </Table>
   )
 }
