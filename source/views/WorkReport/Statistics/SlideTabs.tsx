@@ -18,6 +18,18 @@ const IconContainer = styled.div`
 const tabsWrap = css`
   width: 100%;
   .ant-tabs > .ant-tabs-nav {
+    .ant-tabs-nav-wrap {
+      background: pink;
+    }
+    .ant-tabs-nav-list {
+      background: #6688ff;
+      .ant-tabs-tab {
+        color: #ffffff;
+      }
+      .ant-tabs-tab.ant-tabs-tab-active {
+        color: #323233;
+      }
+    }
     .ant-tabs-nav-operations {
       display: none;
     }
@@ -44,6 +56,7 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
   onChange,
 }: SlideTabsProps) => {
   const [xAxis, setXAxis] = useState<number>(0)
+  const [activeKey, setActiveKey] = useState<string>('1')
   const [viewRight, setViewRight] = useState<number>(0)
   const [slidRight, setSlidRight] = useState<number>(0)
   const nodes = useRef<Array<any>>([])
@@ -107,6 +120,7 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
   useEffect(() => {
     resize()
   }, [])
+
   useLayoutEffect(() => {
     window.addEventListener('resize', resize)
     return () => {
@@ -115,7 +129,12 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
   }, [])
 
   const handleChange = (key: string) => {
+    setActiveKey(key)
     onChange?.(key)
+  }
+
+  const onTabScroll = (val: any) => {
+    // console.log('val', val)
   }
 
   const operateSlot: Record<PositionType, React.ReactNode> = {
@@ -144,8 +163,9 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
       <Tabs
         tabBarExtraContent={operateSlot}
         items={items}
-        defaultActiveKey={defaultValue}
+        activeKey={activeKey}
         onChange={handleChange}
+        onTabScroll={onTabScroll}
       />
     </div>
   )

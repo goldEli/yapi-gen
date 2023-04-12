@@ -216,7 +216,7 @@ const Sortable = (props: any) => {
                 <RightOperate>
                   <Checkbox
                     disabled={child.type === 1 ? true : false}
-                    checked={child?.isRequired === 1 ? true : false}
+                    checked={child?.is_required === 1 ? true : false}
                     onClick={(e: any) => {
                       e.stopPropagation(),
                         props.onChangeChecked(e.target.checked, child)

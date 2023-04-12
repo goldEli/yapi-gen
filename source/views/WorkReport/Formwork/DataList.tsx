@@ -2,24 +2,30 @@
 export const data = [
   {
     label: '当日',
+    key: 1,
   },
   {
     label: '次日',
+    key: 2,
   },
 ]
 // 0-45分
 export const minuteData = [
   {
     label: '0分',
+    key: 0,
   },
   {
     label: '15分',
+    key: 15,
   },
   {
     label: '30分',
+    key: 30,
   },
   {
     label: '45分',
+    key: 45,
   },
 ]
 // 0-23时
@@ -247,116 +253,134 @@ export const dayData = [
     label: '30日',
     key: 30,
   },
+  {
+    label: '31日',
+    key: 31,
+  },
 ]
 // 次月1-15日
 export const nextMonthDay = [
   {
     label: '次月1日',
-    key: 1,
+    key: 32,
   },
   {
     label: '次月2日',
-    key: 2,
+    key: 33,
   },
   {
     label: '次月3日',
-    key: 3,
+    key: 34,
   },
   {
     label: '次月4日',
-    key: 4,
+    key: 35,
   },
   {
     label: '次月5日',
-    key: 5,
+    key: 36,
   },
   {
     label: '次月6日',
-    key: 6,
+    key: 37,
   },
   {
     label: '次月7日',
-    key: 7,
+    key: 38,
   },
   {
     label: '次月8日',
-    key: 8,
+    key: 39,
   },
   {
     label: '次月9日',
-    key: 9,
+    key: 40,
   },
   {
     label: '次月10日',
-    key: 10,
+    key: 41,
   },
   {
     label: '次月11日',
-    key: 11,
+    key: 42,
   },
   {
     label: '次月12日',
-    key: 12,
+    key: 43,
   },
   {
     label: '次月13日',
-    key: 13,
+    key: 44,
   },
   {
     label: '次月14日',
-    key: 14,
+    key: 45,
   },
   {
     label: '次月15日',
-    key: 15,
+    key: 46,
   },
 ]
 // 周一到周日
 export const startWeekData = [
   {
     label: '周一',
+    key: 0,
   },
   {
     label: '周二',
+    key: 1,
   },
   {
     label: '周三',
+    key: 2,
   },
   {
     label: '周四',
+    key: 3,
   },
   {
     label: '周五',
+    key: 4,
   },
   {
     label: '周六',
-  },
-  {
-    label: '周日',
+    key: 5,
   },
 ]
 // 次周一到周日
 export const endWeekData = [
   {
     label: '周日',
+    key: 6,
   },
   {
     label: '次周一',
+    key: 7,
   },
   {
     label: '次周二',
+    key: 8,
   },
   {
     label: '次周三',
+    key: 9,
   },
   {
     label: '次周四',
+    key: 10,
   },
   {
     label: '次周五',
+    key: 11,
   },
   {
     label: '次周六',
+    key: 12,
+  },
+  {
+    label: '次周日',
+    key: 13,
   },
 ]
 interface Item {
@@ -387,15 +411,15 @@ export const seleData2: Array<Item> = [
     label: '添加成员',
   },
   {
-    key: '2',
+    key: 'reportsTo',
     label: '直属主管',
   },
   {
-    key: '3',
+    key: 'departmentHead',
     label: '部门主管',
   },
   {
-    key: '4',
+    key: 'teamManagement',
     label: '团队管理',
   },
 ]
@@ -406,19 +430,27 @@ export const seleData3: Array<Item> = [
   },
   {
     key: 'all',
-    label: '全部',
+    label: '全员',
   },
   {
-    key: '3',
+    key: 'obj',
     label: '汇报对象',
   },
   {
-    key: '4',
+    key: 'departmentHead',
     label: '部门主管',
   },
   {
-    key: '5',
+    key: 'teamManagement',
     label: '团队管理',
+  },
+  {
+    key: 'reportsTo',
+    label: '直属主管',
+  },
+  {
+    key: 'allSuperiors',
+    label: '所有上级',
   },
 ]
 export default {

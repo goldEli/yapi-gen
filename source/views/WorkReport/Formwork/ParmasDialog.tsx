@@ -1,5 +1,6 @@
 /* eslint-disable require-unicode-regexp */
 /* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
 import CommonModal from '@/components/CommonModal'
 import FormTitleSmall from '@/components/FormTitleSmall'
 import IconFont from '@/components/IconFont'
@@ -13,8 +14,10 @@ const FormWrap = styled(Form)({
 })
 interface DragItem {
   type: number
-  title: string
+  name: string
   icon: string
+  tips: string
+  is_required: number
 }
 interface Props {
   onClose(): void
@@ -29,17 +32,21 @@ const ParmasDialog = (props: Props) => {
   useEffect(() => {
     form.resetFields()
     form.setFieldsValue({
-      name: props.dragItem?.title,
+      name: props.dragItem?.name,
+      tips: props.dragItem?.tips,
     })
   }, [props.isVisible])
+  const onConfirm = () => {
+    const formVal = form.getFieldsValue()
+    formVal.is_required = props.dragItem?.is_required
+    props.onConfirm(formVal, props.dragItem?.type)
+  }
   return (
     <CommonModal
       isVisible={props.isVisible}
       title={'组件参数配置'}
       onClose={props.onClose}
-      onConfirm={() =>
-        props.onConfirm(form.getFieldsValue(), props.dragItem?.type)
-      }
+      onConfirm={onConfirm}
     >
       <div
         ref={ChooseDom}

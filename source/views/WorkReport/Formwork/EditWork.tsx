@@ -9,9 +9,8 @@ import ParmasDialog from './ParmasDialog'
 import CommonButton from '@/components/CommonButton'
 import { useDispatch, useSelector } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import { setEditSave } from '@store/formWork'
+import { setEditSave, setTemplateContentConfigs } from '@store/formWork'
 import { upDateTemplate } from '@/services/formwork'
-import { getTemplateList } from '@store/formWork/thunk'
 import { message } from 'antd'
 const TitleStyle = styled.div`
   display: flex;
@@ -42,7 +41,6 @@ const RightTabs = styled.div`
   padding-left: 24px;
   border-left: 1px solid var(--neutral-n6-d1);
 `
-
 interface PropsType {
   back(): void
   value: string
@@ -58,6 +56,8 @@ const EditWork = (props: PropsType) => {
   const [delIsVisible, setDelIsVisible] = useState(false)
   const [dragItem, setDragItem] = useState<any>()
   const [index, setIndex] = useState(0)
+  const [type, setType] = useState('')
+  const { templateContentConfigs } = useSelector(store => store.formWork)
   const [dataList, setDataList] = useState([
     {
       name: '汇报对象',
@@ -70,7 +70,6 @@ const EditWork = (props: PropsType) => {
     const evevtObj: any = event.dataTransfer.getData('item')
       ? JSON.parse(event.dataTransfer.getData('item'))
       : null
-    console.log(evevtObj)
     if (evevtObj.type === 4) {
       const configs = {
         type: evevtObj.type,
@@ -82,24 +81,58 @@ const EditWork = (props: PropsType) => {
       arrData.splice(i, 0, configs)
       setDataList(arrData)
     } else {
-      setIndex(index)
-      setDragItem(evevtObj)
+      const configs = {
+        type: evevtObj.type,
+        tips: evevtObj.tips || '',
+        name: evevtObj.title,
+        is_required: 2,
+      }
+      setType('add')
+      setIndex(i)
+      setDragItem(configs)
       evevtObj && setIsVisible(true)
     }
   }
   // 组件参数配置
-  const ParmasDialogOnConfirm = (obj: any, type: number) => {
+  const ParmasDialogOnConfirm = (obj: any, num: number) => {
     const configs = {
-      type: type,
+      type: num,
       tips: obj.tips || '',
       name: obj.name,
-      is_required: 2,
+      is_required: obj.is_required,
     }
     setIsVisible(false)
     const arrData = Array.from(dataList)
-    arrData.splice(index, 0, configs)
-    setDataList(arrData)
+    if (type === 'add') {
+      arrData.splice(index, 0, configs)
+      setDataList(arrData)
+    } else if (type === 'edit') {
+      arrData[index] = configs
+      setDataList(arrData)
+    }
+    dispatch(setTemplateContentConfigs(arrData))
   }
+  const onChangeChecked = (val: boolean, el: any) => {
+    const num = val ? 1 : 2
+    const arr = dataList.map(item => ({
+      ...item,
+      is_required: el.name === item.name ? num : item.is_required,
+    }))
+    dispatch(setTemplateContentConfigs(arr))
+    setDataList(arr)
+  }
+  const onClick = (i: number, el: any) => {
+    setIndex(i)
+    setDragItem(el)
+    setType('edit')
+    setIsVisible(true)
+  }
+  const onDelete = (el: { name: string }) => {
+    const arr = dataList.filter(item => el.name !== item.name)
+    dispatch(setTemplateContentConfigs(arr))
+    setDataList(arr)
+  }
+  // console.log(templateContentConfigs, 'TemplateContentConfigs')
   return (
     <>
       <div id="father" style={{ display: 'flex' }}>
@@ -110,15 +143,15 @@ const EditWork = (props: PropsType) => {
           <div>
             <TabsDragging
               positionType="top"
-              onClick={(i: any, child: any) => console.log('click')}
+              onClick={(i: any, child: any) => onClick(i, child)}
               onDrop={(event: any, i: any) => onDrag(event, i)}
               onMove={(data: any) => console.log('move')}
               // onChangeMove={(list: any) => setList1(list)}
               list={dataList}
               onChangeChecked={(val: boolean, child: any) =>
-                console.log('checked')
+                onChangeChecked(val, child)
               }
-              onDelete={(child: any) => console.log('sc')}
+              onDelete={(child: any) => onDelete(child)}
               setList={setDataList}
             />
           </div>
@@ -133,6 +166,7 @@ const EditWork = (props: PropsType) => {
 
         {/* 组件配置弹窗 */}
         <ParmasDialog
+          // type={type}
           dragItem={dragItem}
           isVisible={isVisible}
           onClose={() => setIsVisible(false)}

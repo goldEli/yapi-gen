@@ -1026,6 +1026,7 @@ export const getVerifyInfo: any = async (params: any) => {
   const response = await http.get(`/b/user/verify/${params?.id}`)
 
   return {
+    cancel_verify: response.data.cancel_verify,
     category_attachment: response.data.category_attachment,
     id: response.data.id,
     demandName: response.data.story_name,

@@ -61,7 +61,6 @@ const AddFormWork = (props: Props) => {
   const onConfirm = async () => {
     const res2 = await form.validateFields()
     const formValues = form.getFieldsValue()
-    console.log(formValues, 'formValues')
     props.onConfirm(formValues.name)
   }
 
