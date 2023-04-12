@@ -39,3 +39,11 @@ export const updateCalendarConfig = createAsyncThunk(
     return res
   },
 )
+
+export const getDaysOfWeekList = createAsyncThunk(
+  `${name}/getDaysOfWeekList`,
+  async (params: API.Calendar.GetDaysOfWeekList.Params) => {
+    const res = await services.calendar.getDaysOfWeekList(params)
+    return res.data
+  },
+)

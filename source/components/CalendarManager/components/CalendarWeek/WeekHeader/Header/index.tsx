@@ -1,8 +1,9 @@
 import styled from '@emotion/styled'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import dayjs from 'dayjs'
-import React from 'react'
+import React, { useEffect } from 'react'
 import classnames from 'classnames'
+import { getDaysOfWeekList } from '@store/calendar/calendar.thunk'
 
 interface WeekHeaderProps {}
 
@@ -74,7 +75,26 @@ const WeekListItem = styled.div`
 `
 
 const Header: React.FC<WeekHeaderProps> = props => {
-  const { selectedWeek, selectedDay } = useSelector(store => store.calendar)
+  const { selectedWeek, checkedTime } = useSelector(store => store.calendar)
+  const { calenderYearWeekValue } = useSelector(store => store.calendarPanel)
+  const dispatch = useDispatch()
+
+  // init
+  useEffect(() => {
+    if (!calenderYearWeekValue) {
+      return
+    }
+    const arr = calenderYearWeekValue.split('/')
+    const [year, week] = arr
+
+    dispatch(
+      getDaysOfWeekList({
+        year: parseInt(year, 10),
+        week: parseInt(week, 10),
+      }),
+    )
+  }, [calenderYearWeekValue])
+
   return (
     <HeaderBox>
       <TimeZone>GTM+08</TimeZone>
@@ -88,9 +108,7 @@ const Header: React.FC<WeekHeaderProps> = props => {
           const weekDayNums = ['0', '6']
           const classname = classnames('monthDay', {
             weekend: weekDayNums.includes(currentWeekDayNum),
-            selectedDay:
-              date.format('DD/MM/YYYY') ===
-              dayjs(selectedDay).format('DD/MM/YYYY'),
+            selectedDay: date.isSame(dayjs(checkedTime), 'day'),
           })
 
           return (
