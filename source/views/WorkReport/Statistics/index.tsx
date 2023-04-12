@@ -14,6 +14,7 @@ import PermissionWrap from '@/components/PermissionWrap'
 import { useSelector } from '@store/index'
 import RangePicker from '@/components/RangePicker'
 import moment from 'moment'
+import { getStatTempList } from '@/services/report'
 
 const data: any = {
   currentPage: 1,
@@ -180,8 +181,9 @@ const Statistics = () => {
     },
   ]
 
-  const getData = () => {
-    console.log('getData')
+  const getData = async () => {
+    const res = await getStatTempList()
+    console.log('res')
   }
 
   useEffect(() => {

@@ -1,8 +1,10 @@
+/* eslint-disable no-duplicate-imports */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/no-danger */
+
 // 需求详情弹窗预览模式
 
 import {
@@ -20,40 +22,36 @@ import {
 } from '@store/demand'
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
 import { setProjectInfo } from '@store/project'
-import { Drawer, message, Popover, Skeleton, Space } from 'antd'
+import { Drawer, message, Form, Skeleton, Space, Input, Button } from 'antd'
+import type { EditorRef } from '@xyfe/uikit'
+import UploadAttach from '@/components/UploadAttach'
+import { Editor } from '@xyfe/uikit'
 import { createRef, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import ChangeStatusPopover from '../ChangeStatusPopover'
-import CommonIconFont from '../CommonIconFont'
-import DeleteConfirm from '../DeleteConfirm'
-import { DemandOperationDropdownMenu } from '../DemandComponent/DemandOperationDropdownMenu'
-import StateTag from '../StateTag'
-import { DragLine } from '../StyleCommon'
-import BasicDemand from './BasicDemand'
-import ChildrenDemand from './ChildrenDemand'
-import DemandComment from './DemandComment'
-import DetailDemand from './DetailDemand'
-import DetailsSkeleton from './DetailsSkeleton'
-import { throttle } from 'lodash'
+import CommonIconFont from '@/components/CommonIconFont'
+import DeleteConfirm from '@/components/DeleteConfirm'
+import { DragLine } from '@/components/StyleCommon'
+import DetailsSkeleton from '@/components/DemandDetailDrawer/DetailsSkeleton'
+import { divide, throttle } from 'lodash'
+import CommonUserAvatar from '@/components/CommonUserAvatar'
+import IconFont from '@/components/IconFont'
 import {
   Header,
   BackIcon,
   ChangeIconGroup,
   Content,
-  ParentBox,
-  DemandName,
-  CollapseItem,
-  CollapseItemTitle,
-  CollapseItemContent,
-  DrawerHeader,
-  NextWrap,
   SkeletonStatus,
   UpWrap,
   DownWrap,
+  ContentHeadWrap,
+  LabelTitle,
+  LabelMessage,
+  LabelMessageRead,
+  CommentFooter,
 } from './style'
-import CommonButton from '../CommonButton'
+import DemandComment from '@/components/DemandDetailDrawer/DemandComment'
 
-const DemandDetailDrawer = () => {
+const ReportDetailDrawer = () => {
   const normalState = {
     detailInfo: {
       isOpen: true,
@@ -90,11 +88,8 @@ const DemandDetailDrawer = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [demandIds, setDemandIds] = useState([])
   const commentDom: any = createRef()
-
-  const isCanEdit =
-    projectInfo.projectPermissions?.length > 0 &&
-    projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
-      ?.length > 0
+  const [form] = Form.useForm()
+  const [isReview, setIsReview] = useState(false)
 
   const modeList = [
     { name: t('project.detailInfo'), key: 'detailInfo', content: '' },
@@ -347,7 +342,7 @@ const DemandDetailDrawer = () => {
         placement="right"
         bodyStyle={{ padding: 0, position: 'relative' }}
         width={leftWidth}
-        open={isDemandDetailDrawerVisible}
+        open={true}
         onClose={onCancel}
         destroyOnClose
         maskClosable={false}
@@ -370,166 +365,176 @@ const DemandDetailDrawer = () => {
                 <Skeleton.Input active />
               </SkeletonStatus>
             )}
-            {!skeletonLoading && (
-              <ChangeStatusPopover
-                isCanOperation={isCanEdit && !drawerInfo.isExamine}
-                projectId={drawerInfo.projectId}
-                record={drawerInfo}
-                onChangeStatus={onChangeStatus}
-              >
-                <StateTag
-                  name={drawerInfo?.status?.status?.content}
-                  onClick={drawerInfo.isExamine ? onExamine : void 0}
-                  isShow={isCanEdit || drawerInfo.isExamine}
-                  state={
-                    drawerInfo?.status?.is_start === 1 &&
-                    drawerInfo?.status?.is_end === 2
-                      ? 1
-                      : drawerInfo?.status?.is_end === 1 &&
-                        drawerInfo?.status?.is_start === 2
-                      ? 2
-                      : drawerInfo?.status?.is_start === 2 &&
-                        drawerInfo?.status?.is_end === 2
-                      ? 3
-                      : 0
-                  }
-                />
-              </ChangeStatusPopover>
-            )}
           </Space>
           <Space size={16}>
             <ChangeIconGroup>
-              {currentIndex > 0 && (
-                <UpWrap
-                  onClick={onUpDemand}
-                  id="upIcon"
-                  isOnly={
-                    demandIds?.length === 0 ||
-                    currentIndex === demandIds?.length - 1
-                  }
-                >
-                  <CommonIconFont
-                    type="up"
-                    size={20}
-                    color="var(--neutral-n1-d1)"
-                  />
-                </UpWrap>
-              )}
-              {!(
-                demandIds?.length === 0 ||
-                currentIndex === demandIds?.length - 1
-              ) && (
-                <DownWrap
-                  onClick={onDownDemand}
-                  id="downIcon"
-                  isOnly={currentIndex <= 0}
-                >
-                  <CommonIconFont
-                    type="down"
-                    size={20}
-                    color="var(--neutral-n1-d1)"
-                  />
-                </DownWrap>
-              )}
-            </ChangeIconGroup>
-            <div onClick={onToDetail}>
-              <CommonButton type="icon" icon="full-screen" />
-            </div>
-            <Popover
-              open={isMoreVisible}
-              onOpenChange={setIsMoreVisible}
-              placement="bottomRight"
-              trigger={['click', 'hover']}
-              getPopupContainer={n => n}
-              content={
-                <DemandOperationDropdownMenu
-                  haveComment
-                  onEditChange={onEditChange}
-                  onDeleteChange={onDeleteChange}
-                  onCreateChild={onCreateChild}
-                  onAddComment={() => commentDom.current?.addComment()}
-                  record={demandDetailDrawerProps}
+              <UpWrap
+                onClick={onUpDemand}
+                id="upIcon"
+                isOnly={
+                  demandIds?.length === 0 ||
+                  currentIndex === demandIds?.length - 1
+                }
+              >
+                <CommonIconFont
+                  type="up"
+                  size={20}
+                  color="var(--neutral-n1-d1)"
                 />
-              }
-            >
-              <div>
-                <CommonButton type="icon" icon="more" />
-              </div>
-            </Popover>
+              </UpWrap>
+
+              <DownWrap
+                onClick={onDownDemand}
+                id="downIcon"
+                isOnly={currentIndex <= 0}
+              >
+                <CommonIconFont
+                  type="down"
+                  size={20}
+                  color="var(--neutral-n1-d1)"
+                />
+              </DownWrap>
+            </ChangeIconGroup>
           </Space>
         </Header>
-        <Content>
+        <Content isReview={isReview}>
           {skeletonLoading && <DetailsSkeleton />}
           {!skeletonLoading && (
             <>
-              <ParentBox size={8}>
-                {drawerInfo.hierarchy?.map((i: any, index: number) => (
-                  <DrawerHeader key={i.prefixKey}>
-                    <img src={i.categoryAttachment} alt="" />
-                    <div>
-                      {i.projectPrefix}-{i.prefixKey}
-                    </div>
-                    <span
-                      hidden={
-                        drawerInfo.hierarchy?.length <= 1 ||
-                        index === drawerInfo.hierarchy?.length - 1
-                      }
-                    >
-                      /
-                    </span>
-                  </DrawerHeader>
-                ))}
-              </ParentBox>
-              <DemandName>{drawerInfo.name}</DemandName>
-              {modeList.map((i: any) => (
-                <CollapseItem key={i.key}>
-                  <CollapseItemTitle onClick={() => onChangeShowState(i)}>
-                    <span>{i.name}</span>
-                    <CommonIconFont
-                      type={showState[i.key].isOpen ? 'up' : 'down'}
-                      color="var(--neutral-n2)"
+              <ContentHeadWrap>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
+                >
+                  {false ? (
+                    <img
+                      style={{
+                        width: 32,
+                        height: 32,
+                        borderRadius: 16,
+                      }}
+                      // src={i.avatar}
                     />
-                  </CollapseItemTitle>
-                  <CollapseItemContent
-                    ref={showState[i.key].dom}
-                    isOpen={showState[i.key].isOpen}
-                  >
-                    {i.key === 'detailInfo' && (
-                      <DetailDemand
-                        detail={drawerInfo}
-                        onUpdate={getDemandDetail}
-                      />
-                    )}
-                    {i.key === 'detailDemands' && showState[i.key].isOpen && (
-                      <ChildrenDemand
-                        detail={drawerInfo}
-                        isOpen={showState[i.key].isOpen}
-                      />
-                    )}
-                    {i.key === 'basicInfo' && showState[i.key].isOpen && (
-                      <BasicDemand
-                        detail={drawerInfo}
-                        isOpen={showState[i.key].isOpen}
-                        onUpdate={getDemandDetail}
-                      />
-                    )}
-                    {i.key === 'demandComment' && (
-                      <DemandComment
-                        detail={drawerInfo}
-                        isOpen={showState[i.key].isOpen}
-                        onRef={commentDom}
-                        isOpenInfo
-                      />
-                    )}
-                  </CollapseItemContent>
-                </CollapseItem>
-              ))}
+                  ) : (
+                    <span>
+                      <CommonUserAvatar size="large" />
+                    </span>
+                  )}
+                  <div className="reportTitleWrap">
+                    <div className="titleText">
+                      李四的工作日报
+                      <span className="dateText">
+                        （2022-08-21至2022-08-27）
+                      </span>
+                    </div>
+                    <div className="submitTimeText">
+                      提交时间：2023-09-12 15:20:32
+                    </div>
+                  </div>
+                </div>
+              </ContentHeadWrap>
+              <Form
+                form={form}
+                onFinish={confirm}
+                layout="vertical"
+                initialValues={{ info2: '2222222222' }}
+                onFinishFailed={() => {
+                  setTimeout(() => {
+                    const errorList = (document as any).querySelectorAll(
+                      '.ant-form-item-has-error',
+                    )
+
+                    errorList[0].scrollIntoView({
+                      block: 'center',
+                      behavior: 'smooth',
+                    })
+                  }, 100)
+                }}
+              >
+                <Form.Item
+                  style={{
+                    marginBottom: '30px',
+                  }}
+                  label={<LabelTitle>{t('report.list.todayWork')}</LabelTitle>}
+                  name="info"
+                >
+                  <Editor readonly disableUpdateValue />
+                </Form.Item>
+                <Form.Item
+                  style={{
+                    marginBottom: '30px',
+                  }}
+                  label={
+                    <LabelTitle>{t('report.list.tomorrowWork')}</LabelTitle>
+                  }
+                  name="info2"
+                >
+                  <Editor readonly disableUpdateValue />
+                </Form.Item>
+                <Form.Item
+                  label={<LabelTitle>{t('common.attachment')}</LabelTitle>}
+                  name="attachments"
+                >
+                  11111
+                </Form.Item>
+                <Form.Item
+                  label={
+                    <LabelTitle>
+                      {t('report.list.associatedRequirement')}
+                    </LabelTitle>
+                  }
+                  name="needs"
+                >
+                  111
+                </Form.Item>
+              </Form>
+              <div>
+                <div>
+                  <span className={LabelMessage}>已读</span>
+                  <span className={LabelMessageRead}>{`未读 (${3})`}</span>
+                </div>
+              </div>
+              <div>
+                <div style={{ marginTop: 21 }}>
+                  <LabelTitle>评论</LabelTitle>
+                </div>
+              </div>
             </>
           )}
+          <DemandComment detail={drawerInfo} isOpen={true} onRef={commentDom} />
         </Content>
+
+        <CommentFooter isReview={isReview}>
+          {isReview ? (
+            <>
+              <Editor />
+              <div className="buttonBox">
+                <Space>
+                  <Button type="primary" size="small">
+                    评论
+                  </Button>
+                  <Button
+                    type="default"
+                    size="small"
+                    onClick={() => setIsReview(false)}
+                  >
+                    取消
+                  </Button>
+                </Space>
+              </div>
+            </>
+          ) : (
+            <Input
+              placeholder={`评论${'张三'}的日志`}
+              onFocus={() => setIsReview(true)}
+            />
+          )}
+        </CommentFooter>
       </Drawer>
     </>
   )
 }
 
-export default DemandDetailDrawer
+export default ReportDetailDrawer
