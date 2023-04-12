@@ -81,6 +81,7 @@ export const userSetupsCalendar = async (
   await http.post<any, any>(`/b/calendar/${params.id}/userSetups`, {
     is_check: params.is_check,
     color: params.color,
+    is_only_show: params.is_only_show,
   })
 }
 

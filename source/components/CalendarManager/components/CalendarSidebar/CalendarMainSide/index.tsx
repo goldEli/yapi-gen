@@ -14,15 +14,17 @@ import { getCalendarList } from '@store/calendar/calendar.thunk'
 import { useEffect, useState } from 'react'
 import CalendarSubscribe from '../CalendarSubscribe'
 import CalendarFormModal from '../CalendarFormModal'
+import { useTranslation } from 'react-i18next'
 
 const CalendarMainSide = () => {
   const dispatch = useDispatch()
+  const [t] = useTranslation()
   const [value, setValue] = useState('')
 
   // 改变路由
   const onChangeRouter = () => {
     localStorage.setItem('calendarSetKey', 'view')
-    dispatch(setRouterMenu({ name: '视图选项', key: 'view' }))
+    dispatch(setRouterMenu({ name: t('view_options'), key: 'view' }))
   }
 
   // 创建日程
@@ -41,14 +43,14 @@ const CalendarMainSide = () => {
       <CommonButton type="primary" style={{ width: '100%', marginBottom: 24 }}>
         <CreateScheduleBtn onClick={onCreate}>
           <IconFont type="plus" style={{ fontSize: 16 }} />
-          <span className="btnText">创建日程</span>
+          <span className="btnText">{t('create_calendar')}</span>
         </CreateScheduleBtn>
       </CommonButton>
       <DXCalendar />
       <div style={{ width: '100%', margin: '24px 0' }}>
         <InputSearch
           onChangeSearch={setValue}
-          placeholder={'搜索日历'}
+          placeholder={t('search_calendar')}
           width="100%"
           autoFocus
           leftIcon
@@ -56,12 +58,12 @@ const CalendarMainSide = () => {
       </div>
       <ManagerListBox>
         <CalendarManagerList
-          title="我管理的"
+          title={t('manage_calendar')}
           type="manager"
           searchValue={value}
         />
         <CalendarManagerList
-          title="我订阅的"
+          title={t('subscribed_calendar')}
           type="subscribe"
           searchValue={value}
         />
@@ -72,7 +74,7 @@ const CalendarMainSide = () => {
             type="settings"
             style={{ fontSize: 18, color: 'var(--neutral-n3)' }}
           />
-          <div>日历设置</div>
+          <div>{t('calendar_settings')}</div>
         </div>
       </CalendarSetBox>
     </>

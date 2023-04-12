@@ -60,7 +60,7 @@ const useCalculationConflict = () => {
       })
       .flat()
 
-    const d = list.map(item => {
+    const d = list?.map(item => {
       const cur = conflictsWithSize.find(i => i.id === item.schedule_id)
       if (cur) {
         return {

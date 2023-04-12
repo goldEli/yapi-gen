@@ -2,6 +2,7 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { setRouterMenu } from '@store/calendar'
 import { useDispatch, useSelector } from '@store/index'
+import { useTranslation } from 'react-i18next'
 
 const CalendarSetSideTitle = styled.div`
   font-size: 14px;
@@ -51,6 +52,7 @@ const MenuItem = styled.div<{ active: boolean }>`
 
 const CalendarSetSide = () => {
   const dispatch = useDispatch()
+  const [t] = useTranslation()
   const { menuList, routerMenu } = useSelector(store => store.calendar)
 
   // 改变路由
@@ -66,11 +68,11 @@ const CalendarSetSide = () => {
 
   return (
     <>
-      <CalendarSetSideTitle>日程设置</CalendarSetSideTitle>
+      <CalendarSetSideTitle>{t('schedule_settings')}</CalendarSetSideTitle>
       <BackBox>
         <div className="box" onClick={onBack}>
           <IconFont className="icon" type="left-md" />
-          <div className="text">返回</div>
+          <div className="text">{t('calendar_back')}</div>
         </div>
       </BackBox>
       <MenuItems>

@@ -1,12 +1,7 @@
-import { colorMap } from '@/components/CalendarManager/config'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import styled from '@emotion/styled'
-import {
-  setCalendarData,
-  setCheckedCalendarList,
-  setCalendarModal,
-} from '@store/calendar'
-import { useDispatch, useSelector } from '@store/index'
+import { setCalendarModal } from '@store/calendar'
+import { useDispatch } from '@store/index'
 import { useState } from 'react'
 import CalendarColor from '../../CalendarColor'
 import { deleteCalendar, unsubscribeCalendar } from '@/services/calendar'
@@ -15,6 +10,7 @@ import {
   getCalendarList,
   userSetupsCalendar,
 } from '@store/calendar/calendar.thunk'
+import { useTranslation } from 'react-i18next'
 
 const MoreWrap = styled.div`
   padding: 4px 0 10px;
@@ -58,17 +54,18 @@ interface CalendarMoreDropdownProps {
 
 const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
   const dispatch = useDispatch()
+  const [t] = useTranslation()
   const [isDeleteVisible, setIsDeleteVisible] = useState(false)
   const [isUnsubscribeVisible, setIsUnsubscribeVisible] = useState(false)
   const subMenu = [
-    { name: '仅显示此日历', type: 'only' },
-    { name: '退订日历', type: 'unsubscribe' },
+    { name: t('show_only_this_calendar'), type: 'only' },
+    { name: t('unsubscribe_from_calendar'), type: 'unsubscribe' },
   ]
   const manageMenu = [
-    { name: '仅显示此日历', type: 'only' },
-    { name: '编辑日历', type: 'edit' },
-    { name: '删除日历', type: 'delete' },
-    { name: '退订日历', type: 'unsubscribe' },
+    { name: t('show_only_this_calendar'), type: 'only' },
+    { name: t('editorial_calendar'), type: 'edit' },
+    { name: t('delete_calendar'), type: 'delete' },
+    { name: t('unsubscribe_from_calendar'), type: 'unsubscribe' },
   ]
 
   // 仅显示此日历
@@ -80,6 +77,7 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
         is_only_show: 1,
       }),
     )
+    props.onCancel()
   }
 
   // 删除日历确认事件
@@ -87,7 +85,7 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
     await deleteCalendar({ id: props.item.calendar_id })
     dispatch(getCalendarList())
     setIsDeleteVisible(false)
-    message.success('删除成功！')
+    message.success(t('common.deleteSuccess'))
   }
 
   // 退订日历确认事件
@@ -95,7 +93,7 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
     await unsubscribeCalendar({ id: props.item.calendar_id })
     dispatch(getCalendarList())
     setIsUnsubscribeVisible(false)
-    message.success('取消订阅成功！')
+    message.success(t('unsubscribed_successfully'))
   }
 
   // 点击菜单事件
@@ -146,15 +144,15 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
     <>
       <DeleteConfirm
         isVisible={isDeleteVisible}
-        title="删除日历"
-        text="您即将永久删除该日历，所有日历成员都将无法再使用，要继续吗？"
+        title={t('delete_calendar')}
+        text={t('delete_calendar_text')}
         onConfirm={onDeleteConfirm}
         onChangeVisible={() => setIsDeleteVisible(false)}
       />
       <DeleteConfirm
         isVisible={isUnsubscribeVisible}
-        title="退订日历"
-        text="确认退订该日历，退订后将无法访问该日历的日程"
+        title={t('unsubscribe_from_calendar')}
+        text={t('unsubscribe_from_calendar_text')}
         onConfirm={onUnsubscribeConfirm}
         onChangeVisible={() => setIsUnsubscribeVisible(false)}
       />

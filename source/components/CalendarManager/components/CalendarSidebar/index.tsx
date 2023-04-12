@@ -1,21 +1,14 @@
-import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
-import IconFont from '@/components/IconFont'
-import InputSearch from '@/components/InputSearch'
 import { DragLine } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
 import { useEffect, useRef, useState } from 'react'
 import {
-  CalendarSetBox,
   CalendarSidebarBox,
   CalendarSidebarMain,
   CalenderBoxLeftArea,
-  CreateScheduleBtn,
   FoldIcon,
 } from '../../styles'
-import CalendarManagerList from '../CalendarManagerList'
-import DXCalendar from '../DXCalendar'
 import CalendarMainSide from './CalendarMainSide'
 import CalendarSetSide from './CalendarSetSide'
 

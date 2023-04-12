@@ -36,7 +36,7 @@ const ScheduleCardList: React.FC<ScheduleCardListProps> = props => {
   console.log({ data })
 
   const content = useMemo(() => {
-    return data.map(item => {
+    return data?.map(item => {
       return (
         <ScheduleCard
           key={item.info.id}

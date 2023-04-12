@@ -52,7 +52,7 @@ const useCalculationConflict = () => {
       .flat()
 
     // 设置所有日程的left 和 width
-    const d = list.map(item => {
+    const d = list?.map(item => {
       const cur = conflictsWithSize.find(i => i.id === item.id)
       const str = dayjs(item.start_timestamp).format(format)
       // 根据日期计算出left

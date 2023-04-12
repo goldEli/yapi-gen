@@ -137,7 +137,6 @@ const urls = {
    */
   saveSchedule: '/b/schedule',
   getScheduleList: '/b/schedule_list',
-  getSubscribeList: '/b/subscribe_list',
 
   getCalendarDaysOfYearList: '/b/schedule/daysOfYear',
   getCalendarDaysOfMonthList: '/b/schedule/daysOfMonth',

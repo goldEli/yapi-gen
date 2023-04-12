@@ -42,6 +42,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setCalendarModal } from '@store/calendar'
 import { addCalendar, editCalendar, getCalendarInfo } from '@/services/calendar'
 import { getCalendarList } from '@store/calendar/calendar.thunk'
+import { useTranslation } from 'react-i18next'
 
 interface PermissionDropProps {
   onUpdateShare(item: Model.Calendar.MemberItem, type: string): void
@@ -49,6 +50,7 @@ interface PermissionDropProps {
 }
 
 const PermissionDrop = (props: PermissionDropProps) => {
+  const [t] = useTranslation()
   const { relateConfig } = useSelector(store => store.calendar)
   const [isVisible, setIsVisible] = useState(false)
   // 移除成员
@@ -91,13 +93,13 @@ const PermissionDrop = (props: PermissionDropProps) => {
       )}
       <ItemProvider />
       <PermissionDropItem onClick={() => setIsTransferVisible(true)}>
-        转让日历
+        {t('transfer_calendar')}
       </PermissionDropItem>
       <PermissionDropItem
         onClick={() => setIsDeleteVisible(true)}
         style={{ color: 'var(--function-error)' }}
       >
-        移除成员
+        {t('remove_members')}
       </PermissionDropItem>
     </PermissionDropBox>
   )
@@ -106,25 +108,27 @@ const PermissionDrop = (props: PermissionDropProps) => {
     <>
       <DeleteConfirm
         isVisible={isDeleteVisible}
-        title="移除成员"
+        title={t('remove_members')}
         onConfirm={onDeleteMember}
         onChangeVisible={() => setIsDeleteVisible(false)}
-        text="确认移除成员"
+        text={t('confirm_remove_member')}
       />
 
       <CommonModal
         isVisible={isTransferVisible}
         onClose={() => setIsTransferVisible(false)}
         onConfirm={onTransferCalendar}
-        title="转让日历"
+        title={t('transfer_calendar')}
       >
         <TransferContent>
           <Radio.Group
             onChange={(e: RadioChangeEvent) => setTransferValue(e.target.value)}
             value={transferValue}
           >
-            <Radio value={1}>转让我退出该日历</Radio>
-            <Radio value={2}>转让我变为管理员</Radio>
+            <Radio value={1}>
+              {t('transfer_me_to_become_an_administrator')}
+            </Radio>
+            <Radio value={2}>{t('transfer_me_to_exit_this_calendar')}</Radio>
           </Radio.Group>
         </TransferContent>
       </CommonModal>
@@ -155,6 +159,7 @@ const PermissionDrop = (props: PermissionDropProps) => {
 const CalendarFormModal = () => {
   const [form] = Form.useForm()
   const dispatch = useDispatch()
+  const [t] = useTranslation()
   const { calendarModal, relateConfig } = useSelector(store => store.calendar)
   const inputRefDom = useRef<HTMLInputElement>(null)
   // 创建日历默认主题色
@@ -239,7 +244,7 @@ const CalendarFormModal = () => {
           ...[
             {
               id: -1,
-              name: '全员',
+              name: t('calendar_all_member'),
               type: 1 as Model.Calendar.ChooseAddType,
             },
           ],
@@ -312,7 +317,11 @@ const CalendarFormModal = () => {
     }
     dispatch(getCalendarList())
     onClose()
-    message.success(calendarModal?.params?.id ? '编辑成功!' : '创建成功!')
+    message.success(
+      calendarModal?.params?.id
+        ? t('common.editSuccess')
+        : t('common.createSuccess'),
+    )
   }
 
   // 更新共享成员
@@ -384,7 +393,7 @@ const CalendarFormModal = () => {
       {isChooseVisible && (
         <AddMemberCommonModal
           isVisible={isChooseVisible}
-          title="添加成员"
+          title={t('common.addMember1')}
           onClose={() => setIsChooseVisible(false)}
           onConfirm={onAddConfirm}
           {...addMemberProps}
@@ -398,15 +407,21 @@ const CalendarFormModal = () => {
       />
       <CommonModal
         isVisible={calendarModal.visible}
-        title={calendarModal?.params?.id ? '编辑日历' : '创建日历'}
+        title={
+          calendarModal?.params?.id ? t('edit_calendar') : t('create_calendar')
+        }
         width={528}
         onClose={onClose}
         onConfirm={onCreateConfirm}
-        confirmText={calendarModal?.params?.id ? '确认' : '创建'}
+        confirmText={
+          calendarModal?.params?.id
+            ? t('common.confirm2')
+            : t('newlyAdd.create')
+        }
       >
         <FormWrap layout="vertical" form={form}>
           <Form.Item
-            label="日历名称"
+            label={t('calendar_name_text')}
             name="name"
             rules={[{ required: true, message: '' }]}
             getValueFromEvent={event => {
@@ -417,27 +432,27 @@ const CalendarFormModal = () => {
             <Input
               autoComplete="off"
               ref={inputRefDom as any}
-              placeholder="请输入日历名称"
+              placeholder={t('please_enter_a_calendar_name')}
               allowClear
               maxLength={30}
               autoFocus
             />
           </Form.Item>
-          <Form.Item label="日历描述" name="describe">
+          <Form.Item label={t('calendar_description')} name="describe">
             <Input
               autoComplete="off"
-              placeholder="请输入日历描述"
+              placeholder={t('please_enter_a_calendar_description')}
               allowClear
               maxLength={200}
               autoFocus
             />
           </Form.Item>
-          <Form.Item label={<FormTitleSmall text="权限" />}>
+          <Form.Item label={<FormTitleSmall text={t('Permission')} />}>
             <PermissionBox>
               <div className="select">
                 <CustomSelect
                   onChange={setCurrentPermission}
-                  placeholder="请选择权限"
+                  placeholder={t('please_select_permissions')}
                   optionLabelProp="label"
                   value={currentPermission}
                 >
@@ -485,20 +500,22 @@ const CalendarFormModal = () => {
           </Form.Item>
           {currentPermission !== 1 && (
             <>
-              <Form.Item label="共享日历成员">
+              <Form.Item label={t('shared_calendar_members')}>
                 <CommonButton
                   icon="plus"
                   type="primaryText"
                   iconPlacement="left"
                   onClick={() => onAddMember('share')}
                 >
-                  添加成员
+                  {t('add_a_member')}
                 </CommonButton>
                 {shareList.map((i: Model.Calendar.MemberItem) => (
                   <ShareMemberItem key={i.id}>
                     <CommonUserAvatar avatar={i.avatar} name={i.name} />
                     {i.is_owner === 1 && (
-                      <div className="notCanOperation">管理员</div>
+                      <div className="notCanOperation">
+                        {t('administrators')}
+                      </div>
                     )}
                     {i.is_owner !== 1 && (
                       <PermissionDrop onUpdateShare={onUpdateShare} item={i} />
@@ -506,7 +523,7 @@ const CalendarFormModal = () => {
                   </ShareMemberItem>
                 ))}
               </Form.Item>
-              <Form.Item label="可订阅人群">
+              <Form.Item label={t('subscribeable_audience')}>
                 <Popover
                   trigger={['hover']}
                   content={chooseMemberType}
@@ -521,7 +538,7 @@ const CalendarFormModal = () => {
                       type="primaryText"
                       iconPlacement="left"
                     >
-                      添加成员
+                      {t('add_a_member')}
                     </CommonButton>
                   </div>
                 </Popover>
@@ -555,7 +572,7 @@ const CalendarFormModal = () => {
             </>
           )}
 
-          <Form.Item label="选择图标">
+          <Form.Item label={t('newlyAdd.chooseIcon')}>
             <ChooseIconOrUpload
               color={path}
               hiddenUpload={hiddenUpload}

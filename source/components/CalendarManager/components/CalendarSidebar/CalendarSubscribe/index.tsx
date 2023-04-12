@@ -17,6 +17,7 @@ import { getCalendarList } from '@store/calendar/calendar.thunk'
 import { useDispatch, useSelector } from '@store/index'
 import { Skeleton, Tabs, Tooltip, message } from 'antd'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
 const ContentWrap = styled.div`
@@ -163,6 +164,7 @@ interface TabsContentProps {
 }
 
 const TabsContent = (props: TabsContentProps) => {
+  const [t] = useTranslation()
   const [dataList, setDataList] = useState<Model.Calendar.SubscribeInfo[]>()
   const [dataUserList, setDataUserList] =
     useState<Model.Calendar.GetContactsCalendarInfo[]>()
@@ -172,7 +174,7 @@ const TabsContent = (props: TabsContentProps) => {
   // 取消订阅
   const onCancelSubscribe = async (id: number) => {
     await unsubscribeCalendar({ id })
-    message.success('取消订阅成功!')
+    message.success(t('unsubscribed_successfully'))
     dispatch(getCalendarList())
     if (props.type === '0') {
       const resultData = dataUserList?.map(
@@ -194,7 +196,7 @@ const TabsContent = (props: TabsContentProps) => {
   // 订阅
   const onSubscribe = async (id: number) => {
     await subscribeCalendar({ id })
-    message.success('订阅成功!')
+    message.success(t('subscription_successful'))
     dispatch(getCalendarList())
     if (props.type === '0') {
       const newData = dataUserList?.map(
@@ -280,8 +282,12 @@ const TabsContent = (props: TabsContentProps) => {
                     <div className="content">
                       <div className="title">{i.name}</div>
                       <div className="sub">
-                        <span>创建人：{i.user.name}</span>
-                        <span>订阅量：{i.subscribe_num}</span>
+                        <span>
+                          {t('calendar_creator')}：{i.user.name}
+                        </span>
+                        <span>
+                          {t('subscribe_num')}：{i.subscribe_num}
+                        </span>
                       </div>
                       <Tooltip
                         title={i.describe}
@@ -297,7 +303,7 @@ const TabsContent = (props: TabsContentProps) => {
                       type="light"
                       onClick={() => onCancelSubscribe(i.id)}
                     >
-                      <div style={{ minWidth: 58 }}>取消订阅</div>
+                      <div style={{ minWidth: 58 }}>{t('unsubscribed')}</div>
                     </CommonButton>
                   )}
                   {i.status === 2 && (
@@ -306,7 +312,7 @@ const TabsContent = (props: TabsContentProps) => {
                         style={{ minWidth: 58 }}
                         onClick={() => onSubscribe(i.id)}
                       >
-                        订阅
+                        {t('subscription')}
                       </div>
                     </CommonButton>
                   )}
@@ -357,7 +363,7 @@ const TabsContent = (props: TabsContentProps) => {
                           style={{ minWidth: 58 }}
                           onClick={() => onCancelSubscribe(i.id)}
                         >
-                          取消订阅
+                          {t('unsubscribed')}
                         </div>
                       </CommonButton>
                     )}
@@ -367,7 +373,7 @@ const TabsContent = (props: TabsContentProps) => {
                           style={{ minWidth: 58 }}
                           onClick={() => onSubscribe(i.id)}
                         >
-                          订阅
+                          {t('subscription')}
                         </div>
                       </CommonButton>
                     )}
@@ -384,6 +390,7 @@ const TabsContent = (props: TabsContentProps) => {
 
 const CalendarSubscribe = () => {
   const dispatch = useDispatch()
+  const [t] = useTranslation()
   const { subscribeModal } = useSelector(store => store.calendar)
   const [activeKey, setActiveKey] = useState('0')
   const [searchValue, setSearchValue] = useState('')
@@ -398,7 +405,9 @@ const CalendarSubscribe = () => {
 
   const operations = (
     <InputSearch
-      placeholder={activeKey === '0' ? '搜索联系人姓名' : '搜索日历名称'}
+      placeholder={
+        activeKey === '0' ? t('calendar_search_name') : t('calendar_name')
+      }
       leftIcon
       width={184}
       onChangeSearch={setSearchValue}
@@ -448,7 +457,7 @@ const CalendarSubscribe = () => {
   const items = [
     {
       key: '0',
-      label: '订阅联系人',
+      label: t('subscription_contact'),
       children: (
         <TabsContent
           onMore={getContactsCalendarData}
@@ -459,7 +468,7 @@ const CalendarSubscribe = () => {
     },
     {
       key: '1',
-      label: '公开日历',
+      label: t('public_calendar'),
       children: (
         <TabsContent
           onMore={page => getSubscribeData(activeKey, page)}
@@ -470,7 +479,7 @@ const CalendarSubscribe = () => {
     },
     {
       key: '2',
-      label: '节假日',
+      label: t('holiday_calendar'),
       children: (
         <TabsContent
           onMore={page => getSubscribeData(activeKey, page)}
@@ -501,7 +510,7 @@ const CalendarSubscribe = () => {
     <CommonModal
       isVisible={subscribeModal}
       isShowFooter
-      title="订阅日历"
+      title={t('subscription_calendar')}
       width={784}
       onClose={onClose}
     >
