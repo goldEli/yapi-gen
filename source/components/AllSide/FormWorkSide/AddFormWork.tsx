@@ -56,14 +56,16 @@ const Content = (props: PropsType) => {
 }
 const AddFormWork = (props: Props) => {
   const [form] = Form.useForm()
-
-  //
   const onConfirm = async () => {
     const res2 = await form.validateFields()
     const formValues = form.getFieldsValue()
     props.onConfirm(formValues.name)
   }
-
+  useEffect(() => {
+    if (props.isVisible) {
+      form.resetFields()
+    }
+  }, [props.isVisible])
   return (
     <CommonModal
       isVisible={props.isVisible}

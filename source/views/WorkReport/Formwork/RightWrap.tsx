@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setEditSave } from '@store/formWork'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { deleteTemplate } from '@/services/formwork'
-import { getTemplateList } from '@store/formWork/thunk'
+import { getTemplateList, templateDetail } from '@store/formWork/thunk'
 const RightFormWorkStyle = styled.div`
   flex: 1;
   overflow: hidden;
@@ -94,10 +94,10 @@ export const StyleLeft = styled.div<{ bgc?: any }>(
       : 'var(--neutral-n8)  var(--neutral-n8)  var(--neutral-n8)  transparent',
   }),
 )
-const BtnRight = styled.div`
+export const BtnRight = styled.div`
   display: flex;
 `
-const EditFormWorkBox = styled.div`
+export const EditFormWorkBox = styled.div`
   margin: 20px 0 20px 24px;
   border-bottom: 1px solid var(--neutral-n6-d1);
 `
@@ -126,8 +126,14 @@ const RightFormWork = () => {
   const dispatch = useDispatch()
   const [delIsVisible, setDelIsVisible] = useState(false)
   const { activeItem } = useSelector(store => store.formWork)
+  const getTemplateDetail = async () => {
+    await dispatch(templateDetail({ id: activeItem.id }))
+  }
   useEffect(() => {
-    activeItem && setValue(activeItem.label)
+    if (activeItem) {
+      setValue(activeItem.name)
+      activeItem?.id && getTemplateDetail()
+    }
   }, [activeItem])
   // 删除模板
   const deleteActiveItem = async () => {
