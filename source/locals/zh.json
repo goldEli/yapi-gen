@@ -1010,7 +1010,20 @@
       "informant": "汇报人",
       "status": "状态"
     },
-    "statistics": "汇报我的统计",
-    "mine": "我的汇报"
+    "statistics": {
+      "title": "汇报我的统计",
+      "mine": "我的汇报",
+      "accumulated": "累计汇报",
+      "onTime": "按时汇报",
+      "supplementary": "补交",
+      "unSubmitted": "未提交",
+      "submitTime": "提交时间",
+      "templateUsage": "汇报模版使用情况e",
+      "reportCategory": "汇报类别",
+      "usersVolume": "使用人数",
+      "accumulatedReports": "累计汇报数",
+      "totalNoSubmitTimes": "累计未提交",
+      "currentNoSubmitTimes": "当前未提交"
+    }
   }
 }
