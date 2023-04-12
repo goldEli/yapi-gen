@@ -157,7 +157,7 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
           className={`${tabsList} tabs-list`}
           style={{ transform: `translateX(${xAxis}px` }}
         >
-          <Space size={32}>
+          <Space size={TAB_MARGIN}>
             {items.map(item => (
               <TabItem
                 className="tab-item"
