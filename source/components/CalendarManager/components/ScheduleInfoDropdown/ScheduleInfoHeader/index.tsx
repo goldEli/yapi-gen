@@ -4,9 +4,12 @@ import { useSelector, useDispatch } from '@store/index'
 import { setScheduleModal } from '@store/calendar'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
 import { Dropdown, Checkbox } from 'antd'
-import React, { useState } from 'react'
+import React, { useState ,useEffect} from 'react'
 import ScheduleInfoIcon from './../ScheduleInfoIcon'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import dayjs from 'dayjs'
+import weekday  from 'dayjs/plugin/weekday'
+dayjs.extend(weekday)
 interface ScheduleInfoDropdownProps { }
 const ScheduleInfoHeader = styled.div`
   height: 136px;
@@ -117,7 +120,7 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
       {scheduleInfo.subject}
       </ScheduleInfoHeaderContent>
       <ScheduleInfoHeaderDate>
-        3月16 (周三) 15:09 - 3月17 (周五) 16:00
+        {dayjs(scheduleInfo.start_datetime).format('MM月DD')} ( 周{dayjs(scheduleInfo.start_datetime).weekday()}) {scheduleInfo.start_time} - {dayjs(scheduleInfo.end_datetime).format('MM月DD')} (周{dayjs(scheduleInfo.start_datetime).weekday()}) {scheduleInfo.end_time}
       </ScheduleInfoHeaderDate>
       <DeleteConfirm
         isVisible={isVisible}

@@ -3,6 +3,7 @@ import { css } from '@emotion/css'
 
 import React from 'react'
 import ScheduleInfoIcon from '../ScheduleInfoIcon'
+import { useSelector, useDispatch } from '@store/index'
 const ScheduleInfoContentBox = styled.div`
     padding: 16px;
     max-height: 400px;
@@ -77,24 +78,25 @@ const FileItemInfo=styled.div`
   }
 `
 const ScheduleInfoContent: React.FC = props => {
+  const {scheduleInfo}=useSelector(state=>state.schedule);
   return (
     <ScheduleInfoContentBox>
       <ScheduleInfoContentItem>
         <span><ScheduleInfoIcon type="database" /></span>
         <div className={tip}>
-          <span><img src='https://img95.699pic.com/photo/50133/0843.jpg_wh300.jpg' />易烊千玺（所有者）</span></div>
+          <span><img src='https://img95.699pic.com/photo/50133/0843.jpg_wh300.jpg' />{scheduleInfo.creator?.name}（所有者）</span></div>
       </ScheduleInfoContentItem>
       <ScheduleInfoContentItem>
         <span><ScheduleInfoIcon type="team" /></span>
         <div className={tip}>
-          <span>参与者（3人）</span><span onClick={(e)=>{
+          <span>参与者（{scheduleInfo.members?.length}人）</span><span onClick={(e)=>{
             e.stopPropagation()
           }}><ScheduleInfoIcon type="up"  /></span></div>
       </ScheduleInfoContentItem>
       <PersonList>
         {
-          [1, 2, 3].map((item, idx) => <PersonItem key={idx}>
-            <span><img src='https://img95.699pic.com/photo/50133/0843.jpg_wh300.jpg' />胡歌</span>
+          scheduleInfo.members?.map((item:any, idx:number) => <PersonItem key={item.user_id}>
+            <span><img src='https://img95.699pic.com/photo/50133/0843.jpg_wh300.jpg' />{item.user?.name}</span>
             <span>未回复</span>
           </PersonItem>)
         }
@@ -102,7 +104,7 @@ const ScheduleInfoContent: React.FC = props => {
       </PersonList>
       <ScheduleInfoContentItem>
         <span><ScheduleInfoIcon type="file-02" /></span>
-        <div className={tip}>这是一段介绍文字这是一段介绍文字这是一段介绍文字的发生那时的那是你的sands</div>
+        <div className={tip}>{scheduleInfo.describe}</div>
       </ScheduleInfoContentItem>
       <ScheduleInfoContentItem>
         <span><ScheduleInfoIcon type="attachment" /></span>
@@ -110,11 +112,11 @@ const ScheduleInfoContent: React.FC = props => {
       </ScheduleInfoContentItem>
        <FileList>
         {
-          [1,2].map((item,index)=><FileItem key={index}>
+          scheduleInfo.files?.map((item:any,index:number)=><FileItem key={index}>
              <span><img src='https://img95.699pic.com/photo/50133/0843.jpg_wh300.jpg' /></span>
               <FileItemInfo>
                 <span>这是一个图片.jpg</span>
-                <span>张三 2020-11-12 10:40:00</span>
+                <span>{item.user.name} {item.created_at}</span>
               </FileItemInfo>
           </FileItem>)
         }

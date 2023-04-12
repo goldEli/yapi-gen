@@ -1,5 +1,6 @@
 declare namespace Model.Schedule {
   interface Info {
+    [x: string]: any
     // id: number
     // title?: string
     // startTime: number
