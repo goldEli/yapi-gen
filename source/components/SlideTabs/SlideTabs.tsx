@@ -1,10 +1,9 @@
-/* eslint-disable no-param-reassign */
 import React, { useRef, useState } from 'react'
 import style from './SlideTabs.module.css'
 
 const SlideTabs = () => {
-  const timer = useRef<any>()
-  const smb = useRef<any>()
+  const timer = useRef<NodeJS.Timeout>()
+  const smb = useRef<HTMLDivElement>(null)
   const [arr, setArr] = useState(Array.from({ length: 400 }))
   const [active, setActive] = useState(0)
   console.log(active)
@@ -12,9 +11,9 @@ const SlideTabs = () => {
   const changeLeft = (child: any) => {
     console.log(child)
 
-    let offsetLeft = child.offsetLeft,
-      parentElement = child.parentElement,
-      left = parentElement.getBoundingClientRect().left,
+    const { offsetLeft } = child,
+      { parentElement } = child,
+      { left } = parentElement.getBoundingClientRect(),
       scrollX = parentElement.scrollLeft,
       clientX = parentElement.clientWidth,
       childClientX = child.clientWidth,
