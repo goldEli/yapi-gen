@@ -1,7 +1,7 @@
+import { getStyleValue } from '@/components/CalendarManager/utils'
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import React, { useCallback, useRef, useState } from 'react'
-import { getStyleValue } from '../utils'
 
 export type TDirection = 'top' | 'bottom'
 interface ResizerProps {

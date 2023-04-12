@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import dayjs from 'dayjs'
-import React, { useMemo } from 'react'
-import CurrentTimeLine from '../../CurrentTimeLine'
+import React, { useEffect, useMemo } from 'react'
+import CurrentTimeLine from '../CurrentTimeLine'
 import { formatYYYYMMDD, oneHourHeight } from '../../../config'
 import { useDispatch, useSelector } from '@store/index'
 import classNames from 'classnames'
@@ -10,6 +10,7 @@ import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
 import ScheduleCardList from '../ScheduleCardList'
 import QuickCreateScheduleModel from '../../QuickCreateScheduleModel'
 import { setQuickCreateScheduleModel } from '@store/calendarPanle'
+import { EventBus } from '@/components/CalendarManager/eventBus'
 
 interface TimescaleProps {}
 const Table = styled.table`
@@ -17,7 +18,7 @@ const Table = styled.table`
   width: 100%;
   box-sizing: border-box;
   position: relative;
-  overflow-x: hidden;
+  /* overflow-x: auto; */
   tr {
     height: ${oneHourHeight / 4}px;
     box-sizing: border-box;
@@ -54,11 +55,21 @@ const Timescale: React.FC<TimescaleProps> = props => {
   const tableRef = React.useRef<HTMLTableElement>(null)
   const dispatch = useDispatch()
 
+  const cancelCreateSchedule = () => {
+    setTimeZone([])
+  }
+
+  useEffect(() => {
+    EventBus.getInstance().register('cancelCreateSchedule', () => {
+      cancelCreateSchedule()
+    })
+  }, [])
+
   const onSelectTimeZone = React.useCallback(
     (e: React.MouseEvent, id: string) => {
       // 点击空白重置
       if (timeZone.length) {
-        setTimeZone([])
+        cancelCreateSchedule()
         dispatch(
           setQuickCreateScheduleModel({
             visible: false,
@@ -172,6 +183,7 @@ const Timescale: React.FC<TimescaleProps> = props => {
       <NewCalendarArea timeZone={timeZone} distance={distance} />
       <ScheduleCardList />
       <ScheduleInfoDropdown containerClassName=".time-scale" />
+      <QuickCreateScheduleModel containerClassName=".time-scale" />
     </Table>
   )
 }
