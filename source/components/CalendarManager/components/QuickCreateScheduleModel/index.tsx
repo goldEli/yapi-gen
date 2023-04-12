@@ -57,7 +57,6 @@ const CreateSchedule = styled.div<{
   position: absolute;
   top: ${props => props.top + 'px'};
   left: ${props => props.left + 'px'};
-  padding-bottom: 24px;
   border-radius: 6px;
 `
 
@@ -123,6 +122,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
 
   // 关闭弹窗
   const onClose = () => {
+    form.resetFields()
     dispatch(setQuickCreateScheduleModel({ visible: false }))
     setNoticeList([])
     setParticipant({
