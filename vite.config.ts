@@ -57,15 +57,7 @@ export default defineConfig(config => {
     },
     build: {
       modulePreload: true,
-      minify: 'terser',
-      terserOptions: {
-        compress: {
-          drop_console:
-            config.command === 'build' && env.MODE !== 'development',
-          drop_debugger:
-            config.command === 'build' && env.MODE !== 'development',
-        },
-      },
+      minify: 'esbuild',
     },
     envDir: './environments/',
     envPrefix: '__',

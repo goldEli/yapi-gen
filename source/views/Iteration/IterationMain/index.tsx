@@ -289,7 +289,6 @@ const IterationMain = (props: Props) => {
             updateState={props.updateState}
           />
           <Right>
-            {/* TODO: 迭代刷新 */}
             <Operation
               isGrid={isGrid}
               onChangeGrid={val => onChangeGrid(val)}

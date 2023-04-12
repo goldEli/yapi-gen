@@ -725,9 +725,9 @@ const ProjectMember = (props: { searchValue?: string }) => {
                 isActive={!isVisible}
               />
               <DividerWrap type="vertical" />
-              {/* //TODO: 项目成员刷新处 */}
+
               <ScreenMinHover
-                label={t('staff.refresh')}
+                label={t('common.refresh')}
                 icon="sync"
                 onClick={refresh}
               />

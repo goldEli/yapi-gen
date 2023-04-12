@@ -32,6 +32,7 @@ export const MyIconMode = styled.div<{ active: boolean }>`
   justify-content: center;
   width: 48px;
   height: 48px;
+  transition: all 0.5s;
   background: ${props =>
     props.active ? 'var(--primary-d1)' : 'var(--hover-d2)'};
   border-radius: 6px 6px 6px 6px;

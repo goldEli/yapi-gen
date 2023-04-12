@@ -6,7 +6,7 @@
 import IconFont from '@/components/IconFont'
 import { useDispatch, useSelector } from '@store/index'
 import { changeVisible } from '@store/SiteNotifications'
-import { Checkbox, Drawer, Tooltip } from 'antd'
+import { Checkbox, Divider, Drawer, Skeleton, Tooltip } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ContentItem from '../ContentItem/ContentItem'
@@ -22,13 +22,8 @@ import {
 import VirtualList from '../VittualNode/VittualNode'
 import VirtualScrollList from '../VittualNode/VittualNode'
 import { useTranslation } from 'react-i18next'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
-const formWorkUsageData: any = {
-  list: [],
-}
-for (let i = 0; i < 100; i++) {
-  formWorkUsageData.list.push(i)
-}
 const tabsValue = [
   {
     id: '1',
@@ -50,6 +45,8 @@ const SiteDrawer = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const isVisible = useSelector(store => store.siteNotifications.isVisible)
+  const [list, setList] = useState(Array.from({ length: 10 }))
+  const [hasMore, setHasMore] = useState(true)
 
   const onClose = () => {
     dispatch(changeVisible(false))
@@ -57,7 +54,15 @@ const SiteDrawer = () => {
   const changeActive = (id: string) => {
     setActive(id)
   }
-
+  const fetchMoreData = () => {
+    if (list.length >= 500) {
+      setHasMore(false)
+      return
+    }
+    setTimeout(() => {
+      setList(list.concat(Array.from({ length: 10 })))
+    }, 3000)
+  }
   return (
     <Drawer
       bodyStyle={{ padding: 16, paddingBottom: '8px', boxSizing: 'border-box' }}
@@ -100,24 +105,28 @@ const SiteDrawer = () => {
           <GrepTitle>{t('today')}</GrepTitle>
           <GrepTitle>{t('all_read')}</GrepTitle>
         </div>
-        <div
-        // style={{
-        //   overflow: 'scroll',
-        //   height: 'calc(100vh - 230px)',
-        //   padding: '10px 16px',
-        //   display: 'flex',
-        //   flexDirection: 'column',
-        //   gap: '16px',
-        // }}
+
+        <InfiniteScroll
+          dataLength={list.length}
+          next={fetchMoreData}
+          style={{
+            overflow: 'auto',
+            height: 'calc(100vh - 230px)',
+            padding: '10px 16px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '16px',
+          }}
+          hasMore={hasMore}
+          height={document.body.clientHeight - 230}
+          loader={<Skeleton avatar paragraph={{ rows: 2 }} active />}
+          scrollableTarget="scrollableDiv"
+          endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
         >
-          {/* {new Array(30).fill(null).map((i: any) => (
-            <ContentItem key={i} />
-          ))} */}
-          <VirtualScrollList
-            dataList={formWorkUsageData.list}
-            renderItem={(i, index) => <ContentItem name={i} />}
-          />
-        </div>
+          {list.map((i: any, index: any) => (
+            <ContentItem name={index} key={i} />
+          ))}
+        </InfiniteScroll>
 
         <div
           style={{

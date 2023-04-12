@@ -486,6 +486,9 @@
     "reviewDemandTo": "流转需求至",
     "applyReviewTo": "申请流转至",
     "demandReviewTo": "需求流转至",
+    "demandBackflowTo": "需求流回至",
+    "cancelExamineTime": "取消审核时间",
+    "cancelExamine": "取消审核",
     "notExamineTo": "审核未通过需求状态流回",
     "editCustomFields": "编辑自定义字段",
     "createCustomFields": "创建自定义字段",
@@ -639,6 +642,7 @@
     "del": "删除",
     "stop": "结束",
     "open": "开启",
+    "refresh": "刷新",
     "pleaseEnter": "请输入",
     "pleaseSelect": "请选择",
     "circulation": "流转",
@@ -954,7 +958,6 @@
     "projectCount": "项目数",
     "refreshSuccess": "刷新成功",
     "companyStaff": "公司员工",
-    "refresh": "刷新",
     "pleaseKey": "请输入昵称姓名邮箱电话"
   },
   "mark": {
@@ -1016,7 +1019,20 @@
       "associatedRequirement": "关联需求",
       "submit": "提交"
     },
-    "statistics": "汇报我的统计",
-    "mine": "我的汇报"
+    "statistics": {
+      "title": "汇报我的统计",
+      "mine": "我的汇报",
+      "accumulated": "累计汇报",
+      "onTime": "按时汇报",
+      "supplementary": "补交",
+      "unSubmitted": "未提交",
+      "submitTime": "提交时间",
+      "templateUsage": "汇报模版使用情况e",
+      "reportCategory": "汇报类别",
+      "usersVolume": "使用人数",
+      "accumulatedReports": "累计汇报数",
+      "totalNoSubmitTimes": "累计未提交",
+      "currentNoSubmitTimes": "当前未提交"
+    }
   }
 }

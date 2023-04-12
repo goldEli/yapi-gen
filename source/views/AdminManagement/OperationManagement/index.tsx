@@ -303,9 +303,8 @@ const OperationManagement = () => {
               {t('common.clearForm')}
             </div>
 
-            {/* //TODO: 操作日志刷新处 */}
             <ScreenMinHover
-              label={t('staff.refresh')}
+              label={t('common.refresh')}
               icon="sync"
               onClick={onValuesChange}
             />

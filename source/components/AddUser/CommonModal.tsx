@@ -280,8 +280,8 @@ const CommonModal = (props: ModalProps) => {
       if (res[i].staffs?.length >= 1) {
         const data = res[i].staffs?.map((el: any) => ({
           ...el,
-          staffs: { ...el, id: 'team_id_' + el.id },
-          id: 'team_id_' + el.id,
+          staffs: { ...el, id: 'department_id_' + el.id },
+          id: 'department_id_' + el.id,
         }))
         if (res[i].children) {
           res[i].children = [...res[i]?.children, ...data]
@@ -293,8 +293,8 @@ const CommonModal = (props: ModalProps) => {
         newTreeData(res[i].children)
         res[i].staffs = res[i].staffs?.map((el: any) => ({
           ...el,
-          staffs: { ...el, id: 'team_id_' + el.id },
-          id: 'team_id_' + el.id,
+          staffs: { ...el, id: 'department_id_' + el.id },
+          id: 'department_id_' + el.id,
         }))
       }
     }
@@ -361,7 +361,6 @@ const CommonModal = (props: ModalProps) => {
         ])
         break
     }
-    console.log(props.state)
   }, [props.state])
 
   // 删除成员
@@ -427,7 +426,7 @@ const CommonModal = (props: ModalProps) => {
     if (tabsActive === 1) {
       const data = getStaffs(e.checkedNodes)
       const filterArr = data.filter((el: any) =>
-        String(el.id).includes('team_id'),
+        String(el.id).includes('department_id_'),
       )
       const emptyData = filterArr.filter((el: any) => el?.length !== 0)
       setPersonData(deleteDeep(emptyData))

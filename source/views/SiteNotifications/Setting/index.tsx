@@ -15,6 +15,7 @@ import { First, Wrap } from './style'
 import { useDispatch, useSelector } from '@store/index'
 import { editMyAllNoteSet } from '@/services/SiteNotifications'
 import { setMyConfiguration } from '@store/SiteNotifications'
+import { log } from 'console'
 
 const Setting = () => {
   const [t] = useTranslation()
@@ -177,7 +178,8 @@ const Setting = () => {
 
   const onSave = async () => {
     const res = await editMyAllNoteSet(
-      Array.from(new Set([...myEmailConfiguration, ...selectKeys])),
+      selectKeys,
+      // Array.from(new Set([...myEmailConfiguration, ...selectKeys])),
     )
 
     if (res.code === 0) {
