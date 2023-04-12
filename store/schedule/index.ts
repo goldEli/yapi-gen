@@ -3,6 +3,7 @@ import {
   getCalendarDaysOfYearList,
   getScheduleList,
   getCalendarDaysOfMonthList,
+  getScheduleInfo
 } from './schedule.thunk'
 
 type SliceState = {
@@ -17,7 +18,8 @@ type SliceState = {
   scheduleListModal: Model.Schedule.ScheduleList
   scheduleDate?: number
   yearViewScheduleList: Model.Schedule.Info[]
-  monthViewScheduleList: Model.Schedule.Info[]
+  monthViewScheduleList: Model.Schedule.Info[],
+  scheduleInfo: Model.Schedule.Info,
 }
 
 const initialState: SliceState = {
@@ -35,6 +37,22 @@ const initialState: SliceState = {
   scheduleDate: 0,
   yearViewScheduleList: [],
   monthViewScheduleList: [],
+  scheduleInfo: {
+    schedule_id: 0,
+    subject: '',
+    is_span_day: false,
+    is_all_day: 1,
+    start_timestamp: 0,
+    end_timestamp: 0,
+    is_busy: 1,
+    color: 0,
+    is_busy_text: '',
+    year: 0,
+    month: 0,
+    day: 0,
+    datetime:'', 
+    timestamp:0
+  }
 }
 
 const slice = createSlice({
@@ -71,6 +89,10 @@ const slice = createSlice({
     })
     builder.addCase(getCalendarDaysOfMonthList.fulfilled, (state, action) => {
       state.monthViewScheduleList = action.payload
+    })
+    builder.addCase(getScheduleInfo.fulfilled, (state, action) => {
+      console.log('11111getScheduleInfo-----', action.payload)
+      state.scheduleInfo = action.payload
     })
   },
 })

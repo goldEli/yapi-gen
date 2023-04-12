@@ -55,6 +55,7 @@ declare namespace Model.Schedule {
     visible: boolean
     top?: number
     left?: number
-    date?: number
+    date?: number,
+    scheduleListData?:any
   }
 }

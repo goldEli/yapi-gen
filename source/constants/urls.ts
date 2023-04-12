@@ -148,7 +148,6 @@ const urls = {
   getContactsCalendarList: '/b/calendar/getContacts',
   getDaysOfMonthList: '/b/calendar/daysOfMonth',
 }
-
 export default urls
 
 export type Urls = typeof urls

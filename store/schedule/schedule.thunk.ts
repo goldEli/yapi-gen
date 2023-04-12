@@ -52,3 +52,18 @@ export const getCalendarDaysOfMonthList = createAsyncThunk(
     return ''
   },
 )
+
+export const getScheduleInfo = createAsyncThunk(
+  `${name}/getScheduleInfo`,
+  async (params:{id:number}) => {
+    try {
+      const res = await services.schedule.getScheduleInfo(params);
+      return res
+    } catch (error) {
+      //
+    }
+    return ''
+  },
+)
+
+

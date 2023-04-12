@@ -29,7 +29,7 @@ export const saveScheduleList = async (
 
 // 获取日程详情
 export const getScheduleInfo = async (params: { id: number }) => {
-  const response = await http.post<any, any>(`/b/schedule/${params.id}`)
+  const response = await http.get<any, any>(`/b/schedule/${params.id}`)
   return response.data
 }
 

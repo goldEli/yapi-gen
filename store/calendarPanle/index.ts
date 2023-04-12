@@ -20,7 +20,7 @@ type SliceState = {
     visible: boolean
     x: number
     y: number
-    id: Model.Schedule.Info['schedule_id']
+    schedule_id: Model.Schedule.Info['schedule_id']
   }
   //日视图  2023-01-11
   calenderDayValue: string
@@ -66,7 +66,7 @@ const initialState: SliceState = {
     visible: false,
     x: 0,
     y: 0,
-    id: 0,
+    schedule_id: 0,
   },
   calenderDayValue: dayjs().format('YYYY-M-D'),
   calenderWeekValue: dayjs().format('YYYY-M-D'),

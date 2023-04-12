@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { StyledCalendar } from '../../styles'
 
 import dayjs, { Dayjs } from 'dayjs'
@@ -51,43 +51,43 @@ const CalendarForCalendarYear: React.FC<
 > = props => {
   //const current = React.useMemo(() => dayjs().month(props.month), [props.month])
   const { yearViewScheduleList } = useSelector(state => state.schedule)
-  console.log('yearViewScheduleList', yearViewScheduleList)
   const [date, setDate] = useState<Dayjs>(dayjs())
   const onCallBack = (date: Dayjs) => {
     setDate(date)
   }
-  const disPatch = useDispatch()
+  const disPatch = useDispatch();
+  const dateClick = useCallback((e: any, date: any) => {
+    let month = props.month
+    e.stopPropagation();
+    console.log('-------', dayjs(date).format('YYYY-MM-DD'));
+    let selectDate = dayjs(date).format('YYYY-MM-DD')
+    if (!Object.keys(yearViewScheduleList).includes(dayjs(date).format('YYYY-MM-DD'))) return
+    // setScheduleDate
+    disPatch(
+      setScheduleListModal({
+        visible: true,
+        top: 76,
+        left: 100,
+        date: dayjs(date).date(),
+        scheduleListData: yearViewScheduleList[selectDate as keyof typeof yearViewScheduleList]  //[props.type as keyof typeof calendarData]
+      }),
+    )
+    disPatch(setScheduleDate(month))
+    disPatch(setScheduleInfoDropdown({ visible: false }))
+  }, [yearViewScheduleList])
   return (
     <div style={{ position: 'relative' }}>
       <StyledCalendar
         dateFullCellRender={date => {
           const today =
             dayjs().format('DD/MM/YYYY') === dayjs(date).format('DD/MM/YYYY')
-          const hasSchedule = [
-            '21/03/2023',
-            '18/02/2023',
-            '16/02/2023',
-          ].includes(dayjs(date).format('DD/MM/YYYY'))
+          const hasSchedule = Object.keys(yearViewScheduleList).includes(dayjs(date).format('YYYY-MM-DD'))
           return (
             <DayBox
               className={
                 today ? dayActive : hasSchedule ? hasScheduleClass : ''
               }
-              onClick={e => {
-                let month = props.month
-                e.stopPropagation()
-                // setScheduleDate
-                disPatch(
-                  setScheduleListModal({
-                    visible: true,
-                    top: 76,
-                    left: 100,
-                    date: dayjs(date).date(),
-                  }),
-                )
-                disPatch(setScheduleDate(month))
-                disPatch(setScheduleInfoDropdown({ visible: false }))
-              }}
+              onClick={(e) => dateClick(e, date)}
             >
               {dayjs(date).date()}
             </DayBox>
@@ -96,7 +96,7 @@ const CalendarForCalendarYear: React.FC<
         value={date.month(props.month)}
         style={wrapperStyle}
         fullscreen={false}
-        onPanelChange={(value, mode) => {}}
+        onPanelChange={(value, mode) => { }}
         headerRender={({ value, type, onChange, onTypeChange }) => {
           return (
             <HeaderRender
