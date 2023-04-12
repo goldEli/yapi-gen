@@ -75,7 +75,6 @@ const PermissionConfig = (props: PropsType) => {
   }
   // 根据接口拆解数据
   const onChangeValues = (values: any) => {
-    console.log(values, 'values')
     let isAllWrite = 2
     let isAllView = 2
     values.forEach((item: any) => {
@@ -149,6 +148,7 @@ const PermissionConfig = (props: PropsType) => {
       setFillingRequirements({ ...fillingRequirements, submit_cycle: value }),
     )
   }
+  // 表单更新操作
   const formOnValuesChange = (values: any) => {
     dispatch(setFillingRequirements({ ...fillingRequirements, ...values }))
   }
@@ -213,10 +213,40 @@ const PermissionConfig = (props: PropsType) => {
     reportContent.is_all_write === 2 && setPerson1(data1)
     setPerson2(data2)
   }
-  console.log(reportContent)
   useEffect(() => {
     reportContent && assemblyData()
   }, [reportContent])
+  // 删除重新存
+  const onChangedel = (el: any, num: number) => {
+    // 谁可以写
+    let data1 =
+      reportContent.template_configs?.filter(
+        (item: { user_type: number }) => item.user_type === 1,
+      ) || []
+    //  汇报对象
+    let data2 = reportContent.template_configs?.filter(
+      (item: { user_type: number }) => item.user_type === 2,
+    )
+    //  谁可以看
+    let data3 =
+      reportContent.template_configs?.filter(
+        (item: { user_type: number }) => item.user_type === 3,
+      ) || []
+    if (num === 1) {
+      data1 = data1.filter((item: any) => item.target_id !== el.target_id)
+    } else if (num === 2) {
+      data2 = data2.filter((item: any) => item.target_id !== el.target_id)
+    } else {
+      data3 = data3.filter((item: any) => item.target_id !== el.target_id)
+    }
+    dispatch(
+      setReportContent({
+        is_all_view: reportContent.is_all_view,
+        is_all_write: reportContent.is_all_write,
+        template_configs: filterValues([...data1, ...data2, ...data3]),
+      }),
+    )
+  }
   return (
     <PermissionConfigStyle>
       {/* 汇报内容 */}
@@ -228,6 +258,7 @@ const PermissionConfig = (props: PropsType) => {
         <>
           {/* 谁可以写 */}
           <Addperson
+            onChangedel={val => onChangedel(val, 1)}
             onChangeValues={val => onChangeValues(val)}
             person={person1}
             title="谁可以写"
@@ -236,6 +267,7 @@ const PermissionConfig = (props: PropsType) => {
           />
           {/* 汇报对象*/}
           <Addperson
+            onChangedel={val => onChangedel(val, 2)}
             onChangeValues={val => onChangeValues(val)}
             person={person2}
             title="汇报对象"
@@ -244,6 +276,7 @@ const PermissionConfig = (props: PropsType) => {
           />
           {/* 谁可以看 */}
           <Addperson
+            onChangedel={val => onChangedel(val, 3)}
             onChangeValues={val => onChangeValues(val)}
             person={person3}
             title="谁可以看"

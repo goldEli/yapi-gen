@@ -75,7 +75,6 @@ const FormWorkSide = () => {
   const { dataList } = useSelector(store => store.formWork)
   useEffect(() => {
     const item: any = dataList.find((el: any, index: any) => index === isActive)
-    console.log(item, 'oo')
     dispatch(setActiveItem(item))
   }, [isActive, dataList])
   const onConfirm = async (name: string) => {
