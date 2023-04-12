@@ -32,7 +32,7 @@ const AllDayScheduleBox: React.FC<AllDayScheduleBoxProps> = props => {
     <AllDayScheduleBoxBox>
       <div className="label">GTM+08</div>
       <div className="list">
-        {list.map(item => {
+        {list?.map(item => {
           return (
             <AllDayScheduleItem
               bg={getColorWithOpacityPointOne(item.color)}

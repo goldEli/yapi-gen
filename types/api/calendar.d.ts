@@ -1,4 +1,20 @@
 declare namespace API.Calendar {
+  namespace GetContactsCalendarList {
+    type Params = {
+      username?: string
+    }
+    type Result = {
+      list: Model.Calendar.GetContactsCalendarInfo[]
+    }
+  }
+
+  namespace UserSetupsCalendar {
+    type Params = {
+      id: number
+      color?: number
+      is_check?: number
+    }
+  }
   namespace GetDaysOfWeekList {
     type Params = {
       week: number
@@ -41,6 +57,7 @@ declare namespace API.Calendar {
   namespace GetSubscribeList {
     type Params = {
       type: string
+      keywords?: string
     }
     type Result = {
       list: Model.Calendar.SubscribeInfo[]

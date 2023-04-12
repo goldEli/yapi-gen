@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as services from '@/services'
+import { AppDispatch } from '@store/index'
 
 const name = 'calendar'
 
@@ -17,10 +18,17 @@ export const getRelateConfig = createAsyncThunk(
   `${name}/getRelateConfig`,
   async () => {
     const res = await services.calendar.getRelateConfig()
-    console.log(res, '=11212')
     return res.data
   },
 )
+
+// 用户日历设置接口
+export const userSetupsCalendar =
+  (params: API.Calendar.UserSetupsCalendar.Params) =>
+  async (dispatch: AppDispatch) => {
+    await services.calendar.userSetupsCalendar(params)
+    dispatch(getCalendarList())
+  }
 
 // 获取日历设置配置
 export const getCalendarConfig = createAsyncThunk(

@@ -34,10 +34,6 @@ const RepeatModal = (props: RepeatModalProps) => {
   const [number, setNumber] = useState<number>(1)
   // 选择周期
   const [chooseRepeat, setChooseRepeat] = useState<CheckboxValueType[]>([])
-  // 当月共有多少天
-  const [currentDate, setCurrentDate] = useState([])
-  // 当年共有多少月
-  const [currentMonth, setCurrentMonth] = useState([])
   const unit = ['天', '周', '月', '年']
 
   const checkboxOptions = [
@@ -75,8 +71,6 @@ const RepeatModal = (props: RepeatModalProps) => {
       repeat_end_date: endDate,
       repeat_end_num: number,
       repeat_choose: chooseRepeat,
-      repeat_start: '',
-      repeat_end: '',
     }
     props.onRepeatConfirm(params)
     onClose()
@@ -115,21 +109,6 @@ const RepeatModal = (props: RepeatModalProps) => {
               onChange={setChooseRepeat}
             />
           </RepeatModalCheck>
-        )}
-        {[3, 4].includes(props.currentRepeat) && (
-          <Form.Item label="从">
-            <Select
-              style={{ width: 140, marginRight: 16 }}
-              value={endType}
-              onChange={setEndType}
-            />
-            -
-            <Select
-              style={{ width: 140, marginLeft: 16 }}
-              value={endType}
-              onChange={setEndType}
-            />
-          </Form.Item>
         )}
         <Form.Item label="结束重复">
           <Select
