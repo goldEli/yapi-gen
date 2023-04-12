@@ -10,7 +10,6 @@ const Wrap = styled.div({
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
-  backgroundColor: 'white',
   height: '100%',
   width: '100%',
   borderRadius: 6,

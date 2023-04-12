@@ -14,7 +14,6 @@ import {
   message,
 } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
-import useModalPosition from '../../hooks/useModalPosition'
 import AddMemberCommonModal from '@/components/AddUser/CommonModal'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import IconFont from '@/components/IconFont'
@@ -41,8 +40,10 @@ import { colorMap } from '../../config'
 import { setQuickCreateScheduleModel } from '@store/calendarPanle'
 import { setScheduleModal } from '@store/calendar'
 import { saveSchedule } from '@store/schedule/schedule.thunk'
+import { EventBus } from '../../eventBus'
+import useModalPosition from './useModalPosition'
 interface CreateScheduleBoxProps {
-  containerClassName?: string
+  containerClassName: string
 }
 
 const CreateSchedule = styled.div<{
@@ -91,7 +92,6 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
   const { position } = useModalPosition({
     ...quickCreateScheduleModel,
     containerClassName: props.containerClassName,
-    modalClassName: '.schedule-info-dropdown-box',
     modalInfo: {
       width: 528,
       height: 544,
@@ -129,6 +129,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
 
   // 关闭弹窗
   const onClose = () => {
+    EventBus.getInstance().dispatch('cancelCreateSchedule')
     form.resetFields()
     dispatch(setQuickCreateScheduleModel({ visible: false }))
     setNoticeList([])
@@ -233,12 +234,12 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
         calendar_id: normalCategory.calendar_id,
       },
     }
-    resultParams.start_datetime = moment(values.time[0]).format(
-      isAll ? 'YYYY-MM-DD' : 'YYYY-MM-DD hh:mm:ss',
-    )
-    resultParams.end_datetime = moment(values.time[1]).format(
-      isAll ? 'YYYY-MM-DD' : 'YYYY-MM-DD hh:mm:ss',
-    )
+    resultParams.start_datetime = isAll
+      ? moment(values.time[0]).startOf('day').format('YYYY-MM-DD HH:mm:ss')
+      : moment(values.time[0]).format('YYYY-MM-DD HH:mm:ss')
+    resultParams.end_datetime = isAll
+      ? moment(values.time[1]).endOf('day').format('YYYY-MM-DD HH:mm:ss')
+      : moment(values.time[1]).format('YYYY-MM-DD HH:mm:ss')
     delete resultParams.time
     return resultParams
   }
@@ -289,7 +290,10 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
       <AddMemberCommonModal
         isVisible={isChooseVisible && !!position}
         title="添加成员"
-        onClose={() => setIsChooseVisible(false)}
+        onClose={() => {
+          setIsChooseVisible(false)
+          EventBus.getInstance().dispatch('cancelCreateSchedule')
+        }}
         onConfirm={onAddConfirm}
       />
       <CreateSchedule

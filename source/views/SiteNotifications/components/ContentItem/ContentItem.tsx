@@ -16,7 +16,7 @@ import {
   Wrap2,
 } from './style'
 
-const ContentItem = () => {
+const ContentItem = (props: any) => {
   const [choose, setChoose] = useState(false)
 
   return (
@@ -33,7 +33,7 @@ const ContentItem = () => {
         </div>
         <HoverWrap style={{ flex: '1' }}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Name>李钟硕</Name>
+            <Name>{props.name}</Name>
             <Tip>在评论中@了您</Tip>
             <Time>2小时前</Time>
             <Time2>

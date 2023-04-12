@@ -14,8 +14,8 @@ const CalendarDayBox = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  position: relative;
-  margin-top: 58px;
+  /* position: relative; */
+  /* margin-top: 58px; */
   overflow-x: auto;
 `
 
@@ -24,8 +24,6 @@ const CalendarDay: React.FC<CalendarDayProps> = props => {
     <CalendarDayBox className="calendar-day-box">
       <ScheduleAllDay />
       <Timescale />
-
-      <QuickCreateScheduleModel />
     </CalendarDayBox>
   )
 }

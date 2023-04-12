@@ -9,6 +9,8 @@ export const getSubscribeList = async (
     `/b/calendar/${params.type}/getAllCalendarList`,
     {
       keywords: params.keywords,
+      page: params.page,
+      page_size: 10,
     },
   )
   return response
@@ -21,7 +23,11 @@ export const getContactsCalendarList = async (
   const response = await http.get<
     any,
     API.Calendar.GetContactsCalendarList.Result
-  >('getContactsCalendarList', params)
+  >('getContactsCalendarList', {
+    username: params.username,
+    page: params.page,
+    page_size: 10,
+  })
   return response
 }
 
@@ -78,7 +84,7 @@ export const userSetupsCalendar = async (
   })
 }
 
-// 订阅日历
+// 订阅日历-- finish-1
 export const subscribeCalendar = async (params: { id: number }) => {
   await http.post<any, any>(`/b/calendar/${params.id}/subscribe`)
 }
@@ -105,7 +111,7 @@ export const getDaysOfWeekList = async (
   return res
 }
 
-// 取消订阅日历
+// 取消订阅日历-- finish-1
 export const unsubscribeCalendar = async (params: { id: number }) => {
   await http.post<any, any>(`/b/calendar/${params.id}/unsubscribe`)
 }

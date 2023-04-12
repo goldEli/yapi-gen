@@ -26,7 +26,7 @@ export const ContentEmail = styled.span`
 
 export const ContentEmail2 = styled.span<{ active?: boolean }>`
   cursor: pointer;
-  padding: 0 8px;
+  padding: 2px 8px;
   height: 28px;
   background: ${props => (props.active ? ' rgba(102,136,255,0.1)' : '#F2F2F4')};
   border-radius: 6px 6px 6px 6px;

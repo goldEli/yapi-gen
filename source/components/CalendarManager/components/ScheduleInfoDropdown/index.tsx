@@ -6,7 +6,6 @@ import React,{useEffect} from 'react'
 import ScheduleInfoHeaderBox from './ScheduleInfoHeader'
 import ScheduleInfoContent from './SCheduleInfoContent'
 import ScheduleInfoFooter from './ScheduleInfoFooter'
-import { getStyleValue } from '../CalendarWeek/utils'
 import useModalPosition from '../../hooks/useModalPosition'
 import {getScheduleInfo} from '@store/schedule/schedule.thunk'
 interface ScheduleInfoDropdownProps {

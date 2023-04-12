@@ -2,7 +2,7 @@ import IconFont from '@/components/IconFont'
 import LeftTitle from '@/components/LeftTitle'
 import { useDispatch, useSelector } from '@store/index'
 import { changeVisibleFilter } from '@store/SiteNotifications'
-import { Checkbox, Drawer } from 'antd'
+import { Badge, Checkbox, Drawer } from 'antd'
 import React, { useState } from 'react'
 import { CloseWrap } from '../SiteDrawer/style'
 import {
@@ -16,6 +16,7 @@ import {
   ResetB,
   Wrap,
 } from './style'
+import { t } from 'i18next'
 
 const items = [
   {
@@ -38,7 +39,7 @@ const items = [
   },
   {
     id: '4',
-    icon: 'database',
+    icon: 'calendar-nor',
     icon2: 'calendar-sel',
     text: '日程管理',
   },
@@ -77,7 +78,7 @@ const AllSideFilter = () => {
     >
       <Wrap>
         <MyHead>
-          <LeftTitle title="筛选通知" />
+          <LeftTitle title={t('filtering_notifications')} />
           <CloseWrap onClick={onClose} width={32} height={32}>
             <IconFont
               style={{ fontSize: 20, color: 'var(--neutral-n2)' }}
@@ -87,25 +88,27 @@ const AllSideFilter = () => {
         </MyHead>
         <MyIconModeTextWrap>
           {items.map((i: any) => (
-            <MyIconModeWrap onClick={() => setActive(i.id)} key={i.id}>
-              <MyIconMode active={active === i.id}>
-                <IconFont
-                  style={{ fontSize: 20 }}
-                  type={active === i.id ? i.icon2 : i.icon}
-                />
-              </MyIconMode>
-              <MyIconModeText>{i.text}</MyIconModeText>
-            </MyIconModeWrap>
+            <Badge key={i.id} size="small" offset={[-22, 6]} count={5}>
+              <MyIconModeWrap onClick={() => setActive(i.id)}>
+                <MyIconMode active={active === i.id}>
+                  <IconFont
+                    style={{ fontSize: 20 }}
+                    type={active === i.id ? i.icon2 : i.icon}
+                  />
+                </MyIconMode>
+                <MyIconModeText>{i.text}</MyIconModeText>
+              </MyIconModeWrap>
+            </Badge>
           ))}
         </MyIconModeTextWrap>
         <MyHead>
-          <LeftTitle title="通知事项" />
-          <ResetB>重置筛选</ResetB>
+          <LeftTitle title={t('Notices')} />
+          <ResetB>{t('reset_filtering') as string}</ResetB>
         </MyHead>
         <InfoWrap>
           <Checkbox.Group style={{ width: '100%' }} onChange={onChange}>
             <InfoWrapItem>
-              <span>分配给我任务</span>
+              <span>{t('assign_me_tasks') as string}</span>
               <Checkbox value="A" />
             </InfoWrapItem>
           </Checkbox.Group>

@@ -4,14 +4,45 @@ import { AppDispatch } from '@store/index'
 
 const name = 'schedule'
 
-export const getScheduleList = createAsyncThunk(
-  `${name}/getScheduleList`,
-  async (params: API.Schedule.GetScheduleList.Params) => {
-    console.log('getScheduleList', params)
-    const res = await services.schedule.getScheduleList(params)
-    return res.data
+export const getScheduleListDay = createAsyncThunk(
+  `${name}/getScheduleListDay`,
+  async (params: API.Schedule.GetScheduleListDay.Params) => {
+    const res = await services.schedule.getScheduleListDay(params)
+    return res
   },
 )
+
+export const getScheduleListDaysOfWeek = createAsyncThunk(
+  `${name}/getScheduleListDaysOfWeek`,
+  async (params: API.Schedule.GetScheduleListDaysOfWeek.Params) => {
+    const res = await services.schedule.getScheduleListDaysOfWeek(params)
+    return res
+  },
+)
+
+export const getScheduleListDaysOfMonth = createAsyncThunk(
+  `${name}/getScheduleListDaysOfMonth`,
+  async (params: API.Schedule.GetScheduleListDaysOfMonth.Params) => {
+    const res = await services.schedule.getScheduleListDaysOfMonth(params)
+    return res
+  },
+)
+// export const getScheduleListDaysOf = createAsyncThunk(
+//   `${name}/getScheduleList`,
+//   async (params: API.Schedule.GetScheduleList.Params) => {
+//     console.log('getScheduleList', params)
+//     const res = await services.schedule.getScheduleList(params)
+//     return res.data
+//   },
+// )
+// export const getScheduleList = createAsyncThunk(
+//   `${name}/getScheduleList`,
+//   async (params: API.Schedule.GetScheduleList.Params) => {
+//     console.log('getScheduleList', params)
+//     const res = await services.schedule.getScheduleList(params)
+//     return res.data
+//   },
+// )
 // export const saveSchedule = createAsyncThunk(
 //   `${name}/getScheduleList`,
 //   async (params: API.Schedule.GetScheduleList.Params) => {
@@ -24,7 +55,8 @@ export const saveSchedule =
   (params: API.Schedule.SaveSchedule.Params) =>
   async (dispatch: AppDispatch) => {
     await services.schedule.saveScheduleList(params)
-    dispatch(getScheduleList({ id: 1 }))
+    // TODO refresh list
+    // dispatch(getScheduleList({ id: 1 }))
   }
 
 export const getCalendarDaysOfYearList = createAsyncThunk(

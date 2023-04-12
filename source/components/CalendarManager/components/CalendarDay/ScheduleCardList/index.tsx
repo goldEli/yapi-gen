@@ -1,9 +1,11 @@
 import React, { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from '@store/index'
 import ScheduleCard from '../ScheduleCard'
-import { getScheduleList } from '@store/schedule/schedule.thunk'
+// import { getScheduleList } from '@store/schedule/schedule.thunk'
 import useCalculationConflict from '../hooks/useCalculationConflict'
 import styled from '@emotion/styled'
+import { getYearMonthWeekDay } from '@/components/CalendarManager/utils'
+import { getScheduleListDaysOfWeek } from '@store/schedule/schedule.thunk'
 
 interface ScheduleCardListProps {}
 const ScheduleCardListBox = styled.div`
@@ -11,13 +13,27 @@ const ScheduleCardListBox = styled.div`
 `
 
 const ScheduleCardList: React.FC<ScheduleCardListProps> = props => {
-  // const scheduleList = useSelector(store => store.schedule.scheduleList)
+  const { calenderDayValue } = useSelector(store => store.calendarPanel)
+  const { checkedCalendarList } = useSelector(store => store.calendar)
   const { data } = useCalculationConflict()
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getScheduleList({ id: 1 }))
-  }, [])
+    // dispatch(getScheduleList({ id: 1 }))
+    if (!calenderDayValue) {
+      return
+    }
+    const { week, year } = getYearMonthWeekDay(calenderDayValue)
+
+    dispatch(
+      getScheduleListDaysOfWeek({
+        week,
+        year,
+        calendar_ids: checkedCalendarList.map(item => item.calendar_id),
+      }),
+    )
+  }, [calenderDayValue, checkedCalendarList])
+  console.log({ data })
 
   const content = useMemo(() => {
     return data.map(item => {

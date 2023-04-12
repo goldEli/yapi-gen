@@ -139,6 +139,14 @@ export const updateStaff: any = async (params: any) => {
   return response
 }
 
+export const batchUpdateStaff: any = async (params: any) => {
+  const response = await http.post('batchEditStaff', {
+    role_id: params.roleId,
+    user_ids: params.userIds,
+  })
+  return response
+}
+
 export const refreshStaff: any = async (params: any) => {
   const response = await http.post('refreshStaff', params)
   return response

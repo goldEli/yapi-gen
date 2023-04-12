@@ -1,19 +1,52 @@
 import * as http from '@/tools/http'
-import { scheduleListMockData } from './mockData'
 import { addIdToScheduleList } from './utils'
 
 // 日程列表
-export const getScheduleList = async (
-  params: API.Schedule.GetScheduleList.Params,
+// export const getScheduleList = async (
+//   params: API.Schedule.GetScheduleList.Params,
+// ) => {
+//   const res = addIdToScheduleList(scheduleListMockData.data)
+//   scheduleListMockData.data = res
+//   return Promise.resolve(scheduleListMockData)
+//   const response = await http.get<any, API.Schedule.GetScheduleList.Result>(
+//     'getScheduleList',
+//     params,
+//   )
+//   return response
+// }
+// 日视图 日程列表
+export const getScheduleListDay = async (
+  params: API.Schedule.GetScheduleListDay.Params,
 ) => {
-  const res = addIdToScheduleList(scheduleListMockData.data)
-  scheduleListMockData.data = res
-  return Promise.resolve(scheduleListMockData)
-  const response = await http.get<any, API.Schedule.GetScheduleList.Result>(
-    'getScheduleList',
+  const response = await http.post<any, API.Schedule.GetScheduleListDay.Result>(
+    'getScheduleListDay',
     params,
   )
-  return response
+  const res = addIdToScheduleList(response.data)
+  return res
+}
+
+// 周视图 日程列表
+export const getScheduleListDaysOfWeek = async (
+  params: API.Schedule.GetScheduleListDaysOfWeek.Params,
+) => {
+  const response = await http.post<
+    any,
+    API.Schedule.GetScheduleListDaysOfWeek.Result
+  >('getScheduleListDaysOfWeek', params)
+  const res = addIdToScheduleList(response.data)
+  return res
+}
+
+export const getScheduleListDaysOfMonth = async (
+  params: API.Schedule.GetScheduleListDaysOfMonth.Params,
+) => {
+  const response = await http.post<
+    any,
+    API.Schedule.GetScheduleListDaysOfMonth.Result
+  >('getScheduleListDaysOfMonth', params)
+  const res = addIdToScheduleList(response.data)
+  return res
 }
 
 // 创建日程

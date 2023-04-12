@@ -1,5 +1,5 @@
+import { getStyleValue } from '@/components/CalendarManager/utils'
 import React from 'react'
-import { getStyleValue } from '../utils'
 const useMaxWidth = () => {
   const [maxWidth, setMaxWidth] = React.useState(0)
   React.useEffect(() => {

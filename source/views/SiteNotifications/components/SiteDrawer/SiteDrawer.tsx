@@ -1,8 +1,13 @@
+/* eslint-disable complexity */
+/* eslint-disable consistent-return */
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable no-duplicate-imports */
+/* eslint-disable react/jsx-no-undef */
 import IconFont from '@/components/IconFont'
 import { useDispatch, useSelector } from '@store/index'
 import { changeVisible } from '@store/SiteNotifications'
-import { Checkbox, Drawer, Tooltip } from 'antd'
-import React, { useState } from 'react'
+import { Checkbox, Divider, Drawer, Skeleton, Tooltip } from 'antd'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ContentItem from '../ContentItem/ContentItem'
 import {
@@ -14,6 +19,10 @@ import {
   Tips,
   Wrap,
 } from './style'
+import VirtualList from '../VittualNode/VittualNode'
+import VirtualScrollList from '../VittualNode/VittualNode'
+import { useTranslation } from 'react-i18next'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 const tabsValue = [
   {
@@ -31,16 +40,28 @@ const tabsValue = [
 ]
 
 const SiteDrawer = () => {
+  const [t] = useTranslation()
   const [active, setActive] = useState('1')
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const isVisible = useSelector(store => store.siteNotifications.isVisible)
+  const [list, setList] = useState(Array.from({ length: 10 }))
+  const [hasMore, setHasMore] = useState(true)
 
   const onClose = () => {
     dispatch(changeVisible(false))
   }
   const changeActive = (id: string) => {
     setActive(id)
+  }
+  const fetchMoreData = () => {
+    if (list.length >= 500) {
+      setHasMore(false)
+      return
+    }
+    setTimeout(() => {
+      setList(list.concat(Array.from({ length: 10 })))
+    }, 3000)
   }
   return (
     <Drawer
@@ -81,23 +102,31 @@ const SiteDrawer = () => {
             marginTop: '16px',
           }}
         >
-          <GrepTitle>今天</GrepTitle>
-          <GrepTitle>全部已读</GrepTitle>
+          <GrepTitle>{t('today')}</GrepTitle>
+          <GrepTitle>{t('all_read')}</GrepTitle>
         </div>
-        <div
+
+        <InfiniteScroll
+          dataLength={list.length}
+          next={fetchMoreData}
           style={{
-            overflow: 'scroll',
+            overflow: 'auto',
             height: 'calc(100vh - 230px)',
             padding: '10px 16px',
             display: 'flex',
             flexDirection: 'column',
             gap: '16px',
           }}
+          hasMore={hasMore}
+          height={document.body.clientHeight - 230}
+          loader={<Skeleton avatar paragraph={{ rows: 2 }} active />}
+          scrollableTarget="scrollableDiv"
+          endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
         >
-          {new Array(30).fill(null).map((i: any) => (
-            <ContentItem key={i} />
+          {list.map((i: any, index: any) => (
+            <ContentItem name={index} key={i} />
           ))}
-        </div>
+        </InfiniteScroll>
 
         <div
           style={{
@@ -107,7 +136,11 @@ const SiteDrawer = () => {
             width: '100%',
           }}
         >
-          <Tips>已为您显示近半年的所有通知消息</Tips>
+          <Tips>
+            {t(
+              'all_notifications_in_the_past_half_year_have_been_displayed_for_you',
+            )}
+          </Tips>
           <MyFooter>
             <Checkbox>
               <span
@@ -117,7 +150,7 @@ const SiteDrawer = () => {
                   color: 'var(--neutral-n1-d1)',
                 }}
               >
-                只显示未读
+                {t('show_only_unread')}
               </span>
             </Checkbox>
             <div
@@ -125,7 +158,7 @@ const SiteDrawer = () => {
                 display: 'flex',
               }}
             >
-              <Tooltip title="设置">
+              <Tooltip title={t('set')}>
                 <CloseWrap
                   style={{
                     margin: '0 4px',
@@ -140,7 +173,7 @@ const SiteDrawer = () => {
                   />
                 </CloseWrap>
               </Tooltip>
-              <Tooltip title="新页面">
+              <Tooltip title={t('new_page')}>
                 <CloseWrap
                   style={{
                     margin: 0,

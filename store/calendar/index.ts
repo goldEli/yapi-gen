@@ -44,7 +44,7 @@ type SliceState = {
 }
 
 const initialState: SliceState = {
-  checkedTime: '"2023-04-12"',
+  checkedTime: '2023-04-12',
   relateConfig: {
     calendar: {
       permission_types: [],

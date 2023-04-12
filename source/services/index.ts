@@ -9,6 +9,7 @@ import * as cos from './cos'
 import * as memberInfo from './memberInfo'
 import * as schedule from './schedule'
 import * as calendar from './calendar'
+import * as formwork from './formwork'
 
 export {
   user,
@@ -22,4 +23,5 @@ export {
   memberInfo,
   schedule,
   calendar,
+  formwork,
 }

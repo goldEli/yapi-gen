@@ -85,7 +85,7 @@ const DelBtnText = styled.span`
 const Sortable = (props: any) => {
   const [t] = useTranslation()
   const { list } = props
-  const { option } = useSelector(store => store.category)
+  const { option } = useSelector(store => store.formWork)
   const [current, setCurrent] = useState<any>(null)
   const [endIndex, setEndIndex] = useState<any>(null)
   const ref: any = useRef()
@@ -99,7 +99,7 @@ const Sortable = (props: any) => {
       ...item,
       dragtype: 'move',
     }
-    ev.dataTransfer.setData('DragItem', JSON.stringify(moveItem))
+    ev.dataTransfer.setData('item', JSON.stringify(moveItem))
     setCurrent(index)
     const imgDom = document.createElement('div')
     document.body.appendChild(imgDom)
@@ -149,6 +149,18 @@ const Sortable = (props: any) => {
       clearTimeout(timer)
     }
   }, [])
+  const getType = (type: number) => {
+    switch (type) {
+      case 1:
+        return '人员字段'
+      case 2:
+        return '附件'
+      case 3:
+        return '富文本'
+      default:
+        return '关联需求'
+    }
+  }
   return (
     <div
       draggable="false"
@@ -161,7 +173,7 @@ const Sortable = (props: any) => {
           <div
             ref={ref}
             draggable="false"
-            key={child?.storyId}
+            key={child?.name}
             onDragOver={allowDrop}
             onDrop={event => onDrop(event, i)}
           >
@@ -169,130 +181,51 @@ const Sortable = (props: any) => {
               ref={container}
               id="container"
               style={{
-                transition:
-                  dragItem?.storyId === child?.storyId ? 'all .1s' : '',
+                transition: dragItem?.name === child?.name ? 'all .1s' : '',
                 transform:
-                  dragItem?.storyId === child?.storyId
+                  dragItem?.name === child?.name
                     ? 'translateY(10px)'
                     : 'translateY(0)',
               }}
-              key={child?.storyId}
-              draggable="true"
-              onDragStart={(ev: any) => onDragStart(ev, i, child)}
-              onDragOver={e => onDragOver(e, i, child)}
-              onDragEnd={e => onDragEnd(e, i)}
-              onClick={() => child?.isCustomize != 2 && props.onClick(i, child)}
+              key={child?.name}
+              // draggable="true"
+              // onDragStart={(ev: any) => onDragStart(ev, i, child)}
+              // onDragOver={e => onDragOver(e, i, child)}
+              // onDragEnd={e => onDragEnd(e, i)}
+              onClick={() => child.type !== 1 && props.onClick(i, child)}
             >
-              {child?.isCustomize === 2 ? (
-                <Tooltip
-                  placement="topRight"
-                  title={t('system_fields_are_not_editable')}
-                >
-                  <ItemList>
-                    <div style={{ display: 'flex', width: '100%' }}>
-                      <IconBox>
-                        <CommonIconFont
-                          type={
-                            option?.find(
-                              (item: any) =>
-                                child?.fieldContent?.attr === item.type,
-                            )?.icon
-                          }
-                          size={24}
-                          color="var(--neutral-n2-d2)"
-                        />
-                      </IconBox>
-                      <ListMsg>
-                        <div>{child?.title}</div>
-                        <div>
-                          {t(
-                            option?.find(
-                              (item: any) =>
-                                child?.fieldContent?.attr === item.type,
-                            )?.label,
-                          )}
-                        </div>
-                      </ListMsg>
-                    </div>
-                    <RightOperate>
-                      {child?.content === 'users_name' ||
-                      child?.content === 'user_name' ||
-                      child?.content === 'finish_at' ||
-                      child?.content === 'created_at' ||
-                      child?.content === 'schedule' ? (
-                        <Checkbox disabled={true} />
-                      ) : (
-                        <Checkbox
-                          checked={child?.isRequired === 1 ? true : false}
-                          onClick={(e: any) => {
-                            e.stopPropagation()
-                            props.onChangeChecked(e.target.checked, child)
-                          }}
-                        />
-                      )}
-
-                      <Text>{t('must')}</Text>
-                      <>
-                        {child?.content === 'users_name' ||
-                        child?.content === 'user_name' ||
-                        child?.content === 'finish_at' ||
-                        child?.content === 'created_at' ? (
-                          <DelBtnText> {t('p2.delete')}</DelBtnText>
-                        ) : (
-                          <DelBtn
-                            onClick={(event: any) => {
-                              event.stopPropagation()
-                              props.onDelete(child)
-                            }}
-                          >
-                            {t('p2.delete')}
-                          </DelBtn>
-                        )}
-                      </>
-                    </RightOperate>
-                  </ItemList>
-                </Tooltip>
-              ) : (
-                <ItemList>
-                  <div style={{ display: 'flex' }}>
-                    <IconBox>
-                      <CommonIconFont
-                        type={
-                          option.find(
-                            (item: any) =>
-                              child?.fieldContent?.attr === item.type,
-                          )?.icon
-                        }
-                        size={24}
-                        color="var(--neutral-n1-d1)"
-                      />
-                    </IconBox>
-                    <ListMsg>
-                      <div>{child?.title}</div>
-                      <div>
-                        {t(
-                          option.find(
-                            (item: any) =>
-                              child?.fieldContent?.attr === item.type,
-                          )?.label,
-                        )}
-                      </div>
-                    </ListMsg>
-                  </div>
-                  <RightOperate>
-                    <Checkbox
-                      disabled={
-                        child?.fieldContent.attr === 'single_checkbox'
-                          ? true
-                          : false
+              <ItemList>
+                <div style={{ display: 'flex' }}>
+                  <IconBox>
+                    <CommonIconFont
+                      type={
+                        option.find((item: any) => child?.type === item.type)
+                          ?.icon
                       }
-                      checked={child?.isRequired === 1 ? true : false}
-                      onClick={(e: any) => {
-                        e.stopPropagation(),
-                          props.onChangeChecked(e.target.checked, child)
-                      }}
+                      size={24}
+                      color="var(--neutral-n1-d1)"
                     />
-                    <Text>{t('must')}</Text>
+                  </IconBox>
+                  <ListMsg>
+                    <div>
+                      {child?.name}--{child.type}
+                    </div>
+                    <div>{getType(child.type)}</div>
+                  </ListMsg>
+                </div>
+                <RightOperate>
+                  <Checkbox
+                    disabled={child.type === 1 ? true : false}
+                    checked={child?.is_required === 1 ? true : false}
+                    onClick={(e: any) => {
+                      e.stopPropagation(),
+                        props.onChangeChecked(e.target.checked, child)
+                    }}
+                  />
+                  <Text>{t('must')}</Text>
+                  {child.type === 1 ? (
+                    <DelBtnText> {t('p2.delete')}</DelBtnText>
+                  ) : (
                     <DelBtn
                       onClick={(event: any) => {
                         event.stopPropagation()
@@ -301,9 +234,9 @@ const Sortable = (props: any) => {
                     >
                       {t('p2.delete')}
                     </DelBtn>
-                  </RightOperate>
-                </ItemList>
-              )}
+                  )}
+                </RightOperate>
+              </ItemList>
             </Container>
           </div>
         ))}

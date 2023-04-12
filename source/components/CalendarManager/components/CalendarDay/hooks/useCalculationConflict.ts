@@ -3,8 +3,10 @@
  * 得到冲突日程的宽度 以及  left位置
  */
 import { useEffect, useState, useMemo } from 'react'
-import { getStyleValue } from '../utils'
-import { getConflictsTimeRange } from '@/components/CalendarManager/utils'
+import {
+  getConflictsTimeRange,
+  getStyleValue,
+} from '@/components/CalendarManager/utils'
 import useScheduleList from './useScheduleList'
 
 const minLeft = 58
@@ -29,9 +31,6 @@ const useCalculationConflict = () => {
       return
     }
     const conflicts = getConflictsTimeRange(list)
-    if (!conflicts.length) {
-      return
-    }
 
     const conflictsWithSize = conflicts
       .map(con => {

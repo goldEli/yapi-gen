@@ -1,4 +1,23 @@
 {
+  "notification": "通知",
+  "notification_settings": "通知设置",
+  "operand": "操作对象",
+  "email_notification": "邮件通知",
+  "ReceiveEmailUpdatesWithMentionsInvitationsAndCommentsAboutItemsYouCareAbout": "接收有关您关注项目的提及、邀请和评论的电子邮件更新",
+  "use_this_email_to_receive": "使用此邮箱接收",
+  "receive_format": "接收格式",
+  "what_situations_require_email_notification": "什么情况需要电子邮件通知",
+  "notification_item_settings": "通知项设置",
+  "today": "今天",
+  "all_read": "全部已读",
+  "all_notifications_in_the_past_half_year_have_been_displayed_for_you": "已为您显示近半年的所有通知消息",
+  "show_only_unread": "只显示未读",
+  "new_page": "新页面",
+  "filtering_notifications": "筛选通知",
+  "Notices": "通知事项",
+  "reset_filtering": "重置筛选",
+  "assign_me_tasks": "分配给我任务",
+
   "is_required": "为必填字段！",
   "menu_word": "文档",
   "search_for_the_requirement_name_or_number": "搜索需求名称或编号",
@@ -467,6 +486,9 @@
     "reviewDemandTo": "流转需求至",
     "applyReviewTo": "申请流转至",
     "demandReviewTo": "需求流转至",
+    "demandBackflowTo": "需求流回至",
+    "cancelExamineTime": "取消审核时间",
+    "cancelExamine": "取消审核",
     "notExamineTo": "审核未通过需求状态流回",
     "editCustomFields": "编辑自定义字段",
     "createCustomFields": "创建自定义字段",
@@ -991,7 +1013,20 @@
       "informant": "汇报人",
       "status": "状态"
     },
-    "statistics": "汇报统计",
-    "mine": "我的汇报"
+    "statistics": {
+      "title": "汇报我的统计",
+      "mine": "我的汇报",
+      "accumulated": "累计汇报",
+      "onTime": "按时汇报",
+      "supplementary": "补交",
+      "unSubmitted": "未提交",
+      "submitTime": "提交时间",
+      "templateUsage": "汇报模版使用情况e",
+      "reportCategory": "汇报类别",
+      "usersVolume": "使用人数",
+      "accumulatedReports": "累计汇报数",
+      "totalNoSubmitTimes": "累计未提交",
+      "currentNoSubmitTimes": "当前未提交"
+    }
   }
 }

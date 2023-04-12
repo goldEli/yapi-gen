@@ -1,31 +1,52 @@
 /* eslint-disable require-unicode-regexp */
 /* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
 import CommonModal from '@/components/CommonModal'
 import FormTitleSmall from '@/components/FormTitleSmall'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { Form, Input, Tooltip } from 'antd'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 const FormWrap = styled(Form)({
   '& .ant-form-item-row': {
     display: 'block !important',
   },
 })
+interface DragItem {
+  type: number
+  name: string
+  icon: string
+  tips: string
+  is_required: number
+}
 interface Props {
   onClose(): void
-  onConfirm(): void
+  onConfirm(values: DragItem, type: number): void
   isVisible: boolean
+  dragItem: DragItem
 }
 const ParmasDialog = (props: Props) => {
   const { TextArea } = Input
   const ChooseDom = useRef<HTMLInputElement>(null)
   const [form] = Form.useForm()
+  useEffect(() => {
+    form.resetFields()
+    form.setFieldsValue({
+      name: props.dragItem?.name,
+      tips: props.dragItem?.tips,
+    })
+  }, [props.isVisible])
+  const onConfirm = () => {
+    const formVal = form.getFieldsValue()
+    formVal.is_required = props.dragItem?.is_required
+    props.onConfirm(formVal, props.dragItem?.type)
+  }
   return (
     <CommonModal
       isVisible={props.isVisible}
       title={'组件参数配置'}
       onClose={props.onClose}
-      onConfirm={props.onConfirm}
+      onConfirm={onConfirm}
     >
       <div
         ref={ChooseDom}
@@ -33,7 +54,7 @@ const ParmasDialog = (props: Props) => {
       >
         <FormWrap form={form} layout="vertical">
           <Form.Item
-            name="1"
+            name="name"
             label={
               <div>
                 <FormTitleSmall text="标题名称" />
@@ -65,14 +86,16 @@ const ParmasDialog = (props: Props) => {
           >
             <Input autoComplete="off" autoFocus />
           </Form.Item>
-          <Form.Item style={{ marginTop: 24 }} name="2" label="提示文字">
-            <TextArea
-              style={{ minHeight: '102px' }}
-              placeholder="提示文字可以用来提示用户如何填写"
-              autoComplete="off"
-              autoFocus
-            />
-          </Form.Item>
+          {props.dragItem?.type === 3 && (
+            <Form.Item style={{ marginTop: 24 }} name="tips" label="提示文字">
+              <TextArea
+                style={{ minHeight: '102px' }}
+                placeholder="提示文字可以用来提示用户如何填写"
+                autoComplete="off"
+                autoFocus
+              />
+            </Form.Item>
+          )}
         </FormWrap>
       </div>
     </CommonModal>
