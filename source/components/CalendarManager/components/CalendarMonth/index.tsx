@@ -3,7 +3,7 @@ import React from 'react'
 import CalendarMonthHeader from './CalendarMonthHeader'
 import Content from './Content'
 import { useDispatch, useSelector } from '@store/index'
-import { getScheduleList } from '@store/schedule/schedule.thunk'
+// import { getScheduleList } from '@store/schedule/schedule.thunk'
 import { getDaysOfMonthList } from '@store/calendar/calendar.thunk'
 
 interface CalendarMonthProps {}
@@ -35,7 +35,7 @@ const CalendarMonth: React.FC<CalendarMonthProps> = props => {
   }, [calenderMonthValue])
 
   React.useEffect(() => {
-    dispatch(getScheduleList({ id: 1 }))
+    // dispatch(getScheduleList({ id: 1 }))
   }, [])
   return (
     <CalendarMonthBox>

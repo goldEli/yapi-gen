@@ -147,6 +147,10 @@ const urls = {
   getDaysOfWeekList: '/b/calendar/daysOfWeek',
   getContactsCalendarList: '/b/calendar/getContacts',
   getDaysOfMonthList: '/b/calendar/daysOfMonth',
+
+  getScheduleListDaysOfWeek: '/b/schedule/daysOfWeek',
+  getScheduleListDaysOfMonth: '/b/schedule/daysOfMonth',
+  getScheduleListDay: '/b/schedule/days',
 }
 
 export default urls

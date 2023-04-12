@@ -1,8 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
   getCalendarDaysOfYearList,
-  getScheduleList,
   getCalendarDaysOfMonthList,
+  getScheduleListDay,
+  getScheduleListDaysOfWeek,
+  getScheduleListDaysOfMonth,
 } from './schedule.thunk'
 
 type SliceState = {
@@ -63,7 +65,16 @@ const slice = createSlice({
     },
   },
   extraReducers(builder) {
-    builder.addCase(getScheduleList.fulfilled, (state, action) => {
+    // builder.addCase(getScheduleList.fulfilled, (state, action) => {
+    //   state.scheduleList = action.payload
+    // })
+    builder.addCase(getScheduleListDay.fulfilled, (state, action) => {
+      state.scheduleList = action.payload
+    })
+    builder.addCase(getScheduleListDaysOfWeek.fulfilled, (state, action) => {
+      state.scheduleList = action.payload
+    })
+    builder.addCase(getScheduleListDaysOfMonth.fulfilled, (state, action) => {
       state.scheduleList = action.payload
     })
     builder.addCase(getCalendarDaysOfYearList.fulfilled, (state, action) => {

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from '@store/index'
 import ScheduleCard from '../ScheduleCard'
-import { getScheduleList } from '@store/schedule/schedule.thunk'
+// import { getScheduleList } from '@store/schedule/schedule.thunk'
 import useCalculationConflict from '../hooks/useCalculationConflict'
 import styled from '@emotion/styled'
 import CurrentTimeLine from '../CurrentTimeLine'
@@ -25,7 +25,7 @@ const ScheduleCardList: React.FC<ScheduleCardListProps> = props => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getScheduleList({ id: 1 }))
+    // dispatch(getScheduleList({ id: 1 }))
   }, [])
 
   const content = useMemo(() => {

@@ -16,6 +16,7 @@ const useModalPosition = (props: {
   const [position, setPosition] = React.useState<{ x: number; y: number }>()
 
   React.useEffect(() => {
+    // TODO refactor code
     if (!props.visible) {
       setPosition(void 0)
       return
