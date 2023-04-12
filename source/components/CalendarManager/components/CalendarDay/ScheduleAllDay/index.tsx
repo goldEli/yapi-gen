@@ -18,9 +18,9 @@ const ScheduleAllDayBox = styled.div`
   box-sizing: border-box;
   overflow: hidden;
   height: 52px;
-  position: absolute;
+  /* position: absolute;
   top: -55px;
-  left: 0;
+  left: 0; */
 `
 
 const TimeZone = styled.span`

@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import dayjs from 'dayjs'
 import React, { useMemo } from 'react'
-import CurrentTimeLine from '../../CurrentTimeLine'
+import CurrentTimeLine from '../CurrentTimeLine'
 import { formatYYYYMMDD, oneHourHeight } from '../../../config'
 import { useDispatch, useSelector } from '@store/index'
 import classNames from 'classnames'
@@ -17,7 +17,7 @@ const Table = styled.table`
   width: 100%;
   box-sizing: border-box;
   position: relative;
-  overflow-x: hidden;
+  /* overflow-x: auto; */
   tr {
     height: ${oneHourHeight / 4}px;
     box-sizing: border-box;
@@ -172,6 +172,7 @@ const Timescale: React.FC<TimescaleProps> = props => {
       <NewCalendarArea timeZone={timeZone} distance={distance} />
       <ScheduleCardList />
       <ScheduleInfoDropdown containerClassName=".time-scale" />
+      <QuickCreateScheduleModel />
     </Table>
   )
 }

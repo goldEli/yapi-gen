@@ -1,8 +1,9 @@
+import useCurrentTime from '@/components/CalendarManager/hooks/useCurrentTime'
+import { getDistanceByTime } from '@/components/CalendarManager/utils'
 import styled from '@emotion/styled'
+import { useSelector } from '@store/index'
 import dayjs from 'dayjs'
 import React, { memo, useMemo } from 'react'
-import useCurrentTime from '../../hooks/useCurrentTime'
-import { getDistanceByTime } from '../../utils'
 
 interface CurrentTimeLineProps {
   // time: number
@@ -42,6 +43,14 @@ const CurrentTimeLine: React.FC<CurrentTimeLineProps> = props => {
   const top = useMemo(() => {
     return getDistanceByTime(currentTime.valueOf())
   }, [currentTime])
+  const { calenderDayValue } = useSelector(store => store.calendarPanel)
+  const visible = useMemo(() => {
+    return currentTime.isSame(dayjs(calenderDayValue), 'day')
+  }, [calenderDayValue, currentTime])
+
+  if (!visible) {
+    return <></>
+  }
   return (
     <CurrentLine top={top}>
       <span className="time">{time}</span>
