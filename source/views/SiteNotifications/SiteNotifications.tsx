@@ -248,6 +248,14 @@ const SiteNotifications = () => {
         }),
       ),
     )
+    //   const re1 = await getContactStatistics()
+    // const re2 = await getContactList()
+    // const re3 = await getDetail()
+    // const re4 = await getMsg_list()
+    // console.log(re1)
+    // console.log(re2)
+    // console.log(re3)
+    // console.log(re4)
   }
   useEffect(() => {
     init()
