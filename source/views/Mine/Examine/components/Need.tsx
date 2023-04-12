@@ -13,6 +13,7 @@ import {
   LabNumber,
   ShowWrap,
   HoverWrap,
+  DividerWrap,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import { Button, Spin, Table } from 'antd'
@@ -284,6 +285,13 @@ const Need = (props: any) => {
             icon="filter"
             onClick={() => setFilterState(!filterState)}
             isActive={!filterState}
+            style={{ margin: '0 8px' }}
+          />
+          <DividerWrap type="vertical" />
+          <ScreenMinHover
+            label={t('common.refresh')}
+            icon="sync"
+            onClick={onUpdate}
             style={{ marginLeft: 8 }}
           />
         </SearchWrap>

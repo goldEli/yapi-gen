@@ -68,7 +68,7 @@ const HeaderSearch = (props: {
       </TitleWrap>
       <SearchBox>
         <ScreenMinHover
-          label={t('staff.refresh')}
+          label={t('common.refresh')}
           icon="sync"
           onClick={props.onRefresh}
         />
