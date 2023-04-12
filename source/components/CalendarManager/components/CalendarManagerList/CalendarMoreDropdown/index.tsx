@@ -58,7 +58,6 @@ interface CalendarMoreDropdownProps {
 
 const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
   const dispatch = useDispatch()
-  const { calendarData } = useSelector(store => store.calendar)
   const [isDeleteVisible, setIsDeleteVisible] = useState(false)
   const [isUnsubscribeVisible, setIsUnsubscribeVisible] = useState(false)
   const subMenu = [
@@ -73,9 +72,14 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
   ]
 
   // 仅显示此日历
-  const showOnlyCalendar = () => {
-    const resultItem: Model.Calendar.Info = { ...props.item, is_check: 1 }
-    dispatch(setCheckedCalendarList([resultItem]))
+  const showOnlyCalendar = async () => {
+    await dispatch(
+      userSetupsCalendar({
+        is_check: 1,
+        id: props.item.calendar_id,
+        is_only_show: 1,
+      }),
+    )
   }
 
   // 删除日历确认事件
@@ -113,8 +117,8 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
   }
 
   // 改变颜色
-  const onChangeColor = (color: number) => {
-    dispatch(
+  const onChangeColor = async (color: number) => {
+    await dispatch(
       userSetupsCalendar({
         color,
         id: props.item.calendar_id,

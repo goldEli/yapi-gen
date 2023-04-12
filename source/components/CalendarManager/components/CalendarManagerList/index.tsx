@@ -89,8 +89,8 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
   const calendarList = calendarData[props.type as keyof typeof calendarData]
 
   // 改变日历的选中状态
-  const onChangeCheck = (item: Model.Calendar.Info) => {
-    dispatch(
+  const onChangeCheck = async (item: Model.Calendar.Info) => {
+    await dispatch(
       userSetupsCalendar({
         is_check: item.is_check === 1 ? 2 : 1,
         id: item.calendar_id,

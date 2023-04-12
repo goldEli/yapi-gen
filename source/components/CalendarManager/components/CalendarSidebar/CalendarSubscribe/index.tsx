@@ -5,11 +5,17 @@ import CommonModal from '@/components/CommonModal'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import InputSearch from '@/components/InputSearch'
 import NoData from '@/components/NoData'
-import { getContactsCalendarList, getSubscribeList } from '@/services/calendar'
+import {
+  getContactsCalendarList,
+  getSubscribeList,
+  subscribeCalendar,
+  unsubscribeCalendar,
+} from '@/services/calendar'
 import styled from '@emotion/styled'
 import { setSubscribeModal } from '@store/calendar'
+import { getCalendarList } from '@store/calendar/calendar.thunk'
 import { useDispatch, useSelector } from '@store/index'
-import { Tabs, Tooltip } from 'antd'
+import { Tabs, Tooltip, message } from 'antd'
 import { createRef, useEffect, useMemo, useRef, useState } from 'react'
 
 const ContentWrap = styled.div`
@@ -149,13 +155,69 @@ interface TabsContentProps {
 }
 
 const TabsContent = (props: TabsContentProps) => {
+  const [dataList, setDataList] = useState<Model.Calendar.SubscribeInfo[]>()
+  const [dataUserList, setDataUserList] =
+    useState<Model.Calendar.GetContactsCalendarInfo[]>()
+  const dispatch = useDispatch()
+  // 取消订阅
+  const onCancelSubscribe = async (id: number) => {
+    await unsubscribeCalendar({ id })
+    message.success('取消订阅成功!')
+    dispatch(getCalendarList())
+    if (props.type === '0') {
+      const resultData = dataUserList?.map(
+        (i: Model.Calendar.GetContactsCalendarInfo) => ({
+          ...i,
+          status: i.id === id ? 2 : i.status,
+        }),
+      )
+      setDataUserList(resultData)
+    } else {
+      const resultData = dataList?.map((i: Model.Calendar.SubscribeInfo) => ({
+        ...i,
+        status: i.id === id ? 2 : i.status,
+      }))
+      setDataList(resultData)
+    }
+  }
+
+  // 订阅
+  const onSubscribe = async (id: number) => {
+    await subscribeCalendar({ id })
+    message.success('订阅成功!')
+    dispatch(getCalendarList())
+    if (props.type === '0') {
+      const newData = dataUserList?.map(
+        (i: Model.Calendar.GetContactsCalendarInfo) => ({
+          ...i,
+          status: i.id === id ? 1 : i.status,
+        }),
+      )
+      setDataUserList(newData)
+    } else {
+      const newData = dataList?.map((i: Model.Calendar.SubscribeInfo) => ({
+        ...i,
+        status: i.id === id ? 1 : i.status,
+      }))
+      setDataList(newData)
+    }
+  }
+
+  useEffect(() => {
+    setDataList(props.dataList)
+  }, [props.dataList])
+
+  useEffect(() => {
+    setDataUserList(props.dataUserList)
+  }, [props.dataUserList])
+
   return (
     <TabsContentWrap>
       {props.type !== '0' && (
         <TabsBox>
-          {props?.dataList &&
-            props?.dataList.length > 0 &&
-            props?.dataList.map((i: Model.Calendar.SubscribeInfo) => (
+          {dataList &&
+            dataList.length > 0 &&
+            dataList.map((i: Model.Calendar.SubscribeInfo) => (
               <TabsItem key={i.id}>
                 <TabsItemLeft>
                   <div className="icon">
@@ -177,59 +239,75 @@ const TabsContent = (props: TabsContentProps) => {
                   </div>
                 </TabsItemLeft>
                 {i.status === 1 && (
-                  <CommonButton type="secondary">
-                    <div style={{ minWidth: 58 }}>订阅</div>
+                  <CommonButton
+                    type="light"
+                    onClick={() => onCancelSubscribe(i.id)}
+                  >
+                    <div style={{ minWidth: 58 }}>取消订阅</div>
                   </CommonButton>
                 )}
                 {i.status === 2 && (
-                  <CommonButton type="light">
-                    <div style={{ minWidth: 58 }}>取消订阅</div>
+                  <CommonButton type="secondary">
+                    <div
+                      style={{ minWidth: 58 }}
+                      onClick={() => onSubscribe(i.id)}
+                    >
+                      订阅
+                    </div>
                   </CommonButton>
                 )}
               </TabsItem>
             ))}
-          {props?.dataList && props?.dataList.length <= 0 && <NoData />}
+          {dataList && dataList.length <= 0 && <NoData />}
         </TabsBox>
       )}
       {props.type === '0' && (
         <TabsBox>
-          {props?.dataUserList &&
-            props?.dataUserList.length > 0 &&
-            props?.dataUserList.map(
-              (i: Model.Calendar.GetContactsCalendarInfo) => (
-                <TabsItemLi key={i.id}>
-                  <div className="nameBox">
-                    <div className="avatar">
-                      <CommonUserAvatar size="large" />
-                    </div>
-                    <div className="name">
-                      <span className="label">{i.user.name}</span>
-                      <span className="sub">
-                        {i.user.department_name}-{i.user.job_name}
-                      </span>
-                    </div>
+          {dataUserList &&
+            dataUserList.length > 0 &&
+            dataUserList.map((i: Model.Calendar.GetContactsCalendarInfo) => (
+              <TabsItemLi key={i.id}>
+                <div className="nameBox">
+                  <div className="avatar">
+                    <CommonUserAvatar size="large" />
                   </div>
-                  <div className="otherBox">{i.user.phone}</div>
-                  <div className="otherBox">{i.user.email}</div>
-                  <div
-                    className="otherBox"
-                    style={{ justifyContent: 'flex-end' }}
-                  >
-                    {i.status === 1 && (
-                      <CommonButton type="secondary">
-                        <div style={{ minWidth: 58 }}>订阅</div>
-                      </CommonButton>
-                    )}
-                    {i.status === 2 && (
-                      <CommonButton type="light">
-                        <div style={{ minWidth: 58 }}>取消订阅</div>
-                      </CommonButton>
-                    )}
+                  <div className="name">
+                    <span className="label">{i.user.name}</span>
+                    <span className="sub">
+                      {i.user.department_name}-{i.user.job_name}
+                    </span>
                   </div>
-                </TabsItemLi>
-              ),
-            )}
-          {props?.dataUserList && props?.dataUserList.length <= 0 && <NoData />}
+                </div>
+                <div className="otherBox">{i.user.phone}</div>
+                <div className="otherBox">{i.user.email}</div>
+                <div
+                  className="otherBox"
+                  style={{ justifyContent: 'flex-end' }}
+                >
+                  {i.status === 1 && (
+                    <CommonButton type="light">
+                      <div
+                        style={{ minWidth: 58 }}
+                        onClick={() => onCancelSubscribe(i.id)}
+                      >
+                        取消订阅
+                      </div>
+                    </CommonButton>
+                  )}
+                  {i.status === 2 && (
+                    <CommonButton type="secondary">
+                      <div
+                        style={{ minWidth: 58 }}
+                        onClick={() => onSubscribe(i.id)}
+                      >
+                        订阅
+                      </div>
+                    </CommonButton>
+                  )}
+                </div>
+              </TabsItemLi>
+            ))}
+          {dataUserList && dataUserList.length <= 0 && <NoData />}
         </TabsBox>
       )}
     </TabsContentWrap>

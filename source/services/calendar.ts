@@ -78,7 +78,7 @@ export const userSetupsCalendar = async (
   })
 }
 
-// 订阅日历
+// 订阅日历-- finish-1
 export const subscribeCalendar = async (params: { id: number }) => {
   await http.post<any, any>(`/b/calendar/${params.id}/subscribe`)
 }
@@ -105,7 +105,7 @@ export const getDaysOfWeekList = async (
   return res
 }
 
-// 取消订阅日历
+// 取消订阅日历-- finish-1
 export const unsubscribeCalendar = async (params: { id: number }) => {
   await http.post<any, any>(`/b/calendar/${params.id}/unsubscribe`)
 }

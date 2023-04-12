@@ -234,12 +234,12 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
         calendar_id: normalCategory.calendar_id,
       },
     }
-    resultParams.start_datetime = moment(values.time[0]).format(
-      isAll ? 'YYYY-MM-DD' : 'YYYY-MM-DD hh:mm:ss',
-    )
-    resultParams.end_datetime = moment(values.time[1]).format(
-      isAll ? 'YYYY-MM-DD' : 'YYYY-MM-DD hh:mm:ss',
-    )
+    resultParams.start_datetime = isAll
+      ? moment(values.time[0]).startOf('day').format('YYYY-MM-DD HH:mm:ss')
+      : moment(values.time[0]).format('YYYY-MM-DD HH:mm:ss')
+    resultParams.end_datetime = isAll
+      ? moment(values.time[1]).endOf('day').format('YYYY-MM-DD HH:mm:ss')
+      : moment(values.time[1]).format('YYYY-MM-DD HH:mm:ss')
     delete resultParams.time
     return resultParams
   }
