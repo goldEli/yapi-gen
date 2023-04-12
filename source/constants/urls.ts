@@ -132,11 +132,11 @@ const urls = {
   getMenuPermission: '/b/user_menu_list',
   getCompanyUserPreferenceConfig: '/b/preference/config',
   updateCompanyUserPreferenceConfig: '/b/preference/config',
-  createTemplate: '/report/template/create',
-  upDateTemplate: '/report/template/update/',
-  templateDetail: '/report/template/info',
-  deleteTemplate: '/report/template/delete',
-  templateList: '/report/template/list',
+  createTemplate: '/b/work_report/template/create',
+  upDateTemplate: '/b/work_report/template/edit',
+  templateDetail: '/b/work_report/template/info',
+  deleteTemplate: '/b/work_report/template/delete',
+  templateList: '/b/work_report/template/list',
 }
 
 export default urls
