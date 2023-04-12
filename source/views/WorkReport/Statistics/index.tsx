@@ -197,23 +197,6 @@ const Statistics = () => {
     return {
       label: `工作周报${i}`,
       key: id,
-      children: (
-        <>
-          <ResizeTable
-            isSpinning={isSpinning}
-            dataWrapNormalHeight="calc(100vh - 292px)"
-            col={columns}
-            dataSource={data.list}
-            noData={<NoData />}
-          />
-          <PaginationBox
-            currentPage={data?.currentPage}
-            pageSize={data?.pageSize}
-            total={data?.total}
-            onChange={onChangePage}
-          />
-        </>
-      ),
     }
   })
 
@@ -248,6 +231,21 @@ const Statistics = () => {
             defaultValue={tabKey}
             onChange={handleChange}
           />
+          <>
+            <ResizeTable
+              isSpinning={isSpinning}
+              dataWrapNormalHeight="calc(100vh - 292px)"
+              col={columns}
+              dataSource={data.list}
+              noData={<NoData />}
+            />
+            <PaginationBox
+              currentPage={data?.currentPage}
+              pageSize={data?.pageSize}
+              total={data?.total}
+              onChange={onChangePage}
+            />
+          </>
         </Head>
         <Center>
           <CenterRight>

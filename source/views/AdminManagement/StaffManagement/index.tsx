@@ -534,9 +534,9 @@ const StaffManagement = () => {
           />
 
           <DividerWrap type="vertical" />
-          {/* //TODO: 员工刷新处 */}
+
           <ScreenMinHover
-            label={t('staff.refresh')}
+            label={t('common.refresh')}
             icon="sync"
             onClick={refresh}
             style={{ margin: '0 8px' }}
