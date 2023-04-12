@@ -84,30 +84,35 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
   }, [])
 
   const prev = () => {
-    const fragment = nodes.current.slice(
+    const segment = nodes.current.slice(
       nodeIndex.current - STEP,
       nodeIndex.current,
     )
     nodeIndex.current -= STEP
-    let nodeWidth = 0
-    for (let index = 0; index < fragment.length; index++) {
-      nodeWidth += fragment[index].clientWidth + TAB_MARGIN
-    }
+
+    const nodeWidth = segment.reduce(
+      (accumulator, currentValue) =>
+        accumulator + currentValue.clientWidth + TAB_MARGIN,
+      0,
+    )
+
     setXAxis(current => {
       return current + nodeWidth
     })
   }
 
   const next = () => {
-    const fragment = nodes.current.slice(
+    const segment = nodes.current.slice(
       nodeIndex.current,
       nodeIndex.current + STEP,
     )
     nodeIndex.current += STEP
-    let nodeWidth = 0
-    for (let index = 0; index < fragment.length; index++) {
-      nodeWidth += fragment[index].clientWidth + TAB_MARGIN
-    }
+    const nodeWidth = segment.reduce(
+      (accumulator, currentValue) =>
+        accumulator + currentValue.clientWidth + TAB_MARGIN,
+      0,
+    )
+
     setXAxis(current => {
       return current - nodeWidth
     })
