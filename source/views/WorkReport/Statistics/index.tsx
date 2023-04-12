@@ -1,7 +1,6 @@
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 import { SecondTitle, SelectWrapBedeck } from '@/components/StyleCommon'
-
 import { css } from '@emotion/css'
 import ResizeTable from '@/components/ResizeTable'
 import NoData from '@/components/NoData'
@@ -14,7 +13,6 @@ import SlideTabs from './SlideTabs'
 import PermissionWrap from '@/components/PermissionWrap'
 import { useSelector } from '@store/index'
 import RangePicker from '@/components/RangePicker'
-import { use } from 'i18next'
 import moment from 'moment'
 
 const data: any = {
@@ -50,9 +48,10 @@ for (let i = 0; i < 100; i++) {
 const StyledWrap = styled.div`
   height: calc(100vh - 56px);
   display: flex;
-  gap: 17px;
+  gap: 16px;
 `
 const Head = styled.div`
+  width: calc(100% - 504px);
   box-sizing: border-box;
   padding: 24px;
   background: rgba(255, 255, 255, 1);
@@ -101,12 +100,12 @@ const CardGroup = styled(Space)({
 const CardItem = styled.div({
   height: 104,
   width: 208,
-  padding: 24,
+  padding: '0 24px',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'start',
-  borderRadius: 6,
+  borderRadius: 16,
   span: {
     fontSize: 12,
     color: 'var(--neutral-n2)',
@@ -128,7 +127,7 @@ const Statistics = () => {
 
   const columns: ColumnsType<any> = [
     {
-      title: '姓名',
+      title: <> {t('common.name')} </>,
       dataIndex: 'name',
       width: 264,
       render: (value: string) => {
@@ -141,22 +140,23 @@ const Statistics = () => {
       },
     },
     {
-      title: '按时提交',
+      title: <> {t('report.statistics.onTime')} </>,
       dataIndex: 'onTimeCount',
       width: 160,
     },
     {
-      title: '补交',
+      title: <> {t('report.statistics.supplementary')} </>,
       dataIndex: 'delayTimes',
       width: 160,
     },
     {
-      title: '累计未提交',
+      title: <> {t('report.statistics.totalNoSubmitTimes')} </>,
       dataIndex: 'totalNoSubmitTimes',
       width: 160,
     },
     {
-      title: '当前未提交',
+      title: <> {t('report.statistics.currentNoSubmitTimes')} </>,
+
       dataIndex: 'currentNoSubmitTimes',
       width: 160,
     },
@@ -164,19 +164,19 @@ const Statistics = () => {
 
   const usageColumns: ColumnsType<any> = [
     {
-      title: '汇报类别',
+      title: <> {t('report.statistics.reportCategory')} </>,
       dataIndex: 'name',
-      width: 150,
+      width: 130,
     },
     {
-      title: '使用人数',
+      title: <> {t('report.statistics.usersVolume')} </>,
       dataIndex: 'userCount',
-      width: 150,
+      width: 88,
     },
     {
-      title: '累计汇报数',
+      title: <> {t('report.statistics.accumulatedReports')} </>,
       dataIndex: 'totalReportCount',
-      width: 150,
+      width: 88,
     },
   ]
 
@@ -197,23 +197,6 @@ const Statistics = () => {
     return {
       label: `工作周报${i}`,
       key: id,
-      children: (
-        <>
-          <ResizeTable
-            isSpinning={isSpinning}
-            dataWrapNormalHeight="calc(100vh - 292px)"
-            col={columns}
-            dataSource={data.list}
-            noData={<NoData />}
-          />
-          <PaginationBox
-            currentPage={data?.currentPage}
-            pageSize={data?.pageSize}
-            total={data?.total}
-            onChange={onChangePage}
-          />
-        </>
-      ),
     }
   })
 
@@ -235,10 +218,10 @@ const Statistics = () => {
       <StyledWrap>
         <Head>
           <div className={cardTitle}>
-            <SecondTitle>{t('report.statistics')}</SecondTitle>
+            <SecondTitle>{t('report.statistics.title')}</SecondTitle>
             <SelectWrapBedeck>
               <span style={{ margin: '0 16px', fontSize: '14px' }}>
-                提交时间
+                {t('report.statistics.submitTime')}
               </span>
               <RangePicker isShowQuick onChange={onChangeDate} />
             </SelectWrapBedeck>
@@ -248,30 +231,53 @@ const Statistics = () => {
             defaultValue={tabKey}
             onChange={handleChange}
           />
+          <>
+            <ResizeTable
+              isSpinning={isSpinning}
+              dataWrapNormalHeight="calc(100vh - 292px)"
+              col={columns}
+              dataSource={data.list}
+              noData={<NoData />}
+            />
+            <PaginationBox
+              currentPage={data?.currentPage}
+              pageSize={data?.pageSize}
+              total={data?.total}
+              onChange={onChangePage}
+            />
+          </>
         </Head>
         <Center>
           <CenterRight>
-            <SecondTitle>{t('report.mine')}</SecondTitle>
+            <SecondTitle>{t('report.statistics.mine')}</SecondTitle>
             <CardGroup size={24}>
               <CardItem style={{ backgroundColor: 'rgba(102, 136, 255, 0.1)' }}>
-                <span>累计汇报</span>
-                <div>{100}</div>
+                <Space size={8} direction="vertical">
+                  <span>{t('report.statistics.accumulated')}</span>
+                  <div>{100}</div>
+                </Space>
               </CardItem>
               <CardItem style={{ backgroundColor: 'rgba(67, 186, 154, 0.10)' }}>
-                <span>按时汇报</span>
-                <div>{100}</div>
+                <Space size={8} direction="vertical">
+                  <span>{t('report.statistics.onTime')}</span>
+                  <div>{100}</div>
+                </Space>
               </CardItem>
               <CardItem style={{ backgroundColor: 'rgba(250, 151, 70, 0.1)' }}>
-                <span>补交</span>
-                <div>{0}</div>
+                <Space size={8} direction="vertical">
+                  <span>{t('report.statistics.supplementary')}</span>
+                  <div>{100}</div>
+                </Space>
               </CardItem>
               <CardItem style={{ backgroundColor: 'rgba(255, 92, 94, 0.1)' }}>
-                <span>未提交</span>
-                <div>{0}</div>
+                <Space size={8} direction="vertical">
+                  <span>{t('report.statistics.unSubmitted')}</span>
+                  <div>{0}</div>
+                </Space>
               </CardItem>
             </CardGroup>
 
-            <SecondTitle>汇报模版使用情况</SecondTitle>
+            <SecondTitle>{t('report.statistics.templateUsage')}</SecondTitle>
 
             <div className={rightBottom}>
               <ResizeTable

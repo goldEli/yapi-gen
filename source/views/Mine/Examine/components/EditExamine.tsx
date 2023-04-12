@@ -92,6 +92,7 @@ const EditExamine = (props: Props) => {
       }),
     )
   }
+  console.log('verifyInfo', verifyInfo)
 
   useEffect(() => {
     getInfo()
@@ -357,8 +358,10 @@ const EditExamine = (props: Props) => {
         >
           {t('newlyAdd.reviewProcess')}
         </div>
+        {/* 审核部分 */}
         {verifyInfo?.verify && (
           <TimelineWrap>
+            {/* verifyType 依次审核? */}
             {verifyInfo?.verify?.verifyType === 1 && (
               <>
                 {verifyInfo?.verify?.process?.map((k: any, index: any) => (
@@ -493,18 +496,84 @@ const EditExamine = (props: Props) => {
                 ))}
               </Timeline.Item>
             )}
-
+            {/* TODO: 取消审核 */}
+            {verifyInfo.verifyStatus === 4 && (
+              <Timeline.Item style={{ marginBottom: 16 }}>
+                <WrapBox size={16} color="var(--neutral-n1-d1)" right={16}>
+                  {t('newlyAdd.reviewPerson')}
+                </WrapBox>
+                <div
+                  style={{
+                    marginTop: 8,
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
+                >
+                  <NameWrap>
+                    {String(
+                      verifyInfo.cancel_verify.user_name.trim().slice(0, 1),
+                    ).toLocaleUpperCase()}
+                  </NameWrap>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      marginLeft: 8,
+                    }}
+                  >
+                    <WrapBox size={14} color="var(--neutral-n1-d1)">
+                      {verifyInfo.cancel_verify.user_name}
+                    </WrapBox>
+                    <div
+                      style={{
+                        fontSize: 12,
+                        display: 'flex',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <span
+                        style={{
+                          color: 'var(--neutral-n4)',
+                        }}
+                      >
+                        {t('newlyAdd.cancelExamine')}
+                      </span>
+                      <WrapBox left={16}>
+                        {verifyInfo.cancel_verify.created_at}
+                      </WrapBox>
+                    </div>
+                  </div>
+                </div>
+              </Timeline.Item>
+            )}
+            {/* TODO: 需求流回至 */}
             <Timeline.Item style={{ marginBottom: 16 }}>
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <WrapBox size={16} color="var(--neutral-n1-d1)" right={8}>
-                  {t('newlyAdd.circulationTo')}
-                </WrapBox>
-                {verifyInfo?.to ? (
-                  <ViewWrap color={verifyInfo?.to?.color}>
-                    {verifyInfo?.to?.content}
+                {/*  优化：取消审核label  */}
+                {verifyInfo.verifyStatus === 4 ? (
+                  <WrapBox size={16} color="var(--neutral-n1-d1)" right={8}>
+                    {t('newlyAdd.demandBackflowTo')}
+                  </WrapBox>
+                ) : (
+                  <WrapBox size={16} color="var(--neutral-n1-d1)" right={8}>
+                    {t('newlyAdd.circulationTo')}
+                  </WrapBox>
+                )}
+                {/*  优化：取消审核tag  */}
+                {verifyInfo.verifyStatus === 4 ? (
+                  <ViewWrap color={verifyInfo?.from?.color}>
+                    {verifyInfo?.from?.content}
                   </ViewWrap>
                 ) : (
-                  <DelWrap>{t('newlyAdd.statusDel')}</DelWrap>
+                  <>
+                    {verifyInfo?.to ? (
+                      <ViewWrap color={verifyInfo?.to?.color}>
+                        {verifyInfo?.to?.content}
+                      </ViewWrap>
+                    ) : (
+                      <DelWrap>{t('newlyAdd.statusDel')}</DelWrap>
+                    )}
+                  </>
                 )}
               </div>
             </Timeline.Item>

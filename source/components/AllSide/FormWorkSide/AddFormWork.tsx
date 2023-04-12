@@ -18,11 +18,16 @@ const LabelTitle = styled.div`
 `
 interface Props {
   isVisible: boolean
-  onConfirm(): void
+  onConfirm(name: string): void
   onClose(): void
 }
-const AddFormWork = (props: Props) => {
-  const [form] = Form.useForm()
+interface PropsType {
+  isVisible: boolean
+  onChange?(name: string): void
+  value?: string | undefined
+}
+
+const Content = (props: PropsType) => {
   const inputRefDom = useRef<HTMLInputElement>(null)
   useEffect(() => {
     if (props.isVisible) {
@@ -32,30 +37,50 @@ const AddFormWork = (props: Props) => {
     }
   }, [props.isVisible])
   return (
+    <>
+      <LabelTitle>
+        <span>模板名称</span>
+        <span>*</span>
+      </LabelTitle>
+      <Input
+        value={props.value}
+        autoComplete="off"
+        ref={inputRefDom as any}
+        onInput={(e: any) => props.onChange?.(e.target.value)}
+        placeholder="请输入模板名称限50字"
+        maxLength={50}
+        autoFocus
+      />
+    </>
+  )
+}
+const AddFormWork = (props: Props) => {
+  const [form] = Form.useForm()
+
+  //
+  const onConfirm = async () => {
+    const res2 = await form.validateFields()
+    const formValues = form.getFieldsValue()
+    props.onConfirm(formValues.name)
+  }
+
+  return (
     <CommonModal
       isVisible={props.isVisible}
       title="创建模板"
       onClose={() => props.onClose()}
-      onConfirm={() => props.onConfirm()}
+      onConfirm={onConfirm}
     >
       <FormWrap
         form={form}
         layout="vertical"
         style={{ padding: '0 16px 0 24px' }}
       >
-        <Form.Item name="name" rules={[{ required: true, message: '' }]}>
-          <LabelTitle>
-            <span>模板名称</span>
-            <span>*</span>
-          </LabelTitle>
-          <Input
-            autoComplete="off"
-            ref={inputRefDom as any}
-            placeholder="请输入模板名称限50字"
-            allowClear
-            maxLength={50}
-            autoFocus
-          />
+        <Form.Item
+          name="name"
+          rules={[{ required: true, message: '请输入模板名称' }]}
+        >
+          <Content isVisible={props.isVisible} />
         </Form.Item>
       </FormWrap>
     </CommonModal>

@@ -1,6 +1,7 @@
 import { MenuItem } from '@/components/AllSide/ProjectSide/style'
 import CommonIconFont from '@/components/CommonIconFont'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 
 const items = [
@@ -27,6 +28,7 @@ const items = [
 ]
 
 const AllSide = () => {
+  const [t] = useTranslation()
   const navigate = useNavigate()
   const { id } = useParams<any>()
 
@@ -57,7 +59,7 @@ const AllSide = () => {
         onClick={() => navigate('/SiteNotifications/Setting/1')}
       >
         <CommonIconFont type="settings" color="var(--neutral-n3)" size={18} />
-        <div>通知设置</div>
+        <div>{t('notification_settings') as string}</div>
       </MenuItem>
     </div>
   )

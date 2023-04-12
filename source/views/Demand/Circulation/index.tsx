@@ -83,7 +83,7 @@ const LabelItem = styled.div({
   color: 'var(--neutral-n3)',
   fontSize: 14,
   fontWeight: 400,
-  width: 70,
+  minWidth: 70,
   whiteSpace: 'nowrap',
   textOverflow: 'ellipsis',
   overflow: 'hidden',
@@ -175,6 +175,7 @@ const Circulation = () => {
       </span>
     )
   }
+  console.log('statusLogs', statusLogs)
   return (
     <Wrap>
       <Spin indicator={<NewLoadingTransition />} spinning={isSpin}>
@@ -204,12 +205,16 @@ const Circulation = () => {
                         {i?.operationName}
                       </TextWrap>
                       <TextWrap style={{ marginLeft: 32 }}>
+                        {/* TODO: 优化changeType */}
                         {i.changeType === 1
                           ? t('common.createDemand')
                           : i.changeType === 2
                           ? t('newlyAdd.reviewDemandTo')
+                          : i.changeType === 4
+                          ? t('newlyAdd.demandBackflowTo')
                           : t('newlyAdd.applyReviewTo')}
                       </TextWrap>
+                      {/* tag */}
                       {i.statusTo ? (
                         <div style={{ marginLeft: 8 }}>
                           {i.changeType === 3 ? (
@@ -233,6 +238,7 @@ const Circulation = () => {
                         <DelWrap>{t('newlyAdd.statusDel')}</DelWrap>
                       )}
                     </LineItem>
+                    {/* field */}
                     {Object.keys(i.fields)?.map((m: any) => (
                       <LineItem key={m} top={16} hasTop hidden={!i?.fields[m]}>
                         <LabelItem>
@@ -243,6 +249,7 @@ const Circulation = () => {
                             {i.fields[m]?.content_txt}：
                           </OmitText>
                         </LabelItem>
+                        {/* 时间评论字段值 */}
                         {(typeof i.fields[m]?.value === 'string' ||
                           i.fields[m]?.value === null) &&
                           m !== 'priority' && (
@@ -254,6 +261,7 @@ const Circulation = () => {
                                 : '--'}
                             </ContentWrap>
                           )}
+                        {/* 用户数组 */}
                         {Array.isArray(i.fields[m]?.value) &&
                           (m === 'tag' ? (
                             <ContentWrap>
@@ -301,6 +309,22 @@ const Circulation = () => {
                         )}
                       </LineItem>
                     ))}
+                    {/* TODO: 取消审核时间 */}
+                    {i.changeType === 4 && (
+                      <LineItem top={16}>
+                        <LabelItem>
+                          <OmitText
+                            width={157}
+                            tipProps={{ placement: 'topLeft' }}
+                          >
+                            {t('newlyAdd.cancelExamineTime')}：
+                          </OmitText>
+                        </LabelItem>
+                        <SpanWrap size={14} color="var(--neutral-n3)">
+                          {i.time}
+                        </SpanWrap>
+                      </LineItem>
+                    )}
                     {i.changeType === 3 &&
                       i.verifyAll?.verify.verifyType === 1 &&
                       i.verifyAll?.verify?.process?.map((k: any) => (

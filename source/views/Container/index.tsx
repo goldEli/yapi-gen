@@ -23,6 +23,7 @@ import CreateIteration from '@/components/CreateIteration'
 import CreateDemand from '@/components/CreateDemand'
 import DemandDetailDrawer from '@/components/DemandDetailDrawer'
 import SiteDrawer from '../SiteNotifications/components/SiteDrawer/SiteDrawer'
+import SlideTabs from '@/components/SlideTabs/SlideTabs'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -205,6 +206,7 @@ export const Container = () => {
     <KitConfigProvider local={language as any}>
       <ConfigProvider locale={antdLocal} autoInsertSpaceInButton={false}>
         <GlobalStyle />
+
         <LayoutWrap id="layoutWrap">
           <HeaderWrap>
             <HeaderLeft />

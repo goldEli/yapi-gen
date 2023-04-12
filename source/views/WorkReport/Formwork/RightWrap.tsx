@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import CommonButton from '@/components/CommonButton'
 import styled from '@emotion/styled'
-import { Input } from 'antd'
+import { Input, message } from 'antd'
 import { useEffect, useState } from 'react'
 import PermissionConfig from './PermissionConfig'
 import EditWork from './EditWork'
@@ -9,6 +9,8 @@ import PreviewDialog from '@/components/FormWork/PreviewDialog'
 import { useDispatch, useSelector } from '@store/index'
 import { setEditSave } from '@store/formWork'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import { deleteTemplate } from '@/services/formwork'
+import { getTemplateList } from '@store/formWork/thunk'
 const RightFormWorkStyle = styled.div`
   flex: 1;
   overflow: hidden;
@@ -109,17 +111,40 @@ const EditFormWorkStyle = styled(Input)({
     color: 'var(--neutral-n4)',
   },
 })
-
+const BtnRow = styled.div`
+  width: 100%;
+  height: 80px;
+  display: flex;
+  justify-content: flex-end;
+`
 const RightFormWork = () => {
   const [isActive, setIsActive] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   const [value, setValue] = useState('')
+  const { editSave } = useSelector(store => store.formWork)
+  const [save, setSave] = useState(editSave)
   const dispatch = useDispatch()
   const [delIsVisible, setDelIsVisible] = useState(false)
   const { activeItem } = useSelector(store => store.formWork)
   useEffect(() => {
     activeItem && setValue(activeItem.label)
   }, [activeItem])
+  // 删除模板
+  const deleteActiveItem = async () => {
+    setDelIsVisible(false)
+    await deleteTemplate({ id: activeItem.id })
+    message.success('删除成功')
+    await dispatch(getTemplateList())
+  }
+  useEffect(() => {
+    setSave(editSave)
+  }, [editSave])
+  const saveApi = async () => {
+    dispatch(setEditSave(true))
+    // await upDateTemplate({ name: props.value })
+    message.success('编辑成功')
+    // await dispatch(getTemplateList())
+  }
   return (
     <RightFormWorkStyle>
       <Title>工作日报</Title>
@@ -155,6 +180,7 @@ const RightFormWork = () => {
           <EditFormWorkStyle
             placeholder="请输入模板标题"
             value={value}
+            maxLength={50}
             onInput={(e: any) => {
               setValue(e.target.value), dispatch(setEditSave(false))
             }}
@@ -163,10 +189,35 @@ const RightFormWork = () => {
       ) : null}
       {/* 编辑模板 */}
       {isActive === 0 ? (
-        <EditWork back={() => setIsActive(1)} />
+        <EditWork value={value} back={() => setIsActive(1)} />
       ) : (
         <PermissionConfig back={() => setIsActive(0)} />
       )}
+      {/* 底部保存 */}
+      <BtnRow>
+        {isActive === 0 ? (
+          <CommonButton type="light" onClick={() => setIsActive(1)}>
+            下一步
+          </CommonButton>
+        ) : (
+          <CommonButton type="light" onClick={() => setIsActive(1)}>
+            上一步
+          </CommonButton>
+        )}
+        {save ? (
+          <CommonButton type="primary" style={{ margin: '0 0px 0 16px' }}>
+            已保存
+          </CommonButton>
+        ) : (
+          <CommonButton
+            type="primary"
+            onClick={() => saveApi()}
+            style={{ margin: '0 0px 0 16px' }}
+          >
+            保存
+          </CommonButton>
+        )}
+      </BtnRow>
       {/* 预览 */}
       <PreviewDialog
         dataList={[]}
@@ -181,7 +232,7 @@ const RightFormWork = () => {
         title={'删除模板'}
         text="确认删除模版，删除后将无法汇报"
         isVisible={delIsVisible}
-        onConfirm={() => setDelIsVisible(false)}
+        onConfirm={deleteActiveItem}
         notCancel
       />
     </RightFormWorkStyle>

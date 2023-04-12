@@ -15,7 +15,7 @@ import {
   HoverWrap,
 } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
-import { Spin, Table } from 'antd'
+import { Button, Spin, Table } from 'antd'
 import NoData from '@/components/NoData'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
@@ -23,12 +23,13 @@ import SearchList from './Filter'
 import EditExamine from './EditExamine'
 import { useDynamicColumns } from './TableColum'
 import { useSelector } from '@store/index'
-import { getVerifyList, getVerifyUserList } from '@/services/mine'
+import { getVerifyList, getVerifyUserList, cancelVerify } from '@/services/mine'
 import InputSearch from '@/components/InputSearch'
 import PaginationBox from '@/components/TablePagination'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import ResizeTable from '@/components/ResizeTable'
 import ScreenMinHover from '@/components/ScreenMinHover'
+import DeleteConfirm from '@/components/DeleteConfirm'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -78,6 +79,8 @@ const Need = (props: any) => {
   const [keyword, setKeyword] = useState<string>('')
   const [searchParams, setSearchParams] = useState<any>({})
   const [isSpin, setIsSpin] = useState<boolean>(false)
+  const [delIsVisible, setDelIsVisible] = useState<boolean>(false)
+  const [currentItem, setCurrentItem] = useState<any>({})
 
   const getList = async (
     item?: any,
@@ -163,8 +166,45 @@ const Need = (props: any) => {
     activeTab,
     onClickItem,
   })
+  const onUpdate = () => {
+    getList(pageObj, order, keyword, searchParams)
+  }
+
+  const handleCancel = async () => {
+    await cancelVerify(currentItem.id)
+    setDelIsVisible(false)
+    setCurrentItem({})
+    onUpdate()
+  }
 
   const selectColum: any = useMemo(() => {
+    if (activeTab === 1) {
+      return columns.concat([
+        {
+          title: '操作',
+          dataIndex: 'action',
+          key: 'action',
+          render: (_: string, record: any) => {
+            return (
+              <>
+                {record.status === 1 && (
+                  <Button
+                    type="link"
+                    style={{ padding: 0 }}
+                    onClick={() => {
+                      setDelIsVisible(true)
+                      setCurrentItem(record)
+                    }}
+                  >
+                    取消审核
+                  </Button>
+                )}
+              </>
+            )
+          },
+        },
+      ])
+    }
     return columns
   }, [columns])
 
@@ -183,10 +223,6 @@ const Need = (props: any) => {
       {},
       val,
     )
-  }
-
-  const onUpdate = () => {
-    getList(pageObj, order, keyword, searchParams)
   }
 
   return (
@@ -272,6 +308,7 @@ const Need = (props: any) => {
           </div>
         </LoadingSpin>
       </div>
+
       {listData?.list?.length >= 1 && (
         <PaginationBox
           total={listData?.total}
@@ -280,6 +317,17 @@ const Need = (props: any) => {
           onChange={onChangePage}
         />
       )}
+
+      <DeleteConfirm
+        title="取消审核"
+        text="确认取消当前需求审核，取消后提交需求将在我提交的列表中移除"
+        isVisible={delIsVisible}
+        onConfirm={handleCancel}
+        onChangeVisible={() => {
+          setDelIsVisible(false)
+          setCurrentItem({})
+        }}
+      />
     </div>
   )
 }
