@@ -5,6 +5,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import ScheduleAllDay from './ScheduleAllDay'
 import ScheduleCardList from './ScheduleCardList'
 import Timescale from './Timescale'
+import QuickCreateScheduleModel from '../QuickCreateScheduleModel'
 
 interface CalendarDayProps {}
 
@@ -15,6 +16,7 @@ const CalendarDayBox = styled.div`
   flex-direction: column;
   position: relative;
   margin-top: 58px;
+  overflow-x: auto;
 `
 
 const CalendarDay: React.FC<CalendarDayProps> = props => {
@@ -22,6 +24,8 @@ const CalendarDay: React.FC<CalendarDayProps> = props => {
     <CalendarDayBox className="calendar-day-box">
       <ScheduleAllDay />
       <Timescale />
+
+      <QuickCreateScheduleModel />
     </CalendarDayBox>
   )
 }

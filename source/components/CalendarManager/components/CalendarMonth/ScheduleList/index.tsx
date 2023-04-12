@@ -20,7 +20,7 @@ const ScheduleList: React.FC<ScheduleListProps> = props => {
 
   const { data } = props
   const key = data.date
-  const list = scheduleList[key]
+  const list = scheduleList?.[key]
 
   // console.log({list}, scheduleList)
   const hiddenNum = useMemo(() => {

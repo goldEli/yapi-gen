@@ -2,28 +2,18 @@
  * 计算日程冲突
  * 得到冲突日程的宽度 以及  left位置
  */
-import { useSelector } from '@store/index'
 import { useEffect, useState, useMemo } from 'react'
 import { getStyleValue } from '../utils'
-import dayjs from 'dayjs'
 import { getConflictsTimeRange } from '@/components/CalendarManager/utils'
+import useScheduleList from './useScheduleList'
 
 const minLeft = 58
 const useCalculationConflict = () => {
-  const scheduleList = useSelector(store => store.schedule.scheduleList)
-  const { checkedTime } = useSelector(store => store.calendar)
+  const { list } = useScheduleList()
   const [maxWidth, setMaxWidth] = useState(0)
   const [data, setData] = useState<
     { info: Model.Schedule.Info; width: number; left: number }[]
   >([])
-  const key = dayjs(checkedTime).format('YYYY-MM-DD')
-  const list = useMemo(
-    () =>
-      scheduleList[key]?.filter(
-        item => item.is_all_day !== 1 && !item.is_span_day,
-      ),
-    [scheduleList, checkedTime],
-  )
 
   useEffect(() => {
     const timeScale = document.querySelector('.time-scale')
