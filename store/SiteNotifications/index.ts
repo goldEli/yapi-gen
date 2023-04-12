@@ -11,7 +11,10 @@ type SliceState = {
 
 const slice = createSlice({
   name: 'SiteNotifications',
-  initialState: {} as SliceState,
+  initialState: {
+    myConfiguration: [],
+    myEmailConfiguration: [],
+  } as SliceState,
   reducers: {
     changeVisible: (state, action) => {
       state.isVisible = action.payload

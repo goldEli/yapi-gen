@@ -211,7 +211,7 @@ const Circulation = () => {
                           : i.changeType === 2
                           ? t('newlyAdd.reviewDemandTo')
                           : i.changeType === 4
-                          ? '需求流回至'
+                          ? t('newlyAdd.demandBackflowTo')
                           : t('newlyAdd.applyReviewTo')}
                       </TextWrap>
                       {/* tag */}
@@ -317,7 +317,7 @@ const Circulation = () => {
                             width={157}
                             tipProps={{ placement: 'topLeft' }}
                           >
-                            取消审核时间：
+                            {t('newlyAdd.cancelExamineTime')}：
                           </OmitText>
                         </LabelItem>
                         <SpanWrap size={14} color="var(--neutral-n3)">

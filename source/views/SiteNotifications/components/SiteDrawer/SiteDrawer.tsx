@@ -55,13 +55,13 @@ const SiteDrawer = () => {
     setActive(id)
   }
   const fetchMoreData = () => {
-    if (list.length >= 50) {
+    if (list.length >= 500) {
       setHasMore(false)
       return
     }
     setTimeout(() => {
       setList(list.concat(Array.from({ length: 10 })))
-    }, 1500)
+    }, 3000)
   }
   return (
     <Drawer

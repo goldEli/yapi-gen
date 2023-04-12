@@ -536,7 +536,7 @@ const EditExamine = (props: Props) => {
                           color: 'var(--neutral-n4)',
                         }}
                       >
-                        取消审核
+                        {t('newlyAdd.cancelExamine')}
                       </span>
                       <WrapBox left={16}>
                         {verifyInfo.cancel_verify.created_at}
@@ -552,7 +552,7 @@ const EditExamine = (props: Props) => {
                 {/*  优化：取消审核label  */}
                 {verifyInfo.verifyStatus === 4 ? (
                   <WrapBox size={16} color="var(--neutral-n1-d1)" right={8}>
-                    需求流回至
+                    {t('newlyAdd.demandBackflowTo')}
                   </WrapBox>
                 ) : (
                   <WrapBox size={16} color="var(--neutral-n1-d1)" right={8}>

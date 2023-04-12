@@ -326,7 +326,6 @@ const DemandMain = (props: Props) => {
             iKey={key}
           />
           <Right isShowLeft={isShowLeft}>
-            {/* TODO: 需求刷新 */}
             <Operation
               pid={projectId}
               isGrid={isGrid}
