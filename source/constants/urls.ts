@@ -136,7 +136,7 @@ const urls = {
   saveSchedule: '/b/schedule',
   getScheduleList: '/b/schedule_list',
   getSubscribeList: '/b/subscribe_list',
-  getCalendarIconList: '/b/calendar_icon_list',
+
   getCalendarDaysOfYearList: '/b/schedule/daysOfYear',
   getCalendarDaysOfMonthList: '/b/schedule/daysOfMonth',
   // 完整地址
@@ -146,6 +146,7 @@ const urls = {
   addCalendar: '/b/calendar',
   getUserCalendars: '/b/calendar/getUserCalendars',
   getDaysOfWeekList: '/b/calendar/daysOfWeek',
+  getContactsCalendarList: '/b/calendar/getContacts',
 }
 
 export default urls

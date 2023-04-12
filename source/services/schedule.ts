@@ -329,6 +329,13 @@ export const saveScheduleList = async (
   )
   return response
 }
+
+// 获取日程详情
+export const getScheduleInfo = async (params: { id: number }) => {
+  const response = await http.post<any, any>(`/b/schedule/${params.id}`)
+  return response.data
+}
+
 // 获取年日程数据列表
 export const getCalendarDaysOfYearList = async (
   params: API.Schedule.ScheduleInfoList.Params,

@@ -203,6 +203,7 @@ const CalendarSet = () => {
     },
     schedule_configs: {},
     notification_configs: {},
+    isUpdate: false,
   })
   // 默认导入的日历
   const [importCalendar, setImportCalendar] = useState(0)
@@ -258,9 +259,15 @@ const CalendarSet = () => {
 
   // 修改配置 key： 表单对应的key, value：修改的值 outKey: 最外层的key
   const onChangeSet = (value: number, key: string, outKey: string) => {
-    const params = formParams[outKey]
-    params[key] = value
-    setFormParams({ ...formParams, ...{ [outKey]: params } })
+    const params = {
+      ...formParams[outKey],
+      ...{ [key]: value },
+    }
+    setFormParams({
+      ...formParams,
+      ...{ [outKey]: params },
+      ...{ isUpdate: true },
+    })
   }
 
   const onCustomRequest = async (file: any) => {
@@ -286,19 +293,15 @@ const CalendarSet = () => {
     setImportList(resultList)
   }
 
-  // 设置默认值
-  const getNormalForm = () => {
-    // setFormParams(calendarConfig)
-  }
-
   useEffect(() => {
-    getNormalForm()
-    // 获取日历列表
+    setFormParams(calendarConfig)
   }, [calendarConfig])
 
   useEffect(() => {
-    // console.log(formParams, '=formParamsformParams')
-    dispatch(updateCalendarConfig(formParams))
+    if (formParams.isUpdate) {
+      dispatch(updateCalendarConfig(formParams))
+      setFormParams({ ...formParams, ...{ isUpdate: false } })
+    }
   }, [formParams])
 
   useEffect(() => {
@@ -308,7 +311,6 @@ const CalendarSet = () => {
         behavior: 'smooth',
       })
     }
-    dispatch(getCalendarConfig())
   }, [routerMenu])
 
   return (
@@ -333,7 +335,7 @@ const CalendarSet = () => {
             {options.map((i: any) => (
               <Checkbox
                 key={i.key}
-                checked={formParams.view_options[i.key] === 1}
+                checked={formParams?.view_options?.[i.key] === 1}
                 onChange={e =>
                   onChangeSet(e.target.checked ? 1 : 2, i.key, 'view_options')
                 }
@@ -347,7 +349,7 @@ const CalendarSet = () => {
             onChange={time =>
               onChangeSet(time, 'week_first_day', 'view_options')
             }
-            value={formParams.view_options.week_first_day}
+            value={formParams?.view_options?.week_first_day}
             options={timeOption}
             style={{ width: 320 }}
             getPopupContainer={n => n}
@@ -383,7 +385,7 @@ const CalendarSet = () => {
                   <div className="radio">
                     <div
                       className={
-                        formParams.schedule_configs.schedule_color === i.value
+                        formParams?.schedule_configs?.schedule_color === i.value
                           ? 'active'
                           : 'normal'
                       }
@@ -405,7 +407,7 @@ const CalendarSet = () => {
                 'schedule_configs',
               )
             }
-            value={formParams.schedule_configs.schedule_default_duration}
+            value={formParams?.schedule_configs?.schedule_default_duration}
             options={relateConfig.schedule.default_duration}
             style={{ width: 320 }}
             getPopupContainer={n => n}
@@ -426,7 +428,7 @@ const CalendarSet = () => {
                     'notification_configs',
                   )
                 }
-                value={formParams.notification_configs.not_all_day_remind}
+                value={formParams?.notification_configs?.not_all_day_remind}
                 options={relateConfig.schedule.remind_types}
                 style={{ width: 320 }}
                 getPopupContainer={n => n}
@@ -442,7 +444,7 @@ const CalendarSet = () => {
                     'notification_configs',
                   )
                 }
-                value={formParams.notification_configs.all_day_remind}
+                value={formParams?.notification_configs?.all_day_remind}
                 options={relateConfig.schedule.all_day_remind}
                 style={{ width: 320 }}
                 getPopupContainer={n => n}
@@ -450,7 +452,7 @@ const CalendarSet = () => {
             </NotificationWrap>
           </LineForm>
           <Checkbox
-            checked={formParams.notification_configs.only_remind_accept === 1}
+            checked={formParams?.notification_configs?.only_remind_accept === 1}
             onChange={e =>
               onChangeSet(
                 e.target.checked ? 1 : 2,

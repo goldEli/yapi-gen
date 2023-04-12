@@ -1,4 +1,17 @@
 declare namespace Model.Calendar {
+  interface GetContactsCalendarInfo {
+    id: number
+    name: string
+    user_id: number
+    status: 1 | 2
+    user: {
+      name: string
+      email: string
+      department_name: string
+      job_name: string
+      phone: string
+    }
+  }
   interface GetRelateConfigCommonInfo {
     value: number
     label: string
@@ -121,20 +134,20 @@ declare namespace Model.Calendar {
     subscribe: Info[]
   }
 
-  // 订阅列表数据 节假日、公开日历、订阅联系人
+  // 订阅列表数据 节假日、公开日历
   interface SubscribeInfo {
     id: number
-    avatar?: string
     name: string
-    phone?: string
-    email?: string
+    user_id: number
     // 1是订阅
-    is_subscribe: 0 | 1
+    status: 1 | 2
     department?: string
-    creator?: string
-    number?: number | string
+    user: {
+      id: number
+      name: string
+    }
+    subscribe_num?: number | string
     describe?: string
-    icon?: string
   }
 
   // 日历图标列表

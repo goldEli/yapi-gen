@@ -11,6 +11,7 @@ import {
   Input,
   Popover,
   Select,
+  message,
 } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
 import useModalPosition from '../../hooks/useModalPosition'
@@ -39,6 +40,7 @@ import { RangePickerProps } from 'antd/lib/date-picker'
 import { colorMap } from '../../config'
 import { setQuickCreateScheduleModel } from '@store/calendarPanle'
 import { setScheduleModal } from '@store/calendar'
+import { saveSchedule } from '@store/schedule/schedule.thunk'
 interface CreateScheduleBoxProps {
   containerClassName?: string
 }
@@ -217,9 +219,19 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
       values.permission_update = participant.permission.includes(0) ? 1 : 2
       values.permission_invite = participant.permission.includes(1) ? 1 : 2
     }
-    const resultParams = { ...values, ...normalCategory }
-    resultParams.start_datetime = moment(values.time[0]).format('YYYY-MM-DD')
-    resultParams.end_datetime = moment(values.time[1]).format('YYYY-MM-DD')
+    const resultParams = {
+      ...values,
+      ...{
+        color: normalCategory.color,
+        calendar_id: normalCategory.calendar_id,
+      },
+    }
+    resultParams.start_datetime = moment(values.time[0]).format(
+      isAll ? 'YYYY-MM-DD' : 'YYYY-MM-DD hh:mm:ss',
+    )
+    resultParams.end_datetime = moment(values.time[1]).format(
+      isAll ? 'YYYY-MM-DD' : 'YYYY-MM-DD hh:mm:ss',
+    )
     delete resultParams.time
     return resultParams
   }
@@ -227,7 +239,9 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
   // 保存
   const onConfirm = async () => {
     const params = await onGetParams()
-    console.log(params)
+    dispatch(saveSchedule(params))
+    message.success('创建成功')
+    onClose()
   }
 
   // 跳转更多选项

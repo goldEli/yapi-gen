@@ -5,7 +5,7 @@ import CommonModal from '@/components/CommonModal'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import InputSearch from '@/components/InputSearch'
 import NoData from '@/components/NoData'
-import { getSubscribeList } from '@/services/calendar'
+import { getContactsCalendarList, getSubscribeList } from '@/services/calendar'
 import styled from '@emotion/styled'
 import { setSubscribeModal } from '@store/calendar'
 import { useDispatch, useSelector } from '@store/index'
@@ -148,16 +148,33 @@ const TabsContent = (props: TabsContentProps) => {
   const [dataList, setDataList] = useState<{
     list?: Model.Calendar.SubscribeInfo[]
   }>()
+  const [dataUserList, setDataUserList] = useState<{
+    list?: Model.Calendar.GetContactsCalendarInfo[]
+  }>()
 
   const getList = async () => {
+    // console.log(222)
     setDataList({})
     const response = await getSubscribeList({ type: props.type })
     setDataList({ list: response.data.list })
   }
 
+  const getList1 = async () => {
+    setDataUserList({})
+    const response = await getContactsCalendarList({
+      username: props.searchValue,
+    })
+    setDataUserList({ list: response.data.list })
+  }
+
   useEffect(() => {
-    getList()
-  }, [])
+    console.log(props.type)
+    if (props.type === '0') {
+      getList1()
+    } else {
+      getList()
+    }
+  }, [props.type])
 
   return (
     <TabsContentWrap>
@@ -176,8 +193,8 @@ const TabsContent = (props: TabsContentProps) => {
                     <div className="content">
                       <div className="title">{i.name}</div>
                       <div className="sub">
-                        <span>创建人：{i.creator}</span>
-                        <span>订阅量：{i.number}</span>
+                        <span>创建人：{i.user.name}</span>
+                        <span>订阅量：{i.subscribe_num}</span>
                       </div>
                       <Tooltip
                         title={i.describe}
@@ -188,12 +205,12 @@ const TabsContent = (props: TabsContentProps) => {
                       </Tooltip>
                     </div>
                   </TabsItemLeft>
-                  {i.is_subscribe === 1 && (
+                  {i.status === 1 && (
                     <CommonButton type="secondary">
                       <div style={{ minWidth: 58 }}>订阅</div>
                     </CommonButton>
                   )}
-                  {!i.is_subscribe && (
+                  {!i.status && (
                     <CommonButton type="light">
                       <div style={{ minWidth: 58 }}>取消订阅</div>
                     </CommonButton>
@@ -208,35 +225,37 @@ const TabsContent = (props: TabsContentProps) => {
       )}
       {props.type === '0' && (
         <TabsBox>
-          {dataList?.list &&
-            dataList?.list.length > 0 &&
-            dataList?.list
-              .filter((i: Model.Calendar.SubscribeInfo) =>
+          {dataUserList?.list &&
+            dataUserList?.list.length > 0 &&
+            dataUserList?.list
+              .filter((i: Model.Calendar.GetContactsCalendarInfo) =>
                 i.name.includes(props.searchValue),
               )
-              .map((i: Model.Calendar.SubscribeInfo) => (
+              .map((i: Model.Calendar.GetContactsCalendarInfo) => (
                 <TabsItemLi key={i.id}>
                   <div className="nameBox">
                     <div className="avatar">
                       <CommonUserAvatar size="large" />
                     </div>
                     <div className="name">
-                      <span className="label">{i.name}</span>
-                      <span className="sub">{i.department}</span>
+                      <span className="label">{i.user.name}</span>
+                      <span className="sub">
+                        {i.user.department_name}-{i.user.job_name}
+                      </span>
                     </div>
                   </div>
-                  <div className="otherBox">{i.phone}</div>
-                  <div className="otherBox">{i.email}</div>
+                  <div className="otherBox">{i.user.phone}</div>
+                  <div className="otherBox">{i.user.email}</div>
                   <div
                     className="otherBox"
                     style={{ justifyContent: 'flex-end' }}
                   >
-                    {i.is_subscribe === 1 && (
+                    {i.status === 1 && (
                       <CommonButton type="secondary">
                         <div style={{ minWidth: 58 }}>订阅</div>
                       </CommonButton>
                     )}
-                    {!i.is_subscribe && (
+                    {!i.status && (
                       <CommonButton type="light">
                         <div style={{ minWidth: 58 }}>取消订阅</div>
                       </CommonButton>
@@ -244,9 +263,10 @@ const TabsContent = (props: TabsContentProps) => {
                   </div>
                 </TabsItemLi>
               ))}
-          {(!dataList?.list ||
-            dataList?.list.filter((i: Model.Calendar.SubscribeInfo) =>
-              i.name.includes(props.searchValue),
+          {(!dataUserList?.list ||
+            dataUserList?.list.filter(
+              (i: Model.Calendar.GetContactsCalendarInfo) =>
+                i.name.includes(props.searchValue),
             ).length <= 0) && <NoData />}
         </TabsBox>
       )}
@@ -294,6 +314,8 @@ const CalendarSubscribe = () => {
 
   const onClose = () => {
     dispatch(setSubscribeModal(false))
+    setActiveKey('0')
+    setSearchValue('')
   }
 
   return (

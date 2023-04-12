@@ -14,6 +14,7 @@ import {
   Popover,
   Radio,
   Select,
+  message,
 } from 'antd'
 import {
   CreateContent,
@@ -40,6 +41,7 @@ import moment, { Moment } from 'moment'
 import RepeatModal from './RepeatModal'
 import UploadAttach from '@/components/UploadAttach'
 import CreateVisualization from './CreateVisualization'
+import { saveSchedule } from '@store/schedule/schedule.thunk'
 
 interface DefaultTime {
   value: number | undefined
@@ -66,6 +68,7 @@ const CreateSchedule = () => {
   const inputDom: any = useRef<HTMLInputElement>(null)
   const { scheduleModal, relateConfig, calendarData, calendarConfig } =
     useSelector(store => store.calendar)
+  const { userInfo } = useSelector(store => store.user)
   const [form] = Form.useForm()
   const [calendarCategory, setCalendarCategory] = useState<
     Model.Calendar.Info[]
@@ -94,9 +97,7 @@ const CreateSchedule = () => {
   const [isRepeatVisible, setIsRepeatVisible] = useState(false)
   // 当前选择的重复值
   const [currentRepeat, setCurrentRepeat] = useState<number>(0)
-  const [time, setTime] = useState<
-    Moment | undefined | DatePickerProps['value'] | RangePickerProps['value']
-  >()
+  const [time, setTime] = useState<any>()
   // 参与者
   const [participant, setParticipant] = useState<{
     list: Model.Calendar.MemberItem[]
@@ -119,6 +120,25 @@ const CreateSchedule = () => {
   // 关闭弹窗
   const onClose = () => {
     dispatch(setScheduleModal({ visible: false, params: {} }))
+    form.resetFields()
+    setAttachList([])
+    setNoticeList([])
+    setCurrentRepeat(0)
+    setParticipant({
+      list: [],
+      permission: [],
+    })
+    setTime(null)
+    setNormalCategory({
+      color: 0,
+      calendar_id: 0,
+    })
+    setIsAll(false)
+    setRepeatValue({
+      value: 0,
+      params: {},
+    })
+    setStatus(1)
   }
 
   // 保存
@@ -129,17 +149,31 @@ const CreateSchedule = () => {
     values.repeat_type = repeatValue.value
     values.members = participant.list.map((i: Model.Calendar.MemberItem) => ({
       user_id: i.id,
+      company_id: userInfo.company_id,
     }))
     values.reminds = noticeList.map((i: DefaultTime) => i.value)
     if (participant.list.length > 0) {
       values.permission_update = participant.permission.includes(0) ? 1 : 2
       values.permission_invite = participant.permission.includes(1) ? 1 : 2
     }
-    const resultParams = { ...values, ...normalCategory, ...repeatValue.params }
-    resultParams.start_datetime = moment(values.time[0]).format('YYYY-MM-DD')
-    resultParams.end_datetime = moment(values.time[1]).format('YYYY-MM-DD')
+    const resultParams = {
+      ...values,
+      ...{
+        color: normalCategory.color,
+        calendar_id: normalCategory.calendar_id,
+      },
+      ...repeatValue.params,
+    }
+    resultParams.start_datetime = moment(values.time[0]).format(
+      isAll ? 'YYYY-MM-DD' : 'YYYY-MM-DD hh:mm:ss',
+    )
+    resultParams.end_datetime = moment(values.time[1]).format(
+      isAll ? 'YYYY-MM-DD' : 'YYYY-MM-DD hh:mm:ss',
+    )
     delete resultParams.time
-    console.log(resultParams)
+    dispatch(saveSchedule(resultParams))
+    message.success('创建成功')
+    onClose()
   }
 
   // 选中的共享成员
@@ -168,6 +202,7 @@ const CreateSchedule = () => {
   // 是否是全天
   const onChangeIsAll = (e: CheckboxChangeEvent) => {
     setIsAll(e.target.checked)
+    setNoticeList([])
     form.setFieldsValue({
       isAll: e.target.checked,
       time,
@@ -176,9 +211,28 @@ const CreateSchedule = () => {
 
   //   修改重复
   const onChangeRepeat = (value: number) => {
+    // 是否可操作重复限制
+    const limitDay = [0, 1, 1, 31, 366]
+    if (!time) {
+      message.warning('请选择时间！')
+      return
+    }
+    // 计算日期相差多少
+    const difference = moment(
+      moment(time[1]).format(isAll ? 'YYYY-MM-DD' : 'YYYY-MM-DD hh:mm:ss'),
+    ).diff(
+      moment(
+        moment(time[0]).format(isAll ? 'YYYY-MM-DD' : 'YYYY-MM-DD hh:mm:ss'),
+      ),
+    )
+
     if (value === 0) {
       setRepeatValue({ value, params: {} })
     } else {
+      if (difference / 86400000 < limitDay[value]) {
+        message.warning(`仅支持时长在${limitDay[value]}天内的日程重复！`)
+        return
+      }
       setIsRepeatVisible(true)
       setCurrentRepeat(value)
     }
@@ -191,7 +245,6 @@ const CreateSchedule = () => {
 
   // 添加提醒
   const onAddNotice = () => {
-    console.log(calendarConfig, relateConfig)
     const list = [
       ...[
         {
@@ -242,6 +295,13 @@ const CreateSchedule = () => {
       form.setFieldsValue({
         permission: 1,
       })
+      if (scheduleModal?.params?.id) {
+        // 调用日程详情接口
+      }
+      // 从简易弹窗跳转过来
+      if (scheduleModal?.params?.time) {
+        // 调用日程详情接口
+      }
       setTimeout(() => {
         inputDom.current.focus()
       }, 100)
@@ -313,7 +373,7 @@ const CreateSchedule = () => {
               >
                 <DatePicker.RangePicker
                   style={{ width: '100%' }}
-                  showTime
+                  showTime={!isAll}
                   onChange={setTime}
                   allowClear={false}
                 />
