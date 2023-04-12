@@ -7,7 +7,8 @@ export const getScheduleList = async (
   params: API.Schedule.GetScheduleList.Params,
 ) => {
   const res = addIdToScheduleList(scheduleListMockData.data)
-  return Promise.resolve(res)
+  scheduleListMockData.data = res
+  return Promise.resolve(scheduleListMockData)
   const response = await http.get<any, API.Schedule.GetScheduleList.Result>(
     'getScheduleList',
     params,
