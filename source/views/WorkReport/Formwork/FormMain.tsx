@@ -10,6 +10,8 @@ import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import CommonIconFont from '@/components/CommonIconFont'
 import Picker from './Picker'
+import { setFillingRequirements, setErr } from '@store/formWork'
+import { useDispatch, useSelector } from '@store/index'
 const Text = styled.div`
   color: var(--neutral-n1-d1);
   font-size: 14px;
@@ -270,7 +272,7 @@ interface CheckBoxType {
 const CheckBox = (props: CheckBoxType) => {
   return (
     <Checkbox
-      checked={props.value || false}
+      checked={props.value}
       onChange={e => props.onChange?.(e.target.checked)}
     >
       {props.title}
@@ -280,20 +282,20 @@ const CheckBox = (props: CheckBoxType) => {
 interface FormType {
   // 每周每月每日补交范围不同，不重复没有补交范围
   type: string
-  backValues(s: any, e: any, r: any): void
+  // backValues(s: any, e: any, r: any): void
 }
 let startTime: any = null
 let endTime: any = null
 let remindTime: any = null
+let err: any = null
 const FormMain = (props: FormType) => {
+  const dispatch = useDispatch()
   const [startTimes, setStartTimes] = useState<any>()
   const [endTimes, setEndTimes] = useState<any>()
   const [remindTimes, setRemindTimes] = useState<any>()
+  const { fillingRequirements } = useSelector(store => store.formWork)
   // 每天选择不能大于24小时
   const dayJudgeTime = () => {
-    if (!startTime && !endTime) {
-      return
-    }
     if (
       (startTime?.v1 === 1 && endTime?.v1 === 1) ||
       (startTime?.v1 === 2 && endTime?.v1 === 2)
@@ -301,33 +303,47 @@ const FormMain = (props: FormType) => {
       // 判断结束必须大于开始
       if (endTime?.v2 < startTime?.v2) {
         message.warning('结束时间不能小于开始时间')
+        err = false
       } else if (endTime?.v2 === startTime?.v2) {
         if (endTime?.v3 < startTime?.v3) {
           message.warning('结束时间不能小于开始时间')
+          err = false
         }
       }
     } else if (startTime?.v1 === 1 && endTime?.v1 === 2) {
       if (endTime?.v2 > startTime?.v2) {
         message.warning('结束时间不能大于24小时')
+        err = false
       } else if (startTime?.v2 === endTime?.v2) {
         if (endTime?.v3 > startTime?.v3) {
           message.warning('结束时间不能大于24小时')
+          err = false
         }
       }
     } else if (startTime?.v1 === 2 && endTime?.v1 === 1) {
       message.warning('开始时间不能小于结束时间')
+      err = false
+    } else {
+      err = true
     }
   }
   // 不能超过一周
   const WeekJudgeTime = () => {
-    if (endTime.v1 > startTime.v1 + 7) {
+    if (endTime?.v1 > startTime?.v1 + 7) {
       message.warning('开始时间不允许超过一周')
-    } else if (endTime.v1 === startTime.v1 + 7) {
-      if (endTime.v2 > startTime.v2) {
+      err = false
+    } else if (endTime?.v1 === startTime?.v1 + 7) {
+      if (endTime?.v2 > startTime?.v2) {
         message.warning('开始时间不允许超过一周')
-      } else if (endTime.v2 === startTime.v2) {
-        if (endTime.v3 > startTime.v3) message.warning('开始时间不允许超过一周')
+        err = false
+      } else if (endTime?.v2 === startTime?.v2) {
+        if (endTime?.v3 > startTime?.v3) {
+          message.warning('开始时间不允许超过一周')
+          err = false
+        }
       }
+    } else {
+      err = true
     }
   }
   const getValues = (type: string, v1: number, v2: number, v3: number) => {
@@ -359,24 +375,34 @@ const FormMain = (props: FormType) => {
         }
       }
       setRemindTimes(remindTime)
+      dispatch(
+        setFillingRequirements({
+          ...fillingRequirements,
+          start_time: startTime,
+          end_time: endTime,
+          reminder_time: remindTime,
+        }),
+      )
     }
     if (props.type === 'day') {
       dayJudgeTime()
     } else if (props.type === 'week') {
       WeekJudgeTime()
     }
-    props.backValues(startTime, endTime, remindTime)
+    dispatch(setErr(err))
+    // props.backValues(startTime, endTime, remindTime)
   }
+  console.log(err, 'err')
   return (
     <>
       {props.type === 'day' ? (
         <>
           <Form.Item label="" name="is_holiday">
-            <Checkbox>跟随中国法定节假日自动调整 </Checkbox>
+            <CheckBox title={'跟随中国法定节假日自动调整'} />
           </Form.Item>
           <Form.Item
             label=""
-            name="2"
+            name="day"
             style={{
               marginBottom: '32px',
             }}
@@ -398,7 +424,7 @@ const FormMain = (props: FormType) => {
           props.type === 'week' ||
           props.type === 'month' ? (
             <Picker
-              valuerObj={startTimes}
+              value={startTimes}
               type={props.type}
               pickerType="start"
               getValues={(v1: number, v2: number, v3: number) =>
@@ -423,26 +449,26 @@ const FormMain = (props: FormType) => {
             getValues={(v1, v2, v3) => getValues('end', v1, v2, v3)}
             type={props.type}
             pickerType="end"
-            valuerObj={endTimes}
+            value={endTimes}
           />
         ) : (
-          <DatePicker format="YYYY-MM-DD HH:mm:ss" />
+          <DatePicker showTime />
         )}
       </Form.Item>
       <RowStyle>
-        <Form.Item style={{ marginRight: 48 }} label="" name="5">
+        <Form.Item style={{ marginRight: 48 }} label="" name="is_supply">
           <CheckBox title="截止时间后允许补交" />
         </Form.Item>
         {props.type === 'doNot' ? null : (
-          <Form.Item label="" name="6">
+          <Form.Item label="" name="hand_scope">
             <SupScope type={props.type} />
           </Form.Item>
         )}
       </RowStyle>
-      <Form.Item label="" name="7">
+      <Form.Item label="" name="is_cycle_limit">
         <CheckBox title="每个周限填一次" />
       </Form.Item>
-      <Form.Item label="" name="8">
+      <Form.Item label="" name="is_submitter_edit">
         <CheckBox title="提交汇报提交人可修改" />
       </Form.Item>
       <Form.Item
@@ -450,7 +476,7 @@ const FormMain = (props: FormType) => {
           marginTop: '32px',
         }}
         label=""
-        name="edit"
+        name="auto_reminder"
       >
         <Edit />
       </Form.Item>
@@ -464,7 +490,7 @@ const FormMain = (props: FormType) => {
       >
         <Picker
           getValues={(v1, v2, v3) => getValues('remind', v1, v2, v3)}
-          valuerObj={remindTimes}
+          value={remindTimes}
           type={props.type}
           pickerType="remind"
         />

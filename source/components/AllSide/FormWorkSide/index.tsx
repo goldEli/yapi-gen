@@ -83,9 +83,9 @@ const FormWorkSide = () => {
     getDataList()
   }, [])
 
-  // useEffect(() => {
-  //   console.log(dataList)
-  // }, [dataList])
+  useEffect(() => {
+    console.log(dataList)
+  }, [dataList])
   return (
     <FormWorkSideStyle>
       <TitleStyle>

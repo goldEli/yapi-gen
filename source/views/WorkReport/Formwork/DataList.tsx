@@ -32,7 +32,7 @@ export const minuteData = [
 export const hourData = [
   {
     label: '0时',
-    key: 24,
+    key: 0,
   },
   {
     label: '1时',

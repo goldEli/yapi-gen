@@ -60,7 +60,7 @@ const Item = styled.div`
   }
 `
 const InputStyle = styled(Input)({
-  width: '232px',
+  width: '320px',
 })
 
 interface PropsType {
@@ -69,7 +69,8 @@ interface PropsType {
   // 每天 day ,每周 week , 每月 month , 不重复doNot
   type: string
   getValues(val1: number, val2: number, val3: number): void
-  valuerObj: any
+  value: any
+  onChange?(values: any): void
 }
 interface Item {
   label: string
@@ -165,6 +166,11 @@ const Picker = (props: PropsType) => {
   const getTime = () => {
     setIsOpen(false)
     props.getValues(leftActiveVal, centerActiveVal, rightActiveVal)
+    props.onChange?.({
+      v1: leftActiveVal,
+      v2: centerActiveVal,
+      v3: rightActiveVal,
+    })
   }
   // 需要中文
   const getLabelName = (num: number) => {
@@ -231,15 +237,15 @@ const Picker = (props: PropsType) => {
     }
   }
   useEffect(() => {
-    if (!props?.valuerObj) {
+    if (!props?.value) {
       return
     }
-    v1 = props?.valuerObj?.v1
-    v2 = props?.valuerObj?.v2
-    v3 = props?.valuerObj?.v3
-    setLeftActiveVal(props?.valuerObj?.v1)
-    setCenterActiveVal(props?.valuerObj?.v2)
-    setRightActiveVal(props?.valuerObj?.v3)
+    v1 = props?.value?.v1
+    v2 = props?.value?.v2
+    v3 = props?.value?.v3
+    setLeftActiveVal(props?.value?.v1)
+    setCenterActiveVal(props?.value?.v2)
+    setRightActiveVal(props?.value?.v3)
     if (props.type === 'day') {
       getDayValues()
     } else if (props.type === 'week') {
@@ -247,7 +253,7 @@ const Picker = (props: PropsType) => {
     } else if (props.type === 'month') {
       getMonthValues()
     }
-  }, [props.valuerObj])
+  }, [props.value])
   const content = () => {
     return (
       <PickerStyle>

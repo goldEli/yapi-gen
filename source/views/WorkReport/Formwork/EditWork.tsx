@@ -41,7 +41,6 @@ const RightTabs = styled.div`
   padding-left: 24px;
   border-left: 1px solid var(--neutral-n6-d1);
 `
-
 interface PropsType {
   back(): void
   value: string
@@ -58,6 +57,7 @@ const EditWork = (props: PropsType) => {
   const [dragItem, setDragItem] = useState<any>()
   const [index, setIndex] = useState(0)
   const [type, setType] = useState('')
+  const { templateContentConfigs } = useSelector(store => store.formWork)
   const [dataList, setDataList] = useState([
     {
       name: '汇报对象',
@@ -110,8 +110,7 @@ const EditWork = (props: PropsType) => {
       arrData[index] = configs
       setDataList(arrData)
     }
-    // dispatch(setTemplateContentConfigs(arrData))
-    // console.log(arrData, 'arrData')
+    dispatch(setTemplateContentConfigs(arrData))
   }
   const onChangeChecked = (val: boolean, el: any) => {
     const num = val ? 1 : 2
@@ -119,6 +118,7 @@ const EditWork = (props: PropsType) => {
       ...item,
       is_required: el.name === item.name ? num : item.is_required,
     }))
+    dispatch(setTemplateContentConfigs(arr))
     setDataList(arr)
   }
   const onClick = (i: number, el: any) => {
@@ -127,6 +127,12 @@ const EditWork = (props: PropsType) => {
     setType('edit')
     setIsVisible(true)
   }
+  const onDelete = (el: { name: string }) => {
+    const arr = dataList.filter(item => el.name !== item.name)
+    dispatch(setTemplateContentConfigs(arr))
+    setDataList(arr)
+  }
+  // console.log(templateContentConfigs, 'TemplateContentConfigs')
   return (
     <>
       <div id="father" style={{ display: 'flex' }}>
@@ -145,7 +151,7 @@ const EditWork = (props: PropsType) => {
               onChangeChecked={(val: boolean, child: any) =>
                 onChangeChecked(val, child)
               }
-              onDelete={(child: any) => console.log('sc')}
+              onDelete={(child: any) => onDelete(child)}
               setList={setDataList}
             />
           </div>
