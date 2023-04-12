@@ -5,18 +5,18 @@ export const createTemplate: any = async (parmas: { name: string }) => {
   return response
 }
 export const upDateTemplate: any = async (parmas: { id: string | number }) => {
-  const response = await http.post('upDateTemplate', { id: parmas.id })
+  const response = await http.put('upDateTemplate', { id: parmas.id })
   return response
 }
 export const deleteTemplate: any = async (parmas: { id: string | number }) => {
-  const response = await http.post('deleteTemplate', { id: parmas.id })
+  const response = await http.delete('deleteTemplate', { id: parmas.id })
   return response
 }
 export const templateDetail: any = async (parmas: { id: string | number }) => {
-  const response = await http.post(`templateDetail/${parmas.id}`)
+  const response = await http.get(`templateDetail/${parmas.id}`)
   return response
 }
 export const templateList: any = async (parmas: { id: string | number }) => {
-  const response = await http.post(`templateList`)
+  const response = await http.get(`templateList`)
   return response
 }

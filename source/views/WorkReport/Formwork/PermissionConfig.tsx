@@ -9,6 +9,7 @@ import FormMain from './FormMain'
 import { Form, Radio } from 'antd'
 import { useDispatch, useSelector } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import { setReportContent, setFillingRequirements } from '@store/formWork'
 const PermissionConfigStyle = styled.div`
   padding: 0 24px;
 `
@@ -73,21 +74,17 @@ const PermissionConfig = (props: PropsType) => {
   const [type, setType] = useState<string>('day')
   const [form] = Form.useForm()
   const [delIsVisible, setDelIsVisible] = useState(false)
-  // 全员看
-  const [isAllView, setIsAllView] = useState(2)
-  // 全员写
-  const [isAllWrite, setIsAllWrite] = useState(2)
-  const [templateConfigs, setTemplateConfigs] = useState<any>([])
+  const { fillingRequirements } = useSelector(store => store.formWork)
   const onChangeValues = (values: any) => {
-    setIsAllWrite(2)
-    setIsAllView(2)
+    let isAllWrite = 2
+    let isAllView = 2
     values.forEach((item: any) => {
       if (item.user_type === 1 && item.key === 'all') {
         // 全员写
-        setIsAllWrite(1)
+        isAllWrite = 1
       } else if (item.user_type === 3 && item.key === 'all') {
         // 全员看
-        setIsAllView(1)
+        isAllView = 1
       }
     })
     // 部门的数据重新set 组装成员的数据 需要截取掉之前拼接的字符窜
@@ -110,9 +107,43 @@ const PermissionConfig = (props: PropsType) => {
           user_type: el.user_type,
           target_type: el.target_type,
         })) || []
-    // 最终的大数组
-    setTemplateConfigs([...setData, ...setData1])
+    // 最终的大数组-- 人员
+    const configsData = [...setData, ...setData1]
+    // console.log(configsData, 'oooo', values)
+    dispatch(
+      setReportContent({
+        is_all_view: isAllView,
+        is_all_write: isAllWrite,
+        template_configs: configsData,
+      }),
+    )
   }
+  // 填写周期
+  const onchange = (e: any) => {
+    setType(e.target.value)
+    let value = 0
+    switch (e.target.value) {
+      case 'day':
+        value = 1
+        break
+      case 'week':
+        value = 2
+        break
+      case 'month':
+        value = 3
+        break
+      default:
+        value = 4
+        break
+    }
+    dispatch(
+      setFillingRequirements({ ...fillingRequirements, submit_cycle: value }),
+    )
+  }
+  const onValuesChange = (values: any) => {
+    dispatch(setFillingRequirements({ ...fillingRequirements, ...values }))
+  }
+  // console.log(fillingRequirements, 'fillingRequirements')
   return (
     <PermissionConfigStyle>
       {/* 汇报内容 */}
@@ -160,23 +191,25 @@ const PermissionConfig = (props: PropsType) => {
           <Radio.Group
             style={{ margin: '8px 0 16px 0' }}
             value={type}
-            onChange={e => setType(e.target.value)}
+            onChange={e => {
+              onchange(e)
+            }}
           >
             <Radio value={'day'}>每天</Radio>
             <Radio value={'week'}>每周</Radio>
             <Radio value={'month'}>每月</Radio>
             <Radio value={'doNot'}>不重复</Radio>
           </Radio.Group>
-          <DayFormBox form={form}>
+          <DayFormBox form={form} onValuesChange={onValuesChange}>
             <FormMain
               type={type}
-              backValues={(s: any, e: any, r: any) =>
-                form?.setFieldsValue({
-                  start_time: s,
-                  end_time: e,
-                  reminder_time: r,
-                })
-              }
+              // backValues={(s: any, e: any, r: any) =>
+              // form?.setFieldsValue({
+              //   start_time: s,
+              //   end_time: e,
+              //   reminder_time: r,
+              // })
+              // }
             />
           </DayFormBox>
           {/* <div onClick={() => console.log(form?.getFieldsValue(), 999)}>123</div> */}
