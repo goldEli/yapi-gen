@@ -13,10 +13,10 @@ export const deleteTemplate: any = async (parmas: { id: string | number }) => {
   return response
 }
 export const templateDetail: any = async (parmas: { id: string | number }) => {
-  const response = await http.get(`templateDetail/${parmas.id}`)
+  const response = await http.get(`templateDetail`, { id: parmas.id })
   return response
 }
 export const templateList: any = async (parmas: { id: string | number }) => {
   const response = await http.get(`templateList`)
-  return response
+  return response.data
 }

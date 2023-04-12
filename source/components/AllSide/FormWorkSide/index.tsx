@@ -10,6 +10,7 @@ import SupplementaryIntercourse from './SupplementaryIntercourse'
 import WriteReport from './WriteReport'
 import { createTemplate } from '@/services/formwork'
 import { getTemplateList } from '@store/formWork/thunk'
+import { setTemplateName, setDataList } from '@store/formWork'
 import { message } from 'antd'
 // getTemplateList
 const FormWorkSideStyle = styled.div`
@@ -29,9 +30,13 @@ const TitleStyle = styled.div`
 const Slide = styled.div`
   height: 44px;
   padding-left: 24px;
+  padding-right: 12px;
   font-size: 14px;
   color: var(--neutral-n1-d2);
   line-height: 44px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
   &:hover {
     cursor: pointer;
   }
@@ -69,12 +74,17 @@ const FormWorkSide = () => {
   const [delIsVisible, setDelIsVisible] = useState(false)
   const { dataList } = useSelector(store => store.formWork)
   useEffect(() => {
-    dispatch(setActiveItem(a.find((el, index) => index === isActive)))
-  }, [isActive])
+    const item: any = dataList.find((el: any, index: any) => index === isActive)
+    console.log(item, 'oo')
+    dispatch(setActiveItem(item))
+  }, [isActive, dataList])
   const onConfirm = async (name: string) => {
-    const res = await createTemplate({ name })
-    message.success('创建成功')
-    await dispatch(getTemplateList())
+    setIsVisible(false)
+    // const res = await createTemplate({ name })
+    // message.success('创建成功')
+    // await dispatch(getTemplateList())
+    dispatch(setTemplateName(name))
+    dispatch(setDataList([{ name }, ...dataList]))
   }
   const getDataList = async () => {
     await dispatch(getTemplateList())
@@ -82,21 +92,20 @@ const FormWorkSide = () => {
   useEffect(() => {
     getDataList()
   }, [])
-
-  useEffect(() => {
-    console.log(dataList)
-  }, [dataList])
+  const itemActive = (el: any, index: any) => {
+    setIsActive(index)
+  }
   return (
     <FormWorkSideStyle>
       <TitleStyle>
         <span>模板</span>
         <IconFontStyle type="plus" onClick={() => setIsVisible(true)} />
       </TitleStyle>
-      {dataList.map((el: { name: string; id: number }, index: number) => {
+      {dataList?.map((el: { name: string; id: number }, index: number) => {
         return (
           <Slide
             key={el.id}
-            onClick={() => setIsActive(index)}
+            onClick={() => itemActive(el, index)}
             style={{
               color:
                 isActive == index
@@ -116,7 +125,7 @@ const FormWorkSide = () => {
       <AddFormWork
         onClose={() => setIsVisible(false)}
         isVisible={isVisible}
-        onConfirm={onConfirm}
+        onConfirm={(name: string) => onConfirm(name)}
       />
       {/* 未保存的弹窗 */}
       <DeleteConfirm

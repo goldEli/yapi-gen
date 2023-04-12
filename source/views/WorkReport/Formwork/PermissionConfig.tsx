@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-handler-names */
 /* eslint-disable camelcase */
+/* eslint-disable no-constant-binary-expression */
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import Addperson from './Addperson'
@@ -28,40 +29,6 @@ const DayFormBox = styled(Form)({
     width: '320px',
   },
 })
-const person = [
-  {
-    label: 'zcm88888888888888888888888',
-    id: 1,
-  },
-  {
-    label: 'zcm1',
-    id: 2,
-  },
-  {
-    label: 'zcm1',
-    id: 3,
-  },
-  {
-    label: 'zcm4',
-    id: 4,
-  },
-  {
-    label: 'zcm4',
-    id: 5,
-  },
-  {
-    label: 'zcm4',
-    id: 6,
-  },
-  {
-    label: 'zcm4',
-    id: 7,
-  },
-  {
-    label: 'zcm4',
-    id: 8,
-  },
-]
 interface PropsType {
   back(): void
 }
@@ -74,8 +41,41 @@ const PermissionConfig = (props: PropsType) => {
   const [type, setType] = useState<string>('day')
   const [form] = Form.useForm()
   const [delIsVisible, setDelIsVisible] = useState(false)
-  const { fillingRequirements } = useSelector(store => store.formWork)
+  const { fillingRequirements, reportContent } = useSelector(
+    store => store.formWork,
+  )
+  const [person1, setPerson1] = useState<any>()
+  const [person2, setPerson2] = useState<any>()
+  const [person3, setPerson3] = useState<any>()
+  // 去重
+  const fitlerDataList = (data: any) => {
+    let obj: any = {}
+    let set: any = data?.reduce((cur: any, next: any) => {
+      obj[next.target_id] ? '' : (obj[next.target_id] = true && cur.push(next))
+      return cur
+    }, [])
+    return set
+  }
+  // 存之前过滤
+  const filterValues = (list: any) => {
+    // 谁可以写
+    let data1 =
+      list?.filter((item: { user_type: number }) => item.user_type === 1) || []
+    //  汇报对象
+    let data2 = list?.filter(
+      (item: { user_type: number }) => item.user_type === 2,
+    )
+    //  谁可以看
+    let data3 =
+      list?.filter((item: { user_type: number }) => item.user_type === 3) || []
+    const d1 = fitlerDataList(data1)
+    const d2 = fitlerDataList(data2)
+    const d3 = fitlerDataList(data3)
+    return [...d1, ...d2, ...d3]
+  }
+  // 根据接口拆解数据
   const onChangeValues = (values: any) => {
+    console.log(values, 'values')
     let isAllWrite = 2
     let isAllView = 2
     values.forEach((item: any) => {
@@ -95,6 +95,7 @@ const PermissionConfig = (props: PropsType) => {
           target_id: Number(el.id.slice(14)),
           user_type: el.user_type,
           target_type: el.target_type,
+          target_value: el.target_value,
         })) || []
     // 团队的数据
     const setData1 =
@@ -106,18 +107,27 @@ const PermissionConfig = (props: PropsType) => {
           target_id: el.id,
           user_type: el.user_type,
           target_type: el.target_type,
+          target_value: el.target_value,
         })) || []
+    // 管理人员
+    const setData2 = values?.filter(
+      (el: { target_type: number }) => el.target_type === 4,
+    )
     // 最终的大数组-- 人员
-    const configsData = [...setData, ...setData1]
-    // console.log(configsData, 'oooo', values)
+    const configsData = [...setData, ...setData1, ...setData2]
+
     dispatch(
       setReportContent({
         is_all_view: isAllView,
         is_all_write: isAllWrite,
-        template_configs: configsData,
+        template_configs: filterValues([
+          ...reportContent.template_configs,
+          ...configsData,
+        ]),
       }),
     )
   }
+
   // 填写周期
   const onchange = (e: any) => {
     setType(e.target.value)
@@ -140,10 +150,74 @@ const PermissionConfig = (props: PropsType) => {
       setFillingRequirements({ ...fillingRequirements, submit_cycle: value }),
     )
   }
-  const onValuesChange = (values: any) => {
+  const formOnValuesChange = (values: any) => {
     dispatch(setFillingRequirements({ ...fillingRequirements, ...values }))
   }
-  // console.log(fillingRequirements, 'fillingRequirements')
+
+  // 组装数据
+  const assemblyData = () => {
+    // 谁可以写
+    let data1 =
+      reportContent.template_configs?.filter(
+        (item: { user_type: number }) => item.user_type === 1,
+      ) || []
+    //  汇报对象
+    let data2 = reportContent.template_configs?.filter(
+      (item: { user_type: number }) => item.user_type === 2,
+    )
+    //  谁可以看
+    let data3 =
+      reportContent.template_configs?.filter(
+        (item: { user_type: number }) => item.user_type === 3,
+      ) || []
+    // 有已经存在的情况，需要过滤掉
+    if (reportContent.is_all_view === 1) {
+      const newData3 = [
+        {
+          user_type: 3,
+          key: 'all',
+          name: '全部',
+          avatar: '',
+          target_value: {
+            user_type: 3,
+            key: 'all',
+            name: '全部',
+            avatar: '',
+          },
+        },
+        ...data3,
+      ]
+      const hasAll = data3.find((el: any) => el.target_value.key === 'all')
+      setPerson3(hasAll ? data3 : newData3)
+    }
+    // 有已经存在的情况，需要过滤掉
+    if (reportContent.is_all_write === 1) {
+      const newData1 = [
+        {
+          user_type: 1,
+          key: 'all',
+          name: '全部',
+          avatar: '',
+          target_value: {
+            user_type: 1,
+            key: 'all',
+            name: '全部',
+            avatar: '',
+          },
+        },
+        ...data1,
+      ]
+      const hasAll = data1.find((el: any) => el.target_value.key === 'all')
+      setPerson1(hasAll ? data1 : newData1)
+    }
+    reportContent.is_all_view === 2 && setPerson3(data3)
+    reportContent.is_all_write === 2 && setPerson1(data1)
+    setPerson2(data2)
+  }
+  console.log(reportContent)
+  useEffect(() => {
+    reportContent && assemblyData()
+  }, [reportContent])
   return (
     <PermissionConfigStyle>
       {/* 汇报内容 */}
@@ -156,7 +230,7 @@ const PermissionConfig = (props: PropsType) => {
           {/* 谁可以写 */}
           <Addperson
             onChangeValues={val => onChangeValues(val)}
-            data={person}
+            person={person1}
             title="谁可以写"
             isShow={true}
             state={1}
@@ -164,7 +238,7 @@ const PermissionConfig = (props: PropsType) => {
           {/* 汇报对象*/}
           <Addperson
             onChangeValues={val => onChangeValues(val)}
-            data={person}
+            person={person2}
             title="汇报对象"
             isShow={false}
             state={2}
@@ -172,7 +246,7 @@ const PermissionConfig = (props: PropsType) => {
           {/* 谁可以看 */}
           <Addperson
             onChangeValues={val => onChangeValues(val)}
-            data={person}
+            person={person3}
             title="谁可以看"
             isShow={false}
             state={3}
@@ -200,7 +274,7 @@ const PermissionConfig = (props: PropsType) => {
             <Radio value={'month'}>每月</Radio>
             <Radio value={'doNot'}>不重复</Radio>
           </Radio.Group>
-          <DayFormBox form={form} onValuesChange={onValuesChange}>
+          <DayFormBox form={form} onValuesChange={formOnValuesChange}>
             <FormMain
               type={type}
               // backValues={(s: any, e: any, r: any) =>
