@@ -30,7 +30,10 @@ export function getStyleValue(dom: Element, attr: keyof CSSStyleDeclaration) {
   return parseFloat(getComputedStyle(dom)[attr] + '')
 }
 
-export function getConflictsTimeRange(list: Model.Schedule.Info[]) {
+export function getConflictsTimeRange(list?: Model.Schedule.Info[]) {
+  if (!list) {
+    return []
+  }
   const res: Model.Schedule.Info[][] = []
   for (let i = 0; i < list.length; ++i) {
     for (let j = i + 1; j < list.length; ++j) {

@@ -41,6 +41,9 @@ const useCalculationConflict = () => {
       return
     }
     const conflicts = getConflictsTimeRange(list)
+    if (!conflicts.length) {
+      return
+    }
 
     const conflictsWithSize = conflicts
       .map(con => {
