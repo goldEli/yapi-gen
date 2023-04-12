@@ -12,7 +12,8 @@ declare namespace API.Calendar {
     type Params = {
       id: number
       color?: number
-      is_check?: number
+      is_check?: 1 | 2
+      is_only_show?: 1
     }
   }
   namespace GetDaysOfWeekList {

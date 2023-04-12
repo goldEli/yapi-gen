@@ -164,14 +164,14 @@ const CreateSchedule = () => {
       },
       ...repeatValue.params,
     }
-    resultParams.start_datetime = moment(values.time[0]).format(
-      isAll ? 'YYYY-MM-DD' : 'YYYY-MM-DD hh:mm:ss',
-    )
-    resultParams.end_datetime = moment(values.time[1]).format(
-      isAll ? 'YYYY-MM-DD' : 'YYYY-MM-DD hh:mm:ss',
-    )
+    resultParams.start_datetime = isAll
+      ? moment(values.time[0]).startOf('day').format('YYYY-MM-DD HH:mm:ss')
+      : moment(values.time[0]).format('YYYY-MM-DD HH:mm:ss')
+    resultParams.end_datetime = isAll
+      ? moment(values.time[1]).endOf('day').format('YYYY-MM-DD HH:mm:ss')
+      : moment(values.time[1]).format('YYYY-MM-DD HH:mm:ss')
     delete resultParams.time
-    dispatch(saveSchedule(resultParams))
+    await dispatch(saveSchedule(resultParams))
     message.success('创建成功')
     onClose()
   }
@@ -217,14 +217,12 @@ const CreateSchedule = () => {
       message.warning('请选择时间！')
       return
     }
+    const startTime = isAll ? moment(time[0]).startOf('day') : moment(time[0])
+    const endTime = isAll ? moment(time[1]).endOf('day') : moment(time[0])
     // 计算日期相差多少
     const difference = moment(
-      moment(time[1]).format(isAll ? 'YYYY-MM-DD' : 'YYYY-MM-DD hh:mm:ss'),
-    ).diff(
-      moment(
-        moment(time[0]).format(isAll ? 'YYYY-MM-DD' : 'YYYY-MM-DD hh:mm:ss'),
-      ),
-    )
+      moment(endTime).format('YYYY-MM-DD HH:mm:ss'),
+    ).diff(moment(startTime).format('YYYY-MM-DD HH:mm:ss'))
 
     if (value === 0) {
       setRepeatValue({ value, params: {} })
