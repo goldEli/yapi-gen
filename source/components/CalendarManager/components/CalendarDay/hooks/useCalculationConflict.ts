@@ -15,18 +15,18 @@ import dayjs from 'dayjs'
 const minLeft = 58
 const useCalculationConflict = () => {
   const scheduleList = useSelector(store => store.schedule.scheduleList)
-  const { selectedDay } = useSelector(store => store.calendar)
+  const { checkedTime } = useSelector(store => store.calendar)
   const [maxWidth, setMaxWidth] = useState(0)
   const [data, setData] = useState<
     { info: Model.Schedule.Info; width: number; left: number }[]
   >([])
-  const key = dayjs(selectedDay).format('YYYY-MM-DD')
+  const key = dayjs(checkedTime).format('YYYY-MM-DD')
   const list = useMemo(
     () =>
       scheduleList[key]?.filter(
         item => item.is_all_day !== 1 && !item.is_span_day,
       ),
-    [scheduleList, selectedDay],
+    [scheduleList, checkedTime],
   )
 
   useEffect(() => {

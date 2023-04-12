@@ -80,11 +80,11 @@ const borderRight = css`
 `
 
 const DayItem: React.FC<DayItemProps> = props => {
-  const { selectedDay, selectedMonth } = useSelector(store => store.calendar)
+  const { checkedTime, selectedMonth } = useSelector(store => store.calendar)
   const { idx } = props
   const info = selectedMonth[props.idx]
   const day = dayjs(info.date).format('DD')
-  const isSelected = dayjs(selectedDay).isSame(dayjs(info.date), 'day')
+  const isSelected = dayjs(checkedTime).isSame(dayjs(info.date), 'day')
   const { currentTime } = useCurrentTime()
   const isCurrent = currentTime.isSame(dayjs(info.datetime), 'day')
   const dispatch = useDispatch()

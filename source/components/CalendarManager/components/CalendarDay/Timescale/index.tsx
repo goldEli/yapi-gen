@@ -46,7 +46,7 @@ const Table = styled.table`
 `
 
 const Timescale: React.FC<TimescaleProps> = props => {
-  const { selectedDay } = useSelector(store => store.calendar)
+  const { checkedTime } = useSelector(store => store.calendar)
 
   const [timeZone, setTimeZone] = React.useState<string[]>([])
   const [distance, setDistance] = React.useState(0)
@@ -138,7 +138,7 @@ const Timescale: React.FC<TimescaleProps> = props => {
             {Array(4)
               .fill(0)
               .map((i, index) => {
-                const id = `${dayjs(selectedDay).format(
+                const id = `${dayjs(checkedTime).format(
                   formatYYYYMMDD,
                 )} ${str}:${15 * index}:00`
                 return (
@@ -163,7 +163,7 @@ const Timescale: React.FC<TimescaleProps> = props => {
           </>
         )
       })
-  }, [timeZone, selectedDay])
+  }, [timeZone, checkedTime])
   return (
     <Table ref={tableRef} className="time-scale">
       {content}

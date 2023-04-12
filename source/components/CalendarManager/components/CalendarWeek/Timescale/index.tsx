@@ -49,7 +49,7 @@ const Table = styled.table`
 `
 
 const Timescale: React.FC<TimescaleProps> = props => {
-  const { calendarData, selectedDay } = useSelector(store => store.calendar)
+  const { calendarData, checkedTime } = useSelector(store => store.calendar)
   const currentColor = useMemo(() => {
     return calendarData.manager.find(item => item.is_default === 1)?.color
   }, [calendarData])
@@ -158,7 +158,7 @@ const Timescale: React.FC<TimescaleProps> = props => {
           </>
         )
       })
-  }, [currentColor, timeZone, selectedDay, weeks])
+  }, [currentColor, timeZone, checkedTime, weeks])
   return (
     // <Popover trigger={['contextMenu']} content={popoverContent} title="Title">
     <Table ref={tableRef} className="time-scale">

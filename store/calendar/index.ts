@@ -24,8 +24,7 @@ type SliceState = {
   // 日历路由记录
   routerMenu: Model.Calendar.RouterMenu
   menuList: Model.Calendar.RouterMenu[]
-  // 选择的日期
-  selectedDay: number
+
   // 选择的周
   selectedWeek: Model.Calendar.DaysOfWeek[]
   // 是否打开创建或者是编辑日程弹窗
@@ -86,7 +85,6 @@ const initialState: SliceState = {
     name: '',
     key: '',
   },
-  selectedDay: dayjs('2023-3-30 13:10:00').valueOf(),
   selectedWeek: [],
   scheduleModal: {
     visible: false,
@@ -119,9 +117,7 @@ const slice = createSlice({
     setRouterMenu(state, action: PayloadAction<SliceState['routerMenu']>) {
       state.routerMenu = action.payload
     },
-    setSelectedDay(state, action: PayloadAction<SliceState['selectedDay']>) {
-      state.selectedDay = action.payload
-    },
+
     setScheduleModal(
       state,
       action: PayloadAction<SliceState['scheduleModal']>,
