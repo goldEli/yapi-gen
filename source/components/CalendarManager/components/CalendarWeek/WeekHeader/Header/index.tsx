@@ -127,7 +127,7 @@ const Header: React.FC<WeekHeaderProps> = props => {
                     weekend: weekDayNums.includes(currentWeekDayNum),
                   })}
                 >
-                  初一
+                  {item.lunar_day_chinese}
                 </span>
               </div>
             </WeekListItem>
