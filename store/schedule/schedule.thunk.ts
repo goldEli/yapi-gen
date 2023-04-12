@@ -15,7 +15,6 @@ export const getScheduleListDay = createAsyncThunk(
 export const getScheduleListDaysOfWeek = createAsyncThunk(
   `${name}/getScheduleListDaysOfWeek`,
   async (params: API.Schedule.GetScheduleListDaysOfWeek.Params) => {
-    console.log('getScheduleListDaysOfWeek', { params })
     const res = await services.schedule.getScheduleListDaysOfWeek(params)
     return res
   },

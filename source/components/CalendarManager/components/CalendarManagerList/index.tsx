@@ -85,7 +85,6 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const { calendarData } = useSelector(store => store.calendar)
 
-  console.log(calendarData, '=calendarData')
   const calendarList = calendarData[props.type as keyof typeof calendarData]
 
   // 改变日历的选中状态

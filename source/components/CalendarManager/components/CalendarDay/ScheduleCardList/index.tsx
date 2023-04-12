@@ -33,6 +33,7 @@ const ScheduleCardList: React.FC<ScheduleCardListProps> = props => {
       }),
     )
   }, [calenderDayValue, checkedCalendarList])
+  console.log({ data })
 
   const content = useMemo(() => {
     return data.map(item => {
