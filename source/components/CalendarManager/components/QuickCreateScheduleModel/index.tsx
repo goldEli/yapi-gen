@@ -246,7 +246,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
   // 保存
   const onConfirm = async () => {
     const params = await onGetParams()
-    dispatch(saveSchedule(params))
+    await dispatch(saveSchedule(params))
     message.success('创建成功')
     onClose()
   }
