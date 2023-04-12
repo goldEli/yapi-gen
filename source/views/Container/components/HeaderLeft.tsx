@@ -62,6 +62,8 @@ const DrawerComponent = (props: DrawerComponentProps) => {
         : item.url
     // 如果是日志则默认跳转
     navigate(item.url === '/LogManagement' ? `${item.url}/Send/1` : navigateUrl)
+    // 如果是工作汇报则默认跳转
+    navigate(item.url === '/Report' ? `${item.url}/Review` : navigateUrl)
     const resultMenu = {
       ...item,
       ...{
@@ -352,7 +354,10 @@ const HeaderLeft = () => {
 
       {showTopNav && (
         <ChildrenMenu>
-          {currentMenu.children.map((i: any) => (
+          {(currentMenu?.url === '/Report'
+            ? [...currentMenu.children].reverse()
+            : currentMenu.children
+          ).map((i: any) => (
             <ChildrenMenuItem key={i.id} size={8} isActive={getActive(i)}>
               {getMenuItemElement(i)}
             </ChildrenMenuItem>

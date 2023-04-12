@@ -137,6 +137,7 @@ const urls = {
   templateDetail: '/report/template/info',
   deleteTemplate: '/report/template/delete',
   templateList: '/report/template/list',
+  writeReport:'/b/work_report/user'
 }
 
 export default urls

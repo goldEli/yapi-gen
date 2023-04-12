@@ -1013,7 +1013,8 @@
       "todayWork": "今日完成工作",
       "tomorrowWork": "明日计划工作",
       "reportPerson": "汇报对象",
-      "associatedRequirement": "关联需求"
+      "associatedRequirement": "关联需求",
+      "submit": "提交"
     },
     "statistics": "汇报我的统计",
     "mine": "我的汇报"

@@ -7,7 +7,7 @@
 import { Form, Modal } from 'antd'
 import { ExclamationCircleFilled } from '@ant-design/icons'
 import CommonModal from '@/components/CommonModal'
-import ChoosePeople from '@/views/LogManagement/components/ChoosePeople'
+import ChoosePeople from '@/views/WorkReport/Formwork/ChoosePeople'
 import RelatedNeed from '@/views/LogManagement/components//RelatedNeed'
 import IconFont from '@/components/IconFont'
 import { AddWrap } from '@/components/StyleCommon'
@@ -16,7 +16,7 @@ import { useEffect, useRef, useState } from 'react'
 import { getReportDetail } from '@/services/daily'
 import { useTranslation } from 'react-i18next'
 import UploadAttach from '@/components/UploadAttach'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { changeRest } from '@store/log'
 import type { EditorRef } from '@xyfe/uikit'
 import { Editor } from '@xyfe/uikit'
@@ -68,6 +68,8 @@ const HandleReport = (props: any) => {
   const leftDom: any = useRef<HTMLInputElement>(null)
   const dispatch = useDispatch()
   const [t] = useTranslation()
+  const userInfo = useSelector(state => state.user.userInfo)
+  const [reportDetail, setReportDetail] = useState<any>({})
 
   const close = () => {
     form.resetFields()
@@ -79,13 +81,12 @@ const HandleReport = (props: any) => {
 
   const confirm = async () => {
     const data: any = await form.validateFields()
-
     await props.editConfirm(data, props.editId)
     dispatch(changeRest(true))
     close()
   }
 
-  const onChangeAttachment = (result: any) => {
+  const onChangeAttachment = (result: any, name: string) => {
     const arr = result.map((i: any) => {
       return {
         url: i.url,
@@ -99,7 +100,7 @@ const HandleReport = (props: any) => {
     })
 
     form.setFieldsValue({
-      attachments: arr,
+      [name]: arr,
     })
   }
 
@@ -158,8 +159,9 @@ const HandleReport = (props: any) => {
         }
       }),
     )
+
     setPeopleValue(
-      res.data.copysend_list.map((item: any) => {
+      reportDetail?.report_user_list?.map((item: any) => {
         return {
           avatar: item.avatar,
           id: item.user_id,
@@ -209,7 +211,7 @@ const HandleReport = (props: any) => {
     })
   }
   const onValidator = (rule: any, value: any) => {
-    if (value === '<p><br></p>' || value.trim() === '') {
+    if (value === '<p><br></p>' || value === '<p></p>' || value.trim() === '') {
       return Promise.reject(
         new Error('The two passwords that you entered do not match!'),
       )
@@ -219,6 +221,117 @@ const HandleReport = (props: any) => {
   if (!props.visibleEdit) {
     return null
   }
+
+  const getFormItemHtml = (content: any): React.ReactElement => {
+    switch (content.type) {
+      case 1:
+        return (
+          <Form.Item
+            label={<LabelTitle>{content.name}</LabelTitle>}
+            name={`${content.type}_${content.id}`}
+            rules={[
+              {
+                required: content.is_required,
+                message: (
+                  <div
+                    style={{
+                      margin: '5px 0',
+                      fontSize: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {t('common.pleaseSelect')}
+                  </div>
+                ),
+              },
+            ]}
+          >
+            {props.visibleEdit ? (
+              <ChoosePeople initValue={peopleValue} />
+            ) : null}
+          </Form.Item>
+        )
+      case 2:
+        return (
+          <Form.Item
+            label={<LabelTitle>{content.name}</LabelTitle>}
+            name={`${content.type}_${content.id}`}
+          >
+            <UploadAttach
+              power
+              defaultList={attachList}
+              onChangeAttachment={(res: any) => {
+                onChangeAttachment(res, `${content.type}_${content.id}`)
+              }}
+              onBottom={onBottom}
+              addWrap={
+                <AddWrap
+                  style={{
+                    marginBottom: '20px',
+                  }}
+                  hasColor
+                >
+                  <IconFont type="plus" />
+                  <div>{t('p2.addAdjunct') as unknown as string}</div>
+                </AddWrap>
+              }
+            />
+          </Form.Item>
+        )
+      case 3:
+        return (
+          <Form.Item
+            style={{
+              marginBottom: '30px',
+            }}
+            label={<LabelTitle>{content.name}</LabelTitle>}
+            name={`${content.type}_${content.id}`}
+            rules={[
+              {
+                validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
+                required: true,
+                message: (
+                  <div
+                    style={{
+                      margin: '5px 0',
+                      fontSize: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {t('p2.only1')}
+                  </div>
+                ),
+                whitespace: true,
+                validator: onValidator,
+              },
+            ]}
+            initialValue={content.tips}
+          >
+            <Editor
+              ref={editorRef}
+              upload={uploadFile}
+              getSuggestions={() => options}
+            />
+          </Form.Item>
+        )
+      case 4:
+        return (
+          <Form.Item
+            label={<LabelTitle>{content.name}</LabelTitle>}
+            name={`${content.type}_${content.id}`}
+          >
+            {props.visibleEdit ? (
+              <RelatedNeed onBootom={scrollToBottom} initValue={needValue} />
+            ) : null}
+          </Form.Item>
+        )
+      default:
+        return <span />
+    }
+  }
+
   return (
     <CommonModal
       width={784}
@@ -226,7 +339,7 @@ const HandleReport = (props: any) => {
       isVisible={props.visibleEdit}
       onClose={close}
       onConfirm={confirm}
-      confirmText={t('newlyAdd.submit')}
+      confirmText={t('report.list.submit')}
     >
       <div
         style={{
@@ -243,14 +356,14 @@ const HandleReport = (props: any) => {
               alignItems: 'center',
             }}
           >
-            {false ? (
+            {userInfo.avatar ? (
               <img
                 style={{
                   width: 32,
                   height: 32,
                   borderRadius: 16,
                 }}
-                // src={i.avatar}
+                src={userInfo.avatar}
               />
             ) : (
               <span>
@@ -258,7 +371,7 @@ const HandleReport = (props: any) => {
               </span>
             )}
             <div className="titleText">
-              李四的工作日报
+              {`${userInfo.name}的工作${reportDetail.name}`}
               <span className="dateText">（2022-08-21至2022-08-27）</span>
             </div>
           </div>
@@ -287,108 +400,9 @@ const HandleReport = (props: any) => {
             }, 100)
           }}
         >
-          <Form.Item
-            style={{
-              marginBottom: '30px',
-            }}
-            label={<LabelTitle>{t('report.list.todayWork')}</LabelTitle>}
-            name="info"
-            rules={[
-              {
-                validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
-                required: true,
-                message: (
-                  <div
-                    style={{
-                      margin: '5px 0',
-                      fontSize: '12px',
-                      display: 'flex',
-                      alignItems: 'center',
-                    }}
-                  >
-                    {t('p2.only1')}
-                  </div>
-                ),
-                whitespace: true,
-                validator: onValidator,
-              },
-            ]}
-          >
-            <Editor
-              ref={editorRef}
-              upload={uploadFile}
-              getSuggestions={() => options}
-            />
-          </Form.Item>
-          <Form.Item
-            style={{
-              marginBottom: '30px',
-            }}
-            label={<LabelTitle>{t('report.list.tomorrowWork')}</LabelTitle>}
-            name="info2"
-            rules={[
-              {
-                validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
-                required: true,
-                message: (
-                  <div
-                    style={{
-                      margin: '5px 0',
-                      fontSize: '12px',
-                      display: 'flex',
-                      alignItems: 'center',
-                    }}
-                  >
-                    {t('p2.only1')}
-                  </div>
-                ),
-                whitespace: true,
-                validator: onValidator,
-              },
-            ]}
-          >
-            <Editor upload={uploadFile} getSuggestions={() => options} />
-          </Form.Item>
-          <Form.Item
-            label={<LabelTitle>{t('report.list.reportPerson')}</LabelTitle>}
-            name="people"
-          >
-            {props.visibleEdit ? (
-              <ChoosePeople initValue={peopleValue} />
-            ) : null}
-          </Form.Item>
-          <Form.Item
-            label={<LabelTitle>{t('common.attachment')}</LabelTitle>}
-            name="attachments"
-          >
-            <UploadAttach
-              power
-              defaultList={attachList}
-              onChangeAttachment={onChangeAttachment}
-              onBottom={onBottom}
-              addWrap={
-                <AddWrap
-                  style={{
-                    marginBottom: '20px',
-                  }}
-                  hasColor
-                >
-                  <IconFont type="plus" />
-                  <div>{t('p2.addAdjunct') as unknown as string}</div>
-                </AddWrap>
-              }
-            />
-          </Form.Item>
-          <Form.Item
-            label={
-              <LabelTitle>{t('report.list.associatedRequirement')}</LabelTitle>
-            }
-            name="needs"
-          >
-            {props.visibleEdit ? (
-              <RelatedNeed onBootom={scrollToBottom} initValue={needValue} />
-            ) : null}
-          </Form.Item>
+          {reportDetail?.template_content_configs?.map((item: any) => {
+            return <div key={item.id}>{getFormItemHtml(item)}</div>
+          })}
         </Form>
       </div>
     </CommonModal>
