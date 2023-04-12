@@ -46,3 +46,9 @@ export const getMsg_list: any = async () => {
 
   return response.data
 }
+
+export const setRead: any = async (params: any) => {
+  const response: any = await http.post<any>('/b/msg/setRead', params)
+
+  return response.data
+}
