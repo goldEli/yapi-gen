@@ -85,6 +85,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
   const { relateConfig, calendarConfig, calendarData } = useSelector(
     store => store.calendar,
   )
+  const { userInfo } = useSelector(store => store.user)
   const { quickCreateScheduleModel } = useSelector(store => store.calendarPanel)
   const { visible } = quickCreateScheduleModel
   const { position } = useModalPosition({
@@ -213,7 +214,9 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
     let values = form.getFieldsValue()
     values.members = participant.list.map((i: Model.Calendar.MemberItem) => ({
       user_id: i.id,
+      company_id: userInfo.company_id,
     }))
+    values.repeat_type = 0
     values.reminds = noticeList.map((i: DefaultTime) => i.value)
     if (participant.list.length > 0) {
       values.permission_update = participant.permission.includes(0) ? 1 : 2
@@ -307,7 +310,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
         >
           <Form.Item
             label={<CreateFormItem label="主题" type="database" />}
-            name="name"
+            name="subject"
             rules={[{ required: true, message: '' }]}
           >
             <Input

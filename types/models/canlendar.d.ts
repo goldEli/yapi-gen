@@ -148,6 +148,7 @@ declare namespace Model.Calendar {
     }
     subscribe_num?: number | string
     describe?: string
+    icon: string
   }
 
   // 日历图标列表

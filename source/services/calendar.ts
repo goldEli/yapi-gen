@@ -1,17 +1,20 @@
 import urls from '@/constants/urls'
 import * as http from '@/tools/http'
 
-// 订阅日历列表
+// 订阅日历列表 -- finish-1
 export const getSubscribeList = async (
   params: API.Calendar.GetSubscribeList.Params,
 ) => {
   const response = await http.get<any, API.Calendar.GetSubscribeList.Result>(
     `/b/calendar/${params.type}/getAllCalendarList`,
+    {
+      keywords: params.keywords,
+    },
   )
   return response
 }
 
-// 订阅联系人列表
+// 订阅联系人列表 -- finish -1
 export const getContactsCalendarList = async (
   params: API.Calendar.GetContactsCalendarList.Params,
 ) => {

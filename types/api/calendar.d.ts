@@ -50,6 +50,7 @@ declare namespace API.Calendar {
   namespace GetSubscribeList {
     type Params = {
       type: string
+      keywords?: string
     }
     type Result = {
       list: Model.Calendar.SubscribeInfo[]

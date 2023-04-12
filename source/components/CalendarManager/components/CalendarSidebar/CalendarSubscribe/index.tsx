@@ -67,7 +67,10 @@ const TabsItemLeft = styled.div`
     height: 32px;
     border-radius: 50%;
     margin-right: 12px;
-    background: red;
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
   .content {
     display: flex;
@@ -140,98 +143,60 @@ const TabsItemLi = styled.div`
 `
 
 interface TabsContentProps {
+  dataList?: Model.Calendar.SubscribeInfo[]
+  dataUserList?: Model.Calendar.GetContactsCalendarInfo[]
   type: string
-  searchValue: string
 }
 
 const TabsContent = (props: TabsContentProps) => {
-  const [dataList, setDataList] = useState<{
-    list?: Model.Calendar.SubscribeInfo[]
-  }>()
-  const [dataUserList, setDataUserList] = useState<{
-    list?: Model.Calendar.GetContactsCalendarInfo[]
-  }>()
-
-  const getList = async () => {
-    // console.log(222)
-    setDataList({})
-    const response = await getSubscribeList({ type: props.type })
-    setDataList({ list: response.data.list })
-  }
-
-  const getList1 = async () => {
-    setDataUserList({})
-    const response = await getContactsCalendarList({
-      username: props.searchValue,
-    })
-    setDataUserList({ list: response.data.list })
-  }
-
-  useEffect(() => {
-    console.log(props.type)
-    if (props.type === '0') {
-      getList1()
-    } else {
-      getList()
-    }
-  }, [props.type])
-
   return (
     <TabsContentWrap>
       {props.type !== '0' && (
         <TabsBox>
-          {dataList?.list &&
-            dataList?.list.length > 0 &&
-            dataList?.list
-              ?.filter((i: Model.Calendar.SubscribeInfo) =>
-                i.name.includes(props.searchValue),
-              )
-              .map((i: Model.Calendar.SubscribeInfo) => (
-                <TabsItem key={i.id}>
-                  <TabsItemLeft>
-                    <div className="icon" />
-                    <div className="content">
-                      <div className="title">{i.name}</div>
-                      <div className="sub">
-                        <span>创建人：{i.user.name}</span>
-                        <span>订阅量：{i.subscribe_num}</span>
-                      </div>
-                      <Tooltip
-                        title={i.describe}
-                        placement="topLeft"
-                        getPopupContainer={n => n}
-                      >
-                        <div className="describe">{i.describe}</div>
-                      </Tooltip>
+          {props?.dataList &&
+            props?.dataList.length > 0 &&
+            props?.dataList.map((i: Model.Calendar.SubscribeInfo) => (
+              <TabsItem key={i.id}>
+                <TabsItemLeft>
+                  <div className="icon">
+                    <img src={i.icon} alt="" />
+                  </div>
+                  <div className="content">
+                    <div className="title">{i.name}</div>
+                    <div className="sub">
+                      <span>创建人：{i.user.name}</span>
+                      <span>订阅量：{i.subscribe_num}</span>
                     </div>
-                  </TabsItemLeft>
-                  {i.status === 1 && (
-                    <CommonButton type="secondary">
-                      <div style={{ minWidth: 58 }}>订阅</div>
-                    </CommonButton>
-                  )}
-                  {!i.status && (
-                    <CommonButton type="light">
-                      <div style={{ minWidth: 58 }}>取消订阅</div>
-                    </CommonButton>
-                  )}
-                </TabsItem>
-              ))}
-          {(!dataList?.list ||
-            dataList?.list.filter((i: Model.Calendar.SubscribeInfo) =>
-              i.name.includes(props.searchValue),
-            ).length <= 0) && <NoData />}
+                    <Tooltip
+                      title={i.describe}
+                      placement="topLeft"
+                      getPopupContainer={n => n}
+                    >
+                      <div className="describe">{i.describe}</div>
+                    </Tooltip>
+                  </div>
+                </TabsItemLeft>
+                {i.status === 1 && (
+                  <CommonButton type="secondary">
+                    <div style={{ minWidth: 58 }}>订阅</div>
+                  </CommonButton>
+                )}
+                {i.status === 2 && (
+                  <CommonButton type="light">
+                    <div style={{ minWidth: 58 }}>取消订阅</div>
+                  </CommonButton>
+                )}
+              </TabsItem>
+            ))}
+          {props?.dataList && props?.dataList.length <= 0 && <NoData />}
         </TabsBox>
       )}
       {props.type === '0' && (
         <TabsBox>
-          {dataUserList?.list &&
-            dataUserList?.list.length > 0 &&
-            dataUserList?.list
-              .filter((i: Model.Calendar.GetContactsCalendarInfo) =>
-                i.name.includes(props.searchValue),
-              )
-              .map((i: Model.Calendar.GetContactsCalendarInfo) => (
+          {props?.dataUserList &&
+            props?.dataUserList.length > 0 &&
+            props?.dataUserList.map(
+              (i: Model.Calendar.GetContactsCalendarInfo) => (
                 <TabsItemLi key={i.id}>
                   <div className="nameBox">
                     <div className="avatar">
@@ -255,19 +220,16 @@ const TabsContent = (props: TabsContentProps) => {
                         <div style={{ minWidth: 58 }}>订阅</div>
                       </CommonButton>
                     )}
-                    {!i.status && (
+                    {i.status === 2 && (
                       <CommonButton type="light">
                         <div style={{ minWidth: 58 }}>取消订阅</div>
                       </CommonButton>
                     )}
                   </div>
                 </TabsItemLi>
-              ))}
-          {(!dataUserList?.list ||
-            dataUserList?.list.filter(
-              (i: Model.Calendar.GetContactsCalendarInfo) =>
-                i.name.includes(props.searchValue),
-            ).length <= 0) && <NoData />}
+              ),
+            )}
+          {props?.dataUserList && props?.dataUserList.length <= 0 && <NoData />}
         </TabsBox>
       )}
     </TabsContentWrap>
@@ -279,21 +241,30 @@ const CalendarSubscribe = () => {
   const { subscribeModal } = useSelector(store => store.calendar)
   const [activeKey, setActiveKey] = useState('0')
   const [searchValue, setSearchValue] = useState('')
+  const [dataList, setDataList] = useState<{
+    list?: Model.Calendar.SubscribeInfo[]
+  }>()
+  const [dataUserList, setDataUserList] = useState<{
+    list?: Model.Calendar.GetContactsCalendarInfo[]
+  }>()
+
   const items = [
     {
       key: '0',
       label: '订阅联系人',
-      children: <TabsContent type={activeKey} searchValue={searchValue} />,
+      children: (
+        <TabsContent type={activeKey} dataUserList={dataUserList?.list} />
+      ),
     },
     {
       key: '1',
       label: '公开日历',
-      children: <TabsContent type={activeKey} searchValue={searchValue} />,
+      children: <TabsContent type={activeKey} dataList={dataList?.list} />,
     },
     {
       key: '2',
       label: '节假日',
-      children: <TabsContent type={activeKey} searchValue={searchValue} />,
+      children: <TabsContent type={activeKey} dataList={dataList?.list} />,
     },
   ]
 
@@ -307,16 +278,56 @@ const CalendarSubscribe = () => {
     />
   )
 
+  // 获取公开日历及节假日 列表
+  const getSubscribeData = async (value: string) => {
+    setDataList({})
+    const response = await getSubscribeList({
+      type: value,
+      keywords: searchValue,
+    })
+    setDataList({ list: response.data.list })
+  }
+
+  // 获取订阅联系人列表
+  const getContactsCalendarData = async () => {
+    setDataUserList({})
+    const response = await getContactsCalendarList({
+      username: searchValue,
+    })
+    setDataUserList({ list: response.data.list })
+  }
+
+  // 切换tab
   const onChangeTabsActive = (value: string) => {
     setActiveKey(value)
     setSearchValue('')
+    if (value === '0') {
+      getContactsCalendarData()
+    } else {
+      getSubscribeData(value)
+    }
   }
 
+  // 关闭弹窗
   const onClose = () => {
     dispatch(setSubscribeModal(false))
     setActiveKey('0')
     setSearchValue('')
   }
+
+  useEffect(() => {
+    if (subscribeModal) {
+      getContactsCalendarData()
+    }
+  }, [subscribeModal])
+
+  useEffect(() => {
+    if (activeKey === '0') {
+      getContactsCalendarData()
+    } else {
+      getSubscribeData(activeKey)
+    }
+  }, [searchValue])
 
   return (
     <CommonModal
