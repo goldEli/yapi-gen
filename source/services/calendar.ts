@@ -10,7 +10,7 @@ export const getSubscribeList = async (
     {
       keywords: params.keywords,
       page: params.page,
-      pagesize: 10,
+      page_size: 10,
     },
   )
   return response
@@ -26,7 +26,7 @@ export const getContactsCalendarList = async (
   >('getContactsCalendarList', {
     username: params.username,
     page: params.page,
-    pagesize: 10,
+    page_size: 10,
   })
   return response
 }
