@@ -9,6 +9,8 @@ export const getSubscribeList = async (
     `/b/calendar/${params.type}/getAllCalendarList`,
     {
       keywords: params.keywords,
+      page: params.page,
+      pagesize: 10,
     },
   )
   return response
@@ -21,7 +23,11 @@ export const getContactsCalendarList = async (
   const response = await http.get<
     any,
     API.Calendar.GetContactsCalendarList.Result
-  >('getContactsCalendarList', params)
+  >('getContactsCalendarList', {
+    username: params.username,
+    page: params.page,
+    pagesize: 10,
+  })
   return response
 }
 
