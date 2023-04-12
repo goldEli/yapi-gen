@@ -392,7 +392,7 @@ const FormMain = (props: FormType) => {
     dispatch(setErr(err))
     // props.backValues(startTime, endTime, remindTime)
   }
-  console.log(err, 'err')
+  // console.log(err, 'err')
   return (
     <>
       {props.type === 'day' ? (

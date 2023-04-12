@@ -1,5 +1,7 @@
+/* eslint-disable camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import { createSlice } from '@reduxjs/toolkit'
-import { getTemplateList } from './thunk'
+import { getTemplateList, templateDetail } from './thunk'
 
 type SliceState = {
   // 编辑的状态
@@ -15,6 +17,10 @@ type SliceState = {
   reportContent: any
   // 开始时间和结束时间有误
   err: boolean
+  // 模板名称
+  templateName: string
+  // 详情数据
+  templateDetailValues: any
 }
 
 const formWork = createSlice({
@@ -23,6 +29,8 @@ const formWork = createSlice({
     editSave: false,
     activeItem: null,
     err: true,
+    templateName: '',
+    templateDetailValues: null,
     option: [
       {
         type: 1,
@@ -41,15 +49,17 @@ const formWork = createSlice({
         icon: 'horizontal',
       },
     ],
-    dataList: [
+    dataList: [],
+    fillingRequirements: {},
+    reportContent: null,
+    templateContentConfigs: [
       {
-        name: 123,
-        id: 1,
+        name: '汇报对象',
+        is_required: 2,
+        tips: '',
+        type: 1,
       },
     ],
-    fillingRequirements: {},
-    reportContent: {},
-    templateContentConfigs: [],
   } as SliceState,
   reducers: {
     // 是否保存
@@ -76,11 +86,32 @@ const formWork = createSlice({
     setErr: (state: any, action) => {
       state.err = action.payload
     },
+    // 模板名称
+    setTemplateName: (state: any, action) => {
+      state.templateName = action.payload
+    },
+    setDataList: (state: any, action) => {
+      state.dataList = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addCase(getTemplateList.fulfilled, (state, action) => {
-      const data = action.payload.list
+      const data = action.payload
       state.dataList = data
+    })
+    builder.addCase(templateDetail.fulfilled, (state, action) => {
+      const data = action.payload.data
+      state.templateDetailValues = data
+      state.templateContentConfigs = data.template_content_configs
+      state.reportContent = {
+        template_configs: data.template_configs.map((el: any) => ({
+          ...el,
+          target_value:
+            el.target_type === 4 ? { name: el.target_value } : el.target_value,
+        })),
+        is_all_view: data.is_all_view,
+        is_all_write: data.is_all_write,
+      }
     })
   },
 })
@@ -92,5 +123,7 @@ export const {
   setReportContent,
   setTemplateContentConfigs,
   setErr,
+  setTemplateName,
+  setDataList,
 } = formWork.actions
 export default formWork.reducer
