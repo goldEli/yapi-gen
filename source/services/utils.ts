@@ -1,4 +1,4 @@
-export function addIdToScheduleList(data: API.Schedule.GetScheduleList.Result) {
+export function addIdToScheduleList(data: API.Schedule.ScheduleListResult) {
   for (const key in data) {
     const item = data[key]
     item.forEach(i => {

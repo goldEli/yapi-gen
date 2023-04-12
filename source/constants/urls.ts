@@ -155,6 +155,10 @@ const urls = {
   templateDetail: '/b/work_report/template/info',
   deleteTemplate: '/b/work_report/template/delete',
   templateList: '/b/work_report/template/list',
+
+  getScheduleListDaysOfWeek: '/b/schedule/daysOfWeek',
+  getScheduleListDaysOfMonth: '/b/schedule/daysOfMonth',
+  getScheduleListDay: '/b/schedule/days',
 }
 
 export default urls

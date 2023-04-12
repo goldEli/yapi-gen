@@ -58,3 +58,18 @@ export function getConflictsTimeRange(list?: Model.Schedule.Info[]) {
   }
   return res.filter(item => item.length)
 }
+
+export const getYearMonthWeekDay = (time: string | number) => {
+  const d = dayjs(time)
+  const year = d.year()
+  const month = d.month() + 1
+  const week = d.week()
+  const day = d.date()
+
+  return {
+    year,
+    month,
+    week,
+    day,
+  }
+}
