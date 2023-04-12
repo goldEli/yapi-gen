@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import dayjs, { Dayjs } from 'dayjs'
+import weekOfYear from 'dayjs/plugin/weekOfYear'
 import { store } from '..'
-
+dayjs.extend(weekOfYear)
 type SliceState = {
   // 日历面板类型
   calendarPanelType: Model.Calendar.CalendarPanelType
@@ -69,12 +70,12 @@ const initialState: SliceState = {
     id: 0,
   },
   calenderDayValue: dayjs().format('YYYY-M-D'),
-  calenderWeekValue: dayjs().format('YYYY-M'),
+  calenderWeekValue: dayjs().format('YYYY-M-D'),
   calenderMonthValue: dayjs().format('YYYY-M'),
   calenderYearValue: dayjs().format('YYYY'),
   calenderListValue: dayjs().format('YYYY-M-D'),
   calenderYearType: 0,
-  calenderYearWeekValue: '',
+  calenderYearWeekValue: dayjs().year() + '/' + dayjs().week(),
   monthMoveScheduleActiveInfo: defaultMonthMoveScheduleActiveInfo,
 }
 
@@ -172,7 +173,6 @@ const slice = createSlice({
       state,
       action: PayloadAction<SliceState['calenderWeekValue']>,
     ) {
-      console.log('payload-----', action.payload)
       state.calenderWeekValue = action.payload
     },
     setCalenderMonthValue(
@@ -197,7 +197,7 @@ const slice = createSlice({
       state,
       action: PayloadAction<SliceState['calenderYearWeekValue']>,
     ) {
-      state.calenderListValue = action.payload
+      state.calenderYearWeekValue = action.payload
     },
     setCalenderYearType(
       state,

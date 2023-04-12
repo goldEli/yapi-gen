@@ -11,9 +11,11 @@ import {
   setScheduleSearchKey,
   setCalenderYearWeekValue,
 } from '@store/calendarPanle'
+import { setCheckedTime } from '@store/calendar'
 import { useDispatch, useSelector } from '@store/index'
 import React, { useState, useRef, useEffect } from 'react'
 import dayjs, { Dayjs } from 'dayjs'
+import _ from 'lodash'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
 import IconFont from '@/components/IconFont'
 import InputSearch from '@/components/InputSearch'
@@ -69,12 +71,11 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
   // 左侧日历切换的值
   const checkedTime = useSelector(state => state.calendar.checkedTime)
 
+  const { calenderYearWeekValue } = useSelector(state => state.calendarPanel)
+
+  const dayValue = useRef<string>()
+
   useEffect(() => {
-    console.log(
-      'check-time',
-      checkedTime,
-      dayjs(checkedTime).format('YYYY-MM-DD'),
-    )
     if (!checkedTime) {
       dispatch(setCalenderDayValue(dayjs().format('YYYY-MM-DD')))
       return
@@ -127,29 +128,36 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
   `
   const listenDay = (): void => {
     const { current } = iconTypeRef
+    let newDayValue = null
     if (current === 1) {
       dispatch(
         setCalenderDayValue(
           dayjs(calenderDayValue).add(1, 'day').format('YYYY-MM-DD'),
         ),
       )
+
+      dayValue.current = dayjs(calenderDayValue)
+        .add(1, 'day')
+        .format('YYYY-MM-DD')
     } else if (current === -1) {
       dispatch(
         setCalenderDayValue(
           dayjs(calenderDayValue).subtract(1, 'day').format('YYYY-MM-DD'),
         ),
       )
+      dayValue.current = dayjs(calenderDayValue)
+        .subtract(1, 'day')
+        .format('YYYY-MM-DD')
     } else {
       dispatch(setCalenderDayValue(dayjs().format('YYYY-MM-DD')))
+      dayValue.current = dayjs().format('YYYY-MM-DD')
     }
+    console.log('calenderDayValue', dayValue.current)
+    // dispatch(setCheckedTime(dayValue.current))
   }
   const listenWeek = (): void => {
     const { current } = iconTypeRef
-    console.log(
-      'dayjs(calenderWeekValue).week()',
-      dayjs(calenderWeekValue).year() + '/' + dayjs(calenderWeekValue).week(),
-      calenderWeekValue,
-    )
+    let newWeekValue = null
     if (current === 1) {
       //dayjs('2018-06-27').week()
       dispatch(
@@ -157,18 +165,22 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
           dayjs(calenderWeekValue).add(1, 'week').format('YYYY-M-D'),
         ),
       )
+      newWeekValue = dayjs(calenderWeekValue).add(1, 'week').format('YYYY-M-D')
     } else if (current === -1) {
       dispatch(
         setCalenderWeekValue(
           dayjs(calenderWeekValue).subtract(1, 'week').format('YYYY-M-D'),
         ),
       )
+      newWeekValue = dayjs(calenderWeekValue)
+        .subtract(1, 'week')
+        .format('YYYY-M-D')
     } else {
       dispatch(setCalenderWeekValue(dayjs().format('YYYY-M-D')))
+      newWeekValue = dayjs().format('YYYY-M-D')
     }
     let yearWeekValue =
-      dayjs(calenderWeekValue).year() + '/' + dayjs(calenderWeekValue).week()
-    console.log('yearWeekValue----', yearWeekValue)
+      dayjs(newWeekValue).year() + '/' + dayjs(newWeekValue).week()
     dispatch(setCalenderYearWeekValue(yearWeekValue))
   }
   const listenMonth = (): void => {
@@ -280,6 +292,11 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
           onChange={(value: Model.Calendar.CalendarPanelType) => {
             setInputDefaultValue('')
             dispatch(setCalendarPanelType(value))
+            dispatch(setCalenderDayValue(dayjs().format('YYYY-MM-DD')))
+            dispatch(setCalenderWeekValue(dayjs().format('YYYY-M-D')))
+            dispatch(setCalenderMonthValue(dayjs().format('YYYY-MM')))
+            dispatch(setCalenderYearValue(dayjs().format('YYYY')))
+            dispatch(setCalenderListValue(dayjs().format('YYYY-MM')))
           }}
           options={selectOptions}
           allowClear
