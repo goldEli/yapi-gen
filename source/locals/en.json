@@ -1,4 +1,39 @@
 {
+  "notification": "notification",
+
+  "notification_settings": "notification Settings ",
+
+  "operand": "operand",
+
+  "email_notification": "Email notification",
+
+  "ReceiveEmailUpdatesWithMentionsInvitationsAndCommentsAboutItemsYouCareAbout": "receive mention about your concern, invite and comments email updates",
+
+  "use_this_email_to_receive": "Use this email to receive",
+
+  "receive_format": "receive_format",
+
+  "what_situations_require_email_notification": "What situation requires email notification",
+
+  "notification_item_settings": "Notification Settings ",
+
+  "today": "Today ",
+
+  "all_read": "All read",
+
+  "all_notifications_in_the_past_half_year_have_been_displayed_for_you": "All notifications for the last six months have been displayed for you",
+
+  "show_only_unread": "Show unread only ",
+
+  "new_page": "New page",
+
+  "filtering_notifications": "Filter notifications",
+
+  "Notices": "Notices",
+
+  "reset_filtering": "Reset the filtering",
+
+  "assign_me_tasks": "Assign me tasks",
   "is_required": "Is Required",
   "menu_word": "Word",
   "search_for_the_requirement_name_or_number": "Search for the requirement name or number",
@@ -467,6 +502,9 @@
     "reviewDemandTo": "Review Demand To",
     "applyReviewTo": "Apply to",
     "demandReviewTo": "Demand flow to",
+    "demandBackflowTo": "Demand back flow to",
+    "cancelExamineTime": "Cancel examine time",
+    "cancelExamine": "Cancel examine",
     "notExamineTo": "Audit failed request status flow back",
     "editCustomFields": "Edit Custom Fields",
     "createCustomFields": "Create Custom Fields",
@@ -990,7 +1028,20 @@
       "informant": "informant",
       "status": "status"
     },
-    "statistics": "Reporting statistics",
-    "mine": "My Report"
+    "statistics": {
+      "title": "Reporting Statistics",
+      "mine": "My Report",
+      "accumulated": "Accumulated",
+      "onTime": "On Time",
+      "supplementary": "Supplementary",
+      "unSubmitted": "Unsubmitted",
+      "submitTime": "Submission Time",
+      "templateUsage": "Report on Formwork usage",
+      "reportCategory": "Report Category",
+      "usersVolume": "User Volume",
+      "accumulatedReports": "Accumulated Reports",
+      "totalNoSubmitTimes": "Accumulated Unsubmitted",
+      "currentNoSubmitTimes": "Currently Not Submitted"
+    }
   }
 }

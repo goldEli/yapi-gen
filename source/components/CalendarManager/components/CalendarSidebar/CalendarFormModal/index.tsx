@@ -368,6 +368,17 @@ const CalendarFormModal = () => {
     setCurrentPermission(relateConfig.calendar.permission_types[0]?.value)
   }, [relateConfig])
 
+  // 共享成员才有权限选择
+  const addMemberProps =
+    currentKey === 'share'
+      ? {
+          isCalendar: true,
+          isPermisGroup: true,
+          projectPermission: relateConfig.calendar.user_group_ids,
+          userGroupId: 3,
+        }
+      : {}
+
   return (
     <>
       {isChooseVisible && (
@@ -376,10 +387,7 @@ const CalendarFormModal = () => {
           title="添加成员"
           onClose={() => setIsChooseVisible(false)}
           onConfirm={onAddConfirm}
-          isCalendar
-          isPermisGroup
-          projectPermission={relateConfig.calendar.user_group_ids}
-          userGroupId={3}
+          {...addMemberProps}
         />
       )}
       <AddDepartmentOrTeamModal

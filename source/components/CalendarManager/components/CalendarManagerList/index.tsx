@@ -9,6 +9,7 @@ import { setCalendarModal, setSubscribeModal } from '@store/calendar'
 import CalendarMoreDropdown from './CalendarMoreDropdown'
 import { colorMap } from '../../config'
 import { userSetupsCalendar } from '@store/calendar/calendar.thunk'
+import NoData from '@/components/NoData'
 
 const { Panel } = Collapse
 
@@ -78,13 +79,13 @@ const ItemBox = styled.div`
 interface CalendarManagerListProps {
   title: string
   type: 'manager' | 'subscribe'
+  searchValue: string
 }
 
 const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
   const dispatch = useDispatch()
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const { calendarData } = useSelector(store => store.calendar)
-
   const calendarList = calendarData[props.type as keyof typeof calendarData]
 
   // 改变日历的选中状态
@@ -132,30 +133,37 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
           }
           key="1"
         >
-          {calendarList?.map((i: Model.Calendar.Info) => (
-            <CalendarManagerListItem key={i.id}>
-              <ItemBox key={i.id} onClick={() => onChangeCheck(i)}>
-                <IconFont
-                  type={i.is_check === 1 ? 'pput-sel' : 'put'}
-                  style={{ fontSize: 16, color: colorMap[i.color] }}
-                />
-                <span className="name">
-                  {i.is_default === 1 ? i.user.name : i.name}
-                </span>
-              </ItemBox>
-              <MoreDropdown
-                isMoreVisible={isMoreVisible}
-                menu={
-                  <CalendarMoreDropdown
-                    item={i}
-                    type={props.type}
-                    onCancel={() => setIsMoreVisible(false)}
+          {calendarList
+            ?.filter((k: Model.Calendar.Info) =>
+              k.name.includes(props.searchValue),
+            )
+            ?.map((i: Model.Calendar.Info) => (
+              <CalendarManagerListItem key={i.id}>
+                <ItemBox key={i.id} onClick={() => onChangeCheck(i)}>
+                  <IconFont
+                    type={i.is_check === 1 ? 'pput-sel' : 'put'}
+                    style={{ fontSize: 16, color: colorMap[i.color] }}
                   />
-                }
-                onChangeVisible={setIsMoreVisible}
-              />
-            </CalendarManagerListItem>
-          ))}
+                  <span className="name">
+                    {i.is_default === 1 ? i.user.name : i.name}
+                  </span>
+                </ItemBox>
+                <MoreDropdown
+                  isMoreVisible={isMoreVisible}
+                  menu={
+                    <CalendarMoreDropdown
+                      item={i}
+                      type={props.type}
+                      onCancel={() => setIsMoreVisible(false)}
+                    />
+                  }
+                  onChangeVisible={setIsMoreVisible}
+                />
+              </CalendarManagerListItem>
+            ))}
+          {calendarList?.filter((k: Model.Calendar.Info) =>
+            k.name.includes(props.searchValue),
+          ).length <= 0 && <NoData size />}
         </Panel>
       </CollapseWrap>
     </div>

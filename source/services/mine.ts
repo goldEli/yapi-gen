@@ -1026,6 +1026,7 @@ export const getVerifyInfo: any = async (params: any) => {
   const response = await http.get(`/b/user/verify/${params?.id}`)
 
   return {
+    cancel_verify: response.data.cancel_verify,
     category_attachment: response.data.category_attachment,
     id: response.data.id,
     demandName: response.data.story_name,
@@ -1068,5 +1069,13 @@ export const updateVerifyOperation: any = async (params: any) => {
     project_id: params.projectId,
     verify_status: params.status,
     verify_opinion: params.remark,
+  })
+}
+
+export const cancelVerify = async (id: any) => {
+  await http.post(`/b/user/verify/cancel/${id}`, undefined, {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
   })
 }

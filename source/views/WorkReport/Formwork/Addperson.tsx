@@ -1,9 +1,16 @@
+/* eslint-disable camelcase */
+/* eslint-disable complexity */
+/* eslint-disable consistent-return */
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable no-case-declarations */
+/* eslint-disable no-constant-binary-expression */
 import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { Dropdown } from 'antd'
 import { useEffect, useState } from 'react'
 import { seleData1, seleData2, seleData3 } from './DataList'
+import CommonModal from '@/components/AddUser/CommonModal'
 const AddPersonText = styled.div`
   margin-left: 26px;
   display: flex;
@@ -39,13 +46,26 @@ const Col = styled.div`
   img {
     width: 24px;
     height: 24px;
-    border: 1px solid red;
+    border-radius: 50%;
+  }
+  &:hover {
+    cursor: pointer;
+    background-color: var(--neutral-white-d4);
+    box-shadow: 0px 0px 10px 0px rgba(9, 9, 9, 0.09);
   }
 `
 const NameText = styled.div`
   padding: 0 10px;
 `
-
+const DefalutIcon = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: rgba(125, 189, 225, 1);
+`
 interface RowsItem {
   label: string
   id: number
@@ -58,7 +78,8 @@ interface Props {
   // 红色必选
   isShow: boolean
   // 类型
-  state: string
+  state: number
+  onChangeValues(value: any): void
 }
 interface Item {
   label: string
@@ -66,29 +87,118 @@ interface Item {
 }
 const Addperson = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [member, setMember] = useState(props.data)
+  // 用来过滤全员和展示
+  const [member, setMember] = useState<any>([])
   const [items, setItems] = useState<Array<Item>>()
+  const [isVisible, setIsVisible] = useState(false)
+  const [userType, setUserType] = useState<number>(0)
+  const [targetType, setTargetType] = useState<number>(0)
+  // 去重
+  const fitlerDataList = (data: any) => {
+    let obj: any = {}
+    let set: any = data?.reduce((cur: any, next: any) => {
+      obj[next.name] ? '' : (obj[next.name] = true && cur.push(next))
+      return cur
+    }, [])
+    return set
+  }
+  // 获取名称和固定的id
+  const getName = (key: string, type: string) => {
+    switch (key) {
+      case 'obj':
+        return type == 'id' ? 1 : '汇报对象'
+      case 'departmentHead':
+        return type == 'id' ? 2 : '部门主管'
+      case 'teamManagement':
+        return type == 'id' ? 3 : '团队管理'
+      case 'reportsTo':
+        return type == 'id' ? 4 : '直属主管'
+      case 'allSuperiors':
+        return type == 'id' ? 5 : '所有上级'
+      case 'all':
+        return '全部'
+    }
+  }
   // 下拉
   const onOpenChange = (e: { key: string }) => {
     setIsOpen(false)
+    setIsVisible(e.key === 'user' ? true : false)
+    setUserType(props.state)
+    switch (e.key) {
+      case 'user':
+        setTargetType(1)
+        break
+      case 'department':
+        setTargetType(2)
+        break
+      case 'team':
+        setTargetType(3)
+        break
+      case 'all':
+        const data = [
+          ...member,
+          {
+            user_type: props.state,
+            key: 'all',
+            name: getName(e.key, ''),
+            avatar: '',
+          },
+        ]
+        const values1: any = fitlerDataList(data)
+        setMember(values1)
+        props.onChangeValues(values1)
+        break
+      default:
+        const data1 = [
+          ...member,
+          {
+            user_type: props.state,
+            key: e.key,
+            target_type: 4,
+            name: getName(e.key, ''),
+            avatar: '',
+            target_id: getName(e.key, 'id'),
+          },
+        ]
+        const values = fitlerDataList(data1)
+        setMember(values)
+        props.onChangeValues(values)
+        setTargetType(4)
+        break
+    }
   }
   // 删除添加的成员
-  const delPerson = (el: { id: number }) => {
-    setMember(member.filter(item => item.id !== el.id))
+  const delPerson = (el: { name: string }) => {
+    // 这抛回去
+    setMember(member.filter((item: any) => item.name !== el.name))
+    const values = member.filter((item: any) => item.name !== el.name)
+    props.onChangeValues(values)
   }
   useEffect(() => {
     switch (props.state) {
-      case '1':
+      case 1:
         setItems(seleData1)
         break
-      case '2':
+      case 2:
         setItems(seleData2)
         break
-      case '3':
+      case 3:
         setItems(seleData3)
         break
     }
   }, [props.state])
+  const onConfirm = (data: any) => {
+    const setData = data.map((el: any) => ({
+      ...el,
+      user_type: userType,
+      target_type: targetType,
+    }))
+    const values = fitlerDataList([...member, ...setData])
+    setMember(values)
+    props.onChangeValues(values)
+    setIsVisible(false)
+  }
+
   return (
     <>
       <AddPersonText>
@@ -117,19 +227,40 @@ const Addperson = (props: Props) => {
         </Dropdown>
       </AddPersonText>
       <PersonContainer>
-        {member.map(el => (
-          <Col key={el.id}>
-            <img src="" />
-            <NameText>{el.label}</NameText>
-            <CommonIconFont
-              onClick={() => delPerson(el)}
-              type="close"
-              size={14}
-              color="var(--neutral-n3)"
-            />
-          </Col>
-        ))}
+        {member?.map(
+          (el: { avatar: string; id: string | number; name: string }) => (
+            <Col key={el.id}>
+              {el.avatar ? (
+                <img src={el.avatar} />
+              ) : (
+                <DefalutIcon>
+                  <CommonIconFont
+                    type="userAll"
+                    size={16}
+                    color="var(--neutral-white-d7)"
+                  />
+                </DefalutIcon>
+              )}
+
+              <NameText>{el.name}</NameText>
+              <CommonIconFont
+                onClick={() => delPerson(el)}
+                type="close"
+                size={14}
+                color="var(--neutral-n3)"
+              />
+            </Col>
+          ),
+        )}
       </PersonContainer>
+      {/* 添加成员弹窗 */}
+      <CommonModal
+        title={'添加成员'}
+        state={2}
+        isVisible={isVisible}
+        onConfirm={onConfirm}
+        onClose={() => setIsVisible(false)}
+      />
     </>
   )
 }

@@ -2,9 +2,11 @@ declare namespace API.Calendar {
   namespace GetContactsCalendarList {
     type Params = {
       username?: string
+      page: number
     }
     type Result = {
       list: Model.Calendar.GetContactsCalendarInfo[]
+      pager: Model.Calendar.Pager
     }
   }
 
@@ -59,9 +61,11 @@ declare namespace API.Calendar {
     type Params = {
       type: string
       keywords?: string
+      page: number
     }
     type Result = {
       list: Model.Calendar.SubscribeInfo[]
+      pager: Model.Calendar.Pager
     }
   }
 

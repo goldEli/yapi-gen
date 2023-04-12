@@ -1,4 +1,9 @@
 declare namespace Model.Calendar {
+  interface Pager {
+    page: number
+    pagesize: number
+    total: number
+  }
   interface GetContactsCalendarInfo {
     id: number
     name: string

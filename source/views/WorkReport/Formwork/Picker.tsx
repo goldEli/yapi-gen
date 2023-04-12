@@ -1,4 +1,7 @@
 /* eslint-disable complexity */
+/* eslint-disable consistent-return */
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable no-useless-concat */
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { Input, Popover } from 'antd'
@@ -57,7 +60,7 @@ const Item = styled.div`
   }
 `
 const InputStyle = styled(Input)({
-  width: '232px',
+  width: '320px',
 })
 
 interface PropsType {
@@ -65,18 +68,29 @@ interface PropsType {
   pickerType: string
   // 每天 day ,每周 week , 每月 month , 不重复doNot
   type: string
+  getValues(val1: number, val2: number, val3: number): void
+  value: any
+  onChange?(values: any): void
 }
 interface Item {
   label: string
   key?: number
 }
+let v1 = 0
+let v2 = 0
+let v3 = 0
 const Picker = (props: PropsType) => {
   const [leftActive, setLeftActive] = useState<number>(-1)
   const [centerActive, setCenterActive] = useState<number>(-1)
   const [rightActive, setRightActive] = useState<number>(-1)
+  const [leftActiveVal, setLeftActiveVal] = useState<number>(-1)
+  const [centerActiveVal, setCenterActiveVal] = useState<number>(-1)
+  const [rightActiveVal, setRightActiveVal] = useState<number>(-1)
   const [leftDataList, setLeftDataList] = useState<Array<Item>>()
   const [rightDataList, setRightDataList] = useState<Array<Item>>()
   const [centerDataList, setCenterDataList] = useState<Array<Item>>()
+  const [isOpen, setIsOpen] = useState(false)
+  const [value, setValue] = useState('')
   // 计算每月多少天
   const getCountDays = () => {
     var curDate = new Date()
@@ -124,13 +138,13 @@ const Picker = (props: PropsType) => {
       setRightDataList(minuteData)
     } else if (props.type === 'month' && props.pickerType === 'start') {
       // 每月，开始时间 - 从25-次月的15日
-      const day = dayData.filter(el => el.key >= 25 && el.key <= getCountDays())
+      const day = dayData.filter(el => el.key >= 25 && el.key <= 31)
       setLeftDataList([...day, ...nextMonthDay])
       setCenterDataList(hourData)
       setRightDataList(minuteData)
     } else if (props.type === 'month' && props.pickerType === 'end') {
       // 每月，开始时间 - 从25-次月的15日
-      const day = dayData.filter(el => el.key >= 26 && el.key <= getCountDays())
+      const day = dayData.filter(el => el.key >= 26 && el.key <= 31)
       setLeftDataList([...day, ...nextMonthDay])
       setCenterDataList(hourData)
       setRightDataList(minuteData)
@@ -145,8 +159,101 @@ const Picker = (props: PropsType) => {
       setCenterDataList(hourData)
       setRightDataList(minuteData)
     }
+  }, [isOpen, props.type])
+  useEffect(() => {
+    setValue('')
   }, [props.type])
-
+  const getTime = () => {
+    setIsOpen(false)
+    props.getValues(leftActiveVal, centerActiveVal, rightActiveVal)
+    props.onChange?.({
+      v1: leftActiveVal,
+      v2: centerActiveVal,
+      v3: rightActiveVal,
+    })
+  }
+  // 需要中文
+  const getLabelName = (num: number) => {
+    switch (num) {
+      case 0:
+        return '周一'
+      case 1:
+        return '周二'
+      case 2:
+        return '周三'
+      case 3:
+        return '周四'
+      case 4:
+        return '周五'
+      case 5:
+        return '周六'
+      case 6:
+        return '周日'
+      case 7:
+        return '次周一'
+      case 8:
+        return '次周二'
+      case 9:
+        return '次周三'
+      case 10:
+        return '次周四'
+      case 11:
+        return '次周五'
+      case 12:
+        return '次周六'
+      case 13:
+        return '次周日'
+    }
+  }
+  // 周
+  const getWeekValues = () => {
+    if (props.pickerType === 'remind') {
+      setValue(
+        '截止时间前' + '/' + v1 + '日' + '/' + v2 + '时' + '/' + v3 + '分',
+      )
+    } else {
+      setValue(getLabelName(v1) + '/' + v2 + '时' + '/' + v3 + '分')
+    }
+  }
+  // 天
+  const getDayValues = () => {
+    // 回显input
+    if (props.pickerType === 'remind') {
+      setValue('截止时间前' + '/' + v2 + '时' + '/' + v3 + '分')
+    } else {
+      setValue((v1 == 1 ? '当日' : '次日') + '/' + v2 + '时' + '/' + v3 + '分')
+    }
+  }
+  // 月
+  const getMonthValues = () => {
+    if (props.pickerType === 'remind') {
+      setValue(
+        '截止时间前' + '/' + v1 + '日' + '/' + v2 + '时' + '/' + v3 + '分',
+      )
+    } else {
+      const arr = [...nextMonthDay, ...dayData]
+      const label = arr.find((el: any) => el.key === v1)?.label
+      setValue(label + '/' + v2 + '时' + '/' + v3 + '分')
+    }
+  }
+  useEffect(() => {
+    if (!props?.value) {
+      return
+    }
+    v1 = props?.value?.v1
+    v2 = props?.value?.v2
+    v3 = props?.value?.v3
+    setLeftActiveVal(props?.value?.v1)
+    setCenterActiveVal(props?.value?.v2)
+    setRightActiveVal(props?.value?.v3)
+    if (props.type === 'day') {
+      getDayValues()
+    } else if (props.type === 'week') {
+      getWeekValues()
+    } else if (props.type === 'month') {
+      getMonthValues()
+    }
+  }, [props.value])
   const content = () => {
     return (
       <PickerStyle>
@@ -156,10 +263,12 @@ const Picker = (props: PropsType) => {
         ) : null}
         {props.type === 'day' && props.pickerType === 'remind' ? null : (
           <LeftTime>
-            {leftDataList?.map((el: { label: string }, index: number) => (
+            {leftDataList?.map((el: any, index: number) => (
               <Item
                 key={el.label}
-                onClick={() => setLeftActive(index)}
+                onClick={() => {
+                  setLeftActive(index), setLeftActiveVal(el.key)
+                }}
                 style={{
                   color:
                     leftActive === index
@@ -173,10 +282,12 @@ const Picker = (props: PropsType) => {
           </LeftTime>
         )}
         <CenterTime>
-          {centerDataList?.map((el: { label: string }, index: number) => (
+          {centerDataList?.map((el: any, index: number) => (
             <Item
               key={el.label}
-              onClick={() => setCenterActive(index)}
+              onClick={() => {
+                setCenterActive(index), setCenterActiveVal(el.key)
+              }}
               style={{
                 color:
                   centerActive === index
@@ -189,10 +300,12 @@ const Picker = (props: PropsType) => {
           ))}
         </CenterTime>
         <RightTime>
-          {rightDataList?.map((el: { label: string }, index: number) => (
+          {rightDataList?.map((el: any, index: number) => (
             <Item
               key={el.label}
-              onClick={() => setRightActive(index)}
+              onClick={() => {
+                setRightActive(index), setRightActiveVal(el.key)
+              }}
               style={{
                 color:
                   rightActive === index
@@ -203,6 +316,7 @@ const Picker = (props: PropsType) => {
               {el.label}
             </Item>
           ))}
+          <Item onClick={getTime}>完成</Item>
         </RightTime>
       </PickerStyle>
     )
@@ -211,14 +325,21 @@ const Picker = (props: PropsType) => {
     <div>
       <InputStyle
         type="text"
+        value={value}
         suffix={
           <Popover
+            open={isOpen}
             placement="bottomRight"
             title={''}
             content={content}
             trigger="click"
           >
-            <CommonIconFont type="time" size={16} color="var(--neutral-n4)" />
+            <CommonIconFont
+              type="time"
+              size={16}
+              color="var(--neutral-n4)"
+              onClick={() => setIsOpen(!isOpen)}
+            />
           </Popover>
         }
       />

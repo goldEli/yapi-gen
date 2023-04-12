@@ -1,7 +1,7 @@
 import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
-import { Breadcrumb, Select, Switch } from 'antd'
-import React, { useState } from 'react'
+import { Breadcrumb, Select, Switch, message } from 'antd'
+import React, { useEffect, useState } from 'react'
 import { First, Wrap } from '../Setting/style'
 import {
   ActiveContentEmail2,
@@ -10,41 +10,29 @@ import {
   ContentEmail,
   ContentEmail2,
 } from './style'
-
-const items = [
-  {
-    id: '1',
-    text: '待办',
-  },
-  {
-    id: '2',
-    text: '待办',
-  },
-  {
-    id: '3',
-    text: '待办',
-  },
-  {
-    id: '4',
-    text: '待办',
-  },
-  {
-    id: '5',
-    text: '待办',
-  },
-  {
-    id: '6',
-    text: '待办',
-  },
-  {
-    id: '7',
-    text: '待办',
-  },
-]
+import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from '@store/index'
+import { editMyAllNoteSet } from '@/services/SiteNotifications'
+import {
+  setMyConfiguration,
+  setMyEmailConfiguration,
+} from '@store/SiteNotifications'
 
 const Email = () => {
+  const [t] = useTranslation()
+  const dispatch = useDispatch()
   const [choose, setChoose] = useState<any>([])
   const [active, setActive] = useState<any>(true)
+  const email = useSelector(store => store.user.loginInfo.email)
+  const myConfiguration = useSelector(
+    store => store.siteNotifications.myConfiguration,
+  )
+  const emailConfigurations = useSelector(
+    store => store.siteNotifications.emailConfiguration,
+  )
+  const myEmailConfiguration = useSelector(
+    store => store.siteNotifications.myEmailConfiguration,
+  )
   const onChange = (checked: boolean) => {
     setActive(checked)
   }
@@ -56,6 +44,20 @@ const Email = () => {
       setChoose([...choose, id])
     }
   }
+  const onSave = async () => {
+    const res = await editMyAllNoteSet(
+      Array.from(new Set([...myConfiguration, ...choose])),
+    )
+
+    if (res.code === 0) {
+      message.success(t('succeed'))
+    }
+    dispatch(setMyEmailConfiguration(choose))
+  }
+
+  useEffect(() => {
+    setChoose(myEmailConfiguration)
+  }, [myEmailConfiguration])
 
   return (
     <Wrap>
@@ -70,19 +72,24 @@ const Email = () => {
           }
         >
           <Breadcrumb.Item>
-            <span style={{ color: 'var(--neutral-n1-d1)' }}>通知</span>
+            <span style={{ color: 'var(--neutral-n1-d1)' }}>
+              {' '}
+              {t('notification')}
+            </span>
           </Breadcrumb.Item>
-          <Breadcrumb.Item>邮件通知</Breadcrumb.Item>
+          <Breadcrumb.Item>{t('email_notification')}</Breadcrumb.Item>
         </Breadcrumb>
         {active ? (
-          <CommonButton type="primary">
-            <span>保存</span>
+          <CommonButton onClick={onSave} type="primary">
+            <span>{t('common.save')}</span>
           </CommonButton>
         ) : null}
       </First>
       <Content>
         <Content1>
-          接收有关您关注项目的提及、邀请和评论的电子邮件更新
+          {t(
+            'ReceiveEmailUpdatesWithMentionsInvitationsAndCommentsAboutItemsYouCareAbout',
+          )}
           <span style={{ marginLeft: '250px' }}>
             <Switch checked={active} onChange={onChange} />
           </span>
@@ -90,9 +97,10 @@ const Email = () => {
         {active ? (
           <ActiveContentEmail2 active={active}>
             <Content1>
-              使用此邮箱接收 <ContentEmail>XXXX@ifudsds n.com</ContentEmail>
+              {t('use_this_email_to_receive')}
+              <ContentEmail>{email}</ContentEmail>
             </Content1>
-            <Content1>接收格式</Content1>
+            <Content1>{t('receive_format')}</Content1>
             <div>
               <Select
                 defaultValue="lucy"
@@ -109,9 +117,11 @@ const Email = () => {
                 ]}
               />
             </div>
-            <Content1>什么情况需要电子邮件通知</Content1>
+            <Content1>
+              {t('what_situations_require_email_notification')}
+            </Content1>
             <div>
-              {items.map((i: any) => (
+              {emailConfigurations.map((i: any) => (
                 <ContentEmail2
                   active={choose.includes(i.id)}
                   onClick={() => onChoose(i.id)}

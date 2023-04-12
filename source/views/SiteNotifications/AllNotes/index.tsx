@@ -6,12 +6,14 @@ import { changeVisibleFilter } from '@store/SiteNotifications'
 import { useParams } from 'react-router'
 import AllSideFilter from '../components/AllSideFilter/AllSideFilter'
 import ContentItem from '../components/ContentItem/ContentItem'
+import { useTranslation } from 'react-i18next'
 
 interface ZoomRatioType {
   [MapZoom: string]: string
 }
 const Index = () => {
   // const titles =
+  const [t] = useTranslation()
   const dispatch = useDispatch()
   const { id } = useParams()
   const titles: ZoomRatioType = {
@@ -38,9 +40,11 @@ const Index = () => {
             onClick={() => dispatch(changeVisibleFilter(true))}
             type="light"
           >
-            筛选通知
+            {t('filtering_notifications') as string}
           </CommonButton>
-          {id !== '3' && <CommonButton type="light">全部已读</CommonButton>}
+          {id !== '3' && (
+            <CommonButton type="light">{t('all_read') as string}</CommonButton>
+          )}
         </div>
       </div>
 

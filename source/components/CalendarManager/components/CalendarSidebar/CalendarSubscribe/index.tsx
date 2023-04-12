@@ -15,8 +15,9 @@ import styled from '@emotion/styled'
 import { setSubscribeModal } from '@store/calendar'
 import { getCalendarList } from '@store/calendar/calendar.thunk'
 import { useDispatch, useSelector } from '@store/index'
-import { Tabs, Tooltip, message } from 'antd'
-import { createRef, useEffect, useMemo, useRef, useState } from 'react'
+import { Skeleton, Tabs, Tooltip, message } from 'antd'
+import { useEffect, useState } from 'react'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 const ContentWrap = styled.div`
   padding: 0 24px;
@@ -149,9 +150,16 @@ const TabsItemLi = styled.div`
 `
 
 interface TabsContentProps {
-  dataList?: Model.Calendar.SubscribeInfo[]
-  dataUserList?: Model.Calendar.GetContactsCalendarInfo[]
+  dataList?: {
+    list?: Model.Calendar.SubscribeInfo[]
+    pager?: Model.Calendar.Pager
+  }
+  dataUserList?: {
+    list?: Model.Calendar.GetContactsCalendarInfo[]
+    pager?: Model.Calendar.Pager
+  }
   type: string
+  onMore(page: number): void
 }
 
 const TabsContent = (props: TabsContentProps) => {
@@ -159,6 +167,8 @@ const TabsContent = (props: TabsContentProps) => {
   const [dataUserList, setDataUserList] =
     useState<Model.Calendar.GetContactsCalendarInfo[]>()
   const dispatch = useDispatch()
+  const [hasMore, setHasMore] = useState<boolean>(false)
+
   // 取消订阅
   const onCancelSubscribe = async (id: number) => {
     await unsubscribeCalendar({ id })
@@ -203,95 +213,91 @@ const TabsContent = (props: TabsContentProps) => {
     }
   }
 
+  // 更多加载-公开及节假日
+  const fetchMoreData = () => {
+    if ((dataList?.length || 0) >= (props.dataList?.pager?.total || 0)) {
+      setHasMore(false)
+      return
+    }
+    props.onMore((props.dataList?.pager?.page || 0) + 1)
+  }
+
+  // 更多加载-订阅
+  const fetchMoreUserData = () => {
+    if (
+      (dataUserList?.length || 0) >= (props.dataUserList?.pager?.total || 0)
+    ) {
+      setHasMore(false)
+      return
+    }
+    props.onMore((props.dataUserList?.pager?.page || 0) + 1)
+  }
+
   useEffect(() => {
-    setDataList(props.dataList)
+    setDataList(props.dataList?.list)
+    setHasMore(
+      !(
+        (props.dataList?.list?.length || 0) <=
+        (props.dataList?.pager?.total || 0)
+      ),
+    )
   }, [props.dataList])
 
   useEffect(() => {
-    setDataUserList(props.dataUserList)
+    setDataUserList(props.dataUserList?.list)
+    setHasMore(
+      !(
+        (props.dataUserList?.list?.length || 0) <=
+        (props.dataUserList?.pager?.total || 0)
+      ),
+    )
   }, [props.dataUserList])
 
   return (
     <TabsContentWrap>
       {props.type !== '0' && (
-        <TabsBox>
-          {dataList &&
-            dataList.length > 0 &&
-            dataList.map((i: Model.Calendar.SubscribeInfo) => (
-              <TabsItem key={i.id}>
-                <TabsItemLeft>
-                  <div className="icon">
-                    <img src={i.icon} alt="" />
-                  </div>
-                  <div className="content">
-                    <div className="title">{i.name}</div>
-                    <div className="sub">
-                      <span>创建人：{i.user.name}</span>
-                      <span>订阅量：{i.subscribe_num}</span>
+        <InfiniteScroll
+          dataLength={dataList?.length || 0}
+          next={fetchMoreData}
+          style={{
+            overflow: 'auto',
+            maxHeight: '60vh',
+          }}
+          hasMore={hasMore}
+          height="60vh"
+          loader={<Skeleton avatar paragraph={{ rows: 2 }} active />}
+          scrollableTarget="scrollableDiv"
+        >
+          <TabsBox>
+            {dataList &&
+              dataList.length > 0 &&
+              dataList.map((i: Model.Calendar.SubscribeInfo) => (
+                <TabsItem key={i.id}>
+                  <TabsItemLeft>
+                    <div className="icon">
+                      <img src={i.icon} alt="" />
                     </div>
-                    <Tooltip
-                      title={i.describe}
-                      placement="topLeft"
-                      getPopupContainer={n => n}
-                    >
-                      <div className="describe">{i.describe}</div>
-                    </Tooltip>
-                  </div>
-                </TabsItemLeft>
-                {i.status === 1 && (
-                  <CommonButton
-                    type="light"
-                    onClick={() => onCancelSubscribe(i.id)}
-                  >
-                    <div style={{ minWidth: 58 }}>取消订阅</div>
-                  </CommonButton>
-                )}
-                {i.status === 2 && (
-                  <CommonButton type="secondary">
-                    <div
-                      style={{ minWidth: 58 }}
-                      onClick={() => onSubscribe(i.id)}
-                    >
-                      订阅
-                    </div>
-                  </CommonButton>
-                )}
-              </TabsItem>
-            ))}
-          {dataList && dataList.length <= 0 && <NoData />}
-        </TabsBox>
-      )}
-      {props.type === '0' && (
-        <TabsBox>
-          {dataUserList &&
-            dataUserList.length > 0 &&
-            dataUserList.map((i: Model.Calendar.GetContactsCalendarInfo) => (
-              <TabsItemLi key={i.id}>
-                <div className="nameBox">
-                  <div className="avatar">
-                    <CommonUserAvatar size="large" />
-                  </div>
-                  <div className="name">
-                    <span className="label">{i.user.name}</span>
-                    <span className="sub">
-                      {i.user.department_name}-{i.user.job_name}
-                    </span>
-                  </div>
-                </div>
-                <div className="otherBox">{i.user.phone}</div>
-                <div className="otherBox">{i.user.email}</div>
-                <div
-                  className="otherBox"
-                  style={{ justifyContent: 'flex-end' }}
-                >
-                  {i.status === 1 && (
-                    <CommonButton type="light">
-                      <div
-                        style={{ minWidth: 58 }}
-                        onClick={() => onCancelSubscribe(i.id)}
-                      >
-                        取消订阅
+                    <div className="content">
+                      <div className="title">{i.name}</div>
+                      <div className="sub">
+                        <span>创建人：{i.user.name}</span>
+                        <span>订阅量：{i.subscribe_num}</span>
                       </div>
+                      <Tooltip
+                        title={i.describe}
+                        placement="topLeft"
+                        getPopupContainer={n => n}
+                      >
+                        <div className="describe">{i.describe}</div>
+                      </Tooltip>
+                    </div>
+                  </TabsItemLeft>
+                  {i.status === 1 && (
+                    <CommonButton
+                      type="light"
+                      onClick={() => onCancelSubscribe(i.id)}
+                    >
+                      <div style={{ minWidth: 58 }}>取消订阅</div>
                     </CommonButton>
                   )}
                   {i.status === 2 && (
@@ -304,11 +310,73 @@ const TabsContent = (props: TabsContentProps) => {
                       </div>
                     </CommonButton>
                   )}
-                </div>
-              </TabsItemLi>
-            ))}
-          {dataUserList && dataUserList.length <= 0 && <NoData />}
-        </TabsBox>
+                </TabsItem>
+              ))}
+            {dataList && dataList.length <= 0 && <NoData />}
+          </TabsBox>
+        </InfiniteScroll>
+      )}
+      {props.type === '0' && (
+        <InfiniteScroll
+          dataLength={dataList?.length || 0}
+          next={fetchMoreUserData}
+          style={{
+            overflow: 'auto',
+            maxHeight: '60vh',
+          }}
+          hasMore={hasMore}
+          height="60vh"
+          loader={<Skeleton avatar paragraph={{ rows: 2 }} active />}
+          scrollableTarget="scrollableDiv"
+        >
+          <TabsBox>
+            {dataUserList &&
+              dataUserList.length > 0 &&
+              dataUserList.map((i: Model.Calendar.GetContactsCalendarInfo) => (
+                <TabsItemLi key={i.id}>
+                  <div className="nameBox">
+                    <div className="avatar">
+                      <CommonUserAvatar size="large" />
+                    </div>
+                    <div className="name">
+                      <span className="label">{i.user.name}</span>
+                      <span className="sub">
+                        {i.user.department_name}-{i.user.job_name}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="otherBox">{i.user.phone}</div>
+                  <div className="otherBox">{i.user.email}</div>
+                  <div
+                    className="otherBox"
+                    style={{ justifyContent: 'flex-end' }}
+                  >
+                    {i.status === 1 && (
+                      <CommonButton type="light">
+                        <div
+                          style={{ minWidth: 58 }}
+                          onClick={() => onCancelSubscribe(i.id)}
+                        >
+                          取消订阅
+                        </div>
+                      </CommonButton>
+                    )}
+                    {i.status === 2 && (
+                      <CommonButton type="secondary">
+                        <div
+                          style={{ minWidth: 58 }}
+                          onClick={() => onSubscribe(i.id)}
+                        >
+                          订阅
+                        </div>
+                      </CommonButton>
+                    )}
+                  </div>
+                </TabsItemLi>
+              ))}
+            {dataUserList && dataUserList.length <= 0 && <NoData />}
+          </TabsBox>
+        </InfiniteScroll>
       )}
     </TabsContentWrap>
   )
@@ -321,30 +389,12 @@ const CalendarSubscribe = () => {
   const [searchValue, setSearchValue] = useState('')
   const [dataList, setDataList] = useState<{
     list?: Model.Calendar.SubscribeInfo[]
+    pager?: Model.Calendar.Pager
   }>()
   const [dataUserList, setDataUserList] = useState<{
     list?: Model.Calendar.GetContactsCalendarInfo[]
+    pager?: Model.Calendar.Pager
   }>()
-
-  const items = [
-    {
-      key: '0',
-      label: '订阅联系人',
-      children: (
-        <TabsContent type={activeKey} dataUserList={dataUserList?.list} />
-      ),
-    },
-    {
-      key: '1',
-      label: '公开日历',
-      children: <TabsContent type={activeKey} dataList={dataList?.list} />,
-    },
-    {
-      key: '2',
-      label: '节假日',
-      children: <TabsContent type={activeKey} dataList={dataList?.list} />,
-    },
-  ]
 
   const operations = (
     <InputSearch
@@ -357,22 +407,24 @@ const CalendarSubscribe = () => {
   )
 
   // 获取公开日历及节假日 列表
-  const getSubscribeData = async (value: string) => {
+  const getSubscribeData = async (value: string, page?: number) => {
     setDataList({})
     const response = await getSubscribeList({
       type: value,
       keywords: searchValue,
+      page: page || 1,
     })
-    setDataList({ list: response.data.list })
+    setDataList({ list: response.data.list, pager: response.data.pager })
   }
 
   // 获取订阅联系人列表
-  const getContactsCalendarData = async () => {
+  const getContactsCalendarData = async (page?: number) => {
     setDataUserList({})
     const response = await getContactsCalendarList({
       username: searchValue,
+      page: page || 1,
     })
-    setDataUserList({ list: response.data.list })
+    setDataUserList({ list: response.data.list, pager: response.data.pager })
   }
 
   // 切换tab
@@ -393,6 +445,42 @@ const CalendarSubscribe = () => {
     setSearchValue('')
   }
 
+  const items = [
+    {
+      key: '0',
+      label: '订阅联系人',
+      children: (
+        <TabsContent
+          onMore={getContactsCalendarData}
+          type={activeKey}
+          dataUserList={dataUserList}
+        />
+      ),
+    },
+    {
+      key: '1',
+      label: '公开日历',
+      children: (
+        <TabsContent
+          onMore={page => getSubscribeData(activeKey, page)}
+          type={activeKey}
+          dataList={dataList}
+        />
+      ),
+    },
+    {
+      key: '2',
+      label: '节假日',
+      children: (
+        <TabsContent
+          onMore={page => getSubscribeData(activeKey, page)}
+          type={activeKey}
+          dataList={dataList}
+        />
+      ),
+    },
+  ]
+
   useEffect(() => {
     if (subscribeModal) {
       getContactsCalendarData()
@@ -400,10 +488,12 @@ const CalendarSubscribe = () => {
   }, [subscribeModal])
 
   useEffect(() => {
-    if (activeKey === '0') {
-      getContactsCalendarData()
-    } else {
-      getSubscribeData(activeKey)
+    if (subscribeModal) {
+      if (activeKey === '0' && subscribeModal) {
+        getContactsCalendarData()
+      } else {
+        getSubscribeData(activeKey)
+      }
     }
   }, [searchValue])
 

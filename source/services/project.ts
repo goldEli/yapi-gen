@@ -356,6 +356,14 @@ export const updateMember: any = async (params: any) => {
   })
 }
 
+export const batchUpdateMember: any = async (params: any) => {
+  await http.post<any>('batchUpdateMember', {
+    project_id: Number(params.projectId),
+    user_group_id: params.userGroupId,
+    user_ids: params.userIds,
+  })
+}
+
 export const deleteMember: any = async (params: any) => {
   await http.delete<any>('deleteMember', {
     project_id: Number(params.projectId),
