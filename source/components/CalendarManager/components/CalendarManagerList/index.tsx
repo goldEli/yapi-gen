@@ -5,14 +5,10 @@ import { CloseWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import MoreDropdown from '@/components/MoreDropdown'
 import { useDispatch, useSelector } from '@store/index'
-import {
-  setCalendarData,
-  setCheckedCalendarList,
-  setCalendarModal,
-  setSubscribeModal,
-} from '@store/calendar'
+import { setCalendarModal, setSubscribeModal } from '@store/calendar'
 import CalendarMoreDropdown from './CalendarMoreDropdown'
 import { colorMap } from '../../config'
+import { userSetupsCalendar } from '@store/calendar/calendar.thunk'
 
 const { Panel } = Collapse
 
@@ -87,36 +83,17 @@ interface CalendarManagerListProps {
 const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
   const dispatch = useDispatch()
   const [isMoreVisible, setIsMoreVisible] = useState(false)
-  const { calendarData, checkedCalendarList } = useSelector(
-    store => store.calendar,
-  )
+  const { calendarData } = useSelector(store => store.calendar)
 
   console.log(calendarData, '=calendarData')
   const calendarList = calendarData[props.type as keyof typeof calendarData]
 
   // 改变日历的选中状态
   const onChangeCheck = (item: Model.Calendar.Info) => {
-    // 还缺少一个修改保存选中数据的接口
-
-    // 改变原始数据
-    const newCalendarData = calendarList?.map((i: Model.Calendar.Info) => ({
-      ...i,
-      is_check: i.id === item.id ? (i.is_check ? 0 : 1) : i.is_check,
-    }))
-    let resultCheck: Model.Calendar.Info[]
-    // 如果当前是选中，则选中数组过滤
-    if (item.is_check) {
-      resultCheck = checkedCalendarList?.filter(
-        (i: Model.Calendar.Info) => i.id !== item.id,
-      )
-    } else {
-      resultCheck = [...checkedCalendarList, ...[item]]
-    }
-    dispatch(setCheckedCalendarList(resultCheck))
     dispatch(
-      setCalendarData({
-        ...calendarData,
-        ...{ [props.type]: newCalendarData },
+      userSetupsCalendar({
+        is_check: item.is_check === 1 ? 2 : 1,
+        id: item.calendar_id,
       }),
     )
   }

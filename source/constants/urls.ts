@@ -136,7 +136,7 @@ const urls = {
   saveSchedule: '/b/schedule',
   getScheduleList: '/b/schedule_list',
   getSubscribeList: '/b/subscribe_list',
-  getCalendarIconList: '/b/calendar_icon_list',
+
   getCalendarDaysOfYearList: '/b/schedule/daysOfYear',
   getCalendarDaysOfMonthList: '/b/schedule/daysOfMonth',
   getCalendarConfig: '/b/calendar/getConfig',
@@ -145,6 +145,7 @@ const urls = {
   addCalendar: '/b/calendar',
   getUserCalendars: '/b/calendar/getUserCalendars',
   getDaysOfWeekList: '/b/calendar/daysOfWeek',
+  getContactsCalendarList: '/b/calendar/getContacts',
   getDaysOfMonthList: '/b/calendar/daysOfMonth',
 }
 

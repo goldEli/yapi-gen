@@ -1,113 +1,27 @@
 import urls from '@/constants/urls'
 import * as http from '@/tools/http'
 
-// 订阅日历列表
+// 订阅日历列表 -- finish-1
 export const getSubscribeList = async (
   params: API.Calendar.GetSubscribeList.Params,
 ) => {
-  const subList = [
-    {
-      id: 1,
-      name: '日历名称',
-      phone: '121212121',
-      email: 'hjkhksdhds@.com',
-      is_subscribe: 1,
-      department: '产品部-产品',
-    },
-    {
-      id: 2,
-      name: '日历名称1111',
-      phone: '121212121',
-      email: 'hjkhksdhds@.com',
-      is_subscribe: 0,
-      department: '产品部-产品',
-    },
-  ] as Model.Calendar.SubscribeInfo[]
-  const publicList = [
-    {
-      id: 1,
-      name: '日历名称',
-      is_subscribe: 1,
-      creator: '张三',
-      number: 1000,
-      describe:
-        '假数据啥啥假数据啥啥假数据啥啥假数据啥啥假数据啥啥假数据啥啥假数据啥啥假数据啥啥假数据啥啥假数据啥啥假数据啥啥',
-      icon: 'dfdf',
-    },
-    {
-      id: 2,
-      name: '日历名称121212',
-      is_subscribe: 0,
-      creator: '张三',
-      number: 1000,
-      describe: '假数据啥啥',
-      icon: 'dfdf',
-    },
-    {
-      id: 3,
-      name: '日历名称121212',
-      is_subscribe: 0,
-      creator: '张三',
-      number: 1000,
-      describe: '假数据啥啥',
-      icon: 'dfdf',
-    },
-    {
-      id: 4,
-      name: '日历名称121212',
-      is_subscribe: 0,
-      creator: '张三',
-      number: 1000,
-      describe: '假数据啥啥',
-      icon: 'dfdf',
-    },
-    {
-      id: 5,
-      name: '日历名称121212',
-      is_subscribe: 0,
-      creator: '张三',
-      number: 1000,
-      describe: '假数据啥啥',
-      icon: 'dfdf',
-    },
-    {
-      id: 6,
-      name: '日历名称121212',
-      is_subscribe: 0,
-      creator: '张三',
-      number: 1000,
-      describe: '假数据啥啥',
-      icon: 'dfdf',
-    },
-    {
-      id: 7,
-      name: '日历名称121212',
-      is_subscribe: 0,
-      creator: '张三',
-      number: 1000,
-      describe: '假数据啥啥',
-      icon: 'dfdf',
-    },
-    {
-      id: 8,
-      name: '日历名称121212',
-      is_subscribe: 0,
-      creator: '张三',
-      number: 1000,
-      describe: '假数据啥啥',
-      icon: 'dfdf',
-    },
-  ] as Model.Calendar.SubscribeInfo[]
-  return {
-    code: '',
-    msg: '',
-    data: {
-      list: params.type === '0' ? subList : publicList,
-    },
-  }
   const response = await http.get<any, API.Calendar.GetSubscribeList.Result>(
-    `/b/calendar/{params.type}/getAllCalendarList`,
+    `/b/calendar/${params.type}/getAllCalendarList`,
+    {
+      keywords: params.keywords,
+    },
   )
+  return response
+}
+
+// 订阅联系人列表 -- finish -1
+export const getContactsCalendarList = async (
+  params: API.Calendar.GetContactsCalendarList.Params,
+) => {
+  const response = await http.get<
+    any,
+    API.Calendar.GetContactsCalendarList.Result
+  >('getContactsCalendarList', params)
   return response
 }
 
@@ -154,6 +68,16 @@ export const getCalendarInfo = async (params: { id: number | undefined }) => {
   return response.data
 }
 
+// 用户日历设置  -- finish-1
+export const userSetupsCalendar = async (
+  params: API.Calendar.UserSetupsCalendar.Params,
+) => {
+  await http.post<any, any>(`/b/calendar/${params.id}/userSetups`, {
+    is_check: params.is_check,
+    color: params.color,
+  })
+}
+
 // 订阅日历
 export const subscribeCalendar = async (params: { id: number }) => {
   await http.post<any, any>(`/b/calendar/${params.id}/subscribe`)
@@ -186,7 +110,7 @@ export const unsubscribeCalendar = async (params: { id: number }) => {
   await http.post<any, any>(`/b/calendar/${params.id}/unsubscribe`)
 }
 
-// 获取日历设置接口
+// 获取日历设置接口  -- finish-1
 export const getCalendarConfig = async () => {
   const response = await http.get<any, API.Calendar.GetCalendarConfig.Result>(
     'getCalendarConfig',
@@ -198,7 +122,7 @@ export const getCalendarConfig = async () => {
   }
 }
 
-// 修改日历设置
+// 修改日历设置  -- finish -1
 export const updateCalendarConfig = async (
   params: Model.Calendar.UpdateCalendarConfigParams,
 ) => {

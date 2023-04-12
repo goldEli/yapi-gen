@@ -11,7 +11,10 @@ import { useState } from 'react'
 import CalendarColor from '../../CalendarColor'
 import { deleteCalendar, unsubscribeCalendar } from '@/services/calendar'
 import { message } from 'antd'
-import { getCalendarList } from '@store/calendar/calendar.thunk'
+import {
+  getCalendarList,
+  userSetupsCalendar,
+} from '@store/calendar/calendar.thunk'
 
 const MoreWrap = styled.div`
   padding: 4px 0 10px;
@@ -58,7 +61,6 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
   const { calendarData } = useSelector(store => store.calendar)
   const [isDeleteVisible, setIsDeleteVisible] = useState(false)
   const [isUnsubscribeVisible, setIsUnsubscribeVisible] = useState(false)
-  const calendarList = calendarData[props.type as keyof typeof calendarData]
   const subMenu = [
     { name: '仅显示此日历', type: 'only' },
     { name: '退订日历', type: 'unsubscribe' },
@@ -89,7 +91,7 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
     await unsubscribeCalendar({ id: props.item.calendar_id })
     dispatch(getCalendarList())
     setIsUnsubscribeVisible(false)
-    message.success('退订日历成功！')
+    message.success('取消订阅成功！')
   }
 
   // 点击菜单事件
@@ -112,17 +114,10 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
 
   // 改变颜色
   const onChangeColor = (color: number) => {
-    // 走编辑接口
-
-    // 改变原始数据
-    const newCalendarData = calendarList?.map((i: Model.Calendar.Info) => ({
-      ...i,
-      color: i.id === props.item.id ? colorMap[color] : colorMap[i.color],
-    }))
     dispatch(
-      setCalendarData({
-        ...calendarData,
-        ...{ [props.type]: newCalendarData },
+      userSetupsCalendar({
+        color,
+        id: props.item.calendar_id,
       }),
     )
     props.onCancel()

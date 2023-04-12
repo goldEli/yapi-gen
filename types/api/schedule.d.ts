@@ -22,4 +22,6 @@ declare namespace API.Schedule {
       [key in string]: Model.Schedule.Info[]
     }
   }
+
+  namespace
 }
