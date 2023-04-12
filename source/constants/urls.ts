@@ -139,13 +139,13 @@ const urls = {
   getCalendarIconList: '/b/calendar_icon_list',
   getCalendarDaysOfYearList: '/b/schedule/daysOfYear',
   getCalendarDaysOfMonthList: '/b/schedule/daysOfMonth',
-  // 完整地址
   getCalendarConfig: '/b/calendar/getConfig',
   updateCalendarConfig: '/b/calendar/setConfig',
   getRelateConfig: '/b/calendar/enum',
   addCalendar: '/b/calendar',
   getUserCalendars: '/b/calendar/getUserCalendars',
   getDaysOfWeekList: '/b/calendar/daysOfWeek',
+  getDaysOfMonthList: '/b/calendar/daysOfMonth',
 }
 
 export default urls

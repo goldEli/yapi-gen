@@ -82,12 +82,15 @@ const borderRight = css`
 const DayItem: React.FC<DayItemProps> = props => {
   const { checkedTime, selectedMonth } = useSelector(store => store.calendar)
   const { idx } = props
-  const info = selectedMonth[props.idx]
-  const day = dayjs(info.date).format('DD')
-  const isSelected = dayjs(checkedTime).isSame(dayjs(info.date), 'day')
+  const info = selectedMonth?.[props.idx]
+  const day = dayjs(info?.date).format('DD')
+  const isSelected = dayjs(checkedTime).isSame(dayjs(info?.date), 'day')
   const { currentTime } = useCurrentTime()
-  const isCurrent = currentTime.isSame(dayjs(info.datetime), 'day')
+  const isCurrent = currentTime.isSame(dayjs(info?.datetime), 'day')
   const dispatch = useDispatch()
+  if (!info) {
+    return <></>
+  }
   return (
     <DayItemBox
       className={classNames({
@@ -118,13 +121,13 @@ const DayItem: React.FC<DayItemProps> = props => {
         <span
           className={classNames('day', {
             dayActive: isSelected,
-            daySecondaryColor: !info.is_current_month && !isSelected,
+            daySecondaryColor: !info?.is_current_month && !isSelected,
             currentDay: isCurrent,
           })}
         >
           {day}
         </span>
-        <span className="lunar">{info.lunar_day_chinese}</span>
+        <span className="lunar">{info?.lunar_day_chinese}</span>
       </div>
       <ScheduleList idx={idx} data={info} />
     </DayItemBox>

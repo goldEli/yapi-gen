@@ -5,11 +5,11 @@ import dayjs from 'dayjs'
 import {
   getCalendarConfig,
   getCalendarList,
+  getDaysOfMonthList,
   getDaysOfWeekList,
   getRelateConfig,
   updateCalendarConfig,
 } from './calendar.thunk'
-import { selectedMonth } from './mockData'
 
 type SliceState = {
   // 左侧-选中的时间
@@ -40,7 +40,7 @@ type SliceState = {
   // 是否打开订阅日历弹窗
   subscribeModal: boolean
   // 选择的月信息
-  selectedMonth: Model.Calendar.DayOfMonth[]
+  selectedMonth?: Model.Calendar.DaysOfMonth[]
 }
 
 const initialState: SliceState = {
@@ -95,7 +95,7 @@ const initialState: SliceState = {
     params: {},
   },
   subscribeModal: false,
-  selectedMonth: selectedMonth,
+  selectedMonth: [],
 }
 
 const slice = createSlice({
@@ -170,6 +170,9 @@ const slice = createSlice({
     // 周视图列表
     builder.addCase(getDaysOfWeekList.fulfilled, (state, action) => {
       state.selectedWeek = action.payload
+    })
+    builder.addCase(getDaysOfMonthList.fulfilled, (state, action) => {
+      state.selectedMonth = action.payload
     })
   },
 })

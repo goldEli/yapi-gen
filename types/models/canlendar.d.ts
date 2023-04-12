@@ -150,30 +150,33 @@ declare namespace Model.Calendar {
   // 1下一年  -1上一年 0 当前年份
   type CalendarYearType = -1 | 0 | 1
 
-  interface DayOfMonth {
-    lunar_year_chinese: string
+  interface DaysOfWeek {
+    // 必须 农历月
     lunar_month_chinese: string
+    // 必须 农历日
     lunar_day_chinese: string
+    // 必须 节日
     term: string
-    week_no: number
+    // 必须 周索引，0-6分别是周日到周六
+    week_no: 0 | 1 | 2 | 3 | 4 | 5 | 6
+    // 必须 周名称
     week_name: string
-    // '金牛'
+    // 必须 星座
     constellation: string
+    // 必须 是否是当前月
     is_current_month: boolean
+    // 必须 年
     year: number
     month: number
     day: number
     week_num: number
     date: string
-    // '2023-05-04 00:00:00'
     datetime: string
-    // '2023-05-05T16:00:00.000000Z'
     date_object: string
     timestamp: number
-    // 'PRC'
     timezone_name: string
   }
-  interface DaysOfWeek {
+  interface DaysOfMonth {
     // 必须 农历月
     lunar_month_chinese: string
     // 必须 农历日

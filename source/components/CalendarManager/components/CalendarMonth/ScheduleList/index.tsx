@@ -6,7 +6,7 @@ import MoveActiveItem from '../MoveActiveItem'
 import MoreScheduleButton from '../../MoreScheduleButton'
 
 interface ScheduleListProps {
-  data: Model.Calendar.DayOfMonth
+  data: Model.Calendar.DaysOfMonth
   idx: number
 }
 
