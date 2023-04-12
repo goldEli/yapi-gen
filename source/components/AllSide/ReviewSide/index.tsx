@@ -7,6 +7,7 @@ import { useSelector } from '@store/index'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
+import WriteReportModal from '../FormWorkSide/WriteReport'
 
 const Menu = styled.div`
   width: 100%;
@@ -49,6 +50,14 @@ const ReviewSide = () => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   asyncSetTtile(t('title.c8'))
+  const { pathname } = useLocation()
+  const nowPath2 = Number(pathname.split('/')[4]) || ''
+  const navigate = useNavigate()
+  const [visibleEdit, setVisibleEdit] = useState(false)
+  const [visibleEditText, setVisibleEditText] = useState('')
+  const [showPop, setShowPop] = useState(false)
+  const [id, setId] = useState(1)
+  const [type, setType] = useState('')
   const menuList = [
     {
       id: 1,
@@ -69,14 +78,6 @@ const ReviewSide = () => {
       state: 3,
     },
   ]
-  const { pathname } = useLocation()
-  const nowPath2 = Number(pathname.split('/')[4]) || ''
-  const navigate = useNavigate()
-  const [visibleEdit, setVisibleEdit] = useState(false)
-  const [visibleEditText, setVisibleEditText] = useState('')
-  const [showPop, setShowPop] = useState(false)
-  const [id, setId] = useState(1)
-  const [type, setType] = useState('')
   const keyValue = {
     id,
     change: () => {
@@ -86,6 +87,9 @@ const ReviewSide = () => {
   }
   const changeActive = (value: any) => {
     navigate(value.path)
+  }
+  const handleReport = () => {
+    setVisibleEdit(true)
   }
 
   return (
@@ -111,7 +115,7 @@ const ReviewSide = () => {
         >
           {t('report.list.workReport')}
         </span>
-        <MySpan>
+        <MySpan onClick={handleReport}>
           <IconFont
             style={{
               fontSize: '16px',
@@ -171,6 +175,14 @@ const ReviewSide = () => {
           </MenuItem>
         ))}
       </Menu>
+      <WriteReportModal
+        isVisible={visibleEdit}
+        onClose={() => setVisibleEdit(false)}
+        onConfirm={function (): void {
+          throw new Error('Function not implemented.')
+        }}
+        title={'写汇报'}
+      />
     </div>
   )
 }

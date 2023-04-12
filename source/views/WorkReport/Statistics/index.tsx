@@ -14,12 +14,7 @@ import PermissionWrap from '@/components/PermissionWrap'
 import { useSelector } from '@store/index'
 import RangePicker from '@/components/RangePicker'
 import moment from 'moment'
-import {
-  getStatTempList,
-  getStatUserList,
-  getStatInfo,
-  getStatTempUsage,
-} from '@/services/report'
+import { getStatTempList } from '@/services/report'
 
 const data: any = {
   currentPage: 1,
