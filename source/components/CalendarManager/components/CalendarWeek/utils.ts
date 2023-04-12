@@ -243,32 +243,6 @@ interface TimeRange {
   end_timestamp: number
 }
 
-export function getConflictsTimeRange(list: Model.Schedule.Info[]) {
-  const res: Model.Schedule.Info[][] = []
-  for (let i = 0; i < list.length; ++i) {
-    for (let j = i + 1; j < list.length; ++j) {
-      if (
-        list[i].start_timestamp < list[j].end_timestamp &&
-        list[i].end_timestamp > list[j].start_timestamp
-      ) {
-        res.push([list[i], list[j]])
-      }
-    }
-  }
-
-  for (let i = 0; i < res.length; ++i) {
-    const first = res[i]
-    for (let j = 0; j < res.length; ++j) {
-      const two = res[j]
-      if (first.some(item => two.includes(item))) {
-        res[i] = []
-        res[j] = [...new Set(first.concat(two))]
-      }
-    }
-  }
-  return res.filter(item => item.length)
-}
-
 export const isSameTime = (time1: number, time2: number | string) => {
   return dayjs(time1).isSame(dayjs(time2), 'day')
 }

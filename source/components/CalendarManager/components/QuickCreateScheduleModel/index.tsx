@@ -92,6 +92,10 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
     ...quickCreateScheduleModel,
     containerClassName: props.containerClassName,
     modalClassName: '.schedule-info-dropdown-box',
+    modalInfo: {
+      width: 528,
+      height: 544,
+    },
   })
   const dispatch = useDispatch()
   const [form] = Form.useForm()
@@ -276,6 +280,10 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
     }
   }, [quickCreateScheduleModel])
 
+  if (!position) {
+    return <></>
+  }
+
   return (
     <>
       <AddMemberCommonModal
@@ -285,7 +293,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
         onConfirm={onAddConfirm}
       />
       <CreateSchedule
-        className="schedule-info-dropdown-box"
+        className="quick-create-schedule-model"
         visible={visible && !!position}
         top={position?.y ?? 0}
         left={position?.x ?? 0}

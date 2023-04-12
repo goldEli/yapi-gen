@@ -139,7 +139,6 @@ const urls = {
 
   getCalendarDaysOfYearList: '/b/schedule/daysOfYear',
   getCalendarDaysOfMonthList: '/b/schedule/daysOfMonth',
-  // 完整地址
   getCalendarConfig: '/b/calendar/getConfig',
   updateCalendarConfig: '/b/calendar/setConfig',
   getRelateConfig: '/b/calendar/enum',
@@ -147,6 +146,7 @@ const urls = {
   getUserCalendars: '/b/calendar/getUserCalendars',
   getDaysOfWeekList: '/b/calendar/daysOfWeek',
   getContactsCalendarList: '/b/calendar/getContacts',
+  getDaysOfMonthList: '/b/calendar/daysOfMonth',
 }
 
 export default urls

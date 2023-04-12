@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import dayjs, { Dayjs } from 'dayjs'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
-import { store } from '..'
 dayjs.extend(weekOfYear)
 type SliceState = {
   // 日历面板类型

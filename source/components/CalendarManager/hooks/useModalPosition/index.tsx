@@ -8,6 +8,10 @@ const useModalPosition = (props: {
   visible: boolean
   containerClassName?: string
   modalClassName: string
+  modalInfo?: {
+    width: number
+    height: number
+  }
 }) => {
   const [position, setPosition] = React.useState<{ x: number; y: number }>()
   React.useEffect(() => {
@@ -28,8 +32,9 @@ const useModalPosition = (props: {
 
     if (domModal && domContainer) {
       // 获取元素的宽度
-      const width = getStyleValue(domModal, 'width')
-      const height = getStyleValue(domModal, 'height')
+      const width = props?.modalInfo?.width ?? getStyleValue(domModal, 'width')
+      const height =
+        props?.modalInfo?.height ?? getStyleValue(domModal, 'height')
       // 浏览器可视宽高
       const totalWidth =
         window.innerWidth || document.documentElement.clientWidth
@@ -58,7 +63,7 @@ const useModalPosition = (props: {
         y: props.y - offset.y,
       })
     }
-  }, [props.visible, props.id])
+  }, [props.visible, props.id, props.modalInfo])
 
   return { position }
 }

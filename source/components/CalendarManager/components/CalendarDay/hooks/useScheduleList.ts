@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from '@store/index'
 import dayjs from 'dayjs'
 
-const useScheduleAllDayList = () => {
+const useScheduleList = () => {
   const { scheduleList } = useSelector(store => store.schedule)
   const { calenderDayValue } = useSelector(store => store.calendarPanel)
   // const { scheduleList } = useSelector(
@@ -12,9 +12,9 @@ const useScheduleAllDayList = () => {
   const list = React.useMemo(() => {
     const key = dayjs(calenderDayValue).format('YYYY-MM-DD')
     return scheduleList?.[key]?.filter(
-      item => item.is_all_day === 1 || item.is_span_day,
+      item => item.is_all_day !== 1 || !item.is_span_day,
     )
   }, [scheduleList, calenderDayValue])
   return { list }
 }
-export default useScheduleAllDayList
+export default useScheduleList

@@ -22,6 +22,13 @@ declare namespace API.Calendar {
     }
     type Result = Model.Calendar.DaysOfWeek[]
   }
+  namespace GetDaysOfMonthList {
+    type Params = {
+      month: number
+      year: number
+    }
+    type Result = Model.Calendar.DaysOfWeek[]
+  }
   namespace CalendarInfo {
     type Result = {
       id: number
