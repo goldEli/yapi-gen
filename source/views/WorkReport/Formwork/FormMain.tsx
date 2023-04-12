@@ -178,48 +178,12 @@ interface CheckBoxGroupType {
   onChange?(val: Array<ValueType>): void
   value?: any
 }
-const options: Array<ValueType> = [
-  {
-    label: '周一',
-    key: 0,
-    value: false,
-  },
-  {
-    label: '周二',
-    key: 1,
-    value: false,
-  },
-  {
-    label: '周三',
-    key: 2,
-    value: false,
-  },
-  {
-    label: '周四',
-    key: 3,
-    value: false,
-  },
-  {
-    label: '周五',
-    key: 4,
-    value: false,
-  },
-  {
-    label: '周六',
-    key: 5,
-    value: false,
-  },
-  {
-    label: '周日',
-    key: 6,
-    value: false,
-  },
-]
 // 选择周几
 const CheckBoxGroup = (props: CheckBoxGroupType) => {
+  const { aWeekDataList } = useSelector(store => store.formWork)
   useEffect(() => {
     if (!props.value) {
-      props.onChange?.(options)
+      props.onChange?.(aWeekDataList)
     }
   }, [])
   const onChange = (value: boolean, el: { value: boolean; key: number }) => {
