@@ -14,7 +14,6 @@ import {
   message,
 } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
-import useModalPosition from '../../hooks/useModalPosition'
 import AddMemberCommonModal from '@/components/AddUser/CommonModal'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import IconFont from '@/components/IconFont'
@@ -42,6 +41,7 @@ import { setQuickCreateScheduleModel } from '@store/calendarPanle'
 import { setScheduleModal } from '@store/calendar'
 import { saveSchedule } from '@store/schedule/schedule.thunk'
 import { EventBus } from '../../eventBus'
+import useModalPosition from './useModalPosition'
 interface CreateScheduleBoxProps {
   containerClassName: string
 }

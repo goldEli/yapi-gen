@@ -4,8 +4,10 @@
  */
 import { useSelector } from '@store/index'
 import { useEffect, useState, useMemo } from 'react'
-import { getStyleValue } from '../utils'
-import { getConflictsTimeRange } from '@/components/CalendarManager/utils'
+import {
+  getConflictsTimeRange,
+  getStyleValue,
+} from '@/components/CalendarManager/utils'
 
 const minLeft = 58
 const useCalculationConflict = () => {
