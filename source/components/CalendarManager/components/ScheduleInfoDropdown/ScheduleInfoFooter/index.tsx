@@ -1,8 +1,9 @@
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import CommonButton from '@/components/CommonButton'
-import React from 'react'
-
+import React, { Fragment } from 'react'
+import { useDispatch, useSelector } from '@store/index'
+import { scheduleInfoReply } from '@store/schedule/schedule.thunk'
 interface iProps {
 
 }
@@ -19,12 +20,26 @@ const ScheduleInfoFooterBox = styled.div`
 `
 
 const ScheduleInfoFooter: React.FC<iProps> = props => {
+	const disPatch = useDispatch();
+	const { scheduleInfo } = useSelector(state => state.schedule)
+	const replySchedule = (status: number) => {
+		console.log('status------', status, typeof scheduleInfo.id)
+		disPatch(scheduleInfoReply({ id: scheduleInfo.id as any, status }))
+	}
 	return (
-		<ScheduleInfoFooterBox>
-			<CommonButton type='light'>接收</CommonButton>
-			<CommonButton type='light'>拒绝</CommonButton>
-			<CommonButton type='light'>待定</CommonButton>
-		</ScheduleInfoFooterBox>
+		<Fragment>
+			{
+				scheduleInfo.is_join && scheduleInfo.join_member_status === 0 && !scheduleInfo.is_creator ?
+					<ScheduleInfoFooterBox>
+						<CommonButton type='light' onClick={() => replySchedule(1)}>接收</CommonButton>
+						<CommonButton type='light' onClick={() => replySchedule(2)}>拒绝</CommonButton>
+						<CommonButton type='light' onClick={() => replySchedule(3)}>待定</CommonButton>
+					</ScheduleInfoFooterBox> :
+					null
+			}
+
+		</Fragment>
+
 	)
 }
 

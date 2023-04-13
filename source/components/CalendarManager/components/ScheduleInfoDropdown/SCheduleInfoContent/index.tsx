@@ -1,9 +1,10 @@
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 
-import React from 'react'
+import React,{useState} from 'react'
 import ScheduleInfoIcon from '../ScheduleInfoIcon'
 import { useSelector, useDispatch } from '@store/index'
+import IconFont from '@/components/IconFont'
 const ScheduleInfoContentBox = styled.div`
     padding: 16px;
     max-height: 400px;
@@ -50,7 +51,6 @@ const FileList = styled.div`
   margin-left: 28px;
 `
 const FileItem = styled.div`
-  height: 60px;
   background: #FFFFFF;
   box-shadow: 0px 0px 7px 0px rgba(0,0,0,0.06);
   border-radius: 6px 6px 6px 6px;
@@ -59,13 +59,17 @@ const FileItem = styled.div`
   box-sizing: border-box;
   display: flex;
   align-items: center;
+  >span:nth-child(1){
+    font-size: 30px;
+    margin-right: 8px;
+  }
   img{
     width: 32px;
     height: 32px;
     margin-right: 8px;
   }
 `
-const FileItemInfo=styled.div`
+const FileItemInfo = styled.div`
   display: flex;
   flex-direction:column;
   span:nth-child(1){
@@ -78,26 +82,39 @@ const FileItemInfo=styled.div`
   }
 `
 const ScheduleInfoContent: React.FC = props => {
-  const {scheduleInfo}=useSelector(state=>state.schedule);
+  const { scheduleInfo } = useSelector(state => state.schedule);
+  const [memberStatus,setMemberStatus]=useState({
+    0:'待回复',
+    1:'接受',
+    2:'拒绝',
+    3:'待定'
+  });
+  const [fileType,setFileType]=useState({
+    'docx':'colorDOC-76p4mioh',
+    'ppt':'colorPPT',
+    'pdf':'colorpdf',
+    'video':'colorvideo',
+    'zip':'zip'
+  })
   return (
     <ScheduleInfoContentBox>
       <ScheduleInfoContentItem>
         <span><ScheduleInfoIcon type="database" /></span>
         <div className={tip}>
-          <span><img src='https://img95.699pic.com/photo/50133/0843.jpg_wh300.jpg' />{scheduleInfo.creator?.name}（所有者）</span></div>
+          <span><img src={scheduleInfo?.creator?.avatar} />{scheduleInfo.creator?.name}（所有者）</span></div>
       </ScheduleInfoContentItem>
       <ScheduleInfoContentItem>
         <span><ScheduleInfoIcon type="team" /></span>
         <div className={tip}>
-          <span>参与者（{scheduleInfo.members?.length}人）</span><span onClick={(e)=>{
+          <span>参与者（{scheduleInfo.members?.length}人）</span><span onClick={(e) => {
             e.stopPropagation()
-          }}><ScheduleInfoIcon type="up"  /></span></div>
+          }}><ScheduleInfoIcon type="up" /></span></div>
       </ScheduleInfoContentItem>
       <PersonList>
         {
-          scheduleInfo.members?.map((item:any, idx:number) => <PersonItem key={item.user_id}>
-            <span><img src='https://img95.699pic.com/photo/50133/0843.jpg_wh300.jpg' />{item.user?.name}</span>
-            <span>未回复</span>
+          scheduleInfo.members?.map((item: any, idx: number) => <PersonItem key={item.user_id}>
+            <span><img src={item.user?.avatar} />{item.user?.name}</span>
+            <span>{item.status_text}</span>
           </PersonItem>)
         }
 
@@ -110,24 +127,28 @@ const ScheduleInfoContent: React.FC = props => {
         <span><ScheduleInfoIcon type="attachment" /></span>
         <div className={tip}>文件列表</div>
       </ScheduleInfoContentItem>
-       <FileList>
+      <FileList>
         {
-          scheduleInfo.files?.map((item:any,index:number)=><FileItem key={index}>
-             <span><img src='https://img95.699pic.com/photo/50133/0843.jpg_wh300.jpg' /></span>
-              <FileItemInfo>
-                <span>这是一个图片.jpg</span>
-                <span>{item.user.name} {item.created_at}</span>
-              </FileItemInfo>
+          scheduleInfo.files?.map((item: any, index: number) => <FileItem key={index}>
+            <span><IconFont type={fileType[item.url.substring(item.url.lastIndexOf('.')+1) as keyof typeof fileType]|| 'colorunknown'} /></span>
+            <FileItemInfo>
+              <span>{decodeURIComponent(item.url.substring(item.url.lastIndexOf('/')+1))}</span>
+              <span>{item.user.name} {item.created_at}</span>
+            </FileItemInfo>
           </FileItem>)
         }
-       </FileList>
-      <ScheduleInfoContentItem>
-        <span><ScheduleInfoIcon type="alarm" /></span>
-        <div className={tip}>提前15分钟</div>
-      </ScheduleInfoContentItem>
+      </FileList>
+      {
+        scheduleInfo.reminds?.map((item: any) => (
+          <ScheduleInfoContentItem>
+            <span><ScheduleInfoIcon type="alarm" /></span>
+            <div className={tip}>{item.remind_type_text}</div>
+          </ScheduleInfoContentItem>
+        ))
+      }
       <ScheduleInfoContentItem>
         <span><ScheduleInfoIcon type="calendar-days" /></span>
-        <div className={tip}>我的日历</div>
+        <div className={tip}>{scheduleInfo.calendar_name}</div>
       </ScheduleInfoContentItem>
     </ScheduleInfoContentBox>
   )

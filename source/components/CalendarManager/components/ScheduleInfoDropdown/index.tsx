@@ -8,6 +8,7 @@ import ScheduleInfoContent from './SCheduleInfoContent'
 import ScheduleInfoFooter from './ScheduleInfoFooter'
 import useModalPosition from '../../hooks/useModalPosition'
 import {getScheduleInfo} from '@store/schedule/schedule.thunk'
+import dayjs from 'dayjs'
 interface ScheduleInfoDropdownProps {
   containerClassName?: string
 }
@@ -30,7 +31,7 @@ const ScheduleInfoDropdownBox = styled.div<{
 `
 const ScheduleInfoDropdown: React.FC<ScheduleInfoDropdownProps> = props => {
   const { scheduleInfoDropdown } = useSelector(store => store.calendarPanel);
-  const {schedule_id}=scheduleInfoDropdown
+  const {schedule_id,show_date=dayjs().format('YYYY-MM-DD')}=scheduleInfoDropdown
   console.log('scheduleInfoDropdown----',scheduleInfoDropdown)
   const { visible } = scheduleInfoDropdown
   const { position } = useModalPosition({
@@ -42,7 +43,7 @@ const ScheduleInfoDropdown: React.FC<ScheduleInfoDropdownProps> = props => {
   const disPatch=useDispatch()
   useEffect(() => {
     if(!schedule_id) return
-    disPatch(getScheduleInfo({id:schedule_id}))
+    disPatch(getScheduleInfo({id:schedule_id,show_date}))
   }, [schedule_id])
   
   return (
