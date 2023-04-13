@@ -167,13 +167,15 @@ const PermissionConfig = (props: PropsType) => {
     let hv = h * 60 * 60
     let m = tv - hv
     let mv = m / 60
+    let time = 0
     if (str === 'day') {
-      return t
+      time = t
     } else if (str === 'hour') {
-      return h
+      time = h
     } else {
-      return mv
+      time = parseInt(String(mv), 10)
     }
+    return time
   }
   // 组装数据
   const assemblyData = () => {
@@ -290,6 +292,7 @@ const PermissionConfig = (props: PropsType) => {
         break
     }
     const newObj = { ...fillingRequirements }
+    // console.log(fillingRequirements, 'fillingRequirements')
     if (fillingRequirements?.submit_cycle === 1) {
       const nowData = aWeekDataList
       const newData = fillingRequirements?.day
@@ -299,68 +302,68 @@ const PermissionConfig = (props: PropsType) => {
       }))
       newObj.day = arr
       const newStartTime = {
-        v1: fillingRequirements.start_time.day_type,
-        v2: time2(fillingRequirements.start_time.time, 'hour'),
-        v3: time2(fillingRequirements.start_time.time, 'minute'),
+        v1: fillingRequirements?.start_time?.day_type,
+        v2: time2(fillingRequirements?.start_time?.time, 'hour'),
+        v3: time2(fillingRequirements?.start_time?.time, 'minute'),
       }
       const newEndTime = {
-        v1: fillingRequirements.end_time.day_type,
-        v2: time2(fillingRequirements.end_time.time, 'hour'),
-        v3: time2(fillingRequirements.end_time.time, 'minute'),
+        v1: fillingRequirements.end_time?.day_type,
+        v2: time2(fillingRequirements?.end_time?.time, 'hour'),
+        v3: time2(fillingRequirements?.end_time?.time, 'minute'),
       }
       const newReminderTime = {
-        v2: time2(fillingRequirements.reminder_time, 'hour'),
-        v3: time2(fillingRequirements.reminder_time, 'minute'),
+        v2: time2(fillingRequirements?.reminder_time, 'hour'),
+        v3: time2(fillingRequirements?.reminder_time, 'minute'),
       }
       newObj.start_time = newStartTime
       newObj.end_time = newEndTime
       newObj.reminder_time = newReminderTime
     } else if (fillingRequirements?.submit_cycle === 2) {
       const newStartTime = {
-        v1: fillingRequirements.start_time.day_type,
-        v2: time2(fillingRequirements.start_time.time, 'hour'),
-        v3: time2(fillingRequirements.start_time.time, 'minute'),
+        v1: fillingRequirements?.start_time?.day_type,
+        v2: time2(fillingRequirements?.start_time?.time, 'hour'),
+        v3: time2(fillingRequirements?.start_time?.time, 'minute'),
       }
       const newEndTime = {
-        v1: fillingRequirements.end_time.day_type,
-        v2: time2(fillingRequirements.end_time.time, 'hour'),
-        v3: time2(fillingRequirements.end_time.time, 'minute'),
+        v1: fillingRequirements?.end_time?.day_type,
+        v2: time2(fillingRequirements?.end_time?.time, 'hour'),
+        v3: time2(fillingRequirements?.end_time?.time, 'minute'),
       }
       const newReminderTime = {
-        v1: time2(fillingRequirements.reminder_time, 'day'),
-        v2: time2(fillingRequirements.reminder_time, 'hour'),
-        v3: time2(fillingRequirements.reminder_time, 'minute'),
+        v1: time2(fillingRequirements?.reminder_time, 'day'),
+        v2: time2(fillingRequirements?.reminder_time, 'hour'),
+        v3: time2(fillingRequirements?.reminder_time, 'minute'),
       }
       newObj.start_time = newStartTime
       newObj.end_time = newEndTime
       newObj.reminder_time = newReminderTime
     } else if (fillingRequirements?.submit_cycle === 3) {
       const newStartTime = {
-        v1: fillingRequirements.start_time.day_type,
-        v2: time2(fillingRequirements.start_time.time, 'hour'),
-        v3: time2(fillingRequirements.start_time.time, 'minute'),
+        v1: fillingRequirements.start_time?.day_type,
+        v2: time2(fillingRequirements?.start_time?.time, 'hour'),
+        v3: time2(fillingRequirements?.start_time?.time, 'minute'),
       }
       const newEndTime = {
-        v1: fillingRequirements.end_time.day_type,
-        v2: time2(fillingRequirements.end_time.time, 'hour'),
-        v3: time2(fillingRequirements.end_time.time, 'minute'),
+        v1: fillingRequirements.end_time?.day_type,
+        v2: time2(fillingRequirements?.end_time?.time, 'hour'),
+        v3: time2(fillingRequirements?.end_time?.time, 'minute'),
       }
       const newReminderTime = {
-        v1: time2(fillingRequirements.reminder_time, 'day'),
-        v2: time2(fillingRequirements.reminder_time, 'hour'),
-        v3: time2(fillingRequirements.reminder_time, 'minute'),
+        v1: time2(fillingRequirements?.reminder_time, 'day'),
+        v2: time2(fillingRequirements?.reminder_time, 'hour'),
+        v3: time2(fillingRequirements?.reminder_time, 'minute'),
       }
       newObj.start_time = newStartTime
       newObj.end_time = newEndTime
       newObj.reminder_time = newReminderTime
     } else if (fillingRequirements?.submit_cycle === 4) {
       const newEndTime = timestampToTime(
-        fillingRequirements.end_time?.time || fillingRequirements.end_time,
+        fillingRequirements?.end_time?.time || fillingRequirements?.end_time,
       )
       const newReminderTime = {
-        v1: time2(fillingRequirements.reminder_time, 'day'),
-        v2: time2(fillingRequirements.reminder_time, 'hour'),
-        v3: time2(fillingRequirements.reminder_time, 'minute'),
+        v1: time2(fillingRequirements?.reminder_time, 'day'),
+        v2: time2(fillingRequirements?.reminder_time, 'hour'),
+        v3: time2(fillingRequirements?.reminder_time, 'minute'),
       }
       newObj.end_time = newEndTime
       newObj.reminder_time = newReminderTime
