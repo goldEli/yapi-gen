@@ -59,7 +59,6 @@ const CalendarForCalendarYear: React.FC<
   const dateClick = useCallback((e: any, date: any) => {
     let month = props.month
     e.stopPropagation();
-    console.log('-------', dayjs(date).format('YYYY-MM-DD'));
     let selectDate = dayjs(date).format('YYYY-MM-DD')
     if (!Object.keys(yearViewScheduleList).includes(dayjs(date).format('YYYY-MM-DD'))) return
     // setScheduleDate
@@ -73,7 +72,7 @@ const CalendarForCalendarYear: React.FC<
       }),
     )
     disPatch(setScheduleDate(month))
-    disPatch(setScheduleInfoDropdown({ visible: false }))
+    disPatch(setScheduleInfoDropdown({ visible: false,show_date:selectDate }))
   }, [yearViewScheduleList])
   return (
     <div style={{ position: 'relative' }}>

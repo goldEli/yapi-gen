@@ -61,8 +61,8 @@ export const saveScheduleList = async (
 }
 
 // 获取日程详情
-export const getScheduleInfo = async (params: { id: number }) => {
-  const response = await http.get<any, any>(`/b/schedule/${params.id}`)
+export const getScheduleInfo = async (params: { id: number,show_date:number | string }) => {
+  const response = await http.get<any, any>(`/b/schedule/${params.id}`,{show_date:params.show_date})
   return response.data
 }
 
@@ -80,4 +80,9 @@ export const getCalendarDaysOfMonthList = async (
 ) => {
   const res = await http.post('getCalendarDaysOfMonthList', params)
   return res
+}
+// 日程回复
+export const scheduleInfoReply = async (params: { id: number,status:number }) => {
+  const response = await http.post<any, any>(`/b/schedule/${params.id}/reply`,{status:params.status})
+  return response.data
 }

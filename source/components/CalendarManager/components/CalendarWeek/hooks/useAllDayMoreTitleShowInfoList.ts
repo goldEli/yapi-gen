@@ -23,7 +23,6 @@ const useAllDayMoreTitleShowInfoList = () => {
       )
       // 最多展示两个
       if (data?.length > 2) {
-        console.log({ data })
         res.push({
           weekDay: week,
           show: true,

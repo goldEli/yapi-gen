@@ -39,9 +39,12 @@ export const refreshCalendarPanelScheduleList =
     const { calendarPanelType } = state.calendarPanel
     const { checkedCalendarList } = state.calendar
     const params = ParamsCache.getInstance().getCache(calendarPanelType)
+    if (!params) {
+      return
+    }
     const newParams = {
       ...params,
-      calendar_ids: checkedCalendarList,
+      calendar_ids: checkedCalendarList.map(item => item.calendar_id),
     }
     switch (calendarPanelType) {
       case 'day':
@@ -118,9 +121,22 @@ export const getCalendarDaysOfMonthList = createAsyncThunk(
 
 export const getScheduleInfo = createAsyncThunk(
   `${name}/getScheduleInfo`,
-  async (params: { id: number }) => {
+  async (params: { id: number,show_date:string | number }) => {
     try {
       const res = await services.schedule.getScheduleInfo(params)
+      return res
+    } catch (error) {
+      //
+    }
+    return ''
+  },
+)
+
+export const scheduleInfoReply = createAsyncThunk(
+  `${name}/scheduleInfoReply`,
+  async (params: { id: number,status:number }) => {
+    try {
+      const res = await services.schedule.scheduleInfoReply(params)
       return res
     } catch (error) {
       //

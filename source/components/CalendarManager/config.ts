@@ -9,6 +9,7 @@ export const oneMinuteHeight = oneHourHeight / 60
 export const halfHourHeight = oneHourHeight / 2
 
 export const formatYYYYMMDD = 'YYYY-MM-DD'
+export const formatYYYYMMDDhhmmss = 'YYYY-MM-DD HH:mm:ss'
 
 export const colorMap = [
   '#FF5C5E',
