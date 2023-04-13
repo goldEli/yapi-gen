@@ -1,9 +1,10 @@
+/* eslint-disable require-atomic-updates */
 /* eslint-disable no-undefined */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 import CommonButton from '@/components/CommonButton'
 import LeftTitle from '@/components/LeftTitle'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { changeVisibleFilter } from '@store/SiteNotifications'
 import { useParams } from 'react-router'
 import AllSideFilter from '../components/AllSideFilter/AllSideFilter'
@@ -12,14 +13,17 @@ import { useTranslation } from 'react-i18next'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { Divider, Skeleton } from 'antd'
 import { getMsg_list, setReadApi } from '@/services/SiteNotifications'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { log } from 'console'
 
 interface ZoomRatioType {
   [MapZoom: string]: string
 }
 const Index = () => {
+  const lastId = useRef(0)
+  const friendUsername = useRef('')
   const [list, setList] = useState([])
-  const [lastId, setLastId] = useState<any>(0)
+  // const [lastId, setLastId] = useState<any>(0)
   const [hasMore, setHasMore] = useState(true)
   const [t] = useTranslation()
   const dispatch = useDispatch()
@@ -37,37 +41,48 @@ const Index = () => {
     const arr = list.map((i: any) => i.id)
     setReads(arr)
   }
-  const init = async () => {
+
+  const fetchMoreData = async (b?: boolean) => {
     const re4 = await getMsg_list({
-      lastId,
+      lastId: lastId.current,
       read: id === '2' ? 0 : id === '3' ? 1 : undefined,
+      friendUsername: friendUsername.current,
     })
-
-    return {
-      lastId: re4.lastId,
-      list: re4.list,
-    }
-  }
-
-  const fetchMoreData = async () => {
-    const re4 = await init()
 
     if (re4.lastId === 0) {
       setHasMore(false)
       return
     }
+    lastId.current = re4.lastId
+    setTimeout(() => {
+      if (b) {
+        console.log(re4.list)
 
-    setList(list.concat(re4.list))
-    setLastId(re4.lastId)
+        setList(re4.list)
+      } else {
+        setList(list.concat(re4.list))
+      }
+    }, 500)
   }
+  const changeUser = (str: string) => {
+    console.log(str, 'fdfd')
+    friendUsername.current = str
+    lastId.current = 0
+    setHasMore(true)
+    fetchMoreData(true)
+  }
+  console.log(list)
+  console.log(friendUsername)
 
   useEffect(() => {
-    fetchMoreData()
-  }, [])
+    lastId.current = 0
+    setHasMore(true)
+    fetchMoreData(true)
+  }, [id])
 
   return (
     <div>
-      <AllSideFilter />
+      <AllSideFilter changeUser={changeUser} />
       <div
         style={{
           display: 'flex',

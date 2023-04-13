@@ -1,7 +1,7 @@
 // 批量操作弹窗 -- 编辑及删除
 
 /* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable camelcase */
+
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable complexity */
 /* eslint-disable camelcase */

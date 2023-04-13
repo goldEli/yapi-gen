@@ -19,7 +19,7 @@ import {
 import { t } from 'i18next'
 import { getContactStatistics } from '@/services/SiteNotifications'
 
-const AllSideFilter = () => {
+const AllSideFilter = (props: any) => {
   const items = [
     // {
     //   id: '1',
@@ -79,13 +79,12 @@ const AllSideFilter = () => {
   }
   const choose = (id: any) => {
     setActive(id)
-    console.log()
+    props.changeUser(id)
   }
-  console.log(active)
 
   const init = async () => {
     const res = await getContactStatistics()
-    console.log(res, '筛选数据')
+
     items.forEach((i: any) => {
       res.list.forEach((j: any) => {
         if (i.sendType === j.send_user) {
@@ -93,7 +92,7 @@ const AllSideFilter = () => {
         }
       })
     })
-    console.log(items)
+
     setLists(items)
   }
 
@@ -146,8 +145,6 @@ const AllSideFilter = () => {
             {configuration[
               configuration.findIndex((i: any) => i.sendType === active)
             ].children?.map((i: any) => {
-              console.log(i)
-
               return (
                 <InfoWrapItem key={i.value}>
                   <span>{i.label}</span>
