@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import { useDispatch } from '@store/index'
 import dayjs from 'dayjs'
 import React, { useMemo, useState } from 'react'
-import { oneHourHeight } from '../../../config'
+import { formatYYYYMMDDhhmmss, oneHourHeight } from '../../../config'
 import { getTimeByAddDistance, getTimeByOffsetDistance } from '../utils'
 import { DraggableData, Position, ResizableDelta, Rnd } from 'react-rnd'
 import { css } from '@emotion/css'
@@ -10,7 +10,7 @@ import { DraggableEvent } from 'react-draggable'
 import { ResizeDirection } from 're-resizable'
 import usePosition from '../hooks/usePosition'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
-import { saveSchedule } from '@store/schedule/schedule.thunk'
+import { modifySchedule, saveSchedule } from '@store/schedule/schedule.thunk'
 import { getColorWithOpacityPointOne } from '@/components/CalendarManager/utils'
 
 interface ScheduleCardProps {
@@ -38,15 +38,32 @@ const Title = styled.span`
   line-height: 20px;
   color: var(--neutral-n1-d1);
 `
+const Time = styled.span`
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--neutral-n4);
+`
 
 const ScheduleCard: React.FC<ScheduleCardProps> = props => {
   const { data } = props
-  const { start_timestamp, end_timestamp } = data
+  const [localTime, setLocalTime] = useState<{
+    start_timestamp: number
+    end_timestamp: number
+  }>()
+
+  const { start_timestamp = 0, end_timestamp = 0 } = localTime ?? {}
   const dispatch = useDispatch()
   const [timeRange, setTimeRange] = useState<{
     startTime: string
     endTime: string
   } | null>(null)
+
+  React.useEffect(() => {
+    setLocalTime({
+      start_timestamp: props.data.start_timestamp,
+      end_timestamp: props.data.end_timestamp,
+    })
+  }, [props.data.end_timestamp, props.data.start_timestamp])
 
   const { height, top } = usePosition(start_timestamp, end_timestamp)
   const isDrag = React.useRef(false)
@@ -65,6 +82,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
       endTime: time.endTime.format('HH:mm'),
     })
   }
+
   const onDragStart = (e: DraggableEvent, draggableData: DraggableData) => {
     // const { node, y, deltaY, lastY } = draggableData
     isDrag.current = false
@@ -75,6 +93,29 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
       endTime: time.endTime.format('HH:mm'),
     })
   }
+
+  const onModify = (start_timestamp: number, end_timestamp: number) => {
+    // 修改日程
+    // 修改本地
+    setLocalTime({
+      start_timestamp,
+      end_timestamp,
+    })
+
+    // 修改数据库
+    const { schedule_id, color, subject, calendar_id } = props.data
+    dispatch(
+      modifySchedule({
+        calendar_id,
+        schedule_id,
+        color,
+        subject,
+        start_datetime: dayjs(start_timestamp).format(formatYYYYMMDDhhmmss),
+        end_datetime: dayjs(end_timestamp).format(formatYYYYMMDDhhmmss),
+      }),
+    )
+  }
+
   const onDragStop = (e: DraggableEvent, draggableData: DraggableData) => {
     e.stopPropagation()
     const { x, node, y, deltaX, deltaY, lastY } = draggableData
@@ -84,17 +125,9 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
       y - top,
     )
 
-    dispatch(
-      saveSchedule({
-        ...props.data,
-        start_timestamp: time.startTime.valueOf(),
-        end_timestamp: time.endTime.valueOf(),
-      }),
-    )
+    onModify(time.startTime.valueOf(), time.endTime.valueOf())
+
     setTimeRange(null)
-    const calenderBoxRightArea = document.querySelector(
-      '#calenderBoxRightArea',
-    ) as Element
 
     // 点击打开详情弹窗, 如果是拖动不打开
     if (!isDrag.current) {
@@ -154,39 +187,36 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
   ) => {
     if (dir === 'bottom') {
       const time = getTimeByAddDistance(end_timestamp, delta.height)
-      // dispatch(
-      //   setSchedule({
-      //     ...props.data,
-      //     endTime: time.valueOf(),
-      //   }),
-      // )
-      dispatch(
-        saveSchedule({
-          ...props.data,
-          end_timestamp: time.valueOf(),
-        }),
-      )
+      onModify(start_timestamp, time.valueOf())
     }
     if (dir === 'top') {
       const sTime = getTimeByAddDistance(start_timestamp, delta.height * -1)
-      // const eTime = getTimeByAddDistance(endTime, delta.height)
-      // dispatch(
-      //   setSchedule({
-      //     ...props.data,
-      //     startTime: sTime.valueOf(),
-      //   }),
-      // )
-      dispatch(
-        saveSchedule({
-          ...props.data,
-          start_timestamp: sTime.valueOf(),
-        }),
-      )
+      onModify(sTime.valueOf(), end_timestamp)
     }
     setTimeRange(null)
   }
 
   const gridHeight = useMemo(() => (oneHourHeight / 60) * 15, [outerHeight])
+  const { is_show_busy } = data
+
+  const content = useMemo(() => {
+    if (is_show_busy) {
+      return (
+        <>
+          <Time>{data.start_time}&nbsp;</Time>
+          <Title>{data.is_busy_text}</Title>
+        </>
+      )
+    }
+    return (
+      <>
+        <Title>
+          {timeRange && `${timeRange?.startTime} - ${timeRange?.endTime} `}
+        </Title>
+        <Title>{data.subject}</Title>`
+      </>
+    )
+  }, [is_show_busy, timeRange, data.subject, data.start_time])
 
   return (
     <Rnd
@@ -209,13 +239,16 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
         y: top,
       }}
       dragAxis="y"
+      // disableDragging={is_show_busy}
       enableResizing={{
         bottom: true,
+        // bottom: !is_show_busy,
         bottomLeft: false,
         bottomRight: false,
         left: false,
         right: false,
         top: true,
+        // top: !is_show_busy,
         topLeft: false,
         topRight: false,
       }}
@@ -227,10 +260,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
       onResize={onResize}
       onResizeStop={onResizeStop}
     >
-      <Title>
-        {timeRange && `${timeRange?.startTime} - ${timeRange?.endTime}`}
-      </Title>
-      <Title>{props.data.subject}</Title>
+      {content}
     </Rnd>
   )
 }

@@ -31,6 +31,21 @@ export const getScheduleListDaysOfMonth = createAsyncThunk(
     return res
   },
 )
+// 修改本地日程
+export const modifyLocalSchedule =
+  (params: API.Schedule.ModifySchedule.Params) =>
+  async (dispatch: AppDispatch) => {
+    await services.schedule.modifySchedule(params)
+    dispatch(refreshCalendarPanelScheduleList())
+  }
+
+// 修改日程
+export const modifySchedule =
+  (params: API.Schedule.ModifySchedule.Params) =>
+  async (dispatch: AppDispatch) => {
+    await services.schedule.modifySchedule(params)
+    dispatch(refreshCalendarPanelScheduleList())
+  }
 
 // 刷新面板上日程列表
 export const refreshCalendarPanelScheduleList =
@@ -145,7 +160,7 @@ export const getLeftCalendarDaysOfMonthList = createAsyncThunk(
 )
 export const getScheduleInfo = createAsyncThunk(
   `${name}/getScheduleInfo`,
-  async (params: { id: number,show_date:string | number }) => {
+  async (params: { id: number; show_date: string | number }) => {
     try {
       const res = await services.schedule.getScheduleInfo(params)
       return res
@@ -158,7 +173,7 @@ export const getScheduleInfo = createAsyncThunk(
 
 export const scheduleInfoReply = createAsyncThunk(
   `${name}/scheduleInfoReply`,
-  async (params: { id: number,status:number }) => {
+  async (params: { id: number; status: number }) => {
     try {
       const res = await services.schedule.scheduleInfoReply(params)
       return res

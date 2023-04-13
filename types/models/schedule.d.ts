@@ -1,9 +1,11 @@
 declare namespace Model.Schedule {
   interface Info {
     id?: string
+    calendar_id: number
     // 是否展示到面板中
     hidden?: boolean
     schedule_id: number
+    is_show_busy?: boolean
     subject: string
     is_span_day: boolean
     // 是否是全天任务 1 是 2 否

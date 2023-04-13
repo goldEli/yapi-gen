@@ -1,4 +1,17 @@
 declare namespace API.Schedule {
+  namespace ModifySchedule {
+    type Keys =
+      | 'calendar_id'
+      | 'schedule_id'
+      | 'subject'
+      | 'start_datetime'
+      | 'start_datetime'
+      | 'color'
+    type Params = Omit<Partial<Model.Schedule.Info>, Keys> &
+      Required<Pick<Model.Schedule.Info, Keys>>
+    type Result = null
+  }
+
   type ScheduleListResult = {
     [key in string]: Model.Schedule.Info[]
   }
