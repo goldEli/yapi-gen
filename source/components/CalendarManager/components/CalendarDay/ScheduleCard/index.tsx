@@ -94,19 +94,12 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     })
   }
 
-  const onDragStop = (e: DraggableEvent, draggableData: DraggableData) => {
-    e.stopPropagation()
-    const { x, node, y, deltaX, deltaY, lastY } = draggableData
-    const time = getTimeByOffsetDistance(
-      start_timestamp,
-      end_timestamp,
-      y - top,
-    )
+  const onModify = (start_timestamp: number, end_timestamp: number) => {
     // 修改日程
     // 修改本地
     setLocalTime({
-      start_timestamp: time.startTime.valueOf(),
-      end_timestamp: time.endTime.valueOf(),
+      start_timestamp,
+      end_timestamp,
     })
 
     // 修改数据库
@@ -117,10 +110,22 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
         schedule_id,
         color,
         subject,
-        start_datetime: time.startTime.format(formatYYYYMMDDhhmmss),
-        end_datetime: time.endTime.format(formatYYYYMMDDhhmmss),
+        start_datetime: dayjs(start_timestamp).format(formatYYYYMMDDhhmmss),
+        end_datetime: dayjs(end_timestamp).format(formatYYYYMMDDhhmmss),
       }),
     )
+  }
+
+  const onDragStop = (e: DraggableEvent, draggableData: DraggableData) => {
+    e.stopPropagation()
+    const { x, node, y, deltaX, deltaY, lastY } = draggableData
+    const time = getTimeByOffsetDistance(
+      start_timestamp,
+      end_timestamp,
+      y - top,
+    )
+
+    onModify(time.startTime.valueOf(), time.endTime.valueOf())
 
     setTimeRange(null)
 
@@ -182,34 +187,11 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
   ) => {
     if (dir === 'bottom') {
       const time = getTimeByAddDistance(end_timestamp, delta.height)
-      // dispatch(
-      //   setSchedule({
-      //     ...props.data,
-      //     endTime: time.valueOf(),
-      //   }),
-      // )
-      dispatch(
-        saveSchedule({
-          ...props.data,
-          end_timestamp: time.valueOf(),
-        }),
-      )
+      onModify(start_timestamp, time.valueOf())
     }
     if (dir === 'top') {
       const sTime = getTimeByAddDistance(start_timestamp, delta.height * -1)
-      // const eTime = getTimeByAddDistance(endTime, delta.height)
-      // dispatch(
-      //   setSchedule({
-      //     ...props.data,
-      //     startTime: sTime.valueOf(),
-      //   }),
-      // )
-      dispatch(
-        saveSchedule({
-          ...props.data,
-          start_timestamp: sTime.valueOf(),
-        }),
-      )
+      onModify(sTime.valueOf(), end_timestamp)
     }
     setTimeRange(null)
   }
@@ -257,14 +239,16 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
         y: top,
       }}
       dragAxis="y"
-      disableDragging={is_show_busy}
+      // disableDragging={is_show_busy}
       enableResizing={{
-        bottom: !is_show_busy,
+        bottom: true,
+        // bottom: !is_show_busy,
         bottomLeft: false,
         bottomRight: false,
         left: false,
         right: false,
-        top: !is_show_busy,
+        top: true,
+        // top: !is_show_busy,
         topLeft: false,
         topRight: false,
       }}

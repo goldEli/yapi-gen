@@ -37,14 +37,16 @@ const useCalculationConflict = () => {
     const conflictsWithSize = conflicts
       .map(con => {
         const len = con.length
-        const gap = 2
-        const width = Math.floor((maxWidth - 20) / len) - gap
+        // const gap = 2
+        // const width = Math.floor((maxWidth - 20) / len) - gap
+        const width = Math.floor((maxWidth - 20) / len)
         return con.map((item, idx) => {
-          const deltaLeft = idx * gap
+          // const deltaLeft = idx * gap
           return {
             id: item.schedule_id,
             width,
-            left: minLeft + width * idx + deltaLeft,
+            // left: minLeft + width * idx + deltaLeft,
+            left: minLeft + width * idx,
           }
         })
       })
