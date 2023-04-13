@@ -155,6 +155,11 @@ const slice = createSlice({
       state,
       action: PayloadAction<Partial<SliceState['scheduleInfoDropdown']>>,
     ) {
+      // 如果创建日程打开，阻止查看日程详情
+      if (state.quickCreateScheduleModel.visible) {
+        return
+      }
+
       state.scheduleInfoDropdown = {
         ...state.scheduleInfoDropdown,
         ...action.payload,
