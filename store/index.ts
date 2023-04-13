@@ -24,6 +24,8 @@ import log from './log'
 import siteNotifications from './SiteNotifications'
 import scroll from './scroll'
 import formWork from './formWork'
+import workReport from './workReport'
+
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
@@ -46,6 +48,7 @@ export const store = configureStore({
     siteNotifications,
     scroll,
     formWork,
+    workReport,
   },
 })
 
