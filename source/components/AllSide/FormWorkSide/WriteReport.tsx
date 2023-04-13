@@ -1,15 +1,17 @@
 /* eslint-disable-next-line @typescript-eslint/naming-convention */
 import CommonButton from '@/components/CommonButton'
 import CommonModal from '@/components/CommonModal'
-import CustomSelect from '@/components/CustomSelect'
-import InputSearch from '@/components/InputSearch'
+import InputSearch from './SearchSelect'
 import SupplementaryIntercourseModal from './SupplementaryIntercourse'
 import HandleReport from '@/views/WorkReport/Review/components/HandleReport'
 import styled from '@emotion/styled'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import Bgc from './img/bgc.png'
-import { writeReport } from '@/services/report'
+import { writeReport, templateLatelyList } from '@/services/report'
+import { message } from 'antd'
+import moment from 'moment'
 
 interface Props {
   isVisible: boolean
@@ -18,16 +20,13 @@ interface Props {
   title: string
 }
 const HeaderWrap = styled.div`
-  padding: 0 24px;
   display: flex;
   justify-content: space-between;
 `
 const BtnRow = styled.div`
   display: flex;
 `
-const SelectStyle = styled(CustomSelect)``
 const MainWrap = styled.div`
-  padding: 0 24px;
   margin-top: 24px;
 `
 const TitleWrap = styled.div`
@@ -104,47 +103,58 @@ const FormWrap = styled.div`
 
 const WriteReport = (props: Props) => {
   const navigate = useNavigate()
-  const [searchVal, setSearchVal] = useState('')
-  const inputRefDom = useRef<HTMLInputElement>(null)
   const [visibleMakeUp, setVisibleMakeUp] = useState(false)
   const [visibleEdit, setVisibleEdit] = useState(false)
   const [editId, setEditId] = useState()
   const [dataList, setDataList] = useState<any>({})
+  const [t] = useTranslation()
+
+  const getTemplateLatelyList = async () => {
+    const result = await templateLatelyList()
+    if (result && result.data) {
+      setDataList(result.data)
+    }
+  }
+
+  useEffect(() => {
+    getTemplateLatelyList()
+  }, [])
+
   const getContentHtml = (name: string, type: number): React.ReactElement => {
     switch (type) {
       case 1:
         return (
           <>
             <div>{name}</div>
-            <div>请选择</div>
+            <div>{t('report.list.select')}</div>
           </>
         )
       case 2:
         return (
           <>
             <div>{name}</div>
-            <div>请上传</div>
+            <div>{t('report.list.upload')}</div>
           </>
         )
       case 3:
         return (
           <>
             <div>{name}</div>
-            <div>请填写</div>
+            <div>{t('report.list.write')}</div>
           </>
         )
       case 4:
         return (
           <>
             <div>{name}</div>
-            <div>请关联</div>
+            <div>{t('report.list.correlation')}</div>
           </>
         )
       default:
         return (
           <>
             <div>{name}</div>
-            <div>请填写</div>
+            <div>{t('report.list.write')}</div>
           </>
         )
     }
@@ -158,64 +168,125 @@ const WriteReport = (props: Props) => {
         onClose={props.onClose}
         hasFooter
       >
-        <HeaderWrap>
-          <BtnRow>
-            <CommonButton
-              type="light"
-              onClick={() => navigate('/Report/Formwork')}
-            >
-              创建模板
-            </CommonButton>
-            <CommonButton
-              style={{ marginLeft: 16 }}
-              type="light"
-              onClick={() => setVisibleMakeUp(true)}
-            >
-              补交汇报
-            </CommonButton>
-          </BtnRow>
-          <InputSearch
-            leftIcon
-            placeholder="搜索汇报标题或内容"
-            width={184}
-            autoFocus
-            onChangeSearch={setSearchVal}
-            ref={inputRefDom as any}
-          />
-        </HeaderWrap>
-        <MainWrap>
-          <TitleWrap>最近使用</TitleWrap>
-          {dataList?.usedTemplate?.map((item: any) => (
-            <WrapBox key={item.id}>
-              <ColWrap>
-                <CarWrap
-                  disabled={!!(item.is_user_used && item.is_cycle_limit)}
-                  onClick={() => {
-                    if (!(item.is_user_used && item.is_cycle_limit)) {
-                      setEditId(item.id)
-                      setVisibleEdit(true)
+        <div
+          style={{
+            height: 'calc(90vh - 136px)',
+            overflow: 'scroll',
+            padding: ' 0 24px',
+          }}
+        >
+          <HeaderWrap>
+            <BtnRow>
+              <CommonButton
+                type="light"
+                onClick={() => navigate('/Report/Formwork')}
+              >
+                {t('report.list.createTemplate')}
+              </CommonButton>
+              <CommonButton
+                style={{ marginLeft: 16 }}
+                type="light"
+                onClick={() => setVisibleMakeUp(true)}
+              >
+                {t('report.list.fillReport')}
+              </CommonButton>
+            </BtnRow>
+            <InputSearch
+              leftIcon
+              placeholder={t('report.list.searchReport')}
+              width={184}
+              onChange={(id: any) => {
+                setEditId(id)
+                setVisibleEdit(true)
+              }}
+              options={[]
+                .concat(dataList?.usedTemplate || [])
+                .concat(dataList?.otherTemplate || [])
+                .filter((k: any) => !(k.submit_cycle === 1 && k.is_user_used))
+                .map((item: any) => ({
+                  label: item.name,
+                  value: item.id,
+                }))}
+            />
+          </HeaderWrap>
+          <MainWrap>
+            <TitleWrap>{t('report.list.recent')}</TitleWrap>
+            <WrapBox>
+              {dataList?.usedTemplate?.map((item: any) => (
+                <ColWrap key={item.id}>
+                  <CarWrap
+                    disabled={
+                      !!(item.is_user_used && item.is_cycle_limit === 1)
                     }
-                  }}
-                >
-                  <img src={Bgc} />
-                  <CarItem>
-                    <CarTitle>工作{item.name}</CarTitle>
-                    {item.template_content_configs
-                      ?.filter((t: any, i: number) => i < 2)
-                      .map((content: any) => (
-                        <FormWrap key={content.id}>
-                          {getContentHtml(content.name, content.type)}
-                        </FormWrap>
-                      ))}
-                  </CarItem>
-                </CarWrap>
-                {item.used_created_at ? (
-                  <TimeText>{item.used_created_at}已提交</TimeText>
-                ) : null}
-              </ColWrap>
+                    onClick={() => {
+                      if (!(item.is_user_used && item.is_cycle_limit === 1)) {
+                        setEditId(item.id)
+                        setVisibleEdit(true)
+                      }
+                    }}
+                  >
+                    <img src={Bgc} />
+                    <CarItem>
+                      <CarTitle>工作{item.name}</CarTitle>
+                      {item.template_content_configs
+                        ?.filter((tcc: any, i: number) => i < 2)
+                        .map((content: any) => (
+                          <FormWrap key={content.id}>
+                            {getContentHtml(content.name, content.type)}
+                          </FormWrap>
+                        ))}
+                    </CarItem>
+                  </CarWrap>
+                  {item.used_created_at ? (
+                    <TimeText>
+                      {moment(item.used_created_at).format('M月D日')}
+                      {t('report.list.haveSubmit')}
+                    </TimeText>
+                  ) : null}
+                </ColWrap>
+              ))}
             </WrapBox>
-          ))}
-        </MainWrap>
+            {dataList?.otherTemplate?.length ? (
+              <>
+                <TitleWrap>{t('report.list.other')}</TitleWrap>
+                <WrapBox>
+                  {dataList.otherTemplate.map((item: any) => (
+                    <ColWrap key={item.id}>
+                      <CarWrap
+                        disabled={
+                          !!(item.is_user_used && item.is_cycle_limit === 1)
+                        }
+                        onClick={() => {
+                          if (
+                            !(item.is_user_used && item.is_cycle_limit === 1)
+                          ) {
+                            setEditId(item.id)
+                            setVisibleEdit(true)
+                          }
+                        }}
+                      >
+                        <img src={Bgc} />
+                        <CarItem>
+                          <CarTitle>工作{item.name}</CarTitle>
+                          {item.template_content_configs
+                            ?.filter((tcc: any, i: number) => i < 2)
+                            .map((content: any) => (
+                              <FormWrap key={content.id}>
+                                {getContentHtml(content.name, content.type)}
+                              </FormWrap>
+                            ))}
+                        </CarItem>
+                      </CarWrap>
+                      {item.used_created_at ? (
+                        <TimeText>{item.used_created_at}已提交</TimeText>
+                      ) : null}
+                    </ColWrap>
+                  ))}
+                </WrapBox>
+              </>
+            ) : null}
+          </MainWrap>
+        </div>
       </CommonModal>
       <SupplementaryIntercourseModal
         isVisible={visibleMakeUp}
@@ -249,12 +320,14 @@ const WriteReport = (props: Props) => {
               })
             }
           })
-          writeReport({
+          const res = await writeReport({
             report_template_id: editId,
             data,
             target_users: users,
           })
-          console.log(params, editId)
+          if (res && res.data && res.data.id) {
+            message.success(t('操作成功'))
+          }
         }}
       />
     </>
