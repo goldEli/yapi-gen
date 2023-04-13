@@ -55,7 +55,7 @@ const TabItem = styled.div`
 
 interface SlideTabsProps {
   onChange?(value: string): void
-  defaultValue?: string
+  activeKey: number | string
   items: any[]
 }
 
@@ -64,11 +64,10 @@ const TAB_MARGIN = 32
 
 const SlideTabs: React.FC<SlideTabsProps> = ({
   items,
-  defaultValue = '1',
+  activeKey,
   onChange,
 }: SlideTabsProps) => {
   const [xAxis, setXAxis] = useState<number>(0)
-  const [activeKey, setActiveKey] = useState<string>(defaultValue)
   const [viewRectOffset, setViewRectOffset] = useState<number>(0)
   const [sliderRectOffset, setSliderRectOffset] = useState<number>(0)
   const nodes = useRef<Array<any>>([])
@@ -141,7 +140,6 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
   }, [])
 
   const handleClick = (key: string) => {
-    setActiveKey(key)
     onChange?.(key)
   }
 
