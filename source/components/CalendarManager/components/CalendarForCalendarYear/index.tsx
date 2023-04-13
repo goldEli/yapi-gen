@@ -31,11 +31,11 @@ const hasScheduleClass = css`
   &::after {
     position: absolute;
     content: '';
-    width: 6px;
-    height: 6px;
+    width: 4px;
+    height: 4px;
     background: var(--primary-d1);
-    bottom: -8px;
-    left: 10px;
+    bottom: -4px;
+    left: 12px;
     border-radius: 50%;
   }
 `

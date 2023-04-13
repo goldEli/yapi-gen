@@ -81,14 +81,16 @@ const FileItemInfo = styled.div`
     font-size: var(--font12);
   }
 `
+const toggleDropUp=css`
+  max-height: 0;
+  overflow-y: hidden;
+`
+const toggleDropDown=css`
+  max-height: auto;
+`
 const ScheduleInfoContent: React.FC = props => {
   const { scheduleInfo } = useSelector(state => state.schedule);
-  const [memberStatus,setMemberStatus]=useState({
-    0:'待回复',
-    1:'接受',
-    2:'拒绝',
-    3:'待定'
-  });
+  const [toggleStatus,setToggleStatus]=useState(false)
   const [fileType,setFileType]=useState({
     'docx':'colorDOC-76p4mioh',
     'ppt':'colorPPT',
@@ -108,9 +110,9 @@ const ScheduleInfoContent: React.FC = props => {
         <div className={tip}>
           <span>参与者（{scheduleInfo.members?.length}人）</span><span onClick={(e) => {
             e.stopPropagation()
-          }}><ScheduleInfoIcon type="up" /></span></div>
+          }}><IconFont onClick={()=>setToggleStatus(!toggleStatus)} style={{fontSize:'18px'}} type={toggleStatus?'up':'down'} /></span></div>
       </ScheduleInfoContentItem>
-      <PersonList>
+      <PersonList className={toggleStatus?toggleDropUp:toggleDropDown}>
         {
           scheduleInfo.members?.map((item: any, idx: number) => <PersonItem key={item.user_id}>
             <span><img src={item.user?.avatar} />{item.user?.name}</span>
@@ -130,7 +132,7 @@ const ScheduleInfoContent: React.FC = props => {
       <FileList>
         {
           scheduleInfo.files?.map((item: any, index: number) => <FileItem key={index}>
-            <span><IconFont type={fileType[item.url.substring(item.url.lastIndexOf('.')+1) as keyof typeof fileType]|| 'colorunknown'} /></span>
+            <span><IconFont type={fileType[item.url.substring(item.url.lastIndexOf('.')+1) as keyof typeof fileType] || 'colorunknown'} /></span>
             <FileItemInfo>
               <span>{decodeURIComponent(item.url.substring(item.url.lastIndexOf('/')+1))}</span>
               <span>{item.user.name} {item.created_at}</span>
