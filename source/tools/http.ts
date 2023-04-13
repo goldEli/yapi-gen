@@ -56,7 +56,7 @@ const isCheckTicket = async (isPass: boolean) => {
 }
 
 client.config({
-  base:import.meta.env.__API_BASE_URL__,
+  base: import.meta.env.__API_BASE_URL__,
   headers: {
     'Content-Type': 'application/json; charset=UTF-8',
   },
@@ -195,7 +195,7 @@ export const get = <SearchParams extends HttpRequestSearch, Result = any>(
   options?: any,
 ) => {
   return client.get<SearchParams, ResponseData<Result>>(
-    urls[key as UrlKeys] || key,
+    (urls[key as UrlKeys] || key) as string,
     data,
     options,
   )
@@ -207,7 +207,7 @@ export const post = <Payload, Result = any>(
   options?: any,
 ) => {
   return client.post<Payload, ResponseData<Result>>(
-    urls[key as UrlKeys] || key,
+    (urls[key as UrlKeys] || key) as string,
     data,
     options,
   )
@@ -219,7 +219,7 @@ export const put = <Payload, Result = any>(
   options?: any,
 ) => {
   return client.put<Payload, ResponseData<Result>>(
-    urls[key as UrlKeys] || key,
+    (urls[key as UrlKeys] || key) as string,
     data,
     {
       search: options,
@@ -231,7 +231,7 @@ export const patch = <Payload, Result = any>(
   data?: any,
 ) => {
   return client.patch<Payload, ResponseData<Result>>(
-    urls[key as UrlKeys] || key,
+    (urls[key as UrlKeys] || key) as string,
     data,
   )
 }
@@ -241,7 +241,7 @@ const deleteMethod = <Payload, Result = any>(
   data?: any,
 ) => {
   return client.delete<Payload, ResponseData<Result>>(
-    urls[key as UrlKeys] || key,
+    (urls[key as UrlKeys] || key) as string,
     data,
   )
 }
