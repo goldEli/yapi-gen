@@ -48,19 +48,19 @@ const Index = () => {
       read: id === '2' ? 0 : id === '3' ? 1 : undefined,
       friendUsername: friendUsername.current,
     })
+    console.log(Array.isArray(re4.list), '数据')
 
     if (re4.lastId === 0) {
+      setList(re4.list)
       setHasMore(false)
       return
     }
     lastId.current = re4.lastId
     setTimeout(() => {
       if (b) {
-        console.log(re4.list)
-
         setList(re4.list)
       } else {
-        setList(list.concat(re4.list))
+        setList(e => e.concat(re4.list))
       }
     }, 500)
   }
@@ -79,6 +79,7 @@ const Index = () => {
     setHasMore(true)
     fetchMoreData(true)
   }, [id])
+  console.log(list, '集合')
 
   return (
     <div>
@@ -125,9 +126,11 @@ const Index = () => {
           scrollableTarget="scrollableDiv"
           endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
         >
-          {list.map((i: any) => (
-            <ContentItem setReads={setReads} item={i} key={i.id} />
-          ))}
+          {list.map((i: any) => {
+            console.log(i, 'shu')
+
+            return <ContentItem setReads={setReads} item={i} key={i.id} />
+          })}
         </InfiniteScroll>
       </div>
     </div>
