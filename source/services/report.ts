@@ -5,8 +5,8 @@ export const getStatTempList: any = async () => {
   return response.data
 }
 
-export const getStatUserList: any = async () => {
-  const response = await http.get('statUserList')
+export const getStatUserList: any = async (params: any) => {
+  const response = await http.get('statUserList', params)
   return response.data
 }
 
@@ -18,7 +18,6 @@ export const getStatInfo: any = async () => {
 export const getStatTempUsage: any = async () => {
   const response = await http.get('statTempUsage')
   return response.data
-
 }
 // 模板
 
