@@ -10,8 +10,11 @@ import * as memberInfo from './memberInfo'
 import * as schedule from './schedule'
 import * as calendar from './calendar'
 import * as formwork from './formwork'
+import * as report from './report'
 
 export {
+  formwork,
+  report,
   user,
   setting,
   staff,
@@ -23,5 +26,4 @@ export {
   memberInfo,
   schedule,
   calendar,
-  formwork,
 }
