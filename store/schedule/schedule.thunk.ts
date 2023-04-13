@@ -32,6 +32,7 @@ export const getScheduleListDaysOfMonth = createAsyncThunk(
   },
 )
 
+// 修改日程
 export const modifySchedule =
   (params: API.Schedule.ModifySchedule.Params) =>
   async (dispatch: AppDispatch) => {
