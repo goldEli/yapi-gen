@@ -42,6 +42,7 @@ import RepeatModal from './RepeatModal'
 import UploadAttach from '@/components/UploadAttach'
 import CreateVisualization from './CreateVisualization'
 import { saveSchedule } from '@store/schedule/schedule.thunk'
+import dayjs from 'dayjs'
 
 interface DefaultTime {
   value: number | undefined
@@ -84,7 +85,7 @@ const CreateSchedule = () => {
   // 忙碌或者空闲
   const [status, setStatus] = useState(1)
   // 是否是全天
-  const [isAll, setIsAll] = useState(false)
+  const [isAll, setIsAll] = useState<boolean | undefined>(false)
   //   重复
   const [repeatValue, setRepeatValue] = useState<{
     value: number
@@ -116,6 +117,11 @@ const CreateSchedule = () => {
     { label: '可修改日程', value: 0 },
     { label: '邀请参与者', value: 1 },
   ]
+
+  // 不可选择当前时间之前的
+  const disabledDate: RangePickerProps['disabledDate'] = current => {
+    return current && current < moment().endOf('day')
+  }
 
   // 关闭弹窗
   const onClose = () => {
@@ -204,7 +210,6 @@ const CreateSchedule = () => {
     setIsAll(e.target.checked)
     setNoticeList([])
     form.setFieldsValue({
-      isAll: e.target.checked,
       time,
     })
   }
@@ -281,25 +286,33 @@ const CreateSchedule = () => {
 
   useEffect(() => {
     if (scheduleModal.visible) {
+      console.log(
+        scheduleModal,
+        '=scheduleModalscheduleModalscheduleModal',
+        scheduleModal.params?.isAll,
+      )
       // 获取日历列表，并且过滤出可创建日程的日历
-      const result = [
-        ...calendarData.manager,
-        ...calendarData.subscribe,
-      ].filter((i: Model.Calendar.Info) => [1, 2].includes(i.user_group_id))
-      setCalendarCategory(result)
+      setCalendarCategory(calendarData.manager)
       // 默认日历列表第一条
-      setNormalCategory(result[0])
+      setNormalCategory(calendarData.manager[0])
+      setIsAll(scheduleModal.params?.isAll)
+      const resultTime = [
+        moment(scheduleModal.params?.startTime),
+        moment(scheduleModal.params?.endTime),
+      ]
+      setTime(resultTime)
       // 公开范围默认 为默认
       form.setFieldsValue({
         permission: 1,
+        time: resultTime,
       })
-      if (scheduleModal?.params?.id) {
-        // 调用日程详情接口
-      }
-      // 从简易弹窗跳转过来
-      if (scheduleModal?.params?.time) {
-        // 调用日程详情接口
-      }
+      // if (scheduleModal?.params?.id) {
+      //   // 调用日程详情接口
+      // }
+      // // 从简易弹窗跳转过来
+      // if (scheduleModal?.params?.time) {
+      //   // 调用日程详情接口
+      // }
       setTimeout(() => {
         inputDom.current.focus()
       }, 100)
@@ -374,9 +387,10 @@ const CreateSchedule = () => {
                   showTime={!isAll}
                   onChange={setTime}
                   allowClear={false}
+                  disabledDate={disabledDate}
                 />
               </Form.Item>
-              <Checkbox value={isAll} onChange={onChangeIsAll}>
+              <Checkbox checked={isAll} onChange={onChangeIsAll}>
                 全天
               </Checkbox>
             </TimeWrap>

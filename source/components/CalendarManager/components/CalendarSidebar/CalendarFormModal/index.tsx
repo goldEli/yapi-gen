@@ -47,6 +47,7 @@ import { useTranslation } from 'react-i18next'
 interface PermissionDropProps {
   onUpdateShare(item: Model.Calendar.MemberItem, type: string): void
   item: Model.Calendar.MemberItem
+  onTransfer(id: number, value: number): void
 }
 
 const PermissionDrop = (props: PermissionDropProps) => {
@@ -62,7 +63,8 @@ const PermissionDrop = (props: PermissionDropProps) => {
 
   // 转让日历
   const onTransferCalendar = () => {
-    // 调用转让日历接口并更新
+    props.onTransfer(props.item.id, transferValue)
+    setIsTransferVisible(false)
   }
 
   //  移除成员
@@ -337,7 +339,28 @@ const CalendarFormModal = () => {
         (i: Model.Calendar.MemberItem) => i.id !== item.id,
       )
     }
-    setShareList(resultList)
+    setShareList(resultList as Model.Calendar.MemberItem[])
+  }
+
+  // 转让日历
+  const onTransferCalendar = (id: number, value: number) => {
+    let resultList
+    if (value === 1) {
+      resultList = shareList.map((i: Model.Calendar.MemberItem) => ({
+        ...i,
+        is_owner: i.id === id ? 1 : 2,
+        permission: i.id === id ? 1 : i.permission,
+      }))
+    } else {
+      resultList = shareList
+        .filter((i: Model.Calendar.MemberItem) => i.is_owner !== 1)
+        .map((i: Model.Calendar.MemberItem) => ({
+          ...i,
+          is_owner: i.id === id ? 1 : 2,
+          permission: i.id === id ? 1 : i.permission,
+        }))
+    }
+    setShareList(resultList as Model.Calendar.MemberItem[])
   }
 
   // 获取日历详情
@@ -518,7 +541,11 @@ const CalendarFormModal = () => {
                       </div>
                     )}
                     {i.is_owner !== 1 && (
-                      <PermissionDrop onUpdateShare={onUpdateShare} item={i} />
+                      <PermissionDrop
+                        onUpdateShare={onUpdateShare}
+                        onTransfer={onTransferCalendar}
+                        item={i}
+                      />
                     )}
                   </ShareMemberItem>
                 ))}

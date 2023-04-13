@@ -44,11 +44,12 @@ const TabsWrap = styled(Tabs)`
 
 const TabsContentWrap = styled.div`
   padding: 8px 0;
+  height: 60vh;
+  overflow: auto;
 `
 
 const TabsBox = styled.div`
-  height: 60vh;
-  overflow: auto;
+  height: 100%;
 `
 
 const TabsItem = styled.div`
@@ -169,7 +170,6 @@ const TabsContent = (props: TabsContentProps) => {
   const [dataUserList, setDataUserList] =
     useState<Model.Calendar.GetContactsCalendarInfo[]>()
   const dispatch = useDispatch()
-  const [hasMore, setHasMore] = useState<boolean>(false)
 
   // 取消订阅
   const onCancelSubscribe = async (id: number) => {
@@ -217,56 +217,34 @@ const TabsContent = (props: TabsContentProps) => {
 
   // 更多加载-公开及节假日
   const fetchMoreData = () => {
-    if ((dataList?.length || 0) >= (props.dataList?.pager?.total || 0)) {
-      setHasMore(false)
-      return
-    }
     props.onMore((props.dataList?.pager?.page || 0) + 1)
   }
 
-  // 更多加载-订阅
+  // 更多加载-订阅联系人
   const fetchMoreUserData = () => {
-    if (
-      (dataUserList?.length || 0) >= (props.dataUserList?.pager?.total || 0)
-    ) {
-      setHasMore(false)
-      return
-    }
-    props.onMore((props.dataUserList?.pager?.page || 0) + 1)
+    props.onMore((props.dataList?.pager?.page || 0) + 1)
   }
 
   useEffect(() => {
-    setDataList(props.dataList?.list)
-    setHasMore(
-      !(
-        (props.dataList?.list?.length || 0) <=
-        (props.dataList?.pager?.total || 0)
-      ),
-    )
+    setDataList([...(dataList || []), ...(props.dataList?.list || [])])
   }, [props.dataList])
 
   useEffect(() => {
-    setDataUserList(props.dataUserList?.list)
-    setHasMore(
-      !(
-        (props.dataUserList?.list?.length || 0) <=
-        (props.dataUserList?.pager?.total || 0)
-      ),
-    )
+    setDataUserList([
+      ...(dataUserList || []),
+      ...(props.dataUserList?.list || []),
+    ])
   }, [props.dataUserList])
 
   return (
-    <TabsContentWrap>
+    <TabsContentWrap id="scrollableDiv">
       {props.type !== '0' && (
         <InfiniteScroll
           dataLength={dataList?.length || 0}
           next={fetchMoreData}
-          style={{
-            overflow: 'auto',
-            maxHeight: '60vh',
-          }}
-          hasMore={hasMore}
-          height="60vh"
+          hasMore={
+            (dataList?.length || 0) < (props.dataList?.pager?.total || 0)
+          }
           loader={<Skeleton avatar paragraph={{ rows: 2 }} active />}
           scrollableTarget="scrollableDiv"
         >
@@ -318,20 +296,20 @@ const TabsContent = (props: TabsContentProps) => {
                   )}
                 </TabsItem>
               ))}
-            {dataList && dataList.length <= 0 && <NoData />}
+            {dataList && dataList.length <= 0 && (
+              <NoData style={{ height: '58vh' }} />
+            )}
           </TabsBox>
         </InfiniteScroll>
       )}
       {props.type === '0' && (
         <InfiniteScroll
-          dataLength={dataList?.length || 0}
+          dataLength={dataUserList?.length || 0}
           next={fetchMoreUserData}
-          style={{
-            overflow: 'auto',
-            maxHeight: '60vh',
-          }}
-          hasMore={hasMore}
-          height="60vh"
+          hasMore={
+            (dataUserList?.length || 0) <
+            (props.dataUserList?.pager?.total || 0)
+          }
           loader={<Skeleton avatar paragraph={{ rows: 2 }} active />}
           scrollableTarget="scrollableDiv"
         >
@@ -380,7 +358,9 @@ const TabsContent = (props: TabsContentProps) => {
                   </div>
                 </TabsItemLi>
               ))}
-            {dataUserList && dataUserList.length <= 0 && <NoData />}
+            {dataUserList && dataUserList.length <= 0 && (
+              <NoData style={{ height: '58vh' }} />
+            )}
           </TabsBox>
         </InfiniteScroll>
       )}
