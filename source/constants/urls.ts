@@ -142,7 +142,9 @@ const urls = {
   statTempList: '/b/work_report/statistics/template/list',
   statUserList: '/b/work_report/statistics/user/list',
   statInfo: '/b/work_report/statistics/info',
-  statTempUsage: '/b/work_report/statistics/template',
+  repSentList: '/b/work_report/user/send/list',
+  repReceivedList: '/b/work_report/user/receive/list',
+  repPublicList: '/b/work_report/user/public/list',
 }
 
 export default urls
