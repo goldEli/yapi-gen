@@ -1,3 +1,4 @@
+/* eslint-disable no-empty */
 /* eslint-disable require-atomic-updates */
 /* eslint-disable no-undefined */
 /* eslint-disable camelcase */
@@ -14,14 +15,14 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import { Divider, Skeleton } from 'antd'
 import { getMsg_list, setReadApi } from '@/services/SiteNotifications'
 import { useEffect, useRef, useState } from 'react'
-import { log } from 'console'
 
 interface ZoomRatioType {
   [MapZoom: string]: string
 }
 const Index = () => {
-  const lastId = useRef(0)
-  const friendUsername = useRef('')
+  const lastId = useRef<any>()
+  const friendUsername = useRef<any>(undefined)
+  const msgType = useRef<any>(undefined)
   const [list, setList] = useState([])
   // const [lastId, setLastId] = useState<any>(0)
   const [hasMore, setHasMore] = useState(true)
@@ -47,11 +48,10 @@ const Index = () => {
       lastId: lastId.current,
       read: id === '2' ? 0 : id === '3' ? 1 : undefined,
       friendUsername: friendUsername.current,
+      msgType: msgType.current,
     })
-    console.log(Array.isArray(re4.list), '数据')
 
     if (re4.lastId === 0) {
-      setList(re4.list)
       setHasMore(false)
       return
     }
@@ -64,9 +64,17 @@ const Index = () => {
       }
     }, 500)
   }
-  const changeUser = (str: string) => {
+  const changeUser = (str: string, arr: any) => {
     console.log(str, 'fdfd')
+    msgType.current = arr
     friendUsername.current = str
+    lastId.current = 0
+    setHasMore(true)
+    fetchMoreData(true)
+  }
+  const changeMsg = (arr: any) => {
+    msgType.current = arr
+
     lastId.current = 0
     setHasMore(true)
     fetchMoreData(true)
@@ -83,7 +91,7 @@ const Index = () => {
 
   return (
     <div>
-      <AllSideFilter changeUser={changeUser} />
+      <AllSideFilter changeUser={changeUser} changeMsg={changeMsg} />
       <div
         style={{
           display: 'flex',
@@ -124,7 +132,7 @@ const Index = () => {
           height={document.body.clientHeight - 230}
           loader={<Skeleton avatar paragraph={{ rows: 2 }} active />}
           scrollableTarget="scrollableDiv"
-          endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+          endMessage={<Divider plain>nothing more 🤐</Divider>}
         >
           {list.map((i: any) => {
             console.log(i, 'shu')
