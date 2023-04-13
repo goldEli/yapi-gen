@@ -44,7 +44,7 @@ export const refreshCalendarPanelScheduleList =
     }
     const newParams = {
       ...params,
-      calendar_ids: checkedCalendarList,
+      calendar_ids: checkedCalendarList.map(item => item.calendar_id),
     }
     switch (calendarPanelType) {
       case 'day':
