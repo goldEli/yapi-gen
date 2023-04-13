@@ -22,7 +22,7 @@ type SliceState = {
   scheduleDate?: number
   yearViewScheduleList: Model.Schedule.Info[]
   monthViewScheduleList: Model.Schedule.Info[]
-  scheduleInfo: Model.Schedule.Info
+  scheduleInfo?: Model.Schedule.Info
   scheduleInfoReply?: {
     status: number
   }
@@ -43,22 +43,6 @@ const initialState: SliceState = {
   scheduleDate: 0,
   yearViewScheduleList: [],
   monthViewScheduleList: [],
-  scheduleInfo: {
-    schedule_id: 0,
-    subject: '',
-    is_span_day: false,
-    is_all_day: 1,
-    start_timestamp: 0,
-    end_timestamp: 0,
-    is_busy: 1,
-    color: 0,
-    is_busy_text: '',
-    year: 0,
-    month: 0,
-    day: 0,
-    datetime: '',
-    timestamp: 0,
-  },
 }
 
 const slice = createSlice({

@@ -41,6 +41,7 @@ declare namespace Model.Schedule {
     datetime: string
     // 1677772799
     timestamp: number
+    date: string
 
     creator?: {
       id: integer

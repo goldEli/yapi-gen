@@ -107,7 +107,7 @@ const ScheduleInfoContent: React.FC = props => {
         <div className={tip}>
           <span>
             <img src={scheduleInfo?.creator?.avatar} />
-            {scheduleInfo.creator?.name}（所有者）
+            {scheduleInfo?.creator?.name}（所有者）
           </span>
         </div>
       </ScheduleInfoContentItem>
@@ -116,7 +116,7 @@ const ScheduleInfoContent: React.FC = props => {
           <ScheduleInfoIcon type="team" />
         </span>
         <div className={tip}>
-          <span>参与者（{scheduleInfo.members?.length}人）</span>
+          <span>参与者（{scheduleInfo?.members?.length}人）</span>
           <span
             onClick={e => {
               e.stopPropagation()
@@ -131,7 +131,7 @@ const ScheduleInfoContent: React.FC = props => {
         </div>
       </ScheduleInfoContentItem>
       <PersonList className={toggleStatus ? toggleDropUp : toggleDropDown}>
-        {scheduleInfo.members?.map((item, idx) => (
+        {scheduleInfo?.members?.map((item, idx) => (
           <PersonItem key={item.user_id}>
             <span>
               <img src={item.user?.avatar} />
@@ -145,7 +145,7 @@ const ScheduleInfoContent: React.FC = props => {
         <span>
           <ScheduleInfoIcon type="file-02" />
         </span>
-        <div className={tip}>{scheduleInfo.describe}</div>
+        <div className={tip}>{scheduleInfo?.describe}</div>
       </ScheduleInfoContentItem>
       <ScheduleInfoContentItem>
         <span>
@@ -154,7 +154,7 @@ const ScheduleInfoContent: React.FC = props => {
         <div className={tip}>文件列表</div>
       </ScheduleInfoContentItem>
       <FileList>
-        {scheduleInfo.files?.map((item, index) => (
+        {scheduleInfo?.files?.map((item, index) => (
           <FileItem key={index}>
             <span>
               <IconFont
@@ -180,7 +180,7 @@ const ScheduleInfoContent: React.FC = props => {
           </FileItem>
         ))}
       </FileList>
-      {scheduleInfo.reminds?.map((item, idx) => (
+      {scheduleInfo?.reminds?.map((item, idx) => (
         <ScheduleInfoContentItem key={idx}>
           <span>
             <ScheduleInfoIcon type="alarm" />
@@ -192,7 +192,7 @@ const ScheduleInfoContent: React.FC = props => {
         <span>
           <ScheduleInfoIcon type="calendar-days" />
         </span>
-        <div className={tip}>{scheduleInfo.calendar_name}</div>
+        <div className={tip}>{scheduleInfo?.calendar_name}</div>
       </ScheduleInfoContentItem>
     </ScheduleInfoContentBox>
   )

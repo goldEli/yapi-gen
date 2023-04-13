@@ -21,12 +21,11 @@ const ScheduleInfoFooter: React.FC<iProps> = props => {
   const disPatch = useDispatch()
   const { scheduleInfo } = useSelector(state => state.schedule)
   const replySchedule = (status: number) => {
-    console.log('status------', status, typeof scheduleInfo.id)
-    disPatch(scheduleInfoReply({ id: scheduleInfo.id as any, status }))
+    disPatch(scheduleInfoReply({ id: scheduleInfo?.id as any, status }))
   }
   return (
     <>
-      {scheduleInfo.is_join &&
+      {scheduleInfo?.is_join &&
       scheduleInfo.join_member_status === 0 &&
       !scheduleInfo.is_creator ? (
         <ScheduleInfoFooterBox>
