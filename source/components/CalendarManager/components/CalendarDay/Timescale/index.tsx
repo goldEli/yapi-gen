@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import dayjs from 'dayjs'
-import React, { useCallback, useEffect, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import CurrentTimeLine from '../CurrentTimeLine'
 import {
   formatYYYYMMDD,
@@ -59,7 +59,12 @@ const Timescale: React.FC<TimescaleProps> = props => {
   const [distance, setDistance] = React.useState(0)
   const tableRef = React.useRef<HTMLTableElement>(null)
   const timeRange = useCreateTimeRange(timeZone?.[0], distance)
+  const timeRangeRef = useRef(timeRange)
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    timeRangeRef.current = timeRange
+  }, [timeRange])
 
   const cancelCreateSchedule = () => {
     setTimeZone([])
@@ -73,7 +78,6 @@ const Timescale: React.FC<TimescaleProps> = props => {
 
   const onSelectTimeZone = useCallback(
     (e: React.MouseEvent, id: string) => {
-      console.log('mouseDown', timeRange)
       // 点击空白重置
       if (timeZone.length) {
         cancelCreateSchedule()
@@ -103,8 +107,8 @@ const Timescale: React.FC<TimescaleProps> = props => {
             visible: true,
             x: event.offsetX + 58,
             y: target.offsetTop,
-            startTime: timeRange.startTime,
-            endTime: timeRange.endTime,
+            startTime: timeRangeRef.current.startTime,
+            endTime: timeRangeRef.current.endTime,
             isAll: false,
           }),
         )
