@@ -66,6 +66,7 @@ const ClearButton = styled.div`
   white-space: nowrap;
   cursor: pointer;
 `
+const defaultPageParam = { page: 1, pagesize: 20 }
 
 const List = () => {
   const [t] = useTranslation()
@@ -75,9 +76,10 @@ const List = () => {
   const [orderKey, setOrderKey] = useState<any>()
   const [visibleLook, setVisibleLook] = useState(false)
   const [total, setTotal] = useState<number>(250)
-  const [pageObj, setPageObj] = useState({ page: 1, pagesize: 20 })
+  const [pageObj, setPageObj] = useState(defaultPageParam)
   const [listData, setListData] = useState<any[]>([])
   const [queryParams, setQueryParams] = useState<any>({})
+
   const params = useParams()
   const id = Number(params?.id)
 
@@ -130,7 +132,12 @@ const List = () => {
 
   useEffect(() => {
     getList()
-  }, [id, pageObj, queryParams])
+  }, [pageObj, queryParams])
+
+  useEffect(() => {
+    setQueryParams({})
+    setPageObj({ ...pageObj, page: 1 })
+  }, [id])
 
   const NewSort = (props: any) => {
     return (
