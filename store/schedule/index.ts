@@ -7,7 +7,10 @@ import {
   getScheduleListDaysOfWeek,
   getScheduleListDaysOfMonth,
   scheduleInfoReply,
+  getLeftCalendarDaysOfMonthList,
+  getScheduleDaysOfList
 } from './schedule.thunk'
+import { Mode } from 'fs'
 
 type SliceState = {
   // 默认日程时长
@@ -20,11 +23,15 @@ type SliceState = {
   }
   scheduleListModal: Model.Schedule.ScheduleList
   scheduleDate?: number
-  yearViewScheduleList: Model.Schedule.Info[]
+  yearViewScheduleList: Model.Schedule.Info[],
+  listViewScheduleList?: [],
   monthViewScheduleList: Model.Schedule.Info[]
   scheduleInfo?: Model.Schedule.Info
   scheduleInfoReply?: {
     status: number
+  }
+  leftViewScheduleList: {
+    [key in string]: Model.Schedule.Info[]
   }
 }
 
@@ -43,6 +50,7 @@ const initialState: SliceState = {
   scheduleDate: 0,
   yearViewScheduleList: [],
   monthViewScheduleList: [],
+  leftViewScheduleList: {},
 }
 
 const slice = createSlice({
@@ -89,12 +97,27 @@ const slice = createSlice({
     builder.addCase(getCalendarDaysOfMonthList.fulfilled, (state, action) => {
       state.monthViewScheduleList = action.payload
     })
+    builder.addCase(getScheduleDaysOfList.fulfilled, (state, action) => {
+      let array:any = []
+      if (action.payload) {
+        Object.keys(action.payload).sort().forEach(key=>{
+          array.push({ date: key, list: action.payload[key] })
+        })
+      }
+      state.listViewScheduleList = array
+    })
     builder.addCase(getScheduleInfo.fulfilled, (state, action) => {
       state.scheduleInfo = action.payload
     })
     builder.addCase(scheduleInfoReply.fulfilled, (state, action) => {
       state.scheduleInfoReply = action.payload
     })
+    builder.addCase(
+      getLeftCalendarDaysOfMonthList.fulfilled,
+      (state, action) => {
+        state.leftViewScheduleList = action.payload
+      },
+    )
   },
 })
 

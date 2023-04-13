@@ -133,7 +133,31 @@ export const getCalendarDaysOfMonthList = createAsyncThunk(
     return ''
   },
 )
-
+export const getScheduleDaysOfList = createAsyncThunk(
+  `${name}/getScheduleDaysOfList`,
+  async (params: API.Schedule.ScheduleInfoList.Params) => {
+    try {
+      const res = await services.schedule.getCalendarDaysOfMonthList(params)
+      return res.data
+    } catch (error) {
+      //
+    }
+    return ''
+  },
+)
+// 左侧日历获取当月的日程
+export const getLeftCalendarDaysOfMonthList = createAsyncThunk(
+  `${name}/getLeftCalendarDaysOfMonthList`,
+  async (params: API.Schedule.ScheduleInfoList.Params) => {
+    try {
+      const res = await services.schedule.getCalendarDaysOfMonthList(params)
+      return res.data
+    } catch (error) {
+      //
+    }
+    return ''
+  },
+)
 export const getScheduleInfo = createAsyncThunk(
   `${name}/getScheduleInfo`,
   async (params: { id: number; show_date: string | number }) => {

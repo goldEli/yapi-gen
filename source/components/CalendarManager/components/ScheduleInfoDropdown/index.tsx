@@ -33,7 +33,6 @@ const ScheduleInfoDropdown: React.FC<ScheduleInfoDropdownProps> = props => {
   const { scheduleInfoDropdown } = useSelector(store => store.calendarPanel)
   const { schedule_id, show_date = dayjs().format('YYYY-MM-DD') } =
     scheduleInfoDropdown
-  console.log('scheduleInfoDropdown----', scheduleInfoDropdown)
   const { visible } = scheduleInfoDropdown
   const { position } = useModalPosition({
     ...scheduleInfoDropdown,
