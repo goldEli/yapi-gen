@@ -38,6 +38,11 @@ const Title = styled.span`
   line-height: 20px;
   color: var(--neutral-n1-d1);
 `
+const Time = styled.span`
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--neutral-n4);
+`
 
 const ScheduleCard: React.FC<ScheduleCardProps> = props => {
   const { data } = props
@@ -210,6 +215,26 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
   }
 
   const gridHeight = useMemo(() => (oneHourHeight / 60) * 15, [outerHeight])
+  const { is_show_busy } = data
+
+  const content = useMemo(() => {
+    if (is_show_busy) {
+      return (
+        <>
+          <Time>{data.start_time}&nbsp;</Time>
+          <Title>{data.is_busy_text}</Title>
+        </>
+      )
+    }
+    return (
+      <>
+        <Title>
+          {timeRange && `${timeRange?.startTime} - ${timeRange?.endTime} `}
+        </Title>
+        <Title>{data.subject}</Title>`
+      </>
+    )
+  }, [is_show_busy, timeRange, data.subject, data.start_time])
 
   return (
     <Rnd
@@ -232,13 +257,14 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
         y: top,
       }}
       dragAxis="y"
+      disableDragging={is_show_busy}
       enableResizing={{
-        bottom: true,
+        bottom: !is_show_busy,
         bottomLeft: false,
         bottomRight: false,
         left: false,
         right: false,
-        top: true,
+        top: !is_show_busy,
         topLeft: false,
         topRight: false,
       }}
@@ -250,10 +276,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
       onResize={onResize}
       onResizeStop={onResizeStop}
     >
-      <Title>
-        {timeRange && `${timeRange?.startTime} - ${timeRange?.endTime} `}
-      </Title>
-      <Title>{props.data.subject}</Title>
+      {content}
     </Rnd>
   )
 }
