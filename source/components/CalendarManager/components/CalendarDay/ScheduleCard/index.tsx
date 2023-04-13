@@ -239,16 +239,14 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
         y: top,
       }}
       dragAxis="y"
-      // disableDragging={is_show_busy}
+      disableDragging={is_show_busy}
       enableResizing={{
-        bottom: true,
-        // bottom: !is_show_busy,
+        bottom: !is_show_busy,
         bottomLeft: false,
         bottomRight: false,
         left: false,
         right: false,
-        top: true,
-        // top: !is_show_busy,
+        top: !is_show_busy,
         topLeft: false,
         topRight: false,
       }}
