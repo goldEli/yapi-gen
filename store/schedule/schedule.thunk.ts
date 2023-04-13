@@ -36,16 +36,21 @@ export const refreshCalendarPanelScheduleList =
   () => async (dispatch: AppDispatch) => {
     const state = store.getState()
     const { calendarPanelType } = state.calendarPanel
+    const { checkedCalendarList } = state.calendar
     const params = ParamsCache.getInstance().getCache(calendarPanelType)
+    const newParams = {
+      ...params,
+      calendar_ids: checkedCalendarList,
+    }
     switch (calendarPanelType) {
       case 'day':
-        dispatch(getScheduleListDaysOfDate(params))
+        dispatch(getScheduleListDaysOfDate(newParams))
         break
       case 'week':
-        dispatch(getScheduleListDaysOfWeek(params))
+        dispatch(getScheduleListDaysOfWeek(newParams))
         break
       case 'month':
-        dispatch(getScheduleListDaysOfMonth(params))
+        dispatch(getScheduleListDaysOfMonth(newParams))
         break
 
       default:
