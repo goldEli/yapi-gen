@@ -75,11 +75,11 @@ const initialState: SliceState = {
   },
   checkedCalendarList: [],
   menuList: [
-    { name: '视图选项', key: 'view' },
-    { name: '日程设置', key: 'schedule' },
-    { name: '通知设置', key: 'notice' },
-    { name: '日历导入', key: 'import' },
-    { name: '日历导出', key: 'export' },
+    { name: 'view_options', key: 'view' },
+    { name: 'schedule_settings', key: 'schedule' },
+    { name: 'notification_settings', key: 'notice' },
+    { name: 'calendar_import', key: 'import' },
+    { name: 'calendar_export', key: 'export' },
   ],
   routerMenu: {
     name: '',

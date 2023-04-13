@@ -81,10 +81,8 @@ declare namespace Model.Calendar {
     // 用于编辑日程详情查询
     id?: string | number
     // 日程时间
-    time?: {
-      startTime: string
-      endTime: string
-    }
+    startTime?: string
+    endTime?: string
     // 是否全天
     isAll?: boolean
     // 小弹窗位置
@@ -120,7 +118,7 @@ declare namespace Model.Calendar {
     calendar_id: number
     id: number
     color: number
-    is_owner: 1 | 2
+    is_owner?: 1 | 2
     // 1 是默认的日历，用于判断删除权限
     is_default: 0 | 1
     name: string

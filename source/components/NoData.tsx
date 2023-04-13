@@ -29,12 +29,13 @@ interface Props {
   haveFilter?: any
   // 大小
   size?: any
+  style?: any
 }
 
 const NoData = (props: Props) => {
   const [t] = useTranslation()
   return (
-    <Wrap>
+    <Wrap style={{ ...props.style }}>
       <img src={noData} style={{ width: props?.size ? 120 : 240 }} alt="" />
       {!props?.subText && !props?.children && !props?.haveFilter && (
         <div>{t('components.noData')}</div>

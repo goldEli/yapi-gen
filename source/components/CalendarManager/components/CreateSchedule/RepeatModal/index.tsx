@@ -6,13 +6,13 @@ import {
   DatePicker,
   DatePickerProps,
   Form,
-  Input,
   InputNumber,
   Select,
 } from 'antd'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { RangePickerProps } from 'antd/lib/date-picker'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface RepeatModalProps {
   title: string
@@ -23,6 +23,7 @@ interface RepeatModalProps {
 }
 
 const RepeatModal = (props: RepeatModalProps) => {
+  const [t] = useTranslation()
   const { relateConfig } = useSelector(store => store.calendar)
   //  每多少重复
   const [repeat, setRepeat] = useState<number>(1)
@@ -34,16 +35,16 @@ const RepeatModal = (props: RepeatModalProps) => {
   const [number, setNumber] = useState<number>(1)
   // 选择周期
   const [chooseRepeat, setChooseRepeat] = useState<CheckboxValueType[]>([])
-  const unit = ['天', '周', '月', '年']
+  const unit = [t('day'), t('week'), t('month'), t('year')]
 
   const checkboxOptions = [
-    { label: '周一', value: 1 },
-    { label: '周二', value: 2 },
-    { label: '周三', value: 3 },
-    { label: '周四', value: 4 },
-    { label: '周五', value: 5 },
-    { label: '周六', value: 6 },
-    { label: '周日', value: 0 },
+    { label: t('monday1'), value: 1 },
+    { label: t('tuesday'), value: 2 },
+    { label: t('wednesday'), value: 3 },
+    { label: t('thursday'), value: 4 },
+    { label: t('friday'), value: 5 },
+    { label: t('saturday1'), value: 6 },
+    { label: t('weekday'), value: 0 },
   ]
 
   const onClose = () => {
@@ -76,8 +77,6 @@ const RepeatModal = (props: RepeatModalProps) => {
     onClose()
   }
 
-  console.log()
-
   return (
     <CommonModal
       isVisible={props.isVisible}
@@ -91,7 +90,7 @@ const RepeatModal = (props: RepeatModalProps) => {
         labelAlign="left"
       >
         <Form.Item
-          label="每"
+          label={t('every')}
           style={{ margin: props.currentRepeat === 2 ? '0 0 8px 0' : '' }}
         >
           <InputNumber
@@ -100,7 +99,8 @@ const RepeatModal = (props: RepeatModalProps) => {
             min={1}
             onChange={value => setRepeat(value || 1)}
           />
-          {unit[props.currentRepeat - 1]}重复
+          {unit[props.currentRepeat - 1]}
+          {t('repeat')}
         </Form.Item>
         {props.currentRepeat === 2 && (
           <RepeatModalCheck>
@@ -110,7 +110,7 @@ const RepeatModal = (props: RepeatModalProps) => {
             />
           </RepeatModalCheck>
         )}
-        <Form.Item label="结束重复">
+        <Form.Item label={t('end_repetition')}>
           <Select
             style={{ width: 140, marginRight: 16 }}
             options={relateConfig.schedule.repeat_end_types}
@@ -128,7 +128,7 @@ const RepeatModal = (props: RepeatModalProps) => {
                 min={1}
                 onChange={value => setNumber(value || 1)}
               />
-              次后
+              {t('after')}
             </>
           )}
         </Form.Item>

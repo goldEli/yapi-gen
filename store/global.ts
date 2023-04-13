@@ -16,8 +16,6 @@ export interface GlobalState {
   language: string
   basicFieldList: any[]
   tagOrPriority: any[]
-  // // 最小宽度 -- 用于搜索栏按钮展示
-  // screenMin: boolean
 }
 
 const initialState: GlobalState = {

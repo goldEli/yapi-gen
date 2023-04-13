@@ -82,7 +82,7 @@ const CalendarSetSide = () => {
             onClick={() => onChangeRouter(i)}
             active={routerMenu.key === i.key}
           >
-            {i.name}
+            {t(i.name)}
           </MenuItem>
         ))}
       </MenuItems>

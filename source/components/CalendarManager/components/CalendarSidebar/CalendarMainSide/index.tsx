@@ -7,7 +7,7 @@ import CommonButton from '@/components/CommonButton'
 import IconFont from '@/components/IconFont'
 import InputSearch from '@/components/InputSearch'
 import { setScheduleModal, setRouterMenu } from '@store/calendar'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import CalendarManagerList from '../../CalendarManagerList'
 import DXCalendar from '../../DXCalendar'
 import { getCalendarList } from '@store/calendar/calendar.thunk'
@@ -20,6 +20,7 @@ const CalendarMainSide = () => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const [value, setValue] = useState('')
+  const { checkedTime } = useSelector(store => store.calendar)
 
   // 改变路由
   const onChangeRouter = () => {
@@ -29,7 +30,12 @@ const CalendarMainSide = () => {
 
   // 创建日程
   const onCreate = () => {
-    dispatch(setScheduleModal({ visible: true }))
+    const params = {
+      isAll: true,
+      startTime: checkedTime,
+      endTime: checkedTime,
+    }
+    dispatch(setScheduleModal({ visible: true, params }))
   }
 
   useEffect(() => {
@@ -43,7 +49,7 @@ const CalendarMainSide = () => {
       <CommonButton type="primary" style={{ width: '100%', marginBottom: 24 }}>
         <CreateScheduleBtn onClick={onCreate}>
           <IconFont type="plus" style={{ fontSize: 16 }} />
-          <span className="btnText">{t('create_calendar')}</span>
+          <span className="btnText">{t('create_schedule')}</span>
         </CreateScheduleBtn>
       </CommonButton>
       <DXCalendar />
