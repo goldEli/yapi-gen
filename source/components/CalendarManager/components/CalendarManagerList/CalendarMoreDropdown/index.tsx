@@ -134,6 +134,8 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
       resultList = ['edit', 'only', 'delete']
     } else if (props.item.user_group_id === 1) {
       resultList = ['edit', 'only', 'unsubscribe', 'delete']
+    } else {
+      resultList = ['only', 'unsubscribe']
     }
     return manageMenu.filter((i: { name: string; type: string }) =>
       resultList.includes(i.type),

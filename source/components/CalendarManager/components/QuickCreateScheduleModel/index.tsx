@@ -113,9 +113,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
     color: 0,
     calendar_id: 0,
   })
-  const [time, setTime] = useState<
-    Moment | undefined | DatePickerProps['value'] | RangePickerProps['value']
-  >(null)
+  const [time, setTime] = useState<any>()
   // 参与者
   const [participant, setParticipant] = useState<{
     list: Model.Calendar.MemberItem[]
@@ -126,6 +124,11 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
   })
   // 提醒
   const [noticeList, setNoticeList] = useState<DefaultTime[]>([])
+
+  // 不可选择当前时间之前的
+  const disabledDate: RangePickerProps['disabledDate'] = current => {
+    return current && current < moment().endOf('day')
+  }
 
   // 关闭弹窗
   const onClose = () => {
@@ -177,6 +180,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
   // 是否是全天
   const onChangeIsAll = (e: CheckboxChangeEvent) => {
     setIsAll(e.target.checked)
+    console.log(time, '11111')
     form.setFieldsValue({
       isAll: e.target.checked,
       time,
@@ -264,21 +268,28 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
   useEffect(() => {
     if (quickCreateScheduleModel.visible) {
       // 获取日历列表，并且过滤出可创建日程的日历
-      const result = [
-        ...calendarData.manager,
-        ...calendarData.subscribe,
-      ].filter((i: Model.Calendar.Info) => [1, 2].includes(i.user_group_id))
-      setCalendarCategory(result)
+      setCalendarCategory(calendarData.manager)
       // 默认日历列表第一条
-      setNormalCategory(result[0])
+      setNormalCategory(calendarData.manager[0])
+      setIsAll(quickCreateScheduleModel.isAll)
+      const resultTime = [
+        moment(quickCreateScheduleModel.startTime),
+        moment(quickCreateScheduleModel.endTime),
+      ]
+      setTime(resultTime)
       // 公开范围默认 为默认
       form.setFieldsValue({
         permission: 1,
+        time: resultTime,
       })
       setTimeout(() => {
         inputDom.current.focus()
       }, 100)
     }
+    console.log(
+      quickCreateScheduleModel,
+      '=quickCreateScheduleModelquickCreateScheduleModel',
+    )
   }, [quickCreateScheduleModel])
 
   if (!position) {
@@ -342,12 +353,13 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
             >
               <DatePicker.RangePicker
                 style={{ width: '100%' }}
-                showTime
+                showTime={!isAll}
                 onChange={setTime}
                 allowClear={false}
+                disabledDate={disabledDate}
               />
             </Form.Item>
-            <Checkbox value={isAll} onChange={onChangeIsAll}>
+            <Checkbox checked={isAll} onChange={onChangeIsAll}>
               全天
             </Checkbox>
           </TimeWrap>

@@ -161,9 +161,10 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
                 />
               </CalendarManagerListItem>
             ))}
-          {calendarList?.filter((k: Model.Calendar.Info) =>
-            k.name.includes(props.searchValue),
-          ).length <= 0 && <NoData size />}
+          {calendarList &&
+            calendarList?.filter((k: Model.Calendar.Info) =>
+              k.name.includes(props.searchValue),
+            ).length <= 0 && <NoData size />}
         </Panel>
       </CollapseWrap>
     </div>
