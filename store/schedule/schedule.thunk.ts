@@ -32,6 +32,7 @@ export const getScheduleListDaysOfMonth = createAsyncThunk(
   },
 )
 
+// 刷新面板上日程列表
 export const refreshCalendarPanelScheduleList =
   () => async (dispatch: AppDispatch) => {
     const state = store.getState()
