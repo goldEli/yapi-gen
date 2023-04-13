@@ -59,7 +59,7 @@ const useCalculationConflict = () => {
       }
       return {
         info: item,
-        width: maxWidth,
+        width: maxWidth - 20,
         left: minLeft,
       }
     })

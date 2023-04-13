@@ -4,13 +4,13 @@ import { useSelector, useDispatch } from '@store/index'
 import { setScheduleModal } from '@store/calendar'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
 import { Dropdown, Checkbox } from 'antd'
-import React, { useState ,useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import ScheduleInfoIcon from './../ScheduleInfoIcon'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import dayjs from 'dayjs'
-import weekday  from 'dayjs/plugin/weekday'
+import weekday from 'dayjs/plugin/weekday'
 dayjs.extend(weekday)
-interface ScheduleInfoDropdownProps { }
+interface ScheduleInfoDropdownProps {}
 const ScheduleInfoHeader = styled.div`
   height: 136px;
   background-color: var(--primary-d1);
@@ -76,9 +76,8 @@ const confirmSure = css`
 `
 const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
   const [isVisible, setIsVisible] = useState(false)
-  const [checked, setChecked] = useState(false);
-  const {scheduleInfo}=useSelector(state=>state.schedule);
-  console.log('scheduleInfo-----',scheduleInfo)
+  const [checked, setChecked] = useState(false)
+  const { scheduleInfo } = useSelector(state => state.schedule)
   const disPatch = useDispatch()
   const onConfirm = () => {
     console.log(checked)
@@ -117,10 +116,14 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
         </div>
       </ScheduleInfoHeaderBtn>
       <ScheduleInfoHeaderContent>
-      {scheduleInfo.subject}
+        {scheduleInfo.subject}
       </ScheduleInfoHeaderContent>
       <ScheduleInfoHeaderDate>
-        {dayjs(scheduleInfo.start_datetime).format('MM月DD')} ( 周{dayjs(scheduleInfo.start_datetime).weekday()}) {scheduleInfo.start_time} - {dayjs(scheduleInfo.end_datetime).format('MM月DD')} (周{dayjs(scheduleInfo.start_datetime).weekday()}) {scheduleInfo.end_time}
+        {dayjs(scheduleInfo.start_datetime).format('MM月DD')} ( 周
+        {dayjs(scheduleInfo.start_datetime).weekday()}){' '}
+        {scheduleInfo.start_time} -{' '}
+        {dayjs(scheduleInfo.end_datetime).format('MM月DD')} (周
+        {dayjs(scheduleInfo.start_datetime).weekday()}) {scheduleInfo.end_time}
       </ScheduleInfoHeaderDate>
       <DeleteConfirm
         isVisible={isVisible}
