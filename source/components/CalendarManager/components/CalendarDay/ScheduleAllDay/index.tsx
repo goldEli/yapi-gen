@@ -113,6 +113,8 @@ const ScheduleAllDay: React.FC<ScheduleAllDayProps> = props => {
           e.stopPropagation()
           dispatch(
             setQuickCreateScheduleModel({
+              startTime: calenderDayValue,
+              endTime: calenderDayValue,
               visible: true,
               isAll: true,
               x: 100,
