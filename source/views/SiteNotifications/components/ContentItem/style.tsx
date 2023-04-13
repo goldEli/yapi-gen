@@ -20,12 +20,12 @@ export const Time = styled.div`
   margin-left: auto;
 `
 
-export const Wrap = styled.div`
+export const Wrap = styled.div<{ greps?: boolean }>`
   padding: 12px;
   display: flex;
   border-radius: 6px 6px 6px 6px;
   transition: all 0.3s;
-  /* filter: grayscale(150%); */
+  filter: ${props => (props.greps ? 'grayscale(250%)' : '')};
   /* filter: drop-shadow(5px 5px 5px black);
   filter: saturate(50%);  */
   :hover {

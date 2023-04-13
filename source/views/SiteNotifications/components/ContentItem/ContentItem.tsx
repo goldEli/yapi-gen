@@ -35,10 +35,14 @@ const ContentItem = (props: any) => {
     }
     return time
   }
+  const change = () => {
+    setChoose(true)
+    props.setReads([id])
+  }
 
   return (
     <div>
-      <Wrap onClick={() => setChoose(true)}>
+      <Wrap greps={choose} onClick={change}>
         <div
           style={{
             marginRight: '12px',
@@ -54,7 +58,7 @@ const ContentItem = (props: any) => {
             {/* <Tip>在评论中@了您</Tip> */}
             <Time>{formatTime(create_time)}</Time>
             {read === 0 && (
-              <Time2 onClick={() => props.setReads([id])}>
+              <Time2>
                 <Radio checked={choose} />
               </Time2>
             )}
