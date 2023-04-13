@@ -326,11 +326,11 @@ const CalendarSet = () => {
         <div className="main">{t('programme')}</div>
         <IconFont className="main" type="right" style={{ fontSize: 14 }} />
         <div className="sub">
-          {
+          {t(
             menuList.filter(
               (i: Model.Calendar.RouterMenu) => i.key === routerMenu.key,
-            )[0].name
-          }
+            )[0].name,
+          )}
         </div>
       </CrumbsWrap>
       <ContentWrap>

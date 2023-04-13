@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from '@store/index'
 import {
   Checkbox,
   DatePicker,
-  DatePickerProps,
   Form,
   Input,
   Popover,
@@ -37,12 +36,12 @@ import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { RangePickerProps } from 'antd/lib/date-picker'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox'
-import moment, { Moment } from 'moment'
+import moment from 'moment'
 import RepeatModal from './RepeatModal'
 import UploadAttach from '@/components/UploadAttach'
 import CreateVisualization from './CreateVisualization'
 import { saveSchedule } from '@store/schedule/schedule.thunk'
-import dayjs from 'dayjs'
+import { useTranslation } from 'react-i18next'
 
 interface DefaultTime {
   value: number | undefined
@@ -64,6 +63,7 @@ const CreateFormItem = (props: CreateFormItemProps) => {
 }
 
 const CreateSchedule = () => {
+  const [t] = useTranslation()
   const dispatch = useDispatch()
   const leftDom: any = useRef<HTMLDivElement>(null)
   const inputDom: any = useRef<HTMLInputElement>(null)
@@ -114,8 +114,8 @@ const CreateSchedule = () => {
 
   // 参与者的权限
   const checkboxOptions = [
-    { label: '可修改日程', value: 0 },
-    { label: '邀请参与者', value: 1 },
+    { label: t('modifiable_schedule'), value: 0 },
+    { label: t('invite_participants'), value: 1 },
   ]
 
   // 不可选择当前时间之前的
@@ -178,7 +178,7 @@ const CreateSchedule = () => {
       : moment(values.time[1]).format('YYYY-MM-DD HH:mm:ss')
     delete resultParams.time
     await dispatch(saveSchedule(resultParams))
-    message.success('创建成功')
+    message.success(t('common.createSuccess'))
     onClose()
   }
 
@@ -219,7 +219,7 @@ const CreateSchedule = () => {
     // 是否可操作重复限制
     const limitDay = [0, 1, 1, 31, 366]
     if (!time) {
-      message.warning('请选择时间！')
+      message.warning(t('please_select_a_time'))
       return
     }
     const startTime = isAll ? moment(time[0]).startOf('day') : moment(time[0])
@@ -233,7 +233,11 @@ const CreateSchedule = () => {
       setRepeatValue({ value, params: {} })
     } else {
       if (difference / 86400000 < limitDay[value]) {
-        message.warning(`仅支持时长在${limitDay[value]}天内的日程重复！`)
+        message.warning(
+          t('only_schedule_repeats_with_a_duration_of_days_are_supported', {
+            value: limitDay[value],
+          }),
+        )
         return
       }
       setIsRepeatVisible(true)
@@ -286,11 +290,6 @@ const CreateSchedule = () => {
 
   useEffect(() => {
     if (scheduleModal.visible) {
-      console.log(
-        scheduleModal,
-        '=scheduleModalscheduleModalscheduleModal',
-        scheduleModal.params?.isAll,
-      )
       // 获取日历列表，并且过滤出可创建日程的日历
       setCalendarCategory(calendarData.manager)
       // 默认日历列表第一条
@@ -333,23 +332,27 @@ const CreateSchedule = () => {
       />
       <AddMemberCommonModal
         isVisible={isChooseVisible}
-        title="添加成员"
+        title={t('add_a_member')}
         onClose={() => setIsChooseVisible(false)}
         onConfirm={onAddConfirm}
       />
       <CommonModal
         isVisible={scheduleModal.visible}
-        title={scheduleModal?.params?.id ? '编辑日程' : '创建日程'}
+        title={
+          scheduleModal?.params?.id ? t('edit_schedule') : t('create_schedule')
+        }
         width={1056}
         onClose={onClose}
         hasFooter={
           <ModalFooter>
             <CommonButton type="light" onClick={onClose}>
-              取消
+              {t('cancel')}
             </CommonButton>
-            <CommonButton type="secondary">完成并创建下一个</CommonButton>
+            <CommonButton type="secondary">
+              {t('common.finishToAdd')}
+            </CommonButton>
             <CommonButton type="primary" onClick={onConfirm}>
-              创建
+              {t('newlyAdd.create')}
             </CommonButton>
           </ModalFooter>
         }
@@ -363,13 +366,13 @@ const CreateSchedule = () => {
             className="haveRight"
           >
             <Form.Item
-              label={<CreateFormItem label="主题" type="database" />}
+              label={<CreateFormItem label={t('theme')} type="database" />}
               name="subject"
               rules={[{ required: true, message: '' }]}
             >
               <Input
                 autoComplete="off"
-                placeholder="请输入主题"
+                placeholder={t('please_enter_a_theme')}
                 maxLength={80}
                 ref={inputDom}
                 autoFocus
@@ -377,7 +380,7 @@ const CreateSchedule = () => {
             </Form.Item>
             <TimeWrap>
               <Form.Item
-                label={<CreateFormItem label="时间" type="time" />}
+                label={<CreateFormItem label={t('time')} type="time" />}
                 name="time"
                 rules={[{ required: true, message: '' }]}
                 style={{ margin: 0, width: '84%' }}
@@ -391,7 +394,7 @@ const CreateSchedule = () => {
                 />
               </Form.Item>
               <Checkbox checked={isAll} onChange={onChangeIsAll}>
-                全天
+                {t('all_day_long')}
               </Checkbox>
             </TimeWrap>
             <Form.Item style={{ width: '80%', marginTop: 8 }}>
@@ -405,7 +408,7 @@ const CreateSchedule = () => {
             </Form.Item>
             <ItemFlex style={{ margin: '24px 0' }}>
               <div className="box">
-                <CreateFormItem type="team" label="参与者" />
+                <CreateFormItem type="team" label={t('participant')} />
                 <CloseWrap
                   width={24}
                   height={24}
@@ -442,17 +445,27 @@ const CreateSchedule = () => {
               )}
             </ItemFlex>
             <Form.Item
-              label={<CreateFormItem label="日程描述" type="file-02" />}
+              label={
+                <CreateFormItem
+                  label={t('schedule_description')}
+                  type="file-02"
+                />
+              }
               name="describe"
             >
               <Input.TextArea
-                placeholder="请输入日程描述"
+                placeholder={t('please_enter_a_schedule_description')}
                 autoSize
                 maxLength={200}
               />
             </Form.Item>
             <Form.Item
-              label={<CreateFormItem label="日程类别" type="calendar-days" />}
+              label={
+                <CreateFormItem
+                  label={t('schedule_category')}
+                  type="calendar-days"
+                />
+              }
             >
               <ItemFlex>
                 <div className="box">
@@ -502,7 +515,7 @@ const CreateSchedule = () => {
               </ItemFlex>
             </Form.Item>
             <Form.Item
-              label={<CreateFormItem label="公开范围" type="lock" />}
+              label={<CreateFormItem label={t('public_scope')} type="lock" />}
               name="permission"
               style={{ margin: 0 }}
             >
@@ -526,7 +539,7 @@ const CreateSchedule = () => {
               </Radio.Group>
             </Form.Item>
             <Form.Item
-              label={<CreateFormItem label="提醒" type="alarm" />}
+              label={<CreateFormItem label={t('remind')} type="alarm" />}
               name="reminds"
             >
               <CommonButton
@@ -535,7 +548,7 @@ const CreateSchedule = () => {
                 iconPlacement="left"
                 onClick={onAddNotice}
               >
-                添加提醒
+                {t('add_reminder')}
               </CommonButton>
               {noticeList.map((i: DefaultTime) => (
                 <NoticeBox key={i.id}>
@@ -559,7 +572,12 @@ const CreateSchedule = () => {
               ))}
             </Form.Item>
             <Form.Item
-              label={<CreateFormItem label="附件" type="attachment" />}
+              label={
+                <CreateFormItem
+                  label={t('common.attachment')}
+                  type="attachment"
+                />
+              }
               name="files"
             >
               <UploadAttach
@@ -573,7 +591,7 @@ const CreateSchedule = () => {
                       icon="plus"
                       iconPlacement="left"
                     >
-                      添加附件
+                      {t('p2.addAdjunct')}
                     </CommonButton>
                   </div>
                 }
