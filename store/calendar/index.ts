@@ -44,7 +44,7 @@ type SliceState = {
 }
 
 const initialState: SliceState = {
-  checkedTime: '2023-04-12',
+  checkedTime: dayjs().format('YYYY-MM-DD'),
   relateConfig: {
     calendar: {
       permission_types: [],

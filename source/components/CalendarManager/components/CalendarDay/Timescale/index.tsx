@@ -105,24 +105,7 @@ const Timescale: React.FC<TimescaleProps> = props => {
             endTime: dayjs(timeZone[0]).format(formatYYYYMMDD),
           }),
         )
-        // dispatch(
-        //   setCreateEasyScheduleModal({
-        //     visible: true,
-        //     position: {
-        //       x: event.offsetX + 58,
-        //       y: target.offsetTop,
-        //     },
-        //     time: {
-        //       startTime: dayjs(timeZone[0]).format(formatYYYYMMDD),
-        //       endTime: dayjs(timeZone[0]).format(formatYYYYMMDD),
-        //     },
-        //   }),
-        //   // setQuickCreateScheduleModel({
-        //   //   visible: true,
-        //   //   x: event.offsetX + 58,
-        //   //   y: target.offsetTop,
-        //   // }),
-        // )
+
         dom.removeEventListener('mouseup', onMouseUp)
       }
       dom.removeEventListener('mousemove', onMousemove)
