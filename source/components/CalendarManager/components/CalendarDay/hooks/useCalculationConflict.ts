@@ -38,7 +38,7 @@ const useCalculationConflict = () => {
         const gap = 2
         const width = Math.floor((maxWidth - 20) / len) - gap
         return con.map((item, idx) => {
-          const deltaLeft = idx === 0 ? 0 : gap
+          const deltaLeft = idx * gap
           return {
             id: item.schedule_id,
             width,
