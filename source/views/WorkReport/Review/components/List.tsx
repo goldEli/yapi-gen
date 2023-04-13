@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Tooltip } from 'antd'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
@@ -23,6 +23,8 @@ import {
 } from '@/services/report'
 import { templateList } from '@/services/formwork'
 import { getStaffList } from '@/services/staff'
+import { useDispatch } from '@store/index'
+import { setViewReportModal } from '@store/workReport'
 
 const ListTitle = styled.div`
   height: 32px;
@@ -76,6 +78,7 @@ const statusOptions = [
   { label: '已评', value: 3 },
 ]
 const List = () => {
+  const dispatch = useDispatch()
   const [t] = useTranslation()
   const { pathname } = useLocation()
   const [isSpinning, setIsSpinning] = useState(false)
@@ -127,6 +130,7 @@ const List = () => {
       }
       setIsSpinning(false)
       setListData(res.list)
+      console.log(121212121, res.list)
       setTotal(res.pager.total)
     } catch (error) {
       console.log('error', error)
@@ -147,6 +151,15 @@ const List = () => {
     setPageObj({ ...pageObj, page: 1 })
   }, [id])
 
+  const onClickView = (row: any) => {
+    dispatch(
+      setViewReportModal({
+        visible: true,
+        id: row.id,
+        ids: listData.map((i: any) => i.id),
+      }),
+    )
+  }
   const NewSort = (props: any) => {
     return (
       <Sort
@@ -172,7 +185,7 @@ const List = () => {
       width: 450,
       title: t('report.list.summary'),
       dataIndex: 'report_precis',
-      render: (text: string) => {
+      render: (text: string, record: any) => {
         return (
           <Tooltip
             placement="topLeft"
@@ -186,7 +199,9 @@ const List = () => {
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
+                cursor: 'pointer',
               }}
+              onClick={() => onClickView(record)}
             >
               {text.trim().slice(0, 100)}
             </span>
@@ -457,7 +472,6 @@ const List = () => {
           onChange={onChangePage}
         />
       </ListContent>
-      <ReportDetailDrawer />
     </>
   )
 }

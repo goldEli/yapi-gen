@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { Outlet } from 'react-router-dom'
-import { useSelector } from '@store/index'
 import PermissionWrap from '@/components/PermissionWrap'
+import ReportDetailDrawer from './components/ReportDetailDrawer'
 
 const Wrap = styled.div`
   height: 100%;
@@ -14,16 +14,13 @@ const Main = styled.div({
 })
 
 const Review = () => {
-  const { currentMenu } = useSelector(store => store.user)
   return (
-    <PermissionWrap
-      auth="/Report/Review"
-      permission={currentMenu?.children?.map((i: any) => i.url)}
-    >
+    <PermissionWrap auth="/Report/Review" permission={['/Report/Review']}>
       <Wrap>
         {/* 右边的表格 */}
         <Main>
           <Outlet />
+          <ReportDetailDrawer />
         </Main>
       </Wrap>
     </PermissionWrap>

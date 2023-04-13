@@ -1,6 +1,11 @@
 import * as http from '../tools/http'
 // 汇报
 
+export const getReportInfo = async (params: any) => {
+  const response = await http.get('getReportInfo', params)
+  return response.data
+}
+
 export const getStatTempList: any = async () => {
   const response = await http.get('statTempList')
   return response.data
