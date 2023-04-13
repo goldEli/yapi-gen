@@ -69,7 +69,74 @@ const HandleReport = (props: any) => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const userInfo = useSelector(state => state.user.userInfo)
-  const [reportDetail, setReportDetail] = useState<any>({})
+  const [reportDetail, setReportDetail] = useState<any>({
+    id: 5,
+    name: '日报',
+    company_id: 1504303190303051800,
+    user_id: 6,
+    requirement: {
+      day: [1, 2, 3, 4, 5],
+      end_time: {
+        time: 64800,
+        day_type: 2,
+      },
+      is_holiday: 1,
+      start_time: {
+        time: 28800,
+        day_type: 1,
+      },
+    },
+    submit_cycle: 1,
+    auto_reminder: 1,
+    reminder_time: 3600,
+    is_supply: 1,
+    is_cycle_limit: 1,
+    is_submitter_edit: 1,
+    is_all_view: 1,
+    is_all_write: 1,
+    hand_scope: 3,
+    created_at: '2023-03-29 14:19:24',
+    updated_at: '2023-03-29 08:39:18',
+    deleted_at: null,
+    template_content_configs: [
+      {
+        id: 7,
+        name: '下日计划',
+        report_template_id: 5,
+        type: 3,
+        tips: '测试内容2',
+        is_required: 1,
+      },
+      {
+        id: 8,
+        name: '附件',
+        report_template_id: 5,
+        type: 2,
+        tips: '测试内容3',
+        is_required: 1,
+      },
+      {
+        id: 9,
+        name: '关联需求',
+        report_template_id: 5,
+        type: 4,
+        tips: '测试内容4',
+        is_required: 1,
+      },
+      {
+        id: 10,
+        name: '汇报对象',
+        report_template_id: 5,
+        type: 1,
+        tips: '测试内容5',
+        is_required: 1,
+      },
+    ],
+    user: {
+      id: 6,
+      name: '马成龙',
+    },
+  })
 
   const close = () => {
     form.resetFields()

@@ -1017,7 +1017,17 @@
       "tomorrowWork": "明日计划工作",
       "reportPerson": "汇报对象",
       "associatedRequirement": "关联需求",
-      "submit": "提交"
+      "submit": "提交",
+      "select": "请选择",
+      "upload": "请上传",
+      "write": "请填写",
+      "correlation": "请关联",
+      "haveSubmit": "已提交",
+      "createTemplate": "创建模板",
+      "fillReport": "补交汇报",
+      "recent": "最近使用",
+      "other": "其他",
+      "searchReport": "搜索汇报标题或内容"
     },
     "statistics": {
       "title": "汇报我的统计",
