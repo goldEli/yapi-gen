@@ -21,6 +21,8 @@ import {
   getRepReceivedList,
   getRepPublicList,
 } from '@/services/report'
+import { templateList } from '@/services/formwork'
+import { getStaffList } from '@/services/staff'
 
 const ListTitle = styled.div`
   height: 32px;
@@ -68,6 +70,11 @@ const ClearButton = styled.div`
 `
 const defaultPageParam = { page: 1, pagesize: 20 }
 
+const statusOptions = [
+  { label: '未读', value: 1 },
+  { label: '已读', value: 2 },
+  { label: '已评', value: 3 },
+]
 const List = () => {
   const [t] = useTranslation()
   const { pathname } = useLocation()
@@ -78,8 +85,9 @@ const List = () => {
   const [total, setTotal] = useState<number>(250)
   const [pageObj, setPageObj] = useState(defaultPageParam)
   const [listData, setListData] = useState<any[]>([])
+  const [repTypeOptions, setRepTypeOptions] = useState<any[]>([])
+  const [userOptions, setUserOptions] = useState<any[]>([])
   const [queryParams, setQueryParams] = useState<any>({})
-
   const params = useParams()
   const id = Number(params?.id)
 
@@ -262,8 +270,24 @@ const List = () => {
     })
   }
 
-  const onChangeType = (val: any) => {
-    console.log(val)
+  const onChangeStatusType = (value: any) => {
+    setQueryParams({
+      ...queryParams,
+      type: value,
+    })
+  }
+  const onChangeSubmitter = (value: any) => {
+    // TODO: 提交人
+    // setQueryParams({
+    //   ...queryParams,
+    //   user_id: value,
+    // })
+  }
+  const onChangeRepType = (value: any) => {
+    setQueryParams({
+      ...queryParams,
+      report_template_id: value,
+    })
   }
 
   const onPressEnter = (value: any) => {
@@ -312,22 +336,15 @@ const List = () => {
     <>
       <SelectWrapForList>
         <span style={{ margin: '0 16px', fontSize: '14px' }}>
-          {id === 2 && t('report.list.submitter')}
-          {id === 3 && t('report.list.informant')}
+          {t('report.list.submitter')}
         </span>
         <CustomSelect
           style={{ width: 148 }}
           getPopupContainer={(node: any) => node}
           allowClear
           optionFilterProp="label"
-          defaultValue={['all']}
-          options={[
-            { label: '所有', value: 'all' },
-            { label: '张三', value: 'date' },
-            { label: '李四', value: 'date1' },
-            { label: '王五', value: 'date2' },
-          ]}
-          onChange={onChangeType}
+          options={userOptions}
+          onChange={onChangeSubmitter}
         />
       </SelectWrapForList>
       <SelectWrapForList>
@@ -339,18 +356,32 @@ const List = () => {
           getPopupContainer={(node: any) => node}
           allowClear
           optionFilterProp="label"
-          defaultValue={['all']}
-          options={[
-            { label: '所有', value: 'all' },
-            { label: '未读', value: 'unread' },
-            { label: '已读', value: 'read' },
-            { label: '已评', value: 'reviewed' },
-          ]}
-          onChange={onChangeType}
+          options={statusOptions}
+          onChange={onChangeStatusType}
         />
       </SelectWrapForList>
     </>
   )
+  const generateOptions = (item: any) => {
+    return {
+      label: item.name,
+      value: item.id,
+    }
+  }
+  const getTemplateList = async () => {
+    const data = await templateList()
+    setRepTypeOptions(data.map(generateOptions))
+  }
+
+  const getUserList = async () => {
+    const data = await getStaffList({ all: 1 })
+    setUserOptions(data.map(generateOptions))
+  }
+
+  useEffect(() => {
+    getTemplateList()
+    getUserList()
+  }, [])
 
   return (
     <>
@@ -375,13 +406,8 @@ const List = () => {
             allowClear
             optionFilterProp="label"
             defaultValue={['all']}
-            options={[
-              { label: '所有', value: 'all' },
-              { label: '工作日报', value: 'date' },
-              { label: '工作日报1', value: 'date1' },
-              { label: '工作日报2', value: 'date2' },
-            ]}
-            onChange={onChangeType}
+            options={repTypeOptions}
+            onChange={onChangeRepType}
           />
         </SelectWrapForList>
         {id !== 1 && (id === 2 || id === 3) ? extraSelect : null}
