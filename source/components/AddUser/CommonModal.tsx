@@ -22,7 +22,6 @@ import {
 } from '@/services/setting'
 import { unionBy } from 'lodash'
 import CustomSelect from '../CustomSelect'
-import { cos } from '@/services/cos'
 
 const { DirectoryTree } = Tree
 const ModalHeader = styled.div`

@@ -138,7 +138,11 @@ const urls = {
   deleteTemplate: '/b/work_report/template/delete',
   templateList: '/b/work_report/template/list',
   templateLatelyList: '/b/work_report/template/lately',
-  writeReport: '/b/work_report/user'
+  writeReport: '/b/work_report/user',
+  statTempList: '/b/work_report/statistics/template/list',
+  statUserList: '/b/work_report/statistics/user/list',
+  statInfo: '/b/work_report/statistics/info',
+  statTempUsage: '/b/work_report/statistics/template',
 }
 
 export default urls

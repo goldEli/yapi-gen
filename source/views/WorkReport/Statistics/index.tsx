@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 import { SecondTitle, SelectWrapBedeck } from '@/components/StyleCommon'
@@ -14,6 +16,12 @@ import PermissionWrap from '@/components/PermissionWrap'
 import { useSelector } from '@store/index'
 import RangePicker from '@/components/RangePicker'
 import moment from 'moment'
+import {
+  getStatInfo,
+  getStatTempList,
+  getStatUserList,
+  getStatTempUsage,
+} from '@/services/report'
 
 const data: any = {
   currentPage: 1,
@@ -121,84 +129,118 @@ const Statistics = () => {
   const [t] = useTranslation()
   const { currentMenu } = useSelector(store => store.user)
   const [isSpinning, setIsSpinning] = useState<boolean>(false)
-  const [dataList, setDataList] = useState<any>([])
-  const [tabKey, setTabKey] = useState<string>('1')
+  const [formWorkData, setFormWorkData] = useState<any[]>([])
+  const [userDataList, setUserDataList] = useState<any[]>([])
+  const [usageDataList, setUsageDataList] = useState<any[]>([])
+  const [statInfoData, setStatInfoData] = useState<any>({})
+  const [tabKey, setTabKey] = useState<string>('')
   const [queryParams, setQueryParams] = useState<any>({})
 
   const columns: ColumnsType<any> = [
     {
       title: <> {t('common.name')} </>,
-      dataIndex: 'name',
+      // 汇报对象id
+      dataIndex: 'report_to_user_id',
       width: 264,
       render: (value: string) => {
         return (
           <NameColumn>
             <CommonUserAvatar size="small" />
-            <span>{value} </span>
+            <span>{value}</span>
           </NameColumn>
         )
       },
     },
     {
-      title: <> {t('report.statistics.onTime')} </>,
-      dataIndex: 'onTimeCount',
+      title: <>{t('report.statistics.onTime')}</>,
+      dataIndex: 'on_time_count',
       width: 160,
     },
     {
-      title: <> {t('report.statistics.supplementary')} </>,
-      dataIndex: 'delayTimes',
+      title: <>{t('report.statistics.supplementary')}</>,
+      dataIndex: 'no_payment_count',
       width: 160,
     },
     {
-      title: <> {t('report.statistics.totalNoSubmitTimes')} </>,
-      dataIndex: 'totalNoSubmitTimes',
+      title: <>{t('report.statistics.totalNoSubmitTimes')}</>,
+      dataIndex: 'cumulative_unsubmit_count',
       width: 160,
     },
     {
-      title: <> {t('report.statistics.currentNoSubmitTimes')} </>,
-
-      dataIndex: 'currentNoSubmitTimes',
+      title: <>{t('report.statistics.currentNoSubmitTimes')}</>,
+      dataIndex: 'no_submit_count',
       width: 160,
     },
   ]
 
   const usageColumns: ColumnsType<any> = [
     {
-      title: <> {t('report.statistics.reportCategory')} </>,
+      title: <>{t('report.statistics.reportCategory')}</>,
       dataIndex: 'name',
       width: 130,
     },
     {
-      title: <> {t('report.statistics.usersVolume')} </>,
-      dataIndex: 'userCount',
+      title: <>{t('report.statistics.usersVolume')}</>,
+      dataIndex: 'uv',
       width: 88,
     },
     {
-      title: <> {t('report.statistics.accumulatedReports')} </>,
-      dataIndex: 'totalReportCount',
+      title: <>{t('report.statistics.accumulatedReports')}</>,
+      dataIndex: 'pv',
       width: 88,
     },
   ]
 
-  const getData = () => {
-    console.log('getData')
+  const getTempList = async () => {
+    const { list } = await getStatTempList()
+    const items = list.map((v: any) => {
+      return {
+        label: v.name,
+        key: v.id,
+      }
+    })
+    setFormWorkData(items)
+    setTabKey(list[0].id)
+  }
+
+  const getUsageDataList = async () => {
+    const { list } = await getStatTempUsage()
+    setUsageDataList(list)
+  }
+
+  const getUserList = async () => {
+    setIsSpinning(true)
+    const { list } = await getStatUserList({
+      report_template_id: tabKey,
+      ...queryParams,
+    })
+    setUserDataList(list)
+    setIsSpinning(false)
+  }
+
+  const getStatInfoData = async () => {
+    const statData = await getStatInfo()
+    setStatInfoData(statData)
   }
 
   useEffect(() => {
-    getData()
-  }, [queryParams])
+    getTempList()
+    getUsageDataList()
+  }, [])
+
+  useEffect(() => {
+    if (tabKey) {
+      getUserList()
+    }
+  }, [tabKey, queryParams])
+
+  useEffect(() => {
+    getStatInfoData()
+  }, [tabKey])
 
   const onChangePage = (current: number, pageSize: number) => {
-    setQueryParams({ pageNumber: current, pageSize })
+    setQueryParams({ page: current, pageSize })
   }
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  const items = new Array(30).fill(null).map((_: any, i) => {
-    const id = String(i + 1)
-    return {
-      label: `工作周报${i}`,
-      key: id,
-    }
-  })
 
   const onChangeDate = (values: any) => {
     const startTime = moment(values[0]).format('YYYY-MM-DD')
@@ -206,7 +248,7 @@ const Statistics = () => {
     setQueryParams({ startTime, endTime, pageSize: queryParams.pageSize })
   }
 
-  const handleChange = (value: string) => {
+  const onTabChange = (value: string) => {
     setTabKey(value)
   }
 
@@ -226,17 +268,13 @@ const Statistics = () => {
               <RangePicker isShowQuick onChange={onChangeDate} />
             </SelectWrapBedeck>
           </div>
-          <SlideTabs
-            items={items}
-            defaultValue={tabKey}
-            onChange={handleChange}
-          />
+          <SlideTabs items={formWorkData} onChange={onTabChange} />
           <>
             <ResizeTable
               isSpinning={isSpinning}
               dataWrapNormalHeight="calc(100vh - 292px)"
               col={columns}
-              dataSource={data.list}
+              dataSource={userDataList}
               noData={<NoData />}
             />
             <PaginationBox
@@ -254,25 +292,25 @@ const Statistics = () => {
               <CardItem style={{ backgroundColor: 'rgba(102, 136, 255, 0.1)' }}>
                 <Space size={8} direction="vertical">
                   <span>{t('report.statistics.accumulated')}</span>
-                  <div>{100}</div>
+                  <div>{statInfoData.accruing}</div>
                 </Space>
               </CardItem>
               <CardItem style={{ backgroundColor: 'rgba(67, 186, 154, 0.10)' }}>
                 <Space size={8} direction="vertical">
                   <span>{t('report.statistics.onTime')}</span>
-                  <div>{100}</div>
+                  <div>{statInfoData.on_time_count}</div>
                 </Space>
               </CardItem>
               <CardItem style={{ backgroundColor: 'rgba(250, 151, 70, 0.1)' }}>
                 <Space size={8} direction="vertical">
                   <span>{t('report.statistics.supplementary')}</span>
-                  <div>{100}</div>
+                  <div>{statInfoData.no_payment_count}</div>
                 </Space>
               </CardItem>
               <CardItem style={{ backgroundColor: 'rgba(255, 92, 94, 0.1)' }}>
                 <Space size={8} direction="vertical">
                   <span>{t('report.statistics.unSubmitted')}</span>
-                  <div>{0}</div>
+                  <div>{statInfoData.cumulative_unsubmit_count}</div>
                 </Space>
               </CardItem>
             </CardGroup>
@@ -281,10 +319,10 @@ const Statistics = () => {
 
             <div className={rightBottom}>
               <ResizeTable
-                isSpinning={isSpinning}
+                isSpinning={false}
                 dataWrapNormalHeight="304px"
                 col={usageColumns}
-                dataSource={formWorkUsageData.list}
+                dataSource={usageDataList}
                 noData={<NoData />}
               />
             </div>

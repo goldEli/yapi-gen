@@ -80,6 +80,7 @@ interface Props {
   // 类型
   state: number
   onChangeValues(value: any): void
+  onChangedel(value: any): void
 }
 interface Item {
   label: string
@@ -160,7 +161,6 @@ const Addperson = (props: Props) => {
             target_type: 4,
             name: getName(e.key, ''),
             avatar: '',
-            id: -props.state + '' + getName(e.key, ''),
             target_id: getName(e.key, 'id'),
             target_value: {
               user_type: props.state,
@@ -177,11 +177,8 @@ const Addperson = (props: Props) => {
     }
   }
   // 删除添加的成员
-  const delPerson = (el: { id: any }) => {
-    // 这抛回去
-    const values = personData?.filter((item: any) => item.id !== el.id)
-    setPersonData(values)
-    props.onChangeValues(values)
+  const delPerson = (el: { target_id: any }) => {
+    props.onChangedel(el)
   }
   useEffect(() => {
     switch (props.state) {

@@ -8,9 +8,11 @@ import * as project from './project'
 import * as cos from './cos'
 import * as memberInfo from './memberInfo'
 import * as formwork from './formwork'
+import * as report from './report'
 
 export {
   formwork,
+  report,
   user,
   setting,
   staff,

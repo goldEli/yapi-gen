@@ -21,6 +21,8 @@ type SliceState = {
   templateName: string
   // 详情数据
   templateDetailValues: any
+  // 周数据
+  aWeekDataList: any
 }
 
 const formWork = createSlice({
@@ -60,6 +62,43 @@ const formWork = createSlice({
         type: 1,
       },
     ],
+    aWeekDataList: [
+      {
+        label: '周一',
+        key: 0,
+        value: false,
+      },
+      {
+        label: '周二',
+        key: 1,
+        value: false,
+      },
+      {
+        label: '周三',
+        key: 2,
+        value: false,
+      },
+      {
+        label: '周四',
+        key: 3,
+        value: false,
+      },
+      {
+        label: '周五',
+        key: 4,
+        value: false,
+      },
+      {
+        label: '周六',
+        key: 5,
+        value: false,
+      },
+      {
+        label: '周日',
+        key: 6,
+        value: false,
+      },
+    ],
   } as SliceState,
   reducers: {
     // 是否保存
@@ -93,6 +132,9 @@ const formWork = createSlice({
     setDataList: (state: any, action) => {
       state.dataList = action.payload
     },
+    setAWeekDataList: (state: any, action) => {
+      state.aWeekDataList = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addCase(getTemplateList.fulfilled, (state, action) => {
@@ -111,6 +153,30 @@ const formWork = createSlice({
         })),
         is_all_view: data.is_all_view,
         is_all_write: data.is_all_write,
+      }
+      state.fillingRequirements = {
+        // 填写周期 1-每天 2-每周 3-每月 4-不重复
+        submit_cycle: data.submit_cycle,
+        // 填写周期每天属性：是否跟随中国法定节假日自动调整，1：是，2：否
+        is_holiday: data.requirement.is_holiday,
+        // 填写周期每天属性：0：周一，1：周二以此类推
+        day: data.requirement.day,
+        // 截止时间
+        end_time: data.requirement.end_time,
+        // 开始时间
+        start_time: data.requirement.start_time,
+        // 是否自动提醒 1- 是 2-否
+        auto_reminder: data.auto_reminder === 1 ? true : false,
+        // 提醒时间（单位秒）
+        reminder_time: data.reminder_time,
+        //截止时间后允许补交1- 是 2-否
+        is_supply: data.is_supply === 1 ? true : false,
+        // 每个周期限填一次1- 是 2-否
+        is_cycle_limit: data.is_cycle_limit === 1 ? true : false,
+        // 提交汇报提交人可修改 1-是 2-否
+        is_submitter_edit: data.is_submitter_edit,
+        // 补交范围，数字对应周期属性
+        hand_scope: data.hand_scope,
       }
     })
   },
