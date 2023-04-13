@@ -2,6 +2,7 @@
 /* eslint-disable react/jsx-handler-names */
 /* eslint-disable camelcase */
 /* eslint-disable no-constant-binary-expression */
+// eslint-disable radix
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import Addperson from './Addperson'
@@ -10,7 +11,12 @@ import FormMain from './FormMain'
 import { Form, Radio } from 'antd'
 import { useDispatch, useSelector } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import { setReportContent, setFillingRequirements } from '@store/formWork'
+import {
+  setReportContent,
+  setFillingRequirements,
+  setAWeekDataList,
+} from '@store/formWork'
+import moment from 'moment'
 const PermissionConfigStyle = styled.div`
   padding: 0 24px;
 `
@@ -41,7 +47,7 @@ const PermissionConfig = (props: PropsType) => {
   const [type, setType] = useState<string>('day')
   const [form] = Form.useForm()
   const [delIsVisible, setDelIsVisible] = useState(false)
-  const { fillingRequirements, reportContent } = useSelector(
+  const { fillingRequirements, reportContent, aWeekDataList } = useSelector(
     store => store.formWork,
   )
   const [person1, setPerson1] = useState<any>()
@@ -152,7 +158,23 @@ const PermissionConfig = (props: PropsType) => {
   const formOnValuesChange = (values: any) => {
     dispatch(setFillingRequirements({ ...fillingRequirements, ...values }))
   }
-
+  // 秒转成时分秒
+  const time2 = (num: any, str: string) => {
+    let t: any = parseInt(String(num / 60 / 60 / 24), 10)
+    const t1 = t * 60 * 60 * 24
+    const tv = num - t1
+    let h: number = parseInt(String(tv / 60 / 60), 10)
+    let hv = h * 60 * 60
+    let m = tv - hv
+    let mv = m / 60
+    if (str === 'day') {
+      return t
+    } else if (str === 'hour') {
+      return h
+    } else {
+      return mv
+    }
+  }
   // 组装数据
   const assemblyData = () => {
     // 谁可以写
@@ -247,6 +269,108 @@ const PermissionConfig = (props: PropsType) => {
       }),
     )
   }
+  const timestampToTime = (timeVal: any) => {
+    // 时间戳为10位需*1000，时间戳为13位不需乘1000
+    const time = moment(timeVal * 1000).format('YYYY-MM-DD HH:mm:ss')
+    return time
+  }
+  const setFormValues = () => {
+    switch (fillingRequirements?.submit_cycle) {
+      case 1:
+        setType('day')
+        break
+      case 2:
+        setType('week')
+        break
+      case 3:
+        setType('month')
+        break
+      case 4:
+        setType('doNot')
+        break
+    }
+    const newObj = { ...fillingRequirements }
+    if (fillingRequirements?.submit_cycle === 1) {
+      const nowData = aWeekDataList
+      const newData = fillingRequirements?.day
+      const arr = nowData.map((item: any) => ({
+        ...item,
+        value: newData?.includes(item.key) ? true : false,
+      }))
+      newObj.day = arr
+      const newStartTime = {
+        v1: fillingRequirements.start_time.day_type,
+        v2: time2(fillingRequirements.start_time.time, 'hour'),
+        v3: time2(fillingRequirements.start_time.time, 'minute'),
+      }
+      const newEndTime = {
+        v1: fillingRequirements.end_time.day_type,
+        v2: time2(fillingRequirements.end_time.time, 'hour'),
+        v3: time2(fillingRequirements.end_time.time, 'minute'),
+      }
+      const newReminderTime = {
+        v2: time2(fillingRequirements.reminder_time, 'hour'),
+        v3: time2(fillingRequirements.reminder_time, 'minute'),
+      }
+      newObj.start_time = newStartTime
+      newObj.end_time = newEndTime
+      newObj.reminder_time = newReminderTime
+    } else if (fillingRequirements?.submit_cycle === 2) {
+      const newStartTime = {
+        v1: fillingRequirements.start_time.day_type,
+        v2: time2(fillingRequirements.start_time.time, 'hour'),
+        v3: time2(fillingRequirements.start_time.time, 'minute'),
+      }
+      const newEndTime = {
+        v1: fillingRequirements.end_time.day_type,
+        v2: time2(fillingRequirements.end_time.time, 'hour'),
+        v3: time2(fillingRequirements.end_time.time, 'minute'),
+      }
+      const newReminderTime = {
+        v1: time2(fillingRequirements.reminder_time, 'day'),
+        v2: time2(fillingRequirements.reminder_time, 'hour'),
+        v3: time2(fillingRequirements.reminder_time, 'minute'),
+      }
+      newObj.start_time = newStartTime
+      newObj.end_time = newEndTime
+      newObj.reminder_time = newReminderTime
+    } else if (fillingRequirements?.submit_cycle === 3) {
+      const newStartTime = {
+        v1: fillingRequirements.start_time.day_type,
+        v2: time2(fillingRequirements.start_time.time, 'hour'),
+        v3: time2(fillingRequirements.start_time.time, 'minute'),
+      }
+      const newEndTime = {
+        v1: fillingRequirements.end_time.day_type,
+        v2: time2(fillingRequirements.end_time.time, 'hour'),
+        v3: time2(fillingRequirements.end_time.time, 'minute'),
+      }
+      const newReminderTime = {
+        v1: time2(fillingRequirements.reminder_time, 'day'),
+        v2: time2(fillingRequirements.reminder_time, 'hour'),
+        v3: time2(fillingRequirements.reminder_time, 'minute'),
+      }
+      newObj.start_time = newStartTime
+      newObj.end_time = newEndTime
+      newObj.reminder_time = newReminderTime
+    } else if (fillingRequirements?.submit_cycle === 4) {
+      const newEndTime = timestampToTime(
+        fillingRequirements.end_time?.time || fillingRequirements.end_time,
+      )
+      const newReminderTime = {
+        v1: time2(fillingRequirements.reminder_time, 'day'),
+        v2: time2(fillingRequirements.reminder_time, 'hour'),
+        v3: time2(fillingRequirements.reminder_time, 'minute'),
+      }
+      newObj.end_time = newEndTime
+      newObj.reminder_time = newReminderTime
+    }
+    form.setFieldsValue(newObj)
+  }
+  useEffect(() => {
+    fillingRequirements && setFormValues()
+  }, [fillingRequirements])
+
   return (
     <PermissionConfigStyle>
       {/* 汇报内容 */}
@@ -307,16 +431,7 @@ const PermissionConfig = (props: PropsType) => {
             <Radio value={'doNot'}>不重复</Radio>
           </Radio.Group>
           <DayFormBox form={form} onValuesChange={formOnValuesChange}>
-            <FormMain
-              type={type}
-              // backValues={(s: any, e: any, r: any) =>
-              // form?.setFieldsValue({
-              //   start_time: s,
-              //   end_time: e,
-              //   reminder_time: r,
-              // })
-              // }
-            />
+            <FormMain type={type} />
           </DayFormBox>
           {/* <div onClick={() => console.log(form?.getFieldsValue(), 999)}>123</div> */}
         </div>
