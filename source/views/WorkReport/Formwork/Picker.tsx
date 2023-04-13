@@ -169,7 +169,7 @@ const Picker = (props: PropsType) => {
   const getTime = () => {
     setIsOpen(false)
     props.getValues(leftActiveVal, centerActiveVal, rightActiveVal)
-    if (props.type === 'start' || props.type === 'end') {
+    if (props.pickerType === 'start' || props.pickerType === 'end') {
       props?.onChange?.({
         time: time1(0, centerActiveVal, rightActiveVal),
         day_type: leftActiveVal,
@@ -244,7 +244,9 @@ const Picker = (props: PropsType) => {
     }
   }
   useEffect(() => {
+    // console.log(props?.value, 'props?.value')
     if (!props?.value) {
+      setValue('')
       return
     }
     v1 = props?.value?.v1
@@ -262,7 +264,6 @@ const Picker = (props: PropsType) => {
     } else {
       getMonthValues()
     }
-    console.log(props.value, 'value')
   }, [props.value])
   const content = () => {
     return (

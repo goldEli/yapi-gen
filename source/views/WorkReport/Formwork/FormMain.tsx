@@ -30,66 +30,66 @@ interface SupScopeType {
   value?: string
   onChange?(val: string | number): void
 }
-const dayData: Array<Item> = [
+const dayData: any = [
   {
     label: '前一日',
-    key: '1',
+    key: 1,
   },
   {
     label: '前二日',
-    key: '2',
+    key: 2,
   },
   {
     label: '前三日',
-    key: '3',
+    key: 3,
   },
   {
     label: '前四日',
-    key: '4',
+    key: 4,
   },
   {
     label: '前五日',
-    key: '5',
+    key: 5,
   },
   {
     label: '前六日',
-    key: '6',
+    key: 6,
   },
   {
     label: '前七日',
-    key: '7',
+    key: 7,
   },
   {
     label: '无限制',
-    key: '8',
+    key: 0,
   },
 ]
-const weekData: Array<Item> = [
+const weekData: any = [
   {
     label: '前一周',
-    key: '1',
+    key: 1,
   },
   {
     label: '前二周',
-    key: '2',
+    key: 2,
   },
   {
     label: '前三周',
-    key: '3',
+    key: 4,
   },
   {
     label: '无限止',
-    key: '4',
+    key: 0,
   },
 ]
-const monthData: Array<Item> = [
+const monthData: any = [
   {
     label: '前一月',
-    key: '1',
+    key: 1,
   },
   {
     label: '无限止',
-    key: '2',
+    key: 0,
   },
 ]
 interface Item {
@@ -118,41 +118,71 @@ const SupScope = (props: SupScopeType) => {
   const [label, setLabel] = useState('')
   // 每天 day ,每周 week , 每月 month , 不重复doNot
   useEffect(() => {
-    switch (props.type) {
-      case 'day':
-        setItems(dayData)
-        props.onChange?.(dayData[0].key)
-        setLabel(dayData[0].label)
-        break
-      case 'week':
-        setItems(weekData)
-        props.onChange?.(weekData[0].key)
-        setLabel(weekData[0].label)
-        break
-      case 'month':
-        setItems(monthData)
-        props.onChange?.(monthData[0].key)
-        setLabel(monthData[0].label)
-        break
-    }
-  }, [props.type])
-
-  const onOpenChange = (e: { key: string }) => {
+    // switch (props.type) {
+    //   case 'day':
+    //     setItems(dayData)
+    //     if (props.value) {
+    //       // const item: any = dayData?.find((el: any) => el.key == props.value)
+    //       // props.onChange?.(item?.key)
+    //       // setLabel(item?.label)
+    //     } else {
+    //       props.onChange?.(dayData[0].key)
+    //       setLabel(dayData[0].label)
+    //     }
+    //     break
+    //   case 'week':
+    //     setItems(weekData)
+    //     if (props.value) {
+    //       // const item = weekData?.find((el: any) => el.key == props.value)
+    //       // props.onChange?.(item?.key)
+    //       // setLabel(item?.label)
+    //     } else {
+    //       props.onChange?.(weekData[0].key)
+    //       setLabel(weekData[0].label)
+    //     }
+    //     break
+    //   case 'month':
+    //     setItems(monthData)
+    //     if (props.value) {
+    //       // const item = monthData?.find((el: any) => el.key == props.value)
+    //       // props.onChange?.(item?.key)
+    //       // setLabel(item?.label)
+    //     } else {
+    //       props.onChange?.(monthData[0].key)
+    //       setLabel(monthData[0].label)
+    //     }
+    //     break
+    // }
+    // onOpenChange({ key: props.value ? props.value : 1 })
+    // console.log(props.value, 'props.value')
+    // if (props.type === 'day') {
+    //   setItems(dayData)
+    //   if (props.value) {
+    //     const item: any = dayData?.find((el: any) => el.key == props.value)
+    //     props.onChange?.(item?.key)
+    //     setLabel(item?.label)
+    //   } else {
+    //     props.onChange?.(dayData[0].key)
+    //     setLabel(dayData[0].label)
+    //   }
+    // }
+  }, [props.value])
+  const onOpenChange = (e: { key: any }) => {
     props.onChange?.(e.key)
     switch (props.type) {
       case 'day':
         setLabel(
-          dayData.find((el: { key: string }) => el.key === e.key)?.label || '',
+          dayData.find((el: { key: number }) => el.key === e.key)?.label || '',
         )
         break
       case 'week':
         setLabel(
-          weekData.find((el: { key: string }) => el.key === e.key)?.label || '',
+          weekData.find((el: { key: number }) => el.key === e.key)?.label || '',
         )
         break
       case 'month':
         setLabel(
-          monthData.find((el: { key: string }) => el.key === e.key)?.label ||
+          monthData.find((el: { key: number }) => el.key === e.key)?.label ||
             '',
         )
         break
@@ -200,19 +230,25 @@ interface CheckBoxGroupType {
 // 选择周几
 const CheckBoxGroup = (props: CheckBoxGroupType) => {
   const { aWeekDataList } = useSelector(store => store.formWork)
-  useEffect(() => {
-    if (!props.value) {
-      props.onChange?.(aWeekDataList)
-    }
-  }, [])
-  const onChange = (value: boolean, el: { value: boolean; key: number }) => {
+  // console.log(props.value, 'ooo')
+  // useEffect(() => {
+  //   if (!props.value) {
+  //     props.onChange?.(aWeekDataList)
+  //   } else {
+  //     props.onChange?.(props.value)
+  //   }
+  // }, [])
+  const onChange = (value: boolean, el1: { value: boolean; key: number }) => {
     const filterVal = props?.value.map(
       (item: { value: boolean; key: number }) => ({
         ...item,
-        value: el.key === item.key ? value : item.value,
+        value: el1.key === item.key ? value : item.value,
       }),
     )
-    props.onChange?.(filterVal)
+    const newData = filterVal
+      ?.filter((el: any) => el.value)
+      ?.map((el: any) => el.key)
+    props.onChange?.(newData)
   }
   return (
     <>
