@@ -213,7 +213,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
         <Title>
           {timeRange && `${timeRange?.startTime} - ${timeRange?.endTime} `}
         </Title>
-        <Title>{data.subject}</Title>`
+        <Title>{data.subject}</Title>
       </>
     )
   }, [is_show_busy, timeRange, data.subject, data.start_time])
