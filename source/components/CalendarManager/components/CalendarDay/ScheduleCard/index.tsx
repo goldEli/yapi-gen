@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import { useDispatch } from '@store/index'
 import dayjs from 'dayjs'
 import React, { useMemo, useState } from 'react'
-import { oneHourHeight } from '../../../config'
+import { formatYYYYMMDDhhmmss, oneHourHeight } from '../../../config'
 import { getTimeByAddDistance, getTimeByOffsetDistance } from '../utils'
 import { DraggableData, Position, ResizableDelta, Rnd } from 'react-rnd'
 import { css } from '@emotion/css'
@@ -10,7 +10,7 @@ import { DraggableEvent } from 'react-draggable'
 import { ResizeDirection } from 're-resizable'
 import usePosition from '../hooks/usePosition'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
-import { saveSchedule } from '@store/schedule/schedule.thunk'
+import { modifySchedule, saveSchedule } from '@store/schedule/schedule.thunk'
 import { getColorWithOpacityPointOne } from '@/components/CalendarManager/utils'
 
 interface ScheduleCardProps {
@@ -83,18 +83,27 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
       end_timestamp,
       y - top,
     )
-
+    // 修改日程
+    const { schedule_id, color, subject, calender_id } = props.data
     dispatch(
-      saveSchedule({
-        ...props.data,
-        start_timestamp: time.startTime.valueOf(),
-        end_timestamp: time.endTime.valueOf(),
+      modifySchedule({
+        calender_id,
+        schedule_id,
+        color,
+        subject,
+        start_datetime: time.startTime.format(formatYYYYMMDDhhmmss),
+        end_datetime: time.endTime.format(formatYYYYMMDDhhmmss),
       }),
     )
+
+    // dispatch(
+    //   saveSchedule({
+    //     ...props.data,
+    //     start_timestamp: time.startTime.valueOf(),
+    //     end_timestamp: time.endTime.valueOf(),
+    //   }),
+    // )
     setTimeRange(null)
-    const calenderBoxRightArea = document.querySelector(
-      '#calenderBoxRightArea',
-    ) as Element
 
     // 点击打开详情弹窗, 如果是拖动不打开
     if (!isDrag.current) {
@@ -228,7 +237,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
       onResizeStop={onResizeStop}
     >
       <Title>
-        {timeRange && `${timeRange?.startTime} - ${timeRange?.endTime}`}
+        {timeRange && `${timeRange?.startTime} - ${timeRange?.endTime} `}
       </Title>
       <Title>{props.data.subject}</Title>
     </Rnd>
