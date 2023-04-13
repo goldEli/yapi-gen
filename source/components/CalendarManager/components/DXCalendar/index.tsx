@@ -5,6 +5,7 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
 import dayLocaleData from 'dayjs/plugin/localeData'
 import styled from '@emotion/styled'
+import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
 import { useDispatch, useSelector } from '@store/index'
 import { setCheckedTime } from '@store/calendar'
@@ -28,11 +29,37 @@ const CalendarHeader = styled.div`
     font-family: SiYuanMedium;
   }
 `
-
+const DayBox = styled.div`
+  width: 24px;
+  height: 24px;
+  font-size: var(--font14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+const dayActive = css`
+  border-radius: 50%;
+  background: var(--primary-d1);
+  color: var(--neutral-white-d7);
+  position: relative;
+`
+const hasScheduleClass = css`
+  position: relative;
+  &::after {
+    position: absolute;
+    content: '';
+    width: 4px;
+    height: 4px;
+    background: var(--primary-d1);
+    bottom: -4px;
+    left: 12px;
+    border-radius: 50%;
+  }
+`
 const DXCalendar: React.FC = () => {
   const dispatch = useDispatch()
   const { checkedTime } = useSelector(store => store.calendar)
-
+  console.log('DXCalendar-----',)
   const wrapperStyle: React.CSSProperties = {
     // width: 240,
     background: 'var(--neutral-n9)',
@@ -51,6 +78,21 @@ const DXCalendar: React.FC = () => {
       // onPanelChange={(value, mode) => {
       //   console.log(value.format('YYYY-MM-DD'), mode)
       // }}
+      dateFullCellRender={date => {
+        let yearViewScheduleList=['2023-04-16','2023-04-21']
+        const today =
+          dayjs().format('DD/MM/YYYY') === dayjs(date).format('DD/MM/YYYY')
+        const hasSchedule =yearViewScheduleList.includes(
+          dayjs(date).format('YYYY-MM-DD'),
+        )
+        return (
+          <DayBox
+            className={today ? dayActive : hasSchedule ? hasScheduleClass : ''}
+          >
+            {dayjs(date).date()}
+          </DayBox>
+        )
+      }}
       headerRender={({ value, type, onChange, onTypeChange }) => {
         const month = value.month()
         return (
