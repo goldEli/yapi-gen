@@ -31,3 +31,13 @@ export const templateLatelyList: any = async (params: any) => {
     const response = await http.get('templateLatelyList', { ...params })
     return response
   }
+
+export const supplyList: any = async (params: any) => {
+    const response = await http.get('supplyList', { ...params })
+    return response
+  }
+
+export const getReportDetailById: any = async (params: any) => {
+    const response = await http.get('getReportDetailById', { ...params })
+    return response
+  }

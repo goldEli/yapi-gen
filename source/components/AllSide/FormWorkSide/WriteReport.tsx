@@ -51,7 +51,7 @@ const CarWrap = styled.div<{ disabled?: boolean }>`
   margin-left: 24px;
   margin-bottom: 8px;
   &:hover {
-    cursor: ${props => (props.disabled ? 'not-allowed' : 'inherit')};
+    cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
     box-shadow: 0px 0px 10px 0px rgba(9, 9, 9, 0.09);
   }
   img {
@@ -105,7 +105,7 @@ const WriteReport = (props: Props) => {
   const navigate = useNavigate()
   const [visibleMakeUp, setVisibleMakeUp] = useState(false)
   const [visibleEdit, setVisibleEdit] = useState(false)
-  const [editId, setEditId] = useState()
+  const [templateId, setTemplateId] = useState()
   const [dataList, setDataList] = useState<any>({})
   const [t] = useTranslation()
 
@@ -186,7 +186,10 @@ const WriteReport = (props: Props) => {
               <CommonButton
                 style={{ marginLeft: 16 }}
                 type="light"
-                onClick={() => setVisibleMakeUp(true)}
+                onClick={() => {
+                  props.onClose()
+                  setVisibleMakeUp(true)
+                }}
               >
                 {t('report.list.fillReport')}
               </CommonButton>
@@ -196,13 +199,16 @@ const WriteReport = (props: Props) => {
               placeholder={t('report.list.searchReport')}
               width={184}
               onChange={(id: any) => {
-                setEditId(id)
+                setTemplateId(id)
                 setVisibleEdit(true)
               }}
               options={[]
                 .concat(dataList?.usedTemplate || [])
                 .concat(dataList?.otherTemplate || [])
-                .filter((k: any) => !(k.submit_cycle === 1 && k.is_user_used))
+                .filter(
+                  (k: any) =>
+                    !(k.submit_cycle === 1 && k.is_current_cycle_used),
+                )
                 .map((item: any) => ({
                   label: item.name,
                   value: item.id,
@@ -216,11 +222,18 @@ const WriteReport = (props: Props) => {
                 <ColWrap key={item.id}>
                   <CarWrap
                     disabled={
-                      !!(item.is_user_used && item.is_cycle_limit === 1)
+                      !!(
+                        item.is_current_cycle_used && item.is_cycle_limit === 1
+                      )
                     }
                     onClick={() => {
-                      if (!(item.is_user_used && item.is_cycle_limit === 1)) {
-                        setEditId(item.id)
+                      if (
+                        !(
+                          item.is_current_cycle_used &&
+                          item.is_cycle_limit === 1
+                        )
+                      ) {
+                        setTemplateId(item.id)
                         setVisibleEdit(true)
                       }
                     }}
@@ -254,13 +267,19 @@ const WriteReport = (props: Props) => {
                     <ColWrap key={item.id}>
                       <CarWrap
                         disabled={
-                          !!(item.is_user_used && item.is_cycle_limit === 1)
+                          !!(
+                            item.is_current_cycle_used &&
+                            item.is_cycle_limit === 1
+                          )
                         }
                         onClick={() => {
                           if (
-                            !(item.is_user_used && item.is_cycle_limit === 1)
+                            !(
+                              item.is_current_cycle_used &&
+                              item.is_cycle_limit === 1
+                            )
                           ) {
-                            setEditId(item.id)
+                            setTemplateId(item.id)
                             setVisibleEdit(true)
                           }
                         }}
@@ -297,38 +316,10 @@ const WriteReport = (props: Props) => {
         title="补交汇报"
       />
       <HandleReport
-        editId={editId}
+        templateId={templateId}
         visibleEdit={visibleEdit}
         editClose={() => setVisibleEdit(false)}
         visibleEditText="写汇报"
-        editConfirm={async (params: any) => {
-          let users: any[] = []
-          const data: any[] = []
-          Object.keys(params).forEach((key: string) => {
-            const tempArr = key.split('_')
-            if (tempArr[0] === '1') {
-              users = params[key]
-            } else if (tempArr[0] === '3') {
-              data.push({
-                conf_id: Number(tempArr[1]),
-                content: params[key],
-              })
-            } else {
-              data.push({
-                conf_id: Number(tempArr[1]),
-                content: params[key] || [],
-              })
-            }
-          })
-          const res = await writeReport({
-            report_template_id: editId,
-            data,
-            target_users: users,
-          })
-          if (res && res.data && res.data.id) {
-            message.success(t('操作成功'))
-          }
-        }}
       />
     </>
   )

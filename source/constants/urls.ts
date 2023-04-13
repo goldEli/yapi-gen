@@ -143,6 +143,8 @@ const urls = {
   statUserList: '/b/work_report/statistics/user/list',
   statInfo: '/b/work_report/statistics/info',
   statTempUsage: '/b/work_report/statistics/template',
+  supplyList:'/b/work_report/template/supply',
+  getReportDetailById:'/b/work_report/user/info'
 }
 
 export default urls

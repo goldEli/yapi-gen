@@ -1,10 +1,9 @@
 // 写日志
-/* eslint-disable no-duplicate-imports */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/jsx-handler-names */
-import { Form, Modal } from 'antd'
+import { Form, message, Modal } from 'antd'
 import { ExclamationCircleFilled } from '@ant-design/icons'
 import CommonModal from '@/components/CommonModal'
 import ChoosePeople from '@/views/WorkReport/Formwork/ChoosePeople'
@@ -13,16 +12,15 @@ import IconFont from '@/components/IconFont'
 import { AddWrap } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
 import { useEffect, useRef, useState } from 'react'
-import { getReportDetail } from '@/services/daily'
 import { useTranslation } from 'react-i18next'
 import UploadAttach from '@/components/UploadAttach'
-import { useDispatch, useSelector } from '@store/index'
-import { changeRest } from '@store/log'
-import type { EditorRef } from '@xyfe/uikit'
+import { useSelector } from '@store/index'
 import { Editor } from '@xyfe/uikit'
 import { getStaffListAll } from '@/services/staff'
 import { uploadFile } from '@/components/CreateDemand/CreateDemandLeft'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
+import { getReportDetailById, writeReport } from '@/services/report'
+import { templateDetail } from '@/services/formwork'
 
 const LabelTitle = styled.span`
   font-size: 14px;
@@ -59,97 +57,48 @@ const HeadWrap = styled.div`
 `
 
 const HandleReport = (props: any) => {
-  const editorRef = useRef<EditorRef>(null)
   const [form] = Form.useForm()
   const [attachList, setAttachList] = useState<any>([])
-  const [peopleValue, setPeopleValue] = useState<any>([])
-  const [needValue, setNeedValue] = useState<any>([])
   const [options, setOptions] = useState<any>([])
   const leftDom: any = useRef<HTMLInputElement>(null)
-  const dispatch = useDispatch()
   const [t] = useTranslation()
   const userInfo = useSelector(state => state.user.userInfo)
-  const [reportDetail, setReportDetail] = useState<any>({
-    id: 5,
-    name: '日报',
-    company_id: 1504303190303051800,
-    user_id: 6,
-    requirement: {
-      day: [1, 2, 3, 4, 5],
-      end_time: {
-        time: 64800,
-        day_type: 2,
-      },
-      is_holiday: 1,
-      start_time: {
-        time: 28800,
-        day_type: 1,
-      },
-    },
-    submit_cycle: 1,
-    auto_reminder: 1,
-    reminder_time: 3600,
-    is_supply: 1,
-    is_cycle_limit: 1,
-    is_submitter_edit: 1,
-    is_all_view: 1,
-    is_all_write: 1,
-    hand_scope: 3,
-    created_at: '2023-03-29 14:19:24',
-    updated_at: '2023-03-29 08:39:18',
-    deleted_at: null,
-    template_content_configs: [
-      {
-        id: 7,
-        name: '下日计划',
-        report_template_id: 5,
-        type: 3,
-        tips: '测试内容2',
-        is_required: 1,
-      },
-      {
-        id: 8,
-        name: '附件',
-        report_template_id: 5,
-        type: 2,
-        tips: '测试内容3',
-        is_required: 1,
-      },
-      {
-        id: 9,
-        name: '关联需求',
-        report_template_id: 5,
-        type: 4,
-        tips: '测试内容4',
-        is_required: 1,
-      },
-      {
-        id: 10,
-        name: '汇报对象',
-        report_template_id: 5,
-        type: 1,
-        tips: '测试内容5',
-        is_required: 1,
-      },
-    ],
-    user: {
-      id: 6,
-      name: '马成龙',
-    },
-  })
+  const [reportDetail, setReportDetail] = useState<any>(null)
 
   const close = () => {
     form.resetFields()
     props.editClose()
     setAttachList([])
-    setPeopleValue([])
-    setNeedValue([])
   }
 
   const confirm = async () => {
-    const data: any = await form.validateFields()
-    await props.editConfirm(data, props.editId)
-    dispatch(changeRest(true))
+    const params: any = await form.validateFields()
+    let users: any[] = []
+    const data: any[] = []
+    Object.keys(params).forEach((key: string) => {
+      const tempArr = key.split('_')
+      if (tempArr[0] === '1') {
+        users = params[key]
+      } else if (tempArr[0] === '3') {
+        data.push({
+          conf_id: Number(tempArr[1]),
+          content: params[key],
+        })
+      } else {
+        data.push({
+          conf_id: Number(tempArr[1]),
+          content: params[key] || [],
+        })
+      }
+    })
+    const res = await writeReport({
+      report_template_id: props?.templateId,
+      data,
+      target_users: users,
+    })
+    if (res && res.code === 0 && res.data?.id) {
+      message.success(t('操作成功'))
+    }
     close()
   }
 
@@ -207,47 +156,21 @@ const HandleReport = (props: any) => {
   }
 
   const setDefaultValue = async () => {
-    const res = await getReportDetail(props.editId)
-    form.setFieldsValue({
-      info: res.data.info.finish_content,
-      info2: res.data.info.plan_content,
-    })
-
-    setAttachList(
-      res.data.files.map((item: any) => {
-        return {
-          url: item.associate,
-          id: item.id,
-          size: item.configurations.size,
-          time: item.created_at,
-          name: item.configurations.name,
-          suffix: item.configurations.ext,
-          username: res.data.info.user_name,
-        }
-      }),
-    )
-
-    setPeopleValue(
-      reportDetail?.report_user_list?.map((item: any) => {
-        return {
-          avatar: item.avatar,
-          id: item.user_id,
-          name: item.name,
-          nickname: '',
-          positionName: null,
-          roleName: '',
-        }
-      }),
-    )
-    setNeedValue(
-      res.data.story_list.map((item: any) => {
-        return {
-          key: item.associate,
-          value: Number(item.associate),
-          label: item.name,
-        }
-      }),
-    )
+    const result = await getReportDetailById({ id: 11 })
+    console.log(result, 'rerererer')
+    // setAttachList(
+    //     res.data.files.map((item: any) => {
+    //       return {
+    //         url: item.associate,
+    //         id: item.id,
+    //         size: item.configurations.size,
+    //         time: item.created_at,
+    //         name: item.configurations.name,
+    //         suffix: item.configurations.ext,
+    //         username: res.data.info.user_name,
+    //       }
+    //     }),
+    //   )
   }
   const getList = async () => {
     const result = await getStaffListAll({ all: 1 })
@@ -259,15 +182,24 @@ const HandleReport = (props: any) => {
     )
   }
 
+  const getTemplateById = async () => {
+    const res = await templateDetail({ id: props?.templateId })
+    if (res && res.code === 0 && res.data) {
+      setReportDetail(res.data)
+    }
+  }
+
   useEffect(() => {
     if (props.editId && props.visibleEdit) {
       setDefaultValue()
     }
     getList()
-    setTimeout(() => {
-      editorRef.current?.focus()
-    }, 100)
   }, [props.editId, props.visibleEdit])
+
+  useEffect(() => {
+    getTemplateById()
+    getList()
+  }, [props.templateId])
 
   const scrollToBottom = () => {
     setTimeout(() => {
@@ -315,7 +247,18 @@ const HandleReport = (props: any) => {
             ]}
           >
             {props.visibleEdit ? (
-              <ChoosePeople initValue={peopleValue} />
+              <ChoosePeople
+                initValue={reportDetail?.report_user_list?.map((item: any) => {
+                  return {
+                    avatar: item.avatar,
+                    id: item.id,
+                    name: item.name,
+                    nickname: '',
+                    positionName: null,
+                    roleName: '',
+                  }
+                })}
+              />
             ) : null}
           </Form.Item>
         )
@@ -376,11 +319,7 @@ const HandleReport = (props: any) => {
             ]}
             initialValue={content.tips}
           >
-            <Editor
-              ref={editorRef}
-              upload={uploadFile}
-              getSuggestions={() => options}
-            />
+            <Editor upload={uploadFile} getSuggestions={() => options} />
           </Form.Item>
         )
       case 4:
@@ -390,7 +329,7 @@ const HandleReport = (props: any) => {
             name={`${content.type}_${content.id}`}
           >
             {props.visibleEdit ? (
-              <RelatedNeed onBootom={scrollToBottom} initValue={needValue} />
+              <RelatedNeed onBootom={scrollToBottom} initValue={[]} />
             ) : null}
           </Form.Item>
         )
@@ -438,7 +377,7 @@ const HandleReport = (props: any) => {
               </span>
             )}
             <div className="titleText">
-              {`${userInfo.name}的工作${reportDetail.name}`}
+              {`${userInfo?.name}的工作${reportDetail?.name}`}
               <span className="dateText">（2022-08-21至2022-08-27）</span>
             </div>
           </div>
@@ -459,7 +398,6 @@ const HandleReport = (props: any) => {
               const errorList = (document as any).querySelectorAll(
                 '.ant-form-item-has-error',
               )
-
               errorList[0].scrollIntoView({
                 block: 'center',
                 behavior: 'smooth',
