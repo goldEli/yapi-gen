@@ -6,7 +6,7 @@ import {
   getScheduleListDaysOfDate,
   getScheduleListDaysOfWeek,
   getScheduleListDaysOfMonth,
-  scheduleInfoReply
+  scheduleInfoReply,
 } from './schedule.thunk'
 
 type SliceState = {
@@ -22,8 +22,10 @@ type SliceState = {
   scheduleDate?: number
   yearViewScheduleList: Model.Schedule.Info[]
   monthViewScheduleList: Model.Schedule.Info[]
-  scheduleInfo: Model.Schedule.Info,
-  scheduleInfoReply:{},
+  scheduleInfo: Model.Schedule.Info
+  scheduleInfoReply?: {
+    status: number
+  }
 }
 
 const initialState: SliceState = {
@@ -57,7 +59,6 @@ const initialState: SliceState = {
     datetime: '',
     timestamp: 0,
   },
-  scheduleInfoReply:{}
 }
 
 const slice = createSlice({
