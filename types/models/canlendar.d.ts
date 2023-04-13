@@ -1,4 +1,20 @@
 declare namespace Model.Calendar {
+  interface CalendarInfo {
+    id: number
+    type: number
+    name: string
+    describe: string
+    icon: string
+    permission: 1 | 2 | 3
+    color: number
+    is_default: 1 | 2
+    status: number
+    subscribe_num: number
+    share_members: []
+    subscribe_members: []
+    user: []
+    is_owner: 1 | 2
+  }
   interface Pager {
     page: number
     pagesize: number
@@ -104,7 +120,7 @@ declare namespace Model.Calendar {
 
   // 添加成员/部门/团队
   interface MemberItem {
-    id: number
+    id: number | string
     name: string
     avatar?: string
     // 1是选中

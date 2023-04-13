@@ -37,9 +37,9 @@ const CalendarSidebar: React.FC<CalendarSidebarProps> = props => {
   const dispatch = useDispatch()
   const { firstMenuCollapse } = useSelector(state => state.global)
   const { routerMenu } = useSelector(store => store.calendar)
-  const calendarMainSideDom: any = useRef<HTMLElement>(null)
-  const calendarSideDom: any = useRef<HTMLElement>(null)
-  const sliderRef = useRef<any>(null)
+  const calendarMainSideDom = useRef<HTMLDivElement>(null)
+  const calendarSideDom = useRef<HTMLDivElement>(null)
+  const sliderRef = useRef<HTMLDivElement>(null)
   const maxWidth = 422
   const [leftWidth, setLeftWidth] = useState(288)
   const [endWidth, setEndWidth] = useState(288)
@@ -47,6 +47,7 @@ const CalendarSidebar: React.FC<CalendarSidebarProps> = props => {
 
   // 拖动线条
   const onDragLine = () => {
+    if (sliderRef.current === null) return
     let width = sliderRef.current?.clientWidth
     document.onmousemove = e => {
       setEndWidth(288)
@@ -98,11 +99,14 @@ const CalendarSidebar: React.FC<CalendarSidebarProps> = props => {
   }
 
   useEffect(() => {
+    if (calendarMainSideDom.current === null) return
+    if (calendarSideDom.current === null) return
     if (routerMenu.key || localStorage.getItem('calendarSetKey')) {
       calendarMainSideDom.current.style.width = '0px'
       calendarSideDom.current.style.width = '100%'
       calendarSideDom.current.style.display = 'block'
       setTimeout(() => {
+        if (calendarMainSideDom.current === null) return
         calendarMainSideDom.current.style.display = 'none'
       }, 100)
     } else {
@@ -110,6 +114,7 @@ const CalendarSidebar: React.FC<CalendarSidebarProps> = props => {
       calendarMainSideDom.current.style.width = '100%'
       calendarMainSideDom.current.style.display = 'block'
       setTimeout(() => {
+        if (calendarSideDom.current === null) return
         calendarSideDom.current.style.display = 'none'
       }, 100)
     }

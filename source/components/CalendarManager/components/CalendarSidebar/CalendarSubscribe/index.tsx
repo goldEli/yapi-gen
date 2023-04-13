@@ -15,6 +15,7 @@ import styled from '@emotion/styled'
 import { setSubscribeModal } from '@store/calendar'
 import { getCalendarList } from '@store/calendar/calendar.thunk'
 import { useDispatch, useSelector } from '@store/index'
+import { refreshCalendarPanelScheduleList } from '@store/schedule/schedule.thunk'
 import { Skeleton, Tabs, Tooltip, message } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -175,6 +176,7 @@ const TabsContent = (props: TabsContentProps) => {
   const onCancelSubscribe = async (id: number) => {
     await unsubscribeCalendar({ id })
     message.success(t('unsubscribed_successfully'))
+    dispatch(refreshCalendarPanelScheduleList())
     dispatch(getCalendarList())
     if (props.type === '0') {
       const resultData = dataUserList?.map(
@@ -198,6 +200,7 @@ const TabsContent = (props: TabsContentProps) => {
     await subscribeCalendar({ id })
     message.success(t('subscription_successful'))
     dispatch(getCalendarList())
+    dispatch(refreshCalendarPanelScheduleList())
     if (props.type === '0') {
       const newData = dataUserList?.map(
         (i: Model.Calendar.GetContactsCalendarInfo) => ({
