@@ -1033,7 +1033,17 @@
       "tomorrowWork": "Planned work for tomorrow",
       "reportPerson": "Report person",
       "associatedRequirement": "Associated requirement",
-      "submit": "Submit"
+      "submit": "Submit",
+      "select": "Please select",
+      "upload": "Please upload",
+      "write": "Please fill in",
+      "correlation": "Please associate",
+      "haveSubmit": "submitted",
+      "createTemplate": "Create a template",
+      "fillReport": "Supplementary report",
+      "recent": "Recent use",
+      "other": "Other",
+      "searchReport": "Search for report title or content"
     },
     "statistics": {
       "title": "Reporting Statistics",
