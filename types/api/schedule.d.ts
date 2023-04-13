@@ -2,9 +2,9 @@ declare namespace API.Schedule {
   type ScheduleListResult = {
     [key in string]: Model.Schedule.Info[]
   }
-  namespace GetScheduleListDay {
+  namespace GetScheduleListDaysOfDate {
     type Params = {
-      day: string
+      date: string
       calendar_ids: number[]
     }
     type Result = ScheduleListResult

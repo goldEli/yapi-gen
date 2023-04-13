@@ -4,10 +4,10 @@ import { AppDispatch } from '@store/index'
 
 const name = 'schedule'
 
-export const getScheduleListDay = createAsyncThunk(
-  `${name}/getScheduleListDay`,
-  async (params: API.Schedule.GetScheduleListDay.Params) => {
-    const res = await services.schedule.getScheduleListDay(params)
+export const getScheduleListDaysOfDate = createAsyncThunk(
+  `${name}/getScheduleListDaysOfDate`,
+  async (params: API.Schedule.GetScheduleListDaysOfDate.Params) => {
+    const res = await services.schedule.getScheduleListDaysOfDate(params)
     return res
   },
 )
@@ -87,9 +87,9 @@ export const getCalendarDaysOfMonthList = createAsyncThunk(
 
 export const getScheduleInfo = createAsyncThunk(
   `${name}/getScheduleInfo`,
-  async (params:{id:number}) => {
+  async (params: { id: number }) => {
     try {
-      const res = await services.schedule.getScheduleInfo(params);
+      const res = await services.schedule.getScheduleInfo(params)
       return res
     } catch (error) {
       //
@@ -97,5 +97,3 @@ export const getScheduleInfo = createAsyncThunk(
     return ''
   },
 )
-
-

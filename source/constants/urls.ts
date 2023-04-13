@@ -157,7 +157,7 @@ const urls = {
 
   getScheduleListDaysOfWeek: '/b/schedule/daysOfWeek',
   getScheduleListDaysOfMonth: '/b/schedule/daysOfMonth',
-  getScheduleListDay: '/b/schedule/days',
+  getScheduleListDaysOfDate: '/b/schedule/daysOfDate',
 }
 export default urls
 

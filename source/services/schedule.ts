@@ -15,13 +15,13 @@ import { addIdToScheduleList } from './utils'
 //   return response
 // }
 // 日视图 日程列表
-export const getScheduleListDay = async (
-  params: API.Schedule.GetScheduleListDay.Params,
+export const getScheduleListDaysOfDate = async (
+  params: API.Schedule.GetScheduleListDaysOfDate.Params,
 ) => {
-  const response = await http.post<any, API.Schedule.GetScheduleListDay.Result>(
-    'getScheduleListDay',
-    params,
-  )
+  const response = await http.post<
+    any,
+    API.Schedule.GetScheduleListDaysOfDate.Result
+  >('getScheduleListDaysOfDate', params)
   const res = addIdToScheduleList(response.data)
   return res
 }

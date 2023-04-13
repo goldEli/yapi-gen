@@ -5,7 +5,10 @@ import ScheduleCard from '../ScheduleCard'
 import useCalculationConflict from '../hooks/useCalculationConflict'
 import styled from '@emotion/styled'
 import { getYearMonthWeekDay } from '@/components/CalendarManager/utils'
-import { getScheduleListDaysOfWeek } from '@store/schedule/schedule.thunk'
+import {
+  getScheduleListDaysOfDate,
+  getScheduleListDaysOfWeek,
+} from '@store/schedule/schedule.thunk'
 
 interface ScheduleCardListProps {}
 const ScheduleCardListBox = styled.div`
@@ -26,9 +29,8 @@ const ScheduleCardList: React.FC<ScheduleCardListProps> = props => {
     const { week, year } = getYearMonthWeekDay(calenderDayValue)
 
     dispatch(
-      getScheduleListDaysOfWeek({
-        week,
-        year,
+      getScheduleListDaysOfDate({
+        date: calenderDayValue,
         calendar_ids: checkedCalendarList.map(item => item.calendar_id),
       }),
     )
