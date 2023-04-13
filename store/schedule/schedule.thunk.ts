@@ -39,6 +39,9 @@ export const refreshCalendarPanelScheduleList =
     const { calendarPanelType } = state.calendarPanel
     const { checkedCalendarList } = state.calendar
     const params = ParamsCache.getInstance().getCache(calendarPanelType)
+    if (!params) {
+      return
+    }
     const newParams = {
       ...params,
       calendar_ids: checkedCalendarList,
