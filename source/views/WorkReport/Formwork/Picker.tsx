@@ -2,6 +2,7 @@
 /* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-useless-concat */
+/* eslint-disable camelcase */
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { Input, Popover } from 'antd'
@@ -101,12 +102,6 @@ const Picker = (props: PropsType) => {
   // 每周提醒时间(提前0-5)天时和分
   // 每月提醒时间(提前0-30天)天时和分
   useEffect(() => {
-    setCenterDataList([])
-    setLeftDataList([])
-    setRightDataList([])
-    setLeftActive(-1)
-    setCenterActive(-1)
-    setRightActive(-1)
     if (props.type === 'day' && props.pickerType === 'start') {
       // 每天，开始时间
       setLeftDataList(data)
@@ -163,15 +158,27 @@ const Picker = (props: PropsType) => {
   useEffect(() => {
     setValue('')
   }, [props.type])
+  //  时分数转化为秒
+  const time1 = (d: number, h: number, m: number) => {
+    let datS: any = d ? d * 60 * 60 * 24 : 0
+    let hS = h * 60 * 60
+    let minute = m * 60
+    const second = datS + hS + minute
+    return second
+  }
   const getTime = () => {
     setIsOpen(false)
     props.getValues(leftActiveVal, centerActiveVal, rightActiveVal)
-    props.onChange?.({
-      v1: leftActiveVal,
-      v2: centerActiveVal,
-      v3: rightActiveVal,
-    })
+    if (props.type === 'start' || props.type === 'end') {
+      props?.onChange?.({
+        time: time1(0, centerActiveVal, rightActiveVal),
+        day_type: leftActiveVal,
+      })
+    } else {
+      props?.onChange?.(time1(leftActiveVal, centerActiveVal, rightActiveVal))
+    }
   }
+
   // 需要中文
   const getLabelName = (num: number) => {
     switch (num) {
@@ -252,7 +259,10 @@ const Picker = (props: PropsType) => {
       getWeekValues()
     } else if (props.type === 'month') {
       getMonthValues()
+    } else {
+      getMonthValues()
     }
+    console.log(props.value, 'value')
   }, [props.value])
   const content = () => {
     return (

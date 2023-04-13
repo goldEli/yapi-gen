@@ -75,7 +75,7 @@ const CommonModal = (props: any) => {
                 {t('common.cancel')}
               </CommonButton>
               <CommonButton type="primary" onClick={props?.onConfirm}>
-                {t('common.confirm')}
+                {props?.confirmText || t('common.confirm')}
               </CommonButton>
             </ModalFooter>
           )}
