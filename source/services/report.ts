@@ -41,3 +41,18 @@ export const getReportDetailById: any = async (params: any) => {
     const response = await http.get('getReportDetailById', { ...params })
     return response
   }
+
+export const getRepSentList: any = async (params: any) => {
+  const response = await http.get('repSentList', params)
+  return response.data
+}
+
+export const getRepReceivedList: any = async (params: any) => {
+  const response = await http.get('repReceivedList', params)
+  return response.data
+}
+
+export const getRepPublicList: any = async (params: any) => {
+  const response = await http.get('repPublicList', params)
+  return response.data
+}

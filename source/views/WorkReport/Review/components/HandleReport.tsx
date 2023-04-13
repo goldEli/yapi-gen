@@ -64,6 +64,7 @@ const HandleReport = (props: any) => {
   const [t] = useTranslation()
   const userInfo = useSelector(state => state.user.userInfo)
   const [reportDetail, setReportDetail] = useState<any>(null)
+  const [EditDetail, setEditDetail] = useState<any>(null)
 
   const close = () => {
     form.resetFields()
@@ -156,8 +157,10 @@ const HandleReport = (props: any) => {
   }
 
   const setDefaultValue = async () => {
-    const result = await getReportDetailById({ id: 11 })
-    console.log(result, 'rerererer')
+    const result = await getReportDetailById({ id: props?.editId })
+    if (result.code === 0 && result.data) {
+      setEditDetail(result.data)
+    }
     // setAttachList(
     //     res.data.files.map((item: any) => {
     //       return {
@@ -377,7 +380,9 @@ const HandleReport = (props: any) => {
               </span>
             )}
             <div className="titleText">
-              {`${userInfo?.name}的工作${reportDetail?.name}`}
+              {`${userInfo?.name}的工作${
+                props.editId ? EditDetail?.name : reportDetail?.name
+              }`}
               <span className="dateText">（2022-08-21至2022-08-27）</span>
             </div>
           </div>
@@ -405,9 +410,13 @@ const HandleReport = (props: any) => {
             }, 100)
           }}
         >
-          {reportDetail?.template_content_configs?.map((item: any) => {
-            return <div key={item.id}>{getFormItemHtml(item)}</div>
-          })}
+          {props?.editId
+            ? EditDetail?.report_content?.map((item: any) => {
+                return <div key={item.id}>{getFormItemHtml(item)}</div>
+              })
+            : reportDetail?.template_content_configs?.map((item: any) => {
+                return <div key={item.id}>{getFormItemHtml(item)}</div>
+              })}
         </Form>
       </div>
     </CommonModal>

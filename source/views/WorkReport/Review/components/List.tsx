@@ -1,4 +1,6 @@
-import { useState } from 'react'
+/* eslint-disable camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
+import { useEffect, useMemo, useState } from 'react'
 import { Tooltip } from 'antd'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
@@ -12,9 +14,16 @@ import ResizeTable from '@/components/ResizeTable'
 import PaginationBox from '@/components/TablePagination'
 import Sort from '@/components/Sort'
 import NoData from '@/components/NoData'
-import LabelTag from '@/components/LabelTag'
 import ReadStatusTag from './ReadStatusTag'
 import ReportDetailDrawer from './ReportDetailDrawer'
+import {
+  getRepSentList,
+  getRepReceivedList,
+  getRepPublicList,
+} from '@/services/report'
+import { templateList } from '@/services/formwork'
+import { getStaffList } from '@/services/staff'
+import HandleReport from './HandleReport'
 
 const ListTitle = styled.div`
   height: 32px;
@@ -60,20 +69,30 @@ const ClearButton = styled.div`
   white-space: nowrap;
   cursor: pointer;
 `
+const defaultPageParam = { page: 1, pagesize: 20 }
 
+const statusOptions = [
+  { label: '未读', value: 1 },
+  { label: '已读', value: 2 },
+  { label: '已评', value: 3 },
+]
 const List = () => {
   const [t] = useTranslation()
-  const [reportedAt, setReportedAt] = useState<any>(null)
-  const [submitAt, setSubmitAt] = useState<any>(null)
   const { pathname } = useLocation()
   const [isSpinning, setIsSpinning] = useState(false)
   const [order, setOrder] = useState<any>('')
   const [orderKey, setOrderKey] = useState<any>()
-  const [visibleLook, setVisibleLook] = useState(false)
   const [total, setTotal] = useState<number>(250)
-  const [pageObj, setPageObj] = useState({ page: 1, size: 20 })
+  const [pageObj, setPageObj] = useState(defaultPageParam)
+  const [listData, setListData] = useState<any[]>([])
+  const [repTypeOptions, setRepTypeOptions] = useState<any[]>([])
+  const [userOptions, setUserOptions] = useState<any[]>([])
+  const [queryParams, setQueryParams] = useState<any>({})
+  const [editId, setEditId] = useState<any>()
+  const [visibleEdit, setVisibleEdit] = useState(false)
   const params = useParams()
   const id = Number(params?.id)
+
   const menuList = [
     {
       id: 1,
@@ -93,10 +112,42 @@ const List = () => {
     },
   ]
 
+  const getList = async () => {
+    try {
+      setIsSpinning(true)
+      let res
+      switch (id) {
+        case 1:
+          res = await getRepSentList({ ...pageObj, ...queryParams })
+          break
+        case 2:
+          res = await getRepReceivedList({ ...pageObj, ...queryParams })
+          break
+        case 3:
+          res = await getRepPublicList({ ...pageObj, ...queryParams })
+          break
+      }
+      setIsSpinning(false)
+      setListData(res.list)
+      setTotal(res.pager.total)
+    } catch (error) {
+      console.log('error', error)
+    }
+  }
+
   const updateOrderkey = (key: any, orderVal: any) => {
     setOrderKey(key)
     setOrder(orderVal)
   }
+
+  useEffect(() => {
+    getList()
+  }, [pageObj, queryParams])
+
+  useEffect(() => {
+    setQueryParams({})
+    setPageObj({ ...pageObj, page: 1 })
+  }, [id])
 
   const NewSort = (props: any) => {
     return (
@@ -110,42 +161,19 @@ const List = () => {
       </Sort>
     )
   }
-  const columnsData: any = [
+  const columns: any[] = [
     {
       width: 188,
       title: t('common.title'),
-      dataIndex: 'name',
-      key: 'name',
-      render: (text: string | number) => {
-        return (
-          <div>
-            <span style={{ marginRight: 14 }}>{text}</span>
-            <LabelTag
-              options={[
-                {
-                  label: t('report.list.update'),
-                  color: '#E56F0E',
-                  background: 'rgba(250,151,70,0.1)',
-                  state: 1,
-                },
-                {
-                  label: t('report.list.makeup'),
-                  color: '#7641E8',
-                  background: 'rgba(161,118,251,0.1)',
-                  state: 2,
-                },
-              ]}
-              state={2}
-            />
-          </div>
-        )
+      dataIndex: 'user',
+      render: (_: string, record: any) => {
+        return <span>{String(record.user.name)}</span>
       },
     },
     {
       width: 450,
       title: t('report.list.summary'),
-      dataIndex: 'finish_content',
-      key: 'finish_content',
+      dataIndex: 'report_precis',
       render: (text: string) => {
         return (
           <Tooltip
@@ -173,10 +201,9 @@ const List = () => {
       title: (
         <NewSort fixedKey="file_count">{t('report.list.reportTime')}</NewSort>
       ),
-      dataIndex: 'file_count',
-      key: 'file_count',
-      render: (text: string | number) => {
-        return <div>{text}</div>
+      dataIndex: 'start_time',
+      render: (_: string, record: any) => {
+        return <span>{`${record.start_time} ~ ${record.end_time}`}</span>
       },
     },
     {
@@ -185,19 +212,14 @@ const List = () => {
         <NewSort fixedKey="created_at">{t('report.list.submitTime')}</NewSort>
       ),
       dataIndex: 'created_at',
-      key: 'created_at',
-      render: (text: string | number) => {
-        return <div>{text}</div>
-      },
     },
     {
       width: 160,
       title: t('report.list.readState'),
       align: 'center',
-      dataIndex: 'state',
-      key: 'state',
+      dataIndex: 'is_read',
       render: (text: string | number) => {
-        return <ReadStatusTag status="read" />
+        return <ReadStatusTag status={text === 1 ? 'read' : 'no'} />
       },
     },
     {
@@ -205,14 +227,12 @@ const List = () => {
       title: t('report.list.operation'),
       align: 'center',
       fixed: 'right',
-      render: (text: string, record: any) => {
+      render: (_: string, record: any) => {
         return (
           <span
             onClick={() => {
-              // setVisibleEdit(true)
-              // setEditId(record.id)
-              // setEditType(record.type)
-              // setType(record.type)
+              setVisibleEdit(true)
+              setEditId(record.id)
             }}
             style={{
               fontSize: '14px',
@@ -230,51 +250,100 @@ const List = () => {
   const nowPath2 = Number(pathname.split('/')[4]) || ''
   const title = menuList[(nowPath2 as number) - 1]?.name
 
-  const onChangeTime = (dates: any) => {
-    console.log(dates)
-    if (dates === null) {
-      setReportedAt(null)
-      return
-    }
+  const onChangeTime = (type: string, dates: any) => {
     const date = []
     date[0] = moment(dates[0]).format('YYYY-MM-DD')
     date[1] = moment(dates[1]).format('YYYY-MM-DD')
-
-    setReportedAt(date)
+    if (type === 'report') {
+      setQueryParams({
+        ...queryParams,
+        report_start_time: date[0],
+        report_end_time: date[1],
+      })
+      return
+    }
+    setQueryParams({
+      ...queryParams,
+      send_start_time: date[0],
+      send_end_time: date[1],
+    })
   }
 
-  const onChangeType = (val: any) => {
-    console.log(val)
+  const onChangeStatusType = (value: any) => {
+    setQueryParams({
+      ...queryParams,
+      type: value,
+    })
+  }
+  const onChangeSubmitter = (value: any) => {
+    // TODO: 提交人
+    // setQueryParams({
+    //   ...queryParams,
+    //   user_id: value,
+    // })
+  }
+  const onChangeRepType = (value: any) => {
+    setQueryParams({
+      ...queryParams,
+      report_template_id: value,
+    })
   }
 
   const onPressEnter = (value: any) => {
-    console.log(value)
+    if (value) {
+      setQueryParams({
+        keyword: value,
+      })
+    } else {
+      setQueryParams({
+        ...queryParams,
+        keyword: value,
+      })
+    }
+    setPageObj({ ...pageObj, page: 1 })
   }
 
   const onChangePage = (page: any, size: number) => {
-    setPageObj({ page, size })
+    setPageObj({ page, pagesize: size })
   }
+
+  const restQuery = () => {
+    setQueryParams({})
+  }
+
+  const repDate = useMemo(() => {
+    if (queryParams.report_start_time && queryParams.report_end_time) {
+      return [
+        moment(queryParams.report_start_time),
+        moment(queryParams.report_end_time),
+      ]
+    }
+    return null
+  }, [queryParams])
+
+  const submitDate = useMemo(() => {
+    if (queryParams.report_start_time && queryParams.report_end_time) {
+      return [
+        moment(queryParams.send_start_time),
+        moment(queryParams.report_end_time),
+      ]
+    }
+    return null
+  }, [queryParams])
 
   const extraSelect = (
     <>
       <SelectWrapForList>
         <span style={{ margin: '0 16px', fontSize: '14px' }}>
-          {id === 2 && t('report.list.submitter')}
-          {id === 3 && t('report.list.informant')}
+          {t('report.list.submitter')}
         </span>
         <CustomSelect
           style={{ width: 148 }}
           getPopupContainer={(node: any) => node}
           allowClear
           optionFilterProp="label"
-          defaultValue={['all']}
-          options={[
-            { label: '所有', value: 'all' },
-            { label: '张三', value: 'date' },
-            { label: '李四', value: 'date1' },
-            { label: '王五', value: 'date2' },
-          ]}
-          onChange={onChangeType}
+          options={userOptions}
+          onChange={onChangeSubmitter}
         />
       </SelectWrapForList>
       <SelectWrapForList>
@@ -286,18 +355,32 @@ const List = () => {
           getPopupContainer={(node: any) => node}
           allowClear
           optionFilterProp="label"
-          defaultValue={['all']}
-          options={[
-            { label: '所有', value: 'all' },
-            { label: '未读', value: 'unread' },
-            { label: '已读', value: 'read' },
-            { label: '已评', value: 'reviewed' },
-          ]}
-          onChange={onChangeType}
+          options={statusOptions}
+          onChange={onChangeStatusType}
         />
       </SelectWrapForList>
     </>
   )
+  const generateOptions = (item: any) => {
+    return {
+      label: item.name,
+      value: item.id,
+    }
+  }
+  const getTemplateList = async () => {
+    const data = await templateList()
+    setRepTypeOptions(data.map(generateOptions))
+  }
+
+  const getUserList = async () => {
+    const data = await getStaffList({ all: 1 })
+    setUserOptions(data.map(generateOptions))
+  }
+
+  useEffect(() => {
+    getTemplateList()
+    getUserList()
+  }, [])
 
   return (
     <>
@@ -322,13 +405,8 @@ const List = () => {
             allowClear
             optionFilterProp="label"
             defaultValue={['all']}
-            options={[
-              { label: '所有', value: 'all' },
-              { label: '工作日报', value: 'date' },
-              { label: '工作日报1', value: 'date1' },
-              { label: '工作日报2', value: 'date2' },
-            ]}
-            onChange={onChangeType}
+            options={repTypeOptions}
+            onChange={onChangeRepType}
           />
         </SelectWrapForList>
         {id !== 1 && (id === 2 || id === 3) ? extraSelect : null}
@@ -338,10 +416,8 @@ const List = () => {
           </span>
           <RangePicker
             placement="bottomLeft"
-            dateValue={
-              reportedAt ? [moment(reportedAt[0]), moment(reportedAt[1])] : null
-            }
-            onChange={onChangeTime}
+            dateValue={repDate}
+            onChange={date => onChangeTime('report', date)}
           />
         </SelectWrapForList>
         <SelectWrapForList>
@@ -351,13 +427,11 @@ const List = () => {
           <RangePicker
             isShowQuick
             placement="bottomLeft"
-            dateValue={
-              submitAt ? [moment(submitAt[0]), moment(submitAt[1])] : null
-            }
-            onChange={onChangeTime}
+            dateValue={submitDate}
+            onChange={date => onChangeTime('submit', date)}
           />
         </SelectWrapForList>
-        <ClearButton>清除条件</ClearButton>
+        <ClearButton onClick={restQuery}>清除条件</ClearButton>
       </ListHead>
       <ListContent>
         <div
@@ -370,133 +444,29 @@ const List = () => {
           <ResizeTable
             isSpinning={isSpinning}
             dataWrapNormalHeight="100%"
-            col={id === 1 ? columnsData : columnsData.filter((k: any) => k.key)}
-            // dataSource={[
-            //   {
-            //     name: '李钟硕的日报',
-            //     finish_content:
-            //       '内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX',
-            //     file_count: '2023-4-6',
-            //     created_at: '2023-4-6',
-            //     state: '已读',
-            //   },
-            //   {
-            //     name: '李钟硕的日报',
-            //     finish_content:
-            //       '内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX',
-            //     file_count: '2023-4-6',
-            //     created_at: '2023-4-6',
-            //     state: '已读',
-            //   },
-            //   {
-            //     name: '李钟硕的日报',
-            //     finish_content:
-            //       '内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX',
-            //     file_count: '2023-4-4',
-            //     created_at: '2023-4-6',
-            //     state: '已读',
-            //   },
-            //   {
-            //     name: '李钟硕的日报',
-            //     finish_content:
-            //       '内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX',
-            //     file_count: '2023-4-7',
-            //     created_at: '2023-4-6',
-            //     state: '已读',
-            //   },
-            //   {
-            //     name: '李钟硕的日报',
-            //     finish_content:
-            //       '内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX',
-            //     file_count: '2023-4-6',
-            //     created_at: '2023-4-6',
-            //     state: '已读',
-            //   },
-            //   {
-            //     name: '李钟硕的日报',
-            //     finish_content:
-            //       '内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX',
-            //     file_count: '2023-4-9',
-            //     created_at: '2023-4-6',
-            //     state: '已读',
-            //   },
-            //   {
-            //     name: '李钟硕的日报',
-            //     finish_content:
-            //       '内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX',
-            //     file_count: '2023-4-6',
-            //     created_at: '2023-4-6',
-            //     state: '已读',
-            //   },
-            //   {
-            //     name: '李钟硕的日报',
-            //     finish_content:
-            //       '内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX',
-            //     file_count: '2023-4-6',
-            //     created_at: '2023-4-6',
-            //     state: '已读',
-            //   },
-            //   {
-            //     name: '李钟硕的日报',
-            //     finish_content:
-            //       '内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX',
-            //     file_count: '2023-4-6',
-            //     created_at: '2023-4-6',
-            //     state: '已读',
-            //   },
-            //   {
-            //     name: '李钟硕的日报',
-            //     finish_content:
-            //       '内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX',
-            //     file_count: '2023-4-6',
-            //     created_at: '2023-4-6',
-            //     state: '已读',
-            //   },
-            //   {
-            //     name: '李钟硕的日报',
-            //     finish_content:
-            //       '内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX',
-            //     file_count: '2023-4-6',
-            //     created_at: '2023-4-6',
-            //     state: '已读',
-            //   },
-            //   {
-            //     name: '李钟硕的日报',
-            //     finish_content:
-            //       '内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX',
-            //     file_count: '2023-4-6',
-            //     created_at: '2023-4-6',
-            //     state: '已读',
-            //   },
-            //   {
-            //     name: '李钟硕的日报',
-            //     finish_content:
-            //       '内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX',
-            //     file_count: '2023-4-6',
-            //     created_at: '2023-4-6',
-            //     state: '已读',
-            //   },
-            //   {
-            //     name: '李钟硕的日报',
-            //     finish_content:
-            //       '内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX内容XXXXXXXXXXX',
-            //     file_count: '2023-4-6',
-            //     created_at: '2023-4-6',
-            //     state: '已读',
-            //   },
-            // ]}
-            dataSource={[]}
+            col={
+              id === 1
+                ? columns
+                : columns?.filter((item: any) => item.dataIndex)
+            }
             noData={<NoData />}
+            dataSource={listData}
           />
         </div>
         <PaginationBox
           total={total}
-          pageSize={pageObj.size}
+          pageSize={pageObj.pagesize}
           currentPage={pageObj.page}
           onChange={onChangePage}
         />
       </ListContent>
       <ReportDetailDrawer />
+      <HandleReport
+        editId={editId}
+        visibleEdit={visibleEdit}
+        editClose={() => setVisibleEdit(false)}
+        visibleEditText="修改汇报"
+      />
     </>
   )
 }

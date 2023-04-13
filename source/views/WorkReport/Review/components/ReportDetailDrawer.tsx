@@ -342,7 +342,7 @@ const ReportDetailDrawer = () => {
         placement="right"
         bodyStyle={{ padding: 0, position: 'relative' }}
         width={leftWidth}
-        open={true}
+        open={false}
         onClose={onCancel}
         destroyOnClose
         maskClosable={false}

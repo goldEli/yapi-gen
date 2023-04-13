@@ -133,7 +133,7 @@ const Statistics = () => {
   const [userDataList, setUserDataList] = useState<any[]>([])
   const [usageDataList, setUsageDataList] = useState<any[]>([])
   const [statInfoData, setStatInfoData] = useState<any>({})
-  const [tabKey, setTabKey] = useState<string>('')
+  const [tabKey, setTabKey] = useState<string | number>('')
   const [queryParams, setQueryParams] = useState<any>({})
 
   const columns: ColumnsType<any> = [
@@ -268,7 +268,11 @@ const Statistics = () => {
               <RangePicker isShowQuick onChange={onChangeDate} />
             </SelectWrapBedeck>
           </div>
-          <SlideTabs items={formWorkData} onChange={onTabChange} />
+          <SlideTabs
+            activeKey={tabKey}
+            items={formWorkData}
+            onChange={onTabChange}
+          />
           <>
             <ResizeTable
               isSpinning={isSpinning}
