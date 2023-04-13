@@ -34,7 +34,7 @@ import CalendarColor from '../CalendarColor'
 import CommonButton from '@/components/CommonButton'
 import { ColorWrap } from '../CalendarSidebar/CalendarFormModal/style'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox'
-import moment, { Moment } from 'moment'
+import moment from 'moment'
 import { RangePickerProps } from 'antd/lib/date-picker'
 import { colorMap } from '../../config'
 import { setQuickCreateScheduleModel } from '@store/calendarPanle'
@@ -42,6 +42,7 @@ import { setScheduleModal } from '@store/calendar'
 import { saveSchedule } from '@store/schedule/schedule.thunk'
 import { EventBus } from '../../eventBus'
 import useModalPosition from './useModalPosition'
+import { useTranslation } from 'react-i18next'
 interface CreateScheduleBoxProps {
   containerClassName: string
 }
@@ -83,6 +84,7 @@ const CreateFormItem = (props: CreateFormItemProps) => {
 }
 
 const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
+  const [t] = useTranslation()
   const { relateConfig, calendarConfig, calendarData } = useSelector(
     store => store.calendar,
   )
@@ -150,8 +152,8 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
 
   // 参与者的权限
   const checkboxOptions = [
-    { label: '可修改日程', value: 0 },
-    { label: '邀请参与者', value: 1 },
+    { label: t('modifiable_schedule'), value: 0 },
+    { label: t('invite_participants'), value: 1 },
   ]
 
   // 选中的共享成员
@@ -180,7 +182,6 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
   // 是否是全天
   const onChangeIsAll = (e: CheckboxChangeEvent) => {
     setIsAll(e.target.checked)
-    console.log(time, '11111')
     form.setFieldsValue({
       isAll: e.target.checked,
       time,
@@ -226,6 +227,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
       company_id: userInfo.company_id,
     }))
     values.repeat_type = 0
+    values.is_all_day = isAll ? 1 : 2
     values.reminds = noticeList.map((i: DefaultTime) => i.value)
     if (participant.list.length > 0) {
       values.permission_update = participant.permission.includes(0) ? 1 : 2
@@ -252,7 +254,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
   const onConfirm = async () => {
     const params = await onGetParams()
     await dispatch(saveSchedule(params))
-    message.success('创建成功')
+    message.success(t('common.createSuccess'))
     onClose()
   }
 
@@ -286,10 +288,6 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
         inputDom.current.focus()
       }, 100)
     }
-    console.log(
-      quickCreateScheduleModel,
-      '=quickCreateScheduleModelquickCreateScheduleModel',
-    )
   }, [quickCreateScheduleModel])
 
   if (!position) {
@@ -300,7 +298,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
     <>
       <AddMemberCommonModal
         isVisible={isChooseVisible && !!position}
-        title="添加成员"
+        title={t('add_a_member')}
         onClose={() => {
           setIsChooseVisible(false)
           EventBus.getInstance().dispatch('cancelCreateSchedule')
@@ -317,7 +315,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
         }}
       >
         <EasyScheduleHeader>
-          <span>创建日程</span>
+          <span>{t('create_schedule')}</span>
           <CloseWrap onClick={onClose} width={32} height={32}>
             <IconFont
               style={{ fontSize: 20, color: 'var(--neutral-n2)' }}
@@ -332,13 +330,13 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
           className="haveRight"
         >
           <Form.Item
-            label={<CreateFormItem label="主题" type="database" />}
+            label={<CreateFormItem label={t('theme')} type="database" />}
             name="subject"
             rules={[{ required: true, message: '' }]}
           >
             <Input
               autoComplete="off"
-              placeholder="请输入主题"
+              placeholder={t('please_enter_a_theme')}
               maxLength={80}
               ref={inputDom}
               autoFocus
@@ -346,7 +344,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
           </Form.Item>
           <TimeWrap>
             <Form.Item
-              label={<CreateFormItem label="时间" type="time" />}
+              label={<CreateFormItem label={t('time')} type="time" />}
               name="time"
               rules={[{ required: true, message: '' }]}
               style={{ margin: 0, width: '80%' }}
@@ -360,7 +358,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
               />
             </Form.Item>
             <Checkbox checked={isAll} onChange={onChangeIsAll}>
-              全天
+              {t('all_day_long')}
             </Checkbox>
           </TimeWrap>
           <ItemFlex style={{ margin: '24px 0' }}>
@@ -402,17 +400,27 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
             )}
           </ItemFlex>
           <Form.Item
-            label={<CreateFormItem label="日程描述" type="file-02" />}
+            label={
+              <CreateFormItem
+                label={t('schedule_description')}
+                type="file-02"
+              />
+            }
             name="describe"
           >
             <Input.TextArea
-              placeholder="请输入日程描述"
+              placeholder={t('please_enter_a_schedule_description')}
               autoSize
               maxLength={200}
             />
           </Form.Item>
           <Form.Item
-            label={<CreateFormItem label="日程类别" type="calendar-days" />}
+            label={
+              <CreateFormItem
+                label={t('schedule_category')}
+                type="calendar-days"
+              />
+            }
           >
             <ItemFlex>
               <div className="box">
@@ -462,7 +470,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
             </ItemFlex>
           </Form.Item>
           <Form.Item
-            label={<CreateFormItem label="提醒" type="alarm" />}
+            label={<CreateFormItem label={t('remind')} type="alarm" />}
             name="notice"
           >
             <CommonButton
@@ -471,7 +479,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
               iconPlacement="left"
               onClick={onAddNotice}
             >
-              添加提醒
+              {t('add_reminder')}
             </CommonButton>
             {noticeList.map((i: DefaultTime) => (
               <NoticeBox key={i.id}>
@@ -494,10 +502,10 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
         </CreateForm>
         <ModalFooter size={16}>
           <CommonButton type="light" onClick={onToMore}>
-            更多选项
+            {t('more_options')}
           </CommonButton>
           <CommonButton type="primary" onClick={onConfirm}>
-            创建
+            {t('newlyAdd.create')}
           </CommonButton>
         </ModalFooter>
       </CreateSchedule>

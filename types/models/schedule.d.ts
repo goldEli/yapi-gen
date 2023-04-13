@@ -51,12 +51,59 @@ declare namespace Model.Schedule {
       status: number
       user_id: number
       status_text: string
+      user: {
+        id: number
+        name: string
+        avatar: string
+      }
     }[]
     describe?: string
     files?: {
       url: string
       user_id: string
       created_at: string
+      user: {
+        id: number
+        name: string
+        avatar: string
+      }
+    }[]
+    reminds?: {
+      before_time: number
+      remind_type_text: string
+    }[]
+    calendar_name?: string
+    is_join?: boolean
+    join_member_status?: number
+    is_creator?: boolean
+    title?: string
+  }
+  type DetailInfo = Info & {
+    creator?: {
+      id: integer
+      name: string
+      avatar: string
+    }
+    members?: {
+      status: number
+      user_id: number
+      status_text: string
+      user: {
+        id: number
+        name: string
+        avatar: string
+      }
+    }[]
+    describe?: string
+    files?: {
+      url: string
+      user_id: string
+      created_at: string
+      user: {
+        id: number
+        name: string
+        avatar: string
+      }
     }[]
     reminds?: {
       before_time: number
