@@ -29,26 +29,33 @@ export const getContactStatistics: any = async () => {
   return response.data
 }
 
-export const getContactList: any = async () => {
-  const response: any = await http.get<any>('/b/msg/contactList')
+// export const getContactList: any = async () => {
+//   const response: any = await http.get<any>('/b/msg/contactList')
+
+//   return response.data
+// }
+
+// export const getDetail: any = async () => {
+//   const response: any = await http.get<any>('/b/msg/detail', { msgId: 341 })
+
+//   return response.data
+// }
+
+export const getMsg_list: any = async (params: any) => {
+  const response: any = await http.get<any>('/b/msg/list', {
+    lastId: params.lastId,
+    read: params.read,
+    friendUsername: params.friendUsername,
+    msgType: params.msgType,
+  })
 
   return response.data
 }
 
-export const getDetail: any = async () => {
-  const response: any = await http.get<any>('/b/msg/detail', { msgId: 341 })
-
-  return response.data
-}
-
-export const getMsg_list: any = async () => {
-  const response: any = await http.get<any>('/b/msg/list')
-
-  return response.data
-}
-
-export const setRead: any = async (params: any) => {
-  const response: any = await http.post<any>('/b/msg/setRead', params)
+export const setReadApi: any = async (params: any) => {
+  const response: any = await http.post<any>('/b/msg/setRead', {
+    msgIds: params,
+  })
 
   return response.data
 }

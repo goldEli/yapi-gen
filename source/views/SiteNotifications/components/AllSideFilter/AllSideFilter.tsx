@@ -3,7 +3,7 @@ import LeftTitle from '@/components/LeftTitle'
 import { useDispatch, useSelector } from '@store/index'
 import { changeVisibleFilter } from '@store/SiteNotifications'
 import { Badge, Checkbox, Drawer } from 'antd'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CloseWrap } from '../SiteDrawer/style'
 import {
   InfoWrap,
@@ -17,44 +17,57 @@ import {
   Wrap,
 } from './style'
 import { t } from 'i18next'
+import { getContactStatistics } from '@/services/SiteNotifications'
 
-const items = [
-  {
-    id: '1',
-    icon: 'package-nor',
-    icon2: 'package-sel',
-    text: '产品管理',
-  },
-  {
-    id: '2',
-    icon: 'folder-open-nor',
-    icon2: 'folder-open-sel',
-    text: '项目管理',
-  },
-  {
-    id: '3',
-    icon: 'bell',
-    icon2: 'bell-sel',
-    text: '系统通知',
-  },
-  {
-    id: '4',
-    icon: 'calendar-nor',
-    icon2: 'calendar-sel',
-    text: '日程管理',
-  },
-  {
-    id: '5',
-    icon: 'log-nor',
-    icon2: 'log-sel',
-    text: '工作汇报',
-  },
-]
-
-const AllSideFilter = () => {
-  const [active, setActive] = useState('1')
+const AllSideFilter = (props: any) => {
+  const items = [
+    // {
+    //   id: '1',
+    //   icon: 'package-nor',
+    //   icon2: 'package-sel',
+    //   text: '产品管理',
+    //   sendType:'product'
+    // },
+    {
+      id: '2',
+      icon: 'folder-open-nor',
+      icon2: 'folder-open-sel',
+      text: '项目管理',
+      sendType: 'project',
+      read: 0,
+    },
+    {
+      id: '3',
+      icon: 'bell',
+      icon2: 'bell-sel',
+      text: '系统通知',
+      sendType: 'sys',
+      read: 0,
+    },
+    {
+      id: '4',
+      icon: 'calendar-nor',
+      icon2: 'calendar-sel',
+      text: '日程管理',
+      sendType: 'calendar',
+      read: 0,
+    },
+    {
+      id: '5',
+      icon: 'log-nor',
+      icon2: 'log-sel',
+      text: '工作汇报',
+      sendType: 'report',
+      read: 0,
+    },
+  ]
+  const [active, setActive] = useState('project')
+  const [lists, setLists] = useState<any>([])
   const isVisibleFilter = useSelector(
     store => store.siteNotifications.isVisibleFilter,
+  )
+  const configuration = useSelector(
+    store => store.siteNotifications.configuration,
   )
   const dispatch = useDispatch()
   const onClose = () => {
@@ -62,8 +75,30 @@ const AllSideFilter = () => {
   }
 
   const onChange = (checkedValues: any) => {
-    // console.log('checked = ', checkedValues)
+    console.log('checked = ', checkedValues)
   }
+  const choose = (id: any) => {
+    setActive(id)
+    props.changeUser(id)
+  }
+
+  const init = async () => {
+    const res = await getContactStatistics()
+
+    items.forEach((i: any) => {
+      res.list.forEach((j: any) => {
+        if (i.sendType === j.send_user) {
+          i.read = Number(j.nread)
+        }
+      })
+    })
+
+    setLists(items)
+  }
+
+  useEffect(() => {
+    init()
+  }, [])
 
   return (
     <Drawer
@@ -87,13 +122,13 @@ const AllSideFilter = () => {
           </CloseWrap>
         </MyHead>
         <MyIconModeTextWrap>
-          {items.map((i: any) => (
-            <Badge key={i.id} size="small" offset={[-22, 6]} count={5}>
-              <MyIconModeWrap onClick={() => setActive(i.id)}>
-                <MyIconMode active={active === i.id}>
+          {lists.map((i: any) => (
+            <Badge key={i.id} size="small" offset={[-22, 6]} count={i.read}>
+              <MyIconModeWrap onClick={() => choose(i.sendType)}>
+                <MyIconMode active={active === i.sendType}>
                   <IconFont
                     style={{ fontSize: 20 }}
-                    type={active === i.id ? i.icon2 : i.icon}
+                    type={active === i.sendType ? i.icon2 : i.icon}
                   />
                 </MyIconMode>
                 <MyIconModeText>{i.text}</MyIconModeText>
@@ -107,10 +142,16 @@ const AllSideFilter = () => {
         </MyHead>
         <InfoWrap>
           <Checkbox.Group style={{ width: '100%' }} onChange={onChange}>
-            <InfoWrapItem>
-              <span>{t('assign_me_tasks') as string}</span>
-              <Checkbox value="A" />
-            </InfoWrapItem>
+            {configuration[
+              configuration.findIndex((i: any) => i.sendType === active)
+            ].children?.map((i: any) => {
+              return (
+                <InfoWrapItem key={i.value}>
+                  <span>{i.label}</span>
+                  <Checkbox value={i.value} />
+                </InfoWrapItem>
+              )
+            })}
           </Checkbox.Group>
         </InfoWrap>
       </Wrap>
