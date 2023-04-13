@@ -227,6 +227,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
       company_id: userInfo.company_id,
     }))
     values.repeat_type = 0
+    values.is_all_day = isAll ? 1 : 2
     values.reminds = noticeList.map((i: DefaultTime) => i.value)
     if (participant.list.length > 0) {
       values.permission_update = participant.permission.includes(0) ? 1 : 2

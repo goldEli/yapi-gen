@@ -152,6 +152,7 @@ const CreateSchedule = () => {
     await form.validateFields()
     let values = form.getFieldsValue()
     values.is_busy = status
+    values.is_all_day = isAll ? 1 : 2
     values.repeat_type = repeatValue.value
     values.members = participant.list.map((i: Model.Calendar.MemberItem) => ({
       user_id: i.id,
