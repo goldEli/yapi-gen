@@ -78,7 +78,13 @@ export const getCalendarDaysOfYearList = async (
 export const getCalendarDaysOfMonthList = async (
   params: API.Schedule.ScheduleInfoList.Params,
 ) => {
-  const res = await http.post('getCalendarDaysOfMonthList', params)
+  const res = await http.post('getScheduleListDaysOfMonth', params)
+  return res
+}
+export const getScheduleDaysOfMonthList = async (
+  params: API.Schedule.ScheduleInfoList.Params,
+) => {
+  const res = await http.post('getScheduleListDaysOfMonth', params)
   return res
 }
 // 日程回复

@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { StyledCalendar } from '../../styles'
 
 import dayjs from 'dayjs'
@@ -10,7 +10,7 @@ import IconFont from '@/components/IconFont'
 import { useDispatch, useSelector } from '@store/index'
 import { setCheckedTime } from '@store/calendar'
 import { getNowDate } from '@/tools'
-
+import {getLeftCalendarDaysOfMonthList} from '@store/schedule/schedule.thunk'
 dayjs.extend(dayLocaleData)
 const CalendarHeader = styled.div`
   width: 100%;
@@ -58,15 +58,15 @@ const hasScheduleClass = css`
 `
 const DXCalendar: React.FC = () => {
   const dispatch = useDispatch()
-  const { checkedTime } = useSelector(store => store.calendar)
-  console.log('DXCalendar-----',)
+  const { checkedTime } = useSelector(store => store.calendar);
+  const {leftViewScheduleList}=useSelector(state=>state.schedule);
   const wrapperStyle: React.CSSProperties = {
     // width: 240,
     background: 'var(--neutral-n9)',
     //  border: `1px solid ${token.colorBorderSecondary}`,
     //  borderRadius: token.borderRadiusLG,
   }
-
+  
   return (
     <StyledCalendar
       style={wrapperStyle}
@@ -79,10 +79,9 @@ const DXCalendar: React.FC = () => {
       //   console.log(value.format('YYYY-MM-DD'), mode)
       // }}
       dateFullCellRender={date => {
-        let yearViewScheduleList=['2023-04-16','2023-04-21']
         const today =
           dayjs().format('DD/MM/YYYY') === dayjs(date).format('DD/MM/YYYY')
-        const hasSchedule =yearViewScheduleList.includes(
+        const hasSchedule =Object.keys(leftViewScheduleList).includes(
           dayjs(date).format('YYYY-MM-DD'),
         )
         return (
