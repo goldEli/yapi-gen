@@ -42,7 +42,7 @@ export const StyledCalendar = styled(Calendar)`
   min-width: 240px;
   font-family: SiYuanMedium;
   .ant-picker-panel {
-    background: var(--neutral-n9);
+    background: #fff;
     border-top: none;
   }
   .ant-picker-cell .ant-picker-cell-inner {
