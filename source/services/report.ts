@@ -28,6 +28,21 @@ export const writeReport: any = async (params: any) => {
 }
 
 export const templateLatelyList: any = async (params: any) => {
-    const response = await http.get('templateLatelyList', { ...params })
-    return response
-  }
+  const response = await http.get('templateLatelyList', { ...params })
+  return response
+}
+
+export const getRepSentList: any = async (params: any) => {
+  const response = await http.get('repSentList', params)
+  return response.data
+}
+
+export const getRepReceivedList: any = async (params: any) => {
+  const response = await http.get('repReceivedList', params)
+  return response.data
+}
+
+export const getRepPublicList: any = async (params: any) => {
+  const response = await http.get('repPublicList', params)
+  return response.data
+}
