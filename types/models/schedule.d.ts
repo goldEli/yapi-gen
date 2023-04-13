@@ -1,7 +1,7 @@
 declare namespace Model.Schedule {
   interface Info {
     id?: string
-    calender_id: number
+    calendar_id: number
     // 是否展示到面板中
     hidden?: boolean
     schedule_id: number

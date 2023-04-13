@@ -41,12 +41,24 @@ const Title = styled.span`
 
 const ScheduleCard: React.FC<ScheduleCardProps> = props => {
   const { data } = props
-  const { start_timestamp, end_timestamp } = data
+  const [localTime, setLocalTime] = useState<{
+    start_timestamp: number
+    end_timestamp: number
+  }>()
+
+  const { start_timestamp = 0, end_timestamp = 0 } = localTime ?? {}
   const dispatch = useDispatch()
   const [timeRange, setTimeRange] = useState<{
     startTime: string
     endTime: string
   } | null>(null)
+
+  React.useEffect(() => {
+    setLocalTime({
+      start_timestamp: props.data.start_timestamp,
+      end_timestamp: props.data.end_timestamp,
+    })
+  }, [props.data.end_timestamp, props.data.start_timestamp])
 
   const { height, top } = usePosition(start_timestamp, end_timestamp)
   const isDrag = React.useRef(false)
@@ -65,6 +77,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
       endTime: time.endTime.format('HH:mm'),
     })
   }
+
   const onDragStart = (e: DraggableEvent, draggableData: DraggableData) => {
     // const { node, y, deltaY, lastY } = draggableData
     isDrag.current = false
@@ -75,6 +88,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
       endTime: time.endTime.format('HH:mm'),
     })
   }
+
   const onDragStop = (e: DraggableEvent, draggableData: DraggableData) => {
     e.stopPropagation()
     const { x, node, y, deltaX, deltaY, lastY } = draggableData
@@ -84,10 +98,17 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
       y - top,
     )
     // 修改日程
-    const { schedule_id, color, subject, calender_id } = props.data
+    // 修改本地
+    setLocalTime({
+      start_timestamp: time.startTime.valueOf(),
+      end_timestamp: time.endTime.valueOf(),
+    })
+
+    // 修改数据库
+    const { schedule_id, color, subject, calendar_id } = props.data
     dispatch(
       modifySchedule({
-        calender_id,
+        calendar_id,
         schedule_id,
         color,
         subject,
@@ -96,13 +117,6 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
       }),
     )
 
-    // dispatch(
-    //   saveSchedule({
-    //     ...props.data,
-    //     start_timestamp: time.startTime.valueOf(),
-    //     end_timestamp: time.endTime.valueOf(),
-    //   }),
-    // )
     setTimeRange(null)
 
     // 点击打开详情弹窗, 如果是拖动不打开

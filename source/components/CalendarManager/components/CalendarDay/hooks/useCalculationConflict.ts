@@ -30,7 +30,9 @@ const useCalculationConflict = () => {
     if (!maxWidth) {
       return
     }
-    const conflicts = getConflictsTimeRange(list)
+    const conflicts = getConflictsTimeRange(
+      list.sort((a, b) => a.schedule_id - b.schedule_id),
+    )
 
     const conflictsWithSize = conflicts
       .map(con => {

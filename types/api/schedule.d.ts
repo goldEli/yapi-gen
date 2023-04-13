@@ -1,7 +1,7 @@
 declare namespace API.Schedule {
   namespace ModifySchedule {
     type Keys =
-      | 'calender_id'
+      | 'calendar_id'
       | 'schedule_id'
       | 'subject'
       | 'start_datetime'
