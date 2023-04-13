@@ -1,3 +1,5 @@
+/* eslint-disable no-undefined */
+/* eslint-disable camelcase */
 /* eslint-disable complexity */
 /* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/no-shadow */
@@ -8,7 +10,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { changeVisible } from '@store/SiteNotifications'
 import { Checkbox, Divider, Drawer, Skeleton, Tooltip } from 'antd'
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import ContentItem from '../ContentItem/ContentItem'
 import {
   CloseWrap,
@@ -19,10 +21,14 @@ import {
   Tips,
   Wrap,
 } from './style'
-import VirtualList from '../VittualNode/VittualNode'
-import VirtualScrollList from '../VittualNode/VittualNode'
 import { useTranslation } from 'react-i18next'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import {
+  getContactStatistics,
+  getMsg_list,
+  setReadApi,
+} from '@/services/SiteNotifications'
+import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 
 const tabsValue = [
   {
@@ -41,12 +47,21 @@ const tabsValue = [
 
 const SiteDrawer = () => {
   const [t] = useTranslation()
+
   const [active, setActive] = useState('1')
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const isVisible = useSelector(store => store.siteNotifications.isVisible)
-  const [list, setList] = useState(Array.from({ length: 10 }))
+  const [list, setList] = useState([])
+  const [lastId, setLastId] = useState<any>(0)
   const [hasMore, setHasMore] = useState(true)
+  const [read, setRead] = useState<number | null>()
+
+  const onChange = (e: CheckboxChangeEvent) => {
+    setLastId(0)
+    setList([])
+    setRead(e.target.checked ? 0 : undefined)
+  }
 
   const onClose = () => {
     dispatch(changeVisible(false))
@@ -54,17 +69,47 @@ const SiteDrawer = () => {
   const changeActive = (id: string) => {
     setActive(id)
   }
-  const fetchMoreData = () => {
-    if (list.length >= 500) {
+  const init = async () => {
+    const re4 = await getMsg_list({
+      lastId,
+      read,
+    })
+
+    return {
+      lastId: re4.lastId,
+      list: re4.list,
+    }
+  }
+
+  const fetchMoreData = async () => {
+    const re4 = await init()
+    console.log(re4)
+
+    if (re4.lastId === 0) {
       setHasMore(false)
       return
     }
     setTimeout(() => {
-      setList(list.concat(Array.from({ length: 10 })))
+      setList(list.concat(re4.list))
+      setLastId(re4.lastId)
     }, 3000)
   }
+
+  const setReads = async (values: any) => {
+    console.log(values)
+    setReadApi(values)
+  }
+  const setAllRead = () => {
+    const arr = list.map((i: any) => i.id)
+    setReads(arr)
+  }
+  useEffect(() => {
+    isVisible ? fetchMoreData() : null
+  }, [isVisible, read])
+
   return (
     <Drawer
+      forceRender
       bodyStyle={{ padding: 16, paddingBottom: '8px', boxSizing: 'border-box' }}
       width={400}
       zIndex={1}
@@ -103,7 +148,7 @@ const SiteDrawer = () => {
           }}
         >
           <GrepTitle>{t('today')}</GrepTitle>
-          <GrepTitle>{t('all_read')}</GrepTitle>
+          <GrepTitle onClick={setAllRead}>{t('all_read')}</GrepTitle>
         </div>
 
         <InfiniteScroll
@@ -123,8 +168,8 @@ const SiteDrawer = () => {
           scrollableTarget="scrollableDiv"
           endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
         >
-          {list.map((i: any, index: any) => (
-            <ContentItem name={index} key={i} />
+          {list.map((i: any) => (
+            <ContentItem setReads={setReads} item={i} key={i.id} />
           ))}
         </InfiniteScroll>
 
@@ -142,7 +187,7 @@ const SiteDrawer = () => {
             )}
           </Tips>
           <MyFooter>
-            <Checkbox>
+            <Checkbox onChange={onChange}>
               <span
                 style={{
                   fontSize: '14px',

@@ -11,6 +11,8 @@ import { Dropdown } from 'antd'
 import { useEffect, useState } from 'react'
 import { seleData1, seleData2, seleData3 } from './DataList'
 import CommonModal from '@/components/AddUser/CommonModal'
+import AddDepartmentOrTeamModal from '@/components/AddDepartmentOrTeamModal'
+
 const AddPersonText = styled.div`
   margin-left: 26px;
   display: flex;
@@ -90,6 +92,8 @@ const Addperson = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false)
   const [items, setItems] = useState<Array<Item>>()
   const [isVisible, setIsVisible] = useState(false)
+  // 添加部门/团队弹窗
+  const [isAddVisible, setIsAddVisible] = useState(false)
   const [userType, setUserType] = useState<number>(0)
   const [targetType, setTargetType] = useState<number>(0)
   const [personData, setPersonData] = useState<any>()
@@ -106,15 +110,15 @@ const Addperson = (props: Props) => {
   const getName = (key: string, type: string) => {
     switch (key) {
       case 'obj':
-        return type == 'id' ? 1 : '汇报对象'
+        return type === 'id' ? 1 : '汇报对象'
       case 'departmentHead':
-        return type == 'id' ? 2 : '部门主管'
+        return type === 'id' ? 2 : '部门主管'
       case 'teamManagement':
-        return type == 'id' ? 3 : '团队管理'
+        return type === 'id' ? 3 : '团队管理'
       case 'reportsTo':
-        return type == 'id' ? 4 : '直属主管'
+        return type === 'id' ? 4 : '直属主管'
       case 'allSuperiors':
-        return type == 'id' ? 5 : '所有上级'
+        return type === 'id' ? 5 : '所有上级'
       case 'all':
         return '全部'
     }
@@ -122,7 +126,8 @@ const Addperson = (props: Props) => {
   // 下拉
   const onOpenChange = (e: { key: string }) => {
     setIsOpen(false)
-    setIsVisible(e.key === 'user' ? true : false)
+    setIsVisible(e.key === 'user')
+    setIsAddVisible(['department', 'team'].includes(e.key))
     setUserType(props.state)
     switch (e.key) {
       case 'user':
@@ -204,6 +209,12 @@ const Addperson = (props: Props) => {
     props.onChangeValues(values)
     setIsVisible(false)
   }
+
+  // 添加团队确认
+  const onAddConfirm = () => {
+    //
+  }
+
   useEffect(() => {
     setPersonData(fitlerDataList(props.person))
   }, [props.person])
@@ -268,6 +279,12 @@ const Addperson = (props: Props) => {
           onClose={() => setIsVisible(false)}
         />
       )}
+      <AddDepartmentOrTeamModal
+        isVisible={isAddVisible}
+        onClose={() => setIsAddVisible(false)}
+        type={targetType === 2 ? 1 : 3}
+        onConfirm={onAddConfirm}
+      />
     </>
   )
 }

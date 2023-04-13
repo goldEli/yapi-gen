@@ -158,7 +158,7 @@ const formWork = createSlice({
         // 填写周期 1-每天 2-每周 3-每月 4-不重复
         submit_cycle: data.submit_cycle,
         // 填写周期每天属性：是否跟随中国法定节假日自动调整，1：是，2：否
-        is_holiday: data.requirement.is_holiday,
+        is_holiday: data.requirement.is_holiday === 1 ? true : false,
         // 填写周期每天属性：0：周一，1：周二以此类推
         day: data.requirement.day,
         // 截止时间
@@ -176,7 +176,7 @@ const formWork = createSlice({
         // 提交汇报提交人可修改 1-是 2-否
         is_submitter_edit: data.is_submitter_edit,
         // 补交范围，数字对应周期属性
-        hand_scope: data.hand_scope,
+        hand_scope: Number(data.hand_scope),
       }
     })
   },
@@ -191,5 +191,6 @@ export const {
   setErr,
   setTemplateName,
   setDataList,
+  setAWeekDataList,
 } = formWork.actions
 export default formWork.reducer

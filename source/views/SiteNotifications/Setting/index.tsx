@@ -192,6 +192,7 @@ const Setting = () => {
 
     setSelectKeys(myConfiguration)
   }, [myConfiguration])
+  console.log(configurations)
 
   return (
     <Wrap>
@@ -223,15 +224,18 @@ const Setting = () => {
           <span>{t('common.permission')}</span>
         </TitleGroup>
         <MainWrap>
-          {configurations.map((i: any) => (
-            <PermissionItem
-              key={i.id}
-              item={i}
-              onChange={setSelectKeys}
-              value={selectKeys}
-              activeDetail={activeDetail}
-            />
-          ))}
+          {configurations.map((i: any) => {
+            console.log(i)
+            return (
+              <PermissionItem
+                key={i.name}
+                item={i}
+                onChange={setSelectKeys}
+                value={selectKeys}
+                activeDetail={activeDetail}
+              />
+            )
+          })}
         </MainWrap>
       </div>
     </Wrap>
