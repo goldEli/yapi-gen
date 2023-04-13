@@ -6,6 +6,8 @@ import ScheduleAllDay from './ScheduleAllDay'
 import ScheduleCardList from './ScheduleCardList'
 import Timescale from './Timescale'
 import QuickCreateScheduleModel from '../QuickCreateScheduleModel'
+import { useDispatch, useSelector } from '@store/index'
+import { getScheduleListDaysOfDate } from '@store/schedule/schedule.thunk'
 
 interface CalendarDayProps {}
 
@@ -20,6 +22,23 @@ const CalendarDayBox = styled.div`
 `
 
 const CalendarDay: React.FC<CalendarDayProps> = props => {
+  const { calenderDayValue } = useSelector(store => store.calendarPanel)
+  const { checkedCalendarList } = useSelector(store => store.calendar)
+  const dispatch = useDispatch()
+
+  React.useEffect(() => {
+    // dispatch(getScheduleList({ id: 1 }))
+    if (!calenderDayValue) {
+      return
+    }
+
+    dispatch(
+      getScheduleListDaysOfDate({
+        date: calenderDayValue,
+        calendar_ids: checkedCalendarList.map(item => item.calendar_id),
+      }),
+    )
+  }, [calenderDayValue, checkedCalendarList])
   return (
     <CalendarDayBox className="calendar-day-box">
       <ScheduleAllDay />

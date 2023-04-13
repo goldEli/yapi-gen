@@ -8,8 +8,10 @@ import { getColorWithOpacityPointOne } from '../../../utils'
 import { useSelector } from '@store/index'
 
 interface NewCalendarAreaProps {
-  timeZone: string[]
-  distance: number
+  timeRange: {
+    startTime: string
+    endTime: string
+  }
 }
 
 const Box = styled.div`
@@ -38,23 +40,12 @@ const NewCalendarArea: React.FC<NewCalendarAreaProps> = props => {
     return colorIdx
   }, [calendarData])
 
-  const startTime = React.useMemo(() => {
-    const key = props.timeZone[0]
-    return dayjs(key)
-  }, [props.timeZone])
+  const { startTime, endTime } = props.timeRange
 
-  const endTime = React.useMemo(() => {
-    if (!startTime) {
-      return dayjs(startTime)
-    }
-    const step = Math.ceil(props.distance / oneMinuteHeight / 15)
-    // 起步30分钟
-    const dis = Math.max(step * 15, oneMinuteHeight * 15)
-    const time = getTimeByAddDistance(startTime.valueOf(), dis)
-    return dayjs(time)
-  }, [props.distance, startTime])
-
-  const { top, height } = usePosition(startTime.valueOf(), endTime.valueOf())
+  const { top, height } = usePosition(
+    dayjs(startTime).valueOf(),
+    dayjs(endTime).valueOf(),
+  )
 
   return (
     <Box
@@ -64,9 +55,9 @@ const NewCalendarArea: React.FC<NewCalendarAreaProps> = props => {
         height,
       }}
       className="new-calendar-area"
-      visible={!!props.timeZone.length}
+      visible={!!props.timeRange.endTime}
     >
-      <Title>{`${startTime.format('HH:mm')}-${endTime?.format(
+      <Title>{`${dayjs(startTime).format('HH:mm')}-${dayjs(endTime)?.format(
         'HH:mm',
       )}`}</Title>
     </Box>
