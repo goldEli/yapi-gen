@@ -1,5 +1,8 @@
 import styled from '@emotion/styled'
-import { setScheduleInfoDropdown } from '@store/calendarPanle'
+import {
+  setQuickCreateScheduleModel,
+  setScheduleInfoDropdown,
+} from '@store/calendarPanle'
 import { useDispatch, useSelector } from '@store/index'
 import React, { useEffect, useMemo, useState } from 'react'
 import { getColorWithOpacityPointOne } from '@/components/CalendarManager/utils'
@@ -105,7 +108,19 @@ const ScheduleAllDay: React.FC<ScheduleAllDayProps> = props => {
       <Month>{time.format('MMM')}</Month>
       <Week>{time.format('ddd')}</Week>
       <Lunar>{weekDay?.lunar_day_chinese}</Lunar>
-      <ScheduleList>
+      <ScheduleList
+        onClick={e => {
+          e.stopPropagation()
+          dispatch(
+            setQuickCreateScheduleModel({
+              visible: true,
+              isAll: true,
+              x: 100,
+              y: 0,
+            }),
+          )
+        }}
+      >
         <ScheduleListScroll>
           {list?.map(item => {
             return (

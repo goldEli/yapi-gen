@@ -57,7 +57,13 @@ const useModalPosition = (props: {
         y: props.y - offset.y,
       })
     }
-  }, [props.visible, props.modalInfo?.width, props.modalInfo?.height])
+  }, [
+    props.visible,
+    props.modalInfo?.width,
+    props.modalInfo?.height,
+    props.x,
+    props.y,
+  ])
 
   return { position }
 }

@@ -282,7 +282,7 @@ export const NoticeBox = styled.div`
 `
 
 export const AllDayScheduleItem = styled.div`
-  width: 100%;
+  width: calc(100% - 20px);
   box-sizing: border-box;
   padding-left: 8px;
   background-color: ${(props: { bg: string }) => props.bg};
