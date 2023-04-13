@@ -89,11 +89,18 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
   return (
     <ScheduleInfoHeader>
       <ScheduleInfoHeaderBtn>
-        <span className={statusClass}>{scheduleInfo.is_busy===1?'忙碌':'空闲'}</span>
+        <span className={statusClass}>
+          {scheduleInfo?.is_busy === 1 ? '忙碌' : '空闲'}
+        </span>
         <div className={iconBox}>
           <span
             onClick={() => {
-              disPatch(setScheduleModal({ visible: true, params: { id: scheduleInfo.id } }))
+              disPatch(
+                setScheduleModal({
+                  visible: true,
+                  params: { id: scheduleInfo?.id },
+                }),
+              )
             }}
           >
             <ScheduleInfoIcon type="edit" />
@@ -116,10 +123,10 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
         </div>
       </ScheduleInfoHeaderBtn>
       <ScheduleInfoHeaderContent>
-        {scheduleInfo.subject}
+        {scheduleInfo?.subject}
       </ScheduleInfoHeaderContent>
       <ScheduleInfoHeaderDate>
-        {scheduleInfo.title}
+        {scheduleInfo?.title}
         {/* {dayjs(scheduleInfo.start_datetime).format('MM月DD')} (周{dayjs(scheduleInfo.start_datetime).weekday()}) {scheduleInfo.start_time} - {dayjs(scheduleInfo.end_datetime).format('MM月DD')} (周{dayjs(scheduleInfo.start_datetime).weekday()}) {scheduleInfo.end_time} */}
       </ScheduleInfoHeaderDate>
       <DeleteConfirm

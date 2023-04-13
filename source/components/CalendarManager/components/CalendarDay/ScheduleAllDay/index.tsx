@@ -113,6 +113,8 @@ const ScheduleAllDay: React.FC<ScheduleAllDayProps> = props => {
           e.stopPropagation()
           dispatch(
             setQuickCreateScheduleModel({
+              startTime: calenderDayValue,
+              endTime: calenderDayValue,
               visible: true,
               isAll: true,
               x: 100,
@@ -129,6 +131,7 @@ const ScheduleAllDay: React.FC<ScheduleAllDayProps> = props => {
                   e.stopPropagation()
                   dispatch(
                     setScheduleInfoDropdown({
+                      show_date: item.date,
                       schedule_id: item.schedule_id,
                       visible: true,
                       y: 0,

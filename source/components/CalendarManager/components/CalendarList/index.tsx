@@ -2,12 +2,14 @@ import React, { useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { useDispatch, useSelector } from '@store/index'
-import { getCalendarDaysOfMonthList } from '@store/schedule/schedule.thunk'
+import { getScheduleDaysOfList } from '@store/schedule/schedule.thunk'
 import dayjs from 'dayjs'
-interface CalendarListProps { }
+import { forIn } from '@antv/util'
+import { forEach } from 'lodash'
+interface CalendarListProps {}
 const CalendarListBox = styled.div`
   background-color: #fff;
-  max-height: 400px;
+  max-height: 600px;
   overflow-y: scroll;
 `
 const CalendarListItem = styled.div`
@@ -35,7 +37,6 @@ const LunarDate = styled.div`
 const CalendarListInfo = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   position: relative;
   top: 6px;
 `
@@ -77,52 +78,37 @@ const currentClass = css`
   height: 28px !important;
 `
 const CalendarList: React.FC<CalendarListProps> = props => {
-  const data = [
-    {
-      id: 1,
-      list: [
-        { text: '这是一个日程标题内容', date: '全天' },
-        { text: '这是一个日程标题内容', date: '09-10' },
-        { text: '这是一个日程标题内容', date: '11-12' },
-      ],
-      time: '2023-04-18'
-    },
-    { id: 2, time: '2023-04-19', list: [{ text: '这是一个日程标题内容', date: '2023-04-18' }] },
-    { id: 3, time: '2023-04-20', list: [{ text: '这是一个日程标题内容', date: '2023-04-19' }] },
-    { id: 2, time: '2023-04-21', list: [{ text: '这是一个日程标题内容', date: '2023-04-20' }] },
-    { id: 3, time: '2023-04-22', list: [{ text: '这是一个日程标题内容', date: '2023-04-21' }] },
-    { id: 2, time: '2023-04-23', list: [{ text: '这是一个日程标题内容', date: '2023-04-22' }] },
-    { id: 3, time: '2023-04-24', list: [{ text: '这是一个日程标题内容', date: '2023-04-23' }] },
-    { id: 2, time: '2023-04-25', list: [{ text: '这是一个日程标题内容', date: '2023-04-24' }] },
-    { id: 3, time: '2023-04-26', list: [{ text: '这是一个日程标题内容', date: '2023-04-15' }] },
-    { id: 2, time: '2023-04-27', list: [{ text: '这是一个日程标题内容', date: '2023-04-16' }] },
-  ]
   const CalendarListBoxRef = useRef<HTMLDivElement>(null)
   const { calenderListValue } = useSelector(state => state.calendarPanel)
   const { scheduleSearchKey } = useSelector(state => state.calendarPanel)
   const { calendarData } = useSelector(state => state.calendar)
-  const { monthViewScheduleList } = useSelector(state => state.schedule)
+  const { listViewScheduleList=[] } = useSelector(state => state.schedule)
   const { checkedTime } = useSelector(state => state.calendar)
   let data1 = calendarData?.manager.concat(calendarData?.subscribe)
   const disPatch = useDispatch()
   useEffect(() => {
-    // console.log('列表视图', calenderListValue, CalendarListBoxRef, checkedTime)
+     console.log('列表视图',)
     let params = {
       year: dayjs(calenderListValue).year(),
       month: dayjs(calenderListValue).month() + 1,
       calendar_ids: data1.map(item => item.calendar_id),
     }
-    disPatch(getCalendarDaysOfMonthList(params))
+    disPatch(getScheduleDaysOfList(params))
   }, [calenderListValue, scheduleSearchKey])
   useEffect(() => {
-    let childrenKeys = [...CalendarListBoxRef.current?.children as any].map((item => {
-      return { type: item.getAttribute('datatype'), height: item.clientHeight }
-    }));
-    let currentItem = childrenKeys.find(item => item.type === checkedTime);
-    let currentIndex = childrenKeys.findIndex(item => item.type === checkedTime);
-    let totalHeight = 0;
+    let childrenKeys = [...(CalendarListBoxRef.current?.children as any)].map(
+      item => {
+        return {
+          type: item.getAttribute('datatype'),
+          height: item.clientHeight,
+        }
+      },
+    )
+    let currentItem = childrenKeys.find(item => item.type === checkedTime)
+    let currentIndex = childrenKeys.findIndex(item => item.type === checkedTime)
+    let totalHeight = 0
     for (let i = 0; i < childrenKeys.length; i++) {
-      totalHeight += childrenKeys[i].height;
+      totalHeight += childrenKeys[i].height
       if (i === currentIndex || !currentItem) {
         break
       }
@@ -130,35 +116,42 @@ const CalendarList: React.FC<CalendarListProps> = props => {
     console.log('currentItem', currentItem, currentIndex, totalHeight)
     if (CalendarListBoxRef.current) {
       CalendarListBoxRef.current.scrollTo({
-        top:totalHeight,
-        behavior: 'smooth'
+        top: totalHeight,
+        behavior: 'smooth',
       })
     }
   }, [checkedTime])
-  return <CalendarListBox ref={CalendarListBoxRef}>
-    {
-      data.map((item, index) =>
-        <CalendarListItem key={index} className={CalendarListClass} datatype={item.time}>
+  return (
+    <CalendarListBox ref={CalendarListBoxRef}>
+      {listViewScheduleList.map((item:any, index:number) => (
+        <CalendarListItem
+          key={index}
+          className={CalendarListClass}
+          datatype={item.date}
+        >
           <div style={{ width: '40px' }}>
             <DateBox className={index === 0 ? currentClass : ''}>
-              {dayjs().date() + index}
+              {dayjs(item.date).date()}
             </DateBox>
           </div>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <MonthWeekBox>3月 周日</MonthWeekBox>
-            <LunarDate>廿四 </LunarDate>
+            <MonthWeekBox>
+              {item.list[0].month}月 {item.list[0].week_name}
+            </MonthWeekBox>
+            <LunarDate>{item.list[0].lunar_day_chinese} </LunarDate>
           </div>
           <CalendarListInfo>
-            {item.list.map((ele, idx) => (
-              <TimeItem key={ele.date}>
+            {item.list.map((ele:any) => (
+              <TimeItem key={ele.schedule_id}>
                 <span className={dateClass}>{ele.date}</span>
-                <span>{ele.text}</span>
+                <span>{ele.subject}</span>
               </TimeItem>
             ))}
           </CalendarListInfo>
         </CalendarListItem>
-      )}
-  </CalendarListBox>
+      ))}
+    </CalendarListBox>
+  )
 }
 
 export default CalendarList

@@ -164,6 +164,12 @@ const urls = {
   getScheduleListDaysOfWeek: '/b/schedule/daysOfWeek',
   getScheduleListDaysOfMonth: '/b/schedule/daysOfMonth',
   getScheduleListDaysOfDate: '/b/schedule/daysOfDate',
+
+  // 修改日程
+
+  modifySchedule: function (id: Model.Schedule.Info['schedule_id']) {
+    return `/b/schedule/${id}`
+  },
 }
 export default urls
 

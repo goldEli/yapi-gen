@@ -12,7 +12,7 @@ const useScheduleList = () => {
   const list = React.useMemo(() => {
     const key = dayjs(calenderDayValue).format('YYYY-MM-DD')
     return scheduleList?.[key]?.filter(
-      item => item.is_all_day !== 1 || !item.is_span_day,
+      item => item.is_all_day !== 1 && !item.is_span_day,
     )
   }, [scheduleList, calenderDayValue])
   return { list }
