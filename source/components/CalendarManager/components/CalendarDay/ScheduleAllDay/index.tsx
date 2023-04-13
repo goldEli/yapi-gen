@@ -114,7 +114,7 @@ const ScheduleAllDay: React.FC<ScheduleAllDayProps> = props => {
                   e.stopPropagation()
                   dispatch(
                     setScheduleInfoDropdown({
-                      id: item.schedule_id,
+                      schedule_id: item.schedule_id,
                       visible: true,
                       y: 0,
                       x: 300,

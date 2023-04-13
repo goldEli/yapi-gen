@@ -2,7 +2,7 @@ import React from 'react'
 import { getStyleValue } from '../../utils'
 
 const useModalPosition = (props: {
-  id: number
+  schedule_id: number
   x: number
   y: number
   visible: boolean
@@ -89,7 +89,12 @@ const useModalPosition = (props: {
         y: props.y - offset.y,
       })
     }
-  }, [props.visible, props.id, props.modalInfo?.width, props.modalInfo?.height])
+  }, [
+    props.visible,
+    props.schedule_id,
+    props.modalInfo?.width,
+    props.modalInfo?.height,
+  ])
 
   return { position }
 }

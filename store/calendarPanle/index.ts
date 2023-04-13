@@ -13,7 +13,6 @@ type SliceState = {
     visible: boolean
     x: number
     y: number
-    id: Model.Schedule.Info['schedule_id']
   }
   // 查看日程详情弹窗
   scheduleInfoDropdown: {
@@ -60,7 +59,6 @@ const initialState: SliceState = {
     visible: false,
     x: 0,
     y: 0,
-    id: 0,
   },
   scheduleInfoDropdown: {
     visible: false,

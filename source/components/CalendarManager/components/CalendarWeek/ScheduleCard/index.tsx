@@ -120,7 +120,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     if (!isDrag.current) {
       dispatch(
         setScheduleInfoDropdown({
-          id: props.data.schedule_id,
+          schedule_id: props.data.schedule_id,
           visible: true,
           x: x + 58 + 20,
           y: y + 20,
