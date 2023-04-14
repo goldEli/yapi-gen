@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import SupplementaryIntercourse from './SupplementaryIntercourse'
 import WriteReport from './WriteReport'
-import { createTemplate } from '@/services/formwork'
 import { getTemplateList } from '@store/formWork/thunk'
 import {
   setTemplateName,
@@ -92,7 +91,11 @@ const FormWorkSide = () => {
     dispatch(setDataList([{ name }, ...dataList]))
   }
   const getDataList = async () => {
-    await dispatch(getTemplateList())
+    const res = await dispatch(getTemplateList())
+    res.payload?.length >= 1 &&
+      dispatch(
+        setActiveItem({ id: res?.payload[0]?.id, name: res?.payload[0]?.name }),
+      )
   }
   useEffect(() => {
     getDataList()
@@ -119,18 +122,12 @@ const FormWorkSide = () => {
       is_submitter_edit: false,
       is_cycle_limit: false,
       is_supply: false,
-      reminder_time: 0,
+      reminder_time: null,
       auto_reminder: false,
       submit_cycle: 1,
       is_holiday: false,
-      end_time: {
-        day_type: 1,
-        time: 0,
-      },
-      start_time: {
-        day_type: 1,
-        time: 0,
-      },
+      end_time: null,
+      start_time: null,
     }
     dispatch(
       setReportContent({

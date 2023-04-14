@@ -182,14 +182,16 @@ const HandleReport = (props: any) => {
   useEffect(() => {
     if (props.editId && props.visibleEdit) {
       setDefaultValue()
+      getList()
     }
-    getList()
   }, [props.editId, props.visibleEdit])
 
   // 写汇报 初始化
   useEffect(() => {
-    getTemplateById(props?.templateId)
-    getList()
+    if (props?.templateId) {
+      getTemplateById(props?.templateId)
+      getList()
+    }
   }, [props.templateId])
 
   const scrollToBottom = () => {

@@ -148,6 +148,9 @@ const urls = {
   repSentList: '/b/work_report/user/send/list',
   repReceivedList: '/b/work_report/user/receive/list',
   repPublicList: '/b/work_report/user/public/list',
+  getReportInfo: '/b/work_report/user/info',
+  getReportComment: '/b/work_report/user/comment',
+  addReportComment: '/b/work_report/user/comment',
 }
 
 export default urls

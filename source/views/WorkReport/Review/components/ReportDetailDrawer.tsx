@@ -1,40 +1,21 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-duplicate-imports */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/no-danger */
-
-// 需求详情弹窗预览模式
-
-import {
-  deleteDemand,
-  getDemandInfo,
-  updateDemandStatus,
-} from '@/services/demand'
-import { getProjectInfo } from '@/services/project'
-import { encryptPhp } from '@/tools/cryptoPhp'
-import {
-  setCreateDemandProps,
-  setDemandDetailDrawerProps,
-  setIsCreateDemandVisible,
-  setIsUpdateDemand,
-} from '@store/demand'
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
-import { setProjectInfo } from '@store/project'
 import { Drawer, message, Form, Skeleton, Space, Input, Button } from 'antd'
-import type { EditorRef } from '@xyfe/uikit'
-import UploadAttach from '@/components/UploadAttach'
-import { Editor } from '@xyfe/uikit'
-import { createRef, useEffect, useRef, useState } from 'react'
+import { Editor, EditorRef } from '@xyfe/uikit'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonIconFont from '@/components/CommonIconFont'
-import DeleteConfirm from '@/components/DeleteConfirm'
 import { DragLine } from '@/components/StyleCommon'
 import DetailsSkeleton from '@/components/DemandDetailDrawer/DetailsSkeleton'
-import { divide, throttle } from 'lodash'
+import { throttle } from 'lodash'
+import { uploadFileToKey } from '@/services/cos'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
-import IconFont from '@/components/IconFont'
 import {
   Header,
   BackIcon,
@@ -44,60 +25,103 @@ import {
   UpWrap,
   DownWrap,
   ContentHeadWrap,
-  LabelTitle,
-  LabelMessage,
-  LabelMessageRead,
   CommentFooter,
+  DetailItem,
+  TargetUserItem,
+  TargetUserContent,
+  ContactDemandBox,
+  ContactDemandItem,
+  CommentBox,
 } from './style'
-import DemandComment from '@/components/DemandDetailDrawer/DemandComment'
+import { setViewReportModal } from '@store/workReport'
+import {
+  addReportComment,
+  getReportComment,
+  getReportInfo,
+} from '@/services/report'
+import UploadAttach from '@/components/UploadAttach'
+import CommonButton from '@/components/CommonButton'
+
+interface TargetTabsProps {
+  list: any
+}
+
+const TargetTabs = (props: TargetTabsProps) => {
+  const [activeTab, setActiveTab] = useState(0)
+  return (
+    <TargetUserItem>
+      <div className="tabs">
+        <span
+          className={activeTab === 0 ? 'active' : ''}
+          onClick={() => setActiveTab(0)}
+        >
+          已读 ({props.list?.filter((k: any) => k.type !== 1)?.length})
+        </span>
+        <span
+          className={activeTab === 1 ? 'active' : ''}
+          onClick={() => setActiveTab(1)}
+        >
+          未读 ({props.list?.filter((k: any) => k.type === 1)?.length})
+        </span>
+      </div>
+      <TargetUserContent size={24}>
+        {props.list
+          ?.filter((k: any) =>
+            (activeTab === 1 ? [1] : [2, 3]).includes(k.type),
+          )
+          ?.map((i: any) => (
+            <div key={i.user_id}>
+              <CommonUserAvatar avatar={i.user.avatar} name={i.user.name} />
+            </div>
+          ))}
+      </TargetUserContent>
+    </TargetUserItem>
+  )
+}
+
+const ContactDemand = (props: { list: any }) => {
+  const list = props.list?.length ? props.list : []
+  return (
+    <ContactDemandBox>
+      {list.map((i: any) => (
+        <ContactDemandItem key={i.id}>
+          【{i.id}】<span className="name">{i.name}</span>
+        </ContactDemandItem>
+      ))}
+    </ContactDemandBox>
+  )
+}
+
+const AttachmentBox = (props: { list: any }) => {
+  const list = props.list?.length ? props.list : []
+  const resultList = list.map((item: any) => {
+    return {
+      url: item.url,
+      id: new Date().getTime() + Math.random(),
+      size: item.size,
+      time: item.ctime,
+      name: item.name || '--',
+      suffix: item.ext,
+      username: item.username,
+    }
+  })
+  return <UploadAttach isReport canUpdate power defaultList={resultList} />
+}
 
 const ReportDetailDrawer = () => {
-  const normalState = {
-    detailInfo: {
-      isOpen: true,
-      dom: useRef<any>(null),
-    },
-    detailDemands: {
-      isOpen: false,
-      dom: useRef<any>(null),
-    },
-    basicInfo: {
-      isOpen: false,
-      dom: useRef<any>(null),
-    },
-    demandComment: {
-      isOpen: false,
-      dom: useRef<any>(null),
-    },
-  }
-  const {
-    isDemandDetailDrawerVisible,
-    demandDetailDrawerProps,
-    isUpdateDemand,
-  } = useSelector(store => store.demand)
-  const { projectInfo } = useSelector(store => store.project)
   const [t] = useTranslation()
   const dispatch = useDispatch()
-  const [isMoreVisible, setIsMoreVisible] = useState(false)
-  const [isDelete, setIsDelete] = useState(false)
+  const { viewReportModal } = useSelector(store => store.workReport)
   const [skeletonLoading, setSkeletonLoading] = useState(false)
   const [focus, setFocus] = useState(false)
-  const [deleteId, setDeleteId] = useState(0)
   const [drawerInfo, setDrawerInfo] = useState<any>({})
-  const [showState, setShowState] = useState<any>(normalState)
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [demandIds, setDemandIds] = useState([])
-  const commentDom: any = createRef()
-  const [form] = Form.useForm()
+  const [reportIds, setReportIds] = useState<any>([])
   const [isReview, setIsReview] = useState(false)
-
-  const modeList = [
-    { name: t('project.detailInfo'), key: 'detailInfo', content: '' },
-    { name: t('common.childDemand'), key: 'detailDemands', content: '' },
-    { name: t('newlyAdd.basicInfo'), key: 'basicInfo', content: '' },
-    { name: t('requirements_review'), key: 'demandComment', content: '' },
-  ]
+  const [commentList, setCommentList] = useState([])
+  const [form] = Form.useForm()
   const leftWidth = 640
+  const editorRef = useRef<EditorRef>(null)
 
   // 拖动线条
   const onDragLine = (e: React.MouseEvent) => {
@@ -123,156 +147,44 @@ const ReportDetailDrawer = () => {
     })
   }
 
-  // 获取项目详情权限
-  const getProjectData = async () => {
-    const response = await getProjectInfo({
-      projectId:
-        demandDetailDrawerProps.project_id ?? demandDetailDrawerProps.projectId,
+  // 获取汇报评论
+  const getReportCommentData = async (id: number) => {
+    const response = await getReportComment({
+      report_user_id: id,
+      page: 1,
+      pagesize: 999,
     })
-    dispatch(setProjectInfo(response))
+    setCommentList(response.list)
   }
 
-  // 获取需求详情
-  const getDemandDetail = async (id?: any, ids?: any) => {
-    const paramsProjectId =
-      demandDetailDrawerProps.project_id ?? demandDetailDrawerProps.projectId
-    if (demandDetailDrawerProps?.isAllProject) {
-      getProjectData()
-    }
+  // 获取汇报详情
+  const getReportDetail = async (ids?: any) => {
     setDrawerInfo({})
     setSkeletonLoading(true)
-    const info = await getDemandInfo({
-      projectId: paramsProjectId,
-      id: id ? id : demandDetailDrawerProps?.id,
-    })
-    info.hierarchy.push({
-      id: info.id,
-      categoryId: info.category,
-      prefixKey: info.prefixKey,
-      projectPrefix: info.projectPrefix,
-      categoryAttachment: info.category_attachment,
-      parentId: info.parentId,
-      name: info.name,
+    const info = await getReportInfo({
+      id: viewReportModal?.id,
     })
     setDrawerInfo(info)
     setSkeletonLoading(false)
     // 获取当前需求的下标， 用作上一下一切换
     setCurrentIndex((ids || []).findIndex((i: any) => i === info.id))
+    getReportCommentData(viewReportModal?.id)
   }
 
   // 关闭弹窗
   const onCancel = () => {
-    dispatch({
-      type: 'demand/setIsDemandDetailDrawerVisible',
-      payload: false,
-    })
-    dispatch(setCreateDemandProps({}))
-    dispatch({
-      type: 'demand/setDemandDetailDrawerProps',
-      payload: {},
-    })
-    setShowState(normalState)
-  }
-
-  // 跳转详情页面
-  const onToDetail = () => {
-    const params = encryptPhp(
-      JSON.stringify({
-        type: 'info',
-        id: drawerInfo.projectId,
-        demandId: drawerInfo.id,
-      }),
-    )
-    const url = `ProjectManagement/Demand?data=${params}`
-    window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
-  }
-
-  // 点击编辑
-  const onEditChange = (item: any) => {
-    setIsMoreVisible(false)
-    dispatch(setIsCreateDemandVisible(true))
-    dispatch(
-      setCreateDemandProps({
-        demandId: item.id,
-        projectId: drawerInfo.projectId,
-      }),
-    )
-  }
-
-  // 点击删除
-  const onDeleteChange = (item: any) => {
-    setIsMoreVisible(false)
-    setDeleteId(item.id)
-    setIsDelete(true)
-  }
-
-  // 点击创建子需求
-  const onCreateChild = (item: any) => {
-    setIsMoreVisible(false)
-    dispatch(setIsCreateDemandVisible(true))
-    dispatch(
-      setCreateDemandProps({
-        projectId: drawerInfo.projectId,
-        isChild: true,
-        parentId: item.id,
-        categoryId: item.categoryId,
-      }),
-    )
-  }
-
-  // 改变模块显示
-  const onChangeShowState = (item: any) => {
-    const newState = Object.assign({}, showState)
-    const resState = {
-      isOpen: !newState[item.key].isOpen,
-      dom: newState[item.key].dom,
-    }
-    newState[item.key].dom.current.style.height = resState.isOpen ? 'auto' : 0
-    newState[item.key] = resState
-    setShowState(newState)
-  }
-
-  // 是否审核
-  const onExamine = () => {
-    message.warning(t('newlyAdd.underReview'))
-  }
-
-  // 修改状态
-  const onChangeStatus = async (value: any) => {
-    try {
-      await updateDemandStatus(value)
-      message.success(t('common.statusSuccess'))
-      getDemandDetail()
-      dispatch(setIsUpdateDemand(true))
-    } catch (error) {
-      //
-    }
-  }
-
-  // 删除需求
-  const onDeleteConfirm = async () => {
-    try {
-      await deleteDemand({
-        projectId: drawerInfo.projectId,
-        id: deleteId,
-      })
-      message.success(t('common.deleteSuccess'))
-      setDeleteId(0)
-      setIsDelete(false)
-      onCancel()
-      // 更新列表
-    } catch (error) {
-      //
-    }
+    setFocus(false)
+    setIsReview(false)
+    dispatch(setViewReportModal({ visible: false, id: 0, ids: [] }))
   }
 
   // 向上查找需求
   const onUpDemand = () => {
-    const newIndex = demandIds[currentIndex - 1]
+    const newIndex = reportIds[currentIndex - 1]
     if (!currentIndex) return
     dispatch(
-      setDemandDetailDrawerProps({
-        ...demandDetailDrawerProps,
+      setViewReportModal({
+        ...viewReportModal,
         ...{ id: newIndex },
       }),
     )
@@ -280,19 +192,19 @@ const ReportDetailDrawer = () => {
 
   // 向下查找需求
   const onDownDemand = () => {
-    const newIndex = demandIds[currentIndex + 1]
-    if (currentIndex === demandIds?.length - 1) return
+    const newIndex = reportIds[currentIndex + 1]
+    if (currentIndex === reportIds?.length - 1) return
 
     dispatch(
-      setDemandDetailDrawerProps({
-        ...demandDetailDrawerProps,
+      setViewReportModal({
+        ...viewReportModal,
         ...{ id: newIndex },
       }),
     )
   }
 
   const getKeyDown = (e: any) => {
-    if (storeAll.getState().demand.isDemandDetailDrawerVisible) {
+    if (storeAll.getState().workReport.viewReportModal.visible) {
       if (e.keyCode === 38) {
         //up
         document.getElementById('upIcon')?.click()
@@ -304,23 +216,43 @@ const ReportDetailDrawer = () => {
     }
   }
 
-  useEffect(() => {
-    if (isDemandDetailDrawerVisible || demandDetailDrawerProps?.id) {
-      setDemandIds(demandDetailDrawerProps?.demandIds || [])
-      getDemandDetail('', demandDetailDrawerProps?.demandIds || [])
-      setShowState(normalState)
+  // 评论
+  const onComment = async () => {
+    const params = {
+      report_user_id: drawerInfo.id,
+      content: form.getFieldsValue().info,
     }
-  }, [demandDetailDrawerProps, isDemandDetailDrawerVisible])
+    await addReportComment(params)
+    message.success('添加评论成功！')
+    setIsReview(false)
+    getReportCommentData(drawerInfo.id)
+    form.resetFields()
+  }
+
+  // 富文本上传
+  const uploadFile = (file: File, dom: any, key2?: any) => {
+    const key = uploadFileToKey(
+      file,
+      file.name,
+      `richEditorFiles_${new Date().getTime()}`,
+      false,
+      data => {
+        if (key2 === 'copy') {
+          dom.past(data.url)
+        }
+        dom?.notifyUploaded(data.key, data.url)
+      },
+    )
+    return key
+  }
 
   useEffect(() => {
-    if (isUpdateDemand) {
-      setCurrentIndex(0)
-      setDemandIds([])
-      if (isDemandDetailDrawerVisible) {
-        getDemandDetail()
-      }
+    console.log(viewReportModal.visible, viewReportModal?.id, 'viewReportModal')
+    if (viewReportModal.visible && viewReportModal?.id) {
+      setReportIds(viewReportModal?.ids || [])
+      getReportDetail(viewReportModal?.ids || [])
     }
-  }, [isUpdateDemand])
+  }, [viewReportModal])
 
   useEffect(() => {
     document.addEventListener('keydown', getKeyDown)
@@ -331,18 +263,12 @@ const ReportDetailDrawer = () => {
 
   return (
     <>
-      <DeleteConfirm
-        text={t('mark.del')}
-        isVisible={isDelete}
-        onChangeVisible={() => setIsDelete(!isDelete)}
-        onConfirm={onDeleteConfirm}
-      />
       <Drawer
         closable={false}
         placement="right"
         bodyStyle={{ padding: 0, position: 'relative' }}
         width={leftWidth}
-        open={false}
+        open={viewReportModal.visible}
         onClose={onCancel}
         destroyOnClose
         maskClosable={false}
@@ -368,32 +294,39 @@ const ReportDetailDrawer = () => {
           </Space>
           <Space size={16}>
             <ChangeIconGroup>
-              <UpWrap
-                onClick={onUpDemand}
-                id="upIcon"
-                isOnly={
-                  demandIds?.length === 0 ||
-                  currentIndex === demandIds?.length - 1
-                }
-              >
-                <CommonIconFont
-                  type="up"
-                  size={20}
-                  color="var(--neutral-n1-d1)"
-                />
-              </UpWrap>
+              {currentIndex > 0 && (
+                <UpWrap
+                  onClick={onUpDemand}
+                  id="upIcon"
+                  isOnly={
+                    reportIds?.length === 0 ||
+                    currentIndex === reportIds?.length - 1
+                  }
+                >
+                  <CommonIconFont
+                    type="up"
+                    size={20}
+                    color="var(--neutral-n1-d1)"
+                  />
+                </UpWrap>
+              )}
 
-              <DownWrap
-                onClick={onDownDemand}
-                id="downIcon"
-                isOnly={currentIndex <= 0}
-              >
-                <CommonIconFont
-                  type="down"
-                  size={20}
-                  color="var(--neutral-n1-d1)"
-                />
-              </DownWrap>
+              {!(
+                reportIds?.length === 0 ||
+                currentIndex === reportIds?.length - 1
+              ) && (
+                <DownWrap
+                  onClick={onDownDemand}
+                  id="downIcon"
+                  isOnly={currentIndex <= 0}
+                >
+                  <CommonIconFont
+                    type="down"
+                    size={20}
+                    color="var(--neutral-n1-d1)"
+                  />
+                </DownWrap>
+              )}
             </ChangeIconGroup>
           </Space>
         </Header>
@@ -408,126 +341,100 @@ const ReportDetailDrawer = () => {
                     alignItems: 'center',
                   }}
                 >
-                  {false ? (
-                    <img
-                      style={{
-                        width: 32,
-                        height: 32,
-                        borderRadius: 16,
-                      }}
-                      // src={i.avatar}
-                    />
-                  ) : (
-                    <span>
-                      <CommonUserAvatar size="large" />
-                    </span>
-                  )}
+                  <CommonUserAvatar
+                    size="large"
+                    avatar={drawerInfo?.user?.avatar}
+                  />
                   <div className="reportTitleWrap">
                     <div className="titleText">
-                      李四的工作日报
+                      {drawerInfo?.user?.name}的
+                      {drawerInfo?.report_template_name}
                       <span className="dateText">
-                        （2022-08-21至2022-08-27）
+                        （{drawerInfo?.start_time}至{drawerInfo?.end_time}）
                       </span>
                     </div>
                     <div className="submitTimeText">
-                      提交时间：2023-09-12 15:20:32
+                      提交时间：{drawerInfo?.created_at}
                     </div>
                   </div>
                 </div>
               </ContentHeadWrap>
-              <Form
-                form={form}
-                onFinish={confirm}
-                layout="vertical"
-                initialValues={{ info2: '2222222222' }}
-                onFinishFailed={() => {
-                  setTimeout(() => {
-                    const errorList = (document as any).querySelectorAll(
-                      '.ant-form-item-has-error',
-                    )
-
-                    errorList[0].scrollIntoView({
-                      block: 'center',
-                      behavior: 'smooth',
-                    })
-                  }, 100)
-                }}
-              >
-                <Form.Item
-                  style={{
-                    marginBottom: '30px',
-                  }}
-                  label={<LabelTitle>{t('report.list.todayWork')}</LabelTitle>}
-                  name="info"
-                >
-                  <Editor readonly disableUpdateValue />
-                </Form.Item>
-                <Form.Item
-                  style={{
-                    marginBottom: '30px',
-                  }}
-                  label={
-                    <LabelTitle>{t('report.list.tomorrowWork')}</LabelTitle>
-                  }
-                  name="info2"
-                >
-                  <Editor readonly disableUpdateValue />
-                </Form.Item>
-                <Form.Item
-                  label={<LabelTitle>{t('common.attachment')}</LabelTitle>}
-                  name="attachments"
-                >
-                  11111
-                </Form.Item>
-                <Form.Item
-                  label={
-                    <LabelTitle>
-                      {t('report.list.associatedRequirement')}
-                    </LabelTitle>
-                  }
-                  name="needs"
-                >
-                  111
-                </Form.Item>
-              </Form>
-              <div>
-                <div>
-                  <span className={LabelMessage}>已读</span>
-                  <span className={LabelMessageRead}>{`未读 (${3})`}</span>
-                </div>
-              </div>
-              <div>
-                <div style={{ marginTop: 21 }}>
-                  <LabelTitle>评论</LabelTitle>
-                </div>
-              </div>
+              {drawerInfo?.report_content?.map((i: any) => (
+                <DetailItem key={i.id}>
+                  <div className="title">{i.name}</div>
+                  {i.type === 1 && (
+                    <TargetTabs list={drawerInfo?.target_users} />
+                  )}
+                  {i.type === 2 && <AttachmentBox list={i?.pivot?.params} />}
+                  {i.type === 3 && (
+                    <Editor
+                      readonly
+                      disableUpdateValue
+                      value={i?.pivot?.content}
+                    />
+                  )}
+                  {i.type === 4 && <ContactDemand list={i?.pivot?.params} />}
+                </DetailItem>
+              ))}
+              <DetailItem>
+                <div className="title">评论</div>
+                {commentList.map((i: any) => (
+                  <CommentBox key={i.id}>
+                    <div className="header">
+                      <CommonUserAvatar name={i.comment_user.name} />
+                      <div className="time">{i.created_at || '--'}</div>
+                    </div>
+                    <div className="content">
+                      <Editor readonly disableUpdateValue value={i?.content} />
+                    </div>
+                  </CommentBox>
+                ))}
+              </DetailItem>
             </>
           )}
-          <DemandComment detail={drawerInfo} isOpen={true} onRef={commentDom} />
         </Content>
 
         <CommentFooter isReview={isReview}>
           {isReview ? (
             <>
-              <Editor />
+              <div className="editBox">
+                <Form form={form}>
+                  <Form.Item name="info">
+                    <Editor
+                      ref={editorRef}
+                      upload={uploadFile}
+                      getSuggestions={() => []}
+                    />
+                  </Form.Item>
+                </Form>
+              </div>
               <div className="buttonBox">
                 <Space>
-                  <Button type="primary" size="small">
-                    评论
-                  </Button>
-                  <Button
-                    type="default"
+                  <CommonButton
+                    type="light"
                     size="small"
-                    onClick={() => setIsReview(false)}
+                    onClick={() => {
+                      setIsReview(false)
+                      form.resetFields()
+                    }}
+                    style={{ fontSize: 12 }}
                   >
                     取消
-                  </Button>
+                  </CommonButton>
+                  <CommonButton
+                    type="primary"
+                    size="small"
+                    style={{ fontSize: 12 }}
+                    onClick={onComment}
+                  >
+                    评论
+                  </CommonButton>
                 </Space>
               </div>
             </>
           ) : (
             <Input
-              placeholder={`评论${'张三'}的日志`}
+              placeholder={`评论${drawerInfo?.user?.name || '--'}的日志`}
               onFocus={() => setIsReview(true)}
             />
           )}

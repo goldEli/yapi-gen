@@ -3,6 +3,82 @@ import styled from '@emotion/styled'
 import { Input, Popover, Space } from 'antd'
 import { css } from '@emotion/css'
 
+export const DetailItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;
+  .title {
+    font-size: 14px;
+    font-family: SiYuanMedium;
+    margin-bottom: 8px;
+  }
+`
+
+export const TargetUserItem = styled.div`
+  .tabs {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    span {
+      font-size: 14px;
+      color: var(--neutral-n3);
+      cursor: pointer;
+    }
+    span:last-child {
+      margin-left: 16px;
+    }
+    .active {
+      font-family: SiYuanMedium;
+      color: var(--neutral-n1-d1);
+    }
+  }
+`
+
+export const TargetUserContent = styled(Space)`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+`
+
+export const ContactDemandBox = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+export const ContactDemandItem = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: var(--neutral-n1-d1);
+  .name {
+    max-width: 85%;
+    white-space: normal;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  &:last-child {
+    margin-bottom: 0px;
+  }
+`
+
+export const CommentBox = styled.div`
+  margin-bottom: 8px;
+  .header {
+    display: flex;
+    align-items: center;
+    .time {
+      margin-left: 16px;
+      font-size: 12px;
+      color: var(--neutral-n3);
+    }
+  }
+  .content {
+    padding-left: 32px;
+    margin-top: 2px;
+  }
+`
+
 export const SkeletonGroup = styled(Space)`
   display: flex;
   align-items: center;
@@ -122,10 +198,10 @@ export const ChangeIconBox = styled.div`
 `
 
 export const Content = styled.div<{ isReview?: boolean }>`
-  height: calc(100% - 53px);
+  height: ${props =>
+    props.isReview ? 'calc(100% - 336px)' : 'calc(100% - 134px)'};
   overflow: auto;
   padding: 16px 24px;
-  padding-bottom: ${props => (props.isReview ? '280px' : '80px')};
   position: relative;
 `
 
@@ -187,16 +263,26 @@ export const LabelMessageRead = css`
 
 export const CommentFooter = styled.div<{ isReview?: boolean }>`
   width: 100%;
-  height: ${props => (props.isReview ? '280px' : '80px')};
+  height: auto;
+  min-height: ${props => (props.isReview ? '280px' : '80px')};
   box-sizing: border-box;
   padding: 24px 24px 0px 24px;
   background: var(--neutral-white-d5);
   position: absolute;
   bottom: 0px;
+  .editBox {
+    max-height: 72vh;
+    overflow: auto;
+  }
   .buttonBox {
     margin-top: 12px;
     display: flex;
     justify-content: flex-end;
+    margin-top: 12px;
+    margin-bottom: 24px;
+  }
+  .ant-form-item {
+    margin-bottom: 0px;
   }
 `
 

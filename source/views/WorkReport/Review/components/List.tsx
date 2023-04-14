@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Tooltip } from 'antd'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
@@ -24,6 +24,8 @@ import {
 import { templateList } from '@/services/formwork'
 import { getStaffList } from '@/services/staff'
 import HandleReport from './HandleReport'
+import { useDispatch } from '@store/index'
+import { setViewReportModal } from '@store/workReport'
 
 const ListTitle = styled.div`
   height: 32px;
@@ -77,6 +79,7 @@ const statusOptions = [
   { label: '已评', value: 3 },
 ]
 const List = () => {
+  const dispatch = useDispatch()
   const [t] = useTranslation()
   const { pathname } = useLocation()
   const [isSpinning, setIsSpinning] = useState(false)
@@ -149,6 +152,15 @@ const List = () => {
     setPageObj({ ...pageObj, page: 1 })
   }, [id])
 
+  const onClickView = (row: any) => {
+    dispatch(
+      setViewReportModal({
+        visible: true,
+        id: row.id,
+        ids: listData.map((i: any) => i.id),
+      }),
+    )
+  }
   const NewSort = (props: any) => {
     return (
       <Sort
@@ -174,7 +186,7 @@ const List = () => {
       width: 450,
       title: t('report.list.summary'),
       dataIndex: 'report_precis',
-      render: (text: string) => {
+      render: (text: string, record: any) => {
         return (
           <Tooltip
             placement="topLeft"
@@ -188,7 +200,9 @@ const List = () => {
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
+                cursor: 'pointer',
               }}
+              onClick={() => onClickView(record)}
             >
               {text.trim().slice(0, 100)}
             </span>
@@ -276,11 +290,10 @@ const List = () => {
     })
   }
   const onChangeSubmitter = (value: any) => {
-    // TODO: 提交人
-    // setQueryParams({
-    //   ...queryParams,
-    //   user_id: value,
-    // })
+    setQueryParams({
+      ...queryParams,
+      user_id: value,
+    })
   }
   const onChangeRepType = (value: any) => {
     setQueryParams({
@@ -322,10 +335,10 @@ const List = () => {
   }, [queryParams])
 
   const submitDate = useMemo(() => {
-    if (queryParams.report_start_time && queryParams.report_end_time) {
+    if (queryParams.send_start_time && queryParams.send_end_time) {
       return [
         moment(queryParams.send_start_time),
-        moment(queryParams.report_end_time),
+        moment(queryParams.send_end_time),
       ]
     }
     return null
@@ -342,6 +355,7 @@ const List = () => {
           getPopupContainer={(node: any) => node}
           allowClear
           optionFilterProp="label"
+          value={[queryParams.user_id]}
           options={userOptions}
           onChange={onChangeSubmitter}
         />
@@ -418,6 +432,7 @@ const List = () => {
             {t('report.list.dateReport')}
           </span>
           <RangePicker
+            isShowQuick
             placement="bottomLeft"
             dateValue={repDate}
             onChange={date => onChangeTime('report', date)}
