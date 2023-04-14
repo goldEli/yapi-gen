@@ -369,7 +369,9 @@ const List = () => {
   }
   const getTemplateList = async () => {
     const data = await templateList()
-    setRepTypeOptions(data.map(generateOptions))
+    setRepTypeOptions(
+      [{ label: '所有', value: null }].concat(data.map(generateOptions)),
+    )
   }
 
   const getUserList = async () => {
@@ -404,7 +406,8 @@ const List = () => {
             getPopupContainer={(node: any) => node}
             allowClear
             optionFilterProp="label"
-            defaultValue={['all']}
+            defaultValue={[null]}
+            value={[queryParams.report_template_id || null]}
             options={repTypeOptions}
             onChange={onChangeRepType}
           />

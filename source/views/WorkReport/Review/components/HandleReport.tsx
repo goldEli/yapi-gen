@@ -58,20 +58,19 @@ const HeadWrap = styled.div`
 
 const HandleReport = (props: any) => {
   const [form] = Form.useForm()
-  const [attachList, setAttachList] = useState<any>([])
   const [options, setOptions] = useState<any>([])
+  const [editDetail, setEditDetail] = useState<any>(null)
   const leftDom: any = useRef<HTMLInputElement>(null)
   const [t] = useTranslation()
   const userInfo = useSelector(state => state.user.userInfo)
   const [reportDetail, setReportDetail] = useState<any>(null)
-  const [EditDetail, setEditDetail] = useState<any>(null)
 
   const close = () => {
     form.resetFields()
     props.editClose()
-    setAttachList([])
   }
 
+  // 写汇报| 修改汇报 | 补交汇报 提交操作
   const confirm = async () => {
     const params: any = await form.validateFields()
     let users: any[] = []
@@ -92,6 +91,8 @@ const HandleReport = (props: any) => {
         })
       }
     })
+
+    // 写汇报
     const res = await writeReport({
       report_template_id: props?.templateId,
       data,
@@ -103,16 +104,15 @@ const HandleReport = (props: any) => {
     close()
   }
 
+  // 选择附件逻辑处理
   const onChangeAttachment = (result: any, name: string) => {
     const arr = result.map((i: any) => {
       return {
+        name: i.name,
         url: i.url,
-        created_at: i.ctime,
-        configurations: {
-          name: i.name,
-          ext: i.ext,
-          size: i.size,
-        },
+        size: i.size,
+        ext: i.ext,
+        ctime: i.ctime,
       }
     })
 
@@ -155,25 +155,18 @@ const HandleReport = (props: any) => {
       },
     })
   }
-
+  const getTemplateById = async (id: number) => {
+    const res = await templateDetail({ id })
+    if (res && res.code === 0 && res.data) {
+      setReportDetail(res.data)
+    }
+  }
   const setDefaultValue = async () => {
     const result = await getReportDetailById({ id: props?.editId })
     if (result.code === 0 && result.data) {
       setEditDetail(result.data)
+      getTemplateById(result.data.report_template_id)
     }
-    // setAttachList(
-    //     res.data.files.map((item: any) => {
-    //       return {
-    //         url: item.associate,
-    //         id: item.id,
-    //         size: item.configurations.size,
-    //         time: item.created_at,
-    //         name: item.configurations.name,
-    //         suffix: item.configurations.ext,
-    //         username: res.data.info.user_name,
-    //       }
-    //     }),
-    //   )
   }
   const getList = async () => {
     const result = await getStaffListAll({ all: 1 })
@@ -185,13 +178,7 @@ const HandleReport = (props: any) => {
     )
   }
 
-  const getTemplateById = async () => {
-    const res = await templateDetail({ id: props?.templateId })
-    if (res && res.code === 0 && res.data) {
-      setReportDetail(res.data)
-    }
-  }
-
+  // 修改汇报 初始化
   useEffect(() => {
     if (props.editId && props.visibleEdit) {
       setDefaultValue()
@@ -199,8 +186,9 @@ const HandleReport = (props: any) => {
     getList()
   }, [props.editId, props.visibleEdit])
 
+  // 写汇报 初始化
   useEffect(() => {
-    getTemplateById()
+    getTemplateById(props?.templateId)
     getList()
   }, [props.templateId])
 
@@ -223,7 +211,7 @@ const HandleReport = (props: any) => {
   if (!props.visibleEdit) {
     return null
   }
-
+  // 根据模板类型生成对应的item
   const getFormItemHtml = (content: any): React.ReactElement => {
     switch (content.type) {
       case 1:
@@ -273,7 +261,7 @@ const HandleReport = (props: any) => {
           >
             <UploadAttach
               power
-              defaultList={attachList}
+              defaultList={[]}
               onChangeAttachment={(res: any) => {
                 onChangeAttachment(res, `${content.type}_${content.id}`)
               }}
@@ -331,9 +319,7 @@ const HandleReport = (props: any) => {
             label={<LabelTitle>{content.name}</LabelTitle>}
             name={`${content.type}_${content.id}`}
           >
-            {props.visibleEdit ? (
-              <RelatedNeed onBootom={scrollToBottom} initValue={[]} />
-            ) : null}
+            <RelatedNeed onBootom={scrollToBottom} initValue={[]} />
           </Form.Item>
         )
       default:
@@ -380,9 +366,7 @@ const HandleReport = (props: any) => {
               </span>
             )}
             <div className="titleText">
-              {`${userInfo?.name}的工作${
-                props.editId ? EditDetail?.name : reportDetail?.name
-              }`}
+              {`${userInfo?.name}的工作${reportDetail?.name}`}
               <span className="dateText">（2022-08-21至2022-08-27）</span>
             </div>
           </div>
@@ -410,13 +394,9 @@ const HandleReport = (props: any) => {
             }, 100)
           }}
         >
-          {props?.editId
-            ? EditDetail?.report_content?.map((item: any) => {
-                return <div key={item.id}>{getFormItemHtml(item)}</div>
-              })
-            : reportDetail?.template_content_configs?.map((item: any) => {
-                return <div key={item.id}>{getFormItemHtml(item)}</div>
-              })}
+          {reportDetail?.template_content_configs?.map((item: any) => {
+            return <div key={item.id}>{getFormItemHtml(item)}</div>
+          })}
         </Form>
       </div>
     </CommonModal>
