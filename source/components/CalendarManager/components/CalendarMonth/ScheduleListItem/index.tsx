@@ -92,6 +92,11 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
           dispatch(clearMonthMoveScheduleActiveInfo())
           window.calendarMonthPanelType = null
           window.removeEventListener('mousemove', handleMove)
+          /**
+           * 点击查看详情
+           * 1. 如果拖动不查看
+           * 2. 跨天日程只有第一天才能点
+           */
           if (!isDrag.current && !isAllDayButNotFirstDay) {
             dispatch(
               setScheduleInfoDropdown({
