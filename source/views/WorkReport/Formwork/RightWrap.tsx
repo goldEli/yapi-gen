@@ -161,7 +161,6 @@ const RightFormWork = () => {
     setSave(editSave)
   }, [editSave])
   const saveApi = async () => {
-    dispatch(setEditSave(true))
     let parmas: any = {}
     parmas = {
       submit_cycle: fillingRequirements?.submit_cycle,
@@ -170,7 +169,8 @@ const RightFormWork = () => {
       is_supply: fillingRequirements?.is_supply ? 1 : 2,
       is_cycle_limit: fillingRequirements?.is_cycle_limit ? 1 : 2,
       is_submitter_edit: fillingRequirements?.is_cycle_limit ? 1 : 2,
-      hand_scope: fillingRequirements?.hand_scope?.key,
+      hand_scope:
+        fillingRequirements?.hand_scope?.key || fillingRequirements?.hand_scope,
       is_all_view: reportContent?.is_all_view,
       is_all_write: reportContent?.is_all_write,
       template_content_configs: templateContentConfigs,
@@ -199,6 +199,7 @@ const RightFormWork = () => {
       dispatch(setActiveItem({ id: res.data.id, name: res.data }))
       message.success('新增成功')
     }
+    dispatch(setEditSave(true))
   }
   return (
     <RightFormWorkStyle>
