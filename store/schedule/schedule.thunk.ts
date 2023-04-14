@@ -36,12 +36,8 @@ export const getScheduleListDaysOfMonth = createAsyncThunk(
 export const modifySchedule =
   (params: API.Schedule.ModifySchedule.Params) =>
   async (dispatch: AppDispatch) => {
-    try {
-      await services.schedule.modifySchedule(params)
-      await dispatch(refreshCalendarPanelScheduleList())
-    } catch (error) {
-      await dispatch(refreshCalendarPanelScheduleList())
-    }
+    await services.schedule.modifySchedule(params)
+    await dispatch(refreshCalendarPanelScheduleList())
   }
 
 // 刷新面板上日程列表
@@ -108,63 +104,38 @@ export const saveSchedule =
 export const getCalendarDaysOfYearList = createAsyncThunk(
   `${name}/getCalendarDaysOfYearList`,
   async (params: API.Schedule.ScheduleInfoList.Params) => {
-    try {
-      const res = await services.schedule.getCalendarDaysOfYearList(params)
-      return res.data
-    } catch (error) {
-      //
-    }
-    return ''
+    const res = await services.schedule.getCalendarDaysOfYearList(params)
+    return res.data
   },
 )
 
 export const getCalendarDaysOfMonthList = createAsyncThunk(
   `${name}/getCalendarDaysOfMonthList`,
   async (params: API.Schedule.ScheduleInfoList.Params) => {
-    try {
-      const res = await services.schedule.getCalendarDaysOfMonthList(params)
-      return res.data
-    } catch (error) {
-      //
-    }
-    return ''
+    const res = await services.schedule.getCalendarDaysOfMonthList(params)
+    return res.data
   },
 )
 export const getScheduleDaysOfList = createAsyncThunk(
   `${name}/getScheduleDaysOfList`,
   async (params: API.Schedule.ScheduleInfoList.Params) => {
-    try {
-      const res = await services.schedule.getCalendarDaysOfMonthList(params)
-      return res.data
-    } catch (error) {
-      //
-    }
-    return ''
+    const res = await services.schedule.getCalendarDaysOfMonthList(params)
+    return res.data
   },
 )
 // 左侧日历获取当月的日程
 export const getLeftCalendarDaysOfMonthList = createAsyncThunk(
   `${name}/getLeftCalendarDaysOfMonthList`,
   async (params: API.Schedule.ScheduleInfoList.Params) => {
-    try {
-      const res = await services.schedule.getCalendarDaysOfMonthList(params)
-      return res.data
-    } catch (error) {
-      //
-    }
-    return ''
+    const res = await services.schedule.getCalendarDaysOfMonthList(params)
+    return res.data
   },
 )
 export const getScheduleInfo = createAsyncThunk(
   `${name}/getScheduleInfo`,
   async (params: { id: number; show_date: string | number }) => {
-    try {
-      const res = await services.schedule.getScheduleInfo(params)
-      return res
-    } catch (error) {
-      //
-    }
-    return ''
+    const res = await services.schedule.getScheduleInfo(params)
+    return res
   },
 )
 
@@ -172,13 +143,8 @@ export const getScheduleInfo = createAsyncThunk(
 export const scheduleInfoReply = createAsyncThunk(
   `${name}/scheduleInfoReply`,
   async (params: { id: number; status: number }) => {
-    try {
-      const res = await services.schedule.scheduleInfoReply(params)
-      return res
-    } catch (error) {
-      //
-    }
-    return ''
+    const res = await services.schedule.scheduleInfoReply(params)
+    return res
   },
 )
 
@@ -186,40 +152,27 @@ export const scheduleInfoReply = createAsyncThunk(
 export const scheduleInfoDelete = createAsyncThunk(
   `${name}/scheduleInfoDelete`,
   async (params: { id: string; is_remind: boolean }) => {
-    try {
-      const res = await services.schedule.scheduleInfoDelete(params)
-      return res
-    } catch (error) {
-      //
-    }
-    return ''
+    const res = await services.schedule.scheduleInfoDelete(params)
+    return res
   },
 )
 // 日程转让
 export const scheduleInfoTransfer = createAsyncThunk(
   `${name}/scheduleInfoTransfer`,
-  async (params: { id: string | undefined; is_exit: boolean; user_id: number }) => {
-    try {
-      const res = await services.schedule.scheduleInfoTransfer(params)
-      return res
-    } catch (error) {
-      //
-    }
-    return ''
+  async (params: {
+    id: string | undefined
+    is_exit: boolean
+    user_id: number
+  }) => {
+    const res = await services.schedule.scheduleInfoTransfer(params)
+    return res
   },
 )
 // 日程搜索
 export const getScheduleSearch = createAsyncThunk(
   `${name}/getScheduleSearch`,
-  async (params: {   calendar_ids: number[],
-    year:number,
-    keyword:string }) => {
-    try {
-      const res = await services.schedule.getScheduleSearch(params)
-      return res
-    } catch (error) {
-      //
-    }
-    return ''
+  async (params: { calendar_ids: number[]; year: number; keyword: string }) => {
+    const res = await services.schedule.getScheduleSearch(params)
+    return res
   },
 )

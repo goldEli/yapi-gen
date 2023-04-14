@@ -2,10 +2,11 @@ import React, { useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { useDispatch, useSelector } from '@store/index'
-import { getScheduleDaysOfList } from '@store/schedule/schedule.thunk'
+import {
+  getScheduleDaysOfList,
+  getScheduleSearch,
+} from '@store/schedule/schedule.thunk'
 import dayjs from 'dayjs'
-import { forIn } from '@antv/util'
-import { forEach } from 'lodash'
 interface CalendarListProps {}
 const CalendarListBox = styled.div`
   background-color: #fff;
@@ -82,19 +83,27 @@ const CalendarList: React.FC<CalendarListProps> = props => {
   const { calenderListValue } = useSelector(state => state.calendarPanel)
   const { scheduleSearchKey } = useSelector(state => state.calendarPanel)
   const { calendarData } = useSelector(state => state.calendar)
-  const { listViewScheduleList=[] } = useSelector(state => state.schedule)
+  const { listViewScheduleList = [] } = useSelector(state => state.schedule)
   const { checkedTime } = useSelector(state => state.calendar)
   let data1 = calendarData?.manager.concat(calendarData?.subscribe)
   const disPatch = useDispatch()
   useEffect(() => {
-     console.log('列表视图',)
+    console.log('列表视图')
     let params = {
       year: dayjs(calenderListValue).year(),
       month: dayjs(calenderListValue).month() + 1,
       calendar_ids: data1.map(item => item.calendar_id),
     }
     disPatch(getScheduleDaysOfList(params))
-  }, [calenderListValue, scheduleSearchKey])
+  }, [calenderListValue])
+  useEffect(() => {
+    let params = {
+      year: dayjs(calenderListValue).year(),
+      keyword: scheduleSearchKey || '',
+      calendar_ids: data1.map(item => item.calendar_id),
+    }
+    disPatch(getScheduleSearch(params))
+  }, [scheduleSearchKey])
   useEffect(() => {
     let childrenKeys = [...(CalendarListBoxRef.current?.children as any)].map(
       item => {
@@ -123,7 +132,7 @@ const CalendarList: React.FC<CalendarListProps> = props => {
   }, [checkedTime])
   return (
     <CalendarListBox ref={CalendarListBoxRef}>
-      {listViewScheduleList.map((item:any, index:number) => (
+      {listViewScheduleList.map((item: any, index: number) => (
         <CalendarListItem
           key={index}
           className={CalendarListClass}
@@ -141,7 +150,7 @@ const CalendarList: React.FC<CalendarListProps> = props => {
             <LunarDate>{item.list[0].lunar_day_chinese} </LunarDate>
           </div>
           <CalendarListInfo>
-            {item.list.map((ele:any) => (
+            {item.list.map((ele: any) => (
               <TimeItem key={ele.schedule_id}>
                 <span className={dateClass}>{ele.date}</span>
                 <span>{ele.subject}</span>

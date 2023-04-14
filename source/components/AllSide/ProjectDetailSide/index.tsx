@@ -39,9 +39,9 @@ export const Back = styled.div`
 `
 const ProjectDetailSide = () => {
   const [t] = useTranslation()
-  const projectSide: any = useRef<HTMLElement>(null)
-  const projectSetSide: any = useRef<HTMLElement>(null)
-  const projectSetCategory: any = useRef<HTMLElement>(null)
+  const projectSide: any = useRef<HTMLDivElement>(null)
+  const projectSetSide: any = useRef<HTMLDivElement>(null)
+  const projectSetCategory: any = useRef<HTMLDivElement>(null)
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -214,6 +214,10 @@ const ProjectDetailSide = () => {
 
   useEffect(() => {
     if (paramsData?.pageIdx) {
+      if (projectSide.current === null) return
+      if (projectSetCategory.current === null) return
+      if (projectSetSide.current === null) return
+
       // 配置工作流或者是没有type的，跳转需求/迭代侧边栏
       if (!paramsData?.type && paramsData.pageIdx !== 'work') {
         projectSide.current.style.width = '0px'
@@ -222,10 +226,14 @@ const ProjectDetailSide = () => {
         projectSetSide.current.style.display = 'block'
       }
     } else {
+      if (projectSide.current === null) return
+      if (projectSetCategory.current === null) return
+      if (projectSetSide.current === null) return
       projectSetSide.current.style.width = '0px'
       projectSetCategory.current.style.width = '0px'
       projectSide.current.style.width = '100%'
       setTimeout(() => {
+        if (projectSetSide.current === null) return
         projectSetSide.current.style.display = 'none'
       }, 200)
     }

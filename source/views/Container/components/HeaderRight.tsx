@@ -44,6 +44,7 @@ import {
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const { language, theme } = useSelector(store => store.global)
+
   const dispatch = useDispatch()
   const [isChangeVisible, setIsChangeVisible] = useState(false)
 
@@ -439,6 +440,7 @@ const HeaderRight = () => {
           </Popover>
         )}
         <SiteNotifications />
+
         <CloseWrap width={32} height={32} onClick={onHelp}>
           <CommonIconFont type="question" size={24} />
         </CloseWrap>

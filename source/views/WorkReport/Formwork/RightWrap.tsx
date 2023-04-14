@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
 import CommonButton from '@/components/CommonButton'
 import styled from '@emotion/styled'
 import { Input, message } from 'antd'
@@ -7,10 +8,15 @@ import PermissionConfig from './PermissionConfig'
 import EditWork from './EditWork'
 import PreviewDialog from '@/components/FormWork/PreviewDialog'
 import { useDispatch, useSelector } from '@store/index'
-import { setEditSave } from '@store/formWork'
+import { setActiveItem, setEditSave, setTemplateName } from '@store/formWork'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import { deleteTemplate } from '@/services/formwork'
+import {
+  deleteTemplate,
+  upDateTemplate,
+  createTemplate,
+} from '@/services/formwork'
 import { getTemplateList, templateDetail } from '@store/formWork/thunk'
+import DataList, { data } from './DataList'
 const RightFormWorkStyle = styled.div`
   flex: 1;
   overflow: hidden;
@@ -121,11 +127,18 @@ const RightFormWork = () => {
   const [isActive, setIsActive] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   const [value, setValue] = useState('')
-  const { editSave } = useSelector(store => store.formWork)
-  const [save, setSave] = useState(editSave)
+  const [save, setSave] = useState(false)
   const dispatch = useDispatch()
   const [delIsVisible, setDelIsVisible] = useState(false)
-  const { activeItem } = useSelector(store => store.formWork)
+  const {
+    editSave,
+    dataList,
+    activeItem,
+    reportContent,
+    templateContentConfigs,
+    templateName,
+    fillingRequirements,
+  } = useSelector(store => store.formWork)
   const getTemplateDetail = async () => {
     await dispatch(templateDetail({ id: activeItem.id }))
   }
@@ -139,17 +152,54 @@ const RightFormWork = () => {
   const deleteActiveItem = async () => {
     setDelIsVisible(false)
     await deleteTemplate({ id: activeItem.id })
-    message.success('删除成功')
     await dispatch(getTemplateList())
+    dataList.length >= 1 &&
+      dispatch(setActiveItem({ id: dataList[0].id, name: dataList[0].name }))
+    message.success('删除成功')
   }
   useEffect(() => {
     setSave(editSave)
   }, [editSave])
   const saveApi = async () => {
+    let parmas: any = {}
+    parmas = {
+      submit_cycle: fillingRequirements?.submit_cycle,
+      auto_reminder: fillingRequirements?.auto_reminder ? 1 : 2,
+      reminder_time: fillingRequirements?.reminder_time,
+      is_supply: fillingRequirements?.is_supply ? 1 : 2,
+      is_cycle_limit: fillingRequirements?.is_cycle_limit ? 1 : 2,
+      is_submitter_edit: fillingRequirements?.is_cycle_limit ? 1 : 2,
+      hand_scope:
+        fillingRequirements?.hand_scope?.key || fillingRequirements?.hand_scope,
+      is_all_view: reportContent?.is_all_view,
+      is_all_write: reportContent?.is_all_write,
+      template_content_configs: templateContentConfigs,
+      template_configs: reportContent?.template_configs?.filter(
+        (el: any) => el.target_value.key !== 'all',
+      ),
+      id: activeItem.id || 0,
+    }
+    if (templateName) {
+      parmas.name = templateName
+    }
+    parmas.requirement = {
+      day: fillingRequirements?.day,
+      end_time: fillingRequirements?.end_time,
+      start_time: fillingRequirements?.start_time,
+      is_holiday: fillingRequirements?.is_holiday ? 1 : 2,
+    }
+    if (activeItem?.id) {
+      const res = await upDateTemplate(parmas)
+      message.success('编辑成功')
+      await dispatch(getTemplateList())
+      dispatch(setActiveItem({ id: activeItem?.id, name: activeItem?.name }))
+    } else {
+      const res = await createTemplate(parmas)
+      await dispatch(getTemplateList())
+      dispatch(setActiveItem({ id: res.data.id, name: res.data }))
+      message.success('新增成功')
+    }
     dispatch(setEditSave(true))
-    // await upDateTemplate({ name: props.value })
-    message.success('编辑成功')
-    // await dispatch(getTemplateList())
   }
   return (
     <RightFormWorkStyle>
@@ -188,7 +238,10 @@ const RightFormWork = () => {
             value={value}
             maxLength={50}
             onInput={(e: any) => {
-              setValue(e.target.value), dispatch(setEditSave(false))
+              dispatch(setEditSave(false))
+              setValue(e.target.value),
+                dispatch(setTemplateName(e.target.value))
+              dispatch(setEditSave(false))
             }}
           ></EditFormWorkStyle>
         </EditFormWorkBox>
@@ -206,7 +259,7 @@ const RightFormWork = () => {
             下一步
           </CommonButton>
         ) : (
-          <CommonButton type="light" onClick={() => setIsActive(1)}>
+          <CommonButton type="light" onClick={() => setIsActive(0)}>
             上一步
           </CommonButton>
         )}

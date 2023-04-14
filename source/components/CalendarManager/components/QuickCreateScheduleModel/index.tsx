@@ -264,7 +264,16 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
 
   // 跳转更多选项
   const onToMore = async () => {
-    const params = await onGetParams()
+    const params = {
+      isAll,
+      participant,
+      noticeList,
+      startTime: form.getFieldsValue().start_datetime,
+      endTime: form.getFieldsValue().end_datetime,
+      subject: form.getFieldsValue().subject,
+      describe: form.getFieldsValue().describe,
+      normalCategory,
+    }
     dispatch(setScheduleModal({ visible: true, params }))
     setTimeout(() => {
       onClose()
@@ -273,6 +282,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
 
   useEffect(() => {
     if (quickCreateScheduleModel.visible) {
+      console.log(calendarData.manager, '=calendarData.manager')
       // 获取日历列表，并且过滤出可创建日程的日历
       setCalendarCategory(calendarData.manager)
       // 默认日历列表第一条

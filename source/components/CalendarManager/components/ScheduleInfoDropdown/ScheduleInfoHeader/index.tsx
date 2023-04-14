@@ -3,15 +3,31 @@ import { css } from '@emotion/css'
 import { useSelector, useDispatch } from '@store/index'
 import { setScheduleModal } from '@store/calendar'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
-import { Dropdown, Checkbox, Radio, type RadioChangeEvent, Select } from 'antd'
+import {
+  Dropdown,
+  Checkbox,
+  Radio,
+  type RadioChangeEvent,
+  Select,
+  message,
+} from 'antd'
 import React, { useState, useEffect } from 'react'
 import ScheduleInfoIcon from './../ScheduleInfoIcon'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import dayjs from 'dayjs'
 import weekday from 'dayjs/plugin/weekday'
 import CommonModal from '@/components/CommonModal'
-import {scheduleInfoTransfer,scheduleInfoDelete} from '@store/schedule/schedule.thunk'
-import {setScheduleListModal,setScheduleInfoDelete,setScheduleInfoTransfer} from '@store/schedule/index'
+import {
+  scheduleInfoTransfer,
+  scheduleInfoDelete,
+  refreshCalendarPanelScheduleList,
+} from '@store/schedule/schedule.thunk'
+import {
+  setScheduleListModal,
+  setScheduleInfoDelete,
+  setScheduleInfoTransfer,
+} from '@store/schedule/index'
+import { useTranslation } from 'react-i18next'
 dayjs.extend(weekday)
 const { Option } = Select
 interface ScheduleInfoDropdownProps {}
@@ -122,28 +138,28 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
   const [checked, setChecked] = useState(false)
   const [showTipBox, setShowTipBox] = useState(false)
   const [isExit, setIsExit] = useState(true)
-  const [userId,setUserId]=useState<number>();
-  const { scheduleInfo,scheduleInfoTransferStatus,scheduleInfoDeleteStatus} = useSelector(state => state.schedule)
-
+  const [userId, setUserId] = useState<number>()
+  const { scheduleInfo } = useSelector(state => state.schedule)
+  const [t] = useTranslation()
   const disPatch = useDispatch()
   const onChangeVisible = () => {
     setIsVisible(false)
   }
-  useEffect(()=>{
-    if(!scheduleInfoTransferStatus) return
-    setModalVisible(false)
-    setShowTipBox(false);
-    disPatch(setScheduleInfoDropdown({ visible: false }))
-    disPatch(setScheduleListModal({visible:false}))
-    disPatch(setScheduleInfoTransfer(''))
-  },[scheduleInfoTransferStatus])
-  useEffect(()=>{
-    if(!scheduleInfoDeleteStatus) return
-    setIsVisible(false)
-    disPatch(setScheduleInfoDropdown({ visible: false }))
-    disPatch(setScheduleListModal({visible:false}))
-    disPatch(setScheduleInfoDelete(''))
-  },[scheduleInfoDeleteStatus])
+  // useEffect(()=>{
+  //   if(!scheduleInfoTransferStatus) return
+  //   setModalVisible(false)
+  //   setShowTipBox(false);
+  //   disPatch(setScheduleInfoDropdown({ visible: false }))
+  //   disPatch(setScheduleListModal({visible:false}))
+  //   disPatch(setScheduleInfoTransfer(''))
+  // },[scheduleInfoTransferStatus])
+  // useEffect(()=>{
+  //   if(!scheduleInfoDeleteStatus) return
+  //   setIsVisible(false)
+  //   disPatch(setScheduleInfoDropdown({ visible: false }))
+  //   disPatch(setScheduleListModal({visible:false}))
+  //   disPatch(setScheduleInfoDelete(''))
+  // },[scheduleInfoDeleteStatus])
   return (
     <ScheduleInfoHeader>
       <ScheduleInfoHeaderBtn>
@@ -156,7 +172,7 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
               disPatch(
                 setScheduleModal({
                   visible: true,
-                  params: { id: scheduleInfo?.id },
+                  params: { id: scheduleInfo?.id ?? 0 },
                 }),
               )
             }}
@@ -197,16 +213,19 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
       <ScheduleInfoHeaderContent>
         {scheduleInfo?.subject}
       </ScheduleInfoHeaderContent>
-      <ScheduleInfoHeaderDate>
-        {scheduleInfo?.title}
-      </ScheduleInfoHeaderDate>
+      <ScheduleInfoHeaderDate>{scheduleInfo?.title}</ScheduleInfoHeaderDate>
       <DeleteConfirm
         isVisible={isVisible}
-        onConfirm={()=>{
+        onConfirm={() => {
           console.log(checked)
-          let params={id:scheduleInfo?.id ?? '',is_remind:checked}
+          let params = {
+            id: scheduleInfo?.id ? String(scheduleInfo?.id) : '',
+            is_remind: checked,
+          }
           setIsVisible(false)
           disPatch(scheduleInfoDelete(params))
+          disPatch(refreshCalendarPanelScheduleList())
+          message.success(t('common.deleteSuccess'))
         }}
         onChangeVisible={onChangeVisible}
         title="删除日程"
@@ -231,10 +250,12 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
           setModalVisible(false)
         }}
         onConfirm={() => {
-          try {
-            let params={is_exit:isExit,user_id:userId ?? 0,id:scheduleInfo?.id};
-            disPatch(scheduleInfoTransfer(params))
-          } catch (error) {}
+          let params = {
+            is_exit: isExit,
+            user_id: userId ?? 0,
+            id: scheduleInfo?.id ? String(scheduleInfo?.id) : '',
+          }
+          disPatch(scheduleInfoTransfer(params))
         }}
       >
         <ModalChildren>
@@ -243,12 +264,16 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
             placeholder="搜索新的所有者"
             optionLabelProp="label"
             showSearch={true}
-            onSelect={(value)=>{
+            onSelect={value => {
               setUserId(value)
             }}
           >
             {scheduleInfo?.members?.map(ele => (
-              <Option value={ele.user_id} label={ele.user.name}>
+              <Option
+                key={ele.user_id}
+                value={ele.user_id}
+                label={ele.user.name}
+              >
                 {ele.user.name}
               </Option>
             ))}

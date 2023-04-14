@@ -137,6 +137,8 @@ interface Props {
   //   是否禁用
   isDisable?: boolean
   style?: any
+  // 按钮大小
+  size?: 'small' | 'large'
 }
 
 const CommonButton = (props: Props) => {
@@ -219,6 +221,7 @@ const CommonButton = (props: Props) => {
       onClick={props.onClick}
       disabled={props.isDisable}
       hidden={props.hidden}
+      size={props.size}
     >
       {props.children}
     </ButtonWrap>

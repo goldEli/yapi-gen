@@ -1,11 +1,11 @@
 import * as http from '../tools/http'
 //模板
-export const createTemplate: any = async (parmas: { name: string }) => {
+export const createTemplate: any = async (parmas: any) => {
   const response = await http.post('createTemplate', { ...parmas })
   return response
 }
-export const upDateTemplate: any = async (parmas: { id: string | number }) => {
-  const response = await http.put('upDateTemplate', { id: parmas.id })
+export const upDateTemplate: any = async (parmas: any) => {
+  const response = await http.put('upDateTemplate', { ...parmas })
   return response
 }
 export const deleteTemplate: any = async (parmas: { id: string | number }) => {
