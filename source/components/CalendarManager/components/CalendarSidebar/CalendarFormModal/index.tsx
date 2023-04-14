@@ -219,6 +219,19 @@ const CalendarFormModal = () => {
     setIsChooseVisible(true)
   }
 
+  // 对象数组去重
+  const onClearMore = (list: Model.Calendar.MemberItem[]) => {
+    let obj: any = {}
+    const result: Model.Calendar.MemberItem[] = list.reduce(
+      (cur: Model.Calendar.MemberItem[], next: Model.Calendar.MemberItem) => {
+        obj[next.id] ? '' : (obj[next.id] = true && cur.push(next))
+        return cur
+      },
+      [],
+    )
+    return result
+  }
+
   // 选中的共享成员
   const onAddConfirm = (list: Model.Calendar.MemberItem[], id: number) => {
     const resultList = list.map((i: Model.Calendar.MemberItem) => ({
@@ -230,16 +243,21 @@ const CalendarFormModal = () => {
       ...(currentKey === 'share' ? shareList : subscribedList),
       ...resultList,
     ]
-    let obj: any = {}
-    const result: Model.Calendar.MemberItem[] = newList.reduce(
-      (cur: Model.Calendar.MemberItem[], next: Model.Calendar.MemberItem) => {
-        obj[next.id] ? '' : (obj[next.id] = true && cur.push(next))
-        return cur
-      },
-      [],
-    )
+    const result: Model.Calendar.MemberItem[] = onClearMore(newList)
     currentKey === 'share' ? setShareList(result) : setSubscribedList(result)
     setIsChooseVisible(false)
+  }
+
+  // 添加全员
+  const onAddAllMember = () => {
+    const all = {
+      id: '0',
+      name: t('calendar_all_member'),
+      type: 1 as Model.Calendar.ChooseAddType,
+    }
+    const newList = [...subscribedList, ...[all]]
+    const result: Model.Calendar.MemberItem[] = onClearMore(newList)
+    setSubscribedList(result)
   }
 
   // 订阅人群选择的key
@@ -248,16 +266,7 @@ const CalendarFormModal = () => {
     setIsActiveKey(key as Model.Calendar.ChooseAddType)
     switch (key) {
       case 1:
-        setSubscribedList([
-          ...[
-            {
-              id: '0',
-              name: t('calendar_all_member'),
-              type: 1 as Model.Calendar.ChooseAddType,
-            },
-          ],
-          ...subscribedList,
-        ])
+        onAddAllMember()
         break
       case 2:
         onAddMember('subscribeable')
@@ -293,15 +302,7 @@ const CalendarFormModal = () => {
         : i.id,
     }))
     const newList = [...subscribedList, ...resultList]
-    let obj: any = {}
-    const result: Model.Calendar.MemberItem[] = newList.reduce(
-      (cur: Model.Calendar.MemberItem[], next: Model.Calendar.MemberItem) => {
-        obj[next.id] ? '' : (obj[next.id] = true && cur.push(next))
-        return cur
-      },
-      [],
-    )
-    console.log(newList, '===', list)
+    const result: Model.Calendar.MemberItem[] = onClearMore(newList)
     setSubscribedList(result)
   }
 
@@ -404,7 +405,7 @@ const CalendarFormModal = () => {
     setSubscribedList(
       response.subscribe_members.map((i: any) => ({
         id: i.object_id,
-        name: i.object_id ? i.object?.name : t('calendar_all_member'),
+        name: i.object_id === '0' ? t('calendar_all_member') : i.object?.name,
         type: i.object_type,
       })),
     )

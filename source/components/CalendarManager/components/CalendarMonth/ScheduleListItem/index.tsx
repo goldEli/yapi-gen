@@ -171,7 +171,7 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
       }}
       visible={show}
       onMouseDown={onMouseDown}
-      id={props.data.id}
+      id={props.data.id ? String(props.data.id) : ''}
       className={classNames({
         [marginLeft]: !isAllDayButNotFirstDay,
         [marginRight]: !(isAllDayButNotFirstDay || isAllDayFirstDay),

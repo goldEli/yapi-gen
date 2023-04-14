@@ -1,4 +1,12 @@
 declare namespace API.Schedule {
+  namespace GetScheduleInfo {
+    type Params = {
+      id: number | string
+      show_date?: number | string
+    }
+
+    type Result = Model.Schedule.DetailInfo
+  }
   namespace ModifySchedule {
     type Keys =
       | 'calendar_id'

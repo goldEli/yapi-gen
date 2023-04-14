@@ -15,6 +15,9 @@ import { refreshCalendarPanelScheduleList } from '@store/schedule/schedule.thunk
 const { Panel } = Collapse
 
 const CollapseWrap = styled(Collapse)`
+  .ant-collapse-content-box {
+    max-height: inherit;
+  }
   .ant-collapse-item > .ant-collapse-header {
     display: flex;
     align-items: center;
@@ -136,7 +139,7 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
         >
           {calendarList
             ?.filter((k: Model.Calendar.Info) =>
-              k.name.includes(props.searchValue),
+              k?.name?.includes(props.searchValue),
             )
             ?.map((i: Model.Calendar.Info) => (
               <CalendarManagerListItem key={i.id}>
@@ -164,7 +167,7 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
             ))}
           {calendarList &&
             calendarList?.filter((k: Model.Calendar.Info) =>
-              k.name.includes(props.searchValue),
+              k.name?.includes(props.searchValue),
             ).length <= 0 && <NoData size />}
         </Panel>
       </CollapseWrap>

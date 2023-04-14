@@ -93,9 +93,9 @@ declare namespace Model.Calendar {
   }
 
   // 创建日程弹窗传入参数
-  interface ShowScheduleParams {
+  type ShowScheduleParams = {
     // 用于编辑日程详情查询
-    id?: string | number
+    id?: number | string
     // 日程时间
     startTime?: string
     endTime?: string
@@ -103,6 +103,22 @@ declare namespace Model.Calendar {
     isAll?: boolean
     // 小弹窗位置
     position?: { x: number; y: number }
+    // 复制日程id
+    copyScheduleId?: number
+    participant?: {
+      list: MemberItem[]
+      permission: CheckboxValueType[]
+    }
+    noticeList?: {
+      value: number | undefined
+      id: number
+    }[]
+    subject?: string
+    normalCategory?: {
+      color: number
+      calendar_id: number
+    }
+    describe?: string
   }
 
   /**

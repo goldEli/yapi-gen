@@ -25,7 +25,7 @@ type SliceState = {
   scheduleListModal: Model.Schedule.ScheduleList
   scheduleDate?: number
   yearViewScheduleList: {
-    [key in string]: Model.Schedule.Info[]
+    [key in string]: Model.Schedule.ScheduleListInfo[]
   }
   listViewScheduleList?: []
   monthViewScheduleList: Model.Schedule.Info[]
@@ -83,10 +83,10 @@ const slice = createSlice({
       state.scheduleDate = action.payload
     },
     setScheduleInfoDelete(state, action: PayloadAction<string>) {
-     // state.scheduleInfoDeleteStatus = action.payload
+      // state.scheduleInfoDeleteStatus = action.payload
     },
     setScheduleInfoTransfer(state, action: PayloadAction<string>) {
-     // state.scheduleInfoTransferStatus = action.payload
+      // state.scheduleInfoTransferStatus = action.payload
     },
   },
   extraReducers(builder) {
@@ -131,12 +131,12 @@ const slice = createSlice({
         state.leftViewScheduleList = action.payload
       },
     )
-    builder.addCase(scheduleInfoDelete.fulfilled, (state, action) => {
-     // state.scheduleInfoDeleteStatus = action.payload
-    })
-    builder.addCase(scheduleInfoTransfer.fulfilled, (state, action) => {
-     // state.scheduleInfoTransferStatus = action.payload
-    })
+    // builder.addCase(scheduleInfoDelete.fulfilled, (state, action) => {
+    //   state.scheduleInfoDeleteStatus = action.payload
+    // })
+    // builder.addCase(scheduleInfoTransfer.fulfilled, (state, action) => {
+    //   state.scheduleInfoTransferStatus = action.payload
+    // })
     builder.addCase(getScheduleSearch.fulfilled, (state, action) => {
       let array: any = []
       if (action.payload) {

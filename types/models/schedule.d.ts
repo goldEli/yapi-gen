@@ -1,6 +1,6 @@
 declare namespace Model.Schedule {
   interface Info {
-    id?: string
+    id?: number | string
     calendar_id: number
     // 是否展示到面板中
     hidden?: boolean
@@ -80,6 +80,17 @@ declare namespace Model.Schedule {
     join_member_status?: number
     is_creator?: boolean
     title?: string
+    repeat_type: number
+    repeat_choose: number[] | 'null' | '[]'
+    repeat_end_date: string
+    repeat_end_num: number
+    repeat_end_type: number
+    repeat_interval: number
+    start_date: string
+    end_date: string
+    permission_update: number
+    permission_invite: number
+    permission: number
   }
   type DetailInfo = Info & {
     creator?: {
@@ -116,11 +127,11 @@ declare namespace Model.Schedule {
     is_join?: boolean
     join_member_status?: number
     is_creator?: boolean
-    title?: string,
-    is_show_reply?:false
+    title?: string
+    is_show_reply?: false
   }
-  type ScheduleListInfo = info & {
-    lunar_day_chinese:string
+  type ScheduleListInfo = Info & {
+    lunar_day_chinese: string
   }
   type InfoWithPosition = Info & {
     width: number

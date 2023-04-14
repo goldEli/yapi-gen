@@ -41,10 +41,12 @@ import RepeatModal from './RepeatModal'
 import UploadAttach from '@/components/UploadAttach'
 import CreateVisualization from './CreateVisualization'
 import {
+  modifySchedule,
   refreshCalendarPanelScheduleList,
   saveSchedule,
 } from '@store/schedule/schedule.thunk'
 import { useTranslation } from 'react-i18next'
+import { getScheduleInfo } from '@/services/schedule'
 
 interface DefaultTime {
   value: number | undefined
@@ -181,9 +183,20 @@ const CreateSchedule = () => {
       ? moment(values.time[1]).endOf('day').format('YYYY-MM-DD HH:mm:ss')
       : moment(values.time[1]).format('YYYY-MM-DD HH:mm:ss')
     delete resultParams.time
-    await dispatch(saveSchedule(resultParams))
-    dispatch(refreshCalendarPanelScheduleList())
-    message.success(t('common.createSuccess'))
+
+    if (scheduleModal?.params?.id) {
+      await dispatch(
+        modifySchedule({
+          ...resultParams,
+          ...{ schedule_id: scheduleModal?.params?.id },
+        }),
+      )
+      message.success(t('common.editSuccess'))
+    } else {
+      await dispatch(saveSchedule(resultParams))
+      message.success(t('common.createSuccess'))
+    }
+
     onClose()
   }
 
@@ -289,8 +302,116 @@ const CreateSchedule = () => {
   //   修改附件
   const onChangeAttachment = (result: any) => {
     form.setFieldsValue({
-      files: result?.map((i: any) => i.url),
+      files: result.map((i: any) => ({
+        url: i.url,
+        size: i.size,
+        name: i.name,
+        suffix: i.ext,
+      })),
     })
+  }
+
+  // 获取日程详情
+  const getScheduleInfoData = async (list: Model.Calendar.Info[]) => {
+    const scheduleInfo = await getScheduleInfo({
+      id:
+        (scheduleModal.params?.id ?? scheduleModal.params?.copyScheduleId) || 0,
+    })
+    const resultTime = [
+      moment(
+        scheduleInfo.is_all_day
+          ? scheduleInfo.start_date
+          : scheduleInfo.start_datetime,
+      ),
+      moment(
+        scheduleInfo.is_all_day
+          ? scheduleInfo.end_date
+          : scheduleInfo.end_datetime,
+      ),
+    ]
+    form.setFieldsValue({
+      subject: scheduleInfo.subject,
+      permission: scheduleInfo.permission,
+      time: resultTime,
+      describe: scheduleInfo.describe,
+    })
+    setIsAll(scheduleInfo.is_all_day === 1)
+    setNormalCategory(
+      list.filter(
+        (i: Model.Calendar.Info) => i.calendar_id === scheduleInfo.calendar_id,
+      )[0],
+    )
+    setStatus(scheduleInfo.is_busy)
+    setRepeatValue({
+      value: scheduleInfo.repeat_type,
+      params: {
+        repeat_interval: scheduleInfo.repeat_interval,
+        repeat_end_type: scheduleInfo.repeat_end_type,
+        repeat_end_date: scheduleInfo.repeat_end_date,
+        repeat_end_num: scheduleInfo.repeat_end_num,
+        repeat_choose: scheduleInfo.repeat_choose,
+      },
+    })
+    setTime(resultTime)
+    // 参与者权限
+    let participantPermission = []
+    if (scheduleInfo.permission_update === 1) {
+      participantPermission.push(0)
+    }
+    if (scheduleInfo.permission_invite === 1) {
+      participantPermission.push(1)
+    }
+    setParticipant({
+      list: scheduleInfo.members?.map((i: any) => ({
+        id: i.user_id,
+        avatar: i.user.avatar,
+        name: i.user.name,
+      })) as Model.Calendar.MemberItem[],
+      permission: participantPermission,
+    })
+    setNoticeList(
+      scheduleInfo.reminds?.map((i: any) => ({
+        id: new Date().getTime() + Math.random(),
+        value: i.before_time,
+      })) as DefaultTime[],
+    )
+    setAttachList(
+      scheduleInfo?.files?.map((i: any) => ({
+        url: i.url,
+        id: new Date().getTime() + Math.random() + i.user_id,
+        size: i.size,
+        time: i.created_at,
+        name: i.name || '--',
+        suffix: i.suffix,
+        username: i.user.name ?? '--',
+      })),
+    )
+  }
+
+  const getEasyInfo = () => {
+    const resultTime = [
+      moment(scheduleModal?.params?.startTime),
+      moment(scheduleModal?.params?.endTime),
+    ]
+    form.setFieldsValue({
+      subject: scheduleModal?.params?.subject,
+      time: resultTime,
+      describe: scheduleModal?.params?.describe,
+    })
+    setIsAll(scheduleModal?.params?.isAll)
+    setNormalCategory(
+      scheduleModal?.params?.normalCategory || {
+        color: 0,
+        calendar_id: 0,
+      },
+    )
+    setNoticeList(scheduleModal.params?.noticeList || [])
+    setParticipant(
+      scheduleModal.params?.participant || {
+        list: [],
+        permission: [],
+      },
+    )
   }
 
   useEffect(() => {
@@ -310,13 +431,16 @@ const CreateSchedule = () => {
         permission: 1,
         time: resultTime,
       })
-      // if (scheduleModal?.params?.id) {
-      //   // 调用日程详情接口
-      // }
-      // // 从简易弹窗跳转过来
-      // if (scheduleModal?.params?.time) {
-      //   // 调用日程详情接口
-      // }
+      if (scheduleModal?.params?.id || scheduleModal?.params?.copyScheduleId) {
+        // 调用日程详情接口
+        getScheduleInfoData(calendarData.manager)
+      }
+      // 从简易弹窗跳转过来
+      if (scheduleModal?.params?.subject) {
+        // 调用日程详情接口
+        console.log(scheduleModal?.params)
+        getEasyInfo()
+      }
       setTimeout(() => {
         inputDom.current.focus()
       }, 100)
