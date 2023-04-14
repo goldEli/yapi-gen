@@ -69,7 +69,13 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
         // e.stopPropagation()
         isDrag.current = false
         window.calendarMonthPanelType = 'move'
+        // 时候执行过
+        let isRun = false
         const handleMove = (e: MouseEvent) => {
+          if (isRun) {
+            return
+          }
+          isRun = true
           isDrag.current = true
           dispatch(
             startMoveMonthSchedule({

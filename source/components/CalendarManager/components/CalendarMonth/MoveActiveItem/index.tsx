@@ -38,11 +38,17 @@ const MoveActiveItem: React.FC<MoveActiveItemProps> = props => {
   const { monthMoveScheduleActiveInfo } = useSelector(
     store => store.calendarPanel,
   )
-  const visible =
-    monthMoveScheduleActiveInfo?.visibleList?.includes(props.idx) ?? false
+  const visible = React.useMemo(() => {
+    const res =
+      monthMoveScheduleActiveInfo?.visibleList?.includes(props.idx) ?? false
+    console.log(res, { monthMoveScheduleActiveInfo })
+    return res
+  }, [monthMoveScheduleActiveInfo?.visibleList, props.idx])
+
   const isAllDay =
     monthMoveScheduleActiveInfo.startSchedule?.is_span_day ||
     monthMoveScheduleActiveInfo.startSchedule?.is_all_day === 1
+
   const time = isAllDay
     ? '全天'
     : monthMoveScheduleActiveInfo.startSchedule?.start_time
