@@ -89,6 +89,7 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
           if (!isDrag.current && !isAllDayButNotFirstDay) {
             dispatch(
               setScheduleInfoDropdown({
+                show_date: props.data.date,
                 schedule_id: props.data.schedule_id,
                 visible: true,
                 x: position?.x,
