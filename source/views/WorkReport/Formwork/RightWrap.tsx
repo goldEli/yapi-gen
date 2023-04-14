@@ -2,6 +2,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable complexity */
 /* eslint-disable consistent-return */
+/* eslint-disable no-negated-condition */
 import CommonButton from '@/components/CommonButton'
 import styled from '@emotion/styled'
 import { Input, message } from 'antd'
@@ -304,7 +305,7 @@ const RightFormWork = () => {
             上一步
           </CommonButton>
         )}
-        {localStorage.getItem('edit') === '1' ? (
+        {localStorage.getItem('edit') !== '1' ? (
           <CommonButton type="primary" style={{ margin: '0 0px 0 16px' }}>
             已保存
           </CommonButton>

@@ -337,7 +337,7 @@ const PermissionConfig = (props: PropsType) => {
       newObj.start_time = newStartTime
       newObj.end_time = newEndTime
       newObj.reminder_time = newReminderTime
-    } else if (obj?.submit_cycle === 2) {
+    } else if (obj?.submit_cycle === 2 || obj?.submit_cycle === 3) {
       const newStartTime = {
         v1: obj?.start_time?.day_type,
         v2: time2(false, obj?.start_time?.time, 'hour'),
@@ -345,25 +345,6 @@ const PermissionConfig = (props: PropsType) => {
       }
       const newEndTime = {
         v1: obj?.end_time?.day_type,
-        v2: time2(false, obj?.end_time?.time, 'hour'),
-        v3: time2(false, obj?.end_time?.time, 'minute'),
-      }
-      const newReminderTime = {
-        v1: time2(true, obj?.reminder_time, 'day'),
-        v2: time2(false, obj?.reminder_time, 'hour'),
-        v3: time2(false, obj?.reminder_time, 'minute'),
-      }
-      newObj.start_time = newStartTime
-      newObj.end_time = newEndTime
-      newObj.reminder_time = newReminderTime
-    } else if (obj?.submit_cycle === 3) {
-      const newStartTime = {
-        v1: obj.start_time?.day_type,
-        v2: time2(false, obj?.start_time?.time, 'hour'),
-        v3: time2(false, obj?.start_time?.time, 'minute'),
-      }
-      const newEndTime = {
-        v1: obj.end_time?.day_type,
         v2: time2(false, obj?.end_time?.time, 'hour'),
         v3: time2(false, obj?.end_time?.time, 'minute'),
       }
@@ -476,7 +457,6 @@ const PermissionConfig = (props: PropsType) => {
           <DayFormBox form={form} onValuesChange={formOnValuesChange}>
             <FormMain type={type} />
           </DayFormBox>
-          {/* <div onClick={() => console.log(form?.getFieldsValue(), 999)}>123</div> */}
         </div>
       ) : null}
 
