@@ -142,7 +142,7 @@ export const scheduleInfoTransfer = async (params: {
 export const getScheduleSearch = async (params: {
   calendar_ids: number[],
   year:number,
-  keyword:string
+  keyword?:string
 }) => {
   const response = await http.post<any, any>(`getScheduleSearch`,params)
   return response.data

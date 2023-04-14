@@ -8,6 +8,7 @@ import styled from '@emotion/styled'
 import HeaderRender from './HeaderRender'
 import { css } from '@emotion/css'
 import { setScheduleListModal, setScheduleDate } from '@store/schedule'
+import {getScheduleSearch} from '@store/schedule/schedule.thunk'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
 import { useDispatch, useSelector } from '@store/index'
 dayjs.extend(dayLocaleData)
@@ -74,7 +75,7 @@ const CalendarForCalendarYear: React.FC<
           top: 76,
           left: 100,
           date: dayjs(date).date(),
-          scheduleListData:yearViewScheduleList[selectDate]
+          scheduleListData: yearViewScheduleList[selectDate],
         }),
       )
       disPatch(setScheduleDate(month))

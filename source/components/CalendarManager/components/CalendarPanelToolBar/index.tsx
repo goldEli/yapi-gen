@@ -289,6 +289,7 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
             marginRight: '10px',
           }}
           onChange={(value: Model.Calendar.CalendarPanelType) => {
+            console.log('list',value)
             setInputDefaultValue('')
             dispatch(setCalendarPanelType(value))
             dispatch(setCalenderDayValue(dayjs().format('YYYY-MM-DD')))
@@ -307,6 +308,9 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
           onChangeSearch={value => {
             setInputDefaultValue(value)
             dispatch(setScheduleSearchKey(value))
+          }}
+          onFocus={()=>{
+            dispatch(setCalendarPanelType('list'))
           }}
         ></InputSearch>
       </div>
