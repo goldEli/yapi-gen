@@ -29,7 +29,7 @@ const LabelTitle = styled.span`
   color: #323233;
   line-height: 22px;
 `
-const HeadWrap = styled.div`
+const HeadWrap = styled.div<{ isCanImport: boolean }>`
   height: 44px;
   display: flex;
   justify-content: space-between;
@@ -51,8 +51,8 @@ const HeadWrap = styled.div`
     font-size: 12px;
     font-family: MiSans-Regular, MiSans;
     font-weight: 400;
-    color: #bbbdbf;
-    cursor: pointer;
+    color: ${(props: any) => (props.isCanImport ? '#646566' : '#bbbdbf')};
+    cursor: ${(props: any) => (props.isCanImport ? 'pointer' : 'not-allowed')};
   }
 `
 
@@ -126,34 +126,34 @@ const HandleReport = (props: any) => {
     dom.scrollTop = dom.scrollHeight
   }
   const importPreviousArticle = () => {
-    Modal.confirm({
-      width: 450,
-      title: (
-        <span
-          style={{
-            fontSize: 16,
-            fontFamily: 'SiYuanMedium',
-            fontWeight: 500,
-            color: '#323233',
-          }}
-        >
-          导入上一篇
-        </span>
-      ),
-      content: (
-        <span style={{ color: '#646566' }}>
-          确认导入上一篇汇报内容，导入后将覆盖当前编辑内容
-        </span>
-      ),
-      icon: <ExclamationCircleFilled />,
-      okText: '确定',
-      cancelText: '取消',
-      centered: true,
-      closable: true,
-      onOk: () => {
-        console.log(2222222)
-      },
-    })
+    if (reportDetail.is_user_used) {
+      Modal.confirm({
+        width: 450,
+        title: (
+          <span
+            style={{
+              fontSize: 16,
+              fontFamily: 'SiYuanMedium',
+              fontWeight: 500,
+              color: '#323233',
+            }}
+          >
+            {t('report.list.import')}
+          </span>
+        ),
+        content: (
+          <span style={{ color: '#646566' }}>{t('report.list.confirm')}</span>
+        ),
+        icon: <ExclamationCircleFilled />,
+        okText: t('report.list.ok'),
+        cancelText: t('report.list.cancel'),
+        centered: true,
+        closable: true,
+        onOk: () => {
+          // Todo 根据模板详情里的上一篇id 去查询
+        },
+      })
+    }
   }
   const getTemplateById = async (id: number) => {
     const res = await templateDetail({ id })
@@ -346,7 +346,7 @@ const HandleReport = (props: any) => {
         }}
         ref={leftDom}
       >
-        <HeadWrap>
+        <HeadWrap isCanImport={reportDetail?.is_user_used}>
           <div
             style={{
               display: 'flex',
@@ -368,7 +368,7 @@ const HandleReport = (props: any) => {
               </span>
             )}
             <div className="titleText">
-              {`${userInfo?.name}的工作${reportDetail?.name}`}
+              {`${userInfo?.name}的${reportDetail?.name}`}
               <span className="dateText">（2022-08-21至2022-08-27）</span>
             </div>
           </div>
