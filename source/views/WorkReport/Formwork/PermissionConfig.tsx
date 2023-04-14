@@ -97,35 +97,20 @@ const PermissionConfig = (props: PropsType) => {
         isAllView = 1
       }
     })
-    // 部门的数据重新set 组装成员的数据 需要截取掉之前拼接的字符窜
-    const setData =
-      values
-        ?.filter((el: any) => String(el?.id)?.includes('department_id_'))
-        ?.map((el: any) => ({
-          target_id: Number(el.id.slice(14)),
-          user_type: el.user_type,
-          target_type: el.target_type,
-          target_value: el.target_value,
-        })) || []
-    // 团队的数据
+    // 团队的数据-部门，成员
     const setData1 =
-      values
-        ?.filter(
-          (el: any) => !String(el?.id)?.includes('department_id_') && el?.id,
-        )
-        ?.map((el: any) => ({
-          target_id: el.id,
-          user_type: el.user_type,
-          target_type: el.target_type,
-          target_value: el.target_value,
-        })) || []
+      values?.map((el: any) => ({
+        target_id: el.id,
+        user_type: el.user_type,
+        target_type: el.target_type,
+        target_value: el.target_value,
+      })) || []
     // 管理人员
     const setData2 = values?.filter(
       (el: { target_type: number }) => el.target_type === 4,
     )
     // 最终的大数组-- 人员
-    const configsData = [...setData, ...setData1, ...setData2]
-    console.log(configsData, 'configsData')
+    const configsData = [...setData1, ...setData2]
     dispatch(
       setReportContent({
         is_all_view: isAllView,

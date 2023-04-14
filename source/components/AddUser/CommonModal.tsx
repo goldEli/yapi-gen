@@ -467,11 +467,24 @@ const CommonModal = (props: ModalProps) => {
     }
   }
   const onConfirm = async () => {
+    const setData =
+      personData
+        ?.filter((el: any) => String(el?.id)?.includes('department_id_'))
+        ?.map((el: any) => ({
+          id: Number(el.id.slice(14)),
+          name: el.name,
+          department_id: el.department_id,
+          avatar: el.avatar,
+          nickname: el.nickname,
+        })) || []
     if (props.isPermisGroup) {
       await form.validateFields()
-      props?.onConfirm?.(personData, form.getFieldsValue().userGroupId)
+      props?.onConfirm?.(
+        tabsActive === 1 ? setData : personData,
+        form.getFieldsValue().userGroupId,
+      )
     } else {
-      props?.onConfirm?.(personData)
+      props?.onConfirm?.(tabsActive === 1 ? setData : personData)
     }
   }
 

@@ -35,6 +35,7 @@ const PersonContainer = styled.div`
   padding: 0 24px;
   display: flex;
   margin-bottom: 24px;
+  flex-wrap: wrap;
 `
 const Col = styled.div`
   display: flex;
@@ -47,6 +48,7 @@ const Col = styled.div`
   color: var(--neutral-n2);
   padding: 8px;
   margin-right: 24px;
+  margin-bottom: 12px;
   img {
     width: 24px;
     height: 24px;
@@ -60,6 +62,7 @@ const Col = styled.div`
 `
 const NameText = styled.div`
   padding: 0 10px;
+  min-width: 40px;
 `
 const DefalutIcon = styled.div<{ bgc?: any }>(
   {
