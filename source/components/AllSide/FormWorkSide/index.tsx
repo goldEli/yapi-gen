@@ -88,7 +88,7 @@ const FormWorkSide = () => {
   const onConfirm = async (name: string) => {
     setIsVisible(false)
     dispatch(setTemplateName(name))
-    dispatch(setDataList([{ name }, ...dataList]))
+    dispatch(setDataList([...dataList, { name }]))
   }
   const getDataList = async () => {
     const res = await dispatch(getTemplateList())
