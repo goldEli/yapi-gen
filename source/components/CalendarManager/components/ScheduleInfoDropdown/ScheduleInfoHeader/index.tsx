@@ -3,15 +3,17 @@ import { css } from '@emotion/css'
 import { useSelector, useDispatch } from '@store/index'
 import { setScheduleModal } from '@store/calendar'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
-import { Dropdown, Checkbox,Radio,type RadioChangeEvent, } from 'antd'
+import { Dropdown, Checkbox, Radio, type RadioChangeEvent, Select } from 'antd'
 import React, { useState, useEffect } from 'react'
 import ScheduleInfoIcon from './../ScheduleInfoIcon'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import dayjs from 'dayjs'
 import weekday from 'dayjs/plugin/weekday'
 import CommonModal from '@/components/CommonModal'
-import InputSearch from '@/components/InputSearch'
+import {scheduleInfoTransfer,scheduleInfoDelete} from '@store/schedule/schedule.thunk'
+import {setScheduleListModal,setScheduleInfoDelete,setScheduleInfoTransfer} from '@store/schedule/index'
 dayjs.extend(weekday)
+const { Option } = Select
 interface ScheduleInfoDropdownProps {}
 const ScheduleInfoHeader = styled.div`
   height: 136px;
@@ -102,32 +104,46 @@ const confirmSure = css`
   margin-left: 8px;
 `
 const ModalChildren = styled.div`
-box-sizing: border-box;
-padding: 0px 18px;
-height: 100px;
-.ant-radio-group{
-  margin-top: 8px;
-}
-.ant-radio-wrapper{
-  color: var(--neutral-n1-d1) !important;
-  font-size: var(--font14) !important;
-  font-weight: 400 !important;
-}
+  box-sizing: border-box;
+  padding: 0px 18px;
+  height: 100px;
+  .ant-radio-group {
+    margin-top: 12px;
+  }
+  .ant-radio-wrapper {
+    color: var(--neutral-n1-d1) !important;
+    font-size: var(--font14) !important;
+    font-weight: 400 !important;
+  }
 `
 const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
   const [isVisible, setIsVisible] = useState(false)
+  const [modalVisible, setModalVisible] = useState(false)
   const [checked, setChecked] = useState(false)
   const [showTipBox, setShowTipBox] = useState(false)
-  const [transferValue,setTransferValue]=useState(1)
-  const { scheduleInfo } = useSelector(state => state.schedule)
+  const [isExit, setIsExit] = useState(true)
+  const [userId,setUserId]=useState<number>();
+  const { scheduleInfo,scheduleInfoTransferStatus,scheduleInfoDeleteStatus} = useSelector(state => state.schedule)
+
   const disPatch = useDispatch()
-  const onConfirm = () => {
-    console.log(checked)
-    setIsVisible(false)
-  }
   const onChangeVisible = () => {
     setIsVisible(false)
   }
+  useEffect(()=>{
+    if(!scheduleInfoTransferStatus) return
+    setModalVisible(false)
+    setShowTipBox(false);
+    disPatch(setScheduleInfoDropdown({ visible: false }))
+    disPatch(setScheduleListModal({visible:false}))
+    disPatch(setScheduleInfoTransfer(''))
+  },[scheduleInfoTransferStatus])
+  useEffect(()=>{
+    if(!scheduleInfoDeleteStatus) return
+    setIsVisible(false)
+    disPatch(setScheduleInfoDropdown({ visible: false }))
+    disPatch(setScheduleListModal({visible:false}))
+    disPatch(setScheduleInfoDelete(''))
+  },[scheduleInfoDeleteStatus])
   return (
     <ScheduleInfoHeader>
       <ScheduleInfoHeaderBtn>
@@ -154,17 +170,18 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
           >
             <ScheduleInfoIcon type="delete" />
           </span>
-          <div
-            className="moreOperate"
-            onClick={() => {
-              console.log(1)
-            }}
-          >
+          <div className="moreOperate">
             <label onClick={() => setShowTipBox(!showTipBox)}>...</label>
             {showTipBox ? (
               <BoxTip>
                 <span onClick={() => {}}>复制日程</span>
-                <span onClick={() => {}}>转让日程</span>
+                <span
+                  onClick={() => {
+                    setModalVisible(true)
+                  }}
+                >
+                  转让日程
+                </span>
               </BoxTip>
             ) : null}
           </div>
@@ -182,11 +199,15 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
       </ScheduleInfoHeaderContent>
       <ScheduleInfoHeaderDate>
         {scheduleInfo?.title}
-        {/* {dayjs(scheduleInfo.start_datetime).format('MM月DD')} (周{dayjs(scheduleInfo.start_datetime).weekday()}) {scheduleInfo.start_time} - {dayjs(scheduleInfo.end_datetime).format('MM月DD')} (周{dayjs(scheduleInfo.start_datetime).weekday()}) {scheduleInfo.end_time} */}
       </ScheduleInfoHeaderDate>
       <DeleteConfirm
         isVisible={isVisible}
-        onConfirm={onConfirm}
+        onConfirm={()=>{
+          console.log(checked)
+          let params={id:scheduleInfo?.id ?? '',is_remind:checked}
+          setIsVisible(false)
+          disPatch(scheduleInfoDelete(params))
+        }}
         onChangeVisible={onChangeVisible}
         title="删除日程"
       >
@@ -202,17 +223,42 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
           <span className={confirmSure}>删除后通知参与者</span>
         </div>
       </DeleteConfirm>
-      <CommonModal isVisible={false} title="转让日程" width={528}>
+      <CommonModal
+        isVisible={modalVisible}
+        title="转让日程"
+        width={528}
+        onClose={() => {
+          setModalVisible(false)
+        }}
+        onConfirm={() => {
+          try {
+            let params={is_exit:isExit,user_id:userId ?? 0,id:scheduleInfo?.id};
+            disPatch(scheduleInfoTransfer(params))
+          } catch (error) {}
+        }}
+      >
         <ModalChildren>
-          <InputSearch placeholder="搜索新的所有者"></InputSearch>
-          <Radio.Group
-            onChange={(e: RadioChangeEvent) => setTransferValue(e.target.value)}
-            value={transferValue}
+          <Select
+            style={{ width: '100%' }}
+            placeholder="搜索新的所有者"
+            optionLabelProp="label"
+            showSearch={true}
+            onSelect={(value)=>{
+              setUserId(value)
+            }}
           >
-            <Radio value={1}>
-            转让我退出该日程
-            </Radio>
-            <Radio value={2}>转让我变为参与者</Radio>
+            {scheduleInfo?.members?.map(ele => (
+              <Option value={ele.user_id} label={ele.user.name}>
+                {ele.user.name}
+              </Option>
+            ))}
+          </Select>
+          <Radio.Group
+            onChange={(e: RadioChangeEvent) => setIsExit(e.target.value)}
+            value={isExit}
+          >
+            <Radio value={true}>转让我退出该日程</Radio>
+            <Radio value={false}>转让我变为参与者</Radio>
           </Radio.Group>
         </ModalChildren>
       </CommonModal>
