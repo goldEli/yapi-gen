@@ -1,9 +1,21 @@
 import * as http from '../tools/http'
 // 汇报
 
+// 获取汇报详情
 export const getReportInfo = async (params: any) => {
   const response = await http.get('getReportInfo', params)
   return response.data
+}
+
+// 获取汇报评论
+export const getReportComment = async (params: any) => {
+  const response = await http.get('getReportComment', params)
+  return response.data
+}
+
+// 添加评论
+export const addReportComment = async (params: any) => {
+  await http.post('addReportComment', params)
 }
 
 export const getStatTempList: any = async () => {
