@@ -9,6 +9,7 @@ import ParmasDialog from './ParmasDialog'
 import { useDispatch, useSelector } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { setTemplateContentConfigs } from '@store/formWork'
+import { message } from 'antd'
 const TitleStyle = styled.div`
   display: flex;
   width: 100%;
@@ -68,9 +69,15 @@ const EditWork = (props: PropsType) => {
         name: evevtObj.title,
         is_required: 2,
       }
+      const newList = dataList.find((el: { type: number }) => el.type === 4)
+      if (newList) {
+        message.warning('已有关联需求')
+        return
+      }
       const arrData = Array.from(dataList)
       arrData.splice(i, 0, configs)
       setDataList(arrData)
+      dispatch(setTemplateContentConfigs(arrData))
     } else {
       const configs = {
         type: evevtObj.type,
