@@ -8,7 +8,7 @@ import {
   getScheduleListDaysOfMonth,
   scheduleInfoReply,
   getLeftCalendarDaysOfMonthList,
-  getScheduleDaysOfList
+  getScheduleDaysOfList,
 } from './schedule.thunk'
 import { Mode } from 'fs'
 
@@ -23,8 +23,10 @@ type SliceState = {
   }
   scheduleListModal: Model.Schedule.ScheduleList
   scheduleDate?: number
-  yearViewScheduleList: Model.Schedule.Info[],
-  listViewScheduleList?: [],
+  yearViewScheduleList: {
+    [key in string]: Model.Schedule.Info[]
+  }
+  listViewScheduleList?: []
   monthViewScheduleList: Model.Schedule.Info[]
   scheduleInfo?: Model.Schedule.DetailInfo
   scheduleInfoReply?: {
@@ -48,7 +50,7 @@ const initialState: SliceState = {
     left: 20,
   },
   scheduleDate: 0,
-  yearViewScheduleList: [],
+  yearViewScheduleList: {},
   monthViewScheduleList: [],
   leftViewScheduleList: {},
 }
@@ -98,11 +100,13 @@ const slice = createSlice({
       state.monthViewScheduleList = action.payload
     })
     builder.addCase(getScheduleDaysOfList.fulfilled, (state, action) => {
-      let array:any = []
+      let array: any = []
       if (action.payload) {
-        Object.keys(action.payload).sort().forEach(key=>{
-          array.push({ date: key, list: action.payload[key] })
-        })
+        Object.keys(action.payload)
+          .sort()
+          .forEach(key => {
+            array.push({ date: key, list: action.payload[key] })
+          })
       }
       state.listViewScheduleList = array
     })

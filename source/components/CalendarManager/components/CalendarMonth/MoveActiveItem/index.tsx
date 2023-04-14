@@ -41,7 +41,6 @@ const MoveActiveItem: React.FC<MoveActiveItemProps> = props => {
   const visible = React.useMemo(() => {
     const res =
       monthMoveScheduleActiveInfo?.visibleList?.includes(props.idx) ?? false
-    console.log(res, { monthMoveScheduleActiveInfo })
     return res
   }, [monthMoveScheduleActiveInfo?.visibleList, props.idx])
 

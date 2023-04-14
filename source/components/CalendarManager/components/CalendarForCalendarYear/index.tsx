@@ -75,10 +75,7 @@ const CalendarForCalendarYear: React.FC<
           left: 100,
           date: dayjs(date).date(),
           //[props.type as keyof typeof calendarData]
-          scheduleListData:
-            yearViewScheduleList[
-              selectDate as keyof typeof yearViewScheduleList
-            ],
+          scheduleListData: yearViewScheduleList[selectDate],
         }),
       )
       disPatch(setScheduleDate(month))
