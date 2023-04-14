@@ -1,33 +1,20 @@
+/* eslint-disable complexity */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable camelcase */
 // 项目设置
 
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { AsyncButton as Button } from '@staryuntech/ant-pro'
-import { Checkbox, Space, Input, Menu, message, Spin } from 'antd'
+import { Checkbox, message, Spin } from 'antd'
 import styled from '@emotion/styled'
-import IconFont from '@/components/IconFont'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { type CheckboxValueType } from 'antd/lib/checkbox/Group'
-import { type CheckboxChangeEvent } from 'antd/lib/checkbox'
 import { useSearchParams } from 'react-router-dom'
-import DeleteConfirm from '@/components/DeleteConfirm'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getParamsData } from '@/tools'
 import { useTranslation } from 'react-i18next'
-import CommonModal from '@/components/CommonModal'
-import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
-import { useDispatch, useSelector } from '@store/index'
-import { setIsRefresh } from '@store/user'
-import {
-  addPermission,
-  deletePermission,
-  getPermission,
-  getProjectPermission,
-  setPermission,
-  updatePermission,
-} from '@/services/project'
+import { useSelector } from '@store/index'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import CommonButton from '@/components/CommonButton'
 import {
@@ -63,16 +50,6 @@ const SetRight = styled.div({
   flexDirection: 'column',
   marginLeft: 24,
   width: 'calc(100% - 184px)',
-})
-const IconFontStyle = styled(IconFont)({
-  color: 'var(--neutral-n2)',
-  fontSize: '18px',
-  borderRadius: '6px',
-  padding: '5px',
-  '&: hover': {
-    background: 'var(--hover-d1)',
-    cursor: 'pointer',
-  },
 })
 const Title = styled.div({
   fontSize: 14,
@@ -171,21 +148,6 @@ const MainWrapItem = styled.div({
   },
 })
 
-const ModalHeader = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  fontSize: 16,
-  color: 'var(--neutral-n1-d2)',
-})
-
-const ModalFooter = styled(Space)({
-  width: '100%',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
-})
-
 export const CheckboxWrap = styled.div({ width: 100 })
 export const OperationWrap = styled.div({ width: 100 })
 export const OperationWrap2 = styled.div({ width: 100, flexShrink: 0 })
@@ -199,90 +161,9 @@ export const GroupWrap = styled.div({
   },
 })
 
-interface ItemProps {
-  item: any
-  onChange?(value: CheckboxValueType[]): void
-  value?: CheckboxValueType[]
-  activeDetail?: any
-}
-
-export const PermissionItem = (props: ItemProps) => {
-  const keys =
-    props.value?.filter(
-      (i: any) => !!props.item.children.find((item: any) => item.value === i),
-    ) || []
-
-  const otherKeys = props.value?.filter((i: any) => !keys.includes(i)) || []
-
-  const onChange = (newKeys: CheckboxValueType[]) => {
-    props.onChange?.([...new Set([...newKeys, ...otherKeys])])
-  }
-
-  const onCheckAllChange = (e: CheckboxChangeEvent) => {
-    onChange(
-      e.target.checked ? props.item.children.map((i: any) => i.value) : [],
-    )
-  }
-
-  return (
-    <MainWrapItem>
-      <OperationWrap2>{props.item.name}</OperationWrap2>
-      <OperationWrap2>
-        <Checkbox
-          disabled={props.activeDetail?.type === 1}
-          indeterminate={
-            keys.length > 0 && keys.length !== props.item.children.length
-          }
-          onChange={onCheckAllChange}
-          checked={
-            keys.length > 0 && keys.length === props.item.children.length
-          }
-        />
-      </OperationWrap2>
-      <OperationWrap2>
-        <Checkbox
-          disabled={props.activeDetail?.type === 1}
-          indeterminate={
-            keys.length > 0 && keys.length !== props.item.children.length
-          }
-          onChange={onCheckAllChange}
-          checked={
-            keys.length > 0 && keys.length === props.item.children.length
-          }
-        />
-      </OperationWrap2>
-
-      <GroupWrap>
-        <Checkbox.Group value={keys} onChange={onChange}>
-          {props.item.children.map((item: any) => {
-            return (
-              <Checkbox
-                key={item.label}
-                disabled={props.activeDetail?.type === 1}
-                value={item.value}
-              >
-                <span
-                  style={{
-                    width: '150px',
-                    display: 'inline-block',
-                    marginBottom: '10px',
-                  }}
-                >
-                  {item.label}
-                </span>
-              </Checkbox>
-            )
-          })}
-        </Checkbox.Group>
-      </GroupWrap>
-    </MainWrapItem>
-  )
-}
-
 const ProjectSet = () => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
-  const inputRefDom = useRef<HTMLInputElement>(null)
   const [isVisible, setIsVisible] = useState(false)
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const [dataList, setDataList] = useState<any>([
@@ -309,7 +190,7 @@ const ProjectSet = () => {
     },
   ])
   const [permissionList, setPermissionList] = useState<any>([])
-  const [selectKeys, setSelectKeys] = useState<CheckboxValueType[]>([])
+
   const [activeDetail, setActiveDetail] = useState<any>({
     id: 108,
     name: '需求',
@@ -325,28 +206,70 @@ const ProjectSet = () => {
   const { isRefresh } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
   asyncSetTtile(`${t('title.a7')}【${projectInfo.name}】`)
-  const getPermissionList = async (id: number) => {
-    setIsSpinning(true)
-    const result = await getPermission({ projectId, roleId: id })
 
-    // setPermissionList(result)
-    console.log(result)
+  function formatName(type: any) {
+    let name = ''
+    switch (type) {
+      case 'email':
+        name = '邮件'
 
-    setIsSpinning(false)
-    let keys: any[] = []
-    result.list.forEach((i: any) => {
-      const a = i.children.filter((j: any) => j.checked)
-      keys = [...keys, ...a.map((k: any) => k.value)]
-    })
-    setSelectKeys(keys)
+        break
+      case 'website':
+        name = '站内信'
+
+        break
+      case 'create':
+        name = '创建人'
+
+        break
+      case 'admin':
+        name = '管理员'
+
+        break
+      case 'leader':
+        name = '项目负责人'
+
+        break
+      case 'handle':
+        name = '处理人'
+
+        break
+      case 'bcc':
+        name = '抄送人'
+
+        break
+      case 'bAdd':
+        name = '被添加人'
+
+        break
+      case 'bAt':
+        name = '被@的人'
+
+        break
+      case 'bOpt':
+        name = '被操作的人'
+
+        break
+      case 'mber':
+        name = '项目成员'
+
+        break
+
+      default:
+        break
+    }
+
+    return name
   }
 
   const init2 = async () => {
-    const res1 = await getConfig(projectId)
     const res2 = await getSysConfig()
     const index = res2.findIndex((i: any) => {
       return i.type === activeDetail.types
     })
+
+    const res1 = await getConfig(projectId)
+
     const index2 = res1.findIndex((i: any) => {
       return i.type === activeDetail.types
     })
@@ -354,8 +277,14 @@ const ProjectSet = () => {
     res2[index].list.forEach((i: any) => {
       res1[index2].list.forEach((k: any) => {
         if (i.code === k.code) {
-          i.tip_type = k.tip_type
-          i.objects = k.objects
+          i.tip_type = k.tip_type.map((m: any) => ({
+            ...m,
+            text: formatName(m.name),
+          }))
+          i.objects = k.objects.map((m: any) => ({
+            ...m,
+            text: formatName(m.name),
+          }))
         }
       })
     })
@@ -378,9 +307,7 @@ const ProjectSet = () => {
   }
 
   const onChangeTabs = (item: any) => {
-    setSelectKeys([])
     setActiveDetail(item)
-    getPermissionList(item.id)
   }
 
   const onChange = (ty: any, less: any, ins: any, check: any) => {
@@ -513,7 +440,7 @@ const ProjectSet = () => {
                                 }
                                 checked={k.is_check === 1}
                               >
-                                {k.name}
+                                {k.text}
                               </Checkbox>
                             </span>
                           ))}
@@ -537,7 +464,7 @@ const ProjectSet = () => {
                                 }
                                 checked={k.is_check === 1}
                               >
-                                {k.name}
+                                {k.text}
                               </Checkbox>
                             </span>
                           ))}
