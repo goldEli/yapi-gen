@@ -23,7 +23,7 @@ const useWebsocket = () => {
   }
 
   const heartCheck: TypeHeartCheck = {
-    timeout: 5000,
+    timeout: 20000,
     timeoutObj: null,
     reset() {
       clearInterval(this.timeoutObj)

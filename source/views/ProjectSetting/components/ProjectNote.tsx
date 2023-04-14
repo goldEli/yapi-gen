@@ -290,6 +290,7 @@ const ProjectSet = () => {
     })
     setPermissionList(res2[index].list)
   }
+
   useEffect(() => {
     init2()
   }, [isRefresh, activeDetail])
