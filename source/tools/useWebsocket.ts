@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable max-len */
+import { getLoginDetail } from '@/services/user'
+import { useSelector } from '@store/index'
 import { useState, useRef, useEffect } from 'react'
 
 const useWebsocket = () => {
@@ -17,23 +19,31 @@ const useWebsocket = () => {
     timeout: number
     timeoutObj: any
     reset(): TypeHeartCheck
-    start(): void
+    start(id: any): void
   }
 
   const heartCheck: TypeHeartCheck = {
-    timeout: 2000,
+    timeout: 5000,
     timeoutObj: null,
     reset() {
       clearInterval(this.timeoutObj)
       return this
     },
-    start() {
+    start(id) {
       this.timeoutObj = setInterval(() => {
-        sendMessage('HeartBeat')
+        const obj = JSON.stringify({
+          to: id,
+          msgType: 'M9999',
+          customType: '',
+          source: 'web',
+          msgIds: [],
+          customData: {},
+        })
+        sendMessage(obj)
       }, this.timeout)
     },
   }
-  const creatWebSocket = () => {
+  const creatWebSocket = async (token: string, id: any) => {
     const stateArr = [
       { key: 0, value: '正在连接中' },
       { key: 1, value: '已经连接并且可以通讯' },
@@ -41,11 +51,13 @@ const useWebsocket = () => {
       { key: 3, value: '连接已关闭或者没有连接成功' },
     ]
 
-    ws.current = new WebSocket(import.meta.env.__WEB_SOCKET_URL__)
-
+    ws.current = new WebSocket(
+      `${import.meta.env.__WEB_SOCKET_URL__}?token=${token}
+        `,
+    )
     ws.current.onopen = () => {
       setReadyState(stateArr[ws.current?.readyState ?? 0])
-      // heartCheck.reset().start()
+      heartCheck.reset().start(id)
     }
     ws.current.onclose = () => {
       setReadyState(stateArr[ws.current?.readyState ?? 0])
@@ -54,10 +66,13 @@ const useWebsocket = () => {
       setReadyState(stateArr[ws.current?.readyState ?? 0])
     }
     ws.current.onmessage = (e: any) => {
+      console.log(e)
+
       setWsData({
         key: Math.random(),
         data: e.data,
       })
+
       //  const { data, type } = (...JSON.parse(e.data)) || {};
       // switch (
       //   type // type 是跟后端约定的
@@ -75,10 +90,10 @@ const useWebsocket = () => {
     }
   }
 
-  const webSocketInit = () => {
-    if (!ws.current || ws.current.readyState === 3) {
-      creatWebSocket()
-    }
+  const webSocketInit = async () => {
+    const res = await getLoginDetail()
+
+    creatWebSocket(res.data.comAuth.token, res.data.id)
   }
 
   //  关闭 WebSocket
@@ -87,15 +102,16 @@ const useWebsocket = () => {
   }
 
   // 发送数据
-  const sendMessage = (str: string) => {
+  const sendMessage = (str: any) => {
     ws.current?.send(str)
   }
 
   // 重连
-  const reconnect = () => {
-    closeWebSocket()
+  const reconnect = async () => {
+    const res = await getLoginDetail()
+
     ws.current = null
-    creatWebSocket()
+    creatWebSocket(res.data.comAuth.token, res.data.id)
   }
 
   useEffect(() => {

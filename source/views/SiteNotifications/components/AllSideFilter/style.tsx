@@ -25,9 +25,10 @@ export const MyIconModeWrap = styled.div`
   padding: 5px 0;
 `
 
-export const MyIconMode = styled.div<{ active: boolean }>`
+export const MyIconMode = styled.div<{ active?: boolean; tap: any }>`
   display: flex;
-  cursor: pointer;
+  cursor: ${props => (props.tap ? 'pointer' : 'text')};
+  /* cursor: pointer; */
   align-items: center;
   justify-content: center;
   width: 48px;
