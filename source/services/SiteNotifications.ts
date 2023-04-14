@@ -79,6 +79,7 @@ export const editSaveConfig: any = async (params: any) => {
   const response: any = await http.post<any>('/b/project/tip/saveConfig', {
     project_id: params.projectId,
     data: params.data,
+    type: params.type,
   })
   return response
 }

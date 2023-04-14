@@ -317,14 +317,11 @@ const ProjectSet = () => {
     label: '管理员',
     types: 'demand',
   })
-  const [addValue, setAddValue] = useState('')
-  const [operationDetail, setOperationDetail] = useState<any>({})
-  const [isDelete, setIsDelete] = useState(false)
+
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const [isSpinning, setIsSpinning] = useState(false)
-  const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
   asyncSetTtile(`${t('title.a7')}【${projectInfo.name}】`)
@@ -343,43 +340,6 @@ const ProjectSet = () => {
     })
     setSelectKeys(keys)
   }
-
-  // const init = async (isInit?: boolean, str?: string) => {
-  //   setIsSpinning(true)
-  //   const res2 = await getSysConfig()
-
-  //   setDataList([
-  //     {
-  //       id: 108,
-  //       name: '需求',
-  //       type: 1,
-  //       label: '管理员',
-  //     },
-  //     {
-  //       id: 109,
-  //       name: '迭代',
-  //       type: 1,
-  //       label: '编辑者',
-  //     },
-  //     {
-  //       id: 110,
-  //       name: '项目',
-  //       type: 1,
-  //       label: '参与者',
-  //     },
-  //   ])
-  //   if (isInit) {
-  //     setActiveDetail(result.list[0])
-  //     getPermissionList(result.list[0].id)
-  //   } else {
-  //     setIsSpinning(false)
-  //   }
-  //   if (str) {
-  //     setActiveDetail(result?.list?.filter((i: any) => i.id === str)[0])
-  //     getPermissionList(result?.list?.filter((i: any) => i.id === str)[0])
-  //   }
-  //   dispatch(setIsRefresh(false))
-  // }
 
   const init2 = async () => {
     const res1 = await getConfig(projectId)
@@ -406,12 +366,15 @@ const ProjectSet = () => {
   }, [isRefresh, activeDetail])
 
   const onSavePermission = async () => {
-    console.log('保存')
-    console.log(permissionList)
     const res = await editSaveConfig({
       projectId,
       data: permissionList,
+      type: activeDetail.type,
     })
+
+    if (res.code === 0) {
+      message.success('成功')
+    }
   }
 
   const onChangeTabs = (item: any) => {
