@@ -168,11 +168,54 @@ export const getScheduleInfo = createAsyncThunk(
   },
 )
 
+// 日程回复
 export const scheduleInfoReply = createAsyncThunk(
   `${name}/scheduleInfoReply`,
   async (params: { id: number; status: number }) => {
     try {
       const res = await services.schedule.scheduleInfoReply(params)
+      return res
+    } catch (error) {
+      //
+    }
+    return ''
+  },
+)
+
+// 日程删除
+export const scheduleInfoDelete = createAsyncThunk(
+  `${name}/scheduleInfoDelete`,
+  async (params: { id: string; is_remind: boolean }) => {
+    try {
+      const res = await services.schedule.scheduleInfoDelete(params)
+      return res
+    } catch (error) {
+      //
+    }
+    return ''
+  },
+)
+// 日程转让
+export const scheduleInfoTransfer = createAsyncThunk(
+  `${name}/scheduleInfoTransfer`,
+  async (params: { id: string | undefined; is_exit: boolean; user_id: number }) => {
+    try {
+      const res = await services.schedule.scheduleInfoTransfer(params)
+      return res
+    } catch (error) {
+      //
+    }
+    return ''
+  },
+)
+// 日程搜索
+export const getScheduleSearch = createAsyncThunk(
+  `${name}/getScheduleSearch`,
+  async (params: {   calendar_ids: number[],
+    year:number,
+    keyword:string }) => {
+    try {
+      const res = await services.schedule.getScheduleSearch(params)
       return res
     } catch (error) {
       //

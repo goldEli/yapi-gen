@@ -117,7 +117,7 @@ export const scheduleInfoReply = async (params: {
 
 // 日程删除
 export const scheduleInfoDelete = async (params: {
-  id: number,
+  id: string,
   is_remind:boolean
 }) => {
   const response = await http.delete<any, any>(`/b/schedule/${params.id}`, {
@@ -128,7 +128,7 @@ export const scheduleInfoDelete = async (params: {
 
 // 日程转让
 export const scheduleInfoTransfer = async (params: {
-  id: number,
+  id: string | undefined,
   is_exit:boolean,
   user_id:number
 }) => {
@@ -139,7 +139,7 @@ export const scheduleInfoTransfer = async (params: {
   return response.data
 }
 // 日程搜索
-export const scheduleSearch = async (params: {
+export const getScheduleSearch = async (params: {
   calendar_ids: number[],
   year:number,
   keyword:string
