@@ -28,7 +28,7 @@ const CalendarMonth: React.FC<CalendarMonthProps> = props => {
     const arr = calenderMonthValue.split('-')
     const [year, month] = arr.map(item => parseInt(item, 10))
     async function run() {
-      dispatch(
+      await dispatch(
         getDaysOfMonthList({
           year,
           month,

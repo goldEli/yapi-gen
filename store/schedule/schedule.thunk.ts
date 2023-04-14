@@ -31,20 +31,17 @@ export const getScheduleListDaysOfMonth = createAsyncThunk(
     return res
   },
 )
-// 修改本地日程
-export const modifyLocalSchedule =
-  (params: API.Schedule.ModifySchedule.Params) =>
-  async (dispatch: AppDispatch) => {
-    await services.schedule.modifySchedule(params)
-    dispatch(refreshCalendarPanelScheduleList())
-  }
 
 // 修改日程
 export const modifySchedule =
   (params: API.Schedule.ModifySchedule.Params) =>
   async (dispatch: AppDispatch) => {
-    await services.schedule.modifySchedule(params)
-    dispatch(refreshCalendarPanelScheduleList())
+    try {
+      await services.schedule.modifySchedule(params)
+      await dispatch(refreshCalendarPanelScheduleList())
+    } catch (error) {
+      await dispatch(refreshCalendarPanelScheduleList())
+    }
   }
 
 // 刷新面板上日程列表
