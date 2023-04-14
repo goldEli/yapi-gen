@@ -39,14 +39,14 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
   const { monthMoveScheduleActiveInfo } = useSelector(
     store => store.calendarPanel,
   )
-  const monthMoveScheduleActiveInfoRef =
-    useRef<typeof monthMoveScheduleActiveInfo>()
+  // const monthMoveScheduleActiveInfoRef =
+  //   useRef<typeof monthMoveScheduleActiveInfo>()
 
   const [visible, setVisible] = useState(true)
 
-  useEffect(() => {
-    monthMoveScheduleActiveInfoRef.current = monthMoveScheduleActiveInfo
-  }, [monthMoveScheduleActiveInfo])
+  // useEffect(() => {
+  //   monthMoveScheduleActiveInfoRef.current = monthMoveScheduleActiveInfo
+  // }, [monthMoveScheduleActiveInfo])
 
   useEffect(() => {
     // 清空拖动数据
@@ -127,7 +127,7 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
       }
       // 拖动之后保存日程
       if (isDrag.current) {
-        const info = monthMoveScheduleActiveInfoRef.current
+        const info = window.monthMoveScheduleActiveInfo
         if (!info?.startSchedule) {
           throw new Error('info?.startSchedule is undefine')
         }

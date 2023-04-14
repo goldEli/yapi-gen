@@ -84,6 +84,7 @@ const slice = createSlice({
   reducers: {
     clearMonthMoveScheduleActiveInfo(state) {
       state.monthMoveScheduleActiveInfo = defaultMonthMoveScheduleActiveInfo
+      window.monthMoveScheduleActiveInfo = defaultMonthMoveScheduleActiveInfo
     },
     startMoveMonthSchedule(
       state,
@@ -104,10 +105,12 @@ const slice = createSlice({
       const max = min + len
 
       const list = Array.from(Array(35).keys()).slice(min, max)
-      state.monthMoveScheduleActiveInfo = {
+      const d = {
         ...newState,
         visibleList: list,
       }
+      state.monthMoveScheduleActiveInfo = d
+      window.monthMoveScheduleActiveInfo = d
     },
     resizeMonthSchedule(
       state,
@@ -134,6 +137,7 @@ const slice = createSlice({
         ...newState,
         visibleList: list,
       }
+      window.monthMoveScheduleActiveInfo = state.monthMoveScheduleActiveInfo
     },
 
     setCalendarPanelType(
