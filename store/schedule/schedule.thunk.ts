@@ -216,7 +216,7 @@ export const getScheduleSearch = createAsyncThunk(
   `${name}/getScheduleSearch`,
   async (params: {   calendar_ids: number[],
     year:number,
-    keyword:string }) => {
+    keyword?:string }) => {
     try {
       const res = await services.schedule.getScheduleSearch(params)
       return res

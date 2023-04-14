@@ -17,7 +17,8 @@ const InputStyle = styled(Input)<{ bgColor: any }>`
 `
 
 interface Props {
-  onChangeSearch?(val: string): void
+  onChangeSearch?(val: string): void,
+  onFocus?():void,
   placeholder: string
   width?: any
   autoFocus?: boolean
@@ -57,6 +58,7 @@ const InputSearch = (props: Props) => {
         setValue(e.target.value)
         dispatch(changeColorText(e.target.value))
       }}
+      onFocus={() => props.onFocus?.()}
       onPressEnter={(e: any) => props.onChangeSearch?.(e.target.value)}
       suffix={
         <>
