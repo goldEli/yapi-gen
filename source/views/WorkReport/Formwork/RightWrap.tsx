@@ -161,20 +161,20 @@ const RightFormWork = () => {
     setSave(editSave)
   }, [editSave])
   const saveApi = async () => {
-    // dispatch(setEditSave(true))
+    dispatch(setEditSave(true))
     let parmas: any = {}
     parmas = {
-      submit_cycle: fillingRequirements.submit_cycle,
-      auto_reminder: fillingRequirements.auto_reminder ? 1 : 2,
-      reminder_time: fillingRequirements.reminder_time,
-      is_supply: fillingRequirements.is_supply ? 1 : 2,
-      is_cycle_limit: fillingRequirements.is_cycle_limit ? 1 : 2,
-      is_submitter_edit: fillingRequirements.is_cycle_limit ? 1 : 2,
-      hand_scope: fillingRequirements.hand_scope,
-      is_all_view: reportContent.is_all_view,
-      is_all_write: reportContent.is_all_write,
+      submit_cycle: fillingRequirements?.submit_cycle,
+      auto_reminder: fillingRequirements?.auto_reminder ? 1 : 2,
+      reminder_time: fillingRequirements?.reminder_time,
+      is_supply: fillingRequirements?.is_supply ? 1 : 2,
+      is_cycle_limit: fillingRequirements?.is_cycle_limit ? 1 : 2,
+      is_submitter_edit: fillingRequirements?.is_cycle_limit ? 1 : 2,
+      hand_scope: fillingRequirements?.hand_scope?.key,
+      is_all_view: reportContent?.is_all_view,
+      is_all_write: reportContent?.is_all_write,
       template_content_configs: templateContentConfigs,
-      template_configs: reportContent.template_configs.filter(
+      template_configs: reportContent?.template_configs?.filter(
         (el: any) => el.target_value.key !== 'all',
       ),
       id: activeItem.id || 0,
@@ -183,10 +183,10 @@ const RightFormWork = () => {
       parmas.name = templateName
     }
     parmas.requirement = {
-      day: fillingRequirements.day,
-      end_time: fillingRequirements.end_time,
-      start_time: fillingRequirements.start_time,
-      is_holiday: fillingRequirements.is_holiday ? 1 : 2,
+      day: fillingRequirements?.day,
+      end_time: fillingRequirements?.end_time,
+      start_time: fillingRequirements?.start_time,
+      is_holiday: fillingRequirements?.is_holiday ? 1 : 2,
     }
     if (activeItem?.id) {
       const res = await upDateTemplate(parmas)
@@ -237,6 +237,7 @@ const RightFormWork = () => {
             value={value}
             maxLength={50}
             onInput={(e: any) => {
+              dispatch(setEditSave(false))
               setValue(e.target.value),
                 dispatch(setTemplateName(e.target.value))
               dispatch(setEditSave(false))
@@ -257,7 +258,7 @@ const RightFormWork = () => {
             下一步
           </CommonButton>
         ) : (
-          <CommonButton type="light" onClick={() => setIsActive(1)}>
+          <CommonButton type="light" onClick={() => setIsActive(0)}>
             上一步
           </CommonButton>
         )}
@@ -271,7 +272,7 @@ const RightFormWork = () => {
             onClick={() => saveApi()}
             style={{ margin: '0 0px 0 16px' }}
           >
-            保存4
+            保存
           </CommonButton>
         )}
       </BtnRow>

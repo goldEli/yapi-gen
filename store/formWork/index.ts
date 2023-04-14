@@ -28,7 +28,7 @@ type SliceState = {
 const formWork = createSlice({
   name: 'formWork',
   initialState: {
-    editSave: false,
+    editSave: true,
     activeItem: null,
     err: true,
     templateName: '',

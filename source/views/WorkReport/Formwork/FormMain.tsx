@@ -13,8 +13,7 @@ import Picker from './Picker'
 import { setFillingRequirements, setErr } from '@store/formWork'
 import { useDispatch, useSelector } from '@store/index'
 import moment from 'moment'
-import { DelButton } from '@/components/StyleCommon'
-import { setProjectInfoValues } from '@store/project'
+import { dayData1, weekData, monthData } from './DataList'
 const Text = styled.div`
   color: var(--neutral-n1-d1);
   font-size: 14px;
@@ -27,87 +26,32 @@ const RowStyle = styled.div`
 interface SupScopeType {
   // 显示的数据不同
   type: string
-  value?: string
+  value?: any
   onChange?(val: string | number): void
 }
-const dayData: any = [
-  {
-    label: '前一日',
-    key: 1,
-  },
-  {
-    label: '前二日',
-    key: 2,
-  },
-  {
-    label: '前三日',
-    key: 3,
-  },
-  {
-    label: '前四日',
-    key: 4,
-  },
-  {
-    label: '前五日',
-    key: 5,
-  },
-  {
-    label: '前六日',
-    key: 6,
-  },
-  {
-    label: '前七日',
-    key: 7,
-  },
-  {
-    label: '无限制',
-    key: 0,
-  },
-]
-const weekData: any = [
-  {
-    label: '前一周',
-    key: 1,
-  },
-  {
-    label: '前二周',
-    key: 2,
-  },
-  {
-    label: '前三周',
-    key: 4,
-  },
-  {
-    label: '无限止',
-    key: 0,
-  },
-]
-const monthData: any = [
-  {
-    label: '前一月',
-    key: 1,
-  },
-  {
-    label: '无限止',
-    key: 0,
-  },
-]
+
 interface Item {
   label: string
   key: string
 }
 const DatePicker1 = (props: any) => {
+  const [value, setValue] = useState<any>('')
   const onChange = (e: any, dateString: string) => {
     props.datePickValue(dateString)
     var T = new Date(dateString)
-    props.onChange(T.getTime() / 1000)
+    props.onChange(T.getTime())
   }
+  useEffect(() => {
+    if (props.value) {
+      setValue(moment(props.value))
+    }
+  }, [props.value])
   return (
     <DatePicker
       onChange={(date: any, dateString: string) => {
         onChange(date, dateString)
       }}
-      value={moment(props.value)}
+      value={value}
       showTime
     />
   )
@@ -115,78 +59,22 @@ const DatePicker1 = (props: any) => {
 const SupScope = (props: SupScopeType) => {
   const [isOpen, setIsOpen] = useState(false)
   const [items, setItems] = useState<Array<Item>>()
-  const [label, setLabel] = useState('')
   // 每天 day ,每周 week , 每月 month , 不重复doNot
   useEffect(() => {
-    // switch (props.type) {
-    //   case 'day':
-    //     setItems(dayData)
-    //     if (props.value) {
-    //       // const item: any = dayData?.find((el: any) => el.key == props.value)
-    //       // props.onChange?.(item?.key)
-    //       // setLabel(item?.label)
-    //     } else {
-    //       props.onChange?.(dayData[0].key)
-    //       setLabel(dayData[0].label)
-    //     }
-    //     break
-    //   case 'week':
-    //     setItems(weekData)
-    //     if (props.value) {
-    //       // const item = weekData?.find((el: any) => el.key == props.value)
-    //       // props.onChange?.(item?.key)
-    //       // setLabel(item?.label)
-    //     } else {
-    //       props.onChange?.(weekData[0].key)
-    //       setLabel(weekData[0].label)
-    //     }
-    //     break
-    //   case 'month':
-    //     setItems(monthData)
-    //     if (props.value) {
-    //       // const item = monthData?.find((el: any) => el.key == props.value)
-    //       // props.onChange?.(item?.key)
-    //       // setLabel(item?.label)
-    //     } else {
-    //       props.onChange?.(monthData[0].key)
-    //       setLabel(monthData[0].label)
-    //     }
-    //     break
-    // }
-    // onOpenChange({ key: props.value ? props.value : 1 })
-    // console.log(props.value, 'props.value')
-    // if (props.type === 'day') {
-    //   setItems(dayData)
-    //   if (props.value) {
-    //     const item: any = dayData?.find((el: any) => el.key == props.value)
-    //     props.onChange?.(item?.key)
-    //     setLabel(item?.label)
-    //   } else {
-    //     props.onChange?.(dayData[0].key)
-    //     setLabel(dayData[0].label)
-    //   }
-    // }
-  }, [props.value])
-  const onOpenChange = (e: { key: any }) => {
-    props.onChange?.(e.key)
     switch (props.type) {
       case 'day':
-        setLabel(
-          dayData.find((el: { key: number }) => el.key === e.key)?.label || '',
-        )
+        setItems(dayData1)
         break
       case 'week':
-        setLabel(
-          weekData.find((el: { key: number }) => el.key === e.key)?.label || '',
-        )
+        setItems(weekData)
         break
       case 'month':
-        setLabel(
-          monthData.find((el: { key: number }) => el.key === e.key)?.label ||
-            '',
-        )
+        setItems(monthData)
         break
     }
+  }, [props.type])
+  const onOpenChange = (e: { key: any }) => {
+    props.onChange?.(Number(e.key))
     setIsOpen(false)
   }
   return (
@@ -207,7 +95,7 @@ const SupScope = (props: SupScopeType) => {
             setIsOpen(!isOpen)
           }}
         >
-          {label}
+          {props.value?.label}
           <CommonIconFont
             type={isOpen ? 'up' : 'down'}
             size={14}
@@ -229,7 +117,7 @@ interface CheckBoxGroupType {
 }
 // 选择周几
 const CheckBoxGroup = (props: CheckBoxGroupType) => {
-  const { aWeekDataList } = useSelector(store => store.formWork)
+  // const { aWeekDataList } = useSelector(store => store.formWork)
   // console.log(props.value, 'ooo')
   // useEffect(() => {
   //   if (!props.value) {

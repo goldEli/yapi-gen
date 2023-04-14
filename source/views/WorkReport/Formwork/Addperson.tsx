@@ -12,6 +12,8 @@ import { useEffect, useState } from 'react'
 import { seleData1, seleData2, seleData3 } from './DataList'
 import CommonModal from '@/components/AddUser/CommonModal'
 import AddDepartmentOrTeamModal from '@/components/AddDepartmentOrTeamModal'
+import { setEditSave } from '@store/formWork'
+import { useDispatch } from '@store/index'
 
 const AddPersonText = styled.div`
   margin-left: 26px;
@@ -59,15 +61,20 @@ const Col = styled.div`
 const NameText = styled.div`
   padding: 0 10px;
 `
-const DefalutIcon = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background-color: rgba(125, 189, 225, 1);
-`
+const DefalutIcon = styled.div<{ bgc?: any }>(
+  {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '24px',
+    height: '24px',
+    borderRadius: '50%',
+  },
+  ({ bgc }) => ({
+    backgroundColor: bgc,
+  }),
+)
+
 interface RowsItem {
   name: string
   id: number
@@ -89,6 +96,7 @@ interface Item {
   key: string
 }
 const Addperson = (props: Props) => {
+  const dispatch = useDispatch()
   const [isOpen, setIsOpen] = useState(false)
   const [items, setItems] = useState<Array<Item>>()
   const [isVisible, setIsVisible] = useState(false)
@@ -125,6 +133,7 @@ const Addperson = (props: Props) => {
   }
   // 下拉
   const onOpenChange = (e: { key: string }) => {
+    dispatch(setEditSave(false))
     setIsOpen(false)
     setIsVisible(e.key === 'user')
     setIsAddVisible(['department', 'team'].includes(e.key))
@@ -184,6 +193,7 @@ const Addperson = (props: Props) => {
   // 删除添加的成员
   const delPerson = (el: { target_id: any }) => {
     props.onChangedel(el)
+    dispatch(setEditSave(false))
   }
   useEffect(() => {
     switch (props.state) {
@@ -198,6 +208,7 @@ const Addperson = (props: Props) => {
         break
     }
   }, [props.state])
+  // 添加成员弹窗
   const onConfirm = (data: any) => {
     const setData = data.map((el: any) => ({
       ...el,
@@ -205,16 +216,63 @@ const Addperson = (props: Props) => {
       target_type: targetType,
       target_value: { name: el.name, avatar: el.avatar },
     }))
-    const values = setData
-    props.onChangeValues(values)
+
+    props.onChangeValues(setData)
     setIsVisible(false)
   }
 
-  // 添加团队确认
-  const onAddConfirm = () => {
-    //
+  // 添加团队部门
+  const onAddConfirm = (data: any) => {
+    const values = data.map((item: any) => ({
+      ...item,
+      user_type: userType,
+      target_type: item.type === 1 ? 2 : item.type,
+      target_value: {
+        name: item.name,
+        avatar: item.type === 1 ? 2 : item.type,
+      },
+    }))
+    props.onChangeValues(values)
   }
-
+  const getImg = (item: any) => {
+    if (
+      item.target_value?.avatar &&
+      item.target_value?.avatar !== 3 &&
+      item.target_value?.avatar !== 2
+    ) {
+      return <img src={item?.target_value?.avatar} />
+    } else if (item.target_value?.avatar === 2) {
+      return (
+        <DefalutIcon bgc="rgba(152, 172, 224, 1)">
+          <CommonIconFont
+            type="team-2"
+            size={16}
+            color="var(--neutral-white-d7)"
+          />
+        </DefalutIcon>
+      )
+    } else if (item.target_value?.avatar === 3) {
+      return (
+        <DefalutIcon bgc="rgba(121, 209, 193, 1)">
+          <CommonIconFont
+            type="branch"
+            size={16}
+            color="var(--neutral-white-d7)"
+          />
+        </DefalutIcon>
+      )
+    } else {
+      return (
+        <DefalutIcon bgc="rgba(125, 189, 225, 1)">
+          <CommonIconFont
+            type="userAll"
+            size={16}
+            color="var(--neutral-white-d7)"
+          />
+        </DefalutIcon>
+      )
+    }
+  }
   useEffect(() => {
     setPersonData(fitlerDataList(props.person))
   }, [props.person])
@@ -248,17 +306,7 @@ const Addperson = (props: Props) => {
       <PersonContainer>
         {personData?.map((el: any) => (
           <Col key={el.id}>
-            {el?.target_value?.avatar ? (
-              <img src={el?.target_value?.avatar} />
-            ) : (
-              <DefalutIcon>
-                <CommonIconFont
-                  type="userAll"
-                  size={16}
-                  color="var(--neutral-white-d7)"
-                />
-              </DefalutIcon>
-            )}
+            {getImg(el)}
             <NameText>{el?.target_value?.name}</NameText>
             <CommonIconFont
               onClick={() => delPerson(el)}

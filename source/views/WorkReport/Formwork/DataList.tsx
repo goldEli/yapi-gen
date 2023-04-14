@@ -453,6 +453,68 @@ export const seleData3: Array<Item> = [
     label: '所有上级',
   },
 ]
+export const dayData1: any = [
+  {
+    label: '前一日',
+    key: 1,
+  },
+  {
+    label: '前二日',
+    key: 2,
+  },
+  {
+    label: '前三日',
+    key: 3,
+  },
+  {
+    label: '前四日',
+    key: 4,
+  },
+  {
+    label: '前五日',
+    key: 5,
+  },
+  {
+    label: '前六日',
+    key: 6,
+  },
+  {
+    label: '前七日',
+    key: 7,
+  },
+  {
+    label: '无限制',
+    key: 0,
+  },
+]
+export const weekData: any = [
+  {
+    label: '前一周',
+    key: 1,
+  },
+  {
+    label: '前二周',
+    key: 2,
+  },
+  {
+    label: '前三周',
+    key: 4,
+  },
+  {
+    label: '无限止',
+    key: 0,
+  },
+]
+export const monthData: any = [
+  {
+    label: '前一月',
+    key: 1,
+  },
+  {
+    label: '无限止',
+    key: 0,
+  },
+]
 export default {
   startWeekData,
   endWeekData,
@@ -463,4 +525,7 @@ export default {
   seleData1,
   seleData2,
   seleData3,
+  dayData1,
+  weekData,
+  monthData,
 }

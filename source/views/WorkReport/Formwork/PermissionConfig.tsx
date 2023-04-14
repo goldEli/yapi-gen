@@ -3,6 +3,9 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-constant-binary-expression */
 // eslint-disable radix
+/* eslint-disable complexity */
+/* eslint-disable consistent-return */
+/* eslint-disable no-case-declarations */
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import Addperson from './Addperson'
@@ -14,9 +17,11 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import {
   setReportContent,
   setFillingRequirements,
-  setAWeekDataList,
+  setEditSave,
 } from '@store/formWork'
+import { dayData1, weekData, monthData } from './DataList'
 import moment from 'moment'
+import { cos } from '@/services/cos'
 const PermissionConfigStyle = styled.div`
   padding: 0 24px;
 `
@@ -120,6 +125,7 @@ const PermissionConfig = (props: PropsType) => {
     )
     // 最终的大数组-- 人员
     const configsData = [...setData, ...setData1, ...setData2]
+    console.log(configsData, 'configsData')
     dispatch(
       setReportContent({
         is_all_view: isAllView,
@@ -150,9 +156,20 @@ const PermissionConfig = (props: PropsType) => {
         value = 4
         break
     }
-    dispatch(
-      setFillingRequirements({ ...fillingRequirements, submit_cycle: value }),
-    )
+    const claerConfig: any = {
+      day: [],
+      hand_scope: 1,
+      is_submitter_edit: false,
+      is_cycle_limit: false,
+      is_supply: false,
+      reminder_time: null,
+      auto_reminder: false,
+      submit_cycle: 1,
+      is_holiday: false,
+      end_time: null,
+      start_time: null,
+    }
+    dispatch(setFillingRequirements({ ...claerConfig, submit_cycle: value }))
   }
   // 表单更新操作
   const formOnValuesChange = (values: any) => {
@@ -160,6 +177,9 @@ const PermissionConfig = (props: PropsType) => {
   }
   // 秒转成时分秒
   const time2 = (num: any, str: string) => {
+    if (!num) {
+      return null
+    }
     let t: any = parseInt(String(num / 60 / 60 / 24), 10)
     const t1 = t * 60 * 60 * 24
     const tv = num - t1
@@ -256,28 +276,42 @@ const PermissionConfig = (props: PropsType) => {
       reportContent.template_configs?.filter(
         (item: { user_type: number }) => item.user_type === 3,
       ) || []
+    let is_all_view = 2
+    let is_all_write = 2
     if (num === 1) {
-      data1 = data1.filter((item: any) => item.target_id !== el.target_id)
+      data1 = data1.filter((item: any) =>
+        el?.target_id ? item?.target_id !== el?.target_id : el.key !== item.key,
+      )
     } else if (num === 2) {
       data2 = data2.filter((item: any) => item.target_id !== el.target_id)
     } else {
-      data3 = data3.filter((item: any) => item.target_id !== el.target_id)
+      data3 = data3.filter((item: any) =>
+        el?.target_id ? item?.target_id !== el?.target_id : el.key !== item.key,
+      )
     }
+    const v3 = data3.find((item: any) => item.key === 'all')
+    const v1 = data1.find((item: any) => item.key === 'all')
+    is_all_view = v3 ? 1 : 2
+    is_all_write = v1 ? 1 : 2
     dispatch(
       setReportContent({
-        is_all_view: reportContent.is_all_view,
-        is_all_write: reportContent.is_all_write,
+        is_all_view: is_all_view,
+        is_all_write: is_all_write,
         template_configs: filterValues([...data1, ...data2, ...data3]),
       }),
     )
   }
   const timestampToTime = (timeVal: any) => {
     // 时间戳为10位需*1000，时间戳为13位不需乘1000
-    const time = moment(timeVal * 1000).format('YYYY-MM-DD HH:mm:ss')
+    let timeValLen = String(timeVal)
+    let v = timeValLen.length === 13 ? timeVal : timeVal * 1000
+    const time = timeVal ? moment(v).format('YYYY-MM-DD HH:mm:ss') : null
     return time
   }
-  const setFormValues = () => {
-    switch (fillingRequirements?.submit_cycle) {
+  // 表单值处理，时间秒转换成展示的数字
+  const setFormValues = (obj: any) => {
+    dispatch(setEditSave(false))
+    switch (obj?.submit_cycle) {
       case 1:
         setType('day')
         break
@@ -291,87 +325,106 @@ const PermissionConfig = (props: PropsType) => {
         setType('doNot')
         break
     }
-    const newObj = { ...fillingRequirements }
-    // console.log(fillingRequirements, 'fillingRequirements')
-    if (fillingRequirements?.submit_cycle === 1) {
+
+    const newObj = { ...obj }
+    if (obj?.submit_cycle === 1) {
       const nowData = aWeekDataList
-      const newData = fillingRequirements?.day
+      const newData = obj?.day
       const arr = nowData.map((item: any) => ({
         ...item,
         value: newData?.includes(item.key) ? true : false,
       }))
       newObj.day = arr
       const newStartTime = {
-        v1: fillingRequirements?.start_time?.day_type,
-        v2: time2(fillingRequirements?.start_time?.time, 'hour'),
-        v3: time2(fillingRequirements?.start_time?.time, 'minute'),
+        v1: obj?.start_time?.day_type,
+        v2: time2(obj?.start_time?.time, 'hour'),
+        v3: time2(obj?.start_time?.time, 'minute'),
       }
       const newEndTime = {
-        v1: fillingRequirements.end_time?.day_type,
-        v2: time2(fillingRequirements?.end_time?.time, 'hour'),
-        v3: time2(fillingRequirements?.end_time?.time, 'minute'),
+        v1: obj.end_time?.day_type,
+        v2: time2(obj?.end_time?.time, 'hour'),
+        v3: time2(obj?.end_time?.time, 'minute'),
       }
       const newReminderTime = {
-        v2: time2(fillingRequirements?.reminder_time, 'hour'),
-        v3: time2(fillingRequirements?.reminder_time, 'minute'),
+        v2: time2(obj?.reminder_time, 'hour'),
+        v3: time2(obj?.reminder_time, 'minute'),
       }
       newObj.start_time = newStartTime
       newObj.end_time = newEndTime
       newObj.reminder_time = newReminderTime
-    } else if (fillingRequirements?.submit_cycle === 2) {
+    } else if (obj?.submit_cycle === 2) {
       const newStartTime = {
-        v1: fillingRequirements?.start_time?.day_type,
-        v2: time2(fillingRequirements?.start_time?.time, 'hour'),
-        v3: time2(fillingRequirements?.start_time?.time, 'minute'),
+        v1: obj?.start_time?.day_type,
+        v2: time2(obj?.start_time?.time, 'hour'),
+        v3: time2(obj?.start_time?.time, 'minute'),
       }
       const newEndTime = {
-        v1: fillingRequirements?.end_time?.day_type,
-        v2: time2(fillingRequirements?.end_time?.time, 'hour'),
-        v3: time2(fillingRequirements?.end_time?.time, 'minute'),
+        v1: obj?.end_time?.day_type,
+        v2: time2(obj?.end_time?.time, 'hour'),
+        v3: time2(obj?.end_time?.time, 'minute'),
       }
       const newReminderTime = {
-        v1: time2(fillingRequirements?.reminder_time, 'day'),
-        v2: time2(fillingRequirements?.reminder_time, 'hour'),
-        v3: time2(fillingRequirements?.reminder_time, 'minute'),
+        v1: time2(obj?.reminder_time, 'day'),
+        v2: time2(obj?.reminder_time, 'hour'),
+        v3: time2(obj?.reminder_time, 'minute'),
       }
       newObj.start_time = newStartTime
       newObj.end_time = newEndTime
       newObj.reminder_time = newReminderTime
-    } else if (fillingRequirements?.submit_cycle === 3) {
+    } else if (obj?.submit_cycle === 3) {
       const newStartTime = {
-        v1: fillingRequirements.start_time?.day_type,
-        v2: time2(fillingRequirements?.start_time?.time, 'hour'),
-        v3: time2(fillingRequirements?.start_time?.time, 'minute'),
+        v1: obj.start_time?.day_type,
+        v2: time2(obj?.start_time?.time, 'hour'),
+        v3: time2(obj?.start_time?.time, 'minute'),
       }
       const newEndTime = {
-        v1: fillingRequirements.end_time?.day_type,
-        v2: time2(fillingRequirements?.end_time?.time, 'hour'),
-        v3: time2(fillingRequirements?.end_time?.time, 'minute'),
+        v1: obj.end_time?.day_type,
+        v2: time2(obj?.end_time?.time, 'hour'),
+        v3: time2(obj?.end_time?.time, 'minute'),
       }
       const newReminderTime = {
-        v1: time2(fillingRequirements?.reminder_time, 'day'),
-        v2: time2(fillingRequirements?.reminder_time, 'hour'),
-        v3: time2(fillingRequirements?.reminder_time, 'minute'),
+        v1: time2(obj?.reminder_time, 'day'),
+        v2: time2(obj?.reminder_time, 'hour'),
+        v3: time2(obj?.reminder_time, 'minute'),
       }
       newObj.start_time = newStartTime
       newObj.end_time = newEndTime
       newObj.reminder_time = newReminderTime
-    } else if (fillingRequirements?.submit_cycle === 4) {
-      const newEndTime = timestampToTime(
-        fillingRequirements?.end_time?.time || fillingRequirements?.end_time,
-      )
+    } else if (obj?.submit_cycle === 4) {
+      const newEndTime = timestampToTime(obj?.end_time?.time)
       const newReminderTime = {
-        v1: time2(fillingRequirements?.reminder_time, 'day'),
-        v2: time2(fillingRequirements?.reminder_time, 'hour'),
-        v3: time2(fillingRequirements?.reminder_time, 'minute'),
+        v1: time2(obj?.reminder_time, 'day'),
+        v2: time2(obj?.reminder_time, 'hour'),
+        v3: time2(obj?.reminder_time, 'minute'),
       }
       newObj.end_time = newEndTime
       newObj.reminder_time = newReminderTime
     }
     form.setFieldsValue(newObj)
   }
+  // 补交范围组数据
+  const getHandScopeValue = (num: any, typeState: number) => {
+    switch (typeState) {
+      case 1:
+        const item = dayData1.find((el: { key: number }) => el.key === num)
+        return { label: item.label, key: item.key }
+      case 2:
+        const item1 = weekData.find((el: { key: number }) => el.key === num)
+        return { label: item1.label, key: item1.key }
+      case 3:
+        const item2 = monthData.find((el: { key: number }) => el.key === num)
+        return { label: item2.label, key: item2.key }
+    }
+  }
   useEffect(() => {
-    fillingRequirements && setFormValues()
+    const newVal = { ...fillingRequirements }
+    // 补交范围改值
+    const obj = getHandScopeValue(
+      Number(newVal.hand_scope),
+      newVal.submit_cycle,
+    ) || { label: 1, key: 1 }
+    newVal.hand_scope = obj
+    fillingRequirements && setFormValues(newVal)
   }, [fillingRequirements])
 
   return (
