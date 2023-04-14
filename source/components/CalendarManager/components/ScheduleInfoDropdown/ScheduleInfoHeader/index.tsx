@@ -3,12 +3,14 @@ import { css } from '@emotion/css'
 import { useSelector, useDispatch } from '@store/index'
 import { setScheduleModal } from '@store/calendar'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
-import { Dropdown, Checkbox } from 'antd'
+import { Dropdown, Checkbox,Radio,type RadioChangeEvent, } from 'antd'
 import React, { useState, useEffect } from 'react'
 import ScheduleInfoIcon from './../ScheduleInfoIcon'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import dayjs from 'dayjs'
 import weekday from 'dayjs/plugin/weekday'
+import CommonModal from '@/components/CommonModal'
+import InputSearch from '@/components/InputSearch'
 dayjs.extend(weekday)
 interface ScheduleInfoDropdownProps {}
 const ScheduleInfoHeader = styled.div`
@@ -55,13 +57,38 @@ const statusClass = css`
 `
 const iconBox = css`
   display: flex;
+  position: relative;
   span {
     margin-left: 6px;
     color: var(--neutral-white-d6);
   }
-  span:nth-child(3) {
+  .moreOperate {
     position: relative;
     top: -4px;
+    margin-left: 6px;
+    color: var(--neutral-white-d6);
+  }
+`
+const BoxTip = styled.div`
+  width: 120px;
+  height: 72px;
+  background: #ffffff;
+  box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+  border-radius: 6px 6px 6px 6px;
+  opacity: 1;
+  position: absolute;
+  top: 24px;
+  right: 0px;
+  display: flex;
+  flex-direction: column;
+  padding-left: 16px;
+  padding-top: 12px;
+  box-sizing: border-box;
+  font-weight: 400;
+  span {
+    color: var(--neutral-n2);
+    font-size: var(--font14);
+    margin-bottom: 6px;
   }
 `
 const confirmText = css`
@@ -74,9 +101,24 @@ const confirmSure = css`
   font-size: var(--font14);
   margin-left: 8px;
 `
+const ModalChildren = styled.div`
+box-sizing: border-box;
+padding: 0px 18px;
+height: 100px;
+.ant-radio-group{
+  margin-top: 8px;
+}
+.ant-radio-wrapper{
+  color: var(--neutral-n1-d1) !important;
+  font-size: var(--font14) !important;
+  font-weight: 400 !important;
+}
+`
 const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
   const [isVisible, setIsVisible] = useState(false)
   const [checked, setChecked] = useState(false)
+  const [showTipBox, setShowTipBox] = useState(false)
+  const [transferValue,setTransferValue]=useState(1)
   const { scheduleInfo } = useSelector(state => state.schedule)
   const disPatch = useDispatch()
   const onConfirm = () => {
@@ -112,7 +154,20 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
           >
             <ScheduleInfoIcon type="delete" />
           </span>
-          <span>...</span>
+          <div
+            className="moreOperate"
+            onClick={() => {
+              console.log(1)
+            }}
+          >
+            <label onClick={() => setShowTipBox(!showTipBox)}>...</label>
+            {showTipBox ? (
+              <BoxTip>
+                <span onClick={() => {}}>复制日程</span>
+                <span onClick={() => {}}>转让日程</span>
+              </BoxTip>
+            ) : null}
+          </div>
           <span
             onClick={() => {
               disPatch(setScheduleInfoDropdown({ visible: false }))
@@ -147,6 +202,20 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
           <span className={confirmSure}>删除后通知参与者</span>
         </div>
       </DeleteConfirm>
+      <CommonModal isVisible={false} title="转让日程" width={528}>
+        <ModalChildren>
+          <InputSearch placeholder="搜索新的所有者"></InputSearch>
+          <Radio.Group
+            onChange={(e: RadioChangeEvent) => setTransferValue(e.target.value)}
+            value={transferValue}
+          >
+            <Radio value={1}>
+            转让我退出该日程
+            </Radio>
+            <Radio value={2}>转让我变为参与者</Radio>
+          </Radio.Group>
+        </ModalChildren>
+      </CommonModal>
     </ScheduleInfoHeader>
   )
 }

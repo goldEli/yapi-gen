@@ -116,7 +116,11 @@ declare namespace Model.Schedule {
     is_join?: boolean
     join_member_status?: number
     is_creator?: boolean
-    title?: string
+    title?: string,
+    is_show_reply?:false
+  }
+  type ScheduleListInfo = info & {
+    lunar_day_chinese:string
   }
   type InfoWithPosition = Info & {
     width: number
@@ -127,6 +131,6 @@ declare namespace Model.Schedule {
     top?: number
     left?: number
     date?: number
-    scheduleListData?: any
+    scheduleListData?: ScheduleListInfo[]
   }
 }

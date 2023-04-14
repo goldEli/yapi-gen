@@ -13,7 +13,6 @@ interface ScheduleListBoxProps {
   visible: boolean
   top?: number
   left?: number
-  month: number
 }
 const ScheduleListBox = styled.div`
   width: 260px;
@@ -104,7 +103,6 @@ const ScheduleListModal: React.FC<ScheduleListProps> = props => {
       visible={visible}
       top={top}
       left={left}
-      month={props.month}
     >
       <ScheduleTitle>
         <span className={dateClass}>{date}</span>

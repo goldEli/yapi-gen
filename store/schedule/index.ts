@@ -26,7 +26,7 @@ type SliceState = {
   yearViewScheduleList: Model.Schedule.Info[],
   listViewScheduleList?: [],
   monthViewScheduleList: Model.Schedule.Info[]
-  scheduleInfo?: Model.Schedule.Info
+  scheduleInfo?: Model.Schedule.DetailInfo
   scheduleInfoReply?: {
     status: number
   }
