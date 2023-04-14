@@ -242,7 +242,7 @@ const RightFormWork = () => {
       dispatch(setActiveItem({ id: res.data.id, name: res.data }))
       message.success('新增成功')
     }
-    localStorage.setItem('edit', '1')
+    localStorage.setItem('edit', '0')
   }
   return (
     <RightFormWorkStyle>
@@ -281,7 +281,7 @@ const RightFormWork = () => {
             value={value}
             maxLength={50}
             onInput={(e: any) => {
-              localStorage.setItem('edit', '0')
+              localStorage.setItem('edit', '1')
               setValue(e.target.value),
                 dispatch(setTemplateName(e.target.value))
             }}

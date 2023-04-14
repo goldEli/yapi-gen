@@ -295,7 +295,7 @@ const PermissionConfig = (props: PropsType) => {
   }
   // 表单值处理，时间秒转换成展示的数字
   const setFormValues = (obj: any) => {
-    localStorage.setItem('edit', '0')
+    localStorage.setItem('edit', '1')
     switch (obj?.submit_cycle) {
       case 1:
         setType('day')

@@ -17,6 +17,7 @@ import {
   setTemplateContentConfigs,
 } from '@store/formWork'
 import { message } from 'antd'
+import { cos } from '@/services'
 // getTemplateList
 const FormWorkSideStyle = styled.div`
   width: 200px;
@@ -101,6 +102,7 @@ const FormWorkSide = () => {
     getDataList()
     const item: any = dataList.find((el: any, index: any) => index === 0)
     dispatch(setActiveItem(item))
+    localStorage.setItem('edit', '0')
   }, [])
   const itemActive = (el: any, index: any) => {
     if (localStorage.getItem('edit') === '1') {

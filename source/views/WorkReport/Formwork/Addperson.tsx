@@ -135,7 +135,7 @@ const Addperson = (props: Props) => {
   }
   // 下拉
   const onOpenChange = (e: { key: string }) => {
-    localStorage.setItem('edit', '0')
+    localStorage.setItem('edit', '1')
     setIsOpen(false)
     setIsVisible(e.key === 'user')
     setIsAddVisible(['department', 'team'].includes(e.key))
@@ -195,7 +195,7 @@ const Addperson = (props: Props) => {
   // 删除添加的成员
   const delPerson = (el: { target_id: any }) => {
     props.onChangedel(el)
-    localStorage.setItem('edit', '0')
+    localStorage.setItem('edit', '1')
   }
   useEffect(() => {
     switch (props.state) {
