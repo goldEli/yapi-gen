@@ -160,13 +160,17 @@ const PermissionConfig = (props: PropsType) => {
   const formOnValuesChange = (values: any) => {
     dispatch(setFillingRequirements({ ...fillingRequirements, ...values }))
   }
-  // 秒转成时分秒
-  const time2 = (num: any, str: string) => {
+  // 秒转成时分秒 b代表取天数
+  const time2 = (b: boolean, num: any, str: string) => {
     if (!num) {
       return null
     }
-    let t: any = parseInt(String(num / 60 / 60 / 24), 10)
-    const t1 = t * 60 * 60 * 24
+    let t = 0
+    let t1 = 0
+    if (b) {
+      t = parseInt(String(num / 60 / 60 / 24), 10)
+      t1 = t ? t * 60 * 60 * 24 : 0
+    }
     const tv = num - t1
     let h: number = parseInt(String(tv / 60 / 60), 10)
     let hv = h * 60 * 60
@@ -322,17 +326,17 @@ const PermissionConfig = (props: PropsType) => {
       newObj.day = arr
       const newStartTime = {
         v1: obj?.start_time?.day_type,
-        v2: time2(obj?.start_time?.time, 'hour'),
-        v3: time2(obj?.start_time?.time, 'minute'),
+        v2: time2(false, obj?.start_time?.time, 'hour'),
+        v3: time2(false, obj?.start_time?.time, 'minute'),
       }
       const newEndTime = {
         v1: obj.end_time?.day_type,
-        v2: time2(obj?.end_time?.time, 'hour'),
-        v3: time2(obj?.end_time?.time, 'minute'),
+        v2: time2(false, obj?.end_time?.time, 'hour'),
+        v3: time2(false, obj?.end_time?.time, 'minute'),
       }
       const newReminderTime = {
-        v2: time2(obj?.reminder_time, 'hour'),
-        v3: time2(obj?.reminder_time, 'minute'),
+        v2: time2(false, obj?.reminder_time, 'hour'),
+        v3: time2(false, obj?.reminder_time, 'minute'),
       }
       newObj.start_time = newStartTime
       newObj.end_time = newEndTime
@@ -340,18 +344,18 @@ const PermissionConfig = (props: PropsType) => {
     } else if (obj?.submit_cycle === 2) {
       const newStartTime = {
         v1: obj?.start_time?.day_type,
-        v2: time2(obj?.start_time?.time, 'hour'),
-        v3: time2(obj?.start_time?.time, 'minute'),
+        v2: time2(false, obj?.start_time?.time, 'hour'),
+        v3: time2(false, obj?.start_time?.time, 'minute'),
       }
       const newEndTime = {
         v1: obj?.end_time?.day_type,
-        v2: time2(obj?.end_time?.time, 'hour'),
-        v3: time2(obj?.end_time?.time, 'minute'),
+        v2: time2(false, obj?.end_time?.time, 'hour'),
+        v3: time2(false, obj?.end_time?.time, 'minute'),
       }
       const newReminderTime = {
-        v1: time2(obj?.reminder_time, 'day'),
-        v2: time2(obj?.reminder_time, 'hour'),
-        v3: time2(obj?.reminder_time, 'minute'),
+        v1: time2(true, obj?.reminder_time, 'day'),
+        v2: time2(false, obj?.reminder_time, 'hour'),
+        v3: time2(false, obj?.reminder_time, 'minute'),
       }
       newObj.start_time = newStartTime
       newObj.end_time = newEndTime
@@ -359,28 +363,30 @@ const PermissionConfig = (props: PropsType) => {
     } else if (obj?.submit_cycle === 3) {
       const newStartTime = {
         v1: obj.start_time?.day_type,
-        v2: time2(obj?.start_time?.time, 'hour'),
-        v3: time2(obj?.start_time?.time, 'minute'),
+        v2: time2(false, obj?.start_time?.time, 'hour'),
+        v3: time2(false, obj?.start_time?.time, 'minute'),
       }
       const newEndTime = {
         v1: obj.end_time?.day_type,
-        v2: time2(obj?.end_time?.time, 'hour'),
-        v3: time2(obj?.end_time?.time, 'minute'),
+        v2: time2(false, obj?.end_time?.time, 'hour'),
+        v3: time2(false, obj?.end_time?.time, 'minute'),
       }
       const newReminderTime = {
-        v1: time2(obj?.reminder_time, 'day'),
-        v2: time2(obj?.reminder_time, 'hour'),
-        v3: time2(obj?.reminder_time, 'minute'),
+        v1: time2(true, obj?.reminder_time, 'day'),
+        v2: time2(false, obj?.reminder_time, 'hour'),
+        v3: time2(false, obj?.reminder_time, 'minute'),
       }
       newObj.start_time = newStartTime
       newObj.end_time = newEndTime
       newObj.reminder_time = newReminderTime
     } else if (obj?.submit_cycle === 4) {
-      const newEndTime = timestampToTime(obj?.end_time?.time)
+      const newEndTime = obj?.end_time
+        ? timestampToTime(obj?.end_time?.time)
+        : null
       const newReminderTime = {
-        v1: time2(obj?.reminder_time, 'day'),
-        v2: time2(obj?.reminder_time, 'hour'),
-        v3: time2(obj?.reminder_time, 'minute'),
+        v1: time2(true, obj?.reminder_time, 'day'),
+        v2: time2(false, obj?.reminder_time, 'hour'),
+        v3: time2(false, obj?.reminder_time, 'minute'),
       }
       newObj.end_time = newEndTime
       newObj.reminder_time = newReminderTime
@@ -392,13 +398,13 @@ const PermissionConfig = (props: PropsType) => {
     switch (typeState) {
       case 1:
         const item = dayData1.find((el: { key: number }) => el.key === num)
-        return { label: item.label, key: item.key }
+        return { label: item?.label, key: item?.key }
       case 2:
         const item1 = weekData.find((el: { key: number }) => el.key === num)
-        return { label: item1.label, key: item1.key }
+        return { label: item1?.label, key: item1?.key }
       case 3:
         const item2 = monthData.find((el: { key: number }) => el.key === num)
-        return { label: item2.label, key: item2.key }
+        return { label: item2?.label, key: item2?.key }
     }
   }
   useEffect(() => {

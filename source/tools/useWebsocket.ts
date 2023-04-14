@@ -91,7 +91,7 @@ const useWebsocket = () => {
   const webSocketInit = async () => {
     const res = await getLoginDetail()
 
-    creatWebSocket(res.data.comAuth.token, res.data.id)
+    creatWebSocket(res?.data?.comAuth?.token, res?.data?.id)
   }
 
   //  关闭 WebSocket
@@ -109,7 +109,7 @@ const useWebsocket = () => {
     const res = await getLoginDetail()
 
     ws.current = null
-    creatWebSocket(res.data.comAuth.token, res.data.id)
+    creatWebSocket(res.data?.comAuth?.token, res?.data?.id)
   }
 
   useEffect(() => {
