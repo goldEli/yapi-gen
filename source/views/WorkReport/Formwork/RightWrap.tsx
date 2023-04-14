@@ -10,7 +10,7 @@ import PermissionConfig from './PermissionConfig'
 import EditWork from './EditWork'
 import PreviewDialog from '@/components/FormWork/PreviewDialog'
 import { useDispatch, useSelector } from '@store/index'
-import { setActiveItem, setEditSave, setTemplateName } from '@store/formWork'
+import { setActiveItem, setTemplateName } from '@store/formWork'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import {
   deleteTemplate,
@@ -160,6 +160,7 @@ const RightFormWork = () => {
     message.success('删除成功')
   }
   useEffect(() => {
+    console.log(editSave, editSave)
     setSave(editSave)
   }, [editSave])
   const getVerifyParams = (parmas: any) => {
@@ -215,9 +216,7 @@ const RightFormWork = () => {
       ),
       id: activeItem.id || 0,
     }
-    if (templateName) {
-      parmas.name = templateName
-    }
+    parmas.name = templateName || activeItem.name
     parmas.requirement = {
       day: fillingRequirements?.day,
       end_time: fillingRequirements?.end_time,
@@ -242,7 +241,7 @@ const RightFormWork = () => {
       dispatch(setActiveItem({ id: res.data.id, name: res.data }))
       message.success('新增成功')
     }
-    dispatch(setEditSave(true))
+    localStorage.setItem('edit', '1')
   }
   return (
     <RightFormWorkStyle>
@@ -281,10 +280,9 @@ const RightFormWork = () => {
             value={value}
             maxLength={50}
             onInput={(e: any) => {
-              dispatch(setEditSave(false))
+              localStorage.setItem('edit', '0')
               setValue(e.target.value),
                 dispatch(setTemplateName(e.target.value))
-              dispatch(setEditSave(false))
             }}
           ></EditFormWorkStyle>
         </EditFormWorkBox>
@@ -306,7 +304,7 @@ const RightFormWork = () => {
             上一步
           </CommonButton>
         )}
-        {save ? (
+        {localStorage.getItem('edit') === '1' ? (
           <CommonButton type="primary" style={{ margin: '0 0px 0 16px' }}>
             已保存
           </CommonButton>

@@ -123,15 +123,6 @@ interface CheckBoxGroupType {
 }
 // 选择周几
 const CheckBoxGroup = (props: CheckBoxGroupType) => {
-  // const { aWeekDataList } = useSelector(store => store.formWork)
-  // console.log(props.value, 'ooo')
-  // useEffect(() => {
-  //   if (!props.value) {
-  //     props.onChange?.(aWeekDataList)
-  //   } else {
-  //     props.onChange?.(props.value)
-  //   }
-  // }, [])
   const onChange = (value: boolean, el1: { value: boolean; key: number }) => {
     const filterVal = props?.value.map(
       (item: { value: boolean; key: number }) => ({
@@ -215,47 +206,53 @@ const FormMain = (props: FormType) => {
       if (endTime?.v2 < startTime?.v2) {
         message.warning('结束时间不能小于开始时间')
         dispatch(setErr(false))
+        return
       } else if (endTime?.v2 === startTime?.v2) {
         if (endTime?.v3 < startTime?.v3) {
           message.warning('结束时间不能小于开始时间')
           dispatch(setErr(false))
+          return
         }
       }
     } else if (startTime?.v1 === 1 && endTime?.v1 === 2) {
       if (endTime?.v2 > startTime?.v2) {
         message.warning('结束时间不能大于24小时')
         dispatch(setErr(false))
+        return
       } else if (startTime?.v2 === endTime?.v2) {
         if (endTime?.v3 > startTime?.v3) {
           message.warning('结束时间不能大于24小时')
           dispatch(setErr(false))
+          return
         }
       }
     } else if (startTime?.v1 === 2 && endTime?.v1 === 1) {
       message.warning('开始时间不能小于结束时间')
       dispatch(setErr(false))
-    } else {
-      dispatch(setErr(true))
+      return
     }
+    dispatch(setErr(true))
   }
   // 不能超过一周
   const WeekJudgeTime = () => {
     if (endTime?.v1 > startTime?.v1 + 7) {
       message.warning('开始时间不允许超过一周')
       dispatch(setErr(false))
+      return
     } else if (endTime?.v1 === startTime?.v1 + 7) {
       if (endTime?.v2 > startTime?.v2) {
         message.warning('开始时间不允许超过一周')
         dispatch(setErr(false))
+        return
       } else if (endTime?.v2 === startTime?.v2) {
         if (endTime?.v3 > startTime?.v3) {
           message.warning('开始时间不允许超过一周')
           dispatch(setErr(false))
+          return
         }
       }
-    } else {
-      dispatch(setErr(true))
     }
+    dispatch(setErr(true))
   }
   const getValues = (type: string, v1: number, v2: number, v3: number) => {
     if (type === 'start') {

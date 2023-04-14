@@ -101,6 +101,7 @@ const FormWorkSide = () => {
     getDataList()
     const item: any = dataList.find((el: any, index: any) => index === 0)
     dispatch(setActiveItem(item))
+    localStorage.setItem('edit', '1')
   }, [])
   const itemActive = (el: any, index: any) => {
     setIsActive(index)
