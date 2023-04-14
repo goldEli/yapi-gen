@@ -99,7 +99,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
     containerClassName: props.containerClassName,
     modalInfo: {
       width: 528,
-      height: 544,
+      height: 640,
     },
   })
   const dispatch = useDispatch()

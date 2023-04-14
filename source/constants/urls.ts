@@ -170,6 +170,7 @@ const urls = {
   getScheduleListDaysOfWeek: '/b/schedule/daysOfWeek',
   getScheduleListDaysOfMonth: '/b/schedule/daysOfMonth',
   getScheduleListDaysOfDate: '/b/schedule/daysOfDate',
+  getScheduleSearch:'/b/schedule/search',
 
   // 修改日程
 

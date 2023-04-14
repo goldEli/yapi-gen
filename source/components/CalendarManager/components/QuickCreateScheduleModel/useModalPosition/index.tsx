@@ -4,8 +4,8 @@ const useModalPosition = (props: {
   x: number
   y: number
   visible: boolean
-  containerClassName?: string
-  modalInfo?: {
+  containerClassName: string
+  modalInfo: {
     width: number
     height: number
   }
@@ -59,8 +59,8 @@ const useModalPosition = (props: {
     }
   }, [
     props.visible,
-    props.modalInfo?.width,
-    props.modalInfo?.height,
+    props.modalInfo.width,
+    props.modalInfo.height,
     props.x,
     props.y,
   ])
