@@ -52,7 +52,7 @@ const defaultMonthMoveScheduleActiveInfo = {
 }
 
 const initialState: SliceState = {
-  calendarPanelType: 'day',
+  calendarPanelType: 'month',
   quickCreateScheduleModel: {
     isAll: false,
     startTime: '',
@@ -95,9 +95,12 @@ const slice = createSlice({
         ...state.monthMoveScheduleActiveInfo,
         ...action.payload,
       }
+      // 日程包含几天
       const len = newState?.length ?? 0
 
+      // 开始坐标
       const min = newState.endIndex ?? 0
+      // 结束坐标
       const max = min + len
 
       const list = Array.from(Array(35).keys()).slice(min, max)
