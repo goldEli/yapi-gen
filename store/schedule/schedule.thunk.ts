@@ -31,20 +31,17 @@ export const getScheduleListDaysOfMonth = createAsyncThunk(
     return res
   },
 )
-// 修改本地日程
-export const modifyLocalSchedule =
-  (params: API.Schedule.ModifySchedule.Params) =>
-  async (dispatch: AppDispatch) => {
-    await services.schedule.modifySchedule(params)
-    dispatch(refreshCalendarPanelScheduleList())
-  }
 
 // 修改日程
 export const modifySchedule =
   (params: API.Schedule.ModifySchedule.Params) =>
   async (dispatch: AppDispatch) => {
-    await services.schedule.modifySchedule(params)
-    dispatch(refreshCalendarPanelScheduleList())
+    try {
+      await services.schedule.modifySchedule(params)
+      await dispatch(refreshCalendarPanelScheduleList())
+    } catch (error) {
+      await dispatch(refreshCalendarPanelScheduleList())
+    }
   }
 
 // 刷新面板上日程列表
@@ -171,11 +168,54 @@ export const getScheduleInfo = createAsyncThunk(
   },
 )
 
+// 日程回复
 export const scheduleInfoReply = createAsyncThunk(
   `${name}/scheduleInfoReply`,
   async (params: { id: number; status: number }) => {
     try {
       const res = await services.schedule.scheduleInfoReply(params)
+      return res
+    } catch (error) {
+      //
+    }
+    return ''
+  },
+)
+
+// 日程删除
+export const scheduleInfoDelete = createAsyncThunk(
+  `${name}/scheduleInfoDelete`,
+  async (params: { id: string; is_remind: boolean }) => {
+    try {
+      const res = await services.schedule.scheduleInfoDelete(params)
+      return res
+    } catch (error) {
+      //
+    }
+    return ''
+  },
+)
+// 日程转让
+export const scheduleInfoTransfer = createAsyncThunk(
+  `${name}/scheduleInfoTransfer`,
+  async (params: { id: string | undefined; is_exit: boolean; user_id: number }) => {
+    try {
+      const res = await services.schedule.scheduleInfoTransfer(params)
+      return res
+    } catch (error) {
+      //
+    }
+    return ''
+  },
+)
+// 日程搜索
+export const getScheduleSearch = createAsyncThunk(
+  `${name}/getScheduleSearch`,
+  async (params: {   calendar_ids: number[],
+    year:number,
+    keyword:string }) => {
+    try {
+      const res = await services.schedule.getScheduleSearch(params)
       return res
     } catch (error) {
       //

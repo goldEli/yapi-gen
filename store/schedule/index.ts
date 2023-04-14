@@ -7,6 +7,9 @@ import {
   getScheduleListDaysOfWeek,
   getScheduleListDaysOfMonth,
   scheduleInfoReply,
+  scheduleInfoDelete,
+  scheduleInfoTransfer,
+  getScheduleSearch,
   getLeftCalendarDaysOfMonthList,
   getScheduleDaysOfList,
 } from './schedule.thunk'
@@ -32,6 +35,8 @@ type SliceState = {
   scheduleInfoReply?: {
     status: number
   }
+  scheduleInfoDeleteStatus?: {}
+  scheduleInfoTransferStatus?: {}
   leftViewScheduleList: {
     [key in string]: Model.Schedule.Info[]
   }
@@ -79,6 +84,12 @@ const slice = createSlice({
     setScheduleDate(state, action: PayloadAction<number>) {
       state.scheduleDate = action.payload
     },
+    setScheduleInfoDelete(state, action: PayloadAction<string>) {
+      state.scheduleInfoDeleteStatus = action.payload
+    },
+    setScheduleInfoTransfer(state, action: PayloadAction<string>) {
+      state.scheduleInfoTransferStatus = action.payload
+    },
   },
   extraReducers(builder) {
     // builder.addCase(getScheduleList.fulfilled, (state, action) => {
@@ -122,11 +133,25 @@ const slice = createSlice({
         state.leftViewScheduleList = action.payload
       },
     )
+    builder.addCase(scheduleInfoDelete.fulfilled, (state, action) => {
+      state.scheduleInfoDeleteStatus = action.payload
+    })
+    builder.addCase(scheduleInfoTransfer.fulfilled, (state, action) => {
+      state.scheduleInfoTransferStatus = action.payload
+    })
+    builder.addCase(getScheduleSearch.fulfilled, (state, action) => {
+      // state.leftViewScheduleList = action.payload
+    })
   },
 })
 
 const schedule = slice.reducer
 
-export const { setScheduleListModal, setScheduleDate } = slice.actions
+export const {
+  setScheduleListModal,
+  setScheduleDate,
+  setScheduleInfoDelete,
+  setScheduleInfoTransfer,
+} = slice.actions
 
 export default schedule

@@ -92,7 +92,6 @@ const ScheduleListModal: React.FC<ScheduleListProps> = props => {
   )
   const disPatch = useDispatch()
   const { visible, top, left, date,scheduleListData=[] } = scheduleListModal
-  //console.log('scheduleListModal----',scheduleListData,date)
   const scheduleInfoClick = (e: any,schedule_id:number) => {
     e.stopPropagation()
     disPatch(setScheduleInfoDropdown({ visible: true,schedule_id }))

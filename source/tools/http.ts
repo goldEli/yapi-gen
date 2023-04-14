@@ -161,7 +161,8 @@ client.config({
         data.code !== 'A0301'
       ) {
         message.error(data.message)
-        throw new Error(data.code)
+        // throw new Error(data.code)
+        return Promise.reject()
       }
       return {
         code: Number(data.code),

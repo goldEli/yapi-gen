@@ -70,9 +70,7 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
   )
   // 左侧日历切换的值
   const checkedTime = useSelector(state => state.calendar.checkedTime)
-
-  const { calenderYearWeekValue } = useSelector(state => state.calendarPanel)
-
+  
   const dayValue = useRef<string>();
   const monthValue = useRef<string>()
 
