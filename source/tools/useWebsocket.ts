@@ -66,8 +66,6 @@ const useWebsocket = () => {
       setReadyState(stateArr[ws.current?.readyState ?? 0])
     }
     ws.current.onmessage = (e: any) => {
-      console.log(e)
-
       setWsData({
         key: Math.random(),
         data: e.data,

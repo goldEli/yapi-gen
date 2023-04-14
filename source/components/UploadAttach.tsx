@@ -181,7 +181,7 @@ const UploadAttach = (props: any) => {
 
   if (props.power) {
     isDownload = true
-    isShowDel = true
+    isShowDel = props.isReport ? false : true
   } else {
     const isCanEdit =
       projectInfo.projectPermissions?.length > 0 &&
