@@ -19,15 +19,14 @@ const ScheduleInfoFooterBox = styled.div`
 
 const ScheduleInfoFooter: React.FC<iProps> = props => {
   const disPatch = useDispatch()
-  const { scheduleInfo } = useSelector(state => state.schedule)
+  const { scheduleInfo } = useSelector(state => state.schedule);
+  console.log(scheduleInfo)
   const replySchedule = (status: number) => {
     disPatch(scheduleInfoReply({ id: scheduleInfo?.id as any, status }))
   }
   return (
     <>
-      {scheduleInfo?.is_join &&
-      scheduleInfo.join_member_status === 0 &&
-      !scheduleInfo.is_creator ? (
+      {scheduleInfo?.is_show_reply? (
         <ScheduleInfoFooterBox>
           <CommonButton type="light" onClick={() => replySchedule(1)}>
             接收

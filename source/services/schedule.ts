@@ -114,3 +114,36 @@ export const scheduleInfoReply = async (params: {
   })
   return response.data
 }
+
+// 日程删除
+export const scheduleInfoDelete = async (params: {
+  id: number,
+  is_remind:boolean
+}) => {
+  const response = await http.delete<any, any>(`/b/schedule/${params.id}`, {
+    is_remind: params.is_remind,
+  })
+  return response.data
+}
+
+// 日程转让
+export const scheduleInfoTransfer = async (params: {
+  id: number,
+  is_exit:boolean,
+  user_id:number
+}) => {
+  const response = await http.post<any, any>(`/b/schedule/${params.id}/makeOver`, {
+    is_exit: params.is_exit,
+    user_id:params.user_id
+  })
+  return response.data
+}
+// 日程搜索
+export const scheduleSearch = async (params: {
+  calendar_ids: number[],
+  year:number,
+  keyword:string
+}) => {
+  const response = await http.post<any, any>(`getScheduleSearch`,params)
+  return response.data
+}

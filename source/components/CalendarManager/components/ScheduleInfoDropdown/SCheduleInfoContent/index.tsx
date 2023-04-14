@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from '@store/index'
 import IconFont from '@/components/IconFont'
 const ScheduleInfoContentBox = styled.div`
   padding: 16px;
-  max-height: 400px;
+  max-height: 460px;
   overflow-y: scroll;
 `
 const ScheduleInfoContentItem = styled.div`
