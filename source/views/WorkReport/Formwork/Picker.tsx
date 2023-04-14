@@ -167,7 +167,8 @@ const Picker = (props: PropsType) => {
   }
   const getTime = () => {
     setIsOpen(false)
-    props.getValues(leftActiveVal, centerActiveVal, rightActiveVal)
+    localStorage.setItem('edit', '1'),
+      props.getValues(leftActiveVal, centerActiveVal, rightActiveVal)
     if (props.pickerType === 'start' || props.pickerType === 'end') {
       props?.onChange?.({
         time: time1(0, centerActiveVal, rightActiveVal),

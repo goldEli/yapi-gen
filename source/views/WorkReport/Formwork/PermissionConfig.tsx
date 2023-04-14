@@ -121,6 +121,7 @@ const PermissionConfig = (props: PropsType) => {
 
   // 填写周期
   const onchange = (e: any) => {
+    localStorage.setItem('edit', '1')
     setType(e.target.value)
     let value = 0
     switch (e.target.value) {
@@ -295,7 +296,6 @@ const PermissionConfig = (props: PropsType) => {
   }
   // 表单值处理，时间秒转换成展示的数字
   const setFormValues = (obj: any) => {
-    localStorage.setItem('edit', '1')
     switch (obj?.submit_cycle) {
       case 1:
         setType('day')
