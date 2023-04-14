@@ -309,9 +309,6 @@ const WriteReport = (props: Props) => {
       <SupplementaryIntercourseModal
         isVisible={visibleMakeUp}
         onClose={() => setVisibleMakeUp(false)}
-        onConfirm={function (): void {
-          throw new Error('Function not implemented.')
-        }}
         title="补交汇报"
       />
       <HandleReport

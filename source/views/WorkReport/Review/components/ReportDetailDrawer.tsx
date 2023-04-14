@@ -83,7 +83,7 @@ const ContactDemand = (props: { list: any }) => {
   const list = props.list?.length ? props.list : []
   return (
     <ContactDemandBox>
-      {list.map((i: any) => (
+      {list?.map((i: any) => (
         <ContactDemandItem key={i.id}>
           【{i.id}】<span className="name">{i.name}</span>
         </ContactDemandItem>
@@ -94,7 +94,7 @@ const ContactDemand = (props: { list: any }) => {
 
 const AttachmentBox = (props: { list: any }) => {
   const list = props.list?.length ? props.list : []
-  const resultList = list.map((item: any) => {
+  const resultList = list?.map((item: any) => {
     return {
       url: item.url,
       id: new Date().getTime() + Math.random(),
@@ -120,6 +120,7 @@ const ReportDetailDrawer = () => {
   const [isReview, setIsReview] = useState(false)
   const [commentList, setCommentList] = useState([])
   const [form] = Form.useForm()
+  const reviewRef = useRef<any>()
   const leftWidth = 640
   const editorRef = useRef<EditorRef>(null)
 
@@ -144,6 +145,15 @@ const ReportDetailDrawer = () => {
     document.addEventListener('mouseup', () => {
       setFocus(false)
       document.removeEventListener('mousemove', debounceWrap)
+    })
+  }
+
+  const scrollToBottom = () => {
+    setTimeout(() => {
+      reviewRef.current.scrollTo({
+        top: reviewRef.current.scrollHeight,
+        behavior: 'smooth',
+      })
     })
   }
 
@@ -224,6 +234,7 @@ const ReportDetailDrawer = () => {
     }
     await addReportComment(params)
     message.success('添加评论成功！')
+    scrollToBottom()
     setIsReview(false)
     getReportCommentData(drawerInfo.id)
     form.resetFields()
@@ -247,7 +258,6 @@ const ReportDetailDrawer = () => {
   }
 
   useEffect(() => {
-    console.log(viewReportModal.visible, viewReportModal?.id, 'viewReportModal')
     if (viewReportModal.visible && viewReportModal?.id) {
       setReportIds(viewReportModal?.ids || [])
       getReportDetail(viewReportModal?.ids || [])
@@ -330,7 +340,7 @@ const ReportDetailDrawer = () => {
             </ChangeIconGroup>
           </Space>
         </Header>
-        <Content isReview={isReview}>
+        <Content isReview={isReview} ref={reviewRef}>
           {skeletonLoading && <DetailsSkeleton />}
           {!skeletonLoading && (
             <>

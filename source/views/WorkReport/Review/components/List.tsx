@@ -157,7 +157,7 @@ const List = () => {
       setViewReportModal({
         visible: true,
         id: row.id,
-        ids: listData.map((i: any) => i.id),
+        ids: listData?.map((i: any) => i.id),
       }),
     )
   }

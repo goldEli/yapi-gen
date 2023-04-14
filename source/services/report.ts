@@ -37,12 +37,18 @@ export const getStatTempUsage: any = async () => {
   const response = await http.get('statTempUsage')
   return response.data
 }
-// 模板
+
 
 export const writeReport: any = async (params: any) => {
   const response = await http.post('writeReport', { ...params })
   return response
 }
+
+export const updateReport: any = async (params: any) => {
+  const response = await http.put('updateReport', { ...params })
+  return response
+}
+
 
 export const templateLatelyList: any = async (params: any) => {
     const response = await http.get('templateLatelyList', { ...params })
@@ -73,3 +79,4 @@ export const getRepPublicList: any = async (params: any) => {
   const response = await http.get('repPublicList', params)
   return response.data
 }
+

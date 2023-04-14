@@ -4,13 +4,11 @@ import { useEffect, useState } from 'react'
 import { supplyList } from '@/services/report'
 import NoData from '@/components/NoData'
 import HandleReport from '@/views/WorkReport/Review/components/HandleReport'
-import { message } from 'antd'
 import { useTranslation } from 'react-i18next'
 
 interface Props {
   isVisible: boolean
   onClose(): void
-  onConfirm(): void
   title: string
 }
 const ItemList = styled.div`

@@ -139,6 +139,7 @@ const urls = {
   templateList: '/b/work_report/template/list',
   templateLatelyList: '/b/work_report/template/lately',
   writeReport: '/b/work_report/user',
+  updateReport: '/b/work_report/user',
   statTempList: '/b/work_report/statistics/template/list',
   statUserList: '/b/work_report/statistics/user/list',
   statInfo: '/b/work_report/statistics/info',

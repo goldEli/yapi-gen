@@ -19,7 +19,11 @@ import { Editor } from '@xyfe/uikit'
 import { getStaffListAll } from '@/services/staff'
 import { uploadFile } from '@/components/CreateDemand/CreateDemandLeft'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
-import { getReportDetailById, writeReport } from '@/services/report'
+import {
+  getReportDetailById,
+  updateReport,
+  writeReport,
+} from '@/services/report'
 import { templateDetail } from '@/services/formwork'
 
 const LabelTitle = styled.span`
@@ -92,15 +96,28 @@ const HandleReport = (props: any) => {
       }
     })
 
-    // 写汇报
-    const res = await writeReport({
-      report_template_id: props?.templateId,
-      data,
-      target_users: users,
-    })
-    if (res && res.code === 0 && res.data?.id) {
-      message.success(t('操作成功'))
+    // 修改汇报
+    if (props?.editId) {
+      const res = await updateReport({
+        id: props?.editId,
+        data,
+        target_users: users,
+      })
+      console.log(res, 'res')
     }
+
+    // 写汇报
+    if (props?.templateId) {
+      const res = await writeReport({
+        report_template_id: props?.templateId,
+        data,
+        target_users: users,
+      })
+      if (res && res.code === 0 && res.data?.id) {
+        message.success(t('操作成功'))
+      }
+    }
+
     close()
   }
 
@@ -126,7 +143,7 @@ const HandleReport = (props: any) => {
     dom.scrollTop = dom.scrollHeight
   }
   const importPreviousArticle = () => {
-    if (reportDetail.is_user_used) {
+    if (reportDetail.prev_report_id) {
       Modal.confirm({
         width: 450,
         title: (
@@ -149,23 +166,49 @@ const HandleReport = (props: any) => {
         cancelText: t('report.list.cancel'),
         centered: true,
         closable: true,
-        onOk: () => {
+        onOk: async () => {
           // Todo 根据模板详情里的上一篇id 去查询
+          const result = await getReportDetailById({
+            id: reportDetail?.prev_report_id,
+          })
+          if (result && result.data) {
+            const temp: any = {}
+            result.data.report_content?.forEach((v: any) => {
+              temp[`${v.type}_${v.id}`] =
+                v.type === 3 ? v?.pivot?.content : v?.pivot?.params
+            })
+            form.setFieldsValue({
+              ...temp,
+              [`${result?.data?.type || 3}_${
+                result?.data?.target_user_config_id
+              }`]: result?.data?.target_users,
+            })
+          }
         },
       })
     }
   }
+  // 通过id查询模板详情
   const getTemplateById = async (id: number) => {
     const res = await templateDetail({ id })
     if (res && res.code === 0 && res.data) {
       setReportDetail(res.data)
     }
   }
+  // Todo 编辑回显值,补个user的值
   const setDefaultValue = async () => {
     const result = await getReportDetailById({ id: props?.editId })
     if (result.code === 0 && result.data) {
       setEditDetail(result.data)
       getTemplateById(result.data.report_template_id)
+      const temp: any = {}
+      result.data.report_content?.forEach((v: any) => {
+        temp[`${v.type}_${v.id}`] =
+          v.type === 3 ? v?.pivot?.content : v?.pivot?.params
+      })
+      form.setFieldsValue({
+        ...temp,
+      })
     }
   }
   const getList = async () => {
@@ -194,14 +237,6 @@ const HandleReport = (props: any) => {
     }
   }, [props.templateId])
 
-  const scrollToBottom = () => {
-    setTimeout(() => {
-      leftDom.current.scrollTo({
-        top: leftDom.current.scrollHeight,
-        behavior: 'smooth',
-      })
-    })
-  }
   const onValidator = (rule: any, value: any) => {
     if (value === '<p><br></p>' || value === '<p></p>' || value.trim() === '') {
       return Promise.reject(
@@ -321,12 +356,16 @@ const HandleReport = (props: any) => {
             label={<LabelTitle>{content.name}</LabelTitle>}
             name={`${content.type}_${content.id}`}
           >
-            <RelatedNeed onBootom={scrollToBottom} initValue={[]} />
+            <RelatedNeed initValue={[]} />
           </Form.Item>
         )
       default:
         return <span />
     }
+  }
+
+  const getReportDateText = (date: any) => {
+    return `（${date?.[0]}${date?.[0] && date?.[1] ? '至' : ''}${date?.[1]}）`
   }
 
   return (
@@ -346,7 +385,7 @@ const HandleReport = (props: any) => {
         }}
         ref={leftDom}
       >
-        <HeadWrap isCanImport={reportDetail?.is_user_used}>
+        <HeadWrap isCanImport={reportDetail?.prev_report_id}>
           <div
             style={{
               display: 'flex',
@@ -369,7 +408,9 @@ const HandleReport = (props: any) => {
             )}
             <div className="titleText">
               {`${userInfo?.name}的${reportDetail?.name}`}
-              <span className="dateText">（2022-08-21至2022-08-27）</span>
+              <span className="dateText">
+                {getReportDateText(reportDetail?.submitCycleDate)}
+              </span>
             </div>
           </div>
           <div className="importText" onClick={importPreviousArticle}>
@@ -406,3 +447,7 @@ const HandleReport = (props: any) => {
 }
 
 export default HandleReport
+
+/**
+ * Todo  1.左侧点击加号动画   2. 写汇报提交后需要刷新页面   3. 最近使用 加个暂无数据  4.查看汇报抽屉优化
+ */
