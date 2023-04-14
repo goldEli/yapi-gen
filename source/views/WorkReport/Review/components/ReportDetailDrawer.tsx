@@ -168,7 +168,6 @@ const ReportDetailDrawer = () => {
     const info = await getReportInfo({
       id: viewReportModal.id,
     })
-    console.log(info)
     setDrawerInfo(info)
     setSkeletonLoading(false)
     // 获取当前需求的下标， 用作上一下一切换
