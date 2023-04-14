@@ -14,11 +14,7 @@ import FormMain from './FormMain'
 import { Form, Radio } from 'antd'
 import { useDispatch, useSelector } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import {
-  setReportContent,
-  setFillingRequirements,
-  setEditSave,
-} from '@store/formWork'
+import { setReportContent, setFillingRequirements } from '@store/formWork'
 import { dayData1, weekData, monthData } from './DataList'
 import moment from 'moment'
 import { cos } from '@/services/cos'
@@ -299,7 +295,7 @@ const PermissionConfig = (props: PropsType) => {
   }
   // 表单值处理，时间秒转换成展示的数字
   const setFormValues = (obj: any) => {
-    dispatch(setEditSave(false))
+    localStorage.setItem('edit', '0')
     switch (obj?.submit_cycle) {
       case 1:
         setType('day')

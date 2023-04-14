@@ -6,12 +6,9 @@ import { useEffect, useState } from 'react'
 import TabsDragging from './TabsDragging'
 import RightDragging from './RightDragging'
 import ParmasDialog from './ParmasDialog'
-import CommonButton from '@/components/CommonButton'
 import { useDispatch, useSelector } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import { setEditSave, setTemplateContentConfigs } from '@store/formWork'
-import { upDateTemplate } from '@/services/formwork'
-import { message } from 'antd'
+import { setTemplateContentConfigs } from '@store/formWork'
 const TitleStyle = styled.div`
   display: flex;
   width: 100%;
@@ -60,7 +57,7 @@ const EditWork = (props: PropsType) => {
   const { templateContentConfigs } = useSelector(store => store.formWork)
   const [dataList, setDataList] = useState<any>()
   const onDrag = (event: any, i: number) => {
-    dispatch(setEditSave(false))
+    localStorage.setItem('edit', '0')
     const evevtObj: any = event.dataTransfer.getData('item')
       ? JSON.parse(event.dataTransfer.getData('item'))
       : null
@@ -107,7 +104,7 @@ const EditWork = (props: PropsType) => {
     dispatch(setTemplateContentConfigs(arrData))
   }
   const onChangeChecked = (val: boolean, el: any) => {
-    dispatch(setEditSave(false))
+    localStorage.setItem('edit', '0')
     const num = val ? 1 : 2
     const arr = dataList.map((item: any) => ({
       ...item,
@@ -123,7 +120,7 @@ const EditWork = (props: PropsType) => {
     setIsVisible(true)
   }
   const onDelete = (el: { name: string }) => {
-    dispatch(setEditSave(false))
+    localStorage.setItem('edit', '0')
     const arr = dataList.filter((item: any) => el.name !== item.name)
     dispatch(setTemplateContentConfigs(arr))
     setDataList(arr)
