@@ -2,10 +2,8 @@ import React, { useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { useDispatch, useSelector } from '@store/index'
-import { getScheduleDaysOfList } from '@store/schedule/schedule.thunk'
+import { getScheduleDaysOfList ,getScheduleSearch} from '@store/schedule/schedule.thunk'
 import dayjs from 'dayjs'
-import { forIn } from '@antv/util'
-import { forEach } from 'lodash'
 interface CalendarListProps {}
 const CalendarListBox = styled.div`
   background-color: #fff;
@@ -94,7 +92,15 @@ const CalendarList: React.FC<CalendarListProps> = props => {
       calendar_ids: data1.map(item => item.calendar_id),
     }
     disPatch(getScheduleDaysOfList(params))
-  }, [calenderListValue, scheduleSearchKey])
+  }, [calenderListValue])
+  useEffect(()=>{
+    let params={
+      year: dayjs(calenderListValue).year(),
+      keyword:scheduleSearchKey,
+      calendar_ids: data1.map(item => item.calendar_id),
+    }
+    disPatch(getScheduleSearch(params))
+  },[scheduleSearchKey])
   useEffect(() => {
     let childrenKeys = [...(CalendarListBoxRef.current?.children as any)].map(
       item => {

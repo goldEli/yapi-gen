@@ -124,27 +124,27 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
   const [showTipBox, setShowTipBox] = useState(false)
   const [isExit, setIsExit] = useState(true)
   const [userId,setUserId]=useState<number>();
-  const { scheduleInfo,scheduleInfoTransferStatus,scheduleInfoDeleteStatus} = useSelector(state => state.schedule)
+  const { scheduleInfo} = useSelector(state => state.schedule)
   const [t] = useTranslation()
   const disPatch = useDispatch()
   const onChangeVisible = () => {
     setIsVisible(false)
   }
-  useEffect(()=>{
-    if(!scheduleInfoTransferStatus) return
-    setModalVisible(false)
-    setShowTipBox(false);
-    disPatch(setScheduleInfoDropdown({ visible: false }))
-    disPatch(setScheduleListModal({visible:false}))
-    disPatch(setScheduleInfoTransfer(''))
-  },[scheduleInfoTransferStatus])
-  useEffect(()=>{
-    if(!scheduleInfoDeleteStatus) return
-    setIsVisible(false)
-    disPatch(setScheduleInfoDropdown({ visible: false }))
-    disPatch(setScheduleListModal({visible:false}))
-    disPatch(setScheduleInfoDelete(''))
-  },[scheduleInfoDeleteStatus])
+  // useEffect(()=>{
+  //   if(!scheduleInfoTransferStatus) return
+  //   setModalVisible(false)
+  //   setShowTipBox(false);
+  //   disPatch(setScheduleInfoDropdown({ visible: false }))
+  //   disPatch(setScheduleListModal({visible:false}))
+  //   disPatch(setScheduleInfoTransfer(''))
+  // },[scheduleInfoTransferStatus])
+  // useEffect(()=>{
+  //   if(!scheduleInfoDeleteStatus) return
+  //   setIsVisible(false)
+  //   disPatch(setScheduleInfoDropdown({ visible: false }))
+  //   disPatch(setScheduleListModal({visible:false}))
+  //   disPatch(setScheduleInfoDelete(''))
+  // },[scheduleInfoDeleteStatus])
   return (
     <ScheduleInfoHeader>
       <ScheduleInfoHeaderBtn>
