@@ -1,3 +1,4 @@
+/* eslint-disable require-atomic-updates */
 /* eslint-disable no-undefined */
 /* eslint-disable camelcase */
 /* eslint-disable complexity */
@@ -9,7 +10,7 @@ import IconFont from '@/components/IconFont'
 import { useDispatch, useSelector } from '@store/index'
 import { changeVisible } from '@store/SiteNotifications'
 import { Checkbox, Divider, Drawer, Skeleton, Tooltip } from 'antd'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import ContentItem from '../ContentItem/ContentItem'
 import {
@@ -32,6 +33,10 @@ import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 
 const tabsValue = [
   {
+    id: '3',
+    text: '全部',
+  },
+  {
     id: '1',
     text: '最新（4）',
   },
@@ -39,27 +44,22 @@ const tabsValue = [
     id: '2',
     text: '@我的',
   },
-  {
-    id: '3',
-    text: '全部',
-  },
 ]
 
 const SiteDrawer = () => {
   const [t] = useTranslation()
-
-  const [active, setActive] = useState('1')
+  const [active, setActive] = useState('3')
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const isVisible = useSelector(store => store.siteNotifications.isVisible)
   const [list, setList] = useState([])
-  const [lastId, setLastId] = useState<any>(0)
+  const lastId = useRef(0)
   const [hasMore, setHasMore] = useState(true)
   const [read, setRead] = useState<number | null>()
 
   const onChange = (e: CheckboxChangeEvent) => {
-    setLastId(0)
-    setList([])
+    lastId.current = 0
+    setHasMore(true)
     setRead(e.target.checked ? 0 : undefined)
   }
 
@@ -69,34 +69,27 @@ const SiteDrawer = () => {
   const changeActive = (id: string) => {
     setActive(id)
   }
-  const init = async () => {
+
+  const fetchMoreData = async (b?: boolean) => {
     const re4 = await getMsg_list({
-      lastId,
+      lastId: lastId.current,
       read,
     })
-
-    return {
-      lastId: re4.lastId,
-      list: re4.list,
-    }
-  }
-
-  const fetchMoreData = async () => {
-    const re4 = await init()
-    console.log(re4)
 
     if (re4.lastId === 0) {
       setHasMore(false)
       return
     }
+    lastId.current = re4.lastId
     setTimeout(() => {
-      setList(list.concat(re4.list))
-      setLastId(re4.lastId)
-    }, 3000)
+      if (b) {
+        setList(re4.list)
+      } else {
+        setList(list.concat(re4.list))
+      }
+    }, 500)
   }
-
   const setReads = async (values: any) => {
-    console.log(values)
     setReadApi(values)
   }
   const setAllRead = () => {
@@ -104,7 +97,7 @@ const SiteDrawer = () => {
     setReads(arr)
   }
   useEffect(() => {
-    isVisible ? fetchMoreData() : null
+    isVisible ? fetchMoreData(true) : null
   }, [isVisible, read])
 
   return (

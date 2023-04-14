@@ -28,6 +28,7 @@ import calendarPanel from './calendarPanle'
 import siteNotifications from './SiteNotifications'
 import formWork from './formWork'
 import createScheduleVisualization from './createScheduleVisualization'
+import workReport from './workReport'
 
 export const store = configureStore({
   reducer: {
@@ -55,6 +56,7 @@ export const store = configureStore({
     siteNotifications,
     formWork,
     createScheduleVisualization,
+    workReport,
   },
 })
 

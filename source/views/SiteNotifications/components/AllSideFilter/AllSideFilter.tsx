@@ -19,7 +19,7 @@ import {
 import { t } from 'i18next'
 import { getContactStatistics } from '@/services/SiteNotifications'
 
-const AllSideFilter = () => {
+const AllSideFilter = (props: any) => {
   const items = [
     // {
     //   id: '1',
@@ -61,8 +61,9 @@ const AllSideFilter = () => {
       read: 0,
     },
   ]
-  const [active, setActive] = useState('project')
+  const [active, setActive] = useState('')
   const [lists, setLists] = useState<any>([])
+  const [checeks, setCheceks] = useState<any>([])
   const isVisibleFilter = useSelector(
     store => store.siteNotifications.isVisibleFilter,
   )
@@ -75,17 +76,26 @@ const AllSideFilter = () => {
   }
 
   const onChange = (checkedValues: any) => {
-    console.log('checked = ', checkedValues)
+    setCheceks(checkedValues)
+    props.changeMsg(checkedValues)
   }
   const choose = (id: any) => {
     setActive(id)
-    console.log()
+
+    const arr = configuration[
+      configuration.findIndex((i: any) => i.sendType === active)
+    ]?.children?.map((i: any) => {
+      console.log(i)
+      return i.value
+    })
+
+    setCheceks(arr)
+    props.changeUser(id, arr)
   }
-  console.log(active)
 
   const init = async () => {
     const res = await getContactStatistics()
-    console.log(res, '筛选数据')
+
     items.forEach((i: any) => {
       res.list.forEach((j: any) => {
         if (i.sendType === j.send_user) {
@@ -93,7 +103,7 @@ const AllSideFilter = () => {
         }
       })
     })
-    console.log(items)
+
     setLists(items)
   }
 
@@ -125,8 +135,10 @@ const AllSideFilter = () => {
         <MyIconModeTextWrap>
           {lists.map((i: any) => (
             <Badge key={i.id} size="small" offset={[-22, 6]} count={i.read}>
-              <MyIconModeWrap onClick={() => choose(i.sendType)}>
-                <MyIconMode active={active === i.sendType}>
+              <MyIconModeWrap
+                onClick={() => (i.read ? choose(i.sendType) : null)}
+              >
+                <MyIconMode tap={i.read} active={active === i.sendType}>
                   <IconFont
                     style={{ fontSize: 20 }}
                     type={active === i.sendType ? i.icon2 : i.icon}
@@ -139,23 +151,27 @@ const AllSideFilter = () => {
         </MyIconModeTextWrap>
         <MyHead>
           <LeftTitle title={t('Notices')} />
-          <ResetB>{t('reset_filtering') as string}</ResetB>
+          {/* <ResetB>{t('reset_filtering') as string}</ResetB> */}
         </MyHead>
         <InfoWrap>
-          <Checkbox.Group style={{ width: '100%' }} onChange={onChange}>
-            {configuration[
-              configuration.findIndex((i: any) => i.sendType === active)
-            ].children?.map((i: any) => {
-              console.log(i)
-
-              return (
-                <InfoWrapItem key={i.value}>
-                  <span>{i.label}</span>
-                  <Checkbox value={i.value} />
-                </InfoWrapItem>
-              )
-            })}
-          </Checkbox.Group>
+          {active && (
+            <Checkbox.Group
+              value={checeks}
+              style={{ width: '100%' }}
+              onChange={onChange}
+            >
+              {configuration[
+                configuration.findIndex((i: any) => i.sendType === active)
+              ].children?.map((i: any) => {
+                return (
+                  <InfoWrapItem key={i.value}>
+                    <span>{i.label}</span>
+                    <Checkbox value={i.value} />
+                  </InfoWrapItem>
+                )
+              })}
+            </Checkbox.Group>
+          )}
         </InfoWrap>
       </Wrap>
     </Drawer>

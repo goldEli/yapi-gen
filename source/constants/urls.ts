@@ -160,6 +160,12 @@ const urls = {
   statUserList: '/b/work_report/statistics/user/list',
   statInfo: '/b/work_report/statistics/info',
   statTempUsage: '/b/work_report/statistics/template',
+  repSentList: '/b/work_report/user/send/list',
+  repReceivedList: '/b/work_report/user/receive/list',
+  repPublicList: '/b/work_report/user/public/list',
+  getReportInfo: '/b/work_report/user/info',
+  getReportComment: '/b/work_report/user/comment',
+  addReportComment: '/b/work_report/user/comment',
 
   getScheduleListDaysOfWeek: '/b/schedule/daysOfWeek',
   getScheduleListDaysOfMonth: '/b/schedule/daysOfMonth',

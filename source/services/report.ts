@@ -1,6 +1,23 @@
 import * as http from '../tools/http'
 // 汇报
 
+// 获取汇报详情
+export const getReportInfo = async (params: any) => {
+  const response = await http.get('getReportInfo', params)
+  return response.data
+}
+
+// 获取汇报评论
+export const getReportComment = async (params: any) => {
+  const response = await http.get('getReportComment', params)
+  return response.data
+}
+
+// 添加评论
+export const addReportComment = async (params: any) => {
+  await http.post('addReportComment', params)
+}
+
 export const getStatTempList: any = async () => {
   const response = await http.get('statTempList')
   return response.data
@@ -30,4 +47,19 @@ export const writeReport: any = async (params: any) => {
 export const templateLatelyList: any = async (params: any) => {
   const response = await http.get('templateLatelyList', { ...params })
   return response
+}
+
+export const getRepSentList: any = async (params: any) => {
+  const response = await http.get('repSentList', params)
+  return response.data
+}
+
+export const getRepReceivedList: any = async (params: any) => {
+  const response = await http.get('repReceivedList', params)
+  return response.data
+}
+
+export const getRepPublicList: any = async (params: any) => {
+  const response = await http.get('repPublicList', params)
+  return response.data
 }
