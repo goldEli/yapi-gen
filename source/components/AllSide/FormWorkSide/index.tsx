@@ -104,7 +104,10 @@ const FormWorkSide = () => {
     localStorage.setItem('edit', '1')
   }, [])
   const itemActive = (el: any, index: any) => {
-    localStorage.setItem('edit', '1')
+    if (localStorage.getItem('edit') === '0') {
+      setDelIsVisible(true)
+      return
+    }
     setIsActive(index)
     const data = [
       {
