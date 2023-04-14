@@ -4,37 +4,16 @@
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/no-danger */
-
-// 需求详情弹窗预览模式
-
-import {
-  deleteDemand,
-  getDemandInfo,
-  updateDemandStatus,
-} from '@/services/demand'
-import { getProjectInfo } from '@/services/project'
-import { encryptPhp } from '@/tools/cryptoPhp'
-import {
-  setCreateDemandProps,
-  setDemandDetailDrawerProps,
-  setIsCreateDemandVisible,
-  setIsUpdateDemand,
-} from '@store/demand'
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
-import { setProjectInfo } from '@store/project'
 import { Drawer, message, Form, Skeleton, Space, Input, Button } from 'antd'
-import type { EditorRef } from '@xyfe/uikit'
-import UploadAttach from '@/components/UploadAttach'
 import { Editor } from '@xyfe/uikit'
 import { createRef, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonIconFont from '@/components/CommonIconFont'
-import DeleteConfirm from '@/components/DeleteConfirm'
 import { DragLine } from '@/components/StyleCommon'
 import DetailsSkeleton from '@/components/DemandDetailDrawer/DetailsSkeleton'
-import { divide, throttle } from 'lodash'
+import { throttle } from 'lodash'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
-import IconFont from '@/components/IconFont'
 import {
   Header,
   BackIcon,
@@ -49,54 +28,20 @@ import {
   LabelMessageRead,
   CommentFooter,
 } from './style'
-import DemandComment from '@/components/DemandDetailDrawer/DemandComment'
+import { setViewReportModal } from '@store/workReport'
+import { getReportInfo } from '@/services/report'
 
 const ReportDetailDrawer = () => {
-  const normalState = {
-    detailInfo: {
-      isOpen: true,
-      dom: useRef<any>(null),
-    },
-    detailDemands: {
-      isOpen: false,
-      dom: useRef<any>(null),
-    },
-    basicInfo: {
-      isOpen: false,
-      dom: useRef<any>(null),
-    },
-    demandComment: {
-      isOpen: false,
-      dom: useRef<any>(null),
-    },
-  }
-  const {
-    isDemandDetailDrawerVisible,
-    demandDetailDrawerProps,
-    isUpdateDemand,
-  } = useSelector(store => store.demand)
-  const { projectInfo } = useSelector(store => store.project)
   const [t] = useTranslation()
   const dispatch = useDispatch()
-  const [isMoreVisible, setIsMoreVisible] = useState(false)
-  const [isDelete, setIsDelete] = useState(false)
+  const { viewReportModal } = useSelector(store => store.workReport)
   const [skeletonLoading, setSkeletonLoading] = useState(false)
   const [focus, setFocus] = useState(false)
-  const [deleteId, setDeleteId] = useState(0)
   const [drawerInfo, setDrawerInfo] = useState<any>({})
-  const [showState, setShowState] = useState<any>(normalState)
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [demandIds, setDemandIds] = useState([])
-  const commentDom: any = createRef()
-  const [form] = Form.useForm()
+  const [reportIds, setReportIds] = useState<any>([])
   const [isReview, setIsReview] = useState(false)
-
-  const modeList = [
-    { name: t('project.detailInfo'), key: 'detailInfo', content: '' },
-    { name: t('common.childDemand'), key: 'detailDemands', content: '' },
-    { name: t('newlyAdd.basicInfo'), key: 'basicInfo', content: '' },
-    { name: t('requirements_review'), key: 'demandComment', content: '' },
-  ]
+  const [form] = Form.useForm()
   const leftWidth = 640
 
   // 拖动线条
@@ -123,37 +68,14 @@ const ReportDetailDrawer = () => {
     })
   }
 
-  // 获取项目详情权限
-  const getProjectData = async () => {
-    const response = await getProjectInfo({
-      projectId:
-        demandDetailDrawerProps.project_id ?? demandDetailDrawerProps.projectId,
-    })
-    dispatch(setProjectInfo(response))
-  }
-
-  // 获取需求详情
-  const getDemandDetail = async (id?: any, ids?: any) => {
-    const paramsProjectId =
-      demandDetailDrawerProps.project_id ?? demandDetailDrawerProps.projectId
-    if (demandDetailDrawerProps?.isAllProject) {
-      getProjectData()
-    }
+  // 获取汇报详情
+  const getReportDetail = async (ids?: any) => {
     setDrawerInfo({})
     setSkeletonLoading(true)
-    const info = await getDemandInfo({
-      projectId: paramsProjectId,
-      id: id ? id : demandDetailDrawerProps?.id,
+    const info = await getReportInfo({
+      id: viewReportModal.id,
     })
-    info.hierarchy.push({
-      id: info.id,
-      categoryId: info.category,
-      prefixKey: info.prefixKey,
-      projectPrefix: info.projectPrefix,
-      categoryAttachment: info.category_attachment,
-      parentId: info.parentId,
-      name: info.name,
-    })
+    console.log(info)
     setDrawerInfo(info)
     setSkeletonLoading(false)
     // 获取当前需求的下标， 用作上一下一切换
@@ -162,117 +84,18 @@ const ReportDetailDrawer = () => {
 
   // 关闭弹窗
   const onCancel = () => {
-    dispatch({
-      type: 'demand/setIsDemandDetailDrawerVisible',
-      payload: false,
-    })
-    dispatch(setCreateDemandProps({}))
-    dispatch({
-      type: 'demand/setDemandDetailDrawerProps',
-      payload: {},
-    })
-    setShowState(normalState)
-  }
-
-  // 跳转详情页面
-  const onToDetail = () => {
-    const params = encryptPhp(
-      JSON.stringify({
-        type: 'info',
-        id: drawerInfo.projectId,
-        demandId: drawerInfo.id,
-      }),
-    )
-    const url = `ProjectManagement/Demand?data=${params}`
-    window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
-  }
-
-  // 点击编辑
-  const onEditChange = (item: any) => {
-    setIsMoreVisible(false)
-    dispatch(setIsCreateDemandVisible(true))
-    dispatch(
-      setCreateDemandProps({
-        demandId: item.id,
-        projectId: drawerInfo.projectId,
-      }),
-    )
-  }
-
-  // 点击删除
-  const onDeleteChange = (item: any) => {
-    setIsMoreVisible(false)
-    setDeleteId(item.id)
-    setIsDelete(true)
-  }
-
-  // 点击创建子需求
-  const onCreateChild = (item: any) => {
-    setIsMoreVisible(false)
-    dispatch(setIsCreateDemandVisible(true))
-    dispatch(
-      setCreateDemandProps({
-        projectId: drawerInfo.projectId,
-        isChild: true,
-        parentId: item.id,
-        categoryId: item.categoryId,
-      }),
-    )
-  }
-
-  // 改变模块显示
-  const onChangeShowState = (item: any) => {
-    const newState = Object.assign({}, showState)
-    const resState = {
-      isOpen: !newState[item.key].isOpen,
-      dom: newState[item.key].dom,
-    }
-    newState[item.key].dom.current.style.height = resState.isOpen ? 'auto' : 0
-    newState[item.key] = resState
-    setShowState(newState)
-  }
-
-  // 是否审核
-  const onExamine = () => {
-    message.warning(t('newlyAdd.underReview'))
-  }
-
-  // 修改状态
-  const onChangeStatus = async (value: any) => {
-    try {
-      await updateDemandStatus(value)
-      message.success(t('common.statusSuccess'))
-      getDemandDetail()
-      dispatch(setIsUpdateDemand(true))
-    } catch (error) {
-      //
-    }
-  }
-
-  // 删除需求
-  const onDeleteConfirm = async () => {
-    try {
-      await deleteDemand({
-        projectId: drawerInfo.projectId,
-        id: deleteId,
-      })
-      message.success(t('common.deleteSuccess'))
-      setDeleteId(0)
-      setIsDelete(false)
-      onCancel()
-      // 更新列表
-    } catch (error) {
-      //
-    }
+    setFocus(false)
+    setIsReview(false)
+    dispatch(setViewReportModal({ visible: false, id: 0, ids: [] }))
   }
 
   // 向上查找需求
   const onUpDemand = () => {
-    const newIndex = demandIds[currentIndex - 1]
+    const newIndex = reportIds[currentIndex - 1]
     if (!currentIndex) return
     dispatch(
-      setDemandDetailDrawerProps({
-        ...demandDetailDrawerProps,
+      setViewReportModal({
+        ...viewReportModal,
         ...{ id: newIndex },
       }),
     )
@@ -280,19 +103,19 @@ const ReportDetailDrawer = () => {
 
   // 向下查找需求
   const onDownDemand = () => {
-    const newIndex = demandIds[currentIndex + 1]
-    if (currentIndex === demandIds?.length - 1) return
+    const newIndex = reportIds[currentIndex + 1]
+    if (currentIndex === reportIds?.length - 1) return
 
     dispatch(
-      setDemandDetailDrawerProps({
-        ...demandDetailDrawerProps,
+      setViewReportModal({
+        ...viewReportModal,
         ...{ id: newIndex },
       }),
     )
   }
 
   const getKeyDown = (e: any) => {
-    if (storeAll.getState().demand.isDemandDetailDrawerVisible) {
+    if (storeAll.getState().workReport.viewReportModal.visible) {
       if (e.keyCode === 38) {
         //up
         document.getElementById('upIcon')?.click()
@@ -305,22 +128,11 @@ const ReportDetailDrawer = () => {
   }
 
   useEffect(() => {
-    if (isDemandDetailDrawerVisible || demandDetailDrawerProps?.id) {
-      setDemandIds(demandDetailDrawerProps?.demandIds || [])
-      getDemandDetail('', demandDetailDrawerProps?.demandIds || [])
-      setShowState(normalState)
+    if (viewReportModal.visible || viewReportModal?.id) {
+      setReportIds(viewReportModal?.ids || [])
+      getReportDetail(viewReportModal?.ids || [])
     }
-  }, [demandDetailDrawerProps, isDemandDetailDrawerVisible])
-
-  useEffect(() => {
-    if (isUpdateDemand) {
-      setCurrentIndex(0)
-      setDemandIds([])
-      if (isDemandDetailDrawerVisible) {
-        getDemandDetail()
-      }
-    }
-  }, [isUpdateDemand])
+  }, [viewReportModal])
 
   useEffect(() => {
     document.addEventListener('keydown', getKeyDown)
@@ -331,18 +143,12 @@ const ReportDetailDrawer = () => {
 
   return (
     <>
-      <DeleteConfirm
-        text={t('mark.del')}
-        isVisible={isDelete}
-        onChangeVisible={() => setIsDelete(!isDelete)}
-        onConfirm={onDeleteConfirm}
-      />
       <Drawer
         closable={false}
         placement="right"
         bodyStyle={{ padding: 0, position: 'relative' }}
         width={leftWidth}
-        open={false}
+        open={viewReportModal.visible}
         onClose={onCancel}
         destroyOnClose
         maskClosable={false}
@@ -368,32 +174,39 @@ const ReportDetailDrawer = () => {
           </Space>
           <Space size={16}>
             <ChangeIconGroup>
-              <UpWrap
-                onClick={onUpDemand}
-                id="upIcon"
-                isOnly={
-                  demandIds?.length === 0 ||
-                  currentIndex === demandIds?.length - 1
-                }
-              >
-                <CommonIconFont
-                  type="up"
-                  size={20}
-                  color="var(--neutral-n1-d1)"
-                />
-              </UpWrap>
+              {currentIndex > 0 && (
+                <UpWrap
+                  onClick={onUpDemand}
+                  id="upIcon"
+                  isOnly={
+                    reportIds?.length === 0 ||
+                    currentIndex === reportIds?.length - 1
+                  }
+                >
+                  <CommonIconFont
+                    type="up"
+                    size={20}
+                    color="var(--neutral-n1-d1)"
+                  />
+                </UpWrap>
+              )}
 
-              <DownWrap
-                onClick={onDownDemand}
-                id="downIcon"
-                isOnly={currentIndex <= 0}
-              >
-                <CommonIconFont
-                  type="down"
-                  size={20}
-                  color="var(--neutral-n1-d1)"
-                />
-              </DownWrap>
+              {!(
+                reportIds?.length === 0 ||
+                currentIndex === reportIds?.length - 1
+              ) && (
+                <DownWrap
+                  onClick={onDownDemand}
+                  id="downIcon"
+                  isOnly={currentIndex <= 0}
+                >
+                  <CommonIconFont
+                    type="down"
+                    size={20}
+                    color="var(--neutral-n1-d1)"
+                  />
+                </DownWrap>
+              )}
             </ChangeIconGroup>
           </Space>
         </Header>
@@ -408,29 +221,19 @@ const ReportDetailDrawer = () => {
                     alignItems: 'center',
                   }}
                 >
-                  {false ? (
-                    <img
-                      style={{
-                        width: 32,
-                        height: 32,
-                        borderRadius: 16,
-                      }}
-                      // src={i.avatar}
-                    />
-                  ) : (
-                    <span>
-                      <CommonUserAvatar size="large" />
-                    </span>
-                  )}
+                  <CommonUserAvatar
+                    size="large"
+                    avatar={drawerInfo?.user?.avatar}
+                  />
                   <div className="reportTitleWrap">
                     <div className="titleText">
-                      李四的工作日报
+                      {drawerInfo?.user?.name}的工作日报
                       <span className="dateText">
-                        （2022-08-21至2022-08-27）
+                        （{drawerInfo?.start_time}至{drawerInfo?.end_time}）
                       </span>
                     </div>
                     <div className="submitTimeText">
-                      提交时间：2023-09-12 15:20:32
+                      提交时间：{drawerInfo?.created_at}
                     </div>
                   </div>
                 </div>
@@ -503,7 +306,6 @@ const ReportDetailDrawer = () => {
               </div>
             </>
           )}
-          <DemandComment detail={drawerInfo} isOpen={true} onRef={commentDom} />
         </Content>
 
         <CommentFooter isReview={isReview}>

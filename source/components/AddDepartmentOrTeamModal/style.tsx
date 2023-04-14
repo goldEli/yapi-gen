@@ -21,7 +21,7 @@ export const ContentLeft = styled.div`
 
 export const TreeStyle = styled(DirectoryTree)`
   width: 214px;
-  height: calc(100% - 40px);
+  height: 410px;
   overflow-y: auto;
   margin-top: 8px;
   .ant-tree-checkbox-inner {

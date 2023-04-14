@@ -43,7 +43,7 @@ export const getContactStatistics: any = async () => {
 
 export const getMsg_list: any = async (params: any) => {
   const response: any = await http.get<any>('/b/msg/list', {
-    lastId: params.lastId,
+    lastId: params.lastId ?? 0,
     read: params.read,
     friendUsername: params.friendUsername,
     msgType: params.msgType,
