@@ -216,9 +216,7 @@ const RightFormWork = () => {
       ),
       id: activeItem.id || 0,
     }
-    if (templateName) {
-      parmas.name = templateName
-    }
+    parmas.name = templateName || activeItem.name
     parmas.requirement = {
       day: fillingRequirements?.day,
       end_time: fillingRequirements?.end_time,
