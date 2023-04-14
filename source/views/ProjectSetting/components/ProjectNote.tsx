@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 // 项目设置
 
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -29,6 +30,11 @@ import {
 } from '@/services/project'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import CommonButton from '@/components/CommonButton'
+import {
+  editSaveConfig,
+  getConfig,
+  getSysConfig,
+} from '@/services/SiteNotifications'
 
 const Warp = styled.div({
   height: 'calc(100vh - 123px)',
@@ -279,18 +285,43 @@ const ProjectSet = () => {
   const inputRefDom = useRef<HTMLInputElement>(null)
   const [isVisible, setIsVisible] = useState(false)
   const [isMoreVisible, setIsMoreVisible] = useState(false)
-  const [dataList, setDataList] = useState<any>([])
+  const [dataList, setDataList] = useState<any>([
+    {
+      id: 108,
+      name: '需求',
+      type: 1,
+      label: '管理员',
+      types: 'demand',
+    },
+    {
+      id: 109,
+      name: '迭代',
+      type: 2,
+      label: '编辑者',
+      types: 'iteration',
+    },
+    {
+      id: 110,
+      name: '项目',
+      type: 3,
+      label: '参与者',
+      types: 'project',
+    },
+  ])
   const [permissionList, setPermissionList] = useState<any>([])
   const [selectKeys, setSelectKeys] = useState<CheckboxValueType[]>([])
-  const [activeDetail, setActiveDetail] = useState<any>({})
-  const [addValue, setAddValue] = useState('')
-  const [operationDetail, setOperationDetail] = useState<any>({})
-  const [isDelete, setIsDelete] = useState(false)
+  const [activeDetail, setActiveDetail] = useState<any>({
+    id: 108,
+    name: '需求',
+    type: 1,
+    label: '管理员',
+    types: 'demand',
+  })
+
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const [isSpinning, setIsSpinning] = useState(false)
-  const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
   asyncSetTtile(`${t('title.a7')}【${projectInfo.name}】`)
@@ -298,7 +329,9 @@ const ProjectSet = () => {
     setIsSpinning(true)
     const result = await getPermission({ projectId, roleId: id })
 
-    setPermissionList(result)
+    // setPermissionList(result)
+    console.log(result)
+
     setIsSpinning(false)
     let keys: any[] = []
     result.list.forEach((i: any) => {
@@ -308,111 +341,40 @@ const ProjectSet = () => {
     setSelectKeys(keys)
   }
 
-  const init = async (isInit?: boolean, str?: string) => {
-    setIsSpinning(true)
-    const result = await getProjectPermission({ projectId })
+  const init2 = async () => {
+    const res1 = await getConfig(projectId)
+    const res2 = await getSysConfig()
+    const index = res2.findIndex((i: any) => {
+      return i.type === activeDetail.types
+    })
+    const index2 = res1.findIndex((i: any) => {
+      return i.type === activeDetail.types
+    })
 
-    setDataList([
-      {
-        id: 108,
-        name: '需求',
-        type: 1,
-        label: '管理员',
-      },
-      {
-        id: 109,
-        name: '迭代',
-        type: 1,
-        label: '编辑者',
-      },
-      {
-        id: 110,
-        name: '项目',
-        type: 1,
-        label: '参与者',
-      },
-    ])
-    if (isInit) {
-      setActiveDetail(result.list[0])
-      getPermissionList(result.list[0].id)
-    } else {
-      setIsSpinning(false)
-    }
-    if (str) {
-      setActiveDetail(result?.list?.filter((i: any) => i.id === str)[0])
-      getPermissionList(result?.list?.filter((i: any) => i.id === str)[0])
-    }
-    dispatch(setIsRefresh(false))
+    res2[index].list.forEach((i: any) => {
+      res1[index2].list.forEach((k: any) => {
+        if (i.code === k.code) {
+          i.tip_type = k.tip_type
+          i.objects = k.objects
+        }
+      })
+    })
+    setPermissionList(res2[index].list)
   }
-
   useEffect(() => {
-    init(true)
-  }, [isRefresh])
+    init2()
+  }, [isRefresh, activeDetail])
 
   const onSavePermission = async () => {
-    if (!selectKeys.length) {
-      message.warning(t('setting.pleasePermission'))
-      return
-    }
-    try {
-      await setPermission({
-        roleId: activeDetail.id,
-        permissionIds: selectKeys,
-        projectId,
-      })
-      getPermissionList(activeDetail.id)
-      message.success(t('common.saveSuccess'))
-    } catch (error) {
-      //
-    }
-  }
+    const res = await editSaveConfig({
+      projectId,
+      data: permissionList,
+      type: activeDetail.type,
+    })
 
-  const onSaveGroup = async () => {
-    if (!String(addValue).trim()) {
-      message.warning(t('version2.permissionNull'))
-      setAddValue('')
-      return
+    if (res.code === 0) {
+      message.success('成功')
     }
-    let result
-    try {
-      if (operationDetail.id) {
-        await updatePermission({
-          name: addValue,
-          id: operationDetail.id,
-          projectId,
-        })
-        setOperationDetail({})
-        message.success(t('common.editSuccess'))
-      } else {
-        result = await addPermission({ name: addValue, projectId })
-        message.success(t('common.createSuccess'))
-      }
-      setIsVisible(false)
-      init(false, result?.data?.id)
-      setAddValue('')
-    } catch (error) {
-      //
-    }
-  }
-
-  const onClickMenu = (e: any, type: string, item: any) => {
-    setIsMoreVisible(false)
-    e.stopPropagation()
-    setOperationDetail(item)
-    if (type === 'edit') {
-      setIsVisible(true)
-      setAddValue(item.name)
-      setTimeout(() => {
-        inputRefDom.current?.focus()
-      }, 100)
-    } else {
-      setIsDelete(true)
-    }
-  }
-
-  const onClose = () => {
-    setIsVisible(false)
-    setAddValue('')
   }
 
   const onChangeTabs = (item: any) => {
@@ -421,88 +383,50 @@ const ProjectSet = () => {
     getPermissionList(item.id)
   }
 
-  const onDeleteConfirm = async () => {
-    try {
-      await deletePermission({ id: operationDetail.id, projectId })
-      setIsDelete(false)
-      setOperationDetail({})
-      message.success(t('common.deleteSuccess'))
-      init(true)
-    } catch (error) {
-      //
+  const onChange = (ty: any, less: any, ins: any, check: any) => {
+    const newA: any = JSON.parse(JSON.stringify(permissionList))
+    console.log(ty, less, ins, check)
+    let c: any = ''
+    if (check === 1) {
+      c = 2
+    } else if (check === 2) {
+      c = 1
     }
+
+    const index = newA.findIndex((i: any) => i.code === ty)
+    const index2 = newA[index].objects.findIndex((i: any) => i.name === ins)
+    const index3 = newA[index].tip_type.findIndex((i: any) => i.name === ins)
+
+    if (less === 'ob') {
+      newA[index].objects[index2].is_check = c
+    }
+    if (less === 'msg') {
+      newA[index].tip_type[index3].is_check = c
+    }
+    setPermissionList(newA)
   }
-
-  const menu = (item: any) => (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label: (
-            <div onClick={e => onClickMenu(e, 'edit', item)}>
-              {t('common.edit')}
-            </div>
-          ),
-        },
-        {
-          key: '2',
-          label: (
-            <div onClick={e => onClickMenu(e, 'delete', item)}>
-              {t('common.del')}
-            </div>
-          ),
-        },
-      ]}
-    />
-  )
-
   return (
     <PermissionWrap
       auth="b/project/role"
       permission={projectInfo?.projectPermissions?.map((i: any) => i.identity)}
     >
-      <div style={{ height: '100%' }}>
-        <DeleteConfirm
-          isVisible={isDelete}
-          text={t('setting.confirmGroup')}
-          onChangeVisible={() => setIsDelete(!isDelete)}
-          onConfirm={onDeleteConfirm}
-        />
-        <CommonModal
-          isVisible={isVisible}
-          title={
-            operationDetail.id
-              ? t('setting.editPermission')
-              : t('setting.createPermission')
-          }
-          width={528}
-          onClose={onClose}
-          isShowFooter
+      <div style={{ height: '100%', position: 'relative' }}>
+        <div
+          style={{
+            zIndex: 11,
+            position: 'absolute',
+            right: '24px',
+            top: '-60px',
+          }}
         >
-          <div style={{ margin: ' 0 20px 24px 24px' }}>
-            <Input
-              ref={inputRefDom as any}
-              autoFocus
-              autoComplete="off"
-              maxLength={10}
-              value={addValue}
-              onChange={e => setAddValue(e.target.value)}
-              placeholder={t('setting.pleaseEnterName')}
-            />
-          </div>
-          <ModalFooter size={16} style={{ padding: '0 20px 24px 0' }}>
-            <CommonButton type="light" onClick={onClose}>
-              {t('common.cancel')}
-            </CommonButton>
-            <CommonButton
-              isDisable={!addValue}
-              onClick={onSaveGroup}
-              type="primary"
-            >
-              {t('common.confirm2')}
-            </CommonButton>
-          </ModalFooter>
-        </CommonModal>
+          <CommonButton
+            style={{ width: 'fit-content', marginTop: 16 }}
+            type="primary"
+            onClick={onSavePermission}
+          >
+            {t('common.save')}
+          </CommonButton>
+        </div>
         <Warp>
           <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
             <SetMain>
@@ -534,23 +458,93 @@ const ProjectSet = () => {
                   </BtnHeader>
                 </RightHeader>
                 <TitleGroup>
-                  {/* <CheckboxWrap>{t('setting.all')}</CheckboxWrap> */}
-
-                  <OperationWrap>事件</OperationWrap>
-                  <OperationWrap>站内通知</OperationWrap>
-                  <OperationWrap>邮箱通知</OperationWrap>
-                  <span>通知对象</span>
+                  <span
+                    style={{
+                      width: '168px',
+                    }}
+                  >
+                    事件
+                  </span>
+                  <span
+                    style={{
+                      width: '120px',
+                    }}
+                  >
+                    邮箱通知
+                  </span>
+                  <span
+                    style={{
+                      width: '120px',
+                    }}
+                  >
+                    站内通知
+                  </span>
+                  <span
+                    style={{
+                      width: '504px',
+                    }}
+                  >
+                    通知对象
+                  </span>
                 </TitleGroup>
                 <MainWrap>
-                  {permissionList.list?.map((i: any) => (
-                    <PermissionItem
-                      key={i.id}
-                      item={i}
-                      onChange={setSelectKeys}
-                      value={selectKeys}
-                      activeDetail={activeDetail}
-                    />
-                  ))}
+                  {permissionList?.map((i: any) => {
+                    return (
+                      <MainWrapItem key={i.code}>
+                        <span
+                          style={{
+                            width: '168px',
+                          }}
+                        >
+                          {i.note}
+                        </span>
+                        <span>
+                          {i.tip_type.map((k: any) => (
+                            <span
+                              style={{
+                                display: 'inline-block',
+                                width: '120px',
+                              }}
+                              key={k.name}
+                            >
+                              <Checkbox
+                                onChange={() =>
+                                  onChange(i.code, 'msg', k.name, k.is_check)
+                                }
+                                checked={k.is_check === 1}
+                              >
+                                {k.name}
+                              </Checkbox>
+                            </span>
+                          ))}
+                        </span>
+                        <span
+                          style={{
+                            width: '504px',
+                          }}
+                        >
+                          {i.objects.map((k: any) => (
+                            <span
+                              style={{
+                                display: 'inline-block',
+                                width: '120px',
+                              }}
+                              key={k.name}
+                            >
+                              <Checkbox
+                                onChange={() =>
+                                  onChange(i.code, 'ob', k.name, k.is_check)
+                                }
+                                checked={k.is_check === 1}
+                              >
+                                {k.name}
+                              </Checkbox>
+                            </span>
+                          ))}
+                        </span>
+                      </MainWrapItem>
+                    )
+                  })}
                 </MainWrap>
               </SetRight>
             </SetMain>

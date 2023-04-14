@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
+/* eslint-disable complexity */
+/* eslint-disable consistent-return */
 import CommonButton from '@/components/CommonButton'
 import styled from '@emotion/styled'
 import { Input, message } from 'antd'
@@ -16,7 +18,6 @@ import {
   createTemplate,
 } from '@/services/formwork'
 import { getTemplateList, templateDetail } from '@store/formWork/thunk'
-import DataList, { data } from './DataList'
 const RightFormWorkStyle = styled.div`
   flex: 1;
   overflow: hidden;
@@ -138,6 +139,7 @@ const RightFormWork = () => {
     templateContentConfigs,
     templateName,
     fillingRequirements,
+    err,
   } = useSelector(store => store.formWork)
   const getTemplateDetail = async () => {
     await dispatch(templateDetail({ id: activeItem.id }))
@@ -160,6 +162,40 @@ const RightFormWork = () => {
   useEffect(() => {
     setSave(editSave)
   }, [editSave])
+  const getVerifyParams = (parmas: any) => {
+    // 谁可以写是必填的
+    if (parmas.is_all_write !== 1) {
+      const list = parmas.template_configs.filter(
+        (el: any) => el.user_type === 1,
+      )
+      list.length < 1 && message.warning('谁可以写必选')
+      return false
+    } else if (
+      parmas.submit_cycle === 1 ||
+      parmas.submit_cycle === 2 ||
+      parmas.submit_cycle === 3
+    ) {
+      if (!parmas.requirement.start_time) {
+        message.warning('开始时间必填')
+        return false
+      } else if (!parmas.requirement.end_time) {
+        message.warning('截止时间必填')
+        return false
+      } else if (!parmas.reminder_time) {
+        message.warning('提醒时间必填')
+        return false
+      }
+    } else if (parmas.submit_cycle === 4) {
+      if (!parmas.requirement.end_time) {
+        message.warning('截止时间必填')
+        return false
+      } else if (!parmas.reminder_time) {
+        message.warning('提醒时间必填')
+        return false
+      }
+    }
+    return true
+  }
   const saveApi = async () => {
     let parmas: any = {}
     parmas = {
@@ -187,6 +223,13 @@ const RightFormWork = () => {
       end_time: fillingRequirements?.end_time,
       start_time: fillingRequirements?.start_time,
       is_holiday: fillingRequirements?.is_holiday ? 1 : 2,
+    }
+    if (!getVerifyParams(parmas)) {
+      return
+    }
+    if (!err) {
+      message.warning('结束时间大于开始时间')
+      return
     }
     if (activeItem?.id) {
       const res = await upDateTemplate(parmas)

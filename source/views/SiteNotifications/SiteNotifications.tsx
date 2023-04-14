@@ -257,7 +257,7 @@ const SiteNotifications = () => {
   }, [])
   useEffect(() => {
     if (wsData) {
-      sendMsg()
+      // sendMsg()
     }
   }, [wsData])
 

@@ -59,3 +59,27 @@ export const setReadApi: any = async (params: any) => {
 
   return response.data
 }
+// --------------------------------------------------------------------------消息
+
+export const getConfig: any = async (projectId: any) => {
+  const response: any = await http.get<any>(
+    `/b/project/tip/${projectId}/config`,
+  )
+
+  return response.data.list
+}
+
+export const getSysConfig: any = async () => {
+  const response: any = await http.get<any>('/b/project/tip/sysConfig')
+
+  return response.data.list
+}
+
+export const editSaveConfig: any = async (params: any) => {
+  const response: any = await http.post<any>('/b/project/tip/saveConfig', {
+    project_id: params.projectId,
+    data: params.data,
+    type: params.type,
+  })
+  return response
+}

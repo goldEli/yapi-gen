@@ -66,8 +66,6 @@ const useWebsocket = () => {
       setReadyState(stateArr[ws.current?.readyState ?? 0])
     }
     ws.current.onmessage = (e: any) => {
-      console.log(e)
-
       setWsData({
         key: Math.random(),
         data: e.data,
@@ -93,7 +91,7 @@ const useWebsocket = () => {
   const webSocketInit = async () => {
     const res = await getLoginDetail()
 
-    creatWebSocket(res.data.comAuth.token, res.data.id)
+    creatWebSocket(res?.data?.comAuth?.token, res?.data?.id)
   }
 
   //  关闭 WebSocket
@@ -111,7 +109,7 @@ const useWebsocket = () => {
     const res = await getLoginDetail()
 
     ws.current = null
-    creatWebSocket(res.data.comAuth.token, res.data.id)
+    creatWebSocket(res.data?.comAuth?.token, res?.data?.id)
   }
 
   useEffect(() => {
