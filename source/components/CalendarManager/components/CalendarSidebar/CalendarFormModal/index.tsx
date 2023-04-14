@@ -43,11 +43,13 @@ import { setCalendarModal } from '@store/calendar'
 import { addCalendar, editCalendar, getCalendarInfo } from '@/services/calendar'
 import { getCalendarList } from '@store/calendar/calendar.thunk'
 import { useTranslation } from 'react-i18next'
+import { refreshCalendarPanelScheduleList } from '@store/schedule/schedule.thunk'
 
 interface PermissionDropProps {
   onUpdateShare(item: Model.Calendar.MemberItem, type: string): void
   item: Model.Calendar.MemberItem
-  onTransfer(id: number, value: number): void
+  onTransfer(id: number | string, value: number): void
+  calendarInfo?: Model.Calendar.CalendarInfo
 }
 
 const PermissionDrop = (props: PermissionDropProps) => {
@@ -94,9 +96,11 @@ const PermissionDrop = (props: PermissionDropProps) => {
         ),
       )}
       <ItemProvider />
-      <PermissionDropItem onClick={() => setIsTransferVisible(true)}>
-        {t('transfer_calendar')}
-      </PermissionDropItem>
+      {props?.calendarInfo?.is_owner === 1 && (
+        <PermissionDropItem onClick={() => setIsTransferVisible(true)}>
+          {t('transfer_calendar')}
+        </PermissionDropItem>
+      )}
       <PermissionDropItem
         onClick={() => setIsDeleteVisible(true)}
         style={{ color: 'var(--function-error)' }}
@@ -187,6 +191,8 @@ const CalendarFormModal = () => {
   >([])
   // 可订阅人群下拉选择
   const [isAddVisible, setIsAddVisible] = useState(false)
+  const [calendarInfo, setCalendarInfo] =
+    useState<Model.Calendar.CalendarInfo>()
   const [currentPermission, setCurrentPermission] = useState<number>()
 
   // 关闭创建日历弹窗
@@ -196,7 +202,7 @@ const CalendarFormModal = () => {
     setCurrentKey('')
     setShareList([])
     setSubscribedList([])
-    setCurrentPermission(relateConfig.calendar.permission_types[0].value)
+    setCurrentPermission(relateConfig.calendar.permission_types[0]?.value)
     dispatch(setCalendarModal({ visible: false, params: {} }))
     form.resetFields()
   }
@@ -245,7 +251,7 @@ const CalendarFormModal = () => {
         setSubscribedList([
           ...[
             {
-              id: -1,
+              id: '0',
               name: t('calendar_all_member'),
               type: 1 as Model.Calendar.ChooseAddType,
             },
@@ -282,8 +288,21 @@ const CalendarFormModal = () => {
     const resultList = list.map((i: Model.Calendar.MemberItem) => ({
       ...i,
       type: isActiveKey,
+      id: String(i.id).includes('team')
+        ? Number(String(i.id).split('_')[2])
+        : i.id,
     }))
-    setSubscribedList([...new Set([...subscribedList, ...resultList])])
+    const newList = [...subscribedList, ...resultList]
+    let obj: any = {}
+    const result: Model.Calendar.MemberItem[] = newList.reduce(
+      (cur: Model.Calendar.MemberItem[], next: Model.Calendar.MemberItem) => {
+        obj[next.id] ? '' : (obj[next.id] = true && cur.push(next))
+        return cur
+      },
+      [],
+    )
+    console.log(newList, '===', list)
+    setSubscribedList(result)
   }
 
   // 删除选择的可订阅人群
@@ -306,7 +325,7 @@ const CalendarFormModal = () => {
     }))
     values.subscribe_members = subscribedList.map(
       (i: Model.Calendar.MemberItem) => ({
-        object_id: i.id,
+        object_id: String(i.id),
         object_type: i.type,
       }),
     )
@@ -318,6 +337,7 @@ const CalendarFormModal = () => {
       await addCalendar(values)
     }
     dispatch(getCalendarList())
+    dispatch(refreshCalendarPanelScheduleList())
     onClose()
     message.success(
       calendarModal?.params?.id
@@ -368,6 +388,7 @@ const CalendarFormModal = () => {
     const response = await getCalendarInfo({
       id: calendarModal?.params?.id,
     })
+    setCalendarInfo(response as Model.Calendar.CalendarInfo)
     form.setFieldsValue(response)
     setNormalColor(response.color)
     setPath(response.icon)
@@ -383,7 +404,7 @@ const CalendarFormModal = () => {
     setSubscribedList(
       response.subscribe_members.map((i: any) => ({
         id: i.object_id,
-        name: i.object.name,
+        name: i.object_id ? i.object?.name : t('calendar_all_member'),
         type: i.object_type,
       })),
     )
@@ -416,7 +437,7 @@ const CalendarFormModal = () => {
       {isChooseVisible && (
         <AddMemberCommonModal
           isVisible={isChooseVisible}
-          title={t('common.addMember1')}
+          title={t('add_a_member')}
           onClose={() => setIsChooseVisible(false)}
           onConfirm={onAddConfirm}
           {...addMemberProps}
@@ -474,7 +495,11 @@ const CalendarFormModal = () => {
             <PermissionBox>
               <div className="select">
                 <CustomSelect
-                  onChange={setCurrentPermission}
+                  onChange={(value: number) => {
+                    setCurrentPermission(value)
+                    setSubscribedList([])
+                    setShareList([])
+                  }}
                   placeholder={t('please_select_permissions')}
                   optionLabelProp="label"
                   value={currentPermission}
@@ -545,6 +570,7 @@ const CalendarFormModal = () => {
                         onUpdateShare={onUpdateShare}
                         onTransfer={onTransferCalendar}
                         item={i}
+                        calendarInfo={calendarInfo}
                       />
                     )}
                   </ShareMemberItem>

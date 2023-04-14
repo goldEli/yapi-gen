@@ -5,9 +5,10 @@ import {
   useMemo,
   useRef,
   useState,
+  useTransition,
 } from 'react'
 import { DoubleRightOutlined, DoubleLeftOutlined } from '@ant-design/icons'
-import { Space } from 'antd'
+import { Divider, Space } from 'antd'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 
@@ -49,13 +50,23 @@ const TabItem = styled.div`
   align-items: center;
   color: ${(props: any) =>
     props.theme ? 'var(--primary-d1)' : 'var(--neutral-n2)'};
-  border-bottom: ${(props: any) =>
-    props.theme ? '2px solid var(--primary-d1)' : 'none'};
+`
+const TabBarLine = styled.div`
+  width: 100%;
+  height: 3px;
+  background: var(--primary-d1);
+  opacity: 1;
+  position: absolute;
+  bottom: 0;
+  visibility: ${(props: any) => (props.theme ? 'visible' : 'hidden')};
+  opacity: ${(props: any) => (props.theme ? '1' : '0')};
+  transition: all 0.2s linear;
+  transition-delay: 0s;
 `
 
 interface SlideTabsProps {
   onChange?(value: string): void
-  defaultValue?: string
+  activeKey: number | string
   items: any[]
 }
 
@@ -64,11 +75,10 @@ const TAB_MARGIN = 32
 
 const SlideTabs: React.FC<SlideTabsProps> = ({
   items,
-  defaultValue = '1',
+  activeKey,
   onChange,
 }: SlideTabsProps) => {
   const [xAxis, setXAxis] = useState<number>(0)
-  const [activeKey, setActiveKey] = useState<string>(defaultValue)
   const [viewRectOffset, setViewRectOffset] = useState<number>(0)
   const [sliderRectOffset, setSliderRectOffset] = useState<number>(0)
   const nodes = useRef<Array<any>>([])
@@ -84,30 +94,35 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
   }, [])
 
   const prev = () => {
-    const fragment = nodes.current.slice(
+    const segment = nodes.current.slice(
       nodeIndex.current - STEP,
       nodeIndex.current,
     )
     nodeIndex.current -= STEP
-    let nodeWidth = 0
-    for (let index = 0; index < fragment.length; index++) {
-      nodeWidth += fragment[index].clientWidth + TAB_MARGIN
-    }
+
+    const nodeWidth = segment.reduce(
+      (accumulator, currentValue) =>
+        accumulator + currentValue.clientWidth + TAB_MARGIN,
+      0,
+    )
+
     setXAxis(current => {
       return current + nodeWidth
     })
   }
 
   const next = () => {
-    const fragment = nodes.current.slice(
+    const segment = nodes.current.slice(
       nodeIndex.current,
       nodeIndex.current + STEP,
     )
     nodeIndex.current += STEP
-    let nodeWidth = 0
-    for (let index = 0; index < fragment.length; index++) {
-      nodeWidth += fragment[index].clientWidth + TAB_MARGIN
-    }
+    const nodeWidth = segment.reduce(
+      (accumulator, currentValue) =>
+        accumulator + currentValue.clientWidth + TAB_MARGIN,
+      0,
+    )
+
     setXAxis(current => {
       return current - nodeWidth
     })
@@ -136,7 +151,6 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
   }, [])
 
   const handleClick = (key: string) => {
-    setActiveKey(key)
     onChange?.(key)
   }
 
@@ -168,6 +182,7 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
                 onClick={() => handleClick(item.key)}
               >
                 {item.label}
+                <TabBarLine theme={isActive(item.key)} />
               </TabItem>
             ))}
           </Space>

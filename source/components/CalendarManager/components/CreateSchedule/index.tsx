@@ -40,7 +40,10 @@ import moment from 'moment'
 import RepeatModal from './RepeatModal'
 import UploadAttach from '@/components/UploadAttach'
 import CreateVisualization from './CreateVisualization'
-import { saveSchedule } from '@store/schedule/schedule.thunk'
+import {
+  refreshCalendarPanelScheduleList,
+  saveSchedule,
+} from '@store/schedule/schedule.thunk'
 import { useTranslation } from 'react-i18next'
 
 interface DefaultTime {
@@ -179,6 +182,7 @@ const CreateSchedule = () => {
       : moment(values.time[1]).format('YYYY-MM-DD HH:mm:ss')
     delete resultParams.time
     await dispatch(saveSchedule(resultParams))
+    dispatch(refreshCalendarPanelScheduleList())
     message.success(t('common.createSuccess'))
     onClose()
   }

@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import DirectoryTree from 'antd/lib/tree/DirectoryTree'
 
 // 添加成员弹窗
 export const ContentBox = styled.div`
@@ -17,9 +18,49 @@ export const ContentLeft = styled.div`
   border-right: 1px solid var(--neutral-n6-d1);
 `
 
+export const TreeStyle = styled(DirectoryTree)`
+  width: 214px;
+  height: 410px;
+  overflow-y: auto;
+  margin-top: 8px;
+  .ant-tree-checkbox-inner {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+  }
+  .ant-tree-checkbox-checked .ant-tree-checkbox-inner {
+    background-color: var(--primary-d1);
+    border-color: var(--primary-d1);
+  }
+  .ant-tree-checkbox-indeterminate .ant-tree-checkbox-inner::after {
+    background-color: var(--auxiliary-b2);
+  }
+  & .ant-tree-iconEle {
+    display: none !important;
+  }
+  .ant-tree-treenode {
+    min-width: 216px;
+    height: 44px;
+    padding-left: 16px;
+    /* overflow: hidden; */
+  }
+
+  .ant-tree-treenode:hover {
+    border-radius: 6px;
+    background-color: var(--hover-d2);
+    .ant-tree-title div {
+      color: var(--neutral-n1-d1) !important;
+    }
+  }
+  .ant-tree.ant-tree-directory .ant-tree-treenode-selected:hover::before,
+  .ant-tree.ant-tree-directory .ant-tree-treenode-selected::before {
+    background-color: none;
+  }
+`
+
 export const LeftItems = styled.div`
   width: 100%;
-  height: calc(100% - 36px);
+  height: 356px;
   overflow: auto;
   padding-right: 20px;
 `

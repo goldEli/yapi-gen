@@ -141,11 +141,10 @@ const CreateActionBar = (props: Props) => {
           <Divider style={{ height: 16, margin: 0 }} type="vertical" />
         ) : null}
 
-        {/* //TODO: 项目列表刷新处 */}
         <ScreenMinHover
           onClick={props.onRefresh}
           icon="sync"
-          label={t('staff.refresh')}
+          label={t('common.refresh')}
         />
 
         <DividerWrap type="vertical" />

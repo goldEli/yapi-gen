@@ -12,6 +12,7 @@ type SliceState = {
 const slice = createSlice({
   name: 'SiteNotifications',
   initialState: {
+    configuration: [],
     myConfiguration: [],
     myEmailConfiguration: [],
   } as SliceState,

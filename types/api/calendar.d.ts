@@ -33,21 +33,7 @@ declare namespace API.Calendar {
     type Result = Model.Calendar.DaysOfWeek[]
   }
   namespace CalendarInfo {
-    type Result = {
-      id: number
-      type: number
-      name: string
-      describe: string
-      icon: string
-      permission: 1 | 2 | 3
-      color: number
-      is_default: 1 | 2
-      status: number
-      subscribe_num: number
-      share_members: []
-      subscribe_members: []
-      user: []
-    }
+    type Result = Model.Calendar.CalendarInfo
   }
 
   namespace GetCalendarList {

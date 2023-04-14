@@ -558,6 +558,16 @@ const CommonNeed = (props: any) => {
                 />
               </>
             )}
+
+            {(props.id !== 0 || props.type === 'abeyance') && (
+              <DividerWrap type="vertical" />
+            )}
+            <ScreenMinHover
+              label={t('common.refresh')}
+              icon="sync"
+              onClick={() => init(false)}
+            />
+
             {props.id !== 0 && (
               <>
                 <DividerWrap type="vertical" />

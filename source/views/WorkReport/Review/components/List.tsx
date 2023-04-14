@@ -14,6 +14,7 @@ import Sort from '@/components/Sort'
 import NoData from '@/components/NoData'
 import LabelTag from '@/components/LabelTag'
 import ReadStatusTag from './ReadStatusTag'
+import ReportDetailDrawer from './ReportDetailDrawer'
 
 const ListTitle = styled.div`
   height: 32px;
@@ -495,6 +496,7 @@ const List = () => {
           onChange={onChangePage}
         />
       </ListContent>
+      <ReportDetailDrawer />
     </>
   )
 }

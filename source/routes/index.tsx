@@ -42,7 +42,7 @@ const routes = [
           {
             // 汇报
             path: 'Review',
-            element: lazy(() => import('@/views/WorkReport/Review/index')),
+            element: lazy(() => import('@/views/WorkReport/Review')),
             children: [
               {
                 path: '',
@@ -63,10 +63,6 @@ const routes = [
           {
             path: 'Formwork',
             element: lazy(() => import('@/views/WorkReport/Formwork')),
-          },
-          {
-            path: 'Review',
-            element: lazy(() => import('@/views/WorkReport/Review')),
           },
         ],
       },

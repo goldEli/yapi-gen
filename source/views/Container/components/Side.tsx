@@ -167,7 +167,7 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
       nodeComponent = <LogSide />
     } else if (String(pathname).includes('/ProjectManagement/')) {
       nodeComponent = <ProjectDetailSide />
-    } else if (String(pathname).includes('/Report/')) {
+    } else if (String(pathname).includes('/Report/Formwork')) {
       nodeComponent = <FormWorkSide />
     } else if (String(pathname).includes('/Report/Review/')) {
       nodeComponent = <ReviewSide />

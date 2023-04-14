@@ -12,6 +12,9 @@ import CommonIconFont from '@/components/CommonIconFont'
 import Picker from './Picker'
 import { setFillingRequirements, setErr } from '@store/formWork'
 import { useDispatch, useSelector } from '@store/index'
+import moment from 'moment'
+import { DelButton } from '@/components/StyleCommon'
+import { setProjectInfoValues } from '@store/project'
 const Text = styled.div`
   color: var(--neutral-n1-d1);
   font-size: 14px;
@@ -92,6 +95,22 @@ const monthData: Array<Item> = [
 interface Item {
   label: string
   key: string
+}
+const DatePicker1 = (props: any) => {
+  const onChange = (e: any, dateString: string) => {
+    props.datePickValue(dateString)
+    var T = new Date(dateString)
+    props.onChange(T.getTime() / 1000)
+  }
+  return (
+    <DatePicker
+      onChange={(date: any, dateString: string) => {
+        onChange(date, dateString)
+      }}
+      value={moment(props.value)}
+      showTime
+    />
+  )
 }
 const SupScope = (props: SupScopeType) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -178,48 +197,12 @@ interface CheckBoxGroupType {
   onChange?(val: Array<ValueType>): void
   value?: any
 }
-const options: Array<ValueType> = [
-  {
-    label: '周一',
-    key: 0,
-    value: false,
-  },
-  {
-    label: '周二',
-    key: 1,
-    value: false,
-  },
-  {
-    label: '周三',
-    key: 2,
-    value: false,
-  },
-  {
-    label: '周四',
-    key: 3,
-    value: false,
-  },
-  {
-    label: '周五',
-    key: 4,
-    value: false,
-  },
-  {
-    label: '周六',
-    key: 5,
-    value: false,
-  },
-  {
-    label: '周日',
-    key: 6,
-    value: false,
-  },
-]
 // 选择周几
 const CheckBoxGroup = (props: CheckBoxGroupType) => {
+  const { aWeekDataList } = useSelector(store => store.formWork)
   useEffect(() => {
     if (!props.value) {
-      props.onChange?.(options)
+      props.onChange?.(aWeekDataList)
     }
   }, [])
   const onChange = (value: boolean, el: { value: boolean; key: number }) => {
@@ -375,14 +358,6 @@ const FormMain = (props: FormType) => {
         }
       }
       setRemindTimes(remindTime)
-      dispatch(
-        setFillingRequirements({
-          ...fillingRequirements,
-          start_time: startTime,
-          end_time: endTime,
-          reminder_time: remindTime,
-        }),
-      )
     }
     if (props.type === 'day') {
       dayJudgeTime()
@@ -390,9 +365,10 @@ const FormMain = (props: FormType) => {
       WeekJudgeTime()
     }
     dispatch(setErr(err))
-    // props.backValues(startTime, endTime, remindTime)
   }
-  console.log(err, 'err')
+  const setValues = (val: any) => {
+    setEndTimes(val)
+  }
   return (
     <>
       {props.type === 'day' ? (
@@ -452,7 +428,12 @@ const FormMain = (props: FormType) => {
             value={endTimes}
           />
         ) : (
-          <DatePicker showTime />
+          <DatePicker1
+            value={endTimes}
+            datePickValue={(val: any) => {
+              setValues(val)
+            }}
+          />
         )}
       </Form.Item>
       <RowStyle>
@@ -498,4 +479,5 @@ const FormMain = (props: FormType) => {
     </>
   )
 }
+
 export default FormMain

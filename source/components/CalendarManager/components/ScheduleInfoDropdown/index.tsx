@@ -36,8 +36,11 @@ const ScheduleInfoDropdown: React.FC<ScheduleInfoDropdownProps> = props => {
   const { visible } = scheduleInfoDropdown
   const { position } = useModalPosition({
     ...scheduleInfoDropdown,
-    containerClassName: props.containerClassName,
-    modalClassName: '.schedule-info-dropdown-box',
+    containerClassName: props.containerClassName ?? '',
+    modalInfo: {
+      width: 320,
+      height: 640,
+    },
   })
   // console.log({ scheduleInfoDropdown })
   const disPatch = useDispatch()

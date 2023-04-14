@@ -213,7 +213,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
         <Title>
           {timeRange && `${timeRange?.startTime} - ${timeRange?.endTime} `}
         </Title>
-        <Title>{data.subject}</Title>`
+        <Title>{data.subject}</Title>
       </>
     )
   }, [is_show_busy, timeRange, data.subject, data.start_time])
@@ -239,16 +239,14 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
         y: top,
       }}
       dragAxis="y"
-      // disableDragging={is_show_busy}
+      disableDragging={is_show_busy}
       enableResizing={{
-        bottom: true,
-        // bottom: !is_show_busy,
+        bottom: !is_show_busy,
         bottomLeft: false,
         bottomRight: false,
         left: false,
         right: false,
-        top: true,
-        // top: !is_show_busy,
+        top: !is_show_busy,
         topLeft: false,
         topRight: false,
       }}

@@ -1,7 +1,9 @@
+/* eslint-disable react/jsx-handler-names */
+/* eslint-disable camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import CommonIconFont from '@/components/CommonIconFont'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import IconFont from '@/components/IconFont'
-
 import { Badge, Radio } from 'antd'
 import React, { useState } from 'react'
 import {
@@ -15,9 +17,24 @@ import {
   Wrap,
   Wrap2,
 } from './style'
+import dayjs from 'dayjs'
 
 const ContentItem = (props: any) => {
+  const { send_user, msg_body, to_user, create_time, read, id } = props.item
   const [choose, setChoose] = useState(false)
+
+  function formatTime(params: number) {
+    let time = ''
+    const now = new Date().valueOf() / 1000
+    const difference = now - params
+    console.log()
+    if (difference < 7200) {
+      time = '两小时前'
+    } else {
+      time = dayjs.unix(params).format('YYYY-MM-DD HH:mm:ss')
+    }
+    return time
+  }
 
   return (
     <div>
@@ -27,65 +44,40 @@ const ContentItem = (props: any) => {
             marginRight: '12px',
           }}
         >
-          <Badge offset={[-1, 4]} dot>
-            <CommonUserAvatar />
+          <Badge offset={[-1, 4]} dot={read === 0}>
+            <CommonUserAvatar avatar={to_user.head} />
           </Badge>
         </div>
         <HoverWrap style={{ flex: '1' }}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Name>{props.name}</Name>
-            <Tip>在评论中@了您</Tip>
-            <Time>2小时前</Time>
-            <Time2>
-              <Radio checked={choose} />
-            </Time2>
+            <Name>{send_user}</Name>
+            {/* <Tip>在评论中@了您</Tip> */}
+            <Time>{formatTime(create_time)}</Time>
+            {read === 0 && (
+              <Time2 onClick={() => props.setReads([id])}>
+                <Radio checked={choose} />
+              </Time2>
+            )}
           </div>
-          <div
+          {/* <div
             style={{ display: 'flex', alignItems: 'center', margin: '5px 0px' }}
           >
             <CommonIconFont color="var(--neutral-n3)" type="folder-open-nor" />
             <About>关于XXXX产品V3.0.0的开发计划</About>
-          </div>
+          </div> */}
 
           <GrepContent>
-            <span>关于XXXX产品V3.0.0的开发计划中千颂伊酱@了您，请</span>
-            <span
+            <span>{msg_body.content}</span>
+            {/* <span
               style={{
                 color: 'var(--auxiliary-text-t1-d2)',
               }}
             >
               前往查看
-            </span>
+            </span> */}
           </GrepContent>
         </HoverWrap>
       </Wrap>
-
-      {/* <div style={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}>
-        <Badge offset={[-1, 4]} dot>
-          <CommonUserAvatar />
-        </Badge>
-        <span style={{ marginLeft: '8px' }}>来自 亿洋</span>
-        <span
-          style={{
-            color: 'var(--auxiliary-text-t1-d2)',
-          }}
-        >
-          另外 1 条消息
-        </span>
-      </div>
-      <div style={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}>
-        <Badge offset={[-1, 4]} dot>
-          <CommonUserAvatar />
-        </Badge>
-        <span
-          style={{
-            marginLeft: '8px',
-            color: 'var(--auxiliary-text-t1-d2)',
-          }}
-        >
-          收起
-        </span>
-      </div> */}
     </div>
   )
 }

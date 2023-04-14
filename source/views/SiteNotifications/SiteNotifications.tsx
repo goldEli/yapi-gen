@@ -16,9 +16,7 @@ import { Badge, notification } from 'antd'
 import React, { useEffect } from 'react'
 import {
   getAllNoteSet,
-  getContactList,
   getContactStatistics,
-  getDetail,
   getMsg_list,
   getMyAllNoteSet,
 } from '@/services/SiteNotifications'
@@ -164,10 +162,12 @@ const SiteNotifications = () => {
     const obj = {
       name: '',
       children: [],
+      sendType: '',
     }
 
     if (value.module === 'project') {
       obj.name = '项目管理'
+      obj.sendType = 'project'
       obj.children = value.lists.map((i: any) => {
         return {
           label: setNewName(value.module, i.rule),
@@ -179,6 +179,7 @@ const SiteNotifications = () => {
     }
     if (value.module === 'system') {
       obj.name = '系统通知'
+      obj.sendType = 'sys'
       obj.children = value.lists.map((i: any) => {
         return {
           label: setNewName(value.module, i.rule),
@@ -190,6 +191,7 @@ const SiteNotifications = () => {
     }
     if (value.module === 'calendar') {
       obj.name = '日程管理'
+      obj.sendType = 'calendar'
       obj.children = value.lists.map((i: any) => {
         return {
           label: setNewName(value.module, i.rule),
@@ -201,6 +203,7 @@ const SiteNotifications = () => {
     }
     if (value.module === 'report') {
       obj.name = '工作汇报'
+      obj.sendType = 'report'
       obj.children = value.lists.map((i: any) => {
         return {
           label: setNewName(value.module, i.rule),
@@ -226,12 +229,12 @@ const SiteNotifications = () => {
     }))
   }
   const init = async () => {
-    getContactStatistics()
-    getContactList()
-    getDetail()
-    getMsg_list()
     const res = await getAllNoteSet()
-    dispatch(setConfiguration(initSet(res.im)))
+    dispatch(
+      setConfiguration(
+        initSet(res.im.filter((i: any) => i.module !== 'product')),
+      ),
+    )
     dispatch(setEmailConfiguration(initEmailSet(res.mail)))
     const res2 = await getMyAllNoteSet()
     dispatch(
@@ -248,14 +251,6 @@ const SiteNotifications = () => {
         }),
       ),
     )
-    //   const re1 = await getContactStatistics()
-    // const re2 = await getContactList()
-    // const re3 = await getDetail()
-    // const re4 = await getMsg_list()
-    // console.log(re1)
-    // console.log(re2)
-    // console.log(re3)
-    // console.log(re4)
   }
   useEffect(() => {
     init()
