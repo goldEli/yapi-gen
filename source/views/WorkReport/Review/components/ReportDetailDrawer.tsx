@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-duplicate-imports */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/jsx-no-leaked-render */
@@ -6,13 +7,14 @@
 /* eslint-disable react/no-danger */
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
 import { Drawer, message, Form, Skeleton, Space, Input, Button } from 'antd'
-import { Editor } from '@xyfe/uikit'
+import { Editor, EditorRef } from '@xyfe/uikit'
 import { createRef, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonIconFont from '@/components/CommonIconFont'
 import { DragLine } from '@/components/StyleCommon'
 import DetailsSkeleton from '@/components/DemandDetailDrawer/DetailsSkeleton'
 import { throttle } from 'lodash'
+import { uploadFileToKey } from '@/services/cos'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import {
   Header,
@@ -27,9 +29,87 @@ import {
   LabelMessage,
   LabelMessageRead,
   CommentFooter,
+  DetailItem,
+  TargetUserItem,
+  TargetUserContent,
+  ContactDemandBox,
+  ContactDemandItem,
+  CommentBox,
 } from './style'
 import { setViewReportModal } from '@store/workReport'
-import { getReportInfo } from '@/services/report'
+import {
+  addReportComment,
+  getReportComment,
+  getReportInfo,
+} from '@/services/report'
+import UploadAttach from '@/components/UploadAttach'
+import CommonButton from '@/components/CommonButton'
+
+interface TargetTabsProps {
+  list: any
+}
+
+const TargetTabs = (props: TargetTabsProps) => {
+  const [activeTab, setActiveTab] = useState(0)
+  return (
+    <TargetUserItem>
+      <div className="tabs">
+        <span
+          className={activeTab === 0 ? 'active' : ''}
+          onClick={() => setActiveTab(0)}
+        >
+          已读 ({props.list?.filter((k: any) => k.type !== 1)?.length})
+        </span>
+        <span
+          className={activeTab === 1 ? 'active' : ''}
+          onClick={() => setActiveTab(1)}
+        >
+          未读 ({props.list?.filter((k: any) => k.type === 1)?.length})
+        </span>
+      </div>
+      <TargetUserContent size={24}>
+        {props.list
+          ?.filter((k: any) =>
+            (activeTab === 1 ? [1] : [2, 3]).includes(k.type),
+          )
+          ?.map((i: any) => (
+            <div key={i.user_id}>
+              <CommonUserAvatar avatar={i.user.avatar} name={i.user.name} />
+            </div>
+          ))}
+      </TargetUserContent>
+    </TargetUserItem>
+  )
+}
+
+const ContactDemand = (props: { list: any }) => {
+  const list = props.list?.length ? JSON.parse(props.list) : []
+  return (
+    <ContactDemandBox>
+      {list.map((i: any) => (
+        <ContactDemandItem key={i.id}>
+          【{i.id}】<span className="name">{i.name}</span>
+        </ContactDemandItem>
+      ))}
+    </ContactDemandBox>
+  )
+}
+
+const AttachmentBox = (props: { list: any }) => {
+  const list = props.list?.length ? JSON.parse(props.list) : []
+  const resultList = list.map((item: any) => {
+    return {
+      url: item.url,
+      id: new Date().getTime() + Math.random(),
+      size: item.size,
+      time: item.ctime,
+      name: item.name || '--',
+      suffix: item.ext,
+      username: item.username,
+    }
+  })
+  return <UploadAttach isReport canUpdate power defaultList={resultList} />
+}
 
 const ReportDetailDrawer = () => {
   const [t] = useTranslation()
@@ -41,8 +121,10 @@ const ReportDetailDrawer = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [reportIds, setReportIds] = useState<any>([])
   const [isReview, setIsReview] = useState(false)
+  const [commentList, setCommentList] = useState([])
   const [form] = Form.useForm()
   const leftWidth = 640
+  const editorRef = useRef<EditorRef>(null)
 
   // 拖动线条
   const onDragLine = (e: React.MouseEvent) => {
@@ -68,6 +150,17 @@ const ReportDetailDrawer = () => {
     })
   }
 
+  // 获取汇报评论
+  const getReportCommentData = async (id: number) => {
+    const response = await getReportComment({
+      report_user_id: id,
+      page: 1,
+      pagesize: 999,
+    })
+    console.log(response, '=response')
+    setCommentList(response.list)
+  }
+
   // 获取汇报详情
   const getReportDetail = async (ids?: any) => {
     setDrawerInfo({})
@@ -80,6 +173,7 @@ const ReportDetailDrawer = () => {
     setSkeletonLoading(false)
     // 获取当前需求的下标， 用作上一下一切换
     setCurrentIndex((ids || []).findIndex((i: any) => i === info.id))
+    getReportCommentData(viewReportModal?.id)
   }
 
   // 关闭弹窗
@@ -125,6 +219,36 @@ const ReportDetailDrawer = () => {
         document.getElementById('downIcon')?.click()
       }
     }
+  }
+
+  // 评论
+  const onComment = async () => {
+    const params = {
+      report_user_id: drawerInfo.id,
+      content: form.getFieldsValue().info,
+    }
+    await addReportComment(params)
+    message.success('添加评论成功！')
+    setIsReview(false)
+    getReportCommentData(drawerInfo.id)
+    form.resetFields()
+  }
+
+  // 富文本上传
+  const uploadFile = (file: File, dom: any, key2?: any) => {
+    const key = uploadFileToKey(
+      file,
+      file.name,
+      `richEditorFiles_${new Date().getTime()}`,
+      false,
+      data => {
+        if (key2 === 'copy') {
+          dom.past(data.url)
+        }
+        dom?.notifyUploaded(data.key, data.url)
+      },
+    )
+    return key
   }
 
   useEffect(() => {
@@ -227,7 +351,8 @@ const ReportDetailDrawer = () => {
                   />
                   <div className="reportTitleWrap">
                     <div className="titleText">
-                      {drawerInfo?.user?.name}的工作日报
+                      {drawerInfo?.user?.name}的
+                      {drawerInfo?.report_template_name}
                       <span className="dateText">
                         （{drawerInfo?.start_time}至{drawerInfo?.end_time}）
                       </span>
@@ -238,72 +363,37 @@ const ReportDetailDrawer = () => {
                   </div>
                 </div>
               </ContentHeadWrap>
-              <Form
-                form={form}
-                onFinish={confirm}
-                layout="vertical"
-                initialValues={{ info2: '2222222222' }}
-                onFinishFailed={() => {
-                  setTimeout(() => {
-                    const errorList = (document as any).querySelectorAll(
-                      '.ant-form-item-has-error',
-                    )
-
-                    errorList[0].scrollIntoView({
-                      block: 'center',
-                      behavior: 'smooth',
-                    })
-                  }, 100)
-                }}
-              >
-                <Form.Item
-                  style={{
-                    marginBottom: '30px',
-                  }}
-                  label={<LabelTitle>{t('report.list.todayWork')}</LabelTitle>}
-                  name="info"
-                >
-                  <Editor readonly disableUpdateValue />
-                </Form.Item>
-                <Form.Item
-                  style={{
-                    marginBottom: '30px',
-                  }}
-                  label={
-                    <LabelTitle>{t('report.list.tomorrowWork')}</LabelTitle>
-                  }
-                  name="info2"
-                >
-                  <Editor readonly disableUpdateValue />
-                </Form.Item>
-                <Form.Item
-                  label={<LabelTitle>{t('common.attachment')}</LabelTitle>}
-                  name="attachments"
-                >
-                  11111
-                </Form.Item>
-                <Form.Item
-                  label={
-                    <LabelTitle>
-                      {t('report.list.associatedRequirement')}
-                    </LabelTitle>
-                  }
-                  name="needs"
-                >
-                  111
-                </Form.Item>
-              </Form>
-              <div>
-                <div>
-                  <span className={LabelMessage}>已读</span>
-                  <span className={LabelMessageRead}>{`未读 (${3})`}</span>
-                </div>
-              </div>
-              <div>
-                <div style={{ marginTop: 21 }}>
-                  <LabelTitle>评论</LabelTitle>
-                </div>
-              </div>
+              {drawerInfo?.report_content?.map((i: any) => (
+                <DetailItem key={i.id}>
+                  <div className="title">{i.name}</div>
+                  {i.type === 1 && (
+                    <TargetTabs list={drawerInfo?.target_users} />
+                  )}
+                  {i.type === 2 && <AttachmentBox list={i?.pivot?.params} />}
+                  {i.type === 3 && (
+                    <Editor
+                      readonly
+                      disableUpdateValue
+                      value={i?.pivot?.content}
+                    />
+                  )}
+                  {i.type === 4 && <ContactDemand list={i?.pivot?.params} />}
+                </DetailItem>
+              ))}
+              <DetailItem>
+                <div className="title">评论</div>
+                {commentList.map((i: any) => (
+                  <CommentBox key={i.id}>
+                    <div className="header">
+                      <CommonUserAvatar name={i.comment_user.name} />
+                      <div className="time">{i.created_at || '--'}</div>
+                    </div>
+                    <div className="content">
+                      <Editor readonly disableUpdateValue value={i?.content} />
+                    </div>
+                  </CommentBox>
+                ))}
+              </DetailItem>
             </>
           )}
         </Content>
@@ -311,25 +401,44 @@ const ReportDetailDrawer = () => {
         <CommentFooter isReview={isReview}>
           {isReview ? (
             <>
-              <Editor />
+              <div className="editBox">
+                <Form form={form}>
+                  <Form.Item name="info">
+                    <Editor
+                      ref={editorRef}
+                      upload={uploadFile}
+                      getSuggestions={() => []}
+                    />
+                  </Form.Item>
+                </Form>
+              </div>
               <div className="buttonBox">
                 <Space>
-                  <Button type="primary" size="small">
-                    评论
-                  </Button>
-                  <Button
-                    type="default"
+                  <CommonButton
+                    type="light"
                     size="small"
-                    onClick={() => setIsReview(false)}
+                    onClick={() => {
+                      setIsReview(false)
+                      form.resetFields()
+                    }}
+                    style={{ fontSize: 12 }}
                   >
                     取消
-                  </Button>
+                  </CommonButton>
+                  <CommonButton
+                    type="primary"
+                    size="small"
+                    style={{ fontSize: 12 }}
+                    onClick={onComment}
+                  >
+                    评论
+                  </CommonButton>
                 </Space>
               </div>
             </>
           ) : (
             <Input
-              placeholder={`评论${'张三'}的日志`}
+              placeholder={`评论${drawerInfo?.user?.name || '--'}的日志`}
               onFocus={() => setIsReview(true)}
             />
           )}
