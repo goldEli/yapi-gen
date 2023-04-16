@@ -108,7 +108,7 @@ export const getScheduleDaysOfMonthList = async (
 }
 // 日程回复
 export const scheduleInfoReply = async (params: {
-  id: number
+  id: number | string
   status: number
 }) => {
   const response = await http.post<any, any>(`/b/schedule/${params.id}/reply`, {

@@ -144,4 +144,8 @@ declare namespace Model.Schedule {
     date?: number
     scheduleListData?: ScheduleListInfo[]
   }
+  type listViewScheduleListProps= {
+    date:number | string,
+    list:Info[]
+  }
 }

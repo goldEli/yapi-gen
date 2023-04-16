@@ -1,10 +1,10 @@
 import styled from '@emotion/styled'
-import { css } from '@emotion/css'
 import CommonButton from '@/components/CommonButton'
 import React, { Fragment } from 'react'
 import { useDispatch, useSelector } from '@store/index'
-import { scheduleInfoReply } from '@store/schedule/schedule.thunk'
-interface iProps {}
+import { scheduleInfoReply } from '@/services/schedule'
+import { setScheduleInfoDropdown } from '@store/calendarPanle'
+interface iProps { }
 const ScheduleInfoFooterBox = styled.div`
   color: var(--neutral-n3);
   display: flex;
@@ -18,15 +18,19 @@ const ScheduleInfoFooterBox = styled.div`
 `
 
 const ScheduleInfoFooter: React.FC<iProps> = props => {
-  const disPatch = useDispatch()
   const { scheduleInfo } = useSelector(state => state.schedule);
-  console.log(scheduleInfo)
-  const replySchedule = (status: number) => {
-    disPatch(scheduleInfoReply({ id: scheduleInfo?.id as any, status }))
+  const disPatch=useDispatch();
+  const replySchedule = async (status: number) => {
+    try {
+      await scheduleInfoReply({ id: scheduleInfo?.id ?? 0, status })
+      disPatch(setScheduleInfoDropdown({ visible: false }))
+    } catch (error) {
+
+    }
   }
   return (
     <>
-      {scheduleInfo?.is_show_reply? (
+      {scheduleInfo?.is_show_reply ? (
         <ScheduleInfoFooterBox>
           <CommonButton type="light" onClick={() => replySchedule(1)}>
             接收

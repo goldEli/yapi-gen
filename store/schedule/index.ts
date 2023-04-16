@@ -6,13 +6,14 @@ import {
   getScheduleListDaysOfDate,
   getScheduleListDaysOfWeek,
   getScheduleListDaysOfMonth,
-  scheduleInfoReply,
-  scheduleInfoDelete,
-  scheduleInfoTransfer,
   getScheduleSearch,
   getLeftCalendarDaysOfMonthList,
   getScheduleDaysOfList,
 } from './schedule.thunk'
+interface a{
+  date:number | string,
+  list:Model.Schedule.Info[]
+}
 type SliceState = {
   // 默认日程时长
   defaultScheduleDuration: number
@@ -27,8 +28,8 @@ type SliceState = {
   yearViewScheduleList: {
     [key in string]: Model.Schedule.ScheduleListInfo[]
   }
-  listViewScheduleList?: []
-  monthViewScheduleList: Model.Schedule.Info[]
+  listViewScheduleList?: Model.Schedule.listViewScheduleListProps[]
+  monthViewScheduleList: []
   scheduleInfo?: Model.Schedule.DetailInfo
   scheduleInfoReply?: {
     status: number
@@ -82,12 +83,7 @@ const slice = createSlice({
     setScheduleDate(state, action: PayloadAction<number>) {
       state.scheduleDate = action.payload
     },
-    setScheduleInfoDelete(state, action: PayloadAction<string>) {
-      // state.scheduleInfoDeleteStatus = action.payload
-    },
-    setScheduleInfoTransfer(state, action: PayloadAction<string>) {
-      // state.scheduleInfoTransferStatus = action.payload
-    },
+   
   },
   extraReducers(builder) {
     // builder.addCase(getScheduleList.fulfilled, (state, action) => {
@@ -109,7 +105,7 @@ const slice = createSlice({
       state.monthViewScheduleList = action.payload
     })
     builder.addCase(getScheduleDaysOfList.fulfilled, (state, action) => {
-      let array: any = []
+      let array: Model.Schedule.listViewScheduleListProps[] = []
       if (action.payload) {
         Object.keys(action.payload)
           .sort()
@@ -122,23 +118,14 @@ const slice = createSlice({
     builder.addCase(getScheduleInfo.fulfilled, (state, action) => {
       state.scheduleInfo = action.payload
     })
-    builder.addCase(scheduleInfoReply.fulfilled, (state, action) => {
-      state.scheduleInfoReply = action.payload
-    })
     builder.addCase(
       getLeftCalendarDaysOfMonthList.fulfilled,
       (state, action) => {
         state.leftViewScheduleList = action.payload
       },
     )
-    // builder.addCase(scheduleInfoDelete.fulfilled, (state, action) => {
-    //   state.scheduleInfoDeleteStatus = action.payload
-    // })
-    // builder.addCase(scheduleInfoTransfer.fulfilled, (state, action) => {
-    //   state.scheduleInfoTransferStatus = action.payload
-    // })
     builder.addCase(getScheduleSearch.fulfilled, (state, action) => {
-      let array: any = []
+      let array: Model.Schedule.listViewScheduleListProps[] = []
       if (action.payload) {
         Object.keys(action.payload)
           .sort()
@@ -147,7 +134,6 @@ const slice = createSlice({
           })
       }
       state.listViewScheduleList = array
-      // state.leftViewScheduleList = action.payload
     })
   },
 })
@@ -157,8 +143,6 @@ const schedule = slice.reducer
 export const {
   setScheduleListModal,
   setScheduleDate,
-  setScheduleInfoDelete,
-  setScheduleInfoTransfer,
 } = slice.actions
 
 export default schedule

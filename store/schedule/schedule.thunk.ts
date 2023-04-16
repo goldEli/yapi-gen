@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as services from '@/services'
 import { AppDispatch, store } from '@store/index'
 import ParamsCache from './paramsCache'
+import { setScheduleInfoDropdown } from '@store/calendarPanle'
 
 const name = 'schedule'
 
@@ -35,10 +36,10 @@ export const getScheduleListDaysOfMonth = createAsyncThunk(
 // 修改日程
 export const modifySchedule =
   (params: API.Schedule.ModifySchedule.Params) =>
-  async (dispatch: AppDispatch) => {
-    await services.schedule.modifySchedule(params)
-    await dispatch(refreshCalendarPanelScheduleList())
-  }
+    async (dispatch: AppDispatch) => {
+      await services.schedule.modifySchedule(params)
+      await dispatch(refreshCalendarPanelScheduleList())
+    }
 
 // 刷新面板上日程列表
 export const refreshCalendarPanelScheduleList =
@@ -96,10 +97,10 @@ export const refreshCalendarPanelScheduleList =
 
 export const saveSchedule =
   (params: API.Schedule.SaveSchedule.Params) =>
-  async (dispatch: AppDispatch) => {
-    await services.schedule.saveScheduleList(params)
-    dispatch(refreshCalendarPanelScheduleList())
-  }
+    async (dispatch: AppDispatch) => {
+      await services.schedule.saveScheduleList(params)
+      dispatch(refreshCalendarPanelScheduleList())
+    }
 
 export const getCalendarDaysOfYearList = createAsyncThunk(
   `${name}/getCalendarDaysOfYearList`,
@@ -135,36 +136,6 @@ export const getScheduleInfo = createAsyncThunk(
   `${name}/getScheduleInfo`,
   async (params: { id: number; show_date: string | number }) => {
     const res = await services.schedule.getScheduleInfo(params)
-    return res
-  },
-)
-
-// 日程回复
-export const scheduleInfoReply = createAsyncThunk(
-  `${name}/scheduleInfoReply`,
-  async (params: { id: number; status: number }) => {
-    const res = await services.schedule.scheduleInfoReply(params)
-    return res
-  },
-)
-
-// 日程删除
-export const scheduleInfoDelete = createAsyncThunk(
-  `${name}/scheduleInfoDelete`,
-  async (params: { id: string; is_remind: boolean }) => {
-    const res = await services.schedule.scheduleInfoDelete(params)
-    return res
-  },
-)
-// 日程转让
-export const scheduleInfoTransfer = createAsyncThunk(
-  `${name}/scheduleInfoTransfer`,
-  async (params: {
-    id: string | undefined
-    is_exit: boolean
-    user_id: number
-  }) => {
-    const res = await services.schedule.scheduleInfoTransfer(params)
     return res
   },
 )
