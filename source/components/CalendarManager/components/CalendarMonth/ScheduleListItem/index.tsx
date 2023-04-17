@@ -103,17 +103,27 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
     } = info?.startSchedule
     // 移动了多少天，负数表示向前移动，正数表示先后移动
     const movedDay = (info.endIndex ?? 0) - (info.startIndex ?? 0)
+    const newStart = dayjs(schedule_start_datetime)
+      .add(movedDay, 'day')
+      .format(formatYYYYMMDDhhmmss)
+    const newEnd = dayjs(schedule_end_datetime)
+      .add(movedDay, 'day')
+      .format(formatYYYYMMDDhhmmss)
+    if (
+      newStart === schedule_start_datetime &&
+      newEnd === schedule_end_datetime
+    ) {
+      // 清空拖动数据
+      dispatch(clearMonthMoveScheduleActiveInfo())
+      return
+    }
     const params = {
       calendar_id,
       schedule_id,
       color,
       subject,
-      start_datetime: dayjs(schedule_start_datetime)
-        .add(movedDay, 'day')
-        .format(formatYYYYMMDDhhmmss),
-      end_datetime: dayjs(schedule_end_datetime)
-        .add(movedDay, 'day')
-        .format(formatYYYYMMDDhhmmss),
+      start_datetime: newStart,
+      end_datetime: newEnd,
     }
     dispatch(modifySchedule(params))
   }
@@ -143,13 +153,25 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
     const startYMD = dayjs(schedule_end_datetime)
       .add(movedDay, 'day')
       .format(formatYYYYMMDD)
+
+    const newStart = dayjs(startYMD).format(formatYYYYMMDDhhmmss)
+    const newEnd = dayjs(schedule_end_datetime).format(formatYYYYMMDDhhmmss)
+    if (
+      newStart === schedule_start_datetime &&
+      newEnd === schedule_end_datetime
+    ) {
+      // 清空拖动数据
+      dispatch(clearMonthMoveScheduleActiveInfo())
+      return
+    }
+
     const params = {
       calendar_id,
       schedule_id,
       color,
       subject,
-      start_datetime: dayjs(startYMD).format(formatYYYYMMDDhhmmss),
-      end_datetime: dayjs(schedule_end_datetime).format(formatYYYYMMDDhhmmss),
+      start_datetime: newStart,
+      end_datetime: newEnd,
     }
     dispatch(modifySchedule(params))
   }
