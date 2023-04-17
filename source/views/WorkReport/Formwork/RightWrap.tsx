@@ -206,7 +206,7 @@ const RightFormWork = () => {
       reminder_time: fillingRequirements?.reminder_time,
       is_supply: fillingRequirements?.is_supply ? 1 : 2,
       is_cycle_limit: fillingRequirements?.is_cycle_limit ? 1 : 2,
-      is_submitter_edit: fillingRequirements?.is_cycle_limit ? 1 : 2,
+      is_submitter_edit: fillingRequirements?.is_submitter_edit ? 1 : 2,
       hand_scope:
         fillingRequirements?.hand_scope?.key || fillingRequirements?.hand_scope,
       is_all_view: reportContent?.is_all_view,
@@ -224,6 +224,7 @@ const RightFormWork = () => {
       start_time: fillingRequirements?.start_time,
       is_holiday: fillingRequirements?.is_holiday ? 1 : 2,
     }
+    console.log(parmas, 'parmas')
     if (!getVerifyParams(parmas)) {
       return
     }

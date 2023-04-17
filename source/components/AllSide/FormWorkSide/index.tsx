@@ -146,7 +146,7 @@ const FormWorkSide = () => {
     const data = [
       {
         name: '汇报对象',
-        is_required: 2,
+        is_required: 1,
         tips: '',
         type: 1,
       },
