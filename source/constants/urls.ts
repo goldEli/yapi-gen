@@ -152,6 +152,7 @@ const urls = {
   getReportInfo: '/b/work_report/user/info',
   getReportComment: '/b/work_report/user/comment',
   addReportComment: '/b/work_report/user/comment',
+  supplyReport:'/b/work_report/user/supply'
 }
 
 export default urls

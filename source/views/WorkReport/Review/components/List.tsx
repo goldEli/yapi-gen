@@ -27,7 +27,6 @@ import HandleReport from './HandleReport'
 import { useDispatch } from '@store/index'
 import { setViewReportModal } from '@store/workReport'
 import LabelTag from '@/components/LabelTag'
-import { useSelector } from 'react-redux'
 
 const ListTitle = styled.div`
   height: 32px;
@@ -99,7 +98,6 @@ const List = () => {
   const [t] = useTranslation()
   const { pathname } = useLocation()
   const [isSpinning, setIsSpinning] = useState(false)
-  const { viewReportModal } = useSelector(store => store.workReport)
   const [order, setOrder] = useState<any>('')
   const [orderKey, setOrderKey] = useState<any>()
   const [total, setTotal] = useState<number>(250)
@@ -429,7 +427,12 @@ const List = () => {
   }, [])
 
   return (
-    <>
+    <div
+      style={{
+        height: 'calc(100% - 64px)',
+        overflow: 'hidden',
+      }}
+    >
       <ListTitle>
         <span>{title}</span>
         <div>
@@ -482,13 +485,7 @@ const List = () => {
         <ClearButton onClick={restQuery}>清除条件</ClearButton>
       </ListHead>
       <ListContent>
-        <div
-          style={{
-            height: 'calc(100% - 50px)',
-            overflow: 'hidden',
-            padding: '16px 16px 0',
-          }}
-        >
+        <div style={{ height: 'calc(100% - 125px)' }}>
           <ResizeTable
             isSpinning={isSpinning}
             dataWrapNormalHeight="100%"
@@ -508,7 +505,7 @@ const List = () => {
           onChange={onChangePage}
         />
       </ListContent>
-      {viewReportModal.visible && <ReportDetailDrawer />}
+      <ReportDetailDrawer />
 
       <HandleReport
         editId={editId}
@@ -516,7 +513,7 @@ const List = () => {
         editClose={() => setVisibleEdit(false)}
         visibleEditText="修改汇报"
       />
-    </>
+    </div>
   )
 }
 

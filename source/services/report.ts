@@ -80,3 +80,7 @@ export const getRepPublicList: any = async (params: any) => {
   return response.data
 }
 
+export const supplyReport: any = async (params: any) => {
+  const response = await http.post('supplyReport', params)
+  return response.data
+}
