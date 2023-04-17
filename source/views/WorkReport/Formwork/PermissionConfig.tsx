@@ -107,7 +107,6 @@ const PermissionConfig = (props: PropsType) => {
       } else {
         d1 = [...person1, ...val1]
       }
-      console.log(hasAll, 'ppp')
     } else if (num === 2) {
       const val2 =
         values?.map((el: any) => ({
@@ -277,11 +276,6 @@ const PermissionConfig = (props: PropsType) => {
       const hasAll = data1.find((el: any) => el.target_value.key === 'all')
       setPerson1(hasAll ? data1 : newData1)
     }
-    console.log(
-      reportContent.is_all_view,
-      reportContent.is_all_write,
-      'is_all_write',
-    )
     reportContent.is_all_view === 2 && setPerson3(data3)
     reportContent.is_all_write === 2 && setPerson1(data1)
     setPerson2(data2)
@@ -386,8 +380,8 @@ const PermissionConfig = (props: PropsType) => {
       }
       const newReminderTime = {
         v1: time2(true, obj?.reminder_time, 'day'),
-        v2: time2(false, obj?.reminder_time, 'hour'),
-        v3: time2(false, obj?.reminder_time, 'minute'),
+        v2: time2(true, obj?.reminder_time, 'hour'),
+        v3: time2(true, obj?.reminder_time, 'minute'),
       }
       newObj.start_time = newStartTime
       newObj.end_time = newEndTime
@@ -396,8 +390,8 @@ const PermissionConfig = (props: PropsType) => {
       const newEndTime = obj?.end_time ? timestampToTime(obj?.end_time) : null
       const newReminderTime = {
         v1: time2(true, obj?.reminder_time, 'day'),
-        v2: time2(false, obj?.reminder_time, 'hour'),
-        v3: time2(false, obj?.reminder_time, 'minute'),
+        v2: time2(true, obj?.reminder_time, 'hour'),
+        v3: time2(true, obj?.reminder_time, 'minute'),
       }
       newObj.end_time = newEndTime
       newObj.reminder_time = newReminderTime
