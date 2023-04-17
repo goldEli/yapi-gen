@@ -120,6 +120,7 @@ const EditFormWorkStyle = styled(Input)({
   },
 })
 const BtnRow = styled.div`
+  align-items: center;
   width: 100%;
   height: 80px;
   display: flex;
