@@ -174,6 +174,7 @@ const Picker = (props: PropsType) => {
     dispatch(setEditSave(false))
     props.getValues(leftActiveVal, centerActiveVal, rightActiveVal)
     if (props.pickerType === 'start' || props.pickerType === 'end') {
+      if (leftActiveVal < 0 || centerActiveVal < 0 || rightActiveVal < 0) return
       props?.onChange?.({
         time: time1(
           0,
@@ -184,9 +185,11 @@ const Picker = (props: PropsType) => {
       })
     } else {
       if (props.type === 'day') {
-        console.log(centerActiveVal, rightActiveVal, 'day')
+        if (centerActiveVal < 0 || rightActiveVal < 0) return
         props?.onChange?.(time1(0, centerActiveVal, rightActiveVal))
       } else {
+        if (leftActiveVal < 0 || centerActiveVal < 0 || rightActiveVal < 0)
+          return
         props?.onChange?.(time1(leftActiveVal, centerActiveVal, rightActiveVal))
       }
     }
