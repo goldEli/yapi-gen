@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react'
 import Addperson from './Addperson'
 import Title from './Title'
 import FormMain from './FormMain'
-import { Form, Radio } from 'antd'
+import { Form, message, Radio } from 'antd'
 import { useDispatch, useSelector } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import {
@@ -96,14 +96,18 @@ const PermissionConfig = (props: PropsType) => {
         target_type: el.target_type,
         target_value: el.target_value,
       }))
-      d1 = [...person1, ...val1]
-      setPerson1(
-        d1.filter(
-          (item: any) =>
-            item.user_type !== 1 &&
-            (item.key !== 'all' || item.target_value.key !== 'all'),
-        ),
+      const hasAll = d1.find(
+        (item: any) =>
+          item.user_type === 1 &&
+          (item.key === 'all' || item.target_value.key === 'all'),
       )
+      if (hasAll) {
+        message.warning('你已添加全员')
+        d1 = [...person1]
+      } else {
+        d1 = [...person1, ...val1]
+      }
+      console.log(hasAll, 'ppp')
     } else if (num === 2) {
       const val2 =
         values?.map((el: any) => ({
@@ -121,14 +125,17 @@ const PermissionConfig = (props: PropsType) => {
         target_type: el.target_type,
         target_value: el.target_value,
       }))
-      d3 = [...person3, ...val3]
-      setPerson3(
-        d3.filter(
-          (item: any) =>
-            item.user_type !== 3 &&
-            (item.key !== 'all' || item.target_value.key !== 'all'),
-        ),
+      const hasAll = d3.find(
+        (item: any) =>
+          item.user_type === 3 &&
+          (item.key === 'all' || item.target_value.key === 'all'),
       )
+      if (hasAll) {
+        message.warning('你已添加全员')
+        d1 = [...person1]
+      } else {
+        d1 = [...person1, ...val3]
+      }
     }
     const d3V = d3.find(
       (item: any) =>
@@ -270,6 +277,11 @@ const PermissionConfig = (props: PropsType) => {
       const hasAll = data1.find((el: any) => el.target_value.key === 'all')
       setPerson1(hasAll ? data1 : newData1)
     }
+    console.log(
+      reportContent.is_all_view,
+      reportContent.is_all_write,
+      'is_all_write',
+    )
     reportContent.is_all_view === 2 && setPerson3(data3)
     reportContent.is_all_write === 2 && setPerson1(data1)
     setPerson2(data2)
