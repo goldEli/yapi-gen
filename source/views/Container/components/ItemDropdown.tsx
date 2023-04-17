@@ -5,7 +5,7 @@ import { Dropdown } from 'antd'
 import { useEffect, useState } from 'react'
 import * as services from '@/services'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { t } from 'i18next'
 
@@ -82,6 +82,7 @@ const Border = styled.div`
   border-bottom: 1px solid var(--neutral-n6-d2);
 `
 const ItemDropdown = (props: PropsType) => {
+  const { userInfo } = useSelector(store => store.user)
   const navigate = useNavigate()
   const [itemArr, setItemArr] = useState([])
   const dispatch = useDispatch()
@@ -141,17 +142,21 @@ const ItemDropdown = (props: PropsType) => {
             />
             {t('view_all_projects') as string}
           </div>
-          <div onClick={onCreate}>
-            <IconFont
-              type="plus"
-              style={{
-                fontSize: 20,
-                marginRight: 12,
-                color: 'var(--neutral-n3)',
-              }}
-            />
-            {t('common.createProject') as string}
-          </div>
+          {(
+            userInfo.company_permissions?.map((i: any) => i.identity) || []
+          ).includes('b/project/save') && (
+            <div onClick={onCreate}>
+              <IconFont
+                type="plus"
+                style={{
+                  fontSize: 20,
+                  marginRight: 12,
+                  color: 'var(--neutral-n3)',
+                }}
+              />
+              {t('common.createProject') as string}
+            </div>
+          )}
         </Footer>
       </Container>
     )

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
 import classNames from 'classnames'
@@ -8,12 +8,16 @@ import useCurrentTime from '@/components/CalendarManager/hooks/useCurrentTime'
 import ScheduleList from '../../ScheduleList'
 import {
   resizeMonthSchedule,
+  setQuickCreateScheduleModel,
+  setSelectedDayInMonth,
   // moveMonthSchedule,
   startMoveMonthSchedule,
 } from '@store/calendarPanle'
+import { setScheduleListModal } from '@store/schedule'
 
 interface DayItemProps {
   idx: number
+  list?: (Model.Schedule.Info | undefined)[]
 }
 
 const DayItemBox = styled.div`
@@ -81,6 +85,7 @@ const borderRight = css`
 
 const DayItem: React.FC<DayItemProps> = props => {
   const { checkedTime, selectedMonth } = useSelector(store => store.calendar)
+  const { selectedDayInMonth } = useSelector(store => store.calendarPanel)
   const { idx } = props
   const info = selectedMonth?.[props.idx]
   const day = dayjs(info?.date).format('DD')
@@ -88,17 +93,41 @@ const DayItem: React.FC<DayItemProps> = props => {
   const { currentTime } = useCurrentTime()
   const isCurrent = currentTime.isSame(dayjs(info?.datetime), 'day')
   const dispatch = useDispatch()
+
   if (!info) {
     return <></>
   }
+
   return (
     <DayItemBox
       className={classNames({
-        [selectedBg]: isSelected,
+        [selectedBg]: isSelected || selectedDayInMonth === info.datetime,
         [borderRight]: (idx + 1) % 7 === 0,
         [borderBottom]: idx > 27,
       })}
       key={idx}
+      onClick={e => {
+        e.stopPropagation()
+        const target = e.target as HTMLDivElement
+        const { offsetTop, offsetLeft } = target
+        // 关闭列表
+        dispatch(
+          setScheduleListModal({
+            visible: false,
+          }),
+        )
+        dispatch(
+          setQuickCreateScheduleModel({
+            visible: true,
+            isAll: true,
+            startTime: info.datetime,
+            endTime: info.datetime,
+            x: offsetLeft,
+            y: offsetTop,
+          }),
+        )
+        dispatch(setSelectedDayInMonth(info.datetime))
+      }}
       onMouseEnter={e => {
         console.log('window.calendarPanel.type', window.calendarMonthPanelType)
         if (window.calendarMonthPanelType === 'move') {
@@ -129,7 +158,7 @@ const DayItem: React.FC<DayItemProps> = props => {
         </span>
         <span className="lunar">{info?.lunar_day_chinese}</span>
       </div>
-      <ScheduleList idx={idx} data={info} />
+      <ScheduleList data={info} idx={idx} list={props.list} />
     </DayItemBox>
   )
 }

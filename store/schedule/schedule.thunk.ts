@@ -2,7 +2,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as services from '@/services'
 import { AppDispatch, store } from '@store/index'
 import ParamsCache from './paramsCache'
-import { setScheduleInfoDropdown } from '@store/calendarPanle'
 
 const name = 'schedule'
 
@@ -98,7 +97,7 @@ export const saveSchedule =
   (params: API.Schedule.SaveSchedule.Params) =>
   async (dispatch: AppDispatch) => {
     await services.schedule.saveScheduleList(params)
-    dispatch(refreshCalendarPanelScheduleList())
+    await dispatch(refreshCalendarPanelScheduleList())
   }
 
 export const getCalendarDaysOfYearList = createAsyncThunk(

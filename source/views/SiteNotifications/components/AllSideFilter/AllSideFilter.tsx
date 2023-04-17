@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 import IconFont from '@/components/IconFont'
 import LeftTitle from '@/components/LeftTitle'
 import { useDispatch, useSelector } from '@store/index'
@@ -77,20 +78,17 @@ const AllSideFilter = (props: any) => {
 
   const onChange = (checkedValues: any) => {
     setCheceks(checkedValues)
-    props.changeMsg(checkedValues)
+    props.changeMsg(checkedValues.length < 1 ? undefined : checkedValues)
   }
   const choose = (id: any) => {
-    setActive(id)
-
-    const arr = configuration[
-      configuration.findIndex((i: any) => i.sendType === active)
-    ]?.children?.map((i: any) => {
-      console.log(i)
-      return i.value
-    })
-
-    setCheceks(arr)
-    props.changeUser(id, arr)
+    if (id === active) {
+      setActive('')
+      setCheceks([])
+      props.changeUser(undefined, undefined)
+    } else {
+      setActive(id)
+      props.changeUser(id, undefined)
+    }
   }
 
   const init = async () => {
@@ -151,7 +149,9 @@ const AllSideFilter = (props: any) => {
         </MyIconModeTextWrap>
         <MyHead>
           <LeftTitle title={t('Notices')} />
-          {/* <ResetB>{t('reset_filtering') as string}</ResetB> */}
+          <ResetB onClick={() => onChange([])}>
+            {t('reset_filtering') as string}
+          </ResetB>
         </MyHead>
         <InfoWrap>
           {active && (

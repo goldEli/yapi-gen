@@ -68,7 +68,7 @@
   "modifiable_schedule": "Modifiable schedule",
   "invite_participants": "Invite Participants",
   "please_select_a_time": "Please select a time!",
-  "only_schedule_repeats_with_a_duration_of_days_are_supported!": "Only support schedule repeats with a duration within {{value}} days!",
+  "only_schedule_repeats_with_a_duration_of_days_are_supported": "Only support schedule repeats with a duration within {{value}} days!",
   "edit_schedule": "Edit Schedule",
   "theme": "Theme",
   "please_enter_a_theme": "Please enter a theme",
@@ -1142,7 +1142,10 @@
       "fillReport": "Supplementary report",
       "recent": "Recent use",
       "other": "Other",
-      "searchReport": "Search for report title or content"
+      "searchReport": "Search for report title or content",
+      "confirm": "Confirm to import the previous content, which will overwrite the current editing content",
+      "ok": "Ok",
+      "cancel": "Cancel"
     },
     "statistics": {
       "title": "Reporting Statistics",

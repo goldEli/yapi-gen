@@ -11,7 +11,6 @@ import {
   userSetupsCalendar,
 } from '@store/calendar/calendar.thunk'
 import { useTranslation } from 'react-i18next'
-import { refreshCalendarPanelScheduleList } from '@store/schedule/schedule.thunk'
 
 const MoreWrap = styled.div`
   padding: 4px 0 10px;
@@ -79,7 +78,6 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
       }),
     )
     props.onCancel()
-    dispatch(refreshCalendarPanelScheduleList())
   }
 
   // 删除日历确认事件
@@ -88,7 +86,6 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
     dispatch(getCalendarList())
     setIsDeleteVisible(false)
     message.success(t('common.deleteSuccess'))
-    dispatch(refreshCalendarPanelScheduleList())
   }
 
   // 退订日历确认事件
@@ -97,7 +94,6 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
     dispatch(getCalendarList())
     setIsUnsubscribeVisible(false)
     message.success(t('unsubscribed_successfully'))
-    dispatch(refreshCalendarPanelScheduleList())
   }
 
   // 点击菜单事件
@@ -127,7 +123,6 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
       }),
     )
     props.onCancel()
-    dispatch(refreshCalendarPanelScheduleList())
   }
 
   // 我管理的日历下拉菜单 -- 根据状态判断

@@ -43,7 +43,6 @@ import { setCalendarModal } from '@store/calendar'
 import { addCalendar, editCalendar, getCalendarInfo } from '@/services/calendar'
 import { getCalendarList } from '@store/calendar/calendar.thunk'
 import { useTranslation } from 'react-i18next'
-import { refreshCalendarPanelScheduleList } from '@store/schedule/schedule.thunk'
 
 interface PermissionDropProps {
   onUpdateShare(item: Model.Calendar.MemberItem, type: string): void
@@ -338,7 +337,6 @@ const CalendarFormModal = () => {
       await addCalendar(values)
     }
     dispatch(getCalendarList())
-    dispatch(refreshCalendarPanelScheduleList())
     onClose()
     message.success(
       calendarModal?.params?.id
@@ -390,6 +388,9 @@ const CalendarFormModal = () => {
       id: calendarModal?.params?.id,
     })
     setCalendarInfo(response as Model.Calendar.CalendarInfo)
+    if (response.is_default === 1) {
+      response.name = response.user.name
+    }
     form.setFieldsValue(response)
     setNormalColor(response.color)
     setPath(response.icon)
@@ -481,6 +482,7 @@ const CalendarFormModal = () => {
               allowClear
               maxLength={30}
               autoFocus
+              disabled={calendarInfo?.is_default === 1}
             />
           </Form.Item>
           <Form.Item label={t('calendar_description')} name="describe">

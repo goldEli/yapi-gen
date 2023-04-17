@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable max-len */
 import { getLoginDetail } from '@/services/user'
-import { useSelector } from '@store/index'
 import { useState, useRef, useEffect } from 'react'
 
 const useWebsocket = () => {
@@ -23,7 +22,7 @@ const useWebsocket = () => {
   }
 
   const heartCheck: TypeHeartCheck = {
-    timeout: 5000,
+    timeout: 3 * 60 * 1000,
     timeoutObj: null,
     reset() {
       clearInterval(this.timeoutObj)
@@ -66,8 +65,6 @@ const useWebsocket = () => {
       setReadyState(stateArr[ws.current?.readyState ?? 0])
     }
     ws.current.onmessage = (e: any) => {
-      console.log(e)
-
       setWsData({
         key: Math.random(),
         data: e.data,
@@ -93,7 +90,7 @@ const useWebsocket = () => {
   const webSocketInit = async () => {
     const res = await getLoginDetail()
 
-    creatWebSocket(res.data.comAuth.token, res.data.id)
+    creatWebSocket(res?.data?.comAuth?.token, res?.data?.id)
   }
 
   //  关闭 WebSocket
@@ -111,7 +108,7 @@ const useWebsocket = () => {
     const res = await getLoginDetail()
 
     ws.current = null
-    creatWebSocket(res.data.comAuth.token, res.data.id)
+    creatWebSocket(res.data?.comAuth?.token, res?.data?.id)
   }
 
   useEffect(() => {

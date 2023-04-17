@@ -9,48 +9,26 @@ export const handleOffsetDistance = (
   end_timestamp: number,
   delta: XYCoord,
 ) => {
-  console.log('==================')
   const offsetTop = Math.round(delta?.y ?? 0)
-  console.log('offsetTop', offsetTop)
   const offsetMinute = Math.floor(offsetTop / (oneHourHeight / 60))
-  console.log('offsetMinute', offsetMinute)
-  // const direction = offsetMinute < 0 ? -1 : 1
-  // console.log('direction', direction)
+
   // 每次移动是15分钟的倍数
   const step = Math.ceil(offsetMinute / 15)
   const moveMinute = step * 15
-  console.log('moveMinute', moveMinute)
 
   const newStartTime = dayjs(start_timestamp).add(moveMinute, 'minute')
-  console.log('newStartTime', newStartTime.format('HH:mm'))
   const newEndTime = dayjs(end_timestamp).add(moveMinute, 'minute')
-  console.log('newEndTime', newEndTime.format('HH:mm'))
   return {
     newStartTime,
     newEndTime,
   }
 }
 export const getEndTimeByHeight = (start_timestamp: number, height: number) => {
-  // console.log('==================')
-  // const offsetTop = Math.round(delta?.y ?? 0)
-  // console.log('offsetTop', offsetTop)
   const offsetMinute = Math.floor(height / (oneHourHeight / 60))
-  // console.log('offsetMinute', offsetMinute)
-  // const direction = offsetMinute < 0 ? -1 : 1
-  // console.log('direction', direction)
   // 每次移动是15分钟的倍数
   const step = Math.ceil(offsetMinute / 15)
   const moveMinute = step * 15
-  // console.log('moveMinute', moveMinute)
-
-  // const newStartTime = dayjs(start_timestamp).add(moveMinute, 'minute')
-  // console.log('newStartTime', newStartTime.format('HH:mm'))
   const newEndTime = dayjs(start_timestamp).add(moveMinute, 'minute')
-  console.log(
-    'newEndTime',
-    dayjs(start_timestamp).format('HH:mm'),
-    newEndTime.format('HH:mm'),
-  )
   return newEndTime
 }
 

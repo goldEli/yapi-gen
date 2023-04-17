@@ -1,5 +1,3 @@
-/* eslint-disable no-empty */
-
 import { useSelector, useDispatch } from '@store/index'
 import { setScheduleModal } from '@store/calendar'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'

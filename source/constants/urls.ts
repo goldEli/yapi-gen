@@ -156,10 +156,13 @@ const urls = {
   templateList: '/b/work_report/template/list',
   templateLatelyList: '/b/work_report/template/lately',
   writeReport: '/b/work_report/user',
+  updateReport: '/b/work_report/user',
   statTempList: '/b/work_report/statistics/template/list',
   statUserList: '/b/work_report/statistics/user/list',
   statInfo: '/b/work_report/statistics/info',
   statTempUsage: '/b/work_report/statistics/template',
+  supplyList: '/b/work_report/template/supply',
+  getReportDetailById: '/b/work_report/user/info',
   repSentList: '/b/work_report/user/send/list',
   repReceivedList: '/b/work_report/user/receive/list',
   repPublicList: '/b/work_report/user/public/list',
@@ -170,7 +173,7 @@ const urls = {
   getScheduleListDaysOfWeek: '/b/schedule/daysOfWeek',
   getScheduleListDaysOfMonth: '/b/schedule/daysOfMonth',
   getScheduleListDaysOfDate: '/b/schedule/daysOfDate',
-  getScheduleSearch:'/b/schedule/search',
+  getScheduleSearch: '/b/schedule/search',
 
   // 修改日程
 

@@ -12,9 +12,8 @@ import { useEffect, useState } from 'react'
 import { seleData1, seleData2, seleData3 } from './DataList'
 import CommonModal from '@/components/AddUser/CommonModal'
 import AddDepartmentOrTeamModal from '@/components/AddDepartmentOrTeamModal'
-import { setEditSave } from '@store/formWork'
 import { useDispatch } from '@store/index'
-
+import { setEditSave } from '@store/formWork'
 const AddPersonText = styled.div`
   margin-left: 26px;
   display: flex;

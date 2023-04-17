@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
+/* eslint-disable complexity */
+/* eslint-disable consistent-return */
+/* eslint-disable no-negated-condition */
 import CommonButton from '@/components/CommonButton'
 import styled from '@emotion/styled'
 import { Input, message } from 'antd'
@@ -16,7 +19,6 @@ import {
   createTemplate,
 } from '@/services/formwork'
 import { getTemplateList, templateDetail } from '@store/formWork/thunk'
-import DataList, { data } from './DataList'
 const RightFormWorkStyle = styled.div`
   flex: 1;
   overflow: hidden;
@@ -127,7 +129,6 @@ const RightFormWork = () => {
   const [isActive, setIsActive] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   const [value, setValue] = useState('')
-  const [save, setSave] = useState(false)
   const dispatch = useDispatch()
   const [delIsVisible, setDelIsVisible] = useState(false)
   const {
@@ -138,6 +139,7 @@ const RightFormWork = () => {
     templateContentConfigs,
     templateName,
     fillingRequirements,
+    err,
   } = useSelector(store => store.formWork)
   const getTemplateDetail = async () => {
     await dispatch(templateDetail({ id: activeItem.id }))
@@ -157,9 +159,40 @@ const RightFormWork = () => {
       dispatch(setActiveItem({ id: dataList[0].id, name: dataList[0].name }))
     message.success('删除成功')
   }
-  useEffect(() => {
-    setSave(editSave)
-  }, [editSave])
+  const getVerifyParams = (parmas: any) => {
+    // 谁可以写是必填的
+    if (parmas.is_all_write !== 1) {
+      const list = parmas.template_configs.filter(
+        (el: any) => el.user_type === 1,
+      )
+      list.length < 1 && message.warning('谁可以写必选')
+      return false
+    } else if (
+      parmas.submit_cycle === 1 ||
+      parmas.submit_cycle === 2 ||
+      parmas.submit_cycle === 3
+    ) {
+      if (!parmas.requirement.start_time) {
+        message.warning('开始时间必填')
+        return false
+      } else if (!parmas.requirement.end_time) {
+        message.warning('截止时间必填')
+        return false
+      } else if (!parmas.reminder_time) {
+        message.warning('提醒时间必填')
+        return false
+      }
+    } else if (parmas.submit_cycle === 4) {
+      if (!parmas.requirement.end_time) {
+        message.warning('截止时间必填')
+        return false
+      } else if (!parmas.reminder_time) {
+        message.warning('提醒时间必填')
+        return false
+      }
+    }
+    return true
+  }
   const saveApi = async () => {
     let parmas: any = {}
     parmas = {
@@ -168,7 +201,7 @@ const RightFormWork = () => {
       reminder_time: fillingRequirements?.reminder_time,
       is_supply: fillingRequirements?.is_supply ? 1 : 2,
       is_cycle_limit: fillingRequirements?.is_cycle_limit ? 1 : 2,
-      is_submitter_edit: fillingRequirements?.is_cycle_limit ? 1 : 2,
+      is_submitter_edit: fillingRequirements?.is_submitter_edit ? 1 : 2,
       hand_scope:
         fillingRequirements?.hand_scope?.key || fillingRequirements?.hand_scope,
       is_all_view: reportContent?.is_all_view,
@@ -179,14 +212,20 @@ const RightFormWork = () => {
       ),
       id: activeItem.id || 0,
     }
-    if (templateName) {
-      parmas.name = templateName
-    }
+    parmas.name = templateName || activeItem.name
     parmas.requirement = {
       day: fillingRequirements?.day,
       end_time: fillingRequirements?.end_time,
       start_time: fillingRequirements?.start_time,
       is_holiday: fillingRequirements?.is_holiday ? 1 : 2,
+    }
+    console.log(parmas, 'parmas')
+    if (!getVerifyParams(parmas)) {
+      return
+    }
+    if (!err) {
+      message.warning('结束时间大于开始时间')
+      return
     }
     if (activeItem?.id) {
       const res = await upDateTemplate(parmas)
@@ -241,7 +280,6 @@ const RightFormWork = () => {
               dispatch(setEditSave(false))
               setValue(e.target.value),
                 dispatch(setTemplateName(e.target.value))
-              dispatch(setEditSave(false))
             }}
           ></EditFormWorkStyle>
         </EditFormWorkBox>
@@ -263,7 +301,7 @@ const RightFormWork = () => {
             上一步
           </CommonButton>
         )}
-        {save ? (
+        {editSave ? (
           <CommonButton type="primary" style={{ margin: '0 0px 0 16px' }}>
             已保存
           </CommonButton>

@@ -6,9 +6,7 @@ import { setScheduleInfoDropdown } from '@store/calendarPanle'
 import { setScheduleListModal } from '@store/schedule'
 import ScheduleInfoDropdown from '../ScheduleInfoDropdown'
 import dayjs from 'dayjs'
-interface ScheduleListProps {
-  month: number
-}
+interface ScheduleListProps {}
 interface ScheduleListBoxProps {
   visible: boolean
   top?: number

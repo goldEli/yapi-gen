@@ -181,7 +181,7 @@ const WhiteDay = (props: Props) => {
   }
   const onConfirm = () => {
     const values = form.getFieldsValue()
-    console.log(values)
+    // console.log(values)
   }
   return (
     <CommonModal
@@ -252,7 +252,36 @@ const WhiteDay = (props: Props) => {
             style={{
               marginBottom: '30px',
             }}
-            label={<LabelTitle title={'今日工作'} />}
+            label={<LabelTitle title={'本周完成工作'} />}
+            name="info"
+            rules={[
+              {
+                validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
+                required: true,
+                message: (
+                  <div
+                    style={{
+                      margin: '5px 0',
+                      fontSize: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    请输入
+                  </div>
+                ),
+                whitespace: true,
+                validator: onValidator,
+              },
+            ]}
+          >
+            <EditorMain isVisible={props.isVisible} type={props.type} />
+          </Form.Item>
+          <Form.Item
+            style={{
+              marginBottom: '30px',
+            }}
+            label={<LabelTitle title={'下周计划工作'} />}
             name="info"
             rules={[
               {

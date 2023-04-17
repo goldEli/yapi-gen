@@ -39,10 +39,7 @@ import { RangePickerProps } from 'antd/lib/date-picker'
 import { colorMap } from '../../config'
 import { setQuickCreateScheduleModel } from '@store/calendarPanle'
 import { setScheduleModal } from '@store/calendar'
-import {
-  refreshCalendarPanelScheduleList,
-  saveSchedule,
-} from '@store/schedule/schedule.thunk'
+import { saveSchedule } from '@store/schedule/schedule.thunk'
 import { EventBus } from '../../eventBus'
 import useModalPosition from './useModalPosition'
 import { useTranslation } from 'react-i18next'
@@ -257,7 +254,6 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
   const onConfirm = async () => {
     const params = await onGetParams()
     await dispatch(saveSchedule(params))
-    dispatch(refreshCalendarPanelScheduleList())
     message.success(t('common.createSuccess'))
     onClose()
   }
@@ -268,8 +264,12 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
       isAll,
       participant,
       noticeList,
-      startTime: form.getFieldsValue().start_datetime,
-      endTime: form.getFieldsValue().end_datetime,
+      startTime: moment(form.getFieldsValue().time[0]).format(
+        'YYYY-MM-DD HH:mm:ss',
+      ),
+      endTime: moment(form.getFieldsValue().time[1]).format(
+        'YYYY-MM-DD HH:mm:ss',
+      ),
       subject: form.getFieldsValue().subject,
       describe: form.getFieldsValue().describe,
       normalCategory,

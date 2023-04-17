@@ -57,7 +57,7 @@ const formWork = createSlice({
     templateContentConfigs: [
       {
         name: '汇报对象',
-        is_required: 2,
+        is_required: 1,
         tips: '',
         type: 1,
       },
@@ -101,10 +101,6 @@ const formWork = createSlice({
     ],
   } as SliceState,
   reducers: {
-    // 是否保存
-    setEditSave: (state: any, action) => {
-      state.editSave = action.payload
-    },
     // 当前选中的
     setActiveItem: (state: any, action) => {
       state.activeItem = action.payload
@@ -134,6 +130,9 @@ const formWork = createSlice({
     },
     setAWeekDataList: (state: any, action) => {
       state.aWeekDataList = action.payload
+    },
+    setEditSave: (state: any, action) => {
+      state.editSave = action.payload
     },
   },
   extraReducers(builder) {
@@ -185,7 +184,6 @@ const formWork = createSlice({
 })
 
 export const {
-  setEditSave,
   setActiveItem,
   setFillingRequirements,
   setReportContent,
@@ -194,5 +192,6 @@ export const {
   setTemplateName,
   setDataList,
   setAWeekDataList,
+  setEditSave,
 } = formWork.actions
 export default formWork.reducer

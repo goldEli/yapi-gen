@@ -4,7 +4,7 @@ import React, { Fragment } from 'react'
 import { useDispatch, useSelector } from '@store/index'
 import { scheduleInfoReply } from '@/services/schedule'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
-interface iProps { }
+interface iProps {}
 const ScheduleInfoFooterBox = styled.div`
   color: var(--neutral-n3);
   display: flex;
@@ -18,14 +18,14 @@ const ScheduleInfoFooterBox = styled.div`
 `
 
 const ScheduleInfoFooter: React.FC<iProps> = props => {
-  const { scheduleInfo } = useSelector(state => state.schedule);
-  const disPatch=useDispatch();
+  const { scheduleInfo } = useSelector(state => state.schedule)
+  const disPatch = useDispatch()
   const replySchedule = async (status: number) => {
     try {
       await scheduleInfoReply({ id: scheduleInfo?.id ?? 0, status })
       disPatch(setScheduleInfoDropdown({ visible: false }))
     } catch (error) {
-
+      //
     }
   }
   return (
