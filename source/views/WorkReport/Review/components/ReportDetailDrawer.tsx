@@ -228,9 +228,10 @@ const ReportDetailDrawer = () => {
 
   // 评论
   const onComment = async () => {
+    const value = await form.validateFields()
     const params = {
       report_user_id: drawerInfo.id,
-      content: form.getFieldsValue().info,
+      content: value.info,
     }
     await addReportComment(params)
     message.success('添加评论成功！')
@@ -270,6 +271,15 @@ const ReportDetailDrawer = () => {
       document.removeEventListener('keydown', getKeyDown)
     }
   }, [])
+
+  const onValidator = (rule: any, value: any) => {
+    if (value === '<p><br></p>' || value === '<p></p>' || value.trim() === '') {
+      return Promise.reject(
+        new Error('The two passwords that you entered do not match!'),
+      )
+    }
+    return Promise.resolve()
+  }
 
   return (
     <>
@@ -409,7 +419,29 @@ const ReportDetailDrawer = () => {
             <>
               <div className="editBox">
                 <Form form={form}>
-                  <Form.Item name="info">
+                  <Form.Item
+                    name="info"
+                    rules={[
+                      {
+                        validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
+                        required: true,
+                        message: (
+                          <div
+                            style={{
+                              margin: '5px 0',
+                              fontSize: '12px',
+                              display: 'flex',
+                              alignItems: 'center',
+                            }}
+                          >
+                            评论不能为空
+                          </div>
+                        ),
+                        whitespace: true,
+                        validator: onValidator,
+                      },
+                    ]}
+                  >
                     <Editor
                       ref={editorRef}
                       upload={uploadFile}
