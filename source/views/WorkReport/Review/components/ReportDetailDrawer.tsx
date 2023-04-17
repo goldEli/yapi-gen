@@ -8,7 +8,7 @@
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
 import { Drawer, message, Form, Skeleton, Space, Input, Button } from 'antd'
 import { Editor, EditorRef } from '@xyfe/uikit'
-import { createRef, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonIconFont from '@/components/CommonIconFont'
 import { DragLine } from '@/components/StyleCommon'
@@ -25,9 +25,6 @@ import {
   UpWrap,
   DownWrap,
   ContentHeadWrap,
-  LabelTitle,
-  LabelMessage,
-  LabelMessageRead,
   CommentFooter,
   DetailItem,
   TargetUserItem,
@@ -83,10 +80,10 @@ const TargetTabs = (props: TargetTabsProps) => {
 }
 
 const ContactDemand = (props: { list: any }) => {
-  const list = props.list?.length ? JSON.parse(props.list) : []
+  const list = props.list?.length ? props.list : []
   return (
     <ContactDemandBox>
-      {list.map((i: any) => (
+      {list?.map((i: any) => (
         <ContactDemandItem key={i.id}>
           【{i.id}】<span className="name">{i.name}</span>
         </ContactDemandItem>
@@ -96,8 +93,8 @@ const ContactDemand = (props: { list: any }) => {
 }
 
 const AttachmentBox = (props: { list: any }) => {
-  const list = props.list?.length ? JSON.parse(props.list) : []
-  const resultList = list.map((item: any) => {
+  const list = props.list?.length ? props.list : []
+  const resultList = list?.map((item: any) => {
     return {
       url: item.url,
       id: new Date().getTime() + Math.random(),
@@ -123,6 +120,7 @@ const ReportDetailDrawer = () => {
   const [isReview, setIsReview] = useState(false)
   const [commentList, setCommentList] = useState([])
   const [form] = Form.useForm()
+  const reviewRef = useRef<any>()
   const leftWidth = 640
   const editorRef = useRef<EditorRef>(null)
 
@@ -150,6 +148,15 @@ const ReportDetailDrawer = () => {
     })
   }
 
+  const scrollToBottom = () => {
+    setTimeout(() => {
+      reviewRef.current.scrollTo({
+        top: reviewRef.current.scrollHeight,
+        behavior: 'smooth',
+      })
+    })
+  }
+
   // 获取汇报评论
   const getReportCommentData = async (id: number) => {
     const response = await getReportComment({
@@ -157,7 +164,6 @@ const ReportDetailDrawer = () => {
       page: 1,
       pagesize: 999,
     })
-    console.log(response, '=response')
     setCommentList(response.list)
   }
 
@@ -166,7 +172,7 @@ const ReportDetailDrawer = () => {
     setDrawerInfo({})
     setSkeletonLoading(true)
     const info = await getReportInfo({
-      id: viewReportModal.id,
+      id: viewReportModal?.id,
     })
     setDrawerInfo(info)
     setSkeletonLoading(false)
@@ -228,6 +234,7 @@ const ReportDetailDrawer = () => {
     }
     await addReportComment(params)
     message.success('添加评论成功！')
+    scrollToBottom()
     setIsReview(false)
     getReportCommentData(drawerInfo.id)
     form.resetFields()
@@ -251,7 +258,7 @@ const ReportDetailDrawer = () => {
   }
 
   useEffect(() => {
-    if (viewReportModal.visible || viewReportModal?.id) {
+    if (viewReportModal.visible && viewReportModal?.id) {
       setReportIds(viewReportModal?.ids || [])
       getReportDetail(viewReportModal?.ids || [])
     }
@@ -333,7 +340,7 @@ const ReportDetailDrawer = () => {
             </ChangeIconGroup>
           </Space>
         </Header>
-        <Content isReview={isReview}>
+        <Content isReview={isReview} ref={reviewRef}>
           {skeletonLoading && <DetailsSkeleton />}
           {!skeletonLoading && (
             <>

@@ -13,7 +13,7 @@ import { seleData1, seleData2, seleData3 } from './DataList'
 import CommonModal from '@/components/AddUser/CommonModal'
 import AddDepartmentOrTeamModal from '@/components/AddDepartmentOrTeamModal'
 import { useDispatch } from '@store/index'
-
+import { setEditSave } from '@store/formWork'
 const AddPersonText = styled.div`
   margin-left: 26px;
   display: flex;
@@ -135,7 +135,7 @@ const Addperson = (props: Props) => {
   }
   // 下拉
   const onOpenChange = (e: { key: string }) => {
-    localStorage.setItem('edit', '1')
+    dispatch(setEditSave(false))
     setIsOpen(false)
     setIsVisible(e.key === 'user')
     setIsAddVisible(['department', 'team'].includes(e.key))
@@ -195,7 +195,7 @@ const Addperson = (props: Props) => {
   // 删除添加的成员
   const delPerson = (el: { target_id: any }) => {
     props.onChangedel(el)
-    localStorage.setItem('edit', '1')
+    dispatch(setEditSave(false))
   }
   useEffect(() => {
     switch (props.state) {

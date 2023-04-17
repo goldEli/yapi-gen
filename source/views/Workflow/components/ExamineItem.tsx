@@ -121,8 +121,8 @@ export const ItemWrap = styled.div({
   },
 })
 
-const tooltipStyle = css`
-  margin: 2px 0 0 5px;
+const queTooltipStyle = css`
+  margin-left: 8px;
   font-size: 15px;
   cursor: pointer;
 `
@@ -337,25 +337,19 @@ const ExamineItem = (props: Props) => {
                 fontSize: 12,
               }}
             >
-              <span>
-                <span>
-                  {menuList?.filter((i: any) => i.value === normal)[0]?.name}
-                </span>
-                <Tooltip
-                  title={
-                    menuList?.filter((i: any) => i.value === normal)[0]?.tips
-                  }
-                >
-                  <IconFont
-                    style={{
-                      color: 'var(--neutral-n3)',
-                    }}
-                    className={tooltipStyle}
-                    type="question"
-                  />
-                </Tooltip>
-              </span>
+              {menuList?.filter((i: any) => i.value === normal)[0]?.name}
             </span>
+            <Tooltip
+              title={menuList?.filter((i: any) => i.value === normal)[0]?.tips}
+            >
+              <IconFont
+                style={{
+                  color: 'var(--neutral-n3)',
+                }}
+                className={queTooltipStyle}
+                type="question"
+              />
+            </Tooltip>
             <IconFont
               style={{
                 marginLeft: 8,
