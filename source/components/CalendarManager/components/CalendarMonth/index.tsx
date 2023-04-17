@@ -43,11 +43,8 @@ const CalendarMonth: React.FC<CalendarMonthProps> = props => {
       )
     }
     run()
-  }, [calenderMonthValue])
+  }, [calenderMonthValue, checkedCalendarList])
 
-  React.useEffect(() => {
-    // dispatch(getScheduleList({ id: 1 }))
-  }, [])
   return (
     <CalendarMonthBox>
       <CalendarMonthHeader />

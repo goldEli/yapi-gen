@@ -8,6 +8,7 @@ import MoreScheduleButton from '../../MoreScheduleButton'
 interface ScheduleListProps {
   data: Model.Calendar.DaysOfMonth
   idx: number
+  list?: (Model.Schedule.Info | undefined)[]
 }
 
 const ScheduleListBox = styled.div`
@@ -18,43 +19,31 @@ const ScheduleListBox = styled.div`
 const ScheduleList: React.FC<ScheduleListProps> = props => {
   const { scheduleList } = useSelector(store => store.schedule)
 
-  const { data } = props
+  const { list, data } = props
   const key = data.date
-  const list = scheduleList?.[key]
+  // const list = scheduleList?.[key]
 
   // console.log({list}, scheduleList)
   const hiddenNum = useMemo(() => {
+    const list = scheduleList?.[key]
     if (!list?.length) {
       return 0
     }
     const len = list?.length
     return len > 3 ? len - 3 : 0
-  }, [list])
+  }, [key, scheduleList])
   const showList = useMemo(() => {
-    const acrossDayScheduleList =
-      list
-        ?.filter(item => item.is_span_day)
-        ?.sort((a, b) => a.schedule_id - b.schedule_id) ?? []
-    const allDayScheduleList =
-      list
-        ?.filter(item => item.is_all_day === 1 && !item.is_span_day)
-        ?.sort((a, b) => a.schedule_id - b.schedule_id) ?? []
-    const otherList =
-      list
-        ?.filter(item => !item.is_all_day || item.is_all_day !== 1)
-        ?.sort((a, b) => a.schedule_id - b.schedule_id) ?? []
-    const newList = [
-      ...acrossDayScheduleList,
-      ...allDayScheduleList,
-      ...otherList,
-    ]
-    return newList?.slice(0, 3)
+    const newList = list?.slice(0, 3)
+    return newList
   }, [list])
 
   return (
     <ScheduleListBox>
-      {showList.map(item => {
-        return <ScheduleListItem idx={props.idx} data={item} key={item.id} />
+      {showList?.map((item, idx) => {
+        if (!item) {
+          return <div key={idx} style={{ height: '22px' }}></div>
+        }
+        return <ScheduleListItem idx={props.idx} data={item} key={item?.id} />
       })}
       <MoreScheduleButton hiddenNum={hiddenNum} />
       <MoveActiveItem idx={props.idx} />

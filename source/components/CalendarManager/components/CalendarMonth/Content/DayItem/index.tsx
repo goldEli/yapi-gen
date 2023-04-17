@@ -16,6 +16,7 @@ import {
 
 interface DayItemProps {
   idx: number
+  list?: (Model.Schedule.Info | undefined)[]
 }
 
 const DayItemBox = styled.div`
@@ -150,7 +151,7 @@ const DayItem: React.FC<DayItemProps> = props => {
         </span>
         <span className="lunar">{info?.lunar_day_chinese}</span>
       </div>
-      <ScheduleList idx={idx} data={info} />
+      <ScheduleList data={info} idx={idx} list={props.list} />
     </DayItemBox>
   )
 }

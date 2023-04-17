@@ -48,6 +48,11 @@ type SliceState = {
   scheduleSearchKey?: string
   // 月视图，当前点击的日期
   selectedDayInMonth?: Model.Calendar.DaysOfMonth['datetime']
+  // 跨天头天index记录，用于非头天渲染
+  firstDataIndexInfo?: {
+    firstDayInfo: Model.Schedule.Info
+    index: number
+  }[]
 }
 const defaultMonthMoveScheduleActiveInfo = {
   visibleList: [],
@@ -84,6 +89,12 @@ const slice = createSlice({
   name: 'calendarPanel',
   initialState,
   reducers: {
+    setFirstDataIndexInfo(
+      state,
+      action: PayloadAction<SliceState['firstDataIndexInfo']>,
+    ) {
+      state.firstDataIndexInfo = action.payload
+    },
     setSelectedDayInMonth(
       state,
       action: PayloadAction<SliceState['selectedDayInMonth']>,
@@ -252,6 +263,7 @@ export const {
   resizeMonthSchedule,
   setQuickCreateScheduleModel,
   setSelectedDayInMonth,
+  setFirstDataIndexInfo,
 } = slice.actions
 
 export default calendarPanel
