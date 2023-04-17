@@ -14,7 +14,11 @@ import FormMain from './FormMain'
 import { Form, Radio } from 'antd'
 import { useDispatch, useSelector } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import { setReportContent, setFillingRequirements } from '@store/formWork'
+import {
+  setReportContent,
+  setFillingRequirements,
+  setEditSave,
+} from '@store/formWork'
 import { dayData1, weekData, monthData } from './DataList'
 import moment from 'moment'
 import { cos } from '@/services/cos'
@@ -121,7 +125,7 @@ const PermissionConfig = (props: PropsType) => {
 
   // 填写周期
   const onchange = (e: any) => {
-    localStorage.setItem('edit', '1')
+    dispatch(setEditSave(false))
     setType(e.target.value)
     let value = 0
     switch (e.target.value) {

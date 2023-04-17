@@ -131,6 +131,9 @@ const formWork = createSlice({
     setAWeekDataList: (state: any, action) => {
       state.aWeekDataList = action.payload
     },
+    setEditSave: (state: any, action) => {
+      state.editSave = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addCase(getTemplateList.fulfilled, (state, action) => {
@@ -189,5 +192,6 @@ export const {
   setTemplateName,
   setDataList,
   setAWeekDataList,
+  setEditSave,
 } = formWork.actions
 export default formWork.reducer

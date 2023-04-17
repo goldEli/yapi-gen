@@ -111,7 +111,9 @@ const FormWorkSide = () => {
   const [isVisible, setIsVisible] = useState(false)
   const dispatch = useDispatch()
   const [delIsVisible, setDelIsVisible] = useState(false)
-  const { dataList, activeItem } = useSelector(store => store.formWork)
+  const { dataList, activeItem, editSave } = useSelector(
+    store => store.formWork,
+  )
   useEffect(() => {
     dataList.forEach((el: any, index: any) => {
       if (el.id === activeItem.id) {
@@ -135,10 +137,9 @@ const FormWorkSide = () => {
     getDataList()
     const item: any = dataList.find((el: any, index: any) => index === 0)
     dispatch(setActiveItem(item))
-    localStorage.setItem('edit', '0')
   }, [])
   const itemActive = (el: any, index: any) => {
-    if (localStorage.getItem('edit') === '1') {
+    if (!editSave) {
       setDelIsVisible(true)
       return
     }

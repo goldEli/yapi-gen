@@ -4,8 +4,9 @@
 /* eslint-disable no-useless-concat */
 /* eslint-disable camelcase */
 import CommonIconFont from '@/components/CommonIconFont'
-import { DelButton } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
+import { useDispatch } from '@store/index'
+import { setEditSave } from '@store/formWork'
 import { Input, Popover } from 'antd'
 import { useEffect, useState } from 'react'
 import {
@@ -82,6 +83,7 @@ let v1 = 0
 let v2 = 0
 let v3 = 0
 const Picker = (props: PropsType) => {
+  const dispatch = useDispatch()
   const [leftActiveVal, setLeftActiveVal] = useState<number>(-1)
   const [centerActiveVal, setCenterActiveVal] = useState<number>(-1)
   const [rightActiveVal, setRightActiveVal] = useState<number>(-1)
@@ -164,8 +166,8 @@ const Picker = (props: PropsType) => {
   }
   const getTime = () => {
     setIsOpen(false)
-    localStorage.setItem('edit', '1'),
-      props.getValues(leftActiveVal, centerActiveVal, rightActiveVal)
+    dispatch(setEditSave(false))
+    props.getValues(leftActiveVal, centerActiveVal, rightActiveVal)
     if (props.pickerType === 'start' || props.pickerType === 'end') {
       props?.onChange?.({
         time: time1(
