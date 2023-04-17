@@ -115,7 +115,12 @@ const SiteDrawer = () => {
   return (
     <Drawer
       forceRender
-      bodyStyle={{ padding: 16, paddingBottom: '8px', boxSizing: 'border-box' }}
+      bodyStyle={{
+        padding: 16,
+        paddingBottom: '8px',
+        paddingRight: '4px',
+        boxSizing: 'border-box',
+      }}
       width={400}
       zIndex={1}
       closable={false}
