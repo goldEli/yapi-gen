@@ -1,9 +1,11 @@
+/* eslint-disable no-empty */
+/* eslint-disable require-atomic-updates */
 /* eslint-disable no-undefined */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 import CommonButton from '@/components/CommonButton'
 import LeftTitle from '@/components/LeftTitle'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { changeVisibleFilter } from '@store/SiteNotifications'
 import { useParams } from 'react-router'
 import AllSideFilter from '../components/AllSideFilter/AllSideFilter'
@@ -12,14 +14,17 @@ import { useTranslation } from 'react-i18next'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { Divider, Skeleton } from 'antd'
 import { getMsg_list, setReadApi } from '@/services/SiteNotifications'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 interface ZoomRatioType {
   [MapZoom: string]: string
 }
 const Index = () => {
+  const lastId = useRef<any>()
+  const friendUsername = useRef<any>(undefined)
+  const msgType = useRef<any>(undefined)
   const [list, setList] = useState([])
-  const [lastId, setLastId] = useState<any>(0)
+  // const [lastId, setLastId] = useState<any>(0)
   const [hasMore, setHasMore] = useState(true)
   const [t] = useTranslation()
   const dispatch = useDispatch()
@@ -37,37 +42,52 @@ const Index = () => {
     const arr = list.map((i: any) => i.id)
     setReads(arr)
   }
-  const init = async () => {
+
+  const fetchMoreData = async (b?: boolean) => {
     const re4 = await getMsg_list({
-      lastId,
+      lastId: lastId.current,
       read: id === '2' ? 0 : id === '3' ? 1 : undefined,
+      friendUsername: friendUsername.current,
+      msgType: msgType.current,
     })
-
-    return {
-      lastId: re4.lastId,
-      list: re4.list,
-    }
-  }
-
-  const fetchMoreData = async () => {
-    const re4 = await init()
 
     if (re4.lastId === 0) {
       setHasMore(false)
       return
     }
+    lastId.current = re4.lastId
+    setTimeout(() => {
+      if (b) {
+        setList(re4.list)
+      } else {
+        setList(e => e.concat(re4.list))
+      }
+    }, 500)
+  }
+  const changeUser = (str: string, arr: any) => {
+    msgType.current = arr
+    friendUsername.current = str
+    lastId.current = 0
+    setHasMore(true)
+    fetchMoreData(true)
+  }
+  const changeMsg = (arr: any) => {
+    msgType.current = arr
 
-    setList(list.concat(re4.list))
-    setLastId(re4.lastId)
+    lastId.current = 0
+    setHasMore(true)
+    fetchMoreData(true)
   }
 
   useEffect(() => {
-    fetchMoreData()
-  }, [])
+    lastId.current = 0
+    setHasMore(true)
+    fetchMoreData(true)
+  }, [id])
 
   return (
     <div>
-      <AllSideFilter />
+      <AllSideFilter changeUser={changeUser} changeMsg={changeMsg} />
       <div
         style={{
           display: 'flex',
@@ -108,11 +128,11 @@ const Index = () => {
           height={document.body.clientHeight - 230}
           loader={<Skeleton avatar paragraph={{ rows: 2 }} active />}
           scrollableTarget="scrollableDiv"
-          endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+          endMessage={<Divider plain>nothing more </Divider>}
         >
-          {list.map((i: any) => (
-            <ContentItem setReads={setReads} item={i} key={i.id} />
-          ))}
+          {list.map((i: any) => {
+            return <ContentItem setReads={setReads} item={i} key={i.id} />
+          })}
         </InfiniteScroll>
       </div>
     </div>

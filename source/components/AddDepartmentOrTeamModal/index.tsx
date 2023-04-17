@@ -78,6 +78,7 @@ const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
         type: props.type,
       })),
     )
+    onClose()
     props.onClose()
   }
 
@@ -251,7 +252,7 @@ const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
   useEffect(() => {
     if (props.isVisible) {
       switch (props.type) {
-        case 1:
+        case 4:
           getDepartmentTree()
           break
         case 3:
@@ -277,7 +278,7 @@ const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
       <ContentBox>
         <ContentLeft>
           <div style={{ paddingRight: 20 }}>
-            {props.type !== 1 && (
+            {props.type !== 4 && (
               <>
                 <Input
                   value={searchValue}
@@ -328,7 +329,7 @@ const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
                 </LeftItems>
               </>
             )}
-            {props.type === 1 && (
+            {props.type === 4 && (
               <>
                 <TreeSelect
                   style={{ width: '100%' }}

@@ -139,12 +139,19 @@ const urls = {
   templateList: '/b/work_report/template/list',
   templateLatelyList: '/b/work_report/template/lately',
   writeReport: '/b/work_report/user',
+  updateReport: '/b/work_report/user',
   statTempList: '/b/work_report/statistics/template/list',
   statUserList: '/b/work_report/statistics/user/list',
   statInfo: '/b/work_report/statistics/info',
+  statTempUsage: '/b/work_report/statistics/template',
+  supplyList:'/b/work_report/template/supply',
+  getReportDetailById:'/b/work_report/user/info',
   repSentList: '/b/work_report/user/send/list',
   repReceivedList: '/b/work_report/user/receive/list',
   repPublicList: '/b/work_report/user/public/list',
+  getReportInfo: '/b/work_report/user/info',
+  getReportComment: '/b/work_report/user/comment',
+  addReportComment: '/b/work_report/user/comment',
 }
 
 export default urls

@@ -4,6 +4,7 @@
 /* eslint-disable no-useless-concat */
 /* eslint-disable camelcase */
 import CommonIconFont from '@/components/CommonIconFont'
+import { DelButton } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
 import { Input, Popover } from 'antd'
 import { useEffect, useState } from 'react'
@@ -155,9 +156,7 @@ const Picker = (props: PropsType) => {
       setRightDataList(minuteData)
     }
   }, [isOpen, props.type])
-  useEffect(() => {
-    setValue('')
-  }, [props.type])
+
   //  时分数转化为秒
   const time1 = (d: number, h: number, m: number) => {
     let datS: any = d ? d * 60 * 60 * 24 : 0
@@ -168,8 +167,9 @@ const Picker = (props: PropsType) => {
   }
   const getTime = () => {
     setIsOpen(false)
-    props.getValues(leftActiveVal, centerActiveVal, rightActiveVal)
-    if (props.type === 'start' || props.type === 'end') {
+    localStorage.setItem('edit', '1'),
+      props.getValues(leftActiveVal, centerActiveVal, rightActiveVal)
+    if (props.pickerType === 'start' || props.pickerType === 'end') {
       props?.onChange?.({
         time: time1(0, centerActiveVal, rightActiveVal),
         day_type: leftActiveVal,
@@ -244,7 +244,8 @@ const Picker = (props: PropsType) => {
     }
   }
   useEffect(() => {
-    if (!props?.value) {
+    if (!props?.value?.v2 && !props?.value?.v3) {
+      setValue('')
       return
     }
     v1 = props?.value?.v1
@@ -262,7 +263,6 @@ const Picker = (props: PropsType) => {
     } else {
       getMonthValues()
     }
-    console.log(props.value, 'value')
   }, [props.value])
   const content = () => {
     return (

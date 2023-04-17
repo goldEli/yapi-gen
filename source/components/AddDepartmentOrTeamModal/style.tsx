@@ -10,6 +10,7 @@ export const ContentBox = styled.div`
 `
 
 export const ContentLeft = styled.div`
+  overflow: auto;
   width: 264px;
   display: flex;
   flex-direction: column;
@@ -20,7 +21,7 @@ export const ContentLeft = styled.div`
 
 export const TreeStyle = styled(DirectoryTree)`
   width: 214px;
-  height: calc(100% - 40px);
+  height: 410px;
   overflow-y: auto;
   margin-top: 8px;
   .ant-tree-checkbox-inner {

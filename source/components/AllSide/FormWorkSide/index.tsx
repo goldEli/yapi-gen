@@ -1,17 +1,23 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import AddFormWork from '@/components/AllSide/FormWorkSide/AddFormWork'
-import { setActiveItem } from '@store/formWork/index'
+import { setActiveItem, setFillingRequirements } from '@store/formWork/index'
 import { useDispatch, useSelector } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import SupplementaryIntercourse from './SupplementaryIntercourse'
 import WriteReport from './WriteReport'
-import { createTemplate } from '@/services/formwork'
 import { getTemplateList } from '@store/formWork/thunk'
-import { setTemplateName, setDataList } from '@store/formWork'
+import {
+  setTemplateName,
+  setDataList,
+  setReportContent,
+  setTemplateContentConfigs,
+} from '@store/formWork'
 import { message } from 'antd'
+import { cos } from '@/services'
 // getTemplateList
 const FormWorkSideStyle = styled.div`
   width: 200px;
@@ -72,27 +78,73 @@ const FormWorkSide = () => {
   const [isVisible, setIsVisible] = useState(false)
   const dispatch = useDispatch()
   const [delIsVisible, setDelIsVisible] = useState(false)
-  const { dataList } = useSelector(store => store.formWork)
+  const { dataList, activeItem } = useSelector(store => store.formWork)
   useEffect(() => {
-    const item: any = dataList.find((el: any, index: any) => index === isActive)
-    dispatch(setActiveItem(item))
-  }, [isActive, dataList])
+    dataList.forEach((el: any, index: any) => {
+      if (el.id === activeItem.id) {
+        setIsActive(index)
+      }
+    })
+  }, [activeItem])
   const onConfirm = async (name: string) => {
     setIsVisible(false)
-    // const res = await createTemplate({ name })
-    // message.success('创建成功')
-    // await dispatch(getTemplateList())
     dispatch(setTemplateName(name))
-    dispatch(setDataList([{ name }, ...dataList]))
+    dispatch(setDataList([...dataList, { name }]))
   }
   const getDataList = async () => {
-    await dispatch(getTemplateList())
+    const res = await dispatch(getTemplateList())
+    res.payload?.length >= 1 &&
+      dispatch(
+        setActiveItem({ id: res?.payload[0]?.id, name: res?.payload[0]?.name }),
+      )
   }
   useEffect(() => {
     getDataList()
+    const item: any = dataList.find((el: any, index: any) => index === 0)
+    dispatch(setActiveItem(item))
+    localStorage.setItem('edit', '0')
   }, [])
   const itemActive = (el: any, index: any) => {
+    if (localStorage.getItem('edit') === '1') {
+      setDelIsVisible(true)
+      return
+    }
     setIsActive(index)
+    const data = [
+      {
+        name: '汇报对象',
+        is_required: 2,
+        tips: '',
+        type: 1,
+      },
+    ]
+    dispatch(setTemplateContentConfigs(data))
+    const claerConfig: any = {
+      day: [],
+      template_configs: [],
+      hand_scope: 1,
+      is_all_write: 2,
+      is_all_view: 2,
+      is_submitter_edit: false,
+      is_cycle_limit: false,
+      is_supply: false,
+      reminder_time: null,
+      auto_reminder: false,
+      submit_cycle: 1,
+      is_holiday: false,
+      end_time: null,
+      start_time: null,
+    }
+    dispatch(
+      setReportContent({
+        template_configs: [],
+        is_all_view: 2,
+        is_all_write: 2,
+      }),
+    )
+    dispatch(setFillingRequirements(claerConfig))
+    dispatch(setActiveItem(el))
+    dispatch(setTemplateName(el.name))
   }
   return (
     <FormWorkSideStyle>

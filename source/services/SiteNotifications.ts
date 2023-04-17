@@ -43,8 +43,10 @@ export const getContactStatistics: any = async () => {
 
 export const getMsg_list: any = async (params: any) => {
   const response: any = await http.get<any>('/b/msg/list', {
-    lastId: params.lastId,
+    lastId: params.lastId ?? 0,
     read: params.read,
+    friendUsername: params.friendUsername,
+    msgType: params.msgType,
   })
 
   return response.data
@@ -56,4 +58,29 @@ export const setReadApi: any = async (params: any) => {
   })
 
   return response.data
+}
+// --------------------------------------------------------------------------消息
+
+export const getConfig: any = async (projectId: any) => {
+  const response: any = await http.get<any>(
+    `/b/project/tip/${projectId}/config`,
+  )
+  console.log(response.data)
+
+  return response.data.list
+}
+
+export const getSysConfig: any = async () => {
+  const response: any = await http.get<any>('/b/project/tip/sysConfig')
+
+  return response.data.list
+}
+
+export const editSaveConfig: any = async (params: any) => {
+  const response: any = await http.post<any>('/b/project/tip/saveConfig', {
+    project_id: params.projectId,
+    data: params.data,
+    type: params.type,
+  })
+  return response
 }

@@ -28,7 +28,7 @@ type SliceState = {
 const formWork = createSlice({
   name: 'formWork',
   initialState: {
-    editSave: false,
+    editSave: true,
     activeItem: null,
     err: true,
     templateName: '',
@@ -101,10 +101,6 @@ const formWork = createSlice({
     ],
   } as SliceState,
   reducers: {
-    // 是否保存
-    setEditSave: (state: any, action) => {
-      state.editSave = action.payload
-    },
     // 当前选中的
     setActiveItem: (state: any, action) => {
       state.activeItem = action.payload
@@ -144,7 +140,9 @@ const formWork = createSlice({
     builder.addCase(templateDetail.fulfilled, (state, action) => {
       const data = action.payload.data
       state.templateDetailValues = data
-      state.templateContentConfigs = data.template_content_configs
+      if (data.template_content_configs.length) {
+        state.templateContentConfigs = data.template_content_configs
+      }
       state.reportContent = {
         template_configs: data.template_configs.map((el: any) => ({
           ...el,
@@ -183,7 +181,6 @@ const formWork = createSlice({
 })
 
 export const {
-  setEditSave,
   setActiveItem,
   setFillingRequirements,
   setReportContent,

@@ -6,11 +6,9 @@ import { useEffect, useState } from 'react'
 import TabsDragging from './TabsDragging'
 import RightDragging from './RightDragging'
 import ParmasDialog from './ParmasDialog'
-import CommonButton from '@/components/CommonButton'
 import { useDispatch, useSelector } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import { setEditSave, setTemplateContentConfigs } from '@store/formWork'
-import { upDateTemplate } from '@/services/formwork'
+import { setTemplateContentConfigs } from '@store/formWork'
 import { message } from 'antd'
 const TitleStyle = styled.div`
   display: flex;
@@ -60,6 +58,7 @@ const EditWork = (props: PropsType) => {
   const { templateContentConfigs } = useSelector(store => store.formWork)
   const [dataList, setDataList] = useState<any>()
   const onDrag = (event: any, i: number) => {
+    localStorage.setItem('edit', '1')
     const evevtObj: any = event.dataTransfer.getData('item')
       ? JSON.parse(event.dataTransfer.getData('item'))
       : null
@@ -70,9 +69,15 @@ const EditWork = (props: PropsType) => {
         name: evevtObj.title,
         is_required: 2,
       }
+      const newList = dataList.find((el: { type: number }) => el.type === 4)
+      if (newList) {
+        message.warning('已有关联需求')
+        return
+      }
       const arrData = Array.from(dataList)
       arrData.splice(i, 0, configs)
       setDataList(arrData)
+      dispatch(setTemplateContentConfigs(arrData))
     } else {
       const configs = {
         type: evevtObj.type,
@@ -106,6 +111,7 @@ const EditWork = (props: PropsType) => {
     dispatch(setTemplateContentConfigs(arrData))
   }
   const onChangeChecked = (val: boolean, el: any) => {
+    localStorage.setItem('edit', '1')
     const num = val ? 1 : 2
     const arr = dataList.map((item: any) => ({
       ...item,
@@ -121,6 +127,7 @@ const EditWork = (props: PropsType) => {
     setIsVisible(true)
   }
   const onDelete = (el: { name: string }) => {
+    localStorage.setItem('edit', '1')
     const arr = dataList.filter((item: any) => el.name !== item.name)
     dispatch(setTemplateContentConfigs(arr))
     setDataList(arr)
@@ -128,7 +135,6 @@ const EditWork = (props: PropsType) => {
   useEffect(() => {
     setDataList(templateContentConfigs)
   }, [templateContentConfigs])
-  // console.log(templateContentConfigs, 'TemplateContentConfigs')
   return (
     <>
       <div id="father" style={{ display: 'flex' }}>
