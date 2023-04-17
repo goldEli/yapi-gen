@@ -2,6 +2,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable complexity */
 /* eslint-disable consistent-return */
+/* eslint-disable no-negated-condition */
 import CommonButton from '@/components/CommonButton'
 import styled from '@emotion/styled'
 import { Input, message } from 'antd'
@@ -241,7 +242,7 @@ const RightFormWork = () => {
       dispatch(setActiveItem({ id: res.data.id, name: res.data }))
       message.success('新增成功')
     }
-    localStorage.setItem('edit', '1')
+    localStorage.setItem('edit', '0')
   }
   return (
     <RightFormWorkStyle>
@@ -280,7 +281,7 @@ const RightFormWork = () => {
             value={value}
             maxLength={50}
             onInput={(e: any) => {
-              localStorage.setItem('edit', '0')
+              localStorage.setItem('edit', '1')
               setValue(e.target.value),
                 dispatch(setTemplateName(e.target.value))
             }}
@@ -304,7 +305,7 @@ const RightFormWork = () => {
             上一步
           </CommonButton>
         )}
-        {localStorage.getItem('edit') === '1' ? (
+        {localStorage.getItem('edit') !== '1' ? (
           <CommonButton type="primary" style={{ margin: '0 0px 0 16px' }}>
             已保存
           </CommonButton>

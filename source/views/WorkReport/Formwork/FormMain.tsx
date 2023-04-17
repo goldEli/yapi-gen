@@ -124,6 +124,7 @@ interface CheckBoxGroupType {
 // 选择周几
 const CheckBoxGroup = (props: CheckBoxGroupType) => {
   const onChange = (value: boolean, el1: { value: boolean; key: number }) => {
+    localStorage.setItem('edit', '1')
     const filterVal = props?.value.map(
       (item: { value: boolean; key: number }) => ({
         ...item,
@@ -162,7 +163,9 @@ const Edit = (props: EditType) => {
       <Switch
         checked={props.value || false}
         style={{ marginLeft: 8 }}
-        onChange={e => props.onChange?.(e)}
+        onChange={e => {
+          localStorage.setItem('edit', '1'), props.onChange?.(e)
+        }}
       />
     </RowStyle>
   )
@@ -177,7 +180,9 @@ const CheckBox = (props: CheckBoxType) => {
   return (
     <Checkbox
       checked={props.value}
-      onChange={e => props.onChange?.(e.target.checked)}
+      onChange={e => {
+        localStorage.setItem('edit', '1'), props.onChange?.(e.target.checked)
+      }}
     >
       {props.title}
     </Checkbox>
