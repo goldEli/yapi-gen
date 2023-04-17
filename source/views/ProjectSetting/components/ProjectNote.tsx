@@ -349,7 +349,7 @@ const ProjectSet = () => {
           }}
         >
           <CommonButton
-            style={{ width: 'fit-content', marginTop: 16 }}
+            style={{ marginTop: 16 }}
             type="primary"
             onClick={onSavePermission}
           >
