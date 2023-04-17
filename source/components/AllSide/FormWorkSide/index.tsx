@@ -190,7 +190,6 @@ const FormWorkSide = () => {
       <SupplementaryIntercourse
         title="补交汇报"
         isVisible={false}
-        onConfirm={() => 123}
         onClose={() => 123}
       />
       {/* 写汇报 */}
