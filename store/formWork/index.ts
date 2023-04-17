@@ -57,7 +57,7 @@ const formWork = createSlice({
     templateContentConfigs: [
       {
         name: '汇报对象',
-        is_required: 2,
+        is_required: 1,
         tips: '',
         type: 1,
       },
@@ -131,6 +131,9 @@ const formWork = createSlice({
     setAWeekDataList: (state: any, action) => {
       state.aWeekDataList = action.payload
     },
+    setEditSave: (state: any, action) => {
+      state.editSave = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addCase(getTemplateList.fulfilled, (state, action) => {
@@ -189,5 +192,6 @@ export const {
   setTemplateName,
   setDataList,
   setAWeekDataList,
+  setEditSave,
 } = formWork.actions
 export default formWork.reducer

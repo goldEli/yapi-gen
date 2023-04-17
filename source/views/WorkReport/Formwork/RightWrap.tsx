@@ -11,7 +11,7 @@ import PermissionConfig from './PermissionConfig'
 import EditWork from './EditWork'
 import PreviewDialog from '@/components/FormWork/PreviewDialog'
 import { useDispatch, useSelector } from '@store/index'
-import { setActiveItem, setTemplateName } from '@store/formWork'
+import { setActiveItem, setEditSave, setTemplateName } from '@store/formWork'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import {
   deleteTemplate,
@@ -129,7 +129,6 @@ const RightFormWork = () => {
   const [isActive, setIsActive] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   const [value, setValue] = useState('')
-  const [save, setSave] = useState(false)
   const dispatch = useDispatch()
   const [delIsVisible, setDelIsVisible] = useState(false)
   const {
@@ -160,10 +159,6 @@ const RightFormWork = () => {
       dispatch(setActiveItem({ id: dataList[0].id, name: dataList[0].name }))
     message.success('删除成功')
   }
-  useEffect(() => {
-    console.log(editSave, editSave)
-    setSave(editSave)
-  }, [editSave])
   const getVerifyParams = (parmas: any) => {
     // 谁可以写是必填的
     if (parmas.is_all_write !== 1) {
@@ -206,7 +201,7 @@ const RightFormWork = () => {
       reminder_time: fillingRequirements?.reminder_time,
       is_supply: fillingRequirements?.is_supply ? 1 : 2,
       is_cycle_limit: fillingRequirements?.is_cycle_limit ? 1 : 2,
-      is_submitter_edit: fillingRequirements?.is_cycle_limit ? 1 : 2,
+      is_submitter_edit: fillingRequirements?.is_submitter_edit ? 1 : 2,
       hand_scope:
         fillingRequirements?.hand_scope?.key || fillingRequirements?.hand_scope,
       is_all_view: reportContent?.is_all_view,
@@ -224,6 +219,7 @@ const RightFormWork = () => {
       start_time: fillingRequirements?.start_time,
       is_holiday: fillingRequirements?.is_holiday ? 1 : 2,
     }
+    console.log(parmas, 'parmas')
     if (!getVerifyParams(parmas)) {
       return
     }
@@ -242,7 +238,7 @@ const RightFormWork = () => {
       dispatch(setActiveItem({ id: res.data.id, name: res.data }))
       message.success('新增成功')
     }
-    localStorage.setItem('edit', '0')
+    dispatch(setEditSave(true))
   }
   return (
     <RightFormWorkStyle>
@@ -281,7 +277,7 @@ const RightFormWork = () => {
             value={value}
             maxLength={50}
             onInput={(e: any) => {
-              localStorage.setItem('edit', '1')
+              dispatch(setEditSave(false))
               setValue(e.target.value),
                 dispatch(setTemplateName(e.target.value))
             }}
@@ -305,7 +301,7 @@ const RightFormWork = () => {
             上一步
           </CommonButton>
         )}
-        {localStorage.getItem('edit') !== '1' ? (
+        {editSave ? (
           <CommonButton type="primary" style={{ margin: '0 0px 0 16px' }}>
             已保存
           </CommonButton>

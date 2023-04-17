@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import CommonIconFont from '@/components/CommonIconFont'
 import Picker from './Picker'
-import { setErr } from '@store/formWork'
+import { setEditSave, setErr } from '@store/formWork'
 import { useDispatch } from '@store/index'
 import moment from 'moment'
 import { dayData1, weekData, monthData } from './DataList'
@@ -123,8 +123,9 @@ interface CheckBoxGroupType {
 }
 // 选择周几
 const CheckBoxGroup = (props: CheckBoxGroupType) => {
+  const dispatch = useDispatch()
   const onChange = (value: boolean, el1: { value: boolean; key: number }) => {
-    localStorage.setItem('edit', '1')
+    dispatch(setEditSave(false))
     const filterVal = props?.value.map(
       (item: { value: boolean; key: number }) => ({
         ...item,
@@ -157,6 +158,7 @@ interface EditType {
   value?: boolean
 }
 const Edit = (props: EditType) => {
+  const dispatch = useDispatch()
   return (
     <RowStyle>
       <Text>自动提醒未提交的人</Text>
@@ -164,7 +166,7 @@ const Edit = (props: EditType) => {
         checked={props.value || false}
         style={{ marginLeft: 8 }}
         onChange={e => {
-          localStorage.setItem('edit', '1'), props.onChange?.(e)
+          dispatch(setEditSave(false)), props.onChange?.(e)
         }}
       />
     </RowStyle>
@@ -177,11 +179,12 @@ interface CheckBoxType {
 }
 
 const CheckBox = (props: CheckBoxType) => {
+  const dispatch = useDispatch()
   return (
     <Checkbox
       checked={props.value}
       onChange={e => {
-        localStorage.setItem('edit', '1'), props.onChange?.(e.target.checked)
+        dispatch(setEditSave(false)), props.onChange?.(e.target.checked)
       }}
     >
       {props.title}
@@ -221,12 +224,12 @@ const FormMain = (props: FormType) => {
       }
     } else if (startTime?.v1 === 1 && endTime?.v1 === 2) {
       if (endTime?.v2 > startTime?.v2) {
-        message.warning('结束时间不能大于24小时')
+        message.warning('结束时间不能大于开始时间的24小时')
         dispatch(setErr(false))
         return
       } else if (startTime?.v2 === endTime?.v2) {
         if (endTime?.v3 > startTime?.v3) {
-          message.warning('结束时间不能大于24小时')
+          message.warning('结束时间不能大于开始时间的24小时')
           dispatch(setErr(false))
           return
         }
@@ -241,17 +244,17 @@ const FormMain = (props: FormType) => {
   // 不能超过一周
   const WeekJudgeTime = () => {
     if (endTime?.v1 > startTime?.v1 + 7) {
-      message.warning('开始时间不允许超过一周')
+      message.warning('结束时间不允许超过开始时间一周')
       dispatch(setErr(false))
       return
     } else if (endTime?.v1 === startTime?.v1 + 7) {
       if (endTime?.v2 > startTime?.v2) {
-        message.warning('开始时间不允许超过一周')
+        message.warning('结束时间不允许超过开始时间一周')
         dispatch(setErr(false))
         return
       } else if (endTime?.v2 === startTime?.v2) {
         if (endTime?.v3 > startTime?.v3) {
-          message.warning('开始时间不允许超过一周')
+          message.warning('结束时间不允许超过开始时间一周')
           dispatch(setErr(false))
           return
         }

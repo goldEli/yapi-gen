@@ -49,6 +49,7 @@ const tabsValue = [
 const SiteDrawer = () => {
   const [t] = useTranslation()
   const [active, setActive] = useState('3')
+  const newName = useRef<any>(undefined)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const isVisible = useSelector(store => store.siteNotifications.isVisible)
@@ -66,14 +67,11 @@ const SiteDrawer = () => {
   const onClose = () => {
     dispatch(changeVisible(false))
   }
-  const changeActive = (id: string) => {
-    setActive(id)
-  }
-
   const fetchMoreData = async (b?: boolean) => {
     const re4 = await getMsg_list({
       lastId: lastId.current,
       read,
+      latTime: newName.current,
     })
 
     if (re4.lastId === 0) {
@@ -89,6 +87,20 @@ const SiteDrawer = () => {
       }
     }, 500)
   }
+  const changeActive = (id: string) => {
+    setActive(id)
+    if (id === '3') {
+      newName.current = undefined
+      lastId.current = 0
+      fetchMoreData(true)
+    }
+    if (id === '1') {
+      newName.current = new Date().valueOf() / 1000
+      lastId.current = 0
+      fetchMoreData(true)
+    }
+  }
+
   const setReads = async (values: any) => {
     setReadApi(values)
   }

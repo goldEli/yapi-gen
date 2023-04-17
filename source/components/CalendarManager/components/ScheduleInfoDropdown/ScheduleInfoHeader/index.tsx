@@ -1,14 +1,7 @@
-
 import { useSelector, useDispatch } from '@store/index'
 import { setScheduleModal } from '@store/calendar'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
-import {
-  Checkbox,
-  Radio,
-  type RadioChangeEvent,
-  Select,
-  message,
-} from 'antd'
+import { Checkbox, Radio, type RadioChangeEvent, Select, message } from 'antd'
 import {
   ScheduleInfoHeader,
   ScheduleInfoHeaderContent,
@@ -19,7 +12,7 @@ import {
   BoxTip,
   confirmText,
   confirmSure,
-  ModalChildren
+  ModalChildren,
 } from '../styles'
 import React, { useState, useEffect } from 'react'
 import ScheduleInfoIcon from './../ScheduleInfoIcon'
@@ -31,7 +24,7 @@ import { scheduleInfoDelete, scheduleInfoTransfer } from '@/services/schedule'
 import { useTranslation } from 'react-i18next'
 dayjs.extend(weekday)
 const { Option } = Select
-interface ScheduleInfoDropdownProps { }
+interface ScheduleInfoDropdownProps {}
 
 const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
   const [isVisible, setIsVisible] = useState(false)
@@ -53,15 +46,14 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
       id: scheduleInfo?.id ? String(scheduleInfo?.id) : '',
     }
     try {
-      await scheduleInfoTransfer(params);
-      message.success(t('转让成功'));
+      await scheduleInfoTransfer(params)
+      message.success(t('转让成功'))
       setModalVisible(false)
-      setShowTipBox(false);
+      setShowTipBox(false)
       disPatch(setScheduleInfoDropdown({ visible: false }))
     } catch (error) {
-
+      //
     }
-
   }
   const confirmDelete = async () => {
     console.log()
@@ -75,9 +67,8 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
       message.success(t('common.deleteSuccess'))
       disPatch(setScheduleInfoDropdown({ visible: false }))
     } catch (error) {
-
+      //
     }
-
   }
   return (
     <ScheduleInfoHeader>
@@ -109,15 +100,19 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
             <label onClick={() => setShowTipBox(!showTipBox)}>...</label>
             {showTipBox ? (
               <BoxTip>
-                <span onClick={() => {
-                  if(!scheduleInfo) return
-                  disPatch(
-                    setScheduleModal({
-                      visible: true,
-                      params: {copyScheduleId:Number(scheduleInfo?.id)},//
-                    }),
-                  )
-                }}>复制日程</span>
+                <span
+                  onClick={() => {
+                    if (!scheduleInfo) return
+                    disPatch(
+                      setScheduleModal({
+                        visible: true,
+                        params: { copyScheduleId: Number(scheduleInfo?.id) },
+                      }),
+                    )
+                  }}
+                >
+                  复制日程
+                </span>
                 <span
                   onClick={() => {
                     setModalVisible(true)
