@@ -21,7 +21,8 @@ import {
 import dayjs from 'dayjs'
 
 const ContentItem = (props: any) => {
-  const { send_user, msg_body, to_user, create_time, read, id } = props.item
+  const { send_user, msg_body, to_user, create_time, read, id, custom_data } =
+    props.item
   const [choose, setChoose] = useState(false)
 
   function formatTime(params: number) {
@@ -84,7 +85,9 @@ const ContentItem = (props: any) => {
 
         <GrepContent>
           <span
-            dangerouslySetInnerHTML={{ __html: formateBlue(msg_body.content) }}
+            dangerouslySetInnerHTML={{
+              __html: formateBlue(msg_body.content, custom_data.linkWebUrl),
+            }}
           />
           {/* <span
             style={{
