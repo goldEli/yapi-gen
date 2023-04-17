@@ -264,8 +264,12 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
       isAll,
       participant,
       noticeList,
-      startTime: form.getFieldsValue().start_datetime,
-      endTime: form.getFieldsValue().end_datetime,
+      startTime: moment(form.getFieldsValue().time[0]).format(
+        'YYYY-MM-DD HH:mm:ss',
+      ),
+      endTime: moment(form.getFieldsValue().time[1]).format(
+        'YYYY-MM-DD HH:mm:ss',
+      ),
       subject: form.getFieldsValue().subject,
       describe: form.getFieldsValue().describe,
       normalCategory,

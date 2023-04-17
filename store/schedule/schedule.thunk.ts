@@ -2,7 +2,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as services from '@/services'
 import { AppDispatch, store } from '@store/index'
 import ParamsCache from './paramsCache'
-import { setScheduleInfoDropdown } from '@store/calendarPanle'
 
 const name = 'schedule'
 
