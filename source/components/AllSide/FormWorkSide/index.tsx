@@ -17,6 +17,7 @@ import {
   setTemplateContentConfigs,
 } from '@store/formWork'
 import { message } from 'antd'
+import { cos } from '@/services'
 // getTemplateList
 const FormWorkSideStyle = styled.div`
   width: 200px;
@@ -88,7 +89,7 @@ const FormWorkSide = () => {
   const onConfirm = async (name: string) => {
     setIsVisible(false)
     dispatch(setTemplateName(name))
-    dispatch(setDataList([{ name }, ...dataList]))
+    dispatch(setDataList([...dataList, { name }]))
   }
   const getDataList = async () => {
     const res = await dispatch(getTemplateList())
@@ -101,8 +102,13 @@ const FormWorkSide = () => {
     getDataList()
     const item: any = dataList.find((el: any, index: any) => index === 0)
     dispatch(setActiveItem(item))
+    localStorage.setItem('edit', '0')
   }, [])
   const itemActive = (el: any, index: any) => {
+    if (localStorage.getItem('edit') === '1') {
+      setDelIsVisible(true)
+      return
+    }
     setIsActive(index)
     const data = [
       {
@@ -179,20 +185,6 @@ const FormWorkSide = () => {
         isVisible={delIsVisible}
         onConfirm={() => setDelIsVisible(false)}
         notCancel
-      />
-      {/* 补交汇报弹窗 */}
-      <SupplementaryIntercourse
-        title="补交汇报"
-        isVisible={false}
-        onConfirm={() => 123}
-        onClose={() => 123}
-      />
-      {/* 写汇报 */}
-      <WriteReport
-        title="写汇报"
-        isVisible={false}
-        onConfirm={() => 123}
-        onClose={() => 123}
       />
     </FormWorkSideStyle>
   )

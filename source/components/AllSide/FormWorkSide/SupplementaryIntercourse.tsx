@@ -1,9 +1,14 @@
 import CommonModal from '@/components/CommonModal'
 import styled from '@emotion/styled'
+import { useEffect, useState } from 'react'
+import { supplyList } from '@/services/report'
+import NoData from '@/components/NoData'
+import HandleReport from '@/views/WorkReport/Review/components/HandleReport'
+import { useTranslation } from 'react-i18next'
+
 interface Props {
   isVisible: boolean
   onClose(): void
-  onConfirm(): void
   title: string
 }
 const ItemList = styled.div`
@@ -37,30 +42,55 @@ const Text = styled.div`
   font-size: 14px;
   color: var(--neutral-n1-d1);
 `
+
 const SupplementaryIntercourse = (props: Props) => {
-  const a = [
-    {
-      title: '123',
-    },
-    {
-      title: '345',
-    },
-  ]
+  const [list, setList] = useState<any[]>([])
+  const [visibleEdit, setVisibleEdit] = useState(false)
+  const [editId, setEditId] = useState()
+  const [t] = useTranslation()
+
+  const getSupplyList = async () => {
+    const result = await supplyList()
+    if (result && result.code === 0) {
+      setList(result.data)
+    }
+  }
+  useEffect(() => {
+    getSupplyList()
+  }, [])
+
   return (
     <CommonModal
       width={640}
       title={props.title}
       isVisible={props.isVisible}
       onClose={props.onClose}
-      onConfirm={props.onConfirm}
-      confirmText=""
+      hasFooter
     >
-      {a.map(item => (
-        <ItemList key={item.title}>
-          <Text>{item.title}</Text>
-          <Btn onClick={() => 123}>补交</Btn>
-        </ItemList>
-      ))}
+      <div
+        style={{
+          height: 'calc(80vh - 136px)',
+          overflow: 'scroll',
+          padding: ' 0 24px',
+        }}
+      >
+        {list?.length ? (
+          list.map(item => (
+            <ItemList key={item.id}>
+              <Text>{item.name}</Text>
+              <Btn onClick={() => setEditId(item.id)}>补交</Btn>
+            </ItemList>
+          ))
+        ) : (
+          <NoData />
+        )}
+      </div>
+      <HandleReport
+        editId={editId}
+        visibleEdit={visibleEdit}
+        editClose={() => setVisibleEdit(false)}
+        visibleEditText="写汇报"
+      />
     </CommonModal>
   )
 }

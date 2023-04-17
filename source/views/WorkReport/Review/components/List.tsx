@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Tooltip } from 'antd'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
@@ -23,8 +23,10 @@ import {
 } from '@/services/report'
 import { templateList } from '@/services/formwork'
 import { getStaffList } from '@/services/staff'
+import HandleReport from './HandleReport'
 import { useDispatch } from '@store/index'
 import { setViewReportModal } from '@store/workReport'
+import LabelTag from '@/components/LabelTag'
 
 const ListTitle = styled.div`
   height: 32px;
@@ -77,6 +79,20 @@ const statusOptions = [
   { label: '已读', value: 2 },
   { label: '已评', value: 3 },
 ]
+const reportState = [
+  {
+    label: '更新',
+    color: '#E56F0E',
+    background: 'rgba(250,151,70,0.1)',
+    state: 1,
+  },
+  {
+    label: '补交',
+    color: '#7641E8 ',
+    background: 'rgba(161,118,251,0.1)',
+    state: 2,
+  },
+]
 const List = () => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
@@ -84,13 +100,14 @@ const List = () => {
   const [isSpinning, setIsSpinning] = useState(false)
   const [order, setOrder] = useState<any>('')
   const [orderKey, setOrderKey] = useState<any>()
-  const [visibleLook, setVisibleLook] = useState(false)
   const [total, setTotal] = useState<number>(250)
   const [pageObj, setPageObj] = useState(defaultPageParam)
   const [listData, setListData] = useState<any[]>([])
   const [repTypeOptions, setRepTypeOptions] = useState<any[]>([])
   const [userOptions, setUserOptions] = useState<any[]>([])
   const [queryParams, setQueryParams] = useState<any>({})
+  const [editId, setEditId] = useState<any>()
+  const [visibleEdit, setVisibleEdit] = useState(false)
   const params = useParams()
   const id = Number(params?.id)
 
@@ -130,7 +147,6 @@ const List = () => {
       }
       setIsSpinning(false)
       setListData(res.list)
-      console.log(121212121, res.list)
       setTotal(res.pager.total)
     } catch (error) {
       console.log('error', error)
@@ -156,7 +172,7 @@ const List = () => {
       setViewReportModal({
         visible: true,
         id: row.id,
-        ids: listData.map((i: any) => i.id),
+        ids: listData?.map((i: any) => i.id),
       }),
     )
   }
@@ -172,13 +188,23 @@ const List = () => {
       </Sort>
     )
   }
-  const columns: any = [
+  const columns: any[] = [
     {
       width: 188,
       title: t('common.title'),
       dataIndex: 'user',
       render: (_: string, record: any) => {
-        return <span>{String(record.user.name)}</span>
+        return (
+          <>
+            <span style={{ marginRight: 12 }}>{String(record.user.name)}</span>
+            <LabelTag
+              options={reportState}
+              state={
+                record.is_supply === 1 ? 1 : record.is_update === 1 ? 2 : 0
+              }
+            />
+          </>
+        )
       },
     },
     {
@@ -244,10 +270,8 @@ const List = () => {
         return (
           <span
             onClick={() => {
-              // setVisibleEdit(true)
-              // setEditId(record.id)
-              // setEditType(record.type)
-              // setType(record.type)
+              setVisibleEdit(true)
+              setEditId(record.id)
             }}
             style={{
               fontSize: '14px',
@@ -277,7 +301,6 @@ const List = () => {
       })
       return
     }
-
     setQueryParams({
       ...queryParams,
       send_start_time: date[0],
@@ -292,11 +315,10 @@ const List = () => {
     })
   }
   const onChangeSubmitter = (value: any) => {
-    // TODO: 提交人
-    // setQueryParams({
-    //   ...queryParams,
-    //   user_id: value,
-    // })
+    setQueryParams({
+      ...queryParams,
+      user_id: value,
+    })
   }
   const onChangeRepType = (value: any) => {
     setQueryParams({
@@ -338,10 +360,10 @@ const List = () => {
   }, [queryParams])
 
   const submitDate = useMemo(() => {
-    if (queryParams.report_start_time && queryParams.report_end_time) {
+    if (queryParams.send_start_time && queryParams.send_end_time) {
       return [
         moment(queryParams.send_start_time),
-        moment(queryParams.report_end_time),
+        moment(queryParams.send_end_time),
       ]
     }
     return null
@@ -358,6 +380,7 @@ const List = () => {
           getPopupContainer={(node: any) => node}
           allowClear
           optionFilterProp="label"
+          value={[queryParams.user_id]}
           options={userOptions}
           onChange={onChangeSubmitter}
         />
@@ -385,7 +408,9 @@ const List = () => {
   }
   const getTemplateList = async () => {
     const data = await templateList()
-    setRepTypeOptions(data.map(generateOptions))
+    setRepTypeOptions(
+      [{ label: '所有', value: null }].concat(data.map(generateOptions)),
+    )
   }
 
   const getUserList = async () => {
@@ -420,7 +445,8 @@ const List = () => {
             getPopupContainer={(node: any) => node}
             allowClear
             optionFilterProp="label"
-            defaultValue={['all']}
+            defaultValue={[null]}
+            value={[queryParams.report_template_id || null]}
             options={repTypeOptions}
             onChange={onChangeRepType}
           />
@@ -431,6 +457,7 @@ const List = () => {
             {t('report.list.dateReport')}
           </span>
           <RangePicker
+            isShowQuick
             placement="bottomLeft"
             dateValue={repDate}
             onChange={date => onChangeTime('report', date)}
@@ -460,7 +487,11 @@ const List = () => {
           <ResizeTable
             isSpinning={isSpinning}
             dataWrapNormalHeight="100%"
-            col={columns}
+            col={
+              id === 1
+                ? columns
+                : columns?.filter((item: any) => item.dataIndex)
+            }
             noData={<NoData />}
             dataSource={listData}
           />
@@ -472,6 +503,13 @@ const List = () => {
           onChange={onChangePage}
         />
       </ListContent>
+      <ReportDetailDrawer />
+      <HandleReport
+        editId={editId}
+        visibleEdit={visibleEdit}
+        editClose={() => setVisibleEdit(false)}
+        visibleEditText="修改汇报"
+      />
     </>
   )
 }

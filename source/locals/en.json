@@ -1142,7 +1142,10 @@
       "fillReport": "Supplementary report",
       "recent": "Recent use",
       "other": "Other",
-      "searchReport": "Search for report title or content"
+      "searchReport": "Search for report title or content",
+      "confirm": "Confirm to import the previous content, which will overwrite the current editing content",
+      "ok": "Ok",
+      "cancel": "Cancel"
     },
     "statistics": {
       "title": "Reporting Statistics",
