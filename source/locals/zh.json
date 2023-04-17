@@ -1029,7 +1029,8 @@
       "searchReport": "搜索汇报标题或内容",
       "confirm": "确认导入上一篇汇报内容，导入后将覆盖当前编辑内容",
       "ok": "确定",
-      "cancel": "取消"
+      "cancel": "取消",
+      "writeReport": "写汇报"
     },
     "statistics": {
       "title": "汇报我的统计",

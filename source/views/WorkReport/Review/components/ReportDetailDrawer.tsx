@@ -6,7 +6,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/no-danger */
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
-import { Drawer, message, Form, Skeleton, Space, Input, Button } from 'antd'
+import { Drawer, message, Form, Skeleton, Space, Input } from 'antd'
 import { Editor, EditorRef } from '@xyfe/uikit'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -228,9 +228,10 @@ const ReportDetailDrawer = () => {
 
   // 评论
   const onComment = async () => {
+    const value = await form.validateFields()
     const params = {
       report_user_id: drawerInfo.id,
-      content: form.getFieldsValue().info,
+      content: value.info,
     }
     await addReportComment(params)
     message.success('添加评论成功！')
@@ -257,6 +258,21 @@ const ReportDetailDrawer = () => {
     return key
   }
 
+  // 判断点击位置是否在抽屉内，关闭抽屉
+  const getClickPosition = (e: any) => {
+    if (
+      viewReportModal.visible &&
+      window.innerWidth - e.clientX > leftWidth &&
+      !Array.from(document.getElementsByClassName('dragLine')).includes(
+        e.target,
+      ) &&
+      !Array.from(document.getElementsByClassName('summarySpan')).includes(
+        e.target,
+      )
+    ) {
+      onCancel()
+    }
+  }
   useEffect(() => {
     if (viewReportModal.visible && viewReportModal?.id) {
       setReportIds(viewReportModal?.ids || [])
@@ -266,13 +282,25 @@ const ReportDetailDrawer = () => {
 
   useEffect(() => {
     document.addEventListener('keydown', getKeyDown)
+    document.addEventListener('mousedown', getClickPosition)
     return () => {
       document.removeEventListener('keydown', getKeyDown)
+      document.removeEventListener('mousedown', getClickPosition)
     }
   }, [])
 
+  const onValidator = (rule: any, value: any) => {
+    if (value === '<p><br></p>' || value === '<p></p>' || value.trim() === '') {
+      return Promise.reject(
+        new Error('The two passwords that you entered do not match!'),
+      )
+    }
+    return Promise.resolve()
+  }
+
   return (
     <>
+      (
       <Drawer
         closable={false}
         placement="right"
@@ -286,7 +314,12 @@ const ReportDetailDrawer = () => {
         getContainer={false}
         className="drawerRoot"
       >
-        <DragLine onMouseDown={onDragLine} style={{ left: 0 }} active={focus} />
+        <DragLine
+          onMouseDown={onDragLine}
+          style={{ left: 0 }}
+          active={focus}
+          className="dragLine"
+        />
         <Header>
           <Space size={16}>
             <BackIcon onClick={onCancel}>
@@ -409,7 +442,29 @@ const ReportDetailDrawer = () => {
             <>
               <div className="editBox">
                 <Form form={form}>
-                  <Form.Item name="info">
+                  <Form.Item
+                    name="info"
+                    rules={[
+                      {
+                        validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
+                        required: true,
+                        message: (
+                          <div
+                            style={{
+                              margin: '5px 0',
+                              fontSize: '12px',
+                              display: 'flex',
+                              alignItems: 'center',
+                            }}
+                          >
+                            评论不能为空
+                          </div>
+                        ),
+                        whitespace: true,
+                        validator: onValidator,
+                      },
+                    ]}
+                  >
                     <Editor
                       ref={editorRef}
                       upload={uploadFile}
@@ -450,6 +505,7 @@ const ReportDetailDrawer = () => {
           )}
         </CommentFooter>
       </Drawer>
+      )
     </>
   )
 }
