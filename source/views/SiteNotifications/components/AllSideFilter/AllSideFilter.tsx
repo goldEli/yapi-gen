@@ -84,10 +84,10 @@ const AllSideFilter = (props: any) => {
     if (id === active) {
       setActive('')
       setCheceks([])
-      props.changeUser(undefined, [])
+      props.changeUser(undefined, undefined)
     } else {
       setActive(id)
-      props.changeUser(id, [])
+      props.changeUser(id, undefined)
     }
   }
 
