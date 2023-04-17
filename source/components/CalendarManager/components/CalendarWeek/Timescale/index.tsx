@@ -53,6 +53,10 @@ const Table = styled.table`
 
 const Timescale: React.FC<TimescaleProps> = props => {
   const { calendarData, checkedTime } = useSelector(store => store.calendar)
+  const { scheduleList } = useSelector(store => store.schedule)
+  const { quickCreateScheduleModel, scheduleInfoDropdown } = useSelector(
+    store => store.calendarPanel,
+  )
   const currentColor = useMemo(() => {
     return calendarData.manager.find(item => item.is_default === 1)?.color
   }, [calendarData])
@@ -187,14 +191,31 @@ const Timescale: React.FC<TimescaleProps> = props => {
         )
       })
   }, [currentColor, timeZone, checkedTime, weeks])
+  const isShowScheduleDetailModal = useMemo(() => {
+    for (const key in scheduleList) {
+      const list = scheduleList[key]
+      const cur = list.find(
+        item => item.schedule_id === scheduleInfoDropdown.schedule_id,
+      )
+      console.log({ cur })
+      if (cur?.is_all_day === 1 || cur?.is_span_day) {
+        return false
+      }
+    }
+    return true
+  }, [scheduleList, scheduleInfoDropdown])
   return (
     // <Popover trigger={['contextMenu']} content={popoverContent} title="Title">
     <Table ref={tableRef} className="time-scale">
       {content}
       <NewCalendarArea timeZone={timeZone} distance={distance} />
       <ScheduleCardList />
-      <QuickCreateScheduleModel containerClassName=".time-scale" />
-      <ScheduleInfoDropdown containerClassName=".time-scale" />
+      {!quickCreateScheduleModel.isAll && (
+        <QuickCreateScheduleModel containerClassName=".time-scale" />
+      )}
+      {isShowScheduleDetailModal && (
+        <ScheduleInfoDropdown containerClassName=".time-scale" />
+      )}
     </Table>
     // </Popover>
   )

@@ -20,7 +20,9 @@ const WeekHeader: React.FC<WeekHeaderProps> = props => {
   return (
     <WeekHeaderBox>
       <Header />
-      <AllDayScheduleArea />
+      <div style={{ paddingLeft: '58px' }}>
+        <AllDayScheduleArea />
+      </div>
     </WeekHeaderBox>
   )
 }
