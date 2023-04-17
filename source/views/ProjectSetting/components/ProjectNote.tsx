@@ -263,13 +263,14 @@ const ProjectSet = () => {
   }
 
   const init2 = async () => {
+    setIsSpinning(true)
     const res2 = await getSysConfig()
     const index = res2.findIndex((i: any) => {
       return i.type === activeDetail.types
     })
 
     const res1 = await getConfig(projectId)
-
+    setIsSpinning(false)
     const index2 = res1.findIndex((i: any) => {
       return i.type === activeDetail.types
     })
@@ -348,7 +349,7 @@ const ProjectSet = () => {
           }}
         >
           <CommonButton
-            style={{ width: 'fit-content', marginTop: 16 }}
+            style={{ marginTop: 16 }}
             type="primary"
             onClick={onSavePermission}
           >

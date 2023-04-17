@@ -74,11 +74,7 @@ export const useDynamicColumns = (state: any) => {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Tooltip placement="top" title={record.categoryName}>
               <img
-                src={
-                  record.category_attachment
-                    ? record.category_attachment
-                    : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
-                }
+                src={record.categoryAttachment}
                 style={{
                   width: '18px',
                   height: '18px',
