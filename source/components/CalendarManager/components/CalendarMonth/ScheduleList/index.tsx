@@ -1,9 +1,11 @@
 import React, { useMemo } from 'react'
 import styled from '@emotion/styled'
 import ScheduleListItem from '../ScheduleListItem'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import MoveActiveItem from '../MoveActiveItem'
 import MoreScheduleButton from '../../MoreScheduleButton'
+import { setScheduleListModal } from '@store/schedule'
+import dayjs from 'dayjs'
 
 interface ScheduleListProps {
   data: Model.Calendar.DaysOfMonth
@@ -37,6 +39,8 @@ const ScheduleList: React.FC<ScheduleListProps> = props => {
     return newList
   }, [list])
 
+  const dispatch = useDispatch()
+
   return (
     <ScheduleListBox>
       {showList?.map((item, idx) => {
@@ -45,7 +49,29 @@ const ScheduleList: React.FC<ScheduleListProps> = props => {
         }
         return <ScheduleListItem idx={props.idx} data={item} key={item?.id} />
       })}
-      <MoreScheduleButton hiddenNum={hiddenNum} />
+      <div
+        onClick={e => {
+          e.stopPropagation()
+          const target = e.target as HTMLDivElement
+          const { left, top } = target.getBoundingClientRect()
+          const box = document.querySelector(
+            '.calendar-month-content-box',
+          ) as HTMLDivElement
+          const { left: boxLeft, top: boxTop } = box?.getBoundingClientRect()
+          console.log('x y', { left, top }, { boxLeft, boxTop })
+          dispatch(
+            setScheduleListModal({
+              visible: true,
+              top: top - boxTop,
+              left: left - boxLeft,
+              date: dayjs(data.date).date(),
+              scheduleListData: scheduleList?.[key] ?? [],
+            }),
+          )
+        }}
+      >
+        <MoreScheduleButton hiddenNum={hiddenNum} />
+      </div>
       <MoveActiveItem idx={props.idx} />
     </ScheduleListBox>
   )

@@ -33,9 +33,7 @@ const HeaderRender: React.FC<HeaderRenderProps> = props => {
   return (
     <CalendarHeader>
       {`${props.month + 1}月`}
-      {props.month === date ? (
-        <ScheduleListModal month={props.month + 1} />
-      ) : null}
+      {props.month === date ? <ScheduleListModal /> : null}
       {scheduleInfo.visible && props.month === date ? (
         <ScheduleInfoDropdown />
       ) : null}

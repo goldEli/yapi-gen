@@ -13,6 +13,7 @@ import {
   // moveMonthSchedule,
   startMoveMonthSchedule,
 } from '@store/calendarPanle'
+import { setScheduleListModal } from '@store/schedule'
 
 interface DayItemProps {
   idx: number
@@ -109,6 +110,12 @@ const DayItem: React.FC<DayItemProps> = props => {
         e.stopPropagation()
         const target = e.target as HTMLDivElement
         const { offsetTop, offsetLeft } = target
+        // 关闭列表
+        dispatch(
+          setScheduleListModal({
+            visible: false,
+          }),
+        )
         dispatch(
           setQuickCreateScheduleModel({
             visible: true,

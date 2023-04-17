@@ -7,6 +7,7 @@ import { useSelector } from '@store/index'
 import dayjs from 'dayjs'
 import { sortScheduleList } from '@/components/CalendarManager/utils'
 import { formatYYYYMMDD } from '@/components/CalendarManager/config'
+import ScheduleListModal from '../../ScheduleListModal'
 
 interface ContentProps {}
 
@@ -25,7 +26,7 @@ type List = {
 
 const Content: React.FC<ContentProps> = props => {
   const { scheduleList } = useSelector(store => store.schedule)
-  const { checkedTime, selectedMonth } = useSelector(store => store.calendar)
+  const { selectedMonth } = useSelector(store => store.calendar)
   const [list, setList] = useState<List>({})
 
   // const showList = useMemo(() => {
@@ -110,6 +111,7 @@ const Content: React.FC<ContentProps> = props => {
         })}
       <ScheduleInfoDropdown containerClassName=".calendar-month-content-box" />
       <QuickCreateScheduleModel containerClassName=".calendar-month-content-box" />
+      <ScheduleListModal />
     </ContentBox>
   )
 }

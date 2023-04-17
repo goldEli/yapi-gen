@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from '@store/index'
 // import { getScheduleList } from '@store/schedule/schedule.thunk'
 import { getDaysOfMonthList } from '@store/calendar/calendar.thunk'
 import { getScheduleListDaysOfMonth } from '@store/schedule/schedule.thunk'
+import { setScheduleListModal } from '@store/schedule'
 
 interface CalendarMonthProps {}
 

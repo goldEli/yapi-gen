@@ -10,6 +10,7 @@ declare namespace Model.Schedule {
     is_span_day: boolean
     // 是否是全天任务 1 是 2 否
     is_all_day: 1 | 2
+    lunar_day_chinese: string
     // '2023-03-02 16:33:00'
     start_datetime?: string
     // '16:33'
@@ -144,8 +145,8 @@ declare namespace Model.Schedule {
     date?: number
     scheduleListData?: ScheduleListInfo[]
   }
-  type listViewScheduleListProps= {
-    date:number | string,
-    list:Info[]
+  type listViewScheduleListProps = {
+    date: number | string
+    list: Info[]
   }
 }
