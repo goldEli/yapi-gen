@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable max-len */
 import { getLoginDetail } from '@/services/user'
-import { useSelector } from '@store/index'
 import { useState, useRef, useEffect } from 'react'
 
 const useWebsocket = () => {
@@ -23,7 +22,7 @@ const useWebsocket = () => {
   }
 
   const heartCheck: TypeHeartCheck = {
-    timeout: 20000,
+    timeout: 3 * 60 * 1000,
     timeoutObj: null,
     reset() {
       clearInterval(this.timeoutObj)

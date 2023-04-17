@@ -23,36 +23,6 @@ import {
   getStatTempUsage,
 } from '@/services/report'
 
-const data: any = {
-  currentPage: 1,
-  pageSize: 10,
-  total: 0,
-  list: [],
-}
-for (let i = 0; i < 100; i++) {
-  data.list.push({
-    id: String(i),
-    name: '李钟硕',
-    onTimeCount: 146,
-    delayTimes: 82,
-    totalNoSubmitTimes: 69,
-    currentNoSubmitTimes: 17,
-  })
-}
-data.total = data.list.length
-
-const formWorkUsageData: any = {
-  list: [],
-}
-for (let i = 0; i < 100; i++) {
-  formWorkUsageData.list.push({
-    id: String(i),
-    name: '工作日志',
-    userCount: 146,
-    totalReportCount: 82,
-  })
-}
-
 const StyledWrap = styled.div`
   height: calc(100vh - 56px);
   display: flex;
@@ -97,7 +67,6 @@ const cardTitle = css`
 
 const rightBottom = css`
   margin: 8px 0;
-  height: 472px;
 `
 const CardGroup = styled(Space)({
   display: 'flex',
@@ -245,7 +214,7 @@ const Statistics = () => {
   const onChangeDate = (values: any) => {
     const startTime = moment(values[0]).format('YYYY-MM-DD')
     const endTime = moment(values[1]).format('YYYY-MM-DD')
-    setQueryParams({ startTime, endTime, pageSize: queryParams.pageSize })
+    // setQueryParams({ startTime, endTime, pageSize: queryParams.pageSize })
   }
 
   const onTabChange = (value: string) => {
