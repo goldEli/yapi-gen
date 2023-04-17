@@ -65,7 +65,6 @@ const Index = () => {
     }, 500)
   }
   const changeUser = (str: string, arr: any) => {
-    console.log(str, 'fdfd')
     msgType.current = arr
     friendUsername.current = str
     lastId.current = 0
@@ -79,15 +78,12 @@ const Index = () => {
     setHasMore(true)
     fetchMoreData(true)
   }
-  console.log(list)
-  console.log(friendUsername)
 
   useEffect(() => {
     lastId.current = 0
     setHasMore(true)
     fetchMoreData(true)
   }, [id])
-  console.log(list, '集合')
 
   return (
     <div>
@@ -132,11 +128,9 @@ const Index = () => {
           height={document.body.clientHeight - 230}
           loader={<Skeleton avatar paragraph={{ rows: 2 }} active />}
           scrollableTarget="scrollableDiv"
-          endMessage={<Divider plain>nothing more 🤐</Divider>}
+          endMessage={<Divider plain>nothing more </Divider>}
         >
           {list.map((i: any) => {
-            console.log(i, 'shu')
-
             return <ContentItem setReads={setReads} item={i} key={i.id} />
           })}
         </InfiniteScroll>
