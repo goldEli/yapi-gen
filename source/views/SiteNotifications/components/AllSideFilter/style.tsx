@@ -73,6 +73,10 @@ export const ResetB = styled.div`
   font-weight: 400;
   color: var(--neutral-n3);
   line-height: 22px;
+  cursor: pointer;
+  :hover {
+    color: var(--auxiliary-text-t2-d2);
+  }
 `
 
 export const InfoWrap = styled.div``
