@@ -52,15 +52,18 @@ const DatePicker1 = (props: any) => {
   useEffect(() => {
     if (props.value) {
       setValue(moment(props.value))
+    } else {
+      setValue('')
     }
   }, [props.value])
   return (
     <DatePicker
       onChange={(date: any, dateString: string) => {
+        console.log(dateString, dateString)
         onChange(date, dateString)
       }}
-      value={value}
       showTime
+      value={value}
     />
   )
 }
