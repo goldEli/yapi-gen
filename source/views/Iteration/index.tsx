@@ -42,6 +42,7 @@ import MyBreadcrumb from '@/components/MyBreadcrumb'
 import PermissionWrap from '@/components/PermissionWrap'
 import CommonButton from '@/components/CommonButton'
 import ScreenMinHover from '@/components/ScreenMinHover'
+import { setIsUpdateDemand } from '@store/demand'
 
 const Wrap = styled.div`
   height: 100%;
@@ -169,6 +170,7 @@ const Iteration = () => {
   const [titleList3, setTitleList3] = useState<any[]>([])
   const [allTitleList, setAllTitleList] = useState<any[]>([])
   const [isVisibleFields, setIsVisibleFields] = useState(false)
+
   const [searchGroups, setSearchGroups] = useState<any>({
     statusId: [],
     priorityId: [],
@@ -414,6 +416,10 @@ const Iteration = () => {
       )
     }
 
+    const refresh = () => {
+      dispatch(setIsUpdateDemand(true))
+    }
+
     return (
       <div style={{ height: '100%' }}>
         <DeleteConfirm
@@ -508,6 +514,14 @@ const Iteration = () => {
                   />
                 )}
                 <DividerWrap type="vertical" />
+
+                <ScreenMinHover
+                  icon="sync"
+                  label={t('common.refresh')}
+                  onClick={refresh}
+                />
+                <DividerWrap type="vertical" />
+
                 <DropDownMenu
                   menu={
                     <SetShowField
