@@ -82,9 +82,6 @@ let v1 = 0
 let v2 = 0
 let v3 = 0
 const Picker = (props: PropsType) => {
-  const [leftActive, setLeftActive] = useState<number>(-1)
-  const [centerActive, setCenterActive] = useState<number>(-1)
-  const [rightActive, setRightActive] = useState<number>(-1)
   const [leftActiveVal, setLeftActiveVal] = useState<number>(-1)
   const [centerActiveVal, setCenterActiveVal] = useState<number>(-1)
   const [rightActiveVal, setRightActiveVal] = useState<number>(-1)
@@ -171,7 +168,11 @@ const Picker = (props: PropsType) => {
       props.getValues(leftActiveVal, centerActiveVal, rightActiveVal)
     if (props.pickerType === 'start' || props.pickerType === 'end') {
       props?.onChange?.({
-        time: time1(0, centerActiveVal, rightActiveVal),
+        time: time1(
+          0,
+          centerActiveVal === 0 ? 24 : centerActiveVal,
+          rightActiveVal,
+        ),
         day_type: leftActiveVal,
       })
     } else {
@@ -244,10 +245,17 @@ const Picker = (props: PropsType) => {
     }
   }
   useEffect(() => {
-    if (!props?.value?.v2 && !props?.value?.v3) {
+    if (
+      !props?.value?.v2 &&
+      !props?.value?.v3 &&
+      props?.value?.v2 !== 0 &&
+      props?.value?.v3 !== 0
+    ) {
       setValue('')
       return
     }
+    const item = leftDataList?.find(el => el.key === props?.value?.v1)
+    console.log(item)
     v1 = props?.value?.v1
     v2 = props?.value?.v2
     v3 = props?.value?.v3
@@ -277,11 +285,11 @@ const Picker = (props: PropsType) => {
               <Item
                 key={el.label}
                 onClick={() => {
-                  setLeftActive(index), setLeftActiveVal(el.key)
+                  setLeftActiveVal(el.key)
                 }}
                 style={{
                   color:
-                    leftActive === index
+                    leftActiveVal === el.key
                       ? 'var(--primary-d2)'
                       : 'var(--neutral-n2)',
                 }}
@@ -296,11 +304,11 @@ const Picker = (props: PropsType) => {
             <Item
               key={el.label}
               onClick={() => {
-                setCenterActive(index), setCenterActiveVal(el.key)
+                setCenterActiveVal(el.key)
               }}
               style={{
                 color:
-                  centerActive === index
+                  centerActiveVal === el.key
                     ? 'var(--primary-d2)'
                     : 'var(--neutral-n2)',
               }}
@@ -314,11 +322,11 @@ const Picker = (props: PropsType) => {
             <Item
               key={el.label}
               onClick={() => {
-                setRightActive(index), setRightActiveVal(el.key)
+                setRightActiveVal(el.key)
               }}
               style={{
                 color:
-                  rightActive === index
+                  rightActiveVal === el.key
                     ? 'var(--primary-d2)'
                     : 'var(--neutral-n2)',
               }}

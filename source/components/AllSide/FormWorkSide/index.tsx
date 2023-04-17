@@ -16,8 +16,6 @@ import {
   setReportContent,
   setTemplateContentConfigs,
 } from '@store/formWork'
-import { message } from 'antd'
-import { cos } from '@/services'
 // getTemplateList
 const FormWorkSideStyle = styled.div`
   width: 200px;
@@ -56,6 +54,41 @@ const IconFontStyle = styled(IconFont)({
     background: 'var(--hover-d1)',
     color: 'var(--neutral-n1-d1)',
     cursor: 'pointer',
+  },
+})
+const NoDataCreateWrap = styled.div({
+  marginTop: 8,
+  minHeight: 68,
+  borderRadius: 6,
+  padding: '8px 12px',
+  '.top': {
+    display: 'flex',
+    alignItems: 'flex-start',
+    marginBottom: 12,
+    svg: {
+      color: '#FA9746',
+      fontSize: 16,
+      marginTop: 2,
+    },
+    div: {
+      color: 'var(--neutral-n2)',
+      fontSize: 12,
+      marginLeft: 8,
+      flexWrap: 'wrap',
+    },
+  },
+  '.bottom': {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    color: ' var(--primary-d2)',
+    svg: {
+      fontSize: 10,
+    },
+    div: {
+      fontSize: 12,
+      marginLeft: 6,
+    },
   },
 })
 const a = [
@@ -152,26 +185,45 @@ const FormWorkSide = () => {
         <span>模板</span>
         <IconFontStyle type="plus" onClick={() => setIsVisible(true)} />
       </TitleStyle>
-      {dataList?.map((el: { name: string; id: number }, index: number) => {
-        return (
-          <Slide
-            key={el.id}
-            onClick={() => itemActive(el, index)}
-            style={{
-              color:
-                isActive == index
-                  ? 'var(--primary-d2)'
-                  : 'var(--neutral-n1-d2)',
-              background:
-                isActive == index
-                  ? 'linear-gradient(90deg, #EBEFFF 0%, rgba(243,246,255,0) 100%)'
-                  : 'none',
-            }}
-          >
-            {el.name}
-          </Slide>
-        )
-      })}
+      {dataList?.length < 1 ? (
+        <NoDataCreateWrap>
+          <div className="top">
+            <IconFont type="Warning" />
+            <div>暂无模板，创建一个吧~</div>
+          </div>
+          <div className="bottom">
+            <div
+              className="bottom"
+              onClick={() => setIsVisible(true)}
+              style={{ cursor: 'pointer' }}
+            >
+              <IconFont type="plus" />
+              <div>新建模板</div>
+            </div>
+          </div>
+        </NoDataCreateWrap>
+      ) : (
+        dataList?.map((el: { name: string; id: number }, index: number) => {
+          return (
+            <Slide
+              key={el.id}
+              onClick={() => itemActive(el, index)}
+              style={{
+                color:
+                  isActive == index
+                    ? 'var(--primary-d2)'
+                    : 'var(--neutral-n1-d2)',
+                background:
+                  isActive == index
+                    ? 'linear-gradient(90deg, #EBEFFF 0%, rgba(243,246,255,0) 100%)'
+                    : 'none',
+              }}
+            >
+              {el.name}
+            </Slide>
+          )
+        })
+      )}
       {/* 创建模板 */}
       <AddFormWork
         onClose={() => setIsVisible(false)}

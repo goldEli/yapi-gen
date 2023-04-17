@@ -157,7 +157,7 @@ const PermissionConfig = (props: PropsType) => {
   const formOnValuesChange = (values: any) => {
     dispatch(setFillingRequirements({ ...fillingRequirements, ...values }))
   }
-  // 秒转成时分秒 b代表取天数
+  // 秒转成时分秒 b为true代表取天数
   const time2 = (b: boolean, num: any, str: string) => {
     if (!num) {
       return null
@@ -177,7 +177,7 @@ const PermissionConfig = (props: PropsType) => {
     if (str === 'day') {
       time = t
     } else if (str === 'hour') {
-      time = h
+      time = h === 24 ? 0 : h
     } else {
       time = parseInt(String(mv), 10)
     }
@@ -394,6 +394,7 @@ const PermissionConfig = (props: PropsType) => {
     newVal.hand_scope = obj
     fillingRequirements && setFormValues(newVal)
   }, [fillingRequirements])
+  console.log(fillingRequirements, 'fillingRequirements')
 
   return (
     <PermissionConfigStyle>
