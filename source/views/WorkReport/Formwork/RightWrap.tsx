@@ -154,9 +154,11 @@ const RightFormWork = () => {
   const deleteActiveItem = async () => {
     setDelIsVisible(false)
     await deleteTemplate({ id: activeItem.id })
-    await dispatch(getTemplateList())
-    dataList.length >= 1 &&
-      dispatch(setActiveItem({ id: dataList[0].id, name: dataList[0].name }))
+    const res = await dispatch(getTemplateList())
+    res.payload?.length >= 1 &&
+      dispatch(
+        setActiveItem({ id: res.payload[0].id, name: res.payload[0].name }),
+      )
     message.success('删除成功')
   }
   const getVerifyParams = (parmas: any) => {
