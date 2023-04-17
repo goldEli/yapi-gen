@@ -186,20 +186,6 @@ const FormWorkSide = () => {
         onConfirm={() => setDelIsVisible(false)}
         notCancel
       />
-      {/* 补交汇报弹窗 */}
-      <SupplementaryIntercourse
-        title="补交汇报"
-        isVisible={false}
-        onConfirm={() => 123}
-        onClose={() => 123}
-      />
-      {/* 写汇报 */}
-      <WriteReport
-        title="写汇报"
-        isVisible={false}
-        onConfirm={() => 123}
-        onClose={() => 123}
-      />
     </FormWorkSideStyle>
   )
 }
