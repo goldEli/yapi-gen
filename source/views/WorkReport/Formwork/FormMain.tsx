@@ -41,11 +41,13 @@ interface Item {
   key: string
 }
 const DatePicker1 = (props: any) => {
+  const dispatch = useDispatch()
   const [value, setValue] = useState<any>('')
   const onChange = (e: any, dateString: string) => {
     props.datePickValue(dateString)
     var T = new Date(dateString)
     props.onChange(T.getTime())
+    dispatch(setEditSave(false))
   }
   useEffect(() => {
     if (props.value) {
@@ -301,6 +303,7 @@ const FormMain = (props: FormType) => {
   const setValues = (val: any) => {
     setEndTimes(val)
   }
+  console.log(endTimes, 'endTimes')
   return (
     <>
       {props.type === 'day' ? (

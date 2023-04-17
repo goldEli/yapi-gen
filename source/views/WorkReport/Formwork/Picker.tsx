@@ -260,7 +260,6 @@ const Picker = (props: PropsType) => {
       return
     }
     const item = leftDataList?.find(el => el.key === props?.value?.v1)
-    console.log(item)
     v1 = props?.value?.v1
     v2 = props?.value?.v2
     v3 = props?.value?.v3
