@@ -123,7 +123,6 @@ const ReportDetailDrawer = () => {
   const reviewRef = useRef<any>()
   const leftWidth = 640
   const editorRef = useRef<EditorRef>(null)
-  const drawerRef = useRef<any>()
 
   // 拖动线条
   const onDragLine = (e: React.MouseEvent) => {
@@ -260,8 +259,19 @@ const ReportDetailDrawer = () => {
   }
 
   // 判断点击位置是否在抽屉内，关闭抽屉
-  const getClickPosition = e => {
-    console.log(e.clientX)
+  const getClickPosition = (e: any) => {
+    if (
+      viewReportModal.visible &&
+      window.innerWidth - e.clientX > leftWidth &&
+      !Array.from(document.getElementsByClassName('dragLine')).includes(
+        e.target,
+      ) &&
+      !Array.from(document.getElementsByClassName('summarySpan')).includes(
+        e.target,
+      )
+    ) {
+      onCancel()
+    }
   }
   useEffect(() => {
     if (viewReportModal.visible && viewReportModal?.id) {
@@ -271,10 +281,11 @@ const ReportDetailDrawer = () => {
   }, [viewReportModal])
 
   useEffect(() => {
-    document.addEventListener('click', getClickPosition)
     document.addEventListener('keydown', getKeyDown)
+    document.addEventListener('mousedown', getClickPosition)
     return () => {
       document.removeEventListener('keydown', getKeyDown)
+      document.removeEventListener('mousedown', getClickPosition)
     }
   }, [])
 
@@ -289,6 +300,7 @@ const ReportDetailDrawer = () => {
 
   return (
     <>
+      (
       <Drawer
         closable={false}
         placement="right"
@@ -302,7 +314,12 @@ const ReportDetailDrawer = () => {
         getContainer={false}
         className="drawerRoot"
       >
-        <DragLine onMouseDown={onDragLine} style={{ left: 0 }} active={focus} />
+        <DragLine
+          onMouseDown={onDragLine}
+          style={{ left: 0 }}
+          active={focus}
+          className="dragLine"
+        />
         <Header>
           <Space size={16}>
             <BackIcon onClick={onCancel}>
@@ -488,6 +505,7 @@ const ReportDetailDrawer = () => {
           )}
         </CommentFooter>
       </Drawer>
+      )
     </>
   )
 }
