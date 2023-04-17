@@ -346,7 +346,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
         </div>
       ),
       dataIndex: 'check',
-      width: 48,
+      width: 56,
       render: (text: string, record: any) => {
         return (
           <Checkbox
