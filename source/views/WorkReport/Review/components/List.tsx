@@ -24,10 +24,9 @@ import {
 import { templateList } from '@/services/formwork'
 import { getStaffList } from '@/services/staff'
 import HandleReport from './HandleReport'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { setViewReportModal } from '@store/workReport'
 import LabelTag from '@/components/LabelTag'
-import { useSelector } from 'react-redux'
 
 const ListTitle = styled.div`
   height: 32px;

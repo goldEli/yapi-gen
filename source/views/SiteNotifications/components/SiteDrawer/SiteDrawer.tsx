@@ -95,7 +95,7 @@ const SiteDrawer = () => {
       fetchMoreData(true)
     }
     if (id === '1') {
-      newName.current = new Date().valueOf() / 1000
+      newName.current = Math.floor(new Date().valueOf() / 1000)
       lastId.current = 0
       fetchMoreData(true)
     }
