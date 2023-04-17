@@ -36,10 +36,10 @@ export const getScheduleListDaysOfMonth = createAsyncThunk(
 // 修改日程
 export const modifySchedule =
   (params: API.Schedule.ModifySchedule.Params) =>
-    async (dispatch: AppDispatch) => {
-      await services.schedule.modifySchedule(params)
-      await dispatch(refreshCalendarPanelScheduleList())
-    }
+  async (dispatch: AppDispatch) => {
+    await services.schedule.modifySchedule(params)
+    await dispatch(refreshCalendarPanelScheduleList())
+  }
 
 // 刷新面板上日程列表
 export const refreshCalendarPanelScheduleList =
@@ -65,7 +65,6 @@ export const refreshCalendarPanelScheduleList =
       case 'month':
         dispatch(getScheduleListDaysOfMonth(newParams))
         break
-
       default:
         break
     }
@@ -97,10 +96,10 @@ export const refreshCalendarPanelScheduleList =
 
 export const saveSchedule =
   (params: API.Schedule.SaveSchedule.Params) =>
-    async (dispatch: AppDispatch) => {
-      await services.schedule.saveScheduleList(params)
-      dispatch(refreshCalendarPanelScheduleList())
-    }
+  async (dispatch: AppDispatch) => {
+    await services.schedule.saveScheduleList(params)
+    dispatch(refreshCalendarPanelScheduleList())
+  }
 
 export const getCalendarDaysOfYearList = createAsyncThunk(
   `${name}/getCalendarDaysOfYearList`,
@@ -142,7 +141,7 @@ export const getScheduleInfo = createAsyncThunk(
 // 日程搜索
 export const getScheduleSearch = createAsyncThunk(
   `${name}/getScheduleSearch`,
-  async (params: { calendar_ids: number[]; year: number; keyword: string }) => {
+  async (params: API.Schedule.SearchKeys.params) => {
     const res = await services.schedule.getScheduleSearch(params)
     return res
   },

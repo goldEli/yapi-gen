@@ -147,10 +147,10 @@ const slice = createSlice({
     builder.addCase(getCalendarList.fulfilled, (state, action) => {
       state.calendarData = action.payload
       const checkManageList = action.payload.manager?.filter(
-        (i: Model.Calendar.Info) => i.is_check,
+        (i: Model.Calendar.Info) => i.is_check === 1,
       )
       const checkSubList = action.payload.subscribe?.filter(
-        (i: Model.Calendar.Info) => i.is_check,
+        (i: Model.Calendar.Info) => i.is_check === 1,
       )
       // 获取当前数据默认选择的日历
       state.checkedCalendarList = [...checkManageList, ...checkSubList]

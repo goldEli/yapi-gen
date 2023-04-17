@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react'
+import React, { useEffect } from 'react'
 import { StyledCalendar } from '../../styles'
 
 import dayjs from 'dayjs'
@@ -10,7 +10,7 @@ import IconFont from '@/components/IconFont'
 import { useDispatch, useSelector } from '@store/index'
 import { setCheckedTime } from '@store/calendar'
 import { getNowDate } from '@/tools'
-import {getLeftCalendarDaysOfMonthList} from '@store/schedule/schedule.thunk'
+import { getLeftCalendarDaysOfMonthList } from '@store/schedule/schedule.thunk'
 dayjs.extend(dayLocaleData)
 const CalendarHeader = styled.div`
   width: 100%;
@@ -39,8 +39,9 @@ const DayBox = styled.div`
 `
 const dayActive = css`
   border-radius: 50%;
-  background: var(--primary-d1);
-  color: var(--neutral-white-d7);
+  background: var(--neutral-white-d7);
+  color: var(--primary-d1);
+  border: 1px solid var(--primary-d1);
   position: relative;
 `
 const hasScheduleClass = css`
@@ -56,17 +57,22 @@ const hasScheduleClass = css`
     border-radius: 50%;
   }
 `
+const selectedDateActive = css`
+  border-radius: 50%;
+  background: var(--primary-d1);
+  color: var(--neutral-white-d1);
+`
 const DXCalendar: React.FC = () => {
   const dispatch = useDispatch()
-  const { checkedTime } = useSelector(store => store.calendar);
-  const {leftViewScheduleList}=useSelector(state=>state.schedule);
+  const { checkedTime } = useSelector(store => store.calendar)
+  const { leftViewScheduleList } = useSelector(state => state.schedule)
   const wrapperStyle: React.CSSProperties = {
     // width: 240,
     background: 'var(--neutral-n9)',
     //  border: `1px solid ${token.colorBorderSecondary}`,
     //  borderRadius: token.borderRadiusLG,
   }
-  
+
   return (
     <StyledCalendar
       style={wrapperStyle}
@@ -81,12 +87,21 @@ const DXCalendar: React.FC = () => {
       dateFullCellRender={date => {
         const today =
           dayjs().format('DD/MM/YYYY') === dayjs(date).format('DD/MM/YYYY')
-        const hasSchedule =Object.keys(leftViewScheduleList).includes(
+        const hasSchedule = Object.keys(leftViewScheduleList).includes(
           dayjs(date).format('YYYY-MM-DD'),
         )
+        const selectedDate = checkedTime === dayjs(date).format('YYYY-MM-DD')
         return (
           <DayBox
-            className={today ? dayActive : hasSchedule ? hasScheduleClass : ''}
+            className={
+              today
+                ? dayActive
+                : selectedDate
+                ? selectedDateActive
+                : hasSchedule
+                ? hasScheduleClass
+                : ''
+            }
           >
             {dayjs(date).date()}
           </DayBox>

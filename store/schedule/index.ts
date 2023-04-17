@@ -10,9 +10,9 @@ import {
   getLeftCalendarDaysOfMonthList,
   getScheduleDaysOfList,
 } from './schedule.thunk'
-interface a{
-  date:number | string,
-  list:Model.Schedule.Info[]
+interface a {
+  date: number | string
+  list: Model.Schedule.Info[]
 }
 type SliceState = {
   // 默认日程时长
@@ -83,7 +83,6 @@ const slice = createSlice({
     setScheduleDate(state, action: PayloadAction<number>) {
       state.scheduleDate = action.payload
     },
-   
   },
   extraReducers(builder) {
     // builder.addCase(getScheduleList.fulfilled, (state, action) => {
@@ -140,9 +139,6 @@ const slice = createSlice({
 
 const schedule = slice.reducer
 
-export const {
-  setScheduleListModal,
-  setScheduleDate,
-} = slice.actions
+export const { setScheduleListModal, setScheduleDate } = slice.actions
 
 export default schedule

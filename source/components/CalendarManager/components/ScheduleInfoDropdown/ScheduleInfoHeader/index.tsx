@@ -1,14 +1,9 @@
+/* eslint-disable no-empty */
 
 import { useSelector, useDispatch } from '@store/index'
 import { setScheduleModal } from '@store/calendar'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
-import {
-  Checkbox,
-  Radio,
-  type RadioChangeEvent,
-  Select,
-  message,
-} from 'antd'
+import { Checkbox, Radio, type RadioChangeEvent, Select, message } from 'antd'
 import {
   ScheduleInfoHeader,
   ScheduleInfoHeaderContent,
@@ -19,7 +14,7 @@ import {
   BoxTip,
   confirmText,
   confirmSure,
-  ModalChildren
+  ModalChildren,
 } from '../styles'
 import React, { useState, useEffect } from 'react'
 import ScheduleInfoIcon from './../ScheduleInfoIcon'
@@ -31,7 +26,7 @@ import { scheduleInfoDelete, scheduleInfoTransfer } from '@/services/schedule'
 import { useTranslation } from 'react-i18next'
 dayjs.extend(weekday)
 const { Option } = Select
-interface ScheduleInfoDropdownProps { }
+interface ScheduleInfoDropdownProps {}
 
 const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
   const [isVisible, setIsVisible] = useState(false)
@@ -47,25 +42,23 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
     setIsVisible(false)
   }
   const confirmTranster = async () => {
-    let params = {
+    const params = {
       is_exit: isExit,
       user_id: userId ?? 0,
       id: scheduleInfo?.id ? String(scheduleInfo?.id) : '',
     }
     try {
-      await scheduleInfoTransfer(params);
-      message.success(t('转让成功'));
+      await scheduleInfoTransfer(params)
+      message.success(t('转让成功'))
       setModalVisible(false)
-      setShowTipBox(false);
+      setShowTipBox(false)
       disPatch(setScheduleInfoDropdown({ visible: false }))
     } catch (error) {
-
+      console.log(error)
     }
-
   }
   const confirmDelete = async () => {
-    console.log()
-    let params = {
+    const params = {
       id: scheduleInfo?.id ? String(scheduleInfo?.id) : '',
       is_remind: checked,
     }
@@ -75,9 +68,8 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
       message.success(t('common.deleteSuccess'))
       disPatch(setScheduleInfoDropdown({ visible: false }))
     } catch (error) {
-
+      console.log(error)
     }
-
   }
   return (
     <ScheduleInfoHeader>
@@ -109,15 +101,21 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
             <label onClick={() => setShowTipBox(!showTipBox)}>...</label>
             {showTipBox ? (
               <BoxTip>
-                <span onClick={() => {
-                  if(!scheduleInfo) return
-                  disPatch(
-                    setScheduleModal({
-                      visible: true,
-                      params: {copyScheduleId:Number(scheduleInfo?.id)},//
-                    }),
-                  )
-                }}>复制日程</span>
+                <span
+                  onClick={() => {
+                    if (!scheduleInfo) {
+                      return
+                    }
+                    disPatch(
+                      setScheduleModal({
+                        visible: true,
+                        params: { copyScheduleId: Number(scheduleInfo?.id) },
+                      }),
+                    )
+                  }}
+                >
+                  复制日程
+                </span>
                 <span
                   onClick={() => {
                     setModalVisible(true)
@@ -174,6 +172,11 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
             placeholder="搜索新的所有者"
             optionLabelProp="label"
             showSearch={true}
+            filterOption={(input, option) =>
+              ((option?.label ?? '') as string)
+                .toLowerCase()
+                .includes(input.toLowerCase())
+            }
             onSelect={value => {
               setUserId(value)
             }}

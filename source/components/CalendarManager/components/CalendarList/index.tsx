@@ -1,111 +1,60 @@
-import React, { useEffect, useRef } from 'react'
-import styled from '@emotion/styled'
-import { css } from '@emotion/css'
+import React, { useEffect, useRef, useState } from 'react'
+
 import { useDispatch, useSelector } from '@store/index'
 import {
   getScheduleDaysOfList,
   getScheduleSearch,
 } from '@store/schedule/schedule.thunk'
 import dayjs from 'dayjs'
+import {
+  CalendarListBox,
+  CalendarListItem,
+  DateBox,
+  MonthWeekBox,
+  LunarDate,
+  CalendarListInfo,
+  TimeItem,
+  CalendarListClass,
+  dateClass,
+  currentClass,
+} from './styles'
 interface CalendarListProps {}
-const CalendarListBox = styled.div`
-  background-color: #fff;
-  max-height: 600px;
-  overflow-y: scroll;
-`
-const CalendarListItem = styled.div`
-  border-top: 1px solid var(--neutral-n6-d1);
-  display: flex;
-  padding: 12px 0px;
-  align-items: flex-start;
-`
-const DateBox = styled.div`
-  color: var(--neutral-n1-d1);
-  font-size: var(--font18);
-  font-weight: 500;
-  width: 40px;
-`
-const MonthWeekBox = styled.div`
-  color: var(--neutral-n1-d1);
-  font-size: var(--font16);
-`
-// 农历日期组件
-const LunarDate = styled.div`
-  color: var(--neutral-n3);
-  font-size: var(--font12);
-  margin-left: 4px;
-`
-const CalendarListInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  top: 6px;
-`
-const TimeItem = styled.div`
-  color: var(--neutral-n1-d1);
-  font-size: var(--font14);
-  margin-left: 115px;
-  position: relative;
-  margin-bottom: 8px;
-  &:before {
-    position: absolute;
-    content: '';
-    left: -12px;
-    top: 8px;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--primary-d1);
-  }
-`
-const CalendarListClass = css`
-  :last-child {
-    border-bottom: 1px solid var(--neutral-n6-d1);
-  }
-`
-const dateClass = css`
-  margin-right: 65px;
-  display: inline-block;
-  width: 100px;
-`
-const currentClass = css`
-  background: var(--primary-d1) !important;
-  border-radius: 50% !important;
-  color: #fff !important;
-  font-size: var(--font18) !important;
-  text-align: center !important;
-  display: inline-block;
-  width: 28px !important;
-  height: 28px !important;
-`
+
 const CalendarList: React.FC<CalendarListProps> = props => {
   const CalendarListBoxRef = useRef<HTMLDivElement>(null)
   const { calenderListValue } = useSelector(state => state.calendarPanel)
   const { scheduleSearchKey } = useSelector(state => state.calendarPanel)
-  const { calendarData } = useSelector(state => state.calendar)
-  const { listViewScheduleList = [] } = useSelector(state => state.schedule)
+  const { listViewScheduleList } = useSelector(state => state.schedule)
   const { checkedTime } = useSelector(state => state.calendar)
-  let data1 = calendarData?.manager.concat(calendarData?.subscribe)
+  const { checkedCalendarList } = useSelector(state => state.calendar)
+  const [checkedCalendarIds, setCheckedCalendarIds] = useState(
+    checkedCalendarList.map(item => item.calendar_id),
+  )
+  const checkedCalendarIdsRef = useRef<number[]>([])
+  // const calendarDataArray = calendarData?.manager.concat(
+  //   calendarData?.subscribe,
+  // )
   const disPatch = useDispatch()
+  const getSearchList = () => {
+    disPatch(
+      getScheduleSearch({
+        year: dayjs(calenderListValue).year(),
+        keyword: scheduleSearchKey,
+        calendar_ids: checkedCalendarIdsRef.current,
+      }),
+    )
+  }
   useEffect(() => {
-    console.log('列表视图')
-    let params = {
+    const params = {
       year: dayjs(calenderListValue).year(),
       month: dayjs(calenderListValue).month() + 1,
-      calendar_ids: data1.map(item => item.calendar_id),
+      calendar_ids: checkedCalendarList.map(item => item.calendar_id),
     }
     disPatch(getScheduleDaysOfList(params))
   }, [calenderListValue])
+
   useEffect(() => {
-    let params = {
-      year: dayjs(calenderListValue).year(),
-      keyword: scheduleSearchKey || '',
-      calendar_ids: data1.map(item => item.calendar_id),
-    }
-    disPatch(getScheduleSearch(params))
-  }, [scheduleSearchKey])
-  useEffect(() => {
-    let childrenKeys = [...(CalendarListBoxRef.current?.children as any)].map(
+    const childrenKeys = [...(CalendarListBoxRef.current?.children as any)].map(
       item => {
         return {
           type: item.getAttribute('datatype'),
@@ -113,8 +62,10 @@ const CalendarList: React.FC<CalendarListProps> = props => {
         }
       },
     )
-    let currentItem = childrenKeys.find(item => item.type === checkedTime)
-    let currentIndex = childrenKeys.findIndex(item => item.type === checkedTime)
+    const currentItem = childrenKeys.find(item => item.type === checkedTime)
+    const currentIndex = childrenKeys.findIndex(
+      item => item.type === checkedTime,
+    )
     let totalHeight = 0
     for (let i = 0; i < childrenKeys.length; i++) {
       totalHeight += childrenKeys[i].height
@@ -122,7 +73,7 @@ const CalendarList: React.FC<CalendarListProps> = props => {
         break
       }
     }
-    console.log('currentItem', currentItem, currentIndex, totalHeight)
+
     if (CalendarListBoxRef.current) {
       CalendarListBoxRef.current.scrollTo({
         top: totalHeight,
@@ -130,9 +81,15 @@ const CalendarList: React.FC<CalendarListProps> = props => {
       })
     }
   }, [checkedTime])
+  useEffect(() => {
+    const calendar_ids = checkedCalendarList.map(item => item.calendar_id)
+    checkedCalendarIdsRef.current = calendar_ids
+    setCheckedCalendarIds([...calendar_ids])
+    getSearchList()
+  }, [checkedCalendarList, scheduleSearchKey])
   return (
     <CalendarListBox ref={CalendarListBoxRef}>
-      {listViewScheduleList.map((item: any, index: number) => (
+      {listViewScheduleList?.map((item: any, index: number) => (
         <CalendarListItem
           key={index}
           className={CalendarListClass}
@@ -150,8 +107,8 @@ const CalendarList: React.FC<CalendarListProps> = props => {
             <LunarDate>{item.list[0].lunar_day_chinese} </LunarDate>
           </div>
           <CalendarListInfo>
-            {item.list.map((ele: any) => (
-              <TimeItem key={ele.schedule_id}>
+            {item.list.map((ele: any, index: number) => (
+              <TimeItem key={index}>
                 <span className={dateClass}>{ele.date}</span>
                 <span>{ele.subject}</span>
               </TimeItem>

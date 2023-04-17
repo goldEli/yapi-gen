@@ -11,7 +11,7 @@ import {
   getCalendarConfig,
   getRelateConfig,
 } from '@store/calendar/calendar.thunk'
-import {getLeftCalendarDaysOfMonthList} from '@store/schedule/schedule.thunk'
+import { getLeftCalendarDaysOfMonthList } from '@store/schedule/schedule.thunk'
 type CalendarManagerLayoutProps = {
   // num: string
 }
@@ -24,9 +24,10 @@ const CalendarManager: React.ForwardRefRenderFunction<
   CalendarManagerLayoutProps
 > = (props, forwardedRef) => {
   const { routerMenu } = useSelector(store => store.calendar)
-  const { checkedTime } = useSelector(store => store.calendar);
+  const { checkedTime } = useSelector(store => store.calendar)
   const dispatch = useDispatch()
-  const {calendarData} = useSelector(state => state.calendar);
+  const { calendarData } = useSelector(state => state.calendar)
+  const { checkedCalendarList } = useSelector(state => state.calendar)
   let data = calendarData?.manager.concat(calendarData?.subscribe)
   // 初始化获取当前是设置页还是看板页
   useEffect(() => {
@@ -37,14 +38,18 @@ const CalendarManager: React.ForwardRefRenderFunction<
     dispatch(getRelateConfig())
     dispatch(getCalendarConfig())
   }, [])
-  useEffect(()=>{
-    let params={
-      year:dayjs(checkedTime).year(),
-      month:dayjs(checkedTime).month()+1,
-      calendar_ids:data.map(item => item.calendar_id),
+  useEffect(() => {
+    let params = {
+      year: dayjs(checkedTime).year(),
+      month: dayjs(checkedTime).month() + 1,
+      calendar_ids: data.map(item => item.calendar_id),
     }
+    setTimeout(() => {
+      console.log(111111, checkedCalendarList)
+    }, 300)
+
     dispatch(getLeftCalendarDaysOfMonthList(params))
-  },[checkedTime])
+  }, [checkedTime])
   React.useImperativeHandle(forwardedRef, () => ({
     open() {
       alert('open')
