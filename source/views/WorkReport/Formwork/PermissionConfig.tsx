@@ -211,6 +211,7 @@ const PermissionConfig = (props: PropsType) => {
           key: 'all',
           name: '全部',
           avatar: '',
+          target_id: -1,
           target_value: {
             user_type: 3,
             key: 'all',
@@ -231,6 +232,7 @@ const PermissionConfig = (props: PropsType) => {
           key: 'all',
           name: '全部',
           avatar: '',
+          target_id: -1,
           target_value: {
             user_type: 1,
             key: 'all',
@@ -252,30 +254,19 @@ const PermissionConfig = (props: PropsType) => {
   }, [reportContent])
   // 删除重新存
   const onChangedel = (el: any, num: number) => {
-    // 谁可以写
-    let data1 =
-      reportContent.template_configs?.filter(
-        (item: { user_type: number }) => item.user_type === 1,
-      ) || []
-    //  汇报对象
-    let data2 = reportContent.template_configs?.filter(
-      (item: { user_type: number }) => item.user_type === 2,
-    )
-    //  谁可以看
-    let data3 =
-      reportContent.template_configs?.filter(
-        (item: { user_type: number }) => item.user_type === 3,
-      ) || []
+    let data1: any = person1 || []
+    let data2: any = person2 || []
+    let data3: any = person3 || []
     let is_all_view = 2
     let is_all_write = 2
     if (num === 1) {
-      data1 = data1.filter((item: any) =>
+      data1 = person1.filter((item: any) =>
         el?.target_id ? item?.target_id !== el?.target_id : el.key !== item.key,
       )
     } else if (num === 2) {
-      data2 = data2.filter((item: any) => item.target_id !== el.target_id)
+      data2 = person2.filter((item: any) => item.target_id !== el.target_id)
     } else {
-      data3 = data3.filter((item: any) =>
+      data3 = person3.filter((item: any) =>
         el?.target_id ? item?.target_id !== el?.target_id : el.key !== item.key,
       )
     }
