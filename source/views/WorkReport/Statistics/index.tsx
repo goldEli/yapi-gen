@@ -130,7 +130,7 @@ const Statistics = () => {
   const { currentMenu } = useSelector(store => store.user)
   const [isSpinning, setIsSpinning] = useState<boolean>(false)
   const [formWorkData, setFormWorkData] = useState<any[]>([])
-  const [userDataList, setUserDataList] = useState<any[]>([])
+  const [userListData, setUserListData] = useState<any>({})
   const [usageDataList, setUsageDataList] = useState<any[]>([])
   const [statInfoData, setStatInfoData] = useState<any>({})
   const [tabKey, setTabKey] = useState<string | number>('')
@@ -210,11 +210,11 @@ const Statistics = () => {
 
   const getUserList = async () => {
     setIsSpinning(true)
-    const { list } = await getStatUserList({
+    const response = await getStatUserList({
       report_template_id: tabKey,
       ...queryParams,
     })
-    setUserDataList(list)
+    setUserListData(response)
     setIsSpinning(false)
   }
 
@@ -278,13 +278,13 @@ const Statistics = () => {
               isSpinning={isSpinning}
               dataWrapNormalHeight="calc(100vh - 292px)"
               col={columns}
-              dataSource={userDataList}
+              dataSource={userListData.list}
               noData={<NoData />}
             />
             <PaginationBox
-              currentPage={data?.currentPage}
-              pageSize={data?.pageSize}
-              total={data?.total}
+              currentPage={queryParams?.page}
+              pageSize={queryParams?.pageSize}
+              total={userListData.total}
               onChange={onChangePage}
             />
           </>
