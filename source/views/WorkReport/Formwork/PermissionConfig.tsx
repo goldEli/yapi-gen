@@ -14,7 +14,11 @@ import FormMain from './FormMain'
 import { Form, Radio } from 'antd'
 import { useDispatch, useSelector } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import { setReportContent, setFillingRequirements } from '@store/formWork'
+import {
+  setReportContent,
+  setFillingRequirements,
+  setEditSave,
+} from '@store/formWork'
 import { dayData1, weekData, monthData } from './DataList'
 import moment from 'moment'
 import { cos } from '@/services/cos'
@@ -121,7 +125,7 @@ const PermissionConfig = (props: PropsType) => {
 
   // 填写周期
   const onchange = (e: any) => {
-    localStorage.setItem('edit', '1')
+    dispatch(setEditSave(false))
     setType(e.target.value)
     let value = 0
     switch (e.target.value) {
@@ -157,7 +161,7 @@ const PermissionConfig = (props: PropsType) => {
   const formOnValuesChange = (values: any) => {
     dispatch(setFillingRequirements({ ...fillingRequirements, ...values }))
   }
-  // 秒转成时分秒 b代表取天数
+  // 秒转成时分秒 b为true代表取天数
   const time2 = (b: boolean, num: any, str: string) => {
     if (!num) {
       return null
@@ -177,7 +181,7 @@ const PermissionConfig = (props: PropsType) => {
     if (str === 'day') {
       time = t
     } else if (str === 'hour') {
-      time = h
+      time = h === 24 ? 0 : h
     } else {
       time = parseInt(String(mv), 10)
     }

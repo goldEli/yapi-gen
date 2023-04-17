@@ -31,6 +31,10 @@ export const minuteData = [
 // 0-23时
 export const hourData = [
   {
+    label: '0时',
+    key: 0,
+  },
+  {
     label: '1时',
     key: 1,
   },
@@ -121,10 +125,6 @@ export const hourData = [
   {
     label: '23时',
     key: 23,
-  },
-  {
-    label: '24时',
-    key: 24,
   },
 ]
 // 0-30天
