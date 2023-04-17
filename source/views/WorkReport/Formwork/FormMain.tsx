@@ -224,12 +224,12 @@ const FormMain = (props: FormType) => {
       }
     } else if (startTime?.v1 === 1 && endTime?.v1 === 2) {
       if (endTime?.v2 > startTime?.v2) {
-        message.warning('结束时间不能大于24小时')
+        message.warning('结束时间不能大于开始时间的24小时')
         dispatch(setErr(false))
         return
       } else if (startTime?.v2 === endTime?.v2) {
         if (endTime?.v3 > startTime?.v3) {
-          message.warning('结束时间不能大于24小时')
+          message.warning('结束时间不能大于开始时间的24小时')
           dispatch(setErr(false))
           return
         }
@@ -244,17 +244,17 @@ const FormMain = (props: FormType) => {
   // 不能超过一周
   const WeekJudgeTime = () => {
     if (endTime?.v1 > startTime?.v1 + 7) {
-      message.warning('开始时间不允许超过一周')
+      message.warning('结束时间不允许超过开始时间一周')
       dispatch(setErr(false))
       return
     } else if (endTime?.v1 === startTime?.v1 + 7) {
       if (endTime?.v2 > startTime?.v2) {
-        message.warning('开始时间不允许超过一周')
+        message.warning('结束时间不允许超过开始时间一周')
         dispatch(setErr(false))
         return
       } else if (endTime?.v2 === startTime?.v2) {
         if (endTime?.v3 > startTime?.v3) {
-          message.warning('开始时间不允许超过一周')
+          message.warning('结束时间不允许超过开始时间一周')
           dispatch(setErr(false))
           return
         }

@@ -254,16 +254,19 @@ const Picker = (props: PropsType) => {
       props?.value?.v3 !== 0
     ) {
       setValue('')
+      setLeftActiveVal(-1)
+      setCenterActiveVal(-1)
+      setRightActiveVal(-1)
       return
     }
     const item = leftDataList?.find(el => el.key === props?.value?.v1)
-    console.log(item)
     v1 = props?.value?.v1
     v2 = props?.value?.v2
     v3 = props?.value?.v3
     setLeftActiveVal(props?.value?.v1)
     setCenterActiveVal(props?.value?.v2)
     setRightActiveVal(props?.value?.v3)
+    props.getValues(props?.value?.v1, props?.value?.v2, props?.value?.v3)
     if (props.type === 'day') {
       getDayValues()
     } else if (props.type === 'week') {
