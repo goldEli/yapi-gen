@@ -78,7 +78,7 @@ const AllSideFilter = (props: any) => {
 
   const onChange = (checkedValues: any) => {
     setCheceks(checkedValues)
-    props.changeMsg(checkedValues)
+    props.changeMsg(checkedValues.length < 1 ? undefined : checkedValues)
   }
   const choose = (id: any) => {
     if (id === active) {

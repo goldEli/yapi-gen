@@ -47,7 +47,7 @@ export const getMsg_list: any = async (params: any) => {
     lastId: params.lastId ?? 0,
     read: params.read,
     friendUsername: params.friendUsername,
-    customType: params.msgType.length < 1 ? undefined : params.msgType,
+    customType: params.msgType,
     latTime: params.latTime,
   })
 
