@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Tooltip } from 'antd'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
@@ -26,6 +26,7 @@ import { getStaffList } from '@/services/staff'
 import HandleReport from './HandleReport'
 import { useDispatch } from '@store/index'
 import { setViewReportModal } from '@store/workReport'
+import LabelTag from '@/components/LabelTag'
 
 const ListTitle = styled.div`
   height: 32px;
@@ -77,6 +78,20 @@ const statusOptions = [
   { label: '未读', value: 1 },
   { label: '已读', value: 2 },
   { label: '已评', value: 3 },
+]
+const reportState = [
+  {
+    label: '更新',
+    color: '#E56F0E',
+    background: 'rgba(250,151,70,0.1)',
+    state: 1,
+  },
+  {
+    label: '补交',
+    color: '#7641E8 ',
+    background: 'rgba(161,118,251,0.1)',
+    state: 2,
+  },
 ]
 const List = () => {
   const dispatch = useDispatch()
@@ -179,7 +194,17 @@ const List = () => {
       title: t('common.title'),
       dataIndex: 'user',
       render: (_: string, record: any) => {
-        return <span>{String(record.user.name)}</span>
+        return (
+          <>
+            <span style={{ marginRight: 12 }}>{String(record.user.name)}</span>
+            <LabelTag
+              options={reportState}
+              state={
+                record.is_supply === 1 ? 1 : record.is_update === 1 ? 2 : 0
+              }
+            />
+          </>
+        )
       },
     },
     {
