@@ -181,7 +181,7 @@ const WhiteDay = (props: Props) => {
   }
   const onConfirm = () => {
     const values = form.getFieldsValue()
-    console.log(values)
+    // console.log(values)
   }
   return (
     <CommonModal

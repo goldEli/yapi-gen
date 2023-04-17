@@ -70,10 +70,9 @@ const HeaderSearch = (props: {
         <ScreenMinHover
           label={t('common.refresh')}
           icon="sync"
+          style={{ margin: '0 8px' }}
           onClick={props.onRefresh}
         />
-
-        <DividerWrap type="vertical" />
 
         <InputSearch
           width={202}
@@ -83,7 +82,7 @@ const HeaderSearch = (props: {
           onChangeSearch={(value: string) => props.onSetSearchVal(value)}
           leftIcon
         />
-        <DividerWrap type="vertical" />
+
         <ButtonStyle onClick={props.onShowAddMemberModal}>
           {t('add_a_member') as string}
         </ButtonStyle>
@@ -91,4 +90,5 @@ const HeaderSearch = (props: {
     </HeaderWrap>
   )
 }
+
 export default HeaderSearch

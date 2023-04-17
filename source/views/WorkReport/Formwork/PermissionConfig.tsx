@@ -14,7 +14,11 @@ import FormMain from './FormMain'
 import { Form, Radio } from 'antd'
 import { useDispatch, useSelector } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import { setReportContent, setFillingRequirements } from '@store/formWork'
+import {
+  setReportContent,
+  setFillingRequirements,
+  setEditSave,
+} from '@store/formWork'
 import { dayData1, weekData, monthData } from './DataList'
 import moment from 'moment'
 import { cos } from '@/services/cos'
@@ -121,7 +125,7 @@ const PermissionConfig = (props: PropsType) => {
 
   // 填写周期
   const onchange = (e: any) => {
-    localStorage.setItem('edit', '1')
+    dispatch(setEditSave(false))
     setType(e.target.value)
     let value = 0
     switch (e.target.value) {
@@ -157,7 +161,7 @@ const PermissionConfig = (props: PropsType) => {
   const formOnValuesChange = (values: any) => {
     dispatch(setFillingRequirements({ ...fillingRequirements, ...values }))
   }
-  // 秒转成时分秒 b代表取天数
+  // 秒转成时分秒 b为true代表取天数
   const time2 = (b: boolean, num: any, str: string) => {
     if (!num) {
       return null
@@ -177,7 +181,7 @@ const PermissionConfig = (props: PropsType) => {
     if (str === 'day') {
       time = t
     } else if (str === 'hour') {
-      time = h
+      time = h === 24 ? 0 : h
     } else {
       time = parseInt(String(mv), 10)
     }
@@ -207,6 +211,7 @@ const PermissionConfig = (props: PropsType) => {
           key: 'all',
           name: '全部',
           avatar: '',
+          target_id: -1,
           target_value: {
             user_type: 3,
             key: 'all',
@@ -227,6 +232,7 @@ const PermissionConfig = (props: PropsType) => {
           key: 'all',
           name: '全部',
           avatar: '',
+          target_id: -1,
           target_value: {
             user_type: 1,
             key: 'all',
@@ -248,30 +254,19 @@ const PermissionConfig = (props: PropsType) => {
   }, [reportContent])
   // 删除重新存
   const onChangedel = (el: any, num: number) => {
-    // 谁可以写
-    let data1 =
-      reportContent.template_configs?.filter(
-        (item: { user_type: number }) => item.user_type === 1,
-      ) || []
-    //  汇报对象
-    let data2 = reportContent.template_configs?.filter(
-      (item: { user_type: number }) => item.user_type === 2,
-    )
-    //  谁可以看
-    let data3 =
-      reportContent.template_configs?.filter(
-        (item: { user_type: number }) => item.user_type === 3,
-      ) || []
+    let data1: any = person1 || []
+    let data2: any = person2 || []
+    let data3: any = person3 || []
     let is_all_view = 2
     let is_all_write = 2
     if (num === 1) {
-      data1 = data1.filter((item: any) =>
+      data1 = person1.filter((item: any) =>
         el?.target_id ? item?.target_id !== el?.target_id : el.key !== item.key,
       )
     } else if (num === 2) {
-      data2 = data2.filter((item: any) => item.target_id !== el.target_id)
+      data2 = person2.filter((item: any) => item.target_id !== el.target_id)
     } else {
-      data3 = data3.filter((item: any) =>
+      data3 = person3.filter((item: any) =>
         el?.target_id ? item?.target_id !== el?.target_id : el.key !== item.key,
       )
     }

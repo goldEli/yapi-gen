@@ -27,7 +27,7 @@ const ContentItem = (props: any) => {
     let time = ''
     const now = new Date().valueOf() / 1000
     const difference = now - params
-    console.log()
+
     if (difference < 7200) {
       time = '两小时前'
     } else {

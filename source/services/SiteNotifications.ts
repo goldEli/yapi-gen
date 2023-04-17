@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 
@@ -42,11 +43,12 @@ export const getContactStatistics: any = async () => {
 // }
 
 export const getMsg_list: any = async (params: any) => {
-  const response: any = await http.get<any>('/b/msg/list', {
+  const response: any = await http.post<any>('/b/msg/list', {
     lastId: params.lastId ?? 0,
     read: params.read,
     friendUsername: params.friendUsername,
-    msgType: params.msgType,
+    customType: params.msgType,
+    latTime: params.latTime,
   })
 
   return response.data
