@@ -71,8 +71,8 @@ const BatchAction = ({ children, onCancel }: BatchActionProps, ref: any) => {
   })
 
   return (
-    <>
-      {visible && (
+    <div>
+      {visible ? (
         <div className={batchAllBox}>
           <div className={batchBox}>
             <Space size={8}>{children}</Space>
@@ -88,8 +88,8 @@ const BatchAction = ({ children, onCancel }: BatchActionProps, ref: any) => {
             />
           </div>
         </div>
-      )}
-    </>
+      ) : null}
+    </div>
   )
 }
 

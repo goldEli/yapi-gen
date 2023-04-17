@@ -1,7 +1,6 @@
 import styled from '@emotion/styled'
 import { Outlet } from 'react-router-dom'
 import PermissionWrap from '@/components/PermissionWrap'
-import ReportDetailDrawer from './components/ReportDetailDrawer'
 
 const Wrap = styled.div`
   height: 100%;
@@ -20,7 +19,6 @@ const Review = () => {
         {/* 右边的表格 */}
         <Main>
           <Outlet />
-          <ReportDetailDrawer />
         </Main>
       </Wrap>
     </PermissionWrap>

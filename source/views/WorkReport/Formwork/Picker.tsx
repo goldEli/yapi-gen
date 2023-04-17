@@ -259,7 +259,6 @@ const Picker = (props: PropsType) => {
       setRightActiveVal(-1)
       return
     }
-    const item = leftDataList?.find(el => el.key === props?.value?.v1)
     v1 = props?.value?.v1
     v2 = props?.value?.v2
     v3 = props?.value?.v3
@@ -349,6 +348,7 @@ const Picker = (props: PropsType) => {
       <InputStyle
         type="text"
         value={value}
+        placeholder="请选择时间"
         suffix={
           <Popover
             open={isOpen}

@@ -15,7 +15,6 @@ import PaginationBox from '@/components/TablePagination'
 import Sort from '@/components/Sort'
 import NoData from '@/components/NoData'
 import ReadStatusTag from './ReadStatusTag'
-import ReportDetailDrawer from './ReportDetailDrawer'
 import {
   getRepSentList,
   getRepReceivedList,
@@ -98,7 +97,6 @@ const List = () => {
   const [t] = useTranslation()
   const { pathname } = useLocation()
   const [isSpinning, setIsSpinning] = useState(false)
-  const { viewReportModal } = useSelector(store => store.workReport)
   const [order, setOrder] = useState<any>('')
   const [orderKey, setOrderKey] = useState<any>()
   const [total, setTotal] = useState<number>(250)
@@ -220,7 +218,7 @@ const List = () => {
             getPopupContainer={node => node}
           >
             <span
-              className="summarySpan"
+              className="canClickDetail"
               style={{
                 display: 'block',
                 width: '400px',
@@ -507,7 +505,6 @@ const List = () => {
           onChange={onChangePage}
         />
       </ListContent>
-      {viewReportModal.visible && <ReportDetailDrawer />}
 
       <HandleReport
         editId={editId}
