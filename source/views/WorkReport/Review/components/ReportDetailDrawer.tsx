@@ -6,7 +6,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/no-danger */
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
-import { Drawer, message, Form, Skeleton, Space, Input, Button } from 'antd'
+import { Drawer, message, Form, Skeleton, Space, Input } from 'antd'
 import { Editor, EditorRef } from '@xyfe/uikit'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -123,6 +123,7 @@ const ReportDetailDrawer = () => {
   const reviewRef = useRef<any>()
   const leftWidth = 640
   const editorRef = useRef<EditorRef>(null)
+  const drawerRef = useRef<any>()
 
   // 拖动线条
   const onDragLine = (e: React.MouseEvent) => {
@@ -258,6 +259,10 @@ const ReportDetailDrawer = () => {
     return key
   }
 
+  // 判断点击位置是否在抽屉内，关闭抽屉
+  const getClickPosition = e => {
+    console.log(e.clientX)
+  }
   useEffect(() => {
     if (viewReportModal.visible && viewReportModal?.id) {
       setReportIds(viewReportModal?.ids || [])
@@ -266,6 +271,7 @@ const ReportDetailDrawer = () => {
   }, [viewReportModal])
 
   useEffect(() => {
+    document.addEventListener('click', getClickPosition)
     document.addEventListener('keydown', getKeyDown)
     return () => {
       document.removeEventListener('keydown', getKeyDown)
