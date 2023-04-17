@@ -10,10 +10,10 @@ export function sortScheduleList(list: Model.Schedule.Info[]) {
     list
       ?.filter(item => item.is_all_day === 1 && !item.is_span_day)
       ?.sort((a, b) => a.schedule_id - b.schedule_id) ?? []
-  const otherList =
-    list
-      ?.filter(item => !item.is_all_day || item.is_all_day !== 1)
-      ?.sort((a, b) => a.schedule_id - b.schedule_id) ?? []
+  const otherList = list?.filter(
+    item => !item.is_all_day || item.is_all_day !== 1,
+  )
+
   const newList = [
     ...acrossDayScheduleList,
     ...allDayScheduleList,
