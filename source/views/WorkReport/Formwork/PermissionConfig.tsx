@@ -381,9 +381,7 @@ const PermissionConfig = (props: PropsType) => {
       newObj.end_time = newEndTime
       newObj.reminder_time = newReminderTime
     } else if (obj?.submit_cycle === 4) {
-      const newEndTime = obj?.end_time
-        ? timestampToTime(obj?.end_time?.time)
-        : null
+      const newEndTime = obj?.end_time ? timestampToTime(obj?.end_time) : null
       const newReminderTime = {
         v1: time2(true, obj?.reminder_time, 'day'),
         v2: time2(false, obj?.reminder_time, 'hour'),

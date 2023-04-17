@@ -1046,7 +1046,8 @@
       "searchReport": "Search for report title or content",
       "confirm": "Confirm to import the previous content, which will overwrite the current editing content",
       "ok": "Ok",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "writeReport": "Write a report"
     },
     "statistics": {
       "title": "Reporting Statistics",

@@ -27,6 +27,7 @@ import HandleReport from './HandleReport'
 import { useDispatch } from '@store/index'
 import { setViewReportModal } from '@store/workReport'
 import LabelTag from '@/components/LabelTag'
+import { useSelector } from 'react-redux'
 
 const ListTitle = styled.div`
   height: 32px;
@@ -98,6 +99,7 @@ const List = () => {
   const [t] = useTranslation()
   const { pathname } = useLocation()
   const [isSpinning, setIsSpinning] = useState(false)
+  const { viewReportModal } = useSelector(store => store.workReport)
   const [order, setOrder] = useState<any>('')
   const [orderKey, setOrderKey] = useState<any>()
   const [total, setTotal] = useState<number>(250)
@@ -219,6 +221,7 @@ const List = () => {
             getPopupContainer={node => node}
           >
             <span
+              className="summarySpan"
               style={{
                 display: 'block',
                 width: '400px',
@@ -237,9 +240,10 @@ const List = () => {
     },
     {
       width: 252,
-      title: (
-        <NewSort fixedKey="file_count">{t('report.list.reportTime')}</NewSort>
-      ),
+      title: t('report.list.reportTime'),
+      sorter: (a: any, b: any) => {
+        return moment(a.start_time).valueOf() - moment(b.start_time).valueOf()
+      },
       dataIndex: 'start_time',
       render: (_: string, record: any) => {
         return <span>{`${record.start_time} ~ ${record.end_time}`}</span>
@@ -247,10 +251,11 @@ const List = () => {
     },
     {
       width: 240,
-      title: (
-        <NewSort fixedKey="created_at">{t('report.list.submitTime')}</NewSort>
-      ),
+      title: t('report.list.submitTime'),
       dataIndex: 'created_at',
+      sorter: (a: any, b: any) => {
+        return moment(a.created_at).valueOf() - moment(b.created_at).valueOf()
+      },
     },
     {
       width: 160,
@@ -503,7 +508,8 @@ const List = () => {
           onChange={onChangePage}
         />
       </ListContent>
-      <ReportDetailDrawer />
+      {viewReportModal.visible && <ReportDetailDrawer />}
+
       <HandleReport
         editId={editId}
         visibleEdit={visibleEdit}
