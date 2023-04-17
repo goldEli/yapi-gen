@@ -15,7 +15,6 @@ import PaginationBox from '@/components/TablePagination'
 import Sort from '@/components/Sort'
 import NoData from '@/components/NoData'
 import ReadStatusTag from './ReadStatusTag'
-import ReportDetailDrawer from './ReportDetailDrawer'
 import {
   getRepSentList,
   getRepReceivedList,
@@ -24,9 +23,10 @@ import {
 import { templateList } from '@/services/formwork'
 import { getStaffList } from '@/services/staff'
 import HandleReport from './HandleReport'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { setViewReportModal } from '@store/workReport'
 import LabelTag from '@/components/LabelTag'
+import ReportDetailDrawer from './ReportDetailDrawer'
 
 const ListTitle = styled.div`
   height: 32px;
@@ -219,7 +219,7 @@ const List = () => {
             getPopupContainer={node => node}
           >
             <span
-              className="summarySpan"
+              className="canClickDetail"
               style={{
                 display: 'block',
                 width: '400px',

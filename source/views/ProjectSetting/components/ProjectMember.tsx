@@ -335,13 +335,18 @@ const ProjectMember = (props: { searchValue?: string }) => {
     },
     {
       title: (
-        <Checkbox
-          onChange={onCheckAll}
-          checked={selectedRowKeys.length === memberList?.list?.length}
-        />
+        <div>
+          <Checkbox
+            onChange={onCheckAll}
+            checked={selectedRowKeys.length === memberList?.list?.length}
+          />
+          {selectedRowKeys.length > 0 && (
+            <span style={{ marginLeft: 8 }}>{selectedRowKeys.length}</span>
+          )}
+        </div>
       ),
       dataIndex: 'check',
-      width: 48,
+      width: 56,
       render: (text: string, record: any) => {
         return (
           <Checkbox

@@ -24,6 +24,12 @@ import StateTag from '@/components/StateTag'
 
 const TimeLIneWrap = styled(Timeline)({
   marginTop: 24,
+  '.ant-timeline-item-head-blue': {
+    borderColor: 'var(--neutral-n5)!important',
+  },
+  '& :first-child .ant-timeline-item-head-blue': {
+    borderColor: 'var(--primary-d1)!important',
+  },
   '.ant-timeline-item-label': {
     width: '102px!important',
   },

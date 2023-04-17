@@ -258,21 +258,31 @@ const ReportDetailDrawer = () => {
     return key
   }
 
-  // 判断点击位置是否在抽屉内，关闭抽屉
-  const getClickPosition = (e: any) => {
+  // 关闭汇报抽屉
+  const onCloseDemandDetail = (e: any) => {
+    if (!storeAll.getState().workReport.viewReportModal.visible) {
+      return
+    }
     if (
-      viewReportModal.visible &&
-      window.innerWidth - e.clientX > leftWidth &&
-      !Array.from(document.getElementsByClassName('dragLine')).includes(
-        e.target,
-      ) &&
-      !Array.from(document.getElementsByClassName('summarySpan')).includes(
-        e.target,
-      )
+      typeof e.target?.parentElement?.className !== 'string' ||
+      typeof e.target?.className !== 'string' ||
+      (!e.target?.parentElement?.className?.includes('canClickDetail') &&
+        !e.target?.className?.includes('canClickDetail') &&
+        storeAll.getState().workReport.viewReportModal.visible)
     ) {
-      onCancel()
+      dispatch(setViewReportModal({ visible: false }))
     }
   }
+
+  useEffect(() => {
+    document
+      .getElementById('layoutWrap')
+      ?.addEventListener('click', onCloseDemandDetail)
+    return document
+      .getElementById('layoutWrap')
+      ?.addEventListener('click', onCloseDemandDetail)
+  }, [document.getElementById('layoutWrap')])
+
   useEffect(() => {
     if (viewReportModal.visible && viewReportModal?.id) {
       setReportIds(viewReportModal?.ids || [])
@@ -282,10 +292,8 @@ const ReportDetailDrawer = () => {
 
   useEffect(() => {
     document.addEventListener('keydown', getKeyDown)
-    document.addEventListener('mousedown', getClickPosition)
     return () => {
       document.removeEventListener('keydown', getKeyDown)
-      document.removeEventListener('mousedown', getClickPosition)
     }
   }, [])
 
@@ -299,214 +307,201 @@ const ReportDetailDrawer = () => {
   }
 
   return (
-    <>
-      (
-      <Drawer
-        closable={false}
-        placement="right"
-        bodyStyle={{ padding: 0, position: 'relative' }}
-        width={leftWidth}
-        open={viewReportModal.visible}
-        onClose={onCancel}
-        destroyOnClose
-        maskClosable={false}
-        mask={false}
-        getContainer={false}
-        className="drawerRoot"
-      >
-        <DragLine
-          onMouseDown={onDragLine}
-          style={{ left: 0 }}
-          active={focus}
-          className="dragLine"
-        />
-        <Header>
-          <Space size={16}>
-            <BackIcon onClick={onCancel}>
-              <CommonIconFont
-                type="right-02"
-                size={20}
-                color="var(--neutral-n1-d1)"
-              />
-            </BackIcon>
-            {skeletonLoading && (
-              <SkeletonStatus>
-                <Skeleton.Input active />
-              </SkeletonStatus>
+    <Drawer
+      closable={false}
+      placement="right"
+      bodyStyle={{ padding: 0, position: 'relative' }}
+      width={leftWidth}
+      open={viewReportModal.visible}
+      onClose={onCancel}
+      destroyOnClose
+      maskClosable={false}
+      mask={false}
+      getContainer={false}
+      className="drawerRoot"
+    >
+      <DragLine onMouseDown={onDragLine} style={{ left: 0 }} active={focus} />
+      <Header>
+        <Space size={16}>
+          <BackIcon onClick={onCancel}>
+            <CommonIconFont
+              type="right-02"
+              size={20}
+              color="var(--neutral-n1-d1)"
+            />
+          </BackIcon>
+          {skeletonLoading && (
+            <SkeletonStatus>
+              <Skeleton.Input active />
+            </SkeletonStatus>
+          )}
+        </Space>
+        <Space size={16}>
+          <ChangeIconGroup>
+            {currentIndex > 0 && (
+              <UpWrap
+                onClick={onUpDemand}
+                id="upIcon"
+                isOnly={
+                  reportIds?.length === 0 ||
+                  currentIndex === reportIds?.length - 1
+                }
+              >
+                <CommonIconFont
+                  type="up"
+                  size={20}
+                  color="var(--neutral-n1-d1)"
+                />
+              </UpWrap>
             )}
-          </Space>
-          <Space size={16}>
-            <ChangeIconGroup>
-              {currentIndex > 0 && (
-                <UpWrap
-                  onClick={onUpDemand}
-                  id="upIcon"
-                  isOnly={
-                    reportIds?.length === 0 ||
-                    currentIndex === reportIds?.length - 1
-                  }
-                >
-                  <CommonIconFont
-                    type="up"
-                    size={20}
-                    color="var(--neutral-n1-d1)"
-                  />
-                </UpWrap>
-              )}
 
-              {!(
-                reportIds?.length === 0 ||
-                currentIndex === reportIds?.length - 1
-              ) && (
-                <DownWrap
-                  onClick={onDownDemand}
-                  id="downIcon"
-                  isOnly={currentIndex <= 0}
-                >
-                  <CommonIconFont
-                    type="down"
-                    size={20}
-                    color="var(--neutral-n1-d1)"
-                  />
-                </DownWrap>
-              )}
-            </ChangeIconGroup>
-          </Space>
-        </Header>
-        <Content isReview={isReview} ref={reviewRef}>
-          {skeletonLoading && <DetailsSkeleton />}
-          {!skeletonLoading && (
-            <>
-              <ContentHeadWrap>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                >
-                  <CommonUserAvatar
-                    size="large"
-                    avatar={drawerInfo?.user?.avatar}
-                  />
-                  <div className="reportTitleWrap">
-                    <div className="titleText">
-                      {drawerInfo?.user?.name}的
-                      {drawerInfo?.report_template_name}
-                      <span className="dateText">
-                        （{drawerInfo?.start_time}至{drawerInfo?.end_time}）
-                      </span>
-                    </div>
-                    <div className="submitTimeText">
-                      提交时间：{drawerInfo?.created_at}
-                    </div>
+            {!(
+              reportIds?.length === 0 || currentIndex === reportIds?.length - 1
+            ) && (
+              <DownWrap
+                onClick={onDownDemand}
+                id="downIcon"
+                isOnly={currentIndex <= 0}
+              >
+                <CommonIconFont
+                  type="down"
+                  size={20}
+                  color="var(--neutral-n1-d1)"
+                />
+              </DownWrap>
+            )}
+          </ChangeIconGroup>
+        </Space>
+      </Header>
+      <Content isReview={isReview} ref={reviewRef}>
+        {skeletonLoading && <DetailsSkeleton />}
+        {!skeletonLoading && (
+          <>
+            <ContentHeadWrap>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                <CommonUserAvatar
+                  size="large"
+                  avatar={drawerInfo?.user?.avatar}
+                />
+                <div className="reportTitleWrap">
+                  <div className="titleText">
+                    {drawerInfo?.user?.name}的{drawerInfo?.report_template_name}
+                    <span className="dateText">
+                      （{drawerInfo?.start_time}至{drawerInfo?.end_time}）
+                    </span>
+                  </div>
+                  <div className="submitTimeText">
+                    提交时间：{drawerInfo?.created_at}
                   </div>
                 </div>
-              </ContentHeadWrap>
-              {drawerInfo?.report_content?.map((i: any) => (
-                <DetailItem key={i.id}>
-                  <div className="title">{i.name}</div>
-                  {i.type === 1 && (
-                    <TargetTabs list={drawerInfo?.target_users} />
-                  )}
-                  {i.type === 2 && <AttachmentBox list={i?.pivot?.params} />}
-                  {i.type === 3 && (
-                    <Editor
-                      readonly
-                      disableUpdateValue
-                      value={i?.pivot?.content}
-                    />
-                  )}
-                  {i.type === 4 && <ContactDemand list={i?.pivot?.params} />}
-                </DetailItem>
-              ))}
-              <DetailItem>
-                <div className="title">评论</div>
-                {commentList.map((i: any) => (
-                  <CommentBox key={i.id}>
-                    <div className="header">
-                      <CommonUserAvatar name={i.comment_user.name} />
-                      <div className="time">{i.created_at || '--'}</div>
-                    </div>
-                    <div className="content">
-                      <Editor readonly disableUpdateValue value={i?.content} />
-                    </div>
-                  </CommentBox>
-                ))}
+              </div>
+            </ContentHeadWrap>
+            {drawerInfo?.report_content?.map((i: any) => (
+              <DetailItem key={i.id}>
+                <div className="title">{i.name}</div>
+                {i.type === 1 && <TargetTabs list={drawerInfo?.target_users} />}
+                {i.type === 2 && <AttachmentBox list={i?.pivot?.params} />}
+                {i.type === 3 && (
+                  <Editor
+                    readonly
+                    disableUpdateValue
+                    value={i?.pivot?.content}
+                  />
+                )}
+                {i.type === 4 && <ContactDemand list={i?.pivot?.params} />}
               </DetailItem>
-            </>
-          )}
-        </Content>
+            ))}
+            <DetailItem>
+              <div className="title">评论</div>
+              {commentList.map((i: any) => (
+                <CommentBox key={i.id}>
+                  <div className="header">
+                    <CommonUserAvatar name={i.comment_user.name} />
+                    <div className="time">{i.created_at || '--'}</div>
+                  </div>
+                  <div className="content">
+                    <Editor readonly disableUpdateValue value={i?.content} />
+                  </div>
+                </CommentBox>
+              ))}
+            </DetailItem>
+          </>
+        )}
+      </Content>
 
-        <CommentFooter isReview={isReview}>
-          {isReview ? (
-            <>
-              <div className="editBox">
-                <Form form={form}>
-                  <Form.Item
-                    name="info"
-                    rules={[
-                      {
-                        validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
-                        required: true,
-                        message: (
-                          <div
-                            style={{
-                              margin: '5px 0',
-                              fontSize: '12px',
-                              display: 'flex',
-                              alignItems: 'center',
-                            }}
-                          >
-                            评论不能为空
-                          </div>
-                        ),
-                        whitespace: true,
-                        validator: onValidator,
-                      },
-                    ]}
-                  >
-                    <Editor
-                      ref={editorRef}
-                      upload={uploadFile}
-                      getSuggestions={() => []}
-                    />
-                  </Form.Item>
-                </Form>
-              </div>
-              <div className="buttonBox">
-                <Space>
-                  <CommonButton
-                    type="light"
-                    size="small"
-                    onClick={() => {
-                      setIsReview(false)
-                      form.resetFields()
-                    }}
-                    style={{ fontSize: 12 }}
-                  >
-                    取消
-                  </CommonButton>
-                  <CommonButton
-                    type="primary"
-                    size="small"
-                    style={{ fontSize: 12 }}
-                    onClick={onComment}
-                  >
-                    评论
-                  </CommonButton>
-                </Space>
-              </div>
-            </>
-          ) : (
-            <Input
-              placeholder={`评论${drawerInfo?.user?.name || '--'}的日志`}
-              onFocus={() => setIsReview(true)}
-            />
-          )}
-        </CommentFooter>
-      </Drawer>
-      )
-    </>
+      <CommentFooter isReview={isReview}>
+        {isReview ? (
+          <>
+            <div className="editBox">
+              <Form form={form}>
+                <Form.Item
+                  name="info"
+                  rules={[
+                    {
+                      validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
+                      required: true,
+                      message: (
+                        <div
+                          style={{
+                            margin: '5px 0',
+                            fontSize: '12px',
+                            display: 'flex',
+                            alignItems: 'center',
+                          }}
+                        >
+                          评论不能为空
+                        </div>
+                      ),
+                      whitespace: true,
+                      validator: onValidator,
+                    },
+                  ]}
+                >
+                  <Editor
+                    ref={editorRef}
+                    upload={uploadFile}
+                    getSuggestions={() => []}
+                  />
+                </Form.Item>
+              </Form>
+            </div>
+            <div className="buttonBox">
+              <Space>
+                <CommonButton
+                  type="light"
+                  size="small"
+                  onClick={() => {
+                    setIsReview(false)
+                    form.resetFields()
+                  }}
+                  style={{ fontSize: 12 }}
+                >
+                  取消
+                </CommonButton>
+                <CommonButton
+                  type="primary"
+                  size="small"
+                  style={{ fontSize: 12 }}
+                  onClick={onComment}
+                >
+                  评论
+                </CommonButton>
+              </Space>
+            </div>
+          </>
+        ) : (
+          <Input
+            placeholder={`评论${drawerInfo?.user?.name || '--'}的日志`}
+            onFocus={() => setIsReview(true)}
+          />
+        )}
+      </CommentFooter>
+    </Drawer>
   )
 }
 
