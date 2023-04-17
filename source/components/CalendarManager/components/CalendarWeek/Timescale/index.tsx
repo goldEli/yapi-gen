@@ -88,13 +88,6 @@ const Timescale: React.FC<TimescaleProps> = props => {
           '#calenderBoxRightArea',
         ) as Element
         dom.removeEventListener('mousemove', onMousemove)
-        // dispatch(
-        //   setQuickCreateScheduleModel({
-        //     visible: true,
-        //     x: target.offsetLeft + 58,
-        //     y: target.offsetTop,
-        //   }),
-        // )
         dom.removeEventListener('mouseup', onMouseUp)
       }
       dom.removeEventListener('mousemove', onMousemove)

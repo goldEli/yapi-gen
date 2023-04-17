@@ -46,6 +46,8 @@ type SliceState = {
   }
   //搜索日程关键字
   scheduleSearchKey?: string
+  // 月视图，当前点击的日期
+  selectedDayInMonth?: Model.Calendar.DaysOfMonth['datetime']
 }
 const defaultMonthMoveScheduleActiveInfo = {
   visibleList: [],
@@ -82,6 +84,12 @@ const slice = createSlice({
   name: 'calendarPanel',
   initialState,
   reducers: {
+    setSelectedDayInMonth(
+      state,
+      action: PayloadAction<SliceState['selectedDayInMonth']>,
+    ) {
+      state.selectedDayInMonth = action.payload
+    },
     clearMonthMoveScheduleActiveInfo(state) {
       state.monthMoveScheduleActiveInfo = defaultMonthMoveScheduleActiveInfo
       window.monthMoveScheduleActiveInfo = defaultMonthMoveScheduleActiveInfo
@@ -158,6 +166,10 @@ const slice = createSlice({
       state.quickCreateScheduleModel = {
         ...state.quickCreateScheduleModel,
         ...action.payload,
+      }
+      // 关闭弹窗清空月视图选中
+      if (!state.quickCreateScheduleModel.visible) {
+        state.selectedDayInMonth = void 0
       }
     },
     setScheduleInfoDropdown(
@@ -239,6 +251,7 @@ export const {
   clearMonthMoveScheduleActiveInfo,
   resizeMonthSchedule,
   setQuickCreateScheduleModel,
+  setSelectedDayInMonth,
 } = slice.actions
 
 export default calendarPanel

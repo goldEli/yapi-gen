@@ -30,10 +30,30 @@ const ScheduleList: React.FC<ScheduleListProps> = props => {
     const len = list?.length
     return len > 3 ? len - 3 : 0
   }, [list])
+  const showList = useMemo(() => {
+    const acrossDayScheduleList =
+      list
+        ?.filter(item => item.is_span_day)
+        ?.sort((a, b) => a.schedule_id - b.schedule_id) ?? []
+    const allDayScheduleList =
+      list
+        ?.filter(item => item.is_all_day === 1 && !item.is_span_day)
+        ?.sort((a, b) => a.schedule_id - b.schedule_id) ?? []
+    const otherList =
+      list
+        ?.filter(item => !item.is_all_day || item.is_all_day !== 1)
+        ?.sort((a, b) => a.schedule_id - b.schedule_id) ?? []
+    const newList = [
+      ...acrossDayScheduleList,
+      ...allDayScheduleList,
+      ...otherList,
+    ]
+    return newList?.slice(0, 3)
+  }, [list])
 
   return (
     <ScheduleListBox>
-      {list?.slice(0, 3).map(item => {
+      {showList.map(item => {
         return <ScheduleListItem idx={props.idx} data={item} key={item.id} />
       })}
       <MoreScheduleButton hiddenNum={hiddenNum} />

@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from '@emotion/styled'
 import DayItem from './DayItem'
 import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
+import QuickCreateScheduleModel from '../../QuickCreateScheduleModel'
 
 interface ContentProps {}
 
@@ -23,6 +24,7 @@ const Content: React.FC<ContentProps> = props => {
           return <DayItem idx={idx} key={idx} />
         })}
       <ScheduleInfoDropdown containerClassName=".calendar-month-content-box" />
+      <QuickCreateScheduleModel containerClassName=".calendar-month-content-box" />
     </ContentBox>
   )
 }

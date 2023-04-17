@@ -15,7 +15,7 @@ import {
   marginLeft,
   marginRight,
 } from './styled'
-import { useDispatch, useSelector } from '@store/index'
+import { store, useDispatch, useSelector } from '@store/index'
 import {
   clearMonthMoveScheduleActiveInfo,
   resizeMonthSchedule,
@@ -27,7 +27,10 @@ import useScheduleListArr from '../hooks/useScheduleListArr'
 import useRelativePosition from '@/components/CalendarManager/hooks/useRelativePosition'
 import _ from 'lodash'
 import { modifySchedule } from '@store/schedule/schedule.thunk'
-import { formatYYYYMMDDhhmmss } from '@/components/CalendarManager/config'
+import {
+  formatYYYYMMDD,
+  formatYYYYMMDDhhmmss,
+} from '@/components/CalendarManager/config'
 
 interface ScheduleListItemProps {
   data: Model.Schedule.Info
@@ -83,9 +86,98 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
       }),
     )
   }
+
+  // 移动日程后后保存
+  const onSave = () => {
+    const info = store.getState().calendarPanel.monthMoveScheduleActiveInfo
+    if (!info?.startSchedule) {
+      throw new Error('info?.startSchedule is undefine')
+    }
+    const {
+      schedule_id,
+      color,
+      subject,
+      calendar_id,
+      schedule_start_datetime,
+      schedule_end_datetime,
+    } = info?.startSchedule
+    // 移动了多少天，负数表示向前移动，正数表示先后移动
+    const movedDay = (info.endIndex ?? 0) - (info.startIndex ?? 0)
+    const newStart = dayjs(schedule_start_datetime)
+      .add(movedDay, 'day')
+      .format(formatYYYYMMDDhhmmss)
+    const newEnd = dayjs(schedule_end_datetime)
+      .add(movedDay, 'day')
+      .format(formatYYYYMMDDhhmmss)
+    if (
+      newStart === schedule_start_datetime &&
+      newEnd === schedule_end_datetime
+    ) {
+      // 清空拖动数据
+      dispatch(clearMonthMoveScheduleActiveInfo())
+      return
+    }
+    const params = {
+      calendar_id,
+      schedule_id,
+      color,
+      subject,
+      start_datetime: newStart,
+      end_datetime: newEnd,
+    }
+    dispatch(modifySchedule(params))
+  }
+
+  // 调整头天后保存
+  const onSaveForResizingFirstDay = () => {
+    const info = store.getState().calendarPanel.monthMoveScheduleActiveInfo
+    if (!info?.startSchedule) {
+      throw new Error('info?.startSchedule is undefine')
+    }
+    const {
+      schedule_id,
+      color,
+      subject,
+      calendar_id,
+      schedule_start_datetime,
+      schedule_end_datetime,
+    } = info?.startSchedule
+    const { visibleList } = info
+    // 移动了多少天，负数表示向前移动，正数表示先后移动
+    // const movedDay = (info.endIndex ?? 0) - (info.startIndex ?? 0)
+    if (!visibleList?.length) {
+      throw new Error('visibleList?.length is zero')
+    }
+    const len = visibleList?.length
+    const movedDay = (len - 1) * -1
+    const startYMD = dayjs(schedule_end_datetime)
+      .add(movedDay, 'day')
+      .format(formatYYYYMMDD)
+
+    const newStart = dayjs(startYMD).format(formatYYYYMMDDhhmmss)
+    const newEnd = dayjs(schedule_end_datetime).format(formatYYYYMMDDhhmmss)
+    if (
+      newStart === schedule_start_datetime &&
+      newEnd === schedule_end_datetime
+    ) {
+      // 清空拖动数据
+      dispatch(clearMonthMoveScheduleActiveInfo())
+      return
+    }
+
+    const params = {
+      calendar_id,
+      schedule_id,
+      color,
+      subject,
+      start_datetime: newStart,
+      end_datetime: newEnd,
+    }
+    dispatch(modifySchedule(params))
+  }
+
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     // 跨天如果不是头天不能拖动
-    console.log('monusedonw')
     if (isAllDayButNotFirstDay) {
       return
     }
@@ -127,33 +219,7 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
       }
       // 拖动之后保存日程
       if (isDrag.current) {
-        const info = window.monthMoveScheduleActiveInfo
-        if (!info?.startSchedule) {
-          throw new Error('info?.startSchedule is undefine')
-        }
-        const {
-          schedule_id,
-          color,
-          subject,
-          calendar_id,
-          schedule_start_datetime,
-          schedule_end_datetime,
-        } = info?.startSchedule
-        // 移动了多少天，负数表示向前移动，正数表示先后移动
-        const movedDay = (info.endIndex ?? 0) - (info.startIndex ?? 0)
-        const params = {
-          calendar_id,
-          schedule_id,
-          color,
-          subject,
-          start_datetime: dayjs(schedule_start_datetime)
-            .add(movedDay, 'day')
-            .format(formatYYYYMMDDhhmmss),
-          end_datetime: dayjs(schedule_end_datetime)
-            .add(movedDay, 'day')
-            .format(formatYYYYMMDDhhmmss),
-        }
-        await dispatch(modifySchedule(params))
+        onSave()
       }
     })
   }
@@ -163,6 +229,7 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
       data.schedule_id
     )
   }, [monthMoveScheduleActiveInfo, data.schedule_id, visible])
+
   return (
     <ScheduleListItemBox
       ref={domRef}
@@ -194,10 +261,12 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
                   length: len,
                 }),
               )
-              window.addEventListener('mouseup', () => {
-                dispatch(clearMonthMoveScheduleActiveInfo())
+              const onMouseupForDot = (e: MouseEvent) => {
+                onSaveForResizingFirstDay()
                 window.calendarMonthPanelType = null
-              })
+              }
+              window.removeEventListener('mouseup', onMouseupForDot)
+              window.addEventListener('mouseup', onMouseupForDot)
             }}
             bg={getColor(data.color)}
           />
