@@ -221,7 +221,6 @@ const RightFormWork = () => {
       start_time: fillingRequirements?.start_time,
       is_holiday: fillingRequirements?.is_holiday ? 1 : 2,
     }
-    console.log(parmas, 'parmas')
     if (!getVerifyParams(parmas)) {
       return
     }

@@ -7,7 +7,7 @@ import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { useDispatch } from '@store/index'
 import { setEditSave } from '@store/formWork'
-import { Input, Popover } from 'antd'
+import { Input, message, Popover } from 'antd'
 import { useEffect, useState } from 'react'
 import {
   startWeekData,
@@ -158,14 +158,19 @@ const Picker = (props: PropsType) => {
 
   //  时分数转化为秒
   const time1 = (d: number, h: number, m: number) => {
+    if (h < 0 || m < 0) {
+      message.warning('请选择时间')
+      setIsOpen(true)
+      return
+    }
     let datS: any = d ? d * 60 * 60 * 24 : 0
     let hS = h * 60 * 60
     let minute = m * 60
     const second = datS + hS + minute
+    setIsOpen(false)
     return second
   }
   const getTime = () => {
-    setIsOpen(false)
     dispatch(setEditSave(false))
     props.getValues(leftActiveVal, centerActiveVal, rightActiveVal)
     if (props.pickerType === 'start' || props.pickerType === 'end') {
@@ -178,7 +183,12 @@ const Picker = (props: PropsType) => {
         day_type: leftActiveVal,
       })
     } else {
-      props?.onChange?.(time1(leftActiveVal, centerActiveVal, rightActiveVal))
+      if (props.type === 'day') {
+        console.log(centerActiveVal, rightActiveVal, 'day')
+        props?.onChange?.(time1(0, centerActiveVal, rightActiveVal))
+      } else {
+        props?.onChange?.(time1(leftActiveVal, centerActiveVal, rightActiveVal))
+      }
     }
   }
 
