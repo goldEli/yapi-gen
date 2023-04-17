@@ -39,10 +39,7 @@ import { RangePickerProps } from 'antd/lib/date-picker'
 import { colorMap } from '../../config'
 import { setQuickCreateScheduleModel } from '@store/calendarPanle'
 import { setScheduleModal } from '@store/calendar'
-import {
-  refreshCalendarPanelScheduleList,
-  saveSchedule,
-} from '@store/schedule/schedule.thunk'
+import { saveSchedule } from '@store/schedule/schedule.thunk'
 import { EventBus } from '../../eventBus'
 import useModalPosition from './useModalPosition'
 import { useTranslation } from 'react-i18next'
@@ -257,7 +254,6 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
   const onConfirm = async () => {
     const params = await onGetParams()
     await dispatch(saveSchedule(params))
-    dispatch(refreshCalendarPanelScheduleList())
     message.success(t('common.createSuccess'))
     onClose()
   }

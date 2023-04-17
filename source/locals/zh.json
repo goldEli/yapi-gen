@@ -68,7 +68,7 @@
   "modifiable_schedule": "可修改日程",
   "invite_participants": "邀请参与者",
   "please_select_a_time": "请选择时间！",
-  "only_schedule_repeats_with_a_duration_of_days_are_supported!": "仅支持时长在{{value}}天内的日程重复！",
+  "only_schedule_repeats_with_a_duration_of_days_are_supported": "仅支持时长在{{value}}天内的日程重复！",
   "edit_schedule": "编辑日程",
   "theme": "主题",
   "please_enter_a_theme": "请输入主题",

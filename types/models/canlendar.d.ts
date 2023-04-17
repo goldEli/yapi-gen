@@ -12,7 +12,10 @@ declare namespace Model.Calendar {
     subscribe_num: number
     share_members: []
     subscribe_members: []
-    user: []
+    user: {
+      id: number
+      name: string
+    }
     is_owner: 1 | 2
   }
   interface Pager {
@@ -119,6 +122,7 @@ declare namespace Model.Calendar {
       calendar_id: number
     }
     describe?: string
+    permission?: boolean
   }
 
   /**

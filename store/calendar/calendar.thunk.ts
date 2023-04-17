@@ -1,14 +1,16 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as services from '@/services'
 import { AppDispatch } from '@store/index'
+import { refreshCalendarPanelScheduleList } from '@store/schedule/schedule.thunk'
 
 const name = 'calendar'
 
 // 获取日历列表
 export const getCalendarList = createAsyncThunk(
   `${name}/getCalendarList`,
-  async () => {
+  async (_, { dispatch }) => {
     const res = await services.calendar.getCalendarList()
+    dispatch(refreshCalendarPanelScheduleList() as AppDispatch)
     return res.data
   },
 )

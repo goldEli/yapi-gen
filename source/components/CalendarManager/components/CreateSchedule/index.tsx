@@ -40,11 +40,7 @@ import moment from 'moment'
 import RepeatModal from './RepeatModal'
 import UploadAttach from '@/components/UploadAttach'
 import CreateVisualization from './CreateVisualization'
-import {
-  modifySchedule,
-  refreshCalendarPanelScheduleList,
-  saveSchedule,
-} from '@store/schedule/schedule.thunk'
+import { modifySchedule, saveSchedule } from '@store/schedule/schedule.thunk'
 import { useTranslation } from 'react-i18next'
 import { getScheduleInfo } from '@/services/schedule'
 
@@ -153,7 +149,7 @@ const CreateSchedule = () => {
   }
 
   // 保存
-  const onConfirm = async () => {
+  const onConfirm = async (next?: boolean) => {
     await form.validateFields()
     let values = form.getFieldsValue()
     values.is_busy = status
@@ -191,13 +187,27 @@ const CreateSchedule = () => {
           ...{ schedule_id: scheduleModal?.params?.id },
         }),
       )
+      onClose()
       message.success(t('common.editSuccess'))
     } else {
       await dispatch(saveSchedule(resultParams))
       message.success(t('common.createSuccess'))
+      if (next) {
+        dispatch(
+          setScheduleModal({
+            ...scheduleModal,
+            params: {
+              isAll,
+              permission: resultParams.permission,
+              startTime: resultParams.start_datetime,
+              endTime: resultParams.end_datetime,
+            },
+          }),
+        )
+      } else {
+        onClose()
+      }
     }
-
-    onClose()
   }
 
   // 选中的共享成员
@@ -241,7 +251,8 @@ const CreateSchedule = () => {
       return
     }
     const startTime = isAll ? moment(time[0]).startOf('day') : moment(time[0])
-    const endTime = isAll ? moment(time[1]).endOf('day') : moment(time[0])
+    const endTime = isAll ? moment(time[1]).endOf('day') : moment(time[1])
+
     // 计算日期相差多少
     const difference = moment(
       moment(endTime).format('YYYY-MM-DD HH:mm:ss'),
@@ -388,6 +399,7 @@ const CreateSchedule = () => {
     )
   }
 
+  // 简易弹窗更多选项
   const getEasyInfo = () => {
     const resultTime = [
       moment(scheduleModal?.params?.startTime),
@@ -416,6 +428,7 @@ const CreateSchedule = () => {
 
   useEffect(() => {
     if (scheduleModal.visible) {
+      console.log(112121212)
       // 获取日历列表，并且过滤出可创建日程的日历
       setCalendarCategory(calendarData.manager)
       // 默认日历列表第一条
@@ -428,7 +441,7 @@ const CreateSchedule = () => {
       setTime(resultTime)
       // 公开范围默认 为默认
       form.setFieldsValue({
-        permission: 1,
+        permission: scheduleModal.params?.permission ?? 1,
         time: resultTime,
       })
       if (scheduleModal?.params?.id || scheduleModal?.params?.copyScheduleId) {
@@ -438,7 +451,6 @@ const CreateSchedule = () => {
       // 从简易弹窗跳转过来
       if (scheduleModal?.params?.subject) {
         // 调用日程详情接口
-        console.log(scheduleModal?.params)
         getEasyInfo()
       }
       setTimeout(() => {
@@ -477,11 +489,15 @@ const CreateSchedule = () => {
             <CommonButton type="light" onClick={onClose}>
               {t('cancel')}
             </CommonButton>
-            <CommonButton type="secondary">
-              {t('common.finishToAdd')}
-            </CommonButton>
-            <CommonButton type="primary" onClick={onConfirm}>
-              {t('newlyAdd.create')}
+            {!scheduleModal.params?.id && (
+              <CommonButton type="secondary" onClick={() => onConfirm(true)}>
+                {t('common.finishToAdd')}
+              </CommonButton>
+            )}
+            <CommonButton type="primary" onClick={() => onConfirm()}>
+              {scheduleModal.params?.id
+                ? t('common.edit')
+                : t('newlyAdd.create')}
             </CommonButton>
           </ModalFooter>
         }

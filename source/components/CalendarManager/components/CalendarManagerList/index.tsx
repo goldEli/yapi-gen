@@ -10,7 +10,6 @@ import CalendarMoreDropdown from './CalendarMoreDropdown'
 import { colorMap } from '../../config'
 import { userSetupsCalendar } from '@store/calendar/calendar.thunk'
 import NoData from '@/components/NoData'
-import { refreshCalendarPanelScheduleList } from '@store/schedule/schedule.thunk'
 
 const { Panel } = Collapse
 
@@ -100,7 +99,6 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
         id: item.calendar_id,
       }),
     )
-    dispatch(refreshCalendarPanelScheduleList())
   }
 
   const onOpenSub = (e: any) => {
