@@ -101,10 +101,6 @@ const formWork = createSlice({
     ],
   } as SliceState,
   reducers: {
-    // 是否保存
-    setEditSave: (state: any, action) => {
-      state.editSave = action.payload
-    },
     // 当前选中的
     setActiveItem: (state: any, action) => {
       state.activeItem = action.payload
@@ -185,7 +181,6 @@ const formWork = createSlice({
 })
 
 export const {
-  setEditSave,
   setActiveItem,
   setFillingRequirements,
   setReportContent,

@@ -207,9 +207,7 @@ const Sortable = (props: any) => {
                     />
                   </IconBox>
                   <ListMsg>
-                    <div>
-                      {child?.name}--{child.type}
-                    </div>
+                    <div>{child?.name}</div>
                     <div>{getType(child.type)}</div>
                   </ListMsg>
                 </div>
