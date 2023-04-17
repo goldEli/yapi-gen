@@ -58,6 +58,7 @@ const DatePicker1 = (props: any) => {
   }, [props.value])
   return (
     <DatePicker
+      placeholder="请选择结束时间"
       onChange={(date: any, dateString: string) => {
         console.log(dateString, dateString)
         onChange(date, dateString)
@@ -68,6 +69,7 @@ const DatePicker1 = (props: any) => {
   )
 }
 const SupScope = (props: SupScopeType) => {
+  const dispatch = useDispatch()
   const [isOpen, setIsOpen] = useState(false)
   const [items, setItems] = useState<Array<Item>>()
   // 每天 day ,每周 week , 每月 month , 不重复doNot
@@ -86,6 +88,7 @@ const SupScope = (props: SupScopeType) => {
   }, [props.type])
   const onOpenChange = (e: { key: any }) => {
     props.onChange?.(Number(e.key))
+    dispatch(setEditSave(false))
     setIsOpen(false)
   }
   return (
@@ -306,7 +309,6 @@ const FormMain = (props: FormType) => {
   const setValues = (val: any) => {
     setEndTimes(val)
   }
-  console.log(endTimes, 'endTimes')
   return (
     <>
       {props.type === 'day' ? (
