@@ -16,7 +16,7 @@ interface ScheduleListBoxProps {
 }
 const ScheduleListBox = styled.div`
   width: 260px;
-  height:200px;
+  height: 200px;
   position: absolute;
   top: ${(props: ScheduleListBoxProps) => props.top + 'px'};
   left: ${(props: ScheduleListBoxProps) => props.left + 'px'};
@@ -91,25 +91,28 @@ const ScheduleListModal: React.FC<ScheduleListProps> = props => {
     state => state.calendarPanel.scheduleInfoDropdown,
   )
   const disPatch = useDispatch()
-  const { visible, top, left, date,scheduleListData=[] } = scheduleListModal
-  const scheduleInfoClick = (e: any,schedule_id:number) => {
+  const { visible, top, left, date, scheduleListData = [] } = scheduleListModal
+  const scheduleInfoClick = (e: any, schedule_id: number) => {
     e.stopPropagation()
-    disPatch(setScheduleInfoDropdown({ visible: true,schedule_id }))
+    disPatch(setScheduleInfoDropdown({ visible: true, schedule_id }))
     disPatch(setScheduleListModal({ visible: false }))
   }
   return (
-    <ScheduleListBox
-      visible={visible}
-      top={top}
-      left={left}
-    >
+    <ScheduleListBox visible={visible} top={top} left={left}>
       <ScheduleTitle>
         <span className={dateClass}>{date}</span>
-        <span className={gregorianDateClass}>{scheduleListData[0]?.lunar_day_chinese}</span>
+        <span className={gregorianDateClass}>
+          {scheduleListData[0]?.lunar_day_chinese}
+        </span>
       </ScheduleTitle>
-      {scheduleListData.map((item:Model.Schedule.Info) => (
-        <ScheduleItem key={item.schedule_id} onClick={e => scheduleInfoClick(e,item.schedule_id)}>
-          <span className={labelTime}>{item.start_time}-{item.end_time}</span>
+      {scheduleListData.map((item: Model.Schedule.Info) => (
+        <ScheduleItem
+          key={item.schedule_id}
+          onClick={e => scheduleInfoClick(e, item.schedule_id)}
+        >
+          <span className={labelTime}>
+            {item.start_time}-{item.end_time}
+          </span>
           <span className={labelContent}>{item.subject}</span>
         </ScheduleItem>
       ))}

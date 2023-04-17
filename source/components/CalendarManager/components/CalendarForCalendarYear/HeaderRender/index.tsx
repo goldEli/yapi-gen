@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import dayjs, { Dayjs } from 'dayjs'
 import React, { useState, useEffect } from 'react'
 import { useSelector } from '@store/index'
-import ScheduleListModal from '../../ScheduleList'
+import ScheduleListModal from '../../ScheduleListModal'
 import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
 interface HeaderRenderProps {
   onChange(date: dayjs.Dayjs): void
