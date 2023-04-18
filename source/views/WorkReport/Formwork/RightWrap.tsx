@@ -19,6 +19,7 @@ import {
   createTemplate,
 } from '@/services/formwork'
 import { getTemplateList, templateDetail } from '@store/formWork/thunk'
+import { getBatchEditConfig } from '@/services/demand'
 const RightFormWorkStyle = styled.div`
   flex: 1;
   overflow: hidden;
@@ -259,6 +260,26 @@ const RightFormWork = () => {
   useEffect(() => {
     setIsActive(0)
   }, [activeItem])
+  const getBtn = () => {
+    // 编辑的情况0和1都应该有
+    if (editSave && activeItem?.id) {
+      return <CommonButton type="primary">已保存</CommonButton>
+    } else if (!editSave && activeItem?.id) {
+      return (
+        <CommonButton type="primary" onClick={() => saveApi()}>
+          保存
+        </CommonButton>
+      )
+    } else if (!editSave && !activeItem?.id && isActive === 1) {
+      return (
+        <CommonButton type="primary" onClick={() => saveApi()}>
+          保存
+        </CommonButton>
+      )
+    } else if (editSave && !activeItem?.id && isActive === 1) {
+      return <CommonButton type="primary">已保存</CommonButton>
+    }
+  }
   return (
     <RightFormWorkStyle>
       <Title>工作日报</Title>
@@ -328,13 +349,7 @@ const RightFormWork = () => {
             上一步
           </CommonButton>
         )}
-        {editSave && isActive === 1 ? (
-          <CommonButton type="primary">已保存</CommonButton>
-        ) : isActive === 1 ? (
-          <CommonButton type="primary" onClick={() => saveApi()}>
-            保存
-          </CommonButton>
-        ) : null}
+        <>{getBtn()}</>
       </BtnRow>
       {/* 预览 */}
       <PreviewDialog
