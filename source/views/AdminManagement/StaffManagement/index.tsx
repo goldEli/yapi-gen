@@ -516,21 +516,22 @@ const StaffManagement = () => {
               onChangeSearch={onPressEnter}
             />
           </div>
-          <DividerWrap type="vertical" />
 
           <ScreenMinHover
             label={t('common.refresh')}
             icon="sync"
             onClick={refresh}
-            style={{ margin: '0 8px' }}
+            style={{ marginRight: 8 }}
           />
+
+          <DividerWrap type="vertical" />
 
           <ScreenMinHover
             label={t('common.search')}
             icon="filter"
             onClick={onChangeFilter}
             isActive={isShow}
-            style={{ marginRight: '8px' }}
+            style={{ margin: '0 8px' }}
           />
 
           <DividerWrap type="vertical" />

@@ -68,12 +68,6 @@ const HeaderSearch = (props: {
         <span>{activeTeam?.name}</span>
       </TitleWrap>
       <SearchBox>
-        <ScreenMinHover
-          label={t('common.refresh')}
-          icon="sync"
-          style={{ marginRight: 8 }}
-          onClick={props.onRefresh}
-        />
         <Space size={24}>
           <DividerWrap type="vertical" />
           <InputSearch
@@ -91,6 +85,13 @@ const HeaderSearch = (props: {
         <ButtonStyle onClick={props.onShowAddMemberModal}>
           {t('add_a_member') as string}
         </ButtonStyle>
+
+        <ScreenMinHover
+          label={t('common.refresh')}
+          icon="sync"
+          style={{ marginLeft: 24 }}
+          onClick={props.onRefresh}
+        />
       </SearchBox>
     </HeaderWrap>
   )
