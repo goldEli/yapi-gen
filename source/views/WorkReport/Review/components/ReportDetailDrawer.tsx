@@ -333,11 +333,6 @@ const ReportDetailDrawer = () => {
               color="var(--neutral-n1-d1)"
             />
           </BackIcon>
-          {skeletonLoading && (
-            <SkeletonStatus>
-              <Skeleton.Input active />
-            </SkeletonStatus>
-          )}
         </Space>
         <Space size={16}>
           <ChangeIconGroup>
