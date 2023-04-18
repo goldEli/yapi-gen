@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from '@store/index'
 import {
   changeNumber,
   changeVisible,
+  changeVisibleFilter,
   setConfiguration,
   setEmailConfiguration,
   setMyConfiguration,
@@ -28,15 +29,12 @@ const SiteNotifications = () => {
   const { isVisible, all } = useSelector(store => store.siteNotifications)
   const init2 = async () => {
     const res = await getContactStatistics()
-    console.log(res)
+
     let num = 0
 
     res.list.forEach((i: any) => {
-      console.log(Number(i.total))
-
       num += Number(i.total)
     })
-    console.log(num)
 
     dispatch(changeNumber(num))
   }
@@ -283,6 +281,7 @@ const SiteNotifications = () => {
       <CommonIconFont
         onClick={() => {
           dispatch(changeVisible(!isVisible))
+          dispatch(changeVisibleFilter(false))
           sendMessage('1234')
         }}
         color="var(--neutral-n2)"
