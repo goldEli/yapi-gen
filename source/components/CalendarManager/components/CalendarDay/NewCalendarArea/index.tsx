@@ -1,11 +1,10 @@
 import styled from '@emotion/styled'
 import dayjs from 'dayjs'
 import React from 'react'
-import { oneMinuteHeight } from '../../../config'
 import usePosition from '../hooks/usePosition'
-import { getTimeByAddDistance } from '../utils'
-import { getColorWithOpacityPointOne } from '../../../utils'
 import { useSelector } from '@store/index'
+import useColor from '@/components/CalendarManager/hooks/useColor'
+import classNames from 'classnames'
 
 interface NewCalendarAreaProps {
   timeRange: {
@@ -18,7 +17,7 @@ const Box = styled.div`
   width: calc(100% - 58px);
   font-size: 12px;
   line-height: 20px;
-  color: var(--neutral-n1-d1);
+  /* color: var(--neutral-n1-d1); */
   position: absolute;
   left: 58px;
   display: ${(props: { visible: boolean }) =>
@@ -27,12 +26,13 @@ const Box = styled.div`
 const Title = styled.span`
   font-size: 12px;
   line-height: 20px;
-  color: var(--neutral-n1-d1);
+  /* color: var(--neutral-n1-d1); */
 `
 
 const NewCalendarArea: React.FC<NewCalendarAreaProps> = props => {
   // console.table(props.pointerPosition)
   const { calendarData } = useSelector(store => store.calendar)
+  const { getBgColor, getColorClassName } = useColor()
   const currentColor = React.useMemo(() => {
     const colorIdx = calendarData.manager.find(
       item => item.is_default === 1,
@@ -50,16 +50,16 @@ const NewCalendarArea: React.FC<NewCalendarAreaProps> = props => {
   return (
     <Box
       style={{
-        background: getColorWithOpacityPointOne(currentColor ?? 0),
+        background: getBgColor(currentColor ?? 0),
         top,
         height,
       }}
-      className="new-calendar-area"
+      className={classNames('getBgColor', getColorClassName())}
       visible={!!props.timeRange.endTime}
     >
-      <Title>{`${dayjs(startTime).format('HH:mm')}-${dayjs(endTime)?.format(
+      <Title className={getColorClassName()}>{`${dayjs(startTime).format(
         'HH:mm',
-      )}`}</Title>
+      )}-${dayjs(endTime)?.format('HH:mm')}`}</Title>
     </Box>
   )
 }

@@ -10,8 +10,8 @@ import { DraggableEvent } from 'react-draggable'
 import { ResizeDirection } from 're-resizable'
 import usePosition from '../hooks/usePosition'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
-import { modifySchedule, saveSchedule } from '@store/schedule/schedule.thunk'
-import { getColorWithOpacityPointOne } from '@/components/CalendarManager/utils'
+import { modifySchedule } from '@store/schedule/schedule.thunk'
+import useColor from '@/components/CalendarManager/hooks/useColor'
 
 interface ScheduleCardProps {
   data: Model.Schedule.Info
@@ -36,12 +36,12 @@ const dragBoxClassName = css`
 const Title = styled.span`
   font-size: 12px;
   line-height: 20px;
-  color: var(--neutral-n1-d1);
+  /* color: var(--neutral-n1-d1); */
 `
 const Time = styled.span`
   font-size: 12px;
   line-height: 20px;
-  color: var(--neutral-n4);
+  /* color: var(--neutral-n4); */
 `
 
 const ScheduleCard: React.FC<ScheduleCardProps> = props => {
@@ -57,6 +57,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     startTime: string
     endTime: string
   } | null>(null)
+  const { getBgColor, getColorClassName } = useColor()
 
   React.useEffect(() => {
     setLocalTime({
@@ -203,17 +204,17 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     if (is_show_busy) {
       return (
         <>
-          <Time>{data.start_time}&nbsp;</Time>
-          <Title>{data.is_busy_text}</Title>
+          <Time className={getColorClassName()}>{data.start_time}&nbsp;</Time>
+          <Title className={getColorClassName()}>{data.is_busy_text}</Title>
         </>
       )
     }
     return (
       <>
-        <Title>
+        <Title className={getColorClassName()}>
           {timeRange && `${timeRange?.startTime} - ${timeRange?.endTime} `}
         </Title>
-        <Title>{data.subject}</Title>
+        <Title className={getColorClassName()}>{data.subject}</Title>
       </>
     )
   }, [is_show_busy, timeRange, data.subject, data.start_time])
@@ -224,7 +225,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
         e.stopPropagation()
       }}
       style={{
-        background: getColorWithOpacityPointOne(data.color),
+        background: getBgColor(data.color),
       }}
       className={dragBoxClassName}
       key={props.data.schedule_id}
