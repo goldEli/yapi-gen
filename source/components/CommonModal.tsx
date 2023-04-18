@@ -65,7 +65,7 @@ const CommonModal = (props: any) => {
           </CloseWrap>
         </Space>
       </ModalHeader>
-      <div>{props?.children}</div>
+      <div style={{ minHeight: 154 }}>{props?.children}</div>
       {!props?.isShowFooter && (
         <>
           {props?.hasFooter}

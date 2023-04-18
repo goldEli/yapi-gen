@@ -246,7 +246,6 @@ const RightFormWork = () => {
     }
     dispatch(setEditSave(true))
   }
-  console.log(activeItem, 'activeItem')
   return (
     <RightFormWorkStyle>
       <Title>工作日报</Title>
