@@ -162,7 +162,7 @@ const Statistics = () => {
 
   const getTempList = async () => {
     const { list } = await getStatTempList()
-    const items = list.map((v: any) => {
+    const items = Object.values(list).map((v: any) => {
       return {
         label: v.name,
         key: v.id,
