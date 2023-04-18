@@ -712,6 +712,7 @@
     "department": "Department",
     "job": "Job",
     "permissionGroup": "Permission Group",
+    "batchConfigPermission": "Batch Config Permissions",
     "loading": "Loading",
     "add": "Add",
     "saveSuccess": "Save successfully",

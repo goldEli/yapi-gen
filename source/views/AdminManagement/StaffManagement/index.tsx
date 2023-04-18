@@ -630,7 +630,7 @@ const StaffManagement = () => {
         <Tooltip
           placement="top"
           getPopupContainer={node => node}
-          title="权限组"
+          title={t('common.permissionGroup')}
         >
           <div className={boxItem} onClick={() => setBatchEditVisible(true)}>
             <IconFont type="lock" />

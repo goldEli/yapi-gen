@@ -685,6 +685,7 @@
     "department": "部门",
     "job": "职位",
     "permissionGroup": "权限组",
+    "batchConfigPermission": "批量配置权限",
     "loading": "加载中",
     "add": "新增",
     "saveSuccess": "保存成功",
