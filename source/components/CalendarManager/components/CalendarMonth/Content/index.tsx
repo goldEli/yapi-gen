@@ -75,7 +75,7 @@ const Content: React.FC<ContentProps> = props => {
         ) {
           const theDayBefore = dayjs(key).add(-1, 'day').format(formatYYYYMMDD)
           const theDayBeforeScheduleList = o[theDayBefore]
-          const index = theDayBeforeScheduleList.findIndex(
+          const index = theDayBeforeScheduleList?.findIndex(
             schedule => schedule?.schedule_id === item.schedule_id,
           )
           res[index] = item

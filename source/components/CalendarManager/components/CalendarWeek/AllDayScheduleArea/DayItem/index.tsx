@@ -23,7 +23,7 @@ interface DayItemProps {
 const DayItemBox = styled.div`
   user-select: none;
   width: 100%;
-  padding: 12px 0;
+  /* padding: 12px 0; */
   box-sizing: border-box;
   border-color: var(--neutral-n6-d1);
   border-style: solid;
@@ -31,7 +31,8 @@ const DayItemBox = styled.div`
   border-top-width: 1px;
   border-right-width: 0px;
   border-bottom-width: 0px;
-  min-height: 142px;
+  height: 100px;
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -84,12 +85,12 @@ const borderRight = css`
 `
 
 const DayItem: React.FC<DayItemProps> = props => {
-  const { checkedTime, selectedMonth } = useSelector(store => store.calendar)
+  const { checkedTime, selectedWeek } = useSelector(store => store.calendar)
   const { selectedDayInMonth } = useSelector(store => store.calendarPanel)
   const { idx } = props
-  const info = selectedMonth?.[props.idx]
+  const info = selectedWeek?.[props.idx]
   const day = dayjs(info?.date).format('DD')
-  const isSelected = dayjs(checkedTime).isSame(dayjs(info?.date), 'day')
+  // const isSelected = dayjs(checkedTime).isSame(dayjs(info?.date), 'day')
   const { currentTime } = useCurrentTime()
   const isCurrent = currentTime.isSame(dayjs(info?.datetime), 'day')
   const dispatch = useDispatch()
@@ -101,7 +102,7 @@ const DayItem: React.FC<DayItemProps> = props => {
   return (
     <DayItemBox
       className={classNames({
-        [selectedBg]: isSelected || selectedDayInMonth === info.datetime,
+        [selectedBg]: selectedDayInMonth === info.datetime,
         [borderRight]: (idx + 1) % 7 === 0,
         [borderBottom]: idx > 27,
       })}

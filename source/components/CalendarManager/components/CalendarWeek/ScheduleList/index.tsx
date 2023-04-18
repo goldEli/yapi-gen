@@ -34,6 +34,7 @@ const ScheduleList: React.FC<ScheduleListProps> = props => {
     const len = list?.length
     return len > 3 ? len - 3 : 0
   }, [key, scheduleList])
+
   const showList = useMemo(() => {
     const newList = list?.slice(0, 3)
     return newList
@@ -55,10 +56,9 @@ const ScheduleList: React.FC<ScheduleListProps> = props => {
           const target = e.target as HTMLDivElement
           const { left, top } = target.getBoundingClientRect()
           const box = document.querySelector(
-            '.calendar-month-content-box',
+            '.calendar-week-all-day-box',
           ) as HTMLDivElement
           const { left: boxLeft, top: boxTop } = box?.getBoundingClientRect()
-          console.log('x y', { left, top }, { boxLeft, boxTop })
           dispatch(
             setScheduleListModal({
               visible: true,

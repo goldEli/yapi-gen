@@ -197,7 +197,6 @@ const Timescale: React.FC<TimescaleProps> = props => {
       const cur = list.find(
         item => item.schedule_id === scheduleInfoDropdown.schedule_id,
       )
-      console.log({ cur })
       if (cur?.is_all_day === 1 || cur?.is_span_day) {
         return false
       }
