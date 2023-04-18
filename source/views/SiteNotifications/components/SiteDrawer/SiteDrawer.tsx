@@ -64,6 +64,8 @@ const SiteDrawer = () => {
     lastId.current = 0
     setHasMore(true)
     setRead(e.target.checked ? 0 : undefined)
+    const state = localStorage.getItem('read')
+    localStorage.setItem('read', e.target.checked ? '0' : '1')
   }
 
   const onClose = () => {
@@ -72,10 +74,12 @@ const SiteDrawer = () => {
   const fetchMoreData = async (b?: boolean) => {
     const re4 = await getMsg_list({
       lastId: lastId.current,
-      read,
+      read: localStorage.getItem('read'),
       latTime: newName.current,
     })
-
+    if (lastId.current === 0 && re4.lastId === 0) {
+      setList([])
+    }
     if (re4.lastId === 0) {
       setHasMore(false)
       return
@@ -114,13 +118,22 @@ const SiteDrawer = () => {
     isVisible ? fetchMoreData(true) : null
   }, [isVisible, read])
 
+  const readStatue = () => {
+    let state: boolean
+    if (localStorage.getItem('read') === '0') {
+      state = true
+    } else {
+      state = false
+    }
+    console.log(localStorage.getItem('read'))
+    return state
+  }
+
   useEffect(() => {
     for (let i = 0; i < 3; i++) {
       console.log(tabBox.current?.children[i].getBoundingClientRect().left)
 
       tabBox.current?.children[i].addEventListener('click', e => {
-        console.log(e)
-
         if (tabActive.current) {
           tabActive.current.style.left = `${
             (tabBox.current?.children[i] as HTMLDivElement).offsetLeft
@@ -217,7 +230,7 @@ const SiteDrawer = () => {
             )}
           </Tips>
           <MyFooter>
-            <Checkbox onChange={onChange}>
+            <Checkbox checked={readStatue()} onChange={onChange}>
               <span
                 style={{
                   fontSize: '14px',

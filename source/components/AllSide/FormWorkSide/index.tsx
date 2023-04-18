@@ -4,7 +4,11 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import AddFormWork from '@/components/AllSide/FormWorkSide/AddFormWork'
-import { setActiveItem, setFillingRequirements } from '@store/formWork/index'
+import {
+  setActiveItem,
+  setFillingRequirements,
+  setEditSave,
+} from '@store/formWork/index'
 import { useDispatch, useSelector } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { getTemplateList } from '@store/formWork/thunk'
@@ -89,20 +93,7 @@ const NoDataCreateWrap = styled.div({
     },
   },
 })
-const a = [
-  {
-    label: '工作日报',
-    id: 1,
-  },
-  {
-    label: '工作周报',
-    id: 2,
-  },
-  {
-    label: '工作月报',
-    id: 3,
-  },
-]
+
 const Box = styled.div`
   height: calc(100vh - 150px);
   overflow-y: auto;
@@ -191,7 +182,16 @@ const FormWorkSide = () => {
     <FormWorkSideStyle>
       <TitleStyle>
         <span>模板</span>
-        <IconFontStyle type="plus" onClick={() => setIsVisible(true)} />
+        <IconFontStyle
+          type="plus"
+          onClick={() => {
+            if (!editSave) {
+              setDelIsVisible(true)
+              return
+            }
+            setIsVisible(true)
+          }}
+        />
       </TitleStyle>
       <Box>
         {dataList?.length < 1 ? (
