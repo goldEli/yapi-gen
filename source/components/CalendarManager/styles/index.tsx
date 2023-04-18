@@ -83,7 +83,7 @@ export const StyledCalendar = styled(Calendar)`
   }
 `
 
-export const CalendarSidebarBox = styled.div<{ collapse: boolean }>`
+export const CalendarSidebarBox = styled.div<{ collapse?: boolean }>`
   width: ${props => (props.collapse ? 0 : 200)}px;
   height: 100%;
   align-items: center;

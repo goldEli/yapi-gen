@@ -128,6 +128,7 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
   // 我管理的日历下拉菜单 -- 根据状态判断
   const getResultManageMenu = () => {
     let resultList: string[] = []
+    // 所有者
     if (props.item.is_default === 1) {
       resultList = ['edit', 'only']
     } else if (props.item.is_owner === 1) {

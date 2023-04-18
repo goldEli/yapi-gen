@@ -40,63 +40,6 @@ const CalendarSidebar: React.FC<CalendarSidebarProps> = props => {
   const calendarMainSideDom = useRef<HTMLDivElement>(null)
   const calendarSideDom = useRef<HTMLDivElement>(null)
   const sliderRef = useRef<HTMLDivElement>(null)
-  const maxWidth = 422
-  const [leftWidth, setLeftWidth] = useState(288)
-  const [endWidth, setEndWidth] = useState(288)
-  const [focus, setFocus] = useState(false)
-
-  // 拖动线条
-  const onDragLine = () => {
-    if (sliderRef.current === null) return
-    let width = sliderRef.current?.clientWidth
-    document.onmousemove = e => {
-      setEndWidth(288)
-      setFocus(true)
-      width = e.clientX
-      if (width > maxWidth) {
-        setLeftWidth(maxWidth)
-      } else {
-        if (firstMenuCollapse) {
-          dispatch({
-            type: 'global/setFirstMenuCollapse',
-            payload: !firstMenuCollapse,
-          })
-        }
-        setLeftWidth(width < 26 ? 26 : width)
-      }
-    }
-    document.onmouseup = () => {
-      if (width < 288) {
-        setEndWidth(width)
-        setLeftWidth(26)
-        dispatch({
-          type: 'global/setFirstMenuCollapse',
-          payload: true,
-        })
-      } else if (width > maxWidth) {
-        setLeftWidth(maxWidth)
-      } else {
-        setLeftWidth(width)
-      }
-      document.onmousemove = null
-      document.onmouseup = null
-      setFocus(false)
-    }
-  }
-
-  // 点击按钮
-  const onChangeSide = () => {
-    if (firstMenuCollapse) {
-      setLeftWidth(288)
-    } else {
-      setLeftWidth(26)
-    }
-    setEndWidth(0)
-    dispatch({
-      type: 'global/setFirstMenuCollapse',
-      payload: !firstMenuCollapse,
-    })
-  }
 
   useEffect(() => {
     if (calendarMainSideDom.current === null) return
@@ -125,8 +68,7 @@ const CalendarSidebar: React.FC<CalendarSidebarProps> = props => {
       collapse={firstMenuCollapse}
       ref={sliderRef}
       style={{
-        width: firstMenuCollapse ? 26 : leftWidth,
-        transition: endWidth < 288 ? '0.2s' : 'initial',
+        width: firstMenuCollapse ? 26 : 288,
       }}
     >
       <CalendarSidebarMain firstMenuCollapse={firstMenuCollapse}>
@@ -139,19 +81,6 @@ const CalendarSidebar: React.FC<CalendarSidebarProps> = props => {
           </SetWrap>
         </CalenderBoxLeftArea>
       </CalendarSidebarMain>
-
-      <DragLine
-        onMouseDown={onDragLine}
-        style={{ left: leftWidth - 1 }}
-        active={focus}
-      />
-      <FoldIcon onClick={onChangeSide}>
-        <CommonIconFont
-          type={firstMenuCollapse ? 'right' : 'left'}
-          size={16}
-          color="var(--neutral-n2)"
-        />
-      </FoldIcon>
     </CalendarSidebarBox>
   )
 }

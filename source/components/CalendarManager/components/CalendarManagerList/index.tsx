@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Collapse } from 'antd'
+import { Collapse, Tooltip } from 'antd'
 import styled from '@emotion/styled'
 import { CloseWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
@@ -58,7 +58,7 @@ const CalendarManagerListItem = styled.div`
     font-size: 14px;
     color: var(--neutral-n2);
     margin-left: 8px;
-    max-width: 86%;
+    max-width: 90%;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -76,7 +76,7 @@ const CalendarManagerListItem = styled.div`
 const ItemBox = styled.div`
   display: flex;
   align-items: center;
-  width: 96%;
+  width: 90%;
 `
 
 interface CalendarManagerListProps {
@@ -153,9 +153,14 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
                     type={i.is_check === 1 ? 'pput-sel' : 'put'}
                     style={{ fontSize: 16, color: colorMap[i.color] }}
                   />
-                  <span className="name">
-                    {i.is_default === 1 ? i.user.name : i.name}
-                  </span>
+                  <Tooltip
+                    title={i.is_default === 1 ? i.user.name : i.name}
+                    getPopupContainer={n => n}
+                  >
+                    <span className="name">
+                      {i.is_default === 1 ? i.user.name : i.name}
+                    </span>
+                  </Tooltip>
                 </ItemBox>
                 <MoreDropdown
                   isMoreVisible={isMoreVisible}
