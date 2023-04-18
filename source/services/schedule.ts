@@ -77,7 +77,7 @@ export const getScheduleInfo = async (
   params: API.Schedule.GetScheduleInfo.Params,
 ) => {
   const response = await http.get<any, API.Schedule.GetScheduleInfo.Result>(
-    `/b/schedule/${params.id}`,
+    `/b/calendar/schedule/${params.id}`,
     {
       show_date: params.show_date,
     },
@@ -108,9 +108,12 @@ export const getScheduleDaysOfMonthList = async (
 }
 // 日程回复
 export const scheduleInfoReply = async (params: API.Schedule.Reply.params) => {
-  const response = await http.post<any, any>(`/b/schedule/${params.id}/reply`, {
-    status: params.status,
-  })
+  const response = await http.post<any, any>(
+    `/b/calendar/schedule/${params.id}/reply`,
+    {
+      status: params.status,
+    },
+  )
   return response.data
 }
 
@@ -118,9 +121,12 @@ export const scheduleInfoReply = async (params: API.Schedule.Reply.params) => {
 export const scheduleInfoDelete = async (
   params: API.Schedule.Delete.params,
 ) => {
-  const response = await http.delete<any, any>(`/b/schedule/${params.id}`, {
-    is_remind: params.is_remind,
-  })
+  const response = await http.delete<any, any>(
+    `/b/calendar/schedule/${params.id}`,
+    {
+      is_remind: params.is_remind,
+    },
+  )
   return response.data
 }
 
@@ -129,7 +135,7 @@ export const scheduleInfoTransfer = async (
   params: API.Schedule.Transfer.params,
 ) => {
   const response = await http.post<any, any>(
-    `/b/schedule/${params.id}/makeOver`,
+    `/b/calendar/schedule/${params.id}/makeOver`,
     {
       is_exit: params.is_exit,
       user_id: params.user_id,
