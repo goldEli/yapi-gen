@@ -67,11 +67,13 @@ const CalendarMainSide = () => {
           title={t('manage_calendar')}
           type="manager"
           searchValue={value}
+          path="b/calendar"
         />
         <CalendarManagerList
           title={t('subscribed_calendar')}
           type="subscribe"
           searchValue={value}
+          path="b/calendar/subscribe"
         />
       </ManagerListBox>
       <CalendarSetBox onClick={onChangeRouter}>

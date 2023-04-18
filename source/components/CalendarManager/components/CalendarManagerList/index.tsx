@@ -83,13 +83,18 @@ interface CalendarManagerListProps {
   title: string
   type: 'manager' | 'subscribe'
   searchValue: string
+  path: string
 }
 
 const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
   const dispatch = useDispatch()
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const { calendarData } = useSelector(store => store.calendar)
+  const { userInfo } = useSelector(store => store.user)
   const calendarList = calendarData[props.type as keyof typeof calendarData]
+  const allPermission = userInfo.company_permissions?.map(
+    (i: any) => i.identity,
+  )
 
   // 改变日历的选中状态
   const onChangeCheck = async (item: Model.Calendar.Info) => {
@@ -128,9 +133,11 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
           header={
             <Title>
               <span className="name">{props.title}</span>
-              <CloseWrap width={24} height={24} onClick={e => onOpenSub(e)}>
-                <IconFont className="icon" type="plus" />
-              </CloseWrap>
+              {allPermission.includes(props.path) && (
+                <CloseWrap width={24} height={24} onClick={e => onOpenSub(e)}>
+                  <IconFont className="icon" type="plus" />
+                </CloseWrap>
+              )}
             </Title>
           }
           key="1"

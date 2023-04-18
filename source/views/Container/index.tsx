@@ -64,7 +64,7 @@ const Main = styled.div<{ left: number }>`
     height: 100%;
   }
 `
-const NONE_SIDE_PATH = ['/Situation', '/Report/Statistics']
+const NONE_SIDE_PATH = ['/Situation', '/Report/Statistics', '/CalendarManager']
 
 export const Container = () => {
   const location = useLocation()

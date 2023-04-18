@@ -84,9 +84,9 @@ declare namespace Model.Calendar {
   }
 
   interface UpdateCalendarConfigParams {
-    view_options: ViewOptionsInfo | undefined
-    schedule_configs: ScheduleConfigsInfo | undefined
-    notification_configs: NotificationConfigsInfo | undefined
+    view_options?: ViewOptionsInfo
+    schedule_configs?: ScheduleConfigsInfo
+    notification_configs?: NotificationConfigsInfo
   }
 
   // 创建日历弹窗传入参数

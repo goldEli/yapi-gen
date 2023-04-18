@@ -34,7 +34,7 @@ import { colorMap } from '../../config'
 import AddMemberCommonModal from '@/components/AddUser/CommonModal'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
-import { RangePickerProps } from 'antd/lib/date-picker'
+import { DatePickerProps, RangePickerProps } from 'antd/lib/date-picker'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import moment from 'moment'
 import RepeatModal from './RepeatModal'
@@ -43,6 +43,7 @@ import CreateVisualization from './CreateVisualization'
 import { modifySchedule, saveSchedule } from '@store/schedule/schedule.thunk'
 import { useTranslation } from 'react-i18next'
 import { getScheduleInfo } from '@/services/schedule'
+import { setVisualizationTime } from '@store/schedule'
 
 interface DefaultTime {
   value: number | undefined
@@ -71,6 +72,7 @@ const CreateSchedule = () => {
   const { scheduleModal, relateConfig, calendarData, calendarConfig } =
     useSelector(store => store.calendar)
   const { userInfo } = useSelector(store => store.user)
+  const { visualizationTime } = useSelector(store => store.schedule)
   const [form] = Form.useForm()
   const [calendarCategory, setCalendarCategory] = useState<
     Model.Calendar.Info[]
@@ -240,6 +242,14 @@ const CreateSchedule = () => {
     form.setFieldsValue({
       time,
     })
+    const format = e.target.checked ? 'YYYY-MM-DD' : 'YYYY-MM-DD HH:mm:ss'
+    // 通知右侧可视化
+    dispatch(
+      setVisualizationTime({
+        startTime: moment(time[0]).format(format),
+        endTime: moment(time[1]).format(format),
+      }),
+    )
   }
 
   //   修改重复
@@ -426,23 +436,51 @@ const CreateSchedule = () => {
     )
   }
 
+  // 修改时间
+  const onChangeTime = (
+    value: DatePickerProps['value'] | RangePickerProps['value'],
+    dateString: [string, string] | string,
+  ) => {
+    setTime(value)
+    // 通知右侧可视化
+    dispatch(
+      setVisualizationTime({
+        startTime: dateString[0],
+        endTime: dateString[1],
+      }),
+    )
+  }
+
+  // 更新右侧可视化调整时间
+  useEffect(() => {
+    const resultTime = [
+      moment(visualizationTime?.startTime),
+      moment(visualizationTime?.endTime),
+    ]
+    setTime(resultTime)
+    form.setFieldsValue({
+      time: resultTime,
+    })
+  }, [visualizationTime])
+
   useEffect(() => {
     if (scheduleModal.visible) {
-      console.log(112121212)
       // 获取日历列表，并且过滤出可创建日程的日历
       setCalendarCategory(calendarData.manager)
       // 默认日历列表第一条
       setNormalCategory(calendarData.manager[0])
       setIsAll(scheduleModal.params?.isAll)
-      const resultTime = [
-        moment(scheduleModal.params?.startTime),
-        moment(scheduleModal.params?.endTime),
-      ]
-      setTime(resultTime)
+
+      // 通知右侧可视化
+      dispatch(
+        setVisualizationTime({
+          startTime: scheduleModal.params?.startTime,
+          endTime: scheduleModal.params?.endTime,
+        }),
+      )
       // 公开范围默认 为默认
       form.setFieldsValue({
         permission: scheduleModal.params?.permission ?? 1,
-        time: resultTime,
       })
       if (scheduleModal?.params?.id || scheduleModal?.params?.copyScheduleId) {
         // 调用日程详情接口
@@ -533,7 +571,7 @@ const CreateSchedule = () => {
                 <DatePicker.RangePicker
                   style={{ width: '100%' }}
                   showTime={!isAll}
-                  onChange={setTime}
+                  onChange={onChangeTime}
                   allowClear={false}
                   disabledDate={disabledDate}
                 />
