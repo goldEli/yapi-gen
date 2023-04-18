@@ -64,13 +64,13 @@ const HeadWrap = styled.div<{ isCanImport: boolean }>`
 const HandleReport = (props: any) => {
   const [form] = Form.useForm()
   const [options, setOptions] = useState<any>([])
-  const [editDetail, setEditDetail] = useState<any>(null)
   const leftDom: any = useRef<HTMLInputElement>(null)
   const [t] = useTranslation()
   const userInfo = useSelector(state => state.user.userInfo)
   const [reportDetail, setReportDetail] = useState<any>(null)
   const isFirstValidator = useRef(0)
   const [peopleValue, setPeopleValue] = useState<any>([])
+  const [relatedNeedList, setRelatedNeedList] = useState<any>([])
 
   const close = () => {
     form.resetFields()
@@ -108,7 +108,6 @@ const HandleReport = (props: any) => {
         data,
         target_users: users,
       })
-      console.log(res, 'res')
     }
 
     // 写汇报 | 补交汇报
@@ -119,7 +118,10 @@ const HandleReport = (props: any) => {
           report_template_id: props?.templateId,
           data,
           target_users: users,
-          date: props?.date,
+          date: {
+            start_time: props?.date?.[0],
+            end_time: props?.date?.[1],
+          },
         })
       } else {
         res = await writeReport({
@@ -128,8 +130,8 @@ const HandleReport = (props: any) => {
           target_users: users,
         })
       }
-      if (res && res.code === 0 && res.data?.id) {
-        message.success(t('操作成功'))
+      if (res && res.id) {
+        message.success(t('report.list.success'))
       }
     }
 
@@ -157,6 +159,7 @@ const HandleReport = (props: any) => {
     const dom: any = leftDom?.current
     dom.scrollTop = dom.scrollHeight
   }
+  // 导入上一篇
   const importPreviousArticle = () => {
     if (reportDetail.prev_report_id) {
       Modal.confirm({
@@ -218,18 +221,22 @@ const HandleReport = (props: any) => {
     const res = await templateDetail({ id })
     if (res && res.code === 0 && res.data) {
       setReportDetail(res.data)
-      setPeopleValue(
-        res.data?.report_user_list?.map((item: any) => {
-          return {
-            avatar: item.avatar,
-            id: item.id,
-            name: item.name,
-          }
-        }),
-      )
+      // 不是修改态 才需要用模板里面的user
+      if (!props?.editId) {
+        setPeopleValue(
+          res.data?.report_user_list?.map((item: any) => {
+            return {
+              avatar: item.avatar,
+              id: item.id,
+              name: item.name,
+            }
+          }),
+        )
+      }
     }
   }
 
+  // 编辑回显
   const setDefaultValue = async () => {
     const result = await getReportDetailById({ id: props?.editId })
     if (result.code === 0 && result.data) {
@@ -242,19 +249,19 @@ const HandleReport = (props: any) => {
           }
         }),
       )
+      setRelatedNeedList(
+        result.data?.report_content?.filter((k: any) => k.type === 4),
+      )
       getTemplateById(result.data.report_template_id)
       const temp: any = {}
       result.data.report_content?.forEach((v: any) => {
-        temp[`${v.type}_${v.id}`] =
-          v.type === 3 ? v?.pivot?.content : v?.pivot?.params
+        if (v.type !== 4) {
+          temp[`${v.type}_${v.id}`] =
+            v.type === 3 ? v?.pivot?.content : v?.pivot?.params
+        }
       })
       form.setFieldsValue({
         ...temp,
-        [`1_${result.data.target_user_config_id}`]:
-          result.data.target_users?.map((u: any) => ({
-            id: u.user?.id,
-            label: u.user?.name,
-          })),
       })
     }
   }
@@ -398,8 +405,23 @@ const HandleReport = (props: any) => {
           <Form.Item
             label={<LabelTitle>{content.name}</LabelTitle>}
             name={`${content.type}_${content.id}`}
+            key={content.id}
           >
-            <RelatedNeed initValue={[]} />
+            <RelatedNeed
+              initValue={
+                relatedNeedList?.length
+                  ? relatedNeedList
+                      .filter((items: any) => content.id === items.id)
+                      .map((s: any) => s.pivot.params)
+                      .flat()
+                      .map((item: any) => ({
+                        label: item.name,
+                        value: item.id,
+                        key: item.id,
+                      }))
+                  : []
+              }
+            />
           </Form.Item>
         )
       default:

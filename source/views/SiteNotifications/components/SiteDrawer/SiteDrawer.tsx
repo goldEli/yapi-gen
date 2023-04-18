@@ -116,7 +116,11 @@ const SiteDrawer = () => {
 
   useEffect(() => {
     for (let i = 0; i < 3; i++) {
-      tabBox.current?.children[i].addEventListener('click', () => {
+      console.log(tabBox.current?.children[i].getBoundingClientRect().left)
+
+      tabBox.current?.children[i].addEventListener('click', e => {
+        console.log(e)
+
         if (tabActive.current) {
           tabActive.current.style.left = `${
             (tabBox.current?.children[i] as HTMLDivElement).offsetLeft

@@ -516,6 +516,15 @@ const StaffManagement = () => {
               onChangeSearch={onPressEnter}
             />
           </div>
+          <DividerWrap type="vertical" />
+
+          <ScreenMinHover
+            label={t('common.refresh')}
+            icon="sync"
+            onClick={refresh}
+            style={{ margin: '0 8px' }}
+          />
+
           <ScreenMinHover
             label={t('common.search')}
             icon="filter"
@@ -526,14 +535,6 @@ const StaffManagement = () => {
 
           <DividerWrap type="vertical" />
 
-          <ScreenMinHover
-            label={t('common.refresh')}
-            icon="sync"
-            onClick={refresh}
-            style={{ margin: '0 8px' }}
-          />
-
-          <DividerWrap type="vertical" />
           <div className={settingWrap}>
             <DropDownMenu
               menu={<SetShowField notView onChangeFieldVisible={showModal} />}
@@ -629,7 +630,7 @@ const StaffManagement = () => {
         <Tooltip
           placement="top"
           getPopupContainer={node => node}
-          title="权限组"
+          title={t('common.permissionGroup')}
         >
           <div className={boxItem} onClick={() => setBatchEditVisible(true)}>
             <IconFont type="lock" />
