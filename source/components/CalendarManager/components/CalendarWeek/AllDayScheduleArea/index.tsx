@@ -105,10 +105,6 @@ const Content: React.FC<ContentProps> = props => {
     })
   }, [selectedWeek, list])
 
-  console.log(
-    { list, scheduleList, selectedWeek },
-    selectedWeek.map(item => item.date),
-  )
   return (
     <ContentBox className="calendar-week-all-day-box">
       {content}
