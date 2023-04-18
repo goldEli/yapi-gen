@@ -203,9 +203,9 @@ const List = () => {
             {record.user?.avatar ? (
               <img
                 style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: 16,
+                  width: 24,
+                  height: 24,
+                  borderRadius: 12,
                 }}
                 src={record.user?.avatar}
               />
