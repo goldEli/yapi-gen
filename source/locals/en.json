@@ -532,6 +532,7 @@
     "demandBackflowTo": "Demand back flow to",
     "cancelExamineTime": "Cancel examine time",
     "cancelExamine": "Cancel examine",
+    "sureCancelExamine": "Are you sure to cancel the current requirement examine? After cancellation, The submitted requirements will be removed from the list I submitted",
     "notExamineTo": "Audit failed request status flow back",
     "editCustomFields": "Edit Custom Fields",
     "createCustomFields": "Create Custom Fields",

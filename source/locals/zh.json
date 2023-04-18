@@ -505,6 +505,7 @@
     "demandBackflowTo": "需求流回至",
     "cancelExamineTime": "取消审核时间",
     "cancelExamine": "取消审核",
+    "sureCancelExamine": "确认取消当前需求审核？取消后提交需求将在我提交的列表中移除",
     "notExamineTo": "审核未通过需求状态流回",
     "editCustomFields": "编辑自定义字段",
     "createCustomFields": "创建自定义字段",

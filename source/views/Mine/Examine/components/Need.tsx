@@ -331,7 +331,7 @@ const Need = (props: any) => {
 
       <DeleteConfirm
         title={t('newlyAdd.cancelExamine')}
-        text="确认取消当前需求审核，取消后提交需求将在我提交的列表中移除"
+        text={t('newlyAdd.sureCancelExamine')}
         isVisible={delIsVisible}
         onConfirm={handleCancel}
         onChangeVisible={() => {
