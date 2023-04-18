@@ -426,7 +426,9 @@ const EditExamine = (props: Props) => {
                             </div>
                           </div>
                         </div>
-                        <WrapBox top={4}>{i.remark}</WrapBox>
+                        <WrapBox top={4} color="var(--neutral-n2)">
+                          {i.remark}
+                        </WrapBox>
                       </div>
                     ))}
                   </Timeline.Item>
