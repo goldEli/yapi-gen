@@ -147,12 +147,15 @@ const AllSideFilter = (props: any) => {
             </Badge>
           ))}
         </MyIconModeTextWrap>
-        <MyHead>
-          <LeftTitle title={t('Notices')} />
-          <ResetB onClick={() => onChange([])}>
-            {t('reset_filtering') as string}
-          </ResetB>
-        </MyHead>
+        {active && (
+          <MyHead>
+            <LeftTitle title={t('Notices')} />
+            <ResetB onClick={() => onChange([])}>
+              {t('reset_filtering') as string}
+            </ResetB>
+          </MyHead>
+        )}
+
         <InfoWrap>
           {active && (
             <Checkbox.Group
