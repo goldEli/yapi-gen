@@ -120,7 +120,7 @@ const Timescale: React.FC<TimescaleProps> = props => {
         dispatch(
           setQuickCreateScheduleModel({
             visible: true,
-            x: event.offsetX + 58,
+            x: target.offsetLeft,
             y: target.offsetTop,
             startTime: timeRangeRef.current.startTime,
             endTime: timeRangeRef.current.endTime,

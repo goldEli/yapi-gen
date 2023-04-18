@@ -113,9 +113,6 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
       }),
     )
     setTimeRange(null)
-    const calenderBoxRightArea = document.querySelector(
-      '#calenderBoxRightArea',
-    ) as Element
     // 点击打开详情弹窗, 如果是拖动不打开
     if (!isDrag.current) {
       dispatch(
