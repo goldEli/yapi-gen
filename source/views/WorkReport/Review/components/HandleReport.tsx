@@ -58,6 +58,9 @@ const HeadWrap = styled.div<{ isCanImport: boolean }>`
     font-weight: 400;
     color: ${(props: any) => (props.isCanImport ? '#646566' : '#bbbdbf')};
     cursor: ${(props: any) => (props.isCanImport ? 'pointer' : 'not-allowed')};
+    .notCopy {
+      user-select: none;
+    }
   }
 `
 
@@ -100,10 +103,10 @@ const HandleReport = (props: any) => {
         })
       }
     })
-
+    let res = null
     // 修改汇报
     if (props?.editId) {
-      const res = await updateReport({
+      res = await updateReport({
         id: props?.editId,
         data,
         target_users: users,
@@ -112,7 +115,6 @@ const HandleReport = (props: any) => {
 
     // 写汇报 | 补交汇报
     if (props?.templateId) {
-      let res = null
       if (props?.isSupply) {
         res = await supplyReport({
           report_template_id: props?.templateId,
@@ -130,9 +132,9 @@ const HandleReport = (props: any) => {
           target_users: users,
         })
       }
-      if (res && res.id) {
-        message.success(t('report.list.success'))
-      }
+    }
+    if (res && res.code === 0) {
+      message.success(t('report.list.success'))
     }
 
     close()
@@ -185,32 +187,39 @@ const HandleReport = (props: any) => {
         centered: true,
         closable: true,
         onOk: async () => {
-          const result = await getReportDetailById({
-            id: reportDetail?.prev_report_id,
-          })
-          if (result && result.data) {
-            const temp: any = {}
-            setPeopleValue(
-              result.data?.target_users?.map((item: any) => {
-                return {
-                  avatar: item.user.avatar,
-                  id: item.user.id,
-                  name: item.user.name,
-                }
-              }),
-            )
-            result.data.report_content?.forEach((v: any) => {
-              temp[`${v.type}_${v.id}`] =
-                v.type === 3 ? v?.pivot?.content : v?.pivot?.params
+          try {
+            const result = await getReportDetailById({
+              id: reportDetail?.prev_report_id,
             })
-            form.setFieldsValue({
-              ...temp,
-              [`1_${result.data.target_user_config_id}`]:
-                result.data.target_users?.map((u: any) => ({
-                  id: u.user?.id,
-                  label: u.user?.name,
-                })),
-            })
+            if (result && result.data) {
+              const temp: any = {}
+              setPeopleValue(
+                result.data?.target_users?.map((item: any) => {
+                  return {
+                    avatar: item.user.avatar,
+                    id: item.user.id,
+                    name: item.user.name,
+                  }
+                }),
+              )
+              result.data.report_content?.forEach((v: any) => {
+                temp[`${v.type}_${v.id}`] =
+                  v.type === 3 ? v?.pivot?.content : v?.pivot?.params
+              })
+              form.setFieldsValue({
+                ...temp,
+                [`1_${result.data.target_user_config_id}`]:
+                  result.data.target_users?.map((u: any) => ({
+                    id: u.user?.id,
+                    label: u.user?.name,
+                  })),
+              })
+              message.success(t('report.list.success'))
+            } else {
+              message.error(result?.data?.message || t('report.list.fail'))
+            }
+          } catch (error) {
+            message.error(t('report.list.fail'))
           }
         },
       })
@@ -483,7 +492,7 @@ const HandleReport = (props: any) => {
               style={{ transform: 'rotate(180deg)', marginRight: 4 }}
               type="Import"
             />
-            <span>{t('report.list.import')}</span>
+            <span className="notCopy">{t('report.list.import')}</span>
           </div>
         </HeadWrap>
         <Form

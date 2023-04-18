@@ -1053,7 +1053,8 @@
       "of": "的",
       "okComment": "添加评论成功！",
       "noSubmitted": "未提交",
-      "success": "操作成功"
+      "success": "操作成功",
+      "fail": "操作失败"
     },
     "statistics": {
       "title": "汇报我的统计",

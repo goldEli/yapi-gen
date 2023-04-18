@@ -26,6 +26,7 @@ import HandleReport from './HandleReport'
 import { useDispatch } from '@store/index'
 import { setViewReportModal } from '@store/workReport'
 import LabelTag from '@/components/LabelTag'
+import CommonUserAvatar from '@/components/CommonUserAvatar'
 
 const ListTitle = styled.div`
   height: 32px;
@@ -97,8 +98,6 @@ const List = () => {
   const [t] = useTranslation()
   const { pathname } = useLocation()
   const [isSpinning, setIsSpinning] = useState(false)
-  const [order, setOrder] = useState<any>('')
-  const [orderKey, setOrderKey] = useState<any>()
   const [total, setTotal] = useState<number>(250)
   const [pageObj, setPageObj] = useState(defaultPageParam)
   const [listData, setListData] = useState<any[]>([])
@@ -152,11 +151,6 @@ const List = () => {
     }
   }
 
-  const updateOrderkey = (key: any, orderVal: any) => {
-    setOrderKey(key)
-    setOrder(orderVal)
-  }
-
   useEffect(() => {
     getList()
   }, [pageObj, queryParams])
@@ -175,13 +169,24 @@ const List = () => {
       }),
     )
   }
+
+  const onUpdateOrderKey = (key: any, val: any) => {
+    console.log(key, val, 'e4324')
+
+    setQueryParams({
+      ...queryParams,
+      order: val === 2 ? 'desc' : 'asc',
+      orderkey: key,
+    })
+  }
+
   const NewSort = (props: any) => {
     return (
       <Sort
         fixedKey={props.fixedKey}
-        onChangeKey={updateOrderkey}
-        nowKey={orderKey}
-        order={order}
+        onChangeKey={props.onUpdateOrderKey}
+        nowKey={props.nowKey}
+        order={props.order}
       >
         {props.children}
       </Sort>
@@ -194,15 +199,33 @@ const List = () => {
       dataIndex: 'user',
       render: (_: string, record: any) => {
         return (
-          <>
-            <span style={{ marginRight: 12 }}>{String(record.user.name)}</span>
+          <div style={{ display: 'flex', alignItems: 'center', height: 52 }}>
+            {record.user?.avatar ? (
+              <img
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: 16,
+                }}
+                src={record.user?.avatar}
+              />
+            ) : (
+              <span>
+                <CommonUserAvatar size="small" />
+              </span>
+            )}
+            <span style={{ marginRight: 12, marginLeft: 8 }}>
+              {String(record.user.name)}
+              {t('report.list.of')}
+              {record.name}
+            </span>
             <LabelTag
               options={reportState}
               state={
                 record.is_supply === 1 ? 1 : record.is_update === 1 ? 2 : 0
               }
             />
-          </>
+          </div>
         )
       },
     },
@@ -237,10 +260,16 @@ const List = () => {
     },
     {
       width: 252,
-      title: t('report.list.reportTime'),
-      sorter: (a: any, b: any) => {
-        return moment(a.start_time).valueOf() - moment(b.start_time).valueOf()
-      },
+      title: (
+        <NewSort
+          fixedKey="start_time"
+          nowKey={queryParams.orderkey}
+          order={queryParams.order}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          {t('report.list.reportTime')}
+        </NewSort>
+      ),
       dataIndex: 'start_time',
       render: (_: string, record: any) => {
         return <span>{`${record.start_time} ~ ${record.end_time}`}</span>
@@ -248,11 +277,17 @@ const List = () => {
     },
     {
       width: 240,
-      title: t('report.list.submitTime'),
+      title: (
+        <NewSort
+          fixedKey="created_at"
+          nowKey={queryParams.orderkey}
+          order={queryParams.order}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          {t('report.list.submitTime')}
+        </NewSort>
+      ),
       dataIndex: 'created_at',
-      sorter: (a: any, b: any) => {
-        return moment(a.created_at).valueOf() - moment(b.created_at).valueOf()
-      },
     },
     {
       width: 160,
@@ -439,6 +474,7 @@ const List = () => {
             placeholder={t('report.list.search')}
             onChangeSearch={onPressEnter}
             leftIcon
+            isReport
           />
         </div>
       </ListTitle>

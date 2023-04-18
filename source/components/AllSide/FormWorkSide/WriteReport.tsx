@@ -53,6 +53,7 @@ const CarWrap = styled.div<{ disabled?: boolean }>`
   &:hover {
     cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
     box-shadow: 0px 0px 10px 0px rgba(9, 9, 9, 0.09);
+    border: 1px solid transparent;
   }
   img {
     width: 156px;
@@ -242,7 +243,7 @@ const WriteReport = (props: Props) => {
                     >
                       <img src={Bgc} />
                       <CarItem>
-                        <CarTitle>工作{item.name}</CarTitle>
+                        <CarTitle>{item.name}</CarTitle>
                         {item.template_content_configs
                           ?.filter((tcc: any, i: number) => i < 2)
                           .map((content: any) => (
@@ -291,7 +292,7 @@ const WriteReport = (props: Props) => {
                       >
                         <img src={Bgc} />
                         <CarItem>
-                          <CarTitle>工作{item.name}</CarTitle>
+                          <CarTitle>{item.name}</CarTitle>
                           {item.template_content_configs
                             ?.filter((tcc: any, i: number) => i < 2)
                             .map((content: any) => (
