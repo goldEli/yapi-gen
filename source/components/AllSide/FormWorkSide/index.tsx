@@ -18,7 +18,6 @@ import {
 } from '@store/formWork'
 // getTemplateList
 const FormWorkSideStyle = styled.div`
-  width: 200px;
   min-width: 200px;
 `
 const TitleStyle = styled.div`
