@@ -135,11 +135,11 @@ const urls = {
   /**
    * 日历管理
    */
-  saveSchedule: '/b/schedule',
-  getScheduleList: '/b/schedule_list',
+  saveSchedule: '/b/calendar/schedule',
+  getScheduleList: '/b/calendar/schedule_list',
 
-  getCalendarDaysOfYearList: '/b/schedule/daysOfYear',
-  getCalendarDaysOfMonthList: '/b/schedule/daysOfMonth',
+  getCalendarDaysOfYearList: '/b/calendar/schedule/daysOfYear',
+  getCalendarDaysOfMonthList: '/b/calendar/schedule/daysOfMonth',
   getCalendarConfig: '/b/calendar/getConfig',
   updateCalendarConfig: '/b/calendar/setConfig',
   getRelateConfig: '/b/calendar/enum',
@@ -170,15 +170,15 @@ const urls = {
   getReportComment: '/b/work_report/user/comment',
   addReportComment: '/b/work_report/user/comment',
 
-  getScheduleListDaysOfWeek: '/b/schedule/daysOfWeek',
-  getScheduleListDaysOfMonth: '/b/schedule/daysOfMonth',
-  getScheduleListDaysOfDate: '/b/schedule/daysOfDate',
-  getScheduleSearch: '/b/schedule/search',
+  getScheduleListDaysOfWeek: '/b/calendar/schedule/daysOfWeek',
+  getScheduleListDaysOfMonth: '/b/calendar/schedule/daysOfMonth',
+  getScheduleListDaysOfDate: '/b/calendar/schedule/daysOfDate',
+  getScheduleSearch: '/b/calendar/schedule/search',
 
   // 修改日程
 
   modifySchedule: function (id: Model.Schedule.Info['schedule_id']) {
-    return `/b/schedule/${id}`
+    return `/b/calendar/schedule/${id}`
   },
 }
 export default urls
