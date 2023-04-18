@@ -21,6 +21,7 @@ import { uploadFile } from '@/components/CreateDemand/CreateDemandLeft'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import {
   getReportDetailById,
+  supplyReport,
   updateReport,
   writeReport,
 } from '@/services/report'
@@ -68,14 +69,18 @@ const HandleReport = (props: any) => {
   const [t] = useTranslation()
   const userInfo = useSelector(state => state.user.userInfo)
   const [reportDetail, setReportDetail] = useState<any>(null)
+  const isFirstValidator = useRef(0)
+  const [peopleValue, setPeopleValue] = useState<any>([])
 
   const close = () => {
     form.resetFields()
     props.editClose()
+    isFirstValidator.current = 0
   }
 
-  // 写汇报| 修改汇报 | 补交汇报 提交操作
+  // 写汇报| 修改汇报 | 补交汇报 的提交操作
   const confirm = async () => {
+    isFirstValidator.current += 1
     const params: any = await form.validateFields()
     let users: any[] = []
     const data: any[] = []
@@ -106,13 +111,23 @@ const HandleReport = (props: any) => {
       console.log(res, 'res')
     }
 
-    // 写汇报
+    // 写汇报 | 补交汇报
     if (props?.templateId) {
-      const res = await writeReport({
-        report_template_id: props?.templateId,
-        data,
-        target_users: users,
-      })
+      let res = null
+      if (props?.isSupply) {
+        res = await supplyReport({
+          report_template_id: props?.templateId,
+          data,
+          target_users: users,
+          date: props?.date,
+        })
+      } else {
+        res = await writeReport({
+          report_template_id: props?.templateId,
+          data,
+          target_users: users,
+        })
+      }
       if (res && res.code === 0 && res.data?.id) {
         message.success(t('操作成功'))
       }
@@ -167,21 +182,31 @@ const HandleReport = (props: any) => {
         centered: true,
         closable: true,
         onOk: async () => {
-          // Todo 根据模板详情里的上一篇id 去查询
           const result = await getReportDetailById({
             id: reportDetail?.prev_report_id,
           })
           if (result && result.data) {
             const temp: any = {}
+            setPeopleValue(
+              result.data?.target_users?.map((item: any) => {
+                return {
+                  avatar: item.user.avatar,
+                  id: item.user.id,
+                  name: item.user.name,
+                }
+              }),
+            )
             result.data.report_content?.forEach((v: any) => {
               temp[`${v.type}_${v.id}`] =
                 v.type === 3 ? v?.pivot?.content : v?.pivot?.params
             })
             form.setFieldsValue({
               ...temp,
-              [`${result?.data?.type || 3}_${
-                result?.data?.target_user_config_id
-              }`]: result?.data?.target_users,
+              [`1_${result.data.target_user_config_id}`]:
+                result.data.target_users?.map((u: any) => ({
+                  id: u.user?.id,
+                  label: u.user?.name,
+                })),
             })
           }
         },
@@ -193,13 +218,30 @@ const HandleReport = (props: any) => {
     const res = await templateDetail({ id })
     if (res && res.code === 0 && res.data) {
       setReportDetail(res.data)
+      setPeopleValue(
+        res.data?.report_user_list?.map((item: any) => {
+          return {
+            avatar: item.avatar,
+            id: item.id,
+            name: item.name,
+          }
+        }),
+      )
     }
   }
-  // Todo 编辑回显值,补个user的值
+
   const setDefaultValue = async () => {
     const result = await getReportDetailById({ id: props?.editId })
     if (result.code === 0 && result.data) {
-      setEditDetail(result.data)
+      setPeopleValue(
+        result.data?.target_users?.map((item: any) => {
+          return {
+            avatar: item.user.avatar,
+            id: item.user.id,
+            name: item.user.name,
+          }
+        }),
+      )
       getTemplateById(result.data.report_template_id)
       const temp: any = {}
       result.data.report_content?.forEach((v: any) => {
@@ -208,6 +250,11 @@ const HandleReport = (props: any) => {
       })
       form.setFieldsValue({
         ...temp,
+        [`1_${result.data.target_user_config_id}`]:
+          result.data.target_users?.map((u: any) => ({
+            id: u.user?.id,
+            label: u.user?.name,
+          })),
       })
     }
   }
@@ -245,6 +292,14 @@ const HandleReport = (props: any) => {
     }
     return Promise.resolve()
   }
+
+  const onValidatorForPerson = (rule: any, value: any) => {
+    if (value?.length === 0 && isFirstValidator.current !== 0) {
+      return Promise.reject(new Error(''))
+    }
+    return Promise.resolve()
+  }
+
   if (!props.visibleEdit) {
     return null
   }
@@ -271,23 +326,11 @@ const HandleReport = (props: any) => {
                     {t('common.pleaseSelect')}
                   </div>
                 ),
+                validator: onValidatorForPerson,
               },
             ]}
           >
-            {props.visibleEdit ? (
-              <ChoosePeople
-                initValue={reportDetail?.report_user_list?.map((item: any) => {
-                  return {
-                    avatar: item.avatar,
-                    id: item.id,
-                    name: item.name,
-                    nickname: '',
-                    positionName: null,
-                    roleName: '',
-                  }
-                })}
-              />
-            ) : null}
+            <ChoosePeople initValue={peopleValue} />
           </Form.Item>
         )
       case 2:
@@ -423,7 +466,6 @@ const HandleReport = (props: any) => {
         </HeadWrap>
         <Form
           form={form}
-          onFinish={confirm}
           layout="vertical"
           onFinishFailed={() => {
             setTimeout(() => {

@@ -24,6 +24,12 @@ import StateTag from '@/components/StateTag'
 
 const TimeLIneWrap = styled(Timeline)({
   marginTop: 24,
+  '.ant-timeline-item-head-blue': {
+    borderColor: 'var(--neutral-n5)!important',
+  },
+  '& :first-child .ant-timeline-item-head-blue': {
+    borderColor: 'var(--primary-d1)!important',
+  },
   '.ant-timeline-item-label': {
     width: '102px!important',
   },
@@ -175,14 +181,15 @@ const Circulation = () => {
       </span>
     )
   }
-  console.log('statusLogs', statusLogs)
+
   return (
     <Wrap>
       <Spin indicator={<NewLoadingTransition />} spinning={isSpin}>
         {!!statusLogs?.list && (
           <>
             {statusLogs?.list?.length > 0 && (
-              <TimeLIneWrap mode="left">
+              <TimeLIneWrap mode="left" reverse>
+                <Timeline.Item />
                 {statusLogs.list?.map((i: any) => (
                   <Timeline.Item
                     key={i.id}
@@ -535,7 +542,6 @@ const Circulation = () => {
                     )}
                   </Timeline.Item>
                 ))}
-                <Timeline.Item />
               </TimeLIneWrap>
             )}
             {statusLogs?.list?.length <= 0 && <NoData />}

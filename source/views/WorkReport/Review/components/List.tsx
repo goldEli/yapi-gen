@@ -15,7 +15,6 @@ import PaginationBox from '@/components/TablePagination'
 import Sort from '@/components/Sort'
 import NoData from '@/components/NoData'
 import ReadStatusTag from './ReadStatusTag'
-import ReportDetailDrawer from './ReportDetailDrawer'
 import {
   getRepSentList,
   getRepReceivedList,
@@ -24,7 +23,7 @@ import {
 import { templateList } from '@/services/formwork'
 import { getStaffList } from '@/services/staff'
 import HandleReport from './HandleReport'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { setViewReportModal } from '@store/workReport'
 import LabelTag from '@/components/LabelTag'
 
@@ -219,6 +218,7 @@ const List = () => {
             getPopupContainer={node => node}
           >
             <span
+              className="canClickDetail"
               style={{
                 display: 'block',
                 width: '400px',
@@ -237,9 +237,10 @@ const List = () => {
     },
     {
       width: 252,
-      title: (
-        <NewSort fixedKey="file_count">{t('report.list.reportTime')}</NewSort>
-      ),
+      title: t('report.list.reportTime'),
+      sorter: (a: any, b: any) => {
+        return moment(a.start_time).valueOf() - moment(b.start_time).valueOf()
+      },
       dataIndex: 'start_time',
       render: (_: string, record: any) => {
         return <span>{`${record.start_time} ~ ${record.end_time}`}</span>
@@ -247,10 +248,11 @@ const List = () => {
     },
     {
       width: 240,
-      title: (
-        <NewSort fixedKey="created_at">{t('report.list.submitTime')}</NewSort>
-      ),
+      title: t('report.list.submitTime'),
       dataIndex: 'created_at',
+      sorter: (a: any, b: any) => {
+        return moment(a.created_at).valueOf() - moment(b.created_at).valueOf()
+      },
     },
     {
       width: 160,
@@ -424,7 +426,12 @@ const List = () => {
   }, [])
 
   return (
-    <>
+    <div
+      style={{
+        height: 'calc(100% - 64px)',
+        overflow: 'hidden',
+      }}
+    >
       <ListTitle>
         <span>{title}</span>
         <div>
@@ -477,13 +484,7 @@ const List = () => {
         <ClearButton onClick={restQuery}>清除条件</ClearButton>
       </ListHead>
       <ListContent>
-        <div
-          style={{
-            height: 'calc(100% - 50px)',
-            overflow: 'hidden',
-            padding: '16px 16px 0',
-          }}
-        >
+        <div style={{ height: 'calc(100% - 125px)' }}>
           <ResizeTable
             isSpinning={isSpinning}
             dataWrapNormalHeight="100%"
@@ -503,14 +504,14 @@ const List = () => {
           onChange={onChangePage}
         />
       </ListContent>
-      <ReportDetailDrawer />
+
       <HandleReport
         editId={editId}
         visibleEdit={visibleEdit}
         editClose={() => setVisibleEdit(false)}
         visibleEditText="修改汇报"
       />
-    </>
+    </div>
   )
 }
 

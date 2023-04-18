@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react'
 import Addperson from './Addperson'
 import Title from './Title'
 import FormMain from './FormMain'
-import { Form, Radio } from 'antd'
+import { Form, message, Radio } from 'antd'
 import { useDispatch, useSelector } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import {
@@ -24,6 +24,8 @@ import moment from 'moment'
 import { cos } from '@/services/cos'
 const PermissionConfigStyle = styled.div`
   padding: 0 24px;
+  overflow-y: auto;
+  height: calc(100vh - 250px);
 `
 const TitleText = styled.div`
   font-size: 14px;
@@ -85,44 +87,75 @@ const PermissionConfig = (props: PropsType) => {
     return [...d1, ...d2, ...d3]
   }
   // 根据接口拆解数据
-  const onChangeValues = (values: any) => {
-    let isAllWrite = 2
-    let isAllView = 2
-    values.forEach((item: any) => {
-      if (item.user_type === 1 && item.key === 'all') {
-        // 全员写
-        isAllWrite = 1
-      } else if (item.user_type === 3 && item.key === 'all') {
-        // 全员看
-        isAllView = 1
-      }
-    })
-    // 团队的数据-部门，成员
-    const setData1 =
-      values?.map((el: any) => ({
-        target_id: el.id,
+  const onChangeValues = (values: any, num: number) => {
+    let d1: any = person1 || []
+    let d2 = person2 || []
+    let d3 = person3 || []
+    if (num === 1) {
+      const val1 = values?.map((el: any) => ({
+        target_id: el.id || el.target_id,
         user_type: el.user_type,
         target_type: el.target_type,
         target_value: el.target_value,
-      })) || []
-    // 管理人员
-    const setData2 = values?.filter(
-      (el: { target_type: number }) => el.target_type === 4,
+      }))
+      const hasAll = d1.find(
+        (item: any) =>
+          item.user_type === 1 &&
+          (item.key === 'all' || item.target_value.key === 'all'),
+      )
+      // if (hasAll) {
+      //   message.warning('你已添加全员')
+      //   d1 = [...person1]
+      // } else {
+      d1 = [...person1, ...val1]
+      // }
+    } else if (num === 2) {
+      const val2 =
+        values?.map((el: any) => ({
+          target_id: el.id || el.target_id,
+          user_type: el.user_type,
+          target_type: el.target_type,
+          target_value: el.target_value,
+        })) || []
+      d2 = [...person2, ...val2]
+      setPerson2(d2)
+    } else {
+      const val3 = values?.map((el: any) => ({
+        target_id: el.id || el.target_id,
+        user_type: el.user_type,
+        target_type: el.target_type,
+        target_value: el.target_value,
+      }))
+      const hasAll = d3.find(
+        (item: any) =>
+          item.user_type === 3 &&
+          (item.key === 'all' || item.target_value.key === 'all'),
+      )
+      // if (hasAll) {
+      //   message.warning('你已添加全员')
+      //   d1 = [...person1]
+      // } else {
+      d1 = [...person1, ...val3]
+      // }
+    }
+    const d3V = d3.find(
+      (item: any) =>
+        item.user_type === 3 &&
+        (item.key === 'all' || item.target_value.key === 'all'),
     )
-    // 最终的大数组-- 人员
-    const configsData = [...setData1, ...setData2]
+    const d1v = d1.find(
+      (item: any) =>
+        item.user_type === 1 &&
+        (item.key === 'all' || item.target_value.key === 'all'),
+    )
     dispatch(
       setReportContent({
-        is_all_view: isAllView,
-        is_all_write: isAllWrite,
-        template_configs: filterValues([
-          ...reportContent.template_configs,
-          ...configsData,
-        ]),
+        is_all_view: d3V ? 1 : 2,
+        is_all_write: d1v ? 1 : 2,
+        template_configs: [...d1, ...d2, ...d3],
       }),
     )
   }
-
   // 填写周期
   const onchange = (e: any) => {
     dispatch(setEditSave(false))
@@ -257,8 +290,6 @@ const PermissionConfig = (props: PropsType) => {
     let data1: any = person1 || []
     let data2: any = person2 || []
     let data3: any = person3 || []
-    let is_all_view = 2
-    let is_all_write = 2
     if (num === 1) {
       data1 = person1.filter((item: any) =>
         el?.target_id ? item?.target_id !== el?.target_id : el.key !== item.key,
@@ -270,14 +301,20 @@ const PermissionConfig = (props: PropsType) => {
         el?.target_id ? item?.target_id !== el?.target_id : el.key !== item.key,
       )
     }
-    const v3 = data3.find((item: any) => item.key === 'all')
-    const v1 = data1.find((item: any) => item.key === 'all')
-    is_all_view = v3 ? 1 : 2
-    is_all_write = v1 ? 1 : 2
+    const v3 = data3.find(
+      (item: any) =>
+        item.user_type === 3 &&
+        (item.key === 'all' || item.target_value.key === 'all'),
+    )
+    const v1 = data1.find(
+      (item: any) =>
+        item.user_type === 1 &&
+        (item.key === 'all' || item.target_value.key === 'all'),
+    )
     dispatch(
       setReportContent({
-        is_all_view: is_all_view,
-        is_all_write: is_all_write,
+        is_all_view: v3 ? 1 : 2,
+        is_all_write: v1 ? 1 : 2,
         template_configs: filterValues([...data1, ...data2, ...data3]),
       }),
     )
@@ -345,20 +382,18 @@ const PermissionConfig = (props: PropsType) => {
       }
       const newReminderTime = {
         v1: time2(true, obj?.reminder_time, 'day'),
-        v2: time2(false, obj?.reminder_time, 'hour'),
-        v3: time2(false, obj?.reminder_time, 'minute'),
+        v2: time2(true, obj?.reminder_time, 'hour'),
+        v3: time2(true, obj?.reminder_time, 'minute'),
       }
       newObj.start_time = newStartTime
       newObj.end_time = newEndTime
       newObj.reminder_time = newReminderTime
     } else if (obj?.submit_cycle === 4) {
-      const newEndTime = obj?.end_time
-        ? timestampToTime(obj?.end_time?.time)
-        : null
+      const newEndTime = obj?.end_time ? timestampToTime(obj?.end_time) : null
       const newReminderTime = {
         v1: time2(true, obj?.reminder_time, 'day'),
-        v2: time2(false, obj?.reminder_time, 'hour'),
-        v3: time2(false, obj?.reminder_time, 'minute'),
+        v2: time2(true, obj?.reminder_time, 'hour'),
+        v3: time2(true, obj?.reminder_time, 'minute'),
       }
       newObj.end_time = newEndTime
       newObj.reminder_time = newReminderTime
@@ -389,7 +424,6 @@ const PermissionConfig = (props: PropsType) => {
     newVal.hand_scope = obj
     fillingRequirements && setFormValues(newVal)
   }, [fillingRequirements])
-
   return (
     <PermissionConfigStyle>
       {/* 汇报内容 */}
@@ -402,7 +436,7 @@ const PermissionConfig = (props: PropsType) => {
           {/* 谁可以写 */}
           <Addperson
             onChangedel={val => onChangedel(val, 1)}
-            onChangeValues={val => onChangeValues(val)}
+            onChangeValues={val => onChangeValues(val, 1)}
             person={person1}
             title="谁可以写"
             isShow={true}
@@ -411,7 +445,7 @@ const PermissionConfig = (props: PropsType) => {
           {/* 汇报对象*/}
           <Addperson
             onChangedel={val => onChangedel(val, 2)}
-            onChangeValues={val => onChangeValues(val)}
+            onChangeValues={val => onChangeValues(val, 2)}
             person={person2}
             title="汇报对象"
             isShow={false}
@@ -420,7 +454,7 @@ const PermissionConfig = (props: PropsType) => {
           {/* 谁可以看 */}
           <Addperson
             onChangedel={val => onChangedel(val, 3)}
-            onChangeValues={val => onChangeValues(val)}
+            onChangeValues={val => onChangeValues(val, 3)}
             person={person3}
             title="谁可以看"
             isShow={false}

@@ -161,6 +161,7 @@ const Sortable = (props: any) => {
         return '关联需求'
     }
   }
+  console.log(list, 'list')
   return (
     <div
       draggable="false"
@@ -192,7 +193,9 @@ const Sortable = (props: any) => {
               // onDragStart={(ev: any) => onDragStart(ev, i, child)}
               // onDragOver={e => onDragOver(e, i, child)}
               // onDragEnd={e => onDragEnd(e, i)}
-              onClick={() => child.type !== 1 && props.onClick(i, child)}
+              onClick={() =>
+                child.type !== 1 && child.type != 4 && props.onClick(i, child)
+              }
             >
               <ItemList>
                 <div style={{ display: 'flex' }}>

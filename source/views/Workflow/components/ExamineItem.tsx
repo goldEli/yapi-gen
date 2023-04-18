@@ -300,10 +300,33 @@ const ExamineItem = (props: Props) => {
         >
           {t('newlyAdd.reviewPerson')}
         </span>
+
+        <Tooltip
+          placement="topRight"
+          title={menuList?.filter((i: any) => i.value === normal)[0]?.tips}
+        >
+          <span
+            style={{
+              marginLeft: 32,
+              color: 'var(--neutral-n1-d2)',
+              verticalAlign: 'text-bottom',
+              fontSize: 12,
+            }}
+          >
+            {menuList?.filter((i: any) => i.value === normal)[0]?.name}
+          </span>
+          <IconFont
+            style={{
+              color: 'var(--neutral-n3)',
+            }}
+            className={queTooltipStyle}
+            type="question"
+          />
+        </Tooltip>
         <Popover
           key={isShowSelect.toString()}
           visible={isShowSelect}
-          placement="bottom"
+          placement="bottomRight"
           trigger="hover"
           onVisibleChange={visible => setIsShowSelect(visible)}
           content={
@@ -328,28 +351,6 @@ const ExamineItem = (props: Props) => {
               // marginTop: 4,
             }}
           >
-            <span
-              style={{
-                marginLeft: 32,
-                color: isShowSelect
-                  ? 'var(--primary-d2)'
-                  : 'var(--neutral-n1-d2)',
-                fontSize: 12,
-              }}
-            >
-              {menuList?.filter((i: any) => i.value === normal)[0]?.name}
-            </span>
-            <Tooltip
-              title={menuList?.filter((i: any) => i.value === normal)[0]?.tips}
-            >
-              <IconFont
-                style={{
-                  color: 'var(--neutral-n3)',
-                }}
-                className={queTooltipStyle}
-                type="question"
-              />
-            </Tooltip>
             <IconFont
               style={{
                 marginLeft: 8,

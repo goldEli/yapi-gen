@@ -9,7 +9,7 @@ import { getTicket, loginOut } from '@/services/user'
 import { useDispatch, useSelector } from '@store/index'
 import { changeLanguage, type LocaleKeys } from '@/locals'
 import { message, Popover, Space, Tooltip } from 'antd'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import {
   ChangeItem,
   ChangeItems,
@@ -41,10 +41,11 @@ import {
   setScheduleModal,
   setSubscribeModal,
 } from '@store/calendar'
+import { setIsRefresh } from '@store/user'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const { language, theme } = useSelector(store => store.global)
-
+  const { isRefresh } = useSelector(store => store.user)
   const dispatch = useDispatch()
   const [isChangeVisible, setIsChangeVisible] = useState(false)
 
@@ -76,6 +77,7 @@ const ChangeComponent = (props: { item: any; onClose(): void }) => {
         payload: type,
       })
       dispatch(getLoginDetail())
+      dispatch(setIsRefresh(!isRefresh))
     }
 
     // // 切换主题
@@ -368,6 +370,12 @@ const HeaderRight = () => {
     )
   }
 
+  const showPlusIcon = useMemo(() => {
+    return (
+      String(location.pathname).includes('/ProjectManagement') ||
+      String(location.pathname).includes('/Report')
+    )
+  }, [location.pathname])
   return (
     <>
       {/* 退出登录 */}
@@ -415,7 +423,7 @@ const HeaderRight = () => {
       </CommonModal>
 
       <Space size={16}>
-        {String(location.pathname).includes('/ProjectManagement') && (
+        {showPlusIcon && (
           <Popover
             content={content(createList)}
             open={isCreateVisible}

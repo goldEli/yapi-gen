@@ -124,8 +124,14 @@ const ResizeTable = (props: ResizeTableProps) => {
     }
 
   useEffect(() => {
-    console.log(props.col, 'props.col')
-    setCols(props.col)
+    let resultList: any = props.col
+    // props.col.forEach((element: any, index: number) => {
+    //   if (index === props.col.length - 1) {
+    //     delete element.width
+    //   }
+    //   resultList.push(element)
+    // })
+    setCols(resultList)
   }, [props.col])
 
   useEffect(() => {

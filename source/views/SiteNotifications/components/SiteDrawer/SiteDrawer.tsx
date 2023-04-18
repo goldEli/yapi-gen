@@ -21,6 +21,7 @@ import {
   TabsWrapItem,
   Tips,
   Wrap,
+  ActiveTab,
 } from './style'
 import { useTranslation } from 'react-i18next'
 import InfiniteScroll from 'react-infinite-scroll-component'
@@ -31,21 +32,6 @@ import {
 } from '@/services/SiteNotifications'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 
-const tabsValue = [
-  {
-    id: '3',
-    text: '全部',
-  },
-  {
-    id: '1',
-    text: '最新（4）',
-  },
-  {
-    id: '2',
-    text: '@我的',
-  },
-]
-
 const SiteDrawer = () => {
   const [t] = useTranslation()
   const [active, setActive] = useState('3')
@@ -55,8 +41,24 @@ const SiteDrawer = () => {
   const isVisible = useSelector(store => store.siteNotifications.isVisible)
   const [list, setList] = useState([])
   const lastId = useRef(0)
+  const tabBox = useRef<HTMLDivElement>(null)
+  const tabActive = useRef<HTMLDivElement>(null)
   const [hasMore, setHasMore] = useState(true)
   const [read, setRead] = useState<number | null>()
+  const tabsValue = [
+    {
+      id: '3',
+      text: t('all'),
+    },
+    {
+      id: '1',
+      text: t('new1'),
+    },
+    {
+      id: '2',
+      text: t('atmy'),
+    },
+  ]
 
   const onChange = (e: CheckboxChangeEvent) => {
     lastId.current = 0
@@ -95,7 +97,7 @@ const SiteDrawer = () => {
       fetchMoreData(true)
     }
     if (id === '1') {
-      newName.current = new Date().valueOf() / 1000
+      newName.current = Math.floor(new Date().valueOf() / 1000)
       lastId.current = 0
       fetchMoreData(true)
     }
@@ -112,10 +114,28 @@ const SiteDrawer = () => {
     isVisible ? fetchMoreData(true) : null
   }, [isVisible, read])
 
+  useEffect(() => {
+    for (let i = 0; i < 3; i++) {
+      tabBox.current?.children[i].addEventListener('click', () => {
+        if (tabActive.current) {
+          tabActive.current.style.left = `${
+            (tabBox.current?.children[i] as HTMLDivElement).offsetLeft
+          }px`
+          tabActive.current.style.width = `${tabBox.current?.children[i].clientWidth}px`
+        }
+      })
+    }
+  }, [])
+
   return (
     <Drawer
       forceRender
-      bodyStyle={{ padding: 16, paddingBottom: '8px', boxSizing: 'border-box' }}
+      bodyStyle={{
+        padding: 16,
+        paddingBottom: '8px',
+        paddingRight: '4px',
+        boxSizing: 'border-box',
+      }}
       width={400}
       zIndex={1}
       closable={false}
@@ -126,7 +146,7 @@ const SiteDrawer = () => {
     >
       <Wrap>
         <div style={{ display: 'flex' }}>
-          <TabsWrap>
+          <TabsWrap ref={tabBox}>
             {tabsValue.map((i: any) => (
               <TabsWrapItem
                 onClick={() => changeActive(i.id)}
@@ -136,6 +156,7 @@ const SiteDrawer = () => {
                 {i.text}
               </TabsWrapItem>
             ))}
+            <ActiveTab ref={tabActive} />
           </TabsWrap>
           <CloseWrap onClick={onClose} width={32} height={32}>
             <IconFont

@@ -29,11 +29,11 @@ const TitleStyle = styled.div`
 const LeftTabs = styled.div`
   flex: 1;
   margin: 0 24px;
-  height: calc(100vh - 220px);
+  height: calc(100vh - 330px);
   overflow-y: auto;
 `
 const RightTabs = styled.div`
-  height: calc(100vh - 220px);
+  height: calc(100vh - 330px);
   overflow-y: auto;
   width: 400;
   padding-left: 24px;
@@ -137,7 +137,10 @@ const EditWork = (props: PropsType) => {
   }, [templateContentConfigs])
   return (
     <>
-      <div id="father" style={{ display: 'flex' }}>
+      <div
+        id="father"
+        style={{ display: 'flex', height: 'calc(100vh -300px)' }}
+      >
         <LeftTabs>
           <TitleStyle draggable="false">
             <span>汇报内容</span>

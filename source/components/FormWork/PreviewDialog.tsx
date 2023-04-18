@@ -4,6 +4,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/jsx-handler-names */
+/* eslint-disable consistent-return */
 import { Form } from 'antd'
 import CommonModal from '@/components/CommonModal'
 import ChoosePeople from './ChoosePeople'
@@ -17,6 +18,7 @@ import { Editor, EditorRef } from '@xyfe/uikit'
 import { uploadFile } from '@/components/CreateDemand/CreateDemandLeft'
 import styled from '@emotion/styled'
 import CommonIconFont from '../CommonIconFont'
+import { useSelector } from '@store/index'
 const HeaderWrap = styled.div`
   width: 100%;
   display: flex;
@@ -133,6 +135,8 @@ const EditorMain = (props: EditorPropsType) => {
 }
 const WhiteDay = (props: Props) => {
   const [form] = Form.useForm()
+  const { templateContentConfigs } = useSelector(store => store.formWork)
+
   const [attachList, setAttachList] = useState<any>([])
   const [peopleValue, setPeopleValue] = useState<any>([])
   const [needValue, setNeedValue] = useState<any>([])
@@ -181,47 +185,94 @@ const WhiteDay = (props: Props) => {
   }
   const onConfirm = () => {
     const values = form.getFieldsValue()
-    // console.log(values)
+  }
+  const getMain = (item: any) => {
+    if (item.type == 3) {
+      return (
+        <Form.Item
+          style={{
+            marginBottom: '30px',
+          }}
+          label={<LabelTitle title={item?.name} />}
+          name="info"
+          rules={[
+            {
+              validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
+              required: item.is_required === 1 ? true : false,
+              message: (
+                <div
+                  style={{
+                    margin: '5px 0',
+                    fontSize: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
+                >
+                  {item.tips}
+                </div>
+              ),
+              whitespace: true,
+              validator: onValidator,
+            },
+          ]}
+        >
+          <EditorMain isVisible={props.isVisible} type={props.type} />
+        </Form.Item>
+      )
+    } else if (item.type === 1) {
+      return (
+        <Form.Item label={<LabelTitle title={'汇报对象'} />} name="people">
+          {props.isVisible ? (
+            <ChoosePeople type={props.type} initValue={peopleValue} />
+          ) : null}
+        </Form.Item>
+      )
+    } else if (item.type === 2) {
+      return (
+        <Form.Item
+          label={<LabelTitle title={t('common.attachment')} />}
+          name="attachments"
+        >
+          <AddWrap
+            style={{
+              marginBottom: '20px',
+            }}
+            hasColor
+          >
+            <IconFont type="plus" />
+            添加附件
+          </AddWrap>
+        </Form.Item>
+      )
+    } else if (item.type === 4) {
+      return (
+        <Form.Item
+          label={<LabelTitle title={t('p2.managingDemand')} />}
+          name="needs"
+        >
+          <AddWrap
+            style={{
+              marginBottom: '20px',
+            }}
+            hasColor
+          >
+            <IconFont type="plus" />
+            关联需求
+          </AddWrap>
+        </Form.Item>
+      )
+    }
   }
   return (
     <CommonModal
       width={784}
+      noCancel
       title={props.title}
       isVisible={props.isVisible}
       onClose={props.onClose}
       onConfirm={() => onConfirm()}
-      confirmText={t('newlyAdd.submit')}
+      confirmText={'再次编辑'}
     >
-      {props.type === 'formWork' ? null : (
-        <HeaderWrap>
-          <LeftWrap>
-            <ImgWrap src="" />
-            <div>
-              <TopWrap>
-                <span>{props.userDetail?.title}</span>
-                <span>{props.userDetail?.title}</span>
-              </TopWrap>
-              <BottomWrap>
-                <span>上次提交时间：</span>
-                <span>{props.userDetail?.submitTime}</span>
-              </BottomWrap>
-            </div>
-          </LeftWrap>
-          <RightWrap
-            onClick={() => {
-              alert(133)
-            }}
-          >
-            <CommonIconFont
-              type="Import"
-              transform="rotate(180deg)"
-              size={16}
-              color="var(--neutral-n2)"
-            />
-            <Text>导入上篇</Text>
-          </RightWrap>
-        </HeaderWrap>
-      )}
       <div
         style={{
           height: 'calc(90vh - 136px)',
@@ -248,122 +299,9 @@ const WhiteDay = (props: Props) => {
             }, 100)
           }}
         >
-          <Form.Item
-            style={{
-              marginBottom: '30px',
-            }}
-            label={<LabelTitle title={'本周完成工作'} />}
-            name="info"
-            rules={[
-              {
-                validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
-                required: true,
-                message: (
-                  <div
-                    style={{
-                      margin: '5px 0',
-                      fontSize: '12px',
-                      display: 'flex',
-                      alignItems: 'center',
-                    }}
-                  >
-                    请输入
-                  </div>
-                ),
-                whitespace: true,
-                validator: onValidator,
-              },
-            ]}
-          >
-            <EditorMain isVisible={props.isVisible} type={props.type} />
-          </Form.Item>
-          <Form.Item
-            style={{
-              marginBottom: '30px',
-            }}
-            label={<LabelTitle title={'下周计划工作'} />}
-            name="info"
-            rules={[
-              {
-                validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
-                required: true,
-                message: (
-                  <div
-                    style={{
-                      margin: '5px 0',
-                      fontSize: '12px',
-                      display: 'flex',
-                      alignItems: 'center',
-                    }}
-                  >
-                    请输入
-                  </div>
-                ),
-                whitespace: true,
-                validator: onValidator,
-              },
-            ]}
-          >
-            <EditorMain isVisible={props.isVisible} type={props.type} />
-          </Form.Item>
-          <Form.Item label={<LabelTitle title={'汇报对象'} />} name="people">
-            {props.isVisible ? (
-              <ChoosePeople type={props.type} initValue={peopleValue} />
-            ) : null}
-          </Form.Item>
-          <Form.Item
-            label={<LabelTitle title={t('common.attachment')} />}
-            name="attachments"
-          >
-            {props.type === 'formWork' ? (
-              <AddWrap
-                style={{
-                  marginBottom: '20px',
-                }}
-                hasColor
-              >
-                <IconFont type="plus" />
-                添加附件
-              </AddWrap>
-            ) : (
-              <UploadAttach
-                power
-                defaultList={attachList}
-                onChangeAttachment={onChangeAttachment}
-                onBottom={onBottom}
-                type={props.type}
-                addWrap={
-                  <AddWrap
-                    style={{
-                      marginBottom: '20px',
-                    }}
-                    hasColor
-                  >
-                    <IconFont type="plus" />
-                    添加附件
-                  </AddWrap>
-                }
-              />
-            )}
-          </Form.Item>
-          <Form.Item
-            label={<LabelTitle title={t('p2.managingDemand')} />}
-            name="needs"
-          >
-            {props.type === 'formWork' ? (
-              <AddWrap
-                style={{
-                  marginBottom: '20px',
-                }}
-                hasColor
-              >
-                <IconFont type="plus" />
-                关联需求
-              </AddWrap>
-            ) : (
-              <RelatedNeed onBootom={scrollToBottom} initValue={needValue} />
-            )}
-          </Form.Item>
+          {templateContentConfigs?.map((item: any) => {
+            return <>{getMain(item)}</>
+          })}
         </Form>
       </div>
     </CommonModal>

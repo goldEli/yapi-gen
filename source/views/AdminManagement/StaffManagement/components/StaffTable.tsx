@@ -197,10 +197,9 @@ export const useDynamicColumns = (state: any) => {
                 height: 8,
                 marginRight: 8,
                 borderRadius: '50%',
-                background:
-                  text === 1 ? 'var(--function-success)' : 'var(--neutral-n5)',
+                background: text === 1 ? 'var(--function-success)' : '#A176FB',
               }}
-            />{' '}
+            />
             {text === 1 ? t('normal') : t('handed_over')}
           </div>
         )

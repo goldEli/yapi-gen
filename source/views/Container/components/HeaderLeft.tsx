@@ -310,7 +310,7 @@ const HeaderLeft = () => {
       '/Report/Formwork',
     ]
     if (unDropdownUrl.includes(i.url)) {
-      return <span onClick={() => navigate(i.url)}>{i.name}</span>
+      return <span>{i.name}</span>
     }
     switch (i.url) {
       case '/ProjectManagement/Mine':
@@ -320,6 +320,13 @@ const HeaderLeft = () => {
       default:
         return ''
     }
+  }
+
+  const handleClickMenuItem = (url: string) => {
+    if (url.includes('ProjectManagement')) {
+      return
+    }
+    navigate(url)
   }
 
   return (
@@ -358,7 +365,12 @@ const HeaderLeft = () => {
             ? [...currentMenu.children].reverse()
             : currentMenu.children
           ).map((i: any) => (
-            <ChildrenMenuItem key={i.id} size={8} isActive={getActive(i)}>
+            <ChildrenMenuItem
+              onClick={() => handleClickMenuItem(i.url)}
+              key={i.id}
+              size={8}
+              isActive={getActive(i)}
+            >
               {getMenuItemElement(i)}
             </ChildrenMenuItem>
           ))}
