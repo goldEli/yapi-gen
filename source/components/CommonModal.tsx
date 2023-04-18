@@ -65,15 +65,18 @@ const CommonModal = (props: any) => {
           </CloseWrap>
         </Space>
       </ModalHeader>
-      <div>{props?.children}</div>
+      <div style={{ minHeight: 154 }}>{props?.children}</div>
       {!props?.isShowFooter && (
         <>
           {props?.hasFooter}
           {!props.hasFooter && (
             <ModalFooter size={16}>
-              <CommonButton type="light" onClick={props?.onClose}>
-                {t('common.cancel')}
-              </CommonButton>
+              {props?.noCancel ? null : (
+                <CommonButton type="light" onClick={props?.onClose}>
+                  {t('common.cancel')}
+                </CommonButton>
+              )}
+
               <CommonButton type="primary" onClick={props?.onConfirm}>
                 {props?.confirmText || t('common.confirm')}
               </CommonButton>
