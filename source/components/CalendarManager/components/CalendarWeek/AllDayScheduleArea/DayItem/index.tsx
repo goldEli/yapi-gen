@@ -146,7 +146,7 @@ const DayItem: React.FC<DayItemProps> = props => {
         }
       }}
     >
-      <div className="dayBox">
+      {/* <div className="dayBox">
         <span
           className={classNames('day', {
             dayActive: isSelected,
@@ -157,7 +157,7 @@ const DayItem: React.FC<DayItemProps> = props => {
           {day}
         </span>
         <span className="lunar">{info?.lunar_day_chinese}</span>
-      </div>
+      </div> */}
       <ScheduleList data={info} idx={idx} list={props.list} />
     </DayItemBox>
   )
