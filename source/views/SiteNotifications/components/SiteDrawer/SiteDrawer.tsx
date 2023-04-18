@@ -64,32 +64,30 @@ const SiteDrawer = () => {
     lastId.current = 0
     setHasMore(true)
     setRead(e.target.checked ? 0 : undefined)
-    const state = localStorage.getItem('read')
     localStorage.setItem('read', e.target.checked ? '0' : '1')
   }
 
   const onClose = () => {
     dispatch(changeVisible(false))
   }
-  const fetchMoreData = async (b?: boolean) => {
+  const fetchMoreData = async (type: number) => {
     const re4 = await getMsg_list({
       lastId: lastId.current,
       read: localStorage.getItem('read'),
       latTime: newName.current,
     })
-    if (lastId.current === 0 && re4.lastId === 0) {
-      setList([])
-    }
-    if (re4.lastId === 0) {
-      setHasMore(false)
-      return
-    }
     lastId.current = re4.lastId
     setTimeout(() => {
-      if (b) {
+      if (type === 1 && re4.lastId === 0) {
         setList(re4.list)
-      } else {
-        setList(list.concat(re4.list))
+        setHasMore(false)
+      } else if (type === 1) {
+        setList(re4.list)
+      } else if (type === 2 && re4.lastId === 0) {
+        setList(e => e.concat(re4.list))
+        setHasMore(false)
+      } else if (type === 2) {
+        setList(e => e.concat(re4.list))
       }
     }, 500)
   }
@@ -98,12 +96,12 @@ const SiteDrawer = () => {
     if (id === '3') {
       newName.current = undefined
       lastId.current = 0
-      fetchMoreData(true)
+      fetchMoreData(1)
     }
     if (id === '1') {
       newName.current = Math.floor(new Date().valueOf() / 1000)
       lastId.current = 0
-      fetchMoreData(true)
+      fetchMoreData(1)
     }
   }
 
@@ -115,7 +113,7 @@ const SiteDrawer = () => {
     setReads(arr)
   }
   useEffect(() => {
-    isVisible ? fetchMoreData(true) : null
+    isVisible ? fetchMoreData(1) : null
   }, [isVisible, read])
 
   const readStatue = () => {
@@ -125,14 +123,12 @@ const SiteDrawer = () => {
     } else {
       state = false
     }
-    console.log(localStorage.getItem('read'))
+
     return state
   }
 
   useEffect(() => {
     for (let i = 0; i < 3; i++) {
-      console.log(tabBox.current?.children[i].getBoundingClientRect().left)
-
       tabBox.current?.children[i].addEventListener('click', e => {
         if (tabActive.current) {
           tabActive.current.style.left = `${
@@ -196,7 +192,7 @@ const SiteDrawer = () => {
 
         <InfiniteScroll
           dataLength={list.length}
-          next={fetchMoreData}
+          next={() => fetchMoreData(2)}
           style={{
             overflow: 'auto',
             height: 'calc(100vh - 230px)',
@@ -209,7 +205,7 @@ const SiteDrawer = () => {
           height={document.body.clientHeight - 230}
           loader={<Skeleton avatar paragraph={{ rows: 2 }} active />}
           scrollableTarget="scrollableDiv"
-          endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+          endMessage={<Divider plain>{t('nm')}</Divider>}
         >
           {list.map((i: any) => (
             <ContentItem setReads={setReads} item={i} key={i.id} />

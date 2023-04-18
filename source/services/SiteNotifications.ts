@@ -46,7 +46,7 @@ export const getMsg_list: any = async (params: any) => {
   const response: any = await http.post<any>('/b/msg/list', {
     lastId: params.lastId ?? 0,
     read: params.read,
-    friendUsername: params.friendUsername,
+    friendUsername: params.friendUsername ? [params.friendUsername] : undefined,
     customType: params.msgType,
     latTime: params.latTime,
   })
