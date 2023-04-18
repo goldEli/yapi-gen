@@ -14,6 +14,7 @@ import CommonModal from '@/components/AddUser/CommonModal'
 import AddDepartmentOrTeamModal from '@/components/AddDepartmentOrTeamModal'
 import { useDispatch } from '@store/index'
 import { setEditSave } from '@store/formWork'
+import CommonUserAvatar from '@/components/CommonUserAvatar'
 const AddPersonText = styled.div`
   margin-left: 26px;
   display: flex;
@@ -76,7 +77,20 @@ const DefalutIcon = styled.div<{ bgc?: any }>(
     backgroundColor: bgc,
   }),
 )
-
+const DefalutIcon1 = styled.div<{ bgc?: any }>(
+  {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '24px',
+    height: '24px',
+    borderRadius: '50%',
+    border: '1px solid  #DDE3F3',
+  },
+  ({ bgc }) => ({
+    backgroundColor: bgc,
+  }),
+)
 interface RowsItem {
   name: string
   id: number
@@ -240,7 +254,8 @@ const Addperson = (props: Props) => {
     if (
       item.target_value?.avatar &&
       item.target_value?.avatar !== 3 &&
-      item.target_value?.avatar !== 2
+      item.target_value?.avatar !== 2 &&
+      item.target_value?.avatar !== 4
     ) {
       return <img src={item?.target_value?.avatar} />
     } else if (item.target_value?.avatar === 2) {
@@ -253,7 +268,7 @@ const Addperson = (props: Props) => {
           />
         </DefalutIcon>
       )
-    } else if (item.target_value?.avatar === 3) {
+    } else if (item.target_value?.avatar === 4) {
       return (
         <DefalutIcon bgc="rgba(121, 209, 193, 1)">
           <CommonIconFont
@@ -263,7 +278,7 @@ const Addperson = (props: Props) => {
           />
         </DefalutIcon>
       )
-    } else {
+    } else if (item.target_value.key === 'all' || item.target_type === 4) {
       return (
         <DefalutIcon bgc="rgba(125, 189, 225, 1)">
           <CommonIconFont
@@ -273,6 +288,8 @@ const Addperson = (props: Props) => {
           />
         </DefalutIcon>
       )
+    } else {
+      return <CommonUserAvatar />
     }
   }
   useEffect(() => {
@@ -332,7 +349,7 @@ const Addperson = (props: Props) => {
       <AddDepartmentOrTeamModal
         isVisible={isAddVisible}
         onClose={() => setIsAddVisible(false)}
-        type={targetType === 2 ? 1 : 3}
+        type={targetType === 2 ? 4 : 3}
         onConfirm={onAddConfirm}
       />
     </>

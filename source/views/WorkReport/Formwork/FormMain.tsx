@@ -41,28 +41,34 @@ interface Item {
   key: string
 }
 const DatePicker1 = (props: any) => {
+  const dispatch = useDispatch()
   const [value, setValue] = useState<any>('')
   const onChange = (e: any, dateString: string) => {
     props.datePickValue(dateString)
     var T = new Date(dateString)
     props.onChange(T.getTime())
+    dispatch(setEditSave(false))
   }
   useEffect(() => {
     if (props.value) {
       setValue(moment(props.value))
+    } else {
+      setValue('')
     }
   }, [props.value])
   return (
     <DatePicker
+      placeholder="请选择结束时间"
       onChange={(date: any, dateString: string) => {
         onChange(date, dateString)
       }}
-      value={value}
       showTime
+      value={value}
     />
   )
 }
 const SupScope = (props: SupScopeType) => {
+  const dispatch = useDispatch()
   const [isOpen, setIsOpen] = useState(false)
   const [items, setItems] = useState<Array<Item>>()
   // 每天 day ,每周 week , 每月 month , 不重复doNot
@@ -81,6 +87,7 @@ const SupScope = (props: SupScopeType) => {
   }, [props.type])
   const onOpenChange = (e: { key: any }) => {
     props.onChange?.(Number(e.key))
+    dispatch(setEditSave(false))
     setIsOpen(false)
   }
   return (

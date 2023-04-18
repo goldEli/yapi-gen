@@ -25,7 +25,10 @@ export const demandSlice = createSlice({
   reducers: {
     // 启用状态
     setViewReportModal: (state: any, action) => {
-      state.viewReportModal = action.payload
+      state.viewReportModal = {
+        ...state.viewReportModal,
+        ...action.payload,
+      }
     },
   },
   extraReducers(builder) {

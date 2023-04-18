@@ -84,11 +84,6 @@ const settingWrap = css`
   margin: 0 8px;
 `
 
-type actionRefType = {
-  onClose(): void
-  open(): void
-}
-
 const StaffManagement = () => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
@@ -147,7 +142,6 @@ const StaffManagement = () => {
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([])
   const [roleOptions, setRoleOptions] = useState<number[]>([])
-  const actionRef = useRef<actionRefType>(null)
 
   const getStaffListData = async () => {
     setIsSpinning(true)
@@ -315,14 +309,6 @@ const StaffManagement = () => {
     setSelectedRowKeys([])
   }
 
-  useEffect(() => {
-    if (selectedRowKeys.length > 0) {
-      actionRef.current?.open()
-    } else {
-      actionRef.current?.onClose()
-    }
-  }, [selectedRowKeys])
-
   const selectColum: any = useMemo(() => {
     const arr = allTitleList
     const newList = []
@@ -335,13 +321,18 @@ const StaffManagement = () => {
     }
     const checkboxColumn = {
       title: (
-        <Checkbox
-          onChange={onCheckAll}
-          checked={selectedRowKeys.length === listData?.length}
-        />
+        <div>
+          <Checkbox
+            onChange={onCheckAll}
+            checked={selectedRowKeys.length === listData?.length}
+          />
+          {selectedRowKeys.length > 0 && (
+            <span style={{ marginLeft: 8 }}>{selectedRowKeys.length}</span>
+          )}
+        </div>
       ),
       dataIndex: 'check',
-      width: 48,
+      width: 56,
       key: 'check',
       render: (text: string, record: any) => {
         return (
@@ -631,7 +622,10 @@ const StaffManagement = () => {
         onConfirm={onConfirmBatchEdit}
         roleOptions={roleOptions}
       />
-      <BatchAction ref={actionRef} onCancel={() => setSelectedRowKeys([])}>
+      <BatchAction
+        open={selectedRowKeys.length > 0}
+        onCancel={() => setSelectedRowKeys([])}
+      >
         <Tooltip
           placement="top"
           getPopupContainer={node => node}

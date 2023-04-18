@@ -169,6 +169,7 @@ const urls = {
   getReportInfo: '/b/work_report/user/info',
   getReportComment: '/b/work_report/user/comment',
   addReportComment: '/b/work_report/user/comment',
+  supplyReport: '/b/work_report/user/supply',
 
   getScheduleListDaysOfWeek: '/b/calendar/schedule/daysOfWeek',
   getScheduleListDaysOfMonth: '/b/calendar/schedule/daysOfMonth',

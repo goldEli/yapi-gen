@@ -34,7 +34,7 @@ const BatchSetPermGroup = (props: {
       <Form
         form={form}
         layout="vertical"
-        style={{ padding: '0 24px' }}
+        style={{ padding: '8px 24px', height: 156 }}
         autoComplete="off"
       >
         <Form.Item
