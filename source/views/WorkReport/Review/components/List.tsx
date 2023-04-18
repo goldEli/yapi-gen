@@ -56,9 +56,6 @@ const ListHead = styled.div({
 const SelectWrapForList = styled(SelectWrapBedeck)`
   margin-right: 16px;
 `
-const ListContent = styled.div`
-  height: calc(100% - ${50}px);
-`
 
 const ClearButton = styled.div`
   width: 56px;
@@ -294,8 +291,8 @@ const List = () => {
 
   const onChangeTime = (type: string, dates: any) => {
     const date = []
-    date[0] = moment(dates[0]).format('YYYY-MM-DD')
-    date[1] = moment(dates[1]).format('YYYY-MM-DD')
+    date[0] = dates ? moment(dates[0]).format('YYYY-MM-DD') : null
+    date[1] = dates ? moment(dates[1]).format('YYYY-MM-DD') : null
     if (type === 'report') {
       setQueryParams({
         ...queryParams,
@@ -427,12 +424,7 @@ const List = () => {
   }, [])
 
   return (
-    <div
-      style={{
-        height: 'calc(100% - 64px)',
-        overflow: 'hidden',
-      }}
-    >
+    <>
       <ListTitle>
         <span className="title-text">{title}</span>
         <Space size={24}>
@@ -489,27 +481,22 @@ const List = () => {
         </SelectWrapForList>
         <ClearButton onClick={restQuery}>清除条件</ClearButton>
       </ListHead>
-      <ListContent>
-        <div style={{ height: 'calc(100% - 125px)' }}>
-          <ResizeTable
-            isSpinning={isSpinning}
-            dataWrapNormalHeight="100%"
-            col={
-              id === 1
-                ? columns
-                : columns?.filter((item: any) => item.dataIndex)
-            }
-            noData={<NoData />}
-            dataSource={listData}
-          />
-        </div>
-        <PaginationBox
-          total={total}
-          pageSize={pageObj.pagesize}
-          currentPage={pageObj.page}
-          onChange={onChangePage}
-        />
-      </ListContent>
+
+      <ResizeTable
+        isSpinning={isSpinning}
+        dataWrapNormalHeight="calc(100vh - 251px)"
+        col={
+          id === 1 ? columns : columns?.filter((item: any) => item.dataIndex)
+        }
+        noData={<NoData />}
+        dataSource={listData}
+      />
+      <PaginationBox
+        total={total}
+        pageSize={pageObj.pagesize}
+        currentPage={pageObj.page}
+        onChange={onChangePage}
+      />
 
       <HandleReport
         editId={editId}
@@ -517,7 +504,7 @@ const List = () => {
         editClose={() => setVisibleEdit(false)}
         visibleEditText="修改汇报"
       />
-    </div>
+    </>
   )
 }
 
