@@ -10,7 +10,6 @@ export const ContentBox = styled.div`
 `
 
 export const ContentLeft = styled.div`
-  overflow: auto;
   width: 264px;
   display: flex;
   flex-direction: column;

@@ -162,7 +162,7 @@ const Statistics = () => {
 
   const getTempList = async () => {
     const { list } = await getStatTempList()
-    const items = list.map((v: any) => {
+    const items = Object.values(list).map((v: any) => {
       return {
         label: v.name,
         key: v.id,
@@ -195,6 +195,7 @@ const Statistics = () => {
   useEffect(() => {
     getTempList()
     getUsageDataList()
+    getStatInfoData()
   }, [])
 
   useEffect(() => {
@@ -202,10 +203,6 @@ const Statistics = () => {
       getUserList()
     }
   }, [tabKey, queryParams])
-
-  useEffect(() => {
-    getStatInfoData()
-  }, [tabKey])
 
   const onChangePage = (current: number, pageSize: number) => {
     setQueryParams({ page: current, pageSize })

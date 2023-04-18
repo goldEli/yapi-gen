@@ -36,10 +36,11 @@ import { getLoginDetail } from '@store/user/user.thunk'
 import helpPdf from '/Agile.pdf'
 import { t } from 'i18next'
 import SiteNotifications from '@/views/SiteNotifications/SiteNotifications'
+import { setIsRefresh } from '@store/user'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const { language, theme } = useSelector(store => store.global)
-
+  const { isRefresh } = useSelector(store => store.user)
   const dispatch = useDispatch()
   const [isChangeVisible, setIsChangeVisible] = useState(false)
 
@@ -71,6 +72,7 @@ const ChangeComponent = (props: { item: any; onClose(): void }) => {
         payload: type,
       })
       dispatch(getLoginDetail())
+      dispatch(setIsRefresh(!isRefresh))
     }
 
     // // 切换主题
@@ -180,15 +182,6 @@ const HeaderRight = () => {
       ).includes('b/project/save'),
     },
   ]
-  // TODO: 写汇报
-  // const reportCreateList = [
-  //   {
-  //     name: t('report.list.writeReport'),
-  //     key: 'writeReport',
-  //     icon: '',
-  //     isPermission: true,
-  //   },
-  // ]
 
   const labelList = [
     {

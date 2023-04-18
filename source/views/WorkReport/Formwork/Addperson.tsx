@@ -254,7 +254,8 @@ const Addperson = (props: Props) => {
     if (
       item.target_value?.avatar &&
       item.target_value?.avatar !== 3 &&
-      item.target_value?.avatar !== 2
+      item.target_value?.avatar !== 2 &&
+      item.target_value?.avatar !== 4
     ) {
       return <img src={item?.target_value?.avatar} />
     } else if (item.target_value?.avatar === 2) {
@@ -267,7 +268,7 @@ const Addperson = (props: Props) => {
           />
         </DefalutIcon>
       )
-    } else if (item.target_value?.avatar === 3) {
+    } else if (item.target_value?.avatar === 4) {
       return (
         <DefalutIcon bgc="rgba(121, 209, 193, 1)">
           <CommonIconFont
@@ -348,7 +349,7 @@ const Addperson = (props: Props) => {
       <AddDepartmentOrTeamModal
         isVisible={isAddVisible}
         onClose={() => setIsAddVisible(false)}
-        type={targetType === 2 ? 1 : 3}
+        type={targetType === 2 ? 4 : 3}
         onConfirm={onAddConfirm}
       />
     </>

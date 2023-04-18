@@ -70,7 +70,7 @@ const HeaderTop = styled.div({
 
 const Content = styled.div({
   // padding: 16,
-  height: 'calc(100% - 52px)',
+  height: 'calc(100% - 32px)',
 })
 
 const FilterWrap = styled(Form)({
@@ -113,11 +113,6 @@ const NewSort = (sortProps: any) => {
   )
 }
 
-type actionRefType = {
-  onClose(): void
-  open(): void
-}
-
 const ProjectMember = (props: { searchValue?: string }) => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
@@ -148,7 +143,6 @@ const ProjectMember = (props: { searchValue?: string }) => {
   asyncSetTtile(`${t('title.a2')}【${projectInfo.name ?? ''}】`)
   const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([])
   const dispatch = useDispatch()
-  const actionRef = useRef<actionRefType>(null)
 
   const hasAdd = getIsPermission(
     projectInfo?.projectPermissions,
@@ -316,19 +310,9 @@ const ProjectMember = (props: { searchValue?: string }) => {
     setSelectedRowKeys([])
   }
 
-  useEffect(() => {
-    if (selectedRowKeys.length > 0) {
-      actionRef.current?.open()
-    } else {
-      actionRef.current?.onClose()
-    }
-  }, [selectedRowKeys])
-
   const columns = [
     {
-      title: '',
-      dataIndex: 'name',
-      width: 10,
+      width: 40,
       render: (text: string, record: any) => {
         return hasDel && hasEdit ? null : <MoreDropdown menu={menu(record)} />
       },
@@ -356,7 +340,6 @@ const ProjectMember = (props: { searchValue?: string }) => {
         )
       },
     },
-
     {
       title: (
         <NewSort
@@ -369,7 +352,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
         </NewSort>
       ),
       dataIndex: 'nickname',
-      width: 210,
+      width: 240,
       render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -448,7 +431,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
         </NewSort>
       ),
       dataIndex: 'departmentName',
-      width: 160,
+      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -465,7 +448,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
         </NewSort>
       ),
       dataIndex: 'positionName',
-      width: 120,
+      width: 180,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -696,7 +679,10 @@ const ProjectMember = (props: { searchValue?: string }) => {
           projectPermission={projectPermission}
         />
 
-        <BatchAction ref={actionRef} onCancel={() => setSelectedRowKeys([])}>
+        <BatchAction
+          open={selectedRowKeys.length > 0}
+          onCancel={() => setSelectedRowKeys([])}
+        >
           <Tooltip
             placement="top"
             getPopupContainer={node => node}

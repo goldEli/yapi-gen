@@ -4,6 +4,8 @@ import CommonUserAvatar from '@/components/CommonUserAvatar'
 import ResizeTable from '@/components/ResizeTable'
 import NoData from '@/components/NoData'
 import { t } from 'i18next'
+import Sort from '@/components/Sort'
+import { useState } from 'react'
 
 const OperationWrap = styled.div`
   font-size: 14px;
@@ -16,7 +18,25 @@ const OperationWrap = styled.div`
     cursor: pointer;
   }
 `
+const NewSort = (sortProps: any) => {
+  return (
+    <Sort
+      fixedKey={sortProps.fixedKey}
+      onChangeKey={sortProps.onUpdateOrderKey}
+      nowKey={sortProps.nowKey}
+      order={sortProps.order === 'asc' ? 1 : 2}
+    >
+      {sortProps.children}
+    </Sort>
+  )
+}
 const Table = (props: any) => {
+  const [order, setOrder] = useState<any>({ value: '', key: '' })
+  const onUpdateOrderKey = (key: any, val: any) => {
+    console.log(key, val, 'key')
+    setOrder({ value: val === 2 ? 'desc' : 'asc', key })
+    props.onUpdateOrderKey(key, val === 2 ? 'desc' : 'asc')
+  }
   const columns: any = [
     {
       title: t('nickname') as string,
@@ -28,44 +48,113 @@ const Table = (props: any) => {
       ),
     },
     {
-      title: t('project.realName') as string,
+      title: (
+        <NewSort
+          nowKey={order.key}
+          order={order.value}
+          fixedKey="name"
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          {t('project.realName')}
+        </NewSort>
+      ),
       dataIndex: 'name',
       key: 'name',
       width: 160,
     },
     {
-      title: t('project.gender0') as string,
+      title: (
+        <NewSort
+          onUpdateOrderKey={onUpdateOrderKey}
+          nowKey={order.key}
+          order={order.value}
+          fixedKey="gender"
+        >
+          {' '}
+          {t('project.gender0')}
+        </NewSort>
+      ),
       dataIndex: 'gender',
       key: 'gender',
       width: 80,
       render: (text: any) => GENDER_MAP[text],
     },
     {
-      title: t('mailbox'),
+      title: (
+        <NewSort
+          nowKey={order.key}
+          order={order.value}
+          fixedKey="email"
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          {' '}
+          {t('mailbox')}
+        </NewSort>
+      ),
       width: 160,
       dataIndex: 'email',
       key: 'email',
     },
     {
-      title: t('cell_phone_number'),
+      title: (
+        <NewSort
+          fixedKey="phone"
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          {' '}
+          {t('cell_phone_number')}
+        </NewSort>
+      ),
       width: 160,
       dataIndex: 'phone',
       key: 'phone',
     },
     {
-      title: t('department'),
+      title: (
+        <NewSort
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+          fixedKey="department_name"
+        >
+          {' '}
+          {t('department')}
+        </NewSort>
+      ),
       width: 160,
       dataIndex: 'department_name',
       key: 'department_name',
     },
     {
-      title: t('position'),
+      title: (
+        <NewSort
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+          fixedKey="position_name"
+        >
+          {' '}
+          {t('position')}
+        </NewSort>
+      ),
       width: 160,
       dataIndex: 'position_name',
       key: 'position_name',
     },
     {
-      title: t('team_role'),
+      title: (
+        <NewSort
+          nowKey={order.key}
+          order={order.value}
+          onUpdateOrderKey={onUpdateOrderKey}
+          fixedKey="team_is_admin"
+        >
+          {' '}
+          {t('team_role')}
+        </NewSort>
+      ),
       dataIndex: 'team_is_admin',
       key: 'team_is_admin',
       render: (text: any) =>

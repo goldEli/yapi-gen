@@ -48,31 +48,18 @@ export const boxItem = css`
 `
 
 interface BatchActionProps {
+  open: boolean
   onCancel(): void
   children: ReactNode
 }
 
-const BatchAction = ({ children, onCancel }: BatchActionProps, ref: any) => {
-  const [visible, setVisible] = useState(false)
-
+const BatchAction = ({ open, children, onCancel }: BatchActionProps) => {
   const onClose = () => {
-    setVisible(false)
     onCancel()
   }
-  const open = () => {
-    setVisible(true)
-  }
-
-  useImperativeHandle(ref, () => {
-    return {
-      onClose,
-      open,
-    }
-  })
-
   return (
     <div>
-      {visible ? (
+      {open ? (
         <div className={batchAllBox}>
           <div className={batchBox}>
             <Space size={8}>{children}</Space>
@@ -93,4 +80,4 @@ const BatchAction = ({ children, onCancel }: BatchActionProps, ref: any) => {
   )
 }
 
-export default forwardRef(BatchAction)
+export default BatchAction

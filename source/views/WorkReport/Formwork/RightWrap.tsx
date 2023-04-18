@@ -172,8 +172,10 @@ const RightFormWork = () => {
       const list = parmas.template_configs.filter(
         (el: any) => el.user_type === 1,
       )
-      list.length < 1 && message.warning('谁可以写必选')
-      return false
+      if (list?.length < 1) {
+        message.warning('谁可以写必选')
+        return false
+      }
     } else if (
       parmas.submit_cycle === 1 ||
       parmas.submit_cycle === 2 ||
@@ -201,6 +203,9 @@ const RightFormWork = () => {
     return true
   }
   const saveApi = async () => {
+    const config = reportContent?.template_configs
+      ?.filter((el: any) => el.target_value)
+      ?.filter((item: any) => item.target_value.key !== 'all')
     let parmas: any = {}
     parmas = {
       submit_cycle: fillingRequirements?.submit_cycle,
@@ -214,10 +219,8 @@ const RightFormWork = () => {
       is_all_view: reportContent?.is_all_view,
       is_all_write: reportContent?.is_all_write,
       template_content_configs: templateContentConfigs,
-      template_configs: reportContent?.template_configs?.filter(
-        (el: any) => el.target_value.key !== 'all',
-      ),
-      id: activeItem.id || 0,
+      template_configs: config,
+      id: activeItem?.id || 0,
     }
     parmas.name = templateName || activeItem.name
     parmas.requirement = {
@@ -241,12 +244,11 @@ const RightFormWork = () => {
     } else {
       const res = await createTemplate(parmas)
       await dispatch(getTemplateList())
-      dispatch(setActiveItem({ id: res.data.id, name: res.data }))
+      dispatch(setActiveItem({ id: res.data.id, name: res.data.name }))
       message.success('新增成功')
     }
     dispatch(setEditSave(true))
   }
-  console.log(activeItem, 'activeItem')
   return (
     <RightFormWorkStyle>
       <Title>工作日报</Title>
@@ -300,27 +302,29 @@ const RightFormWork = () => {
       {/* 底部保存 */}
       <BtnRow>
         {isActive === 0 ? (
-          <CommonButton type="light" onClick={() => setIsActive(1)}>
+          <CommonButton
+            type="light"
+            onClick={() => setIsActive(1)}
+            style={{ marginRight: '16px' }}
+          >
             下一步
           </CommonButton>
         ) : (
-          <CommonButton type="light" onClick={() => setIsActive(0)}>
+          <CommonButton
+            type="light"
+            onClick={() => setIsActive(0)}
+            style={{ marginRight: '16px' }}
+          >
             上一步
           </CommonButton>
         )}
-        {editSave ? (
-          <CommonButton type="primary" style={{ margin: '0 0px 0 16px' }}>
-            已保存
-          </CommonButton>
-        ) : (
-          <CommonButton
-            type="primary"
-            onClick={() => saveApi()}
-            style={{ margin: '0 0px 0 16px' }}
-          >
+        {editSave && isActive === 1 ? (
+          <CommonButton type="primary">已保存</CommonButton>
+        ) : isActive === 1 ? (
+          <CommonButton type="primary" onClick={() => saveApi()}>
             保存
           </CommonButton>
-        )}
+        ) : null}
       </BtnRow>
       {/* 预览 */}
       <PreviewDialog
@@ -337,7 +341,7 @@ const RightFormWork = () => {
         text="确认删除模版，删除后将无法汇报"
         isVisible={delIsVisible}
         onConfirm={deleteActiveItem}
-        notCancel
+        onChangeVisible={() => setDelIsVisible(false)}
       />
     </RightFormWorkStyle>
   )
