@@ -125,6 +125,8 @@ const RightTable = () => {
   const [activeMember, setActiveMember] = useState<any>(null)
   const [searchVal, setSearchVal] = useState('')
   const [addMemberVisible, setAddMemberVisible] = useState(false)
+  const [orderKey, setOrderKey] = useState<any>()
+  const [order, setOrder] = useState<any>(3)
   const options = [
     {
       value: 1,
@@ -147,6 +149,9 @@ const RightTable = () => {
       },
     }
     await dispatch(getMemberList(param))
+  }
+  const onUpdateOrderKey = (key: any, oder: any) => {
+    onFetchMemberList({}, { key, value: oder })
   }
   useEffect(() => {
     if (activeTeamId) {
@@ -283,6 +288,7 @@ const RightTable = () => {
       </PersonStyle>
     )
   }
+
   return (
     <RightWrap>
       <HeaderSearch
@@ -292,6 +298,7 @@ const RightTable = () => {
       />
       <TableBox>
         <Table
+          onUpdateOrderKey={onUpdateOrderKey}
           onEditRow={(row: any, state: string) => {
             setActiveMember(row)
             setIsVisible(true),

@@ -180,15 +180,6 @@ const HeaderRight = () => {
       ).includes('b/project/save'),
     },
   ]
-  // TODO: 写汇报
-  // const reportCreateList = [
-  //   {
-  //     name: t('report.list.writeReport'),
-  //     key: 'writeReport',
-  //     icon: '',
-  //     isPermission: true,
-  //   },
-  // ]
 
   const labelList = [
     {
