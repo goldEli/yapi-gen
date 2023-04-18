@@ -161,32 +161,61 @@ const PermissionConfig = (props: PropsType) => {
     dispatch(setEditSave(false))
     setType(e.target.value)
     let value = 0
+    let start = null
+    let end = null
+    let reminder_time = 0
     switch (e.target.value) {
       case 'day':
         value = 1
+        start = {
+          day_type: 1,
+          time: 24 * 60 * 60,
+        }
+        end = {
+          day_type: 1,
+          time: 24 * 60 * 60,
+        }
+        // reminder_time = 1 * 24 * 60 * 60
         break
       case 'week':
         value = 2
+        start = {
+          day_type: 4,
+          time: 24 * 60 * 60,
+        }
+        end = {
+          day_type: 7,
+          time: 24 * 60 * 60,
+        }
         break
       case 'month':
         value = 3
+        start = {
+          day_type: 25,
+          time: 24 * 60 * 60,
+        }
+        end = {
+          day_type: 34,
+          time: 24 * 60 * 60,
+        }
         break
       default:
         value = 4
         break
     }
+
     const claerConfig: any = {
-      day: [],
+      day: [0, 1, 2, 3, 4],
       hand_scope: 1,
-      is_submitter_edit: false,
-      is_cycle_limit: false,
-      is_supply: false,
-      reminder_time: null,
-      auto_reminder: false,
+      is_submitter_edit: true,
+      is_cycle_limit: true,
+      is_supply: true,
+      reminder_time,
+      auto_reminder: true,
       submit_cycle: 1,
-      is_holiday: false,
-      end_time: null,
-      start_time: null,
+      is_holiday: true,
+      end_time: end,
+      start_time: start,
     }
     dispatch(setFillingRequirements({ ...claerConfig, submit_cycle: value }))
   }

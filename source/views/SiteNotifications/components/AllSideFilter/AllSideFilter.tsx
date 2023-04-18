@@ -106,8 +106,8 @@ const AllSideFilter = (props: any) => {
   }
 
   useEffect(() => {
-    init()
-  }, [])
+    isVisibleFilter ? init() : null
+  }, [isVisibleFilter])
 
   return (
     <Drawer

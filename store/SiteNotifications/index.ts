@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 type SliceState = {
+  all: number
   friendUsername: string
   isVisible: boolean
   isVisibleFilter: boolean
@@ -14,6 +15,7 @@ type SliceState = {
 const slice = createSlice({
   name: 'SiteNotifications',
   initialState: {
+    all: 0,
     configuration: [],
     myConfiguration: [],
     myEmailConfiguration: [],
@@ -21,6 +23,9 @@ const slice = createSlice({
     msgType: [],
   } as SliceState,
   reducers: {
+    changeNumber: (state, action) => {
+      state.all = action.payload
+    },
     changeVisible: (state, action) => {
       state.isVisible = action.payload
     },
@@ -45,6 +50,7 @@ const slice = createSlice({
 })
 
 export const {
+  changeNumber,
   changeVisible,
   changeVisibleFilter,
   setConfiguration,

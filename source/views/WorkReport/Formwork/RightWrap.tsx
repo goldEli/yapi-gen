@@ -203,9 +203,9 @@ const RightFormWork = () => {
     return true
   }
   const saveApi = async () => {
-    const config =
-      reportContent?.template_configs?.filter((el: any) => el.target_value) ||
-      []
+    const config = reportContent?.template_configs
+      ?.filter((el: any) => el.target_value)
+      ?.filter((item: any) => item.target_value.key !== 'all')
     let parmas: any = {}
     parmas = {
       submit_cycle: fillingRequirements?.submit_cycle,
