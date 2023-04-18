@@ -224,7 +224,12 @@ const RightFormWork = () => {
     }
     parmas.name = templateName || activeItem.name
     parmas.requirement = {
-      day: fillingRequirements?.day,
+      day:
+        fillingRequirements.submit_cycle === 1
+          ? fillingRequirements?.day
+              .filter((el: { value: boolean }) => el.value)
+              .map((el: { key: number }) => el.key)
+          : [],
       end_time: fillingRequirements?.end_time,
       start_time: fillingRequirements?.start_time,
       is_holiday: fillingRequirements?.is_holiday ? 1 : 2,

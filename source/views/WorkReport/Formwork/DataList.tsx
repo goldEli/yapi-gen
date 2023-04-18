@@ -515,6 +515,43 @@ export const monthData: any = [
     key: 0,
   },
 ]
+export const aWeekDataList = [
+  {
+    label: '周一',
+    key: 0,
+    value: true,
+  },
+  {
+    label: '周二',
+    key: 1,
+    value: true,
+  },
+  {
+    label: '周三',
+    key: 2,
+    value: true,
+  },
+  {
+    label: '周四',
+    key: 3,
+    value: true,
+  },
+  {
+    label: '周五',
+    key: 4,
+    value: true,
+  },
+  {
+    label: '周六',
+    key: 5,
+    value: false,
+  },
+  {
+    label: '周日',
+    key: 6,
+    value: false,
+  },
+]
 export default {
   startWeekData,
   endWeekData,
@@ -528,4 +565,5 @@ export default {
   dayData1,
   weekData,
   monthData,
+  aWeekDataList,
 }

@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { createSlice } from '@reduxjs/toolkit'
 import { getTemplateList, templateDetail } from './thunk'
-
 type SliceState = {
   // 编辑的状态
   editSave: boolean
@@ -22,7 +21,6 @@ type SliceState = {
   // 详情数据
   templateDetailValues: any
   // 周数据
-  aWeekDataList: any
 }
 
 const formWork = createSlice({
@@ -62,43 +60,6 @@ const formWork = createSlice({
         type: 1,
       },
     ],
-    aWeekDataList: [
-      {
-        label: '周一',
-        key: 0,
-        value: true,
-      },
-      {
-        label: '周二',
-        key: 1,
-        value: true,
-      },
-      {
-        label: '周三',
-        key: 2,
-        value: true,
-      },
-      {
-        label: '周四',
-        key: 3,
-        value: true,
-      },
-      {
-        label: '周五',
-        key: 4,
-        value: true,
-      },
-      {
-        label: '周六',
-        key: 5,
-        value: true,
-      },
-      {
-        label: '周日',
-        key: 6,
-        value: true,
-      },
-    ],
   } as SliceState,
   reducers: {
     // 当前选中的
@@ -128,9 +89,6 @@ const formWork = createSlice({
     setDataList: (state: any, action) => {
       state.dataList = action.payload
     },
-    setAWeekDataList: (state: any, action) => {
-      state.aWeekDataList = action.payload
-    },
     setEditSave: (state: any, action) => {
       state.editSave = action.payload
     },
@@ -155,13 +113,58 @@ const formWork = createSlice({
         is_all_view: data.is_all_view,
         is_all_write: data.is_all_write,
       }
+      const nowData = [
+        {
+          label: '周一',
+          key: 0,
+          value: true,
+        },
+        {
+          label: '周二',
+          key: 1,
+          value: true,
+        },
+        {
+          label: '周三',
+          key: 2,
+          value: true,
+        },
+        {
+          label: '周四',
+          key: 3,
+          value: true,
+        },
+        {
+          label: '周五',
+          key: 4,
+          value: true,
+        },
+        {
+          label: '周六',
+          key: 5,
+          value: true,
+        },
+        {
+          label: '周日',
+          key: 6,
+          value: true,
+        },
+      ]
+      let dayData = []
+      if (data.submit_cycle == 1) {
+        const newData = data.requirement.day
+        dayData = nowData.map((item: any) => ({
+          ...item,
+          value: newData?.includes(item.key) ? true : false,
+        }))
+      }
       state.fillingRequirements = {
         // 填写周期 1-每天 2-每周 3-每月 4-不重复
         submit_cycle: data.submit_cycle,
         // 填写周期每天属性：是否跟随中国法定节假日自动调整，1：是，2：否
         is_holiday: data.requirement.is_holiday === 1 ? true : false,
         // 填写周期每天属性：0：周一，1：周二以此类推
-        day: data.requirement.day,
+        day: dayData,
         // 截止时间
         end_time: data.requirement.end_time,
         // 开始时间
@@ -191,7 +194,6 @@ export const {
   setErr,
   setTemplateName,
   setDataList,
-  setAWeekDataList,
   setEditSave,
 } = formWork.actions
 export default formWork.reducer
