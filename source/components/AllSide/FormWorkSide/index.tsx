@@ -154,7 +154,7 @@ const FormWorkSide = () => {
     ]
     dispatch(setTemplateContentConfigs(data))
     const claerConfig: any = {
-      day: [],
+      day: [0, 1, 2, 3, 4],
       template_configs: [],
       hand_scope: 1,
       is_all_write: 2,
@@ -166,8 +166,14 @@ const FormWorkSide = () => {
       auto_reminder: true,
       submit_cycle: 1,
       is_holiday: true,
-      end_time: null,
-      start_time: null,
+      end_time: {
+        day_type: 1,
+        time: 24 * 60 * 60,
+      },
+      start_time: {
+        day_type: 1,
+        time: 24 * 60 * 60,
+      },
     }
     dispatch(
       setReportContent({
