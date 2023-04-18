@@ -254,6 +254,9 @@ const RightFormWork = () => {
     }
     dispatch(setEditSave(true))
   }
+  useEffect(() => {
+    setIsActive(0)
+  }, [activeItem])
   return (
     <RightFormWorkStyle>
       <Title>工作日报</Title>
