@@ -14,6 +14,7 @@ import {
   setReportContent,
   setTemplateContentConfigs,
 } from '@store/formWork'
+import { aWeekDataList } from '@/views/WorkReport/Formwork/DataList'
 // getTemplateList
 const FormWorkSideStyle = styled.div`
   min-width: 200px;
@@ -154,7 +155,7 @@ const FormWorkSide = () => {
     ]
     dispatch(setTemplateContentConfigs(data))
     const claerConfig: any = {
-      day: [0, 1, 2, 3, 4],
+      day: aWeekDataList,
       template_configs: [],
       hand_scope: 1,
       is_all_write: 2,
