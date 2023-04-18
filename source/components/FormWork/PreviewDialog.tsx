@@ -185,7 +185,6 @@ const WhiteDay = (props: Props) => {
   }
   const onConfirm = () => {
     const values = form.getFieldsValue()
-    // console.log(values)
   }
   const getMain = (item: any) => {
     if (item.type == 3) {

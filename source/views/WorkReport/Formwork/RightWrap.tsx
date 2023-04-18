@@ -243,7 +243,7 @@ const RightFormWork = () => {
     } else {
       const res = await createTemplate(parmas)
       await dispatch(getTemplateList())
-      dispatch(setActiveItem({ id: res.data.id, name: res.data }))
+      dispatch(setActiveItem({ id: res.data.id, name: res.data.name }))
       message.success('新增成功')
     }
     dispatch(setEditSave(true))
