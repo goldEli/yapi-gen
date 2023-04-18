@@ -64,7 +64,6 @@ export const refreshCalendarPanelScheduleList =
       case 'month':
         dispatch(getScheduleListDaysOfMonth(newParams))
         break
-
       default:
         break
     }
@@ -141,7 +140,7 @@ export const getScheduleInfo = createAsyncThunk(
 // 日程搜索
 export const getScheduleSearch = createAsyncThunk(
   `${name}/getScheduleSearch`,
-  async (params: { calendar_ids: number[]; year: number; keyword: string }) => {
+  async (params: API.Schedule.SearchKeys.params) => {
     const res = await services.schedule.getScheduleSearch(params)
     return res
   },

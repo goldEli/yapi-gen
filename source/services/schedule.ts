@@ -107,10 +107,7 @@ export const getScheduleDaysOfMonthList = async (
   return res
 }
 // 日程回复
-export const scheduleInfoReply = async (params: {
-  id: number | string
-  status: number
-}) => {
+export const scheduleInfoReply = async (params: API.Schedule.Reply.params) => {
   const response = await http.post<any, any>(`/b/schedule/${params.id}/reply`, {
     status: params.status,
   })
@@ -118,10 +115,9 @@ export const scheduleInfoReply = async (params: {
 }
 
 // 日程删除
-export const scheduleInfoDelete = async (params: {
-  id: string
-  is_remind: boolean
-}) => {
+export const scheduleInfoDelete = async (
+  params: API.Schedule.Delete.params,
+) => {
   const response = await http.delete<any, any>(`/b/schedule/${params.id}`, {
     is_remind: params.is_remind,
   })
@@ -129,11 +125,9 @@ export const scheduleInfoDelete = async (params: {
 }
 
 // 日程转让
-export const scheduleInfoTransfer = async (params: {
-  id: string | undefined
-  is_exit: boolean
-  user_id: number
-}) => {
+export const scheduleInfoTransfer = async (
+  params: API.Schedule.Transfer.params,
+) => {
   const response = await http.post<any, any>(
     `/b/schedule/${params.id}/makeOver`,
     {
@@ -144,11 +138,9 @@ export const scheduleInfoTransfer = async (params: {
   return response.data
 }
 // 日程搜索
-export const getScheduleSearch = async (params: {
-  calendar_ids: number[]
-  year: number
-  keyword: string
-}) => {
+export const getScheduleSearch = async (
+  params: API.Schedule.SearchKeys.params,
+) => {
   const response = await http.post<any, any>(`getScheduleSearch`, params)
   return response.data
 }

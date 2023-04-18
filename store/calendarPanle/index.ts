@@ -59,7 +59,7 @@ const defaultMonthMoveScheduleActiveInfo = {
 }
 
 const initialState: SliceState = {
-  calendarPanelType: 'month',
+  calendarPanelType: 'day',
   quickCreateScheduleModel: {
     isAll: false,
     startTime: '',
@@ -163,7 +163,6 @@ const slice = createSlice({
       state,
       action: PayloadAction<SliceState['calendarPanelType']>,
     ) {
-      console.log(action.payload)
       state.calendarPanelType = action.payload
     },
     setQuickCreateScheduleModel(

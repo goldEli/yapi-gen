@@ -65,5 +65,16 @@ declare namespace API.Schedule {
     }
   }
 
-  namespace
+  namespace SearchKeys {
+    type params = { calendar_ids: number[]; year: number; keyword?: string }
+  }
+  namespace Reply {
+    type params = { id: number | string; status: number }
+  }
+  namespace Transfer {
+    type params = { id: string; is_exit: boolean; user_id: number }
+  }
+  namespace Delete {
+    type params = { id: string; is_remind: boolean }
+  }
 }

@@ -10,6 +10,7 @@ import {
   setCalenderListValue,
   setScheduleSearchKey,
   setCalenderYearWeekValue,
+  setScheduleInfoDropdown,
 } from '@store/calendarPanle'
 import { setCheckedTime } from '@store/calendar'
 import { useDispatch, useSelector } from '@store/index'
@@ -70,8 +71,8 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
   )
   // 左侧日历切换的值
   const checkedTime = useSelector(state => state.calendar.checkedTime)
-  
-  const dayValue = useRef<string>();
+
+  const dayValue = useRef<string>()
   const monthValue = useRef<string>()
 
   useEffect(() => {
@@ -128,7 +129,7 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
     }
   `
   const listenDay = (): void => {
-    const { current } = iconTypeRef;
+    const { current } = iconTypeRef
     if (current === 1) {
       dispatch(
         setCalenderDayValue(
@@ -136,22 +137,26 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
         ),
       )
 
-      dayValue.current = dayjs(calenderDayValue).add(1, 'day').format('YYYY-MM-DD');
+      dayValue.current = dayjs(calenderDayValue)
+        .add(1, 'day')
+        .format('YYYY-MM-DD')
     } else if (current === -1) {
       dispatch(
         setCalenderDayValue(
           dayjs(calenderDayValue).subtract(1, 'day').format('YYYY-MM-DD'),
         ),
       )
-      dayValue.current = dayjs(calenderDayValue).subtract(1, 'day').format('YYYY-MM-DD');
+      dayValue.current = dayjs(calenderDayValue)
+        .subtract(1, 'day')
+        .format('YYYY-MM-DD')
     } else {
       dispatch(setCalenderDayValue(dayjs().format('YYYY-MM-DD')))
-      dayValue.current = dayjs().format('YYYY-MM-DD');
+      dayValue.current = dayjs().format('YYYY-MM-DD')
     }
     dispatch(setCheckedTime(dayValue.current))
   }
   const listenWeek = (): void => {
-    const { current } = iconTypeRef;
+    const { current } = iconTypeRef
     let newWeekValue = null
     if (current === 1) {
       //dayjs('2018-06-27').week()
@@ -167,7 +172,9 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
           dayjs(calenderWeekValue).subtract(1, 'week').format('YYYY-M-D'),
         ),
       )
-      newWeekValue = dayjs(calenderWeekValue).subtract(1, 'week').format('YYYY-M-D')
+      newWeekValue = dayjs(calenderWeekValue)
+        .subtract(1, 'week')
+        .format('YYYY-M-D')
     } else {
       dispatch(setCalenderWeekValue(dayjs().format('YYYY-M-D')))
       newWeekValue = dayjs().format('YYYY-M-D')
@@ -184,14 +191,18 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
           dayjs(calenderMonthValue).add(1, 'month').format('YYYY-MM'),
         ),
       )
-      monthValue.current = dayjs(calenderMonthValue).add(1, 'month').format('YYYY-MM')
+      monthValue.current = dayjs(calenderMonthValue)
+        .add(1, 'month')
+        .format('YYYY-MM')
     } else if (current === -1) {
       dispatch(
         setCalenderMonthValue(
           dayjs(calenderMonthValue).subtract(1, 'month').format('YYYY-MM'),
         ),
       )
-      monthValue.current = dayjs(calenderMonthValue).subtract(1, 'month').format('YYYY-MM')
+      monthValue.current = dayjs(calenderMonthValue)
+        .subtract(1, 'month')
+        .format('YYYY-MM')
     } else {
       dispatch(setCalenderMonthValue(dayjs().format('YYYY-MM')))
       monthValue.current = dayjs().format('YYYY-MM')
@@ -241,14 +252,14 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
     ['year', listenYear],
     ['list', listenList],
   ])
-  const prevYearClick = (e:any) => {
+  const prevYearClick = (e: any) => {
     e.stopPropagation()
     iconTypeRef.current = -1
     let methods = maps.get(calendarPanelType) as Function
     methods()
   }
 
-  const nextYearClick = (e:any) => {
+  const nextYearClick = (e: any) => {
     console.log(e)
     iconTypeRef.current = 1
     let methods = maps.get(calendarPanelType) as Function
@@ -289,7 +300,6 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
             marginRight: '10px',
           }}
           onChange={(value: Model.Calendar.CalendarPanelType) => {
-            console.log('list',value)
             setInputDefaultValue('')
             dispatch(setCalendarPanelType(value))
             dispatch(setCalenderDayValue(dayjs().format('YYYY-MM-DD')))
@@ -297,6 +307,9 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
             dispatch(setCalenderMonthValue(dayjs().format('YYYY-MM')))
             dispatch(setCalenderYearValue(dayjs().format('YYYY')))
             dispatch(setCalenderListValue(dayjs().format('YYYY-MM')))
+            dispatch(
+              setScheduleInfoDropdown({ schedule_id: 0, visible: false }),
+            )
           }}
           options={selectOptions}
           allowClear
@@ -309,7 +322,7 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
             setInputDefaultValue(value)
             dispatch(setScheduleSearchKey(value))
           }}
-          onFocus={()=>{
+          onFocus={() => {
             dispatch(setCalendarPanelType('list'))
           }}
         ></InputSearch>

@@ -40,7 +40,7 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
     setIsVisible(false)
   }
   const confirmTranster = async () => {
-    let params = {
+    const params = {
       is_exit: isExit,
       user_id: userId ?? 0,
       id: scheduleInfo?.id ? String(scheduleInfo?.id) : '',
@@ -52,12 +52,11 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
       setShowTipBox(false)
       disPatch(setScheduleInfoDropdown({ visible: false }))
     } catch (error) {
-      //
+      console.log(error)
     }
   }
   const confirmDelete = async () => {
-    console.log()
-    let params = {
+    const params = {
       id: scheduleInfo?.id ? String(scheduleInfo?.id) : '',
       is_remind: checked,
     }
@@ -67,7 +66,7 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
       message.success(t('common.deleteSuccess'))
       disPatch(setScheduleInfoDropdown({ visible: false }))
     } catch (error) {
-      //
+      console.log(error)
     }
   }
   return (
@@ -102,7 +101,9 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
               <BoxTip>
                 <span
                   onClick={() => {
-                    if (!scheduleInfo) return
+                    if (!scheduleInfo) {
+                      return
+                    }
                     disPatch(
                       setScheduleModal({
                         visible: true,
@@ -169,6 +170,11 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
             placeholder="搜索新的所有者"
             optionLabelProp="label"
             showSearch={true}
+            filterOption={(input, option) =>
+              ((option?.label ?? '') as string)
+                .toLowerCase()
+                .includes(input.toLowerCase())
+            }
             onSelect={value => {
               setUserId(value)
             }}

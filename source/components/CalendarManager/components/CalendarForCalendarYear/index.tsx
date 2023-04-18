@@ -8,9 +8,11 @@ import styled from '@emotion/styled'
 import HeaderRender from './HeaderRender'
 import { css } from '@emotion/css'
 import { setScheduleListModal, setScheduleDate } from '@store/schedule'
-import {getScheduleSearch} from '@store/schedule/schedule.thunk'
+import { getScheduleSearch } from '@store/schedule/schedule.thunk'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
 import { useDispatch, useSelector } from '@store/index'
+import Loading from '@/components/Loading'
+
 dayjs.extend(dayLocaleData)
 
 const DayBox = styled.div`
