@@ -12,7 +12,6 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonIconFont from '@/components/CommonIconFont'
 import { DragLine } from '@/components/StyleCommon'
-import DetailsSkeleton from '@/components/DemandDetailDrawer/DetailsSkeleton'
 import { throttle } from 'lodash'
 import { uploadFileToKey } from '@/services/cos'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
@@ -41,6 +40,7 @@ import {
 } from '@/services/report'
 import UploadAttach from '@/components/UploadAttach'
 import CommonButton from '@/components/CommonButton'
+import ReportDetailSkeleton from './ReportDetailSkeleton'
 
 interface TargetTabsProps {
   list: any
@@ -374,7 +374,7 @@ const ReportDetailDrawer = () => {
         </Space>
       </Header>
       <Content isReview={isReview} ref={reviewRef}>
-        {skeletonLoading && <DetailsSkeleton />}
+        {skeletonLoading && <ReportDetailSkeleton />}
         {!skeletonLoading && (
           <>
             <ContentHeadWrap>
