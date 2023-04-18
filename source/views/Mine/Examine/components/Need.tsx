@@ -280,19 +280,22 @@ const Need = (props: any) => {
               leftIcon
             />
           </div>
+
+          <ScreenMinHover
+            label={t('common.refresh')}
+            icon="sync"
+            onClick={onUpdate}
+            style={{ marginRight: 8 }}
+          />
+
+          <DividerWrap type="vertical" />
+
           <ScreenMinHover
             label={t('common.search')}
             icon="filter"
             onClick={() => setFilterState(!filterState)}
             isActive={!filterState}
             style={{ margin: '0 8px' }}
-          />
-          <DividerWrap type="vertical" />
-          <ScreenMinHover
-            label={t('common.refresh')}
-            icon="sync"
-            onClick={onUpdate}
-            style={{ marginLeft: 8 }}
           />
         </SearchWrap>
       </div>
