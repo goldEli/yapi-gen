@@ -31,6 +31,7 @@ import {
 } from '@store/category/index'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
+import { CloseWrap } from '@/components/StyleCommon'
 
 const IconFontStyle = styled(IconFont)({
   color: 'var(--neutral-n2)',
@@ -254,7 +255,13 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
         <TitleStyle>
           <span>{t('demandSettingSide.classification')}</span>{' '}
           {isCreate > 0 && (
-            <IconFontStyle type="plus" onClick={() => setIsVisible(true)} />
+            <CloseWrap width={24} height={24}>
+              <IconFont
+                style={{ fontSize: 18 }}
+                type="plus"
+                onClick={() => setIsVisible(true)}
+              />
+            </CloseWrap>
           )}
         </TitleStyle>
         <Tabs>

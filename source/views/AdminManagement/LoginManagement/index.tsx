@@ -32,10 +32,15 @@ const Header = styled.div({
   top: 0,
   zIndex: 9,
   padding: '24px 24px 20px',
-  '.title': {
-    fontSize: 16,
-    fontFamily: 'SiYuanMedium',
-    color: 'var(--neutral-n1-d1)',
+  '.title-bar': {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    '.title-text': {
+      fontSize: 16,
+      fontFamily: 'SiYuanMedium',
+      color: 'var(--neutral-n1-d1)',
+    },
   },
 })
 
@@ -326,7 +331,14 @@ const LoginManagement = () => {
         onValuesChange={onValuesChange}
       >
         <Header>
-          <div className="title">{t('setting.loginLog')}</div>
+          <div className="title-bar">
+            <div className="title-text"> {t('setting.loginLog')} </div>
+            <ScreenMinHover
+              label={t('common.refresh')}
+              icon="sync"
+              onClick={onValuesChange}
+            />
+          </div>
           <SearchWrap size={16}>
             <SelectWrapBedeck>
               <span style={{ margin: '0 12px', fontSize: '14px' }}>
@@ -374,12 +386,6 @@ const LoginManagement = () => {
             >
               {t('common.clearForm')}
             </div>
-
-            <ScreenMinHover
-              label={t('common.refresh')}
-              icon="sync"
-              onClick={onValuesChange}
-            />
           </SearchWrap>
         </Header>
         <Content>

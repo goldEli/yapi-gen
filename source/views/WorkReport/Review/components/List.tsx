@@ -1,14 +1,13 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useEffect, useMemo, useState } from 'react'
-import { Tooltip } from 'antd'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useParams } from 'react-router-dom'
 import { SelectWrapBedeck } from '@/components/StyleCommon'
 import moment from 'moment'
 import RangePicker from '@/components/RangePicker'
-import CustomSelect from '@/components/CustomSelect'
+import CustomSelect from '@/components/MoreSelect'
 import InputSearch from '@/components/InputSearch'
 import ResizeTable from '@/components/ResizeTable'
 import PaginationBox from '@/components/TablePagination'
@@ -27,6 +26,8 @@ import { useDispatch } from '@store/index'
 import { setViewReportModal } from '@store/workReport'
 import LabelTag from '@/components/LabelTag'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
+import { Space, Tooltip } from 'antd'
+import ScreenMinHover from '@/components/ScreenMinHover'
 
 const ListTitle = styled.div`
   height: 32px;
@@ -35,7 +36,7 @@ const ListTitle = styled.div`
   align-items: center;
   justify-content: space-between;
   margin: 20px 24px 20px 24px;
-  span {
+  .title-text {
     font-size: 16px;
     font-family: SiYuanMedium;
     font-weight: 500;
@@ -56,9 +57,6 @@ const ListHead = styled.div({
 const SelectWrapForList = styled(SelectWrapBedeck)`
   margin-right: 16px;
 `
-const ListContent = styled.div`
-  height: calc(100% - ${50}px);
-`
 
 const ClearButton = styled.div`
   width: 56px;
@@ -74,25 +72,6 @@ const ClearButton = styled.div`
 `
 const defaultPageParam = { page: 1, pagesize: 20 }
 
-const statusOptions = [
-  { label: '未读', value: 1 },
-  { label: '已读', value: 2 },
-  { label: '已评', value: 3 },
-]
-const reportState = [
-  {
-    label: '更新',
-    color: '#E56F0E',
-    background: 'rgba(250,151,70,0.1)',
-    state: 1,
-  },
-  {
-    label: '补交',
-    color: '#7641E8 ',
-    background: 'rgba(161,118,251,0.1)',
-    state: 2,
-  },
-]
 const List = () => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
@@ -108,6 +87,25 @@ const List = () => {
   const [visibleEdit, setVisibleEdit] = useState(false)
   const params = useParams()
   const id = Number(params?.id)
+  const statusOptions = [
+    { label: t('p2.noRead'), value: 1 },
+    { label: t('p2.haveRead'), value: 2 },
+    { label: t('report.list.haveComment'), value: 3 },
+  ]
+  const reportState = [
+    {
+      label: t('report.list.update'),
+      color: '#E56F0E',
+      background: 'rgba(250,151,70,0.1)',
+      state: 1,
+    },
+    {
+      label: t('report.list.makeup'),
+      color: '#7641E8 ',
+      background: 'rgba(161,118,251,0.1)',
+      state: 2,
+    },
+  ]
 
   const menuList = [
     {
@@ -171,8 +169,6 @@ const List = () => {
   }
 
   const onUpdateOrderKey = (key: any, val: any) => {
-    console.log(key, val, 'e4324')
-
     setQueryParams({
       ...queryParams,
       order: val === 2 ? 'desc' : 'asc',
@@ -328,8 +324,8 @@ const List = () => {
 
   const onChangeTime = (type: string, dates: any) => {
     const date = []
-    date[0] = moment(dates[0]).format('YYYY-MM-DD')
-    date[1] = moment(dates[1]).format('YYYY-MM-DD')
+    date[0] = dates ? moment(dates[0]).format('YYYY-MM-DD') : null
+    date[1] = dates ? moment(dates[1]).format('YYYY-MM-DD') : null
     if (type === 'report') {
       setQueryParams({
         ...queryParams,
@@ -358,9 +354,10 @@ const List = () => {
     })
   }
   const onChangeRepType = (value: any) => {
+    console.log(value)
     setQueryParams({
       ...queryParams,
-      report_template_id: value,
+      report_template_ids: value,
     })
   }
 
@@ -441,13 +438,12 @@ const List = () => {
     return {
       label: item.name,
       value: item.id,
+      id: item.id,
     }
   }
   const getTemplateList = async () => {
     const data = await templateList()
-    setRepTypeOptions(
-      [{ label: '所有', value: null }].concat(data.map(generateOptions)),
-    )
+    setRepTypeOptions(data.map(generateOptions))
   }
 
   const getUserList = async () => {
@@ -461,22 +457,22 @@ const List = () => {
   }, [])
 
   return (
-    <div
-      style={{
-        height: 'calc(100% - 64px)',
-        overflow: 'hidden',
-      }}
-    >
+    <>
       <ListTitle>
-        <span>{title}</span>
-        <div>
+        <span className="title-text">{title}</span>
+        <Space size={24}>
           <InputSearch
             placeholder={t('report.list.search')}
             onChangeSearch={onPressEnter}
             leftIcon
             isReport
           />
-        </div>
+          <ScreenMinHover
+            label={t('common.refresh')}
+            icon="sync"
+            onClick={getList}
+          />
+        </Space>
       </ListTitle>
       <ListHead>
         <SelectWrapForList>
@@ -484,14 +480,15 @@ const List = () => {
             {t('report.list.reportType')}
           </span>
           <CustomSelect
+            more
             style={{ width: 148 }}
             getPopupContainer={(node: any) => node}
             allowClear
             optionFilterProp="label"
-            defaultValue={[null]}
             value={[queryParams.report_template_id || null]}
             options={repTypeOptions}
             onChange={onChangeRepType}
+            onConfirm={() => null}
           />
         </SelectWrapForList>
         {id !== 1 && (id === 2 || id === 3) ? extraSelect : null}
@@ -517,37 +514,32 @@ const List = () => {
             onChange={date => onChangeTime('submit', date)}
           />
         </SelectWrapForList>
-        <ClearButton onClick={restQuery}>清除条件</ClearButton>
+        <ClearButton onClick={restQuery}>{t('common.clearForm')}</ClearButton>
       </ListHead>
-      <ListContent>
-        <div style={{ height: 'calc(100% - 125px)' }}>
-          <ResizeTable
-            isSpinning={isSpinning}
-            dataWrapNormalHeight="100%"
-            col={
-              id === 1
-                ? columns
-                : columns?.filter((item: any) => item.dataIndex)
-            }
-            noData={<NoData />}
-            dataSource={listData}
-          />
-        </div>
-        <PaginationBox
-          total={total}
-          pageSize={pageObj.pagesize}
-          currentPage={pageObj.page}
-          onChange={onChangePage}
-        />
-      </ListContent>
+
+      <ResizeTable
+        isSpinning={isSpinning}
+        dataWrapNormalHeight="calc(100vh - 251px)"
+        col={
+          id === 1 ? columns : columns?.filter((item: any) => item.dataIndex)
+        }
+        noData={<NoData />}
+        dataSource={listData}
+      />
+      <PaginationBox
+        total={total}
+        pageSize={pageObj.pagesize}
+        currentPage={pageObj.page}
+        onChange={onChangePage}
+      />
 
       <HandleReport
         editId={editId}
         visibleEdit={visibleEdit}
         editClose={() => setVisibleEdit(false)}
-        visibleEditText="修改汇报"
+        visibleEditText={t('report.list.modifyReport')}
       />
-    </div>
+    </>
   )
 }
 

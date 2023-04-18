@@ -161,7 +161,6 @@ const Sortable = (props: any) => {
         return '关联需求'
     }
   }
-  console.log(list, 'list')
   return (
     <div
       draggable="false"

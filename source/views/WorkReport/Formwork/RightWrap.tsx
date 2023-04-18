@@ -19,6 +19,7 @@ import {
   createTemplate,
 } from '@/services/formwork'
 import { getTemplateList, templateDetail } from '@store/formWork/thunk'
+import { getBatchEditConfig } from '@/services/demand'
 const RightFormWorkStyle = styled.div`
   flex: 1;
   overflow: hidden;
@@ -134,7 +135,6 @@ const RightFormWork = () => {
   const [delIsVisible, setDelIsVisible] = useState(false)
   const {
     editSave,
-    dataList,
     activeItem,
     reportContent,
     templateContentConfigs,
@@ -181,6 +181,15 @@ const RightFormWork = () => {
       parmas.submit_cycle === 2 ||
       parmas.submit_cycle === 3
     ) {
+      if (parmas.submit_cycle === 1) {
+        if (
+          parmas.requirement?.start_time?.time >
+          parmas.requirement?.end_time?.time
+        ) {
+          message.warning('结束时间不能小于开始时间')
+          return false
+        }
+      }
       if (!parmas.requirement.start_time) {
         message.warning('开始时间必填')
         return false
@@ -224,8 +233,16 @@ const RightFormWork = () => {
     }
     parmas.name = templateName || activeItem.name
     parmas.requirement = {
-      day: fillingRequirements?.day,
-      end_time: fillingRequirements?.end_time,
+      day:
+        fillingRequirements.submit_cycle === 1
+          ? fillingRequirements?.day
+              .filter((el: { value: boolean }) => el.value)
+              .map((el: { key: number }) => el.key)
+          : [],
+      end_time:
+        fillingRequirements.submit_cycle === 4
+          ? fillingRequirements?.end_time / 1000
+          : fillingRequirements?.end_time,
       start_time: fillingRequirements?.start_time,
       is_holiday: fillingRequirements?.is_holiday ? 1 : 2,
     }
@@ -248,6 +265,29 @@ const RightFormWork = () => {
       message.success('新增成功')
     }
     dispatch(setEditSave(true))
+  }
+  useEffect(() => {
+    setIsActive(0)
+  }, [activeItem])
+  const getBtn = () => {
+    // 编辑的情况0和1都应该有
+    if (editSave && activeItem?.id) {
+      return <CommonButton type="primary">已保存</CommonButton>
+    } else if (!editSave && activeItem?.id) {
+      return (
+        <CommonButton type="primary" onClick={() => saveApi()}>
+          保存
+        </CommonButton>
+      )
+    } else if (!editSave && !activeItem?.id && isActive === 1) {
+      return (
+        <CommonButton type="primary" onClick={() => saveApi()}>
+          保存
+        </CommonButton>
+      )
+    } else if (editSave && !activeItem?.id && isActive === 1) {
+      return <CommonButton type="primary">已保存</CommonButton>
+    }
   }
   return (
     <RightFormWorkStyle>
@@ -318,13 +358,7 @@ const RightFormWork = () => {
             上一步
           </CommonButton>
         )}
-        {editSave && isActive === 1 ? (
-          <CommonButton type="primary">已保存</CommonButton>
-        ) : isActive === 1 ? (
-          <CommonButton type="primary" onClick={() => saveApi()}>
-            保存
-          </CommonButton>
-        ) : null}
+        <>{getBtn()}</>
       </BtnRow>
       {/* 预览 */}
       <PreviewDialog

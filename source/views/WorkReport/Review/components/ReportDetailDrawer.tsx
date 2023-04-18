@@ -20,7 +20,6 @@ import {
   BackIcon,
   ChangeIconGroup,
   Content,
-  SkeletonStatus,
   UpWrap,
   DownWrap,
   ContentHeadWrap,
@@ -333,11 +332,6 @@ const ReportDetailDrawer = () => {
               color="var(--neutral-n1-d1)"
             />
           </BackIcon>
-          {skeletonLoading && (
-            <SkeletonStatus>
-              <Skeleton.Input active />
-            </SkeletonStatus>
-          )}
         </Space>
         <Space size={16}>
           <ChangeIconGroup>
@@ -397,9 +391,9 @@ const ReportDetailDrawer = () => {
                     {t('report.list.of')}
                     {drawerInfo?.report_template_name}
                     <span className="dateText">
-                      （{drawerInfo?.start_time}
-                      {t('report.list.to')}
-                      {drawerInfo?.end_time}）
+                      {`（${drawerInfo?.start_time} ${t('report.list.to')} ${
+                        drawerInfo?.end_time
+                      }）`}
                     </span>
                   </div>
                   <div className="submitTimeText">
@@ -425,17 +419,23 @@ const ReportDetailDrawer = () => {
             ))}
             <DetailItem>
               <div className="title">{t('common.comment')}</div>
-              {commentList.map((i: any) => (
-                <CommentBox key={i.id}>
-                  <div className="header">
-                    <CommonUserAvatar name={i.comment_user.name} />
-                    <div className="time">{i.created_at || '--'}</div>
-                  </div>
-                  <div className="content">
-                    <Editor readonly disableUpdateValue value={i?.content} />
-                  </div>
-                </CommentBox>
-              ))}
+              {commentList && commentList.length
+                ? commentList.map((i: any) => (
+                    <CommentBox key={i.id}>
+                      <div className="header">
+                        <CommonUserAvatar name={i.comment_user.name} />
+                        <div className="time">{i.created_at || '--'}</div>
+                      </div>
+                      <div className="content">
+                        <Editor
+                          readonly
+                          disableUpdateValue
+                          value={i?.content}
+                        />
+                      </div>
+                    </CommentBox>
+                  ))
+                : '--'}
             </DetailItem>
           </>
         )}

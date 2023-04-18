@@ -504,23 +504,26 @@ const Iteration = () => {
               </Item>
             </TitleWrap>
             {type === 'demand' && (
-              <OperationWrap size={16}>
-                {hasFilter ? null : (
-                  <ScreenMinHover
-                    label={t('common.search')}
-                    icon="filter"
-                    onClick={() => setFilterState(!filterState)}
-                    isActive={!filterState}
-                  />
-                )}
-                <DividerWrap type="vertical" />
-
+              <OperationWrap>
                 <ScreenMinHover
                   icon="sync"
                   label={t('common.refresh')}
                   onClick={refresh}
                 />
+
                 <DividerWrap type="vertical" />
+
+                {hasFilter ? null : (
+                  <>
+                    <ScreenMinHover
+                      label={t('common.search')}
+                      icon="filter"
+                      onClick={() => setFilterState(!filterState)}
+                      isActive={!filterState}
+                    />
+                    <DividerWrap type="vertical" />
+                  </>
+                )}
 
                 <DropDownMenu
                   menu={

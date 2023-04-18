@@ -19,9 +19,9 @@ import {
   setFillingRequirements,
   setEditSave,
 } from '@store/formWork'
-import { dayData1, weekData, monthData } from './DataList'
+import { dayData1, weekData, monthData, aWeekDataList } from './DataList'
 import moment from 'moment'
-import { cos } from '@/services/cos'
+import { throttle } from 'lodash'
 const PermissionConfigStyle = styled.div`
   padding: 0 24px;
   overflow-y: auto;
@@ -54,7 +54,7 @@ const PermissionConfig = (props: PropsType) => {
   const [type, setType] = useState<string>('day')
   const [form] = Form.useForm()
   const [delIsVisible, setDelIsVisible] = useState(false)
-  const { fillingRequirements, reportContent, aWeekDataList } = useSelector(
+  const { fillingRequirements, reportContent } = useSelector(
     store => store.formWork,
   )
   const [person1, setPerson1] = useState<any>()
@@ -203,9 +203,8 @@ const PermissionConfig = (props: PropsType) => {
         value = 4
         break
     }
-
     const claerConfig: any = {
-      day: [0, 1, 2, 3, 4],
+      day: aWeekDataList,
       hand_scope: 1,
       is_submitter_edit: true,
       is_cycle_limit: true,
@@ -356,7 +355,7 @@ const PermissionConfig = (props: PropsType) => {
     return time
   }
   // 表单值处理，时间秒转换成展示的数字
-  const setFormValues = (obj: any) => {
+  const setFormValues = throttle((obj: any) => {
     switch (obj?.submit_cycle) {
       case 1:
         setType('day')
@@ -374,13 +373,6 @@ const PermissionConfig = (props: PropsType) => {
 
     const newObj = { ...obj }
     if (obj?.submit_cycle === 1) {
-      const nowData = aWeekDataList
-      const newData = obj?.day
-      const arr = nowData.map((item: any) => ({
-        ...item,
-        value: newData?.includes(item.key) ? true : false,
-      }))
-      newObj.day = arr
       const newStartTime = {
         v1: obj?.start_time?.day_type,
         v2: time2(false, obj?.start_time?.time, 'hour'),
@@ -428,7 +420,7 @@ const PermissionConfig = (props: PropsType) => {
       newObj.reminder_time = newReminderTime
     }
     form.setFieldsValue(newObj)
-  }
+  }, 500)
   // 补交范围组数据
   const getHandScopeValue = (num: any, typeState: number) => {
     switch (typeState) {

@@ -53,6 +53,8 @@ const HeadWrap = styled.div<{ isCanImport: boolean }>`
     }
   }
   .importText {
+    display: flex;
+    align-items: center;
     font-size: 12px;
     font-family: MiSans-Regular, MiSans;
     font-weight: 400;
@@ -439,7 +441,9 @@ const HandleReport = (props: any) => {
   }
 
   const getReportDateText = (date: any) => {
-    return `（${date?.[0]}${date?.[0] && date?.[1] ? '至' : ''}${date?.[1]}）`
+    return `（${date?.[0]} ${
+      date?.[0] && date?.[1] ? t('report.list.to') : ''
+    } ${date?.[1]}）`
   }
 
   return (
@@ -483,13 +487,18 @@ const HandleReport = (props: any) => {
             <div className="titleText">
               {`${userInfo?.name}的${reportDetail?.name}`}
               <span className="dateText">
-                {getReportDateText(reportDetail?.submitCycleDate)}
+                {reportDetail?.submitCycleDate.filter((v: string) => v).length >
+                  0 && getReportDateText(reportDetail?.submitCycleDate)}
               </span>
             </div>
           </div>
           <div className="importText" onClick={importPreviousArticle}>
             <IconFont
-              style={{ transform: 'rotate(180deg)', marginRight: 4 }}
+              style={{
+                transform: 'rotate(180deg)',
+                marginRight: 4,
+                fontSize: 16,
+              }}
               type="Import"
             />
             <span className="notCopy">{t('report.list.import')}</span>
