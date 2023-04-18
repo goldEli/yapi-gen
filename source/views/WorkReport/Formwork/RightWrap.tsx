@@ -172,8 +172,10 @@ const RightFormWork = () => {
       const list = parmas.template_configs.filter(
         (el: any) => el.user_type === 1,
       )
-      list.length < 1 && message.warning('谁可以写必选')
-      return false
+      if (list?.length < 1) {
+        message.warning('谁可以写必选')
+        return false
+      }
     } else if (
       parmas.submit_cycle === 1 ||
       parmas.submit_cycle === 2 ||
@@ -246,7 +248,6 @@ const RightFormWork = () => {
     }
     dispatch(setEditSave(true))
   }
-  console.log(activeItem, 'activeItem')
   return (
     <RightFormWorkStyle>
       <Title>工作日报</Title>
@@ -300,27 +301,29 @@ const RightFormWork = () => {
       {/* 底部保存 */}
       <BtnRow>
         {isActive === 0 ? (
-          <CommonButton type="light" onClick={() => setIsActive(1)}>
+          <CommonButton
+            type="light"
+            onClick={() => setIsActive(1)}
+            style={{ marginRight: '16px' }}
+          >
             下一步
           </CommonButton>
         ) : (
-          <CommonButton type="light" onClick={() => setIsActive(0)}>
+          <CommonButton
+            type="light"
+            onClick={() => setIsActive(0)}
+            style={{ marginRight: '16px' }}
+          >
             上一步
           </CommonButton>
         )}
-        {editSave ? (
-          <CommonButton type="primary" style={{ margin: '0 0px 0 16px' }}>
-            已保存
-          </CommonButton>
-        ) : (
-          <CommonButton
-            type="primary"
-            onClick={() => saveApi()}
-            style={{ margin: '0 0px 0 16px' }}
-          >
+        {editSave && isActive === 1 ? (
+          <CommonButton type="primary">已保存</CommonButton>
+        ) : isActive === 1 ? (
+          <CommonButton type="primary" onClick={() => saveApi()}>
             保存
           </CommonButton>
-        )}
+        ) : null}
       </BtnRow>
       {/* 预览 */}
       <PreviewDialog
@@ -337,7 +340,7 @@ const RightFormWork = () => {
         text="确认删除模版，删除后将无法汇报"
         isVisible={delIsVisible}
         onConfirm={deleteActiveItem}
-        notCancel
+        onChangeVisible={() => setDelIsVisible(false)}
       />
     </RightFormWorkStyle>
   )
