@@ -30,10 +30,10 @@ const Index = () => {
   const dispatch = useDispatch()
   const { id } = useParams()
   const titles: ZoomRatioType = {
-    1: '全部通知',
-    2: '未读通知',
-    3: '已读通知',
-    4: '提及我的',
+    1: t('all_notices'),
+    2: t('unread_notifications'),
+    3: t('read_notifications'),
+    4: t('referring_to_my'),
   }
   const setReads = async (values: any) => {
     setReadApi(values)

@@ -31,21 +31,6 @@ import {
 } from '@/services/SiteNotifications'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 
-const tabsValue = [
-  {
-    id: '3',
-    text: '全部',
-  },
-  {
-    id: '1',
-    text: '最新（4）',
-  },
-  {
-    id: '2',
-    text: '@我的',
-  },
-]
-
 const SiteDrawer = () => {
   const [t] = useTranslation()
   const [active, setActive] = useState('3')
@@ -57,6 +42,20 @@ const SiteDrawer = () => {
   const lastId = useRef(0)
   const [hasMore, setHasMore] = useState(true)
   const [read, setRead] = useState<number | null>()
+  const tabsValue = [
+    {
+      id: '3',
+      text: t('all'),
+    },
+    {
+      id: '1',
+      text: t('new1'),
+    },
+    {
+      id: '2',
+      text: t('atmy'),
+    },
+  ]
 
   const onChange = (e: CheckboxChangeEvent) => {
     lastId.current = 0
