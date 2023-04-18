@@ -532,6 +532,7 @@
     "demandBackflowTo": "Demand back flow to",
     "cancelExamineTime": "Cancel examine time",
     "cancelExamine": "Cancel examine",
+    "sureCancelExamine": "Are you sure to cancel the current requirement examine? After cancellation, The submitted requirements will be removed from the list I submitted",
     "notExamineTo": "Audit failed request status flow back",
     "editCustomFields": "Edit Custom Fields",
     "createCustomFields": "Create Custom Fields",
@@ -712,6 +713,7 @@
     "department": "Department",
     "job": "Job",
     "permissionGroup": "Permission Group",
+    "batchConfigPermission": "Batch Config Permissions",
     "loading": "Loading",
     "add": "Add",
     "saveSuccess": "Save successfully",
@@ -1074,7 +1076,14 @@
       "confirm": "Confirm to import the previous content, which will overwrite the current editing content",
       "ok": "Ok",
       "cancel": "Cancel",
-      "writeReport": "Write a report"
+      "writeReport": "Write a report",
+      "log": "Log",
+      "noEmpty": "The comment cannot be empty",
+      "to": "to",
+      "of": "of",
+      "okComment": "Add a comment successfully!",
+      "noSubmitted": "Not submitted",
+      "success": "Successful operation"
     },
     "statistics": {
       "title": "Reporting Statistics",

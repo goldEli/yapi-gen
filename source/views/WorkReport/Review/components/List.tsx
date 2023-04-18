@@ -1,11 +1,11 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useEffect, useMemo, useState } from 'react'
-import { Tooltip } from 'antd'
+import { Space, Tooltip } from 'antd'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useParams } from 'react-router-dom'
-import { SelectWrapBedeck } from '@/components/StyleCommon'
+import { DividerWrap, SelectWrapBedeck } from '@/components/StyleCommon'
 import moment from 'moment'
 import RangePicker from '@/components/RangePicker'
 import CustomSelect from '@/components/CustomSelect'
@@ -23,9 +23,10 @@ import {
 import { templateList } from '@/services/formwork'
 import { getStaffList } from '@/services/staff'
 import HandleReport from './HandleReport'
-import { useDispatch, useSelector } from '@store/index'
+import { useDispatch } from '@store/index'
 import { setViewReportModal } from '@store/workReport'
 import LabelTag from '@/components/LabelTag'
+import ScreenMinHover from '@/components/ScreenMinHover'
 
 const ListTitle = styled.div`
   height: 32px;
@@ -34,7 +35,7 @@ const ListTitle = styled.div`
   align-items: center;
   justify-content: space-between;
   margin: 20px 24px 20px 24px;
-  span {
+  .title-text {
     font-size: 16px;
     font-family: SiYuanMedium;
     font-weight: 500;
@@ -433,14 +434,19 @@ const List = () => {
       }}
     >
       <ListTitle>
-        <span>{title}</span>
-        <div>
+        <span className="title-text">{title}</span>
+        <Space size={24}>
           <InputSearch
             placeholder={t('report.list.search')}
             onChangeSearch={onPressEnter}
             leftIcon
           />
-        </div>
+          <ScreenMinHover
+            label={t('common.refresh')}
+            icon="sync"
+            onClick={getList}
+          />
+        </Space>
       </ListTitle>
       <ListHead>
         <SelectWrapForList>

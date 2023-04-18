@@ -14,6 +14,7 @@ import { setEditSave, setErr } from '@store/formWork'
 import { useDispatch } from '@store/index'
 import moment from 'moment'
 import { dayData1, weekData, monthData } from './DataList'
+import { throttle } from 'lodash'
 const Text = styled.div`
   color: var(--neutral-n1-d1);
   font-size: 14px;
@@ -131,19 +132,19 @@ interface CheckBoxGroupType {
 // 选择周几
 const CheckBoxGroup = (props: CheckBoxGroupType) => {
   const dispatch = useDispatch()
-  const onChange = (value: boolean, el1: { value: boolean; key: number }) => {
-    dispatch(setEditSave(false))
-    const filterVal = props?.value.map(
-      (item: { value: boolean; key: number }) => ({
-        ...item,
-        value: el1.key === item.key ? value : item.value,
-      }),
-    )
-    const newData = filterVal
-      ?.filter((el: any) => el.value)
-      ?.map((el: any) => el.key)
-    props.onChange?.(newData)
-  }
+  const onChange = throttle(
+    (value: boolean, el1: { value: boolean; key: number }) => {
+      dispatch(setEditSave(false))
+      const filterVal = props?.value.map(
+        (item: { value: boolean; key: number }) => ({
+          ...item,
+          value: el1.key === item.key ? value : item.value,
+        }),
+      )
+      props.onChange?.(filterVal)
+    },
+    500,
+  )
   return (
     <>
       {props.value?.map(
