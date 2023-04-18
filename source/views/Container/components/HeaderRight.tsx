@@ -9,7 +9,7 @@ import { getTicket, loginOut } from '@/services/user'
 import { useDispatch, useSelector } from '@store/index'
 import { changeLanguage, type LocaleKeys } from '@/locals'
 import { message, Popover, Space, Tooltip } from 'antd'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import {
   ChangeItem,
   ChangeItems,
@@ -331,6 +331,12 @@ const HeaderRight = () => {
     </ChangeItems>
   )
 
+  const showPlusIcon = useMemo(() => {
+    return (
+      String(location.pathname).includes('/ProjectManagement') ||
+      String(location.pathname).includes('/Report')
+    )
+  }, [location.pathname])
   return (
     <>
       {/* 退出登录 */}
@@ -378,7 +384,7 @@ const HeaderRight = () => {
       </CommonModal>
 
       <Space size={16}>
-        {String(location.pathname).includes('/ProjectManagement') && (
+        {showPlusIcon && (
           <Popover
             content={content}
             open={isCreateVisible}

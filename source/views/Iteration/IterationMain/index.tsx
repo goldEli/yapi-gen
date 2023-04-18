@@ -265,7 +265,7 @@ const IterationMain = (props: Props) => {
   }, [isUpdateDemand])
 
   const refresh = () => {
-    getList(isGrid, searchItems, pageObj, false, topParentId)
+    getList(isGrid, pageObj, searchItems, false, topParentId)
   }
 
   return (

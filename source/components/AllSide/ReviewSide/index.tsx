@@ -1,9 +1,9 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 import IconFont from '@/components/IconFont'
+import { CloseWrap } from '@/components/StyleCommon'
 import useSetTitle from '@/hooks/useSetTitle'
 import styled from '@emotion/styled'
-import { useSelector } from '@store/index'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -54,10 +54,8 @@ const ReviewSide = () => {
   const nowPath2 = Number(pathname.split('/')[4]) || ''
   const navigate = useNavigate()
   const [visibleEdit, setVisibleEdit] = useState(false)
-  const [visibleEditText, setVisibleEditText] = useState('')
-  const [showPop, setShowPop] = useState(false)
   const [id, setId] = useState(1)
-  const [type, setType] = useState('')
+
   const menuList = [
     {
       id: 1,
@@ -78,13 +76,7 @@ const ReviewSide = () => {
       state: 3,
     },
   ]
-  const keyValue = {
-    id,
-    change: () => {
-      const value = id + 1
-      setId(value)
-    },
-  }
+
   const changeActive = (value: any) => {
     navigate(value.path)
   }
@@ -115,14 +107,15 @@ const ReviewSide = () => {
         >
           {t('report.list.workReport')}
         </span>
-        <MySpan onClick={handleReport}>
+
+        <CloseWrap onClick={handleReport} width={32} height={32}>
           <IconFont
             style={{
               fontSize: '16px',
             }}
             type="plus"
           />
-        </MySpan>
+        </CloseWrap>
       </div>
 
       <Menu>
