@@ -4,10 +4,11 @@ import IconFont from '@/components/IconFont'
 import { CloseWrap } from '@/components/StyleCommon'
 import useSetTitle from '@/hooks/useSetTitle'
 import styled from '@emotion/styled'
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from '@store/index'
 import WriteReportModal from '../FormWorkSide/WriteReport'
+import { setWriteReportModal } from '@store/workReport'
 
 const Menu = styled.div`
   width: 100%;
@@ -53,8 +54,10 @@ const ReviewSide = () => {
   const { pathname } = useLocation()
   const nowPath2 = Number(pathname.split('/')[4]) || ''
   const navigate = useNavigate()
-  const [visibleEdit, setVisibleEdit] = useState(false)
-  const [id, setId] = useState(1)
+  const { visible: visibleEdit } = useSelector(
+    state => state.workReport.writeReportModal,
+  )
+  const dispatch = useDispatch()
 
   const menuList = [
     {
@@ -81,7 +84,7 @@ const ReviewSide = () => {
     navigate(value.path)
   }
   const handleReport = () => {
-    setVisibleEdit(true)
+    dispatch(setWriteReportModal({ visible: true }))
   }
 
   return (
@@ -170,11 +173,11 @@ const ReviewSide = () => {
       </Menu>
       <WriteReportModal
         isVisible={visibleEdit}
-        onClose={() => setVisibleEdit(false)}
+        onClose={() => dispatch(setWriteReportModal({ visible: false }))}
         onConfirm={function (): void {
           throw new Error('Function not implemented.')
         }}
-        title={'写汇报'}
+        title={t('report.list.writeReport')}
       />
     </div>
   )

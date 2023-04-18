@@ -1,6 +1,6 @@
 /* eslint-disable no-duplicate-imports */
 // 需求
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 export interface CounterState {
   // 查看汇报抽屉
@@ -9,6 +9,9 @@ export interface CounterState {
     id: number
     ids: number[]
   }
+  writeReportModal: {
+    visible: boolean
+  }
 }
 
 const initialState: CounterState = {
@@ -16,6 +19,9 @@ const initialState: CounterState = {
     visible: false,
     id: 0,
     ids: [],
+  },
+  writeReportModal: {
+    visible: false,
   },
 }
 
@@ -30,12 +36,18 @@ export const demandSlice = createSlice({
         ...action.payload,
       }
     },
+    // 启动最近的汇报列表modal
+    setWriteReportModal: (state: any, action) => {
+      state.writeReportModal = {
+        ...state.writeReportModal,
+        ...action.payload,
+      }
+    },
   },
-  extraReducers(builder) {
-    //
-  },
+  // extraReducers(builder) {
+  // },
 })
 
-export const { setViewReportModal } = demandSlice.actions
+export const { setViewReportModal, setWriteReportModal } = demandSlice.actions
 
 export default demandSlice.reducer

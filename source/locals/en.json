@@ -1047,7 +1047,14 @@
       "confirm": "Confirm to import the previous content, which will overwrite the current editing content",
       "ok": "Ok",
       "cancel": "Cancel",
-      "writeReport": "Write a report"
+      "writeReport": "Write a report",
+      "log": "Log",
+      "noEmpty": "The comment cannot be empty",
+      "to": "to",
+      "of": "of",
+      "okComment": "Add a comment successfully!",
+      "noSubmitted": "Not submitted",
+      "success": "Successful operation"
     },
     "statistics": {
       "title": "Reporting Statistics",

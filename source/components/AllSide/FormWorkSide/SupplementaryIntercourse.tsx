@@ -52,7 +52,18 @@ const SupplementaryIntercourse = (props: Props) => {
   const getSupplyList = async () => {
     const result = await supplyList()
     if (result && result.code === 0) {
-      setList(result.data)
+      const temp: any = []
+      Object.keys(result.data).forEach((key: any) => {
+        const arr = result.data[key]?.supply_date?.map((item: any) => {
+          return {
+            ...result.data[key],
+            date: item,
+            key: Date.now(),
+          }
+        })
+        temp.push(...arr)
+      })
+      setList(temp)
     }
   }
   useEffect(() => {
@@ -76,15 +87,17 @@ const SupplementaryIntercourse = (props: Props) => {
       >
         {list?.length ? (
           list.map(item => (
-            <ItemList key={item.id}>
-              <Text>{item.name}</Text>
+            <ItemList key={item.key}>
+              <Text>{`${item.date?.join('~')} ${item.name} ${t(
+                'report.list.noSubmitted',
+              )}`}</Text>
               <Btn
                 onClick={() => {
                   setVisibleEdit(true)
                   setTemplateObj(item)
                 }}
               >
-                补交
+                {t('report.list.makeup')}
               </Btn>
             </ItemList>
           ))
@@ -94,11 +107,11 @@ const SupplementaryIntercourse = (props: Props) => {
       </div>
       <HandleReport
         isSupply
-        date={templateObj.supply_date}
+        date={templateObj.date}
         templateId={templateObj.id}
         visibleEdit={visibleEdit}
         editClose={() => setVisibleEdit(false)}
-        visibleEditText="写汇报"
+        visibleEditText={t('report.list.writeReport')}
       />
     </CommonModal>
   )

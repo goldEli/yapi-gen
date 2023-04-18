@@ -23,10 +23,9 @@ import {
 import { templateList } from '@/services/formwork'
 import { getStaffList } from '@/services/staff'
 import HandleReport from './HandleReport'
-import { useDispatch, useSelector } from '@store/index'
+import { useDispatch } from '@store/index'
 import { setViewReportModal } from '@store/workReport'
 import LabelTag from '@/components/LabelTag'
-import ReportDetailDrawer from './ReportDetailDrawer'
 
 const ListTitle = styled.div`
   height: 32px;
@@ -505,7 +504,6 @@ const List = () => {
           onChange={onChangePage}
         />
       </ListContent>
-      <ReportDetailDrawer />
 
       <HandleReport
         editId={editId}

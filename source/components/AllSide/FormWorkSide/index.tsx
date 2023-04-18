@@ -7,8 +7,6 @@ import AddFormWork from '@/components/AllSide/FormWorkSide/AddFormWork'
 import { setActiveItem, setFillingRequirements } from '@store/formWork/index'
 import { useDispatch, useSelector } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import SupplementaryIntercourse from './SupplementaryIntercourse'
-import WriteReport from './WriteReport'
 import { getTemplateList } from '@store/formWork/thunk'
 import {
   setTemplateName,
