@@ -134,7 +134,6 @@ const RightFormWork = () => {
   const [delIsVisible, setDelIsVisible] = useState(false)
   const {
     editSave,
-    dataList,
     activeItem,
     reportContent,
     templateContentConfigs,
@@ -230,7 +229,10 @@ const RightFormWork = () => {
               .filter((el: { value: boolean }) => el.value)
               .map((el: { key: number }) => el.key)
           : [],
-      end_time: fillingRequirements?.end_time,
+      end_time:
+        fillingRequirements.submit_cycle === 4
+          ? fillingRequirements?.end_time / 1000
+          : fillingRequirements?.end_time,
       start_time: fillingRequirements?.start_time,
       is_holiday: fillingRequirements?.is_holiday ? 1 : 2,
     }
