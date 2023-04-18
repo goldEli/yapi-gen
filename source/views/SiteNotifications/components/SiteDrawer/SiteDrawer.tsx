@@ -21,6 +21,7 @@ import {
   TabsWrapItem,
   Tips,
   Wrap,
+  ActiveTab,
 } from './style'
 import { useTranslation } from 'react-i18next'
 import InfiniteScroll from 'react-infinite-scroll-component'
@@ -40,6 +41,8 @@ const SiteDrawer = () => {
   const isVisible = useSelector(store => store.siteNotifications.isVisible)
   const [list, setList] = useState([])
   const lastId = useRef(0)
+  const tabBox = useRef<HTMLDivElement>(null)
+  const tabActive = useRef<HTMLDivElement>(null)
   const [hasMore, setHasMore] = useState(true)
   const [read, setRead] = useState<number | null>()
   const tabsValue = [
@@ -111,6 +114,19 @@ const SiteDrawer = () => {
     isVisible ? fetchMoreData(true) : null
   }, [isVisible, read])
 
+  useEffect(() => {
+    for (let i = 0; i < 3; i++) {
+      tabBox.current?.children[i].addEventListener('click', () => {
+        if (tabActive.current) {
+          tabActive.current.style.left = `${
+            (tabBox.current?.children[i] as HTMLDivElement).offsetLeft
+          }px`
+          tabActive.current.style.width = `${tabBox.current?.children[i].clientWidth}px`
+        }
+      })
+    }
+  }, [])
+
   return (
     <Drawer
       forceRender
@@ -130,7 +146,7 @@ const SiteDrawer = () => {
     >
       <Wrap>
         <div style={{ display: 'flex' }}>
-          <TabsWrap>
+          <TabsWrap ref={tabBox}>
             {tabsValue.map((i: any) => (
               <TabsWrapItem
                 onClick={() => changeActive(i.id)}
@@ -140,6 +156,7 @@ const SiteDrawer = () => {
                 {i.text}
               </TabsWrapItem>
             ))}
+            <ActiveTab ref={tabActive} />
           </TabsWrap>
           <CloseWrap onClick={onClose} width={32} height={32}>
             <IconFont

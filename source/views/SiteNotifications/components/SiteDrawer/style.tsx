@@ -8,6 +8,7 @@ export const Wrap = styled.div`
 `
 
 export const TabsWrap = styled.div`
+  position: relative;
   width: 322px;
   padding: 2px;
   display: flex;
@@ -15,11 +16,26 @@ export const TabsWrap = styled.div`
   border-radius: 4px;
 `
 
+export const ActiveTab = styled.div`
+  position: absolute;
+  bottom: 2px;
+  left: 2px;
+  width: 50px;
+  padding: 4px 16px;
+  border-radius: 4px;
+  height: 30px;
+
+  background: var(--neutral-white-d6);
+  transition: left 0.4s;
+`
+
 export const TabsWrapItem = styled.div<{ active: boolean }>`
+  z-index: 1;
   padding: 4px 16px;
   border-radius: 4px;
   cursor: pointer;
-  background: ${props => (props.active ? 'var(--neutral-white-d6);' : '')};
+  /* background: ${props =>
+    props.active ? 'var(--neutral-white-d6);' : ''}; */
   color: ${props => (props.active ? 'var(--primary-d2);' : '')};
   transition: all 0.5s;
 `
