@@ -1047,7 +1047,14 @@
       "confirm": "确认导入上一篇汇报内容，导入后将覆盖当前编辑内容",
       "ok": "确定",
       "cancel": "取消",
-      "writeReport": "写汇报"
+      "writeReport": "写汇报",
+      "log": "的日志",
+      "noEmpty": "评论不能为空",
+      "to": "至",
+      "of": "的",
+      "okComment": "添加评论成功！",
+      "noSubmitted": "未提交",
+      "success": "操作成功"
     },
     "statistics": {
       "title": "汇报我的统计",
