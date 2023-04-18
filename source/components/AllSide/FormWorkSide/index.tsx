@@ -7,8 +7,6 @@ import AddFormWork from '@/components/AllSide/FormWorkSide/AddFormWork'
 import { setActiveItem, setFillingRequirements } from '@store/formWork/index'
 import { useDispatch, useSelector } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import SupplementaryIntercourse from './SupplementaryIntercourse'
-import WriteReport from './WriteReport'
 import { getTemplateList } from '@store/formWork/thunk'
 import {
   setTemplateName,
@@ -161,13 +159,13 @@ const FormWorkSide = () => {
       hand_scope: 1,
       is_all_write: 2,
       is_all_view: 2,
-      is_submitter_edit: false,
-      is_cycle_limit: false,
-      is_supply: false,
+      is_submitter_edit: true,
+      is_cycle_limit: true,
+      is_supply: true,
       reminder_time: null,
-      auto_reminder: false,
+      auto_reminder: true,
       submit_cycle: 1,
-      is_holiday: false,
+      is_holiday: true,
       end_time: null,
       start_time: null,
     }
