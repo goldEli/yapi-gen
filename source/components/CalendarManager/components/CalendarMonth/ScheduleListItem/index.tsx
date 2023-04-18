@@ -60,9 +60,12 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
   const isAllDay = data.is_all_day === 1 || data.is_span_day
   const isAllDayFirstDay =
     isAllDay && isSameTime(start_timestamp, schedule_start_datetime ?? 0)
-  const isAllDayButNotFirstDay =
-    data.is_span_day &&
-    !isSameTime(start_timestamp, schedule_start_datetime ?? 0)
+  const isAllDayButNotFirstDay = useMemo(() => {
+    return (
+      data.is_span_day &&
+      !isSameTime(start_timestamp, schedule_start_datetime ?? 0)
+    )
+  }, [props.data])
   // 如果是跨天或者全天任务显示全天
   const time = isAllDay ? '全天' : data.start_time
   const isDrag = React.useRef(false)

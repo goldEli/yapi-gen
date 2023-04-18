@@ -58,7 +58,6 @@ const ScheduleList: React.FC<ScheduleListProps> = props => {
             '.calendar-month-content-box',
           ) as HTMLDivElement
           const { left: boxLeft, top: boxTop } = box?.getBoundingClientRect()
-          console.log('x y', { left, top }, { boxLeft, boxTop })
           dispatch(
             setScheduleListModal({
               visible: true,
