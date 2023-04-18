@@ -181,6 +181,15 @@ const RightFormWork = () => {
       parmas.submit_cycle === 2 ||
       parmas.submit_cycle === 3
     ) {
+      if (parmas.submit_cycle === 1) {
+        if (
+          parmas.requirement?.start_time?.time >
+          parmas.requirement?.end_time?.time
+        ) {
+          message.warning('结束时间不能小于开始时间')
+          return false
+        }
+      }
       if (!parmas.requirement.start_time) {
         message.warning('开始时间必填')
         return false
