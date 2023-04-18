@@ -243,7 +243,7 @@ const FormWorkSide = () => {
       {/* 未保存的弹窗 */}
       <DeleteConfirm
         title={'保存提示'}
-        text="【模版名称】还未保存，是否保存编辑内容？"
+        text={`【${activeItem?.name}】还未保存，是否保存编辑内容？`}
         isVisible={delIsVisible}
         onConfirm={() => setDelIsVisible(false)}
         notCancel
