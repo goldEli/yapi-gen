@@ -131,7 +131,7 @@ const Index = () => {
           height={document.body.clientHeight - 230}
           loader={<Skeleton avatar paragraph={{ rows: 2 }} active />}
           scrollableTarget="scrollableDiv"
-          endMessage={<Divider plain>nothing more </Divider>}
+          endMessage={<Divider plain>{t('nm')} </Divider>}
         >
           {list.map((i: any) => {
             return <ContentItem setReads={setReads} item={i} key={i.id} />

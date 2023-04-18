@@ -205,7 +205,7 @@ const SiteDrawer = () => {
           height={document.body.clientHeight - 230}
           loader={<Skeleton avatar paragraph={{ rows: 2 }} active />}
           scrollableTarget="scrollableDiv"
-          endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+          endMessage={<Divider plain>{t('nm')}</Divider>}
         >
           {list.map((i: any) => (
             <ContentItem setReads={setReads} item={i} key={i.id} />
