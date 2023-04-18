@@ -291,8 +291,8 @@ const List = () => {
 
   const onChangeTime = (type: string, dates: any) => {
     const date = []
-    date[0] = moment(dates[0]).format('YYYY-MM-DD')
-    date[1] = moment(dates[1]).format('YYYY-MM-DD')
+    date[0] = dates ? moment(dates[0]).format('YYYY-MM-DD') : null
+    date[1] = dates ? moment(dates[1]).format('YYYY-MM-DD') : null
     if (type === 'report') {
       setQueryParams({
         ...queryParams,
