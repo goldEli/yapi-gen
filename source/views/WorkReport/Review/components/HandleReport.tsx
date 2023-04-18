@@ -476,7 +476,8 @@ const HandleReport = (props: any) => {
             <div className="titleText">
               {`${userInfo?.name}的${reportDetail?.name}`}
               <span className="dateText">
-                {getReportDateText(reportDetail?.submitCycleDate)}
+                {reportDetail?.submitCycleDate.filter((v: string) => v).length >
+                  0 && getReportDateText(reportDetail?.submitCycleDate)}
               </span>
             </div>
           </div>
