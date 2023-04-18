@@ -322,6 +322,13 @@ const HeaderLeft = () => {
     }
   }
 
+  const handleClickMenuItem = (url: string) => {
+    if (url.includes('ProjectManagement')) {
+      return
+    }
+    navigate(url)
+  }
+
   return (
     <HeaderLeftWrap>
       <DrawerComponent value={isVisible} onChange={setIsVisible} />
@@ -359,7 +366,7 @@ const HeaderLeft = () => {
             : currentMenu.children
           ).map((i: any) => (
             <ChildrenMenuItem
-              onClick={() => navigate(i.url)}
+              onClick={() => handleClickMenuItem(i.url)}
               key={i.id}
               size={8}
               isActive={getActive(i)}

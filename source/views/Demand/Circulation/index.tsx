@@ -181,14 +181,15 @@ const Circulation = () => {
       </span>
     )
   }
-  console.log('statusLogs', statusLogs)
+
   return (
     <Wrap>
       <Spin indicator={<NewLoadingTransition />} spinning={isSpin}>
         {!!statusLogs?.list && (
           <>
             {statusLogs?.list?.length > 0 && (
-              <TimeLIneWrap mode="left">
+              <TimeLIneWrap mode="left" reverse>
+                <Timeline.Item />
                 {statusLogs.list?.map((i: any) => (
                   <Timeline.Item
                     key={i.id}
@@ -541,7 +542,6 @@ const Circulation = () => {
                     )}
                   </Timeline.Item>
                 ))}
-                <Timeline.Item />
               </TimeLIneWrap>
             )}
             {statusLogs?.list?.length <= 0 && <NoData />}

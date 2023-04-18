@@ -203,6 +203,9 @@ const RightFormWork = () => {
     return true
   }
   const saveApi = async () => {
+    const config =
+      reportContent?.template_configs?.filter((el: any) => el.target_value) ||
+      []
     let parmas: any = {}
     parmas = {
       submit_cycle: fillingRequirements?.submit_cycle,
@@ -216,10 +219,8 @@ const RightFormWork = () => {
       is_all_view: reportContent?.is_all_view,
       is_all_write: reportContent?.is_all_write,
       template_content_configs: templateContentConfigs,
-      template_configs: reportContent?.template_configs?.filter(
-        (el: any) => el.target_value.key !== 'all',
-      ),
-      id: activeItem.id || 0,
+      template_configs: config,
+      id: activeItem?.id || 0,
     }
     parmas.name = templateName || activeItem.name
     parmas.requirement = {
@@ -243,7 +244,7 @@ const RightFormWork = () => {
     } else {
       const res = await createTemplate(parmas)
       await dispatch(getTemplateList())
-      dispatch(setActiveItem({ id: res.data.id, name: res.data }))
+      dispatch(setActiveItem({ id: res.data.id, name: res.data.name }))
       message.success('新增成功')
     }
     dispatch(setEditSave(true))

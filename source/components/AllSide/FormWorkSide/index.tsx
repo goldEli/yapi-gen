@@ -7,8 +7,6 @@ import AddFormWork from '@/components/AllSide/FormWorkSide/AddFormWork'
 import { setActiveItem, setFillingRequirements } from '@store/formWork/index'
 import { useDispatch, useSelector } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import SupplementaryIntercourse from './SupplementaryIntercourse'
-import WriteReport from './WriteReport'
 import { getTemplateList } from '@store/formWork/thunk'
 import {
   setTemplateName,
@@ -18,7 +16,6 @@ import {
 } from '@store/formWork'
 // getTemplateList
 const FormWorkSideStyle = styled.div`
-  width: 200px;
   min-width: 200px;
 `
 const TitleStyle = styled.div`
@@ -105,7 +102,10 @@ const a = [
     id: 3,
   },
 ]
-
+const Box = styled.div`
+  height: calc(100vh - 150px);
+  overflow-y: auto;
+`
 const FormWorkSide = () => {
   const [isActive, setIsActive] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
@@ -159,13 +159,13 @@ const FormWorkSide = () => {
       hand_scope: 1,
       is_all_write: 2,
       is_all_view: 2,
-      is_submitter_edit: false,
-      is_cycle_limit: false,
-      is_supply: false,
+      is_submitter_edit: true,
+      is_cycle_limit: true,
+      is_supply: true,
       reminder_time: null,
-      auto_reminder: false,
+      auto_reminder: true,
       submit_cycle: 1,
-      is_holiday: false,
+      is_holiday: true,
       end_time: null,
       start_time: null,
     }
@@ -186,45 +186,47 @@ const FormWorkSide = () => {
         <span>模板</span>
         <IconFontStyle type="plus" onClick={() => setIsVisible(true)} />
       </TitleStyle>
-      {dataList?.length < 1 ? (
-        <NoDataCreateWrap>
-          <div className="top">
-            <IconFont type="Warning" />
-            <div>暂无模板，创建一个吧~</div>
-          </div>
-          <div className="bottom">
-            <div
-              className="bottom"
-              onClick={() => setIsVisible(true)}
-              style={{ cursor: 'pointer' }}
-            >
-              <IconFont type="plus" />
-              <div>新建模板</div>
+      <Box>
+        {dataList?.length < 1 ? (
+          <NoDataCreateWrap>
+            <div className="top">
+              <IconFont type="Warning" />
+              <div>暂无模板，创建一个吧~</div>
             </div>
-          </div>
-        </NoDataCreateWrap>
-      ) : (
-        dataList?.map((el: { name: string; id: number }, index: number) => {
-          return (
-            <Slide
-              key={el.id}
-              onClick={() => itemActive(el, index)}
-              style={{
-                color:
-                  isActive == index
-                    ? 'var(--primary-d2)'
-                    : 'var(--neutral-n1-d2)',
-                background:
-                  isActive == index
-                    ? 'linear-gradient(90deg, #EBEFFF 0%, rgba(243,246,255,0) 100%)'
-                    : 'none',
-              }}
-            >
-              {el.name}
-            </Slide>
-          )
-        })
-      )}
+            <div className="bottom">
+              <div
+                className="bottom"
+                onClick={() => setIsVisible(true)}
+                style={{ cursor: 'pointer' }}
+              >
+                <IconFont type="plus" />
+                <div>新建模板</div>
+              </div>
+            </div>
+          </NoDataCreateWrap>
+        ) : (
+          dataList?.map((el: { name: string; id: number }, index: number) => {
+            return (
+              <Slide
+                key={el.id}
+                onClick={() => itemActive(el, index)}
+                style={{
+                  color:
+                    isActive == index
+                      ? 'var(--primary-d2)'
+                      : 'var(--neutral-n1-d2)',
+                  background:
+                    isActive == index
+                      ? 'linear-gradient(90deg, #EBEFFF 0%, rgba(243,246,255,0) 100%)'
+                      : 'none',
+                }}
+              >
+                {el.name}
+              </Slide>
+            )
+          })
+        )}
+      </Box>
       {/* 创建模板 */}
       <AddFormWork
         onClose={() => setIsVisible(false)}
