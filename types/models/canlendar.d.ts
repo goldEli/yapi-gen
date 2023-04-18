@@ -72,7 +72,8 @@ declare namespace Model.Calendar {
   }
   // 日历设置-日程设置
   interface ScheduleConfigsInfo {
-    schedule_color: number
+    // 主题  1 现代 2 经典
+    schedule_color: 1 | 2
     schedule_default_duration: number
   }
 
