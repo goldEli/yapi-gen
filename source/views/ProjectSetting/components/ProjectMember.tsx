@@ -70,7 +70,7 @@ const HeaderTop = styled.div({
 
 const Content = styled.div({
   // padding: 16,
-  height: 'calc(100% - 52px)',
+  height: 'calc(100% - 32px)',
 })
 
 const FilterWrap = styled(Form)({
@@ -369,7 +369,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
         </NewSort>
       ),
       dataIndex: 'nickname',
-      width: 210,
+      width: 240,
       render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -448,7 +448,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
         </NewSort>
       ),
       dataIndex: 'departmentName',
-      width: 160,
+      width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },
@@ -465,7 +465,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
         </NewSort>
       ),
       dataIndex: 'positionName',
-      width: 120,
+      width: 180,
       render: (text: string) => {
         return <span>{text || '--'}</span>
       },

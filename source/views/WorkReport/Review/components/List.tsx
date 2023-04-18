@@ -26,6 +26,7 @@ import HandleReport from './HandleReport'
 import { useDispatch, useSelector } from '@store/index'
 import { setViewReportModal } from '@store/workReport'
 import LabelTag from '@/components/LabelTag'
+import ReportDetailDrawer from './ReportDetailDrawer'
 
 const ListTitle = styled.div`
   height: 32px;
@@ -426,7 +427,12 @@ const List = () => {
   }, [])
 
   return (
-    <>
+    <div
+      style={{
+        height: 'calc(100% - 64px)',
+        overflow: 'hidden',
+      }}
+    >
       <ListTitle>
         <span>{title}</span>
         <div>
@@ -479,13 +485,7 @@ const List = () => {
         <ClearButton onClick={restQuery}>清除条件</ClearButton>
       </ListHead>
       <ListContent>
-        <div
-          style={{
-            height: 'calc(100% - 50px)',
-            overflow: 'hidden',
-            padding: '16px 16px 0',
-          }}
-        >
+        <div style={{ height: 'calc(100% - 125px)' }}>
           <ResizeTable
             isSpinning={isSpinning}
             dataWrapNormalHeight="100%"
@@ -505,6 +505,7 @@ const List = () => {
           onChange={onChangePage}
         />
       </ListContent>
+      <ReportDetailDrawer />
 
       <HandleReport
         editId={editId}
@@ -512,7 +513,7 @@ const List = () => {
         editClose={() => setVisibleEdit(false)}
         visibleEditText="修改汇报"
       />
-    </>
+    </div>
   )
 }
 

@@ -120,6 +120,7 @@ const EditFormWorkStyle = styled(Input)({
   },
 })
 const BtnRow = styled.div`
+  align-items: center;
   width: 100%;
   height: 80px;
   display: flex;
@@ -153,7 +154,11 @@ const RightFormWork = () => {
   // 删除模板
   const deleteActiveItem = async () => {
     setDelIsVisible(false)
-    await deleteTemplate({ id: activeItem.id })
+    if (!activeItem?.id) {
+      const res = await dispatch(getTemplateList())
+      return
+    }
+    await deleteTemplate({ id: activeItem?.id })
     const res = await dispatch(getTemplateList())
     res.payload?.length >= 1 &&
       dispatch(
@@ -241,6 +246,7 @@ const RightFormWork = () => {
     }
     dispatch(setEditSave(true))
   }
+  console.log(activeItem, 'activeItem')
   return (
     <RightFormWorkStyle>
       <Title>工作日报</Title>
@@ -320,7 +326,7 @@ const RightFormWork = () => {
       <PreviewDialog
         dataList={[]}
         type={'formWork'}
-        title="工作周报预览"
+        title={activeItem?.name}
         onClose={() => setIsVisible(false)}
         onConfirm={() => setIsVisible(false)}
         isVisible={isVisible}

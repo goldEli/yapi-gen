@@ -24,6 +24,8 @@ import moment from 'moment'
 import { cos } from '@/services/cos'
 const PermissionConfigStyle = styled.div`
   padding: 0 24px;
+  overflow-y: auto;
+  height: calc(100vh - 250px);
 `
 const TitleText = styled.div`
   font-size: 14px;
