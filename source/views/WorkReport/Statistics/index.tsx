@@ -195,6 +195,7 @@ const Statistics = () => {
   useEffect(() => {
     getTempList()
     getUsageDataList()
+    getStatInfoData()
   }, [])
 
   useEffect(() => {
@@ -202,10 +203,6 @@ const Statistics = () => {
       getUserList()
     }
   }, [tabKey, queryParams])
-
-  useEffect(() => {
-    getStatInfoData()
-  }, [tabKey])
 
   const onChangePage = (current: number, pageSize: number) => {
     setQueryParams({ page: current, pageSize })
