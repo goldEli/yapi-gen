@@ -22,6 +22,9 @@ const TimelineWrap = styled(Timeline)({
   '.ant-timeline-item-last > .ant-timeline-item-content': {
     minHeight: 'auto',
   },
+  '.ant-timeline-item:last-child > .ant-timeline-item-tail': {
+    display: 'none',
+  },
   '.ant-timeline-item-last': {
     paddingBottom: '0!important',
   },
@@ -92,7 +95,6 @@ const EditExamine = (props: Props) => {
       }),
     )
   }
-  console.log('verifyInfo', verifyInfo)
 
   useEffect(() => {
     getInfo()
@@ -360,7 +362,7 @@ const EditExamine = (props: Props) => {
         </div>
         {/* 审核部分 */}
         {verifyInfo?.verify && (
-          <TimelineWrap>
+          <TimelineWrap reverse>
             {/* verifyType 依次审核? */}
             {verifyInfo?.verify?.verifyType === 1 && (
               <>
