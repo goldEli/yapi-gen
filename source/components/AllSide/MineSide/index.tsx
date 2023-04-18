@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 import IconFont from '@/components/IconFont'
+import { CloseWrap } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
 import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import { useDispatch } from '@store/index'
@@ -106,13 +107,13 @@ const MineSide = () => {
         >
           {t('container.mine')}
         </span>
-        <IconFontStyle
-          style={{
-            fontSize: '16px',
-          }}
-          type="plus"
-          onClick={onCreateDemand}
-        />
+        <CloseWrap width={24} height={24}>
+          <IconFont
+            style={{ fontSize: 18 }}
+            type="plus"
+            onClick={onCreateDemand}
+          />
+        </CloseWrap>
       </div>
       <Menu>
         {menuList.map(item => (
