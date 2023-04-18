@@ -348,7 +348,7 @@ const Addperson = (props: Props) => {
       <AddDepartmentOrTeamModal
         isVisible={isAddVisible}
         onClose={() => setIsAddVisible(false)}
-        type={targetType === 2 ? 1 : 3}
+        type={targetType === 2 ? 4 : 3}
         onConfirm={onAddConfirm}
       />
     </>
