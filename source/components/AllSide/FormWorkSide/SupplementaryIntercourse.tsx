@@ -46,7 +46,7 @@ const Text = styled.div`
 const SupplementaryIntercourse = (props: Props) => {
   const [list, setList] = useState<any[]>([])
   const [visibleEdit, setVisibleEdit] = useState(false)
-  const [editId, setEditId] = useState()
+  const [templateObj, setTemplateObj] = useState<any>({})
   const [t] = useTranslation()
 
   const getSupplyList = async () => {
@@ -78,7 +78,14 @@ const SupplementaryIntercourse = (props: Props) => {
           list.map(item => (
             <ItemList key={item.id}>
               <Text>{item.name}</Text>
-              <Btn onClick={() => setEditId(item.id)}>补交</Btn>
+              <Btn
+                onClick={() => {
+                  setVisibleEdit(true)
+                  setTemplateObj(item)
+                }}
+              >
+                补交
+              </Btn>
             </ItemList>
           ))
         ) : (
@@ -86,7 +93,9 @@ const SupplementaryIntercourse = (props: Props) => {
         )}
       </div>
       <HandleReport
-        editId={editId}
+        isSupply
+        date={templateObj.supply_date}
+        templateId={templateObj.id}
         visibleEdit={visibleEdit}
         editClose={() => setVisibleEdit(false)}
         visibleEditText="写汇报"

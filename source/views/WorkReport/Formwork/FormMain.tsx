@@ -60,7 +60,6 @@ const DatePicker1 = (props: any) => {
     <DatePicker
       placeholder="请选择结束时间"
       onChange={(date: any, dateString: string) => {
-        console.log(dateString, dateString)
         onChange(date, dateString)
       }}
       showTime
