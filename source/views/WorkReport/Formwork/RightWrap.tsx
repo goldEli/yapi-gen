@@ -319,15 +319,9 @@ const RightFormWork = () => {
           </CommonButton>
         )}
         {editSave && isActive === 1 ? (
-          <CommonButton type="primary" style={{ marginRight: '16px' }}>
-            已保存
-          </CommonButton>
+          <CommonButton type="primary">已保存</CommonButton>
         ) : isActive === 1 ? (
-          <CommonButton
-            type="primary"
-            onClick={() => saveApi()}
-            style={{ marginRight: '16px' }}
-          >
+          <CommonButton type="primary" onClick={() => saveApi()}>
             保存
           </CommonButton>
         ) : null}

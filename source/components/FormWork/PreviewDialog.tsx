@@ -267,42 +267,13 @@ const WhiteDay = (props: Props) => {
   return (
     <CommonModal
       width={784}
+      noCancel
       title={props.title}
       isVisible={props.isVisible}
       onClose={props.onClose}
       onConfirm={() => onConfirm()}
-      confirmText={t('newlyAdd.submit')}
+      confirmText={'再次编辑'}
     >
-      {props.type === 'formWork' ? null : (
-        <HeaderWrap>
-          <LeftWrap>
-            <ImgWrap src="" />
-            <div>
-              <TopWrap>
-                <span>{props.userDetail?.title}</span>
-                <span>{props.userDetail?.title}</span>
-              </TopWrap>
-              <BottomWrap>
-                <span>上次提交时间：</span>
-                <span>{props.userDetail?.submitTime}</span>
-              </BottomWrap>
-            </div>
-          </LeftWrap>
-          <RightWrap
-            onClick={() => {
-              alert(133)
-            }}
-          >
-            <CommonIconFont
-              type="Import"
-              transform="rotate(180deg)"
-              size={16}
-              color="var(--neutral-n2)"
-            />
-            <Text>导入上篇</Text>
-          </RightWrap>
-        </HeaderWrap>
-      )}
       <div
         style={{
           height: 'calc(90vh - 136px)',
