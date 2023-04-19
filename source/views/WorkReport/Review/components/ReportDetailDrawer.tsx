@@ -182,6 +182,7 @@ const ReportDetailDrawer = () => {
     const info = await getReportInfo({
       id: viewReportModal?.id,
     })
+
     setDrawerInfo(info)
     setSkeletonLoading(false)
     // 获取当前需求的下标， 用作上一下一切换
@@ -396,9 +397,12 @@ const ReportDetailDrawer = () => {
                     {t('report.list.of')}
                     {drawerInfo?.report_template_name}
                     <span className="dateText">
-                      {`（${drawerInfo?.start_time} ${t('report.list.to')} ${
-                        drawerInfo?.end_time
-                      }）`}
+                      {`（${drawerInfo?.start_time} ${t(
+                        'report.list.to',
+                      )} ${drawerInfo?.end_time.substring(
+                        0,
+                        drawerInfo?.end_time.indexOf(' '),
+                      )}）`}
                     </span>
                   </div>
                   <div className="submitTimeText">
