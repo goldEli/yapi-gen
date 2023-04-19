@@ -31,7 +31,6 @@ import {
   ContactDemandItem,
   CommentBox,
 } from './style'
-import { setViewReportModal } from '@store/workReport'
 import {
   addReportComment,
   getReportComment,
@@ -40,6 +39,7 @@ import {
 import UploadAttach from '@/components/UploadAttach'
 import CommonButton from '@/components/CommonButton'
 import ReportDetailSkeleton from './ReportDetailSkeleton'
+import { saveViewReportDetailDrawer } from '@store/workReport/workReport.thunk'
 
 interface TargetTabsProps {
   list: any
@@ -193,7 +193,7 @@ const ReportDetailDrawer = () => {
   const onCancel = () => {
     setFocus(false)
     setIsReview(false)
-    dispatch(setViewReportModal({ visible: false, id: 0, ids: [] }))
+    dispatch(saveViewReportDetailDrawer({ visible: false, id: 0, ids: [] }))
   }
 
   // 向上查找需求
@@ -201,7 +201,7 @@ const ReportDetailDrawer = () => {
     const newIndex = reportIds[currentIndex - 1]
     if (!currentIndex) return
     dispatch(
-      setViewReportModal({
+      saveViewReportDetailDrawer({
         ...viewReportModal,
         ...{ id: newIndex },
       }),
@@ -212,9 +212,8 @@ const ReportDetailDrawer = () => {
   const onDownDemand = () => {
     const newIndex = reportIds[currentIndex + 1]
     if (currentIndex === reportIds?.length - 1) return
-
     dispatch(
-      setViewReportModal({
+      saveViewReportDetailDrawer({
         ...viewReportModal,
         ...{ id: newIndex },
       }),
@@ -278,7 +277,7 @@ const ReportDetailDrawer = () => {
         !e.target?.className?.includes('canClickDetail') &&
         storeAll.getState().workReport.viewReportModal.visible)
     ) {
-      dispatch(setViewReportModal({ visible: false }))
+      dispatch(saveViewReportDetailDrawer({ visible: false }))
     }
   }
 

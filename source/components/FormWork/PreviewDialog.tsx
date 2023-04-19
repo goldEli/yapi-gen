@@ -153,6 +153,7 @@ const WhiteDay = (props: Props) => {
     props.onClose()
   }
   const getMain = (item: any) => {
+    console.log(item, 'pp')
     if (item.type == 3) {
       return (
         <Form.Item
@@ -187,7 +188,7 @@ const WhiteDay = (props: Props) => {
       )
     } else if (item.type === 1) {
       return (
-        <Form.Item label={<LabelTitle title={'汇报对象'} />} name="people">
+        <Form.Item label={<LabelTitle title={item.name} />} name="people">
           {props.isVisible ? (
             <ChoosePeople type={props.type} initValue={[]} />
           ) : null}
@@ -195,10 +196,7 @@ const WhiteDay = (props: Props) => {
       )
     } else if (item.type === 2) {
       return (
-        <Form.Item
-          label={<LabelTitle title={t('common.attachment')} />}
-          name="attachments"
-        >
+        <Form.Item label={<LabelTitle title={item.name} />} name="attachments">
           <AddWrap
             style={{
               marginBottom: '20px',

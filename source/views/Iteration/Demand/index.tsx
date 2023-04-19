@@ -95,6 +95,7 @@ const DemandWrap = (props: Props) => {
     searchParamsObj?: any,
     updateState?: boolean,
   ) => {
+    console.log(searchParamsObj, '=searchParamsObjsearchParamsObj')
     setDataList({ list: undefined })
     if (!updateState) {
       setIsSpinning(true)

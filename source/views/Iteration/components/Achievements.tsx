@@ -20,6 +20,7 @@ import { setAchieveInfo } from '@store/iterate'
 import { Editor, EditorRef } from '@xyfe/uikit'
 import { uploadFileToKey } from '@/services/cos'
 import { uploadFile } from '@/components/CreateDemand/CreateDemandLeft'
+import { Form } from 'antd'
 
 const Wrap = styled.div<{ isModal: any }>(
   {
@@ -56,6 +57,7 @@ interface Props {
 
 const Achievements = (props: Props) => {
   const editorRef = useRef<EditorRef>(null)
+  const [form] = Form.useForm()
   const WrapDom = useRef<HTMLInputElement>(null)
   const [attachList, setAttachList] = useState<any>([])
   const [newAttachList, setNewAttachList] = useState<any>([])
@@ -71,7 +73,9 @@ const Achievements = (props: Props) => {
 
   const setValue = (obj: any) => {
     setHtml(obj.info)
-
+    form.setFieldsValue({
+      info: obj.info,
+    })
     setAttachList(
       obj.attachList?.map((i: any) => ({
         url: i.attachment.path,
@@ -130,7 +134,7 @@ const Achievements = (props: Props) => {
   const onConfirm = () => {
     const params = {
       attachList: newAttachList,
-      info: html,
+      ...form.getFieldsValue(),
     }
     return params
   }
@@ -154,17 +158,21 @@ const Achievements = (props: Props) => {
       {props.isEdit ? (
         <div className={labelWrap}>
           <span className={label}>{t('p2.m1') as string}</span>
-          <Editor
-            upload={uploadFile}
-            getSuggestions={() => {
-              return new Promise(resolve => {
-                setTimeout(() => {
-                  resolve([])
-                  // resolve(options)
-                }, 1000)
-              })
-            }}
-          />
+          <Form form={form}>
+            <Form.Item name="info">
+              <Editor
+                upload={uploadFile}
+                getSuggestions={() => {
+                  return new Promise(resolve => {
+                    setTimeout(() => {
+                      resolve([])
+                      // resolve(options)
+                    }, 1000)
+                  })
+                }}
+              />
+            </Form.Item>
+          </Form>
         </div>
       ) : html ? (
         <Editor

@@ -213,10 +213,11 @@ const IterationMain = (props: Props) => {
     props.onChangeIsUpdate(false)
   }
 
-  const onSearch = (params: string) => {
-    setSearchItems(params)
+  const onSearch = (params: any) => {
+    const result = { ...params, ...{ searchVal: searchVal } }
+    setSearchItems(result)
     setDataList({ list: undefined })
-    getList(isGrid, { page: 1, size: pageObj.size }, params)
+    getList(isGrid, { page: 1, size: pageObj.size }, result)
   }
 
   const onUpdate = (updateState?: boolean) => {

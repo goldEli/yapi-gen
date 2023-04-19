@@ -6,8 +6,7 @@ import useSetTitle from '@/hooks/useSetTitle'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from '@store/index'
-import WriteReportModal from '../FormWorkSide/WriteReport'
+import { useDispatch } from '@store/index'
 import { setWriteReportModal } from '@store/workReport'
 
 const Menu = styled.div`
@@ -39,9 +38,6 @@ const ReviewSide = () => {
   const { pathname } = useLocation()
   const nowPath2 = Number(pathname.split('/')[4]) || ''
   const navigate = useNavigate()
-  const { visible: visibleEdit } = useSelector(
-    state => state.workReport.writeReportModal,
-  )
   const dispatch = useDispatch()
 
   const menuList = [
@@ -157,14 +153,6 @@ const ReviewSide = () => {
           </MenuItem>
         ))}
       </Menu>
-      <WriteReportModal
-        isVisible={visibleEdit}
-        onClose={() => dispatch(setWriteReportModal({ visible: false }))}
-        onConfirm={function (): void {
-          throw new Error('Function not implemented.')
-        }}
-        title={t('report.list.writeReport')}
-      />
     </div>
   )
 }

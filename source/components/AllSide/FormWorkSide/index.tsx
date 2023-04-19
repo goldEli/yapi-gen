@@ -4,22 +4,18 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import AddFormWork from '@/components/AllSide/FormWorkSide/AddFormWork'
-import {
-  setActiveItem,
-  setFillingRequirements,
-  setEditSave,
-} from '@store/formWork/index'
+import { setActiveItem, setFillingRequirements } from '@store/formWork/index'
 import { useDispatch, useSelector } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { getTemplateList } from '@store/formWork/thunk'
 import {
-  setTemplateName,
   setDataList,
   setReportContent,
   setTemplateContentConfigs,
 } from '@store/formWork'
 import { aWeekDataList } from '@/views/WorkReport/Formwork/DataList'
 import { CloseWrap } from '@/components/StyleCommon'
+import { useTranslation } from 'react-i18next'
 // getTemplateList
 const FormWorkSideStyle = styled.div`
   min-width: 200px;
@@ -100,6 +96,7 @@ const Box = styled.div`
   overflow-y: auto;
 `
 const FormWorkSide = () => {
+  const [t] = useTranslation()
   const [isActive, setIsActive] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   const dispatch = useDispatch()
@@ -116,8 +113,8 @@ const FormWorkSide = () => {
   }, [activeItem])
   const onConfirm = async (name: string) => {
     setIsVisible(false)
-    dispatch(setTemplateName(name))
     dispatch(setDataList([...dataList, { name }]))
+    dataList?.length < 1 && dispatch(setActiveItem({ name }))
   }
   const getDataList = async () => {
     const res = await dispatch(getTemplateList())
@@ -139,7 +136,7 @@ const FormWorkSide = () => {
     setIsActive(index)
     const data = [
       {
-        name: '汇报对象',
+        name: t('formWork.title3'),
         is_required: 1,
         tips: '',
         type: 1,
@@ -177,12 +174,11 @@ const FormWorkSide = () => {
     )
     dispatch(setFillingRequirements(claerConfig))
     dispatch(setActiveItem(el))
-    dispatch(setTemplateName(el.name))
   }
   return (
     <FormWorkSideStyle>
       <TitleStyle>
-        <span>模板</span>
+        <span>{t('formWork.text3')}</span>
         <CloseWrap width={24} height={24}>
           <IconFont
             style={{ fontSize: 18 }}
@@ -202,7 +198,7 @@ const FormWorkSide = () => {
           <NoDataCreateWrap>
             <div className="top">
               <IconFont type="Warning" />
-              <div>暂无模板，创建一个吧~</div>
+              <div>{t('formWork.text4')}</div>
             </div>
             <div className="bottom">
               <div
@@ -211,7 +207,7 @@ const FormWorkSide = () => {
                 style={{ cursor: 'pointer' }}
               >
                 <IconFont type="plus" />
-                <div>新建模板</div>
+                <div>{t('formWork.text5')}</div>
               </div>
             </div>
           </NoDataCreateWrap>
@@ -246,8 +242,8 @@ const FormWorkSide = () => {
       />
       {/* 未保存的弹窗 */}
       <DeleteConfirm
-        title={'保存提示'}
-        text={`【${activeItem?.name}】还未保存，是否保存编辑内容？`}
+        title={t('formWork.text6')}
+        text={`【${activeItem?.name}】${t('formWork.text7')}`}
         isVisible={delIsVisible}
         onConfirm={() => setDelIsVisible(false)}
         notCancel
