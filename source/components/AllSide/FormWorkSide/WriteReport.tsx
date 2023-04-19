@@ -218,8 +218,8 @@ const WriteReport = (props: Props) => {
                 .concat(dataList?.otherTemplate || [])
                 .filter(
                   (k: any) =>
-                    !(k.submit_cycle === 1 && k.is_current_cycle_used) &&
-                    k.is_write,
+                    !(k.submit_cycle === 1 && k.is_current_cycle_used) ||
+                    !k.is_write,
                 )
                 .map((item: any) => ({
                   label: item.name,

@@ -267,7 +267,7 @@ const HandleReport = (props: any) => {
             return {
               avatar: item?.avatar,
               id: item.id || item.user_id,
-              name: item.name,
+              name: item?.name,
             }
           }),
         )
@@ -283,8 +283,8 @@ const HandleReport = (props: any) => {
         result.data?.target_users?.map((item: any) => {
           return {
             avatar: item.user?.avatar,
-            id: item.user.id,
-            name: item.user.name,
+            id: item.user?.id,
+            name: item.user?.name,
           }
         }),
       )
@@ -313,8 +313,8 @@ const HandleReport = (props: any) => {
     const result = await getStaffListAll({ all: 1 })
     setOptions(
       result.map((i: any) => ({
-        id: i.id,
-        label: i.name,
+        id: i?.id,
+        label: i?.name,
       })),
     )
   }
