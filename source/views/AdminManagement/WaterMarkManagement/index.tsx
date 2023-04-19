@@ -88,8 +88,8 @@ const WaterMarkManagement = () => {
           {configList.map(item => (
             <SwitchWrap key={item.title}>
               <Text>
-                <div>{t(item.title)}</div>
-                <div>{t(item.des)}</div>
+                <div>{t(item.title as any)}</div>
+                <div>{t(item.des as any)}</div>
               </Text>
               <Switch onChange={onChange} checked={checked} />
             </SwitchWrap>
