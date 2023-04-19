@@ -25,7 +25,9 @@ const CalendarMainSide = () => {
   // 改变路由
   const onChangeRouter = () => {
     localStorage.setItem('calendarSetKey', 'view')
-    dispatch(setRouterMenu({ name: t('view_options'), key: 'view' }))
+    dispatch(
+      setRouterMenu({ name: t('calendarManager.view_options'), key: 'view' }),
+    )
   }
 
   // 创建日程
@@ -49,14 +51,16 @@ const CalendarMainSide = () => {
       <CommonButton type="primary" style={{ width: '100%', marginBottom: 24 }}>
         <CreateScheduleBtn onClick={onCreate}>
           <IconFont type="plus" style={{ fontSize: 16 }} />
-          <span className="btnText">{t('create_schedule')}</span>
+          <span className="btnText">
+            {t('calendarManager.create_schedule')}
+          </span>
         </CreateScheduleBtn>
       </CommonButton>
       <DXCalendar />
       <div style={{ width: '100%', margin: '24px 0' }}>
         <InputSearch
           onChangeSearch={setValue}
-          placeholder={t('search_calendar')}
+          placeholder={t('calendarManager.search_calendar')}
           width="100%"
           autoFocus
           leftIcon
@@ -64,13 +68,13 @@ const CalendarMainSide = () => {
       </div>
       <ManagerListBox>
         <CalendarManagerList
-          title={t('manage_calendar')}
+          title={t('calendarManager.manage_calendar')}
           type="manager"
           searchValue={value}
           path="b/calendar"
         />
         <CalendarManagerList
-          title={t('subscribed_calendar')}
+          title={t('calendarManager.subscribed_calendar')}
           type="subscribe"
           searchValue={value}
           path="b/calendar/subscribe"
@@ -82,7 +86,7 @@ const CalendarMainSide = () => {
             type="settings"
             style={{ fontSize: 18, color: 'var(--neutral-n3)' }}
           />
-          <div>{t('calendar_settings')}</div>
+          <div>{t('calendarManager.calendar_settings')}</div>
         </div>
       </CalendarSetBox>
     </>

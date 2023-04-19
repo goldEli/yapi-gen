@@ -117,8 +117,8 @@ const CreateSchedule = () => {
 
   // 参与者的权限
   const checkboxOptions = [
-    { label: t('modifiable_schedule'), value: 0 },
-    { label: t('invite_participants'), value: 1 },
+    { label: t('calendarManager.modifiable_schedule'), value: 0 },
+    { label: t('calendarManager.invite_participants'), value: 1 },
   ]
 
   // 不可选择当前时间之前的
@@ -190,10 +190,10 @@ const CreateSchedule = () => {
         }),
       )
       onClose()
-      message.success(t('common.editSuccess'))
+      message.success(t('calendarManager.editSuccess'))
     } else {
       await dispatch(saveSchedule(resultParams))
-      message.success(t('common.createSuccess'))
+      message.success(t('calendarManager.createSuccess'))
       if (next) {
         dispatch(
           setScheduleModal({
@@ -257,7 +257,7 @@ const CreateSchedule = () => {
     // 是否可操作重复限制
     const limitDay = [0, 1, 1, 31, 366]
     if (!time) {
-      message.warning(t('please_select_a_time'))
+      message.warning(t('calendarManager.please_select_a_time'))
       return
     }
     const startTime = isAll ? moment(time[0]).startOf('day') : moment(time[0])
@@ -273,9 +273,12 @@ const CreateSchedule = () => {
     } else {
       if (difference / 86400000 < limitDay[value]) {
         message.warning(
-          t('only_schedule_repeats_with_a_duration_of_days_are_supported', {
-            value: limitDay[value],
-          }),
+          t(
+            'calendarManager.only_schedule_repeats_with_a_duration_of_days_are_supported',
+            {
+              value: limitDay[value],
+            },
+          ),
         )
         return
       }
@@ -518,31 +521,33 @@ const CreateSchedule = () => {
       />
       <AddMemberCommonModal
         isVisible={isChooseVisible}
-        title={t('add_a_member')}
+        title={t('calendarManager.add_a_member')}
         onClose={() => setIsChooseVisible(false)}
         onConfirm={onAddConfirm}
       />
       <CommonModal
         isVisible={scheduleModal.visible}
         title={
-          scheduleModal?.params?.id ? t('edit_schedule') : t('create_schedule')
+          scheduleModal?.params?.id
+            ? t('calendarManager.edit_schedule')
+            : t('calendarManager.create_schedule')
         }
         width={1056}
         onClose={onClose}
         hasFooter={
           <ModalFooter>
             <CommonButton type="light" onClick={onClose}>
-              {t('cancel')}
+              {t('calendarManager.cancel')}
             </CommonButton>
             {!scheduleModal.params?.id && (
               <CommonButton type="secondary" onClick={() => onConfirm(true)}>
-                {t('common.finishToAdd')}
+                {t('calendarManager.finishToAdd')}
               </CommonButton>
             )}
             <CommonButton type="primary" onClick={() => onConfirm()}>
               {scheduleModal.params?.id
-                ? t('common.edit')
-                : t('newlyAdd.create')}
+                ? t('calendarManager.edit')
+                : t('calendarManager.create')}
             </CommonButton>
           </ModalFooter>
         }
@@ -556,13 +561,18 @@ const CreateSchedule = () => {
             className="haveRight"
           >
             <Form.Item
-              label={<CreateFormItem label={t('theme')} type="database" />}
+              label={
+                <CreateFormItem
+                  label={t('calendarManager.theme')}
+                  type="database"
+                />
+              }
               name="subject"
               rules={[{ required: true, message: '' }]}
             >
               <Input
                 autoComplete="off"
-                placeholder={t('please_enter_a_theme')}
+                placeholder={t('calendarManager.please_enter_a_theme')}
                 maxLength={80}
                 ref={inputDom}
                 autoFocus
@@ -570,7 +580,12 @@ const CreateSchedule = () => {
             </Form.Item>
             <TimeWrap>
               <Form.Item
-                label={<CreateFormItem label={t('time')} type="time" />}
+                label={
+                  <CreateFormItem
+                    label={t('calendarManager.time')}
+                    type="time"
+                  />
+                }
                 name="time"
                 rules={[{ required: true, message: '' }]}
                 style={{ margin: 0, width: '84%' }}
@@ -584,7 +599,7 @@ const CreateSchedule = () => {
                 />
               </Form.Item>
               <Checkbox checked={isAll} onChange={onChangeIsAll}>
-                {t('all_day_long')}
+                {t('calendarManager.all_day_long')}
               </Checkbox>
             </TimeWrap>
             <Form.Item style={{ width: '80%', marginTop: 8 }}>
@@ -598,7 +613,10 @@ const CreateSchedule = () => {
             </Form.Item>
             <ItemFlex style={{ margin: '24px 0' }}>
               <div className="box">
-                <CreateFormItem type="team" label={t('participant')} />
+                <CreateFormItem
+                  type="team"
+                  label={t('calendarManager.participant')}
+                />
                 <CloseWrap
                   width={24}
                   height={24}
@@ -637,14 +655,16 @@ const CreateSchedule = () => {
             <Form.Item
               label={
                 <CreateFormItem
-                  label={t('schedule_description')}
+                  label={t('calendarManager.schedule_description')}
                   type="file-02"
                 />
               }
               name="describe"
             >
               <Input.TextArea
-                placeholder={t('please_enter_a_schedule_description')}
+                placeholder={t(
+                  'calendarManager.please_enter_a_schedule_description',
+                )}
                 autoSize
                 maxLength={200}
               />
@@ -652,7 +672,7 @@ const CreateSchedule = () => {
             <Form.Item
               label={
                 <CreateFormItem
-                  label={t('schedule_category')}
+                  label={t('calendarManager.schedule_category')}
                   type="calendar-days"
                 />
               }
@@ -705,7 +725,12 @@ const CreateSchedule = () => {
               </ItemFlex>
             </Form.Item>
             <Form.Item
-              label={<CreateFormItem label={t('public_scope')} type="lock" />}
+              label={
+                <CreateFormItem
+                  label={t('calendarManager.public_scope')}
+                  type="lock"
+                />
+              }
               name="permission"
               style={{ margin: 0 }}
             >
@@ -729,7 +754,12 @@ const CreateSchedule = () => {
               </Radio.Group>
             </Form.Item>
             <Form.Item
-              label={<CreateFormItem label={t('remind')} type="alarm" />}
+              label={
+                <CreateFormItem
+                  label={t('calendarManager.remind')}
+                  type="alarm"
+                />
+              }
               name="reminds"
             >
               <CommonButton
@@ -738,7 +768,7 @@ const CreateSchedule = () => {
                 iconPlacement="left"
                 onClick={onAddNotice}
               >
-                {t('add_reminder')}
+                {t('calendarManager.add_reminder')}
               </CommonButton>
               {noticeList.map((i: DefaultTime) => (
                 <NoticeBox key={i.id}>
@@ -764,7 +794,7 @@ const CreateSchedule = () => {
             <Form.Item
               label={
                 <CreateFormItem
-                  label={t('common.attachment')}
+                  label={t('calendarManager.attachment')}
                   type="attachment"
                 />
               }
@@ -781,7 +811,7 @@ const CreateSchedule = () => {
                       icon="plus"
                       iconPlacement="left"
                     >
-                      {t('p2.addAdjunct')}
+                      {t('calendarManager.addAdjunct')}
                     </CommonButton>
                   </div>
                 }

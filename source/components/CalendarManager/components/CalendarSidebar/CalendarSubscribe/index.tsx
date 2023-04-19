@@ -174,7 +174,7 @@ const TabsContent = (props: TabsContentProps) => {
   // 取消订阅
   const onCancelSubscribe = async (id: number) => {
     await unsubscribeCalendar({ id })
-    message.success(t('unsubscribed_successfully'))
+    message.success(t('calendarManager.unsubscribed_successfully'))
     dispatch(getCalendarList())
     if (props.type === '0') {
       const resultData = dataUserList?.map(
@@ -196,7 +196,7 @@ const TabsContent = (props: TabsContentProps) => {
   // 订阅
   const onSubscribe = async (id: number) => {
     await subscribeCalendar({ id })
-    message.success(t('subscription_successful'))
+    message.success(t('calendarManager.subscription_successful'))
     dispatch(getCalendarList())
     if (props.type === '0') {
       const newData = dataUserList?.map(
@@ -261,10 +261,11 @@ const TabsContent = (props: TabsContentProps) => {
                       <div className="title">{i.name}</div>
                       <div className="sub">
                         <span>
-                          {t('calendar_creator')}：{i.user.name}
+                          {t('calendarManager.calendar_creator')}：{i.user.name}
                         </span>
                         <span>
-                          {t('subscribe_num')}：{i.subscribe_num}
+                          {t('calendarManager.subscribe_num')}：
+                          {i.subscribe_num}
                         </span>
                       </div>
                       <Tooltip
@@ -281,7 +282,9 @@ const TabsContent = (props: TabsContentProps) => {
                       type="light"
                       onClick={() => onCancelSubscribe(i.id)}
                     >
-                      <div style={{ minWidth: 58 }}>{t('unsubscribed')}</div>
+                      <div style={{ minWidth: 58 }}>
+                        {t('calendarManager.unsubscribed')}
+                      </div>
                     </CommonButton>
                   )}
                   {i.status === 2 && (
@@ -290,7 +293,7 @@ const TabsContent = (props: TabsContentProps) => {
                         style={{ minWidth: 58 }}
                         onClick={() => onSubscribe(i.id)}
                       >
-                        {t('subscription')}
+                        {t('calendarManager.subscription')}
                       </div>
                     </CommonButton>
                   )}
@@ -341,7 +344,7 @@ const TabsContent = (props: TabsContentProps) => {
                           style={{ minWidth: 58 }}
                           onClick={() => onCancelSubscribe(i.id)}
                         >
-                          {t('unsubscribed')}
+                          {t('calendarManager.unsubscribed')}
                         </div>
                       </CommonButton>
                     )}
@@ -351,7 +354,7 @@ const TabsContent = (props: TabsContentProps) => {
                           style={{ minWidth: 58 }}
                           onClick={() => onSubscribe(i.id)}
                         >
-                          {t('subscription')}
+                          {t('calendarManager.subscription')}
                         </div>
                       </CommonButton>
                     )}
@@ -386,7 +389,9 @@ const CalendarSubscribe = () => {
   const operations = (
     <InputSearch
       placeholder={
-        activeKey === '0' ? t('calendar_search_name') : t('calendar_name')
+        activeKey === '0'
+          ? t('calendarManager.calendar_search_name')
+          : t('calendarManager.calendar_name')
       }
       leftIcon
       width={184}
@@ -437,7 +442,7 @@ const CalendarSubscribe = () => {
   const items = [
     {
       key: '0',
-      label: t('subscription_contact'),
+      label: t('calendarManager.subscription_contact'),
       children: (
         <TabsContent
           onMore={getContactsCalendarData}
@@ -448,7 +453,7 @@ const CalendarSubscribe = () => {
     },
     {
       key: '1',
-      label: t('public_calendar'),
+      label: t('calendarManager.public_calendar'),
       children: (
         <TabsContent
           onMore={page => getSubscribeData(activeKey, page)}
@@ -459,7 +464,7 @@ const CalendarSubscribe = () => {
     },
     {
       key: '2',
-      label: t('holiday_calendar'),
+      label: t('calendarManager.holiday_calendar'),
       children: (
         <TabsContent
           onMore={page => getSubscribeData(activeKey, page)}
@@ -490,7 +495,7 @@ const CalendarSubscribe = () => {
     <CommonModal
       isVisible={subscribeModal}
       isShowFooter
-      title={t('subscription_calendar')}
+      title={t('calendarManager.subscription_calendar')}
       width={784}
       onClose={onClose}
     >

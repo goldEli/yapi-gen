@@ -68,11 +68,13 @@ const CalendarSetSide = () => {
 
   return (
     <>
-      <CalendarSetSideTitle>{t('schedule_settings')}</CalendarSetSideTitle>
+      <CalendarSetSideTitle>
+        {t('calendarManager.schedule_settings')}
+      </CalendarSetSideTitle>
       <BackBox>
         <div className="box" onClick={onBack}>
           <IconFont className="icon" type="left-md" />
-          <div className="text">{t('calendar_back')}</div>
+          <div className="text">{t('calendarManager.calendar_back')}</div>
         </div>
       </BackBox>
       <MenuItems>
