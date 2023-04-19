@@ -15,6 +15,7 @@ import { useDispatch } from '@store/index'
 import moment from 'moment'
 import { dayData1, weekData, monthData } from './DataList'
 import { throttle } from 'lodash'
+import { useTranslation } from 'react-i18next'
 const Text = styled.div`
   color: var(--neutral-n1-d1);
   font-size: 14px;
@@ -43,6 +44,7 @@ interface Item {
 }
 const DatePicker1 = (props: any) => {
   const dispatch = useDispatch()
+  const [t] = useTranslation()
   const [value, setValue] = useState<any>('')
   const onChange = (e: any, dateString: string) => {
     props.datePickValue(dateString)
@@ -59,7 +61,7 @@ const DatePicker1 = (props: any) => {
   }, [props.value])
   return (
     <DatePicker
-      placeholder="请选择结束时间"
+      placeholder={t('formWork.msg13')}
       onChange={(date: any, dateString: string) => {
         onChange(date, dateString)
       }}
@@ -72,6 +74,7 @@ const SupScope = (props: SupScopeType) => {
   const dispatch = useDispatch()
   const [isOpen, setIsOpen] = useState(false)
   const [items, setItems] = useState<Array<Item>>()
+  const [t] = useTranslation()
   // 每天 day ,每周 week , 每月 month , 不重复doNot
   useEffect(() => {
     switch (props.type) {
@@ -93,7 +96,7 @@ const SupScope = (props: SupScopeType) => {
   }
   return (
     <RowStyle>
-      <Text>补交范围:</Text>
+      <Text>{t('formWork.msg3')}:</Text>
       <Dropdown
         placement="bottomLeft"
         open={isOpen}
@@ -167,9 +170,10 @@ interface EditType {
 }
 const Edit = (props: EditType) => {
   const dispatch = useDispatch()
+  const [t] = useTranslation()
   return (
     <RowStyle>
-      <Text>自动提醒未提交的人</Text>
+      <Text>{t('formWork.msg4')}</Text>
       <Switch
         checked={props.value || false}
         style={{ marginLeft: 8 }}
@@ -209,6 +213,7 @@ let endTime: any = null
 let remindTime: any = null
 const FormMain = (props: FormType) => {
   const dispatch = useDispatch()
+  const [t] = useTranslation()
   const [startTimes, setStartTimes] = useState<any>()
   const [endTimes, setEndTimes] = useState<any>()
   const [remindTimes, setRemindTimes] = useState<any>()
@@ -220,35 +225,35 @@ const FormMain = (props: FormType) => {
     ) {
       // 判断结束必须大于开始
       if (endTime?.v2 < startTime?.v2) {
-        message.warning('结束时间不能小于开始时间')
+        message.warning(t('formWork.msg10'))
         dispatch(setErr(false))
-        dispatch(setErrMsg('结束时间不能小于开始时间'))
+        dispatch(setErrMsg(t('formWork.msg10')))
         return
       } else if (endTime?.v2 === startTime?.v2) {
         if (endTime?.v3 < startTime?.v3) {
-          message.warning('结束时间不能小于开始时间')
+          message.warning(t('formWork.msg10'))
           dispatch(setErr(false))
-          dispatch(setErrMsg('结束时间不能小于开始时间'))
+          dispatch(setErrMsg(t('formWork.msg10')))
           return
         }
       }
     } else if (startTime?.v1 === 1 && endTime?.v1 === 2) {
       if (endTime?.v2 > startTime?.v2) {
-        message.warning('结束时间不能大于开始时间的24小时')
-        dispatch(setErrMsg('结束时间不能大于开始时间的24小时'))
+        message.warning(t('formWork.msg11'))
+        dispatch(setErrMsg(t('formWork.msg11')))
         dispatch(setErr(false))
         return
       } else if (startTime?.v2 === endTime?.v2) {
         if (endTime?.v3 > startTime?.v3) {
-          message.warning('结束时间不能大于开始时间的24小时')
-          dispatch(setErrMsg('结束时间不能大于开始时间的24小时'))
+          message.warning(t('formWork.msg11'))
+          dispatch(setErrMsg(t('formWork.msg11')))
           dispatch(setErr(false))
           return
         }
       }
     } else if (startTime?.v1 === 2 && endTime?.v1 === 1) {
-      message.warning('开始时间不能小于结束时间')
-      dispatch(setErrMsg('开始时间不能小于结束时间'))
+      message.warning(t('formWork.msg12'))
+      dispatch(setErrMsg(t('formWork.msg12')))
       dispatch(setErr(false))
       return
     }
@@ -257,28 +262,27 @@ const FormMain = (props: FormType) => {
   // 不能超过一周
   const WeekJudgeTime = () => {
     if (endTime?.v1 > startTime?.v1 + 7) {
-      message.warning('结束时间不允许超过开始时间一周')
+      message.warning(t('formWork.msg14'))
       dispatch(setErr(false))
-      dispatch(setErrMsg('结束时间不允许超过开始时间一周'))
+      dispatch(setErrMsg(t('formWork.msg14')))
       setErrMsg
       return
     } else if (endTime?.v1 === startTime?.v1 + 7) {
       if (endTime?.v2 > startTime?.v2) {
-        message.warning('结束时间不允许超过开始时间一周')
-        dispatch(setErrMsg('结束时间不允许超过开始时间一周'))
+        message.warning(t('formWork.msg14'))
+        dispatch(setErrMsg(t('formWork.msg14')))
         dispatch(setErr(false))
         return
       } else if (endTime?.v2 === startTime?.v2) {
         if (endTime?.v3 > startTime?.v3) {
-          message.warning('结束时间不允许超过开始时间一周')
-          dispatch(setErrMsg('结束时间不允许超过开始时间一周'))
+          message.warning(t('formWork.msg14'))
+          dispatch(setErrMsg(t('formWork.msg14')))
           dispatch(setErr(false))
           return
         }
       }
     }
     dispatch(setErr(true))
-    // dispatch(setErrMsg(''))
   }
   const getValuesOnece = (type: string, v1: number, v2: number, v3: number) => {
     if (type === 'start') {
@@ -356,7 +360,7 @@ const FormMain = (props: FormType) => {
       {props.type === 'day' ? (
         <>
           <Form.Item label="" name="is_holiday">
-            <CheckBox title={'跟随中国法定节假日自动调整'} />
+            <CheckBox title={t('formWork.msg5')} />
           </Form.Item>
           <Form.Item
             label=""
@@ -375,7 +379,7 @@ const FormMain = (props: FormType) => {
           style={{
             marginBottom: '32px',
           }}
-          label="开始时间"
+          label={t('formWork.start')}
           name="start_time"
         >
           {props.type === 'day' ||
@@ -400,7 +404,7 @@ const FormMain = (props: FormType) => {
         style={{
           margin: '32px 0 16px 0',
         }}
-        label="截止时间"
+        label={t('formWork.end')}
         name="end_time"
       >
         {props.type === 'day' ||
@@ -426,7 +430,7 @@ const FormMain = (props: FormType) => {
       </Form.Item>
       <RowStyle>
         <Form.Item style={{ marginRight: 48 }} label="" name="is_supply">
-          <CheckBox title="截止时间后允许补交" />
+          <CheckBox title={t('formWork.msg6')} />
         </Form.Item>
         {props.type === 'doNot' ? null : (
           <Form.Item label="" name="hand_scope">
@@ -435,10 +439,10 @@ const FormMain = (props: FormType) => {
         )}
       </RowStyle>
       <Form.Item label="" name="is_cycle_limit">
-        <CheckBox title="每个周限填一次" />
+        <CheckBox title={t('formWork.msg7')} />
       </Form.Item>
       <Form.Item label="" name="is_submitter_edit">
-        <CheckBox title="提交汇报提交人可修改" />
+        <CheckBox title={t('formWork.msg8')} />
       </Form.Item>
       <Form.Item
         style={{
@@ -454,7 +458,7 @@ const FormMain = (props: FormType) => {
           marginTop: '16px',
           marginBottom: '44px',
         }}
-        label="提醒时间"
+        label={t('formWork.msg9')}
         name="reminder_time"
       >
         <Picker
