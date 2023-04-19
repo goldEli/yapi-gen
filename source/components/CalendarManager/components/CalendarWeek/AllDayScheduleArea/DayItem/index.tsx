@@ -33,6 +33,7 @@ const DayItemBox = styled.div`
   border-bottom-width: 0px;
   height: 100px;
   flex: 1;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 2px;
