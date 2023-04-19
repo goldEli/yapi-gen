@@ -45,6 +45,7 @@ const Content = styled.div`
 const TimeRange = styled.span`
   font-size: 12px;
   color: var(--neutral-n1-d1);
+  margin-right: 4px;
 `
 const Title = styled.span`
   font-size: 12px;
@@ -79,8 +80,9 @@ const MoveCard: React.FC<ScheduleCardProps> = props => {
       <>
         <TimeRange className={getColorClassName()}>
           {timeRange &&
-            `${timeRange?.start_timestamp} - ${timeRange?.start_timestamp} `}
+            `${timeRange?.start_timestamp} - ${timeRange?.start_timestamp}`}
         </TimeRange>
+
         <Title className={getColorClassName()}>{data?.subject}</Title>
       </>
     )
