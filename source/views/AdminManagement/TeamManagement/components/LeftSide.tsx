@@ -14,6 +14,7 @@ import * as services from '@/services'
 import { companyTeamsList } from '@store/teams/thunk'
 import { addTeams, dismissTeams, editTeams } from '@/services/setting'
 import { setActiveTeam } from '@store/teams/index'
+import { CloseWrap } from '@/components/StyleCommon'
 
 const LeftSideContainer = styled.div`
   position: relative;
@@ -129,8 +130,12 @@ const FormStyle = styled(Form)`
   & .ant-form-item-control-input-content {
     background-color: var(--neutral-white-d5) !important;
   }
-  .ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper,
-  .ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:hover {
+  .ant-input-affix-wrapper-status-error:not(
+      .ant-input-affix-wrapper-disabled
+    ):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper,
+  .ant-input-affix-wrapper-status-error:not(
+      .ant-input-affix-wrapper-disabled
+    ):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:hover {
     background-color: var(--neutral-white-d5) !important;
   }
 `
@@ -411,9 +416,15 @@ const LeftSide = (props: any) => {
       <div className="resizable" />
       <div className="resize_line" />
       <Content className="resize_save">
-        <TeamAdd onClick={() => createTeam()}>
+        <TeamAdd>
           <TiamTitleText>{t('team_management') as string}</TiamTitleText>
-          <IconFontStyle type="plus" />
+          <CloseWrap width={24} height={24}>
+            <IconFont
+              style={{ fontSize: 18 }}
+              type="plus"
+              onClick={() => createTeam()}
+            />
+          </CloseWrap>
         </TeamAdd>
         {/* 拖拽组件 */}
         <SideDragging
