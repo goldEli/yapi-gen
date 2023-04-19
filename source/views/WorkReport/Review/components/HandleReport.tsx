@@ -202,12 +202,13 @@ const HandleReport = (props: any) => {
               setPeopleValue(
                 result.data?.target_users?.map((item: any) => {
                   return {
-                    avatar: item.user.avatar,
-                    id: item.user.id,
-                    name: item.user.name,
+                    avatar: item.user?.avatar,
+                    id: item.user?.id,
+                    name: item.user?.name,
                   }
                 }),
               )
+
               result.data.report_content?.forEach((v: any) => {
                 temp[`${v.type}_${v.id}`] =
                   v.type === 3 ? v?.pivot?.content : v?.pivot?.params
@@ -220,6 +221,9 @@ const HandleReport = (props: any) => {
                     label: u.user?.name,
                   })),
               })
+              setRelatedNeedList(
+                result.data?.report_content?.filter((k: any) => k.type === 4),
+              )
               message.success(t('report.list.success'))
             } else {
               message.error(result?.data?.message || t('report.list.fail'))
