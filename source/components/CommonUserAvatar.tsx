@@ -11,11 +11,14 @@ const UserAvatarWrap = styled.div`
 `
 
 const AvatarBox = styled.div<{ size?: string; isBorder?: boolean }>`
+  border-radius: 50%;
   display: flex;
   width: ${props => (props.size === 'large' ? 32 : 24)}px;
   height: ${props => (props.size === 'large' ? 32 : 24)}px;
   border: ${props =>
-    props.isBorder ? '1px solid var(--neutral-white-d7)' : 'none'};
+    props.isBorder
+      ? '1px solid var(--neutral-white-d2)'
+      : '1px solid var(--avatar-border)'};
   img {
     width: 100%;
     height: 100%;
@@ -42,6 +45,7 @@ interface UserAvatarProps {
 }
 
 const CommonUserAvatar = (props: UserAvatarProps) => {
+  console.log(props)
   const { theme } = useSelector(store => store.global)
   return (
     <UserAvatarWrap>

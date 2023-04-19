@@ -77,21 +77,7 @@ const index = () => {
   return (
     <Side>
       <InfoWrap>
-        {mainInfo?.avatar ? (
-          // <img
-          //   src={mainInfo?.avatar}
-          //   style={{
-          //     width: 40,
-          //     height: 40,
-          //     borderRadius: '50%',
-          //     marginRight: 8,
-          //   }}
-          //   alt=""
-          // />
-          <CommonUserAvatar size="large" avatar={mainInfo?.avatar} />
-        ) : (
-          <CommonUserAvatar size="large" avatar={mainInfo?.avatar} />
-        )}
+        <CommonUserAvatar size="large" avatar={mainInfo?.avatar} />
         <InfoItem>
           <div>{mainInfo?.name}</div>
           <span>{mainInfo?.phone}</span>

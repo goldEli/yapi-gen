@@ -23,11 +23,11 @@ import { templateList } from '@/services/formwork'
 import { getStaffList } from '@/services/staff'
 import HandleReport from './HandleReport'
 import { useDispatch } from '@store/index'
-import { setViewReportModal } from '@store/workReport'
 import LabelTag from '@/components/LabelTag'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { Space, Tooltip } from 'antd'
 import ScreenMinHover from '@/components/ScreenMinHover'
+import { saveViewReportDetailDrawer } from '@store/workReport/workReport.thunk'
 
 const ListTitle = styled.div`
   height: 32px;
@@ -160,7 +160,7 @@ const List = () => {
 
   const onClickView = (row: any) => {
     dispatch(
-      setViewReportModal({
+      saveViewReportDetailDrawer({
         visible: true,
         id: row.id,
         ids: listData?.map((i: any) => i.id),
