@@ -12,6 +12,9 @@ const ScheduleInfoFooterBox = styled.div`
   justify-content: flex-end;
   padding-right: 16px;
   box-sizing: border-box;
+  position: fixed;
+  bottom: 16px;
+  right: 0px;
   button {
     margin-left: 16px;
   }

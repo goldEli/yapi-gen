@@ -1,21 +1,31 @@
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
-
-export const CalendarListWrap = styled.div`
-  height: 80px;
-  position: relative;
+export const ScheduleSearchWrap = styled.div`
+  width: 100%;
+  display: flex;
+  height: 40px;
+  align-items: center;
+  margin-bottom: 40px;
+  > span {
+    height: 40px !important;
+  }
 `
-export const ScrollBox = styled.div`
+export const ScheduleSearchListBox = styled.div`
   background-color: #fff;
   overflow-y: auto;
+  height: 800px;
   position: relative;
-  height: 400px;
+  padding: 24px 50px;
+  box-sizing: border-box;
 `
-export const CalendarListBox = styled.div`
-  background-color: #fff;
-  overflow-y: auto;
-  height: 600px;
-  position: relative;
+export const BackBox = styled.div`
+  width: 60px;
+  color: var(--neutral-n3);
+  font-size: var(--font12);
+  cursor: pointer;
+  span {
+    margin-right: 8px;
+  }
 `
 export const CalendarListItem = styled.div`
   border-top: 1px solid var(--neutral-n6-d1);
@@ -79,7 +89,10 @@ export const TimeItem = styled.div`
 `
 export const CalendarListClass = css`
   :last-child {
-    border-bottom: 1px solid var(--neutral-n6-d1);
+    border-bottom: 1px solid var(--neutral-n6-d1) !important;
+  }
+  :first-child {
+    border-top: none;
   }
 `
 export const dateClass = css`
@@ -96,4 +109,7 @@ export const currentClass = css`
   display: inline-block;
   width: 28px !important;
   height: 28px !important;
+`
+export const contentHigh = css`
+  /* color: var(--primary-d1); */
 `

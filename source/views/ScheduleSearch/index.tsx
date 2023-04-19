@@ -1,14 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
-
-import { useDispatch, useSelector } from '@store/index'
-import {
-  getScheduleDaysOfList,
-  getScheduleSearch,
-} from '@store/schedule/schedule.thunk'
+import { useSelector } from '@store/index'
+import { getScheduleSearch } from '@/services/schedule'
 import dayjs from 'dayjs'
 import IconFont from '@/components/IconFont'
+import { useNavigate } from 'react-router-dom'
 import {
-  CalendarListBox,
+  ScheduleSearchWrap,
+  ScheduleSearchListBox,
+  BackBox,
   CalendarListItem,
   DateBox,
   MonthWeekBox,
@@ -18,80 +17,65 @@ import {
   CalendarListClass,
   dateClass,
   currentClass,
+  contentHigh,
 } from './styles'
 import { intersection } from 'lodash'
+import InputSearch from '@/components/InputSearch'
 interface CalendarListProps {}
 
-const CalendarList: React.FC<CalendarListProps> = props => {
+const ScheduleSearch: React.FC<CalendarListProps> = props => {
   const CalendarListBoxRef = useRef<HTMLDivElement>(null)
-  const { calenderListValue } = useSelector(state => state.calendarPanel)
-  const { scheduleSearchKey } = useSelector(state => state.calendarPanel)
-  const { listViewScheduleList } = useSelector(state => state.schedule)
-  const { checkedTime } = useSelector(state => state.calendar)
   const { checkedCalendarList } = useSelector(state => state.calendar)
-  const [checkedCalendarIds, setCheckedCalendarIds] = useState(
-    checkedCalendarList.map(item => item.calendar_id),
-  )
-  const checkedCalendarIdsRef = useRef<number[]>([])
-  // const calendarDataArray = calendarData?.manager.concat(
-  //   calendarData?.subscribe,
-  // )
-  const disPatch = useDispatch()
+  const [inputDefaultValue, setInputDefaultValue] = useState('')
+  const [searchList, setSearchList] = useState([])
+  const [isInit, setIsInit] = useState<boolean>(true)
+  const navigate = useNavigate()
   const getSearchList = () => {
-    disPatch(
-      getScheduleSearch({
-        year: dayjs(calenderListValue).year(),
-        keyword: scheduleSearchKey,
-        calendar_ids: checkedCalendarIdsRef.current,
-      }),
-    )
+    const params = {
+      year: 2023,
+      calendar_ids: checkedCalendarList.map(item => item.calendar_id),
+      keyword: inputDefaultValue,
+    }
+    getScheduleSearch(params).then(res => {
+      let array: any = []
+      Object.keys(res)
+        .sort()
+        .forEach(key => {
+          let item = res[key]
+          array.push({ date: key, list: item })
+        })
+      setSearchList(array)
+    })
   }
   useEffect(() => {
-    const params = {
-      year: dayjs(calenderListValue).year(),
-      month: dayjs(calenderListValue).month() + 1,
-      calendar_ids: checkedCalendarList.map(item => item.calendar_id),
-    }
-    disPatch(getScheduleDaysOfList(params))
-  }, [calenderListValue])
-
-  useEffect(() => {
-    const childrenKeys = [...(CalendarListBoxRef.current?.children as any)].map(
-      item => {
-        return {
-          type: item.getAttribute('datatype'),
-          height: item.clientHeight,
-        }
-      },
-    )
-    const currentItem = childrenKeys.find(item => item.type === checkedTime)
-    const currentIndex = childrenKeys.findIndex(
-      item => item.type === checkedTime,
-    )
-    let totalHeight = 0
-    for (let i = 0; i < childrenKeys.length; i++) {
-      totalHeight += childrenKeys[i].height
-      if (i === currentIndex || !currentItem) {
-        break
-      }
-    }
-
-    if (CalendarListBoxRef.current) {
-      CalendarListBoxRef.current.scrollTo({
-        top: totalHeight,
-        behavior: 'smooth',
-      })
-    }
-  }, [checkedTime])
-  useEffect(() => {
-    const calendar_ids = checkedCalendarList.map(item => item.calendar_id)
-    checkedCalendarIdsRef.current = calendar_ids
-    setCheckedCalendarIds([...calendar_ids])
+    if (isInit) return
     getSearchList()
-  }, [checkedCalendarList, scheduleSearchKey])
+    console.log(checkedCalendarList)
+    setIsInit(false)
+  }, [inputDefaultValue])
   return (
-    <CalendarListBox ref={CalendarListBoxRef}>
-      {listViewScheduleList?.map((item: any, index: number) => (
+    <ScheduleSearchListBox ref={CalendarListBoxRef}>
+      <ScheduleSearchWrap>
+        <BackBox
+          onClick={() => {
+            navigate(-1)
+          }}
+        >
+          <IconFont type="left-md"></IconFont>返回
+        </BackBox>
+        <InputSearch
+          placeholder="搜索日程"
+          defaultValue={inputDefaultValue}
+          width={'100%'}
+          onChangeSearch={value => {
+            console.log(value)
+            setInputDefaultValue(value)
+          }}
+          onFocus={() => {}}
+        ></InputSearch>
+      </ScheduleSearchWrap>
+
+      {searchList?.map((item: any, index: number) => (
         <CalendarListItem
           key={index}
           className={CalendarListClass}
@@ -118,7 +102,13 @@ const CalendarList: React.FC<CalendarListProps> = props => {
                 </span>
 
                 <span>
-                  {ele.subject}
+                  <label
+                    className={
+                      ele.subject.includes(inputDefaultValue) ? contentHigh : ''
+                    }
+                  >
+                    {ele.subject}
+                  </label>
                   {dayjs(ele.schedule_end_datetime).diff(
                     dayjs(ele.schedule_start_datetime),
                     'days',
@@ -170,8 +160,8 @@ const CalendarList: React.FC<CalendarListProps> = props => {
           </CalendarListInfo>
         </CalendarListItem>
       ))}
-    </CalendarListBox>
+    </ScheduleSearchListBox>
   )
 }
 
-export default CalendarList
+export default ScheduleSearch

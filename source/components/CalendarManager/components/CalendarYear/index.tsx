@@ -8,7 +8,7 @@ interface CalendarYearProps {}
 
 const Box = styled.div`
   display: flex;
-  gap: 68px;
+  gap: 94px;
   flex-wrap: wrap;
 `
 const CalendarYear: React.FC<CalendarYearProps> = props => {
@@ -18,11 +18,6 @@ const CalendarYear: React.FC<CalendarYearProps> = props => {
   checkedCalendarListRef.current = checkedCalendarList
   const calendarYear = useSelector(
     state => state.calendarPanel.calenderYearValue,
-  )
-  console.log(
-    'checkedCalendarList',
-    checkedCalendarList,
-    checkedCalendarListRef.current,
   )
   useEffect(() => {
     let params = {

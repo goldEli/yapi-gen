@@ -190,7 +190,6 @@ const slice = createSlice({
       if (state.quickCreateScheduleModel.visible) {
         return
       }
-
       state.scheduleInfoDropdown = {
         ...state.scheduleInfoDropdown,
         ...action.payload,
@@ -238,9 +237,6 @@ const slice = createSlice({
     ) {
       state.calenderYearType = action.payload
     },
-    setScheduleSearchKey(state, action: PayloadAction<string>) {
-      state.scheduleSearchKey = action.payload
-    },
   },
 })
 
@@ -256,7 +252,6 @@ export const {
   setCalenderYearType,
   setCalenderListValue,
   startMoveMonthSchedule,
-  setScheduleSearchKey,
   setCalenderYearWeekValue,
   clearMonthMoveScheduleActiveInfo,
   resizeMonthSchedule,

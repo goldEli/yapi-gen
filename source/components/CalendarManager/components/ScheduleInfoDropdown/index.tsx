@@ -18,16 +18,16 @@ const ScheduleInfoDropdownBox = styled.div<{
   left: number
 }>`
   width: 320px;
-  overflow-y: scroll;
   background-color: var(--neutral-white-d1);
   box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
-  z-index: 100;
+  z-index: 1;
   display: ${props => (props.visible ? 'block' : 'none')};
-  position: absolute;
-  top: ${props => props.top + 'px'};
-  left: ${props => props.left + 'px'};
+  position: fixed;
+  top: 56px;
+  right: 6px;
   padding-bottom: 24px;
   border-radius: 6px;
+  height: 100%;
 `
 const ScheduleInfoDropdown: React.FC<ScheduleInfoDropdownProps> = props => {
   const { scheduleInfoDropdown } = useSelector(store => store.calendarPanel)
@@ -45,6 +45,7 @@ const ScheduleInfoDropdown: React.FC<ScheduleInfoDropdownProps> = props => {
   // console.log({ scheduleInfoDropdown })
   const disPatch = useDispatch()
   useEffect(() => {
+    console.log('schedule_id', schedule_id)
     if (!schedule_id) return
     disPatch(getScheduleInfo({ id: schedule_id, show_date }))
   }, [schedule_id])

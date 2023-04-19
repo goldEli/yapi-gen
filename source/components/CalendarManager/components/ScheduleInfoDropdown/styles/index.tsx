@@ -103,7 +103,7 @@ export const ModalChildren = styled.div`
 
 export const ScheduleInfoContentBox = styled.div`
   padding: 16px;
-  max-height: 460px;
+  height: calc(100% - 220px);
   overflow-y: scroll;
 `
 export const ScheduleInfoContentItem = styled.div`
@@ -129,6 +129,7 @@ export const contentTip = css`
 `
 export const PersonList = styled.div`
   margin-left: 28px;
+  padding-bottom: 14px;
 `
 export const PersonItem = styled.div`
   display: flex;

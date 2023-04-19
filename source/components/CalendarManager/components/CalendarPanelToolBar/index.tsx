@@ -8,13 +8,13 @@ import {
   setCalenderMonthValue,
   setCalenderYearValue,
   setCalenderListValue,
-  setScheduleSearchKey,
   setCalenderYearWeekValue,
   setScheduleInfoDropdown,
 } from '@store/calendarPanle'
 import { setCheckedTime } from '@store/calendar'
 import { useDispatch, useSelector } from '@store/index'
 import React, { useState, useRef, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import dayjs, { Dayjs } from 'dayjs'
 import _ from 'lodash'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
@@ -44,6 +44,7 @@ const selectOptions: {
   { value: 'list', label: '列表' },
 ]
 const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
+  const navigate = useNavigate()
   const calendarPanelType = useSelector(
     state => state.calendarPanel.calendarPanelType,
   )
@@ -318,12 +319,9 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
           placeholder="搜索日程"
           defaultValue={inputDefaultValue}
           width={184}
-          onChangeSearch={value => {
-            setInputDefaultValue(value)
-            dispatch(setScheduleSearchKey(value))
-          }}
+          onChangeSearch={value => {}}
           onFocus={() => {
-            dispatch(setCalendarPanelType('list'))
+            navigate('/ScheduleSearch')
           }}
         ></InputSearch>
       </div>

@@ -1,10 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 import { useDispatch, useSelector } from '@store/index'
-import {
-  getScheduleDaysOfList,
-  getScheduleSearch,
-} from '@store/schedule/schedule.thunk'
+import { getScheduleDaysOfList } from '@store/schedule/schedule.thunk'
 import dayjs from 'dayjs'
 import IconFont from '@/components/IconFont'
 import {
@@ -29,28 +26,15 @@ const CalendarList: React.FC<CalendarListProps> = props => {
   const { listViewScheduleList } = useSelector(state => state.schedule)
   const { checkedTime } = useSelector(state => state.calendar)
   const { checkedCalendarList } = useSelector(state => state.calendar)
-  const [checkedCalendarIds, setCheckedCalendarIds] = useState(
-    checkedCalendarList.map(item => item.calendar_id),
-  )
   const checkedCalendarIdsRef = useRef<number[]>([])
-  // const calendarDataArray = calendarData?.manager.concat(
-  //   calendarData?.subscribe,
-  // )
   const disPatch = useDispatch()
-  const getSearchList = () => {
-    disPatch(
-      getScheduleSearch({
-        year: dayjs(calenderListValue).year(),
-        keyword: scheduleSearchKey,
-        calendar_ids: checkedCalendarIdsRef.current,
-      }),
-    )
-  }
   useEffect(() => {
     const params = {
       year: dayjs(calenderListValue).year(),
       month: dayjs(calenderListValue).month() + 1,
-      calendar_ids: checkedCalendarList.map(item => item.calendar_id),
+      calendar_ids: checkedCalendarList.map(
+        (item: { calendar_id: number }) => item.calendar_id,
+      ),
     }
     disPatch(getScheduleDaysOfList(params))
   }, [calenderListValue])
@@ -84,10 +68,10 @@ const CalendarList: React.FC<CalendarListProps> = props => {
     }
   }, [checkedTime])
   useEffect(() => {
-    const calendar_ids = checkedCalendarList.map(item => item.calendar_id)
+    const calendar_ids = checkedCalendarList.map(
+      (item: { calendar_id: number }) => item.calendar_id,
+    )
     checkedCalendarIdsRef.current = calendar_ids
-    setCheckedCalendarIds([...calendar_ids])
-    getSearchList()
   }, [checkedCalendarList, scheduleSearchKey])
   return (
     <CalendarListBox ref={CalendarListBoxRef}>
