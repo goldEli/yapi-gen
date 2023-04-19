@@ -86,6 +86,7 @@ const Index = () => {
 
   useEffect(() => {
     lastId.current = 0
+    setList([])
     fetchMoreData(1)
   }, [id])
 
