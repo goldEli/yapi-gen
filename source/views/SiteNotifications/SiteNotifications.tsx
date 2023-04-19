@@ -24,7 +24,7 @@ import {
 } from '@/services/SiteNotifications'
 
 const SiteNotifications = () => {
-  const { sendMessage, wsData } = useWebsocket()
+  const { wsData } = useWebsocket()
   const dispatch = useDispatch()
   const { isVisible, all } = useSelector(store => store.siteNotifications)
   const init2 = async () => {
@@ -39,8 +39,6 @@ const SiteNotifications = () => {
     dispatch(changeNumber(num))
   }
   const sendMsg = () => {
-    console.log(wsData)
-
     if (Notification.permission === 'granted') {
       Notification.requestPermission(() => {
         const n: any = new Notification(wsData.data.msgBody.title, {
@@ -298,7 +296,6 @@ const SiteNotifications = () => {
         onClick={() => {
           dispatch(changeVisible(!isVisible))
           dispatch(changeVisibleFilter(false))
-          sendMessage('1234')
         }}
         color="var(--neutral-n2)"
         size={24}
