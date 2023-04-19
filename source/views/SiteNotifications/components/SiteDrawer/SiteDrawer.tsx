@@ -22,6 +22,7 @@ import {
   Tips,
   Wrap,
   ActiveTab,
+  GrepTitle2,
 } from './style'
 import { useTranslation } from 'react-i18next'
 import InfiniteScroll from 'react-infinite-scroll-component'
@@ -40,6 +41,7 @@ const SiteDrawer = () => {
   const navigate = useNavigate()
   const isVisible = useSelector(store => store.siteNotifications.isVisible)
   const [list, setList] = useState([])
+  const [now, setNow] = useState()
   const lastId = useRef(0)
   const tabBox = useRef<HTMLDivElement>(null)
   const tabActive = useRef<HTMLDivElement>(null)
@@ -52,12 +54,12 @@ const SiteDrawer = () => {
     },
     {
       id: '1',
-      text: t('new1'),
+      text: `${t('new1')}(${now})`,
     },
-    {
-      id: '2',
-      text: t('atmy'),
-    },
+    // {
+    //   id: '2',
+    //   text: t('atmy'),
+    // },
   ]
 
   const onChange = (e: CheckboxChangeEvent) => {
@@ -93,13 +95,14 @@ const SiteDrawer = () => {
   }
   const changeActive = (id: string) => {
     setActive(id)
+    setHasMore(true)
     if (id === '3') {
       newName.current = undefined
       lastId.current = 0
       fetchMoreData(1)
     }
     if (id === '1') {
-      newName.current = Math.floor(new Date().valueOf() / 1000)
+      newName.current = Math.floor(new Date().valueOf() / 1000) - 5 * 60 * 1000
       lastId.current = 0
       fetchMoreData(1)
     }
@@ -112,8 +115,20 @@ const SiteDrawer = () => {
     const arr = list.map((i: any) => i.id)
     setReads(arr)
   }
+
+  const reset = async () => {
+    const res = await getContactStatistics()
+    console.log(res)
+    const a = res.list.find((i: any) => i.send_user === 'now')
+    setNow(a.nread)
+  }
+  const n2 = () => {
+    lastId.current = 0
+    setHasMore(true)
+  }
   useEffect(() => {
-    isVisible ? fetchMoreData(1) : null
+    isVisible ? fetchMoreData(1) : n2()
+    isVisible ? reset() : null
   }, [isVisible, read])
 
   const readStatue = () => {
@@ -187,7 +202,7 @@ const SiteDrawer = () => {
           }}
         >
           <GrepTitle>{t('today')}</GrepTitle>
-          <GrepTitle onClick={setAllRead}>{t('all_read')}</GrepTitle>
+          <GrepTitle2 onClick={setAllRead}>{t('all_read')}</GrepTitle2>
         </div>
 
         <InfiniteScroll

@@ -194,7 +194,6 @@ export const get = <SearchParams extends HttpRequestSearch, Result = any>(
   data?: any,
   options?: any,
 ) => {
-  console.log('datadatadata', data)
   return client.get<SearchParams, ResponseData<Result>>(
     urls[key as UrlKeys] || key,
     data,

@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import CommonIconFont from '@/components/CommonIconFont'
 import Picker from './Picker'
-import { setEditSave, setErr } from '@store/formWork'
+import { setEditSave, setErr, setErrMsg } from '@store/formWork'
 import { useDispatch } from '@store/index'
 import moment from 'moment'
 import { dayData1, weekData, monthData } from './DataList'
@@ -222,28 +222,33 @@ const FormMain = (props: FormType) => {
       if (endTime?.v2 < startTime?.v2) {
         message.warning('结束时间不能小于开始时间')
         dispatch(setErr(false))
+        dispatch(setErrMsg('结束时间不能小于开始时间'))
         return
       } else if (endTime?.v2 === startTime?.v2) {
         if (endTime?.v3 < startTime?.v3) {
           message.warning('结束时间不能小于开始时间')
           dispatch(setErr(false))
+          dispatch(setErrMsg('结束时间不能小于开始时间'))
           return
         }
       }
     } else if (startTime?.v1 === 1 && endTime?.v1 === 2) {
       if (endTime?.v2 > startTime?.v2) {
         message.warning('结束时间不能大于开始时间的24小时')
+        dispatch(setErrMsg('结束时间不能大于开始时间的24小时'))
         dispatch(setErr(false))
         return
       } else if (startTime?.v2 === endTime?.v2) {
         if (endTime?.v3 > startTime?.v3) {
           message.warning('结束时间不能大于开始时间的24小时')
+          dispatch(setErrMsg('结束时间不能大于开始时间的24小时'))
           dispatch(setErr(false))
           return
         }
       }
     } else if (startTime?.v1 === 2 && endTime?.v1 === 1) {
       message.warning('开始时间不能小于结束时间')
+      dispatch(setErrMsg('开始时间不能小于结束时间'))
       dispatch(setErr(false))
       return
     }
@@ -254,21 +259,57 @@ const FormMain = (props: FormType) => {
     if (endTime?.v1 > startTime?.v1 + 7) {
       message.warning('结束时间不允许超过开始时间一周')
       dispatch(setErr(false))
+      dispatch(setErrMsg('结束时间不允许超过开始时间一周'))
+      setErrMsg
       return
     } else if (endTime?.v1 === startTime?.v1 + 7) {
       if (endTime?.v2 > startTime?.v2) {
         message.warning('结束时间不允许超过开始时间一周')
+        dispatch(setErrMsg('结束时间不允许超过开始时间一周'))
         dispatch(setErr(false))
         return
       } else if (endTime?.v2 === startTime?.v2) {
         if (endTime?.v3 > startTime?.v3) {
           message.warning('结束时间不允许超过开始时间一周')
+          dispatch(setErrMsg('结束时间不允许超过开始时间一周'))
           dispatch(setErr(false))
           return
         }
       }
     }
     dispatch(setErr(true))
+    // dispatch(setErrMsg(''))
+  }
+  const getValuesOnece = (type: string, v1: number, v2: number, v3: number) => {
+    if (type === 'start') {
+      startTime = {
+        v1,
+        v2,
+        v3,
+      }
+      setStartTimes(startTime)
+    } else if (type === 'end') {
+      endTime = {
+        v1,
+        v2,
+        v3,
+      }
+      setEndTimes(endTime)
+    } else if (type === 'remind') {
+      if (props.type === 'day') {
+        remindTime = {
+          v2,
+          v3,
+        }
+      } else if (props.type === 'week' || props.type === 'month') {
+        remindTime = {
+          v1,
+          v2,
+          v3,
+        }
+      }
+      setRemindTimes(remindTime)
+    }
   }
   const getValues = (type: string, v1: number, v2: number, v3: number) => {
     if (type === 'start') {
@@ -306,6 +347,7 @@ const FormMain = (props: FormType) => {
       WeekJudgeTime()
     }
   }
+  // 不重复的值
   const setValues = (val: any) => {
     setEndTimes(val)
   }
@@ -343,6 +385,9 @@ const FormMain = (props: FormType) => {
               value={startTimes}
               type={props.type}
               pickerType="start"
+              getValuesOnece={(type: any, v1: any, v2: any, v3: any) =>
+                getValuesOnece(type, v1, v2, v3)
+              }
               getValues={(v1: number, v2: number, v3: number) =>
                 getValues('start', v1, v2, v3)
               }
@@ -362,6 +407,9 @@ const FormMain = (props: FormType) => {
         props.type === 'week' ||
         props.type === 'month' ? (
           <Picker
+            getValuesOnece={(type: any, v1: any, v2: any, v3: any) =>
+              getValuesOnece(type, v1, v2, v3)
+            }
             getValues={(v1, v2, v3) => getValues('end', v1, v2, v3)}
             type={props.type}
             pickerType="end"
@@ -410,6 +458,9 @@ const FormMain = (props: FormType) => {
         name="reminder_time"
       >
         <Picker
+          getValuesOnece={(type: any, v1: any, v2: any, v3: any) =>
+            getValuesOnece(type, v1, v2, v3)
+          }
           getValues={(v1, v2, v3) => getValues('remind', v1, v2, v3)}
           value={remindTimes}
           type={props.type}
