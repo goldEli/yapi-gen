@@ -344,20 +344,23 @@ const List = () => {
   const onChangeStatusType = (value: any) => {
     setQueryParams({
       ...queryParams,
-      type: value,
+      type: value ? (Array.isArray(value) ? value : [value]) : value,
     })
   }
   const onChangeSubmitter = (value: any) => {
     setQueryParams({
       ...queryParams,
-      user_id: value,
+      user_ids: value ? (Array.isArray(value) ? value : [value]) : value,
     })
   }
   const onChangeRepType = (value: any) => {
-    console.log(value)
     setQueryParams({
       ...queryParams,
-      report_template_ids: value,
+      report_template_ids: value
+        ? Array.isArray(value)
+          ? value
+          : [value]
+        : value,
     })
   }
 
@@ -414,24 +417,28 @@ const List = () => {
           getPopupContainer={(node: any) => node}
           allowClear
           optionFilterProp="label"
-          value={[queryParams.user_id]}
+          value={queryParams.user_ids}
           options={userOptions}
           onChange={onChangeSubmitter}
+          onConfirm={() => null}
         />
       </SelectWrapForList>
-      <SelectWrapForList>
-        <span style={{ margin: '0 16px', fontSize: '14px' }}>
-          {t('report.list.status')}
-        </span>
-        <CustomSelect
-          style={{ width: 148 }}
-          getPopupContainer={(node: any) => node}
-          allowClear
-          optionFilterProp="label"
-          options={statusOptions}
-          onChange={onChangeStatusType}
-        />
-      </SelectWrapForList>
+      {id !== 3 && (
+        <SelectWrapForList>
+          <span style={{ margin: '0 16px', fontSize: '14px' }}>
+            {t('report.list.status')}
+          </span>
+          <CustomSelect
+            value={queryParams.type}
+            style={{ width: 148 }}
+            getPopupContainer={(node: any) => node}
+            allowClear
+            optionFilterProp="label"
+            options={statusOptions}
+            onChange={onChangeStatusType}
+          />
+        </SelectWrapForList>
+      )}
     </>
   )
   const generateOptions = (item: any) => {
@@ -480,12 +487,11 @@ const List = () => {
             {t('report.list.reportType')}
           </span>
           <CustomSelect
-            more
             style={{ width: 148 }}
             getPopupContainer={(node: any) => node}
             allowClear
             optionFilterProp="label"
-            value={[queryParams.report_template_id || null]}
+            value={queryParams.report_template_ids}
             options={repTypeOptions}
             onChange={onChangeRepType}
             onConfirm={() => null}
@@ -521,7 +527,13 @@ const List = () => {
         isSpinning={isSpinning}
         dataWrapNormalHeight="calc(100vh - 251px)"
         col={
-          id === 1 ? columns : columns?.filter((item: any) => item.dataIndex)
+          id === 1
+            ? columns
+            : id === 3
+            ? columns?.filter(
+                (item: any) => item.dataIndex && item.dataIndex !== 'is_read',
+              )
+            : columns?.filter((item: any) => item.dataIndex)
         }
         noData={<NoData />}
         dataSource={listData}
