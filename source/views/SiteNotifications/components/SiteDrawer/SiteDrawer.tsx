@@ -22,6 +22,7 @@ import {
   Tips,
   Wrap,
   ActiveTab,
+  GrepTitle2,
 } from './style'
 import { useTranslation } from 'react-i18next'
 import InfiniteScroll from 'react-infinite-scroll-component'
@@ -55,10 +56,10 @@ const SiteDrawer = () => {
       id: '1',
       text: `${t('new1')}(${now})`,
     },
-    {
-      id: '2',
-      text: t('atmy'),
-    },
+    // {
+    //   id: '2',
+    //   text: t('atmy'),
+    // },
   ]
 
   const onChange = (e: CheckboxChangeEvent) => {
@@ -201,7 +202,7 @@ const SiteDrawer = () => {
           }}
         >
           <GrepTitle>{t('today')}</GrepTitle>
-          <GrepTitle onClick={setAllRead}>{t('all_read')}</GrepTitle>
+          <GrepTitle2 onClick={setAllRead}>{t('all_read')}</GrepTitle2>
         </div>
 
         <InfiniteScroll
