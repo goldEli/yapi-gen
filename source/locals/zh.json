@@ -1163,6 +1163,7 @@
     }
   },
   "calendarManager": {
-    "moreItems": "还有{{count}}项..."
+    "moreItems": "还有{{count}}项...",
+    "allDay": "全天"
   }
 }

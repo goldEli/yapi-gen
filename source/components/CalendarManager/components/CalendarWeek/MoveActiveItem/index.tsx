@@ -6,6 +6,7 @@ import {
 } from '@/components/CalendarManager/utils'
 import { useSelector } from '@store/index'
 import { Dot, Time, Title } from '../ScheduleListItem/styled'
+import { useTranslation } from 'react-i18next'
 
 interface MoveActiveItemProps {
   idx: number
@@ -48,8 +49,9 @@ const MoveActiveItem: React.FC<MoveActiveItemProps> = props => {
     monthMoveScheduleActiveInfo.startSchedule?.is_span_day ||
     monthMoveScheduleActiveInfo.startSchedule?.is_all_day === 1
 
+  const [t] = useTranslation()
   const time = isAllDay
-    ? '全天'
+    ? t('calendarManager.allDay')
     : monthMoveScheduleActiveInfo.startSchedule?.start_time
   return (
     <MoveActiveItemBox

@@ -126,7 +126,7 @@ const TimeScale: React.FC<WeekHeaderProps> = props => {
             </tr>
           )
         })}
-      {current !== null && <Title left={left}>新建日程</Title>}
+      {/* {current !== null && <Title left={left}>新建日程</Title>} */}
     </Table>
   )
 }
