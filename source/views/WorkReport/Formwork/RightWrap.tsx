@@ -177,7 +177,8 @@ const RightFormWork = () => {
         message.warning(t('formWork.message1'))
         return false
       }
-    } else if (
+    }
+    if (
       parmas.submit_cycle === 1 ||
       parmas.submit_cycle === 2 ||
       parmas.submit_cycle === 3
@@ -205,7 +206,8 @@ const RightFormWork = () => {
         message.warning(t('formWork.message5'))
         return false
       }
-    } else if (parmas.submit_cycle === 4) {
+    }
+    if (parmas.submit_cycle === 4) {
       if (!parmas.requirement.end_time) {
         message.warning(t('formWork.message4'))
         return false
