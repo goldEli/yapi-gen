@@ -129,7 +129,7 @@ const HandleReport = (props: any) => {
         })
       }
       if (res && res.code === 0 && res.data?.id) {
-        message.success(t('操作成功'))
+        // message.success(t('操作成功'))
       }
     }
 

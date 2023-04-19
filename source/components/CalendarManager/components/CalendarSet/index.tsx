@@ -325,7 +325,7 @@ const CalendarSet = () => {
           {t(
             menuList.filter(
               (i: Model.Calendar.RouterMenu) => i.key === routerMenu.key,
-            )[0].name,
+            )[0].name as any,
           )}
         </div>
       </CrumbsWrap>
