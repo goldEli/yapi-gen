@@ -1160,6 +1160,9 @@
       "accumulatedReports": "累计汇报数",
       "totalNoSubmitTimes": "累计未提交",
       "currentNoSubmitTimes": "当前未提交"
+    },
+    "calendarManager": {
+      "moreItems": "还有{{count}}项..."
     }
   }
 }
