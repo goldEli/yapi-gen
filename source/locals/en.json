@@ -1231,6 +1231,8 @@
     "edit": "Edit",
     "attachment": "Attachment",
     "addAdjunct": "Add attachment",
-    "allDay": "Full-day"
+    "allDay": "Full-day",
+    "owner":"Owner"
+
   }
 }

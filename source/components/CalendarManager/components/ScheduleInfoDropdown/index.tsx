@@ -20,10 +20,10 @@ const ScheduleInfoDropdownBox = styled.div<{
   width: 320px;
   background-color: var(--neutral-white-d1);
   box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
-  z-index: 1;
+  z-index: 999;
   display: ${props => (props.visible ? 'block' : 'none')};
   position: fixed;
-  top: 56px;
+  top: 0;
   right: 6px;
   padding-bottom: 24px;
   border-radius: 6px;

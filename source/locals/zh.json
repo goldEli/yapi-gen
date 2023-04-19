@@ -1203,6 +1203,7 @@
     "edit": "编辑",
     "attachment": "附件",
     "addAdjunct": "添加附件",
-    "allDay": "全天"
+    "allDay": "全天",
+    "owner":"所有者"
   }
 }
