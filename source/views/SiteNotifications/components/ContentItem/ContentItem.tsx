@@ -69,7 +69,7 @@ const ContentItem = (props: any) => {
       </div>
       <HoverWrap style={{ flex: '1' }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Name>{send_user.username}</Name>
+          <Name>{send_user.nickname}</Name>
           {/* <Name>问题字段</Name> */}
           {/* <Tip>在评论中@了您</Tip> */}
           <Time>{formatTime(create_time)}</Time>
