@@ -173,7 +173,7 @@ const Sortable = (props: any) => {
           <div
             ref={ref}
             draggable="false"
-            key={child?.name}
+            key={child?.id}
             onDragOver={allowDrop}
             onDrop={event => onDrop(event, i)}
           >
