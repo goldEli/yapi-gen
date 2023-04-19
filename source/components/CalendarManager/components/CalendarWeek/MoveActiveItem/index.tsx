@@ -5,7 +5,7 @@ import {
   getColorWithOpacityPointOne,
 } from '@/components/CalendarManager/utils'
 import { useSelector } from '@store/index'
-import { Dot, Time, Title } from '../ScheduleListItem/styled'
+import { Dot, Time, Title } from '../../ScheduleStrip/styled'
 import { useTranslation } from 'react-i18next'
 
 interface MoveActiveItemProps {
