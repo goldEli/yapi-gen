@@ -1058,7 +1058,8 @@
       "success": "Successful operation",
       "fail": "Operation failure",
       "modifyReport": "Revision report",
-      "haveComment": "Have commented"
+      "haveComment": "Have commented",
+      "prevDateSubmit": "Last submission time"
     },
     "statistics": {
       "title": "Reporting Statistics",

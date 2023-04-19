@@ -53,6 +53,18 @@ const HeadWrap = styled.div<{ isCanImport: boolean }>`
       font-size: 12px;
     }
   }
+  .reportTitleWrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .submitTimeText {
+    font-size: 12px;
+    font-family: MiSans-Regular, MiSans;
+    font-weight: 400;
+    color: #969799;
+    margin-left: 12px;
+  }
   .importText {
     display: flex;
     align-items: center;
@@ -511,13 +523,18 @@ const HandleReport = (props: any) => {
                   <CommonUserAvatar size="large" />
                 </span>
               )}
-              <div className="titleText">
-                {`${userInfo?.name}的${reportDetail?.name}`}
-                <span className="dateText">
-                  {reportDetail?.submitCycleDate.filter((v: string) => v)
-                    .length > 0 &&
-                    getReportDateText(reportDetail?.submitCycleDate)}
-                </span>
+              <div className="reportTitleWrap">
+                <div className="titleText">
+                  {`${userInfo?.name}的${reportDetail?.name}`}
+                  <span className="dateText">
+                    {reportDetail?.submitCycleDate.filter((v: string) => v)
+                      .length > 0 &&
+                      getReportDateText(reportDetail?.submitCycleDate)}
+                  </span>
+                </div>
+                <div className="submitTimeText">
+                  {t('report.list.prevDateSubmit')}：{reportDetail?.created_at}
+                </div>
               </div>
             </div>
             <div className="importText" onClick={importPreviousArticle}>
