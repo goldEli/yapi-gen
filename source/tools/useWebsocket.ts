@@ -66,9 +66,14 @@ const useWebsocket = () => {
       setReadyState(stateArr[ws.current?.readyState ?? 0])
     }
     ws.current.onmessage = (e: any) => {
+      const data = JSON.parse(e.data)
+
+      if (data.msgType === 'AH000') {
+        return
+      }
       setWsData({
         key: Math.random(),
-        data: JSON.parse(e.data),
+        data,
       })
 
       //  const { data, type } = (...JSON.parse(e.data)) || {};

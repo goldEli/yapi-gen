@@ -141,6 +141,7 @@ const RightFormWork = () => {
     templateName,
     fillingRequirements,
     err,
+    errMsg,
   } = useSelector(store => store.formWork)
   const getTemplateDetail = async () => {
     await dispatch(templateDetail({ id: activeItem.id }))
@@ -181,7 +182,11 @@ const RightFormWork = () => {
       parmas.submit_cycle === 2 ||
       parmas.submit_cycle === 3
     ) {
-      if (parmas.submit_cycle === 1) {
+      if (
+        (parmas.submit_cycle === 1 || parmas.submit_cycle === 3) &&
+        parmas.requirement?.start_time?.day_type ===
+          parmas.requirement?.end_time?.day_type
+      ) {
         if (
           parmas.requirement?.start_time?.time >
           parmas.requirement?.end_time?.time
@@ -250,7 +255,7 @@ const RightFormWork = () => {
       return
     }
     if (!err) {
-      message.warning('结束时间大于开始时间')
+      message.warning(errMsg)
       return
     }
     if (activeItem?.id) {

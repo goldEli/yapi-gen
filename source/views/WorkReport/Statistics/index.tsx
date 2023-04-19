@@ -31,7 +31,7 @@ const StyledWrap = styled.div`
 const Head = styled.div`
   width: calc(100% - 504px);
   box-sizing: border-box;
-  padding: 24px;
+  padding: 24px 24px 0 24px;
   background: rgba(255, 255, 255, 1);
   border-radius: 6px;
   display: flex;
