@@ -399,9 +399,9 @@ const ReportDetailDrawer = () => {
                     <span className="dateText">
                       {`（${drawerInfo?.start_time} ${t(
                         'report.list.to',
-                      )} ${drawerInfo?.end_time.substring(
+                      )} ${drawerInfo?.end_time?.substring(
                         0,
-                        drawerInfo?.end_time.indexOf(' '),
+                        drawerInfo?.end_time?.indexOf(' '),
                       )}）`}
                     </span>
                   </div>
