@@ -16,8 +16,8 @@ export interface GlobalState {
   language: string
   basicFieldList: any[]
   tagOrPriority: any[]
-  // // 最小宽度 -- 用于搜索栏按钮展示
-  // screenMin: boolean
+  // 列表选中id
+  listActiveId: number
 }
 
 const initialState: GlobalState = {
@@ -91,7 +91,7 @@ const initialState: GlobalState = {
     { key: 'endEd', backgroundColor: '--function-tag2' },
     { key: 'closeEd', backgroundColor: '--function-tag6' },
   ],
-  // screenMin: window.innerWidth <= 1440,
+  listActiveId: 0,
 }
 
 export const globalSlice = createSlice({
@@ -109,10 +109,15 @@ export const globalSlice = createSlice({
       localStorage.setItem('language', action.payload)
       preState.language = action.payload
     },
+    setListActiveId(preState: GlobalState, action) {
+      preState.listActiveId = action.payload
+    },
   },
   extraReducers: builder => {
     //
   },
 })
+
+export const { setListActiveId } = globalSlice.actions
 
 export default globalSlice.reducer

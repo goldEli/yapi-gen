@@ -169,7 +169,7 @@ const Statistics = () => {
       }
     })
     setFormWorkData(items)
-    setTabKey(list[0].id)
+    setTabKey(list[0]?.id)
   }
 
   const getUsageDataList = async () => {
@@ -199,9 +199,7 @@ const Statistics = () => {
   }, [])
 
   useEffect(() => {
-    if (tabKey) {
-      getUserList()
-    }
+    getUserList()
   }, [tabKey, queryParams])
 
   const onChangePage = (current: number, pageSize: number) => {
@@ -224,7 +222,6 @@ const Statistics = () => {
   //   }
   //   return null
   // }, [queryParams])
-
   return (
     <PermissionWrap
       auth="/Report/Statistics"

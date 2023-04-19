@@ -14,7 +14,6 @@ import { getProjectInfo } from '@/services/project'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import {
   setCreateDemandProps,
-  setDemandDetailDrawerProps,
   setIsCreateDemandVisible,
   setIsUpdateDemand,
 } from '@store/demand'
@@ -52,6 +51,7 @@ import {
   DownWrap,
 } from './style'
 import CommonButton from '../CommonButton'
+import { saveDemandDetailDrawer } from '@store/demand/demand.thunk'
 
 const DemandDetailDrawer = () => {
   const normalState = {
@@ -172,10 +172,7 @@ const DemandDetailDrawer = () => {
       payload: false,
     })
     dispatch(setCreateDemandProps({}))
-    dispatch({
-      type: 'demand/setDemandDetailDrawerProps',
-      payload: {},
-    })
+    dispatch(saveDemandDetailDrawer({}))
     setShowState(normalState)
   }
 
@@ -276,7 +273,7 @@ const DemandDetailDrawer = () => {
     const newIndex = demandIds[currentIndex - 1]
     if (!currentIndex) return
     dispatch(
-      setDemandDetailDrawerProps({
+      saveDemandDetailDrawer({
         ...demandDetailDrawerProps,
         ...{ id: newIndex },
       }),
@@ -287,9 +284,8 @@ const DemandDetailDrawer = () => {
   const onDownDemand = () => {
     const newIndex = demandIds[currentIndex + 1]
     if (currentIndex === demandIds?.length - 1) return
-
     dispatch(
-      setDemandDetailDrawerProps({
+      saveDemandDetailDrawer({
         ...demandDetailDrawerProps,
         ...{ id: newIndex },
       }),
