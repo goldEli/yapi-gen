@@ -19,12 +19,13 @@ import {
   Wrap2,
 } from './style'
 import dayjs from 'dayjs'
+import { useSelector } from '@store/index'
 
 const ContentItem = (props: any) => {
   const { send_user, msg_body, to_user, create_time, read, id, custom_data } =
     props.item
   const [choose, setChoose] = useState(false)
-
+  const cha = useSelector(store => store.user.loginInfo.timeDiff)
   // function formatTime(params: number) {
   //   let time = ''
   //   const now = new Date().valueOf() / 1000
@@ -38,7 +39,7 @@ const ContentItem = (props: any) => {
   //   return time
   // }
   function formatMsgTime(timespan: number) {
-    var dateTime = new Date(timespan)
+    var dateTime = new Date(timespan + cha)
     var year = dateTime.getFullYear()
     var month = dateTime.getMonth() + 1
     var day = dateTime.getDate()
