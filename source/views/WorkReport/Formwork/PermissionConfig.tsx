@@ -99,17 +99,7 @@ const PermissionConfig = (props: PropsType) => {
         target_type: el.target_type,
         target_value: el.target_value,
       }))
-      const hasAll = d1.find(
-        (item: any) =>
-          item.user_type === 1 &&
-          (item.key === 'all' || item.target_value.key === 'all'),
-      )
-      // if (hasAll) {
-      //   message.warning('你已添加全员')
-      //   d1 = [...person1]
-      // } else {
       d1 = [...person1, ...val1]
-      // }
     } else if (num === 2) {
       const val2 =
         values?.map((el: any) => ({
@@ -127,17 +117,7 @@ const PermissionConfig = (props: PropsType) => {
         target_type: el.target_type,
         target_value: el.target_value,
       }))
-      const hasAll = d3.find(
-        (item: any) =>
-          item.user_type === 3 &&
-          (item.key === 'all' || item.target_value.key === 'all'),
-      )
-      // if (hasAll) {
-      //   message.warning('你已添加全员')
-      //   d1 = [...person1]
-      // } else {
-      d1 = [...person1, ...val3]
-      // }
+      d3 = [...person1, ...val3]
     }
     const d3V = d3.find(
       (item: any) =>
