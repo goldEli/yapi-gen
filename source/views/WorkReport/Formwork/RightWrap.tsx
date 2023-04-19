@@ -181,7 +181,11 @@ const RightFormWork = () => {
       parmas.submit_cycle === 2 ||
       parmas.submit_cycle === 3
     ) {
-      if (parmas.submit_cycle === 1) {
+      if (
+        (parmas.submit_cycle === 1 || parmas.submit_cycle === 3) &&
+        parmas.requirement?.start_time?.day_type ===
+          parmas.requirement?.end_time?.day_type
+      ) {
         if (
           parmas.requirement?.start_time?.time >
           parmas.requirement?.end_time?.time
@@ -246,11 +250,12 @@ const RightFormWork = () => {
       start_time: fillingRequirements?.start_time,
       is_holiday: fillingRequirements?.is_holiday ? 1 : 2,
     }
+    console.log(parmas, 'parmas')
     if (!getVerifyParams(parmas)) {
       return
     }
     if (!err) {
-      message.warning('结束时间大于开始时间')
+      message.warning('时间选择有误')
       return
     }
     if (activeItem?.id) {
