@@ -1,15 +1,9 @@
 import styled from '@emotion/styled'
-import { useDispatch, useSelector } from '@store/index'
-import dayjs from 'dayjs'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useDispatch } from '@store/index'
+import React, { useMemo, useState } from 'react'
 import { oneHourHeight } from '../../../config'
-import {
-  getTimeByAddDistance,
-  getTimeByOffsetDistance,
-  hexToRgba,
-  isSameTime,
-} from '../utils'
-import { DraggableData, Position, ResizableDelta, Rnd } from 'react-rnd'
+import { getTimeByOffsetDistance, isSameTime } from '../utils'
+import { DraggableData } from 'react-rnd'
 import { css } from '@emotion/css'
 import { DraggableEvent } from 'react-draggable'
 import useMaxWidth from '../hooks/useMaxWidth'
@@ -18,6 +12,7 @@ import { getColorWithOpacityPointOne } from '@/components/CalendarManager/utils'
 import { allDayScheduleListClassName } from '../AllDayScheduleList'
 import useUpdateAllDayTime from '../hooks/useUpdateAllDayTime'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
+import MoveCard from '../../MoveCard'
 
 export interface ScheduleCardProps {
   data: Model.Schedule.Info
@@ -167,14 +162,12 @@ const AllDayScheduleCard: React.FC<ScheduleCardProps> = props => {
   }
 
   return (
-    <Rnd
+    <MoveCard
+      data={props.data}
+      timeRange={null}
       onClick={(e: any) => {
         e.stopPropagation()
       }}
-      style={{
-        background: getColorWithOpacityPointOne(data.color),
-      }}
-      className={dragBoxClassName}
       key={props.data.id}
       size={{
         width: props.width,
@@ -202,16 +195,9 @@ const AllDayScheduleCard: React.FC<ScheduleCardProps> = props => {
       onDragStart={onDragStart}
       onDrag={onDrag}
       onDragStop={onDragStop}
-      // onResizeStart={onResizeStart}
-      // onResize={onResize}
-      // onResizeStop={onResizeStop}
     >
-      {/* <Title>
-        {timeRange &&
-          `${timeRange?.start_timestamp} - ${timeRange?.end_timestamp}`}
-      </Title> */}
       <Title>{title}</Title>
-    </Rnd>
+    </MoveCard>
   )
 }
 

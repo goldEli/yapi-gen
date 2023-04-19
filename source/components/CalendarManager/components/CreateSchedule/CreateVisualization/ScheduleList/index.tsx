@@ -16,8 +16,6 @@ const ScheduleListBox = styled.div`
 const ScheduleList: React.FC<ScheduleListProps> = props => {
   const { data } = useCalculationConflict()
 
-  console.log({ data })
-
   const content = React.useMemo(() => {
     return data.map(item => {
       return (

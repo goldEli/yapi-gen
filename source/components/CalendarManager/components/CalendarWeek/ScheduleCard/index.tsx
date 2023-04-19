@@ -1,25 +1,21 @@
 import styled from '@emotion/styled'
-import { useDispatch, useSelector } from '@store/index'
+import { useDispatch } from '@store/index'
 import dayjs from 'dayjs'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { oneHourHeight } from '../../../config'
-import {
-  getTimeByAddDistance,
-  getTimeByOffsetDistance,
-  hexToRgba,
-} from '../utils'
-import { DraggableData, Position, ResizableDelta, Rnd } from 'react-rnd'
+import { getTimeByAddDistance, getTimeByOffsetDistance } from '../utils'
+import { DraggableData, Position, ResizableDelta } from 'react-rnd'
 import { css } from '@emotion/css'
 import { DraggableEvent } from 'react-draggable'
 // import { setSchedule } from '@store/schedule'
 import { ResizeDirection } from 're-resizable'
 import usePosition from '../hooks/usePosition'
-import { Dropdown } from 'antd'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
 import useMaxWidth from '../hooks/useMaxWidth'
 import useWeeks from '../hooks/useWeeks'
 import { getColorWithOpacityPointOne } from '@/components/CalendarManager/utils'
 import { saveSchedule } from '@store/schedule/schedule.thunk'
+import MoveCard from '../../MoveCard'
 
 interface ScheduleCardProps {
   data: Model.Schedule.Info
@@ -195,14 +191,12 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
   const gridHeight = useMemo(() => (oneHourHeight / 60) * 15, [outerHeight])
 
   return (
-    <Rnd
+    <MoveCard
+      timeRange={timeRange}
+      data={props.data}
       onClick={(e: any) => {
         e.stopPropagation()
       }}
-      style={{
-        background: getColorWithOpacityPointOne(data.color),
-      }}
-      className={dragBoxClassName}
       key={props.data.id}
       size={{
         width: props.width,
@@ -231,13 +225,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
       onResizeStart={onResizeStart}
       onResize={onResize}
       onResizeStop={onResizeStop}
-    >
-      <Title>
-        {timeRange &&
-          `${timeRange?.start_timestamp} - ${timeRange?.end_timestamp}`}
-      </Title>
-      <Title>{props.data.subject}</Title>
-    </Rnd>
+    />
   )
 }
 
