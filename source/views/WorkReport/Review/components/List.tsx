@@ -22,11 +22,11 @@ import {
 import { templateList } from '@/services/formwork'
 import { getStaffList } from '@/services/staff'
 import HandleReport from './HandleReport'
-import { useDispatch } from '@store/index'
 import { setViewReportModal } from '@store/workReport'
 import LabelTag from '@/components/LabelTag'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { Space, Tooltip } from 'antd'
+import { useSelector, useDispatch } from '@store/index'
 import ScreenMinHover from '@/components/ScreenMinHover'
 
 const ListTitle = styled.div`
@@ -77,7 +77,7 @@ const List = () => {
   const [t] = useTranslation()
   const { pathname } = useLocation()
   const [isSpinning, setIsSpinning] = useState(false)
-  const [total, setTotal] = useState<number>(250)
+  const [total, setTotal] = useState<number>(0)
   const [pageObj, setPageObj] = useState(defaultPageParam)
   const [listData, setListData] = useState<any[]>([])
   const [repTypeOptions, setRepTypeOptions] = useState<any[]>([])
@@ -87,10 +87,12 @@ const List = () => {
   const [visibleEdit, setVisibleEdit] = useState(false)
   const params = useParams()
   const id = Number(params?.id)
+  const { isFresh } = useSelector(state => state.workReport.listUpdate)
+
   const statusOptions = [
-    { label: t('p2.noRead'), value: 1 },
-    { label: t('p2.haveRead'), value: 2 },
-    { label: t('report.list.haveComment'), value: 3 },
+    { label: t('p2.noRead'), value: 1, id: 1 },
+    { label: t('p2.haveRead'), value: 2, id: 2 },
+    { label: t('report.list.haveComment'), value: 3, id: 3 },
   ]
   const reportState = [
     {
@@ -150,6 +152,12 @@ const List = () => {
   }
 
   useEffect(() => {
+    if (isFresh !== 0) {
+      getList()
+    }
+  }, [isFresh])
+
+  useEffect(() => {
     getList()
   }, [pageObj, queryParams])
 
@@ -190,38 +198,66 @@ const List = () => {
   }
   const columns: any[] = [
     {
-      width: 188,
+      width: 180,
       title: t('common.title'),
       dataIndex: 'user',
       render: (_: string, record: any) => {
         return (
-          <div style={{ display: 'flex', alignItems: 'center', height: 52 }}>
-            {record.user?.avatar ? (
-              <img
+          <Tooltip
+            placement="topLeft"
+            title={`${String(record.user.name)}${t('report.list.of')}${
+              record.name
+            }`}
+            getPopupContainer={node => node}
+          >
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                height: 52,
+                cursor: 'pointer',
+              }}
+              className="canClickDetail"
+              onClick={() => onClickView(record)}
+            >
+              {record.user?.avatar ? (
+                <img
+                  style={{
+                    width: 24,
+                    height: 24,
+                    borderRadius: 12,
+                  }}
+                  src={record.user?.avatar}
+                />
+              ) : (
+                <span>
+                  <CommonUserAvatar size="small" />
+                </span>
+              )}
+
+              <span
                 style={{
-                  width: 24,
-                  height: 24,
-                  borderRadius: 12,
+                  display: 'inline-block',
+                  maxWidth: 170,
+                  marginRight: 12,
+                  marginLeft: 8,
+                  whiteSpace: 'nowrap',
+                  textOverflow: 'ellipsis',
+                  overflow: 'hidden',
                 }}
-                src={record.user?.avatar}
-              />
-            ) : (
-              <span>
-                <CommonUserAvatar size="small" />
+              >
+                {String(record.user.name)}
+                {t('report.list.of')}
+                {record.name}
               </span>
-            )}
-            <span style={{ marginRight: 12, marginLeft: 8 }}>
-              {String(record.user.name)}
-              {t('report.list.of')}
-              {record.name}
-            </span>
-            <LabelTag
-              options={reportState}
-              state={
-                record.is_supply === 1 ? 1 : record.is_update === 1 ? 2 : 0
-              }
-            />
-          </div>
+              <LabelTag
+                options={reportState}
+                state={
+                  record.is_supply === 1 ? 1 : record.is_update === 1 ? 2 : 0
+                }
+              />
+            </div>
+          </Tooltip>
         )
       },
     },
@@ -290,8 +326,12 @@ const List = () => {
       title: t('report.list.readState'),
       align: 'center',
       dataIndex: 'is_read',
-      render: (text: string | number) => {
-        return <ReadStatusTag status={text === 1 ? 'read' : 'no'} />
+      render: (text: number) => {
+        return (
+          <ReadStatusTag
+            status={text === 1 ? 'read' : text === 2 ? 'no' : 'have'}
+          />
+        )
       },
     },
     {
@@ -436,6 +476,7 @@ const List = () => {
             optionFilterProp="label"
             options={statusOptions}
             onChange={onChangeStatusType}
+            onConfirm={() => null}
           />
         </SelectWrapForList>
       )}
@@ -538,13 +579,14 @@ const List = () => {
         noData={<NoData />}
         dataSource={listData}
       />
-      <PaginationBox
-        total={total}
-        pageSize={pageObj.pagesize}
-        currentPage={pageObj.page}
-        onChange={onChangePage}
-      />
-
+      {total ? (
+        <PaginationBox
+          total={total}
+          pageSize={pageObj.pagesize}
+          currentPage={pageObj.page}
+          onChange={onChangePage}
+        />
+      ) : null}
       <HandleReport
         editId={editId}
         visibleEdit={visibleEdit}

@@ -85,29 +85,15 @@ const ContactDemand = (props: { list: any }) => {
   const list = props.list?.length ? props.list : []
   return (
     <ContactDemandBox>
-      {list?.map((i: any) => (
-        <ContactDemandItem key={i.id}>
-          【{i.id}】<span className="name">{i.name}</span>
-        </ContactDemandItem>
-      ))}
+      {list?.length
+        ? list?.map((i: any) => (
+            <ContactDemandItem key={i.id}>
+              【{i.id}】<span className="name">{i.name}</span>
+            </ContactDemandItem>
+          ))
+        : '--'}
     </ContactDemandBox>
   )
-}
-
-const AttachmentBox = (props: { list: any }) => {
-  const list = props.list?.length ? props.list : []
-  const resultList = list?.map((item: any) => {
-    return {
-      url: item.url,
-      id: new Date().getTime() + Math.random(),
-      size: item.size,
-      time: item.ctime,
-      name: item.name || '--',
-      suffix: item.ext,
-      username: item.username,
-    }
-  })
-  return <UploadAttach isReport canUpdate power defaultList={resultList} />
 }
 
 const ReportDetailDrawer = () => {
@@ -148,6 +134,26 @@ const ReportDetailDrawer = () => {
       setFocus(false)
       document.removeEventListener('mousemove', debounceWrap)
     })
+  }
+
+  const AttachmentBox = (props: { list: any }) => {
+    const list = props.list?.length ? props.list : []
+    const resultList = list?.map((item: any) => {
+      return {
+        url: item.url,
+        id: new Date().getTime() + Math.random(),
+        size: item.size,
+        time: item.ctime,
+        name: item.name || '--',
+        suffix: item.ext,
+        username: item.username,
+      }
+    })
+    return list?.length ? (
+      <UploadAttach isReport canUpdate power defaultList={resultList} />
+    ) : (
+      <span>--</span>
+    )
   }
 
   const scrollToBottom = () => {
@@ -405,7 +411,6 @@ const ReportDetailDrawer = () => {
             {drawerInfo?.report_content?.map((i: any) => (
               <DetailItem key={i.id}>
                 <div className="title">{i.name}</div>
-                {i.type === 1 && <TargetTabs list={drawerInfo?.target_users} />}
                 {i.type === 2 && <AttachmentBox list={i?.pivot?.params} />}
                 {i.type === 3 && (
                   <Editor
@@ -417,6 +422,9 @@ const ReportDetailDrawer = () => {
                 {i.type === 4 && <ContactDemand list={i?.pivot?.params} />}
               </DetailItem>
             ))}
+            {drawerInfo?.target_users?.length > 0 && (
+              <TargetTabs list={drawerInfo?.target_users} />
+            )}
             <DetailItem>
               <div className="title">{t('common.comment')}</div>
               {commentList && commentList.length

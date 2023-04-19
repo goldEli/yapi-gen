@@ -1043,7 +1043,8 @@
       "review": "I reported",
       "reviewMe": "Report to me",
       "openReview": "Public reporting",
-      "search": "Search for report title or content",
+      "searchTitle": "Search for report title",
+      "search": "Search for report content",
       "dateReport": "Date of report",
       "dateSubmit": "Submission time",
       "reportType": "Reporting type",
@@ -1054,7 +1055,7 @@
       "modify": "modify",
       "operation": "operation",
       "update": "update",
-      "makeup": "Make up",
+      "makeup": "supply",
       "submitter": "submitter",
 
       "status": "status",

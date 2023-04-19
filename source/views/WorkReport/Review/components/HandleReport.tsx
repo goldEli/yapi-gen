@@ -3,7 +3,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/jsx-handler-names */
-import { Form, message, Modal } from 'antd'
+import { Form, message, Modal, Spin } from 'antd'
 import { ExclamationCircleFilled } from '@ant-design/icons'
 import CommonModal from '@/components/CommonModal'
 import ChoosePeople from '@/views/WorkReport/Formwork/ChoosePeople'
@@ -14,7 +14,7 @@ import styled from '@emotion/styled'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import UploadAttach from '@/components/UploadAttach'
-import { useSelector } from '@store/index'
+import { useSelector, useDispatch } from '@store/index'
 import { Editor } from '@xyfe/uikit'
 import { getStaffListAll } from '@/services/staff'
 import { uploadFile } from '@/components/CreateDemand/CreateDemandLeft'
@@ -26,6 +26,7 @@ import {
   writeReport,
 } from '@/services/report'
 import { templateDetail } from '@/services/formwork'
+import { setUpdateList } from '@store/workReport'
 
 const LabelTitle = styled.span`
   font-size: 14px;
@@ -76,6 +77,7 @@ const HandleReport = (props: any) => {
   const isFirstValidator = useRef(0)
   const [peopleValue, setPeopleValue] = useState<any>([])
   const [relatedNeedList, setRelatedNeedList] = useState<any>([])
+  const dispatch = useDispatch()
 
   const close = () => {
     form.resetFields()
@@ -137,6 +139,8 @@ const HandleReport = (props: any) => {
     }
     if (res && res.code === 0) {
       message.success(t('report.list.success'))
+      // 更新List页面
+      dispatch(setUpdateList({ isFresh: 1 }))
     }
 
     close()
@@ -229,6 +233,7 @@ const HandleReport = (props: any) => {
   }
   // 通过id查询模板详情
   const getTemplateById = async (id: number) => {
+    setReportDetail(null)
     const res = await templateDetail({ id })
     if (res && res.code === 0 && res.data) {
       setReportDetail(res.data)
@@ -238,7 +243,7 @@ const HandleReport = (props: any) => {
           res.data?.report_user_list?.map((item: any) => {
             return {
               avatar: item.avatar,
-              id: item.id,
+              id: item.id || item.user_id,
               name: item.name,
             }
           }),
@@ -406,9 +411,12 @@ const HandleReport = (props: any) => {
                 validator: onValidator,
               },
             ]}
-            initialValue={content.tips}
           >
-            <Editor upload={uploadFile} getSuggestions={() => options} />
+            <Editor
+              upload={uploadFile}
+              getSuggestions={() => options}
+              placeholder={content.tips}
+            />
           </Form.Item>
         )
       case 4:
@@ -457,75 +465,78 @@ const HandleReport = (props: any) => {
       onConfirm={confirm}
       confirmText={t('report.list.submit')}
     >
-      <div
-        style={{
-          height: 'calc(90vh - 136px)',
-          overflow: 'scroll',
-          padding: ' 0 24px',
-        }}
-        ref={leftDom}
-      >
-        <HeadWrap isCanImport={reportDetail?.prev_report_id}>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
+      <Spin spinning={!reportDetail}>
+        <div
+          style={{
+            height: 'calc(90vh - 136px)',
+            overflow: 'scroll',
+            padding: ' 0 24px',
+          }}
+          ref={leftDom}
+        >
+          <HeadWrap isCanImport={reportDetail?.prev_report_id}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              {userInfo.avatar ? (
+                <img
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 16,
+                  }}
+                  src={userInfo.avatar}
+                />
+              ) : (
+                <span>
+                  <CommonUserAvatar size="large" />
+                </span>
+              )}
+              <div className="titleText">
+                {`${userInfo?.name}的${reportDetail?.name}`}
+                <span className="dateText">
+                  {reportDetail?.submitCycleDate.filter((v: string) => v)
+                    .length > 0 &&
+                    getReportDateText(reportDetail?.submitCycleDate)}
+                </span>
+              </div>
+            </div>
+            <div className="importText" onClick={importPreviousArticle}>
+              <IconFont
+                style={{
+                  transform: 'rotate(180deg)',
+                  marginRight: 4,
+                  fontSize: 16,
+                }}
+                type="Import"
+              />
+              <span className="notCopy">{t('report.list.import')}</span>
+            </div>
+          </HeadWrap>
+          <Form
+            form={form}
+            layout="vertical"
+            onFinishFailed={() => {
+              setTimeout(() => {
+                const errorList = (document as any).querySelectorAll(
+                  '.ant-form-item-has-error',
+                )
+                errorList[0].scrollIntoView({
+                  block: 'center',
+                  behavior: 'smooth',
+                })
+              }, 100)
             }}
           >
-            {userInfo.avatar ? (
-              <img
-                style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: 16,
-                }}
-                src={userInfo.avatar}
-              />
-            ) : (
-              <span>
-                <CommonUserAvatar size="large" />
-              </span>
-            )}
-            <div className="titleText">
-              {`${userInfo?.name}的${reportDetail?.name}`}
-              <span className="dateText">
-                {reportDetail?.submitCycleDate.filter((v: string) => v).length >
-                  0 && getReportDateText(reportDetail?.submitCycleDate)}
-              </span>
-            </div>
-          </div>
-          <div className="importText" onClick={importPreviousArticle}>
-            <IconFont
-              style={{
-                transform: 'rotate(180deg)',
-                marginRight: 4,
-                fontSize: 16,
-              }}
-              type="Import"
-            />
-            <span className="notCopy">{t('report.list.import')}</span>
-          </div>
-        </HeadWrap>
-        <Form
-          form={form}
-          layout="vertical"
-          onFinishFailed={() => {
-            setTimeout(() => {
-              const errorList = (document as any).querySelectorAll(
-                '.ant-form-item-has-error',
-              )
-              errorList[0].scrollIntoView({
-                block: 'center',
-                behavior: 'smooth',
-              })
-            }, 100)
-          }}
-        >
-          {reportDetail?.template_content_configs?.map((item: any) => {
-            return <div key={item.id}>{getFormItemHtml(item)}</div>
-          })}
-        </Form>
-      </div>
+            {reportDetail?.template_content_configs?.map((item: any) => {
+              return <div key={item.id}>{getFormItemHtml(item)}</div>
+            })}
+          </Form>
+        </div>
+      </Spin>
     </CommonModal>
   )
 }

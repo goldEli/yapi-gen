@@ -2,7 +2,7 @@ import { Badge } from 'antd'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 
-const mapStatusColor = {
+const mapStatusColor: any = {
   read: '#D5D6D9',
   no: '#FF5C5E',
   have: '#6688FF',
@@ -19,14 +19,14 @@ const ReadSateTagWrap = styled.div`
 `
 
 type ReadStatusProps = {
-  status: keyof typeof mapStatusColor
+  status: string
 }
 
 const ReadStatusTag = (props: ReadStatusProps) => {
   const [t] = useTranslation()
-  const mapStatusText = {
-    read: t('p2.noRead'),
-    no: t('p2.haveRead'),
+  const mapStatusText: any = {
+    read: t('p2.haveRead'),
+    no: t('p2.noRead'),
     have: t('report.list.haveComment'),
   }
 

@@ -200,7 +200,7 @@ const WriteReport = (props: Props) => {
             </BtnRow>
             <InputSearch
               leftIcon
-              placeholder={t('report.list.searchReport')}
+              placeholder={t('report.list.searchTitle')}
               width={184}
               onChange={(id: any) => {
                 setTemplateId(id)
