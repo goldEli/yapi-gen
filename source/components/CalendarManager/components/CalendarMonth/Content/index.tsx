@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import DayItem from './DayItem'
-import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
 import QuickCreateScheduleModel from '../../QuickCreateScheduleModel'
 import { useSelector } from '@store/index'
 import dayjs from 'dayjs'
@@ -34,7 +33,6 @@ const Content: React.FC<ContentProps> = props => {
           const info = selectedMonth?.[idx]
           return <DayItem idx={idx} key={idx} list={list[info?.date ?? '']} />
         })}
-      <ScheduleInfoDropdown containerClassName=".calendar-month-content-box" />
       <QuickCreateScheduleModel containerClassName=".calendar-month-content-box" />
       <ScheduleListModal />
     </ContentBox>

@@ -10,7 +10,6 @@ import {
 import { useDispatch, useSelector } from '@store/index'
 import classNames from 'classnames'
 import NewCalendarArea from '../NewCalendarArea'
-import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
 import ScheduleCardList from '../ScheduleCardList'
 import QuickCreateScheduleModel from '../../QuickCreateScheduleModel'
 import { setQuickCreateScheduleModel } from '@store/calendarPanle'
@@ -172,7 +171,6 @@ const Timescale: React.FC<TimescaleProps> = props => {
       <CurrentTimeLine />
       <NewCalendarArea timeRange={timeRange} />
       <ScheduleCardList />
-      <ScheduleInfoDropdown containerClassName=".time-scale" />
       <QuickCreateScheduleModel containerClassName=".time-scale" />
     </Table>
   )

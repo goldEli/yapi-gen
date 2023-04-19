@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import DayItem from './DayItem'
-import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
 import QuickCreateScheduleModel from '../../QuickCreateScheduleModel'
 import { useSelector } from '@store/index'
 import dayjs from 'dayjs'
@@ -54,9 +53,6 @@ const Content: React.FC<ContentProps> = props => {
   return (
     <ContentBox className="calendar-week-all-day-box">
       {content}
-      {isShowScheduleDetailModal && (
-        <ScheduleInfoDropdown containerClassName=".calendar-week-all-day-box" />
-      )}
       {quickCreateScheduleModel.isAll && (
         <QuickCreateScheduleModel containerClassName=".calendar-week-all-day-box" />
       )}

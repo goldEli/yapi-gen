@@ -36,6 +36,10 @@ const routes = [
         element: lazy(() => import('@/views/CalendarPage')),
       },
       {
+        path: '/ScheduleSearch',
+        element: lazy(() => import('@/views/ScheduleSearch')),
+      },
+      {
         path: '/Report',
         element: lazy(() => import('@/views/WorkReport')),
         children: [

@@ -5,7 +5,6 @@ import { formatYYYYMMDD, oneHourHeight } from '../../../config'
 import { useDispatch, useSelector } from '@store/index'
 import classNames from 'classnames'
 import { Dropdown, Popover } from 'antd'
-import ScheduleInfoDropdown from '../../ScheduleInfoDropdown'
 import ScheduleCardList from '../ScheduleCardList'
 import NewCalendarArea from '../NewCalendarArea'
 import useWeeks from '../hooks/useWeeks'
@@ -211,9 +210,6 @@ const Timescale: React.FC<TimescaleProps> = props => {
       <ScheduleCardList />
       {!quickCreateScheduleModel.isAll && (
         <QuickCreateScheduleModel containerClassName=".time-scale" />
-      )}
-      {isShowScheduleDetailModal && (
-        <ScheduleInfoDropdown containerClassName=".time-scale" />
       )}
     </Table>
     // </Popover>

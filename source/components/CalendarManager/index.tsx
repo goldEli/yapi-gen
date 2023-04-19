@@ -12,6 +12,7 @@ import {
   getRelateConfig,
 } from '@store/calendar/calendar.thunk'
 import { getLeftCalendarDaysOfMonthList } from '@store/schedule/schedule.thunk'
+import ScheduleInfoDropdown from './components/ScheduleInfoDropdown'
 type CalendarManagerLayoutProps = {
   // num: string
 }
@@ -46,6 +47,7 @@ const CalendarManager: React.FC<CalendarManagerLayoutProps> = props => {
         {!routerMenu.key && <CalendarPanel />}
         {routerMenu.key && <CalendarSet />}
       </CalenderBoxRightArea>
+      <ScheduleInfoDropdown></ScheduleInfoDropdown>
     </CalenderBox>
   )
 }

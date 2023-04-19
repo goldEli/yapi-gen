@@ -97,7 +97,8 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
   )
 
   // 改变日历的选中状态
-  const onChangeCheck = async (item: Model.Calendar.Info) => {
+  const onChangeCheck = async (e: any, item: Model.Calendar.Info) => {
+    e.stopPropagation()
     await dispatch(
       userSetupsCalendar({
         is_check: item.is_check === 1 ? 2 : 1,
@@ -148,7 +149,7 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
             )
             ?.map((i: Model.Calendar.Info) => (
               <CalendarManagerListItem key={i.id}>
-                <ItemBox key={i.id} onClick={() => onChangeCheck(i)}>
+                <ItemBox key={i.id} onClick={e => onChangeCheck(e, i)}>
                   <IconFont
                     type={i.is_check === 1 ? 'pput-sel' : 'put'}
                     style={{ fontSize: 16, color: colorMap[i.color] }}
