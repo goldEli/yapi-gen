@@ -128,8 +128,8 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
   const [noticeList, setNoticeList] = useState<DefaultTime[]>([])
 
   // 不可选择当前时间之前的
-  const disabledDate: RangePickerProps['disabledDate'] = current => {
-    return current && current < moment().endOf('day')
+  const onDisabledDate: RangePickerProps['disabledDate'] = current => {
+    return current && current < moment().subtract(1, 'day')
   }
 
   // 关闭弹窗
@@ -152,8 +152,8 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
 
   // 参与者的权限
   const checkboxOptions = [
-    { label: t('modifiable_schedule'), value: 0 },
-    { label: t('invite_participants'), value: 1 },
+    { label: t('calendarManager.modifiable_schedule'), value: 0 },
+    { label: t('calendarManager.invite_participants'), value: 1 },
   ]
 
   // 选中的共享成员
@@ -254,7 +254,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
   const onConfirm = async () => {
     const params = await onGetParams()
     await dispatch(saveSchedule(params))
-    message.success(t('common.createSuccess'))
+    message.success(t('calendarManager.createSuccess'))
     onClose()
   }
 
@@ -312,7 +312,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
     <>
       <AddMemberCommonModal
         isVisible={isChooseVisible && !!position}
-        title={t('add_a_member')}
+        title={t('calendarManager.add_a_member')}
         onClose={() => {
           setIsChooseVisible(false)
           EventBus.getInstance().dispatch('cancelCreateSchedule')
@@ -329,7 +329,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
         }}
       >
         <EasyScheduleHeader>
-          <span>{t('create_schedule')}</span>
+          <span>{t('calendarManager.create_schedule')}</span>
           <CloseWrap onClick={onClose} width={32} height={32}>
             <IconFont
               style={{ fontSize: 20, color: 'var(--neutral-n2)' }}
@@ -344,13 +344,18 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
           className="haveRight"
         >
           <Form.Item
-            label={<CreateFormItem label={t('theme')} type="database" />}
+            label={
+              <CreateFormItem
+                label={t('calendarManager.theme')}
+                type="database"
+              />
+            }
             name="subject"
             rules={[{ required: true, message: '' }]}
           >
             <Input
               autoComplete="off"
-              placeholder={t('please_enter_a_theme')}
+              placeholder={t('calendarManager.please_enter_a_theme')}
               maxLength={80}
               ref={inputDom}
               autoFocus
@@ -358,7 +363,9 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
           </Form.Item>
           <TimeWrap>
             <Form.Item
-              label={<CreateFormItem label={t('time')} type="time" />}
+              label={
+                <CreateFormItem label={t('calendarManager.time')} type="time" />
+              }
               name="time"
               rules={[{ required: true, message: '' }]}
               style={{ margin: 0, width: '80%' }}
@@ -368,16 +375,19 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
                 showTime={!isAll}
                 onChange={setTime}
                 allowClear={false}
-                disabledDate={disabledDate}
+                disabledDate={onDisabledDate}
               />
             </Form.Item>
             <Checkbox checked={isAll} onChange={onChangeIsAll}>
-              {t('all_day_long')}
+              {t('calendarManager.all_day_long')}
             </Checkbox>
           </TimeWrap>
           <ItemFlex style={{ margin: '24px 0' }}>
             <div className="box">
-              <CreateFormItem type="team" label="参与者" />
+              <CreateFormItem
+                type="team"
+                label={t('calendarManager.participant')}
+              />
               <CloseWrap
                 width={24}
                 height={24}
@@ -416,14 +426,16 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
           <Form.Item
             label={
               <CreateFormItem
-                label={t('schedule_description')}
+                label={t('calendarManager.schedule_description')}
                 type="file-02"
               />
             }
             name="describe"
           >
             <Input.TextArea
-              placeholder={t('please_enter_a_schedule_description')}
+              placeholder={t(
+                'calendarManager.please_enter_a_schedule_description',
+              )}
               autoSize
               maxLength={200}
             />
@@ -431,7 +443,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
           <Form.Item
             label={
               <CreateFormItem
-                label={t('schedule_category')}
+                label={t('calendarManager.schedule_category')}
                 type="calendar-days"
               />
             }
@@ -484,7 +496,12 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
             </ItemFlex>
           </Form.Item>
           <Form.Item
-            label={<CreateFormItem label={t('remind')} type="alarm" />}
+            label={
+              <CreateFormItem
+                label={t('calendarManager.remind')}
+                type="alarm"
+              />
+            }
             name="notice"
           >
             <CommonButton
@@ -493,7 +510,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
               iconPlacement="left"
               onClick={onAddNotice}
             >
-              {t('add_reminder')}
+              {t('calendarManager.add_reminder')}
             </CommonButton>
             {noticeList.map((i: DefaultTime) => (
               <NoticeBox key={i.id}>
@@ -516,10 +533,10 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
         </CreateForm>
         <ModalFooter size={16}>
           <CommonButton type="light" onClick={onToMore}>
-            {t('more_options')}
+            {t('calendarManager.more_options')}
           </CommonButton>
           <CommonButton type="primary" onClick={onConfirm}>
-            {t('newlyAdd.create')}
+            {t('calendarManager.create')}
           </CommonButton>
         </ModalFooter>
       </CreateSchedule>

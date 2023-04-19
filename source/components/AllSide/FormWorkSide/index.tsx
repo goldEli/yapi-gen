@@ -4,7 +4,11 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import AddFormWork from '@/components/AllSide/FormWorkSide/AddFormWork'
-import { setActiveItem, setFillingRequirements } from '@store/formWork/index'
+import {
+  setActiveItem,
+  setFillingRequirements,
+  setEditSave,
+} from '@store/formWork/index'
 import { useDispatch, useSelector } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { getTemplateList } from '@store/formWork/thunk'
@@ -14,6 +18,8 @@ import {
   setReportContent,
   setTemplateContentConfigs,
 } from '@store/formWork'
+import { aWeekDataList } from '@/views/WorkReport/Formwork/DataList'
+import { CloseWrap } from '@/components/StyleCommon'
 // getTemplateList
 const FormWorkSideStyle = styled.div`
   min-width: 200px;
@@ -88,20 +94,7 @@ const NoDataCreateWrap = styled.div({
     },
   },
 })
-const a = [
-  {
-    label: '工作日报',
-    id: 1,
-  },
-  {
-    label: '工作周报',
-    id: 2,
-  },
-  {
-    label: '工作月报',
-    id: 3,
-  },
-]
+
 const Box = styled.div`
   height: calc(100vh - 150px);
   overflow-y: auto;
@@ -154,7 +147,7 @@ const FormWorkSide = () => {
     ]
     dispatch(setTemplateContentConfigs(data))
     const claerConfig: any = {
-      day: [],
+      day: aWeekDataList,
       template_configs: [],
       hand_scope: 1,
       is_all_write: 2,
@@ -166,8 +159,14 @@ const FormWorkSide = () => {
       auto_reminder: true,
       submit_cycle: 1,
       is_holiday: true,
-      end_time: null,
-      start_time: null,
+      end_time: {
+        day_type: 1,
+        time: 24 * 60 * 60,
+      },
+      start_time: {
+        day_type: 1,
+        time: 24 * 60 * 60,
+      },
     }
     dispatch(
       setReportContent({
@@ -184,7 +183,19 @@ const FormWorkSide = () => {
     <FormWorkSideStyle>
       <TitleStyle>
         <span>模板</span>
-        <IconFontStyle type="plus" onClick={() => setIsVisible(true)} />
+        <CloseWrap width={24} height={24}>
+          <IconFont
+            style={{ fontSize: 18 }}
+            type="plus"
+            onClick={() => {
+              if (!editSave) {
+                setDelIsVisible(true)
+                return
+              }
+              setIsVisible(true)
+            }}
+          />
+        </CloseWrap>
       </TitleStyle>
       <Box>
         {dataList?.length < 1 ? (
@@ -236,7 +247,7 @@ const FormWorkSide = () => {
       {/* 未保存的弹窗 */}
       <DeleteConfirm
         title={'保存提示'}
-        text="【模版名称】还未保存，是否保存编辑内容？"
+        text={`【${activeItem?.name}】还未保存，是否保存编辑内容？`}
         isVisible={delIsVisible}
         onConfirm={() => setDelIsVisible(false)}
         notCancel

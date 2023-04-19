@@ -17,8 +17,8 @@ const InputStyle = styled(Input)<{ bgColor: any }>`
 `
 
 interface Props {
-  onChangeSearch?(val: string): void,
-  onFocus?():void,
+  onChangeSearch?(val: string): void
+  onFocus?(): void
   placeholder: string
   width?: any
   autoFocus?: boolean
@@ -29,6 +29,7 @@ interface Props {
   isDemand?: boolean
   // 订阅日历弹窗-搜索使用
   defaultValue?: string
+  isReport?: boolean
 }
 
 const InputSearch = (props: Props) => {
@@ -49,6 +50,7 @@ const InputSearch = (props: Props) => {
       value={value}
       style={{
         width: props.width,
+        fontFamily: props.isReport ? 'MiSans' : 'inherit',
       }}
       placeholder={props.placeholder}
       maxLength={props.length}

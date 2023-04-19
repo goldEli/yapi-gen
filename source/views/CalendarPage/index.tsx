@@ -13,7 +13,7 @@ const Wrap = styled.div`
 const CalendarPage = () => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
-  asyncSetTtile(t('calendar'))
+  asyncSetTtile(t('calendarManager.calendar'))
   const { menuPermission } = useSelector(store => store.user)
 
   return (

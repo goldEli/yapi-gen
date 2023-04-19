@@ -4,28 +4,14 @@ import IconFont from '@/components/IconFont'
 import { CloseWrap } from '@/components/StyleCommon'
 import useSetTitle from '@/hooks/useSetTitle'
 import styled from '@emotion/styled'
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from '@store/index'
 import WriteReportModal from '../FormWorkSide/WriteReport'
+import { setWriteReportModal } from '@store/workReport'
 
 const Menu = styled.div`
   width: 100%;
-`
-
-export const MySpan = styled.div`
-  cursor: pointer;
-  width: 24px;
-  height: 24px;
-  color: var(--neutral-n2);
-  border-radius: 6px 6px 6px 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  &:hover {
-    /* background: var(--hover-d1); */
-    color: var(--primary-d2);
-  }
 `
 
 const MenuItem = styled.div<{ active?: any }>(
@@ -53,8 +39,10 @@ const ReviewSide = () => {
   const { pathname } = useLocation()
   const nowPath2 = Number(pathname.split('/')[4]) || ''
   const navigate = useNavigate()
-  const [visibleEdit, setVisibleEdit] = useState(false)
-  const [id, setId] = useState(1)
+  const { visible: visibleEdit } = useSelector(
+    state => state.workReport.writeReportModal,
+  )
+  const dispatch = useDispatch()
 
   const menuList = [
     {
@@ -81,7 +69,7 @@ const ReviewSide = () => {
     navigate(value.path)
   }
   const handleReport = () => {
-    setVisibleEdit(true)
+    dispatch(setWriteReportModal({ visible: true }))
   }
 
   return (
@@ -122,9 +110,10 @@ const ReviewSide = () => {
         {menuList.map((item: any) => (
           <MenuItem
             style={{
-              fontSize: item.state ? '16px' : '',
+              fontSize: 14,
               fontFamily: item.state ? 'SiYuanMedium' : '',
               position: 'relative',
+              fontWeight: 400,
             }}
             active={nowPath2 === item.id}
             onClick={() => changeActive(item)}
@@ -170,11 +159,11 @@ const ReviewSide = () => {
       </Menu>
       <WriteReportModal
         isVisible={visibleEdit}
-        onClose={() => setVisibleEdit(false)}
+        onClose={() => dispatch(setWriteReportModal({ visible: false }))}
         onConfirm={function (): void {
           throw new Error('Function not implemented.')
         }}
-        title={'写汇报'}
+        title={t('report.list.writeReport')}
       />
     </div>
   )

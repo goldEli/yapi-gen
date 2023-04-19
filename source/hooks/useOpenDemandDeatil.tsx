@@ -1,4 +1,5 @@
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { saveDemandDetailDrawer } from '@store/demand/demand.thunk'
 import { useDispatch, useSelector } from '@store/index'
 import { useNavigate } from 'react-router-dom'
 
@@ -14,10 +15,7 @@ const useOpenDemandDetail = () => {
         type: 'demand/setIsDemandDetailDrawerVisible',
         payload: true,
       })
-      dispatch({
-        type: 'demand/setDemandDetailDrawerProps',
-        payload: item,
-      })
+      dispatch(saveDemandDetailDrawer(item))
     } else {
       const params = encryptPhp(
         JSON.stringify({

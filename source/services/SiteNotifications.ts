@@ -25,7 +25,9 @@ export const editMyAllNoteSet: any = async (params: any) => {
 
 // --------------------------------------------------------------------------消息
 export const getContactStatistics: any = async () => {
-  const response: any = await http.get<any>('/b/msg/contactStatistics')
+  const response: any = await http.get<any>('/b/msg/contactStatistics', {
+    latTime: Math.floor(new Date().valueOf() / 1000) - 5 * 60 * 1000,
+  })
 
   return response.data
 }
@@ -46,7 +48,7 @@ export const getMsg_list: any = async (params: any) => {
   const response: any = await http.post<any>('/b/msg/list', {
     lastId: params.lastId ?? 0,
     read: params.read,
-    friendUsername: params.friendUsername,
+    friendUsername: params.friendUsername ? [params.friendUsername] : undefined,
     customType: params.msgType,
     latTime: params.latTime,
   })

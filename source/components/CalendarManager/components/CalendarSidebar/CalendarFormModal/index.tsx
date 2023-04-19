@@ -97,14 +97,14 @@ const PermissionDrop = (props: PermissionDropProps) => {
       <ItemProvider />
       {props?.calendarInfo?.is_owner === 1 && (
         <PermissionDropItem onClick={() => setIsTransferVisible(true)}>
-          {t('transfer_calendar')}
+          {t('calendarManager.transfer_calendar')}
         </PermissionDropItem>
       )}
       <PermissionDropItem
         onClick={() => setIsDeleteVisible(true)}
         style={{ color: 'var(--function-error)' }}
       >
-        {t('remove_members')}
+        {t('calendarManager.remove_members')}
       </PermissionDropItem>
     </PermissionDropBox>
   )
@@ -113,17 +113,17 @@ const PermissionDrop = (props: PermissionDropProps) => {
     <>
       <DeleteConfirm
         isVisible={isDeleteVisible}
-        title={t('remove_members')}
+        title={t('calendarManager.remove_members')}
         onConfirm={onDeleteMember}
         onChangeVisible={() => setIsDeleteVisible(false)}
-        text={t('confirm_remove_member')}
+        text={t('calendarManager.confirm_remove_member')}
       />
 
       <CommonModal
         isVisible={isTransferVisible}
         onClose={() => setIsTransferVisible(false)}
         onConfirm={onTransferCalendar}
-        title={t('transfer_calendar')}
+        title={t('calendarManager.transfer_calendar')}
       >
         <TransferContent>
           <Radio.Group
@@ -131,9 +131,11 @@ const PermissionDrop = (props: PermissionDropProps) => {
             value={transferValue}
           >
             <Radio value={1}>
-              {t('transfer_me_to_become_an_administrator')}
+              {t('calendarManager.transfer_me_to_become_an_administrator')}
             </Radio>
-            <Radio value={2}>{t('transfer_me_to_exit_this_calendar')}</Radio>
+            <Radio value={2}>
+              {t('calendarManager.transfer_me_to_exit_this_calendar')}
+            </Radio>
           </Radio.Group>
         </TransferContent>
       </CommonModal>
@@ -251,7 +253,7 @@ const CalendarFormModal = () => {
   const onAddAllMember = () => {
     const all = {
       id: '0',
-      name: t('calendar_all_member'),
+      name: t('calendarManager.calendar_all_member'),
       type: 1 as Model.Calendar.ChooseAddType,
     }
     const newList = [...subscribedList, ...[all]]
@@ -340,8 +342,8 @@ const CalendarFormModal = () => {
     onClose()
     message.success(
       calendarModal?.params?.id
-        ? t('common.editSuccess')
-        : t('common.createSuccess'),
+        ? t('calendarManager.editSuccess')
+        : t('calendarManager.createSuccess'),
     )
   }
 
@@ -406,7 +408,10 @@ const CalendarFormModal = () => {
     setSubscribedList(
       response.subscribe_members.map((i: any) => ({
         id: i.object_id,
-        name: i.object_id === '0' ? t('calendar_all_member') : i.object?.name,
+        name:
+          i.object_id === '0'
+            ? t('calendarManager.calendar_all_member')
+            : i.object?.name,
         type: i.object_type,
       })),
     )
@@ -439,7 +444,7 @@ const CalendarFormModal = () => {
       {isChooseVisible && (
         <AddMemberCommonModal
           isVisible={isChooseVisible}
-          title={t('add_a_member')}
+          title={t('calendarManager.add_a_member')}
           onClose={() => setIsChooseVisible(false)}
           onConfirm={onAddConfirm}
           {...addMemberProps}
@@ -454,20 +459,22 @@ const CalendarFormModal = () => {
       <CommonModal
         isVisible={calendarModal.visible}
         title={
-          calendarModal?.params?.id ? t('edit_calendar') : t('create_calendar')
+          calendarModal?.params?.id
+            ? t('calendarManager.edit_calendar')
+            : t('calendarManager.create_calendar')
         }
         width={528}
         onClose={onClose}
         onConfirm={onCreateConfirm}
         confirmText={
           calendarModal?.params?.id
-            ? t('common.confirm2')
-            : t('newlyAdd.create')
+            ? t('calendarManager.confirm2')
+            : t('calendarManager.create')
         }
       >
         <FormWrap layout="vertical" form={form}>
           <Form.Item
-            label={t('calendar_name_text')}
+            label={t('calendarManager.calendar_name_text')}
             name="name"
             rules={[{ required: true, message: '' }]}
             getValueFromEvent={event => {
@@ -478,24 +485,31 @@ const CalendarFormModal = () => {
             <Input
               autoComplete="off"
               ref={inputRefDom as any}
-              placeholder={t('please_enter_a_calendar_name')}
+              placeholder={t('calendarManager.please_enter_a_calendar_name')}
               allowClear
               maxLength={30}
               autoFocus
               disabled={calendarInfo?.is_default === 1}
             />
           </Form.Item>
-          <Form.Item label={t('calendar_description')} name="describe">
+          <Form.Item
+            label={t('calendarManager.calendar_description')}
+            name="describe"
+          >
             <Input.TextArea
               autoComplete="off"
-              placeholder={t('please_enter_a_calendar_description')}
+              placeholder={t(
+                'calendarManager.please_enter_a_calendar_description',
+              )}
               allowClear
               maxLength={200}
               autoFocus
               autoSize
             />
           </Form.Item>
-          <Form.Item label={<FormTitleSmall text={t('Permission')} />}>
+          <Form.Item
+            label={<FormTitleSmall text={t('calendarManager.Permission')} />}
+          >
             <PermissionBox>
               <div className="select">
                 <CustomSelect
@@ -504,7 +518,7 @@ const CalendarFormModal = () => {
                     setSubscribedList([])
                     setShareList([])
                   }}
-                  placeholder={t('please_select_permissions')}
+                  placeholder={t('calendarManager.please_select_permissions')}
                   optionLabelProp="label"
                   value={currentPermission}
                 >
@@ -550,20 +564,22 @@ const CalendarFormModal = () => {
               </Popover>
             </PermissionBox>
           </Form.Item>
-          <Form.Item label={t('shared_calendar_members')}>
+          <Form.Item label={t('calendarManager.shared_calendar_members')}>
             <CommonButton
               icon="plus"
               type="primaryText"
               iconPlacement="left"
               onClick={() => onAddMember('share')}
             >
-              {t('add_a_member')}
+              {t('calendarManager.add_a_member')}
             </CommonButton>
             {shareList.map((i: Model.Calendar.MemberItem) => (
               <ShareMemberItem key={i.id}>
                 <CommonUserAvatar avatar={i.avatar} name={i.name} />
                 {i.is_owner === 1 && (
-                  <div className="notCanOperation">{t('administrators')}</div>
+                  <div className="notCanOperation">
+                    {t('calendarManager.administrators')}
+                  </div>
                 )}
                 {i.is_owner !== 1 && (
                   <PermissionDrop
@@ -577,7 +593,7 @@ const CalendarFormModal = () => {
             ))}
           </Form.Item>
           {currentPermission !== 1 && (
-            <Form.Item label={t('subscribeable_audience')}>
+            <Form.Item label={t('calendarManager.subscribable_audience')}>
               <Popover
                 trigger={['hover']}
                 content={chooseMemberType}
@@ -592,7 +608,7 @@ const CalendarFormModal = () => {
                     type="primaryText"
                     iconPlacement="left"
                   >
-                    {t('add_a_member')}
+                    {t('calendarManager.add_a_member')}
                   </CommonButton>
                 </div>
               </Popover>
@@ -625,7 +641,7 @@ const CalendarFormModal = () => {
             </Form.Item>
           )}
 
-          <Form.Item label={t('newlyAdd.chooseIcon')}>
+          <Form.Item label={t('calendarManager.chooseIcon')}>
             <ChooseIconOrUpload
               color={path}
               hiddenUpload={hiddenUpload}

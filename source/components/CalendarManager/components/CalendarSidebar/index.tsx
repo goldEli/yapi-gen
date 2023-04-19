@@ -1,13 +1,10 @@
-import CommonIconFont from '@/components/CommonIconFont'
-import { DragLine } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import {
   CalendarSidebarBox,
   CalendarSidebarMain,
   CalenderBoxLeftArea,
-  FoldIcon,
 } from '../../styles'
 import CalendarMainSide from './CalendarMainSide'
 import CalendarSetSide from './CalendarSetSide'
@@ -34,7 +31,6 @@ interface CalendarSidebarProps {
 }
 
 const CalendarSidebar: React.FC<CalendarSidebarProps> = props => {
-  const dispatch = useDispatch()
   const { firstMenuCollapse } = useSelector(state => state.global)
   const { routerMenu } = useSelector(store => store.calendar)
   const calendarMainSideDom = useRef<HTMLDivElement>(null)

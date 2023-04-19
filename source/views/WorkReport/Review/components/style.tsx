@@ -91,7 +91,7 @@ export const SkeletonGroups = styled.div`
     display: inline-block;
     min-width: inherit;
     border-radius: 4px;
-    background: var(--neutral-n7);
+    background: #f2f2f4;
   }
 `
 
@@ -133,7 +133,7 @@ export const BackIcon = styled.div`
 `
 
 export const ChangeIconGroup = styled.div`
-  border: 1px solid var(--neutral-n6-d1);
+  /* border: 1px solid var(--neutral-n6-d1); */
   border-radius: 6px;
   box-sizing: border-box;
   height: 32px;
@@ -142,7 +142,7 @@ export const ChangeIconGroup = styled.div`
 
 export const NextWrap = styled.div`
   width: 31px;
-  height: 32px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;

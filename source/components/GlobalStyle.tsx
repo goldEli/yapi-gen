@@ -326,9 +326,13 @@ const GlobalStyle = () => {
       -webkit-text-fill-color: var(--auxiliary-b4) !important;
       transition: background-color 5000s ease-in-out 0s !important;
     }
+    .ant-input-affix-wrapper {
+      border: 1px solid var(--neutral-n6-d1);
+    }
     .ant-input-affix-wrapper:focus,
     .ant-input-affix-wrapper-focused {
       box-shadow: none;
+      border: 1px solid var(--primary-d2);
     }
     .ant-popover-inner-content {
       padding: 0;
@@ -405,9 +409,6 @@ const GlobalStyle = () => {
       background: none;
     }
 
-    .ant-input-affix-wrapper {
-      border: 1px solid var(--neutral-n6-d1);
-    }
     input {
       &::placeholder {
         font-size: 14px;
@@ -600,7 +601,7 @@ const GlobalStyle = () => {
     .ant-select:not(.ant-select-customize-input) .ant-select-selector,
     .ant-input,
     .ant-input-number {
-      border: 1px solid var(--active);
+      border: 1px solid var(--neutral-n6-d1);
     }
     .ant-tree .ant-tree-node-content-wrapper.ant-tree-node-selected {
       width: 0;
