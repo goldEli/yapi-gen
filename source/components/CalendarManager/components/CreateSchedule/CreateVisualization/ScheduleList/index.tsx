@@ -9,17 +9,14 @@ interface ScheduleListProps {}
 const ScheduleListBox = styled.div`
   width: calc(100% - 58px);
   position: absolute;
-  /* left: 58px; */
+  left: 58px;
   top: 0px;
 `
 
 const ScheduleList: React.FC<ScheduleListProps> = props => {
   const { data } = useCalculationConflict()
-  const dispatch = useDispatch()
 
-  //   React.useEffect(() => {
-  //     dispatch(getScheduleList({ id: 1 }))
-  //   }, [])
+  console.log({ data })
 
   const content = React.useMemo(() => {
     return data.map(item => {
@@ -33,7 +30,7 @@ const ScheduleList: React.FC<ScheduleListProps> = props => {
       )
     })
   }, [data])
-  return <ScheduleListBox>{content}</ScheduleListBox>
+  return <>{content}</>
 }
 
 export default ScheduleList

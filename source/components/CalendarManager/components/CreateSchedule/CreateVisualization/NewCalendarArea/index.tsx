@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setCurrentDate } from '@store/createScheduleVisualization'
 
 import React, { useMemo, useState } from 'react'
-import { oneHourHeight } from '../../../../config'
+import { formatYYYYMMDDhhmmss, oneHourHeight } from '../../../../config'
 import { getTimeByAddDistance, getTimeByOffsetDistance } from '../utils'
 import { DraggableData, Position, ResizableDelta, Rnd } from 'react-rnd'
 import { css } from '@emotion/css'
@@ -14,6 +14,7 @@ import { ResizeDirection } from 're-resizable'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
 import { saveSchedule } from '@store/schedule/schedule.thunk'
 import { getColorWithOpacityPointOne } from '@/components/CalendarManager/utils'
+import { setVisualizationTime } from '@store/schedule'
 
 interface NewCalendarAreaProps {
   // data: Model.Schedule.Info
@@ -44,6 +45,7 @@ const Title = styled.span`
 const NewCalendarArea: React.FC<NewCalendarAreaProps> = props => {
   // const { data } = props
   // const { start_timestamp, end_timestamp } = data
+
   const { calendarData } = useSelector(store => store.calendar)
   const { visualizationTime } = useSelector(store => store.schedule)
   const currentColor = React.useMemo(() => {
@@ -111,6 +113,13 @@ const NewCalendarArea: React.FC<NewCalendarAreaProps> = props => {
       y - top,
     )
 
+    dispatch(
+      setVisualizationTime({
+        startTime: dayjs(time.startTime).format(formatYYYYMMDDhhmmss),
+        endTime: dayjs(time.endTime).format(formatYYYYMMDDhhmmss),
+      }),
+    )
+
     // dispatch(
     //   saveSchedule({
     //     ...props.data,
@@ -118,18 +127,18 @@ const NewCalendarArea: React.FC<NewCalendarAreaProps> = props => {
     //     end_timestamp: time.endTime.valueOf(),
     //   }),
     // )
-    setTimeRange(null)
-    const calenderBoxRightArea = document.querySelector(
-      '#calenderBoxRightArea',
-    ) as Element
-    // 打开详情弹窗
-    dispatch(
-      setScheduleInfoDropdown({
-        visible: true,
-        x: x + 100,
-        y: y + 20,
-      }),
-    )
+    // setTimeRange(null)
+    // const calenderBoxRightArea = document.querySelector(
+    //   '#calenderBoxRightArea',
+    // ) as Element
+    // // 打开详情弹窗
+    // dispatch(
+    //   setScheduleInfoDropdown({
+    //     visible: true,
+    //     x: x + 100,
+    //     y: y + 20,
+    //   }),
+    // )
   }
 
   const onResize = (
@@ -180,6 +189,12 @@ const NewCalendarArea: React.FC<NewCalendarAreaProps> = props => {
   ) => {
     if (dir === 'bottom') {
       const time = getTimeByAddDistance(endTime.valueOf(), delta.height)
+      dispatch(
+        setVisualizationTime({
+          startTime: startTime.format(formatYYYYMMDDhhmmss),
+          endTime: dayjs(time).format(formatYYYYMMDDhhmmss),
+        }),
+      )
       // dispatch(
       //   setSchedule({
       //     ...props.data,
@@ -195,6 +210,12 @@ const NewCalendarArea: React.FC<NewCalendarAreaProps> = props => {
     }
     if (dir === 'top') {
       const sTime = getTimeByAddDistance(startTime.valueOf(), delta.height * -1)
+      dispatch(
+        setVisualizationTime({
+          startTime: dayjs(sTime).format(formatYYYYMMDDhhmmss),
+          endTime: endTime.format(formatYYYYMMDDhhmmss),
+        }),
+      )
       // const eTime = getTimeByAddDistance(endTime, delta.height)
       // dispatch(
       //   setSchedule({
@@ -228,6 +249,14 @@ const NewCalendarArea: React.FC<NewCalendarAreaProps> = props => {
     }
     return !!visualizationTime
   }, [visualizationTime])
+
+  const title = React.useMemo(() => {
+    if (timeRange) {
+      return `${timeRange?.startTime} - ${timeRange?.endTime}`
+    }
+    return `${startTime.format('HH:mm')}-${endTime?.format('HH:mm')}`
+  }, [timeRange])
+
   if (!visible) {
     return <></>
   }
@@ -249,31 +278,25 @@ const NewCalendarArea: React.FC<NewCalendarAreaProps> = props => {
         y: top,
       }}
       dragAxis="y"
-      disableDragging
       enableResizing={{
-        bottom: false,
+        bottom: true,
         bottomLeft: false,
         bottomRight: false,
         left: false,
         right: false,
-        top: false,
+        top: true,
         topLeft: false,
         topRight: false,
       }}
       bounds=".create-visual-time-scale"
-      // onDragStart={onDragStart}
-      // onDrag={onDrag}
-      // onDragStop={onDragStop}
-      // onResizeStart={onResizeStart}
-      // onResize={onResize}
-      // onResizeStop={onResizeStop}
+      onDragStart={onDragStart}
+      onDrag={onDrag}
+      onDragStop={onDragStop}
+      onResizeStart={onResizeStart}
+      onResize={onResize}
+      onResizeStop={onResizeStop}
     >
-      <Title>
-        {timeRange && `${timeRange?.startTime} - ${timeRange?.endTime}`}
-      </Title>
-      <Title>{`${startTime.format('HH:mm')}-${endTime?.format(
-        'HH:mm',
-      )}`}</Title>
+      <Title>{title}</Title>
     </Rnd>
   )
 }

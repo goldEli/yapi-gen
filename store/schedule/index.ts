@@ -88,7 +88,10 @@ const slice = createSlice({
     setScheduleDate(state, action: PayloadAction<number>) {
       state.scheduleDate = action.payload
     },
-    setVisualizationTime(state, action) {
+    setVisualizationTime(
+      state,
+      action: PayloadAction<SliceState['visualizationTime']>,
+    ) {
       state.visualizationTime = action.payload
     },
   },

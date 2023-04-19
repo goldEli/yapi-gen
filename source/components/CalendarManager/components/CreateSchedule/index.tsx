@@ -471,6 +471,13 @@ const CreateSchedule = () => {
       setNormalCategory(calendarData.manager[0])
       setIsAll(scheduleModal.params?.isAll)
 
+      if (!scheduleModal.params?.startTime) {
+        return
+      }
+      if (!scheduleModal.params?.endTime) {
+        return
+      }
+
       // 通知右侧可视化
       dispatch(
         setVisualizationTime({

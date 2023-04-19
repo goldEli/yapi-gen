@@ -206,7 +206,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
         topLeft: false,
         topRight: false,
       }}
-      // bounds=".calendar-day-box"
+      bounds=".create-visual-time-scale"
       // onDragStart={onDragStart}
       // onDrag={onDrag}
       // onDragStop={onDragStop}

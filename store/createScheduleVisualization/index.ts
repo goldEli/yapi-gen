@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import dayjs from 'dayjs'
+import { getScheduleListForCurrentDay } from './createScheduleVisualization.thunk'
 interface State {
   // selectedDate: {
   //   startTime: number
@@ -39,6 +40,11 @@ const slice = createSlice({
     onNextDay(state) {
       state.currentDate = dayjs(state.currentDate).add(1, 'day').valueOf()
     },
+  },
+  extraReducers(builder) {
+    builder.addCase(getScheduleListForCurrentDay.fulfilled, (state, action) => {
+      state.scheduleList = action.payload
+    })
   },
 })
 const createScheduleVisualization = slice.reducer
