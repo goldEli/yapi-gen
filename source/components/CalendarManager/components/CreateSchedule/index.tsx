@@ -123,6 +123,7 @@ const CreateSchedule = () => {
 
   // 不可选择当前时间之前的
   const disabledDate: RangePickerProps['disabledDate'] = current => {
+    console.log(current)
     return current && current < moment().endOf('day')
   }
 

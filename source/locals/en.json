@@ -1092,6 +1092,17 @@
       "currentNoSubmitTimes": "Currently Not Submitted"
     }
   },
+  "AddDepartmentOrTeamModal": {
+    "add_team": "Add Team",
+    "add_members": "Add Members",
+    "add_department": "Add Department",
+    "search": "Search {{text}}",
+    "team": "Team",
+    "person": "Contacts",
+    "all_checked": "Select All",
+    "checked_count": "Selected {{count}/{{selectCount}}",
+    "clear": "Empty"
+  },
   "calendarManager": {
     "moreItems": "{{count}} more...",
     "calendar": "Calendar",
@@ -1192,7 +1203,20 @@
     "end_repetition": "End repetition",
     "after": "After",
     "more_options": "More Options",
-    "deleteSuccess": "",
-    "notification_settings": ""
+    "deleteSuccess": "Successfully deleted",
+    "editSuccess": "Successfully edited",
+    "createSuccess": "Created successfully",
+    "notification_settings": "Notifications settings",
+    "add_a_member": "Add Members",
+    "confirm2": "Confirm",
+    "create": "Create",
+    "please_select_permissions": "Please select permissions",
+    "Permission": "Limits of authority",
+    "chooseIcon": "Select icon",
+    "cancel": "Cancel",
+    "finishToAdd": "Complete and create the next",
+    "edit": "Edit",
+    "attachment": "Attachment",
+    "addAdjunct": "Add attachment"
   }
 }
