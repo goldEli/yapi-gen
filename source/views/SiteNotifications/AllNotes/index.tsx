@@ -115,7 +115,7 @@ const Index = () => {
         </div>
       </div>
 
-      <div style={{ padding: '0 80px' }}>
+      <div style={{ padding: '0 80px', paddingRight: '4px' }}>
         <InfiniteScroll
           dataLength={list.length}
           next={() => fetchMoreData(2)}
