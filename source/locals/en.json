@@ -1232,7 +1232,16 @@
     "attachment": "Attachment",
     "addAdjunct": "Add attachment",
     "allDay": "Full-day",
-    "owner":"Owner"
-
+    "owner":"Owner",
+    "copySchedule":"Copy Schedule",
+    "transfer_schedule":"Transfer Schedule",
+    "delete_schedule":"Delete Schedule",
+    "delete_tips":"The schedule will be deleted and will also be removed from the participant's calendar",
+    "delete_notice":"Notify participants after deletion",
+    "receive":"Receive",
+    "refuse":"Refuse",
+    "pending":"Pending",
+    "file_list":"File List",
+    "search_schedule":"Search Schedule"
   }
 }

@@ -20,6 +20,7 @@ import _ from 'lodash'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
 import IconFont from '@/components/IconFont'
 import InputSearch from '@/components/InputSearch'
+import { useTranslation } from 'react-i18next'
 dayjs.extend(weekOfYear)
 
 interface CalendarPanelToolBarProps {
@@ -45,6 +46,7 @@ const selectOptions: {
 ]
 const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
   const navigate = useNavigate()
+  const [t] = useTranslation()
   const calendarPanelType = useSelector(
     state => state.calendarPanel.calendarPanelType,
   )
@@ -285,7 +287,7 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
             margin: '0px 10px',
           }}
         >
-          今天
+          {t('today')}
         </div>
         <IconBox>
           <IconFont type="left" onClick={prevYearClick} />
@@ -316,7 +318,7 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
           allowClear
         />
         <InputSearch
-          placeholder="搜索日程"
+          placeholder={t('calendarManager.search_schedule')}
           defaultValue={inputDefaultValue}
           width={184}
           onChangeSearch={value => {}}

@@ -92,7 +92,7 @@ const ScheduleInfoContent: React.FC = props => {
           <span>
             <ScheduleInfoIcon type="attachment" />
           </span>
-          <div className={contentTip}>文件列表</div>
+          <div className={contentTip}>{t('calendarManager.file_list')}</div>
         </ScheduleInfoContentItem>
       ) : null}
 
