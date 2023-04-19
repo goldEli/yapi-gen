@@ -7,9 +7,9 @@ import TabsDragging from './TabsDragging'
 import RightDragging from './RightDragging'
 import ParmasDialog from './ParmasDialog'
 import { useDispatch, useSelector } from '@store/index'
-import DeleteConfirm from '@/components/DeleteConfirm'
 import { setTemplateContentConfigs, setEditSave } from '@store/formWork'
 import { message } from 'antd'
+import { useTranslation } from 'react-i18next'
 const TitleStyle = styled.div`
   display: flex;
   width: 100%;
@@ -50,6 +50,7 @@ interface DragItem {
 }
 const EditWork = (props: PropsType) => {
   const dispatch = useDispatch()
+  const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
   const [delIsVisible, setDelIsVisible] = useState(false)
   const [dragItem, setDragItem] = useState<any>()
@@ -71,7 +72,7 @@ const EditWork = (props: PropsType) => {
       }
       const newList = dataList.find((el: { type: number }) => el.type === 4)
       if (newList) {
-        message.warning('已有关联需求')
+        message.warning(t('formWork.has'))
         return
       }
       const arrData = Array.from(dataList)
@@ -143,7 +144,7 @@ const EditWork = (props: PropsType) => {
       >
         <LeftTabs>
           <TitleStyle draggable="false">
-            <span>汇报内容</span>
+            <span>{t('formWork.content')}</span>
           </TitleStyle>
           <div>
             <TabsDragging
@@ -163,8 +164,8 @@ const EditWork = (props: PropsType) => {
         </LeftTabs>
         <RightTabs>
           <TitleStyle draggable="false">
-            <span>基础控件</span>
-            <span>将控件拖动到左侧区域创建</span>
+            <span>{t('formWork.msg1')}</span>
+            <span>{t('formWork.msg2')}</span>
           </TitleStyle>
           <RightDragging />
         </RightTabs>
@@ -178,15 +179,6 @@ const EditWork = (props: PropsType) => {
           onConfirm={ParmasDialogOnConfirm}
         />
       </div>
-
-      {/* 未保存的弹窗 */}
-      <DeleteConfirm
-        title={'保存提示'}
-        text="【模版名称】还未保存，是否保存编辑内容？"
-        isVisible={delIsVisible}
-        onConfirm={() => setDelIsVisible(false)}
-        notCancel
-      />
     </>
   )
 }

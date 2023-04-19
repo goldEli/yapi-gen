@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { Input, Popover, Space } from 'antd'
+import { Input, Space } from 'antd'
 import { css } from '@emotion/css'
 
 export const DetailItem = styled.div`

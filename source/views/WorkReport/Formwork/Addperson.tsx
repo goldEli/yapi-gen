@@ -15,6 +15,7 @@ import AddDepartmentOrTeamModal from '@/components/AddDepartmentOrTeamModal'
 import { useDispatch } from '@store/index'
 import { setEditSave } from '@store/formWork'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
+import { useTranslation } from 'react-i18next'
 const AddPersonText = styled.div`
   margin-left: 26px;
   display: flex;
@@ -77,20 +78,7 @@ const DefalutIcon = styled.div<{ bgc?: any }>(
     backgroundColor: bgc,
   }),
 )
-const DefalutIcon1 = styled.div<{ bgc?: any }>(
-  {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '24px',
-    height: '24px',
-    borderRadius: '50%',
-    border: '1px solid  #DDE3F3',
-  },
-  ({ bgc }) => ({
-    backgroundColor: bgc,
-  }),
-)
+
 interface RowsItem {
   name: string
   id: number
@@ -116,6 +104,7 @@ const Addperson = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false)
   const [items, setItems] = useState<Array<Item>>()
   const [isVisible, setIsVisible] = useState(false)
+  const [t] = useTranslation()
   // 添加部门/团队弹窗
   const [isAddVisible, setIsAddVisible] = useState(false)
   const [userType, setUserType] = useState<number>(0)
@@ -134,17 +123,17 @@ const Addperson = (props: Props) => {
   const getName = (key: string, type: string) => {
     switch (key) {
       case 'obj':
-        return type === 'id' ? 1 : '汇报对象'
+        return type === 'id' ? 1 : t('formWork.reportTo')
       case 'departmentHead':
-        return type === 'id' ? 2 : '部门主管'
+        return type === 'id' ? 2 : t('formWork.director')
       case 'teamManagement':
-        return type === 'id' ? 3 : '团队管理'
+        return type === 'id' ? 3 : t('formWork.team')
       case 'reportsTo':
-        return type === 'id' ? 4 : '直属主管'
+        return type === 'id' ? 4 : t('formWork.reportsTo')
       case 'allSuperiors':
-        return type === 'id' ? 5 : '所有上级'
+        return type === 'id' ? 5 : t('formWork.allSup')
       case 'all':
-        return '全部'
+        return t('formWork.whole')
     }
   }
   // 下拉
@@ -313,7 +302,7 @@ const Addperson = (props: Props) => {
           }}
         >
           <CommonButton type="primaryText" onClick={() => setIsOpen(!isOpen)}>
-            添加
+            {t('formWork.add')}
             <CommonIconFont
               type={isOpen ? 'up' : 'down'}
               size={14}
@@ -339,7 +328,7 @@ const Addperson = (props: Props) => {
       {/* 添加成员弹窗 */}
       {isVisible && (
         <CommonModal
-          title={'添加成员'}
+          title={t('formWork.addUser')}
           state={2}
           isVisible={isVisible}
           onConfirm={onConfirm}

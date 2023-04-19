@@ -11,7 +11,7 @@ import PermissionConfig from './PermissionConfig'
 import EditWork from './EditWork'
 import PreviewDialog from '@/components/FormWork/PreviewDialog'
 import { useDispatch, useSelector } from '@store/index'
-import { setActiveItem, setEditSave, setTemplateName } from '@store/formWork'
+import { setActiveItem, setEditSave } from '@store/formWork'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import {
   deleteTemplate,
@@ -19,7 +19,7 @@ import {
   createTemplate,
 } from '@/services/formwork'
 import { getTemplateList, templateDetail } from '@store/formWork/thunk'
-import { getBatchEditConfig } from '@/services/demand'
+import { useTranslation } from 'react-i18next'
 const RightFormWorkStyle = styled.div`
   flex: 1;
   overflow: hidden;
@@ -128,6 +128,7 @@ const BtnRow = styled.div`
   justify-content: flex-end;
 `
 const RightFormWork = () => {
+  const [t] = useTranslation()
   const [isActive, setIsActive] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   const [value, setValue] = useState('')
@@ -138,7 +139,6 @@ const RightFormWork = () => {
     activeItem,
     reportContent,
     templateContentConfigs,
-    templateName,
     fillingRequirements,
     err,
     errMsg,
@@ -165,7 +165,7 @@ const RightFormWork = () => {
       dispatch(
         setActiveItem({ id: res.payload[0].id, name: res.payload[0].name }),
       )
-    message.success('删除成功')
+    message.success(t('formWork.message2'))
   }
   const getVerifyParams = (parmas: any) => {
     // 谁可以写是必填的
@@ -174,7 +174,7 @@ const RightFormWork = () => {
         (el: any) => el.user_type === 1,
       )
       if (list?.length < 1) {
-        message.warning('谁可以写必选')
+        message.warning(t('formWork.message1'))
         return false
       }
     } else if (
@@ -191,26 +191,26 @@ const RightFormWork = () => {
           parmas.requirement?.start_time?.time >
           parmas.requirement?.end_time?.time
         ) {
-          message.warning('结束时间不能小于开始时间')
+          message.warning(t('formWork.message3'))
           return false
         }
       }
       if (!parmas.requirement.start_time) {
-        message.warning('开始时间必填')
+        message.warning(t('formWork.msg10'))
         return false
       } else if (!parmas.requirement.end_time) {
-        message.warning('截止时间必填')
+        message.warning(t('formWork.message4'))
         return false
       } else if (!parmas.reminder_time) {
-        message.warning('提醒时间必填')
+        message.warning(t('formWork.message5'))
         return false
       }
     } else if (parmas.submit_cycle === 4) {
       if (!parmas.requirement.end_time) {
-        message.warning('截止时间必填')
+        message.warning(t('formWork.message4'))
         return false
       } else if (!parmas.reminder_time) {
-        message.warning('提醒时间必填')
+        message.warning(t('formWork.message5'))
         return false
       }
     }
@@ -260,15 +260,15 @@ const RightFormWork = () => {
       return
     }
     if (activeItem?.id) {
-      const res = await upDateTemplate(parmas)
-      message.success('编辑成功')
+      await upDateTemplate(parmas)
+      message.success(t('formWork.message6'))
       await dispatch(getTemplateList())
       // dispatch(setActiveItem({ id: activeItem?.id, name: activeItem?.name }))
     } else {
       const res = await createTemplate(parmas)
       await dispatch(getTemplateList())
       dispatch(setActiveItem({ id: res.data.id, name: res.data.name }))
-      message.success('新增成功')
+      message.success(t('formWork.message7'))
     }
     dispatch(setEditSave(true))
   }
@@ -278,49 +278,49 @@ const RightFormWork = () => {
   const getBtn = () => {
     // 编辑的情况0和1都应该有
     if (editSave && activeItem?.id) {
-      return <CommonButton type="primary">已保存</CommonButton>
+      return <CommonButton type="primary">{t('formWork.save1')}</CommonButton>
     } else if (!editSave && activeItem?.id) {
       return (
         <CommonButton type="primary" onClick={() => saveApi()}>
-          保存
+          {t('formWork.save2')}
         </CommonButton>
       )
     } else if (!editSave && !activeItem?.id && isActive === 1) {
       return (
         <CommonButton type="primary" onClick={() => saveApi()}>
-          保存
+          {t('formWork.save2')}
         </CommonButton>
       )
     } else if (editSave && !activeItem?.id && isActive === 1) {
-      return <CommonButton type="primary">已保存</CommonButton>
+      return <CommonButton type="primary"> {t('formWork.save1')}</CommonButton>
     }
   }
   return (
     <RightFormWorkStyle>
-      <Title>工作日报</Title>
+      <Title>{t('formWork.t1')}</Title>
       <HeaderOperate>
         <RowStyle>
           <Col onClick={() => setIsActive(0)}>
             <StyleLeft bgc={isActive === 0} />
-            <Text bgc={isActive === 0}>编辑模板</Text>
+            <Text bgc={isActive === 0}>{t('formWork.t2')}</Text>
             <StyleRight bgc={isActive === 0} />
           </Col>
           <Col2 onClick={() => setIsActive(1)}>
             <StyleLeft bgc={isActive === 1} />
-            <Text bgc={isActive === 1}>权限配置</Text>
+            <Text bgc={isActive === 1}>{t('formWork.t4')}</Text>
             <StyleRight bgc={isActive === 1} />
           </Col2>
         </RowStyle>
         <BtnRight>
           <CommonButton type="light" onClick={() => setIsVisible(true)}>
-            预览
+            {t('formWork.t5')}
           </CommonButton>
           <CommonButton
             type="light"
             onClick={() => setDelIsVisible(true)}
             style={{ margin: '0 0px 0 16px' }}
           >
-            删除
+            {t('formWork.t6')}
           </CommonButton>
         </BtnRight>
       </HeaderOperate>
@@ -328,13 +328,15 @@ const RightFormWork = () => {
       {isActive === 0 ? (
         <EditFormWorkBox>
           <EditFormWorkStyle
-            placeholder="请输入模板标题"
+            placeholder={t('formWork.t7')}
             value={value}
             maxLength={50}
             onInput={(e: any) => {
               dispatch(setEditSave(false))
-              setValue(e.target.value),
-                dispatch(setTemplateName(e.target.value))
+              setValue(e.target.value)
+              dispatch(
+                setActiveItem({ name: e.target.value, id: activeItem?.id }),
+              )
             }}
           ></EditFormWorkStyle>
         </EditFormWorkBox>
@@ -353,7 +355,7 @@ const RightFormWork = () => {
             onClick={() => setIsActive(1)}
             style={{ marginRight: '16px' }}
           >
-            下一步
+            {t('formWork.t8')}
           </CommonButton>
         ) : (
           <CommonButton
@@ -361,7 +363,7 @@ const RightFormWork = () => {
             onClick={() => setIsActive(0)}
             style={{ marginRight: '16px' }}
           >
-            上一步
+            {t('formWork.t9')}
           </CommonButton>
         )}
         <>{getBtn()}</>
@@ -377,8 +379,8 @@ const RightFormWork = () => {
       />
       {/* 删除模板 */}
       <DeleteConfirm
-        title={'删除模板'}
-        text="确认删除模版，删除后将无法汇报"
+        title={t('formWork.t10')}
+        text={t('formWork.t11')}
         isVisible={delIsVisible}
         onConfirm={deleteActiveItem}
         onChangeVisible={() => setDelIsVisible(false)}

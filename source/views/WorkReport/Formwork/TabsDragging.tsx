@@ -152,13 +152,13 @@ const Sortable = (props: any) => {
   const getType = (type: number) => {
     switch (type) {
       case 1:
-        return '人员字段'
+        return t('formWork.text1')
       case 2:
-        return '附件'
+        return t('formWork.tab2')
       case 3:
-        return '富文本'
+        return t('formWork.text2')
       default:
-        return '关联需求'
+        return t('formWork.tab3')
     }
   }
   return (
