@@ -334,6 +334,9 @@ const RightFormWork = () => {
             onInput={(e: any) => {
               dispatch(setEditSave(false))
               setValue(e.target.value)
+              dispatch(
+                setActiveItem({ name: e.target.value, id: activeItem?.id }),
+              )
             }}
           ></EditFormWorkStyle>
         </EditFormWorkBox>
