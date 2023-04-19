@@ -8,10 +8,12 @@ import styled from '@emotion/styled'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { useDispatch } from '@store/index'
 import Bgc from './img/bgc.png'
 import { templateLatelyList } from '@/services/report'
 import moment from 'moment'
 import NoData from '@/components/NoData'
+import { setWriteReportModal } from '@store/workReport'
 
 interface Props {
   isVisible: boolean
@@ -109,6 +111,7 @@ const WriteReport = (props: Props) => {
   const [templateId, setTemplateId] = useState()
   const [dataList, setDataList] = useState<any>({})
   const [t] = useTranslation()
+  const dispatch = useDispatch()
 
   const getTemplateLatelyList = async () => {
     const result = await templateLatelyList()
@@ -202,6 +205,7 @@ const WriteReport = (props: Props) => {
               onChange={(id: any) => {
                 setTemplateId(id)
                 setVisibleEdit(true)
+                dispatch(setWriteReportModal({ visible: false }))
               }}
               options={[]
                 .concat(dataList?.usedTemplate || [])
@@ -239,6 +243,7 @@ const WriteReport = (props: Props) => {
                           ) {
                             setTemplateId(item.id)
                             setVisibleEdit(true)
+                            dispatch(setWriteReportModal({ visible: false }))
                           }
                         }}
                       >
@@ -288,6 +293,7 @@ const WriteReport = (props: Props) => {
                           ) {
                             setTemplateId(item.id)
                             setVisibleEdit(true)
+                            dispatch(setWriteReportModal({ visible: false }))
                           }
                         }}
                       >

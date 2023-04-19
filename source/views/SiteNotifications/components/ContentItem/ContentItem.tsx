@@ -54,7 +54,10 @@ const ContentItem = (props: any) => {
   }
 
   return (
-    <Wrap greps={choose} onClick={() => (choose ? null : change())}>
+    <Wrap
+      greps={choose}
+      onClick={() => (read === 1 || choose ? null : change())}
+    >
       <div
         style={{
           marginRight: '12px',

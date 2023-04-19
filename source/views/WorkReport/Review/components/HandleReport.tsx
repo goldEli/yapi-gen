@@ -441,9 +441,11 @@ const HandleReport = (props: any) => {
   }
 
   const getReportDateText = (date: any) => {
-    return `（${date?.[0]} ${
-      date?.[0] && date?.[1] ? t('report.list.to') : ''
-    } ${date?.[1]}）`
+    return date && date?.some((k: any) => k)
+      ? `（${date?.[0]} ${date?.[0] && date?.[1] ? t('report.list.to') : ''} ${
+          date?.[1]
+        }）`
+      : ''
   }
 
   return (
