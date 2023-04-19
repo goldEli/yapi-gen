@@ -12,6 +12,7 @@ import {
   setDataList,
   setReportContent,
   setTemplateContentConfigs,
+  setTemplateName,
 } from '@store/formWork'
 import { aWeekDataList } from '@/views/WorkReport/Formwork/DataList'
 import { CloseWrap } from '@/components/StyleCommon'
@@ -110,6 +111,7 @@ const FormWorkSide = () => {
         setIsActive(index)
       }
     })
+    dispatch(setTemplateName(activeItem?.name))
   }, [activeItem])
   const onConfirm = async (name: string) => {
     setIsVisible(false)

@@ -15,6 +15,7 @@ export const DetailItem = styled.div`
 `
 
 export const TargetUserItem = styled.div`
+  box-sizing: border-box;
   padding: 24px 0px;
   .tabs {
     display: flex;

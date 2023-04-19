@@ -218,7 +218,8 @@ const WriteReport = (props: Props) => {
                 .concat(dataList?.otherTemplate || [])
                 .filter(
                   (k: any) =>
-                    !(k.submit_cycle === 1 && k.is_current_cycle_used),
+                    !(k.submit_cycle === 1 && k.is_current_cycle_used) &&
+                    k.is_write,
                 )
                 .map((item: any) => ({
                   label: item.name,
@@ -238,14 +239,15 @@ const WriteReport = (props: Props) => {
                           !!(
                             item.is_current_cycle_used &&
                             item.is_cycle_limit === 1
-                          )
+                          ) || !item.is_write
                         }
                         onClick={() => {
                           if (
                             !(
                               item.is_current_cycle_used &&
                               item.is_cycle_limit === 1
-                            )
+                            ) &&
+                            item.is_write
                           ) {
                             setTemplateId(item.id)
                             setVisibleEdit(true)
@@ -288,14 +290,15 @@ const WriteReport = (props: Props) => {
                           !!(
                             item.is_current_cycle_used &&
                             item.is_cycle_limit === 1
-                          )
+                          ) || !item.is_write
                         }
                         onClick={() => {
                           if (
                             !(
                               item.is_current_cycle_used &&
                               item.is_cycle_limit === 1
-                            )
+                            ) &&
+                            item.is_write
                           ) {
                             setTemplateId(item.id)
                             setVisibleEdit(true)
