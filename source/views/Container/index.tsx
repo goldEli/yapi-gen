@@ -24,6 +24,7 @@ import CreateDemand from '@/components/CreateDemand'
 import DemandDetailDrawer from '@/components/DemandDetailDrawer'
 import SiteDrawer from '../SiteNotifications/components/SiteDrawer/SiteDrawer'
 import ReportDetailDrawer from '../WorkReport/Review/components/ReportDetailDrawer'
+import { saveDemandDetailDrawer } from '@store/demand/demand.thunk'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -106,10 +107,7 @@ export const Container = () => {
         type: 'demand/setIsDemandDetailDrawerVisible',
         payload: false,
       })
-      dispatch({
-        type: 'demand/setDemandDetailDrawerProps',
-        payload: {},
-      })
+      dispatch(saveDemandDetailDrawer({}))
     }
   }
 
