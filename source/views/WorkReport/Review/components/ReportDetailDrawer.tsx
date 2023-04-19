@@ -73,7 +73,7 @@ const TargetTabs = (props: TargetTabsProps) => {
           )
           ?.map((i: any) => (
             <div key={i.user_id}>
-              <CommonUserAvatar avatar={i.user.avatar} name={i.user.name} />
+              <CommonUserAvatar avatar={i.user?.avatar} name={i.user?.name} />
             </div>
           ))}
       </TargetUserContent>
