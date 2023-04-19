@@ -46,6 +46,7 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
 
   const { len } = useScheduleListArr(data.schedule_id)
   const dispatch = useDispatch()
+
   const { position } = useRelativePosition(
     `${props.data.id}`,
     '.calendar-week-all-day-box',
