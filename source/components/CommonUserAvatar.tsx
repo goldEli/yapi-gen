@@ -45,7 +45,6 @@ interface UserAvatarProps {
 }
 
 const CommonUserAvatar = (props: UserAvatarProps) => {
-  console.log(props)
   const { theme } = useSelector(store => store.global)
   return (
     <UserAvatarWrap>

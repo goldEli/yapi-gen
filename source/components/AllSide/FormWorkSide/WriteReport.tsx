@@ -8,7 +8,7 @@ import styled from '@emotion/styled'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import Bgc from './img/bgc.png'
 import { templateLatelyList } from '@/services/report'
 import moment from 'moment'
@@ -112,6 +112,7 @@ const WriteReport = (props: Props) => {
   const [dataList, setDataList] = useState<any>({})
   const [t] = useTranslation()
   const dispatch = useDispatch()
+  const { visible } = useSelector(state => state.workReport.writeReportModal)
 
   const getTemplateLatelyList = async () => {
     const result = await templateLatelyList()
@@ -121,8 +122,10 @@ const WriteReport = (props: Props) => {
   }
 
   useEffect(() => {
-    getTemplateLatelyList()
-  }, [])
+    if (visible) {
+      getTemplateLatelyList()
+    }
+  }, [visible])
 
   const getContentHtml = (name: string, type: number): React.ReactElement => {
     switch (type) {
@@ -183,7 +186,10 @@ const WriteReport = (props: Props) => {
             <BtnRow>
               <CommonButton
                 type="light"
-                onClick={() => navigate('/Report/Formwork')}
+                onClick={() => {
+                  dispatch(setWriteReportModal({ visible: false }))
+                  navigate('/Report/Formwork')
+                }}
               >
                 {t('report.list.createTemplate')}
               </CommonButton>
