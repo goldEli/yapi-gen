@@ -34,13 +34,6 @@ const Index = () => {
     3: t('read_notifications'),
     4: t('referring_to_my'),
   }
-  const setReads = async (values: any) => {
-    setReadApi(values)
-  }
-  const setAllRead = () => {
-    const arr = list.map((i: any) => i.id)
-    setReads(arr)
-  }
 
   const fetchMoreData = async (type: number) => {
     const re4 = await getMsg_list({
@@ -65,6 +58,17 @@ const Index = () => {
       }
     }, 500)
   }
+  const setReads = async (values: any) => {
+    await setReadApi(values)
+    setHasMore(true)
+    lastId.current = 0
+    fetchMoreData(1)
+  }
+  const setAllRead = () => {
+    const arr = list.map((i: any) => i.id)
+    setReads(arr)
+  }
+
   const changeUser = (str: string, arr: any) => {
     msgType.current = arr
     friendUsername.current = str
