@@ -39,17 +39,33 @@ const SiteNotifications = () => {
     dispatch(changeNumber(num))
   }
   const sendMsg = () => {
+    console.log(wsData)
+
     if (Notification.permission === 'granted') {
       Notification.requestPermission(() => {
-        const n = new Notification(wsData.data.msgBody.title, {
+        const n: any = new Notification(wsData.data.msgBody.title, {
           body: wsData.data.msgBody.content,
         })
+        n.onclick = function () {
+          if (wsData.data.customData.linkWebUrl) {
+            // 当点击事件触发，打开指定的url
+            window.open(wsData.data.customData.linkWebUrl)
+            n.close()
+          }
+        }
       })
     } else {
       notification.open({
+        maxCount: 1,
         placement: 'bottomRight',
         message: wsData.data.msgBody.title,
         description: wsData.data.msgBody.content,
+        onClick: () => {
+          if (wsData.data.customData.linkWebUrl) {
+            // 当点击事件触发，打开指定的url
+            window.open(wsData.data.customData.linkWebUrl)
+          }
+        },
       })
     }
     init2()
