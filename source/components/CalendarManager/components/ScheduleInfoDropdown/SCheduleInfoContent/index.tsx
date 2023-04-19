@@ -12,7 +12,7 @@ import {
   PersonItem,
   FileList,
   FileItem,
-  FileItemInfo
+  FileItemInfo,
 } from '../styles'
 const toggleDropUp = css`
   max-height: 0;
@@ -39,8 +39,8 @@ const ScheduleInfoContent: React.FC = props => {
         </span>
         <div className={contentTip}>
           <span>
-            <img src={scheduleInfo?.creator?.avatar} />
-            {scheduleInfo?.creator?.name}（所有者）
+            <img src={scheduleInfo?.user?.avatar} />
+            {scheduleInfo?.user?.name}（所有者）
           </span>
         </div>
       </ScheduleInfoContentItem>
@@ -74,22 +74,22 @@ const ScheduleInfoContent: React.FC = props => {
           </PersonItem>
         ))}
       </PersonList>
-      {
-        scheduleInfo?.describe ? <ScheduleInfoContentItem>
+      {scheduleInfo?.describe ? (
+        <ScheduleInfoContentItem>
           <span>
             <ScheduleInfoIcon type="file-02" />
           </span>
           <div className={contentTip}>{scheduleInfo?.describe}</div>
-        </ScheduleInfoContentItem> : null
-      }
-      {
-        scheduleInfo?.files?.length ? <ScheduleInfoContentItem>
+        </ScheduleInfoContentItem>
+      ) : null}
+      {scheduleInfo?.files?.length ? (
+        <ScheduleInfoContentItem>
           <span>
             <ScheduleInfoIcon type="attachment" />
           </span>
           <div className={contentTip}>文件列表</div>
-        </ScheduleInfoContentItem> : null
-      }
+        </ScheduleInfoContentItem>
+      ) : null}
 
       <FileList>
         {scheduleInfo?.files?.map((item, index) => (
@@ -98,9 +98,9 @@ const ScheduleInfoContent: React.FC = props => {
               <IconFont
                 type={
                   fileType[
-                  item.url.substring(
-                    item.url.lastIndexOf('.') + 1,
-                  ) as keyof typeof fileType
+                    item.url.substring(
+                      item.url.lastIndexOf('.') + 1,
+                    ) as keyof typeof fileType
                   ] || 'colorunknown'
                 }
               />

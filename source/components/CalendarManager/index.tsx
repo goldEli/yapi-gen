@@ -26,9 +26,7 @@ const CalendarManager: React.ForwardRefRenderFunction<
   const { routerMenu } = useSelector(store => store.calendar)
   const { checkedTime } = useSelector(store => store.calendar)
   const dispatch = useDispatch()
-  const { calendarData } = useSelector(state => state.calendar)
   const { checkedCalendarList } = useSelector(state => state.calendar)
-  let data = calendarData?.manager.concat(calendarData?.subscribe)
   // 初始化获取当前是设置页还是看板页
   useEffect(() => {
     const calendarSet = localStorage.getItem('calendarSetKey')
@@ -42,14 +40,10 @@ const CalendarManager: React.ForwardRefRenderFunction<
     let params = {
       year: dayjs(checkedTime).year(),
       month: dayjs(checkedTime).month() + 1,
-      calendar_ids: data.map(item => item.calendar_id),
+      calendar_ids: checkedCalendarList.map(item => item.calendar_id),
     }
-    setTimeout(() => {
-      console.log(111111, checkedCalendarList)
-    }, 300)
-
     dispatch(getLeftCalendarDaysOfMonthList(params))
-  }, [checkedTime])
+  }, [checkedTime, checkedCalendarList])
   React.useImperativeHandle(forwardedRef, () => ({
     open() {
       alert('open')

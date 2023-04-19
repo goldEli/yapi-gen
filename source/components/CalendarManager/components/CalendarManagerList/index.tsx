@@ -90,7 +90,6 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const { calendarData } = useSelector(store => store.calendar)
   const calendarList = calendarData[props.type as keyof typeof calendarData]
-
   // 改变日历的选中状态
   const onChangeCheck = async (item: Model.Calendar.Info) => {
     await dispatch(

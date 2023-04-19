@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import CalendarForCalendarYear from '../CalendarForCalendarYear'
 import { useDispatch, useSelector } from '@store/index'
 import { getCalendarDaysOfYearList } from '@store/schedule/schedule.thunk'
@@ -11,19 +11,25 @@ const Box = styled.div`
   gap: 68px;
   flex-wrap: wrap;
 `
-
 const CalendarYear: React.FC<CalendarYearProps> = props => {
   const disPatch = useDispatch()
-  const calendarData = useSelector(state => state.calendar.calendarData)
+  const { checkedCalendarList } = useSelector(state => state.calendar)
+  const checkedCalendarListRef = useRef<Model.Calendar.Info[]>()
+  checkedCalendarListRef.current = checkedCalendarList
   const calendarYear = useSelector(
     state => state.calendarPanel.calenderYearValue,
   )
-  let data = calendarData?.manager.concat(calendarData?.subscribe)
+  console.log(
+    'checkedCalendarList',
+    checkedCalendarList,
+    checkedCalendarListRef.current,
+  )
   useEffect(() => {
     let params = {
       year: dayjs(calendarYear).year(),
-      calendar_ids: data.map(item => item.calendar_id),
+      calendar_ids: checkedCalendarList.map(item => item.calendar_id),
     }
+    console.log('params----', params)
     disPatch(getCalendarDaysOfYearList(params))
   }, [calendarYear])
   return (

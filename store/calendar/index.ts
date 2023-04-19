@@ -10,7 +10,8 @@ import {
   getRelateConfig,
   updateCalendarConfig,
 } from './calendar.thunk'
-
+import { store, AppDispatch } from '@store/index'
+import { refreshCalendarPanelScheduleList } from '@store/schedule/schedule.thunk'
 type SliceState = {
   // 左侧-选中的时间
   checkedTime: string
@@ -154,6 +155,7 @@ const slice = createSlice({
       )
       // 获取当前数据默认选择的日历
       state.checkedCalendarList = [...checkManageList, ...checkSubList]
+      console.log('checkedCalendarList------', state.checkedCalendarList)
     })
     // 获取日历相关配置下拉
     builder.addCase(getRelateConfig.fulfilled, (state, action) => {
