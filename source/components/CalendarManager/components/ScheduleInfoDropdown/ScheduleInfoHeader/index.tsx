@@ -1,7 +1,15 @@
 import { useSelector, useDispatch } from '@store/index'
 import { setScheduleModal } from '@store/calendar'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
-import { Checkbox, Radio, type RadioChangeEvent, Select, message } from 'antd'
+import {
+  Checkbox,
+  Radio,
+  type RadioChangeEvent,
+  Select,
+  message,
+  Popover,
+} from 'antd'
+import { useTranslation } from 'react-i18next'
 import {
   ScheduleInfoHeader,
   ScheduleInfoHeaderContent,
@@ -22,7 +30,6 @@ import dayjs from 'dayjs'
 import weekday from 'dayjs/plugin/weekday'
 import CommonModal from '@/components/CommonModal'
 import { scheduleInfoDelete, scheduleInfoTransfer } from '@/services/schedule'
-import { useTranslation } from 'react-i18next'
 dayjs.extend(weekday)
 const { Option } = Select
 interface ScheduleInfoDropdownProps {}
@@ -123,7 +130,7 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
                     )
                   }}
                 >
-                  复制日程
+                  {t('calendarManager.copySchedule')}
                 </span>
                 {scheduleInfo?.members?.length && scheduleInfo?.is_creator ? (
                   <span
@@ -131,7 +138,7 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
                       setModalVisible(true)
                     }}
                   >
-                    转让日程
+                    {t('calendarManager.transfer_schedule')}
                   </span>
                 ) : null}
               </BoxTip>
@@ -155,23 +162,23 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
         isVisible={isVisible}
         onConfirm={confirmDelete}
         onChangeVisible={onChangeVisible}
-        title="删除日程"
+        title={t('calendarManager.delete_schedule')}
       >
-        <div className={confirmText}>
-          日程将删除，该日程同时会从参与者日历中移除
-        </div>
+        <div className={confirmText}>{t('calendarManager.delete_tips')}</div>
         <div>
           <Checkbox
             onChange={e => {
               setChecked(e.target.checked)
             }}
           ></Checkbox>
-          <span className={confirmSure}>删除后通知参与者</span>
+          <span className={confirmSure}>
+            {t('calendarManager.delete_notice')}
+          </span>
         </div>
       </DeleteConfirm>
       <CommonModal
         isVisible={modalVisible}
-        title="转让日程"
+        title={t('calendarManager.transfer_schedule')}
         width={528}
         onClose={() => {
           setModalVisible(false)

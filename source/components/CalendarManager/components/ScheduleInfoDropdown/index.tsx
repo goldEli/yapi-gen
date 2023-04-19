@@ -56,6 +56,7 @@ const ScheduleInfoDropdown: React.FC<ScheduleInfoDropdownProps> = props => {
       top={position?.y ?? 0}
       left={position?.x ?? 0}
       onClick={e => {
+        console.log(111)
         e.stopPropagation()
       }}
     >

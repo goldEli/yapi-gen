@@ -4,6 +4,7 @@ import React, { Fragment } from 'react'
 import { useDispatch, useSelector } from '@store/index'
 import { scheduleInfoReply } from '@/services/schedule'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
+import { useTranslation } from 'react-i18next'
 interface iProps {}
 const ScheduleInfoFooterBox = styled.div`
   color: var(--neutral-n3);
@@ -21,6 +22,7 @@ const ScheduleInfoFooterBox = styled.div`
 `
 
 const ScheduleInfoFooter: React.FC<iProps> = props => {
+  const [t] = useTranslation()
   const { scheduleInfo } = useSelector(state => state.schedule)
   const disPatch = useDispatch()
   const replySchedule = async (status: number) => {
@@ -33,16 +35,16 @@ const ScheduleInfoFooter: React.FC<iProps> = props => {
   }
   return (
     <>
-      {scheduleInfo?.is_show_reply ? (
+      {!scheduleInfo?.is_show_reply ? (
         <ScheduleInfoFooterBox>
           <CommonButton type="light" onClick={() => replySchedule(1)}>
-            接收
+            {t('calendarManager.receive')}
           </CommonButton>
           <CommonButton type="light" onClick={() => replySchedule(2)}>
-            拒绝
+            {t('calendarManager.refuse')}
           </CommonButton>
           <CommonButton type="light" onClick={() => replySchedule(3)}>
-            待定
+            {t('calendarManager.pending')}
           </CommonButton>
         </ScheduleInfoFooterBox>
       ) : null}

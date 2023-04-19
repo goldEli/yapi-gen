@@ -26,13 +26,13 @@ interface CalendarListProps {}
 const ScheduleSearch: React.FC<CalendarListProps> = props => {
   const CalendarListBoxRef = useRef<HTMLDivElement>(null)
   const { checkedCalendarList } = useSelector(state => state.calendar)
-  const [inputDefaultValue, setInputDefaultValue] = useState('')
+  const [inputDefaultValue, setInputDefaultValue] = useState<string>()
+  const { calenderYearValue } = useSelector(state => state.calendarPanel)
   const [searchList, setSearchList] = useState([])
-  const [isInit, setIsInit] = useState<boolean>(true)
   const navigate = useNavigate()
   const getSearchList = () => {
     const params = {
-      year: 2023,
+      year: parseInt(calenderYearValue),
       calendar_ids: checkedCalendarList.map(item => item.calendar_id),
       keyword: inputDefaultValue,
     }
@@ -48,10 +48,8 @@ const ScheduleSearch: React.FC<CalendarListProps> = props => {
     })
   }
   useEffect(() => {
-    if (isInit) return
+    if (inputDefaultValue === undefined) return
     getSearchList()
-    console.log(checkedCalendarList)
-    setIsInit(false)
   }, [inputDefaultValue])
   return (
     <ScheduleSearchListBox ref={CalendarListBoxRef}>
@@ -93,8 +91,8 @@ const ScheduleSearch: React.FC<CalendarListProps> = props => {
             <LunarDate>{item.list[0].lunar_day_chinese} </LunarDate>
           </div>
           <CalendarListInfo>
-            {item.list.map((ele: any, index: number) => (
-              <TimeItem key={index}>
+            {item.list.map((ele: any, idx: number) => (
+              <TimeItem key={idx}>
                 <span className={dateClass}>
                   {ele.is_all_day === 1
                     ? '全天'
