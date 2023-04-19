@@ -60,6 +60,7 @@ const Index = () => {
   }
   const setReads = async (values: any) => {
     await setReadApi(values)
+    setList([])
     setHasMore(true)
     lastId.current = 0
     fetchMoreData(1)
