@@ -482,10 +482,10 @@ export const dayData1: any = [
     label: '前七日',
     key: 7,
   },
-  {
-    label: '无限制',
-    key: 0,
-  },
+  // {
+  //   label: '无限制',
+  //   key: 0,
+  // },
 ]
 export const weekData: any = [
   {
@@ -500,20 +500,20 @@ export const weekData: any = [
     label: '前三周',
     key: 3,
   },
-  {
-    label: '无限止',
-    key: 0,
-  },
+  // {
+  //   label: '无限止',
+  //   key: 0,
+  // },
 ]
 export const monthData: any = [
   {
     label: '前一月',
     key: 1,
   },
-  {
-    label: '无限止',
-    key: 0,
-  },
+  // {
+  //   label: '无限止',
+  //   key: 0,
+  // },
 ]
 export const aWeekDataList = [
   {
