@@ -25,7 +25,8 @@ const Line = styled.div`
   margin-top: 24px;
 `
 const RightLine = styled(Line)`
-  text-align: right;
+  display: flex;
+  justify-content: flex-end;
   margin-top: 24px;
   color: rgba(50, 50, 51, 1);
 `
@@ -103,11 +104,7 @@ const SetPermissionWrap = (props: {
         </Left>
         <Right>
           <PersonalHead>
-            {data?.avatar ? (
-              <img className={imgCss} src={data?.avatar} alt="" />
-            ) : (
-              <CommonUserAvatar />
-            )}
+            <CommonUserAvatar avatar={data?.avatar} />
           </PersonalHead>
           <RightLine>{data.phone ? data.phone : '--'}</RightLine>
           <RightLine>{data.email ? data.email : '--'}</RightLine>

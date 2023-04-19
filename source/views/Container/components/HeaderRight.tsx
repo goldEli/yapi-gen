@@ -362,11 +362,7 @@ const HeaderRight = () => {
                 <Line key={i.label}>{i.label ? i.label : '-'}</Line>
                 {i.key === 'avatar' && (
                   <PersonalHead>
-                    {userInfo.avatar ? (
-                      <img className={imgCss} src={userInfo.avatar} />
-                    ) : (
-                      <CommonUserAvatar size="large" />
-                    )}
+                    <CommonUserAvatar size="large" avatar={userInfo.avatar} />
                   </PersonalHead>
                 )}
                 {i.key !== 'avatar' && (

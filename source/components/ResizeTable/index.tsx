@@ -122,8 +122,6 @@ const ResizeTable = (props: ResizeTableProps) => {
   const dataWrapRef = useRef<HTMLDivElement>(null)
   const canRun = useRef(true)
 
-  console.log(listActiveId)
-
   // 处理拖拽
   const handleResize =
     (index: any) =>
