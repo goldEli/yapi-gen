@@ -6,6 +6,7 @@ import MoveActiveItem from '../MoveActiveItem'
 import MoreScheduleButton from '../../MoreScheduleButton'
 import { setScheduleListModal } from '@store/schedule'
 import dayjs from 'dayjs'
+import ScheduleStripListItem from '../../ScheduleStripListItem'
 
 interface ScheduleListProps {
   data: Model.Calendar.DaysOfMonth
@@ -47,7 +48,14 @@ const ScheduleList: React.FC<ScheduleListProps> = props => {
         if (!item) {
           return <div key={idx} style={{ height: '22px' }}></div>
         }
-        return <ScheduleListItem idx={props.idx} data={item} key={item?.id} />
+        return (
+          <ScheduleStripListItem
+            containerClassName=".calendar-month-content-box"
+            idx={props.idx}
+            data={item}
+            key={item?.id}
+          />
+        )
       })}
       <div
         onClick={e => {
