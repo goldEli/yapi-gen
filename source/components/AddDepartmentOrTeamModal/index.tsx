@@ -27,6 +27,7 @@ import {
   TreeStyle,
 } from './style'
 import { unionBy } from 'lodash'
+import { useTranslation } from 'react-i18next'
 
 type ChooseAddType = 1 | 2 | 3 | undefined | 4 | null
 
@@ -46,6 +47,7 @@ interface AddDepartmentModalProps {
 }
 
 const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
+  const [t] = useTranslation()
   // 选中的人员数据
   const [checkedList, setCheckedList] = useState<MemberItem[]>([])
   const [dataList, setDataList] = useState<MemberItem[]>([])
@@ -267,10 +269,10 @@ const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
       isVisible={props.isVisible}
       title={
         props.type === 3
-          ? '添加团队'
+          ? t('AddDepartmentOrTeamModal.add_team')
           : props.type === 2
-          ? '添加成员'
-          : '添加部门'
+          ? t('AddDepartmentOrTeamModal.add_members')
+          : t('AddDepartmentOrTeamModal.add_department')
       }
       onClose={onClose}
       onConfirm={onConfirm}
@@ -284,7 +286,12 @@ const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
                   value={searchValue}
                   allowClear
                   onChange={e => setSearchValue(e.target.value)}
-                  placeholder={`搜索${props.type === 3 ? '团队' : '联系人'}`}
+                  placeholder={t('AddDepartmentOrTeamModal.search', {
+                    text:
+                      props.type === 3
+                        ? t('AddDepartmentOrTeamModal.team')
+                        : t('AddDepartmentOrTeamModal.person'),
+                  })}
                 />
                 <CheckBoxWrap>
                   <Checkbox
@@ -295,7 +302,7 @@ const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
                       checkedList.length !== selectDataList.length
                     }
                   >
-                    全选
+                    {t('AddDepartmentOrTeamModal.all_checked')}
                   </Checkbox>
                 </CheckBoxWrap>
                 <LeftItems>
@@ -376,9 +383,14 @@ const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
         <ContentRight>
           <Header>
             <span>
-              已选{checkedList.length}/{selectDataList.length}
+              {t('AddDepartmentOrTeamModal.checked_count', {
+                count: checkedList.length,
+                selectCount: selectDataList.length,
+              })}
             </span>
-            <span onClick={onClearAll}>清空</span>
+            <span onClick={onClearAll}>
+              {t('AddDepartmentOrTeamModal.clear')}
+            </span>
           </Header>
           <ListWraps>
             {checkedList.length > 0 &&

@@ -20,7 +20,6 @@ import {
   BackIcon,
   ChangeIconGroup,
   Content,
-  SkeletonStatus,
   UpWrap,
   DownWrap,
   ContentHeadWrap,
@@ -32,7 +31,6 @@ import {
   ContactDemandItem,
   CommentBox,
 } from './style'
-import { setViewReportModal } from '@store/workReport'
 import {
   addReportComment,
   getReportComment,
@@ -41,6 +39,7 @@ import {
 import UploadAttach from '@/components/UploadAttach'
 import CommonButton from '@/components/CommonButton'
 import ReportDetailSkeleton from './ReportDetailSkeleton'
+import { saveViewReportDetailDrawer } from '@store/workReport/workReport.thunk'
 
 interface TargetTabsProps {
   list: any
@@ -48,6 +47,7 @@ interface TargetTabsProps {
 
 const TargetTabs = (props: TargetTabsProps) => {
   const [activeTab, setActiveTab] = useState(0)
+  const [t] = useTranslation()
   return (
     <TargetUserItem>
       <div className="tabs">
@@ -55,13 +55,15 @@ const TargetTabs = (props: TargetTabsProps) => {
           className={activeTab === 0 ? 'active' : ''}
           onClick={() => setActiveTab(0)}
         >
-          已读 ({props.list?.filter((k: any) => k.type !== 1)?.length})
+          {t('p2.haveRead')} (
+          {props.list?.filter((k: any) => k.type !== 1)?.length})
         </span>
         <span
           className={activeTab === 1 ? 'active' : ''}
           onClick={() => setActiveTab(1)}
         >
-          未读 ({props.list?.filter((k: any) => k.type === 1)?.length})
+          {t('p2.noRead')} (
+          {props.list?.filter((k: any) => k.type === 1)?.length})
         </span>
       </div>
       <TargetUserContent size={24}>
@@ -185,7 +187,7 @@ const ReportDetailDrawer = () => {
   const onCancel = () => {
     setFocus(false)
     setIsReview(false)
-    dispatch(setViewReportModal({ visible: false, id: 0, ids: [] }))
+    dispatch(saveViewReportDetailDrawer({ visible: false, id: 0, ids: [] }))
   }
 
   // 向上查找需求
@@ -193,7 +195,7 @@ const ReportDetailDrawer = () => {
     const newIndex = reportIds[currentIndex - 1]
     if (!currentIndex) return
     dispatch(
-      setViewReportModal({
+      saveViewReportDetailDrawer({
         ...viewReportModal,
         ...{ id: newIndex },
       }),
@@ -204,9 +206,8 @@ const ReportDetailDrawer = () => {
   const onDownDemand = () => {
     const newIndex = reportIds[currentIndex + 1]
     if (currentIndex === reportIds?.length - 1) return
-
     dispatch(
-      setViewReportModal({
+      saveViewReportDetailDrawer({
         ...viewReportModal,
         ...{ id: newIndex },
       }),
@@ -234,7 +235,7 @@ const ReportDetailDrawer = () => {
       content: value.info,
     }
     await addReportComment(params)
-    message.success('添加评论成功！')
+    message.success(t('report.list.okComment'))
     scrollToBottom()
     setIsReview(false)
     getReportCommentData(drawerInfo.id)
@@ -270,7 +271,7 @@ const ReportDetailDrawer = () => {
         !e.target?.className?.includes('canClickDetail') &&
         storeAll.getState().workReport.viewReportModal.visible)
     ) {
-      dispatch(setViewReportModal({ visible: false }))
+      dispatch(saveViewReportDetailDrawer({ visible: false }))
     }
   }
 
@@ -330,11 +331,6 @@ const ReportDetailDrawer = () => {
               color="var(--neutral-n1-d1)"
             />
           </BackIcon>
-          {skeletonLoading && (
-            <SkeletonStatus>
-              <Skeleton.Input active />
-            </SkeletonStatus>
-          )}
         </Space>
         <Space size={16}>
           <ChangeIconGroup>
@@ -390,13 +386,17 @@ const ReportDetailDrawer = () => {
                 />
                 <div className="reportTitleWrap">
                   <div className="titleText">
-                    {drawerInfo?.user?.name}的{drawerInfo?.report_template_name}
+                    {drawerInfo?.user?.name}
+                    {t('report.list.of')}
+                    {drawerInfo?.report_template_name}
                     <span className="dateText">
-                      （{drawerInfo?.start_time}至{drawerInfo?.end_time}）
+                      {`（${drawerInfo?.start_time} ${t('report.list.to')} ${
+                        drawerInfo?.end_time
+                      }）`}
                     </span>
                   </div>
                   <div className="submitTimeText">
-                    提交时间：{drawerInfo?.created_at}
+                    {t('report.list.dateSubmit')}：{drawerInfo?.created_at}
                   </div>
                 </div>
               </div>
@@ -417,18 +417,24 @@ const ReportDetailDrawer = () => {
               </DetailItem>
             ))}
             <DetailItem>
-              <div className="title">评论</div>
-              {commentList.map((i: any) => (
-                <CommentBox key={i.id}>
-                  <div className="header">
-                    <CommonUserAvatar name={i.comment_user.name} />
-                    <div className="time">{i.created_at || '--'}</div>
-                  </div>
-                  <div className="content">
-                    <Editor readonly disableUpdateValue value={i?.content} />
-                  </div>
-                </CommentBox>
-              ))}
+              <div className="title">{t('common.comment')}</div>
+              {commentList && commentList.length
+                ? commentList.map((i: any) => (
+                    <CommentBox key={i.id}>
+                      <div className="header">
+                        <CommonUserAvatar name={i.comment_user.name} />
+                        <div className="time">{i.created_at || '--'}</div>
+                      </div>
+                      <div className="content">
+                        <Editor
+                          readonly
+                          disableUpdateValue
+                          value={i?.content}
+                        />
+                      </div>
+                    </CommentBox>
+                  ))
+                : '--'}
             </DetailItem>
           </>
         )}
@@ -454,7 +460,7 @@ const ReportDetailDrawer = () => {
                             alignItems: 'center',
                           }}
                         >
-                          评论不能为空
+                          {t('report.list.noEmpty')}
                         </div>
                       ),
                       whitespace: true,
@@ -481,7 +487,7 @@ const ReportDetailDrawer = () => {
                   }}
                   style={{ fontSize: 12 }}
                 >
-                  取消
+                  {t('report.list.cancel')}
                 </CommonButton>
                 <CommonButton
                   type="primary"
@@ -489,14 +495,16 @@ const ReportDetailDrawer = () => {
                   style={{ fontSize: 12 }}
                   onClick={onComment}
                 >
-                  评论
+                  {t('common.comment')}
                 </CommonButton>
               </Space>
             </div>
           </>
         ) : (
           <Input
-            placeholder={`评论${drawerInfo?.user?.name || '--'}的日志`}
+            placeholder={`${t('common.comment')}${
+              drawerInfo?.user?.name || '--'
+            }${t('report.list.log')}`}
             onFocus={() => setIsReview(true)}
           />
         )}

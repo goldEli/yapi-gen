@@ -58,14 +58,20 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
   const [isDeleteVisible, setIsDeleteVisible] = useState(false)
   const [isUnsubscribeVisible, setIsUnsubscribeVisible] = useState(false)
   const subMenu = [
-    { name: t('show_only_this_calendar'), type: 'only' },
-    { name: t('unsubscribe_from_calendar'), type: 'unsubscribe' },
+    { name: t('calendarManager.show_only_this_calendar'), type: 'only' },
+    {
+      name: t('calendarManager.unsubscribe_from_calendar'),
+      type: 'unsubscribe',
+    },
   ]
   const manageMenu = [
-    { name: t('show_only_this_calendar'), type: 'only' },
-    { name: t('editorial_calendar'), type: 'edit' },
-    { name: t('delete_calendar'), type: 'delete' },
-    { name: t('unsubscribe_from_calendar'), type: 'unsubscribe' },
+    { name: t('calendarManager.show_only_this_calendar'), type: 'only' },
+    { name: t('calendarManager.editorial_calendar'), type: 'edit' },
+    { name: t('calendarManager.delete_calendar'), type: 'delete' },
+    {
+      name: t('calendarManager.unsubscribe_from_calendar'),
+      type: 'unsubscribe',
+    },
   ]
 
   // 仅显示此日历
@@ -85,7 +91,7 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
     await deleteCalendar({ id: props.item.calendar_id })
     dispatch(getCalendarList())
     setIsDeleteVisible(false)
-    message.success(t('common.deleteSuccess'))
+    message.success(t('calendarManager.deleteSuccess'))
   }
 
   // 退订日历确认事件
@@ -93,7 +99,7 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
     await unsubscribeCalendar({ id: props.item.calendar_id })
     dispatch(getCalendarList())
     setIsUnsubscribeVisible(false)
-    message.success(t('unsubscribed_successfully'))
+    message.success(t('calendarManager.unsubscribed_successfully'))
   }
 
   // 点击菜单事件
@@ -147,15 +153,15 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
     <>
       <DeleteConfirm
         isVisible={isDeleteVisible}
-        title={t('delete_calendar')}
-        text={t('delete_calendar_text')}
+        title={t('calendarManager.delete_calendar')}
+        text={t('calendarManager.delete_calendar_text')}
         onConfirm={onDeleteConfirm}
         onChangeVisible={() => setIsDeleteVisible(false)}
       />
       <DeleteConfirm
         isVisible={isUnsubscribeVisible}
-        title={t('unsubscribe_from_calendar')}
-        text={t('unsubscribe_from_calendar_text')}
+        title={t('calendarManager.unsubscribe_from_calendar')}
+        text={t('calendarManager.unsubscribe_from_calendar_text')}
         onConfirm={onUnsubscribeConfirm}
         onChangeVisible={() => setIsUnsubscribeVisible(false)}
       />

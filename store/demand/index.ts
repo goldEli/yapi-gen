@@ -123,9 +123,6 @@ export const demandSlice = createSlice({
       state.demandDetailDrawerProps = action.payload
     },
   },
-  extraReducers(builder) {
-    //
-  },
 })
 
 export const {

@@ -18,10 +18,11 @@ type CalendarManagerLayoutProps = {
 }
 
 const CalendarManager: React.FC<CalendarManagerLayoutProps> = props => {
-  const { routerMenu } = useSelector(store => store.calendar)
-  const { checkedTime } = useSelector(store => store.calendar)
+  const { routerMenu, checkedTime, checkedCalendarList } = useSelector(
+    store => store.calendar,
+  )
+  const { isRefresh } = useSelector(store => store.user)
   const dispatch = useDispatch()
-  const { checkedCalendarList } = useSelector(state => state.calendar)
   // 初始化获取当前是设置页还是看板页
   useEffect(() => {
     const calendarSet = localStorage.getItem('calendarSetKey')
@@ -31,6 +32,15 @@ const CalendarManager: React.FC<CalendarManagerLayoutProps> = props => {
     dispatch(getRelateConfig())
     dispatch(getCalendarConfig())
   }, [])
+
+  useEffect(() => {
+    if (isRefresh) {
+      // 获取相应配置
+      dispatch(getRelateConfig())
+      dispatch(getCalendarConfig())
+    }
+  }, [isRefresh])
+
   useEffect(() => {
     let params = {
       year: dayjs(checkedTime).year(),
@@ -39,6 +49,7 @@ const CalendarManager: React.FC<CalendarManagerLayoutProps> = props => {
     }
     dispatch(getLeftCalendarDaysOfMonthList(params))
   }, [checkedTime, checkedCalendarList])
+
   return (
     <CalenderBox>
       <CreateSchedule />

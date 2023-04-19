@@ -69,6 +69,14 @@ export const GrepTitle = styled.span`
   color: var(--neutral-n3);
   font-size: 12px;
 `
+export const GrepTitle2 = styled.span`
+  color: var(--neutral-n3);
+  font-size: 12px;
+  cursor: pointer;
+  :hover {
+    color: var(--primary-d1);
+  }
+`
 
 export const Tips = styled.div`
   height: 20px;

@@ -3,8 +3,6 @@ import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
 import classNames from 'classnames'
 import { css } from '@emotion/css'
-import dayjs from 'dayjs'
-import useCurrentTime from '@/components/CalendarManager/hooks/useCurrentTime'
 import ScheduleList from '../../ScheduleList'
 import {
   resizeMonthSchedule,
@@ -33,6 +31,7 @@ const DayItemBox = styled.div`
   border-bottom-width: 0px;
   height: 100px;
   flex: 1;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -85,14 +84,10 @@ const borderRight = css`
 `
 
 const DayItem: React.FC<DayItemProps> = props => {
-  const { checkedTime, selectedWeek } = useSelector(store => store.calendar)
+  const { selectedWeek } = useSelector(store => store.calendar)
   const { selectedDayInMonth } = useSelector(store => store.calendarPanel)
   const { idx } = props
   const info = selectedWeek?.[props.idx]
-  const day = dayjs(info?.date).format('DD')
-  // const isSelected = dayjs(checkedTime).isSame(dayjs(info?.date), 'day')
-  const { currentTime } = useCurrentTime()
-  const isCurrent = currentTime.isSame(dayjs(info?.datetime), 'day')
   const dispatch = useDispatch()
 
   if (!info) {

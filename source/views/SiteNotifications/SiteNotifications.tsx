@@ -6,7 +6,9 @@ import IconFont from '@/components/IconFont'
 import useWebsocket from '@/tools/useWebsocket'
 import { useDispatch, useSelector } from '@store/index'
 import {
+  changeNumber,
   changeVisible,
+  changeVisibleFilter,
   setConfiguration,
   setEmailConfiguration,
   setMyConfiguration,
@@ -22,24 +24,49 @@ import {
 } from '@/services/SiteNotifications'
 
 const SiteNotifications = () => {
-  const { sendMessage, wsData } = useWebsocket()
+  const { wsData } = useWebsocket()
   const dispatch = useDispatch()
-  const isVisible = useSelector(store => store.siteNotifications.isVisible)
+  const { isVisible, all } = useSelector(store => store.siteNotifications)
+  const init2 = async () => {
+    const res = await getContactStatistics()
+
+    let num = 0
+
+    res.list.forEach((i: any) => {
+      num += Number(i.total)
+    })
+
+    dispatch(changeNumber(num))
+  }
   const sendMsg = () => {
     if (Notification.permission === 'granted') {
       Notification.requestPermission(() => {
-        const n = new Notification(wsData.data.msgBody.title, {
+        const n: any = new Notification(wsData.data.msgBody.title, {
           body: wsData.data.msgBody.content,
         })
+        n.onclick = function () {
+          if (wsData.data.customData.linkWebUrl) {
+            // 当点击事件触发，打开指定的url
+            window.open(wsData.data.customData.linkWebUrl)
+            n.close()
+          }
+        }
       })
     } else {
       notification.open({
+        maxCount: 1,
         placement: 'bottomRight',
-        message: 'Notification Title',
-        description:
-          'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+        message: wsData.data.msgBody.title,
+        description: wsData.data.msgBody.content,
+        onClick: () => {
+          if (wsData.data.customData.linkWebUrl) {
+            // 当点击事件触发，打开指定的url
+            window.open(wsData.data.customData.linkWebUrl)
+          }
+        },
       })
     }
+    init2()
   }
   const setNewName = (type: string, code: number) => {
     let name = ''
@@ -252,8 +279,10 @@ const SiteNotifications = () => {
       ),
     )
   }
+
   useEffect(() => {
     init()
+    init2()
   }, [])
   useEffect(() => {
     if (wsData) {
@@ -262,11 +291,11 @@ const SiteNotifications = () => {
   }, [wsData])
 
   return (
-    <Badge size="small" offset={[-2, 1]} count={5}>
+    <Badge size="small" offset={[-2, 1]} count={all}>
       <CommonIconFont
         onClick={() => {
           dispatch(changeVisible(!isVisible))
-          sendMessage('1234')
+          dispatch(changeVisibleFilter(false))
         }}
         color="var(--neutral-n2)"
         size={24}

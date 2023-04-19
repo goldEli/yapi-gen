@@ -8,10 +8,12 @@ import styled from '@emotion/styled'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { useDispatch } from '@store/index'
 import Bgc from './img/bgc.png'
 import { templateLatelyList } from '@/services/report'
 import moment from 'moment'
 import NoData from '@/components/NoData'
+import { setWriteReportModal } from '@store/workReport'
 
 interface Props {
   isVisible: boolean
@@ -53,6 +55,7 @@ const CarWrap = styled.div<{ disabled?: boolean }>`
   &:hover {
     cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
     box-shadow: 0px 0px 10px 0px rgba(9, 9, 9, 0.09);
+    border: 1px solid transparent;
   }
   img {
     width: 156px;
@@ -108,6 +111,7 @@ const WriteReport = (props: Props) => {
   const [templateId, setTemplateId] = useState()
   const [dataList, setDataList] = useState<any>({})
   const [t] = useTranslation()
+  const dispatch = useDispatch()
 
   const getTemplateLatelyList = async () => {
     const result = await templateLatelyList()
@@ -201,6 +205,7 @@ const WriteReport = (props: Props) => {
               onChange={(id: any) => {
                 setTemplateId(id)
                 setVisibleEdit(true)
+                dispatch(setWriteReportModal({ visible: false }))
               }}
               options={[]
                 .concat(dataList?.usedTemplate || [])
@@ -216,54 +221,56 @@ const WriteReport = (props: Props) => {
             />
           </HeaderWrap>
           <MainWrap>
-            <TitleWrap>{t('report.list.recent')}</TitleWrap>
-            <WrapBox>
-              {dataList?.usedTemplate?.length ? (
-                dataList.usedTemplate?.map((item: any) => (
-                  <ColWrap key={item.id}>
-                    <CarWrap
-                      disabled={
-                        !!(
-                          item.is_current_cycle_used &&
-                          item.is_cycle_limit === 1
-                        )
-                      }
-                      onClick={() => {
-                        if (
-                          !(
+            {dataList?.usedTemplate?.length ? (
+              <>
+                <TitleWrap>{t('report.list.recent')}</TitleWrap>
+                <WrapBox>
+                  {dataList.usedTemplate?.map((item: any) => (
+                    <ColWrap key={item.id}>
+                      <CarWrap
+                        disabled={
+                          !!(
                             item.is_current_cycle_used &&
                             item.is_cycle_limit === 1
                           )
-                        ) {
-                          setTemplateId(item.id)
-                          setVisibleEdit(true)
                         }
-                      }}
-                    >
-                      <img src={Bgc} />
-                      <CarItem>
-                        <CarTitle>工作{item.name}</CarTitle>
-                        {item.template_content_configs
-                          ?.filter((tcc: any, i: number) => i < 2)
-                          .map((content: any) => (
-                            <FormWrap key={content.id}>
-                              {getContentHtml(content.name, content.type)}
-                            </FormWrap>
-                          ))}
-                      </CarItem>
-                    </CarWrap>
-                    {item.used_created_at ? (
-                      <TimeText>
-                        {moment(item.used_created_at).format('M月D日')}
-                        {t('report.list.haveSubmit')}
-                      </TimeText>
-                    ) : null}
-                  </ColWrap>
-                ))
-              ) : (
-                <NoData />
-              )}
-            </WrapBox>
+                        onClick={() => {
+                          if (
+                            !(
+                              item.is_current_cycle_used &&
+                              item.is_cycle_limit === 1
+                            )
+                          ) {
+                            setTemplateId(item.id)
+                            setVisibleEdit(true)
+                            dispatch(setWriteReportModal({ visible: false }))
+                          }
+                        }}
+                      >
+                        <img src={Bgc} />
+                        <CarItem>
+                          <CarTitle>{item.name}</CarTitle>
+                          {item.template_content_configs
+                            ?.filter((tcc: any, i: number) => i < 2)
+                            .map((content: any) => (
+                              <FormWrap key={content.id}>
+                                {getContentHtml(content.name, content.type)}
+                              </FormWrap>
+                            ))}
+                        </CarItem>
+                      </CarWrap>
+                      {item.used_created_at ? (
+                        <TimeText>
+                          {moment(item.used_created_at).format('M月D日')}
+                          {t('report.list.haveSubmit')}
+                        </TimeText>
+                      ) : null}
+                    </ColWrap>
+                  ))}
+                </WrapBox>
+              </>
+            ) : null}
+
             {dataList?.otherTemplate?.length ? (
               <>
                 <TitleWrap>{t('report.list.other')}</TitleWrap>
@@ -286,12 +293,13 @@ const WriteReport = (props: Props) => {
                           ) {
                             setTemplateId(item.id)
                             setVisibleEdit(true)
+                            dispatch(setWriteReportModal({ visible: false }))
                           }
                         }}
                       >
                         <img src={Bgc} />
                         <CarItem>
-                          <CarTitle>工作{item.name}</CarTitle>
+                          <CarTitle>{item.name}</CarTitle>
                           {item.template_content_configs
                             ?.filter((tcc: any, i: number) => i < 2)
                             .map((content: any) => (
@@ -302,7 +310,10 @@ const WriteReport = (props: Props) => {
                         </CarItem>
                       </CarWrap>
                       {item.used_created_at ? (
-                        <TimeText>{item.used_created_at}已提交</TimeText>
+                        <TimeText>
+                          {item.used_created_at}
+                          {t('report.list.haveSubmit')}
+                        </TimeText>
                       ) : null}
                     </ColWrap>
                   ))}

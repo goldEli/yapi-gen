@@ -1,20 +1,8 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
-import {
-  getColorWithOpacityPointOne,
-  getColor,
-} from '@/components/CalendarManager/utils'
-import { isSameTime } from '../../CalendarWeek/utils'
+/**
+ * 月视图日程，周视图全天日程
+ */
+import React, { useEffect, useMemo, useState } from 'react'
 import dayjs from 'dayjs'
-import { css } from '@emotion/css'
-import classNames from 'classnames'
-import {
-  Dot,
-  ScheduleListItemBox,
-  Time,
-  Title,
-  marginLeft,
-  marginRight,
-} from './styled'
 import { store, useDispatch, useSelector } from '@store/index'
 import {
   clearMonthMoveScheduleActiveInfo,
@@ -23,7 +11,6 @@ import {
   // moveMonthSchedule,
   startMoveMonthSchedule,
 } from '@store/calendarPanle'
-import useScheduleListArr from '../hooks/useScheduleListArr'
 import useRelativePosition from '@/components/CalendarManager/hooks/useRelativePosition'
 import _ from 'lodash'
 import { modifySchedule } from '@store/schedule/schedule.thunk'
@@ -31,13 +18,18 @@ import {
   formatYYYYMMDD,
   formatYYYYMMDDhhmmss,
 } from '@/components/CalendarManager/config'
+import ScheduleStrip from '../ScheduleStrip'
+import useAllDay from '@/components/CalendarManager/hooks/useAllDay'
+import useAcrossScheduleList from '@/components/CalendarManager/hooks/useAcrossScheduleList'
 
 interface ScheduleListItemProps {
   data: Model.Schedule.Info
   idx: number
+  // .calendar-week-all-day-box
+  containerClassName: string
 }
 
-const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
+const ScheduleStripListItem: React.FC<ScheduleListItemProps> = props => {
   const { data } = props
   const { monthMoveScheduleActiveInfo } = useSelector(
     store => store.calendarPanel,
@@ -50,27 +42,28 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
     dispatch(clearMonthMoveScheduleActiveInfo())
   }, [data])
 
-  const { start_timestamp, schedule_start_datetime } = props.data
-  const isAllDay = data.is_all_day === 1 || data.is_span_day
-  const isAllDayFirstDay =
-    isAllDay && isSameTime(start_timestamp, schedule_start_datetime ?? 0)
-  const isAllDayButNotFirstDay =
-    data.is_span_day &&
-    !isSameTime(start_timestamp, schedule_start_datetime ?? 0)
-  // 如果是跨天或者全天任务显示全天
-  const time = useMemo(() => {
-    return isAllDay ? '全天' : data.start_time
-  }, [isAllDay, data.start_time])
+  const { isAcrossDayButNotFirstDay } = useAllDay({ data: props.data })
+
   const isDrag = React.useRef(false)
   const domRef = React.useRef(null)
 
-  const { len } = useScheduleListArr(data.schedule_id)
+  const { len } = useAcrossScheduleList(data.schedule_id)
   const dispatch = useDispatch()
+
   const { position } = useRelativePosition(
     `${props.data.id}`,
-    '.calendar-week-all-day-box',
+    props.containerClassName,
   )
 
+  // 时候展示日程
+  const show = useMemo(() => {
+    return (
+      monthMoveScheduleActiveInfo?.startSchedule?.schedule_id !==
+      data.schedule_id
+    )
+  }, [monthMoveScheduleActiveInfo, data.schedule_id, visible])
+
+  // 打开详情弹窗
   const onOpenScheduleDetail = () => {
     dispatch(
       setScheduleInfoDropdown({
@@ -172,9 +165,10 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
     dispatch(modifySchedule(params))
   }
 
+  // 点击日程
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     // 跨天如果不是头天不能拖动
-    if (isAllDayButNotFirstDay) {
+    if (isAcrossDayButNotFirstDay) {
       return
     }
     // e.stopPropagation()
@@ -209,7 +203,7 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
        * 1. 如果拖动不查看
        * 2. 跨天日程只有第一天才能点
        */
-      if (!isDrag.current && !isAllDayButNotFirstDay) {
+      if (!isDrag.current && !isAcrossDayButNotFirstDay) {
         onOpenScheduleDetail()
         return
       }
@@ -219,59 +213,36 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
       }
     })
   }
-  const show = useMemo(() => {
-    return (
-      monthMoveScheduleActiveInfo?.startSchedule?.schedule_id !==
-      data.schedule_id
+
+  // 拖拽头部
+  const onDotMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.stopPropagation()
+    window.calendarMonthPanelType = 'resize'
+    dispatch(
+      resizeMonthSchedule({
+        startSchedule: props.data,
+        startIndex: props.idx,
+        endIndex: props.idx,
+        length: len,
+      }),
     )
-  }, [monthMoveScheduleActiveInfo, data.schedule_id, visible])
+    const onMouseupForDot = (e: MouseEvent) => {
+      onSaveForResizingFirstDay()
+      window.calendarMonthPanelType = null
+    }
+    window.removeEventListener('mouseup', onMouseupForDot)
+    window.addEventListener('mouseup', onMouseupForDot)
+  }
 
   return (
-    <ScheduleListItemBox
+    <ScheduleStrip
+      data={props.data}
       ref={domRef}
-      onClick={e => {
-        e.stopPropagation()
-      }}
       visible={show}
       onMouseDown={onMouseDown}
-      id={props.data.id ? String(props.data.id) : ''}
-      className={classNames({
-        [marginLeft]: !isAllDayButNotFirstDay,
-        [marginRight]: !(isAllDayButNotFirstDay || isAllDayFirstDay),
-      })}
-      bg={isAllDay ? getColorWithOpacityPointOne(data.color) : void 0}
-      hoverBg={getColorWithOpacityPointOne(data.color)}
-      color={getColor(data.color)}
-    >
-      {!isAllDayButNotFirstDay && (
-        <>
-          <Dot
-            onMouseDown={e => {
-              e.stopPropagation()
-              window.calendarMonthPanelType = 'resize'
-              dispatch(
-                resizeMonthSchedule({
-                  startSchedule: props.data,
-                  startIndex: props.idx,
-                  endIndex: props.idx,
-                  length: len,
-                }),
-              )
-              const onMouseupForDot = (e: MouseEvent) => {
-                onSaveForResizingFirstDay()
-                window.calendarMonthPanelType = null
-              }
-              window.removeEventListener('mouseup', onMouseupForDot)
-              window.addEventListener('mouseup', onMouseupForDot)
-            }}
-            bg={getColor(data.color)}
-          />
-          <Time className="text">{time}</Time>
-          <Title className="text">{props.data.subject}</Title>
-        </>
-      )}
-    </ScheduleListItemBox>
+      onDotMouseDown={onDotMouseDown}
+    />
   )
 }
 
-export default ScheduleListItem
+export default ScheduleStripListItem

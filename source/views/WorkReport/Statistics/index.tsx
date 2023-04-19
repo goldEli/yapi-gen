@@ -6,7 +6,7 @@ import { SecondTitle, SelectWrapBedeck } from '@/components/StyleCommon'
 import { css } from '@emotion/css'
 import ResizeTable from '@/components/ResizeTable'
 import NoData from '@/components/NoData'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { ColumnsType } from 'antd/lib/table'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import PaginationBox from '@/components/TablePagination'
@@ -31,7 +31,7 @@ const StyledWrap = styled.div`
 const Head = styled.div`
   width: calc(100% - 504px);
   box-sizing: border-box;
-  padding: 24px;
+  padding: 24px 24px 0 24px;
   background: rgba(255, 255, 255, 1);
   border-radius: 6px;
   display: flex;
@@ -169,7 +169,7 @@ const Statistics = () => {
       }
     })
     setFormWorkData(items)
-    setTabKey(list[0].id)
+    setTabKey(list[0]?.id)
   }
 
   const getUsageDataList = async () => {
@@ -208,15 +208,22 @@ const Statistics = () => {
     setQueryParams({ page: current, pageSize })
   }
 
-  const onChangeDate = (values: any) => {
-    const startTime = moment(values[0]).format('YYYY-MM-DD')
-    const endTime = moment(values[1]).format('YYYY-MM-DD')
-    // setQueryParams({ startTime, endTime, pageSize: queryParams.pageSize })
-  }
+  // const onChangeDate = (values: any) => {
+  //   const startTime = values ? moment(values[0]).format('YYYY-MM-DD') : null
+  //   const endTime = values ? moment(values[1]).format('YYYY-MM-DD') : null
+  //   setQueryParams({ startTime, endTime, pageSize: queryParams.pageSize })
+  // }
 
   const onTabChange = (value: string) => {
     setTabKey(value)
   }
+
+  // const submitDate = useMemo(() => {
+  //   if (queryParams.startTime && queryParams.endTime) {
+  //     return [moment(queryParams.startTime), moment(queryParams.endTime)]
+  //   }
+  //   return null
+  // }, [queryParams])
 
   return (
     <PermissionWrap
@@ -227,12 +234,16 @@ const Statistics = () => {
         <Head>
           <div className={cardTitle}>
             <SecondTitle>{t('report.statistics.title')}</SecondTitle>
-            <SelectWrapBedeck>
+            {/* <SelectWrapBedeck>
               <span style={{ margin: '0 16px', fontSize: '14px' }}>
                 {t('report.statistics.submitTime')}
               </span>
-              <RangePicker isShowQuick onChange={onChangeDate} />
-            </SelectWrapBedeck>
+              <RangePicker
+                isShowQuick
+                dateValue={submitDate}
+                onChange={onChangeDate}
+              />
+            </SelectWrapBedeck> */}
           </div>
           <SlideTabs
             activeKey={tabKey}

@@ -34,6 +34,7 @@ const DayItemBox = styled.div`
   min-height: 142px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   gap: 2px;
   .dayBox {
     display: flex;

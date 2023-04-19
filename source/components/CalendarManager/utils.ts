@@ -94,3 +94,7 @@ export const getYearMonthWeekDay = (time: string | number) => {
     day,
   }
 }
+
+export const isSameTime = (time1: number, time2: number | string) => {
+  return dayjs(time1).isSame(dayjs(time2), 'day')
+}

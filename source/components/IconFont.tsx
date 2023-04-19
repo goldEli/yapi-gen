@@ -8,4 +8,8 @@ const IconFont = createFromIconfontCN({
   ],
 })
 
+// const IconFont = createFromIconfontCN({
+//   scriptUrl: '/svg_24216_148.3952e58e61bcd01cde1bc5bcbd330e19.js',
+// })
+
 export default IconFont

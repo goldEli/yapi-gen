@@ -5,10 +5,9 @@ import {
   useMemo,
   useRef,
   useState,
-  useTransition,
 } from 'react'
 import { DoubleRightOutlined, DoubleLeftOutlined } from '@ant-design/icons'
-import { Divider, Space } from 'antd'
+import { Space } from 'antd'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 

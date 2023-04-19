@@ -215,17 +215,17 @@ const CalendarSet = () => {
   // 视图选项
   const options = [
     {
-      label: t('hide_rejected_schedules'),
+      label: t('calendarManager.hide_rejected_schedules'),
       value: 0,
       key: 'hide_reject_schedule',
     },
     {
-      label: t('reduce_the_brightness_of_completed_schedules'),
+      label: t('calendarManager.reduce_the_brightness_of_completed_schedules'),
       value: 1,
       key: 'reduce_finish_schedule_light',
     },
     {
-      label: t('display_lunar_calendar'),
+      label: t('calendarManager.display_lunar_calendar'),
       value: 2,
       key: 'show_lunar_calendar',
     },
@@ -233,21 +233,21 @@ const CalendarSet = () => {
 
   // 一周的第一天
   const timeOption = [
-    { label: t('sunday'), value: 0 },
-    { label: t('saturday'), value: 6 },
-    { label: t('monday'), value: 1 },
+    { label: t('calendarManager.sunday'), value: 0 },
+    { label: t('calendarManager.saturday'), value: 6 },
+    { label: t('calendarManager.monday'), value: 1 },
   ]
 
   // 日程颜色
   const colorList = [
     {
-      name: t('modern_Colored_Text'),
+      name: t('calendarManager.modern_Colored_Text'),
       value: 1,
       background: 'var(--function-tag5)',
       color: 'var(--neutral-n1-d1)',
     },
     {
-      name: t('classic_white_text'),
+      name: t('calendarManager.classic_white_text'),
       value: 2,
       background: 'var(--primary-d1)',
       color: 'var(--neutral-white-d7)',
@@ -271,7 +271,7 @@ const CalendarSet = () => {
     if (
       !(file.file.type?.includes('iCal') || file.file.type?.includes('VCS'))
     ) {
-      message.warning(t('import_calendar_text'))
+      message.warning(t('calendarManager.import_calendar_text'))
       return
     }
     const data = await uploadFileByTask(
@@ -319,7 +319,7 @@ const CalendarSet = () => {
   return (
     <CalendarSetWrap>
       <CrumbsWrap size={4}>
-        <div className="main">{t('programme')}</div>
+        <div className="main">{t('calendarManager.programme')}</div>
         <IconFont className="main" type="right" style={{ fontSize: 14 }} />
         <div className="sub">
           {t(
@@ -332,7 +332,7 @@ const CalendarSet = () => {
       <ContentWrap>
         <div id="calendar-view">
           <Title>
-            <div className="name">{t('view_options')}</div>
+            <div className="name">{t('calendarManager.view_options')}</div>
           </Title>
           <CheckBoxViewWrap>
             {options.map((i: any) => (
@@ -348,7 +348,7 @@ const CalendarSet = () => {
             ))}
           </CheckBoxViewWrap>
           <Label style={{ marginTop: 24 }}>
-            {t('the_first_day_of_the_week')}
+            {t('calendarManager.the_first_day_of_the_week')}
           </Label>
           <Select
             onChange={time =>
@@ -362,9 +362,11 @@ const CalendarSet = () => {
         </div>
         <div id="calendar-schedule">
           <Title>
-            <div className="name">{t('schedule_settings')}</div>
+            <div className="name">{t('calendarManager.schedule_settings')}</div>
           </Title>
-          <Label style={{ marginTop: 8 }}>{t('schedule_color')}</Label>
+          <Label style={{ marginTop: 8 }}>
+            {t('calendarManager.schedule_color')}
+          </Label>
           <ScheduleColorWrap size={56}>
             {colorList.map(
               (i: {
@@ -384,7 +386,7 @@ const CalendarSet = () => {
                     className="colorBox"
                     style={{ background: i.background, color: i.color }}
                   >
-                    <span>{t('meeting')}</span>
+                    <span>{t('calendarManager.meeting')}</span>
                     <span>10:00-12:00</span>
                   </div>
                   <div className="radio">
@@ -404,7 +406,7 @@ const CalendarSet = () => {
             )}
           </ScheduleColorWrap>
           <Label style={{ marginTop: 24 }}>
-            {t('default_duration_of_schedule')}
+            {t('calendarManager.default_duration_of_schedule')}
           </Label>
           <Select
             onChange={normalValue =>
@@ -422,12 +424,16 @@ const CalendarSet = () => {
         </div>
         <div id="calendar-notice">
           <Title>
-            <div className="name">{t('notification_settings')}</div>
+            <div className="name">
+              {t('calendarManager.notification_settings')}
+            </div>
           </Title>
           <LineForm size={56}>
             <NotificationWrap>
               <Label>
-                {t('default_reminder_time_for_non_full_day_schedule')}
+                {t(
+                  'calendarManager.default_reminder_time_for_non_full_day_schedule',
+                )}
               </Label>
               <Select
                 onChange={partialDayValue =>
@@ -444,7 +450,11 @@ const CalendarSet = () => {
               />
             </NotificationWrap>
             <NotificationWrap>
-              <Label>{t('default_reminder_time_for_all_day_schedule')}</Label>
+              <Label>
+                {t(
+                  'calendarManager.default_reminder_time_for_all_day_schedule',
+                )}
+              </Label>
               <Select
                 onChange={allDayValue =>
                   onChangeSet(
@@ -470,20 +480,24 @@ const CalendarSet = () => {
               )
             }
           >
-            {t('remind_me_only_of_accepted_schedules')}
+            {t('calendarManager.remind_me_only_of_accepted_schedules')}
           </Checkbox>
         </div>
         <div id="calendar-import">
           <Title>
-            <div className="name">{t('calendar_import')}</div>
-            <Tooltip title={t('can_import_text')}>
+            <div className="name">{t('calendarManager.calendar_import')}</div>
+            <Tooltip title={t('calendarManager.can_import_text')}>
               <TitleIcon className="icon" type="question" />
             </Tooltip>
             <Upload fileList={[]} customRequest={onCustomRequest}>
-              <CommonButton type="primaryText">{t('leading_in')}</CommonButton>
+              <CommonButton type="primaryText">
+                {t('calendarManager.leading_in')}
+              </CommonButton>
             </Upload>
           </Title>
-          <Label style={{ marginTop: 8 }}>{t('add_to_calendar')}</Label>
+          <Label style={{ marginTop: 8 }}>
+            {t('calendarManager.add_to_calendar')}
+          </Label>
           <Select
             getPopupContainer={n => n}
             onChange={setImportCalendar}
@@ -518,11 +532,15 @@ const CalendarSet = () => {
         <div id="calendar-export">
           <Title>
             <div className="name" style={{ marginRight: 16 }}>
-              {t('calendar_export')}
+              {t('calendarManager.calendar_export')}
             </div>
-            <CommonButton type="primaryText">{t('leading_out')}</CommonButton>
+            <CommonButton type="primaryText">
+              {t('calendarManager.leading_out')}
+            </CommonButton>
           </Title>
-          <Label style={{ marginTop: 8 }}>{t('Select_export_calendar')}</Label>
+          <Label style={{ marginTop: 8 }}>
+            {t('calendarManager.Select_export_calendar')}
+          </Label>
           <CheckBoxWrap
             style={{ margin: 0 }}
             value={exportIds}

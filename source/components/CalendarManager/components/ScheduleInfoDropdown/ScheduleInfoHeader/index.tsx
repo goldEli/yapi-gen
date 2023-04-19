@@ -78,7 +78,11 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
   }
   return (
     <ScheduleInfoHeader>
-      <ScheduleInfoHeaderBtn onClick={e => e.stopPropagation()}>
+      <ScheduleInfoHeaderBtn
+        onClick={e => {
+          e.stopPropagation()
+        }}
+      >
         <span className={statusClass}>
           {scheduleInfo?.is_busy === 1 ? '忙碌' : '空闲'}
         </span>

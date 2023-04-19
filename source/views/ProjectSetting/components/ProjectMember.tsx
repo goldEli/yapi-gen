@@ -686,7 +686,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
           <Tooltip
             placement="top"
             getPopupContainer={node => node}
-            title="权限组"
+            title={t('common.permissionGroup')}
           >
             <div className={boxItem} onClick={() => setBatchEditVisible(true)}>
               <IconFont type="lock" />
@@ -710,17 +710,16 @@ const ProjectMember = (props: { searchValue?: string }) => {
             </Space>
             <Space size={8}>
               <ScreenMinHover
+                label={t('common.refresh')}
+                icon="sync"
+                onClick={refresh}
+              />
+              <DividerWrap type="vertical" />
+              <ScreenMinHover
                 label={t('common.search')}
                 icon="filter"
                 onClick={onChangeFilter}
                 isActive={!isVisible}
-              />
-              <DividerWrap type="vertical" />
-
-              <ScreenMinHover
-                label={t('common.refresh')}
-                icon="sync"
-                onClick={refresh}
               />
             </Space>
           </HeaderTop>

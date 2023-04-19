@@ -14,6 +14,7 @@ import * as services from '@/services'
 import { companyTeamsList } from '@store/teams/thunk'
 import { addTeams, dismissTeams, editTeams } from '@/services/setting'
 import { setActiveTeam } from '@store/teams/index'
+import { CloseWrap } from '@/components/StyleCommon'
 
 const LeftSideContainer = styled.div`
   position: relative;
@@ -415,9 +416,15 @@ const LeftSide = (props: any) => {
       <div className="resizable" />
       <div className="resize_line" />
       <Content className="resize_save">
-        <TeamAdd onClick={() => createTeam()}>
+        <TeamAdd>
           <TiamTitleText>{t('team_management') as string}</TiamTitleText>
-          <IconFontStyle type="plus" />
+          <CloseWrap width={24} height={24}>
+            <IconFont
+              style={{ fontSize: 18 }}
+              type="plus"
+              onClick={() => createTeam()}
+            />
+          </CloseWrap>
         </TeamAdd>
         {/* 拖拽组件 */}
         <SideDragging

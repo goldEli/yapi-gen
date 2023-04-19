@@ -35,16 +35,21 @@ const RepeatModal = (props: RepeatModalProps) => {
   const [number, setNumber] = useState<number>(1)
   // 选择周期
   const [chooseRepeat, setChooseRepeat] = useState<CheckboxValueType[]>([])
-  const unit = [t('day'), t('week'), t('month'), t('year')]
+  const unit = [
+    t('calendarManager.day'),
+    t('calendarManager.week'),
+    t('calendarManager.month'),
+    t('calendarManager.year'),
+  ]
 
   const checkboxOptions = [
-    { label: t('monday1'), value: 1 },
-    { label: t('tuesday'), value: 2 },
-    { label: t('wednesday'), value: 3 },
-    { label: t('thursday'), value: 4 },
-    { label: t('friday'), value: 5 },
-    { label: t('saturday1'), value: 6 },
-    { label: t('weekday'), value: 0 },
+    { label: t('calendarManager.monday1'), value: 1 },
+    { label: t('calendarManager.tuesday'), value: 2 },
+    { label: t('calendarManager.wednesday'), value: 3 },
+    { label: t('calendarManager.thursday'), value: 4 },
+    { label: t('calendarManager.friday'), value: 5 },
+    { label: t('calendarManager.saturday1'), value: 6 },
+    { label: t('calendarManager.weekday'), value: 0 },
   ]
 
   const onClose = () => {
@@ -90,7 +95,7 @@ const RepeatModal = (props: RepeatModalProps) => {
         labelAlign="left"
       >
         <Form.Item
-          label={t('every')}
+          label={t('calendarManager.every')}
           style={{ margin: props.currentRepeat === 2 ? '0 0 8px 0' : '' }}
         >
           <InputNumber
@@ -100,7 +105,7 @@ const RepeatModal = (props: RepeatModalProps) => {
             onChange={value => setRepeat(value || 1)}
           />
           {unit[props.currentRepeat - 1]}
-          {t('repeat')}
+          {t('calendarManager.repeat')}
         </Form.Item>
         {props.currentRepeat === 2 && (
           <RepeatModalCheck>
@@ -110,7 +115,7 @@ const RepeatModal = (props: RepeatModalProps) => {
             />
           </RepeatModalCheck>
         )}
-        <Form.Item label={t('end_repetition')}>
+        <Form.Item label={t('calendarManager.end_repetition')}>
           <Select
             style={{ width: 140, marginRight: 16 }}
             options={relateConfig.schedule.repeat_end_types}
@@ -128,7 +133,7 @@ const RepeatModal = (props: RepeatModalProps) => {
                 min={1}
                 onChange={value => setNumber(value || 1)}
               />
-              {t('after')}
+              {t('calendarManager.after')}
             </>
           )}
         </Form.Item>
