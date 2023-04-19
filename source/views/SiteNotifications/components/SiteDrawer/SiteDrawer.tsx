@@ -46,6 +46,7 @@ const SiteDrawer = () => {
   const tabBox = useRef<HTMLDivElement>(null)
   const tabActive = useRef<HTMLDivElement>(null)
   const [hasMore, setHasMore] = useState(true)
+
   const [read, setRead] = useState<number | null>()
   const tabsValue = [
     {
@@ -65,6 +66,7 @@ const SiteDrawer = () => {
   const onChange = (e: CheckboxChangeEvent) => {
     lastId.current = 0
     setHasMore(true)
+    setList([])
     setRead(e.target.checked ? 0 : undefined)
     localStorage.setItem('read', e.target.checked ? '0' : '1')
   }
@@ -79,6 +81,7 @@ const SiteDrawer = () => {
       latTime: newName.current,
     })
     lastId.current = re4.lastId
+
     setTimeout(() => {
       if (type === 1 && re4.lastId === 0) {
         setList(re4.list)
@@ -94,6 +97,7 @@ const SiteDrawer = () => {
     }, 500)
   }
   const changeActive = (id: string) => {
+    setList([])
     setActive(id)
     setHasMore(true)
     if (id === '3') {
@@ -111,6 +115,7 @@ const SiteDrawer = () => {
   const setReads = async (values: any) => {
     await setReadApi(values)
     setHasMore(true)
+    setList([])
     lastId.current = 0
     fetchMoreData(1)
   }
@@ -205,7 +210,9 @@ const SiteDrawer = () => {
           }}
         >
           <GrepTitle>{t('today')}</GrepTitle>
-          <GrepTitle2 onClick={setAllRead}>{t('all_read')}</GrepTitle2>
+          <GrepTitle2 onClick={() => (list.length >= 1 ? setAllRead() : null)}>
+            {t('all_read')}
+          </GrepTitle2>
         </div>
 
         <InfiniteScroll

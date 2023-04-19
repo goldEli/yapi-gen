@@ -20,6 +20,7 @@ import {
 } from '@/services/formwork'
 import { getTemplateList, templateDetail } from '@store/formWork/thunk'
 import { useTranslation } from 'react-i18next'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
 const RightFormWorkStyle = styled.div`
   flex: 1;
   overflow: hidden;
@@ -301,7 +302,17 @@ const RightFormWork = () => {
     }
   }
   return (
-    <Spin spinning={isSpinning}>
+    <Spin
+      spinning={isSpinning}
+      indicator={<NewLoadingTransition />}
+      style={{
+        width: '100%',
+        position: 'absolute',
+        transform: 'translate(-50%, -50%)',
+        top: '50%',
+        left: '50%',
+      }}
+    >
       <RightFormWorkStyle>
         <Title>{t('formWork.t1')}</Title>
         <HeaderOperate>

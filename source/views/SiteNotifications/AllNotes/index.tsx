@@ -60,6 +60,7 @@ const Index = () => {
   }
   const setReads = async (values: any) => {
     await setReadApi(values)
+    setList([])
     setHasMore(true)
     lastId.current = 0
     fetchMoreData(1)
@@ -86,6 +87,7 @@ const Index = () => {
 
   useEffect(() => {
     lastId.current = 0
+    setList([])
     fetchMoreData(1)
   }, [id])
 
@@ -112,7 +114,10 @@ const Index = () => {
             {t('filtering_notifications') as string}
           </CommonButton>
           {id !== '3' && (
-            <CommonButton onClick={setAllRead} type="light">
+            <CommonButton
+              onClick={() => (list.length >= 1 ? setAllRead() : null)}
+              type="light"
+            >
               {t('all_read') as string}
             </CommonButton>
           )}
