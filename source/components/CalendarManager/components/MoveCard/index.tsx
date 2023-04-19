@@ -80,7 +80,7 @@ const MoveCard: React.FC<ScheduleCardProps> = props => {
       <>
         <TimeRange className={getColorClassName()}>
           {timeRange &&
-            `${timeRange?.start_timestamp} - ${timeRange?.start_timestamp}`}
+            `${timeRange?.start_timestamp} - ${timeRange?.end_timestamp}`}
         </TimeRange>
 
         <Title className={getColorClassName()}>{data?.subject}</Title>

@@ -1,6 +1,5 @@
 import { useDispatch } from '@store/index'
 import React, { useState } from 'react'
-import useColor from '../useColor'
 import usePosition from '../usePosition'
 import { DraggableEvent } from 'react-draggable'
 import { DraggableData, Position, ResizableDelta } from 'react-rnd'
