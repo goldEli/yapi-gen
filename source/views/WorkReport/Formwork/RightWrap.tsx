@@ -192,7 +192,7 @@ const RightFormWork = () => {
           parmas.requirement?.start_time?.time >
           parmas.requirement?.end_time?.time
         ) {
-          message.warning(t('formWork.message3'))
+          message.warning(t('formWork.msg10'))
           return false
         }
       }
