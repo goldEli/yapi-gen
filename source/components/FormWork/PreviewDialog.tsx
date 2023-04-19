@@ -13,7 +13,6 @@ import IconFont from '@/components/IconFont'
 import { AddWrap } from '@/components/StyleCommon'
 import { useEffect, useRef, useState } from 'react'
 import { t } from 'i18next'
-import UploadAttach from '@/components/FormWork/UploadAttach'
 import { Editor, EditorRef } from '@xyfe/uikit'
 import { uploadFile } from '@/components/CreateDemand/CreateDemandLeft'
 import styled from '@emotion/styled'
@@ -27,39 +26,11 @@ const HeaderWrap = styled.div`
   padding: 0 24px 24px 24px;
 `
 
-const LeftWrap = styled.div`
-  display: flex;
-  align-items: center;
-`
-const RightWrap = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 12px;
-  color: var(--neutral-n2);
-  &:hover {
-    cursor: pointer;
-  }
-`
-const Text = styled.span`
-  margin-left: 2px;
-`
 const ImgWrap = styled.img`
   width: 40px;
   height: 40px;
   border: 1px solid red;
   margin-right: 12px;
-`
-const TopWrap = styled.div`
-  font-size: 16px;
-  font-family: siyuanmedium;
-  color: var(--neutral-n1-d1);
-  span:nth-child(2) {
-    font-size: 12px;
-  }
-`
-const BottomWrap = styled.div`
-  font-size: 12px;
-  color: var(--neutral-n3);
 `
 export const LabelTitle = (props: any) => {
   return (
