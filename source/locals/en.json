@@ -1084,7 +1084,10 @@
       "of": "of",
       "okComment": "Add a comment successfully!",
       "noSubmitted": "Not submitted",
-      "success": "Successful operation"
+      "success": "Successful operation",
+      "fail": "Operation failure",
+      "modifyReport": "Revision report",
+      "haveComment": "Have commented"
     },
     "statistics": {
       "title": "Reporting Statistics",
