@@ -28,8 +28,8 @@ const SiteNotifications = () => {
   const sendMsg = () => {
     if (Notification.permission === 'granted') {
       Notification.requestPermission(() => {
-        const n = new Notification('来自张三的审批通知', {
-          body: 'DXKJ-001产品计划已规划，点击前往审批',
+        const n = new Notification(wsData.data.msgBody.title, {
+          body: wsData.data.msgBody.content,
         })
       })
     } else {

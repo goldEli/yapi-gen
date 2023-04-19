@@ -190,9 +190,8 @@ const ImportItem = styled.div`
 const CalendarSet = () => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
-  const { menuList, routerMenu, calendarConfig, relateConfig } = useSelector(
-    store => store.calendar,
-  )
+  const { menuList, routerMenu, calendarConfig, relateConfig, calendarData } =
+    useSelector(store => store.calendar)
   // 配置选项默认值
   const [formParams, setFormParams] = useState<any>({
     view_options: {
@@ -205,7 +204,7 @@ const CalendarSet = () => {
     isUpdate: false,
   })
   // 默认导入的日历
-  const [importCalendar, setImportCalendar] = useState(0)
+  const [importCalendar, setImportCalendar] = useState<number>()
   // 导出的日历
   const [exportIds, setExportIds] = useState<CheckboxValueType[]>([])
   // 导入的日历数组
@@ -255,15 +254,6 @@ const CalendarSet = () => {
     },
   ]
 
-  // 可导出的日历列表
-  const exportList = [
-    { label: '2222日历', value: 0 },
-    { label: '33333日历', value: 1 },
-    { label: '4444日历', value: 2 },
-    { label: '5555日历', value: 3 },
-    { label: '6666日历', value: 4 },
-  ]
-
   // 修改配置 key： 表单对应的key, value：修改的值 outKey: 最外层的key
   const onChangeSet = (value: number, key: string, outKey: string) => {
     const params = {
@@ -301,6 +291,12 @@ const CalendarSet = () => {
   }
 
   useEffect(() => {
+    if (calendarData.manager?.length > 0) {
+      setImportCalendar(calendarData.manager[0].calendar_id)
+    }
+  }, [calendarData])
+
+  useEffect(() => {
     setFormParams(calendarConfig)
   }, [calendarConfig])
 
@@ -329,7 +325,7 @@ const CalendarSet = () => {
           {t(
             menuList.filter(
               (i: Model.Calendar.RouterMenu) => i.key === routerMenu.key,
-            )[0].name,
+            )[0].name as any,
           )}
         </div>
       </CrumbsWrap>
@@ -492,7 +488,10 @@ const CalendarSet = () => {
             getPopupContainer={n => n}
             onChange={setImportCalendar}
             value={importCalendar}
-            options={exportList}
+            options={calendarData.manager?.map((i: Model.Calendar.Info) => ({
+              label: i.name,
+              value: i.calendar_id,
+            }))}
             style={{ width: 320 }}
           />
           {importList.length > 0 && (
@@ -527,7 +526,10 @@ const CalendarSet = () => {
           <CheckBoxWrap
             style={{ margin: 0 }}
             value={exportIds}
-            options={exportList}
+            options={calendarData.manager?.map((i: Model.Calendar.Info) => ({
+              label: i.name,
+              value: i.calendar_id,
+            }))}
             onChange={setExportIds}
           />
         </div>

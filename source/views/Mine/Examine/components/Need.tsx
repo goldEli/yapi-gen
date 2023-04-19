@@ -182,7 +182,7 @@ const Need = (props: any) => {
     if (activeTab === 1) {
       return columns.concat([
         {
-          title: '操作',
+          title: <>{t('newlyAdd.operation')}</>,
           dataIndex: 'action',
           key: 'action',
           render: (_: string, record: any) => {
@@ -197,7 +197,7 @@ const Need = (props: any) => {
                       setCurrentItem(record)
                     }}
                   >
-                    取消审核
+                    {t('newlyAdd.cancelExamine')}
                   </Button>
                 )}
               </>
@@ -327,7 +327,7 @@ const Need = (props: any) => {
       )}
 
       <DeleteConfirm
-        title="取消审核"
+        title={t('newlyAdd.cancelExamine')}
         text="确认取消当前需求审核，取消后提交需求将在我提交的列表中移除"
         isVisible={delIsVisible}
         onConfirm={handleCancel}

@@ -1,8 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import {
-  getColorWithOpacityPointOne,
-  getColor,
-} from '@/components/CalendarManager/utils'
+import { getColor } from '@/components/CalendarManager/utils'
 import { isSameTime } from '../../CalendarWeek/utils'
 import dayjs from 'dayjs'
 import { css } from '@emotion/css'
@@ -31,6 +28,7 @@ import {
   formatYYYYMMDD,
   formatYYYYMMDDhhmmss,
 } from '@/components/CalendarManager/config'
+import useColor from '@/components/CalendarManager/hooks/useColor'
 
 interface ScheduleListItemProps {
   data: Model.Schedule.Info
@@ -42,8 +40,8 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
   const { monthMoveScheduleActiveInfo } = useSelector(
     store => store.calendarPanel,
   )
-  // const monthMoveScheduleActiveInfoRef =
-  // useRef<typeof monthMoveScheduleActiveInfo>()
+  const { getBgColor, getColorClassName, getSecondaryColorClassName } =
+    useColor()
 
   const [visible, setVisible] = useState(true)
 
@@ -60,9 +58,12 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
   const isAllDay = data.is_all_day === 1 || data.is_span_day
   const isAllDayFirstDay =
     isAllDay && isSameTime(start_timestamp, schedule_start_datetime ?? 0)
-  const isAllDayButNotFirstDay =
-    data.is_span_day &&
-    !isSameTime(start_timestamp, schedule_start_datetime ?? 0)
+  const isAllDayButNotFirstDay = useMemo(() => {
+    return (
+      data.is_span_day &&
+      !isSameTime(start_timestamp, schedule_start_datetime ?? 0)
+    )
+  }, [props.data])
   // 如果是跨天或者全天任务显示全天
   const time = isAllDay ? '全天' : data.start_time
   const isDrag = React.useRef(false)
@@ -243,8 +244,8 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
         [marginLeft]: !isAllDayButNotFirstDay,
         [marginRight]: !(isAllDayButNotFirstDay || isAllDayFirstDay),
       })}
-      bg={isAllDay ? getColorWithOpacityPointOne(data.color) : void 0}
-      hoverBg={getColorWithOpacityPointOne(data.color)}
+      bg={isAllDay ? getBgColor(data.color) : void 0}
+      hoverBg={getBgColor(data.color)}
       color={getColor(data.color)}
     >
       {!isAllDayButNotFirstDay && (
@@ -270,8 +271,12 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
             }}
             bg={getColor(data.color)}
           />
-          <Time className="text">{time}</Time>
-          <Title className="text">{props.data.subject}</Title>
+          <Time className={classNames('text', getSecondaryColorClassName())}>
+            {time}
+          </Time>
+          <Title className={classNames('text', getSecondaryColorClassName())}>
+            {props.data.subject}
+          </Title>
         </>
       )}
     </ScheduleListItemBox>

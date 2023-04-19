@@ -211,47 +211,47 @@ const ProjectSet = () => {
     let name = ''
     switch (type) {
       case 'email':
-        name = '邮件'
+        name = t('mailbox')
 
         break
       case 'website':
-        name = '站内信'
+        name = t('station_premise')
 
         break
       case 'create':
-        name = '创建人'
+        name = t('common.createName')
 
         break
       case 'admin':
-        name = '管理员'
+        name = t('Administrator')
 
         break
       case 'leader':
-        name = '项目负责人'
+        name = t('project_leader')
 
         break
       case 'handle':
-        name = '处理人'
+        name = t('common.dealName')
 
         break
       case 'bcc':
-        name = '抄送人'
+        name = t('common.copySend')
 
         break
       case 'bAdd':
-        name = '被添加人'
+        name = t('person_to_be_added')
 
         break
       case 'bAt':
-        name = '被@的人'
+        name = t('the_person_being')
 
         break
       case 'bOpt':
-        name = '被操作的人'
+        name = t('the_person_being_manipulated')
 
         break
       case 'mber':
-        name = '项目成员'
+        name = t('project.projectMember')
 
         break
 
@@ -263,13 +263,14 @@ const ProjectSet = () => {
   }
 
   const init2 = async () => {
+    setIsSpinning(true)
     const res2 = await getSysConfig()
     const index = res2.findIndex((i: any) => {
       return i.type === activeDetail.types
     })
 
     const res1 = await getConfig(projectId)
-
+    setIsSpinning(false)
     const index2 = res1.findIndex((i: any) => {
       return i.type === activeDetail.types
     })
@@ -391,28 +392,28 @@ const ProjectSet = () => {
                       width: '168px',
                     }}
                   >
-                    事件
+                    {t('incident')}
                   </span>
                   <span
                     style={{
                       width: '120px',
                     }}
                   >
-                    邮箱通知
+                    {t('email_notification')}
                   </span>
                   <span
                     style={{
                       width: '120px',
                     }}
                   >
-                    站内通知
+                    {t('insite_notifications')}
                   </span>
                   <span
                     style={{
                       width: '504px',
                     }}
                   >
-                    通知对象
+                    {t('notify_object')}
                   </span>
                 </TitleGroup>
                 <MainWrap>

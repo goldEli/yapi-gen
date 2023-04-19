@@ -40,6 +40,11 @@ type SliceState = {
   leftViewScheduleList: {
     [key in string]: Model.Schedule.Info[]
   }
+  // 创建日程右侧可视化
+  visualizationTime?: {
+    startTime: string
+    endTime: string
+  }
 }
 
 const initialState: SliceState = {
@@ -83,6 +88,12 @@ const slice = createSlice({
     },
     setScheduleDate(state, action: PayloadAction<number>) {
       state.scheduleDate = action.payload
+    },
+    setVisualizationTime(
+      state,
+      action: PayloadAction<SliceState['visualizationTime']>,
+    ) {
+      state.visualizationTime = action.payload
     },
   },
   extraReducers(builder) {
@@ -142,6 +153,7 @@ const slice = createSlice({
 
 const schedule = slice.reducer
 
-export const { setScheduleListModal, setScheduleDate } = slice.actions
+export const { setScheduleListModal, setScheduleDate, setVisualizationTime } =
+  slice.actions
 
 export default schedule

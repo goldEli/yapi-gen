@@ -23,7 +23,7 @@ import CreateIteration from '@/components/CreateIteration'
 import CreateDemand from '@/components/CreateDemand'
 import DemandDetailDrawer from '@/components/DemandDetailDrawer'
 import SiteDrawer from '../SiteNotifications/components/SiteDrawer/SiteDrawer'
-import SlideTabs from '@/components/SlideTabs/SlideTabs'
+import ReportDetailDrawer from '../WorkReport/Review/components/ReportDetailDrawer'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -64,7 +64,7 @@ const Main = styled.div<{ left: number }>`
     height: 100%;
   }
 `
-const NONE_SIDE_PATH = ['/Situation', '/Report/Statistics']
+const NONE_SIDE_PATH = ['/Situation', '/Report/Statistics', '/CalendarManager']
 
 export const Container = () => {
   const location = useLocation()
@@ -233,6 +233,7 @@ export const Container = () => {
         <CreateIteration />
         <CreateDemand />
         <DemandDetailDrawer />
+        <ReportDetailDrawer />
         <SiteDrawer />
       </ConfigProvider>
     </KitConfigProvider>

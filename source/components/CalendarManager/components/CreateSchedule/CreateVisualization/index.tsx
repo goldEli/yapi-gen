@@ -2,7 +2,14 @@ import React from 'react'
 import styled from '@emotion/styled'
 import Header from './Header'
 import Content from './Content'
+import { useDispatch, useSelector } from '@store/index'
+import { getScheduleListDaysOfDate } from '@store/schedule/schedule.thunk'
 import dayjs from 'dayjs'
+import {
+  formatYYYYMMDD,
+  formatYYYYMMDDhhmmss,
+} from '@/components/CalendarManager/config'
+import { getScheduleListForCurrentDay } from '@store/createScheduleVisualization/createScheduleVisualization.thunk'
 
 interface CreateVisualizationProps {}
 
@@ -20,6 +27,24 @@ const CreateVisualizationBox = styled.div`
 `
 
 const CreateVisualization: React.FC<CreateVisualizationProps> = props => {
+  const { currentDate } = useSelector(
+    store => store.createScheduleVisualization,
+  )
+  const { checkedCalendarList } = useSelector(store => store.calendar)
+  const dispatch = useDispatch()
+
+  React.useEffect(() => {
+    // dispatch(getScheduleList({ id: 1 }))
+    if (!currentDate) {
+      return
+    }
+    dispatch(
+      getScheduleListForCurrentDay({
+        date: dayjs(currentDate).format(formatYYYYMMDD),
+        calendar_ids: checkedCalendarList.map(item => item.calendar_id),
+      }),
+    )
+  }, [currentDate, checkedCalendarList])
   return (
     <CreateVisualizationBox>
       <Header />

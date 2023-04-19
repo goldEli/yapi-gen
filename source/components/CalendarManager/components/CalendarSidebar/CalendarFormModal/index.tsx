@@ -486,12 +486,13 @@ const CalendarFormModal = () => {
             />
           </Form.Item>
           <Form.Item label={t('calendar_description')} name="describe">
-            <Input
+            <Input.TextArea
               autoComplete="off"
               placeholder={t('please_enter_a_calendar_description')}
               allowClear
               maxLength={200}
               autoFocus
+              autoSize
             />
           </Form.Item>
           <Form.Item label={<FormTitleSmall text={t('Permission')} />}>
@@ -549,83 +550,79 @@ const CalendarFormModal = () => {
               </Popover>
             </PermissionBox>
           </Form.Item>
+          <Form.Item label={t('shared_calendar_members')}>
+            <CommonButton
+              icon="plus"
+              type="primaryText"
+              iconPlacement="left"
+              onClick={() => onAddMember('share')}
+            >
+              {t('add_a_member')}
+            </CommonButton>
+            {shareList.map((i: Model.Calendar.MemberItem) => (
+              <ShareMemberItem key={i.id}>
+                <CommonUserAvatar avatar={i.avatar} name={i.name} />
+                {i.is_owner === 1 && (
+                  <div className="notCanOperation">{t('administrators')}</div>
+                )}
+                {i.is_owner !== 1 && (
+                  <PermissionDrop
+                    onUpdateShare={onUpdateShare}
+                    onTransfer={onTransferCalendar}
+                    item={i}
+                    calendarInfo={calendarInfo}
+                  />
+                )}
+              </ShareMemberItem>
+            ))}
+          </Form.Item>
           {currentPermission !== 1 && (
-            <>
-              <Form.Item label={t('shared_calendar_members')}>
-                <CommonButton
-                  icon="plus"
-                  type="primaryText"
-                  iconPlacement="left"
-                  onClick={() => onAddMember('share')}
-                >
-                  {t('add_a_member')}
-                </CommonButton>
-                {shareList.map((i: Model.Calendar.MemberItem) => (
-                  <ShareMemberItem key={i.id}>
-                    <CommonUserAvatar avatar={i.avatar} name={i.name} />
-                    {i.is_owner === 1 && (
-                      <div className="notCanOperation">
-                        {t('administrators')}
-                      </div>
+            <Form.Item label={t('subscribeable_audience')}>
+              <Popover
+                trigger={['hover']}
+                content={chooseMemberType}
+                placement="bottomLeft"
+                getPopupContainer={node => node}
+                visible={isAddVisible}
+                onVisibleChange={visible => setIsAddVisible(visible)}
+              >
+                <div style={{ width: 'max-content' }}>
+                  <CommonButton
+                    icon="plus"
+                    type="primaryText"
+                    iconPlacement="left"
+                  >
+                    {t('add_a_member')}
+                  </CommonButton>
+                </div>
+              </Popover>
+              <SubscribedItems size={16}>
+                {subscribedList.map((i: Model.Calendar.MemberItem) => (
+                  <SubscribedItem key={i.id} size={8}>
+                    {i.type === 2 && (
+                      <CommonUserAvatar size="small" avatar={i.avatar} />
                     )}
-                    {i.is_owner !== 1 && (
-                      <PermissionDrop
-                        onUpdateShare={onUpdateShare}
-                        onTransfer={onTransferCalendar}
-                        item={i}
-                        calendarInfo={calendarInfo}
-                      />
+                    {i.type === 4 && (
+                      <DepartmentIcon>
+                        <IconFont type="branch" />
+                      </DepartmentIcon>
                     )}
-                  </ShareMemberItem>
+                    {i.type === 3 && (
+                      <TeamIcon>
+                        <IconFont type="team-2" />
+                      </TeamIcon>
+                    )}
+                    {i.type === 1 && (
+                      <TeamIcon>
+                        <IconFont type="userAll" />
+                      </TeamIcon>
+                    )}
+                    <span>{i.name}</span>
+                    <IconFont type="close" onClick={() => onDeleteItem(i)} />
+                  </SubscribedItem>
                 ))}
-              </Form.Item>
-              <Form.Item label={t('subscribeable_audience')}>
-                <Popover
-                  trigger={['hover']}
-                  content={chooseMemberType}
-                  placement="bottomLeft"
-                  getPopupContainer={node => node}
-                  visible={isAddVisible}
-                  onVisibleChange={visible => setIsAddVisible(visible)}
-                >
-                  <div style={{ width: 'max-content' }}>
-                    <CommonButton
-                      icon="plus"
-                      type="primaryText"
-                      iconPlacement="left"
-                    >
-                      {t('add_a_member')}
-                    </CommonButton>
-                  </div>
-                </Popover>
-                <SubscribedItems size={16}>
-                  {subscribedList.map((i: Model.Calendar.MemberItem) => (
-                    <SubscribedItem key={i.id} size={8}>
-                      {i.type === 2 && (
-                        <CommonUserAvatar size="small" avatar={i.avatar} />
-                      )}
-                      {i.type === 4 && (
-                        <DepartmentIcon>
-                          <IconFont type="branch" />
-                        </DepartmentIcon>
-                      )}
-                      {i.type === 3 && (
-                        <TeamIcon>
-                          <IconFont type="team-2" />
-                        </TeamIcon>
-                      )}
-                      {i.type === 1 && (
-                        <TeamIcon>
-                          <IconFont type="userAll" />
-                        </TeamIcon>
-                      )}
-                      <span>{i.name}</span>
-                      <IconFont type="close" onClick={() => onDeleteItem(i)} />
-                    </SubscribedItem>
-                  ))}
-                </SubscribedItems>
-              </Form.Item>
-            </>
+              </SubscribedItems>
+            </Form.Item>
           )}
 
           <Form.Item label={t('newlyAdd.chooseIcon')}>

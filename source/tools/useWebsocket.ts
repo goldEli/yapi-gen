@@ -53,6 +53,7 @@ const useWebsocket = () => {
     ws.current = new WebSocket(
       `${import.meta.env.__WEB_SOCKET_URL__}?token=${token}
         `,
+      // 'ws://192.168.2.64:5008'
     )
     ws.current.onopen = () => {
       setReadyState(stateArr[ws.current?.readyState ?? 0])
@@ -67,7 +68,7 @@ const useWebsocket = () => {
     ws.current.onmessage = (e: any) => {
       setWsData({
         key: Math.random(),
-        data: e.data,
+        data: JSON.parse(e.data),
       })
 
       //  const { data, type } = (...JSON.parse(e.data)) || {};

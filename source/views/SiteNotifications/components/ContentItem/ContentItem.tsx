@@ -1,3 +1,4 @@
+/* eslint-disable react/no-danger */
 /* eslint-disable react/jsx-handler-names */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -20,7 +21,8 @@ import {
 import dayjs from 'dayjs'
 
 const ContentItem = (props: any) => {
-  const { send_user, msg_body, to_user, create_time, read, id } = props.item
+  const { send_user, msg_body, to_user, create_time, read, id, custom_data } =
+    props.item
   const [choose, setChoose] = useState(false)
 
   function formatTime(params: number) {
@@ -40,6 +42,17 @@ const ContentItem = (props: any) => {
     props.setReads([id])
   }
 
+  function formateBlue(str: string, url?: string) {
+    if (str.includes('请前往查看')) {
+      return str.replace(
+        '请前往查看',
+        `<a href="${url}" target="_blank">请前往查看</a>`,
+      )
+    }
+
+    return str
+  }
+
   return (
     <Wrap greps={choose} onClick={change}>
       <div
@@ -53,9 +66,9 @@ const ContentItem = (props: any) => {
       </div>
       <HoverWrap style={{ flex: '1' }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          {/* <Name>{send_user}</Name> */}
-          <Name>问题字段</Name>
-          <Tip>在评论中@了您</Tip>
+          <Name>{send_user.username}</Name>
+          {/* <Name>问题字段</Name> */}
+          {/* <Tip>在评论中@了您</Tip> */}
           <Time>{formatTime(create_time)}</Time>
           {read === 0 && (
             <Time2>
@@ -67,18 +80,22 @@ const ContentItem = (props: any) => {
           style={{ display: 'flex', alignItems: 'center', margin: '5px 0px' }}
         >
           <CommonIconFont color="var(--neutral-n3)" type="folder-open-nor" />
-          <About>关于XXXX产品V3.0.0的开发计划</About>
+          <About>{msg_body.title}</About>
         </div>
 
         <GrepContent>
-          <span>{msg_body.content}</span>
           <span
+            dangerouslySetInnerHTML={{
+              __html: formateBlue(msg_body.content, custom_data.linkWebUrl),
+            }}
+          />
+          {/* <span
             style={{
               color: 'var(--auxiliary-text-t1-d2)',
             }}
           >
             前往查看
-          </span>
+          </span> */}
         </GrepContent>
       </HoverWrap>
     </Wrap>

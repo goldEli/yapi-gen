@@ -98,6 +98,33 @@
   "after": "After",
   "more_options": "More Options",
 
+  "incident": "incident",
+  "insite_notifications": " insite_notifications",
+
+  "notify_object": " Notification object",
+
+  "station_premise": " station_premise",
+
+  "Administrator": " administrator ",
+
+  "person_to_be_added": " The person added",
+
+  "the_person_being": " the person being @ ",
+
+  "The_person_being_manager ": " The person being manipulated",
+
+  "all_notices": " all_notices",
+
+  "unread_notifications": " No notifications",
+
+  "read_notifications": " read notifications",
+
+  "referring_to_my": " Refer to my",
+  "all": " All ",
+
+  "new1": " latest ",
+
+  "atmy": " @my ",
   "notification": "notification",
 
   "notification_settings": "notification Settings ",
@@ -1145,7 +1172,8 @@
       "searchReport": "Search for report title or content",
       "confirm": "Confirm to import the previous content, which will overwrite the current editing content",
       "ok": "Ok",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "writeReport": "Write a report"
     },
     "statistics": {
       "title": "Reporting Statistics",

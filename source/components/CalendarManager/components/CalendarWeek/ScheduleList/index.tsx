@@ -34,6 +34,7 @@ const ScheduleList: React.FC<ScheduleListProps> = props => {
     const len = list?.length
     return len > 3 ? len - 3 : 0
   }, [key, scheduleList])
+
   const showList = useMemo(() => {
     const newList = list?.slice(0, 3)
     return newList
@@ -41,24 +42,30 @@ const ScheduleList: React.FC<ScheduleListProps> = props => {
 
   const dispatch = useDispatch()
 
+  const scheduleListItemElements = useMemo(() => {
+    if (showList?.[0]?.start_datetime === '2023-04-18 00:00:00') {
+      console.log({ showList }, showList?.length)
+    }
+    return showList?.map((item, idx) => {
+      if (!item) {
+        return <div key={idx} style={{ height: '22px' }}></div>
+      }
+      return <ScheduleListItem idx={props.idx} data={item} key={item?.id} />
+    })
+  }, [showList, props.idx])
+
   return (
     <ScheduleListBox>
-      {showList?.map((item, idx) => {
-        if (!item) {
-          return <div key={idx} style={{ height: '22px' }}></div>
-        }
-        return <ScheduleListItem idx={props.idx} data={item} key={item?.id} />
-      })}
+      {scheduleListItemElements}
       <div
         onClick={e => {
           e.stopPropagation()
           const target = e.target as HTMLDivElement
           const { left, top } = target.getBoundingClientRect()
           const box = document.querySelector(
-            '.calendar-month-content-box',
+            '.calendar-week-all-day-box',
           ) as HTMLDivElement
           const { left: boxLeft, top: boxTop } = box?.getBoundingClientRect()
-          console.log('x y', { left, top }, { boxLeft, boxTop })
           dispatch(
             setScheduleListModal({
               visible: true,

@@ -83,7 +83,7 @@ export const StyledCalendar = styled(Calendar)`
   }
 `
 
-export const CalendarSidebarBox = styled.div<{ collapse: boolean }>`
+export const CalendarSidebarBox = styled.div<{ collapse?: boolean }>`
   width: ${props => (props.collapse ? 0 : 200)}px;
   height: 100%;
   align-items: center;
@@ -288,7 +288,7 @@ export const AllDayScheduleItem = styled.div`
   background-color: ${(props: { bg: string }) => props.bg};
   font-size: 12px;
   font-weight: 400;
-  color: var(--neutral-n1-d1);
+  /* color: var(--neutral-n1-d1); */
   display: flex;
   align-items: center;
   height: 20px;

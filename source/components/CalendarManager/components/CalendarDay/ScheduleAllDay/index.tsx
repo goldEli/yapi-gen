@@ -5,11 +5,11 @@ import {
 } from '@store/calendarPanle'
 import { useDispatch, useSelector } from '@store/index'
 import React, { useEffect, useMemo, useState } from 'react'
-import { getColorWithOpacityPointOne } from '@/components/CalendarManager/utils'
 import useScheduleAllDayList from '../hooks/useScheduleAllDayList'
 import { AllDayScheduleItem } from '@/components/CalendarManager/styles'
 import dayjs from 'dayjs'
 import { getDaysOfWeekList } from '@/services/calendar'
+import useColor from '@/components/CalendarManager/hooks/useColor'
 
 interface ScheduleAllDayProps {}
 const ScheduleAllDayBox = styled.div`
@@ -79,6 +79,7 @@ const ScheduleAllDay: React.FC<ScheduleAllDayProps> = props => {
   const dispatch = useDispatch()
   const { calenderDayValue } = useSelector(store => store.calendarPanel)
   const [weekDay, setWeekDay] = useState<Model.Calendar.DaysOfWeek>()
+  const { getBgColor, getColorClassName } = useColor()
 
   const time = useMemo(() => {
     return dayjs(calenderDayValue)
@@ -140,7 +141,8 @@ const ScheduleAllDay: React.FC<ScheduleAllDayProps> = props => {
                   )
                 }}
                 key={item.schedule_id}
-                bg={getColorWithOpacityPointOne(item.color)}
+                bg={getBgColor(item.color)}
+                className={getColorClassName()}
               >
                 {item.subject}
               </AllDayScheduleItem>

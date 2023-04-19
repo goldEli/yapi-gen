@@ -15,14 +15,8 @@ import { getLeftCalendarDaysOfMonthList } from '@store/schedule/schedule.thunk'
 type CalendarManagerLayoutProps = {
   // num: string
 }
-type CalendarManagerLayoutHandle = {
-  open(): void
-}
 
-const CalendarManager: React.ForwardRefRenderFunction<
-  CalendarManagerLayoutHandle,
-  CalendarManagerLayoutProps
-> = (props, forwardedRef) => {
+const CalendarManager: React.FC<CalendarManagerLayoutProps> = props => {
   const { routerMenu } = useSelector(store => store.calendar)
   const { checkedTime } = useSelector(store => store.calendar)
   const dispatch = useDispatch()
@@ -44,11 +38,6 @@ const CalendarManager: React.ForwardRefRenderFunction<
     }
     dispatch(getLeftCalendarDaysOfMonthList(params))
   }, [checkedTime, checkedCalendarList])
-  React.useImperativeHandle(forwardedRef, () => ({
-    open() {
-      alert('open')
-    },
-  }))
   return (
     <CalenderBox>
       <CreateSchedule />
@@ -61,4 +50,4 @@ const CalendarManager: React.ForwardRefRenderFunction<
   )
 }
 
-export default React.forwardRef(CalendarManager)
+export default CalendarManager

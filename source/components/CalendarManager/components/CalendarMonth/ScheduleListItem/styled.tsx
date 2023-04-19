@@ -41,11 +41,11 @@ export const Dot = styled.div<{ bg: string }>`
   }
 `
 export const Time = styled.div`
-  color: var(--neutral-n4);
+  /* color: var(--neutral-n4); */
 `
 export const Title = styled.div`
   flex: 1;
-  color: var(--neutral-n2);
+  /* color: var(--neutral-n2); */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

@@ -1,11 +1,10 @@
 import React from 'react'
 import styled from '@emotion/styled'
-import {
-  getColor,
-  getColorWithOpacityPointOne,
-} from '@/components/CalendarManager/utils'
+import { getColor } from '@/components/CalendarManager/utils'
 import { useSelector } from '@store/index'
 import { Dot, Time, Title } from '../ScheduleListItem/styled'
+import useColor from '@/components/CalendarManager/hooks/useColor'
+import classNames from 'classnames'
 
 interface MoveActiveItemProps {
   idx: number
@@ -35,6 +34,8 @@ const Container = styled.div<{
 `
 
 const MoveActiveItem: React.FC<MoveActiveItemProps> = props => {
+  const { getBgColor, getColorClassName, getSecondaryColorClassName } =
+    useColor()
   const { monthMoveScheduleActiveInfo } = useSelector(
     store => store.calendarPanel,
   )
@@ -53,9 +54,7 @@ const MoveActiveItem: React.FC<MoveActiveItemProps> = props => {
     : monthMoveScheduleActiveInfo.startSchedule?.start_time
   return (
     <MoveActiveItemBox
-      bg={getColorWithOpacityPointOne(
-        monthMoveScheduleActiveInfo.startSchedule?.color ?? 0,
-      )}
+      bg={getBgColor(monthMoveScheduleActiveInfo.startSchedule?.color ?? 0)}
       visible={visible}
     >
       <Container
@@ -67,8 +66,10 @@ const MoveActiveItem: React.FC<MoveActiveItemProps> = props => {
         <Dot
           bg={getColor(monthMoveScheduleActiveInfo.startSchedule?.color ?? 0)}
         />
-        <Time className="text">{time}</Time>
-        <Title className="text">
+        <Time className={classNames('text', getSecondaryColorClassName())}>
+          {time}
+        </Time>
+        <Title className={classNames('text', getColorClassName())}>
           {monthMoveScheduleActiveInfo.startSchedule?.subject}
         </Title>
       </Container>

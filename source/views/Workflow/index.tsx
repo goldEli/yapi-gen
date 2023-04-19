@@ -196,7 +196,7 @@ const Workflow = () => {
               <StyleRight bgc={step === 1} />
             </Col>
             <Col
-              style={{ transform: 'translate(-10px, 10px)' }}
+              style={{ transform: 'translate(-20px, 0px)' }}
               onClick={() => onChangeStep(2)}
             >
               <StyleLeft bgc={step === 2} />

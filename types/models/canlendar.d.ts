@@ -72,7 +72,8 @@ declare namespace Model.Calendar {
   }
   // 日历设置-日程设置
   interface ScheduleConfigsInfo {
-    schedule_color: number
+    // 主题  1 现代 2 经典
+    schedule_color: 1 | 2
     schedule_default_duration: number
   }
 
@@ -84,9 +85,9 @@ declare namespace Model.Calendar {
   }
 
   interface UpdateCalendarConfigParams {
-    view_options: ViewOptionsInfo | undefined
-    schedule_configs: ScheduleConfigsInfo | undefined
-    notification_configs: NotificationConfigsInfo | undefined
+    view_options?: ViewOptionsInfo
+    schedule_configs?: ScheduleConfigsInfo
+    notification_configs?: NotificationConfigsInfo
   }
 
   // 创建日历弹窗传入参数

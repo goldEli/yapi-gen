@@ -498,7 +498,7 @@ export const weekData: any = [
   },
   {
     label: '前三周',
-    key: 4,
+    key: 3,
   },
   {
     label: '无限止',

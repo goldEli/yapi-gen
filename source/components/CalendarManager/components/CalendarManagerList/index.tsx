@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Collapse } from 'antd'
+import { Collapse, Tooltip } from 'antd'
 import styled from '@emotion/styled'
 import { CloseWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
@@ -58,7 +58,7 @@ const CalendarManagerListItem = styled.div`
     font-size: 14px;
     color: var(--neutral-n2);
     margin-left: 8px;
-    max-width: 86%;
+    max-width: 90%;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -76,20 +76,26 @@ const CalendarManagerListItem = styled.div`
 const ItemBox = styled.div`
   display: flex;
   align-items: center;
-  width: 96%;
+  width: 90%;
 `
 
 interface CalendarManagerListProps {
   title: string
   type: 'manager' | 'subscribe'
   searchValue: string
+  path: string
 }
 
 const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
   const dispatch = useDispatch()
   const [isMoreVisible, setIsMoreVisible] = useState(false)
   const { calendarData } = useSelector(store => store.calendar)
+  const { userInfo } = useSelector(store => store.user)
   const calendarList = calendarData[props.type as keyof typeof calendarData]
+  const allPermission = userInfo.company_permissions?.map(
+    (i: any) => i.identity,
+  )
+
   // 改变日历的选中状态
   const onChangeCheck = async (item: Model.Calendar.Info) => {
     await dispatch(
@@ -127,9 +133,11 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
           header={
             <Title>
               <span className="name">{props.title}</span>
-              <CloseWrap width={24} height={24} onClick={e => onOpenSub(e)}>
-                <IconFont className="icon" type="plus" />
-              </CloseWrap>
+              {allPermission.includes(props.path) && (
+                <CloseWrap width={24} height={24} onClick={e => onOpenSub(e)}>
+                  <IconFont className="icon" type="plus" />
+                </CloseWrap>
+              )}
             </Title>
           }
           key="1"
@@ -145,9 +153,14 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
                     type={i.is_check === 1 ? 'pput-sel' : 'put'}
                     style={{ fontSize: 16, color: colorMap[i.color] }}
                   />
-                  <span className="name">
-                    {i.is_default === 1 ? i.user.name : i.name}
-                  </span>
+                  <Tooltip
+                    title={i.is_default === 1 ? i.user.name : i.name}
+                    getPopupContainer={n => n}
+                  >
+                    <span className="name">
+                      {i.is_default === 1 ? i.user.name : i.name}
+                    </span>
+                  </Tooltip>
                 </ItemBox>
                 <MoreDropdown
                   isMoreVisible={isMoreVisible}

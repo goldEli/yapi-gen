@@ -4,33 +4,33 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 
-const items = [
-  {
-    id: '1',
-    title: '全部通知',
-    icon: 'bell',
-  },
-  {
-    id: '2',
-    title: '未读通知',
-    icon: 'bell-notification',
-  },
-  {
-    id: '3',
-    title: '已读通知',
-    icon: 'bell-off',
-  },
-  {
-    id: '4',
-    title: '提及我的',
-    icon: 'mention',
-  },
-]
-
 const AllSide = () => {
   const [t] = useTranslation()
   const navigate = useNavigate()
   const { id } = useParams<any>()
+
+  const items = [
+    {
+      id: '1',
+      title: t('all_notices'),
+      icon: 'bell',
+    },
+    {
+      id: '2',
+      title: t('unread_notifications'),
+      icon: 'bell-notification',
+    },
+    {
+      id: '3',
+      title: t('read_notifications'),
+      icon: 'bell-off',
+    },
+    {
+      id: '4',
+      title: t('referring_to_my'),
+      icon: 'mention',
+    },
+  ]
 
   return (
     <div

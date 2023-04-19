@@ -120,6 +120,7 @@ const EditFormWorkStyle = styled(Input)({
   },
 })
 const BtnRow = styled.div`
+  align-items: center;
   width: 100%;
   height: 80px;
   display: flex;
@@ -153,10 +154,16 @@ const RightFormWork = () => {
   // 删除模板
   const deleteActiveItem = async () => {
     setDelIsVisible(false)
-    await deleteTemplate({ id: activeItem.id })
-    await dispatch(getTemplateList())
-    dataList.length >= 1 &&
-      dispatch(setActiveItem({ id: dataList[0].id, name: dataList[0].name }))
+    if (!activeItem?.id) {
+      const res = await dispatch(getTemplateList())
+      return
+    }
+    await deleteTemplate({ id: activeItem?.id })
+    const res = await dispatch(getTemplateList())
+    res.payload?.length >= 1 &&
+      dispatch(
+        setActiveItem({ id: res.payload[0].id, name: res.payload[0].name }),
+      )
     message.success('删除成功')
   }
   const getVerifyParams = (parmas: any) => {
@@ -165,8 +172,10 @@ const RightFormWork = () => {
       const list = parmas.template_configs.filter(
         (el: any) => el.user_type === 1,
       )
-      list.length < 1 && message.warning('谁可以写必选')
-      return false
+      if (list?.length < 1) {
+        message.warning('谁可以写必选')
+        return false
+      }
     } else if (
       parmas.submit_cycle === 1 ||
       parmas.submit_cycle === 2 ||
@@ -194,6 +203,9 @@ const RightFormWork = () => {
     return true
   }
   const saveApi = async () => {
+    const config =
+      reportContent?.template_configs?.filter((el: any) => el.target_value) ||
+      []
     let parmas: any = {}
     parmas = {
       submit_cycle: fillingRequirements?.submit_cycle,
@@ -207,10 +219,8 @@ const RightFormWork = () => {
       is_all_view: reportContent?.is_all_view,
       is_all_write: reportContent?.is_all_write,
       template_content_configs: templateContentConfigs,
-      template_configs: reportContent?.template_configs?.filter(
-        (el: any) => el.target_value.key !== 'all',
-      ),
-      id: activeItem.id || 0,
+      template_configs: config,
+      id: activeItem?.id || 0,
     }
     parmas.name = templateName || activeItem.name
     parmas.requirement = {
@@ -219,7 +229,6 @@ const RightFormWork = () => {
       start_time: fillingRequirements?.start_time,
       is_holiday: fillingRequirements?.is_holiday ? 1 : 2,
     }
-    console.log(parmas, 'parmas')
     if (!getVerifyParams(parmas)) {
       return
     }
@@ -235,7 +244,7 @@ const RightFormWork = () => {
     } else {
       const res = await createTemplate(parmas)
       await dispatch(getTemplateList())
-      dispatch(setActiveItem({ id: res.data.id, name: res.data }))
+      dispatch(setActiveItem({ id: res.data.id, name: res.data.name }))
       message.success('新增成功')
     }
     dispatch(setEditSave(true))
@@ -293,33 +302,35 @@ const RightFormWork = () => {
       {/* 底部保存 */}
       <BtnRow>
         {isActive === 0 ? (
-          <CommonButton type="light" onClick={() => setIsActive(1)}>
+          <CommonButton
+            type="light"
+            onClick={() => setIsActive(1)}
+            style={{ marginRight: '16px' }}
+          >
             下一步
           </CommonButton>
         ) : (
-          <CommonButton type="light" onClick={() => setIsActive(0)}>
+          <CommonButton
+            type="light"
+            onClick={() => setIsActive(0)}
+            style={{ marginRight: '16px' }}
+          >
             上一步
           </CommonButton>
         )}
-        {editSave ? (
-          <CommonButton type="primary" style={{ margin: '0 0px 0 16px' }}>
-            已保存
-          </CommonButton>
-        ) : (
-          <CommonButton
-            type="primary"
-            onClick={() => saveApi()}
-            style={{ margin: '0 0px 0 16px' }}
-          >
+        {editSave && isActive === 1 ? (
+          <CommonButton type="primary">已保存</CommonButton>
+        ) : isActive === 1 ? (
+          <CommonButton type="primary" onClick={() => saveApi()}>
             保存
           </CommonButton>
-        )}
+        ) : null}
       </BtnRow>
       {/* 预览 */}
       <PreviewDialog
         dataList={[]}
         type={'formWork'}
-        title="工作周报预览"
+        title={activeItem?.name}
         onClose={() => setIsVisible(false)}
         onConfirm={() => setIsVisible(false)}
         isVisible={isVisible}
@@ -330,7 +341,7 @@ const RightFormWork = () => {
         text="确认删除模版，删除后将无法汇报"
         isVisible={delIsVisible}
         onConfirm={deleteActiveItem}
-        notCancel
+        onChangeVisible={() => setDelIsVisible(false)}
       />
     </RightFormWorkStyle>
   )

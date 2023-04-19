@@ -42,14 +42,8 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
   const { monthMoveScheduleActiveInfo } = useSelector(
     store => store.calendarPanel,
   )
-  // const monthMoveScheduleActiveInfoRef =
-  // useRef<typeof monthMoveScheduleActiveInfo>()
 
   const [visible, setVisible] = useState(true)
-
-  // useEffect(() => {
-  //   monthMoveScheduleActiveInfoRef.current = monthMoveScheduleActiveInfo
-  // }, [monthMoveScheduleActiveInfo])
 
   useEffect(() => {
     // 清空拖动数据
@@ -64,7 +58,9 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
     data.is_span_day &&
     !isSameTime(start_timestamp, schedule_start_datetime ?? 0)
   // 如果是跨天或者全天任务显示全天
-  const time = isAllDay ? '全天' : data.start_time
+  const time = useMemo(() => {
+    return isAllDay ? '全天' : data.start_time
+  }, [isAllDay, data.start_time])
   const isDrag = React.useRef(false)
   const domRef = React.useRef(null)
 
@@ -72,7 +68,7 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
   const dispatch = useDispatch()
   const { position } = useRelativePosition(
     `${props.data.id}`,
-    '.calendar-month-content-box',
+    '.calendar-week-all-day-box',
   )
 
   const onOpenScheduleDetail = () => {
