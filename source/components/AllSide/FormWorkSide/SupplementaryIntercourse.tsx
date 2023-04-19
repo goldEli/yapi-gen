@@ -67,8 +67,10 @@ const SupplementaryIntercourse = (props: Props) => {
     }
   }
   useEffect(() => {
-    getSupplyList()
-  }, [])
+    if (props?.isVisible) {
+      getSupplyList()
+    }
+  }, [props?.isVisible])
 
   return (
     <CommonModal

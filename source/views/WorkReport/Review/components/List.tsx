@@ -203,38 +203,37 @@ const List = () => {
       dataIndex: 'user',
       render: (_: string, record: any) => {
         return (
-          <Tooltip
-            placement="topLeft"
-            title={`${String(record.user.name)}${t('report.list.of')}${
-              record.name
-            }`}
-            getPopupContainer={node => node}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              height: 52,
+              cursor: 'pointer',
+            }}
+            className="canClickDetail"
+            onClick={() => onClickView(record)}
           >
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                height: 52,
-                cursor: 'pointer',
-              }}
-              className="canClickDetail"
-              onClick={() => onClickView(record)}
+            {record.user?.avatar ? (
+              <img
+                style={{
+                  width: 24,
+                  height: 24,
+                  borderRadius: 12,
+                }}
+                src={record.user?.avatar}
+              />
+            ) : (
+              <span>
+                <CommonUserAvatar size="small" />
+              </span>
+            )}
+            <Tooltip
+              placement="topLeft"
+              title={`${String(record.user.name)}${t('report.list.of')}${
+                record.name
+              }`}
+              getPopupContainer={node => node}
             >
-              {record.user?.avatar ? (
-                <img
-                  style={{
-                    width: 24,
-                    height: 24,
-                    borderRadius: 12,
-                  }}
-                  src={record.user?.avatar}
-                />
-              ) : (
-                <span>
-                  <CommonUserAvatar size="small" />
-                </span>
-              )}
-
               <span
                 style={{
                   display: 'inline-block',
@@ -256,8 +255,8 @@ const List = () => {
                   record.is_supply === 1 ? 1 : record.is_update === 1 ? 2 : 0
                 }
               />
-            </div>
-          </Tooltip>
+            </Tooltip>
+          </div>
         )
       },
     },
@@ -304,7 +303,11 @@ const List = () => {
       ),
       dataIndex: 'start_time',
       render: (_: string, record: any) => {
-        return <span>{`${record.start_time} ~ ${record.end_time}`}</span>
+        return (
+          <span>{`${record.start_time} ~ ${moment(record.end_time).format(
+            'YYYY-MM-DD',
+          )}`}</span>
+        )
       },
     },
     {

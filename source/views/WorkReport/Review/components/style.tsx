@@ -15,6 +15,7 @@ export const DetailItem = styled.div`
 `
 
 export const TargetUserItem = styled.div`
+  padding: 24px 0px;
   .tabs {
     display: flex;
     align-items: center;
