@@ -115,6 +115,7 @@ const SiteDrawer = () => {
   const setReads = async (values: any) => {
     await setReadApi(values)
     setHasMore(true)
+    setList([])
     lastId.current = 0
     fetchMoreData(1)
   }
@@ -209,7 +210,9 @@ const SiteDrawer = () => {
           }}
         >
           <GrepTitle>{t('today')}</GrepTitle>
-          <GrepTitle2 onClick={setAllRead}>{t('all_read')}</GrepTitle2>
+          <GrepTitle2 onClick={() => (list.length >= 1 ? setAllRead() : null)}>
+            {t('all_read')}
+          </GrepTitle2>
         </div>
 
         <InfiniteScroll
