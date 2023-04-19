@@ -438,11 +438,7 @@ const ReportDetailDrawer = () => {
                         <div className="time">{i.created_at || '--'}</div>
                       </div>
                       <div className="content">
-                        <Editor
-                          readonly
-                          disableUpdateValue
-                          value={i?.content}
-                        />
+                        <div dangerouslySetInnerHTML={{ __html: i?.content }} />
                       </div>
                     </CommentBox>
                   ))

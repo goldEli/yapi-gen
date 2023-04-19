@@ -77,6 +77,7 @@ const HandleReport = (props: any) => {
   const isFirstValidator = useRef(0)
   const [peopleValue, setPeopleValue] = useState<any>([])
   const [relatedNeedList, setRelatedNeedList] = useState<any>([])
+  const [uploadAttachList, setUploadAttachList] = useState<any>({})
   const dispatch = useDispatch()
 
   const close = () => {
@@ -194,11 +195,13 @@ const HandleReport = (props: any) => {
         closable: true,
         onOk: async () => {
           try {
+            setUploadAttachList({})
             const result = await getReportDetailById({
               id: reportDetail?.prev_report_id,
             })
             if (result && result.data) {
               const temp: any = {}
+              const attach: any = {}
               setPeopleValue(
                 result.data?.target_users?.map((item: any) => {
                   return {
@@ -212,7 +215,11 @@ const HandleReport = (props: any) => {
               result.data.report_content?.forEach((v: any) => {
                 temp[`${v.type}_${v.id}`] =
                   v.type === 3 ? v?.pivot?.content : v?.pivot?.params
+                if (v.type === 2) {
+                  attach[`${v.type}_${v.id}`] = v?.pivot?.params
+                }
               })
+              setUploadAttachList({ ...attach })
               form.setFieldsValue({
                 ...temp,
                 [`1_${result.data.target_user_config_id}`]:
@@ -246,7 +253,7 @@ const HandleReport = (props: any) => {
         setPeopleValue(
           res.data?.report_user_list?.map((item: any) => {
             return {
-              avatar: item.avatar,
+              avatar: item?.avatar,
               id: item.id || item.user_id,
               name: item.name,
             }
@@ -263,7 +270,7 @@ const HandleReport = (props: any) => {
       setPeopleValue(
         result.data?.target_users?.map((item: any) => {
           return {
-            avatar: item.user.avatar,
+            avatar: item.user?.avatar,
             id: item.user.id,
             name: item.user.name,
           }
@@ -274,12 +281,17 @@ const HandleReport = (props: any) => {
       )
       getTemplateById(result.data.report_template_id)
       const temp: any = {}
+      const attach: any = {}
       result.data.report_content?.forEach((v: any) => {
         if (v.type !== 4) {
           temp[`${v.type}_${v.id}`] =
             v.type === 3 ? v?.pivot?.content : v?.pivot?.params
         }
+        if (v.type === 2) {
+          attach[`${v.type}_${v.id}`] = v?.pivot?.params
+        }
       })
+      setUploadAttachList({ ...attach })
       form.setFieldsValue({
         ...temp,
       })
@@ -368,7 +380,7 @@ const HandleReport = (props: any) => {
           >
             <UploadAttach
               power
-              defaultList={[]}
+              defaultList={uploadAttachList[`${content.type}_${content.id}`]}
               onChangeAttachment={(res: any) => {
                 onChangeAttachment(res, `${content.type}_${content.id}`)
               }}
@@ -485,14 +497,14 @@ const HandleReport = (props: any) => {
                 alignItems: 'center',
               }}
             >
-              {userInfo.avatar ? (
+              {userInfo?.avatar ? (
                 <img
                   style={{
                     width: 32,
                     height: 32,
                     borderRadius: 16,
                   }}
-                  src={userInfo.avatar}
+                  src={userInfo?.avatar}
                 />
               ) : (
                 <span>
