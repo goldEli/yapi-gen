@@ -11,7 +11,7 @@ import PermissionConfig from './PermissionConfig'
 import EditWork from './EditWork'
 import PreviewDialog from '@/components/FormWork/PreviewDialog'
 import { useDispatch, useSelector } from '@store/index'
-import { setActiveItem, setEditSave } from '@store/formWork'
+import { setActiveItem, setEditSave, setTemplateName } from '@store/formWork'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import {
   deleteTemplate,
@@ -135,7 +135,6 @@ const RightFormWork = () => {
   const dispatch = useDispatch()
   const [delIsVisible, setDelIsVisible] = useState(false)
   const [isSpinning, setIsSpinning] = useState(false)
-  const [templateName, setTemplateName] = useState('')
   const {
     editSave,
     activeItem,
@@ -143,6 +142,7 @@ const RightFormWork = () => {
     templateContentConfigs,
     fillingRequirements,
     err,
+    templateName,
     errMsg,
   } = useSelector(store => store.formWork)
   const getTemplateDetail = async () => {
@@ -264,7 +264,7 @@ const RightFormWork = () => {
       message.warning(errMsg)
       return
     }
-    console.log(parmas, 'parmas')
+    console.log(parmas, 'parmas', activeItem)
     if (activeItem?.id) {
       await upDateTemplate(parmas)
       message.success(t('formWork.message6'))
@@ -340,7 +340,7 @@ const RightFormWork = () => {
               onInput={(e: any) => {
                 dispatch(setEditSave(false))
                 setValue(e.target.value)
-                setTemplateName(e.target.value)
+                dispatch(setTemplateName(e.target.value))
               }}
             ></EditFormWorkStyle>
           </EditFormWorkBox>
