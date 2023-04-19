@@ -125,7 +125,6 @@ const DayItem: React.FC<DayItemProps> = props => {
         dispatch(setSelectedDayInMonth(info.datetime))
       }}
       onMouseEnter={e => {
-        console.log('window.calendarPanel.type', window.calendarMonthPanelType)
         if (window.calendarMonthPanelType === 'move') {
           dispatch(
             startMoveMonthSchedule({

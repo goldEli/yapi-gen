@@ -18,7 +18,6 @@ const useScheduleListSort = (
     const o: List = {}
     for (const key in scheduleList) {
       o[key] = sortScheduleList(scheduleList[key])
-      console.log(key, scheduleList[key], o[key])
     }
     // const res:any = {}
 

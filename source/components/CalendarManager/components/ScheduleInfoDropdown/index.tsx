@@ -45,7 +45,6 @@ const ScheduleInfoDropdown: React.FC<ScheduleInfoDropdownProps> = props => {
   // console.log({ scheduleInfoDropdown })
   const disPatch = useDispatch()
   useEffect(() => {
-    console.log('schedule_id', schedule_id)
     if (!schedule_id) return
     disPatch(getScheduleInfo({ id: schedule_id, show_date }))
   }, [schedule_id])
