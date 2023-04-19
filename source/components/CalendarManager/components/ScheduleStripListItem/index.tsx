@@ -1,7 +1,8 @@
+/**
+ * 月视图日程，周视图全天日程
+ */
 import React, { useEffect, useMemo, useState } from 'react'
-
 import dayjs from 'dayjs'
-
 import { store, useDispatch, useSelector } from '@store/index'
 import {
   clearMonthMoveScheduleActiveInfo,
@@ -10,7 +11,6 @@ import {
   // moveMonthSchedule,
   startMoveMonthSchedule,
 } from '@store/calendarPanle'
-import useScheduleListArr from '../hooks/useScheduleListArr'
 import useRelativePosition from '@/components/CalendarManager/hooks/useRelativePosition'
 import _ from 'lodash'
 import { modifySchedule } from '@store/schedule/schedule.thunk'
@@ -18,15 +18,18 @@ import {
   formatYYYYMMDD,
   formatYYYYMMDDhhmmss,
 } from '@/components/CalendarManager/config'
-import ScheduleStrip from '../../ScheduleStrip'
+import ScheduleStrip from '../ScheduleStrip'
 import useAllDay from '@/components/CalendarManager/hooks/useAllDay'
+import useAcrossScheduleList from '@/components/CalendarManager/hooks/useAcrossScheduleList'
 
 interface ScheduleListItemProps {
   data: Model.Schedule.Info
   idx: number
+  // .calendar-week-all-day-box
+  containerClassName: string
 }
 
-const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
+const ScheduleStripListItem: React.FC<ScheduleListItemProps> = props => {
   const { data } = props
   const { monthMoveScheduleActiveInfo } = useSelector(
     store => store.calendarPanel,
@@ -44,14 +47,15 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
   const isDrag = React.useRef(false)
   const domRef = React.useRef(null)
 
-  const { len } = useScheduleListArr(data.schedule_id)
+  const { len } = useAcrossScheduleList(data.schedule_id)
   const dispatch = useDispatch()
 
   const { position } = useRelativePosition(
     `${props.data.id}`,
-    '.calendar-week-all-day-box',
+    props.containerClassName,
   )
 
+  // 时候展示日程
   const show = useMemo(() => {
     return (
       monthMoveScheduleActiveInfo?.startSchedule?.schedule_id !==
@@ -241,4 +245,4 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
   )
 }
 
-export default ScheduleListItem
+export default ScheduleStripListItem

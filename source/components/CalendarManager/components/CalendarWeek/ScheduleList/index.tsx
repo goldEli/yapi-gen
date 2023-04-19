@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react'
 import styled from '@emotion/styled'
-import ScheduleListItem from '../ScheduleListItem'
 import { useDispatch, useSelector } from '@store/index'
 import MoveActiveItem from '../MoveActiveItem'
 import MoreScheduleButton from '../../MoreScheduleButton'
 import { setScheduleListModal } from '@store/schedule'
 import dayjs from 'dayjs'
+import ScheduleStripListItem from '../../ScheduleStripListItem'
 
 interface ScheduleListProps {
   data: Model.Calendar.DaysOfMonth
@@ -50,7 +50,14 @@ const ScheduleList: React.FC<ScheduleListProps> = props => {
       if (!item) {
         return <div key={idx} style={{ height: '22px' }}></div>
       }
-      return <ScheduleListItem idx={props.idx} data={item} key={item?.id} />
+      return (
+        <ScheduleStripListItem
+          containerClassName=".calendar-week-all-day-box"
+          idx={props.idx}
+          data={item}
+          key={item?.id}
+        />
+      )
     })
   }, [showList, props.idx])
 

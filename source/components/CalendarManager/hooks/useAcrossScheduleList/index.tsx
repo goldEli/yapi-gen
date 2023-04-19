@@ -2,7 +2,7 @@ import { useSelector } from '@store/index'
 import { useMemo } from 'react'
 
 // 获取跨天所有任务
-const useScheduleListArr = (id: Model.Schedule.Info['schedule_id']) => {
+const useAcrossScheduleList = (id: Model.Schedule.Info['schedule_id']) => {
   const { scheduleList } = useSelector(store => store.schedule)
 
   const listArr = useMemo(() => {
@@ -25,4 +25,4 @@ const useScheduleListArr = (id: Model.Schedule.Info['schedule_id']) => {
   }
 }
 
-export default useScheduleListArr
+export default useAcrossScheduleList
