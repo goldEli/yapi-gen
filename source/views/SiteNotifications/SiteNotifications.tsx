@@ -291,17 +291,20 @@ const SiteNotifications = () => {
   }, [wsData])
 
   return (
-    <Badge size="small" offset={[-2, 1]} count={all}>
-      <CommonIconFont
-        onClick={() => {
-          dispatch(changeVisible(!isVisible))
-          dispatch(changeVisibleFilter(false))
-        }}
-        color="var(--neutral-n2)"
-        size={24}
-        type="bell"
-      />
-    </Badge>
+    <div
+      style={{
+        cursor: 'pointer',
+      }}
+      onClick={() => {
+        dispatch(changeVisible(!isVisible))
+        dispatch(changeVisibleFilter(false))
+      }}
+    >
+      {' '}
+      <Badge size="small" offset={[-2, 1]} count={all}>
+        <CommonIconFont color="var(--neutral-n2)" size={24} type="bell" />
+      </Badge>
+    </div>
   )
 }
 

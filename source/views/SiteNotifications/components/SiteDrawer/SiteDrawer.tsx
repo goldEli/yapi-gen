@@ -109,7 +109,10 @@ const SiteDrawer = () => {
   }
 
   const setReads = async (values: any) => {
-    setReadApi(values)
+    await setReadApi(values)
+    setHasMore(true)
+    lastId.current = 0
+    fetchMoreData(1)
   }
   const setAllRead = () => {
     const arr = list.map((i: any) => i.id)
@@ -262,7 +265,10 @@ const SiteDrawer = () => {
                   style={{
                     margin: '0 4px',
                   }}
-                  onClick={() => navigate('/SiteNotifications/Setting/1')}
+                  onClick={() => {
+                    navigate('/SiteNotifications/Setting/1')
+                    dispatch(changeVisible(false))
+                  }}
                   width={32}
                   height={32}
                 >
@@ -277,7 +283,10 @@ const SiteDrawer = () => {
                   style={{
                     margin: 0,
                   }}
-                  onClick={() => navigate('/SiteNotifications/AllNote/1')}
+                  onClick={() => {
+                    navigate('/SiteNotifications/AllNote/1')
+                    dispatch(changeVisible(false))
+                  }}
                   width={32}
                   height={32}
                 >
