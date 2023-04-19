@@ -51,7 +51,7 @@ export const Content = styled.div`
   width: 100%;
   overflow: auto;
   display: flex;
-  z-index: 1;
+  /* z-index: 1; */
 `
 
 const Main = styled.div<{ left: number }>`
