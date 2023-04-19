@@ -1189,9 +1189,9 @@
       "accumulatedReports": "Accumulated Reports",
       "totalNoSubmitTimes": "Accumulated Unsubmitted",
       "currentNoSubmitTimes": "Currently Not Submitted"
-    },
-    "calendarManager": {
-      "moreItems": "{{count}} more..."
     }
+  },
+  "calendarManager": {
+    "moreItems": "{{count}} more..."
   }
 }
