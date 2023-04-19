@@ -194,7 +194,7 @@ const ScheduleStripListItem: React.FC<ScheduleListItemProps> = props => {
       )
     }
     window.addEventListener('mousemove', handleMove)
-    window.addEventListener('mouseup', async e => {
+    const onMouseup = async (e: MouseEvent) => {
       // 重置
       window.calendarMonthPanelType = null
       window.removeEventListener('mousemove', handleMove)
@@ -211,7 +211,8 @@ const ScheduleStripListItem: React.FC<ScheduleListItemProps> = props => {
       if (isDrag.current) {
         onSave()
       }
-    })
+    }
+    window.addEventListener('mouseup', onMouseup, { once: true })
   }
 
   // 拖拽头部
