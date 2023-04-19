@@ -2,6 +2,7 @@ import CommonModal from '@/components/CommonModal'
 import styled from '@emotion/styled'
 import { Form, Input } from 'antd'
 import { useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 const FormWrap = styled(Form)`
   box-sizing: border-box;
   padding-right: 24px;
@@ -28,6 +29,7 @@ interface PropsType {
 }
 
 const Content = (props: PropsType) => {
+  const [t] = useTranslation()
   const inputRefDom = useRef<HTMLInputElement>(null)
   useEffect(() => {
     if (props.isVisible) {
@@ -39,7 +41,7 @@ const Content = (props: PropsType) => {
   return (
     <>
       <LabelTitle>
-        <span>模板名称</span>
+        <span>{t('formWork.text8')}</span>
         <span>*</span>
       </LabelTitle>
       <Input
@@ -47,7 +49,7 @@ const Content = (props: PropsType) => {
         autoComplete="off"
         ref={inputRefDom as any}
         onInput={(e: any) => props.onChange?.(e.target.value)}
-        placeholder="请输入模板名称限50字"
+        placeholder={t('formWork.text9')}
         maxLength={50}
         autoFocus
       />
@@ -56,6 +58,7 @@ const Content = (props: PropsType) => {
 }
 const AddFormWork = (props: Props) => {
   const [form] = Form.useForm()
+  const [t] = useTranslation()
   const onConfirm = async () => {
     const res2 = await form.validateFields()
     const formValues = form.getFieldsValue()
@@ -69,7 +72,7 @@ const AddFormWork = (props: Props) => {
   return (
     <CommonModal
       isVisible={props.isVisible}
-      title="创建模板"
+      title={t('formWork.text10')}
       onClose={() => props.onClose()}
       onConfirm={onConfirm}
       getPopupContainer={(node: any) => node}
@@ -81,7 +84,7 @@ const AddFormWork = (props: Props) => {
       >
         <Form.Item
           name="name"
-          rules={[{ required: true, message: '请输入模板名称' }]}
+          rules={[{ required: true, message: t('formWork.text11') }]}
         >
           <Content isVisible={props.isVisible} />
         </Form.Item>

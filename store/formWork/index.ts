@@ -16,8 +16,6 @@ type SliceState = {
   reportContent: any
   // 开始时间和结束时间有误
   err: boolean
-  // 模板名称
-  templateName: string
   // 详情数据
   templateDetailValues: any
   // 报错的提示语
@@ -31,7 +29,6 @@ const formWork = createSlice({
     activeItem: null,
     err: true,
     errMsg: '',
-    templateName: '',
     templateDetailValues: null,
     option: [
       {
@@ -84,10 +81,7 @@ const formWork = createSlice({
     setErr: (state: any, action) => {
       state.err = action.payload
     },
-    // 模板名称
-    setTemplateName: (state: any, action) => {
-      state.templateName = action.payload
-    },
+
     setDataList: (state: any, action) => {
       state.dataList = action.payload
     },
@@ -197,7 +191,6 @@ export const {
   setReportContent,
   setTemplateContentConfigs,
   setErr,
-  setTemplateName,
   setDataList,
   setEditSave,
   setErrMsg,

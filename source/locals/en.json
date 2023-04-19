@@ -2,65 +2,36 @@
   "nm": "nothing more",
   "incident": "incident",
   "insite_notifications": " insite_notifications",
-
   "notify_object": " Notification object",
-
   "station_premise": " station_premise",
-
   "Administrator": " administrator ",
-
   "person_to_be_added": " The person added",
-
   "the_person_being": " the person being @ ",
-
   "The_person_being_manager ": " The person being manipulated",
-
   "all_notices": " all_notices",
-
   "unread_notifications": " No notifications",
-
   "read_notifications": " read notifications",
-
   "referring_to_my": " Refer to my",
   "all": " All ",
-
   "new1": " latest ",
-
   "atmy": " @my ",
   "notification": "notification",
-
   "notification_settings": "notification Settings ",
-
   "operand": "operand",
-
   "email_notification": "Email notification",
-
   "ReceiveEmailUpdatesWithMentionsInvitationsAndCommentsAboutItemsYouCareAbout": "receive mention about your concern, invite and comments email updates",
-
   "use_this_email_to_receive": "Use this email to receive",
-
   "receive_format": "receive_format",
-
   "what_situations_require_email_notification": "What situation requires email notification",
-
   "notification_item_settings": "Notification Settings ",
-
   "today": "Today ",
-
   "all_read": "All read",
-
   "all_notifications_in_the_past_half_year_have_been_displayed_for_you": "All notifications for the last six months have been displayed for you",
-
   "show_only_unread": "Show unread only ",
-
   "new_page": "New page",
-
   "filtering_notifications": "Filter notifications",
-
   "Notices": "Notices",
-
   "reset_filtering": "Reset the filtering",
-
   "assign_me_tasks": "Assign me tasks",
   "is_required": "Is Required",
   "menu_word": "Word",
@@ -1056,7 +1027,6 @@
       "update": "update",
       "makeup": "Make up",
       "submitter": "submitter",
-
       "status": "status",
       "import": "Import the previous part",
       "todayWork": "Finish work today",
@@ -1103,6 +1073,85 @@
       "accumulatedReports": "Accumulated Reports",
       "totalNoSubmitTimes": "Accumulated Unsubmitted",
       "currentNoSubmitTimes": "Currently Not Submitted"
+    },
+    "formWork": {
+      "add": "Add",
+      "addUser": "Add Members",
+      "reportTo": "Report to",
+      "director": "Director",
+      "team": "Team",
+      "reportsTo": "Reports to",
+      "allSup": "All superiors",
+      "whole": "Whole",
+      "has": "Existing associated requirements",
+      "content": "Reporting content",
+      "msg1": "Basic controls",
+      "msg2": "Drag the control to the left area to create",
+      "msg3": "Supplementary submission scope",
+      "msg4": "Automatically remind unsubmitted people",
+      "msg5": "Automatically adjust following Chinese statutory holidays",
+      "start": "StartTime",
+      "end": "EndTime",
+      "msg6": "Allow supplementary payment after the deadline",
+      "msg7": "Limited to one filling per week",
+      "msg8": "The submitter of the report can be modified",
+      "msg9": "Reminder Time",
+      "msg10": "The end time cannot be less than the start time",
+      "msg11": "The end time cannot be greater than 24 hours from the start time",
+      "msg12": "The start time cannot be less than the end time",
+      "msg13": "Please select the end time",
+      "msg14": "The end time cannot exceed the start time by one week",
+      "dialog1": "Component parameter configuration",
+      "dialog2": "Title",
+      "dialog3": "Enter a name that conforms to reading habits and is limited to 20 words. It cannot be a component name and cannot duplicate an existing custom title",
+      "dialog4": "Prompt text",
+      "dialog5": "Prompt text can be used to prompt users how to fill out",
+      "title1": "Reporting content",
+      "title2": "Who can write",
+      "title3": "Report To",
+      "title4": "Who can watch",
+      "title5": "Filling requirements",
+      "title6": "Directly fill in the required statistics and submission status",
+      "title7": "Fill in cycle",
+      "title8": "Every day",
+      "title9": "Weekly",
+      "title10": "Monthly",
+      "title11": "No-repeat",
+      "inp1": "Please select a time",
+      "end1": "Before the deadline",
+      "tab1": "Rich Text Editor",
+      "tab2": "annex",
+      "tab3": "Related Requirements",
+      "message1": "Who can write mandatory",
+      "message2": "Successfully deleted",
+      "message3": "Start time is required",
+      "message4": "Deadline required",
+      "message5": "Reminder time is required",
+      "message6": "Successfully edited",
+      "message7": "Successfully added",
+      "save1": "saved",
+      "save2": "save",
+      "t1": "Daily work report",
+      "t2": "Edit template",
+      "t4": "Permission configuration",
+      "t5": "Preview",
+      "t6": "Delete",
+      "t7": "Please enter the template title",
+      "t8": "next step",
+      "t9": "Previous",
+      "t10": "Delete Template",
+      "t11": "Confirm to delete the template. Once deleted, reporting will not be possible",
+      "text1": "Personnel Fields",
+      "text2": "Rich text",
+      "text3": "Template",
+      "text4": "There is currently no template available, create one now~",
+      "text5": "New Template",
+      "text6": "Save prompt",
+      "text7": "Not saved yet. Do you want to save the edited content?",
+      "text8": "Template Name",
+      "text9": "Please enter a template name with a limit of 50 words",
+      "text10": "Create a template",
+      "text11": "Please enter a template name"
     }
   }
 }
