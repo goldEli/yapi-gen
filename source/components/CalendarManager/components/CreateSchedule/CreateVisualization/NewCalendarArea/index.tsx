@@ -7,14 +7,13 @@ import { setCurrentDate } from '@store/createScheduleVisualization'
 import React, { useMemo, useState } from 'react'
 import { formatYYYYMMDDhhmmss, oneHourHeight } from '../../../../config'
 import { getTimeByAddDistance, getTimeByOffsetDistance } from '../utils'
-import { DraggableData, Position, ResizableDelta, Rnd } from 'react-rnd'
+import { DraggableData, Position, ResizableDelta } from 'react-rnd'
 import { css } from '@emotion/css'
 import { DraggableEvent } from 'react-draggable'
 import { ResizeDirection } from 're-resizable'
-import { setScheduleInfoDropdown } from '@store/calendarPanle'
-import { saveSchedule } from '@store/schedule/schedule.thunk'
 import { getColorWithOpacityPointOne } from '@/components/CalendarManager/utils'
 import { setVisualizationTime } from '@store/schedule'
+import MoveCard from '../../../MoveCard'
 
 interface NewCalendarAreaProps {
   // data: Model.Schedule.Info
@@ -262,11 +261,9 @@ const NewCalendarArea: React.FC<NewCalendarAreaProps> = props => {
   }
 
   return (
-    <Rnd
-      style={{
-        background: getColorWithOpacityPointOne(currentColor ?? 0),
-      }}
-      className={dragBoxClassName}
+    <MoveCard
+      data={null}
+      timeRange={null}
       size={{
         width: `400`,
         height,
@@ -297,7 +294,7 @@ const NewCalendarArea: React.FC<NewCalendarAreaProps> = props => {
       onResizeStop={onResizeStop}
     >
       <Title>{title}</Title>
-    </Rnd>
+    </MoveCard>
   )
 }
 

@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 import React, { useMemo, useState } from 'react'
 import { formatYYYYMMDDhhmmss, oneHourHeight } from '../../../config'
 import { getTimeByAddDistance, getTimeByOffsetDistance } from '../utils'
-import { DraggableData, Position, ResizableDelta, Rnd } from 'react-rnd'
+import { DraggableData, Position, ResizableDelta } from 'react-rnd'
 import { css } from '@emotion/css'
 import { DraggableEvent } from 'react-draggable'
 import { ResizeDirection } from 're-resizable'
@@ -12,6 +12,7 @@ import usePosition from '../hooks/usePosition'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
 import { modifySchedule } from '@store/schedule/schedule.thunk'
 import useColor from '@/components/CalendarManager/hooks/useColor'
+import MoveCard from '../../MoveCard'
 
 interface ScheduleCardProps {
   data: Model.Schedule.Info
@@ -54,8 +55,8 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
   const { start_timestamp = 0, end_timestamp = 0 } = localTime ?? {}
   const dispatch = useDispatch()
   const [timeRange, setTimeRange] = useState<{
-    startTime: string
-    endTime: string
+    start_timestamp: string
+    end_timestamp: string
   } | null>(null)
   const { getBgColor, getColorClassName } = useColor()
 
@@ -79,8 +80,8 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
       y - top,
     )
     setTimeRange({
-      startTime: time.startTime.format('HH:mm'),
-      endTime: time.endTime.format('HH:mm'),
+      start_timestamp: time.startTime.format('HH:mm'),
+      end_timestamp: time.endTime.format('HH:mm'),
     })
   }
 
@@ -90,8 +91,8 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     e.stopPropagation()
     const time = getTimeByOffsetDistance(start_timestamp, end_timestamp, 0)
     setTimeRange({
-      startTime: time.startTime.format('HH:mm'),
-      endTime: time.endTime.format('HH:mm'),
+      start_timestamp: time.startTime.format('HH:mm'),
+      end_timestamp: time.endTime.format('HH:mm'),
     })
   }
 
@@ -154,15 +155,15 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     if (dir === 'bottom') {
       const time = getTimeByAddDistance(end_timestamp, delta.height)
       setTimeRange({
-        startTime: dayjs(start_timestamp).format('HH:mm'),
-        endTime: time.format('HH:mm'),
+        start_timestamp: dayjs(start_timestamp).format('HH:mm'),
+        end_timestamp: time.format('HH:mm'),
       })
     }
     if (dir === 'top') {
       const time = getTimeByAddDistance(start_timestamp, delta.height * -1)
       setTimeRange({
-        startTime: time.format('HH:mm'),
-        endTime: dayjs(end_timestamp).format('HH:mm'),
+        start_timestamp: time.format('HH:mm'),
+        end_timestamp: dayjs(end_timestamp).format('HH:mm'),
       })
     }
   }
@@ -174,8 +175,8 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
   ) => {
     const time = getTimeByOffsetDistance(start_timestamp, end_timestamp, 0)
     setTimeRange({
-      startTime: time.startTime.format('HH:mm'),
-      endTime: time.endTime.format('HH:mm'),
+      start_timestamp: time.startTime.format('HH:mm'),
+      end_timestamp: time.endTime.format('HH:mm'),
     })
   }
 
@@ -198,36 +199,14 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
   }
 
   const gridHeight = useMemo(() => (oneHourHeight / 60) * 15, [outerHeight])
-  const { is_show_busy } = data
-
-  const content = useMemo(() => {
-    if (is_show_busy) {
-      return (
-        <>
-          <Time className={getColorClassName()}>{data.start_time}&nbsp;</Time>
-          <Title className={getColorClassName()}>{data.is_busy_text}</Title>
-        </>
-      )
-    }
-    return (
-      <>
-        <Title className={getColorClassName()}>
-          {timeRange && `${timeRange?.startTime} - ${timeRange?.endTime} `}
-        </Title>
-        <Title className={getColorClassName()}>{data.subject}</Title>
-      </>
-    )
-  }, [is_show_busy, timeRange, data.subject, data.start_time])
 
   return (
-    <Rnd
+    <MoveCard
+      timeRange={timeRange}
+      data={props.data}
       onClick={(e: any) => {
         e.stopPropagation()
       }}
-      style={{
-        background: getBgColor(data.color),
-      }}
-      className={dragBoxClassName}
       key={props.data.schedule_id}
       size={{
         width: props.width,
@@ -240,17 +219,6 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
         y: top,
       }}
       dragAxis="y"
-      disableDragging={is_show_busy}
-      enableResizing={{
-        bottom: !is_show_busy,
-        bottomLeft: false,
-        bottomRight: false,
-        left: false,
-        right: false,
-        top: !is_show_busy,
-        topLeft: false,
-        topRight: false,
-      }}
       bounds=".calendar-day-box"
       onDragStart={onDragStart}
       onDrag={onDrag}
@@ -258,9 +226,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
       onResizeStart={onResizeStart}
       onResize={onResize}
       onResizeStop={onResizeStop}
-    >
-      {content}
-    </Rnd>
+    />
   )
 }
 
