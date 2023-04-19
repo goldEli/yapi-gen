@@ -18,12 +18,12 @@ const CalendarPage = () => {
 
   return (
     <Wrap>
-      {/* <PermissionWrap
+      <PermissionWrap
         auth="/CalendarManager"
         permission={menuPermission?.menus?.map((i: any) => i.url)}
-      > */}
-      <CalendarManager />
-      {/* </PermissionWrap> */}
+      >
+        <CalendarManager />
+      </PermissionWrap>
     </Wrap>
   )
 }
