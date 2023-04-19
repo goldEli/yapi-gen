@@ -20,7 +20,8 @@ type SliceState = {
   templateName: string
   // 详情数据
   templateDetailValues: any
-  // 周数据
+  // 报错的提示语
+  errMsg: string
 }
 
 const formWork = createSlice({
@@ -29,6 +30,7 @@ const formWork = createSlice({
     editSave: true,
     activeItem: null,
     err: true,
+    errMsg: '',
     templateName: '',
     templateDetailValues: null,
     option: [
@@ -91,6 +93,9 @@ const formWork = createSlice({
     },
     setEditSave: (state: any, action) => {
       state.editSave = action.payload
+    },
+    setErrMsg: (state: any, action) => {
+      state.errMsg = action.payload
     },
   },
   extraReducers(builder) {
@@ -195,5 +200,6 @@ export const {
   setTemplateName,
   setDataList,
   setEditSave,
+  setErrMsg,
 } = formWork.actions
 export default formWork.reducer

@@ -141,6 +141,7 @@ const RightFormWork = () => {
     templateName,
     fillingRequirements,
     err,
+    errMsg,
   } = useSelector(store => store.formWork)
   const getTemplateDetail = async () => {
     await dispatch(templateDetail({ id: activeItem.id }))
@@ -250,12 +251,11 @@ const RightFormWork = () => {
       start_time: fillingRequirements?.start_time,
       is_holiday: fillingRequirements?.is_holiday ? 1 : 2,
     }
-    console.log(parmas, 'parmas')
     if (!getVerifyParams(parmas)) {
       return
     }
     if (!err) {
-      message.warning('时间选择有误')
+      message.warning(errMsg)
       return
     }
     if (activeItem?.id) {
