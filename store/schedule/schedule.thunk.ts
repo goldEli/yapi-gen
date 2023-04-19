@@ -32,6 +32,21 @@ export const getScheduleListDaysOfMonth = createAsyncThunk(
   },
 )
 
+export const getCalendarDaysOfYearList = createAsyncThunk(
+  `${name}/getCalendarDaysOfYearList`,
+  async (params: API.Schedule.ScheduleInfoList.Params) => {
+    ParamsCache.getInstance().addCache('year', params)
+    const res = await services.schedule.getCalendarDaysOfYearList(params)
+    return res.data
+  },
+)
+export const getScheduleDaysOfList = createAsyncThunk(
+  `${name}/getScheduleDaysOfList`,
+  async (params: API.Schedule.ScheduleInfoList.Params) => {
+    const res = await services.schedule.getCalendarDaysOfMonthList(params)
+    return res.data
+  },
+)
 // 修改日程
 export const modifySchedule =
   (params: API.Schedule.ModifySchedule.Params) =>
@@ -63,6 +78,13 @@ export const refreshCalendarPanelScheduleList =
         break
       case 'month':
         dispatch(getScheduleListDaysOfMonth(newParams))
+        break
+      case 'year':
+        console.log(11111, newParams)
+        dispatch(getCalendarDaysOfYearList(newParams))
+        break
+      case 'list':
+        dispatch(getCalendarDaysOfMonthList(newParams))
         break
       default:
         break
@@ -100,14 +122,6 @@ export const saveSchedule =
     await dispatch(refreshCalendarPanelScheduleList())
   }
 
-export const getCalendarDaysOfYearList = createAsyncThunk(
-  `${name}/getCalendarDaysOfYearList`,
-  async (params: API.Schedule.ScheduleInfoList.Params) => {
-    const res = await services.schedule.getCalendarDaysOfYearList(params)
-    return res.data
-  },
-)
-
 export const getCalendarDaysOfMonthList = createAsyncThunk(
   `${name}/getCalendarDaysOfMonthList`,
   async (params: API.Schedule.ScheduleInfoList.Params) => {
@@ -115,13 +129,7 @@ export const getCalendarDaysOfMonthList = createAsyncThunk(
     return res.data
   },
 )
-export const getScheduleDaysOfList = createAsyncThunk(
-  `${name}/getScheduleDaysOfList`,
-  async (params: API.Schedule.ScheduleInfoList.Params) => {
-    const res = await services.schedule.getCalendarDaysOfMonthList(params)
-    return res.data
-  },
-)
+
 // 左侧日历获取当月的日程
 export const getLeftCalendarDaysOfMonthList = createAsyncThunk(
   `${name}/getLeftCalendarDaysOfMonthList`,

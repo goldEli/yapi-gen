@@ -10,7 +10,9 @@ export const getCalendarList = createAsyncThunk(
   `${name}/getCalendarList`,
   async (_, { dispatch }) => {
     const res = await services.calendar.getCalendarList()
-    dispatch(refreshCalendarPanelScheduleList() as AppDispatch)
+    setTimeout(() => {
+      dispatch(refreshCalendarPanelScheduleList() as AppDispatch)
+    }, 0)
     return res.data
   },
 )

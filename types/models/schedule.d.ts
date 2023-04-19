@@ -99,6 +99,7 @@ declare namespace Model.Schedule {
       name: string
       avatar: string
     }
+    user?: { id: integer; name: string; avatar: string }
     members?: {
       status: number
       user_id: number

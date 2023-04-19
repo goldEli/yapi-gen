@@ -72,7 +72,7 @@ declare namespace API.Schedule {
     type params = { id: number | string; status: number }
   }
   namespace Transfer {
-    type params = { id: string; is_exit: boolean; user_id: number }
+    type params = { id: string; is_exit: number; user_id: number }
   }
   namespace Delete {
     type params = { id: string; is_remind: boolean }

@@ -15,6 +15,7 @@ import {
   ModalChildren,
 } from '../styles'
 import React, { useState, useEffect } from 'react'
+import { refreshCalendarPanelScheduleList } from '@store/schedule/schedule.thunk'
 import ScheduleInfoIcon from './../ScheduleInfoIcon'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import dayjs from 'dayjs'
@@ -31,15 +32,19 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
   const [modalVisible, setModalVisible] = useState(false)
   const [checked, setChecked] = useState(false)
   const [showTipBox, setShowTipBox] = useState(false)
-  const [isExit, setIsExit] = useState(true)
-  const [userId, setUserId] = useState<number>()
+  const [isExit, setIsExit] = useState<number>(0)
+  const [userId, setUserId] = useState<number>(0)
   const { scheduleInfo } = useSelector(state => state.schedule)
   const [t] = useTranslation()
   const disPatch = useDispatch()
   const onChangeVisible = () => {
     setIsVisible(false)
   }
-  const confirmTranster = async () => {
+  const confirmTransference = async () => {
+    if (!userId) {
+      message.error('接收人不能为空')
+      return
+    }
     const params = {
       is_exit: isExit,
       user_id: userId ?? 0,
@@ -51,6 +56,7 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
       setModalVisible(false)
       setShowTipBox(false)
       disPatch(setScheduleInfoDropdown({ visible: false }))
+      disPatch(refreshCalendarPanelScheduleList())
     } catch (error) {
       console.log(error)
     }
@@ -65,13 +71,14 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
       setIsVisible(false)
       message.success(t('common.deleteSuccess'))
       disPatch(setScheduleInfoDropdown({ visible: false }))
+      disPatch(refreshCalendarPanelScheduleList())
     } catch (error) {
       console.log(error)
     }
   }
   return (
     <ScheduleInfoHeader>
-      <ScheduleInfoHeaderBtn>
+      <ScheduleInfoHeaderBtn onClick={e => e.stopPropagation()}>
         <span className={statusClass}>
           {scheduleInfo?.is_busy === 1 ? '忙碌' : '空闲'}
         </span>
@@ -114,18 +121,21 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
                 >
                   复制日程
                 </span>
-                <span
-                  onClick={() => {
-                    setModalVisible(true)
-                  }}
-                >
-                  转让日程
-                </span>
+                {scheduleInfo?.members?.length && scheduleInfo?.is_creator ? (
+                  <span
+                    onClick={() => {
+                      setModalVisible(true)
+                    }}
+                  >
+                    转让日程
+                  </span>
+                ) : null}
               </BoxTip>
             ) : null}
           </div>
           <span
-            onClick={() => {
+            onClick={e => {
+              e.stopPropagation()
               disPatch(setScheduleInfoDropdown({ visible: false }))
             }}
           >
@@ -162,7 +172,7 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
         onClose={() => {
           setModalVisible(false)
         }}
-        onConfirm={confirmTranster}
+        onConfirm={confirmTransference}
       >
         <ModalChildren>
           <Select
@@ -193,8 +203,8 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
             onChange={(e: RadioChangeEvent) => setIsExit(e.target.value)}
             value={isExit}
           >
-            <Radio value={true}>转让我退出该日程</Radio>
-            <Radio value={false}>转让我变为参与者</Radio>
+            <Radio value={1}>转让我退出该日程</Radio>
+            <Radio value={0}>转让我变为参与者</Radio>
           </Radio.Group>
         </ModalChildren>
       </CommonModal>
