@@ -23,26 +23,6 @@ interface ScheduleCardProps {
   left: number
 }
 
-const dragBoxClassName = css`
-  /* width: calc(100% - 58px); */
-  border-radius: 6px 6px 6px 6px;
-  /* position: absolute;
-  top: 0px;
-  left: 58px; */
-  font-size: 25;
-  min-height: 22px;
-  cursor: move;
-  box-sizing: border-box;
-  padding: 0 4px;
-  position: relative;
-  z-index: 2;
-`
-const Title = styled.span`
-  font-size: 12px;
-  line-height: 20px;
-  color: var(--neutral-n1-d1);
-`
-
 const ScheduleCard: React.FC<ScheduleCardProps> = props => {
   const { data } = props
   const { start_timestamp, end_timestamp } = data
@@ -99,14 +79,15 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     const newEndTime = dayjs(
       `${weekDay} ${time.end_timestamp.format('HH:mm:ss')}`,
     ).valueOf()
-
-    dispatch(
-      saveSchedule({
-        ...props.data,
-        start_timestamp: newStartTime,
-        end_timestamp: newEndTime,
-      }),
-    )
+    if (isDrag.current) {
+      dispatch(
+        saveSchedule({
+          ...props.data,
+          start_timestamp: newStartTime,
+          end_timestamp: newEndTime,
+        }),
+      )
+    }
     setTimeRange(null)
     // 点击打开详情弹窗, 如果是拖动不打开
     if (!isDrag.current) {
