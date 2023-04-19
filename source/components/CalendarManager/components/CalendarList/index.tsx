@@ -93,8 +93,8 @@ const CalendarList: React.FC<CalendarListProps> = props => {
             <LunarDate>{item.list[0].lunar_day_chinese} </LunarDate>
           </div>
           <CalendarListInfo>
-            {item.list.map((ele: any, index: number) => (
-              <TimeItem key={index}>
+            {item.list.map((ele: any, idx: number) => (
+              <TimeItem key={idx}>
                 <span className={dateClass}>
                   {ele.is_all_day === 1
                     ? '全天'

@@ -66,7 +66,11 @@ declare namespace API.Schedule {
   }
 
   namespace SearchKeys {
-    type params = { calendar_ids: number[]; year: number; keyword?: string }
+    type params = {
+      calendar_ids: number[]
+      year: number
+      keyword?: string
+    }
   }
   namespace Reply {
     type params = { id: number | string; status: number }
