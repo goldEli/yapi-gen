@@ -217,6 +217,7 @@ const RightFormWork = () => {
     return true
   }
   const saveApi = async () => {
+    console.log(activeItem, 'activeItem')
     const config = reportContent?.template_configs
       ?.filter((el: any) => el.target_value)
       ?.filter((item: any) => item.target_value.key !== 'all')
@@ -234,9 +235,9 @@ const RightFormWork = () => {
       is_all_write: reportContent?.is_all_write,
       template_content_configs: templateContentConfigs,
       template_configs: config,
-      id: activeItem?.id || 0,
+      id: activeItem?.id,
     }
-    parmas.name = templateName || activeItem.name
+    parmas.name = activeItem.name
     parmas.requirement = {
       day:
         fillingRequirements.submit_cycle === 1
@@ -262,7 +263,7 @@ const RightFormWork = () => {
       const res = await upDateTemplate(parmas)
       message.success('编辑成功')
       await dispatch(getTemplateList())
-      dispatch(setActiveItem({ id: activeItem?.id, name: activeItem?.name }))
+      // dispatch(setActiveItem({ id: activeItem?.id, name: activeItem?.name }))
     } else {
       const res = await createTemplate(parmas)
       await dispatch(getTemplateList())
