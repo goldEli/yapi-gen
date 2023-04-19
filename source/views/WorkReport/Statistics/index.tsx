@@ -169,7 +169,7 @@ const Statistics = () => {
       }
     })
     setFormWorkData(items)
-    setTabKey(list[0].id)
+    setTabKey(list[0]?.id)
   }
 
   const getUsageDataList = async () => {
