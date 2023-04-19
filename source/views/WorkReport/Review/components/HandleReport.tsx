@@ -533,7 +533,7 @@ const HandleReport = (props: any) => {
                   </span>
                 </div>
                 <div className="submitTimeText">
-                  {t('report.list.prevDateSubmit')}：{reportDetail?.created_at}
+                  {t('report.list.prevDateSubmit')}：{reportDetail?.updated_at}
                 </div>
               </div>
             </div>
