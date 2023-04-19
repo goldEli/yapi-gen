@@ -161,7 +161,6 @@ const Sortable = (props: any) => {
         return '关联需求'
     }
   }
-  console.log(list, 'list')
   return (
     <div
       draggable="false"
@@ -174,7 +173,7 @@ const Sortable = (props: any) => {
           <div
             ref={ref}
             draggable="false"
-            key={child?.name}
+            key={child?.id}
             onDragOver={allowDrop}
             onDrop={event => onDrop(event, i)}
           >

@@ -160,17 +160,6 @@ const OperationGroup = (props: Props) => {
         </HasIconMenu>
       </DropDownMenu>
 
-      {!hasFilter && <DividerWrap type="vertical" />}
-
-      {!hasFilter && (
-        <ScreenMinHover
-          label={t('common.search')}
-          icon="filter"
-          onClick={props.onChangeFilter}
-          isActive={!props.filterState}
-        />
-      )}
-
       <DividerWrap type="vertical" />
 
       <ScreenMinHover
@@ -178,6 +167,18 @@ const OperationGroup = (props: Props) => {
         icon="sync"
         onClick={props.onRefresh}
       />
+
+      {!hasFilter && (
+        <>
+          <DividerWrap type="vertical" />
+          <ScreenMinHover
+            label={t('common.search')}
+            icon="filter"
+            onClick={props.onChangeFilter}
+            isActive={!props.filterState}
+          />
+        </>
+      )}
 
       <DividerWrap type="vertical" />
 

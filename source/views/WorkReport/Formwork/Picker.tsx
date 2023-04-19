@@ -72,6 +72,7 @@ interface PropsType {
   // 每天 day ,每周 week , 每月 month , 不重复doNot
   type: string
   getValues(val1: number, val2: number, val3: number): void
+  getValuesOnece(type: string, val1: number, val2: number, val3: number): void
   value: any
   onChange?(values: any): void
 }
@@ -278,7 +279,12 @@ const Picker = (props: PropsType) => {
     setLeftActiveVal(props?.value?.v1)
     setCenterActiveVal(props?.value?.v2)
     setRightActiveVal(props?.value?.v3)
-    props.getValues(props?.value?.v1, props?.value?.v2, props?.value?.v3)
+    props.getValuesOnece(
+      props.pickerType,
+      props?.value?.v1,
+      props?.value?.v2,
+      props?.value?.v3,
+    )
     if (props.type === 'day') {
       getDayValues()
     } else if (props.type === 'week') {

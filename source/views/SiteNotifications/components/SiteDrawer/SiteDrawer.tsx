@@ -22,6 +22,7 @@ import {
   Tips,
   Wrap,
   ActiveTab,
+  GrepTitle2,
 } from './style'
 import { useTranslation } from 'react-i18next'
 import InfiniteScroll from 'react-infinite-scroll-component'
@@ -40,6 +41,7 @@ const SiteDrawer = () => {
   const navigate = useNavigate()
   const isVisible = useSelector(store => store.siteNotifications.isVisible)
   const [list, setList] = useState([])
+  const [now, setNow] = useState()
   const lastId = useRef(0)
   const tabBox = useRef<HTMLDivElement>(null)
   const tabActive = useRef<HTMLDivElement>(null)
@@ -52,54 +54,57 @@ const SiteDrawer = () => {
     },
     {
       id: '1',
-      text: t('new1'),
+      text: `${t('new1')}(${now})`,
     },
-    {
-      id: '2',
-      text: t('atmy'),
-    },
+    // {
+    //   id: '2',
+    //   text: t('atmy'),
+    // },
   ]
 
   const onChange = (e: CheckboxChangeEvent) => {
     lastId.current = 0
     setHasMore(true)
     setRead(e.target.checked ? 0 : undefined)
+    localStorage.setItem('read', e.target.checked ? '0' : '1')
   }
 
   const onClose = () => {
     dispatch(changeVisible(false))
   }
-  const fetchMoreData = async (b?: boolean) => {
+  const fetchMoreData = async (type: number) => {
     const re4 = await getMsg_list({
       lastId: lastId.current,
-      read,
+      read: localStorage.getItem('read'),
       latTime: newName.current,
     })
-
-    if (re4.lastId === 0) {
-      setHasMore(false)
-      return
-    }
     lastId.current = re4.lastId
     setTimeout(() => {
-      if (b) {
+      if (type === 1 && re4.lastId === 0) {
         setList(re4.list)
-      } else {
-        setList(list.concat(re4.list))
+        setHasMore(false)
+      } else if (type === 1) {
+        setList(re4.list)
+      } else if (type === 2 && re4.lastId === 0) {
+        setList(e => e.concat(re4.list))
+        setHasMore(false)
+      } else if (type === 2) {
+        setList(e => e.concat(re4.list))
       }
     }, 500)
   }
   const changeActive = (id: string) => {
     setActive(id)
+    setHasMore(true)
     if (id === '3') {
       newName.current = undefined
       lastId.current = 0
-      fetchMoreData(true)
+      fetchMoreData(1)
     }
     if (id === '1') {
-      newName.current = Math.floor(new Date().valueOf() / 1000)
+      newName.current = Math.floor(new Date().valueOf() / 1000) - 5 * 60 * 1000
       lastId.current = 0
-      fetchMoreData(true)
+      fetchMoreData(1)
     }
   }
 
@@ -110,13 +115,36 @@ const SiteDrawer = () => {
     const arr = list.map((i: any) => i.id)
     setReads(arr)
   }
+
+  const reset = async () => {
+    const res = await getContactStatistics()
+    console.log(res)
+    const a = res.list.find((i: any) => i.send_user === 'now')
+    setNow(a.nread)
+  }
+  const n2 = () => {
+    lastId.current = 0
+    setHasMore(true)
+  }
   useEffect(() => {
-    isVisible ? fetchMoreData(true) : null
+    isVisible ? fetchMoreData(1) : n2()
+    isVisible ? reset() : null
   }, [isVisible, read])
+
+  const readStatue = () => {
+    let state: boolean
+    if (localStorage.getItem('read') === '0') {
+      state = true
+    } else {
+      state = false
+    }
+
+    return state
+  }
 
   useEffect(() => {
     for (let i = 0; i < 3; i++) {
-      tabBox.current?.children[i].addEventListener('click', () => {
+      tabBox.current?.children[i].addEventListener('click', e => {
         if (tabActive.current) {
           tabActive.current.style.left = `${
             (tabBox.current?.children[i] as HTMLDivElement).offsetLeft
@@ -174,12 +202,12 @@ const SiteDrawer = () => {
           }}
         >
           <GrepTitle>{t('today')}</GrepTitle>
-          <GrepTitle onClick={setAllRead}>{t('all_read')}</GrepTitle>
+          <GrepTitle2 onClick={setAllRead}>{t('all_read')}</GrepTitle2>
         </div>
 
         <InfiniteScroll
           dataLength={list.length}
-          next={fetchMoreData}
+          next={() => fetchMoreData(2)}
           style={{
             overflow: 'auto',
             height: 'calc(100vh - 230px)',
@@ -192,7 +220,7 @@ const SiteDrawer = () => {
           height={document.body.clientHeight - 230}
           loader={<Skeleton avatar paragraph={{ rows: 2 }} active />}
           scrollableTarget="scrollableDiv"
-          endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+          endMessage={<Divider plain>{t('nm')}</Divider>}
         >
           {list.map((i: any) => (
             <ContentItem setReads={setReads} item={i} key={i.id} />
@@ -213,7 +241,7 @@ const SiteDrawer = () => {
             )}
           </Tips>
           <MyFooter>
-            <Checkbox onChange={onChange}>
+            <Checkbox checked={readStatue()} onChange={onChange}>
               <span
                 style={{
                   fontSize: '14px',

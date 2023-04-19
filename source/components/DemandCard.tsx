@@ -217,11 +217,10 @@ const DemandCard = (props: Props) => {
                     style={{
                       marginLeft: index ? -7 : 0,
                       zIndex: index,
-                      border: '1px solid var(--neutral-white-d2)',
                       borderRadius: '50%',
                     }}
                   >
-                    <CommonUserAvatar />
+                    <CommonUserAvatar isBorder />
                   </div>
                 ))}
               <div

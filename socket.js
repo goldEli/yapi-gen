@@ -9,7 +9,26 @@ wss.on("connection", ws => {
 
     // sending message to client
     setInterval(() => {
-        ws.send('Welcome, you are connected!');
+        ws.send(JSON.stringify({
+            "send": "project",
+            "to": "31",
+            "msgType": "M0000",
+            "customType": "1102",
+            "source": "sys",
+            "msgBody": {
+                "title": "【张三】创建了迭代",
+                "content": "【张三】在【王娇项目348762384--xxll】创建了【迭代1.0】迭代，请前往查看"
+            },
+            "customData": {
+                "linkWebUrl": "http://www.baidu.com",
+                "projectId": "24",
+                "iterateId": "12",
+                "demanId": "1000058"
+            },
+            "msgIds": [
+                1213
+            ]
+        }));
     }, 10000);
 
 

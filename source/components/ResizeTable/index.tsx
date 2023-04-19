@@ -6,6 +6,7 @@ import { Resizable } from 'react-resizable'
 import './index.css'
 import styled from '@emotion/styled'
 import NewLoadingTransition from '../NewLoadingTransition'
+import { useSelector } from '@store/index'
 
 const TableWrap = styled(Table)`
   user-select: none;
@@ -47,17 +48,31 @@ const TableWrap = styled(Table)`
   .ant-table-row {
     height: 52px;
   }
+  .ant-table-tbody > tr.ant-table-row-selected > td {
+    background: transparent;
+  }
   .ant-table-tbody > tr.ant-table-row:hover > td,
   .ant-table-tbody > tr > td.ant-table-cell-row-hover {
-    background: var(--hover-d2);
+    background: transparent;
   }
   .ant-table-row-selected {
-    background: var(--selected);
+    background: var(--hover-d2);
+    &:hover {
+      background: var(--selected);
+    }
   }
   .ant-table-row:hover {
     .dropdownIcon {
       visibility: visible;
     }
+  }
+  .ant-table-row:not(.ant-table-row-selected) {
+    &:hover {
+      background: var(--hover-d2);
+    }
+  }
+  .activeListItem {
+    background: var(--hover-d2);
   }
 `
 
@@ -98,6 +113,7 @@ interface ResizeTableProps {
 }
 // 拖拽调整table
 const ResizeTable = (props: ResizeTableProps) => {
+  const { listActiveId } = useSelector(store => store.global)
   // 表格列
   const [cols, setCols] = useState<any>([])
   const [columns, setColumns] = useState<any>([])
@@ -105,6 +121,8 @@ const ResizeTable = (props: ResizeTableProps) => {
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
   const dataWrapRef = useRef<HTMLDivElement>(null)
   const canRun = useRef(true)
+
+  console.log(listActiveId)
 
   // 处理拖拽
   const handleResize =
@@ -195,6 +213,9 @@ const ResizeTable = (props: ResizeTableProps) => {
               rowSelection={props?.rowSelection}
               expandable={props?.expandable}
               onRow={props.onRow as any}
+              rowClassName={(row: any) =>
+                row.id === listActiveId ? 'activeListItem' : ''
+              }
             />
           )}
           {props.dataSource && props.dataSource?.length <= 0 && (

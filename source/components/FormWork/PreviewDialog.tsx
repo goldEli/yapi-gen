@@ -136,42 +136,8 @@ const EditorMain = (props: EditorPropsType) => {
 const WhiteDay = (props: Props) => {
   const [form] = Form.useForm()
   const { templateContentConfigs } = useSelector(store => store.formWork)
-
-  const [attachList, setAttachList] = useState<any>([])
-  const [peopleValue, setPeopleValue] = useState<any>([])
-  const [needValue, setNeedValue] = useState<any>([])
   const leftDom: any = useRef<HTMLInputElement>(null)
-  const onChangeAttachment = (result: any) => {
-    const arr = result.map((i: any) => {
-      return {
-        url: i.url,
-        created_at: i.ctime,
-        configurations: {
-          name: i.name,
-          ext: i.ext,
-          size: i.size,
-        },
-      }
-    })
 
-    form.setFieldsValue({
-      attachments: arr,
-    })
-  }
-
-  const onBottom = () => {
-    const dom: any = leftDom?.current
-    dom.scrollTop = dom.scrollHeight
-  }
-
-  const scrollToBottom = () => {
-    setTimeout(() => {
-      leftDom.current.scrollTo({
-        top: leftDom.current.scrollHeight,
-        behavior: 'smooth',
-      })
-    })
-  }
   const onValidator = (rule: any, value: any) => {
     if (value === '<p><br></p>' || value.trim() === '') {
       return Promise.reject(
@@ -184,7 +150,7 @@ const WhiteDay = (props: Props) => {
     return null
   }
   const onConfirm = () => {
-    const values = form.getFieldsValue()
+    props.onClose()
   }
   const getMain = (item: any) => {
     if (item.type == 3) {
@@ -223,7 +189,7 @@ const WhiteDay = (props: Props) => {
       return (
         <Form.Item label={<LabelTitle title={'汇报对象'} />} name="people">
           {props.isVisible ? (
-            <ChoosePeople type={props.type} initValue={peopleValue} />
+            <ChoosePeople type={props.type} initValue={[]} />
           ) : null}
         </Form.Item>
       )

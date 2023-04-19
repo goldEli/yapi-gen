@@ -2,6 +2,7 @@ import { Form } from 'antd'
 import CustomSelect from '@/components/CustomSelect'
 import CommonModal from '@/components/CommonModal'
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const BatchSetPermGroup = (props: {
   isVisible: boolean
@@ -10,6 +11,7 @@ const BatchSetPermGroup = (props: {
   roleOptions?: number[]
 }) => {
   const [form] = Form.useForm()
+  const [t] = useTranslation()
 
   useEffect(() => {
     if (!props.isVisible) {
@@ -27,23 +29,25 @@ const BatchSetPermGroup = (props: {
     <CommonModal
       width={528}
       onClose={() => props.onClose()}
-      title="批量配置权限"
+      title={t('common.batchConfigPermission')}
       isVisible={props.isVisible}
       onConfirm={onConfirm}
     >
       <Form
         form={form}
         layout="vertical"
-        style={{ padding: '8px 24px', height: 156 }}
+        style={{ padding: '8px 24px' }}
         autoComplete="off"
       >
         <Form.Item
-          label="权限组"
+          label={t('common.permissionGroup')}
           name="userGroupId"
-          rules={[{ required: true, message: '请选择权限组' }]}
+          rules={[
+            { required: true, message: String(t('project.pleasePermission')) },
+          ]}
         >
           <CustomSelect
-            placeholder="请选择"
+            placeholder={t('common.pleaseSelect')}
             getPopupContainer={(node: any) => node}
             showSearch
             optionFilterProp="label"

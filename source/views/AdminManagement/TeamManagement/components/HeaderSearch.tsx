@@ -5,6 +5,7 @@ import { useSelector } from '@store/index'
 import { useTranslation } from 'react-i18next'
 import { DividerWrap, HoverWrap } from '@/components/StyleCommon'
 import ScreenMinHover from '@/components/ScreenMinHover'
+import { Space } from 'antd'
 
 const HeaderWrap = styled.div`
   width: 100%;
@@ -67,25 +68,30 @@ const HeaderSearch = (props: {
         <span>{activeTeam?.name}</span>
       </TitleWrap>
       <SearchBox>
-        <ScreenMinHover
-          label={t('common.refresh')}
-          icon="sync"
-          style={{ margin: '0 8px' }}
-          onClick={props.onRefresh}
-        />
-
-        <InputSearch
-          width={202}
-          bgColor="var(--neutral-white-d4)"
-          length={12}
-          placeholder={t('please_enter_your_nickname_name_email_phone_number')}
-          onChangeSearch={(value: string) => props.onSetSearchVal(value)}
-          leftIcon
-        />
+        <Space size={24}>
+          <DividerWrap type="vertical" />
+          <InputSearch
+            width={202}
+            bgColor="var(--neutral-white-d4)"
+            length={12}
+            placeholder={t(
+              'please_enter_your_nickname_name_email_phone_number',
+            )}
+            onChangeSearch={(value: string) => props.onSetSearchVal(value)}
+            leftIcon
+          />
+        </Space>
 
         <ButtonStyle onClick={props.onShowAddMemberModal}>
           {t('add_a_member') as string}
         </ButtonStyle>
+
+        <ScreenMinHover
+          label={t('common.refresh')}
+          icon="sync"
+          style={{ marginLeft: 24 }}
+          onClick={props.onRefresh}
+        />
       </SearchBox>
     </HeaderWrap>
   )

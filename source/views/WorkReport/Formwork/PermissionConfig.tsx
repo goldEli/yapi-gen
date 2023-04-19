@@ -19,9 +19,9 @@ import {
   setFillingRequirements,
   setEditSave,
 } from '@store/formWork'
-import { dayData1, weekData, monthData } from './DataList'
+import { dayData1, weekData, monthData, aWeekDataList } from './DataList'
 import moment from 'moment'
-import { cos } from '@/services/cos'
+import { throttle } from 'lodash'
 const PermissionConfigStyle = styled.div`
   padding: 0 24px;
   overflow-y: auto;
@@ -54,7 +54,7 @@ const PermissionConfig = (props: PropsType) => {
   const [type, setType] = useState<string>('day')
   const [form] = Form.useForm()
   const [delIsVisible, setDelIsVisible] = useState(false)
-  const { fillingRequirements, reportContent, aWeekDataList } = useSelector(
+  const { fillingRequirements, reportContent } = useSelector(
     store => store.formWork,
   )
   const [person1, setPerson1] = useState<any>()
@@ -161,32 +161,60 @@ const PermissionConfig = (props: PropsType) => {
     dispatch(setEditSave(false))
     setType(e.target.value)
     let value = 0
+    let start = null
+    let end = null
+    let reminder_time = 0
     switch (e.target.value) {
       case 'day':
         value = 1
+        start = {
+          day_type: 1,
+          time: 24 * 60 * 60,
+        }
+        end = {
+          day_type: 1,
+          time: 24 * 60 * 60,
+        }
+        // reminder_time = 1 * 24 * 60 * 60
         break
       case 'week':
         value = 2
+        start = {
+          day_type: 4,
+          time: 24 * 60 * 60,
+        }
+        end = {
+          day_type: 7,
+          time: 24 * 60 * 60,
+        }
         break
       case 'month':
         value = 3
+        start = {
+          day_type: 25,
+          time: 24 * 60 * 60,
+        }
+        end = {
+          day_type: 34,
+          time: 24 * 60 * 60,
+        }
         break
       default:
         value = 4
         break
     }
     const claerConfig: any = {
-      day: [],
+      day: aWeekDataList,
       hand_scope: 1,
-      is_submitter_edit: false,
-      is_cycle_limit: false,
-      is_supply: false,
-      reminder_time: null,
-      auto_reminder: false,
+      is_submitter_edit: true,
+      is_cycle_limit: true,
+      is_supply: true,
+      reminder_time,
+      auto_reminder: true,
       submit_cycle: 1,
-      is_holiday: false,
-      end_time: null,
-      start_time: null,
+      is_holiday: true,
+      end_time: end,
+      start_time: start,
     }
     dispatch(setFillingRequirements({ ...claerConfig, submit_cycle: value }))
   }
@@ -327,7 +355,7 @@ const PermissionConfig = (props: PropsType) => {
     return time
   }
   // 表单值处理，时间秒转换成展示的数字
-  const setFormValues = (obj: any) => {
+  const setFormValues = throttle((obj: any) => {
     switch (obj?.submit_cycle) {
       case 1:
         setType('day')
@@ -345,13 +373,6 @@ const PermissionConfig = (props: PropsType) => {
 
     const newObj = { ...obj }
     if (obj?.submit_cycle === 1) {
-      const nowData = aWeekDataList
-      const newData = obj?.day
-      const arr = nowData.map((item: any) => ({
-        ...item,
-        value: newData?.includes(item.key) ? true : false,
-      }))
-      newObj.day = arr
       const newStartTime = {
         v1: obj?.start_time?.day_type,
         v2: time2(false, obj?.start_time?.time, 'hour'),
@@ -399,7 +420,7 @@ const PermissionConfig = (props: PropsType) => {
       newObj.reminder_time = newReminderTime
     }
     form.setFieldsValue(newObj)
-  }
+  }, 500)
   // 补交范围组数据
   const getHandScopeValue = (num: any, typeState: number) => {
     switch (typeState) {
