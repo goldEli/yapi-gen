@@ -5,8 +5,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import CommonButton from '@/components/CommonButton'
 import LeftTitle from '@/components/LeftTitle'
-import { useDispatch, useSelector } from '@store/index'
-import { changeVisibleFilter } from '@store/SiteNotifications'
+import { useDispatch } from '@store/index'
+import { changeVisible, changeVisibleFilter } from '@store/SiteNotifications'
 import { useParams } from 'react-router'
 import AllSideFilter from '../components/AllSideFilter/AllSideFilter'
 import ContentItem from '../components/ContentItem/ContentItem'
@@ -24,7 +24,6 @@ const Index = () => {
   const friendUsername = useRef<any>(undefined)
   const msgType = useRef<any>(undefined)
   const [list, setList] = useState([])
-  // const [lastId, setLastId] = useState<any>(0)
   const [hasMore, setHasMore] = useState(true)
   const [t] = useTranslation()
   const dispatch = useDispatch()
@@ -43,7 +42,7 @@ const Index = () => {
     setReads(arr)
   }
 
-  const fetchMoreData = async (b?: boolean) => {
+  const fetchMoreData = async (type: number) => {
     const re4 = await getMsg_list({
       lastId: lastId.current,
       read: id === '2' ? 0 : id === '3' ? 1 : undefined,
@@ -51,15 +50,17 @@ const Index = () => {
       msgType: msgType.current,
     })
 
-    if (re4.lastId === 0) {
-      setHasMore(false)
-      return
-    }
     lastId.current = re4.lastId
     setTimeout(() => {
-      if (b) {
+      if (type === 1 && re4.lastId === 0) {
         setList(re4.list)
-      } else {
+        setHasMore(false)
+      } else if (type === 1) {
+        setList(re4.list)
+      } else if (type === 2 && re4.lastId === 0) {
+        setList(e => e.concat(re4.list))
+        setHasMore(false)
+      } else if (type === 2) {
         setList(e => e.concat(re4.list))
       }
     }, 500)
@@ -67,22 +68,21 @@ const Index = () => {
   const changeUser = (str: string, arr: any) => {
     msgType.current = arr
     friendUsername.current = str
-    lastId.current = 0
+    lastId.current = undefined
     setHasMore(true)
-    fetchMoreData(true)
+
+    fetchMoreData(1)
   }
   const changeMsg = (arr: any) => {
     msgType.current = arr
-
-    lastId.current = 0
+    lastId.current = undefined
     setHasMore(true)
-    fetchMoreData(true)
+    fetchMoreData(1)
   }
 
   useEffect(() => {
     lastId.current = 0
-    setHasMore(true)
-    fetchMoreData(true)
+    fetchMoreData(1)
   }, [id])
 
   return (
@@ -99,7 +99,10 @@ const Index = () => {
         <LeftTitle title={titles[id as string]} />
         <div style={{ display: 'flex', gap: '16px' }}>
           <CommonButton
-            onClick={() => dispatch(changeVisibleFilter(true))}
+            onClick={() => {
+              dispatch(changeVisibleFilter(true))
+              dispatch(changeVisible(false))
+            }}
             type="light"
           >
             {t('filtering_notifications') as string}
@@ -112,10 +115,10 @@ const Index = () => {
         </div>
       </div>
 
-      <div style={{ padding: '0 80px' }}>
+      <div style={{ padding: '0 80px', paddingRight: '4px' }}>
         <InfiniteScroll
           dataLength={list.length}
-          next={fetchMoreData}
+          next={() => fetchMoreData(2)}
           style={{
             overflow: 'auto',
             height: 'calc(100vh - 230px)',
@@ -128,7 +131,7 @@ const Index = () => {
           height={document.body.clientHeight - 230}
           loader={<Skeleton avatar paragraph={{ rows: 2 }} active />}
           scrollableTarget="scrollableDiv"
-          endMessage={<Divider plain>nothing more </Divider>}
+          endMessage={<Divider plain>{t('nm')} </Divider>}
         >
           {list.map((i: any) => {
             return <ContentItem setReads={setReads} item={i} key={i.id} />

@@ -1,14 +1,13 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useEffect, useMemo, useState } from 'react'
-import { Space, Tooltip } from 'antd'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useParams } from 'react-router-dom'
-import { DividerWrap, SelectWrapBedeck } from '@/components/StyleCommon'
+import { SelectWrapBedeck } from '@/components/StyleCommon'
 import moment from 'moment'
 import RangePicker from '@/components/RangePicker'
-import CustomSelect from '@/components/CustomSelect'
+import CustomSelect from '@/components/MoreSelect'
 import InputSearch from '@/components/InputSearch'
 import ResizeTable from '@/components/ResizeTable'
 import PaginationBox from '@/components/TablePagination'
@@ -26,6 +25,8 @@ import HandleReport from './HandleReport'
 import { useDispatch } from '@store/index'
 import { setViewReportModal } from '@store/workReport'
 import LabelTag from '@/components/LabelTag'
+import CommonUserAvatar from '@/components/CommonUserAvatar'
+import { Space, Tooltip } from 'antd'
 import ScreenMinHover from '@/components/ScreenMinHover'
 
 const ListTitle = styled.div`
@@ -71,32 +72,11 @@ const ClearButton = styled.div`
 `
 const defaultPageParam = { page: 1, pagesize: 20 }
 
-const statusOptions = [
-  { label: '未读', value: 1 },
-  { label: '已读', value: 2 },
-  { label: '已评', value: 3 },
-]
-const reportState = [
-  {
-    label: '更新',
-    color: '#E56F0E',
-    background: 'rgba(250,151,70,0.1)',
-    state: 1,
-  },
-  {
-    label: '补交',
-    color: '#7641E8 ',
-    background: 'rgba(161,118,251,0.1)',
-    state: 2,
-  },
-]
 const List = () => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const { pathname } = useLocation()
   const [isSpinning, setIsSpinning] = useState(false)
-  const [order, setOrder] = useState<any>('')
-  const [orderKey, setOrderKey] = useState<any>()
   const [total, setTotal] = useState<number>(250)
   const [pageObj, setPageObj] = useState(defaultPageParam)
   const [listData, setListData] = useState<any[]>([])
@@ -107,6 +87,25 @@ const List = () => {
   const [visibleEdit, setVisibleEdit] = useState(false)
   const params = useParams()
   const id = Number(params?.id)
+  const statusOptions = [
+    { label: t('p2.noRead'), value: 1 },
+    { label: t('p2.haveRead'), value: 2 },
+    { label: t('report.list.haveComment'), value: 3 },
+  ]
+  const reportState = [
+    {
+      label: t('report.list.update'),
+      color: '#E56F0E',
+      background: 'rgba(250,151,70,0.1)',
+      state: 1,
+    },
+    {
+      label: t('report.list.makeup'),
+      color: '#7641E8 ',
+      background: 'rgba(161,118,251,0.1)',
+      state: 2,
+    },
+  ]
 
   const menuList = [
     {
@@ -150,11 +149,6 @@ const List = () => {
     }
   }
 
-  const updateOrderkey = (key: any, orderVal: any) => {
-    setOrderKey(key)
-    setOrder(orderVal)
-  }
-
   useEffect(() => {
     getList()
   }, [pageObj, queryParams])
@@ -173,13 +167,22 @@ const List = () => {
       }),
     )
   }
+
+  const onUpdateOrderKey = (key: any, val: any) => {
+    setQueryParams({
+      ...queryParams,
+      order: val === 2 ? 'desc' : 'asc',
+      orderkey: key,
+    })
+  }
+
   const NewSort = (props: any) => {
     return (
       <Sort
         fixedKey={props.fixedKey}
-        onChangeKey={updateOrderkey}
-        nowKey={orderKey}
-        order={order}
+        onChangeKey={props.onUpdateOrderKey}
+        nowKey={props.nowKey}
+        order={props.order}
       >
         {props.children}
       </Sort>
@@ -192,15 +195,33 @@ const List = () => {
       dataIndex: 'user',
       render: (_: string, record: any) => {
         return (
-          <>
-            <span style={{ marginRight: 12 }}>{String(record.user.name)}</span>
+          <div style={{ display: 'flex', alignItems: 'center', height: 52 }}>
+            {record.user?.avatar ? (
+              <img
+                style={{
+                  width: 24,
+                  height: 24,
+                  borderRadius: 12,
+                }}
+                src={record.user?.avatar}
+              />
+            ) : (
+              <span>
+                <CommonUserAvatar size="small" />
+              </span>
+            )}
+            <span style={{ marginRight: 12, marginLeft: 8 }}>
+              {String(record.user.name)}
+              {t('report.list.of')}
+              {record.name}
+            </span>
             <LabelTag
               options={reportState}
               state={
                 record.is_supply === 1 ? 1 : record.is_update === 1 ? 2 : 0
               }
             />
-          </>
+          </div>
         )
       },
     },
@@ -235,10 +256,16 @@ const List = () => {
     },
     {
       width: 252,
-      title: t('report.list.reportTime'),
-      sorter: (a: any, b: any) => {
-        return moment(a.start_time).valueOf() - moment(b.start_time).valueOf()
-      },
+      title: (
+        <NewSort
+          fixedKey="start_time"
+          nowKey={queryParams.orderkey}
+          order={queryParams.order}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          {t('report.list.reportTime')}
+        </NewSort>
+      ),
       dataIndex: 'start_time',
       render: (_: string, record: any) => {
         return <span>{`${record.start_time} ~ ${record.end_time}`}</span>
@@ -246,11 +273,17 @@ const List = () => {
     },
     {
       width: 240,
-      title: t('report.list.submitTime'),
+      title: (
+        <NewSort
+          fixedKey="created_at"
+          nowKey={queryParams.orderkey}
+          order={queryParams.order}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          {t('report.list.submitTime')}
+        </NewSort>
+      ),
       dataIndex: 'created_at',
-      sorter: (a: any, b: any) => {
-        return moment(a.created_at).valueOf() - moment(b.created_at).valueOf()
-      },
     },
     {
       width: 160,
@@ -321,9 +354,10 @@ const List = () => {
     })
   }
   const onChangeRepType = (value: any) => {
+    console.log(value)
     setQueryParams({
       ...queryParams,
-      report_template_id: value,
+      report_template_ids: value,
     })
   }
 
@@ -404,13 +438,12 @@ const List = () => {
     return {
       label: item.name,
       value: item.id,
+      id: item.id,
     }
   }
   const getTemplateList = async () => {
     const data = await templateList()
-    setRepTypeOptions(
-      [{ label: '所有', value: null }].concat(data.map(generateOptions)),
-    )
+    setRepTypeOptions(data.map(generateOptions))
   }
 
   const getUserList = async () => {
@@ -432,6 +465,7 @@ const List = () => {
             placeholder={t('report.list.search')}
             onChangeSearch={onPressEnter}
             leftIcon
+            isReport
           />
           <ScreenMinHover
             label={t('common.refresh')}
@@ -446,14 +480,15 @@ const List = () => {
             {t('report.list.reportType')}
           </span>
           <CustomSelect
+            more
             style={{ width: 148 }}
             getPopupContainer={(node: any) => node}
             allowClear
             optionFilterProp="label"
-            defaultValue={[null]}
             value={[queryParams.report_template_id || null]}
             options={repTypeOptions}
             onChange={onChangeRepType}
+            onConfirm={() => null}
           />
         </SelectWrapForList>
         {id !== 1 && (id === 2 || id === 3) ? extraSelect : null}
@@ -479,7 +514,7 @@ const List = () => {
             onChange={date => onChangeTime('submit', date)}
           />
         </SelectWrapForList>
-        <ClearButton onClick={restQuery}>清除条件</ClearButton>
+        <ClearButton onClick={restQuery}>{t('common.clearForm')}</ClearButton>
       </ListHead>
 
       <ResizeTable
@@ -502,7 +537,7 @@ const List = () => {
         editId={editId}
         visibleEdit={visibleEdit}
         editClose={() => setVisibleEdit(false)}
-        visibleEditText="修改汇报"
+        visibleEditText={t('report.list.modifyReport')}
       />
     </>
   )

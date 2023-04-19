@@ -1,4 +1,5 @@
 {
+  "nm": "没有更多",
   "incident": "事件",
   "insite_notifications": "站内通知",
   "notify_object": "通知对象",
@@ -1055,7 +1056,10 @@
       "of": "的",
       "okComment": "添加评论成功！",
       "noSubmitted": "未提交",
-      "success": "操作成功"
+      "success": "操作成功",
+      "fail": "操作失败",
+      "modifyReport": "修改汇报",
+      "haveComment": "已评"
     },
     "statistics": {
       "title": "汇报我的统计",

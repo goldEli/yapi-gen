@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-max-depth */
 // 权限设置
 
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -27,7 +28,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
 import CommonButton from '@/components/CommonButton'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
-import { DelButton } from '@/components/StyleCommon'
+import { CloseWrap, DelButton } from '@/components/StyleCommon'
 
 const GroupWrap = styled.div({
   display: 'flex',
@@ -446,7 +447,20 @@ const PermissionManagement = () => {
           }
           width={528}
           onClose={onClose}
-          isShowFooter
+          hasFooter={
+            <ModalFooter size={16} style={{ padding: '0 16px 24px 0' }}>
+              <CommonButton type="light" onClick={onClose}>
+                {t('common.cancel')}
+              </CommonButton>
+              <CommonButton
+                isDisable={!addValue}
+                onClick={onSaveGroup}
+                type="primary"
+              >
+                {t('common.confirm2')}
+              </CommonButton>
+            </ModalFooter>
+          }
         >
           <div style={{ margin: '0 16px 24px 24px' }}>
             <Input
@@ -456,18 +470,6 @@ const PermissionManagement = () => {
               placeholder={t('setting.pleaseEnterName')}
             />
           </div>
-          <ModalFooter size={16} style={{ padding: '0 16px 24px 0' }}>
-            <CommonButton type="light" onClick={onClose}>
-              {t('common.cancel')}
-            </CommonButton>
-            <CommonButton
-              isDisable={!addValue}
-              onClick={onSaveGroup}
-              type="primary"
-            >
-              {t('common.confirm2')}
-            </CommonButton>
-          </ModalFooter>
         </CommonModal>
         <Header>
           <span>{t('setting.permissionManagement')}</span>
@@ -490,10 +492,13 @@ const PermissionManagement = () => {
                     {t('setting.userGroup')}
                   </Title>
                   <Tooltip placement="top" title={t('adding_a_user_group')}>
-                    <IconFontStyle
-                      type="plus"
-                      onClick={() => setIsVisible(true)}
-                    />
+                    <CloseWrap width={24} height={24}>
+                      <IconFont
+                        style={{ fontSize: 18 }}
+                        type="plus"
+                        onClick={() => setIsVisible(true)}
+                      />
+                    </CloseWrap>
                   </Tooltip>
                 </RowBox>
                 <MenuItems>

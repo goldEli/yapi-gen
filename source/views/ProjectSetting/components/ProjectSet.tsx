@@ -29,6 +29,7 @@ import {
 } from '@/services/project'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import CommonButton from '@/components/CommonButton'
+import { CloseWrap } from '@/components/StyleCommon'
 
 const Warp = styled.div({
   height: 'calc(100vh - 123px)',
@@ -444,7 +445,21 @@ const ProjectSet = () => {
           }
           width={528}
           onClose={onClose}
-          isShowFooter
+          isShowFooter={false}
+          hasFooter={
+            <ModalFooter size={16} style={{ padding: '0 20px 24px 0' }}>
+              <CommonButton type="light" onClick={onClose}>
+                {t('common.cancel')}
+              </CommonButton>
+              <CommonButton
+                isDisable={!addValue}
+                onClick={onSaveGroup}
+                type="primary"
+              >
+                {t('common.confirm2')}
+              </CommonButton>
+            </ModalFooter>
+          }
         >
           <div style={{ margin: ' 0 20px 24px 24px' }}>
             <Input
@@ -457,18 +472,6 @@ const ProjectSet = () => {
               placeholder={t('setting.pleaseEnterName')}
             />
           </div>
-          <ModalFooter size={16} style={{ padding: '0 20px 24px 0' }}>
-            <CommonButton type="light" onClick={onClose}>
-              {t('common.cancel')}
-            </CommonButton>
-            <CommonButton
-              isDisable={!addValue}
-              onClick={onSaveGroup}
-              type="primary"
-            >
-              {t('common.confirm2')}
-            </CommonButton>
-          </ModalFooter>
         </CommonModal>
         <Warp>
           <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
@@ -476,15 +479,18 @@ const ProjectSet = () => {
               <SetLeft>
                 <Title>
                   {t('setting.userGroup')}
-                  <IconFontStyle
-                    type="plus"
-                    onClick={() => {
-                      setIsVisible(true)
-                      setTimeout(() => {
-                        inputRefDom.current?.focus()
-                      }, 100)
-                    }}
-                  />
+                  <CloseWrap width={24} height={24}>
+                    <IconFont
+                      style={{ fontSize: 18 }}
+                      type="plus"
+                      onClick={() => {
+                        setIsVisible(true)
+                        setTimeout(() => {
+                          inputRefDom.current?.focus()
+                        }, 100)
+                      }}
+                    />
+                  </CloseWrap>
                 </Title>
                 <MenuItems>
                   {dataList?.map((item: any) => (

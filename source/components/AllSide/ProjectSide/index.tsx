@@ -25,11 +25,11 @@ import {
   MenuItem,
   WrapDetail,
   GroupBox,
-  CloseWrap,
   TitleBox,
   NoDataCreateWrap,
   GroupItems,
 } from './style'
+import { CloseWrap } from '@/components/StyleCommon'
 
 interface Props {
   onAddClick(): void
@@ -281,9 +281,7 @@ const MoreProjectSide = (props: Props) => {
             <IconFont
               type="plus"
               style={{
-                fontSize: 16,
-                color: 'var(--neutral-n2)',
-                cursor: 'pointer',
+                fontSize: 18,
               }}
             />
           </CloseWrap>

@@ -14,21 +14,6 @@ const Menu = styled.div`
   width: 100%;
 `
 
-export const MySpan = styled.div`
-  cursor: pointer;
-  width: 24px;
-  height: 24px;
-  color: var(--neutral-n2);
-  border-radius: 6px 6px 6px 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  &:hover {
-    /* background: var(--hover-d1); */
-    color: var(--primary-d2);
-  }
-`
-
 const MenuItem = styled.div<{ active?: any }>(
   ({ active }) => ({
     background: active ? 'var(--gradient-left)' : '',
@@ -125,9 +110,10 @@ const ReviewSide = () => {
         {menuList.map((item: any) => (
           <MenuItem
             style={{
-              fontSize: item.state ? '16px' : '',
+              fontSize: 14,
               fontFamily: item.state ? 'SiYuanMedium' : '',
               position: 'relative',
+              fontWeight: 400,
             }}
             active={nowPath2 === item.id}
             onClick={() => changeActive(item)}

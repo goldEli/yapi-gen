@@ -26,6 +26,7 @@ interface Props {
   length?: number
   leftIcon?: boolean
   isDemand?: boolean
+  isReport?: boolean
 }
 
 const InputSearch = (props: Props) => {
@@ -39,6 +40,7 @@ const InputSearch = (props: Props) => {
       value={value}
       style={{
         width: props.width,
+        fontFamily: props.isReport ? 'MiSans' : 'inherit',
       }}
       placeholder={props.placeholder}
       maxLength={props.length}

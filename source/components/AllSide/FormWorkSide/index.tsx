@@ -19,6 +19,7 @@ import {
   setTemplateContentConfigs,
 } from '@store/formWork'
 import { aWeekDataList } from '@/views/WorkReport/Formwork/DataList'
+import { CloseWrap } from '@/components/StyleCommon'
 // getTemplateList
 const FormWorkSideStyle = styled.div`
   min-width: 200px;
@@ -182,16 +183,19 @@ const FormWorkSide = () => {
     <FormWorkSideStyle>
       <TitleStyle>
         <span>模板</span>
-        <IconFontStyle
-          type="plus"
-          onClick={() => {
-            if (!editSave) {
-              setDelIsVisible(true)
-              return
-            }
-            setIsVisible(true)
-          }}
-        />
+        <CloseWrap width={24} height={24}>
+          <IconFont
+            style={{ fontSize: 18 }}
+            type="plus"
+            onClick={() => {
+              if (!editSave) {
+                setDelIsVisible(true)
+                return
+              }
+              setIsVisible(true)
+            }}
+          />
+        </CloseWrap>
       </TitleStyle>
       <Box>
         {dataList?.length < 1 ? (
