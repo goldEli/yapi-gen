@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 type SliceState = {
   all: number
+  now: number
   friendUsername: string
   isVisible: boolean
   isVisibleFilter: boolean
@@ -25,6 +26,9 @@ const slice = createSlice({
   reducers: {
     changeNumber: (state, action) => {
       state.all = action.payload
+    },
+    changeNow: (state, action) => {
+      state.now = action.payload
     },
     changeVisible: (state, action) => {
       state.isVisible = action.payload
