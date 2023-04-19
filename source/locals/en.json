@@ -1217,6 +1217,7 @@
     "finishToAdd": "Complete and create the next",
     "edit": "Edit",
     "attachment": "Attachment",
-    "addAdjunct": "Add attachment"
+    "addAdjunct": "Add attachment",
+    "allDay": "Full-day"
   }
 }

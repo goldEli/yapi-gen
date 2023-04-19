@@ -29,6 +29,7 @@ import {
   formatYYYYMMDDhhmmss,
 } from '@/components/CalendarManager/config'
 import useColor from '@/components/CalendarManager/hooks/useColor'
+import { useTranslation } from 'react-i18next'
 
 interface ScheduleListItemProps {
   data: Model.Schedule.Info
@@ -64,8 +65,9 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
       !isSameTime(start_timestamp, schedule_start_datetime ?? 0)
     )
   }, [props.data])
+  const [t] = useTranslation()
   // 如果是跨天或者全天任务显示全天
-  const time = isAllDay ? '全天' : data.start_time
+  const time = isAllDay ? t('calendarManager.allDay') : data.start_time
   const isDrag = React.useRef(false)
   const domRef = React.useRef(null)
 

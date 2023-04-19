@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from '@emotion/styled'
+import { useTranslation } from 'react-i18next'
 
 interface MoreScheduleButtonProps {
   hiddenNum: number
@@ -16,11 +17,16 @@ const MoreScheduleButtonBox = styled.div`
 `
 
 const MoreScheduleButton: React.FC<MoreScheduleButtonProps> = props => {
+  const [t] = useTranslation()
   if (!props.hiddenNum) {
     return <></>
   }
   return (
-    <MoreScheduleButtonBox>{`还有${props.hiddenNum}项...`}</MoreScheduleButtonBox>
+    <MoreScheduleButtonBox>
+      {t('calendarManager.moreItems', {
+        count: props.hiddenNum,
+      })}
+    </MoreScheduleButtonBox>
   )
 }
 

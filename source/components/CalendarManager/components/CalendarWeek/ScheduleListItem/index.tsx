@@ -31,6 +31,7 @@ import {
   formatYYYYMMDD,
   formatYYYYMMDDhhmmss,
 } from '@/components/CalendarManager/config'
+import { useTranslation } from 'react-i18next'
 
 interface ScheduleListItemProps {
   data: Model.Schedule.Info
@@ -57,9 +58,12 @@ const ScheduleListItem: React.FC<ScheduleListItemProps> = props => {
   const isAllDayButNotFirstDay =
     data.is_span_day &&
     !isSameTime(start_timestamp, schedule_start_datetime ?? 0)
+
+  const [t] = useTranslation()
+
   // 如果是跨天或者全天任务显示全天
   const time = useMemo(() => {
-    return isAllDay ? '全天' : data.start_time
+    return isAllDay ? t('calendarManager.allDay') : data.start_time
   }, [isAllDay, data.start_time])
   const isDrag = React.useRef(false)
   const domRef = React.useRef(null)
