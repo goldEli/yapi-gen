@@ -457,7 +457,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
                     content={
                       <ColorWrap>
                         <CalendarColor
-                          color={normalCategory.color}
+                          color={normalCategory?.color}
                           onChangeColor={color => {
                             setNormalCategory({
                               calendar_id: normalCategory?.calendar_id,
@@ -471,7 +471,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
                   >
                     <div
                       className="color"
-                      style={{ background: colorMap[normalCategory.color] }}
+                      style={{ background: colorMap[normalCategory?.color] }}
                     />
                   </Popover>
                 </div>
