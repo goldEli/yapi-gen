@@ -109,10 +109,42 @@ const FormWorkSide = () => {
   }
   const getDataList = async () => {
     const res = await dispatch(getTemplateList())
-    res.payload?.length >= 1 &&
+    if (res.payload?.length < 1) {
+      const claerConfig: any = {
+        day: aWeekDataList,
+        template_configs: [],
+        hand_scope: 1,
+        is_all_write: 2,
+        is_all_view: 2,
+        is_submitter_edit: true,
+        is_cycle_limit: true,
+        is_supply: true,
+        reminder_time: null,
+        auto_reminder: true,
+        submit_cycle: 1,
+        is_holiday: true,
+        end_time: {
+          day_type: 1,
+          time: 24 * 60 * 60,
+        },
+        start_time: {
+          day_type: 1,
+          time: 24 * 60 * 60,
+        },
+      }
+      dispatch(
+        setReportContent({
+          template_configs: [],
+          is_all_view: 2,
+          is_all_write: 2,
+        }),
+      )
+      dispatch(setFillingRequirements(claerConfig))
+    } else {
       dispatch(
         setActiveItem({ id: res?.payload[0]?.id, name: res?.payload[0]?.name }),
       )
+    }
   }
   useEffect(() => {
     getDataList()
@@ -166,7 +198,6 @@ const FormWorkSide = () => {
     dispatch(setFillingRequirements(claerConfig))
     dispatch(setActiveItem(el))
   }
-  // console.log(t('formWork.text3'), 'title')
   return (
     <FormWorkSideStyle>
       <TitleStyle>
