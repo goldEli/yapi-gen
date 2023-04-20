@@ -72,7 +72,7 @@ const ScheduleStripList: React.FC<ScheduleListProps> = props => {
           const target = e.target as HTMLDivElement
           const { left, top } = target.getBoundingClientRect()
           const box = document.querySelector(
-            '.calendar-week-all-day-box',
+            props.containerClassName,
           ) as HTMLDivElement
           const { left: boxLeft, top: boxTop } = box?.getBoundingClientRect()
           dispatch(
