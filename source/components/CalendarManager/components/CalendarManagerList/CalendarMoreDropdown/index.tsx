@@ -106,7 +106,6 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
 
   // 点击菜单事件
   const onClickMenu = (type: string) => {
-    console.log(type)
     if (type === 'only') {
       showOnlyCalendar()
       props.onCancel()
