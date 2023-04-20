@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-useless-concat */
 /* eslint-disable camelcase */
+/* eslint-disable max-params */
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { useDispatch } from '@store/index'
@@ -81,8 +82,7 @@ interface PropsType {
   pickerType: string
   // 每天 day ,每周 week , 每月 month , 不重复doNot
   type: string
-  getValues(val1: number, val2: number, val3: number): void
-  getValuesOnece(type: string, val1: number, val2: number, val3: number): void
+  getValues(val1: number, val2: number, val3: number, onece: boolean): void
   value: any
   onChange?(values: any): void
 }
@@ -184,7 +184,7 @@ const Picker = (props: PropsType) => {
   }
   const getTime = () => {
     dispatch(setEditSave(false))
-    props.getValues(leftActiveVal, centerActiveVal, rightActiveVal)
+    props.getValues(leftActiveVal, centerActiveVal, rightActiveVal, false)
     if (props.pickerType === 'start' || props.pickerType === 'end') {
       if (leftActiveVal < 0 || centerActiveVal < 0 || rightActiveVal < 0) return
       props?.onChange?.({
@@ -290,12 +290,7 @@ const Picker = (props: PropsType) => {
     setLeftActiveVal(props?.value?.v1)
     setCenterActiveVal(props?.value?.v2)
     setRightActiveVal(props?.value?.v3)
-    props.getValuesOnece(
-      props.pickerType,
-      props?.value?.v1,
-      props?.value?.v2,
-      props?.value?.v3,
-    )
+    props.getValues(props?.value?.v1, props?.value?.v2, props?.value?.v3, true)
     if (props.type === 'day') {
       getDayValues()
     } else if (props.type === 'week') {
