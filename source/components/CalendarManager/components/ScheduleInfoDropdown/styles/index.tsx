@@ -57,7 +57,7 @@ export const iconBox = css`
   }
 `
 export const BoxTip = styled.div`
-  min-width: 160px;
+  min-width: 120px;
   background: #ffffff;
   box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
   border-radius: 6px 6px 6px 6px;
