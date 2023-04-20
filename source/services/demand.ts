@@ -708,6 +708,7 @@ export const addComment: any = async (params: any) => {
     story_id: params.demandId,
     content: params.content,
     attachment: params.attachment,
+    a_user_ids: params.a_user_ids,
   })
 }
 

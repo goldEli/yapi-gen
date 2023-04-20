@@ -40,6 +40,8 @@ import UploadAttach from '@/components/UploadAttach'
 import CommonButton from '@/components/CommonButton'
 import ReportDetailSkeleton from './ReportDetailSkeleton'
 import { saveViewReportDetailDrawer } from '@store/workReport/workReport.thunk'
+import { getStaffListAll } from '@/services/staff'
+import { getIdsForAt } from '@/tools'
 
 interface TargetTabsProps {
   list: any
@@ -108,6 +110,7 @@ const ReportDetailDrawer = () => {
   const [isReview, setIsReview] = useState(false)
   const [commentList, setCommentList] = useState([])
   const [form] = Form.useForm()
+  const [arr, setArr] = useState<any>(null)
   const reviewRef = useRef<any>()
   const leftWidth = 640
   const editorRef = useRef<EditorRef>(null)
@@ -135,7 +138,16 @@ const ReportDetailDrawer = () => {
       document.removeEventListener('mousemove', debounceWrap)
     })
   }
+  const init = async () => {
+    const companyList = await getStaffListAll({ all: 1 })
 
+    const filterCompanyList = companyList.map((item: any) => ({
+      id: item.id,
+
+      label: item.name,
+    }))
+    setArr(filterCompanyList)
+  }
   const AttachmentBox = (props: { list: any }) => {
     const list = props.list?.length ? props.list : []
     const resultList = list?.map((item: any) => {
@@ -240,6 +252,7 @@ const ReportDetailDrawer = () => {
     const params = {
       report_user_id: drawerInfo.id,
       content: value.info,
+      a_user_ids: getIdsForAt(value.info),
     }
     await addReportComment(params)
     message.success(t('report.list.okComment'))
@@ -299,6 +312,7 @@ const ReportDetailDrawer = () => {
   }, [viewReportModal])
 
   useEffect(() => {
+    init()
     document.addEventListener('keydown', getKeyDown)
     return () => {
       document.removeEventListener('keydown', getKeyDown)
@@ -479,7 +493,7 @@ const ReportDetailDrawer = () => {
                   <Editor
                     ref={editorRef}
                     upload={uploadFile}
-                    getSuggestions={() => []}
+                    getSuggestions={() => arr}
                   />
                 </Form.Item>
               </Form>

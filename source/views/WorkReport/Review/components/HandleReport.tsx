@@ -120,6 +120,7 @@ const HandleReport = (props: any) => {
         })
       }
     })
+
     let res = null
     // 修改汇报
     if (props?.editId) {
