@@ -97,6 +97,7 @@ const SupplementaryIntercourse = (props: Props) => {
                 onClick={() => {
                   setVisibleEdit(true)
                   setTemplateObj(item)
+                  props.onClose()
                 }}
               >
                 {t('report.list.makeup')}
