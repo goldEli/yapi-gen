@@ -123,7 +123,6 @@ const ReportDetailDrawer = () => {
   const { userInfo } = useSelector(store => store.user)
   const [isVisible, setIsVisible] = useState(false)
   const [isDeleteId, setIsDeleteId] = useState(0)
-  const reviewCount = useRef<any>(0)
 
   // 拖动线条
   const onDragLine = (e: React.MouseEvent) => {
@@ -276,13 +275,10 @@ const ReportDetailDrawer = () => {
     scrollToBottom()
     setIsReview(false)
     getReportCommentData(drawerInfo.id)
-    if (reviewCount.current === 0) {
-      const info = await getReportInfo({
-        id: viewReportModal?.id,
-      })
-      setUserList(info?.target_users)
-    }
-    reviewCount.current += 1
+    const info = await getReportInfo({
+      id: viewReportModal?.id,
+    })
+    setUserList(info?.target_users)
     form.resetFields()
   }
 
