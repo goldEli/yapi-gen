@@ -56,6 +56,7 @@ const CarWrap = styled.div<{ disabled?: boolean }>`
     cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
     box-shadow: 0px 0px 10px 0px rgba(9, 9, 9, 0.09);
     border: 1px solid transparent;
+    user-select: ${props => (props.disabled ? 'none' : 'inherit')};
   }
   img {
     width: 156px;
