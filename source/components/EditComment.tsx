@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 //  评论的弹框
 
 /* eslint-disable react-hooks/rules-of-hooks */
@@ -19,6 +20,8 @@ import { Editor, EditorRef } from '@xyfe/uikit'
 import { uploadFile } from './CreateDemand/CreateDemandLeft'
 import { useDispatch } from '@store/index'
 import { changeRestScroll } from '@store/scroll'
+import { getProjectMember } from '@/services/project'
+import { getIdsForAt } from '@/tools'
 
 const EditComment = (props: any) => {
   const [form] = Form.useForm()
@@ -28,16 +31,16 @@ const EditComment = (props: any) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const editorRef = useRef<EditorRef>(null)
-  const init = async () => {
-    const companyList = await getStaffListAll({ all: 1 })
 
+  const init = async () => {
+    const companyList = await getProjectMember({
+      projectId: props.projectId,
+      all: true,
+    })
     const filterCompanyList = companyList.map((item: any) => ({
       id: item.id,
-      name: item.name,
-      avatar: item.avatar,
-      nickname: item.nickname,
-      positionName: null,
-      roleName: item.roleName,
+
+      label: item.name,
     }))
     setArr(filterCompanyList)
   }
@@ -50,6 +53,7 @@ const EditComment = (props: any) => {
 
     return Promise.resolve()
   }
+  console.log(arr)
 
   const onChangeAttachment = (result: any) => {
     const arrs = result.map((i: any) => {
@@ -96,6 +100,7 @@ const EditComment = (props: any) => {
     await props.editConfirm({
       content: form.getFieldsValue().info,
       attachment: form.getFieldsValue().attachments,
+      a_user_ids: getIdsForAt(form.getFieldsValue().info),
     })
     dispatch(changeRestScroll(true))
   }
@@ -104,9 +109,8 @@ const EditComment = (props: any) => {
     setTimeout(() => {
       editable.current?.focus()
     }, 100)
-    if (props.visibleEdit) {
-      init()
-    }
+
+    init()
     form.resetFields()
   }, [props.visibleEdit])
 
@@ -174,17 +178,7 @@ const EditComment = (props: any) => {
               },
             ]}
           >
-            <Editor
-              upload={uploadFile}
-              getSuggestions={() => {
-                return new Promise(resolve => {
-                  setTimeout(() => {
-                    resolve([])
-                    // resolve(options)
-                  }, 1000)
-                })
-              }}
-            />
+            <Editor upload={uploadFile} getSuggestions={() => arr} />
           </Form.Item>
           <Form.Item
             label={<LabelTitle title={t('common.attachment')} />}
