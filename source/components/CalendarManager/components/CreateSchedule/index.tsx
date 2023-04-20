@@ -85,6 +85,11 @@ const CreateSchedule = () => {
   >([])
   const leftWidth = 980
   const [isVisible, setIsVisible] = useState(false)
+  // 当前日程所在日是否在我管理里
+  const [hasCalendar, setHasCalendar] = useState<{
+    label: string
+    value: number
+  }>({ label: '', value: 0 })
   // 创建日历默认主题色
   const [normalCategory, setNormalCategory] = useState({
     color: 0,
@@ -125,7 +130,7 @@ const CreateSchedule = () => {
   // 参与者的权限
   const checkboxOptions = [
     { label: t('calendarManager.modifiable_schedule'), value: 0 },
-    { label: t('calendarManager.invite_participants'), value: 1 },
+    // { label: t('calendarManager.invite_participants'), value: 1 },
   ]
 
   // 不可选择当前时间前一天及之前的
@@ -368,10 +373,24 @@ const CreateSchedule = () => {
       describe: scheduleInfo.describe,
     })
     setIsAll(scheduleInfo.is_all_day === 1)
+    const hasStateList = list.filter(
+      (i: Model.Calendar.Info) => i.calendar_id === scheduleInfo.calendar_id,
+    )
+    setHasCalendar(
+      hasStateList?.length > 0
+        ? { label: '', value: 0 }
+        : {
+            label: scheduleInfo.calendar_name || '',
+            value: scheduleInfo.calendar_id || 0,
+          },
+    )
     setNormalCategory(
-      list.filter(
-        (i: Model.Calendar.Info) => i.calendar_id === scheduleInfo.calendar_id,
-      )[0],
+      hasStateList?.length > 0
+        ? hasStateList[0]
+        : {
+            color: scheduleInfo.color,
+            calendar_id: scheduleInfo.calendar_id,
+          },
     )
     setStatus(scheduleInfo.is_busy)
     setRepeatValue({
@@ -690,35 +709,45 @@ const CreateSchedule = () => {
                     }
                     style={{ width: '90%' }}
                     getPopupContainer={n => n}
-                    options={calendarCategory.map((i: Model.Calendar.Info) => ({
-                      label: i.is_default === 1 ? i.user.name : i.name,
-                      value: i.calendar_id,
-                    }))}
+                    options={calendarCategory
+                      .map((i: Model.Calendar.Info) => ({
+                        label: i.is_default === 1 ? i.user.name : i.name,
+                        value: i.calendar_id,
+                      }))
+                      .concat([hasCalendar])}
+                    disabled={hasCalendar.value as unknown as boolean}
                   />
                   <Popover
                     trigger={['hover']}
                     placement="bottomRight"
                     open={isVisible}
                     onOpenChange={setIsVisible}
-                    overlayStyle={{ width: 192 }}
+                    overlayStyle={{
+                      width: 192,
+                    }}
                     content={
-                      <ColorWrap>
-                        <CalendarColor
-                          color={normalCategory.color}
-                          onChangeColor={color => {
-                            setNormalCategory({
-                              calendar_id: normalCategory?.calendar_id,
-                              color,
-                            })
-                            setIsVisible(false)
-                          }}
-                        />
-                      </ColorWrap>
+                      hasCalendar.value ? null : (
+                        <ColorWrap>
+                          <CalendarColor
+                            color={normalCategory.color}
+                            onChangeColor={color => {
+                              setNormalCategory({
+                                calendar_id: normalCategory?.calendar_id,
+                                color,
+                              })
+                              setIsVisible(false)
+                            }}
+                          />
+                        </ColorWrap>
+                      )
                     }
                   >
                     <div
                       className="color"
-                      style={{ background: colorMap[normalCategory.color] }}
+                      style={{
+                        background: colorMap[normalCategory.color],
+                        cursor: hasCalendar.value ? 'no-drop' : 'pointer',
+                      }}
                     />
                   </Popover>
                 </div>

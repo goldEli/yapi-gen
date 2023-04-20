@@ -135,7 +135,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
   // 参与者的权限
   const checkboxOptions = [
     { label: t('calendarManager.modifiable_schedule'), value: 0 },
-    { label: t('calendarManager.invite_participants'), value: 1 },
+    // { label: t('calendarManager.invite_participants'), value: 1 },
   ]
 
   // 选中的共享成员
