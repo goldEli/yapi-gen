@@ -336,7 +336,7 @@ export const DayItemBox = styled.div`
   border-top-width: 1px;
   border-right-width: 0px;
   border-bottom-width: 0px;
-  height: 100px;
+  height: 100%;
   flex: 1;
   overflow: hidden;
   display: flex;
