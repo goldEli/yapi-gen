@@ -333,11 +333,13 @@ const HandleReport = (props: any) => {
 
   // 写汇报 初始化
   useEffect(() => {
+    console.log('2222', props?.templateId)
+
     if (props?.templateId) {
       getTemplateById(props?.templateId)
       getList()
     }
-  }, [props.templateId])
+  }, [props.templateId, props.visibleEdit])
 
   // 自定义校富文本框
   const onValidator = (rule: any, value: any) => {
