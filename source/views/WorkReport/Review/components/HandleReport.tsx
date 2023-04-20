@@ -1,4 +1,6 @@
-// 写日志
+/**
+ * 写汇报
+ */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 /* eslint-disable react/no-unstable-nested-components */
@@ -92,6 +94,7 @@ const HandleReport = (props: any) => {
   const [uploadAttachList, setUploadAttachList] = useState<any>({})
   const dispatch = useDispatch()
 
+  // 关闭弹窗时重置
   const close = () => {
     form.resetFields()
     props.editClose()
@@ -156,7 +159,6 @@ const HandleReport = (props: any) => {
       // 更新List页面
       dispatch(setUpdateList({ isFresh: 1 }))
     }
-
     close()
   }
 
@@ -176,7 +178,7 @@ const HandleReport = (props: any) => {
       [name]: arr,
     })
   }
-
+  //
   const onBottom = () => {
     const dom: any = leftDom?.current
     dom.scrollTop = dom.scrollHeight
@@ -276,7 +278,7 @@ const HandleReport = (props: any) => {
     }
   }
 
-  // 编辑回显
+  // 修改态回显
   const setDefaultValue = async () => {
     const result = await getReportDetailById({ id: props?.editId })
     if (result.code === 0 && result.data) {
@@ -310,6 +312,7 @@ const HandleReport = (props: any) => {
       })
     }
   }
+  // 获取人员集合
   const getList = async () => {
     const result = await getStaffListAll({ all: 1 })
     setOptions(
@@ -336,6 +339,7 @@ const HandleReport = (props: any) => {
     }
   }, [props.templateId])
 
+  // 自定义校富文本框
   const onValidator = (rule: any, value: any) => {
     if (value === '<p><br></p>' || value === '<p></p>' || value.trim() === '') {
       return Promise.reject(
@@ -345,6 +349,7 @@ const HandleReport = (props: any) => {
     return Promise.resolve()
   }
 
+  // 自定义校验汇报对象
   const onValidatorForPerson = (rule: any, value: any) => {
     if (value?.length === 0 && isFirstValidator.current !== 0) {
       return Promise.reject(new Error(''))
@@ -352,9 +357,6 @@ const HandleReport = (props: any) => {
     return Promise.resolve()
   }
 
-  if (!props.visibleEdit) {
-    return null
-  }
   // 根据模板类型生成对应的item
   const getFormItemHtml = (content: any): React.ReactElement => {
     switch (content.type) {
@@ -477,6 +479,7 @@ const HandleReport = (props: any) => {
     }
   }
 
+  // 拼接模板填写时间
   const getReportDateText = (date: any) => {
     return date && date?.some((k: any) => k)
       ? `（${date?.[0]} ${date?.[0] && date?.[1] ? t('report.list.to') : ''} ${
@@ -524,9 +527,10 @@ const HandleReport = (props: any) => {
                   <CommonUserAvatar size="large" />
                 </span>
               )}
+
               <div className="reportTitleWrap">
                 <div className="titleText">
-                  {`${userInfo?.name}的${reportDetail?.name}`}
+                  {`${userInfo?.name}的${reportDetail?.name ?? ''}`}
                   <span className="dateText">
                     {reportDetail?.submitCycleDate.filter((v: string) => v)
                       .length > 0 &&
@@ -534,7 +538,8 @@ const HandleReport = (props: any) => {
                   </span>
                 </div>
                 <div className="submitTimeText">
-                  {t('report.list.prevDateSubmit')}：{reportDetail?.updated_at}
+                  {t('report.list.prevDateSubmit')}：
+                  {reportDetail?.updated_at ?? ''}
                 </div>
               </div>
             </div>

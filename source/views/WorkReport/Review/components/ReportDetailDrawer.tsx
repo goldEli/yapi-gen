@@ -6,7 +6,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/no-danger */
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
-import { Drawer, message, Form, Skeleton, Space, Input } from 'antd'
+import { Drawer, message, Form, Space, Input } from 'antd'
 import { Editor, EditorRef } from '@xyfe/uikit'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -47,6 +47,7 @@ interface TargetTabsProps {
   list: any
 }
 
+// 已读未读
 const TargetTabs = (props: TargetTabsProps) => {
   const [activeTab, setActiveTab] = useState(0)
   const [t] = useTranslation()
@@ -233,14 +234,15 @@ const ReportDetailDrawer = () => {
     )
   }
 
+  // 键盘上下键事件监听
   const getKeyDown = (e: any) => {
     if (storeAll.getState().workReport.viewReportModal.visible) {
       if (e.keyCode === 38) {
-        //up
+        // up
         document.getElementById('upIcon')?.click()
       }
       if (e.keyCode === 40) {
-        //down
+        // down
         document.getElementById('downIcon')?.click()
       }
     }
