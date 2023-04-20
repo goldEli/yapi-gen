@@ -11,7 +11,8 @@ import {
 } from 'antd'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { RangePickerProps } from 'antd/lib/date-picker'
-import { useState } from 'react'
+import moment from 'moment'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 interface RepeatModalProps {
@@ -20,6 +21,7 @@ interface RepeatModalProps {
   onClose(): void
   currentRepeat: number
   onRepeatConfirm(form: any): void
+  repeatParams?: any
 }
 
 const RepeatModal = (props: RepeatModalProps) => {
@@ -35,6 +37,8 @@ const RepeatModal = (props: RepeatModalProps) => {
   const [number, setNumber] = useState<number>(1)
   // 选择周期
   const [chooseRepeat, setChooseRepeat] = useState<CheckboxValueType[]>([])
+  // 选择周期
+  const [resultDate, setResultDate] = useState<DatePickerProps['value']>()
   const unit = [
     t('calendarManager.day'),
     t('calendarManager.week'),
@@ -63,10 +67,11 @@ const RepeatModal = (props: RepeatModalProps) => {
 
   // 修改日程时间
   const onChangeTime = (
-    _value: DatePickerProps['value'] | RangePickerProps['value'],
+    value: DatePickerProps['value'],
     dateString: [string, string] | string,
   ) => {
     setEndDate(dateString)
+    setResultDate(value)
   }
 
   // 重复小弹窗确认事件
@@ -81,6 +86,26 @@ const RepeatModal = (props: RepeatModalProps) => {
     props.onRepeatConfirm(params)
     onClose()
   }
+
+  useEffect(() => {
+    if (props.isVisible) {
+      console.log(props.repeatParams)
+      setNumber(props.repeatParams.params.repeat_end_num)
+      setEndType(props.repeatParams.params.repeat_end_type)
+      setEndDate(
+        props.repeatParams.params.repeat_end_date === '0000-00-00'
+          ? ''
+          : props.repeatParams.params.repeat_end_date,
+      )
+      setRepeat(props.repeatParams.params.repeat_interval)
+      setChooseRepeat(props.repeatParams.params.repeat_choose)
+      setResultDate(
+        props.repeatParams.params.repeat_end_date === '0000-00-00'
+          ? null
+          : moment(props.repeatParams.params.repeat_end_date),
+      )
+    }
+  }, [props.isVisible])
 
   return (
     <CommonModal
@@ -123,7 +148,11 @@ const RepeatModal = (props: RepeatModalProps) => {
             onChange={setEndType}
           />
           {endType === 1 && (
-            <DatePicker onChange={onChangeTime} style={{ width: 140 }} />
+            <DatePicker
+              value={resultDate as DatePickerProps['value']}
+              onChange={onChangeTime}
+              style={{ width: 140 }}
+            />
           )}
           {endType === 2 && (
             <>
