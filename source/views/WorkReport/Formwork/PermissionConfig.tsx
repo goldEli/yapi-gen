@@ -251,13 +251,13 @@ const PermissionConfig = (props: PropsType) => {
         {
           user_type: 3,
           key: 'all',
-          name: '全部',
+          name: '全员',
           avatar: '',
           target_id: -1,
           target_value: {
             user_type: 3,
             key: 'all',
-            name: '全部',
+            name: '全员',
             avatar: '',
           },
         },
@@ -272,13 +272,13 @@ const PermissionConfig = (props: PropsType) => {
         {
           user_type: 1,
           key: 'all',
-          name: '全部',
+          name: '全员',
           avatar: '',
           target_id: -1,
           target_value: {
             user_type: 1,
             key: 'all',
-            name: '全部',
+            name: '全员',
             avatar: '',
           },
         },
