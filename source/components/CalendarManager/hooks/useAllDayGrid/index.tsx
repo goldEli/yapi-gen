@@ -54,16 +54,16 @@ const useAllDayGrid = (props: {
         visible: false,
       }),
     )
-    // dispatch(
-    //   setQuickCreateScheduleModel({
-    //     visible: true,
-    //     isAll: true,
-    //     startTime: info?.datetime,
-    //     endTime: info?.datetime,
-    //     x: offsetLeft,
-    //     y: offsetTop,
-    //   }),
-    // )
+    dispatch(
+      setQuickCreateScheduleModel({
+        visible: true,
+        isAll: true,
+        startTime: info?.datetime,
+        endTime: info?.datetime,
+        x: offsetLeft,
+        y: offsetTop,
+      }),
+    )
   }
 
   const onMouseEnter = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {

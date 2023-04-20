@@ -7,7 +7,11 @@ import useCurrentTime from '@/components/CalendarManager/hooks/useCurrentTime'
 import { setSelectedDayInMonth } from '@store/calendarPanle'
 import ScheduleStripList from '../../../ScheduleStripList'
 import useAllDayGrid from '@/components/CalendarManager/hooks/useAllDayGrid'
-import { DayItemBox } from '@/components/CalendarManager/styles'
+import {
+  CreateScheduleText,
+  DayItemBox,
+} from '@/components/CalendarManager/styles'
+import { useTranslation } from 'react-i18next'
 
 interface DayItemProps {
   idx: number
@@ -58,15 +62,17 @@ const DayItem: React.FC<DayItemProps> = props => {
 
   const day = dayjs(info?.date).format('DD')
   const isSelected = dayjs(checkedTime).isSame(dayjs(info?.date), 'day')
+  const isSelectedForCreate = selectedDayInMonth === info?.datetime
   const { currentTime } = useCurrentTime()
   const isCurrent = currentTime.isSame(dayjs(info?.datetime), 'day')
   const { classnames, onClick, onMouseEnter } = useAllDayGrid({
     info,
     idx,
-    showSelectedBg: isCurrent || selectedDayInMonth === info?.datetime,
+    showSelectedBg: isCurrent || isSelectedForCreate,
     showBorderRight: (idx + 1) % 7 === 0,
     showBorderBottom: idx > 27,
   })
+  const [t] = useTranslation()
 
   if (!info) {
     return <></>
@@ -97,6 +103,9 @@ const DayItem: React.FC<DayItemProps> = props => {
         idx={idx}
         list={props.list}
       />
+      <CreateScheduleText top={28} visible={isSelectedForCreate}>
+        {t('calendarManager.create_schedule')}
+      </CreateScheduleText>
     </DayItemBox>
   )
 }

@@ -326,7 +326,10 @@ export const DayItemBox = styled.div`
   position: relative;
 `
 
-export const CreateScheduleText = styled.div<{ visible: boolean }>`
+export const CreateScheduleText = styled.div<{
+  visible: boolean
+  top?: number
+}>`
   font-size: 12px;
   margin: 0 2px;
   box-sizing: border-box;
@@ -336,7 +339,7 @@ export const CreateScheduleText = styled.div<{ visible: boolean }>`
   background-color: var(--primary-d1);
   border-radius: 4px;
   position: absolute;
-  top: 0;
+  top: ${props => (props.top ?? 0) + 'px'};
   left: 0;
   display: ${props => (props.visible ? 'block' : 'none')};
 `
