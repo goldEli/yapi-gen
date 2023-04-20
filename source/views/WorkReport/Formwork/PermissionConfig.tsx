@@ -294,7 +294,7 @@ const PermissionConfig = (props: PropsType) => {
   useEffect(() => {
     reportContent && assemblyData()
   }, [reportContent])
-  // 删除重新存
+  // 选人删除重新存
   const onChangedel = (el: any, num: number) => {
     let data1: any = person1 || []
     let data2: any = person2 || []

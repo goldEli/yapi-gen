@@ -45,17 +45,6 @@ const Slide = styled.div`
     cursor: pointer;
   }
 `
-const IconFontStyle = styled(IconFont)({
-  color: 'var(--neutral-n2)',
-  fontSize: '18px',
-  borderRadius: '6px',
-  padding: '5px',
-  '&: hover': {
-    background: 'var(--hover-d1)',
-    color: 'var(--neutral-n1-d1)',
-    cursor: 'pointer',
-  },
-})
 const NoDataCreateWrap = styled.div({
   marginTop: 8,
   minHeight: 68,
@@ -177,6 +166,7 @@ const FormWorkSide = () => {
     dispatch(setFillingRequirements(claerConfig))
     dispatch(setActiveItem(el))
   }
+  // console.log(t('formWork.text3'), 'title')
   return (
     <FormWorkSideStyle>
       <TitleStyle>

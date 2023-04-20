@@ -1,260 +1,260 @@
 // 次日 当日
 export const data = [
   {
-    label: '当日',
+    label: 'atThatTime',
     key: 1,
   },
   {
-    label: '次日',
+    label: 'theNextDay',
     key: 2,
   },
 ]
 // 0-45分
 export const minuteData = [
   {
-    label: '0分',
+    label: 'm0',
     key: 0,
   },
   {
-    label: '15分',
+    label: 'm15',
     key: 15,
   },
   {
-    label: '30分',
+    label: 'm30',
     key: 30,
   },
   {
-    label: '45分',
+    label: 'm45',
     key: 45,
   },
 ]
 // 0-23时
 export const hourData = [
   {
-    label: '0时',
+    label: '0h',
     key: 0,
   },
   {
-    label: '1时',
+    label: '1h',
     key: 1,
   },
   {
-    label: '2时',
+    label: '2h',
     key: 2,
   },
   {
-    label: '3时',
+    label: '3h',
     key: 3,
   },
   {
-    label: '4时',
+    label: '4h',
     key: 4,
   },
   {
-    label: '5时',
+    label: '5h',
     key: 5,
   },
   {
-    label: '6时',
+    label: '6h',
     key: 6,
   },
   {
-    label: '7时',
+    label: '7h',
     key: 7,
   },
   {
-    label: '8时',
+    label: '8h',
     key: 8,
   },
   {
-    label: '9时',
+    label: '9h',
     key: 9,
   },
   {
-    label: '10时',
+    label: '10h',
     key: 10,
   },
   {
-    label: '11时',
+    label: '11h',
     key: 11,
   },
   {
-    label: '12时',
+    label: '12h',
     key: 12,
   },
   {
-    label: '13时',
+    label: '13h',
     key: 13,
   },
   {
-    label: '14时',
+    label: '14h',
     key: 14,
   },
   {
-    label: '15时',
+    label: '15h',
     key: 15,
   },
   {
-    label: '16时',
+    label: '16h',
     key: 16,
   },
   {
-    label: '17时',
+    label: '17h',
     key: 17,
   },
   {
-    label: '18时',
+    label: '18h',
     key: 18,
   },
   {
-    label: '19时',
+    label: '19h',
     key: 19,
   },
   {
-    label: '20时',
+    label: '20h',
     key: 20,
   },
   {
-    label: '21时',
+    label: '21h',
     key: 21,
   },
   {
-    label: '22时',
+    label: '22h',
     key: 22,
   },
   {
-    label: '23时',
+    label: '23h',
     key: 23,
   },
 ]
 // 0-30天
 export const dayData = [
   {
-    label: '0日',
+    label: '0d',
     key: 0,
   },
   {
-    label: '1日',
+    label: '1d',
     key: 1,
   },
   {
-    label: '2日',
+    label: '2d',
     key: 2,
   },
   {
-    label: '3日',
+    label: '3d',
     key: 3,
   },
   {
-    label: '4日',
+    label: '4d',
     key: 4,
   },
   {
-    label: '5日',
+    label: '5d',
     key: 5,
   },
   {
-    label: '6日',
+    label: '6d',
     key: 6,
   },
   {
-    label: '7日',
+    label: '7d',
     key: 7,
   },
   {
-    label: '8日',
+    label: '8d',
     key: 8,
   },
   {
-    label: '9日',
+    label: '9d',
     key: 9,
   },
   {
-    label: '10日',
+    label: '10d',
     key: 10,
   },
   {
-    label: '11日',
+    label: '11d',
     key: 11,
   },
   {
-    label: '12日',
+    label: '12d',
     key: 12,
   },
   {
-    label: '13日',
+    label: '13d',
     key: 13,
   },
   {
-    label: '14日',
+    label: '14d',
     key: 14,
   },
   {
-    label: '15日',
+    label: '15d',
     key: 15,
   },
   {
-    label: '16日',
+    label: '16d',
     key: 16,
   },
   {
-    label: '17日',
+    label: '17d',
     key: 17,
   },
   {
-    label: '18日',
+    label: '18d',
     key: 18,
   },
   {
-    label: '19日',
+    label: '19d',
     key: 19,
   },
   {
-    label: '20日',
+    label: '20d',
     key: 20,
   },
   {
-    label: '21日',
+    label: '21d',
     key: 21,
   },
   {
-    label: '22日',
+    label: '22d',
     key: 22,
   },
   {
-    label: '23日',
+    label: '23d',
     key: 23,
   },
   {
-    label: '24日',
+    label: '24d',
     key: 24,
   },
   {
-    label: '25日',
+    label: '25d',
     key: 25,
   },
   {
-    label: '26日',
+    label: '26d',
     key: 26,
   },
   {
-    label: '27日',
+    label: '27d',
     key: 27,
   },
   {
-    label: '28日',
+    label: '28d',
     key: 28,
   },
   {
-    label: '29日',
+    label: '29d',
     key: 29,
   },
   {
-    label: '30日',
+    label: '30d',
     key: 30,
   },
   {
-    label: '31日',
+    label: '31d',
     key: 31,
   },
 ]
@@ -324,62 +324,62 @@ export const nextMonthDay = [
 // 周一到周日
 export const startWeekData = [
   {
-    label: '周一',
+    label: 'monday',
     key: 0,
   },
   {
-    label: '周二',
+    label: 'tuesday',
     key: 1,
   },
   {
-    label: '周三',
+    label: 'wednesday',
     key: 2,
   },
   {
-    label: '周四',
+    label: 'thursday',
     key: 3,
   },
   {
-    label: '周五',
+    label: 'friday',
     key: 4,
   },
   {
-    label: '周六',
+    label: 'saturday',
     key: 5,
   },
 ]
 // 次周一到周日
 export const endWeekData = [
   {
-    label: '周日',
+    label: 'sunday',
     key: 6,
   },
   {
-    label: '次周一',
+    label: 'cw1',
     key: 7,
   },
   {
-    label: '次周二',
+    label: 'cw2',
     key: 8,
   },
   {
-    label: '次周三',
+    label: 'cw3',
     key: 9,
   },
   {
-    label: '次周四',
+    label: 'cw4',
     key: 10,
   },
   {
-    label: '次周五',
+    label: 'cw5',
     key: 11,
   },
   {
-    label: '次周六',
+    label: 'cw6',
     key: 12,
   },
   {
-    label: '次周日',
+    label: 'cw7',
     key: 13,
   },
 ]
@@ -390,96 +390,96 @@ interface Item {
 export const seleData1: Array<Item> = [
   {
     key: 'all',
-    label: '全员',
+    label: 'all',
   },
   {
     key: 'user',
-    label: '添加成员',
+    label: 'addUser',
   },
   {
     key: 'department',
-    label: '添加部门',
+    label: 'addbm',
   },
   {
     key: 'team',
-    label: '添加团队',
+    label: 'addtd',
   },
 ]
 export const seleData2: Array<Item> = [
   {
     key: 'user',
-    label: '添加成员',
+    label: 'addUser',
   },
   {
     key: 'reportsTo',
-    label: '直属主管',
+    label: 'reportsTo',
   },
   {
     key: 'departmentHead',
-    label: '部门主管',
+    label: 'bmzg',
   },
   {
     key: 'teamManagement',
-    label: '团队管理',
+    label: 'team',
   },
 ]
 export const seleData3: Array<Item> = [
   {
     key: 'user',
-    label: '添加成员',
+    label: 'addUser',
   },
   {
     key: 'all',
-    label: '全员',
+    label: 'all',
   },
   {
     key: 'obj',
-    label: '汇报对象',
+    label: 'reportTo',
   },
   {
     key: 'departmentHead',
-    label: '部门主管',
+    label: 'director',
   },
   {
     key: 'teamManagement',
-    label: '团队管理',
+    label: 'team',
   },
   {
     key: 'reportsTo',
-    label: '直属主管',
+    label: 'reportsTo',
   },
   {
     key: 'allSuperiors',
-    label: '所有上级',
+    label: 'allSup',
   },
 ]
 export const dayData1: any = [
   {
-    label: '前一日',
+    label: 'bd1',
     key: 1,
   },
   {
-    label: '前二日',
+    label: 'bd2',
     key: 2,
   },
   {
-    label: '前三日',
+    label: 'bd3',
     key: 3,
   },
   {
-    label: '前四日',
+    label: 'bd4',
     key: 4,
   },
   {
-    label: '前五日',
+    label: 'bd5',
     key: 5,
   },
   {
-    label: '前六日',
+    label: 'bd6',
     key: 6,
   },
   {
-    label: '前七日',
+    label: 'bd7',
     key: 7,
   },
   // {
@@ -489,15 +489,15 @@ export const dayData1: any = [
 ]
 export const weekData: any = [
   {
-    label: '前一周',
+    label: 'bw1',
     key: 1,
   },
   {
-    label: '前二周',
+    label: 'bw2',
     key: 2,
   },
   {
-    label: '前三周',
+    label: 'bw3',
     key: 3,
   },
   // {
@@ -507,7 +507,7 @@ export const weekData: any = [
 ]
 export const monthData: any = [
   {
-    label: '前一月',
+    label: 'bmonth',
     key: 1,
   },
   // {
@@ -517,37 +517,37 @@ export const monthData: any = [
 ]
 export const aWeekDataList = [
   {
-    label: '周一',
+    label: 'monday',
     key: 0,
     value: true,
   },
   {
-    label: '周二',
+    label: 'tuesday',
     key: 1,
     value: true,
   },
   {
-    label: '周三',
+    label: 'wednesday',
     key: 2,
     value: true,
   },
   {
-    label: '周四',
+    label: 'thursday',
     key: 3,
     value: true,
   },
   {
-    label: '周五',
+    label: 'friday',
     key: 4,
     value: true,
   },
   {
-    label: '周六',
+    label: 'saturday',
     key: 5,
     value: false,
   },
   {
-    label: '周日',
+    label: 'sunday',
     key: 6,
     value: false,
   },

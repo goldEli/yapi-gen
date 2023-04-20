@@ -134,6 +134,7 @@ interface CheckBoxGroupType {
 }
 // 选择周几
 const CheckBoxGroup = (props: CheckBoxGroupType) => {
+  const [t]: any = useTranslation()
   const dispatch = useDispatch()
   const onChange = throttle(
     (value: boolean, el1: { value: boolean; key: number }) => {
@@ -157,7 +158,7 @@ const CheckBoxGroup = (props: CheckBoxGroupType) => {
             onChange={e => onChange(e.target.checked, el)}
             checked={el.value}
           >
-            {el.label}
+            {t(`formWork.${el.label}`)}
           </Checkbox>
         ),
       )}
