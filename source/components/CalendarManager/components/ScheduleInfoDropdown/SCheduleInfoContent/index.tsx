@@ -5,6 +5,7 @@ import ScheduleInfoIcon from '../ScheduleInfoIcon'
 import { useSelector, useDispatch } from '@store/index'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
+import UploadAttach from '@/components/UploadAttach'
 import {
   ScheduleInfoContentBox,
   ScheduleInfoContentItem,
@@ -123,6 +124,7 @@ const ScheduleInfoContent: React.FC = props => {
           </FileItem>
         ))}
       </FileList>
+      {/* <UploadAttach></UploadAttach> */}
       {scheduleInfo?.reminds?.map((item, idx) => (
         <ScheduleInfoContentItem key={idx}>
           <span>
