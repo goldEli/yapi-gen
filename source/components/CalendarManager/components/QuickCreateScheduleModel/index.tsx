@@ -283,7 +283,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
         time: resultTime,
       })
       setTimeout(() => {
-        inputDom.current.focus()
+        inputDom?.current?.focus()
       }, 100)
     }
   }, [quickCreateScheduleModel])

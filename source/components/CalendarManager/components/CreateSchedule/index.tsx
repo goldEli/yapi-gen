@@ -11,6 +11,7 @@ import {
   Drawer,
   Form,
   Input,
+  InputRef,
   Popover,
   Radio,
   Select,
@@ -48,6 +49,7 @@ import { modifySchedule, saveSchedule } from '@store/schedule/schedule.thunk'
 import { useTranslation } from 'react-i18next'
 import { getScheduleInfo } from '@/services/schedule'
 import { setVisualizationTime } from '@store/schedule'
+import { type } from 'os'
 
 interface DefaultTime {
   value?: number
@@ -71,8 +73,8 @@ const CreateFormItem = (props: CreateFormItemProps) => {
 const CreateSchedule = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
-  const leftDom: any = useRef<HTMLDivElement>(null)
-  const inputDom: any = useRef<HTMLInputElement>(null)
+  // const leftDom = useRef<Ref<FormInstance<unknown>>>()
+  const inputDom = useRef<InputRef | null>(null)
   const { scheduleModal, relateConfig, calendarData, calendarConfig } =
     useSelector(store => store.calendar)
   const { userInfo } = useSelector(store => store.user)
@@ -502,7 +504,7 @@ const CreateSchedule = () => {
         getEasyInfo()
       }
       setTimeout(() => {
-        inputDom.current.focus()
+        inputDom?.current?.focus()
       }, 100)
     }
   }, [scheduleModal])
@@ -552,7 +554,7 @@ const CreateSchedule = () => {
         </EasyScheduleHeader>
         <CreateContentAll>
           <CreateFormAll
-            ref={leftDom}
+            // ref={leftDom}
             scrollToFirstError
             form={form}
             layout="vertical"
