@@ -182,7 +182,7 @@ const formWork = createSlice({
         // 每个周期限填一次1- 是 2-否
         is_cycle_limit: data.is_cycle_limit === 1 ? true : false,
         // 提交汇报提交人可修改 1-是 2-否
-        is_submitter_edit: data.is_submitter_edit,
+        is_submitter_edit: data.is_submitter_edit === 1 ? true : false,
         // 补交范围，数字对应周期属性
         hand_scope: Number(data.hand_scope),
       }

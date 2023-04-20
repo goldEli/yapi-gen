@@ -228,6 +228,7 @@ const RightFormWork = () => {
       ?.filter((el: any) => el.target_value)
       ?.filter((item: any) => item.target_value.key !== 'all')
     let parmas: any = {}
+    console.log(parmas, 'parmas')
     parmas = {
       submit_cycle: fillingRequirements?.submit_cycle,
       auto_reminder: fillingRequirements?.auto_reminder ? 1 : 2,
