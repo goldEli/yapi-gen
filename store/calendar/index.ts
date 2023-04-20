@@ -155,7 +155,6 @@ const slice = createSlice({
       )
       // 获取当前数据默认选择的日历
       state.checkedCalendarList = [...checkManageList, ...checkSubList]
-      console.log('checkedCalendarList------', state.checkedCalendarList)
     })
     // 获取日历相关配置下拉
     builder.addCase(getRelateConfig.fulfilled, (state, action) => {

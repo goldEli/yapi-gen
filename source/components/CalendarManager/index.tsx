@@ -42,6 +42,7 @@ const CalendarManager: React.FC<CalendarManagerLayoutProps> = props => {
   }, [isRefresh])
 
   useEffect(() => {
+    if (checkedCalendarList.length === 0) return
     let params = {
       year: dayjs(checkedTime).year(),
       month: dayjs(checkedTime).month() + 1,

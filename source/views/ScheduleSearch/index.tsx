@@ -4,6 +4,7 @@ import { getScheduleSearch } from '@/services/schedule'
 import dayjs from 'dayjs'
 import IconFont from '@/components/IconFont'
 import { useNavigate } from 'react-router-dom'
+import { isDateIntersection } from '@/tools/index'
 import {
   ScheduleSearchWrap,
   ScheduleSearchListBox,
@@ -98,7 +99,6 @@ const ScheduleSearch: React.FC<CalendarListProps> = props => {
                     ? '全天'
                     : ele.start_time + '-' + ele.end_time}
                 </span>
-
                 <span>
                   <label
                     className={
@@ -129,26 +129,19 @@ const ScheduleSearch: React.FC<CalendarListProps> = props => {
                   ) : null}
                 </span>
 
-                {intersection(
-                  [
-                    item.list[index]?.start_datetime,
-                    item.list[index]?.end_datetime,
-                  ],
-                  [
-                    item.list[index - 1]?.start_datetime,
-                    item.list[index - 1]?.end_datetime,
-                  ],
-                ).length ||
-                intersection(
-                  [
-                    item.list[index]?.start_datetime,
-                    item.list[index]?.end_datetime,
-                  ],
-                  [
-                    item.list[index + 1]?.start_datetime,
-                    item.list[index + 1]?.end_datetime,
-                  ],
-                ).length ? (
+                {(isDateIntersection(
+                  item.list[idx + 1]?.start_datetime,
+                  item.list[idx + 1]?.end_datetime,
+                  item.list[idx]?.start_datetime,
+                  item.list[idx]?.end_datetime,
+                ) ||
+                  isDateIntersection(
+                    item.list[idx]?.start_datetime,
+                    item.list[idx]?.end_datetime,
+                    item.list[idx - 1]?.start_datetime,
+                    item.list[idx - 1]?.end_datetime,
+                  )) &&
+                item.list.length > 1 ? (
                   <span>
                     <IconFont type="warning-02"></IconFont>
                   </span>

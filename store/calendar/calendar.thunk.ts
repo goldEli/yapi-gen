@@ -16,7 +16,14 @@ export const getCalendarList = createAsyncThunk(
     return res.data
   },
 )
-
+// 日历月列表
+export const getDaysOfMonthList = createAsyncThunk(
+  `${name}/getDaysOfMonthList`,
+  async (params: API.Calendar.GetDaysOfMonthList.Params) => {
+    const res = await services.calendar.getDaysOfMonthList(params)
+    return res.data
+  },
+)
 // 获取日历相关配置下拉
 export const getRelateConfig = createAsyncThunk(
   `${name}/getRelateConfig`,
@@ -57,15 +64,6 @@ export const getDaysOfWeekList = createAsyncThunk(
   `${name}/getDaysOfWeekList`,
   async (params: API.Calendar.GetDaysOfWeekList.Params) => {
     const res = await services.calendar.getDaysOfWeekList(params)
-    return res.data
-  },
-)
-
-// 日历月列表
-export const getDaysOfMonthList = createAsyncThunk(
-  `${name}/getDaysOfMonthList`,
-  async (params: API.Calendar.GetDaysOfMonthList.Params) => {
-    const res = await services.calendar.getDaysOfMonthList(params)
     return res.data
   },
 )
