@@ -89,7 +89,6 @@ const EditorMain = (props: EditorPropsType) => {
       }, 100)
     }
   }, [props.isVisible])
-  console.log(props, 'props')
   return (
     <div
       style={{
@@ -127,7 +126,6 @@ const WhiteDay = (props: Props) => {
     props.onClose()
   }
   const getMain = (item: any) => {
-    console.log(item, 'pp')
     if (item.type == 3) {
       return (
         <Form.Item
