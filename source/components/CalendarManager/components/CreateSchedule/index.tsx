@@ -133,8 +133,6 @@ const CreateSchedule = () => {
     return current && current < moment().subtract(1, 'day')
   }
 
-  console.log(scheduleModal)
-
   // 关闭弹窗
   const onClose = () => {
     dispatch(setScheduleModal({ visible: false, params: {} }))
@@ -163,6 +161,7 @@ const CreateSchedule = () => {
   const onConfirm = async (next?: boolean) => {
     await form.validateFields()
     let values = form.getFieldsValue()
+    const repeatValueParams = repeatValue.value ? { ...repeatValue.params } : {}
     values.is_busy = status
     values.is_all_day = isAll ? 1 : 2
     values.repeat_type = repeatValue.value
@@ -181,7 +180,7 @@ const CreateSchedule = () => {
         color: normalCategory.color,
         calendar_id: normalCategory.calendar_id,
       },
-      ...repeatValue.params,
+      ...{ ...repeatValueParams },
     }
     resultParams.start_datetime = isAll
       ? moment(values.time[0]).startOf('day').format('YYYY-MM-DD HH:mm:ss')
@@ -512,6 +511,7 @@ const CreateSchedule = () => {
   return (
     <>
       <RepeatModal
+        repeatParams={repeatValue}
         isVisible={isRepeatVisible}
         title={relateConfig.schedule.repeat_types[currentRepeat]?.label}
         currentRepeat={currentRepeat}
@@ -607,7 +607,7 @@ const CreateSchedule = () => {
                 className="select"
                 value={repeatValue.value}
                 options={relateConfig.schedule.repeat_types}
-                onChange={onChangeRepeat}
+                onSelect={onChangeRepeat}
                 getPopupContainer={n => n}
               />
             </Form.Item>
