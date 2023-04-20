@@ -111,13 +111,14 @@ const PermissionConfig = (props: PropsType) => {
       d2 = [...person2, ...val2]
       setPerson2(d2)
     } else {
+      // debugger
       const val3 = values?.map((el: any) => ({
         target_id: el.id || el.target_id,
         user_type: el.user_type,
         target_type: el.target_type,
         target_value: el.target_value,
       }))
-      d3 = [...person1, ...val3]
+      d3 = [...person3, ...val3]
     }
     const d3V = d3.find(
       (item: any) =>
@@ -287,6 +288,7 @@ const PermissionConfig = (props: PropsType) => {
       const hasAll = data1.find((el: any) => el.target_value.key === 'all')
       setPerson1(hasAll ? data1 : newData1)
     }
+    console.log(data1, data2, data3, '柱状')
     reportContent.is_all_view === 2 && setPerson3(data3)
     reportContent.is_all_write === 2 && setPerson1(data1)
     setPerson2(data2)
