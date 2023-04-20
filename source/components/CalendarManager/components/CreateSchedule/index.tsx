@@ -704,7 +704,7 @@ const CreateSchedule = () => {
                     content={
                       <ColorWrap>
                         <CalendarColor
-                          color={normalCategory.color}
+                          color={normalCategory?.color}
                           onChangeColor={color => {
                             setNormalCategory({
                               calendar_id: normalCategory?.calendar_id,
