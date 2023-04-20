@@ -38,7 +38,6 @@ export const getStatTempUsage: any = async () => {
   return response.data
 }
 
-
 export const writeReport: any = async (params: any) => {
   const response = await http.post('writeReport', { ...params })
   return response
@@ -49,21 +48,20 @@ export const updateReport: any = async (params: any) => {
   return response
 }
 
-
 export const templateLatelyList: any = async (params: any) => {
-    const response = await http.get('templateLatelyList', { ...params })
-    return response
-  }
+  const response = await http.get('templateLatelyList', { ...params })
+  return response
+}
 
 export const supplyList: any = async (params: any) => {
-    const response = await http.get('supplyList', { ...params })
-    return response
-  }
+  const response = await http.get('supplyList', { ...params })
+  return response
+}
 
 export const getReportDetailById: any = async (params: any) => {
-    const response = await http.get('getReportDetailById', { ...params })
-    return response
-  }
+  const response = await http.get('getReportDetailById', { ...params })
+  return response
+}
 
 export const getRepSentList: any = async (params: any) => {
   const response = await http.get('repSentList', params)
@@ -82,5 +80,11 @@ export const getRepPublicList: any = async (params: any) => {
 
 export const supplyReport: any = async (params: any) => {
   const response = await http.post('supplyReport', params)
+  return response.data
+}
+
+// 删除评论
+export const delReportComment: any = async (params: any) => {
+  const response = await http.delete('delReportComment', params)
   return response.data
 }

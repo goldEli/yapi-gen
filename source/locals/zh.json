@@ -12,7 +12,7 @@
   "unread_notifications": "未读通知",
   "read_notifications": "已读通知",
   "referring_to_my": "提及我的",
-  "all": "全部",
+  "all": "全员",
   "new1": "最新",
   "atmy": "@我的",
   "notification": "通知",
@@ -1246,7 +1246,8 @@
       "success": "操作成功",
       "fail": "操作失败",
       "modifyReport": "修改汇报",
-      "haveComment": "已评"
+      "haveComment": "已评",
+      "prevDateSubmit": "上次提交时间"
     },
     "statistics": {
       "title": "汇报我的统计",

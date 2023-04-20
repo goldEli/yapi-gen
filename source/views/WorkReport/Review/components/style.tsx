@@ -66,6 +66,10 @@ export const ContactDemandItem = styled.div`
 
 export const CommentBox = styled.div`
   margin-bottom: 8px;
+  .headWrap {
+    display: flex;
+    justify-content: space-between;
+  }
   .header {
     display: flex;
     align-items: center;
