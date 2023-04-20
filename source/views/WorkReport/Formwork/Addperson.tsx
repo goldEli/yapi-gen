@@ -104,7 +104,7 @@ const Addperson = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false)
   const [items, setItems] = useState<Array<Item>>()
   const [isVisible, setIsVisible] = useState(false)
-  const [t] = useTranslation()
+  const [t]: any = useTranslation()
   // 添加部门/团队弹窗
   const [isAddVisible, setIsAddVisible] = useState(false)
   const [userType, setUserType] = useState<number>(0)
@@ -203,16 +203,23 @@ const Addperson = (props: Props) => {
   useEffect(() => {
     switch (props.state) {
       case 1:
-        setItems(seleData1)
+        setItems(
+          seleData1.map(el => ({ ...el, label: t(`formWork.${el.label}`) })),
+        )
         break
       case 2:
-        setItems(seleData2)
+        setItems(
+          seleData2.map(el => ({ ...el, label: t(`formWork.${el.label}`) })),
+        )
         break
       case 3:
-        setItems(seleData3)
+        setItems(
+          seleData3.map(el => ({ ...el, label: t(`formWork.${el.label}`) })),
+        )
         break
     }
   }, [props.state])
+  console.log(items, 'oooooooooo')
   // 添加成员弹窗
   const onConfirm = (data: any) => {
     const setData = data.map((el: any) => ({

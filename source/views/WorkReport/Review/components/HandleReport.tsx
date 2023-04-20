@@ -85,7 +85,7 @@ const HandleReport = (props: any) => {
   const [form] = Form.useForm()
   const [options, setOptions] = useState<any>([])
   const leftDom: any = useRef<HTMLInputElement>(null)
-  const [t] = useTranslation()
+  const [t]: any = useTranslation()
   const userInfo = useSelector(state => state.user.userInfo)
   const [reportDetail, setReportDetail] = useState<any>(null)
   const isFirstValidator = useRef(0)
@@ -123,6 +123,7 @@ const HandleReport = (props: any) => {
         })
       }
     })
+
     let res = null
     // 修改汇报
     if (props?.editId) {
@@ -527,9 +528,10 @@ const HandleReport = (props: any) => {
                   <CommonUserAvatar size="large" />
                 </span>
               )}
+
               <div className="reportTitleWrap">
                 <div className="titleText">
-                  {`${userInfo?.name}的${reportDetail?.name}`}
+                  {`${userInfo?.name}的${reportDetail?.name ?? ''}`}
                   <span className="dateText">
                     {reportDetail?.submitCycleDate.filter((v: string) => v)
                       .length > 0 &&
@@ -537,7 +539,8 @@ const HandleReport = (props: any) => {
                   </span>
                 </div>
                 <div className="submitTimeText">
-                  {t('report.list.prevDateSubmit')}：{reportDetail?.updated_at}
+                  {t('report.list.prevDateSubmit')}：
+                  {reportDetail?.updated_at ?? ''}
                 </div>
               </div>
             </div>

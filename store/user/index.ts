@@ -10,9 +10,11 @@ export interface CounterState {
   isRefresh: boolean
   currentMenu: any
   menuIconList: any
+  companyList: any
 }
 
 const initialState: CounterState = {
+  companyList: [],
   loginInfo: {},
   userInfo: {},
   menuPermission: {},
@@ -37,6 +39,9 @@ export const counterSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    setCompanyList: (state, action) => {
+      state.companyList = action.payload
+    },
     setIsRefresh: (state, action) => {
       state.isRefresh = action.payload
     },

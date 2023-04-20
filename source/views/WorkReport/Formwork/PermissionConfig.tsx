@@ -48,7 +48,7 @@ interface PropsType {
 }
 const PermissionConfig = (props: PropsType) => {
   const dispatch = useDispatch()
-  const [t] = useTranslation()
+  const [t]: any = useTranslation()
   // 汇报内容是否展开
   const [report, setReport] = useState(true)
   const [fillIn, setFillIn] = useState(true)
@@ -294,7 +294,7 @@ const PermissionConfig = (props: PropsType) => {
   useEffect(() => {
     reportContent && assemblyData()
   }, [reportContent])
-  // 删除重新存
+  // 选人删除重新存
   const onChangedel = (el: any, num: number) => {
     let data1: any = person1 || []
     let data2: any = person2 || []
@@ -407,13 +407,13 @@ const PermissionConfig = (props: PropsType) => {
     switch (typeState) {
       case 1:
         const item = dayData1.find((el: { key: number }) => el.key === num)
-        return { label: item?.label, key: item?.key }
+        return { label: t(`formWork.${item?.label}`), key: item?.key }
       case 2:
         const item1 = weekData.find((el: { key: number }) => el.key === num)
-        return { label: item1?.label, key: item1?.key }
+        return { label: t(`formWork.${item1?.label}`), key: item1?.key }
       case 3:
         const item2 = monthData.find((el: { key: number }) => el.key === num)
-        return { label: item2?.label, key: item2?.key }
+        return { label: t(`formWork.${item2?.label}`), key: item2?.key }
     }
   }
   useEffect(() => {
