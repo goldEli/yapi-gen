@@ -347,7 +347,7 @@ function getIdsForAt(htmlString: string) {
   )
   console.log(dataIdValues)
 
-  return dataIdValues
+  return Array.from(new Set(dataIdValues))
 }
 
 export {
