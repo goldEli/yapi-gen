@@ -92,6 +92,7 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
     dispatch(getCalendarList())
     setIsDeleteVisible(false)
     message.success(t('calendarManager.deleteSuccess'))
+    props.onCancel()
   }
 
   // 退订日历确认事件
@@ -100,13 +101,15 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
     dispatch(getCalendarList())
     setIsUnsubscribeVisible(false)
     message.success(t('calendarManager.unsubscribed_successfully'))
+    props.onCancel()
   }
 
   // 点击菜单事件
   const onClickMenu = (type: string) => {
-    props.onCancel()
+    console.log(type)
     if (type === 'only') {
       showOnlyCalendar()
+      props.onCancel()
     } else if (type === 'edit') {
       dispatch(
         setCalendarModal({
@@ -114,6 +117,7 @@ const CalendarMoreDropdown = (props: CalendarMoreDropdownProps) => {
           params: { id: props.item.calendar_id },
         }),
       )
+      props.onCancel()
     } else if (type === 'delete') {
       setIsDeleteVisible(true)
     } else {
