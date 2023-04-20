@@ -77,6 +77,7 @@ interface EditorPropsType {
   isVisible: boolean
   onChange?(e: string): void
   value?: string
+  placehodler: string
 }
 const EditorMain = (props: EditorPropsType) => {
   const editorRef = useRef<EditorRef>(null)
@@ -88,6 +89,7 @@ const EditorMain = (props: EditorPropsType) => {
       }, 100)
     }
   }, [props.isVisible])
+  console.log(props, 'props')
   return (
     <div
       style={{
@@ -96,6 +98,7 @@ const EditorMain = (props: EditorPropsType) => {
     >
       <Editor
         value={props.value}
+        placeholder={props.placehodler}
         onChange={(e: string) => props.onChange?.(e)}
         ref={editorRef}
         upload={uploadFile}
@@ -154,7 +157,11 @@ const WhiteDay = (props: Props) => {
             },
           ]}
         >
-          <EditorMain isVisible={props.isVisible} type={props.type} />
+          <EditorMain
+            isVisible={props.isVisible}
+            type={props.type}
+            placehodler={item.tips}
+          />
         </Form.Item>
       )
     } else if (item.type === 1) {
