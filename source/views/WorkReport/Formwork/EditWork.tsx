@@ -52,7 +52,6 @@ const EditWork = (props: PropsType) => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
-  const [delIsVisible, setDelIsVisible] = useState(false)
   const [dragItem, setDragItem] = useState<any>()
   const [index, setIndex] = useState(0)
   const [type, setType] = useState('')
@@ -68,6 +67,7 @@ const EditWork = (props: PropsType) => {
         type: evevtObj.type,
         tips: evevtObj.tips || '',
         name: evevtObj.title,
+        id: Math.random() + '_' + evevtObj.type,
         is_required: 2,
       }
       const newList = dataList.find((el: { type: number }) => el.type === 4)
@@ -84,6 +84,7 @@ const EditWork = (props: PropsType) => {
         type: evevtObj.type,
         tips: evevtObj.tips || '',
         name: evevtObj.title,
+        id: Math.random() + '_' + evevtObj.type,
         is_required: 2,
       }
       setType('add')
@@ -96,6 +97,7 @@ const EditWork = (props: PropsType) => {
   const ParmasDialogOnConfirm = (obj: any, num: number) => {
     const configs = {
       type: num,
+      id: Math.random() + '_' + num,
       tips: obj.tips || '',
       name: obj.name,
       is_required: obj.is_required,
@@ -116,7 +118,7 @@ const EditWork = (props: PropsType) => {
     const num = val ? 1 : 2
     const arr = dataList.map((item: any) => ({
       ...item,
-      is_required: el.name === item.name ? num : item.is_required,
+      is_required: el.id === item.id ? num : item.is_required,
     }))
     dispatch(setTemplateContentConfigs(arr))
     setDataList(arr)
@@ -127,9 +129,9 @@ const EditWork = (props: PropsType) => {
     setType('edit')
     setIsVisible(true)
   }
-  const onDelete = (el: { name: string }) => {
+  const onDelete = (el: { name: string; id: any }) => {
     dispatch(setEditSave(false))
-    const arr = dataList.filter((item: any) => el.name !== item.name)
+    const arr = dataList.filter((item: any) => el.id !== item.id)
     dispatch(setTemplateContentConfigs(arr))
     setDataList(arr)
   }
