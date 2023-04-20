@@ -162,18 +162,37 @@ export const ManagerListBox = styled.div`
 export const CreateContent = styled.div`
   display: flex;
   height: 100%;
+  height: calc(100% - 136px);
+  overflow: auto;
+  padding-right: 4px;
+  width: 100%;
+`
+
+export const CreateContentAll = styled.div`
+  display: flex;
+  height: 100%;
+  height: calc(100% - 136px);
+  overflow: auto;
+  padding-right: 4px;
   .haveRight {
-    width: 524px;
+    width: 50%;
   }
   .notRight {
     width: 100%;
   }
 `
 
+export const CreateFormAll = styled(Form)`
+  padding: 0 16px 0 24px;
+  height: 100%;
+  overflow: auto;
+`
+
 export const CreateForm = styled(Form)`
   padding: 0 16px 0 24px;
-  max-height: 60vh;
+  height: calc(100% - 136px);
   overflow: auto;
+  width: 100%;
 `
 
 export const CreateFormItemWrap = styled.div`

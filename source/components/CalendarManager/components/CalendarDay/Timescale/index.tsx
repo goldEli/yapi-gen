@@ -171,7 +171,7 @@ const Timescale: React.FC<TimescaleProps> = props => {
       <CurrentTimeLine />
       <NewCalendarArea timeRange={timeRange} />
       <ScheduleCardList />
-      <QuickCreateScheduleModel containerClassName=".time-scale" />
+      {/* <QuickCreateScheduleModel containerClassName=".time-scale" /> */}
     </Table>
   )
 }

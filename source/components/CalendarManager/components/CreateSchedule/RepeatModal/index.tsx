@@ -28,7 +28,7 @@ const RepeatModal = (props: RepeatModalProps) => {
   //  每多少重复
   const [repeat, setRepeat] = useState<number>(1)
   // 结束重复类型
-  const [endType, setEndType] = useState(0)
+  const [endType, setEndType] = useState(null)
   // 结束日期
   const [endDate, setEndDate] = useState<[string, string] | string>()
   // 结束次数
@@ -57,7 +57,7 @@ const RepeatModal = (props: RepeatModalProps) => {
     setNumber(1)
     setEndDate('')
     setRepeat(1)
-    setEndType(0)
+    setEndType(null)
     props.onClose()
   }
 

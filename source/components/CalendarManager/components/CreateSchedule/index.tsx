@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from '@store/index'
 import {
   Checkbox,
   DatePicker,
+  Drawer,
   Form,
   Input,
   Popover,
@@ -17,9 +18,12 @@ import {
 } from 'antd'
 import {
   CreateContent,
+  CreateContentAll,
   CreateForm,
+  CreateFormAll,
   CreateFormItemWrap,
   CreateScheduleChecks,
+  EasyScheduleHeader,
   ItemFlex,
   NoticeBox,
   ParticipantItem,
@@ -46,7 +50,7 @@ import { getScheduleInfo } from '@/services/schedule'
 import { setVisualizationTime } from '@store/schedule'
 
 interface DefaultTime {
-  value: number | undefined
+  value?: number
   id: number
 }
 
@@ -77,6 +81,7 @@ const CreateSchedule = () => {
   const [calendarCategory, setCalendarCategory] = useState<
     Model.Calendar.Info[]
   >([])
+  const leftWidth = 980
   const [isVisible, setIsVisible] = useState(false)
   // 创建日历默认主题色
   const [normalCategory, setNormalCategory] = useState({
@@ -125,6 +130,8 @@ const CreateSchedule = () => {
   const onDisabledDate: RangePickerProps['disabledDate'] = current => {
     return current && current < moment().subtract(1, 'day')
   }
+
+  console.log(scheduleModal)
 
   // 关闭弹窗
   const onClose = () => {
@@ -474,13 +481,6 @@ const CreateSchedule = () => {
       setNormalCategory(calendarData.manager[0])
       setIsAll(scheduleModal.params?.isAll)
 
-      if (!scheduleModal.params?.startTime) {
-        return
-      }
-      if (!scheduleModal.params?.endTime) {
-        return
-      }
-
       // 通知右侧可视化
       dispatch(
         setVisualizationTime({
@@ -525,35 +525,33 @@ const CreateSchedule = () => {
         onClose={() => setIsChooseVisible(false)}
         onConfirm={onAddConfirm}
       />
-      <CommonModal
-        isVisible={scheduleModal.visible}
-        title={
-          scheduleModal?.params?.id
-            ? t('calendarManager.edit_schedule')
-            : t('calendarManager.create_schedule')
-        }
-        width={1056}
+      <Drawer
+        closable={false}
+        placement="right"
+        bodyStyle={{ padding: 0, position: 'relative' }}
+        width={leftWidth}
+        open={scheduleModal.visible}
         onClose={onClose}
-        hasFooter={
-          <ModalFooter>
-            <CommonButton type="light" onClick={onClose}>
-              {t('calendarManager.cancel')}
-            </CommonButton>
-            {!scheduleModal.params?.id && (
-              <CommonButton type="secondary" onClick={() => onConfirm(true)}>
-                {t('calendarManager.finishToAdd')}
-              </CommonButton>
-            )}
-            <CommonButton type="primary" onClick={() => onConfirm()}>
-              {scheduleModal.params?.id
-                ? t('calendarManager.edit')
-                : t('calendarManager.create')}
-            </CommonButton>
-          </ModalFooter>
-        }
+        destroyOnClose
+        maskClosable={false}
+        mask={false}
+        className="drawerRoot"
       >
-        <CreateContent>
-          <CreateForm
+        <EasyScheduleHeader>
+          <span>
+            {scheduleModal?.params?.id
+              ? t('calendarManager.edit_schedule')
+              : t('calendarManager.create_schedule')}
+          </span>
+          <CloseWrap onClick={onClose} width={32} height={32}>
+            <IconFont
+              style={{ fontSize: 20, color: 'var(--neutral-n2)' }}
+              type="close"
+            />
+          </CloseWrap>
+        </EasyScheduleHeader>
+        <CreateContentAll>
+          <CreateFormAll
             ref={leftDom}
             scrollToFirstError
             form={form}
@@ -817,10 +815,25 @@ const CreateSchedule = () => {
                 }
               />
             </Form.Item>
-          </CreateForm>
+          </CreateFormAll>
           <CreateVisualization />
-        </CreateContent>
-      </CommonModal>
+        </CreateContentAll>
+        <ModalFooter>
+          <CommonButton type="light" onClick={onClose}>
+            {t('calendarManager.cancel')}
+          </CommonButton>
+          {!scheduleModal.params?.id && (
+            <CommonButton type="secondary" onClick={() => onConfirm(true)}>
+              {t('calendarManager.finishToAdd')}
+            </CommonButton>
+          )}
+          <CommonButton type="primary" onClick={() => onConfirm()}>
+            {scheduleModal.params?.id
+              ? t('calendarManager.edit')
+              : t('calendarManager.create')}
+          </CommonButton>
+        </ModalFooter>
+      </Drawer>
     </>
   )
 }

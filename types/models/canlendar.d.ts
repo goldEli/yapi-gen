@@ -114,8 +114,8 @@ declare namespace Model.Calendar {
       permission: CheckboxValueType[]
     }
     noticeList?: {
-      value: number | undefined
       id: number
+      value?: number
     }[]
     subject?: string
     normalCategory?: {

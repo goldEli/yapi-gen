@@ -1,12 +1,10 @@
 /* eslint-disable no-constant-binary-expression */
-import styled from '@emotion/styled'
-import { css } from '@emotion/css'
+
 import { useDispatch, useSelector } from '@store/index'
 import {
   Checkbox,
   DatePicker,
-  DatePickerProps,
-  Dropdown,
+  Drawer,
   Form,
   Input,
   Popover,
@@ -27,6 +25,7 @@ import {
   ParticipantItems,
   TimeWrap,
   EasyScheduleHeader,
+  CreateContent,
 } from '../../styles'
 import { CloseWrap, ModalFooter } from '@/components/StyleCommon'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
@@ -46,24 +45,6 @@ import { useTranslation } from 'react-i18next'
 interface CreateScheduleBoxProps {
   containerClassName: string
 }
-
-const CreateSchedule = styled.div<{
-  visible: boolean
-  top: number
-  left: number
-}>`
-  width: 528px;
-  overflow-y: scroll;
-  background-color: var(--neutral-white-d1);
-  box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
-  z-index: 100;
-  display: ${props => (props.visible ? 'block' : 'none')};
-  position: absolute;
-  top: ${props => props.top + 'px'};
-  left: ${props => props.left + 'px'};
-  border-radius: 6px;
-`
-
 interface CreateFormItemProps {
   type: string
   label: string
@@ -101,6 +82,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
   })
   const dispatch = useDispatch()
   const [form] = Form.useForm()
+  const leftWidth = 480
   const inputDom: any = useRef<HTMLInputElement>(null)
   const [calendarCategory, setCalendarCategory] = useState<
     Model.Calendar.Info[]
@@ -201,6 +183,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
       ],
       ...noticeList,
     ]
+    console.log(list, '=listlistlist')
     setNoticeList(list)
   }
 
@@ -216,6 +199,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
       ...i,
       value: i.id === id ? value : i.value,
     }))
+    console.log(result, '=resultresult')
     setNoticeList(result)
   }
 
@@ -260,6 +244,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
 
   // 跳转更多选项
   const onToMore = async () => {
+    await form.validateFields()
     const params = {
       isAll,
       participant,
@@ -282,7 +267,6 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
 
   useEffect(() => {
     if (quickCreateScheduleModel.visible) {
-      console.log(calendarData.manager, '=calendarData.manager')
       // 获取日历列表，并且过滤出可创建日程的日历
       setCalendarCategory(calendarData.manager)
       // 默认日历列表第一条
@@ -304,10 +288,6 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
     }
   }, [quickCreateScheduleModel])
 
-  if (!position) {
-    return <></>
-  }
-
   return (
     <>
       <AddMemberCommonModal
@@ -319,14 +299,17 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
         }}
         onConfirm={onAddConfirm}
       />
-      <CreateSchedule
-        className="quick-create-schedule-model"
-        visible={visible && !!position}
-        top={position?.y ?? 0}
-        left={position?.x ?? 0}
-        onClick={e => {
-          e.stopPropagation()
-        }}
+      <Drawer
+        closable={false}
+        placement="right"
+        bodyStyle={{ padding: 0, position: 'relative' }}
+        width={leftWidth}
+        open={visible}
+        onClose={onClose}
+        destroyOnClose
+        maskClosable={false}
+        mask={false}
+        className="drawerRoot"
       >
         <EasyScheduleHeader>
           <span>{t('calendarManager.create_schedule')}</span>
@@ -337,200 +320,205 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
             />
           </CloseWrap>
         </EasyScheduleHeader>
-        <CreateForm
-          scrollToFirstError
-          form={form}
-          layout="vertical"
-          className="haveRight"
-        >
-          <Form.Item
-            label={
-              <CreateFormItem
-                label={t('calendarManager.theme')}
-                type="database"
-              />
-            }
-            name="subject"
-            rules={[{ required: true, message: '' }]}
-          >
-            <Input
-              autoComplete="off"
-              placeholder={t('calendarManager.please_enter_a_theme')}
-              maxLength={80}
-              ref={inputDom}
-              autoFocus
-            />
-          </Form.Item>
-          <TimeWrap>
+        <CreateContent>
+          <CreateForm scrollToFirstError form={form} layout="vertical">
             <Form.Item
               label={
-                <CreateFormItem label={t('calendarManager.time')} type="time" />
+                <CreateFormItem
+                  label={t('calendarManager.theme')}
+                  type="database"
+                />
               }
-              name="time"
+              name="subject"
               rules={[{ required: true, message: '' }]}
-              style={{ margin: 0, width: '80%' }}
             >
-              <DatePicker.RangePicker
-                style={{ width: '100%' }}
-                showTime={!isAll}
-                onChange={setTime}
-                allowClear={false}
-                disabledDate={onDisabledDate}
+              <Input
+                autoComplete="off"
+                placeholder={t('calendarManager.please_enter_a_theme')}
+                maxLength={80}
+                ref={inputDom}
+                autoFocus
               />
             </Form.Item>
-            <Checkbox checked={isAll} onChange={onChangeIsAll}>
-              {t('calendarManager.all_day_long')}
-            </Checkbox>
-          </TimeWrap>
-          <ItemFlex style={{ margin: '24px 0' }}>
-            <div className="box">
-              <CreateFormItem
-                type="team"
-                label={t('calendarManager.participant')}
-              />
-              <CloseWrap
-                width={24}
-                height={24}
-                onClick={() => setIsChooseVisible(true)}
+            <TimeWrap>
+              <Form.Item
+                label={
+                  <CreateFormItem
+                    label={t('calendarManager.time')}
+                    type="time"
+                  />
+                }
+                name="time"
+                rules={[{ required: true, message: '' }]}
+                style={{ margin: 0, width: '80%' }}
               >
-                <IconFont type="plus" />
-              </CloseWrap>
-            </div>
-            <ParticipantItems>
-              {participant.list.map((i: Model.Calendar.MemberItem) => (
-                <ParticipantItem key={i.id}>
-                  <CommonUserAvatar avatar={i.avatar} name={i.name} />
+                <DatePicker.RangePicker
+                  style={{ width: '100%' }}
+                  showTime={!isAll}
+                  onChange={setTime}
+                  allowClear={false}
+                  disabledDate={onDisabledDate}
+                />
+              </Form.Item>
+              <Checkbox checked={isAll} onChange={onChangeIsAll}>
+                {t('calendarManager.all_day_long')}
+              </Checkbox>
+            </TimeWrap>
+            <ItemFlex style={{ margin: '24px 0' }}>
+              <div className="box">
+                <CreateFormItem
+                  type="team"
+                  label={t('calendarManager.participant')}
+                />
+                <CloseWrap
+                  width={24}
+                  height={24}
+                  onClick={() => setIsChooseVisible(true)}
+                >
+                  <IconFont type="plus" />
+                </CloseWrap>
+              </div>
+              <ParticipantItems>
+                {participant.list.map((i: Model.Calendar.MemberItem) => (
+                  <ParticipantItem key={i.id}>
+                    <CommonUserAvatar avatar={i.avatar} name={i.name} />
+                    <IconFont
+                      onClick={() => onDeleteParticipant(i)}
+                      className="icon"
+                      type="close"
+                    />
+                  </ParticipantItem>
+                ))}
+              </ParticipantItems>
+              {participant.list.length > 0 && (
+                <CreateScheduleChecks size={24}>
+                  <Checkbox.Group
+                    options={checkboxOptions}
+                    value={participant.permission}
+                    onChange={values =>
+                      setParticipant({
+                        ...participant,
+                        ...{ permission: values },
+                      })
+                    }
+                  />
+                </CreateScheduleChecks>
+              )}
+            </ItemFlex>
+            <Form.Item
+              label={
+                <CreateFormItem
+                  label={t('calendarManager.schedule_description')}
+                  type="file-02"
+                />
+              }
+              name="describe"
+            >
+              <Input.TextArea
+                placeholder={t(
+                  'calendarManager.please_enter_a_schedule_description',
+                )}
+                autoSize
+                maxLength={200}
+              />
+            </Form.Item>
+            <Form.Item
+              label={
+                <CreateFormItem
+                  label={t('calendarManager.schedule_category')}
+                  type="calendar-days"
+                />
+              }
+            >
+              <ItemFlex>
+                <div className="box">
+                  <Select
+                    value={normalCategory?.calendar_id}
+                    onChange={value =>
+                      setNormalCategory(
+                        calendarCategory.filter(
+                          (i: Model.Calendar.Info) => i.calendar_id === value,
+                        )[0],
+                      )
+                    }
+                    style={{ width: '90%' }}
+                    getPopupContainer={n => n}
+                    options={calendarCategory.map((i: Model.Calendar.Info) => ({
+                      label: i.is_default === 1 ? i.user.name : i.name,
+                      value: i.calendar_id,
+                    }))}
+                  />
+                  <Popover
+                    trigger={['hover']}
+                    placement="bottomRight"
+                    open={isVisible}
+                    onOpenChange={setIsVisible}
+                    overlayStyle={{ width: 192 }}
+                    content={
+                      <ColorWrap>
+                        <CalendarColor
+                          color={normalCategory.color}
+                          onChangeColor={color => {
+                            setNormalCategory({
+                              calendar_id: normalCategory?.calendar_id,
+                              color,
+                            })
+                            setIsVisible(false)
+                          }}
+                        />
+                      </ColorWrap>
+                    }
+                  >
+                    <div
+                      className="color"
+                      style={{ background: colorMap[normalCategory.color] }}
+                    />
+                  </Popover>
+                </div>
+              </ItemFlex>
+            </Form.Item>
+            <Form.Item
+              label={
+                <CreateFormItem
+                  label={t('calendarManager.remind')}
+                  type="alarm"
+                />
+              }
+              name="notice"
+            >
+              <CommonButton
+                type="primaryText"
+                icon="plus"
+                iconPlacement="left"
+                onClick={onAddNotice}
+              >
+                {t('calendarManager.add_reminder')}
+              </CommonButton>
+              {noticeList.map((i: DefaultTime) => (
+                <NoticeBox key={i.id}>
+                  <Select
+                    className="select"
+                    value={i.value}
+                    options={
+                      isAll
+                        ? relateConfig.schedule.all_day_remind
+                        : relateConfig.schedule.un_all_day_remind
+                    }
+                    onChange={value => onChangeNotice(value, i.id)}
+                    getPopupContainer={n => n}
+                    style={{ width: '92%' }}
+                    optionFilterProp="label"
+                  />
                   <IconFont
-                    onClick={() => onDeleteParticipant(i)}
+                    onClick={() => onDeleteNotice(i.id)}
                     className="icon"
                     type="close"
                   />
-                </ParticipantItem>
+                </NoticeBox>
               ))}
-            </ParticipantItems>
-            {participant.list.length > 0 && (
-              <CreateScheduleChecks size={24}>
-                <Checkbox.Group
-                  options={checkboxOptions}
-                  value={participant.permission}
-                  onChange={values =>
-                    setParticipant({
-                      ...participant,
-                      ...{ permission: values },
-                    })
-                  }
-                />
-              </CreateScheduleChecks>
-            )}
-          </ItemFlex>
-          <Form.Item
-            label={
-              <CreateFormItem
-                label={t('calendarManager.schedule_description')}
-                type="file-02"
-              />
-            }
-            name="describe"
-          >
-            <Input.TextArea
-              placeholder={t(
-                'calendarManager.please_enter_a_schedule_description',
-              )}
-              autoSize
-              maxLength={200}
-            />
-          </Form.Item>
-          <Form.Item
-            label={
-              <CreateFormItem
-                label={t('calendarManager.schedule_category')}
-                type="calendar-days"
-              />
-            }
-          >
-            <ItemFlex>
-              <div className="box">
-                <Select
-                  value={normalCategory?.calendar_id}
-                  onChange={value =>
-                    setNormalCategory(
-                      calendarCategory.filter(
-                        (i: Model.Calendar.Info) => i.calendar_id === value,
-                      )[0],
-                    )
-                  }
-                  style={{ width: '90%' }}
-                  getPopupContainer={n => n}
-                  options={calendarCategory.map((i: Model.Calendar.Info) => ({
-                    label: i.is_default === 1 ? i.user.name : i.name,
-                    value: i.calendar_id,
-                  }))}
-                />
-                <Popover
-                  trigger={['hover']}
-                  placement="bottomRight"
-                  open={isVisible}
-                  onOpenChange={setIsVisible}
-                  overlayStyle={{ width: 192 }}
-                  content={
-                    <ColorWrap>
-                      <CalendarColor
-                        color={normalCategory.color}
-                        onChangeColor={color => {
-                          setNormalCategory({
-                            calendar_id: normalCategory?.calendar_id,
-                            color,
-                          })
-                          setIsVisible(false)
-                        }}
-                      />
-                    </ColorWrap>
-                  }
-                >
-                  <div
-                    className="color"
-                    style={{ background: colorMap[normalCategory.color] }}
-                  />
-                </Popover>
-              </div>
-            </ItemFlex>
-          </Form.Item>
-          <Form.Item
-            label={
-              <CreateFormItem
-                label={t('calendarManager.remind')}
-                type="alarm"
-              />
-            }
-            name="notice"
-          >
-            <CommonButton
-              type="primaryText"
-              icon="plus"
-              iconPlacement="left"
-              onClick={onAddNotice}
-            >
-              {t('calendarManager.add_reminder')}
-            </CommonButton>
-            {noticeList.map((i: DefaultTime) => (
-              <NoticeBox key={i.id}>
-                <Select
-                  className="select"
-                  value={i.value}
-                  options={relateConfig.schedule.remind_types}
-                  onChange={value => onChangeNotice(value, i.id)}
-                  getPopupContainer={n => n}
-                  style={{ width: '92%' }}
-                />
-                <IconFont
-                  onClick={() => onDeleteNotice(i.id)}
-                  className="icon"
-                  type="close"
-                />
-              </NoticeBox>
-            ))}
-          </Form.Item>
-        </CreateForm>
+            </Form.Item>
+          </CreateForm>
+        </CreateContent>
         <ModalFooter size={16}>
           <CommonButton type="light" onClick={onToMore}>
             {t('calendarManager.more_options')}
@@ -539,7 +527,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
             {t('calendarManager.create')}
           </CommonButton>
         </ModalFooter>
-      </CreateSchedule>
+      </Drawer>
     </>
   )
 }
