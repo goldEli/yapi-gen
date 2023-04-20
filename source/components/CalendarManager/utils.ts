@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import { colorMap, oneHourHeight, oneMinuteHeight } from './config'
+import { XYCoord } from 'react-dnd'
 
 export function sortScheduleList(list: Model.Schedule.Info[]) {
   const acrossDayScheduleList =

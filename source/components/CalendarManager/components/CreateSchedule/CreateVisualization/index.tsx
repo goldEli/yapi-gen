@@ -15,7 +15,7 @@ interface CreateVisualizationProps {}
 
 const CreateVisualizationBox = styled.div`
   width: 524px;
-  max-height: 60vh;
+  height: 100%;
   padding: 0 16px 0 24px;
   border-left: 1px solid var(--neutral-n6-d1);
   margin-left: 4px;

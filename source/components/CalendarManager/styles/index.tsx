@@ -162,18 +162,37 @@ export const ManagerListBox = styled.div`
 export const CreateContent = styled.div`
   display: flex;
   height: 100%;
+  height: calc(100% - 136px);
+  overflow: auto;
+  padding-right: 4px;
+  width: 100%;
+`
+
+export const CreateContentAll = styled.div`
+  display: flex;
+  height: 100%;
+  height: calc(100% - 136px);
+  overflow: auto;
+  padding-right: 4px;
   .haveRight {
-    width: 524px;
+    width: 50%;
   }
   .notRight {
     width: 100%;
   }
 `
 
+export const CreateFormAll = styled(Form)`
+  padding: 0 16px 0 24px;
+  height: 100%;
+  overflow: auto;
+`
+
 export const CreateForm = styled(Form)`
   padding: 0 16px 0 24px;
-  max-height: 60vh;
+  height: calc(100% - 136px);
   overflow: auto;
+  width: 100%;
 `
 
 export const CreateFormItemWrap = styled.div`
@@ -304,4 +323,42 @@ export const EasyScheduleHeader = styled.div`
   height: 56px;
   padding: 0 13px 0 24px;
   font-family: SiYuanMedium;
+`
+
+export const DayItemBox = styled.div`
+  user-select: none;
+  width: 100%;
+  /* padding: 12px 0; */
+  box-sizing: border-box;
+  border-color: var(--neutral-n6-d1);
+  border-style: solid;
+  border-left-width: 1px;
+  border-top-width: 1px;
+  border-right-width: 0px;
+  border-bottom-width: 0px;
+  height: 100%;
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  position: relative;
+`
+
+export const CreateScheduleText = styled.div<{
+  visible: boolean
+  top?: number
+}>`
+  font-size: 12px;
+  margin: 0 2px;
+  box-sizing: border-box;
+  padding-left: 8px;
+  width: calc(100% - 4px);
+  color: var(--neutral-white-d7);
+  background-color: var(--primary-d1);
+  border-radius: 4px;
+  position: absolute;
+  top: ${props => (props.top ?? 0) + 'px'};
+  left: 0;
+  display: ${props => (props.visible ? 'block' : 'none')};
 `

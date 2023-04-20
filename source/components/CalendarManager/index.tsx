@@ -13,6 +13,7 @@ import {
 } from '@store/calendar/calendar.thunk'
 import { getLeftCalendarDaysOfMonthList } from '@store/schedule/schedule.thunk'
 import ScheduleInfoDropdown from './components/ScheduleInfoDropdown'
+import QuickCreateScheduleModel from './components/QuickCreateScheduleModel'
 type CalendarManagerLayoutProps = {
   // num: string
 }
@@ -60,6 +61,7 @@ const CalendarManager: React.FC<CalendarManagerLayoutProps> = props => {
         {routerMenu.key && <CalendarSet />}
       </CalenderBoxRightArea>
       <ScheduleInfoDropdown></ScheduleInfoDropdown>
+      <QuickCreateScheduleModel containerClassName="" />
     </CalenderBox>
   )
 }

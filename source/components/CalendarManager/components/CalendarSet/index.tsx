@@ -364,7 +364,7 @@ const CalendarSet = () => {
           <Title>
             <div className="name">{t('calendarManager.schedule_settings')}</div>
           </Title>
-          <Label style={{ marginTop: 8 }}>
+          {/* <Label style={{ marginTop: 8 }}>
             {t('calendarManager.schedule_color')}
           </Label>
           <ScheduleColorWrap size={56}>
@@ -404,7 +404,7 @@ const CalendarSet = () => {
                 </div>
               ),
             )}
-          </ScheduleColorWrap>
+          </ScheduleColorWrap> */}
           <Label style={{ marginTop: 24 }}>
             {t('calendarManager.default_duration_of_schedule')}
           </Label>

@@ -76,11 +76,11 @@ const initialState: SliceState = {
   },
   checkedCalendarList: [],
   menuList: [
-    { name: 'view_options', key: 'view' },
-    { name: 'schedule_settings', key: 'schedule' },
-    { name: 'notification_settings', key: 'notice' },
-    { name: 'calendar_import', key: 'import' },
-    { name: 'calendar_export', key: 'export' },
+    { name: 'calendarManager.view_options', key: 'view' },
+    { name: 'calendarManager.schedule_settings', key: 'schedule' },
+    { name: 'calendarManager.notification_settings', key: 'notice' },
+    { name: 'calendarManager.calendar_import', key: 'import' },
+    { name: 'calendarManager.calendar_export', key: 'export' },
   ],
   routerMenu: {
     name: '',

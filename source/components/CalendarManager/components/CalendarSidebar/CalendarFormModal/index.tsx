@@ -206,6 +206,7 @@ const CalendarFormModal = () => {
     setCurrentPermission(relateConfig.calendar.permission_types[0]?.value)
     dispatch(setCalendarModal({ visible: false, params: {} }))
     form.resetFields()
+    setCalendarInfo({} as Model.Calendar.CalendarInfo)
   }
 
   // 切换图标

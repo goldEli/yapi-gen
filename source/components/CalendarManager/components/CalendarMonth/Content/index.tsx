@@ -16,7 +16,7 @@ const ContentBox = styled.div`
   flex: 1;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 142px 142px 142px 142px 142px;
   position: relative;
 `
 
@@ -33,7 +33,7 @@ const Content: React.FC<ContentProps> = props => {
           const info = selectedMonth?.[idx]
           return <DayItem idx={idx} key={idx} list={list[info?.date ?? '']} />
         })}
-      <QuickCreateScheduleModel containerClassName=".calendar-month-content-box" />
+      {/* <QuickCreateScheduleModel containerClassName=".calendar-month-content-box" /> */}
       <ScheduleListModal />
     </ContentBox>
   )

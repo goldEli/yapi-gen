@@ -42,8 +42,8 @@ type SliceState = {
   }
   // 创建日程右侧可视化
   visualizationTime?: {
-    startTime: string
-    endTime: string
+    startTime?: string
+    endTime?: string
   }
 }
 

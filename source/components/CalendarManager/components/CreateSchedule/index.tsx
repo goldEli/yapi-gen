@@ -8,8 +8,10 @@ import { useDispatch, useSelector } from '@store/index'
 import {
   Checkbox,
   DatePicker,
+  Drawer,
   Form,
   Input,
+  InputRef,
   Popover,
   Radio,
   Select,
@@ -17,9 +19,12 @@ import {
 } from 'antd'
 import {
   CreateContent,
+  CreateContentAll,
   CreateForm,
+  CreateFormAll,
   CreateFormItemWrap,
   CreateScheduleChecks,
+  EasyScheduleHeader,
   ItemFlex,
   NoticeBox,
   ParticipantItem,
@@ -44,9 +49,10 @@ import { modifySchedule, saveSchedule } from '@store/schedule/schedule.thunk'
 import { useTranslation } from 'react-i18next'
 import { getScheduleInfo } from '@/services/schedule'
 import { setVisualizationTime } from '@store/schedule'
+import { type } from 'os'
 
 interface DefaultTime {
-  value: number | undefined
+  value?: number
   id: number
 }
 
@@ -67,8 +73,8 @@ const CreateFormItem = (props: CreateFormItemProps) => {
 const CreateSchedule = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
-  const leftDom: any = useRef<HTMLDivElement>(null)
-  const inputDom: any = useRef<HTMLInputElement>(null)
+  // const leftDom = useRef<Ref<FormInstance<unknown>>>()
+  const inputDom = useRef<InputRef | null>(null)
   const { scheduleModal, relateConfig, calendarData, calendarConfig } =
     useSelector(store => store.calendar)
   const { userInfo } = useSelector(store => store.user)
@@ -77,6 +83,7 @@ const CreateSchedule = () => {
   const [calendarCategory, setCalendarCategory] = useState<
     Model.Calendar.Info[]
   >([])
+  const leftWidth = 980
   const [isVisible, setIsVisible] = useState(false)
   // 创建日历默认主题色
   const [normalCategory, setNormalCategory] = useState({
@@ -154,6 +161,7 @@ const CreateSchedule = () => {
   const onConfirm = async (next?: boolean) => {
     await form.validateFields()
     let values = form.getFieldsValue()
+    const repeatValueParams = repeatValue.value ? { ...repeatValue.params } : {}
     values.is_busy = status
     values.is_all_day = isAll ? 1 : 2
     values.repeat_type = repeatValue.value
@@ -172,7 +180,7 @@ const CreateSchedule = () => {
         color: normalCategory.color,
         calendar_id: normalCategory.calendar_id,
       },
-      ...repeatValue.params,
+      ...{ ...repeatValueParams },
     }
     resultParams.start_datetime = isAll
       ? moment(values.time[0]).startOf('day').format('YYYY-MM-DD HH:mm:ss')
@@ -474,13 +482,6 @@ const CreateSchedule = () => {
       setNormalCategory(calendarData.manager[0])
       setIsAll(scheduleModal.params?.isAll)
 
-      if (!scheduleModal.params?.startTime) {
-        return
-      }
-      if (!scheduleModal.params?.endTime) {
-        return
-      }
-
       // 通知右侧可视化
       dispatch(
         setVisualizationTime({
@@ -502,7 +503,7 @@ const CreateSchedule = () => {
         getEasyInfo()
       }
       setTimeout(() => {
-        inputDom.current.focus()
+        inputDom?.current?.focus()
       }, 100)
     }
   }, [scheduleModal])
@@ -510,6 +511,7 @@ const CreateSchedule = () => {
   return (
     <>
       <RepeatModal
+        repeatParams={repeatValue}
         isVisible={isRepeatVisible}
         title={relateConfig.schedule.repeat_types[currentRepeat]?.label}
         currentRepeat={currentRepeat}
@@ -525,36 +527,34 @@ const CreateSchedule = () => {
         onClose={() => setIsChooseVisible(false)}
         onConfirm={onAddConfirm}
       />
-      <CommonModal
-        isVisible={scheduleModal.visible}
-        title={
-          scheduleModal?.params?.id
-            ? t('calendarManager.edit_schedule')
-            : t('calendarManager.create_schedule')
-        }
-        width={1056}
+      <Drawer
+        closable={false}
+        placement="right"
+        bodyStyle={{ padding: 0, position: 'relative' }}
+        width={leftWidth}
+        open={scheduleModal.visible}
         onClose={onClose}
-        hasFooter={
-          <ModalFooter>
-            <CommonButton type="light" onClick={onClose}>
-              {t('calendarManager.cancel')}
-            </CommonButton>
-            {!scheduleModal.params?.id && (
-              <CommonButton type="secondary" onClick={() => onConfirm(true)}>
-                {t('calendarManager.finishToAdd')}
-              </CommonButton>
-            )}
-            <CommonButton type="primary" onClick={() => onConfirm()}>
-              {scheduleModal.params?.id
-                ? t('calendarManager.edit')
-                : t('calendarManager.create')}
-            </CommonButton>
-          </ModalFooter>
-        }
+        destroyOnClose
+        maskClosable={false}
+        mask={false}
+        className="drawerRoot"
       >
-        <CreateContent>
-          <CreateForm
-            ref={leftDom}
+        <EasyScheduleHeader>
+          <span>
+            {scheduleModal?.params?.id
+              ? t('calendarManager.edit_schedule')
+              : t('calendarManager.create_schedule')}
+          </span>
+          <CloseWrap onClick={onClose} width={32} height={32}>
+            <IconFont
+              style={{ fontSize: 20, color: 'var(--neutral-n2)' }}
+              type="close"
+            />
+          </CloseWrap>
+        </EasyScheduleHeader>
+        <CreateContentAll>
+          <CreateFormAll
+            // ref={leftDom}
             scrollToFirstError
             form={form}
             layout="vertical"
@@ -607,7 +607,7 @@ const CreateSchedule = () => {
                 className="select"
                 value={repeatValue.value}
                 options={relateConfig.schedule.repeat_types}
-                onChange={onChangeRepeat}
+                onSelect={onChangeRepeat}
                 getPopupContainer={n => n}
               />
             </Form.Item>
@@ -704,7 +704,7 @@ const CreateSchedule = () => {
                     content={
                       <ColorWrap>
                         <CalendarColor
-                          color={normalCategory.color}
+                          color={normalCategory?.color}
                           onChangeColor={color => {
                             setNormalCategory({
                               calendar_id: normalCategory?.calendar_id,
@@ -817,10 +817,25 @@ const CreateSchedule = () => {
                 }
               />
             </Form.Item>
-          </CreateForm>
+          </CreateFormAll>
           <CreateVisualization />
-        </CreateContent>
-      </CommonModal>
+        </CreateContentAll>
+        <ModalFooter>
+          <CommonButton type="light" onClick={onClose}>
+            {t('calendarManager.cancel')}
+          </CommonButton>
+          {!scheduleModal.params?.id && (
+            <CommonButton type="secondary" onClick={() => onConfirm(true)}>
+              {t('calendarManager.finishToAdd')}
+            </CommonButton>
+          )}
+          <CommonButton type="primary" onClick={() => onConfirm()}>
+            {scheduleModal.params?.id
+              ? t('calendarManager.edit')
+              : t('calendarManager.create')}
+          </CommonButton>
+        </ModalFooter>
+      </Drawer>
     </>
   )
 }
