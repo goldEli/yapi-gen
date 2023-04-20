@@ -324,3 +324,41 @@ export const EasyScheduleHeader = styled.div`
   padding: 0 13px 0 24px;
   font-family: SiYuanMedium;
 `
+
+export const DayItemBox = styled.div`
+  user-select: none;
+  width: 100%;
+  /* padding: 12px 0; */
+  box-sizing: border-box;
+  border-color: var(--neutral-n6-d1);
+  border-style: solid;
+  border-left-width: 1px;
+  border-top-width: 1px;
+  border-right-width: 0px;
+  border-bottom-width: 0px;
+  height: 100px;
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  position: relative;
+`
+
+export const CreateScheduleText = styled.div<{
+  visible: boolean
+  top?: number
+}>`
+  font-size: 12px;
+  margin: 0 2px;
+  box-sizing: border-box;
+  padding-left: 8px;
+  width: calc(100% - 4px);
+  color: var(--neutral-white-d7);
+  background-color: var(--primary-d1);
+  border-radius: 4px;
+  position: absolute;
+  top: ${props => (props.top ?? 0) + 'px'};
+  left: 0;
+  display: ${props => (props.visible ? 'block' : 'none')};
+`
