@@ -281,6 +281,9 @@ const RightFormWork = () => {
   }
   useEffect(() => {
     setIsActive(0)
+    return () => {
+      dispatch(setEditSave(true))
+    }
   }, [activeItem])
   const getBtn = () => {
     // 编辑的情况0和1都应该有

@@ -250,12 +250,20 @@ const List = () => {
                 {t('report.list.of')}
                 {record.name}
               </span>
-              <LabelTag
-                options={reportState}
-                state={
-                  record.is_supply === 1 ? 1 : record.is_update === 1 ? 2 : 0
-                }
-              />
+              {(id === 1 || id === 3) && (
+                <LabelTag
+                  options={reportState}
+                  state={record.is_supply === 1 ? 2 : 0}
+                />
+              )}
+              {id === 2 && (
+                <LabelTag
+                  options={reportState}
+                  state={
+                    record.is_supply === 1 ? 2 : record.is_update === 1 ? 1 : 0
+                  }
+                />
+              )}
             </Tooltip>
           </div>
         )
@@ -329,11 +337,13 @@ const List = () => {
       width: 160,
       title: t('report.list.readState'),
       align: 'center',
-      dataIndex: 'is_read',
-      render: (text: number) => {
-        return (
+      dataIndex: 'type',
+      render: (text: number, record: any) => {
+        return id === 1 ? (
+          <ReadStatusTag status={record.is_read === 1 ? 'read' : 'no'} />
+        ) : (
           <ReadStatusTag
-            status={text === 1 ? 'read' : text === 2 ? 'no' : 'have'}
+            status={text === 2 ? 'read' : text === 1 ? 'no' : 'have'}
           />
         )
       },
