@@ -482,6 +482,8 @@ const List = () => {
           getPopupContainer={(node: any) => node}
           allowClear
           optionFilterProp="label"
+          showArrow
+          showSearch
           value={queryParams.user_ids}
           options={userOptions}
           onChange={onChangeSubmitter}
@@ -494,6 +496,8 @@ const List = () => {
             {t('report.list.status')}
           </span>
           <CustomSelect
+            showArrow
+            showSearch
             value={queryParams.type}
             style={{ width: 148 }}
             getPopupContainer={(node: any) => node}
@@ -565,6 +569,8 @@ const List = () => {
             {t('report.list.reportType')}
           </span>
           <CustomSelect
+            showArrow
+            showSearch
             style={{ width: 148 }}
             getPopupContainer={(node: any) => node}
             allowClear

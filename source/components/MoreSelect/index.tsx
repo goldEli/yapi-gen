@@ -99,13 +99,8 @@ const index = (props: any) => {
           </div>
         </>
       )}
-    >
-      {prepositionItems.map((i: any) => (
-        <Select.Option value={i.value} key={i.id}>
-          <span>{i.label}</span>
-        </Select.Option>
-      ))}
-    </SelectWrap>
+      options={prepositionItems}
+    />
   )
 }
 
