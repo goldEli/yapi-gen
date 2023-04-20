@@ -7,7 +7,8 @@
 /* eslint-disable react/no-danger */
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
 import { Drawer, message, Form, Space, Input } from 'antd'
-import { Editor, EditorRef } from '@xyfe/uikit'
+import type { EditorRef } from '@xyfe/uikit'
+import { Editor } from '@xyfe/uikit'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonIconFont from '@/components/CommonIconFont'
@@ -35,6 +36,7 @@ import {
   addReportComment,
   getReportComment,
   getReportInfo,
+  delReportComment,
 } from '@/services/report'
 import UploadAttach from '@/components/UploadAttach'
 import CommonButton from '@/components/CommonButton'
@@ -42,6 +44,8 @@ import ReportDetailSkeleton from './ReportDetailSkeleton'
 import { saveViewReportDetailDrawer } from '@store/workReport/workReport.thunk'
 import { getStaffListAll } from '@/services/staff'
 import { getIdsForAt } from '@/tools'
+import IconFont from '@/components/IconFont'
+import DeleteConfirm from '@/components/DeleteConfirm'
 
 interface TargetTabsProps {
   list: any
@@ -115,6 +119,11 @@ const ReportDetailDrawer = () => {
   const reviewRef = useRef<any>()
   const leftWidth = 640
   const editorRef = useRef<EditorRef>(null)
+  const [userList, setUserList] = useState<any>([])
+  const { userInfo } = useSelector(store => store.user)
+  const [isVisible, setIsVisible] = useState(false)
+  const [isDeleteId, setIsDeleteId] = useState(0)
+  const reviewCount = useRef<any>(0)
 
   // 拖动线条
   const onDragLine = (e: React.MouseEvent) => {
@@ -129,8 +138,10 @@ const ReportDetailDrawer = () => {
       drawerBody.style.minWidth = '100%'
       drawerBody.style.right = '0px'
       const nextWidth = innerWidth - ev.clientX
-      if (nextWidth <= leftWidth) return
-      drawer!.style.width = innerWidth - ev.clientX + 'px'
+      if (nextWidth <= leftWidth) {
+        return
+      }
+      drawer!.style.width = `${innerWidth - ev.clientX}px`
     }
     const debounceWrap: any = throttle(moveHandler, 60, {})
     document.addEventListener('mousemove', debounceWrap)
@@ -195,7 +206,7 @@ const ReportDetailDrawer = () => {
     const info = await getReportInfo({
       id: viewReportModal?.id,
     })
-
+    setUserList(info?.target_users)
     setDrawerInfo(info)
     setSkeletonLoading(false)
     // 获取当前需求的下标， 用作上一下一切换
@@ -213,7 +224,9 @@ const ReportDetailDrawer = () => {
   // 向上查找需求
   const onUpDemand = () => {
     const newIndex = reportIds[currentIndex - 1]
-    if (!currentIndex) return
+    if (!currentIndex) {
+      return
+    }
     dispatch(
       saveViewReportDetailDrawer({
         ...viewReportModal,
@@ -225,7 +238,9 @@ const ReportDetailDrawer = () => {
   // 向下查找需求
   const onDownDemand = () => {
     const newIndex = reportIds[currentIndex + 1]
-    if (currentIndex === reportIds?.length - 1) return
+    if (currentIndex === reportIds?.length - 1) {
+      return
+    }
     dispatch(
       saveViewReportDetailDrawer({
         ...viewReportModal,
@@ -261,6 +276,13 @@ const ReportDetailDrawer = () => {
     scrollToBottom()
     setIsReview(false)
     getReportCommentData(drawerInfo.id)
+    if (reviewCount.current === 0) {
+      const info = await getReportInfo({
+        id: viewReportModal?.id,
+      })
+      setUserList(info?.target_users)
+    }
+    reviewCount.current += 1
     form.resetFields()
   }
 
@@ -328,6 +350,27 @@ const ReportDetailDrawer = () => {
       )
     }
     return Promise.resolve()
+  }
+
+  // 删除评论
+  const onDeleteComment = (item: any) => {
+    setIsVisible(true)
+    setIsDeleteId(item.id)
+  }
+
+  const onDeleteConfirm = async () => {
+    try {
+      await delReportComment({
+        report_user_id: viewReportModal?.id,
+        id: isDeleteId,
+      })
+      message.success(t('common.deleteSuccess'))
+      setIsDeleteId(0)
+      setIsVisible(false)
+      getReportCommentData(viewReportModal?.id)
+    } catch (error) {
+      //
+    }
   }
 
   return (
@@ -442,16 +485,25 @@ const ReportDetailDrawer = () => {
               </DetailItem>
             ))}
             {drawerInfo?.target_users?.length > 0 && (
-              <TargetTabs list={drawerInfo?.target_users} />
+              <TargetTabs list={userList} />
             )}
             <DetailItem>
               <div className="title">{t('common.comment')}</div>
               {commentList && commentList.length
                 ? commentList.map((i: any) => (
                     <CommentBox key={i.id}>
-                      <div className="header">
-                        <CommonUserAvatar name={i.comment_user.name} />
-                        <div className="time">{i.created_at || '--'}</div>
+                      <div className="headWrap">
+                        <div className="header">
+                          <CommonUserAvatar name={i.comment_user.name} />
+                          <div className="time">{i.created_at || '--'}</div>
+                        </div>
+                        {userInfo?.id === i.comment_user.id ? (
+                          <IconFont
+                            style={{ marginLeft: 20 }}
+                            type="close"
+                            onClick={() => onDeleteComment(i)}
+                          />
+                        ) : null}
                       </div>
                       <div className="content">
                         <Editor
@@ -537,6 +589,12 @@ const ReportDetailDrawer = () => {
           />
         )}
       </CommentFooter>
+      <DeleteConfirm
+        text={t('mark.cd')}
+        isVisible={isVisible}
+        onChangeVisible={() => setIsVisible(!isVisible)}
+        onConfirm={onDeleteConfirm}
+      />
     </Drawer>
   )
 }

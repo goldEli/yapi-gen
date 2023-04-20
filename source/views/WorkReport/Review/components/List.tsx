@@ -354,7 +354,7 @@ const List = () => {
       align: 'center',
       fixed: 'right',
       render: (_: string, record: any) => {
-        return (
+        return record?.is_submitter_edit === 1 ? (
           <span
             onClick={() => {
               setVisibleEdit(true)
@@ -368,6 +368,17 @@ const List = () => {
             }}
           >
             {t('report.list.modify')}
+          </span>
+        ) : (
+          <span
+            style={{
+              fontSize: '14px',
+              fontWeight: ' 400',
+              color: '#bbbdbf',
+              cursor: 'not-allowed',
+            }}
+          >
+            修改
           </span>
         )
       },
@@ -598,7 +609,7 @@ const List = () => {
             ? columns
             : id === 3
             ? columns?.filter(
-                (item: any) => item.dataIndex && item.dataIndex !== 'is_read',
+                (item: any) => item.dataIndex && item.dataIndex !== 'type',
               )
             : columns?.filter((item: any) => item.dataIndex)
         }
