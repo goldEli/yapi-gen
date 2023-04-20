@@ -32,23 +32,23 @@ const ScheduleSearch: React.FC<CalendarListProps> = props => {
   const navigate = useNavigate()
   const getSearchList = () => {
     const params = {
-      year: parseInt(calenderYearValue),
+      year: parseInt(calenderYearValue, 10),
       calendar_ids: checkedCalendarList.map(item => item.calendar_id),
       keyword: inputDefaultValue,
     }
     getScheduleSearch(params).then(res => {
-      let array: any = []
+      const array: any = []
       Object.keys(res)
         .sort()
         .forEach(key => {
-          let item = res[key]
+          const item = res[key]
           array.push({ date: key, list: item })
         })
       setSearchList(array)
     })
   }
   useEffect(() => {
-    if (inputDefaultValue === undefined) return
+    if (inputDefaultValue === void 0) return
     getSearchList()
   }, [inputDefaultValue])
   return (

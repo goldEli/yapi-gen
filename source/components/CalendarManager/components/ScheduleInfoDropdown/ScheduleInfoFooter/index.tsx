@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { scheduleInfoReply } from '@/services/schedule'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
 import { useTranslation } from 'react-i18next'
+import { divide } from 'lodash'
 interface iProps {}
 const ScheduleInfoFooterBox = styled.div`
   color: var(--neutral-n3);
@@ -33,9 +34,25 @@ const ScheduleInfoFooter: React.FC<iProps> = props => {
       //
     }
   }
+  const ButtonWrap = React.useMemo(
+    () => (
+      <ScheduleInfoFooterBox>
+        <CommonButton type="light" onClick={() => replySchedule(1)}>
+          {t('calendarManager.receive')}
+        </CommonButton>
+        <CommonButton type="light" onClick={() => replySchedule(2)}>
+          {t('calendarManager.refuse')}
+        </CommonButton>
+        <CommonButton type="light" onClick={() => replySchedule(3)}>
+          {t('calendarManager.pending')}
+        </CommonButton>
+      </ScheduleInfoFooterBox>
+    ),
+    [],
+  )
   return (
     <>
-      {!scheduleInfo?.is_show_reply ? (
+      {scheduleInfo?.is_show_reply ? (
         <ScheduleInfoFooterBox>
           <CommonButton type="light" onClick={() => replySchedule(1)}>
             {t('calendarManager.receive')}
