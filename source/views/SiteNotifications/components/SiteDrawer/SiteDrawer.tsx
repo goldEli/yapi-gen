@@ -37,6 +37,7 @@ const SiteDrawer = () => {
   const [t] = useTranslation()
   const [active, setActive] = useState('3')
   const newName = useRef<any>(undefined)
+  const atmy = useRef<any>(undefined)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const isVisible = useSelector(store => store.siteNotifications.isVisible)
@@ -57,10 +58,10 @@ const SiteDrawer = () => {
       id: '1',
       text: `${t('new1')}(${now ?? 0})`,
     },
-    // {
-    //   id: '2',
-    //   text: t('atmy'),
-    // },
+    {
+      id: '2',
+      text: t('atmy'),
+    },
   ]
 
   const onChange = (e: CheckboxChangeEvent) => {
@@ -79,6 +80,7 @@ const SiteDrawer = () => {
       lastId: lastId.current,
       read: localStorage.getItem('read'),
       latTime: newName.current,
+      msgType: atmy.current,
     })
     lastId.current = re4.lastId
 
@@ -101,11 +103,19 @@ const SiteDrawer = () => {
     setActive(id)
     setHasMore(true)
     if (id === '3') {
+      atmy.current = undefined
       newName.current = undefined
       lastId.current = 0
       fetchMoreData(1)
     }
+    if (id === '2') {
+      newName.current = undefined
+      atmy.current = ['191', '132']
+      lastId.current = 0
+      fetchMoreData(1)
+    }
     if (id === '1') {
+      atmy.current = undefined
       newName.current = Math.floor(new Date().valueOf() / 1000) - 5 * 60 * 1000
       lastId.current = 0
       fetchMoreData(1)

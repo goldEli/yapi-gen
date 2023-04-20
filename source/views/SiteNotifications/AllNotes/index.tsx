@@ -86,6 +86,10 @@ const Index = () => {
   }
 
   useEffect(() => {
+    msgType.current = undefined
+    if (id === '4') {
+      msgType.current = ['191', '132']
+    }
     lastId.current = 0
     setList([])
     fetchMoreData(1)
