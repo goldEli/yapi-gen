@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as services from '@/services'
 import { AppDispatch, store } from '@store/index'
 import ParamsCache from './paramsCache'
-
+import dayjs from 'dayjs'
 const name = 'schedule'
 
 export const getScheduleListDaysOfDate = createAsyncThunk(
@@ -43,6 +43,7 @@ export const getCalendarDaysOfYearList = createAsyncThunk(
 export const getScheduleDaysOfList = createAsyncThunk(
   `${name}/getScheduleDaysOfList`,
   async (params: API.Schedule.ScheduleInfoList.Params) => {
+    ParamsCache.getInstance().addCache('list', params)
     const res = await services.schedule.getCalendarDaysOfMonthList(params)
     return res.data
   },
@@ -60,7 +61,7 @@ export const refreshCalendarPanelScheduleList =
   () => async (dispatch: AppDispatch) => {
     const state = store.getState()
     const { calendarPanelType } = state.calendarPanel
-    const { checkedCalendarList } = state.calendar
+    const { checkedCalendarList, checkedTime } = state.calendar
     const params = ParamsCache.getInstance().getCache(calendarPanelType)
     if (!params) {
       return
@@ -69,6 +70,12 @@ export const refreshCalendarPanelScheduleList =
       ...params,
       calendar_ids: checkedCalendarList.map(item => item.calendar_id),
     }
+    const yearParams = {
+      calendar_ids: checkedCalendarList.map(item => item.calendar_id),
+      year: dayjs(checkedTime).year(),
+      month: dayjs(checkedTime).month() + 1,
+    }
+    // dispatch(getCalendarDaysOfMonthList(yearParams))
     switch (calendarPanelType) {
       case 'day':
         dispatch(getScheduleListDaysOfDate(newParams))
@@ -80,11 +87,10 @@ export const refreshCalendarPanelScheduleList =
         dispatch(getScheduleListDaysOfMonth(newParams))
         break
       case 'year':
-        console.log(11111, newParams)
         dispatch(getCalendarDaysOfYearList(newParams))
         break
       case 'list':
-        dispatch(getCalendarDaysOfMonthList(newParams))
+        dispatch(getScheduleDaysOfList(newParams))
         break
       default:
         break

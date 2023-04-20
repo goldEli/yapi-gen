@@ -9,6 +9,7 @@
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import { decryptPhp } from './cryptoPhp'
+import dayjs from 'dayjs'
 import {
   Select,
   Input,
@@ -349,7 +350,32 @@ function getCustomNormalValue(attr: any, text: any) {
   }
   return result || '--'
 }
+function isDateIntersection(
+  start1: string,
+  end1: string,
+  start2: string,
+  end2: string,
+) {
+  const startdate1 = dayjs(start1).valueOf()
+  const enddate1 = dayjs(end1).valueOf()
 
+  const startdate2 = dayjs(start2).valueOf()
+  const enddate2 = dayjs(end2).valueOf()
+
+  if (startdate1 >= startdate2 && startdate1 <= enddate2) {
+    return true
+  }
+
+  if (enddate1 >= startdate2 && enddate1 <= enddate2) {
+    return true
+  }
+
+  if (startdate1 <= startdate1 && enddate1 >= enddate2) {
+    return true
+  }
+
+  return false
+}
 export {
   getIsPermission,
   getParamsData,
@@ -362,4 +388,5 @@ export {
   getCustomNormalValue,
   copyLink,
   getNowDate,
+  isDateIntersection,
 }

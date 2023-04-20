@@ -1,9 +1,10 @@
 import React from 'react'
 import styled from '@emotion/styled'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { css } from '@emotion/css'
 import dayjs from 'dayjs'
 import classNames from 'classnames'
+import { getDaysOfWeekList } from '@store/calendar/calendar.thunk'
 
 interface CalendarMonthHeaderProps {}
 
@@ -26,24 +27,41 @@ const weekendsColor = css`
   color: var(--neutral-n4) !important;
 `
 
-// 从星期天开始
 const CalendarMonthHeader: React.FC<CalendarMonthHeaderProps> = props => {
-  //   const { selectedMonthWeeks } = useSelector(store => store.calendar)
+  const { selectedWeek } = useSelector(store => store.calendar)
+  const { calenderYearWeekValue } = useSelector(store => store.calendarPanel)
+  const dispatch = useDispatch()
+
+  // init
+  React.useEffect(() => {
+    if (!calenderYearWeekValue) {
+      return
+    }
+    const arr = calenderYearWeekValue.split('/')
+    const [year, week] = arr
+
+    dispatch(
+      getDaysOfWeekList({
+        year: parseInt(year, 10),
+        week: parseInt(week, 10),
+      }),
+    )
+  }, [calenderYearWeekValue])
   return (
     <CalendarMonthHeaderBox>
-      {Array(7)
-        .fill(0)
-        .map((item, idx) => {
-          const dayOfWeek = dayjs().day(idx).format('ddd')
-          const classnames = classNames({
-            [weekendsColor]: idx === 0 || idx === 6,
-          })
-          return (
-            <Item className={classnames} key={item}>
-              {dayOfWeek}
-            </Item>
-          )
-        })}
+      {selectedWeek.map((item, idx) => {
+        const d = dayjs(item.date)
+        const dayOfWeek = d.format('ddd')
+        const weekNum = d.day()
+        const classnames = classNames({
+          [weekendsColor]: weekNum === 0 || weekNum === 6,
+        })
+        return (
+          <Item className={classnames} key={item.date}>
+            {dayOfWeek}
+          </Item>
+        )
+      })}
     </CalendarMonthHeaderBox>
   )
 }
