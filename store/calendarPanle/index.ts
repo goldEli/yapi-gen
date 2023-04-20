@@ -122,7 +122,7 @@ const slice = createSlice({
       const min = newState.endIndex ?? 0
       // 结束坐标
       const max = min + len
-
+      // 移动后，展示跨天日程的下标
       const list = Array.from(Array(42).keys()).slice(min, max)
       const d = {
         ...newState,
