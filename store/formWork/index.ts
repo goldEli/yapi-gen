@@ -16,12 +16,11 @@ type SliceState = {
   reportContent: any
   // 开始时间和结束时间有误
   err: boolean
-  // 模板名称
-  templateName: string
   // 详情数据
   templateDetailValues: any
   // 报错的提示语
   errMsg: string
+  templateName: string
 }
 
 const formWork = createSlice({
@@ -31,7 +30,6 @@ const formWork = createSlice({
     activeItem: null,
     err: true,
     errMsg: '',
-    templateName: '',
     templateDetailValues: null,
     option: [
       {
@@ -54,6 +52,7 @@ const formWork = createSlice({
     dataList: [],
     fillingRequirements: {},
     reportContent: null,
+    templateName: '',
     templateContentConfigs: [
       {
         name: '汇报对象',
@@ -84,10 +83,7 @@ const formWork = createSlice({
     setErr: (state: any, action) => {
       state.err = action.payload
     },
-    // 模板名称
-    setTemplateName: (state: any, action) => {
-      state.templateName = action.payload
-    },
+
     setDataList: (state: any, action) => {
       state.dataList = action.payload
     },
@@ -96,6 +92,9 @@ const formWork = createSlice({
     },
     setErrMsg: (state: any, action) => {
       state.errMsg = action.payload
+    },
+    setTemplateName: (state: any, action) => {
+      state.templateName = action.payload
     },
   },
   extraReducers(builder) {
@@ -197,9 +196,9 @@ export const {
   setReportContent,
   setTemplateContentConfigs,
   setErr,
-  setTemplateName,
   setDataList,
   setEditSave,
   setErrMsg,
+  setTemplateName,
 } = formWork.actions
 export default formWork.reducer

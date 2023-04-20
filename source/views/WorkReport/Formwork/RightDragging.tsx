@@ -162,20 +162,21 @@ const SliderList = (props: any) => {
 }
 
 const Sortable = () => {
+  const [t] = useTranslation()
   const option = [
     {
       type: 3,
-      title: '富文本编辑器',
+      title: t('formWork.tab1'),
       icon: 'text',
     },
     {
       type: 2,
-      title: '附件',
+      title: t('formWork.tab2'),
       icon: 'attachment',
     },
     {
       type: 4,
-      title: '关联需求',
+      title: t('formWork.tab3'),
       icon: 'horizontal',
     },
   ]

@@ -18,6 +18,7 @@ import {
   data,
   dayData,
 } from './DataList'
+import { useTranslation } from 'react-i18next'
 const PickerStyle = styled.div`
   width: 360px;
   height: 232px;
@@ -84,6 +85,7 @@ let v1 = 0
 let v2 = 0
 let v3 = 0
 const Picker = (props: PropsType) => {
+  const [t] = useTranslation()
   const dispatch = useDispatch()
   const [leftActiveVal, setLeftActiveVal] = useState<number>(-1)
   const [centerActiveVal, setCenterActiveVal] = useState<number>(-1)
@@ -300,7 +302,7 @@ const Picker = (props: PropsType) => {
       <PickerStyle>
         {/* 提醒时间才有 */}
         {props.pickerType === 'remind' ? (
-          <LeftTime1>{<Item>截止时间前</Item>}</LeftTime1>
+          <LeftTime1>{<Item>{t('formWork.end1')}</Item>}</LeftTime1>
         ) : null}
         {props.type === 'day' && props.pickerType === 'remind' ? null : (
           <LeftTime>
@@ -362,12 +364,13 @@ const Picker = (props: PropsType) => {
       </PickerStyle>
     )
   }
+
   return (
     <div>
       <InputStyle
         type="text"
         value={value}
-        placeholder="请选择时间"
+        placeholder={t('formWork.inp1')}
         suffix={
           <Popover
             open={isOpen}

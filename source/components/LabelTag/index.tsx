@@ -11,9 +11,9 @@ interface LabelPropType {
   state: number
 }
 
-const LabelWrap = styled.span`
+const LabelWrap = styled.span<{ zh: boolean }>`
   display: inline-block;
-  width: 30px;
+  width: ${(props: any) => (props.zh ? '30px' : '45px')};
   height: 20px;
   box-sizing: border-box;
   background: ${(props: any) => props.theme};
@@ -26,6 +26,7 @@ const LabelWrap = styled.span`
   position: relative;
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
+  white-space: nowrap;
   &::after {
     content: '';
     width: 0px;
@@ -34,7 +35,7 @@ const LabelWrap = styled.span`
     border-right-color: ${(props: any) => props.theme};
     position: absolute;
     top: 0px;
-    right: 30px;
+    right: ${(props: any) => (props.zh ? '30px' : '45px')};
   }
 `
 
@@ -42,7 +43,11 @@ const LabelTag = (props: LabelPropType) => {
   const { options, state } = props
   const labelItem = options.find((k: ItemType) => k.state === state)
   return (
-    <LabelWrap theme={labelItem?.background} color={labelItem?.color}>
+    <LabelWrap
+      theme={labelItem?.background}
+      color={labelItem?.color}
+      zh={localStorage.getItem('language') === 'zh'}
+    >
       {labelItem?.label}
     </LabelWrap>
   )

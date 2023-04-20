@@ -34,13 +34,6 @@ const Index = () => {
     3: t('read_notifications'),
     4: t('referring_to_my'),
   }
-  const setReads = async (values: any) => {
-    setReadApi(values)
-  }
-  const setAllRead = () => {
-    const arr = list.map((i: any) => i.id)
-    setReads(arr)
-  }
 
   const fetchMoreData = async (type: number) => {
     const re4 = await getMsg_list({
@@ -65,6 +58,18 @@ const Index = () => {
       }
     }, 500)
   }
+  const setReads = async (values: any) => {
+    await setReadApi(values)
+    setList([])
+    setHasMore(true)
+    lastId.current = 0
+    fetchMoreData(1)
+  }
+  const setAllRead = () => {
+    const arr = list.map((i: any) => i.id)
+    setReads(arr)
+  }
+
   const changeUser = (str: string, arr: any) => {
     msgType.current = arr
     friendUsername.current = str
@@ -82,6 +87,7 @@ const Index = () => {
 
   useEffect(() => {
     lastId.current = 0
+    setList([])
     fetchMoreData(1)
   }, [id])
 
@@ -108,7 +114,10 @@ const Index = () => {
             {t('filtering_notifications') as string}
           </CommonButton>
           {id !== '3' && (
-            <CommonButton onClick={setAllRead} type="light">
+            <CommonButton
+              onClick={() => (list.length >= 1 ? setAllRead() : null)}
+              type="light"
+            >
               {t('all_read') as string}
             </CommonButton>
           )}

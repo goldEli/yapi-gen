@@ -69,7 +69,6 @@ const HeaderSearch = (props: {
       </TitleWrap>
       <SearchBox>
         <Space size={24}>
-          <DividerWrap type="vertical" />
           <InputSearch
             width={202}
             bgColor="var(--neutral-white-d4)"

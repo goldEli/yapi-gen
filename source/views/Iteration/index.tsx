@@ -170,6 +170,7 @@ const Iteration = () => {
   const [titleList3, setTitleList3] = useState<any[]>([])
   const [allTitleList, setAllTitleList] = useState<any[]>([])
   const [isVisibleFields, setIsVisibleFields] = useState(false)
+  const [searchValue, setSearchValue] = useState('')
 
   const [searchGroups, setSearchGroups] = useState<any>({
     statusId: [],
@@ -233,6 +234,7 @@ const Iteration = () => {
       schedule_start: e.schedule?.start,
       schedule_end: e.schedule?.end,
       custom_field: customField,
+      searchVal: searchValue,
     }
 
     setSearchGroups(params)
@@ -388,6 +390,7 @@ const Iteration = () => {
     if (searchGroups.searchVal !== value) {
       let obj = JSON.parse(JSON.stringify(searchGroups))
       obj.searchVal = value
+      setSearchValue(value)
       setSearchGroups(obj)
     }
   }

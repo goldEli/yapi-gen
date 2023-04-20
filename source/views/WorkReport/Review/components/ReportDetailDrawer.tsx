@@ -73,7 +73,7 @@ const TargetTabs = (props: TargetTabsProps) => {
           )
           ?.map((i: any) => (
             <div key={i.user_id}>
-              <CommonUserAvatar avatar={i.user.avatar} name={i.user.name} />
+              <CommonUserAvatar avatar={i.user?.avatar} name={i.user?.name} />
             </div>
           ))}
       </TargetUserContent>
@@ -85,29 +85,15 @@ const ContactDemand = (props: { list: any }) => {
   const list = props.list?.length ? props.list : []
   return (
     <ContactDemandBox>
-      {list?.map((i: any) => (
-        <ContactDemandItem key={i.id}>
-          【{i.id}】<span className="name">{i.name}</span>
-        </ContactDemandItem>
-      ))}
+      {list?.length
+        ? list?.map((i: any) => (
+            <ContactDemandItem key={i.id}>
+              【{i.id}】<span className="name">{i.name}</span>
+            </ContactDemandItem>
+          ))
+        : '--'}
     </ContactDemandBox>
   )
-}
-
-const AttachmentBox = (props: { list: any }) => {
-  const list = props.list?.length ? props.list : []
-  const resultList = list?.map((item: any) => {
-    return {
-      url: item.url,
-      id: new Date().getTime() + Math.random(),
-      size: item.size,
-      time: item.ctime,
-      name: item.name || '--',
-      suffix: item.ext,
-      username: item.username,
-    }
-  })
-  return <UploadAttach isReport canUpdate power defaultList={resultList} />
 }
 
 const ReportDetailDrawer = () => {
@@ -150,6 +136,26 @@ const ReportDetailDrawer = () => {
     })
   }
 
+  const AttachmentBox = (props: { list: any }) => {
+    const list = props.list?.length ? props.list : []
+    const resultList = list?.map((item: any) => {
+      return {
+        url: item.url,
+        id: new Date().getTime() + Math.random(),
+        size: item.size,
+        time: item.ctime,
+        name: item.name || '--',
+        suffix: item.ext,
+        username: item.username,
+      }
+    })
+    return list?.length ? (
+      <UploadAttach isReport canUpdate power defaultList={resultList} />
+    ) : (
+      <span>--</span>
+    )
+  }
+
   const scrollToBottom = () => {
     setTimeout(() => {
       reviewRef.current.scrollTo({
@@ -176,6 +182,7 @@ const ReportDetailDrawer = () => {
     const info = await getReportInfo({
       id: viewReportModal?.id,
     })
+
     setDrawerInfo(info)
     setSkeletonLoading(false)
     // 获取当前需求的下标， 用作上一下一切换
@@ -390,9 +397,12 @@ const ReportDetailDrawer = () => {
                     {t('report.list.of')}
                     {drawerInfo?.report_template_name}
                     <span className="dateText">
-                      {`（${drawerInfo?.start_time} ${t('report.list.to')} ${
-                        drawerInfo?.end_time
-                      }）`}
+                      {`（${drawerInfo?.start_time} ${t(
+                        'report.list.to',
+                      )} ${drawerInfo?.end_time?.substring(
+                        0,
+                        drawerInfo?.end_time?.indexOf(' '),
+                      )}）`}
                     </span>
                   </div>
                   <div className="submitTimeText">
@@ -404,7 +414,6 @@ const ReportDetailDrawer = () => {
             {drawerInfo?.report_content?.map((i: any) => (
               <DetailItem key={i.id}>
                 <div className="title">{i.name}</div>
-                {i.type === 1 && <TargetTabs list={drawerInfo?.target_users} />}
                 {i.type === 2 && <AttachmentBox list={i?.pivot?.params} />}
                 {i.type === 3 && (
                   <Editor
@@ -416,6 +425,9 @@ const ReportDetailDrawer = () => {
                 {i.type === 4 && <ContactDemand list={i?.pivot?.params} />}
               </DetailItem>
             ))}
+            {drawerInfo?.target_users?.length > 0 && (
+              <TargetTabs list={drawerInfo?.target_users} />
+            )}
             <DetailItem>
               <div className="title">{t('common.comment')}</div>
               {commentList && commentList.length
@@ -426,11 +438,7 @@ const ReportDetailDrawer = () => {
                         <div className="time">{i.created_at || '--'}</div>
                       </div>
                       <div className="content">
-                        <Editor
-                          readonly
-                          disableUpdateValue
-                          value={i?.content}
-                        />
+                        <div dangerouslySetInnerHTML={{ __html: i?.content }} />
                       </div>
                     </CommentBox>
                   ))
