@@ -1,15 +1,21 @@
 import React, { useState } from 'react'
-import { Collapse, Tooltip } from 'antd'
+import { Collapse, Tooltip, message } from 'antd'
 import styled from '@emotion/styled'
 import { CloseWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import MoreDropdown from '@/components/MoreDropdown'
 import { useDispatch, useSelector } from '@store/index'
 import { setCalendarModal, setSubscribeModal } from '@store/calendar'
-import CalendarMoreDropdown from './CalendarMoreDropdown'
 import { colorMap } from '../../config'
-import { userSetupsCalendar } from '@store/calendar/calendar.thunk'
+import {
+  getCalendarList,
+  userSetupsCalendar,
+} from '@store/calendar/calendar.thunk'
 import NoData from '@/components/NoData'
+import { useTranslation } from 'react-i18next'
+import CalendarColor from '../CalendarColor'
+import { deleteCalendar, unsubscribeCalendar } from '@/services/calendar'
+import DeleteConfirm from '@/components/DeleteConfirm'
 
 const { Panel } = Collapse
 
@@ -79,6 +85,40 @@ const ItemBox = styled.div`
   width: 90%;
 `
 
+const MoreWrap = styled.div`
+  padding: 4px 0 10px;
+  display: flex;
+  flex-direction: column;
+  background: var(--neutral-white-d6);
+  border-radius: 6px;
+  min-width: 120px;
+  box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+`
+
+const Item = styled.div`
+  height: 32px;
+  padding: 0 16px;
+  cursor: pointer;
+  color: var(--neutral-n2);
+  font-size: 14px;
+  line-height: 32px;
+  &:hover {
+    background: var(--hover-d3);
+    color: var(--neutral-n1-d1);
+  }
+`
+
+const Provider = styled.div`
+  height: 1px;
+  background: var(--neutral-n6-d1);
+  margin: 8px 0;
+`
+
+const ColorWrap = styled.div`
+  padding: 0 16px;
+  width: 192px;
+`
+
 interface CalendarManagerListProps {
   title: string
   type: 'manager' | 'subscribe'
@@ -88,13 +128,37 @@ interface CalendarManagerListProps {
 
 const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
   const dispatch = useDispatch()
+  const [t] = useTranslation()
+  const [isDeleteVisible, setIsDeleteVisible] = useState(false)
+  const [isUnsubscribeVisible, setIsUnsubscribeVisible] = useState(false)
   const [isMoreVisible, setIsMoreVisible] = useState(false)
+  const [operationItem, setOperationItem] = useState<Model.Calendar.Info>(
+    {} as Model.Calendar.Info,
+  )
   const { calendarData } = useSelector(store => store.calendar)
   const { userInfo } = useSelector(store => store.user)
   const calendarList = calendarData[props.type as keyof typeof calendarData]
   const allPermission = userInfo.company_permissions?.map(
     (i: any) => i.identity,
   )
+
+  const subMenu = [
+    { name: t('calendarManager.show_only_this_calendar'), type: 'only' },
+    {
+      name: t('calendarManager.unsubscribe_from_calendar'),
+      type: 'unsubscribe',
+    },
+  ]
+
+  const manageMenu = [
+    { name: t('calendarManager.show_only_this_calendar'), type: 'only' },
+    { name: t('calendarManager.editorial_calendar'), type: 'edit' },
+    { name: t('calendarManager.delete_calendar'), type: 'delete' },
+    {
+      name: t('calendarManager.unsubscribe_from_calendar'),
+      type: 'unsubscribe',
+    },
+  ]
 
   // 改变日历的选中状态
   const onChangeCheck = async (e: any, item: Model.Calendar.Info) => {
@@ -114,8 +178,108 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
       : dispatch(setCalendarModal({ visible: true }))
   }
 
+  // 仅显示此日历
+  const showOnlyCalendar = async (i: Model.Calendar.Info) => {
+    await dispatch(
+      userSetupsCalendar({
+        is_check: 1,
+        id: i.calendar_id,
+        is_only_show: 1,
+      }),
+    )
+    setIsMoreVisible(false)
+  }
+
+  // 删除日历确认事件
+  const onDeleteConfirm = async () => {
+    await deleteCalendar({ id: operationItem.calendar_id })
+    dispatch(getCalendarList())
+    setIsDeleteVisible(false)
+    message.success(t('calendarManager.deleteSuccess'))
+    setOperationItem({} as Model.Calendar.Info)
+  }
+
+  // 退订日历确认事件
+  const onUnsubscribeConfirm = async () => {
+    await unsubscribeCalendar({ id: operationItem.calendar_id })
+    dispatch(getCalendarList())
+    setIsUnsubscribeVisible(false)
+    message.success(t('calendarManager.unsubscribed_successfully'))
+    setOperationItem({} as Model.Calendar.Info)
+  }
+
+  // 点击菜单事件
+  const onClickMenu = (type: string, i: Model.Calendar.Info) => {
+    if (type === 'only') {
+      showOnlyCalendar(i)
+    } else if (type === 'edit') {
+      dispatch(
+        setCalendarModal({
+          visible: true,
+          params: { id: i.calendar_id },
+        }),
+      )
+    } else if (type === 'delete') {
+      setOperationItem(i)
+      setIsDeleteVisible(true)
+    } else {
+      setOperationItem(i)
+      setIsUnsubscribeVisible(true)
+    }
+    setIsMoreVisible(false)
+  }
+
+  // 改变颜色
+  const onChangeColor = async (color: number, i: Model.Calendar.Info) => {
+    await dispatch(
+      userSetupsCalendar({
+        color,
+        id: i.calendar_id,
+      }),
+    )
+    setIsMoreVisible(false)
+  }
+
+  // 我管理的日历下拉菜单 -- 根据状态判断
+  const getResultManageMenu = (i: Model.Calendar.Info) => {
+    let resultList: string[] = []
+    // 所有者
+    if (i.is_default === 1) {
+      resultList = ['edit', 'only']
+    } else if (i.is_owner === 1) {
+      resultList = ['edit', 'only', 'delete']
+    } else if (i.user_group_id === 1) {
+      resultList = ['edit', 'only', 'unsubscribe', 'delete']
+    } else {
+      resultList = ['only', 'unsubscribe']
+    }
+    return manageMenu.filter((i: { name: string; type: string }) =>
+      resultList.includes(i.type),
+    )
+  }
+
   return (
     <div style={{ marginBottom: 24 }}>
+      <DeleteConfirm
+        isVisible={isDeleteVisible}
+        title={t('calendarManager.delete_calendar')}
+        text={t('calendarManager.delete_calendar_text')}
+        onConfirm={onDeleteConfirm}
+        onChangeVisible={() => {
+          setIsDeleteVisible(false)
+          setOperationItem({} as Model.Calendar.Info)
+        }}
+      />
+      <DeleteConfirm
+        isVisible={isUnsubscribeVisible}
+        title={t('calendarManager.unsubscribe_from_calendar')}
+        text={t('calendarManager.unsubscribe_from_calendar_text')}
+        onConfirm={onUnsubscribeConfirm}
+        onChangeVisible={() => {
+          setIsUnsubscribeVisible(false)
+          setOperationItem({} as Model.Calendar.Info)
+        }}
+      />
       <CollapseWrap
         defaultActiveKey={['1']}
         ghost
@@ -166,11 +330,28 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
                 <MoreDropdown
                   isMoreVisible={isMoreVisible}
                   menu={
-                    <CalendarMoreDropdown
-                      item={i}
-                      type={props.type}
-                      onCancel={() => setIsMoreVisible(false)}
-                    />
+                    <MoreWrap>
+                      {(props.type === 'subscribe'
+                        ? subMenu
+                        : getResultManageMenu(i)
+                      ).map((k: { name: string; type: string }) => (
+                        <Item
+                          key={k.name}
+                          onClick={() => onClickMenu(k.type, i)}
+                        >
+                          {k.name}
+                        </Item>
+                      ))}
+                      <div style={{ padding: '0 16px' }}>
+                        <Provider />
+                      </div>
+                      <ColorWrap>
+                        <CalendarColor
+                          color={i.color}
+                          onChangeColor={value => onChangeColor(value, i)}
+                        />
+                      </ColorWrap>
+                    </MoreWrap>
                   }
                   onChangeVisible={setIsMoreVisible}
                 />
