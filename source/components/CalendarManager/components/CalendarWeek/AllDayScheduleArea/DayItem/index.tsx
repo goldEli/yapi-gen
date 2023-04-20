@@ -91,7 +91,7 @@ const DayItem: React.FC<DayItemProps> = props => {
   const info = selectedWeek?.[props.idx]
   const dispatch = useDispatch()
   const classnames = classNames({
-    [selectedBg]: selectedDayInMonth === info.datetime,
+    [selectedBg]: selectedDayInMonth === info?.datetime,
     [borderRight]: (idx + 1) % 7 === 0,
     [borderBottom]: true,
   })
