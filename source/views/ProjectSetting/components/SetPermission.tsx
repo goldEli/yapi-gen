@@ -26,6 +26,8 @@ const Line = styled.div`
   line-height: 32px;
 `
 const RightLine = styled(Line)`
+  display: flex;
+  justify-content: flex-end;
   margin-top: 24px;
   color: rgba(50, 50, 51, 1);
   display: flex;
@@ -66,8 +68,7 @@ const SetPermissionWrap = (props: {
   }
 
   const onConfirm = async () => {
-    console.log('infoId', infoId)
-    // await props.onConfirm(infoId)
+    await props.onConfirm(infoId)
   }
 
   return (

@@ -22,6 +22,7 @@ import {
 import { dayData1, weekData, monthData, aWeekDataList } from './DataList'
 import moment from 'moment'
 import { throttle } from 'lodash'
+import { useTranslation } from 'react-i18next'
 const PermissionConfigStyle = styled.div`
   padding: 0 24px;
   overflow-y: auto;
@@ -47,13 +48,13 @@ interface PropsType {
 }
 const PermissionConfig = (props: PropsType) => {
   const dispatch = useDispatch()
+  const [t] = useTranslation()
   // 汇报内容是否展开
   const [report, setReport] = useState(true)
   const [fillIn, setFillIn] = useState(true)
   // 每天 day ,每周 week , 每月 month , 不重复doNot
   const [type, setType] = useState<string>('day')
   const [form] = Form.useForm()
-  const [delIsVisible, setDelIsVisible] = useState(false)
   const { fillingRequirements, reportContent } = useSelector(
     store => store.formWork,
   )
@@ -98,17 +99,7 @@ const PermissionConfig = (props: PropsType) => {
         target_type: el.target_type,
         target_value: el.target_value,
       }))
-      const hasAll = d1.find(
-        (item: any) =>
-          item.user_type === 1 &&
-          (item.key === 'all' || item.target_value.key === 'all'),
-      )
-      // if (hasAll) {
-      //   message.warning('你已添加全员')
-      //   d1 = [...person1]
-      // } else {
       d1 = [...person1, ...val1]
-      // }
     } else if (num === 2) {
       const val2 =
         values?.map((el: any) => ({
@@ -126,17 +117,7 @@ const PermissionConfig = (props: PropsType) => {
         target_type: el.target_type,
         target_value: el.target_value,
       }))
-      const hasAll = d3.find(
-        (item: any) =>
-          item.user_type === 3 &&
-          (item.key === 'all' || item.target_value.key === 'all'),
-      )
-      // if (hasAll) {
-      //   message.warning('你已添加全员')
-      //   d1 = [...person1]
-      // } else {
-      d1 = [...person1, ...val3]
-      // }
+      d3 = [...person1, ...val3]
     }
     const d3V = d3.find(
       (item: any) =>
@@ -227,11 +208,11 @@ const PermissionConfig = (props: PropsType) => {
     if (!num) {
       return null
     }
-    let t = 0
+    let tt = 0
     let t1 = 0
     if (b) {
-      t = parseInt(String(num / 60 / 60 / 24), 10)
-      t1 = t ? t * 60 * 60 * 24 : 0
+      tt = parseInt(String(num / 60 / 60 / 24), 10)
+      t1 = tt ? tt * 60 * 60 * 24 : 0
     }
     const tv = num - t1
     let h: number = parseInt(String(tv / 60 / 60), 10)
@@ -240,7 +221,7 @@ const PermissionConfig = (props: PropsType) => {
     let mv = m / 60
     let time = 0
     if (str === 'day') {
-      time = t
+      time = tt
     } else if (str === 'hour') {
       time = h === 24 ? 0 : h
     } else {
@@ -449,7 +430,7 @@ const PermissionConfig = (props: PropsType) => {
     <PermissionConfigStyle>
       {/* 汇报内容 */}
       <Title
-        headerTitle="汇报内容"
+        headerTitle={t('formWork.title1')}
         onChange={(val: boolean) => setReport(val)}
       />
       {report ? (
@@ -459,7 +440,7 @@ const PermissionConfig = (props: PropsType) => {
             onChangedel={val => onChangedel(val, 1)}
             onChangeValues={val => onChangeValues(val, 1)}
             person={person1}
-            title="谁可以写"
+            title={t('formWork.title2')}
             isShow={true}
             state={1}
           />
@@ -468,7 +449,7 @@ const PermissionConfig = (props: PropsType) => {
             onChangedel={val => onChangedel(val, 2)}
             onChangeValues={val => onChangeValues(val, 2)}
             person={person2}
-            title="汇报对象"
+            title={t('formWork.title3')}
             isShow={false}
             state={2}
           />
@@ -477,7 +458,7 @@ const PermissionConfig = (props: PropsType) => {
             onChangedel={val => onChangedel(val, 3)}
             onChangeValues={val => onChangeValues(val, 3)}
             person={person3}
-            title="谁可以看"
+            title={t('formWork.title4')}
             isShow={false}
             state={3}
           />
@@ -485,13 +466,13 @@ const PermissionConfig = (props: PropsType) => {
       ) : null}
       {/* 填写要求 */}
       <Title
-        headerTitle="填写要求"
-        msg="将直接填写要求统计提交情况"
+        headerTitle={t('formWork.title5')}
+        msg={t('formWork.title6')}
         onChange={(val: boolean) => setFillIn(val)}
       />
       {fillIn ? (
         <div style={{ marginLeft: '24px' }}>
-          <TitleText>填写周期</TitleText>
+          <TitleText>{t('formWork.title7')}</TitleText>
           <Radio.Group
             style={{ margin: '8px 0 16px 0' }}
             value={type}
@@ -499,25 +480,16 @@ const PermissionConfig = (props: PropsType) => {
               onchange(e)
             }}
           >
-            <Radio value={'day'}>每天</Radio>
-            <Radio value={'week'}>每周</Radio>
-            <Radio value={'month'}>每月</Radio>
-            <Radio value={'doNot'}>不重复</Radio>
+            <Radio value={'day'}>{t('formWork.title8')}</Radio>
+            <Radio value={'week'}>{t('formWork.title9')}</Radio>
+            <Radio value={'month'}>{t('formWork.title10')}</Radio>
+            <Radio value={'doNot'}>{t('formWork.title11')}</Radio>
           </Radio.Group>
           <DayFormBox form={form} onValuesChange={formOnValuesChange}>
             <FormMain type={type} />
           </DayFormBox>
         </div>
       ) : null}
-
-      {/* 未保存的弹窗 */}
-      <DeleteConfirm
-        title={'保存提示'}
-        text="【模版名称】还未保存，是否保存编辑内容？"
-        isVisible={delIsVisible}
-        onConfirm={() => setDelIsVisible(false)}
-        notCancel
-      />
     </PermissionConfigStyle>
   )
 }

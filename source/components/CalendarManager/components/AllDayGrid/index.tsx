@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { css } from '@emotion/css'
 import dayjs from 'dayjs'
 import useCurrentTime from '@/components/CalendarManager/hooks/useCurrentTime'
-import ScheduleList from '../../ScheduleList'
+// import ScheduleList from '../../ScheduleList'
 import {
   resizeMonthSchedule,
   setQuickCreateScheduleModel,
@@ -14,11 +14,11 @@ import {
   startMoveMonthSchedule,
 } from '@store/calendarPanle'
 import { setScheduleListModal } from '@store/schedule'
-import ScheduleStripList from '../../../ScheduleStripList'
 
 interface DayItemProps {
   idx: number
   list?: (Model.Schedule.Info | undefined)[]
+  children?: React.ReactNode
 }
 
 const DayItemBox = styled.div`
@@ -152,7 +152,7 @@ const DayItem: React.FC<DayItemProps> = props => {
       onClick={onClick}
       onMouseEnter={onMouseEnter}
     >
-      <DayBox>
+      {/* <DayBox>
         <span
           className={classNames('day', {
             dayActive: isSelected,
@@ -164,12 +164,8 @@ const DayItem: React.FC<DayItemProps> = props => {
         </span>
         <span className="lunar">{info?.lunar_day_chinese}</span>
       </DayBox>
-      <ScheduleStripList
-        containerClassName=".calendar-month-content-box"
-        data={info}
-        idx={idx}
-        list={props.list}
-      />
+      <ScheduleList data={info} idx={idx} list={props.list} /> */}
+      {props.children}
     </DayItemBox>
   )
 }

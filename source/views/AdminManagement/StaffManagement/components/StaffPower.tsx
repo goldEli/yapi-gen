@@ -29,6 +29,8 @@ const Line = styled.div`
   line-height: 32px;
 `
 const RightLine = styled(Line)`
+  display: flex;
+  justify-content: flex-end;
   margin-top: 24px;
   color: var(--neutral-n1-d1);
   display: flex;

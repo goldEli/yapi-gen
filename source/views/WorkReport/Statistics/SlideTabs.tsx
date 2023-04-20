@@ -115,6 +115,7 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
       nodeIndex.current,
       nodeIndex.current + STEP,
     )
+
     nodeIndex.current += STEP
     const nodeWidth = segment.reduce(
       (accumulator, currentValue) =>

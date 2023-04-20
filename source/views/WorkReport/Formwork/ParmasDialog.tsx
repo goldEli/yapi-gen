@@ -7,6 +7,7 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { Form, Input, Tooltip } from 'antd'
 import { useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 const FormWrap = styled(Form)({
   '& .ant-form-item-row': {
     display: 'block !important',
@@ -29,6 +30,7 @@ const ParmasDialog = (props: Props) => {
   const { TextArea } = Input
   const ChooseDom = useRef<HTMLInputElement>(null)
   const [form] = Form.useForm()
+  const [t] = useTranslation()
   useEffect(() => {
     form.resetFields()
     form.setFieldsValue({
@@ -44,7 +46,7 @@ const ParmasDialog = (props: Props) => {
   return (
     <CommonModal
       isVisible={props.isVisible}
-      title={'组件参数配置'}
+      title={t('formWork.dialog1')}
       onClose={props.onClose}
       onConfirm={onConfirm}
     >
@@ -57,7 +59,7 @@ const ParmasDialog = (props: Props) => {
             name="name"
             label={
               <div>
-                <FormTitleSmall text="标题名称" />
+                <FormTitleSmall text={t('formWork.dialog2')} />
                 <Tooltip
                   overlayStyle={{
                     fontSize: '12px',
@@ -65,7 +67,7 @@ const ParmasDialog = (props: Props) => {
                   }}
                   trigger={['click']}
                   placement="top"
-                  title="输入一个符合阅读习惯名称限20字，不能是 组件名称，且不能与已有的自定义标题重名"
+                  title={t('formWork.dialog3')}
                 >
                   <IconFont
                     style={{
@@ -87,10 +89,14 @@ const ParmasDialog = (props: Props) => {
             <Input autoComplete="off" autoFocus />
           </Form.Item>
           {props.dragItem?.type === 3 && (
-            <Form.Item style={{ marginTop: 24 }} name="tips" label="提示文字">
+            <Form.Item
+              style={{ marginTop: 24 }}
+              name="tips"
+              label={t('formWork.dialog4')}
+            >
               <TextArea
                 style={{ minHeight: '102px' }}
-                placeholder="提示文字可以用来提示用户如何填写"
+                placeholder={t('formWork.dialog5')}
                 autoComplete="off"
                 autoFocus
               />
