@@ -226,14 +226,11 @@ const TabsContent = (props: TabsContentProps) => {
   }
 
   useEffect(() => {
-    setDataList([...(dataList || []), ...(props.dataList?.list || [])])
+    setDataList(props.dataList?.list || [])
   }, [props.dataList])
 
   useEffect(() => {
-    setDataUserList([
-      ...(dataUserList || []),
-      ...(props.dataUserList?.list || []),
-    ])
+    setDataUserList(props.dataUserList?.list || [])
   }, [props.dataUserList])
 
   return (
@@ -261,7 +258,8 @@ const TabsContent = (props: TabsContentProps) => {
                       <div className="title">{i.name}</div>
                       <div className="sub">
                         <span>
-                          {t('calendarManager.calendar_creator')}：{i.user.name}
+                          {t('calendarManager.calendar_creator')}：
+                          {i.user?.name}
                         </span>
                         <span>
                           {t('calendarManager.subscribe_num')}：
@@ -386,6 +384,16 @@ const CalendarSubscribe = () => {
     pager?: Model.Calendar.Pager
   }>()
 
+  const onChangeSearch = (value: string, key: string) => {
+    if (value === searchValue) return
+    setSearchValue(value)
+    if (key === '0') {
+      getContactsCalendarData(1, value)
+    } else {
+      getSubscribeData(activeKey, 1, value)
+    }
+  }
+
   const operations = (
     <InputSearch
       placeholder={
@@ -395,30 +403,42 @@ const CalendarSubscribe = () => {
       }
       leftIcon
       width={184}
-      onChangeSearch={setSearchValue}
+      onChangeSearch={value => onChangeSearch(value, activeKey)}
       defaultValue={searchValue}
     />
   )
 
   // 获取公开日历及节假日 列表
-  const getSubscribeData = async (value: string, page?: number) => {
+  const getSubscribeData = async (
+    value: string,
+    page?: number,
+    search?: string,
+  ) => {
+    const oldData = JSON.parse(JSON.stringify(dataList?.list || []))
     setDataList({})
     const response = await getSubscribeList({
       type: value,
-      keywords: searchValue,
+      keywords: search,
       page: page || 1,
     })
-    setDataList({ list: response.data.list, pager: response.data.pager })
+    setDataList({
+      list: search ? response.data.list : [...oldData, ...response.data.list],
+      pager: response.data.pager,
+    })
   }
 
   // 获取订阅联系人列表
-  const getContactsCalendarData = async (page?: number) => {
+  const getContactsCalendarData = async (page?: number, search?: string) => {
+    const oldData = JSON.parse(JSON.stringify(dataUserList?.list || []))
     setDataUserList({})
     const response = await getContactsCalendarList({
-      username: searchValue,
+      username: search,
       page: page || 1,
     })
-    setDataUserList({ list: response.data.list, pager: response.data.pager })
+    setDataUserList({
+      list: search ? response.data.list : [...oldData, ...response.data.list],
+      pager: response.data.pager,
+    })
   }
 
   // 切换tab
@@ -481,15 +501,11 @@ const CalendarSubscribe = () => {
     }
   }, [subscribeModal])
 
-  useEffect(() => {
-    if (subscribeModal) {
-      if (activeKey === '0' && subscribeModal) {
-        getContactsCalendarData()
-      } else {
-        getSubscribeData(activeKey)
-      }
-    }
-  }, [searchValue])
+  // useEffect(() => {
+  //   if (subscribeModal) {
+
+  //   }
+  // }, [searchValue])
 
   return (
     <CommonModal
