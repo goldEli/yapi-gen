@@ -94,18 +94,21 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
           {scheduleInfo?.is_busy === 1 ? '忙碌' : '空闲'}
         </span>
         <div className={iconBox}>
-          <span
-            onClick={() => {
-              disPatch(
-                setScheduleModal({
-                  visible: true,
-                  params: { id: scheduleInfo?.id ?? 0 },
-                }),
-              )
-            }}
-          >
-            <ScheduleInfoIcon type="edit" />
-          </span>
+          {scheduleInfo?.able_update ? (
+            <span
+              onClick={() => {
+                disPatch(
+                  setScheduleModal({
+                    visible: true,
+                    params: { id: scheduleInfo?.id ?? 0 },
+                  }),
+                )
+              }}
+            >
+              <ScheduleInfoIcon type="edit" />
+            </span>
+          ) : null}
+
           <span
             onClick={() => {
               setIsVisible(true)
