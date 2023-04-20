@@ -17,7 +17,7 @@ const ScheduleInfoDropdownBox = styled.div<{
   top: number
   left: number
 }>`
-  width: 320px;
+  width: 400px;
   background-color: var(--neutral-white-d1);
   box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
   z-index: 999;

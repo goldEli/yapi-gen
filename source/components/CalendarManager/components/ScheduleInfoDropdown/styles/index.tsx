@@ -149,6 +149,9 @@ export const PersonItem = styled.div`
 `
 export const FileList = styled.div`
   margin-left: 28px;
+  .css-48p5kt-Card {
+    min-width: 320px !important;
+  }
 `
 export const FileItem = styled.div`
   background: #ffffff;

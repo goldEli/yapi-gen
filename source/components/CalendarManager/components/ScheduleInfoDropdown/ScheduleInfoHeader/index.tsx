@@ -122,12 +122,14 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
                     if (!scheduleInfo) {
                       return
                     }
+                    setShowTipBox(!showTipBox)
                     disPatch(
                       setScheduleModal({
                         visible: true,
                         params: { copyScheduleId: Number(scheduleInfo?.id) },
                       }),
                     )
+                    disPatch(setScheduleInfoDropdown({ visible: false }))
                   }}
                 >
                   {t('calendarManager.copySchedule')}
@@ -136,6 +138,8 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
                   <span
                     onClick={() => {
                       setModalVisible(true)
+                      setShowTipBox(!showTipBox)
+                      disPatch(setScheduleInfoDropdown({ visible: false }))
                     }}
                   >
                     {t('calendarManager.transfer_schedule')}

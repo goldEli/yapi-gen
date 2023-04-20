@@ -97,7 +97,7 @@ const ScheduleInfoContent: React.FC = props => {
         </ScheduleInfoContentItem>
       ) : null}
 
-      <FileList>
+      {/* <FileList>
         {scheduleInfo?.files?.map((item, index) => (
           <FileItem key={index}>
             <span>
@@ -123,8 +123,30 @@ const ScheduleInfoContent: React.FC = props => {
             </FileItemInfo>
           </FileItem>
         ))}
+      </FileList> */}
+      <FileList>
+        <UploadAttach
+          power
+          isReport
+          defaultList={scheduleInfo?.files?.map((i: any) => ({
+            url: i.url,
+            id: new Date().getTime() + Math.random() + i.user_id,
+            size: i.size,
+            time: i.created_at,
+            name: i.name || '--',
+            suffix: i.suffix,
+            username: i.user.name ?? '--',
+          }))}
+          // addWrap={
+          //   <div style={{ marginBottom: 8 }}>
+          //     <CommonButton type="primaryText" icon="plus" iconPlacement="left">
+          //       {t('calendarManager.addAdjunct')}
+          //     </CommonButton>
+          //   </div>
+          // }
+          onChangeAttachment={() => {}}
+        ></UploadAttach>
       </FileList>
-      {/* <UploadAttach></UploadAttach> */}
       {scheduleInfo?.reminds?.map((item, idx) => (
         <ScheduleInfoContentItem key={idx}>
           <span>
