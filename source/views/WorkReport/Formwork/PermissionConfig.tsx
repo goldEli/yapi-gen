@@ -58,9 +58,9 @@ const PermissionConfig = (props: PropsType) => {
   const { fillingRequirements, reportContent } = useSelector(
     store => store.formWork,
   )
-  const [person1, setPerson1] = useState<any>()
-  const [person2, setPerson2] = useState<any>()
-  const [person3, setPerson3] = useState<any>()
+  const [person1, setPerson1] = useState<any>([])
+  const [person2, setPerson2] = useState<any>([])
+  const [person3, setPerson3] = useState<any>([])
   // 去重
   const fitlerDataList = (data: any) => {
     let obj: any = {}
@@ -93,12 +93,13 @@ const PermissionConfig = (props: PropsType) => {
     let d2 = person2 || []
     let d3 = person3 || []
     if (num === 1) {
-      const val1 = values?.map((el: any) => ({
-        target_id: el.id || el.target_id,
-        user_type: el.user_type,
-        target_type: el.target_type,
-        target_value: el.target_value,
-      }))
+      const val1 =
+        values?.map((el: any) => ({
+          target_id: el.id || el.target_id,
+          user_type: el.user_type,
+          target_type: el.target_type,
+          target_value: el.target_value,
+        })) || []
       d1 = [...person1, ...val1]
     } else if (num === 2) {
       const val2 =
@@ -111,12 +112,13 @@ const PermissionConfig = (props: PropsType) => {
       d2 = [...person2, ...val2]
       setPerson2(d2)
     } else {
-      const val3 = values?.map((el: any) => ({
-        target_id: el.id || el.target_id,
-        user_type: el.user_type,
-        target_type: el.target_type,
-        target_value: el.target_value,
-      }))
+      const val3 =
+        values?.map((el: any) => ({
+          target_id: el.id || el.target_id,
+          user_type: el.user_type,
+          target_type: el.target_type,
+          target_value: el.target_value,
+        })) || []
       d3 = [...person3, ...val3]
     }
     const d3V = d3.find(
