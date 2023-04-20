@@ -57,11 +57,10 @@ export const iconBox = css`
   }
 `
 export const BoxTip = styled.div`
-  width: 120px;
+  min-width: 160px;
   background: #ffffff;
   box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
   border-radius: 6px 6px 6px 6px;
-  opacity: 1;
   position: absolute;
   top: 24px;
   right: 0px;
@@ -69,8 +68,12 @@ export const BoxTip = styled.div`
   flex-direction: column;
   padding-left: 16px;
   padding-top: 12px;
+  padding-right: 16px;
   box-sizing: border-box;
   font-weight: 400;
+  box-sizing: border-box;
+  max-width: 160px;
+  z-index: 88;
   span {
     color: var(--neutral-n2);
     font-size: var(--font14);
@@ -103,7 +106,7 @@ export const ModalChildren = styled.div`
 
 export const ScheduleInfoContentBox = styled.div`
   padding: 16px;
-  max-height: 460px;
+  height: calc(100% - 220px);
   overflow-y: scroll;
 `
 export const ScheduleInfoContentItem = styled.div`
@@ -129,6 +132,7 @@ export const contentTip = css`
 `
 export const PersonList = styled.div`
   margin-left: 28px;
+  padding-bottom: 14px;
 `
 export const PersonItem = styled.div`
   display: flex;

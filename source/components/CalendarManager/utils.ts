@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { colorMap, oneMinuteHeight } from './config'
+import { colorMap, oneHourHeight, oneMinuteHeight } from './config'
 
 export function sortScheduleList(list: Model.Schedule.Info[]) {
   const acrossDayScheduleList =
@@ -93,4 +93,35 @@ export const getYearMonthWeekDay = (time: string | number) => {
     week,
     day,
   }
+}
+
+export const isSameTime = (time1: number, time2: number | string) => {
+  return dayjs(time1).isSame(dayjs(time2), 'day')
+}
+export const getMinutesByDistance = (height: number) => {
+  return (oneHourHeight / 60) * height
+}
+
+export const addMinutes = (time: number, minutes: number) => {
+  return dayjs(time).add(minutes, 'minute')
+}
+
+export const getTimeByOffsetDistance = (
+  startTime: number,
+  endTime: number,
+  distance: number,
+) => {
+  const offset = getMinutesByDistance(distance)
+  const newStartTime = addMinutes(startTime, offset)
+  const newEndTime = addMinutes(endTime, offset)
+  return {
+    startTime: newStartTime,
+    endTime: newEndTime,
+  }
+}
+
+export const getTimeByAddDistance = (time: number, distance: number) => {
+  const offset = getMinutesByDistance(distance)
+  const newTime = addMinutes(time, offset)
+  return newTime
 }

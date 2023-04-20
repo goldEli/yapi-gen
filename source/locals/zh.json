@@ -1282,6 +1282,17 @@
     "edit": "编辑",
     "attachment": "附件",
     "addAdjunct": "添加附件",
-    "allDay": "全天"
+    "allDay": "全天",
+    "owner":"所有者",
+    "copySchedule":"复制日程",
+    "transfer_schedule":"转让日程",
+    "delete_schedule":"删除日程",
+    "delete_tips":"日程将删除，该日程同时会从参与者日历中移除",
+    "delete_notice":"删除后通知参与者",
+    "receive":"接收",
+    "refuse":"拒绝",
+    "pending":"待定",
+    "file_list":"文件列表",
+    "search_schedule":"搜索日程"
   }
 }

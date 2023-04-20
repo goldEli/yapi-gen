@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import ScheduleInfoIcon from '../ScheduleInfoIcon'
 import { useSelector, useDispatch } from '@store/index'
 import IconFont from '@/components/IconFont'
+import { useTranslation } from 'react-i18next'
 import {
   ScheduleInfoContentBox,
   ScheduleInfoContentItem,
@@ -24,6 +25,7 @@ const toggleDropDown = css`
 const ScheduleInfoContent: React.FC = props => {
   const { scheduleInfo } = useSelector(state => state.schedule)
   const [toggleStatus, setToggleStatus] = useState(false)
+  const [t] = useTranslation()
   const [fileType, setFileType] = useState({
     docx: 'colorDOC-76p4mioh',
     ppt: 'colorPPT',
@@ -40,7 +42,7 @@ const ScheduleInfoContent: React.FC = props => {
         <div className={contentTip}>
           <span>
             <img src={scheduleInfo?.user?.avatar} />
-            {scheduleInfo?.user?.name}（所有者）
+            {scheduleInfo?.user?.name}（{t('calendarManager.owner')}）
           </span>
         </div>
       </ScheduleInfoContentItem>
@@ -49,7 +51,10 @@ const ScheduleInfoContent: React.FC = props => {
           <ScheduleInfoIcon type="team" />
         </span>
         <div className={contentTip}>
-          <span>参与者（{scheduleInfo?.members?.length}人）</span>
+          <span>
+            {t('calendarManager.participant')}（{scheduleInfo?.members?.length}
+            人）
+          </span>
           <span
             onClick={e => {
               e.stopPropagation()
@@ -87,7 +92,7 @@ const ScheduleInfoContent: React.FC = props => {
           <span>
             <ScheduleInfoIcon type="attachment" />
           </span>
-          <div className={contentTip}>文件列表</div>
+          <div className={contentTip}>{t('calendarManager.file_list')}</div>
         </ScheduleInfoContentItem>
       ) : null}
 

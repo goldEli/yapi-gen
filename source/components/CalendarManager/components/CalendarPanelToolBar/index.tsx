@@ -8,18 +8,19 @@ import {
   setCalenderMonthValue,
   setCalenderYearValue,
   setCalenderListValue,
-  setScheduleSearchKey,
   setCalenderYearWeekValue,
   setScheduleInfoDropdown,
 } from '@store/calendarPanle'
 import { setCheckedTime } from '@store/calendar'
 import { useDispatch, useSelector } from '@store/index'
 import React, { useState, useRef, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import dayjs, { Dayjs } from 'dayjs'
 import _ from 'lodash'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
 import IconFont from '@/components/IconFont'
 import InputSearch from '@/components/InputSearch'
+import { useTranslation } from 'react-i18next'
 dayjs.extend(weekOfYear)
 
 interface CalendarPanelToolBarProps {
@@ -44,6 +45,8 @@ const selectOptions: {
   { value: 'list', label: '列表' },
 ]
 const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
+  const navigate = useNavigate()
+  const [t] = useTranslation()
   const calendarPanelType = useSelector(
     state => state.calendarPanel.calendarPanelType,
   )
@@ -284,7 +287,7 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
             margin: '0px 10px',
           }}
         >
-          今天
+          {t('today')}
         </div>
         <IconBox>
           <IconFont type="left" onClick={prevYearClick} />
@@ -315,15 +318,12 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
           allowClear
         />
         <InputSearch
-          placeholder="搜索日程"
+          placeholder={t('calendarManager.search_schedule')}
           defaultValue={inputDefaultValue}
           width={184}
-          onChangeSearch={value => {
-            setInputDefaultValue(value)
-            dispatch(setScheduleSearchKey(value))
-          }}
+          onChangeSearch={value => {}}
           onFocus={() => {
-            dispatch(setCalendarPanelType('list'))
+            navigate('/ScheduleSearch')
           }}
         ></InputSearch>
       </div>

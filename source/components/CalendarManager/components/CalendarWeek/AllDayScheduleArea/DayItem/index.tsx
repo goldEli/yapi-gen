@@ -3,8 +3,6 @@ import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
 import classNames from 'classnames'
 import { css } from '@emotion/css'
-import dayjs from 'dayjs'
-import useCurrentTime from '@/components/CalendarManager/hooks/useCurrentTime'
 import ScheduleList from '../../ScheduleList'
 import {
   resizeMonthSchedule,
@@ -14,6 +12,7 @@ import {
   startMoveMonthSchedule,
 } from '@store/calendarPanle'
 import { setScheduleListModal } from '@store/schedule'
+import ScheduleStripList from '../../../ScheduleStripList'
 
 interface DayItemProps {
   idx: number
@@ -33,6 +32,7 @@ const DayItemBox = styled.div`
   border-bottom-width: 0px;
   height: 100px;
   flex: 1;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -85,15 +85,55 @@ const borderRight = css`
 `
 
 const DayItem: React.FC<DayItemProps> = props => {
-  const { checkedTime, selectedWeek } = useSelector(store => store.calendar)
+  const { selectedWeek } = useSelector(store => store.calendar)
   const { selectedDayInMonth } = useSelector(store => store.calendarPanel)
   const { idx } = props
   const info = selectedWeek?.[props.idx]
-  const day = dayjs(info?.date).format('DD')
-  // const isSelected = dayjs(checkedTime).isSame(dayjs(info?.date), 'day')
-  const { currentTime } = useCurrentTime()
-  const isCurrent = currentTime.isSame(dayjs(info?.datetime), 'day')
   const dispatch = useDispatch()
+  const classnames = classNames({
+    [selectedBg]: selectedDayInMonth === info?.datetime,
+    [borderRight]: (idx + 1) % 7 === 0,
+    [borderBottom]: true,
+  })
+  const onClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.stopPropagation()
+    const target = e.target as HTMLDivElement
+    const { offsetTop, offsetLeft } = target
+    // 关闭列表
+    dispatch(
+      setScheduleListModal({
+        visible: false,
+      }),
+    )
+    dispatch(
+      setQuickCreateScheduleModel({
+        visible: true,
+        isAll: true,
+        startTime: info.datetime,
+        endTime: info.datetime,
+        x: offsetLeft,
+        y: offsetTop,
+      }),
+    )
+    dispatch(setSelectedDayInMonth(info.datetime))
+  }
+
+  const onMouseEnter = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (window.calendarMonthPanelType === 'move') {
+      dispatch(
+        startMoveMonthSchedule({
+          endIndex: props.idx,
+        }),
+      )
+    }
+    if (window.calendarMonthPanelType === 'resize') {
+      dispatch(
+        resizeMonthSchedule({
+          endIndex: props.idx,
+        }),
+      )
+    }
+  }
 
   if (!info) {
     return <></>
@@ -101,51 +141,10 @@ const DayItem: React.FC<DayItemProps> = props => {
 
   return (
     <DayItemBox
-      className={classNames({
-        [selectedBg]: selectedDayInMonth === info.datetime,
-        [borderRight]: (idx + 1) % 7 === 0,
-        [borderBottom]: idx > 27,
-      })}
+      className={classnames}
       key={idx}
-      onClick={e => {
-        e.stopPropagation()
-        const target = e.target as HTMLDivElement
-        const { offsetTop, offsetLeft } = target
-        // 关闭列表
-        dispatch(
-          setScheduleListModal({
-            visible: false,
-          }),
-        )
-        dispatch(
-          setQuickCreateScheduleModel({
-            visible: true,
-            isAll: true,
-            startTime: info.datetime,
-            endTime: info.datetime,
-            x: offsetLeft,
-            y: offsetTop,
-          }),
-        )
-        dispatch(setSelectedDayInMonth(info.datetime))
-      }}
-      onMouseEnter={e => {
-        console.log('window.calendarPanel.type', window.calendarMonthPanelType)
-        if (window.calendarMonthPanelType === 'move') {
-          dispatch(
-            startMoveMonthSchedule({
-              endIndex: props.idx,
-            }),
-          )
-        }
-        if (window.calendarMonthPanelType === 'resize') {
-          dispatch(
-            resizeMonthSchedule({
-              endIndex: props.idx,
-            }),
-          )
-        }
-      }}
+      onClick={onClick}
+      onMouseEnter={onMouseEnter}
     >
       {/* <div className="dayBox">
         <span
@@ -159,7 +158,13 @@ const DayItem: React.FC<DayItemProps> = props => {
         </span>
         <span className="lunar">{info?.lunar_day_chinese}</span>
       </div> */}
-      <ScheduleList data={info} idx={idx} list={props.list} />
+      {/* <ScheduleList data={info} idx={idx} list={props.list} /> */}
+      <ScheduleStripList
+        containerClassName=".calendar-week-all-day-box"
+        data={info}
+        idx={idx}
+        list={props.list}
+      />
     </DayItemBox>
   )
 }

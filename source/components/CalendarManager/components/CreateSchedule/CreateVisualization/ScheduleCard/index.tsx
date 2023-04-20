@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 import React, { useMemo, useState } from 'react'
 import { oneHourHeight } from '../../../../config'
 import { getTimeByAddDistance, getTimeByOffsetDistance } from '../utils'
-import { DraggableData, Position, ResizableDelta, Rnd } from 'react-rnd'
+import { DraggableData, Position, ResizableDelta } from 'react-rnd'
 import { css } from '@emotion/css'
 import { DraggableEvent } from 'react-draggable'
 import { ResizeDirection } from 're-resizable'
@@ -12,6 +12,7 @@ import usePosition from '../hooks/usePosition'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
 import { saveSchedule } from '@store/schedule/schedule.thunk'
 import { getColorWithOpacityPointOne } from '@/components/CalendarManager/utils'
+import MoveCard from '../../../MoveCard'
 
 interface ScheduleCardProps {
   data: Model.Schedule.Info
@@ -178,11 +179,9 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
   const gridHeight = useMemo(() => (oneHourHeight / 60) * 15, [outerHeight])
 
   return (
-    <Rnd
-      style={{
-        background: getColorWithOpacityPointOne(data.color),
-      }}
-      className={dragBoxClassName}
+    <MoveCard
+      timeRange={null}
+      data={props.data}
       key={props.data.schedule_id}
       size={{
         width: props.width,
@@ -207,18 +206,9 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
         topRight: false,
       }}
       bounds=".create-visual-time-scale"
-      // onDragStart={onDragStart}
-      // onDrag={onDrag}
-      // onDragStop={onDragStop}
-      // onResizeStart={onResizeStart}
-      // onResize={onResize}
-      // onResizeStop={onResizeStop}
     >
-      {/* <Title>
-        {timeRange && `${timeRange?.startTime} - ${timeRange?.endTime}`}
-      </Title> */}
       <Title>{props.data.subject}</Title>
-    </Rnd>
+    </MoveCard>
   )
 }
 

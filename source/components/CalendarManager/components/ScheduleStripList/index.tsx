@@ -1,14 +1,16 @@
 import React, { useMemo } from 'react'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
-import MoreScheduleButton from '../../MoreScheduleButton'
 import { setScheduleListModal } from '@store/schedule'
 import dayjs from 'dayjs'
-import ScheduleStripListItem from '../../ScheduleStripListItem'
-import MoveActiveItem from '../../MoveActiveItem'
+import MoreScheduleButton from '../MoreScheduleButton'
+import MoveActiveItem from '../MoveActiveItem'
+import ScheduleStripListItem from '../ScheduleStripListItem'
 
 interface ScheduleListProps {
   data: Model.Calendar.DaysOfMonth
+  // .calendar-week-all-day-box
+  containerClassName: string
   idx: number
   list?: (Model.Schedule.Info | undefined)[]
 }
@@ -18,7 +20,7 @@ const ScheduleListBox = styled.div`
   position: relative;
 `
 
-const ScheduleList: React.FC<ScheduleListProps> = props => {
+const ScheduleStripList: React.FC<ScheduleListProps> = props => {
   const { scheduleList } = useSelector(store => store.schedule)
 
   const { list, data } = props
@@ -34,6 +36,7 @@ const ScheduleList: React.FC<ScheduleListProps> = props => {
     const len = list?.length
     return len > 3 ? len - 3 : 0
   }, [key, scheduleList])
+
   const showList = useMemo(() => {
     const newList = list?.slice(0, 3)
     return newList
@@ -41,28 +44,35 @@ const ScheduleList: React.FC<ScheduleListProps> = props => {
 
   const dispatch = useDispatch()
 
+  const scheduleListItemElements = useMemo(() => {
+    if (showList?.[0]?.start_datetime === '2023-04-18 00:00:00') {
+      console.log({ showList }, showList?.length)
+    }
+    return showList?.map((item, idx) => {
+      if (!item) {
+        return <div key={idx} style={{ height: '22px' }}></div>
+      }
+      return (
+        <ScheduleStripListItem
+          containerClassName={props.containerClassName}
+          idx={props.idx}
+          data={item}
+          key={item?.id}
+        />
+      )
+    })
+  }, [showList, props.idx, props.containerClassName])
+
   return (
     <ScheduleListBox>
-      {showList?.map((item, idx) => {
-        if (!item) {
-          return <div key={idx} style={{ height: '22px' }}></div>
-        }
-        return (
-          <ScheduleStripListItem
-            containerClassName=".calendar-month-content-box"
-            idx={props.idx}
-            data={item}
-            key={item?.id}
-          />
-        )
-      })}
+      {scheduleListItemElements}
       <div
         onClick={e => {
           e.stopPropagation()
           const target = e.target as HTMLDivElement
           const { left, top } = target.getBoundingClientRect()
           const box = document.querySelector(
-            '.calendar-month-content-box',
+            '.calendar-week-all-day-box',
           ) as HTMLDivElement
           const { left: boxLeft, top: boxTop } = box?.getBoundingClientRect()
           dispatch(
@@ -83,4 +93,4 @@ const ScheduleList: React.FC<ScheduleListProps> = props => {
   )
 }
 
-export default ScheduleList
+export default ScheduleStripList

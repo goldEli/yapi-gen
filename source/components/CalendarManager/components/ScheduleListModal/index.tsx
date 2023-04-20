@@ -4,7 +4,6 @@ import React from 'react'
 import { useSelector, useDispatch } from '@store/index'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
 import { setScheduleListModal } from '@store/schedule'
-import ScheduleInfoDropdown from '../ScheduleInfoDropdown'
 import dayjs from 'dayjs'
 interface ScheduleListProps {}
 interface ScheduleListBoxProps {
@@ -114,7 +113,6 @@ const ScheduleListModal: React.FC<ScheduleListProps> = props => {
           <span className={labelContent}>{item.subject}</span>
         </ScheduleItem>
       ))}
-      <ScheduleInfoDropdown></ScheduleInfoDropdown>
     </ScheduleListBox>
   )
 }
