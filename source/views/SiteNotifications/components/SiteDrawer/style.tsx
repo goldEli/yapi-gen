@@ -20,7 +20,7 @@ export const ActiveTab = styled.div`
   position: absolute;
   bottom: 2px;
   left: 2px;
-  width: 50px;
+  width: 60px;
   padding: 4px 16px;
   border-radius: 4px;
   height: 30px;
