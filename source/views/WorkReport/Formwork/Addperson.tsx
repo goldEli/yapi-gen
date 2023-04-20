@@ -219,7 +219,6 @@ const Addperson = (props: Props) => {
         break
     }
   }, [props.state])
-  console.log(items, 'oooooooooo')
   // 添加成员弹窗
   const onConfirm = (data: any) => {
     const setData = data.map((el: any) => ({

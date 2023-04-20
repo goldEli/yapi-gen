@@ -25,11 +25,11 @@ const AllSide = () => {
       title: t('read_notifications'),
       icon: 'bell-off',
     },
-    // {
-    //   id: '4',
-    //   title: t('referring_to_my'),
-    //   icon: 'mention',
-    // },
+    {
+      id: '4',
+      title: t('referring_to_my'),
+      icon: 'mention',
+    },
   ]
 
   return (

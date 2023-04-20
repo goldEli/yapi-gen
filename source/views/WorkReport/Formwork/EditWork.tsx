@@ -151,7 +151,7 @@ const EditWork = (props: PropsType) => {
               positionType="top"
               onClick={(i: any, child: any) => onClick(i, child)}
               onDrop={(event: any, i: any) => onDrag(event, i)}
-              onMove={(data: any) => console.log('move')}
+              // onMove={(data: any) => console.log('move')}
               // onChangeMove={(list: any) => setList1(list)}
               list={dataList}
               onChangeChecked={(val: boolean, child: any) =>

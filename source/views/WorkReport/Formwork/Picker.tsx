@@ -244,31 +244,73 @@ const Picker = (props: PropsType) => {
   const getWeekValues = () => {
     if (props.pickerType === 'remind') {
       setValue(
-        '截止时间前' + '/' + v1 + '日' + '/' + v2 + '时' + '/' + v3 + '分',
+        t('formWork.end1') +
+          '/' +
+          v1 +
+          t('formWork.day') +
+          '/' +
+          v2 +
+          t('formWork.h') +
+          '/' +
+          v3 +
+          t('formWork.m'),
       )
     } else {
-      setValue(getLabelName(v1) + '/' + v2 + '时' + '/' + v3 + '分')
+      setValue(
+        getLabelName(v1) +
+          '/' +
+          v2 +
+          t('formWork.h') +
+          '/' +
+          v3 +
+          t('formWork.m'),
+      )
     }
   }
   // 天
   const getDayValues = () => {
     // 回显input
     if (props.pickerType === 'remind') {
-      setValue('截止时间前' + '/' + v2 + '时' + '/' + v3 + '分')
+      setValue(
+        t('formWork.end1') +
+          '/' +
+          v2 +
+          t('formWork.h') +
+          '/' +
+          v3 +
+          t('formWork.m'),
+      )
     } else {
-      setValue((v1 == 1 ? '当日' : '次日') + '/' + v2 + '时' + '/' + v3 + '分')
+      setValue(
+        (v1 == 1 ? t('formWork.atThatTime') : t('formWork.theNextDay')) +
+          '/' +
+          v2 +
+          t('formWork.h') +
+          '/' +
+          v3 +
+          t('formWork.m'),
+      )
     }
   }
   // 月
   const getMonthValues = () => {
     if (props.pickerType === 'remind') {
       setValue(
-        '截止时间前' + '/' + v1 + '日' + '/' + v2 + '时' + '/' + v3 + '分',
+        t('formWork.end1') +
+          '/' +
+          v1 +
+          t('formWork.day') +
+          '/' +
+          v2 +
+          t('formWork.h') +
+          '/' +
+          v3 +
+          t('formWork.m'),
       )
     } else {
       const arr = [...nextMonthDay, ...dayData]
       const label = arr.find((el: any) => el.key === v1)?.label
-      setValue(label + '/' + v2 + '时' + '/' + v3 + '分')
+      setValue(label + '/' + v2 + t('formWork.h') + '/' + v3 + t('formWork.m'))
     }
   }
   useEffect(() => {

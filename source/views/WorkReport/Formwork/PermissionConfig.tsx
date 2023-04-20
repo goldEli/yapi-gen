@@ -117,7 +117,7 @@ const PermissionConfig = (props: PropsType) => {
         target_type: el.target_type,
         target_value: el.target_value,
       }))
-      d3 = [...person1, ...val3]
+      d3 = [...person3, ...val3]
     }
     const d3V = d3.find(
       (item: any) =>
