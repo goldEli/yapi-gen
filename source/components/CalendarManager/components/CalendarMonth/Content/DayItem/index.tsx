@@ -70,7 +70,7 @@ const DayItem: React.FC<DayItemProps> = props => {
     idx,
     showSelectedBg: isCurrent || isSelectedForCreate,
     showBorderRight: (idx + 1) % 7 === 0,
-    showBorderBottom: idx > 27,
+    showBorderBottom: idx > 34,
   })
   const [t] = useTranslation()
 
