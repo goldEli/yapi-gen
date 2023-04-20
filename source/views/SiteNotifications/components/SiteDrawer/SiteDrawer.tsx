@@ -55,7 +55,7 @@ const SiteDrawer = () => {
     },
     {
       id: '1',
-      text: `${t('new1')}(${now})`,
+      text: `${t('new1')}(${now ?? 0})`,
     },
     // {
     //   id: '2',
