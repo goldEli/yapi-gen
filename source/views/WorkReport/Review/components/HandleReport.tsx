@@ -85,7 +85,7 @@ const HandleReport = (props: any) => {
   const [form] = Form.useForm()
   const [options, setOptions] = useState<any>([])
   const leftDom: any = useRef<HTMLInputElement>(null)
-  const [t] = useTranslation()
+  const [t]: any = useTranslation()
   const userInfo = useSelector(state => state.user.userInfo)
   const [reportDetail, setReportDetail] = useState<any>(null)
   const isFirstValidator = useRef(0)
@@ -490,6 +490,7 @@ const HandleReport = (props: any) => {
 
   return (
     <CommonModal
+      hasFooter={!!reportDetail}
       width={784}
       title={props.visibleEditText}
       isVisible={props.visibleEdit}

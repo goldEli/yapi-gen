@@ -119,37 +119,37 @@ const formWork = createSlice({
       }
       const nowData = [
         {
-          label: '周一',
+          label: 'monday',
           key: 0,
           value: true,
         },
         {
-          label: '周二',
+          label: 'tuesday',
           key: 1,
           value: true,
         },
         {
-          label: '周三',
+          label: 'wednesday',
           key: 2,
           value: true,
         },
         {
-          label: '周四',
+          label: 'thursday',
           key: 3,
           value: true,
         },
         {
-          label: '周五',
+          label: 'friday',
           key: 4,
           value: true,
         },
         {
-          label: '周六',
+          label: 'saturday',
           key: 5,
           value: true,
         },
         {
-          label: '周日',
+          label: 'sunday',
           key: 6,
           value: true,
         },
