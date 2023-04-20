@@ -53,6 +53,18 @@ const HeadWrap = styled.div<{ isCanImport: boolean }>`
       font-size: 12px;
     }
   }
+  .reportTitleWrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .submitTimeText {
+    font-size: 12px;
+    font-family: MiSans-Regular, MiSans;
+    font-weight: 400;
+    color: #969799;
+    margin-left: 12px;
+  }
   .importText {
     display: flex;
     align-items: center;
@@ -77,6 +89,7 @@ const HandleReport = (props: any) => {
   const isFirstValidator = useRef(0)
   const [peopleValue, setPeopleValue] = useState<any>([])
   const [relatedNeedList, setRelatedNeedList] = useState<any>([])
+  const [uploadAttachList, setUploadAttachList] = useState<any>({})
   const dispatch = useDispatch()
 
   const close = () => {
@@ -194,11 +207,13 @@ const HandleReport = (props: any) => {
         closable: true,
         onOk: async () => {
           try {
+            setUploadAttachList({})
             const result = await getReportDetailById({
               id: reportDetail?.prev_report_id,
             })
             if (result && result.data) {
               const temp: any = {}
+              const attach: any = {}
               setPeopleValue(
                 result.data?.target_users?.map((item: any) => {
                   return {
@@ -212,7 +227,11 @@ const HandleReport = (props: any) => {
               result.data.report_content?.forEach((v: any) => {
                 temp[`${v.type}_${v.id}`] =
                   v.type === 3 ? v?.pivot?.content : v?.pivot?.params
+                if (v.type === 2) {
+                  attach[`${v.type}_${v.id}`] = v?.pivot?.params
+                }
               })
+              setUploadAttachList({ ...attach })
               form.setFieldsValue({
                 ...temp,
                 [`1_${result.data.target_user_config_id}`]:
@@ -246,9 +265,9 @@ const HandleReport = (props: any) => {
         setPeopleValue(
           res.data?.report_user_list?.map((item: any) => {
             return {
-              avatar: item.avatar,
+              avatar: item?.avatar,
               id: item.id || item.user_id,
-              name: item.name,
+              name: item?.name,
             }
           }),
         )
@@ -263,9 +282,9 @@ const HandleReport = (props: any) => {
       setPeopleValue(
         result.data?.target_users?.map((item: any) => {
           return {
-            avatar: item.user.avatar,
-            id: item.user.id,
-            name: item.user.name,
+            avatar: item.user?.avatar,
+            id: item.user?.id,
+            name: item.user?.name,
           }
         }),
       )
@@ -274,12 +293,17 @@ const HandleReport = (props: any) => {
       )
       getTemplateById(result.data.report_template_id)
       const temp: any = {}
+      const attach: any = {}
       result.data.report_content?.forEach((v: any) => {
         if (v.type !== 4) {
           temp[`${v.type}_${v.id}`] =
             v.type === 3 ? v?.pivot?.content : v?.pivot?.params
         }
+        if (v.type === 2) {
+          attach[`${v.type}_${v.id}`] = v?.pivot?.params
+        }
       })
+      setUploadAttachList({ ...attach })
       form.setFieldsValue({
         ...temp,
       })
@@ -289,8 +313,8 @@ const HandleReport = (props: any) => {
     const result = await getStaffListAll({ all: 1 })
     setOptions(
       result.map((i: any) => ({
-        id: i.id,
-        label: i.name,
+        id: i?.id,
+        label: i?.name,
       })),
     )
   }
@@ -368,7 +392,7 @@ const HandleReport = (props: any) => {
           >
             <UploadAttach
               power
-              defaultList={[]}
+              defaultList={uploadAttachList[`${content.type}_${content.id}`]}
               onChangeAttachment={(res: any) => {
                 onChangeAttachment(res, `${content.type}_${content.id}`)
               }}
@@ -485,27 +509,32 @@ const HandleReport = (props: any) => {
                 alignItems: 'center',
               }}
             >
-              {userInfo.avatar ? (
+              {userInfo?.avatar ? (
                 <img
                   style={{
                     width: 32,
                     height: 32,
                     borderRadius: 16,
                   }}
-                  src={userInfo.avatar}
+                  src={userInfo?.avatar}
                 />
               ) : (
                 <span>
                   <CommonUserAvatar size="large" />
                 </span>
               )}
-              <div className="titleText">
-                {`${userInfo?.name}的${reportDetail?.name}`}
-                <span className="dateText">
-                  {reportDetail?.submitCycleDate.filter((v: string) => v)
-                    .length > 0 &&
-                    getReportDateText(reportDetail?.submitCycleDate)}
-                </span>
+              <div className="reportTitleWrap">
+                <div className="titleText">
+                  {`${userInfo?.name}的${reportDetail?.name}`}
+                  <span className="dateText">
+                    {reportDetail?.submitCycleDate.filter((v: string) => v)
+                      .length > 0 &&
+                      getReportDateText(reportDetail?.submitCycleDate)}
+                  </span>
+                </div>
+                <div className="submitTimeText">
+                  {t('report.list.prevDateSubmit')}：{reportDetail?.updated_at}
+                </div>
               </div>
             </div>
             <div className="importText" onClick={importPreviousArticle}>
