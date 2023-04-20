@@ -19,6 +19,7 @@ import {
   dayData,
 } from './DataList'
 import { useTranslation } from 'react-i18next'
+import CommonButton from '@/components/CommonButton'
 const PickerStyle = styled.div`
   width: 360px;
   height: 232px;
@@ -48,6 +49,7 @@ const CenterTime = styled.div`
   border-right: 1px solid var(--neutral-n6-d2);
 `
 const RightTime = styled.div`
+  position: relative;
   width: 120px;
   height: 232px;
   overflow-y: auto;
@@ -69,7 +71,11 @@ const Item = styled.div`
 const InputStyle = styled(Input)({
   width: '320px',
 })
-
+const Btn = styled.div`
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+`
 interface PropsType {
   // remind 代表提醒时间
   pickerType: string
@@ -362,7 +368,11 @@ const Picker = (props: PropsType) => {
               {t(`formWork.${el.label}`)}
             </Item>
           ))}
-          <Item onClick={getTime}>完成</Item>
+          <Btn onClick={getTime}>
+            <CommonButton type="primary" size="small">
+              完成
+            </CommonButton>
+          </Btn>
         </RightTime>
       </PickerStyle>
     )

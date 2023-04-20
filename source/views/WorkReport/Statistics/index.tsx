@@ -109,14 +109,13 @@ const Statistics = () => {
   const columns: ColumnsType<any> = [
     {
       title: <> {t('common.name')} </>,
-      // 汇报对象id
-      dataIndex: 'report_to_user_id',
+      dataIndex: 'user',
       width: 264,
-      render: (value: string) => {
+      render: (value: any) => {
         return (
           <NameColumn>
             <CommonUserAvatar size="small" />
-            <span>{value}</span>
+            <span>{value.name}</span>
           </NameColumn>
         )
       },

@@ -114,7 +114,10 @@ const Index = () => {
             {t('filtering_notifications') as string}
           </CommonButton>
           {id !== '3' && (
-            <CommonButton onClick={setAllRead} type="light">
+            <CommonButton
+              onClick={() => (list.length >= 1 ? setAllRead() : null)}
+              type="light"
+            >
               {t('all_read') as string}
             </CommonButton>
           )}

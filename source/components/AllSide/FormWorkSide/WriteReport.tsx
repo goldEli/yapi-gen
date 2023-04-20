@@ -114,6 +114,7 @@ const WriteReport = (props: Props) => {
   const dispatch = useDispatch()
   const { visible } = useSelector(state => state.workReport.writeReportModal)
 
+  // 获取最近提交的模板列表
   const getTemplateLatelyList = async () => {
     const result = await templateLatelyList()
     if (result && result.data) {
@@ -127,6 +128,7 @@ const WriteReport = (props: Props) => {
     }
   }, [visible])
 
+  // 根据type生成对应的展示模板
   const getContentHtml = (name: string, type: number): React.ReactElement => {
     switch (type) {
       case 1:
@@ -218,7 +220,7 @@ const WriteReport = (props: Props) => {
                 .concat(dataList?.otherTemplate || [])
                 .filter(
                   (k: any) =>
-                    !(k.submit_cycle === 1 && k.is_current_cycle_used) &&
+                    !(k.is_cycle_limit === 1 && k.is_current_cycle_used) &&
                     k.is_write,
                 )
                 .map((item: any) => ({
@@ -334,11 +336,13 @@ const WriteReport = (props: Props) => {
           </MainWrap>
         </div>
       </CommonModal>
+      {/* 补交汇报 */}
       <SupplementaryIntercourseModal
         isVisible={visibleMakeUp}
         onClose={() => setVisibleMakeUp(false)}
         title={t('report.list.fillReport')}
       />
+      {/* 写汇报 */}
       <HandleReport
         templateId={templateId}
         visibleEdit={visibleEdit}

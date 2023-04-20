@@ -198,7 +198,7 @@ const List = () => {
   }
   const columns: any[] = [
     {
-      width: 180,
+      width: 200,
       title: t('common.title'),
       dataIndex: 'user',
       render: (_: string, record: any) => {
@@ -237,12 +237,13 @@ const List = () => {
               <span
                 style={{
                   display: 'inline-block',
-                  maxWidth: 170,
+                  maxWidth: 160,
                   marginRight: 12,
                   marginLeft: 8,
                   whiteSpace: 'nowrap',
                   textOverflow: 'ellipsis',
                   overflow: 'hidden',
+                  verticalAlign: 'middle',
                 }}
               >
                 {String(record.user.name)}

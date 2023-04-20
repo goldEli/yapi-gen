@@ -1,4 +1,6 @@
-// 写日志
+/**
+ * 写汇报
+ */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 /* eslint-disable react/no-unstable-nested-components */
@@ -53,6 +55,18 @@ const HeadWrap = styled.div<{ isCanImport: boolean }>`
       font-size: 12px;
     }
   }
+  .reportTitleWrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .submitTimeText {
+    font-size: 12px;
+    font-family: MiSans-Regular, MiSans;
+    font-weight: 400;
+    color: #969799;
+    margin-left: 12px;
+  }
   .importText {
     display: flex;
     align-items: center;
@@ -71,14 +85,16 @@ const HandleReport = (props: any) => {
   const [form] = Form.useForm()
   const [options, setOptions] = useState<any>([])
   const leftDom: any = useRef<HTMLInputElement>(null)
-  const [t] = useTranslation()
+  const [t]: any = useTranslation()
   const userInfo = useSelector(state => state.user.userInfo)
   const [reportDetail, setReportDetail] = useState<any>(null)
   const isFirstValidator = useRef(0)
   const [peopleValue, setPeopleValue] = useState<any>([])
   const [relatedNeedList, setRelatedNeedList] = useState<any>([])
+  const [uploadAttachList, setUploadAttachList] = useState<any>({})
   const dispatch = useDispatch()
 
+  // 关闭弹窗时重置
   const close = () => {
     form.resetFields()
     props.editClose()
@@ -142,7 +158,6 @@ const HandleReport = (props: any) => {
       // 更新List页面
       dispatch(setUpdateList({ isFresh: 1 }))
     }
-
     close()
   }
 
@@ -162,7 +177,7 @@ const HandleReport = (props: any) => {
       [name]: arr,
     })
   }
-
+  //
   const onBottom = () => {
     const dom: any = leftDom?.current
     dom.scrollTop = dom.scrollHeight
@@ -194,11 +209,13 @@ const HandleReport = (props: any) => {
         closable: true,
         onOk: async () => {
           try {
+            setUploadAttachList({})
             const result = await getReportDetailById({
               id: reportDetail?.prev_report_id,
             })
             if (result && result.data) {
               const temp: any = {}
+              const attach: any = {}
               setPeopleValue(
                 result.data?.target_users?.map((item: any) => {
                   return {
@@ -212,7 +229,11 @@ const HandleReport = (props: any) => {
               result.data.report_content?.forEach((v: any) => {
                 temp[`${v.type}_${v.id}`] =
                   v.type === 3 ? v?.pivot?.content : v?.pivot?.params
+                if (v.type === 2) {
+                  attach[`${v.type}_${v.id}`] = v?.pivot?.params
+                }
               })
+              setUploadAttachList({ ...attach })
               form.setFieldsValue({
                 ...temp,
                 [`1_${result.data.target_user_config_id}`]:
@@ -246,9 +267,9 @@ const HandleReport = (props: any) => {
         setPeopleValue(
           res.data?.report_user_list?.map((item: any) => {
             return {
-              avatar: item.avatar,
+              avatar: item?.avatar,
               id: item.id || item.user_id,
-              name: item.name,
+              name: item?.name,
             }
           }),
         )
@@ -256,16 +277,16 @@ const HandleReport = (props: any) => {
     }
   }
 
-  // 编辑回显
+  // 修改态回显
   const setDefaultValue = async () => {
     const result = await getReportDetailById({ id: props?.editId })
     if (result.code === 0 && result.data) {
       setPeopleValue(
         result.data?.target_users?.map((item: any) => {
           return {
-            avatar: item.user.avatar,
-            id: item.user.id,
-            name: item.user.name,
+            avatar: item.user?.avatar,
+            id: item.user?.id,
+            name: item.user?.name,
           }
         }),
       )
@@ -274,23 +295,29 @@ const HandleReport = (props: any) => {
       )
       getTemplateById(result.data.report_template_id)
       const temp: any = {}
+      const attach: any = {}
       result.data.report_content?.forEach((v: any) => {
         if (v.type !== 4) {
           temp[`${v.type}_${v.id}`] =
             v.type === 3 ? v?.pivot?.content : v?.pivot?.params
         }
+        if (v.type === 2) {
+          attach[`${v.type}_${v.id}`] = v?.pivot?.params
+        }
       })
+      setUploadAttachList({ ...attach })
       form.setFieldsValue({
         ...temp,
       })
     }
   }
+  // 获取人员集合
   const getList = async () => {
     const result = await getStaffListAll({ all: 1 })
     setOptions(
       result.map((i: any) => ({
-        id: i.id,
-        label: i.name,
+        id: i?.id,
+        label: i?.name,
       })),
     )
   }
@@ -311,6 +338,7 @@ const HandleReport = (props: any) => {
     }
   }, [props.templateId])
 
+  // 自定义校富文本框
   const onValidator = (rule: any, value: any) => {
     if (value === '<p><br></p>' || value === '<p></p>' || value.trim() === '') {
       return Promise.reject(
@@ -320,6 +348,7 @@ const HandleReport = (props: any) => {
     return Promise.resolve()
   }
 
+  // 自定义校验汇报对象
   const onValidatorForPerson = (rule: any, value: any) => {
     if (value?.length === 0 && isFirstValidator.current !== 0) {
       return Promise.reject(new Error(''))
@@ -327,9 +356,6 @@ const HandleReport = (props: any) => {
     return Promise.resolve()
   }
 
-  if (!props.visibleEdit) {
-    return null
-  }
   // 根据模板类型生成对应的item
   const getFormItemHtml = (content: any): React.ReactElement => {
     switch (content.type) {
@@ -368,7 +394,7 @@ const HandleReport = (props: any) => {
           >
             <UploadAttach
               power
-              defaultList={[]}
+              defaultList={uploadAttachList[`${content.type}_${content.id}`]}
               onChangeAttachment={(res: any) => {
                 onChangeAttachment(res, `${content.type}_${content.id}`)
               }}
@@ -452,6 +478,7 @@ const HandleReport = (props: any) => {
     }
   }
 
+  // 拼接模板填写时间
   const getReportDateText = (date: any) => {
     return date && date?.some((k: any) => k)
       ? `（${date?.[0]} ${date?.[0] && date?.[1] ? t('report.list.to') : ''} ${
@@ -485,27 +512,34 @@ const HandleReport = (props: any) => {
                 alignItems: 'center',
               }}
             >
-              {userInfo.avatar ? (
+              {userInfo?.avatar ? (
                 <img
                   style={{
                     width: 32,
                     height: 32,
                     borderRadius: 16,
                   }}
-                  src={userInfo.avatar}
+                  src={userInfo?.avatar}
                 />
               ) : (
                 <span>
                   <CommonUserAvatar size="large" />
                 </span>
               )}
-              <div className="titleText">
-                {`${userInfo?.name}的${reportDetail?.name}`}
-                <span className="dateText">
-                  {reportDetail?.submitCycleDate.filter((v: string) => v)
-                    .length > 0 &&
-                    getReportDateText(reportDetail?.submitCycleDate)}
-                </span>
+
+              <div className="reportTitleWrap">
+                <div className="titleText">
+                  {`${userInfo?.name}的${reportDetail?.name ?? ''}`}
+                  <span className="dateText">
+                    {reportDetail?.submitCycleDate.filter((v: string) => v)
+                      .length > 0 &&
+                      getReportDateText(reportDetail?.submitCycleDate)}
+                  </span>
+                </div>
+                <div className="submitTimeText">
+                  {t('report.list.prevDateSubmit')}：
+                  {reportDetail?.updated_at ?? ''}
+                </div>
               </div>
             </div>
             <div className="importText" onClick={importPreviousArticle}>

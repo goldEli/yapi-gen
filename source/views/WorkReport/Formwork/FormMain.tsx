@@ -74,18 +74,33 @@ const SupScope = (props: SupScopeType) => {
   const dispatch = useDispatch()
   const [isOpen, setIsOpen] = useState(false)
   const [items, setItems] = useState<Array<Item>>()
-  const [t] = useTranslation()
+  const [t]: any = useTranslation()
   // 每天 day ,每周 week , 每月 month , 不重复doNot
   useEffect(() => {
     switch (props.type) {
       case 'day':
-        setItems(dayData1)
+        setItems(
+          dayData1.map((el: any) => ({
+            ...el,
+            label: t(`formWork.${el.label}`),
+          })),
+        )
         break
       case 'week':
-        setItems(weekData)
+        setItems(
+          weekData.map((el: any) => ({
+            ...el,
+            label: t(`formWork.${el.label}`),
+          })),
+        )
         break
       case 'month':
-        setItems(monthData)
+        setItems(
+          monthData.map((el: any) => ({
+            ...el,
+            label: t(`formWork.${el.label}`),
+          })),
+        )
         break
     }
   }, [props.type])
@@ -94,6 +109,7 @@ const SupScope = (props: SupScopeType) => {
     dispatch(setEditSave(false))
     setIsOpen(false)
   }
+  console.log(props.value)
   return (
     <RowStyle>
       <Text>{t('formWork.msg3')}:</Text>

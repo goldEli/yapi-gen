@@ -31,9 +31,8 @@ const SiteNotifications = () => {
     const res = await getContactStatistics()
 
     let num = 0
-
     res.list.forEach((i: any) => {
-      num += Number(i.total)
+      num += Number(i.nread)
     })
 
     dispatch(changeNumber(num))
