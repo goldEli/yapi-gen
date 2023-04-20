@@ -337,7 +337,7 @@ const HandleReport = (props: any) => {
       getTemplateById(props?.templateId)
       getList()
     }
-  }, [props.templateId])
+  }, [props.templateId, props.visibleEdit])
 
   // 自定义校富文本框
   const onValidator = (rule: any, value: any) => {
