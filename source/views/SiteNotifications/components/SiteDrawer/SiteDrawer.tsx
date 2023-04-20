@@ -126,7 +126,7 @@ const SiteDrawer = () => {
 
   const reset = async () => {
     const res = await getContactStatistics()
-    console.log(res)
+
     const a = res.list.find((i: any) => i.send_user === 'now')
     setNow(a.nread)
   }
