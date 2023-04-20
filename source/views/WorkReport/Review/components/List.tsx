@@ -18,8 +18,8 @@ import {
   getRepSentList,
   getRepReceivedList,
   getRepPublicList,
+  templateLatelyList,
 } from '@/services/report'
-import { templateList } from '@/services/formwork'
 import { getStaffList } from '@/services/staff'
 import HandleReport from './HandleReport'
 import LabelTag from '@/components/LabelTag'
@@ -493,9 +493,21 @@ const List = () => {
       id: item.id,
     }
   }
+  // 获取我可操作的模板list
   const getTemplateList = async () => {
-    const data = await templateList()
-    setRepTypeOptions(data.map(generateOptions))
+    const res = await templateLatelyList()
+    if (res && res.code === 0) {
+      const data = res?.data || {}
+      const temp = [
+        ...(data.otherTemplate || []),
+        ...(data.usedTemplate || []),
+      ].filter(
+        (item: any) =>
+          !(item.is_current_cycle_used && item.is_cycle_limit === 1) &&
+          item.is_write,
+      )
+      setRepTypeOptions(temp.map(generateOptions))
+    }
   }
 
   const getUserList = async () => {

@@ -490,6 +490,7 @@ const HandleReport = (props: any) => {
 
   return (
     <CommonModal
+      hasFooter={!!reportDetail}
       width={784}
       title={props.visibleEditText}
       isVisible={props.visibleEdit}
