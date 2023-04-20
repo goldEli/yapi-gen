@@ -110,6 +110,7 @@ const Index = () => {
     }
     lastId.current = 0
     setList([])
+    setHasMore(true)
     fetchMoreData(1)
   }, [id, all])
 
