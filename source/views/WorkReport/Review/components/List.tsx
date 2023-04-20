@@ -250,12 +250,20 @@ const List = () => {
                 {t('report.list.of')}
                 {record.name}
               </span>
-              <LabelTag
-                options={reportState}
-                state={
-                  record.is_supply === 1 ? 1 : record.is_update === 1 ? 2 : 0
-                }
-              />
+              {id === 1 && (
+                <LabelTag
+                  options={reportState}
+                  state={record.is_supply === 1 ? 2 : 0}
+                />
+              )}
+              {id === 2 && (
+                <LabelTag
+                  options={reportState}
+                  state={
+                    record.is_supply === 1 ? 2 : record.is_update === 1 ? 1 : 0
+                  }
+                />
+              )}
             </Tooltip>
           </div>
         )
