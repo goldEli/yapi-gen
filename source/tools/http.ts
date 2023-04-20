@@ -75,6 +75,7 @@ client.config({
       options.headers.Language = localStorage.getItem('language') || ''
       options.headers.System = getSystem()
       options.headers.Client = browser()
+      options.headers.timestamp = Math.floor(new Date().valueOf() / 1000)
       if (!(options.payload instanceof FormData)) {
         options.payload = JSON.stringify(options.payload)
       }

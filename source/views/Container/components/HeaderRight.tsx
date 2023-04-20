@@ -42,6 +42,7 @@ import {
   setSubscribeModal,
 } from '@store/calendar'
 import { setIsRefresh } from '@store/user'
+import { setWriteReportModal } from '@store/workReport'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const { language, theme } = useSelector(store => store.global)
@@ -370,12 +371,6 @@ const HeaderRight = () => {
     )
   }
 
-  const showPlusIcon = useMemo(() => {
-    return (
-      String(location.pathname).includes('/ProjectManagement') ||
-      String(location.pathname).includes('/Report')
-    )
-  }, [location.pathname])
   return (
     <>
       {/* 退出登录 */}
@@ -404,11 +399,7 @@ const HeaderRight = () => {
                 <Line key={i.label}>{i.label ? i.label : '-'}</Line>
                 {i.key === 'avatar' && (
                   <PersonalHead>
-                    {userInfo.avatar ? (
-                      <img className={imgCss} src={userInfo.avatar} />
-                    ) : (
-                      <CommonUserAvatar size="large" />
-                    )}
+                    <CommonUserAvatar size="large" avatar={userInfo.avatar} />
                   </PersonalHead>
                 )}
                 {i.key !== 'avatar' && (
@@ -423,7 +414,7 @@ const HeaderRight = () => {
       </CommonModal>
 
       <Space size={16}>
-        {showPlusIcon && (
+        {String(location.pathname).includes('/ProjectManagement') && (
           <Popover
             content={content(createList)}
             open={isCreateVisible}
@@ -446,6 +437,14 @@ const HeaderRight = () => {
               <CommonIconFont type="plus" size={20} />
             </CreateWrap>
           </Popover>
+        )}
+
+        {String(location.pathname).includes('/Report') && (
+          <CreateWrap
+            onClick={() => dispatch(setWriteReportModal({ visible: true }))}
+          >
+            <CommonIconFont type="plus" size={20} />
+          </CreateWrap>
         )}
         <SiteNotifications />
 

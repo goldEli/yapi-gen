@@ -5,7 +5,7 @@
 /* eslint-disable no-negated-condition */
 import CommonButton from '@/components/CommonButton'
 import styled from '@emotion/styled'
-import { Input, message } from 'antd'
+import { Input, message, Spin } from 'antd'
 import { useEffect, useState } from 'react'
 import PermissionConfig from './PermissionConfig'
 import EditWork from './EditWork'
@@ -19,7 +19,8 @@ import {
   createTemplate,
 } from '@/services/formwork'
 import { getTemplateList, templateDetail } from '@store/formWork/thunk'
-import { getBatchEditConfig } from '@/services/demand'
+import { useTranslation } from 'react-i18next'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
 const RightFormWorkStyle = styled.div`
   flex: 1;
   overflow: hidden;
@@ -128,23 +129,27 @@ const BtnRow = styled.div`
   justify-content: flex-end;
 `
 const RightFormWork = () => {
+  const [t] = useTranslation()
   const [isActive, setIsActive] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   const [value, setValue] = useState('')
   const dispatch = useDispatch()
   const [delIsVisible, setDelIsVisible] = useState(false)
+  const [isSpinning, setIsSpinning] = useState(false)
   const {
     editSave,
     activeItem,
     reportContent,
     templateContentConfigs,
-    templateName,
     fillingRequirements,
     err,
+    templateName,
     errMsg,
   } = useSelector(store => store.formWork)
   const getTemplateDetail = async () => {
+    setIsSpinning(true)
     await dispatch(templateDetail({ id: activeItem.id }))
+    setIsSpinning(false)
   }
   useEffect(() => {
     if (activeItem) {
@@ -165,7 +170,7 @@ const RightFormWork = () => {
       dispatch(
         setActiveItem({ id: res.payload[0].id, name: res.payload[0].name }),
       )
-    message.success('删除成功')
+    message.success(t('formWork.message2'))
   }
   const getVerifyParams = (parmas: any) => {
     // 谁可以写是必填的
@@ -174,10 +179,11 @@ const RightFormWork = () => {
         (el: any) => el.user_type === 1,
       )
       if (list?.length < 1) {
-        message.warning('谁可以写必选')
+        message.warning(t('formWork.message1'))
         return false
       }
-    } else if (
+    }
+    if (
       parmas.submit_cycle === 1 ||
       parmas.submit_cycle === 2 ||
       parmas.submit_cycle === 3
@@ -191,26 +197,27 @@ const RightFormWork = () => {
           parmas.requirement?.start_time?.time >
           parmas.requirement?.end_time?.time
         ) {
-          message.warning('结束时间不能小于开始时间')
+          message.warning(t('formWork.msg10'))
           return false
         }
       }
       if (!parmas.requirement.start_time) {
-        message.warning('开始时间必填')
+        message.warning(t('formWork.msg10'))
         return false
       } else if (!parmas.requirement.end_time) {
-        message.warning('截止时间必填')
+        message.warning(t('formWork.message4'))
         return false
       } else if (!parmas.reminder_time) {
-        message.warning('提醒时间必填')
+        message.warning(t('formWork.message5'))
         return false
       }
-    } else if (parmas.submit_cycle === 4) {
+    }
+    if (parmas.submit_cycle === 4) {
       if (!parmas.requirement.end_time) {
-        message.warning('截止时间必填')
+        message.warning(t('formWork.message4'))
         return false
       } else if (!parmas.reminder_time) {
-        message.warning('提醒时间必填')
+        message.warning(t('formWork.message5'))
         return false
       }
     }
@@ -234,7 +241,7 @@ const RightFormWork = () => {
       is_all_write: reportContent?.is_all_write,
       template_content_configs: templateContentConfigs,
       template_configs: config,
-      id: activeItem?.id || 0,
+      id: activeItem?.id,
     }
     parmas.name = templateName || activeItem.name
     parmas.requirement = {
@@ -258,16 +265,16 @@ const RightFormWork = () => {
       message.warning(errMsg)
       return
     }
+    console.log(parmas, 'parmas', activeItem)
     if (activeItem?.id) {
-      const res = await upDateTemplate(parmas)
-      message.success('编辑成功')
+      await upDateTemplate(parmas)
+      message.success(t('formWork.message6'))
       await dispatch(getTemplateList())
-      dispatch(setActiveItem({ id: activeItem?.id, name: activeItem?.name }))
     } else {
       const res = await createTemplate(parmas)
       await dispatch(getTemplateList())
       dispatch(setActiveItem({ id: res.data.id, name: res.data.name }))
-      message.success('新增成功')
+      message.success(t('formWork.message7'))
     }
     dispatch(setEditSave(true))
   }
@@ -277,112 +284,124 @@ const RightFormWork = () => {
   const getBtn = () => {
     // 编辑的情况0和1都应该有
     if (editSave && activeItem?.id) {
-      return <CommonButton type="primary">已保存</CommonButton>
+      return <CommonButton type="primary">{t('formWork.save1')}</CommonButton>
     } else if (!editSave && activeItem?.id) {
       return (
         <CommonButton type="primary" onClick={() => saveApi()}>
-          保存
+          {t('formWork.save2')}
         </CommonButton>
       )
     } else if (!editSave && !activeItem?.id && isActive === 1) {
       return (
         <CommonButton type="primary" onClick={() => saveApi()}>
-          保存
+          {t('formWork.save2')}
         </CommonButton>
       )
     } else if (editSave && !activeItem?.id && isActive === 1) {
-      return <CommonButton type="primary">已保存</CommonButton>
+      return <CommonButton type="primary"> {t('formWork.save1')}</CommonButton>
     }
   }
   return (
-    <RightFormWorkStyle>
-      <Title>工作日报</Title>
-      <HeaderOperate>
-        <RowStyle>
-          <Col onClick={() => setIsActive(0)}>
-            <StyleLeft bgc={isActive === 0} />
-            <Text bgc={isActive === 0}>编辑模板</Text>
-            <StyleRight bgc={isActive === 0} />
-          </Col>
-          <Col2 onClick={() => setIsActive(1)}>
-            <StyleLeft bgc={isActive === 1} />
-            <Text bgc={isActive === 1}>权限配置</Text>
-            <StyleRight bgc={isActive === 1} />
-          </Col2>
-        </RowStyle>
-        <BtnRight>
-          <CommonButton type="light" onClick={() => setIsVisible(true)}>
-            预览
-          </CommonButton>
-          <CommonButton
-            type="light"
-            onClick={() => setDelIsVisible(true)}
-            style={{ margin: '0 0px 0 16px' }}
-          >
-            删除
-          </CommonButton>
-        </BtnRight>
-      </HeaderOperate>
-      {/* 编辑 */}
-      {isActive === 0 ? (
-        <EditFormWorkBox>
-          <EditFormWorkStyle
-            placeholder="请输入模板标题"
-            value={value}
-            maxLength={50}
-            onInput={(e: any) => {
-              dispatch(setEditSave(false))
-              setValue(e.target.value),
-                dispatch(setTemplateName(e.target.value))
-            }}
-          ></EditFormWorkStyle>
-        </EditFormWorkBox>
-      ) : null}
-      {/* 编辑模板 */}
-      {isActive === 0 ? (
-        <EditWork value={value} back={() => setIsActive(1)} />
-      ) : (
-        <PermissionConfig back={() => setIsActive(0)} />
-      )}
-      {/* 底部保存 */}
-      <BtnRow>
+    <Spin
+      spinning={isSpinning}
+      indicator={<NewLoadingTransition />}
+      style={{
+        width: '100%',
+        position: 'absolute',
+        transform: 'translate(-50%, -50%)',
+        top: '50%',
+        left: '50%',
+      }}
+    >
+      <RightFormWorkStyle>
+        <Title>{t('formWork.t1')}</Title>
+        <HeaderOperate>
+          <RowStyle>
+            <Col onClick={() => setIsActive(0)}>
+              <StyleLeft bgc={isActive === 0} />
+              <Text bgc={isActive === 0}>{t('formWork.t2')}</Text>
+              <StyleRight bgc={isActive === 0} />
+            </Col>
+            <Col2 onClick={() => setIsActive(1)}>
+              <StyleLeft bgc={isActive === 1} />
+              <Text bgc={isActive === 1}>{t('formWork.t4')}</Text>
+              <StyleRight bgc={isActive === 1} />
+            </Col2>
+          </RowStyle>
+          <BtnRight>
+            <CommonButton type="light" onClick={() => setIsVisible(true)}>
+              {t('formWork.t5')}
+            </CommonButton>
+            <CommonButton
+              type="light"
+              onClick={() => setDelIsVisible(true)}
+              style={{ margin: '0 0px 0 16px' }}
+            >
+              {t('formWork.t6')}
+            </CommonButton>
+          </BtnRight>
+        </HeaderOperate>
+        {/* 编辑 */}
         {isActive === 0 ? (
-          <CommonButton
-            type="light"
-            onClick={() => setIsActive(1)}
-            style={{ marginRight: '16px' }}
-          >
-            下一步
-          </CommonButton>
+          <EditFormWorkBox>
+            <EditFormWorkStyle
+              placeholder={t('formWork.t7')}
+              value={value}
+              maxLength={50}
+              onInput={(e: any) => {
+                dispatch(setEditSave(false))
+                setValue(e.target.value)
+                dispatch(setTemplateName(e.target.value))
+              }}
+            ></EditFormWorkStyle>
+          </EditFormWorkBox>
+        ) : null}
+        {/* 编辑模板 */}
+        {isActive === 0 ? (
+          <EditWork value={value} back={() => setIsActive(1)} />
         ) : (
-          <CommonButton
-            type="light"
-            onClick={() => setIsActive(0)}
-            style={{ marginRight: '16px' }}
-          >
-            上一步
-          </CommonButton>
+          <PermissionConfig back={() => setIsActive(0)} />
         )}
-        <>{getBtn()}</>
-      </BtnRow>
-      {/* 预览 */}
-      <PreviewDialog
-        dataList={[]}
-        type={'formWork'}
-        title={activeItem?.name}
-        onClose={() => setIsVisible(false)}
-        onConfirm={() => setIsVisible(false)}
-        isVisible={isVisible}
-      />
-      {/* 删除模板 */}
-      <DeleteConfirm
-        title={'删除模板'}
-        text="确认删除模版，删除后将无法汇报"
-        isVisible={delIsVisible}
-        onConfirm={deleteActiveItem}
-        onChangeVisible={() => setDelIsVisible(false)}
-      />
-    </RightFormWorkStyle>
+        {/* 底部保存 */}
+        <BtnRow>
+          {isActive === 0 ? (
+            <CommonButton
+              type="light"
+              onClick={() => setIsActive(1)}
+              style={{ marginRight: '16px' }}
+            >
+              {t('formWork.t8')}
+            </CommonButton>
+          ) : (
+            <CommonButton
+              type="light"
+              onClick={() => setIsActive(0)}
+              style={{ marginRight: '16px' }}
+            >
+              {t('formWork.t9')}
+            </CommonButton>
+          )}
+          <>{getBtn()}</>
+        </BtnRow>
+        {/* 预览 */}
+        <PreviewDialog
+          dataList={[]}
+          type={'formWork'}
+          title={activeItem?.name}
+          onClose={() => setIsVisible(false)}
+          onConfirm={() => setIsVisible(false)}
+          isVisible={isVisible}
+        />
+        {/* 删除模板 */}
+        <DeleteConfirm
+          title={t('formWork.t10')}
+          text={t('formWork.t11')}
+          isVisible={delIsVisible}
+          onConfirm={deleteActiveItem}
+          onChangeVisible={() => setDelIsVisible(false)}
+        />
+      </RightFormWorkStyle>
+    </Spin>
   )
 }
 export default RightFormWork
