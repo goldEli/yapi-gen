@@ -1097,11 +1097,11 @@
     "saturday": "Saturday",
     "sunday": "Sunday",
     "atThatTime": "Today",
-    "theNextDay": "次日",
-    "m0": "0points",
-    "m15": "15points",
-    "m30": "30points",
-    "m45": "45points",
+    "theNextDay": "the next day",
+    "m0": "0 points",
+    "m15": "15 points",
+    "m30": "30 points",
+    "m45": "45 points",
     "0h": "0h",
     "1h": "1h",
     "2h": "2h",
@@ -1191,7 +1191,10 @@
     "bw1": "Last week",
     "bw2": "The first two weeks",
     "bw3": "First Three Weeks",
-    "all": "All staff"
+    "all": "All staff",
+    "day": "Day",
+    "h": "Time",
+    "m": "Divide"
   },
   "report": {
     "list": {
