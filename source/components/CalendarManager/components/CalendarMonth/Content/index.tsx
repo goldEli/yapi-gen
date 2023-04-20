@@ -27,7 +27,7 @@ const Content: React.FC<ContentProps> = props => {
 
   return (
     <ContentBox className="calendar-month-content-box">
-      {Array(35)
+      {Array(42)
         .fill(0)
         .map((_, idx) => {
           const info = selectedMonth?.[idx]
