@@ -5,15 +5,23 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import CommonButton from '@/components/CommonButton'
 import LeftTitle from '@/components/LeftTitle'
-import { useDispatch } from '@store/index'
-import { changeVisible, changeVisibleFilter } from '@store/SiteNotifications'
+import { useDispatch, useSelector } from '@store/index'
+import {
+  changeNumber,
+  changeVisible,
+  changeVisibleFilter,
+} from '@store/SiteNotifications'
 import { useParams } from 'react-router'
 import AllSideFilter from '../components/AllSideFilter/AllSideFilter'
 import ContentItem from '../components/ContentItem/ContentItem'
 import { useTranslation } from 'react-i18next'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { Divider, Skeleton } from 'antd'
-import { getMsg_list, setReadApi } from '@/services/SiteNotifications'
+import {
+  getContactStatistics,
+  getMsg_list,
+  setReadApi,
+} from '@/services/SiteNotifications'
 import { useEffect, useRef, useState } from 'react'
 
 interface ZoomRatioType {
@@ -21,6 +29,7 @@ interface ZoomRatioType {
 }
 const Index = () => {
   const lastId = useRef<any>()
+  const all = useSelector(store => store.siteNotifications.all)
   const friendUsername = useRef<any>(undefined)
   const msgType = useRef<any>(undefined)
   const [list, setList] = useState([])
@@ -59,11 +68,20 @@ const Index = () => {
     }, 500)
   }
   const setReads = async (values: any) => {
-    await setReadApi(values)
-    setList([])
-    setHasMore(true)
-    lastId.current = 0
-    fetchMoreData(1)
+    const res = await setReadApi(values)
+    if (res.code === 0) {
+      const res2 = await getContactStatistics()
+      let num = 0
+      res2.list.slice(1, 5).forEach((i: any) => {
+        num += Number(i.nread)
+      })
+
+      dispatch(changeNumber(num))
+      setList([])
+      setHasMore(true)
+      lastId.current = 0
+      fetchMoreData(1)
+    }
   }
   const setAllRead = () => {
     const arr = list.map((i: any) => i.id)
@@ -93,7 +111,7 @@ const Index = () => {
     lastId.current = 0
     setList([])
     fetchMoreData(1)
-  }, [id])
+  }, [id, all])
 
   return (
     <div>
