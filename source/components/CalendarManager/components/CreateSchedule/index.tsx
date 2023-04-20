@@ -356,12 +356,12 @@ const CreateSchedule = () => {
     })
     const resultTime = [
       moment(
-        scheduleInfo.is_all_day
+        scheduleInfo.is_all_day === 1
           ? scheduleInfo.start_date
           : scheduleInfo.start_datetime,
       ),
       moment(
-        scheduleInfo.is_all_day
+        scheduleInfo.is_all_day === 1
           ? scheduleInfo.end_date
           : scheduleInfo.end_datetime,
       ),

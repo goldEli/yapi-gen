@@ -10,7 +10,6 @@ import {
   Select,
 } from 'antd'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
-import { RangePickerProps } from 'antd/lib/date-picker'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
