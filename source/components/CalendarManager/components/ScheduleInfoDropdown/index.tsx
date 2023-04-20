@@ -45,9 +45,9 @@ const ScheduleInfoDropdown: React.FC<ScheduleInfoDropdownProps> = props => {
   // console.log({ scheduleInfoDropdown })
   const disPatch = useDispatch()
   useEffect(() => {
-    if (!schedule_id) return
+    if (!schedule_id || !visible) return
     disPatch(getScheduleInfo({ id: schedule_id, show_date }))
-  }, [schedule_id])
+  }, [schedule_id,visible])
 
   return (
     <ScheduleInfoDropdownBox
