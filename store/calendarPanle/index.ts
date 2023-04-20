@@ -123,7 +123,7 @@ const slice = createSlice({
       // 结束坐标
       const max = min + len
 
-      const list = Array.from(Array(35).keys()).slice(min, max)
+      const list = Array.from(Array(42).keys()).slice(min, max)
       const d = {
         ...newState,
         visibleList: list,
@@ -151,7 +151,7 @@ const slice = createSlice({
         return
       }
 
-      const list = Array.from(Array(35).keys()).slice(min, max)
+      const list = Array.from(Array(42).keys()).slice(min, max)
       state.monthMoveScheduleActiveInfo = {
         ...newState,
         visibleList: list,
