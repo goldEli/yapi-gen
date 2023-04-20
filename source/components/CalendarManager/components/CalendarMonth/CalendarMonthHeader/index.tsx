@@ -50,9 +50,11 @@ const CalendarMonthHeader: React.FC<CalendarMonthHeaderProps> = props => {
   return (
     <CalendarMonthHeaderBox>
       {selectedWeek.map((item, idx) => {
-        const dayOfWeek = dayjs(item.date).format('ddd')
+        const d = dayjs(item.date)
+        const dayOfWeek = d.format('ddd')
+        const weekNum = d.day()
         const classnames = classNames({
-          [weekendsColor]: idx === 0 || idx === 6,
+          [weekendsColor]: weekNum === 0 || weekNum === 6,
         })
         return (
           <Item className={classnames} key={item.date}>
