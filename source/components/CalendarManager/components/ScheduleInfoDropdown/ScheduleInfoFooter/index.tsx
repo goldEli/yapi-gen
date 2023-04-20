@@ -34,22 +34,6 @@ const ScheduleInfoFooter: React.FC<iProps> = props => {
       //
     }
   }
-  const ButtonWrap = React.useMemo(
-    () => (
-      <ScheduleInfoFooterBox>
-        <CommonButton type="light" onClick={() => replySchedule(1)}>
-          {t('calendarManager.receive')}
-        </CommonButton>
-        <CommonButton type="light" onClick={() => replySchedule(2)}>
-          {t('calendarManager.refuse')}
-        </CommonButton>
-        <CommonButton type="light" onClick={() => replySchedule(3)}>
-          {t('calendarManager.pending')}
-        </CommonButton>
-      </ScheduleInfoFooterBox>
-    ),
-    [],
-  )
   return (
     <>
       {scheduleInfo?.is_show_reply ? (
