@@ -140,6 +140,7 @@ declare namespace Model.Schedule {
     width: number
     left: number
   }
+  type ScheduleListViewInfo = { date: string; list: DetailInfo[] }
   interface ScheduleList {
     visible: boolean
     top?: number

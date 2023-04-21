@@ -390,7 +390,7 @@ function isDateIntersection(
 }
 type props = { [key in string]: Model.Schedule.DetailInfo[] }
 function mapToArray(res: props) {
-  const array: { date: string; list: Model.Schedule.DetailInfo[] }[] = []
+  const array: Model.Schedule.ScheduleListViewInfo[] = []
   Object.keys(res)
     .sort()
     .forEach(key => {

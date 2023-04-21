@@ -10,6 +10,7 @@ import {
   getLeftCalendarDaysOfMonthList,
   getScheduleDaysOfList,
 } from './schedule.thunk'
+import { mapToArray } from '@/tools'
 import dayjs from 'dayjs'
 interface a {
   date: number | string
@@ -121,12 +122,7 @@ const slice = createSlice({
     builder.addCase(getScheduleDaysOfList.fulfilled, (state, action) => {
       let array: Model.Schedule.listViewScheduleListProps[] = []
       if (action.payload) {
-        Object.keys(action.payload)
-          .sort()
-          .forEach((key, index) => {
-            let item = action.payload[key]
-            array.push({ date: key, list: item })
-          })
+        array = mapToArray(action.payload)
         state.listViewScheduleList = [...array]
       }
     })

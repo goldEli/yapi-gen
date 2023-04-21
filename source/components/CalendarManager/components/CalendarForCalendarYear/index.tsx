@@ -36,7 +36,7 @@ const hasScheduleClass = css`
     height: 4px;
     background: var(--primary-d1);
     bottom: -4px;
-    left: 12px;
+    left: 11px;
     border-radius: 50%;
   }
 `
