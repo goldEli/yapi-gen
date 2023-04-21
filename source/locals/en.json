@@ -1402,6 +1402,7 @@
     "refuse": "Refuse",
     "pending": "Pending",
     "file_list": "File List",
-    "search_schedule": "Search Schedule"
+    "search_schedule": "Search Schedule",
+    "today": "Today"
   }
 }

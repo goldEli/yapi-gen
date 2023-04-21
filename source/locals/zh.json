@@ -1402,6 +1402,7 @@
     "refuse": "拒绝",
     "pending": "待定",
     "file_list": "文件列表",
-    "search_schedule": "搜索日程"
+    "search_schedule": "搜索日程",
+    "today": "今天"
   }
 }
