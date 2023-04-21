@@ -77,7 +77,7 @@ const DelBtn = styled.span`
 const DelBtnText = styled.span`
   display: inline-block;
   min-width: 20px;
-  color: var(--neutral-n3);
+  color: var(--neutral-n4);
   margin: 0;
   padding: 0;
 `
