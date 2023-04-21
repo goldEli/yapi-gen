@@ -8,11 +8,9 @@ import styled from '@emotion/styled'
 import HeaderRender from './HeaderRender'
 import { css } from '@emotion/css'
 import { setScheduleListModal, setScheduleDate } from '@store/schedule'
-import { getScheduleSearch } from '@store/schedule/schedule.thunk'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
 import { useDispatch, useSelector } from '@store/index'
-import Loading from '@/components/Loading'
-
+import classNames from 'classnames'
 dayjs.extend(dayLocaleData)
 
 const DayBox = styled.div`
@@ -98,9 +96,10 @@ const CalendarForCalendarYear: React.FC<
           )
           return (
             <DayBox
-              className={
-                today ? dayActive : hasSchedule ? hasScheduleClass : ''
-              }
+              className={classNames({
+                [dayActive]: today,
+                [hasScheduleClass]: hasSchedule,
+              })}
               onClick={e => dateClick(e, date)}
             >
               {dayjs(date).date()}

@@ -352,31 +352,52 @@ function getCustomNormalValue(attr: any, text: any) {
   }
   return result || '--'
 }
+// 判断日期是否重复
 function isDateIntersection(
   start1: string,
   end1: string,
   start2: string,
   end2: string,
 ) {
-  const startdate1 = dayjs(start1).valueOf()
-  const enddate1 = dayjs(end1).valueOf()
+  const firstGroupStartDate = dayjs(start1).valueOf()
+  const firstGroupEndDate = dayjs(end1).valueOf()
 
-  const startdate2 = dayjs(start2).valueOf()
-  const enddate2 = dayjs(end2).valueOf()
+  const secondGroupFirstDate = dayjs(start2).valueOf()
+  const secondGroupEndDate = dayjs(end2).valueOf()
 
-  if (startdate1 >= startdate2 && startdate1 <= enddate2) {
+  if (
+    firstGroupStartDate >= secondGroupFirstDate &&
+    firstGroupStartDate <= secondGroupEndDate
+  ) {
     return true
   }
 
-  if (enddate1 >= startdate2 && enddate1 <= enddate2) {
+  if (
+    firstGroupEndDate >= secondGroupFirstDate &&
+    firstGroupEndDate <= secondGroupEndDate
+  ) {
     return true
   }
 
-  if (startdate1 <= startdate1 && enddate1 >= enddate2) {
+  if (
+    firstGroupStartDate <= firstGroupStartDate &&
+    firstGroupEndDate >= secondGroupEndDate
+  ) {
     return true
   }
 
   return false
+}
+type props = { [key in string]: Model.Schedule.DetailInfo[] }
+function mapToArray(res: props) {
+  const array: { date: string; list: Model.Schedule.DetailInfo[] }[] = []
+  Object.keys(res)
+    .sort()
+    .forEach(key => {
+      const item = res[key]
+      array.push({ date: key, list: item })
+    })
+  return array
 }
 function getIdsForAt(htmlString: string) {
   const parser = new DOMParser()
@@ -406,4 +427,5 @@ export {
   copyLink,
   getNowDate,
   isDateIntersection,
+  mapToArray,
 }

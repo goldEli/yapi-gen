@@ -23,6 +23,7 @@ const CalendarManager: React.FC<CalendarManagerLayoutProps> = props => {
     store => store.calendar,
   )
   const { isRefresh } = useSelector(store => store.user)
+  const { scheduleInfo } = useSelector(state => state.schedule)
   const dispatch = useDispatch()
   // 初始化获取当前是设置页还是看板页
   useEffect(() => {

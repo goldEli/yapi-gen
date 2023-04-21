@@ -53,6 +53,7 @@ type SliceState = {
     firstDayInfo: Model.Schedule.Info
     index: number
   }[]
+  calendarLoading: boolean
 }
 const defaultMonthMoveScheduleActiveInfo = {
   visibleList: [],
@@ -83,6 +84,7 @@ const initialState: SliceState = {
   calenderYearType: 0,
   calenderYearWeekValue: dayjs().year() + '/' + dayjs().week(),
   monthMoveScheduleActiveInfo: defaultMonthMoveScheduleActiveInfo,
+  calendarLoading: true,
 }
 
 const slice = createSlice({
@@ -237,6 +239,18 @@ const slice = createSlice({
     ) {
       state.calenderYearType = action.payload
     },
+    setCalenderLoading(state, action: PayloadAction<boolean>) {
+      state.calendarLoading = action.payload
+    },
+    setInitScheduleInfoDropdown(
+      state,
+      action: PayloadAction<Partial<SliceState['scheduleInfoDropdown']>>,
+    ) {
+      state.scheduleInfoDropdown = {
+        ...state.scheduleInfoDropdown,
+        ...action.payload,
+      }
+    },
   },
 })
 
@@ -258,6 +272,8 @@ export const {
   setQuickCreateScheduleModel,
   setSelectedDayInMonth,
   setFirstDataIndexInfo,
+  setCalenderLoading,
+  setInitScheduleInfoDropdown,
 } = slice.actions
 
 export default calendarPanel

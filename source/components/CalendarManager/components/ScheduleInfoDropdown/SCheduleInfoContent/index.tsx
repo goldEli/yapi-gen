@@ -131,7 +131,7 @@ const ScheduleInfoContent: React.FC = props => {
           defaultList={scheduleInfo?.files?.map((i: any) => ({
             url: i.url,
             id: new Date().getTime() + Math.random() + i.user_id,
-            size: i.size,
+            size: Math.abs(i.size),
             time: i.created_at,
             name: i.name || '--',
             suffix: i.suffix,
