@@ -16,7 +16,7 @@ const ContentBox = styled.div`
   flex: 1;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 142px 142px 142px 142px 142px;
+  grid-template-rows: 142px 142px 142px 142px 142px 142px;
   position: relative;
 `
 
@@ -27,7 +27,7 @@ const Content: React.FC<ContentProps> = props => {
 
   return (
     <ContentBox className="calendar-month-content-box">
-      {Array(35)
+      {Array(42)
         .fill(0)
         .map((_, idx) => {
           const info = selectedMonth?.[idx]

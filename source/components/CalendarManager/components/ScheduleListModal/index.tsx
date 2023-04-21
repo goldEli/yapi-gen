@@ -5,7 +5,8 @@ import { useSelector, useDispatch } from '@store/index'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
 import { setScheduleListModal } from '@store/schedule'
 import dayjs from 'dayjs'
-interface ScheduleListProps {}
+import { getColorWithOpacityPointOne ,getColor} from '../../utils'
+interface ScheduleListProps { }
 interface ScheduleListBoxProps {
   visible: boolean
   top?: number
@@ -28,7 +29,7 @@ const ScheduleListBox = styled.div`
   padding-bottom: 4px;
   box-sizing: border-box;
 `
-const ScheduleItem = styled.div`
+const ScheduleItem = styled.div<{ color: string }>`
   font-size: 12px;
   font-family: PingFang SC-Regular, PingFang SC;
   font-weight: 400;
@@ -38,7 +39,7 @@ const ScheduleItem = styled.div`
   box-sizing: border-box;
   cursor: pointer;
   &:hover {
-    background: rgba(102, 136, 255, 0.1);
+    background: ${(props) => props.color};
     border-radius: 6px;
   }
 `
@@ -54,7 +55,8 @@ const labelTime = css`
   color: var(---neutral-n4);
   margin-right: 8px;
   position: relative;
-  &::before {
+  padding-left: 14px;
+  /* &::before {
     width: 6px;
     height: 6px;
     background: var(--primary-d1);
@@ -64,7 +66,16 @@ const labelTime = css`
     margin-right: 8px;
     position: relative;
     top: -2px;
-  }
+  } */
+`
+const Dot = styled.div<{color:string}>`
+  position: absolute;
+  top: 5px;
+  width: 6px;
+  height: 6px;
+  background: ${(props)=>props.color};
+  border-radius: 2px 2px 2px 2px;
+  left: 0px;
 `
 const labelContent = css`
   font-size: 12px;
@@ -106,8 +117,10 @@ const ScheduleListModal: React.FC<ScheduleListProps> = props => {
         <ScheduleItem
           key={item.schedule_id}
           onClick={e => scheduleInfoClick(e, item.schedule_id)}
+          color={getColorWithOpacityPointOne(item.color)}
         >
           <span className={labelTime}>
+            <Dot color={getColor(item.color)}></Dot>
             {item.start_time}-{item.end_time}
           </span>
           <span className={labelContent}>{item.subject}</span>

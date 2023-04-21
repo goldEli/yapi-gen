@@ -17,7 +17,7 @@ const ScheduleInfoDropdownBox = styled.div<{
   top: number
   left: number
 }>`
-  width: 320px;
+  width: 400px;
   background-color: var(--neutral-white-d1);
   box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
   z-index: 999;
@@ -45,9 +45,9 @@ const ScheduleInfoDropdown: React.FC<ScheduleInfoDropdownProps> = props => {
   // console.log({ scheduleInfoDropdown })
   const disPatch = useDispatch()
   useEffect(() => {
-    if (!schedule_id) return
+    if (!schedule_id || !visible) return
     disPatch(getScheduleInfo({ id: schedule_id, show_date }))
-  }, [schedule_id])
+  }, [schedule_id,visible])
 
   return (
     <ScheduleInfoDropdownBox

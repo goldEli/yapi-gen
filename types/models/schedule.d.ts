@@ -131,6 +131,7 @@ declare namespace Model.Schedule {
     is_creator?: boolean
     title?: string
     is_show_reply?: false
+    able_update?: false
   }
   type ScheduleListInfo = Info & {
     lunar_day_chinese: string

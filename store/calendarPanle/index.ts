@@ -59,7 +59,7 @@ const defaultMonthMoveScheduleActiveInfo = {
 }
 
 const initialState: SliceState = {
-  calendarPanelType: 'month',
+  calendarPanelType: 'year',
   quickCreateScheduleModel: {
     isAll: false,
     startTime: '',
@@ -122,8 +122,8 @@ const slice = createSlice({
       const min = newState.endIndex ?? 0
       // 结束坐标
       const max = min + len
-
-      const list = Array.from(Array(35).keys()).slice(min, max)
+      // 移动后，展示跨天日程的下标
+      const list = Array.from(Array(42).keys()).slice(min, max)
       const d = {
         ...newState,
         visibleList: list,
@@ -151,7 +151,7 @@ const slice = createSlice({
         return
       }
 
-      const list = Array.from(Array(35).keys()).slice(min, max)
+      const list = Array.from(Array(42).keys()).slice(min, max)
       state.monthMoveScheduleActiveInfo = {
         ...newState,
         visibleList: list,

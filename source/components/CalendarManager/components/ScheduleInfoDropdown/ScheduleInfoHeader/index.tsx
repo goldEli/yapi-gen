@@ -94,18 +94,21 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
           {scheduleInfo?.is_busy === 1 ? '忙碌' : '空闲'}
         </span>
         <div className={iconBox}>
-          <span
-            onClick={() => {
-              disPatch(
-                setScheduleModal({
-                  visible: true,
-                  params: { id: scheduleInfo?.id ?? 0 },
-                }),
-              )
-            }}
-          >
-            <ScheduleInfoIcon type="edit" />
-          </span>
+          {scheduleInfo?.able_update ? (
+            <span
+              onClick={() => {
+                disPatch(
+                  setScheduleModal({
+                    visible: true,
+                    params: { id: scheduleInfo?.id ?? 0 },
+                  }),
+                )
+              }}
+            >
+              <ScheduleInfoIcon type="edit" />
+            </span>
+          ) : null}
+
           <span
             onClick={() => {
               setIsVisible(true)
@@ -122,12 +125,14 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
                     if (!scheduleInfo) {
                       return
                     }
+                    setShowTipBox(!showTipBox)
                     disPatch(
                       setScheduleModal({
                         visible: true,
                         params: { copyScheduleId: Number(scheduleInfo?.id) },
                       }),
                     )
+                    disPatch(setScheduleInfoDropdown({ visible: false }))
                   }}
                 >
                   {t('calendarManager.copySchedule')}
@@ -136,6 +141,8 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
                   <span
                     onClick={() => {
                       setModalVisible(true)
+                      setShowTipBox(!showTipBox)
+                      disPatch(setScheduleInfoDropdown({ visible: false }))
                     }}
                   >
                     {t('calendarManager.transfer_schedule')}
