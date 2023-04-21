@@ -60,7 +60,7 @@ const defaultMonthMoveScheduleActiveInfo = {
 }
 
 const initialState: SliceState = {
-  calendarPanelType: 'year',
+  calendarPanelType: 'week',
   quickCreateScheduleModel: {
     isAll: false,
     startTime: '',

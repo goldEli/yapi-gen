@@ -77,10 +77,13 @@ const DayItem: React.FC<DayItemProps> = props => {
   })
   const [t] = useTranslation()
 
+  const { scheduleList } = useSelector(store => store.schedule)
+
   if (!info) {
     return <></>
   }
 
+  const key = info.date
   return (
     <DayItemBox
       className={classnames}
@@ -105,6 +108,7 @@ const DayItem: React.FC<DayItemProps> = props => {
         data={info}
         idx={idx}
         list={props.list}
+        allList={scheduleList[key]}
       />
       <CreateScheduleText top={28} visible={isSelectedForCreate}>
         {t('calendarManager.create_schedule')}

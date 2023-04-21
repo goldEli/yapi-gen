@@ -1,11 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import styled from '@emotion/styled'
 import DayItem from './DayItem'
-import QuickCreateScheduleModel from '../../QuickCreateScheduleModel'
 import { useSelector } from '@store/index'
-import dayjs from 'dayjs'
-import { sortScheduleList } from '@/components/CalendarManager/utils'
-import { formatYYYYMMDD } from '@/components/CalendarManager/config'
 import ScheduleListModal from '../../ScheduleListModal'
 import useScheduleListSort from '@/components/CalendarManager/hooks/useScheduleListSort'
 
