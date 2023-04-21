@@ -3,6 +3,7 @@ import React from 'react'
 import useMaxWidth from '../hooks/useMaxWidth'
 import MoveCard from '../../MoveCard'
 import useMoveCard from '@/components/CalendarManager/hooks/useMoveCard'
+import useWeeks from '../hooks/useWeeks'
 
 interface ScheduleCardProps {
   data: Model.Schedule.Info
@@ -13,11 +14,19 @@ interface ScheduleCardProps {
 const ScheduleCard: React.FC<ScheduleCardProps> = props => {
   const { maxWidth } = useMaxWidth()
 
+  const [localLeft, setLocalLeft] = React.useState(0)
+  const { getLeftByCurrentWeekDay } = useWeeks()
+
+  React.useEffect(() => {
+    setLocalLeft(props.left)
+  }, [props.left])
+
   const {
     height,
     top,
     gridHeight,
     timeRange,
+    localTime,
     onResizeStop,
     onResizeStart,
     onResize,
@@ -25,6 +34,19 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     onDragStart,
     onDrag,
   } = useMoveCard({ data: props.data, type: 'week' })
+
+  /**
+   * 移动后 再后端还未返回数据时，修改该left，避免日程出现跳动问题
+   */
+  React.useLayoutEffect(() => {
+    if (!localTime) {
+      return
+    }
+    const { start_timestamp } = localTime
+    const left = getLeftByCurrentWeekDay(start_timestamp)
+    setLocalLeft(left)
+  }, [localTime])
+
   return (
     <MoveCard
       timeRange={timeRange}
@@ -37,7 +59,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
       dragGrid={[maxWidth, gridHeight]}
       resizeGrid={[gridHeight, gridHeight]}
       position={{
-        x: props.left,
+        x: localLeft,
         y: top,
       }}
       enableResizing={{
