@@ -36,7 +36,32 @@ const useWeeks = () => {
     return index * maxWidth
   }
 
-  return { weeks, getCurrentWeekDayByLeft, getLeftByCurrentWeekDay }
+  // 跨天拖动 计算新的时间
+  const getTimeAfterAcrossDay = (
+    left: number,
+    startTime: dayjs.Dayjs,
+    endTime: dayjs.Dayjs,
+  ) => {
+    const weekDay = getCurrentWeekDayByLeft(left)
+    const newStartTime = dayjs(
+      `${weekDay} ${startTime.format('HH:mm:ss')}`,
+    ).valueOf()
+    const newEndTime = dayjs(
+      `${weekDay} ${endTime.format('HH:mm:ss')}`,
+    ).valueOf()
+
+    return {
+      newStartTime,
+      newEndTime,
+    }
+  }
+
+  return {
+    weeks,
+    getCurrentWeekDayByLeft,
+    getLeftByCurrentWeekDay,
+    getTimeAfterAcrossDay,
+  }
 }
 
 export default useWeeks

@@ -27,7 +27,7 @@ const useMoveCard = (props: {
     end_timestamp: string
   } | null>(null)
 
-  const { getCurrentWeekDayByLeft } = useWeeks()
+  const { getTimeAfterAcrossDay } = useWeeks()
 
   React.useEffect(() => {
     setLocalTime({
@@ -39,15 +39,17 @@ const useMoveCard = (props: {
   const { height, top } = usePosition(start_timestamp, end_timestamp)
   const isDrag = React.useRef(false)
 
+  // 拖动时
   const onDrag = (e: DraggableEvent, draggableData: DraggableData) => {
     isDrag.current = true
     e.stopPropagation()
-    const { node, y, deltaY, lastY } = draggableData
+    const { node, y, x, deltaY, lastY } = draggableData
     const time = getTimeByOffsetDistance(
       start_timestamp,
       end_timestamp,
       y - top,
     )
+
     setTimeRange({
       start_timestamp: time.startTime.format('HH:mm'),
       end_timestamp: time.endTime.format('HH:mm'),
@@ -101,13 +103,12 @@ const useMoveCard = (props: {
 
     if (props.type === 'week') {
       // 基于当前的日期更新
-      const weekDay = getCurrentWeekDayByLeft(x)
-      const newStartTime = dayjs(
-        `${weekDay} ${time.startTime.format('HH:mm:ss')}`,
-      ).valueOf()
-      const newEndTime = dayjs(
-        `${weekDay} ${time.endTime.format('HH:mm:ss')}`,
-      ).valueOf()
+
+      const { newStartTime, newEndTime } = getTimeAfterAcrossDay(
+        x,
+        time.startTime,
+        time.endTime,
+      )
       onModify(dayjs(newStartTime).valueOf(), dayjs(newEndTime).valueOf())
     }
 
