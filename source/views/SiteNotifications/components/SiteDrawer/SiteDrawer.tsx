@@ -193,7 +193,7 @@ const SiteDrawer = () => {
         boxSizing: 'border-box',
       }}
       width={400}
-      zIndex={1}
+      zIndex={100}
       closable={false}
       mask={false}
       placement="right"
