@@ -18,32 +18,19 @@ import { AddWrap } from './StyleCommon'
 import { uploadFileToKey } from '@/services/cos'
 import { Editor, EditorRef } from '@xyfe/uikit'
 import { uploadFile } from './CreateDemand/CreateDemandLeft'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { changeRestScroll } from '@store/scroll'
 import { getProjectMember } from '@/services/project'
-import { getIdsForAt } from '@/tools'
+import { getIdsForAt, removeNull } from '@/tools'
 
 const EditComment = (props: any) => {
   const [form] = Form.useForm()
-  const [arr, setArr] = useState<any>(null)
   const editable = useRef<HTMLInputElement>(null)
   const attachDom: any = createRef()
   const [t] = useTranslation()
   const dispatch = useDispatch()
-  const editorRef = useRef<EditorRef>(null)
+  const { projectInfoValues } = useSelector(store => store.project)
 
-  const init = async () => {
-    const companyList = await getProjectMember({
-      projectId: props.projectId,
-      all: true,
-    })
-    const filterCompanyList = companyList.map((item: any) => ({
-      id: item.id,
-
-      label: item.name,
-    }))
-    setArr(filterCompanyList)
-  }
   const onValidator = (rule: any, value: any) => {
     if (value === '<p><br></p>' || value.trim() === '') {
       return Promise.reject(
@@ -53,7 +40,6 @@ const EditComment = (props: any) => {
 
     return Promise.resolve()
   }
-  console.log(arr)
 
   const onChangeAttachment = (result: any) => {
     const arrs = result.map((i: any) => {
@@ -110,7 +96,6 @@ const EditComment = (props: any) => {
       editable.current?.focus()
     }, 100)
 
-    init()
     form.resetFields()
   }, [props.visibleEdit])
 
@@ -178,7 +163,15 @@ const EditComment = (props: any) => {
               },
             ]}
           >
-            <Editor upload={uploadFile} getSuggestions={() => arr} />
+            <Editor
+              upload={uploadFile}
+              getSuggestions={() =>
+                removeNull(projectInfoValues, 'user_name')?.map((k: any) => ({
+                  label: k.content,
+                  id: k.id,
+                }))
+              }
+            />
           </Form.Item>
           <Form.Item
             label={<LabelTitle title={t('common.attachment')} />}
