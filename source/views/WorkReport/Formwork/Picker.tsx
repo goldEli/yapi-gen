@@ -102,14 +102,7 @@ const Picker = (props: PropsType) => {
   const [leftDataList, setLeftDataList] = useState<Array<Item>>()
   const [rightDataList, setRightDataList] = useState<Array<Item>>()
   const [centerDataList, setCenterDataList] = useState<Array<Item>>()
-  const [isOpen, setIsOpen] = useState(false)
   const [value, setValue] = useState('')
-  // 计算每月多少天
-  const getCountDays = () => {
-    var curDate = new Date()
-    curDate.setDate(32)
-    return 32 - curDate.getDate()
-  }
   // 每天提醒时间只有时(提前24h)和分
   // 每周提醒时间(提前0-5)天时和分
   // 每月提醒时间(提前0-30天)天时和分
@@ -166,20 +159,18 @@ const Picker = (props: PropsType) => {
       setCenterDataList(hourData)
       setRightDataList(minuteData)
     }
-  }, [isOpen, props.type])
+  }, [props.type])
 
   //  时分数转化为秒
   const time1 = (d: number, h: number, m: number) => {
-    if (h < 0 || m < 0) {
-      message.warning('请选择时间')
-      setIsOpen(true)
-      return
-    }
+    // if (h < 0 || m < 0) {
+    //   message.warning('请选择时间')
+    //   return
+    // }
     let datS: any = d ? d * 60 * 60 * 24 : 0
-    let hS = h * 60 * 60
+    let hS = h === 0 ? 24 : h * 60 * 60
     let minute = m * 60
     const second = datS + hS + minute
-    setIsOpen(false)
     return second
   }
   const getTime = () => {
@@ -197,11 +188,12 @@ const Picker = (props: PropsType) => {
       })
     } else {
       if (props.type === 'day') {
-        if (centerActiveVal < 0 || rightActiveVal < 0) return
+        // if (centerActiveVal < 0 || rightActiveVal < 0) return
+        console.log(centerActiveVal, rightActiveVal, 'pppp')
         props?.onChange?.(time1(0, centerActiveVal, rightActiveVal))
       } else {
-        if (leftActiveVal < 0 || centerActiveVal < 0 || rightActiveVal < 0)
-          return
+        // if (leftActiveVal < 0 || centerActiveVal < 0 || rightActiveVal < 0)
+        //   return
         props?.onChange?.(time1(leftActiveVal, centerActiveVal, rightActiveVal))
       }
     }
@@ -309,8 +301,17 @@ const Picker = (props: PropsType) => {
       )
     } else {
       const arr = [...nextMonthDay, ...dayData]
+      console.log(arr, 'ppp')
       const label = arr.find((el: any) => el.key === v1)?.label
-      setValue(label + '/' + v2 + t('formWork.h') + '/' + v3 + t('formWork.m'))
+      setValue(
+        t(`formWork.${label}`) +
+          '/' +
+          v2 +
+          t('formWork.h') +
+          '/' +
+          v3 +
+          t('formWork.m'),
+      )
     }
   }
   useEffect(() => {
@@ -355,8 +356,8 @@ const Picker = (props: PropsType) => {
             {leftDataList?.map((el: any, index: number) => (
               <Item
                 key={el.label}
-                onClick={() => {
-                  setLeftActiveVal(el.key)
+                onClick={e => {
+                  e.stopPropagation(), setLeftActiveVal(el.key)
                 }}
                 style={{
                   color:
@@ -374,8 +375,8 @@ const Picker = (props: PropsType) => {
           {centerDataList?.map((el: any, index: number) => (
             <Item
               key={el.label}
-              onClick={() => {
-                setCenterActiveVal(el.key)
+              onClick={e => {
+                e.stopPropagation(), setCenterActiveVal(el.key)
               }}
               style={{
                 color:
@@ -392,8 +393,8 @@ const Picker = (props: PropsType) => {
           {rightDataList?.map((el: any, index: number) => (
             <Item
               key={el.label}
-              onClick={() => {
-                setRightActiveVal(el.key)
+              onClick={e => {
+                e.stopPropagation(), setRightActiveVal(el.key)
               }}
               style={{
                 color:
@@ -414,31 +415,22 @@ const Picker = (props: PropsType) => {
       </PickerStyle>
     )
   }
-
   return (
-    <div>
+    <Popover
+      placement="bottomRight"
+      title={''}
+      content={content}
+      trigger="[click,hover]"
+    >
       <InputStyle
         type="text"
         value={value}
         placeholder={t('formWork.inp1')}
         suffix={
-          <Popover
-            open={isOpen}
-            placement="bottomRight"
-            title={''}
-            content={content}
-            trigger="click"
-          >
-            <CommonIconFont
-              type="time"
-              size={16}
-              color="var(--neutral-n4)"
-              onClick={() => setIsOpen(!isOpen)}
-            />
-          </Popover>
+          <CommonIconFont type="time" size={16} color="var(--neutral-n4)" />
         }
       />
-    </div>
+    </Popover>
   )
 }
 export default Picker

@@ -261,63 +261,63 @@ export const dayData = [
 // 次月1-15日
 export const nextMonthDay = [
   {
-    label: '次月1日',
+    label: 'c1',
     key: 32,
   },
   {
-    label: '次月2日',
+    label: 'c2',
     key: 33,
   },
   {
-    label: '次月3日',
+    label: 'c3',
     key: 34,
   },
   {
-    label: '次月4日',
+    label: 'c4',
     key: 35,
   },
   {
-    label: '次月5日',
+    label: 'c5',
     key: 36,
   },
   {
-    label: '次月6日',
+    label: 'c6',
     key: 37,
   },
   {
-    label: '次月7日',
+    label: 'c7',
     key: 38,
   },
   {
-    label: '次月8日',
+    label: 'c8',
     key: 39,
   },
   {
-    label: '次月9日',
+    label: 'c9',
     key: 40,
   },
   {
-    label: '次月10日',
+    label: 'c10',
     key: 41,
   },
   {
-    label: '次月11日',
+    label: 'c11',
     key: 42,
   },
   {
-    label: '次月12日',
+    label: 'c12',
     key: 43,
   },
   {
-    label: '次月13日',
+    label: 'c13',
     key: 44,
   },
   {
-    label: '次月14日',
+    label: 'c14',
     key: 45,
   },
   {
-    label: '次月15日',
+    label: 'c15',
     key: 46,
   },
 ]

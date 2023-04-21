@@ -4,7 +4,11 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import AddFormWork from '@/components/AllSide/FormWorkSide/AddFormWork'
-import { setActiveItem, setFillingRequirements } from '@store/formWork/index'
+import {
+  setActiveItem,
+  setEditSave,
+  setFillingRequirements,
+} from '@store/formWork/index'
 import { useDispatch, useSelector } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { getTemplateList } from '@store/formWork/thunk'
@@ -17,6 +21,7 @@ import {
 import { aWeekDataList } from '@/views/WorkReport/Formwork/DataList'
 import { CloseWrap } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
+import { debounce } from 'lodash'
 // getTemplateList
 const FormWorkSideStyle = styled.div`
   min-width: 200px;
@@ -96,16 +101,57 @@ const FormWorkSide = () => {
   )
   useEffect(() => {
     dataList.forEach((el: any, index: any) => {
-      if (el.id === activeItem.id) {
+      if (el.name === activeItem?.name) {
         setIsActive(index)
       }
     })
     dispatch(setTemplateName(activeItem?.name))
   }, [activeItem])
   const onConfirm = async (name: string) => {
-    setIsVisible(false)
     dispatch(setDataList([...dataList, { name }]))
-    dataList?.length < 1 && dispatch(setActiveItem({ name }))
+    setIsActive(dataList?.length - 1)
+    dispatch(setActiveItem({ name }))
+    dispatch(
+      setTemplateContentConfigs([
+        {
+          name: '汇报对象',
+          is_required: 1,
+          tips: '',
+          type: 1,
+        },
+      ]),
+    )
+    const claerConfig: any = {
+      day: aWeekDataList,
+      template_configs: [],
+      hand_scope: 1,
+      is_all_write: 2,
+      is_all_view: 2,
+      is_submitter_edit: true,
+      is_cycle_limit: true,
+      is_supply: true,
+      reminder_time: 2 * 60 * 60,
+      auto_reminder: true,
+      submit_cycle: 1,
+      is_holiday: true,
+      end_time: {
+        day_type: 2,
+        time: 24 * 60 * 60,
+      },
+      start_time: {
+        day_type: 1,
+        time: 24 * 60 * 60,
+      },
+    }
+    dispatch(
+      setReportContent({
+        template_configs: [],
+        is_all_view: 2,
+        is_all_write: 2,
+      }),
+    )
+    dispatch(setFillingRequirements(claerConfig))
+    setIsVisible(false)
   }
   const getDataList = async () => {
     const res = await dispatch(getTemplateList())
@@ -119,12 +165,12 @@ const FormWorkSide = () => {
         is_submitter_edit: true,
         is_cycle_limit: true,
         is_supply: true,
-        reminder_time: null,
+        reminder_time: 2 * 60 * 60,
         auto_reminder: true,
         submit_cycle: 1,
         is_holiday: true,
         end_time: {
-          day_type: 1,
+          day_type: 2,
           time: 24 * 60 * 60,
         },
         start_time: {
@@ -151,12 +197,11 @@ const FormWorkSide = () => {
     const item: any = dataList.find((el: any, index: any) => index === 0)
     dispatch(setActiveItem(item))
   }, [])
-  const itemActive = (el: any, index: any) => {
+  const itemActive = debounce((el: any, index: any) => {
     if (!editSave) {
       setDelIsVisible(true)
       return
     }
-    setIsActive(index)
     const data = [
       {
         name: t('formWork.title3'),
@@ -175,12 +220,12 @@ const FormWorkSide = () => {
       is_submitter_edit: true,
       is_cycle_limit: true,
       is_supply: true,
-      reminder_time: null,
+      reminder_time: 2 * 60 * 60,
       auto_reminder: true,
       submit_cycle: 1,
       is_holiday: true,
       end_time: {
-        day_type: 1,
+        day_type: 2,
         time: 24 * 60 * 60,
       },
       start_time: {
@@ -197,7 +242,7 @@ const FormWorkSide = () => {
     )
     dispatch(setFillingRequirements(claerConfig))
     dispatch(setActiveItem(el))
-  }
+  }, 500)
   return (
     <FormWorkSideStyle>
       <TitleStyle>
@@ -207,7 +252,7 @@ const FormWorkSide = () => {
             style={{ fontSize: 18 }}
             type="plus"
             onClick={() => {
-              if (!editSave) {
+              if (!editSave && activeItem?.name) {
                 setDelIsVisible(true)
                 return
               }
@@ -238,7 +283,7 @@ const FormWorkSide = () => {
           dataList?.map((el: { name: string; id: number }, index: number) => {
             return (
               <Slide
-                key={el.id}
+                key={el.name}
                 onClick={() => itemActive(el, index)}
                 style={{
                   color:
@@ -268,8 +313,10 @@ const FormWorkSide = () => {
         title={t('formWork.text6')}
         text={`【${activeItem?.name}】${t('formWork.text7')}`}
         isVisible={delIsVisible}
+        onChangeVisible={() => {
+          dispatch(setEditSave(true)), setDelIsVisible(false)
+        }}
         onConfirm={() => setDelIsVisible(false)}
-        notCancel
       />
     </FormWorkSideStyle>
   )

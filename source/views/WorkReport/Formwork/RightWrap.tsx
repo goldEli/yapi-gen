@@ -6,13 +6,21 @@
 import CommonButton from '@/components/CommonButton'
 import styled from '@emotion/styled'
 import { Input, message, Spin } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import PermissionConfig from './PermissionConfig'
 import EditWork from './EditWork'
 import PreviewDialog from '@/components/FormWork/PreviewDialog'
 import { useDispatch, useSelector } from '@store/index'
-import { setActiveItem, setEditSave, setTemplateName } from '@store/formWork'
+import {
+  setActiveItem,
+  setEditSave,
+  setTemplateName,
+  setTemplateContentConfigs,
+  setFillingRequirements,
+  setReportContent,
+} from '@store/formWork'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import { aWeekDataList } from '@/views/WorkReport/Formwork/DataList'
 import {
   deleteTemplate,
   upDateTemplate,
@@ -109,10 +117,12 @@ export const BtnRight = styled.div`
 `
 export const EditFormWorkBox = styled.div`
   margin: 20px 0 20px 24px;
-  border-bottom: 1px solid var(--neutral-n6-d1);
+  /* border-bottom: 1px solid var(--neutral-n6-d1); */
 `
 const EditFormWorkStyle = styled(Input)({
   border: 'none',
+  borderRadius: 0,
+  borderBottom: '1px solid var(--neutral-n6-d1)',
   marginBottom: '14px',
   color: 'var(--neutral-n1-d1)',
   fontFamily: 'SiYuanMedium',
@@ -130,6 +140,7 @@ const BtnRow = styled.div`
 `
 const RightFormWork = () => {
   const [t] = useTranslation()
+  const inputRefDom = useRef<any>(null)
   const [isActive, setIsActive] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   const [value, setValue] = useState('')
@@ -159,17 +170,60 @@ const RightFormWork = () => {
   }, [activeItem])
   // 删除模板
   const deleteActiveItem = async () => {
-    setDelIsVisible(false)
-    if (!activeItem?.id) {
-      const res = await dispatch(getTemplateList())
-      return
+    if (activeItem?.id) {
+      await deleteTemplate({ id: activeItem?.id })
     }
-    await deleteTemplate({ id: activeItem?.id })
     const res = await dispatch(getTemplateList())
-    res.payload?.length >= 1 &&
+    if (res.payload?.length >= 1) {
       dispatch(
         setActiveItem({ id: res.payload[0].id, name: res.payload[0].name }),
       )
+    } else {
+      // 初始化
+      dispatch(setActiveItem({ name: '' }))
+      dispatch(setTemplateName(''))
+      dispatch(
+        setTemplateContentConfigs([
+          {
+            name: '汇报对象',
+            is_required: 1,
+            tips: '',
+            type: 1,
+          },
+        ]),
+      )
+      const claerConfig: any = {
+        day: aWeekDataList,
+        template_configs: [],
+        hand_scope: 1,
+        is_all_write: 2,
+        is_all_view: 2,
+        is_submitter_edit: true,
+        is_cycle_limit: true,
+        is_supply: true,
+        reminder_time: 2 * 60 * 60,
+        auto_reminder: true,
+        submit_cycle: 1,
+        is_holiday: true,
+        end_time: {
+          day_type: 2,
+          time: 24 * 60 * 60,
+        },
+        start_time: {
+          day_type: 1,
+          time: 24 * 60 * 60,
+        },
+      }
+      dispatch(
+        setReportContent({
+          template_configs: [],
+          is_all_view: 2,
+          is_all_write: 2,
+        }),
+      )
+      dispatch(setFillingRequirements(claerConfig))
+    }
+    setDelIsVisible(false)
     message.success(t('formWork.message2'))
   }
   const getVerifyParams = (parmas: any) => {
@@ -269,6 +323,7 @@ const RightFormWork = () => {
       await upDateTemplate(parmas)
       message.success(t('formWork.message6'))
       await dispatch(getTemplateList())
+      dispatch(setActiveItem({ name: templateName, id: activeItem?.id }))
     } else {
       const res = await createTemplate(parmas)
       await dispatch(getTemplateList())
@@ -283,6 +338,7 @@ const RightFormWork = () => {
       dispatch(setEditSave(true))
     }
   }, [activeItem])
+  console.log(activeItem, 'activeItem')
   const getBtn = () => {
     // 编辑的情况0和1都应该有
     if (editSave && activeItem?.id) {
@@ -303,6 +359,23 @@ const RightFormWork = () => {
       return <CommonButton type="primary"> {t('formWork.save1')}</CommonButton>
     }
   }
+  const getTitle = () => {
+    console.log(activeItem, 'activeItem')
+    if (!activeItem?.name && !templateName) {
+      return t('formWork.t1')
+    } else {
+      return templateName || activeItem?.name
+    }
+  }
+  console.log(templateName, 'templateName')
+  useEffect(() => {
+    getTitle()
+  }, [templateName])
+  useEffect(() => {
+    setTimeout(() => {
+      inputRefDom.current?.focus()
+    }, 100)
+  }, [])
   return (
     <Spin
       spinning={isSpinning}
@@ -316,7 +389,7 @@ const RightFormWork = () => {
       }}
     >
       <RightFormWorkStyle>
-        <Title>{t('formWork.t1')}</Title>
+        <Title>{getTitle()}</Title>
         <HeaderOperate>
           <RowStyle>
             <Col onClick={() => setIsActive(0)}>
@@ -347,8 +420,10 @@ const RightFormWork = () => {
         {isActive === 0 ? (
           <EditFormWorkBox>
             <EditFormWorkStyle
+              ref={inputRefDom}
               placeholder={t('formWork.t7')}
               value={value}
+              autoFocus
               maxLength={50}
               onInput={(e: any) => {
                 dispatch(setEditSave(false))
