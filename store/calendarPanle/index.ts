@@ -147,7 +147,6 @@ const slice = createSlice({
 
       const min = endIndex ?? 0
       const max = startIndex + len
-      console.log({ min, max })
       // 往前扩大天数时，往后拉的最大极限是不能小于最后一天
       if (min >= max) {
         return
