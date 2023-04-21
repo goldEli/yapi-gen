@@ -82,3 +82,9 @@ export const supplyReport: any = async (params: any) => {
   const response = await http.post('supplyReport', params)
   return response.data
 }
+
+// 删除评论
+export const delReportComment: any = async (params: any) => {
+  const response = await http.delete('delReportComment', params)
+  return response.data
+}

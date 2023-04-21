@@ -5,6 +5,7 @@
 /* eslint-disable require-unicode-regexp */
 /* eslint-disable no-negated-condition */
 /* eslint-disable complexity */
+/* eslint-disable max-params */
 import { Checkbox, Switch, Form, Dropdown, DatePicker, message } from 'antd'
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
@@ -74,18 +75,33 @@ const SupScope = (props: SupScopeType) => {
   const dispatch = useDispatch()
   const [isOpen, setIsOpen] = useState(false)
   const [items, setItems] = useState<Array<Item>>()
-  const [t] = useTranslation()
+  const [t]: any = useTranslation()
   // 每天 day ,每周 week , 每月 month , 不重复doNot
   useEffect(() => {
     switch (props.type) {
       case 'day':
-        setItems(dayData1)
+        setItems(
+          dayData1.map((el: any) => ({
+            ...el,
+            label: t(`formWork.${el.label}`),
+          })),
+        )
         break
       case 'week':
-        setItems(weekData)
+        setItems(
+          weekData.map((el: any) => ({
+            ...el,
+            label: t(`formWork.${el.label}`),
+          })),
+        )
         break
       case 'month':
-        setItems(monthData)
+        setItems(
+          monthData.map((el: any) => ({
+            ...el,
+            label: t(`formWork.${el.label}`),
+          })),
+        )
         break
     }
   }, [props.type])
@@ -134,6 +150,7 @@ interface CheckBoxGroupType {
 }
 // 选择周几
 const CheckBoxGroup = (props: CheckBoxGroupType) => {
+  const [t]: any = useTranslation()
   const dispatch = useDispatch()
   const onChange = throttle(
     (value: boolean, el1: { value: boolean; key: number }) => {
@@ -157,7 +174,7 @@ const CheckBoxGroup = (props: CheckBoxGroupType) => {
             onChange={e => onChange(e.target.checked, el)}
             checked={el.value}
           >
-            {el.label}
+            {t(`formWork.${el.label}`)}
           </Checkbox>
         ),
       )}
@@ -315,7 +332,13 @@ const FormMain = (props: FormType) => {
       setRemindTimes(remindTime)
     }
   }
-  const getValues = (type: string, v1: number, v2: number, v3: number) => {
+  const getValues = (
+    type: string,
+    v1: number,
+    v2: number,
+    v3: number,
+    onece: boolean,
+  ) => {
     if (type === 'start') {
       startTime = {
         v1,
@@ -345,9 +368,9 @@ const FormMain = (props: FormType) => {
       }
       setRemindTimes(remindTime)
     }
-    if (props.type === 'day') {
+    if (props.type === 'day' && !onece) {
       dayJudgeTime()
-    } else if (props.type === 'week') {
+    } else if (props.type === 'week' && !onece) {
       WeekJudgeTime()
     }
   }
@@ -389,11 +412,8 @@ const FormMain = (props: FormType) => {
               value={startTimes}
               type={props.type}
               pickerType="start"
-              getValuesOnece={(type: any, v1: any, v2: any, v3: any) =>
-                getValuesOnece(type, v1, v2, v3)
-              }
-              getValues={(v1: number, v2: number, v3: number) =>
-                getValues('start', v1, v2, v3)
+              getValues={(v1: number, v2: number, v3: number, onece: boolean) =>
+                getValues('start', v1, v2, v3, onece)
               }
             />
           ) : null}
@@ -411,10 +431,9 @@ const FormMain = (props: FormType) => {
         props.type === 'week' ||
         props.type === 'month' ? (
           <Picker
-            getValuesOnece={(type: any, v1: any, v2: any, v3: any) =>
-              getValuesOnece(type, v1, v2, v3)
+            getValues={(v1: number, v2: number, v3: number, onece: boolean) =>
+              getValues('end', v1, v2, v3, onece)
             }
-            getValues={(v1, v2, v3) => getValues('end', v1, v2, v3)}
             type={props.type}
             pickerType="end"
             value={endTimes}
@@ -462,10 +481,9 @@ const FormMain = (props: FormType) => {
         name="reminder_time"
       >
         <Picker
-          getValuesOnece={(type: any, v1: any, v2: any, v3: any) =>
-            getValuesOnece(type, v1, v2, v3)
+          getValues={(v1: number, v2: number, v3: number, onece: boolean) =>
+            getValues('remind', v1, v2, v3, onece)
           }
-          getValues={(v1, v2, v3) => getValues('remind', v1, v2, v3)}
           value={remindTimes}
           type={props.type}
           pickerType="remind"

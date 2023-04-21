@@ -33,7 +33,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
     onDragStop,
     onDragStart,
     onDrag,
-  } = useMoveCard({ data: props.data })
+  } = useMoveCard({ data: props.data, type: 'day' })
   return (
     <MoveCard
       timeRange={timeRange}

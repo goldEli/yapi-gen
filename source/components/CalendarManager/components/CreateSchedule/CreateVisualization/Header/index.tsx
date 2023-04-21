@@ -8,6 +8,7 @@ import {
   onPrevDay,
   setToday,
 } from '@store/createScheduleVisualization'
+import { useTranslation } from 'react-i18next'
 
 interface HeaderProps {}
 
@@ -54,6 +55,7 @@ const Header: React.FC<HeaderProps> = props => {
     store => store.createScheduleVisualization,
   )
   const dispatch = useDispatch()
+  const [t] = useTranslation()
 
   return (
     <HeaderBox>
@@ -62,7 +64,7 @@ const Header: React.FC<HeaderProps> = props => {
           dispatch(setToday())
         }}
       >
-        今天
+        {t('calendarManager.today')}
       </Button>
       <TimeBox>
         <span

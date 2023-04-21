@@ -48,7 +48,7 @@ interface PropsType {
 }
 const PermissionConfig = (props: PropsType) => {
   const dispatch = useDispatch()
-  const [t] = useTranslation()
+  const [t]: any = useTranslation()
   // 汇报内容是否展开
   const [report, setReport] = useState(true)
   const [fillIn, setFillIn] = useState(true)
@@ -58,9 +58,9 @@ const PermissionConfig = (props: PropsType) => {
   const { fillingRequirements, reportContent } = useSelector(
     store => store.formWork,
   )
-  const [person1, setPerson1] = useState<any>()
-  const [person2, setPerson2] = useState<any>()
-  const [person3, setPerson3] = useState<any>()
+  const [person1, setPerson1] = useState<any>([])
+  const [person2, setPerson2] = useState<any>([])
+  const [person3, setPerson3] = useState<any>([])
   // 去重
   const fitlerDataList = (data: any) => {
     let obj: any = {}
@@ -93,12 +93,13 @@ const PermissionConfig = (props: PropsType) => {
     let d2 = person2 || []
     let d3 = person3 || []
     if (num === 1) {
-      const val1 = values?.map((el: any) => ({
-        target_id: el.id || el.target_id,
-        user_type: el.user_type,
-        target_type: el.target_type,
-        target_value: el.target_value,
-      }))
+      const val1 =
+        values?.map((el: any) => ({
+          target_id: el.id || el.target_id,
+          user_type: el.user_type,
+          target_type: el.target_type,
+          target_value: el.target_value,
+        })) || []
       d1 = [...person1, ...val1]
     } else if (num === 2) {
       const val2 =
@@ -111,13 +112,14 @@ const PermissionConfig = (props: PropsType) => {
       d2 = [...person2, ...val2]
       setPerson2(d2)
     } else {
-      const val3 = values?.map((el: any) => ({
-        target_id: el.id || el.target_id,
-        user_type: el.user_type,
-        target_type: el.target_type,
-        target_value: el.target_value,
-      }))
-      d3 = [...person1, ...val3]
+      const val3 =
+        values?.map((el: any) => ({
+          target_id: el.id || el.target_id,
+          user_type: el.user_type,
+          target_type: el.target_type,
+          target_value: el.target_value,
+        })) || []
+      d3 = [...person3, ...val3]
     }
     const d3V = d3.find(
       (item: any) =>
@@ -251,13 +253,13 @@ const PermissionConfig = (props: PropsType) => {
         {
           user_type: 3,
           key: 'all',
-          name: '全部',
+          name: '全员',
           avatar: '',
           target_id: -1,
           target_value: {
             user_type: 3,
             key: 'all',
-            name: '全部',
+            name: '全员',
             avatar: '',
           },
         },
@@ -272,13 +274,13 @@ const PermissionConfig = (props: PropsType) => {
         {
           user_type: 1,
           key: 'all',
-          name: '全部',
+          name: '全员',
           avatar: '',
           target_id: -1,
           target_value: {
             user_type: 1,
             key: 'all',
-            name: '全部',
+            name: '全员',
             avatar: '',
           },
         },
@@ -294,7 +296,7 @@ const PermissionConfig = (props: PropsType) => {
   useEffect(() => {
     reportContent && assemblyData()
   }, [reportContent])
-  // 删除重新存
+  // 选人删除重新存
   const onChangedel = (el: any, num: number) => {
     let data1: any = person1 || []
     let data2: any = person2 || []
@@ -407,13 +409,13 @@ const PermissionConfig = (props: PropsType) => {
     switch (typeState) {
       case 1:
         const item = dayData1.find((el: { key: number }) => el.key === num)
-        return { label: item?.label, key: item?.key }
+        return { label: t(`formWork.${item?.label}`), key: item?.key }
       case 2:
         const item1 = weekData.find((el: { key: number }) => el.key === num)
-        return { label: item1?.label, key: item1?.key }
+        return { label: t(`formWork.${item1?.label}`), key: item1?.key }
       case 3:
         const item2 = monthData.find((el: { key: number }) => el.key === num)
-        return { label: item2?.label, key: item2?.key }
+        return { label: t(`formWork.${item2?.label}`), key: item2?.key }
     }
   }
   useEffect(() => {
@@ -426,6 +428,7 @@ const PermissionConfig = (props: PropsType) => {
     newVal.hand_scope = obj
     fillingRequirements && setFormValues(newVal)
   }, [fillingRequirements])
+  console.log(fillingRequirements, 'fillingRequirements')
   return (
     <PermissionConfigStyle>
       {/* 汇报内容 */}

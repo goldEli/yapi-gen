@@ -42,6 +42,7 @@ const LabelWrap = styled.span<{ zh: boolean }>`
 const LabelTag = (props: LabelPropType) => {
   const { options, state } = props
   const labelItem = options.find((k: ItemType) => k.state === state)
+
   return (
     <LabelWrap
       theme={labelItem?.background}

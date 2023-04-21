@@ -47,7 +47,9 @@ function getIsPermission(arr: any, value: string) {
 
 // 解密地址栏参数
 function getParamsData(params: any) {
-  if (!params.get('data')) return
+  if (!params.get('data')) {
+    return
+  }
   return JSON.parse(decryptPhp(params.get('data') as string))
 }
 
@@ -397,7 +399,22 @@ function mapToArray(res: props) {
     })
   return array
 }
+function getIdsForAt(htmlString: string) {
+  const parser = new DOMParser()
+  // 解析HTML字符串为HTML文档对象
+  const htmlDoc = parser.parseFromString(htmlString, 'text/html')
+  // 获取具有data-id属性的元素，并获取它们的值
+  const dataIdElements = htmlDoc.querySelectorAll('[data-id]')
+  const dataIdValues = Array.from(dataIdElements).map(el =>
+    el.getAttribute('data-id'),
+  )
+  console.log(dataIdValues)
+
+  return Array.from(new Set(dataIdValues))
+}
+
 export {
+  getIdsForAt,
   getIsPermission,
   getParamsData,
   transData,

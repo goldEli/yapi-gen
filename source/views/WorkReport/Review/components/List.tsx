@@ -18,8 +18,8 @@ import {
   getRepSentList,
   getRepReceivedList,
   getRepPublicList,
+  templateLatelyList,
 } from '@/services/report'
-import { templateList } from '@/services/formwork'
 import { getStaffList } from '@/services/staff'
 import HandleReport from './HandleReport'
 import LabelTag from '@/components/LabelTag'
@@ -250,12 +250,20 @@ const List = () => {
                 {t('report.list.of')}
                 {record.name}
               </span>
-              <LabelTag
-                options={reportState}
-                state={
-                  record.is_supply === 1 ? 1 : record.is_update === 1 ? 2 : 0
-                }
-              />
+              {(id === 1 || id === 3) && (
+                <LabelTag
+                  options={reportState}
+                  state={record.is_supply === 1 ? 2 : 0}
+                />
+              )}
+              {id === 2 && (
+                <LabelTag
+                  options={reportState}
+                  state={
+                    record.is_supply === 1 ? 2 : record.is_update === 1 ? 1 : 0
+                  }
+                />
+              )}
             </Tooltip>
           </div>
         )
@@ -329,11 +337,13 @@ const List = () => {
       width: 160,
       title: t('report.list.readState'),
       align: 'center',
-      dataIndex: 'is_read',
-      render: (text: number) => {
-        return (
+      dataIndex: 'type',
+      render: (text: number, record: any) => {
+        return id === 1 ? (
+          <ReadStatusTag status={record.is_read === 1 ? 'read' : 'no'} />
+        ) : (
           <ReadStatusTag
-            status={text === 1 ? 'read' : text === 2 ? 'no' : 'have'}
+            status={text === 2 ? 'read' : text === 1 ? 'no' : 'have'}
           />
         )
       },
@@ -344,7 +354,7 @@ const List = () => {
       align: 'center',
       fixed: 'right',
       render: (_: string, record: any) => {
-        return (
+        return record?.is_submitter_edit === 1 ? (
           <span
             onClick={() => {
               setVisibleEdit(true)
@@ -358,6 +368,17 @@ const List = () => {
             }}
           >
             {t('report.list.modify')}
+          </span>
+        ) : (
+          <span
+            style={{
+              fontSize: '14px',
+              fontWeight: ' 400',
+              color: '#bbbdbf',
+              cursor: 'not-allowed',
+            }}
+          >
+            修改
           </span>
         )
       },
@@ -461,6 +482,8 @@ const List = () => {
           getPopupContainer={(node: any) => node}
           allowClear
           optionFilterProp="label"
+          showArrow
+          showSearch
           value={queryParams.user_ids}
           options={userOptions}
           onChange={onChangeSubmitter}
@@ -473,6 +496,8 @@ const List = () => {
             {t('report.list.status')}
           </span>
           <CustomSelect
+            showArrow
+            showSearch
             value={queryParams.type}
             style={{ width: 148 }}
             getPopupContainer={(node: any) => node}
@@ -493,9 +518,21 @@ const List = () => {
       id: item.id,
     }
   }
+  // 获取我可操作的模板list
   const getTemplateList = async () => {
-    const data = await templateList()
-    setRepTypeOptions(data.map(generateOptions))
+    const res = await templateLatelyList()
+    if (res && res.code === 0) {
+      const data = res?.data || {}
+      const temp = [
+        ...(data.otherTemplate || []),
+        ...(data.usedTemplate || []),
+      ].filter(
+        (item: any) =>
+          !(item.is_current_cycle_used && item.is_cycle_limit === 1) &&
+          item.is_write,
+      )
+      setRepTypeOptions(temp.map(generateOptions))
+    }
   }
 
   const getUserList = async () => {
@@ -532,6 +569,8 @@ const List = () => {
             {t('report.list.reportType')}
           </span>
           <CustomSelect
+            showArrow
+            showSearch
             style={{ width: 148 }}
             getPopupContainer={(node: any) => node}
             allowClear
@@ -576,7 +615,7 @@ const List = () => {
             ? columns
             : id === 3
             ? columns?.filter(
-                (item: any) => item.dataIndex && item.dataIndex !== 'is_read',
+                (item: any) => item.dataIndex && item.dataIndex !== 'type',
               )
             : columns?.filter((item: any) => item.dataIndex)
         }

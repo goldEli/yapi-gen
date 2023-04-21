@@ -61,7 +61,7 @@ export const setReadApi: any = async (params: any) => {
     msgIds: params,
   })
 
-  return response.data
+  return response
 }
 // --------------------------------------------------------------------------消息
 

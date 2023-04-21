@@ -9,8 +9,12 @@ import dayjs from 'dayjs'
 import { formatYYYYMMDDhhmmss, oneHourHeight } from '../../config'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
 import { ResizeDirection } from 're-resizable'
+import useWeeks from '../../components/CalendarWeek/hooks/useWeeks'
 
-const useMoveCard = (props: { data: Model.Schedule.Info }) => {
+const useMoveCard = (props: {
+  data: Model.Schedule.Info
+  type: Model.Calendar.CalendarPanelType
+}) => {
   const [localTime, setLocalTime] = useState<{
     start_timestamp: number
     end_timestamp: number
@@ -22,7 +26,8 @@ const useMoveCard = (props: { data: Model.Schedule.Info }) => {
     start_timestamp: string
     end_timestamp: string
   } | null>(null)
-  //   const { getBgColor, getColorClassName } = useColor()
+
+  const { getCurrentWeekDayByLeft } = useWeeks()
 
   React.useEffect(() => {
     setLocalTime({
@@ -90,8 +95,21 @@ const useMoveCard = (props: { data: Model.Schedule.Info }) => {
       end_timestamp,
       y - top,
     )
+    if (props.type === 'day') {
+      onModify(time.startTime.valueOf(), time.endTime.valueOf())
+    }
 
-    onModify(time.startTime.valueOf(), time.endTime.valueOf())
+    if (props.type === 'week') {
+      // 基于当前的日期更新
+      const weekDay = getCurrentWeekDayByLeft(x)
+      const newStartTime = dayjs(
+        `${weekDay} ${time.startTime.format('HH:mm:ss')}`,
+      ).valueOf()
+      const newEndTime = dayjs(
+        `${weekDay} ${time.endTime.format('HH:mm:ss')}`,
+      ).valueOf()
+      onModify(dayjs(newStartTime).valueOf(), dayjs(newEndTime).valueOf())
+    }
 
     setTimeRange(null)
 
