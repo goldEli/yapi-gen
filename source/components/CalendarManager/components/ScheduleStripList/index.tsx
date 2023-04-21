@@ -6,6 +6,7 @@ import dayjs from 'dayjs'
 import MoreScheduleButton from '../MoreScheduleButton'
 import MoveActiveItem from '../MoveActiveItem'
 import ScheduleStripListItem from '../ScheduleStripListItem'
+import { time } from 'console'
 
 interface ScheduleListProps {
   data: Model.Calendar.DaysOfMonth
@@ -25,13 +26,7 @@ const ScheduleListBox = styled.div`
 `
 
 const ScheduleStripList: React.FC<ScheduleListProps> = props => {
-  // const { scheduleList } = useSelector(store => store.schedule)
-
   const { list, data, allList } = props
-  // const key = data.date
-  // const list = scheduleList?.[key]
-
-  // console.log({list}, scheduleList)
 
   const showList = useMemo(() => {
     const newList = list?.slice(0, 3)
@@ -51,7 +46,7 @@ const ScheduleStripList: React.FC<ScheduleListProps> = props => {
       arr.splice(i, 1)
     }
     return arr
-  }, [allList])
+  }, [list])
 
   // 计算隐藏了多少项目
   const hiddenNum = useMemo(() => {
@@ -59,7 +54,8 @@ const ScheduleStripList: React.FC<ScheduleListProps> = props => {
       return 0
     }
     const len = allList?.length
-    return len > showList.length ? len - showList.length : 0
+    const showListLen = showList.filter(item => !!item)?.length ?? 0
+    return len > showListLen ? len - showListLen : 0
   }, [allList, showList])
 
   const dispatch = useDispatch()
@@ -83,6 +79,8 @@ const ScheduleStripList: React.FC<ScheduleListProps> = props => {
       )
     })
   }, [showList, props.idx, props.containerClassName])
+
+  console.log(props.data.datetime, { allList, list, showList })
 
   return (
     <ScheduleListBox>
