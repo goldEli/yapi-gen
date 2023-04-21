@@ -15,7 +15,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
   const { maxWidth } = useMaxWidth()
 
   const [localLeft, setLocalLeft] = React.useState(0)
-  const { getLeftByCurrentWeekDay } = useWeeks()
+  const { getLeftByCurrentWeekDay, getDeltaLeft } = useWeeks()
 
   React.useEffect(() => {
     setLocalLeft(props.left)
@@ -43,9 +43,9 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
       return
     }
     const { start_timestamp } = localTime
-    const left = getLeftByCurrentWeekDay(start_timestamp)
-    setLocalLeft(left)
-  }, [localTime])
+    const deltaLeft = getDeltaLeft(props.data.start_timestamp, start_timestamp)
+    setLocalLeft(props.left + deltaLeft)
+  }, [localTime, props.left, props.data.start_timestamp])
 
   return (
     <MoveCard

@@ -45,6 +45,14 @@ const useWeeks = () => {
     return index * maxWidth
   }
 
+  // left方向移动了多少
+  const getDeltaLeft = (beforeStartTime: number, afterStartTime: number) => {
+    const before = getLeftByCurrentWeekDay(beforeStartTime)
+    const after = getLeftByCurrentWeekDay(afterStartTime)
+    const delta = (after - before) * maxWidth
+    return delta
+  }
+
   // 跨天拖动 计算新的时间
   const getTimeAfterAcrossDay = (
     left: number,
@@ -70,6 +78,7 @@ const useWeeks = () => {
     getCurrentWeekDayByLeft,
     getLeftByCurrentWeekDay,
     getTimeAfterAcrossDay,
+    getDeltaLeft,
   }
 }
 
