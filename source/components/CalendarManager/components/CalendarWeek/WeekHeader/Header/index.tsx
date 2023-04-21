@@ -4,6 +4,7 @@ import dayjs from 'dayjs'
 import React, { useEffect } from 'react'
 import classnames from 'classnames'
 import { getDaysOfWeekList } from '@store/calendar/calendar.thunk'
+import useShowLunar from '@/components/CalendarManager/hooks/useShowLunar'
 
 interface WeekHeaderProps {}
 
@@ -78,6 +79,7 @@ const Header: React.FC<WeekHeaderProps> = props => {
   const { selectedWeek, checkedTime } = useSelector(store => store.calendar)
   const { calenderYearWeekValue } = useSelector(store => store.calendarPanel)
   const dispatch = useDispatch()
+  const { showLunar } = useShowLunar()
 
   // init
   useEffect(() => {
@@ -122,13 +124,15 @@ const Header: React.FC<WeekHeaderProps> = props => {
               </span>
               <div className="bottom">
                 <span className={classname}>{monthDay}</span>
-                <span
-                  className={classnames('lunar', {
-                    weekend: weekDayNums.includes(currentWeekDayNum),
-                  })}
-                >
-                  {item.lunar_day_chinese}
-                </span>
+                {showLunar && (
+                  <span
+                    className={classnames('lunar', {
+                      weekend: weekDayNums.includes(currentWeekDayNum),
+                    })}
+                  >
+                    {item.lunar_day_chinese}
+                  </span>
+                )}
               </div>
             </WeekListItem>
           )

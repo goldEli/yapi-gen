@@ -10,6 +10,7 @@ import { AllDayScheduleItem } from '@/components/CalendarManager/styles'
 import dayjs from 'dayjs'
 import { getDaysOfWeekList } from '@/services/calendar'
 import useColor from '@/components/CalendarManager/hooks/useColor'
+import useShowLunar from '@/components/CalendarManager/hooks/useShowLunar'
 
 interface ScheduleAllDayProps {}
 const ScheduleAllDayBox = styled.div`
@@ -80,6 +81,7 @@ const ScheduleAllDay: React.FC<ScheduleAllDayProps> = props => {
   const { calenderDayValue } = useSelector(store => store.calendarPanel)
   const [weekDay, setWeekDay] = useState<Model.Calendar.DaysOfWeek>()
   const { getBgColor, getColorClassName } = useColor()
+  const { showLunar } = useShowLunar()
 
   const time = useMemo(() => {
     return dayjs(calenderDayValue)
@@ -108,7 +110,7 @@ const ScheduleAllDay: React.FC<ScheduleAllDayProps> = props => {
       <Day>{time.format('DD')}</Day>
       <Month>{time.format('MMM')}</Month>
       <Week>{time.format('ddd')}</Week>
-      <Lunar>{weekDay?.lunar_day_chinese}</Lunar>
+      {showLunar && <Lunar>{weekDay?.lunar_day_chinese}</Lunar>}
       <ScheduleList
         onClick={e => {
           e.stopPropagation()
