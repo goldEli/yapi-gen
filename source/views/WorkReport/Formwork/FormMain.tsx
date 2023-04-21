@@ -348,7 +348,6 @@ const FormMain = (props: FormType) => {
   const setValues = (val: any) => {
     setEndTimes(val)
   }
-  console.log(fillingRequirements, 'reportContent')
   return (
     <>
       {props.type === 'day' ? (
