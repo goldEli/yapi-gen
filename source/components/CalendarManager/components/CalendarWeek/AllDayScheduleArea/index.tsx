@@ -24,10 +24,17 @@ const ContentBox = styled.div`
 const Content: React.FC<ContentProps> = props => {
   const { scheduleList } = useSelector(store => store.schedule)
   const { selectedWeek } = useSelector(store => store.calendar)
-  const { quickCreateScheduleModel, scheduleInfoDropdown } = useSelector(
-    store => store.calendarPanel,
-  )
-  const { list } = useScheduleListSort(scheduleList)
+
+  const filteredScheduleList = useMemo(() => {
+    const res: API.Schedule.ScheduleListResult = {}
+    for (const key in scheduleList) {
+      res[key] = scheduleList[key].filter(
+        item => item.is_all_day === 1 || item.is_span_day,
+      )
+    }
+    return res
+  }, [scheduleList])
+  const { list } = useScheduleListSort(filteredScheduleList)
 
   const content = useMemo(() => {
     const arr = Array(7).fill(0)
