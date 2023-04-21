@@ -347,8 +347,6 @@ const HandleReport = (props: any) => {
 
   // 自定义校富文本框
   const onValidator = (rule: any, value: any) => {
-    console.log('rule', value, rule)
-
     if (
       (value === '<p><br></p>' ||
         value === '<p></p>' ||
