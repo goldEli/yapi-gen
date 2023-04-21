@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import React from 'react'
