@@ -132,7 +132,7 @@ export const contentTip = css`
 `
 export const PersonList = styled.div`
   margin-left: 28px;
-  padding-bottom: 14px;
+  /* padding-bottom: 14px; */
   min-width: 60px;
 `
 export const PersonItem = styled.div`
