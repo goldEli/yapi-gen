@@ -138,6 +138,7 @@ const EditWork = (props: PropsType) => {
   useEffect(() => {
     setDataList(templateContentConfigs)
   }, [templateContentConfigs])
+  console.log(templateContentConfigs, 'templateContentConfigs')
   return (
     <>
       <div

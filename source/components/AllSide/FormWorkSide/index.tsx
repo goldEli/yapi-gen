@@ -4,7 +4,11 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import AddFormWork from '@/components/AllSide/FormWorkSide/AddFormWork'
-import { setActiveItem, setFillingRequirements } from '@store/formWork/index'
+import {
+  setActiveItem,
+  setEditSave,
+  setFillingRequirements,
+} from '@store/formWork/index'
 import { useDispatch, useSelector } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { getTemplateList } from '@store/formWork/thunk'
@@ -17,6 +21,7 @@ import {
 import { aWeekDataList } from '@/views/WorkReport/Formwork/DataList'
 import { CloseWrap } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
+import { debounce } from 'lodash'
 // getTemplateList
 const FormWorkSideStyle = styled.div`
   min-width: 200px;
@@ -148,8 +153,6 @@ const FormWorkSide = () => {
     dispatch(setFillingRequirements(claerConfig))
     setIsVisible(false)
   }
-  //
-  console.log()
   const getDataList = async () => {
     const res = await dispatch(getTemplateList())
     if (res.payload?.length < 1) {
@@ -194,7 +197,7 @@ const FormWorkSide = () => {
     const item: any = dataList.find((el: any, index: any) => index === 0)
     dispatch(setActiveItem(item))
   }, [])
-  const itemActive = (el: any, index: any) => {
+  const itemActive = debounce((el: any, index: any) => {
     if (!editSave) {
       setDelIsVisible(true)
       return
@@ -239,7 +242,7 @@ const FormWorkSide = () => {
     )
     dispatch(setFillingRequirements(claerConfig))
     dispatch(setActiveItem(el))
-  }
+  }, 500)
   return (
     <FormWorkSideStyle>
       <TitleStyle>
@@ -249,7 +252,7 @@ const FormWorkSide = () => {
             style={{ fontSize: 18 }}
             type="plus"
             onClick={() => {
-              if (!editSave) {
+              if (!editSave && activeItem?.name) {
                 setDelIsVisible(true)
                 return
               }
@@ -310,8 +313,10 @@ const FormWorkSide = () => {
         title={t('formWork.text6')}
         text={`【${activeItem?.name}】${t('formWork.text7')}`}
         isVisible={delIsVisible}
+        onChangeVisible={() => {
+          dispatch(setEditSave(true)), setDelIsVisible(false)
+        }}
         onConfirm={() => setDelIsVisible(false)}
-        notCancel
       />
     </FormWorkSideStyle>
   )

@@ -21,7 +21,7 @@ import {
 } from '@store/formWork'
 import { dayData1, weekData, monthData, aWeekDataList } from './DataList'
 import moment from 'moment'
-import { throttle } from 'lodash'
+import { debounce, throttle } from 'lodash'
 import { useTranslation } from 'react-i18next'
 const PermissionConfigStyle = styled.div`
   padding: 0 24px;
@@ -155,7 +155,7 @@ const PermissionConfig = (props: PropsType) => {
           time: 24 * 60 * 60,
         }
         end = {
-          day_type: 1,
+          day_type: 2,
           time: 24 * 60 * 60,
         }
         reminder_time = 2 * 60 * 60
