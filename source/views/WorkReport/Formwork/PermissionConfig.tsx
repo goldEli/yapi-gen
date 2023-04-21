@@ -357,7 +357,6 @@ const PermissionConfig = (props: PropsType) => {
         setType('doNot')
         break
     }
-
     const newObj = { ...obj }
     if (obj?.submit_cycle === 1) {
       const newStartTime = {
