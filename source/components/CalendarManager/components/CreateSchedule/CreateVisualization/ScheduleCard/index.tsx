@@ -20,20 +20,6 @@ interface ScheduleCardProps {
   left: number
 }
 
-const dragBoxClassName = css`
-  /* width: calc(100% - 58px); */
-  border-radius: 6px 6px 6px 6px;
-  /* position: absolute;
-  top: 0px;
-  left: 58px; */
-  font-size: 25;
-  min-height: 22px;
-  cursor: move;
-  box-sizing: border-box;
-  padding: 0 4px;
-  position: relative;
-  z-index: 2;
-`
 const Title = styled.span`
   font-size: 12px;
   line-height: 20px;
@@ -87,9 +73,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
       }),
     )
     setTimeRange(null)
-    const calenderBoxRightArea = document.querySelector(
-      '#calenderBoxRightArea',
-    ) as Element
+
     // 打开详情弹窗
     dispatch(
       setScheduleInfoDropdown({
