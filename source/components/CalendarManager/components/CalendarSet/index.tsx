@@ -2,6 +2,7 @@ import CommonButton from '@/components/CommonButton'
 import IconFont from '@/components/IconFont'
 import { uploadFileByTask } from '@/services/cos'
 import styled from '@emotion/styled'
+import { setRouterMenu } from '@store/calendar'
 import { updateCalendarConfig } from '@store/calendar/calendar.thunk'
 import { useDispatch, useSelector } from '@store/index'
 import { Checkbox, message, Select, Space, Tooltip, Upload } from 'antd'
@@ -10,7 +11,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 const CalendarSetWrap = styled.div`
-  padding: 20px 24px;
+  padding: 20px 4px 20px 24px;
   background: var(--neutral-white-d4);
   height: 100%;
 `
@@ -26,6 +27,7 @@ const CrumbsWrap = styled(Space)`
   }
   .main {
     color: var(--neutral-n1-d1);
+    cursor: pointer;
   }
   .sub {
     color: var(--neutral-n3);
@@ -290,6 +292,11 @@ const CalendarSet = () => {
     setImportList(resultList)
   }
 
+  const onBack = () => {
+    localStorage.removeItem('calendarSetKey')
+    dispatch(setRouterMenu({ name: '', key: '' }))
+  }
+
   useEffect(() => {
     if (calendarData.manager?.length > 0) {
       setImportCalendar(calendarData.manager[0].calendar_id)
@@ -319,7 +326,9 @@ const CalendarSet = () => {
   return (
     <CalendarSetWrap>
       <CrumbsWrap size={4}>
-        <div className="main">{t('calendarManager.programme')}</div>
+        <div className="main" onClick={onBack}>
+          {t('calendarManager.programme')}
+        </div>
         <IconFont className="main" type="right" style={{ fontSize: 14 }} />
         <div className="sub">
           {t(
@@ -334,7 +343,7 @@ const CalendarSet = () => {
           <Title>
             <div className="name">{t('calendarManager.view_options')}</div>
           </Title>
-          <CheckBoxViewWrap>
+          <CheckBoxViewWrap size={56}>
             {options.map((i: any) => (
               <Checkbox
                 key={i.key}
