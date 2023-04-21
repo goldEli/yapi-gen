@@ -93,11 +93,11 @@ const ContentItem = (props: any) => {
     >
       <div
         style={{
-          marginRight: '12px',
+          marginRight: '8px',
         }}
       >
         <Badge offset={[-1, 4]} dot={read === 0}>
-          <CommonUserAvatar avatar={send_user.head} />
+          <CommonUserAvatar isBorder avatar={send_user.head} />
         </Badge>
       </div>
       <HoverWrap style={{ flex: '1' }}>
@@ -115,7 +115,7 @@ const ContentItem = (props: any) => {
         <div
           style={{ display: 'flex', alignItems: 'center', margin: '5px 0px' }}
         >
-          <CommonIconFont color="var(--neutral-n3)" type="folder-open-nor" />
+          <CommonUserAvatar avatar={msg_body.optHeader} />
           <About>{msg_body.title}</About>
         </div>
 
