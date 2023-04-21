@@ -191,6 +191,7 @@ const useMoveCard = (props: {
     top,
     gridHeight,
     timeRange,
+    localTime,
     onResizeStop,
     onResizeStart,
     onResize,
