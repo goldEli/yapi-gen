@@ -30,10 +30,13 @@ const DayItem: React.FC<DayItemProps> = props => {
     showBorderBottom: true,
   })
 
+  const { scheduleList } = useSelector(store => store.schedule)
+
   if (!info) {
     return <></>
   }
 
+  const key = info.date
   return (
     <DayItemBox
       className={classnames}
@@ -46,6 +49,9 @@ const DayItem: React.FC<DayItemProps> = props => {
         data={info}
         idx={idx}
         list={props.list}
+        allList={scheduleList[key]?.filter(
+          item => item.is_all_day === 1 || item.is_span_day,
+        )}
       />
       <CreateScheduleText visible={isSelected}>
         {t('calendarManager.create_schedule')}
