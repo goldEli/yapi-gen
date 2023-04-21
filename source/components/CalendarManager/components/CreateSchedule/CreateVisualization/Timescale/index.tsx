@@ -50,9 +50,7 @@ const Timescale: React.FC<TimescaleProps> = props => {
   const { checkedTime } = useSelector(store => store.calendar)
 
   const [timeZone, setTimeZone] = React.useState<string[]>([])
-  const [distance, setDistance] = React.useState(0)
   const tableRef = React.useRef<HTMLTableElement>(null)
-  const dispatch = useDispatch()
 
   const onSelectTimeZone = React.useCallback(
     (e: React.MouseEvent, id: string) => {
@@ -78,10 +76,6 @@ const Timescale: React.FC<TimescaleProps> = props => {
       }
       const dom = tableRef.current
       function onMouseUp(event: MouseEvent) {
-        // setDistance(dis)
-        const calenderBoxRightArea = document.querySelector(
-          '#calenderBoxRightArea',
-        ) as Element
         dom.removeEventListener('mousemove', onMousemove)
         const target = event.target as HTMLDivElement
         // 打开创建日程弹窗
