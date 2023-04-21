@@ -299,7 +299,6 @@ const SiteNotifications = () => {
         dispatch(changeVisibleFilter(false))
       }}
     >
-      {' '}
       <Badge size="small" offset={[-2, 1]} count={all}>
         <CommonIconFont color="var(--neutral-n2)" size={24} type="bell" />
       </Badge>
