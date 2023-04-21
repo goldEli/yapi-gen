@@ -12,7 +12,7 @@ import styled from '@emotion/styled'
 import CommonIconFont from '@/components/CommonIconFont'
 import Picker from './Picker'
 import { setEditSave, setErr, setErrMsg } from '@store/formWork'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import moment from 'moment'
 import { dayData1, weekData, monthData } from './DataList'
 import { throttle } from 'lodash'
@@ -234,6 +234,7 @@ const FormMain = (props: FormType) => {
   const [startTimes, setStartTimes] = useState<any>()
   const [endTimes, setEndTimes] = useState<any>()
   const [remindTimes, setRemindTimes] = useState<any>()
+  const { fillingRequirements } = useSelector(store => store.formWork)
   // 每天选择不能大于24小时
   const dayJudgeTime = () => {
     if (
@@ -347,6 +348,7 @@ const FormMain = (props: FormType) => {
   const setValues = (val: any) => {
     setEndTimes(val)
   }
+  console.log(fillingRequirements, 'reportContent')
   return (
     <>
       {props.type === 'day' ? (
@@ -443,24 +445,27 @@ const FormMain = (props: FormType) => {
       >
         <Edit />
       </Form.Item>
-      <Form.Item
-        rules={[{ required: true, message: '' }]}
-        style={{
-          marginTop: '16px',
-          marginBottom: '44px',
-        }}
-        label={t('formWork.msg9')}
-        name="reminder_time"
-      >
-        <Picker
-          getValues={(v1: number, v2: number, v3: number, onece: boolean) =>
-            getValues('remind', v1, v2, v3, onece)
-          }
-          value={remindTimes}
-          type={props.type}
-          pickerType="remind"
-        />
-      </Form.Item>
+      {fillingRequirements?.auto_reminder ||
+        (fillingRequirements?.auto_reminder === 1 && (
+          <Form.Item
+            rules={[{ required: true, message: '' }]}
+            style={{
+              marginTop: '16px',
+              marginBottom: '44px',
+            }}
+            label={t('formWork.msg9')}
+            name="reminder_time"
+          >
+            <Picker
+              getValues={(v1: number, v2: number, v3: number, onece: boolean) =>
+                getValues('remind', v1, v2, v3, onece)
+              }
+              value={remindTimes}
+              type={props.type}
+              pickerType="remind"
+            />
+          </Form.Item>
+        ))}
     </>
   )
 }
