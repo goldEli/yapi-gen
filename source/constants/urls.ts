@@ -170,6 +170,7 @@ const urls = {
   getReportComment: '/b/work_report/user/comment',
   addReportComment: '/b/work_report/user/comment',
   supplyReport: '/b/work_report/user/supply',
+  delReportComment: '/b/work_report/user/comment',
 
   getScheduleListDaysOfWeek: '/b/calendar/schedule/daysOfWeek',
   getScheduleListDaysOfMonth: '/b/calendar/schedule/daysOfMonth',

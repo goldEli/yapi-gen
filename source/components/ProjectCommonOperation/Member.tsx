@@ -270,6 +270,7 @@ const Member = (props: Props) => {
       })),
     )
   }
+  console.log(memberList)
 
   // 获取项目成员列表 isUpdateProjectInfoValues：是否需要更新项目下拉数据
   const getList = async (isUpdateProjectInfoValues?: boolean) => {

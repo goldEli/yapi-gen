@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-useless-concat */
 /* eslint-disable camelcase */
+/* eslint-disable max-params */
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { useDispatch } from '@store/index'
@@ -19,6 +20,7 @@ import {
   dayData,
 } from './DataList'
 import { useTranslation } from 'react-i18next'
+import CommonButton from '@/components/CommonButton'
 const PickerStyle = styled.div`
   width: 360px;
   height: 232px;
@@ -48,6 +50,7 @@ const CenterTime = styled.div`
   border-right: 1px solid var(--neutral-n6-d2);
 `
 const RightTime = styled.div`
+  position: relative;
   width: 120px;
   height: 232px;
   overflow-y: auto;
@@ -57,6 +60,9 @@ const Item = styled.div`
   padding: 0 16px;
   height: 32px;
   line-height: 32px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   &:hover {
     cursor: pointer;
     background-color: var(--hover-d3);
@@ -66,14 +72,17 @@ const Item = styled.div`
 const InputStyle = styled(Input)({
   width: '320px',
 })
-
+const Btn = styled.div`
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+`
 interface PropsType {
   // remind 代表提醒时间
   pickerType: string
   // 每天 day ,每周 week , 每月 month , 不重复doNot
   type: string
-  getValues(val1: number, val2: number, val3: number): void
-  getValuesOnece(type: string, val1: number, val2: number, val3: number): void
+  getValues(val1: number, val2: number, val3: number, onece: boolean): void
   value: any
   onChange?(values: any): void
 }
@@ -85,7 +94,7 @@ let v1 = 0
 let v2 = 0
 let v3 = 0
 const Picker = (props: PropsType) => {
-  const [t] = useTranslation()
+  const [t]: any = useTranslation()
   const dispatch = useDispatch()
   const [leftActiveVal, setLeftActiveVal] = useState<number>(-1)
   const [centerActiveVal, setCenterActiveVal] = useState<number>(-1)
@@ -175,7 +184,7 @@ const Picker = (props: PropsType) => {
   }
   const getTime = () => {
     dispatch(setEditSave(false))
-    props.getValues(leftActiveVal, centerActiveVal, rightActiveVal)
+    props.getValues(leftActiveVal, centerActiveVal, rightActiveVal, false)
     if (props.pickerType === 'start' || props.pickerType === 'end') {
       if (leftActiveVal < 0 || centerActiveVal < 0 || rightActiveVal < 0) return
       props?.onChange?.({
@@ -202,64 +211,115 @@ const Picker = (props: PropsType) => {
   const getLabelName = (num: number) => {
     switch (num) {
       case 0:
-        return '周一'
+        return t('formWork.monday')
       case 1:
-        return '周二'
+        return t(`formWork.tuesday`)
       case 2:
-        return '周三'
+        return t(`formWork.wednesday`)
       case 3:
-        return '周四'
+        return t(`formWork.thursday`)
       case 4:
-        return '周五'
+        return t(`formWork.friday`)
       case 5:
-        return '周六'
+        return t(`formWork.saturday`)
       case 6:
-        return '周日'
+        return t(`formWork.sunday`)
       case 7:
-        return '次周一'
+        return t(`formWork.cw1`)
       case 8:
-        return '次周二'
+        return t(`formWork.cw2`)
       case 9:
-        return '次周三'
+        return t(`formWork.cw3`)
       case 10:
-        return '次周四'
+        return t(`formWork.cw4`)
       case 11:
-        return '次周五'
+        return t(`formWork.cw5`)
       case 12:
-        return '次周六'
+        return t(`formWork.cw6`)
       case 13:
-        return '次周日'
+        return t(`formWork.cw7`)
     }
   }
   // 周
   const getWeekValues = () => {
     if (props.pickerType === 'remind') {
       setValue(
-        '截止时间前' + '/' + v1 + '日' + '/' + v2 + '时' + '/' + v3 + '分',
+        t('formWork.end1') +
+          '/' +
+          v1 +
+          t('formWork.day') +
+          '/' +
+          v2 +
+          t('formWork.h') +
+          '/' +
+          v3 +
+          t('formWork.m'),
       )
     } else {
-      setValue(getLabelName(v1) + '/' + v2 + '时' + '/' + v3 + '分')
+      setValue(
+        getLabelName(v1) +
+          '/' +
+          v2 +
+          t('formWork.h') +
+          '/' +
+          v3 +
+          t('formWork.m'),
+      )
     }
   }
   // 天
   const getDayValues = () => {
     // 回显input
     if (props.pickerType === 'remind') {
-      setValue('截止时间前' + '/' + v2 + '时' + '/' + v3 + '分')
+      setValue(
+        t('formWork.end1') +
+          '/' +
+          v2 +
+          t('formWork.h') +
+          '/' +
+          v3 +
+          t('formWork.m'),
+      )
     } else {
-      setValue((v1 == 1 ? '当日' : '次日') + '/' + v2 + '时' + '/' + v3 + '分')
+      setValue(
+        (v1 == 1 ? t('formWork.atThatTime') : t('formWork.theNextDay')) +
+          '/' +
+          v2 +
+          t('formWork.h') +
+          '/' +
+          v3 +
+          t('formWork.m'),
+      )
     }
   }
   // 月
   const getMonthValues = () => {
     if (props.pickerType === 'remind') {
       setValue(
-        '截止时间前' + '/' + v1 + '日' + '/' + v2 + '时' + '/' + v3 + '分',
+        t('formWork.end1') +
+          '/' +
+          v1 +
+          t('formWork.day') +
+          '/' +
+          v2 +
+          t('formWork.h') +
+          '/' +
+          v3 +
+          t('formWork.m'),
       )
     } else {
       const arr = [...nextMonthDay, ...dayData]
+      console.log(arr, 'ppp')
       const label = arr.find((el: any) => el.key === v1)?.label
-      setValue(label + '/' + v2 + '时' + '/' + v3 + '分')
+      setValue(
+        t(`formWork.${label}`) +
+          '/' +
+          v2 +
+          t('formWork.h') +
+          '/' +
+          v3 +
+          t('formWork.m'),
+      )
     }
   }
   useEffect(() => {
@@ -281,12 +341,7 @@ const Picker = (props: PropsType) => {
     setLeftActiveVal(props?.value?.v1)
     setCenterActiveVal(props?.value?.v2)
     setRightActiveVal(props?.value?.v3)
-    props.getValuesOnece(
-      props.pickerType,
-      props?.value?.v1,
-      props?.value?.v2,
-      props?.value?.v3,
-    )
+    props.getValues(props?.value?.v1, props?.value?.v2, props?.value?.v3, true)
     if (props.type === 'day') {
       getDayValues()
     } else if (props.type === 'week') {
@@ -319,7 +374,7 @@ const Picker = (props: PropsType) => {
                       : 'var(--neutral-n2)',
                 }}
               >
-                {el.label}
+                {t(`formWork.${el.label}`)}
               </Item>
             ))}
           </LeftTime>
@@ -338,7 +393,7 @@ const Picker = (props: PropsType) => {
                     : 'var(--neutral-n2)',
               }}
             >
-              {el.label}
+              {t(`formWork.${el.label}`)}
             </Item>
           ))}
         </CenterTime>
@@ -356,10 +411,14 @@ const Picker = (props: PropsType) => {
                     : 'var(--neutral-n2)',
               }}
             >
-              {el.label}
+              {t(`formWork.${el.label}`)}
             </Item>
           ))}
-          <Item onClick={getTime}>完成</Item>
+          <Btn onClick={getTime}>
+            <CommonButton type="primary" size="small">
+              完成
+            </CommonButton>
+          </Btn>
         </RightTime>
       </PickerStyle>
     )

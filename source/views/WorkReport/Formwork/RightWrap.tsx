@@ -265,7 +265,6 @@ const RightFormWork = () => {
       message.warning(errMsg)
       return
     }
-    console.log(parmas, 'parmas', activeItem)
     if (activeItem?.id) {
       await upDateTemplate(parmas)
       message.success(t('formWork.message6'))
@@ -280,6 +279,9 @@ const RightFormWork = () => {
   }
   useEffect(() => {
     setIsActive(0)
+    return () => {
+      dispatch(setEditSave(true))
+    }
   }, [activeItem])
   const getBtn = () => {
     // 编辑的情况0和1都应该有

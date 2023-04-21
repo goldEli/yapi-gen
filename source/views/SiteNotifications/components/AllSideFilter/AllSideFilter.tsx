@@ -133,9 +133,7 @@ const AllSideFilter = (props: any) => {
         <MyIconModeTextWrap>
           {lists.map((i: any) => (
             <Badge key={i.id} size="small" offset={[-22, 6]} count={i.read}>
-              <MyIconModeWrap
-                onClick={() => (i.read ? choose(i.sendType) : null)}
-              >
+              <MyIconModeWrap onClick={() => choose(i.sendType)}>
                 <MyIconMode tap={i.read} active={active === i.sendType}>
                   <IconFont
                     style={{ fontSize: 20 }}

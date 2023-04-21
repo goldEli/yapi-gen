@@ -155,6 +155,7 @@ const DemandComment = (props: Props) => {
         demandId: props.detail.id,
         content: params.content,
         attachment: params.attachment,
+        a_user_ids: params.a_user_ids,
       })
       message.success(t('project.replaySuccess'))
       getList()
@@ -173,6 +174,7 @@ const DemandComment = (props: Props) => {
   return (
     <>
       <EditComment
+        projectId={props.detail.projectId}
         visibleEdit={isVisibleComment}
         editClose={() => setIsVisibleComment(false)}
         editConfirm={onAddConfirm}
