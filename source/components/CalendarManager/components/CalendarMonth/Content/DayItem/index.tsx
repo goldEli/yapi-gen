@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import styled from '@emotion/styled'
-import { useDispatch, useSelector } from '@store/index'
+import { useSelector } from '@store/index'
 import classNames from 'classnames'
 import dayjs from 'dayjs'
 import useCurrentTime from '@/components/CalendarManager/hooks/useCurrentTime'
-import { setSelectedDayInMonth } from '@store/calendarPanle'
 import ScheduleStripList from '../../../ScheduleStripList'
 import useAllDayGrid from '@/components/CalendarManager/hooks/useAllDayGrid'
 import {
