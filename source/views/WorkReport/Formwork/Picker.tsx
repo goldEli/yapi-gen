@@ -309,8 +309,17 @@ const Picker = (props: PropsType) => {
       )
     } else {
       const arr = [...nextMonthDay, ...dayData]
+      console.log(arr, 'ppp')
       const label = arr.find((el: any) => el.key === v1)?.label
-      setValue(label + '/' + v2 + t('formWork.h') + '/' + v3 + t('formWork.m'))
+      setValue(
+        t(`formWork.${label}`) +
+          '/' +
+          v2 +
+          t('formWork.h') +
+          '/' +
+          v3 +
+          t('formWork.m'),
+      )
     }
   }
   useEffect(() => {

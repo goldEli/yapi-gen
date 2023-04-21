@@ -46,6 +46,7 @@ import { getStaffListAll } from '@/services/staff'
 import { getIdsForAt } from '@/tools'
 import IconFont from '@/components/IconFont'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import { setUpdateList } from '@store/workReport'
 
 interface TargetTabsProps {
   list: any
@@ -123,7 +124,6 @@ const ReportDetailDrawer = () => {
   const { userInfo } = useSelector(store => store.user)
   const [isVisible, setIsVisible] = useState(false)
   const [isDeleteId, setIsDeleteId] = useState(0)
-  const reviewCount = useRef<any>(0)
 
   // 拖动线条
   const onDragLine = (e: React.MouseEvent) => {
@@ -276,14 +276,13 @@ const ReportDetailDrawer = () => {
     scrollToBottom()
     setIsReview(false)
     getReportCommentData(drawerInfo.id)
-    if (reviewCount.current === 0) {
-      const info = await getReportInfo({
-        id: viewReportModal?.id,
-      })
-      setUserList(info?.target_users)
-    }
-    reviewCount.current += 1
+    const info = await getReportInfo({
+      id: viewReportModal?.id,
+    })
+    setUserList(info?.target_users)
     form.resetFields()
+    // 更新List页面
+    dispatch(setUpdateList({ isFresh: 1 }))
   }
 
   // 富文本上传
@@ -368,6 +367,8 @@ const ReportDetailDrawer = () => {
       setIsDeleteId(0)
       setIsVisible(false)
       getReportCommentData(viewReportModal?.id)
+      // 更新List页面
+      dispatch(setUpdateList({ isFresh: 1 }))
     } catch (error) {
       //
     }
@@ -520,75 +521,77 @@ const ReportDetailDrawer = () => {
         )}
       </Content>
 
-      <CommentFooter isReview={isReview}>
-        {isReview ? (
-          <>
-            <div className="editBox">
-              <Form form={form}>
-                <Form.Item
-                  name="info"
-                  rules={[
-                    {
-                      validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
-                      required: true,
-                      message: (
-                        <div
-                          style={{
-                            margin: '5px 0',
-                            fontSize: '12px',
-                            display: 'flex',
-                            alignItems: 'center',
-                          }}
-                        >
-                          {t('report.list.noEmpty')}
-                        </div>
-                      ),
-                      whitespace: true,
-                      validator: onValidator,
-                    },
-                  ]}
-                >
-                  <Editor
-                    ref={editorRef}
-                    upload={uploadFile}
-                    getSuggestions={() => arr}
-                  />
-                </Form.Item>
-              </Form>
-            </div>
-            <div className="buttonBox">
-              <Space>
-                <CommonButton
-                  type="light"
-                  size="small"
-                  onClick={() => {
-                    setIsReview(false)
-                    form.resetFields()
-                  }}
-                  style={{ fontSize: 12 }}
-                >
-                  {t('report.list.cancel')}
-                </CommonButton>
-                <CommonButton
-                  type="primary"
-                  size="small"
-                  style={{ fontSize: 12 }}
-                  onClick={onComment}
-                >
-                  {t('common.comment')}
-                </CommonButton>
-              </Space>
-            </div>
-          </>
-        ) : (
-          <Input
-            placeholder={`${t('common.comment')}${
-              drawerInfo?.user?.name || '--'
-            }${t('report.list.log')}`}
-            onFocus={() => setIsReview(true)}
-          />
-        )}
-      </CommentFooter>
+      {!skeletonLoading && (
+        <CommentFooter isReview={isReview}>
+          {isReview ? (
+            <>
+              <div className="editBox">
+                <Form form={form}>
+                  <Form.Item
+                    name="info"
+                    rules={[
+                      {
+                        validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
+                        required: true,
+                        message: (
+                          <div
+                            style={{
+                              margin: '5px 0',
+                              fontSize: '12px',
+                              display: 'flex',
+                              alignItems: 'center',
+                            }}
+                          >
+                            {t('report.list.noEmpty')}
+                          </div>
+                        ),
+                        whitespace: true,
+                        validator: onValidator,
+                      },
+                    ]}
+                  >
+                    <Editor
+                      ref={editorRef}
+                      upload={uploadFile}
+                      getSuggestions={() => arr}
+                    />
+                  </Form.Item>
+                </Form>
+              </div>
+              <div className="buttonBox">
+                <Space>
+                  <CommonButton
+                    type="light"
+                    size="small"
+                    onClick={() => {
+                      setIsReview(false)
+                      form.resetFields()
+                    }}
+                    style={{ fontSize: 12 }}
+                  >
+                    {t('report.list.cancel')}
+                  </CommonButton>
+                  <CommonButton
+                    type="primary"
+                    size="small"
+                    style={{ fontSize: 12 }}
+                    onClick={onComment}
+                  >
+                    {t('common.comment')}
+                  </CommonButton>
+                </Space>
+              </div>
+            </>
+          ) : (
+            <Input
+              placeholder={`${t('common.comment')}${
+                drawerInfo?.user?.name || '--'
+              }${t('report.list.log')}`}
+              onFocus={() => setIsReview(true)}
+            />
+          )}
+        </CommentFooter>
+      )}
       <DeleteConfirm
         text={t('mark.cd')}
         isVisible={isVisible}
