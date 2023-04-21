@@ -34,7 +34,6 @@ const dragBoxClassName = css`
   padding: 0 4px;
   position: relative;
   z-index: 2;
-  transition: 0.2s;
 `
 const Content = styled.div`
   width: 100%;
