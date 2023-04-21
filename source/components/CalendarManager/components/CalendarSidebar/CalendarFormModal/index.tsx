@@ -516,8 +516,7 @@ const CalendarFormModal = () => {
                 <CustomSelect
                   onChange={(value: number) => {
                     setCurrentPermission(value)
-                    setSubscribedList([])
-                    setShareList([])
+                    setSubscribedList(value === 1 ? [] : subscribedList)
                   }}
                   placeholder={t('calendarManager.please_select_permissions')}
                   optionLabelProp="label"
