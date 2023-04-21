@@ -92,10 +92,10 @@ const ReviewSide = () => {
           {t('report.list.workReport')}
         </span>
 
-        <CloseWrap onClick={handleReport} width={32} height={32}>
+        <CloseWrap onClick={handleReport} width={24} height={24}>
           <IconFont
             style={{
-              fontSize: '16px',
+              fontSize: 18,
             }}
             type="plus"
           />
