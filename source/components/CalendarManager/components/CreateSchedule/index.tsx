@@ -384,14 +384,10 @@ const CreateSchedule = () => {
             value: scheduleInfo.calendar_id || 0,
           },
     )
-    setNormalCategory(
-      hasStateList?.length > 0
-        ? hasStateList[0]
-        : {
-            color: scheduleInfo.color,
-            calendar_id: scheduleInfo.calendar_id,
-          },
-    )
+    setNormalCategory({
+      color: scheduleInfo.color,
+      calendar_id: scheduleInfo.calendar_id,
+    })
     setStatus(scheduleInfo.is_busy)
     setRepeatValue({
       value: scheduleInfo.repeat_type,
