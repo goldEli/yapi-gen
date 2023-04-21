@@ -28,7 +28,8 @@ const CalendarList: React.FC<CalendarListProps> = props => {
   const { checkedTime } = useSelector(state => state.calendar)
   const { checkedCalendarList } = useSelector(state => state.calendar)
   const checkedCalendarIdsRef = useRef<number[]>([])
-  // const {}=useSelector(state=>state.)
+  const { calendarConfig } = useSelector(state => state.calendar)
+  const { view_options } = calendarConfig
   const disPatch = useDispatch()
   useEffect(() => {
     const params = {
@@ -75,38 +76,8 @@ const CalendarList: React.FC<CalendarListProps> = props => {
     )
     checkedCalendarIdsRef.current = calendar_ids
   }, [checkedCalendarList])
-  // const isDateIntersection = (
-  //   start1: string,
-  //   end1: string,
-  //   start2: string,
-  //   end2: string,
-  // ) => {
-  //   const startdate1 = dayjs(start1).valueOf()
-  //   const enddate1 = dayjs(end1).valueOf()
-
-  //   const startdate2 = dayjs(start2).valueOf()
-  //   const enddate2 = dayjs(end2).valueOf()
-
-  //   if (startdate1 >= startdate2 && startdate1 <= enddate2) {
-  //     //startdate1介于另一个区间之间
-  //     return true
-  //   }
-
-  //   if (enddate1 >= startdate2 && enddate1 <= enddate2) {
-  //     //enddate1介于另一个区间之间
-  //     return true
-  //   }
-
-  //   if (startdate1 <= startdate1 && enddate1 >= enddate2) {
-  //     //startdate1-enddate1的区间大于另一个区间，且另一个区间在startdate1-enddate1之间
-  //     return true
-  //   }
-
-  //   return false
-  // }
   return (
     <CalendarListBox ref={CalendarListBoxRef}>
-      {/* <Loading></Loading> */}
       {listViewScheduleList?.map((item: any, index: number) => (
         <CalendarListItem
           key={index}
@@ -122,7 +93,9 @@ const CalendarList: React.FC<CalendarListProps> = props => {
             <MonthWeekBox>
               {item.list[0].month}月 {item.list[0].week_name}
             </MonthWeekBox>
-            <LunarDate>{item.list[0].lunar_day_chinese} </LunarDate>
+            {view_options?.show_lunar_calendar === 1 && (
+              <LunarDate>{item.list[0].lunar_day_chinese} </LunarDate>
+            )}
           </div>
           <CalendarListInfo>
             {item.list.map((ele: any, idx: number) => (
