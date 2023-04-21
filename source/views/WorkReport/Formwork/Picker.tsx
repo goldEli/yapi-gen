@@ -183,6 +183,7 @@ const Picker = (props: PropsType) => {
     return second
   }
   const getTime = () => {
+    // debugger
     dispatch(setEditSave(false))
     props.getValues(leftActiveVal, centerActiveVal, rightActiveVal, false)
     if (props.pickerType === 'start' || props.pickerType === 'end') {
@@ -364,8 +365,8 @@ const Picker = (props: PropsType) => {
             {leftDataList?.map((el: any, index: number) => (
               <Item
                 key={el.label}
-                onClick={() => {
-                  setLeftActiveVal(el.key)
+                onClick={e => {
+                  e.stopPropagation(), setLeftActiveVal(el.key)
                 }}
                 style={{
                   color:
@@ -383,8 +384,8 @@ const Picker = (props: PropsType) => {
           {centerDataList?.map((el: any, index: number) => (
             <Item
               key={el.label}
-              onClick={() => {
-                setCenterActiveVal(el.key)
+              onClick={e => {
+                e.stopPropagation(), setCenterActiveVal(el.key)
               }}
               style={{
                 color:
@@ -401,8 +402,8 @@ const Picker = (props: PropsType) => {
           {rightDataList?.map((el: any, index: number) => (
             <Item
               key={el.label}
-              onClick={() => {
-                setRightActiveVal(el.key)
+              onClick={e => {
+                e.stopPropagation(), setRightActiveVal(el.key)
               }}
               style={{
                 color:
@@ -425,7 +426,7 @@ const Picker = (props: PropsType) => {
   }
 
   return (
-    <div>
+    <div onClick={() => setIsOpen(!isOpen)}>
       <InputStyle
         type="text"
         value={value}

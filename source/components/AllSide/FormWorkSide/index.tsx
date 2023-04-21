@@ -96,17 +96,60 @@ const FormWorkSide = () => {
   )
   useEffect(() => {
     dataList.forEach((el: any, index: any) => {
-      if (el.id === activeItem?.id) {
+      if (el.name === activeItem?.name) {
         setIsActive(index)
       }
     })
     dispatch(setTemplateName(activeItem?.name))
   }, [activeItem])
   const onConfirm = async (name: string) => {
-    setIsVisible(false)
     dispatch(setDataList([...dataList, { name }]))
-    dataList?.length < 1 && dispatch(setActiveItem({ name }))
+    setIsActive(dataList?.length - 1)
+    dispatch(setActiveItem({ name }))
+    dispatch(
+      setTemplateContentConfigs([
+        {
+          name: '汇报对象',
+          is_required: 1,
+          tips: '',
+          type: 1,
+        },
+      ]),
+    )
+    const claerConfig: any = {
+      day: aWeekDataList,
+      template_configs: [],
+      hand_scope: 1,
+      is_all_write: 2,
+      is_all_view: 2,
+      is_submitter_edit: true,
+      is_cycle_limit: true,
+      is_supply: true,
+      reminder_time: 2 * 60 * 60,
+      auto_reminder: true,
+      submit_cycle: 1,
+      is_holiday: true,
+      end_time: {
+        day_type: 2,
+        time: 24 * 60 * 60,
+      },
+      start_time: {
+        day_type: 1,
+        time: 24 * 60 * 60,
+      },
+    }
+    dispatch(
+      setReportContent({
+        template_configs: [],
+        is_all_view: 2,
+        is_all_write: 2,
+      }),
+    )
+    dispatch(setFillingRequirements(claerConfig))
+    setIsVisible(false)
   }
+  //
+  console.log()
   const getDataList = async () => {
     const res = await dispatch(getTemplateList())
     if (res.payload?.length < 1) {
@@ -119,12 +162,12 @@ const FormWorkSide = () => {
         is_submitter_edit: true,
         is_cycle_limit: true,
         is_supply: true,
-        reminder_time: null,
+        reminder_time: 2 * 60 * 60,
         auto_reminder: true,
         submit_cycle: 1,
         is_holiday: true,
         end_time: {
-          day_type: 1,
+          day_type: 2,
           time: 24 * 60 * 60,
         },
         start_time: {
@@ -156,7 +199,6 @@ const FormWorkSide = () => {
       setDelIsVisible(true)
       return
     }
-    setIsActive(index)
     const data = [
       {
         name: t('formWork.title3'),
@@ -175,12 +217,12 @@ const FormWorkSide = () => {
       is_submitter_edit: true,
       is_cycle_limit: true,
       is_supply: true,
-      reminder_time: null,
+      reminder_time: 2 * 60 * 60,
       auto_reminder: true,
       submit_cycle: 1,
       is_holiday: true,
       end_time: {
-        day_type: 1,
+        day_type: 2,
         time: 24 * 60 * 60,
       },
       start_time: {
@@ -238,7 +280,7 @@ const FormWorkSide = () => {
           dataList?.map((el: { name: string; id: number }, index: number) => {
             return (
               <Slide
-                key={el.id}
+                key={el.name}
                 onClick={() => itemActive(el, index)}
                 style={{
                   color:

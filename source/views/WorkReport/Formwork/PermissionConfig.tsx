@@ -158,7 +158,7 @@ const PermissionConfig = (props: PropsType) => {
           day_type: 1,
           time: 24 * 60 * 60,
         }
-        // reminder_time = 1 * 24 * 60 * 60
+        reminder_time = 2 * 60 * 60
         break
       case 'week':
         value = 2
@@ -170,7 +170,9 @@ const PermissionConfig = (props: PropsType) => {
           day_type: 7,
           time: 24 * 60 * 60,
         }
+        reminder_time = 172800
         break
+
       case 'month':
         value = 3
         start = {
@@ -181,9 +183,11 @@ const PermissionConfig = (props: PropsType) => {
           day_type: 34,
           time: 24 * 60 * 60,
         }
+        reminder_time = 172800
         break
       default:
         value = 4
+        reminder_time = 172800
         break
     }
     const claerConfig: any = {

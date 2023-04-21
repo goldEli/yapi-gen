@@ -201,12 +201,12 @@ const RightFormWork = () => {
         is_submitter_edit: true,
         is_cycle_limit: true,
         is_supply: true,
-        reminder_time: null,
+        reminder_time: 2 * 60 * 60,
         auto_reminder: true,
         submit_cycle: 1,
         is_holiday: true,
         end_time: {
-          day_type: 1,
+          day_type: 2,
           time: 24 * 60 * 60,
         },
         start_time: {
@@ -323,6 +323,7 @@ const RightFormWork = () => {
       await upDateTemplate(parmas)
       message.success(t('formWork.message6'))
       await dispatch(getTemplateList())
+      dispatch(setActiveItem({ name: templateName, id: activeItem?.id }))
     } else {
       const res = await createTemplate(parmas)
       await dispatch(getTemplateList())
@@ -337,6 +338,7 @@ const RightFormWork = () => {
       dispatch(setEditSave(true))
     }
   }, [activeItem])
+  console.log(activeItem, 'activeItem')
   const getBtn = () => {
     // 编辑的情况0和1都应该有
     if (editSave && activeItem?.id) {
@@ -358,12 +360,17 @@ const RightFormWork = () => {
     }
   }
   const getTitle = () => {
-    if (!templateName && !activeItem?.name) {
+    console.log(activeItem, 'activeItem')
+    if (!activeItem?.name && !templateName) {
       return t('formWork.t1')
     } else {
-      return t('formWork.t1') + '-' + templateName || activeItem?.name
+      return templateName || activeItem?.name
     }
   }
+  console.log(templateName, 'templateName')
+  useEffect(() => {
+    getTitle()
+  }, [templateName])
   return (
     <Spin
       spinning={isSpinning}
