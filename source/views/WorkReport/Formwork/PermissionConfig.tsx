@@ -155,7 +155,7 @@ const PermissionConfig = (props: PropsType) => {
           time: 24 * 60 * 60,
         }
         end = {
-          day_type: 1,
+          day_type: 2,
           time: 24 * 60 * 60,
         }
         reminder_time = 2 * 60 * 60
