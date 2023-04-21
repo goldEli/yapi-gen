@@ -358,7 +358,7 @@ const RightFormWork = () => {
     }
   }
   const getTitle = () => {
-    if (!templateName || !activeItem?.name) {
+    if (!templateName && !activeItem?.name) {
       return t('formWork.t1')
     } else {
       return t('formWork.t1') + '-' + templateName || activeItem?.name
