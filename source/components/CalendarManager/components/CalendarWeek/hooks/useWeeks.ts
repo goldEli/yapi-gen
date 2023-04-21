@@ -2,6 +2,7 @@ import { useSelector } from '@store/index'
 import dayjs from 'dayjs'
 import React from 'react'
 import useMaxWidth from './useMaxWidth'
+import { formatYYYYMMDDhhmmss } from '@/components/CalendarManager/config'
 
 const format = 'YYYY-MM-DD'
 const useWeeks = () => {
@@ -15,14 +16,21 @@ const useWeeks = () => {
 
   const getCurrentWeekDayByLeft = (left: number) => {
     let index = 0
-    const l = Math.ceil(left)
+    const l = Math.floor(left)
     while (true) {
       if (index === 7) {
         throw new Error('the value of left is error')
       }
-      const lessThanLeft = Math.ceil(maxWidth * index) <= l
-      const biggerThanLeft = Math.ceil(maxWidth * (index + 1)) > l
+      const lessThanLeft = Math.floor(maxWidth * index) <= l
+      const biggerThanLeft = Math.floor(maxWidth * (index + 1)) > l
       if (lessThanLeft && biggerThanLeft) {
+        // console.log(
+        //   '123',
+        //   index,
+        //   Math.floor(maxWidth * index),
+        //   l,
+        //   Math.floor(maxWidth * (index + 1)),
+        // )
         return dayjs(selectedWeek[index].date).format('YYYY-MM-DD')
       }
       ++index
@@ -33,6 +41,7 @@ const useWeeks = () => {
     const index = selectedWeek.findIndex(item =>
       dayjs(item.date).isSame(dayjs(time), 'day'),
     )
+    console.log(dayjs(time).format(formatYYYYMMDDhhmmss), index)
     return index * maxWidth
   }
 
