@@ -445,27 +445,26 @@ const FormMain = (props: FormType) => {
       >
         <Edit />
       </Form.Item>
-      {fillingRequirements?.auto_reminder ||
-        (fillingRequirements?.auto_reminder === 1 && (
-          <Form.Item
-            rules={[{ required: true, message: '' }]}
-            style={{
-              marginTop: '16px',
-              marginBottom: '44px',
-            }}
-            label={t('formWork.msg9')}
-            name="reminder_time"
-          >
-            <Picker
-              getValues={(v1: number, v2: number, v3: number, onece: boolean) =>
-                getValues('remind', v1, v2, v3, onece)
-              }
-              value={remindTimes}
-              type={props.type}
-              pickerType="remind"
-            />
-          </Form.Item>
-        ))}
+      {fillingRequirements?.auto_reminder ? (
+        <Form.Item
+          rules={[{ required: true, message: '' }]}
+          style={{
+            marginTop: '16px',
+            marginBottom: '44px',
+          }}
+          label={t('formWork.msg9')}
+          name="reminder_time"
+        >
+          <Picker
+            getValues={(v1: number, v2: number, v3: number, onece: boolean) =>
+              getValues('remind', v1, v2, v3, onece)
+            }
+            value={remindTimes}
+            type={props.type}
+            pickerType="remind"
+          />
+        </Form.Item>
+      ) : null}
     </>
   )
 }

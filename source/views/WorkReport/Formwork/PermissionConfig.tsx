@@ -433,6 +433,7 @@ const PermissionConfig = (props: PropsType) => {
     newVal.hand_scope = obj
     fillingRequirements && setFormValues(newVal)
   }, [fillingRequirements])
+  console.log(fillingRequirements, 'fillingRequirements')
   return (
     <PermissionConfigStyle>
       {/* 汇报内容 */}
