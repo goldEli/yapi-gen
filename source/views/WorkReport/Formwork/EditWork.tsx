@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-handler-names */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
+/* eslint-disable consistent-return */
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import TabsDragging from './TabsDragging'
@@ -95,6 +96,10 @@ const EditWork = (props: PropsType) => {
   }
   // 组件参数配置
   const ParmasDialogOnConfirm = (obj: any, num: number) => {
+    const filterName = dataList.find((el: any) => el.name === obj.name)
+    if (filterName) {
+      return message.warning('重复模板名称')
+    }
     const configs = {
       type: num,
       id: Math.random() + '_' + num,

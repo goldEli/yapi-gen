@@ -18,6 +18,7 @@ import {
   setReportContent,
   setFillingRequirements,
   setEditSave,
+  setErr,
 } from '@store/formWork'
 import { dayData1, weekData, monthData, aWeekDataList } from './DataList'
 import moment from 'moment'
@@ -142,6 +143,7 @@ const PermissionConfig = (props: PropsType) => {
   // 填写周期
   const onchange = (e: any) => {
     dispatch(setEditSave(false))
+    dispatch(setErr(true))
     setType(e.target.value)
     let value = 0
     let start = null
