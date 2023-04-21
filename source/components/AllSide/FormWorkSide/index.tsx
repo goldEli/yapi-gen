@@ -46,8 +46,15 @@ const Slide = styled.div`
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  color: ${(props: any) =>
+    props.theme ? 'var(--primary-d2)' : 'var(--neutral-n1-d2)'};
+  background: ${(props: any) =>
+    props.theme
+      ? 'linear-gradient(90deg, #EBEFFF 0%, rgba(243,246,255,0) 100%)'
+      : 'none'};
   &:hover {
     cursor: pointer;
+    color: var(--primary-d1);
   }
 `
 const NoDataCreateWrap = styled.div({
@@ -75,7 +82,7 @@ const NoDataCreateWrap = styled.div({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    color: ' var(--primary-d2)',
+    color: 'var(--primary-d2)',
     svg: {
       fontSize: 10,
     },
@@ -285,16 +292,7 @@ const FormWorkSide = () => {
               <Slide
                 key={el.name}
                 onClick={() => itemActive(el, index)}
-                style={{
-                  color:
-                    isActive == index
-                      ? 'var(--primary-d2)'
-                      : 'var(--neutral-n1-d2)',
-                  background:
-                    isActive == index
-                      ? 'linear-gradient(90deg, #EBEFFF 0%, rgba(243,246,255,0) 100%)'
-                      : 'none',
-                }}
+                theme={isActive == index}
               >
                 {el.name}
               </Slide>

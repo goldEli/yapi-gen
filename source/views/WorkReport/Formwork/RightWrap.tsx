@@ -69,6 +69,7 @@ export const Col = styled.div`
     cursor: pointer;
   }
 `
+
 export const Text = styled.div<{ bgc: any }>(
   {
     padding: '0 24px 0 0',
@@ -77,13 +78,14 @@ export const Text = styled.div<{ bgc: any }>(
     lineHeight: '32px',
     textAlign: 'center',
     fontSize: '14px',
-    fontFamily: 'SiYuanMedium',
   },
   ({ bgc }) => ({
     backgroundColor: bgc ? 'var(--function-tag5)' : 'var(--neutral-n8)',
     color: bgc ? 'var(--primary-d1)' : 'var(--neutral-n2)',
+    fontFamily: bgc ? 'SiYuanMedium' : 'inherit',
   }),
 )
+
 export const StyleRight = styled.div<{ bgc?: any }>(
   {
     width: 0,
@@ -98,6 +100,7 @@ export const StyleRight = styled.div<{ bgc?: any }>(
       : ' transparent transparent  transparent  var(--neutral-n8) ',
   }),
 )
+
 export const StyleLeft = styled.div<{ bgc?: any }>(
   {
     width: 0,
@@ -112,13 +115,16 @@ export const StyleLeft = styled.div<{ bgc?: any }>(
       : 'var(--neutral-n8)  var(--neutral-n8)  var(--neutral-n8)  transparent',
   }),
 )
+
 export const BtnRight = styled.div`
   display: flex;
 `
+
 export const EditFormWorkBox = styled.div`
   margin: 20px 0 20px 24px;
   /* border-bottom: 1px solid var(--neutral-n6-d1); */
 `
+
 const EditFormWorkStyle = styled(Input)({
   border: 'none',
   borderRadius: 0,

@@ -26,7 +26,6 @@ import {
 const StyledWrap = styled.div`
   height: calc(100vh - 56px);
   display: flex;
-  gap: 16px;
 `
 const Head = styled.div`
   width: calc(100% - 504px);
@@ -36,8 +35,6 @@ const Head = styled.div`
   border-radius: 6px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 24px;
   flex: 1;
 `
 const Center = styled.div`
@@ -261,7 +258,7 @@ const Statistics = () => {
             <>
               <ResizeTable
                 isSpinning={isSpinning}
-                dataWrapNormalHeight="calc(100vh - 292px)"
+                dataWrapNormalHeight="100%"
                 col={columns}
                 dataSource={userListData.list}
                 noData={<NoData />}
