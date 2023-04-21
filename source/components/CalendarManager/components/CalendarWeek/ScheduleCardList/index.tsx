@@ -20,13 +20,7 @@ const Container = styled.div`
 `
 
 const ScheduleCardList: React.FC<ScheduleCardListProps> = props => {
-  // const scheduleList = useSelector(store => store.schedule.scheduleList)
   const { data } = useCalculationConflict()
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    // dispatch(getScheduleList({ id: 1 }))
-  }, [])
 
   const content = useMemo(() => {
     return data.map(item => {
