@@ -18,6 +18,7 @@ import {
   currentClass,
 } from './styles'
 import { intersection } from 'lodash'
+import Loading from '@/components/Loading'
 interface CalendarListProps {}
 
 const CalendarList: React.FC<CalendarListProps> = props => {
@@ -27,6 +28,7 @@ const CalendarList: React.FC<CalendarListProps> = props => {
   const { checkedTime } = useSelector(state => state.calendar)
   const { checkedCalendarList } = useSelector(state => state.calendar)
   const checkedCalendarIdsRef = useRef<number[]>([])
+  // const {}=useSelector(state=>state.)
   const disPatch = useDispatch()
   useEffect(() => {
     const params = {
@@ -104,6 +106,7 @@ const CalendarList: React.FC<CalendarListProps> = props => {
   // }
   return (
     <CalendarListBox ref={CalendarListBoxRef}>
+      {/* <Loading></Loading> */}
       {listViewScheduleList?.map((item: any, index: number) => (
         <CalendarListItem
           key={index}

@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { useSelector, useDispatch } from '@store/index'
-import { Dropdown } from 'antd'
+import { Dropdown, Spin } from 'antd'
 import React, { useEffect } from 'react'
 import ScheduleInfoHeaderBox from './ScheduleInfoHeader'
 import ScheduleInfoContent from './SCheduleInfoContent'
@@ -17,7 +17,7 @@ const ScheduleInfoDropdownBox = styled.div<{
   top: number
   left: number
 }>`
-  width: 400px;
+  width: 360px;
   background-color: var(--neutral-white-d1);
   box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
   z-index: 999;
@@ -42,12 +42,14 @@ const ScheduleInfoDropdown: React.FC<ScheduleInfoDropdownProps> = props => {
       height: 640,
     },
   })
+  const { scheduleInfo } = useSelector(state => state.schedule)
+
   // console.log({ scheduleInfoDropdown })
   const disPatch = useDispatch()
   useEffect(() => {
     if (!schedule_id || !visible) return
     disPatch(getScheduleInfo({ id: schedule_id, show_date }))
-  }, [schedule_id,visible])
+  }, [schedule_id, visible])
 
   return (
     <ScheduleInfoDropdownBox
@@ -60,9 +62,11 @@ const ScheduleInfoDropdown: React.FC<ScheduleInfoDropdownProps> = props => {
         e.stopPropagation()
       }}
     >
-      <ScheduleInfoHeaderBox></ScheduleInfoHeaderBox>
-      <ScheduleInfoContent></ScheduleInfoContent>
-      <ScheduleInfoFooter></ScheduleInfoFooter>
+      <Spin spinning={scheduleInfo ? false : true} size="large" tip="Loading">
+        <ScheduleInfoHeaderBox></ScheduleInfoHeaderBox>
+        <ScheduleInfoContent></ScheduleInfoContent>
+        <ScheduleInfoFooter></ScheduleInfoFooter>
+      </Spin>
     </ScheduleInfoDropdownBox>
   )
 }

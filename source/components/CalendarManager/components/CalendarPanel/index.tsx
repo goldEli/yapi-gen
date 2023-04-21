@@ -9,6 +9,7 @@ import CalendarWeek from '../CalendarWeek'
 import CalendarYear from '../CalendarYear'
 import { setScheduleListModal } from '@store/schedule'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
+import { Spin } from 'antd'
 interface CalendarPanelProps {
   children?: React.ReactDOM
 }
@@ -36,6 +37,7 @@ const CalendarPanel: React.FC<CalendarPanelProps> = props => {
   const calenderYearValue = useSelector(
     store => store.calendarPanel.calenderYearValue,
   )
+  const { calendarLoading } = useSelector(state => state.calendarPanel)
   const disPatch = useDispatch()
   const content = useMemo(() => {
     if (calendarPanelType === 'day') {
@@ -61,7 +63,9 @@ const CalendarPanel: React.FC<CalendarPanelProps> = props => {
       }}
     >
       <CalendarPanelToolBar />
-      <Content>{content}</Content>
+      <Spin spinning={calendarLoading} tip="Loading" size="large">
+        <Content>{content}</Content>
+      </Spin>
     </Box>
   )
 }

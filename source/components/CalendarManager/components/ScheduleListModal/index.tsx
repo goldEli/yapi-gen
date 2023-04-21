@@ -3,10 +3,10 @@ import { css } from '@emotion/css'
 import React from 'react'
 import { useSelector, useDispatch } from '@store/index'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
-import { setScheduleListModal } from '@store/schedule'
+import { setScheduleListModal, setScheduleInfo } from '@store/schedule'
 import dayjs from 'dayjs'
-import { getColorWithOpacityPointOne ,getColor} from '../../utils'
-interface ScheduleListProps { }
+import { getColorWithOpacityPointOne, getColor } from '../../utils'
+interface ScheduleListProps {}
 interface ScheduleListBoxProps {
   visible: boolean
   top?: number
@@ -15,6 +15,8 @@ interface ScheduleListBoxProps {
 const ScheduleListBox = styled.div`
   width: 260px;
   height: 200px;
+  max-height: 400px;
+  overflow: scroll;
   position: absolute;
   top: ${(props: ScheduleListBoxProps) => props.top + 'px'};
   left: ${(props: ScheduleListBoxProps) => props.left + 'px'};
@@ -39,7 +41,7 @@ const ScheduleItem = styled.div<{ color: string }>`
   box-sizing: border-box;
   cursor: pointer;
   &:hover {
-    background: ${(props) => props.color};
+    background: ${props => props.color};
     border-radius: 6px;
   }
 `
@@ -68,12 +70,12 @@ const labelTime = css`
     top: -2px;
   } */
 `
-const Dot = styled.div<{color:string}>`
+const Dot = styled.div<{ color: string }>`
   position: absolute;
   top: 5px;
   width: 6px;
   height: 6px;
-  background: ${(props)=>props.color};
+  background: ${props => props.color};
   border-radius: 2px 2px 2px 2px;
   left: 0px;
 `
@@ -104,6 +106,7 @@ const ScheduleListModal: React.FC<ScheduleListProps> = props => {
     e.stopPropagation()
     disPatch(setScheduleInfoDropdown({ visible: true, schedule_id }))
     disPatch(setScheduleListModal({ visible: false }))
+    disPatch(setScheduleInfo(undefined))
   }
   return (
     <ScheduleListBox visible={visible} top={top} left={left}>

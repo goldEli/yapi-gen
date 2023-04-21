@@ -10,7 +10,7 @@ import IconFont from '@/components/IconFont'
 import { useDispatch, useSelector } from '@store/index'
 import { setCheckedTime } from '@store/calendar'
 import { getNowDate } from '@/tools'
-import { getLeftCalendarDaysOfMonthList } from '@store/schedule/schedule.thunk'
+import classNames from 'classnames'
 dayjs.extend(dayLocaleData)
 const CalendarHeader = styled.div`
   width: 100%;
@@ -52,8 +52,8 @@ const hasScheduleClass = css`
     width: 4px;
     height: 4px;
     background: var(--primary-d1);
-    bottom: -4px;
-    left: 12px;
+    bottom: -6px;
+    left: 10px;
     border-radius: 50%;
   }
 `
@@ -93,15 +93,11 @@ const DXCalendar: React.FC = () => {
         const selectedDate = checkedTime === dayjs(date).format('YYYY-MM-DD')
         return (
           <DayBox
-            className={
-              today
-                ? dayActive
-                : selectedDate
-                ? selectedDateActive
-                : hasSchedule
-                ? hasScheduleClass
-                : ''
-            }
+            className={classNames({
+              [dayActive]: today,
+              [hasScheduleClass]: hasSchedule,
+              [selectedDateActive]: selectedDate,
+            })}
           >
             {dayjs(date).date()}
           </DayBox>

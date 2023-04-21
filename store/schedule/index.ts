@@ -95,6 +95,9 @@ const slice = createSlice({
     ) {
       state.visualizationTime = action.payload
     },
+    setScheduleInfo(state, action: PayloadAction<SliceState['scheduleInfo']>) {
+      state.scheduleInfo = action.payload
+    },
   },
   extraReducers(builder) {
     // builder.addCase(getScheduleList.fulfilled, (state, action) => {
@@ -152,7 +155,11 @@ const slice = createSlice({
 
 const schedule = slice.reducer
 
-export const { setScheduleListModal, setScheduleDate, setVisualizationTime } =
-  slice.actions
+export const {
+  setScheduleListModal,
+  setScheduleDate,
+  setVisualizationTime,
+  setScheduleInfo,
+} = slice.actions
 
 export default schedule

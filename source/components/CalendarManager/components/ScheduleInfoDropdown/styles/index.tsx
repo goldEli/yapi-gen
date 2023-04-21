@@ -133,6 +133,7 @@ export const contentTip = css`
 export const PersonList = styled.div`
   margin-left: 28px;
   padding-bottom: 14px;
+  min-width: 60px;
 `
 export const PersonItem = styled.div`
   display: flex;
@@ -150,7 +151,8 @@ export const PersonItem = styled.div`
 export const FileList = styled.div`
   margin-left: 28px;
   .css-48p5kt-Card {
-    min-width: 320px !important;
+    min-width: 300px !important;
+    margin-left: 0px !important ;
   }
 `
 export const FileItem = styled.div`
