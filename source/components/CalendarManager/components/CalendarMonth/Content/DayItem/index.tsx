@@ -65,12 +65,14 @@ const DayItem: React.FC<DayItemProps> = props => {
   const isSelectedForCreate = selectedDayInMonth === info?.datetime
   const { currentTime } = useCurrentTime()
   const isCurrent = currentTime.isSame(dayjs(info?.datetime), 'day')
+  const len = selectedMonth?.length ?? 0
   const { classnames, onClick, onMouseEnter } = useAllDayGrid({
     info,
     idx,
     showSelectedBg: isCurrent || isSelectedForCreate,
     showBorderRight: (idx + 1) % 7 === 0,
-    showBorderBottom: idx > 34,
+    // showBorderBottom: idx > 27,
+    showBorderBottom: idx > len - 8,
   })
   const [t] = useTranslation()
 
