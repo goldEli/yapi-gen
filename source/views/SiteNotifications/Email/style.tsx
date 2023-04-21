@@ -4,13 +4,13 @@ export const Content = styled.div`
   padding: 48px 56px;
 `
 
-export const Content1 = styled.div`
+export const Content1 = styled.div<{ margin?: number }>`
   height: 22px;
   font-size: 14px;
   font-weight: 400;
   color: var(--neutral-n1-d1);
   line-height: 22px;
-  margin: 16px 0;
+  margin-bottom: ${(props: any) => `${props.margin}px`};
 `
 
 export const ContentEmail = styled.span`

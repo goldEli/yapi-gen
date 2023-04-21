@@ -15,7 +15,6 @@ import { First, Wrap } from './style'
 import { useDispatch, useSelector } from '@store/index'
 import { editMyAllNoteSet } from '@/services/SiteNotifications'
 import { setMyConfiguration } from '@store/SiteNotifications'
-import { log } from 'console'
 
 const Setting = () => {
   const [t] = useTranslation()
