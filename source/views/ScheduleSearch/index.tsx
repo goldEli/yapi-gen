@@ -35,7 +35,9 @@ const ScheduleSearch: React.FC<CalendarListProps> = props => {
   const { checkedCalendarList } = useSelector(state => state.calendar)
   const [inputDefaultValue, setInputDefaultValue] = useState<string>()
   const { calenderYearValue } = useSelector(state => state.calendarPanel)
-  const [searchList, setSearchList] = useState<any>([])
+  const [searchList, setSearchList] = useState<
+    Model.Schedule.ScheduleListViewInfo[]
+  >([])
   const [loading, setLoading] = useState(false)
   const disPatch = useDispatch()
   const navigate = useNavigate()
