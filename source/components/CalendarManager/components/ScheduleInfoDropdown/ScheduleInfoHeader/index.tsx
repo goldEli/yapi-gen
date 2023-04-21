@@ -59,7 +59,7 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
     }
     try {
       await scheduleInfoTransfer(params)
-      // message.success(t('转让成功'))
+      message.success('转让成功')
       setModalVisible(false)
       setShowTipBox(false)
       disPatch(setScheduleInfoDropdown({ visible: false }))

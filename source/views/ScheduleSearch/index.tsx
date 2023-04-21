@@ -117,7 +117,7 @@ const ScheduleSearch: React.FC<CalendarListProps> = props => {
                         )
                       }, 0)
 
-                      disPatch(setScheduleInfo(undefined))
+                      disPatch(setScheduleInfo(void 0))
                     }}
                   >
                     <span className={dateClass}>
