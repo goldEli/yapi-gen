@@ -68,6 +68,10 @@ const TableWrap = styled(Table)`
   .activeListItem {
     background: var(--hover-d2);
   }
+  //去掉表格颜色过度
+  .ant-table-tbody > tr > td {
+    transition: none;
+  }
 `
 // FIXME:保留样式
 // .ant-table-tbody > tr.ant-table-row-selected > td {

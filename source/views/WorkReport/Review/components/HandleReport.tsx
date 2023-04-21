@@ -38,13 +38,11 @@ const LabelTitle = styled.span`
   line-height: 22px;
 `
 const HeadWrap = styled.div<{ isCanImport: boolean }>`
-  height: 44px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
   .titleText {
-    height: 24px;
     font-size: 16px;
     font-family: SiYuanMedium;
     font-weight: 500;
@@ -77,6 +75,7 @@ const HeadWrap = styled.div<{ isCanImport: boolean }>`
     cursor: ${(props: any) => (props.isCanImport ? 'pointer' : 'not-allowed')};
     .notCopy {
       user-select: none;
+      white-space: nowrap;
     }
   }
 `

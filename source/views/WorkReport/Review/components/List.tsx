@@ -250,13 +250,10 @@ const List = () => {
                 {t('report.list.of')}
                 {record.name}
               </span>
-              {(id === 1 || id === 3) && (
-                <LabelTag
-                  options={reportState}
-                  state={record.is_supply === 1 ? 2 : 0}
-                />
+              {(id === 1 || id === 3) && record.is_supply === 1 && (
+                <LabelTag options={reportState} state={2} />
               )}
-              {id === 2 && (
+              {id === 2 && record.is_supply !== 2 && record.is_update !== 2 && (
                 <LabelTag
                   options={reportState}
                   state={
