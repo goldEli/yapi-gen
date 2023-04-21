@@ -641,7 +641,7 @@ const CreateSchedule = () => {
                   height={24}
                   onClick={() => setIsChooseVisible(true)}
                 >
-                  <IconFont type="plus" />
+                  <IconFont type="plus" style={{ fontSize: 18 }} />
                 </CloseWrap>
               </div>
               <ParticipantItems>
