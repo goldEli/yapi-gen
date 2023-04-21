@@ -1,3 +1,4 @@
+import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 
 export const Wrap = styled.div`
@@ -65,11 +66,14 @@ export const CloseWrap = styled.div<{ width?: any; height?: any }>`
     }
   }
 `
+
 export const GrepTitle = styled.span`
   color: var(--neutral-n3);
   font-size: 12px;
 `
+
 export const GrepTitle2 = styled.span`
+  margin-right: 16px;
   color: var(--neutral-n3);
   font-size: 12px;
   cursor: pointer;
@@ -96,4 +100,10 @@ export const MyFooter = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+`
+
+export const messageDrawer = css`
+  .ant-drawer-mask {
+    background: rgba(0, 0, 0, 0);
+  }
 `

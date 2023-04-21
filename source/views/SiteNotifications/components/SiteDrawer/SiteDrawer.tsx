@@ -23,6 +23,7 @@ import {
   Wrap,
   ActiveTab,
   GrepTitle2,
+  messageDrawer,
 } from './style'
 import { useTranslation } from 'react-i18next'
 import InfiniteScroll from 'react-infinite-scroll-component'
@@ -185,6 +186,7 @@ const SiteDrawer = () => {
 
   return (
     <Drawer
+      className={messageDrawer}
       forceRender
       bodyStyle={{
         padding: 16,
@@ -195,7 +197,6 @@ const SiteDrawer = () => {
       width={400}
       zIndex={1}
       closable={false}
-      mask={false}
       placement="right"
       onClose={onClose}
       open={isVisible}
