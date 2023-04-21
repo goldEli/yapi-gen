@@ -41,7 +41,7 @@ const useWeeks = () => {
     const index = selectedWeek.findIndex(item =>
       dayjs(item.date).isSame(dayjs(time), 'day'),
     )
-    console.log(dayjs(time).format(formatYYYYMMDDhhmmss), index)
+    // console.log(dayjs(time).format(formatYYYYMMDDhhmmss), index)
     return index * maxWidth
   }
 
