@@ -39,7 +39,7 @@ const DayBox = styled.div`
 `
 const dayActive = css`
   border-radius: 50%;
-  background: var(--neutral-white-d7);
+  background: transparent;
   color: var(--primary-d1);
   border: 1px solid var(--primary-d1);
   position: relative;

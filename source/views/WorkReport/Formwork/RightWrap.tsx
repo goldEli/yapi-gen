@@ -11,8 +11,16 @@ import PermissionConfig from './PermissionConfig'
 import EditWork from './EditWork'
 import PreviewDialog from '@/components/FormWork/PreviewDialog'
 import { useDispatch, useSelector } from '@store/index'
-import { setActiveItem, setEditSave, setTemplateName } from '@store/formWork'
+import {
+  setActiveItem,
+  setEditSave,
+  setTemplateName,
+  setTemplateContentConfigs,
+  setFillingRequirements,
+  setReportContent,
+} from '@store/formWork'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import { aWeekDataList } from '@/views/WorkReport/Formwork/DataList'
 import {
   deleteTemplate,
   upDateTemplate,
@@ -166,10 +174,56 @@ const RightFormWork = () => {
     }
     await deleteTemplate({ id: activeItem?.id })
     const res = await dispatch(getTemplateList())
-    res.payload?.length >= 1 &&
+    if (res.payload?.length >= 1) {
       dispatch(
         setActiveItem({ id: res.payload[0].id, name: res.payload[0].name }),
       )
+    } else {
+      // 初始化
+      dispatch(setActiveItem({ name: '' }))
+      dispatch(setTemplateName(''))
+      dispatch(
+        setTemplateContentConfigs([
+          {
+            name: '汇报对象',
+            is_required: 1,
+            tips: '',
+            type: 1,
+          },
+        ]),
+      )
+      const claerConfig: any = {
+        day: aWeekDataList,
+        template_configs: [],
+        hand_scope: 1,
+        is_all_write: 2,
+        is_all_view: 2,
+        is_submitter_edit: true,
+        is_cycle_limit: true,
+        is_supply: true,
+        reminder_time: 2 * 60 * 60,
+        auto_reminder: true,
+        submit_cycle: 1,
+        is_holiday: true,
+        end_time: {
+          day_type: 2,
+          time: 24 * 60 * 60,
+        },
+        start_time: {
+          day_type: 1,
+          time: 24 * 60 * 60,
+        },
+      }
+      dispatch(
+        setReportContent({
+          template_configs: [],
+          is_all_view: 2,
+          is_all_write: 2,
+        }),
+      )
+      dispatch(setFillingRequirements(claerConfig))
+    }
+
     message.success(t('formWork.message2'))
   }
   const getVerifyParams = (parmas: any) => {
@@ -269,6 +323,7 @@ const RightFormWork = () => {
       await upDateTemplate(parmas)
       message.success(t('formWork.message6'))
       await dispatch(getTemplateList())
+      dispatch(setActiveItem({ name: templateName, id: activeItem?.id }))
     } else {
       const res = await createTemplate(parmas)
       await dispatch(getTemplateList())
@@ -283,6 +338,7 @@ const RightFormWork = () => {
       dispatch(setEditSave(true))
     }
   }, [activeItem])
+  console.log(activeItem, 'activeItem')
   const getBtn = () => {
     // 编辑的情况0和1都应该有
     if (editSave && activeItem?.id) {
@@ -303,6 +359,18 @@ const RightFormWork = () => {
       return <CommonButton type="primary"> {t('formWork.save1')}</CommonButton>
     }
   }
+  const getTitle = () => {
+    console.log(activeItem, 'activeItem')
+    if (!activeItem?.name && !templateName) {
+      return t('formWork.t1')
+    } else {
+      return templateName || activeItem?.name
+    }
+  }
+  console.log(templateName, 'templateName')
+  useEffect(() => {
+    getTitle()
+  }, [templateName])
   return (
     <Spin
       spinning={isSpinning}
@@ -316,7 +384,7 @@ const RightFormWork = () => {
       }}
     >
       <RightFormWorkStyle>
-        <Title>{t('formWork.t1')}</Title>
+        <Title>{getTitle()}</Title>
         <HeaderOperate>
           <RowStyle>
             <Col onClick={() => setIsActive(0)}>

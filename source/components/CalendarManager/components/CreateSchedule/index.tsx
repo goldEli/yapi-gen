@@ -641,7 +641,7 @@ const CreateSchedule = () => {
                   height={24}
                   onClick={() => setIsChooseVisible(true)}
                 >
-                  <IconFont type="plus" />
+                  <IconFont type="plus" style={{ fontSize: 18 }} />
                 </CloseWrap>
               </div>
               <ParticipantItems>
@@ -684,7 +684,7 @@ const CreateSchedule = () => {
                 placeholder={t(
                   'calendarManager.please_enter_a_schedule_description',
                 )}
-                autoSize
+                autoSize={{ maxRows: 5 }}
                 maxLength={200}
               />
             </Form.Item>
