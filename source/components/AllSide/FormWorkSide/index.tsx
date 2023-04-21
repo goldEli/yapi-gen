@@ -96,7 +96,7 @@ const FormWorkSide = () => {
   )
   useEffect(() => {
     dataList.forEach((el: any, index: any) => {
-      if (el.id === activeItem.id) {
+      if (el.id === activeItem?.id) {
         setIsActive(index)
       }
     })
