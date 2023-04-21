@@ -361,10 +361,7 @@ const HeaderLeft = () => {
 
       {showTopNav && (
         <ChildrenMenu>
-          {(currentMenu?.url === '/Report'
-            ? [...currentMenu.children].reverse()
-            : currentMenu.children
-          ).map((i: any) => (
+          {currentMenu.children.map((i: any) => (
             <ChildrenMenuItem
               onClick={() => handleClickMenuItem(i.url)}
               key={i.id}
