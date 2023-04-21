@@ -73,7 +73,6 @@ const Email = () => {
         >
           <Breadcrumb.Item>
             <span style={{ color: 'var(--neutral-n1-d1)' }}>
-              {' '}
               {t('notification')}
             </span>
           </Breadcrumb.Item>
@@ -86,7 +85,7 @@ const Email = () => {
         ) : null}
       </First>
       <Content>
-        <Content1>
+        <Content1 margin={21}>
           {t(
             'ReceiveEmailUpdatesWithMentionsInvitationsAndCommentsAboutItemsYouCareAbout',
           )}
@@ -96,9 +95,9 @@ const Email = () => {
         </Content1>
         {active ? (
           <ActiveContentEmail2 active={active}>
-            <Content1>
+            <Content1 margin={21}>
               {t('use_this_email_to_receive')}
-              <ContentEmail>{email}</ContentEmail>
+              {email ? <ContentEmail>{email}</ContentEmail> : '--'}
             </Content1>
 
             <Content1>
