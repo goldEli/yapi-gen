@@ -9,8 +9,12 @@ import dayjs from 'dayjs'
 import { formatYYYYMMDDhhmmss, oneHourHeight } from '../../config'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
 import { ResizeDirection } from 're-resizable'
+import useWeeks from '../../components/CalendarWeek/hooks/useWeeks'
 
-const useMoveCard = (props: { data: Model.Schedule.Info }) => {
+const useMoveCard = (props: {
+  data: Model.Schedule.Info
+  type: Model.Calendar.CalendarPanelType
+}) => {
   const [localTime, setLocalTime] = useState<{
     start_timestamp: number
     end_timestamp: number
@@ -23,6 +27,7 @@ const useMoveCard = (props: { data: Model.Schedule.Info }) => {
     end_timestamp: string
   } | null>(null)
   //   const { getBgColor, getColorClassName } = useColor()
+  const { getCurrentWeekDayByLeft } = useWeeks()
 
   React.useEffect(() => {
     setLocalTime({
@@ -82,6 +87,29 @@ const useMoveCard = (props: { data: Model.Schedule.Info }) => {
     )
   }
 
+  // const onModifyWeek = (start_timestamp: number, end_timestamp: number) => {
+  //   // 修改日程
+  //   // 修改本地
+  //   setLocalTime({
+  //     start_timestamp,
+  //     end_timestamp,
+  //   })
+
+  //   // 修改数据库
+  //   const { schedule_id, color, subject, calendar_id } = props.data
+
+  //   dispatch(
+  //     modifySchedule({
+  //       calendar_id,
+  //       schedule_id,
+  //       color,
+  //       subject,
+  //       start_datetime: dayjs(start_timestamp).format(formatYYYYMMDDhhmmss),
+  //       end_datetime: dayjs(end_timestamp).format(formatYYYYMMDDhhmmss),
+  //     }),
+  //   )
+  // }
+
   const onDragStop = (e: DraggableEvent, draggableData: DraggableData) => {
     e.stopPropagation()
     const { x, node, y, deltaX, deltaY, lastY } = draggableData
@@ -90,8 +118,21 @@ const useMoveCard = (props: { data: Model.Schedule.Info }) => {
       end_timestamp,
       y - top,
     )
+    if (props.type === 'day') {
+      onModify(time.startTime.valueOf(), time.endTime.valueOf())
+    }
 
-    onModify(time.startTime.valueOf(), time.endTime.valueOf())
+    if (props.type === 'week') {
+      // 基于当前的日期更新
+      const weekDay = getCurrentWeekDayByLeft(x)
+      const newStartTime = dayjs(
+        `${weekDay} ${time.startTime.format('HH:mm:ss')}`,
+      ).valueOf()
+      const newEndTime = dayjs(
+        `${weekDay} ${time.endTime.format('HH:mm:ss')}`,
+      ).valueOf()
+      onModify(dayjs(newStartTime).valueOf(), dayjs(newEndTime).valueOf())
+    }
 
     setTimeRange(null)
 
