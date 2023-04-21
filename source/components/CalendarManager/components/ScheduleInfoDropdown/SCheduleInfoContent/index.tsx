@@ -27,13 +27,6 @@ const ScheduleInfoContent: React.FC = props => {
   const { scheduleInfo } = useSelector(state => state.schedule)
   const [toggleStatus, setToggleStatus] = useState(false)
   const [t] = useTranslation()
-  const [fileType, setFileType] = useState({
-    docx: 'colorDOC-76p4mioh',
-    ppt: 'colorPPT',
-    pdf: 'colorpdf',
-    video: 'colorvideo',
-    zip: 'zip',
-  })
   return (
     <ScheduleInfoContentBox>
       <ScheduleInfoContentItem>
@@ -96,57 +89,25 @@ const ScheduleInfoContent: React.FC = props => {
           <div className={contentTip}>{t('calendarManager.file_list')}</div>
         </ScheduleInfoContentItem>
       ) : null}
+      {scheduleInfo?.files?.length ? (
+        <FileList>
+          <UploadAttach
+            power
+            isReport
+            defaultList={scheduleInfo?.files?.map((i: any) => ({
+              url: i.url,
+              id: new Date().getTime() + Math.random() + i.user_id,
+              size: Math.abs(i.size),
+              time: i.created_at,
+              name: i.name || '--',
+              suffix: i.suffix,
+              username: i.user.name ?? '--',
+            }))}
+            onChangeAttachment={() => {}}
+          ></UploadAttach>
+        </FileList>
+      ) : null}
 
-      {/* <FileList>
-        {scheduleInfo?.files?.map((item, index) => (
-          <FileItem key={index}>
-            <span>
-              <IconFont
-                type={
-                  fileType[
-                    item.url.substring(
-                      item.url.lastIndexOf('.') + 1,
-                    ) as keyof typeof fileType
-                  ] || 'colorunknown'
-                }
-              />
-            </span>
-            <FileItemInfo>
-              <span>
-                {decodeURIComponent(
-                  item.url.substring(item.url.lastIndexOf('/') + 1),
-                )}
-              </span>
-              <span>
-                {item.user.name} {item.created_at}
-              </span>
-            </FileItemInfo>
-          </FileItem>
-        ))}
-      </FileList> */}
-      <FileList>
-        <UploadAttach
-          power
-          isReport
-          defaultList={scheduleInfo?.files?.map((i: any) => ({
-            url: i.url,
-            id: new Date().getTime() + Math.random() + i.user_id,
-            size: Math.abs(i.size),
-            time: i.created_at,
-            name: i.name || '--',
-            suffix: i.suffix,
-            username: i.user.name ?? '--',
-          }))}
-          // addWrap={
-          //   <div style={{ marginBottom: 8 }}>
-          //     <CommonButton type="primaryText" icon="plus" iconPlacement="left">
-          //       {t('calendarManager.addAdjunct')}
-          //     </CommonButton>
-          //   </div>
-          // }
-          onChangeAttachment={() => {}}
-        ></UploadAttach>
-      </FileList>
       {scheduleInfo?.reminds?.map((item, idx) => (
         <ScheduleInfoContentItem key={idx}>
           <span>
