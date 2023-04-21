@@ -1,6 +1,6 @@
 import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
-import { Breadcrumb, Select, Switch, message } from 'antd'
+import { Breadcrumb, Select, Switch, message, Space } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { First, Wrap } from '../Setting/style'
 import {
@@ -103,7 +103,7 @@ const Email = () => {
             <Content1>
               {t('what_situations_require_email_notification')}
             </Content1>
-            <div>
+            <Space size={12}>
               {emailConfigurations.map((i: any) => (
                 <ContentEmail2
                   active={choose.includes(i.id)}
@@ -113,7 +113,7 @@ const Email = () => {
                   {i.text}
                 </ContentEmail2>
               ))}
-            </div>
+            </Space>
           </ActiveContentEmail2>
         ) : null}
       </Content>
