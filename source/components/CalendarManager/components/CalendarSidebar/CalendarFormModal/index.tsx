@@ -505,7 +505,7 @@ const CalendarFormModal = () => {
               allowClear
               maxLength={200}
               autoFocus
-              autoSize
+              autoSize={{ maxRows: 5 }}
             />
           </Form.Item>
           <Form.Item

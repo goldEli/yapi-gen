@@ -13,6 +13,7 @@ const CalendarSetSideTitle = styled.div`
 
 const BackBox = styled.div`
   padding: 0 24px;
+  width: fit-content;
   .box {
     width: 100%;
     height: 48px;
@@ -20,14 +21,16 @@ const BackBox = styled.div`
     align-items: center;
     cursor: pointer;
     border-bottom: 1px solid var(--neutral-n6-d1);
+    color: var(--neutral-n3);
     .icon {
       font-size: 16px;
-      color: var(--neutral-n3);
       margin-right: 4px;
     }
     .text {
       font-size: 12px;
-      color: var(--neutral-n3);
+    }
+    &:hover {
+      color: var(--primary-d2);
     }
   }
 `
@@ -48,6 +51,9 @@ const MenuItem = styled.div<{ active: boolean }>`
     props.active ? 'var(--gradient-left)' : 'transparent'};
   font-family: ${props => (props.active ? 'SiYuanMedium' : '')};
   cursor: pointer;
+  &:hover {
+    color: var(--primary-d2);
+  }
 `
 
 const CalendarSetSide = () => {

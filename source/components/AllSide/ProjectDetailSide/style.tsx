@@ -75,11 +75,17 @@ export const MenuItem = styled.div<{ isActive?: boolean }>`
   display: flex;
   align-items: center;
   padding: 0 24px;
-  color: ${props =>
-    props.isActive ? 'var(--primary-d2)' : 'var(--neutral-n1-d2)'};
   cursor: pointer;
+  &:hover {
+    svg,
+    div {
+      color: var(--primary-d2) !important;
+    }
+  }
   div {
     margin-left: 12px;
+    color: ${props =>
+      props.isActive ? 'var(--primary-d2)' : 'var(--neutral-n1-d2)'};
   }
   svg {
     color: ${props =>
@@ -87,12 +93,6 @@ export const MenuItem = styled.div<{ isActive?: boolean }>`
   }
   background: ${props =>
     props.isActive ? 'var(--gradient-left)' : 'transparent'};
-  &:hover {
-    svg {
-      color: var(--primary-d2) !important;
-    }
-    color: var(--primary-d2) !important;
-  }
 `
 
 export const Provider = styled.div`

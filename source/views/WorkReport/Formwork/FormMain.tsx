@@ -301,37 +301,6 @@ const FormMain = (props: FormType) => {
     }
     dispatch(setErr(true))
   }
-  const getValuesOnece = (type: string, v1: number, v2: number, v3: number) => {
-    if (type === 'start') {
-      startTime = {
-        v1,
-        v2,
-        v3,
-      }
-      setStartTimes(startTime)
-    } else if (type === 'end') {
-      endTime = {
-        v1,
-        v2,
-        v3,
-      }
-      setEndTimes(endTime)
-    } else if (type === 'remind') {
-      if (props.type === 'day') {
-        remindTime = {
-          v2,
-          v3,
-        }
-      } else if (props.type === 'week' || props.type === 'month') {
-        remindTime = {
-          v1,
-          v2,
-          v3,
-        }
-      }
-      setRemindTimes(remindTime)
-    }
-  }
   const getValues = (
     type: string,
     v1: number,
@@ -399,6 +368,7 @@ const FormMain = (props: FormType) => {
       {/* 不重复是时间插件*/}
       {props.type === 'doNot' ? null : (
         <Form.Item
+          rules={[{ required: true, message: '' }]}
           style={{
             marginBottom: '32px',
           }}
@@ -421,6 +391,7 @@ const FormMain = (props: FormType) => {
       )}
 
       <Form.Item
+        rules={[{ required: true, message: '' }]}
         style={{
           margin: '32px 0 16px 0',
         }}
@@ -473,6 +444,7 @@ const FormMain = (props: FormType) => {
         <Edit />
       </Form.Item>
       <Form.Item
+        rules={[{ required: true, message: '' }]}
         style={{
           marginTop: '16px',
           marginBottom: '44px',

@@ -13,6 +13,9 @@ export const CreateWrap = styled.div`
   cursor: pointer;
   background: var(--primary-d1);
   color: var(--neutral-white-d7);
+  &:hover {
+    background: var(--auxiliary-b2);
+  }
 `
 
 export const UserAvatar = styled.div`

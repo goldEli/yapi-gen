@@ -40,6 +40,9 @@ const TabsWrap = styled(Tabs)`
     text-shadow: none;
     font-family: SiYuanMedium;
   }
+  .ant-tabs-nav::before {
+    border-bottom: 1px solid var(--neutral-n6-d2);
+  }
 `
 
 const TabsContentWrap = styled.div`
