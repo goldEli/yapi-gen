@@ -163,6 +163,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
 
   // 是否是全天
   const onChangeIsAll = (e: CheckboxChangeEvent) => {
+    setNoticeList([])
     setIsAll(e.target.checked)
     form.setFieldsValue({
       isAll: e.target.checked,
