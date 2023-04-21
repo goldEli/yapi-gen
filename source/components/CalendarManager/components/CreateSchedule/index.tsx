@@ -49,7 +49,6 @@ import { modifySchedule, saveSchedule } from '@store/schedule/schedule.thunk'
 import { useTranslation } from 'react-i18next'
 import { getScheduleInfo } from '@/services/schedule'
 import { setVisualizationTime } from '@store/schedule'
-import { type } from 'os'
 
 interface DefaultTime {
   value?: number
