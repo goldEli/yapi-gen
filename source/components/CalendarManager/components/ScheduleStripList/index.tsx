@@ -80,8 +80,6 @@ const ScheduleStripList: React.FC<ScheduleListProps> = props => {
     })
   }, [showList, props.idx, props.containerClassName])
 
-  console.log(props.data.datetime, { allList, list, showList })
-
   return (
     <ScheduleListBox>
       {scheduleListItemElements}
