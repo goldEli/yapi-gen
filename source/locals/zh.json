@@ -1247,7 +1247,8 @@
       "fail": "操作失败",
       "modifyReport": "修改汇报",
       "haveComment": "已评",
-      "prevDateSubmit": "上次提交时间"
+      "prevDateSubmit": "上次提交时间",
+      "add": "请添加"
     },
     "statistics": {
       "title": "汇报我的统计",

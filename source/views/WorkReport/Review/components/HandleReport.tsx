@@ -84,7 +84,7 @@ const HeadWrap = styled.div<{ isCanImport: boolean }>`
 const HandleReport = (props: any) => {
   const [form] = Form.useForm()
   const [options, setOptions] = useState<any>([])
-  const leftDom: any = useRef<HTMLInputElement>(null)
+  const wrapRef = useRef<HTMLInputElement>(null)
   const [t]: any = useTranslation()
   const userInfo = useSelector(state => state.user.userInfo)
   const [reportDetail, setReportDetail] = useState<any>(null)
@@ -104,7 +104,17 @@ const HandleReport = (props: any) => {
   // 写汇报| 修改汇报 | 补交汇报 的提交操作
   const confirm = async () => {
     isFirstValidator.current += 1
-    const params: any = await form.validateFields()
+    const params = await form.validateFields().catch(() => {
+      setTimeout(() => {
+        const errorList = (wrapRef.current as any).querySelectorAll(
+          '.ant-form-item-has-error',
+        )
+        errorList[0].scrollIntoView({
+          block: 'center',
+          behavior: 'smooth',
+        })
+      }, 100)
+    })
     let users: any[] = []
     const data: any[] = []
     Object.keys(params).forEach((key: string) => {
@@ -178,11 +188,7 @@ const HandleReport = (props: any) => {
       [name]: arr,
     })
   }
-  //
-  const onBottom = () => {
-    const dom: any = leftDom?.current
-    dom.scrollTop = dom.scrollHeight
-  }
+
   // 导入上一篇
   const importPreviousArticle = () => {
     if (reportDetail.prev_report_id) {
@@ -341,7 +347,15 @@ const HandleReport = (props: any) => {
 
   // 自定义校富文本框
   const onValidator = (rule: any, value: any) => {
-    if (value === '<p><br></p>' || value === '<p></p>' || value.trim() === '') {
+    console.log('rule', value, rule)
+
+    if (
+      (value === '<p><br></p>' ||
+        value === '<p></p>' ||
+        value?.trim() === '' ||
+        !value) &&
+      rule?.required
+    ) {
       return Promise.reject(
         new Error('The two passwords that you entered do not match!'),
       )
@@ -349,9 +363,13 @@ const HandleReport = (props: any) => {
     return Promise.resolve()
   }
 
-  // 自定义校验汇报对象
+  // 自定义校验 汇报对象 || 关联需求
   const onValidatorForPerson = (rule: any, value: any) => {
-    if (value?.length === 0 && isFirstValidator.current !== 0) {
+    if (
+      value?.length === 0 &&
+      isFirstValidator.current !== 0 &&
+      rule?.required
+    ) {
       return Promise.reject(new Error(''))
     }
     return Promise.resolve()
@@ -367,7 +385,7 @@ const HandleReport = (props: any) => {
             name={`${content.type}_${content.id}`}
             rules={[
               {
-                required: content.is_required,
+                required: content.is_required === 1,
                 message: (
                   <div
                     style={{
@@ -392,6 +410,23 @@ const HandleReport = (props: any) => {
           <Form.Item
             label={<LabelTitle>{content.name}</LabelTitle>}
             name={`${content.type}_${content.id}`}
+            rules={[
+              {
+                required: content.is_required === 1,
+                message: (
+                  <div
+                    style={{
+                      margin: '5px 0',
+                      fontSize: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {t('report.list.upload')}
+                  </div>
+                ),
+              },
+            ]}
           >
             <UploadAttach
               power
@@ -399,7 +434,6 @@ const HandleReport = (props: any) => {
               onChangeAttachment={(res: any) => {
                 onChangeAttachment(res, `${content.type}_${content.id}`)
               }}
-              onBottom={onBottom}
               addWrap={
                 <AddWrap
                   style={{
@@ -425,7 +459,7 @@ const HandleReport = (props: any) => {
             rules={[
               {
                 validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
-                required: true,
+                required: content.is_required === 1,
                 message: (
                   <div
                     style={{
@@ -456,6 +490,24 @@ const HandleReport = (props: any) => {
             label={<LabelTitle>{content.name}</LabelTitle>}
             name={`${content.type}_${content.id}`}
             key={content.id}
+            rules={[
+              {
+                required: content.is_required === 1,
+                message: (
+                  <div
+                    style={{
+                      margin: '5px 0',
+                      fontSize: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {t('report.list.add')}
+                  </div>
+                ),
+                validator: onValidatorForPerson,
+              },
+            ]}
           >
             <RelatedNeed
               initValue={
@@ -505,7 +557,7 @@ const HandleReport = (props: any) => {
             overflow: 'scroll',
             padding: ' 0 24px',
           }}
-          ref={leftDom}
+          ref={wrapRef}
         >
           <HeadWrap isCanImport={reportDetail?.prev_report_id}>
             <div
@@ -556,21 +608,7 @@ const HandleReport = (props: any) => {
               <span className="notCopy">{t('report.list.import')}</span>
             </div>
           </HeadWrap>
-          <Form
-            form={form}
-            layout="vertical"
-            onFinishFailed={() => {
-              setTimeout(() => {
-                const errorList = (document as any).querySelectorAll(
-                  '.ant-form-item-has-error',
-                )
-                errorList[0].scrollIntoView({
-                  block: 'center',
-                  behavior: 'smooth',
-                })
-              }, 100)
-            }}
-          >
+          <Form form={form} layout="vertical">
             {reportDetail?.template_content_configs?.map((item: any) => {
               return <div key={item.id}>{getFormItemHtml(item)}</div>
             })}

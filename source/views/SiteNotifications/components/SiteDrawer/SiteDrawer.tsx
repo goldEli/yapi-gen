@@ -143,7 +143,6 @@ const SiteDrawer = () => {
     const arr = list.map((i: any) => i.id)
     setReads(arr)
   }
-  console.log(list)
 
   const reset = async () => {
     const res = await getContactStatistics()
