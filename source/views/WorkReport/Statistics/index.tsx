@@ -182,8 +182,7 @@ const Statistics = () => {
     setIsSpinning(true)
 
     const response = await getStatUserList({
-      // eslint-disable-next-line no-undefined
-      report_template_id: tabKey === '-1' ? undefined : tabKey,
+      report_template_id: tabKey === '-1' ? void 0 : tabKey,
       ...queryParams,
     })
     setUserListData(response)
