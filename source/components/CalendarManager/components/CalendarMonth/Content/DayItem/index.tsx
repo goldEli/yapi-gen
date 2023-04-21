@@ -12,6 +12,7 @@ import {
   DayItemBox,
 } from '@/components/CalendarManager/styles'
 import { useTranslation } from 'react-i18next'
+import useShowLunar from '@/components/CalendarManager/hooks/useShowLunar'
 
 interface DayItemProps {
   idx: number
@@ -59,6 +60,7 @@ const DayItem: React.FC<DayItemProps> = props => {
   const { selectedDayInMonth } = useSelector(store => store.calendarPanel)
   const { idx } = props
   const info = selectedMonth?.[props.idx]
+  const { showLunar } = useShowLunar()
 
   const day = dayjs(info?.date).format('DD')
   const isSelected = dayjs(checkedTime).isSame(dayjs(info?.date), 'day')
@@ -97,7 +99,7 @@ const DayItem: React.FC<DayItemProps> = props => {
         >
           {day}
         </span>
-        <span className="lunar">{info?.lunar_day_chinese}</span>
+        {showLunar && <span className="lunar">{info?.lunar_day_chinese}</span>}
       </DayBox>
       <ScheduleStripList
         containerClassName=".calendar-month-content-box"
