@@ -65,7 +65,7 @@ const MoveCard: React.FC<ScheduleCardProps> = props => {
 
   const { is_show_busy } = data || {}
 
-  const { getBgColor, getColorClassName } = useColor()
+  const { getColorClassName } = useColor()
 
   const content = useMemo(() => {
     if (is_show_busy) {

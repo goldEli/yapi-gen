@@ -26,7 +26,7 @@ const useMoveCard = (props: {
     start_timestamp: string
     end_timestamp: string
   } | null>(null)
-  //   const { getBgColor, getColorClassName } = useColor()
+
   const { getCurrentWeekDayByLeft } = useWeeks()
 
   React.useEffect(() => {
@@ -86,29 +86,6 @@ const useMoveCard = (props: {
       }),
     )
   }
-
-  // const onModifyWeek = (start_timestamp: number, end_timestamp: number) => {
-  //   // 修改日程
-  //   // 修改本地
-  //   setLocalTime({
-  //     start_timestamp,
-  //     end_timestamp,
-  //   })
-
-  //   // 修改数据库
-  //   const { schedule_id, color, subject, calendar_id } = props.data
-
-  //   dispatch(
-  //     modifySchedule({
-  //       calendar_id,
-  //       schedule_id,
-  //       color,
-  //       subject,
-  //       start_datetime: dayjs(start_timestamp).format(formatYYYYMMDDhhmmss),
-  //       end_datetime: dayjs(end_timestamp).format(formatYYYYMMDDhhmmss),
-  //     }),
-  //   )
-  // }
 
   const onDragStop = (e: DraggableEvent, draggableData: DraggableData) => {
     e.stopPropagation()
