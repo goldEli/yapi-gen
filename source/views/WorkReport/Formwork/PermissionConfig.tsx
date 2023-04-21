@@ -21,7 +21,7 @@ import {
 } from '@store/formWork'
 import { dayData1, weekData, monthData, aWeekDataList } from './DataList'
 import moment from 'moment'
-import { throttle } from 'lodash'
+import { debounce, throttle } from 'lodash'
 import { useTranslation } from 'react-i18next'
 const PermissionConfigStyle = styled.div`
   padding: 0 24px;

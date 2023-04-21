@@ -170,12 +170,9 @@ const RightFormWork = () => {
   }, [activeItem])
   // 删除模板
   const deleteActiveItem = async () => {
-    setDelIsVisible(false)
-    if (!activeItem?.id) {
-      const res = await dispatch(getTemplateList())
-      return
+    if (activeItem?.id) {
+      await deleteTemplate({ id: activeItem?.id })
     }
-    await deleteTemplate({ id: activeItem?.id })
     const res = await dispatch(getTemplateList())
     if (res.payload?.length >= 1) {
       dispatch(
@@ -226,7 +223,7 @@ const RightFormWork = () => {
       )
       dispatch(setFillingRequirements(claerConfig))
     }
-
+    setDelIsVisible(false)
     message.success(t('formWork.message2'))
   }
   const getVerifyParams = (parmas: any) => {

@@ -163,12 +163,12 @@ const Picker = (props: PropsType) => {
 
   //  时分数转化为秒
   const time1 = (d: number, h: number, m: number) => {
-    if (h < 0 || m < 0) {
-      message.warning('请选择时间')
-      return
-    }
+    // if (h < 0 || m < 0) {
+    //   message.warning('请选择时间')
+    //   return
+    // }
     let datS: any = d ? d * 60 * 60 * 24 : 0
-    let hS = h * 60 * 60
+    let hS = h === 0 ? 24 : h * 60 * 60
     let minute = m * 60
     const second = datS + hS + minute
     return second
@@ -188,11 +188,12 @@ const Picker = (props: PropsType) => {
       })
     } else {
       if (props.type === 'day') {
-        if (centerActiveVal < 0 || rightActiveVal < 0) return
+        // if (centerActiveVal < 0 || rightActiveVal < 0) return
+        console.log(centerActiveVal, rightActiveVal, 'pppp')
         props?.onChange?.(time1(0, centerActiveVal, rightActiveVal))
       } else {
-        if (leftActiveVal < 0 || centerActiveVal < 0 || rightActiveVal < 0)
-          return
+        // if (leftActiveVal < 0 || centerActiveVal < 0 || rightActiveVal < 0)
+        //   return
         props?.onChange?.(time1(leftActiveVal, centerActiveVal, rightActiveVal))
       }
     }
