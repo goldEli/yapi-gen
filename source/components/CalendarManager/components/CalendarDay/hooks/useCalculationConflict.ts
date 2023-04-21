@@ -8,23 +8,17 @@ import {
   getStyleValue,
 } from '@/components/CalendarManager/utils'
 import useScheduleList from './useScheduleList'
+import useMaxWidth from '@/components/CalendarManager/hooks/useMaxWith'
 
 const minLeft = 58
+
 const useCalculationConflict = () => {
   const { list } = useScheduleList()
-  const [maxWidth, setMaxWidth] = useState(0)
   const [data, setData] = useState<
     { info: Model.Schedule.Info; width: number; left: number }[]
   >([])
 
-  useEffect(() => {
-    const timeScale = document.querySelector('.time-scale')
-    if (!timeScale) {
-      return
-    }
-    const width = Math.floor(getStyleValue(timeScale, 'width')) - minLeft
-    setMaxWidth(width)
-  }, [])
+  const { maxWidth } = useMaxWidth('.time-scale', minLeft)
 
   useEffect(() => {
     if (!maxWidth) {
