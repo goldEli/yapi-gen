@@ -119,37 +119,37 @@ const formWork = createSlice({
       }
       const nowData = [
         {
-          label: '周一',
+          label: 'monday',
           key: 0,
           value: true,
         },
         {
-          label: '周二',
+          label: 'tuesday',
           key: 1,
           value: true,
         },
         {
-          label: '周三',
+          label: 'wednesday',
           key: 2,
           value: true,
         },
         {
-          label: '周四',
+          label: 'thursday',
           key: 3,
           value: true,
         },
         {
-          label: '周五',
+          label: 'friday',
           key: 4,
           value: true,
         },
         {
-          label: '周六',
+          label: 'saturday',
           key: 5,
           value: true,
         },
         {
-          label: '周日',
+          label: 'sunday',
           key: 6,
           value: true,
         },
@@ -182,7 +182,7 @@ const formWork = createSlice({
         // 每个周期限填一次1- 是 2-否
         is_cycle_limit: data.is_cycle_limit === 1 ? true : false,
         // 提交汇报提交人可修改 1-是 2-否
-        is_submitter_edit: data.is_submitter_edit,
+        is_submitter_edit: data.is_submitter_edit === 1 ? true : false,
         // 补交范围，数字对应周期属性
         hand_scope: Number(data.hand_scope),
       }

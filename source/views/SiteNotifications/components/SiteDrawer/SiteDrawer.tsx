@@ -8,7 +8,7 @@
 /* eslint-disable react/jsx-no-undef */
 import IconFont from '@/components/IconFont'
 import { useDispatch, useSelector } from '@store/index'
-import { changeVisible } from '@store/SiteNotifications'
+import { changeNumber, changeVisible } from '@store/SiteNotifications'
 import { Checkbox, Divider, Drawer, Skeleton, Tooltip } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -37,9 +37,10 @@ const SiteDrawer = () => {
   const [t] = useTranslation()
   const [active, setActive] = useState('3')
   const newName = useRef<any>(undefined)
+  const atmy = useRef<any>(undefined)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const isVisible = useSelector(store => store.siteNotifications.isVisible)
+  const { all, isVisible } = useSelector(store => store.siteNotifications)
   const [list, setList] = useState([])
   const [now, setNow] = useState()
   const lastId = useRef(0)
@@ -55,12 +56,12 @@ const SiteDrawer = () => {
     },
     {
       id: '1',
-      text: `${t('new1')}(${now})`,
+      text: `${t('new1')}(${now ?? 0})`,
     },
-    // {
-    //   id: '2',
-    //   text: t('atmy'),
-    // },
+    {
+      id: '2',
+      text: t('atmy'),
+    },
   ]
 
   const onChange = (e: CheckboxChangeEvent) => {
@@ -79,6 +80,7 @@ const SiteDrawer = () => {
       lastId: lastId.current,
       read: localStorage.getItem('read'),
       latTime: newName.current,
+      msgType: atmy.current,
     })
     lastId.current = re4.lastId
 
@@ -101,11 +103,19 @@ const SiteDrawer = () => {
     setActive(id)
     setHasMore(true)
     if (id === '3') {
+      atmy.current = undefined
       newName.current = undefined
       lastId.current = 0
       fetchMoreData(1)
     }
+    if (id === '2') {
+      newName.current = undefined
+      atmy.current = ['191', '132']
+      lastId.current = 0
+      fetchMoreData(1)
+    }
     if (id === '1') {
+      atmy.current = undefined
       newName.current = Math.floor(new Date().valueOf() / 1000) - 5 * 60 * 1000
       lastId.current = 0
       fetchMoreData(1)
@@ -113,20 +123,30 @@ const SiteDrawer = () => {
   }
 
   const setReads = async (values: any) => {
-    await setReadApi(values)
-    setHasMore(true)
-    setList([])
-    lastId.current = 0
-    fetchMoreData(1)
+    const res = await setReadApi(values)
+    console.log(res)
+    if (res.code === 0) {
+      const res2 = await getContactStatistics()
+      let num = 0
+      res2.list.slice(1, 5).forEach((i: any) => {
+        num += Number(i.nread)
+      })
+
+      dispatch(changeNumber(num))
+      setHasMore(true)
+      setList([])
+      lastId.current = 0
+      fetchMoreData(1)
+    }
   }
   const setAllRead = () => {
     const arr = list.map((i: any) => i.id)
     setReads(arr)
   }
+  console.log(list)
 
   const reset = async () => {
     const res = await getContactStatistics()
-    console.log(res)
     const a = res.list.find((i: any) => i.send_user === 'now')
     setNow(a.nread)
   }
@@ -137,7 +157,7 @@ const SiteDrawer = () => {
   useEffect(() => {
     isVisible ? fetchMoreData(1) : n2()
     isVisible ? reset() : null
-  }, [isVisible, read])
+  }, [isVisible, read, all])
 
   const readStatue = () => {
     let state: boolean

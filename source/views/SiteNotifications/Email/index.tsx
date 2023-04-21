@@ -100,23 +100,7 @@ const Email = () => {
               {t('use_this_email_to_receive')}
               <ContentEmail>{email}</ContentEmail>
             </Content1>
-            <Content1>{t('receive_format')}</Content1>
-            <div>
-              <Select
-                defaultValue="lucy"
-                style={{ width: 320 }}
-                options={[
-                  {
-                    value: 'jack',
-                    label: 'HTML',
-                  },
-                  {
-                    value: 'lucy',
-                    label: '文本',
-                  },
-                ]}
-              />
-            </div>
+
             <Content1>
               {t('what_situations_require_email_notification')}
             </Content1>

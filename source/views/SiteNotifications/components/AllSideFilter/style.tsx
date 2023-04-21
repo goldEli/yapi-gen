@@ -27,7 +27,7 @@ export const MyIconModeWrap = styled.div`
 
 export const MyIconMode = styled.div<{ active?: boolean; tap: any }>`
   display: flex;
-  cursor: ${props => (props.tap ? 'pointer' : 'text')};
+  cursor: pointer;
   /* cursor: pointer; */
   align-items: center;
   justify-content: center;
