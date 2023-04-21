@@ -103,7 +103,7 @@ const Statistics = () => {
   const [userListData, setUserListData] = useState<any>({})
   const [usageDataList, setUsageDataList] = useState<any[]>([])
   const [statInfoData, setStatInfoData] = useState<any>({})
-  const [tabKey, setTabKey] = useState<string | number>('')
+  const [tabKey, setTabKey] = useState<string | number>('-1')
   const [queryParams, setQueryParams] = useState<any>({})
 
   const columns: ColumnsType<any> = [
@@ -170,8 +170,10 @@ const Statistics = () => {
       }
     })
     setSpinning(false)
-    setTabItems(items)
-    setTabKey(list[0]?.id)
+    setTabItems([
+      { label: String(t('report.statistics.allReport')), key: '-1' },
+      ...items,
+    ])
   }
 
   const getUsageDataList = async () => {
@@ -181,8 +183,9 @@ const Statistics = () => {
 
   const getUserList = async () => {
     setIsSpinning(true)
+
     const response = await getStatUserList({
-      report_template_id: tabKey,
+      report_template_id: tabKey === '-1' ? void 0 : tabKey,
       ...queryParams,
     })
     setUserListData(response)
