@@ -170,7 +170,10 @@ const Statistics = () => {
       }
     })
     setSpinning(false)
-    setTabItems([{ label: '所有汇报', key: '-1' }, ...items])
+    setTabItems([
+      { label: String(t('report.statistics.allReport')), key: '-1' },
+      ...items,
+    ])
   }
 
   const getUsageDataList = async () => {

@@ -224,10 +224,11 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
 
   useEffect(() => {
     if (
-      projectInfo?.projectPermissions?.length <= 0 ||
-      projectInfo?.projectPermissions?.filter(
-        (i: any) => i.identity === 'b/project/story_config',
-      )?.length <= 0
+      (projectInfo?.projectPermissions?.length <= 0 ||
+        projectInfo?.projectPermissions?.filter(
+          (i: any) => i.identity === 'b/project/story_config',
+        )?.length <= 0) &&
+      location.hostname === '/ProjectManagement/DemandSetting'
     ) {
       props.onBack()
     }
