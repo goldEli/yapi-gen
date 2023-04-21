@@ -252,7 +252,7 @@ const FormWorkSide = () => {
             style={{ fontSize: 18 }}
             type="plus"
             onClick={() => {
-              if (!editSave) {
+              if (!editSave && activeItem?.name) {
                 setDelIsVisible(true)
                 return
               }
