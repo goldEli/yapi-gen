@@ -14,6 +14,7 @@ import { templateLatelyList } from '@/services/report'
 import moment from 'moment'
 import NoData from '@/components/NoData'
 import { setWriteReportModal } from '@store/workReport'
+import { Tooltip } from 'antd'
 
 interface Props {
   isVisible: boolean
@@ -91,6 +92,9 @@ const CarTitle = styled.div`
   color: var(--neutral-n1-d1);
   font-size: 14px;
   font-family: siyuanmedium;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `
 const FormWrap = styled.div`
   margin-top: 24px;
@@ -260,7 +264,9 @@ const WriteReport = (props: Props) => {
                       >
                         <img src={Bgc} />
                         <CarItem>
-                          <CarTitle>{item.name}</CarTitle>
+                          <Tooltip placement="topLeft" title={item.name}>
+                            <CarTitle>{item.name}</CarTitle>
+                          </Tooltip>
                           {item.template_content_configs
                             ?.filter((tcc: any, i: number) => i < 2)
                             .map((content: any) => (
