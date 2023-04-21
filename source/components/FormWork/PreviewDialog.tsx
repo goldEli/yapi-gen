@@ -164,7 +164,30 @@ const WhiteDay = (props: Props) => {
       )
     } else if (item.type === 1) {
       return (
-        <Form.Item label={<LabelTitle title={item.name} />} name="people">
+        <Form.Item
+          label={<LabelTitle title={item.name} />}
+          name="people"
+          rules={[
+            {
+              validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
+              required: item.is_required === 1 ? true : false,
+              message: (
+                <div
+                  style={{
+                    margin: '5px 0',
+                    fontSize: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
+                >
+                  {item.tips}
+                </div>
+              ),
+              whitespace: true,
+              validator: onValidator,
+            },
+          ]}
+        >
           {props.isVisible ? (
             <ChoosePeople type={props.type} initValue={[]} />
           ) : null}
@@ -172,7 +195,30 @@ const WhiteDay = (props: Props) => {
       )
     } else if (item.type === 2) {
       return (
-        <Form.Item label={<LabelTitle title={item.name} />} name="attachments">
+        <Form.Item
+          label={<LabelTitle title={item.name} />}
+          name="attachments"
+          rules={[
+            {
+              validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
+              required: item.is_required === 1 ? true : false,
+              message: (
+                <div
+                  style={{
+                    margin: '5px 0',
+                    fontSize: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
+                >
+                  {item.tips}
+                </div>
+              ),
+              whitespace: true,
+              validator: onValidator,
+            },
+          ]}
+        >
           <AddWrap
             style={{
               marginBottom: '20px',
@@ -187,7 +233,31 @@ const WhiteDay = (props: Props) => {
     } else if (item.type === 4) {
       return (
         <Form.Item
-          label={<LabelTitle title={t('p2.managingDemand')} />}
+          label={
+            <LabelTitle
+              title={t('p2.managingDemand')}
+              rules={[
+                {
+                  validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
+                  required: item.is_required === 1 ? true : false,
+                  message: (
+                    <div
+                      style={{
+                        margin: '5px 0',
+                        fontSize: '12px',
+                        display: 'flex',
+                        alignItems: 'center',
+                      }}
+                    >
+                      {item.tips}
+                    </div>
+                  ),
+                  whitespace: true,
+                  validator: onValidator,
+                },
+              ]}
+            />
+          }
           name="needs"
         >
           <AddWrap

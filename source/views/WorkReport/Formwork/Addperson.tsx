@@ -299,7 +299,7 @@ const Addperson = (props: Props) => {
         </AddPersonTitleText>
         <Dropdown
           placement="bottomLeft"
-          open={isOpen}
+          // open={isOpen}
           trigger={['click']}
           menu={{ items, onClick: onOpenChange }}
           overlayStyle={{
@@ -309,11 +309,7 @@ const Addperson = (props: Props) => {
         >
           <CommonButton type="primaryText" onClick={() => setIsOpen(!isOpen)}>
             {t('formWork.add')}
-            <CommonIconFont
-              type={isOpen ? 'up' : 'down'}
-              size={14}
-              color="var(--primary-d2)"
-            />
+            <CommonIconFont type={'down'} size={14} color="var(--primary-d2)" />
           </CommonButton>
         </Dropdown>
       </AddPersonText>
