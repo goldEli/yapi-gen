@@ -2,9 +2,11 @@ import React, { useEffect, useRef, useState } from 'react'
 
 import { useDispatch, useSelector } from '@store/index'
 import { getScheduleDaysOfList } from '@store/schedule/schedule.thunk'
+import { useTranslation } from 'react-i18next'
 import dayjs from 'dayjs'
 import IconFont from '@/components/IconFont'
 import { isDateIntersection } from '@/tools/index'
+import { getColorWithOpacityPointOne, getColor } from '../../utils'
 import {
   CalendarListBox,
   CalendarListItem,
@@ -13,6 +15,7 @@ import {
   LunarDate,
   CalendarListInfo,
   TimeItem,
+  Dot,
   CalendarListClass,
   dateClass,
   currentClass,
@@ -31,6 +34,7 @@ const CalendarList: React.FC<CalendarListProps> = props => {
   const { calendarConfig } = useSelector(state => state.calendar)
   const { view_options } = calendarConfig
   const disPatch = useDispatch()
+  const [t] = useTranslation()
   useEffect(() => {
     const params = {
       year: dayjs(calenderListValue).year(),
@@ -84,7 +88,7 @@ const CalendarList: React.FC<CalendarListProps> = props => {
           className={CalendarListClass}
           datatype={item.date}
         >
-          <div style={{ width: '40px' }}>
+          <div>
             <DateBox className={index === 0 ? currentClass : ''}>
               {dayjs(item.date).date()}
             </DateBox>
@@ -99,10 +103,14 @@ const CalendarList: React.FC<CalendarListProps> = props => {
           </div>
           <CalendarListInfo>
             {item.list.map((ele: any, idx: number) => (
-              <TimeItem key={idx}>
+              <TimeItem
+                key={idx}
+                color={getColorWithOpacityPointOne(ele.color)}
+              >
+                <Dot color={getColor(ele.color)}></Dot>
                 <span className={dateClass}>
                   {ele.is_all_day === 1
-                    ? '全天'
+                    ? t('calendarManager.allDay')
                     : ele.start_time + '-' + ele.end_time}
                 </span>
                 <span>
@@ -114,46 +122,21 @@ const CalendarList: React.FC<CalendarListProps> = props => {
                     1 >
                   1 ? (
                     <label>
-                      （第{' '}
-                      {dayjs(ele.end_datetime).diff(
-                        dayjs(ele.schedule_start_datetime),
-                        'days',
-                      ) + 1}{' '}
-                      天，共{' '}
-                      {dayjs(ele.schedule_end_datetime).diff(
-                        dayjs(ele.schedule_start_datetime),
-                        'days',
-                      ) + 1}{' '}
-                      天）
+                      {t('calendarManager.dayof', {
+                        day:
+                          dayjs(ele.end_datetime).diff(
+                            dayjs(ele.schedule_start_datetime),
+                            'days',
+                          ) + 1,
+                        days:
+                          dayjs(ele.schedule_end_datetime).diff(
+                            dayjs(ele.schedule_start_datetime),
+                            'days',
+                          ) + 1,
+                      })}
                     </label>
                   ) : null}
                 </span>
-                {/* {(intersection(
-                  [
-                    item.list[idx]?.start_datetime,
-                    item.list[idx]?.end_datetime,
-                  ],
-                  [
-                    item.list[idx - 1]?.start_datetime,
-                    item.list[idx - 1]?.end_datetime,
-                  ],
-                ).length ||
-                  intersection(
-                    [
-                      item.list[idx + 1]?.start_datetime,
-                      item.list[idx + 1]?.end_datetime,
-                    ],
-                    [
-                      item.list[idx]?.start_datetime,
-                      item.list[idx]?.end_datetime,
-                    ],
-                  ).length) &&
-                item.list.length > 1 ? (
-                  <span>
-                    <IconFont type="warning-02"></IconFont>
-                  </span>
-                ) : null} */}
-
                 {(isDateIntersection(
                   item.list[idx + 1]?.start_datetime,
                   item.list[idx + 1]?.end_datetime,

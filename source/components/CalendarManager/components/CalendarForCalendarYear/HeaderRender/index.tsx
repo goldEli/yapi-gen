@@ -14,6 +14,7 @@ const CalendarHeader = styled.div`
   width: 100%;
   height: 40px;
   position: relative;
+  font-weight: bold;
 `
 const HeaderRender: React.FC<HeaderRenderProps> = props => {
   const calenderYearValue = useSelector(

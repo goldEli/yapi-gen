@@ -49,7 +49,7 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
   }
   const confirmTransference = async () => {
     if (!userId) {
-      message.error('接收人不能为空')
+      message.error(t('calendarManager.user_not_empty'))
       return
     }
     const params = {
@@ -59,7 +59,7 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
     }
     try {
       await scheduleInfoTransfer(params)
-      message.success('转让成功')
+      message.success(t('calendarManager.transfer_success'))
       setModalVisible(false)
       setShowTipBox(false)
       disPatch(setScheduleInfoDropdown({ visible: false }))
@@ -84,14 +84,17 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
     }
   }
   return (
-    <ScheduleInfoHeader>
-      <ScheduleInfoHeaderBtn
-        onClick={e => {
-          e.stopPropagation()
-        }}
-      >
+    <ScheduleInfoHeader
+      onClick={e => {
+        setShowTipBox(!showTipBox)
+        e.stopPropagation()
+      }}
+    >
+      <ScheduleInfoHeaderBtn onClick={e => {}}>
         <span className={statusClass}>
-          {scheduleInfo?.is_busy === 1 ? '忙碌' : '空闲'}
+          {scheduleInfo?.is_busy === 1
+            ? t('calendarManager.busy')
+            : t('calendarManager.free')}
         </span>
         <div className={iconBox}>
           {scheduleInfo?.able_update ? (
@@ -186,7 +189,7 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
       <CommonModal
         isVisible={modalVisible}
         title={t('calendarManager.transfer_schedule')}
-        width={528}
+        width={570}
         onClose={() => {
           setModalVisible(false)
         }}
@@ -195,7 +198,7 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
         <ModalChildren>
           <Select
             style={{ width: '100%' }}
-            placeholder="搜索新的所有者"
+            placeholder={t('calendarManager.search_users')}
             optionLabelProp="label"
             showSearch={true}
             filterOption={(input, option) =>
@@ -221,8 +224,8 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
             onChange={(e: RadioChangeEvent) => setIsExit(e.target.value)}
             value={isExit}
           >
-            <Radio value={1}>转让我退出该日程</Radio>
-            <Radio value={0}>转让我变为参与者</Radio>
+            <Radio value={1}>{t('calendarManager.transfer_tip1')}</Radio>
+            <Radio value={0}>{t('calendarManager.transfer_tip2')}</Radio>
           </Radio.Group>
         </ModalChildren>
       </CommonModal>

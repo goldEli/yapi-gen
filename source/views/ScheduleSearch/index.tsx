@@ -2,10 +2,15 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from '@store/index'
 import { getScheduleSearch } from '@/services/schedule'
 import dayjs from 'dayjs'
+import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
 import { useNavigate } from 'react-router-dom'
 import { isDateIntersection } from '@/tools/index'
 import { Empty, Spin } from 'antd'
+import {
+  getColorWithOpacityPointOne,
+  getColor,
+} from '@/components/CalendarManager/utils'
 import {
   ScheduleSearchWrap,
   ScheduleSearchListBox,
@@ -16,6 +21,7 @@ import {
   LunarDate,
   CalendarListInfo,
   TimeItem,
+  Dot,
   CalendarListClass,
   dateClass,
   currentClass,
@@ -33,6 +39,7 @@ interface CalendarListProps {}
 const ScheduleSearch: React.FC<CalendarListProps> = props => {
   const CalendarListBoxRef = useRef<HTMLDivElement>(null)
   const { checkedCalendarList } = useSelector(state => state.calendar)
+  const [t] = useTranslation()
   const [inputDefaultValue, setInputDefaultValue] = useState<string>()
   const { calenderYearValue } = useSelector(state => state.calendarPanel)
   const [searchList, setSearchList] = useState<
@@ -70,10 +77,11 @@ const ScheduleSearch: React.FC<CalendarListProps> = props => {
               )
             }}
           >
-            <IconFont type="left-md"></IconFont>返回
+            <IconFont type="left-md"></IconFont>
+            {t('calendarManager.calendar_back')}
           </BackBox>
           <InputSearch
-            placeholder="搜索日程"
+            placeholder={t('calendarManager.search_schedule')}
             defaultValue={inputDefaultValue}
             width={'100%'}
             onChangeSearch={value => {
@@ -89,8 +97,9 @@ const ScheduleSearch: React.FC<CalendarListProps> = props => {
                 key={index}
                 className={CalendarListClass}
                 datatype={item.date}
+                style={{ paddingLeft: index === 0 ? '6px' : '' }}
               >
-                <div style={{ width: '40px' }}>
+                <div>
                   <DateBox className={index === 0 ? currentClass : ''}>
                     {dayjs(item.date).date()}
                   </DateBox>
@@ -105,6 +114,7 @@ const ScheduleSearch: React.FC<CalendarListProps> = props => {
                   {item.list.map((ele: any, idx: number) => (
                     <TimeItem
                       key={idx}
+                      color={getColorWithOpacityPointOne(ele.color)}
                       onClick={() => {
                         console.log('ele.schedule_id----', ele.schedule_id)
                         disPatch(
@@ -122,9 +132,11 @@ const ScheduleSearch: React.FC<CalendarListProps> = props => {
                         disPatch(setScheduleInfo(void 0))
                       }}
                     >
+                      {' '}
+                      <Dot color={getColor(ele.color)}></Dot>
                       <span className={dateClass}>
                         {ele.is_all_day === 1
-                          ? '全天'
+                          ? t('calendarManager.allDay')
                           : ele.start_time + '-' + ele.end_time}
                       </span>
                       <span>
@@ -144,21 +156,21 @@ const ScheduleSearch: React.FC<CalendarListProps> = props => {
                           1 >
                         1 ? (
                           <label>
-                            （第{' '}
-                            {dayjs(ele.end_datetime).diff(
-                              dayjs(ele.schedule_start_datetime),
-                              'days',
-                            ) + 1}{' '}
-                            天，共{' '}
-                            {dayjs(ele.schedule_end_datetime).diff(
-                              dayjs(ele.schedule_start_datetime),
-                              'days',
-                            ) + 1}{' '}
-                            天）
+                            {t('calendarManager.dayof', {
+                              day:
+                                dayjs(ele.end_datetime).diff(
+                                  dayjs(ele.schedule_start_datetime),
+                                  'days',
+                                ) + 1,
+                              days:
+                                dayjs(ele.schedule_end_datetime).diff(
+                                  dayjs(ele.schedule_start_datetime),
+                                  'days',
+                                ) + 1,
+                            })}
                           </label>
                         ) : null}
                       </span>
-
                       {(isDateIntersection(
                         item.list[idx + 1]?.start_datetime,
                         item.list[idx + 1]?.end_datetime,
