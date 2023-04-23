@@ -234,10 +234,11 @@ const Addperson = (props: Props) => {
 
   // 添加团队部门
   const onAddConfirm = (data: any) => {
+    console.log(userType, 'userType', data)
     const values = data.map((item: any) => ({
       ...item,
       user_type: userType,
-      target_type: item.type === 1 ? 2 : item.type,
+      target_type: item.type === 3 ? 3 : 2,
       target_value: {
         name: item.name,
         avatar: item.type === 1 ? 2 : item.type,
