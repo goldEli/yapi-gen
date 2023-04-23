@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-handler-names */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
+/* eslint-disable consistent-return */
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import TabsDragging from './TabsDragging'
@@ -10,6 +11,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setTemplateContentConfigs, setEditSave } from '@store/formWork'
 import { message } from 'antd'
 import { useTranslation } from 'react-i18next'
+import { callbackify } from 'util'
 const TitleStyle = styled.div`
   display: flex;
   width: 100%;
@@ -95,6 +97,10 @@ const EditWork = (props: PropsType) => {
   }
   // 组件参数配置
   const ParmasDialogOnConfirm = (obj: any, num: number) => {
+    const filterName = dataList.find((el: any) => el.name === obj.name)
+    if (filterName) {
+      return message.warning('重复模板名称')
+    }
     const configs = {
       type: num,
       id: Math.random() + '_' + num,
@@ -145,11 +151,23 @@ const EditWork = (props: PropsType) => {
         id="father"
         style={{ display: 'flex', height: 'calc(100vh -300px)' }}
       >
-        <LeftTabs>
+        <LeftTabs
+          onDragOver={event => {
+            event.preventDefault(), event.stopPropagation()
+          }}
+        >
           <TitleStyle draggable="false">
             <span>{t('formWork.content')}</span>
           </TitleStyle>
-          <div>
+          <div
+            style={{ height: 'calc(100vh - 370px)' }}
+            onDrop={event => {
+              onDrag(event, dataList?.length - 1)
+            }}
+            onDragOver={event => {
+              event.preventDefault()
+            }}
+          >
             <TabsDragging
               positionType="top"
               onClick={(i: any, child: any) => onClick(i, child)}

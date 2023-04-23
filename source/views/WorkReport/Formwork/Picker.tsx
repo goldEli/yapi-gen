@@ -420,7 +420,7 @@ const Picker = (props: PropsType) => {
       placement="bottomRight"
       title={''}
       content={content}
-      trigger="[click,hover]"
+      trigger="[click]"
     >
       <InputStyle
         type="text"

@@ -22,6 +22,7 @@ const IconContainer = styled.div`
 
 const tabsContainer = css`
   display: flex;
+  margin-top: 8px;
 `
 const TabsWrap = styled.div`
   width: 100%;

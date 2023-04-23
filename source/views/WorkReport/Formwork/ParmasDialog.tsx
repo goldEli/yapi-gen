@@ -86,7 +86,7 @@ const ParmasDialog = (props: Props) => {
               return event.target.value.replace(/(?<start>^\s*)/g, '')
             }}
           >
-            <Input autoComplete="off" autoFocus />
+            <Input autoComplete="off" autoFocus maxLength={20} />
           </Form.Item>
           {props.dragItem?.type === 3 && (
             <Form.Item

@@ -189,9 +189,7 @@ const SiteDrawer = () => {
       className={messageDrawer}
       forceRender
       bodyStyle={{
-        padding: 16,
-        paddingBottom: '8px',
-        paddingRight: '4px',
+        padding: '16px 12px 0 12px',
         boxSizing: 'border-box',
       }}
       width={400}
