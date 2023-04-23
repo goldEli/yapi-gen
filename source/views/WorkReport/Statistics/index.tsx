@@ -16,6 +16,7 @@ import PermissionWrap from '@/components/PermissionWrap'
 import { useSelector } from '@store/index'
 import RangePicker from '@/components/RangePicker'
 import moment from 'moment'
+
 import {
   getStatInfo,
   getStatTempList,
@@ -63,7 +64,7 @@ const cardTitle = css`
 `
 
 const rightBottom = css`
-  margin: 8px 0;
+  margin: 8px 24px 0 0;
 `
 const CardGroup = styled(Space)({
   display: 'flex',
@@ -148,6 +149,7 @@ const Statistics = () => {
     {
       title: <>{t('report.statistics.usersVolume')}</>,
       dataIndex: 'uv',
+      align: 'left',
       width: 88,
     },
     {
@@ -279,32 +281,32 @@ const Statistics = () => {
                 <CardItem
                   style={{ backgroundColor: 'rgba(102, 136, 255, 0.1)' }}
                 >
-                  <Space size={8} direction="vertical">
-                    <span>{t('report.statistics.accumulated')}</span>
-                    <div>{statInfoData.accruing}</div>
-                  </Space>
+                  <span style={{ marginBottom: 9 }}>
+                    {t('report.statistics.accumulated')}
+                  </span>
+                  <div>{statInfoData.accruing}</div>
                 </CardItem>
                 <CardItem
                   style={{ backgroundColor: 'rgba(67, 186, 154, 0.10)' }}
                 >
-                  <Space size={8} direction="vertical">
-                    <span>{t('report.statistics.onTime')}</span>
-                    <div>{statInfoData.on_time_count}</div>
-                  </Space>
+                  <span style={{ marginBottom: 9 }}>
+                    {t('report.statistics.onTime')}
+                  </span>
+                  <div>{statInfoData.on_time_count}</div>
                 </CardItem>
                 <CardItem
                   style={{ backgroundColor: 'rgba(250, 151, 70, 0.1)' }}
                 >
-                  <Space size={8} direction="vertical">
-                    <span>{t('report.statistics.supplementary')}</span>
-                    <div>{statInfoData.no_payment_count}</div>
-                  </Space>
+                  <span style={{ marginBottom: 9 }}>
+                    {t('report.statistics.supplementary')}
+                  </span>
+                  <div>{statInfoData.no_payment_count}</div>
                 </CardItem>
                 <CardItem style={{ backgroundColor: 'rgba(255, 92, 94, 0.1)' }}>
-                  <Space size={8} direction="vertical">
-                    <span>{t('report.statistics.unSubmitted')}</span>
-                    <div>{statInfoData.cumulative_unsubmit_count}</div>
-                  </Space>
+                  <span style={{ marginBottom: 9 }}>
+                    {t('report.statistics.unSubmitted')}
+                  </span>
+                  <div>{statInfoData.cumulative_unsubmit_count}</div>
                 </CardItem>
               </CardGroup>
 
