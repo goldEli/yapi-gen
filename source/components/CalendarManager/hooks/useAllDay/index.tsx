@@ -14,10 +14,20 @@ const useAllDay = (props: { data: Model.Schedule.Info }) => {
     data.is_span_day &&
     !isSameTime(start_timestamp, schedule_start_datetime ?? 0)
 
+  // 跨天最后一天
+  const isAcrossDayAndLastDay =
+    data.is_span_day &&
+    isSameTime(props.data.end_timestamp, props.data.schedule_end_datetime ?? 0)
+
+  // 跨天日程
+  const isAcrossDay = data.is_span_day
+
   return {
     isAllDay,
     isAcrossDayFirstDay,
     isAcrossDayButNotFirstDay,
+    isAcrossDayAndLastDay,
+    isAcrossDay,
   }
 }
 

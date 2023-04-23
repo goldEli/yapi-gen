@@ -1,6 +1,13 @@
 import React, { useState, useMemo } from 'react'
 import styled from '@emotion/styled'
-import { Dot, Time, Title } from './styled'
+import {
+  Dot,
+  ResizeLeftBar,
+  ResizeRightBar,
+  ScheduleStripBox,
+  Time,
+  Title,
+} from './styled'
 import useAllDay from '../../hooks/useAllDay'
 import { useTranslation } from 'react-i18next'
 import { getColor, getColorWithOpacityPointOne } from '../../utils'
@@ -16,29 +23,6 @@ interface ScheduleStripProps {
 
 type ScheduleStripHandle = null
 
-const ScheduleStripBox = styled.div<{
-  bg?: string
-  hoverBg: string
-  hoverText: string
-  visible: boolean
-}>`
-  height: 22px;
-  background: ${props => props.bg};
-  .text {
-  }
-  &:hover {
-    background: ${props => props.hoverBg};
-  }
-  &:hover .text {
-    color: ${props => props.hoverText};
-  }
-  display: flex;
-  visibility: ${props => (props.visible ? 'visible' : 'hidden')};
-  gap: 7px;
-  cursor: pointer;
-  align-items: center;
-`
-
 export const marginLeft = css`
   margin-left: 2px;
 `
@@ -52,8 +36,13 @@ const ScheduleStrip: React.ForwardRefRenderFunction<
   ScheduleStripProps
 > = (props, forwardedRef) => {
   const { data } = props
-  const { isAllDay, isAcrossDayFirstDay, isAcrossDayButNotFirstDay } =
-    useAllDay({ data })
+  const {
+    isAllDay,
+    isAcrossDayFirstDay,
+    isAcrossDayButNotFirstDay,
+    isAcrossDayAndLastDay,
+    isAcrossDay,
+  } = useAllDay({ data })
   const [t] = useTranslation()
 
   // 如果是跨天或者全天任务显示全天
@@ -115,6 +104,14 @@ const ScheduleStrip: React.ForwardRefRenderFunction<
       }}
     >
       {contentElements}
+      <ResizeLeftBar visible={!isAcrossDayButNotFirstDay} />
+      {/**
+       * 跨天  只有最后一天才能展示
+       * 非跨天可暂时
+       */}
+      {/* <ResizeRightBar
+        visible={(isAcrossDay && isAcrossDayAndLastDay) || !isAcrossDay}
+      /> */}
     </ScheduleStripBox>
   )
 }
