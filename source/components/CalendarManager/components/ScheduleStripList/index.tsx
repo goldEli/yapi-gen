@@ -23,6 +23,9 @@ const ScheduleListBox = styled.div`
   width: 100%;
   min-height: 114px;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 `
 
 const ScheduleStripList: React.FC<ScheduleListProps> = props => {
