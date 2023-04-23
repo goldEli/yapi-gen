@@ -50,7 +50,6 @@ const Email = () => {
     const res = await editMyAllNoteSet(
       Array.from(new Set([...myConfiguration, ...choose])),
     )
-    Message({ msg: t('succeed'), type: 'error' })
     if (res.code === 0) {
       Message({ msg: t('succeed'), type: 'success' })
     }
