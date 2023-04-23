@@ -5,7 +5,7 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
-import { Checkbox, Tooltip } from 'antd'
+import { Checkbox } from 'antd'
 import { throttle } from 'lodash'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next'
 const Container = styled.div`
   position: relative;
   height: 72px;
+  margin: 0 24px;
   &:hover {
     cursor: pointer;
   }

@@ -3,7 +3,8 @@ import styled from '@emotion/styled'
 import { Space } from 'antd'
 
 // 头部操作栏右侧
-export const CreateWrap = styled.div`
+
+export const CreateIcon = styled.div`
   height: 24px;
   width: 24px;
   border-radius: 50%;
@@ -13,6 +14,18 @@ export const CreateWrap = styled.div`
   cursor: pointer;
   background: var(--primary-d1);
   color: var(--neutral-white-d7);
+`
+
+export const CreateWrap = styled.div`
+  height: 32px;
+  width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  &:hover {
+    background: var(--hover-d1);
+  }
 `
 
 export const UserAvatar = styled.div`
@@ -186,7 +199,7 @@ export const ChildrenMenuItem = styled(Space)<{ isActive?: boolean }>`
   height: 56px;
   cursor: pointer;
   font-size: var(--font14);
-  font-family: SiYuanMedium;
+  font-family: ${props => (props.isActive ? 'SiYuanMedium' : 'inherit')};
   color: ${props =>
     props.isActive ? 'var(--primary-d2)' : 'var(--neutral-n1-d2)'};
   background: ${props =>
