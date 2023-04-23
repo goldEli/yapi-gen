@@ -617,7 +617,7 @@ const List = () => {
       <Divider style={{ margin: '20px 0' }} />
       <ResizeTable
         isSpinning={isSpinning}
-        dataWrapNormalHeight="calc(100vh - 271px)"
+        dataWrapNormalHeight="calc(100vh - 264px)"
         col={
           id === 1
             ? columns
