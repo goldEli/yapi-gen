@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 
 interface MoreScheduleButtonProps {
   hiddenNum: number
+  onClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>): void
 }
 
 const MoreScheduleButtonBox = styled.div`
@@ -13,6 +14,8 @@ const MoreScheduleButtonBox = styled.div`
   display: flex;
   height: 20px;
   overflow: hidden;
+`
+const Text = styled.span`
   cursor: pointer;
 `
 
@@ -23,9 +26,11 @@ const MoreScheduleButton: React.FC<MoreScheduleButtonProps> = props => {
   }
   return (
     <MoreScheduleButtonBox>
-      {t('calendarManager.moreItems', {
-        count: props.hiddenNum,
-      })}
+      <Text onClick={props.onClick}>
+        {t('calendarManager.moreItems', {
+          count: props.hiddenNum,
+        })}
+      </Text>
     </MoreScheduleButtonBox>
   )
 }

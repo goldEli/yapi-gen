@@ -350,10 +350,9 @@ export const CreateScheduleText = styled.div<{
   top?: number
 }>`
   font-size: 12px;
-  margin: 0 2px;
   box-sizing: border-box;
   padding-left: 8px;
-  width: calc(100% - 4px);
+  width: 100%;
   color: var(--neutral-white-d7);
   background-color: var(--primary-d1);
   border-radius: 4px;
@@ -361,4 +360,7 @@ export const CreateScheduleText = styled.div<{
   top: ${props => (props.top ?? 0) + 'px'};
   left: 0;
   display: ${props => (props.visible ? 'block' : 'none')};
+  height: 22px;
+  display: flex;
+  align-items: center;
 `
