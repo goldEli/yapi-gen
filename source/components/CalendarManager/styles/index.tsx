@@ -359,8 +359,7 @@ export const CreateScheduleText = styled.div<{
   position: absolute;
   top: ${props => (props.top ?? 0) + 'px'};
   left: 0;
-  display: ${props => (props.visible ? 'block' : 'none')};
+  display: ${props => (props.visible ? 'flex' : 'none')};
   height: 22px;
-  display: flex;
   align-items: center;
 `
