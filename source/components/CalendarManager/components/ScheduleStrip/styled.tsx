@@ -5,6 +5,7 @@ export const Dot = styled.div<{ bg: string }>`
   height: 6px;
   background: ${props => props.bg};
   border-radius: 2px 2px 2px 2px;
+  margin-left: 8px;
   &:hover {
     cursor: col-resize;
   }
