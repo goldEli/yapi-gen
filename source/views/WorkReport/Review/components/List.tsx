@@ -130,6 +130,7 @@ const List = () => {
 
   const getList = async () => {
     try {
+      setListData([])
       setIsSpinning(true)
       let res
       switch (id) {
@@ -554,6 +555,7 @@ const List = () => {
         <span className="title-text">{title}</span>
         <Space size={24}>
           <InputSearch
+            defaultValue={queryParams.keyword}
             placeholder={t('report.list.search')}
             onChangeSearch={onPressEnter}
             leftIcon
