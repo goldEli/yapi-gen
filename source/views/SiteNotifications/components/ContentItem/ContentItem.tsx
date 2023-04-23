@@ -102,7 +102,9 @@ const ContentItem = (props: any) => {
       </div>
       <HoverWrap style={{ flex: '1' }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Name>{send_user.nickname}</Name>
+          <Name className={String(read === 1 ? 'read' : 'unread')}>
+            {send_user.nickname}
+          </Name>
           {/* <Name>问题字段</Name> */}
           {/* <Tip>在评论中@了您</Tip> */}
           <Time>{formatMsgTime(create_time * 1000)}</Time>
@@ -112,14 +114,14 @@ const ContentItem = (props: any) => {
             </Time2>
           )}
         </div>
-        <div
-          style={{ display: 'flex', alignItems: 'center', margin: '5px 0px' }}
-        >
+        <div className="msgTitle">
           <CommonUserAvatar avatar={msg_body.optHeader} />
-          <About>{msg_body.title}</About>
+          <About className={String(read === 1 ? 'read' : 'unread')}>
+            {msg_body.title}
+          </About>
         </div>
 
-        <GrepContent>
+        <GrepContent status={read}>
           <span
             dangerouslySetInnerHTML={{
               __html: formateBlue(msg_body.content, custom_data.linkWebUrl),
