@@ -123,7 +123,12 @@ const AllSideFilter = (props: any) => {
       <Wrap>
         <MyHead>
           <LeftTitle title={t('filtering_notifications')} />
-          <CloseWrap onClick={onClose} width={32} height={32}>
+          <CloseWrap
+            onClick={onClose}
+            width={32}
+            height={32}
+            style={{ marginRight: 18 }}
+          >
             <IconFont
               style={{ fontSize: 20, color: 'var(--neutral-n2)' }}
               type="close"
