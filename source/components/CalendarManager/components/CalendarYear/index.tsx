@@ -34,11 +34,10 @@ const CalendarYear: React.FC<CalendarYearProps> = props => {
         .fill(0)
         .map((item, idx) => {
           return (
-            <Col xs={14} sm={12} md={10} lg={8} xl={6} xxl={4}>
+            <Col key={idx} xs={14} sm={12} md={10} lg={8} xl={6} xxl={4}>
               <CalendarForCalendarYear month={idx} key={idx} />
             </Col>
           )
-          return
         })}
     </Row>
   )
