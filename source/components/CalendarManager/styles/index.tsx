@@ -330,7 +330,7 @@ export const DayItemBox = styled.div`
   width: 100%;
   /* padding: 12px 0; */
   box-sizing: border-box;
-  border-color: var(--neutral-n6-d1);
+  border-color: var(--function-tag6);
   border-style: solid;
   border-left-width: 1px;
   border-top-width: 1px;
