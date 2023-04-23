@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import CustomSelect from '@/components/CustomSelect'
 import styled from '@emotion/styled'
+import { css } from '@emotion/css'
 import {
   setCalendarPanelType,
   setCalenderDayValue,
@@ -21,6 +22,7 @@ import weekOfYear from 'dayjs/plugin/weekOfYear'
 import IconFont from '@/components/IconFont'
 import InputSearch from '@/components/InputSearch'
 import { useTranslation } from 'react-i18next'
+import CommonButton from '@/components/CommonButton'
 dayjs.extend(weekOfYear)
 
 interface CalendarPanelToolBarProps {
@@ -34,19 +36,18 @@ const Box = styled.div`
   align-items: center;
   margin-top: 4px;
 `
-const selectOptions: {
-  value: Model.Calendar.CalendarPanelType
-  label: string
-}[] = [
-  { value: 'day', label: '日' },
-  { value: 'week', label: '周' },
-  { value: 'month', label: '月' },
-  { value: 'year', label: '年' },
-  { value: 'list', label: '列表' },
-]
 const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
   const navigate = useNavigate()
   const [t] = useTranslation()
+  const [selectOptions, setSelectOptions] = useState<
+    { value: Model.Calendar.CalendarPanelType; label: string }[]
+  >([
+    { value: 'day', label: t('calendarManager.day') },
+    { value: 'week', label: t('calendarManager.week') },
+    { value: 'month', label: t('calendarManager.month') },
+    { value: 'year', label: t('calendarManager.year') },
+    { value: 'list', label: t('calendarManager.list') },
+  ])
   const calendarPanelType = useSelector(
     state => state.calendarPanel.calendarPanelType,
   )
@@ -114,7 +115,7 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
     // checkedTime,
   ])
 
-  const iconTypeRef = useRef<number>()
+  const iconTypeRef = useRef<number>(0)
 
   const dispatch = useDispatch()
 
@@ -130,6 +131,18 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
     span {
       font-size: var(--font16);
     }
+  `
+  const TodayWrap = styled.div`
+    margin: 0px 10px;
+    border: 1px solid var(--neutral-n6-d1);
+    border-radius: 4px;
+    padding: 0px 10px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+  `
+  const disables = css`
+    background: #f6f7f9;
   `
   const listenDay = (): void => {
     const { current } = iconTypeRef
@@ -281,14 +294,13 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
           cursor: 'pointer',
         }}
       >
-        <div
+        <TodayWrap
           onClick={todayClick}
-          style={{
-            margin: '0px 10px',
-          }}
+          className={iconTypeRef.current === 0 ? disables : ''}
         >
+          {' '}
           {t('today')}
-        </div>
+        </TodayWrap>
         <IconBox>
           <IconFont type="left" onClick={prevYearClick} />
           <TextBox> {dateText}</TextBox>
@@ -299,7 +311,7 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
         <CustomSelect
           value={calendarPanelType}
           style={{
-            width: '80px',
+            width: '90px',
             marginRight: '10px',
           }}
           onChange={(value: Model.Calendar.CalendarPanelType) => {
@@ -315,7 +327,6 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
             )
           }}
           options={selectOptions}
-          allowClear
         />
         <InputSearch
           placeholder={t('calendarManager.search_schedule')}

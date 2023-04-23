@@ -17,7 +17,7 @@ const ScheduleInfoDropdownBox = styled.div<{
   top: number
   left: number
 }>`
-  width: 360px;
+  width: 420px;
   background-color: var(--neutral-white-d1);
   box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
   z-index: 999;
@@ -64,7 +64,9 @@ const ScheduleInfoDropdown: React.FC<ScheduleInfoDropdownProps> = props => {
     >
       <Spin spinning={scheduleInfo ? false : true} size="large" tip="Loading">
         <ScheduleInfoHeaderBox></ScheduleInfoHeaderBox>
-        <ScheduleInfoContent showFooter={scheduleInfo?.is_show_reply ?? false}></ScheduleInfoContent>
+        <ScheduleInfoContent
+          showFooter={scheduleInfo?.is_show_reply ?? false}
+        ></ScheduleInfoContent>
         <ScheduleInfoFooter></ScheduleInfoFooter>
       </Spin>
     </ScheduleInfoDropdownBox>

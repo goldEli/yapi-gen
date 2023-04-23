@@ -14,7 +14,7 @@ export const ScrollBox = styled.div`
 export const CalendarListBox = styled.div`
   background-color: #fff;
   overflow-y: auto;
-  height: 600px;
+  /* height: 600px; */
   position: relative;
 `
 export const CalendarListItem = styled.div`
@@ -22,12 +22,18 @@ export const CalendarListItem = styled.div`
   display: flex;
   padding: 12px 0px;
   align-items: flex-start;
+  &:first-child {
+    padding-left: 6px;
+  }
 `
 export const DateBox = styled.div`
   color: var(--neutral-n1-d1);
   font-size: var(--font18);
-  font-weight: 500;
   width: 40px;
+  font-family: PingFang SC-Medium, PingFang SC;
+  font-weight: bold;
+  margin-right: 12px;
+  padding-left: 12px;
 `
 export const MonthWeekBox = styled.div`
   color: var(--neutral-n1-d1);
@@ -43,7 +49,7 @@ export const LunarDate = styled.div`
 `
 export const CalendarListInfo = styled.div`
   position: relative;
-  top: 6px;
+  /* top: 6px; */
   width: calc(100% - 250px);
   margin-left: 100px;
   align-items: center;
@@ -54,8 +60,9 @@ export const TimeItem = styled.div`
   position: relative;
   height: 30px;
   line-height: 30px;
-  padding-left: 20px;
-  &:before {
+  padding-left: 24px;
+  /* border: 1px solid; */
+  /* &:before {
     position: absolute;
     content: '';
     left: 10px;
@@ -64,9 +71,9 @@ export const TimeItem = styled.div`
     height: 6px;
     border-radius: 50%;
     background: var(--primary-d1);
-  }
+  } */
   &:hover {
-    background: var(--neutral-n6-d1);
+    background: ${props => props.color};
     border-radius: 6px;
     cursor: pointer;
   }
@@ -75,7 +82,18 @@ export const TimeItem = styled.div`
     font-size: var(--font16);
     position: relative;
     top: 1px;
+    margin-left: 9px;
   }
+`
+export const Dot = styled.div<{ color: string }>`
+  position: absolute;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  background: ${props => props.color};
+  border-radius: 2px 2px 2px 2px;
+  left: 10px;
+  margin-top: -3px;
 `
 export const CalendarListClass = css`
   :last-child {
@@ -89,11 +107,13 @@ export const dateClass = css`
 `
 export const currentClass = css`
   background: var(--primary-d1) !important;
-  border-radius: 50% !important;
+  border-radius: 14px !important;
   color: #fff !important;
   font-size: var(--font18) !important;
-  text-align: center !important;
   display: inline-block;
   width: 28px !important;
   height: 28px !important;
+  margin-left: 6px !important;
+  text-align: center !important;
+  padding-left: 0px !important;
 `

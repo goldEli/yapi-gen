@@ -66,18 +66,24 @@ export const BoxTip = styled.div`
   right: 0px;
   display: flex;
   flex-direction: column;
-  padding-left: 16px;
-  padding-top: 12px;
-  padding-right: 16px;
   box-sizing: border-box;
   font-weight: 400;
   box-sizing: border-box;
   max-width: 160px;
   z-index: 88;
+  padding: 6px 0px;
   span {
     color: var(--neutral-n2);
     font-size: var(--font14);
-    margin-bottom: 6px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    margin-left: 0px;
+    padding-left: 16px;
+    box-sizing: border-box;
+    &:hover {
+      background: var(--hover-d3);
+    }
   }
 `
 export const confirmText = css`
@@ -104,10 +110,11 @@ export const ModalChildren = styled.div`
   }
 `
 
-export const ScheduleInfoContentBox = styled.div<{showFooter:boolean}>`
+export const ScheduleInfoContentBox = styled.div<{ showFooter: boolean }>`
   padding: 16px;
   /* height: calc(100% - 160px); */
-  height: ${(props)=>props.showFooter?'calc(100% - 160px)':'calc(100% - 0px)'};
+  height: ${props =>
+    props.showFooter ? 'calc(100% - 160px)' : 'calc(100% - 0px)'};
   overflow-y: scroll;
 `
 export const ScheduleInfoContentItem = styled.div`
@@ -147,17 +154,21 @@ export const PersonItem = styled.div`
   font-size: var(--font12);
   img {
     width: 24px;
-    height: 22px;
+    height: 24px;
     margin-right: 8px;
+    border-radius: 24px;
+  }
+  span:nth-child(2) {
+    color: var(--neutral-n3);
   }
 `
 export const FileList = styled.div`
   margin-left: 28px;
-  >div{
-    >div{
-      >div{
+  > div {
+    > div {
+      > div {
         margin-left: 0px !important;
-        min-width: 300px !important
+        /* min-width: 300px !important */
       }
     }
   }

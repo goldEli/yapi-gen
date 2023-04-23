@@ -1405,6 +1405,15 @@
     "pending": "Pending",
     "file_list": "File List",
     "search_schedule": "Search Schedule",
-    "today": "Today"
+    "today": "Today",
+    "transfer_tip1":"Transfer me out of this schedule",
+    "transfer_tip2":"Transfer me to become a participant",
+    "search_users":"Search for new owners",
+    "transfer_success":"Transfer successful",
+    "user_not_empty":"Recipient cannot be empty",
+    "busy":"Busy",
+    "free":"Free",
+    "dayof":"（Day {{day}} of {{days}}）",
+    "list":"List"
   }
 }

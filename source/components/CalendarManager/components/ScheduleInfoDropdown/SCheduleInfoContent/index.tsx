@@ -19,12 +19,16 @@ import {
 const toggleDropUp = css`
   max-height: 0;
   overflow-y: hidden;
+  transition: all 0.3s;
 `
 const toggleDropDown = css`
   /* max-height: auto; */
   max-height: 30vh;
+  transition: all 0.3s;
 `
-interface IProps{showFooter:boolean}
+interface IProps {
+  showFooter: boolean
+}
 const ScheduleInfoContent: React.FC<IProps> = props => {
   const { scheduleInfo } = useSelector(state => state.schedule)
   const [toggleStatus, setToggleStatus] = useState(false)
@@ -42,7 +46,10 @@ const ScheduleInfoContent: React.FC<IProps> = props => {
           </span>
         </div>
       </ScheduleInfoContentItem>
-      <ScheduleInfoContentItem>
+      <ScheduleInfoContentItem
+        onClick={() => setToggleStatus(!toggleStatus)}
+        style={{ cursor: 'pointer' }}
+      >
         <span>
           <ScheduleInfoIcon type="team" />
         </span>
@@ -51,21 +58,16 @@ const ScheduleInfoContent: React.FC<IProps> = props => {
             {t('calendarManager.participant')}（{scheduleInfo?.members?.length}
             人）
           </span>
-          <span
-            onClick={e => {
-              e.stopPropagation()
-            }}
-          >
+          <span onClick={e => {}}>
             <IconFont
-              onClick={() => setToggleStatus(!toggleStatus)}
               style={{ fontSize: '18px' }}
               type={toggleStatus ? 'up' : 'down'}
             />
           </span>
         </div>
       </ScheduleInfoContentItem>
-      {
-        scheduleInfo?.members?.length ? <PersonList className={toggleStatus ? toggleDropUp : toggleDropDown}>
+      {scheduleInfo?.members?.length ? (
+        <PersonList className={toggleStatus ? toggleDropUp : toggleDropDown}>
           {scheduleInfo?.members?.map((item, idx) => (
             <PersonItem key={item.user_id}>
               <span>
@@ -75,8 +77,8 @@ const ScheduleInfoContent: React.FC<IProps> = props => {
               <span>{item.status_text}</span>
             </PersonItem>
           ))}
-        </PersonList>:null
-      }
+        </PersonList>
+      ) : null}
 
       {scheduleInfo?.describe ? (
         <ScheduleInfoContentItem>
@@ -108,7 +110,7 @@ const ScheduleInfoContent: React.FC<IProps> = props => {
               suffix: i.suffix,
               username: i.user.name ?? '--',
             }))}
-            onChangeAttachment={() => { }}
+            onChangeAttachment={() => {}}
           ></UploadAttach>
         </FileList>
       ) : null}

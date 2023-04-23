@@ -27,9 +27,10 @@ const ScheduleListBox = styled.div`
   box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
   border-radius: 6px 6px 6px 6px;
   z-index: 999;
-  padding-left: 16px;
+  padding-left: 8px;
   padding-top: 4px;
   padding-bottom: 4px;
+  padding-right: 1px;
   box-sizing: border-box;
 `
 const ScheduleItem = styled.div<{ color: string }>`
@@ -40,6 +41,10 @@ const ScheduleItem = styled.div<{ color: string }>`
   margin-bottom: 4px;
   padding-left: 6px;
   box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  height: 28px;
+  /* border: 1px solid; */
   cursor: pointer;
   &:hover {
     background: ${props => props.color};
@@ -73,7 +78,7 @@ const labelTime = css`
 `
 const Dot = styled.div<{ color: string }>`
   position: absolute;
-  top: 5px;
+  top: 7px;
   width: 6px;
   height: 6px;
   background: ${props => props.color};
@@ -95,6 +100,7 @@ const dateClass = css`
 const gregorianDateClass = css`
   color: var(--neutral-n3);
   font-size: 12px;
+  font-family: MiSans-Regular, MiSans;
 `
 const ScheduleListModal: React.FC<ScheduleListProps> = props => {
   const { scheduleListModal } = useSelector(state => state.schedule)
