@@ -236,6 +236,9 @@ const RightFormWork = () => {
     let timeValLen = String(timeVal)
     return timeValLen.length === 13 ? timeVal / 1000 : timeVal
   }
+  const getTemplateSort = (list: any) => {
+    return list.map((item: any, index: number) => ({ ...item, sort: index }))
+  }
   const getVerifyParams = (parmas: any) => {
     // 谁可以写是必填的
     if (parmas.is_all_write !== 1) {
@@ -303,7 +306,7 @@ const RightFormWork = () => {
         fillingRequirements?.hand_scope?.key || fillingRequirements?.hand_scope,
       is_all_view: reportContent?.is_all_view,
       is_all_write: reportContent?.is_all_write,
-      template_content_configs: templateContentConfigs,
+      template_content_configs: getTemplateSort(templateContentConfigs),
       template_configs: config,
       id: activeItem?.id,
     }
