@@ -14,6 +14,7 @@ import {
   ChangeItem,
   ChangeItems,
   CreateWrap,
+  CreateIcon,
   Provider,
   imgCss,
   Line,
@@ -434,16 +435,20 @@ const HeaderRight = () => {
             placement="bottomRight"
           >
             <CreateWrap>
-              <CommonIconFont type="plus" size={20} />
+              <CreateIcon>
+                <CommonIconFont type="plus" size={20} />
+              </CreateIcon>
             </CreateWrap>
           </Popover>
         )}
 
         {String(location.pathname).includes('/Report') && (
-          <CreateWrap
-            onClick={() => dispatch(setWriteReportModal({ visible: true }))}
-          >
-            <CommonIconFont type="plus" size={20} />
+          <CreateWrap>
+            <CreateIcon
+              onClick={() => dispatch(setWriteReportModal({ visible: true }))}
+            >
+              <CommonIconFont type="plus" size={20} />
+            </CreateIcon>
           </CreateWrap>
         )}
 

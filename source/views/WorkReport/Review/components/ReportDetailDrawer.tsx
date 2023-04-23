@@ -457,12 +457,14 @@ const ReportDetailDrawer = () => {
                     {t('report.list.of')}
                     {drawerInfo?.report_template_name}
                     <span className="dateText">
-                      {`（${drawerInfo?.start_time} ${t(
-                        'report.list.to',
-                      )} ${drawerInfo?.end_time?.substring(
-                        0,
-                        drawerInfo?.end_time?.indexOf(' '),
-                      )}）`}
+                      {drawerInfo?.submit_cycle === 4
+                        ? '--'
+                        : `（${drawerInfo?.start_time} ${t(
+                            'report.list.to',
+                          )} ${drawerInfo?.end_time?.substring(
+                            0,
+                            drawerInfo?.end_time?.indexOf(' '),
+                          )}）`}
                     </span>
                   </div>
                   <div className="submitTimeText">

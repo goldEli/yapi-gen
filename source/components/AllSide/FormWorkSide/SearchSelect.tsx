@@ -4,6 +4,9 @@ import { useState } from 'react'
 
 const InputStyle = styled(Select)`
   outline: none;
+  .anticon-down {
+    display: none;
+  }
 `
 
 interface Props {
@@ -42,6 +45,7 @@ const SearchSelect = (props: Props) => {
         setValue(newValue)
       }}
       options={props.options}
+      notFoundContent={null}
     />
   )
 }

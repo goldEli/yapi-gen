@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next'
 const AddPersonText = styled.div`
   margin-left: 26px;
   display: flex;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 `
 const AddPersonTitleText = styled.div`
   display: flex;
@@ -35,13 +35,12 @@ const PersonContainer = styled.div`
   width: 100%;
   padding: 0 24px;
   display: flex;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   flex-wrap: wrap;
 `
 const Col = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
   min-width: 116px;
   height: 32px;
   background-color: var(--neutral-n8);
@@ -62,6 +61,7 @@ const Col = styled.div`
   }
 `
 const NameText = styled.div`
+  flex: 1;
   padding: 0 10px;
   min-width: 40px;
 `
@@ -234,10 +234,11 @@ const Addperson = (props: Props) => {
 
   // 添加团队部门
   const onAddConfirm = (data: any) => {
+    console.log(userType, 'userType', data)
     const values = data.map((item: any) => ({
       ...item,
       user_type: userType,
-      target_type: item.type === 1 ? 2 : item.type,
+      target_type: item.type === 3 ? 3 : 2,
       target_value: {
         name: item.name,
         avatar: item.type === 1 ? 2 : item.type,
@@ -299,7 +300,8 @@ const Addperson = (props: Props) => {
         </AddPersonTitleText>
         <Dropdown
           placement="bottomLeft"
-          // open={isOpen}
+          visible={isOpen}
+          onVisibleChange={setIsOpen}
           trigger={['click']}
           menu={{ items, onClick: onOpenChange }}
           overlayStyle={{
@@ -309,7 +311,11 @@ const Addperson = (props: Props) => {
         >
           <CommonButton type="primaryText" onClick={() => setIsOpen(!isOpen)}>
             {t('formWork.add')}
-            <CommonIconFont type={'down'} size={14} color="var(--primary-d2)" />
+            <CommonIconFont
+              type={isOpen ? 'up' : 'down'}
+              size={14}
+              color="var(--primary-d2)"
+            />
           </CommonButton>
         </Dropdown>
       </AddPersonText>

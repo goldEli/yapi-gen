@@ -696,16 +696,16 @@ const ProjectMember = (props: { searchValue?: string }) => {
             </Space>
             <Space size={8}>
               <ScreenMinHover
-                label={t('common.refresh')}
-                icon="sync"
-                onClick={refresh}
-              />
-              <DividerWrap type="vertical" />
-              <ScreenMinHover
                 label={t('common.search')}
                 icon="filter"
                 onClick={onChangeFilter}
                 isActive={!isVisible}
+              />
+              <DividerWrap type="vertical" />
+              <ScreenMinHover
+                label={t('common.refresh')}
+                icon="sync"
+                onClick={refresh}
               />
             </Space>
           </HeaderTop>
