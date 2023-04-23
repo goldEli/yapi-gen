@@ -3,6 +3,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/naming-convention */
+import CommonUserAvatar from '@/components/CommonUserAvatar'
 import IconFont from '@/components/IconFont'
 import NoData from '@/components/NoData'
 import { NameWrap } from '@/components/StyleCommon'
@@ -170,25 +171,8 @@ export const ChoosePerson = (props: ChoosePersonProps) => {
                   setValue('')
                 }}
               >
-                {i.avatar ? (
-                  <img
-                    style={{
-                      width: 24,
-                      height: 24,
-                      borderRadius: 16,
-                      marginRight: 8,
-                    }}
-                    src={i?.avatar}
-                    alt=""
-                  />
-                ) : (
-                  <NameWrap style={{ margin: '0 8px 0 0' }}>
-                    {String(
-                      i?.name?.substring(0, 1)?.trim().slice(0, 1),
-                    ).toLocaleUpperCase()}
-                  </NameWrap>
-                )}
-                {i.name}
+                <CommonUserAvatar avatar={i?.avatar} />
+                <span style={{ marginLeft: 8 }}>{i.name}</span>
               </PersonItemWrap>
             )
           })}
@@ -385,18 +369,7 @@ const ExamineItem = (props: Props) => {
                 }}
               >
                 <NewNameWrap>
-                  {i.avatar ? (
-                    <img
-                      style={{ width: 32, height: 32, borderRadius: 16 }}
-                      src={i.avatar}
-                    />
-                  ) : (
-                    <NameWrap style={{ margin: 0 }}>
-                      {String(
-                        i?.name?.substring(0, 1)?.trim().slice(0, 1),
-                      ).toLocaleUpperCase()}
-                    </NameWrap>
-                  )}
+                  <CommonUserAvatar avatar={i?.avatar} />
                   <IconFontWrap
                     type="close-solid"
                     onClick={() => onDelCheckPerson(i.id)}

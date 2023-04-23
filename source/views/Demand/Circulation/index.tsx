@@ -21,6 +21,7 @@ import { getStoryStatusLog } from '@/services/demand'
 import { setIsUpdateChangeLog } from '@store/demand'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import StateTag from '@/components/StateTag'
+import CommonUserAvatar from '@/components/CommonUserAvatar'
 
 const TimeLIneWrap = styled(Timeline)({
   marginTop: 24,
@@ -201,16 +202,7 @@ const Circulation = () => {
                     }
                   >
                     <LineItem bottom={8}>
-                      <NameWrap
-                        style={{ marginBottom: 0, width: 24, height: 24 }}
-                      >
-                        {String(
-                          i?.operationName?.trim().slice(0, 1),
-                        ).toLocaleUpperCase()}
-                      </NameWrap>
-                      <TextWrap style={{ marginLeft: 8 }}>
-                        {i?.operationName}
-                      </TextWrap>
+                      <CommonUserAvatar name={i?.operationName?.trim()} />
                       <TextWrap style={{ marginLeft: 32 }}>
                         {/* TODO: 优化changeType */}
                         {i.changeType === 1
@@ -288,19 +280,9 @@ const Circulation = () => {
                                 <Space size={24}>
                                   {i.fields[m]?.value?.map((n: any) => (
                                     <div key={n.id} style={{ display: 'flex' }}>
-                                      <NameWrap
-                                        style={{
-                                          marginBottom: 0,
-                                          marginRight: 8,
-                                          width: 24,
-                                          height: 24,
-                                        }}
-                                      >
-                                        {String(
-                                          n?.name?.trim().slice(0, 1),
-                                        ).toLocaleUpperCase()}
-                                      </NameWrap>
-                                      <span>{n?.name?.trim()}</span>
+                                      <CommonUserAvatar
+                                        name={n?.name?.trim()}
+                                      />
                                     </div>
                                   ))}
                                 </Space>
@@ -399,20 +381,7 @@ const Circulation = () => {
                                     alignItems: 'center',
                                   }}
                                 >
-                                  <NameWrap
-                                    style={{
-                                      marginBottom: 0,
-                                      width: 24,
-                                      height: 24,
-                                    }}
-                                  >
-                                    {String(
-                                      m.name?.trim().slice(0, 1),
-                                    ).toLocaleUpperCase()}
-                                  </NameWrap>
-                                  <span style={{ marginLeft: 8 }}>
-                                    {m.name?.trim()}
-                                  </span>
+                                  <CommonUserAvatar name={m.name?.trim()} />
                                 </div>
                               </LineItem>
                               <LineItem style={{ marginLeft: 32 }}>
@@ -461,22 +430,9 @@ const Circulation = () => {
                             <div
                               style={{ display: 'flex', alignItems: 'center' }}
                             >
-                              <NameWrap
-                                style={{
-                                  marginBottom: 0,
-                                  width: 24,
-                                  height: 24,
-                                }}
-                              >
-                                {String(
-                                  i.verifyAll?.verify.fixedUser.userName
-                                    ?.trim()
-                                    .slice(0, 1),
-                                ).toLocaleUpperCase()}
-                              </NameWrap>
-                              <span style={{ marginLeft: 8 }}>
-                                {i.verifyAll?.verify.fixedUser.userName?.trim()}
-                              </span>
+                              <CommonUserAvatar
+                                name={i.verifyAll?.verify.fixedUser.userName?.trim()}
+                              />
                             </div>
                           </LineItem>
                           <LineItem style={{ marginLeft: 32 }}>

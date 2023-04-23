@@ -15,7 +15,6 @@ const ModalHeader = styled.div`
   justify-content: space-between;
   font-size: 16px;
   color: var(--neutral-n1-d1);
-  font-family: siyuanmedium;
   height: 56px;
   padding: 0 13px 0 24px;
   font-family: SiYuanMedium;
