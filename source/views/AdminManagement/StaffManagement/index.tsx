@@ -518,15 +518,6 @@ const StaffManagement = () => {
           </div>
 
           <ScreenMinHover
-            label={t('common.refresh')}
-            icon="sync"
-            onClick={refresh}
-            style={{ marginRight: 8 }}
-          />
-
-          <DividerWrap type="vertical" />
-
-          <ScreenMinHover
             label={t('common.search')}
             icon="filter"
             onClick={onChangeFilter}
@@ -536,6 +527,14 @@ const StaffManagement = () => {
 
           <DividerWrap type="vertical" />
 
+          <ScreenMinHover
+            label={t('common.refresh')}
+            icon="sync"
+            onClick={refresh}
+            style={{ marginRight: 8 }}
+          />
+
+          <DividerWrap type="vertical" />
           <div className={settingWrap}>
             <DropDownMenu
               menu={<SetShowField notView onChangeFieldVisible={showModal} />}

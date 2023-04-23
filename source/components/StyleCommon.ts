@@ -214,7 +214,8 @@ const HoverWrap = styled.div<{ isActive?: any }>`
   & .iconMain {
     font-size: 18px;
   }
-  .label {
+
+  > .label {
     margin-left: 8px;
   }
   background: ${props => (props.isActive ? 'var(--hover-d1)' : '')};

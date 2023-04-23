@@ -3,7 +3,7 @@ import { changeColorText } from '@store/color-text'
 import { useDispatch, useSelector } from '@store/index'
 import { saveInputKey } from '@store/view'
 import { Input } from 'antd'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import CommonIconFont from './CommonIconFont'
 
 const InputStyle = styled(Input)<{ bgColor: any }>`
@@ -27,12 +27,21 @@ interface Props {
   leftIcon?: boolean
   isDemand?: boolean
   isReport?: boolean
+  // 用于公共使用时，清除
+  defaultValue?: string
 }
 
 const InputSearch = (props: Props) => {
   // 用于控制输入框的删除图标
   const [value, setValue] = useState('')
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (!props.defaultValue) {
+      setValue('')
+    }
+  }, [props.defaultValue])
+
   return (
     <InputStyle
       ref={props?.ref}
