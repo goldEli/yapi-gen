@@ -159,7 +159,12 @@ const AllSideFilter = (props: any) => {
         {active ? (
           <MyHead>
             <LeftTitle title={t('Notices')} />
-            <ResetB onClick={() => onChange([])}>
+            <ResetB
+              style={{
+                marginRight: '24px',
+              }}
+              onClick={() => onChange([])}
+            >
               {t('reset_filtering') as string}
             </ResetB>
           </MyHead>
