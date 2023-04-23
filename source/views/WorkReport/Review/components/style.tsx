@@ -97,7 +97,7 @@ export const SkeletonGroups = styled.div`
     display: inline-block;
     min-width: inherit;
     border-radius: 4px;
-    background: #f2f2f4;
+    background: var(--neutral-n7);
   }
 `
 

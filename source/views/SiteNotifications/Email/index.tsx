@@ -1,3 +1,4 @@
+/* eslint-disable new-cap */
 import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
 import { Breadcrumb, Select, Switch, message, Space } from 'antd'
@@ -17,6 +18,7 @@ import {
   setMyConfiguration,
   setMyEmailConfiguration,
 } from '@store/SiteNotifications'
+import { Message } from '@/components/Message'
 
 const Email = () => {
   const [t] = useTranslation()
@@ -48,9 +50,9 @@ const Email = () => {
     const res = await editMyAllNoteSet(
       Array.from(new Set([...myConfiguration, ...choose])),
     )
-
+    Message({ msg: t('succeed'), type: 'error' })
     if (res.code === 0) {
-      message.success(t('succeed'))
+      Message({ msg: t('succeed'), type: 'success' })
     }
     dispatch(setMyEmailConfiguration(choose))
   }

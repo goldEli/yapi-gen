@@ -511,7 +511,7 @@ const StaffManagement = () => {
           <div className={inputSearch}>
             <InputSearch
               leftIcon
-              width={223}
+              width={184}
               placeholder={t('staff.pleaseKey')}
               onChangeSearch={onPressEnter}
             />
