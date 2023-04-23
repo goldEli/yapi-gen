@@ -146,8 +146,9 @@ export const TitleGroup = styled.div({
   display: 'flex',
   alignItems: 'center',
   marginTop: 14,
-  color: 'var(--neutral-n4)',
+  color: 'var(--neutral-n2)',
   fontSize: 12,
+  fontWeight: 600,
 })
 
 export const MainWrap = styled.div({
@@ -182,6 +183,7 @@ const ModalFooter = styled(Space)({
 })
 
 export const CheckboxWrap = styled.div({ width: 100 })
+
 export const OperationWrap = styled.div({ width: 100 })
 
 export const GroupWrap = styled.div({

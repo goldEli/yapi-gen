@@ -13,23 +13,33 @@ const Menu = styled.div`
   width: 100%;
 `
 
-const MenuItem = styled.div<{ active?: any }>(
-  ({ active }) => ({
-    background: active ? 'var(--gradient-left)' : '',
-    color: active ? 'var(--primary-d2) !important' : '',
-  }),
-  {
-    boxSizing: 'border-box',
-    height: 44,
-    display: 'flex',
-    alignItems: 'center',
-    cursor: 'pointer',
-    paddingLeft: 52,
-    '&: hover': {
-      color: 'var(--primary-d2)',
-    },
-  },
-)
+export const MenuItem = styled.div<{ isActive?: boolean }>`
+  height: 44px;
+  font-family: SiYuanRegular;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  font-size: 14px;
+  color: ${props =>
+    props.isActive ? 'var(--primary-d2)' : 'var(--neutral-n1-d2)'};
+  cursor: pointer;
+  white-space: nowrap;
+  div {
+    margin-left: 12px;
+  }
+  svg {
+    color: ${props =>
+      props.isActive ? 'var(--primary-d2)' : 'var(--neutral-n3)'};
+  }
+  background: ${props =>
+    props.isActive ? 'var(--gradient-left)' : 'transparent'};
+  &:hover {
+    svg {
+      color: var(--primary-d2) !important;
+    }
+    color: var(--primary-d2) !important;
+  }
+`
 
 const ReviewSide = () => {
   const asyncSetTtile = useSetTitle()
@@ -92,10 +102,10 @@ const ReviewSide = () => {
           {t('report.list.workReport')}
         </span>
 
-        <CloseWrap onClick={handleReport} width={32} height={32}>
+        <CloseWrap onClick={handleReport} width={24} height={24}>
           <IconFont
             style={{
-              fontSize: '16px',
+              fontSize: 18,
             }}
             type="plus"
           />
@@ -107,11 +117,8 @@ const ReviewSide = () => {
           <MenuItem
             style={{
               fontSize: 14,
-              fontFamily: item.state ? 'SiYuanMedium' : '',
-              position: 'relative',
-              fontWeight: 400,
             }}
-            active={nowPath2 === item.id}
+            isActive={nowPath2 === item.id}
             onClick={() => changeActive(item)}
             key={item.id}
             hidden={item.isPermission}
@@ -122,8 +129,6 @@ const ReviewSide = () => {
                 style={{
                   fontSize: 20,
                   marginRight: item.state ? '6px' : '',
-                  position: 'absolute',
-                  left: '24px',
                 }}
               />
             )}
@@ -133,8 +138,6 @@ const ReviewSide = () => {
                 style={{
                   fontSize: 20,
                   marginRight: item.state ? '6px' : '',
-                  position: 'absolute',
-                  left: '24px',
                 }}
               />
             )}
@@ -144,8 +147,6 @@ const ReviewSide = () => {
                 style={{
                   fontSize: 20,
                   marginRight: item.state ? '6px' : '',
-                  position: 'absolute',
-                  left: '24px',
                 }}
               />
             )}

@@ -18,10 +18,11 @@ import {
   setReportContent,
   setFillingRequirements,
   setEditSave,
+  setErr,
 } from '@store/formWork'
 import { dayData1, weekData, monthData, aWeekDataList } from './DataList'
 import moment from 'moment'
-import { throttle } from 'lodash'
+import { debounce, throttle } from 'lodash'
 import { useTranslation } from 'react-i18next'
 const PermissionConfigStyle = styled.div`
   padding: 0 24px;
@@ -142,6 +143,7 @@ const PermissionConfig = (props: PropsType) => {
   // 填写周期
   const onchange = (e: any) => {
     dispatch(setEditSave(false))
+    dispatch(setErr(true))
     setType(e.target.value)
     let value = 0
     let start = null
@@ -155,7 +157,7 @@ const PermissionConfig = (props: PropsType) => {
           time: 24 * 60 * 60,
         }
         end = {
-          day_type: 1,
+          day_type: 2,
           time: 24 * 60 * 60,
         }
         reminder_time = 2 * 60 * 60
@@ -357,7 +359,6 @@ const PermissionConfig = (props: PropsType) => {
         setType('doNot')
         break
     }
-
     const newObj = { ...obj }
     if (obj?.submit_cycle === 1) {
       const newStartTime = {
@@ -432,6 +433,7 @@ const PermissionConfig = (props: PropsType) => {
     newVal.hand_scope = obj
     fillingRequirements && setFormValues(newVal)
   }, [fillingRequirements])
+  console.log(fillingRequirements, 'fillingRequirements')
   return (
     <PermissionConfigStyle>
       {/* 汇报内容 */}

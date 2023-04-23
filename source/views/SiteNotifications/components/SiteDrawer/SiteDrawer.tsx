@@ -23,6 +23,7 @@ import {
   Wrap,
   ActiveTab,
   GrepTitle2,
+  messageDrawer,
 } from './style'
 import { useTranslation } from 'react-i18next'
 import InfiniteScroll from 'react-infinite-scroll-component'
@@ -143,7 +144,6 @@ const SiteDrawer = () => {
     const arr = list.map((i: any) => i.id)
     setReads(arr)
   }
-  console.log(list)
 
   const reset = async () => {
     const res = await getContactStatistics()
@@ -185,17 +185,15 @@ const SiteDrawer = () => {
 
   return (
     <Drawer
+      className={messageDrawer}
       forceRender
       bodyStyle={{
-        padding: 16,
-        paddingBottom: '8px',
-        paddingRight: '4px',
+        padding: '16px 12px 0 12px',
         boxSizing: 'border-box',
       }}
       width={400}
       zIndex={100}
       closable={false}
-      mask={false}
       placement="right"
       onClose={onClose}
       open={isVisible}

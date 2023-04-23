@@ -6,7 +6,7 @@
 import CommonButton from '@/components/CommonButton'
 import styled from '@emotion/styled'
 import { Input, message, Spin } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import PermissionConfig from './PermissionConfig'
 import EditWork from './EditWork'
 import PreviewDialog from '@/components/FormWork/PreviewDialog'
@@ -69,6 +69,7 @@ export const Col = styled.div`
     cursor: pointer;
   }
 `
+
 export const Text = styled.div<{ bgc: any }>(
   {
     padding: '0 24px 0 0',
@@ -77,13 +78,14 @@ export const Text = styled.div<{ bgc: any }>(
     lineHeight: '32px',
     textAlign: 'center',
     fontSize: '14px',
-    fontFamily: 'SiYuanMedium',
   },
   ({ bgc }) => ({
     backgroundColor: bgc ? 'var(--function-tag5)' : 'var(--neutral-n8)',
     color: bgc ? 'var(--primary-d1)' : 'var(--neutral-n2)',
+    fontFamily: bgc ? 'SiYuanMedium' : 'inherit',
   }),
 )
+
 export const StyleRight = styled.div<{ bgc?: any }>(
   {
     width: 0,
@@ -98,6 +100,7 @@ export const StyleRight = styled.div<{ bgc?: any }>(
       : ' transparent transparent  transparent  var(--neutral-n8) ',
   }),
 )
+
 export const StyleLeft = styled.div<{ bgc?: any }>(
   {
     width: 0,
@@ -112,15 +115,20 @@ export const StyleLeft = styled.div<{ bgc?: any }>(
       : 'var(--neutral-n8)  var(--neutral-n8)  var(--neutral-n8)  transparent',
   }),
 )
+
 export const BtnRight = styled.div`
   display: flex;
 `
+
 export const EditFormWorkBox = styled.div`
   margin: 20px 0 20px 24px;
-  border-bottom: 1px solid var(--neutral-n6-d1);
+  /* border-bottom: 1px solid var(--neutral-n6-d1); */
 `
+
 const EditFormWorkStyle = styled(Input)({
   border: 'none',
+  borderRadius: 0,
+  borderBottom: '1px solid var(--neutral-n6-d1)',
   marginBottom: '14px',
   color: 'var(--neutral-n1-d1)',
   fontFamily: 'SiYuanMedium',
@@ -138,6 +146,7 @@ const BtnRow = styled.div`
 `
 const RightFormWork = () => {
   const [t] = useTranslation()
+  const inputRefDom = useRef<any>(null)
   const [isActive, setIsActive] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   const [value, setValue] = useState('')
@@ -167,12 +176,9 @@ const RightFormWork = () => {
   }, [activeItem])
   // 删除模板
   const deleteActiveItem = async () => {
-    setDelIsVisible(false)
-    if (!activeItem?.id) {
-      const res = await dispatch(getTemplateList())
-      return
+    if (activeItem?.id) {
+      await deleteTemplate({ id: activeItem?.id })
     }
-    await deleteTemplate({ id: activeItem?.id })
     const res = await dispatch(getTemplateList())
     if (res.payload?.length >= 1) {
       dispatch(
@@ -223,7 +229,7 @@ const RightFormWork = () => {
       )
       dispatch(setFillingRequirements(claerConfig))
     }
-
+    setDelIsVisible(false)
     message.success(t('formWork.message2'))
   }
   const getVerifyParams = (parmas: any) => {
@@ -371,6 +377,11 @@ const RightFormWork = () => {
   useEffect(() => {
     getTitle()
   }, [templateName])
+  useEffect(() => {
+    setTimeout(() => {
+      inputRefDom.current?.focus()
+    }, 100)
+  }, [])
   return (
     <Spin
       spinning={isSpinning}
@@ -415,8 +426,10 @@ const RightFormWork = () => {
         {isActive === 0 ? (
           <EditFormWorkBox>
             <EditFormWorkStyle
+              ref={inputRefDom}
               placeholder={t('formWork.t7')}
               value={value}
+              autoFocus
               maxLength={50}
               onInput={(e: any) => {
                 dispatch(setEditSave(false))
