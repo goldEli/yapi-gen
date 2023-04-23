@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setTemplateContentConfigs, setEditSave } from '@store/formWork'
 import { message } from 'antd'
 import { useTranslation } from 'react-i18next'
-import { callbackify } from 'util'
+
 const TitleStyle = styled.div`
   display: flex;
   width: 100%;
@@ -19,7 +19,7 @@ const TitleStyle = styled.div`
   font-size: 14px;
   color: var(--neutral-n1-d1);
   font-family: SiYuanMedium;
-  margin-bottom: 16px;
+  margin: 0 24px 16px 24px;
   span:nth-child(2) {
     margin-left: 8px;
     font-size: 12px;
@@ -30,7 +30,6 @@ const TitleStyle = styled.div`
 `
 const LeftTabs = styled.div`
   flex: 1;
-  margin: 0 24px;
   height: calc(100vh - 330px);
   overflow-y: auto;
 `
@@ -148,60 +147,55 @@ const EditWork = (props: PropsType) => {
     setDataList(templateContentConfigs)
   }, [templateContentConfigs])
   return (
-    <>
-      <div
-        id="father"
-        style={{ display: 'flex', height: 'calc(100vh -300px)' }}
+    <div id="father" style={{ display: 'flex', height: 'calc(100vh -300px)' }}>
+      <LeftTabs
+        onDragOver={event => {
+          event.preventDefault(), event.stopPropagation()
+        }}
       >
-        <LeftTabs
+        <TitleStyle draggable="false">
+          <span>{t('formWork.content')}</span>
+        </TitleStyle>
+        <div
+          style={{ height: 'calc(100vh - 370px)' }}
+          onDrop={event => {
+            onDrag(event, dataList?.length - 1)
+          }}
           onDragOver={event => {
-            event.preventDefault(), event.stopPropagation()
+            event.preventDefault()
           }}
         >
-          <TitleStyle draggable="false">
-            <span>{t('formWork.content')}</span>
-          </TitleStyle>
-          <div
-            style={{ height: 'calc(100vh - 370px)' }}
-            onDrop={event => {
-              onDrag(event, dataList?.length - 1)
-            }}
-            onDragOver={event => {
-              event.preventDefault()
-            }}
-          >
-            <TabsDragging
-              positionType="top"
-              onClick={(i: any, child: any) => onClick(i, child)}
-              onDrop={(event: any, i: any) => onDrag(event, i)}
-              onChangeMove={(list: any) => setDataList(list)}
-              list={dataList}
-              onChangeChecked={(val: boolean, child: any) =>
-                onChangeChecked(val, child)
-              }
-              onDelete={(child: any) => onDelete(child)}
-              setList={setDataList}
-            />
-          </div>
-        </LeftTabs>
-        <RightTabs>
-          <TitleStyle draggable="false">
-            <span>{t('formWork.msg1')}</span>
-            <span>{t('formWork.msg2')}</span>
-          </TitleStyle>
-          <RightDragging />
-        </RightTabs>
+          <TabsDragging
+            positionType="top"
+            onClick={(i: any, child: any) => onClick(i, child)}
+            onDrop={(event: any, i: any) => onDrag(event, i)}
+            onChangeMove={(list: any) => setDataList(list)}
+            list={dataList}
+            onChangeChecked={(val: boolean, child: any) =>
+              onChangeChecked(val, child)
+            }
+            onDelete={(child: any) => onDelete(child)}
+            setList={setDataList}
+          />
+        </div>
+      </LeftTabs>
+      <RightTabs>
+        <TitleStyle draggable="false">
+          <span>{t('formWork.msg1')}</span>
+          <span>{t('formWork.msg2')}</span>
+        </TitleStyle>
+        <RightDragging />
+      </RightTabs>
 
-        {/* 组件配置弹窗 */}
-        <ParmasDialog
-          // type={type}
-          dragItem={dragItem}
-          isVisible={isVisible}
-          onClose={() => setIsVisible(false)}
-          onConfirm={ParmasDialogOnConfirm}
-        />
-      </div>
-    </>
+      {/* 组件配置弹窗 */}
+      <ParmasDialog
+        // type={type}
+        dragItem={dragItem}
+        isVisible={isVisible}
+        onClose={() => setIsVisible(false)}
+        onConfirm={ParmasDialogOnConfirm}
+      />
+    </div>
   )
 }
 export default EditWork
