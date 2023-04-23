@@ -5,7 +5,7 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
-import { Checkbox, Tooltip } from 'antd'
+import { Checkbox } from 'antd'
 import { throttle } from 'lodash'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next'
 const Container = styled.div`
   position: relative;
   height: 72px;
+  margin: 0 24px;
   &:hover {
     cursor: pointer;
   }
@@ -120,6 +121,7 @@ const Sortable = (props: any) => {
   }
 
   const onDragOver = throttle((e: any, index: number, child: any) => {
+    e.stopPropagation()
     setDragItem(child)
     setEndIndex(index)
     if (e.pageY >= window.screen?.availHeight - 300) {
@@ -188,13 +190,15 @@ const Sortable = (props: any) => {
                     : 'translateY(0)',
               }}
               key={child?.name}
-              // draggable="true"
-              // onDragStart={(ev: any) => onDragStart(ev, i, child)}
-              // onDragOver={e => onDragOver(e, i, child)}
-              // onDragEnd={e => onDragEnd(e, i)}
-              onClick={() =>
-                child.type !== 1 && child.type != 4 && props.onClick(i, child)
-              }
+              draggable="true"
+              onDragStart={(ev: any) => onDragStart(ev, i, child)}
+              onDragOver={e => onDragOver(e, i, child)}
+              onDragEnd={e => onDragEnd(e, i)}
+              onClick={(event: any) => {
+                console.log('dj'),
+                  event.preventDefault(),
+                  child.type !== 1 && child.type != 4 && props.onClick(i, child)
+              }}
             >
               <ItemList>
                 <div style={{ display: 'flex' }}>

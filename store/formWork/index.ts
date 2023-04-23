@@ -69,7 +69,6 @@ const formWork = createSlice({
     },
     // 装表单的参数 填写要求的表单内容
     setFillingRequirements: (state: any, action: any) => {
-      console.log(action.payload, 'action.payload')
       state.fillingRequirements = action.payload
     },
     // 装汇报内容的参数

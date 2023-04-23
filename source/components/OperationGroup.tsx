@@ -137,7 +137,12 @@ const OperationGroup = (props: Props) => {
   }
   return (
     <SpaceWrap size={8} style={{ marginLeft: 8 }}>
-      {location.pathname.includes('Demand') && <ViewPort pid={projectId} />}
+      {location.pathname.includes('Demand') && (
+        <>
+          <ViewPort pid={projectId} />
+          <DividerWrap type="vertical" />
+        </>
+      )}
 
       <DropDownMenu
         isVisible={isVisible}
@@ -160,14 +165,6 @@ const OperationGroup = (props: Props) => {
         </HasIconMenu>
       </DropDownMenu>
 
-      <DividerWrap type="vertical" />
-
-      <ScreenMinHover
-        label={t('common.refresh')}
-        icon="sync"
-        onClick={props.onRefresh}
-      />
-
       {!hasFilter && (
         <>
           <DividerWrap type="vertical" />
@@ -179,6 +176,14 @@ const OperationGroup = (props: Props) => {
           />
         </>
       )}
+
+      <DividerWrap type="vertical" />
+
+      <ScreenMinHover
+        label={t('common.refresh')}
+        icon="sync"
+        onClick={props.onRefresh}
+      />
 
       <DividerWrap type="vertical" />
 

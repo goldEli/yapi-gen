@@ -45,7 +45,7 @@ const SiteNotificationSide = () => {
           onClick={() => navigate(`${i.path}${i.id}`)}
         >
           {/* <CommonIconFont type={i.icon} color="var(--neutral-n3)" size={18} /> */}
-          <div>{i.title}</div>
+          {i.title}
         </MenuItem>
       ))}
     </Wrap>

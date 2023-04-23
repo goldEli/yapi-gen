@@ -123,7 +123,12 @@ const AllSideFilter = (props: any) => {
       <Wrap>
         <MyHead>
           <LeftTitle title={t('filtering_notifications')} />
-          <CloseWrap onClick={onClose} width={32} height={32}>
+          <CloseWrap
+            onClick={onClose}
+            width={32}
+            height={32}
+            style={{ marginRight: 18 }}
+          >
             <IconFont
               style={{ fontSize: 20, color: 'var(--neutral-n2)' }}
               type="close"
@@ -132,11 +137,17 @@ const AllSideFilter = (props: any) => {
         </MyHead>
         <MyIconModeTextWrap>
           {lists.map((i: any) => (
-            <Badge key={i.id} size="small" offset={[-22, 6]} count={i.read}>
+            <Badge
+              key={i.id}
+              size="small"
+              offset={[-22, 6]}
+              style={{ padding: '0 4px' }}
+              count={i.read}
+            >
               <MyIconModeWrap onClick={() => choose(i.sendType)}>
                 <MyIconMode tap={i.read} active={active === i.sendType}>
                   <IconFont
-                    style={{ fontSize: 20 }}
+                    style={{ fontSize: 24 }}
                     type={active === i.sendType ? i.icon2 : i.icon}
                   />
                 </MyIconMode>
@@ -145,17 +156,22 @@ const AllSideFilter = (props: any) => {
             </Badge>
           ))}
         </MyIconModeTextWrap>
-        {active && (
+        {active ? (
           <MyHead>
             <LeftTitle title={t('Notices')} />
-            <ResetB onClick={() => onChange([])}>
+            <ResetB
+              style={{
+                marginRight: '24px',
+              }}
+              onClick={() => onChange([])}
+            >
               {t('reset_filtering') as string}
             </ResetB>
           </MyHead>
-        )}
+        ) : null}
 
         <InfoWrap>
-          {active && (
+          {active ? (
             <Checkbox.Group
               value={checeks}
               style={{ width: '100%' }}
@@ -172,7 +188,7 @@ const AllSideFilter = (props: any) => {
                 )
               })}
             </Checkbox.Group>
-          )}
+          ) : null}
         </InfoWrap>
       </Wrap>
     </Drawer>

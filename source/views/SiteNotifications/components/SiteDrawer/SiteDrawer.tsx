@@ -125,11 +125,12 @@ const SiteDrawer = () => {
 
   const setReads = async (values: any) => {
     const res = await setReadApi(values)
-    console.log(res)
+
     if (res.code === 0) {
       const res2 = await getContactStatistics()
       let num = 0
-      res2.list.slice(1, 5).forEach((i: any) => {
+
+      res2.list.slice(1, 6).forEach((i: any) => {
         num += Number(i.nread)
       })
 
@@ -192,7 +193,7 @@ const SiteDrawer = () => {
         boxSizing: 'border-box',
       }}
       width={400}
-      zIndex={1}
+      zIndex={100}
       closable={false}
       placement="right"
       onClose={onClose}
@@ -224,7 +225,7 @@ const SiteDrawer = () => {
           style={{
             display: 'flex',
             justifyContent: 'space-between',
-            marginTop: '16px',
+            margin: '16px 0 8px',
           }}
         >
           <GrepTitle>{t('today')}</GrepTitle>

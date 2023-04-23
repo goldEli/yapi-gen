@@ -13,8 +13,7 @@ export const MyHead = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  padding: 0 24px;
+  padding-left: 24px;
 `
 
 export const MyIconModeWrap = styled.div`
@@ -57,6 +56,7 @@ export const MyIconModeText = styled.div`
   line-height: 22px;
   margin-top: 8px;
 `
+
 export const MyIconModeTextWrap = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -80,6 +80,7 @@ export const ResetB = styled.div`
 `
 
 export const InfoWrap = styled.div``
+
 export const InfoWrapItem = styled.div`
   display: flex;
   align-items: center;

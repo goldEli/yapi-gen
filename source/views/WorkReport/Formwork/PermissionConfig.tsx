@@ -90,6 +90,7 @@ const PermissionConfig = (props: PropsType) => {
   }
   // 根据接口拆解数据
   const onChangeValues = (values: any, num: number) => {
+    console.log(values, 'values')
     let d1: any = person1 || []
     let d2 = person2 || []
     let d3 = person3 || []
@@ -154,11 +155,11 @@ const PermissionConfig = (props: PropsType) => {
         value = 1
         start = {
           day_type: 1,
-          time: 24 * 60 * 60,
+          time: 0,
         }
         end = {
           day_type: 2,
-          time: 24 * 60 * 60,
+          time: 0,
         }
         reminder_time = 2 * 60 * 60
         break
@@ -166,11 +167,11 @@ const PermissionConfig = (props: PropsType) => {
         value = 2
         start = {
           day_type: 4,
-          time: 24 * 60 * 60,
+          time: 0,
         }
         end = {
           day_type: 7,
-          time: 24 * 60 * 60,
+          time: 0,
         }
         reminder_time = 172800
         break
@@ -179,11 +180,11 @@ const PermissionConfig = (props: PropsType) => {
         value = 3
         start = {
           day_type: 25,
-          time: 24 * 60 * 60,
+          time: 0,
         }
         end = {
           day_type: 34,
-          time: 24 * 60 * 60,
+          time: 0,
         }
         reminder_time = 172800
         break
@@ -213,9 +214,6 @@ const PermissionConfig = (props: PropsType) => {
   }
   // 秒转成时分秒 b为true代表取天数
   const time2 = (b: boolean, num: any, str: string) => {
-    if (!num) {
-      return null
-    }
     let tt = 0
     let t1 = 0
     if (b) {
@@ -231,7 +229,7 @@ const PermissionConfig = (props: PropsType) => {
     if (str === 'day') {
       time = tt
     } else if (str === 'hour') {
-      time = h === 24 ? 0 : h
+      time = h
     } else {
       time = parseInt(String(mv), 10)
     }
@@ -433,7 +431,6 @@ const PermissionConfig = (props: PropsType) => {
     newVal.hand_scope = obj
     fillingRequirements && setFormValues(newVal)
   }, [fillingRequirements])
-  console.log(fillingRequirements, 'fillingRequirements')
   return (
     <PermissionConfigStyle>
       {/* 汇报内容 */}

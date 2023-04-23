@@ -179,11 +179,11 @@ const RightTable = () => {
   }
 
   const onDelConfirm = async () => {
-    if (activeMember?.team_is_admin === 1) {
-      message.warning(t('team_administrators_cannot_be_removed') as string)
-      setDelIsVisible(false)
-      return
-    }
+    // if (activeMember?.team_is_admin === 1) {
+    //   message.warning(t('team_administrators_cannot_be_removed') as string)
+    //   setDelIsVisible(false)
+    //   return
+    // }
     try {
       await services.setting.deleteMemberList({
         id: activeMember?.team_id,

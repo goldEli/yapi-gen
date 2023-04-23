@@ -8,7 +8,7 @@ import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { useDispatch } from '@store/index'
 import { setEditSave } from '@store/formWork'
-import { Input, message, Popover } from 'antd'
+import { Input, Popover } from 'antd'
 import { useEffect, useState } from 'react'
 import {
   startWeekData,
@@ -21,6 +21,11 @@ import {
 } from './DataList'
 import { useTranslation } from 'react-i18next'
 import CommonButton from '@/components/CommonButton'
+const PopoverWrap = styled(Popover)({
+  '.ant-popover-content': {
+    marginTop: '4px',
+  },
+})
 const PickerStyle = styled.div`
   width: 360px;
   height: 232px;
@@ -96,13 +101,14 @@ let v3 = 0
 const Picker = (props: PropsType) => {
   const [t]: any = useTranslation()
   const dispatch = useDispatch()
-  const [leftActiveVal, setLeftActiveVal] = useState<number>(-1)
-  const [centerActiveVal, setCenterActiveVal] = useState<number>(-1)
-  const [rightActiveVal, setRightActiveVal] = useState<number>(-1)
+  const [leftActiveVal, setLeftActiveVal] = useState<number>(0)
+  const [centerActiveVal, setCenterActiveVal] = useState<number>(0)
+  const [rightActiveVal, setRightActiveVal] = useState<number>(0)
   const [leftDataList, setLeftDataList] = useState<Array<Item>>()
   const [rightDataList, setRightDataList] = useState<Array<Item>>()
   const [centerDataList, setCenterDataList] = useState<Array<Item>>()
   const [value, setValue] = useState('')
+  const [popoverVisible, setPopoverVisible] = useState(false)
   // 每天提醒时间只有时(提前24h)和分
   // 每周提醒时间(提前0-5)天时和分
   // 每月提醒时间(提前0-30天)天时和分
@@ -163,12 +169,8 @@ const Picker = (props: PropsType) => {
 
   //  时分数转化为秒
   const time1 = (d: number, h: number, m: number) => {
-    // if (h < 0 || m < 0) {
-    //   message.warning('请选择时间')
-    //   return
-    // }
     let datS: any = d ? d * 60 * 60 * 24 : 0
-    let hS = h === 0 ? 24 : h * 60 * 60
+    let hS = h * 60 * 60
     let minute = m * 60
     const second = datS + hS + minute
     return second
@@ -177,26 +179,18 @@ const Picker = (props: PropsType) => {
     dispatch(setEditSave(false))
     props.getValues(leftActiveVal, centerActiveVal, rightActiveVal, false)
     if (props.pickerType === 'start' || props.pickerType === 'end') {
-      if (leftActiveVal < 0 || centerActiveVal < 0 || rightActiveVal < 0) return
       props?.onChange?.({
-        time: time1(
-          0,
-          centerActiveVal === 0 ? 24 : centerActiveVal,
-          rightActiveVal,
-        ),
+        time: time1(0, centerActiveVal, rightActiveVal),
         day_type: leftActiveVal,
       })
     } else {
       if (props.type === 'day') {
-        // if (centerActiveVal < 0 || rightActiveVal < 0) return
-        console.log(centerActiveVal, rightActiveVal, 'pppp')
         props?.onChange?.(time1(0, centerActiveVal, rightActiveVal))
       } else {
-        // if (leftActiveVal < 0 || centerActiveVal < 0 || rightActiveVal < 0)
-        //   return
         props?.onChange?.(time1(leftActiveVal, centerActiveVal, rightActiveVal))
       }
     }
+    setPopoverVisible(false)
   }
 
   // 需要中文
@@ -301,7 +295,6 @@ const Picker = (props: PropsType) => {
       )
     } else {
       const arr = [...nextMonthDay, ...dayData]
-      console.log(arr, 'ppp')
       const label = arr.find((el: any) => el.key === v1)?.label
       setValue(
         t(`formWork.${label}`) +
@@ -322,9 +315,9 @@ const Picker = (props: PropsType) => {
       props?.value?.v3 !== 0
     ) {
       setValue('')
-      setLeftActiveVal(-1)
-      setCenterActiveVal(-1)
-      setRightActiveVal(-1)
+      setLeftActiveVal(0)
+      setCenterActiveVal(0)
+      setRightActiveVal(0)
       return
     }
     v1 = props?.value?.v1
@@ -416,9 +409,11 @@ const Picker = (props: PropsType) => {
     )
   }
   return (
-    <Popover
+    <PopoverWrap
       placement="bottomRight"
       title={''}
+      visible={popoverVisible}
+      onVisibleChange={setPopoverVisible}
       content={content}
       trigger="[click]"
     >
@@ -430,7 +425,7 @@ const Picker = (props: PropsType) => {
           <CommonIconFont type="time" size={16} color="var(--neutral-n4)" />
         }
       />
-    </Popover>
+    </PopoverWrap>
   )
 }
 export default Picker

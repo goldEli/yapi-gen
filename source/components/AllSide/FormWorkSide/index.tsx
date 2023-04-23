@@ -67,13 +67,13 @@ const NoDataCreateWrap = styled.div({
     alignItems: 'flex-start',
     marginBottom: 12,
     svg: {
-      color: '#FA9746',
+      color: 'var(--function-warning)',
       fontSize: 16,
-      marginTop: 2,
+      marginTop: 1,
     },
     div: {
       color: 'var(--neutral-n2)',
-      fontSize: 12,
+      fontSize: 14,
       marginLeft: 8,
       flexWrap: 'wrap',
     },
@@ -143,11 +143,11 @@ const FormWorkSide = () => {
       is_holiday: true,
       end_time: {
         day_type: 2,
-        time: 24 * 60 * 60,
+        time: 0,
       },
       start_time: {
         day_type: 1,
-        time: 24 * 60 * 60,
+        time: 0,
       },
     }
     dispatch(
@@ -178,11 +178,11 @@ const FormWorkSide = () => {
         is_holiday: true,
         end_time: {
           day_type: 2,
-          time: 24 * 60 * 60,
+          time: 0,
         },
         start_time: {
           day_type: 1,
-          time: 24 * 60 * 60,
+          time: 0,
         },
       }
       dispatch(
@@ -233,11 +233,11 @@ const FormWorkSide = () => {
       is_holiday: true,
       end_time: {
         day_type: 2,
-        time: 24 * 60 * 60,
+        time: 0,
       },
       start_time: {
         day_type: 1,
-        time: 24 * 60 * 60,
+        time: 0,
       },
     }
     dispatch(

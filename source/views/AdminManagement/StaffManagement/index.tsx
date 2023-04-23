@@ -511,20 +511,11 @@ const StaffManagement = () => {
           <div className={inputSearch}>
             <InputSearch
               leftIcon
-              width={292}
+              width={223}
               placeholder={t('staff.pleaseKey')}
               onChangeSearch={onPressEnter}
             />
           </div>
-
-          <ScreenMinHover
-            label={t('common.refresh')}
-            icon="sync"
-            onClick={refresh}
-            style={{ marginRight: 8 }}
-          />
-
-          <DividerWrap type="vertical" />
 
           <ScreenMinHover
             label={t('common.search')}
@@ -536,6 +527,14 @@ const StaffManagement = () => {
 
           <DividerWrap type="vertical" />
 
+          <ScreenMinHover
+            label={t('common.refresh')}
+            icon="sync"
+            onClick={refresh}
+            style={{ marginRight: 8 }}
+          />
+
+          <DividerWrap type="vertical" />
           <div className={settingWrap}>
             <DropDownMenu
               menu={<SetShowField notView onChangeFieldVisible={showModal} />}
