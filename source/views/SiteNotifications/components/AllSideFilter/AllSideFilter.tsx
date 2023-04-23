@@ -132,11 +132,17 @@ const AllSideFilter = (props: any) => {
         </MyHead>
         <MyIconModeTextWrap>
           {lists.map((i: any) => (
-            <Badge key={i.id} size="small" offset={[-22, 6]} count={i.read}>
+            <Badge
+              key={i.id}
+              size="small"
+              offset={[-22, 6]}
+              style={{ padding: '0 4px' }}
+              count={i.read}
+            >
               <MyIconModeWrap onClick={() => choose(i.sendType)}>
                 <MyIconMode tap={i.read} active={active === i.sendType}>
                   <IconFont
-                    style={{ fontSize: 20 }}
+                    style={{ fontSize: 24 }}
                     type={active === i.sendType ? i.icon2 : i.icon}
                   />
                 </MyIconMode>
@@ -145,17 +151,17 @@ const AllSideFilter = (props: any) => {
             </Badge>
           ))}
         </MyIconModeTextWrap>
-        {active && (
+        {active ? (
           <MyHead>
             <LeftTitle title={t('Notices')} />
             <ResetB onClick={() => onChange([])}>
               {t('reset_filtering') as string}
             </ResetB>
           </MyHead>
-        )}
+        ) : null}
 
         <InfoWrap>
-          {active && (
+          {active ? (
             <Checkbox.Group
               value={checeks}
               style={{ width: '100%' }}
@@ -172,7 +178,7 @@ const AllSideFilter = (props: any) => {
                 )
               })}
             </Checkbox.Group>
-          )}
+          ) : null}
         </InfoWrap>
       </Wrap>
     </Drawer>
