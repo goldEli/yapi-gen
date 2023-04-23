@@ -299,7 +299,6 @@ const Addperson = (props: Props) => {
         </AddPersonTitleText>
         <Dropdown
           placement="bottomLeft"
-          // open={isOpen}
           visible={isOpen}
           onVisibleChange={setIsOpen}
           trigger={['click']}
