@@ -120,6 +120,7 @@ const Sortable = (props: any) => {
   }
 
   const onDragOver = throttle((e: any, index: number, child: any) => {
+    e.stopPropagation()
     setDragItem(child)
     setEndIndex(index)
     if (e.pageY >= window.screen?.availHeight - 300) {
@@ -188,13 +189,15 @@ const Sortable = (props: any) => {
                     : 'translateY(0)',
               }}
               key={child?.name}
-              // draggable="true"
-              // onDragStart={(ev: any) => onDragStart(ev, i, child)}
-              // onDragOver={e => onDragOver(e, i, child)}
-              // onDragEnd={e => onDragEnd(e, i)}
-              onClick={() =>
-                child.type !== 1 && child.type != 4 && props.onClick(i, child)
-              }
+              draggable="true"
+              onDragStart={(ev: any) => onDragStart(ev, i, child)}
+              onDragOver={e => onDragOver(e, i, child)}
+              onDragEnd={e => onDragEnd(e, i)}
+              onClick={(event: any) => {
+                console.log('dj'),
+                  event.preventDefault(),
+                  child.type !== 1 && child.type != 4 && props.onClick(i, child)
+              }}
             >
               <ItemList>
                 <div style={{ display: 'flex' }}>

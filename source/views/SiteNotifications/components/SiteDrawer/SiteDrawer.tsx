@@ -225,7 +225,7 @@ const SiteDrawer = () => {
           style={{
             display: 'flex',
             justifyContent: 'space-between',
-            marginTop: '16px',
+            margin: '16px 0 8px',
           }}
         >
           <GrepTitle>{t('today')}</GrepTitle>

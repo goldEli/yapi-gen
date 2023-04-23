@@ -143,11 +143,11 @@ const FormWorkSide = () => {
       is_holiday: true,
       end_time: {
         day_type: 2,
-        time: 24 * 60 * 60,
+        time: 0,
       },
       start_time: {
         day_type: 1,
-        time: 24 * 60 * 60,
+        time: 0,
       },
     }
     dispatch(
@@ -178,11 +178,11 @@ const FormWorkSide = () => {
         is_holiday: true,
         end_time: {
           day_type: 2,
-          time: 24 * 60 * 60,
+          time: 0,
         },
         start_time: {
           day_type: 1,
-          time: 24 * 60 * 60,
+          time: 0,
         },
       }
       dispatch(
@@ -233,11 +233,11 @@ const FormWorkSide = () => {
       is_holiday: true,
       end_time: {
         day_type: 2,
-        time: 24 * 60 * 60,
+        time: 0,
       },
       start_time: {
         day_type: 1,
-        time: 24 * 60 * 60,
+        time: 0,
       },
     }
     dispatch(

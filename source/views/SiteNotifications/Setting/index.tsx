@@ -8,17 +8,18 @@ import {
   TitleGroup,
 } from '@/views/ProjectSetting/components/ProjectSet'
 import { Breadcrumb, message } from 'antd'
-import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { First, Wrap } from './style'
 import { useDispatch, useSelector } from '@store/index'
 import { editMyAllNoteSet } from '@/services/SiteNotifications'
 import { setMyConfiguration } from '@store/SiteNotifications'
+import { useNavigate } from 'react-router-dom'
 
 const Setting = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [selectKeys, setSelectKeys] = useState<any>()
   const configurations = useSelector(
     store => store.siteNotifications.configuration,
@@ -206,9 +207,14 @@ const Setting = () => {
           }
         >
           <Breadcrumb.Item>
-            <span style={{ color: 'var(--neutral-n1-d1)' }}>
+            <a
+              onClick={() => {
+                navigate('/SiteNotifications/AllNote/1')
+              }}
+              style={{ color: 'var(--neutral-n1-d1)' }}
+            >
               {t('notification')}
-            </span>
+            </a>
           </Breadcrumb.Item>
           <Breadcrumb.Item>{t('notification_settings')}</Breadcrumb.Item>
         </Breadcrumb>

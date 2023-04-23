@@ -34,6 +34,11 @@ const Header = styled.div({
   top: 0,
   zIndex: 9,
   padding: '24px 24px 20px',
+  '.title': {
+    fontSize: 16,
+    fontFamily: 'SiYuanMedium',
+    color: 'var(--neutral-n1-d1)',
+  },
   '.title-bar': {
     display: 'flex',
     justifyContent: 'space-between',
@@ -231,13 +236,13 @@ const OperationManagement = () => {
         ?.children?.map((i: any) => i.url)}
     >
       <Form
-        style={{ height: '100%' }}
+        style={{ height: 'calc(100vh -200px)' }}
         form={form}
         onValuesChange={onValuesChange}
       >
         <Header>
           <div className="title-bar">
-            <div className="title"> {t('setting.operationLog')} </div>
+            <div className="title"> {t('setting.operationLog')}</div>
             <ScreenMinHover
               label={t('common.refresh')}
               icon="sync"
