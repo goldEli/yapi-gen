@@ -13,8 +13,7 @@ export const MyHead = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  padding: 0 24px;
+  padding-left: 24px;
 `
 
 export const MyIconModeWrap = styled.div`
