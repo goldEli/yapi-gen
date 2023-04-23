@@ -97,7 +97,7 @@ export const SkeletonGroups = styled.div`
     display: inline-block;
     min-width: inherit;
     border-radius: 4px;
-    background: #f2f2f4;
+    background: var(--neutral-n7);
   }
 `
 
@@ -168,13 +168,13 @@ export const NextWrap = styled.div`
   }
 `
 
-export const UpWrap = styled(NextWrap) <{ isOnly?: boolean }>`
+export const UpWrap = styled(NextWrap)<{ isOnly?: boolean }>`
   border: 0px;
   border-radius: 0px;
   background: none;
 `
 
-export const DownWrap = styled(NextWrap) <{ isOnly?: boolean }>`
+export const DownWrap = styled(NextWrap)<{ isOnly?: boolean }>`
   border: 0px;
   border-radius: 0px;
   background: none;
