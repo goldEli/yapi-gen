@@ -57,6 +57,7 @@ export const MyIconModeText = styled.div`
   line-height: 22px;
   margin-top: 8px;
 `
+
 export const MyIconModeTextWrap = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -80,6 +81,7 @@ export const ResetB = styled.div`
 `
 
 export const InfoWrap = styled.div``
+
 export const InfoWrapItem = styled.div`
   display: flex;
   align-items: center;
