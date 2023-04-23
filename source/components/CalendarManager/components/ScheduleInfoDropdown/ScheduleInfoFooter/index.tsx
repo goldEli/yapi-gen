@@ -15,7 +15,9 @@ const ScheduleInfoFooterBox = styled.div`
   padding-right: 16px;
   box-sizing: border-box;
   position: fixed;
-  bottom: 16px;
+  right: 0px;
+  position: fixed;
+  bottom: 24px;
   right: 0px;
   button {
     margin-left: 16px;

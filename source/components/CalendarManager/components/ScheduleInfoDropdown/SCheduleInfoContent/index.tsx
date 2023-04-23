@@ -21,14 +21,16 @@ const toggleDropUp = css`
   overflow-y: hidden;
 `
 const toggleDropDown = css`
-  max-height: auto;
+  /* max-height: auto; */
+  max-height: 30vh;
 `
-const ScheduleInfoContent: React.FC = props => {
+interface IProps{showFooter:boolean}
+const ScheduleInfoContent: React.FC<IProps> = props => {
   const { scheduleInfo } = useSelector(state => state.schedule)
   const [toggleStatus, setToggleStatus] = useState(false)
   const [t] = useTranslation()
   return (
-    <ScheduleInfoContentBox>
+    <ScheduleInfoContentBox showFooter={props.showFooter}>
       <ScheduleInfoContentItem>
         <span>
           <ScheduleInfoIcon type="database" />
@@ -62,17 +64,20 @@ const ScheduleInfoContent: React.FC = props => {
           </span>
         </div>
       </ScheduleInfoContentItem>
-      <PersonList className={toggleStatus ? toggleDropUp : toggleDropDown}>
-        {scheduleInfo?.members?.map((item, idx) => (
-          <PersonItem key={item.user_id}>
-            <span>
-              <img src={item.user?.avatar} />
-              {item.user?.name}
-            </span>
-            <span>{item.status_text}</span>
-          </PersonItem>
-        ))}
-      </PersonList>
+      {
+        scheduleInfo?.members?.length ? <PersonList className={toggleStatus ? toggleDropUp : toggleDropDown}>
+          {scheduleInfo?.members?.map((item, idx) => (
+            <PersonItem key={item.user_id}>
+              <span>
+                <img src={item.user?.avatar} />
+                {item.user?.name}
+              </span>
+              <span>{item.status_text}</span>
+            </PersonItem>
+          ))}
+        </PersonList>:null
+      }
+
       {scheduleInfo?.describe ? (
         <ScheduleInfoContentItem>
           <span>
@@ -103,7 +108,7 @@ const ScheduleInfoContent: React.FC = props => {
               suffix: i.suffix,
               username: i.user.name ?? '--',
             }))}
-            onChangeAttachment={() => {}}
+            onChangeAttachment={() => { }}
           ></UploadAttach>
         </FileList>
       ) : null}

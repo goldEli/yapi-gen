@@ -211,7 +211,7 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
               <Option
                 key={ele.user_id}
                 value={ele.user_id}
-                label={ele.user.name}
+                label={ele?.user.name}
               >
                 {ele.user.name}
               </Option>

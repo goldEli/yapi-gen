@@ -88,16 +88,15 @@ const RepeatModal = (props: RepeatModalProps) => {
 
   useEffect(() => {
     if (props.isVisible) {
-      console.log(props.repeatParams)
-      setNumber(props.repeatParams.params.repeat_end_num)
+      setNumber(props.repeatParams.params.repeat_end_num || 1)
       setEndType(props.repeatParams.params.repeat_end_type)
       setEndDate(
         props.repeatParams.params.repeat_end_date === '0000-00-00'
           ? ''
           : props.repeatParams.params.repeat_end_date,
       )
-      setRepeat(props.repeatParams.params.repeat_interval)
-      setChooseRepeat(props.repeatParams.params.repeat_choose)
+      setRepeat(props.repeatParams.params.repeat_interval || 1)
+      setChooseRepeat(props.repeatParams.params.repeat_choose || [])
       setResultDate(
         props.repeatParams.params.repeat_end_date === '0000-00-00'
           ? null

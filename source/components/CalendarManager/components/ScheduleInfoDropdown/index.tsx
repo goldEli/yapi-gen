@@ -64,7 +64,7 @@ const ScheduleInfoDropdown: React.FC<ScheduleInfoDropdownProps> = props => {
     >
       <Spin spinning={scheduleInfo ? false : true} size="large" tip="Loading">
         <ScheduleInfoHeaderBox></ScheduleInfoHeaderBox>
-        <ScheduleInfoContent></ScheduleInfoContent>
+        <ScheduleInfoContent showFooter={scheduleInfo?.is_show_reply ?? false}></ScheduleInfoContent>
         <ScheduleInfoFooter></ScheduleInfoFooter>
       </Spin>
     </ScheduleInfoDropdownBox>
