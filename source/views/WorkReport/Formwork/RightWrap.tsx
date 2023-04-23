@@ -46,6 +46,7 @@ const HeaderOperate = styled.div`
   height: 32px;
   display: flex;
   justify-content: space-between;
+  margin-bottom: 20px;
 `
 export const RowStyle = styled.div`
   position: relative;

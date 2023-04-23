@@ -67,13 +67,13 @@ const NoDataCreateWrap = styled.div({
     alignItems: 'flex-start',
     marginBottom: 12,
     svg: {
-      color: '#FA9746',
+      color: 'var(--function-warning)',
       fontSize: 16,
-      marginTop: 2,
+      marginTop: 1,
     },
     div: {
       color: 'var(--neutral-n2)',
-      fontSize: 12,
+      fontSize: 14,
       marginLeft: 8,
       flexWrap: 'wrap',
     },
