@@ -189,7 +189,6 @@ const Picker = (props: PropsType) => {
     } else {
       if (props.type === 'day') {
         // if (centerActiveVal < 0 || rightActiveVal < 0) return
-        console.log(centerActiveVal, rightActiveVal, 'pppp')
         props?.onChange?.(time1(0, centerActiveVal, rightActiveVal))
       } else {
         // if (leftActiveVal < 0 || centerActiveVal < 0 || rightActiveVal < 0)
@@ -301,7 +300,6 @@ const Picker = (props: PropsType) => {
       )
     } else {
       const arr = [...nextMonthDay, ...dayData]
-      console.log(arr, 'ppp')
       const label = arr.find((el: any) => el.key === v1)?.label
       setValue(
         t(`formWork.${label}`) +
