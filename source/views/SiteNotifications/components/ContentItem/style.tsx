@@ -77,21 +77,33 @@ export const About = styled.div`
   font-size: 12px;
   font-family: PingFang SC-Regular, PingFang SC;
   font-weight: 400;
-  color: var(--neutral-n2);
   line-height: 20px;
   margin-left: 4px;
 `
 
-export const GrepContent = styled.div`
+export const GrepContent = styled.div<{ status?: boolean }>`
   font-size: 12px;
   font-family: PingFang SC-Regular, PingFang SC;
   font-weight: 400;
-  color: var(--neutral-n2);
   line-height: 20px;
   padding: 8px;
   background-color: var(--neutral-n8);
   border-radius: 6px 6px 6px 6px;
+  color: ${(props: any) =>
+    props.status ? 'var(--neutral-n4)' : 'var(--neutral-n2)'};
 `
+
 export const HoverWrap = styled.div`
   flex: 1;
+  .msgTitle {
+    display: flex;
+    align-items: center;
+    margin: 5px 0px;
+  }
+  .read {
+    color: var(--neutral-n4);
+  }
+  .unread {
+    color: var(--neutral-n2);
+  }
 `
