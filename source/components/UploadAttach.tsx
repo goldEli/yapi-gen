@@ -73,9 +73,11 @@ export const Gred = styled.div`
 export const GredParent = styled.div`
   margin-right: 12px;
   position: relative;
+
   &:hover {
     ${Gred} {
       opacity: 0.6;
+      background-color: rgba(0, 0, 0, 0.3);
       transition: all 0.1s;
     }
   }

@@ -162,7 +162,7 @@ const CommonButton = (props: Props) => {
     height: 32px;
     padding: 0 16px;
     box-sizing: border-box;
-    font-size: var(--font14);
+    /* font-size: var(--font14); */
     cursor: pointer;
     display: flex;
     align-items: center;
