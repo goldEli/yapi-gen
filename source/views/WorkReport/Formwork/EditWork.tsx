@@ -64,6 +64,9 @@ const EditWork = (props: PropsType) => {
     const evevtObj: any = event.dataTransfer.getData('item')
       ? JSON.parse(event.dataTransfer.getData('item'))
       : null
+    if (evevtObj?.id) {
+      return
+    }
     if (evevtObj.type === 4) {
       const configs = {
         type: evevtObj.type,
@@ -144,7 +147,6 @@ const EditWork = (props: PropsType) => {
   useEffect(() => {
     setDataList(templateContentConfigs)
   }, [templateContentConfigs])
-  console.log(templateContentConfigs, 'templateContentConfigs')
   return (
     <>
       <div
@@ -172,8 +174,7 @@ const EditWork = (props: PropsType) => {
               positionType="top"
               onClick={(i: any, child: any) => onClick(i, child)}
               onDrop={(event: any, i: any) => onDrag(event, i)}
-              // onMove={(data: any) => console.log('move')}
-              // onChangeMove={(list: any) => setList1(list)}
+              onChangeMove={(list: any) => setDataList(list)}
               list={dataList}
               onChangeChecked={(val: boolean, child: any) =>
                 onChangeChecked(val, child)

@@ -213,11 +213,11 @@ const RightFormWork = () => {
         is_holiday: true,
         end_time: {
           day_type: 2,
-          time: 24 * 60 * 60,
+          time: 0,
         },
         start_time: {
           day_type: 1,
-          time: 24 * 60 * 60,
+          time: 0,
         },
       }
       dispatch(
@@ -231,6 +231,13 @@ const RightFormWork = () => {
     }
     setDelIsVisible(false)
     message.success(t('formWork.message2'))
+  }
+  const getEndTime = (timeVal: number) => {
+    let timeValLen = String(timeVal)
+    return timeValLen.length === 13 ? timeVal / 1000 : timeVal
+  }
+  const getTemplateSort = (list: any) => {
+    return list.map((item: any, index: number) => ({ ...item, sort: index }))
   }
   const getVerifyParams = (parmas: any) => {
     // 谁可以写是必填的
@@ -299,7 +306,7 @@ const RightFormWork = () => {
         fillingRequirements?.hand_scope?.key || fillingRequirements?.hand_scope,
       is_all_view: reportContent?.is_all_view,
       is_all_write: reportContent?.is_all_write,
-      template_content_configs: templateContentConfigs,
+      template_content_configs: getTemplateSort(templateContentConfigs),
       template_configs: config,
       id: activeItem?.id,
     }
@@ -313,7 +320,7 @@ const RightFormWork = () => {
           : [],
       end_time:
         fillingRequirements.submit_cycle === 4
-          ? fillingRequirements?.end_time / 1000
+          ? getEndTime(fillingRequirements?.end_time)
           : fillingRequirements?.end_time,
       start_time: fillingRequirements?.start_time,
       is_holiday: fillingRequirements?.is_holiday ? 1 : 2,
@@ -325,6 +332,7 @@ const RightFormWork = () => {
       message.warning(errMsg)
       return
     }
+    console.log(parmas, 'parmas')
     if (activeItem?.id) {
       await upDateTemplate(parmas)
       message.success(t('formWork.message6'))
@@ -338,13 +346,13 @@ const RightFormWork = () => {
     }
     dispatch(setEditSave(true))
   }
+
   useEffect(() => {
     setIsActive(0)
     return () => {
       dispatch(setEditSave(true))
     }
   }, [activeItem])
-  console.log(activeItem, 'activeItem')
   const getBtn = () => {
     // 编辑的情况0和1都应该有
     if (editSave && activeItem?.id) {
@@ -366,14 +374,12 @@ const RightFormWork = () => {
     }
   }
   const getTitle = () => {
-    console.log(activeItem, 'activeItem')
     if (!activeItem?.name && !templateName) {
       return t('formWork.t1')
     } else {
       return templateName || activeItem?.name
     }
   }
-  console.log(templateName, 'templateName')
   useEffect(() => {
     getTitle()
   }, [templateName])

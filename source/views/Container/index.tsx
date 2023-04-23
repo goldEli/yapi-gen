@@ -60,7 +60,8 @@ const Main = styled.div<{ left: number }>`
   flex: 1;
   position: relative;
   background: var(--neutral-white-d1);
-  overflow: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
   > div:first-child {
     height: 100%;
   }
