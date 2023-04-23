@@ -102,14 +102,7 @@ const Picker = (props: PropsType) => {
   const [leftDataList, setLeftDataList] = useState<Array<Item>>()
   const [rightDataList, setRightDataList] = useState<Array<Item>>()
   const [centerDataList, setCenterDataList] = useState<Array<Item>>()
-  const [isOpen, setIsOpen] = useState(false)
   const [value, setValue] = useState('')
-  // 计算每月多少天
-  const getCountDays = () => {
-    var curDate = new Date()
-    curDate.setDate(32)
-    return 32 - curDate.getDate()
-  }
   // 每天提醒时间只有时(提前24h)和分
   // 每周提醒时间(提前0-5)天时和分
   // 每月提醒时间(提前0-30天)天时和分
@@ -166,43 +159,28 @@ const Picker = (props: PropsType) => {
       setCenterDataList(hourData)
       setRightDataList(minuteData)
     }
-  }, [isOpen, props.type])
+  }, [props.type])
 
   //  时分数转化为秒
   const time1 = (d: number, h: number, m: number) => {
-    if (h < 0 || m < 0) {
-      message.warning('请选择时间')
-      setIsOpen(true)
-      return
-    }
     let datS: any = d ? d * 60 * 60 * 24 : 0
     let hS = h * 60 * 60
     let minute = m * 60
     const second = datS + hS + minute
-    setIsOpen(false)
     return second
   }
   const getTime = () => {
-    // debugger
     dispatch(setEditSave(false))
     props.getValues(leftActiveVal, centerActiveVal, rightActiveVal, false)
     if (props.pickerType === 'start' || props.pickerType === 'end') {
-      if (leftActiveVal < 0 || centerActiveVal < 0 || rightActiveVal < 0) return
       props?.onChange?.({
-        time: time1(
-          0,
-          centerActiveVal === 0 ? 24 : centerActiveVal,
-          rightActiveVal,
-        ),
+        time: time1(0, centerActiveVal, rightActiveVal),
         day_type: leftActiveVal,
       })
     } else {
       if (props.type === 'day') {
-        if (centerActiveVal < 0 || rightActiveVal < 0) return
         props?.onChange?.(time1(0, centerActiveVal, rightActiveVal))
       } else {
-        if (leftActiveVal < 0 || centerActiveVal < 0 || rightActiveVal < 0)
-          return
         props?.onChange?.(time1(leftActiveVal, centerActiveVal, rightActiveVal))
       }
     }
@@ -310,7 +288,6 @@ const Picker = (props: PropsType) => {
       )
     } else {
       const arr = [...nextMonthDay, ...dayData]
-      console.log(arr, 'ppp')
       const label = arr.find((el: any) => el.key === v1)?.label
       setValue(
         t(`formWork.${label}`) +
@@ -424,31 +401,22 @@ const Picker = (props: PropsType) => {
       </PickerStyle>
     )
   }
-
   return (
-    <div onClick={() => setIsOpen(!isOpen)}>
+    <Popover
+      placement="bottomRight"
+      title={''}
+      content={content}
+      trigger="[click]"
+    >
       <InputStyle
         type="text"
         value={value}
         placeholder={t('formWork.inp1')}
         suffix={
-          <Popover
-            open={isOpen}
-            placement="bottomRight"
-            title={''}
-            content={content}
-            trigger="click"
-          >
-            <CommonIconFont
-              type="time"
-              size={16}
-              color="var(--neutral-n4)"
-              onClick={() => setIsOpen(!isOpen)}
-            />
-          </Popover>
+          <CommonIconFont type="time" size={16} color="var(--neutral-n4)" />
         }
       />
-    </div>
+    </Popover>
   )
 }
 export default Picker

@@ -93,16 +93,18 @@ const ContentItem = (props: any) => {
     >
       <div
         style={{
-          marginRight: '12px',
+          marginRight: '8px',
         }}
       >
         <Badge offset={[-1, 4]} dot={read === 0}>
-          <CommonUserAvatar avatar={send_user.head} />
+          <CommonUserAvatar isBorder avatar={send_user.head} />
         </Badge>
       </div>
       <HoverWrap style={{ flex: '1' }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Name>{send_user.nickname}</Name>
+          <Name className={String(read === 1 ? 'read' : 'unread')}>
+            {send_user.nickname}
+          </Name>
           {/* <Name>问题字段</Name> */}
           {/* <Tip>在评论中@了您</Tip> */}
           <Time>{formatMsgTime(create_time * 1000)}</Time>
@@ -112,14 +114,14 @@ const ContentItem = (props: any) => {
             </Time2>
           )}
         </div>
-        <div
-          style={{ display: 'flex', alignItems: 'center', margin: '5px 0px' }}
-        >
-          <CommonIconFont color="var(--neutral-n3)" type="folder-open-nor" />
-          <About>{msg_body.title}</About>
+        <div className="msgTitle">
+          <CommonUserAvatar avatar={msg_body.optHeader} />
+          <About className={String(read === 1 ? 'read' : 'unread')}>
+            {msg_body.title}
+          </About>
         </div>
 
-        <GrepContent>
+        <GrepContent status={read}>
           <span
             dangerouslySetInnerHTML={{
               __html: formateBlue(msg_body.content, custom_data.linkWebUrl),

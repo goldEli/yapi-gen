@@ -72,7 +72,7 @@ const Index = () => {
     if (res.code === 0) {
       const res2 = await getContactStatistics()
       let num = 0
-      res2.list.slice(1, 5).forEach((i: any) => {
+      res2.list.slice(1, 6).forEach((i: any) => {
         num += Number(i.nread)
       })
 

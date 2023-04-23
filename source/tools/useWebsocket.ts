@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable max-len */
 import { getLoginDetail } from '@/services/user'
+import { debounce, throttle } from 'lodash'
 import { useState, useRef, useEffect } from 'react'
 
 const useWebsocket = () => {
@@ -22,7 +23,7 @@ const useWebsocket = () => {
   }
 
   const heartCheck: TypeHeartCheck = {
-    timeout: 3 * 60 * 1000,
+    timeout: 1 * 60 * 1000,
     timeoutObj: null,
     reset() {
       clearInterval(this.timeoutObj)
@@ -53,7 +54,7 @@ const useWebsocket = () => {
     ws.current = new WebSocket(
       `${import.meta.env.__WEB_SOCKET_URL__}?token=${token}
         `,
-      // 'ws://192.168.2.64:5008'
+      // 'ws://192.168.2.64:5008',
     )
     ws.current.onopen = () => {
       setReadyState(stateArr[ws.current?.readyState ?? 0])
@@ -65,32 +66,25 @@ const useWebsocket = () => {
     ws.current.onerror = () => {
       setReadyState(stateArr[ws.current?.readyState ?? 0])
     }
-    ws.current.onmessage = (e: any) => {
-      const data = JSON.parse(e.data)
 
-      if (data.msgType === 'AH000') {
-        return
-      }
-      setWsData({
-        key: Math.random(),
-        data,
-      })
+    ws.current.onmessage = throttle(
+      (e: any) => {
+        const data = JSON.parse(e.data)
 
-      //  const { data, type } = (...JSON.parse(e.data)) || {};
-      // switch (
-      //   type // type 是跟后端约定的
-      // ) {
-      //   case '101':
-      //     setMessage({ ...JSON.parse(e.data) },review: data); //根据自身情况进行修改
-      //     break;
-      //   case '102':
-      //     setMessage({ ...JSON.parse(e.data) },pipelineResults: data);//根据自身情况进行修改
-      //     break;
-      //   default:
-      //     setMessage({ ...JSON.parse(e.data), ...data });//根据自身情况进行修改
-      //     break;
-      // }
-    }
+        if (data.msgType === 'AH000') {
+          return
+        }
+
+        setWsData({
+          key: Math.random(),
+          data,
+        })
+      },
+      5000,
+      {
+        trailing: false,
+      },
+    )
   }
 
   const webSocketInit = async () => {

@@ -1,6 +1,6 @@
 import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
-import { Breadcrumb, Select, Switch, message } from 'antd'
+import { Breadcrumb, Select, Switch, message, Space } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { First, Wrap } from '../Setting/style'
 import {
@@ -73,7 +73,6 @@ const Email = () => {
         >
           <Breadcrumb.Item>
             <span style={{ color: 'var(--neutral-n1-d1)' }}>
-              {' '}
               {t('notification')}
             </span>
           </Breadcrumb.Item>
@@ -86,7 +85,7 @@ const Email = () => {
         ) : null}
       </First>
       <Content>
-        <Content1>
+        <Content1 margin={21}>
           {t(
             'ReceiveEmailUpdatesWithMentionsInvitationsAndCommentsAboutItemsYouCareAbout',
           )}
@@ -96,15 +95,15 @@ const Email = () => {
         </Content1>
         {active ? (
           <ActiveContentEmail2 active={active}>
-            <Content1>
+            <Content1 margin={21}>
               {t('use_this_email_to_receive')}
-              <ContentEmail>{email}</ContentEmail>
+              {email ? <ContentEmail>{email}</ContentEmail> : '--'}
             </Content1>
 
-            <Content1>
+            <Content1 margin={9}>
               {t('what_situations_require_email_notification')}
             </Content1>
-            <div>
+            <Space size={12}>
               {emailConfigurations.map((i: any) => (
                 <ContentEmail2
                   active={choose.includes(i.id)}
@@ -114,7 +113,7 @@ const Email = () => {
                   {i.text}
                 </ContentEmail2>
               ))}
-            </div>
+            </Space>
           </ActiveContentEmail2>
         ) : null}
       </Content>

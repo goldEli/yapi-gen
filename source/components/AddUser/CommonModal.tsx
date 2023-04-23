@@ -228,6 +228,7 @@ const CommonModal = (props: ModalProps) => {
   const [checkedKeys, setCheckedKeys] = useState<any>()
   const [personData, setPersonData] = useState<any>([])
   const [tabsTreeDataList, setTabsTreeDataList] = useState<any>([])
+  const [teamId, setTeamId] = useState<any>([])
   const [tabs, setTabs] = useState([
     {
       label: t('commonModal.labelTitle'),
@@ -434,11 +435,26 @@ const CommonModal = (props: ModalProps) => {
       setPersonData(deleteDeep(emptyData))
       setCheckedKeys(checkedKey)
     } else {
+      const fatherData = getKeyData(treeData, 0)
+      // const list = checkedKey?.filter((item: any) => !fatherData?.includes(item))
       setCheckedKeys(checkedKey)
       setPersonData(
-        e.checkedNodes.filter((el: any) => !String(el.id).includes('team_id')),
+        e.checkedNodes?.filter((item: any) => !fatherData?.includes(item.id)),
       )
     }
+  }
+  // 把team组成大数组去过滤父级
+  let dataTeam: any = []
+  const getKeyData = (res: any, preId: any) => {
+    for (const i in res) {
+      if (preId === res[i].team_id) {
+        dataTeam.push(res[i].team_id)
+      }
+      if (res[i].children) {
+        getKeyData(res[i].children, res[i].id)
+      }
+    }
+    return Array.from(new Set(dataTeam))
   }
   // 全选
   const checkAllChange = (e: any) => {

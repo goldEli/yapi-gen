@@ -29,6 +29,7 @@ import {
   setIsUpdateMember,
 } from '@store/project'
 import InputSearch from '../InputSearch'
+import CommonUserAvatar from '../CommonUserAvatar'
 
 interface Props {
   visible: boolean
@@ -79,15 +80,10 @@ const ListItem = styled.div({
   '.avatarBox': {
     display: 'flex',
     alignItems: 'center',
-    img: {
-      width: 32,
-      height: 32,
-      borderRadius: '50%',
-      marginRight: 8,
-    },
-    div: {
+    '.info': {
       display: 'flex',
       flexDirection: 'column',
+      marginLeft: 8,
       'span:first-child': {
         color: 'var(--neutral-n1-d2)',
         fontSize: 14,
@@ -270,7 +266,6 @@ const Member = (props: Props) => {
       })),
     )
   }
-  console.log(memberList)
 
   // 获取项目成员列表 isUpdateProjectInfoValues：是否需要更新项目下拉数据
   const getList = async (isUpdateProjectInfoValues?: boolean) => {
@@ -462,14 +457,8 @@ const Member = (props: Props) => {
             {memberList?.map((i: any) => (
               <ListItem key={i.id}>
                 <div className="avatarBox">
-                  {i.avatar ? (
-                    <img src={i.avatar} alt="" />
-                  ) : (
-                    <NameWrap>
-                      {String(i.name?.trim().slice(0, 1)).toLocaleUpperCase()}
-                    </NameWrap>
-                  )}
-                  <div>
+                  <CommonUserAvatar avatar={i.avatar} size="large" />
+                  <div className="info">
                     <span>
                       {i.name}
                       {i.nickname ? `(${i.nickname})` : ''}

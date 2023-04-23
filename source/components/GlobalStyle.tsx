@@ -854,6 +854,11 @@ const GlobalStyle = () => {
     .ant-tree.ant-tree-directory .ant-tree-treenode-selected::before {
       background: none;
     }
+
+    // 全局提示 message
+    .ant-message .ant-message-success .anticon {
+      color: var(--function-success);
+    }
   `
   return <Global styles={globalCss} />
 }

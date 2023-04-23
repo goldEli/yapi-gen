@@ -23,6 +23,9 @@ const ScheduleListBox = styled.div`
   width: 100%;
   min-height: 114px;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 `
 
 const ScheduleStripList: React.FC<ScheduleListProps> = props => {
@@ -83,27 +86,28 @@ const ScheduleStripList: React.FC<ScheduleListProps> = props => {
   return (
     <ScheduleListBox>
       {scheduleListItemElements}
-      <div
-        onClick={e => {
-          e.stopPropagation()
-          const target = e.target as HTMLDivElement
-          const { left, top } = target.getBoundingClientRect()
-          const box = document.querySelector(
-            props.containerClassName,
-          ) as HTMLDivElement
-          const { left: boxLeft, top: boxTop } = box?.getBoundingClientRect()
-          dispatch(
-            setScheduleListModal({
-              visible: true,
-              top: top - boxTop,
-              left: left - boxLeft,
-              date: dayjs(data.date).date(),
-              scheduleListData: allList,
-            }),
-          )
-        }}
-      >
-        <MoreScheduleButton hiddenNum={hiddenNum} />
+      <div>
+        <MoreScheduleButton
+          onClick={e => {
+            e.stopPropagation()
+            const target = e.target as HTMLDivElement
+            const { left, top } = target.getBoundingClientRect()
+            const box = document.querySelector(
+              props.containerClassName,
+            ) as HTMLDivElement
+            const { left: boxLeft, top: boxTop } = box?.getBoundingClientRect()
+            dispatch(
+              setScheduleListModal({
+                visible: true,
+                top: top - boxTop,
+                left: left - boxLeft,
+                date: dayjs(data.date).date(),
+                scheduleListData: allList,
+              }),
+            )
+          }}
+          hiddenNum={hiddenNum}
+        />
       </div>
       <MoveActiveItem idx={props.idx} />
     </ScheduleListBox>

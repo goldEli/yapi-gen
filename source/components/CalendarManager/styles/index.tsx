@@ -330,7 +330,7 @@ export const DayItemBox = styled.div`
   width: 100%;
   /* padding: 12px 0; */
   box-sizing: border-box;
-  border-color: var(--neutral-n6-d1);
+  border-color: var(--function-tag6);
   border-style: solid;
   border-left-width: 1px;
   border-top-width: 1px;
@@ -350,15 +350,16 @@ export const CreateScheduleText = styled.div<{
   top?: number
 }>`
   font-size: 12px;
-  margin: 0 2px;
   box-sizing: border-box;
   padding-left: 8px;
-  width: calc(100% - 4px);
+  width: 100%;
   color: var(--neutral-white-d7);
   background-color: var(--primary-d1);
   border-radius: 4px;
   position: absolute;
   top: ${props => (props.top ?? 0) + 'px'};
   left: 0;
-  display: ${props => (props.visible ? 'block' : 'none')};
+  display: ${props => (props.visible ? 'flex' : 'none')};
+  height: 22px;
+  align-items: center;
 `

@@ -446,8 +446,10 @@ const HeaderRight = () => {
             <CommonIconFont type="plus" size={20} />
           </CreateWrap>
         )}
-        <SiteNotifications />
 
+        <CloseWrap width={32} height={32}>
+          <SiteNotifications />
+        </CloseWrap>
         <CloseWrap width={32} height={32} onClick={onHelp}>
           <CommonIconFont type="question" size={24} />
         </CloseWrap>

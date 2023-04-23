@@ -4,7 +4,11 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import AddFormWork from '@/components/AllSide/FormWorkSide/AddFormWork'
-import { setActiveItem, setFillingRequirements } from '@store/formWork/index'
+import {
+  setActiveItem,
+  setEditSave,
+  setFillingRequirements,
+} from '@store/formWork/index'
 import { useDispatch, useSelector } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { getTemplateList } from '@store/formWork/thunk'
@@ -17,6 +21,7 @@ import {
 import { aWeekDataList } from '@/views/WorkReport/Formwork/DataList'
 import { CloseWrap } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
+import { debounce } from 'lodash'
 // getTemplateList
 const FormWorkSideStyle = styled.div`
   min-width: 200px;
@@ -41,8 +46,15 @@ const Slide = styled.div`
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  color: ${(props: any) =>
+    props.theme ? 'var(--primary-d2)' : 'var(--neutral-n1-d2)'};
+  background: ${(props: any) =>
+    props.theme
+      ? 'linear-gradient(90deg, #EBEFFF 0%, rgba(243,246,255,0) 100%)'
+      : 'none'};
   &:hover {
     cursor: pointer;
+    color: var(--primary-d1);
   }
 `
 const NoDataCreateWrap = styled.div({
@@ -70,7 +82,7 @@ const NoDataCreateWrap = styled.div({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    color: ' var(--primary-d2)',
+    color: 'var(--primary-d2)',
     svg: {
       fontSize: 10,
     },
@@ -131,11 +143,11 @@ const FormWorkSide = () => {
       is_holiday: true,
       end_time: {
         day_type: 2,
-        time: 24 * 60 * 60,
+        time: 0,
       },
       start_time: {
         day_type: 1,
-        time: 24 * 60 * 60,
+        time: 0,
       },
     }
     dispatch(
@@ -148,8 +160,6 @@ const FormWorkSide = () => {
     dispatch(setFillingRequirements(claerConfig))
     setIsVisible(false)
   }
-  //
-  console.log()
   const getDataList = async () => {
     const res = await dispatch(getTemplateList())
     if (res.payload?.length < 1) {
@@ -168,11 +178,11 @@ const FormWorkSide = () => {
         is_holiday: true,
         end_time: {
           day_type: 2,
-          time: 24 * 60 * 60,
+          time: 0,
         },
         start_time: {
           day_type: 1,
-          time: 24 * 60 * 60,
+          time: 0,
         },
       }
       dispatch(
@@ -194,7 +204,7 @@ const FormWorkSide = () => {
     const item: any = dataList.find((el: any, index: any) => index === 0)
     dispatch(setActiveItem(item))
   }, [])
-  const itemActive = (el: any, index: any) => {
+  const itemActive = debounce((el: any, index: any) => {
     if (!editSave) {
       setDelIsVisible(true)
       return
@@ -223,11 +233,11 @@ const FormWorkSide = () => {
       is_holiday: true,
       end_time: {
         day_type: 2,
-        time: 24 * 60 * 60,
+        time: 0,
       },
       start_time: {
         day_type: 1,
-        time: 24 * 60 * 60,
+        time: 0,
       },
     }
     dispatch(
@@ -239,7 +249,7 @@ const FormWorkSide = () => {
     )
     dispatch(setFillingRequirements(claerConfig))
     dispatch(setActiveItem(el))
-  }
+  }, 500)
   return (
     <FormWorkSideStyle>
       <TitleStyle>
@@ -249,7 +259,7 @@ const FormWorkSide = () => {
             style={{ fontSize: 18 }}
             type="plus"
             onClick={() => {
-              if (!editSave) {
+              if (!editSave && activeItem?.name) {
                 setDelIsVisible(true)
                 return
               }
@@ -282,16 +292,7 @@ const FormWorkSide = () => {
               <Slide
                 key={el.name}
                 onClick={() => itemActive(el, index)}
-                style={{
-                  color:
-                    isActive == index
-                      ? 'var(--primary-d2)'
-                      : 'var(--neutral-n1-d2)',
-                  background:
-                    isActive == index
-                      ? 'linear-gradient(90deg, #EBEFFF 0%, rgba(243,246,255,0) 100%)'
-                      : 'none',
-                }}
+                theme={isActive == index}
               >
                 {el.name}
               </Slide>
@@ -310,8 +311,10 @@ const FormWorkSide = () => {
         title={t('formWork.text6')}
         text={`【${activeItem?.name}】${t('formWork.text7')}`}
         isVisible={delIsVisible}
+        onChangeVisible={() => {
+          dispatch(setEditSave(true)), setDelIsVisible(false)
+        }}
         onConfirm={() => setDelIsVisible(false)}
-        notCancel
       />
     </FormWorkSideStyle>
   )

@@ -46,6 +46,7 @@ import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import BatchAction, { boxItem } from '@/components/BatchAction'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import BatchSetPermGroup from './BatchSetPermGroup'
+import CommonUserAvatar from '@/components/CommonUserAvatar'
 
 const Wrap = styled.div({
   padding: '0 24px',
@@ -356,22 +357,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
       render: (text: string, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            {record.avatar ? (
-              <img
-                src={record.avatar}
-                alt=""
-                style={{
-                  // marginLeft: 32,
-                  width: 32,
-                  height: 32,
-                  borderRadius: '50%',
-                }}
-              />
-            ) : (
-              <NameWrap>
-                {String(record.name?.trim().slice(0, 1)).toLocaleUpperCase()}
-              </NameWrap>
-            )}
+            <CommonUserAvatar avatar={record.avatar} size="large" />
             <span
               style={{
                 marginLeft: 12,

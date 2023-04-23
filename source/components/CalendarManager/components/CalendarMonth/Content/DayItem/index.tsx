@@ -22,11 +22,11 @@ const DayBox = styled.div`
   display: flex;
   gap: 4px;
   align-items: center;
-  padding: 0 12px;
+  padding: 12px;
   box-sizing: border-box;
   .day {
     font-size: 18px;
-    font-weight: 500;
+    font-family: SiYuanMedium;
     color: var(--neutral-n1-d1);
     width: 28px;
     height: 28px;
@@ -110,7 +110,7 @@ const DayItem: React.FC<DayItemProps> = props => {
         list={props.list}
         allList={scheduleList[key]}
       />
-      <CreateScheduleText top={28} visible={isSelectedForCreate}>
+      <CreateScheduleText top={52} visible={isSelectedForCreate}>
         {t('calendarManager.create_schedule')}
       </CreateScheduleText>
     </DayItemBox>

@@ -1247,7 +1247,8 @@
       "fail": "Operation failure",
       "modifyReport": "Revision report",
       "haveComment": "Have commented",
-      "prevDateSubmit": "Last submission time"
+      "prevDateSubmit": "Last submission time",
+      "add": "Please add"
     },
     "statistics": {
       "title": "Reporting Statistics",

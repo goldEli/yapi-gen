@@ -256,6 +256,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
 }
 
 const HeaderLeft = () => {
+  const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
   const { currentMenu, menuIconList, menuPermission } = useSelector(
     store => store.user,
@@ -340,31 +341,31 @@ const HeaderLeft = () => {
           onClick={() => setIsVisible(true)}
         />
         <Space size={8}>
-          <CommonIconFont
-            type={
-              menuIconList?.filter((i: any) =>
-                String(currentMenu?.url).includes(i.key),
-              )?.[0]?.normal
-            }
-            size={24}
-            color="var(--neutral-n3)"
-          />
-          <MenuLabel>{currentMenu?.name}</MenuLabel>
-          {routerPath.pathname.includes('SiteNotifications') && (
+          {currentMenu ? (
+            <>
+              <CommonIconFont
+                type={
+                  menuIconList?.filter((i: any) =>
+                    String(currentMenu?.url).includes(i.key),
+                  )?.[0]?.normal
+                }
+                size={24}
+                color="var(--neutral-n3)"
+              />
+              <MenuLabel>{currentMenu?.name}</MenuLabel>{' '}
+            </>
+          ) : routerPath.pathname.includes('SiteNotifications') ? (
             <Space size={8}>
               <CommonIconFont type="bell" size={24} color="var(--neutral-n3)" />
-              <MenuLabel>通知中心</MenuLabel>
+              <MenuLabel>{t('notificationCenter')}</MenuLabel>
             </Space>
-          )}
+          ) : null}
         </Space>
       </Space>
 
       {showTopNav && (
         <ChildrenMenu>
-          {(currentMenu?.url === '/Report'
-            ? [...currentMenu.children].reverse()
-            : currentMenu.children
-          ).map((i: any) => (
+          {currentMenu.children.map((i: any) => (
             <ChildrenMenuItem
               onClick={() => handleClickMenuItem(i.url)}
               key={i.id}
