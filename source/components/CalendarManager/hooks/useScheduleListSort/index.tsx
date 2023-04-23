@@ -34,7 +34,7 @@ const useScheduleListSort = (
           'day',
         )
         if (isCrossDay && isNotFirstDay) {
-          // 获取头天的index
+          // 获取上一天天的index
           const theDayBefore = dayjs(key).add(-1, 'day').format(formatYYYYMMDD)
           const theDayBeforeScheduleList = o[theDayBefore]
           const index = theDayBeforeScheduleList?.findIndex(

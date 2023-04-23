@@ -3,22 +3,44 @@ import { colorMap, oneHourHeight, oneMinuteHeight } from './config'
 import { XYCoord } from 'react-dnd'
 
 export function sortScheduleList(list: Model.Schedule.Info[]) {
-  const acrossDayScheduleList =
-    list
-      ?.filter(item => item.is_span_day)
+  // const acrossDayScheduleList =
+  //   list
+  //     ?.filter(item => item.is_span_day)
+  //     ?.sort((a, b) => a.schedule_id - b.schedule_id) ?? []
+  // const allDayScheduleList =
+  //   list
+  //     ?.filter(item => item.is_all_day === 1 && !item.is_span_day)
+  //     ?.sort((a, b) => a.schedule_id - b.schedule_id) ?? []
+  // const otherList = list?.filter(
+  //   item => !item.is_all_day || item.is_all_day !== 1,
+  // )
+  const acrossDay = list?.filter(item => item.is_span_day)
+  const noneAcrossDay = list?.filter(item => !item.is_span_day)
+  const acrossDayAndFullDay =
+    acrossDay
+      ?.filter(item => item.is_all_day === 1)
       ?.sort((a, b) => a.schedule_id - b.schedule_id) ?? []
-  const allDayScheduleList =
-    list
-      ?.filter(item => item.is_all_day === 1 && !item.is_span_day)
+  const acrossDayAndNoneFullDay =
+    acrossDay
+      ?.filter(item => item.is_all_day !== 1)
       ?.sort((a, b) => a.schedule_id - b.schedule_id) ?? []
-  const otherList = list?.filter(
-    item => !item.is_all_day || item.is_all_day !== 1,
-  )
+  const noneAcrossAndFullDay =
+    noneAcrossDay
+      ?.filter(item => item.is_all_day === 1)
+      ?.sort((a, b) => a.schedule_id - b.schedule_id) ?? []
+  const noneAcrossAndNoneFullDay =
+    noneAcrossDay
+      ?.filter(item => item.is_all_day !== 1)
+      ?.sort((a, b) => a.schedule_id - b.schedule_id) ?? []
 
   const newList = [
-    ...acrossDayScheduleList,
-    ...allDayScheduleList,
-    ...otherList,
+    ...acrossDayAndFullDay,
+    ...acrossDayAndNoneFullDay,
+    ...noneAcrossAndFullDay,
+    ...noneAcrossAndNoneFullDay,
+    // ...acrossDayScheduleList,
+    // ...allDayScheduleList,
+    // ...otherList,
   ]
   return newList
 }
