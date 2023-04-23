@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { getAsyncVerifyInfo } from '@store/mine'
 import { updateVerifyOperation } from '@/services/mine'
 import CommonButton from '@/components/CommonButton'
+import CommonUserAvatar from '@/components/CommonUserAvatar'
 
 const TimelineWrap = styled(Timeline)({
   '.ant-timeline-item-last > .ant-timeline-item-content': {
@@ -300,19 +301,7 @@ const EditExamine = (props: Props) => {
                                 margin: '0 24px 8px 0',
                               }}
                             >
-                              <NameWrap
-                                style={{
-                                  marginBottom: 0,
-                                  marginRight: 8,
-                                  width: 24,
-                                  height: 24,
-                                }}
-                              >
-                                {String(
-                                  n?.name?.trim().slice(0, 1),
-                                ).toLocaleUpperCase()}
-                              </NameWrap>
-                              <span>{n?.name?.trim()}</span>
+                              <CommonUserAvatar name={n?.name?.trim()} />
                             </div>
                           ))}
                         </div>
@@ -393,11 +382,7 @@ const EditExamine = (props: Props) => {
                             alignItems: 'center',
                           }}
                         >
-                          <NameWrap>
-                            {String(
-                              i.userName?.trim().slice(0, 1),
-                            ).toLocaleUpperCase()}
-                          </NameWrap>
+                          <CommonUserAvatar />
                           <div
                             style={{
                               display: 'flex',
@@ -451,11 +436,7 @@ const EditExamine = (props: Props) => {
                         alignItems: 'center',
                       }}
                     >
-                      <NameWrap>
-                        {String(
-                          k.userName?.trim().slice(0, 1),
-                        ).toLocaleUpperCase()}
-                      </NameWrap>
+                      <CommonUserAvatar />
                       <div
                         style={{
                           display: 'flex',
@@ -513,11 +494,7 @@ const EditExamine = (props: Props) => {
                     alignItems: 'center',
                   }}
                 >
-                  <NameWrap>
-                    {String(
-                      verifyInfo.cancel_verify.user_name.trim().slice(0, 1),
-                    ).toLocaleUpperCase()}
-                  </NameWrap>
+                  <CommonUserAvatar />
                   <div
                     style={{
                       display: 'flex',

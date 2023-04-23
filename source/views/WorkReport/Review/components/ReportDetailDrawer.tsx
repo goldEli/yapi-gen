@@ -395,7 +395,7 @@ const ReportDetailDrawer = () => {
             <CommonIconFont
               type="right-02"
               size={20}
-              color="var(--neutral-n1-d1)"
+              color="var(--neutral-n2)"
             />
           </BackIcon>
         </Space>
