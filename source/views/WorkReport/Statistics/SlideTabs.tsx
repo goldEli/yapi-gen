@@ -114,7 +114,7 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
     })
   }
 
-  const next = () => {
+  const next = (val = 0) => {
     const segment = nodes.current.slice(
       nodeIndex.current,
       nodeIndex.current + STEP,
@@ -128,7 +128,7 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
     )
 
     setXAxis(current => {
-      return current - nodeWidth
+      return current - nodeWidth - val
     })
   }
 
@@ -154,7 +154,11 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
     }
   }, [])
 
-  const handleClick = (key: string) => {
+  const handleClick = (index: number, key: string) => {
+    const { right } = nodes.current[index].getBoundingClientRect()
+    if (right > viewRectOffset) {
+      next(right - viewRectOffset)
+    }
     onChange?.(key)
   }
 
@@ -178,12 +182,12 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
           style={{ transform: `translateX(${xAxis}px` }}
         >
           <Space size={TAB_MARGIN}>
-            {items.map(item => (
+            {items.map((item, index) => (
               <TabItem
                 className="tab-item"
                 theme={isActive(item.key)}
                 key={item.key}
-                onClick={() => handleClick(item.key)}
+                onClick={() => handleClick(index, item.key)}
               >
                 {item.label}
                 <TabBarLine theme={isActive(item.key)} />
@@ -194,7 +198,7 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
       </TabsWrap>
       {showRight ? (
         <IconContainer position="right">
-          <IconFont type="right-02" onClick={next} />
+          <IconFont type="right-02" onClick={() => next()} />
         </IconContainer>
       ) : null}
     </div>
