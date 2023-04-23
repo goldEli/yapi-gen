@@ -17,7 +17,8 @@ const Text = styled.div`
 const TitleStyle = styled.div`
   display: flex;
   align-items: center;
-  margin: 20px 0 16px 0;
+  padding-right: 16px;
+  padding-bottom: 20px;
   &:hover {
     cursor: pointer;
   }

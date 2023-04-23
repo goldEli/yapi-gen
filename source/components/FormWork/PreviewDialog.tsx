@@ -10,28 +10,36 @@ import CommonModal from '@/components/CommonModal'
 import ChoosePeople from './ChoosePeople'
 import RelatedNeed from './RelatedNeed'
 import IconFont from '@/components/IconFont'
-import { AddWrap } from '@/components/StyleCommon'
+// import { AddWrap } from '@/components/StyleCommon'
 import { useEffect, useRef, useState } from 'react'
 import { t } from 'i18next'
 import { Editor, EditorRef } from '@xyfe/uikit'
 import { uploadFile } from '@/components/CreateDemand/CreateDemandLeft'
 import styled from '@emotion/styled'
-import CommonIconFont from '../CommonIconFont'
-import { useSelector } from '@store/index'
-const HeaderWrap = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 24px 24px 24px;
-`
 
-const ImgWrap = styled.img`
-  width: 40px;
-  height: 40px;
-  border: 1px solid red;
-  margin-right: 12px;
-`
+import { useSelector } from '@store/index'
+// 添加符号 例： 标签添加与附件添加
+const AddWrap = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  boxSizing: 'border-box',
+  cursor: 'pointer',
+  borderRadius: 6,
+  color: 'var(--primary-d2)',
+  width: 'fit-content',
+  '.anticon': {
+    fontSize: 16,
+    alignItems: 'center',
+    svg: {
+      margin: 0,
+    },
+  },
+  div: {
+    fontSize: 14,
+    fontWeight: 400,
+  },
+})
 export const LabelTitle = (props: any) => {
   return (
     <div
@@ -223,7 +231,6 @@ const WhiteDay = (props: Props) => {
             style={{
               marginBottom: '20px',
             }}
-            hasColor
           >
             <IconFont type="plus" />
             添加附件
@@ -264,7 +271,6 @@ const WhiteDay = (props: Props) => {
             style={{
               marginBottom: '20px',
             }}
-            hasColor
           >
             <IconFont type="plus" />
             关联需求
