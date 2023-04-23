@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useParams } from 'react-router-dom'
@@ -253,14 +253,19 @@ const List = () => {
               {(id === 1 || id === 3) && record.is_supply === 1 && (
                 <LabelTag options={reportState} state={2} />
               )}
-              {id === 2 && record.is_supply !== 2 && record.is_update !== 2 && (
-                <LabelTag
-                  options={reportState}
-                  state={
-                    record.is_supply === 1 ? 2 : record.is_update === 1 ? 1 : 0
-                  }
-                />
-              )}
+              {id === 2 &&
+                (record.is_supply !== 2 || record.is_update !== 2) && (
+                  <LabelTag
+                    options={reportState}
+                    state={
+                      record.is_supply === 1
+                        ? 2
+                        : record.is_update === 1
+                        ? 1
+                        : 0
+                    }
+                  />
+                )}
             </Tooltip>
           </div>
         )
@@ -309,7 +314,9 @@ const List = () => {
       ),
       dataIndex: 'start_time',
       render: (_: string, record: any) => {
-        return (
+        return record.submit_cycle === 4 ? (
+          '--'
+        ) : (
           <span>{`${record.start_time} ~ ${moment(record.end_time).format(
             'YYYY-MM-DD',
           )}`}</span>
@@ -320,7 +327,7 @@ const List = () => {
       width: 240,
       title: (
         <NewSort
-          fixedKey="created_at"
+          fixedKey="updated_at"
           nowKey={queryParams.orderkey}
           order={queryParams.order}
           onUpdateOrderKey={onUpdateOrderKey}
@@ -328,7 +335,7 @@ const List = () => {
           {t('report.list.submitTime')}
         </NewSort>
       ),
-      dataIndex: 'created_at',
+      dataIndex: 'updated_at',
     },
     {
       width: 160,
@@ -525,8 +532,7 @@ const List = () => {
         ...(data.usedTemplate || []),
       ].filter(
         (item: any) =>
-          !(item.is_current_cycle_used && item.is_cycle_limit === 1) &&
-          item.is_write,
+          !(item.is_current_cycle_used && item.is_cycle_limit === 1),
       )
       setRepTypeOptions(temp.map(generateOptions))
     }

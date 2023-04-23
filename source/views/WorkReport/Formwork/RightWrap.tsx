@@ -344,7 +344,7 @@ const RightFormWork = () => {
       dispatch(setEditSave(true))
     }
   }, [activeItem])
-  console.log(activeItem, 'activeItem')
+
   const getBtn = () => {
     // 编辑的情况0和1都应该有
     if (editSave && activeItem?.id) {
@@ -366,7 +366,6 @@ const RightFormWork = () => {
     }
   }
   const getTitle = () => {
-    console.log(activeItem, 'activeItem')
     if (!activeItem?.name && !templateName) {
       return t('formWork.t1')
     } else {

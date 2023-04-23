@@ -127,10 +127,12 @@ const ChoosePeople = (props: any) => {
                     <CommonUserAvatar size="small" />
                   </div>
                 )}
-                <IconFontWrap
-                  type="close-circle-fill"
-                  onClick={() => onDelCheckPerson(i.id)}
-                />
+                {i.noDel ? null : (
+                  <IconFontWrap
+                    type="close-circle-fill"
+                    onClick={() => onDelCheckPerson(i.id)}
+                  />
+                )}
               </NewNameWrap>
               <span
                 style={{
