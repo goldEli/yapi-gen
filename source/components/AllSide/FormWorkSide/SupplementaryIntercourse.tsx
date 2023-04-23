@@ -90,14 +90,13 @@ const SupplementaryIntercourse = (props: Props) => {
         {list?.length ? (
           list.map(item => (
             <ItemList key={item.key}>
-              <Text>{`${item.date?.join('~')} ${item.name} ${t(
-                'report.list.noSubmitted',
-              )}`}</Text>
+              <Text>{`${
+                item.submit_cycle === 4 ? '--' : item.date?.join('~')
+              } ${item.name} ${t('report.list.noSubmitted')}`}</Text>
               <Btn
                 onClick={() => {
                   setVisibleEdit(true)
                   setTemplateObj(item)
-                  props.onClose()
                 }}
               >
                 {t('report.list.makeup')}
@@ -113,7 +112,10 @@ const SupplementaryIntercourse = (props: Props) => {
         date={templateObj.date}
         templateId={templateObj.id}
         visibleEdit={visibleEdit}
-        editClose={() => setVisibleEdit(false)}
+        editClose={() => {
+          setVisibleEdit(false)
+          props.onClose()
+        }}
         visibleEditText={t('report.list.writeReport')}
       />
     </CommonModal>
