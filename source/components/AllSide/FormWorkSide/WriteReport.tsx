@@ -12,7 +12,6 @@ import { useDispatch, useSelector } from '@store/index'
 import Bgc from './img/bgc.png'
 import { templateLatelyList } from '@/services/report'
 import moment from 'moment'
-import NoData from '@/components/NoData'
 import { setWriteReportModal } from '@store/workReport'
 import { Tooltip } from 'antd'
 
@@ -61,7 +60,7 @@ const CarWrap = styled.div<{ disabled?: boolean }>`
   }
   img {
     width: 156px;
-    height: 206px;
+    height: 205px;
     position: absolute;
     top: 0;
     left: 0;
@@ -337,9 +336,7 @@ const WriteReport = (props: Props) => {
                   ))}
                 </WrapBox>
               </>
-            ) : (
-              <NoData />
-            )}
+            ) : null}
           </MainWrap>
         </div>
       </CommonModal>
