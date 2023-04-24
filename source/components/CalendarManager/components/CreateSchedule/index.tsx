@@ -616,7 +616,7 @@ const CreateSchedule = () => {
                 {t('calendarManager.all_day_long')}
               </Checkbox>
             </TimeWrap>
-            <Form.Item style={{ width: '80%', marginTop: 8 }}>
+            <Form.Item style={{ width: '82%', marginTop: 8 }}>
               <Select
                 className="select"
                 value={repeatValue.value}

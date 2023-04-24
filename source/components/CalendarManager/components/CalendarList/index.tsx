@@ -20,8 +20,6 @@ import {
   dateClass,
   currentClass,
 } from './styles'
-import { intersection } from 'lodash'
-import Loading from '@/components/Loading'
 interface CalendarListProps {}
 
 const CalendarList: React.FC<CalendarListProps> = props => {

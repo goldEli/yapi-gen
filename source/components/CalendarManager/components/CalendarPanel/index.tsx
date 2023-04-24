@@ -10,6 +10,7 @@ import CalendarYear from '../CalendarYear'
 import { setScheduleListModal } from '@store/schedule'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
 import { Spin } from 'antd'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
 interface CalendarPanelProps {
   children?: React.ReactDOM
 }
@@ -63,7 +64,7 @@ const CalendarPanel: React.FC<CalendarPanelProps> = props => {
       }}
     >
       <CalendarPanelToolBar />
-      <Spin spinning={calendarLoading} tip="Loading" size="large">
+      <Spin spinning={calendarLoading} indicator={<NewLoadingTransition />}>
         <Content>{content}</Content>
       </Spin>
     </Box>
