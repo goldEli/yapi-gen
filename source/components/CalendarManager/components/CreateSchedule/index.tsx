@@ -29,6 +29,7 @@ import {
   NoticeBox,
   ParticipantItem,
   ParticipantItems,
+  RepeatTextWrap,
   TimeWrap,
 } from '../../styles'
 import IconFont from '@/components/IconFont'
@@ -307,6 +308,7 @@ const CreateSchedule = () => {
   // 重复小弹窗确认事件
   const onRepeatConfirm = (params: any) => {
     setRepeatValue({ value: currentRepeat, params })
+    console.log(params, '=paramsparamsparamsparams')
   }
 
   // 添加提醒
@@ -481,6 +483,48 @@ const CreateSchedule = () => {
     )
   }
 
+  // 获取重复文字
+  const getRepeatText = () => {
+    let text
+    const lastText =
+      repeatValue.params.repeat_end_type === 1
+        ? `${t('calendarManager.repeat_end_time')}${
+            repeatValue.params.repeat_end_date
+          }`
+        : `${t('calendarManager.repeat_end_count')}${
+            repeatValue.params.repeat_end_num
+          }`
+    if (repeatValue.value === 1) {
+      text = t('calendarManager.day_repeat', {
+        num: repeatValue.params.repeat_interval,
+      })
+    } else if (repeatValue.value === 2) {
+      const weekList = [
+        t('calendarManager.weekday'),
+        t('calendarManager.monday1'),
+        t('calendarManager.tuesday'),
+        t('calendarManager.wednesday'),
+        t('calendarManager.thursday'),
+        t('calendarManager.friday'),
+        t('calendarManager.saturday1'),
+      ]
+      let resultWeek: string[] = []
+      repeatValue.params.repeat_choose.forEach((element: number) => {
+        resultWeek.push(weekList[element])
+      })
+      text = t('calendarManager.week_repeat', { text: resultWeek.join('、') })
+    } else if (repeatValue.value === 3) {
+      text = t('calendarManager.month_repeat', {
+        num: repeatValue.params.repeat_interval,
+      })
+    } else {
+      text = t('calendarManager.year_repeat', {
+        num: repeatValue.params.repeat_interval,
+      })
+    }
+    return text + lastText
+  }
+
   // 更新右侧可视化调整时间
   useEffect(() => {
     const resultTime = [
@@ -526,6 +570,8 @@ const CreateSchedule = () => {
       }, 100)
     }
   }, [scheduleModal])
+
+  console.log(repeatValue)
 
   return (
     <>
@@ -628,6 +674,9 @@ const CreateSchedule = () => {
                 onSelect={onChangeRepeat}
                 getPopupContainer={n => n}
               />
+              {repeatValue.value !== 0 && (
+                <RepeatTextWrap>{getRepeatText()}</RepeatTextWrap>
+              )}
             </Form.Item>
             <ItemFlex style={{ margin: '24px 0' }}>
               <div className="box">

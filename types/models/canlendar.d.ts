@@ -162,6 +162,7 @@ declare namespace Model.Calendar {
     // 1是选中的日历
     is_check?: 0 | 1
     user_group_id: 1 | 2 | 3 | 4
+    origin_is_default?: 1 | 2
     user: {
       id: number
       name: string

@@ -1302,6 +1302,14 @@
     "clear": "清空"
   },
   "calendarManager": {
+    "repeat_end_time": "截止时间: ",
+    "repeat_end_count": "截止次数: ",
+    "day_repeat": "每{{num}}天重复，",
+    "week_repeat": "每{{text}}重复，",
+    "month_repeat": "每{{num}}月重复，",
+    "year_repeat": "每{{num}}年重复，",
+    "end_type_time_null": "结束重复为空时，时间必填！",
+    "end_type_null": "结束重复不能为空",
     "time_limit": "结束时间必须大于开始时间！",
     "moreItems": "还有{{count}}项...",
     "calendar": "日历",
