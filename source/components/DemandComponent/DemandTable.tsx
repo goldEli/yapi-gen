@@ -26,6 +26,7 @@ import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import ResizeTable from '../ResizeTable'
 import CommonButton from '../CommonButton'
+import { getMessage } from '../Message'
 
 const Content = styled.div({
   padding: '20px 12px 0 0px',
@@ -194,7 +195,7 @@ const DemandTable = (props: Props) => {
         priorityId: item.priorityId,
         projectId,
       })
-      message.success(t('common.prioritySuccess'))
+      getMessage({ msg: t('common.prioritySuccess'), type: 'success' })
       props.onChangeRow?.()
     } catch (error) {
       //
@@ -204,7 +205,7 @@ const DemandTable = (props: Props) => {
   const onChangeStatus = async (value: any) => {
     try {
       await updateDemandStatus(value)
-      message.success(t('common.statusSuccess'))
+      getMessage({ msg: t('common.statusSuccess'), type: 'success' })
       props.onChangeRow?.()
     } catch (error) {
       //

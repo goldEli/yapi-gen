@@ -29,6 +29,7 @@ import { Content, IterationContent } from './style'
 import ProjectCommonOperation from '@/components/ProjectCommonOperation'
 import DemandTree from './components/DemandTree'
 import { setFilterKeys } from '@store/project'
+import { getMessage } from '@/components/Message'
 
 const Right = styled.div({
   width: '100%',
@@ -180,7 +181,7 @@ const IterationMain = (props: Props) => {
   const onDeleteConfirm = async () => {
     try {
       await deleteDemand({ projectId, id: deleteId })
-      message.success(t('common.deleteSuccess'))
+      getMessage({ msg: t('common.deleteSuccess') as string, type: 'success' })
       setIsVisible(false)
       setDeleteId(0)
       setDataList({ list: undefined })

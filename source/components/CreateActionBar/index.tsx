@@ -6,6 +6,7 @@ import IconFont from '../IconFont'
 import { DividerWrap, HasIconMenu, HoverWrap } from '../StyleCommon'
 import { MainTitle, WrapRight } from './style'
 import ScreenMinHover from '../ScreenMinHover'
+import { getMessage } from '../Message'
 
 interface Props {
   sort: string
@@ -31,7 +32,7 @@ const CreateActionBar = (props: Props) => {
 
   // 切换显示类型
   const onClickMenuFormat = (type: boolean) => {
-    message.success(t('version2.reviewModeChangeSuccess'))
+    getMessage({ msg: t('version2.reviewModeChangeSuccess'), type: 'success' })
     props.onChangeFormat(type)
     setIsVisibleFormat(false)
   }

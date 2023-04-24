@@ -27,6 +27,7 @@ import {
   StyleRight,
   Text,
 } from '../WorkReport/Formwork/RightWrap'
+import { getMessage } from '@/components/Message'
 
 const Wrap = styled.div({
   padding: 16,
@@ -154,7 +155,7 @@ const Workflow = () => {
       return
     }
     if (!ChildRef?.current?.list?.length && val === 2) {
-      message.warning(t('newlyAdd.onlyDemandStatus'))
+      getMessage({ msg: t('newlyAdd.onlyDemandStatus'), type: 'warning' })
     } else {
       setStep(val)
       if (val === 2) {

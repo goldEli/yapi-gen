@@ -29,6 +29,7 @@ import { setIsRefresh } from '@store/user'
 import CommonButton from '@/components/CommonButton'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import { CloseWrap, DelButton } from '@/components/StyleCommon'
+import { getMessage } from '@/components/Message'
 
 const GroupWrap = styled.div({
   display: 'flex',
@@ -323,7 +324,7 @@ const PermissionManagement = () => {
 
   const onSavePermission = async () => {
     if (!selectKeys.length) {
-      message.warning(t('setting.pleasePermission'))
+      getMessage({ msg: t('setting.pleasePermission'), type: 'warning' })
       return
     }
     try {
@@ -332,8 +333,7 @@ const PermissionManagement = () => {
         permissionIds: selectKeys,
       })
       getRolePermission({ roleId: activeDetail.id })
-      message.success(t('common.saveSuccess'))
-
+      getMessage({ msg: t('common.saveSuccess'), type: 'success' })
       //
     } catch (error) {
       //
@@ -342,7 +342,7 @@ const PermissionManagement = () => {
 
   const onSaveGroup = async () => {
     if (!String(addValue).trim()) {
-      message.warning(t('version2.permissionNull'))
+      getMessage({ msg: t('version2.permissionNull'), type: 'warning' })
       setAddValue('')
       return
     }
@@ -350,10 +350,10 @@ const PermissionManagement = () => {
     try {
       if (operationDetail.id) {
         await updateRole({ name: addValue, id: operationDetail.id })
-        message.success(t('common.editSuccess'))
+        getMessage({ msg: t('common.editSuccess'), type: 'success' })
       } else {
         result = await addRole({ name: addValue })
-        message.success(t('common.createSuccess'))
+        getMessage({ msg: t('common.createSuccess'), type: 'success' })
       }
       setIsVisible(false)
       init(false, result?.data?.id)
@@ -394,7 +394,7 @@ const PermissionManagement = () => {
       await deleteRole({ id: operationDetail.id })
       setIsDelete(false)
       setOperationDetail({})
-      message.success(t('common.deleteSuccess'))
+      getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
       init()
     } catch (error) {
       //

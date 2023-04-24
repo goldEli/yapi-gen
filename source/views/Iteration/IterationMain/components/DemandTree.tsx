@@ -39,6 +39,7 @@ import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import ResizeTable from '@/components/ResizeTable'
 import CreateDemandButton from './CreateDemandButton'
 import { setFilterParamsModal } from '@store/project'
+import { getMessage } from '@/components/Message'
 
 const Content = styled.div({
   padding: '20px 12px 0 8px',
@@ -184,7 +185,10 @@ const DemandTree = (props: Props) => {
         priorityId: item.priorityId,
         projectId,
       })
-      message.success(t('common.prioritySuccess'))
+      getMessage({
+        msg: t('common.prioritySuccess') as string,
+        type: 'success',
+      })
       props.onChangeRow?.(row?.topId)
     } catch (error) {
       //
@@ -195,7 +199,7 @@ const DemandTree = (props: Props) => {
   const onChangeStatus = async (value: any, row?: any) => {
     try {
       await updateDemandStatus(value)
-      message.success(t('common.statusSuccess'))
+      getMessage({ msg: t('common.statusSuccess') as string, type: 'success' })
       props.onChangeRow?.(row?.topId)
     } catch (error) {
       //

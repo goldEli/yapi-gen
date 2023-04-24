@@ -11,7 +11,6 @@ import { imgs } from '@/views/LogManagement/components/LookDay'
 import { OmitText } from '@star-yun/ui'
 import { useSelector } from '@store/index'
 import { Editor } from '@xyfe/uikit'
-import { message } from 'antd'
 import { useEffect, useImperativeHandle, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Viewer from 'react-viewer'
@@ -20,6 +19,7 @@ import CommonUserAvatar from '../CommonUserAvatar'
 import DeleteConfirm from '../DeleteConfirm'
 import EditComment from '../EditComment'
 import IconFont from '../IconFont'
+import { getMessage } from '../Message'
 import NoData from '../NoData'
 import { HiddenText } from '../StyleCommon'
 import { fileIconMap } from '../UploadAttach'
@@ -47,7 +47,7 @@ interface Props {
 }
 
 const DemandComment = (props: Props) => {
-  const [t] = useTranslation()
+  const [t]: any = useTranslation()
   const { userInfo } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
   const [dataList, setDataList] = useState<any>({
@@ -132,14 +132,14 @@ const DemandComment = (props: Props) => {
       comment_id: attid,
       att_id: id,
     })
-    message.success(t('common.deleteSuccess'))
+    getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
     getList()
   }
 
   const onDeleteConfirm = async () => {
     try {
       await deleteComment({ projectId: props.detail.projectId, id: isDeleteId })
-      message.success(t('common.deleteSuccess'))
+      getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
       setIsDeleteId(0)
       setIsVisible(false)
       getList()
@@ -157,7 +157,7 @@ const DemandComment = (props: Props) => {
         attachment: params.attachment,
         a_user_ids: params.a_user_ids,
       })
-      message.success(t('project.replaySuccess'))
+      getMessage({ msg: t('common.replaySuccess'), type: 'success' })
       getList()
       setIsVisibleComment(false)
     } catch (error) {

@@ -18,6 +18,7 @@ import { message } from 'antd'
 import { getCategoryConfigList } from '@store/category/thunk'
 import { setGetCategoryConfigArray } from '@store/category'
 import { useTranslation } from 'react-i18next'
+import { getMessage } from '@/components/Message'
 
 const TitleStyle = styled.div`
   display: flex;
@@ -213,7 +214,7 @@ const Main = (props: any) => {
       ? JSON.parse(event.dataTransfer.getData('DragItem'))
       : null
     if (customizeNum?.length === 20 && evevtObj?.dragtype === 'add') {
-      message.warning(t('newlyAdd.maxAddFields'))
+      getMessage({ msg: t('newlyAdd.maxAddFields'), type: 'warning' })
       return
     } else {
       setColItem(null)
@@ -249,7 +250,7 @@ const Main = (props: any) => {
       project_id: projectInfo.id,
       data: newData,
     })
-    message.success(t('common.saveSuccess'))
+    getMessage({ msg: t('common.saveSuccess'), type: 'success' })
     await dispatch(
       getCategoryConfigList({
         projectId: projectInfo.id,

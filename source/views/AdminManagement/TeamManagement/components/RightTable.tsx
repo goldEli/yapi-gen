@@ -19,6 +19,7 @@ import { GENDER_MAP } from '@/constants'
 import TeamOverModal from '@/components/TeamOverModal'
 import { t } from 'i18next'
 import CustomSelect from '@/components/CustomSelect'
+import { getMessage } from '@/components/Message'
 
 const RightWrap = styled.div`
   flex: 1;
@@ -174,7 +175,7 @@ const RightTable = () => {
       })
       setIsVisible(false)
       onFetchMemberList()
-      message.success(t('edit_member_successfully') as string)
+      getMessage({ msg: t('edit_member_successfully'), type: 'success' })
     } catch (error) {}
   }
 
@@ -191,7 +192,7 @@ const RightTable = () => {
       })
       setDelIsVisible(false)
       onFetchMemberList()
-      message.success(t('removal_success') as string)
+      getMessage({ msg: t('removal_success'), type: 'success' })
     } catch (error) {}
   }
 
@@ -206,7 +207,7 @@ const RightTable = () => {
       })
       setAddMemberVisible(false)
       onFetchMemberList()
-      message.success(t('successfully_added') as string)
+      getMessage({ msg: t('successfully_added'), type: 'success' })
     } catch (error) {}
   }
 
