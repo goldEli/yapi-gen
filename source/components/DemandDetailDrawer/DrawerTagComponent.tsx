@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonIconFont from '../CommonIconFont'
 import IconFont from '../IconFont'
+import { getMessage } from '../Message'
 import {
   AddTagIcon,
   ColorWrap,
@@ -76,7 +77,7 @@ const DrawerTagComponent = (props: Props) => {
       type: 'tag',
       targetId: [{ name: item.content, color: item.color }],
     })
-    message.success(t('common.addSuccess'))
+    getMessage({ msg: t('common.addSuccess'), type: 'success' })
     props.onUpdate()
     setIsOpen(false)
   }
@@ -97,7 +98,7 @@ const DrawerTagComponent = (props: Props) => {
         type: 'tag',
         targetId: [{ name: newTag, color: value1 }],
       })
-      message.success(t('common.addSuccess'))
+      getMessage({ msg: t('common.addSuccess'), type: 'success' })
       props.onUpdate()
       setNewTag('')
       setIsChooseColor(false)
@@ -120,7 +121,7 @@ const DrawerTagComponent = (props: Props) => {
       type: 'tag',
       targetId: item.deleteId,
     })
-    message.success(t('common.deleteSuccess'))
+    getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
     props.onUpdate()
   }
 

@@ -29,6 +29,7 @@ import {
 import { getTemplateList, templateDetail } from '@store/formWork/thunk'
 import { useTranslation } from 'react-i18next'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
+import { getMessage } from '@/components/Message'
 const RightFormWorkStyle = styled.div`
   flex: 1;
   overflow: hidden;
@@ -231,14 +232,21 @@ const RightFormWork = () => {
       dispatch(setFillingRequirements(claerConfig))
     }
     setDelIsVisible(false)
-    message.success(t('formWork.message2'))
+    getMessage({ msg: t('formWork.message2'), type: 'success' })
   }
   const getEndTime = (timeVal: number) => {
     let timeValLen = String(timeVal)
     return timeValLen.length === 13 ? timeVal / 1000 : timeVal
   }
   const getTemplateSort = (list: any) => {
-    return list.map((item: any, index: number) => ({ ...item, sort: index }))
+    const sortData = list.map((item: any, index: number) => ({
+      ...item,
+      sort: index,
+    }))
+    sortData.forEach((el: any) => {
+      Number(el.id) < 1 && delete el.id
+    })
+    return sortData
   }
   const getVerifyParams = (parmas: any) => {
     // 谁可以写是必填的
@@ -247,7 +255,7 @@ const RightFormWork = () => {
         (el: any) => el.user_type === 1,
       )
       if (list?.length < 1) {
-        message.warning(t('formWork.message1'))
+        getMessage({ msg: t('formWork.message1'), type: 'warning' })
         return false
       }
     }
@@ -265,27 +273,27 @@ const RightFormWork = () => {
           parmas.requirement?.start_time?.time >
           parmas.requirement?.end_time?.time
         ) {
-          message.warning(t('formWork.msg10'))
+          getMessage({ msg: t('formWork.msg10'), type: 'warning' })
           return false
         }
       }
       if (!parmas.requirement.start_time) {
-        message.warning(t('formWork.msg10'))
+        getMessage({ msg: t('formWork.message3'), type: 'warning' })
         return false
       } else if (!parmas.requirement.end_time) {
-        message.warning(t('formWork.message4'))
+        getMessage({ msg: t('formWork.message4'), type: 'warning' })
         return false
       } else if (!parmas.reminder_time) {
-        message.warning(t('formWork.message5'))
+        getMessage({ msg: t('formWork.message5'), type: 'warning' })
         return false
       }
     }
     if (parmas.submit_cycle === 4) {
       if (!parmas.requirement.end_time) {
-        message.warning(t('formWork.message4'))
+        getMessage({ msg: t('formWork.message4'), type: 'warning' })
         return false
       } else if (!parmas.reminder_time) {
-        message.warning(t('formWork.message5'))
+        getMessage({ msg: t('formWork.message5'), type: 'warning' })
         return false
       }
     }
@@ -330,19 +338,20 @@ const RightFormWork = () => {
       return
     }
     if (!err) {
-      message.warning(errMsg)
+      getMessage({ msg: errMsg, type: 'warning' })
       return
     }
+    console.log(parmas, 'parmas')
     if (activeItem?.id) {
       await upDateTemplate(parmas)
-      message.success(t('formWork.message6'))
+      getMessage({ msg: t('formWork.message6'), type: 'success' })
       await dispatch(getTemplateList())
       dispatch(setActiveItem({ name: templateName, id: activeItem?.id }))
     } else {
       const res = await createTemplate(parmas)
       await dispatch(getTemplateList())
       dispatch(setActiveItem({ id: res.data.id, name: res.data.name }))
-      message.success(t('formWork.message7'))
+      getMessage({ msg: t('formWork.message7'), type: 'success' })
     }
     dispatch(setEditSave(true))
   }

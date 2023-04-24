@@ -20,6 +20,7 @@ import {
   setIsRefreshComment,
   setIsUpdateStatus,
 } from '@store/demand'
+import { getMessage } from '@/components/Message'
 
 const StatusWrap = styled.div({
   display: 'flex',
@@ -50,7 +51,7 @@ const DemandStatusBox = (props: any) => {
 
   const onChangeIdx = (id: any, row: any) => {
     if (demandInfo?.isExamine) {
-      message.warning(t('newlyAdd.underReview'))
+      getMessage({ msg: t('newlyAdd.underReview'), type: 'warning' })
     } else {
       setActive(id)
       setRows(row)
@@ -70,7 +71,7 @@ const DemandStatusBox = (props: any) => {
   const updateStatus = async (res1: any) => {
     try {
       await updateDemandStatus(res1)
-      message.success(t('common.circulationSuccess'))
+      getMessage({ msg: t('common.circulationSuccess'), type: 'success' })
       const result = await getDemandInfo({
         projectId: props.pid,
         id: props.sid,

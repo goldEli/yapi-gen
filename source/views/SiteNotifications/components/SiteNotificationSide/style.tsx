@@ -6,7 +6,7 @@ export const Title = styled.div`
   height: 22px;
   font-size: 14px;
   color: var(--neutral-n1-d1);
-  font-weight: 600;
+  font-family: SiYuanMedium;
   line-height: 22px;
 `
 

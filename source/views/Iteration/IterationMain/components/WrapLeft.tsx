@@ -45,6 +45,7 @@ import {
 } from '@/services/iterate'
 import CommonButton from '@/components/CommonButton'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
+import { getMessage } from '@/components/Message'
 
 const Left = styled.div<{ isShowLeft: boolean }>(
   {
@@ -363,7 +364,7 @@ const WrapLeft = (props: Props) => {
           id: item?.id,
           status: value,
         })
-        message.success(t('common.editS'))
+        getMessage({ msg: t('common.editS') as string, type: 'success' })
         getList(null, true)
       } catch (error) {
         //
@@ -384,7 +385,7 @@ const WrapLeft = (props: Props) => {
         id: isDeleteId,
       })
       setIsVisible(false)
-      message.success(t('common.deleteSuccess'))
+      getMessage({ msg: t('common.deleteSuccess') as string, type: 'success' })
       getList({}, true)
     } catch (error) {
       //

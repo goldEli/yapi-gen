@@ -40,6 +40,7 @@ import SetShowField from '@/components/SetShowField/indedx'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
+import { getMessage } from '@/components/Message'
 
 const Operation = styled.div({
   display: 'flex',
@@ -186,7 +187,7 @@ const ChildDemand = () => {
         priorityId: item.priorityId,
         projectId,
       })
-      message.success(t('common.prioritySuccess'))
+      getMessage({ msg: t('common.prioritySuccess'), type: 'success' })
       onUpdate()
     } catch (error) {
       //
@@ -196,7 +197,7 @@ const ChildDemand = () => {
   const onChangeStatus = async (value: any) => {
     try {
       await updateDemandStatus(value)
-      message.success(t('common.statusSuccess'))
+      getMessage({ msg: t('common.statusSuccess'), type: 'success' })
       onUpdate()
     } catch (error) {
       //
@@ -206,7 +207,7 @@ const ChildDemand = () => {
   const onDeleteConfirm = async () => {
     try {
       await deleteDemand({ projectId, id: deleteId })
-      message.success(t('common.deleteSuccess'))
+      getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
       setIsDelete(false)
       setDeleteId(0)
       onUpdate()

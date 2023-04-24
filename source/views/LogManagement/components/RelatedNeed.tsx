@@ -3,6 +3,7 @@
 /* eslint-disable react/jsx-no-leaked-render */
 import CustomSelect from '@/components/CustomSelect'
 import IconFont from '@/components/IconFont'
+import { getMessage } from '@/components/Message'
 import { AddWrap } from '@/components/StyleCommon'
 import { getDemandList, getProjectList } from '@/services/daily'
 import { css } from '@emotion/css'
@@ -70,7 +71,7 @@ const RelatedNeed = (props: any) => {
     setShow(false)
     setShowNeed(true)
     lessForm.resetFields()
-    message.success(t('p2.need3'))
+    getMessage({ msg: t('p2.need3') as string, type: 'success' })
   }
 
   const del = (item: any) => {

@@ -30,6 +30,7 @@ import {
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import CommonButton from '@/components/CommonButton'
 import { CloseWrap } from '@/components/StyleCommon'
+import { getMessage } from '@/components/Message'
 
 const Warp = styled.div({
   height: 'calc(100vh - 123px)',
@@ -148,7 +149,7 @@ export const TitleGroup = styled.div({
   marginTop: 14,
   color: 'var(--neutral-n2)',
   fontSize: 12,
-  fontWeight: 600,
+  fontFamily: 'SiYuanMedium',
 })
 
 export const MainWrap = styled.div({
@@ -321,7 +322,7 @@ const ProjectSet = () => {
 
   const onSavePermission = async () => {
     if (!selectKeys.length) {
-      message.warning(t('setting.pleasePermission'))
+      getMessage({ msg: t('setting.pleasePermission'), type: 'warning' })
       return
     }
     try {
@@ -331,7 +332,7 @@ const ProjectSet = () => {
         projectId,
       })
       getPermissionList(activeDetail.id)
-      message.success(t('common.saveSuccess'))
+      getMessage({ msg: t('common.saveSuccess') as string, type: 'success' })
     } catch (error) {
       //
     }
@@ -339,7 +340,7 @@ const ProjectSet = () => {
 
   const onSaveGroup = async () => {
     if (!String(addValue).trim()) {
-      message.warning(t('version2.permissionNull'))
+      getMessage({ msg: t('version2.permissionNull'), type: 'warning' })
       setAddValue('')
       return
     }
@@ -352,10 +353,13 @@ const ProjectSet = () => {
           projectId,
         })
         setOperationDetail({})
-        message.success(t('common.editSuccess'))
+        getMessage({ msg: t('common.editSuccess') as string, type: 'success' })
       } else {
         result = await addPermission({ name: addValue, projectId })
-        message.success(t('common.createSuccess'))
+        getMessage({
+          msg: t('common.createSuccess') as string,
+          type: 'success',
+        })
       }
       setIsVisible(false)
       init(false, result?.data?.id)
@@ -396,7 +400,7 @@ const ProjectSet = () => {
       await deletePermission({ id: operationDetail.id, projectId })
       setIsDelete(false)
       setOperationDetail({})
-      message.success(t('common.deleteSuccess'))
+      getMessage({ msg: t('common.deleteSuccess') as string, type: 'success' })
       init(true)
     } catch (error) {
       //

@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setTemplateContentConfigs, setEditSave } from '@store/formWork'
 import { message } from 'antd'
 import { useTranslation } from 'react-i18next'
+import { getMessage } from '@/components/Message'
 
 const TitleStyle = styled.div`
   display: flex;
@@ -29,6 +30,7 @@ const TitleStyle = styled.div`
   }
 `
 const LeftTabs = styled.div`
+  overflow-x: hidden;
   flex: 1;
   height: calc(100vh - 330px);
   overflow-y: auto;
@@ -36,7 +38,8 @@ const LeftTabs = styled.div`
 const RightTabs = styled.div`
   height: calc(100vh - 330px);
   overflow-y: auto;
-  width: 400;
+  overflow-x: hidden;
+  width: 400px;
   padding-left: 24px;
   border-left: 1px solid var(--neutral-n6-d1);
 `
@@ -71,12 +74,12 @@ const EditWork = (props: PropsType) => {
         type: evevtObj.type,
         tips: evevtObj.tips || '',
         name: evevtObj.title,
-        id: Math.random() + '_' + evevtObj.type,
+        id: Math.random(),
         is_required: 2,
       }
       const newList = dataList.find((el: { type: number }) => el.type === 4)
       if (newList) {
-        message.warning(t('formWork.has'))
+        getMessage({ msg: t('formWork.has'), type: 'warning' })
         return
       }
       const arrData = Array.from(dataList)
@@ -88,7 +91,7 @@ const EditWork = (props: PropsType) => {
         type: evevtObj.type,
         tips: evevtObj.tips || '',
         name: evevtObj.title,
-        id: Math.random() + '_' + evevtObj.type,
+        id: Math.random(),
         is_required: 2,
       }
       setType('add')
@@ -101,11 +104,11 @@ const EditWork = (props: PropsType) => {
   const ParmasDialogOnConfirm = (obj: any, num: number) => {
     const filterName = dataList.find((el: any) => el.name === obj.name)
     if (filterName) {
-      return message.warning('重复模板名称')
+      return getMessage({ msg: t('formWork.hasTemplate'), type: 'warning' })
     }
     const configs = {
       type: num,
-      id: Math.random() + '_' + num,
+      id: Math.random(),
       tips: obj.tips || '',
       name: obj.name,
       is_required: obj.is_required,

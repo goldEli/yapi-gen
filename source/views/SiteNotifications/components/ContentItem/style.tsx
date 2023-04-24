@@ -91,6 +91,9 @@ export const GrepContent = styled.div<{ status?: boolean }>`
   border-radius: 6px 6px 6px 6px;
   color: ${(props: any) =>
     props.status ? 'var(--neutral-n4)' : 'var(--neutral-n2)'};
+  a {
+    color: var(--auxiliary-text-t1-d2);
+  }
 `
 
 export const HoverWrap = styled.div`

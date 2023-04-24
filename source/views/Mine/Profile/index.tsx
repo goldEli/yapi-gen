@@ -27,6 +27,7 @@ import {
 } from '@/services/mine'
 import PaginationBox from '@/components/TablePagination'
 import { useNavigate } from 'react-router-dom'
+import { getMessage } from '@/components/Message'
 
 const Mygante = styled(Gantt)`
   min-width: 1000px;
@@ -248,7 +249,7 @@ const Profile = () => {
 
   const onToDetail = (item: any) => {
     if (item.feedable.deleted_at || item.feedable.project.deleted_at) {
-      message.warning(t('common.demandDeleteEd'))
+      getMessage({ msg: t('common.demandDeleteEd'), type: 'warning' })
       return
     }
 

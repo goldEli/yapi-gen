@@ -12,6 +12,7 @@ import { getProjectList } from '@/services/project'
 import { useSelector } from '@store/index'
 import { addInfoDemand, getDemandList } from '@/services/demand'
 import InputSearch from './InputSearch'
+import { getMessage } from './Message'
 
 const PopoverWrap = styled(Popover)<{ isRight?: any }>({}, ({ isRight }) => ({
   '.ant-popover-placement-bottom': {
@@ -220,7 +221,7 @@ const HaveSearchAndList = (props: Props) => {
         type: 'parent',
         targetId: [item.value],
       })
-      message.success(t('common.addSuccess'))
+      getMessage({ msg: t('common.addSuccess'), type: 'success' })
       props.onUpdate()
     } catch (error) {
       //
