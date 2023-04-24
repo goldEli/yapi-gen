@@ -377,6 +377,7 @@ export const CreateMoveCardBox = styled.div<{
     color: var(--neutral-white-d7);
     padding-left: 8px;
   }
+  z-index: 3;
 `
 
 export const CreateScheduleText = styled.div<{
