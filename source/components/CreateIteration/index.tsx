@@ -21,6 +21,7 @@ import { useTranslation } from 'react-i18next'
 import CommonModal from '../CommonModal'
 import { uploadFile } from '../CreateDemand/CreateDemandLeft'
 import CustomSelect from '../CustomSelect'
+import { getMessage } from '../Message'
 import MoreOptions from '../MoreOptions'
 import RangePicker from '../RangePicker'
 
@@ -125,13 +126,13 @@ const CreateIteration = () => {
         id: createIterationParams?.id,
         ...values,
       })
-      message.success(t('common.editSuccess'))
+      getMessage({ msg: t('common.editSuccess'), type: 'success' })
     } else {
       await addIterate({
         projectId: createIterationParams?.projectId,
         ...values,
       })
-      message.success(t('common.createSuccess'))
+      getMessage({ msg: t('common.createSuccess'), type: 'success' })
     }
     onCancel()
     dispatch(setIsUpdateList(true))

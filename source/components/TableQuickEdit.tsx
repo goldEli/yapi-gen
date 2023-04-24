@@ -28,6 +28,7 @@ import {
   updateTableParams,
 } from '@/services/demand'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
+import { getMessage } from './Message'
 
 const LimitText = styled.div`
   width: 192px;
@@ -422,7 +423,7 @@ const TableQuickEdit = (props: Props) => {
       } else {
         props.onUpdate?.()
       }
-      message.success(t('common.editSuccess'))
+      getMessage({ msg: t('common.editSuccess'), type: 'success' })
       if (type === 1) {
         setIsShowControl(false)
       }

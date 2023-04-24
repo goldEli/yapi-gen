@@ -49,6 +49,7 @@ import {
 import { useSelector } from '@store/index'
 import CustomSelect from '@/components/CustomSelect'
 import CommonButton from '@/components/CommonButton'
+import { getMessage } from '@/components/Message'
 
 const TableWrapTop = styled(Table)({
   '.ant-table-cell': {
@@ -311,7 +312,7 @@ const SetConfig = (props: Props) => {
     }
 
     await saveWorkflowConfig(params)
-    message.success(t('common.saveSuccess'))
+    getMessage({ msg: t('common.saveSuccess') as string, type: 'success' })
     onClose()
     setDataSource([])
   }

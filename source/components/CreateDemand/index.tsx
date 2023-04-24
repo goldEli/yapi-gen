@@ -27,6 +27,7 @@ import { createRef, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonButton from '../CommonButton'
 import CommonModal from '../CommonModal'
+import { getMessage } from '../Message'
 import CreateDemandLeft from './CreateDemandLeft'
 import CreateDemandRight from './CreateDemandRight'
 
@@ -140,7 +141,7 @@ const CreateDemand = () => {
         id: createDemandProps?.demandId,
         ...values,
       })
-      message.success(t('common.editSuccess'))
+      getMessage({ msg: t('common.editSuccess'), type: 'success' })
       dispatch(setIsUpdateStatus(true))
       dispatch(setIsUpdateChangeLog(true))
     } else {
@@ -148,7 +149,7 @@ const CreateDemand = () => {
         projectId,
         ...values,
       })
-      message.success(t('common.createSuccess'))
+      getMessage({ msg: t('common.createSuccess'), type: 'success' })
     }
     // 保存数据后更新项目信息-用于更新标签
     if (projectId) {

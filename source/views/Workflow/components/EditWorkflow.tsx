@@ -16,6 +16,7 @@ import { useSelector } from '@store/index'
 import { updateStoryConfigWorkflow } from '@/services/project'
 import FormTitleSmall from '@/components/FormTitleSmall'
 import IconFont from '@/components/IconFont'
+import { getMessage } from '@/components/Message'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -56,7 +57,7 @@ const EditWorkflow = (props: EditorProps) => {
 
     try {
       await updateStoryConfigWorkflow(params)
-      message.success(t('common.editSuccess'))
+      getMessage({ msg: t('common.editSuccess') as string, type: 'success' })
       props?.onClose()
       props?.onUpdate()
       setTimeout(() => {

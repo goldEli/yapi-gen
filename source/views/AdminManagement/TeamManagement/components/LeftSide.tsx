@@ -15,6 +15,7 @@ import { companyTeamsList } from '@store/teams/thunk'
 import { addTeams, dismissTeams, editTeams } from '@/services/setting'
 import { setActiveTeam } from '@store/teams/index'
 import { CloseWrap } from '@/components/StyleCommon'
+import { getMessage } from '@/components/Message'
 
 const LeftSideContainer = styled.div`
   position: relative;
@@ -382,10 +383,10 @@ const LeftSide = (props: any) => {
     try {
       if (formType === 'create') {
         await addTeams({ name, logo })
-        message.success('创建成功')
+        getMessage({ msg: t('common.createSuccess'), type: 'success' })
       } else {
         await editTeams(activeTeam?.id, { name, logo })
-        message.success('编辑成功')
+        getMessage({ msg: t('common.editSuccess'), type: 'success' })
       }
       props.isSpin(false)
       setTeamIsVisible(false)
@@ -400,7 +401,7 @@ const LeftSide = (props: any) => {
       await dismissTeams(activeTeam?.id)
       setDelTeamIsVisible(false)
       getTeamsList()
-      message.success('删除成功')
+      getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
     } catch (error) {}
   }
   const onChangeTeam = (key: any, child: any) => {

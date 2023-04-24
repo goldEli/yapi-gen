@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { useState } from 'react'
-import { message, Popover, Progress, Table, Tooltip } from 'antd'
+import { Popover, Progress, Table, Tooltip } from 'antd'
 import Sort from '@/components/Sort'
 import {
   CategoryWrap,

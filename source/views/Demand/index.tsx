@@ -52,6 +52,7 @@ import StateTag from '@/components/StateTag'
 import CommonButton from '@/components/CommonButton'
 import PermissionWrap from '@/components/PermissionWrap'
 import CustomSelect from '@/components/CustomSelect'
+import { getMessage } from '@/components/Message'
 
 const Wrap = styled.div`
   height: 100%;
@@ -284,7 +285,7 @@ const DemandBox = () => {
   const onDeleteConfirm = async () => {
     try {
       await deleteDemand({ projectId, id: demandInfo.id })
-      message.success(t('common.deleteSuccess'))
+      getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
       setIsDelVisible(false)
       const params = encryptPhp(JSON.stringify({ id: projectId }))
       navigate(`/ProjectManagement/Demand?data=${params}`)
@@ -308,7 +309,7 @@ const DemandBox = () => {
     try {
       await updateDemandStatus(value)
       dispatch(setIsRefreshComment(true))
-      message.success(t('common.statusSuccess'))
+      getMessage({ msg: t('common.statusSuccess'), type: 'success' })
       if (demandId) {
         const result = await getDemandInfo({ projectId, id: demandId })
         dispatch(setDemandInfo(result))
@@ -337,7 +338,7 @@ const DemandBox = () => {
         id: demandInfo?.id,
         ...form.getFieldsValue(),
       })
-      message.success(t('newlyAdd.changeSuccess'))
+      getMessage({ msg: t('newlyAdd.changeSuccess'), type: 'success' })
       setIsShowCategory(false)
       dispatch(setIsUpdateStatus(true))
       dispatch(setIsRefresh(true))
