@@ -1246,6 +1246,7 @@
       "okComment": "Add a comment successfully!",
       "noSubmitted": "Not submitted",
       "success": "Successful operation",
+      "reportSubmittedSuccessfully": "Report submitted successfully !",
       "fail": "Operation failure",
       "modifyReport": "Revision report",
       "haveComment": "Have commented",

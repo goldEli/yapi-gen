@@ -1246,6 +1246,7 @@
       "okComment": "添加评论成功！",
       "noSubmitted": "未提交",
       "success": "操作成功",
+      "reportSubmittedSuccessfully": "汇报提交成功!",
       "fail": "操作失败",
       "modifyReport": "修改汇报",
       "haveComment": "已评",
