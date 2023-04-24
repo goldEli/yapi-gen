@@ -20,13 +20,7 @@ const useCalculationConflict = () => {
   const [data, setData] = useState<
     { info: Model.Schedule.Info; width: number; left: number }[]
   >([])
-  // const list = useMemo(
-  //   () =>
-  //     scheduleList
-  //       .filter(item => item.is_all_day !== 1)
-  //       .filter(item => weeks.includes(dayjs(item.startTime).format(format))),
-  //   [scheduleList, weeks],
-  // )
+
   const { list } = useList()
 
   useEffect(() => {
@@ -60,13 +54,13 @@ const useCalculationConflict = () => {
       if (cur) {
         return {
           info: item,
-          width: cur.width,
+          width: cur.width - 2,
           left: baseLeft + cur.left,
         }
       }
       return {
         info: item,
-        width: maxWidth,
+        width: maxWidth - 20,
         left: baseLeft,
       }
     })
