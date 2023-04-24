@@ -66,9 +66,11 @@ const EditWork = (props: PropsType) => {
     const evevtObj: any = event.dataTransfer.getData('item')
       ? JSON.parse(event.dataTransfer.getData('item'))
       : null
+    // 上下移动不会触发拖动的弹窗
     if (evevtObj?.dragtype === 'move') {
       return
     }
+    // 关联需求没有弹窗
     if (evevtObj.type === 4) {
       const configs = {
         type: evevtObj.type,
@@ -124,6 +126,7 @@ const EditWork = (props: PropsType) => {
     }
     dispatch(setTemplateContentConfigs(arrData))
   }
+  // 必填选项
   const onChangeChecked = (val: boolean, el: any) => {
     dispatch(setEditSave(false))
     const num = val ? 1 : 2
@@ -134,12 +137,14 @@ const EditWork = (props: PropsType) => {
     dispatch(setTemplateContentConfigs(arr))
     setDataList(arr)
   }
+  // 行点击事件
   const onClick = (i: number, el: any) => {
     setIndex(i)
     setDragItem(el)
     setType('edit')
     setIsVisible(true)
   }
+  // 删除
   const onDelete = (el: { name: string; id: any }) => {
     dispatch(setEditSave(false))
     const arr = dataList.filter((item: any) => el.id !== item.id)
@@ -182,6 +187,7 @@ const EditWork = (props: PropsType) => {
           />
         </div>
       </LeftTabs>
+      {/* 基础控件 */}
       <RightTabs>
         <TitleStyle draggable="false">
           <span>{t('formWork.msg1')}</span>
@@ -192,7 +198,6 @@ const EditWork = (props: PropsType) => {
 
       {/* 组件配置弹窗 */}
       <ParmasDialog
-        // type={type}
         dragItem={dragItem}
         isVisible={isVisible}
         onClose={() => setIsVisible(false)}

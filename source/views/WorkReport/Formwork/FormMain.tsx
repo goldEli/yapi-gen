@@ -224,7 +224,6 @@ const CheckBox = (props: CheckBoxType) => {
 interface FormType {
   // 每周每月每日补交范围不同，不重复没有补交范围
   type: string
-  // backValues(s: any, e: any, r: any): void
 }
 let startTime: any = null
 let endTime: any = null
@@ -303,6 +302,7 @@ const FormMain = (props: FormType) => {
     }
     dispatch(setErr(true))
   }
+  // 时间组件选择后赋值，在判断时间是否合格
   const getValues = (
     type: string,
     v1: number,
@@ -339,15 +339,12 @@ const FormMain = (props: FormType) => {
       }
       setRemindTimes(remindTime)
     }
+    // onece 第一次回显不效验时间是否合格
     if (props.type === 'day' && !onece) {
       dayJudgeTime()
     } else if (props.type === 'week' && !onece) {
       WeekJudgeTime()
     }
-  }
-  // 不重复的值
-  const setValues = (val: any) => {
-    setEndTimes(val)
   }
   return (
     <>
@@ -414,9 +411,7 @@ const FormMain = (props: FormType) => {
         ) : (
           <DatePicker1
             value={endTimes}
-            datePickValue={(val: any) => {
-              setValues(val)
-            }}
+            datePickValue={(val: any) => setEndTimes(val)}
           />
         )}
       </Form.Item>

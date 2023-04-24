@@ -175,6 +175,7 @@ const Picker = (props: PropsType) => {
     const second = datS + hS + minute
     return second
   }
+  // 完成
   const getTime = () => {
     dispatch(setEditSave(false))
     props.getValues(leftActiveVal, centerActiveVal, rightActiveVal, false)
@@ -332,8 +333,6 @@ const Picker = (props: PropsType) => {
     } else if (props.type === 'week') {
       getWeekValues()
     } else if (props.type === 'month') {
-      getMonthValues()
-    } else {
       getMonthValues()
     }
   }, [props.value])
