@@ -23,6 +23,7 @@ import IconFont from '@/components/IconFont'
 import InputSearch from '@/components/InputSearch'
 import { useTranslation } from 'react-i18next'
 import CommonButton from '@/components/CommonButton'
+import { clearScheduleList } from '@store/schedule'
 dayjs.extend(weekOfYear)
 
 interface CalendarPanelToolBarProps {
@@ -30,11 +31,13 @@ interface CalendarPanelToolBarProps {
 }
 const Box = styled.div`
   width: 100%;
-  height: 36px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 4px;
+  top: 4px;
+  z-index: 100;
+  background: #fff;
 `
 const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
   const navigate = useNavigate()
@@ -318,6 +321,8 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
             marginRight: '10px',
           }}
           onChange={(value: Model.Calendar.CalendarPanelType) => {
+            // 清空日程
+            dispatch(clearScheduleList())
             setInputDefaultValue('')
             dispatch(setCalendarPanelType(value))
             dispatch(setCalenderDayValue(dayjs().format('YYYY-MM-DD')))

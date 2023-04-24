@@ -2,7 +2,10 @@ import React from 'react'
 import styled from '@emotion/styled'
 import useScheduleAllDayList from '../hooks/useScheduleAllDayList'
 import { AllDayScheduleItem } from '@/components/CalendarManager/styles'
-import { getColorWithOpacityPointOne } from '@/components/CalendarManager/utils'
+import {
+  getColor,
+  getColorWithOpacityPointOne,
+} from '@/components/CalendarManager/utils'
 
 interface AllDayScheduleBoxProps {}
 
@@ -35,6 +38,7 @@ const AllDayScheduleBox: React.FC<AllDayScheduleBoxProps> = props => {
         {list?.map(item => {
           return (
             <AllDayScheduleItem
+              hoverTextColor={getColor(item.color)}
               bg={getColorWithOpacityPointOne(item.color)}
               key={item.schedule_id}
             >

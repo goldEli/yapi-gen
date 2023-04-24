@@ -4,11 +4,9 @@ import React, { useEffect, useMemo, useRef } from 'react'
 import { formatYYYYMMDD, oneHourHeight } from '../../../config'
 import { useDispatch, useSelector } from '@store/index'
 import classNames from 'classnames'
-import { Dropdown, Popover } from 'antd'
 import ScheduleCardList from '../ScheduleCardList'
 import NewCalendarArea from '../NewCalendarArea'
 import useWeeks from '../hooks/useWeeks'
-import QuickCreateScheduleModel from '../../QuickCreateScheduleModel'
 import { EventBus } from '@/components/CalendarManager/eventBus'
 import { setQuickCreateScheduleModel } from '@store/calendarPanle'
 import useCreateTimeRange from '../hooks/useCreateTimeRange'
@@ -52,10 +50,6 @@ const Table = styled.table`
 
 const Timescale: React.FC<TimescaleProps> = props => {
   const { calendarData, checkedTime } = useSelector(store => store.calendar)
-  const { scheduleList } = useSelector(store => store.schedule)
-  const { quickCreateScheduleModel, scheduleInfoDropdown } = useSelector(
-    store => store.calendarPanel,
-  )
   const currentColor = useMemo(() => {
     return calendarData.manager.find(item => item.is_default === 1)?.color
   }, [calendarData])
@@ -70,11 +64,6 @@ const Timescale: React.FC<TimescaleProps> = props => {
   useEffect(() => {
     timeRangeRef.current = timeRange
   }, [timeRange])
-  // const timeRangeRef = useRef(timeRange)
-
-  // useEffect(() => {
-  //   timeRangeRef.current = timeRange
-  // }, [timeRange])
 
   const cancelCreateSchedule = () => {
     setTimeZone([])
@@ -96,11 +85,6 @@ const Timescale: React.FC<TimescaleProps> = props => {
             visible: false,
           }),
         )
-        // dispatch(
-        //   setQuickCreateScheduleModel({
-        //     visible: false,
-        //   }),
-        // )
         return
       }
 
@@ -144,7 +128,6 @@ const Timescale: React.FC<TimescaleProps> = props => {
       .fill(0)
       .map((item, idx) => {
         let str = String(idx)
-        // console.log(str.length)
         if (str.length === 1) {
           str = '0' + str
         }
@@ -155,11 +138,7 @@ const Timescale: React.FC<TimescaleProps> = props => {
               .fill(0)
               .map((i, index) => {
                 return (
-                  <tr
-                    key={index}
-                    // data-id={id}
-                    // onMouseDown={e => onSelectTimeZone(e, id)}
-                  >
+                  <tr key={index}>
                     <td className="firstTd borderRight">
                       {index === 0 && idx !== 0 && (
                         <span className="time">{`${str}:00`}</span>
@@ -190,29 +169,13 @@ const Timescale: React.FC<TimescaleProps> = props => {
         )
       })
   }, [currentColor, timeZone, checkedTime, weeks])
-  const isShowScheduleDetailModal = useMemo(() => {
-    for (const key in scheduleList) {
-      const list = scheduleList[key]
-      const cur = list.find(
-        item => item.schedule_id === scheduleInfoDropdown.schedule_id,
-      )
-      if (cur?.is_all_day === 1 || cur?.is_span_day) {
-        return false
-      }
-    }
-    return true
-  }, [scheduleList, scheduleInfoDropdown])
+
   return (
-    // <Popover trigger={['contextMenu']} content={popoverContent} title="Title">
     <Table ref={tableRef} className="time-scale">
       {content}
       <NewCalendarArea timeZone={timeZone} distance={distance} />
       <ScheduleCardList />
-      {/* {!quickCreateScheduleModel.isAll && (
-        <QuickCreateScheduleModel containerClassName=".time-scale" />
-      )} */}
     </Table>
-    // </Popover>
   )
 }
 

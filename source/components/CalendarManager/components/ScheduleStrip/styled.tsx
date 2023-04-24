@@ -31,10 +31,11 @@ export const Dot = styled.div<{ bg: string }>`
   border-radius: 2px 2px 2px 2px;
   margin-left: 8px;
 `
-export const Time = styled.div`
+export const Time = styled.span`
   color: var(--neutral-n4);
+  font-size: 12px;
 `
-export const Title = styled.div`
+export const Title = styled.span`
   flex: 1;
   color: var(--neutral-n2);
   overflow: hidden;

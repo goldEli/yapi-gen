@@ -5,6 +5,7 @@ import usePosition from '../hooks/usePosition'
 import { useSelector } from '@store/index'
 import useColor from '@/components/CalendarManager/hooks/useColor'
 import classNames from 'classnames'
+import { CreateMoveCardBox } from '@/components/CalendarManager/styles'
 
 interface NewCalendarAreaProps {
   timeRange: {
@@ -14,18 +15,21 @@ interface NewCalendarAreaProps {
 }
 
 const Box = styled.div`
-  width: calc(100% - 58px);
+  width: calc(100% - 58px - 20px);
   font-size: 12px;
   line-height: 20px;
-  /* color: var(--neutral-n1-d1); */
+  background-color: var(--primary-d1);
   position: absolute;
   left: 58px;
   display: ${(props: { visible: boolean }) =>
     props.visible ? 'block' : 'none'};
+  border-radius: 6px;
 `
 const Title = styled.span`
   font-size: 12px;
   line-height: 20px;
+  color: var(--neutral-white-d7);
+  padding-left: 8px;
   /* color: var(--neutral-n1-d1); */
 `
 
@@ -48,19 +52,17 @@ const NewCalendarArea: React.FC<NewCalendarAreaProps> = props => {
   )
 
   return (
-    <Box
-      style={{
-        background: getBgColor(currentColor ?? 0),
-        top,
-        height,
-      }}
-      className={classNames('getBgColor', getColorClassName())}
+    <CreateMoveCardBox
+      top={top}
+      left={58}
+      height={height}
+      width={'calc(100% - 58px - 20px)'}
       visible={!!props.timeRange.endTime}
     >
-      <Title className={getColorClassName()}>{`${dayjs(startTime).format(
-        'HH:mm',
-      )}-${dayjs(endTime)?.format('HH:mm')}`}</Title>
-    </Box>
+      <span className="title">{`${dayjs(startTime).format('HH:mm')}-${dayjs(
+        endTime,
+      )?.format('HH:mm')}`}</span>
+    </CreateMoveCardBox>
   )
 }
 
