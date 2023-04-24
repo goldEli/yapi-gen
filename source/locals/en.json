@@ -1,4 +1,42 @@
 {
+  "pm": "project management ",
+
+  "systematic_notification": "system notification",
+
+  "schedule_management": "schedule management",
+  "Invitations": "Invite me to participate",
+  "work_report": "Work report",
+  "pending_my_approval": "Pending my approval",
+
+  "me_in_the_comments": "@me in comments",
+
+  "created_the_task": "The task was created ",
+
+  "system_notice": "system notice",
+
+  "Reminder": "Reminder",
+
+  "my_approval": "I approved ",
+
+  "to_do": "To do",
+
+  "calendar_reminder": "calendar reminder",
+
+  "This ": "I was invited to participate ",
+
+  "mentioned_in_comments": "mentioned_in_comments",
+
+  "created_tasks": "The task was created ",
+
+  "who_submitted_the_report": "Who submitted the briefing ",
+
+  "report_reminder": "report_reminder",
+
+  "waiting_for_my_approval": "Wait for my approval",
+
+  "invitationss": "The schedule to which I am invited ",
+
+  "system_announcement": "system announcement",
   "nm": "nothing more",
   "incident": "incident",
   "insite_notifications": " insite_notifications",

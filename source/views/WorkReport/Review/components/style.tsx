@@ -97,7 +97,7 @@ export const SkeletonGroups = styled.div`
     display: inline-block;
     min-width: inherit;
     border-radius: 4px;
-    background: var(--neutral-n7);
+    background: var(--primary-d1);
   }
 `
 
@@ -176,7 +176,7 @@ export const UpWrap = styled(NextWrap)<{ isOnly?: boolean }>`
 
 export const DownWrap = styled(NextWrap)<{ isOnly?: boolean }>`
   border: 0px;
-  border-radius: 0px;
+  /* border-radius: 0px; */
   background: none;
 `
 
@@ -272,10 +272,13 @@ export const CommentFooter = styled.div<{ isReview?: boolean }>`
   height: auto;
   min-height: ${props => (props.isReview ? '280px' : '80px')};
   box-sizing: border-box;
-  padding: 24px 24px 0px 24px;
+  padding: 24px;
   background: var(--neutral-white-d5);
   position: absolute;
   bottom: 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
   .editBox {
     max-height: 72vh;
     overflow: auto;

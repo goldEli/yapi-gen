@@ -9,6 +9,9 @@ export const Time2 = styled.div`
   line-height: 20px;
   margin-left: auto;
   display: none;
+  .ant-checkbox .ant-checkbox-inner {
+    border-radius: 50% !important;
+  }
 `
 export const Time = styled.div`
   height: 20px;
