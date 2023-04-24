@@ -16,6 +16,7 @@ const Menu = styled.div`
 export const MenuItem = styled.div<{ isActive?: boolean }>`
   height: 44px;
   font-family: SiYuanRegular;
+  font-family: ${props => (props.isActive ? 'SiYuanMedium' : 'SiYuanRegular')};
   display: flex;
   align-items: center;
   padding: 0 24px;
@@ -127,8 +128,8 @@ const ReviewSide = () => {
               <IconFont
                 type="send"
                 style={{
-                  fontSize: 20,
-                  marginRight: item.state ? '6px' : '',
+                  fontSize: 18,
+                  marginRight: item.state ? '12px' : '',
                 }}
               />
             )}
@@ -136,8 +137,8 @@ const ReviewSide = () => {
               <IconFont
                 type="container"
                 style={{
-                  fontSize: 20,
-                  marginRight: item.state ? '6px' : '',
+                  fontSize: 18,
+                  marginRight: item.state ? '12px' : '',
                 }}
               />
             )}
@@ -145,8 +146,8 @@ const ReviewSide = () => {
               <IconFont
                 type="inbox-02"
                 style={{
-                  fontSize: 20,
-                  marginRight: item.state ? '6px' : '',
+                  fontSize: 18,
+                  marginRight: item.state ? '12px' : '',
                 }}
               />
             )}
