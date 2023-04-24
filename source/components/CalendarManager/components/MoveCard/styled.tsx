@@ -17,6 +17,9 @@ export const TimeRange = styled.span`
   font-size: 14px;
   color: var(--neutral-n1-d1);
   margin-right: 4px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `
 export const Title = styled.span`
   font-size: 14px;
