@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { getColor, getColorWithOpacityPointOne } from '../../utils'
 import { css } from '@emotion/css'
 import classNames from 'classnames'
+import useShowTime from '../../hooks/useShowTime'
 
 interface ScheduleStripProps {
   onDotMouseDown: React.MouseEventHandler<HTMLDivElement>
@@ -28,25 +29,12 @@ const ScheduleStrip: React.ForwardRefRenderFunction<
   ScheduleStripProps
 > = (props, forwardedRef) => {
   const { data } = props
-  const {
-    isAllDay,
-    isAcrossDayFirstDay,
-    isAcrossDay,
-    isAcrossDayButNotFirstDay,
-    isFullDay,
-  } = useAllDay({ data })
+  const { isAllDay, isAcrossDayFirstDay, isAcrossDayButNotFirstDay } =
+    useAllDay({ data })
   const [t] = useTranslation()
 
   // 如果是跨天或者全天任务显示全天
-  const time = React.useMemo(() => {
-    if (isFullDay) {
-      return t('calendarManager.allDay')
-    }
-    if (isAcrossDay) {
-      return t('calendarManager.acrossDay')
-    }
-    return data.start_time
-  }, [data.start_time, isFullDay, isAcrossDay])
+  const { timeStr } = useShowTime(data)
 
   // 是否展示内容
   // 如果跨天且不是第一天 不展示
@@ -62,11 +50,11 @@ const ScheduleStrip: React.ForwardRefRenderFunction<
     return (
       <>
         <Dot onMouseDown={props.onDotMouseDown} bg={getColor(data.color)} />
-        <Time className="text">{time}</Time>
+        <Time className="text">{timeStr}</Time>
         <Title className="text">{data.subject}</Title>
       </>
     )
-  }, [contentVisible, time, data])
+  }, [contentVisible, timeStr, data])
 
   const bg = useMemo(() => {
     // 日程背景色
