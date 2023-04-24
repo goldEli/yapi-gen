@@ -1282,6 +1282,7 @@
     "clear": "Empty"
   },
   "calendarManager": {
+    "time_limit": "The end time must be greater than the start time!",
     "moreItems": "{{count}} more...",
     "calendar": "Calendar",
     "unsubscribed_successfully": "Unsubscribed successfully!",

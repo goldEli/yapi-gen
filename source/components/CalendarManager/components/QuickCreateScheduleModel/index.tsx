@@ -42,6 +42,7 @@ import { saveSchedule } from '@store/schedule/schedule.thunk'
 import { EventBus } from '../../eventBus'
 import useModalPosition from './useModalPosition'
 import { useTranslation } from 'react-i18next'
+import { getMessage } from '@/components/Message'
 interface CreateScheduleBoxProps {
   containerClassName: string
 }
@@ -226,12 +227,20 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
       ? moment(values.time[1]).endOf('day').format('YYYY-MM-DD HH:mm:ss')
       : moment(values.time[1]).format('YYYY-MM-DD HH:mm:ss')
     delete resultParams.time
+
     return resultParams
   }
 
   // 保存
   const onConfirm = async () => {
     const params = await onGetParams()
+    if (
+      moment(params.start_datetime).format('x') ===
+      moment(params.end_datetime).format('x')
+    ) {
+      getMessage({ msg: t('calendarManager.time_limit'), type: 'warning' })
+      return
+    }
     await dispatch(saveSchedule(params))
     message.success(t('calendarManager.createSuccess'))
     onClose()
