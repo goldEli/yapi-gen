@@ -132,11 +132,6 @@ const CreateSchedule = () => {
     // { label: t('calendarManager.invite_participants'), value: 1 },
   ]
 
-  // 不可选择当前时间前一天及之前的
-  const onDisabledDate: RangePickerProps['disabledDate'] = current => {
-    return current && current < moment().subtract(1, 'day')
-  }
-
   // 关闭弹窗
   const onClose = () => {
     dispatch(setScheduleModal({ visible: false, params: {} }))
@@ -609,7 +604,6 @@ const CreateSchedule = () => {
                   showTime={!isAll}
                   onChange={onChangeTime}
                   allowClear={false}
-                  disabledDate={onDisabledDate}
                 />
               </Form.Item>
               <Checkbox checked={isAll} onChange={onChangeIsAll}>

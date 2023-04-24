@@ -109,11 +109,6 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
   // 提醒
   const [noticeList, setNoticeList] = useState<DefaultTime[]>([])
 
-  // 不可选择当前时间之前的
-  const onDisabledDate: RangePickerProps['disabledDate'] = current => {
-    return current && current < moment().subtract(1, 'day')
-  }
-
   // 关闭弹窗
   const onClose = () => {
     EventBus.getInstance().dispatch('cancelCreateSchedule')
@@ -357,7 +352,6 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
                   showTime={!isAll}
                   onChange={setTime}
                   allowClear={false}
-                  disabledDate={onDisabledDate}
                 />
               </Form.Item>
               <Checkbox checked={isAll} onChange={onChangeIsAll}>
