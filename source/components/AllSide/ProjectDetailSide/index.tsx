@@ -111,7 +111,7 @@ const ProjectDetailSide = () => {
       key: 'main',
     },
     {
-      name: '通知设置',
+      name: t('notification_settings'),
       icon: 'settings',
       path: '/ProjectManagement/ProjectSetting',
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>

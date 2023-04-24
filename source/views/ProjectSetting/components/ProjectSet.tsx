@@ -287,7 +287,6 @@ const ProjectSet = () => {
   const getPermissionList = async (id: number) => {
     setIsSpinning(true)
     const result = await getPermission({ projectId, roleId: id })
-    console.log(result)
 
     setPermissionList(result)
     setIsSpinning(false)
