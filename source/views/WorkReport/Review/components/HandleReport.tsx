@@ -30,6 +30,7 @@ import {
 import { templateDetail } from '@/services/formwork'
 import { setUpdateList } from '@store/workReport'
 import { getMessage } from '@/components/Message'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
 
 const LabelTitle = styled.span`
   font-size: 14px;
@@ -564,7 +565,7 @@ const HandleReport = (props: any) => {
       onConfirm={confirm}
       confirmText={t('report.list.submit')}
     >
-      <Spin spinning={!reportDetail}>
+      <Spin spinning={!reportDetail} indicator={<NewLoadingTransition />}>
         <div
           style={{
             height: 'calc(90vh - 136px)',

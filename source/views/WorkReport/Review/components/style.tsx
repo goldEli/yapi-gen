@@ -176,7 +176,7 @@ export const UpWrap = styled(NextWrap)<{ isOnly?: boolean }>`
 
 export const DownWrap = styled(NextWrap)<{ isOnly?: boolean }>`
   border: 0px;
-  border-radius: 0px;
+  /* border-radius: 0px; */
   background: none;
 `
 
