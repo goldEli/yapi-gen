@@ -21,6 +21,9 @@ const IconContainer = styled.div<{ position: string }>`
     props.position === 'left'
       ? '5px 0px 7px -3px rgba(0, 0, 0, 0.12)'
       : '-5px 0px 7px -3px rgba(0,0,0,0.12)'};
+  &:hover .anticon {
+    color: var(--primary-d2);
+  }
 `
 
 const tabsContainer = css`
