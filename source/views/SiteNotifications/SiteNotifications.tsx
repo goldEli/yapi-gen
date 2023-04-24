@@ -22,16 +22,17 @@ import {
   getMsg_list,
   getMyAllNoteSet,
 } from '@/services/SiteNotifications'
+import { useTranslation } from 'react-i18next'
 
 const SiteNotifications = () => {
+  const [t] = useTranslation()
   const { wsData } = useWebsocket()
   const dispatch = useDispatch()
   const { isVisible, all } = useSelector(store => store.siteNotifications)
+  const isRefresh = useSelector(store => store.user.isRefresh)
   const init2 = async () => {
     const res = await getContactStatistics()
-
     let num = 0
-
     res.list.slice(1, 6).forEach((i: any) => {
       num += Number(i.nread)
     })
@@ -73,16 +74,16 @@ const SiteNotifications = () => {
     if (type === 'project') {
       switch (code) {
         case 130:
-          name = '分配给我任务'
+          name = t('assign_me_tasks')
           break
         case 131:
-          name = '待我审批'
+          name = t('pending_my_approval')
           break
         case 132:
-          name = '评论中@我'
+          name = t('me_in_the_comments')
           break
         case 133:
-          name = '创建了任务'
+          name = t('created_the_task')
           break
 
         default:
@@ -93,16 +94,16 @@ const SiteNotifications = () => {
     if (type === 'system') {
       switch (code) {
         case 150:
-          name = '系统公告'
+          name = t('system_notice')
           break
         case 151:
-          name = '事项提醒'
+          name = t('Reminder')
           break
         case 152:
-          name = '我审核的'
+          name = t('my_approval')
           break
         case 153:
-          name = '待办'
+          name = t('to_do')
           break
 
         default:
@@ -113,16 +114,16 @@ const SiteNotifications = () => {
     if (type === 'calendar') {
       switch (code) {
         case 170:
-          name = '日程提醒'
+          name = t('calendar_reminder')
           break
         case 171:
-          name = '邀请我参与的'
+          name = t('Invitations')
           break
         case 132:
-          name = '评论中@我'
+          name = t('mentioned_in_comments')
           break
         case 133:
-          name = '创建了任务'
+          name = t('created_tasks')
           break
 
         default:
@@ -133,16 +134,16 @@ const SiteNotifications = () => {
     if (type === 'report') {
       switch (code) {
         case 190:
-          name = '谁提交了简报'
+          name = t('who_submitted_the_report')
           break
         case 191:
-          name = '评论中@我'
+          name = t('mentioned_in_comments')
           break
         case 192:
-          name = '简报催缴'
+          name = t('report_reminder')
           break
         case 133:
-          name = '创建了任务'
+          name = t('created_the_task')
           break
 
         default:
@@ -153,28 +154,28 @@ const SiteNotifications = () => {
     if (type === 'email') {
       switch (code) {
         case 201:
-          name = '待办'
+          name = t('to_do')
           break
         case 202:
-          name = '评论中@我'
+          name = t('me_in_the_comments')
           break
         case 203:
-          name = '待我审批'
+          name = t('waiting_for_my_approval')
           break
         case 204:
-          name = '简报催缴'
+          name = t('report_reminder')
           break
         case 205:
-          name = '谁提交了简报'
+          name = t('who_submitted_the_report')
           break
         case 206:
-          name = '日程提醒'
+          name = t('calendar_reminder')
           break
         case 207:
-          name = '邀请我参与的日程'
+          name = t('invitationss')
           break
         case 208:
-          name = '系统公告'
+          name = t('system_announcement')
           break
 
         default:
@@ -193,7 +194,7 @@ const SiteNotifications = () => {
     }
 
     if (value.module === 'project') {
-      obj.name = '项目管理'
+      obj.name = t('pm')
       obj.sendType = 'project'
       obj.children = value.lists.map((i: any) => {
         return {
@@ -205,7 +206,7 @@ const SiteNotifications = () => {
       return obj
     }
     if (value.module === 'system') {
-      obj.name = '系统通知'
+      obj.name = t('systematic_notification')
       obj.sendType = 'sys'
       obj.children = value.lists.map((i: any) => {
         return {
@@ -217,7 +218,7 @@ const SiteNotifications = () => {
       return obj
     }
     if (value.module === 'calendar') {
-      obj.name = '日程管理'
+      obj.name = t('schedule_management')
       obj.sendType = 'calendar'
       obj.children = value.lists.map((i: any) => {
         return {
@@ -229,7 +230,7 @@ const SiteNotifications = () => {
       return obj
     }
     if (value.module === 'report') {
-      obj.name = '工作汇报'
+      obj.name = t('work_report')
       obj.sendType = 'report'
       obj.children = value.lists.map((i: any) => {
         return {
@@ -257,6 +258,7 @@ const SiteNotifications = () => {
   }
   const init = async () => {
     const res = await getAllNoteSet()
+
     dispatch(
       setConfiguration(
         initSet(res.im.filter((i: any) => i.module !== 'product')),
@@ -283,7 +285,7 @@ const SiteNotifications = () => {
   useEffect(() => {
     init()
     init2()
-  }, [])
+  }, [isRefresh])
   useEffect(() => {
     if (wsData) {
       sendMsg()
