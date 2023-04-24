@@ -66,7 +66,7 @@ const EditWork = (props: PropsType) => {
     const evevtObj: any = event.dataTransfer.getData('item')
       ? JSON.parse(event.dataTransfer.getData('item'))
       : null
-    if (evevtObj?.id) {
+    if (evevtObj?.dragtype === 'move') {
       return
     }
     if (evevtObj.type === 4) {
