@@ -156,7 +156,7 @@ const StepPageOne = (propsOne: Props) => {
 
   const onSave = () => {
     if (!dataSource?.list?.length) {
-      message.warning(t('newlyAdd.onlyDemandStatus'))
+      getMessage({ msg: t('newlyAdd.onlyDemandStatus'), type: 'warning' })
       return
     }
     try {
@@ -224,7 +224,7 @@ const StepPageOne = (propsOne: Props) => {
 
   const onChangeListStatus = async (checked: any, row: any) => {
     if (row.startStatus) {
-      message.warning(t('newlyAdd.startStatusNoEnd'))
+      getMessage({ msg: t('newlyAdd.startStatusNoEnd'), type: 'warning' })
       return
     }
     const obj = {

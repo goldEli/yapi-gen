@@ -3,6 +3,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable react/jsx-handler-names */
 import IconFont from '@/components/IconFont'
+import { getMessage } from '@/components/Message'
 import { uploadFileByTask } from '@/services/cos'
 import styled from '@emotion/styled'
 import { message, Popover, Space, Upload } from 'antd'
@@ -141,7 +142,7 @@ const ChooseColor = (props: ChooseColorProps) => {
   }
   const onCustomRequest = async (file: any) => {
     if (!file.file.type?.includes('image')) {
-      message.warning(t('please_upload_a_picture'))
+      getMessage({ msg: t('please_upload_a_picture'), type: 'warning' })
       return
     }
     const data: any = await uploadFileByTask(file.file, '2', '2')

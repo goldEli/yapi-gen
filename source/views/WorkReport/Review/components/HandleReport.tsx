@@ -260,10 +260,13 @@ const HandleReport = (props: any) => {
               )
               getMessage({ msg: t('report.list.success'), type: 'success' })
             } else {
-              message.error(result?.data?.message || t('report.list.fail'))
+              getMessage({
+                msg: result?.data?.message || t('report.list.fail'),
+                type: 'error',
+              })
             }
           } catch (error) {
-            message.error(t('report.list.fail'))
+            getMessage({ msg: t('report.list.fail'), type: 'error' })
           }
         },
       })

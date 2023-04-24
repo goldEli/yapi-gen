@@ -87,7 +87,7 @@ const EditWorkflow = (props: EditorProps) => {
 
   const onChangeStatus = (checked: any) => {
     if (props?.item?.startStatus && checked) {
-      message.warning(t('newlyAdd.startStatusNoEnd'))
+      getMessage({ msg: t('newlyAdd.startStatusNoEnd'), type: 'warning' })
       return
     }
     setStatus(checked)

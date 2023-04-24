@@ -8,7 +8,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { Checkbox, Menu, message, Space, Tooltip } from 'antd'
+import { Checkbox, Menu, message, Space, Table, Tooltip } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useDynamicColumns } from './components/StaffTable'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -290,26 +290,26 @@ const StaffManagement = () => {
       navigate(`/AdminManagement/MemberInfo/Profile?data=${params}`)
     }
   }
-
-  const onSelectChange = (e: CheckboxChangeEvent, record: any) => {
-    if (e.target.checked) {
-      setSelectedRowKeys(prev => [...prev, record.id])
-      return
+  const onOperationCheckbox = (keys: number[]) => {
+    const redClassElements = document.getElementsByClassName(
+      'ant-checkbox-wrapper',
+    )
+    for (const i of redClassElements) {
+      if (i.getElementsByClassName('tagLength')[0]) {
+        i.removeChild(i.getElementsByClassName('tagLength')[0])
+      }
+      if (keys?.length > 0) {
+        const div2 = document.createElement('div')
+        div2.innerText = String(keys.length)
+        div2.className = 'tagLength'
+        i.appendChild(div2)
+      }
     }
-    setSelectedRowKeys(prev => {
-      return prev.filter(v => v !== record.id)
-    })
   }
-  const onCheckAll = (e: CheckboxChangeEvent) => {
-    if (e.target.checked) {
-      setSelectedRowKeys(
-        listData.map((record: Record<string, any>) => record.id),
-      )
-      return
-    }
-    setSelectedRowKeys([])
+  const onSelectChange = (keys: number[]) => {
+    setSelectedRowKeys(keys)
+    onOperationCheckbox(keys)
   }
-
   const selectColum: any = useMemo(() => {
     const arr = allTitleList
     const newList = []
@@ -320,32 +320,8 @@ const StaffManagement = () => {
         }
       }
     }
-    const checkboxColumn = {
-      title: (
-        <div>
-          <Checkbox
-            onChange={onCheckAll}
-            checked={selectedRowKeys.length === listData?.length}
-          />
-          {selectedRowKeys.length > 0 && (
-            <span style={{ marginLeft: 8 }}>{selectedRowKeys.length}</span>
-          )}
-        </div>
-      ),
-      dataIndex: 'check',
-      width: 56,
-      key: 'check',
-      render: (text: string, record: any) => {
-        return (
-          <Checkbox
-            checked={selectedRowKeys.indexOf(record.id) > -1}
-            onChange={e => onSelectChange(e, record)}
-          />
-        )
-      },
-    }
 
-    const arrList = [
+    const initColumns = [
       {
         width: 40,
         render: (_text: any, record: any) => {
@@ -363,7 +339,7 @@ const StaffManagement = () => {
       },
     ]
 
-    arrList.push(checkboxColumn)
+    initColumns.push(Table.SELECTION_COLUMN as any)
 
     const lastList = [
       {
@@ -396,7 +372,7 @@ const StaffManagement = () => {
     ]
 
     const resultLast = isHaveCheck ? lastList : []
-    return [...arrList, ...newList, ...resultLast]
+    return [...initColumns, ...newList, ...resultLast]
   }, [titleList, titleList2, columns])
 
   const showModal = () => {
@@ -481,6 +457,11 @@ const StaffManagement = () => {
       getStaffListData()
     }
   }
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+  }
+
   return (
     <PermissionWrap
       auth="/AdminManagement/StaffManagement"
@@ -562,6 +543,7 @@ const StaffManagement = () => {
           isSpinning={isSpinning}
           dataWrapNormalHeight="100%"
           col={selectColum}
+          rowSelection={rowSelection}
           dataSource={listData}
           noData={<NoData />}
         />

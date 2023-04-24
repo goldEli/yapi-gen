@@ -51,7 +51,7 @@ const DemandStatusBox = (props: any) => {
 
   const onChangeIdx = (id: any, row: any) => {
     if (demandInfo?.isExamine) {
-      message.warning(t('newlyAdd.underReview'))
+      getMessage({ msg: t('newlyAdd.underReview'), type: 'warning' })
     } else {
       setActive(id)
       setRows(row)

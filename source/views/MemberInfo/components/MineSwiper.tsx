@@ -7,6 +7,7 @@ import SwiperCard from './SwiperCard'
 import { useTranslation } from 'react-i18next'
 import { message } from 'antd'
 import styled from '@emotion/styled'
+import { getMessage } from '@/components/Message'
 
 const SwiperWrap = styled.div`
   display: flex;
@@ -40,7 +41,7 @@ const SwiperCardMove = (props: any) => {
 
   const onClickProject = (item: any) => {
     if (item?.is_public !== 1 && !item.user_ismember) {
-      message.warning(t('common.notCheckInfo'))
+      getMessage({ msg: t('common.notCheckInfo'), type: 'warning' })
     } else {
       setSwiperActive(item.id)
       onTap(item.id)

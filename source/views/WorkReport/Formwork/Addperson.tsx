@@ -41,7 +41,7 @@ const PersonContainer = styled.div`
 const Col = styled.div`
   display: flex;
   align-items: center;
-  min-width: 116px;
+  /* min-width: 116px; */
   height: 32px;
   background-color: var(--neutral-n8);
   border-radius: 6px;

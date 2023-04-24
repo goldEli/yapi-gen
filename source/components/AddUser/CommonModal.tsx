@@ -22,6 +22,7 @@ import {
 } from '@/services/setting'
 import { unionBy } from 'lodash'
 import CustomSelect from '../CustomSelect'
+import { getMessage } from '../Message'
 
 const { DirectoryTree } = Tree
 const ModalHeader = styled.div`
@@ -164,6 +165,7 @@ const TreeStyle = styled(DirectoryTree)`
   width: 216px;
   overflow-y: auto;
   overflow-x: auto;
+  height: 308px;
   .ant-tree-checkbox-inner {
     width: 16px;
     height: 16px;
@@ -475,7 +477,7 @@ const CommonModal = (props: ModalProps) => {
     setSearchVal(value)
     const hasVal = personData.filter((el: any) => el.id === value)
     if (hasVal.length >= 1) {
-      message.warning(t('commonModal.warnningMsg1'))
+      getMessage({ msg: t('commonModal.warnningMsg1'), type: 'warning' })
     } else {
       const filterVal: any = selectDataList.filter((el: any) => el.id === value)
       setCheckedKeys([...checkedKeys, filterVal.find((item: any) => item).id])

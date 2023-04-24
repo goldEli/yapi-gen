@@ -320,7 +320,7 @@ const DemandBox = () => {
   }
 
   const onExamine = () => {
-    message.warning(t('newlyAdd.underReview'))
+    getMessage({ msg: t('newlyAdd.underReview'), type: 'warning' })
   }
 
   const onCloseCategory = () => {
