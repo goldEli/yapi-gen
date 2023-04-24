@@ -86,7 +86,7 @@ const index = (props: any) => {
       suffixIcon={
         <IconFont
           type="down"
-          style={{ fontSize: 16, color: 'var(--neutral-n4)' }}
+          style={{ fontSize: 12, color: 'var(--neutral-n4)' }}
         />
       }
       dropdownRender={(menu: any) => (

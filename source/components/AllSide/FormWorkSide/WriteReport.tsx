@@ -49,13 +49,13 @@ const CarWrap = styled.div<{ disabled?: boolean }>`
   border: 1px solid var(--neutral-n6-d2);
   border-radius: 6px 6px 6px 6px;
   box-sizing: border-box;
-  transition: all 0.3s;
+  /* transition: all 0.3s; */
   margin-left: 24px;
   margin-bottom: 8px;
   &:hover {
     cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
     box-shadow: 0px 0px 10px 0px rgba(9, 9, 9, 0.09);
-    border: 1px solid transparent;
+    /* border: 1px solid transparent; */
     user-select: ${props => (props.disabled ? 'none' : 'inherit')};
   }
   img {
