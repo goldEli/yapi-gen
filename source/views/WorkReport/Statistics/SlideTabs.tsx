@@ -131,7 +131,7 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
     )
 
     setXAxis(current => {
-      return current - nodeWidth - val
+      return current - nodeWidth
     })
   }
 
@@ -158,10 +158,10 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
   }, [])
 
   const handleClick = (index: number, key: string) => {
-    const { right } = nodes.current[index].getBoundingClientRect()
-    if (right > viewRectOffset) {
-      next(right - viewRectOffset)
-    }
+    // const { right } = nodes.current[index].getBoundingClientRect()
+    // if (right > viewRectOffset) {
+    //   next(right - viewRectOffset)
+    // }
     onChange?.(key)
   }
 
