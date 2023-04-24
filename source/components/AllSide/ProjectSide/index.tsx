@@ -16,7 +16,7 @@ import {
 import { changeGroupId, changeTypeId } from '@store/create-propject'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefreshGroup } from '@store/project'
-import { Form, Input, Menu, message } from 'antd'
+import { Form, Input, Menu } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
@@ -30,6 +30,7 @@ import {
   GroupItems,
 } from './style'
 import { CloseWrap } from '@/components/StyleCommon'
+import { getMessage } from '@/components/Message'
 
 interface Props {
   onAddClick(): void
@@ -141,7 +142,7 @@ const MoreProjectSide = (props: Props) => {
   const onDeleteConfirm = async () => {
     try {
       await deleteProjectGroup({ id: operationObj?.id })
-      message.success(t('common.deleteSuccess'))
+      getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
       onUpdateGroup(groupId === operationObj?.id)
       // 如果分组只剩最后一个分组,默认切换到我参与的，反之切换到分组第一个
       if (groupList?.list?.length === 1) {
@@ -161,7 +162,7 @@ const MoreProjectSide = (props: Props) => {
       values.id = operationObj?.id
       try {
         await updateProjectGroup(values)
-        message.success(t('common.editSuccess'))
+        getMessage({ msg: t('common.editSuccess'), type: 'success' })
         onUpdateGroup()
       } catch (error) {
         //
@@ -169,7 +170,7 @@ const MoreProjectSide = (props: Props) => {
     } else {
       try {
         await addProjectGroup(values)
-        message.success(t('common.createSuccess'))
+        getMessage({ msg: t('common.createSuccess'), type: 'success' })
         onUpdateGroup()
       } catch (error) {
         //

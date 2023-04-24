@@ -1195,7 +1195,8 @@
     "all": "全员",
     "day": "日",
     "h": "时",
-    "m": "分"
+    "m": "分",
+    "hasTemplate": "重复模板名称"
   },
   "report": {
     "list": {
@@ -1245,6 +1246,7 @@
       "okComment": "添加评论成功！",
       "noSubmitted": "未提交",
       "success": "操作成功",
+      "reportSubmittedSuccessfully": "汇报提交成功!",
       "fail": "操作失败",
       "modifyReport": "修改汇报",
       "haveComment": "已评",
@@ -1407,14 +1409,14 @@
     "file_list": "文件列表",
     "search_schedule": "搜索日程",
     "today": "今天",
-    "transfer_tip1":"转让我退出该日程",
-    "transfer_tip2":"转让我变为参与者",
-    "search_users":"搜索新的所有者",
-    "transfer_success":"转让成功",
-    "user_not_empty":"接收人不能为空",
-    "busy":"忙碌",
-    "free":"空闲",
-    "dayof":"（第{{day}}天，共{{days}}天）",
-    "list":"列表"
+    "transfer_tip1": "转让我退出该日程",
+    "transfer_tip2": "转让我变为参与者",
+    "search_users": "搜索新的所有者",
+    "transfer_success": "转让成功",
+    "user_not_empty": "接收人不能为空",
+    "busy": "忙碌",
+    "free": "空闲",
+    "dayof": "（第{{day}}天，共{{days}}天）",
+    "list": "列表"
   }
 }

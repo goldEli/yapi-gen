@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { changeRestScroll } from '@store/scroll'
 import { getProjectMember } from '@/services/project'
 import { getIdsForAt, removeNull } from '@/tools'
+import { getMessage } from './Message'
 
 const EditComment = (props: any) => {
   const [form] = Form.useForm()
@@ -72,14 +73,14 @@ const EditComment = (props: any) => {
     await form.validateFields()
     const inner = document.getElementById('inner')
     if (!String(inner?.innerHTML).trim()) {
-      message.warning(t('new_p1.a9'))
+      getMessage({ msg: t('new_p1.a9'), type: 'warning' })
       return
     }
 
     // 未上传成功的个数
     const stateLength = attachDom.current?.getAttachState()
     if (stateLength) {
-      message.warning(t('version2.haveNoSuccessAttach'))
+      getMessage({ msg: t('version2.haveNoSuccessAttach'), type: 'warning' })
       return
     }
 

@@ -15,6 +15,7 @@ import {
 } from '@/services/iterate'
 import { setIterateInfo } from '@store/iterate'
 import CommonButton from '@/components/CommonButton'
+import { getMessage } from '@/components/Message'
 
 const ModalFooter = styled(Space)({
   width: '100%',
@@ -65,7 +66,7 @@ const EditAchievements = (props: Props) => {
         id: props.id,
         ...params,
       })
-      message.success(t('common.editSuccess') as string)
+      getMessage({ msg: t('common.editSuccess') as string, type: 'success' })
       onClose()
       childRef?.current?.reset()
       if (props.isInfo) {

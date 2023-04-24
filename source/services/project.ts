@@ -6,6 +6,7 @@
 
 // 项目
 
+import { getMessage } from '@/components/Message'
 import { getNestedChildren, transData } from '@/tools'
 import * as http from '@/tools/http'
 import { onRest } from '@store/create-propject'
@@ -247,7 +248,7 @@ export const addProject: any = async (params: any) => {
     leader_id: params?.leader_id,
   })
   if (res.code === 0) {
-    message.success(t('common.createSuccess') as string)
+    getMessage({ msg: t('common.createSuccess') as string, type: 'success' })
     store.dispatch(onRest(true))
   }
 
@@ -267,7 +268,7 @@ export const updateProject: any = async (params: any) => {
     id: params.id,
   })
   if (res.code === 0) {
-    message.success(t('common.editSuccess') as string)
+    getMessage({ msg: t('common.editSuccess') as string, type: 'success' })
     store.dispatch(onRest(true))
   }
 

@@ -9,6 +9,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonIconFont from '../CommonIconFont'
 import IconFont from '../IconFont'
+import { getMessage } from '../Message'
 
 const ChangeItem = styled.div<{ isActive?: boolean; height?: number }>`
   width: 100%;
@@ -44,7 +45,10 @@ const SetShowField = (props: Props) => {
       previewModel: type,
       id: userPreferenceConfig?.id,
     })
-    message.success(t('switch_preview_mode_successfully'))
+    getMessage({
+      msg: t('switch_preview_mode_successfully') as string,
+      type: 'success',
+    })
     dispatch(
       setUserPreferenceConfig({
         ...userPreferenceConfig,

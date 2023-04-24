@@ -9,6 +9,7 @@ import { Form, Input, message } from 'antd'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '../CommonModal'
 import FormTitleSmall from '../FormTitleSmall'
+import { getMessage } from '../Message'
 import { Wrap, WrapText } from './style'
 
 const CreateViewPort = (props: any) => {
@@ -37,7 +38,7 @@ const CreateViewPort = (props: any) => {
     await dispatch(addViewList(data))
     await dispatch(getViewList(props.pid))
     await dispatch(changeCreateVisible(false))
-    message.success(t('common.createSuccess'))
+    getMessage({ msg: t('common.createSuccess'), type: 'success' })
     form.resetFields()
   }
   const onClose = () => {

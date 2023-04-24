@@ -47,6 +47,7 @@ import { getIdsForAt } from '@/tools'
 import IconFont from '@/components/IconFont'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { setUpdateList } from '@store/workReport'
+import { getMessage } from '@/components/Message'
 
 interface TargetTabsProps {
   list: any
@@ -272,7 +273,7 @@ const ReportDetailDrawer = () => {
       a_user_ids: getIdsForAt(value.info),
     }
     await addReportComment(params)
-    message.success(t('report.list.okComment'))
+    getMessage({ msg: t('report.list.okComment'), type: 'success' })
     scrollToBottom()
     setIsReview(false)
     getReportCommentData(drawerInfo.id)
@@ -363,7 +364,7 @@ const ReportDetailDrawer = () => {
         report_user_id: viewReportModal?.id,
         id: isDeleteId,
       })
-      message.success(t('common.deleteSuccess'))
+      getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
       setIsDeleteId(0)
       setIsVisible(false)
       getReportCommentData(viewReportModal?.id)

@@ -20,11 +20,17 @@ const Table = styled.table`
   tr {
     height: ${oneHourHeight / 4}px;
     box-sizing: border-box;
-    /* all: unset; */
+    padding: 0;
+    margin: 0;
   }
   td {
     box-sizing: border-box;
-    /* all: unset; */
+    padding: 0;
+    margin: 0;
+    border-right: 1px solid transparent;
+    border-left: 1px solid transparent;
+    /* border-top: 1px solid transparent; */
+    /* border-bottom: 1px solid transparent; */
   }
   .firstTr {
   }
@@ -33,7 +39,7 @@ const Table = styled.table`
     position: relative;
   }
   .borderTop {
-    border-top: 1px solid var(--neutral-n6-d1);
+    border-top: 1px solid var(--neutral-n6-d1) !important;
   }
   .time {
     font-size: 12px;
@@ -157,7 +163,7 @@ const Timescale: React.FC<TimescaleProps> = props => {
                             onMouseDown={e => onSelectTimeZone(e, id)}
                             key={tdIndex}
                             className={classNames('borderRight', {
-                              borderTop: index === 0,
+                              borderTop: index === 0 && idx !== 0,
                             })}
                           ></td>
                         )

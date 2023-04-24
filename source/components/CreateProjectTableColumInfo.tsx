@@ -24,6 +24,7 @@ import ChangeStatusPopover from './ChangeStatusPopover'
 import ChangePriorityPopover from './ChangePriorityPopover'
 import StateTag from './StateTag'
 import DemandProgress from './DemandProgress'
+import { getMessage } from './Message'
 
 const Wrap = styled.div<{ isEdit?: any }>(
   {
@@ -40,7 +41,7 @@ export const useDynamicColumns = (state: any) => {
   const { userInfo } = useSelector(store => store.user)
 
   const onExamine = () => {
-    message.warning(t('newlyAdd.underReview'))
+    getMessage({ msg: t('newlyAdd.underReview'), type: 'warning' })
   }
 
   const NewSort = (props: any) => {

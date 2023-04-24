@@ -22,6 +22,7 @@ import { getCustomNormalValue } from '@/tools'
 import TableColorText from './TableColorText'
 import StateTag from './StateTag'
 import DemandProgress from './DemandProgress'
+import { getMessage } from './Message'
 
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
   {
@@ -77,7 +78,7 @@ export const useDynamicColumns = (state: any) => {
   }
 
   const onExamine = () => {
-    message.warning(t('newlyAdd.underReview'))
+    getMessage({ msg: t('newlyAdd.underReview'), type: 'warning' })
   }
 
   const onUpdate = (row: any, isClass?: any) => {

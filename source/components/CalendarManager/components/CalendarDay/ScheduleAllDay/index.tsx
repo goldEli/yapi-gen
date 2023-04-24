@@ -11,6 +11,10 @@ import dayjs from 'dayjs'
 import { getDaysOfWeekList } from '@/services/calendar'
 import useColor from '@/components/CalendarManager/hooks/useColor'
 import useShowLunar from '@/components/CalendarManager/hooks/useShowLunar'
+import {
+  getColor,
+  getColorWithOpacityPointOne,
+} from '@/components/CalendarManager/utils'
 
 interface ScheduleAllDayProps {}
 const ScheduleAllDayBox = styled.div`
@@ -145,7 +149,8 @@ const ScheduleAllDay: React.FC<ScheduleAllDayProps> = props => {
                   )
                 }}
                 key={item.schedule_id}
-                bg={getBgColor(item.color)}
+                hoverTextColor={getColor(item.color)}
+                bg={getColorWithOpacityPointOne(item.color)}
                 className={getColorClassName()}
               >
                 {item.subject}

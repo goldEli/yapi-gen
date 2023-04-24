@@ -43,6 +43,7 @@ import PermissionWrap from '@/components/PermissionWrap'
 import CommonButton from '@/components/CommonButton'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import { setIsUpdateDemand } from '@store/demand'
+import { getMessage } from '@/components/Message'
 
 const Wrap = styled.div`
   height: 100%;
@@ -329,7 +330,7 @@ const Iteration = () => {
   const onDeleteConfirm = async () => {
     try {
       await deleteIterate({ projectId, id: iterateId })
-      message.success(t('common.deleteSuccess'))
+      getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
       setIsDelete(false)
       const params = encryptPhp(JSON.stringify({ id: projectId }))
       navigate(`/ProjectManagement/Iteration?data=${params}`)
@@ -363,7 +364,7 @@ const Iteration = () => {
           id: iterateInfo?.id,
           status: val,
         })
-        message.success(t('common.editS'))
+        getMessage({ msg: t('common.editS'), type: 'success' })
         onUpdateIterateInfo(iterateInfo?.id)
         const beforeValues = JSON.parse(JSON.stringify(projectInfoValues))
         // 修改迭代状态更新到项目下拉数据中

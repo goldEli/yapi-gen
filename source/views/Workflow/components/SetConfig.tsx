@@ -49,6 +49,7 @@ import {
 import { useSelector } from '@store/index'
 import CustomSelect from '@/components/CustomSelect'
 import CommonButton from '@/components/CommonButton'
+import { getMessage } from '@/components/Message'
 
 const TableWrapTop = styled(Table)({
   '.ant-table-cell': {
@@ -284,7 +285,7 @@ const SetConfig = (props: Props) => {
             (i: any) => i.obj.verify_users && i.obj.verify_users?.length > 0,
           )?.length !== normalList?.length
         ) {
-          message.warning(t('newlyAdd.needExaminePerson'))
+          getMessage({ msg: t('newlyAdd.needExaminePerson'), type: 'warning' })
           return
         }
         params.process = normalList
@@ -297,7 +298,7 @@ const SetConfig = (props: Props) => {
     }
 
     if (dataSource?.filter((k: any) => !k.content)?.length) {
-      message.warning(t('newlyAdd.needFields'))
+      getMessage({ msg: t('newlyAdd.needFields'), type: 'warning' })
       return
     }
 
@@ -306,12 +307,12 @@ const SetConfig = (props: Props) => {
         (k: any) => k.content && k.default_type === 1 && !k.default_value,
       )?.length
     ) {
-      message.warning(t('newlyAdd.needNormal'))
+      getMessage({ msg: t('newlyAdd.needNormal'), type: 'warning' })
       return
     }
 
     await saveWorkflowConfig(params)
-    message.success(t('common.saveSuccess'))
+    getMessage({ msg: t('common.saveSuccess') as string, type: 'success' })
     onClose()
     setDataSource([])
   }
@@ -757,7 +758,7 @@ const SetConfig = (props: Props) => {
   const onAddExamine = () => {
     const lastItem: any = normalList[normalList?.length - 1]
     if (!lastItem?.obj?.verify_users?.length) {
-      message.warning(t('newlyAdd.needExaminePerson'))
+      getMessage({ msg: t('newlyAdd.needExaminePerson'), type: 'warning' })
       return
     }
     setNormalList([...normalList, ...[{ id: new Date().getTime(), obj: {} }]])

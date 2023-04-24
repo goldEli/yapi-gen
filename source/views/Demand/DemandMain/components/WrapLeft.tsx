@@ -35,6 +35,7 @@ import {
 } from '@/services/demand'
 import { changeId } from '@store/counterSlice'
 import { useSearchParams } from 'react-router-dom'
+import { getMessage } from '@/components/Message'
 
 const Left = styled.div`
   height: calc(100vh - 150px);
@@ -154,7 +155,7 @@ const TreeItem = (props: any) => {
       id: props.id,
     })
     if (news.code === 0) {
-      message.success(t('common.deleteSuccess'))
+      getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
     }
     // 如果当前删除的跟当前选中的一致，则重置
     if (context?.key === props.id) {
@@ -189,8 +190,8 @@ const TreeItem = (props: any) => {
 
     if (news.code === 0) {
       tag
-        ? message.success(t('common.createSuccess'))
-        : message.success(t('common.editSuccess'))
+        ? getMessage({ msg: t('common.createSuccess'), type: 'success' })
+        : getMessage({ msg: t('common.editSuccess'), type: 'success' })
     }
 
     close()

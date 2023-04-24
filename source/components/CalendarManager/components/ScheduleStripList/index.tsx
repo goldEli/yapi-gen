@@ -21,7 +21,7 @@ interface ScheduleListProps {
 
 const ScheduleListBox = styled.div`
   width: 100%;
-  min-height: 114px;
+  min-height: 95px;
   position: relative;
   display: flex;
   flex-direction: column;

@@ -13,8 +13,8 @@ import {
 } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { useState, useEffect, useRef } from 'react'
-import { Menu, message, Form, Space, Checkbox, Tooltip } from 'antd'
+import { useState, useEffect, useRef, useMemo } from 'react'
+import { Menu, message, Form, Space, Checkbox, Tooltip, Table } from 'antd'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import Sort from '@/components/Sort'
 import PermissionWrap from '@/components/PermissionWrap'
@@ -47,6 +47,7 @@ import BatchAction, { boxItem } from '@/components/BatchAction'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import BatchSetPermGroup from './BatchSetPermGroup'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
+import { getMessage } from '@/components/Message'
 
 const Wrap = styled.div({
   padding: '0 24px',
@@ -292,55 +293,28 @@ const ProjectMember = (props: { searchValue?: string }) => {
     }
   }
 
-  const onSelectChange = (e: CheckboxChangeEvent, record: any) => {
-    if (e.target.checked) {
-      setSelectedRowKeys(prev => [...prev, record.id])
-      return
+  const onOperationCheckbox = (keys: number[]) => {
+    const redClassElements = document.getElementsByClassName(
+      'ant-checkbox-wrapper',
+    )
+    for (const i of redClassElements) {
+      if (i.getElementsByClassName('tagLength')[0]) {
+        i.removeChild(i.getElementsByClassName('tagLength')[0])
+      }
+      if (keys?.length > 0) {
+        const div2 = document.createElement('div')
+        div2.innerText = String(keys.length)
+        div2.className = 'tagLength'
+        i.appendChild(div2)
+      }
     }
-    setSelectedRowKeys(prev => {
-      return prev.filter(v => v !== record.id)
-    })
   }
-  const onCheckAll = (e: CheckboxChangeEvent) => {
-    if (e.target.checked) {
-      setSelectedRowKeys(
-        memberList?.list.map((record: Record<string, any>) => record.id),
-      )
-      return
-    }
-    setSelectedRowKeys([])
+  const onSelectChange = (keys: number[]) => {
+    setSelectedRowKeys(keys)
+    onOperationCheckbox(keys)
   }
 
   const columns = [
-    {
-      width: 40,
-      render: (text: string, record: any) => {
-        return hasDel && hasEdit ? null : <MoreDropdown menu={menu(record)} />
-      },
-    },
-    {
-      title: (
-        <div>
-          <Checkbox
-            onChange={onCheckAll}
-            checked={selectedRowKeys.length === memberList?.list?.length}
-          />
-          {selectedRowKeys.length > 0 && (
-            <span style={{ marginLeft: 8 }}>{selectedRowKeys.length}</span>
-          )}
-        </div>
-      ),
-      dataIndex: 'check',
-      width: 56,
-      render: (text: string, record: any) => {
-        return (
-          <Checkbox
-            checked={selectedRowKeys.indexOf(record.id) > -1}
-            onChange={e => onSelectChange(e, record)}
-          />
-        )
-      },
-    },
     {
       title: (
         <NewSort
@@ -501,6 +475,19 @@ const ProjectMember = (props: { searchValue?: string }) => {
     },
   ]
 
+  const selectColumns: any = useMemo(() => {
+    const initColumns = [
+      {
+        width: 40,
+        render: (text: string, record: any) => {
+          return hasDel && hasEdit ? null : <MoreDropdown menu={menu(record)} />
+        },
+      },
+    ]
+    initColumns.push(Table.SELECTION_COLUMN as any)
+    return [...initColumns, ...columns]
+  }, [columns])
+
   const onChangeUpdate = () => {
     setOperationItem({})
     getList(order, pageObj)
@@ -556,7 +543,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
     }
     try {
       await updateMember(params)
-      message.success(t('common.editSuccess'))
+      getMessage({ msg: t('common.editSuccess') as string, type: 'success' })
       setOperationItem({})
       // 可以考虑不走接口修改
       onChangeUpdate()
@@ -572,7 +559,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
         userGroupId: roleId,
         userIds: selectedRowKeys.map(i => Number(i)),
       })
-      message.success('操作成功')
+      getMessage({ msg: t('report.list.success') as string, type: 'success' })
       setSelectedRowKeys([])
       getList(order, pageObj)
       setBatchEditVisible(false)
@@ -589,7 +576,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
 
   const handleOk = async (list: any, userId: number) => {
     if (list.length <= 0) {
-      message.warning(t('project.memberNull'))
+      getMessage({ msg: t('project.memberNull'), type: 'warning' })
       return
     }
     const params: any = {
@@ -598,7 +585,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
       userIds: list.map((el: any) => el.id),
     }
     await addMember(params)
-    message.success(t('common.addSuccess'))
+    getMessage({ msg: t('common.addSuccess') as string, type: 'success' })
     setUserDataList([])
     getList(order, pageObj)
     setIsAddVisible(false)
@@ -621,6 +608,10 @@ const ProjectMember = (props: { searchValue?: string }) => {
 
   const refresh = () => {
     getList(order, pageObj)
+  }
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
   }
 
   return (
@@ -767,8 +758,9 @@ const ProjectMember = (props: { searchValue?: string }) => {
           <ResizeTable
             isSpinning={isSpinning}
             dataWrapNormalHeight="calc(100% - 64px)"
-            col={columns}
+            col={selectColumns}
             dataSource={memberList?.list}
+            rowSelection={rowSelection}
             noData={<NoData />}
           />
           <PaginationBox

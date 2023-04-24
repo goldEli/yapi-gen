@@ -28,6 +28,7 @@ import {
   updateTableParams,
 } from '@/services/demand'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
+import { getMessage } from './Message'
 
 const LimitText = styled.div`
   width: 192px;
@@ -351,13 +352,13 @@ const TableQuickEdit = (props: Props) => {
   // 操作框改变
   const onChange = async (newValue: any, type?: any) => {
     if (props.item.categoryConfigList[props.keyText] === 1 && !newValue) {
-      message.warning(`${props.keyText}为必填字段！`)
+      getMessage({ msg: `${props.keyText}为必填字段！`, type: 'warning' })
       setIsShowControl(false)
       return
     }
 
     if (props.keyText === 'name' && newValue.length <= 0) {
-      message.warning(t('p2.nameNotNull'))
+      getMessage({ msg: t('p2.nameNotNull'), type: 'warning' })
       setIsShowControl(false)
       return
     }
@@ -369,7 +370,10 @@ const TableQuickEdit = (props: Props) => {
         moment(props.item.expectedEnd || '').unix() <
           moment(newValue || '').unix()
       ) {
-        message.warning(t('version2.endTimeComputedStartTime'))
+        getMessage({
+          msg: t('version2.endTimeComputedStartTime'),
+          type: 'warning',
+        })
         setIsShowControl(false)
         return
       }
@@ -382,7 +386,10 @@ const TableQuickEdit = (props: Props) => {
         moment(props.item.expectedStart || '').unix() >
           moment(newValue || '').unix()
       ) {
-        message.warning(t('version2.startTimeComputedEndTime'))
+        getMessage({
+          msg: t('version2.startTimeComputedEndTime'),
+          type: 'warning',
+        })
         setIsShowControl(false)
         return
       }
@@ -422,7 +429,7 @@ const TableQuickEdit = (props: Props) => {
       } else {
         props.onUpdate?.()
       }
-      message.success(t('common.editSuccess'))
+      getMessage({ msg: t('common.editSuccess'), type: 'success' })
       if (type === 1) {
         setIsShowControl(false)
       }
@@ -434,7 +441,10 @@ const TableQuickEdit = (props: Props) => {
   // 操作框失焦
   const onBlur = (val: any) => {
     if (props.item.categoryConfigList[props.keyText] === 1 && !val) {
-      message.warning(`${props.keyText}${t('is_required')}`)
+      getMessage({
+        msg: `${props.keyText}${t('is_required')}`,
+        type: 'warning',
+      })
       setIsShowControl(false)
       return
     }

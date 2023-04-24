@@ -35,7 +35,7 @@ export const Dot = styled.div<{ bg: string }>`
   width: 6px;
   height: 6px;
   background: ${props => props.bg};
-  border-radius: 2px 2px 2px 2px;
+  border-radius: 2px;
   &:hover {
     cursor: col-resize;
   }

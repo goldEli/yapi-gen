@@ -29,6 +29,7 @@ import { setDemandInfo } from '@store/demand'
 import { useDispatch, useSelector } from '@store/index'
 import TagComponent from '@/components/TagComponent'
 import { Editor } from '@xyfe/uikit'
+import { getMessage } from '@/components/Message'
 
 const WrapLeft = styled.div({
   width: '100%',
@@ -130,7 +131,7 @@ const WrapLeftBox = () => {
         type: 'attachment',
         targetId: files,
       })
-      message.success(t('common.deleteSuccess'))
+      getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
       const result = await getDemandInfo({ projectId, id: demandId })
       dispatch(setDemandInfo(result))
       onBottom?.()

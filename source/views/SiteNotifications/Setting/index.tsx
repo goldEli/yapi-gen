@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { editMyAllNoteSet } from '@/services/SiteNotifications'
 import { setMyConfiguration } from '@store/SiteNotifications'
 import { useNavigate } from 'react-router-dom'
+import { getMessage } from '@/components/Message'
 
 const Setting = () => {
   const [t] = useTranslation()
@@ -183,7 +184,7 @@ const Setting = () => {
     )
 
     if (res.code === 0) {
-      message.success(t('succeed'))
+      getMessage({ msg: t('succeed') as string, type: 'success' })
     }
     dispatch(setMyConfiguration(selectKeys))
   }

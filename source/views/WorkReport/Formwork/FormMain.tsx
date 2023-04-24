@@ -17,6 +17,7 @@ import moment from 'moment'
 import { dayData1, weekData, monthData } from './DataList'
 import { throttle } from 'lodash'
 import { useTranslation } from 'react-i18next'
+import { getMessage } from '@/components/Message'
 const Text = styled.div`
   color: var(--neutral-n1-d1);
   font-size: 14px;
@@ -243,13 +244,13 @@ const FormMain = (props: FormType) => {
     ) {
       // 判断结束必须大于开始
       if (endTime?.v2 < startTime?.v2) {
-        message.warning(t('formWork.msg10'))
+        getMessage({ msg: t('formWork.msg10'), type: 'warning' })
         dispatch(setErr(false))
         dispatch(setErrMsg(t('formWork.msg10')))
         return
       } else if (endTime?.v2 === startTime?.v2) {
         if (endTime?.v3 < startTime?.v3) {
-          message.warning(t('formWork.msg10'))
+          getMessage({ msg: t('formWork.msg10'), type: 'warning' })
           dispatch(setErr(false))
           dispatch(setErrMsg(t('formWork.msg10')))
           return
@@ -257,20 +258,20 @@ const FormMain = (props: FormType) => {
       }
     } else if (startTime?.v1 === 1 && endTime?.v1 === 2) {
       if (endTime?.v2 > startTime?.v2) {
-        message.warning(t('formWork.msg11'))
+        getMessage({ msg: t('formWork.msg11'), type: 'warning' })
         dispatch(setErrMsg(t('formWork.msg11')))
         dispatch(setErr(false))
         return
       } else if (startTime?.v2 === endTime?.v2) {
         if (endTime?.v3 > startTime?.v3) {
-          message.warning(t('formWork.msg11'))
+          getMessage({ msg: t('formWork.msg11'), type: 'warning' })
           dispatch(setErrMsg(t('formWork.msg11')))
           dispatch(setErr(false))
           return
         }
       }
     } else if (startTime?.v1 === 2 && endTime?.v1 === 1) {
-      message.warning(t('formWork.msg12'))
+      getMessage({ msg: t('formWork.msg12'), type: 'warning' })
       dispatch(setErrMsg(t('formWork.msg12')))
       dispatch(setErr(false))
       return
@@ -280,20 +281,20 @@ const FormMain = (props: FormType) => {
   // 不能超过一周
   const WeekJudgeTime = () => {
     if (endTime?.v1 > startTime?.v1 + 7) {
-      message.warning(t('formWork.msg14'))
+      getMessage({ msg: t('formWork.msg14'), type: 'warning' })
       dispatch(setErr(false))
       dispatch(setErrMsg(t('formWork.msg14')))
       setErrMsg
       return
     } else if (endTime?.v1 === startTime?.v1 + 7) {
       if (endTime?.v2 > startTime?.v2) {
-        message.warning(t('formWork.msg14'))
+        getMessage({ msg: t('formWork.msg14'), type: 'warning' })
         dispatch(setErrMsg(t('formWork.msg14')))
         dispatch(setErr(false))
         return
       } else if (endTime?.v2 === startTime?.v2) {
         if (endTime?.v3 > startTime?.v3) {
-          message.warning(t('formWork.msg14'))
+          getMessage({ msg: t('formWork.msg14'), type: 'warning' })
           dispatch(setErrMsg(t('formWork.msg14')))
           dispatch(setErr(false))
           return

@@ -23,6 +23,7 @@ import IconFont from '@/components/IconFont'
 import InputSearch from '@/components/InputSearch'
 import { useTranslation } from 'react-i18next'
 import CommonButton from '@/components/CommonButton'
+import { clearScheduleList } from '@store/schedule'
 dayjs.extend(weekOfYear)
 
 interface CalendarPanelToolBarProps {
@@ -330,6 +331,8 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
             marginRight: '10px',
           }}
           onChange={(value: Model.Calendar.CalendarPanelType) => {
+            // 清空日程
+            dispatch(clearScheduleList())
             setInputDefaultValue('')
             dispatch(setCalendarPanelType(value))
             dispatch(setCalenderDayValue(dayjs().format('YYYY-MM-DD')))

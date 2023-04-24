@@ -27,6 +27,7 @@ import DemandGrid from '@/components/DemandComponent/DemandPanel'
 import DemandTree from '@/components/DemandComponent/DemandTree'
 import ProjectCommonOperation from '@/components/ProjectCommonOperation'
 import { Content, DemandContent } from './style'
+import { getMessage } from '@/components/Message'
 
 const Right = styled.div<{ isShowLeft: boolean }>({
   width: '100%',
@@ -205,7 +206,7 @@ const DemandMain = (props: Props) => {
   const onDeleteConfirm = async () => {
     try {
       await deleteDemand({ projectId, id: deleteId })
-      message.success(t('common.deleteSuccess'))
+      getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
       setIsVisible(false)
       setDeleteId(0)
       getList(isGrid, searchItems, pageObj, order)

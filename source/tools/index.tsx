@@ -23,6 +23,7 @@ import {
 import moment from 'moment'
 import styled from '@emotion/styled'
 import CustomSelect from '@/components/CustomSelect'
+import { getMessage } from '@/components/Message'
 
 // 格式化日对象
 function getNowDate() {
@@ -323,10 +324,10 @@ function bytesToSize(fileByte: any) {
 function copyLink(text: any, successText: string, errorText: string) {
   navigator.clipboard.writeText(text).then(
     () => {
-      message.success(successText)
+      getMessage({ msg: successText as string, type: 'success' })
     },
     err => {
-      message.error(errorText)
+      getMessage({ msg: errorText, type: 'error' })
     },
   )
 }

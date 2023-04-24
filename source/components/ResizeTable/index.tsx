@@ -72,15 +72,14 @@ const TableWrap = styled(Table)`
   .ant-table-tbody > tr > td {
     transition: none;
   }
+  .ant-table-tbody > tr.ant-table-row-selected > td {
+    background: transparent;
+  }
+  .ant-table-tbody > tr.ant-table-row:hover > td,
+  .ant-table-tbody > tr > td.ant-table-cell-row-hover {
+    background: transparent;
+  }
 `
-// FIXME:保留样式
-// .ant-table-tbody > tr.ant-table-row-selected > td {
-//   background: transparent;
-// }
-// .ant-table-tbody > tr.ant-table-row:hover > td,
-// .ant-table-tbody > tr > td.ant-table-cell-row-hover {
-//   background: transparent;
-// }
 
 const DataWrap = styled.div<{ height?: any }>`
   height: ${props => props.height};
