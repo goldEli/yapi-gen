@@ -386,22 +386,18 @@ const HeaderRight = () => {
             onOpenChange={setIsCreateVisible}
             placement="bottomRight"
           >
-            <CreateWrap>
-              <CreateIcon>
-                <CommonIconFont type="plus" size={20} />
-              </CreateIcon>
-            </CreateWrap>
+            <CreateIcon>
+              <CommonIconFont type="plus" size={20} />
+            </CreateIcon>
           </Popover>
         )}
 
         {String(location.pathname).includes('/Report') && (
-          <CreateWrap>
-            <CreateIcon
-              onClick={() => dispatch(setWriteReportModal({ visible: true }))}
-            >
-              <CommonIconFont type="plus" size={20} />
-            </CreateIcon>
-          </CreateWrap>
+          <CreateIcon
+            onClick={() => dispatch(setWriteReportModal({ visible: true }))}
+          >
+            <CommonIconFont type="plus" size={20} />
+          </CreateIcon>
         )}
 
         <CloseWrap width={32} height={32}>
