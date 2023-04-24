@@ -300,17 +300,24 @@ export const NoticeBox = styled.div`
   }
 `
 
-export const AllDayScheduleItem = styled.div`
+export const AllDayScheduleItem = styled.div<{
+  bg: string
+  hoverTextColor: string
+}>`
   width: calc(100% - 20px);
   box-sizing: border-box;
   padding-left: 8px;
-  background-color: ${(props: { bg: string }) => props.bg};
-  font-size: 12px;
+  background-color: ${props => props.bg};
+  font-size: 14px;
   font-weight: 400;
-  /* color: var(--neutral-n1-d1); */
+  color: var(--neutral-n1-d1);
   display: flex;
   align-items: center;
   height: 20px;
+  &:hover {
+    color: ${props => props.hoverTextColor};
+  }
+  cursor: pointer;
 `
 
 export const EasyScheduleHeader = styled.div`
