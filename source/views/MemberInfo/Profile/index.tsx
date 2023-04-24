@@ -32,6 +32,7 @@ import {
   getUserInfoOverviewStatistics,
 } from '@/services/memberInfo'
 import PaginationBox from '@/components/TablePagination'
+import { getMessage } from '@/components/Message'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 
@@ -296,12 +297,12 @@ const Profile = () => {
 
   const onToDetail = (item: any) => {
     if (item?.isPublic !== 1 && !item.isUserMember) {
-      message.warning(t('common.notCheckInfo'))
+      getMessage({ msg: t('common.notCheckInfo'), type: 'warning' })
       return
     }
 
     if (item.deletedTime || item.projectDeletedTime) {
-      message.warning(t('common.demandDeleteEd'))
+      getMessage({ msg: t('common.demandDeleteEd'), type: 'warning' })
       return
     }
 

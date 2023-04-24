@@ -198,7 +198,7 @@ const Upload = (props: any) => {
   const customRequest = async ({ file }: { file: any }) => {
     const fileType = file.type.toString()
     if (!fileType?.includes('image')) {
-      message.warning(t('please_upload_a_picture'))
+      getMessage({ msg: t('please_upload_a_picture'), type: 'warning' })
       return
     }
     const response = await uploadFileByTask(

@@ -1195,7 +1195,8 @@
     "all": "All staff",
     "day": "Day",
     "h": "Time",
-    "m": "Divide"
+    "m": "Divide",
+    "hasTemplate": "Duplicate template name"
   },
   "report": {
     "list": {

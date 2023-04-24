@@ -367,7 +367,7 @@ const Member = (props: Props) => {
   const handleOk = async (list?: any, id?: any) => {
     let userGroupId = id
     if (list.length <= 0) {
-      message.warning(t('project.memberNull'))
+      getMessage({ msg: t('project.memberNull'), type: 'warning' })
       return
     }
     if (!form.getFieldValue('userGroupId')) {

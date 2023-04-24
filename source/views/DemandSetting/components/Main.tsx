@@ -214,7 +214,7 @@ const Main = (props: any) => {
       ? JSON.parse(event.dataTransfer.getData('DragItem'))
       : null
     if (customizeNum?.length === 20 && evevtObj?.dragtype === 'add') {
-      message.warning(t('newlyAdd.maxAddFields'))
+      getMessage({ msg: t('newlyAdd.maxAddFields'), type: 'warning' })
       return
     } else {
       setColItem(null)

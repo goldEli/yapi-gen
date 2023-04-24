@@ -218,7 +218,7 @@ const EditFiled = (props: Props) => {
       // 下拉
       const hasNull = row.filter(i => !i.value)
       if (hasNull?.length) {
-        message.warning(t('newlyAdd.notEnterNull'))
+        getMessage({ msg: t('newlyAdd.notEnterNull'), type: 'warning' })
         return
       }
       contentValue = row.map(i => i.value)
@@ -233,7 +233,7 @@ const EditFiled = (props: Props) => {
     ) {
       // 人员字段
       if (personValue?.length <= 0) {
-        message.warning(t('version2.chooseNotNull'))
+        getMessage({ msg: t('version2.chooseNotNull'), type: 'warning' })
         return
       }
       contentValue = [personValue]

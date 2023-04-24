@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setTemplateContentConfigs, setEditSave } from '@store/formWork'
 import { message } from 'antd'
 import { useTranslation } from 'react-i18next'
+import { getMessage } from '@/components/Message'
 
 const TitleStyle = styled.div`
   display: flex;
@@ -76,7 +77,7 @@ const EditWork = (props: PropsType) => {
       }
       const newList = dataList.find((el: { type: number }) => el.type === 4)
       if (newList) {
-        message.warning(t('formWork.has'))
+        getMessage({ msg: t('formWork.has'), type: 'warning' })
         return
       }
       const arrData = Array.from(dataList)
@@ -101,7 +102,7 @@ const EditWork = (props: PropsType) => {
   const ParmasDialogOnConfirm = (obj: any, num: number) => {
     const filterName = dataList.find((el: any) => el.name === obj.name)
     if (filterName) {
-      return message.warning('重复模板名称')
+      return getMessage({ msg: t('formWork.hasTemplate'), type: 'warning' })
     }
     const configs = {
       type: num,

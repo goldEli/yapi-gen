@@ -25,6 +25,7 @@ import Viewer from 'react-viewer'
 import myImg from '/er.png'
 import { cos, uploadFile } from '@/services/cos'
 import { useSelector } from '@store/index'
+import { getMessage } from './Message'
 
 const Warp = styled(Upload)({
   '.ant-upload-list-item-name': {
@@ -223,10 +224,11 @@ const UploadAttach = (props: any) => {
 
   const onUploadBefore = (file: any) => {
     if (isFormat(file.name)) {
-      message.warning(
-        `${t('p2.text')}['exe', 'bat', 'com', 'vbs', 'reg', 'sh']`,
-        3,
-      )
+      getMessage({
+        msg: `${t('p2.text')}['exe', 'bat', 'com', 'vbs', 'reg', 'sh']`,
+        type: 'warning',
+        num: 3,
+      })
       return Upload.LIST_IGNORE
     }
     if (file.size / 1024 > 5242880) {
@@ -234,7 +236,7 @@ const UploadAttach = (props: any) => {
     }
 
     if (String(file.name).length >= 130) {
-      message.warning(t('p2.maxUploadText'))
+      getMessage({ msg: t('p2.maxUploadText'), type: 'warning', num: 3 })
       return Upload.LIST_IGNORE
     }
 

@@ -237,7 +237,7 @@ const DemandDetailDrawer = () => {
 
   // 是否审核
   const onExamine = () => {
-    message.warning(t('newlyAdd.underReview'))
+    getMessage({ msg: t('newlyAdd.underReview'), type: 'warning' })
   }
 
   // 修改状态

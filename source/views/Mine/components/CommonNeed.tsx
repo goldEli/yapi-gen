@@ -302,7 +302,7 @@ const CommonNeed = (props: any) => {
   // 点击打开详情并组装当前平级的需求id列表
   const onClickItem = (item: any) => {
     if (item.project?.isPublic !== 1 && !item.project?.isUserMember) {
-      message.warning(t('common.notCheckInfo'))
+      getMessage({ msg: t('common.notCheckInfo'), type: 'warning' })
     } else {
       let demandIds: any
 
