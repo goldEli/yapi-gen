@@ -15,6 +15,7 @@ const PaginationBox = (props: PropType) => {
       style={{
         paddingRight: '16px',
       }}
+      className="pagination-box"
     >
       <Pagination
         current={props.currentPage}

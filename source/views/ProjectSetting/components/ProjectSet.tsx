@@ -149,7 +149,7 @@ export const TitleGroup = styled.div({
   marginTop: 14,
   color: 'var(--neutral-n2)',
   fontSize: 12,
-  fontWeight: 600,
+  fontFamily: 'SiYuanMedium',
 })
 
 export const MainWrap = styled.div({
@@ -185,7 +185,11 @@ const ModalFooter = styled(Space)({
 
 export const CheckboxWrap = styled.div({ width: 100 })
 
-export const OperationWrap = styled.div({ width: 100 })
+export const OperationWrap = styled.div({
+  minWidth: 100,
+  whiteSpace: 'nowrap',
+  width: 'fit-content',
+})
 
 export const GroupWrap = styled.div({
   display: 'flex',
@@ -247,9 +251,11 @@ export const PermissionItem = (props: ItemProps) => {
               >
                 <span
                   style={{
-                    width: '150px',
+                    minWidth: '150px',
+                    width: 'fit-content',
                     display: 'inline-block',
                     marginBottom: '10px',
+                    whiteSpace: 'nowrap',
                   }}
                 >
                   {item.label}
@@ -287,7 +293,6 @@ const ProjectSet = () => {
   const getPermissionList = async (id: number) => {
     setIsSpinning(true)
     const result = await getPermission({ projectId, roleId: id })
-    console.log(result)
 
     setPermissionList(result)
     setIsSpinning(false)

@@ -5,7 +5,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/jsx-handler-names */
-import { Form, message, Modal, Spin } from 'antd'
+import { Form, Modal, Spin } from 'antd'
 import { ExclamationCircleFilled } from '@ant-design/icons'
 import CommonModal from '@/components/CommonModal'
 import ChoosePeople from '@/views/WorkReport/Formwork/ChoosePeople'
@@ -169,7 +169,10 @@ const HandleReport = (props: any) => {
       }
     }
     if (res && res.code === 0) {
-      getMessage({ msg: t('report.list.success'), type: 'success' })
+      getMessage({
+        msg: t('report.list.reportSubmittedSuccessfully'),
+        type: 'success',
+      })
       // 更新List页面
       dispatch(setUpdateList({ isFresh: 1 }))
     }
@@ -599,6 +602,8 @@ const HandleReport = (props: any) => {
                   <span className="dateText">
                     {reportDetail?.submit_cycle === 4
                       ? '--'
+                      : props.isSupply
+                      ? getReportDateText(props.date)
                       : reportDetail?.submitCycleDate.filter((v: string) => v)
                           .length > 0 &&
                         getReportDateText(reportDetail?.submitCycleDate)}
