@@ -12,10 +12,11 @@ export const ScheduleSearchWrap = styled.div`
 `
 export const ScheduleSearchListBox = styled.div`
   background-color: #fff;
-  overflow-y: auto;
+  overflow-y: scroll;
   position: relative;
   padding: 24px 50px;
   box-sizing: border-box;
+  height: 100%;
 `
 export const BackBox = styled.div`
   width: 60px;

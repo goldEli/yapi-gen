@@ -1,33 +1,27 @@
 import dayjs from 'dayjs'
 import { colorMap, oneHourHeight, oneMinuteHeight } from './config'
-import { XYCoord } from 'react-dnd'
 
 export function sortScheduleList(list: Model.Schedule.Info[]) {
-  // const acrossDayScheduleList =
-  //   list
-  //     ?.filter(item => item.is_span_day)
-  //     ?.sort((a, b) => a.schedule_id - b.schedule_id) ?? []
-  // const allDayScheduleList =
-  //   list
-  //     ?.filter(item => item.is_all_day === 1 && !item.is_span_day)
-  //     ?.sort((a, b) => a.schedule_id - b.schedule_id) ?? []
-  // const otherList = list?.filter(
-  //   item => !item.is_all_day || item.is_all_day !== 1,
-  // )
+  // 跨天
   const acrossDay = list?.filter(item => item.is_span_day)
+  // 非跨天
   const noneAcrossDay = list?.filter(item => !item.is_span_day)
+  // 跨天中的全天
   const acrossDayAndFullDay =
     acrossDay
       ?.filter(item => item.is_all_day === 1)
       ?.sort((a, b) => a.schedule_id - b.schedule_id) ?? []
+  // 跨天中的非全天
   const acrossDayAndNoneFullDay =
     acrossDay
       ?.filter(item => item.is_all_day !== 1)
       ?.sort((a, b) => a.schedule_id - b.schedule_id) ?? []
+  // 非跨天中的全天
   const noneAcrossAndFullDay =
     noneAcrossDay
       ?.filter(item => item.is_all_day === 1)
       ?.sort((a, b) => a.schedule_id - b.schedule_id) ?? []
+  // 非跨天中的非全天
   const noneAcrossAndNoneFullDay =
     noneAcrossDay
       ?.filter(item => item.is_all_day !== 1)
@@ -38,9 +32,6 @@ export function sortScheduleList(list: Model.Schedule.Info[]) {
     ...acrossDayAndNoneFullDay,
     ...noneAcrossAndFullDay,
     ...noneAcrossAndNoneFullDay,
-    // ...acrossDayScheduleList,
-    // ...allDayScheduleList,
-    // ...otherList,
   ]
   return newList
 }
