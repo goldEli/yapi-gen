@@ -239,7 +239,14 @@ const RightFormWork = () => {
     return timeValLen.length === 13 ? timeVal / 1000 : timeVal
   }
   const getTemplateSort = (list: any) => {
-    return list.map((item: any, index: number) => ({ ...item, sort: index }))
+    const sortData = list.map((item: any, index: number) => ({
+      ...item,
+      sort: index,
+    }))
+    sortData.forEach((el: any) => {
+      Number(el.id) < 1 && delete el.id
+    })
+    return sortData
   }
   const getVerifyParams = (parmas: any) => {
     // 谁可以写是必填的
@@ -334,6 +341,7 @@ const RightFormWork = () => {
       getMessage({ msg: errMsg, type: 'warning' })
       return
     }
+    console.log(parmas, 'parmas')
     if (activeItem?.id) {
       await upDateTemplate(parmas)
       getMessage({ msg: t('formWork.message6'), type: 'success' })
