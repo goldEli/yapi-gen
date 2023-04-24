@@ -14,6 +14,7 @@ import ViewPort from './ViewPort'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import SetShowField from './SetShowField/indedx'
 import ScreenMinHover from './ScreenMinHover'
+import { getMessage } from './Message'
 
 interface Props {
   onChangeFilter?(): void
@@ -50,7 +51,7 @@ const OperationGroup = (props: Props) => {
 
   // 切换显示类型
   const onClickMenu = (number: any) => {
-    message.success(t('version2.reviewModeChangeSuccess'))
+    getMessage({ msg: t('version2.reviewModeChangeSuccess'), type: 'success' })
     props.onChangeGrid?.(number)
     setIsVisible(false)
   }

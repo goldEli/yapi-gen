@@ -22,6 +22,7 @@ import {
   getConfig,
   getSysConfig,
 } from '@/services/SiteNotifications'
+import { getMessage } from '@/components/Message'
 
 const Warp = styled.div({
   height: 'calc(100vh - 123px)',
@@ -304,7 +305,7 @@ const ProjectSet = () => {
     })
 
     if (res.code === 0) {
-      message.success('成功')
+      getMessage({ msg: t('report.list.success') as string, type: 'success' })
     }
   }
 

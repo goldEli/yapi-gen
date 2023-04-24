@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { getAsyncVerifyInfo } from '@store/mine'
 import { updateVerifyOperation } from '@/services/mine'
 import CommonButton from '@/components/CommonButton'
+import { getMessage } from '@/components/Message'
 
 const TimelineWrap = styled(Timeline)({
   '.ant-timeline-item-last > .ant-timeline-item-content': {
@@ -115,7 +116,10 @@ const EditExamine = (props: Props) => {
         status,
         remark: value,
       })
-      message.success(t('newlyAdd.editExamineSuccess'))
+      getMessage({
+        msg: t('newlyAdd.editExamineSuccess') as string,
+        type: 'success',
+      })
       onClose()
       props?.onUpdate()
     } catch (error) {

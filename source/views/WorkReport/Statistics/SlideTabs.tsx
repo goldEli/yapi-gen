@@ -21,6 +21,9 @@ const IconContainer = styled.div<{ position: string }>`
     props.position === 'left'
       ? '5px 0px 7px -3px rgba(0, 0, 0, 0.12)'
       : '-5px 0px 7px -3px rgba(0,0,0,0.12)'};
+  &:hover .anticon {
+    color: var(--primary-d2);
+  }
 `
 
 const tabsContainer = css`
@@ -128,7 +131,7 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
     )
 
     setXAxis(current => {
-      return current - nodeWidth - val
+      return current - nodeWidth
     })
   }
 
@@ -155,10 +158,10 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
   }, [])
 
   const handleClick = (index: number, key: string) => {
-    const { right } = nodes.current[index].getBoundingClientRect()
-    if (right > viewRectOffset) {
-      next(right - viewRectOffset)
-    }
+    // const { right } = nodes.current[index].getBoundingClientRect()
+    // if (right > viewRectOffset) {
+    //   next(right - viewRectOffset)
+    // }
     onChange?.(key)
   }
 

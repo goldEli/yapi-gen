@@ -7,6 +7,7 @@ import { t } from 'i18next'
 import { useEffect, useState } from 'react'
 import CommonModal from '../CommonModal'
 import CustomSelect from '../CustomSelect'
+import { getMessage } from '../Message'
 import { PinkWrap, Wrap } from './style'
 
 const { Option } = Select
@@ -39,7 +40,7 @@ const HandOverModal = (props: any) => {
       const res1 = await confirmHand({ id: props.id.id, data: newObj })
 
       if (res1.code === 0) {
-        message.success(t('succeed') as string)
+        getMessage({ msg: t('succeed'), type: 'success' })
         form.resetFields()
         props.close()
         props.confirm()

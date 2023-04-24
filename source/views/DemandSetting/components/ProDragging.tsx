@@ -9,6 +9,7 @@ import { useSelector } from '@store/index'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
 import { throttle } from 'lodash'
+import { getMessage } from '@/components/Message'
 
 const Container = styled.div`
   border-radius: 8px;
@@ -116,7 +117,7 @@ const SliderList = (props: any) => {
       id: delItem?.id,
       projectId: projectInfo.id,
     })
-    message.success(t('common.deleteSuccess'))
+    getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
     setIsVisible(false)
     props.onUpdate()
   }

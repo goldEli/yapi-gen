@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next'
 import HaveSearchAndList from '@/components/HaveSearchAndList'
 import { useSelector } from '@store/index'
 import { deleteInfoDemand } from '@/services/demand'
+import { getMessage } from '@/components/Message'
 
 const DemandCheckedItem = styled.div({
   minHeight: 22,
@@ -57,7 +58,7 @@ const ParentDemand = (props: Props) => {
         type: 'parent',
         targetId: props.detail?.parentId,
       })
-      message.success(t('common.deleteSuccess'))
+      getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
       props.onUpdate()
     } catch (error) {
       //

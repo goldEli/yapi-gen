@@ -47,6 +47,7 @@ import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import BatchAction, { boxItem } from '@/components/BatchAction'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import BatchSetPermGroup from '@/views/ProjectSetting/components/BatchSetPermGroup'
+import { getMessage } from '@/components/Message'
 
 export const tableWrapP = css`
   display: flex;
@@ -210,7 +211,7 @@ const StaffManagement = () => {
     const res = await updateStaff(e)
 
     if (res.code === 0) {
-      message.success(res.message)
+      getMessage({ msg: res.message, type: 'success' })
       getStaffListData()
       setIsStaffPersonalVisible(false)
     }
@@ -222,7 +223,7 @@ const StaffManagement = () => {
         roleId,
         userIds: selectedRowKeys.map(i => Number(i)),
       })
-      message.success('操作成功')
+      getMessage({ msg: t('report.list.success'), type: 'success' })
       setSelectedRowKeys([])
       getStaffListData()
       setBatchEditVisible(false)
@@ -444,7 +445,7 @@ const StaffManagement = () => {
     async () => {
       const res = await refreshStaff()
       if (res.code === 0) {
-        message.success(t('staff.refreshSuccess'))
+        getMessage({ msg: t('staff.refreshSuccess'), type: 'success' })
         init()
       }
     },
@@ -467,8 +468,7 @@ const StaffManagement = () => {
     const res1 = await confirmHand({ id: editData.id })
 
     if (res1.code === 0) {
-      message.success(t('succeed'))
-
+      getMessage({ msg: t('succeed'), type: 'success' })
       setIsVisibleFieldsB(false)
       getStaffListData()
     }
@@ -476,7 +476,7 @@ const StaffManagement = () => {
   const onConfirm2 = async () => {
     const res = await restHand(editData.id)
     if (res.code === 0) {
-      message.success(t('succeed'))
+      getMessage({ msg: t('succeed'), type: 'success' })
       setIsVisibleFieldsC(false)
       getStaffListData()
     }

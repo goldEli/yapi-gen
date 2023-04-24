@@ -1,12 +1,13 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 import IconFont from '@/components/IconFont'
+import { getMessage } from '@/components/Message'
 import useSetTitle from '@/hooks/useSetTitle'
 import { writeDaily } from '@/services/daily'
 import WhiteDay from '@/views/LogManagement/components/WhiteDay'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
-import { message, Popover } from 'antd'
+import { Popover } from 'antd'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -155,7 +156,7 @@ const LogSide = () => {
 
     const res = await writeDaily(obj, 1)
     if (res.code === 0) {
-      message.success(t('setting.success'))
+      getMessage({ msg: t('setting.success'), type: 'success' })
       editClose()
       keyValue.change()
     }
