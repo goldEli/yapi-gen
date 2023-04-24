@@ -345,6 +345,33 @@ export const DayItemBox = styled.div`
   position: relative;
 `
 
+export const CreateMoveCardBox = styled.div<{
+  width: string | number
+  height: number
+  left: number
+  top: number
+  visible: boolean
+}>`
+  width: ${props =>
+    typeof props.width === 'string' ? props.width : props.width + 'px'};
+  height: ${props => props.height + 'px'};
+  top: ${props => props.top + 'px'};
+  font-size: 12px;
+  line-height: 20px;
+  background-color: var(--primary-d1);
+  position: absolute;
+  left: ${props => props.left + 'px'};
+  display: ${(props: { visible: boolean }) =>
+    props.visible ? 'block' : 'none'};
+  border-radius: 6px;
+  .title {
+    font-size: 12px;
+    line-height: 20px;
+    color: var(--neutral-white-d7);
+    padding-left: 8px;
+  }
+`
+
 export const CreateScheduleText = styled.div<{
   visible: boolean
   top?: number

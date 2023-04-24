@@ -82,7 +82,7 @@ const CreateSchedule = () => {
   const [calendarCategory, setCalendarCategory] = useState<
     Model.Calendar.Info[]
   >([])
-  const leftWidth = 980
+  const leftWidth = 1020
   const [isVisible, setIsVisible] = useState(false)
   // 当前日程所在日是否在我管理里
   const [hasCalendar, setHasCalendar] = useState<{
@@ -283,7 +283,7 @@ const CreateSchedule = () => {
     if (value === 0) {
       setRepeatValue({ value, params: {} })
     } else {
-      if (difference / 86400000 < limitDay[value]) {
+      if (difference / 86400000 > limitDay[value]) {
         message.warning(
           t(
             'calendarManager.only_schedule_repeats_with_a_duration_of_days_are_supported',
@@ -602,7 +602,7 @@ const CreateSchedule = () => {
                 }
                 name="time"
                 rules={[{ required: true, message: '' }]}
-                style={{ margin: 0, width: '84%' }}
+                style={{ margin: 0, width: '82%' }}
               >
                 <DatePicker.RangePicker
                   style={{ width: '100%' }}
@@ -616,7 +616,7 @@ const CreateSchedule = () => {
                 {t('calendarManager.all_day_long')}
               </Checkbox>
             </TimeWrap>
-            <Form.Item style={{ width: '80%', marginTop: 8 }}>
+            <Form.Item style={{ width: '82%', marginTop: 8 }}>
               <Select
                 className="select"
                 value={repeatValue.value}
@@ -709,7 +709,7 @@ const CreateSchedule = () => {
                         label: i.is_default === 1 ? i.user.name : i.name,
                         value: i.calendar_id,
                       }))
-                      .concat([hasCalendar])}
+                      .concat(hasCalendar.value === 0 ? [] : [hasCalendar])}
                     disabled={hasCalendar.value as unknown as boolean}
                   />
                   <Popover

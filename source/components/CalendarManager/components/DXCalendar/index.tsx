@@ -22,6 +22,9 @@ const CalendarHeader = styled.div`
     font-size: 16px;
     color: var(--neutral-n1-d1);
     cursor: pointer;
+    &:hover {
+      color: var(--primary-d2);
+    }
   }
   .time {
     font-size: 16px;

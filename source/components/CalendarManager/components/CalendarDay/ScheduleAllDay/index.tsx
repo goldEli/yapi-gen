@@ -22,9 +22,11 @@ const ScheduleAllDayBox = styled.div`
   box-sizing: border-box;
   overflow: hidden;
   height: 52px;
-  /* position: absolute;
-  top: -55px;
-  left: 0; */
+  position: sticky;
+  top: 52px;
+  left: 0px;
+  background: var(--neutral-white-d1);
+  z-index: 100;
 `
 
 const TimeZone = styled.span`
