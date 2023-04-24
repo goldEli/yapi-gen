@@ -1456,6 +1456,7 @@
     "busy": "Busy",
     "free": "Free",
     "dayof": "（Day {{day}} of {{days}}）",
-    "list": "List"
+    "list": "List",
+    "acrossDay": "Cross day"
   }
 }
