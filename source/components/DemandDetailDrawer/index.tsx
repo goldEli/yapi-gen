@@ -52,6 +52,7 @@ import {
 } from './style'
 import CommonButton from '../CommonButton'
 import { saveDemandDetailDrawer } from '@store/demand/demand.thunk'
+import { getMessage } from '../Message'
 
 const DemandDetailDrawer = () => {
   const normalState = {
@@ -243,7 +244,7 @@ const DemandDetailDrawer = () => {
   const onChangeStatus = async (value: any) => {
     try {
       await updateDemandStatus(value)
-      message.success(t('common.statusSuccess'))
+      getMessage({ msg: t('common.statusSuccess'), type: 'success' })
       getDemandDetail()
       dispatch(setIsUpdateDemand(true))
     } catch (error) {
@@ -258,7 +259,8 @@ const DemandDetailDrawer = () => {
         projectId: drawerInfo.projectId,
         id: deleteId,
       })
-      message.success(t('common.deleteSuccess'))
+      getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
+      getDemandDetail()
       setDeleteId(0)
       setIsDelete(false)
       onCancel()

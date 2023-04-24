@@ -30,6 +30,6 @@ const getMsgType = (type: string, msg: string) => {
       })
   }
 }
-export const Message = (props: Props) => {
+export const getMessage = (props: Props) => {
   return getMsgType(props.type, props.msg)
 }

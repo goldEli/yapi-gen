@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { changeRest } from '@store/log'
 import ResizeTable from '@/components/ResizeTable'
 import { SelectWrapBedeck } from '@/components/StyleCommon'
+import { getMessage } from '@/components/Message'
 
 const srr = [undefined, undefined, 1, 2, 3]
 const Send = () => {
@@ -64,7 +65,7 @@ const Send = () => {
 
     const res = await writeDaily(obj, 2)
     if (res.code === 0) {
-      message.success(t('setting.success'))
+      getMessage({ msg: t('setting.success') as string, type: 'success' })
       editClose()
       init()
     }

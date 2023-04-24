@@ -18,7 +18,7 @@ import {
   setMyConfiguration,
   setMyEmailConfiguration,
 } from '@store/SiteNotifications'
-import { Message } from '@/components/Message'
+import { getMessage } from '@/components/Message'
 
 const Email = () => {
   const [t] = useTranslation()
@@ -51,7 +51,7 @@ const Email = () => {
       Array.from(new Set([...myConfiguration, ...choose])),
     )
     if (res.code === 0) {
-      Message({ msg: t('succeed'), type: 'success' })
+      getMessage({ msg: t('succeed'), type: 'success' })
     }
     dispatch(setMyEmailConfiguration(choose))
   }
