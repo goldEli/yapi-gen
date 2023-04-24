@@ -249,6 +249,10 @@ const RightFormWork = () => {
     return sortData
   }
   const getVerifyParams = (parmas: any) => {
+    if (!parmas.name) {
+      getMessage({ msg: t('formWork.text11'), type: 'warning' })
+      return false
+    }
     // 谁可以写是必填的
     if (parmas.is_all_write !== 1) {
       const list = parmas.template_configs.filter(
@@ -319,7 +323,7 @@ const RightFormWork = () => {
       template_configs: config,
       id: activeItem?.id,
     }
-    parmas.name = templateName || activeItem.name
+    parmas.name = templateName || activeItem?.name
     parmas.requirement = {
       day:
         fillingRequirements.submit_cycle === 1
@@ -341,7 +345,6 @@ const RightFormWork = () => {
       getMessage({ msg: errMsg, type: 'warning' })
       return
     }
-    console.log(parmas, 'parmas')
     if (activeItem?.id) {
       await upDateTemplate(parmas)
       getMessage({ msg: t('formWork.message6'), type: 'success' })
