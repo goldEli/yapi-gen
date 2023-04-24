@@ -201,7 +201,16 @@ const List = () => {
   const columns: any[] = [
     {
       width: 200,
-      title: t('common.title'),
+      title: (
+        <NewSort
+          fixedKey="user_id"
+          nowKey={queryParams.orderkey}
+          order={queryParams.order}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          {t('common.title')}
+        </NewSort>
+      ),
       dataIndex: 'user',
       render: (_: string, record: any) => {
         return (
@@ -275,7 +284,16 @@ const List = () => {
     },
     {
       width: 450,
-      title: t('report.list.summary'),
+      title: (
+        <NewSort
+          fixedKey="user_id"
+          nowKey={queryParams.orderkey}
+          order={queryParams.order}
+          onUpdateOrderKey={onUpdateOrderKey}
+        >
+          {t('report.list.summary')}
+        </NewSort>
+      ),
       dataIndex: 'report_precis',
       render: (text: string, record: any) => {
         return (

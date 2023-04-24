@@ -25,6 +25,7 @@ export const ContentEmail = styled.span`
 `
 
 export const ContentEmail2 = styled.span<{ active?: boolean }>`
+  white-space: nowrap;
   cursor: pointer;
   padding: 2px 8px;
   height: 28px;

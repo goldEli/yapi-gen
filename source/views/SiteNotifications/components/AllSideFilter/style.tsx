@@ -49,6 +49,7 @@ export const MyIconMode = styled.div<{ active?: boolean; tap: any }>`
 `
 
 export const MyIconModeText = styled.div`
+  text-align: center;
   height: 22px;
   font-size: 14px;
   font-weight: 400;
