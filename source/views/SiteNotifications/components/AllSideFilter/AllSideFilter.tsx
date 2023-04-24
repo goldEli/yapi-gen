@@ -17,10 +17,11 @@ import {
   ResetB,
   Wrap,
 } from './style'
-import { t } from 'i18next'
 import { getContactStatistics } from '@/services/SiteNotifications'
+import { useTranslation } from 'react-i18next'
 
 const AllSideFilter = (props: any) => {
+  const [t] = useTranslation()
   const items = [
     // {
     //   id: '1',
@@ -33,7 +34,7 @@ const AllSideFilter = (props: any) => {
       id: '2',
       icon: 'folder-open-nor',
       icon2: 'folder-open-sel',
-      text: '项目管理',
+      text: t('pm'),
       sendType: 'project',
       read: 0,
     },
@@ -41,7 +42,7 @@ const AllSideFilter = (props: any) => {
       id: '3',
       icon: 'bell',
       icon2: 'bell-sel',
-      text: '系统通知',
+      text: t('systematic_notification'),
       sendType: 'sys',
       read: 0,
     },
@@ -49,7 +50,7 @@ const AllSideFilter = (props: any) => {
       id: '4',
       icon: 'calendar-nor',
       icon2: 'calendar-sel',
-      text: '日程管理',
+      text: t('schedule_management'),
       sendType: 'calendar',
       read: 0,
     },
@@ -57,7 +58,7 @@ const AllSideFilter = (props: any) => {
       id: '5',
       icon: 'log-nor',
       icon2: 'log-sel',
-      text: '工作汇报',
+      text: t('work_report'),
       sendType: 'report',
       read: 0,
     },
@@ -71,6 +72,7 @@ const AllSideFilter = (props: any) => {
   const configuration = useSelector(
     store => store.siteNotifications.configuration,
   )
+  const isRefresh = useSelector(store => store.user.isRefresh)
   const dispatch = useDispatch()
   const onClose = () => {
     dispatch(changeVisibleFilter(false))
@@ -107,7 +109,7 @@ const AllSideFilter = (props: any) => {
 
   useEffect(() => {
     isVisibleFilter ? init() : null
-  }, [isVisibleFilter])
+  }, [isVisibleFilter, isRefresh])
 
   return (
     <Drawer
