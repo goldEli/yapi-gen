@@ -27,7 +27,7 @@ const CurrentLine = styled.div`
   }
   .time {
     font-size: 12px;
-    font-weight: 500;
+    font-family: SiYuanMedium;
     top: -10px;
     left: -42px;
     color: #f842af;

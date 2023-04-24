@@ -48,8 +48,7 @@ const DayBox = styled.div`
   }
   .lunar {
     font-size: 12px;
-    font-family: PingFang SC-Regular, PingFang SC;
-    font-weight: 400;
+
     color: var(--neutral-n4);
   }
 `

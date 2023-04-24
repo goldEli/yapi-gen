@@ -16,7 +16,20 @@ language
 localStorage.getItem('language') || 'zh'
 ```
 
-字体使用
+### 字重
 
-全局默认：SiYuanRegular
-加粗字体：SiYuanMedium
+字重不要用`font-weight`，使用字体样式
+
+##### 全局字体样式
+
+```css
+font-family: SiYuanRegular;
+```
+
+##### 加粗字体样式
+
+遇到需要加粗的文字，使用`SiYuanMedium`字体样式
+
+```css
+font-family: SiYuanMedium;
+```
