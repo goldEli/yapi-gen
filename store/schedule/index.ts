@@ -105,6 +105,9 @@ const slice = createSlice({
     ) {
       state.yearViewScheduleList = action.payload
     },
+    clearScheduleList(state) {
+      state.scheduleList = {}
+    },
     setScheduleList(state, action: PayloadAction<SliceState['scheduleList']>) {
       state.scheduleList = action.payload
     },
@@ -174,6 +177,7 @@ export const {
   setYearViewsList,
   setScheduleList,
   setListViews,
+  clearScheduleList,
 } = slice.actions
 
 export default schedule
