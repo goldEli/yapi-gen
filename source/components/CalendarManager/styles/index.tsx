@@ -309,7 +309,7 @@ export const AllDayScheduleItem = styled.div<{
   padding-left: 8px;
   background-color: ${props => props.bg};
   font-size: 14px;
-  font-weight: 400;
+
   color: var(--neutral-n1-d1);
   display: flex;
   align-items: center;
