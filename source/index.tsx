@@ -21,16 +21,6 @@ export const Loading = styled.div`
 `
 
 import '@/locals'
-import { message } from 'antd'
-
-message.config({
-  top: 100,
-  duration: 2,
-  maxCount: 3,
-  rtl: true,
-  prefixCls: 'my-message',
-})
-
 log.init({ isDEV: import.meta.env.DEV })
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
