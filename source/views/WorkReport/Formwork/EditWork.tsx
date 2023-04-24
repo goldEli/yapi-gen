@@ -30,6 +30,7 @@ const TitleStyle = styled.div`
   }
 `
 const LeftTabs = styled.div`
+  overflow-x: hidden;
   flex: 1;
   height: calc(100vh - 330px);
   overflow-y: auto;
@@ -37,7 +38,8 @@ const LeftTabs = styled.div`
 const RightTabs = styled.div`
   height: calc(100vh - 330px);
   overflow-y: auto;
-  width: 400;
+  overflow-x: hidden;
+  width: 400px;
   padding-left: 24px;
   border-left: 1px solid var(--neutral-n6-d1);
 `
