@@ -149,7 +149,7 @@ export const TitleGroup = styled.div({
   marginTop: 14,
   color: 'var(--neutral-n2)',
   fontSize: 12,
-  fontWeight: 600,
+  fontFamily: 'SiYuanMedium',
 })
 
 export const MainWrap = styled.div({
