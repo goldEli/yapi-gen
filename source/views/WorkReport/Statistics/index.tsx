@@ -37,6 +37,9 @@ const Head = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
+  .pagination-box {
+    padding-right: 0 !important;
+  }
 `
 const Center = styled.div`
   width: 488px;
