@@ -30,6 +30,7 @@ import NewLoadingTransition from '@/components/NewLoadingTransition'
 import StateTag from '@/components/StateTag'
 import CustomSelect from '@/components/CustomSelect'
 import CommonButton from '@/components/CommonButton'
+import { getMessage } from '@/components/Message'
 
 const TableWrap = styled.div({
   width: '780px',
@@ -151,7 +152,10 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
       return
     }
     if (!normalColor) {
-      message.warning(t('newlyAdd.pleaseStatusChooseColor'))
+      getMessage({
+        msg: t('newlyAdd.pleaseStatusChooseColor'),
+        type: 'warning',
+      })
       return
     }
     props?.onConfirm?.({ name: value, color: normalColor })
@@ -269,7 +273,7 @@ const AddWorkflow = (props: Props) => {
 
   const onConfirm = async () => {
     if (!selectedRowKeys?.length) {
-      message.warning(t('newlyAdd.onlyChooseStatus'))
+      getMessage({ msg: t('newlyAdd.onlyChooseStatus'), type: 'warning' })
       return
     }
     const obj = {
@@ -279,7 +283,7 @@ const AddWorkflow = (props: Props) => {
     }
     try {
       await addStoryConfigWorkflow(obj)
-      message.success(t('common.addSuccess'))
+      getMessage({ msg: t('common.addSuccess') as string, type: 'success' })
       setSelectedRowKeys([])
       props?.onClose()
       props?.onUpdate()
@@ -299,7 +303,7 @@ const AddWorkflow = (props: Props) => {
     obj.categoryId = categoryItem?.id
     try {
       await addStoryConfigStatus(obj)
-      message.success(t('common.addSuccess'))
+      getMessage({ msg: t('common.addSuccess') as string, type: 'success' })
       getList()
     } catch (error) {
       //
@@ -311,7 +315,7 @@ const AddWorkflow = (props: Props) => {
     obj.id = operationObj.id
     try {
       await updateStoryConfigStatus(obj)
-      message.success(t('common.editSuccess'))
+      getMessage({ msg: t('common.editSuccess') as string, type: 'success' })
       setOperationObj({})
       getList()
       props?.onUpdate()
@@ -347,7 +351,7 @@ const AddWorkflow = (props: Props) => {
     }
     try {
       await deleteStoryConfigStatus(obj)
-      message.success(t('common.deleteSuccess'))
+      getMessage({ msg: t('common.deleteSuccess') as string, type: 'success' })
       getList()
       onCloseDel()
       props?.onUpdate()
@@ -376,7 +380,7 @@ const AddWorkflow = (props: Props) => {
     }
     try {
       await deleteStoryConfigStatus(obj)
-      message.success(t('common.deleteSuccess'))
+      getMessage({ msg: t('common.deleteSuccess') as string, type: 'success' })
       getList()
       onCloseHasDelete()
       props?.onUpdate()

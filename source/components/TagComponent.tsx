@@ -14,6 +14,7 @@ import {
   deleteInfoDemand,
   getDemandInfo,
 } from '@/services/demand'
+import { getMessage } from './Message'
 
 const TagCheckedItem = styled.div<{ color?: string }>(
   {
@@ -184,7 +185,7 @@ const TagBox = (props: TagProps) => {
           type: 'tag',
           targetId: [{ name: item.content, color: item.color }],
         })
-        message.success(t('common.addSuccess'))
+        getMessage({ msg: t('common.addSuccess'), type: 'success' })
         const result = await getDemandInfo({
           projectId,
           id: demandInfo?.id,
@@ -289,7 +290,7 @@ const TagComponent = (props: Props) => {
           type: 'tag',
           targetId: [{ name: newTag, color: value }],
         })
-        message.success(t('common.addSuccess'))
+        getMessage({ msg: t('common.addSuccess'), type: 'success' })
         const result = await getDemandInfo({
           projectId,
           id: demandInfo?.id,
@@ -324,7 +325,7 @@ const TagComponent = (props: Props) => {
           type: 'tag',
           targetId: item.id,
         })
-        message.success(t('common.deleteSuccess'))
+        getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
         const result = await getDemandInfo({
           projectId,
           id: demandInfo?.id,

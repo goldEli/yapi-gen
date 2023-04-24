@@ -11,6 +11,7 @@ import { Form, message, Select } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonIconFont from '../CommonIconFont'
+import { getMessage } from '../Message'
 
 export const InnerLine = styled.div`
   &:hover {
@@ -71,7 +72,7 @@ const RelatedNeed = (props: any) => {
     setShow(false)
     setShowNeed(true)
     lessForm.resetFields()
-    message.success(t('p2.need3'))
+    getMessage({ msg: t('p2.need3'), type: 'success' })
   }
 
   const del = (item: any) => {

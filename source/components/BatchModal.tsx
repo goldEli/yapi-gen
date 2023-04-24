@@ -21,6 +21,7 @@ import moment from 'moment'
 import { useSelector } from '@store/index'
 import { batchDelete, batchEdit, getBatchEditConfig } from '@/services/demand'
 import CustomSelect from './CustomSelect'
+import { getMessage } from './Message'
 
 interface Props {
   isVisible: boolean
@@ -143,7 +144,7 @@ const BatchModal = (props: Props) => {
         demandIds: props.selectRows?.map((i: any) => i.id),
         projectId,
       })
-      message.success(t('common.deleteSuccess'))
+      getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
       setHaveChildren(false)
       props.onClose()
     } catch (error) {
@@ -206,7 +207,7 @@ const BatchModal = (props: Props) => {
     }
     try {
       await batchEdit(params)
-      message.success(t('common.editSuccess'))
+      getMessage({ msg: t('common.editSuccess'), type: 'success' })
       onEditClose()
       props.onClose()
     } catch (error) {

@@ -8,6 +8,7 @@ import InputSearch from '@/components/InputSearch'
 import LeftTitle from '@/components/LeftTitle'
 import MainGrid from '@/components/MainGrid/MainGrid'
 import MainTable from '@/components/MainTable/MainTable'
+import { getMessage } from '@/components/Message'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import PermissionWrap from '@/components/PermissionWrap'
 import useSetTitle from '@/hooks/useSetTitle'
@@ -132,7 +133,7 @@ const ProjectManagementOptimization = () => {
   const onDeleteConfirm = async () => {
     try {
       await deleteProject({ id: operationDetail.id })
-      message.success(t('common.deleteSuccess'))
+      getMessage({ msg: t('common.deleteSuccess') as string, type: 'success' })
       setIsDelete(false)
       setOperationDetail({})
       onUpdate()
@@ -149,9 +150,11 @@ const ProjectManagementOptimization = () => {
       } else {
         await openProject({ id: item.id })
       }
-      message.success(
-        item.status === 1 ? t('common.endSuccess') : t('common.openSuccess'),
-      )
+      getMessage({
+        msg:
+          item.status === 1 ? t('common.endSuccess') : t('common.openSuccess'),
+        type: 'success',
+      })
       setOperationDetail({})
       setIsStop(false)
       onUpdate()

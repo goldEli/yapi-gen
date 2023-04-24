@@ -44,6 +44,7 @@ import {
 } from '@store/calendar'
 import { setIsRefresh } from '@store/user'
 import { setWriteReportModal } from '@store/workReport'
+import { getMessage } from '@/components/Message'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const { language, theme } = useSelector(store => store.global)
@@ -73,7 +74,7 @@ const ChangeComponent = (props: { item: any; onClose(): void }) => {
       if (type === language) return
       onClose()
       await changeLanguage(type as LocaleKeys)
-      message.success(t('common.localsSwitching') as string)
+      getMessage({ msg: t('common.localsSwitching'), type: 'success' })
       dispatch({
         type: 'global/setLanguage',
         payload: type,

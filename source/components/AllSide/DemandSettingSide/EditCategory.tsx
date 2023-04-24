@@ -6,7 +6,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable camelcase */
 import CommonModal from '@/components/CommonModal'
-import { Input, Form, message } from 'antd'
+import { Input, Form } from 'antd'
 import styled from '@emotion/styled'
 import { useEffect, useRef, useState } from 'react'
 import { getParamsData } from '@/tools'
@@ -20,6 +20,7 @@ import { useSearchParams } from 'react-router-dom'
 import { uploadFileByTask } from '@/services/cos'
 import { DelButton } from '@/components/StyleCommon'
 import ChooseIconOrUpload from '@/components/ChooseIconOrUpload'
+import { getMessage } from '@/components/Message'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -90,7 +91,7 @@ const EditorCategory = (props: EditorProps) => {
   const onConfirm = async (props: any) => {
     await form.validateFields()
     if (!form.getFieldValue('color')) {
-      message.warning(t('newlyAdd.pleaseChooseColor'))
+      getMessage({ msg: t('newlyAdd.pleaseChooseColor'), type: 'warning' })
       return
     }
     const params = form.getFieldsValue()
@@ -103,7 +104,7 @@ const EditorCategory = (props: EditorProps) => {
     if (props?.type === 'edit') {
       try {
         await updateStoryConfigCategory(params)
-        message.success(t('common.editSuccess'))
+        getMessage({ msg: t('common.editSuccess'), type: 'success' })
         onReset()
       } catch (error) {
         //
@@ -111,7 +112,7 @@ const EditorCategory = (props: EditorProps) => {
     } else {
       try {
         await addStoryConfigCategory(params)
-        message.success(t('common.createSuccess'))
+        getMessage({ msg: t('common.createSuccess'), type: 'success' })
         onReset()
       } catch (error) {
         //

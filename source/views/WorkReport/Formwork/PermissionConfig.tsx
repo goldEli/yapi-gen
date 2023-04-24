@@ -27,7 +27,7 @@ import { useTranslation } from 'react-i18next'
 const PermissionConfigStyle = styled.div`
   padding: 0 24px;
   overflow-y: auto;
-  height: calc(100vh - 250px);
+  height: calc(100vh - 265px);
 `
 const TitleText = styled.div`
   font-size: 14px;

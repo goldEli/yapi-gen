@@ -28,6 +28,7 @@ import { InnerLine } from './RelatedNeed'
 import { Editor, EditorRef } from '@xyfe/uikit'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
+import { getMessage } from '@/components/Message'
 
 export const GrepWrap = styled.div`
   position: fixed;
@@ -239,7 +240,7 @@ const LookDay = (props: any) => {
       content: value,
     })
     if (res.code === 0) {
-      message.success(t('p2.conSuccess') as string)
+      getMessage({ msg: t('p2.conSuccess') as string, type: 'success' })
       setDefaultValue(1)
       setValue('')
       scrollToBottom()

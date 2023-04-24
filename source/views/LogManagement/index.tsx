@@ -13,6 +13,7 @@ import WhiteDay from './components/WhiteDay'
 import { writeDaily } from '@/services/daily'
 import useSetTitle from '@/hooks/useSetTitle'
 import PermissionWrap from '@/components/PermissionWrap'
+import { getMessage } from '@/components/Message'
 
 const Wrap = styled.div`
   height: 100%;
@@ -125,7 +126,7 @@ const LogManagement = () => {
 
     const res = await writeDaily(obj, 1)
     if (res.code === 0) {
-      message.success(t('setting.success'))
+      getMessage({ msg: t('setting.success') as string, type: 'success' })
       editClose()
       keyValue.change()
     }

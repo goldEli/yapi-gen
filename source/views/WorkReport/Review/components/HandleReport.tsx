@@ -29,6 +29,8 @@ import {
 } from '@/services/report'
 import { templateDetail } from '@/services/formwork'
 import { setUpdateList } from '@store/workReport'
+import { getMessage } from '@/components/Message'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
 
 const LabelTitle = styled.span`
   font-size: 14px;
@@ -167,7 +169,7 @@ const HandleReport = (props: any) => {
       }
     }
     if (res && res.code === 0) {
-      message.success(t('report.list.success'))
+      getMessage({ msg: t('report.list.success'), type: 'success' })
       // 更新List页面
       dispatch(setUpdateList({ isFresh: 1 }))
     }
@@ -257,12 +259,15 @@ const HandleReport = (props: any) => {
               setRelatedNeedList(
                 result.data?.report_content?.filter((k: any) => k.type === 4),
               )
-              message.success(t('report.list.success'))
+              getMessage({ msg: t('report.list.success'), type: 'success' })
             } else {
-              message.error(result?.data?.message || t('report.list.fail'))
+              getMessage({
+                msg: result?.data?.message || t('report.list.fail'),
+                type: 'error',
+              })
             }
           } catch (error) {
-            message.error(t('report.list.fail'))
+            getMessage({ msg: t('report.list.fail'), type: 'error' })
           }
         },
       })
@@ -557,7 +562,7 @@ const HandleReport = (props: any) => {
       onConfirm={confirm}
       confirmText={t('report.list.submit')}
     >
-      <Spin spinning={!reportDetail}>
+      <Spin spinning={!reportDetail} indicator={<NewLoadingTransition />}>
         <div
           style={{
             height: 'calc(90vh - 136px)',

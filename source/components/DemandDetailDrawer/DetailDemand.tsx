@@ -14,6 +14,7 @@ import UploadAttach from '../UploadAttach'
 import { ContentItem, Label } from './style'
 import DrawerTagComponent from './DrawerTagComponent'
 import { Editor } from '@xyfe/uikit'
+import { getMessage } from '../Message'
 
 interface DetailDemand {
   detail: any
@@ -61,7 +62,7 @@ const DetailDemand = (props: DetailDemand) => {
         type: 'attachment',
         targetId: files,
       })
-      message.success(t('common.deleteSuccess'))
+      getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
       props.onUpdate()
     } catch (error) {
       //
