@@ -18,6 +18,26 @@ const IconFontWrap = styled(IconFont)({
   right: -4,
   top: -5,
 })
+const Tag = styled.div`
+  width: 24px;
+  height: 24px;
+  border: 1px dashed var(--neutral-n3);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & .icon {
+    color: var(--neutral-n3);
+    font-size: 16px;
+  }
+  &:hover {
+    border: 1px dashed var(--primary-d2);
+    color: var(--primary-d2);
+    .icon {
+      color: var(--primary-d2);
+    }
+  }
+`
 const NewNameWrap = styled.div({
   position: 'relative',
   overflow: 'inherit',
@@ -180,32 +200,18 @@ const ChoosePeople = (props: any) => {
               height: '24px',
             }}
           >
-            <div
-              style={{
-                width: '24px',
-                height: '24px',
-                border: '1px dashed var(--neutral-n3)',
-                borderRadius: '50%',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
+            <Tag>
               <IconFont
                 className="icon"
                 type="plus"
-                style={{
-                  color: 'var(--neutral-n3)',
-                  fontSize: '16px',
-                }}
+                style={{}}
                 onClick={() => setIsOpen(true)}
               />
-            </div>
+            </Tag>
           </div>
         </Popover>
       </div>
     </div>
   )
 }
-
 export default ChoosePeople

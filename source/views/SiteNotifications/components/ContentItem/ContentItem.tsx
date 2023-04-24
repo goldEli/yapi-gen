@@ -3,7 +3,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
 import CommonUserAvatar from '@/components/CommonUserAvatar'
-import { Badge, Radio } from 'antd'
+import { Badge, Checkbox } from 'antd'
 import { useState } from 'react'
 import { About, GrepContent, HoverWrap, Name, Time, Time2, Wrap } from './style'
 import dayjs from 'dayjs'
@@ -79,7 +79,7 @@ const ContentItem = (props: any) => {
           <Time>{formatMsgTime(create_time * 1000)}</Time>
           {read === 0 && (
             <Time2>
-              <Radio checked={choose} />
+              <Checkbox checked={choose} />
             </Time2>
           )}
         </div>

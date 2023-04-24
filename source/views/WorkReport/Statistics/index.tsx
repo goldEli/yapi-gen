@@ -38,10 +38,13 @@ const Head = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
+  .pagination-box {
+    padding-right: 0 !important;
+  }
 `
 const Center = styled.div`
   width: 488px;
-  border-left: 1px solid #ecedef;
+  border-left: 1px solid #ecedef;mm
 `
 const NameColumn = styled.div({
   display: 'flex',
@@ -234,7 +237,7 @@ const Statistics = () => {
       auth="/Report/Statistics"
       permission={currentMenu?.children?.map((i: any) => i.url)}
     >
-      <Spin spinning={spinning} indicator={<NewLoadingTransition />}>
+      <Spin indicator={<NewLoadingTransition />} spinning={spinning}>
         <StyledWrap>
           <Head>
             <div className={cardTitle}>

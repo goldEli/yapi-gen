@@ -34,6 +34,7 @@ const getMsgType = (type: string, msg: string, num?: number) => {
       })
   }
 }
+
 export const getMessage = (props: Props) => {
   return getMsgType(props.type, props.msg, props?.num || 1)
 }

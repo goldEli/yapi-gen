@@ -51,8 +51,14 @@ const TableWrap = styled(Table)`
 
   .ant-table-row-selected {
     background: var(--hover-d2);
+    > td.ant-table-cell-fix-right {
+      background: var(--hover-d2);
+    }
     &:hover {
       background: var(--selected);
+      > td.ant-table-cell-fix-right {
+        background: var(--selected);
+      }
     }
   }
   .ant-table-row:hover {
@@ -63,6 +69,9 @@ const TableWrap = styled(Table)`
   .ant-table-row:not(.ant-table-row-selected) {
     &:hover {
       background: var(--hover-d2);
+      > td.ant-table-cell-fix-right {
+        background: var(--hover-d2);
+      }
     }
   }
   .activeListItem {
@@ -72,11 +81,15 @@ const TableWrap = styled(Table)`
   .ant-table-tbody > tr > td {
     transition: none;
   }
-  .ant-table-tbody > tr.ant-table-row-selected > td {
-    background: transparent;
+  .ant-table-tbody > tr.ant-table-row-selected {
+    > td:not(.ant-table-cell-fix-right) {
+      background: transparent;
+    }
   }
-  .ant-table-tbody > tr.ant-table-row:hover > td,
-  .ant-table-tbody > tr > td.ant-table-cell-row-hover {
+  .ant-table-tbody > tr.ant-table-row:hover > td:not(.ant-table-cell-fix-right),
+  .ant-table-tbody
+    > tr
+    > td.ant-table-cell-row-hover:not(.ant-table-cell-fix-right) {
     background: transparent;
   }
 `

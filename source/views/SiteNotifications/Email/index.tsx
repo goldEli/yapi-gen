@@ -101,7 +101,7 @@ const Email = () => {
               {email ? <ContentEmail>{email}</ContentEmail> : '--'}
             </Content1>
 
-            <Content1 margin={9}>
+            <Content1 margin={16}>
               {t('what_situations_require_email_notification')}
             </Content1>
             <Space size={12}>
