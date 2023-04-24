@@ -15,6 +15,8 @@ import {
   getColor,
   getColorWithOpacityPointOne,
 } from '@/components/CalendarManager/utils'
+import { Dot, Time, Title } from '../../ScheduleStrip/styled'
+import ScheduleStripContent from '../../ScheduleStrip/ScheduleStripContent'
 
 interface ScheduleAllDayProps {}
 const ScheduleAllDayBox = styled.div`
@@ -85,7 +87,7 @@ const ScheduleAllDay: React.FC<ScheduleAllDayProps> = props => {
   const dispatch = useDispatch()
   const { calenderDayValue } = useSelector(store => store.calendarPanel)
   const [weekDay, setWeekDay] = useState<Model.Calendar.DaysOfWeek>()
-  const { getBgColor, getColorClassName } = useColor()
+  const { getColorClassName } = useColor()
   const { showLunar } = useShowLunar()
 
   const time = useMemo(() => {
@@ -152,7 +154,7 @@ const ScheduleAllDay: React.FC<ScheduleAllDayProps> = props => {
                 bg={getColorWithOpacityPointOne(item.color)}
                 className={getColorClassName()}
               >
-                {item.subject}
+                <ScheduleStripContent data={item} />
               </AllDayScheduleItem>
             )
           })}

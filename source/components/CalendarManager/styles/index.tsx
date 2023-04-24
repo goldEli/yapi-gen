@@ -318,6 +318,9 @@ export const AllDayScheduleItem = styled.div<{
     color: ${props => props.hoverTextColor};
   }
   cursor: pointer;
+  display: flex;
+  gap: 7px;
+  align-items: center;
 `
 
 export const EasyScheduleHeader = styled.div`

@@ -6,6 +6,7 @@ import {
   getColor,
   getColorWithOpacityPointOne,
 } from '@/components/CalendarManager/utils'
+import ScheduleStripContent from '../../../ScheduleStrip/ScheduleStripContent'
 
 interface AllDayScheduleBoxProps {}
 
@@ -42,7 +43,7 @@ const AllDayScheduleBox: React.FC<AllDayScheduleBoxProps> = props => {
               bg={getColorWithOpacityPointOne(item.color)}
               key={item.schedule_id}
             >
-              {item.subject}
+              <ScheduleStripContent data={item} />
             </AllDayScheduleItem>
           )
         })}
