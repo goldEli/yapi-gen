@@ -28,14 +28,25 @@ const ScheduleStrip: React.ForwardRefRenderFunction<
   ScheduleStripProps
 > = (props, forwardedRef) => {
   const { data } = props
-  const { isAllDay, isAcrossDayFirstDay, isAcrossDayButNotFirstDay } =
-    useAllDay({ data })
+  const {
+    isAllDay,
+    isAcrossDayFirstDay,
+    isAcrossDay,
+    isAcrossDayButNotFirstDay,
+    isFullDay,
+  } = useAllDay({ data })
   const [t] = useTranslation()
 
   // 如果是跨天或者全天任务显示全天
   const time = React.useMemo(() => {
-    return isAllDay ? t('calendarManager.allDay') : data.start_time
-  }, [isAllDay, data.start_time])
+    if (isFullDay) {
+      return t('calendarManager.allDay')
+    }
+    if (isAcrossDay) {
+      return t('calendarManager.acrossDay')
+    }
+    return data.start_time
+  }, [data.start_time, isFullDay, isAcrossDay])
 
   // 是否展示内容
   // 如果跨天且不是第一天 不展示

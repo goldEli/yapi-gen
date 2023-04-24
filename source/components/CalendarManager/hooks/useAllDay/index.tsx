@@ -4,7 +4,7 @@ import { isSameTime } from '../../utils'
 const useAllDay = (props: { data: Model.Schedule.Info }) => {
   const { data } = props
   const { start_timestamp, schedule_start_datetime } = props.data
-  // 全天(包含跨天)
+  // 全天和跨天
   const isAllDay = data.is_all_day === 1 || data.is_span_day
   // 跨天
   const isAcrossDayFirstDay =
@@ -22,12 +22,16 @@ const useAllDay = (props: { data: Model.Schedule.Info }) => {
   // 跨天日程
   const isAcrossDay = data.is_span_day
 
+  // 全天日程
+  const isFullDay = data.is_all_day === 1
+
   return {
     isAllDay,
     isAcrossDayFirstDay,
     isAcrossDayButNotFirstDay,
     isAcrossDayAndLastDay,
     isAcrossDay,
+    isFullDay,
   }
 }
 
