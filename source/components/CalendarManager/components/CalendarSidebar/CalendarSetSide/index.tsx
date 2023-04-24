@@ -13,24 +13,27 @@ const CalendarSetSideTitle = styled.div`
 
 const BackBox = styled.div`
   padding: 0 24px;
-  width: fit-content;
   .box {
     width: 100%;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
     border-bottom: 1px solid var(--neutral-n6-d1);
     color: var(--neutral-n3);
+    .boxWarp {
+      display: flex;
+      align-items: center;
+      height: 48px;
+      width: fit-content;
+      &:hover {
+        color: var(--primary-d2);
+      }
+    }
     .icon {
       font-size: 16px;
       margin-right: 4px;
+      cursor: pointer;
     }
     .text {
       font-size: 12px;
-    }
-    &:hover {
-      color: var(--primary-d2);
+      cursor: pointer;
     }
   }
 `
@@ -78,9 +81,13 @@ const CalendarSetSide = () => {
         {t('calendarManager.schedule_settings')}
       </CalendarSetSideTitle>
       <BackBox>
-        <div className="box" onClick={onBack}>
-          <IconFont className="icon" type="left-md" />
-          <div className="text">{t('calendarManager.calendar_back')}</div>
+        <div className="box">
+          <div className="boxWarp" onClick={onBack}>
+            <IconFont className="icon" type="left-md" />
+            <div onClick={onBack} className="text">
+              {t('calendarManager.calendar_back')}
+            </div>
+          </div>
         </div>
       </BackBox>
       <MenuItems>
