@@ -23,6 +23,7 @@ import {
   getStatUserList,
   getStatTempUsage,
 } from '@/services/report'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
 
 const StyledWrap = styled.div`
   height: calc(100vh - 56px);
@@ -236,7 +237,7 @@ const Statistics = () => {
       auth="/Report/Statistics"
       permission={currentMenu?.children?.map((i: any) => i.url)}
     >
-      <Spin spinning={spinning}>
+      <Spin indicator={<NewLoadingTransition />} spinning={spinning}>
         <StyledWrap>
           <Head>
             <div className={cardTitle}>
