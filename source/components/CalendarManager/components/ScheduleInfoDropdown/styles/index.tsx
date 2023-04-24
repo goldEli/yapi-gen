@@ -116,11 +116,15 @@ export const ScheduleInfoContentBox = styled.div<{ showFooter: boolean }>`
   height: ${props =>
     props.showFooter ? 'calc(100% - 160px)' : 'calc(100% - 0px)'};
   overflow-y: scroll;
+  overflow-x: hidden;
 `
 export const ScheduleInfoContentItem = styled.div`
   display: flex;
   align-items: flex-start;
   margin-bottom: 14px;
+  /* &:hover {
+    background: var(--hover-d3);
+  } */
 `
 export const contentTip = css`
   color: var(--neutral-n1-d1);

@@ -38,6 +38,12 @@ const Box = styled.div`
   top: 4px;
   z-index: 100;
   background: #fff;
+  position: sticky;
+  top: 0px;
+  left: 0px;
+  z-index: 100;
+  height: 70px;
+  flex-shrink: 0;
 `
 const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
   const navigate = useNavigate()
@@ -146,6 +152,10 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
     height: 32px;
     display: flex;
     align-items: center;
+    color: var(--neutral-n2);
+    &:hover {
+      background: #f6f7f9;
+    }
   `
   const disables = css`
     background: #f6f7f9;
@@ -302,7 +312,7 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
       >
         <TodayWrap
           onClick={todayClick}
-          className={iconTypeRef.current === 0 ? disables : ''}
+          // className={iconTypeRef.current === 0 ? disables : ''}
         >
           {' '}
           {t('today')}
