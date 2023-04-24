@@ -5,6 +5,7 @@
 /* eslint-disable operator-linebreak */
 /* eslint-disable @typescript-eslint/no-redundant-type-constituents */
 /* eslint-disable @typescript-eslint/naming-convention */
+import { getMessage } from '@/components/Message'
 import urls, { type UrlKeys } from '@/constants/urls'
 import { getTicket } from '@/services/user'
 import client from '@jihe/http-client'
@@ -161,7 +162,7 @@ client.config({
         data.code !== 0 &&
         data.code !== 'A0301'
       ) {
-        message.error(data.message)
+        getMessage({ msg: data.message, type: 'error' })
         throw new Error(data.code)
       }
       return {

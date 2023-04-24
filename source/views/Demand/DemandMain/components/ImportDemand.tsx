@@ -204,7 +204,7 @@ const ImportDemand = () => {
       reader.readAsText(result.body, 'utf-8')
       reader.onload = function () {
         const obj = JSON.parse(reader.result as any)
-        message.error(obj.message)
+        getMessage({ msg: obj.message, type: 'error' })
       }
     } else {
       const blob = new Blob([result.body], {

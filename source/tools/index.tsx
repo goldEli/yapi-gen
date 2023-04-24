@@ -310,7 +310,7 @@ function copyLink(text: any, successText: string, errorText: string) {
       getMessage({ msg: successText as string, type: 'success' })
     },
     err => {
-      message.error(errorText)
+      getMessage({ msg: errorText, type: 'error' })
     },
   )
 }
