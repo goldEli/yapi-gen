@@ -1,13 +1,5 @@
-import React, { useState, useMemo } from 'react'
-import styled from '@emotion/styled'
-import {
-  Dot,
-  ResizeLeftBar,
-  ResizeRightBar,
-  ScheduleStripBox,
-  Time,
-  Title,
-} from './styled'
+import React, { useMemo } from 'react'
+import { Dot, ResizeLeftBar, ScheduleStripBox, Time, Title } from './styled'
 import useAllDay from '../../hooks/useAllDay'
 import { useTranslation } from 'react-i18next'
 import { getColor, getColorWithOpacityPointOne } from '../../utils'
@@ -36,13 +28,8 @@ const ScheduleStrip: React.ForwardRefRenderFunction<
   ScheduleStripProps
 > = (props, forwardedRef) => {
   const { data } = props
-  const {
-    isAllDay,
-    isAcrossDayFirstDay,
-    isAcrossDayButNotFirstDay,
-    isAcrossDayAndLastDay,
-    isAcrossDay,
-  } = useAllDay({ data })
+  const { isAllDay, isAcrossDayFirstDay, isAcrossDayButNotFirstDay } =
+    useAllDay({ data })
   const [t] = useTranslation()
 
   // 如果是跨天或者全天任务显示全天

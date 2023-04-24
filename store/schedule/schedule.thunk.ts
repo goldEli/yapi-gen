@@ -74,7 +74,6 @@ export const refreshCalendarPanelScheduleList =
     const { calendarPanelType } = state.calendarPanel
     const { checkedCalendarList, checkedTime } = state.calendar
     const params = ParamsCache.getInstance().getCache(calendarPanelType)
-
     if (!params) {
       return
     }
