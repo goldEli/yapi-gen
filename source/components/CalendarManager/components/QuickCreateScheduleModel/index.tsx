@@ -82,7 +82,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
   })
   const dispatch = useDispatch()
   const [form] = Form.useForm()
-  const leftWidth = 480
+  const leftWidth = 500
   const inputDom: any = useRef<HTMLInputElement>(null)
   const [calendarCategory, setCalendarCategory] = useState<
     Model.Calendar.Info[]
@@ -184,7 +184,6 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
       ],
       ...noticeList,
     ]
-    console.log(list, '=listlistlist')
     setNoticeList(list)
   }
 
@@ -351,7 +350,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
                 }
                 name="time"
                 rules={[{ required: true, message: '' }]}
-                style={{ margin: 0, width: '80%' }}
+                style={{ margin: 0, width: '82%' }}
               >
                 <DatePicker.RangePicker
                   style={{ width: '100%' }}
