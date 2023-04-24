@@ -80,70 +80,6 @@ const Label = styled.div`
   margin-bottom: 8px;
 `
 
-const ScheduleColorWrap = styled(Space)`
-  display: flex;
-  align-items: center;
-  margin-top: 8px;
-  .box {
-    display: flex;
-    flex-direction: column;
-    min-width: 142px;
-    cursor: pointer;
-    .colorBox {
-      height: 60px;
-      border-radius: 4px;
-      padding: 4px 8px;
-      display: flex;
-      flex-direction: column;
-      span {
-        font-size: 12px;
-      }
-    }
-    .radio {
-      margin-top: 8px;
-      display: flex;
-      align-items: center;
-      .name {
-        margin-left: 8px;
-        font-size: 14px;
-        color: var(--neutral-n1-d1);
-      }
-      .normal {
-        width: 16px;
-        height: 16px;
-        border-radius: 50%;
-        box-sizing: border-box;
-        border: 1px solid var(--neutral-n4);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        div {
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background: transparent;
-        }
-      }
-      .active {
-        width: 16px;
-        height: 16px;
-        border-radius: 50%;
-        box-sizing: border-box;
-        border: 1px solid var(--primary-d1);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        div {
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background: var(--primary-d1);
-        }
-      }
-    }
-  }
-`
-
 const LineForm = styled(Space)`
   display: flex;
   align-items: center;
@@ -414,7 +350,7 @@ const CalendarSet = () => {
               ),
             )}
           </ScheduleColorWrap> */}
-          <Label style={{ marginTop: 24 }}>
+          <Label style={{ marginTop: 8 }}>
             {t('calendarManager.default_duration_of_schedule')}
           </Label>
           <Select
