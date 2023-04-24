@@ -167,7 +167,7 @@ const HandleReport = (props: any) => {
       }
     }
     if (res && res.code === 0) {
-      message.success(t('report.list.success'))
+      message.success(t('report.list.reportSubmittedSuccessfully'))
       // 更新List页面
       dispatch(setUpdateList({ isFresh: 1 }))
     }
