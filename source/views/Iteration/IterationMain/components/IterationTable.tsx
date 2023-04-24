@@ -26,6 +26,7 @@ import { DemandOperationDropdownMenu } from '@/components/DemandComponent/Demand
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import ResizeTable from '@/components/ResizeTable'
 import CreateDemandButton from './CreateDemandButton'
+import { getMessage } from '@/components/Message'
 
 const Content = styled.div({
   background: 'var(--neutral-white-d1)',
@@ -147,7 +148,10 @@ const IterationTable = (props: Props) => {
         priorityId: item.priorityId,
         projectId,
       })
-      message.success(t('common.prioritySuccess'))
+      getMessage({
+        msg: t('common.prioritySuccess') as string,
+        type: 'success',
+      })
       props.onChangeRow?.()
     } catch (error) {
       //
@@ -157,7 +161,7 @@ const IterationTable = (props: Props) => {
   const onChangeStatus = async (value: any) => {
     try {
       await updateDemandStatus(value)
-      message.success(t('common.statusSuccess'))
+      getMessage({ msg: t('common.statusSuccess') as string, type: 'success' })
       props.onChangeRow?.()
     } catch (error) {
       //

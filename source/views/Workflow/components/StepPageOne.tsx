@@ -50,6 +50,7 @@ import NewLoadingTransition from '@/components/NewLoadingTransition'
 import StateTag from '@/components/StateTag'
 import CommonButton from '@/components/CommonButton'
 import CustomSelect from '@/components/CustomSelect'
+import { getMessage } from '@/components/Message'
 
 const TableWrap = styled.div({
   width: '100%',
@@ -160,7 +161,7 @@ const StepPageOne = (propsOne: Props) => {
     }
     try {
       onSaveMethod()
-      message.success(t('common.saveSuccess'))
+      getMessage({ msg: t('common.saveSuccess') as string, type: 'success' })
       propsOne?.onChangeStep(2)
     } catch (error) {
       //
@@ -180,7 +181,7 @@ const StepPageOne = (propsOne: Props) => {
 
     try {
       await deleteStoryConfigWorkflow(obj)
-      message.success(t('common.deleteSuccess'))
+      getMessage({ msg: t('common.deleteSuccess') as string, type: 'success' })
       setOperationObj({})
       setIsHasDelete(false)
       const arr = dataSource?.list?.filter(
@@ -201,7 +202,7 @@ const StepPageOne = (propsOne: Props) => {
         projectId: paramsData.id,
         id: operationObj?.id,
       })
-      message.success(t('common.deleteSuccess'))
+      getMessage({ msg: t('common.deleteSuccess') as string, type: 'success' })
       setOperationObj({})
       setIsDelVisible(false)
       const arr = dataSource?.list?.filter(
@@ -233,7 +234,7 @@ const StepPageOne = (propsOne: Props) => {
     }
     try {
       await updateStoryConfigWorkflow(obj)
-      message.success(t('common.editS'))
+      getMessage({ msg: t('common.editS') as string, type: 'success' })
       onSaveMethod()
     } catch (error) {
       //
@@ -248,7 +249,7 @@ const StepPageOne = (propsOne: Props) => {
     }
     try {
       await updateStoryConfigWorkflow(obj)
-      message.success(t('common.editS'))
+      getMessage({ msg: t('common.editS'), type: 'success' })
       onSaveMethod()
     } catch (error) {
       //

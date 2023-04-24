@@ -46,6 +46,7 @@ import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import BatchAction, { boxItem } from '@/components/BatchAction'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import BatchSetPermGroup from './BatchSetPermGroup'
+import { getMessage } from '@/components/Message'
 
 const Wrap = styled.div({
   padding: '0 24px',
@@ -570,7 +571,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
     }
     try {
       await updateMember(params)
-      message.success(t('common.editSuccess'))
+      getMessage({ msg: t('common.editSuccess') as string, type: 'success' })
       setOperationItem({})
       // 可以考虑不走接口修改
       onChangeUpdate()
@@ -586,7 +587,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
         userGroupId: roleId,
         userIds: selectedRowKeys.map(i => Number(i)),
       })
-      message.success('操作成功')
+      getMessage({ msg: t('report.list.success') as string, type: 'success' })
       setSelectedRowKeys([])
       getList(order, pageObj)
       setBatchEditVisible(false)
@@ -612,7 +613,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
       userIds: list.map((el: any) => el.id),
     }
     await addMember(params)
-    message.success(t('common.addSuccess'))
+    getMessage({ msg: t('common.addSuccess') as string, type: 'success' })
     setUserDataList([])
     getList(order, pageObj)
     setIsAddVisible(false)

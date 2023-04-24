@@ -36,6 +36,7 @@ import { DemandOperationDropdownMenu } from '@/components/DemandComponent/Demand
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
+import { getMessage } from '@/components/Message'
 
 const RowIconFont = styled(IconFont)({
   visibility: 'hidden',
@@ -210,7 +211,10 @@ const DemandWrap = (props: Props) => {
         priorityId: item.priorityId,
         projectId,
       })
-      message.success(t('common.prioritySuccess'))
+      getMessage({
+        msg: t('common.prioritySuccess') as string,
+        type: 'success',
+      })
       getList(pageObj, order, orderKey, props.searchGroups)
     } catch (error) {
       //
@@ -220,7 +224,7 @@ const DemandWrap = (props: Props) => {
   const onChangeStatus = async (value: any) => {
     try {
       await updateDemandStatus(value)
-      message.success(t('common.statusSuccess'))
+      getMessage({ msg: t('common.statusSuccess') as string, type: 'success' })
       getList(pageObj, order, orderKey, props.searchGroups)
     } catch (error) {
       //
@@ -251,7 +255,7 @@ const DemandWrap = (props: Props) => {
   const onDeleteConfirm = async () => {
     try {
       await deleteDemand({ projectId, id: deleteId })
-      message.success(t('common.deleteSuccess'))
+      getMessage({ msg: t('common.deleteSuccess') as string, type: 'success' })
       setIsVisible(false)
       setDeleteId(0)
       setIsDelete(false)

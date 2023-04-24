@@ -29,6 +29,7 @@ import {
 } from '@/services/report'
 import { templateDetail } from '@/services/formwork'
 import { setUpdateList } from '@store/workReport'
+import { getMessage } from '@/components/Message'
 
 const LabelTitle = styled.span`
   font-size: 14px;
@@ -167,7 +168,7 @@ const HandleReport = (props: any) => {
       }
     }
     if (res && res.code === 0) {
-      message.success(t('report.list.success'))
+      getMessage({ msg: t('report.list.success'), type: 'success' })
       // 更新List页面
       dispatch(setUpdateList({ isFresh: 1 }))
     }
@@ -257,7 +258,7 @@ const HandleReport = (props: any) => {
               setRelatedNeedList(
                 result.data?.report_content?.filter((k: any) => k.type === 4),
               )
-              message.success(t('report.list.success'))
+              getMessage({ msg: t('report.list.success'), type: 'success' })
             } else {
               message.error(result?.data?.message || t('report.list.fail'))
             }

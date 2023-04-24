@@ -26,6 +26,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setProjectFieIdsData } from '@store/category/index'
 import FormTitleSmall from '@/components/FormTitleSmall'
 import CustomSelect from '@/components/CustomSelect'
+import { getMessage } from '@/components/Message'
 
 const FormWrap = styled(Form)({
   '.ant-form-item': {
@@ -251,7 +252,7 @@ const EditFiled = (props: Props) => {
       try {
         obj.id = props?.item?.storyId
         const res: any = await updateStoryConfigField(obj)
-        message.success(t('common.editSuccess'))
+        getMessage({ msg: t('common.editSuccess'), type: 'success' })
         onReset()
         res.data.res && props.onEditUpdate(res.data.res)
       } catch (error) {
@@ -260,7 +261,7 @@ const EditFiled = (props: Props) => {
     } else {
       try {
         const res = await addStoryConfigField(obj)
-        message.success(t('common.createSuccess'))
+        getMessage({ msg: t('common.createSuccess'), type: 'success' })
         props?.onInsert(res.data)
         // 更新项目已有字段数据
         const data: any = await dispatch(getProjectFieIds(projectInfo.id))

@@ -24,6 +24,7 @@ import { setFilterKeys, setProjectInfoValues } from '@store/project'
 import { updateIterateStatus } from '@/services/iterate'
 import { Editor } from '@xyfe/uikit'
 import ScreenMinHover from '@/components/ScreenMinHover'
+import { getMessage } from '@/components/Message'
 
 const OperationWrap = styled.div({
   background: 'white',
@@ -116,7 +117,7 @@ const Operation = (props: Props) => {
           id: props.currentDetail?.id,
           status: val,
         })
-        message.success(t('common.editS'))
+        getMessage({ msg: t('common.editS') as string, type: 'success' })
         const beforeValues = JSON.parse(JSON.stringify(projectInfoValues))
         // 修改迭代状态更新到项目下拉数据中
         const newValues = beforeValues?.map((i: any) =>
