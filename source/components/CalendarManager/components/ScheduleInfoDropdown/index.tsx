@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { useSelector, useDispatch } from '@store/index'
 import { Dropdown, Spin, Drawer } from 'antd'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import ScheduleInfoHeaderBox from './ScheduleInfoHeader'
 import ScheduleInfoContent from './SCheduleInfoContent'
 import ScheduleInfoFooter from './ScheduleInfoFooter'
@@ -45,7 +45,6 @@ const ScheduleInfoDropdown: React.FC<ScheduleInfoDropdownProps> = props => {
   })
   const { scheduleInfo } = useSelector(state => state.schedule)
 
-  console.log('visible', visible)
   const disPatch = useDispatch()
   useEffect(() => {
     if (!schedule_id || !visible) return
@@ -60,7 +59,6 @@ const ScheduleInfoDropdown: React.FC<ScheduleInfoDropdownProps> = props => {
         top={position?.y ?? 0}
         left={position?.x ?? 0}
         onClick={e => {
-          console.log(111)
           e.stopPropagation()
         }}
       >

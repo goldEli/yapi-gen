@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from '@store/index'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
 import UploadAttach from '@/components/UploadAttach'
+import defaultImage from '/public/avatarWhite.png'
 import {
   ScheduleInfoContentBox,
   ScheduleInfoContentItem,
@@ -40,19 +41,21 @@ const ScheduleInfoContent: React.FC<IProps> = props => {
   const [toggleStatus, setToggleStatus] = useState(false)
   const [t] = useTranslation()
   return (
-    <ScheduleInfoContentBox
-      showFooter={props.showFooter}
-      onClick={() => {
-        console.log(11)
-      }}
-    >
+    <ScheduleInfoContentBox showFooter={props.showFooter}>
       <ScheduleInfoContentItem>
         <span>
           <ScheduleInfoIcon type="database" />
         </span>
         <div className={contentTip}>
           <span>
-            <img src={scheduleInfo?.user?.avatar} />
+            {/* <img src={scheduleInfo?.user?.avatar} /> */}
+            <img
+              src={
+                scheduleInfo?.user?.avatar
+                  ? scheduleInfo.user?.avatar
+                  : defaultImage
+              }
+            />
             {scheduleInfo?.user?.name}（{t('calendarManager.owner')}）
           </span>
         </div>
@@ -83,7 +86,9 @@ const ScheduleInfoContent: React.FC<IProps> = props => {
           {scheduleInfo?.members?.map((item, idx) => (
             <PersonItem key={item.user_id}>
               <span>
-                <img src={item.user?.avatar} />
+                <img
+                  src={item.user?.avatar ? item.user?.avatar : defaultImage}
+                />
                 {item.user?.name}
               </span>
               <span>{item.status_text}</span>

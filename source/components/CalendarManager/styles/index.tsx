@@ -397,3 +397,16 @@ export const CreateScheduleText = styled.div<{
   height: 22px;
   align-items: center;
 `
+export const TodayButton = styled.div`
+  margin: 0px 10px;
+  border: 1px solid var(--neutral-n6-d1);
+  border-radius: 4px;
+  padding: 0px 10px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  color: var(--neutral-n2);
+  &:hover {
+    background: var(--hover-d2);
+  }
+`

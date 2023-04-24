@@ -22,7 +22,7 @@ import {
   confirmSure,
   ModalChildren,
 } from '../styles'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useImperativeHandle } from 'react'
 import { refreshCalendarPanelScheduleList } from '@store/schedule/schedule.thunk'
 import ScheduleInfoIcon from './../ScheduleInfoIcon'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -41,6 +41,7 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
   const [showTipBox, setShowTipBox] = useState(false)
   const [isExit, setIsExit] = useState<number>(0)
   const [userId, setUserId] = useState<number>(0)
+
   const { scheduleInfo } = useSelector(state => state.schedule)
   const [t] = useTranslation()
   const disPatch = useDispatch()
@@ -86,7 +87,7 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
   return (
     <ScheduleInfoHeader
       onClick={e => {
-        setShowTipBox(!showTipBox)
+        showTipBox && setShowTipBox(!showTipBox)
         e.stopPropagation()
       }}
     >
