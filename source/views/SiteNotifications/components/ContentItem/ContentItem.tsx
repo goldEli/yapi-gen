@@ -79,7 +79,7 @@ const ContentItem = (props: any) => {
     if (str.includes('请前往查看')) {
       return str.replace(
         '请前往查看',
-        `<a href="${url}" target="_blank">请前往查看</a>`,
+        `<a href="${url}" target="_self">请前往查看</a>`,
       )
     }
 
