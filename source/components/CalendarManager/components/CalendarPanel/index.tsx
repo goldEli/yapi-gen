@@ -24,11 +24,13 @@ const Box = styled.div`
   flex-direction: column;
   gap: 20px;
   overflow-x: hidden;
+  padding-top: 0px;
 `
 
 const Content = styled.div`
   width: 100%;
   flex-grow: 1;
+  background: #fff;
 `
 
 const CalendarPanel: React.FC<CalendarPanelProps> = props => {

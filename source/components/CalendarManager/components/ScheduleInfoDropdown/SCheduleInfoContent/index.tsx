@@ -26,6 +26,12 @@ const toggleDropDown = css`
   max-height: 30vh;
   transition: all 0.3s;
 `
+const hover = css`
+  color: red !important;
+  &:hover {
+    color: red;
+  }
+`
 interface IProps {
   showFooter: boolean
 }
@@ -34,7 +40,12 @@ const ScheduleInfoContent: React.FC<IProps> = props => {
   const [toggleStatus, setToggleStatus] = useState(false)
   const [t] = useTranslation()
   return (
-    <ScheduleInfoContentBox showFooter={props.showFooter}>
+    <ScheduleInfoContentBox
+      showFooter={props.showFooter}
+      onClick={() => {
+        console.log(11)
+      }}
+    >
       <ScheduleInfoContentItem>
         <span>
           <ScheduleInfoIcon type="database" />
@@ -47,6 +58,7 @@ const ScheduleInfoContent: React.FC<IProps> = props => {
         </div>
       </ScheduleInfoContentItem>
       <ScheduleInfoContentItem
+        className={hover}
         onClick={() => setToggleStatus(!toggleStatus)}
         style={{ cursor: 'pointer' }}
       >

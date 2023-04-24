@@ -1,13 +1,15 @@
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   CalendarSidebarBox,
   CalendarSidebarMain,
   CalenderBoxLeftArea,
+  FoldIcon,
 } from '../../styles'
 import CalendarMainSide from './CalendarMainSide'
 import CalendarSetSide from './CalendarSetSide'
+import CommonIconFont from '@/components/CommonIconFont'
 
 const SetWrap = styled.div`
   padding: 24px 0px 8px;
@@ -31,11 +33,28 @@ interface CalendarSidebarProps {
 }
 
 const CalendarSidebar: React.FC<CalendarSidebarProps> = props => {
+  const dispatch = useDispatch()
   const { firstMenuCollapse } = useSelector(state => state.global)
   const { routerMenu } = useSelector(store => store.calendar)
   const calendarMainSideDom = useRef<HTMLDivElement>(null)
   const calendarSideDom = useRef<HTMLDivElement>(null)
   const sliderRef = useRef<HTMLDivElement>(null)
+  const [leftWidth, setLeftWidth] = useState(288)
+  const [endWidth, setEndWidth] = useState(288)
+
+  // 点击按钮
+  const onChangeSide = () => {
+    if (firstMenuCollapse) {
+      setLeftWidth(288)
+    } else {
+      setLeftWidth(26)
+    }
+    setEndWidth(0)
+    dispatch({
+      type: 'global/setFirstMenuCollapse',
+      payload: !firstMenuCollapse,
+    })
+  }
 
   useEffect(() => {
     if (calendarMainSideDom.current === null) return
@@ -64,7 +83,8 @@ const CalendarSidebar: React.FC<CalendarSidebarProps> = props => {
       collapse={firstMenuCollapse}
       ref={sliderRef}
       style={{
-        width: firstMenuCollapse ? 26 : 288,
+        width: firstMenuCollapse ? 26 : leftWidth,
+        transition: endWidth < 288 ? '0.2s' : 'initial',
       }}
     >
       <CalendarSidebarMain firstMenuCollapse={firstMenuCollapse}>
@@ -77,6 +97,13 @@ const CalendarSidebar: React.FC<CalendarSidebarProps> = props => {
           </SetWrap>
         </CalenderBoxLeftArea>
       </CalendarSidebarMain>
+      <FoldIcon onClick={onChangeSide}>
+        <CommonIconFont
+          type={firstMenuCollapse ? 'right' : 'left'}
+          size={16}
+          color="var(--neutral-n2)"
+        />
+      </FoldIcon>
     </CalendarSidebarBox>
   )
 }

@@ -1,17 +1,8 @@
 import React from 'react'
-import styled from '@emotion/styled'
 import ScheduleCard from '../ScheduleCard'
-import { useDispatch } from '@store/index'
 import useCalculationConflict from '../hooks/useCalculationConflict'
 
 interface ScheduleListProps {}
-
-const ScheduleListBox = styled.div`
-  width: calc(100% - 58px);
-  position: absolute;
-  left: 58px;
-  top: 0px;
-`
 
 const ScheduleList: React.FC<ScheduleListProps> = props => {
   const { data } = useCalculationConflict()
