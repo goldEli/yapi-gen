@@ -30,7 +30,7 @@ const Button = styled.div`
   justify-content: center;
 
   font-size: 14px;
-  font-weight: 400;
+
   color: var(--neutral-n3);
 `
 

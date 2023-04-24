@@ -42,6 +42,7 @@ import { saveSchedule } from '@store/schedule/schedule.thunk'
 import { EventBus } from '../../eventBus'
 import useModalPosition from './useModalPosition'
 import { useTranslation } from 'react-i18next'
+import { getMessage } from '@/components/Message'
 interface CreateScheduleBoxProps {
   containerClassName: string
 }
@@ -108,11 +109,6 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
   })
   // 提醒
   const [noticeList, setNoticeList] = useState<DefaultTime[]>([])
-
-  // 不可选择当前时间之前的
-  const onDisabledDate: RangePickerProps['disabledDate'] = current => {
-    return current && current < moment().subtract(1, 'day')
-  }
 
   // 关闭弹窗
   const onClose = () => {
@@ -231,12 +227,20 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
       ? moment(values.time[1]).endOf('day').format('YYYY-MM-DD HH:mm:ss')
       : moment(values.time[1]).format('YYYY-MM-DD HH:mm:ss')
     delete resultParams.time
+
     return resultParams
   }
 
   // 保存
   const onConfirm = async () => {
     const params = await onGetParams()
+    if (
+      moment(params.start_datetime).format('x') ===
+      moment(params.end_datetime).format('x')
+    ) {
+      getMessage({ msg: t('calendarManager.time_limit'), type: 'warning' })
+      return
+    }
     await dispatch(saveSchedule(params))
     message.success(t('calendarManager.createSuccess'))
     onClose()
@@ -308,7 +312,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
         onClose={onClose}
         destroyOnClose
         maskClosable={false}
-        mask={false}
+        // mask={false}
         className="drawerRoot"
       >
         <EasyScheduleHeader>
@@ -357,7 +361,6 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
                   showTime={!isAll}
                   onChange={setTime}
                   allowClear={false}
-                  disabledDate={onDisabledDate}
                 />
               </Form.Item>
               <Checkbox checked={isAll} onChange={onChangeIsAll}>

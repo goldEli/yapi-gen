@@ -148,16 +148,16 @@ const ChooseIconOrUpload = (props: ChooseColorProps) => {
       return
     }
     const data: any = await uploadFileByTask(file.file, '2', '2')
-    data && setCover(data.url)
+    if (data) {
+      setCover(data.url)
+      props?.onChangeValue?.(data.url, 2)
+    }
   }
 
   const activeChoose = (event: any, img: any) => {
     event.preventDefault()
     event.stopPropagation()
-    const obj = {
-      path: img,
-    }
-    props?.onChangeValue?.(obj, 1)
+    props?.onChangeValue?.(img, 1)
   }
 
   const colorStatus = (

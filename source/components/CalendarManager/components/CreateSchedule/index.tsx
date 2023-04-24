@@ -49,6 +49,7 @@ import { modifySchedule, saveSchedule } from '@store/schedule/schedule.thunk'
 import { useTranslation } from 'react-i18next'
 import { getScheduleInfo } from '@/services/schedule'
 import { setVisualizationTime } from '@store/schedule'
+import { getMessage } from '@/components/Message'
 
 interface DefaultTime {
   value?: number
@@ -132,11 +133,6 @@ const CreateSchedule = () => {
     // { label: t('calendarManager.invite_participants'), value: 1 },
   ]
 
-  // 不可选择当前时间前一天及之前的
-  const onDisabledDate: RangePickerProps['disabledDate'] = current => {
-    return current && current < moment().subtract(1, 'day')
-  }
-
   // 关闭弹窗
   const onClose = () => {
     dispatch(setScheduleModal({ visible: false, params: {} }))
@@ -186,6 +182,7 @@ const CreateSchedule = () => {
       },
       ...{ ...repeatValueParams },
     }
+
     resultParams.start_datetime = isAll
       ? moment(values.time[0]).startOf('day').format('YYYY-MM-DD HH:mm:ss')
       : moment(values.time[0]).format('YYYY-MM-DD HH:mm:ss')
@@ -193,6 +190,14 @@ const CreateSchedule = () => {
       ? moment(values.time[1]).endOf('day').format('YYYY-MM-DD HH:mm:ss')
       : moment(values.time[1]).format('YYYY-MM-DD HH:mm:ss')
     delete resultParams.time
+
+    if (
+      moment(resultParams.start_datetime).format('x') ===
+      moment(resultParams.end_datetime).format('x')
+    ) {
+      getMessage({ msg: t('calendarManager.time_limit'), type: 'warning' })
+      return
+    }
 
     if (scheduleModal?.params?.id) {
       await dispatch(
@@ -550,7 +555,7 @@ const CreateSchedule = () => {
         onClose={onClose}
         destroyOnClose
         maskClosable={false}
-        mask={false}
+        // mask={false}
         className="drawerRoot"
       >
         <EasyScheduleHeader>
@@ -609,7 +614,6 @@ const CreateSchedule = () => {
                   showTime={!isAll}
                   onChange={onChangeTime}
                   allowClear={false}
-                  disabledDate={onDisabledDate}
                 />
               </Form.Item>
               <Checkbox checked={isAll} onChange={onChangeIsAll}>

@@ -10,6 +10,7 @@ import {
   setYearViewsList,
   setScheduleList,
   setListViews,
+  setScheduleInfo,
 } from '@store/schedule'
 import { Empty, Spin } from 'antd'
 import {
@@ -33,7 +34,6 @@ import {
   contentHigh,
 } from './styles'
 import InputSearch from '@/components/InputSearch'
-import { setScheduleInfo } from '@store/schedule'
 import {
   setScheduleInfoDropdown,
   setInitScheduleInfoDropdown,

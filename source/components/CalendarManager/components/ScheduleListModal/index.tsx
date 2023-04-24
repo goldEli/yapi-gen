@@ -35,8 +35,7 @@ const ScheduleListBox = styled.div`
 `
 const ScheduleItem = styled.div<{ color: string }>`
   font-size: 12px;
-  font-family: PingFang SC-Regular, PingFang SC;
-  font-weight: 400;
+
   color: #646566;
   margin-bottom: 4px;
   padding-left: 6px;
@@ -58,8 +57,7 @@ const ScheduleTitle = styled.div`
 `
 const labelTime = css`
   font-size: 12px;
-  font-family: PingFang SC-Regular, PingFang SC;
-  font-weight: 400;
+
   color: var(---neutral-n4);
   margin-right: 8px;
   position: relative;
@@ -87,8 +85,7 @@ const Dot = styled.div<{ color: string }>`
 `
 const labelContent = css`
   font-size: 12px;
-  font-family: PingFang SC-Regular, PingFang SC;
-  font-weight: 400;
+
   color: var(--neutral-n2);
   line-height: 20px;
 `
@@ -101,7 +98,6 @@ const gregorianDateClass = css`
   color: var(--neutral-n3);
   font-size: 12px;
   font-family: MiSans-Regular, MiSans;
-  font-weight: 400;
 `
 const ScheduleListModal: React.FC<ScheduleListProps> = props => {
   const { scheduleListModal } = useSelector(state => state.schedule)

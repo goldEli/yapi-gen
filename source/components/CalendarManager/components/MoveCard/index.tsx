@@ -52,7 +52,7 @@ const MoveCard: React.FC<ScheduleCardProps> = props => {
   return (
     <MoveCardBox
       hoverTextColor={getColor(data?.color ?? 0)}
-      onClick={(e: any) => {
+      onClick={(e: MouseEvent) => {
         e.stopPropagation()
       }}
       bg={getColorWithOpacityPointOne(data?.color ?? 0)}

@@ -318,10 +318,7 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
                     type={i.is_check === 1 ? 'pput-sel' : 'put'}
                     style={{ fontSize: 16, color: colorMap[i.color] }}
                   />
-                  <Tooltip
-                    title={i.is_default === 1 ? i.user.name : i.name}
-                    getPopupContainer={n => n}
-                  >
+                  <Tooltip title={i.is_default === 1 ? i.user.name : i.name}>
                     <span className="name">
                       {i.is_default === 1 ? i.user.name : i.name}
                     </span>

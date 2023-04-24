@@ -74,7 +74,7 @@ const EditWork = (props: PropsType) => {
         type: evevtObj.type,
         tips: evevtObj.tips || '',
         name: evevtObj.title,
-        id: Math.random() + '_' + evevtObj.type,
+        id: Math.random(),
         is_required: 2,
       }
       const newList = dataList.find((el: { type: number }) => el.type === 4)
@@ -91,7 +91,7 @@ const EditWork = (props: PropsType) => {
         type: evevtObj.type,
         tips: evevtObj.tips || '',
         name: evevtObj.title,
-        id: Math.random() + '_' + evevtObj.type,
+        id: Math.random(),
         is_required: 2,
       }
       setType('add')
@@ -108,7 +108,7 @@ const EditWork = (props: PropsType) => {
     }
     const configs = {
       type: num,
-      id: Math.random() + '_' + num,
+      id: Math.random(),
       tips: obj.tips || '',
       name: obj.name,
       is_required: obj.is_required,
