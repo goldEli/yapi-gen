@@ -247,8 +247,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
   }
 
   // 跳转更多选项
-  const onToMore = async () => {
-    await form.validateFields()
+  const onToMore = () => {
     const params = {
       isAll,
       participant,
