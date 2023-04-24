@@ -550,7 +550,7 @@ const CreateSchedule = () => {
         onClose={onClose}
         destroyOnClose
         maskClosable={false}
-        mask={false}
+        // mask={false}
         className="drawerRoot"
       >
         <EasyScheduleHeader>

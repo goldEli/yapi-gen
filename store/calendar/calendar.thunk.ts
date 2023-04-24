@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as services from '@/services'
 import { AppDispatch } from '@store/index'
 import { refreshCalendarPanelScheduleList } from '@store/schedule/schedule.thunk'
+import { setIsRefresh } from '@store/user'
 
 const name = 'calendar'
 
@@ -44,8 +45,9 @@ export const userSetupsCalendar =
 // 获取日历设置配置
 export const getCalendarConfig = createAsyncThunk(
   `${name}/getCalendarConfig`,
-  async () => {
+  async (_, { dispatch }) => {
     const res = await services.calendar.getCalendarConfig()
+    dispatch(setIsRefresh(false))
     return res
   },
 )

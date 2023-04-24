@@ -15,3 +15,8 @@ language
 ```js
 localStorage.getItem('language') || 'zh'
 ```
+
+字体使用
+
+全局默认：SiYuanRegular
+加粗字体：SiYuanMedium

@@ -260,10 +260,12 @@ const TabsContent = (props: TabsContentProps) => {
                     <div className="content">
                       <div className="title">{i.name}</div>
                       <div className="sub">
-                        <span>
-                          {t('calendarManager.calendar_creator')}：
-                          {i.user?.name}
-                        </span>
+                        {props.type === '1' && (
+                          <span>
+                            {t('calendarManager.calendar_creator')}：
+                            {i.user?.name}
+                          </span>
+                        )}
                         <span>
                           {t('calendarManager.subscribe_num')}：
                           {i.subscribe_num}
@@ -425,7 +427,10 @@ const CalendarSubscribe = () => {
       page: page || 1,
     })
     setDataList({
-      list: search ? response.data.list : [...oldData, ...response.data.list],
+      list:
+        search || page === 1
+          ? response.data.list
+          : [...oldData, ...response.data.list],
       pager: response.data.pager,
     })
   }
@@ -439,7 +444,10 @@ const CalendarSubscribe = () => {
       page: page || 1,
     })
     setDataUserList({
-      list: search ? response.data.list : [...oldData, ...response.data.list],
+      list:
+        search || page === 1
+          ? response.data.list
+          : [...oldData, ...response.data.list],
       pager: response.data.pager,
     })
   }
@@ -449,9 +457,9 @@ const CalendarSubscribe = () => {
     setActiveKey(value)
     setSearchValue('')
     if (value === '0') {
-      getContactsCalendarData()
+      getContactsCalendarData(1)
     } else {
-      getSubscribeData(value)
+      getSubscribeData(value, 1)
     }
   }
 
@@ -503,12 +511,6 @@ const CalendarSubscribe = () => {
       getContactsCalendarData()
     }
   }, [subscribeModal])
-
-  // useEffect(() => {
-  //   if (subscribeModal) {
-
-  //   }
-  // }, [searchValue])
 
   return (
     <CommonModal
