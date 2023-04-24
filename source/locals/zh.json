@@ -1282,6 +1282,7 @@
     "clear": "清空"
   },
   "calendarManager": {
+    "time_limit": "结束时间必须大于开始时间！",
     "moreItems": "还有{{count}}项...",
     "calendar": "日历",
     "unsubscribed_successfully": "取消订阅成功!",

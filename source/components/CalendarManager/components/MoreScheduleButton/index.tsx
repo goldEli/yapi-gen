@@ -9,7 +9,7 @@ interface MoreScheduleButtonProps {
 
 const MoreScheduleButtonBox = styled.div`
   font-size: 12px;
-  font-weight: 400;
+
   color: var(--neutral-n3);
   display: flex;
   height: 20px;

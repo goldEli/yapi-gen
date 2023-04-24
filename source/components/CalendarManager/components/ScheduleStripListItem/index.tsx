@@ -169,6 +169,8 @@ const ScheduleStripListItem: React.FC<ScheduleListItemProps> = props => {
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     // 跨天如果不是头天不能拖动
     if (isAcrossDayButNotFirstDay) {
+      // 打开详情
+      onOpenScheduleDetail()
       return
     }
     // e.stopPropagation()
@@ -201,9 +203,8 @@ const ScheduleStripListItem: React.FC<ScheduleListItemProps> = props => {
       /**
        * 点击查看详情
        * 1. 如果拖动不查看
-       * 2. 跨天日程只有第一天才能点
        */
-      if (!isDrag.current && !isAcrossDayButNotFirstDay) {
+      if (!isDrag.current) {
         onOpenScheduleDetail()
         return
       }

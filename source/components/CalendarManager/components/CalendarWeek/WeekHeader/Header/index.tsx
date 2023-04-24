@@ -12,7 +12,7 @@ const HeaderBox = styled.div`
   display: flex;
   height: 64px;
   font-size: 16px;
-  font-weight: 400;
+
   color: var(--neutral-n1-d1);
 `
 
@@ -22,7 +22,7 @@ const TimeZone = styled.div`
   align-items: center;
   justify-content: center;
   font-size: 14px;
-  font-weight: 500;
+  font-family: SiYuanMedium;
   color: var(--neutral-n1-d1);
   position: absolute;
   bottom: -12px;
@@ -47,11 +47,11 @@ const WeekListItem = styled.div`
   }
   .monthDay {
     font-size: 18px;
-    font-weight: 500;
+    font-family: SiYuanMedium;
   }
   .lunar {
     font-size: 12px;
-    font-weight: 400;
+
     color: var(--neutral-n2);
   }
   .selectedDay {

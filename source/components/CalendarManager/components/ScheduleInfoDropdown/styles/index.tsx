@@ -17,7 +17,7 @@ export const ScheduleInfoHeaderContent = styled.div`
   color: var(--neutral-white-d7);
   font-size: var(--font14);
   font-family: PingFang SC-Medium, PingFang SC;
-  font-weight: 500;
+  font-family: SiYuanMedium;
   margin-bottom: 8px;
   text-overflow: -o-ellipsis-lastline;
   overflow: hidden;
@@ -67,7 +67,7 @@ export const BoxTip = styled.div`
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  font-weight: 400;
+
   box-sizing: border-box;
   max-width: 160px;
   z-index: 88;
@@ -106,7 +106,6 @@ export const ModalChildren = styled.div`
   .ant-radio-wrapper {
     color: var(--neutral-n1-d1) !important;
     font-size: var(--font14) !important;
-    font-weight: 400 !important;
   }
 `
 

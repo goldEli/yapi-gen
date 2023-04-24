@@ -23,7 +23,7 @@ const Item = styled.div`
   box-sizing: border-box;
   padding-left: 12px;
   font-size: 16px;
-  font-weight: 400;
+
   color: var(--neutral-n1-d1);
   display: flex;
   align-items: center;

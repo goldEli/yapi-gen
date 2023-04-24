@@ -35,8 +35,7 @@ const ScheduleAllDayBox = styled.div`
 
 const TimeZone = styled.span`
   font-size: 14px;
-  font-family: PingFang SC-Medium, PingFang SC;
-  font-weight: 500;
+  font-family: SiYuanMedium;
   color: var(--neutral-n1-d1);
 `
 const Day = styled.span`
@@ -44,7 +43,7 @@ const Day = styled.span`
   height: 28px;
   background: var(--primary-d1);
   font-size: 18px;
-  font-weight: 500;
+  font-family: SiYuanMedium;
   color: var(--neutral-white-d7);
   display: flex;
   align-items: center;
@@ -53,17 +52,17 @@ const Day = styled.span`
 `
 const Month = styled.span`
   font-size: 16px;
-  font-weight: 400;
+
   color: var(--neutral-n1-d2);
 `
 const Week = styled.span`
   font-size: 16px;
-  font-weight: 400;
+
   color: var(--neutral-n1-d2);
 `
 const Lunar = styled.span`
   font-size: 14px;
-  font-weight: 400;
+
   color: var(--neutral-n3);
 `
 const ScheduleList = styled.div`

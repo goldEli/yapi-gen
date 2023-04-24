@@ -43,7 +43,7 @@ const Table = styled.table`
   }
   .time {
     font-size: 12px;
-    font-weight: 500;
+    font-family: SiYuanMedium;
     color: var(--neutral-n3);
     position: absolute;
     top: -9px;

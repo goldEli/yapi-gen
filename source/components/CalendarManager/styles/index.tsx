@@ -309,7 +309,7 @@ export const AllDayScheduleItem = styled.div<{
   padding-left: 8px;
   background-color: ${props => props.bg};
   font-size: 14px;
-  font-weight: 400;
+
   color: var(--neutral-n1-d1);
   display: flex;
   align-items: center;
@@ -377,6 +377,7 @@ export const CreateMoveCardBox = styled.div<{
     color: var(--neutral-white-d7);
     padding-left: 8px;
   }
+  z-index: 3;
 `
 
 export const CreateScheduleText = styled.div<{
@@ -396,4 +397,17 @@ export const CreateScheduleText = styled.div<{
   display: ${props => (props.visible ? 'flex' : 'none')};
   height: 22px;
   align-items: center;
+`
+export const TodayButton = styled.div`
+  margin: 0px 10px;
+  border: 1px solid var(--neutral-n6-d1);
+  border-radius: 4px;
+  padding: 0px 10px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  color: var(--neutral-n2);
+  &:hover {
+    background: var(--hover-d2);
+  }
 `

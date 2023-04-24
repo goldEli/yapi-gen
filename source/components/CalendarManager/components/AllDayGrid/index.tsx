@@ -47,7 +47,7 @@ const DayBox = styled.div`
   box-sizing: border-box;
   .day {
     font-size: 18px;
-    font-weight: 500;
+    font-family: SiYuanMedium;
     color: var(--neutral-n1-d1);
     width: 28px;
     height: 28px;
@@ -69,8 +69,7 @@ const DayBox = styled.div`
   }
   .lunar {
     font-size: 12px;
-    font-family: PingFang SC-Regular, PingFang SC;
-    font-weight: 400;
+
     color: var(--neutral-n4);
   }
 `

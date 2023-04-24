@@ -30,8 +30,7 @@ export const DateBox = styled.div`
   color: var(--neutral-n1-d1);
   font-size: var(--font18);
   width: 40px;
-  font-family: PingFang SC-Medium, PingFang SC;
-  font-weight: bold;
+  font-family: SiYuanMedium;
   margin-right: 12px;
   padding-left: 12px;
 `

@@ -24,6 +24,7 @@ import InputSearch from '@/components/InputSearch'
 import { useTranslation } from 'react-i18next'
 import CommonButton from '@/components/CommonButton'
 import { clearScheduleList } from '@store/schedule'
+import { TodayButton } from '../../styles'
 dayjs.extend(weekOfYear)
 
 interface CalendarPanelToolBarProps {
@@ -310,13 +311,8 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
           cursor: 'pointer',
         }}
       >
-        <TodayWrap
-          onClick={todayClick}
-          // className={iconTypeRef.current === 0 ? disables : ''}
-        >
-          {' '}
-          {t('today')}
-        </TodayWrap>
+        {/* <TodayWrap onClick={todayClick}> {t('today')}</TodayWrap> */}
+        <TodayButton onClick={todayClick}> {t('today')}</TodayButton>
         <IconBox>
           <IconFont type="left" onClick={prevYearClick} />
           <TextBox> {dateText}</TextBox>
@@ -343,6 +339,7 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
             dispatch(
               setScheduleInfoDropdown({ schedule_id: 0, visible: false }),
             )
+            dispatch(setCheckedTime(dayjs().format('YYYY-MM-DD')))
           }}
           options={selectOptions}
         />

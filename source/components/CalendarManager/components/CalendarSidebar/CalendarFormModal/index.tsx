@@ -207,6 +207,7 @@ const CalendarFormModal = () => {
     dispatch(setCalendarModal({ visible: false, params: {} }))
     form.resetFields()
     setCalendarInfo({} as Model.Calendar.CalendarInfo)
+    setPath('')
   }
 
   // 切换图标
@@ -425,9 +426,11 @@ const CalendarFormModal = () => {
   }, [calendarModal])
 
   useEffect(() => {
-    setPath(relateConfig.calendar.icon_path?.[0])
-    setCurrentPermission(relateConfig.calendar.permission_types[0]?.value)
-  }, [relateConfig])
+    if (calendarModal.visible && relateConfig) {
+      setPath(relateConfig.calendar.icon_path?.[0])
+      setCurrentPermission(relateConfig.calendar.permission_types[0]?.value)
+    }
+  }, [calendarModal.visible, relateConfig])
 
   // 共享成员才有权限选择
   const addMemberProps =

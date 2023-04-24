@@ -66,7 +66,14 @@ export const modifySchedule =
     await services.schedule.modifySchedule(params)
     await dispatch(refreshCalendarPanelScheduleList())
   }
-
+export const getScheduleInfo = createAsyncThunk(
+  `${name}/getScheduleInfo`,
+  async (params: { id: number; show_date: string | number }) => {
+    ParamsCache.getInstance().addCache('info', params)
+    const res = await services.schedule.getScheduleInfo(params)
+    return res
+  },
+)
 // 刷新面板上日程列表
 export const refreshCalendarPanelScheduleList =
   () => async (dispatch: AppDispatch) => {
@@ -74,6 +81,7 @@ export const refreshCalendarPanelScheduleList =
     const { calendarPanelType } = state.calendarPanel
     const { checkedCalendarList, checkedTime } = state.calendar
     const params = ParamsCache.getInstance().getCache(calendarPanelType)
+    const infoParams = ParamsCache.getInstance().getCache('info')
     if (!params) {
       return
     }
@@ -81,6 +89,7 @@ export const refreshCalendarPanelScheduleList =
       ...params,
       calendar_ids: checkedCalendarList.map(item => item.calendar_id),
     }
+    dispatch(getScheduleInfo(infoParams))
     switch (calendarPanelType) {
       case 'day':
         dispatch(getScheduleListDaysOfDate(newParams))
@@ -149,13 +158,7 @@ export const getLeftCalendarDaysOfMonthList = createAsyncThunk(
     return res.data
   },
 )
-export const getScheduleInfo = createAsyncThunk(
-  `${name}/getScheduleInfo`,
-  async (params: { id: number; show_date: string | number }) => {
-    const res = await services.schedule.getScheduleInfo(params)
-    return res
-  },
-)
+
 // 日程搜索
 export const getScheduleSearch = createAsyncThunk(
   `${name}/getScheduleSearch`,
