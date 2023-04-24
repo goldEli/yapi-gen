@@ -6,18 +6,21 @@ import {
   useRef,
   useState,
 } from 'react'
-import { DoubleRightOutlined, DoubleLeftOutlined } from '@ant-design/icons'
 import { Space } from 'antd'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
+import IconFont from '@/components/IconFont'
 
-const IconContainer = styled.div`
+const IconContainer = styled.div<{ position: string }>`
   width: 40px;
   height: 52px;
-  box-shadow: 5px 0px 7px -3px rgba(0, 0, 0, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: ${(props: any) =>
+    props.position === 'left'
+      ? '5px 0px 7px -3px rgba(0, 0, 0, 0.12)'
+      : '-5px 0px 7px -3px rgba(0,0,0,0.12)'};
 `
 
 const tabsContainer = css`
@@ -111,7 +114,7 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
     })
   }
 
-  const next = () => {
+  const next = (val = 0) => {
     const segment = nodes.current.slice(
       nodeIndex.current,
       nodeIndex.current + STEP,
@@ -125,7 +128,7 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
     )
 
     setXAxis(current => {
-      return current - nodeWidth
+      return current - nodeWidth - val
     })
   }
 
@@ -151,7 +154,11 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
     }
   }, [])
 
-  const handleClick = (key: string) => {
+  const handleClick = (index: number, key: string) => {
+    const { right } = nodes.current[index].getBoundingClientRect()
+    if (right > viewRectOffset) {
+      next(right - viewRectOffset)
+    }
     onChange?.(key)
   }
 
@@ -165,8 +172,8 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
   return (
     <div className={tabsContainer}>
       {showLeft ? (
-        <IconContainer>
-          <DoubleLeftOutlined onClick={prev} />
+        <IconContainer position="left">
+          <IconFont type="left-02" onClick={prev} />
         </IconContainer>
       ) : null}
       <TabsWrap className="tabs-wrap">
@@ -175,12 +182,12 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
           style={{ transform: `translateX(${xAxis}px` }}
         >
           <Space size={TAB_MARGIN}>
-            {items.map(item => (
+            {items.map((item, index) => (
               <TabItem
                 className="tab-item"
                 theme={isActive(item.key)}
                 key={item.key}
-                onClick={() => handleClick(item.key)}
+                onClick={() => handleClick(index, item.key)}
               >
                 {item.label}
                 <TabBarLine theme={isActive(item.key)} />
@@ -190,8 +197,8 @@ const SlideTabs: React.FC<SlideTabsProps> = ({
         </TabSlider>
       </TabsWrap>
       {showRight ? (
-        <IconContainer>
-          <DoubleRightOutlined onClick={next} />
+        <IconContainer position="right">
+          <IconFont type="right-02" onClick={() => next()} />
         </IconContainer>
       ) : null}
     </div>

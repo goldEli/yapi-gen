@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useParams } from 'react-router-dom'
@@ -24,10 +24,15 @@ import { getStaffList } from '@/services/staff'
 import HandleReport from './HandleReport'
 import LabelTag from '@/components/LabelTag'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
-import { Space, Tooltip } from 'antd'
+import { Divider, Space, Tooltip } from 'antd'
 import { useSelector, useDispatch } from '@store/index'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import { saveViewReportDetailDrawer } from '@store/workReport/workReport.thunk'
+import { css } from '@emotion/css'
+
+const listContainer = css`
+  margin: 0 24px;
+`
 
 const ListTitle = styled.div`
   height: 32px;
@@ -35,7 +40,7 @@ const ListTitle = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 20px 24px 20px 24px;
+  margin: 20px 0;
   .title-text {
     font-size: 16px;
     font-family: SiYuanMedium;
@@ -48,10 +53,6 @@ const ListHead = styled.div({
   background: 'var(--neutral-white-d2)',
   display: 'flex',
   alignItems: 'center',
-  paddingRight: '24px',
-  paddingBottom: '20px',
-  marginLeft: '24px',
-  borderBottom: '1px solid var(--neutral-n6-d1)',
 })
 
 const SelectWrapForList = styled(SelectWrapBedeck)`
@@ -130,6 +131,7 @@ const List = () => {
 
   const getList = async () => {
     try {
+      setListData([])
       setIsSpinning(true)
       let res
       switch (id) {
@@ -253,14 +255,19 @@ const List = () => {
               {(id === 1 || id === 3) && record.is_supply === 1 && (
                 <LabelTag options={reportState} state={2} />
               )}
-              {id === 2 && record.is_supply !== 2 && record.is_update !== 2 && (
-                <LabelTag
-                  options={reportState}
-                  state={
-                    record.is_supply === 1 ? 2 : record.is_update === 1 ? 1 : 0
-                  }
-                />
-              )}
+              {id === 2 &&
+                (record.is_supply !== 2 || record.is_update !== 2) && (
+                  <LabelTag
+                    options={reportState}
+                    state={
+                      record.is_supply === 1
+                        ? 2
+                        : record.is_update === 1
+                        ? 1
+                        : 0
+                    }
+                  />
+                )}
             </Tooltip>
           </div>
         )
@@ -309,7 +316,9 @@ const List = () => {
       ),
       dataIndex: 'start_time',
       render: (_: string, record: any) => {
-        return (
+        return record.submit_cycle === 4 ? (
+          '--'
+        ) : (
           <span>{`${record.start_time} ~ ${moment(record.end_time).format(
             'YYYY-MM-DD',
           )}`}</span>
@@ -320,7 +329,7 @@ const List = () => {
       width: 240,
       title: (
         <NewSort
-          fixedKey="created_at"
+          fixedKey="updated_at"
           nowKey={queryParams.orderkey}
           order={queryParams.order}
           onUpdateOrderKey={onUpdateOrderKey}
@@ -328,7 +337,7 @@ const List = () => {
           {t('report.list.submitTime')}
         </NewSort>
       ),
-      dataIndex: 'created_at',
+      dataIndex: 'updated_at',
     },
     {
       width: 160,
@@ -525,8 +534,7 @@ const List = () => {
         ...(data.usedTemplate || []),
       ].filter(
         (item: any) =>
-          !(item.is_current_cycle_used && item.is_cycle_limit === 1) &&
-          item.is_write,
+          !(item.is_current_cycle_used && item.is_cycle_limit === 1),
       )
       setRepTypeOptions(temp.map(generateOptions))
     }
@@ -543,11 +551,12 @@ const List = () => {
   }, [])
 
   return (
-    <>
+    <div className={listContainer}>
       <ListTitle>
         <span className="title-text">{title}</span>
         <Space size={24}>
           <InputSearch
+            defaultValue={queryParams.keyword}
             placeholder={t('report.list.search')}
             onChangeSearch={onPressEnter}
             leftIcon
@@ -604,9 +613,11 @@ const List = () => {
         <ClearButton onClick={restQuery}>{t('common.clearForm')}</ClearButton>
       </ListHead>
 
+      {/* <Divider style={{ minWidth: 'calc(100% - 48px)', margin: '20px 24px' }} /> */}
+      <Divider style={{ margin: '20px 0' }} />
       <ResizeTable
         isSpinning={isSpinning}
-        dataWrapNormalHeight="calc(100vh - 251px)"
+        dataWrapNormalHeight="calc(100vh - 264px)"
         col={
           id === 1
             ? columns
@@ -619,6 +630,7 @@ const List = () => {
         noData={<NoData />}
         dataSource={listData}
       />
+
       {total ? (
         <PaginationBox
           total={total}
@@ -627,13 +639,14 @@ const List = () => {
           onChange={onChangePage}
         />
       ) : null}
+
       <HandleReport
         editId={editId}
         visibleEdit={visibleEdit}
         editClose={() => setVisibleEdit(false)}
         visibleEditText={t('report.list.modifyReport')}
       />
-    </>
+    </div>
   )
 }
 

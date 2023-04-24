@@ -333,19 +333,18 @@ const RightFormWork = () => {
       message.warning(errMsg)
       return
     }
-    console.log(parmas, 'parmas')
-    // if (activeItem?.id) {
-    //   await upDateTemplate(parmas)
-    //   message.success(t('formWork.message6'))
-    //   await dispatch(getTemplateList())
-    //   dispatch(setActiveItem({ name: templateName, id: activeItem?.id }))
-    // } else {
-    //   const res = await createTemplate(parmas)
-    //   await dispatch(getTemplateList())
-    //   dispatch(setActiveItem({ id: res.data.id, name: res.data.name }))
-    //   message.success(t('formWork.message7'))
-    // }
-    // dispatch(setEditSave(true))
+    if (activeItem?.id) {
+      await upDateTemplate(parmas)
+      message.success(t('formWork.message6'))
+      await dispatch(getTemplateList())
+      dispatch(setActiveItem({ name: templateName, id: activeItem?.id }))
+    } else {
+      const res = await createTemplate(parmas)
+      await dispatch(getTemplateList())
+      dispatch(setActiveItem({ id: res.data.id, name: res.data.name }))
+      message.success(t('formWork.message7'))
+    }
+    dispatch(setEditSave(true))
   }
 
   useEffect(() => {
@@ -354,6 +353,7 @@ const RightFormWork = () => {
       dispatch(setEditSave(true))
     }
   }, [activeItem])
+
   const getBtn = () => {
     // 编辑的情况0和1都应该有
     if (editSave && activeItem?.id) {

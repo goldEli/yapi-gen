@@ -508,7 +508,7 @@ const ImportDemand = () => {
               }}
             >
               <IconFont
-                type="checked-poster"
+                type="check-circle"
                 style={{ fontSize: 80, color: '#43BA9A' }}
               />
               <div
