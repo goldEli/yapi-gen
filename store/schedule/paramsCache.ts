@@ -1,5 +1,5 @@
 // 缓存请求参数用于刷新
-type TKey = Model.Calendar.CalendarPanelType | 'info'
+type TKey = Model.Calendar.CalendarPanelType
 export default class ParamsCache {
   private cache: Map<TKey, any>
 

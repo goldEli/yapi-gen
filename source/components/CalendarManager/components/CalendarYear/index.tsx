@@ -29,12 +29,12 @@ const CalendarYear: React.FC<CalendarYearProps> = props => {
     disPatch(getCalendarDaysOfYearList(params))
   }, [calendarYear])
   return (
-    <Row gutter={[6, 30]}>
+    <Row gutter={[100, 30]}>
       {Array(12)
         .fill(0)
         .map((item, idx) => {
           return (
-            <Col key={idx} xs={14} sm={12} md={10} lg={8} xl={6} xxl={4}>
+            <Col key={idx} xs={14} sm={12} md={10} lg={8} xl={6} xxl={6}>
               <CalendarForCalendarYear month={idx} />
             </Col>
           )
