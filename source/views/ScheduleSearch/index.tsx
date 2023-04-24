@@ -6,6 +6,11 @@ import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
 import { useNavigate } from 'react-router-dom'
 import { isDateIntersection } from '@/tools/index'
+import {
+  setYearViewsList,
+  setScheduleList,
+  setListViews,
+} from '@store/schedule'
 import { Empty, Spin } from 'antd'
 import {
   getColorWithOpacityPointOne,
@@ -75,6 +80,9 @@ const ScheduleSearch: React.FC<CalendarListProps> = props => {
               disPatch(
                 setInitScheduleInfoDropdown({ schedule_id: 0, visible: false }),
               )
+              disPatch(setYearViewsList({}))
+              disPatch(setScheduleList({}))
+              disPatch(setListViews([]))
             }}
           >
             <IconFont type="left-md"></IconFont>

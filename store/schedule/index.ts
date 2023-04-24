@@ -99,6 +99,21 @@ const slice = createSlice({
     setScheduleInfo(state, action: PayloadAction<SliceState['scheduleInfo']>) {
       state.scheduleInfo = action.payload
     },
+    setYearViewsList(
+      state,
+      action: PayloadAction<SliceState['yearViewScheduleList']>,
+    ) {
+      state.yearViewScheduleList = action.payload
+    },
+    setScheduleList(state, action: PayloadAction<SliceState['scheduleList']>) {
+      state.scheduleList = action.payload
+    },
+    setListViews(
+      state,
+      action: PayloadAction<SliceState['listViewScheduleList']>,
+    ) {
+      state.listViewScheduleList = action.payload
+    },
   },
   extraReducers(builder) {
     // builder.addCase(getScheduleList.fulfilled, (state, action) => {
@@ -156,6 +171,9 @@ export const {
   setScheduleDate,
   setVisualizationTime,
   setScheduleInfo,
+  setYearViewsList,
+  setScheduleList,
+  setListViews,
 } = slice.actions
 
 export default schedule

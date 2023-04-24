@@ -94,9 +94,9 @@ const DXCalendar: React.FC = () => {
         return (
           <DayBox
             className={classNames({
-              [dayActive]: today,
               [hasScheduleClass]: hasSchedule,
               [selectedDateActive]: selectedDate,
+              [dayActive]: today,
             })}
           >
             {dayjs(date).date()}
