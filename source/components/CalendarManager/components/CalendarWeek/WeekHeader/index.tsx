@@ -10,7 +10,7 @@ const WeekHeaderBox = styled.div`
   flex-direction: column;
   position: sticky;
   box-sizing: border-box;
-  top: -20px;
+  top: 52px;
   left: 0px;
   background: var(--neutral-white-d1);
   z-index: 100;
