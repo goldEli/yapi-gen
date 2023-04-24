@@ -23,6 +23,18 @@ import {
   setReadApi,
 } from '@/services/SiteNotifications'
 import { useEffect, useRef, useState } from 'react'
+import { css } from '@emotion/css'
+
+const scrollListWrap = css`
+  padding: 0px 84px 0px 80px;
+  .ant-skeleton-active {
+    .ant-skeleton-title,
+    .ant-skeleton-paragraph > li {
+      border-radius: 4px;
+      background: var(--neutral-n7);
+    }
+  }
+`
 
 interface ZoomRatioType {
   [MapZoom: string]: string
@@ -147,7 +159,7 @@ const Index = () => {
         </div>
       </div>
 
-      <div style={{ padding: '0px 84px 0px 80px' }}>
+      <div className={scrollListWrap}>
         <InfiniteScroll
           dataLength={list.length}
           next={() => fetchMoreData(2)}
