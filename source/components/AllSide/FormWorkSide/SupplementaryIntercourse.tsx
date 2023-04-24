@@ -50,17 +50,20 @@ const SupplementaryIntercourse = (props: Props) => {
   const [t] = useTranslation()
 
   const getSupplyList = async () => {
+    setList([])
     const result = await supplyList()
     if (result && result.code === 0) {
       const temp: any = []
       Object.keys(result.data).forEach((key: any) => {
-        const arr = result.data[key]?.supply_date?.map((item: any) => {
-          return {
-            ...result.data[key],
-            date: item,
-            key: Date.now(),
-          }
-        })
+        const arr = result.data[key]?.supply_date?.map(
+          (item: any, index: number) => {
+            return {
+              ...result.data[key],
+              date: item,
+              key: key + String(Date.now()) + index,
+            }
+          },
+        )
         temp.push(...arr)
       })
       setList(temp)

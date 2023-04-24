@@ -594,6 +594,8 @@ const HandleReport = (props: any) => {
                   <span className="dateText">
                     {reportDetail?.submit_cycle === 4
                       ? '--'
+                      : props.isSupply
+                      ? getReportDateText(props.date)
                       : reportDetail?.submitCycleDate.filter((v: string) => v)
                           .length > 0 &&
                         getReportDateText(reportDetail?.submitCycleDate)}
