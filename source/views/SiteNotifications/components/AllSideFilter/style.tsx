@@ -69,7 +69,7 @@ export const MyIconModeTextWrap = styled.div`
 export const ResetB = styled.div`
   height: 22px;
   font-size: 14px;
-  font-family: PingFang SC-Regular, PingFang SC;
+  font-family: SiYuanRegular;
   font-weight: 400;
   color: var(--neutral-n3);
   line-height: 22px;
