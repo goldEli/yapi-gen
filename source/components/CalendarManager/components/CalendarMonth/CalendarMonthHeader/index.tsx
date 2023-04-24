@@ -12,6 +12,11 @@ const CalendarMonthHeaderBox = styled.div`
   width: 100%;
   height: 40px;
   display: flex;
+  position: sticky;
+  left: 0;
+  top: 52px;
+  background: var(--neutral-white-d1);
+  z-index: 100;
 `
 const Item = styled.div`
   flex: 1;
