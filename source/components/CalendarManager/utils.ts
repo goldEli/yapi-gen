@@ -1,19 +1,7 @@
 import dayjs from 'dayjs'
 import { colorMap, oneHourHeight, oneMinuteHeight } from './config'
-import { XYCoord } from 'react-dnd'
 
 export function sortScheduleList(list: Model.Schedule.Info[]) {
-  // const acrossDayScheduleList =
-  //   list
-  //     ?.filter(item => item.is_span_day)
-  //     ?.sort((a, b) => a.schedule_id - b.schedule_id) ?? []
-  // const allDayScheduleList =
-  //   list
-  //     ?.filter(item => item.is_all_day === 1 && !item.is_span_day)
-  //     ?.sort((a, b) => a.schedule_id - b.schedule_id) ?? []
-  // const otherList = list?.filter(
-  //   item => !item.is_all_day || item.is_all_day !== 1,
-  // )
   const acrossDay = list?.filter(item => item.is_span_day)
   const noneAcrossDay = list?.filter(item => !item.is_span_day)
   const acrossDayAndFullDay =
@@ -38,9 +26,6 @@ export function sortScheduleList(list: Model.Schedule.Info[]) {
     ...acrossDayAndNoneFullDay,
     ...noneAcrossAndFullDay,
     ...noneAcrossAndNoneFullDay,
-    // ...acrossDayScheduleList,
-    // ...allDayScheduleList,
-    // ...otherList,
   ]
   return newList
 }
