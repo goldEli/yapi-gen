@@ -843,7 +843,10 @@ const GlobalStyle = () => {
       animation-fill-mode: forwards;
       border: solid 2px #cccccc;
     }
-
+    .ant-select-clear {
+      width: 16px;
+      height: 16px;
+    }
     .drag-item {
       height: 64px;
       animation: dragdown ease 0.2s 1;

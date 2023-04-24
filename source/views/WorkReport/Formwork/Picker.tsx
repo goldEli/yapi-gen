@@ -401,7 +401,7 @@ const Picker = (props: PropsType) => {
           ))}
           <Btn onClick={getTime}>
             <CommonButton type="primary" size="small">
-              完成
+              {t('container.finish')}
             </CommonButton>
           </Btn>
         </RightTime>
