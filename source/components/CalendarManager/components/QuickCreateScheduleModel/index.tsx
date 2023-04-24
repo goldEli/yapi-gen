@@ -308,7 +308,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
         onClose={onClose}
         destroyOnClose
         maskClosable={false}
-        mask={false}
+        // mask={false}
         className="drawerRoot"
       >
         <EasyScheduleHeader>
