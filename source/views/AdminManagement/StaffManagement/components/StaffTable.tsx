@@ -168,7 +168,7 @@ export const useDynamicColumns = (state: any) => {
                 borderRadius: '50%',
                 marginRight: 8,
                 background:
-                  text === 1 ? 'var(--function-success)' : 'var(--neutral-n5)',
+                  text === 1 ? 'var(--neutral-n5)' : 'var(--neutral-n5)',
               }}
             />{' '}
             {text === 1 ? t('common.job1') : t('common.job2')}
@@ -197,7 +197,7 @@ export const useDynamicColumns = (state: any) => {
                 height: 8,
                 marginRight: 8,
                 borderRadius: '50%',
-                background: text === 1 ? 'var(--function-success)' : '#A176FB',
+                background: text === 1 ? 'var(--neutral-n5)' : '#A176FB',
               }}
             />
             {text === 1 ? t('normal') : t('handed_over')}

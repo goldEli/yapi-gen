@@ -98,6 +98,9 @@ const HandleReport = (props: any) => {
     form.resetFields()
     props.editClose()
     isFirstValidator.current = 0
+    setPeopleValue([])
+    setRelatedNeedList([])
+    setUploadAttachList({})
   }
 
   // 写汇报| 修改汇报 | 补交汇报 的提交操作
@@ -123,7 +126,7 @@ const HandleReport = (props: any) => {
       } else if (tempArr[0] === '3') {
         data.push({
           conf_id: Number(tempArr[1]),
-          content: params[key],
+          content: params[key] || '',
         })
       } else {
         data.push({
@@ -228,6 +231,9 @@ const HandleReport = (props: any) => {
                     avatar: item.user?.avatar,
                     id: item.user?.id,
                     name: item.user?.name,
+                    noDel: reportDetail?.report_user_list?.some(
+                      (i: any) => i.id === item.user?.id,
+                    ),
                   }
                 }),
               )
@@ -276,6 +282,7 @@ const HandleReport = (props: any) => {
               avatar: item?.avatar,
               id: item.id || item.user_id,
               name: item?.name,
+              noDel: true,
             }
           }),
         )
@@ -293,6 +300,9 @@ const HandleReport = (props: any) => {
             avatar: item.user?.avatar,
             id: item.user?.id,
             name: item.user?.name,
+            noDel: reportDetail?.report_user_list?.some(
+              (i: any) => i.id === item.user?.id,
+            ),
           }
         }),
       )
@@ -582,9 +592,11 @@ const HandleReport = (props: any) => {
                 <div className="titleText">
                   {`${userInfo?.name}的${reportDetail?.name ?? ''}`}
                   <span className="dateText">
-                    {reportDetail?.submitCycleDate.filter((v: string) => v)
-                      .length > 0 &&
-                      getReportDateText(reportDetail?.submitCycleDate)}
+                    {reportDetail?.submit_cycle === 4
+                      ? '--'
+                      : reportDetail?.submitCycleDate.filter((v: string) => v)
+                          .length > 0 &&
+                        getReportDateText(reportDetail?.submitCycleDate)}
                   </span>
                 </div>
                 <div className="submitTimeText">

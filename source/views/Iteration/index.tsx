@@ -508,14 +508,6 @@ const Iteration = () => {
             </TitleWrap>
             {type === 'demand' && (
               <OperationWrap>
-                <ScreenMinHover
-                  icon="sync"
-                  label={t('common.refresh')}
-                  onClick={refresh}
-                />
-
-                <DividerWrap type="vertical" />
-
                 {hasFilter ? null : (
                   <>
                     <ScreenMinHover
@@ -527,6 +519,14 @@ const Iteration = () => {
                     <DividerWrap type="vertical" />
                   </>
                 )}
+
+                <ScreenMinHover
+                  icon="sync"
+                  label={t('common.refresh')}
+                  onClick={refresh}
+                />
+
+                <DividerWrap type="vertical" />
 
                 <DropDownMenu
                   menu={

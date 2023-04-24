@@ -46,6 +46,7 @@ const HeaderOperate = styled.div`
   height: 32px;
   display: flex;
   justify-content: space-between;
+  margin-bottom: 20px;
 `
 export const RowStyle = styled.div`
   position: relative;
@@ -332,7 +333,6 @@ const RightFormWork = () => {
       message.warning(errMsg)
       return
     }
-    console.log(parmas, 'parmas')
     if (activeItem?.id) {
       await upDateTemplate(parmas)
       message.success(t('formWork.message6'))
@@ -353,6 +353,7 @@ const RightFormWork = () => {
       dispatch(setEditSave(true))
     }
   }, [activeItem])
+
   const getBtn = () => {
     // 编辑的情况0和1都应该有
     if (editSave && activeItem?.id) {

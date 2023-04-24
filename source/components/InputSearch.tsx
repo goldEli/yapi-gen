@@ -3,7 +3,7 @@ import { changeColorText } from '@store/color-text'
 import { useDispatch, useSelector } from '@store/index'
 import { saveInputKey } from '@store/view'
 import { Input } from 'antd'
-import { useEffect, useImperativeHandle, useState } from 'react'
+import { useEffect, useState } from 'react'
 import CommonIconFont from './CommonIconFont'
 
 const InputStyle = styled(Input)<{ bgColor: any }>`
@@ -27,9 +27,9 @@ interface Props {
   length?: number
   leftIcon?: boolean
   isDemand?: boolean
-  // 订阅日历弹窗-搜索使用
-  defaultValue?: string
   isReport?: boolean
+  // 用于公共使用时，清除
+  defaultValue?: string
 }
 
 const InputSearch = (props: Props) => {

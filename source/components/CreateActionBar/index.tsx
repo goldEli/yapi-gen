@@ -137,17 +137,10 @@ const CreateActionBar = (props: Props) => {
             </DropDownMenu>
           </div>
         ) : null}
+
         {props.isGrid ? (
           <Divider style={{ height: 16, margin: 0 }} type="vertical" />
         ) : null}
-
-        <ScreenMinHover
-          onClick={props.onRefresh}
-          icon="sync"
-          label={t('common.refresh')}
-        />
-
-        <DividerWrap type="vertical" />
 
         <DropDownMenu
           isVisible={isVisibleFormat}
@@ -157,6 +150,14 @@ const CreateActionBar = (props: Props) => {
         >
           <div>{props.isGrid ? t('common.thumbnail') : t('common.list')}</div>
         </DropDownMenu>
+
+        <DividerWrap type="vertical" />
+
+        <ScreenMinHover
+          onClick={props.onRefresh}
+          icon="sync"
+          label={t('common.refresh')}
+        />
       </Space>
     </WrapRight>
   )
