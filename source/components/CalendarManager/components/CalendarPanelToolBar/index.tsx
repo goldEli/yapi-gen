@@ -130,6 +130,9 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
     cursor: pointer;
     span {
       font-size: var(--font16);
+      &:hover {
+        color: var(--primary-d2);
+      }
     }
   `
   const TodayWrap = styled.div`

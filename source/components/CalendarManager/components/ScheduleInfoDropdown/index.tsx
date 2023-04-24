@@ -9,6 +9,7 @@ import ScheduleInfoFooter from './ScheduleInfoFooter'
 import useModalPosition from '../../hooks/useModalPosition'
 import { getScheduleInfo } from '@store/schedule/schedule.thunk'
 import dayjs from 'dayjs'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
 interface ScheduleInfoDropdownProps {
   containerClassName?: string
 }
@@ -62,7 +63,10 @@ const ScheduleInfoDropdown: React.FC<ScheduleInfoDropdownProps> = props => {
         e.stopPropagation()
       }}
     >
-      <Spin spinning={scheduleInfo ? false : true} size="large" tip="Loading">
+      <Spin
+        indicator={<NewLoadingTransition />}
+        spinning={scheduleInfo ? false : true}
+      >
         <ScheduleInfoHeaderBox></ScheduleInfoHeaderBox>
         <ScheduleInfoContent
           showFooter={scheduleInfo?.is_show_reply ?? false}
