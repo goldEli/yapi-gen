@@ -24,10 +24,15 @@ import { getStaffList } from '@/services/staff'
 import HandleReport from './HandleReport'
 import LabelTag from '@/components/LabelTag'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
-import { Space, Tooltip } from 'antd'
+import { Divider, Space, Tooltip } from 'antd'
 import { useSelector, useDispatch } from '@store/index'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import { saveViewReportDetailDrawer } from '@store/workReport/workReport.thunk'
+import { css } from '@emotion/css'
+
+const listContainer = css`
+  margin: 0 24px;
+`
 
 const ListTitle = styled.div`
   height: 32px;
@@ -35,7 +40,7 @@ const ListTitle = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 20px 24px 20px 24px;
+  margin: 20px 0;
   .title-text {
     font-size: 16px;
     font-family: SiYuanMedium;
@@ -48,10 +53,6 @@ const ListHead = styled.div({
   background: 'var(--neutral-white-d2)',
   display: 'flex',
   alignItems: 'center',
-  paddingRight: '24px',
-  paddingBottom: '20px',
-  marginLeft: '24px',
-  borderBottom: '1px solid var(--neutral-n6-d1)',
 })
 
 const SelectWrapForList = styled(SelectWrapBedeck)`
@@ -550,7 +551,7 @@ const List = () => {
   }, [])
 
   return (
-    <>
+    <div className={listContainer}>
       <ListTitle>
         <span className="title-text">{title}</span>
         <Space size={24}>
@@ -612,9 +613,10 @@ const List = () => {
         <ClearButton onClick={restQuery}>{t('common.clearForm')}</ClearButton>
       </ListHead>
 
+      <Divider style={{ margin: '20px 0' }} />
       <ResizeTable
         isSpinning={isSpinning}
-        dataWrapNormalHeight="calc(100vh - 251px)"
+        dataWrapNormalHeight="calc(100vh - 264px)"
         col={
           id === 1
             ? columns
@@ -627,6 +629,7 @@ const List = () => {
         noData={<NoData />}
         dataSource={listData}
       />
+
       {total ? (
         <PaginationBox
           total={total}
@@ -635,13 +638,14 @@ const List = () => {
           onChange={onChangePage}
         />
       ) : null}
+
       <HandleReport
         editId={editId}
         visibleEdit={visibleEdit}
         editClose={() => setVisibleEdit(false)}
         visibleEditText={t('report.list.modifyReport')}
       />
-    </>
+    </div>
   )
 }
 

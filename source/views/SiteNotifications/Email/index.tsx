@@ -18,7 +18,7 @@ import {
   setMyConfiguration,
   setMyEmailConfiguration,
 } from '@store/SiteNotifications'
-import { Message } from '@/components/Message'
+import { getMessage } from '@/components/Message'
 
 const Email = () => {
   const [t] = useTranslation()
@@ -50,9 +50,8 @@ const Email = () => {
     const res = await editMyAllNoteSet(
       Array.from(new Set([...myConfiguration, ...choose])),
     )
-    Message({ msg: t('succeed'), type: 'error' })
     if (res.code === 0) {
-      Message({ msg: t('succeed'), type: 'success' })
+      getMessage({ msg: t('succeed'), type: 'success' })
     }
     dispatch(setMyEmailConfiguration(choose))
   }

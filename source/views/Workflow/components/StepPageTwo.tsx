@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setWorkList } from '@store/project'
 import { saveWorkflowStatus } from '@/services/project'
 import CommonButton from '@/components/CommonButton'
+import { getMessage } from '@/components/Message'
 
 const TableWrap = styled.div({
   width: '100%',
@@ -130,7 +131,7 @@ const StepPageTwo = () => {
           can_changes_category_status: k.canChange,
         })),
       })
-      message.success(t('common.saveSuccess'))
+      getMessage({ msg: t('common.saveSuccess'), type: 'success' })
     } catch (error) {
       //
     }

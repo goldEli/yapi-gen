@@ -30,6 +30,7 @@ import {
 } from '@store/project'
 import InputSearch from '../InputSearch'
 import CommonUserAvatar from '../CommonUserAvatar'
+import { getMessage } from '../Message'
 
 interface Props {
   visible: boolean
@@ -336,7 +337,7 @@ const Member = (props: Props) => {
         userGroupId: item.id,
         userIds: row.id,
       })
-      message.success(t('common.editS'))
+      getMessage({ msg: t('common.editS'), type: 'success' })
       // 可以考虑不走接口修改
       getList()
       dispatch(setIsUpdateMember(true))
@@ -362,7 +363,7 @@ const Member = (props: Props) => {
   const handleOk = async (list?: any, id?: any) => {
     let userGroupId = id
     if (list.length <= 0) {
-      message.warning(t('project.memberNull'))
+      getMessage({ msg: t('project.memberNull'), type: 'warning' })
       return
     }
     if (!form.getFieldValue('userGroupId')) {
@@ -377,7 +378,7 @@ const Member = (props: Props) => {
       userIds: list?.map((i: any) => i.id),
     }
     await addMember(params)
-    message.success(t('common.addSuccess'))
+    getMessage({ msg: t('common.addSuccess'), type: 'success' })
     getList(true)
     setIsVisible(false)
     const result = await getProjectInfo({ projectId: projectInfo.id })

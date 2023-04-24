@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import ChangePriorityPopover from '../ChangePriorityPopover'
 import IconFont from '../IconFont'
+import { getMessage } from '../Message'
 import {
   AddWrap,
   CanOperation,
@@ -98,7 +99,7 @@ const BasicDemand = (props: Props) => {
         priorityId: item.priorityId,
         projectId: props.detail.projectId,
       })
-      message.success(t('common.prioritySuccess'))
+      getMessage({ msg: t('common.prioritySuccess'), type: 'success' })
       props.onUpdate?.()
     } catch (error) {
       //

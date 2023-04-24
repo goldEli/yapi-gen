@@ -24,6 +24,7 @@ import {
   getImportExcelUpdate,
 } from '@/services/demand'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
+import { getMessage } from '@/components/Message'
 
 const Wrap = styled.div<{ language: any }>(
   {
@@ -145,7 +146,7 @@ const ImportDemand = () => {
     const acceptArr = ['xlsx', 'xls']
     const urlType = file.name.split('.')
     if (!acceptArr.includes(urlType[urlType.length - 1])) {
-      message.warning(t('project.incorrectFormat'))
+      getMessage({ msg: t('project.incorrectFormat'), type: 'warning' })
       return Upload.LIST_IGNORE
     }
     return ''
@@ -203,7 +204,7 @@ const ImportDemand = () => {
       reader.readAsText(result.body, 'utf-8')
       reader.onload = function () {
         const obj = JSON.parse(reader.result as any)
-        message.error(obj.message)
+        getMessage({ msg: obj.message, type: 'error' })
       }
     } else {
       const blob = new Blob([result.body], {

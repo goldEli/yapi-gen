@@ -115,7 +115,7 @@ const FormWorkSide = () => {
     dispatch(setTemplateName(activeItem?.name))
   }, [activeItem])
   const onConfirm = async (name: string) => {
-    dispatch(setDataList([...dataList, { name }]))
+    dispatch(setDataList([{ name }, ...dataList]))
     setIsActive(dataList?.length - 1)
     dispatch(setActiveItem({ name }))
     dispatch(

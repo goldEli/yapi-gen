@@ -52,6 +52,7 @@ import SetShowField from '@/components/SetShowField/indedx'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import ResizeTable from '@/components/ResizeTable'
 import ScreenMinHover from '@/components/ScreenMinHover'
+import { getMessage } from '@/components/Message'
 
 const LoadingSpin = styled(Spin)({
   minHeight: 300,
@@ -301,7 +302,10 @@ const CommonNeed = (props: any) => {
   const updateStatus = async (res1: any) => {
     try {
       await updateDemandStatus(res1)
-      message.success(t('common.circulationSuccess'))
+      getMessage({
+        msg: t('common.circulationSuccess') as string,
+        type: 'success',
+      })
       init()
     } catch (error) {
       //
@@ -310,7 +314,10 @@ const CommonNeed = (props: any) => {
   const updatePriority = async (res1: any) => {
     const res = await updatePriorityStatus(res1)
     if (res.code === 0) {
-      message.success(t('common.prioritySuccess'))
+      getMessage({
+        msg: t('common.prioritySuccess') as string,
+        type: 'success',
+      })
     }
 
     init()
@@ -325,7 +332,7 @@ const CommonNeed = (props: any) => {
   // 点击打开详情并组装当前平级的需求id列表
   const onClickItem = (item: any) => {
     if (item.project?.isPublic !== 1 && !item.project?.isUserMember) {
-      message.warning(t('common.notCheckInfo'))
+      getMessage({ msg: t('common.notCheckInfo'), type: 'warning' })
     } else {
       let demandIds: any
 
@@ -489,7 +496,7 @@ const CommonNeed = (props: any) => {
   const onDeleteConfirm = async () => {
     try {
       await deleteDemand({ projectId, id: operationItem?.id })
-      message.success(t('common.deleteSuccess'))
+      getMessage({ msg: t('common.deleteSuccess') as string, type: 'success' })
       setIsDelVisible(false)
       init()
     } catch (error) {
@@ -498,7 +505,10 @@ const CommonNeed = (props: any) => {
   }
 
   const onChangeMany = (state: boolean) => {
-    message.success(t('version2.reviewModeChangeSuccess'))
+    getMessage({
+      msg: t('version2.reviewModeChangeSuccess') as string,
+      type: 'success',
+    })
     setIsMany(state)
     setIsVisibleFormat(false)
     setPageObj({ page: 1, size: pageObj.size })
