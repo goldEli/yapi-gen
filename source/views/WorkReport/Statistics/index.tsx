@@ -44,7 +44,7 @@ const Head = styled.div`
 `
 const Center = styled.div`
   width: 488px;
-  border-left: 1px solid #ecedef;
+  border-left: 1px solid #ecedef;mm
 `
 const NameColumn = styled.div({
   display: 'flex',

@@ -167,29 +167,7 @@ const ProjectSet = () => {
   const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
   const [isMoreVisible, setIsMoreVisible] = useState(false)
-  const [dataList, setDataList] = useState<any>([
-    {
-      id: 108,
-      name: '需求',
-      type: 1,
-      label: '管理员',
-      types: 'demand',
-    },
-    {
-      id: 109,
-      name: '迭代',
-      type: 2,
-      label: '编辑者',
-      types: 'iteration',
-    },
-    {
-      id: 110,
-      name: '项目',
-      type: 3,
-      label: '参与者',
-      types: 'project',
-    },
-  ])
+  const [dataList, setDataList] = useState<any>()
   const [permissionList, setPermissionList] = useState<any>([])
 
   const [activeDetail, setActiveDetail] = useState<any>({
@@ -264,6 +242,29 @@ const ProjectSet = () => {
   }
 
   const init2 = async () => {
+    setDataList([
+      {
+        id: 108,
+        name: t('demand'),
+        type: 1,
+        label: '管理员',
+        types: 'demand',
+      },
+      {
+        id: 109,
+        name: t('iteration'),
+        type: 2,
+        label: '编辑者',
+        types: 'iteration',
+      },
+      {
+        id: 110,
+        name: t('title.project'),
+        type: 3,
+        label: '参与者',
+        types: 'project',
+      },
+    ])
     setIsSpinning(true)
     const res2 = await getSysConfig()
     const index = res2.findIndex((i: any) => {
@@ -335,6 +336,8 @@ const ProjectSet = () => {
     }
     setPermissionList(newA)
   }
+  console.log(permissionList)
+
   return (
     <PermissionWrap
       auth="b/project/role"
