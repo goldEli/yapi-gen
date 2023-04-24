@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable max-len */
-import { getLoginDetail } from '@/services/user'
+import { getLoginDetail, getTicket, loginOut } from '@/services/user'
 import { debounce, throttle } from 'lodash'
 import { useState, useRef, useEffect } from 'react'
 
@@ -70,7 +70,20 @@ const useWebsocket = () => {
     ws.current.onmessage = throttle(
       (e: any) => {
         const data = JSON.parse(e.data)
-
+        if (data.msgType === 'AH001') {
+          sessionStorage.removeItem('saveRouter')
+          try {
+            loginOut()
+            setTimeout(() => {
+              localStorage.removeItem('agileToken')
+              localStorage.removeItem('quickCreateData')
+              getTicket()
+            }, 100)
+          } catch (error) {
+            //
+          }
+          return
+        }
         if (data.msgType === 'AH000') {
           return
         }
