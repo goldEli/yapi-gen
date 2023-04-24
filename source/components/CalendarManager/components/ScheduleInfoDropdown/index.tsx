@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { useSelector, useDispatch } from '@store/index'
-import { Dropdown, Spin } from 'antd'
+import { Dropdown, Spin, Drawer } from 'antd'
 import React, { useEffect } from 'react'
 import ScheduleInfoHeaderBox from './ScheduleInfoHeader'
 import ScheduleInfoContent from './SCheduleInfoContent'
@@ -45,7 +45,7 @@ const ScheduleInfoDropdown: React.FC<ScheduleInfoDropdownProps> = props => {
   })
   const { scheduleInfo } = useSelector(state => state.schedule)
 
-  // console.log({ scheduleInfoDropdown })
+  console.log('visible', visible)
   const disPatch = useDispatch()
   useEffect(() => {
     if (!schedule_id || !visible) return
@@ -53,27 +53,29 @@ const ScheduleInfoDropdown: React.FC<ScheduleInfoDropdownProps> = props => {
   }, [schedule_id, visible])
 
   return (
-    <ScheduleInfoDropdownBox
-      className="schedule-info-dropdown-box"
-      visible={visible && !!position}
-      top={position?.y ?? 0}
-      left={position?.x ?? 0}
-      onClick={e => {
-        console.log(111)
-        e.stopPropagation()
-      }}
-    >
-      <Spin
-        indicator={<NewLoadingTransition />}
-        spinning={scheduleInfo ? false : true}
+    <Drawer open={visible} mask={false}>
+      <ScheduleInfoDropdownBox
+        className="schedule-info-dropdown-box"
+        visible={visible && !!position}
+        top={position?.y ?? 0}
+        left={position?.x ?? 0}
+        onClick={e => {
+          console.log(111)
+          e.stopPropagation()
+        }}
       >
-        <ScheduleInfoHeaderBox></ScheduleInfoHeaderBox>
-        <ScheduleInfoContent
-          showFooter={scheduleInfo?.is_show_reply ?? false}
-        ></ScheduleInfoContent>
-        <ScheduleInfoFooter></ScheduleInfoFooter>
-      </Spin>
-    </ScheduleInfoDropdownBox>
+        <Spin
+          indicator={<NewLoadingTransition />}
+          spinning={scheduleInfo ? false : true}
+        >
+          <ScheduleInfoHeaderBox></ScheduleInfoHeaderBox>
+          <ScheduleInfoContent
+            showFooter={scheduleInfo?.is_show_reply ?? false}
+          ></ScheduleInfoContent>
+          <ScheduleInfoFooter></ScheduleInfoFooter>
+        </Spin>
+      </ScheduleInfoDropdownBox>
+    </Drawer>
   )
 }
 
