@@ -604,7 +604,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
 
   const handleOk = async (list: any, userId: number) => {
     if (list.length <= 0) {
-      message.warning(t('project.memberNull'))
+      getMessage({ msg: t('project.memberNull'), type: 'warning' })
       return
     }
     const params: any = {

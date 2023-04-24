@@ -324,7 +324,7 @@ const PermissionManagement = () => {
 
   const onSavePermission = async () => {
     if (!selectKeys.length) {
-      message.warning(t('setting.pleasePermission'))
+      getMessage({ msg: t('setting.pleasePermission'), type: 'warning' })
       return
     }
     try {
@@ -342,7 +342,7 @@ const PermissionManagement = () => {
 
   const onSaveGroup = async () => {
     if (!String(addValue).trim()) {
-      message.warning(t('version2.permissionNull'))
+      getMessage({ msg: t('version2.permissionNull'), type: 'warning' })
       setAddValue('')
       return
     }

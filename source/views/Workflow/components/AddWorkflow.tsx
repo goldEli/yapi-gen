@@ -152,7 +152,10 @@ const AddActiveWrap = (props: AddActiveWrapProps) => {
       return
     }
     if (!normalColor) {
-      message.warning(t('newlyAdd.pleaseStatusChooseColor'))
+      getMessage({
+        msg: t('newlyAdd.pleaseStatusChooseColor'),
+        type: 'warning',
+      })
       return
     }
     props?.onConfirm?.({ name: value, color: normalColor })
@@ -270,7 +273,7 @@ const AddWorkflow = (props: Props) => {
 
   const onConfirm = async () => {
     if (!selectedRowKeys?.length) {
-      message.warning(t('newlyAdd.onlyChooseStatus'))
+      getMessage({ msg: t('newlyAdd.onlyChooseStatus'), type: 'warning' })
       return
     }
     const obj = {
