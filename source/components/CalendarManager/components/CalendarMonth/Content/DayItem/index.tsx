@@ -109,7 +109,7 @@ const DayItem: React.FC<DayItemProps> = props => {
         list={props.list}
         allList={scheduleList[key]}
       />
-      <CreateScheduleText top={52} visible={isSelectedForCreate}>
+      <CreateScheduleText top={54} visible={isSelectedForCreate}>
         {t('calendarManager.create_schedule')}
       </CreateScheduleText>
     </DayItemBox>
