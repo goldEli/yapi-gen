@@ -42,6 +42,7 @@ const useAllDayGrid = (props: {
       [borderBottom]: props.showBorderBottom,
     })
   }, [props.showSelectedBg, props.showBorderRight, props.showBorderBottom])
+
   const openQuickCreateScheduleModel = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
   ) => {

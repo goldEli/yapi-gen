@@ -104,7 +104,7 @@ const CreateSchedule = () => {
   const [isAll, setIsAll] = useState<boolean | undefined>(false)
   //   重复
   const [repeatValue, setRepeatValue] = useState<{
-    value: number
+    value?: number
     params: any
   }>({
     value: 0,

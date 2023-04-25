@@ -40,6 +40,16 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
         x: props.left,
         y: top,
       }}
+      enableResizing={{
+        bottom: true,
+        bottomLeft: false,
+        bottomRight: false,
+        left: false,
+        right: false,
+        top: true,
+        topLeft: false,
+        topRight: false,
+      }}
       dragAxis="y"
       bounds=".calendar-day-box"
       onDragStart={onDragStart}

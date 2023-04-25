@@ -21,6 +21,7 @@ import {
 import ScheduleStrip from '../ScheduleStrip'
 import useAllDay from '@/components/CalendarManager/hooks/useAllDay'
 import useAcrossScheduleList from '@/components/CalendarManager/hooks/useAcrossScheduleList'
+import useRepeatSchedule from '../../hooks/useRepeatSchdule'
 
 interface ScheduleListItemProps {
   data: Model.Schedule.Info
@@ -165,10 +166,17 @@ const ScheduleStripListItem: React.FC<ScheduleListItemProps> = props => {
     dispatch(modifySchedule(params))
   }
 
+  const { isRepeatSchedule } = useRepeatSchedule(props.data)
+
   // 点击日程
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    // 跨天如果不是头天不能拖动
-    if (isAcrossDayButNotFirstDay) {
+    e.stopPropagation()
+    /**
+     * 不能拖动
+     * 1. 跨天如果不是头天不能拖动
+     * 2. 重复日程不能拖
+     */
+    if (isAcrossDayButNotFirstDay || isRepeatSchedule) {
       // 打开详情
       onOpenScheduleDetail()
       return

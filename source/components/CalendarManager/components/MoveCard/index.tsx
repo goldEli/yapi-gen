@@ -9,6 +9,7 @@ import {
 } from '@/components/CalendarManager/utils'
 import useColor from '../../hooks/useColor'
 import { Content, MoveCardBox, Time, TimeRange, Title } from './styled'
+import useRepeatSchedule from '../../hooks/useRepeatSchdule'
 
 type ScheduleCardProps = {
   data: Model.Schedule.Info | null
@@ -23,6 +24,8 @@ const MoveCard: React.FC<ScheduleCardProps> = props => {
   const { data, timeRange } = props
 
   const { is_show_busy } = data || {}
+
+  const { isRepeatSchedule } = useRepeatSchedule(data)
 
   const { getColorClassName } = useColor()
 
@@ -48,6 +51,9 @@ const MoveCard: React.FC<ScheduleCardProps> = props => {
   }, [is_show_busy, timeRange, data?.subject, data?.start_time])
   const children = props.children || <Content>{content}</Content>
   const { enableResizing, ...otherProps } = props ?? {}
+  const disable = useMemo(() => {
+    return is_show_busy || isRepeatSchedule
+  }, [is_show_busy, isRepeatSchedule])
 
   return (
     <MoveCardBox
@@ -56,8 +62,8 @@ const MoveCard: React.FC<ScheduleCardProps> = props => {
         e.stopPropagation()
       }}
       bg={getColorWithOpacityPointOne(data?.color ?? 0)}
-      disableDragging={is_show_busy}
-      enableResizing={is_show_busy ? false : enableResizing}
+      disableDragging={disable}
+      enableResizing={disable ? false : enableResizing}
       {...otherProps}
     >
       {children}
