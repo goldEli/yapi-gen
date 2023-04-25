@@ -29,6 +29,7 @@ const scrollListWrap = css`
   padding: 0px 84px 0px 80px;
   .ant-skeleton-active {
     .ant-skeleton-title,
+    .ant-skeleton-avatar,
     .ant-skeleton-paragraph > li {
       border-radius: 4px;
       background: var(--neutral-n7);
