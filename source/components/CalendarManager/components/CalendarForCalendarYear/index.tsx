@@ -44,7 +44,7 @@ interface CalendarForCalendarYearProps {
   month: number
 }
 const wrapperStyle: React.CSSProperties = {
-  width: 240,
+  // width: 240,
 }
 
 const CalendarForCalendarYear: React.FC<

@@ -6,6 +6,14 @@ import { Form, Space } from 'antd'
 
 const Calendar = generateCalendar<Dayjs>(dayjsGenerateConfig)
 
+export const RepeatTextWrap = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: var(--neutral-n3);
+  margin-top: 4px;
+`
+
 export const CalenderBox = styled.div`
   display: flex;
   height: calc(100vh - 56px);

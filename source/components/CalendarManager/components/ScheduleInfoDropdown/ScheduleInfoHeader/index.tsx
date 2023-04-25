@@ -107,6 +107,7 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
                     params: { id: scheduleInfo?.id ?? 0 },
                   }),
                 )
+                disPatch(setScheduleInfoDropdown({ visible: false }))
               }}
             >
               <ScheduleInfoIcon type="edit" />

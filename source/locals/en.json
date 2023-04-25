@@ -1320,6 +1320,14 @@
     "clear": "Empty"
   },
   "calendarManager": {
+    "repeat_end_time": "Deadline: ",
+    "repeat_end_count": "Deadline Times: ",
+    "day_repeat": "Repeat every {num}} day,",
+    "week_repeat": "Repeat every {text}},",
+    "month_repeat": "Repeat every {num}} month,",
+    "year_repeat": "Repeat every {num}} year,",
+    "end_type_time_null": "When the end repetition is empty, time is required!",
+    "end_type_null": "End repetition cannot be empty",
     "time_limit": "The end time must be greater than the start time!",
     "moreItems": "{{count}} more...",
     "calendar": "Calendar",

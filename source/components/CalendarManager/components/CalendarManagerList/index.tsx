@@ -249,7 +249,10 @@ const CalendarManagerList: React.FC<CalendarManagerListProps> = props => {
     } else if (i.is_owner === 1) {
       resultList = ['edit', 'only', 'delete']
     } else if (i.user_group_id === 1) {
-      resultList = ['edit', 'only', 'unsubscribe', 'delete']
+      resultList =
+        i.origin_is_default === 1
+          ? ['edit', 'only', 'unsubscribe']
+          : ['edit', 'only', 'unsubscribe', 'delete']
     } else {
       resultList = ['only', 'unsubscribe']
     }

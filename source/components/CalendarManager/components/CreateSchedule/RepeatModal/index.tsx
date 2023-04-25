@@ -1,5 +1,6 @@
 import { RepeatModalCheck } from '@/components/CalendarManager/styles'
 import CommonModal from '@/components/CommonModal'
+import { getMessage } from '@/components/Message'
 import { useSelector } from '@store/index'
 import {
   Checkbox,
@@ -31,13 +32,13 @@ const RepeatModal = (props: RepeatModalProps) => {
   // 结束重复类型
   const [endType, setEndType] = useState(null)
   // 结束日期
-  const [endDate, setEndDate] = useState<[string, string] | string>()
+  const [endDate, setEndDate] = useState<any>(null)
   // 结束次数
   const [number, setNumber] = useState<number>(1)
   // 选择周期
   const [chooseRepeat, setChooseRepeat] = useState<CheckboxValueType[]>([])
   // 选择周期
-  const [resultDate, setResultDate] = useState<DatePickerProps['value']>()
+  const [resultDate, setResultDate] = useState<any>(null)
   const unit = [
     t('calendarManager.day'),
     t('calendarManager.week'),
@@ -75,6 +76,18 @@ const RepeatModal = (props: RepeatModalProps) => {
 
   // 重复小弹窗确认事件
   const onRepeatConfirm = () => {
+    if (!endType) {
+      getMessage({ msg: t('calendarManager.end_type_null'), type: 'warning' })
+      return
+    }
+    console.log(endType, '=12121', endDate)
+    if (endType === 1 && !endDate) {
+      getMessage({
+        msg: t('calendarManager.end_type_time_null'),
+        type: 'warning',
+      })
+      return
+    }
     const params = {
       repeat_interval: repeat,
       repeat_end_type: endType,
@@ -88,19 +101,26 @@ const RepeatModal = (props: RepeatModalProps) => {
 
   useEffect(() => {
     if (props.isVisible) {
+      console.log(props.repeatParams, '12121')
       setNumber(props.repeatParams.params.repeat_end_num || 1)
       setEndType(props.repeatParams.params.repeat_end_type)
       setEndDate(
-        props.repeatParams.params.repeat_end_date === '0000-00-00'
-          ? ''
+        props.repeatParams.params.repeat_end_date === '0000-00-00' ||
+          !props.repeatParams.params.repeat_end_date
+          ? null
           : props.repeatParams.params.repeat_end_date,
       )
       setRepeat(props.repeatParams.params.repeat_interval || 1)
       setChooseRepeat(props.repeatParams.params.repeat_choose || [])
       setResultDate(
-        props.repeatParams.params.repeat_end_date === '0000-00-00'
+        props.repeatParams.params.repeat_end_date === '0000-00-00' ||
+          !props.repeatParams.params.repeat_end_date
           ? null
           : moment(props.repeatParams.params.repeat_end_date),
+      )
+      console.log(
+        props.repeatParams.params === '0000-00-00',
+        '=props.repeatParams.params',
       )
     }
   }, [props.isVisible])
@@ -135,6 +155,7 @@ const RepeatModal = (props: RepeatModalProps) => {
             <Checkbox.Group
               options={checkboxOptions}
               onChange={setChooseRepeat}
+              value={chooseRepeat}
             />
           </RepeatModalCheck>
         )}
@@ -147,7 +168,7 @@ const RepeatModal = (props: RepeatModalProps) => {
           />
           {endType === 1 && (
             <DatePicker
-              value={resultDate as DatePickerProps['value']}
+              value={resultDate}
               onChange={onChangeTime}
               style={{ width: 140 }}
             />
