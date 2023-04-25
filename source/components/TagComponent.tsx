@@ -270,8 +270,9 @@ const TagComponent = (props: Props) => {
   const { projectInfo } = useSelector(store => store.project)
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
-    projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
-      ?.length > 0
+    projectInfo.projectPermissions?.filter(
+      (i: any) => i.identity === 'b/story/update',
+    )?.length > 0
 
   const colorList = ['#FF5C5E', '#43BA9A', 'var(--primary-d2)', '#969799']
 
