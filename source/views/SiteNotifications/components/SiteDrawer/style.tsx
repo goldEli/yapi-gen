@@ -83,14 +83,13 @@ export const GrepTitle2 = styled.span`
 `
 
 export const Tips = styled.div`
-  height: 20px;
+  height: 28px;
   font-size: 12px;
   font-family: PingFang SC-Regular, PingFang SC;
-  font-weight: 400;
   color: var(--neutral-n3);
-  line-height: 20px;
   display: flex;
   justify-content: center;
+  align-items: end;
 `
 
 export const MyFooter = styled.div`
@@ -105,5 +104,8 @@ export const MyFooter = styled.div`
 export const messageDrawer = css`
   .ant-drawer-mask {
     background: rgba(0, 0, 0, 0);
+  }
+  .ant-skeleton {
+    padding: 0 12px;
   }
 `

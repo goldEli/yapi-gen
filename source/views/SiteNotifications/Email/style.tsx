@@ -19,9 +19,8 @@ export const ContentEmail = styled.span`
   background: #f6f7f9;
   border-radius: 6px 6px 6px 6px;
   font-size: 14px;
-  font-weight: 500;
+  font-family: siyuanmedium;
   color: var(--neutral-n1-d1);
-  margin-left: 8px;
 `
 
 export const ContentEmail2 = styled.span<{ active?: boolean }>`

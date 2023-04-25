@@ -8,7 +8,6 @@
 import { Form, Modal, Spin } from 'antd'
 import { ExclamationCircleFilled } from '@ant-design/icons'
 import CommonModal from '@/components/CommonModal'
-import ChoosePeople from '@/views/WorkReport/Formwork/ChoosePeople'
 import RelatedNeed from '@/views/LogManagement/components//RelatedNeed'
 import IconFont from '@/components/IconFont'
 import { AddWrap } from '@/components/StyleCommon'
@@ -31,6 +30,7 @@ import { templateDetail } from '@/services/formwork'
 import { setUpdateList } from '@store/workReport'
 import { getMessage } from '@/components/Message'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
+import ChoosePeople from '@/views/LogManagement/components/ChoosePeople'
 
 const LabelTitle = styled.span`
   font-size: 14px;

@@ -51,7 +51,6 @@ const Col = styled.div`
   margin-bottom: 12px;
   img {
     width: 24px;
-    height: 24px;
     border-radius: 50%;
   }
   &:hover {
@@ -234,7 +233,6 @@ const Addperson = (props: Props) => {
 
   // 添加团队部门
   const onAddConfirm = (data: any) => {
-    console.log(userType, 'userType', data)
     const values = data.map((item: any) => ({
       ...item,
       user_type: userType,
@@ -274,7 +272,7 @@ const Addperson = (props: Props) => {
           />
         </DefalutIcon>
       )
-    } else if (item.target_value.key === 'all' || item.target_type === 4) {
+    } else if (item.target_value?.key === 'all' || item?.target_type === 4) {
       return (
         <DefalutIcon bgc="rgba(125, 189, 225, 1)">
           <CommonIconFont
