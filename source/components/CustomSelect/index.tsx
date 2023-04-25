@@ -8,6 +8,7 @@ const CustomSelect = ({ children, ...props }: any) => {
       menuItemSelectedIcon={
         <CommonIconFont type="check" color="var(--primary-d1)" />
       }
+      suffixIcon={<CommonIconFont type="down" />}
     >
       {children}
     </Select>
