@@ -25,6 +25,7 @@ export const Time = styled.div`
 
 export const Wrap = styled.div<{ greps?: boolean }>`
   cursor: pointer;
+  margin: 0 12px;
   padding: 12px;
   display: flex;
   border-radius: 6px 6px 6px 6px;

@@ -697,10 +697,10 @@ const CreateDemandLeft = (props: Props) => {
         {props.projectId &&
           projectInfo.projectPermissions?.length > 0 &&
           (projectInfo.projectPermissions?.filter(
-            (i: any) => i.name === '编辑需求',
+            (i: any) => i.identity === 'b/story/update',
           )?.length > 0 ||
             projectInfo.projectPermissions?.filter(
-              (i: any) => i.name === '创建需求',
+              (i: any) => i.identity === 'b/story/save',
             )?.length > 0) && (
             <Form.Item name="tagIds" label={t('common.tag')}>
               <TagComponent

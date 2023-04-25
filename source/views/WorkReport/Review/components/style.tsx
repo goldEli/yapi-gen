@@ -97,7 +97,10 @@ export const SkeletonGroups = styled.div`
     display: inline-block;
     min-width: inherit;
     border-radius: 4px;
-    background: var(--primary-d1);
+    background: var(--neutral-n7);
+  }
+  .ant-skeleton-avatar {
+    background: var(--neutral-n7);
   }
 `
 
