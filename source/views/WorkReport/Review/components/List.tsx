@@ -220,6 +220,7 @@ const List = () => {
               alignItems: 'center',
               height: 52,
               cursor: 'pointer',
+              whiteSpace: 'nowrap',
             }}
             className="canClickDetail"
             onClick={() => onClickView(record)}

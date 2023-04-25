@@ -189,7 +189,7 @@ const SiteDrawer = () => {
       className={messageDrawer}
       forceRender
       bodyStyle={{
-        padding: '16px 12px 0 12px',
+        padding: '16px 0px 0px',
         boxSizing: 'border-box',
       }}
       width={400}
@@ -200,7 +200,7 @@ const SiteDrawer = () => {
       open={isVisible}
     >
       <Wrap>
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex', padding: '0px 12px' }}>
           <TabsWrap ref={tabBox}>
             {tabsValue.map((i: any) => (
               <TabsWrapItem
@@ -225,7 +225,7 @@ const SiteDrawer = () => {
           style={{
             display: 'flex',
             justifyContent: 'space-between',
-            margin: '16px 0 8px',
+            margin: '16px 12px 8px',
           }}
         >
           <GrepTitle>{t('today')}</GrepTitle>
@@ -240,7 +240,7 @@ const SiteDrawer = () => {
           style={{
             overflow: 'auto',
             height: 'calc(100vh - 230px)',
-            padding: '10px 16px',
+            padding: '10px 0px',
             display: 'flex',
             flexDirection: 'column',
             gap: '16px',
@@ -262,6 +262,8 @@ const SiteDrawer = () => {
             bottom: 0,
             left: 0,
             width: '100%',
+            padding: '0 12px',
+            background: 'var(--neutral-white-d1)',
           }}
         >
           <Tips>
