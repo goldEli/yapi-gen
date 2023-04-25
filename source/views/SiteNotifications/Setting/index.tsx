@@ -7,8 +7,8 @@ import {
   PermissionItem,
   TitleGroup,
 } from '@/views/ProjectSetting/components/ProjectSet'
-import { Breadcrumb, message } from 'antd'
-import React, { useEffect, useState } from 'react'
+import { Breadcrumb } from 'antd'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { First, Wrap } from './style'
 import { useDispatch, useSelector } from '@store/index'
