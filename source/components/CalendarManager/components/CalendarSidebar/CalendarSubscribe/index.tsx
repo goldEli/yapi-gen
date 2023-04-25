@@ -508,7 +508,7 @@ const CalendarSubscribe = () => {
 
   useEffect(() => {
     if (subscribeModal) {
-      getContactsCalendarData()
+      getContactsCalendarData(1)
     }
   }, [subscribeModal])
 
