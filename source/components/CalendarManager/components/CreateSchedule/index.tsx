@@ -313,6 +313,7 @@ const CreateSchedule = () => {
 
   // 添加提醒
   const onAddNotice = () => {
+    console.log(calendarConfig, relateConfig)
     const list = [
       ...[
         {
@@ -859,6 +860,7 @@ const CreateSchedule = () => {
                     }
                     onChange={value => onChangeNotice(value, i.id)}
                     getPopupContainer={n => n}
+                    optionFilterProp="label"
                   />
                   <IconFont
                     onClick={() => onDeleteNotice(i.id)}
@@ -908,7 +910,7 @@ const CreateSchedule = () => {
           )}
           <CommonButton type="primary" onClick={() => onConfirm()}>
             {scheduleModal.params?.id
-              ? t('calendarManager.edit')
+              ? t('calendarManager.confirm2')
               : t('calendarManager.create')}
           </CommonButton>
         </ModalFooter>

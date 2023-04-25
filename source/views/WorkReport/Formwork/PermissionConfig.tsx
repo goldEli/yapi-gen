@@ -126,12 +126,12 @@ const PermissionConfig = (props: PropsType) => {
     const d3V = d3.find(
       (item: any) =>
         item.user_type === 3 &&
-        (item.key === 'all' || item.target_value.key === 'all'),
+        (item.key === 'all' || item?.target_value?.key === 'all'),
     )
     const d1v = d1.find(
       (item: any) =>
         item.user_type === 1 &&
-        (item.key === 'all' || item.target_value.key === 'all'),
+        (item.key === 'all' || item?.target_value?.key === 'all'),
     )
     dispatch(
       setReportContent({
@@ -319,12 +319,12 @@ const PermissionConfig = (props: PropsType) => {
     const v3 = data3.find(
       (item: any) =>
         item.user_type === 3 &&
-        (item.key === 'all' || item.target_value.key === 'all'),
+        (item.key === 'all' || item.target_value?.key === 'all'),
     )
     const v1 = data1.find(
       (item: any) =>
         item.user_type === 1 &&
-        (item.key === 'all' || item.target_value.key === 'all'),
+        (item.key === 'all' || item.target_value?.key === 'all'),
     )
     dispatch(
       setReportContent({

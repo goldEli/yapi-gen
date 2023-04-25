@@ -33,6 +33,7 @@ const SearchItemList = styled.div`
     display: none;
   }
   &:hover {
+    width: 352px;
     cursor: pointer;
     background-color: var(--white-d6);
     box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
@@ -72,7 +73,7 @@ const SliderList = (props: any) => {
   let startX = 0
   const [dragItem, setDragItem] = useState<any>()
   const onDragStart = (ev: any) => {
-    const obj = { ...children, dragtype: 'edit' }
+    const obj = { ...children, dragtype: 'add' }
     setDragItem(obj)
     ev.dataTransfer.setData('item', JSON.stringify(obj))
     const imgDom = document.createElement('div')

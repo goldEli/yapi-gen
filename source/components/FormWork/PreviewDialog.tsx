@@ -8,7 +8,6 @@
 import { Form } from 'antd'
 import CommonModal from '@/components/CommonModal'
 import ChoosePeople from './ChoosePeople'
-import RelatedNeed from './RelatedNeed'
 import IconFont from '@/components/IconFont'
 // import { AddWrap } from '@/components/StyleCommon'
 import { useEffect, useRef, useState } from 'react'
