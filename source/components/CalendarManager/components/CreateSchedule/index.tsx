@@ -255,6 +255,19 @@ const CreateSchedule = () => {
 
   // 是否是全天
   const onChangeIsAll = (e: CheckboxChangeEvent) => {
+    // const hasNormal = new Date(
+    //   new Date().setMinutes(
+    //     new Date().getMinutes() +
+    //       (calendarConfig.schedule_configs?.schedule_default_duration || 0),
+    //   ),
+    // )
+    // console.log(
+    //   e.target.checked,
+    //   '121212',
+    //   [moment(new Date()), moment(hasNormal)],
+    //   hasNormal,
+    // )
+
     setIsAll(e.target.checked)
     setNoticeList([])
     form.setFieldsValue({
