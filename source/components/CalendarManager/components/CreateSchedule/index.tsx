@@ -104,7 +104,7 @@ const CreateSchedule = () => {
   const [isAll, setIsAll] = useState<boolean | undefined>(false)
   //   重复
   const [repeatValue, setRepeatValue] = useState<{
-    value: number
+    value?: number
     params: any
   }>({
     value: 0,
@@ -257,15 +257,19 @@ const CreateSchedule = () => {
   const onChangeIsAll = (e: CheckboxChangeEvent) => {
     setIsAll(e.target.checked)
     setNoticeList([])
-    form.setFieldsValue({
-      time,
-    })
     const format = e.target.checked ? 'YYYY-MM-DD' : 'YYYY-MM-DD HH:mm:ss'
+    const startTime = new Date()
+    const endTime = new Date(
+      new Date().setSeconds(
+        new Date().getSeconds() +
+          (calendarConfig.schedule_configs?.schedule_default_duration || 0),
+      ),
+    )
     // 通知右侧可视化
     dispatch(
       setVisualizationTime({
-        startTime: moment(time[0]).format(format),
-        endTime: moment(time[1]).format(format),
+        startTime: moment(startTime).format(format),
+        endTime: moment(endTime).format(format),
       }),
     )
   }
@@ -308,12 +312,10 @@ const CreateSchedule = () => {
   // 重复小弹窗确认事件
   const onRepeatConfirm = (params: any) => {
     setRepeatValue({ value: currentRepeat, params })
-    console.log(params, '=paramsparamsparamsparams')
   }
 
   // 添加提醒
   const onAddNotice = () => {
-    console.log(calendarConfig, relateConfig)
     const list = [
       ...[
         {
@@ -571,8 +573,6 @@ const CreateSchedule = () => {
       }, 100)
     }
   }, [scheduleModal])
-
-  console.log(repeatValue)
 
   return (
     <>

@@ -24,7 +24,6 @@ const useMaxWidth = (className: string, delta: number) => {
     }
   }, [className, delta])
 
-  console.log({ maxWidth }, 'useMaxWidth')
   return {
     maxWidth,
   }
