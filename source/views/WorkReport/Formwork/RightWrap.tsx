@@ -247,6 +247,7 @@ const RightFormWork = () => {
     sortData.forEach((el: any) => {
       Number(el.id) < 1 && delete el.id
     })
+    console.log(sortData, 'sortData1')
     return sortData
   }
   const getVerifyParams = (parmas: any) => {
@@ -346,6 +347,7 @@ const RightFormWork = () => {
       getMessage({ msg: errMsg, type: 'warning' })
       return
     }
+    console.log(parmas, 'parmas')
     if (activeItem?.id) {
       await upDateTemplate(parmas)
       getMessage({ msg: t('formWork.message6'), type: 'success' })

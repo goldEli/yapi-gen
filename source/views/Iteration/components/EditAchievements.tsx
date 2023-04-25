@@ -13,7 +13,7 @@ import {
   getIterateInfo,
   updateAchieve,
 } from '@/services/iterate'
-import { setIterateInfo } from '@store/iterate'
+import { setAchieveInfo, setIterateInfo } from '@store/iterate'
 import CommonButton from '@/components/CommonButton'
 import { getMessage } from '@/components/Message'
 
@@ -75,7 +75,7 @@ const EditAchievements = (props: Props) => {
           id: props.id,
         }
         const resultAchieve = await getAchieveInfo(obj)
-        dispatch(setIterateInfo(resultAchieve))
+        dispatch(setAchieveInfo(resultAchieve))
 
         const result = await getIterateInfo(obj)
         dispatch(setIterateInfo(result))

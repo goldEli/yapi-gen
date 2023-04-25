@@ -216,6 +216,7 @@ export const Container = () => {
                 style={{
                   height: '100%',
                   minWidth: `${1440 - (firstMenuCollapse ? changeLeft : 0)}px`,
+                  overflowY: 'auto',
                 }}
               >
                 <Outlet />

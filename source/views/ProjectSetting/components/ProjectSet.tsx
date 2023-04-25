@@ -87,10 +87,8 @@ const BtnHeader = styled.div`
   top: -59px;
 `
 const MenuItems = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
   padding: '0 16px',
-  height: 'calc(100% - 28px)',
+  maxHeight: 'calc(100% - 175px)',
   overflow: 'scroll',
 })
 
