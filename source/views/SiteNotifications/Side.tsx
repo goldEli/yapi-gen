@@ -2,13 +2,7 @@ import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
 import { useRef, useState, useEffect } from 'react'
-import ProjectDetailSide from '@/components/AllSide/ProjectDetailSide'
-import ProjectSide from '@/components/AllSide/ProjectSide'
-import AdminSide from '@/components/AllSide/AdminSide'
 import { useLocation } from 'react-router-dom'
-import MineSide from '@/components/AllSide/MineSide'
-import LogSide from '@/components/AllSide/LogSide'
-import HisSide from '@/components/AllSide/HisSide'
 import { DragLine } from '@/components/StyleCommon'
 import SiteNotificationSide from './components/SiteNotificationSide/SiteNotificationSide'
 import AllSide from './components/AllSide/AllSide'
@@ -65,7 +59,6 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
   const [endWidth, setEndWidth] = useState(200)
   const [focus, setFocus] = useState(false)
   const { pathname } = useLocation()
-  const [activeType, setActiveType] = useState(0)
 
   useEffect(() => {
     props.onChangeLeft(leftWidth)

@@ -26,7 +26,7 @@ import { useEffect, useRef, useState } from 'react'
 import { css } from '@emotion/css'
 
 const scrollListWrap = css`
-  padding: 0px 84px 0px 80px;
+  padding: 0px 4px 0px 80px;
   .ant-skeleton-active {
     .ant-skeleton-title,
     .ant-skeleton-avatar,
@@ -78,7 +78,7 @@ const Index = () => {
       } else if (type === 2) {
         setList(e => e.concat(re4.list))
       }
-    }, 500)
+    }, 1500)
   }
   const setReads = async (values: any) => {
     const res = await setReadApi(values)
@@ -168,6 +168,7 @@ const Index = () => {
             overflow: 'auto',
             height: 'calc(100vh - 230px)',
             padding: '10px 16px',
+            paddingRight: '80px',
             display: 'flex',
             flexDirection: 'column',
             gap: '16px',
