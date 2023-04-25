@@ -92,6 +92,24 @@ const useMoveCard = (props: {
   const onDragStop = (e: DraggableEvent, draggableData: DraggableData) => {
     e.stopPropagation()
     const { x, node, y, deltaX, deltaY, lastY } = draggableData
+    // 点击打开详情弹窗, 如果是拖动不打开
+    // if (!isDrag.current) {
+    if (!isDrag.current) {
+      dispatch(
+        setScheduleInfoDropdown({
+          show_date: props.data.date,
+          schedule_id: props.data.schedule_id,
+          visible: true,
+          x: x + 100,
+          y: y + 20,
+        }),
+      )
+    }
+    // 没有没有发生位移不进行修改
+    if (y - top === 0) {
+      setTimeRange(null)
+      return
+    }
     const time = getTimeByOffsetDistance(
       start_timestamp,
       end_timestamp,
@@ -111,21 +129,7 @@ const useMoveCard = (props: {
       )
       onModify(dayjs(newStartTime).valueOf(), dayjs(newEndTime).valueOf())
     }
-
     setTimeRange(null)
-
-    // 点击打开详情弹窗, 如果是拖动不打开
-    if (!isDrag.current) {
-      dispatch(
-        setScheduleInfoDropdown({
-          show_date: props.data.date,
-          schedule_id: props.data.schedule_id,
-          visible: true,
-          x: x + 100,
-          y: y + 20,
-        }),
-      )
-    }
   }
 
   const onResize = (
@@ -170,6 +174,10 @@ const useMoveCard = (props: {
     delta: ResizableDelta,
     position: Position,
   ) => {
+    if (delta.width === 0 && delta.height === 0) {
+      setTimeRange(null)
+      return
+    }
     if (dir === 'bottom') {
       const time = getTimeByAddDistance(end_timestamp, delta.height)
       onModify(start_timestamp, time.valueOf())

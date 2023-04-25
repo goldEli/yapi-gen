@@ -2,19 +2,14 @@ import styled from '@emotion/styled'
 import dayjs from 'dayjs'
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import CurrentTimeLine from '../CurrentTimeLine'
-import {
-  formatYYYYMMDD,
-  formatYYYYMMDDhhmmss,
-  oneHourHeight,
-} from '../../../config'
+import { formatYYYYMMDD, oneHourHeight } from '../../../config'
 import { useDispatch, useSelector } from '@store/index'
 import classNames from 'classnames'
 import NewCalendarArea from '../NewCalendarArea'
 import ScheduleCardList from '../ScheduleCardList'
-import QuickCreateScheduleModel from '../../QuickCreateScheduleModel'
 import { setQuickCreateScheduleModel } from '@store/calendarPanle'
 import { EventBus } from '@/components/CalendarManager/eventBus'
-import useCreateTimeRange from '../hooks/useCreateTimeRange'
+import useCreateTimeRange from '@/components/CalendarManager/hooks/useCreateTimeRange'
 
 interface TimescaleProps {}
 const Table = styled.table`

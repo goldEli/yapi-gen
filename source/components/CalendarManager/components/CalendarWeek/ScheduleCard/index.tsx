@@ -1,6 +1,4 @@
 import React from 'react'
-// import { setSchedule } from '@store/schedule'
-import useMaxWidth from '../hooks/useMaxWidth'
 import MoveCard from '../../MoveCard'
 import useMoveCard from '@/components/CalendarManager/hooks/useMoveCard'
 import useWeeks from '../hooks/useWeeks'
@@ -12,10 +10,8 @@ interface ScheduleCardProps {
 }
 
 const ScheduleCard: React.FC<ScheduleCardProps> = props => {
-  const { maxWidth } = useMaxWidth()
-
   const [localLeft, setLocalLeft] = React.useState(0)
-  const { getLeftByCurrentWeekDay, getDeltaLeft } = useWeeks()
+  const { maxWidth, getDeltaLeft } = useWeeks()
 
   React.useEffect(() => {
     setLocalLeft(props.left)

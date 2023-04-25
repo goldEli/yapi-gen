@@ -14,8 +14,8 @@ export const ScrollBox = styled.div`
 export const CalendarListBox = styled.div`
   background-color: #fff;
   overflow-y: auto;
-  /* height: 600px; */
   position: relative;
+  /* height: 700px; */
 `
 export const CalendarListItem = styled.div`
   border-top: 1px solid var(--neutral-n6-d1);
