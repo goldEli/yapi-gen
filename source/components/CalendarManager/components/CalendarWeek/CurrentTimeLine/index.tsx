@@ -3,7 +3,6 @@ import { getDistanceByTime } from '@/components/CalendarManager/utils'
 import styled from '@emotion/styled'
 import dayjs from 'dayjs'
 import React, { memo, useEffect, useMemo, useState } from 'react'
-import useMaxWidth from '../hooks/useMaxWidth'
 import useWeeks from '../hooks/useWeeks'
 
 interface CurrentTimeLineProps {
@@ -49,9 +48,8 @@ const TimeLine = styled.div`
 
 const CurrentTimeLine: React.FC<CurrentTimeLineProps> = props => {
   const { currentTime } = useCurrentTime()
-  const { weeks, getLeftByCurrentWeekDay } = useWeeks()
+  const { weeks, getLeftByCurrentWeekDay, maxWidth } = useWeeks()
   const [visible, setVisible] = useState(false)
-  const { maxWidth } = useMaxWidth()
 
   useEffect(() => {
     if (weeks.some(item => currentTime.isSame(dayjs(item), 'day'))) {
