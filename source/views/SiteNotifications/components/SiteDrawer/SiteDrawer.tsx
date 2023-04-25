@@ -240,7 +240,7 @@ const SiteDrawer = () => {
           style={{
             overflow: 'auto',
             height: 'calc(100vh - 230px)',
-            padding: '10px 16px',
+            padding: '10px 0px',
             display: 'flex',
             flexDirection: 'column',
             gap: '16px',
