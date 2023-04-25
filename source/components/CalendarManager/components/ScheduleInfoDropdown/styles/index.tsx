@@ -50,10 +50,12 @@ export const iconBox = css`
     color: var(--neutral-white-d6);
   }
   .moreOperate {
-    position: relative;
-    top: -4px;
     margin-left: 6px;
     color: var(--neutral-white-d6);
+    cursor: pointer;
+    label {
+      cursor: pointer;
+    }
   }
 `
 export const BoxTip = styled.div`
@@ -110,8 +112,8 @@ export const ModalChildren = styled.div`
 `
 
 export const ScheduleInfoContentBox = styled.div<{ showFooter: boolean }>`
-  padding: 16px;
-  /* height: calc(100% - 160px); */
+  padding: 16px 0px;
+  box-sizing: border-box;
   height: ${props =>
     props.showFooter ? 'calc(100% - 160px)' : 'calc(100% - 0px)'};
   overflow-y: scroll;
@@ -120,10 +122,11 @@ export const ScheduleInfoContentBox = styled.div<{ showFooter: boolean }>`
 export const ScheduleInfoContentItem = styled.div`
   display: flex;
   align-items: flex-start;
+  align-content: center;
   margin-bottom: 14px;
-  /* &:hover {
-    background: var(--hover-d3);
-  } */
+  /* border: 1px solid red; */
+  padding: 0px 16px;
+  box-sizing: border-box;
 `
 export const contentTip = css`
   color: var(--neutral-n1-d1);
@@ -131,14 +134,25 @@ export const contentTip = css`
   margin-left: 10px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
   img {
     width: 24px;
     height: 22px;
     margin-right: 4px;
+    vertical-align: top;
+    position: relative;
+    top: -3px;
   }
   span:nth-child(2) {
     cursor: pointer;
+    position: relative;
+    top: 0px;
+    vertical-align: middle;
+  }
+  .username {
+    position: relative;
+    top: 3px;
   }
 `
 export const PersonList = styled.div`
@@ -160,6 +174,7 @@ export const PersonItem = styled.div`
     height: 24px;
     margin-right: 8px;
     border-radius: 24px;
+    vertical-align: bottom;
   }
   span:nth-child(2) {
     color: var(--neutral-n3);
