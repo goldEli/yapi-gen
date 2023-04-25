@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setCheckedTime } from '@store/calendar'
 import { getNowDate } from '@/tools'
 import classNames from 'classnames'
+import { setCalenderYearWeekValue } from '@store/calendarPanle'
 dayjs.extend(dayLocaleData)
 const CalendarHeader = styled.div`
   width: 100%;
@@ -83,6 +84,11 @@ const DXCalendar: React.FC = () => {
       value={dayjs(checkedTime ? checkedTime : getNowDate())}
       onChange={value => {
         dispatch(setCheckedTime(value.format('YYYY-MM-DD')))
+        let yearWeekValue =
+          dayjs(value.format('YYYY-M-D')).year() +
+          '/' +
+          dayjs(value.format('YYYY-M-D')).week()
+        dispatch(setCalenderYearWeekValue(yearWeekValue))
       }}
       // onPanelChange={(value, mode) => {
       //   console.log(value.format('YYYY-MM-DD'), mode)

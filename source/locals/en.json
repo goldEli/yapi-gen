@@ -1465,6 +1465,7 @@
     "free": "Free",
     "dayof": "（Day {{day}} of {{days}}）",
     "list": "List",
-    "acrossDay": "Cross day"
+    "acrossDay": "Cross day",
+    "conflict":"Conflict"
   }
 }

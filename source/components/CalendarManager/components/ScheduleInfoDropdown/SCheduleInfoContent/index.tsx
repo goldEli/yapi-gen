@@ -28,9 +28,12 @@ const toggleDropDown = css`
   transition: all 0.3s;
 `
 const hover = css`
-  color: red !important;
+  /* border: 1px solid; */
+  height: 30px;
+  display: flex;
+  align-items: center !important;
   &:hover {
-    color: red;
+    background: var(--hover-d3);
   }
 `
 interface IProps {
@@ -48,7 +51,6 @@ const ScheduleInfoContent: React.FC<IProps> = props => {
         </span>
         <div className={contentTip}>
           <span>
-            {/* <img src={scheduleInfo?.user?.avatar} /> */}
             <img
               src={
                 scheduleInfo?.user?.avatar
@@ -56,7 +58,9 @@ const ScheduleInfoContent: React.FC<IProps> = props => {
                   : defaultImage
               }
             />
-            {scheduleInfo?.user?.name}（{t('calendarManager.owner')}）
+            <span className="username">
+              {scheduleInfo?.user?.name}（{t('calendarManager.owner')}）
+            </span>
           </span>
         </div>
       </ScheduleInfoContentItem>

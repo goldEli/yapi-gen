@@ -30,6 +30,7 @@ import dayjs from 'dayjs'
 import weekday from 'dayjs/plugin/weekday'
 import CommonModal from '@/components/CommonModal'
 import { scheduleInfoDelete, scheduleInfoTransfer } from '@/services/schedule'
+import IconFont from '@/components/IconFont'
 dayjs.extend(weekday)
 const { Option } = Select
 interface ScheduleInfoDropdownProps {}
@@ -113,16 +114,20 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
               <ScheduleInfoIcon type="edit" />
             </span>
           ) : null}
+          {scheduleInfo?.is_creator ? (
+            <span
+              onClick={() => {
+                setIsVisible(true)
+              }}
+            >
+              <ScheduleInfoIcon type="delete" />
+            </span>
+          ) : null}
 
-          <span
-            onClick={() => {
-              setIsVisible(true)
-            }}
-          >
-            <ScheduleInfoIcon type="delete" />
-          </span>
           <div className="moreOperate">
-            <label onClick={() => setShowTipBox(!showTipBox)}>...</label>
+            <label onClick={() => setShowTipBox(!showTipBox)}>
+              <IconFont style={{ fontSize: '18px' }} type="more-01" />
+            </label>
             {showTipBox ? (
               <BoxTip>
                 <span

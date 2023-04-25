@@ -36,7 +36,6 @@ const Box = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-top: 4px;
-  top: 4px;
   z-index: 100;
   background: #fff;
   position: sticky;
@@ -45,6 +44,7 @@ const Box = styled.div`
   z-index: 100;
   height: 70px;
   flex-shrink: 0;
+  /* border: 1px solid; */
 `
 const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
   const navigate = useNavigate()
@@ -215,6 +215,7 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
     let yearWeekValue =
       dayjs(newWeekValue).year() + '/' + dayjs(newWeekValue).week()
     dispatch(setCalenderYearWeekValue(yearWeekValue))
+    console.log('yearWeekValue0000', yearWeekValue)
   }
   const listenMonth = (): void => {
     const { current } = iconTypeRef

@@ -7,6 +7,7 @@ import dayjs from 'dayjs'
 import IconFont from '@/components/IconFont'
 import { isDateIntersection } from '@/tools/index'
 import { getColorWithOpacityPointOne, getColor } from '../../utils'
+import { Popover, Tooltip } from 'antd'
 import {
   CalendarListBox,
   CalendarListItem,
@@ -64,7 +65,7 @@ const CalendarList: React.FC<CalendarListProps> = props => {
         break
       }
     }
-
+    console.log('totalHeight', totalHeight)
     if (CalendarListBoxRef.current) {
       CalendarListBoxRef.current.scrollTo({
         top: totalHeight,
@@ -148,9 +149,14 @@ const CalendarList: React.FC<CalendarListProps> = props => {
                     item.list[idx - 1]?.end_datetime,
                   )) &&
                 item.list.length > 1 ? (
-                  <span>
-                    <IconFont type="warning-02"></IconFont>
-                  </span>
+                  <Tooltip
+                    placement="top"
+                    title={t('calendarManager.conflict')}
+                  >
+                    <span>
+                      <IconFont type="warning-02"></IconFont>
+                    </span>
+                  </Tooltip>
                 ) : null}
               </TimeItem>
             ))}
