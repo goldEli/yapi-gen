@@ -195,7 +195,6 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
       ...i,
       value: i.id === id ? value : i.value,
     }))
-    console.log(result, '=resultresult')
     setNoticeList(result)
   }
 

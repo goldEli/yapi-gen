@@ -75,7 +75,7 @@ const Setting = () => {
       ).length,
     },
     {
-      name: '通知设置',
+      name: t('notification_settings'),
       icon: 'settings',
       content: <ProjectNote />,
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>

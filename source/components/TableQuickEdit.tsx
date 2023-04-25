@@ -126,8 +126,9 @@ const TableQuickEdit = (props: Props) => {
   } else {
     isCanEdit =
       projectInfo.projectPermissions?.length > 0 &&
-      projectInfo.projectPermissions?.filter((i: any) => i.name === '编辑需求')
-        ?.length > 0
+      projectInfo.projectPermissions?.filter(
+        (i: any) => i.identity === 'b/story/update',
+      )?.length > 0
     const paramsData = getParamsData(searchParams)
     projectId = paramsData.id
     canClick = isCan && isCanEdit

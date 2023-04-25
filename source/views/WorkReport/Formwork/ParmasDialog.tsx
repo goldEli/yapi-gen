@@ -1,6 +1,7 @@
 /* eslint-disable require-unicode-regexp */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
+// 组件参数配置弹窗
 import CommonModal from '@/components/CommonModal'
 import FormTitleSmall from '@/components/FormTitleSmall'
 import IconFont from '@/components/IconFont'
