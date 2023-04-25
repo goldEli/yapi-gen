@@ -73,7 +73,7 @@ const CalendarForCalendarYear: React.FC<
         setScheduleListModal({
           visible: true,
           top: 76,
-          left: 100,
+          left: 10,
           date: dayjs(date).date(),
           scheduleListData: yearViewScheduleList[selectDate],
         }),
