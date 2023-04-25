@@ -12,7 +12,7 @@ import {
   setListViews,
   setScheduleInfo,
 } from '@store/schedule'
-import { Empty, Spin } from 'antd'
+import { Empty, Spin, Tooltip } from 'antd'
 import {
   getColorWithOpacityPointOne,
   getColor,
@@ -192,9 +192,14 @@ const ScheduleSearch: React.FC<CalendarListProps> = props => {
                           item.list[idx - 1]?.end_datetime,
                         )) &&
                       item.list.length > 1 ? (
-                        <span>
-                          <IconFont type="warning-02"></IconFont>
-                        </span>
+                        <Tooltip
+                          placement="top"
+                          title={t('calendarManager.conflict')}
+                        >
+                          <span>
+                            <IconFont type="warning-02"></IconFont>
+                          </span>
+                        </Tooltip>
                       ) : null}
                     </TimeItem>
                   ))}
