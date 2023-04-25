@@ -105,4 +105,7 @@ export const messageDrawer = css`
   .ant-drawer-mask {
     background: rgba(0, 0, 0, 0);
   }
+  .ant-skeleton {
+    padding: 0 12px;
+  }
 `

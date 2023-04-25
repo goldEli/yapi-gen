@@ -263,7 +263,7 @@ const SiteDrawer = () => {
             left: 0,
             width: '100%',
             padding: '0 12px',
-            background: 'var(-neutral-white-d1)',
+            background: 'var(--neutral-white-d1)',
           }}
         >
           <Tips>
