@@ -274,7 +274,7 @@ const Addperson = (props: Props) => {
           />
         </DefalutIcon>
       )
-    } else if (item.target_value.key === 'all' || item.target_type === 4) {
+    } else if (item.target_value?.key === 'all' || item?.target_type === 4) {
       return (
         <DefalutIcon bgc="rgba(125, 189, 225, 1)">
           <CommonIconFont
