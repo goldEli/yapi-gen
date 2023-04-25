@@ -55,7 +55,7 @@ const CarWrap = styled.div<{ disabled?: boolean }>`
   &:hover {
     cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
     box-shadow: 0px 0px 10px 0px rgba(9, 9, 9, 0.09);
-    /* border: 1px solid transparent; */
+    border: 1px solid transparent;
     user-select: ${props => (props.disabled ? 'none' : 'inherit')};
   }
   img {
@@ -63,7 +63,7 @@ const CarWrap = styled.div<{ disabled?: boolean }>`
     height: 205px;
     position: absolute;
     top: 0;
-    left: 0;
+    left: -1px;
     z-index: 2;
   }
 `
