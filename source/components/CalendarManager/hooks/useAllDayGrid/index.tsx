@@ -14,7 +14,7 @@ import classNames from 'classnames'
 import { css } from '@emotion/css'
 
 const selectedBg = css`
-  background-color: var(--neutral-n6-d1);
+  background-color: var(--function-tag6);
 `
 
 const borderBottom = css`
