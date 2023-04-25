@@ -317,7 +317,7 @@ export const AllDayScheduleItem = styled.div<{
   padding-left: 8px;
   background-color: ${props => props.bg};
   font-size: 14px;
-
+  border-radius: 6px;
   color: var(--neutral-n1-d1);
   display: flex;
   align-items: center;
