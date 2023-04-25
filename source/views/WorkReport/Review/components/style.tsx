@@ -289,8 +289,6 @@ export const CommentFooter = styled.div<{ isReview?: boolean }>`
     margin-top: 12px;
     display: flex;
     justify-content: flex-end;
-    margin-top: 12px;
-    margin-bottom: 24px;
   }
   .ant-form-item {
     margin-bottom: 0px;
