@@ -255,30 +255,21 @@ const CreateSchedule = () => {
 
   // 是否是全天
   const onChangeIsAll = (e: CheckboxChangeEvent) => {
-    // const hasNormal = new Date(
-    //   new Date().setMinutes(
-    //     new Date().getMinutes() +
-    //       (calendarConfig.schedule_configs?.schedule_default_duration || 0),
-    //   ),
-    // )
-    // console.log(
-    //   e.target.checked,
-    //   '121212',
-    //   [moment(new Date()), moment(hasNormal)],
-    //   hasNormal,
-    // )
-
     setIsAll(e.target.checked)
     setNoticeList([])
-    form.setFieldsValue({
-      time,
-    })
     const format = e.target.checked ? 'YYYY-MM-DD' : 'YYYY-MM-DD HH:mm:ss'
+    const startTime = new Date()
+    const endTime = new Date(
+      new Date().setSeconds(
+        new Date().getSeconds() +
+          (calendarConfig.schedule_configs?.schedule_default_duration || 0),
+      ),
+    )
     // 通知右侧可视化
     dispatch(
       setVisualizationTime({
-        startTime: moment(time[0]).format(format),
-        endTime: moment(time[1]).format(format),
+        startTime: moment(startTime).format(format),
+        endTime: moment(endTime).format(format),
       }),
     )
   }
@@ -321,12 +312,10 @@ const CreateSchedule = () => {
   // 重复小弹窗确认事件
   const onRepeatConfirm = (params: any) => {
     setRepeatValue({ value: currentRepeat, params })
-    console.log(params, '=paramsparamsparamsparams')
   }
 
   // 添加提醒
   const onAddNotice = () => {
-    console.log(calendarConfig, relateConfig)
     const list = [
       ...[
         {
