@@ -1,5 +1,6 @@
+/* eslint-disable camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import * as http from '../tools/http'
-
 // 模板
 export const createTemplate: any = async (parmas: any) => {
   const response = await http.post('createTemplate', { ...parmas })
@@ -17,7 +18,10 @@ export const deleteTemplate: any = async (parmas: any) => {
 }
 
 export const templateDetail: any = async (parmas: any) => {
-  const response = await http.get('templateDetail', { id: parmas.id })
+  const response = await http.get('templateDetail', {
+    id: parmas.id,
+    is_edit: parmas.is_edit,
+  })
   return response
 }
 
