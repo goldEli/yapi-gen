@@ -34,7 +34,7 @@ const RightFormWorkStyle = styled.div`
   flex: 1;
   overflow: hidden;
   overflow-y: auto;
-  padding-right: 24px;
+  /* padding-right: 24px; */
 `
 const Title = styled.div`
   padding: 24px;
@@ -43,7 +43,7 @@ const Title = styled.div`
   font-family: SiYuanMedium;
 `
 const HeaderOperate = styled.div`
-  padding-left: 24px;
+  padding: 0 24px;
   height: 32px;
   display: flex;
   justify-content: space-between;
@@ -145,6 +145,7 @@ const BtnRow = styled.div`
   height: 80px;
   display: flex;
   justify-content: flex-end;
+  padding-right: 24px;
 `
 const RightFormWork = () => {
   const [t] = useTranslation()

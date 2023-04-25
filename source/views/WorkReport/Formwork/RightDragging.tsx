@@ -19,7 +19,7 @@ const Container = styled.div`
   }
 `
 const SearchItemList = styled.div`
-  width: 375px;
+  width: 352px;
   height: 44px;
   border-radius: 8px;
   background-color: var(--neutral-n8);
@@ -33,6 +33,7 @@ const SearchItemList = styled.div`
     display: none;
   }
   &:hover {
+    width: 352px;
     cursor: pointer;
     background-color: var(--white-d6);
     box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
