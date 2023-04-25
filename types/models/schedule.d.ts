@@ -81,7 +81,8 @@ declare namespace Model.Schedule {
     join_member_status?: number
     is_creator?: boolean
     title?: string
-    repeat_type: number
+    // 0-不重复 1-每天重复 2-每周重复 3-每月重复 4-每年重复
+    repeat_type?: 0 | 1 | 2 | 3 | 4
     repeat_choose: number[] | 'null' | '[]'
     repeat_end_date: string
     repeat_end_num: number

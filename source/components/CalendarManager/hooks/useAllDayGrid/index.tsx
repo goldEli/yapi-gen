@@ -42,6 +42,7 @@ const useAllDayGrid = (props: {
       [borderBottom]: props.showBorderBottom,
     })
   }, [props.showSelectedBg, props.showBorderRight, props.showBorderBottom])
+
   const openQuickCreateScheduleModel = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
   ) => {
@@ -83,6 +84,11 @@ const useAllDayGrid = (props: {
     }
   }
   const onClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    // 如果拖拽了日程 不触发创建
+    if (window.isMovingSchedule) {
+      return
+    }
+
     openQuickCreateScheduleModel(e)
     dispatch(setSelectedDayInMonth(info?.datetime))
   }

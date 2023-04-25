@@ -15,7 +15,6 @@ const useWeeks = () => {
   const maxWidth = React.useMemo(() => {
     return width / 7
   }, [width])
-  console.log('useWeeks', { maxWidth })
 
   const getCurrentWeekDayByLeft = (left: number) => {
     let index = 0
