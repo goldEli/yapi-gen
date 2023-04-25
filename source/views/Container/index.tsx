@@ -212,7 +212,11 @@ export const Container = () => {
             )}
             <Main left={changeLeft}>
               <div
-                style={{ height: '100%', minWidth: `${1440 - changeLeft}px` }}
+                style={{
+                  height: '100%',
+                  minWidth: `${1440 - changeLeft}px`,
+                  overflowY: 'auto',
+                }}
               >
                 <Outlet />
               </div>
