@@ -13,37 +13,8 @@ interface NewCalendarAreaProps {
   }
 }
 
-// const step = 15
 const NewCalendarArea: React.FC<NewCalendarAreaProps> = props => {
   const { getLeftByCurrentWeekDay } = useWeeks()
-  // const schedule_default_duration =
-  //   useSelector(
-  //     store =>
-  //       store.calendar?.calendarConfig?.schedule_configs
-  //         ?.schedule_default_duration,
-  //   ) ?? 0
-
-  // const startTime = React.useMemo(() => {
-  //   const key = props.timeZone[0]
-  //   return dayjs(key)
-  // }, [props.timeZone])
-
-  // const endTime = React.useMemo(() => {
-  //   if (!startTime) {
-  //     return dayjs(startTime)
-  //   }
-  //   // 走了多少步，每步15分钟
-  //   const steps = Math.ceil(props.distance / oneMinuteHeight / step)
-
-  //   // 默认创建的时间范围, 如果没有就是30分钟
-  //   const defaultTimeRange = schedule_default_duration
-  //     ? schedule_default_duration / 60
-  //     : 30
-
-  //   const dis = Math.max(steps * step, oneMinuteHeight * defaultTimeRange)
-  //   const time = getTimeByAddDistance(startTime.valueOf(), dis)
-  //   return dayjs(time)
-  // }, [props.distance, startTime, schedule_default_duration])
 
   const left = React.useMemo(() => {
     const key = props.timeZone[0]

@@ -1,8 +1,9 @@
 import React from 'react'
 import useCreateTimeRange from '../useCreateTimeRange'
 import { EventBus } from '../../eventBus'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { setQuickCreateScheduleModel } from '@store/calendarPanle'
+import { oneMinuteHeight } from '../../config'
 
 const useCreateScheduleArea = () => {
   const [timeZone, setTimeZone] = React.useState<string[]>([])
@@ -10,6 +11,22 @@ const useCreateScheduleArea = () => {
   const tableRef = React.useRef<HTMLTableElement>(null)
   const timeRange = useCreateTimeRange(timeZone?.[0], distance)
   const timeRangeRef = React.useRef(timeRange)
+  // 毫秒
+  const schedule_default_duration = useSelector(
+    store =>
+      store.calendar.calendarConfig?.schedule_configs
+        ?.schedule_default_duration,
+  )
+
+  const setDefaultDistance = (defaultDistance?: number) => {
+    const duration = defaultDistance ? defaultDistance / 60 : 0
+    setDistance(duration * oneMinuteHeight)
+  }
+
+  React.useEffect(() => {
+    setDefaultDistance(schedule_default_duration)
+  }, [schedule_default_duration])
+
   const dispatch = useDispatch()
   React.useEffect(() => {
     timeRangeRef.current = timeRange
@@ -27,8 +44,7 @@ const useCreateScheduleArea = () => {
 
   const onSelectTimeZone = React.useCallback(
     (e: React.MouseEvent, id: string) => {
-      console.log('mousedown', id)
-      setDistance(0)
+      setDefaultDistance(schedule_default_duration)
       // 点击空白重置
       if (timeZone.length) {
         cancelCreateSchedule()
