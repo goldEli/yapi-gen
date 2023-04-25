@@ -9,14 +9,14 @@ import { useEffect, useState, useMemo } from 'react'
 import useWeeks from './useWeeks'
 import useList from './useList'
 import { getConflictsTimeRange } from '@/components/CalendarManager/utils'
-import useMaxWidth from '@/components/CalendarManager/hooks/useMaxWith'
+// import useMaxWidth from '@/components/CalendarManager/hooks/useMaxWith'
 
 const format = 'YYYY-MM-DD'
 const useCalculationConflict = () => {
-  const { weeks } = useWeeks()
-  const { maxWidth: width } = useMaxWidth('.time-scale', 58)
-  const maxWidth = width / 7
-
+  const { weeks, maxWidth } = useWeeks()
+  // const { maxWidth: width } = useMaxWidth('.time-scale', 58)
+  // const maxWidth = width / 7
+  console.log('useCalculationConflict', { maxWidth })
   const [data, setData] = useState<
     { info: Model.Schedule.Info; width: number; left: number }[]
   >([])
