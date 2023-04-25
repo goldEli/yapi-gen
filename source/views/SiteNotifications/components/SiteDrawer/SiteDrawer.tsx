@@ -97,7 +97,7 @@ const SiteDrawer = () => {
       } else if (type === 2) {
         setList(e => e.concat(re4.list))
       }
-    }, 500)
+    }, 1500)
   }
   const changeActive = (id: string) => {
     setList([])

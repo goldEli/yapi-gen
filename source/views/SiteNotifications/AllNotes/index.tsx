@@ -77,7 +77,7 @@ const Index = () => {
       } else if (type === 2) {
         setList(e => e.concat(re4.list))
       }
-    }, 500)
+    }, 1500)
   }
   const setReads = async (values: any) => {
     const res = await setReadApi(values)
