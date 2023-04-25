@@ -167,10 +167,9 @@ export const useDynamicColumns = (state: any) => {
                 height: 8,
                 borderRadius: '50%',
                 marginRight: 8,
-                background:
-                  text === 1 ? 'var(--neutral-n5)' : 'var(--neutral-n5)',
+                background: text === 2 ? 'var(--neutral-n5)' : '#43ba9a',
               }}
-            />{' '}
+            />
             {text === 1 ? t('common.job1') : t('common.job2')}
           </div>
         )

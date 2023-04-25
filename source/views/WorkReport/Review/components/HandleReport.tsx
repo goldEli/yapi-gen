@@ -39,6 +39,18 @@ const LabelTitle = styled.span`
   color: #323233;
   line-height: 22px;
 `
+const HandleWrap = styled.div`
+  font-family: inherit;
+`
+
+const HandleSpin = styled(Spin)`
+  img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%);
+  }
+`
 const HeadWrap = styled.div<{ isCanImport: boolean }>`
   display: flex;
   justify-content: space-between;
@@ -556,16 +568,16 @@ const HandleReport = (props: any) => {
   }
 
   return (
-    <CommonModal
-      hasFooter={!reportDetail}
-      width={784}
-      title={props.visibleEditText}
-      isVisible={props.visibleEdit}
-      onClose={close}
-      onConfirm={confirm}
-      confirmText={t('report.list.submit')}
-    >
-      <Spin spinning={!reportDetail} indicator={<NewLoadingTransition />}>
+    <HandleWrap>
+      <CommonModal
+        hasFooter={!reportDetail}
+        width={784}
+        title={props.visibleEditText}
+        isVisible={props.visibleEdit}
+        onClose={close}
+        onConfirm={confirm}
+        confirmText={t('report.list.submit')}
+      >
         <div
           style={{
             height: 'calc(90vh - 136px)',
@@ -574,67 +586,78 @@ const HandleReport = (props: any) => {
           }}
           ref={wrapRef}
         >
-          <HeadWrap isCanImport={reportDetail?.prev_report_id}>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              {userInfo?.avatar ? (
-                <img
+          {!reportDetail && (
+            <HandleSpin
+              spinning={!reportDetail}
+              indicator={<NewLoadingTransition />}
+            />
+          )}
+          {reportDetail ? (
+            <>
+              <HeadWrap isCanImport={reportDetail?.prev_report_id}>
+                <div
                   style={{
-                    width: 32,
-                    height: 32,
-                    borderRadius: 16,
+                    display: 'flex',
+                    alignItems: 'center',
                   }}
-                  src={userInfo?.avatar}
-                />
-              ) : (
-                <span>
-                  <CommonUserAvatar size="large" />
-                </span>
-              )}
+                >
+                  {userInfo?.avatar ? (
+                    <img
+                      style={{
+                        width: 32,
+                        height: 32,
+                        borderRadius: 16,
+                      }}
+                      src={userInfo?.avatar}
+                    />
+                  ) : (
+                    <span>
+                      <CommonUserAvatar size="large" />
+                    </span>
+                  )}
 
-              <div className="reportTitleWrap">
-                <div className="titleText">
-                  {`${userInfo?.name}的${reportDetail?.name ?? ''}`}
-                  <span className="dateText">
-                    {reportDetail?.submit_cycle === 4
-                      ? '--'
-                      : props.isSupply
-                      ? getReportDateText(props.date)
-                      : reportDetail?.submitCycleDate.filter((v: string) => v)
-                          .length > 0 &&
-                        getReportDateText(reportDetail?.submitCycleDate)}
-                  </span>
+                  <div className="reportTitleWrap">
+                    <div className="titleText">
+                      {`${userInfo?.name}的${reportDetail?.name ?? ''}`}
+                      <span className="dateText">
+                        {reportDetail?.submit_cycle === 4
+                          ? '--'
+                          : props.isSupply
+                          ? getReportDateText(props.date)
+                          : reportDetail?.submitCycleDate.filter(
+                              (v: string) => v,
+                            ).length > 0 &&
+                            getReportDateText(reportDetail?.submitCycleDate)}
+                      </span>
+                    </div>
+                    <div className="submitTimeText">
+                      {t('report.list.prevDateSubmit')}：
+                      {reportDetail?.updated_at ?? ''}
+                    </div>
+                  </div>
                 </div>
-                <div className="submitTimeText">
-                  {t('report.list.prevDateSubmit')}：
-                  {reportDetail?.updated_at ?? ''}
+                <div className="importText" onClick={importPreviousArticle}>
+                  <IconFont
+                    style={{
+                      transform: 'rotate(180deg)',
+                      marginRight: 4,
+                      fontSize: 16,
+                    }}
+                    type="Import"
+                  />
+                  <span className="notCopy">{t('report.list.import')}</span>
                 </div>
-              </div>
-            </div>
-            <div className="importText" onClick={importPreviousArticle}>
-              <IconFont
-                style={{
-                  transform: 'rotate(180deg)',
-                  marginRight: 4,
-                  fontSize: 16,
-                }}
-                type="Import"
-              />
-              <span className="notCopy">{t('report.list.import')}</span>
-            </div>
-          </HeadWrap>
-          <Form form={form} layout="vertical">
-            {reportDetail?.template_content_configs?.map((item: any) => {
-              return <div key={item.id}>{getFormItemHtml(item)}</div>
-            })}
-          </Form>
+              </HeadWrap>
+              <Form form={form} layout="vertical">
+                {reportDetail?.template_content_configs?.map((item: any) => {
+                  return <div key={item.id}>{getFormItemHtml(item)}</div>
+                })}
+              </Form>
+            </>
+          ) : null}
         </div>
-      </Spin>
-    </CommonModal>
+      </CommonModal>
+    </HandleWrap>
   )
 }
 

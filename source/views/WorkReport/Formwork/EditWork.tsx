@@ -40,7 +40,7 @@ const RightTabs = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   width: 400px;
-  padding-left: 24px;
+  padding: 0 24px;
   border-left: 1px solid var(--neutral-n6-d1);
 `
 interface PropsType {

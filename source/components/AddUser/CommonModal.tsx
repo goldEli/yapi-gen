@@ -165,7 +165,7 @@ const TreeStyle = styled(DirectoryTree)`
   width: 216px;
   overflow-y: auto;
   overflow-x: auto;
-  height: 308px;
+  height: 318px;
   .ant-tree-checkbox-inner {
     width: 16px;
     height: 16px;
