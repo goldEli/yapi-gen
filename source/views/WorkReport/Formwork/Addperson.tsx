@@ -51,7 +51,6 @@ const Col = styled.div`
   margin-bottom: 12px;
   img {
     width: 24px;
-    height: 24px;
     border-radius: 50%;
   }
   &:hover {
@@ -234,7 +233,6 @@ const Addperson = (props: Props) => {
 
   // 添加团队部门
   const onAddConfirm = (data: any) => {
-    console.log(userType, 'userType', data)
     const values = data.map((item: any) => ({
       ...item,
       user_type: userType,

@@ -297,7 +297,7 @@ const HeaderRight = () => {
         dispatch(setCreateDemandProps({ overallCreate: true }))
         return
       case 'schedule':
-        dispatch(setScheduleModal({ visible: true }))
+        dispatch(setScheduleModal({ visible: true, params: { isAll: true } }))
         return
       case 'calendar':
         dispatch(setCalendarModal({ visible: true }))
