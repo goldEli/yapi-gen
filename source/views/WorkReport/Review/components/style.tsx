@@ -169,15 +169,17 @@ export const NextWrap = styled.div`
 `
 
 export const UpWrap = styled(NextWrap)<{ isOnly?: boolean }>`
-  border: 0px;
-  border-radius: 0px;
-  background: none;
+  border-right: ${props =>
+    props.isOnly ? '1px solid var(--neutral-n6-d1)' : '1px solid transparent'};
+  border-top-right-radius: ${props => (props.isOnly ? '6' : '0')}px;
+  border-bottom-right-radius: ${props => (props.isOnly ? '6' : '0')}px;
 `
 
 export const DownWrap = styled(NextWrap)<{ isOnly?: boolean }>`
-  border: 0px;
-  /* border-radius: 0px; */
-  background: none;
+  border-left: ${props =>
+    props.isOnly ? '1px solid var(--neutral-n6-d1)' : '1px solid transparent'};
+  border-top-left-radius: ${props => (props.isOnly ? '6' : '0')}px;
+  border-bottom-left-radius: ${props => (props.isOnly ? '6' : '0')}px;
 `
 
 export const ChangeIconBox = styled.div`
