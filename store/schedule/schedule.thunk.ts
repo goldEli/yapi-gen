@@ -63,7 +63,9 @@ export const getScheduleDaysOfList = createAsyncThunk(
 export const modifySchedule =
   (params: API.Schedule.ModifySchedule.Params) =>
   async (dispatch: AppDispatch) => {
-    await services.schedule.modifySchedule(params)
+    await services.schedule.modifySchedule(params).catch(() => {
+      dispatch(refreshCalendarPanelScheduleList())
+    })
     await dispatch(refreshCalendarPanelScheduleList())
   }
 export const getScheduleInfo = createAsyncThunk(
