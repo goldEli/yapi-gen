@@ -1,15 +1,13 @@
 import styled from '@emotion/styled'
 import dayjs from 'dayjs'
-import React, { useCallback, useEffect, useMemo, useRef } from 'react'
+import React, { useMemo } from 'react'
 import CurrentTimeLine from '../CurrentTimeLine'
 import { formatYYYYMMDD, oneHourHeight } from '../../../config'
-import { useDispatch, useSelector } from '@store/index'
+import { useSelector } from '@store/index'
 import classNames from 'classnames'
 import NewCalendarArea from '../NewCalendarArea'
 import ScheduleCardList from '../ScheduleCardList'
-import { setQuickCreateScheduleModel } from '@store/calendarPanle'
-import { EventBus } from '@/components/CalendarManager/eventBus'
-import useCreateTimeRange from '@/components/CalendarManager/hooks/useCreateTimeRange'
+import useCreateScheduleArea from '@/components/CalendarManager/hooks/useCreateScheduleArea'
 
 interface TimescaleProps {}
 const Table = styled.table`
@@ -49,75 +47,8 @@ const Table = styled.table`
 const Timescale: React.FC<TimescaleProps> = props => {
   const { checkedTime } = useSelector(store => store.calendar)
 
-  const [timeZone, setTimeZone] = React.useState<string[]>([])
-  const [distance, setDistance] = React.useState(0)
-  const tableRef = React.useRef<HTMLTableElement>(null)
-  const timeRange = useCreateTimeRange(timeZone?.[0], distance)
-  const timeRangeRef = useRef(timeRange)
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    timeRangeRef.current = timeRange
-  }, [timeRange])
-
-  const cancelCreateSchedule = () => {
-    setTimeZone([])
-  }
-
-  useEffect(() => {
-    EventBus.getInstance().register('cancelCreateSchedule', () => {
-      cancelCreateSchedule()
-    })
-  }, [])
-
-  const onSelectTimeZone = useCallback(
-    (e: React.MouseEvent, id: string) => {
-      // 点击空白重置
-      if (timeZone.length) {
-        cancelCreateSchedule()
-        dispatch(
-          setQuickCreateScheduleModel({
-            visible: false,
-          }),
-        )
-        return
-      }
-
-      let startY = e.screenY
-      function onMousemove(event: MouseEvent) {
-        const deltaY = event.screenY - startY
-        setDistance(deltaY)
-      }
-      if (tableRef.current === null) {
-        return
-      }
-      const dom = tableRef.current
-      function onMouseUp(event: MouseEvent) {
-        dom.removeEventListener('mousemove', onMousemove)
-        const target = event.target as HTMLDivElement
-        // 打开创建日程弹窗
-        dispatch(
-          setQuickCreateScheduleModel({
-            visible: true,
-            x: event.offsetX + 58,
-            y: target.offsetTop,
-            startTime: timeRangeRef.current.startTime,
-            endTime: timeRangeRef.current.endTime,
-            isAll: false,
-          }),
-        )
-
-        dom.removeEventListener('mouseup', onMouseUp)
-      }
-      dom.removeEventListener('mousemove', onMousemove)
-      dom.addEventListener('mousemove', onMousemove)
-      dom.removeEventListener('mouseup', onMouseUp)
-      dom.addEventListener('mouseup', onMouseUp)
-
-      setTimeZone([id])
-    },
-    [timeZone, timeRange],
-  )
+  const { tableRef, timeZone, timeRange, onSelectTimeZone } =
+    useCreateScheduleArea()
 
   const content = useMemo(() => {
     return Array(24)
@@ -166,7 +97,6 @@ const Timescale: React.FC<TimescaleProps> = props => {
       <CurrentTimeLine />
       <NewCalendarArea timeRange={timeRange} />
       <ScheduleCardList />
-      {/* <QuickCreateScheduleModel containerClassName=".time-scale" /> */}
     </Table>
   )
 }
