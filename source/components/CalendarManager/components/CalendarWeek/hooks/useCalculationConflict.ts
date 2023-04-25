@@ -16,7 +16,6 @@ const useCalculationConflict = () => {
   const { weeks, maxWidth } = useWeeks()
   // const { maxWidth: width } = useMaxWidth('.time-scale', 58)
   // const maxWidth = width / 7
-  console.log('useCalculationConflict', { maxWidth })
   const [data, setData] = useState<
     { info: Model.Schedule.Info; width: number; left: number }[]
   >([])

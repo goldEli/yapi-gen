@@ -10,5 +10,7 @@ declare global {
       // 包含几个日程
       length?: number
     }
+    // 是否正在拖拽日程
+    isMovingSchedule?: boolean
   }
 }

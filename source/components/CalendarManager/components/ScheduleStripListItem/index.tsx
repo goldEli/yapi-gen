@@ -170,6 +170,7 @@ const ScheduleStripListItem: React.FC<ScheduleListItemProps> = props => {
 
   // 点击日程
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    window.isMovingSchedule = true
     e.stopPropagation()
     /**
      * 不能拖动
@@ -207,6 +208,14 @@ const ScheduleStripListItem: React.FC<ScheduleListItemProps> = props => {
     const onMouseup = async (e: MouseEvent) => {
       // 重置
       window.calendarMonthPanelType = null
+      /**
+       * 为什么要加 setTimeout
+       * 此设置需要阻止click的执行， mouseup 比 click 先执行
+       * 所以将次设置放到宏任务队列后面
+       */
+      setTimeout(() => {
+        window.isMovingSchedule = false
+      }, 0)
       window.removeEventListener('mousemove', handleMove)
       /**
        * 点击查看详情
