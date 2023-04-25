@@ -25,13 +25,28 @@ export const marginRight = css`
   margin-right: 2px;
 `
 
+export const borderRadiusLeft = css`
+  border-bottom-left-radius: 6px;
+  border-top-left-radius: 6px;
+`
+export const borderRadiusRight = css`
+  border-bottom-right-radius: 6px;
+  border-top-right-radius: 6px;
+`
+
 const ScheduleStrip: React.ForwardRefRenderFunction<
   ScheduleStripHandle,
   ScheduleStripProps
 > = (props, forwardedRef) => {
   const { data } = props
-  const { isAllDay, isAcrossDayFirstDay, isAcrossDayButNotFirstDay } =
-    useAllDay({ data })
+  const {
+    isAllDay,
+    isAcrossDayFirstDay,
+    isAcrossDayButNotFirstDay,
+    isFullDay,
+    isAcrossDay,
+    isAcrossDayAndLastDay,
+  } = useAllDay({ data })
 
   // 是否展示内容
   // 如果跨天且不是第一天 不展示
@@ -59,12 +74,20 @@ const ScheduleStrip: React.ForwardRefRenderFunction<
   // hover 文字颜色
   const hoverText = getColor(data.color)
 
+  /**
+   * 默认左右右边距且有圆角
+   * 跨天日程需要视觉上需要连接起来
+   * 1. 跨天第一天没有左边距
+   * 2. 跨天最后一天有右边距
+   */
   // 为了保证跨天日程能够连接起来
   // 跨天非第一没有边距
   // 跨天第一只有左边距
   const classnames = classNames({
     [marginLeft]: !isAcrossDayButNotFirstDay,
-    [marginRight]: !(isAcrossDayButNotFirstDay || isAcrossDayFirstDay),
+    [borderRadiusLeft]: !isAcrossDayButNotFirstDay,
+    [marginRight]: !isAcrossDay || isAcrossDayAndLastDay,
+    [borderRadiusRight]: !isAcrossDay || isAcrossDayAndLastDay,
   })
 
   return (

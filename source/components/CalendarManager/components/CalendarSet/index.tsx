@@ -157,11 +157,11 @@ const CalendarSet = () => {
       value: 0,
       key: 'hide_reject_schedule',
     },
-    {
-      label: t('calendarManager.reduce_the_brightness_of_completed_schedules'),
-      value: 1,
-      key: 'reduce_finish_schedule_light',
-    },
+    // {
+    //   label: t('calendarManager.reduce_the_brightness_of_completed_schedules'),
+    //   value: 1,
+    //   key: 'reduce_finish_schedule_light',
+    // },
     {
       label: t('calendarManager.display_lunar_calendar'),
       value: 2,
@@ -389,7 +389,7 @@ const CalendarSet = () => {
                   )
                 }
                 value={formParams?.notification_configs?.not_all_day_remind}
-                options={relateConfig.schedule.remind_types}
+                options={relateConfig.schedule.un_all_day_remind}
                 style={{ width: 320 }}
                 getPopupContainer={n => n}
               />

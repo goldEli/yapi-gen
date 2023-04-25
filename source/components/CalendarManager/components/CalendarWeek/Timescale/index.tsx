@@ -83,6 +83,7 @@ const Timescale: React.FC<TimescaleProps> = props => {
   const onSelectTimeZone = React.useCallback(
     (e: React.MouseEvent, id: string) => {
       console.log('mousedown', id)
+      setDistance(0)
       // 点击空白重置
       if (timeZone.length) {
         cancelCreateSchedule()
@@ -179,7 +180,7 @@ const Timescale: React.FC<TimescaleProps> = props => {
   return (
     <Table ref={tableRef} className="time-scale">
       {content}
-      <NewCalendarArea timeZone={timeZone} distance={distance} />
+      <NewCalendarArea timeZone={timeZone} timeRange={timeRange} />
       <ScheduleCardList />
     </Table>
   )

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { getStyleValue } from '../../utils'
 
-let timer: NodeJS.Timeout
+// let timer: NodeJS.Timeout
 const useMaxWidth = (className: string, delta: number) => {
   const [maxWidth, setMaxWidth] = useState(0)
 
@@ -13,10 +13,10 @@ const useMaxWidth = (className: string, delta: number) => {
     handle()
     const dom = document.querySelector(className)
     const resize = new ResizeObserver(() => {
-      clearTimeout(timer)
-      timer = setTimeout(() => {
-        handle()
-      }, 500)
+      // clearTimeout(timer)
+      // timer = setTimeout(() => {
+      handle()
+      // }, 500)
     })
     dom && resize.observe(dom)
     return () => {
@@ -24,8 +24,7 @@ const useMaxWidth = (className: string, delta: number) => {
     }
   }, [className, delta])
 
-  useEffect(() => {}, [])
-
+  console.log({ maxWidth }, 'useMaxWidth')
   return {
     maxWidth,
   }

@@ -1,8 +1,7 @@
 import { useSelector } from '@store/index'
 import dayjs from 'dayjs'
 import React from 'react'
-import useMaxWidth from './useMaxWidth'
-import { formatYYYYMMDDhhmmss } from '@/components/CalendarManager/config'
+import useMaxWidth from '@/components/CalendarManager/hooks/useMaxWith'
 
 const format = 'YYYY-MM-DD'
 const useWeeks = () => {
@@ -12,7 +11,11 @@ const useWeeks = () => {
     [selectedWeek],
   )
 
-  const { maxWidth } = useMaxWidth()
+  const { maxWidth: width } = useMaxWidth('.time-scale', 58)
+  const maxWidth = React.useMemo(() => {
+    return width / 7
+  }, [width])
+  console.log('useWeeks', { maxWidth })
 
   const getCurrentWeekDayByLeft = (left: number) => {
     let index = 0
@@ -75,6 +78,7 @@ const useWeeks = () => {
 
   return {
     weeks,
+    maxWidth,
     getCurrentWeekDayByLeft,
     getLeftByCurrentWeekDay,
     getTimeAfterAcrossDay,
