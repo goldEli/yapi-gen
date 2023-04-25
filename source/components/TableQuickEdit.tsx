@@ -130,7 +130,7 @@ const TableQuickEdit = (props: Props) => {
         (i: any) => i.identity === 'b/story/update',
       )?.length > 0
     const paramsData = getParamsData(searchParams)
-    projectId = paramsData.id
+    projectId = paramsData?.id
     canClick = isCan && isCanEdit
   }
 
