@@ -1,7 +1,7 @@
 /* eslint-disable new-cap */
 import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
-import { Breadcrumb, Select, Switch, message, Space } from 'antd'
+import { Breadcrumb, Switch, Space } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { First, Wrap } from '../Setting/style'
 import {
@@ -14,15 +14,14 @@ import {
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
 import { editMyAllNoteSet } from '@/services/SiteNotifications'
-import {
-  setMyConfiguration,
-  setMyEmailConfiguration,
-} from '@store/SiteNotifications'
+import { setMyEmailConfiguration } from '@store/SiteNotifications'
 import { getMessage } from '@/components/Message'
+import { useNavigate } from 'react-router-dom'
 
 const Email = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [choose, setChoose] = useState<any>([])
   const [active, setActive] = useState<any>(true)
   const email = useSelector(store => store.user.loginInfo.email)
@@ -73,9 +72,14 @@ const Email = () => {
           }
         >
           <Breadcrumb.Item>
-            <span style={{ color: 'var(--neutral-n1-d1)' }}>
+            <a
+              onClick={() => {
+                navigate('/SiteNotifications/AllNote/1')
+              }}
+              style={{ color: 'var(--neutral-n1-d1)' }}
+            >
               {t('notification')}
-            </span>
+            </a>
           </Breadcrumb.Item>
           <Breadcrumb.Item>{t('email_notification')}</Breadcrumb.Item>
         </Breadcrumb>
