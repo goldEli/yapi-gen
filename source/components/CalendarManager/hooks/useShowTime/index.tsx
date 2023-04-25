@@ -2,7 +2,7 @@ import React from 'react'
 import useAllDay from '../useAllDay'
 import { useTranslation } from 'react-i18next'
 
-const useShowTime = (data: Model.Schedule.Info) => {
+const useShowTime = (data?: Model.Schedule.Info) => {
   const { isAcrossDay, isFullDay } = useAllDay({ data })
   const [t] = useTranslation()
 
@@ -14,8 +14,8 @@ const useShowTime = (data: Model.Schedule.Info) => {
     if (isAcrossDay) {
       return t('calendarManager.acrossDay')
     }
-    return data.start_time
-  }, [data.start_time, isFullDay, isAcrossDay])
+    return data?.start_time
+  }, [data?.start_time, isFullDay, isAcrossDay])
 
   return { timeStr }
 }

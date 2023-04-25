@@ -24,6 +24,7 @@ import {
 } from '../styles'
 import React, { useState, useEffect, useImperativeHandle } from 'react'
 import { refreshCalendarPanelScheduleList } from '@store/schedule/schedule.thunk'
+import { setShowScheduleInfoTip } from '@store/schedule'
 import ScheduleInfoIcon from './../ScheduleInfoIcon'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import dayjs from 'dayjs'
@@ -42,7 +43,7 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
   const [showTipBox, setShowTipBox] = useState(false)
   const [isExit, setIsExit] = useState<number>(0)
   const [userId, setUserId] = useState<number>(0)
-
+  const { showScheduleInfoTip } = useSelector(state => state.schedule)
   const { scheduleInfo } = useSelector(state => state.schedule)
   const [t] = useTranslation()
   const disPatch = useDispatch()
@@ -88,6 +89,7 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
   return (
     <ScheduleInfoHeader
       onClick={e => {
+        showScheduleInfoTip && disPatch(setShowScheduleInfoTip(false))
         showTipBox && setShowTipBox(!showTipBox)
         e.stopPropagation()
       }}
@@ -125,10 +127,10 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
           ) : null}
 
           <div className="moreOperate">
-            <label onClick={() => setShowTipBox(!showTipBox)}>
+            <label onClick={() => disPatch(setShowScheduleInfoTip(true))}>
               <IconFont style={{ fontSize: '18px' }} type="more-01" />
             </label>
-            {showTipBox ? (
+            {showScheduleInfoTip ? (
               <BoxTip>
                 <span
                   onClick={() => {

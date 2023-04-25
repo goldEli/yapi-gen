@@ -1,11 +1,8 @@
 import React from 'react'
 import styled from '@emotion/styled'
-import { getColor } from '@/components/CalendarManager/utils'
 import { useSelector } from '@store/index'
-import { Dot, Time, Title } from '../ScheduleStrip/styled'
 import useColor from '@/components/CalendarManager/hooks/useColor'
-import classNames from 'classnames'
-import { useTranslation } from 'react-i18next'
+import ScheduleStripContent from '../ScheduleStrip/ScheduleStripContent'
 
 interface MoveActiveItemProps {
   idx: number
@@ -35,8 +32,7 @@ const Container = styled.div<{
 `
 
 const MoveActiveItem: React.FC<MoveActiveItemProps> = props => {
-  const { getBgColor, getColorClassName, getSecondaryColorClassName } =
-    useColor()
+  const { getBgColor } = useColor()
   const { monthMoveScheduleActiveInfo } = useSelector(
     store => store.calendarPanel,
   )
@@ -46,14 +42,6 @@ const MoveActiveItem: React.FC<MoveActiveItemProps> = props => {
     return res
   }, [monthMoveScheduleActiveInfo?.visibleList, props.idx])
 
-  const isAllDay =
-    monthMoveScheduleActiveInfo.startSchedule?.is_span_day ||
-    monthMoveScheduleActiveInfo.startSchedule?.is_all_day === 1
-  const [t] = useTranslation()
-
-  const time = isAllDay
-    ? t('calendarManager.allDay')
-    : monthMoveScheduleActiveInfo.startSchedule?.start_time
   return (
     <MoveActiveItemBox
       bg={getBgColor(monthMoveScheduleActiveInfo.startSchedule?.color ?? 0)}
@@ -65,7 +53,10 @@ const MoveActiveItem: React.FC<MoveActiveItemProps> = props => {
           props.idx
         }
       >
-        <Dot
+        <ScheduleStripContent
+          data={monthMoveScheduleActiveInfo.startSchedule}
+        />
+        {/* <Dot
           bg={getColor(monthMoveScheduleActiveInfo.startSchedule?.color ?? 0)}
         />
         <Time className={classNames('text', getSecondaryColorClassName())}>
@@ -73,7 +64,7 @@ const MoveActiveItem: React.FC<MoveActiveItemProps> = props => {
         </Time>
         <Title className={classNames('text', getColorClassName())}>
           {monthMoveScheduleActiveInfo.startSchedule?.subject}
-        </Title>
+        </Title> */}
       </Container>
     </MoveActiveItemBox>
   )

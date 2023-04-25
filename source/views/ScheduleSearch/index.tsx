@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
 import { useNavigate } from 'react-router-dom'
 import { isDateIntersection } from '@/tools/index'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
 import {
   setYearViewsList,
   setScheduleList,
@@ -72,7 +73,11 @@ const ScheduleSearch: React.FC<CalendarListProps> = props => {
   }, [inputDefaultValue])
   return (
     <ScheduleSearchListBox ref={CalendarListBoxRef}>
-      <Spin spinning={loading} size="large" tip="Loading">
+      <Spin
+        spinning={loading}
+        size="large"
+        indicator={<NewLoadingTransition />}
+      >
         <ScheduleSearchWrap>
           <BackBox
             onClick={() => {

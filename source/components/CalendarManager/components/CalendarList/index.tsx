@@ -36,6 +36,7 @@ const CalendarList: React.FC<CalendarListProps> = props => {
   const [t] = useTranslation()
   useEffect(() => {
     const params = {
+      has_other_month: 0,
       year: dayjs(calenderListValue).year(),
       month: dayjs(calenderListValue).month() + 1,
       calendar_ids: checkedCalendarList.map(
