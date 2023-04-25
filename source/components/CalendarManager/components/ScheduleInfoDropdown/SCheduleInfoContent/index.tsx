@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from '@store/index'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
 import UploadAttach from '@/components/UploadAttach'
+import { setShowScheduleInfoTip } from '@store/schedule'
 import defaultImage from '/public/avatarWhite.png'
 import {
   ScheduleInfoContentBox,
@@ -43,8 +44,15 @@ const ScheduleInfoContent: React.FC<IProps> = props => {
   const { scheduleInfo } = useSelector(state => state.schedule)
   const [toggleStatus, setToggleStatus] = useState(false)
   const [t] = useTranslation()
+  const dispatch = useDispatch()
   return (
-    <ScheduleInfoContentBox showFooter={props.showFooter}>
+    <ScheduleInfoContentBox
+      showFooter={props.showFooter}
+      onClick={() => {
+        console.log('content')
+        dispatch(setShowScheduleInfoTip(false))
+      }}
+    >
       <ScheduleInfoContentItem>
         <span>
           <ScheduleInfoIcon type="database" />
