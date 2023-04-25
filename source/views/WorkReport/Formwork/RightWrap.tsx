@@ -167,7 +167,7 @@ const RightFormWork = () => {
   } = useSelector(store => store.formWork)
   const getTemplateDetail = async () => {
     setIsSpinning(true)
-    await dispatch(templateDetail({ id: activeItem.id }))
+    await dispatch(templateDetail({ id: activeItem.id, is_edit: 1 }))
     setIsSpinning(false)
   }
   useEffect(() => {
