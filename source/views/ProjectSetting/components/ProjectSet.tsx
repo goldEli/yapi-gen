@@ -88,8 +88,8 @@ const BtnHeader = styled.div`
 `
 const MenuItems = styled.div({
   padding: '0 16px',
-  maxHeight: 'calc(100% - 175px)',
-  overflow: 'scroll',
+  maxHeight: 'calc(100vh - 184px)',
+  overflowY: 'auto',
 })
 
 const MenuItem = styled.div<{ isActive: boolean }>(
