@@ -116,7 +116,6 @@ const FormWorkSide = () => {
     })
     dispatch(setTemplateName(activeItem?.name))
   }, [activeItem])
-  console.log(activeItem, 'activeItem')
   const onConfirm = async (name: string) => {
     const filterName = dataList.find((el: any) => el.name === name)
     if (filterName) {
