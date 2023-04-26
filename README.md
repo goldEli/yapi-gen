@@ -16,6 +16,32 @@ language
 localStorage.getItem('language') || 'zh'
 ```
 
+###### 自动生成国际化资源
+
+添加文件`script\translate\zhArr.js`
+
+```js
+// 数组中天剑要翻译的中文
+const zhArr = ['你好', '中国制造']
+
+module.exports = zhArr
+```
+
+然后执行命令
+
+```shell
+npm run tran
+```
+
+输出
+
+```js
+{
+  objZh: { hello: '你好', made_in_China: '中国制造' },
+  objEn: { hello: 'Hello', made_in_China: 'Made in China' }
+}
+```
+
 ##### 字重
 
 字重不要用`font-weight`，使用字体样式
