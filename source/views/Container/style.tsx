@@ -20,14 +20,17 @@ export const CreateIcon = styled.div`
 `
 
 export const CreateWrap = styled.div`
-  height: 32px;
-  width: 32px;
+  height: 24px;
+  width: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
+  border-radius: 50%;
+  background: var(--primary-d1);
+  color: var(--neutral-white-d7);
+  cursor: pointer;
   &:hover {
-    background: var(--hover-d1);
+    background: var(--auxiliary-b2);
   }
 `
 
