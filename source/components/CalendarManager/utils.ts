@@ -1,5 +1,11 @@
 import dayjs from 'dayjs'
-import { colorMap, oneHourHeight, oneMinuteHeight } from './config'
+import {
+  colorMap,
+  formatYYYYMMDD,
+  formatYYYYMMDDhhmmss,
+  oneHourHeight,
+  oneMinuteHeight,
+} from './config'
 
 export function sortScheduleList(list: Model.Schedule.Info[]) {
   // 跨天
@@ -115,9 +121,23 @@ export const isSameTime = (time1: number | string, time2: number | string) => {
 export const getMinutesByDistance = (height: number) => {
   return (oneHourHeight / 60) * height
 }
-
 export const addMinutes = (time: number, minutes: number) => {
-  return dayjs(time).add(minutes, 'minute')
+  const currentTime = dayjs(time)
+  let newTime = currentTime.add(minutes, 'minute')
+  const a = dayjs(currentTime.format(formatYYYYMMDD))
+  const b = dayjs(newTime.format(formatYYYYMMDD))
+  /**
+   * 修改时间处理
+   * 不能超过23:59:59，超过了就重置为23:59:59
+   * 不能小于00:00:00，小于了就重置为00:00:00
+   */
+  if (b.isAfter(a)) {
+    newTime = dayjs(`${currentTime.format(formatYYYYMMDD)} 23:59:59`)
+  }
+  if (b.isBefore(a)) {
+    newTime = dayjs(`${currentTime.format(formatYYYYMMDD)} 00:00:00`)
+  }
+  return newTime
 }
 
 export const getTimeByOffsetDistance = (
