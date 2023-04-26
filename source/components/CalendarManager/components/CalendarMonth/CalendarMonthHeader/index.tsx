@@ -14,7 +14,7 @@ const CalendarMonthHeaderBox = styled.div`
   display: flex;
   position: sticky;
   left: 0;
-  top: 52px;
+  top: 70px;
   background: var(--neutral-white-d1);
   z-index: 100;
 `
