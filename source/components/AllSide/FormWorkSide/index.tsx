@@ -116,6 +116,7 @@ const FormWorkSide = () => {
     })
     dispatch(setTemplateName(activeItem?.name))
   }, [activeItem])
+  console.log(activeItem, 'activeItem')
   const onConfirm = async (name: string) => {
     const filterName = dataList.find((el: any) => el.name === name)
     if (filterName) {
@@ -123,7 +124,6 @@ const FormWorkSide = () => {
     }
     dispatch(setDataList([{ name }, ...dataList]))
     setIsActive(dataList?.length - 1)
-    dispatch(setActiveItem({ name }))
     dispatch(
       setTemplateContentConfigs([
         {
@@ -164,6 +164,7 @@ const FormWorkSide = () => {
       }),
     )
     dispatch(setFillingRequirements(claerConfig))
+    dispatch(setActiveItem({ name }))
     setIsVisible(false)
   }
   const getDataList = async () => {
