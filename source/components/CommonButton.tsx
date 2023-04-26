@@ -110,9 +110,10 @@ const icon = css`
   }
 `
 
-const ButtonWrap = styled(Button)`
+const ButtonWrap = styled(Button)<{ size?: any }>`
   display: flex;
   align-items: center;
+  height: ${props => (props.size === 'small' ? '24px' : '32px')};
 `
 
 interface Props {
@@ -159,7 +160,6 @@ const CommonButton = (props: Props) => {
   const commonCss = css`
     ${allButton[props.type]};
     border-radius: 6px;
-    height: 32px;
     padding: 0 16px;
     box-sizing: border-box;
     /* font-size: var(--font14); */
@@ -181,6 +181,7 @@ const CommonButton = (props: Props) => {
   if (props.icon && props.type !== 'icon') {
     return (
       <ButtonWrap
+        size={props.size}
         className={commonCss}
         onClick={props.onClick}
         disabled={props.isDisable}
