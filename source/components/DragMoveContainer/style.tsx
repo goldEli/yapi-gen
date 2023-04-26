@@ -10,10 +10,14 @@ export const ResizeLine = styled.div`
   pointer-events: none;
 `
 
-export const ResizeBar = styled.div`
-  width: 240px;
-  max-width: 700px;
-  min-width: 240px;
+export const ResizeBar = styled.div<{
+  min: string
+  max: string
+  width: string
+}>`
+  width: ${props => props.width};
+  max-width: ${props => props.max};
+  min-width: ${props => props.min};
   height: inherit;
   resize: horizontal;
   cursor: ew-resize;
