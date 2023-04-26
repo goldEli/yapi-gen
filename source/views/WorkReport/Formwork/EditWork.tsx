@@ -9,7 +9,6 @@ import RightDragging from './RightDragging'
 import ParmasDialog from './ParmasDialog'
 import { useDispatch, useSelector } from '@store/index'
 import { setTemplateContentConfigs, setEditSave } from '@store/formWork'
-import { message } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { getMessage } from '@/components/Message'
 
