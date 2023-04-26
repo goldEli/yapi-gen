@@ -157,7 +157,7 @@ const DemandComment = (props: Props) => {
         attachment: params.attachment,
         a_user_ids: params.a_user_ids,
       })
-      getMessage({ msg: t('common.replaySuccess'), type: 'success' })
+      getMessage({ msg: t('project.replaySuccess'), type: 'success' })
       getList()
       setIsVisibleComment(false)
     } catch (error) {
