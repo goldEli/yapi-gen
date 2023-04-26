@@ -244,19 +244,6 @@ const WrapLeftBox = () => {
         </InfoItem>
       </WrapLeft>
     </DragMoveContainer>
-    // <div
-    //   style={{
-    //     position: 'relative',
-    //     height: 'calc(100vh - 242px)',
-    //     margin: '16px 0',
-    //   }}
-    // >
-    //   <div className="resize_bar2" />
-    //   <div className="resize_line" />
-    //   <div className="resize_save2">
-
-    //   </div>
-    // </div>
   )
 }
 
