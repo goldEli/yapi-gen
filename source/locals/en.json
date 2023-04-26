@@ -1320,6 +1320,7 @@
     "clear": "Empty"
   },
   "calendarManager": {
+    "end_repeat_time_cannot_be_less_than_end_time": "End repeat time cannot be less than end time",
     "repeat_end_time": "Deadline: ",
     "repeat_end_count": "Deadline Times: ",
     "day_repeat": "Repeat every {num}} day,",
@@ -1466,6 +1467,6 @@
     "dayof": "（Day {{day}} of {{days}}）",
     "list": "List",
     "acrossDay": "Cross day",
-    "conflict":"Conflict"
+    "conflict": "Conflict"
   }
 }

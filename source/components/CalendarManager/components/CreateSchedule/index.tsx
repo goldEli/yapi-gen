@@ -162,6 +162,23 @@ const CreateSchedule = () => {
   const onConfirm = async (next?: boolean) => {
     await form.validateFields()
     let values = form.getFieldsValue()
+    // 选择的结束重复时间不能小于选择的结束时间
+    if (repeatValue.params.repeat_end_type === 1) {
+      const endTime = moment(values.time[1], 'YYYY-MM-DD HH:mm:ss')
+      const repeatEndTime = moment(
+        repeatValue.params.repeat_end_date,
+        'YYYY-MM-DD HH:mm:ss',
+      )
+      if (endTime.diff(repeatEndTime) > 0) {
+        getMessage({
+          msg: t(
+            'calendarManager.end_repeat_time_cannot_be_less_than_end_time',
+          ),
+          type: 'warning',
+        })
+        return
+      }
+    }
     const repeatValueParams = repeatValue.value ? { ...repeatValue.params } : {}
     values.is_busy = status
     values.is_all_day = isAll ? 1 : 2
@@ -577,6 +594,7 @@ const CreateSchedule = () => {
   return (
     <>
       <RepeatModal
+        entTime={time ? time[1] : ''}
         repeatParams={repeatValue}
         isVisible={isRepeatVisible}
         title={relateConfig.schedule.repeat_types[currentRepeat]?.label}
