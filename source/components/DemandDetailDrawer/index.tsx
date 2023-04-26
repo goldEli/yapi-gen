@@ -53,6 +53,13 @@ import {
 import CommonButton from '../CommonButton'
 import { saveDemandDetailDrawer } from '@store/demand/demand.thunk'
 import { getMessage } from '../Message'
+import styled from '@emotion/styled'
+
+const DrawerStyled = styled(Drawer)`
+  .ant-drawer-content-wrapper {
+    transition: 0s;
+  }
+`
 
 const DemandDetailDrawer = () => {
   const normalState = {
@@ -109,6 +116,7 @@ const DemandDetailDrawer = () => {
   // 拖动线条
   const onDragLine = (e: React.MouseEvent) => {
     const moveHandler = (ev: React.MouseEvent) => {
+      console.log('move')
       setFocus(true)
       const drawer: HTMLElement = document.querySelector(
         '.drawerRoot .ant-drawer-content-wrapper',
@@ -122,7 +130,8 @@ const DemandDetailDrawer = () => {
       if (nextWidth <= leftWidth) return
       drawer!.style.width = innerWidth - ev.clientX + 'px'
     }
-    const debounceWrap: any = throttle(moveHandler, 60, {})
+    // const debounceWrap: any = throttle(moveHandler, 60, {})
+    const debounceWrap: any = moveHandler
     document.addEventListener('mousemove', debounceWrap)
     document.addEventListener('mouseup', () => {
       setFocus(false)
@@ -341,7 +350,7 @@ const DemandDetailDrawer = () => {
         onChangeVisible={() => setIsDelete(!isDelete)}
         onConfirm={onDeleteConfirm}
       />
-      <Drawer
+      <DrawerStyled
         closable={false}
         placement="right"
         bodyStyle={{ padding: 0, position: 'relative' }}
@@ -526,7 +535,7 @@ const DemandDetailDrawer = () => {
             </>
           )}
         </Content>
-      </Drawer>
+      </DrawerStyled>
     </>
   )
 }
