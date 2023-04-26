@@ -51,7 +51,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
         topRight: false,
       }}
       dragAxis="y"
-      bounds=".calendar-day-box"
+      bounds=".time-scale"
       onDragStart={onDragStart}
       onDrag={onDrag}
       onDragStop={onDragStop}

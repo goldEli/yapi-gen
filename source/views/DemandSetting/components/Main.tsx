@@ -343,7 +343,7 @@ const Main = (props: any) => {
           size={14}
           color="var(--neutral-n3)"
         />
-        <span>{t('more_folding') as string}</span>
+        <span style={{ marginLeft: '8px' }}>{t('more_folding') as string}</span>
       </TitleStyle>
       {moreIcon && (
         <TabsDragging
