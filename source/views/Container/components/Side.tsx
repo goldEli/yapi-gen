@@ -10,7 +10,7 @@ import { useLocation } from 'react-router-dom'
 import MineSide from '@/components/AllSide/MineSide'
 import LogSide from '@/components/AllSide/LogSide'
 import HisSide from '@/components/AllSide/HisSide'
-import { DragLine } from '@/components/StyleCommon'
+import { DragLine, MouseDom } from '@/components/StyleCommon'
 import FormWorkSide from '@/components/AllSide/FormWorkSide'
 
 const SideWrap = styled.div<{ collapse: boolean; permission?: boolean }>`
@@ -192,11 +192,13 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
         {getClassSide()}
       </SideMain>
 
-      <DragLine
-        onMouseDown={onDragLine}
-        style={{ left: leftWidth - 1 }}
+      <MouseDom
         active={focus}
-      />
+        onMouseDown={onDragLine}
+        style={{ left: leftWidth - 6 }}
+      >
+        <DragLine active={focus} className="line" />
+      </MouseDom>
       <FoldIcon onClick={onChangeSide}>
         <CommonIconFont
           type={firstMenuCollapse ? 'right' : 'left'}
