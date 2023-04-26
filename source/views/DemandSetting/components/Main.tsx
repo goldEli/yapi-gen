@@ -37,8 +37,8 @@ const Main = (props: any) => {
   const { getCategoryConfigDataList, activeCategory, getProjectFieIdsData } =
     useSelector(store => store.category)
   const { projectInfo } = useSelector(store => store.project)
-  const [getCategoryConfigT, setGetCategoryConfigT] = useState<any>()
-  const [getCategoryConfigF, setGetCategoryConfigF] = useState<any>()
+  const [getCategoryConfigT, setGetCategoryConfigT] = useState<any>([])
+  const [getCategoryConfigF, setGetCategoryConfigF] = useState<any>([])
   const [isVisible, setIsVisible] = useState<boolean>(false)
   const [delItem, setDelItem] = useState<any>()
   const [addAndEditVisible, setAddAndEditVisible] = useState<boolean>(false)
@@ -139,14 +139,20 @@ const Main = (props: any) => {
     if (configType === 1) {
       const arrData = Array.from(getCategoryConfigF)
       arrData.splice(draggingIndex, 0, newItem)
-      setGetCategoryConfigF(arrData)
+      // 插入空白区域的情况
+      draggingIndex !== -1
+        ? setGetCategoryConfigF(arrData)
+        : setGetCategoryConfigF([...getCategoryConfigF, newItem])
     } else {
       const arrData = Array.from(getCategoryConfigT)
       arrData.splice(draggingIndex, 0, newItem)
       setGetCategoryConfigT(arrData)
+      draggingIndex !== -1
+        ? setGetCategoryConfigT(arrData)
+        : setGetCategoryConfigT([...getCategoryConfigT, newItem])
     }
-    setDraggingIndex(null)
   }
+  // 根据下标去插入元素
   const editCategoryConfig = (item: any, type: any, index: any) => {
     const newItem = {
       title: item.title,
@@ -159,7 +165,7 @@ const Main = (props: any) => {
       is_required: item.dragtype !== 'move' ? 2 : item?.isRequired,
       is_fold: type === 1 ? 1 : 2,
     }
-    if (type === 1 && index >= 1) {
+    if (type === 1) {
       const arrData = Array.from(getCategoryConfigF)
       arrData.splice(index, 0, newItem)
       setGetCategoryConfigF(arrData)
@@ -170,7 +176,7 @@ const Main = (props: any) => {
         data && setGetCategoryConfigT(data)
       }
       dispatch(setGetCategoryConfigArray([...arrData, ...getCategoryConfigT]))
-    } else if (type === 2 && index >= 0) {
+    } else if (type === 2) {
       const arrData = Array.from(getCategoryConfigT)
       arrData.splice(index, 0, newItem)
       setGetCategoryConfigT(arrData)
@@ -180,21 +186,6 @@ const Main = (props: any) => {
         )
         data && setGetCategoryConfigF(data)
       }
-      dispatch(setGetCategoryConfigArray([...arrData, ...getCategoryConfigF]))
-    } else if (type === 2 && index === -1) {
-      const arrData = [...getCategoryConfigT, newItem]
-      setGetCategoryConfigT(arrData)
-      const data = getCategoryConfigF.filter(
-        (el: any) => el.storyId !== newItem.storyId,
-      )
-      data && setGetCategoryConfigF(data)
-      dispatch(setGetCategoryConfigArray([...arrData, ...data]))
-    } else if (index == -2) {
-      const data = getCategoryConfigT.filter(
-        (el: any) => el.storyId !== newItem.storyId,
-      )
-      const arrData = [...data, newItem]
-      setGetCategoryConfigT(arrData)
       dispatch(setGetCategoryConfigArray([...arrData, ...getCategoryConfigF]))
     }
     setDragState(false)
@@ -289,10 +280,37 @@ const Main = (props: any) => {
     type === 1 ? setGetCategoryConfigF(list) : setGetCategoryConfigT(list)
     props.onIsOperate(true)
   }
-
+  // 空白区域的情况
+  const onDropEmpty = (event: any, state: number) => {
+    setConfigType(state)
+    setDraggingIndex(-1)
+    const evevtObj: any = event.dataTransfer.getData('item')
+      ? JSON.parse(event.dataTransfer.getData('item'))
+      : null
+    evevtObj?.dragtype === 'add' && setAddAndEditVisible(true),
+      setFieldType(evevtObj)
+    const dragItem = event.dataTransfer.getData('DragItem')
+      ? JSON.parse(event.dataTransfer.getData('DragItem'))
+      : null
+    const filterDataF = getCategoryConfigF.filter(
+      (el: any) => el.storyId !== dragItem.storyId,
+    )
+    const filterDataT = getCategoryConfigT.filter(
+      (el: any) => el.storyId !== dragItem.storyId,
+    )
+    //  双方都需要过滤到拖动的item
+    if (state === 1) {
+      setGetCategoryConfigF([...filterDataF, dragItem])
+      setGetCategoryConfigT(filterDataT)
+    } else {
+      setGetCategoryConfigF(filterDataF)
+      setGetCategoryConfigT([...filterDataT, dragItem])
+    }
+  }
   return (
     <div
       id="father"
+      draggable="false"
       style={{
         flex: 1,
         height: 'calc(100vh - 220px)',
@@ -316,23 +334,30 @@ const Main = (props: any) => {
           {t('newlyAdd.basicInfo') as string}
         </span>
       </TitleStyle>
-      {infoIcon && (
-        <TabsDragging
-          dragState={dragState}
-          onClick={(i: any, child: any) => tabsDraggingOnclick(1, i, child)}
-          onDrop={(event: any, index: any) => onDrop(1, event, index)}
-          onMove={(data: any) => onMove(1, data)}
-          state={1}
-          positionType="top"
-          onChangeMove={(list: any) => onChangeMove(list, 1)}
-          list={getCategoryConfigF}
-          onChangeChecked={(val: boolean, child: any) =>
-            onChangeChecked(1, val, child)
-          }
-          onDelete={(child: any) => onDelete(1, child)}
-          setList={setGetCategoryConfigF}
-        />
-      )}
+      <div
+        style={{ minHeight: 180 }}
+        onDrop={event => onDropEmpty(event, 1)}
+        onDragOver={event => {
+          event.preventDefault()
+        }}
+      >
+        {infoIcon && (
+          <TabsDragging
+            dragState={dragState}
+            onClick={(i: any, child: any) => tabsDraggingOnclick(1, i, child)}
+            onDrop={(event: any, index: any) => onDrop(1, event, index)}
+            state={1}
+            positionType="top"
+            onChangeMove={(list: any) => onChangeMove(list, 1)}
+            list={getCategoryConfigF}
+            onChangeChecked={(val: boolean, child: any) =>
+              onChangeChecked(1, val, child)
+            }
+            onDelete={(child: any) => onDelete(1, child)}
+            setList={setGetCategoryConfigF}
+          />
+        )}
+      </div>
       <TitleStyle
         ref={bottomTitleRef}
         draggable="false"
@@ -345,37 +370,44 @@ const Main = (props: any) => {
         />
         <span style={{ marginLeft: '8px' }}>{t('more_folding') as string}</span>
       </TitleStyle>
-      {moreIcon && (
-        <TabsDragging
-          dragState={dragState}
-          state={2}
-          positionType="bottom"
-          onChangeMove={(list: any) => onChangeMove(list, 2)}
-          onClick={(i: any, child: any) => tabsDraggingOnclick(2, i, child)}
-          onDrop={(event: any, index: any) => onDrop(2, event, index)}
-          onMove={(data: any) => onMove(2, data)}
-          list={getCategoryConfigT}
-          onDelete={(child: any) => onDelete(2, child)}
-          onChangeChecked={(val: boolean, child: any) =>
-            onChangeChecked(2, val, child)
-          }
-          setList={setGetCategoryConfigT}
+      <div
+        style={{ minHeight: 300 }}
+        onDrop={event => onDropEmpty(event, 2)}
+        onDragOver={event => {
+          event.preventDefault()
+        }}
+      >
+        {moreIcon && (
+          <TabsDragging
+            dragState={dragState}
+            state={2}
+            positionType="bottom"
+            onChangeMove={(list: any) => onChangeMove(list, 2)}
+            onClick={(i: any, child: any) => tabsDraggingOnclick(2, i, child)}
+            onDrop={(event: any, index: any) => onDrop(2, event, index)}
+            list={getCategoryConfigT}
+            onDelete={(child: any) => onDelete(2, child)}
+            onChangeChecked={(val: boolean, child: any) =>
+              onChangeChecked(2, val, child)
+            }
+            setList={setGetCategoryConfigT}
+          />
+        )}
+        <DeleteConfirm
+          isVisible={isVisible}
+          onChangeVisible={() => setIsVisible(false)}
+          onConfirm={() => delConfig()}
         />
-      )}
-      <DeleteConfirm
-        isVisible={isVisible}
-        onChangeVisible={() => setIsVisible(false)}
-        onConfirm={() => delConfig()}
-      />
-      {/* 创建编辑自定义字段弹窗 */}
-      <EditField
-        fieldType={fieldType}
-        item={colItem}
-        isVisible={addAndEditVisible}
-        onEditUpdate={res => onUpDate(res)}
-        onInsert={(item: any) => onInsert(item)}
-        onClose={() => setAddAndEditVisible(false)}
-      />
+        {/* 创建编辑自定义字段弹窗 */}
+        <EditField
+          fieldType={fieldType}
+          item={colItem}
+          isVisible={addAndEditVisible}
+          onEditUpdate={res => onUpDate(res)}
+          onInsert={(item: any) => onInsert(item)}
+          onClose={() => setAddAndEditVisible(false)}
+        />
+      </div>
     </div>
   )
 }
