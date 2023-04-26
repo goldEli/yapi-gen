@@ -88,8 +88,13 @@ const AllSideFilter = (props: any) => {
       setCheceks([])
       props.changeUser(undefined, undefined)
     } else {
+      const checkes = configuration[
+        configuration.findIndex((i: any) => i.sendType === id)
+      ].children.map((i: any) => i.value)
+
       setActive(id)
-      props.changeUser(id, undefined)
+      setCheceks(checkes)
+      props.changeUser(id, checkes)
     }
   }
 
