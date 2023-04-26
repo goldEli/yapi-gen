@@ -34,7 +34,6 @@ export const ContentEmail2 = styled.span<{ active?: boolean }>`
   font-weight: 500;
   user-select: none;
   color: ${props => (props.active ? 'var(--primary-d1)' : 'var(--neutral-n2)')};
-  margin-left: 8px;
   line-height: 28px;
 `
 
