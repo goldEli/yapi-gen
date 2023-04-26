@@ -110,7 +110,6 @@ const ScheduleSearch: React.FC<CalendarListProps> = props => {
                 key={index}
                 className={CalendarListClass}
                 datatype={item.date}
-                style={{ paddingLeft: index === 0 ? '6px' : '' }}
               >
                 <div>
                   <DateBox className={index === 0 ? currentClass : ''}>

@@ -89,7 +89,14 @@ const CalendarList: React.FC<CalendarListProps> = props => {
           datatype={item.date}
         >
           <div>
-            <DateBox className={index === 0 ? currentClass : ''}>
+            <DateBox
+              className={
+                dayjs(checkedTime).format('DD') ===
+                dayjs(item.date).format('DD')
+                  ? currentClass
+                  : ''
+              }
+            >
               {dayjs(item.date).date()}
             </DateBox>
           </div>

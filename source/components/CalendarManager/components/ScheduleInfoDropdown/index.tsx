@@ -25,7 +25,7 @@ const ScheduleInfoDropdownBox = styled.div<{
   display: ${props => (props.visible ? 'block' : 'none')};
   position: fixed;
   top: 0;
-  right: 6px;
+  right: 0px;
   padding-bottom: 24px;
   border-radius: 6px;
   height: 100%;

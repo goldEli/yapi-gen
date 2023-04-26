@@ -250,6 +250,14 @@ const slice = createSlice({
         ...action.payload,
       }
     },
+    clearCalenderValue(state) {
+      state.calenderDayValue = initialState.calenderDayValue
+      state.calenderWeekValue = initialState.calenderWeekValue
+      state.calenderMonthValue = initialState.calenderMonthValue
+      state.calenderYearValue = initialState.calenderYearValue
+      state.calenderYearWeekValue = initialState.calenderYearWeekValue
+      state.calenderListValue = initialState.calenderListValue
+    },
   },
 })
 
@@ -273,6 +281,7 @@ export const {
   setFirstDataIndexInfo,
   setCalenderLoading,
   setInitScheduleInfoDropdown,
+  clearCalenderValue,
 } = slice.actions
 
 export default calendarPanel
