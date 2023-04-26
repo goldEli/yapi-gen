@@ -12,6 +12,7 @@ import { setCheckedTime } from '@store/calendar'
 import { getNowDate } from '@/tools'
 import classNames from 'classnames'
 import { setCalenderYearWeekValue } from '@store/calendarPanle'
+import useWeekStart from '../../hooks/useWeekStart'
 dayjs.extend(dayLocaleData)
 const CalendarHeader = styled.div`
   width: 100%;
@@ -76,6 +77,7 @@ const DXCalendar: React.FC = () => {
     //  border: `1px solid ${token.colorBorderSecondary}`,
     //  borderRadius: token.borderRadiusLG,
   }
+  useWeekStart()
 
   return (
     <StyledCalendar
