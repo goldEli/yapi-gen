@@ -63,6 +63,7 @@ const CalendarPanel: React.FC<CalendarPanelProps> = props => {
       onClick={() => {
         disPatch(setScheduleListModal({ visible: false, top: 0, left: 0 }))
         disPatch(setScheduleInfoDropdown({ visible: false }))
+        window.isMovingSchedule = false
       }}
     >
       <CalendarPanelToolBar />

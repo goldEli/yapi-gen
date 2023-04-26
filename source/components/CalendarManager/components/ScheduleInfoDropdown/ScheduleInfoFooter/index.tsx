@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { scheduleInfoReply } from '@/services/schedule'
 import { setScheduleInfoDropdown } from '@store/calendarPanle'
 import { useTranslation } from 'react-i18next'
+import { refreshCalendarPanelScheduleList } from '@store/schedule/schedule.thunk'
 import { divide } from 'lodash'
 interface iProps {}
 const ScheduleInfoFooterBox = styled.div`
@@ -32,6 +33,7 @@ const ScheduleInfoFooter: React.FC<iProps> = props => {
     try {
       await scheduleInfoReply({ id: scheduleInfo?.id ?? 0, status })
       disPatch(setScheduleInfoDropdown({ visible: false }))
+      disPatch(refreshCalendarPanelScheduleList())
     } catch (error) {
       //
     }
