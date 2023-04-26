@@ -15,7 +15,7 @@ const CreateFieldWrap = styled.div`
   border-left: 1px solid var(--neutral-n6-d1);
   padding: 0 24px;
   overflow-y: auto;
-  height: calc(100vh - 260px);
+  height: calc(100vh - 220px);
 `
 const TitleStyle = styled.div`
   width: 352px;

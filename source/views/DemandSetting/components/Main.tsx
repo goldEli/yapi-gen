@@ -313,7 +313,7 @@ const Main = (props: any) => {
       draggable="false"
       style={{
         flex: 1,
-        height: 'calc(100vh - 260px)',
+        height: 'calc(100vh - 220px)',
         overflowY: 'auto',
         padding: '0 24px',
       }}
