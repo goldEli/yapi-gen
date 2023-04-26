@@ -36,7 +36,7 @@ import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 
 const SiteDrawer = () => {
   const [t] = useTranslation()
-  const [active, setActive] = useState('3')
+  const [active, setActive] = useState('1')
   const newName = useRef<any>(undefined)
   const atmy = useRef<any>(undefined)
   const dispatch = useDispatch()
