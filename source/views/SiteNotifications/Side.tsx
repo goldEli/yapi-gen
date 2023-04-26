@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
 import { useRef, useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import { DragLine } from '@/components/StyleCommon'
+import { DragLine, MouseDom } from '@/components/StyleCommon'
 import SiteNotificationSide from './components/SiteNotificationSide/SiteNotificationSide'
 import AllSide from './components/AllSide/AllSide'
 
@@ -147,11 +147,13 @@ const Side = (props: { onChangeLeft(value: number): void }) => {
         {getClassSide()}
       </SideMain>
 
-      <DragLine
-        onMouseDown={onDragLine}
-        style={{ left: leftWidth - 1 }}
+      <MouseDom
         active={focus}
-      />
+        onMouseDown={onDragLine}
+        style={{ left: leftWidth - 6 }}
+      >
+        <DragLine active={focus} className="line" />
+      </MouseDom>
       <FoldIcon onClick={onChangeSide}>
         <CommonIconFont
           type={firstMenuCollapse ? 'right' : 'left'}

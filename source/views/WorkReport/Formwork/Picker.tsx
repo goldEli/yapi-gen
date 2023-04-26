@@ -332,7 +332,7 @@ const Picker = (props: PropsType) => {
       getDayValues()
     } else if (props.type === 'week') {
       getWeekValues()
-    } else if (props.type === 'month') {
+    } else if (props.type === 'month' || props.type === 'doNot') {
       getMonthValues()
     }
   }, [props.value])

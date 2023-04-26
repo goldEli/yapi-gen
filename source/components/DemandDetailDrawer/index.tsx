@@ -27,7 +27,7 @@ import CommonIconFont from '../CommonIconFont'
 import DeleteConfirm from '../DeleteConfirm'
 import { DemandOperationDropdownMenu } from '../DemandComponent/DemandOperationDropdownMenu'
 import StateTag from '../StateTag'
-import { DragLine } from '../StyleCommon'
+import { DragLine, MouseDom } from '../StyleCommon'
 import BasicDemand from './BasicDemand'
 import ChildrenDemand from './ChildrenDemand'
 import DemandComment from './DemandComment'
@@ -53,6 +53,7 @@ import {
 import CommonButton from '../CommonButton'
 import { saveDemandDetailDrawer } from '@store/demand/demand.thunk'
 import { getMessage } from '../Message'
+import styled from '@emotion/styled'
 
 const DemandDetailDrawer = () => {
   const normalState = {
@@ -108,23 +109,26 @@ const DemandDetailDrawer = () => {
 
   // 拖动线条
   const onDragLine = (e: React.MouseEvent) => {
+    const drawer: HTMLElement = document.querySelector(
+      '.drawerRoot .ant-drawer-content-wrapper',
+    )!
+    const drawerBody: HTMLElement = document.querySelector(
+      '.drawerRoot .ant-drawer-body',
+    )!
     const moveHandler = (ev: React.MouseEvent) => {
       setFocus(true)
-      const drawer: HTMLElement = document.querySelector(
-        '.drawerRoot .ant-drawer-content-wrapper',
-      )!
-      const drawerBody: HTMLElement = document.querySelector(
-        '.drawerRoot .ant-drawer-body',
-      )!
       drawerBody.style.minWidth = '100%'
       drawerBody.style.right = '0px'
       const nextWidth = innerWidth - ev.clientX
       if (nextWidth <= leftWidth) return
       drawer!.style.width = innerWidth - ev.clientX + 'px'
     }
-    const debounceWrap: any = throttle(moveHandler, 60, {})
+    drawer.style.transition = '0s'
+    // const debounceWrap: any = throttle(moveHandler, 60, {})
+    const debounceWrap: any = moveHandler
     document.addEventListener('mousemove', debounceWrap)
     document.addEventListener('mouseup', () => {
+      drawer.style.transition = 'all 0.3s'
       setFocus(false)
       document.removeEventListener('mousemove', debounceWrap)
     })
@@ -354,7 +358,9 @@ const DemandDetailDrawer = () => {
         getContainer={false}
         className="drawerRoot"
       >
-        <DragLine onMouseDown={onDragLine} style={{ left: 0 }} active={focus} />
+        <MouseDom active={focus} onMouseDown={onDragLine} style={{ left: 0 }}>
+          <DragLine active={focus} className="line" style={{ marginLeft: 0 }} />
+        </MouseDom>
         <Header>
           <Space size={16}>
             <BackIcon onClick={onCancel}>
