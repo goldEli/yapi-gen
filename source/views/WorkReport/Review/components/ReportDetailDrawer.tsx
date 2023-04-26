@@ -459,7 +459,7 @@ const ReportDetailDrawer = () => {
                     {drawerInfo?.report_template_name}
                     <span className="dateText">
                       {drawerInfo?.submit_cycle === 4
-                        ? '--'
+                        ? null
                         : `（${drawerInfo?.start_time} ${t(
                             'report.list.to',
                           )} ${drawerInfo?.end_time?.substring(

@@ -36,6 +36,7 @@ import {
 import { changeId } from '@store/counterSlice'
 import { useSearchParams } from 'react-router-dom'
 import { getMessage } from '@/components/Message'
+import DragMoveContainer from '@/components/DragMoveContainer/DragMoveContainer'
 
 const Left = styled.div`
   height: calc(100vh - 150px);
@@ -504,43 +505,39 @@ const WrapLeft = (props: any, ref: any) => {
 
   if (props.isShowLeft) {
     return (
-      <Left>
-        <div className="resize_bar" />
-        <div className="resize_line" />
-        <div className="resize_save">
-          <TitleWrap style={{ paddingBottom: '10px' }}>
-            {t('newlyAdd.demandClass')}
-          </TitleWrap>
-          {treeData.length > 0 && show ? (
-            <Tree
-              selectedKeys={[valueId]}
-              allowDrop={(dropNode: any) => {
-                if (dropNode.dropNode.title.props.grade === 4) {
-                  return false
-                }
-                return true
-              }}
-              defaultExpandAll
-              autoExpandParent
-              onDrop={onDrop}
-              onSelect={onSelect}
-              draggable={(node: any) => {
-                const {
-                  title: {
-                    props: { id },
-                  },
-                } = node
-                if (id === -1 || id === 0) {
-                  return false
-                }
+      <DragMoveContainer>
+        <TitleWrap style={{ paddingBottom: '10px' }}>
+          {t('newlyAdd.demandClass')}
+        </TitleWrap>
+        {treeData.length > 0 && show ? (
+          <Tree
+            selectedKeys={[valueId]}
+            allowDrop={(dropNode: any) => {
+              if (dropNode.dropNode.title.props.grade === 4) {
+                return false
+              }
+              return true
+            }}
+            defaultExpandAll
+            autoExpandParent
+            onDrop={onDrop}
+            onSelect={onSelect}
+            draggable={(node: any) => {
+              const {
+                title: {
+                  props: { id },
+                },
+              } = node
+              if (id === -1 || id === 0) {
+                return false
+              }
 
-                return true
-              }}
-              treeData={treeData}
-            />
-          ) : null}
-        </div>
-      </Left>
+              return true
+            }}
+            treeData={treeData}
+          />
+        ) : null}
+      </DragMoveContainer>
     )
   }
   return null
