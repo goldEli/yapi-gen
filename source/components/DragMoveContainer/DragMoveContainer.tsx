@@ -3,19 +3,24 @@ import { ResizeBar, ResizeLine, ResizeWrap } from './style'
 
 interface PropsType {
   children: ReactNode
+  height: string
+  min: string
+  max: string
+  width: string
 }
 
 const DragMoveContainer = (props: PropsType) => {
+  const { children, height } = props
   return (
     <div
       style={{
         position: 'relative',
-        height: 'calc(100vh - 150px)',
+        height,
       }}
     >
-      <ResizeBar />
+      <ResizeBar {...props} />
       <ResizeLine />
-      <ResizeWrap>{props.children}</ResizeWrap>
+      <ResizeWrap>{children}</ResizeWrap>
     </div>
   )
 }

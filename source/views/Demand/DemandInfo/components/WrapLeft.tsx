@@ -30,6 +30,7 @@ import { useDispatch, useSelector } from '@store/index'
 import TagComponent from '@/components/TagComponent'
 import { Editor } from '@xyfe/uikit'
 import { getMessage } from '@/components/Message'
+import DragMoveContainer from '@/components/DragMoveContainer/DragMoveContainer'
 
 const WrapLeft = styled.div({
   width: '100%',
@@ -143,111 +144,119 @@ const WrapLeftBox = () => {
   }
 
   return (
-    <div
-      style={{
-        position: 'relative',
-        height: 'calc(100vh - 242px)',
-        margin: '16px 0',
-      }}
+    <DragMoveContainer
+      max="65vw"
+      min="30vw"
+      width="65vw"
+      height="calc(100vh - 242px)"
     >
-      <div className="resize_bar2" />
-      <div className="resize_line" />
-      <div className="resize_save2">
-        <WrapLeft ref={LeftDom}>
-          <InfoItem
-            style={{
-              marginTop: '0px',
-            }}
-            activeState
-          >
-            <Label>{t('mine.demandInfo')}</Label>
-            {demandInfo?.info ? (
-              <Editor
-                value={demandInfo?.info}
-                getSuggestions={() => []}
-                readonly
-              />
-            ) : (
-              // <div dangerouslySetInnerHTML={{ __html: demandInfo?.info }} />
-              <TextWrap>--</TextWrap>
-            )}
-          </InfoItem>
-          <InfoItem>
-            <Label>{t('common.tag')}</Label>
-            <TagComponent
-              defaultList={tagList}
-              canAdd
-              addWrap={
-                <AddWrap hasDash>
-                  <IconFont type="plus" />
-                </AddWrap>
-              }
+      <WrapLeft ref={LeftDom}>
+        <InfoItem
+          style={{
+            marginTop: '0px',
+          }}
+          activeState
+        >
+          <Label>{t('mine.demandInfo')}</Label>
+          {demandInfo?.info ? (
+            <Editor
+              value={demandInfo?.info}
+              getSuggestions={() => []}
+              readonly
             />
-          </InfoItem>
-          <InfoItem activeState>
-            <Label>{t('common.attachment')}</Label>
-            <div>
-              {projectInfo?.projectPermissions?.filter(
-                (i: any) => i.name === '附件上传',
-              ).length > 0 && (
-                <UploadAttach
-                  onBottom={onBottom}
-                  defaultList={demandInfo?.attachment?.map((i: any) => ({
-                    url: i.attachment.path,
-                    id: i.id,
-                    size: i.attachment.size,
-                    time: i.created_at,
-                    name: i.attachment.name,
-                    suffix: i.attachment.ext,
-                    username: i.user_name ?? '--',
-                  }))}
-                  canUpdate
-                  onC
-                  del={onDeleteInfoAttach}
-                  add={onAddInfoAttach}
-                  addWrap={
-                    <AddWrap
-                      hasColor
+          ) : (
+            // <div dangerouslySetInnerHTML={{ __html: demandInfo?.info }} />
+            <TextWrap>--</TextWrap>
+          )}
+        </InfoItem>
+        <InfoItem>
+          <Label>{t('common.tag')}</Label>
+          <TagComponent
+            defaultList={tagList}
+            canAdd
+            addWrap={
+              <AddWrap hasDash>
+                <IconFont type="plus" />
+              </AddWrap>
+            }
+          />
+        </InfoItem>
+        <InfoItem activeState>
+          <Label>{t('common.attachment')}</Label>
+          <div>
+            {projectInfo?.projectPermissions?.filter(
+              (i: any) => i.name === '附件上传',
+            ).length > 0 && (
+              <UploadAttach
+                onBottom={onBottom}
+                defaultList={demandInfo?.attachment?.map((i: any) => ({
+                  url: i.attachment.path,
+                  id: i.id,
+                  size: i.attachment.size,
+                  time: i.created_at,
+                  name: i.attachment.name,
+                  suffix: i.attachment.ext,
+                  username: i.user_name ?? '--',
+                }))}
+                canUpdate
+                onC
+                del={onDeleteInfoAttach}
+                add={onAddInfoAttach}
+                addWrap={
+                  <AddWrap
+                    hasColor
+                    style={{
+                      marginBottom: '10px',
+                      color: 'var(--primary-d2)F',
+                    }}
+                  >
+                    <IconFont
                       style={{
-                        marginBottom: '10px',
-                        color: 'var(--primary-d2)F',
+                        color: 'var(--primary-d2)',
+                      }}
+                      type="plus"
+                    />
+                    <div
+                      style={{
+                        color: 'var(--primary-d2)',
                       }}
                     >
-                      <IconFont
-                        style={{
-                          color: 'var(--primary-d2)',
-                        }}
-                        type="plus"
-                      />
-                      <div
-                        style={{
-                          color: 'var(--primary-d2)',
-                        }}
-                      >
-                        {t('p2.addAdjunct')}
-                      </div>
-                    </AddWrap>
-                  }
-                />
-              )}
-              {projectInfo?.projectPermissions?.filter(
-                (i: any) => i.name === '附件上传',
-              ).length <= 0 && <span>--</span>}
-            </div>
-          </InfoItem>
-          <DeleteConfirm
-            text={t('p2.del')}
-            isVisible={isDelVisible}
-            onChangeVisible={() => setIsDelVisible(!isDelVisible)}
-            onConfirm={onDeleteConfirm}
-          />
-          <InfoItem>
-            <Label>{t('new_p1.a3')}</Label>
-            <DemandStatus pid={projectId} sid={demandId} />
-          </InfoItem>
-        </WrapLeft>
-      </div>
-    </div>
+                      {t('p2.addAdjunct')}
+                    </div>
+                  </AddWrap>
+                }
+              />
+            )}
+            {projectInfo?.projectPermissions?.filter(
+              (i: any) => i.name === '附件上传',
+            ).length <= 0 && <span>--</span>}
+          </div>
+        </InfoItem>
+        <DeleteConfirm
+          text={t('p2.del')}
+          isVisible={isDelVisible}
+          onChangeVisible={() => setIsDelVisible(!isDelVisible)}
+          onConfirm={onDeleteConfirm}
+        />
+        <InfoItem>
+          <Label>{t('new_p1.a3')}</Label>
+          <DemandStatus pid={projectId} sid={demandId} />
+        </InfoItem>
+      </WrapLeft>
+    </DragMoveContainer>
+    // <div
+    //   style={{
+    //     position: 'relative',
+    //     height: 'calc(100vh - 242px)',
+    //     margin: '16px 0',
+    //   }}
+    // >
+    //   <div className="resize_bar2" />
+    //   <div className="resize_line" />
+    //   <div className="resize_save2">
+
+    //   </div>
+    // </div>
   )
 }
 
