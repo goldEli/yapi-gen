@@ -127,10 +127,13 @@ const ChoosePeople = (props: any) => {
                     <CommonUserAvatar size="small" />
                   </div>
                 )}
-                <IconFontWrap
-                  type="close-circle-fill"
-                  onClick={() => onDelCheckPerson(i.id)}
-                />
+                {/* 判断当前人员是否是默认汇报对象，是得话不能被删除 */}
+                {i.noDel ? null : (
+                  <IconFontWrap
+                    type="close-circle-fill"
+                    onClick={() => onDelCheckPerson(i.id)}
+                  />
+                )}
               </NewNameWrap>
               <span
                 style={{

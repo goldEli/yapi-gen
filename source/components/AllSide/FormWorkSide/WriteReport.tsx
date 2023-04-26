@@ -316,7 +316,9 @@ const WriteReport = (props: Props) => {
                       >
                         <img src={Bgc} />
                         <CarItem>
-                          <CarTitle>{item.name}</CarTitle>
+                          <Tooltip placement="topLeft" title={item.name}>
+                            <CarTitle>{item.name}</CarTitle>
+                          </Tooltip>
                           {item.template_content_configs
                             ?.filter((tcc: any, i: number) => i < 2)
                             .map((content: any) => (

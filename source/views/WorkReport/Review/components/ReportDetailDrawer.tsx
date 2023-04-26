@@ -590,7 +590,12 @@ const ReportDetailDrawer = () => {
               placeholder={`${t('common.comment')}${
                 drawerInfo?.user?.name || '--'
               }${t('report.list.log')}`}
-              onFocus={() => setIsReview(true)}
+              onFocus={() => {
+                setIsReview(true)
+                setTimeout(() => {
+                  editorRef.current?.focus()
+                }, 50)
+              }}
             />
           )}
         </CommentFooter>
