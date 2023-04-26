@@ -55,12 +55,6 @@ import { saveDemandDetailDrawer } from '@store/demand/demand.thunk'
 import { getMessage } from '../Message'
 import styled from '@emotion/styled'
 
-const DrawerStyled = styled(Drawer)`
-  .ant-drawer-content-wrapper {
-    transition: 0s;
-  }
-`
-
 const DemandDetailDrawer = () => {
   const normalState = {
     detailInfo: {
@@ -115,24 +109,26 @@ const DemandDetailDrawer = () => {
 
   // 拖动线条
   const onDragLine = (e: React.MouseEvent) => {
+    const drawer: HTMLElement = document.querySelector(
+      '.drawerRoot .ant-drawer-content-wrapper',
+    )!
+    const drawerBody: HTMLElement = document.querySelector(
+      '.drawerRoot .ant-drawer-body',
+    )!
     const moveHandler = (ev: React.MouseEvent) => {
       setFocus(true)
-      const drawer: HTMLElement = document.querySelector(
-        '.drawerRoot .ant-drawer-content-wrapper',
-      )!
-      const drawerBody: HTMLElement = document.querySelector(
-        '.drawerRoot .ant-drawer-body',
-      )!
       drawerBody.style.minWidth = '100%'
       drawerBody.style.right = '0px'
       const nextWidth = innerWidth - ev.clientX
       if (nextWidth <= leftWidth) return
       drawer!.style.width = innerWidth - ev.clientX + 'px'
     }
+    drawer.style.transition = '0s'
     // const debounceWrap: any = throttle(moveHandler, 60, {})
     const debounceWrap: any = moveHandler
     document.addEventListener('mousemove', debounceWrap)
     document.addEventListener('mouseup', () => {
+      drawer.style.transition = 'all 0.3s'
       setFocus(false)
       document.removeEventListener('mousemove', debounceWrap)
     })
@@ -349,7 +345,7 @@ const DemandDetailDrawer = () => {
         onChangeVisible={() => setIsDelete(!isDelete)}
         onConfirm={onDeleteConfirm}
       />
-      <DrawerStyled
+      <Drawer
         closable={false}
         placement="right"
         bodyStyle={{ padding: 0, position: 'relative' }}
@@ -534,7 +530,7 @@ const DemandDetailDrawer = () => {
             </>
           )}
         </Content>
-      </DrawerStyled>
+      </Drawer>
     </>
   )
 }
