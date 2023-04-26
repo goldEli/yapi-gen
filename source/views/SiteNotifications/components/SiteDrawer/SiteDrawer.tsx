@@ -33,6 +33,7 @@ import {
   setReadApi,
 } from '@/services/SiteNotifications'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox'
+import DragMoveContainer from '@/components/DragMoveContainer/DragMoveContainer'
 
 const SiteDrawer = () => {
   const [t] = useTranslation()
