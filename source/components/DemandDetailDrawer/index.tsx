@@ -27,7 +27,7 @@ import CommonIconFont from '../CommonIconFont'
 import DeleteConfirm from '../DeleteConfirm'
 import { DemandOperationDropdownMenu } from '../DemandComponent/DemandOperationDropdownMenu'
 import StateTag from '../StateTag'
-import { DragLine } from '../StyleCommon'
+import { DragLine, MouseDom } from '../StyleCommon'
 import BasicDemand from './BasicDemand'
 import ChildrenDemand from './ChildrenDemand'
 import DemandComment from './DemandComment'
@@ -358,7 +358,9 @@ const DemandDetailDrawer = () => {
         getContainer={false}
         className="drawerRoot"
       >
-        <DragLine onMouseDown={onDragLine} style={{ left: 0 }} active={focus} />
+        <MouseDom active={focus} onMouseDown={onDragLine} style={{ left: 0 }}>
+          <DragLine active={focus} className="line" style={{ marginLeft: 0 }} />
+        </MouseDom>
         <Header>
           <Space size={16}>
             <BackIcon onClick={onCancel}>
