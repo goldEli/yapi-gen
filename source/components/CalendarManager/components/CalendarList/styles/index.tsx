@@ -22,17 +22,15 @@ export const CalendarListItem = styled.div`
   display: flex;
   padding: 12px 0px;
   align-items: flex-start;
-  &:first-child {
-    padding-left: 6px;
-  }
 `
 export const DateBox = styled.div`
   color: var(--neutral-n1-d1);
   font-size: var(--font18);
-  width: 40px;
+  width: 28px;
+  height: 28px;
   font-family: SiYuanMedium;
   margin-right: 12px;
-  padding-left: 12px;
+  text-align: center;
 `
 export const MonthWeekBox = styled.div`
   color: var(--neutral-n1-d1);
@@ -106,13 +104,10 @@ export const dateClass = css`
 `
 export const currentClass = css`
   background: var(--primary-d1) !important;
-  border-radius: 14px !important;
+  border-radius: 50% !important;
   color: #fff !important;
   font-size: var(--font18) !important;
   display: inline-block;
-  width: 28px !important;
-  height: 28px !important;
-  margin-left: 6px !important;
-  text-align: center !important;
-  padding-left: 0px !important;
+  text-align: center;
+  line-height: 28px;
 `

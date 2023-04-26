@@ -37,17 +37,15 @@ export const CalendarListItem = styled.div`
   display: flex;
   padding: 12px 0px;
   align-items: flex-start;
-  &:first-child {
-    padding-left: 6px;
-  }
+  padding-left: 12px;
 `
 export const DateBox = styled.div`
   color: var(--neutral-n1-d1);
   font-size: var(--font18);
-  font-weight: bold;
-  width: 40px;
+  width: 28px;
+  height: 28px;
   margin-right: 12px;
-  padding-left: 12px;
+  text-align: center;
 `
 export const MonthWeekBox = styled.div`
   color: var(--neutral-n1-d1);
@@ -63,7 +61,6 @@ export const LunarDate = styled.div`
 `
 export const CalendarListInfo = styled.div`
   position: relative;
-  /* top: 6px; */
   width: calc(100% - 250px);
   margin-left: 100px;
   align-items: center;
@@ -114,15 +111,12 @@ export const dateClass = css`
 `
 export const currentClass = css`
   background: var(--primary-d1) !important;
-  border-radius: 14px !important;
+  border-radius: 50% !important;
   color: #fff !important;
   font-size: var(--font18) !important;
   display: inline-block;
-  width: 28px !important;
-  height: 28px !important;
-  margin-left: 6px !important;
-  text-align: center !important;
-  padding-left: 0px !important;
+  text-align: center;
+  line-height: 28px;
 `
 export const contentHigh = css`
   /* color: var(--primary-d1); */

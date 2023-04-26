@@ -4,7 +4,7 @@ import styled from '@emotion/styled'
 import { Input } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import CreatDragging from './CreatDragging'
+import CreateDragging from './CreateDragging'
 import * as services from '@/services'
 import { useDispatch, useSelector } from '@store/index'
 import ProjectDragging from './ProDragging'
@@ -72,7 +72,7 @@ const InputStyle = styled(Input)`
 const CreateField = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
-  const [searchIcon, setSearchIcon] = useState(false)
+  const [searchIcon, setSearchIcon] = useState(true)
   const [search, setSearch] = useState(true)
   const [createIcon, setCreateIcon] = useState(true)
   const { getCategoryConfigArray } = useSelector(store => store.category)
@@ -166,6 +166,7 @@ const CreateField = () => {
   useEffect(() => {
     getCategoryConfigArray?.length >= 1 && getProjectFieIdsApi()
   }, [getCategoryConfigArray])
+
   return (
     <CreateFieldWrap draggable="false">
       <TitleStyle draggable="false" onClick={() => setCreateIcon(!createIcon)}>
@@ -185,8 +186,7 @@ const CreateField = () => {
           {t('drag_the_field_to_the_left_area_to_create_the_field')}
         </span>
       </TitleStyle>
-      {createIcon && <CreatDragging list={option} setList={[]} />}
-
+      {createIcon && <CreateDragging list={option} setList={[]} />}
       <BottomList>
         <BottomTitleStyle>
           <div
@@ -200,6 +200,7 @@ const CreateField = () => {
                 color="var(--neutral-n3)"
               />
             )}
+
             <span
               style={{
                 marginLeft: '4px',

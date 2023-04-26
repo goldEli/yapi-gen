@@ -52,13 +52,14 @@ const SiteDrawer = () => {
   const [read, setRead] = useState<number | null>()
   const tabsValue = [
     {
-      id: '3',
-      text: t('all'),
-    },
-    {
       id: '1',
       text: `${t('new1')}(${now ?? 0})`,
     },
+    {
+      id: '3',
+      text: t('all'),
+    },
+
     {
       id: '2',
       text: t('atmy'),
