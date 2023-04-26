@@ -170,7 +170,6 @@ const ScheduleStripListItem: React.FC<ScheduleListItemProps> = props => {
 
   // 点击日程
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    window.isMovingSchedule = true
     e.stopPropagation()
     /**
      * 不能拖动
@@ -182,6 +181,7 @@ const ScheduleStripListItem: React.FC<ScheduleListItemProps> = props => {
       onOpenScheduleDetail()
       return
     }
+    window.isMovingSchedule = true
     // e.stopPropagation()
     isDrag.current = false
     // 设置类型 move 还是 resize
