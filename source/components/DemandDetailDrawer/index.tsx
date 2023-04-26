@@ -116,7 +116,6 @@ const DemandDetailDrawer = () => {
   // 拖动线条
   const onDragLine = (e: React.MouseEvent) => {
     const moveHandler = (ev: React.MouseEvent) => {
-      console.log('move')
       setFocus(true)
       const drawer: HTMLElement = document.querySelector(
         '.drawerRoot .ant-drawer-content-wrapper',
