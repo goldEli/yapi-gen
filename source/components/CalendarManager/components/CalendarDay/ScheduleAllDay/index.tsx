@@ -29,7 +29,7 @@ const ScheduleAllDayBox = styled.div`
   overflow: hidden;
   height: 52px;
   position: sticky;
-  top: 52px;
+  top: 70px;
   left: 0px;
   background: var(--neutral-white-d1);
   z-index: 100;
