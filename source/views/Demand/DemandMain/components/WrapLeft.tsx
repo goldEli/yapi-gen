@@ -505,7 +505,12 @@ const WrapLeft = (props: any, ref: any) => {
 
   if (props.isShowLeft) {
     return (
-      <DragMoveContainer>
+      <DragMoveContainer
+        height="calc(100vh - 150px)"
+        max="700px"
+        min="240px"
+        width="240px"
+      >
         <TitleWrap style={{ paddingBottom: '10px' }}>
           {t('newlyAdd.demandClass')}
         </TitleWrap>
