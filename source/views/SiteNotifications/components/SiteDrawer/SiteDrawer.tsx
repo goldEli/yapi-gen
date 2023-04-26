@@ -36,7 +36,7 @@ import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 
 const SiteDrawer = () => {
   const [t] = useTranslation()
-  const [active, setActive] = useState('3')
+  const [active, setActive] = useState('1')
   const newName = useRef<any>(undefined)
   const atmy = useRef<any>(undefined)
   const dispatch = useDispatch()
@@ -52,13 +52,14 @@ const SiteDrawer = () => {
   const [read, setRead] = useState<number | null>()
   const tabsValue = [
     {
-      id: '3',
-      text: t('all'),
-    },
-    {
       id: '1',
       text: `${t('new1')}(${now ?? 0})`,
     },
+    {
+      id: '3',
+      text: t('all'),
+    },
+
     {
       id: '2',
       text: t('atmy'),
