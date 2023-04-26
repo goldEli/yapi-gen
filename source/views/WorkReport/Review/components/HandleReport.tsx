@@ -621,7 +621,7 @@ const HandleReport = (props: any) => {
                       {`${userInfo?.name}的${reportDetail?.name ?? ''}`}
                       <span className="dateText">
                         {reportDetail?.submit_cycle === 4
-                          ? '--'
+                          ? null
                           : props.isSupply
                           ? getReportDateText(props.date)
                           : reportDetail?.submitCycleDate.filter(
