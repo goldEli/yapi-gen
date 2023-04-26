@@ -8,7 +8,8 @@ const Index = () => {
   return (
     <Content>
       <Side onChangeLeft={setChangeLeft} />
-      <div style={{ flex: '1' }}>
+
+      <div>
         <Outlet />
       </div>
     </Content>

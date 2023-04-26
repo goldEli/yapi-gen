@@ -529,74 +529,6 @@ const GlobalStyle = () => {
       visibility: visible;
     }
 
-    .resize_bar2 {
-      max-width: 65vw;
-      width: 65vw;
-      min-width: 30vw;
-      height: inherit;
-      resize: horizontal;
-      cursor: ew-resize;
-      cursor: col-resize;
-      opacity: 0;
-      overflow: scroll;
-    }
-    .resize_save2 {
-      position: absolute;
-      top: 0;
-      right: 5px;
-      bottom: 0;
-      left: 0;
-      padding-right: 0px;
-    }
-
-    .resize_bar {
-      width: 240px;
-      max-width: 700px;
-      min-width: 240px;
-      height: inherit;
-      resize: horizontal;
-      cursor: ew-resize;
-      cursor: col-resize;
-      opacity: 0;
-      overflow: scroll;
-    }
-    /* 拖拽线 */
-    .resize_line {
-      position: absolute;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      border-right: 1px solid var(--neutral-n6-d1);
-      border-left: 1px solid var(--neutral-n6-d1);
-      pointer-events: none;
-    }
-    .resize_save {
-      margin-left: -30px;
-      position: absolute;
-      top: 0;
-      right: 5px;
-      bottom: 0;
-      left: 0;
-      padding-left: 30px;
-      overflow-x: hidden;
-    }
-    .resize_bar:hover ~ .resize_line,
-    .resize_bar:active ~ .resize_line {
-      border-left: 2px solid var(--primary-d1);
-    }
-    .resize_bar::-webkit-scrollbar {
-      width: 200px;
-      height: inherit;
-    }
-    .resize_bar2:hover ~ .resize_line,
-    .resize_bar2:active ~ .resize_line {
-      border-left: 2px solid var(--primary-d1);
-    }
-    .resize_bar2::-webkit-scrollbar {
-      width: 200px;
-      height: inherit;
-    }
-
     .ant-picker,
     .ant-select:not(.ant-select-customize-input) .ant-select-selector,
     .ant-input,
@@ -843,10 +775,7 @@ const GlobalStyle = () => {
       animation-fill-mode: forwards;
       border: solid 2px #cccccc;
     }
-    .ant-select-clear {
-      width: 16px;
-      height: 16px;
-    }
+
     .drag-item {
       height: 64px;
       animation: dragdown ease 0.2s 1;
