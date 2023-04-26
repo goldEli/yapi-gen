@@ -140,12 +140,16 @@ const Main = (props: any) => {
       const arrData = Array.from(getCategoryConfigF)
       arrData.splice(draggingIndex, 0, newItem)
       // 插入空白区域的情况
-      draggingIndex !== -1 ? setGetCategoryConfigF(arrData) : setGetCategoryConfigF([...getCategoryConfigF, newItem])
+      draggingIndex !== -1
+        ? setGetCategoryConfigF(arrData)
+        : setGetCategoryConfigF([...getCategoryConfigF, newItem])
     } else {
       const arrData = Array.from(getCategoryConfigT)
       arrData.splice(draggingIndex, 0, newItem)
       setGetCategoryConfigT(arrData)
-      draggingIndex !== -1 ? setGetCategoryConfigT(arrData) : setGetCategoryConfigT([...getCategoryConfigT, newItem])
+      draggingIndex !== -1
+        ? setGetCategoryConfigT(arrData)
+        : setGetCategoryConfigT([...getCategoryConfigT, newItem])
     }
   }
   // 根据下标去插入元素
@@ -286,9 +290,14 @@ const Main = (props: any) => {
     evevtObj?.dragtype === 'add' && setAddAndEditVisible(true),
       setFieldType(evevtObj)
     const dragItem = event.dataTransfer.getData('DragItem')
-      ? JSON.parse(event.dataTransfer.getData('DragItem')) : null
-    const filterDataF = getCategoryConfigF.filter((el: any) => el.storyId !== dragItem.storyId)
-    const filterDataT = getCategoryConfigT.filter((el: any) => el.storyId !== dragItem.storyId)
+      ? JSON.parse(event.dataTransfer.getData('DragItem'))
+      : null
+    const filterDataF = getCategoryConfigF.filter(
+      (el: any) => el.storyId !== dragItem.storyId,
+    )
+    const filterDataT = getCategoryConfigT.filter(
+      (el: any) => el.storyId !== dragItem.storyId,
+    )
     //  双方都需要过滤到拖动的item
     if (state === 1) {
       setGetCategoryConfigF([...filterDataF, dragItem])
@@ -304,7 +313,7 @@ const Main = (props: any) => {
       draggable="false"
       style={{
         flex: 1,
-        height: 'calc(100vh - 220px)',
+        height: 'calc(100vh - 260px)',
         overflowY: 'auto',
         padding: '0 24px',
       }}
@@ -325,10 +334,13 @@ const Main = (props: any) => {
           {t('newlyAdd.basicInfo') as string}
         </span>
       </TitleStyle>
-      <div style={{ minHeight: 180 }} onDrop={event => onDropEmpty(event, 1)}
+      <div
+        style={{ minHeight: 180 }}
+        onDrop={event => onDropEmpty(event, 1)}
         onDragOver={event => {
           event.preventDefault()
-        }}>
+        }}
+      >
         {infoIcon && (
           <TabsDragging
             dragState={dragState}
@@ -358,10 +370,13 @@ const Main = (props: any) => {
         />
         <span style={{ marginLeft: '8px' }}>{t('more_folding') as string}</span>
       </TitleStyle>
-      <div style={{ minHeight: 300 }} onDrop={event => onDropEmpty(event, 2)}
+      <div
+        style={{ minHeight: 300 }}
+        onDrop={event => onDropEmpty(event, 2)}
         onDragOver={event => {
           event.preventDefault()
-        }}>
+        }}
+      >
         {moreIcon && (
           <TabsDragging
             dragState={dragState}

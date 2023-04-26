@@ -7,6 +7,7 @@ import { Outlet, useNavigate, useSearchParams } from 'react-router-dom'
 const ProjectWrap = styled.div`
   position: relative;
   height: 100%;
+  overflow-y: hidden;
   background: var(--neutral-white-d1);
 `
 const Project = () => {
