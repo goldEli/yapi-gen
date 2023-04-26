@@ -1,6 +1,6 @@
 # 敏捷开发
 
-##### 国际化
+### 国际化
 
 在 store 中获取
 
@@ -14,6 +14,28 @@ language
 
 ```js
 localStorage.getItem('language') || 'zh'
+```
+
+###### 检测项目中的中文
+
+```sh
+npm run findCN
+```
+
+输出
+
+```sh
+PS D:\miaoyu\projects\scrum> npm run findCN
+
+> @jihe/template-react@2.1.0 findCN
+> npx @samuel.miao/findcn
+
+开始检测包含文件的中文...
+脚本运行的路径:D:\miaoyu\projects\scrum
+👉️ 文件包含中文：D:\miaoyu\projects\scrum\socket.js
+👉️ 文件包含中文：D:\miaoyu\projects\scrum\source\components\GlobalStyle.tsx
+👉️ 文件包含中文：D:\miaoyu\projects\scrum\source\components\ErrorBoundary.tsx
+👉️ 文件包含中文：D:\miaoyu\projects\scrum\source\components\Shape.tsx
 ```
 
 ###### 自动生成国际化资源
@@ -42,17 +64,17 @@ npm run tran
 }
 ```
 
-##### 字重
+### 字重
 
 字重不要用`font-weight`，使用字体样式
 
-##### 全局字体样式
+### 全局字体样式
 
 ```css
 font-family: SiYuanRegular;
 ```
 
-##### 加粗字体样式
+### 加粗字体样式
 
 遇到需要加粗的文字，使用`SiYuanMedium`字体样式
 
@@ -60,7 +82,7 @@ font-family: SiYuanRegular;
 font-family: SiYuanMedium;
 ```
 
-##### 主题 0-是白色 1-是黑色
+### 主题 0-是白色 1-是黑色
 
 在 store 中获取
 
@@ -86,7 +108,7 @@ localStorage.getItem('theme')
 
 <!-- 例： Light/Neutral/N6-D1  命名：--neutral-n6-d1 -->
 
-##### 公司权限
+### 公司权限
 
 在 store 中获取
 
@@ -99,7 +121,7 @@ userInfo.company_permissions
 使用 identity：权限唯一标识(b/story/update)
 getIsPermission(userInfo.company_permissions,identity)
 
-##### 项目权限
+### 项目权限
 
 在 store 中获取
 
@@ -113,7 +135,7 @@ projectInfo.projectPermissions
 其他权限：getIsPermission(projectInfo.projectPermissions,identity)
 特别处理：附件上传和附件下载使用 name 值匹配
 
-##### 项目下拉配置
+### 项目下拉配置
 
 在 store 中获取
 
