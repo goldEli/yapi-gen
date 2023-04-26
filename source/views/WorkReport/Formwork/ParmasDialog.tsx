@@ -42,7 +42,11 @@ const ParmasDialog = (props: Props) => {
   const onConfirm = () => {
     const formVal = form.getFieldsValue()
     formVal.is_required = props.dragItem?.is_required
-    props.onConfirm(formVal, props.dragItem?.type)
+    if (formVal.name) {
+      props.onConfirm(formVal, props.dragItem?.type)
+    } else {
+      return
+    }
   }
   return (
     <CommonModal

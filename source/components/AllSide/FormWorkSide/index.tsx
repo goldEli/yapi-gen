@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
+/* eslint-disable consistent-return */
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
@@ -22,6 +23,7 @@ import { aWeekDataList } from '@/views/WorkReport/Formwork/DataList'
 import { CloseWrap } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
 import { debounce } from 'lodash'
+import { getMessage } from '@/components/Message'
 // getTemplateList
 const FormWorkSideStyle = styled.div`
   min-width: 200px;
@@ -114,10 +116,14 @@ const FormWorkSide = () => {
     })
     dispatch(setTemplateName(activeItem?.name))
   }, [activeItem])
+  console.log(activeItem, 'activeItem')
   const onConfirm = async (name: string) => {
+    const filterName = dataList.find((el: any) => el.name === name)
+    if (filterName) {
+      return getMessage({ msg: '已有重复模板名称', type: 'warning' })
+    }
     dispatch(setDataList([{ name }, ...dataList]))
     setIsActive(dataList?.length - 1)
-    dispatch(setActiveItem({ name }))
     dispatch(
       setTemplateContentConfigs([
         {
@@ -158,6 +164,7 @@ const FormWorkSide = () => {
       }),
     )
     dispatch(setFillingRequirements(claerConfig))
+    dispatch(setActiveItem({ name }))
     setIsVisible(false)
   }
   const getDataList = async () => {

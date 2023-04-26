@@ -2,7 +2,7 @@ import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 
 export const Wrap = styled.div`
-  position: relative;
+  /* position: relative; */
   padding-top: 56px;
   height: 100%;
   padding-bottom: 100px;

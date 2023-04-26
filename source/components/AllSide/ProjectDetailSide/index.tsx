@@ -115,7 +115,7 @@ const ProjectDetailSide = () => {
       icon: 'settings',
       path: '/ProjectManagement/ProjectSetting',
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-        String(i.identity).includes('b/project/story_config'),
+        String(i.identity).includes('b/project/notification'),
       ).length,
       key: 'note',
     },
