@@ -4,12 +4,12 @@
 /* eslint-disable no-constant-binary-expression */
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { Checkbox } from 'antd'
 import { throttle } from 'lodash'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-
+import { setEditSave } from '@store/formWork'
 const Container = styled.div`
   position: relative;
   height: 72px;
@@ -93,8 +93,10 @@ const Sortable = (props: any) => {
   const container: any = useRef()
   const [dragItem, setDragItem] = useState<any>()
   let timer: any = null
+  const dispatch = useDispatch()
   // 拖动传值
   const onDragStart = (ev: any, index: number, item: any) => {
+    dispatch(setEditSave(false))
     localStorage.className = ref?.current?.className
     const moveItem = {
       ...item,
