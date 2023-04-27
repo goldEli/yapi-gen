@@ -18,6 +18,7 @@ import { getAsyncVerifyInfo } from '@store/mine'
 import { updateVerifyOperation } from '@/services/mine'
 import CommonButton from '@/components/CommonButton'
 import { getMessage } from '@/components/Message'
+import StateTag from '@/components/StateTag'
 
 const TimelineWrap = styled(Timeline)({
   '.ant-timeline-item-last > .ant-timeline-item-content': {
@@ -226,29 +227,7 @@ const EditExamine = (props: Props) => {
         }}
       >
         <ItemWrap>
-          {/* <LabelWrap>{props?.item?.demandId}</LabelWrap>
-          <ContentWrap>
-            <img
-              style={{
-                width: '18px',
-                height: '18px',
-              }}
-              src={verifyInfo?.category_attachment}
-              alt=""
-            />
-            <span
-              style={{
-                height: '20px',
-                fontSize: '12px',
-                fontWeight: 400,
-                color: 'var(--neutral-n2)',
-                lineHeight: '20px',
-              }}
-            >
-              {verifyInfo?.categoryName}
-            </span>
-          </ContentWrap> */}
-          <LabelWrap>编号</LabelWrap>
+          <LabelWrap>{t('serialNumber')}</LabelWrap>
           <ContentWrap>
             <Tooltip title={verifyInfo?.categoryName}>
               <img
@@ -260,6 +239,18 @@ const EditExamine = (props: Props) => {
                 alt=""
               />
             </Tooltip>
+            <span
+              style={{
+                height: '22px',
+                fontSize: '14px',
+                fontFamily: 'SiYuanMedium',
+                color: 'var(--neutral-n1-d1)',
+                lineHeight: '22px',
+                marginLeft: 8,
+              }}
+            >
+              {verifyInfo.storyPrefixKey}
+            </span>
           </ContentWrap>
         </ItemWrap>
         <ItemWrap>
@@ -579,15 +570,39 @@ const EditExamine = (props: Props) => {
                 )}
                 {/*  优化：取消审核tag  */}
                 {verifyInfo.verifyStatus === 4 ? (
-                  <ViewWrap color={verifyInfo?.from?.color}>
-                    {verifyInfo?.from?.content}
-                  </ViewWrap>
+                  <StateTag
+                    name={verifyInfo?.from?.content}
+                    state={
+                      verifyInfo?.from?.is_start === 1 &&
+                      verifyInfo?.from?.is_end === 2
+                        ? 1
+                        : verifyInfo?.from?.is_end === 1 &&
+                          verifyInfo?.from?.is_start === 2
+                        ? 2
+                        : verifyInfo?.from?.is_start === 2 &&
+                          verifyInfo?.from?.is_end === 2
+                        ? 3
+                        : 0
+                    }
+                  />
                 ) : (
                   <>
                     {verifyInfo?.to ? (
-                      <ViewWrap color={verifyInfo?.to?.color}>
-                        {verifyInfo?.to?.content}
-                      </ViewWrap>
+                      <StateTag
+                        name={verifyInfo?.to?.content}
+                        state={
+                          verifyInfo?.to?.is_start === 1 &&
+                          verifyInfo?.to?.is_end === 2
+                            ? 1
+                            : verifyInfo?.to?.is_end === 1 &&
+                              verifyInfo?.to?.is_start === 2
+                            ? 2
+                            : verifyInfo?.to?.is_start === 2 &&
+                              verifyInfo?.to?.is_end === 2
+                            ? 3
+                            : 0
+                        }
+                      />
                     ) : (
                       <DelWrap>{t('newlyAdd.statusDel')}</DelWrap>
                     )}

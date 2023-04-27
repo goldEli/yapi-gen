@@ -983,6 +983,7 @@ export const getVerifyUserList: any = async (params: any) => {
       usersName: i.users_name,
       statusFromTo: i.status_from_to,
       projectId: i.project_id,
+      storyPrefixKey: i.story_prefix_key,
     })),
   }
 }
@@ -1020,6 +1021,7 @@ export const getVerifyList: any = async (params: any) => {
       usersName: i.users_name,
       statusFromTo: i.status_from_to,
       projectId: i.project_id,
+      storyPrefixKey: i.story_prefix_key,
     })),
   }
 }
@@ -1062,6 +1064,7 @@ export const getVerifyInfo: any = async (params: any) => {
       id: k.user_id,
     })),
     fields: response.data.fields,
+    storyPrefixKey: response.data.story_prefix_key,
   }
 }
 
