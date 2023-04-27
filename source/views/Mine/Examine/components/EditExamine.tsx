@@ -5,7 +5,7 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Input, message, Space, Timeline } from 'antd'
+import { Input, message, Space, Timeline, Tooltip } from 'antd'
 import { ViewWrap, NameWrap, DelWrap } from '@/components/StyleCommon'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import CommonModal from '@/components/CommonModal'
@@ -191,6 +191,8 @@ const EditExamine = (props: Props) => {
     )
   }
 
+  console.log(verifyInfo)
+
   return (
     <CommonModal
       isVisible={props.isVisible}
@@ -220,11 +222,11 @@ const EditExamine = (props: Props) => {
         style={{
           maxHeight: props?.isEdit && props?.item?.status === 1 ? 464 : 544,
           overflowY: 'auto',
-          padding: 20,
+          padding: '20px 16px 20px 20px',
         }}
       >
         <ItemWrap>
-          <LabelWrap>{props?.item?.demandId}</LabelWrap>
+          {/* <LabelWrap>{props?.item?.demandId}</LabelWrap>
           <ContentWrap>
             <img
               style={{
@@ -245,6 +247,19 @@ const EditExamine = (props: Props) => {
             >
               {verifyInfo?.categoryName}
             </span>
+          </ContentWrap> */}
+          <LabelWrap>编号</LabelWrap>
+          <ContentWrap>
+            <Tooltip title={verifyInfo?.categoryName}>
+              <img
+                style={{
+                  width: '18px',
+                  height: '18px',
+                }}
+                src={verifyInfo?.category_attachment}
+                alt=""
+              />
+            </Tooltip>
           </ContentWrap>
         </ItemWrap>
         <ItemWrap>
@@ -341,7 +356,7 @@ const EditExamine = (props: Props) => {
           <ItemWrap>
             <LabelWrap>{t('newlyAdd.examineReason')}</LabelWrap>
             <Input.TextArea
-              style={{ width: 310 }}
+              style={{ width: 386 }}
               autoSize={{ minRows: 3, maxRows: 5 }}
               placeholder={t('newlyAdd.pleaseExamine')}
               value={value}
