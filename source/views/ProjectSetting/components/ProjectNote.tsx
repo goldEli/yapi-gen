@@ -51,6 +51,8 @@ const SetRight = styled.div({
   flexDirection: 'column',
   marginLeft: 24,
   width: 'calc(100% - 184px)',
+  height: 'calc(100vh - 128px)',
+  overflow: 'scroll',
 })
 const Title = styled.div({
   fontSize: 14,
@@ -80,7 +82,7 @@ const MenuItem = styled.div<{ isActive: boolean }>(
   {
     display: 'flex',
     flexDirection: 'column',
-    height: 52,
+    height: 44,
     alignItems: 'center',
     justifyContent: 'center',
     cursor: 'pointer',
@@ -150,7 +152,9 @@ const MainWrapItem = styled.div({
 })
 
 export const CheckboxWrap = styled.div({ width: 100 })
+
 export const OperationWrap = styled.div({ width: 100 })
+
 export const OperationWrap2 = styled.div({ width: 100, flexShrink: 0 })
 
 export const GroupWrap = styled.div({
@@ -241,6 +245,53 @@ const ProjectSet = () => {
     return name
   }
 
+  function forName(code: string) {
+    let name = ''
+    switch (code) {
+      case '1000':
+        name = t('Create_requirements')
+        break
+
+      case '1001':
+        name = t('import_requirement')
+        break
+
+      case '1002':
+        name = t('export_requirement')
+        break
+
+      case '1003':
+        name = t('assign_handler')
+        break
+
+      case '1004':
+        name = t('update_status')
+        break
+
+      case '1005':
+        name = t('commented_on_requirement')
+        break
+
+      case '1006':
+        name = t('comment')
+        break
+
+      case '1007':
+        name = t('delete_requirement')
+        break
+
+      case '1008':
+        name = t('add_cc')
+        break
+      case '0001':
+        name = t('import_product')
+        break
+
+      default:
+        break
+    }
+    return name
+  }
   const init2 = async () => {
     setDataList([
       {
@@ -291,12 +342,17 @@ const ProjectSet = () => {
         }
       })
     })
-    setPermissionList(res2[index].list)
+    const newArr = res2[index].list.map((i: any) => ({
+      ...i,
+      note: forName(i.code),
+    }))
+    setPermissionList(newArr)
   }
 
   useEffect(() => {
     init2()
   }, [isRefresh, activeDetail])
+  console.log(permissionList)
 
   const onSavePermission = async () => {
     const res = await editSaveConfig({
@@ -400,21 +456,21 @@ const ProjectSet = () => {
                   </span>
                   <span
                     style={{
-                      width: '120px',
+                      width: '150px',
                     }}
                   >
                     {t('email_notification')}
                   </span>
                   <span
                     style={{
-                      width: '120px',
+                      width: '150px',
                     }}
                   >
                     {t('insite_notifications')}
                   </span>
                   <span
                     style={{
-                      width: '504px',
+                      width: '600px',
                     }}
                   >
                     {t('notify_object')}
@@ -431,12 +487,17 @@ const ProjectSet = () => {
                         >
                           {i.note}
                         </span>
-                        <span>
+                        <span
+                          style={{
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
                           {i.tip_type.map((k: any) => (
                             <span
                               style={{
                                 display: 'inline-block',
-                                width: '120px',
+                                width: '150px',
+                                whiteSpace: 'nowrap',
                               }}
                               key={k.name}
                             >
@@ -453,14 +514,15 @@ const ProjectSet = () => {
                         </span>
                         <span
                           style={{
-                            width: '504px',
+                            width: '600px',
                           }}
                         >
                           {i.objects.map((k: any) => (
                             <span
                               style={{
                                 display: 'inline-block',
-                                width: '120px',
+                                width: '150px',
+                                whiteSpace: 'nowrap',
                               }}
                               key={k.name}
                             >

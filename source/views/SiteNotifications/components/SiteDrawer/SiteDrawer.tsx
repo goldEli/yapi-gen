@@ -48,7 +48,6 @@ const SiteDrawer = () => {
   const tabBox = useRef<HTMLDivElement>(null)
   const tabActive = useRef<HTMLDivElement>(null)
   const [hasMore, setHasMore] = useState(true)
-
   const [read, setRead] = useState<number | null>()
   const tabsValue = [
     {
@@ -80,7 +79,10 @@ const SiteDrawer = () => {
   const fetchMoreData = async (type: number) => {
     const re4 = await getMsg_list({
       lastId: lastId.current,
-      read: localStorage.getItem('read'),
+      read:
+        localStorage.getItem('read') === '1'
+          ? undefined
+          : localStorage.getItem('read'),
       latTime: newName.current,
       msgType: atmy.current,
     })
@@ -118,7 +120,10 @@ const SiteDrawer = () => {
     }
     if (id === '1') {
       atmy.current = undefined
-      newName.current = Math.floor(new Date().valueOf() / 1000) - 5 * 60 * 1000
+
+      const tenMinutesAgoTimestamp = Math.floor((Date.now() - 600000) / 1000)
+
+      newName.current = tenMinutesAgoTimestamp
       lastId.current = 0
       fetchMoreData(1)
     }
