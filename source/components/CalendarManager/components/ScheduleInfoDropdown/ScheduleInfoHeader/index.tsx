@@ -113,7 +113,11 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
                 disPatch(setScheduleInfoDropdown({ visible: false }))
               }}
             >
-              <ScheduleInfoIcon type="edit" />
+              <IconFont
+                type="edit"
+                style={{ fontSize: '18px' }}
+                className="icon"
+              />
             </span>
           ) : null}
           {scheduleInfo?.is_creator ? (
@@ -122,13 +126,21 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
                 setIsVisible(true)
               }}
             >
-              <ScheduleInfoIcon type="delete" />
+              <IconFont
+                type="delete"
+                style={{ fontSize: '18px' }}
+                className="icon"
+              />
             </span>
           ) : null}
 
           <div className="moreOperate">
             <label onClick={() => disPatch(setShowScheduleInfoTip(true))}>
-              <IconFont style={{ fontSize: '18px' }} type="more-01" />
+              <IconFont
+                style={{ fontSize: '18px' }}
+                type="more-01"
+                className="icon"
+              />
             </label>
             {showScheduleInfoTip ? (
               <BoxTip>
@@ -169,7 +181,11 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
               disPatch(setScheduleInfoDropdown({ visible: false }))
             }}
           >
-            <ScheduleInfoIcon type="close" />
+            <IconFont
+              style={{ fontSize: '18px' }}
+              type="close"
+              className="icon"
+            />
           </span>
         </div>
       </ScheduleInfoHeaderBtn>

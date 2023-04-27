@@ -21,10 +21,30 @@ const DayBox = styled.div`
   align-items: center;
   justify-content: center;
 `
+// const dayActive = css`
+//   border-radius: 50%;
+//   background: var(--primary-d1);
+//   color: var(--neutral-white-d7);
+//   position: relative;
+// `
+// const hasScheduleClass = css`
+//   position: relative;
+//   &::after {
+//     position: absolute;
+//     content: '';
+//     width: 4px;
+//     height: 4px;
+//     background: var(--primary-d1);
+//     bottom: -4px;
+//     left: 11px;
+//     border-radius: 50%;
+//   }
+// `
 const dayActive = css`
   border-radius: 50%;
-  background: var(--primary-d1);
-  color: var(--neutral-white-d7);
+  background: transparent;
+  color: var(--primary-d1);
+  border: 1px solid var(--primary-d1);
   position: relative;
 `
 const hasScheduleClass = css`
@@ -35,10 +55,15 @@ const hasScheduleClass = css`
     width: 4px;
     height: 4px;
     background: var(--primary-d1);
-    bottom: -4px;
-    left: 11px;
+    bottom: -6px;
+    left: 10px;
     border-radius: 50%;
   }
+`
+const selectedDateActive = css`
+  border-radius: 50%;
+  background: var(--primary-d1);
+  color: var(--neutral-white-d1);
 `
 interface CalendarForCalendarYearProps {
   month: number
@@ -56,6 +81,7 @@ const CalendarForCalendarYear: React.FC<
   const onCallBack = (date: Dayjs) => {
     setDate(date)
   }
+  const { checkedTime } = useSelector(state => state.calendar)
   const disPatch = useDispatch()
   const dateClick = useCallback(
     (e: any, date: any) => {
@@ -73,7 +99,7 @@ const CalendarForCalendarYear: React.FC<
         setScheduleListModal({
           visible: true,
           top: 76,
-          left: 10,
+          left: 0,
           date: dayjs(date).date(),
           scheduleListData: yearViewScheduleList[selectDate],
         }),
@@ -94,11 +120,13 @@ const CalendarForCalendarYear: React.FC<
           const hasSchedule = Object.keys(yearViewScheduleList).includes(
             dayjs(date).format('YYYY-MM-DD'),
           )
+          const selectedDate = checkedTime === dayjs(date).format('YYYY-MM-DD')
           return (
             <DayBox
               className={classNames({
-                [dayActive]: today,
                 [hasScheduleClass]: hasSchedule,
+                [selectedDateActive]: selectedDate,
+                [dayActive]: today,
               })}
               onClick={e => dateClick(e, date)}
             >

@@ -58,7 +58,7 @@ const ScheduleTitle = styled.div`
 const labelTime = css`
   font-size: 12px;
 
-  color: var(---neutral-n4);
+  color: var(--neutral-n4);
   margin-right: 8px;
   position: relative;
   padding-left: 14px;
@@ -92,6 +92,7 @@ const labelContent = css`
   text-overflow: ellipsis; //溢出用省略号显示
   white-space: nowrap; //溢出不换行
   width: calc(100% - 110px);
+  font-family: SiYuanRegular;
 `
 const dateClass = css`
   color: var(--neutral-n1-d1);

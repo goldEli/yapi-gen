@@ -22,19 +22,30 @@ const toggleDropUp = css`
   max-height: 0;
   overflow-y: hidden;
   transition: all 0.3s;
+  color: var(--neutral-n3) !important;
+  font-size: var(--font16) !important;
 `
 const toggleDropDown = css`
   /* max-height: auto; */
   max-height: 30vh;
   transition: all 0.3s;
+  color: var(--neutral-n3) !important;
+  font-size: var(--font16) !important;
 `
 const hover = css`
-  /* border: 1px solid; */
   height: 30px;
   display: flex;
   align-items: center !important;
+  margin: 0px 14px;
+  margin-right: 6px;
+  padding-left: 3px !important;
   &:hover {
     background: var(--hover-d3);
+    border-radius: 6px;
+  }
+  .icon {
+    position: relative;
+    top: 3px !important;
   }
 `
 interface IProps {
@@ -85,9 +96,9 @@ const ScheduleInfoContent: React.FC<IProps> = props => {
             {t('calendarManager.participant')}（{scheduleInfo?.members?.length}
             人）
           </span>
-          <span onClick={e => {}}>
+          <span onClick={e => {}} className="icon">
             <IconFont
-              style={{ fontSize: '18px' }}
+              style={{ fontSize: '16px', color: 'var(--neutral-n3)' }}
               type={toggleStatus ? 'up' : 'down'}
             />
           </span>

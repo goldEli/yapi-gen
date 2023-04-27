@@ -33,7 +33,7 @@ const weekendsColor = css`
 `
 
 const CalendarMonthHeader: React.FC<CalendarMonthHeaderProps> = props => {
-  const { selectedWeek } = useSelector(store => store.calendar)
+  const { selectedWeek, checkedTime } = useSelector(store => store.calendar)
   const { calenderYearWeekValue } = useSelector(store => store.calendarPanel)
   const dispatch = useDispatch()
 
@@ -47,8 +47,9 @@ const CalendarMonthHeader: React.FC<CalendarMonthHeaderProps> = props => {
 
     dispatch(
       getDaysOfWeekList({
-        year: parseInt(year, 10),
-        week: parseInt(week, 10),
+        // year: parseInt(year, 10),
+        // week: parseInt(week, 10),
+        date: checkedTime,
       }),
     )
   }, [calenderYearWeekValue])

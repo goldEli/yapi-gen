@@ -13,7 +13,8 @@ import {
   setListViews,
   setScheduleInfo,
 } from '@store/schedule'
-import { Empty, Spin, Tooltip } from 'antd'
+import { Empty, Spin, Tooltip, Input } from 'antd'
+const { Search } = Input
 import {
   getColorWithOpacityPointOne,
   getColor,
@@ -44,6 +45,7 @@ import { mapToArray } from '@/tools'
 interface CalendarListProps {}
 const ScheduleSearch: React.FC<CalendarListProps> = props => {
   const CalendarListBoxRef = useRef<HTMLDivElement>(null)
+  const inputRefDom = useRef<HTMLDivElement>(null)
   const { checkedCalendarList } = useSelector(state => state.calendar)
   const [t] = useTranslation()
   const [inputDefaultValue, setInputDefaultValue] = useState<string>()
@@ -67,6 +69,10 @@ const ScheduleSearch: React.FC<CalendarListProps> = props => {
       setSearchList(data)
     })
   }
+  useEffect(() => {
+    console.log(11)
+    inputRefDom.current?.focus()
+  }, [])
   useEffect(() => {
     if (inputDefaultValue === void 0) return
     getSearchList()
@@ -93,16 +99,28 @@ const ScheduleSearch: React.FC<CalendarListProps> = props => {
             <IconFont type="left-md"></IconFont>
             {t('calendarManager.calendar_back')}
           </BackBox>
-          <InputSearch
+          {/* <InputSearch
             placeholder={t('calendarManager.search_schedule')}
             defaultValue={inputDefaultValue}
+            autoFocus
             width={'100%'}
             onChangeSearch={value => {
               console.log(value)
               setInputDefaultValue(value)
             }}
             onFocus={() => {}}
-          ></InputSearch>
+            ref={inputRefDom}
+          ></InputSearch> */}
+          <Input
+            placeholder={t('calendarManager.search_schedule')}
+            style={{ height: '100%' }}
+            autoFocus
+            allowClear
+            onPressEnter={e => {
+              const value = (e.target as HTMLInputElement).value
+              setInputDefaultValue(value)
+            }}
+          />
         </ScheduleSearchWrap>
         {searchList?.length
           ? searchList?.map((item: any, index: number) => (
