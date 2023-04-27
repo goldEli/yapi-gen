@@ -60,8 +60,10 @@ const EditWork = (props: PropsType) => {
   const [type, setType] = useState('')
   const { templateContentConfigs } = useSelector(store => store.formWork)
   const [dataList, setDataList] = useState<any>()
-  const onDrag = (event: any, i: number) => {
+  const [isEmpty, setIsEmpty] = useState(false)
+  const onDrag = (event: any, i: number, empty?: boolean) => {
     dispatch(setEditSave(false))
+    setIsEmpty(empty || false)
     const evevtObj: any = event.dataTransfer.getData('item')
       ? JSON.parse(event.dataTransfer.getData('item'))
       : null
@@ -83,10 +85,14 @@ const EditWork = (props: PropsType) => {
         getMessage({ msg: t('formWork.has'), type: 'warning' })
         return
       }
-      const arrData = Array.from(dataList)
-      arrData.splice(i, 0, configs)
-      setDataList(arrData)
-      dispatch(setTemplateContentConfigs(arrData))
+      if (empty) {
+        dispatch(setTemplateContentConfigs([...dataList, configs]))
+      } else {
+        const arrData = Array.from(dataList)
+        arrData.splice(i, 0, configs)
+        setDataList(arrData)
+        dispatch(setTemplateContentConfigs(arrData))
+      }
     } else {
       const configs = {
         type: evevtObj.type,
@@ -115,10 +121,13 @@ const EditWork = (props: PropsType) => {
       is_required: obj.is_required,
     }
     setIsVisible(false)
-    const arrData = Array.from(dataList)
+    let arrData = Array.from(dataList)
     if (type === 'add') {
-      arrData.splice(index, 0, configs)
-      setDataList(arrData)
+      isEmpty
+        ? (arrData = [...dataList, configs])
+        : arrData.splice(index, 0, configs)
+      isEmpty ? setDataList([...dataList, configs]) : setDataList(arrData)
+      console.log([...dataList, configs], 'confi')
     } else if (type === 'edit') {
       arrData[index] = configs
       setDataList(arrData)
@@ -166,7 +175,7 @@ const EditWork = (props: PropsType) => {
         <div
           style={{ height: 'calc(100vh - 370px)' }}
           onDrop={event => {
-            onDrag(event, dataList?.length - 1)
+            onDrag(event, dataList?.length - 1, true)
           }}
           onDragOver={event => {
             event.preventDefault()

@@ -33,6 +33,7 @@ import {
   setReadApi,
 } from '@/services/SiteNotifications'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox'
+import NoData from '@/components/NoData'
 
 const SiteDrawer = () => {
   const [t] = useTranslation()
@@ -121,7 +122,9 @@ const SiteDrawer = () => {
     if (id === '1') {
       atmy.current = undefined
 
-      const tenMinutesAgoTimestamp = Math.floor((Date.now() - 600000) / 1000)
+      const tenMinutesAgoTimestamp = Math.floor(
+        (new Date().getTime() - 30 * 24 * 3600 * 1000) / 1000,
+      )
 
       newName.current = tenMinutesAgoTimestamp
       lastId.current = 0
@@ -256,7 +259,19 @@ const SiteDrawer = () => {
           height={document.body.clientHeight - 230}
           loader={<Skeleton avatar paragraph={{ rows: 2 }} active />}
           scrollableTarget="scrollableDiv"
-          endMessage={<Divider plain>{t('nm')}</Divider>}
+          endMessage={
+            <div
+              style={{
+                margin: '0 12px',
+              }}
+            >
+              {list.length < 1 ? (
+                <NoData />
+              ) : (
+                <Divider plain>{t('nm')} </Divider>
+              )}
+            </div>
+          }
         >
           {list.map((i: any) => (
             <ContentItem setReads={setReads} item={i} key={i.id} />
@@ -273,11 +288,20 @@ const SiteDrawer = () => {
             background: 'var(--neutral-white-d1)',
           }}
         >
-          <Tips>
-            {t(
-              'all_notifications_in_the_past_half_year_have_been_displayed_for_you',
-            )}
-          </Tips>
+          {active === '1' ? (
+            <Tips>
+              {t(
+                'all_notifications_for_the_last_30_days_have_been_shown_to_you',
+              )}
+            </Tips>
+          ) : (
+            <Tips>
+              {t(
+                'all_notifications_in_the_past_half_year_have_been_displayed_for_you',
+              )}
+            </Tips>
+          )}
+
           <MyFooter>
             <Checkbox checked={readStatue()} onChange={onChange}>
               <span

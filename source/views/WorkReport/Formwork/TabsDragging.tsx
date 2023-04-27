@@ -140,7 +140,6 @@ const Sortable = (props: any) => {
   }
 
   const onDragOver = (e: any) => {
-    e.stopPropagation()
     if (e.pageY >= window.screen?.availHeight - 300) {
       document
         .getElementById('father')!
@@ -208,7 +207,7 @@ const Sortable = (props: any) => {
                 transition: dragItem?.name === child?.name ? 'all .1s' : '',
                 transform:
                   dragItem?.name === child?.name
-                    ? 'translateY(10px)'
+                    ? 'translateY(20px)'
                     : 'translateY(0)',
               }}
               key={child?.name}
@@ -218,8 +217,7 @@ const Sortable = (props: any) => {
               onDragOver={e => onDragOver(e)}
               onDragEnd={e => onDragEnd(e, i)}
               onClick={(event: any) => {
-                console.log('dj'),
-                  event.preventDefault(),
+                event.preventDefault(),
                   child.type !== 1 && child.type != 4 && props.onClick(i, child)
               }}
             >

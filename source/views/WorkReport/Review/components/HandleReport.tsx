@@ -91,6 +91,9 @@ const HeadWrap = styled.div<{ isCanImport: boolean }>`
       user-select: none;
       white-space: nowrap;
     }
+    &:hover {
+      color: var(--primary-d2);
+    }
   }
 `
 

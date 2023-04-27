@@ -8,6 +8,7 @@ export const Title = styled.div`
   color: var(--neutral-n1-d1);
   font-family: SiYuanMedium;
   line-height: 22px;
+  white-space: nowrap;
 `
 
 export const First = styled.div`

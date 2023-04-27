@@ -58,6 +58,7 @@
   "today": "今天",
   "all_read": "全部已读",
   "all_notifications_in_the_past_half_year_have_been_displayed_for_you": "已为您显示近半年的所有通知消息",
+  "all_notifications_for_the_last_30_days_have_been_shown_to_you": "已为您显示近三十天的所有通知消息",
   "show_only_unread": "只显示未读",
   "new_page": "新页面",
   "filtering_notifications": "筛选通知",
