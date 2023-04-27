@@ -9,8 +9,15 @@ import CustomSelect from './CustomSelect'
 import IconFont from './IconFont'
 
 const DragLine = styled.div<{ active: boolean }>`
-  position: absolute;
+  height: 100%;
   width: 2px;
+  margin-left: 4px;
+  background: ${props => (props.active ? 'var(--primary-d2)' : 'transparent')};
+`
+
+const MouseDom = styled.div<{ active: boolean }>`
+  position: absolute;
+  width: 6px;
   cursor: col-resize;
   overflow: hidden;
   z-index: 1;
@@ -20,9 +27,12 @@ const DragLine = styled.div<{ active: boolean }>`
   user-select: none;
   height: 100%;
   top: 0;
-  background: ${props => (props.active ? 'var(--primary-d2)' : 'transparent')};
+  display: flex;
+  align-items: center;
   &:hover {
-    background: var(--primary-d2);
+    .line {
+      background: var(--primary-d2);
+    }
   }
 `
 
@@ -955,4 +965,5 @@ export {
   DragLine,
   SelectWrap,
   DropdownWrap,
+  MouseDom,
 }

@@ -53,6 +53,7 @@ const ListHead = styled.div({
   background: 'var(--neutral-white-d2)',
   display: 'flex',
   alignItems: 'center',
+  flexWrap: 'wrap',
 })
 
 const SelectWrapForList = styled(SelectWrapBedeck)`
