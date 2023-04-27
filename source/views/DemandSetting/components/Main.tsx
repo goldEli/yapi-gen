@@ -2,10 +2,10 @@
 /* eslint-disable camelcase */
 /* eslint-disable new-cap */
 /* eslint-disable require-unicode-regexp */
-/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-negated-condition */
 /* eslint-disable react/no-danger */
 /* eslint-disable complexity */
+/* eslint-disable no-constant-binary-expression */
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { useEffect, useRef, useState } from 'react'
@@ -152,6 +152,15 @@ const Main = (props: any) => {
         : setGetCategoryConfigT([...getCategoryConfigT, newItem])
     }
   }
+  // 去重
+  const fitlerDataList = (data: any) => {
+    let obj: any = {}
+    let set: any = data?.reduce((cur: any, next: any) => {
+      obj[next.storyId] ? '' : (obj[next.storyId] = true && cur.push(next))
+      return cur
+    }, [])
+    return set
+  }
   // 根据下标去插入元素
   const editCategoryConfig = (item: any, type: any, index: any) => {
     const newItem = {
@@ -168,23 +177,23 @@ const Main = (props: any) => {
     if (type === 1) {
       const arrData = Array.from(getCategoryConfigF)
       arrData.splice(index, 0, newItem)
-      setGetCategoryConfigF(arrData)
+      setGetCategoryConfigF(fitlerDataList(arrData))
       if (item.dragtype === 'move') {
         const data = getCategoryConfigT.filter(
           (el: any) => el.storyId !== newItem.storyId,
         )
-        data && setGetCategoryConfigT(data)
+        data && setGetCategoryConfigT(fitlerDataList(data))
       }
       dispatch(setGetCategoryConfigArray([...arrData, ...getCategoryConfigT]))
     } else if (type === 2) {
       const arrData = Array.from(getCategoryConfigT)
       arrData.splice(index, 0, newItem)
-      setGetCategoryConfigT(arrData)
+      setGetCategoryConfigT(fitlerDataList(arrData))
       if (item.dragtype === 'move') {
         const data = getCategoryConfigF.filter(
           (el: any) => el.storyId !== newItem.storyId,
         )
-        data && setGetCategoryConfigF(data)
+        data && setGetCategoryConfigF(fitlerDataList(data))
       }
       dispatch(setGetCategoryConfigArray([...arrData, ...getCategoryConfigF]))
     }
@@ -313,7 +322,7 @@ const Main = (props: any) => {
       draggable="false"
       style={{
         flex: 1,
-        height: 'calc(100vh - 220px)',
+        height: 'calc(100vh - 260px)',
         overflowY: 'auto',
         padding: '0 24px',
       }}
