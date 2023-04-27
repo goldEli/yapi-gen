@@ -86,6 +86,7 @@ const List = () => {
   const [queryParams, setQueryParams] = useState<any>({})
   const [editId, setEditId] = useState<any>()
   const [visibleEdit, setVisibleEdit] = useState(false)
+  const initialRef = useRef(0)
   const params = useParams()
   const id = Number(params?.id)
   const { isFresh } = useSelector(state => state.workReport.listUpdate)
@@ -160,7 +161,10 @@ const List = () => {
   }, [isFresh])
 
   useEffect(() => {
-    getList()
+    if (initialRef.current) {
+      getList()
+    }
+    initialRef.current += 1
   }, [pageObj, queryParams])
 
   useEffect(() => {
