@@ -28,6 +28,18 @@ const NewNameWrap = styled.div({
     },
   },
 })
+
+const DashedWrap = styled.div`
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px dashed var(--neutral-n3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+`
+
 const ChoosePeople = (props: any) => {
   const [allMemberList, setAllMemberList] = useState<any>([])
   const [options, setOptions] = useState<any>([])
@@ -181,11 +193,13 @@ const ChoosePeople = (props: any) => {
               height: '24px',
             }}
           >
-            <IconFont
-              className="icon"
-              type="plus"
-              onClick={() => setIsOpen(true)}
-            />
+            <DashedWrap>
+              <IconFont
+                className="icon"
+                type="plus"
+                onClick={() => setIsOpen(true)}
+              />
+            </DashedWrap>
           </div>
         </Popover>
       </div>

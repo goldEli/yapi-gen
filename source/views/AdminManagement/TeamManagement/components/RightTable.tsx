@@ -36,8 +36,8 @@ const PaginationBox = styled.div`
 `
 const TableBox = styled.div`
   width: 100%;
-  height: calc(100% - 64px - 72px);
-  overflow-y: scroll;
+  height: calc(100% - 160px);
+  overflow-y: auto;
 `
 const FormStyle = styled(Form)`
   & .ant-form-item {

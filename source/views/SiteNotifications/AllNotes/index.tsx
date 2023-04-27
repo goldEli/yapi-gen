@@ -24,6 +24,7 @@ import {
 } from '@/services/SiteNotifications'
 import { useEffect, useRef, useState } from 'react'
 import { css } from '@emotion/css'
+import NoData from '@/components/NoData'
 
 const scrollListWrap = css`
   padding: 0px 4px 0px 80px;
@@ -102,6 +103,7 @@ const Index = () => {
   }
 
   const changeUser = (str: string, arr: any) => {
+    setList([])
     msgType.current = id === '4' ? ['191', '132'].concat(arr ?? []) : arr
     friendUsername.current = str
     lastId.current = undefined
@@ -110,6 +112,7 @@ const Index = () => {
     fetchMoreData(1)
   }
   const changeMsg = (arr: any) => {
+    setList([])
     msgType.current = id === '4' ? ['191', '132'].concat(arr ?? []) : arr
     lastId.current = undefined
     setHasMore(true)
@@ -177,7 +180,9 @@ const Index = () => {
           height={document.body.clientHeight - 230}
           loader={<Skeleton avatar paragraph={{ rows: 2 }} active />}
           scrollableTarget="scrollableDiv"
-          endMessage={<Divider plain>{t('nm')} </Divider>}
+          endMessage={
+            list.length < 1 ? <NoData /> : <Divider plain>{t('nm')} </Divider>
+          }
         >
           {list.map((i: any) => {
             return <ContentItem setReads={setReads} item={i} key={i.id} />

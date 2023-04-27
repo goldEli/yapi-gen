@@ -289,7 +289,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
       const params = encryptPhp(
         JSON.stringify({ id: projectId, isMember: true, userId: row.id }),
       )
-      navigate(`/ProjectManagement/MemberInfo/Profile?data=${params}`)
+      navigate(`/MemberInfo/Profile?data=${params}`)
     }
   }
 

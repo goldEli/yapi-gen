@@ -287,7 +287,7 @@ const StaffManagement = () => {
       const params = encryptPhp(
         JSON.stringify({ id: '', isMember: false, userId: row.id }),
       )
-      navigate(`/AdminManagement/MemberInfo/Profile?data=${params}`)
+      navigate(`/MemberInfo/Profile?data=${params}`)
     }
   }
   const onOperationCheckbox = (keys: number[]) => {

@@ -2,10 +2,10 @@
 /* eslint-disable camelcase */
 /* eslint-disable new-cap */
 /* eslint-disable require-unicode-regexp */
-/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-negated-condition */
 /* eslint-disable react/no-danger */
 /* eslint-disable complexity */
+/* eslint-disable no-constant-binary-expression */
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { useEffect, useRef, useState } from 'react'
@@ -140,13 +140,26 @@ const Main = (props: any) => {
       const arrData = Array.from(getCategoryConfigF)
       arrData.splice(draggingIndex, 0, newItem)
       // 插入空白区域的情况
-      draggingIndex !== -1 ? setGetCategoryConfigF(arrData) : setGetCategoryConfigF([...getCategoryConfigF, newItem])
+      draggingIndex !== -1
+        ? setGetCategoryConfigF(arrData)
+        : setGetCategoryConfigF([...getCategoryConfigF, newItem])
     } else {
       const arrData = Array.from(getCategoryConfigT)
       arrData.splice(draggingIndex, 0, newItem)
       setGetCategoryConfigT(arrData)
-      draggingIndex !== -1 ? setGetCategoryConfigT(arrData) : setGetCategoryConfigT([...getCategoryConfigT, newItem])
+      draggingIndex !== -1
+        ? setGetCategoryConfigT(arrData)
+        : setGetCategoryConfigT([...getCategoryConfigT, newItem])
     }
+  }
+  // 去重
+  const fitlerDataList = (data: any) => {
+    let obj: any = {}
+    let set: any = data?.reduce((cur: any, next: any) => {
+      obj[next.storyId] ? '' : (obj[next.storyId] = true && cur.push(next))
+      return cur
+    }, [])
+    return set
   }
   // 根据下标去插入元素
   const editCategoryConfig = (item: any, type: any, index: any) => {
@@ -164,23 +177,23 @@ const Main = (props: any) => {
     if (type === 1) {
       const arrData = Array.from(getCategoryConfigF)
       arrData.splice(index, 0, newItem)
-      setGetCategoryConfigF(arrData)
+      setGetCategoryConfigF(fitlerDataList(arrData))
       if (item.dragtype === 'move') {
         const data = getCategoryConfigT.filter(
           (el: any) => el.storyId !== newItem.storyId,
         )
-        data && setGetCategoryConfigT(data)
+        data && setGetCategoryConfigT(fitlerDataList(data))
       }
       dispatch(setGetCategoryConfigArray([...arrData, ...getCategoryConfigT]))
     } else if (type === 2) {
       const arrData = Array.from(getCategoryConfigT)
       arrData.splice(index, 0, newItem)
-      setGetCategoryConfigT(arrData)
+      setGetCategoryConfigT(fitlerDataList(arrData))
       if (item.dragtype === 'move') {
         const data = getCategoryConfigF.filter(
           (el: any) => el.storyId !== newItem.storyId,
         )
-        data && setGetCategoryConfigF(data)
+        data && setGetCategoryConfigF(fitlerDataList(data))
       }
       dispatch(setGetCategoryConfigArray([...arrData, ...getCategoryConfigF]))
     }
@@ -286,9 +299,14 @@ const Main = (props: any) => {
     evevtObj?.dragtype === 'add' && setAddAndEditVisible(true),
       setFieldType(evevtObj)
     const dragItem = event.dataTransfer.getData('DragItem')
-      ? JSON.parse(event.dataTransfer.getData('DragItem')) : null
-    const filterDataF = getCategoryConfigF.filter((el: any) => el.storyId !== dragItem.storyId)
-    const filterDataT = getCategoryConfigT.filter((el: any) => el.storyId !== dragItem.storyId)
+      ? JSON.parse(event.dataTransfer.getData('DragItem'))
+      : null
+    const filterDataF = getCategoryConfigF.filter(
+      (el: any) => el.storyId !== dragItem.storyId,
+    )
+    const filterDataT = getCategoryConfigT.filter(
+      (el: any) => el.storyId !== dragItem.storyId,
+    )
     //  双方都需要过滤到拖动的item
     if (state === 1) {
       setGetCategoryConfigF([...filterDataF, dragItem])
@@ -304,7 +322,7 @@ const Main = (props: any) => {
       draggable="false"
       style={{
         flex: 1,
-        height: 'calc(100vh - 220px)',
+        height: 'calc(100vh - 260px)',
         overflowY: 'auto',
         padding: '0 24px',
       }}
@@ -325,10 +343,13 @@ const Main = (props: any) => {
           {t('newlyAdd.basicInfo') as string}
         </span>
       </TitleStyle>
-      <div style={{ minHeight: 180 }} onDrop={event => onDropEmpty(event, 1)}
+      <div
+        style={{ minHeight: 180 }}
+        onDrop={event => onDropEmpty(event, 1)}
         onDragOver={event => {
           event.preventDefault()
-        }}>
+        }}
+      >
         {infoIcon && (
           <TabsDragging
             dragState={dragState}
@@ -358,10 +379,13 @@ const Main = (props: any) => {
         />
         <span style={{ marginLeft: '8px' }}>{t('more_folding') as string}</span>
       </TitleStyle>
-      <div style={{ minHeight: 300 }} onDrop={event => onDropEmpty(event, 2)}
+      <div
+        style={{ minHeight: 300 }}
+        onDrop={event => onDropEmpty(event, 2)}
         onDragOver={event => {
           event.preventDefault()
-        }}>
+        }}
+      >
         {moreIcon && (
           <TabsDragging
             dragState={dragState}

@@ -6,10 +6,25 @@ import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
 import { Checkbox, Tooltip } from 'antd'
-import { throttle } from 'lodash'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-
+const Box = styled.div`
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+`
+const Circle = styled.div`
+  width: 10px;
+  height: 10px;
+  background-color: var(--neutral-white-d1);
+  border-radius: 50%;
+  border: 2px solid var(--primary-d1);
+`
+const Line = styled.div`
+  height: 2px;
+  width: 99%;
+  background-color: var(--primary-d1);
+`
 const Container = styled.div`
   position: relative;
   height: 72px;
@@ -82,10 +97,6 @@ const DelBtnText = styled.span`
   margin: 0;
   padding: 0;
 `
-const Empty = styled.div`
-  width: 100%;
-  height: 300px;
-`
 const Sortable = (props: any) => {
   const [t] = useTranslation()
   const { list } = props
@@ -113,14 +124,13 @@ const Sortable = (props: any) => {
   const fitlerDataList = (data: any) => {
     let obj: any = {}
     let set: any = data?.reduce((cur: any, next: any) => {
-      obj[next.id] ? '' : (obj[next.id] = true && cur.push(next))
+      obj[next.storyId] ? '' : (obj[next.storyId] = true && cur.push(next))
       return cur
     }, [])
     return set
   }
   // 拖动排序
-  const onDragEnd = (e: any, index: number) => {
-    setDragItem(null)
+  const onDragEnd = (e: any, index: number, child: any) => {
     if (endIndex !== index) {
       let _list: any = [...props.list]
       _list[endIndex] = props.list[current]
@@ -131,11 +141,18 @@ const Sortable = (props: any) => {
     }
     setEndIndex(null)
     setCurrent(null)
+    setDragItem(null)
   }
-
-  const onDragOver = throttle((e: any, index: number, child: any) => {
-    setDragItem(child)
+  // 接触到就触发
+  const onDragEnter = (e: any, index: number, child: any) => {
     setEndIndex(index)
+    setDragItem(child)
+    setTimeout(() => {
+      setDragItem(null)
+    }, 500)
+  }
+  // 它是350毫秒就会触发
+  const onDragOver = (e: any) => {
     if (e.pageY >= window.screen?.availHeight - 300) {
       document
         .getElementById('father')!
@@ -145,10 +162,7 @@ const Sortable = (props: any) => {
         .getElementById('father')!
         .scrollTo({ top: Number(0), behavior: 'smooth' })
     }
-    timer = setTimeout(() => {
-      setDragItem(null)
-    }, 500)
-  }, 100)
+  }
   const allowDrop = (ev: any) => {
     ev.preventDefault()
   }
@@ -168,6 +182,7 @@ const Sortable = (props: any) => {
   useEffect(() => {
     return () => {
       clearTimeout(timer)
+      localStorage.className = ''
     }
   }, [])
   return (
@@ -195,14 +210,15 @@ const Sortable = (props: any) => {
                   dragItem?.storyId === child?.storyId ? 'all .1s' : '',
                 transform:
                   dragItem?.storyId === child?.storyId
-                    ? 'translateY(10px)'
+                    ? 'translateY(20px)'
                     : 'translateY(0)',
               }}
               key={child?.storyId}
               draggable="true"
               onDragStart={(ev: any) => onDragStart(ev, i, child)}
-              onDragOver={e => onDragOver(e, i, child)}
-              onDragEnd={e => onDragEnd(e, i)}
+              onDragEnter={e => onDragEnter(e, i, child)}
+              onDragOver={e => onDragOver(e)}
+              onDragEnd={e => onDragEnd(e, i, child)}
               onClick={() => child?.isCustomize != 2 && props.onClick(i, child)}
             >
               {child?.isCustomize === 2 ? (
@@ -327,9 +343,18 @@ const Sortable = (props: any) => {
                 </ItemList>
               )}
             </Container>
+            <Box
+              style={{
+                display: dragItem?.storyId === child?.storyId ? 'flex' : 'none',
+              }}
+            >
+              <Circle />
+              <Line />
+            </Box>
           </div>
         ))}
     </div>
   )
 }
+
 export default Sortable

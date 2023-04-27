@@ -10,7 +10,6 @@ const Wrap = styled.div`
 `
 const Main = styled.div({
   width: '100%',
-  overflow: 'auto',
 })
 
 const Review = () => {

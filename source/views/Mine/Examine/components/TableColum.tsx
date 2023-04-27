@@ -51,17 +51,20 @@ export const useDynamicColumns = (state: any) => {
 
   const arr = [
     {
-      title: <NewSort fixedKey="story_id">ID</NewSort>,
-      dataIndex: 'demandId',
-      key: 'story_id',
+      width: 140,
+      title: <NewSort fixedKey="story_prefix_key">{t('serialNumber')}</NewSort>,
+      dataIndex: 'storyPrefixKey',
+      key: 'prefix_key',
       render: (text: string, record: any) => {
         return (
-          <ClickWrap
-            className="canClickDetail"
-            onClick={() => state.onClickItem(record)}
-          >
-            {text}
-          </ClickWrap>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <ClickWrap
+              className="canClickDetail"
+              onClick={() => state.onClickItem(record)}
+            >
+              {record.storyPrefixKey}
+            </ClickWrap>
+          </div>
         )
       },
     },

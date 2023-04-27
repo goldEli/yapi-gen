@@ -1,4 +1,5 @@
 /* eslint-disable complexity */
+/* eslint-disable no-constant-binary-expression */
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { Input } from 'antd'
@@ -15,7 +16,8 @@ const CreateFieldWrap = styled.div`
   border-left: 1px solid var(--neutral-n6-d1);
   padding: 0 24px;
   overflow-y: auto;
-  height: calc(100vh - 220px);
+  height: calc(100vh - 280px);
+  margin-bottom: 24px;
 `
 const TitleStyle = styled.div`
   width: 352px;
