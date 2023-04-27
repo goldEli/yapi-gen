@@ -503,6 +503,7 @@ const ReportDetailDrawer = () => {
                         </div>
                         {userInfo?.id === i.comment_user.id ? (
                           <IconFont
+                            className="deleteIcon"
                             style={{ marginLeft: 20 }}
                             type="close"
                             onClick={() => onDeleteComment(i)}
