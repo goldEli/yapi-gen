@@ -1,9 +1,27 @@
 {
-  "pm": "project management ",
+  "Create_requirements": "Create Requirements",
+  "import_requirement": "Import requirement",
 
-  "systematic_notification": "system notification",
+  "export_requirement": "Export requirement",
 
-  "schedule_management": "schedule management",
+  "import_product": "Import product",
+
+  "assign_handler": "Requirements  handler",
+
+  "update_status": "Requirement status update ",
+
+  "commented_on_requirement": "Requirement was commented ",
+
+  "comment": "Comment ",
+
+  "delete_requirement": "Requirement to delete ",
+
+  "add_cc": "Make A Play For",
+  "pm": "Project Management",
+
+  "systematic_notification": "System Notification",
+
+  "schedule_management": "Schedule Management",
   "Invitations": "Invite me to participate",
   "work_report": "Work report",
   "pending_my_approval": "Pending my approval",
@@ -12,7 +30,7 @@
 
   "created_the_task": "The task was created ",
 
-  "system_notice": "system notice",
+  "system_notice": "System Notice",
 
   "Reminder": "Reminder",
 
@@ -20,31 +38,31 @@
 
   "to_do": "To do",
 
-  "calendar_reminder": "calendar reminder",
+  "calendar_reminder": "Calendar Reminder",
 
   "This ": "I was invited to participate ",
 
-  "mentioned_in_comments": "mentioned_in_comments",
+  "mentioned_in_comments": "Mentioned In Comments",
 
   "created_tasks": "The task was created ",
 
   "who_submitted_the_report": "Who submitted the briefing ",
 
-  "report_reminder": "report_reminder",
+  "report_reminder": "Report reminder",
 
   "waiting_for_my_approval": "Wait for my approval",
 
   "invitationss": "The schedule to which I am invited ",
 
-  "system_announcement": "system announcement",
+  "system_announcement": "System announcement",
   "nm": "nothing more",
   "incident": "incident",
-  "insite_notifications": " insite_notifications",
+  "insite_notifications": " Insite Notifications",
   "notify_object": " Notification object",
-  "station_premise": " station_premise",
-  "Administrator": " administrator ",
+  "station_premise": "Station Premise",
+  "Administrator": " Administrator ",
   "person_to_be_added": " The person added",
-  "the_person_being": " the person being @ ",
+  "the_person_being": "The person being @ ",
   "The_person_being_manager ": " The person being manipulated",
   "all_notices": " all_notices",
   "unread_notifications": " No notifications",
@@ -56,7 +74,7 @@
   "notification": "notification",
   "notificationCenter": "Notifications",
   "notification_settings": "notification Settings ",
-  "operand": "operand",
+  "operand": "Operand",
   "email_notification": "Email notification",
   "ReceiveEmailUpdatesWithMentionsInvitationsAndCommentsAboutItemsYouCareAbout": "receive mention about your concern, invite and comments email updates",
   "use_this_email_to_receive": "Use this email to receive",
@@ -141,7 +159,7 @@
   "editorial_team": " Edit team",
   "confirmation_of_dissolution": " Confirmation of dissolution",
   "disbanding_the_team": " Disband the team",
-  "mailbox": " mailbox",
+  "mailbox": " Mailbox",
   "shift_out": " shift_out",
   "back_stage_management": " Background management",
   "recent_projects": " recent projects",
