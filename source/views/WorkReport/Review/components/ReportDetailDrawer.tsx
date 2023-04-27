@@ -594,7 +594,7 @@ const ReportDetailDrawer = () => {
                 setIsReview(true)
                 setTimeout(() => {
                   editorRef.current?.focus()
-                }, 0)
+                }, 50)
               }}
             />
           )}

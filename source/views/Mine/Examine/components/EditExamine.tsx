@@ -29,6 +29,12 @@ const TimelineWrap = styled(Timeline)({
   '.ant-timeline-item-last': {
     paddingBottom: '0!important',
   },
+  '.ant-timeline-item-head-blue': {
+    borderColor: 'var(--neutral-n5) !important',
+  },
+  '& :first-child .ant-timeline-item-head-blue': {
+    borderColor: 'var(--primary-d1) !important',
+  },
 })
 
 const FooterWrap = styled(Space)({
@@ -218,19 +224,8 @@ const EditExamine = (props: Props) => {
         }}
       >
         <ItemWrap>
-          <div>{props?.item?.demandId}</div>
-
-          <div
-            style={{
-              height: '24px',
-              background: 'var(--neutral-n8)',
-              borderRadius: '6px 6px 6px 6px',
-              padding: '2px 8px',
-              display: 'flex',
-              alignItems: 'center',
-              marginLeft: '16px',
-            }}
-          >
+          <LabelWrap>{props?.item?.demandId}</LabelWrap>
+          <ContentWrap>
             <img
               style={{
                 width: '18px',
@@ -250,7 +245,7 @@ const EditExamine = (props: Props) => {
             >
               {verifyInfo?.categoryName}
             </span>
-          </div>
+          </ContentWrap>
         </ItemWrap>
         <ItemWrap>
           <LabelWrap>{t('common.title')}</LabelWrap>
@@ -346,7 +341,7 @@ const EditExamine = (props: Props) => {
           <ItemWrap>
             <LabelWrap>{t('newlyAdd.examineReason')}</LabelWrap>
             <Input.TextArea
-              style={{ width: 256 }}
+              style={{ width: 310 }}
               autoSize={{ minRows: 3, maxRows: 5 }}
               placeholder={t('newlyAdd.pleaseExamine')}
               value={value}
@@ -394,7 +389,7 @@ const EditExamine = (props: Props) => {
                           style={{
                             marginTop: 8,
                             display: 'flex',
-                            alignItems: 'center',
+                            alignItems: 'start',
                           }}
                         >
                           <NameWrap>
@@ -555,7 +550,7 @@ const EditExamine = (props: Props) => {
               </Timeline.Item>
             )}
             {/* TODO: 需求流回至 */}
-            <Timeline.Item style={{ marginBottom: 16 }}>
+            <Timeline.Item>
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 {/*  优化：取消审核label  */}
                 {verifyInfo.verifyStatus === 4 ? (

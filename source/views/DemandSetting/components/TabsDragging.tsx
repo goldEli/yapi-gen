@@ -165,24 +165,6 @@ const Sortable = (props: any) => {
       localStorage.className = ''
     }
   }
-  // 空白区域拖动
-  const onDrop2 = (event: any) => {
-    event.preventDefault()
-    const drapClassName = ref?.current?.className
-    if (localStorage.className === drapClassName) {
-      props.onDrop(event, -2)
-      setDragItem(null)
-      localStorage.className = ''
-      return
-    }
-    if (list.length < 1) {
-      props.onDrop(event, 0)
-    } else {
-      props.onDrop(event, -1)
-    }
-    setDragItem(null)
-    localStorage.className = ''
-  }
   useEffect(() => {
     return () => {
       clearTimeout(timer)
@@ -347,16 +329,6 @@ const Sortable = (props: any) => {
             </Container>
           </div>
         ))}
-      {props.state === 2 && (
-        <Empty
-          ref={ref}
-          className={props.positionType + '_' + props.positionType}
-          onDragOver={allowDrop}
-          onDrop={(event: any) => {
-            onDrop2(event)
-          }}
-        />
-      )}
     </div>
   )
 }
