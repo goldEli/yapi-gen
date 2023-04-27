@@ -162,6 +162,7 @@ const SiteDrawer = () => {
     setHasMore(true)
   }
   useEffect(() => {
+    lastId.current = 0
     isVisible ? fetchMoreData(1) : n2()
     isVisible ? reset() : null
   }, [isVisible, read, all])
