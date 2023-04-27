@@ -165,6 +165,7 @@ export const ManagerListBox = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   padding-bottom: 52px;
+  padding-right: 20px;
 `
 
 export const CreateContent = styled.div`
@@ -198,7 +199,7 @@ export const CreateFormAll = styled(Form)`
 
 export const CreateForm = styled(Form)`
   padding: 0 16px 0 24px;
-  height: calc(100% - 136px);
+  height: 100%;
   overflow: auto;
   width: 100%;
 `

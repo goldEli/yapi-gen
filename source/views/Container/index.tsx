@@ -215,7 +215,7 @@ export const Container = () => {
               <div
                 style={{
                   height: '100%',
-                  minWidth: `${1440 - (firstMenuCollapse ? changeLeft : 0)}px`,
+                  minWidth: `${1440 - (firstMenuCollapse ? 26 : changeLeft)}px`,
                   overflowY: 'auto',
                 }}
               >

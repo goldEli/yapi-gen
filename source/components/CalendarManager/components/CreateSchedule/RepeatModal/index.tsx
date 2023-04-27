@@ -11,6 +11,7 @@ import {
   Select,
 } from 'antd'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
+import { RangePickerProps } from 'antd/lib/date-picker'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -22,6 +23,7 @@ interface RepeatModalProps {
   currentRepeat: number
   onRepeatConfirm(form: any): void
   repeatParams?: any
+  entTime?: any
 }
 
 const RepeatModal = (props: RepeatModalProps) => {
@@ -99,9 +101,13 @@ const RepeatModal = (props: RepeatModalProps) => {
     onClose()
   }
 
+  const disabledDate: RangePickerProps['disabledDate'] = current => {
+    const endDate = props.entTime ? props.entTime : moment().endOf('day')
+    return current <= endDate
+  }
+
   useEffect(() => {
     if (props.isVisible) {
-      console.log(props.repeatParams, '12121')
       setNumber(props.repeatParams.params.repeat_end_num || 1)
       setEndType(props.repeatParams.params.repeat_end_type)
       setEndDate(
@@ -117,10 +123,6 @@ const RepeatModal = (props: RepeatModalProps) => {
           !props.repeatParams.params.repeat_end_date
           ? null
           : moment(props.repeatParams.params.repeat_end_date),
-      )
-      console.log(
-        props.repeatParams.params === '0000-00-00',
-        '=props.repeatParams.params',
       )
     }
   }, [props.isVisible])
@@ -171,6 +173,7 @@ const RepeatModal = (props: RepeatModalProps) => {
               value={resultDate}
               onChange={onChangeTime}
               style={{ width: 140 }}
+              disabledDate={disabledDate}
             />
           )}
           {endType === 2 && (

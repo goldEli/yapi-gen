@@ -15,7 +15,6 @@ import { useEffect, useState } from 'react'
 import CalendarSubscribe from '../CalendarSubscribe'
 import CalendarFormModal from '../CalendarFormModal'
 import { useTranslation } from 'react-i18next'
-import { setQuickCreateScheduleModel } from '@store/calendarPanle'
 
 const CalendarMainSide = () => {
   const dispatch = useDispatch()
@@ -49,23 +48,28 @@ const CalendarMainSide = () => {
     <>
       <CalendarSubscribe />
       <CalendarFormModal />
-      <CommonButton type="primary" style={{ width: '100%', marginBottom: 24 }}>
-        <CreateScheduleBtn onClick={onCreate}>
-          <IconFont type="plus" style={{ fontSize: 16 }} />
-          <span className="btnText">
-            {t('calendarManager.create_schedule')}
-          </span>
-        </CreateScheduleBtn>
-      </CommonButton>
-      <DXCalendar />
-      <div style={{ width: '100%', margin: '24px 0' }}>
-        <InputSearch
-          onChangeSearch={setValue}
-          placeholder={t('calendarManager.search_calendar')}
-          width="100%"
-          autoFocus
-          leftIcon
-        />
+      <div style={{ paddingRight: 20 }}>
+        <CommonButton
+          type="primary"
+          style={{ width: '100%', marginBottom: 24 }}
+        >
+          <CreateScheduleBtn onClick={onCreate}>
+            <IconFont type="plus" style={{ fontSize: 16 }} />
+            <span className="btnText">
+              {t('calendarManager.create_schedule')}
+            </span>
+          </CreateScheduleBtn>
+        </CommonButton>
+        <DXCalendar />
+        <div style={{ width: '100%', margin: '24px 0' }}>
+          <InputSearch
+            onChangeSearch={setValue}
+            placeholder={t('calendarManager.search_calendar')}
+            width="100%"
+            autoFocus
+            leftIcon
+          />
+        </div>
       </div>
       <ManagerListBox>
         <CalendarManagerList

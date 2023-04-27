@@ -19,7 +19,7 @@ const SetWrap = styled.div`
 `
 
 const MainWrap = styled.div`
-  padding: 24px 24px 0px;
+  padding: 24px 4px 0px 24px;
   white-space: nowrap;
   transition: 0.2s;
   gap: 24px;

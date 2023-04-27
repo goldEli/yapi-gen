@@ -19,6 +19,7 @@ import {
 } from './style'
 import { getContactStatistics } from '@/services/SiteNotifications'
 import { useTranslation } from 'react-i18next'
+import { useParams } from 'react-router-dom'
 
 const AllSideFilter = (props: any) => {
   const [t] = useTranslation()
@@ -63,12 +64,11 @@ const AllSideFilter = (props: any) => {
       read: 0,
     },
   ]
+  const { id: pid } = useParams()
   const [active, setActive] = useState('')
   const [lists, setLists] = useState<any>([])
   const [checeks, setCheceks] = useState<any>([])
-  const isVisibleFilter = useSelector(
-    store => store.siteNotifications.isVisibleFilter,
-  )
+  const { isVisibleFilter, all } = useSelector(store => store.siteNotifications)
   const configuration = useSelector(
     store => store.siteNotifications.configuration,
   )
@@ -114,7 +114,11 @@ const AllSideFilter = (props: any) => {
 
   useEffect(() => {
     isVisibleFilter ? init() : null
-  }, [isVisibleFilter, isRefresh])
+  }, [isVisibleFilter, isRefresh, all])
+
+  useEffect(() => {
+    setActive('')
+  }, [pid])
 
   return (
     <Drawer
