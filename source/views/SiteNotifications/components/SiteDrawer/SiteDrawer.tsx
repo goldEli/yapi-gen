@@ -33,6 +33,7 @@ import {
   setReadApi,
 } from '@/services/SiteNotifications'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox'
+import NoData from '@/components/NoData'
 
 const SiteDrawer = () => {
   const [t] = useTranslation()
@@ -264,7 +265,11 @@ const SiteDrawer = () => {
                 margin: '0 12px',
               }}
             >
-              <Divider plain>{t('nm')}</Divider>
+              {list.length < 1 ? (
+                <NoData />
+              ) : (
+                <Divider plain>{t('nm')} </Divider>
+              )}
             </div>
           }
         >
