@@ -791,6 +791,10 @@ const GlobalStyle = () => {
     .ant-message .ant-message-success .anticon {
       color: var(--function-success);
     }
+    .ant-select-clear {
+      width: 16px;
+      font-size: 16px;
+    }
   `
   return <Global styles={globalCss} />
 }
