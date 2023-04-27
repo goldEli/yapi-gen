@@ -170,6 +170,8 @@ export const ManagerListBox = styled.div`
   overflow-x: hidden;
   padding-bottom: 52px;
   padding-right: 20px;
+  width: 100%;
+  box-sizing: border-box;
 `
 
 export const CreateContent = styled.div`

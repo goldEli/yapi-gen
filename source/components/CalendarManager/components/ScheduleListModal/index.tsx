@@ -92,6 +92,7 @@ const labelContent = css`
   text-overflow: ellipsis; //溢出用省略号显示
   white-space: nowrap; //溢出不换行
   width: calc(100% - 110px);
+  font-family: SiYuanRegular;
 `
 const dateClass = css`
   color: var(--neutral-n1-d1);

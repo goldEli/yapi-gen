@@ -5,13 +5,14 @@ export const ScheduleInfoHeader = styled.div`
   background-color: var(--primary-d1);
   padding: 16px;
   box-sizing: border-box;
-  border-radius: 6px 6px 0 0;
+  border-radius: 6px 0 0 0;
 `
 export const ScheduleInfoHeaderBtn = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 8px;
   cursor: pointer;
+  align-items: center;
 `
 export const ScheduleInfoHeaderContent = styled.div`
   color: var(--neutral-white-d7);
@@ -45,9 +46,20 @@ export const statusClass = css`
 export const iconBox = css`
   display: flex;
   position: relative;
-  span {
-    margin-left: 6px;
+
+  span.icon {
     color: var(--neutral-white-d6);
+  }
+  > span {
+    width: 28px;
+    height: 28px;
+    margin-left: 2px;
+    text-align: center;
+    line-height: 28px;
+    &:hover {
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 6px;
+    }
   }
   .moreOperate {
     margin-left: 6px;
@@ -55,6 +67,15 @@ export const iconBox = css`
     cursor: pointer;
     label {
       cursor: pointer;
+      width: 28px;
+      height: 28px;
+      display: inline-block;
+      line-height: 28px;
+      text-align: center;
+      &:hover {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 6px;
+      }
     }
   }
 `
