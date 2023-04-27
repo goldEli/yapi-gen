@@ -18,9 +18,7 @@ import {
   message,
 } from 'antd'
 import {
-  CreateContent,
   CreateContentAll,
-  CreateForm,
   CreateFormAll,
   CreateFormItemWrap,
   CreateScheduleChecks,
