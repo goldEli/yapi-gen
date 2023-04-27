@@ -1,12 +1,12 @@
 {
-  "Create_requirements": "Create Requirements ",
+  "Create_requirements": "Create Requirements",
   "import_requirement": "Import requirement",
 
   "export_requirement": "Export requirement",
 
   "import_product": "Import product",
 
-  "assign_handler": "Requirements assignment handler",
+  "assign_handler": "Requirements  handler",
 
   "update_status": "Requirement status update ",
 
@@ -16,12 +16,12 @@
 
   "delete_requirement": "Requirement to delete ",
 
-  "add_cc": "add CC ",
-  "pm": "project management ",
+  "add_cc": "Make A Play For",
+  "pm": "Project Management",
 
-  "systematic_notification": "system notification",
+  "systematic_notification": "System Notification",
 
-  "schedule_management": "schedule management",
+  "schedule_management": "Schedule Management",
   "Invitations": "Invite me to participate",
   "work_report": "Work report",
   "pending_my_approval": "Pending my approval",
@@ -30,7 +30,7 @@
 
   "created_the_task": "The task was created ",
 
-  "system_notice": "system notice",
+  "system_notice": "System Notice",
 
   "Reminder": "Reminder",
 
@@ -38,11 +38,11 @@
 
   "to_do": "To do",
 
-  "calendar_reminder": "calendar reminder",
+  "calendar_reminder": "Calendar Reminder",
 
   "This ": "I was invited to participate ",
 
-  "mentioned_in_comments": "mentioned in comments",
+  "mentioned_in_comments": "Mentioned In Comments",
 
   "created_tasks": "The task was created ",
 
