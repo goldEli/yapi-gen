@@ -26,7 +26,7 @@ export const editMyAllNoteSet: any = async (params: any) => {
 // --------------------------------------------------------------------------消息
 export const getContactStatistics: any = async () => {
   const response: any = await http.get<any>('/b/msg/contactStatistics', {
-    latTime: Math.floor(new Date().valueOf() / 1000) - 5 * 60 * 1000,
+    latTime: Math.floor((new Date().getTime() - 30 * 24 * 3600 * 1000) / 1000),
   })
 
   return response.data
