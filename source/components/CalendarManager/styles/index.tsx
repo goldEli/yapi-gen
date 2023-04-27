@@ -60,12 +60,16 @@ export const StyledCalendar = styled(Calendar)`
     .ant-picker-cell-inner::before {
     border-radius: 50%;
   }
+  .ant-picker-date-panel .ant-picker-content thead {
+  }
   .ant-picker-date-panel .ant-picker-content th {
     width: 24px;
     height: 24px;
     font-size: 12px;
     color: var(--neutral-n3);
     margin-top: 8px;
+    text-align: left;
+    padding-left: 7px;
   }
   .ant-picker-date-panel .ant-picker-content td {
     width: 24px;
