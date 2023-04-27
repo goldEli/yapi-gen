@@ -13,17 +13,18 @@ export const Content = styled.div`
   overflow: hidden;
 `
 
-export const TimeRange = styled.span`
+export const TimeRange = styled.span<{ color?: string; hidden?: boolean }>`
   font-size: 14px;
-  color: var(--neutral-n1-d1);
-  margin-right: 4px;
+  color: ${props => props.color ?? 'var(--neutral-n1-d1)'};
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  display: ${props => (props.hidden ? 'none' : 'inline')};
 `
-export const Title = styled.span`
+export const Title = styled.span<{ color?: string }>`
+  margin-left: 4px;
   font-size: 14px;
-  color: var(--neutral-n2);
+  color: ${props => props.color ?? 'var(--neutral-n2)'};
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
