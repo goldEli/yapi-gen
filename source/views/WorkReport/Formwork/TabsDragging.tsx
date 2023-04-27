@@ -140,7 +140,6 @@ const Sortable = (props: any) => {
   }
 
   const onDragOver = (e: any) => {
-    e.stopPropagation()
     if (e.pageY >= window.screen?.availHeight - 300) {
       document
         .getElementById('father')!
