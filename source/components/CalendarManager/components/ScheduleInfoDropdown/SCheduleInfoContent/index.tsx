@@ -22,19 +22,27 @@ const toggleDropUp = css`
   max-height: 0;
   overflow-y: hidden;
   transition: all 0.3s;
+  color: var(--neutral-n3) !important;
+  font-size: var(--font16) !important;
 `
 const toggleDropDown = css`
   /* max-height: auto; */
   max-height: 30vh;
   transition: all 0.3s;
+  color: var(--neutral-n3) !important;
+  font-size: var(--font16) !important;
 `
 const hover = css`
   /* border: 1px solid; */
   height: 30px;
   display: flex;
   align-items: center !important;
+  /* border: 1px solid red; */
+  /* margin: 0px 14px; */
+  /* padding: 0px !important; */
   &:hover {
     background: var(--hover-d3);
+    border-radius: 6px;
   }
 `
 interface IProps {

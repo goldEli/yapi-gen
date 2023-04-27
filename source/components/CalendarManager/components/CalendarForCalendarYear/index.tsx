@@ -56,6 +56,7 @@ const CalendarForCalendarYear: React.FC<
   const onCallBack = (date: Dayjs) => {
     setDate(date)
   }
+  const { checkedTime } = useSelector(state => state.calendar)
   const disPatch = useDispatch()
   const dateClick = useCallback(
     (e: any, date: any) => {
@@ -90,7 +91,8 @@ const CalendarForCalendarYear: React.FC<
       <StyledCalendar
         dateFullCellRender={date => {
           const today =
-            dayjs().format('DD/MM/YYYY') === dayjs(date).format('DD/MM/YYYY')
+            dayjs(checkedTime).format('DD/MM/YYYY') ===
+            dayjs(date).format('DD/MM/YYYY')
           const hasSchedule = Object.keys(yearViewScheduleList).includes(
             dayjs(date).format('YYYY-MM-DD'),
           )

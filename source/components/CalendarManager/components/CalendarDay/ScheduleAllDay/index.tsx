@@ -86,6 +86,7 @@ const ScheduleAllDay: React.FC<ScheduleAllDayProps> = props => {
   const { list } = useScheduleAllDayList()
   const dispatch = useDispatch()
   const { calenderDayValue } = useSelector(store => store.calendarPanel)
+  const { checkedTime } = useSelector(state => state.calendar)
   const [weekDay, setWeekDay] = useState<Model.Calendar.DaysOfWeek>()
   const { getColorClassName } = useColor()
   const { showLunar } = useShowLunar()
@@ -102,8 +103,9 @@ const ScheduleAllDay: React.FC<ScheduleAllDayProps> = props => {
     const year = t.year()
     const week = t.week()
     const weekNum = t.day()
+
     async function getData() {
-      const res = await getDaysOfWeekList({ year, week })
+      const res = await getDaysOfWeekList({ date: checkedTime })
       const d = res.data.find(item => item.week_no === weekNum)
       setWeekDay(d)
     }

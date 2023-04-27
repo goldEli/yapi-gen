@@ -43,8 +43,9 @@ declare namespace API.Schedule {
 
   namespace GetScheduleListDaysOfWeek {
     type Params = {
-      year: number
-      week: number
+      // year: number
+      // week: number,
+      date: number | string
     } & CalendarIds
     type Result = ScheduleListResult
   }

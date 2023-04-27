@@ -91,8 +91,9 @@ const Header: React.FC<WeekHeaderProps> = props => {
 
     dispatch(
       getDaysOfWeekList({
-        year: parseInt(year, 10),
-        week: parseInt(week, 10),
+        // year: parseInt(year, 10),
+        // week: parseInt(week, 10),
+        date: checkedTime,
       }),
     )
   }, [calenderYearWeekValue])

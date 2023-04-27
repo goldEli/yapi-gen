@@ -58,7 +58,7 @@ const ScheduleTitle = styled.div`
 const labelTime = css`
   font-size: 12px;
 
-  color: var(---neutral-n4);
+  color: var(--neutral-n4);
   margin-right: 8px;
   position: relative;
   padding-left: 14px;

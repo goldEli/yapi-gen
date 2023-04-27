@@ -20,8 +20,9 @@ declare namespace API.Calendar {
   }
   namespace GetDaysOfWeekList {
     type Params = {
-      week: number
-      year: number
+      // week: number
+      // year: number
+      date: number | string
     }
     type Result = Model.Calendar.DaysOfWeek[]
   }
