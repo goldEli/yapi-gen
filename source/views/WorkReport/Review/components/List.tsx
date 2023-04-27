@@ -317,7 +317,7 @@ const List = () => {
               }}
               onClick={() => onClickView(record)}
             >
-              {text.trim().slice(0, 100)}
+              {text?.trim()?.slice(0, 100)}
             </span>
           </Tooltip>
         )
