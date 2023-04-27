@@ -10,7 +10,8 @@ const SvgTextBg = (props: any) => {
   const {
     text = ` ${userInfo?.company_name}  
     `,
-    text2 = ` ${userInfo.name}  ${userInfo.phone} `,
+    text2 = ` ${userInfo.name} `,
+    text3 = ` ${userInfo.phone} `,
     fontSize = 12,
     fillOpacity = '0.5',
     fillColor = theme ? '#3d4251' : '#d5d6d9',
@@ -20,7 +21,12 @@ const SvgTextBg = (props: any) => {
         <text x="-150" y="-30" fill='${fillColor}'  transform = "rotate(-35 220 -220)" fill-opacity='${fillOpacity}' font-size='${fontSize}'> ${text} 
         
 
-        <tspan x="-150" y="-15">${text2}</tspan> </text>
+        <tspan x="-150" y="-15">${text2}</tspan> 
+        
+        <tspan x="-150" y="0">${text3}</tspan> 
+        </text>
+
+      
       </svg>`
 
   const blob = new Blob([res], {
