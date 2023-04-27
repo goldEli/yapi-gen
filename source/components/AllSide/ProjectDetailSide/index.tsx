@@ -112,7 +112,7 @@ const ProjectDetailSide = () => {
     },
     {
       name: t('notification_settings'),
-      icon: 'settings',
+      icon: 'bell',
       path: '/ProjectManagement/ProjectSetting',
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
         String(i.identity).includes('b/project/notification'),

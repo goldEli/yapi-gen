@@ -102,6 +102,7 @@ const Index = () => {
   }
 
   const changeUser = (str: string, arr: any) => {
+    setList([])
     msgType.current = id === '4' ? ['191', '132'].concat(arr ?? []) : arr
     friendUsername.current = str
     lastId.current = undefined
@@ -110,6 +111,7 @@ const Index = () => {
     fetchMoreData(1)
   }
   const changeMsg = (arr: any) => {
+    setList([])
     msgType.current = id === '4' ? ['191', '132'].concat(arr ?? []) : arr
     lastId.current = undefined
     setHasMore(true)

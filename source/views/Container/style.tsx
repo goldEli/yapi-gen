@@ -281,6 +281,8 @@ export const DrawerMenu = styled.div`
   display: flex;
   flex-wrap: wrap;
   max-height: calc(100vh - 204px);
+  gap: 12px;
+  align-items: start;
   overflow-y: scroll;
 `
 
