@@ -184,7 +184,6 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
         ),
       )
       newWeekValue = dayjs(calenderWeekValue).add(1, 'week').format('YYYY-M-D')
-      console.log('calenderWeekValue----', calenderWeekValue)
     } else if (current === -1) {
       dispatch(
         setCalenderWeekValue(
@@ -202,7 +201,6 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
       dayjs(newWeekValue).year() + '/' + dayjs(newWeekValue).week()
     dispatch(setCalenderYearWeekValue(yearWeekValue))
     dispatch(setCheckedTime(newWeekValue))
-    console.log('yearWeekValue0000', yearWeekValue)
   }
   const listenMonth = (): void => {
     const { current } = iconTypeRef
