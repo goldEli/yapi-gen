@@ -66,7 +66,6 @@ const CalendarList: React.FC<CalendarListProps> = props => {
         break
       }
     }
-    console.log('totalHeight', totalHeight)
     if (CalendarListBoxRef.current) {
       CalendarListBoxRef.current.scrollTo({
         top: totalHeight,

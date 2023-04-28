@@ -84,7 +84,7 @@ const DXCalendar: React.FC = () => {
       style={wrapperStyle}
       fullscreen={false}
       value={dayjs(checkedTime ? checkedTime : getNowDate())}
-      onChange={value => {
+      onSelect={value => {
         dispatch(setCheckedTime(value.format('YYYY-MM-DD')))
         let yearWeekValue =
           dayjs(value.format('YYYY-M-D')).year() +
@@ -101,7 +101,9 @@ const DXCalendar: React.FC = () => {
         const hasSchedule = Object.keys(leftViewScheduleList).includes(
           dayjs(date).format('YYYY-MM-DD'),
         )
-        const selectedDate = checkedTime === dayjs(date).format('YYYY-MM-DD')
+        const selectedDate =
+          dayjs(checkedTime).format('YYYY-MM-DD') ===
+          dayjs(date).format('YYYY-MM-DD')
         return (
           <DayBox
             className={classNames({
