@@ -14,6 +14,8 @@ import { templateLatelyList } from '@/services/report'
 import moment from 'moment'
 import { setWriteReportModal } from '@store/workReport'
 import { Tooltip } from 'antd'
+import { templateDetail } from '@/services/formwork'
+import { getMessage } from '@/components/Message'
 
 interface Props {
   isVisible: boolean
@@ -132,6 +134,34 @@ const WriteReport = (props: Props) => {
     }
   }, [visible])
 
+  const openHandleReport = async (item: any) => {
+    if (
+      !(item.is_current_cycle_used && item.is_cycle_limit === 1) &&
+      item.is_write
+    ) {
+      const result = await templateDetail({ id: item.id })
+      if (result && result.code === 'S0002') {
+        getMessage({
+          msg: t('report.list.reportDeleted'),
+          type: 'error',
+        })
+        getTemplateLatelyList()
+      } else if (result?.data && !result.data?.is_write_permissions) {
+        getMessage({
+          msg: t('report.list.noPermissions'),
+          type: 'error',
+        })
+        getTemplateLatelyList()
+      } else if (result?.data && !result.data?.is_submit_cycle_time) {
+        getTemplateLatelyList()
+      } else {
+        setTemplateId(item.id)
+        setVisibleEdit(true)
+        dispatch(setWriteReportModal({ visible: false }))
+      }
+    }
+  }
+
   // 根据type生成对应的展示模板
   const getContentHtml = (name: string, type: number): React.ReactElement => {
     switch (type) {
@@ -247,19 +277,7 @@ const WriteReport = (props: Props) => {
                             item.is_cycle_limit === 1
                           ) || !item.is_write
                         }
-                        onClick={() => {
-                          if (
-                            !(
-                              item.is_current_cycle_used &&
-                              item.is_cycle_limit === 1
-                            ) &&
-                            item.is_write
-                          ) {
-                            setTemplateId(item.id)
-                            setVisibleEdit(true)
-                            dispatch(setWriteReportModal({ visible: false }))
-                          }
-                        }}
+                        onClick={() => openHandleReport(item)}
                       >
                         <img src={Bgc} />
                         <CarItem>
@@ -300,19 +318,7 @@ const WriteReport = (props: Props) => {
                             item.is_cycle_limit === 1
                           ) || !item.is_write
                         }
-                        onClick={() => {
-                          if (
-                            !(
-                              item.is_current_cycle_used &&
-                              item.is_cycle_limit === 1
-                            ) &&
-                            item.is_write
-                          ) {
-                            setTemplateId(item.id)
-                            setVisibleEdit(true)
-                            dispatch(setWriteReportModal({ visible: false }))
-                          }
-                        }}
+                        onClick={() => openHandleReport(item)}
                       >
                         <img src={Bgc} />
                         <CarItem>

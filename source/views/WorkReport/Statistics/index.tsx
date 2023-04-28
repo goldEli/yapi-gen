@@ -227,8 +227,6 @@ const Statistics = () => {
     setTabKey(value)
   }
 
-  console.log(userListData, '=queryParamsqueryParams')
-
   // const submitDate = useMemo(() => {
   //   if (queryParams.startTime && queryParams.endTime) {
   //     return [moment(queryParams.startTime), moment(queryParams.endTime)]
