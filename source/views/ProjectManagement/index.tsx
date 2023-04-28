@@ -36,6 +36,7 @@ const Project = () => {
     '/ProjectManagement/ProjectSetting',
     '/ProjectManagement/Demand',
     '/ProjectManagement/Iteration',
+    '/ProjectManagement/WorkFlow',
   ]
 
   useEffect(() => {

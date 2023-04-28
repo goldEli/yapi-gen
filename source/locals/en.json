@@ -1326,5 +1326,17 @@
       "totalNoSubmitTimes": "Accumulated Unsubmitted",
       "currentNoSubmitTimes": "Currently Not Submitted"
     }
+  },
+  "AddDepartmentOrTeamModal": {
+    "add_team": "Add Team",
+    "add_members": "Add Members",
+    "add_department": "Add Department",
+    "search": "Search {{text}}",
+    "team": "Team",
+    "person": "Contacts",
+    "all_checked": "Select All",
+    "checked_count": "Selected {{count}/{{selectCount}}",
+    "clear": "Empty",
+    "department": "Department"
   }
 }

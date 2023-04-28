@@ -30,7 +30,6 @@ import { getMessage } from '@/components/Message'
 
 const Content = styled.div({
   background: 'var(--neutral-white-d1)',
-  height: 'calc(100% - 52px)',
 })
 
 const RowIconFont = styled(IconFont)({
@@ -369,7 +368,17 @@ const IterationTable = (props: Props) => {
   }
 
   return (
-    <Content>
+    <Content
+      style={{
+        height:
+          !hasCreate &&
+          props.hasId &&
+          props.hasId?.status === 1 &&
+          projectInfo?.status === 1
+            ? 'calc(100% - 64px)'
+            : 'calc(100% - 52px)',
+      }}
+    >
       <CreateDemandButton
         hasCreate={
           !hasCreate &&

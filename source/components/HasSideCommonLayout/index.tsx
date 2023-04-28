@@ -5,14 +5,16 @@ import { useRef, useState } from 'react'
 import { DragLine, MouseDom } from '@/components/StyleCommon'
 
 interface HasSideCommonLayoutProps {
-  side: React.ReactNode
+  side?: React.ReactNode
   children: React.ReactNode
+  hasSide?: boolean
 }
 
 const HasSideWrap = styled.div`
   display: flex;
   height: 100%;
-  overflow: hidden;
+  overflow: auto;
+  flex: 1;
 `
 
 const SideWrap = styled.div<{ isOpen: boolean; permission?: boolean }>`
@@ -58,12 +60,15 @@ const SideMain = styled.div<{ isOpen: boolean }>`
   transition: all 0.3s;
   .box {
     opacity: ${props => (props.isOpen ? 0 : 1)};
+    height: 100%;
   }
 `
 
 const OutletWrap = styled.div<{ width: number }>`
   flex: 1;
-  /* width: ${props => `calc(100% - ${props.width}px)`}; */
+  overflow: auto;
+  height: 100%;
+  overflow-y: hidden;
 `
 
 const HasSideCommonLayout = (props: HasSideCommonLayoutProps) => {
@@ -134,55 +139,55 @@ const HasSideCommonLayout = (props: HasSideCommonLayoutProps) => {
     })
   }
 
-  console.log(
-    window.screen.width < 1440 ? 1440 : window.screen.width - leftWidth,
-  )
-
   return (
     <HasSideWrap>
-      <SideWrap
-        isOpen={firstMenuCollapse}
-        ref={sliderRef}
-        style={{
-          width: firstMenuCollapse ? 26 : leftWidth,
-          transition: endWidth < 200 ? '0.2s' : 'initial',
-        }}
-      >
-        <SideMain
-          ref={sideMain}
-          style={{ width: leftWidth }}
+      {props.hasSide && (
+        <SideWrap
           isOpen={firstMenuCollapse}
+          ref={sliderRef}
+          style={{
+            width: firstMenuCollapse ? 26 : leftWidth,
+            transition: endWidth < 200 ? '0.2s' : 'initial',
+          }}
         >
-          <div className="box">{props.side}</div>
-        </SideMain>
+          <SideMain
+            ref={sideMain}
+            style={{ width: leftWidth }}
+            isOpen={firstMenuCollapse}
+          >
+            <div className="box">{props.side}</div>
+          </SideMain>
 
-        <MouseDom
-          active={focus}
-          onMouseDown={onDragLine}
-          style={{ left: leftWidth - 6 }}
+          <MouseDom
+            active={focus}
+            onMouseDown={onDragLine}
+            style={{ left: leftWidth - 6 }}
+          >
+            <DragLine
+              active={focus}
+              className="line"
+              style={{ marginLeft: 4 }}
+            />
+          </MouseDom>
+
+          <FoldIcon onClick={onChangeSide}>
+            <CommonIconFont
+              type={firstMenuCollapse ? 'right' : 'left'}
+              size={16}
+              color="var(--neutral-n2)"
+            />
+          </FoldIcon>
+        </SideWrap>
+      )}
+      <OutletWrap width={leftWidth}>
+        <div
+          style={{
+            minWidth: `${1440 - (props.hasSide ? leftWidth : 0)}px`,
+            height: '100%',
+          }}
         >
-          <DragLine active={focus} className="line" style={{ marginLeft: 4 }} />
-        </MouseDom>
-
-        <FoldIcon onClick={onChangeSide}>
-          <CommonIconFont
-            type={firstMenuCollapse ? 'right' : 'left'}
-            size={16}
-            color="var(--neutral-n2)"
-          />
-        </FoldIcon>
-      </SideWrap>
-      <OutletWrap
-        width={leftWidth}
-        style={{
-          // width: `${
-          //   window.screen.width < 1440 ? 1440 : window.screen.width - leftWidth
-          // }px`,
-          overflowX: 'scroll',
-          minWidth: `${1440 - leftWidth}px`,
-        }}
-      >
-        {props.children}
+          {props.children}
+        </div>
       </OutletWrap>
     </HasSideWrap>
   )
