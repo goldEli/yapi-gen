@@ -1,4 +1,25 @@
 {
+  "member_change": "Member change",
+
+  "edit_project": "Project editor ",
+
+  "delete_project": "Delete the project",
+
+  "update_project_status": "Project status change ",
+
+  "add_requirement_or_defect": "Add requirement/Defect ",
+
+  "remove_requirement_or_defect": "Remove requirement/Defect ",
+
+  "create_iteration": "Create iteration",
+
+  "edit_iteration": "Iteration edit ",
+
+  "update_iteration_status": "iteration status update ",
+
+  "delete_iteration": "Iteration delete ",
+
+  "edit_iteration_outcome": "Edit the iteration result ",
   "Create_requirements": "Create Requirements",
   "import_requirement": "Import requirement",
 
@@ -1336,7 +1357,8 @@
     "person": "Contacts",
     "all_checked": "Select All",
     "checked_count": "Selected {{count}/{{selectCount}}",
-    "clear": "Empty"
+    "clear": "Empty",
+    "department": "Department"
   },
   "calendarManager": {
     "end_repeat_time_cannot_be_less_than_end_time": "End repeat time cannot be less than end time",

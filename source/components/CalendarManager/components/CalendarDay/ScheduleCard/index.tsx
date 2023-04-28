@@ -35,7 +35,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = props => {
         height,
       }}
       dragGrid={[gridHeight, gridHeight]}
-      resizeGrid={[gridHeight, gridHeight]}
+      resizeGrid={[0, gridHeight]}
       position={{
         x: props.left,
         y: top,

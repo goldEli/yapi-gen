@@ -25,6 +25,7 @@ const WorkReport = () => {
   return (
     <WorkReportWrap>
       <HasSideCommonLayout
+        hasSide={String(pathname).includes('/Report/Statistics')}
         side={
           <>
             {String(pathname).includes('/Report/Formwork') && <FormWorkSide />}

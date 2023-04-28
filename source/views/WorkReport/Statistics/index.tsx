@@ -227,6 +227,8 @@ const Statistics = () => {
     setTabKey(value)
   }
 
+  console.log(userListData, '=queryParamsqueryParams')
+
   // const submitDate = useMemo(() => {
   //   if (queryParams.startTime && queryParams.endTime) {
   //     return [moment(queryParams.startTime), moment(queryParams.endTime)]
@@ -274,7 +276,7 @@ const Statistics = () => {
                 <PaginationBox
                   currentPage={queryParams?.page}
                   pageSize={queryParams?.pageSize}
-                  total={userListData.total}
+                  total={userListData?.pager?.total}
                   onChange={onChangePage}
                 />
               </>
@@ -325,7 +327,7 @@ const Statistics = () => {
                 <div className={rightBottom}>
                   <ResizeTable
                     isSpinning={false}
-                    dataWrapNormalHeight="304px"
+                    dataWrapNormalHeight="calc(100vh - 450px)"
                     col={usageColumns}
                     dataSource={usageDataList}
                     noData={<NoData />}

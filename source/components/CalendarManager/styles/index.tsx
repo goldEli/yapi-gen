@@ -332,7 +332,7 @@ export const AllDayScheduleItem = styled.div<{
   }
   cursor: pointer;
   display: flex;
-  gap: 7px;
+  /* gap: 7px; */
   align-items: center;
 `
 
