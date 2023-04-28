@@ -53,6 +53,7 @@ const ListHead = styled.div({
   background: 'var(--neutral-white-d2)',
   display: 'flex',
   alignItems: 'center',
+  flexWrap: 'wrap',
 })
 
 const SelectWrapForList = styled(SelectWrapBedeck)`
@@ -317,7 +318,7 @@ const List = () => {
               }}
               onClick={() => onClickView(record)}
             >
-              {text.trim().slice(0, 100)}
+              {text?.trim()?.slice(0, 100)}
             </span>
           </Tooltip>
         )

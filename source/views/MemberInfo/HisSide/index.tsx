@@ -16,7 +16,7 @@ import {
   Side,
 } from './style'
 
-const index = () => {
+const HisSide = () => {
   const [t] = useTranslation()
   const { mainInfo } = useSelector(store => store.memberInfo)
   const { projectInfo } = useSelector(store => store.project)
@@ -68,7 +68,7 @@ const index = () => {
       const params = encryptPhp(
         JSON.stringify({ id: projectInfo?.id, pageIdx: 'main', type: 1 }),
       )
-      navigate(`/ProjectSetting?data=${params}`)
+      navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
     } else {
       navigate('/AdminManagement/StaffManagement')
     }
@@ -127,4 +127,4 @@ const index = () => {
   )
 }
 
-export default index
+export default HisSide

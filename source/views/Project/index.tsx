@@ -26,6 +26,8 @@ import { message, Spin } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Content, Wrap } from './style'
+import ProjectSide from './ProjectSide'
+import HasSideCommonLayout from '@/components/HasSideCommonLayout'
 
 const ProjectManagementOptimization = () => {
   const [t] = useTranslation()
@@ -211,12 +213,28 @@ const ProjectManagementOptimization = () => {
     })
   }
 
+  const onChangeType = (type: number) => {
+    setActiveType(type)
+    setGroupId(null)
+    setPageObj({
+      page: 1,
+      size: pageObj.size,
+    })
+  }
+
+  // 切换分组查询列表
+  const onChangeGroup = (id: number) => {
+    setGroupId(id)
+    setActiveType(-1)
+  }
+
   useEffect(() => {
     if (storeGid) {
       setGroupId(storeGid)
       setActiveType(-1)
     }
   }, [storeGid])
+
   useEffect(() => {
     if (typeId || typeId === 0) {
       setActiveType(typeId)
@@ -233,6 +251,97 @@ const ProjectManagementOptimization = () => {
       auth="/ProjectManagement/Project"
       permission={currentMenu?.children?.map((i: any) => i.url)}
     >
+      <HasSideCommonLayout
+        side={
+          <ProjectSide
+            onAddClick={onAddClick}
+            onChangeType={onChangeType}
+            activeType={activeType}
+            onChangeGroup={onChangeGroup}
+          />
+        }
+      >
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            height: '32px',
+            padding: '20px 24px',
+            marginBottom: '20px',
+          }}
+        >
+          <LeftTitle title={t('all_enterprises')} />
+          <div>
+            <InputSearch
+              width={184}
+              bgColor="var(--neutral-white-d4)"
+              length={12}
+              placeholder={t('please_enter_the_project')}
+              onChangeSearch={(value: string) => setSearchVal(value)}
+              leftIcon
+            />
+          </div>
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            // justifyContent: 'space-between',
+            alignItems: 'center',
+            height: '32px',
+            padding: '20px 24px',
+          }}
+        >
+          {(
+            userInfo.company_permissions?.map((i: any) => i.identity) || []
+          ).includes('b/project/save') && (
+            <CommonButton
+              type="primary"
+              onClick={() => dispatch(changeCreateVisible(true))}
+              icon="plus"
+              iconPlacement="left"
+            >
+              {t('common.createProject')}
+            </CommonButton>
+          )}
+
+          <CreateActionBar
+            sort={order.key}
+            isGrid={isGrid}
+            activeType={activeType}
+            onRefresh={onUpdate}
+            onChangeSort={onChangeSort}
+            onChangeFormat={onChangeGrid}
+            onChangeHidden={onChangeHidden}
+            onChangeSearch={onChangeSearch}
+          />
+        </div>
+        <Wrap>
+          <Content isGrid={isGrid}>
+            <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
+              {isGrid ? (
+                <MainGrid
+                  onChangeVisible={() => setIsVisible(true)}
+                  onChangeOperation={onChangeOperation}
+                  onAddClear={() => setOperationDetail({})}
+                  hasFilter={searchVal.length > 0 || isHidden}
+                  projectList={projectList}
+                />
+              ) : (
+                <MainTable
+                  onChangeOperation={onChangeOperation}
+                  onChangePageNavigation={onChangePageNavigation}
+                  onUpdateOrderKey={onUpdateOrderKey}
+                  order={order}
+                  onAddClick={onAddClick}
+                  hasFilter={searchVal.length > 0 || isHidden}
+                  projectList={projectList}
+                />
+              )}
+            </Spin>
+          </Content>
+        </Wrap>
+      </HasSideCommonLayout>
+
       <DeleteConfirm
         text={t('mark.delP')}
         isVisible={isDelete}
@@ -246,86 +355,6 @@ const ProjectManagementOptimization = () => {
         onChangeVisible={() => setIsStop(!isStop)}
         onConfirm={onStopProject}
       />
-
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          height: '32px',
-          padding: '20px 24px',
-          marginBottom: '20px',
-        }}
-      >
-        <LeftTitle title={t('all_enterprises')} />
-        <div>
-          <InputSearch
-            width={184}
-            bgColor="var(--neutral-white-d4)"
-            length={12}
-            placeholder={t('please_enter_the_project')}
-            onChangeSearch={(value: string) => setSearchVal(value)}
-            leftIcon
-          />
-        </div>
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          // justifyContent: 'space-between',
-          alignItems: 'center',
-          height: '32px',
-          padding: '20px 24px',
-        }}
-      >
-        {(
-          userInfo.company_permissions?.map((i: any) => i.identity) || []
-        ).includes('b/project/save') && (
-          <CommonButton
-            type="primary"
-            onClick={() => dispatch(changeCreateVisible(true))}
-            icon="plus"
-            iconPlacement="left"
-          >
-            {t('common.createProject')}
-          </CommonButton>
-        )}
-
-        <CreateActionBar
-          sort={order.key}
-          isGrid={isGrid}
-          activeType={activeType}
-          onRefresh={onUpdate}
-          onChangeSort={onChangeSort}
-          onChangeFormat={onChangeGrid}
-          onChangeHidden={onChangeHidden}
-          onChangeSearch={onChangeSearch}
-        />
-      </div>
-      <Wrap>
-        <Content isGrid={isGrid}>
-          <Spin indicator={<NewLoadingTransition />} spinning={isSpinning}>
-            {isGrid ? (
-              <MainGrid
-                onChangeVisible={() => setIsVisible(true)}
-                onChangeOperation={onChangeOperation}
-                onAddClear={() => setOperationDetail({})}
-                hasFilter={searchVal.length > 0 || isHidden}
-                projectList={projectList}
-              />
-            ) : (
-              <MainTable
-                onChangeOperation={onChangeOperation}
-                onChangePageNavigation={onChangePageNavigation}
-                onUpdateOrderKey={onUpdateOrderKey}
-                order={order}
-                onAddClick={onAddClick}
-                hasFilter={searchVal.length > 0 || isHidden}
-                projectList={projectList}
-              />
-            )}
-          </Spin>
-        </Content>
-      </Wrap>
     </PermissionWrap>
   )
 }

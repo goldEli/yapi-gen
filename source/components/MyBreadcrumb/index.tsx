@@ -114,7 +114,7 @@ const MyBreadcrumb = (props: any) => {
           <span>{props.demand.name}</span>
         </Breadcrumb.Item>
       ) : null}
-      {location.pathname.includes('ProjectManagement/MemberInfo') ||
+      {location.pathname.includes('/MemberInfo') ||
       (location.pathname.includes('MemberInfo/Profile') && props.user) ? (
         <Breadcrumb.Item>
           <span>
