@@ -12,11 +12,13 @@ interface Props {
   isVisible: boolean
   title?: string
   text?: string
-  onChangeVisible?(): void
+  onChangeVisible?: any
   onConfirm(): void
   children?: any
   // 没有取消按钮
   notCancel?: boolean
+  onCancel?: any
+  onCancelState?: boolean
 }
 
 const ModalHeader = styled.div({
@@ -98,7 +100,13 @@ const DeleteConfirm = (props: Props) => {
           </div>
         </Title>
         {!props?.notCancel && (
-          <CloseWrap width={32} height={32} onClick={props?.onChangeVisible}>
+          <CloseWrap
+            width={32}
+            height={32}
+            onClick={() =>
+              props?.onCancelState ? props.onCancel() : props.onChangeVisible()
+            }
+          >
             <IconFont style={{ fontSize: 20 }} type="close" />
           </CloseWrap>
         )}

@@ -820,7 +820,9 @@
     "staff": "员工",
     "information": "日志",
     "companyManagement": "公司管理",
-    "setting": "设置"
+    "setting": "设置",
+    "notice": "通知",
+    "help": "帮助"
   },
   "mine": {
     "mineCopySend": "我的抄送",
@@ -1295,7 +1297,9 @@
       "modifyReport": "修改汇报",
       "haveComment": "已评",
       "prevDateSubmit": "上次提交时间",
-      "add": "请添加"
+      "add": "请添加",
+      "reportDeleted": "模板已被删除",
+      "noPermissions": "你无权限使用该模板"
     },
     "statistics": {
       "title": "汇报我的统计",

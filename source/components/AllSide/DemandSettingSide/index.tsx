@@ -32,18 +32,6 @@ import {
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { CloseWrap } from '@/components/StyleCommon'
-
-const IconFontStyle = styled(IconFont)({
-  color: 'var(--neutral-n2)',
-  fontSize: '18px',
-  borderRadius: '6px',
-  padding: '5px',
-  '&: hover': {
-    background: 'var(--hover-d1)',
-    color: 'var(--neutral-n1-d1)',
-    cursor: 'pointer',
-  },
-})
 const Tabs = styled.div`
   height: 24px;
   border-radius: 4px;

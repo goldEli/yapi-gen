@@ -449,19 +449,24 @@ const HeaderRight = () => {
           </CreateIcon>
         )}
 
-        <CloseWrap width={32} height={32}>
-          <SiteNotifications />
-        </CloseWrap>
-        <CloseWrap width={32} height={32} onClick={onHelp}>
-          <CommonIconFont type="question" size={24} />
-        </CloseWrap>
+        <Tooltip title={t('container.notice') as string}>
+          <CloseWrap width={32} height={32}>
+            <SiteNotifications />
+          </CloseWrap>
+        </Tooltip>
+        <Tooltip title={t('container.help') as string}>
+          <CloseWrap width={32} height={32} onClick={onHelp}>
+            <CommonIconFont type="question" size={24} />
+          </CloseWrap>
+        </Tooltip>
+
         <Popover
           content={userContent}
           open={isVisible}
           onOpenChange={setIsVisible}
           placement="bottomRight"
         >
-          <div>
+          <div style={{ cursor: 'pointer' }}>
             <CommonUserAvatar avatar={userInfo.avatar} size="large" />
           </div>
         </Popover>

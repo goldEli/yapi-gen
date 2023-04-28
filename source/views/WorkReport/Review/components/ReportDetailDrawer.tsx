@@ -97,7 +97,7 @@ const ContactDemand = (props: { list: any }) => {
       {list?.length
         ? list?.map((i: any) => (
             <ContactDemandItem key={i.id}>
-              【{i.id}】<span className="name">{i.name}</span>
+              【{i.story_prefix_key}】<span className="name">{i.name}</span>
             </ContactDemandItem>
           ))
         : '--'}
@@ -218,6 +218,8 @@ const ReportDetailDrawer = () => {
 
   // 关闭弹窗
   const onCancel = () => {
+    // 更新List页面
+    dispatch(setUpdateList({ isFresh: 3 }))
     setFocus(false)
     setIsReview(false)
     dispatch(saveViewReportDetailDrawer({ visible: false, id: 0, ids: [] }))
@@ -235,6 +237,8 @@ const ReportDetailDrawer = () => {
         ...{ id: newIndex },
       }),
     )
+    // 更新List页面
+    dispatch(setUpdateList({ isFresh: 1 }))
   }
 
   // 向下查找需求
@@ -249,6 +253,8 @@ const ReportDetailDrawer = () => {
         ...{ id: newIndex },
       }),
     )
+    // 更新List页面
+    dispatch(setUpdateList({ isFresh: 1 }))
   }
 
   // 键盘上下键事件监听
@@ -316,6 +322,8 @@ const ReportDetailDrawer = () => {
         !e.target?.className?.includes('canClickDetail') &&
         storeAll.getState().workReport.viewReportModal.visible)
     ) {
+      // 更新List页面
+      dispatch(setUpdateList({ isFresh: 1 }))
       dispatch(saveViewReportDetailDrawer({ visible: false }))
     }
   }

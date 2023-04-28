@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable camelcase */
 // 写日志中的关联需求
 
 /* eslint-disable react/jsx-no-leaked-render */
@@ -56,17 +58,21 @@ const RelatedNeed = (props: any) => {
 
   const confirm = async () => {
     const data = await lessForm.validateFields()
-    console.log(data, '=datadatadatadata')
     const newData = JSON.parse(JSON.stringify(data))
+    const result = newData.needs.map((i: any) => ({
+      ...i,
+      ...{
+        story_prefix_key: demandList?.filter((k: any) => k.id === i.value)[0]
+          ?.story_prefix_key,
+      },
+    }))
     const historyData = JSON.parse(JSON.stringify(chooseList))
     if (historyData.length >= 1) {
-      props.onChange(
-        historyData.concat(newData.needs).map((item: any) => item.value),
-      )
-      setChooseList(historyData.concat(newData.needs))
+      props.onChange(historyData.concat(result).map((item: any) => item.value))
+      setChooseList(historyData.concat(result))
     } else {
-      props.onChange(newData.needs.map((item: any) => item.value))
-      setChooseList(newData.needs)
+      props.onChange(result.map((item: any) => item.value))
+      setChooseList(result)
     }
 
     setShow(false)
@@ -233,7 +239,7 @@ const RelatedNeed = (props: any) => {
           {chooseList.map((item: any) => (
             <InnerLine key={item.key}>
               <span>
-                【{item.value}】{item.label}
+                【{item.story_prefix_key}】{item.label}
               </span>
               <IconFont
                 onClick={() => del(item)}
