@@ -86,7 +86,7 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
 
   const dayValue = useRef<string>()
   const monthValue = useRef<string>()
-
+  const listValue = useRef<string>()
   useEffect(() => {
     if (!checkedTime) {
       dispatch(setCalenderDayValue(dayjs().format('YYYY-MM-DD')))
@@ -171,13 +171,7 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
   const listenWeek = (): void => {
     const { current } = iconTypeRef
     let newWeekValue = null
-    console.log(
-      'calenderWeekValue',
-      calenderWeekValue,
-      dayjs().format('YYYY-M-D'),
-    )
     if (current === 1) {
-      //dayjs('2018-06-27').week()
       dispatch(
         setCalenderWeekValue(
           dayjs(calenderWeekValue).add(1, 'week').format('YYYY-M-D'),
@@ -255,15 +249,23 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
           dayjs(calenderListValue).add(1, 'month').format('YYYY-MM'),
         ),
       )
+      listValue.current = dayjs(calenderListValue)
+        .add(1, 'month')
+        .format('YYYY-MM')
     } else if (current === -1) {
       dispatch(
         setCalenderListValue(
           dayjs(calenderListValue).subtract(1, 'month').format('YYYY-MM'),
         ),
       )
+      listValue.current = dayjs(calenderListValue)
+        .subtract(1, 'month')
+        .format('YYYY-MM')
     } else {
       dispatch(setCalenderListValue(dayjs().format('YYYY-MM')))
+      listValue.current = dayjs().format('YYYY-MM')
     }
+    dispatch(setCheckedTime(listValue.current))
   }
   const maps = new Map([
     ['day', listenDay],
@@ -280,7 +282,6 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
   }
 
   const nextYearClick = (e: any) => {
-    console.log(e)
     iconTypeRef.current = 1
     let methods = maps.get(calendarPanelType) as Function
     methods()

@@ -33,7 +33,7 @@ import { CloseWrap } from '@/components/StyleCommon'
 import { getMessage } from '@/components/Message'
 
 const Warp = styled.div({
-  height: 'calc(100vh - 123px)',
+  height: '100%',
 })
 
 const SetMain = styled.div({
@@ -50,6 +50,7 @@ const SetLeft = styled.div({
   flexDirection: 'column',
   borderRight: '1px solid var(--neutral-n6-d1)',
   width: 232,
+  paddingRight: 4,
 })
 const RightHeader = styled.div`
   display: flex;

@@ -99,7 +99,7 @@ const ScheduleStripList: React.FC<ScheduleListProps> = props => {
             dispatch(
               setScheduleListModal({
                 visible: true,
-                top: 0,
+                top: top - boxTop - 72,
                 left: left - boxLeft,
                 date: dayjs(data.date).date(),
                 scheduleListData: allList,

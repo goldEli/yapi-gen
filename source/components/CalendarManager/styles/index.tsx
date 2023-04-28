@@ -17,6 +17,7 @@ export const RepeatTextWrap = styled.div`
 export const CalenderBox = styled.div`
   display: flex;
   height: calc(100vh - 56px);
+  width: 100%;
 `
 
 export const CalenderBoxLeftArea = styled.div`
@@ -25,7 +26,7 @@ export const CalenderBoxLeftArea = styled.div`
   height: 100%;
   display: flex;
   gap: 24px;
-  min-width: 288px;
+  width: 288px;
 `
 
 export const CalenderBoxRightArea = styled.div`
@@ -99,9 +100,6 @@ export const CalendarSidebarBox = styled.div<{ collapse?: boolean }>`
   width: ${props => (props.collapse ? 0 : 200)}px;
   height: 100%;
   align-items: center;
-  max-width: unset !important;
-  min-width: unset !important;
-  flex: unset !important;
   border-right: 1px solid var(--neutral-n6-d1);
   background: ${props =>
     props.collapse ? 'var(--neutral-white-d6)' : 'var(--neutral-n9)'};

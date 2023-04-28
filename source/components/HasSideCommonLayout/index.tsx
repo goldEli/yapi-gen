@@ -12,7 +12,8 @@ interface HasSideCommonLayoutProps {
 const HasSideWrap = styled.div`
   display: flex;
   height: 100%;
-  overflow: hidden;
+  overflow: auto;
+  flex: 1;
 `
 
 const SideWrap = styled.div<{ isOpen: boolean; permission?: boolean }>`
@@ -58,12 +59,15 @@ const SideMain = styled.div<{ isOpen: boolean }>`
   transition: all 0.3s;
   .box {
     opacity: ${props => (props.isOpen ? 0 : 1)};
+    height: 100%;
   }
 `
 
 const OutletWrap = styled.div<{ width: number }>`
   flex: 1;
-  /* width: ${props => `calc(100% - ${props.width}px)`}; */
+  overflow: auto;
+  height: 100%;
+  overflow-y: hidden;
 `
 
 const HasSideCommonLayout = (props: HasSideCommonLayoutProps) => {
@@ -172,17 +176,10 @@ const HasSideCommonLayout = (props: HasSideCommonLayoutProps) => {
           />
         </FoldIcon>
       </SideWrap>
-      <OutletWrap
-        width={leftWidth}
-        style={{
-          // width: `${
-          //   window.screen.width < 1440 ? 1440 : window.screen.width - leftWidth
-          // }px`,
-          overflowX: 'scroll',
-          minWidth: `${1440 - leftWidth}px`,
-        }}
-      >
-        {props.children}
+      <OutletWrap width={leftWidth}>
+        <div style={{ minWidth: `${1440 - leftWidth}px`, height: '100%' }}>
+          {props.children}
+        </div>
       </OutletWrap>
     </HasSideWrap>
   )

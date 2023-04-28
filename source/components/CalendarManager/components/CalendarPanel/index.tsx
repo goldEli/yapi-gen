@@ -23,8 +23,8 @@ const Box = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  overflow-x: hidden;
   padding-top: 0px;
+  min-width: 1152px;
 `
 
 const Content = styled.div`
