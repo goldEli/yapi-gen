@@ -343,8 +343,12 @@ const SiteDrawer = () => {
                     margin: 0,
                   }}
                   onClick={() => {
-                    navigate('/SiteNotifications/AllNote/1')
-                    dispatch(changeVisible(false))
+                    const url = 'SiteNotifications/AllNote/1'
+                    window.open(
+                      `${window.origin}${import.meta.env.__URL_HASH__}${url}`,
+                    )
+                    // navigate()
+                    // dispatch(changeVisible(false))
                   }}
                   width={32}
                   height={32}
