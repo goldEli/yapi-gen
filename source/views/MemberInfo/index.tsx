@@ -18,6 +18,8 @@ import { getAsyncMember } from '@store/memberInfo'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
 import { getProjectInfo } from '@/services/project'
 import { setProjectInfo } from '@store/project'
+import HasSideCommonLayout from '@/components/HasSideCommonLayout'
+import HisSide from './HisSide'
 
 const Wrap = styled.div<{ isMember?: any }>(
   {
@@ -68,22 +70,24 @@ const MemberInfo = () => {
           : userInfo?.company_permissions?.map((i: any) => i.identity)
       }
     >
-      <Wrap isMember={isMember}>
-        <Main>
-          <div
-            style={{
-              height: '32px',
-              display: 'flex',
-              alignItems: 'center',
-              margin: '20px',
-              marginLeft: '24px',
-            }}
-          >
-            <MyBreadcrumb user={{ name: mainInfo?.name }} />
-          </div>
-          <Outlet />
-        </Main>
-      </Wrap>
+      <HasSideCommonLayout side={<HisSide />}>
+        <Wrap isMember={isMember}>
+          <Main>
+            <div
+              style={{
+                height: '32px',
+                display: 'flex',
+                alignItems: 'center',
+                margin: '20px',
+                marginLeft: '24px',
+              }}
+            >
+              <MyBreadcrumb user={{ name: mainInfo?.name }} />
+            </div>
+            <Outlet />
+          </Main>
+        </Wrap>
+      </HasSideCommonLayout>
     </PermissionWrap>
   )
 }

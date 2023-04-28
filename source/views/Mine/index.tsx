@@ -3,6 +3,8 @@ import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
 import { t } from 'i18next'
 import { Outlet, useLocation } from 'react-router-dom'
+import MineSide from './MineSide'
+import HasSideCommonLayout from '@/components/HasSideCommonLayout'
 
 const Title = styled.div`
   height: 32px;
@@ -57,8 +59,10 @@ const Mine = () => {
         ?.filter((k: any) => k.url === '/ProjectManagement')?.[0]
         ?.children?.map((i: any) => i.url)}
     >
-      <Title>{setTitle()?.name}</Title>
-      <Outlet />
+      <HasSideCommonLayout side={<MineSide />}>
+        <Title>{setTitle()?.name}</Title>
+        <Outlet />
+      </HasSideCommonLayout>
     </PermissionWrap>
   )
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable max-len */
 import { getLoginDetail, getTicket, loginOut } from '@/services/user'
@@ -5,6 +6,7 @@ import { debounce, throttle } from 'lodash'
 import { useState, useRef, useEffect } from 'react'
 
 const useWebsocket = () => {
+  const NoData = ['AH000', 'M9999']
   const ws = useRef<WebSocket | null>(null)
   // socket 数据
   const [wsData, setWsData] = useState<any>()
@@ -23,7 +25,7 @@ const useWebsocket = () => {
   }
 
   const heartCheck: TypeHeartCheck = {
-    timeout: 1 * 60 * 1000,
+    timeout: 1 * 40 * 1000,
     timeoutObj: null,
     reset() {
       clearInterval(this.timeoutObj)
@@ -32,11 +34,12 @@ const useWebsocket = () => {
     start(id) {
       this.timeoutObj = setInterval(() => {
         const obj = JSON.stringify({
-          to: id,
+          to: [id],
           msgType: 'M9999',
           customType: '',
           source: 'web',
           msgIds: [],
+          msgBody: { content: '1' },
           customData: {},
         })
         sendMessage(obj)
@@ -73,8 +76,6 @@ const useWebsocket = () => {
         if (data.msgType === 'AH001') {
           sessionStorage.removeItem('saveRouter')
           try {
-            console.log(1)
-
             loginOut()
             setTimeout(() => {
               localStorage.removeItem('agileToken')
@@ -86,7 +87,7 @@ const useWebsocket = () => {
           }
           return
         }
-        if (data.msgType === 'AH000') {
+        if (NoData.includes(data.msgType)) {
           return
         }
 

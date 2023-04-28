@@ -34,7 +34,7 @@ import { getMessage } from '@/components/Message'
 const Right = styled.div({
   width: '100%',
   height: '100%',
-  overflowY: 'hidden',
+  overflowY: 'auto',
   paddingLeft: '24px',
 })
 

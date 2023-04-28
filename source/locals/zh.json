@@ -1,4 +1,17 @@
 {
+  "member_change": "成员变更",
+  "edit_project": "项目编辑",
+  "delete_project": "项目删除",
+  "update_project_status": "项目状态变更",
+
+  "add_requirement_or_defect": "添加需求/缺陷",
+  "remove_requirement_or_defect": "移除需求/缺陷",
+  "create_iteration": "创建迭代",
+  "edit_iteration": "迭代编辑",
+  "update_iteration_status": "迭代状态更新",
+  "delete_iteration": "迭代删除",
+  "edit_iteration_outcome": "编辑迭代成果",
+
   "Create_requirements": "创建需求",
   "import_requirement": "导入需求",
   "export_requirement": "导出需求",
@@ -1300,5 +1313,17 @@
       "totalNoSubmitTimes": "累计未提交",
       "currentNoSubmitTimes": "当前未提交"
     }
+  },
+  "AddDepartmentOrTeamModal": {
+    "add_team": "添加团队",
+    "add_members": "添加成员",
+    "add_department": "添加部门",
+    "search": "搜索{{text}}",
+    "team": "团队",
+    "person": "联系人",
+    "all_checked": "全选",
+    "checked_count": "已选{{count}}/{{selectCount}}",
+    "clear": "清空",
+    "department": "部门"
   }
 }

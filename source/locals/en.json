@@ -1,4 +1,25 @@
 {
+  "member_change": "Member change",
+
+  "edit_project": "Project editor ",
+
+  "delete_project": "Delete the project",
+
+  "update_project_status": "Project status change ",
+
+  "add_requirement_or_defect": "Add requirement/Defect ",
+
+  "remove_requirement_or_defect": "Remove requirement/Defect ",
+
+  "create_iteration": "Create iteration",
+
+  "edit_iteration": "Iteration edit ",
+
+  "update_iteration_status": "iteration status update ",
+
+  "delete_iteration": "Iteration delete ",
+
+  "edit_iteration_outcome": "Edit the iteration result ",
   "Create_requirements": "Create Requirements",
   "import_requirement": "Import requirement",
 
@@ -1326,5 +1347,17 @@
       "totalNoSubmitTimes": "Accumulated Unsubmitted",
       "currentNoSubmitTimes": "Currently Not Submitted"
     }
+  },
+  "AddDepartmentOrTeamModal": {
+    "add_team": "Add Team",
+    "add_members": "Add Members",
+    "add_department": "Add Department",
+    "search": "Search {{text}}",
+    "team": "Team",
+    "person": "Contacts",
+    "all_checked": "Select All",
+    "checked_count": "Selected {{count}/{{selectCount}}",
+    "clear": "Empty",
+    "department": "Department"
   }
 }

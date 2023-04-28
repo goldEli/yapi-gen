@@ -120,28 +120,6 @@ const routes = [
             path: 'WorkFlow',
             element: lazy(() => import('@/views/Workflow')),
           },
-          {
-            path: 'MemberInfo',
-            element: lazy(() => import('@/views/MemberInfo')),
-            children: [
-              {
-                path: 'Carbon',
-                element: lazy(() => import('@/views/MemberInfo/Carbon')),
-              },
-              {
-                path: 'Create',
-                element: lazy(() => import('@/views/MemberInfo/Create')),
-              },
-              {
-                path: 'Finished',
-                element: lazy(() => import('@/views/MemberInfo/Finished')),
-              },
-              {
-                path: 'Profile',
-                element: lazy(() => import('@/views/MemberInfo/Profile')),
-              },
-            ],
-          },
         ],
       },
       {
@@ -188,27 +166,27 @@ const routes = [
               () => import('@/views/AdminManagement/LoginManagement'),
             ),
           },
+        ],
+      },
+      {
+        path: 'MemberInfo',
+        element: lazy(() => import('@/views/MemberInfo')),
+        children: [
           {
-            path: 'MemberInfo',
-            element: lazy(() => import('@/views/MemberInfo')),
-            children: [
-              {
-                path: 'Carbon',
-                element: lazy(() => import('@/views/MemberInfo/Carbon')),
-              },
-              {
-                path: 'Create',
-                element: lazy(() => import('@/views/MemberInfo/Create')),
-              },
-              {
-                path: 'Finished',
-                element: lazy(() => import('@/views/MemberInfo/Finished')),
-              },
-              {
-                path: 'Profile',
-                element: lazy(() => import('@/views/MemberInfo/Profile')),
-              },
-            ],
+            path: 'Carbon',
+            element: lazy(() => import('@/views/MemberInfo/Carbon')),
+          },
+          {
+            path: 'Create',
+            element: lazy(() => import('@/views/MemberInfo/Create')),
+          },
+          {
+            path: 'Finished',
+            element: lazy(() => import('@/views/MemberInfo/Finished')),
+          },
+          {
+            path: 'Profile',
+            element: lazy(() => import('@/views/MemberInfo/Profile')),
           },
         ],
       },
