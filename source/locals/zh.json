@@ -1313,5 +1313,17 @@
       "totalNoSubmitTimes": "累计未提交",
       "currentNoSubmitTimes": "当前未提交"
     }
+  },
+  "AddDepartmentOrTeamModal": {
+    "add_team": "添加团队",
+    "add_members": "添加成员",
+    "add_department": "添加部门",
+    "search": "搜索{{text}}",
+    "team": "团队",
+    "person": "联系人",
+    "all_checked": "全选",
+    "checked_count": "已选{{count}}/{{selectCount}}",
+    "clear": "清空",
+    "department": "部门"
   }
 }

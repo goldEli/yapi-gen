@@ -154,11 +154,19 @@ const Situation = () => {
 
   if (generalData) {
     return (
-      <div>
-        <PermissionWrap
-          auth="/Situation"
-          permission={menuPermission?.menus?.map((i: any) => i.url)}
+      <PermissionWrap
+        auth="/Situation"
+        permission={menuPermission?.menus?.map((i: any) => i.url)}
+      >
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: '100%',
+            paddingRight: 4,
+          }}
         >
+          {' '}
           <Title>{t('project.companyAll')}</Title>
           <Wrap>
             <Project data={generalData?.project} />
@@ -166,8 +174,8 @@ const Situation = () => {
             <Need data={generalData?.need} />
             <Iteration data={generalData?.iterate} />
           </Wrap>
-        </PermissionWrap>
-      </div>
+        </div>
+      </PermissionWrap>
     )
   }
   return <Loading />

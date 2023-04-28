@@ -25,7 +25,7 @@ import {
 import { getMessage } from '@/components/Message'
 
 const Warp = styled.div({
-  height: 'calc(100vh - 123px)',
+  height: '100%',
 })
 
 const SetMain = styled.div({
