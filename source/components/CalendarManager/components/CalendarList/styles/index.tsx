@@ -15,6 +15,8 @@ export const CalendarListBox = styled.div`
   background-color: #fff;
   overflow-y: auto;
   position: relative;
+  /* border: 1px solid; */
+  height: 100vh;
   /* height: 700px; */
 `
 export const CalendarListItem = styled.div`
