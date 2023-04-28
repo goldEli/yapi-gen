@@ -343,7 +343,9 @@ const AddDepartmentOrTeamModal = (props: AddDepartmentModalProps) => {
                   dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                   treeData={treeData}
                   showSearch
-                  placeholder="Please select"
+                  placeholder={t('AddDepartmentOrTeamModal.search', {
+                    text: t('AddDepartmentOrTeamModal.department'),
+                  })}
                   treeDefaultExpandAll
                   onSelect={onSelect}
                   treeNodeFilterProp="name"

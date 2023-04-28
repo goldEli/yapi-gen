@@ -48,9 +48,9 @@ const HeaderWrap = styled.div`
 export const Content = styled.div`
   height: calc(100vh - 56px);
   width: 100%;
-  /* overflow: auto; */
+  /* overflow: auto;
   display: flex;
-  /* z-index: 1; */
+  z-index: 1; */
 `
 
 export const Container = () => {

@@ -136,14 +136,11 @@ const ReportDetailDrawer = () => {
     )!
     const moveHandler = (ev: React.MouseEvent) => {
       setFocus(true)
-
       drawerBody.style.minWidth = '100%'
       drawerBody.style.right = '0px'
       const nextWidth = innerWidth - ev.clientX
-      if (nextWidth <= leftWidth) {
-        return
-      }
-      drawer!.style.width = `${innerWidth - ev.clientX}px`
+      if (nextWidth <= leftWidth) return
+      drawer!.style.width = innerWidth - ev.clientX + 'px'
     }
     drawer.style.transition = '0s'
     // const debounceWrap: any = throttle(moveHandler, 60, {})

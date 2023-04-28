@@ -5,8 +5,9 @@ import { useRef, useState } from 'react'
 import { DragLine, MouseDom } from '@/components/StyleCommon'
 
 interface HasSideCommonLayoutProps {
-  side: React.ReactNode
+  side?: React.ReactNode
   children: React.ReactNode
+  hasSide?: boolean
 }
 
 const HasSideWrap = styled.div`
@@ -138,44 +139,46 @@ const HasSideCommonLayout = (props: HasSideCommonLayoutProps) => {
     })
   }
 
-  console.log(
-    window.screen.width < 1440 ? 1440 : window.screen.width - leftWidth,
-  )
-
   return (
     <HasSideWrap>
-      <SideWrap
-        isOpen={firstMenuCollapse}
-        ref={sliderRef}
-        style={{
-          width: firstMenuCollapse ? 26 : leftWidth,
-          transition: endWidth < 200 ? '0.2s' : 'initial',
-        }}
-      >
-        <SideMain
-          ref={sideMain}
-          style={{ width: leftWidth }}
+      {!props.hasSide && (
+        <SideWrap
           isOpen={firstMenuCollapse}
+          ref={sliderRef}
+          style={{
+            width: firstMenuCollapse ? 26 : leftWidth,
+            transition: endWidth < 200 ? '0.2s' : 'initial',
+          }}
         >
-          <div className="box">{props.side}</div>
-        </SideMain>
+          <SideMain
+            ref={sideMain}
+            style={{ width: leftWidth }}
+            isOpen={firstMenuCollapse}
+          >
+            <div className="box">{props.side}</div>
+          </SideMain>
 
-        <MouseDom
-          active={focus}
-          onMouseDown={onDragLine}
-          style={{ left: leftWidth - 6 }}
-        >
-          <DragLine active={focus} className="line" style={{ marginLeft: 4 }} />
-        </MouseDom>
+          <MouseDom
+            active={focus}
+            onMouseDown={onDragLine}
+            style={{ left: leftWidth - 6 }}
+          >
+            <DragLine
+              active={focus}
+              className="line"
+              style={{ marginLeft: 4 }}
+            />
+          </MouseDom>
 
-        <FoldIcon onClick={onChangeSide}>
-          <CommonIconFont
-            type={firstMenuCollapse ? 'right' : 'left'}
-            size={16}
-            color="var(--neutral-n2)"
-          />
-        </FoldIcon>
-      </SideWrap>
+          <FoldIcon onClick={onChangeSide}>
+            <CommonIconFont
+              type={firstMenuCollapse ? 'right' : 'left'}
+              size={16}
+              color="var(--neutral-n2)"
+            />
+          </FoldIcon>
+        </SideWrap>
+      )}
       <OutletWrap width={leftWidth}>
         <div style={{ minWidth: `${1440 - leftWidth}px`, height: '100%' }}>
           {props.children}
