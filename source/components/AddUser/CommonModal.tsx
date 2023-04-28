@@ -435,7 +435,6 @@ const CommonModal = (props: ModalProps) => {
       setCheckedKeys(checkedKey)
     } else {
       const fatherData = getKeyData(treeData, 0)
-      // const list = checkedKey?.filter((item: any) => !fatherData?.includes(item))
       setCheckedKeys(checkedKey)
       setPersonData(
         e.checkedNodes?.filter((item: any) => !fatherData?.includes(item.id)),
@@ -607,7 +606,11 @@ const CommonModal = (props: ModalProps) => {
           {personData.length >= 1
             ? personData.map((el: any) => (
                 <ListItem key={el.id}>
-                  <CommonUserAvatar name={el.name} fontSize={14} />
+                  <CommonUserAvatar
+                    name={el.name}
+                    fontSize={14}
+                    avatar={el.avatar}
+                  />
                   <IconFont
                     className="del"
                     type="close"
