@@ -38,14 +38,23 @@ const MoveCard: React.FC<ScheduleCardProps> = props => {
         </>
       )
     }
+    let color: string | undefined = getColor(props.data?.color ?? 0)
+    if (!timeRange) {
+      color = void 0
+    }
     return (
       <>
-        <TimeRange className={getColorClassName()}>
-          {timeRange &&
-            `${timeRange?.start_timestamp} - ${timeRange?.end_timestamp}`}
+        <TimeRange
+          color={color}
+          hidden={!timeRange}
+          className={getColorClassName()}
+        >
+          {`${timeRange?.start_timestamp} - ${timeRange?.end_timestamp}`}
         </TimeRange>
 
-        <Title className={getColorClassName()}>{data?.subject}</Title>
+        <Title className={getColorClassName()} color={color}>
+          {data?.subject}
+        </Title>
       </>
     )
   }, [is_show_busy, timeRange, data?.subject, data?.start_time])

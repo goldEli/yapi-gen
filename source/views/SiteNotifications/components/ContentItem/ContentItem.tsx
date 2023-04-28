@@ -50,7 +50,7 @@ const ContentItem = (props: any) => {
       return str.replace(
         '请前往查看',
         `<a  
-        href="${url}" target="_self">请前往查看</a>`,
+        href="${url}" target="_target">请前往查看</a>`,
       )
     }
 

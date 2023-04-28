@@ -34,7 +34,7 @@ const useMoveCard = (props: {
       start_timestamp: props.data.start_timestamp,
       end_timestamp: props.data.end_timestamp,
     })
-  }, [props.data.end_timestamp, props.data.start_timestamp])
+  }, [props.data])
 
   const { height, top } = usePosition(start_timestamp, end_timestamp)
   const isDrag = React.useRef(false)

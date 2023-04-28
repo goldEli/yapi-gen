@@ -14,6 +14,7 @@ const CalendarSetWrap = styled.div`
   padding: 20px 4px 20px 24px;
   background: var(--neutral-white-d4);
   height: 100%;
+  min-width: 1152px;
 `
 
 const CrumbsWrap = styled(Space)`

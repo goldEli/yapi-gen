@@ -160,7 +160,7 @@ const IterationGrid = (props: Props) => {
       />
       <Content
         style={{
-          height: hasCreate ? 'calc(100% - 84px)' : 'calc(100% - 32px)',
+          height: hasCreate ? 'calc(100% - 96px)' : 'calc(100% - 32px)',
         }}
       >
         <div style={{ height: '100%', overflow: 'auto' }}>

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import React from 'react'
+import React, { useMemo } from 'react'
 import CalendarMonthHeader from './CalendarMonthHeader'
 import Content from './Content'
 import { useDispatch, useSelector } from '@store/index'
@@ -20,13 +20,23 @@ const CalendarMonth: React.FC<CalendarMonthProps> = props => {
   const dispatch = useDispatch()
   const { calenderMonthValue } = useSelector(store => store.calendarPanel)
   const { checkedCalendarList } = useSelector(store => store.calendar)
-
-  React.useEffect(() => {
+  const params = useMemo(() => {
     if (!calenderMonthValue) {
-      return
+      return null
     }
     const arr = calenderMonthValue.split('-')
     const [year, month] = arr.map(item => parseInt(item, 10))
+    return {
+      year,
+      month,
+    }
+  }, [calenderMonthValue])
+
+  React.useEffect(() => {
+    if (params === null) {
+      return
+    }
+    const { year, month } = params
     async function run() {
       await dispatch(
         getDaysOfMonthList({
@@ -43,7 +53,7 @@ const CalendarMonth: React.FC<CalendarMonthProps> = props => {
       )
     }
     run()
-  }, [calenderMonthValue, checkedCalendarList])
+  }, [params?.year, params?.month, checkedCalendarList])
 
   return (
     <CalendarMonthBox>
