@@ -166,6 +166,7 @@ const Situation = () => {
             paddingRight: 4,
           }}
         >
+          {' '}
           <Title>{t('project.companyAll')}</Title>
           <Wrap>
             <Project data={generalData?.project} />

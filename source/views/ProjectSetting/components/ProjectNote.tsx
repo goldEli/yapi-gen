@@ -286,6 +286,39 @@ const ProjectSet = () => {
       case '0001':
         name = t('import_product')
         break
+      case '1100':
+        name = t('add_requirement_or_defect')
+        break
+      case '1101':
+        name = t('remove_requirement_or_defect')
+        break
+      case '1102':
+        name = t('create_iteration')
+        break
+      case '1103':
+        name = t('edit_iteration')
+        break
+      case '1104':
+        name = t('update_iteration_status')
+        break
+      case '1105':
+        name = t('delete_iteration')
+        break
+      case '1106':
+        name = t('edit_iteration_outcome')
+        break
+      case '1200':
+        name = t('member_change')
+        break
+      case '1203':
+        name = t('edit_project')
+        break
+      case '1204':
+        name = t('delete_project')
+        break
+      case '1205':
+        name = t('update_project_status')
+        break
 
       default:
         break
@@ -293,6 +326,8 @@ const ProjectSet = () => {
     return name
   }
   const init2 = async () => {
+    console.log(123)
+
     setDataList([
       {
         id: 108,
@@ -352,7 +387,8 @@ const ProjectSet = () => {
   useEffect(() => {
     init2()
   }, [isRefresh, activeDetail])
-  console.log(permissionList)
+
+  console.log(activeDetail)
 
   const onSavePermission = async () => {
     const res = await editSaveConfig({
