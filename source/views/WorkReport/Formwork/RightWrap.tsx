@@ -176,6 +176,10 @@ const RightFormWork = () => {
       setValue(activeItem.name)
       activeItem?.id && getTemplateDetail()
     }
+    setIsActive(0)
+    return () => {
+      dispatch(setEditSave(true))
+    }
   }, [activeItem])
   // 删除模板
   const deleteActiveItem = async () => {
@@ -363,11 +367,8 @@ const RightFormWork = () => {
   }
 
   useEffect(() => {
-    setIsActive(0)
-    return () => {
-      dispatch(setEditSave(true))
-    }
-  }, [activeItem])
+    console.log(9999999)
+  }, [])
 
   const getBtn = () => {
     // 编辑的两个tabsd 情况都出现保存，新增编辑权限中出现

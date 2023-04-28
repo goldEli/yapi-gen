@@ -14,6 +14,7 @@ import { templateLatelyList } from '@/services/report'
 import moment from 'moment'
 import { setWriteReportModal } from '@store/workReport'
 import { Tooltip } from 'antd'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 interface Props {
   isVisible: boolean
@@ -194,7 +195,13 @@ const WriteReport = (props: Props) => {
                 type="light"
                 onClick={() => {
                   dispatch(setWriteReportModal({ visible: false }))
-                  navigate('/Report/Formwork?type=report&isOpen=true')
+                  const params = encryptPhp(
+                    JSON.stringify({
+                      type: 'report',
+                      isOpen: true,
+                    }),
+                  )
+                  navigate(`/Report/Formwork?data=${params}`)
                 }}
               >
                 {t('report.list.createTemplate')}
