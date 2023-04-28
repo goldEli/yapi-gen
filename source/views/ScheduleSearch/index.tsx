@@ -113,7 +113,7 @@ const ScheduleSearch: React.FC<CalendarListProps> = props => {
           ></InputSearch> */}
           <Input
             placeholder={t('calendarManager.search_schedule')}
-            style={{ height: '100%' }}
+            style={{ height: '100%', width: '100%' }}
             autoFocus
             allowClear
             onPressEnter={e => {
