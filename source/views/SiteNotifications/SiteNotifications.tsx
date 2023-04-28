@@ -44,17 +44,15 @@ const SiteNotifications = () => {
       console.log(result)
 
       if (result === 'granted') {
-        Notification.requestPermission(() => {
-          const n: any = new Notification(wsData.data.msgBody.title, {
-            body: wsData.data.msgBody.content,
-          })
-          n.onclick = function () {
-            if (wsData.data.customData.linkWebUrl) {
-              // 当点击事件触发，打开指定的url
-              window.open(wsData.data.customData.linkWebUrl)
-            }
-          }
+        const n: any = new Notification(wsData.data.msgBody.title, {
+          body: wsData.data.msgBody.content,
         })
+        n.onclick = function () {
+          if (wsData.data.customData.linkWebUrl) {
+            // 当点击事件触发，打开指定的url
+            window.open(wsData.data.customData.linkWebUrl)
+          }
+        }
       } else {
         notification.open({
           maxCount: 1,
