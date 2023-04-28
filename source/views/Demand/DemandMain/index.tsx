@@ -32,9 +32,7 @@ import { getMessage } from '@/components/Message'
 const Right = styled.div<{ isShowLeft: boolean }>({
   width: '100%',
   height: '100%',
-  overflowY: 'auto',
   paddingLeft: '24px',
-  minWidth: 800,
 })
 
 interface Props {

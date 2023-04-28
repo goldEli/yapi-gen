@@ -49,7 +49,6 @@ const SiteNotifications = () => {
           if (wsData.data.customData.linkWebUrl) {
             // 当点击事件触发，打开指定的url
             window.open(wsData.data.customData.linkWebUrl)
-            n.close()
           }
         }
       })

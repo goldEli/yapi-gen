@@ -53,6 +53,7 @@ const ListHead = styled.div({
   background: 'var(--neutral-white-d2)',
   display: 'flex',
   alignItems: 'center',
+  flexWrap: 'wrap',
 })
 
 const SelectWrapForList = styled(SelectWrapBedeck)`
@@ -86,6 +87,7 @@ const List = () => {
   const [queryParams, setQueryParams] = useState<any>({})
   const [editId, setEditId] = useState<any>()
   const [visibleEdit, setVisibleEdit] = useState(false)
+  const initialRef = useRef(0)
   const params = useParams()
   const id = Number(params?.id)
   const { isFresh } = useSelector(state => state.workReport.listUpdate)
@@ -99,13 +101,11 @@ const List = () => {
     {
       label: t('report.list.update'),
       color: '#E56F0E',
-      background: 'rgba(250,151,70,0.1)',
       state: 1,
     },
     {
       label: t('report.list.makeup'),
       color: '#7641E8 ',
-      background: 'rgba(161,118,251,0.1)',
       state: 2,
     },
   ]
@@ -160,7 +160,10 @@ const List = () => {
   }, [isFresh])
 
   useEffect(() => {
-    getList()
+    if (initialRef.current) {
+      getList()
+    }
+    initialRef.current += 1
   }, [pageObj, queryParams])
 
   useEffect(() => {
@@ -250,7 +253,7 @@ const List = () => {
                 style={{
                   display: 'inline-block',
                   maxWidth: 160,
-                  marginRight: 12,
+                  marginRight: 5,
                   marginLeft: 8,
                   whiteSpace: 'nowrap',
                   textOverflow: 'ellipsis',
@@ -315,7 +318,7 @@ const List = () => {
               }}
               onClick={() => onClickView(record)}
             >
-              {text.trim().slice(0, 100)}
+              {text?.trim()?.slice(0, 100)}
             </span>
           </Tooltip>
         )

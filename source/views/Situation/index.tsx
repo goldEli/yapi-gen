@@ -22,6 +22,8 @@ const Wrap = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   grid-gap: 24px;
+  height: calc(100vh - 56px);
+  overflow: auto;
 `
 const Title = styled.div`
   padding: 24px 0 0 24px;

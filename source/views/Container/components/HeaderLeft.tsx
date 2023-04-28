@@ -195,42 +195,40 @@ const DrawerComponent = (props: DrawerComponentProps) => {
         <Provider isBottom />
         {/* 其他菜单 */}
         <DrawerMenu>
-          <Space size={12} style={{ flexWrap: 'wrap' }}>
-            {menuPermission?.menus
-              ?.filter((k: any) => k.url !== '/AdminManagement')
-              .map((i: any) => (
-                <DrawerMenuItem
-                  key={i.id}
-                  isActive={currentMenu?.id === i.id}
-                  onClick={() => onChangeCurrentMenu(i)}
-                >
-                  <div className="menuIcon">
-                    <CommonIconFont
-                      type={
-                        currentMenu?.id === i.id
-                          ? menuIconList?.filter((k: any) =>
-                              String(i.url).includes(k.key),
-                            )[0]?.active
-                          : menuIconList?.filter((k: any) =>
-                              String(i.url).includes(k.key),
-                            )[0]?.normal
-                      }
-                      size={24}
-                    />
-                  </div>
-                  <div style={{ textAlign: 'center' }} className="label">
-                    {i.name}
-                  </div>
-                </DrawerMenuItem>
-              ))}
-            <WaitingMenu>
-              <img src={menuTag} className="menuTag" />
-              <div className="menuIcon">
-                <CommonIconFont type="draft" size={24} />
-              </div>
-              <div className="label">{t('menu_word')}</div>
-            </WaitingMenu>
-          </Space>
+          {menuPermission?.menus
+            ?.filter((k: any) => k.url !== '/AdminManagement')
+            .map((i: any) => (
+              <DrawerMenuItem
+                key={i.id}
+                isActive={currentMenu?.id === i.id}
+                onClick={() => onChangeCurrentMenu(i)}
+              >
+                <div className="menuIcon">
+                  <CommonIconFont
+                    type={
+                      currentMenu?.id === i.id
+                        ? menuIconList?.filter((k: any) =>
+                            String(i.url).includes(k.key),
+                          )[0]?.active
+                        : menuIconList?.filter((k: any) =>
+                            String(i.url).includes(k.key),
+                          )[0]?.normal
+                    }
+                    size={24}
+                  />
+                </div>
+                <div style={{ textAlign: 'center' }} className="label">
+                  {i.name}
+                </div>
+              </DrawerMenuItem>
+            ))}
+          <WaitingMenu>
+            <img src={menuTag} className="menuTag" />
+            <div className="menuIcon">
+              <CommonIconFont type="draft" size={24} />
+            </div>
+            <div className="label">{t('menu_word')}</div>
+          </WaitingMenu>
         </DrawerMenu>
         {/* 后台管理 */}
         {menuPermission?.menus?.filter((i: any) => i.url === '/AdminManagement')

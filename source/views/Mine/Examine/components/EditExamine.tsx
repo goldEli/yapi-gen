@@ -5,7 +5,7 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Input, message, Space, Timeline } from 'antd'
+import { Input, message, Space, Timeline, Tooltip } from 'antd'
 import { ViewWrap, NameWrap, DelWrap } from '@/components/StyleCommon'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import CommonModal from '@/components/CommonModal'
@@ -19,6 +19,7 @@ import { updateVerifyOperation } from '@/services/mine'
 import CommonButton from '@/components/CommonButton'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { getMessage } from '@/components/Message'
+import StateTag from '@/components/StateTag'
 
 const TimelineWrap = styled(Timeline)({
   '.ant-timeline-item-last > .ant-timeline-item-content': {
@@ -29,6 +30,12 @@ const TimelineWrap = styled(Timeline)({
   },
   '.ant-timeline-item-last': {
     paddingBottom: '0!important',
+  },
+  '.ant-timeline-item-head-blue': {
+    borderColor: 'var(--neutral-n5) !important',
+  },
+  '& :first-child .ant-timeline-item-head-blue': {
+    borderColor: 'var(--primary-d1) !important',
   },
 })
 
@@ -186,6 +193,8 @@ const EditExamine = (props: Props) => {
     )
   }
 
+  console.log(verifyInfo)
+
   return (
     <CommonModal
       isVisible={props.isVisible}
@@ -215,43 +224,35 @@ const EditExamine = (props: Props) => {
         style={{
           maxHeight: props?.isEdit && props?.item?.status === 1 ? 464 : 544,
           overflowY: 'auto',
-          padding: 20,
+          padding: '20px 16px 20px 20px',
         }}
       >
         <ItemWrap>
-          <div>{props?.item?.demandId}</div>
-
-          <div
-            style={{
-              height: '24px',
-              background: 'var(--neutral-n8)',
-              borderRadius: '6px 6px 6px 6px',
-              padding: '2px 8px',
-              display: 'flex',
-              alignItems: 'center',
-              marginLeft: '16px',
-            }}
-          >
-            <img
-              style={{
-                width: '18px',
-                height: '18px',
-              }}
-              src={verifyInfo?.category_attachment}
-              alt=""
-            />
+          <LabelWrap>{t('serialNumber')}</LabelWrap>
+          <ContentWrap>
+            <Tooltip title={verifyInfo?.categoryName}>
+              <img
+                style={{
+                  width: '18px',
+                  height: '18px',
+                }}
+                src={verifyInfo?.category_attachment}
+                alt=""
+              />
+            </Tooltip>
             <span
               style={{
-                height: '20px',
-                fontSize: '12px',
-                fontWeight: 400,
-                color: 'var(--neutral-n2)',
-                lineHeight: '20px',
+                height: '22px',
+                fontSize: '14px',
+                fontFamily: 'SiYuanMedium',
+                color: 'var(--neutral-n1-d1)',
+                lineHeight: '22px',
+                marginLeft: 8,
               }}
             >
-              {verifyInfo?.categoryName}
+              {verifyInfo.storyPrefixKey}
             </span>
-          </div>
+          </ContentWrap>
         </ItemWrap>
         <ItemWrap>
           <LabelWrap>{t('common.title')}</LabelWrap>
@@ -335,7 +336,7 @@ const EditExamine = (props: Props) => {
           <ItemWrap>
             <LabelWrap>{t('newlyAdd.examineReason')}</LabelWrap>
             <Input.TextArea
-              style={{ width: 256 }}
+              style={{ width: 386 }}
               autoSize={{ minRows: 3, maxRows: 5 }}
               placeholder={t('newlyAdd.pleaseExamine')}
               value={value}
@@ -383,7 +384,7 @@ const EditExamine = (props: Props) => {
                           style={{
                             marginTop: 8,
                             display: 'flex',
-                            alignItems: 'center',
+                            alignItems: 'start',
                           }}
                         >
                           <CommonUserAvatar />
@@ -532,7 +533,7 @@ const EditExamine = (props: Props) => {
               </Timeline.Item>
             )}
             {/* TODO: 需求流回至 */}
-            <Timeline.Item style={{ marginBottom: 16 }}>
+            <Timeline.Item>
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 {/*  优化：取消审核label  */}
                 {verifyInfo.verifyStatus === 4 ? (
@@ -546,15 +547,39 @@ const EditExamine = (props: Props) => {
                 )}
                 {/*  优化：取消审核tag  */}
                 {verifyInfo.verifyStatus === 4 ? (
-                  <ViewWrap color={verifyInfo?.from?.color}>
-                    {verifyInfo?.from?.content}
-                  </ViewWrap>
+                  <StateTag
+                    name={verifyInfo?.from?.content}
+                    state={
+                      verifyInfo?.from?.is_start === 1 &&
+                      verifyInfo?.from?.is_end === 2
+                        ? 1
+                        : verifyInfo?.from?.is_end === 1 &&
+                          verifyInfo?.from?.is_start === 2
+                        ? 2
+                        : verifyInfo?.from?.is_start === 2 &&
+                          verifyInfo?.from?.is_end === 2
+                        ? 3
+                        : 0
+                    }
+                  />
                 ) : (
                   <>
                     {verifyInfo?.to ? (
-                      <ViewWrap color={verifyInfo?.to?.color}>
-                        {verifyInfo?.to?.content}
-                      </ViewWrap>
+                      <StateTag
+                        name={verifyInfo?.to?.content}
+                        state={
+                          verifyInfo?.to?.is_start === 1 &&
+                          verifyInfo?.to?.is_end === 2
+                            ? 1
+                            : verifyInfo?.to?.is_end === 1 &&
+                              verifyInfo?.to?.is_start === 2
+                            ? 2
+                            : verifyInfo?.to?.is_start === 2 &&
+                              verifyInfo?.to?.is_end === 2
+                            ? 3
+                            : 0
+                        }
+                      />
                     ) : (
                       <DelWrap>{t('newlyAdd.statusDel')}</DelWrap>
                     )}

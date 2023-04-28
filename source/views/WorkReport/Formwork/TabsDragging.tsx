@@ -6,10 +6,27 @@ import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
 import { Checkbox } from 'antd'
-import { throttle } from 'lodash'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { setEditSave } from '@store/formWork'
+const Box = styled.div`
+  padding-left: 24px;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+`
+const Circle = styled.div`
+  width: 10px;
+  height: 10px;
+  background-color: var(--neutral-white-d1);
+  border-radius: 50%;
+  border: 2px solid var(--primary-d1);
+`
+const Line = styled.div`
+  height: 2px;
+  width: 97%;
+  background-color: var(--primary-d1);
+`
 const Container = styled.div`
   position: relative;
   height: 72px;
@@ -122,10 +139,7 @@ const Sortable = (props: any) => {
     setCurrent(null)
   }
 
-  const onDragOver = throttle((e: any, index: number, child: any) => {
-    e.stopPropagation()
-    setDragItem(child)
-    setEndIndex(index)
+  const onDragOver = (e: any) => {
     if (e.pageY >= window.screen?.availHeight - 300) {
       document
         .getElementById('father')!
@@ -135,10 +149,15 @@ const Sortable = (props: any) => {
         .getElementById('father')!
         .scrollTo({ top: Number(0), behavior: 'smooth' })
     }
-    timer = setTimeout(() => {
+  }
+  // 接触到就触发
+  const onDragEnter = (e: any, index: number, child: any) => {
+    setEndIndex(index)
+    setDragItem(child)
+    setTimeout(() => {
       setDragItem(null)
     }, 500)
-  }, 100)
+  }
   const allowDrop = (ev: any) => {
     ev.preventDefault()
   }
@@ -188,17 +207,17 @@ const Sortable = (props: any) => {
                 transition: dragItem?.name === child?.name ? 'all .1s' : '',
                 transform:
                   dragItem?.name === child?.name
-                    ? 'translateY(10px)'
+                    ? 'translateY(20px)'
                     : 'translateY(0)',
               }}
               key={child?.name}
               draggable="true"
               onDragStart={(ev: any) => onDragStart(ev, i, child)}
-              onDragOver={e => onDragOver(e, i, child)}
+              onDragEnter={e => onDragEnter(e, i, child)}
+              onDragOver={e => onDragOver(e)}
               onDragEnd={e => onDragEnd(e, i)}
               onClick={(event: any) => {
-                console.log('dj'),
-                  event.preventDefault(),
+                event.preventDefault(),
                   child.type !== 1 && child.type != 4 && props.onClick(i, child)
               }}
             >
@@ -244,6 +263,14 @@ const Sortable = (props: any) => {
                 </RightOperate>
               </ItemList>
             </Container>
+            <Box
+              style={{
+                display: dragItem?.name === child?.name ? 'flex' : 'none',
+              }}
+            >
+              <Circle />
+              <Line />
+            </Box>
           </div>
         ))}
     </div>

@@ -54,23 +54,23 @@ const index = () => {
       const params = encryptPhp(
         JSON.stringify({ id: projectId, isMember, userId }),
       )
-      navigate(`/ProjectManagement/MemberInfo/${value.path}?data=${params}`)
+      navigate(`/MemberInfo/${value.path}?data=${params}`)
     } else {
       const params = encryptPhp(
         JSON.stringify({ userId, isMember: false, id: '' }),
       )
-      navigate(`/AdminManagement/MemberInfo/${value.path}?data=${params}`)
+      navigate(`/MemberInfo/${value.path}?data=${params}`)
     }
   }
 
   const onGoBack = () => {
-    if (location.pathname.includes('/AdminManagement')) {
-      navigate('/AdminManagement/StaffManagement')
-    } else {
+    if (isMember) {
       const params = encryptPhp(
         JSON.stringify({ id: projectInfo?.id, pageIdx: 'main', type: 1 }),
       )
-      navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
+      navigate(`/ProjectSetting?data=${params}`)
+    } else {
+      navigate('/AdminManagement/StaffManagement')
     }
   }
 

@@ -66,6 +66,12 @@ export const ContactDemandItem = styled.div`
 
 export const CommentBox = styled.div`
   margin-bottom: 8px;
+  .deleteIcon {
+    display: none;
+  }
+  &:hover .deleteIcon {
+    display: inherit;
+  }
   .headWrap {
     display: flex;
     justify-content: space-between;
