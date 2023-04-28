@@ -9,4 +9,5 @@ export const DemandContent = styled.div`
   display: flex;
   height: calc(100% - 52px);
   margin-top: 20px;
+  overflow-y: auto;
 `

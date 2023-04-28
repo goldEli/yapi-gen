@@ -24,7 +24,7 @@ const Box = styled.div`
   flex-direction: column;
   gap: 20px;
   padding-top: 0px;
-  min-width: 1240px;
+  min-width: 1152px;
 `
 
 const Content = styled.div`

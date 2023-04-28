@@ -26,7 +26,7 @@ export const CalenderBoxLeftArea = styled.div`
   height: 100%;
   display: flex;
   gap: 24px;
-  min-width: 288px;
+  width: 288px;
 `
 
 export const CalenderBoxRightArea = styled.div`
