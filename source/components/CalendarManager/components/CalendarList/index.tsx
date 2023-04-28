@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useMemo } from 'react'
 
 import { useDispatch, useSelector } from '@store/index'
 import { getScheduleDaysOfList } from '@store/schedule/schedule.thunk'
@@ -22,7 +22,6 @@ import {
   currentClass,
 } from './styles'
 interface CalendarListProps {}
-
 const CalendarList: React.FC<CalendarListProps> = props => {
   const CalendarListBoxRef = useRef<HTMLDivElement>(null)
   const { calenderListValue } = useSelector(state => state.calendarPanel)
@@ -30,8 +29,10 @@ const CalendarList: React.FC<CalendarListProps> = props => {
   const { checkedTime } = useSelector(state => state.calendar)
   const { checkedCalendarList } = useSelector(state => state.calendar)
   const checkedCalendarIdsRef = useRef<number[]>([])
+  let paramsRef = useRef<any>()
   const { calendarConfig } = useSelector(state => state.calendar)
   const { view_options } = calendarConfig
+
   const disPatch = useDispatch()
   const [t] = useTranslation()
   useEffect(() => {
@@ -43,7 +44,11 @@ const CalendarList: React.FC<CalendarListProps> = props => {
         (item: { calendar_id: number }) => item.calendar_id,
       ),
     }
+    if (paramsRef.current === dayjs(calenderListValue).format('YYYY-MM')) {
+      return
+    }
     disPatch(getScheduleDaysOfList(params))
+    paramsRef.current = dayjs(calenderListValue).format('YYYY-MM')
   }, [calenderListValue, checkedCalendarList])
 
   useEffect(() => {
