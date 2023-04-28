@@ -194,7 +194,7 @@ const WriteReport = (props: Props) => {
                 type="light"
                 onClick={() => {
                   dispatch(setWriteReportModal({ visible: false }))
-                  navigate('/Report/Formwork')
+                  navigate('/Report/Formwork?type=report&isOpen=true')
                 }}
               >
                 {t('report.list.createTemplate')}

@@ -217,6 +217,8 @@ const ReportDetailDrawer = () => {
 
   // 关闭弹窗
   const onCancel = () => {
+    // 更新List页面
+    dispatch(setUpdateList({ isFresh: 3 }))
     setFocus(false)
     setIsReview(false)
     dispatch(saveViewReportDetailDrawer({ visible: false, id: 0, ids: [] }))
@@ -234,6 +236,8 @@ const ReportDetailDrawer = () => {
         ...{ id: newIndex },
       }),
     )
+    // 更新List页面
+    dispatch(setUpdateList({ isFresh: 1 }))
   }
 
   // 向下查找需求
@@ -248,6 +252,8 @@ const ReportDetailDrawer = () => {
         ...{ id: newIndex },
       }),
     )
+    // 更新List页面
+    dispatch(setUpdateList({ isFresh: 1 }))
   }
 
   // 键盘上下键事件监听
@@ -315,6 +321,8 @@ const ReportDetailDrawer = () => {
         !e.target?.className?.includes('canClickDetail') &&
         storeAll.getState().workReport.viewReportModal.visible)
     ) {
+      // 更新List页面
+      dispatch(setUpdateList({ isFresh: 1 }))
       dispatch(saveViewReportDetailDrawer({ visible: false }))
     }
   }

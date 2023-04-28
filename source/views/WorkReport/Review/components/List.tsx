@@ -32,6 +32,11 @@ import { css } from '@emotion/css'
 
 const listContainer = css`
   margin: 0 24px;
+  .high-light-text {
+    &:hover {
+      color: var(--primary-d2);
+    }
+  }
 `
 
 const ListTitle = styled.div`
@@ -224,7 +229,7 @@ const List = () => {
               cursor: 'pointer',
               whiteSpace: 'nowrap',
             }}
-            className="canClickDetail"
+            className="canClickDetail high-light-text"
             onClick={() => onClickView(record)}
           >
             {record.user?.avatar ? (
@@ -306,7 +311,7 @@ const List = () => {
             getPopupContainer={node => node}
           >
             <span
-              className="canClickDetail"
+              className="canClickDetail high-light-text"
               style={{
                 display: 'block',
                 width: '400px',
