@@ -17,6 +17,7 @@ export const ScheduleSearchListBox = styled.div`
   padding: 24px 50px;
   box-sizing: border-box;
   height: 100%;
+  width: 100%;
 `
 export const BackBox = styled.div`
   width: 60px;
