@@ -8,7 +8,11 @@ import styled from '@emotion/styled'
 import HeaderRender from './HeaderRender'
 import { css } from '@emotion/css'
 import { setScheduleListModal, setScheduleDate } from '@store/schedule'
-import { setScheduleInfoDropdown } from '@store/calendarPanle'
+import {
+  setScheduleInfoDropdown,
+  setCalendarPanelType,
+} from '@store/calendarPanle'
+import { setCheckedTime } from '@store/calendar/index'
 import { useDispatch, useSelector } from '@store/index'
 import classNames from 'classnames'
 dayjs.extend(dayLocaleData)
@@ -128,6 +132,10 @@ const CalendarForCalendarYear: React.FC<
                 [selectedDateActive]: selectedDate,
                 [dayActive]: today,
               })}
+              onDoubleClick={() => {
+                disPatch(setCalendarPanelType('month'))
+                disPatch(setCheckedTime(dayjs(date).format('YYYY-MM-DD')))
+              }}
               onClick={e => dateClick(e, date)}
             >
               {dayjs(date).date()}

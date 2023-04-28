@@ -97,7 +97,7 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
     } else if (calendarPanelType === 'week') {
       dispatch(setCalenderWeekValue(dayjs(checkedTime).format('YYYY-M-D')))
     } else if (calendarPanelType === 'month') {
-      dispatch(setCalenderMonthValue(dayjs(checkedTime).format('YYYY-MM')))
+      dispatch(setCalenderMonthValue(dayjs(checkedTime).format('YYYY-M-D')))
     } else if (calendarPanelType === 'list') {
       dispatch(setCalenderListValue(checkedTime))
     }
@@ -198,48 +198,49 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
   }
   const listenMonth = (): void => {
     const { current } = iconTypeRef
+    console.log('calenderMonthValue', calenderMonthValue)
     if (current === 1) {
       dispatch(
         setCalenderMonthValue(
-          dayjs(calenderMonthValue).add(1, 'month').format('YYYY-MM'),
+          dayjs(calenderMonthValue).add(1, 'month').format('YYYY-MM-D'),
         ),
       )
       monthValue.current = dayjs(calenderMonthValue)
         .add(1, 'month')
-        .format('YYYY-MM')
+        .format('YYYY-MM-D')
     } else if (current === -1) {
       dispatch(
         setCalenderMonthValue(
-          dayjs(calenderMonthValue).subtract(1, 'month').format('YYYY-MM'),
+          dayjs(calenderMonthValue).subtract(1, 'month').format('YYYY-MM-D'),
         ),
       )
       monthValue.current = dayjs(calenderMonthValue)
         .subtract(1, 'month')
-        .format('YYYY-MM')
+        .format('YYYY-MM-D')
     } else {
-      dispatch(setCalenderMonthValue(dayjs().format('YYYY-MM')))
-      monthValue.current = dayjs().format('YYYY-MM')
+      dispatch(setCalenderMonthValue(dayjs().format('YYYY-MM-D')))
+      monthValue.current = dayjs().format('YYYY-MM-D')
     }
-    dispatch(setCheckedTime(monthValue.current))
+    dispatch(setCheckedTime(dayjs(monthValue.current).format('YYYY-MM-DD')))
   }
   const listenYear = (): void => {
     const { current } = iconTypeRef
     if (current === 1) {
       dispatch(
         setCalenderYearValue(
-          dayjs(calenderYearValue).add(1, 'year').format('YYYY'),
+          dayjs(calenderYearValue).add(1, 'year').format('YYYY-MM-D'),
         ),
       )
     } else if (current === -1) {
       dispatch(
         setCalenderYearValue(
-          dayjs(calenderYearValue).subtract(1, 'year').format('YYYY'),
+          dayjs(calenderYearValue).subtract(1, 'year').format('YYYY-MM-D'),
         ),
       )
     } else {
-      dispatch(setCalenderYearValue(dayjs().format('YYYY')))
+      dispatch(setCalenderYearValue(dayjs().format('YYYY-MM-D')))
     }
-    dispatch(setCheckedTime(dayjs().format('YYYY-MM')))
+    dispatch(setCheckedTime(dayjs().format('YYYY-MM-D')))
   }
   const listenList = (): void => {
     const { current } = iconTypeRef
