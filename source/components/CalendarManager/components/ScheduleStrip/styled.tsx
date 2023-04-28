@@ -18,7 +18,7 @@ export const ScheduleStripBox = styled.div<{
   }
   display: flex;
   visibility: ${props => (props.visible ? 'visible' : 'hidden')};
-  gap: 7px;
+  /* gap: 7px; */
   cursor: pointer;
   align-items: center;
   position: relative;
@@ -30,10 +30,12 @@ export const Dot = styled.div<{ bg: string }>`
   background: ${props => props.bg};
   border-radius: 2px 2px 2px 2px;
   margin-left: 8px;
+  margin-right: 8px;
 `
 export const Time = styled.span`
   color: var(--neutral-n4);
   font-size: 12px;
+  margin-right: 8px;
 `
 export const Title = styled.span`
   flex: 1;

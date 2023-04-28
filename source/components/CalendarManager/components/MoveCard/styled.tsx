@@ -11,6 +11,7 @@ export const Content = styled.div`
   display: flex;
   gap: 4;
   overflow: hidden;
+  align-items: center;
 `
 
 export const TimeRange = styled.span<{

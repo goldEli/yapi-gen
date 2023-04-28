@@ -11,6 +11,7 @@ import useColor from '../../hooks/useColor'
 import { Content, MoveCardBox, Time, TimeRange, Title } from './styled'
 import useRepeatSchedule from '../../hooks/useRepeatSchdule'
 import { useSelector } from '@store/index'
+import IconFont from '@/components/IconFont'
 
 type ScheduleCardProps = {
   data: Model.Schedule.Info | null
@@ -47,6 +48,20 @@ const MoveCard: React.FC<ScheduleCardProps> = props => {
 
   const content = useMemo(() => {
     const color = getColor(props.data?.color ?? 0)
+    if (data?.is_show_replay) {
+      return (
+        <>
+          <IconFont style={{ fontSize: '16px' }} type="bell-red" />
+          <Title
+            color={color}
+            isSelected={isSelected}
+            className={getColorClassName()}
+          >
+            {data?.is_busy_text}
+          </Title>
+        </>
+      )
+    }
     if (is_show_busy) {
       return (
         <>

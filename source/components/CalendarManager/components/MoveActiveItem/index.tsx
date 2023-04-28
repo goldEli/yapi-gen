@@ -27,7 +27,7 @@ const Container = styled.div<{
   width: 100%;
   display: ${props => (props.visible ? 'flex' : 'none')};
   cursor: pointer;
-  gap: 7px;
+  /* gap: 7px; */
   align-items: center;
 `
 
