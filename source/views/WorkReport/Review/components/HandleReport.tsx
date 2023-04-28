@@ -8,7 +8,6 @@
 import { Form, Modal, Spin } from 'antd'
 import { ExclamationCircleFilled } from '@ant-design/icons'
 import CommonModal from '@/components/CommonModal'
-import RelatedNeed from '@/views/LogManagement/components//RelatedNeed'
 import IconFont from '@/components/IconFont'
 import { AddWrap } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
@@ -30,7 +29,8 @@ import { templateDetail } from '@/services/formwork'
 import { setUpdateList } from '@store/workReport'
 import { getMessage } from '@/components/Message'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
-import ChoosePeople from '@/views/LogManagement/components/ChoosePeople'
+import ChoosePeople from './ChoosePeople'
+import RelatedNeed from './RelatedNeed'
 
 const LabelTitle = styled.span`
   font-size: 14px;
@@ -550,6 +550,7 @@ const HandleReport = (props: any) => {
                         label: item.name,
                         value: item.id,
                         key: item.id,
+                        story_prefix_key: item.story_prefix_key,
                       }))
                   : []
               }

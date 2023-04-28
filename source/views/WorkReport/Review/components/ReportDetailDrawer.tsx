@@ -97,7 +97,7 @@ const ContactDemand = (props: { list: any }) => {
       {list?.length
         ? list?.map((i: any) => (
             <ContactDemandItem key={i.id}>
-              【{i.id}】<span className="name">{i.name}</span>
+              【{i.story_prefix_key}】<span className="name">{i.name}</span>
             </ContactDemandItem>
           ))
         : '--'}

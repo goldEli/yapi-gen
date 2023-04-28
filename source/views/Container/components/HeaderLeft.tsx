@@ -332,12 +332,14 @@ const HeaderLeft = () => {
     <HeaderLeftWrap>
       <DrawerComponent value={isVisible} onChange={setIsVisible} />
       <Space size={24}>
-        <CommonIconFont
-          type="menu-02"
-          size={24}
-          color="var(--neutral-n2)"
-          onClick={() => setIsVisible(true)}
-        />
+        <CloseWrap width={32} height={32}>
+          <CommonIconFont
+            type="menu-02"
+            size={24}
+            color="var(--neutral-n2)"
+            onClick={() => setIsVisible(true)}
+          />
+        </CloseWrap>
         <Space size={8}>
           {currentMenu ? (
             <>

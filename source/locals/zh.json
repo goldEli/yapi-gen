@@ -820,7 +820,9 @@
     "staff": "员工",
     "information": "日志",
     "companyManagement": "公司管理",
-    "setting": "设置"
+    "setting": "设置",
+    "notice": "通知",
+    "help": "帮助"
   },
   "mine": {
     "mineCopySend": "我的抄送",
