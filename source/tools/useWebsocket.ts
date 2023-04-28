@@ -76,8 +76,6 @@ const useWebsocket = () => {
         if (data.msgType === 'AH001') {
           sessionStorage.removeItem('saveRouter')
           try {
-            console.log(1)
-
             loginOut()
             setTimeout(() => {
               localStorage.removeItem('agileToken')

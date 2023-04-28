@@ -55,7 +55,7 @@ const SiteNotifications = () => {
     } else {
       notification.open({
         maxCount: 1,
-        placement: 'bottomRight',
+        placement: 'bottomLeft',
         message: wsData.data.msgBody.title,
         description: wsData.data.msgBody.content,
         onClick: () => {
