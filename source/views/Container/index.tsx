@@ -11,7 +11,6 @@ import { useTranslation } from 'react-i18next'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { ConfigProvider as KitConfigProvider } from '@xyfe/uikit'
 import styled from '@emotion/styled'
-import Side from './components/Side'
 import { getLoginDetail } from '@store/user/user.thunk'
 import HeaderLeft from './components/HeaderLeft'
 import HeaderRight from './components/HeaderRight'
@@ -43,39 +42,21 @@ const HeaderWrap = styled.div`
   box-shadow: 0px 1px 9px 0px rgba(20, 37, 98, 0.05);
   background: var(--neutral-white-d2);
   z-index: 200;
-  min-width: 1440px;
+  min-width: 800px;
 `
 
 export const Content = styled.div`
   height: calc(100vh - 56px);
   width: 100%;
-  overflow: auto;
-  display: flex;
-  z-index: 1;
-`
 
-const Main = styled.div<{ left: number }>`
-  height: 100%;
-  width: ${props => `calc(100% - ${props.left}px)`};
-  flex: 1;
-  position: relative;
-  background: var(--neutral-white-d1);
-  overflow-x: auto;
-  overflow-y: hidden;
-  > div:first-child {
-    height: 100%;
-  }
+  display: flex;
 `
-const NONE_SIDE_PATH = ['/Situation', '/Report/Statistics']
 
 export const Container = () => {
   const location = useLocation()
   const dispatch = useDispatch()
   const [isNextVisible, setIsNextVisible] = useState(false)
-  const [changeLeft, setChangeLeft] = useState(200)
-  const { userInfo, loginInfo, menuPermission, isRefresh } = useSelector(
-    store => store.user,
-  )
+  const { loginInfo, menuPermission } = useSelector(store => store.user)
   const {
     i18n: { language },
   } = useTranslation()
@@ -110,36 +91,6 @@ export const Container = () => {
       })
       dispatch(saveDemandDetailDrawer({}))
     }
-  }
-
-  const getSide = () => {
-    let hasPermission
-
-    // 是否是公司成员详情
-    const isStaffMemberInfo =
-      String(location.pathname).includes('/MemberInfo') &&
-      !String(location.pathname).includes('/ProjectManagement')
-
-    if (isStaffMemberInfo) {
-      hasPermission = userInfo?.company_permissions?.filter(
-        (i: any) => i.identity === 'b/companyuser/info',
-      )?.length
-    } else if (
-      String(location.pathname).includes('/ProjectManagement') &&
-      !String(location.pathname).includes('/ProjectManagement/Mine')
-    ) {
-      // 判断项目列表是否有权限
-      hasPermission = menuPermission?.menus
-        ?.filter((l: any) => l.url === '/ProjectManagement')?.[0]
-        ?.children?.filter(
-          (i: any) => i.url === '/ProjectManagement/Project',
-        )?.length
-    } else {
-      hasPermission = menuPermission?.menus?.filter((l: any) =>
-        location.pathname.includes(l.url),
-      )?.length
-    }
-    return hasPermission > 0
   }
 
   useEffect(() => {
@@ -207,19 +158,7 @@ export const Container = () => {
             <HeaderRight />
           </HeaderWrap>
           <Content>
-            {!NONE_SIDE_PATH.includes(location.pathname) && getSide() && (
-              <Side onChangeLeft={setChangeLeft} />
-            )}
-            <Main left={changeLeft}>
-              <div
-                style={{
-                  height: '100%',
-                  minWidth: `${1440 - changeLeft}px`,
-                }}
-              >
-                <Outlet />
-              </div>
-            </Main>
+            <Outlet />
           </Content>
           <Guide
             visible={isNextVisible}

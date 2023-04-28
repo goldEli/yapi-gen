@@ -108,7 +108,13 @@ const Email = () => {
             <Content1 margin={8}>
               {t('what_situations_require_email_notification')}
             </Content1>
-            <Space size={12}>
+            <div
+              style={{
+                display: 'flex',
+                gap: '12px',
+                flexWrap: 'wrap',
+              }}
+            >
               {emailConfigurations.map((i: any) => (
                 <ContentEmail2
                   active={choose.includes(i.id)}
@@ -118,7 +124,7 @@ const Email = () => {
                   {i.text}
                 </ContentEmail2>
               ))}
-            </Space>
+            </div>
           </ActiveContentEmail2>
         ) : null}
       </Content>

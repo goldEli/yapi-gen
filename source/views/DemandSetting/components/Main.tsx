@@ -14,7 +14,6 @@ import { useDispatch, useSelector } from '@store/index'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import EditField from './EditField'
 import { configSave } from '@/services/demand'
-import { message } from 'antd'
 import { getCategoryConfigList } from '@store/category/thunk'
 import { setGetCategoryConfigArray } from '@store/category'
 import { useTranslation } from 'react-i18next'
@@ -322,7 +321,7 @@ const Main = (props: any) => {
       draggable="false"
       style={{
         flex: 1,
-        height: 'calc(100vh - 260px)',
+        height: 'calc(100vh - 220px)',
         overflowY: 'auto',
         padding: '0 24px',
       }}

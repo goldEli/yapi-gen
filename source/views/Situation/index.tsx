@@ -22,6 +22,8 @@ const Wrap = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   grid-gap: 24px;
+  height: calc(100vh - 56px);
+  overflow: auto;
 `
 const Title = styled.div`
   padding: 24px 0 0 24px;
@@ -152,11 +154,19 @@ const Situation = () => {
 
   if (generalData) {
     return (
-      <div>
-        <PermissionWrap
-          auth="/Situation"
-          permission={menuPermission?.menus?.map((i: any) => i.url)}
+      <PermissionWrap
+        auth="/Situation"
+        permission={menuPermission?.menus?.map((i: any) => i.url)}
+      >
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: '100%',
+            paddingRight: 4,
+          }}
         >
+          {' '}
           <Title>{t('project.companyAll')}</Title>
           <Wrap>
             <Project data={generalData?.project} />
@@ -164,8 +174,8 @@ const Situation = () => {
             <Need data={generalData?.need} />
             <Iteration data={generalData?.iterate} />
           </Wrap>
-        </PermissionWrap>
-      </div>
+        </div>
+      </PermissionWrap>
     )
   }
   return <Loading />

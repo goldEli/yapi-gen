@@ -32,7 +32,6 @@ const InfoWrap = styled.div({
   padding: '0 24px',
   background: 'white',
   height: '100%',
-  borderRadius: 6,
 })
 
 const InfoTop = styled.div({

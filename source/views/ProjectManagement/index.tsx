@@ -1,12 +1,15 @@
+import HasSideCommonLayout from '@/components/HasSideCommonLayout'
 import { getParamsData } from '@/tools'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
 import { useEffect, useState } from 'react'
 import { Outlet, useNavigate, useSearchParams } from 'react-router-dom'
+import ProjectDetailSide from './ProjectDetailSide'
 
 const ProjectWrap = styled.div`
   position: relative;
   height: 100%;
+  width: 100%;
   overflow-y: hidden;
   background: var(--neutral-white-d1);
 `
@@ -29,6 +32,13 @@ const Project = () => {
   }
   const navigate = useNavigate()
 
+  const path = [
+    '/ProjectManagement/ProjectSetting',
+    '/ProjectManagement/Demand',
+    '/ProjectManagement/Iteration',
+    '/ProjectManagement/WorkFlow',
+  ]
+
   useEffect(() => {
     if (String(location.pathname).includes('/ProjectManagement/Mine')) {
       setIsShowPage(true)
@@ -42,7 +52,20 @@ const Project = () => {
     }
   }, [paramsData, projectInfo])
 
-  return <ProjectWrap>{isShowPage && <Outlet />}</ProjectWrap>
+  return (
+    <ProjectWrap>
+      {isShowPage && (
+        <>
+          {path.includes(location.pathname) && (
+            <HasSideCommonLayout side={<ProjectDetailSide />}>
+              <Outlet />
+            </HasSideCommonLayout>
+          )}
+          {!path.includes(location.pathname) && <Outlet />}
+        </>
+      )}
+    </ProjectWrap>
+  )
 }
 
 export default Project

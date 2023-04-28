@@ -19,7 +19,7 @@ import ProjectNote from './components/ProjectNote'
 
 const Wrap = styled.div({
   display: 'flex',
-  height: 'calc(100vh - 128px)',
+  height: 'calc(100vh - 130px)',
 })
 
 const Content = styled.div({
