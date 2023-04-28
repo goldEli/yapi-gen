@@ -47,17 +47,26 @@ const MoveCard: React.FC<ScheduleCardProps> = props => {
         <TimeRange
           color={color}
           hidden={!timeRange}
-          className={getColorClassName()}
+          // className={getColorClassName()}
         >
           {`${timeRange?.start_timestamp} - ${timeRange?.end_timestamp}`}
         </TimeRange>
 
-        <Title className={getColorClassName()} color={color}>
+        <Title
+          // className={getColorClassName()}
+          color={color}
+        >
           {data?.subject}
         </Title>
       </>
     )
-  }, [is_show_busy, timeRange, data?.subject, data?.start_time])
+  }, [
+    is_show_busy,
+    timeRange,
+    data?.subject,
+    data?.start_time,
+    props.data?.color,
+  ])
   const children = props.children || <Content>{content}</Content>
   const { enableResizing, ...otherProps } = props ?? {}
   const disable = useMemo(() => {
