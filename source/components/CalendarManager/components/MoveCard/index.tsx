@@ -10,6 +10,7 @@ import {
 import useColor from '../../hooks/useColor'
 import { Content, MoveCardBox, Time, TimeRange, Title } from './styled'
 import useRepeatSchedule from '../../hooks/useRepeatSchdule'
+import { useSelector } from '@store/index'
 
 type ScheduleCardProps = {
   data: Model.Schedule.Info | null
@@ -29,44 +30,50 @@ const MoveCard: React.FC<ScheduleCardProps> = props => {
 
   const { getColorClassName } = useColor()
 
+  const { scheduleInfoDropdown } = useSelector(state => state.calendarPanel)
+
+  const isSelected = useMemo(() => {
+    if (!!timeRange) {
+      return true
+    }
+    if (
+      scheduleInfoDropdown.visible &&
+      scheduleInfoDropdown.schedule_id === data?.schedule_id
+    ) {
+      return true
+    }
+    return false
+  }, [scheduleInfoDropdown, data, timeRange])
+
   const content = useMemo(() => {
+    const color = getColor(props.data?.color ?? 0)
     if (is_show_busy) {
       return (
         <>
           <Time className={getColorClassName()}>{data?.start_time}&nbsp;</Time>
-          <Title className={getColorClassName()}>{data?.is_busy_text}</Title>
+          <Title
+            color={color}
+            isSelected={isSelected}
+            className={getColorClassName()}
+          >
+            {data?.is_busy_text}
+          </Title>
         </>
       )
     }
-    let color: string | undefined = getColor(props.data?.color ?? 0)
-    if (!timeRange) {
-      color = void 0
-    }
+
     return (
       <>
-        <TimeRange
-          color={color}
-          hidden={!timeRange}
-          // className={getColorClassName()}
-        >
+        <TimeRange color={color} isSelected={isSelected} hidden={!timeRange}>
           {`${timeRange?.start_timestamp} - ${timeRange?.end_timestamp}`}
         </TimeRange>
 
-        <Title
-          // className={getColorClassName()}
-          color={color}
-        >
+        <Title color={color} isSelected={isSelected}>
           {data?.subject}
         </Title>
       </>
     )
-  }, [
-    is_show_busy,
-    timeRange,
-    data?.subject,
-    data?.start_time,
-    props.data?.color,
-  ])
+  }, [timeRange, data, isSelected])
   const children = props.children || <Content>{content}</Content>
   const { enableResizing, ...otherProps } = props ?? {}
   const disable = useMemo(() => {
