@@ -12,7 +12,7 @@ import { Editor } from '@xyfe/uikit'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonIconFont from '@/components/CommonIconFont'
-import { DragLine } from '@/components/StyleCommon'
+import { DragLine, MouseDom } from '@/components/StyleCommon'
 import { throttle } from 'lodash'
 import { uploadFileToKey } from '@/services/cos'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
@@ -128,25 +128,26 @@ const ReportDetailDrawer = () => {
 
   // 拖动线条
   const onDragLine = (e: React.MouseEvent) => {
+    const drawer: HTMLElement = document.querySelector(
+      '.drawerRoot .ant-drawer-content-wrapper',
+    )!
+    const drawerBody: HTMLElement = document.querySelector(
+      '.drawerRoot .ant-drawer-body',
+    )!
     const moveHandler = (ev: React.MouseEvent) => {
       setFocus(true)
-      const drawer: HTMLElement = document.querySelector(
-        '.drawerRoot .ant-drawer-content-wrapper',
-      )!
-      const drawerBody: HTMLElement = document.querySelector(
-        '.drawerRoot .ant-drawer-body',
-      )!
       drawerBody.style.minWidth = '100%'
       drawerBody.style.right = '0px'
       const nextWidth = innerWidth - ev.clientX
-      if (nextWidth <= leftWidth) {
-        return
-      }
-      drawer!.style.width = `${innerWidth - ev.clientX}px`
+      if (nextWidth <= leftWidth) return
+      drawer!.style.width = innerWidth - ev.clientX + 'px'
     }
-    const debounceWrap: any = throttle(moveHandler, 60, {})
+    drawer.style.transition = '0s'
+    // const debounceWrap: any = throttle(moveHandler, 60, {})
+    const debounceWrap: any = moveHandler
     document.addEventListener('mousemove', debounceWrap)
     document.addEventListener('mouseup', () => {
+      drawer.style.transition = 'all 0.3s'
       setFocus(false)
       document.removeEventListener('mousemove', debounceWrap)
     })
@@ -389,7 +390,9 @@ const ReportDetailDrawer = () => {
       getContainer={false}
       className="drawerRoot"
     >
-      <DragLine onMouseDown={onDragLine} style={{ left: 0 }} active={focus} />
+      <MouseDom active={focus} onMouseDown={onDragLine} style={{ left: 0 }}>
+        <DragLine active={focus} className="line" style={{ marginLeft: 0 }} />
+      </MouseDom>
       <Header>
         <Space size={16}>
           <BackIcon onClick={onCancel}>

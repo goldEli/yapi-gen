@@ -141,7 +141,7 @@ const HasSideCommonLayout = (props: HasSideCommonLayoutProps) => {
 
   return (
     <HasSideWrap>
-      {props.hasSide && (
+      {!props.hasSide && (
         <SideWrap
           isOpen={firstMenuCollapse}
           ref={sliderRef}
