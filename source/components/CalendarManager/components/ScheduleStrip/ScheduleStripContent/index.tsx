@@ -18,6 +18,26 @@ const ScheduleStripContent: React.FC<ScheduleStripContentProps> = props => {
   const showRedBell = React.useMemo(() => {
     return props.data?.is_show_replay
   }, [props.data])
+  // if (props?.data?.is_show_busy) {
+  //   return (
+  //     <>
+  //       <Time className={getColorClassName()}>{data?.start_time}&nbsp;</Time>
+  //       <Title
+  //         color={color}
+  //         isSelected={isSelected}
+  //         className={getColorClassName()}
+  //       >
+  //         {data?.is_busy_text}
+  //       </Title>
+  //     </>
+  //   )
+  // }
+  const title = React.useMemo(() => {
+    if (props.data?.is_show_busy) {
+      return props.data?.is_busy_text
+    }
+    return props.data?.subject
+  }, [props.data])
   return (
     <>
       <Dot bg={getColor(props?.data?.color ?? 0)} />
@@ -28,7 +48,7 @@ const ScheduleStripContent: React.FC<ScheduleStripContentProps> = props => {
           type="bell-red"
         />
       )}
-      <Title className="text">{props?.data?.subject}</Title>
+      <Title className="text">{title}</Title>
     </>
   )
 }
