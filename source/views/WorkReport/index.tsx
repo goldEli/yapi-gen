@@ -1,12 +1,12 @@
 import styled from '@emotion/styled'
 import { Outlet, useLocation } from 'react-router-dom'
-import WriteReportModal from '../../components/AllSide/FormWorkSide/WriteReport'
 import { useDispatch, useSelector } from '@store/index'
 import { setWriteReportModal } from '@store/workReport'
 import { useTranslation } from 'react-i18next'
 import FormWorkSide from './FormWorkSide'
 import ReviewSide from './ReviewSide'
 import HasSideCommonLayout from '@/components/HasSideCommonLayout'
+import WriteReport from './FormWorkSide/WriteReport'
 
 const WorkReportWrap = styled.div`
   position: relative;
@@ -35,7 +35,7 @@ const WorkReport = () => {
       >
         <Outlet />
       </HasSideCommonLayout>
-      <WriteReportModal
+      <WriteReport
         isVisible={visibleEdit}
         onClose={() => dispatch(setWriteReportModal({ visible: false }))}
         onConfirm={function (): void {
