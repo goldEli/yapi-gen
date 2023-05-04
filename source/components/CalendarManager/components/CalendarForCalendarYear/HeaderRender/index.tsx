@@ -17,8 +17,8 @@ const CalendarHeader = styled.div`
   font-family: SiYuanMedium;
 `
 const HeaderRender: React.FC<HeaderRenderProps> = props => {
-  const calenderYearValue = useSelector(
-    state => state.calendarPanel.calenderYearValue,
+  const calenderTypeValue = useSelector(
+    state => state.calendarPanel.calenderTypeValue,
   )
   const scheduleInfo = useSelector(
     state => state.calendarPanel.scheduleInfoDropdown,
@@ -26,10 +26,10 @@ const HeaderRender: React.FC<HeaderRenderProps> = props => {
   const date = useSelector(state => state.schedule.scheduleDate)
 
   useEffect(() => {
-    let year = dayjs(calenderYearValue)
+    let year = dayjs(calenderTypeValue)
     props.onCallBack(year)
     props.onChange(year)
-  }, [calenderYearValue])
+  }, [calenderTypeValue])
   return (
     <CalendarHeader>
       {`${props.month + 1}月`}

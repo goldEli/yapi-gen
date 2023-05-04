@@ -49,7 +49,7 @@ const ScheduleSearch: React.FC<CalendarListProps> = props => {
   const { checkedCalendarList } = useSelector(state => state.calendar)
   const [t] = useTranslation()
   const [inputDefaultValue, setInputDefaultValue] = useState<string>()
-  const { calenderYearValue } = useSelector(state => state.calendarPanel)
+  const { calenderTypeValue } = useSelector(state => state.calendarPanel)
   const [searchList, setSearchList] = useState<
     Model.Schedule.ScheduleListViewInfo[]
   >([])
@@ -58,7 +58,7 @@ const ScheduleSearch: React.FC<CalendarListProps> = props => {
   const navigate = useNavigate()
   const getSearchList = () => {
     const params = {
-      year: parseInt(calenderYearValue, 10),
+      year: parseInt(calenderTypeValue, 10),
       calendar_ids: checkedCalendarList.map(item => item.calendar_id),
       keyword: inputDefaultValue,
     }

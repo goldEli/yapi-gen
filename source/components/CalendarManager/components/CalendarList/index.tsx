@@ -24,7 +24,7 @@ import {
 interface CalendarListProps {}
 const CalendarList: React.FC<CalendarListProps> = props => {
   const CalendarListBoxRef = useRef<HTMLDivElement>(null)
-  const { calenderListValue } = useSelector(state => state.calendarPanel)
+  const { calenderTypeValue } = useSelector(state => state.calendarPanel)
   const { listViewScheduleList } = useSelector(state => state.schedule)
   const { checkedTime } = useSelector(state => state.calendar)
   const { checkedCalendarList } = useSelector(state => state.calendar)
@@ -38,18 +38,18 @@ const CalendarList: React.FC<CalendarListProps> = props => {
   useEffect(() => {
     const params = {
       has_other_month: 0,
-      year: dayjs(calenderListValue).year(),
-      month: dayjs(calenderListValue).month() + 1,
+      year: dayjs(calenderTypeValue).year(),
+      month: dayjs(calenderTypeValue).month() + 1,
       calendar_ids: checkedCalendarList.map(
         (item: { calendar_id: number }) => item.calendar_id,
       ),
     }
-    if (paramsRef.current === dayjs(calenderListValue).format('YYYY-MM')) {
+    if (paramsRef.current === dayjs(calenderTypeValue).format('YYYY-MM')) {
       return
     }
     disPatch(getScheduleDaysOfList(params))
-    paramsRef.current = dayjs(calenderListValue).format('YYYY-MM')
-  }, [calenderListValue, checkedCalendarList])
+    paramsRef.current = dayjs(calenderTypeValue).format('YYYY-MM')
+  }, [calenderTypeValue, checkedCalendarList])
 
   useEffect(() => {
     const childrenKeys = [...(CalendarListBoxRef.current?.children as any)].map(

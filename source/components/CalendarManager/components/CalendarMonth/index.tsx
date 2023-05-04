@@ -18,19 +18,19 @@ const CalendarMonthBox = styled.div`
 
 const CalendarMonth: React.FC<CalendarMonthProps> = props => {
   const dispatch = useDispatch()
-  const { calenderMonthValue } = useSelector(store => store.calendarPanel)
+  const { calenderTypeValue } = useSelector(store => store.calendarPanel)
   const { checkedCalendarList } = useSelector(store => store.calendar)
   const params = useMemo(() => {
-    if (!calenderMonthValue) {
+    if (!calenderTypeValue) {
       return null
     }
-    const arr = calenderMonthValue.split('-')
+    const arr = calenderTypeValue.split('-')
     const [year, month] = arr.map(item => parseInt(item, 10))
     return {
       year,
       month,
     }
-  }, [calenderMonthValue])
+  }, [calenderTypeValue])
 
   React.useEffect(() => {
     if (params === null) {

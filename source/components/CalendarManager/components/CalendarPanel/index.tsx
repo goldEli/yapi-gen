@@ -37,8 +37,8 @@ const CalendarPanel: React.FC<CalendarPanelProps> = props => {
   const calendarPanelType = useSelector(
     store => store.calendarPanel.calendarPanelType,
   )
-  const calenderYearValue = useSelector(
-    store => store.calendarPanel.calenderYearValue,
+  const calenderTypeValue = useSelector(
+    store => store.calendarPanel.calenderTypeValue,
   )
   const { calendarLoading } = useSelector(state => state.calendarPanel)
   const disPatch = useDispatch()
@@ -56,7 +56,7 @@ const CalendarPanel: React.FC<CalendarPanelProps> = props => {
       return <CalendarList />
     }
     return <CalendarYear />
-  }, [calendarPanelType, calenderYearValue])
+  }, [calendarPanelType, calenderTypeValue])
 
   return (
     <Box

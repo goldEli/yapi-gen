@@ -14,27 +14,27 @@ const CalendarWeekBox = styled.div`
   position: relative;
 `
 const CalendarWeek: React.FC<CalendarWeekProps> = props => {
-  const { calenderYearWeekValue } = useSelector(store => store.calendarPanel)
+  const { calenderTypeValue } = useSelector(store => store.calendarPanel)
   const { checkedCalendarList, checkedTime } = useSelector(
     store => store.calendar,
   )
   const dispatch = useDispatch()
-
+  console.log('chonhgfub/calendar/daysOfWeek')
   React.useEffect(() => {
-    if (!calenderYearWeekValue) {
+    if (!calenderTypeValue) {
       return
     }
-    const [year, week] = calenderYearWeekValue.split('/')
+    const [year, week] = calenderTypeValue.split('/')
 
     dispatch(
       getScheduleListDaysOfWeek({
         // year: parseInt(year, 10),
         // week: parseInt(week, 10),
-        date: checkedTime,
+        date: calenderTypeValue,
         calendar_ids: checkedCalendarList.map(item => item.calendar_id),
       }),
     )
-  }, [calenderYearWeekValue, checkedCalendarList])
+  }, [calenderTypeValue, checkedCalendarList])
   return (
     <CalendarWeekBox>
       <WeekHeader />

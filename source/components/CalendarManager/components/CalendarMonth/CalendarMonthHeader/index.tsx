@@ -34,25 +34,25 @@ const weekendsColor = css`
 
 const CalendarMonthHeader: React.FC<CalendarMonthHeaderProps> = props => {
   const { selectedWeek, checkedTime } = useSelector(store => store.calendar)
-  const { calenderYearWeekValue } = useSelector(store => store.calendarPanel)
+  const { calenderTypeValue } = useSelector(store => store.calendarPanel)
   const dispatch = useDispatch()
 
   // init
   React.useEffect(() => {
-    if (!calenderYearWeekValue) {
+    if (!calenderTypeValue) {
       return
     }
-    const arr = calenderYearWeekValue.split('/')
+    const arr = calenderTypeValue.split('/')
     const [year, week] = arr
 
     dispatch(
       getDaysOfWeekList({
         // year: parseInt(year, 10),
         // week: parseInt(week, 10),
-        date: checkedTime,
+        date: calenderTypeValue,
       }),
     )
-  }, [calenderYearWeekValue])
+  }, [calenderTypeValue])
   return (
     <CalendarMonthHeaderBox>
       {selectedWeek.map((item, idx) => {

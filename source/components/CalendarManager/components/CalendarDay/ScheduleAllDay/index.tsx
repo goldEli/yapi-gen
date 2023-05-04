@@ -85,21 +85,21 @@ const ScheduleListScroll = styled.div`
 const ScheduleAllDay: React.FC<ScheduleAllDayProps> = props => {
   const { list } = useScheduleAllDayList()
   const dispatch = useDispatch()
-  const { calenderDayValue } = useSelector(store => store.calendarPanel)
+  const { calenderTypeValue } = useSelector(store => store.calendarPanel)
   const { checkedTime } = useSelector(state => state.calendar)
   const [weekDay, setWeekDay] = useState<Model.Calendar.DaysOfWeek>()
   const { getColorClassName } = useColor()
   const { showLunar } = useShowLunar()
 
   const time = useMemo(() => {
-    return dayjs(calenderDayValue)
-  }, [calenderDayValue])
+    return dayjs(calenderTypeValue)
+  }, [calenderTypeValue])
 
   useEffect(() => {
-    if (!calenderDayValue) {
+    if (!calenderTypeValue) {
       return
     }
-    const t = dayjs(calenderDayValue)
+    const t = dayjs(calenderTypeValue)
     const year = t.year()
     const week = t.week()
     const weekNum = t.day()
@@ -111,7 +111,7 @@ const ScheduleAllDay: React.FC<ScheduleAllDayProps> = props => {
     }
     getData()
     //
-  }, [calenderDayValue])
+  }, [calenderTypeValue])
 
   return (
     <ScheduleAllDayBox>
@@ -125,8 +125,8 @@ const ScheduleAllDay: React.FC<ScheduleAllDayProps> = props => {
           e.stopPropagation()
           dispatch(
             setQuickCreateScheduleModel({
-              startTime: calenderDayValue,
-              endTime: calenderDayValue,
+              startTime: calenderTypeValue,
+              endTime: calenderTypeValue,
               visible: true,
               isAll: true,
               x: 100,

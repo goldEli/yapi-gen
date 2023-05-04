@@ -77,26 +77,26 @@ const WeekListItem = styled.div`
 
 const Header: React.FC<WeekHeaderProps> = props => {
   const { selectedWeek, checkedTime } = useSelector(store => store.calendar)
-  const { calenderYearWeekValue } = useSelector(store => store.calendarPanel)
+  const { calenderTypeValue } = useSelector(store => store.calendarPanel)
   const dispatch = useDispatch()
   const { showLunar } = useShowLunar()
 
   // init
   useEffect(() => {
-    if (!calenderYearWeekValue) {
+    if (!calenderTypeValue) {
       return
     }
-    const arr = calenderYearWeekValue.split('/')
+    const arr = calenderTypeValue.split('/')
     const [year, week] = arr
 
     dispatch(
       getDaysOfWeekList({
         // year: parseInt(year, 10),
         // week: parseInt(week, 10),
-        date: checkedTime,
+        date: calenderTypeValue,
       }),
     )
-  }, [calenderYearWeekValue])
+  }, [calenderTypeValue])
 
   return (
     <HeaderBox>

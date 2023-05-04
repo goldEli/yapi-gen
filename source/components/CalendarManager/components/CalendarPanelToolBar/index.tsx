@@ -1,21 +1,15 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import CustomSelect from '@/components/CustomSelect'
 import styled from '@emotion/styled'
-import { css } from '@emotion/css'
 import {
   setCalendarPanelType,
-  setCalenderDayValue,
-  setCalenderWeekValue,
-  setCalenderMonthValue,
-  setCalenderYearValue,
-  setCalenderListValue,
-  setCalenderYearWeekValue,
   setScheduleInfoDropdown,
   clearCalenderValue,
+  setCalenderTypeValue
 } from '@store/calendarPanle'
 import { setCheckedTime } from '@store/calendar'
 import { useDispatch, useSelector } from '@store/index'
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useReducer } from 'react'
 import { useNavigate } from 'react-router-dom'
 import dayjs, { Dayjs } from 'dayjs'
 import _ from 'lodash'
@@ -23,7 +17,6 @@ import weekOfYear from 'dayjs/plugin/weekOfYear'
 import IconFont from '@/components/IconFont'
 import InputSearch from '@/components/InputSearch'
 import { useTranslation } from 'react-i18next'
-import CommonButton from '@/components/CommonButton'
 import { clearScheduleList } from '@store/schedule'
 import { TodayButton } from '../../styles'
 dayjs.extend(weekOfYear)
@@ -45,6 +38,22 @@ const Box = styled.div`
   height: 70px;
   flex-shrink: 0;
 `
+const TextBox = styled.div`
+margin: 0px 20px;
+font-size: var(--font16);
+color: var(--neutral-n1-d1);
+`
+const IconBox = styled.div`
+display: flex;
+align-items: center;
+cursor: pointer;
+span {
+  font-size: var(--font16);
+  &:hover {
+    color: var(--primary-d2);
+  }
+}
+`
 const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
   const navigate = useNavigate()
   const [t] = useTranslation()
@@ -60,237 +69,65 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
   const calendarPanelType = useSelector(
     state => state.calendarPanel.calendarPanelType,
   )
+  const calenderTypeValue = useSelector(
+    state => state.calendarPanel.calenderTypeValue,
+  )
   const [dateText, setDateText] = useState<string>()
-  //日视图
-  const calenderDayValue = useSelector(
-    state => state.calendarPanel.calenderDayValue,
-  )
-  //周视图
-  const calenderWeekValue = useSelector(
-    state => state.calendarPanel.calenderWeekValue,
-  )
-  //月视图
-  const calenderMonthValue = useSelector(
-    state => state.calendarPanel.calenderMonthValue,
-  )
-  // 年视图初始值
-  const calenderYearValue = useSelector(
-    state => state.calendarPanel.calenderYearValue,
-  )
-  // 列表视图初始值
-  const calenderListValue = useSelector(
-    state => state.calendarPanel.calenderListValue,
-  )
-  // 左侧日历切换的值
-  const checkedTime = useSelector(state => state.calendar.checkedTime)
-
-  const dayValue = useRef<string>()
-  const monthValue = useRef<string>()
-  const listValue = useRef<string>()
-  useEffect(() => {
-    if (!checkedTime) {
-      dispatch(setCalenderDayValue(dayjs().format('YYYY-MM-DD')))
-      return
-    }
-    if (calendarPanelType === 'day') {
-      dispatch(setCalenderDayValue(dayjs(checkedTime).format('YYYY-M-D')))
-    } else if (calendarPanelType === 'week') {
-      dispatch(setCalenderWeekValue(dayjs(checkedTime).format('YYYY-M-D')))
-    } else if (calendarPanelType === 'month') {
-      dispatch(setCalenderMonthValue(dayjs(checkedTime).format('YYYY-M-D')))
-    } else if (calendarPanelType === 'list') {
-      dispatch(setCalenderListValue(checkedTime))
-    }
-  }, [checkedTime])
   useEffect(() => {
     const maps = new Map([
-      ['day', dayjs(calenderDayValue).format('YYYY年M月D日')],
-      ['week', dayjs(calenderWeekValue).format('YYYY年M月')],
-      ['month', dayjs(calenderMonthValue).format('YYYY年M月')],
-      ['year', dayjs(calenderYearValue).format('YYYY年')],
-      ['list', dayjs(calenderListValue).format('YYYY年M月')],
+      ['day', dayjs(calenderTypeValue).format('YYYY年M月D日')],
+      ['week', dayjs(calenderTypeValue).format('YYYY年M月')],
+      ['month', dayjs(calenderTypeValue).format('YYYY年M月')],
+      ['year', dayjs(calenderTypeValue).format('YYYY年')],
+      ['list', dayjs(calenderTypeValue).format('YYYY年M月')],
     ])
     setDateText(maps.get(calendarPanelType) as string)
+    dispatch(setCheckedTime(calenderTypeValue))
   }, [
     calendarPanelType,
-    calenderListValue,
-    calenderYearValue,
-    calenderDayValue,
-    calenderWeekValue,
-    calenderMonthValue,
-    // checkedTime,
+    calenderTypeValue,
   ])
 
   const iconTypeRef = useRef<number>(0)
 
   const dispatch = useDispatch()
 
-  const TextBox = styled.div`
-    margin: 0px 20px;
-    font-size: var(--font16);
-    color: var(--neutral-n1-d1);
-  `
-  const IconBox = styled.div`
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    span {
-      font-size: var(--font16);
-      &:hover {
-        color: var(--primary-d2);
-      }
+  const changeCalendarDate = () => {
+    const { current } = iconTypeRef;
+    let newCalendarPanelType = calendarPanelType
+    if (newCalendarPanelType === 'list') {
+      newCalendarPanelType = 'month'
     }
-  `
-  const listenDay = (): void => {
-    const { current } = iconTypeRef
     if (current === 1) {
       dispatch(
-        setCalenderDayValue(
-          dayjs(calenderDayValue).add(1, 'day').format('YYYY-MM-DD'),
-        ),
+        setCalenderTypeValue(
+          dayjs(calenderTypeValue).add(1, newCalendarPanelType).format('YYYY-MM-DD'),
+        )
       )
+    } else if (current === -1) {
+      dispatch(
+        setCalenderTypeValue(
+          dayjs(calenderTypeValue).subtract(1, newCalendarPanelType).format('YYYY-MM-DD'),
+        )
+      )
+    } else {
+      dispatch(setCalenderTypeValue(dayjs().format('YYYY-MM-DD')))
+    }
 
-      dayValue.current = dayjs(calenderDayValue)
-        .add(1, 'day')
-        .format('YYYY-MM-DD')
-    } else if (current === -1) {
-      dispatch(
-        setCalenderDayValue(
-          dayjs(calenderDayValue).subtract(1, 'day').format('YYYY-MM-DD'),
-        ),
-      )
-      dayValue.current = dayjs(calenderDayValue)
-        .subtract(1, 'day')
-        .format('YYYY-MM-DD')
-    } else {
-      dispatch(setCalenderDayValue(dayjs().format('YYYY-MM-DD')))
-      dayValue.current = dayjs().format('YYYY-MM-DD')
-    }
-    dispatch(setCheckedTime(dayValue.current))
   }
-  const listenWeek = (): void => {
-    const { current } = iconTypeRef
-    let newWeekValue = null
-    if (current === 1) {
-      dispatch(
-        setCalenderWeekValue(
-          dayjs(calenderWeekValue).add(1, 'week').format('YYYY-M-D'),
-        ),
-      )
-      newWeekValue = dayjs(calenderWeekValue).add(1, 'week').format('YYYY-M-D')
-    } else if (current === -1) {
-      dispatch(
-        setCalenderWeekValue(
-          dayjs(calenderWeekValue).subtract(1, 'week').format('YYYY-M-D'),
-        ),
-      )
-      newWeekValue = dayjs(calenderWeekValue)
-        .subtract(1, 'week')
-        .format('YYYY-M-D')
-    } else {
-      dispatch(setCalenderWeekValue(dayjs().format('YYYY-M-D')))
-      newWeekValue = dayjs().format('YYYY-M-D')
-    }
-    let yearWeekValue =
-      dayjs(newWeekValue).year() + '/' + dayjs(newWeekValue).week()
-    dispatch(setCalenderYearWeekValue(yearWeekValue))
-    dispatch(setCheckedTime(newWeekValue))
-  }
-  const listenMonth = (): void => {
-    const { current } = iconTypeRef
-    console.log('calenderMonthValue', calenderMonthValue)
-    if (current === 1) {
-      dispatch(
-        setCalenderMonthValue(
-          dayjs(calenderMonthValue).add(1, 'month').format('YYYY-MM-D'),
-        ),
-      )
-      monthValue.current = dayjs(calenderMonthValue)
-        .add(1, 'month')
-        .format('YYYY-MM-D')
-    } else if (current === -1) {
-      dispatch(
-        setCalenderMonthValue(
-          dayjs(calenderMonthValue).subtract(1, 'month').format('YYYY-MM-D'),
-        ),
-      )
-      monthValue.current = dayjs(calenderMonthValue)
-        .subtract(1, 'month')
-        .format('YYYY-MM-D')
-    } else {
-      dispatch(setCalenderMonthValue(dayjs().format('YYYY-MM-D')))
-      monthValue.current = dayjs().format('YYYY-MM-D')
-    }
-    dispatch(setCheckedTime(dayjs(monthValue.current).format('YYYY-MM-DD')))
-  }
-  const listenYear = (): void => {
-    const { current } = iconTypeRef
-    if (current === 1) {
-      dispatch(
-        setCalenderYearValue(
-          dayjs(calenderYearValue).add(1, 'year').format('YYYY-MM-D'),
-        ),
-      )
-    } else if (current === -1) {
-      dispatch(
-        setCalenderYearValue(
-          dayjs(calenderYearValue).subtract(1, 'year').format('YYYY-MM-D'),
-        ),
-      )
-    } else {
-      dispatch(setCalenderYearValue(dayjs().format('YYYY-MM-D')))
-    }
-    dispatch(setCheckedTime(dayjs().format('YYYY-MM-D')))
-  }
-  const listenList = (): void => {
-    const { current } = iconTypeRef
-    if (current === 1) {
-      dispatch(
-        setCalenderListValue(
-          dayjs(calenderListValue).add(1, 'month').format('YYYY-MM'),
-        ),
-      )
-      listValue.current = dayjs(calenderListValue)
-        .add(1, 'month')
-        .format('YYYY-MM')
-    } else if (current === -1) {
-      dispatch(
-        setCalenderListValue(
-          dayjs(calenderListValue).subtract(1, 'month').format('YYYY-MM'),
-        ),
-      )
-      listValue.current = dayjs(calenderListValue)
-        .subtract(1, 'month')
-        .format('YYYY-MM')
-    } else {
-      dispatch(setCalenderListValue(dayjs().format('YYYY-MM')))
-      listValue.current = dayjs().format('YYYY-MM')
-    }
-    dispatch(setCheckedTime(listValue.current))
-  }
-  const maps = new Map([
-    ['day', listenDay],
-    ['week', listenWeek],
-    ['month', listenMonth],
-    ['year', listenYear],
-    ['list', listenList],
-  ])
-  const prevYearClick = (e: any) => {
-    e.stopPropagation()
+  
+  const prevYearClick = () => {
     iconTypeRef.current = -1
-    let methods = maps.get(calendarPanelType) as Function
-    methods()
+    changeCalendarDate()
   }
 
-  const nextYearClick = (e: any) => {
+  const nextYearClick = () => {
     iconTypeRef.current = 1
-    let methods = maps.get(calendarPanelType) as Function
-    methods()
+    changeCalendarDate()
   }
   const todayClick = () => {
     iconTypeRef.current = 0
-    let methods = maps.get(calendarPanelType) as Function
-    methods()
+    changeCalendarDate()
   }
   return (
     <Box>
@@ -300,7 +137,6 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
           cursor: 'pointer',
         }}
       >
-        {/* <TodayWrap onClick={todayClick}> {t('today')}</TodayWrap> */}
         <TodayButton onClick={todayClick}> {t('today')}</TodayButton>
         <IconBox>
           <IconFont type="left" onClick={prevYearClick} />
@@ -330,7 +166,7 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
         <InputSearch
           placeholder={t('calendarManager.search_schedule')}
           width={184}
-          onChangeSearch={value => {}}
+          onChangeSearch={value => { }}
           onFocus={() => {
             navigate('/ScheduleSearch')
           }}

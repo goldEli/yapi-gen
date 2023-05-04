@@ -43,10 +43,10 @@ const CurrentTimeLine: React.FC<CurrentTimeLineProps> = props => {
   const top = useMemo(() => {
     return getDistanceByTime(currentTime.valueOf())
   }, [currentTime])
-  const { calenderDayValue } = useSelector(store => store.calendarPanel)
+  const { calenderTypeValue } = useSelector(store => store.calendarPanel)
   const visible = useMemo(() => {
-    return currentTime.isSame(dayjs(calenderDayValue), 'day')
-  }, [calenderDayValue, currentTime])
+    return currentTime.isSame(dayjs(calenderTypeValue), 'day')
+  }, [calenderTypeValue, currentTime])
 
   if (!visible) {
     return <></>
