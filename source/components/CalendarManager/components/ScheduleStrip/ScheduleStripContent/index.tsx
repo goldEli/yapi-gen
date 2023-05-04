@@ -5,6 +5,7 @@ import { getColor } from '@/components/CalendarManager/utils'
 import useShowTime from '@/components/CalendarManager/hooks/useShowTime'
 import IconFont from '@/components/IconFont'
 import useSelectedSchedule from '@/components/CalendarManager/hooks/useSelectedSchedule'
+import BellRed from '../../BellRed'
 
 interface ScheduleStripContentProps {
   data?: Model.Schedule.Info
@@ -24,6 +25,12 @@ const ScheduleStripContent: React.FC<ScheduleStripContentProps> = props => {
   }, [props.data])
 
   const { selected } = useSelectedSchedule(props.data)
+  const redBellElement = React.useMemo(() => {
+    if (!showRedBell) {
+      return null
+    }
+    return <BellRed style={{ marginRight: '4px' }} />
+  }, [])
 
   return (
     <>
@@ -35,12 +42,7 @@ const ScheduleStripContent: React.FC<ScheduleStripContentProps> = props => {
       >
         {timeStr}
       </Time>
-      {showRedBell && (
-        <IconFont
-          style={{ fontSize: '16px', marginRight: '4px' }}
-          type="bell-red"
-        />
-      )}
+      {redBellElement}
       <Title
         selected={selected}
         selectedColor={getColor(props?.data?.color ?? 0)}

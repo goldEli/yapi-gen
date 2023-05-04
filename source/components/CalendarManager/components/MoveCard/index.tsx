@@ -12,6 +12,7 @@ import { Content, MoveCardBox, Time, TimeRange, Title } from './styled'
 import useRepeatSchedule from '../../hooks/useRepeatSchdule'
 import { useSelector } from '@store/index'
 import IconFont from '@/components/IconFont'
+import BellRed from '../BellRed'
 
 type ScheduleCardProps = {
   data: Model.Schedule.Info | null
@@ -51,7 +52,7 @@ const MoveCard: React.FC<ScheduleCardProps> = props => {
     if (data?.is_show_replay) {
       return (
         <>
-          <IconFont style={{ fontSize: '16px' }} type="bell-red" />
+          <BellRed />
           <Title
             color={color}
             isSelected={isSelected}
