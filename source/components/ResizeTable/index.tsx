@@ -128,6 +128,7 @@ interface ResizeTableProps {
   rowSelection?: any
   onRow?(): void
   expandable?: any
+  isTree?: boolean
 }
 // 拖拽调整table
 const ResizeTable = (props: ResizeTableProps) => {
@@ -183,6 +184,16 @@ const ResizeTable = (props: ResizeTableProps) => {
         return {
           ...col,
           onHeaderCell: (column: any) => {
+            console.log(column)
+            if (column.key === 'name') {
+              const doms =
+                document.querySelectorAll<HTMLSpanElement>('.controlMaxWidth')
+              if (doms) {
+                doms.forEach(dom => {
+                  dom.style.maxWidth = `${column.width}px`
+                })
+              }
+            }
             return {
               width: column.width,
               onResize: handleResize(index),

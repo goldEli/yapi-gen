@@ -120,6 +120,7 @@ const WriteReport = (props: Props) => {
 
   // 获取最近提交的模板列表
   const getTemplateLatelyList = async () => {
+    setDataList({})
     const result = await templateLatelyList()
     if (result && result.data) {
       setDataList(result.data)

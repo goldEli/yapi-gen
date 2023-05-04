@@ -168,17 +168,6 @@ const StaffManagement = () => {
     dispatch(setIsRefresh(false))
   }
 
-  const queryRoleList = async () => {
-    const res = await getRoleList()
-    setRoleOptions(
-      res.data.map((v: any) => {
-        return {
-          label: v.content_txt,
-          value: v.id,
-        }
-      }),
-    )
-  }
   const init = () => {
     getStaffListData()
   }
@@ -187,7 +176,6 @@ const StaffManagement = () => {
     if (isRefresh) {
       init()
     }
-    queryRoleList()
   }, [isRefresh])
 
   const controlStaffPersonalVisible = (e: any) => {

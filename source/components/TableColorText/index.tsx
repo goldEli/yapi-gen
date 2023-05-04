@@ -24,7 +24,12 @@ const TableColorText = (props: any) => {
     return newStr
   }
 
-  return <span dangerouslySetInnerHTML={{ __html: lightText(props.text) }} />
+  return (
+    <span
+      className="controlMaxWidth"
+      dangerouslySetInnerHTML={{ __html: lightText(props.text) }}
+    />
+  )
 }
 
 export default TableColorText

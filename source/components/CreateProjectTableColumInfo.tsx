@@ -85,7 +85,7 @@ export const useDynamicColumns = (state: any) => {
       title: <NewSort fixedKey="name">{t('common.title')}</NewSort>,
       dataIndex: 'name',
       key: 'name',
-      width: 200,
+      width: 400,
       render: (text: string | number, record: any) => {
         return (
           <div
@@ -126,7 +126,7 @@ export const useDynamicColumns = (state: any) => {
                 onClick={() => state.onClickItem(record)}
               >
                 <Tooltip title={text} getPopupContainer={node => node}>
-                  {text}
+                  <span className="controlMaxWidth">{text}</span>
                 </Tooltip>
                 {record.is_handover === 1 && (
                   <div

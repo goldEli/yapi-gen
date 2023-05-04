@@ -598,6 +598,7 @@ const DemandTree = (props: Props) => {
         }}
       >
         <ResizeTable
+          isTree
           isSpinning={props?.isSpinning}
           col={selectColum}
           dataSource={data?.list}
