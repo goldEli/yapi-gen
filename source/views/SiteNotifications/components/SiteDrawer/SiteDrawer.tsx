@@ -43,6 +43,7 @@ const SiteDrawer = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { all, isVisible } = useSelector(store => store.siteNotifications)
+  const { isRefresh } = useSelector(store => store.user)
   const [list, setList] = useState([])
   const [now, setNow] = useState()
   const lastId = useRef(0)
@@ -151,8 +152,7 @@ const SiteDrawer = () => {
     }
   }
   const setAllRead = () => {
-    const arr = list.map((i: any) => i.id)
-    setReads(arr)
+    setReads(undefined)
   }
 
   const reset = async () => {
@@ -193,6 +193,20 @@ const SiteDrawer = () => {
       })
     }
   }, [])
+  useEffect(() => {
+    const index = tabsValue.findIndex((i: any) => i.id === active)
+    tabActive.current!.style.left = `${
+      (tabBox.current?.children[index] as HTMLDivElement).offsetLeft === 0
+        ? 2
+        : (tabBox.current?.children[index] as HTMLDivElement).offsetLeft
+    }px`
+
+    tabActive.current!.style.width = `${
+      tabBox.current?.children[index].clientWidth === 0
+        ? 80
+        : tabBox.current?.children[index].clientWidth
+    }px`
+  }, [active, isRefresh])
 
   return (
     <Drawer

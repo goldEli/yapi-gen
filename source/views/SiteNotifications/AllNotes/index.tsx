@@ -98,8 +98,8 @@ const Index = () => {
     }
   }
   const setAllRead = () => {
-    const arr = list.map((i: any) => i.id)
-    setReads(arr)
+    // const arr = list.map((i: any) => i.id)
+    setReads(undefined)
   }
 
   const changeUser = (str: string, arr: any) => {
