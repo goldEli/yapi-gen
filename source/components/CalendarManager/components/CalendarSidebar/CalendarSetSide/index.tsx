@@ -21,7 +21,7 @@ const BackBox = styled.div`
       display: flex;
       align-items: center;
       height: 48px;
-      width: fit-content;
+      cursor: pointer;
       &:hover {
         color: var(--primary-d2);
       }
@@ -29,11 +29,9 @@ const BackBox = styled.div`
     .icon {
       font-size: 16px;
       margin-right: 4px;
-      cursor: pointer;
     }
     .text {
       font-size: 12px;
-      cursor: pointer;
     }
   }
 `
