@@ -61,14 +61,12 @@ const CalendarList: React.FC<CalendarListProps> = props => {
 
   useEffect(() => {
     if (!CalendarListBoxRef.current) return
-    const childrenKeys = [...(CalendarListBoxRef.current?.children as any)].map(
-      item => {
-        return {
-          type: item.getAttribute('datatype'),
-          height: item.clientHeight,
-        }
-      },
-    )
+    const childrenKeys = [...CalendarListBoxRef.current?.children].map(item => {
+      return {
+        type: item.getAttribute('datatype'),
+        height: item.clientHeight,
+      }
+    })
     const currentItem = childrenKeys.find(item => item.type === checkedTime)
     const currentIndex = childrenKeys.findIndex(
       item => item.type === checkedTime,
