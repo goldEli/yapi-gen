@@ -313,6 +313,7 @@ const GlobalStyle = () => {
     html {
       margin: 0;
       box-sizing: border-box;
+      user-select: none;
     }
     // .ant-checkbox-wrapper {
     //   margin: 0 !important;
