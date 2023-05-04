@@ -9,9 +9,9 @@ import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
 import { useDispatch, useSelector } from '@store/index'
 import { setCheckedTime } from '@store/calendar'
+import {setCalenderTypeValue} from '@store/calendarPanle'
 import { getNowDate } from '@/tools'
 import classNames from 'classnames'
-import { setCalenderYearWeekValue } from '@store/calendarPanle'
 import useWeekStart from '../../hooks/useWeekStart'
 dayjs.extend(dayLocaleData)
 const CalendarHeader = styled.div`
@@ -86,15 +86,11 @@ const DXCalendar: React.FC = () => {
       value={dayjs(checkedTime ? checkedTime : getNowDate())}
       onSelect={value => {
         dispatch(setCheckedTime(value.format('YYYY-MM-DD')))
-        let yearWeekValue =
-          dayjs(value.format('YYYY-M-D')).year() +
-          '/' +
-          dayjs(value.format('YYYY-M-D')).week()
-        dispatch(setCalenderYearWeekValue(yearWeekValue))
+        dispatch(setCalenderTypeValue(value.format('YYYY-MM-DD')))
       }}
-      // onPanelChange={(value, mode) => {
-      //   console.log(value.format('YYYY-MM-DD'), mode)
-      // }}
+      onPanelChange={(value, mode) => {
+        console.log(value.format('YYYY-MM-DD'), mode)
+      }}
       dateFullCellRender={date => {
         const today =
           dayjs().format('DD/MM/YYYY') === dayjs(date).format('DD/MM/YYYY')

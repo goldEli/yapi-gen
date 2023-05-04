@@ -22,23 +22,23 @@ const CalendarDayBox = styled.div`
 `
 
 const CalendarDay: React.FC<CalendarDayProps> = props => {
-  const { calenderDayValue } = useSelector(store => store.calendarPanel)
+  const {calenderTypeValue} = useSelector(store => store.calendarPanel)
   const { checkedCalendarList } = useSelector(store => store.calendar)
   const dispatch = useDispatch()
 
   React.useEffect(() => {
     // dispatch(getScheduleList({ id: 1 }))
-    if (!calenderDayValue) {
+    if (!calenderTypeValue) {
       return
     }
 
     dispatch(
       getScheduleListDaysOfDate({
-        date: calenderDayValue,
+        date: calenderTypeValue,
         calendar_ids: checkedCalendarList.map(item => item.calendar_id),
       }),
     )
-  }, [calenderDayValue, checkedCalendarList])
+  }, [calenderTypeValue, checkedCalendarList])
   return (
     <CalendarDayBox className="calendar-day-box">
       <ScheduleAllDay />

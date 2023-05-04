@@ -62,6 +62,7 @@ const labelTime = css`
   margin-right: 8px;
   position: relative;
   padding-left: 14px;
+  font-family: SiYuanRegular;
   /* &::before {
     width: 6px;
     height: 6px;

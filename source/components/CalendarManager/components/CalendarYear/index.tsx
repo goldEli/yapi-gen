@@ -18,7 +18,7 @@ const CalendarYear: React.FC<CalendarYearProps> = props => {
   const checkedCalendarListRef = useRef<Model.Calendar.Info[]>()
   checkedCalendarListRef.current = checkedCalendarList
   const calendarYear = useSelector(
-    state => state.calendarPanel.calenderYearValue,
+    state => state.calendarPanel.calenderTypeValue,
   )
   useEffect(() => {
     let params = {

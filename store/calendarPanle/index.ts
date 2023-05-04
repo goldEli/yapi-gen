@@ -22,19 +22,9 @@ type SliceState = {
     schedule_id: Model.Schedule.Info['schedule_id']
     show_date: string | number
   }
-  //日视图  2023-01-11
-  calenderDayValue: string
-  //周视图 2023/12
-  calenderWeekValue: string
-  //获取一年的哪一周 2023/12
-  calenderYearWeekValue: string
-  //月视图
-  calenderMonthValue: string
-  //年视图
-  calenderYearValue: string
-  // 列表视图
-  calenderListValue: string
-  calenderYearType: Model.Calendar.CalendarYearType
+  calenderYearType: Model.Calendar.CalendarYearType,
+  calenderListValue:string,
+  calenderTypeValue:string,
   // 月视图拖拽日程时，控制显示
   monthMoveScheduleActiveInfo: {
     startSchedule?: Model.Schedule.Info
@@ -76,13 +66,9 @@ const initialState: SliceState = {
     schedule_id: 0,
     show_date: '',
   },
-  calenderDayValue: dayjs().format('YYYY-M-D'),
-  calenderWeekValue: dayjs().format('YYYY-M-D'),
-  calenderMonthValue: dayjs().format('YYYY-M-D'),
-  calenderYearValue: dayjs().format('YYYY-M-D'),
-  calenderListValue: dayjs().format('YYYY-M-D'),
+  calenderTypeValue: dayjs().format('YYYY-M-D'),
+  calenderListValue:dayjs().format('YYYY-M-D'),
   calenderYearType: 0,
-  calenderYearWeekValue: dayjs().year() + '/' + dayjs().week(),
   monthMoveScheduleActiveInfo: defaultMonthMoveScheduleActiveInfo,
   calendarLoading: true,
 }
@@ -198,27 +184,9 @@ const slice = createSlice({
     },
     setCalenderDayValue(
       state,
-      action: PayloadAction<SliceState['calenderDayValue']>,
+      action: PayloadAction<SliceState['calenderTypeValue']>,
     ) {
-      state.calenderDayValue = action.payload
-    },
-    setCalenderWeekValue(
-      state,
-      action: PayloadAction<SliceState['calenderWeekValue']>,
-    ) {
-      state.calenderWeekValue = action.payload
-    },
-    setCalenderMonthValue(
-      state,
-      action: PayloadAction<SliceState['calenderMonthValue']>,
-    ) {
-      state.calenderMonthValue = action.payload
-    },
-    setCalenderYearValue(
-      state,
-      action: PayloadAction<SliceState['calenderYearValue']>,
-    ) {
-      state.calenderYearValue = action.payload
+      state.calenderTypeValue = action.payload
     },
     setCalenderListValue(
       state,
@@ -226,12 +194,7 @@ const slice = createSlice({
     ) {
       state.calenderListValue = action.payload
     },
-    setCalenderYearWeekValue(
-      state,
-      action: PayloadAction<SliceState['calenderYearWeekValue']>,
-    ) {
-      state.calenderYearWeekValue = action.payload
-    },
+   
     setCalenderYearType(
       state,
       action: PayloadAction<SliceState['calenderYearType']>,
@@ -251,13 +214,12 @@ const slice = createSlice({
       }
     },
     clearCalenderValue(state) {
-      state.calenderDayValue = initialState.calenderDayValue
-      state.calenderWeekValue = initialState.calenderWeekValue
-      state.calenderMonthValue = initialState.calenderMonthValue
-      state.calenderYearValue = initialState.calenderYearValue
-      state.calenderYearWeekValue = initialState.calenderYearWeekValue
+      state.calenderTypeValue = initialState.calenderTypeValue
       state.calenderListValue = initialState.calenderListValue
     },
+    setCalenderTypeValue(state,action){
+      state.calenderTypeValue=action.payload
+    }
   },
 })
 
@@ -267,13 +229,9 @@ export const {
   setCalendarPanelType,
   setScheduleInfoDropdown,
   setCalenderDayValue,
-  setCalenderWeekValue,
-  setCalenderMonthValue,
-  setCalenderYearValue,
   setCalenderYearType,
   setCalenderListValue,
   startMoveMonthSchedule,
-  setCalenderYearWeekValue,
   clearMonthMoveScheduleActiveInfo,
   resizeMonthSchedule,
   setQuickCreateScheduleModel,
@@ -282,6 +240,7 @@ export const {
   setCalenderLoading,
   setInitScheduleInfoDropdown,
   clearCalenderValue,
+  setCalenderTypeValue
 } = slice.actions
 
 export default calendarPanel
