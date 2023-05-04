@@ -26,7 +26,7 @@ const TableColorText = (props: any) => {
 
   return (
     <span
-      className="controlMaxWidth"
+      className={`controlMaxWidth level${props.level}`}
       dangerouslySetInnerHTML={{ __html: lightText(props.text) }}
     />
   )
