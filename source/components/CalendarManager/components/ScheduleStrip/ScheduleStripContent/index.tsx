@@ -14,7 +14,7 @@ interface ScheduleStripContentProps {
 const ScheduleStripContent: React.FC<ScheduleStripContentProps> = props => {
   const { timeStr } = useShowTime(props?.data)
   const showRedBell = React.useMemo(() => {
-    return props.data?.is_show_replay
+    return props.data?.is_show_reply
   }, [props.data])
 
   const title = React.useMemo(() => {
@@ -30,7 +30,7 @@ const ScheduleStripContent: React.FC<ScheduleStripContentProps> = props => {
       return null
     }
     return <BellRed style={{ marginRight: '4px' }} />
-  }, [])
+  }, [showRedBell])
 
   return (
     <>
