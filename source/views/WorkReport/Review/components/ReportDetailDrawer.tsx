@@ -455,6 +455,7 @@ const ReportDetailDrawer = () => {
             <ContentHeadWrap>
               <div
                 style={{
+                  width: '100%',
                   display: 'flex',
                   alignItems: 'center',
                 }}

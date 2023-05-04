@@ -230,7 +230,7 @@ export const ContentHeadWrap = styled.div`
   flex-direction: column;
   justify-content: center;
   .titleText {
-    width: 100%;
+    width: 98%;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -249,6 +249,8 @@ export const ContentHeadWrap = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
+    flex: 1;
+    overflow: hidden;
   }
   .submitTimeText {
     font-size: 12px;
