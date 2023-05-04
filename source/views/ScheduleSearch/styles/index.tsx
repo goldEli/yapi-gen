@@ -1,15 +1,6 @@
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
-export const ScheduleSearchWrap = styled.div`
-  width: 100%;
-  display: flex;
-  height: 40px;
-  align-items: center;
-  margin-bottom: 40px;
-  > span {
-    height: 40px !important;
-  }
-`
+
 export const ScheduleSearchListBox = styled.div`
   background-color: #fff;
   overflow-y: scroll;
@@ -19,17 +10,30 @@ export const ScheduleSearchListBox = styled.div`
   height: 100%;
   width: 100%;
 `
+export const ScheduleSearchWrap = styled.div`
+  width: 100%;
+  display: flex;
+  height: 40px;
+  margin-bottom: 40px;
+  > span {
+    height: 40px !important;
+  }
+`
 export const BackBox = styled.div`
-  width: 60px;
   color: var(--neutral-n3);
   font-size: var(--font12);
   cursor: pointer;
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
   &:hover {
     color: var(--primary-d2);
     border-radius: 4px;
   }
   span {
-    margin-right: 8px;
+    margin-right: 4px;
     font-size: var(--font16);
   }
 `
