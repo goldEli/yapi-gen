@@ -1,11 +1,9 @@
 import React, { useMemo } from 'react'
-import { Dot, ResizeLeftBar, ScheduleStripBox, Time, Title } from './styled'
+import { ResizeLeftBar, ScheduleStripBox } from './styled'
 import useAllDay from '../../hooks/useAllDay'
-import { useTranslation } from 'react-i18next'
 import { getColor, getColorWithOpacityPointOne } from '../../utils'
 import { css } from '@emotion/css'
 import classNames from 'classnames'
-import useShowTime from '../../hooks/useShowTime'
 import ScheduleStripContent from './ScheduleStripContent'
 
 interface ScheduleStripProps {
@@ -41,9 +39,7 @@ const ScheduleStrip: React.ForwardRefRenderFunction<
   const { data } = props
   const {
     isAllDay,
-    isAcrossDayFirstDay,
     isAcrossDayButNotFirstDay,
-    isFullDay,
     isAcrossDay,
     isAcrossDayAndLastDay,
   } = useAllDay({ data })
@@ -69,10 +65,14 @@ const ScheduleStrip: React.ForwardRefRenderFunction<
   }, [isAllDay, data])
 
   // hover 日程背景色
-  const hoverBg = getColorWithOpacityPointOne(data.color)
+  const hoverBg = useMemo(() => {
+    return getColorWithOpacityPointOne(data.color)
+  }, [data.color])
 
   // hover 文字颜色
-  const hoverText = getColor(data.color)
+  const hoverText = useMemo(() => {
+    return getColor(data.color)
+  }, [data.color])
 
   /**
    * 默认左右右边距且有圆角

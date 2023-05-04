@@ -181,6 +181,7 @@ const EditComment = (props: any) => {
             ]}
           >
             <Editor
+              at
               upload={uploadFile}
               getSuggestions={() =>
                 removeNull(projectInfoValues, 'user_name')?.map((k: any) => ({
