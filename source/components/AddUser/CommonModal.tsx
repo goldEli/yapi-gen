@@ -311,7 +311,6 @@ const CommonModal = (props: ModalProps) => {
       },
     })
     const data1 = newTreeData(res)
-    console.log(data1, 'data1')
     setTreeData2(data1)
     // 拍平数组
     const data = unionBy(checkdFilterData(res), 'id')
@@ -425,7 +424,6 @@ const CommonModal = (props: ModalProps) => {
   }
   // 勾选复选框
   const onCheck = (checkedKey: any, e: any) => {
-    console.log(checkedKey, e, 'cej')
     checkdFilterDataList = []
     if (tabsActive === 1) {
       const data = getStaffs(e.checkedNodes)
@@ -506,7 +504,6 @@ const CommonModal = (props: ModalProps) => {
       props?.onConfirm?.(tabsActive === 1 ? setData : personData)
     }
   }
-  console.log(treeData2, treeData)
   return (
     <ModalStyle
       footer={false}
