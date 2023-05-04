@@ -67,19 +67,18 @@ const Index = () => {
     })
 
     lastId.current = re4.lastId
-    setTimeout(() => {
-      if (type === 1 && re4.lastId === 0) {
-        setList(re4.list)
-        setHasMore(false)
-      } else if (type === 1) {
-        setList(re4.list)
-      } else if (type === 2 && re4.lastId === 0) {
-        setList(e => e.concat(re4.list))
-        setHasMore(false)
-      } else if (type === 2) {
-        setList(e => e.concat(re4.list))
-      }
-    }, 1500)
+
+    if (type === 1 && re4.lastId === 0) {
+      setList(re4.list)
+      setHasMore(false)
+    } else if (type === 1) {
+      setList(re4.list)
+    } else if (type === 2 && re4.lastId === 0) {
+      setList(e => e.concat(re4.list))
+      setHasMore(false)
+    } else if (type === 2) {
+      setList(e => e.concat(re4.list))
+    }
   }
   const setReads = async (values: any) => {
     const res = await setReadApi(values)
