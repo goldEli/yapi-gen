@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
-import yellowTag from '@/components/AllSide/FormWorkSide/img/yellow_tag.png'
-import blueTag from '@/components/AllSide/FormWorkSide/img/blue_tag.png'
+import yellowTag from '/yellow_tag.png'
+import blueTag from '/blue_tag.png'
 
 type ItemType = {
   label: string
