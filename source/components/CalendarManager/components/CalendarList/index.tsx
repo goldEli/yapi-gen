@@ -9,6 +9,12 @@ import { isDateIntersection } from '@/tools/index'
 import { getColorWithOpacityPointOne, getColor } from '../../utils'
 import { Popover, Tooltip } from 'antd'
 import {
+  setScheduleInfoDropdown,
+  setInitScheduleInfoDropdown,
+} from '@store/calendarPanle'
+import { setScheduleInfo } from '@store/schedule'
+import NoData from '@/components/NoData'
+import {
   CalendarListBox,
   CalendarListItem,
   DateBox,
@@ -24,7 +30,9 @@ import {
 interface CalendarListProps {}
 const CalendarList: React.FC<CalendarListProps> = props => {
   const CalendarListBoxRef = useRef<HTMLDivElement>(null)
-  const { calenderTypeValue } = useSelector(state => state.calendarPanel)
+  const { calenderTypeValue, calendarLoading } = useSelector(
+    state => state.calendarPanel,
+  )
   const { listViewScheduleList } = useSelector(state => state.schedule)
   const { checkedTime } = useSelector(state => state.calendar)
   const { checkedCalendarList } = useSelector(state => state.calendar)
@@ -52,6 +60,7 @@ const CalendarList: React.FC<CalendarListProps> = props => {
   }, [calenderTypeValue, checkedCalendarList])
 
   useEffect(() => {
+    if (!CalendarListBoxRef.current) return
     const childrenKeys = [...(CalendarListBoxRef.current?.children as any)].map(
       item => {
         return {
@@ -85,97 +94,119 @@ const CalendarList: React.FC<CalendarListProps> = props => {
     checkedCalendarIdsRef.current = calendar_ids
   }, [checkedCalendarList])
   return (
-    <CalendarListBox ref={CalendarListBoxRef}>
-      {listViewScheduleList?.map((item: any, index: number) => (
-        <CalendarListItem
-          key={index}
-          className={CalendarListClass}
-          datatype={item.date}
-        >
-          <div>
-            <DateBox
-              className={
-                dayjs(checkedTime).format('DD') ===
-                dayjs(item.date).format('DD')
-                  ? currentClass
-                  : ''
-              }
+    <>
+      {listViewScheduleList?.length !== 0 && (
+        <CalendarListBox ref={CalendarListBoxRef}>
+          {listViewScheduleList?.map((item: any, index: number) => (
+            <CalendarListItem
+              key={index}
+              className={CalendarListClass}
+              datatype={item.date}
             >
-              {dayjs(item.date).date()}
-            </DateBox>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <MonthWeekBox>
-              {item.list[0].month}月 {item.list[0].week_name}
-            </MonthWeekBox>
-            {view_options?.show_lunar_calendar === 1 && (
-              <LunarDate>{item.list[0].lunar_day_chinese} </LunarDate>
-            )}
-          </div>
-          <CalendarListInfo>
-            {item.list.map((ele: any, idx: number) => (
-              <TimeItem
-                key={idx}
-                color={getColorWithOpacityPointOne(ele.color)}
-              >
-                <Dot color={getColor(ele.color)}></Dot>
-                <span className={dateClass}>
-                  {ele.is_all_day === 1
-                    ? t('calendarManager.allDay')
-                    : ele.start_time + '-' + ele.end_time}
-                </span>
-                <span>
-                  {ele.subject}
-                  {dayjs(ele.schedule_end_datetime).diff(
-                    dayjs(ele.schedule_start_datetime),
-                    'days',
-                  ) +
-                    1 >
-                  1 ? (
-                    <label>
-                      {t('calendarManager.dayof', {
-                        day:
-                          dayjs(ele.end_datetime).diff(
-                            dayjs(ele.schedule_start_datetime),
-                            'days',
-                          ) + 1,
-                        days:
-                          dayjs(ele.schedule_end_datetime).diff(
-                            dayjs(ele.schedule_start_datetime),
-                            'days',
-                          ) + 1,
-                      })}
-                    </label>
-                  ) : null}
-                </span>
-                {(isDateIntersection(
-                  item.list[idx + 1]?.start_datetime,
-                  item.list[idx + 1]?.end_datetime,
-                  item.list[idx]?.start_datetime,
-                  item.list[idx]?.end_datetime,
-                ) ||
-                  isDateIntersection(
-                    item.list[idx]?.start_datetime,
-                    item.list[idx]?.end_datetime,
-                    item.list[idx - 1]?.start_datetime,
-                    item.list[idx - 1]?.end_datetime,
-                  )) &&
-                item.list.length > 1 ? (
-                  <Tooltip
-                    placement="top"
-                    title={t('calendarManager.conflict')}
+              <div>
+                <DateBox
+                  className={
+                    dayjs(checkedTime).format('DD') ===
+                    dayjs(item.date).format('DD')
+                      ? currentClass
+                      : ''
+                  }
+                >
+                  {dayjs(item.date).date()}
+                </DateBox>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <MonthWeekBox>
+                  {item.list[0].month}月 {item.list[0].week_name}
+                </MonthWeekBox>
+                {view_options?.show_lunar_calendar === 1 && (
+                  <LunarDate>{item.list[0].lunar_day_chinese} </LunarDate>
+                )}
+              </div>
+              <CalendarListInfo>
+                {item.list.map((ele: any, idx: number) => (
+                  <TimeItem
+                    key={idx}
+                    color={getColorWithOpacityPointOne(ele.color)}
+                    onClick={() => {
+                      console.log('ele.schedule_id----', ele.schedule_id)
+                      disPatch(setInitScheduleInfoDropdown({ schedule_id: 0 }))
+                      setTimeout(() => {
+                        disPatch(
+                          setScheduleInfoDropdown({
+                            visible: true,
+                            schedule_id: ele.schedule_id,
+                          }),
+                        )
+                      }, 0)
+
+                      disPatch(setScheduleInfo(void 0))
+                    }}
                   >
-                    <span>
-                      <IconFont type="warning-02"></IconFont>
+                    <Dot color={getColor(ele.color)}></Dot>
+                    <span className={dateClass}>
+                      {ele.is_all_day === 1
+                        ? t('calendarManager.allDay')
+                        : ele.start_time + '-' + ele.end_time}
                     </span>
-                  </Tooltip>
-                ) : null}
-              </TimeItem>
-            ))}
-          </CalendarListInfo>
-        </CalendarListItem>
-      ))}
-    </CalendarListBox>
+                    <span>
+                      {ele.subject}
+                      {dayjs(ele.schedule_end_datetime).diff(
+                        dayjs(ele.schedule_start_datetime),
+                        'days',
+                      ) +
+                        1 >
+                      1 ? (
+                        <label>
+                          {t('calendarManager.dayof', {
+                            day:
+                              dayjs(ele.end_datetime).diff(
+                                dayjs(ele.schedule_start_datetime),
+                                'days',
+                              ) + 1,
+                            days:
+                              dayjs(ele.schedule_end_datetime).diff(
+                                dayjs(ele.schedule_start_datetime),
+                                'days',
+                              ) + 1,
+                          })}
+                        </label>
+                      ) : null}
+                    </span>
+                    {(isDateIntersection(
+                      item.list[idx + 1]?.start_datetime,
+                      item.list[idx + 1]?.end_datetime,
+                      item.list[idx]?.start_datetime,
+                      item.list[idx]?.end_datetime,
+                    ) ||
+                      isDateIntersection(
+                        item.list[idx]?.start_datetime,
+                        item.list[idx]?.end_datetime,
+                        item.list[idx - 1]?.start_datetime,
+                        item.list[idx - 1]?.end_datetime,
+                      )) &&
+                    item.list.length > 1 ? (
+                      <Tooltip
+                        placement="top"
+                        title={t('calendarManager.conflict')}
+                      >
+                        <span>
+                          <IconFont type="warning-02"></IconFont>
+                        </span>
+                      </Tooltip>
+                    ) : null}
+                  </TimeItem>
+                ))}
+              </CalendarListInfo>
+            </CalendarListItem>
+          ))}
+        </CalendarListBox>
+      )}
+
+      {listViewScheduleList?.length === 0 && calendarLoading === false && (
+        <NoData subText={t('calendarManager.noSchedule')}></NoData>
+      )}
+    </>
   )
 }
 

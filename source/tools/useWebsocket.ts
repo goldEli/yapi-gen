@@ -134,6 +134,12 @@ const useWebsocket = () => {
     }
   }, [ws])
 
+  useEffect(() => {
+    if (readyState.key === 3) {
+      reconnect()
+    }
+  }, [readyState])
+
   //    wsData （获得的 socket 数据）、readyState（当前 socket 状态）、closeWebSocket （关闭 socket）、reconnect（重连）
 
   return {

@@ -20,6 +20,7 @@ export const CommonIconFont = (props: IconProps) => {
         fontSize: props.size || 16,
         transform: props?.transform,
       }}
+      className="ant-select-suffix"
     />
   )
 }

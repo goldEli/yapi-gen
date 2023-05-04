@@ -17,7 +17,7 @@ interface CalendarPanelProps {
 
 const Box = styled.div`
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
   box-sizing: border-box;
   padding: 20px 24px;
   display: flex;
