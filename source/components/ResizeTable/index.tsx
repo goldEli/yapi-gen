@@ -174,12 +174,20 @@ const ResizeTable = (props: ResizeTableProps) => {
         if (col === Table.SELECTION_COLUMN) {
           return col
         }
+        if (!col.width) {
+          return {
+            ...col,
+            width: 100,
+          }
+        }
         return {
           ...col,
-          onHeaderCell: (column: any) => ({
-            width: column.width,
-            onResize: handleResize(index),
-          }),
+          onHeaderCell: (column: any) => {
+            return {
+              width: column.width,
+              onResize: handleResize(index),
+            }
+          },
         }
       }),
     )
