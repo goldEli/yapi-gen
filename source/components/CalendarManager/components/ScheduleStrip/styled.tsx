@@ -16,6 +16,7 @@ export const ScheduleStripBox = styled.div<{
   &:hover .text {
     color: ${props => props.hoverText};
   }
+
   display: flex;
   visibility: ${props => (props.visible ? 'visible' : 'hidden')};
   /* gap: 7px; */
@@ -32,14 +33,22 @@ export const Dot = styled.div<{ bg: string }>`
   margin-left: 8px;
   margin-right: 8px;
 `
-export const Time = styled.span`
-  color: var(--neutral-n4);
+export const Time = styled.span<{
+  selected?: boolean
+  selectedColor: string
+}>`
+  color: ${props =>
+    props.selected ? props.selectedColor : 'var(--neutral-n4)'};
   font-size: 12px;
   margin-right: 8px;
 `
-export const Title = styled.span`
+export const Title = styled.span<{
+  selected?: boolean
+  selectedColor: string
+}>`
   flex: 1;
-  color: var(--neutral-n2);
+  color: ${props =>
+    props.selected ? props.selectedColor : 'var(--neutral-n2)'};
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

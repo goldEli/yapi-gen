@@ -1478,6 +1478,7 @@
     "dayof": "（第{{day}}天，共{{days}}天）",
     "list": "列表",
     "acrossDay": "跨天",
-    "conflict": "冲突"
+    "conflict": "冲突",
+    "noSchedule":"暂无日程"
   }
 }
