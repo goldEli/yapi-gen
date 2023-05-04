@@ -245,10 +245,11 @@ const Addperson = (props: Props) => {
     props.onChangeValues(values)
   }
   const getImg = (item: any) => {
+    console.log(item, 'item')
     if (
       item.target_value?.avatar &&
       item.target_type !== 3 &&
-      item.target_typer !== 2 &&
+      item.target_type !== 2 &&
       item.target_type !== 4
     ) {
       return <img src={item?.target_value?.avatar} />
@@ -322,9 +323,7 @@ const Addperson = (props: Props) => {
         {personData?.map((el: any) => (
           <Col key={el.id}>
             {getImg(el)}
-            <NameText>
-              {el?.target_value?.name}--{el.target_type}
-            </NameText>
+            <NameText>{el?.target_value?.name}</NameText>
             <CommonIconFont
               onClick={() => delPerson(el)}
               type="close"
