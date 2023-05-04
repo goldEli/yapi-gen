@@ -133,9 +133,6 @@ export const Container = () => {
         } else {
           navigateUrl = firstUrl
         }
-      } else if (menuPermission.priorityUrl === '/LogManagement') {
-        // 如果是日志
-        navigateUrl = '/LogManagement/Send/1'
       } else if (menuPermission.priorityUrl === '/AdminManagement') {
         const children = menuPermission?.menus?.filter(
           (i: any) => i.url === '/AdminManagement',

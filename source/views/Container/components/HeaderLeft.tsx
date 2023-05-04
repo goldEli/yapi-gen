@@ -60,8 +60,6 @@ const DrawerComponent = (props: DrawerComponentProps) => {
           ? `${item.children[0].url}/Profile`
           : item.children[0].url
         : item.url
-    // 如果是日志则默认跳转
-    navigate(item.url === '/LogManagement' ? `${item.url}/Send/1` : navigateUrl)
     // 如果是工作汇报则默认跳转
     navigate(item.url === '/Report' ? `${item.url}/Review` : navigateUrl)
     const resultMenu = {
