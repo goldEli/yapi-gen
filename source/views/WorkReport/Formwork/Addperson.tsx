@@ -245,7 +245,6 @@ const Addperson = (props: Props) => {
     props.onChangeValues(values)
   }
   const getImg = (item: any) => {
-    console.log(item, 'item')
     if (
       item.target_value?.avatar &&
       item.target_type !== 3 &&
