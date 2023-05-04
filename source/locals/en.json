@@ -1329,7 +1329,9 @@
       "modifyReport": "Revision report",
       "haveComment": "Have commented",
       "prevDateSubmit": "Last submission time",
-      "add": "Please add"
+      "add": "Please add",
+      "reportDeleted": "The template has been deleted. Procedure",
+      "noPermissions": "You do not have permission to use this template"
     },
     "statistics": {
       "title": "Reporting Statistics",

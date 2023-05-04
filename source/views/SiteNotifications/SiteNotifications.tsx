@@ -41,8 +41,6 @@ const SiteNotifications = () => {
   }
   const sendMsg = () => {
     Notification.requestPermission().then(result => {
-      console.log(result)
-
       if (result === 'granted') {
         const n: any = new Notification(wsData.data.msgBody.title, {
           body: wsData.data.msgBody.content,
