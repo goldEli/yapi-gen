@@ -15,11 +15,11 @@ import { setActiveCategory } from '@store/category'
 import { useNavigate } from 'react-router-dom'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { setStartUsing } from '@store/category/index'
-import EditCategory from '@/components/AllSide/DemandSettingSide/EditCategory'
 import { storyConfigCategoryList } from '@store/category/thunk'
 import CommonModal from '@/components/CommonModal'
 import CustomSelect from '@/components/CustomSelect'
 import CommonButton from '@/components/CommonButton'
+import EditCategory from '@/views/ProjectManagement/DemandSettingSide/EditCategory'
 
 const HeaderWrap = styled.div`
   height: 66px;

@@ -1,8 +1,8 @@
-import { MenuItem } from '@/components/AllSide/ProjectSide/style'
 import CommonIconFont from '@/components/CommonIconFont'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
+import { MenuItem } from '../SiteNotificationSide/style'
 
 const AllSide = () => {
   const [t] = useTranslation()

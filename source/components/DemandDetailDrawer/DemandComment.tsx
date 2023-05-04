@@ -7,7 +7,6 @@
 import { addComment, deleteComment, getCommentList } from '@/services/demand'
 import { delCommonAt } from '@/services/user'
 import { bytesToSize } from '@/tools'
-import { imgs } from '@/views/LogManagement/components/LookDay'
 import { OmitText } from '@star-yun/ui'
 import { useSelector } from '@store/index'
 import { Editor } from '@xyfe/uikit'
@@ -45,7 +44,7 @@ interface Props {
   // 是否是新开需求详情
   isOpenInfo?: boolean
 }
-
+const imgs = ['png', 'webp', 'jpg', 'jpeg', 'png', 'gif']
 const DemandComment = (props: Props) => {
   const [t]: any = useTranslation()
   const { userInfo } = useSelector(store => store.user)

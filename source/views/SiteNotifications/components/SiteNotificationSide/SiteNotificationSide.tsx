@@ -1,10 +1,8 @@
-import { Back } from '@/components/AllSide/ProjectDetailSide'
-import { MenuItem } from '@/components/AllSide/ProjectSide/style'
 import CommonIconFont from '@/components/CommonIconFont'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
-import { First, Title, Wrap } from './style'
+import { Back, First, MenuItem, Title, Wrap } from './style'
 
 const SiteNotificationSide = () => {
   const navigate = useNavigate()

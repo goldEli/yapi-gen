@@ -782,39 +782,13 @@ const CreateSchedule = () => {
                       .concat(hasCalendar.value === 0 ? [] : [hasCalendar])}
                     disabled={hasCalendar.value as unknown as boolean}
                   />
-                  <Popover
-                    trigger={['hover']}
-                    placement="bottomRight"
-                    open={isVisible}
-                    onOpenChange={setIsVisible}
-                    overlayStyle={{
-                      width: 192,
+                  <div
+                    className="color"
+                    style={{
+                      background: colorMap[normalCategory.color],
+                      cursor: 'inherit',
                     }}
-                    content={
-                      hasCalendar.value ? null : (
-                        <ColorWrap>
-                          <CalendarColor
-                            color={normalCategory.color}
-                            onChangeColor={color => {
-                              setNormalCategory({
-                                calendar_id: normalCategory?.calendar_id,
-                                color,
-                              })
-                              setIsVisible(false)
-                            }}
-                          />
-                        </ColorWrap>
-                      )
-                    }
-                  >
-                    <div
-                      className="color"
-                      style={{
-                        background: colorMap[normalCategory.color],
-                        cursor: hasCalendar.value ? 'no-drop' : 'pointer',
-                      }}
-                    />
-                  </Popover>
+                  />
                 </div>
               </ItemFlex>
             </Form.Item>

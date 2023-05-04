@@ -5,7 +5,6 @@
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
-import AddFormWork from '@/components/AllSide/FormWorkSide/AddFormWork'
 import {
   setActiveItem,
   setEditSave,
@@ -28,6 +27,8 @@ import { getMessage } from '@/components/Message'
 import { upDateTemplate, createTemplate } from '@/services/formwork'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
+import { Tooltip } from 'antd'
+import AddFormWork from './AddFormWork'
 const FormWorkSideStyle = styled.div`
   min-width: 200px;
 `
@@ -446,7 +447,13 @@ const FormWorkSide = () => {
                 onClick={() => itemActive(el, index)}
                 theme={isActive == index}
               >
-                {el.name}
+                {el.name?.length >= 25 ? (
+                  <Tooltip placement="topLeft" title={el.name}>
+                    {el.name}
+                  </Tooltip>
+                ) : (
+                  <span>{el.name}</span>
+                )}
               </Slide>
             )
           })
