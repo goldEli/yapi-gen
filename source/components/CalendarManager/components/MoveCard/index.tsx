@@ -49,7 +49,7 @@ const MoveCard: React.FC<ScheduleCardProps> = props => {
 
   const content = useMemo(() => {
     const color = getColor(props.data?.color ?? 0)
-    if (data?.is_show_replay) {
+    if (data?.is_show_reply) {
       return (
         <>
           <BellRed />
