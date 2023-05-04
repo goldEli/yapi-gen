@@ -344,12 +344,12 @@ const CommonModal = (props: ModalProps) => {
     setSelectDataList(deleteDeep(data))
   }
   useEffect(() => {
-    if (tabsActive === 0) {
+    if (tabsActive === 0 && props.isVisible) {
       getTeam()
-    } else {
+    } else if (tabsActive === 1 && props.isVisible) {
       getCompany()
     }
-  }, [tabsActive])
+  }, [tabsActive, props.isVisible])
   useEffect(() => {
     switch (props.state) {
       case 2:
@@ -507,7 +507,6 @@ const CommonModal = (props: ModalProps) => {
       props?.onConfirm?.(tabsActive === 1 ? setData : personData)
     }
   }
-
   return (
     <ModalStyle
       footer={false}

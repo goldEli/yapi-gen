@@ -3,7 +3,6 @@
   "edit_project": "项目编辑",
   "delete_project": "项目删除",
   "update_project_status": "项目状态变更",
-
   "add_requirement_or_defect": "添加需求/缺陷",
   "remove_requirement_or_defect": "移除需求/缺陷",
   "create_iteration": "创建迭代",
@@ -11,7 +10,6 @@
   "update_iteration_status": "迭代状态更新",
   "delete_iteration": "迭代删除",
   "edit_iteration_outcome": "编辑迭代成果",
-
   "Create_requirements": "创建需求",
   "import_requirement": "导入需求",
   "export_requirement": "导出需求",
@@ -1077,7 +1075,7 @@
     "start": "开始时间",
     "end": "截止时间",
     "msg6": "截止时间后允许补交",
-    "msg7": "每个周限填一次",
+    "msg7": "每个周期限填一次",
     "msg8": "提交汇报提交人可修改",
     "msg9": "提醒时间",
     "msg10": "结束时间不能小于开始时间",
