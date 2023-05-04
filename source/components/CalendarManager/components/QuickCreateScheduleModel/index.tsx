@@ -34,7 +34,6 @@ import CommonButton from '@/components/CommonButton'
 import { ColorWrap } from '../CalendarSidebar/CalendarFormModal/style'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import moment from 'moment'
-import { RangePickerProps } from 'antd/lib/date-picker'
 import { colorMap } from '../../config'
 import { setQuickCreateScheduleModel } from '@store/calendarPanle'
 import { setScheduleModal } from '@store/calendar'
@@ -449,32 +448,13 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
                       value: i.calendar_id,
                     }))}
                   />
-                  <Popover
-                    trigger={['hover']}
-                    placement="bottomRight"
-                    open={isVisible}
-                    onOpenChange={setIsVisible}
-                    overlayStyle={{ width: 192 }}
-                    content={
-                      <ColorWrap>
-                        <CalendarColor
-                          color={normalCategory?.color}
-                          onChangeColor={color => {
-                            setNormalCategory({
-                              calendar_id: normalCategory?.calendar_id,
-                              color,
-                            })
-                            setIsVisible(false)
-                          }}
-                        />
-                      </ColorWrap>
-                    }
-                  >
-                    <div
-                      className="color"
-                      style={{ background: colorMap[normalCategory?.color] }}
-                    />
-                  </Popover>
+                  <div
+                    className="color"
+                    style={{
+                      background: colorMap[normalCategory?.color],
+                      cursor: 'inherit',
+                    }}
+                  />
                 </div>
               </ItemFlex>
             </Form.Item>

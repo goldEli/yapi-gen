@@ -42,6 +42,7 @@ import {
 } from '@store/calendarPanle'
 import ScheduleInfoDropdown from '@/components/CalendarManager/components/ScheduleInfoDropdown'
 import { mapToArray } from '@/tools'
+import NoData from '@/components/NoData'
 interface CalendarListProps {}
 const ScheduleSearch: React.FC<CalendarListProps> = props => {
   const CalendarListBoxRef = useRef<HTMLDivElement>(null)
@@ -99,18 +100,6 @@ const ScheduleSearch: React.FC<CalendarListProps> = props => {
             <IconFont type="left-md"></IconFont>
             {t('calendarManager.calendar_back')}
           </BackBox>
-          {/* <InputSearch
-            placeholder={t('calendarManager.search_schedule')}
-            defaultValue={inputDefaultValue}
-            autoFocus
-            width={'100%'}
-            onChangeSearch={value => {
-              console.log(value)
-              setInputDefaultValue(value)
-            }}
-            onFocus={() => {}}
-            ref={inputRefDom}
-          ></InputSearch> */}
           <Input
             placeholder={t('calendarManager.search_schedule')}
             style={{ height: '100%', width: '100%' }}
@@ -229,10 +218,11 @@ const ScheduleSearch: React.FC<CalendarListProps> = props => {
               </CalendarListItem>
             ))
           : inputDefaultValue !== void 0 && (
-              <Empty
-                description="暂无数据，请重新调整一下筛选参数试试"
-                image={Empty.PRESENTED_IMAGE_SIMPLE}
-              />
+              // <Empty
+              //   description="暂无数据，请重新调整一下筛选参数试试"
+              //   image={Empty.PRESENTED_IMAGE_SIMPLE}
+              // />
+              <NoData></NoData>
             )}
         <ScheduleInfoDropdown></ScheduleInfoDropdown>
       </Spin>

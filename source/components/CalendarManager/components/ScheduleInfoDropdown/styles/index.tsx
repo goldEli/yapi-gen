@@ -46,7 +46,6 @@ export const statusClass = css`
 export const iconBox = css`
   display: flex;
   position: relative;
-
   span.icon {
     color: var(--neutral-white-d6);
   }
@@ -55,7 +54,10 @@ export const iconBox = css`
     height: 28px;
     margin-left: 2px;
     text-align: center;
-    line-height: 28px;
+    line-height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     &:hover {
       background: rgba(255, 255, 255, 0.3);
       border-radius: 6px;
@@ -70,8 +72,11 @@ export const iconBox = css`
       width: 28px;
       height: 28px;
       display: inline-block;
-      line-height: 28px;
+      line-height: 30px;
       text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       &:hover {
         background: rgba(255, 255, 255, 0.3);
         border-radius: 6px;

@@ -9,6 +9,11 @@ import { isDateIntersection } from '@/tools/index'
 import { getColorWithOpacityPointOne, getColor } from '../../utils'
 import { Popover, Tooltip } from 'antd'
 import {
+  setScheduleInfoDropdown,
+  setInitScheduleInfoDropdown,
+} from '@store/calendarPanle'
+import { setScheduleInfo } from '@store/schedule'
+import {
   CalendarListBox,
   CalendarListItem,
   DateBox,
@@ -117,6 +122,20 @@ const CalendarList: React.FC<CalendarListProps> = props => {
               <TimeItem
                 key={idx}
                 color={getColorWithOpacityPointOne(ele.color)}
+                onClick={() => {
+                  console.log('ele.schedule_id----', ele.schedule_id)
+                  disPatch(setInitScheduleInfoDropdown({ schedule_id: 0 }))
+                  setTimeout(() => {
+                    disPatch(
+                      setScheduleInfoDropdown({
+                        visible: true,
+                        schedule_id: ele.schedule_id,
+                      }),
+                    )
+                  }, 0)
+
+                  disPatch(setScheduleInfo(void 0))
+                }}
               >
                 <Dot color={getColor(ele.color)}></Dot>
                 <span className={dateClass}>
