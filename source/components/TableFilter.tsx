@@ -20,7 +20,21 @@ import { setFilterKeys } from '@store/project'
 import { saveValue } from '@store/view'
 import MoreSelect from './MoreSelect'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
-import { MySpan } from './AllSide/LogSide'
+
+const MySpan = styled.div`
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  color: var(--neutral-n2);
+  border-radius: 6px 6px 6px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    /* background: var(--hover-d1); */
+    color: var(--primary-d2);
+  }
+`
 
 const Wrap = styled.div({
   display: 'flex',

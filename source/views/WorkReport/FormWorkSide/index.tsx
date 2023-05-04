@@ -5,7 +5,6 @@
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
-import AddFormWork from '@/components/AllSide/FormWorkSide/AddFormWork'
 import {
   setActiveItem,
   setEditSave,
@@ -29,6 +28,7 @@ import { upDateTemplate, createTemplate } from '@/services/formwork'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { Tooltip } from 'antd'
+import AddFormWork from './AddFormWork'
 const FormWorkSideStyle = styled.div`
   min-width: 200px;
 `

@@ -6,23 +6,39 @@
 /* eslint-disable camelcase */
 
 /* eslint-disable no-cond-assign */
-import { getStaffListAll } from '@/services/staff'
-import { LabelTitle } from '@/views/LogManagement/components/WhiteDay'
 import UploadAttach from '@/components/UploadAttach'
-import { Form, message } from 'antd'
-import { createRef, useEffect, useRef, useState } from 'react'
+import { Form } from 'antd'
+import { createRef, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonModal from './CommonModal'
 import IconFont from './IconFont'
 import { AddWrap } from './StyleCommon'
-import { uploadFileToKey } from '@/services/cos'
-import { Editor, EditorRef } from '@xyfe/uikit'
+import { Editor } from '@xyfe/uikit'
 import { uploadFile } from './CreateDemand/CreateDemandLeft'
 import { useDispatch, useSelector } from '@store/index'
 import { changeRestScroll } from '@store/scroll'
-import { getProjectMember } from '@/services/project'
 import { getIdsForAt, removeNull } from '@/tools'
 import { getMessage } from './Message'
+
+const LabelTitle = (props: any) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+      }}
+    >
+      <span
+        style={{
+          fontFamily: 'SiYuanMedium',
+          fontSize: '14px',
+        }}
+      >
+        {props.title}
+      </span>
+    </div>
+  )
+}
 
 const EditComment = (props: any) => {
   const [form] = Form.useForm()

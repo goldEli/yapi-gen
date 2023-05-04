@@ -222,20 +222,6 @@ const routes = [
           },
         ],
       },
-      {
-        path: '/LogManagement',
-        element: lazy(() => import('@/views/LogManagement')),
-        children: [
-          {
-            path: 'send/:id',
-            element: lazy(() => import('@/views/LogManagement/Send')),
-          },
-          {
-            path: 'get/:id',
-            element: lazy(() => import('@/views/LogManagement/GetDaily')),
-          },
-        ],
-      },
     ],
   },
 ]
