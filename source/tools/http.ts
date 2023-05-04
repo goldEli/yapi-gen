@@ -189,6 +189,7 @@ type ResponseData<T> = {
     | 0
     | 1
     | '00000'
+    | 'B0001'
   msg: string
   data: T
 }
