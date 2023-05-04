@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /// <reference types="vite/client" />
 declare const __VERSION__: string
-declare module 'react-resizable'
 
 interface ImportMetaEnv {
   readonly __API_BASE_URL__: string

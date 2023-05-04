@@ -5,6 +5,7 @@ import { getColor, getColorWithOpacityPointOne } from '../../utils'
 import { css } from '@emotion/css'
 import classNames from 'classnames'
 import ScheduleStripContent from './ScheduleStripContent'
+import { useSelector } from '@store/index'
 
 interface ScheduleStripProps {
   onDotMouseDown: React.MouseEventHandler<HTMLDivElement>
@@ -43,12 +44,24 @@ const ScheduleStrip: React.ForwardRefRenderFunction<
     isAcrossDay,
     isAcrossDayAndLastDay,
   } = useAllDay({ data })
+  const { calendarPanelType } = useSelector(store => store.calendarPanel)
+  const { selectedMonth, selectedWeek } = useSelector(store => store.calendar)
 
-  // 是否展示内容
-  // 如果跨天且不是第一天 不展示
+  /**
+   * 是否展示内容
+   * 如果跨天且不是第一天 不展示, but 月视图面板第一天 要展示 周视图面板第一天要展示
+   */
   const contentVisible = useMemo(() => {
+    if (isAcrossDayButNotFirstDay && calendarPanelType === 'month') {
+      const firstDay = selectedMonth?.[0]
+      return firstDay?.date === data.date
+    }
+    if (isAcrossDayButNotFirstDay && calendarPanelType === 'week') {
+      const firstDay = selectedWeek?.[0]
+      return firstDay?.date === data.date
+    }
     return !isAcrossDayButNotFirstDay
-  }, [isAcrossDayButNotFirstDay])
+  }, [isAcrossDayButNotFirstDay, data, selectedMonth, selectedWeek])
 
   // 内容
   const contentElements = React.useMemo(() => {

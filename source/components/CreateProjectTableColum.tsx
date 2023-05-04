@@ -150,11 +150,10 @@ export const useDynamicColumns = (state: any) => {
                   isName
                   isClose={record.status?.is_end === 1}
                   onClick={() => state.onClickItem(record)}
-                  maxWidth={
-                    state.isTree ? 500 - (Number(record.level) - 1) * 24 : 500
-                  }
+                  // maxWidth={
+                  //   state.isTree ? 300 - (Number(record.level) - 1) * 24 : 300
+                  // }
                 >
-                  {/* {hight?<TableColorText text={text} />:text} */}
                   <TableColorText text={text} />
                 </ListNameWrap>
               </Tooltip>

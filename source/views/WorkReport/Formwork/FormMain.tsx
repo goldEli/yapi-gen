@@ -302,6 +302,29 @@ const FormMain = (props: FormType) => {
     }
     dispatch(setErr(true))
   }
+  const MonthJudgeTime = () => {
+    if (startTime.v1 > endTime.v1) {
+      getMessage({ msg: t('formWork.msg10'), type: 'warning' })
+      dispatch(setErrMsg(t('formWork.msg10')))
+      dispatch(setErr(false))
+      return
+    } else if (startTime.v1 === endTime.v1) {
+      if (startTime.v2 > endTime.v2) {
+        getMessage({ msg: t('formWork.msg10'), type: 'warning' })
+        dispatch(setErrMsg(t('formWork.msg10')))
+        dispatch(setErr(false))
+        return
+      } else if (startTime.v2 === endTime.v2) {
+        if (startTime.v3 > endTime.v3) {
+          getMessage({ msg: t('formWork.msg10'), type: 'warning' })
+          dispatch(setErrMsg(t('formWork.msg10')))
+          dispatch(setErr(false))
+          return
+        }
+      }
+    }
+    dispatch(setErr(true))
+  }
   // 时间组件选择后赋值，在判断时间是否合格
   const getValues = (
     type: string,
@@ -344,6 +367,8 @@ const FormMain = (props: FormType) => {
       dayJudgeTime()
     } else if (props.type === 'week' && !onece) {
       WeekJudgeTime()
+    } else if (props.type === 'month' && !onece) {
+      MonthJudgeTime()
     }
   }
   return (
