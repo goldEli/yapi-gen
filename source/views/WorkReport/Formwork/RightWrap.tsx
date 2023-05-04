@@ -365,11 +365,6 @@ const RightFormWork = () => {
     }
     dispatch(setEditSave(true))
   }
-
-  useEffect(() => {
-    console.log(9999999)
-  }, [])
-
   const getBtn = () => {
     // 编辑的两个tabsd 情况都出现保存，新增编辑权限中出现
     if (editSave && activeItem?.id) {

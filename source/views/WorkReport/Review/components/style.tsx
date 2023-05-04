@@ -223,12 +223,17 @@ export const Content = styled.div<{ isReview?: boolean }>`
 `
 
 export const ContentHeadWrap = styled.div`
+  width: 100%;
   height: 44px;
   display: flex;
   margin-bottom: 24px;
   flex-direction: column;
   justify-content: center;
   .titleText {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     height: 24px;
     font-size: 16px;
     font-family: SiYuanMedium;

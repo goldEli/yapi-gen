@@ -247,12 +247,12 @@ const Addperson = (props: Props) => {
   const getImg = (item: any) => {
     if (
       item.target_value?.avatar &&
-      item.target_value?.avatar !== 3 &&
-      item.target_value?.avatar !== 2 &&
-      item.target_value?.avatar !== 4
+      item.target_type !== 3 &&
+      item.target_typer !== 2 &&
+      item.target_type !== 4
     ) {
       return <img src={item?.target_value?.avatar} />
-    } else if (item.target_value?.avatar === 2) {
+    } else if (item.target_value?.avatar === 3 || item.target_type === 3) {
       return (
         <DefalutIcon bgc="rgba(152, 172, 224, 1)">
           <CommonIconFont
@@ -262,7 +262,7 @@ const Addperson = (props: Props) => {
           />
         </DefalutIcon>
       )
-    } else if (item.target_value?.avatar === 4) {
+    } else if (item.target_value?.target_type === 2 || item.target_type === 2) {
       return (
         <DefalutIcon bgc="rgba(121, 209, 193, 1)">
           <CommonIconFont
@@ -289,6 +289,7 @@ const Addperson = (props: Props) => {
   useEffect(() => {
     setPersonData(fitlerDataList(props.person))
   }, [props.person])
+  console.log(props.person, 'personData')
   return (
     <>
       <AddPersonText>
@@ -321,7 +322,9 @@ const Addperson = (props: Props) => {
         {personData?.map((el: any) => (
           <Col key={el.id}>
             {getImg(el)}
-            <NameText>{el?.target_value?.name}</NameText>
+            <NameText>
+              {el?.target_value?.name}--{el.target_type}
+            </NameText>
             <CommonIconFont
               onClick={() => delPerson(el)}
               type="close"
