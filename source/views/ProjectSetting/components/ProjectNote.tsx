@@ -326,8 +326,6 @@ const ProjectSet = () => {
     return name
   }
   const init2 = async () => {
-    console.log(123)
-
     setDataList([
       {
         id: 108,

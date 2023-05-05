@@ -194,9 +194,7 @@ const DemandBox = () => {
   const projectId = paramsData.id
   const { type } = paramsData
   const { demandId } = paramsData
-  const { projectInfo, colorList, projectInfoValues } = useSelector(
-    store => store.project,
-  )
+  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
   const { demandInfo, isUpdateDemand } = useSelector(store => store.demand)
   const { currentMenu } = useSelector(store => store.user)
   const navigate = useNavigate()
@@ -467,6 +465,7 @@ const DemandBox = () => {
   )
 
   const content = () => {
+    console.log(1)
     if (!type) {
       return (
         <DemandMain
@@ -478,6 +477,7 @@ const DemandBox = () => {
       )
     }
 
+    console.log(2)
     return (
       <>
         <CommonModal
@@ -687,6 +687,8 @@ const DemandBox = () => {
   if (!loadingState) {
     return <Loading />
   }
+
+  console.log(33)
 
   return (
     <PermissionWrap
