@@ -42,6 +42,7 @@ import {
   setScheduleModal,
   setSubscribeModal,
 } from '@store/calendar'
+import { setIsAddOrDelete } from '@store/schedule'
 import { setIsRefresh } from '@store/user'
 import { setWriteReportModal } from '@store/workReport'
 import { getMessage } from '@/components/Message'
@@ -298,6 +299,7 @@ const HeaderRight = () => {
         return
       case 'schedule':
         dispatch(setScheduleModal({ visible: true, params: { isAll: true } }))
+        dispatch(setIsAddOrDelete(false))
         return
       case 'calendar':
         dispatch(setCalendarModal({ visible: true }))

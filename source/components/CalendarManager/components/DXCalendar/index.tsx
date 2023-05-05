@@ -9,10 +9,11 @@ import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
 import { useDispatch, useSelector } from '@store/index'
 import { setCheckedTime } from '@store/calendar'
-import {setCalenderTypeValue} from '@store/calendarPanle'
+import { setCalenderTypeValue } from '@store/calendarPanle'
 import { getNowDate } from '@/tools'
 import classNames from 'classnames'
 import useWeekStart from '../../hooks/useWeekStart'
+import { formatYYYYMMDD } from '../../config'
 dayjs.extend(dayLocaleData)
 const CalendarHeader = styled.div`
   width: 100%;
@@ -85,8 +86,8 @@ const DXCalendar: React.FC = () => {
       fullscreen={false}
       value={dayjs(checkedTime ? checkedTime : getNowDate())}
       onSelect={value => {
-        dispatch(setCheckedTime(value.format('YYYY-MM-DD')))
-        dispatch(setCalenderTypeValue(value.format('YYYY-MM-DD')))
+        dispatch(setCheckedTime(value.format(formatYYYYMMDD)))
+        dispatch(setCalenderTypeValue(value.format(formatYYYYMMDD)))
       }}
       onPanelChange={(value, mode) => {
         console.log(value.format('YYYY-MM-DD'), mode)
@@ -95,11 +96,11 @@ const DXCalendar: React.FC = () => {
         const today =
           dayjs().format('DD/MM/YYYY') === dayjs(date).format('DD/MM/YYYY')
         const hasSchedule = Object.keys(leftViewScheduleList).includes(
-          dayjs(date).format('YYYY-MM-DD'),
+          dayjs(date).format(formatYYYYMMDD),
         )
         const selectedDate =
-          dayjs(checkedTime).format('YYYY-MM-DD') ===
-          dayjs(date).format('YYYY-MM-DD')
+          dayjs(checkedTime).format(formatYYYYMMDD) ===
+          dayjs(date).format(formatYYYYMMDD)
         return (
           <DayBox
             className={classNames({
