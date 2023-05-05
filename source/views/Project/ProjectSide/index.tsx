@@ -145,8 +145,15 @@ const MoreProjectSide = (props: Props) => {
       getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
       onUpdateGroup(groupId === operationObj?.id)
       // 如果分组只剩最后一个分组,默认切换到我参与的，反之切换到分组第一个
+
       if (groupList?.list?.length === 1) {
-        onChangeType(0)
+        dispatch(changeTypeId(0))
+      } else {
+        const myid = groupList?.list.filter(
+          (i: any) => i.id !== operationObj?.id,
+        )[0]
+
+        dispatch(changeGroupId(myid.id))
       }
     } catch (error) {
       //

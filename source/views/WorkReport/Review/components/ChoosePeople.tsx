@@ -38,6 +38,17 @@ const DashedWrap = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  &:hover {
+    border-color: var(--primary-d2);
+  }
+
+  &:hover .icon {
+    color: var(--primary-d2);
+  }
+  .icon {
+    font-size: 16px;
+    color: var(--neutral-n3);
+  }
 `
 
 const ChoosePeople = (props: any) => {

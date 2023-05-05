@@ -13,7 +13,8 @@ import Bgc from './img/bgc.png'
 import { templateLatelyList } from '@/services/report'
 import moment from 'moment'
 import { setWriteReportModal } from '@store/workReport'
-import { Tooltip } from 'antd'
+import { Spin, Tooltip } from 'antd'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
 
 interface Props {
   isVisible: boolean
@@ -234,113 +235,118 @@ const WriteReport = (props: Props) => {
                 }))}
             />
           </HeaderWrap>
-          <MainWrap>
-            {dataList?.usedTemplate?.length ? (
-              <>
-                <TitleWrap>{t('report.list.recent')}</TitleWrap>
-                <WrapBox>
-                  {dataList.usedTemplate?.map((item: any) => (
-                    <ColWrap key={item.id}>
-                      <CarWrap
-                        disabled={
-                          !!(
-                            item.is_current_cycle_used &&
-                            item.is_cycle_limit === 1
-                          ) || !item.is_write
-                        }
-                        onClick={() => {
-                          if (
-                            !(
+          <Spin
+            spinning={!dataList?.usedTemplate && !dataList?.usedTemplate}
+            indicator={<NewLoadingTransition />}
+          >
+            <MainWrap>
+              {dataList?.usedTemplate?.length ? (
+                <>
+                  <TitleWrap>{t('report.list.recent')}</TitleWrap>
+                  <WrapBox>
+                    {dataList.usedTemplate?.map((item: any) => (
+                      <ColWrap key={item.id}>
+                        <CarWrap
+                          disabled={
+                            !!(
                               item.is_current_cycle_used &&
                               item.is_cycle_limit === 1
-                            ) &&
-                            item.is_write
-                          ) {
-                            setTemplateId(item.id)
-                            setVisibleEdit(true)
-                            dispatch(setWriteReportModal({ visible: false }))
+                            ) || !item.is_write
                           }
-                        }}
-                      >
-                        <img src={Bgc} />
-                        <CarItem>
-                          <Tooltip placement="topLeft" title={item.name}>
-                            <CarTitle>{item.name}</CarTitle>
-                          </Tooltip>
-                          {item.template_content_configs
-                            ?.filter((tcc: any, i: number) => i < 2)
-                            .map((content: any) => (
-                              <FormWrap key={content.id}>
-                                {getContentHtml(content.name, content.type)}
-                              </FormWrap>
-                            ))}
-                        </CarItem>
-                      </CarWrap>
-                      {item.used_created_at ? (
-                        <TimeText>
-                          {moment(item.used_created_at).format('M月D日')}
-                          {t('report.list.haveSubmit')}
-                        </TimeText>
-                      ) : null}
-                    </ColWrap>
-                  ))}
-                </WrapBox>
-              </>
-            ) : null}
+                          onClick={() => {
+                            if (
+                              !(
+                                item.is_current_cycle_used &&
+                                item.is_cycle_limit === 1
+                              ) &&
+                              item.is_write
+                            ) {
+                              setTemplateId(item.id)
+                              setVisibleEdit(true)
+                              dispatch(setWriteReportModal({ visible: false }))
+                            }
+                          }}
+                        >
+                          <img src={Bgc} />
+                          <CarItem>
+                            <Tooltip placement="topLeft" title={item.name}>
+                              <CarTitle>{item.name}</CarTitle>
+                            </Tooltip>
+                            {item.template_content_configs
+                              ?.filter((tcc: any, i: number) => i < 2)
+                              .map((content: any) => (
+                                <FormWrap key={content.id}>
+                                  {getContentHtml(content.name, content.type)}
+                                </FormWrap>
+                              ))}
+                          </CarItem>
+                        </CarWrap>
+                        {item.used_created_at ? (
+                          <TimeText>
+                            {moment(item.used_created_at).format('M月D日')}
+                            {t('report.list.haveSubmit')}
+                          </TimeText>
+                        ) : null}
+                      </ColWrap>
+                    ))}
+                  </WrapBox>
+                </>
+              ) : null}
 
-            {dataList?.otherTemplate?.length ? (
-              <>
-                <TitleWrap>{t('report.list.other')}</TitleWrap>
-                <WrapBox>
-                  {dataList.otherTemplate.map((item: any) => (
-                    <ColWrap key={item.id}>
-                      <CarWrap
-                        disabled={
-                          !!(
-                            item.is_current_cycle_used &&
-                            item.is_cycle_limit === 1
-                          ) || !item.is_write
-                        }
-                        onClick={() => {
-                          if (
-                            !(
+              {dataList?.otherTemplate?.length ? (
+                <>
+                  <TitleWrap>{t('report.list.other')}</TitleWrap>
+                  <WrapBox>
+                    {dataList.otherTemplate.map((item: any) => (
+                      <ColWrap key={item.id}>
+                        <CarWrap
+                          disabled={
+                            !!(
                               item.is_current_cycle_used &&
                               item.is_cycle_limit === 1
-                            ) &&
-                            item.is_write
-                          ) {
-                            setTemplateId(item.id)
-                            setVisibleEdit(true)
-                            dispatch(setWriteReportModal({ visible: false }))
+                            ) || !item.is_write
                           }
-                        }}
-                      >
-                        <img src={Bgc} />
-                        <CarItem>
-                          <Tooltip placement="topLeft" title={item.name}>
-                            <CarTitle>{item.name}</CarTitle>
-                          </Tooltip>
-                          {item.template_content_configs
-                            ?.filter((tcc: any, i: number) => i < 2)
-                            .map((content: any) => (
-                              <FormWrap key={content.id}>
-                                {getContentHtml(content.name, content.type)}
-                              </FormWrap>
-                            ))}
-                        </CarItem>
-                      </CarWrap>
-                      {item.used_created_at ? (
-                        <TimeText>
-                          {item.used_created_at}
-                          {t('report.list.haveSubmit')}
-                        </TimeText>
-                      ) : null}
-                    </ColWrap>
-                  ))}
-                </WrapBox>
-              </>
-            ) : null}
-          </MainWrap>
+                          onClick={() => {
+                            if (
+                              !(
+                                item.is_current_cycle_used &&
+                                item.is_cycle_limit === 1
+                              ) &&
+                              item.is_write
+                            ) {
+                              setTemplateId(item.id)
+                              setVisibleEdit(true)
+                              dispatch(setWriteReportModal({ visible: false }))
+                            }
+                          }}
+                        >
+                          <img src={Bgc} />
+                          <CarItem>
+                            <Tooltip placement="topLeft" title={item.name}>
+                              <CarTitle>{item.name}</CarTitle>
+                            </Tooltip>
+                            {item.template_content_configs
+                              ?.filter((tcc: any, i: number) => i < 2)
+                              .map((content: any) => (
+                                <FormWrap key={content.id}>
+                                  {getContentHtml(content.name, content.type)}
+                                </FormWrap>
+                              ))}
+                          </CarItem>
+                        </CarWrap>
+                        {item.used_created_at ? (
+                          <TimeText>
+                            {item.used_created_at}
+                            {t('report.list.haveSubmit')}
+                          </TimeText>
+                        ) : null}
+                      </ColWrap>
+                    ))}
+                  </WrapBox>
+                </>
+              ) : null}
+            </MainWrap>
+          </Spin>
         </div>
       </CommonModal>
       {/* 补交汇报 */}

@@ -43,6 +43,7 @@ import {
 import ScheduleInfoDropdown from '@/components/CalendarManager/components/ScheduleInfoDropdown'
 import { mapToArray } from '@/tools'
 import NoData from '@/components/NoData'
+import { formatYYYYMMDD } from '@/components/CalendarManager/config'
 interface CalendarListProps {}
 const ScheduleSearch: React.FC<CalendarListProps> = props => {
   const CalendarListBoxRef = useRef<HTMLDivElement>(null)
@@ -144,6 +145,7 @@ const ScheduleSearch: React.FC<CalendarListProps> = props => {
                             setScheduleInfoDropdown({
                               visible: true,
                               schedule_id: ele.schedule_id,
+                              show_date: dayjs(ele.date).format(formatYYYYMMDD),
                             }),
                           )
                         }, 0)
