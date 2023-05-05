@@ -33,7 +33,7 @@ const DashedWrap = styled.div`
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  border: 1px dashed var(--neutral-n3);
+  border: 2px dashed var(--neutral-n3);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -197,6 +197,10 @@ const ChoosePeople = (props: any) => {
               <IconFont
                 className="icon"
                 type="plus"
+                style={{
+                  color: 'var(--neutral-n3)',
+                  fontSize: '16px',
+                }}
                 onClick={() => setIsOpen(true)}
               />
             </DashedWrap>
