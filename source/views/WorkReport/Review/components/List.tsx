@@ -388,7 +388,7 @@ const List = () => {
       align: 'center',
       fixed: 'right',
       render: (_: string, record: any) => {
-        return record?.is_submitter_edit === 1 ? (
+        return record?.is_submitter_edit === 1 && !record?.delete_time ? (
           <span
             onClick={() => {
               setVisibleEdit(true)
