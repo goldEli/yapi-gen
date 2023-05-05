@@ -13,7 +13,7 @@ import {
   // moveMonthSchedule,
   startMoveMonthSchedule,
 } from '@store/calendarPanle'
-import { setScheduleListModal } from '@store/schedule'
+import { setScheduleListModal, setIsAddOrDelete } from '@store/schedule'
 
 interface DayItemProps {
   idx: number
@@ -117,6 +117,7 @@ const DayItem: React.FC<DayItemProps> = props => {
       }),
     )
     dispatch(setSelectedDayInMonth(info?.datetime))
+    dispatch(setIsAddOrDelete(false))
   }
 
   const onMouseEnter = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {

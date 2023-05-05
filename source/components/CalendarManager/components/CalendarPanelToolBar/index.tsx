@@ -5,7 +5,7 @@ import {
   setCalendarPanelType,
   setScheduleInfoDropdown,
   clearCalenderValue,
-  setCalenderTypeValue
+  setCalenderTypeValue,
 } from '@store/calendarPanle'
 import { setCheckedTime } from '@store/calendar'
 import { useDispatch, useSelector } from '@store/index'
@@ -19,6 +19,7 @@ import InputSearch from '@/components/InputSearch'
 import { useTranslation } from 'react-i18next'
 import { clearScheduleList } from '@store/schedule'
 import { TodayButton } from '../../styles'
+import { formatYYYYMMDD } from '../../config'
 dayjs.extend(weekOfYear)
 
 interface CalendarPanelToolBarProps {
@@ -39,20 +40,20 @@ const Box = styled.div`
   flex-shrink: 0;
 `
 const TextBox = styled.div`
-margin: 0px 20px;
-font-size: var(--font16);
-color: var(--neutral-n1-d1);
+  margin: 0px 20px;
+  font-size: var(--font16);
+  color: var(--neutral-n1-d1);
 `
 const IconBox = styled.div`
-display: flex;
-align-items: center;
-cursor: pointer;
-span {
-  font-size: var(--font16);
-  &:hover {
-    color: var(--primary-d2);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  span {
+    font-size: var(--font16);
+    &:hover {
+      color: var(--primary-d2);
+    }
   }
-}
 `
 const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
   const navigate = useNavigate()
@@ -83,17 +84,14 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
     ])
     setDateText(maps.get(calendarPanelType) as string)
     dispatch(setCheckedTime(calenderTypeValue))
-  }, [
-    calendarPanelType,
-    calenderTypeValue,
-  ])
+  }, [calendarPanelType, calenderTypeValue])
 
   const iconTypeRef = useRef<number>(0)
 
   const dispatch = useDispatch()
 
   const changeCalendarDate = () => {
-    const { current } = iconTypeRef;
+    const { current } = iconTypeRef
     let newCalendarPanelType = calendarPanelType
     if (newCalendarPanelType === 'list') {
       newCalendarPanelType = 'month'
@@ -101,21 +99,24 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
     if (current === 1) {
       dispatch(
         setCalenderTypeValue(
-          dayjs(calenderTypeValue).add(1, newCalendarPanelType).format('YYYY-MM-DD'),
-        )
+          dayjs(calenderTypeValue)
+            .add(1, newCalendarPanelType)
+            .format(formatYYYYMMDD),
+        ),
       )
     } else if (current === -1) {
       dispatch(
         setCalenderTypeValue(
-          dayjs(calenderTypeValue).subtract(1, newCalendarPanelType).format('YYYY-MM-DD'),
-        )
+          dayjs(calenderTypeValue)
+            .subtract(1, newCalendarPanelType)
+            .format(formatYYYYMMDD),
+        ),
       )
     } else {
-      dispatch(setCalenderTypeValue(dayjs().format('YYYY-MM-DD')))
+      dispatch(setCalenderTypeValue(dayjs().format(formatYYYYMMDD)))
     }
-
   }
-  
+
   const prevYearClick = () => {
     iconTypeRef.current = -1
     changeCalendarDate()
@@ -166,7 +167,7 @@ const CalendarPanelToolBar: React.FC<CalendarPanelToolBarProps> = props => {
         <InputSearch
           placeholder={t('calendarManager.search_schedule')}
           width={184}
-          onChangeSearch={value => { }}
+          onChangeSearch={value => {}}
           onFocus={() => {
             navigate('/ScheduleSearch')
           }}

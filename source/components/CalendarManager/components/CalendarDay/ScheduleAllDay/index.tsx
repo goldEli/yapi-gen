@@ -3,6 +3,7 @@ import {
   setQuickCreateScheduleModel,
   setScheduleInfoDropdown,
 } from '@store/calendarPanle'
+import { setIsAddOrDelete } from '@store/schedule'
 import { useDispatch, useSelector } from '@store/index'
 import React, { useEffect, useMemo, useState } from 'react'
 import useScheduleAllDayList from '../hooks/useScheduleAllDayList'
@@ -133,6 +134,7 @@ const ScheduleAllDay: React.FC<ScheduleAllDayProps> = props => {
               y: 0,
             }),
           )
+          dispatch(setIsAddOrDelete(false))
         }}
       >
         <ScheduleListScroll>
