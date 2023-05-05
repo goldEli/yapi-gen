@@ -97,9 +97,11 @@ export const category = createSlice({
       state.getProjectFieIdsData = action.payload
     },
     setCategoryConfigDataList: (state: any, action) => {
-      state.getCategoryConfigDataList.configDataList = []
-      state.getCategoryConfigDataList.isFoldT = []
-      state.getCategoryConfigDataList.isFoldF = []
+      state.getCategoryConfigDataList = {
+        configDataList: [],
+        isFoldT: [],
+        isFoldF: [],
+      }
     },
   },
   extraReducers(builder) {
@@ -109,13 +111,11 @@ export const category = createSlice({
     })
     builder.addCase(getCategoryConfigList.fulfilled, (state, action) => {
       const data = action.payload
-      state.getCategoryConfigDataList.configDataList = data
-      state.getCategoryConfigDataList.isFoldT = data.filter(
-        (el: any) => el.isFold === 2,
-      )
-      state.getCategoryConfigDataList.isFoldF = data.filter(
-        (el: any) => el.isFold === 1,
-      )
+      state.getCategoryConfigDataList = {
+        configDataList: data,
+        isFoldT: data.filter((el: any) => el.isFold === 2),
+        isFoldF: data.filter((el: any) => el.isFold === 1),
+      }
     })
     builder.addCase(getProjectFieIds.fulfilled, (state, action) => {
       action.payload.data

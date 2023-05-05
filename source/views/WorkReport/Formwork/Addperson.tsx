@@ -289,7 +289,6 @@ const Addperson = (props: Props) => {
   useEffect(() => {
     setPersonData(fitlerDataList(props.person))
   }, [props.person])
-  console.log(props.person, 'personData')
   return (
     <>
       <AddPersonText>
