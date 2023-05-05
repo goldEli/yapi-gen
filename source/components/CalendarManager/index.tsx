@@ -23,6 +23,7 @@ const CalendarManager: React.FC<CalendarManagerLayoutProps> = props => {
     store => store.calendar,
   )
   const { isRefresh } = useSelector(store => store.user)
+  const { isAddOrDelete } = useSelector(state => state.schedule)
   const dispatch = useDispatch()
   // 初始化获取当前是设置页还是看板页
   useEffect(() => {
@@ -51,7 +52,16 @@ const CalendarManager: React.FC<CalendarManagerLayoutProps> = props => {
     }
     dispatch(getLeftCalendarDaysOfMonthList(params))
   }, [checkedTime, checkedCalendarList])
-
+  useEffect(() => {
+    let params = {
+      year: dayjs(checkedTime).year(),
+      month: dayjs(checkedTime).month() + 1,
+      calendar_ids: checkedCalendarList.map(item => item.calendar_id),
+    }
+    if (isAddOrDelete) {
+      dispatch(getLeftCalendarDaysOfMonthList(params))
+    }
+  }, [isAddOrDelete])
   return (
     <CalenderBox>
       <CreateSchedule />

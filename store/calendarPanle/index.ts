@@ -1,3 +1,4 @@
+import { formatYYYYMMDD } from '@/components/CalendarManager/config'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import dayjs, { Dayjs } from 'dayjs'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
@@ -22,9 +23,9 @@ type SliceState = {
     schedule_id: Model.Schedule.Info['schedule_id']
     show_date: string | number
   }
-  calenderYearType: Model.Calendar.CalendarYearType,
-  calenderListValue:string,
-  calenderTypeValue:string,
+  calenderYearType: Model.Calendar.CalendarYearType
+  calenderListValue: string
+  calenderTypeValue: string
   // 月视图拖拽日程时，控制显示
   monthMoveScheduleActiveInfo: {
     startSchedule?: Model.Schedule.Info
@@ -66,8 +67,8 @@ const initialState: SliceState = {
     schedule_id: 0,
     show_date: '',
   },
-  calenderTypeValue: dayjs().format('YYYY-M-D'),
-  calenderListValue:dayjs().format('YYYY-M-D'),
+  calenderTypeValue: dayjs().format(formatYYYYMMDD),
+  calenderListValue: dayjs().format(formatYYYYMMDD),
   calenderYearType: 0,
   monthMoveScheduleActiveInfo: defaultMonthMoveScheduleActiveInfo,
   calendarLoading: true,
@@ -194,7 +195,7 @@ const slice = createSlice({
     ) {
       state.calenderListValue = action.payload
     },
-   
+
     setCalenderYearType(
       state,
       action: PayloadAction<SliceState['calenderYearType']>,
@@ -217,9 +218,9 @@ const slice = createSlice({
       state.calenderTypeValue = initialState.calenderTypeValue
       state.calenderListValue = initialState.calenderListValue
     },
-    setCalenderTypeValue(state,action){
-      state.calenderTypeValue=action.payload
-    }
+    setCalenderTypeValue(state, action) {
+      state.calenderTypeValue = action.payload
+    },
   },
 })
 
@@ -240,7 +241,7 @@ export const {
   setCalenderLoading,
   setInitScheduleInfoDropdown,
   clearCalenderValue,
-  setCalenderTypeValue
+  setCalenderTypeValue,
 } = slice.actions
 
 export default calendarPanel

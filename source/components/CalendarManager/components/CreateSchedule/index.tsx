@@ -45,7 +45,7 @@ import CreateVisualization from './CreateVisualization'
 import { modifySchedule, saveSchedule } from '@store/schedule/schedule.thunk'
 import { useTranslation } from 'react-i18next'
 import { getScheduleInfo } from '@/services/schedule'
-import { setVisualizationTime } from '@store/schedule'
+import { setVisualizationTime, setIsAddOrDelete } from '@store/schedule'
 import { getMessage } from '@/components/Message'
 
 interface DefaultTime {
@@ -225,6 +225,7 @@ const CreateSchedule = () => {
     } else {
       await dispatch(saveSchedule(resultParams))
       message.success(t('calendarManager.createSuccess'))
+      dispatch(setIsAddOrDelete(true))
       if (next) {
         dispatch(
           setScheduleModal({

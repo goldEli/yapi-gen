@@ -34,6 +34,7 @@ import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import moment from 'moment'
 import { colorMap } from '../../config'
 import { setQuickCreateScheduleModel } from '@store/calendarPanle'
+import { setIsAddOrDelete } from '@store/schedule'
 import { setScheduleModal } from '@store/calendar'
 import { saveSchedule } from '@store/schedule/schedule.thunk'
 import { EventBus } from '../../eventBus'
@@ -239,6 +240,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
     }
     await dispatch(saveSchedule(params))
     message.success(t('calendarManager.createSuccess'))
+    dispatch(setIsAddOrDelete(true))
     onClose()
   }
 

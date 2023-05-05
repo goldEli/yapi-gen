@@ -197,9 +197,9 @@ const GlobalStyle = () => {
     .ant-input-focused {
       box-shadow: inherit !important;
     }
-    .ant-progress-text {
+    /* .ant-progress-text {
       color: var(--neutral-n2) !important;
-    }
+    } */
     .ant-form-item {
       padding-top: 2px !important;
     }
