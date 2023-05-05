@@ -216,20 +216,14 @@ const FormWorkSide = () => {
         }),
       )
       dispatch(setFillingRequirements(claerConfig))
-    } else {
-      dispatch(
-        setActiveItem({ id: res?.payload[0]?.id, name: res?.payload[0]?.name }),
-      )
     }
   }
   useEffect(() => {
     getDataList()
     // 汇报过来直接打开弹窗
     paramsData?.isOpen && paramsData?.type === 'report' && setIsVisible(true)
-    const item: any = dataList.find((el: any, index: any) => index === 0)
-    dispatch(setActiveItem(item))
   }, [])
-  const itemActive = debounce((el: any, index: any) => {
+  const itemActive = debounce(async (el: any, index: any) => {
     if (!editSave) {
       setDelIsVisible(true)
       setActiveItems(el)

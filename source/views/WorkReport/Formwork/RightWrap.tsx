@@ -6,7 +6,7 @@
 import CommonButton from '@/components/CommonButton'
 import styled from '@emotion/styled'
 import { Input, message, Spin } from 'antd'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import PermissionConfig from './PermissionConfig'
 import EditWork from './EditWork'
 import PreviewDialog from '@/components/FormWork/PreviewDialog'
@@ -168,14 +168,13 @@ const RightFormWork = () => {
   } = useSelector(store => store.formWork)
   const getTemplateDetail = async () => {
     setIsSpinning(true)
-    await dispatch(templateDetail({ id: activeItem.id, is_edit: 1 }))
+    activeItem.id &&
+      (await dispatch(templateDetail({ id: activeItem.id, is_edit: 1 })))
     setIsSpinning(false)
   }
   useEffect(() => {
-    if (activeItem) {
-      setValue(activeItem.name)
-      activeItem?.id && getTemplateDetail()
-    }
+    activeItem?.name && setValue(activeItem.name)
+    activeItem?.id && getTemplateDetail()
     setIsActive(0)
     return () => {
       dispatch(setEditSave(true))
@@ -189,7 +188,7 @@ const RightFormWork = () => {
     const res = await dispatch(getTemplateList())
     if (res.payload?.length >= 1) {
       dispatch(
-        setActiveItem({ id: res.payload[0].id, name: res.payload[0].name }),
+        setActiveItem({ id: res?.payload[0]?.id, name: res?.payload[0]?.name }),
       )
     } else {
       // 初始化

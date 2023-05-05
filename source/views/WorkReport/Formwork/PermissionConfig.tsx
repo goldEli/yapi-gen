@@ -326,6 +326,7 @@ const PermissionConfig = (props: PropsType) => {
         item.user_type === 1 &&
         (item.key === 'all' || item.target_value?.key === 'all'),
     )
+
     dispatch(
       setReportContent({
         is_all_view: v3 ? 1 : 2,
