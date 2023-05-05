@@ -66,21 +66,11 @@ const TableWrap = styled(Table)({
   },
 })
 
-const TableWrapBottom = styled(Table)<{ tableLength?: any }>(
-  {
-    '.ant-table-cell': {
-      padding: 0,
-    },
+const TableWrapBottom = styled(Table)({
+  '.ant-table-cell': {
+    padding: 0,
   },
-  ({ tableLength }) => ({
-    '.ant-table-tbody .ant-table-row:nth-child(odd) td': {
-      backgroundColor:
-        tableLength % 2 === 0
-          ? 'var(--neutral-n6-d1)'
-          : 'var(--neutral-white-d2)',
-    },
-  }),
-)
+})
 
 const LabelWrap = styled.div({
   color: 'var(--neutral-n1-d1)',
@@ -998,7 +988,6 @@ const SetConfig = (props: Props) => {
               />
             )}
             <TableWrapBottom
-              tableLength={dataSource?.length}
               pagination={false}
               dataSource={dataSource?.filter(
                 (i: any) => i.content === 'comment',
