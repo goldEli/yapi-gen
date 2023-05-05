@@ -97,7 +97,7 @@ const TableQuickEdit = (props: Props) => {
   const info = useGetloginInfo()
   const [t] = useTranslation()
   const [isShowControl, setIsShowControl] = useState(false)
-  const inputRef = useRef<any>(null)
+  const inputRef = useRef<HTMLInputElement>()
   const [searchParams] = useSearchParams()
   const [selectTagList, setSelectTagList] = useState<any>([])
   const { projectInfo, projectInfoValues } = useSelector(store => store.project)
