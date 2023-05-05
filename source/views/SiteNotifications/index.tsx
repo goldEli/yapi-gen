@@ -57,7 +57,7 @@ const Index = () => {
 
       <div style={{ flex: '1' }}>
         <Outlet />
-        <ListSort>{childrenToRender}</ListSort>
+        {/* <ListSort>{childrenToRender}</ListSort> */}
       </div>
     </Content>
   )
