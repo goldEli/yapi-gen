@@ -173,6 +173,7 @@ const RightFormWork = () => {
     setIsSpinning(false)
   }
   useEffect(() => {
+    console.log(activeItem, 'activeItem')
     activeItem?.name && setValue(activeItem.name)
     activeItem?.id && getTemplateDetail()
     setIsActive(0)

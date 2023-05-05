@@ -185,6 +185,10 @@ const FormWorkSide = () => {
   }
   const getDataList = async () => {
     const res = await dispatch(getTemplateList())
+    console.log(res.payload, 'res.payload')
+    dispatch(
+      setActiveItem({ name: res?.payload[0]?.name, id: res?.payload[0]?.id }),
+    )
     if (res.payload?.length < 1) {
       const claerConfig: any = {
         day: aWeekDataList,
