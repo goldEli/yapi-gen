@@ -5,7 +5,7 @@
 /* eslint-disable no-negated-condition */
 import CommonButton from '@/components/CommonButton'
 import styled from '@emotion/styled'
-import { Input, message, Spin } from 'antd'
+import { Input, Spin } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import PermissionConfig from './PermissionConfig'
 import EditWork from './EditWork'
@@ -34,7 +34,6 @@ const RightFormWorkStyle = styled.div`
   flex: 1;
   overflow: hidden;
   overflow-y: auto;
-  /* padding-right: 24px; */
 `
 const Title = styled.div`
   padding: 24px;
@@ -124,7 +123,6 @@ export const BtnRight = styled.div`
 
 export const EditFormWorkBox = styled.div`
   margin: 20px 0 20px 24px;
-  /* border-bottom: 1px solid var(--neutral-n6-d1); */
 `
 
 const EditFormWorkStyle = styled(Input)({
@@ -172,15 +170,10 @@ const RightFormWork = () => {
     setIsSpinning(false)
   }
   useEffect(() => {
-    if (activeItem) {
-      setValue(activeItem.name)
-      activeItem?.id && getTemplateDetail()
-    }
-    setIsActive(0)
-    return () => {
-      dispatch(setEditSave(true))
-    }
+    activeItem?.name && setValue(activeItem.name)
+    activeItem?.id && getTemplateDetail()
   }, [activeItem])
+
   // 删除模板
   const deleteActiveItem = async () => {
     if (activeItem?.id) {
@@ -189,7 +182,7 @@ const RightFormWork = () => {
     const res = await dispatch(getTemplateList())
     if (res.payload?.length >= 1) {
       dispatch(
-        setActiveItem({ id: res.payload[0].id, name: res.payload[0].name }),
+        setActiveItem({ id: res?.payload[0]?.id, name: res?.payload[0]?.name }),
       )
     } else {
       // 初始化
