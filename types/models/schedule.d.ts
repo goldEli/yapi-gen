@@ -93,7 +93,7 @@ declare namespace Model.Schedule {
     permission_update: number
     permission_invite: number
     permission: number
-    is_show_replay: boolean
+    is_show_reply: boolean
   }
   type DetailInfo = Info & {
     creator?: {

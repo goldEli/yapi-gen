@@ -220,6 +220,7 @@ const List = () => {
         </NewSort>
       ),
       dataIndex: 'user',
+      key: 'name',
       render: (_: string, record: any) => {
         return (
           <div
@@ -257,7 +258,6 @@ const List = () => {
               <span
                 style={{
                   display: 'inline-block',
-                  maxWidth: 160,
                   marginRight: 5,
                   marginLeft: 8,
                   whiteSpace: 'nowrap',
@@ -265,6 +265,7 @@ const List = () => {
                   overflow: 'hidden',
                   verticalAlign: 'middle',
                 }}
+                className="controlMaxWidth"
               >
                 {String(record.user.name)}
                 {t('report.list.of')}
@@ -411,7 +412,7 @@ const List = () => {
               cursor: 'not-allowed',
             }}
           >
-            修改
+            {t('report.list.modify')}
           </span>
         )
       },

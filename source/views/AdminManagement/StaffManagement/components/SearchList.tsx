@@ -16,6 +16,7 @@ import {
   getRoleList,
 } from '@/services/staff'
 import CustomSelect from '@/components/CustomSelect'
+import { useSelector } from '@store/index'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -47,6 +48,7 @@ interface Props {
 const SearchList = (props: Props) => {
   const [t] = useTranslation()
   const [form] = Form.useForm()
+  const { isRefresh } = useSelector(store => store.user)
   const [departmentOptions, setDepartmentOptions] = useState([])
   const [positionOptions, setPositionOptions] = useState([])
   const [roleOptions, setRoleOptions] = useState([])
@@ -70,6 +72,12 @@ const SearchList = (props: Props) => {
   useEffect(() => {
     init()
   }, [])
+
+  useEffect(() => {
+    if (isRefresh) {
+      init()
+    }
+  }, [isRefresh])
 
   const confirm = async () => {
     const value = await form.validateFields()

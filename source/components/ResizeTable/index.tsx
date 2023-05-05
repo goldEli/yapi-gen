@@ -128,6 +128,7 @@ interface ResizeTableProps {
   rowSelection?: any
   onRow?(): void
   expandable?: any
+  isTree?: boolean
 }
 // 拖拽调整table
 const ResizeTable = (props: ResizeTableProps) => {
@@ -149,7 +150,7 @@ const ResizeTable = (props: ResizeTableProps) => {
       }
       setTimeout(() => {
         canRun.current = true
-      }, 1000 / 70)
+      }, 1000 / 30)
       canRun.current = false
       const nextColumns = [...cols]
       // 拖拽是调整宽度
@@ -183,6 +184,19 @@ const ResizeTable = (props: ResizeTableProps) => {
         return {
           ...col,
           onHeaderCell: (column: any) => {
+            if (column.key === 'name') {
+              const doms =
+                document.querySelectorAll<HTMLSpanElement>('.controlMaxWidth')
+
+              if (doms) {
+                doms.forEach(dom => {
+                  const level = Number(dom.className.split('level')[1])
+                  dom.style.maxWidth = props.isTree
+                    ? `${column.width - level * 24}px`
+                    : `${column.width}px`
+                })
+              }
+            }
             return {
               width: column.width,
               onResize: handleResize(index),
@@ -191,7 +205,7 @@ const ResizeTable = (props: ResizeTableProps) => {
         }
       }),
     )
-  }, [cols])
+  }, [cols, props.dataSource])
 
   useLayoutEffect(() => {
     if (dataWrapRef.current) {

@@ -600,11 +600,12 @@ const ListNameWrap = styled.div<{
     alignItems: 'center',
     padding: '10px 0px',
     cursor: 'pointer',
-    span: {
+    '.controlMaxWidth': {
       textOverflow: 'ellipsis',
       whiteSpace: 'nowrap',
       overflow: 'hidden',
       display: 'inline-block',
+      maxWidth: '400px',
     },
     '&: hover': {
       color: 'var(--primary-d2)',
@@ -613,9 +614,9 @@ const ListNameWrap = styled.div<{
   ({ isClose, isName, maxWidth }) => ({
     color: isClose ? 'var(--neutral-n3)' : '',
     textDecoration: isName && isClose ? 'line-through' : '',
-    span: {
-      maxWidth: maxWidth || 300,
-    },
+    // span: {
+    //   maxWidth: maxWidth || 300,
+    // },
   }),
 )
 
