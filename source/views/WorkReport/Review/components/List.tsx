@@ -19,6 +19,7 @@ import {
   getRepReceivedList,
   getRepPublicList,
   templateLatelyList,
+  getStatTempList,
 } from '@/services/report'
 import { getStaffList } from '@/services/staff'
 import HandleReport from './HandleReport'
@@ -554,6 +555,7 @@ const List = () => {
   }
   // 获取我可操作的模板list
   const getTemplateList = async () => {
+    setRepTypeOptions([])
     const res = await templateLatelyList()
     if (res && res.code === 0) {
       const data = res?.data || {}
@@ -568,13 +570,36 @@ const List = () => {
     }
   }
 
+  // 获取汇报我的模板list
+  const getTemplateForMeList = async () => {
+    setRepTypeOptions([])
+    const res = await getStatTempList()
+    if (res && res.list) {
+      setRepTypeOptions(res.list.map(generateOptions))
+    }
+  }
+
   const getUserList = async () => {
     const data = await getStaffList({ all: 1 })
     setUserOptions(data.map(generateOptions))
   }
 
   useEffect(() => {
-    getTemplateList()
+    if (id === 1) {
+      // 我汇报的
+      getTemplateList()
+    }
+    if (id === 2) {
+      // 汇报我的
+      getTemplateForMeList()
+    }
+    if (id === 3) {
+      // todo 公开汇报
+      getTemplateList()
+    }
+  }, [id])
+
+  useEffect(() => {
     getUserList()
   }, [])
 
