@@ -49,7 +49,9 @@ const CreateAProjectForm = () => {
   const [leaderId, setLeaderId] = useState<any>(0)
   const [lock, setLock] = useState(true)
   const [canChooseLeader, setCanChooseLeader] = useState(true)
-  const { createVisible, isEditId } = useSelector(state => state.createProject)
+  const { createVisible, isEditId, groupId } = useSelector(
+    state => state.createProject,
+  )
   const [selectGroupList, setSelectGroupList] = useState<any>([])
   const [selectLeaders, setSelectLeaders] = useState<any>([])
   const [affiliations, setAffiliations] = useState<any>([])
@@ -157,6 +159,7 @@ const CreateAProjectForm = () => {
     )
     form.setFieldsValue({
       team_id: 0,
+      groups: groupId ?? undefined,
     })
   }
 
