@@ -33,7 +33,8 @@ const DemandSetting = () => {
   const [isSave, setIsSave] = useState(false)
   const { projectInfo } = useSelector(store => store.project)
   const { currentMenu } = useSelector(store => store.user)
-  const { getCategoryConfigDataList, startUsing, activeCategory } = useSelector(
+  const [isNoData, setIsNoData] = useState(false)
+  const { activeCategory, getCategoryConfigDataList } = useSelector(
     store => store.category,
   )
   // 计算当前选中下是否有项目管理权限
@@ -58,7 +59,11 @@ const DemandSetting = () => {
     setIsSave(false)
     setIsOperate(false)
   }, [activeCategory])
-
+  useEffect(() => {
+    getCategoryConfigDataList?.configDataList?.length
+      ? setIsNoData(true)
+      : setIsNoData(false)
+  }, [])
   return (
     <PermissionWrap
       auth={
@@ -70,7 +75,7 @@ const DemandSetting = () => {
           : currentMenu?.children?.map((i: any) => i.url)
       }
     >
-      {getCategoryConfigDataList?.configDataList.length >= 1 ? (
+      {isNoData ? (
         <>
           <Header />
           {isOperate && (

@@ -194,7 +194,7 @@ function getTypeComponent(
         getPopupContainer={(node: any) => node}
         allowClear
         value={defaultValue}
-        ref={inputRef}
+        onRef={inputRef}
         onBlur={() => (isModal ? onBlur?.(defaultValue) : void 0)}
         onChange={(value: any) =>
           onChange?.(value, params.attr === 'fixed_select' ? '' : 1)
@@ -224,7 +224,7 @@ function getTypeComponent(
         getPopupContainer={(node: any) => node}
         allowClear
         value={defaultValue}
-        ref={inputRef}
+        onRef={inputRef}
         onBlur={() => (isModal ? onBlur?.(defaultValue) : void 0)}
         onChange={(value: any) =>
           onChange?.(

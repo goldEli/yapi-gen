@@ -165,10 +165,6 @@ const CreateField = () => {
   useEffect(() => {
     getProjectFieIdsApi()
   }, [])
-  useEffect(() => {
-    getCategoryConfigArray?.length >= 1 && getProjectFieIdsApi()
-  }, [getCategoryConfigArray])
-
   return (
     <CreateFieldWrap draggable="false">
       <TitleStyle draggable="false" onClick={() => setCreateIcon(!createIcon)}>

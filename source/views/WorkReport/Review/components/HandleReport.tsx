@@ -31,6 +31,7 @@ import { getMessage } from '@/components/Message'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import ChoosePeople from './ChoosePeople'
 import RelatedNeed from './RelatedNeed'
+import moment from 'moment'
 
 const LabelTitle = styled.span`
   font-size: 14px;
@@ -104,6 +105,7 @@ const HandleReport = (props: any) => {
   const [t]: any = useTranslation()
   const userInfo = useSelector(state => state.user.userInfo)
   const [reportDetail, setReportDetail] = useState<any>(null)
+  const [detail, setDetail] = useState<any>(null)
   const isFirstValidator = useRef(0)
   const [peopleValue, setPeopleValue] = useState<any>([])
   const [relatedNeedList, setRelatedNeedList] = useState<any>([])
@@ -315,8 +317,10 @@ const HandleReport = (props: any) => {
 
   // 修改态回显
   const setDefaultValue = async () => {
+    setDetail(null)
     const result = await getReportDetailById({ id: props?.editId })
     if (result.code === 0 && result.data) {
+      setDetail(result.data)
       setPeopleValue(
         result.data?.target_users?.map((item: any) => {
           return {
@@ -628,6 +632,12 @@ const HandleReport = (props: any) => {
                           ? null
                           : props.isSupply
                           ? getReportDateText(props.date)
+                          : props?.editId
+                          ? `（${moment(detail?.start_time).format(
+                              'YYYY-MM-DD',
+                            )} ${t('report.list.to')} ${moment(
+                              detail?.end_time,
+                            ).format('YYYY-MM-DD')}）`
                           : reportDetail?.submitCycleDate.filter(
                               (v: string) => v,
                             ).length > 0 &&

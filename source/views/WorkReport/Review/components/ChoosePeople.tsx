@@ -33,11 +33,22 @@ const DashedWrap = styled.div`
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  border: 2px dashed var(--neutral-n3);
+  border: 1px dashed var(--neutral-n3);
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  &:hover {
+    border-color: var(--primary-d2);
+  }
+
+  &:hover .icon {
+    color: var(--primary-d2);
+  }
+  .icon {
+    font-size: 16px;
+    color: var(--neutral-n3);
+  }
 `
 
 const ChoosePeople = (props: any) => {
@@ -197,10 +208,6 @@ const ChoosePeople = (props: any) => {
               <IconFont
                 className="icon"
                 type="plus"
-                style={{
-                  color: 'var(--neutral-n3)',
-                  fontSize: '16px',
-                }}
                 onClick={() => setIsOpen(true)}
               />
             </DashedWrap>

@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Spin, Table } from 'antd'
-import { Resizable } from 'react-resizable'
+import { Resizable, ResizeCallbackData } from 'react-resizable'
 import './index.css'
 import styled from '@emotion/styled'
 import NewLoadingTransition from '../NewLoadingTransition'
@@ -113,6 +113,15 @@ const ResizeTitle = (props: any) => {
       height={0}
       onResize={onResize}
       draggableOpts={{ enableUserSelectHack: false }}
+      minConstraints={[200, 200]}
+      handle={
+        <span
+          className="react-resizable-handle"
+          onClick={e => {
+            e.stopPropagation()
+          }}
+        />
+      }
     >
       <th {...restProps} />
     </Resizable>
@@ -134,78 +143,25 @@ interface ResizeTableProps {
 const ResizeTable = (props: ResizeTableProps) => {
   const { listActiveId } = useSelector(store => store.global)
   // 表格列
-  const [cols, setCols] = useState<any>([])
   const [columns, setColumns] = useState<any>([])
   const [dataWrapHeight, setDataWrapHeight] = useState(0)
   const [tableWrapHeight, setTableWrapHeight] = useState(0)
   const dataWrapRef = useRef<HTMLDivElement>(null)
-  const canRun = useRef(true)
-
-  // 处理拖拽
-  const handleResize =
-    (index: any) =>
-    (e: any, { size }: any) => {
-      if (!canRun.current) {
-        return
-      }
-      setTimeout(() => {
-        canRun.current = true
-      }, 1000 / 30)
-      canRun.current = false
-      const nextColumns = [...cols]
-      // 拖拽是调整宽度
-      nextColumns[index] = { ...nextColumns[index], width: size.width }
-      setCols(nextColumns)
-    }
 
   useEffect(() => {
-    let resultList: any = props.col
-    // props.col.forEach((element: any, index: number) => {
-    //   if (index === props.col.length - 1) {
-    //     delete element.width
-    //   }
-    //   resultList.push(element)
-    // })
-    setCols(resultList)
+    setColumns(props.col)
   }, [props.col])
 
-  useEffect(() => {
-    setColumns(
-      (cols || []).map((col: any, index: number) => {
-        if (col === Table.SELECTION_COLUMN) {
-          return col
-        }
-        if (!col.width) {
-          return {
-            ...col,
-            width: 100,
-          }
-        }
-        return {
-          ...col,
-          onHeaderCell: (column: any) => {
-            if (column.key === 'name') {
-              const doms =
-                document.querySelectorAll<HTMLSpanElement>('.controlMaxWidth')
-
-              if (doms) {
-                doms.forEach(dom => {
-                  const level = Number(dom.className.split('level')[1])
-                  dom.style.maxWidth = props.isTree
-                    ? `${column.width - level * 24}px`
-                    : `${column.width}px`
-                })
-              }
-            }
-            return {
-              width: column.width,
-              onResize: handleResize(index),
-            }
-          },
-        }
-      }),
-    )
-  }, [cols, props.dataSource])
+  const handleResize =
+    (index: number) =>
+    (_: React.SyntheticEvent<Element>, { size }: ResizeCallbackData) => {
+      const newColumns = [...columns]
+      newColumns[index] = {
+        ...newColumns[index],
+        width: size.width,
+      }
+      setColumns(newColumns)
+    }
 
   useLayoutEffect(() => {
     if (dataWrapRef.current) {
@@ -224,6 +180,40 @@ const ResizeTable = (props: ResizeTableProps) => {
   const tableY =
     tableWrapHeight > dataWrapHeight - 52 ? dataWrapHeight - 52 : void 0
 
+  const mergeColumns = columns?.map((col: any, index: number) => {
+    if (col === Table.SELECTION_COLUMN) {
+      return col
+    }
+    if (!col.width) {
+      return {
+        ...col,
+        width: 100,
+      }
+    }
+    return {
+      ...col,
+      onHeaderCell: (column: any) => {
+        if (column.key === 'name') {
+          const doms =
+            document.querySelectorAll<HTMLSpanElement>('.controlMaxWidth')
+
+          if (doms) {
+            doms.forEach(dom => {
+              const level = Number(dom.className.split('level')[1])
+              dom.style.maxWidth = props.isTree
+                ? `${column.width - level * 24}px`
+                : `${column.width}px`
+            })
+          }
+        }
+        return {
+          width: column.width,
+          onResize: handleResize(index) as React.ReactEventHandler<any>,
+        }
+      },
+    }
+  })
+
   return (
     <DataWrap height={props.dataWrapNormalHeight} ref={dataWrapRef}>
       <div
@@ -234,7 +224,7 @@ const ResizeTable = (props: ResizeTableProps) => {
           {!!props.dataSource && props.dataSource?.length > 0 && (
             <TableWrap
               rowKey="id"
-              columns={columns}
+              columns={mergeColumns}
               dataSource={props.dataSource}
               pagination={false}
               components={{

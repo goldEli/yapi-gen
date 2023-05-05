@@ -176,35 +176,7 @@ const ScheduleStripListItem: React.FC<ScheduleListItemProps> = props => {
      * 1. 跨天如果不是头天不能拖动
      * 2. 重复日程不能拖
      */
-    if (isAcrossDayButNotFirstDay || isRepeatSchedule) {
-      // 打开详情
-      onOpenScheduleDetail()
-      return
-    }
     window.isMovingSchedule = true
-    // e.stopPropagation()
-    isDrag.current = false
-    // 设置类型 move 还是 resize
-    window.calendarMonthPanelType = 'move'
-    // 是否执行过
-    let isRun = false
-    const handleMove = (e: MouseEvent) => {
-      if (isRun) {
-        return
-      }
-      setVisible(false)
-      isRun = true
-      isDrag.current = true
-      dispatch(
-        startMoveMonthSchedule({
-          startSchedule: props.data,
-          startIndex: props.idx,
-          endIndex: props.idx,
-          length: len,
-        }),
-      )
-    }
-    window.addEventListener('mousemove', handleMove)
     const onMouseup = async (e: MouseEvent) => {
       // 重置
       window.calendarMonthPanelType = null
@@ -231,6 +203,34 @@ const ScheduleStripListItem: React.FC<ScheduleListItemProps> = props => {
       }
     }
     window.addEventListener('mouseup', onMouseup, { once: true })
+    if (isAcrossDayButNotFirstDay || isRepeatSchedule) {
+      // 打开详情
+      onOpenScheduleDetail()
+      return
+    }
+    // e.stopPropagation()
+    isDrag.current = false
+    // 设置类型 move 还是 resize
+    window.calendarMonthPanelType = 'move'
+    // 是否执行过
+    let isRun = false
+    const handleMove = (e: MouseEvent) => {
+      if (isRun) {
+        return
+      }
+      setVisible(false)
+      isRun = true
+      isDrag.current = true
+      dispatch(
+        startMoveMonthSchedule({
+          startSchedule: props.data,
+          startIndex: props.idx,
+          endIndex: props.idx,
+          length: len,
+        }),
+      )
+    }
+    window.addEventListener('mousemove', handleMove)
   }
 
   // 拖拽头部
