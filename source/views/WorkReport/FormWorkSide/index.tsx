@@ -184,9 +184,7 @@ const FormWorkSide = () => {
     setIsVisible(false)
   }
   const getDataList = async () => {
-    console.log(activeItem, 'pp')
     const res = await dispatch(getTemplateList())
-    console.log(res.payload, 'res.payload')
     dispatch(
       setActiveItem({ name: res?.payload[0]?.name, id: res?.payload[0]?.id }),
     )

@@ -234,10 +234,6 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
     }
   }, [projectInfo])
 
-  useEffect(() => {
-    watchDataList()
-  }, [categoryList])
-
   return (
     <AllWrap>
       <WrapSet>

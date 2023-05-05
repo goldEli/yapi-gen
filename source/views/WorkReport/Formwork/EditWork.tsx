@@ -109,7 +109,6 @@ const EditWork = (props: PropsType) => {
   }
   // 组件参数配置
   const ParmasDialogOnConfirm = (obj: any, num: number) => {
-    console.log(obj, 'pp', type)
     const filterName = dataList.find((el: any) => el.name === obj.name)
     if (filterName && type === 'add') {
       return getMessage({ msg: t('formWork.hasTemplate'), type: 'warning' })
