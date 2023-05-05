@@ -159,7 +159,7 @@ const CreateAProjectForm = () => {
     )
     form.setFieldsValue({
       team_id: 0,
-      groups: groupId ?? undefined,
+      groups: groupId ? [groupId] : undefined,
     })
   }
 
