@@ -27,6 +27,7 @@ import {
   dateClass,
   currentClass,
 } from './styles'
+import { formatYYYYMMDD } from '../../config'
 interface CalendarListProps {}
 const CalendarList: React.FC<CalendarListProps> = props => {
   const CalendarListBoxRef = useRef<HTMLDivElement>(null)
@@ -127,13 +128,13 @@ const CalendarList: React.FC<CalendarListProps> = props => {
                     key={idx}
                     color={getColorWithOpacityPointOne(ele.color)}
                     onClick={() => {
-                      console.log('ele.schedule_id----', ele.schedule_id)
                       disPatch(setInitScheduleInfoDropdown({ schedule_id: 0 }))
                       setTimeout(() => {
                         disPatch(
                           setScheduleInfoDropdown({
                             visible: true,
                             schedule_id: ele.schedule_id,
+                            show_date: dayjs(ele.date).format(formatYYYYMMDD),
                           }),
                         )
                       }, 0)
