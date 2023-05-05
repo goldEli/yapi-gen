@@ -105,11 +105,11 @@ const formWork = createSlice({
     builder.addCase(templateDetail.fulfilled, (state, action) => {
       const data = action.payload.data
       state.templateDetailValues = data
-      if (data.template_content_configs.length) {
+      if (data?.template_content_configs?.length) {
         state.templateContentConfigs = data.template_content_configs
       }
       state.reportContent = {
-        template_configs: data.template_configs.map((el: any) => ({
+        template_configs: data?.template_configs?.map((el: any) => ({
           ...el,
           target_value:
             el.target_type === 4 ? { name: el.target_value } : el.target_value,
