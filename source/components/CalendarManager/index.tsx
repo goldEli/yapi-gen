@@ -42,24 +42,21 @@ const CalendarManager: React.FC<CalendarManagerLayoutProps> = props => {
       dispatch(getCalendarConfig())
     }
   }, [isRefresh])
-
+  const getParams = () => {
+    let params = {
+      year: dayjs(checkedTime).year(),
+      month: dayjs(checkedTime).month() + 1,
+      calendar_ids: checkedCalendarList.map(item => item.calendar_id),
+    }
+    return params
+  }
   useEffect(() => {
     if (checkedCalendarList.length === 0) return
-    let params = {
-      year: dayjs(checkedTime).year(),
-      month: dayjs(checkedTime).month() + 1,
-      calendar_ids: checkedCalendarList.map(item => item.calendar_id),
-    }
-    dispatch(getLeftCalendarDaysOfMonthList(params))
+    dispatch(getLeftCalendarDaysOfMonthList(getParams()))
   }, [checkedTime, checkedCalendarList])
   useEffect(() => {
-    let params = {
-      year: dayjs(checkedTime).year(),
-      month: dayjs(checkedTime).month() + 1,
-      calendar_ids: checkedCalendarList.map(item => item.calendar_id),
-    }
     if (isAddOrDelete) {
-      dispatch(getLeftCalendarDaysOfMonthList(params))
+      dispatch(getLeftCalendarDaysOfMonthList(getParams()))
     }
   }, [isAddOrDelete])
   return (
