@@ -29,13 +29,12 @@ import {
 } from '../../styles'
 import { CloseWrap, ModalFooter } from '@/components/StyleCommon'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
-import CalendarColor from '../CalendarColor'
 import CommonButton from '@/components/CommonButton'
-import { ColorWrap } from '../CalendarSidebar/CalendarFormModal/style'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import moment from 'moment'
 import { colorMap } from '../../config'
 import { setQuickCreateScheduleModel } from '@store/calendarPanle'
+import { setIsAddOrDelete } from '@store/schedule'
 import { setScheduleModal } from '@store/calendar'
 import { saveSchedule } from '@store/schedule/schedule.thunk'
 import { EventBus } from '../../eventBus'
@@ -241,6 +240,7 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
     }
     await dispatch(saveSchedule(params))
     message.success(t('calendarManager.createSuccess'))
+    dispatch(setIsAddOrDelete(true))
     onClose()
   }
 
@@ -431,31 +431,22 @@ const QuickCreateScheduleModel: React.FC<CreateScheduleBoxProps> = props => {
               }
             >
               <ItemFlex>
-                <div className="box">
-                  <Select
-                    value={normalCategory?.calendar_id}
-                    onChange={value =>
-                      setNormalCategory(
-                        calendarCategory.filter(
-                          (i: Model.Calendar.Info) => i.calendar_id === value,
-                        )[0],
-                      )
-                    }
-                    style={{ width: '90%' }}
-                    getPopupContainer={n => n}
-                    options={calendarCategory.map((i: Model.Calendar.Info) => ({
-                      label: i.is_default === 1 ? i.user.name : i.name,
-                      value: i.calendar_id,
-                    }))}
-                  />
-                  <div
-                    className="color"
-                    style={{
-                      background: colorMap[normalCategory?.color],
-                      cursor: 'inherit',
-                    }}
-                  />
-                </div>
+                <Select
+                  value={normalCategory?.calendar_id}
+                  onChange={value =>
+                    setNormalCategory(
+                      calendarCategory.filter(
+                        (i: Model.Calendar.Info) => i.calendar_id === value,
+                      )[0],
+                    )
+                  }
+                  style={{ width: '100%' }}
+                  getPopupContainer={n => n}
+                  options={calendarCategory.map((i: Model.Calendar.Info) => ({
+                    label: i.is_default === 1 ? i.user.name : i.name,
+                    value: i.calendar_id,
+                  }))}
+                />
               </ItemFlex>
             </Form.Item>
             <Form.Item

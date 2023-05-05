@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from '@store/index'
 import dayjs from 'dayjs'
 import React from 'react'
 import useCurrentTime from '../useCurrentTime'
-import { setScheduleListModal } from '@store/schedule'
+import { setScheduleListModal, setIsAddOrDelete } from '@store/schedule'
 import {
   resizeMonthSchedule,
   setQuickCreateScheduleModel,
@@ -65,6 +65,7 @@ const useAllDayGrid = (props: {
         y: offsetTop,
       }),
     )
+    dispatch(setIsAddOrDelete(false))
   }
 
   const onMouseEnter = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {

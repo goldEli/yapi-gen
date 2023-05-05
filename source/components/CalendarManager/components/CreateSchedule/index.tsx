@@ -32,8 +32,6 @@ import {
 } from '../../styles'
 import IconFont from '@/components/IconFont'
 import { useEffect, useRef, useState } from 'react'
-import CalendarColor from '../CalendarColor'
-import { ColorWrap } from '../CalendarSidebar/CalendarFormModal/style'
 import { colorMap } from '../../config'
 import AddMemberCommonModal from '@/components/AddUser/CommonModal'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
@@ -47,7 +45,7 @@ import CreateVisualization from './CreateVisualization'
 import { modifySchedule, saveSchedule } from '@store/schedule/schedule.thunk'
 import { useTranslation } from 'react-i18next'
 import { getScheduleInfo } from '@/services/schedule'
-import { setVisualizationTime } from '@store/schedule'
+import { setVisualizationTime, setIsAddOrDelete } from '@store/schedule'
 import { getMessage } from '@/components/Message'
 
 interface DefaultTime {
@@ -227,6 +225,7 @@ const CreateSchedule = () => {
     } else {
       await dispatch(saveSchedule(resultParams))
       message.success(t('calendarManager.createSuccess'))
+      dispatch(setIsAddOrDelete(true))
       if (next) {
         dispatch(
           setScheduleModal({
@@ -762,34 +761,25 @@ const CreateSchedule = () => {
               }
             >
               <ItemFlex>
-                <div className="box">
-                  <Select
-                    value={normalCategory?.calendar_id}
-                    onChange={value =>
-                      setNormalCategory(
-                        calendarCategory.filter(
-                          (i: Model.Calendar.Info) => i.calendar_id === value,
-                        )[0],
-                      )
-                    }
-                    style={{ width: '90%' }}
-                    getPopupContainer={n => n}
-                    options={calendarCategory
-                      .map((i: Model.Calendar.Info) => ({
-                        label: i.is_default === 1 ? i.user.name : i.name,
-                        value: i.calendar_id,
-                      }))
-                      .concat(hasCalendar.value === 0 ? [] : [hasCalendar])}
-                    disabled={hasCalendar.value as unknown as boolean}
-                  />
-                  <div
-                    className="color"
-                    style={{
-                      background: colorMap[normalCategory.color],
-                      cursor: 'inherit',
-                    }}
-                  />
-                </div>
+                <Select
+                  value={normalCategory?.calendar_id}
+                  onChange={value =>
+                    setNormalCategory(
+                      calendarCategory.filter(
+                        (i: Model.Calendar.Info) => i.calendar_id === value,
+                      )[0],
+                    )
+                  }
+                  style={{ width: '100%' }}
+                  getPopupContainer={n => n}
+                  options={calendarCategory
+                    .map((i: Model.Calendar.Info) => ({
+                      label: i.is_default === 1 ? i.user.name : i.name,
+                      value: i.calendar_id,
+                    }))
+                    .concat(hasCalendar.value === 0 ? [] : [hasCalendar])}
+                  disabled={hasCalendar.value as unknown as boolean}
+                />
               </ItemFlex>
             </Form.Item>
             <Form.Item
