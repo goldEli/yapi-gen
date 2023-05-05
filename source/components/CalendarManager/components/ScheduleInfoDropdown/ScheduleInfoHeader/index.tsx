@@ -24,7 +24,7 @@ import {
 } from '../styles'
 import React, { useState, useEffect, useImperativeHandle } from 'react'
 import { refreshCalendarPanelScheduleList } from '@store/schedule/schedule.thunk'
-import { setShowScheduleInfoTip } from '@store/schedule'
+import { setShowScheduleInfoTip, setIsAddOrDelete } from '@store/schedule'
 import ScheduleInfoIcon from './../ScheduleInfoIcon'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import dayjs from 'dayjs'
@@ -82,6 +82,7 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
       message.success(t('common.deleteSuccess'))
       disPatch(setScheduleInfoDropdown({ visible: false }))
       disPatch(refreshCalendarPanelScheduleList())
+      disPatch(setIsAddOrDelete(true))
     } catch (error) {
       console.log(error)
     }
@@ -124,6 +125,7 @@ const ScheduleInfoHeaderBox: React.FC<ScheduleInfoDropdownProps> = props => {
             <span
               onClick={() => {
                 setIsVisible(true)
+                disPatch(setIsAddOrDelete(false))
               }}
             >
               <IconFont

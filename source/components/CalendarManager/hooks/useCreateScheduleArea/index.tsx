@@ -3,6 +3,7 @@ import useCreateTimeRange from '../useCreateTimeRange'
 import { EventBus } from '../../eventBus'
 import { useDispatch, useSelector } from '@store/index'
 import { setQuickCreateScheduleModel } from '@store/calendarPanle'
+import { setIsAddOrDelete } from '@store/schedule'
 import { oneMinuteHeight } from '../../config'
 
 const useCreateScheduleArea = () => {
@@ -78,6 +79,7 @@ const useCreateScheduleArea = () => {
             isAll: false,
           }),
         )
+        dispatch(setIsAddOrDelete(false))
         dom.removeEventListener('mousemove', onMousemove)
         dom.removeEventListener('mouseup', onMouseUp)
       }

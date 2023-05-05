@@ -47,6 +47,7 @@ type SliceState = {
     endTime?: string
   }
   showScheduleInfoTip?: boolean
+  isAddOrDelete?: boolean
 }
 
 const initialState: SliceState = {
@@ -123,6 +124,9 @@ const slice = createSlice({
     setShowScheduleInfoTip(state, action: PayloadAction<boolean>) {
       state.showScheduleInfoTip = action.payload
     },
+    setIsAddOrDelete(state, action: PayloadAction<boolean>) {
+      state.isAddOrDelete = action.payload
+    },
   },
   extraReducers(builder) {
     // builder.addCase(getScheduleList.fulfilled, (state, action) => {
@@ -185,6 +189,7 @@ export const {
   setListViews,
   clearScheduleList,
   setShowScheduleInfoTip,
+  setIsAddOrDelete,
 } = slice.actions
 
 export default schedule
