@@ -120,6 +120,8 @@ const HandleReport = (props: any) => {
     setPeopleValue([])
     setRelatedNeedList([])
     setUploadAttachList({})
+    setReportDetail(null)
+    setDetail(null)
   }
 
   // 写汇报| 修改汇报 | 补交汇报 的提交操作
