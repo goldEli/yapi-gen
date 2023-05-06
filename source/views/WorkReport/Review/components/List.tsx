@@ -30,6 +30,7 @@ import { useSelector, useDispatch } from '@store/index'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import { saveViewReportDetailDrawer } from '@store/workReport/workReport.thunk'
 import { css } from '@emotion/css'
+import { templateList } from '@/services/formwork'
 
 const listContainer = css`
   margin: 0 24px;
@@ -579,6 +580,15 @@ const List = () => {
     }
   }
 
+  // 获取公开汇报模板list
+  const getTemplateForPublicList = async () => {
+    setRepTypeOptions([])
+    const data = await templateList({ type: 'public' })
+    if (data) {
+      setRepTypeOptions(data.map(generateOptions))
+    }
+  }
+
   const getUserList = async () => {
     const data = await getStaffList({ all: 1 })
     setUserOptions(data.map(generateOptions))
@@ -594,8 +604,8 @@ const List = () => {
       getTemplateForMeList()
     }
     if (id === 3) {
-      // todo 公开汇报
-      getTemplateList()
+      // 公开汇报
+      getTemplateForPublicList()
     }
   }, [id])
 

@@ -26,6 +26,6 @@ export const templateDetail: any = async (parmas: any) => {
 }
 
 export const templateList: any = async (parmas: any) => {
-  const response = await http.get('templateList')
+  const response = await http.get('templateList', { ...parmas })
   return response.data
 }
