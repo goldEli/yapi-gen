@@ -148,9 +148,6 @@ const CreateField = () => {
     dispatch(setProjectFieIdsData(payloadList))
     setPayloadDataList(payloadList)
     setDataList(payloadList)
-    getCategoryConfigArray.length >= 1 &&
-      payloadList &&
-      filterData(getCategoryConfigArray, payloadList)
   }
   // 根据输入框过滤
   const onSearch = (value: string) => {
@@ -163,8 +160,12 @@ const CreateField = () => {
   }
   // 监听列表被删除时过滤
   useEffect(() => {
-    getCategoryConfigArray?.length >= 1 && getProjectFieIdsApi()
-  }, [getCategoryConfigArray])
+    filterData(getCategoryConfigArray, payloadDataList)
+  }, [getCategoryConfigArray, payloadDataList])
+  // 监听列表被删除时过滤
+  useEffect(() => {
+    getProjectFieIdsApi()
+  }, [])
   return (
     <CreateFieldWrap draggable="false">
       <TitleStyle draggable="false" onClick={() => setCreateIcon(!createIcon)}>
