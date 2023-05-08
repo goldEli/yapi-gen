@@ -82,6 +82,7 @@ const SliderList = (props: any) => {
       dragtype: 'edit',
       fieldContent: children.field_content,
       storyId: children.id,
+      is_required: 2,
     }
     setDragItem(obj)
     ev.dataTransfer.setData('item', JSON.stringify(obj))
