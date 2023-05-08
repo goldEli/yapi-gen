@@ -317,7 +317,6 @@ const Main = (props: any) => {
     } else {
       setGetCategoryConfigF(filterDataF)
       setGetCategoryConfigT([...filterDataT, evevtObj])
-      const a = [...filterDataT, evevtObj]
       dispatch(
         setGetCategoryConfigArray([
           ...filterDataF,
@@ -325,6 +324,7 @@ const Main = (props: any) => {
         ]),
       )
     }
+    props.onIsOperate(true)
   }
   return (
     <div
