@@ -162,7 +162,6 @@ const CreateField = () => {
   useEffect(() => {
     filterData(getCategoryConfigArray, payloadDataList)
   }, [getCategoryConfigArray, payloadDataList])
-  // 监听列表被删除时过滤
   useEffect(() => {
     getProjectFieIdsApi()
   }, [])
