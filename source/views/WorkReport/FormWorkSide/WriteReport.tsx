@@ -11,10 +11,12 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
 import Bgc from './img/bgc.png'
 import { templateLatelyList } from '@/services/report'
+import { templateDetail } from '@/services/formwork'
 import moment from 'moment'
 import { setWriteReportModal } from '@store/workReport'
 import { Spin, Tooltip } from 'antd'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
+import { getMessage } from '@/components/Message'
 
 interface Props {
   isVisible: boolean
@@ -174,6 +176,44 @@ const WriteReport = (props: Props) => {
         )
     }
   }
+
+  // 打开写汇报前要查询下状态
+  const openReportModal = async (item: any) => {
+    if (
+      !(item.is_current_cycle_used && item.is_cycle_limit === 1) &&
+      item.is_write
+    ) {
+      const result = await templateDetail({ id: item?.id })
+      if (result && result.data) {
+        if (
+          result.data.is_write_permissions &&
+          result.data.is_submit_cycle_time
+        ) {
+          setTemplateId(item.id)
+          setVisibleEdit(true)
+          dispatch(setWriteReportModal({ visible: false }))
+        } else if (!result.data.is_write_permissions) {
+          // 无权限
+          getMessage({
+            msg: t('report.list.noPermissions'),
+            type: 'error',
+          })
+          getTemplateLatelyList()
+        } else if (!result.data.is_submit_cycle_time) {
+          // 不在汇报周期内
+          getTemplateLatelyList()
+        }
+      } else if (result?.code === 'B0015') {
+        // 已删除
+        getMessage({
+          msg: t('report.list.reportDeleted'),
+          type: 'error',
+        })
+        getTemplateLatelyList()
+      }
+    }
+  }
+
   return (
     <>
       <CommonModal
@@ -253,19 +293,7 @@ const WriteReport = (props: Props) => {
                               item.is_cycle_limit === 1
                             ) || !item.is_write
                           }
-                          onClick={() => {
-                            if (
-                              !(
-                                item.is_current_cycle_used &&
-                                item.is_cycle_limit === 1
-                              ) &&
-                              item.is_write
-                            ) {
-                              setTemplateId(item.id)
-                              setVisibleEdit(true)
-                              dispatch(setWriteReportModal({ visible: false }))
-                            }
-                          }}
+                          onClick={() => openReportModal(item)}
                         >
                           <img src={Bgc} />
                           <CarItem>
@@ -306,19 +334,7 @@ const WriteReport = (props: Props) => {
                               item.is_cycle_limit === 1
                             ) || !item.is_write
                           }
-                          onClick={() => {
-                            if (
-                              !(
-                                item.is_current_cycle_used &&
-                                item.is_cycle_limit === 1
-                              ) &&
-                              item.is_write
-                            ) {
-                              setTemplateId(item.id)
-                              setVisibleEdit(true)
-                              dispatch(setWriteReportModal({ visible: false }))
-                            }
-                          }}
+                          onClick={() => openReportModal(item)}
                         >
                           <img src={Bgc} />
                           <CarItem>

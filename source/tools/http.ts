@@ -162,13 +162,13 @@ client.config({
         data.code !== 1 &&
         data.code !== 0 &&
         data.code !== 'A0301' &&
-        data.code !== 'S0002'
+        data.code !== 'B0015'
       ) {
         getMessage({ msg: data.message, type: 'error' })
         return Promise.reject()
       }
       return {
-        code: data.code === 'S0002' ? data.code : Number(data.code),
+        code: data.code === 'B0015' ? data.code : Number(data.code),
         data: data.data,
         message: data.msg,
       }
