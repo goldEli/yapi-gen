@@ -79,6 +79,7 @@ const SliderList = (props: any) => {
   const onDragStart = (ev: any) => {
     const obj = {
       ...children,
+      id: 0,
       dragtype: 'edit',
       fieldContent: children.field_content,
       storyId: children.id,

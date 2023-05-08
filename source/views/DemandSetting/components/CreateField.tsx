@@ -77,14 +77,14 @@ const CreateField = () => {
   const [searchIcon, setSearchIcon] = useState(true)
   const [search, setSearch] = useState(true)
   const [createIcon, setCreateIcon] = useState(true)
-  const { getCategoryConfigArray, activeCategory } = useSelector(
-    store => store.category,
-  )
+  const { getCategoryConfigArray, activeCategory, getProjectFieIdsData } =
+    useSelector(store => store.category)
   const [dataList, setDataList] = useState<any>()
   const [searchDataList, setSearchDataList] = useState<any>()
   const { projectInfo } = useSelector(store => store.project)
   const [payloadDataList, setPayloadDataList] = useState<any>()
   const [searchValue, setSearchValue] = useState('')
+
   const option = [
     {
       label: t('newlyAdd.lineText'),
@@ -161,8 +161,8 @@ const CreateField = () => {
   }
   // 监听列表被删除时过滤
   useEffect(() => {
-    filterData(getCategoryConfigArray, payloadDataList)
-  }, [getCategoryConfigArray, payloadDataList])
+    filterData(getCategoryConfigArray, getProjectFieIdsData)
+  }, [getCategoryConfigArray, getProjectFieIdsData])
   useEffect(() => {
     getProjectFieIdsApi()
   }, [activeCategory])

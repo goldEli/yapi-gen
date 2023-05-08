@@ -15,10 +15,13 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import EditField from './EditField'
 import { configSave } from '@/services/demand'
 import { getCategoryConfigList } from '@store/category/thunk'
-import { setGetCategoryConfigArray } from '@store/category'
+import {
+  setGetCategoryConfigArray,
+  setProjectFieIdsData,
+} from '@store/category'
 import { useTranslation } from 'react-i18next'
 import { getMessage } from '@/components/Message'
-
+import * as services from '@/services'
 const TitleStyle = styled.div`
   display: flex;
   align-items: center;
@@ -62,15 +65,6 @@ const Main = (props: any) => {
       bottomTitleRef?.current?.getBoundingClientRect().top
     localStorage.topTitleTop = topTitleRef?.current?.getBoundingClientRect().top
   }, [getCategoryConfigDataList])
-  //  移动后跟新的数据
-  const onMove = (state: number, data: any) => {
-    if (state === 1) {
-      setGetCategoryConfigF(data)
-    } else {
-      setGetCategoryConfigT(data)
-    }
-    props.onIsOperate(true)
-  }
   // 删除
   const onDelete = (state: any, child: any) => {
     setDelItem({ state, child })
@@ -96,9 +90,14 @@ const Main = (props: any) => {
       )
       setGetCategoryConfigT(filterData)
     }
-
+    getProjectFieIdsApi()
     setIsVisible(false)
     props.onIsOperate(true)
+  }
+  // 请求api
+  const getProjectFieIdsApi = async () => {
+    const payloadList = await services.demand.getProjectFieIds(projectInfo.id)
+    dispatch(setProjectFieIdsData(payloadList))
   }
   // 必填
   function onChangeChecked(state: any, val: boolean, child: any) {
@@ -126,6 +125,7 @@ const Main = (props: any) => {
   // 插入
   const onInsert = async (item: any) => {
     const newItem = {
+      id: 0,
       title: item.title,
       remarks: item.remarks,
       fieldContent: item.field_content,
@@ -142,6 +142,14 @@ const Main = (props: any) => {
       draggingIndex !== -1
         ? setGetCategoryConfigF(arrData)
         : setGetCategoryConfigF([...getCategoryConfigF, newItem])
+      dispatch(
+        setGetCategoryConfigArray([
+          ...getCategoryConfigT,
+          ...(draggingIndex !== -1
+            ? arrData
+            : [...getCategoryConfigF, newItem]),
+        ]),
+      )
     } else {
       const arrData = Array.from(getCategoryConfigT)
       arrData.splice(draggingIndex, 0, newItem)
@@ -149,6 +157,14 @@ const Main = (props: any) => {
       draggingIndex !== -1
         ? setGetCategoryConfigT(arrData)
         : setGetCategoryConfigT([...getCategoryConfigT, newItem])
+      dispatch(
+        setGetCategoryConfigArray([
+          ...getCategoryConfigF,
+          ...(draggingIndex !== -1
+            ? arrData
+            : [...getCategoryConfigT, newItem]),
+        ]),
+      )
     }
   }
   // 去重
@@ -167,8 +183,8 @@ const Main = (props: any) => {
       remarks: item.remarks,
       content: item.content,
       fieldContent: item?.field_content || item?.fieldContent,
-      id: item.dragtype === 'move' ? item.id : item.storyId,
-      storyId: item.dragtype !== 'move' ? item.id : item.storyId,
+      id: item.dragtype === 'move' ? item.id : 0,
+      storyId: item.storyId,
       isCustomize: item?.is_customize || item?.isCustomize,
       is_required: item.dragtype !== 'move' ? 2 : item?.isRequired,
       is_fold: type === 1 ? 1 : 2,
@@ -297,30 +313,36 @@ const Main = (props: any) => {
       : null
     evevtObj?.dragtype === 'add' && setAddAndEditVisible(true),
       setFieldType(evevtObj)
-
+    let dragItem: any = null
+    if (event.dataTransfer.getData('item')) {
+      dragItem = JSON.parse(event.dataTransfer.getData('item'))
+    } else if (event.dataTransfer.getData('DragItem')) {
+      dragItem = JSON.parse(event.dataTransfer.getData('DragItem'))
+    }
+    dragItem.isFold = state
     const filterDataF = getCategoryConfigF.filter(
-      (el: any) => el.storyId !== evevtObj.storyId,
+      (el: any) => el.storyId !== dragItem.storyId,
     )
     const filterDataT = getCategoryConfigT.filter(
-      (el: any) => el.storyId !== evevtObj.storyId,
+      (el: any) => el.storyId !== dragItem.storyId,
     )
     //  双方都需要过滤到拖动的item
     if (state === 1) {
-      setGetCategoryConfigF([...filterDataF, evevtObj])
+      setGetCategoryConfigF([...filterDataF, dragItem])
       setGetCategoryConfigT(filterDataT)
       dispatch(
         setGetCategoryConfigArray([
           ...filterDataT,
-          ...[...filterDataF, evevtObj],
+          ...[...filterDataF, dragItem],
         ]),
       )
     } else {
       setGetCategoryConfigF(filterDataF)
-      setGetCategoryConfigT([...filterDataT, evevtObj])
+      setGetCategoryConfigT([...filterDataT, dragItem])
       dispatch(
         setGetCategoryConfigArray([
           ...filterDataF,
-          ...[...filterDataT, evevtObj],
+          ...[...filterDataT, dragItem],
         ]),
       )
     }
