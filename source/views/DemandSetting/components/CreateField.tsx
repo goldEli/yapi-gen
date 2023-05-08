@@ -77,7 +77,9 @@ const CreateField = () => {
   const [searchIcon, setSearchIcon] = useState(true)
   const [search, setSearch] = useState(true)
   const [createIcon, setCreateIcon] = useState(true)
-  const { getCategoryConfigArray } = useSelector(store => store.category)
+  const { getCategoryConfigArray, activeCategory } = useSelector(
+    store => store.category,
+  )
   const [dataList, setDataList] = useState<any>()
   const [searchDataList, setSearchDataList] = useState<any>()
   const { projectInfo } = useSelector(store => store.project)
@@ -163,7 +165,7 @@ const CreateField = () => {
   }, [getCategoryConfigArray, payloadDataList])
   useEffect(() => {
     getProjectFieIdsApi()
-  }, [])
+  }, [activeCategory])
   return (
     <CreateFieldWrap draggable="false">
       <TitleStyle draggable="false" onClick={() => setCreateIcon(!createIcon)}>
