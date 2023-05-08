@@ -311,7 +311,8 @@ const Sortable = (props: any) => {
                         {t(
                           option.find(
                             (item: any) =>
-                              child?.fieldContent?.attr === item.type,
+                              (child?.fieldContent?.attr ||
+                                child?.field_content?.attr) === item.type,
                           )?.label,
                         )}
                       </div>
@@ -320,7 +321,7 @@ const Sortable = (props: any) => {
                   <RightOperate>
                     <Checkbox
                       disabled={
-                        child?.fieldContent.attr === 'single_checkbox'
+                        child?.fieldContent?.attr === 'single_checkbox'
                           ? true
                           : false
                       }

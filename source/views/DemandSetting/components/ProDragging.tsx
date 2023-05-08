@@ -77,7 +77,12 @@ const SliderList = (props: any) => {
   let startX = 0
   const [dragItem, setDragItem] = useState<any>()
   const onDragStart = (ev: any) => {
-    const obj = { ...children, dragtype: 'edit' }
+    const obj = {
+      ...children,
+      dragtype: 'edit',
+      fieldContent: children.field_content,
+      storyId: children.id,
+    }
     setDragItem(obj)
     ev.dataTransfer.setData('item', JSON.stringify(obj))
     const imgDom = document.createElement('div')

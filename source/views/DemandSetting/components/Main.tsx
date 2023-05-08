@@ -297,22 +297,33 @@ const Main = (props: any) => {
       : null
     evevtObj?.dragtype === 'add' && setAddAndEditVisible(true),
       setFieldType(evevtObj)
-    const dragItem = event.dataTransfer.getData('DragItem')
-      ? JSON.parse(event.dataTransfer.getData('DragItem'))
-      : null
+
     const filterDataF = getCategoryConfigF.filter(
-      (el: any) => el.storyId !== dragItem.storyId,
+      (el: any) => el.storyId !== evevtObj.storyId,
     )
     const filterDataT = getCategoryConfigT.filter(
-      (el: any) => el.storyId !== dragItem.storyId,
+      (el: any) => el.storyId !== evevtObj.storyId,
     )
     //  双方都需要过滤到拖动的item
     if (state === 1) {
-      setGetCategoryConfigF([...filterDataF, dragItem])
+      setGetCategoryConfigF([...filterDataF, evevtObj])
       setGetCategoryConfigT(filterDataT)
+      dispatch(
+        setGetCategoryConfigArray([
+          ...filterDataT,
+          ...[...filterDataF, evevtObj],
+        ]),
+      )
     } else {
       setGetCategoryConfigF(filterDataF)
-      setGetCategoryConfigT([...filterDataT, dragItem])
+      setGetCategoryConfigT([...filterDataT, evevtObj])
+      const a = [...filterDataT, evevtObj]
+      dispatch(
+        setGetCategoryConfigArray([
+          ...filterDataF,
+          ...[...filterDataT, evevtObj],
+        ]),
+      )
     }
   }
   return (
