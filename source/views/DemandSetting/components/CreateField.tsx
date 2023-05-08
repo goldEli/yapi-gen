@@ -132,7 +132,6 @@ const CreateField = () => {
 
   // 两个数组的比较过滤
   const filterData = (confightList: any, payloadList: any) => {
-    console.log(confightList)
     if (confightList?.length < 1 && payloadList?.length < 1) return
     const filterIds = confightList?.map((item: any) => item.storyId)
     setDataList(
