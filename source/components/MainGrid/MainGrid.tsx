@@ -47,13 +47,15 @@ const MainGrid = (props: Props) => {
       {!!props.projectList?.list &&
         (props.projectList?.list?.length > 0 ? (
           <SpaceWrap>
-            {props.projectList.list?.map((item: any) => (
+            {props.projectList.list?.map((item: any, index: any) => (
               <SpaceWrapItem key={item.id} onClick={() => onToDetail(item)}>
-                <ProjectCard
-                  onChangeOperation={props.onChangeOperation}
-                  item={item}
-                  key={item.id}
-                ></ProjectCard>
+                <div className={`app-${index}`}>
+                  <ProjectCard
+                    onChangeOperation={props.onChangeOperation}
+                    item={item}
+                    key={item.id}
+                  ></ProjectCard>
+                </div>
               </SpaceWrapItem>
             ))}
           </SpaceWrap>

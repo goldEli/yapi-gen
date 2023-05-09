@@ -1,5 +1,7 @@
 /* eslint-disable max-params */
 /* eslint-disable no-undefined */
+import { Steps } from 'intro.js-react'
+import 'intro.js/introjs.css'
 import CommonButton from '@/components/CommonButton'
 import CreateActionBar from '@/components/CreateActionBar'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -34,6 +36,28 @@ const ProjectManagementOptimization = () => {
   const dispatch = useDispatch()
   const asyncSetTtile = useSetTitle()
   asyncSetTtile(t('title.project'))
+
+  const [stepsEnabled, setStepsEnabled] = useState(true)
+  const [initialStep, setInitialStep] = useState(0)
+  const [steps, setSteps] = useState([
+    {
+      element: '.hello',
+      intro: 'Hello step',
+    },
+    {
+      element: '.app-2',
+      intro: (
+        <div
+          style={{
+            color: 'red',
+          }}
+        >
+          feiji
+        </div>
+      ),
+    },
+  ])
+
   const [isGrid, setIsGrid] = useState(true)
   const [isStop, setIsStop] = useState(false)
   const [activeType, setActiveType] = useState(0)
@@ -245,12 +269,21 @@ const ProjectManagementOptimization = () => {
       })
     }
   }, [typeId])
+  const onExit = () => {
+    setStepsEnabled(false)
+  }
 
   return (
     <PermissionWrap
       auth="/ProjectManagement/Project"
       permission={currentMenu?.children?.map((i: any) => i.url)}
     >
+      <Steps
+        enabled={stepsEnabled}
+        steps={steps}
+        initialStep={initialStep}
+        onExit={onExit}
+      />
       <HasSideCommonLayout
         side={
           <ProjectSide
@@ -294,14 +327,16 @@ const ProjectManagementOptimization = () => {
           {(
             userInfo.company_permissions?.map((i: any) => i.identity) || []
           ).includes('b/project/save') && (
-            <CommonButton
-              type="primary"
-              onClick={() => dispatch(changeCreateVisible(true))}
-              icon="plus"
-              iconPlacement="left"
-            >
-              {t('common.createProject')}
-            </CommonButton>
+            <div className="hello">
+              <CommonButton
+                type="primary"
+                onClick={() => dispatch(changeCreateVisible(true))}
+                icon="plus"
+                iconPlacement="left"
+              >
+                {t('common.createProject')}
+              </CommonButton>
+            </div>
           )}
 
           <CreateActionBar
