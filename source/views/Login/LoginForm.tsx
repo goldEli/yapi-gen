@@ -4,6 +4,7 @@
 // 登陆表单
 import style from './Login.module.css'
 import Filed from './components/Filed'
+import { useNavigate } from 'react-router-dom'
 import SecretImage from './components/SecretImage'
 import { useState, useEffect, useReducer } from 'react'
 import {
@@ -25,6 +26,7 @@ import {
 import { getQueryParam } from './utils'
 
 export default React.memo((props: { redirect(): void }) => {
+  const navigate = useNavigate()
   const [form, setForm] = useState<TForm>({
     username: '',
     password: '',
@@ -158,7 +160,9 @@ export default React.memo((props: { redirect(): void }) => {
     const res = await toLogin(data)
     if (res.code === 0) {
       localStorage.token = res.data.token
-      props.redirect()
+      // props.redirect()
+      navigate(`/ProjectManagement`)
+      console.log('feiji ')
     } else {
       setErrorMessage(res.msg)
       setErrorState(true)

@@ -59,6 +59,7 @@ const Page = () => {
   }
 
   useEffect(() => {
+    localStorage.removeItem('token')
     check()
   }, [])
   if (isAuthorized && target && target !== 'oa') {
