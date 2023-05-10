@@ -20,7 +20,7 @@ const Project = () => {
   let paramsData: any
   if (
     !(
-      String(location.pathname).includes('/SprintProject/ReportForms') ||
+      String(location.pathname).includes('/SprintProject/Report') ||
       String(location.pathname).includes('/SprintProject/KanBan') ||
       String(location.pathname) === '/SprintProject/Affair' ||
       String(location.pathname) === '/SprintProject/Sprint'
