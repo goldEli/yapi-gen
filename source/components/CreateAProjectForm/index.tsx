@@ -255,12 +255,17 @@ const CreateAProjectForm = () => {
 
   return (
     <CommonModal
+      bodyStyle={{
+        height: '100vh',
+      }}
       onConfirm={onConfirm}
       onClose={() => {
         dispatch(changeCreateVisible(false))
         dispatch(editProject({ visible: false, id: '' }))
       }}
-      width={832}
+      width="100vw"
+      dex={50}
+      isShowMask={false}
       isVisible={createVisible}
       title={isEditId ? t('edit_item') : t('common.createProject')}
     >

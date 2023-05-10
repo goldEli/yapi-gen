@@ -16,11 +16,13 @@ const ModalHeader = styled.div`
   font-size: 16px;
   color: var(--neutral-n1-d1);
   height: 56px;
+
   padding: 0 13px 0 24px;
   font-family: SiYuanMedium;
 `
 
 const ModalStyle = styled(Modal)`
+  max-width: 100vw;
   .ant-modal-body {
     background-color: var(--neutral-white-d5);
     border-radius: 6px;
@@ -51,6 +53,7 @@ interface CommonModalProps {
   // 是否显示遮罩层
   isShowMask?: boolean
   noCancel?: boolean
+  dex?: number
 }
 
 const CommonModal = (props: CommonModalProps) => {
@@ -61,7 +64,7 @@ const CommonModal = (props: CommonModalProps) => {
       open={props?.isVisible}
       title={false}
       closable={false}
-      bodyStyle={{ padding: '0 4px 0 0', ...props.bodyStyle }}
+      bodyStyle={{ ...props.bodyStyle }}
       width={props?.width || 528}
       maskClosable={false}
       destroyOnClose
@@ -69,6 +72,7 @@ const CommonModal = (props: CommonModalProps) => {
       wrapClassName="vertical-center-modal"
       focusTriggerAfterClose={false}
       mask={props.isShowMask}
+      zIndex={props.dex}
     >
       <ModalHeader>
         <span>{props?.title}</span>
