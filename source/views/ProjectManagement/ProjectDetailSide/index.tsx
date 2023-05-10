@@ -51,7 +51,7 @@ const ProjectDetailSide = () => {
   const routerPath = useLocation()
   const navigate = useNavigate()
   let menuList: any = []
-  if (projectType === 'xue') {
+  if (projectType === 'sprint') {
     menuList = [
       {
         name: '看板',
@@ -285,7 +285,7 @@ const ProjectDetailSide = () => {
         <MenuBox>
           {menuList.map((i: any) => (
             <MenuItem
-              key={i.icon}
+              key={i.path}
               isActive={routerPath.pathname === i.path}
               onClick={() => onChangeRouter(i.path)}
               hidden={!i.isPermission}

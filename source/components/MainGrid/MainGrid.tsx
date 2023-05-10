@@ -35,9 +35,11 @@ const MainGrid = (props: Props) => {
 
   const onToDetail = (item: any) => {
     const params = encryptPhp(JSON.stringify({ id: item.id }))
-    console.log(111, item)
-    // return
-    dispatch(setProjectType(item.name))
+    dispatch(setProjectType(item.prefix))
+    if (item.prefix === 'sprint') {
+      navigate(`/ProjectManagement/SprintProjectKanBan?data=${params}`)
+      return
+    }
     navigate(`/ProjectManagement/Demand?data=${params}`)
   }
 
