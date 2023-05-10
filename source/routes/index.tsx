@@ -131,6 +131,28 @@ const routes = [
         ],
       },
       {
+        path: '/SprintProject',
+        element: lazy(() => import('@/views/SprintProject')),
+        children: [
+          {
+            path: 'KanBan',
+            element: lazy(() => import('@/views/SprintProjectKanBan')),
+          },
+          {
+            path: 'Report',
+            element: lazy(() => import('@/views/SprintProjectReport')),
+          },
+          {
+            path: 'Sprint',
+            element: lazy(() => import('@/views/SprintProjectSprint')),
+          },
+          {
+            path: 'Affair',
+            element: lazy(() => import('@/views/SprintProjectAffair')),
+          },
+        ],
+      },
+      {
         path: '/AdminManagement',
         element: lazy(() => import('@/views/AdminManagement')),
         children: [

@@ -284,8 +284,10 @@ const HeaderLeft = () => {
           (i: any) => i.url === menuPermission.priorityUrl,
         )[0]
       } else {
-        resultMenu = menuPermission?.menus?.filter((i: any) =>
-          routerPath.pathname.includes(i.url),
+        resultMenu = menuPermission?.menus?.filter(
+          (i: any) =>
+            // routerPath.pathname.includes(i.url),
+            routerPath.pathname === i.url,
         )?.[0]
       }
       dispatch(setCurrentMenu(resultMenu))
