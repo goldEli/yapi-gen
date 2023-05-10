@@ -47,33 +47,63 @@ const ProjectDetailSide = () => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData?.id
   const { projectInfo } = useSelector(store => store.project)
+  const { projectType } = useSelector(state => state.createProject)
   const routerPath = useLocation()
   const navigate = useNavigate()
-
-  const menuList = [
-    {
-      name: t('demand'),
-      icon: 'demand',
-      path: '/ProjectManagement/Demand',
-      isPermission:
-        projectInfo?.isPublic === 1
-          ? true
-          : projectInfo?.projectPermissions?.filter((i: any) =>
-              String(i.group_name).includes('需求'),
-            ).length,
-    },
-    {
-      name: t('iteration'),
-      icon: 'interation-2',
-      path: '/ProjectManagement/Iteration',
-      isPermission:
-        projectInfo?.isPublic === 1
-          ? true
-          : projectInfo?.projectPermissions?.filter((i: any) =>
-              String(i.group_name).includes('迭代'),
-            ).length,
-    },
-  ]
+  let menuList: any = []
+  if (projectType === 'xue') {
+    menuList = [
+      {
+        name: '看板',
+        icon: 'demand',
+        path: '/ProjectManagement/SprintProjectKanBan',
+        isPermission: true,
+      },
+      {
+        name: '冲刺',
+        icon: 'interation-2',
+        path: '/ProjectManagement/SprintProjectSprint',
+        isPermission: true,
+      },
+      {
+        name: '报表',
+        icon: 'interation-2',
+        path: '/ProjectManagement/SprintProjectReport',
+        isPermission: true,
+      },
+      {
+        name: '事务',
+        icon: 'interation-2',
+        path: '/ProjectManagement/SprintProjectAffair',
+        isPermission: true,
+      },
+    ]
+  } else {
+    menuList = [
+      {
+        name: t('demand'),
+        icon: 'demand',
+        path: '/ProjectManagement/Demand',
+        isPermission:
+          projectInfo?.isPublic === 1
+            ? true
+            : projectInfo?.projectPermissions?.filter((i: any) =>
+                String(i.group_name).includes('需求'),
+              ).length,
+      },
+      {
+        name: t('iteration'),
+        icon: 'interation-2',
+        path: '/ProjectManagement/Iteration',
+        isPermission:
+          projectInfo?.isPublic === 1
+            ? true
+            : projectInfo?.projectPermissions?.filter((i: any) =>
+                String(i.group_name).includes('迭代'),
+              ).length,
+      },
+    ]
+  }
 
   const sideList = [
     {

@@ -113,6 +113,22 @@ const routes = [
             element: lazy(() => import('@/views/Demand')),
           },
           {
+            path: 'SprintProjectKanBan',
+            element: lazy(() => import('@/views/SprintProjectKanBan')),
+          },
+          {
+            path: 'SprintProjectReport',
+            element: lazy(() => import('@/views/SprintProjectReport')),
+          },
+          {
+            path: 'SprintProjectSprint',
+            element: lazy(() => import('@/views/SprintProjectSprint')),
+          },
+          {
+            path: 'SprintProjectAffair',
+            element: lazy(() => import('@/views/SprintProjectAffair')),
+          },
+          {
             path: 'Iteration',
             element: lazy(() => import('@/views/Iteration')),
           },
@@ -127,28 +143,6 @@ const routes = [
           {
             path: 'WorkFlow',
             element: lazy(() => import('@/views/Workflow')),
-          },
-        ],
-      },
-      {
-        path: '/SprintProject',
-        element: lazy(() => import('@/views/SprintProject')),
-        children: [
-          {
-            path: 'KanBan',
-            element: lazy(() => import('@/views/SprintProjectKanBan')),
-          },
-          {
-            path: 'Report',
-            element: lazy(() => import('@/views/SprintProjectReport')),
-          },
-          {
-            path: 'Sprint',
-            element: lazy(() => import('@/views/SprintProjectSprint')),
-          },
-          {
-            path: 'Affair',
-            element: lazy(() => import('@/views/SprintProjectAffair')),
           },
         ],
       },

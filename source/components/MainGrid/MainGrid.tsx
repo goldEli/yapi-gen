@@ -11,7 +11,7 @@ import NoData from '@/components/NoData'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useDispatch, useSelector } from '@store/index'
 import { DataWrap, SpaceWrap, SpaceWrapItem } from './style'
-import { changeCreateVisible } from '@store/create-propject'
+import { changeCreateVisible, setProjectType } from '@store/create-propject'
 import CommonButton from '../CommonButton'
 
 interface Props {
@@ -35,6 +35,9 @@ const MainGrid = (props: Props) => {
 
   const onToDetail = (item: any) => {
     const params = encryptPhp(JSON.stringify({ id: item.id }))
+    console.log(111, item)
+    // return
+    dispatch(setProjectType(item.name))
     navigate(`/ProjectManagement/Demand?data=${params}`)
   }
 
