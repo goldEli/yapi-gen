@@ -63,6 +63,11 @@ const Text = styled.div<{ bgc: any }>(
   }),
 )
 const OpacityDiv = styled.div<{ op: boolean }>`
+  z-index: ${props => (props.op ? '1' : '0')};
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, 0%);
   transition: all 1s;
   opacity: ${props => (props.op ? '1' : '0')};
 `
