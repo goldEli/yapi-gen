@@ -303,6 +303,7 @@ const CreateAProjectForm = () => {
     <CommonModal2
       bodyStyle={{
         height: '100vh',
+        minWidth: '1400px',
       }}
       onConfirm={onConfirm}
       onClose={() => {
