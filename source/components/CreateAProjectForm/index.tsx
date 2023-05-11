@@ -267,7 +267,7 @@ const CreateAProjectForm = () => {
       dex={50}
       isShowMask={false}
       isVisible={createVisible}
-      title={isEditId ? t('edit_item') : t('common.createProject')}
+      // title={isEditId ? t('edit_item') : t('common.createProject')}
     >
       <div
         style={{
