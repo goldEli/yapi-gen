@@ -35,10 +35,45 @@ import {
   Wrap,
 } from './style'
 import { makePy } from './tool'
+import CommonModal2 from '../CommonModal2'
+import {
+  Col,
+  RowStyle,
+  StyleLeft,
+  StyleRight,
+} from '@/views/WorkReport/Formwork/RightWrap'
+import styled from '@emotion/styled'
 
 export type IndexRef = {
   postValue(): Record<string, unknown>
 }
+const Text = styled.div<{ bgc: any }>(
+  {
+    padding: '0 24px 0 0',
+    minWidth: '99px',
+    height: '32px',
+    lineHeight: '32px',
+    textAlign: 'center',
+    fontSize: '14px',
+  },
+  ({ bgc }) => ({
+    backgroundColor: bgc ? 'var(--function-tag5)' : 'var(--neutral-n8)',
+    color: bgc ? 'var(--primary-d1)' : 'var(--neutral-n2)',
+    fontFamily: bgc ? 'SiYuanMedium' : 'inherit',
+  }),
+)
+const OpacityDiv = styled.div<{ op: boolean }>`
+  transition: all 1s;
+  opacity: ${props => (props.op ? '1' : '0')};
+`
+
+const Side = styled.div<{ op: boolean }>`
+  opacity: ${props => (props.op ? '1' : '0')};
+  width: ${props => (props.op ? '320px' : '0px')};
+  background-color: #f8f8fa;
+  transition: all 1s;
+  flex-shrink: 0;
+`
 
 const CreateAProjectForm = () => {
   const covers = useSelector(state => state.cover.covers)
@@ -61,7 +96,7 @@ const CreateAProjectForm = () => {
   const [user, setUser] = useState<any>()
   const dispatch = useDispatch()
   const inputRefDom = useRef<HTMLInputElement>(null)
-
+  const [step, setStep] = useState(1)
   const onCustomRequest = async (file: any) => {
     const data = await uploadFileByTask(file.file, '2', '2')
     setMyCover(data.url)
@@ -252,9 +287,15 @@ const CreateAProjectForm = () => {
       inputRefDom.current?.focus()
     }, 100)
   }, [createVisible])
+  const onChangeStep = (val: number) => {
+    if (step === val) {
+      return
+    }
+    setStep(val)
+  }
 
   return (
-    <CommonModal
+    <CommonModal2
       bodyStyle={{
         height: '100vh',
       }}
@@ -272,248 +313,327 @@ const CreateAProjectForm = () => {
       <div
         style={{
           display: 'flex',
-          padding: '0 0px 0 24px',
+          height: '100%',
         }}
       >
-        <CoverAreaWrap>
-          <FormTitleSmall text={t('choose_the_cover')} />
-          <CoverArea>
-            {covers?.map((i: any) => (
-              <CoverAreaImageWrap
-                color={i.remarks}
-                onClick={() => setActiveCover(i.path)}
-                key={i.id}
-              >
-                <CoverAreaImage src={i.path} />
-                {activeCover === i.path && (
-                  <IconFont className={coverAreaIcon} type="anglemark" />
-                )}
-              </CoverAreaImageWrap>
-            ))}
-
-            {myCover ? (
-              <CoverAreaImageWrap onClick={() => setActiveCover(myCover)}>
-                <CoverAreaImage src={myCover} />
-                {myCover === activeCover && (
-                  <IconFont className={coverAreaIcon} type="anglemark" />
-                )}
-                {myCover === activeCover && (
-                  <CoverAreaImageShade onClick={() => setMyCover('')}>
-                    <IconFont
-                      className={coverAreadelIcon}
-                      type="delete"
-                      style={{
-                        color: 'var(--neutral-white-d7)',
-                      }}
-                    />
-                  </CoverAreaImageShade>
-                )}
-              </CoverAreaImageWrap>
-            ) : (
-              <Upload fileList={[]} customRequest={onCustomRequest}>
-                <CoverAreaAdd>
-                  <IconFont
-                    style={{
-                      fontSize: 24,
-                      color: 'var(--neutral-n2)',
-                    }}
-                    type="plus"
-                  />
-                </CoverAreaAdd>
-              </Upload>
-            )}
-          </CoverArea>
-          <FormTitleSmall text={t('effect_preview')} />
+        <Side op={step === 3}>侧边</Side>
+        {/* 右边 */}
+        <div
+          style={{
+            flex: '1',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            marginTop: '42px',
+          }}
+        >
           <div
             style={{
-              marginTop: '16px',
+              marginBottom: '48px',
             }}
           >
-            <ProjectCardShow
-              names={names}
-              prefix={pey}
-              user={user}
-              img={activeCover}
-            />
+            <RowStyle>
+              <Col onClick={() => onChangeStep(1)}>
+                <StyleLeft bgc={step === 1} />
+                <Text bgc={step === 1}>编辑模板</Text>
+                <StyleRight bgc={step === 1} />
+              </Col>
+              <Col
+                style={{ transform: 'translate(-20px, 0px)' }}
+                onClick={() => onChangeStep(2)}
+              >
+                <StyleLeft bgc={step === 2} />
+                <Text bgc={step === 2}>权限配置</Text>
+                <StyleRight bgc={step === 2} />
+              </Col>
+              <Col
+                style={{ transform: 'translate(-40px, 0px)' }}
+                onClick={() => onChangeStep(3)}
+              >
+                <StyleLeft bgc={step === 3} />
+                <Text bgc={step === 3}>权限配置</Text>
+                <StyleRight bgc={step === 3} />
+              </Col>
+            </RowStyle>
           </div>
-        </CoverAreaWrap>
-        <Wrap>
-          <Form
-            onFinish={confirm}
-            form={form}
-            layout="vertical"
-            onFinishFailed={() => {
-              setTimeout(() => {
-                const errorList = (document as any).querySelectorAll(
-                  '.ant-form-item-has-error',
-                )
-
-                errorList[0]?.scrollIntoView({
-                  block: 'center',
-                  behavior: 'smooth',
-                })
-              }, 100)
+          <div
+            style={{
+              position: 'relative',
             }}
           >
-            <Form.Item
-              label={<FormTitleSmall text={t('project_name')} />}
-              name="name"
-              rules={[{ required: true, message: '' }]}
-            >
-              <Input
-                ref={inputRefDom as any}
-                maxLength={30}
-                placeholder={t('please_enter_a_project_name')}
-                onChange={onChange}
-                allowClear
-                autoFocus
-                autoComplete="off"
-              />
-            </Form.Item>
-
-            <Form.Item
-              label={<FormTitleSmall text={t('affiliated')} />}
-              name="team_id"
-              rules={[{ required: true, message: '' }]}
-            >
-              <CustomSelect
-                disabled={!!isEditId}
-                placeholder={t('please_select_your_affiliation')}
-                onChange={(value: any) => {
-                  setLeaderId(value)
-                  // eslint-disable-next-line no-undefined
-                  form.setFieldsValue({
-                    leader_id: undefined,
-                    isPublic: undefined,
-                  })
+            <OpacityDiv op={step === 1}>
+              <div
+                style={{
+                  background: 'red',
+                  width: '800px',
                 }}
               >
-                {affiliations.map((i: any) => {
-                  return (
-                    <Select.Option value={i.id} key={i.id} label={i.name}>
-                      <MoreOptions
-                        type="project"
-                        name={i.name}
-                        dec={i.dec}
-                        img={i.img}
-                      />
-                    </Select.Option>
-                  )
-                })}
-              </CustomSelect>
-            </Form.Item>
-            <Form.Item
-              label={
-                <div>
-                  <FormTitleSmall text={t('keyboard')} />
-                  <Tooltip
-                    overlayStyle={{
-                      fontSize: '12px',
-                    }}
-                    trigger={['click']}
-                    placement="top"
-                    title={t(
-                      'the_key_is_used_to_distinguish_items_and_is_used_as_a_requirement_number_prefix',
-                    )}
-                  >
-                    <IconFont
-                      style={{
-                        position: 'absolute',
-                        left: '36px',
-                        top: '4px',
-                        color: 'var(--neutral-n3)',
-                      }}
-                      type="question"
-                    />
-                  </Tooltip>
+                2
+              </div>
+            </OpacityDiv>
+            <OpacityDiv op={step === 2}>
+              <div
+                style={{
+                  background: 'green',
+                  width: '200px',
+                }}
+              >
+                1
+              </div>
+            </OpacityDiv>
+            <OpacityDiv
+              op={step === 3}
+              style={{
+                display: 'flex',
+                padding: '0 0px 0 24px',
+              }}
+            >
+              <CoverAreaWrap>
+                <FormTitleSmall text={t('choose_the_cover')} />
+                <CoverArea>
+                  {covers?.map((i: any) => (
+                    <CoverAreaImageWrap
+                      color={i.remarks}
+                      onClick={() => setActiveCover(i.path)}
+                      key={i.id}
+                    >
+                      <CoverAreaImage src={i.path} />
+                      {activeCover === i.path && (
+                        <IconFont className={coverAreaIcon} type="anglemark" />
+                      )}
+                    </CoverAreaImageWrap>
+                  ))}
+
+                  {myCover ? (
+                    <CoverAreaImageWrap onClick={() => setActiveCover(myCover)}>
+                      <CoverAreaImage src={myCover} />
+                      {myCover === activeCover && (
+                        <IconFont className={coverAreaIcon} type="anglemark" />
+                      )}
+                      {myCover === activeCover && (
+                        <CoverAreaImageShade onClick={() => setMyCover('')}>
+                          <IconFont
+                            className={coverAreadelIcon}
+                            type="delete"
+                            style={{
+                              color: 'var(--neutral-white-d7)',
+                            }}
+                          />
+                        </CoverAreaImageShade>
+                      )}
+                    </CoverAreaImageWrap>
+                  ) : (
+                    <Upload fileList={[]} customRequest={onCustomRequest}>
+                      <CoverAreaAdd>
+                        <IconFont
+                          style={{
+                            fontSize: 24,
+                            color: 'var(--neutral-n2)',
+                          }}
+                          type="plus"
+                        />
+                      </CoverAreaAdd>
+                    </Upload>
+                  )}
+                </CoverArea>
+                <FormTitleSmall text={t('effect_preview')} />
+                <div
+                  style={{
+                    marginTop: '16px',
+                  }}
+                >
+                  <ProjectCardShow
+                    names={names}
+                    prefix={pey}
+                    user={user}
+                    img={activeCover}
+                  />
                 </div>
-              }
-              name="prefix"
-              rules={[
-                {
-                  required: true,
-                  message: '',
-                },
-              ]}
-            >
-              <Input
-                maxLength={10}
-                onChange={e => !e.target.value && setLock(true)}
-                onFocus={() => setLock(false)}
-                placeholder={t('please_enter_the_key')}
-              />
-            </Form.Item>
-            <Form.Item
-              rules={[{ required: true, message: '' }]}
-              label={<FormTitleSmall text={t('project_leader')} />}
-              name="leader_id"
-            >
-              <CustomSelect
-                optionFilterProp="label"
-                onChange={(e: any) => {
-                  const obj = selectLeaders.find((i: any) => i.id === e)
+              </CoverAreaWrap>
+              <Wrap>
+                <Form
+                  onFinish={confirm}
+                  form={form}
+                  layout="vertical"
+                  onFinishFailed={() => {
+                    setTimeout(() => {
+                      const errorList = (document as any).querySelectorAll(
+                        '.ant-form-item-has-error',
+                      )
 
-                  setUser(obj.name)
-                }}
-                showSearch
-                // disabled={canChooseLeader}
-                placeholder={t('please_select_project_leader')}
-              >
-                {selectLeaders.map((i: any) => (
-                  <Select.Option value={i.id} key={i.id} label={i.name}>
-                    <MoreOptions
-                      type="user"
-                      name={i.name}
-                      dec={i.dec}
-                      img={i.img}
+                      errorList[0]?.scrollIntoView({
+                        block: 'center',
+                        behavior: 'smooth',
+                      })
+                    }, 100)
+                  }}
+                >
+                  <Form.Item
+                    label={<FormTitleSmall text={t('project_name')} />}
+                    name="name"
+                    rules={[{ required: true, message: '' }]}
+                  >
+                    <Input
+                      ref={inputRefDom as any}
+                      maxLength={30}
+                      placeholder={t('please_enter_a_project_name')}
+                      onChange={onChange}
+                      allowClear
+                      autoFocus
+                      autoComplete="off"
                     />
-                  </Select.Option>
-                ))}
-              </CustomSelect>
-            </Form.Item>
-            <Form.Item
-              label={<FormTitleSmall text={t('Permission')} />}
-              name="isPublic"
-            >
-              <CustomSelect
-                // disabled={canChooseLeader}
-                placeholder={t('please_select_permissions')}
-                optionLabelProp="label"
-              >
-                {pros.map((i: any) => (
-                  <Select.Option value={i.id} key={i.id} label={i.name}>
-                    <MoreOptions type="promise" name={i.name} dec={i.dec} />
-                  </Select.Option>
-                ))}
-              </CustomSelect>
-            </Form.Item>
-            <Form.Item
-              label={<FormTitleSmall text={t('version2.projectGroup')} />}
-              name="groups"
-            >
-              <CustomSelect
-                placeholder={t('common.pleaseSelect')}
-                mode="multiple"
-                options={selectGroupList}
-                showArrow
-                showSearch
-                allowClear
-                optionFilterProp="label"
-              />
-            </Form.Item>
-            <Form.Item
-              label={<FormTitleSmall text={t('project_description')} />}
-              name="info"
-            >
-              <Input.TextArea
-                placeholder={t('please_enter_project_description')}
-                autoSize={{ minRows: 3, maxRows: 5 }}
-              />
-            </Form.Item>
-          </Form>
-        </Wrap>
+                  </Form.Item>
+
+                  <Form.Item
+                    label={<FormTitleSmall text={t('affiliated')} />}
+                    name="team_id"
+                    rules={[{ required: true, message: '' }]}
+                  >
+                    <CustomSelect
+                      disabled={!!isEditId}
+                      placeholder={t('please_select_your_affiliation')}
+                      onChange={(value: any) => {
+                        setLeaderId(value)
+                        // eslint-disable-next-line no-undefined
+                        form.setFieldsValue({
+                          leader_id: undefined,
+                          isPublic: undefined,
+                        })
+                      }}
+                    >
+                      {affiliations.map((i: any) => {
+                        return (
+                          <Select.Option value={i.id} key={i.id} label={i.name}>
+                            <MoreOptions
+                              type="project"
+                              name={i.name}
+                              dec={i.dec}
+                              img={i.img}
+                            />
+                          </Select.Option>
+                        )
+                      })}
+                    </CustomSelect>
+                  </Form.Item>
+                  <Form.Item
+                    label={
+                      <div>
+                        <FormTitleSmall text={t('keyboard')} />
+                        <Tooltip
+                          overlayStyle={{
+                            fontSize: '12px',
+                          }}
+                          trigger={['click']}
+                          placement="top"
+                          title={t(
+                            'the_key_is_used_to_distinguish_items_and_is_used_as_a_requirement_number_prefix',
+                          )}
+                        >
+                          <IconFont
+                            style={{
+                              position: 'absolute',
+                              left: '36px',
+                              top: '4px',
+                              color: 'var(--neutral-n3)',
+                            }}
+                            type="question"
+                          />
+                        </Tooltip>
+                      </div>
+                    }
+                    name="prefix"
+                    rules={[
+                      {
+                        required: true,
+                        message: '',
+                      },
+                    ]}
+                  >
+                    <Input
+                      maxLength={10}
+                      onChange={e => !e.target.value && setLock(true)}
+                      onFocus={() => setLock(false)}
+                      placeholder={t('please_enter_the_key')}
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    rules={[{ required: true, message: '' }]}
+                    label={<FormTitleSmall text={t('project_leader')} />}
+                    name="leader_id"
+                  >
+                    <CustomSelect
+                      optionFilterProp="label"
+                      onChange={(e: any) => {
+                        const obj = selectLeaders.find((i: any) => i.id === e)
+
+                        setUser(obj.name)
+                      }}
+                      showSearch
+                      // disabled={canChooseLeader}
+                      placeholder={t('please_select_project_leader')}
+                    >
+                      {selectLeaders.map((i: any) => (
+                        <Select.Option value={i.id} key={i.id} label={i.name}>
+                          <MoreOptions
+                            type="user"
+                            name={i.name}
+                            dec={i.dec}
+                            img={i.img}
+                          />
+                        </Select.Option>
+                      ))}
+                    </CustomSelect>
+                  </Form.Item>
+                  <Form.Item
+                    label={<FormTitleSmall text={t('Permission')} />}
+                    name="isPublic"
+                  >
+                    <CustomSelect
+                      // disabled={canChooseLeader}
+                      placeholder={t('please_select_permissions')}
+                      optionLabelProp="label"
+                    >
+                      {pros.map((i: any) => (
+                        <Select.Option value={i.id} key={i.id} label={i.name}>
+                          <MoreOptions
+                            type="promise"
+                            name={i.name}
+                            dec={i.dec}
+                          />
+                        </Select.Option>
+                      ))}
+                    </CustomSelect>
+                  </Form.Item>
+                  <Form.Item
+                    label={<FormTitleSmall text={t('version2.projectGroup')} />}
+                    name="groups"
+                  >
+                    <CustomSelect
+                      placeholder={t('common.pleaseSelect')}
+                      mode="multiple"
+                      options={selectGroupList}
+                      showArrow
+                      showSearch
+                      allowClear
+                      optionFilterProp="label"
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    label={<FormTitleSmall text={t('project_description')} />}
+                    name="info"
+                  >
+                    <Input.TextArea
+                      placeholder={t('please_enter_project_description')}
+                      autoSize={{ minRows: 3, maxRows: 5 }}
+                    />
+                  </Form.Item>
+                </Form>
+              </Wrap>
+            </OpacityDiv>
+          </div>
+        </div>
       </div>
-    </CommonModal>
+    </CommonModal2>
   )
 }
 

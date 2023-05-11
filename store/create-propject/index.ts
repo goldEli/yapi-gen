@@ -13,7 +13,7 @@ type SliceState = {
 const slice = createSlice({
   name: 'createProject',
   initialState: {
-    createVisible: false,
+    createVisible: true,
     isRest: false,
     typeId: 0,
   } as SliceState,

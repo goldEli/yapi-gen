@@ -37,7 +37,7 @@ const ProjectManagementOptimization = () => {
   const asyncSetTtile = useSetTitle()
   asyncSetTtile(t('title.project'))
 
-  const [stepsEnabled, setStepsEnabled] = useState(true)
+  const [stepsEnabled, setStepsEnabled] = useState(false)
   const [initialStep, setInitialStep] = useState(0)
   const [steps, setSteps] = useState([
     {
