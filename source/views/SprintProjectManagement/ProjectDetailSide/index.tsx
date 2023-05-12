@@ -159,10 +159,12 @@ const ProjectDetailSide = () => {
             </span>
           </SideInfo>
         </SideTop>
-        <Back onClick={onGoBack}>
-          <CommonIconFont type="left-md" />
-          <span style={{ marginLeft: '2px' }}>{t('back')}</span>
-        </Back>
+        {pathname === '/SprintProjectManagement/Setting' && (
+          <Back onClick={onGoBack}>
+            <CommonIconFont type="left-md" />
+            <span style={{ marginLeft: '2px' }}>{t('back')}</span>
+          </Back>
+        )}
         <Provider />
 
         <MenuBox>
