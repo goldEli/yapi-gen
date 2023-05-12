@@ -29,7 +29,6 @@ export const WrapCategory = styled.div`
   width: 100%;
   overflow: hidden;
   transition: 0.2s;
-  display: none;
   white-space: nowrap;
 `
 
