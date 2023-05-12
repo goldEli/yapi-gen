@@ -43,6 +43,7 @@ import {
   StyleRight,
 } from '@/views/WorkReport/Formwork/RightWrap'
 import styled from '@emotion/styled'
+import ProjectType from '../ProjectType/ProjectType'
 
 export type IndexRef = {
   postValue(): Record<string, unknown>
@@ -368,13 +369,8 @@ const CreateAProjectForm = () => {
             }}
           >
             <OpacityDiv op={step === 1}>
-              <div
-                style={{
-                  background: 'red',
-                  width: '800px',
-                }}
-              >
-                2
+              <div>
+                <ProjectType />
               </div>
             </OpacityDiv>
             <OpacityDiv op={step === 2}>
