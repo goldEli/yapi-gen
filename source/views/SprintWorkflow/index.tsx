@@ -142,14 +142,14 @@ const Workflow = () => {
   const [step, setStep] = useState(1)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  debugger
-  const { categoryItem } = paramsData
+  const { categoryItem = {} } = paramsData
+  console.log('categoryItem------=', categoryItem)
   const ChildRef: any = createRef()
   // 计算当前选中下是否有项目管理权限
   const resultAuth =
     currentMenu?.children?.filter(
       (i: any) => i.url === '/ProjectManagement/Project',
-    )?.length > 0
+    )?.length > 0 || true
 
   const onChangeStep = (val: number) => {
     if (step === val) {

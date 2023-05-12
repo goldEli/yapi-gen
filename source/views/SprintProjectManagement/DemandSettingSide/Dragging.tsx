@@ -147,10 +147,14 @@ const SliderList = (props: any) => {
       <MenuItem
         onClick={() => {
           const params = encryptPhp(
-            JSON.stringify({ id: projectInfo?.id, pageIdx: 'main', type: 3 }),
+            JSON.stringify({
+              id: projectInfo?.id,
+              pageIdx: 'main',
+              type: 3,
+            }),
           )
-          location.pathname === '/ProjectManagement/WorkFlow' &&
-            navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
+          location.pathname === '/SprintProjectManagement/WorkFlow' &&
+            navigate(`/SprintProjectManagement/Demand?data=${params}`)
           dispatch(setActiveCategory(props.row)), props.onClick(index)
         }}
         key={children.icon}

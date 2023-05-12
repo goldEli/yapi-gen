@@ -23,6 +23,7 @@ import {
   SideInfo,
   SideTop,
   WrapDetail,
+  WrapCategory,
 } from './style'
 
 export const Back = styled.div`
@@ -47,6 +48,7 @@ const ProjectDetailSide = () => {
   const { projectInfo } = useSelector(store => store.project)
   const { pathname } = useLocation()
   const navigate = useNavigate()
+  const [selectedKeys, setSelectedKeys] = useState(['ProjectInfo'])
   const projectSettingsList = [
     {
       label: '项目信息',
@@ -128,78 +130,94 @@ const ProjectDetailSide = () => {
     navigate(`${path}?data=${params}`)
   }
   const projectSettingsClick = ({ item, key }: any) => {
-    if (key === 'ProjectAffair') {
-      return
-    }
+    setSelectedKeys(key)
     const params = encryptPhp(
       JSON.stringify({
         type: key,
         id: projectId,
       }),
     )
+    if (key === 'ProjectAffair') {
+      navigate(`/SprintProjectManagement/Demand?data=${params}`)
+      return
+    }
     navigate(`${item.props.path}?data=${params}`)
   }
   const onGoBack = () => {
     const params = encryptPhp(JSON.stringify({ id: projectId }))
     navigate(`/SprintProjectManagement/KanBan?data=${params}`)
   }
-
+  const demandClick = () => {
+    setSelectedKeys(['ProjectInfo'])
+    const params = encryptPhp(JSON.stringify({ id: projectId }))
+    navigate(`/SprintProjectManagement/Setting?data=${params}`)
+  }
   useEffect(() => {
     getInfo()
   }, [projectId])
   return (
     <AllWrap>
-      <WrapDetail ref={projectSide}>
-        <SideTop>
-          <img src={projectInfo.cover} alt="" />
-          <SideInfo>
-            <div>{projectInfo.name}</div>
-            <span>
-              {projectInfo.teamId ? t('teamwork') : t('enterprise_project')}
-            </span>
-          </SideInfo>
-        </SideTop>
-        {pathname === '/SprintProjectManagement/Setting' && (
-          <Back onClick={onGoBack}>
-            <CommonIconFont type="left-md" />
-            <span style={{ marginLeft: '2px' }}>{t('back')}</span>
-          </Back>
-        )}
-        <Provider />
+      {pathname !== '/SprintProjectManagement/Demand' &&
+        pathname !== '/SprintProjectManagement/WorkFlow' && (
+          <WrapDetail ref={projectSide}>
+            <SideTop>
+              <img src={projectInfo.cover} alt="" />
+              <SideInfo>
+                <div>{projectInfo.name}</div>
+                <span>
+                  {projectInfo.teamId ? t('teamwork') : t('enterprise_project')}
+                </span>
+              </SideInfo>
+            </SideTop>
+            {pathname === '/SprintProjectManagement/Setting' && (
+              <Back onClick={onGoBack}>
+                <CommonIconFont type="left-md" />
+                <span style={{ marginLeft: '2px' }}>{t('back')}</span>
+              </Back>
+            )}
+            <Provider />
 
-        <MenuBox>
-          {pathname === '/SprintProjectManagement/Setting' ? (
-            <Menu
-              items={projectSettingsList}
-              onClick={projectSettingsClick}
-              mode="inline"
-              style={{ background: 'transparent' }}
-            ></Menu>
-          ) : (
-            menuList.map((i: any) => (
-              <MenuItem
-                key={i.path}
-                isActive={pathname === i.path}
-                onClick={() => onChangeRouter(i.path)}
-                hidden={!i.isPermission}
-              >
-                <CommonIconFont type={i.icon} size={18} />
-                <div>{i.name}</div>
-              </MenuItem>
-            ))
-          )}
-        </MenuBox>
-        <SideFooter onClick={() => onSprintProjectSetting(true)}>
-          <div>
-            <CommonIconFont
-              type="settings"
-              color="var(--neutral-n3)"
-              size={18}
-            />
-            <div>{t('project.projectSet')}</div>
-          </div>
-        </SideFooter>
-      </WrapDetail>
+            <MenuBox>
+              {pathname === '/SprintProjectManagement/Setting' ? (
+                <Menu
+                  items={projectSettingsList}
+                  onClick={projectSettingsClick}
+                  mode="inline"
+                  style={{ background: 'transparent' }}
+                  selectedKeys={selectedKeys}
+                ></Menu>
+              ) : (
+                menuList.map((i: any) => (
+                  <MenuItem
+                    key={i.path}
+                    isActive={pathname === i.path}
+                    onClick={() => onChangeRouter(i.path)}
+                    hidden={!i.isPermission}
+                  >
+                    <CommonIconFont type={i.icon} size={18} />
+                    <div>{i.name}</div>
+                  </MenuItem>
+                ))
+              )}
+            </MenuBox>
+            <SideFooter onClick={() => onSprintProjectSetting(true)}>
+              <div>
+                <CommonIconFont
+                  type="settings"
+                  color="var(--neutral-n3)"
+                  size={18}
+                />
+                <div>{t('project.projectSet')}</div>
+              </div>
+            </SideFooter>
+          </WrapDetail>
+        )}
+      {(pathname === '/SprintProjectManagement/Demand' ||
+        pathname === '/SprintProjectManagement/WorkFlow') && (
+        <WrapCategory>
+          <DemandSettingSide onClick={demandClick} onBack={() => {}} />
+        </WrapCategory>
+      )}
     </AllWrap>
   )
 }
