@@ -14,7 +14,7 @@ type SliceState = {
 const slice = createSlice({
   name: 'createProject',
   initialState: {
-    createVisible: true,
+    createVisible: false,
     isRest: false,
     typeId: 0,
     projectType: '',
