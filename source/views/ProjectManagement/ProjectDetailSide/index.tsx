@@ -47,10 +47,10 @@ const ProjectDetailSide = () => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData?.id
   const { projectInfo } = useSelector(store => store.project)
+  const { projectType } = useSelector(state => state.createProject)
   const routerPath = useLocation()
   const navigate = useNavigate()
-
-  const menuList = [
+  let menuList = [
     {
       name: t('demand'),
       icon: 'demand',
@@ -255,7 +255,7 @@ const ProjectDetailSide = () => {
         <MenuBox>
           {menuList.map((i: any) => (
             <MenuItem
-              key={i.icon}
+              key={i.path}
               isActive={routerPath.pathname === i.path}
               onClick={() => onChangeRouter(i.path)}
               hidden={!i.isPermission}
