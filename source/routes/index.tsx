@@ -2,6 +2,7 @@ import { useRoutes, Navigate } from 'react-router-dom'
 import { Container } from '@/views/Container'
 import React from 'react'
 import Loading from '@/components/Loading'
+import Login from '@/views/Login'
 
 const lazy = (
   component: () => Promise<{
@@ -17,6 +18,10 @@ const lazy = (
 }
 
 const routes = [
+  {
+    path: 'login',
+    element: <Login />,
+  },
   {
     path: '',
     element: <Container />,

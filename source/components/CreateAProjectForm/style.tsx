@@ -5,8 +5,8 @@ import IconFont from '../IconFont'
 export const Wrap = styled.div`
   width: 410px;
   padding-left: 24px;
-  max-height: 536px;
-  overflow-y: auto;
+  /* max-height: 536px; */
+  /* overflow-y: auto; */
   padding-right: 24px;
 `
 

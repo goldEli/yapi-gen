@@ -6,11 +6,9 @@ import { Modal, Space } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from './IconFont'
 import { useTranslation } from 'react-i18next'
-import { CloseWrap, ModalFooter } from './StyleCommon'
 import CommonButton from './CommonButton'
 
 const ModalHeader = styled.div`
-  margin-top: 100px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -21,6 +19,17 @@ const ModalHeader = styled.div`
   padding: 0 13px 0 24px;
   font-family: SiYuanMedium;
 `
+const ModalFooter = styled.div({
+  position: 'absolute',
+  bottom: 0,
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+  height: 80,
+  gap: '16px',
+  padding: '0 20px 0 24px',
+})
 
 const ModalStyle = styled(Modal)`
   max-width: 100vw;
@@ -31,7 +40,33 @@ const ModalStyle = styled(Modal)`
     padding: 0px;
   }
 `
-
+const CloseWrap = styled.div<{ width?: any; height?: any }>`
+  position: absolute;
+  top: 96px;
+  right: 40px;
+  width: ${props => props.width}px;
+  height: ${props => props.height}px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 6px;
+  svg {
+    color: var(--neutral-n2);
+  }
+  &:hover {
+    background: var(--hover-d1);
+    svg {
+      color: var(--neutral-n1-d1);
+    }
+  }
+  &:active {
+    background: var(--neutral-n6-d1);
+    svg {
+      color: var(--neutral-n1-d1);
+    }
+  }
+`
 interface CommonModalProps {
   // 是否显示
   isVisible: boolean
@@ -76,9 +111,12 @@ const CommonModal = (props: CommonModalProps) => {
       mask={props.isShowMask}
       zIndex={props.dex}
     >
-      <ModalHeader>
-        <span>{props?.title}</span>
-        <Space size={4}>
+      <div
+        style={{
+          position: 'relative',
+        }}
+      >
+        <ModalHeader>
           {props.hasTop}
           <CloseWrap onClick={props?.onClose} width={32} height={32}>
             <IconFont
@@ -86,27 +124,21 @@ const CommonModal = (props: CommonModalProps) => {
               type="close"
             />
           </CloseWrap>
-        </Space>
-      </ModalHeader>
-      <div style={{ minHeight: 154 }}>{props?.children}</div>
-      {!props?.isShowFooter && (
-        <>
-          {props?.hasFooter}
-          {!props.hasFooter && (
-            <ModalFooter size={16}>
-              {props?.noCancel ? null : (
-                <CommonButton type="light" onClick={props?.onClose}>
-                  {t('common.cancel')}
-                </CommonButton>
-              )}
+        </ModalHeader>
+        <div style={{ height: 'calc(100vh - 56px)' }}>{props?.children}</div>
 
-              <CommonButton type="primary" onClick={props?.onConfirm}>
-                {props?.confirmText ? props?.confirmText : t('common.confirm')}
-              </CommonButton>
-            </ModalFooter>
+        <ModalFooter>
+          {props?.noCancel ? null : (
+            <CommonButton type="light" onClick={props?.onClose}>
+              {t('common.cancel')}
+            </CommonButton>
           )}
-        </>
-      )}
+
+          <CommonButton type="primary" onClick={props?.onConfirm}>
+            {props?.confirmText ? props?.confirmText : t('common.confirm')}
+          </CommonButton>
+        </ModalFooter>
+      </div>
     </ModalStyle>
   )
 }

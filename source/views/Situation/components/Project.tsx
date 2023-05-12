@@ -18,10 +18,15 @@ import { useTranslation } from 'react-i18next'
 
 const DemoColumn = (props: any) => {
   const { data: res } = props
+  console.log(res)
+
   const config = {
     seriesField: 'type',
     color: ['#5b8ff9', '#5ad8a6', '#f6bd16', '#75cbed', '#657798'],
     data: res,
+    columnStyle: {
+      radius: [20, 20, 0, 0],
+    },
     xField: 'type',
     yField: 'sales',
     appendPadding: 20,
@@ -38,6 +43,23 @@ const DemoColumn = (props: any) => {
       label: {
         autoHide: true,
         autoRotate: false,
+      },
+    },
+    yAxis: {
+      grid: {
+        line: {
+          style: {
+            stroke: 'black',
+            lineWidth: 1,
+            lineDash: [4, 5],
+            strokeOpacity: 0.7,
+            shadowColor: 'black',
+            shadowBlur: 10,
+            shadowOffsetX: 5,
+            shadowOffsetY: 5,
+            cursor: 'pointer',
+          },
+        },
       },
     },
   }

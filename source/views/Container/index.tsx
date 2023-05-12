@@ -24,6 +24,7 @@ import DemandDetailDrawer from '@/components/DemandDetailDrawer'
 import SiteDrawer from '../SiteNotifications/components/SiteDrawer/SiteDrawer'
 import ReportDetailDrawer from '../WorkReport/Review/components/ReportDetailDrawer'
 import { saveDemandDetailDrawer } from '@store/demand/demand.thunk'
+import TopNote from '@/components/TopNote/TopNote'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -55,7 +56,7 @@ export const Content = styled.div`
 export const Container = () => {
   const location = useLocation()
   const dispatch = useDispatch()
-  const [isNextVisible, setIsNextVisible] = useState(false)
+  const [isNextVisible, setIsNextVisible] = useState(true)
   const { loginInfo, menuPermission } = useSelector(store => store.user)
   const {
     i18n: { language },
@@ -162,7 +163,7 @@ export const Container = () => {
             close={() => setIsNextVisible(false)}
           />
         </LayoutWrap>
-
+        <TopNote />
         <CreateAProjectForm />
         <CreateIteration />
         <CreateDemand />
