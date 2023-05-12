@@ -226,6 +226,7 @@ const GlobalStyle = () => {
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: inherit;
     }
 
     .vertical-center-modal .ant-modal {

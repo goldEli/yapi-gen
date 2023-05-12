@@ -1,0 +1,64 @@
+.page {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  min-height: 800px;
+  max-height: 1000px;
+}
+.left,
+.right {
+  width: 50%;
+  padding: 40px;
+}
+.left {
+  background: linear-gradient(135deg, #f0f6ff 0%, #f5faff 100%);
+}
+.leftWrap {
+  height: 100%;
+  width: 100%;
+  background: url("/sso/bg.svg") no-repeat;
+  background-size: 100% 100%;
+  display: flex;
+  flex-direction: column;
+}
+.right {
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+}
+
+.left .title {
+  position: absolute;
+}
+
+.left .title .title_img {
+  height: 40px;
+  margin-right: 16px;
+}
+
+.left .title .title_text_img {
+  height: 30px;
+  position: relative;
+  top: -5px;
+}
+.left .content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pageAuth {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  min-height: 800px;
+  max-height: 900px;
+  background: url("/sso/group.png") no-repeat;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+}
