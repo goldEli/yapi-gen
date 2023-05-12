@@ -1,4 +1,6 @@
-const Project = () => {
-  return <div>sprint</div>
+import React from 'react'
+interface IProps {}
+const SprintProjectSprint: React.FC<IProps> = props => {
+  return <div>SprintProjectSprint</div>
 }
-export default Project
+export default SprintProjectSprint

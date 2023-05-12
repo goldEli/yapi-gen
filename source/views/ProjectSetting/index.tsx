@@ -14,7 +14,7 @@ import { useSelector } from '@store/index'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
 import PermissionWrap from '@/components/PermissionWrap'
 import InputSearch from '@/components/InputSearch'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import ProjectNote from './components/ProjectNote'
 
 const Wrap = styled.div({
@@ -83,7 +83,9 @@ const Setting = () => {
       ).length,
     },
   ]
-
+  useEffect(() => {
+    console.log('activeTabs========', activeTabs)
+  }, [activeTabs])
   return (
     <PermissionWrap
       auth="/ProjectManagement/Project"

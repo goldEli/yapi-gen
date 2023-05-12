@@ -1,4 +1,6 @@
-const Project = () => {
-  return <div>kanban</div>
+import React from 'react'
+interface IProps {}
+const SprintProjectKanBen: React.FC<IProps> = props => {
+  return <div>SprintProjectKanBen</div>
 }
-export default Project
+export default SprintProjectKanBen
