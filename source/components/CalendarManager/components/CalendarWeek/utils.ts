@@ -1,6 +1,5 @@
 import dayjs from 'dayjs'
 import _ from 'lodash'
-import { XYCoord } from 'react-dnd'
 import { oneHourHeight } from '../../config'
 import { v4 as uuidv4 } from 'uuid'
 

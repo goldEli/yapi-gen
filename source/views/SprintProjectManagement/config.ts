@@ -64,7 +64,7 @@ export const menuList = [
   {
     name: '报表',
     icon: 'interation-2',
-    path: '/SprintProjectManagement/Report',
+    path: '/SprintProjectManagement/SprintReport',
     isPermission: true,
   },
 ]

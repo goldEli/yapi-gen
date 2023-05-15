@@ -4,23 +4,23 @@
 import { Space, Menu, message } from 'antd'
 import styled from '@emotion/styled'
 import { getIsPermission, getParamsData } from '@/tools/index'
-import { DividerWrap, HasIconMenu, HoverWrap } from './StyleCommon'
+import { DividerWrap, HasIconMenu, HoverWrap } from '../StyleCommon'
 import { useTranslation } from 'react-i18next'
-import IconFont from './IconFont'
-import DropDownMenu from './DropDownMenu'
+import IconFont from '../IconFont'
+import DropDownMenu from '../DropDownMenu'
 import { useState } from 'react'
 import { useSelector } from '@store/index'
-import ViewPort from './ViewPort'
+import ViewPort from '../ViewPort'
 import { useLocation, useSearchParams } from 'react-router-dom'
-import SetShowField from './SetShowField/indedx'
-import ScreenMinHover from './ScreenMinHover'
-import { getMessage } from './Message'
+import ScreenMinHover from '../ScreenMinHover'
+import { getMessage } from '../Message'
+import SetShowField from './SetShowField'
 
 interface Props {
   onChangeFilter?(): void
   onChangeGrid?(val: any): void
   onChangeSetting?(): void
-  isGrid: any
+  isGrid: 1 | 2
   filterState: boolean | undefined
   settingState: boolean | undefined
   isDemand?: boolean
@@ -34,7 +34,7 @@ const SpaceWrap = styled(Space)({
   },
 })
 
-const OperationGroup = (props: Props) => {
+const KanBanOperation = (props: Props) => {
   const [t] = useTranslation()
   const location = useLocation()
   const [searchParams] = useSearchParams()
@@ -84,6 +84,31 @@ const OperationGroup = (props: Props) => {
         ),
       },
       {
+        key: 'thumbnail',
+        label: (
+          <HasIconMenu
+            onClick={() => onClickMenu(1)}
+            isCheck={props.isGrid === 1}
+          >
+            <div className="left">
+              <IconFont className="icon" type="layout" />
+              <span
+                style={{
+                  color: 'var(--neutral-n2)',
+                }}
+                className="label"
+              >
+                {t('common.board')}
+              </span>
+            </div>
+            <IconFont
+              className="checked"
+              type={props.isGrid === 1 ? 'check' : ''}
+            />
+          </HasIconMenu>
+        ),
+      },
+      {
         key: 'tree',
         label: (
           <HasIconMenu
@@ -113,8 +138,7 @@ const OperationGroup = (props: Props) => {
   }
   return (
     <SpaceWrap size={8} style={{ marginLeft: 8 }}>
-      {(location.pathname.includes('Demand') ||
-        location.pathname.includes('Affair')) && (
+      {location.pathname.includes('Demand') && (
         <>
           <ViewPort pid={projectId} />
           <DividerWrap type="vertical" />
@@ -125,10 +149,17 @@ const OperationGroup = (props: Props) => {
         isVisible={isVisible}
         onChangeVisible={setIsVisible}
         menu={menuType}
-        icon={props.isGrid === 2 ? 'tree-list' : 'unorderedlist'}
+        icon={
+          props.isGrid === 1
+            ? 'layout'
+            : props.isGrid === 2
+            ? 'tree-list'
+            : 'unorderedlist'
+        }
       >
         <HasIconMenu>
           <div className="label">
+            {props.isGrid === 1 && t('common.board')}
             {props.isGrid === 2 && t('version2.tree')}
             {!props.isGrid && t('common.list')}
           </div>
@@ -158,16 +189,10 @@ const OperationGroup = (props: Props) => {
       <DividerWrap type="vertical" />
 
       <DropDownMenu
-        menu={
-          <SetShowField
-            onChangeFieldVisible={onClickMenuFields}
-            isGrid={props.isGrid}
-          />
-        }
+        menu={<SetShowField onChangeFieldVisible={onClickMenuFields} />}
         icon="settings"
         isVisible={isVisibleFields}
         onChangeVisible={setIsVisibleFields}
-        isActive={props.settingState}
       >
         <div>{t('common.tableFieldSet')}</div>
       </DropDownMenu>
@@ -175,4 +200,4 @@ const OperationGroup = (props: Props) => {
   )
 }
 
-export default OperationGroup
+export default KanBanOperation

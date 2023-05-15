@@ -1,7 +1,5 @@
 import styled from '@emotion/styled'
 import React, { useMemo } from 'react'
-import { DndProvider, useDrag, useDrop } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
 import ScheduleAllDay from './ScheduleAllDay'
 import ScheduleCardList from './ScheduleCardList'
 import Timescale from './Timescale'
@@ -22,7 +20,7 @@ const CalendarDayBox = styled.div`
 `
 
 const CalendarDay: React.FC<CalendarDayProps> = props => {
-  const {calenderTypeValue} = useSelector(store => store.calendarPanel)
+  const { calenderTypeValue } = useSelector(store => store.calendarPanel)
   const { checkedCalendarList } = useSelector(store => store.calendar)
   const dispatch = useDispatch()
 

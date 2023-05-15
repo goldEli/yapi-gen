@@ -7,9 +7,9 @@ import { setUserPreferenceConfig } from '@store/user'
 import { Menu, message } from 'antd'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import CommonIconFont from '../CommonIconFont'
-import IconFont from '../IconFont'
-import { getMessage } from '../Message'
+import CommonIconFont from '../../CommonIconFont'
+import IconFont from '../../IconFont'
+import { getMessage } from '../../Message'
 
 const ChangeItem = styled.div<{ isActive?: boolean; height?: number }>`
   width: 100%;
@@ -32,7 +32,6 @@ interface Props {
   // 是否有预览模式
   notView?: boolean
   onChangeFieldVisible(): void
-  isGrid?: 1 | 2
 }
 
 const SetShowField = (props: Props) => {
@@ -59,9 +58,7 @@ const SetShowField = (props: Props) => {
   let menuItems = [
     {
       key: '0',
-      label: (
-        <div onClick={props.onChangeFieldVisible}>{t('common.setField')}</div>
-      ),
+      label: <div onClick={props.onChangeFieldVisible}>配置面板</div>,
     },
     {
       key: '1-1',
@@ -105,13 +102,6 @@ const SetShowField = (props: Props) => {
     },
   ]
 
-  if (props.notView) {
-    menuItems = menuItems.filter((i: any) => i.key === '0')
-  }
-
-  if (props.isGrid === 1) {
-    menuItems = menuItems.filter((i: any) => i.key !== '0')
-  }
   const onClick = (e: any) => {
     setActive(e.key)
   }

@@ -465,7 +465,6 @@ const DemandBox = () => {
   )
 
   const content = () => {
-    console.log(1)
     if (!type) {
       return (
         <DemandMain
@@ -476,8 +475,6 @@ const DemandBox = () => {
         />
       )
     }
-
-    console.log(2)
     return (
       <>
         <CommonModal
@@ -687,8 +684,6 @@ const DemandBox = () => {
   if (!loadingState) {
     return <Loading />
   }
-
-  console.log(33)
 
   return (
     <PermissionWrap
