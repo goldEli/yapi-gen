@@ -1,7 +1,7 @@
 /* eslint-disable max-params */
 /* eslint-disable no-undefined */
-import { Steps } from 'intro.js-react'
-import 'intro.js/introjs.css'
+// import { Steps } from 'intro.js-react'
+// import 'intro.js/introjs.css'
 import CommonButton from '@/components/CommonButton'
 import CreateActionBar from '@/components/CreateActionBar'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -278,12 +278,12 @@ const ProjectManagementOptimization = () => {
       auth="/ProjectManagement/Project"
       permission={currentMenu?.children?.map((i: any) => i.url)}
     >
-      <Steps
+      {/* <Steps
         enabled={stepsEnabled}
         steps={steps}
         initialStep={initialStep}
         onExit={onExit}
-      />
+      /> */}
       <HasSideCommonLayout
         side={
           <ProjectSide
