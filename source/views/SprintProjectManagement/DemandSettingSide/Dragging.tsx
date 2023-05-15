@@ -154,7 +154,7 @@ const SliderList = (props: any) => {
             }),
           )
           location.pathname === '/SprintProjectManagement/WorkFlow' &&
-            navigate(`/SprintProjectManagement/Demand?data=${params}`)
+            navigate(`/SprintProjectManagement/DemandSetting?data=${params}`)
           dispatch(setActiveCategory(props.row)), props.onClick(index)
         }}
         key={children.icon}

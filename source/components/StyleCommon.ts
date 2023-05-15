@@ -912,6 +912,7 @@ const SelectWrap = styled(CustomSelect)`
 
 const DropdownWrap = styled(Dropdown)({
   cursor: 'pointer',
+  visibility: 'hidden',
   '&: hover': {
     svg: {
       color: 'var(--auxiliary-b1)',

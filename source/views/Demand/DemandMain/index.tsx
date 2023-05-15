@@ -23,7 +23,7 @@ import ManageView from '@/components/ManageView'
 import CreateViewPort from '@/components/CreateViewPort'
 import DemandTable from '@/components/DemandComponent/DemandTable'
 import DemandTree from '@/components/DemandComponent/DemandTree'
-import ProjectCommonOperation from '@/components/ProjectCommonOperation'
+import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
 import { Content, DemandContent } from './style'
 import { getMessage } from '@/components/Message'
 

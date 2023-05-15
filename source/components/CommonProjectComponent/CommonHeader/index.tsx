@@ -1,12 +1,12 @@
 import { getParamsData } from '@/tools'
 import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import CommonIconFont from '../CommonIconFont'
-import InputSearch from '../InputSearch'
-import Member from './Member'
+import CommonIconFont from '../../CommonIconFont'
+import InputSearch from '../../InputSearch'
 import { MemberIcon, SearchBox, SearchOrProjectMember } from './style'
-import MyBreadcrumb from '../MyBreadcrumb'
+import MyBreadcrumb from '../../MyBreadcrumb'
 import { t } from 'i18next'
+import CommonMember from '../CommonMember'
 
 interface Props {
   onInputSearch(value: string): void
@@ -38,7 +38,7 @@ const ProjectCommonOperation = (props: Props) => {
           </MemberIcon>
         </SearchOrProjectMember>
       </SearchBox>
-      <Member
+      <CommonMember
         visible={memberVisible}
         onChangeVisible={() => setMemberVisible(!memberVisible)}
         projectId={projectId}
