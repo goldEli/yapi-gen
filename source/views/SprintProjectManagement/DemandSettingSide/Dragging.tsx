@@ -161,7 +161,13 @@ const SliderList = (props: any) => {
         isActive={active}
       >
         {children.active}
-        <img style={{ width: '18px' }} src={children.attachmentPath} />
+        <img
+          style={{ width: '18px' }}
+          src={
+            children.attachmentPath ||
+            'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png'
+          }
+        />
         <div>{children.name}</div>
       </MenuItem>
     </Container>

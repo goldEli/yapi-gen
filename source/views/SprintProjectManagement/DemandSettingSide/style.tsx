@@ -57,6 +57,7 @@ export const MenuBox = styled.div`
   height: calc(100% - 150px);
   overflow-y: scroll;
   overflow-x: hidden;
+  transition: all 0.3s;
 `
 
 export const MenuItem = styled.div<{ isActive?: boolean }>`
@@ -144,6 +145,7 @@ export const TitleStyle = styled.div`
   color: var(--neutral-n3);
   justify-content: space-between;
 `
+
 export const Tabs = styled.div`
   width: 100%;
   display: flex;
@@ -211,3 +213,24 @@ export const NoDataCreateWrap = styled.div({
     },
   },
 })
+
+export const AffairTypeWrap = styled.div``
+export const AffairTypeHeader = styled.div`
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 16px;
+  margin-bottom: 18px;
+`
+export const AffairTypeList = styled.div`
+  height: 30px;
+  border: 1px solid red;
+  cursor: pointer;
+`
+export const AffairTypeText = styled.div`
+  font-size: var(--font12);
+  color: var(--neutral-n3);
+  margin-left: 8px;
+  display: inline-block;
+`
