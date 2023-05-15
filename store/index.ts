@@ -29,6 +29,7 @@ import siteNotifications from './SiteNotifications'
 import formWork from './formWork'
 import createScheduleVisualization from './createScheduleVisualization'
 import workReport from './workReport'
+import sprint from './sprint'
 
 export const store = configureStore({
   reducer: {
@@ -57,6 +58,7 @@ export const store = configureStore({
     formWork,
     createScheduleVisualization,
     workReport,
+    sprint,
   },
 })
 
