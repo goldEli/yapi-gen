@@ -12,13 +12,9 @@ import {
 } from '@/services/demand'
 import { getProjectInfo } from '@/services/project'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import {
-  setCreateDemandProps,
-  setIsCreateDemandVisible,
-  setIsUpdateDemand,
-} from '@store/demand'
+import { setIsUpdateDemand } from '@store/demand'
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
-import { setProjectInfo } from '@store/project'
+import { setAddWorkItemModal, setProjectInfo } from '@store/project'
 import { Drawer, message, Popover, Skeleton, Space } from 'antd'
 import { createRef, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -173,11 +169,12 @@ const DemandDetailDrawer = () => {
 
   // 关闭弹窗
   const onCancel = () => {
-    dispatch({
-      type: 'demand/setIsDemandDetailDrawerVisible',
-      payload: false,
-    })
-    dispatch(setCreateDemandProps({}))
+    dispatch(
+      setAddWorkItemModal({
+        visible: false,
+        params: {},
+      }),
+    )
     dispatch(saveDemandDetailDrawer({}))
     setShowState(normalState)
   }
@@ -198,11 +195,13 @@ const DemandDetailDrawer = () => {
   // 点击编辑
   const onEditChange = (item: any) => {
     setIsMoreVisible(false)
-    dispatch(setIsCreateDemandVisible(true))
     dispatch(
-      setCreateDemandProps({
-        demandId: item.id,
-        projectId: drawerInfo.projectId,
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          editId: item.id,
+          projectId: drawerInfo.projectId,
+        },
       }),
     )
   }
@@ -217,13 +216,15 @@ const DemandDetailDrawer = () => {
   // 点击创建子需求
   const onCreateChild = (item: any) => {
     setIsMoreVisible(false)
-    dispatch(setIsCreateDemandVisible(true))
     dispatch(
-      setCreateDemandProps({
-        projectId: drawerInfo.projectId,
-        isChild: true,
-        parentId: item.id,
-        categoryId: item.categoryId,
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          projectId: drawerInfo.projectId,
+          isChild: true,
+          parentId: item.id,
+          categoryId: item.categoryId,
+        },
       }),
     )
   }

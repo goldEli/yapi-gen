@@ -5,24 +5,17 @@
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable complexity */
 import styled from '@emotion/styled'
-import OperationGroup from '@/components/OperationGroup'
 import TableFilter from '@/components/TableFilter'
 import { useEffect, useRef, useState } from 'react'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
-import { Popover, Space, Tooltip } from 'antd'
-import CommonModal from '@/components/CommonModal'
 import DeleteConfirm from '@/components/DeleteConfirm'
 // import ExportDemand from './ExportDemand'
 // import ImportDemand from './ImportDemand'
 import { useDispatch, useSelector } from '@store/index'
-import { setFilterParamsModal } from '@store/project'
-import {
-  setCreateCategory,
-  setCreateDemandProps,
-  setIsCreateDemandVisible,
-} from '@store/demand'
+import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
+import { setCreateCategory } from '@store/demand'
 import { saveScreen } from '@store/view'
 import CommonIconFont from '@/components/CommonIconFont'
 import KanBanOperation from '@/components/KanBanOperation'
@@ -278,8 +271,12 @@ const Operation = (props: Props) => {
     // 需求列表筛选参数赋值给 弹窗
     dispatch(setFilterParamsModal(filterParams))
     setTimeout(() => {
-      dispatch(setIsCreateDemandVisible(true))
-      dispatch(setCreateDemandProps({ projectId: projectInfo?.id }))
+      dispatch(
+        setAddWorkItemModal({
+          visible: true,
+          params: { projectId: projectInfo?.id },
+        }),
+      )
       setIsVisible(false)
     }, 0)
   }

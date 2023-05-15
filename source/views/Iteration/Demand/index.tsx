@@ -18,19 +18,14 @@ import { useDynamicColumns } from '@/components/CreateProjectTableColum'
 import MoreDropdown from '@/components/MoreDropdown'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
-import { setFilterParamsModal } from '@store/project'
+import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
 import {
   deleteDemand,
   updateDemandStatus,
   updatePriority,
   getDemandList,
 } from '@/services/demand'
-import {
-  setCreateDemandProps,
-  setFilterParams,
-  setIsCreateDemandVisible,
-  setIsUpdateDemand,
-} from '@store/demand'
+import { setFilterParams, setIsUpdateDemand } from '@store/demand'
 import PaginationBox from '@/components/TablePagination'
 import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
@@ -161,11 +156,13 @@ const DemandWrap = (props: Props) => {
   }
 
   const onEditChange = (item: any) => {
-    dispatch(setIsCreateDemandVisible(true))
     dispatch(
-      setCreateDemandProps({
-        demandId: item.id,
-        projectId: item.project_id,
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          editId: item.id,
+          projectId: item.project_id,
+        },
       }),
     )
   }
@@ -177,13 +174,15 @@ const DemandWrap = (props: Props) => {
 
   // 点击创建子需求
   const onCreateChild = (item: any) => {
-    dispatch(setIsCreateDemandVisible(true))
     dispatch(
-      setCreateDemandProps({
-        projectId: item.project_id,
-        isChild: true,
-        parentId: item.id,
-        categoryId: item.categoryId,
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          projectId: item.project_id,
+          isChild: true,
+          parentId: item.id,
+          categoryId: item.categoryId,
+        },
       }),
     )
   }
@@ -307,8 +306,12 @@ const DemandWrap = (props: Props) => {
 
   const onCreateDemand = () => {
     dispatch(setFilterParamsModal(filterParams))
-    dispatch(setIsCreateDemandVisible(true))
-    dispatch(setCreateDemandProps({ projectId, iterateId: iterateInfo?.id }))
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: { projectId, iterateId: iterateInfo?.id },
+      }),
+    )
   }
 
   return (

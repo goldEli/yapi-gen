@@ -31,8 +31,6 @@ import {
   Line2,
   LineBox,
 } from './../style'
-import { setIsCreateIterationVisible } from '@store/iterate'
-import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import { getLoginDetail } from '@store/user/user.thunk'
 import helpPdf from '/Agile.pdf'
 import { t } from 'i18next'
@@ -46,6 +44,7 @@ import { setIsAddOrDelete } from '@store/schedule'
 import { setIsRefresh } from '@store/user'
 import { setWriteReportModal } from '@store/workReport'
 import { getMessage } from '@/components/Message'
+import { setAddWorkItemModal } from '@store/project'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const { language, theme } = useSelector(store => store.global)
@@ -171,15 +170,9 @@ const HeaderRight = () => {
 
   const createList = [
     {
-      name: t('common.createDemand'),
-      key: 'demand',
+      name: '添加工作项',
+      key: 'all',
       icon: 'demand',
-      isPermission: true,
-    },
-    {
-      name: t('common.createIterate'),
-      key: 'iteration',
-      icon: 'interation-2',
       isPermission: true,
     },
     {
@@ -194,19 +187,19 @@ const HeaderRight = () => {
 
   const createCalendarList = [
     {
-      name: '创建日程',
+      name: t('calendarManager.create_schedule'),
       key: 'schedule',
       icon: 'database',
       isPermission: true,
     },
     {
-      name: '创建日历',
+      name: t('calendarManager.create_calendar'),
       key: 'calendar',
       icon: 'calendar-days',
       isPermission: true,
     },
     {
-      name: '订阅日历',
+      name: t('calendarManager.subscription_calendar'),
       key: 'subscribe',
       icon: 'carryout',
       isPermission: true,
@@ -250,7 +243,6 @@ const HeaderRight = () => {
     {
       label: t('team'),
       value: userInfo?.teams?.join(';'),
-      // value: '123',
     },
     {
       label: t('permission_group'),
@@ -290,12 +282,13 @@ const HeaderRight = () => {
       case 'project':
         dispatch({ type: 'createProject/changeCreateVisible', payload: true })
         return
-      case 'iteration':
-        dispatch(setIsCreateIterationVisible(true))
-        return
-      case 'demand':
-        dispatch(setIsCreateDemandVisible(true))
-        dispatch(setCreateDemandProps({ overallCreate: true }))
+      case 'all':
+        dispatch(
+          setAddWorkItemModal({
+            visible: true,
+            params: { overallCreate: true },
+          }),
+        )
         return
       case 'schedule':
         dispatch(setScheduleModal({ visible: true, params: { isAll: true } }))
@@ -418,7 +411,8 @@ const HeaderRight = () => {
       </CommonModal>
 
       <Space size={16}>
-        {String(location.pathname).includes('/ProjectManagement') && (
+        {(String(location.pathname).includes('/ProjectManagement') ||
+          String(location.pathname).includes('/SprintProjectManagement')) && (
           <Popover
             content={content(createList)}
             open={isCreateVisible}

@@ -250,7 +250,7 @@ const EditExamine = (props: Props) => {
                 marginLeft: 8,
               }}
             >
-              {verifyInfo.storyPrefixKey}
+              {verifyInfo?.storyPrefixKey}
             </span>
           </ContentWrap>
         </ItemWrap>

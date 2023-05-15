@@ -34,11 +34,10 @@ import {
 } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
 import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
-import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import ResizeTable from '@/components/ResizeTable'
 import CreateDemandButton from './CreateDemandButton'
-import { setFilterParamsModal } from '@store/project'
+import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
 import { getMessage } from '@/components/Message'
 
 const Content = styled.div({
@@ -218,8 +217,12 @@ const DemandTree = (props: Props) => {
     setIsShowMore(false)
     setComputedTopId(item?.topId)
     props.onUpdateTopId?.(item.topId)
-    dispatch(setIsCreateDemandVisible(true))
-    dispatch(setCreateDemandProps({ demandId: item.id, projectId }))
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: { projectId, editId: item.id },
+      }),
+    )
   }
 
   const onDeleteChange = (item: any) => {
@@ -234,14 +237,16 @@ const DemandTree = (props: Props) => {
     setComputedTopId(item?.topId)
     props.onUpdateTopId?.(item.topId)
     setIsShowMore(false)
-    dispatch(setIsCreateDemandVisible(true))
     dispatch(
-      setCreateDemandProps({
-        projectId,
-        isChild: true,
-        parentId: item.id,
-        categoryId: item.categoryId,
-        iterateId: item.iterateId,
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          projectId,
+          isChild: true,
+          parentId: item.id,
+          categoryId: item.categoryId,
+          iterateId: item.iterateId,
+        },
       }),
     )
   }
@@ -582,8 +587,12 @@ const DemandTree = (props: Props) => {
 
   const onCreateDemand = () => {
     dispatch(setFilterParamsModal(filterParams))
-    dispatch(setIsCreateDemandVisible(true))
-    dispatch(setCreateDemandProps({ projectId, iterateId: props.iterateId }))
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: { projectId, iterateId: props.iterateId },
+      }),
+    )
   }
 
   return (

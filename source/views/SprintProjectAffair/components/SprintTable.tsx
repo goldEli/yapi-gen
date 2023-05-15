@@ -16,11 +16,10 @@ import { getIsPermission, getParamsData } from '@/tools'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch, useSelector } from '@store/index'
-import { setFilterParamsModal } from '@store/project'
+import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
 import { updateDemandStatus, updatePriority } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
 import { saveSort, saveTitles } from '@store/view'
-import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import { getMessage } from '@/components/Message'
 import { SprintOperationDropdownMenu } from './SprintOperationDropdownMenu'
@@ -222,9 +221,11 @@ const SprintTable = (props: Props) => {
   // 点击编辑
   const onEditChange = (item: any) => {
     setIsShowMore(false)
-    dispatch(setIsCreateDemandVisible(true))
     dispatch(
-      setCreateDemandProps({ demandId: item.id, projectId: item.project_id }),
+      setAddWorkItemModal({
+        visible: true,
+        params: { projectId: item.project_id, editId: item.id },
+      }),
     )
   }
 
@@ -237,13 +238,15 @@ const SprintTable = (props: Props) => {
   // 点击创建子需求
   const onCreateChild = (item: any) => {
     setIsShowMore(false)
-    dispatch(setIsCreateDemandVisible(true))
     dispatch(
-      setCreateDemandProps({
-        projectId: item.project_id,
-        isChild: true,
-        parentId: item.id,
-        categoryId: item.categoryId,
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          projectId: item.project_id,
+          isChild: true,
+          parentId: item.id,
+          categoryId: item.categoryId,
+        },
       }),
     )
   }
@@ -403,8 +406,12 @@ const SprintTable = (props: Props) => {
   }
 
   const onClick = () => {
-    dispatch(setIsCreateDemandVisible(true))
-    dispatch(setCreateDemandProps({ noDataCreate: true }))
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: { noDataCreate: true },
+      }),
+    )
     dispatch(setFilterParamsModal(filterParams))
   }
 

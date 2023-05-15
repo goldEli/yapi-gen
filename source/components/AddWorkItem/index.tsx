@@ -1,3 +1,15 @@
+import styled from '@emotion/styled'
+import CommonModal from '../CommonModal'
+import { Space } from 'antd'
+import CommonButton from '../CommonButton'
+import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from '@store/index'
+import { createRef, useEffect, useState } from 'react'
+import {
+  getProjectInfoValues,
+  getProjectList,
+  getProjectRecent,
+} from '@/services/project'
 import {
   addDemand,
   getDemandInfo,
@@ -5,31 +17,20 @@ import {
   updateDemand,
 } from '@/services/demand'
 import {
-  getProjectInfoValues,
-  getProjectList,
-  getProjectRecent,
-} from '@/services/project'
+  setProjectInfoValues,
+  setAddWorkItemModal,
+  setFilterParamsModal,
+} from '@store/project'
 import { removeNull } from '@/tools'
-import { encryptPhp } from '@/tools/cryptoPhp'
-import styled from '@emotion/styled'
 import {
   setCreateCategory,
-  setIsCreateDemandVisible,
   setIsUpdateChangeLog,
-  setIsUpdateStatus,
   setIsUpdateDemand,
+  setIsUpdateStatus,
 } from '@store/demand'
-import { useDispatch, useSelector } from '@store/index'
-import { setIsUpdateCreate } from '@store/mine'
-import { setFilterParamsModal, setProjectInfoValues } from '@store/project'
-import { message, Space } from 'antd'
-import { createRef, useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import CommonButton from '../CommonButton'
-import CommonModal from '../CommonModal'
+import { encryptPhp } from '@/tools/cryptoPhp'
 import { getMessage } from '../Message'
-import CreateDemandLeft from './CreateDemandLeft'
-import CreateDemandRight from './CreateDemandRight'
+import { setIsUpdateCreate } from '@store/mine'
 
 const ModalFooter = styled.div({
   width: '100%',
@@ -40,16 +41,14 @@ const ModalFooter = styled.div({
   paddingRight: 24,
 })
 
-const CreateDemand = () => {
+const AddWorkItem = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const rightDom: any = createRef()
   const leftDom: any = createRef()
-  const { createDemandProps, isCreateDemandVisible } = useSelector(
-    store => store.demand,
-  )
-  //   是否是完成并创建下一个 -- 用于提交参数后回填
-  const [isSaveParams, setIsSaveParams] = useState(false)
+  const { addWorkItemModal } = useSelector(store => store.project)
+  const { params, visible } = addWorkItemModal
+  const [isCreateWorkItem, setIsCreateWorkItem] = useState<any>({})
   // 父需求列表
   const [parentList, setParentList] = useState<any>([])
   // 项目列表
@@ -62,29 +61,13 @@ const CreateDemand = () => {
   const [demandInfo, setDemandInfo] = useState<any>({})
   const [fieldList, setFieldList] = useState<any>([])
   const [workStatusList, setWorkStatusList] = useState([])
-  const [isCreateDemand, setIsCreateDemand] = useState<any>({})
   const [newCategory, setNewCategory] = useState<any>({})
+  //   是否是完成并创建下一个 -- 用于提交参数后回填
+  const [isSaveParams, setIsSaveParams] = useState(false)
 
-  // 获取头部标题
-  const titleText = () => {
-    let text: any
-    if (createDemandProps?.isQuickCreate) {
-      text = t('mine.quickCreate')
-    } else if (createDemandProps?.isChild) {
-      text = createDemandProps?.demandId
-        ? t('project.editChildDemand')
-        : t('common.createChildDemand')
-    } else {
-      text = createDemandProps?.demandId
-        ? t('project.editDemand')
-        : t('common.createDemand')
-    }
-    return text
-  }
-
-  // 关闭创建需求
+  // 关闭弹窗
   const onCancel = () => {
-    dispatch(setIsCreateDemandVisible(false))
+    dispatch(setAddWorkItemModal({ visible: false }))
     // 清除创建需求点击的下拉需求类别 -- 需求
     dispatch(setCreateCategory({}))
     setIsSaveParams(false)
@@ -95,11 +78,6 @@ const CreateDemand = () => {
       leftDom.current?.reset()
       rightDom.current?.reset()
     }, 100)
-  }
-
-  // 左侧项目切换清除右侧form表单
-  const onResetForm = () => {
-    rightDom?.current?.reset()
   }
 
   // 获取父需求列表
@@ -125,80 +103,12 @@ const CreateDemand = () => {
     })
     setProjectList(res.list)
     // 如果有需求id则获取详情
-    if (createDemandProps.demandId) {
+    if (params?.editId) {
       const demandResponse = await getDemandInfo({
-        projectId: createDemandProps.projectId,
-        id: createDemandProps?.demandId,
+        projectId: params?.projectId,
+        id: params?.editId,
       })
       setDemandInfo(demandResponse)
-    }
-  }
-
-  const onSaveDemand = async (values: any, hasNext?: any) => {
-    if (createDemandProps?.demandId) {
-      await updateDemand({
-        projectId,
-        id: createDemandProps?.demandId,
-        ...values,
-      })
-      getMessage({ msg: t('common.editSuccess'), type: 'success' })
-      dispatch(setIsUpdateStatus(true))
-      dispatch(setIsUpdateChangeLog(true))
-    } else {
-      await addDemand({
-        projectId,
-        ...values,
-      })
-      getMessage({ msg: t('common.createSuccess'), type: 'success' })
-    }
-    // 保存数据后更新项目信息-用于更新标签
-    if (projectId) {
-      const result = await getProjectInfoValues({ projectId })
-      dispatch(setProjectInfoValues(result))
-    }
-    // 是否是快捷创建，是则要刷新相应的列表接口
-    if (createDemandProps?.isQuickCreate) {
-      dispatch(setIsUpdateCreate(true))
-    } else {
-      // 更新列表
-      dispatch(setIsUpdateDemand(true))
-    }
-
-    // 如果是快速创建，相应数据存缓存
-    if (createDemandProps.isQuickCreate) {
-      const saveParams = values
-      saveParams.name = ''
-      saveParams.info = ''
-      saveParams.attachments = []
-
-      localStorage.setItem(
-        'quickCreateData',
-        encryptPhp(JSON.stringify(saveParams)),
-      )
-    }
-
-    // 是否是完成并创建下一个
-    if (hasNext) {
-      leftDom.current.update()
-      setIsSaveParams(true)
-    } else {
-      dispatch(setCreateCategory({}))
-      dispatch(setIsCreateDemandVisible(false))
-      setIsSaveParams(false)
-      setTimeout(() => {
-        leftDom.current?.reset()
-        rightDom.current?.reset()
-        dispatch(setFilterParamsModal({}))
-      }, 100)
-    }
-  }
-
-  // 点击保存，hasNext是否是完成并下一个
-  const onSaveCategory = async (hasNext?: number) => {
-    const leftValues = await leftDom.current.confirm()
-    const rightValues = await rightDom.current.confirm()
-    if (leftValues && rightValues) {
-      await onSaveDemand({ ...leftValues, ...rightValues }, hasNext)
     }
   }
 
@@ -226,24 +136,92 @@ const CreateDemand = () => {
     }
   }
 
+  const onSaveDemand = async (values: any, hasNext?: any) => {
+    if (params?.editId) {
+      await updateDemand({
+        projectId,
+        id: params?.editId,
+        ...values,
+      })
+      getMessage({ msg: t('common.editSuccess'), type: 'success' })
+      dispatch(setIsUpdateStatus(true))
+      dispatch(setIsUpdateChangeLog(true))
+    } else {
+      await addDemand({
+        projectId,
+        ...values,
+      })
+      getMessage({ msg: t('common.createSuccess'), type: 'success' })
+    }
+    // 保存数据后更新项目信息-用于更新标签
+    if (projectId) {
+      const result = await getProjectInfoValues({ projectId })
+      dispatch(setProjectInfoValues(result))
+    }
+    // 是否是快捷创建，是则要刷新相应的列表接口
+    if (params?.isQuickCreate) {
+      dispatch(setIsUpdateCreate(true))
+    } else {
+      // 更新列表
+      dispatch(setIsUpdateDemand(true))
+    }
+
+    // 如果是快速创建，相应数据存缓存
+    if (params?.isQuickCreate) {
+      const saveParams = values
+      saveParams.name = ''
+      saveParams.info = ''
+      saveParams.attachments = []
+
+      localStorage.setItem(
+        'quickCreateData',
+        encryptPhp(JSON.stringify(saveParams)),
+      )
+    }
+
+    // 是否是完成并创建下一个
+    if (hasNext) {
+      leftDom.current.update()
+      setIsSaveParams(true)
+    } else {
+      dispatch(setCreateCategory({}))
+      dispatch(setAddWorkItemModal({ visible: false }))
+      setIsSaveParams(false)
+      setTimeout(() => {
+        leftDom.current?.reset()
+        rightDom.current?.reset()
+        dispatch(setFilterParamsModal({}))
+      }, 100)
+    }
+  }
+
+  // 点击保存，hasNext是否是完成并下一个
+  const onSaveCategory = async (hasNext?: number) => {
+    const leftValues = await leftDom.current.confirm()
+    const rightValues = await rightDom.current.confirm()
+    if (leftValues && rightValues) {
+      await onSaveDemand({ ...leftValues, ...rightValues }, hasNext)
+    }
+  }
+
   useEffect(() => {
-    if (isCreateDemandVisible) {
+    if (visible) {
       getProjectData()
-      if (createDemandProps.projectId) {
-        getInit(createDemandProps.projectId)
-        setProjectId(createDemandProps.projectId)
+      if (params?.projectId) {
+        getInit(params?.projectId)
+        setProjectId(params?.projectId)
       }
       // 全局创建和快速创建获取最近项目
-      if (!createDemandProps?.projectId) {
+      if (!params?.projectId) {
         getRecentlyList()
       }
     }
-  }, [isCreateDemandVisible])
+  }, [visible])
 
   return (
     <CommonModal
-      title={titleText()}
-      isVisible={isCreateDemandVisible}
+      title={params?.title ?? '添加工作项'}
+      isVisible={visible}
       onClose={onCancel}
       width="88%"
       hasFooter={
@@ -252,9 +230,9 @@ const CreateDemand = () => {
             <CommonButton type="light" onClick={onCancel}>
               {t('common.cancel')}
             </CommonButton>
-            {!createDemandProps.demandId && (
+            {!params?.editId && (
               <CommonButton
-                isDisable={!isCreateDemand}
+                isDisable={!isCreateWorkItem}
                 type="light"
                 onClick={() => onSaveCategory(1)}
               >
@@ -262,13 +240,11 @@ const CreateDemand = () => {
               </CommonButton>
             )}
             <CommonButton
-              isDisable={!isCreateDemand}
+              isDisable={!isCreateWorkItem}
               type="primary"
               onClick={() => onSaveCategory()}
             >
-              {createDemandProps.demandId
-                ? t('common.confirm2')
-                : t('newlyAdd.create')}
+              {params?.editId ? t('common.confirm2') : t('newlyAdd.create')}
             </CommonButton>
           </Space>
         </ModalFooter>
@@ -281,34 +257,10 @@ const CreateDemand = () => {
           display: 'flex',
         }}
       >
-        <CreateDemandLeft
-          projectList={projectList}
-          onRef={leftDom}
-          allCategoryList={allCategoryList}
-          projectId={projectId}
-          onChangeProjectId={setProjectId}
-          demandDetail={demandInfo}
-          onGetFieldList={setFieldList}
-          onResetForm={onResetForm}
-          onGetDataAll={getInit}
-          onChangeWorkStatusList={setWorkStatusList}
-          onGetCreateDemand={setIsCreateDemand}
-          onChangeCategory={setNewCategory}
-        />
-        <CreateDemandRight
-          projectId={projectId}
-          parentList={parentList}
-          onRef={rightDom}
-          fieldsList={fieldList}
-          demandDetail={demandInfo}
-          isSaveParams={isSaveParams}
-          workStatusList={workStatusList}
-          isCreateDemand={isCreateDemand}
-          newCategory={newCategory}
-        />
+        23
       </div>
     </CommonModal>
   )
 }
 
-export default CreateDemand
+export default AddWorkItem

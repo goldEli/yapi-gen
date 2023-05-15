@@ -1,7 +1,7 @@
-import ProjectCommonOperation from '@/components/ProjectCommonOperation'
 import styled from '@emotion/styled'
 import React from 'react'
 import Operation from './Operation'
+import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
 
 interface IProps {}
 const SprintProjectKanBanBox = styled.div`

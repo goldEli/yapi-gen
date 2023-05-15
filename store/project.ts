@@ -1,7 +1,7 @@
 /* eslint-disable no-undefined */
 /* eslint-disable no-duplicate-imports */
 // 项目
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 export interface CounterState {
   projectInfo: any
@@ -13,6 +13,10 @@ export interface CounterState {
   filterKeys: any[]
   projectInfoValues: any[]
   isUpdateMember: boolean
+  addWorkItemModal: {
+    visible: boolean
+    params?: Model.Project.AddWorkItemParams
+  }
 }
 
 const initialState: CounterState = {
@@ -42,6 +46,10 @@ const initialState: CounterState = {
   filterKeys: [],
   projectInfoValues: [],
   isUpdateMember: false,
+  addWorkItemModal: {
+    visible: false,
+    params: {},
+  },
 }
 
 export const projectSlice = createSlice({
@@ -80,6 +88,15 @@ export const projectSlice = createSlice({
     setIsUpdateMember: (state: any, action) => {
       state.isUpdateMember = action.payload
     },
+    setAddWorkItemModal(
+      state,
+      action: PayloadAction<CounterState['addWorkItemModal']>,
+    ) {
+      state.addWorkItemModal = {
+        ...state.addWorkItemModal,
+        ...action.payload,
+      }
+    },
   },
   extraReducers(builder) {
     //
@@ -95,6 +112,7 @@ export const {
   setFilterKeys,
   setProjectInfoValues,
   setIsUpdateMember,
+  setAddWorkItemModal,
 } = projectSlice.actions
 
 export default projectSlice.reducer
