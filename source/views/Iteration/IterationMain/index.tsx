@@ -7,7 +7,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Operation from './components/Operation'
 import IterationTable from './components/IterationTable'
-import IterationGrid from './components/IterationGrid'
 import WrapLeft from './components/WrapLeft'
 import { message } from 'antd'
 import { useEffect, useRef, useState } from 'react'
@@ -26,7 +25,7 @@ import {
 } from '@store/demand'
 import { setIsRefreshList, setIsUpdateList } from '@store/iterate'
 import { Content, IterationContent } from './style'
-import ProjectCommonOperation from '@/components/ProjectCommonOperation'
+import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
 import DemandTree from './components/DemandTree'
 import { setFilterKeys } from '@store/project'
 import { getMessage } from '@/components/Message'
@@ -49,8 +48,6 @@ const IterationMain = (props: Props) => {
   const [t] = useTranslation()
   const keyRef = useRef<any>()
   const [isGrid, setIsGrid] = useState(0)
-  const [isDemandVisible, setIsDemandVisible] = useState(false)
-  const [demandItem, setDemandItem] = useState<any>({})
   const [isShowLeft, setIsShowLeft] = useState(true)
   const [dataList, setDataList] = useState<any>({
     list: undefined,
@@ -165,8 +162,6 @@ const IterationMain = (props: Props) => {
   }
 
   const onChangeOperation = async (item: any) => {
-    setDemandItem(item)
-    setIsDemandVisible(true)
     const result = await getDemandInfo({ projectId, id: item.id })
     dispatch(setDemandInfo(result))
     setTopParentId(item?.topId)
@@ -340,17 +335,6 @@ const IterationMain = (props: Props) => {
                 settingState={isSettingState}
                 onChangeSetting={setIsSettingState}
                 onChangeOrder={onChangeOrder}
-                isSpinning={isSpinning}
-                hasId={keyRef.current}
-                onUpdate={onUpdate}
-                iterateId={keyRef.current?.id}
-              />
-            )}
-            {isGrid === 1 && (
-              <IterationGrid
-                onChangeVisible={onChangeOperation}
-                onDelete={onDelete}
-                data={dataList}
                 isSpinning={isSpinning}
                 hasId={keyRef.current}
                 onUpdate={onUpdate}

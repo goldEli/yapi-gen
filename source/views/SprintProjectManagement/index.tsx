@@ -7,11 +7,11 @@ interface IProps {}
 const Project: React.FC<IProps> = props => {
   const path = [
     '/SprintProjectManagement/KanBan',
-    '/SprintProjectManagement/Report',
+    '/SprintProjectManagement/SprintReport',
     '/SprintProjectManagement/Sprint',
     '/SprintProjectManagement/Affair',
     '/SprintProjectManagement/Setting',
-    '/SprintProjectManagement/Demand',
+    '/SprintProjectManagement/DemandSetting',
     '/SprintProjectManagement/WorkFlow',
   ]
   return (
