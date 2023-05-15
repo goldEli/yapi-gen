@@ -13,17 +13,20 @@ const SprintProjectKanBanBox = styled.div`
   gap: 20px;
 `
 
-const OperationBox = styled.div`
+const ToolBarBox = styled.div`
   width: 100%;
   box-sizing: border-box;
   padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  /* position: relative; */
 `
 
 const SprintProjectKanBan: React.FC<IProps> = props => {
   return (
     <SprintProjectKanBanBox>
       <ProjectCommonOperation onInputSearch={val => {}} />
-      <OperationBox>
+      <ToolBarBox>
         <Operation
           pid={1}
           isGrid={1}
@@ -38,7 +41,7 @@ const SprintProjectKanBan: React.FC<IProps> = props => {
           otherParams={{}}
           dataLength={2}
         />
-      </OperationBox>
+      </ToolBarBox>
     </SprintProjectKanBanBox>
   )
 }

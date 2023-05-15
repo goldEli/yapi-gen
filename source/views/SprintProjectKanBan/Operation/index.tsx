@@ -26,6 +26,7 @@ import {
 import { saveScreen } from '@store/view'
 import CommonIconFont from '@/components/CommonIconFont'
 import KanBanOperation from '@/components/KanBanOperation'
+import SelectOptions from '../SelectOptions'
 
 const OperationWrap = styled.div({
   minHeight: 32,
@@ -44,6 +45,12 @@ const OperationWrap = styled.div({
   },
 })
 
+const LeftBox = styled.div`
+  display: flex;
+  gap: 8px;
+`
+const RightBox = styled.div``
+
 const StickyWrap = styled.div({
   background: 'white',
 })
@@ -60,41 +67,6 @@ const LiWrap = styled.div({
     background: 'var(--hover-d3)',
   },
 })
-
-const IconWrap = styled(IconFont)({
-  fontSize: 20,
-  cursor: 'pointer',
-  padding: 6,
-  borderRadius: 6,
-  color: 'var(--neutral-n3)',
-  '&: hover': {
-    color: 'var(--neutral-n1-d1)',
-    background: 'var(--hover-d3)',
-  },
-})
-
-export const MoreWrap = styled.div<{ type?: any }>(
-  {
-    display: 'flex',
-    alignItems: 'center',
-    height: 32,
-    borderRadius: 6,
-    padding: '0 16px',
-    fontSize: 14,
-    fontWeight: 400,
-    cursor: 'pointer',
-  },
-  ({ type }) => ({
-    background: type ? 'var(--primary-d1)' : 'var(--hover-d2)',
-    color: type ? 'var(--neutral-white-d7)' : 'var(--primary-d2)',
-    '&: hover': {
-      background: type ? 'var(--primary-d1)' : 'var(--hover-d2)',
-    },
-    '&: active': {
-      background: type ? 'var(--primary-d1)' : 'var(--hover-d2)',
-    },
-  }),
-)
 
 const MoreItem = styled.div({
   display: 'flex',
@@ -134,8 +106,7 @@ interface Props {
 
 const Operation = (props: Props) => {
   const [t, i18n] = useTranslation()
-  const [isShow, setIsShow] = useState(false)
-  const [isShow2, setIsShow2] = useState(false)
+
   const [isVisible, setIsVisible] = useState(false)
   const [isVisibleMore, setIsVisibleMore] = useState(false)
   const [isShowImport, setIsShowImport] = useState(false)
@@ -337,42 +308,6 @@ const Operation = (props: Props) => {
     setIsVisibleMore(false)
   }
 
-  const moreOperation = (
-    <div
-      style={{
-        padding: '4px 0',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
-      {hasImport || projectInfo?.status !== 1 ? null : (
-        <MoreItem onClick={onImportClick}>
-          <CommonIconFont type="export" />
-          <span style={{ marginLeft: 8 }}>{t('newlyAdd.importDemand')}</span>
-        </MoreItem>
-      )}
-      {hasExport ? null : (
-        <MoreItem onClick={onExportClick}>
-          <CommonIconFont type="Import" />
-          <span style={{ marginLeft: 8 }}>{t('newlyAdd.exportDemand')}</span>
-        </MoreItem>
-      )}
-    </div>
-  )
-
-  const onImportClose = () => {
-    setIsShowImport(false)
-  }
-
-  const onClickIcon = (value: any) => {
-    if (value === 1) {
-      setIsShow2(false)
-    } else {
-      setIsShow(false)
-    }
-    props?.onChangeIsShowLeft?.()
-  }
-
   return (
     <StickyWrap ref={stickyWrapDom}>
       <DeleteConfirm
@@ -382,33 +317,24 @@ const Operation = (props: Props) => {
         title={t('p2.toast')}
         text={t('p2.exportDemandText')}
       />
-      {/* <CommonModal
-        isVisible={isShowImport}
-        width={784}
-        title={t('newlyAdd.importDemand')}
-        isShowFooter
-        onClose={onImportClose}
-      >
-        <ImportDemand />
-      </CommonModal> */}
-
-      {/* <ExportDemand
-        isShowExport={isShowExport}
-        onClose={setIsShowExport}
-        searchGroups={searchGroups}
-        otherParams={props.otherParams}
-      /> */}
 
       <OperationWrap>
-        <KanBanOperation
-          onChangeFilter={onChangeFilter}
-          onChangeGrid={props.onChangeGrid}
-          onRefresh={props.onRefresh}
-          isGrid={props.isGrid}
-          filterState={filterState}
-          settingState={props.settingState}
-          onChangeSetting={() => props.onChangeSetting(!props.settingState)}
-        />
+        <LeftBox>
+          <SelectOptions title="分组" />
+          <SelectOptions title="列与状态" />
+          <SelectOptions title="视图" />
+        </LeftBox>
+        <RightBox>
+          <KanBanOperation
+            onChangeFilter={onChangeFilter}
+            onChangeGrid={props.onChangeGrid}
+            onRefresh={props.onRefresh}
+            isGrid={props.isGrid}
+            filterState={filterState}
+            settingState={props.settingState}
+            onChangeSetting={() => props.onChangeSetting(!props.settingState)}
+          />
+        </RightBox>
       </OperationWrap>
 
       <div

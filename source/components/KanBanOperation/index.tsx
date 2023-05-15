@@ -56,12 +56,6 @@ const KanBanOperation = (props: Props) => {
     setIsVisible(false)
   }
 
-  // 切换显示类型
-  const onClickMenuFields = () => {
-    props.onChangeSetting?.()
-    setIsVisibleFields(false)
-  }
-
   const menuType = () => {
     let menuItems = [
       {
@@ -138,14 +132,16 @@ const KanBanOperation = (props: Props) => {
   }
   return (
     <SpaceWrap size={8} style={{ marginLeft: 8 }}>
-      {location.pathname.includes('Demand') && (
-        <>
-          <ViewPort pid={projectId} />
-          <DividerWrap type="vertical" />
-        </>
-      )}
+      {/* 分享 */}
+      <ScreenMinHover label={'分享'} icon="share" onClick={() => {}} />
+      <DividerWrap type="vertical" />
+      {/* 视图 */}
+      <>
+        <ViewPort pid={projectId} />
+        <DividerWrap type="vertical" />
+      </>
 
-      <DropDownMenu
+      {/* <DropDownMenu
         isVisible={isVisible}
         onChangeVisible={setIsVisible}
         menu={menuType}
@@ -164,22 +160,21 @@ const KanBanOperation = (props: Props) => {
             {!props.isGrid && t('common.list')}
           </div>
         </HasIconMenu>
-      </DropDownMenu>
+      </DropDownMenu> */}
 
-      {!hasFilter && (
-        <>
-          <DividerWrap type="vertical" />
-          <ScreenMinHover
-            label={t('common.search')}
-            icon="filter"
-            onClick={props.onChangeFilter}
-            isActive={!props.filterState}
-          />
-        </>
-      )}
+      {/* 筛选 */}
+      <>
+        <ScreenMinHover
+          label={t('common.search')}
+          icon="filter"
+          onClick={props.onChangeFilter}
+          isActive={!props.filterState}
+        />
+      </>
 
       <DividerWrap type="vertical" />
 
+      {/* 刷新 */}
       <ScreenMinHover
         label={t('common.refresh')}
         icon="sync"
@@ -187,9 +182,13 @@ const KanBanOperation = (props: Props) => {
       />
 
       <DividerWrap type="vertical" />
+      {/* 全屏 */}
+      <ScreenMinHover label={'全屏'} icon="full-screen" onClick={() => {}} />
+      <DividerWrap type="vertical" />
 
+      {/* 设置 */}
       <DropDownMenu
-        menu={<SetShowField onChangeFieldVisible={onClickMenuFields} />}
+        menu={<SetShowField />}
         icon="settings"
         isVisible={isVisibleFields}
         onChangeVisible={setIsVisibleFields}
