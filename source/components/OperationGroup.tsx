@@ -84,31 +84,6 @@ const OperationGroup = (props: Props) => {
         ),
       },
       {
-        key: 'thumbnail',
-        label: (
-          <HasIconMenu
-            onClick={() => onClickMenu(1)}
-            isCheck={props.isGrid === 1}
-          >
-            <div className="left">
-              <IconFont className="icon" type="layout" />
-              <span
-                style={{
-                  color: 'var(--neutral-n2)',
-                }}
-                className="label"
-              >
-                {t('common.board')}
-              </span>
-            </div>
-            <IconFont
-              className="checked"
-              type={props.isGrid === 1 ? 'check' : ''}
-            />
-          </HasIconMenu>
-        ),
-      },
-      {
         key: 'tree',
         label: (
           <HasIconMenu

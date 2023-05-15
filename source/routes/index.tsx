@@ -144,7 +144,7 @@ const routes = [
             element: lazy(() => import('@/views/SprintProjectKanBan')),
           },
           {
-            path: 'Report',
+            path: 'SprintReport',
             element: lazy(() => import('@/views/SprintProjectReport')),
           },
           {

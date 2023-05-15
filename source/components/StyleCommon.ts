@@ -910,22 +910,17 @@ const SelectWrap = styled(CustomSelect)`
   }
 `
 
-const DropdownWrap = styled(Dropdown)<{ isDemandCard?: any }>(
-  {
-    cursor: 'pointer',
-    '&: hover': {
-      svg: {
-        color: 'var(--auxiliary-b1)',
-      },
-    },
-    '.ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title': {
-      textAlign: 'left',
+const DropdownWrap = styled(Dropdown)({
+  cursor: 'pointer',
+  '&: hover': {
+    svg: {
+      color: 'var(--auxiliary-b1)',
     },
   },
-  ({ isDemandCard }) => ({
-    visibility: isDemandCard ? 'visible' : 'hidden',
-  }),
-)
+  '.ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title': {
+    textAlign: 'left',
+  },
+})
 
 const ModalFooter = styled(Space)({
   width: '100%',

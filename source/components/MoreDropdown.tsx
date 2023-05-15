@@ -13,14 +13,11 @@ interface Props {
   color?: any
   // 是否是子表格
   hasChild?: any
-  // 需求卡片默认显示
-  isDemandCard?: any
 }
 
 const MoreDropdown = (props: Props) => {
   return (
     <DropdownWrap
-      isDemandCard={props?.isDemandCard}
       destroyPopupOnHide
       key={
         props.isMoreVisible && !props?.hasChild
@@ -31,9 +28,7 @@ const MoreDropdown = (props: Props) => {
       overlay={props.menu}
       trigger={['hover']}
       placement={props?.hasChild ? 'bottomLeft' : 'bottomRight'}
-      getPopupContainer={node =>
-        props?.hasChild || props?.isDemandCard ? document.body : node
-      }
+      getPopupContainer={node => (props?.hasChild ? document.body : node)}
       onVisibleChange={visible => props.onChangeVisible?.(visible)}
       className="dropdownIcon"
     >
