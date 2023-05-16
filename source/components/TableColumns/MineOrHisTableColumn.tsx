@@ -1,9 +1,5 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable camelcase */
-// 公用我的/他的需求列表表格
-
-/* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable react/jsx-handler-names */
+// 公用我的/他的需求列表表格
 import IconFont from '@/components/IconFont'
 import {
   ClickWrap,
@@ -15,16 +11,16 @@ import Sort from '@/components/Sort'
 import ChildDemandTable from '@/components/ChildDemandTable'
 import { useTranslation } from 'react-i18next'
 import { OmitText } from '@star-yun/ui'
-import { getCustomNormalValue } from '@/tools'
 import { message, Progress, Tooltip } from 'antd'
-import TableQuickEdit from './TableQuickEdit'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
-import ChangeStatusPopover from './ChangeStatusPopover'
-import ChangePriorityPopover from './ChangePriorityPopover'
-import StateTag from './StateTag'
-import DemandProgress from './DemandProgress'
-import { getMessage } from './Message'
+import { getMessage } from '../Message'
+import TableQuickEdit from '../TableQuickEdit'
+import ChangeStatusPopover from '../ChangeStatusPopover'
+import StateTag from '../StateTag'
+import ChangePriorityPopover from '../ChangePriorityPopover'
+import DemandProgress from '../DemandProgress'
+import { getCustomNormalValue } from '@/tools'
 
 const Wrap = styled.div<{ isEdit?: any }>(
   {
