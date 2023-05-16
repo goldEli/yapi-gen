@@ -257,7 +257,6 @@ export default React.memo((props: { redirect(): void }) => {
     line-height: 22px;
     margin: 0 4px;
   `
-  console.log(';focusNumber', focusNumber)
 
   return (
     <div className={`${style.main} ${secretVisible ? style.filter : ''}`}>
@@ -293,7 +292,9 @@ export default React.memo((props: { redirect(): void }) => {
           onChangeEvent={handleInputChange}
           onCheckSecret={onCheckSecret}
           isHighlight={focusNumber === 1 || focusNumber === 4}
-          isErrorHighlight={errorState}
+          isErrorHighlight={
+            (focusNumber === 1 || focusNumber === 4) && errorState
+          }
           onChangeFocus={changeFocus}
           // onCheckValue={() => onCheckValue(1)}
         />
@@ -308,7 +309,9 @@ export default React.memo((props: { redirect(): void }) => {
           onChangeShow={onChangeShow}
           onCheckSecret={onCheckSecret}
           isHighlight={focusNumber === 2 || focusNumber === 5}
-          isErrorHighlight={errorState}
+          isErrorHighlight={
+            (focusNumber === 2 || focusNumber === 5) && errorState
+          }
           onChangeFocus={changeFocus}
           bigChar={languageMode.bigChar}
           // onCheckValue={() => onCheckValue(2)}
