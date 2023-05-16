@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 
 export const Side = styled.div<{ op: boolean }>`
+  overflow-y: scroll;
   opacity: ${props => (props.op ? '1' : '0')};
   width: 320px;
   position: absolute;
@@ -42,7 +43,7 @@ export const Liu = styled.div`
   .l2 {
     height: 22px;
     font-size: 14px;
-
+    white-space: nowrap;
     color: #646566;
     line-height: 22px;
   }
@@ -57,6 +58,20 @@ export const People = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    .p11 {
+      height: 22px;
+      font-size: 14px;
+
+      color: #323233;
+      line-height: 22px;
+    }
+    .p12 {
+      height: 20px;
+      font-size: 12px;
+
+      color: #969799;
+      line-height: 20px;
+    }
   }
 `
 export const ScaleDiv = styled.div<{ hi: boolean }>`
