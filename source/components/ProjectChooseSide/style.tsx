@@ -1,18 +1,21 @@
 import styled from '@emotion/styled'
 
 export const Side = styled.div<{ op: boolean }>`
+  white-space: nowrap;
   overflow-y: scroll;
   opacity: ${props => (props.op ? '1' : '0')};
   width: 320px;
-  position: absolute;
-  left: ${props => (props.op ? '0px' : '-320px')};
-  top: 0;
+  width: ${props => (props.op ? '320px' : '0px')};
+  position: relative;
+  /* left: ${props => (props.op ? '0px' : '-320px')};
+  top: 0; */
   height: 100%;
   background-color: #f8f8fa;
   transition: all 1s;
   flex-shrink: 0;
   box-sizing: border-box;
   padding: 24px;
+  padding-right: 0px;
   .t1 {
     height: 22px;
     font-size: 14px;

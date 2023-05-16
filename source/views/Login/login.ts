@@ -34,6 +34,7 @@ const language = [
     passwordError: '密码不正确',
     codeError: '动态口令不正确',
     authorizedLogin: '授权登录将获取以下权限',
+    AgileLogin: '登录IFUN Agile',
   },
   {
     id: 1,
@@ -70,6 +71,7 @@ const language = [
     passwordError: 'Incorrect password',
     codeError: 'Incorrect dynamic password',
     authorizedLogin: 'Authorizing login will obtain the following permissions',
+    AgileLogin: 'Login as the IFUN Agile account',
   },
 ]
 const reducer = (prevState: LanguageMode, action: { type: number }) => {
@@ -162,6 +164,7 @@ const systemData: any = {
   agile: {
     logo: '/sso/iFUNAgileLogo.svg',
     name: 'IFUN Agile',
+    loginFormTitle: 'AgileLogin',
   },
 }
 
