@@ -340,6 +340,7 @@ const Operation = (props: Props) => {
             onChange={key => {
               dispatch(onChangeSortByView(key))
             }}
+            operation
           />
         </LeftBox>
         <RightBox>

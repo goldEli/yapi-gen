@@ -8,7 +8,8 @@ import { HasIconMenu } from '@/components/StyleCommon'
 interface SelectBoxProps {
   title: string
   onChange(ley: string): void
-  options: { key: string; value: string; check: boolean }[]
+  options: Model.SprintKanBan.Option[]
+  operation?: Model.SprintKanBan.Option['operation']
 }
 
 const SelectOptionsBox = styled.div`
@@ -27,14 +28,20 @@ const SelectOptionsBox = styled.div`
     color: var(--auxiliary-text-t1-d2);
   }
 `
+const Options = styled.div`
+  height: 32px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
 
 const SelectOptions: React.FC<SelectBoxProps> = props => {
-  const [isVisibleFormat, setIsVisibleFormat] = useState(false)
+  const [isVisibleFormat, setIsVisibleFormat] = useState(true)
 
   // 切换显示类型
   const onClickMenuFormat = (key: string) => {
     // getMessage({ msg: t('version2.reviewModeChangeSuccess'), type: 'success' })
-    // props.onChangeFormat(type)
     props.onChange(key)
     setIsVisibleFormat(false)
   }
@@ -44,22 +51,35 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
     return [current?.value, current?.key]
   }, [props.options])
 
-  const menuItems = useMemo(() => {
-    return props.options.map(item => {
-      return {
-        key: item.key,
-        label: (
-          <HasIconMenu
-            onClick={() => onClickMenuFormat(item.key)}
-            isCheck={item.key === key}
-          >
+  const renderOption = (item: Model.SprintKanBan.Option) => {
+    return {
+      key: item.key,
+      label: (
+        <HasIconMenu
+          onClick={() => onClickMenuFormat(item.key)}
+          isCheck={item.key === key}
+        >
+          <Options>
             <span className="label">{item.value}</span>
             {item.check && <IconFont className="checked" type="check" />}
-          </HasIconMenu>
-        ),
-      }
-    })
-  }, [props.options, key])
+          </Options>
+        </HasIconMenu>
+      ),
+    }
+  }
+
+  const menuItems = useMemo(() => {
+    // 如果是视图
+    if (props.operation) {
+      const arr = props.options.filter(item => !item.isDefault)
+      const arrWithDefault = props.options.filter(item => item.isDefault)
+      const dividerItem = { key: '', label: '', type: 'divider' }
+      const arrWithDefaultItems = arrWithDefault?.map(renderOption)
+      const arrItems = arr?.map(renderOption)
+      return [...arrWithDefaultItems, dividerItem, ...arrItems]
+    }
+    return props.options.map(renderOption)
+  }, [props.options, key, props.operation])
 
   const title = useMemo(() => {
     return `${props.title}：${value}`
