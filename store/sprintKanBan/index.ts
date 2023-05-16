@@ -37,10 +37,10 @@ const slice = createSlice({
       const current = state.sortByGroupOptions?.find(
         item => item.key === action.payload,
       )
+      if (!current) {
+        return
+      }
       state.sortByGroupOptions?.forEach(item => {
-        if (!current) {
-          return
-        }
         item.check = false
         if (item.key === current?.key) {
           item.check = true
@@ -54,10 +54,10 @@ const slice = createSlice({
       const current = state.sortByRowAndStatusOptions?.find(
         item => item.key === action.payload,
       )
+      if (!current) {
+        return
+      }
       state.sortByRowAndStatusOptions?.forEach(item => {
-        if (!current) {
-          return
-        }
         item.check = false
         if (item.key === current?.key) {
           item.check = true
@@ -71,10 +71,10 @@ const slice = createSlice({
       const current = state.sortByView?.find(
         item => item.key === action.payload,
       )
+      if (!current) {
+        return
+      }
       state.sortByView?.forEach(item => {
-        if (!current) {
-          return
-        }
         item.check = false
         if (item.key === current?.key) {
           item.check = true

@@ -71,10 +71,7 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
       onChangeVisible={setIsVisibleFormat}
       menu={<Menu items={menuItems} />}
       isActive
-      // icon={props.isGrid ? 'app-store' : 'unorderedlist'}
-      // icon={'app-store'}
     >
-      {/* <div>{1111}</div> */}
       <SelectOptionsBox>
         <span>{title}</span>
         <IconFont

@@ -20,6 +20,11 @@ import { saveScreen } from '@store/view'
 import CommonIconFont from '@/components/CommonIconFont'
 import KanBanOperation from '@/components/KanBanOperation'
 import SelectOptions from '../SelectOptions'
+import {
+  onChangeSortByGroupOptions,
+  onChangeSortByRowAndStatusOptions,
+  onChangeSortByView,
+} from '@store/sprintKanBan'
 
 const OperationWrap = styled.div({
   minHeight: 32,
@@ -98,12 +103,10 @@ interface Props {
 }
 
 const Operation = (props: Props) => {
-  const [t, i18n] = useTranslation()
+  const [t] = useTranslation()
+  const { sortByGroupOptions, sortByRowAndStatusOptions, sortByView } =
+    useSelector(store => store.sprintKanBan)
 
-  const [isVisible, setIsVisible] = useState(false)
-  const [isVisibleMore, setIsVisibleMore] = useState(false)
-  const [isShowImport, setIsShowImport] = useState(false)
-  const [isShowExport, setIsShowExport] = useState(false)
   const [filterState, setFilterState] = useState(true)
   const [defaultValue, setDefaultValue] = useState({})
 
@@ -319,16 +322,25 @@ const Operation = (props: Props) => {
         <LeftBox>
           <SelectOptions
             title="分组"
-            options={[
-              { key: 'none', value: '无', check: true },
-              { key: 'person', value: '按人员', check: false },
-              { key: 'category', value: '按类别', check: false },
-              { key: 'priority', value: '按优先级', check: false },
-            ]}
-            onChange={key => {}}
+            options={sortByGroupOptions ?? []}
+            onChange={key => {
+              dispatch(onChangeSortByGroupOptions(key))
+            }}
           />
-          {/* <SelectOptions title="列与状态" /> */}
-          {/* <SelectOptions title="视图" /> */}
+          <SelectOptions
+            title="列与状态"
+            options={sortByRowAndStatusOptions ?? []}
+            onChange={key => {
+              dispatch(onChangeSortByRowAndStatusOptions(key))
+            }}
+          />
+          <SelectOptions
+            title="视图"
+            options={sortByView ?? []}
+            onChange={key => {
+              dispatch(onChangeSortByView(key))
+            }}
+          />
         </LeftBox>
         <RightBox>
           <KanBanOperation
