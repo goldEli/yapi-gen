@@ -7,7 +7,7 @@
 /* eslint-disable no-undefined */
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import { Menu } from 'antd'
+import { Menu, message } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 
 import { DividerWrap } from '@/components/StyleCommon'
@@ -36,6 +36,7 @@ import { getMessage } from '@/components/Message'
 import SearchList from '../StaffManagement/components/SearchList'
 import SearchList2 from './components/SearchList2'
 import CommonButton from '@/components/CommonButton'
+import CommonIconFont from '@/components/CommonIconFont'
 
 export const tableWrapP = css`
   display: flex;
@@ -316,7 +317,42 @@ const StaffManagement = () => {
     setPage(1)
     setKeyword(value)
   }
+  useEffect(() => {
+    message.success({
+      icon: <span></span>,
+      duration: 0,
+      content: (
+        <div>
+          <CommonIconFont color="#f99e54" size={18} type="bell" />
+          <span
+            style={{
+              height: '22px',
+              fontSize: '14px',
 
+              color: '#646566',
+              lineHeight: '22px',
+              marginRight: '42px',
+            }}
+          >
+            12和工艺规划查干湖3 12和工艺规划查干湖3 12和工艺规划查干湖3
+            12和工艺规划查干湖3 12和工艺规划查干湖3 12和工艺规划查干湖3
+            12和工艺规划查干湖3 12和工艺规划查干湖3 12和工艺规划查干湖3
+            12和工艺规划查干湖3 12和工艺规划查干湖3
+          </span>
+          <CommonIconFont
+            size={18}
+            // eslint-disable-next-line react/jsx-handler-names
+            onClick={() => message.destroy()}
+            type="close-solid"
+          />
+        </div>
+      ),
+      className: 'custom-class',
+      style: {
+        marginTop: '8vh',
+      },
+    })
+  }, [])
   useEffect(() => {
     setAllTitleList([...titleList, ...titleList2])
     init()
