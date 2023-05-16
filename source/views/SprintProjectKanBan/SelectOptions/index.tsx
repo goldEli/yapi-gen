@@ -3,7 +3,6 @@ import styled from '@emotion/styled'
 import { Menu } from 'antd'
 import IconFont from '@/components/IconFont'
 import DropDownMenu from '@/components/DropDownMenu'
-import { HasIconMenu } from '@/components/StyleCommon'
 
 interface SelectBoxProps {
   title: string
@@ -28,13 +27,97 @@ const SelectOptionsBox = styled.div`
     color: var(--auxiliary-text-t1-d2);
   }
 `
+
+const OperationArea = styled.div`
+  width: 50px;
+`
+const BtnsArea = styled.div`
+  display: none;
+  gap: 14px;
+`
+
+const CheckIcon = styled.div<{ visible: boolean }>`
+  display: ${props => (props.visible ? 'flex' : 'none')};
+  justify-content: flex-end;
+`
+
+const LabelArea = styled.div`
+  display: flex;
+  gap: 8px;
+  margin-right: 16px;
+`
+
+const DefaultTag = styled.div<{ visible: boolean }>`
+  display: ${props => (props.visible ? 'flex' : 'none')};
+  font-size: 12px;
+  height: 22px;
+  padding: 0 8px;
+  align-items: center;
+  justify-content: center;
+  color: var(--neutral-n2);
+  background-color: var(--neutral-n7);
+  border-radius: 6px;
+`
+
 const Options = styled.div`
   height: 32px;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  &:hover .label {
+    color: var(--neutral-n1-d1);
+  }
+  &:hover ${BtnsArea} {
+    display: flex;
+  }
+  &:hover ${CheckIcon} {
+    display: none;
+  }
 `
+const IconWrap = styled(IconFont)`
+  font-size: 14px;
+  color: var(--neutral-n3);
+  &:hover {
+    color: var(--auxiliary-b1);
+  }
+`
+
+const HasIconMenu = styled.div<{ isCheck?: boolean }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    '.icon': {
+      fontSize: 16,
+    },
+    '.checked': {
+      fontSize: 16,
+      color: 'var(--auxiliary-b1)',
+    },
+    '.left': {
+      padding: 0,
+      display: 'flex',
+      alignItems: 'center',
+    },
+    '&: hover': {
+      '.label': {
+        // color: 'var(--neutral-n3)',
+      },
+      '.icon': {
+        // color: 'var(--neutral-n3)',
+      },
+    },
+  },
+  ({ isCheck }) => ({
+    '.label': {
+      color: isCheck ? 'var(--auxiliary-b1)!important' : 'var(--neutral-n3)',
+    },
+    '.icon': {
+      color: isCheck ? 'var(--auxiliary-b1)!important' : 'var(--neutral-n3)',
+    },
+  }),
+)
 
 const SelectOptions: React.FC<SelectBoxProps> = props => {
   const [isVisibleFormat, setIsVisibleFormat] = useState(true)
@@ -67,6 +150,33 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
       ),
     }
   }
+  const renderOptionWidthOperation = (item: Model.SprintKanBan.Option) => {
+    return {
+      key: item.key,
+      label: (
+        <HasIconMenu
+          onClick={() => onClickMenuFormat(item.key)}
+          isCheck={item.key === key}
+        >
+          <Options>
+            <LabelArea>
+              <span className="label">{item.value}</span>
+              <DefaultTag visible={item.isDefault ?? false}>默认</DefaultTag>
+            </LabelArea>
+            <OperationArea>
+              <CheckIcon visible={item.check}>
+                <IconFont className="checked" type="check" />
+              </CheckIcon>
+              <BtnsArea>
+                <IconWrap type="edit" />
+                <IconWrap type="delete" />
+              </BtnsArea>
+            </OperationArea>
+          </Options>
+        </HasIconMenu>
+      ),
+    }
+  }
 
   const menuItems = useMemo(() => {
     // 如果是视图
@@ -74,8 +184,10 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
       const arr = props.options.filter(item => !item.isDefault)
       const arrWithDefault = props.options.filter(item => item.isDefault)
       const dividerItem = { key: '', label: '', type: 'divider' }
-      const arrWithDefaultItems = arrWithDefault?.map(renderOption)
-      const arrItems = arr?.map(renderOption)
+      const arrWithDefaultItems = arrWithDefault?.map(
+        renderOptionWidthOperation,
+      )
+      const arrItems = arr?.map(renderOptionWidthOperation)
       return [...arrWithDefaultItems, dividerItem, ...arrItems]
     }
     return props.options.map(renderOption)
