@@ -151,24 +151,26 @@
   text-align: center;
 }
 
-.language {
+.headWrap {
   position: absolute;
-  right: 40px;
-  top: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  left: 0px;
+  height: 40px;
+  padding: 0px 40px;
 }
+
+.language {
+  position: relative;
+}
+
 .langBox {
   display: flex;
   align-items: center;
 }
-.lang {
-  display: inline-block;
-  font-size: 14px;
-  font-family: PingFang SC-Regular, PingFang SC;
-  font-weight: 400;
-  color: #666666;
-  line-height: 22px;
-  margin: 0 4px;
-}
+
 .lang .popups_item {
   display: inline;
 }
