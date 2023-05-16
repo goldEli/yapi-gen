@@ -9,22 +9,19 @@ import TableFilter from '@/components/TableFilter'
 import { useEffect, useRef, useState } from 'react'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
-import IconFont from '@/components/IconFont'
 import DeleteConfirm from '@/components/DeleteConfirm'
 // import ExportDemand from './ExportDemand'
 // import ImportDemand from './ImportDemand'
 import { useDispatch, useSelector } from '@store/index'
-import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
-import { setCreateCategory } from '@store/demand'
+
 import { saveScreen } from '@store/view'
-import CommonIconFont from '@/components/CommonIconFont'
 import KanBanOperation from '@/components/KanBanOperation'
-import SelectOptions from '../SelectOptions'
 import {
   onChangeSortByGroupOptions,
   onChangeSortByRowAndStatusOptions,
   onChangeSortByView,
 } from '@store/sprintKanBan'
+import SelectOptions from '@/components/SelectOptions'
 
 const OperationWrap = styled.div({
   minHeight: 32,
@@ -51,40 +48,6 @@ const RightBox = styled.div``
 
 const StickyWrap = styled.div({
   background: 'white',
-})
-
-const LiWrap = styled.div({
-  cursor: 'pointer',
-  padding: '0 16px',
-  width: '100%',
-  height: 32,
-  display: 'flex',
-  alignItems: 'center',
-  background: 'var(--neutral-white-d3)',
-  '&: hover': {
-    background: 'var(--hover-d3)',
-  },
-})
-
-const MoreItem = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  height: 32,
-  color: 'var(--neutral-n2)',
-  fontSize: 14,
-  fontWeight: 400,
-  cursor: 'pointer',
-  padding: '0 16px',
-  svg: {
-    color: 'var(--neutral-n3)',
-  },
-  '&: hover': {
-    color: 'var(--neutral-n1-d1)!important',
-    background: 'var(--hover-d3)',
-    svg: {
-      color: 'var(--neutral-n1-d1)!important',
-    },
-  },
 })
 
 interface Props {
@@ -341,6 +304,9 @@ const Operation = (props: Props) => {
               dispatch(onChangeSortByView(key))
             }}
             operation
+            onDel={key => {}}
+            onEdit={key => {}}
+            onCreateView={() => {}}
           />
         </LeftBox>
         <RightBox>

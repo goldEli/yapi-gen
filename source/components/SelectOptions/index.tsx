@@ -1,126 +1,35 @@
+/**
+ * 1. 视图管理下拉
+ * 2. 普通下拉（下拉内容展示与打钩）
+ */
 import React, { useMemo, useState } from 'react'
-import styled from '@emotion/styled'
 import { Menu } from 'antd'
 import IconFont from '@/components/IconFont'
 import DropDownMenu from '@/components/DropDownMenu'
+import {
+  BtnsArea,
+  CheckIcon,
+  DefaultTag,
+  HasIconMenu,
+  IconWrap,
+  LabelArea,
+  OperationArea,
+  Options,
+  SelectOptionsBox,
+} from './styled'
 
 interface SelectBoxProps {
   title: string
-  onChange(ley: string): void
+  onChange(key: string): void
   options: Model.SprintKanBan.Option[]
   operation?: Model.SprintKanBan.Option['operation']
+  onCreateView?: () => void
+  onDel?: (key: string) => void
+  onEdit?: (key: string) => void
 }
 
-const SelectOptionsBox = styled.div`
-  display: flex;
-  align-items: center;
-  height: 32px;
-  border-radius: 6px;
-  /* padding: 0 16px; */
-  font-size: 14px;
-  width: 100%;
-  box-sizing: border-box;
-  cursor: pointer;
-  color: var(--neutral-n2);
-  background-color: var(--hover-d2);
-  &:hover {
-    color: var(--auxiliary-text-t1-d2);
-  }
-`
-
-const OperationArea = styled.div`
-  width: 50px;
-`
-const BtnsArea = styled.div`
-  display: none;
-  gap: 14px;
-`
-
-const CheckIcon = styled.div<{ visible: boolean }>`
-  display: ${props => (props.visible ? 'flex' : 'none')};
-  justify-content: flex-end;
-`
-
-const LabelArea = styled.div`
-  display: flex;
-  gap: 8px;
-  margin-right: 16px;
-`
-
-const DefaultTag = styled.div<{ visible: boolean }>`
-  display: ${props => (props.visible ? 'flex' : 'none')};
-  font-size: 12px;
-  height: 22px;
-  padding: 0 8px;
-  align-items: center;
-  justify-content: center;
-  color: var(--neutral-n2);
-  background-color: var(--neutral-n7);
-  border-radius: 6px;
-`
-
-const Options = styled.div`
-  height: 32px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  &:hover .label {
-    color: var(--neutral-n1-d1);
-  }
-  &:hover ${BtnsArea} {
-    display: flex;
-  }
-  &:hover ${CheckIcon} {
-    display: none;
-  }
-`
-const IconWrap = styled(IconFont)`
-  font-size: 14px;
-  color: var(--neutral-n3);
-  &:hover {
-    color: var(--auxiliary-b1);
-  }
-`
-
-const HasIconMenu = styled.div<{ isCheck?: boolean }>(
-  {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    '.icon': {
-      fontSize: 16,
-    },
-    '.checked': {
-      fontSize: 16,
-      color: 'var(--auxiliary-b1)',
-    },
-    '.left': {
-      padding: 0,
-      display: 'flex',
-      alignItems: 'center',
-    },
-    '&: hover': {
-      '.label': {
-        // color: 'var(--neutral-n3)',
-      },
-      '.icon': {
-        // color: 'var(--neutral-n3)',
-      },
-    },
-  },
-  ({ isCheck }) => ({
-    '.label': {
-      color: isCheck ? 'var(--auxiliary-b1)!important' : 'var(--neutral-n3)',
-    },
-    '.icon': {
-      color: isCheck ? 'var(--auxiliary-b1)!important' : 'var(--neutral-n3)',
-    },
-  }),
-)
-
 const SelectOptions: React.FC<SelectBoxProps> = props => {
-  const [isVisibleFormat, setIsVisibleFormat] = useState(true)
+  const [isVisibleFormat, setIsVisibleFormat] = useState(false)
 
   // 切换显示类型
   const onClickMenuFormat = (key: string) => {
@@ -168,8 +77,20 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
                 <IconFont className="checked" type="check" />
               </CheckIcon>
               <BtnsArea>
-                <IconWrap type="edit" />
-                <IconWrap type="delete" />
+                <IconWrap
+                  onClick={e => {
+                    e.stopPropagation()
+                    props?.onEdit?.(item.key)
+                  }}
+                  type="edit"
+                />
+                <IconWrap
+                  onClick={e => {
+                    e.stopPropagation()
+                    props?.onDel?.(item.key)
+                  }}
+                  type="delete"
+                />
               </BtnsArea>
             </OperationArea>
           </Options>
@@ -188,7 +109,27 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
         renderOptionWidthOperation,
       )
       const arrItems = arr?.map(renderOptionWidthOperation)
-      return [...arrWithDefaultItems, dividerItem, ...arrItems]
+      return [
+        ...arrWithDefaultItems,
+        dividerItem,
+        ...arrItems,
+        dividerItem,
+        {
+          key: 'create-view',
+          label: (
+            <HasIconMenu onClick={() => {}} isCheck={false}>
+              <Options
+                onClick={e => {
+                  e.stopPropagation()
+                  props?.onCreateView?.()
+                }}
+              >
+                <span className="label">{'创建视图'}</span>
+              </Options>
+            </HasIconMenu>
+          ),
+        },
+      ]
     }
     return props.options.map(renderOption)
   }, [props.options, key, props.operation])
