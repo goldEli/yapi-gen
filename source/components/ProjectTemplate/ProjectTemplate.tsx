@@ -1,11 +1,12 @@
+/* eslint-disable react/jsx-handler-names */
 import React from 'react'
-import { Title, Title2 } from './style'
+import { Small, Title, Title2 } from './style'
 import pt1 from '/pt1.png'
 import pt2 from '/pt2.png'
 import pt3 from '/pt3.png'
 import { t } from 'i18next'
 
-const ProjectTemplate = () => {
+const ProjectTemplate = (props: any) => {
   const arr = [
     {
       id: 1,
@@ -82,20 +83,11 @@ const ProjectTemplate = () => {
         }}
       >
         {arr.map((i: any) => (
-          <div
-            style={{
-              height: '265px',
-              width: '288px',
-              border: '1px solid #ECEDEF',
-              borderRadius: '6px',
-              cursor: 'pointer',
-            }}
-            key={i.id}
-          >
+          <Small onClick={() => props.choose(i.id)} key={i.id}>
             <img
               style={{
                 display: 'block',
-                width: '288px',
+                width: '100%',
               }}
               src={i.img}
               alt=""
@@ -142,7 +134,7 @@ const ProjectTemplate = () => {
                 </span>
               ))}
             </div>
-          </div>
+          </Small>
         ))}
       </div>
     </div>
