@@ -56,7 +56,7 @@ export const Content = styled.div`
 export const Container = () => {
   const location = useLocation()
   const dispatch = useDispatch()
-  const [isNextVisible, setIsNextVisible] = useState(true)
+  const [isNextVisible, setIsNextVisible] = useState(false)
   const { loginInfo, menuPermission } = useSelector(store => store.user)
   const {
     i18n: { language },

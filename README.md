@@ -144,3 +144,79 @@ projectInfo.projectPermissions
 
 projectInfoValues
 ```
+
+### 图标加文字操作
+
+使用公共样式 Y:\project\敏捷系统\scrum\source\components\StyleCommon.ts ---> CloseWrap
+并且需要使用 Y:\project\敏捷系统\scrum\source\components\ScreenMinHover ---> ScreenMinHover 组件
+
+### 表格分页
+
+Y:\project\敏捷系统\scrum\source\components\TablePagination ---> TablePagination
+
+### 带有拖拽的表格
+
+Y:\project\敏捷系统\scrum\source\components\ResizeTable
+
+### 搜索条件中带有左侧快捷操作时间组件
+
+Y:\project\敏捷系统\scrum\source\components\RangePicker.tsx
+
+### 大页面的无权限组件
+
+Y:\project\敏捷系统\scrum\source\components\PermissionWrap.tsx
+
+### 搜索组件
+
+例：项目列表搜索
+Y:\project\敏捷系统\scrum\source\components\InputSearch.tsx
+
+### 暂无数据组件
+
+Y:\project\敏捷系统\scrum\source\components\NoData.tsx
+
+### 表格自定义过滤组件
+
+Y:\project\敏捷系统\scrum\source\components\TableFilter.tsx
+
+### 快捷修改
+
+例：需求列表快捷修改
+Y:\project\敏捷系统\scrum\source\components\TableQuickEdit.tsx
+
+### 上传附件组件
+
+Y:\project\敏捷系统\scrum\source\components\UploadAttach.tsx
+
+### 头像组件
+
+Y:\project\敏捷系统\scrum\source\components\CommonUserAvatar.tsx
+
+### 删除确认弹窗
+
+Y:\project\敏捷系统\scrum\source\components\DeleteConfirm.tsx
+
+### 公用的弹窗组件
+
+Y:\project\敏捷系统\scrum\source\components\CommonModal.tsx
+
+### 公用按钮组件
+
+Y:\project\敏捷系统\scrum\source\components\CommonButton.tsx
+
+### 设置组件
+
+例：需求列表右侧设置下拉
+Y:\project\敏捷系统\scrum\source\components\SetShowField
+
+### 自定义下拉组件
+
+Y:\project\敏捷系统\scrum\source\components\CustomSelect
+
+### 三个点下拉操作组件
+
+Y:\project\敏捷系统\scrum\source\components\MoreDropdown.tsx
+
+### dropdown 下拉组件
+
+Y:\project\敏捷系统\scrum\source\components\DropDownMenu.tsx

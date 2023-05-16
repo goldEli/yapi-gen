@@ -138,7 +138,7 @@ const ProjectDetailSide = () => {
       }),
     )
     if (key === 'ProjectAffair') {
-      navigate(`/SprintProjectManagement/Demand?data=${params}`)
+      navigate(`/SprintProjectManagement/DemandSetting?data=${params}`)
       return
     }
     navigate(`${item.props.path}?data=${params}`)
@@ -157,7 +157,7 @@ const ProjectDetailSide = () => {
   }, [projectId])
   return (
     <AllWrap>
-      {pathname !== '/SprintProjectManagement/Demand' &&
+      {pathname !== '/SprintProjectManagement/DemandSetting' &&
         pathname !== '/SprintProjectManagement/WorkFlow' && (
           <WrapDetail ref={projectSide}>
             <SideTop>
@@ -212,7 +212,7 @@ const ProjectDetailSide = () => {
             </SideFooter>
           </WrapDetail>
         )}
-      {(pathname === '/SprintProjectManagement/Demand' ||
+      {(pathname === '/SprintProjectManagement/DemandSetting' ||
         pathname === '/SprintProjectManagement/WorkFlow') && (
         <WrapCategory>
           <DemandSettingSide onClick={demandClick} onBack={() => {}} />

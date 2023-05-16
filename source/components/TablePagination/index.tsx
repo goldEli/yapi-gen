@@ -6,6 +6,7 @@ interface PropType {
   pageSize: number
   currentPage?: number
   onChange(page: number, pageSize: number): void
+  hasPadding?: boolean
 }
 
 const PaginationBox = (props: PropType) => {
@@ -13,7 +14,7 @@ const PaginationBox = (props: PropType) => {
   return (
     <div
       style={{
-        paddingRight: '16px',
+        paddingRight: props.hasPadding ? 0 : '16px',
       }}
       className="pagination-box"
     >

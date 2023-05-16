@@ -154,14 +154,20 @@ const SliderList = (props: any) => {
             }),
           )
           location.pathname === '/SprintProjectManagement/WorkFlow' &&
-            navigate(`/SprintProjectManagement/Demand?data=${params}`)
+            navigate(`/SprintProjectManagement/DemandSetting?data=${params}`)
           dispatch(setActiveCategory(props.row)), props.onClick(index)
         }}
         key={children.icon}
         isActive={active}
       >
         {children.active}
-        <img style={{ width: '18px' }} src={children.attachmentPath} />
+        <img
+          style={{ width: '18px' }}
+          src={
+            children.attachmentPath ||
+            'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png'
+          }
+        />
         <div>{children.name}</div>
       </MenuItem>
     </Container>

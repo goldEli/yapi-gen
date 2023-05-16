@@ -44,6 +44,7 @@ import {
 } from '@/views/WorkReport/Formwork/RightWrap'
 import styled from '@emotion/styled'
 import ProjectType from '../ProjectType/ProjectType'
+import ProjectTemplate from '../ProjectTemplate/ProjectTemplate'
 
 export type IndexRef = {
   postValue(): Record<string, unknown>
@@ -69,8 +70,9 @@ const OpacityDiv = styled.div<{ op: boolean }>`
   left: 50%;
   top: 50%;
   transform: translate(-50%, 0%);
-  transition: all 1s;
+  transition: all 0.8s;
   opacity: ${props => (props.op ? '1' : '0')};
+  pointer-events: ${props => (props.op ? '' : 'none')};
 `
 
 const Side = styled.div<{ op: boolean }>`
@@ -103,6 +105,8 @@ const CreateAProjectForm = () => {
   const dispatch = useDispatch()
   const inputRefDom = useRef<HTMLInputElement>(null)
   const [step, setStep] = useState(1)
+  const [type, setType] = useState('')
+  const [model, setModel] = useState('')
   const onCustomRequest = async (file: any) => {
     const data = await uploadFileByTask(file.file, '2', '2')
     setMyCover(data.url)
@@ -299,7 +303,10 @@ const CreateAProjectForm = () => {
     }
     setStep(val)
   }
-
+  const choose = (type: any) => {
+    setType(type)
+    onChangeStep(2)
+  }
   return (
     <CommonModal2
       bodyStyle={{
@@ -341,25 +348,25 @@ const CreateAProjectForm = () => {
           >
             <RowStyle>
               <Col onClick={() => onChangeStep(1)}>
-                <StyleLeft bgc={step === 1} />
-                <Text bgc={step === 1}>编辑模板</Text>
-                <StyleRight bgc={step === 1} />
+                <StyleLeft bgc={step >= 1} />
+                <Text bgc={step >= 1}>编辑模板</Text>
+                <StyleRight bgc={step >= 1} />
               </Col>
               <Col
                 style={{ transform: 'translate(-20px, 0px)' }}
-                onClick={() => onChangeStep(2)}
+                onClick={() => type && onChangeStep(2)}
               >
-                <StyleLeft bgc={step === 2} />
-                <Text bgc={step === 2}>权限配置</Text>
-                <StyleRight bgc={step === 2} />
+                <StyleLeft bgc={step >= 2} />
+                <Text bgc={step >= 2}>权限配置</Text>
+                <StyleRight bgc={step >= 2} />
               </Col>
               <Col
                 style={{ transform: 'translate(-40px, 0px)' }}
-                onClick={() => onChangeStep(3)}
+                onClick={() => type && onChangeStep(3)}
               >
-                <StyleLeft bgc={step === 3} />
-                <Text bgc={step === 3}>权限配置</Text>
-                <StyleRight bgc={step === 3} />
+                <StyleLeft bgc={step >= 3} />
+                <Text bgc={step >= 3}>权限配置</Text>
+                <StyleRight bgc={step >= 3} />
               </Col>
             </RowStyle>
           </div>
@@ -370,18 +377,11 @@ const CreateAProjectForm = () => {
           >
             <OpacityDiv op={step === 1}>
               <div>
-                <ProjectType />
+                <ProjectType type={type} choose={choose} />
               </div>
             </OpacityDiv>
             <OpacityDiv op={step === 2}>
-              <div
-                style={{
-                  background: 'green',
-                  width: '200px',
-                }}
-              >
-                1
-              </div>
+              <ProjectTemplate />
             </OpacityDiv>
             <OpacityDiv
               op={step === 3}

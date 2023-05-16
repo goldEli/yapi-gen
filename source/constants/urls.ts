@@ -177,6 +177,8 @@ const urls = {
   getScheduleListDaysOfDate: '/b/calendar/schedule/daysOfDate',
   getScheduleSearch: '/b/calendar/schedule/search',
 
+  getSprintList: '/b/list',
+
   // 修改日程
 
   modifySchedule: function (id: Model.Schedule.Info['schedule_id']) {
