@@ -6,9 +6,12 @@ import DropDownMenu from '@/components/DropDownMenu'
 
 interface SelectBoxProps {
   title: string
-  onChange(ley: string): void
+  onChange(key: string): void
   options: Model.SprintKanBan.Option[]
   operation?: Model.SprintKanBan.Option['operation']
+  createView?: () => void
+  onDel?: (key: string) => void
+  onEdit?: (key: string) => void
 }
 
 const SelectOptionsBox = styled.div`
@@ -168,8 +171,20 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
                 <IconFont className="checked" type="check" />
               </CheckIcon>
               <BtnsArea>
-                <IconWrap type="edit" />
-                <IconWrap type="delete" />
+                <IconWrap
+                  onClick={e => {
+                    e.stopPropagation()
+                    props?.onEdit?.(item.key)
+                  }}
+                  type="edit"
+                />
+                <IconWrap
+                  onClick={e => {
+                    e.stopPropagation()
+                    props?.onDel?.(item.key)
+                  }}
+                  type="delete"
+                />
               </BtnsArea>
             </OperationArea>
           </Options>
@@ -188,7 +203,27 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
         renderOptionWidthOperation,
       )
       const arrItems = arr?.map(renderOptionWidthOperation)
-      return [...arrWithDefaultItems, dividerItem, ...arrItems]
+      return [
+        ...arrWithDefaultItems,
+        dividerItem,
+        ...arrItems,
+        dividerItem,
+        {
+          key: 'create-view',
+          label: (
+            <HasIconMenu onClick={() => {}} isCheck={false}>
+              <Options
+                onClick={e => {
+                  e.stopPropagation()
+                  props?.createView?.()
+                }}
+              >
+                <span className="label">{'创建视图'}</span>
+              </Options>
+            </HasIconMenu>
+          ),
+        },
+      ]
     }
     return props.options.map(renderOption)
   }, [props.options, key, props.operation])
