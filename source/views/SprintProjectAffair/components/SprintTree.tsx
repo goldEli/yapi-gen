@@ -26,9 +26,8 @@ import {
   updatePriority,
 } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
-import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
-import { setFilterParamsModal } from '@store/project'
+import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
 import { getMessage } from '@/components/Message'
 import { SprintOperationDropdownMenu } from './SprintOperationDropdownMenu'
 import ResizeTable from '@/components/ResizeTable'
@@ -204,8 +203,15 @@ const SprintTree = (props: Props) => {
     setIsShowMore(false)
     setComputedTopId(item?.topId)
     props.onUpdateTopId?.(item.topId)
-    dispatch(setIsCreateDemandVisible(true))
-    dispatch(setCreateDemandProps({ demandId: item.id, projectId }))
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          projectId,
+          editId: item.id,
+        },
+      }),
+    )
   }
 
   // 点击删除
@@ -221,14 +227,16 @@ const SprintTree = (props: Props) => {
     setComputedTopId(item?.topId)
     props.onUpdateTopId?.(item.topId)
     setIsShowMore(false)
-    dispatch(setIsCreateDemandVisible(true))
     dispatch(
-      setCreateDemandProps({
-        projectId,
-        isChild: true,
-        parentId: item.id,
-        categoryId: item.categoryId,
-        iterateId: item.iterateId,
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          projectId,
+          isChild: true,
+          parentId: item.id,
+          categoryId: item.categoryId,
+          iterateId: item.iterateId,
+        },
       }),
     )
   }
@@ -558,8 +566,12 @@ const SprintTree = (props: Props) => {
   }
 
   const onClick = () => {
-    dispatch(setIsCreateDemandVisible(true))
-    dispatch(setCreateDemandProps({ noDataCreate: true }))
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: { noDataCreate: true },
+      }),
+    )
     dispatch(setFilterParamsModal(filterParams))
   }
 

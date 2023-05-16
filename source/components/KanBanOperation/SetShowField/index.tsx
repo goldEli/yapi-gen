@@ -31,7 +31,6 @@ const ChangeItem = styled.div<{ isActive?: boolean; height?: number }>`
 interface Props {
   // 是否有预览模式
   notView?: boolean
-  onChangeFieldVisible(): void
 }
 
 const SetShowField = (props: Props) => {
@@ -58,7 +57,7 @@ const SetShowField = (props: Props) => {
   let menuItems = [
     {
       key: '0',
-      label: <div onClick={props.onChangeFieldVisible}>配置面板</div>,
+      label: <div>配置面板</div>,
     },
     {
       key: '1-1',

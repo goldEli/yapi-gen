@@ -1,6 +1,5 @@
 /* eslint-disable no-undefined */
 import { getDemandList } from '@/services/demand'
-import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import { useDispatch, useSelector } from '@store/index'
 import { Table } from 'antd'
 import { useEffect, useState } from 'react'
@@ -11,6 +10,7 @@ import NoData from '../NoData'
 import StateTag from '../StateTag'
 import { PriorityWrap } from '../StyleCommon'
 import { Label } from './style'
+import { setAddWorkItemModal } from '@store/project'
 
 interface Props {
   detail?: any
@@ -98,13 +98,15 @@ const ChildrenDemand = (props: Props) => {
   }
 
   const onCreateChild = () => {
-    dispatch(setIsCreateDemandVisible(true))
     dispatch(
-      setCreateDemandProps({
-        isChild: true,
-        parentId: props.detail.id,
-        projectId: props.detail.projectId,
-        categoryId: props.detail.categoryId ?? props.detail.category,
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          isChild: true,
+          parentId: props.detail.id,
+          projectId: props.detail.projectId,
+          categoryId: props.detail.categoryId ?? props.detail.category,
+        },
       }),
     )
   }

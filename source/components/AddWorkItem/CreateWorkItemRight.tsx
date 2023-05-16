@@ -1,7 +1,4 @@
 /* eslint-disable react/jsx-no-leaked-render */
-/* eslint-disable complexity */
-/* eslint-disable camelcase */
-/* eslint-disable @typescript-eslint/naming-convention */
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
 import { getTypeComponent, removeNull } from '@/tools'
 import { decryptPhp } from '@/tools/cryptoPhp'
@@ -46,7 +43,7 @@ interface Props {
   parentList: any[]
   onRef: any
   fieldsList: any[]
-  demandDetail?: any
+  detail?: any
   isSaveParams?: boolean
   workStatusList?: any
   isCreateDemand?: boolean
@@ -64,11 +61,10 @@ const CreateDemandRight = (props: Props) => {
   const [priorityDetail, setPriorityDetail] = useState<any>({})
   const [schedule, setSchedule] = useState(0)
   const [isShowFields, setIsShowFields] = useState(false)
-  const { projectInfoValues, filterParamsModal } = useSelector(
-    store => store.project,
-  )
+  const { projectInfoValues, filterParamsModal, addWorkItemModal } =
+    useSelector(store => store.project)
+  const { params } = addWorkItemModal
   const { userInfo } = useSelector(store => store.user)
-  const { createDemandProps } = useSelector(store => store.demand)
 
   // 处理人相关的下拉
   const getCommonUser = (arr: any, memberArr: any) => {
@@ -132,39 +128,39 @@ const CreateDemandRight = (props: Props) => {
   // 需求详情返回后给标签及附件数组赋值
   useEffect(() => {
     if (
-      createDemandProps?.demandId &&
-      props?.demandDetail?.id &&
-      createDemandProps.demandId === props?.demandDetail?.id
+      params?.editId &&
+      props?.detail?.id &&
+      params?.editId === props?.detail?.id
     ) {
       // 需求进度
-      setSchedule(props?.demandDetail?.schedule)
+      setSchedule(props?.detail?.schedule)
 
       // 获取自定义字段回显值
       const form1Obj: any = {}
-      for (const key in props?.demandDetail?.customField) {
+      for (const key in props?.detail?.customField) {
         form1Obj[key] =
-          props?.demandDetail?.customField[key]?.attr === 'date'
-            ? props?.demandDetail?.customField[key]?.value
-              ? moment(props?.demandDetail?.customField[key]?.value)
+          props?.detail?.customField[key]?.attr === 'date'
+            ? props?.detail?.customField[key]?.value
+              ? moment(props?.detail?.customField[key]?.value)
               : ''
-            : props?.demandDetail?.customField[key]?.value
+            : props?.detail?.customField[key]?.value
       }
       form.setFieldsValue({ ...form, ...form1Obj })
 
       // 回显优先级
-      setPriorityDetail(props?.demandDetail.priority)
+      setPriorityDetail(props?.detail.priority)
 
       // 开始时间
-      if (props?.demandDetail?.expectedStart) {
+      if (props?.detail?.expectedStart) {
         form.setFieldsValue({
-          expected_start_at: moment(props?.demandDetail.expectedStart || 0),
+          expected_start_at: moment(props?.detail.expectedStart || 0),
         })
       }
 
       // 结束时间
-      if (props?.demandDetail?.expectedEnd) {
+      if (props?.detail?.expectedEnd) {
         form.setFieldsValue({
-          expected_end_at: moment(props?.demandDetail.expectedEnd || 0),
+          expected_end_at: moment(props?.detail.expectedEnd || 0),
         })
       }
 
@@ -172,63 +168,61 @@ const CreateDemandRight = (props: Props) => {
       let hasChild: any
 
       // 如果是迭代创建或编辑，默认填入迭代
-      if (createDemandProps.iterateId) {
+      if (params?.iterateId) {
         hasIterateId = removeNull(projectInfoValues, 'iterate_name')
           ?.filter((k: any) => k.status === 1)
-          .filter((i: any) => i.id === createDemandProps?.iterateId).length
-          ? createDemandProps?.iterateId
+          .filter((i: any) => i.id === params?.iterateId).length
+          ? params?.iterateId
           : null
       }
 
       // 如果是子需求创建或编辑，默认父需求填入当前需求id
-      if (createDemandProps.isChild) {
+      if (params.isChild) {
         hasChild = props.parentList?.filter(
-          (i: any) => i.value === Number(createDemandProps?.parentId),
+          (i: any) => i.value === Number(params?.parentId),
         )[0]?.value
       }
 
       form.setFieldsValue({
-        status:
-          props.newCategory?.statusId ?? props.demandDetail?.status.status_id,
+        status: props.newCategory?.statusId ?? props.detail?.status.status_id,
 
         // 抄送人
         users_copysend_name: getCommonUser(
-          props?.demandDetail?.copySend?.map((i: any) => i.copysend),
+          props?.detail?.copySend?.map((i: any) => i.copysend),
           removeNull(projectInfoValues, 'users_copysend_name'),
         ),
 
         // 附件
-        attachments: props?.demandDetail?.attachment?.map(
+        attachments: props?.detail?.attachment?.map(
           (i: any) => i.attachment.path,
         ),
 
         // 处理人
         users_name: getCommonUser(
-          props?.demandDetail?.user?.map((i: any) => i.user),
+          props?.detail?.user?.map((i: any) => i.user),
           removeNull(projectInfoValues, 'user_name'),
         ),
 
         // 迭代
-        iterate_name: createDemandProps.iterateId
+        iterate_name: params.iterateId
           ? hasIterateId
           : removeNull(projectInfoValues, 'iterate_name')
               ?.filter((k: any) => k.status === 1)
-              ?.filter((i: any) => i.id === props?.demandDetail?.iterateId)
-              .length
-          ? props?.demandDetail?.iterateId
+              ?.filter((i: any) => i.id === props?.detail?.iterateId).length
+          ? props?.detail?.iterateId
           : [],
 
         // 父需求
-        parent_id: createDemandProps.isChild
+        parent_id: params.isChild
           ? hasChild
           : props.parentList?.filter(
-              (i: any) => i.value === props?.demandDetail?.parentId,
+              (i: any) => i.value === props?.detail?.parentId,
             ).length
-          ? props?.demandDetail?.parentId
+          ? props?.detail?.parentId
           : null,
 
         // 需求分类
-        class: props?.demandDetail.class || null,
+        class: props?.detail.class || null,
       })
     } else {
       form.setFieldsValue({
@@ -237,32 +231,29 @@ const CreateDemandRight = (props: Props) => {
         )?.[0]?.statusId,
       })
       // 子需求默认回填父需求
-      if (createDemandProps.isChild) {
+      if (params?.isChild) {
         form.setFieldsValue({
           parent_id: props.parentList?.filter(
-            (i: any) => i.value === Number(createDemandProps?.parentId),
+            (i: any) => i.value === Number(params?.parentId),
           )[0]?.value,
         })
       }
 
       // 迭代创建需求默认回填迭代
-      if (createDemandProps.iterateId) {
+      if (params?.iterateId) {
         form.setFieldsValue({
           iterate_name: removeNull(projectInfoValues, 'iterate_name')
             ?.filter((k: any) => k.status === 1)
-            .filter((i: any) => i.id === createDemandProps?.iterateId).length
-            ? createDemandProps?.iterateId
+            .filter((i: any) => i.id === params?.iterateId).length
+            ? params?.iterateId
             : null,
         })
       }
 
       // 如果不是快速创建并且不是完成并创建下一个，则回填筛选值
-      if (!props.isSaveParams && !createDemandProps.isQuickCreate) {
+      if (!props.isSaveParams && !params?.isQuickCreate) {
         // 不是在迭代创建需求并且有筛选项
-        if (
-          !createDemandProps.iterateId &&
-          filterParamsModal?.iterateIds?.length
-        ) {
+        if (!params?.iterateId && filterParamsModal?.iterateIds?.length) {
           const resultId = filterParamsModal?.iterateIds?.filter(
             (i: any) => i !== -1,
           )?.[0]
@@ -335,10 +326,7 @@ const CreateDemandRight = (props: Props) => {
       }
 
       // 如果是快捷创建并且有缓存数据
-      if (
-        createDemandProps.isQuickCreate &&
-        localStorage.getItem('quickCreateData')
-      ) {
+      if (params?.isQuickCreate && localStorage.getItem('quickCreateData')) {
         const hisCategoryData = JSON.parse(
           decryptPhp(localStorage.getItem('quickCreateData') as any),
         )
@@ -381,8 +369,8 @@ const CreateDemandRight = (props: Props) => {
       }
     }
   }, [
-    createDemandProps?.demandId,
-    props?.demandDetail,
+    params?.editId,
+    props?.detail,
     props.parentList,
     props.fieldsList,
     props.workStatusList,
@@ -595,12 +583,12 @@ const CreateDemandRight = (props: Props) => {
           showSearch
           placeholder={t('common.pleaseParentDemand')}
           options={
-            createDemandProps?.demandId
+            params?.editId
               ? props.parentList?.filter(
                   (k: any) =>
-                    k.value !== createDemandProps?.demandId &&
-                    k.parentId !== createDemandProps?.demandId &&
-                    k.parentId !== props?.demandDetail?.parentId,
+                    k.value !== params?.editId &&
+                    k.parentId !== params?.editId &&
+                    k.parentId !== props?.detail?.parentId,
                 )
               : props.parentList
           }
@@ -662,7 +650,7 @@ const CreateDemandRight = (props: Props) => {
               placeholder={t('common.pleaseSelect')}
               getPopupContainer={(node: any) => node}
               allowClear
-              disabled={createDemandProps?.demandId}
+              disabled={params?.editId}
             >
               {props.workStatusList?.list?.map((i: any) => {
                 return (
@@ -713,7 +701,7 @@ const CreateDemandRight = (props: Props) => {
                 </Form.Item>
               )}
             {/* 需求进度 */}
-            {i.content === 'schedule' && createDemandProps.demandId && (
+            {i.content === 'schedule' && params?.editId && (
               <Form.Item
                 key={i.content}
                 label={i.title}
@@ -728,11 +716,11 @@ const CreateDemandRight = (props: Props) => {
                     onChange={value => onChangeSetSchedule(value)}
                     disabled={
                       !(
-                        props?.demandDetail?.user
+                        props?.detail?.user
                           ?.map((k: any) => k.user.id)
                           ?.includes(userInfo?.id) &&
-                        props?.demandDetail.status.is_start !== 1 &&
-                        props?.demandDetail.status.is_end !== 1
+                        props?.detail.status.is_start !== 1 &&
+                        props?.detail.status.is_end !== 1
                       )
                     }
                   />
@@ -780,7 +768,7 @@ const CreateDemandRight = (props: Props) => {
                   </Form.Item>
                 )}
               {/* 需求进度 */}
-              {i.content === 'schedule' && createDemandProps.demandId && (
+              {i.content === 'schedule' && params?.editId && (
                 <Form.Item
                   key={i.content}
                   label={i.title}
@@ -795,11 +783,11 @@ const CreateDemandRight = (props: Props) => {
                       onChange={value => onChangeSetSchedule(value)}
                       disabled={
                         !(
-                          props?.demandDetail?.user
+                          props?.detail?.user
                             ?.map((k: any) => k.user.id)
                             ?.includes(userInfo?.id) &&
-                          props?.demandDetail.status.is_start !== 1 &&
-                          props?.demandDetail.status.is_end !== 1
+                          props?.detail.status.is_start !== 1 &&
+                          props?.detail.status.is_end !== 1
                         )
                       }
                     />

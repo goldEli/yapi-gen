@@ -1,27 +1,23 @@
 /* eslint-disable no-undefined */
-/* eslint-disable complexity */
-/* eslint-disable camelcase */
-/* eslint-disable react/jsx-no-leaked-render */
-/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable require-unicode-regexp */
+import { Form, Input, Select } from 'antd'
+import { useTranslation } from 'react-i18next'
+import { AddWrap } from '../StyleCommon'
+import IconFont from '../IconFont'
+import UploadAttach from '../UploadAttach'
+import TagComponent from '../TagComponent'
+import { Editor, EditorRef } from '@xyfe/uikit'
+import CustomSelect from '../CustomSelect'
+import MoreOptions from '../MoreOptions'
+import CommonModal from '../CommonModal'
+import styled from '@emotion/styled'
+import { useEffect, useImperativeHandle, useRef, useState } from 'react'
+import { useSelector } from '@store/index'
 import { getProjectInfo, getWorkflowList } from '@/services/project'
 import { getCategoryConfigList, updateDemandCategory } from '@/services/demand'
-import styled from '@emotion/styled'
-import { useSelector } from '@store/index'
-import { Form, Input, Select } from 'antd'
-import { useEffect, useImperativeHandle, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import IconFont from '../IconFont'
-import { AddWrap } from '../StyleCommon'
-import TagComponent from '../TagComponent'
-import UploadAttach from '../UploadAttach'
 import { decryptPhp } from '@/tools/cryptoPhp'
 import { removeNull } from '@/tools'
-import CommonModal from '../CommonModal'
-import MoreOptions from '../MoreOptions'
-import { Editor, EditorRef } from '@xyfe/uikit'
 import { uploadFileToKey } from '@/services/cos'
-import CustomSelect from '../CustomSelect'
 
 const LeftWrap = styled.div({
   height: '100%',
@@ -57,7 +53,7 @@ interface Props {
   onRef: any
   allCategoryList: any[]
   projectId: string | number
-  demandDetail?: any
+  detail?: any
   onGetFieldList(list: []): void
   onResetForm(): void
   // 修改项目id
@@ -66,7 +62,7 @@ interface Props {
   onGetDataAll(values: any, categoryId?: any): void
   // 需求类别对应的需求状态下拉列表
   onChangeWorkStatusList(values: any): void
-  onGetCreateDemand(state: boolean): void
+  onGetCreateWorkItem(state: boolean): void
   // 修改需求类别同步给右侧
   onChangeCategory(value: any): void
 }
@@ -92,7 +88,7 @@ const CreateDemandLeft = (props: Props) => {
   const [form] = Form.useForm()
   const editorRef = useRef<EditorRef>(null)
   const inputRefDom = useRef<HTMLInputElement>(null)
-  const leftDom = useRef<HTMLInputElement>(null)
+  const leftDom = useRef<HTMLDivElement>(null)
   const [attachList, setAttachList] = useState<any>([])
   const [tagCheckedList, setTagCheckedList] = useState<any>([])
   const [projectInfo, setProjectInfo] = useState<any>({})
@@ -109,12 +105,10 @@ const CreateDemandLeft = (props: Props) => {
   // 点击需求类别弹出修改需求类别相应参数弹窗
   const [isShowChangeCategory, setIsShowChangeCategory] = useState(false)
   const [categoryObj, setCategoryObj] = useState<any>({})
-  const { filterParamsModal, projectInfoValues } = useSelector(
-    store => store.project,
-  )
-  const { createDemandProps, createCategory } = useSelector(
-    store => store.demand,
-  )
+  const { filterParamsModal, projectInfoValues, addWorkItemModal } =
+    useSelector(store => store.project)
+  const { params } = addWorkItemModal
+  const { createCategory } = useSelector(store => store.demand)
   let isCreateDemand = true
 
   // 获取工作流列表
@@ -146,13 +140,10 @@ const CreateDemandLeft = (props: Props) => {
       color: i.color,
     }))
     // 如果是编辑需求并且切换了新的需求类别
-    if (
-      createDemandProps.demandId &&
-      JSON.stringify(changeCategoryFormData) !== '{}'
-    ) {
+    if (params?.editId && JSON.stringify(changeCategoryFormData) !== '{}') {
       await updateDemandCategory({
         projectId: props.projectId,
-        id: createDemandProps?.demandId,
+        id: params?.editId,
         ...changeCategoryFormData,
       })
       setCurrentCategory({})
@@ -242,11 +233,10 @@ const CreateDemandLeft = (props: Props) => {
       // 是否有创建需求权限
       isCreateDemand = result?.projectPermissions?.filter(
         (i: any) =>
-          i.identity ===
-          (createDemandProps?.demandId ? 'b/story/update' : 'b/story/save'),
+          i.identity === (params?.editId ? 'b/story/update' : 'b/story/save'),
       )?.length
 
-      props.onGetCreateDemand(isCreateDemand)
+      props.onGetCreateWorkItem(isCreateDemand)
     }
   }
 
@@ -285,7 +275,7 @@ const CreateDemandLeft = (props: Props) => {
     if (value === categoryObj?.id) {
       return
     }
-    if (createDemandProps.demandId) {
+    if (params?.editId) {
       changeCategoryForm.setFieldsValue({
         categoryId: value,
       })
@@ -374,50 +364,46 @@ const CreateDemandLeft = (props: Props) => {
         (i: any) => i.status === 1,
       )
       // 如果有需求id
-      if (createDemandProps.demandId) {
+      if (params?.editId) {
         //    如果可使用的能查到详情中的需求类别，则使用详情的， 反之使用列表的第一个
         if (
-          resultCategoryList?.filter(
-            (j: any) => j.id === props.demandDetail.category,
-          )?.length
+          resultCategoryList?.filter((j: any) => j.id === props.detail.category)
+            ?.length
         ) {
           setCategoryObj(
             resultCategoryList?.filter(
-              (j: any) => j.id === props.demandDetail.category,
+              (j: any) => j.id === props.detail.category,
             )[0],
           )
         } else {
           // 反之查所有中的需求类别，做展示用
           setCategoryObj(
             props.allCategoryList?.filter(
-              (j: any) => j.id === props.demandDetail.category,
+              (j: any) => j.id === props.detail.category,
             )[0],
           )
         }
       } else {
         let hisCategoryData: any
         // 如果是快速创建并且有缓存
-        if (
-          createDemandProps.isQuickCreate &&
-          localStorage.getItem('quickCreateData')
-        ) {
+        if (params?.isQuickCreate && localStorage.getItem('quickCreateData')) {
           hisCategoryData = JSON.parse(
             decryptPhp(localStorage.getItem('quickCreateData') as any),
           )
         }
         let resultCategory: any = {}
         // 如果是子需求的话，继承父级的需求类别
-        if (createDemandProps?.isChild) {
+        if (params?.isChild) {
           // 判断父需求类别是否被关闭，是则取列表第一条
           const isExistence = resultCategoryList?.filter(
-            (i: any) => i.id === createDemandProps?.categoryId,
+            (i: any) => i.id === params?.categoryId,
           )
           resultCategory = isExistence?.length
             ? isExistence[0]
             : resultCategoryList[0]
         }
         // 如果是快速创建并且有缓存数据
-        if (createDemandProps?.isQuickCreate && hisCategoryData?.categoryId) {
+        if (params?.isQuickCreate && hisCategoryData?.categoryId) {
           // 判断需求类别是否被关闭，是则取列表第一条
           const isExistence = resultCategoryList?.filter(
             (i: any) => i.id === hisCategoryData?.categoryId,
@@ -428,14 +414,14 @@ const CreateDemandLeft = (props: Props) => {
         }
         // 如果是快速创建没有缓存数据，取列表第一个
         if (
-          (createDemandProps?.isQuickCreate && !hisCategoryData?.categoryId) ||
-          createDemandProps.noDataCreate ||
-          createDemandProps.overallCreate
+          (params?.isQuickCreate && !hisCategoryData?.categoryId) ||
+          params?.noDataCreate ||
+          params?.overallCreate
         ) {
           resultCategory = resultCategoryList[0]
         }
         // 迭代创建 ,当前只有迭代是需要做筛选类别回填
-        if (createDemandProps?.iterateId) {
+        if (params?.iterateId) {
           // 如果是有筛选条件的，回填筛选条件
           if (filterParamsModal?.category_id?.length) {
             const resultId = filterParamsModal?.category_id?.filter(
@@ -473,11 +459,11 @@ const CreateDemandLeft = (props: Props) => {
 
   useEffect(() => {
     // 是否是快捷创建
-    if (createDemandProps?.isQuickCreate) {
+    if (params?.isQuickCreate) {
       getProjectData()
     }
     // 如果是所有项目调用项目信息
-    if (createDemandProps?.isAllProject) {
+    if (params?.isAllProject) {
       getProjectInfoData(props?.projectId)
     }
     // 创建回填筛选数据 --- 标签
@@ -502,19 +488,16 @@ const CreateDemandLeft = (props: Props) => {
   // 需求详情返回后给标签及附件数组赋值
   useEffect(() => {
     // 需求id为真并且与需求详情id匹配
-    if (
-      createDemandProps?.demandId &&
-      createDemandProps?.demandId === props?.demandDetail?.id
-    ) {
+    if (params?.editId && params?.editId === props?.detail?.id) {
       setTagCheckedList(
-        props?.demandDetail?.tag?.map((i: any) => ({
+        props?.detail?.tag?.map((i: any) => ({
           id: i.id,
           color: i.tag?.color,
           name: i.tag?.content,
         })),
       )
       setAttachList(
-        props?.demandDetail?.attachment?.map((i: any) => ({
+        props?.detail?.attachment?.map((i: any) => ({
           url: i.attachment.path,
           id: i.id,
           size: i.attachment.size,
@@ -525,10 +508,10 @@ const CreateDemandLeft = (props: Props) => {
         })),
       )
       form.setFieldsValue({
-        name: props?.demandDetail?.name,
-        info: props?.demandDetail?.info,
-        category_id: props.demandDetail?.categoryId,
-        tagIds: props?.demandDetail?.tag?.map((i: any) => ({
+        name: props?.detail?.name,
+        info: props?.detail?.info,
+        category_id: props.detail?.categoryId,
+        tagIds: props?.detail?.tag?.map((i: any) => ({
           id: i.id,
           color: i.tag?.color,
           name: i.tag?.content,
@@ -538,7 +521,7 @@ const CreateDemandLeft = (props: Props) => {
         inputRefDom.current?.focus()
       }, 100)
     }
-  }, [createDemandProps?.demandId, props?.demandDetail])
+  }, [params?.editId, props?.detail])
 
   return (
     <LeftWrap ref={leftDom}>
@@ -616,7 +599,7 @@ const CreateDemandLeft = (props: Props) => {
               placeholder={t('common.searchProject')}
               allowClear
               showArrow
-              disabled={createDemandProps.projectId}
+              disabled={params?.projectId}
               onClear={onClearProjectId}
               getPopupContainer={(node: any) => node}
               showSearch

@@ -3,8 +3,8 @@
 import IconFont from '@/components/IconFont'
 import { CloseWrap } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
-import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import { useDispatch } from '@store/index'
+import { setAddWorkItemModal } from '@store/project'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 
@@ -79,8 +79,12 @@ const MineSide = () => {
   ]
 
   const onCreateDemand = () => {
-    dispatch(setIsCreateDemandVisible(true))
-    dispatch(setCreateDemandProps({ isQuickCreate: true }))
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: { isQuickCreate: true },
+      }),
+    )
   }
 
   return (

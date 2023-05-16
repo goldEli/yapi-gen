@@ -1,5 +1,4 @@
 /* eslint-disable require-unicode-regexp */
-import { uploadFileToKey } from '@/services/cos'
 import { addIterate, getIterateInfo, updateIterate } from '@/services/iterate'
 import {
   getProjectInfo,
@@ -19,11 +18,11 @@ import moment from 'moment'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '../CommonModal'
-import { uploadFile } from '../CreateDemand/CreateDemandLeft'
 import CustomSelect from '../CustomSelect'
 import { getMessage } from '../Message'
 import MoreOptions from '../MoreOptions'
 import RangePicker from '../RangePicker'
+import { uploadFile } from '../AddWorkItem/CreateWorkItemLeft'
 
 const ItemWrap = styled(Space)`
   display: flex;

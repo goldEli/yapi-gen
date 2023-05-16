@@ -27,10 +27,9 @@ import {
 } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
 import { DemandOperationDropdownMenu } from './DemandOperationDropdownMenu'
-import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
 import ResizeTable from '../ResizeTable'
-import { setFilterParamsModal } from '@store/project'
+import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
 import CommonButton from '../CommonButton'
 import { getMessage } from '../Message'
 
@@ -205,8 +204,12 @@ const DemandTree = (props: Props) => {
     setIsShowMore(false)
     setComputedTopId(item?.topId)
     props.onUpdateTopId?.(item.topId)
-    dispatch(setIsCreateDemandVisible(true))
-    dispatch(setCreateDemandProps({ demandId: item.id, projectId }))
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: { editId: item.id, projectId },
+      }),
+    )
   }
 
   // 点击删除
@@ -222,14 +225,16 @@ const DemandTree = (props: Props) => {
     setComputedTopId(item?.topId)
     props.onUpdateTopId?.(item.topId)
     setIsShowMore(false)
-    dispatch(setIsCreateDemandVisible(true))
     dispatch(
-      setCreateDemandProps({
-        projectId,
-        isChild: true,
-        parentId: item.id,
-        categoryId: item.categoryId,
-        iterateId: item.iterateId,
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          projectId,
+          isChild: true,
+          parentId: item.id,
+          categoryId: item.categoryId,
+          iterateId: item.iterateId,
+        },
       }),
     )
   }
@@ -559,8 +564,12 @@ const DemandTree = (props: Props) => {
   }
 
   const onClick = () => {
-    dispatch(setIsCreateDemandVisible(true))
-    dispatch(setCreateDemandProps({ noDataCreate: true }))
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: { noDataCreate: true },
+      }),
+    )
     dispatch(setFilterParamsModal(filterParams))
   }
 

@@ -13,7 +13,7 @@ import IconFont from '@/components/IconFont'
 import { useEffect, useRef, useState } from 'react'
 import { t } from 'i18next'
 import { Editor, EditorRef } from '@xyfe/uikit'
-import { uploadFile } from '@/components/CreateDemand/CreateDemandLeft'
+import { uploadFile } from '@/components/AddWorkItem/CreateWorkItemLeft'
 import styled from '@emotion/styled'
 
 import { useSelector } from '@store/index'
