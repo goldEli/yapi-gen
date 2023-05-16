@@ -5,12 +5,12 @@
 import { css } from '@emotion/css'
 import { Space, Tooltip } from 'antd'
 import { useTranslation } from 'react-i18next'
-import IconFont from './IconFont'
 import BatchModal from './BatchModal'
 import { useImperativeHandle, useState } from 'react'
 import { copyLink, getParamsData } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useSearchParams } from 'react-router-dom'
+import IconFont from '../IconFont'
 
 const batchAllBox = css`
   display: flex;

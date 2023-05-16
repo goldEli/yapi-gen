@@ -73,6 +73,10 @@ const routes = [
             path: 'Formwork',
             element: lazy(() => import('@/views/WorkReport/Formwork')),
           },
+          {
+            path: 'xn',
+            element: lazy(() => import('@/views/PerformanceInsight')),
+          },
         ],
       },
       {

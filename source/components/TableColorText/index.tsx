@@ -1,3 +1,5 @@
+// 表格搜索高亮
+
 /* eslint-disable require-unicode-regexp */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-negated-condition */

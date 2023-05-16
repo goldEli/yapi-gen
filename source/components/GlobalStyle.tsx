@@ -797,6 +797,13 @@ const GlobalStyle = () => {
       width: 16px;
       font-size: 16px;
     }
+    .ant-dropdown-menu-item-divider, .ant-dropdown-menu-submenu-title-divider {
+      margin: 4px 12px;
+    }
+    .ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title{
+      padding: 0 12px;
+   }
+  }
   `
   return <Global styles={globalCss} />
 }
