@@ -18,7 +18,7 @@ import {
 import IconFont from '@/components/IconFont'
 import { Menu, message, Space, Spin, Table } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
-import { useDynamicColumns } from '@/components/CreateProjectTableColumInfo'
+import { useDynamicColumns } from '@/components/TableColumns/MineOrHisTableColumn'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import TableFilter from '@/components/TableFilter'
 import DeleteConfirm from '@/components/DeleteConfirm'

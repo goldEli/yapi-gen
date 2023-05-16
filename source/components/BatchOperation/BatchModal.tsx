@@ -6,8 +6,6 @@
 /* eslint-disable complexity */
 /* eslint-disable camelcase */
 import { useEffect, useState } from 'react'
-import DeleteConfirm from './DeleteConfirm'
-import CommonModal from './CommonModal'
 import { Checkbox, DatePicker, Form, message, Select, TreeSelect } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
@@ -20,8 +18,10 @@ import {
 import moment from 'moment'
 import { useSelector } from '@store/index'
 import { batchDelete, batchEdit, getBatchEditConfig } from '@/services/demand'
-import CustomSelect from './CustomSelect'
-import { getMessage } from './Message'
+import { getMessage } from '../Message'
+import DeleteConfirm from '../DeleteConfirm'
+import CommonModal from '../CommonModal'
+import CustomSelect from '../CustomSelect'
 
 interface Props {
   isVisible: boolean

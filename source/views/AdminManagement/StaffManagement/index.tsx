@@ -44,10 +44,10 @@ import PermissionWrap from '@/components/PermissionWrap'
 import { confirmHand, restHand } from '@/services/handover'
 import ResizeTable from '@/components/ResizeTable'
 import type { CheckboxChangeEvent } from 'antd/lib/checkbox'
-import BatchAction, { boxItem } from '@/components/BatchAction'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import BatchSetPermGroup from '@/views/ProjectSetting/components/BatchSetPermGroup'
 import { getMessage } from '@/components/Message'
+import BatchAction, { boxItem } from '@/components/BatchOperation/BatchAction'
 
 export const tableWrapP = css`
   display: flex;
