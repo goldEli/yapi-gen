@@ -158,6 +158,18 @@ const AdminSide = () => {
         },
       ],
     },
+    {
+      label: '系统通知',
+      key: '5',
+      icon: <IconFontStyle className="icon" type="safety-certificate" />,
+      children: [
+        {
+          label: '通知管理',
+          key: '/AdminManagement/NoteManagement',
+          path: '/AdminManagement/NoteManagement',
+        },
+      ],
+    },
   ]
 
   const onFilter = (list: any[]) => {
@@ -167,7 +179,7 @@ const AdminSide = () => {
   const sideList = onFilter(side).map(item => {
     return {
       ...item,
-      children: item.children ? onFilter(item.children) : null,
+      // children: item.children ? onFilter(item.children) : null,
     }
   })
 
@@ -176,12 +188,16 @@ const AdminSide = () => {
   )
 
   const onMenuClick = (e: any) => {
+    console.log(e)
+
     const pathObject = allSide.filter((i: any) => i.key === e.key)[0]
     pathObject.path && navigate(pathObject.path)
   }
 
   // 根据导航匹配父级key
   const getDefaultKey = (data: any, parentKeys: any) => {
+    console.log(data)
+
     for (const i in data) {
       if (data[i]?.path === location.pathname) {
         setDefaultKey([parentKeys?.key])
@@ -195,6 +211,7 @@ const AdminSide = () => {
   useEffect(() => {
     getDefaultKey(side, null)
   }, [])
+  console.log(sideList)
 
   return (
     <AdminSideWrap>
