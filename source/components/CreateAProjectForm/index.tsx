@@ -327,6 +327,9 @@ const CreateAProjectForm = () => {
     setModel(type)
     onChangeStep(3)
   }
+  const getIdS = (ids: any) => {
+    console.log(ids, '侧边栏的IDs')
+  }
   return (
     <CommonModal2
       bodyStyle={{
@@ -406,7 +409,7 @@ const CreateAProjectForm = () => {
               </div>
             </OpacityDiv>
             <OpacityDiv op={step === 2}>
-              <ProjectTemplate choose={chooseModel} />
+              <ProjectTemplate getIdS={getIdS} choose={chooseModel} />
             </OpacityDiv>
             <OpacityDiv
               op={step === 3}
