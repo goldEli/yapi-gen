@@ -56,7 +56,7 @@ const ProjectManagementOptimization = () => {
     },
   ])
 
-  const [isGrid, setIsGrid] = useState(true)
+  const [isGrid, setIsGrid] = useState(false)
   const [isStop, setIsStop] = useState(false)
   const [activeType, setActiveType] = useState(0)
   const [isHidden, setIsHidden] = useState(false)
