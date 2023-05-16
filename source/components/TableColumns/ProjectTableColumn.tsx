@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable react/jsx-handler-names */
 
 // 公用需求列表表格
@@ -6,7 +7,13 @@ import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import Sort from '@/components/Sort'
 import { OmitText } from '@star-yun/ui'
-import { ClickWrap, HiddenText, ListNameWrap } from '@/components/StyleCommon'
+import {
+  ClickWrap,
+  HiddenText,
+  ListNameWrap,
+  SeverityWrap,
+  ShowWrap,
+} from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
 import ChildDemandTable from '@/components/ChildDemandTable'
 import { message, Progress, Tooltip } from 'antd'
@@ -19,6 +26,7 @@ import StateTag from '../StateTag'
 import ChangePriorityPopover from '../ChangePriorityPopover'
 import DemandProgress from '../DemandProgress'
 import { getCustomNormalValue } from '@/tools'
+import ChangeSeverityPopover from '../ChangeSeverityPopover'
 
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
   {
@@ -46,6 +54,16 @@ const PriorityWrap = styled.div<{ isShow?: boolean }>(
         visibility: isShow ? 'visible' : 'hidden',
       },
     },
+  }),
+)
+
+const Wrap = styled.div<{ isEdit?: any }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  ({ isEdit }) => ({
+    cursor: isEdit ? 'inherit' : 'pointer',
   }),
 )
 
@@ -227,7 +245,7 @@ export const useDynamicColumns = (state: any) => {
     {
       title: (
         <NewSort fixedKey="child_story_count">
-          {t('common.childDemand')}
+          {projectInfo.projectType === 2 ? '子事务' : t('common.childDemand')}
         </NewSort>
       ),
       dataIndex: 'demand',
@@ -247,7 +265,11 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: <NewSort fixedKey="iterate_name">{t('common.iterate')}</NewSort>,
+      title: (
+        <NewSort fixedKey="iterate_name">
+          {projectInfo.projectType === 2 ? '冲刺' : t('common.iterate')}
+        </NewSort>
+      ),
       dataIndex: 'iteration',
       key: 'iterate_name',
       width: 120,
@@ -275,7 +297,7 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: <NewSort fixedKey="class">{t('newlyAdd.demandClass')}</NewSort>,
+      title: <NewSort fixedKey="class">分类</NewSort>,
       dataIndex: 'class',
       key: 'class',
       width: 120,
@@ -330,7 +352,6 @@ export const useDynamicColumns = (state: any) => {
         )
       },
     },
-
     {
       title: <NewSort fixedKey="user_name">{t('common.createName')}</NewSort>,
       dataIndex: 'userName',
@@ -360,9 +381,7 @@ export const useDynamicColumns = (state: any) => {
       },
     },
     {
-      title: (
-        <NewSort fixedKey="schedule">{t('newlyAdd.demandProgress')}</NewSort>
-      ),
+      title: <NewSort fixedKey="schedule">进度</NewSort>,
       dataIndex: 'schedule',
       key: 'schedule',
       width: 120,
@@ -495,6 +514,106 @@ export const useDynamicColumns = (state: any) => {
       width: 200,
       render: (text: string) => {
         return <span>{text || '--'}</span>
+      },
+    },
+    {
+      title: <NewSort fixedKey="solution">解决方法</NewSort>,
+      dataIndex: 'solution',
+      key: 'solution',
+      width: 200,
+      render: (text: string | number, record: any) => {
+        return (
+          <TableQuickEdit
+            type="text"
+            defaultText={text}
+            keyText="solution"
+            item={record}
+            onUpdate={() => onUpdate(record)}
+            projectId={state.projectId}
+          >
+            <Tooltip title={text} getPopupContainer={node => node}>
+              <span className="controlMaxWidth">{text}</span>
+            </Tooltip>
+          </TableQuickEdit>
+        )
+      },
+    },
+    {
+      title: <NewSort fixedKey="severity">严重程度</NewSort>,
+      dataIndex: 'severity',
+      key: 'severity',
+      width: 200,
+      render: (text: any, record: any) => {
+        return (
+          <ChangeSeverityPopover
+            isCanOperation={
+              !(
+                record.project?.isPublic !== 1 && !record.project?.isUserMember
+              ) && Object.keys(record.categoryConfigList).includes('priority')
+            }
+            onChangeSeverity={item => state.onChangeSeverity(item, record)}
+            record={record}
+            projectId={state.projectId}
+          >
+            <Wrap
+              isEdit={
+                record.project?.isPublic !== 1 && !record.project?.isUserMember
+              }
+            >
+              <Wrap
+                isEdit={
+                  record.project?.isPublic !== 1 &&
+                  !record.project?.isUserMember
+                }
+              >
+                {text?.id && (
+                  <SeverityWrap style={{ background: '#FA9746' }}>
+                    严重
+                  </SeverityWrap>
+                )}
+                {!text?.id && <span style={{ marginLeft: '5px' }}>--</span>}
+              </Wrap>
+              {!(
+                record.project?.isPublic !== 1 && !record.project?.isUserMember
+              ) && (
+                <ShowWrap>
+                  <IconFont
+                    style={{ color: 'var(--primary-d2)' }}
+                    type="down-icon"
+                  />
+                </ShowWrap>
+              )}
+            </Wrap>
+          </ChangeSeverityPopover>
+        )
+      },
+    },
+    {
+      title: <NewSort fixedKey="discovery_version">发现版本</NewSort>,
+      dataIndex: 'discovery_version',
+      key: 'discovery_version',
+      width: 120,
+      render: (text: string, record: any) => {
+        return (
+          <TableQuickEdit
+            type="fixed_radio"
+            defaultText={text}
+            keyText="discovery_version"
+            item={record}
+            onUpdate={() => onUpdate(record)}
+          >
+            <HiddenText>
+              <OmitText
+                width={120}
+                tipProps={{
+                  getPopupContainer: node => node,
+                }}
+              >
+                {text || '--'}
+              </OmitText>
+            </HiddenText>
+          </TableQuickEdit>
+        )
       },
     },
   ]

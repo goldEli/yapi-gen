@@ -172,7 +172,6 @@ const CommonNeed = (props: any) => {
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
   const [isDelVisible, setIsDelVisible] = useState(false)
-  const [isVisible, setIsVisible] = useState(false)
   const [isMany, setIsMany] = useState(
     !!props?.isMember && props?.type === 'abeyance',
   )
@@ -366,6 +365,7 @@ const CommonNeed = (props: any) => {
     plainOptions3,
     projectId: props.id,
     onClickItem,
+    projectType: projectInfo.projectType,
   })
 
   const selectColum: any = useMemo(() => {
