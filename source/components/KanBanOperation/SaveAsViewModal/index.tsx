@@ -53,7 +53,7 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
     <CommonModal
       width={528}
       title={'另存为视图'}
-      isVisible={true}
+      isVisible={false}
       onClose={onClose}
       onConfirm={onsubmit}
       confirmText={'确认'}
