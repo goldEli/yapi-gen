@@ -29,9 +29,67 @@ const initialState: SliceState = {
 const slice = createSlice({
   name: 'sprintKanBan',
   initialState,
-  reducers: {},
+  reducers: {
+    onChangeSortByGroupOptions(
+      state,
+      action: PayloadAction<Model.SprintKanBan.Option['key']>,
+    ) {
+      const current = state.sortByGroupOptions?.find(
+        item => item.key === action.payload,
+      )
+      state.sortByGroupOptions?.forEach(item => {
+        if (!current) {
+          return
+        }
+        item.check = false
+        if (item.key === current?.key) {
+          item.check = true
+        }
+      })
+    },
+    onChangeSortByRowAndStatusOptions(
+      state,
+      action: PayloadAction<Model.SprintKanBan.Option['key']>,
+    ) {
+      const current = state.sortByRowAndStatusOptions?.find(
+        item => item.key === action.payload,
+      )
+      state.sortByRowAndStatusOptions?.forEach(item => {
+        if (!current) {
+          return
+        }
+        item.check = false
+        if (item.key === current?.key) {
+          item.check = true
+        }
+      })
+    },
+    onChangeSortByView(
+      state,
+      action: PayloadAction<Model.SprintKanBan.Option['key']>,
+    ) {
+      const current = state.sortByView?.find(
+        item => item.key === action.payload,
+      )
+      state.sortByView?.forEach(item => {
+        if (!current) {
+          return
+        }
+        item.check = false
+        if (item.key === current?.key) {
+          item.check = true
+        }
+      })
+    },
+  },
 })
 
 const sprintKanBan = slice.reducer
+
+export const {
+  onChangeSortByGroupOptions,
+  onChangeSortByRowAndStatusOptions,
+  onChangeSortByView,
+} = slice.actions
 
 export default sprintKanBan
