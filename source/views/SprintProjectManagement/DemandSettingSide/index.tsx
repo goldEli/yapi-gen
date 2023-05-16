@@ -262,28 +262,28 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
       props.onBack()
     }
   }, [projectInfo])
-  const aa = () => {
-    affairType.map(item => {
-      item = { ...item }
-      item.children.map(ele => {
-        ele = { ...ele, active: true }
-      })
-    })
-    setAffairType([...affairType])
-    console.log(111, affairType)
-  }
+  // const aa = () => {
+  //   affairType.map(item => {
+  //     item = { ...item }
+  //     item.children.map(ele => {
+  //       ele = { ...ele, active: true }
+  //     })
+  //   })
+  //   setAffairType([...affairType])
+  //   console.log(111, affairType)
+  // }
   const updateNode = (index: number, i: number) => {
-    setAffairType(prevData => {
-      const newData = [...prevData]
-      const currentItem = { ...newData[index] }
-      const listToUpdate = [...currentItem.children]
-      const itemToUpdate = { ...listToUpdate[i], active: true } // 修改属性值
-      listToUpdate[i] = itemToUpdate
-      currentItem.children = listToUpdate
-      newData[index] = currentItem
-      console.log('newData', newData)
-      return newData
-    })
+    // setAffairType(prevData => {
+    //   const newData = [...prevData]
+    //   const currentItem = { ...newData[index] }
+    //   const listToUpdate = [...currentItem.children]
+    //   const itemToUpdate = { ...listToUpdate[i], active: true } // 修改属性值
+    //   listToUpdate[i] = itemToUpdate
+    //   currentItem.children = listToUpdate
+    //   newData[index] = currentItem
+    //   console.log('newData', newData)
+    //   return newData
+    // })
   }
   return (
     <AllWrap>
@@ -313,7 +313,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
         </Tabs>
         <div>
           {affairType.map((item, index) => (
-            <AffairTypeWrap>
+            <AffairTypeWrap key={index}>
               <AffairTypeHeader
                 onClick={() => {
                   affairType[index].visible = !affairType[index].visible
