@@ -32,7 +32,7 @@ import {
   updatePriority,
 } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
-import { DemandOperationDropdownMenu } from '@/components/DemandOperationDropdownMenu'
+import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/DemandDropdownMenu'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ResizeTable from '@/components/ResizeTable'
 import CreateDemandButton from './CreateDemandButton'

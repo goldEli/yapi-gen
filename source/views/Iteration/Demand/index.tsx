@@ -27,7 +27,7 @@ import {
 } from '@/services/demand'
 import { setFilterParams, setIsUpdateDemand } from '@store/demand'
 import PaginationBox from '@/components/TablePagination'
-import { DemandOperationDropdownMenu } from '@/components/DemandOperationDropdownMenu'
+import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/DemandDropdownMenu'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'

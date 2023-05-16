@@ -21,7 +21,6 @@ import { useTranslation } from 'react-i18next'
 import ChangeStatusPopover from '../ChangeStatusPopover'
 import CommonIconFont from '../CommonIconFont'
 import DeleteConfirm from '../DeleteConfirm'
-import { DemandOperationDropdownMenu } from '../DemandOperationDropdownMenu'
 import StateTag from '../StateTag'
 import { DragLine, MouseDom } from '../StyleCommon'
 import BasicDemand from './BasicDemand'
@@ -50,6 +49,7 @@ import CommonButton from '../CommonButton'
 import { saveDemandDetailDrawer } from '@store/demand/demand.thunk'
 import { getMessage } from '../Message'
 import styled from '@emotion/styled'
+import { DemandOperationDropdownMenu } from '../TableDropdownMenu/DemandDropdownMenu'
 
 const DemandDetailDrawer = () => {
   const normalState = {

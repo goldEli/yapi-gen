@@ -50,7 +50,7 @@ import {
 } from '@store/project'
 import { deleteDemand } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
-import { DemandOperationDropdownMenu } from '@/components/DemandOperationDropdownMenu'
+import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/DemandDropdownMenu'
 import SetShowField from '@/components/SetShowField/indedx'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ResizeTable from '@/components/ResizeTable'
