@@ -137,15 +137,15 @@ const Operation = (props: Props) => {
   const stickyWrapDom = useRef<HTMLDivElement>(null)
   const dispatch = useDispatch()
 
-  const hasImport = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/story/import',
-  )
+  // const hasImport = getIsPermission(
+  //   projectInfo?.projectPermissions,
+  //   'b/story/import',
+  // )
 
-  const hasExport = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/story/export',
-  )
+  // const hasExport = getIsPermission(
+  //   projectInfo?.projectPermissions,
+  //   'b/story/export',
+  // )
 
   const onFilterSearch = (e: any, customField: any) => {
     const params = {
@@ -236,74 +236,74 @@ const Operation = (props: Props) => {
     setFilterState(!filterState)
   }
 
-  const onChangeCategory = (e: any, item: any) => {
-    dispatch(setCreateCategory(item))
+  // const onChangeCategory = (e: any, item: any) => {
+  //   dispatch(setCreateCategory(item))
 
-    // 需求列表筛选参数赋值给 弹窗
-    dispatch(setFilterParamsModal(filterParams))
-    setTimeout(() => {
-      dispatch(
-        setAddWorkItemModal({
-          visible: true,
-          params: { projectId: projectInfo?.id },
-        }),
-      )
-      setIsVisible(false)
-    }, 0)
-  }
+  //   // 需求列表筛选参数赋值给 弹窗
+  //   dispatch(setFilterParamsModal(filterParams))
+  //   setTimeout(() => {
+  //     dispatch(
+  //       setAddWorkItemModal({
+  //         visible: true,
+  //         params: { projectId: projectInfo?.id },
+  //       }),
+  //     )
+  //     setIsVisible(false)
+  //   }, 0)
+  // }
 
-  const changeStatus = (
-    <div
-      style={{
-        padding: '4px 0px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        minWidth: i18n.language === 'zh' ? 110 : 151,
-      }}
-    >
-      {projectInfoValues
-        ?.filter((i: any) => i.key === 'category')[0]
-        ?.children?.filter((i: any) => i.status === 1)
-        ?.map((k: any) => {
-          return (
-            <LiWrap key={k.id} onClick={(e: any) => onChangeCategory(e, k)}>
-              <img
-                src={
-                  k.category_attachment
-                    ? k.category_attachment
-                    : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
-                }
-                style={{
-                  width: '18px',
-                  height: '18px',
-                  marginRight: '8px',
-                }}
-                alt=""
-              />
-              <span>{k.content}</span>
-            </LiWrap>
-          )
-        })}
-    </div>
-  )
+  // const changeStatus = (
+  //   <div
+  //     style={{
+  //       padding: '4px 0px',
+  //       display: 'flex',
+  //       flexDirection: 'column',
+  //       alignItems: 'flex-start',
+  //       minWidth: i18n.language === 'zh' ? 110 : 151,
+  //     }}
+  //   >
+  //     {projectInfoValues
+  //       ?.filter((i: any) => i.key === 'category')[0]
+  //       ?.children?.filter((i: any) => i.status === 1)
+  //       ?.map((k: any) => {
+  //         return (
+  //           <LiWrap key={k.id} onClick={(e: any) => onChangeCategory(e, k)}>
+  //             <img
+  //               src={
+  //                 k.category_attachment
+  //                   ? k.category_attachment
+  //                   : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
+  //               }
+  //               style={{
+  //                 width: '18px',
+  //                 height: '18px',
+  //                 marginRight: '8px',
+  //               }}
+  //               alt=""
+  //             />
+  //             <span>{k.content}</span>
+  //           </LiWrap>
+  //         )
+  //       })}
+  //   </div>
+  // )
 
-  const onImportClick = () => {
-    setIsVisible(false)
-    setIsShowImport(true)
-    setIsVisibleMore(false)
-  }
+  // const onImportClick = () => {
+  //   setIsVisible(false)
+  //   setIsShowImport(true)
+  //   setIsVisibleMore(false)
+  // }
 
-  const onExportClick = () => {
-    if (props.dataLength > 5000) {
-      setIsVisibleMore(false)
-      setExceedState(true)
-      return
-    }
-    setIsVisible(false)
-    setIsShowExport(true)
-    setIsVisibleMore(false)
-  }
+  // const onExportClick = () => {
+  //   if (props.dataLength > 5000) {
+  //     setIsVisibleMore(false)
+  //     setExceedState(true)
+  //     return
+  //   }
+  //   setIsVisible(false)
+  //   setIsShowExport(true)
+  //   setIsVisibleMore(false)
+  // }
 
   return (
     <StickyWrap ref={stickyWrapDom}>
@@ -317,9 +317,18 @@ const Operation = (props: Props) => {
 
       <OperationWrap>
         <LeftBox>
-          <SelectOptions title="分组" />
-          <SelectOptions title="列与状态" />
-          <SelectOptions title="视图" />
+          <SelectOptions
+            title="分组"
+            options={[
+              { key: 'none', value: '无', check: true },
+              { key: 'person', value: '按人员', check: false },
+              { key: 'category', value: '按类别', check: false },
+              { key: 'priority', value: '按优先级', check: false },
+            ]}
+            onChange={key => {}}
+          />
+          {/* <SelectOptions title="列与状态" /> */}
+          {/* <SelectOptions title="视图" /> */}
         </LeftBox>
         <RightBox>
           <KanBanOperation
