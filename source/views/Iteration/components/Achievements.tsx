@@ -18,8 +18,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { getAchieveInfo } from '@/services/iterate'
 import { setAchieveInfo } from '@store/iterate'
 import { Editor, EditorRef } from '@xyfe/uikit'
-import { uploadFileToKey } from '@/services/cos'
-import { uploadFile } from '@/components/CreateDemand/CreateDemandLeft'
+import { uploadFile } from '@/components/AddWorkItem/CreateWorkItemLeft'
 import { Form } from 'antd'
 
 const Wrap = styled.div<{ isModal: any }>(

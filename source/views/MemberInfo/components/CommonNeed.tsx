@@ -25,7 +25,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
 import NoData from '@/components/NoData'
-import { useDynamicColumns } from '@/components/CreateProjectTableColumInfo'
+import { useDynamicColumns } from '@/components/TableColumns/MineOrHisTableColumn'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import MoreDropdown from '@/components/MoreDropdown'
@@ -43,13 +43,16 @@ import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
 import { updateDemandStatus, updatePriorityStatus } from '@/services/mine'
 import { getProjectInfo, getProjectInfoValues } from '@/services/project'
-import { setProjectInfo, setProjectInfoValues } from '@store/project'
+import {
+  setAddWorkItemModal,
+  setProjectInfo,
+  setProjectInfoValues,
+} from '@store/project'
 import { deleteDemand } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
-import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
-import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
+import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/DemandDropdownMenu'
 import SetShowField from '@/components/SetShowField/indedx'
-import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ResizeTable from '@/components/ResizeTable'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import { getMessage } from '@/components/Message'
@@ -108,9 +111,11 @@ const MoreWrap = (props: MoreWrapProps) => {
   // 点击编辑
   const onEditChange = (item: any) => {
     setIsMoreVisible(false)
-    dispatch(setIsCreateDemandVisible(true))
     dispatch(
-      setCreateDemandProps({ demandId: item.id, projectId: item.project_id }),
+      setAddWorkItemModal({
+        visible: true,
+        params: { editId: item.id, projectId: item.project_id },
+      }),
     )
   }
 
@@ -123,13 +128,15 @@ const MoreWrap = (props: MoreWrapProps) => {
   // 点击创建子需求
   const onCreateChild = (item: any) => {
     setIsMoreVisible(false)
-    dispatch(setIsCreateDemandVisible(true))
     dispatch(
-      setCreateDemandProps({
-        projectId: item.project_id,
-        isChild: true,
-        parentId: item.id,
-        categoryId: item.categoryId,
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          projectId: item.project_id,
+          isChild: true,
+          parentId: item.id,
+          categoryId: item.categoryId,
+        },
       }),
     )
   }

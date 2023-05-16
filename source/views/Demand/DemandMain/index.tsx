@@ -10,7 +10,6 @@ import React, { useState, useEffect, useRef } from 'react'
 import Operation from './components/Operation'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useSearchParams } from 'react-router-dom'
-import { message } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
 import styled from '@emotion/styled'
@@ -22,12 +21,11 @@ import { setFilterParams, setIsUpdateDemand } from '@store/demand'
 import { deleteDemand, getDemandList } from '@/services/demand'
 import ManageView from '@/components/ManageView'
 import CreateViewPort from '@/components/CreateViewPort'
-import DemandTable from '@/components/DemandComponent/DemandTable'
-import DemandGrid from '@/components/DemandComponent/DemandPanel'
-import DemandTree from '@/components/DemandComponent/DemandTree'
-import ProjectCommonOperation from '@/components/ProjectCommonOperation'
+import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
 import { Content, DemandContent } from './style'
 import { getMessage } from '@/components/Message'
+import DemandTree from './components/DemandTree'
+import DemandTable from './components/DemandTable'
 
 const Right = styled.div<{ isShowLeft: boolean }>({
   width: '100%',
@@ -380,15 +378,6 @@ const DemandMain = (props: Props) => {
                 settingState={isSettingState}
                 onChangeSetting={setIsSettingState}
                 onChangeOrder={onChangeOrder}
-                isSpinning={isSpinning}
-                onUpdate={onUpdate}
-              />
-            )}
-            {isGrid === 1 && (
-              <DemandGrid
-                onChangeVisible={onChangeOperation}
-                onDelete={onDelete}
-                data={dataList}
                 isSpinning={isSpinning}
                 onUpdate={onUpdate}
               />

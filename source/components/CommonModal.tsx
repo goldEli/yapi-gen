@@ -10,7 +10,6 @@ import { CloseWrap, ModalFooter } from './StyleCommon'
 import CommonButton from './CommonButton'
 
 const ModalHeader = styled.div`
-  margin-top: 100px;
   display: flex;
   align-items: center;
   justify-content: space-between;

@@ -32,7 +32,7 @@ interface Props {
   // 是否有预览模式
   notView?: boolean
   onChangeFieldVisible(): void
-  isGrid?: number
+  isGrid?: 1 | 2
 }
 
 const SetShowField = (props: Props) => {

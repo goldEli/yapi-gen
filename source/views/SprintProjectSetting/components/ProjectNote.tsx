@@ -329,21 +329,21 @@ const ProjectSet = () => {
     setDataList([
       {
         id: 108,
-        name: t('demand'),
+        name: '事务',
         type: 1,
         label: '管理员',
         types: 'demand',
       },
       {
         id: 109,
-        name: t('iteration'),
+        name: '冲刺',
         type: 2,
         label: '编辑者',
         types: 'iteration',
       },
       {
         id: 110,
-        name: t('title.project'),
+        name: '项目',
         type: 3,
         label: '参与者',
         types: 'project',

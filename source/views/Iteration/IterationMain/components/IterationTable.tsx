@@ -9,7 +9,7 @@ import IconFont from '@/components/IconFont'
 import { useSearchParams } from 'react-router-dom'
 import { createRef, useEffect, useMemo, useState } from 'react'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
-import { useDynamicColumns } from '@/components/CreateProjectTableColum'
+import { useDynamicColumns } from '@/components/TableColumns/ProjectTableColumn'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
@@ -17,16 +17,15 @@ import { getIsPermission, getParamsData } from '@/tools'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch, useSelector } from '@store/index'
-import { setFilterParamsModal } from '@store/project'
+import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
 import { updateDemandStatus, updatePriority } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
-import FloatBatch from '@/components/FloatBatch'
-import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
-import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
-import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
+import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/DemandDropdownMenu'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ResizeTable from '@/components/ResizeTable'
 import CreateDemandButton from './CreateDemandButton'
 import { getMessage } from '@/components/Message'
+import FloatBatch from '@/components/BatchOperation/FloatBatch'
 
 const Content = styled.div({
   background: 'var(--neutral-white-d1)',
@@ -175,9 +174,11 @@ const IterationTable = (props: Props) => {
 
   const onEditChange = (item: any) => {
     setIsShowMore(false)
-    dispatch(setIsCreateDemandVisible(true))
     dispatch(
-      setCreateDemandProps({ demandId: item.id, projectId: item.project_id }),
+      setAddWorkItemModal({
+        visible: true,
+        params: { editId: item.id, projectId: item.project_id },
+      }),
     )
   }
 
@@ -190,14 +191,16 @@ const IterationTable = (props: Props) => {
   // 点击创建子需求
   const onCreateChild = (item: any) => {
     setIsShowMore(false)
-    dispatch(setIsCreateDemandVisible(true))
     dispatch(
-      setCreateDemandProps({
-        projectId: item.project_id,
-        isChild: true,
-        parentId: item.id,
-        iterateId: props.iterateId,
-        categoryId: item.categoryId,
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          projectId: item.project_id,
+          isChild: true,
+          parentId: item.id,
+          iterateId: props.iterateId,
+          categoryId: item.categoryId,
+        },
       }),
     )
   }
@@ -363,8 +366,12 @@ const IterationTable = (props: Props) => {
 
   const onCreateDemand = () => {
     dispatch(setFilterParamsModal(filterParams))
-    dispatch(setIsCreateDemandVisible(true))
-    dispatch(setCreateDemandProps({ projectId, iterateId: props.iterateId }))
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: { projectId, iterateId: props.iterateId },
+      }),
+    )
   }
 
   console.log(hasCreate)

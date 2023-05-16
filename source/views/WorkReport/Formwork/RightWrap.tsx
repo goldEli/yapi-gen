@@ -9,7 +9,6 @@ import { Input, Spin } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import PermissionConfig from './PermissionConfig'
 import EditWork from './EditWork'
-import PreviewDialog from '@/components/FormWork/PreviewDialog'
 import { useDispatch, useSelector } from '@store/index'
 import {
   setActiveItem,
@@ -30,6 +29,7 @@ import { getTemplateList, templateDetail } from '@store/formWork/thunk'
 import { useTranslation } from 'react-i18next'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import { getMessage } from '@/components/Message'
+import PreviewDialog from './PreviewDialog'
 const RightFormWorkStyle = styled.div`
   flex: 1;
   overflow: hidden;

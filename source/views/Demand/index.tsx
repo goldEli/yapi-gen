@@ -37,9 +37,7 @@ import {
   updateDemandStatus,
 } from '@/services/demand'
 import {
-  setCreateDemandProps,
   setDemandInfo,
-  setIsCreateDemandVisible,
   setIsRefreshComment,
   setIsUpdateDemand,
   setIsUpdateStatus,
@@ -53,6 +51,7 @@ import CommonButton from '@/components/CommonButton'
 import PermissionWrap from '@/components/PermissionWrap'
 import CustomSelect from '@/components/CustomSelect'
 import { getMessage } from '@/components/Message'
+import { setAddWorkItemModal } from '@store/project'
 
 const Wrap = styled.div`
   height: 100%;
@@ -271,12 +270,14 @@ const DemandBox = () => {
   }
 
   const onEdit = () => {
-    dispatch(setIsCreateDemandVisible(true))
     dispatch(
-      setCreateDemandProps({
-        demandId: demandInfo.id,
-        projectId: demandInfo.projectId,
-        isInfo: true,
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          editId: demandInfo.id,
+          projectId: demandInfo.projectId,
+          isInfo: true,
+        },
       }),
     )
   }
@@ -465,7 +466,6 @@ const DemandBox = () => {
   )
 
   const content = () => {
-    console.log(1)
     if (!type) {
       return (
         <DemandMain
@@ -476,8 +476,6 @@ const DemandBox = () => {
         />
       )
     }
-
-    console.log(2)
     return (
       <>
         <CommonModal
@@ -687,8 +685,6 @@ const DemandBox = () => {
   if (!loadingState) {
     return <Loading />
   }
-
-  console.log(33)
 
   return (
     <PermissionWrap

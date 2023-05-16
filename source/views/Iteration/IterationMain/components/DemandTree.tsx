@@ -19,13 +19,12 @@ import { ExpendedWrap } from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { OptionalFeld } from '@/components/OptionalFeld'
-import { useDynamicColumns } from '@/components/CreateProjectTableColum'
+import { useDynamicColumns } from '@/components/TableColumns/ProjectTableColumn'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { getIsPermission, getParamsData } from '@/tools'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
-import FloatBatch from '@/components/FloatBatch'
 import { useDispatch, useSelector } from '@store/index'
 import {
   getDemandList,
@@ -33,13 +32,13 @@ import {
   updatePriority,
 } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
-import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
-import { setCreateDemandProps, setIsCreateDemandVisible } from '@store/demand'
-import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
+import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/DemandDropdownMenu'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ResizeTable from '@/components/ResizeTable'
 import CreateDemandButton from './CreateDemandButton'
-import { setFilterParamsModal } from '@store/project'
+import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
 import { getMessage } from '@/components/Message'
+import FloatBatch from '@/components/BatchOperation/FloatBatch'
 
 const Content = styled.div({
   padding: '20px 12px 0 8px',
@@ -218,8 +217,12 @@ const DemandTree = (props: Props) => {
     setIsShowMore(false)
     setComputedTopId(item?.topId)
     props.onUpdateTopId?.(item.topId)
-    dispatch(setIsCreateDemandVisible(true))
-    dispatch(setCreateDemandProps({ demandId: item.id, projectId }))
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: { projectId, editId: item.id },
+      }),
+    )
   }
 
   const onDeleteChange = (item: any) => {
@@ -234,14 +237,16 @@ const DemandTree = (props: Props) => {
     setComputedTopId(item?.topId)
     props.onUpdateTopId?.(item.topId)
     setIsShowMore(false)
-    dispatch(setIsCreateDemandVisible(true))
     dispatch(
-      setCreateDemandProps({
-        projectId,
-        isChild: true,
-        parentId: item.id,
-        categoryId: item.categoryId,
-        iterateId: item.iterateId,
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          projectId,
+          isChild: true,
+          parentId: item.id,
+          categoryId: item.categoryId,
+          iterateId: item.iterateId,
+        },
       }),
     )
   }
@@ -582,8 +587,12 @@ const DemandTree = (props: Props) => {
 
   const onCreateDemand = () => {
     dispatch(setFilterParamsModal(filterParams))
-    dispatch(setIsCreateDemandVisible(true))
-    dispatch(setCreateDemandProps({ projectId, iterateId: props.iterateId }))
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: { projectId, iterateId: props.iterateId },
+      }),
+    )
   }
 
   return (

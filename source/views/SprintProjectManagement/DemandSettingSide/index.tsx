@@ -20,6 +20,10 @@ import {
   BackStyle,
   TitleStyle,
   NoDataCreateWrap,
+  AffairTypeWrap,
+  AffairTypeHeader,
+  AffairTypeText,
+  AffairTypeList,
 } from './style'
 import Dragging from './Dragging'
 import { setStartUsing } from '@store/category'
@@ -88,6 +92,31 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   const [isVisible, setIsVisible] = useState(false)
   const [list, setList] = useState<any>()
   const [categoryItem, setCategoryItem] = useState(paramsData?.categoryItem)
+  const [affairType, setAffairType] = useState([
+    {
+      name: '长故事类型',
+      children: [{ name: '长故事', active: false }],
+      visible: true,
+    },
+    {
+      name: '标准事务类型',
+      children: [{ name: '故事', active: false }],
+      visible: true,
+    },
+    {
+      name: '故障事务类型',
+      visible: true,
+      children: [
+        { name: '故障', active: false },
+        { name: 'BUG缺陷', active: false },
+      ],
+    },
+    {
+      name: '子任务类型',
+      visible: true,
+      children: [{ name: '子任务', active: false }],
+    },
+  ])
   const tabs = [
     {
       label: t('start_using'),
@@ -233,7 +262,29 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
       props.onBack()
     }
   }, [projectInfo])
-
+  // const aa = () => {
+  //   affairType.map(item => {
+  //     item = { ...item }
+  //     item.children.map(ele => {
+  //       ele = { ...ele, active: true }
+  //     })
+  //   })
+  //   setAffairType([...affairType])
+  //   console.log(111, affairType)
+  // }
+  const updateNode = (index: number, i: number) => {
+    // setAffairType(prevData => {
+    //   const newData = [...prevData]
+    //   const currentItem = { ...newData[index] }
+    //   const listToUpdate = [...currentItem.children]
+    //   const itemToUpdate = { ...listToUpdate[i], active: true } // 修改属性值
+    //   listToUpdate[i] = itemToUpdate
+    //   currentItem.children = listToUpdate
+    //   newData[index] = currentItem
+    //   console.log('newData', newData)
+    //   return newData
+    // })
+  }
   return (
     <AllWrap>
       <WrapSet>
@@ -249,18 +300,6 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
           <span>{t('demandSettingSide.back')}</span>
         </BackStyle>
         <Provider />
-        <TitleStyle>
-          <span>{t('demandSettingSide.classification')}</span>{' '}
-          {isCreate > 0 && (
-            <CloseWrap width={24} height={24}>
-              <IconFont
-                style={{ fontSize: 18 }}
-                type="plus"
-                onClick={() => setIsVisible(true)}
-              />
-            </CloseWrap>
-          )}
-        </TitleStyle>
         <Tabs>
           {tabs.map((el, index) => (
             <span
@@ -272,48 +311,70 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
             </span>
           ))}
         </Tabs>
-        <MenuBox>
-          {list?.length >= 1 ? (
-            <Dragging
-              list={list}
-              setList={setList}
-              onClick={(i: number, child: any) => {
-                dispatch(
-                  getCategoryConfigList({
-                    projectId: projectId,
-                    categoryId: child.id,
-                  }),
-                ),
-                  setList(
-                    list.map((el: any, index: any) => ({
-                      ...el,
-                      active: i === index ? true : false,
-                    })),
-                  )
-              }}
-              onMove={(data: any) => onMove(data)}
-            ></Dragging>
-          ) : (
-            <NoDataCreateWrap>
-              <div className="top">
-                <IconFont type="Warning" />
-                <div>{t('demandSettingSide.noData')}</div>
-              </div>
-              <div className="bottom">
-                {isCreate > 0 && (
-                  <div
-                    className="bottom"
-                    onClick={() => setIsVisible(true)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <IconFont type="plus" />
-                    <div>{t('demandSettingSide.addClass')}</div>
-                  </div>
-                )}
-              </div>
-            </NoDataCreateWrap>
-          )}
-        </MenuBox>
+        <div>
+          {affairType.map((item, index) => (
+            <AffairTypeWrap key={index}>
+              <AffairTypeHeader
+                onClick={() => {
+                  affairType[index].visible = !affairType[index].visible
+                  setAffairType([...affairType])
+                }}
+              >
+                <div style={{ cursor: 'pointer' }}>
+                  <IconFont style={{ fontSize: 12 }} type="down" />
+                  <AffairTypeText>{item.name}</AffairTypeText>
+                </div>
+                <IconFont
+                  style={{ fontSize: 14 }}
+                  type="plus"
+                  onClick={e => {
+                    e.stopPropagation()
+                    setIsVisible(true)
+                  }}
+                />
+              </AffairTypeHeader>
+              {item.visible && (
+                <MenuBox>
+                  {item.children?.length >= 1 ? (
+                    <Dragging
+                      list={item.children}
+                      setList={setList}
+                      onClick={(i: number, child: any) => {
+                        dispatch(
+                          getCategoryConfigList({
+                            projectId: projectId,
+                            categoryId: child.id || 695,
+                          }),
+                        )
+                        updateNode(index, i)
+                      }}
+                      onMove={(data: any) => onMove(data)}
+                    ></Dragging>
+                  ) : (
+                    <NoDataCreateWrap>
+                      <div className="top">
+                        <IconFont type="Warning" />
+                        <div>{t('demandSettingSide.noData')}</div>
+                      </div>
+                      <div className="bottom">
+                        {isCreate > 0 && (
+                          <div
+                            className="bottom"
+                            onClick={() => setIsVisible(true)}
+                            style={{ cursor: 'pointer' }}
+                          >
+                            <IconFont type="plus" />
+                            <div>{t('demandSettingSide.addClass')}</div>
+                          </div>
+                        )}
+                      </div>
+                    </NoDataCreateWrap>
+                  )}
+                </MenuBox>
+              )}
+            </AffairTypeWrap>
+          ))}
+        </div>
       </WrapSet>
       <EditCategory
         onClose={() => setIsVisible(false)}

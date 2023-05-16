@@ -11,7 +11,7 @@ import { message } from 'antd'
 import styled from '@emotion/styled'
 import { useEffect, useMemo, useState } from 'react'
 import { OptionalFeld } from '@/components/OptionalFeld'
-import { useDynamicColumns } from '@/components/CreateProjectTableColum'
+import { useDynamicColumns } from '@/components/TableColumns/ProjectTableColumn'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { useSearchParams } from 'react-router-dom'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -29,18 +29,15 @@ import {
   updateDemandStatus,
   updatePriority,
 } from '@/services/demand'
-import {
-  setCreateDemandProps,
-  setDemandInfo,
-  setIsCreateDemandVisible,
-} from '@store/demand'
+import { setDemandInfo } from '@store/demand'
 import PaginationBox from '@/components/TablePagination'
-import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
+import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/DemandDropdownMenu'
 import SetShowField from '@/components/SetShowField/indedx'
-import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
 import { getMessage } from '@/components/Message'
+import { setAddWorkItemModal } from '@store/project'
 
 const Operation = styled.div({
   display: 'flex',
@@ -243,9 +240,11 @@ const ChildDemand = () => {
 
   // 点击编辑
   const onEditChange = (item: any) => {
-    dispatch(setIsCreateDemandVisible(true))
     dispatch(
-      setCreateDemandProps({ demandId: item.id, projectId: item.project_id }),
+      setAddWorkItemModal({
+        visible: true,
+        params: { editId: item.id, projectId: item.project_id },
+      }),
     )
   }
 
@@ -257,13 +256,15 @@ const ChildDemand = () => {
 
   // 点击创建子需求
   const onCreateChild = (item: any) => {
-    dispatch(setIsCreateDemandVisible(true))
     dispatch(
-      setCreateDemandProps({
-        projectId: item.project_id ?? item.projectId,
-        isChild: true,
-        parentId: item.id,
-        categoryId: item.categoryId ?? item.category,
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          projectId: item.project_id ?? item.projectId,
+          isChild: true,
+          parentId: item.id,
+          categoryId: item.categoryId ?? item.category,
+        },
       }),
     )
   }

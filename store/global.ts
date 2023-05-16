@@ -1,6 +1,6 @@
 /* eslint-disable no-duplicate-imports */
 // 公用状态管理
-import { createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
 export interface GlobalState {
   /**

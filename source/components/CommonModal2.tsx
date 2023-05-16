@@ -41,6 +41,7 @@ const ModalStyle = styled(Modal)`
   }
 `
 const CloseWrap = styled.div<{ width?: any; height?: any }>`
+  z-index: 999;
   position: absolute;
   top: 96px;
   right: 40px;

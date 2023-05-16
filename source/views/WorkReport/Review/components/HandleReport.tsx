@@ -17,7 +17,6 @@ import UploadAttach from '@/components/UploadAttach'
 import { useSelector, useDispatch } from '@store/index'
 import { Editor } from '@xyfe/uikit'
 import { getStaffListAll } from '@/services/staff'
-import { uploadFile } from '@/components/CreateDemand/CreateDemandLeft'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import {
   getReportDetailById,
@@ -32,6 +31,7 @@ import NewLoadingTransition from '@/components/NewLoadingTransition'
 import ChoosePeople from './ChoosePeople'
 import RelatedNeed from './RelatedNeed'
 import moment from 'moment'
+import { uploadFile } from '@/components/AddWorkItem/CreateWorkItemLeft'
 
 const LabelTitle = styled.span`
   font-size: 14px;

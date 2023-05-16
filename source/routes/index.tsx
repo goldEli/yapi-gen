@@ -73,6 +73,10 @@ const routes = [
             path: 'Formwork',
             element: lazy(() => import('@/views/WorkReport/Formwork')),
           },
+          {
+            path: 'xn',
+            element: lazy(() => import('@/views/PerformanceInsight')),
+          },
         ],
       },
       {
@@ -144,7 +148,7 @@ const routes = [
             element: lazy(() => import('@/views/SprintProjectKanBan')),
           },
           {
-            path: 'Report',
+            path: 'SprintReport',
             element: lazy(() => import('@/views/SprintProjectReport')),
           },
           {
@@ -160,7 +164,7 @@ const routes = [
             element: lazy(() => import('@/views/SprintProjectSetting')),
           },
           {
-            path: 'Demand',
+            path: 'DemandSetting',
             element: lazy(() => import('@/views/SprintProjectDemand')),
           },
         ],
