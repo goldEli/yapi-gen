@@ -1,11 +1,7 @@
-/* eslint-disable complexity */
-/* eslint-disable no-console */
+/* eslint-disable react/jsx-handler-names */
+
 // 公用需求列表表格
 
-/* eslint-disable react/jsx-no-leaked-render */
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable camelcase */
-/* eslint-disable react/jsx-handler-names */
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 import Sort from '@/components/Sort'
@@ -14,15 +10,15 @@ import { ClickWrap, HiddenText, ListNameWrap } from '@/components/StyleCommon'
 import { useTranslation } from 'react-i18next'
 import ChildDemandTable from '@/components/ChildDemandTable'
 import { message, Progress, Tooltip } from 'antd'
-import ChangeStatusPopover from './ChangeStatusPopover'
-import ChangePriorityPopover from './ChangePriorityPopover'
 import { useSelector } from '@store/index'
-import TableQuickEdit from './TableQuickEdit'
+import { getMessage } from '../Message'
+import TableQuickEdit from '../TableQuickEdit'
+import TableColorText from '../TableColorText'
+import ChangeStatusPopover from '../ChangeStatusPopover'
+import StateTag from '../StateTag'
+import ChangePriorityPopover from '../ChangePriorityPopover'
+import DemandProgress from '../DemandProgress'
 import { getCustomNormalValue } from '@/tools'
-import TableColorText from './TableColorText'
-import StateTag from './StateTag'
-import DemandProgress from './DemandProgress'
-import { getMessage } from './Message'
 
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
   {

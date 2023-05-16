@@ -220,3 +220,7 @@ Y:\project\敏捷系统\scrum\source\components\MoreDropdown.tsx
 ### dropdown 下拉组件
 
 Y:\project\敏捷系统\scrum\source\components\DropDownMenu.tsx
+
+### 带有侧边栏折叠及拖拽
+
+Y:\project\敏捷系统\scrum\source\components\HasSideCommonLayout

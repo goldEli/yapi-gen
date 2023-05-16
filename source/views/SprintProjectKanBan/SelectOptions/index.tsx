@@ -1,13 +1,15 @@
 import React, { useMemo, useState } from 'react'
 import styled from '@emotion/styled'
-import { Menu, Popover } from 'antd'
+import { Menu } from 'antd'
 import IconFont from '@/components/IconFont'
 import DropDownMenu from '@/components/DropDownMenu'
 import { HasIconMenu } from '@/components/StyleCommon'
-import { getMessage } from '@/components/Message'
 
 interface SelectBoxProps {
   title: string
+  onChange(ley: string): void
+  options: Model.SprintKanBan.Option[]
+  operation?: Model.SprintKanBan.Option['operation']
 }
 
 const SelectOptionsBox = styled.div`
@@ -26,93 +28,75 @@ const SelectOptionsBox = styled.div`
     color: var(--auxiliary-text-t1-d2);
   }
 `
-
-const MoreItem = styled.div`
-  display: 'flex';
-  align-items: 'center';
-  width: 100%;
-  box-sizing: border-box;
+const Options = styled.div`
   height: 32px;
-  color: 'var(--neutral-n2)';
-  font-size: 14px;
-  cursor: pointer;
-  padding: 0 16px;
-  &:hover {
-    color: var(--neutral-n1-d1) !important;
-    background: var(--hover-d3);
-  }
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `
 
 const SelectOptions: React.FC<SelectBoxProps> = props => {
-  const [isVisibleMore, setIsVisibleMore] = useState(false)
-  const [isVisibleFormat, setIsVisibleFormat] = useState(false)
-  const moreOperation = (
-    <div
-      style={{
-        padding: '4px 0',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
-      <MoreItem>
-        <span style={{ marginLeft: 8 }}>{123}</span>
-      </MoreItem>
-      <MoreItem>
-        <span style={{ marginLeft: 8 }}>{111}</span>
-      </MoreItem>
-    </div>
-  )
+  const [isVisibleFormat, setIsVisibleFormat] = useState(true)
 
   // 切换显示类型
-  const onClickMenuFormat = (type: boolean) => {
+  const onClickMenuFormat = (key: string) => {
     // getMessage({ msg: t('version2.reviewModeChangeSuccess'), type: 'success' })
-    // props.onChangeFormat(type)
+    props.onChange(key)
     setIsVisibleFormat(false)
   }
 
-  const menuFormat = (
-    <Menu
-      items={[
-        {
-          key: 'list',
-          label: (
-            <HasIconMenu onClick={() => onClickMenuFormat(true)} isCheck={true}>
-              <span className="label">123</span>
-              <IconFont className="checked" type={'check'} />
-            </HasIconMenu>
-          ),
-        },
-        {
-          key: 'thumbnail',
-          label: (
-            <HasIconMenu onClick={() => onClickMenuFormat(true)} isCheck={true}>
-              <span className="label">333</span>
-              <IconFont className="checked" type={'check'} />
-            </HasIconMenu>
-          ),
-        },
-      ]}
-    />
-  )
+  const [value, key] = useMemo(() => {
+    const current = props.options.find(item => item.check)
+    return [current?.value, current?.key]
+  }, [props.options])
+
+  const renderOption = (item: Model.SprintKanBan.Option) => {
+    return {
+      key: item.key,
+      label: (
+        <HasIconMenu
+          onClick={() => onClickMenuFormat(item.key)}
+          isCheck={item.key === key}
+        >
+          <Options>
+            <span className="label">{item.value}</span>
+            {item.check && <IconFont className="checked" type="check" />}
+          </Options>
+        </HasIconMenu>
+      ),
+    }
+  }
+
+  const menuItems = useMemo(() => {
+    // 如果是视图
+    if (props.operation) {
+      const arr = props.options.filter(item => !item.isDefault)
+      const arrWithDefault = props.options.filter(item => item.isDefault)
+      const dividerItem = { key: '', label: '', type: 'divider' }
+      const arrWithDefaultItems = arrWithDefault?.map(renderOption)
+      const arrItems = arr?.map(renderOption)
+      return [...arrWithDefaultItems, dividerItem, ...arrItems]
+    }
+    return props.options.map(renderOption)
+  }, [props.options, key, props.operation])
+
   const title = useMemo(() => {
-    return `${props.title}：按人员`
-  }, [props.title])
+    return `${props.title}：${value}`
+  }, [props.title, value])
 
   return (
     <DropDownMenu
       isVisible={isVisibleFormat}
       onChangeVisible={setIsVisibleFormat}
-      menu={menuFormat}
-      isActive={true}
-      // icon={props.isGrid ? 'app-store' : 'unorderedlist'}
-      // icon={'app-store'}
+      menu={<Menu items={menuItems} />}
+      isActive
     >
-      {/* <div>{1111}</div> */}
       <SelectOptionsBox>
         <span>{title}</span>
         <IconFont
           style={{ fontSize: 16, marginLeft: 8 }}
-          type={isVisibleMore ? 'up' : 'down'}
+          type={isVisibleFormat ? 'up' : 'down'}
         />
       </SelectOptionsBox>
     </DropDownMenu>
