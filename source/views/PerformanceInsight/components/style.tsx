@@ -68,6 +68,9 @@ export const DownWrap = styled(NextWrap)<{ isOnly?: boolean }>`
 `
 export const MainStyle = styled.div`
   padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `
 export const UserMsg = styled.div`
   display: flex;
@@ -109,4 +112,76 @@ export const TableStyle = styled.div`
   height: 408px;
   overflow-y: auto;
   padding: 24px 24px 0 24px;
+`
+export const BtnStyle = styled.div`
+  width: 88px;
+  height: 32px;
+  background: #f6f7f9;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  color: var(--auxiliary-text-t2-d1);
+  justify-content: center;
+  &:hover {
+    color: var(--primary-d1);
+    cursor: pointer;
+  }
+`
+export const WorkStyle = styled.div`
+  width: 100%;
+  margin-bottom: 24px;
+`
+export const TitleType = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 24px;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: 4px;
+  background: var(--hover-d2);
+  color: var(--neutral-n2);
+  font-size: 12px;
+`
+export const ItemMain = styled.div`
+  margin-bottom: 24px;
+`
+export const ItemMain1 = styled.div`
+  margin-top: 24px;
+`
+export const RowItem = styled.div`
+  display: flex;
+  margin: 16px 24px 0 24px;
+  flex-direction: column;
+  .title {
+    font-size: 14px;
+    font-family: SiYuanRegular;
+    color: var(--neutral-n1-d1);
+  }
+  .msg {
+    margin-top: 4px;
+    font-size: 14px;
+    color: var(--neutral-n2);
+  }
+  .time {
+    font-size: 12px;
+    color: var(--neutral-n3);
+  }
+`
+export const Row = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+export const TypeBox = styled.div`
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 24px;
+`
+export const Line = styled.div`
+  width: 45%;
+  height: 1px;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.12);
 `

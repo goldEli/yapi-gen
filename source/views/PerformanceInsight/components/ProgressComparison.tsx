@@ -19,6 +19,7 @@ import Sort from '@/components/Sort'
 import Table from './Table'
 import { Tooltip } from 'antd'
 import WorkItem from './WorkItem'
+import SelectPersonnel from './SelectPersonnel'
 // 进展对比
 interface HaderProps {
   time: string
@@ -126,6 +127,7 @@ const ProgressComparison = () => {
     key: '',
   })
   const [visible, setVisible] = useState<boolean>(false)
+  const [isvisible, setIsvisible] = useState<boolean>(false)
   const onUpdateOrderKey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
     // props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
@@ -135,6 +137,18 @@ const ProgressComparison = () => {
     {
       dataIndex: 'user',
       title: '用户',
+      render: (text: string, record: any) => {
+        return (
+          <div
+            style={{ display: 'flex', alignItems: 'center' }}
+            onClick={() => {
+              setIsvisible(!isvisible)
+            }}
+          >
+            {text}
+          </div>
+        )
+      },
     },
 
     {
@@ -208,7 +222,10 @@ const ProgressComparison = () => {
           }
         />
       </TableStyle>
+      {/* 新增工作项 */}
       <WorkItem visible={visible} ids={[1, 2, 3]} id={2} />
+      {/* 选择人员 */}
+      <SelectPersonnel visible={isvisible} ids={[1, 2, 3]} id={2} />
     </>
   )
 }
