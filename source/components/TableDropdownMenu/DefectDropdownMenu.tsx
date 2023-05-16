@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
-// 需求下拉操作菜单
+// 缺陷下拉菜单
 
 import { copyLink, getIsPermission } from '@/tools'
 import { encryptPhp } from '@/tools/cryptoPhp'
@@ -27,27 +27,15 @@ const MenuWrap = styled(Menu)`
 
 interface Props {
   record: any
-  onEditChange(row: any): void
   onDeleteChange(row: any): void
-  onCreateChild(row: any): void
-  onAddComment?(): void
-  haveComment?: boolean
   // 是否是所有项目
   isAllProject?: boolean
 }
 
-export const DemandOperationDropdownMenu = (props: Props) => {
+export const DefectDropdownMenu = (props: Props) => {
   const [t] = useTranslation()
   const { projectInfo } = useSelector(store => store.project)
 
-  const hasCreate = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/story/save',
-  )
-  const hasEdit = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/story/update',
-  )
   const hasDel = getIsPermission(
     projectInfo?.projectPermissions,
     'b/story/delete',
@@ -55,11 +43,7 @@ export const DemandOperationDropdownMenu = (props: Props) => {
 
   // 复制需求id
   const onCopyId = () => {
-    copyLink(
-      `${props?.record.storyPrefixKey}`,
-      t('copy_requirement_number_successfully'),
-      t('copy_requirement_number_failed'),
-    )
+    copyLink(`${props?.record.storyPrefixKey}`, '复制成功！', '复制失败！')
   }
 
   // 复制需求链接
@@ -75,23 +59,11 @@ export const DemandOperationDropdownMenu = (props: Props) => {
       }),
     )
     const url = `/ProjectManagement/Demand?data=${params}`
-    text += `【${props.record.name}】 ${beforeUrl}${url} \n`
-    copyLink(
-      text,
-      t('successfully_copied_requirement_link'),
-      t('failed_copied_requirement_link'),
-    )
+    text += `${beforeUrl}${url} \n`
+    copyLink(text, '复制成功！', '复制失败！')
   }
 
   let menuItems = [
-    {
-      key: '1',
-      label: (
-        <div onClick={() => props.onEditChange(props.record)}>
-          {t('common.edit')}
-        </div>
-      ),
-    },
     {
       key: '2',
       label: (
@@ -101,41 +73,19 @@ export const DemandOperationDropdownMenu = (props: Props) => {
       ),
     },
     {
-      key: '3',
-      label: (
-        <div onClick={() => props.onCreateChild(props.record)}>
-          {t('add_sub_requirements')}
-        </div>
-      ),
-    },
-    {
-      key: '4',
-      label: <div onClick={props.onAddComment}>{t('add_a_comment')}</div>,
-    },
-    {
       key: '5',
-      label: <div onClick={onCopyId}>{t('copy_requirement_number')}</div>,
+      label: <div onClick={onCopyId}>复制编号</div>,
     },
     {
       key: '6',
-      label: <div onClick={onCopyLink}>{t('copy_title_link')}</div>,
+      label: <div onClick={onCopyLink}>复制链接</div>,
     },
   ]
 
   if (!props.isAllProject) {
-    if (hasEdit) {
-      menuItems = menuItems.filter((i: any) => i.key !== '1')
-    }
     if (hasDel) {
       menuItems = menuItems.filter((i: any) => i.key !== '2')
     }
-    if (hasCreate) {
-      menuItems = menuItems.filter((i: any) => i.key !== '3')
-    }
-  }
-
-  if (!props.haveComment) {
-    menuItems = menuItems.filter((i: any) => i.key !== '4')
   }
 
   return <MenuWrap style={{ minWidth: 56 }} items={menuItems} />

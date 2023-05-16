@@ -32,8 +32,8 @@ import {
   updatePriority,
 } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
-import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
-import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
+import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/DemandDropdownMenu'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ResizeTable from '@/components/ResizeTable'
 import CreateDemandButton from './CreateDemandButton'
 import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'

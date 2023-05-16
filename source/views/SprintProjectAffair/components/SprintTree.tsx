@@ -25,7 +25,7 @@ import {
   updatePriority,
 } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
-import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
 import { getMessage } from '@/components/Message'
 import { SprintOperationDropdownMenu } from './SprintOperationDropdownMenu'
