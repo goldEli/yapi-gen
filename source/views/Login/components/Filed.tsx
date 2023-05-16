@@ -22,7 +22,6 @@ export default (props: any) => {
     }
   }
 
-  console.log(props.isErrorHighlight)
   const getClass = () => {
     if (props.isErrorHighlight) {
       return `${style.error_active} ${style.field}`

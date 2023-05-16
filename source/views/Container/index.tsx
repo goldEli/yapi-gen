@@ -163,7 +163,7 @@ export const Container = () => {
             close={() => setIsNextVisible(false)}
           />
         </LayoutWrap>
-        <TopNote />
+
         <CreateAProjectForm />
         <CreateIteration />
         <DemandDetailDrawer />

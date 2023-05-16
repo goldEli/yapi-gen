@@ -37,7 +37,6 @@ import {
 import { makePy } from './tool'
 import CommonModal2 from '../CommonModal2'
 import {
-  Col,
   RowStyle,
   StyleLeft,
   StyleRight,
@@ -45,10 +44,19 @@ import {
 import styled from '@emotion/styled'
 import ProjectType from '../ProjectType/ProjectType'
 import ProjectTemplate from '../ProjectTemplate/ProjectTemplate'
+import ProjectChooseSide from '../ProjectChooseSide/ProjectChooseSide'
 
 export type IndexRef = {
   postValue(): Record<string, unknown>
 }
+export const Col = styled.div<{ tap: boolean }>`
+  max-width: 200px;
+  height: 32px;
+  display: flex;
+  &:hover {
+    cursor: ${props => (props.tap ? 'pointer' : 'not-allowed')};
+  }
+`
 const Text = styled.div<{ bgc: any }>(
   {
     padding: '0 24px 0 0',
@@ -77,13 +85,19 @@ const OpacityDiv = styled.div<{ op: boolean }>`
 
 const Side = styled.div<{ op: boolean }>`
   opacity: ${props => (props.op ? '1' : '0')};
-  width: ${props => (props.op ? '320px' : '0px')};
+  width: 320px;
+  position: absolute;
+  left: ${props => (props.op ? '0px' : '-320px')};
+  top: 0;
+  height: 100%;
   background-color: #f8f8fa;
   transition: all 1s;
   flex-shrink: 0;
 `
 
 const CreateAProjectForm = () => {
+  const types = ['选择项目类型', '冲刺项目', '迭代项目']
+  const models = ['选择项目模板', '软件开发', '游戏设计', '导入项目']
   const covers = useSelector(state => state.cover.covers)
   const [t] = useTranslation()
   const [form] = Form.useForm()
@@ -104,9 +118,9 @@ const CreateAProjectForm = () => {
   const [user, setUser] = useState<any>()
   const dispatch = useDispatch()
   const inputRefDom = useRef<HTMLInputElement>(null)
-  const [step, setStep] = useState(1)
-  const [type, setType] = useState('')
-  const [model, setModel] = useState('')
+  const [step, setStep] = useState(3)
+  const [type, setType] = useState(0)
+  const [model, setModel] = useState(0)
   const onCustomRequest = async (file: any) => {
     const data = await uploadFileByTask(file.file, '2', '2')
     setMyCover(data.url)
@@ -307,6 +321,15 @@ const CreateAProjectForm = () => {
     setType(type)
     onChangeStep(2)
   }
+  const chooseModel = (type: any) => {
+    console.log(3)
+
+    setModel(type)
+    onChangeStep(3)
+  }
+  const getIdS = (ids: any) => {
+    console.log(ids, '侧边栏的IDs')
+  }
   return (
     <CommonModal2
       bodyStyle={{
@@ -328,9 +351,12 @@ const CreateAProjectForm = () => {
         style={{
           display: 'flex',
           height: '100%',
+          position: 'relative',
         }}
       >
-        <Side op={step === 3}>侧边</Side>
+        <ProjectChooseSide op={step === 3 && model === 3}>
+          侧边
+        </ProjectChooseSide>
         {/* 右边 */}
         <div
           style={{
@@ -347,25 +373,27 @@ const CreateAProjectForm = () => {
             }}
           >
             <RowStyle>
-              <Col onClick={() => onChangeStep(1)}>
+              <Col tap onClick={() => onChangeStep(1)}>
                 <StyleLeft bgc={step >= 1} />
-                <Text bgc={step >= 1}>编辑模板</Text>
+                <Text bgc={step >= 1}>{types[type]}</Text>
                 <StyleRight bgc={step >= 1} />
               </Col>
               <Col
+                tap={!!type}
                 style={{ transform: 'translate(-20px, 0px)' }}
                 onClick={() => type && onChangeStep(2)}
               >
                 <StyleLeft bgc={step >= 2} />
-                <Text bgc={step >= 2}>权限配置</Text>
+                <Text bgc={step >= 2}>{models[model]}</Text>
                 <StyleRight bgc={step >= 2} />
               </Col>
               <Col
+                tap={!!model}
                 style={{ transform: 'translate(-40px, 0px)' }}
-                onClick={() => type && onChangeStep(3)}
+                onClick={() => model && onChangeStep(3)}
               >
                 <StyleLeft bgc={step >= 3} />
-                <Text bgc={step >= 3}>权限配置</Text>
+                <Text bgc={step >= 3}>填写项目信息</Text>
                 <StyleRight bgc={step >= 3} />
               </Col>
             </RowStyle>
@@ -381,7 +409,7 @@ const CreateAProjectForm = () => {
               </div>
             </OpacityDiv>
             <OpacityDiv op={step === 2}>
-              <ProjectTemplate />
+              <ProjectTemplate getIdS={getIdS} choose={chooseModel} />
             </OpacityDiv>
             <OpacityDiv
               op={step === 3}

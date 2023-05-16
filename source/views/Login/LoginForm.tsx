@@ -24,6 +24,8 @@ import {
   checkSecret,
 } from './services'
 import { getQueryParam } from './utils'
+import IconFont from '@/components/IconFont'
+import styled from '@emotion/styled'
 
 export default React.memo((props: { redirect(): void }) => {
   const navigate = useNavigate()
@@ -162,7 +164,6 @@ export default React.memo((props: { redirect(): void }) => {
       localStorage.token = res.data.token
       // props.redirect()
       navigate(`/ProjectManagement`)
-      console.log('feiji ')
     } else {
       setErrorMessage(res.msg)
       setErrorState(true)
@@ -247,11 +248,21 @@ export default React.memo((props: { redirect(): void }) => {
   }
   const isDisable = !agree || !form.code || !form.username || !form.password
 
+  const Lang = styled.span`
+    display: inline-block;
+    font-size: 14px;
+    font-family: MiSans-Regular, MiSans;
+    font-weight: 400;
+    color: var(--neutral-n2);
+    line-height: 22px;
+    margin: 0 4px;
+  `
+
   return (
     <div className={`${style.main} ${secretVisible ? style.filter : ''}`}>
       {(!target || target === 'oa' || !systemData[target]) && (
         <div className={style.title}>
-          <p>{languageMode[systemData.oa.loginFormTitle]}</p>
+          <p>{languageMode[systemData.agile.loginFormTitle]}</p>
         </div>
       )}
       {target && systemData[target] ? (
@@ -409,28 +420,41 @@ export default React.memo((props: { redirect(): void }) => {
           ))}
         </div>
       </div> */}
-      <div onClick={controlPopups} className={style.language}>
-        <div className={style.langBox}>
-          <img src="/sso/LineIcon.svg" alt="" className={style.LineIcon} />
-          <span className={style.lang}>{language[languageMode.id].name}</span>
-          <img src="/sso/down.svg" alt="" className={style.down} />
+      <div className={style.headWrap}>
+        <div>
+          <img src="/sso/logo.png" width={207} />
         </div>
-        {popupsState ? (
-          <div className={style.popups}>
-            {language.map((value, index) => (
-              <div
-                onClick={() => chooseLanguageMode(index)}
-                className={`${style.popups_item} ${
-                  languageMode.id == index ? style.popups_item_active : ''
-                }`}
-                key={index}
-              >
-                {value.name}
-              </div>
-            ))}
+        <div onClick={controlPopups} className={style.language}>
+          <div className={style.langBox}>
+            <img src="/sso/LineIcon.svg" alt="" className={style.LineIcon} />
+            <Lang className={style.lang}>{language[languageMode.id].name}</Lang>
+            <IconFont
+              style={{
+                fontSize: 16,
+                color: 'var(--neutral-n2)',
+                cursor: 'pointer',
+              }}
+              type={popupsState ? 'up-icon' : 'down-icon'}
+            />
           </div>
-        ) : null}
+          {popupsState ? (
+            <div className={style.popups}>
+              {language.map((value, index) => (
+                <div
+                  onClick={() => chooseLanguageMode(index)}
+                  className={`${style.popups_item} ${
+                    languageMode.id == index ? style.popups_item_active : ''
+                  }`}
+                  key={index}
+                >
+                  {value.name}
+                </div>
+              ))}
+            </div>
+          ) : null}
+        </div>
       </div>
+
       <SecretImage
         operationNotes={languageMode.operationNotes}
         operationManual={languageMode.operationManual}
