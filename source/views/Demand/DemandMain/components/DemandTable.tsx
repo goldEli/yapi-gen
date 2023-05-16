@@ -1,14 +1,11 @@
-// 需求主页-需求树形模式
-/* eslint-disable @typescript-eslint/no-use-before-define */
-/* eslint-disable react/jsx-no-useless-fragment */
-/* eslint-disable react/jsx-no-leaked-render */
+// 需求主页-需求表格模式
 /* eslint-disable no-constant-binary-expression */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { createRef, useEffect, useMemo, useRef, useState } from 'react'
+/* eslint-disable react/jsx-no-leaked-render */
+import { createRef, useEffect, useMemo, useState } from 'react'
 import { message, Menu, Table } from 'antd'
 import styled from '@emotion/styled'
-import { ExpendedWrap } from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -18,77 +15,47 @@ import NoData from '@/components/NoData'
 import { getIsPermission, getParamsData } from '@/tools'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
-import FloatBatch from '../BatchOperation/FloatBatch'
 import { useDispatch, useSelector } from '@store/index'
-import {
-  getDemandList,
-  updateDemandStatus,
-  updatePriority,
-} from '@/services/demand'
-import PaginationBox from '@/components/TablePagination'
-import { DemandOperationDropdownMenu } from './DemandOperationDropdownMenu'
-import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
-import ResizeTable from '../ResizeTable'
 import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
-import CommonButton from '../CommonButton'
-import { getMessage } from '../Message'
+import { updateDemandStatus, updatePriority } from '@/services/demand'
+import PaginationBox from '@/components/TablePagination'
+import { saveSort, saveTitles } from '@store/view'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
+import { getMessage } from '@/components/Message'
+import { DemandOperationDropdownMenu } from '@/components/DemandOperationDropdownMenu'
+import ResizeTable from '@/components/ResizeTable'
+import CommonButton from '@/components/CommonButton'
+import FloatBatch from '@/components/BatchOperation/FloatBatch'
 
 const Content = styled.div({
-  padding: '20px 12px 0 8px',
+  padding: '20px 12px 0 0px',
   background: 'var(--neutral-white-d1)',
   height: 'calc(100% - 32px)',
 })
 
 interface Props {
   data: any
+  onChangeVisible(e: any, item: any): void
   onDelete(item: any): void
   onChangePageNavigation?(item: any): void
-  onChangeRow?(topId?: any): void
+  onChangeRow?(): void
   settingState: boolean
   onChangeSetting(val: boolean): void
   onChangeOrder?(item: any): void
   isSpinning?: boolean
-  onUpdate(updateState?: boolean, topId?: any): void
-  filterParams: any
-  isUpdated?: boolean
-  onUpdateTopId?(value: any): void
+  onUpdate(updateState?: boolean): void
 }
 
-interface TreeIconProps {
-  row: any
-  onGetChildList(): void
-}
-
-// 返回标题获取子需求列表icon
-const GetTreeIcon = (props: TreeIconProps) => {
-  const onChangeData = async () => {
-    // 未展开并且是最顶级
-    await props.onGetChildList()
-  }
-  return (
-    <div
-      style={{ display: 'flex', alignItems: 'center', position: 'relative' }}
-    >
-      {props.row.allChildrenCount > 0 && (
-        <ExpendedWrap
-          onClick={onChangeData}
-          type={props.row.isExpended ? 'add-subtract' : 'add-square-big'}
-        />
-      )}
-      {props.row.allChildrenCount <= 0 && (
-        <ExpendedWrap type="add-subtract" style={{ visibility: 'hidden' }} />
-      )}
-    </div>
-  )
-}
-
-const DemandTree = (props: Props) => {
+const DemandTable = (props: Props) => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { projectInfo, filterKeys } = useSelector(store => store.project)
+  const titles = useSelector(store => store.view.tapTitles)
+  const tapSort = useSelector(store => store.view.tapSort)
+  const { filterParams } = useSelector(store => store.demand)
   const [titleList, setTitleList] = useState<any[]>([])
   const [titleList2, setTitleList2] = useState<any[]>([])
   const [titleList3, setTitleList3] = useState<any[]>([])
@@ -99,20 +66,33 @@ const DemandTree = (props: Props) => {
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
   const [isShowMore, setIsShowMore] = useState(false)
-  const [data, setData] = useState<any>({})
-  // 展开的id集合
-  const [expandedRowKeys, setExpandedRowKeys] = useState<any>([])
+  const batchDom: any = createRef()
   // 勾选的id集合
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
-  const batchDom: any = createRef()
-  // 用于获取数据更新后的展开key
-  const [computedTopId, setComputedTopId] = useState(0)
-  const [delayChild, setDelayChild] = useState<any>({})
+  asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
   const dispatch = useDispatch()
   const [openDemandDetail] = useOpenDemandDetail()
-  const { filterParams } = useSelector(store => store.demand)
 
-  asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
+  useEffect(() => {
+    dispatch(
+      saveSort({
+        [orderKey]: order,
+      }),
+    )
+  }, [orderKey, order])
+
+  useEffect(() => {
+    if (tapSort) {
+      const key = Object.keys(tapSort)
+      const value = Object.values(tapSort)
+
+      if (tapSort) {
+        setOrderKey(key[0])
+        setOrder(value[0])
+      }
+    }
+  }, [tapSort])
+
   const getShowkey = () => {
     setPlainOptions(projectInfo?.plainOptions || [])
     setPlainOptions2(projectInfo?.plainOptions2 || [])
@@ -125,11 +105,44 @@ const DemandTree = (props: Props) => {
       ...(projectInfo.titleList2 || []),
       ...(projectInfo.titleList3 || []),
     ])
+    dispatch(
+      saveTitles([
+        ...(projectInfo.titleList || []),
+        ...(projectInfo.titleList2 || []),
+        ...(projectInfo.titleList3 || []),
+      ]),
+    )
   }
 
   useEffect(() => {
     getShowkey()
   }, [projectInfo])
+
+  function getTitle(arr: any, arr1: any) {
+    const arr2: any = []
+    arr1.forEach((i: any) => {
+      arr2.push(i.value)
+    })
+
+    const myArr: any = []
+    arr.forEach((i: any) => {
+      if (arr2.includes(i)) {
+        myArr.push(i)
+      }
+    })
+
+    return myArr
+  }
+
+  useEffect(() => {
+    if (titles) {
+      setTitleList(getTitle(titles, plainOptions))
+      setTitleList2(getTitle(titles, plainOptions2))
+      setTitleList3(getTitle(titles, plainOptions3))
+
+      setAllTitleList(titles)
+    }
+  }, [titles])
 
   const getCheckList = (
     list: CheckboxValueType[],
@@ -141,102 +154,7 @@ const DemandTree = (props: Props) => {
     setTitleList2(list2)
     setTitleList3(list3)
     setAllTitleList(all)
-  }
-
-  const onChangePage = (page: number, size: number) => {
-    props.onChangePageNavigation?.({ page, size })
-    setSelectedRowKeys([])
-    onOperationCheckbox('remove')
-  }
-
-  // 点击跳转需求详情
-  const onClickItem = (item: any) => {
-    setComputedTopId(item.topId)
-    props.onUpdateTopId?.(item.topId)
-    let demandIds: any = []
-    if (item.parentId) {
-      const currentDemandTop = props.data?.list?.filter(
-        (i: any) => i.id === item.topId,
-      )?.[0]
-      demandIds = currentDemandTop.children?.map((k: any) => k.id)
-    } else {
-      demandIds = props.data?.list?.map((i: any) => i.id)
-    }
-    openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id)
-  }
-
-  // 修改优先级
-  const onChangeState = async (item: any, row?: any) => {
-    try {
-      await updatePriority({
-        demandId: item.id,
-        priorityId: item.priorityId,
-        projectId,
-      })
-      getMessage({ msg: t('common.prioritySuccess'), type: 'success' })
-      props.onChangeRow?.(row?.topId)
-    } catch (error) {
-      //
-    }
-  }
-
-  // 修改状态
-  const onChangeStatus = async (value: any, row?: any) => {
-    try {
-      await updateDemandStatus(value)
-      getMessage({ msg: t('common.statusSuccess'), type: 'success' })
-      props.onChangeRow?.(row?.topId)
-    } catch (error) {
-      //
-    }
-  }
-
-  // 点击排序
-  const updateOrderkey = (key: any, val: any) => {
-    setOrderKey(key)
-    setOrder(val)
-    setExpandedRowKeys([])
-    props.onChangeOrder?.({ value: val === 2 ? 'desc' : 'asc', key })
-  }
-
-  // 点击编辑
-  const onEditChange = (item: any) => {
-    setIsShowMore(false)
-    setComputedTopId(item?.topId)
-    props.onUpdateTopId?.(item.topId)
-    dispatch(
-      setAddWorkItemModal({
-        visible: true,
-        params: { editId: item.id, projectId },
-      }),
-    )
-  }
-
-  // 点击删除
-  const onDeleteChange = (item: any) => {
-    setIsShowMore(false)
-    props.onDelete(item)
-    setComputedTopId(item?.topId)
-    props.onUpdateTopId?.(item.topId)
-  }
-
-  // 点击创建子需求
-  const onCreateChild = (item: any) => {
-    setComputedTopId(item?.topId)
-    props.onUpdateTopId?.(item.topId)
-    setIsShowMore(false)
-    dispatch(
-      setAddWorkItemModal({
-        visible: true,
-        params: {
-          projectId,
-          isChild: true,
-          parentId: item.id,
-          categoryId: item.categoryId,
-          iterateId: item.iterateId,
-        },
-      }),
-    )
+    dispatch(saveTitles(all))
   }
 
   // 勾选或者取消勾选，显示数量 keys: 所有选择的数量，type： 添加还是移除
@@ -257,113 +175,80 @@ const DemandTree = (props: Props) => {
     }
   }
 
-  // 计算当前child
-  const onComputedChild = (list: any, row: any) => {
-    list.forEach((element: any) => {
-      if (element.id === row.id) {
-        element.isExpended = !element.isExpended
-        // 如果父级展开，子级也展开
-        if (!element.isExpended) {
-          element.children?.forEach((k: any) => {
-            k.isExpended = true
-          })
-        }
-      } else {
-        // 判断全部子级与当前点击的匹配
-        if (
-          (element.allChildrenIds?.map((i: any) => i.id) || []).includes(row.id)
-        ) {
-          onComputedChild(element.children, row)
-        }
-      }
-    })
+  const onChangePage = (page: number, size: number) => {
+    props.onChangePageNavigation?.({ page, size })
+    setSelectedRowKeys([])
+    onOperationCheckbox('remove')
   }
 
-  // 计算当前是否折叠
-  const onComputedExpended = (row: any, item: any, list: any) => {
-    let state: any = item
-    if (row.id === item.id) {
-      state.isExpended = !item.isExpended
-      state.children = row.parentId ? item.children : list
-    } else {
-      let topChildList: any = []
-      if (item.id === row.topId) {
-        topChildList = item.children
-        state = { ...item, ...{ list: onComputedChild(topChildList, row) } }
-      } else {
-        state = item
-      }
-    }
-    return state
+  // 点击打开详情并组装当前平级的需求id列表
+  const onClickItem = (item: any) => {
+    const demandIds = props.data?.list?.map((i: any) => i.id)
+    openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id)
   }
 
-  // 获取子级下所有的id
-  const getForAllId = (childrenList: any = [], arr: any = []) => {
-    childrenList?.forEach((element: any) => {
-      arr.push(element.id)
-      if (element.children && element.children.length)
-        getForAllId(element.children, arr)
-    })
-    return arr
-  }
-
-  // 点击获取子需求
-  const onGetChildList = async (row: any) => {
-    // 如果查询列表未执行完，不执行获取子需求
-    let resultData: any = data
-    if (props.isUpdated) {
-      setDelayChild(row)
-      return
-    }
-
-    let dataChildren: any
-    let resultList: any
-    // 第一级调用接口获取子级， 并且全部展开子级
-    if (!row.isExpended && !row.parentId) {
-      dataChildren = await getDemandList({
-        tree: 1,
-        ...props.filterParams,
-        all: false,
-        parentId: row.id,
-        // 标识子需求
-        isChildren: true,
+  const onChangeState = async (item: any) => {
+    try {
+      await updatePriority({
+        demandId: item.id,
+        priorityId: item.priorityId,
+        projectId,
       })
+      getMessage({ msg: t('common.prioritySuccess'), type: 'success' })
+      props.onChangeRow?.()
+    } catch (error) {
+      //
     }
-    setDelayChild({})
-
-    // 如果折叠起来，则在已勾选的数组中删掉，反之合并
-    if (row.isExpended) {
-      const lists = [...[row.id], ...(getForAllId(dataChildren?.list) || [])]
-      resultList = expandedRowKeys?.filter(
-        (i: any) => !lists.some((k: any) => k === i),
-      )
-    } else {
-      const lists = [...[row.id], ...(getForAllId(dataChildren?.list) || [])]
-      resultList = [...expandedRowKeys, ...lists]
-    }
-
-    setExpandedRowKeys([...new Set(resultList)])
-    // 折叠时，判断参数错误，顶级折叠使用了子级折叠
-    const resultArr = resultData?.list?.map((i: any) =>
-      onComputedExpended(row, i, dataChildren?.list),
-    )
-    setData({ ...resultData, list: resultArr })
-    setTimeout(() => {
-      setData({ ...resultData, list: resultArr })
-    }, 0)
   }
 
-  // 返回 点击展开子需求图标
-  const getTreeIcon = (row: any) => {
-    return (
-      <>
-        {(row.allChildrenCount > 0 || row.parentId > 0) && (
-          <GetTreeIcon row={row} onGetChildList={() => onGetChildList(row)} />
-        )}
-        {!(row.allChildrenCount > 0 || row.parentId > 0) && (
-          <ExpendedWrap type="add-subtract" style={{ visibility: 'hidden' }} />
-        )}
-      </>
+  const onChangeStatus = async (value: any) => {
+    try {
+      await updateDemandStatus(value)
+      getMessage({ msg: t('common.statusSuccess'), type: 'success' })
+      props.onChangeRow?.()
+    } catch (error) {
+      //
+    }
+  }
+
+  const updateOrderkey = (key: any, val: any) => {
+    setSelectedRowKeys([])
+    onOperationCheckbox('remove')
+    setOrderKey(key)
+    setOrder(val)
+    props.onChangeOrder?.({ value: val === 2 ? 'desc' : 'asc', key })
+  }
+
+  // 点击编辑
+  const onEditChange = (item: any) => {
+    setIsShowMore(false)
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: { editId: item.id, projectId: item.project_id },
+      }),
+    )
+  }
+
+  // 点击删除
+  const onDeleteChange = (item: any) => {
+    setIsShowMore(false)
+    props.onDelete(item)
+  }
+
+  // 点击创建子需求
+  const onCreateChild = (item: any) => {
+    setIsShowMore(false)
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+        params: {
+          projectId: item.project_id,
+          isChild: true,
+          parentId: item.id,
+          categoryId: item.categoryId,
+        },
+      }),
     )
   }
 
@@ -377,8 +262,6 @@ const DemandTree = (props: Props) => {
     onClickItem,
     showChildCOntent: true,
     onUpdate: props?.onUpdate,
-    isTree: true,
-    onChangeTree: getTreeIcon,
   })
 
   const hasCreate = getIsPermission(
@@ -465,7 +348,6 @@ const DemandTree = (props: Props) => {
 
     const arrList = [
       {
-        width: 40,
         render: (text: any, record: any) => {
           return (
             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -500,61 +382,22 @@ const DemandTree = (props: Props) => {
     return [...arrList, ...newList]
   }, [titleList, titleList2, titleList3, columns, selectedRowKeys])
 
-  useEffect(() => {
-    setData(props.data)
-    // 如果有顶层id，则更新展开的key数组
-    if (computedTopId) {
-      if (
-        props.data?.list?.filter((i: any) => i.id === computedTopId)?.length > 0
-      ) {
-        const list = props.data?.list?.filter(
-          (i: any) => i.id === computedTopId,
-        )
-        setExpandedRowKeys([
-          ...[list[0]?.id],
-          ...(getForAllId(list[0]?.children) || []),
-        ])
-      } else {
-        setComputedTopId(0)
-      }
-    }
-  }, [props.data?.list])
-
-  // 获取所有的子级
-  const getAllItems = (childrenList: any = [], arr: any = []) => {
-    childrenList?.forEach((element: any) => {
-      arr.push(element)
-      if (element.children && element.children.length)
-        getAllItems(element.children, arr)
-    })
-    return arr
-  }
-
   // 需求勾选
   const onSelectChange = (record: any, selected: any) => {
-    let resultList: any = []
-    if (record.parentId) {
-      resultList = getAllItems(
-        data?.list?.filter((i: any) => i.id === record.topId)[0]?.children,
-      )?.filter((i: any) => i.id === record.id)[0]?.children
-    } else {
-      resultList = data?.list?.filter((i: any) => i.id === record.topId)
-    }
     const resultKeys = selected
-      ? [...selectedRowKeys, ...[record], ...getAllItems(resultList || [])]
+      ? [...selectedRowKeys, ...[record], ...(record.allChildrenIds || [])]
       : selectedRowKeys?.filter((i: any) => i.id !== record.id)
-    const map = new Map()
-    const newArr = resultKeys.filter(
-      (v: any) => !map.has(v.id) && map.set(v.id, 1),
-    )
-    setSelectedRowKeys([...new Set(newArr)])
-    onOperationCheckbox('add', [...new Set(newArr)])
+    setSelectedRowKeys([...new Set(resultKeys)])
+    onOperationCheckbox('add', [...new Set(resultKeys)])
   }
 
   // 全选
   const onSelectAll = (selected: any) => {
     if (selected) {
-      const childKeys: any = getAllItems(data?.list)
+      let childKeys: any = []
+      props.data?.list?.forEach((element: any) => {
+        childKeys = [...childKeys, ...[element]]
+      })
       setSelectedRowKeys([...new Set(childKeys)])
       onOperationCheckbox('add', [...new Set(childKeys)])
     } else {
@@ -567,7 +410,9 @@ const DemandTree = (props: Props) => {
     dispatch(
       setAddWorkItemModal({
         visible: true,
-        params: { noDataCreate: true },
+        params: {
+          noDataCreate: true,
+        },
       }),
     )
     dispatch(setFilterParamsModal(filterParams))
@@ -576,15 +421,10 @@ const DemandTree = (props: Props) => {
   return (
     <Content>
       <ResizeTable
-        isTree
-        isSpinning={props?.isSpinning}
-        col={selectColum}
-        dataSource={data?.list}
+        isSpinning={props.isSpinning}
         dataWrapNormalHeight="calc(100% - 64px)"
-        expandable={{
-          showExpandColumn: false,
-          expandedRowKeys,
-        }}
+        col={selectColum}
+        dataSource={props.data?.list}
         rowSelection={
           !hasBatch &&
           ({
@@ -623,9 +463,9 @@ const DemandTree = (props: Props) => {
       )}
 
       <PaginationBox
-        currentPage={data?.currentPage}
-        pageSize={data?.pageSize}
-        total={data?.total}
+        currentPage={props.data?.currentPage}
+        pageSize={props.data?.pageSize}
+        total={props.data?.total}
         onChange={onChangePage}
       />
 
@@ -645,4 +485,4 @@ const DemandTree = (props: Props) => {
   )
 }
 
-export default DemandTree
+export default DemandTable
