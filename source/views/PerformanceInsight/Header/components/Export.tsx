@@ -46,7 +46,11 @@ const Export = (props: PropsType) => {
           ) : (
             <span>已选</span>
           )}
-          <Text>
+          <Text
+            onClick={() => {
+              props.onClose(), setIsOpen(true)
+            }}
+          >
             查看成员{' '}
             <CommonIconFont
               type={'right'}

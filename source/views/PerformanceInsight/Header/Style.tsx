@@ -217,3 +217,44 @@ export const Footer = styled.div`
   justify-content: space-between;
   margin-top: 150px;
 `
+export const HeaderRowBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 24px;
+  height: 80px;
+  border-bottom: 1px solid var(--neutral-n6-d1);
+`
+export const Back = styled.div`
+  width: 84px;
+  height: 32px;
+  background: #f6f7f9;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  color: var(--auxiliary-text-t2-d1);
+  justify-content: center;
+  padding: 0 16px;
+  .text {
+    margin-left: 8px;
+    font-size: 14px;
+  }
+  &:hover {
+    color: var(--primary-d1);
+    cursor: pointer;
+  }
+`
+export const RightRow = styled.div`
+  display: flex;
+  align-items: center;
+  .line {
+    display: inline-block;
+    height: 16px;
+    border-right: 1px solid var(--neutral-n6-d1);
+    margin: 0 16px;
+  }
+`
+export const PersonText = styled.div`
+  font-size: 14px;
+  color: var(--neutral-n3);
+`
