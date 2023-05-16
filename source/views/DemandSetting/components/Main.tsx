@@ -22,7 +22,7 @@ import {
 import { useTranslation } from 'react-i18next'
 import { getMessage } from '@/components/Message'
 import * as services from '@/services'
-const TitleStyle = styled.div`
+export const TitleStyle = styled.div`
   display: flex;
   align-items: center;
   color: var(--neutral-n1-d1);

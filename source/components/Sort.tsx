@@ -28,6 +28,7 @@ const Text = styled.span`
 let num = 0
 const Sort = (props: any) => {
   const { nowKey, fixedKey, onChangeKey, order } = props
+  console.log(order, nowKey, fixedKey, 'porder')
 
   return (
     <Wrap

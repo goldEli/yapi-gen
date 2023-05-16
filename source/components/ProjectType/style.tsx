@@ -7,11 +7,16 @@ export const Wrap = styled.div<{ bb: boolean; type: boolean }>`
   box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
   border-radius: 6px 6px 6px 6px;
   opacity: 1;
-
+  border-top: 2px solid transparent;
   box-sizing: border-box;
   padding: 24px;
   position: relative;
-  border-top: 2px solid ${props => (props.type ? '#7773fe' : 'transparent')};
+  transition: all 0.8s;
+  :hover {
+    border-top: 2px solid ${props => (props.type ? '#7773fe' : '#8DD2F6')};
+    transform: translateY(-10px);
+  }
+
   img {
     -webkit-user-drag: none;
   }

@@ -202,6 +202,12 @@ const routes = [
             ),
           },
           {
+            path: 'NoteManagement',
+            element: lazy(
+              () => import('@/views/AdminManagement/NoteManagement'),
+            ),
+          },
+          {
             path: 'OperationManagement',
             element: lazy(
               () => import('@/views/AdminManagement/OperationManagement'),
