@@ -23,8 +23,8 @@ import DemandDetailDrawer from '@/components/DemandDetailDrawer'
 import SiteDrawer from '../SiteNotifications/components/SiteDrawer/SiteDrawer'
 import ReportDetailDrawer from '../WorkReport/Review/components/ReportDetailDrawer'
 import { saveDemandDetailDrawer } from '@store/demand/demand.thunk'
-import TopNote from '@/components/TopNote/TopNote'
 import AddWorkItem from '@/components/AddWorkItem'
+import AddQuickSprint from '@/components/AddQuickSprint'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -170,6 +170,7 @@ export const Container = () => {
         <ReportDetailDrawer />
         <SiteDrawer />
         <AddWorkItem />
+        <AddQuickSprint />
       </ConfigProvider>
     </KitConfigProvider>
   )
