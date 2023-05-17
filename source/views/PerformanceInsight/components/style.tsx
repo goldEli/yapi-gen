@@ -219,7 +219,6 @@ export const Item = styled.div<{ activeIdx: boolean }>(
       borderRadius: 10,
       fontSize: 12,
       color: 'var(--primary-d2)',
-      // background: 'var(--neutral-n1-d1)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -239,3 +238,37 @@ export const Item = styled.div<{ activeIdx: boolean }>(
     },
   }),
 )
+export const Segm = styled.div`
+  height: 32px;
+  line-height: 32px;
+  padding-left: 24px;
+  &:hover {
+    color: var(--primary-d1);
+    cursor: pointer;
+  }
+`
+export const Btn = styled.div`
+  width: 60px;
+  height: 22px;
+  background: #f6f7f9;
+  border-radius: 6px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  color: var(--neutral-n2);
+  justify-content: center;
+  padding: 0 8px;
+  margin-left: 8px;
+  &:hover {
+    color: var(--primary-d1);
+    cursor: pointer;
+  }
+`
+export const RightRow = styled.div`
+  display: flex;
+  align-items: center;
+`
+export const Left = styled.div`
+  display: flex;
+  align-items: center;
+`

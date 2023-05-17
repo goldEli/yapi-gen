@@ -13,7 +13,7 @@ const IssuesGroupBox = styled.div`
 const DropAreaList = styled.div`
   display: flex;
   width: 100%;
-  gap: 8px;
+  gap: 16px;
   /* min-height: 80vh; */
 `
 

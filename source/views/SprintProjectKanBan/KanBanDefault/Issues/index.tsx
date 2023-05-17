@@ -14,11 +14,10 @@ const DropArea = styled.div`
   min-height: 100px;
   display: flex;
   flex-direction: column;
-  background: #f3f3f3;
-  width: 341px;
+  background: var(--neutral-n9);
+  width: 302px;
   box-sizing: border-box;
-  border-radius: 5px;
-  padding: 15px 15px;
+  padding: 16px;
 `
 
 const DropStatusArea = styled.div`

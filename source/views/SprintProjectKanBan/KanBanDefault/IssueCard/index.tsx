@@ -3,17 +3,16 @@ import { Draggable } from 'react-beautiful-dnd'
 import styled from '@emotion/styled'
 import { handleId } from '../utils'
 
-const TaskInformation = styled.div`
+const IssueCardBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  padding: 0 15px;
-  min-height: 106px;
-  border-radius: 5px;
-  max-width: 311px;
-  background: white;
-  margin-top: 15px;
+  width: 270px;
+  height: 144px;
+  border-radius: 6px 6px 6px 6px;
+  background: var(--neutral-white-d2);
+  margin-bottom: 8px;
 
   .secondary-details {
     display: flex;
@@ -21,8 +20,6 @@ const TaskInformation = styled.div`
     align-items: center;
     width: 100%;
     font-size: 12px;
-    font-weight: 400px;
-    color: #7d7d7d;
   }
 `
 
@@ -46,7 +43,7 @@ const IssueCard = (props: IssueCardProps) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <TaskInformation>
+          <IssueCardBox>
             <p>{item.name}</p>
             <div className="secondary-details">
               {/* <p>
@@ -58,7 +55,7 @@ const IssueCard = (props: IssueCardProps) => {
                 </span>
               </p> */}
             </div>
-          </TaskInformation>
+          </IssueCardBox>
         </div>
       )}
     </Draggable>

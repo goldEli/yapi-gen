@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 type SliceState = {
-  sortByGroupOptions?: Model.SprintKanBan.ViewItem[]
+  sortByGroupOptions?: Model.SprintKanBan.GroupInfoItem[]
   sortByRowAndStatusOptions?: Model.SprintKanBan.ViewItem[]
   sortByView?: Model.SprintKanBan.ViewItem[]
   saveAsViewModelInfo: {
