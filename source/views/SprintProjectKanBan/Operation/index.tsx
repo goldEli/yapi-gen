@@ -306,7 +306,9 @@ const Operation = (props: Props) => {
             }}
             operation
             onDel={key => {}}
-            onEdit={key => {}}
+            onEdit={key => {
+              dispatch(openSaveAsViewModel(key))
+            }}
             onCreateView={() => {
               dispatch(openSaveAsViewModel())
             }}

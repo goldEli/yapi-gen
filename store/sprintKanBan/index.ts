@@ -1,10 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 type SliceState = {
-  sortByGroupOptions?: Model.SprintKanBan.Option[]
-  sortByRowAndStatusOptions?: Model.SprintKanBan.Option[]
-  sortByView?: Model.SprintKanBan.Option[]
+  sortByGroupOptions?: Model.SprintKanBan.ViewItem[]
+  sortByRowAndStatusOptions?: Model.SprintKanBan.ViewItem[]
+  sortByView?: Model.SprintKanBan.ViewItem[]
   saveAsViewModelInfo: {
+    visible: boolean
+    viewItem?: Model.SprintKanBan.ViewItem
+  }
+  shareModelInfo: {
     visible: boolean
   }
 }
@@ -30,12 +34,24 @@ const initialState: SliceState = {
   saveAsViewModelInfo: {
     visible: false,
   },
+  shareModelInfo: {
+    visible: false,
+  },
 }
 
 const slice = createSlice({
   name: 'sprintKanBan',
   initialState,
   reducers: {
+    setShareModelInfo(
+      state,
+      action: PayloadAction<SliceState['shareModelInfo']>,
+    ) {
+      state.shareModelInfo = {
+        ...state.shareModelInfo,
+        ...action.payload,
+      }
+    },
     setSaveAsViewModelInfo(
       state,
       action: PayloadAction<SliceState['saveAsViewModelInfo']>,
@@ -47,7 +63,7 @@ const slice = createSlice({
     },
     onChangeSortByGroupOptions(
       state,
-      action: PayloadAction<Model.SprintKanBan.Option['key']>,
+      action: PayloadAction<Model.SprintKanBan.ViewItem['key']>,
     ) {
       const current = state.sortByGroupOptions?.find(
         item => item.key === action.payload,
@@ -64,7 +80,7 @@ const slice = createSlice({
     },
     onChangeSortByRowAndStatusOptions(
       state,
-      action: PayloadAction<Model.SprintKanBan.Option['key']>,
+      action: PayloadAction<Model.SprintKanBan.ViewItem['key']>,
     ) {
       const current = state.sortByRowAndStatusOptions?.find(
         item => item.key === action.payload,
@@ -81,7 +97,7 @@ const slice = createSlice({
     },
     onChangeSortByView(
       state,
-      action: PayloadAction<Model.SprintKanBan.Option['key']>,
+      action: PayloadAction<Model.SprintKanBan.ViewItem['key']>,
     ) {
       const current = state.sortByView?.find(
         item => item.key === action.payload,

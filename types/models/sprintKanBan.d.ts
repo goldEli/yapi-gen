@@ -1,5 +1,5 @@
 declare namespace Model.SprintKanBan {
-  interface Option {
+  interface ViewItem {
     key: string
     value: string
     check: boolean

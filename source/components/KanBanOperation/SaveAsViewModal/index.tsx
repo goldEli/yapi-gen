@@ -1,3 +1,7 @@
+/**
+ * 另存为视图  编辑视图弹窗
+ */
+import React from 'react'
 import { Form, Input } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { getMessage } from '@/components/Message'
@@ -41,17 +45,41 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
   }
 
   const confirm = async () => {
-    await form.validateFields()
-    dispatch(onSaveAsViewModel())
+    const data = await form.validateFields()
+    dispatch(
+      onSaveAsViewModel({
+        ...saveAsViewModelInfo.viewItem,
+        value: data.name,
+      }),
+    )
   }
 
   const onsubmit = () => {
     form.submit()
   }
+  const title = React.useMemo(() => {
+    if (saveAsViewModelInfo.viewItem) {
+      return '编辑视图'
+    }
+    return '另存为视图'
+  }, [saveAsViewModelInfo.viewItem])
+
+  React.useEffect(() => {
+    if (saveAsViewModelInfo.viewItem) {
+      form.setFieldsValue({
+        name: saveAsViewModelInfo.viewItem.value,
+      })
+      return
+    }
+    form.setFieldsValue({
+      name: '',
+    })
+  }, [saveAsViewModelInfo.viewItem])
+
   return (
     <CommonModal
       width={528}
-      title={'另存为视图'}
+      title={title}
       isVisible={saveAsViewModelInfo.visible}
       onClose={onClose}
       onConfirm={onsubmit}
