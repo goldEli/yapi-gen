@@ -187,7 +187,7 @@ const ProjectInfo = () => {
               marginLeft: 24,
               cursor: 'pointer',
             }}
-            type="edit-square"
+            type="edit"
           />
         </div>
         <SubText>{projectInfo.info || '--'}</SubText>

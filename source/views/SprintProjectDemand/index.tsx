@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from '@store/index'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getCategoryConfigList } from '@store/category/thunk'
 import NoData from '@/components/NoData'
-
+import CommonBreadCrumd from '@/components/CommonBreadcrumd'
 const Wrap = styled.div`
   width: 100%;
   display: flex;
@@ -25,7 +25,12 @@ const ButtonStyle = styled.div`
   padding: 0 24px;
   background-color: var(--neutral-n10);
 `
-
+const BreadBox = styled.div`
+  height: 72px;
+  display: flex;
+  align-items: center;
+  padding-left: 24px;
+`
 const DemandSetting = () => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
@@ -77,6 +82,9 @@ const DemandSetting = () => {
     >
       {isNoData ? (
         <>
+          <BreadBox>
+            <CommonBreadCrumd></CommonBreadCrumd>
+          </BreadBox>
           <Header />
           {isOperate && (
             <ButtonStyle>
