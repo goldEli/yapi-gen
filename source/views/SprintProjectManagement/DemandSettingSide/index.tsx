@@ -34,20 +34,9 @@ import {
   setCategoryConfigDataList,
 } from '@store/category/index'
 import styled from '@emotion/styled'
+import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
 import { CloseWrap } from '@/components/StyleCommon'
-
-const IconFontStyle = styled(IconFont)({
-  color: 'var(--neutral-n2)',
-  fontSize: '18px',
-  borderRadius: '6px',
-  padding: '5px',
-  '&: hover': {
-    background: 'var(--hover-d1)',
-    color: 'var(--neutral-n1-d1)',
-    cursor: 'pointer',
-  },
-})
 const Tabs = styled.div`
   height: 24px;
   border-radius: 4px;
@@ -77,6 +66,14 @@ const Tabs = styled.div`
     border: 1px solid var(--neutral-n6-d1);
   }
 `
+const toggleDropUp = css`
+  max-height: 0;
+  transition: all 0.5s;
+`
+const toggleDropDown = css`
+  max-height: 30vh;
+  transition: all 0.5s;
+`
 const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   const [t] = useTranslation()
   const { startUsing, categoryList, activeCategory } = useSelector(
@@ -100,7 +97,10 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
     },
     {
       name: '标准事务类型',
-      children: [{ name: '故事', active: false }],
+      children: [
+        { name: '故事', active: false },
+        { name: '任务', active: false },
+      ],
       visible: true,
     },
     {
@@ -262,28 +262,19 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
       props.onBack()
     }
   }, [projectInfo])
-  // const aa = () => {
-  //   affairType.map(item => {
-  //     item = { ...item }
-  //     item.children.map(ele => {
-  //       ele = { ...ele, active: true }
-  //     })
-  //   })
-  //   setAffairType([...affairType])
-  //   console.log(111, affairType)
-  // }
-  const updateNode = (index: number, i: number) => {
-    // setAffairType(prevData => {
-    //   const newData = [...prevData]
-    //   const currentItem = { ...newData[index] }
-    //   const listToUpdate = [...currentItem.children]
-    //   const itemToUpdate = { ...listToUpdate[i], active: true } // 修改属性值
-    //   listToUpdate[i] = itemToUpdate
-    //   currentItem.children = listToUpdate
-    //   newData[index] = currentItem
-    //   console.log('newData', newData)
-    //   return newData
-    // })
+  const updateNode = (child: any) => {
+    setAffairType(prevData => {
+      const newData = [...prevData]
+      return newData.map(obj => {
+        const updatedChildren = [...obj.children]
+        return {
+          ...obj,
+          children: updatedChildren.map(item => {
+            return { ...item, active: item.name === child.name }
+          }),
+        }
+      })
+    })
   }
   return (
     <AllWrap>
@@ -321,7 +312,10 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
                 }}
               >
                 <div style={{ cursor: 'pointer' }}>
-                  <IconFont style={{ fontSize: 12 }} type="down" />
+                  <IconFont
+                    style={{ fontSize: 12 }}
+                    type={affairType[index].visible ? 'down' : 'up'}
+                  />
                   <AffairTypeText>{item.name}</AffairTypeText>
                 </div>
                 <IconFont
@@ -333,45 +327,23 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
                   }}
                 />
               </AffairTypeHeader>
-              {item.visible && (
-                <MenuBox>
-                  {item.children?.length >= 1 ? (
-                    <Dragging
-                      list={item.children}
-                      setList={setList}
-                      onClick={(i: number, child: any) => {
-                        dispatch(
-                          getCategoryConfigList({
-                            projectId: projectId,
-                            categoryId: child.id || 695,
-                          }),
-                        )
-                        updateNode(index, i)
-                      }}
-                      onMove={(data: any) => onMove(data)}
-                    ></Dragging>
-                  ) : (
-                    <NoDataCreateWrap>
-                      <div className="top">
-                        <IconFont type="Warning" />
-                        <div>{t('demandSettingSide.noData')}</div>
-                      </div>
-                      <div className="bottom">
-                        {isCreate > 0 && (
-                          <div
-                            className="bottom"
-                            onClick={() => setIsVisible(true)}
-                            style={{ cursor: 'pointer' }}
-                          >
-                            <IconFont type="plus" />
-                            <div>{t('demandSettingSide.addClass')}</div>
-                          </div>
-                        )}
-                      </div>
-                    </NoDataCreateWrap>
-                  )}
-                </MenuBox>
-              )}
+
+              <MenuBox className={item.visible ? toggleDropUp : toggleDropDown}>
+                <Dragging
+                  list={item.children}
+                  setList={setList}
+                  onClick={(i: number, child: any) => {
+                    dispatch(
+                      getCategoryConfigList({
+                        projectId: projectId,
+                        categoryId: child.id || 695,
+                      }),
+                    )
+                    updateNode(child)
+                  }}
+                  onMove={(data: any) => onMove(data)}
+                ></Dragging>
+              </MenuBox>
             </AffairTypeWrap>
           ))}
         </div>

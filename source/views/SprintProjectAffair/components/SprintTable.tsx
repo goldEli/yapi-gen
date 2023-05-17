@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-no-leaked-render */
 import { createRef, useEffect, useMemo, useState } from 'react'
-import { message, Menu, Table } from 'antd'
+import { Button, Menu, Table } from 'antd'
 import styled from '@emotion/styled'
 import { useSearchParams } from 'react-router-dom'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
@@ -71,6 +71,7 @@ const SprintTable = (props: Props) => {
   asyncSetTtile(`事务【${projectInfo.name}】`)
   const dispatch = useDispatch()
   const [openDemandDetail] = useOpenDemandDetail()
+  const [dataSource, setDataSource] = useState([])
 
   useEffect(() => {
     dispatch(
@@ -79,6 +80,10 @@ const SprintTable = (props: Props) => {
       }),
     )
   }, [orderKey, order])
+
+  useEffect(() => {
+    setDataSource(props.data?.list || [])
+  }, [props.data])
 
   useEffect(() => {
     if (tapSort) {
@@ -421,7 +426,7 @@ const SprintTable = (props: Props) => {
         isSpinning={props.isSpinning}
         dataWrapNormalHeight="calc(100% - 64px)"
         col={selectColum}
-        dataSource={props.data?.list}
+        dataSource={dataSource}
         rowSelection={
           !hasBatch &&
           ({

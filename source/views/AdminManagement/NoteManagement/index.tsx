@@ -37,6 +37,7 @@ import SearchList from '../StaffManagement/components/SearchList'
 import SearchList2 from './components/SearchList2'
 import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
+import { TextChange } from '@/components/TextChange/TextChange'
 
 export const tableWrapP = css`
   display: flex;
@@ -321,32 +322,7 @@ const StaffManagement = () => {
     message.success({
       icon: <span></span>,
       duration: 0,
-      content: (
-        <div>
-          <CommonIconFont color="#f99e54" size={18} type="bell" />
-          <span
-            style={{
-              height: '22px',
-              fontSize: '14px',
-
-              color: '#646566',
-              lineHeight: '22px',
-              marginRight: '42px',
-            }}
-          >
-            12和工艺规划查干湖3 12和工艺规划查干湖3 12和工艺规划查干湖3
-            12和工艺规划查干湖3 12和工艺规划查干湖3 12和工艺规划查干湖3
-            12和工艺规划查干湖3 12和工艺规划查干湖3 12和工艺规划查干湖3
-            12和工艺规划查干湖3 12和工艺规划查干湖3
-          </span>
-          <CommonIconFont
-            size={18}
-            // eslint-disable-next-line react/jsx-handler-names
-            onClick={() => message.destroy()}
-            type="close-solid"
-          />
-        </div>
-      ),
+      content: <TextChange />,
       className: 'custom-class',
       style: {
         marginTop: '8vh',

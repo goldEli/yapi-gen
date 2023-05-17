@@ -21,8 +21,8 @@ import {
 interface SelectBoxProps {
   title: string
   onChange(key: string): void
-  options: Model.SprintKanBan.Option[]
-  operation?: Model.SprintKanBan.Option['operation']
+  options: Model.SprintKanBan.ViewItem[]
+  operation?: Model.SprintKanBan.ViewItem['operation']
   onCreateView?: () => void
   onDel?: (key: string) => void
   onEdit?: (key: string) => void
@@ -43,7 +43,7 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
     return [current?.value, current?.key]
   }, [props.options])
 
-  const renderOption = (item: Model.SprintKanBan.Option) => {
+  const renderOption = (item: Model.SprintKanBan.ViewItem) => {
     return {
       key: item.key,
       label: (
@@ -59,7 +59,7 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
       ),
     }
   }
-  const renderOptionWidthOperation = (item: Model.SprintKanBan.Option) => {
+  const renderOptionWidthOperation = (item: Model.SprintKanBan.ViewItem) => {
     return {
       key: item.key,
       label: (
@@ -80,6 +80,7 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
                 <IconWrap
                   onClick={e => {
                     e.stopPropagation()
+                    setIsVisibleFormat(false)
                     props?.onEdit?.(item.key)
                   }}
                   type="edit"
@@ -87,6 +88,7 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
                 <IconWrap
                   onClick={e => {
                     e.stopPropagation()
+                    setIsVisibleFormat(false)
                     props?.onDel?.(item.key)
                   }}
                   type="delete"

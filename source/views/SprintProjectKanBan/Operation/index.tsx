@@ -22,6 +22,7 @@ import {
   onChangeSortByView,
 } from '@store/sprintKanBan'
 import SelectOptions from '@/components/SelectOptions'
+import { openSaveAsViewModel } from '@store/sprintKanBan/sprintKanban.thunk'
 
 const OperationWrap = styled.div({
   minHeight: 32,
@@ -305,8 +306,12 @@ const Operation = (props: Props) => {
             }}
             operation
             onDel={key => {}}
-            onEdit={key => {}}
-            onCreateView={() => {}}
+            onEdit={key => {
+              dispatch(openSaveAsViewModel(key))
+            }}
+            onCreateView={() => {
+              dispatch(openSaveAsViewModel())
+            }}
           />
         </LeftBox>
         <RightBox>

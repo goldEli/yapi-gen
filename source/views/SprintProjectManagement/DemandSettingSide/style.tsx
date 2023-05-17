@@ -55,9 +55,7 @@ export const SideInfo = styled.div`
 
 export const MenuBox = styled.div`
   height: calc(100% - 150px);
-  overflow-y: scroll;
   overflow-x: hidden;
-  transition: all 0.3s;
 `
 
 export const MenuItem = styled.div<{ isActive?: boolean }>`

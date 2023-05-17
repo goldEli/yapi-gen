@@ -311,7 +311,7 @@ const DemandMain = (props: Props) => {
         onConfirm={onDeleteConfirm}
       />
       <CreateViewPort pid={projectId} />
-      <ManageView pid={projectId} />
+      <ManageView projectId={projectId} />
       <Content>
         <ProjectCommonOperation onInputSearch={onInputSearch} />
         <DemandContent>

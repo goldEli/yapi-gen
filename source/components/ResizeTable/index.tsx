@@ -135,7 +135,15 @@ interface ResizeTableProps {
   noData?: any
   isSpinning?: boolean
   rowSelection?: any
-  onRow?(): void
+  onRow?: (
+    record: any,
+    index: number,
+  ) => {
+    onMouseEnter?: () => void
+    onMouseLeave?: () => void
+    onClick?: () => void
+    onDoubleClick?: () => void
+  }
   expandable?: any
   isTree?: boolean
 }
