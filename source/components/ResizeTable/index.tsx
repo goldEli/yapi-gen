@@ -135,9 +135,18 @@ interface ResizeTableProps {
   noData?: any
   isSpinning?: boolean
   rowSelection?: any
-  onRow?(): void
+  onRow?: (
+    record: any,
+    index: number,
+  ) => {
+    onMouseEnter?: () => void
+    onMouseLeave?: () => void
+    onClick?: () => void
+    onDoubleClick?: () => void
+  }
   expandable?: any
   isTree?: boolean
+  rowClassName?: any
 }
 // 拖拽调整table
 const ResizeTable = (props: ResizeTableProps) => {
@@ -242,7 +251,7 @@ const ResizeTable = (props: ResizeTableProps) => {
               expandable={props?.expandable}
               onRow={props.onRow as any}
               rowClassName={(row: any) =>
-                row.id === listActiveId ? 'activeListItem' : ''
+                row.id === listActiveId ? 'activeListItem' : props.rowClassName
               }
             />
           )}

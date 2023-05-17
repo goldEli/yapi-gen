@@ -18,6 +18,7 @@ import PermissionWrap from '@/components/PermissionWrap'
 import InputSearch from '@/components/InputSearch'
 import { useState, useEffect } from 'react'
 import ProjectNote from './components/ProjectNote'
+import CommonBreadCrumd from '@/components/CommonBreadcrumd'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -45,6 +46,7 @@ const Setting = () => {
   const activeTabs = paramsData.type || 'ProjectInfo'
   const { currentMenu } = useSelector(store => store.user)
   const [searchValue, setSearchValue] = useState('')
+
   let maps = new Map([
     [
       'ProjectInfo',
@@ -83,15 +85,6 @@ const Setting = () => {
       },
     ],
     [
-      'ProjectAffair',
-      {
-        name: '事务类型',
-        icon: 'settings',
-        content: <DemandSetting />,
-        isPermission: true,
-      },
-    ],
-    [
       'ProjectKanBan',
       {
         name: 'Kanban配置',
@@ -110,10 +103,15 @@ const Setting = () => {
       },
     ],
   ])
+  useEffect(() => {
+    console.log('activeTabs========', activeTabs)
+  }, [activeTabs])
+
   return (
     <div style={{ height: '100%' }}>
       <SearchBox>
-        <MyBreadcrumb setName={maps.get(activeTabs)?.name} />
+        {/* <MyBreadcrumb setName={maps.get(activeTabs)?.name} /> */}
+        <CommonBreadCrumd></CommonBreadCrumd>
         {activeTabs === 'ProjectMember' && (
           <div>
             <InputSearch

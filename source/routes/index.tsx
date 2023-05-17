@@ -167,6 +167,10 @@ const routes = [
             path: 'DemandSetting',
             element: lazy(() => import('@/views/SprintProjectDemand')),
           },
+          {
+            path: 'WorkFlow',
+            element: lazy(() => import('@/views/SprintWorkflow')),
+          },
         ],
       },
       {
@@ -199,6 +203,12 @@ const routes = [
             path: 'WaterMarkManagement',
             element: lazy(
               () => import('@/views/AdminManagement/WaterMarkManagement'),
+            ),
+          },
+          {
+            path: 'NoteManagement',
+            element: lazy(
+              () => import('@/views/AdminManagement/NoteManagement'),
             ),
           },
           {

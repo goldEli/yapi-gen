@@ -105,6 +105,7 @@ const View = () => {
         value: 'all',
       })
     } else if (e.key === 'last') {
+      setIsOpen(false)
       setDialogItem({ name: '' })
       setDialogTitle('新建视图')
       setIsVisible(true)

@@ -8,21 +8,21 @@ import { useDispatch, useSelector } from '@store/index'
 import guide_1 from './img/guide_1.png'
 import guide_2 from './img/guide_2.png'
 import guide_3 from './img/guide_3.png'
+import KanBan from './KanBan'
 
 interface IProps {}
 const SprintProjectKanBanBox = styled.div`
-  padding-top: 20px;
   width: 100%;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  padding: 20px;
 `
 
 const ToolBarBox = styled.div`
   width: 100%;
   box-sizing: border-box;
-  padding: 0 20px;
   display: flex;
   justify-content: space-between;
   /* position: relative; */
@@ -77,6 +77,7 @@ const SprintProjectKanBan: React.FC<IProps> = props => {
         inform={inform}
         close={() => dispatch(onChangeGuideVisible(false))}
       />
+      <KanBan />
     </SprintProjectKanBanBox>
   )
 }

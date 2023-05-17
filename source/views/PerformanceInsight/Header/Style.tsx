@@ -247,14 +247,37 @@ export const Back = styled.div`
 export const RightRow = styled.div`
   display: flex;
   align-items: center;
-  .line {
-    display: inline-block;
-    height: 16px;
-    border-right: 1px solid var(--neutral-n6-d1);
-    margin: 0 16px;
-  }
+`
+export const Line = styled.span`
+  display: inline-block;
+  height: 16px;
+  border-right: 1px solid var(--neutral-n6-d1);
+  margin: 0 16px;
 `
 export const PersonText = styled.div`
   font-size: 14px;
   color: var(--neutral-n3);
+`
+export const Col = styled.div`
+  padding: 24px 24px 12px 24px;
+`
+export const TitleCss = styled.div`
+  color: var(--neutral-n1-d1);
+  padding-left: 8px;
+  font-size: 14px;
+  font-family: SiYuanMedium;
+  position: relative;
+  &::before {
+    content: '';
+    height: 16px;
+    position: absolute;
+    left: 0px;
+    top: 3px;
+    width: 3px;
+    background-color: var(--primary-d1);
+  }
+`
+export const TableStyle = styled.div`
+  height: calc(100% - 300px);
+  padding: 24px 24px 0 24px;
 `

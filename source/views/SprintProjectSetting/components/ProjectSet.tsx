@@ -87,12 +87,21 @@ const BtnHeader = styled.div`
   right: 24px;
   top: -59px;
 `
-const MenuItems = styled.div({
-  padding: '0 16px',
-  maxHeight: 'calc(100vh - 184px)',
-  overflowY: 'auto',
-})
-
+const MenuItems = styled.div`
+  padding: 0 16px;
+  max-height: calc(100vh - 184px);
+  overflow-y: auto;
+  .name {
+    color: var(--neutral-n1-d1);
+    font-size: var(--font14);
+  }
+`
+const MenuItemsTitle = styled.div`
+  padding: 0px 16px;
+  color: var(--neutral-n3);
+  font-size: var(--font12);
+  margin-bottom: 16px;
+`
 const MenuItem = styled.div<{ isActive: boolean }>(
   {
     display: 'flex',
@@ -488,7 +497,7 @@ const ProjectSet = () => {
             <SetMain>
               <SetLeft>
                 <Title>
-                  {t('setting.userGroup')}
+                  角色
                   <CloseWrap width={24} height={24}>
                     <IconFont
                       style={{ fontSize: 18 }}
@@ -503,26 +512,54 @@ const ProjectSet = () => {
                   </CloseWrap>
                 </Title>
                 <MenuItems>
-                  {dataList?.map((item: any) => (
-                    <MenuItem
-                      key={item.id}
-                      onClick={() => onChangeTabs(item)}
-                      isActive={item.id === activeDetail.id}
-                    >
-                      <div className="name">{item.name}</div>
-                      <span className="subName">
+                  <MenuItemsTitle>系统分组</MenuItemsTitle>
+                  {dataList
+                    ?.filter((item: { type: number }) => item.type === 1)
+                    .map((item: any) => (
+                      <MenuItem
+                        key={item.id}
+                        onClick={() => onChangeTabs(item)}
+                        isActive={item.id === activeDetail.id}
+                      >
+                        <div className="name">{item.name}</div>
+                        {/* <span className="subName">
                         {item.type === 1
                           ? t('setting.systemGroup')
                           : t('setting.customGroup')}
-                      </span>
-                      <MoreDropdown
-                        isHidden={item.type === 1}
-                        isMoreVisible={isMoreVisible}
-                        onChangeVisible={setIsMoreVisible}
-                        menu={menu(item)}
-                      />
-                    </MenuItem>
-                  ))}
+                      </span> */}
+                        <MoreDropdown
+                          isHidden={item.type === 1}
+                          isMoreVisible={isMoreVisible}
+                          onChangeVisible={setIsMoreVisible}
+                          menu={menu(item)}
+                        />
+                      </MenuItem>
+                    ))}
+                </MenuItems>
+                <MenuItems>
+                  <MenuItemsTitle>自定义角色</MenuItemsTitle>
+                  {dataList
+                    ?.filter((item: { type: number }) => item.type === 2)
+                    .map((item: any) => (
+                      <MenuItem
+                        key={item.id}
+                        onClick={() => onChangeTabs(item)}
+                        isActive={item.id === activeDetail.id}
+                      >
+                        <div className="name">{item.name}</div>
+                        {/* <span className="subName">
+                        {item.type === 1
+                          ? t('setting.systemGroup')
+                          : t('setting.customGroup')}
+                      </span> */}
+                        <MoreDropdown
+                          isHidden={item.type === 1}
+                          isMoreVisible={isMoreVisible}
+                          onChangeVisible={setIsMoreVisible}
+                          menu={menu(item)}
+                        />
+                      </MenuItem>
+                    ))}
                 </MenuItems>
               </SetLeft>
               <SetRight>

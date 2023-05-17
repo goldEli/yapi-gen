@@ -12,6 +12,7 @@ import {
   DividerWrap,
 } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
+import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { Menu, message, Form, Space, Checkbox, Tooltip, Table } from 'antd'
@@ -26,6 +27,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import AddMemberCommonModal from '@/components/AddUser/CommonModal'
+import TableSelectOptions from '@/components/TableSelectOptions'
 import { getAddDepartMember, getPositionSelectList } from '@/services/staff'
 import {
   addMember,
@@ -101,7 +103,11 @@ const NameWrap = styled.span({
   color: 'white',
   // marginLeft: 32,
 })
-
+const selectOptionsIcon = css`
+  color: var(--neutral-n4);
+  margin-left: 10px;
+  cursor: pointer;
+`
 const NewSort = (sortProps: any) => {
   return (
     <Sort
@@ -142,6 +148,8 @@ const ProjectMember = (props: { searchValue?: string }) => {
   const [departments, setDepartments] = useState([])
   const [member, setMember] = useState<any>()
   const [userDataList, setUserDataList] = useState<any[]>([])
+  const [selectRowKey, setSelectRowKey] = useState('')
+  const [optionsDrop, setOptionsDrop] = useState(false)
   asyncSetTtile(`${t('title.a2')}【${projectInfo.name ?? ''}】`)
   const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([])
   const dispatch = useDispatch()
@@ -426,8 +434,28 @@ const ProjectMember = (props: { searchValue?: string }) => {
       ),
       dataIndex: 'roleName',
       width: 200,
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: string, record: any) => {
+        return (
+          <div style={{ position: 'relative' }}>
+            <span>
+              {text}
+              {record.id === selectRowKey && (
+                <label
+                  className={selectOptionsIcon}
+                  onClick={() => {
+                    setOptionsDrop(!optionsDrop)
+                  }}
+                >
+                  {' '}
+                  <IconFont type="down-icon" />
+                </label>
+              )}
+            </span>
+            {optionsDrop && record.id === selectRowKey && (
+              <TableSelectOptions></TableSelectOptions>
+            )}
+          </div>
+        )
       },
     },
     {
@@ -487,7 +515,6 @@ const ProjectMember = (props: { searchValue?: string }) => {
     initColumns.push(Table.SELECTION_COLUMN as any)
     return [...initColumns, ...columns]
   }, [columns])
-
   const onChangeUpdate = () => {
     setOperationItem({})
     getList(order, pageObj)
@@ -612,6 +639,17 @@ const ProjectMember = (props: { searchValue?: string }) => {
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange,
+  }
+  const onRow = (record: any, index: number) => {
+    return {
+      onMouseEnter: () => {
+        setSelectRowKey(record.id)
+      },
+      onMouseLeave: () => {
+        setSelectRowKey('')
+        setOptionsDrop(false)
+      },
+    }
   }
   return (
     <PermissionWrap
@@ -761,6 +799,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
             dataSource={memberList?.list}
             rowSelection={rowSelection}
             noData={<NoData />}
+            onRow={onRow}
           />
           <PaginationBox
             total={memberList?.total}

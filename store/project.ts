@@ -18,6 +18,10 @@ export interface CounterState {
     params?: Model.Project.AddWorkItemParams
   }
   guideVisible: boolean
+  addQuickSprintModal: {
+    visible: boolean
+    params?: Model.Project.AddQuickSprintParams
+  }
 }
 
 const initialState: CounterState = {
@@ -52,6 +56,13 @@ const initialState: CounterState = {
     params: {},
   },
   guideVisible: false,
+  addQuickSprintModal: {
+    visible: false,
+    params: {
+      name: '长故事',
+      icon: 'https://dev.staryuntech.com/dev-agile/attachment/category_icon/message.png',
+    },
+  },
 }
 
 export const projectSlice = createSlice({
@@ -106,6 +117,15 @@ export const projectSlice = createSlice({
     ) {
       state.guideVisible = action.payload
     },
+    setAddQuickSprintModal(
+      state,
+      action: PayloadAction<CounterState['addQuickSprintModal']>,
+    ) {
+      state.addQuickSprintModal = {
+        ...state.addQuickSprintModal,
+        ...action.payload,
+      }
+    },
   },
   extraReducers(builder) {
     //
@@ -123,6 +143,7 @@ export const {
   setIsUpdateMember,
   setAddWorkItemModal,
   onChangeGuideVisible,
+  setAddQuickSprintModal,
 } = projectSlice.actions
 
 export default projectSlice.reducer

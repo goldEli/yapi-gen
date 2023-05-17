@@ -1,10 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 type SliceState = {
-  sortByGroupOptions?: Model.SprintKanBan.Option[]
-  sortByRowAndStatusOptions?: Model.SprintKanBan.Option[]
-  sortByView?: Model.SprintKanBan.Option[]
   guideVisible: Model.SprintKanBan.guideVisible
+  sortByGroupOptions?: Model.SprintKanBan.GroupInfoItem[]
+  sortByRowAndStatusOptions?: Model.SprintKanBan.ViewItem[]
+  sortByView?: Model.SprintKanBan.ViewItem[]
+  saveAsViewModelInfo: {
+    visible: boolean
+    viewItem?: Model.SprintKanBan.ViewItem
+  }
+  shareModelInfo: {
+    visible: boolean
+  }
 }
 
 const initialState: SliceState = {
@@ -26,6 +33,12 @@ const initialState: SliceState = {
     { key: '4', value: '进度跟踪', check: false },
   ],
   guideVisible: true,
+  saveAsViewModelInfo: {
+    visible: false,
+  },
+  shareModelInfo: {
+    visible: false,
+  },
 }
 
 const slice = createSlice({
@@ -38,9 +51,27 @@ const slice = createSlice({
     ) {
       state.guideVisible = action.payload
     },
+    setShareModelInfo(
+      state,
+      action: PayloadAction<SliceState['shareModelInfo']>,
+    ) {
+      state.shareModelInfo = {
+        ...state.shareModelInfo,
+        ...action.payload,
+      }
+    },
+    setSaveAsViewModelInfo(
+      state,
+      action: PayloadAction<SliceState['saveAsViewModelInfo']>,
+    ) {
+      state.saveAsViewModelInfo = {
+        ...state.saveAsViewModelInfo,
+        ...action.payload,
+      }
+    },
     onChangeSortByGroupOptions(
       state,
-      action: PayloadAction<Model.SprintKanBan.Option['key']>,
+      action: PayloadAction<Model.SprintKanBan.ViewItem['key']>,
     ) {
       const current = state.sortByGroupOptions?.find(
         item => item.key === action.payload,
@@ -57,7 +88,7 @@ const slice = createSlice({
     },
     onChangeSortByRowAndStatusOptions(
       state,
-      action: PayloadAction<Model.SprintKanBan.Option['key']>,
+      action: PayloadAction<Model.SprintKanBan.ViewItem['key']>,
     ) {
       const current = state.sortByRowAndStatusOptions?.find(
         item => item.key === action.payload,
@@ -74,7 +105,7 @@ const slice = createSlice({
     },
     onChangeSortByView(
       state,
-      action: PayloadAction<Model.SprintKanBan.Option['key']>,
+      action: PayloadAction<Model.SprintKanBan.ViewItem['key']>,
     ) {
       const current = state.sortByView?.find(
         item => item.key === action.payload,
@@ -99,6 +130,8 @@ export const {
   onChangeSortByRowAndStatusOptions,
   onChangeSortByView,
   onChangeGuideVisible,
+  setSaveAsViewModelInfo,
+  setShareModelInfo,
 } = slice.actions
 
 export default sprintKanBan

@@ -182,35 +182,6 @@ const HasIconMenu = styled.div<{ isCheck?: boolean }>(
   }),
 )
 
-// 新版移入效果例：项目列表左上方操作
-// const HoverWrap = styled.div<{ isActive?: any }>(
-//   {
-//     minWidth: '80px',
-//     transition: 'all .5s',
-//     padding: '0 8px',
-//     height: 32,
-//     borderRadius: 6,
-//     cursor: 'pointer',
-//     display: 'flex',
-//     alignItems: 'center',
-//     color: 'var(--neutral-n3) !important',
-//     '.iconMain': {
-//       marginRight: 8,
-//       fontSize: 18,
-//     },
-//     svg: {
-//       fontSize: 18,
-//     },
-//     '&: hover': {
-//       background: 'var(--hover-d1)',
-//       color: 'var(--neutral-n1-d1)',
-//     },
-//   },
-//   ({ isActive }) => ({
-//     background: isActive ? 'var(--neutral-n9)' : 'var(--neutral-white-d2)',
-//     color: isActive ? 'var(--neutral-n3)!important' : 'var(--neutral-n3)',
-//   }),
-// )
 const HoverWrap = styled.div<{ isActive?: any }>`
   /* min-width: 80px; */
   padding: 0 8px;
@@ -932,6 +903,16 @@ const ModalFooter = styled(Space)({
   padding: '0 20px 0 24px',
 })
 
+const SeverityWrap = styled.div`
+  display: flex;
+  align-items: center;
+  height: 22px;
+  border-radius: 50px;
+  padding: 0 8px;
+  font-size: 12px;
+  color: var(--neutral-n1-d1);
+`
+
 export {
   title1Css1,
   HiddenText,
@@ -981,4 +962,5 @@ export {
   DropdownWrap,
   ModalFooter,
   MouseDom,
+  SeverityWrap,
 }

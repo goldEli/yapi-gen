@@ -178,12 +178,12 @@ const Sortable = (props: any) => {
   const { list, setList } = props
   return (
     <div
-      style={{
-        width: '100%',
-        height: '87%',
-        overflowY: 'auto',
-        overflowX: 'hidden',
-      }}
+    // style={{
+    //   width: '100%',
+    //   height: '87%',
+    //   overflowY: 'auto',
+    //   overflowX: 'hidden',
+    // }}
     >
       {list?.map((child: any, i: number) => (
         <SliderList

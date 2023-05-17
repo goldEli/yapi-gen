@@ -17,6 +17,7 @@ import { dropdowncontent, Name, SetLine, TextSpan, ViewPortWrap } from './style'
 
 const ViewPort = (props: any) => {
   const [show, setShow] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
   const dispatch = useDispatch()
   const { viewList } = useSelector(state => state.view)
   const [nowKey, setNowKey] = useState('')
@@ -57,6 +58,8 @@ const ViewPort = (props: any) => {
   ]
 
   const onClick = (e: any) => {
+    setIsVisible(false)
+    setShow(false)
     const value =
       viewList[viewList.findIndex((i: any) => String(i.id) === e.key)]
     setNowKey(e.key)
@@ -78,11 +81,26 @@ const ViewPort = (props: any) => {
     }
     return t('whole')
   }, [viewList, nowKey])
+
+  // 点击打开下拉弹窗
   const onOpenChange = (open: boolean) => {
     setShow(open)
+    setIsVisible(open)
+  }
+
+  // 创建视图
+  const onChangeCreate = () => {
+    onOpenChange(false)
+    dispatch(changeCreateVisible(true))
+  }
+  // 视图管理
+  const onChangeView = () => {
+    onOpenChange(false)
+    dispatch(changeViewVisible(true))
   }
   return (
     <Dropdown
+      open={isVisible}
       onOpenChange={onOpenChange}
       trigger={['click']}
       menu={{ items, onClick }}
@@ -91,10 +109,10 @@ const ViewPort = (props: any) => {
         <div className={dropdowncontent}>
           {menu}
           <Divider style={{ margin: 0 }} />
-          <SetLine onClick={() => dispatch(changeCreateVisible(true))}>
+          <SetLine onClick={onChangeCreate}>
             <TextSpan>{t('creating_a_view') as string}</TextSpan>
           </SetLine>
-          <SetLine onClick={() => dispatch(changeViewVisible(true))}>
+          <SetLine onClick={onChangeView}>
             <TextSpan>{t('view_of_administration') as string}</TextSpan>
           </SetLine>
         </div>
