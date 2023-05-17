@@ -29,6 +29,7 @@ const Wrap = styled.div({
   display: 'flex',
   alignItems: 'center',
   height: 350,
+  paddingRight: 4,
 })
 const text = css`
   color: rgba(150, 151, 153, 1);
@@ -59,6 +60,7 @@ const RightWrap = styled.div({
   overflowY: 'auto',
   display: 'flex',
   flexDirection: 'column',
+  paddingRight: 16,
 })
 
 const ItemWrap = styled.div({
@@ -80,6 +82,10 @@ const CheckedItem = styled.div<{ state?: any }>(
     height: 40,
     borderRadius: 4,
     padding: '  0 16px',
+    cursor: 'pointer',
+    'div: first-child': {
+      width: '100%',
+    },
     // eslint-disable-next-line @typescript-eslint/naming-convention
     '&: hover': {
       background: 'var(--hover-d1)',
@@ -108,6 +114,16 @@ const ModalFooter = styled(Space)({
   padding: '0 24px',
 })
 
+const DragItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  div {
+    display: flex;
+    align-items: center;
+  }
+`
+
 interface Props {
   visible: boolean
   title: string
@@ -129,17 +145,7 @@ const SortItemLi = sortableElement<any>((props: any) => (
   <div helperClass="row-dragging" {...props} />
 ))
 
-const DragHandle = sortableHandle(() => (
-  <IconFont
-    type="move"
-    style={{
-      fontSize: 16,
-      cursor: 'pointer',
-      color: 'var(--neutral-n3)',
-      marginRight: 12,
-    }}
-  />
-))
+const DragHandle = sortableHandle((props: any) => <div {...props} />)
 
 const FieldsTemplate = (props: Props) => {
   const [searchParams] = useSearchParams()
@@ -512,20 +518,34 @@ const FieldsTemplate = (props: Props) => {
                         key={item.field}
                         state={getItemState(item.field)}
                       >
-                        <DragHandle />
-                        <span>{item.name}</span>
-                        {!getItemState(item.field) && (
-                          <ShowWrap style={{ marginLeft: 'auto' }}>
-                            <IconFont
-                              style={{
-                                fontSize: 16,
-                                color: 'var(--neutral-n2)',
-                              }}
-                              type="close"
-                              onClick={() => del(item.field)}
-                            />
-                          </ShowWrap>
-                        )}
+                        <DragHandle>
+                          <DragItem>
+                            <div>
+                              <IconFont
+                                type="move"
+                                style={{
+                                  fontSize: 16,
+                                  cursor: 'pointer',
+                                  color: 'var(--neutral-n3)',
+                                  marginRight: 12,
+                                }}
+                              />
+                              <span>{item.name}</span>
+                            </div>
+                            {!getItemState(item.field) && (
+                              <ShowWrap style={{ marginLeft: 'auto' }}>
+                                <IconFont
+                                  style={{
+                                    fontSize: 16,
+                                    color: 'var(--neutral-n2)',
+                                  }}
+                                  type="close"
+                                  onClick={() => del(item.field)}
+                                />
+                              </ShowWrap>
+                            )}
+                          </DragItem>
+                        </DragHandle>
                       </CheckedItem>
                     </SortItemLi>
                   )

@@ -4,20 +4,19 @@
 import { Space, Menu, message } from 'antd'
 import styled from '@emotion/styled'
 import { getIsPermission, getParamsData } from '@/tools/index'
-import { DividerWrap, HasIconMenu, HoverWrap } from '../StyleCommon'
 import { useTranslation } from 'react-i18next'
-import IconFont from '../IconFont'
-import DropDownMenu from '../DropDownMenu'
 import { useState } from 'react'
 import { useDispatch, useSelector } from '@store/index'
-import ViewPort from '../ViewPort'
 import { useLocation, useSearchParams } from 'react-router-dom'
-import ScreenMinHover from '../ScreenMinHover'
-import { getMessage } from '../Message'
 import SetShowField from './SetShowField'
 import SaveAsViewModal from './SaveAsViewModal'
 import { openShareModel } from '@store/sprintKanBan/sprintKanban.thunk'
 import ShareModal from './ShareModal'
+import { DividerWrap, HasIconMenu, HoverWrap } from '@/components/StyleCommon'
+import { getMessage } from '@/components/Message'
+import ScreenMinHover from '@/components/ScreenMinHover'
+import IconFont from '@/components/IconFont'
+import DropDownMenu from '@/components/DropDownMenu'
 
 interface Props {
   onChangeFilter?(): void
@@ -37,7 +36,7 @@ const SpaceWrap = styled(Space)({
   },
 })
 
-const KanBanOperation = (props: Props) => {
+const KanBanBtnsArea = (props: Props) => {
   const [t] = useTranslation()
   const location = useLocation()
   const [searchParams] = useSearchParams()
@@ -211,4 +210,4 @@ const KanBanOperation = (props: Props) => {
   )
 }
 
-export default KanBanOperation
+export default KanBanBtnsArea

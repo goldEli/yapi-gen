@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 type SliceState = {
-  sortByGroupOptions?: Model.SprintKanBan.ViewItem[]
+  guideVisible: Model.SprintKanBan.guideVisible
+  sortByGroupOptions?: Model.SprintKanBan.GroupInfoItem[]
   sortByRowAndStatusOptions?: Model.SprintKanBan.ViewItem[]
   sortByView?: Model.SprintKanBan.ViewItem[]
   saveAsViewModelInfo: {
@@ -31,6 +32,7 @@ const initialState: SliceState = {
     { key: '3', value: '重点关注', check: false },
     { key: '4', value: '进度跟踪', check: false },
   ],
+  guideVisible: true,
   saveAsViewModelInfo: {
     visible: false,
   },
@@ -43,6 +45,12 @@ const slice = createSlice({
   name: 'sprintKanBan',
   initialState,
   reducers: {
+    onChangeGuideVisible(
+      state,
+      action: PayloadAction<SliceState['guideVisible']>,
+    ) {
+      state.guideVisible = action.payload
+    },
     setShareModelInfo(
       state,
       action: PayloadAction<SliceState['shareModelInfo']>,
@@ -121,6 +129,7 @@ export const {
   onChangeSortByGroupOptions,
   onChangeSortByRowAndStatusOptions,
   onChangeSortByView,
+  onChangeGuideVisible,
   setSaveAsViewModelInfo,
   setShareModelInfo,
 } = slice.actions

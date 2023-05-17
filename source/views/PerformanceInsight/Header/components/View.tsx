@@ -98,13 +98,14 @@ const View = () => {
       },
     ])
   }, [])
-  const onOpenChange: MenuProps['onClick'] = e => {
+  const onOpenChange: MenuProps['onClick'] = (e: { key: string }) => {
     if (e.key === 'first') {
       setValue({
         title: '系统视图',
         value: 'all',
       })
     } else if (e.key === 'last') {
+      setIsOpen(false)
       setDialogItem({ name: '' })
       setDialogTitle('新建视图')
       setIsVisible(true)

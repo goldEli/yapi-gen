@@ -36,7 +36,11 @@ const CheckedItem = styled.div({
   alignItems: 'center',
   height: 40,
   borderRadius: 4,
-  padding: '  0 16px',
+  padding: '0 16px',
+  cursor: 'pointer',
+  'div: first-child': {
+    width: '100%',
+  },
   '&: hover': {
     background: 'var(--hover-d1)',
     [ShowWrap.toString()]: {
@@ -79,6 +83,17 @@ const Right = styled.div`
 const ItemWrap = styled.div`
   margin-bottom: 24px;
 `
+
+const DragItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  div {
+    display: flex;
+    align-items: center;
+  }
+`
+
 type OptionalFeldProps = {
   plainOptions: {
     labelTxt: string
@@ -111,17 +126,7 @@ type OptionalFeldProps = {
   onClose(): void
   isVisible: boolean
 }
-const DragHandle = sortableHandle(() => (
-  <IconFont
-    type="move"
-    style={{
-      fontSize: 16,
-      cursor: 'pointer',
-      color: 'var(--neutral-n3)',
-      marginRight: 12,
-    }}
-  />
-))
+const DragHandle = sortableHandle((props: any) => <div {...props} />)
 
 const SortContainer = sortableContainer<any>((props: any) => <div {...props} />)
 
@@ -390,17 +395,40 @@ export const OptionalFeld = (props: OptionalFeldProps) => {
                 index={idx}
               >
                 <CheckedItem key={item?.value}>
-                  <DragHandle />
-                  <span>{item?.labelTxt}</span>
-                  {item?.value !== 'name' && (
-                    <ShowWrap style={{ marginLeft: 'auto' }}>
-                      <IconFont
-                        style={{ fontSize: 16, color: 'var(--neutral-n2)' }}
-                        type="close"
-                        onClick={() => del(item?.value)}
-                      />
-                    </ShowWrap>
-                  )}
+                  <DragHandle>
+                    <DragItem>
+                      <div>
+                        <IconFont
+                          type="move"
+                          style={{
+                            fontSize: 16,
+                            cursor: 'pointer',
+                            color: 'var(--neutral-n3)',
+                            marginRight: 12,
+                          }}
+                        />
+                        <span
+                          style={{
+                            color:
+                              item?.value === 'name'
+                                ? 'var(--neutral-n4)'
+                                : 'var(--neutral-n1-d2)',
+                          }}
+                        >
+                          {item?.labelTxt}
+                        </span>
+                      </div>
+                      {item?.value !== 'name' && (
+                        <ShowWrap style={{ marginLeft: 'auto' }}>
+                          <IconFont
+                            style={{ fontSize: 16, color: 'var(--neutral-n2)' }}
+                            type="close"
+                            onClick={() => del(item?.value)}
+                          />
+                        </ShowWrap>
+                      )}
+                    </DragItem>
+                  </DragHandle>
                 </CheckedItem>
               </SortItemLi>
             ))}
