@@ -15,6 +15,7 @@ import { useLocation, useSearchParams } from 'react-router-dom'
 import ScreenMinHover from '../ScreenMinHover'
 import { getMessage } from '../Message'
 import SetShowField from './SetShowField'
+import SaveAsViewModal from './SaveAsViewModal'
 
 interface Props {
   onChangeFilter?(): void
@@ -195,6 +196,7 @@ const KanBanOperation = (props: Props) => {
       >
         <div>{t('common.tableFieldSet')}</div>
       </DropDownMenu>
+      <SaveAsViewModal />
     </SpaceWrap>
   )
 }

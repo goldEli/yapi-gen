@@ -73,28 +73,27 @@ const ProjectDetailSide = () => {
     },
     {
       label: '通知配置',
-      icon: <CommonIconFont type="settings" size={18} />,
+      icon: <CommonIconFont type="bell" size={18} />,
       path: '/SprintProjectManagement/Setting',
       isPermission: true,
       key: 'ProjectNotify',
     },
     {
       label: '事务类型',
-      icon: <CommonIconFont type="file-text" size={18} />,
+      icon: <CommonIconFont type="selections" size={18} />,
       path: '/SprintProjectManagement/Setting',
       isPermission: true,
       key: 'ProjectAffair',
     },
     {
       label: 'Kanban配置',
-      icon: <CommonIconFont type="file-text" size={18} />,
+      icon: <CommonIconFont type="layout" size={18} />,
       path: '/SprintProjectManagement/Setting',
       isPermission: true,
       key: '2',
       children: [
         {
           label: '列与状态',
-          icon: <CommonIconFont type="file-text" size={18} />,
           path: '/SprintProjectManagement/Setting',
           isPermission: true,
           key: 'ProjectKanBan',
@@ -103,7 +102,7 @@ const ProjectDetailSide = () => {
     },
     {
       label: '首页配置',
-      icon: <CommonIconFont type="file-text" size={18} />,
+      icon: <CommonIconFont type="settings" size={18} />,
       path: '/SprintProjectManagement/Setting',
       isPermission: true,
       key: 'ProjectHome',
@@ -200,16 +199,18 @@ const ProjectDetailSide = () => {
                 ))
               )}
             </MenuBox>
-            <SideFooter onClick={() => onSprintProjectSetting(true)}>
-              <div>
-                <CommonIconFont
-                  type="settings"
-                  color="var(--neutral-n3)"
-                  size={18}
-                />
-                <div>{t('project.projectSet')}</div>
-              </div>
-            </SideFooter>
+            {pathname !== '/SprintProjectManagement/Setting' && (
+              <SideFooter onClick={() => onSprintProjectSetting(true)}>
+                <div>
+                  <CommonIconFont
+                    type="settings"
+                    color="var(--neutral-n3)"
+                    size={18}
+                  />
+                  <div>{t('project.projectSet')}</div>
+                </div>
+              </SideFooter>
+            )}
           </WrapDetail>
         )}
       {(pathname === '/SprintProjectManagement/DemandSetting' ||
