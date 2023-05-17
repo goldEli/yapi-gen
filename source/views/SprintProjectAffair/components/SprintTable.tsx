@@ -34,7 +34,6 @@ const Content = styled.div`
 
 interface Props {
   data: any
-  onChangeVisible(e: any, item: any): void
   onDelete(item: any): void
   onChangePageNavigation?(item: any): void
   onChangeRow?(): void
