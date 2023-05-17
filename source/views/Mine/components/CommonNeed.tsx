@@ -155,7 +155,6 @@ const CommonNeed = (props: any) => {
   const { isUpdateCreate } = useSelector(store => store.mine)
   const { projectInfo } = useSelector(store => store.project)
   const [isDelVisible, setIsDelVisible] = useState(false)
-  const [isVisible, setIsVisible] = useState(false)
   const [isMany, setIsMany] = useState(false)
   const [operationItem, setOperationItem] = useState<any>({})
   const [projectId, setProjectId] = useState<any>()
@@ -336,6 +335,7 @@ const CommonNeed = (props: any) => {
     plainOptions3,
     projectId: props.id,
     onClickItem,
+    projectType: projectInfo.projectType,
   })
 
   const selectColum: any = useMemo(() => {
