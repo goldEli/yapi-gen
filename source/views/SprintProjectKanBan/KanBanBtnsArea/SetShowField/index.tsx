@@ -7,9 +7,9 @@ import { setUserPreferenceConfig } from '@store/user'
 import { Menu, message } from 'antd'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import CommonIconFont from '../../CommonIconFont'
-import IconFont from '../../IconFont'
-import { getMessage } from '../../Message'
+import { getMessage } from '@/components/Message'
+import IconFont from '@/components/IconFont'
+import CommonIconFont from '@/components/CommonIconFont'
 
 const ChangeItem = styled.div<{ isActive?: boolean; height?: number }>`
   width: 100%;

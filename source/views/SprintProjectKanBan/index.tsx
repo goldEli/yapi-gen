@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 import React from 'react'
 import Operation from './Operation'
 import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
+import KanBan from './KanBan'
 
 interface IProps {}
 const SprintProjectKanBanBox = styled.div`
@@ -42,6 +43,7 @@ const SprintProjectKanBan: React.FC<IProps> = props => {
           dataLength={2}
         />
       </ToolBarBox>
+      <KanBan />
     </SprintProjectKanBanBox>
   )
 }
