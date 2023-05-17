@@ -6,18 +6,17 @@ import KanBan from './KanBan'
 
 interface IProps {}
 const SprintProjectKanBanBox = styled.div`
-  padding-top: 20px;
   width: 100%;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  padding: 20px;
 `
 
 const ToolBarBox = styled.div`
   width: 100%;
   box-sizing: border-box;
-  padding: 0 20px;
   display: flex;
   justify-content: space-between;
   /* position: relative; */

@@ -11,7 +11,6 @@ const Container = styled.div`
   flex-direction: column;
   width: 100%;
   box-sizing: border-box;
-  padding: 20px;
 `
 
 const KanBan = () => {
