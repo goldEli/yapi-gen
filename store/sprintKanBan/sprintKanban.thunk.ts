@@ -6,6 +6,9 @@ import { getMessage } from '@/components/Message'
 
 const name = 'sprintKanBan'
 
+// 属性看板
+export const onRefreshKanBan = () => async (dispatch: AppDispatch) => {}
+
 export const openSaveAsViewModel =
   (key?: Model.SprintKanBan.ViewItem['key']) =>
   async (dispatch: AppDispatch) => {

@@ -22,7 +22,10 @@ import {
   onChangeSortByView,
 } from '@store/sprintKanBan'
 import SelectOptions from '@/components/SelectOptions'
-import { openSaveAsViewModel } from '@store/sprintKanBan/sprintKanban.thunk'
+import {
+  onRefreshKanBan,
+  openSaveAsViewModel,
+} from '@store/sprintKanBan/sprintKanban.thunk'
 
 const OperationWrap = styled.div({
   minHeight: 32,
@@ -318,7 +321,9 @@ const Operation = (props: Props) => {
           <KanBanOperation
             onChangeFilter={onChangeFilter}
             onChangeGrid={props.onChangeGrid}
-            onRefresh={props.onRefresh}
+            onRefresh={() => {
+              dispatch(onRefreshKanBan())
+            }}
             isGrid={props.isGrid}
             filterState={filterState}
             settingState={props.settingState}
