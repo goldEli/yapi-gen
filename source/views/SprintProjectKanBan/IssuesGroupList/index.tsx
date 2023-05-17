@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from '@emotion/styled'
 import IssuesGroup from '../IssuesGroup'
 
 interface IssuesGroupListProps {
