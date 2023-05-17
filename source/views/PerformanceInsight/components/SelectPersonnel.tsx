@@ -7,7 +7,7 @@ import {
   Line,
   ItemMain1,
   TypeBox,
-  MainStyle,
+  MainStyle1,
   UserInfo,
   UserMsg,
   BtnStyle,
@@ -16,11 +16,14 @@ import {
   ItemMain,
   RowItem,
   Row,
+  MainWrap,
+  Item,
 } from './style'
 interface Props {
   ids: number[]
   visible: boolean
   id: number
+  onCancel: () => void
 }
 interface UserInfo {
   user: {
@@ -147,48 +150,71 @@ const WorkRecords = (props: WorkRecordsTyle) => {
   )
 }
 const Main = (props: UserInfo) => {
+  const [type, setType] = useState<number>(0)
+  const onChangeIdx = (num: number) => {
+    setType(num)
+  }
   return (
     <>
-      <MainStyle>
+      <MainStyle1>
         <UserMsg>
           <CommonUserAvatar size="large" avatar={props.user.avatar} />
           <UserInfo>
             <div> 李四（xxxxxx@ifun.com）</div>
-            <div className="msg">管理员</div>
+            <div className="msg">管理员1</div>
           </UserInfo>
         </UserMsg>
         <BtnStyle
         // onClick={() => setIsVisible(true)}
         >
+          {/* 快捷操作，打开创建事务的弹窗 */}
           <span className="text">分配事务</span>
         </BtnStyle>
-      </MainStyle>
-      {/* <Work data={[
-                {
-                    type: '进行中', isOpen: false, list: [{ title: '123', msg: '999', time: '2022-19-10' }
-                    ]
-                },
-                {
-                    type: '已逾期', isOpen: false, list: [{ title: '123', msg: '999', time: '2022-19-10' }
-                    ]
-                }
-            ]} /> */}
-      <WorkRecords
-        data={[
-          {
-            type: '进行中',
-            list: [{ title: '123', msg: '999', time: '2022-19-10' }],
-          },
-          {
-            type: '已逾期',
-            list: [{ title: '123', msg: '999', time: '2022-19-10' }],
-          },
-        ]}
-        list={[
-          { title: '123', msg: '999', time: '2022-19-10' },
-          { title: '1235555555', msg: '995555559', time: '2022-19-10' },
-        ]}
-      />
+      </MainStyle1>
+      <MainWrap size={32}>
+        <Item onClick={() => onChangeIdx(0)} activeIdx={type === 0}>
+          <span>工作记录</span>
+        </Item>
+        <Item onClick={() => onChangeIdx(1)} activeIdx={type === 1}>
+          <span>他创建的事务</span>
+        </Item>
+        <Item onClick={() => onChangeIdx(2)} activeIdx={type === 2}>
+          <span>分配给他的事务</span>
+        </Item>
+      </MainWrap>
+      {type === 0 ? (
+        <WorkRecords
+          data={[
+            {
+              type: '进行中',
+              list: [{ title: '123', msg: '999', time: '2022-19-10' }],
+            },
+            {
+              type: '已逾期',
+              list: [{ title: '123', msg: '999', time: '2022-19-10' }],
+            },
+          ]}
+          list={[
+            { title: '123', msg: '999', time: '2022-19-10' },
+            { title: '1235555555', msg: '995555559', time: '2022-19-10' },
+          ]}
+        />
+      ) : (
+        <Work
+          data={[
+            {
+              type: '进行中',
+              isOpen: false,
+              list: [{ title: '123', msg: '999', time: '2022-19-10' }],
+            },
+            {
+              type: '已逾期',
+              isOpen: false,
+              list: [{ title: '123', msg: '999', time: '2022-19-10' }],
+            },
+          ]}
+        />
+      )}
     </>
   )
 }
@@ -197,7 +223,7 @@ const SelectPersonnel = (props: Props) => {
     <Detail
       children={
         <>
-          <DetailHeader ids={props.ids} />
+          <DetailHeader ids={props.ids} onCancel={() => props.onCancel()} />
           <Main user={{ avatar: '123', name: ['1'] }} />
         </>
       }

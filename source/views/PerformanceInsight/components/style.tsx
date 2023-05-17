@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import { Space } from 'antd'
 import exp from 'constants'
 
 export const HeaderStyle = styled.div`
@@ -66,11 +67,14 @@ export const DownWrap = styled(NextWrap)<{ isOnly?: boolean }>`
   border-top-left-radius: ${props => (props.isOnly ? '6' : '0')}px;
   border-bottom-left-radius: ${props => (props.isOnly ? '6' : '0')}px;
 `
-export const MainStyle = styled.div`
+export const MainStyle1 = styled.div`
   padding: 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+`
+export const MainStyle = styled.div`
+  padding: 24px;
 `
 export const UserMsg = styled.div`
   display: flex;
@@ -135,7 +139,7 @@ export const TitleType = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0 24px;
+  margin: 0 24px 16px 24px;
   height: 28px;
   padding: 0 8px;
   border-radius: 4px;
@@ -151,7 +155,7 @@ export const ItemMain1 = styled.div`
 `
 export const RowItem = styled.div`
   display: flex;
-  margin: 16px 24px 0 24px;
+  margin: 0 24px 16px 24px;
   flex-direction: column;
   .title {
     font-size: 14px;
@@ -178,10 +182,60 @@ export const TypeBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0 24px;
+  margin: 0 24px 16px 24px;
 `
 export const Line = styled.div`
   width: 45%;
   height: 1px;
   border-bottom: 1px dashed rgba(0, 0, 0, 0.12);
 `
+export const MainWrap = styled(Space)({
+  borderRadius: 4,
+  background: 'white',
+  width: 'calc(100% - 48px)',
+  margin: '0 24px 24px 24px;',
+  position: 'relative',
+  borderBottom: '1px solid var(--neutral-n6-d1)',
+})
+
+export const Item = styled.div<{ activeIdx: boolean }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    cursor: 'pointer',
+    span: {
+      fontSize: 14,
+      fontWeight: 400,
+      marginRight: 4,
+      color: 'var(--neutral-n2) !important',
+      display: 'inline-block',
+      height: 50,
+      lineHeight: '50px',
+    },
+    div: {
+      minWidth: 20,
+      height: 20,
+      padding: '0 6px',
+      borderRadius: 10,
+      fontSize: 12,
+      color: 'var(--primary-d2)',
+      // background: 'var(--neutral-n1-d1)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  },
+  ({ activeIdx }) => ({
+    span: {
+      color: activeIdx ? 'var(--primary-d2) !important' : 'var(--neutral-n2)',
+      borderBottom: activeIdx
+        ? '2px solid var(--primary-d2)'
+        : '2px solid white',
+      fontFamily: activeIdx ? 'SiYuanMedium' : '',
+    },
+    div: {
+      color: activeIdx ? 'white' : 'var(--primary-d2)',
+      background: activeIdx ? 'var(--primary-d2)' : 'rgba(102, 136, 255, 0.10)',
+    },
+  }),
+)

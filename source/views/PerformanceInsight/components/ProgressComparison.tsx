@@ -223,9 +223,19 @@ const ProgressComparison = () => {
         />
       </TableStyle>
       {/* 新增工作项 */}
-      <WorkItem visible={visible} ids={[1, 2, 3]} id={2} />
+      <WorkItem
+        visible={visible}
+        ids={[1, 2, 3]}
+        id={2}
+        onCancel={() => setVisible(false)}
+      />
       {/* 选择人员 */}
-      <SelectPersonnel visible={isvisible} ids={[1, 2, 3]} id={2} />
+      <SelectPersonnel
+        visible={isvisible}
+        ids={[1, 2, 3]}
+        id={2}
+        onCancel={() => setIsvisible(false)}
+      />
     </>
   )
 }

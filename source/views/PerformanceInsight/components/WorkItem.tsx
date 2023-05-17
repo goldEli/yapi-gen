@@ -18,6 +18,7 @@ interface Props {
   visible: boolean
   id: number
   ids: number[]
+  onCancel: () => void
 }
 interface UserInfo {
   user: {
@@ -117,7 +118,7 @@ const WorkItem = (props: Props) => {
       <Detail
         children={
           <>
-            <DetailHeader ids={props.ids} />
+            <DetailHeader ids={props.ids} onCancel={() => props.onCancel()} />
             <Main user={{ avatar: '', name: ['1', '2'] }} />
           </>
         }

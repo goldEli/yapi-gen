@@ -8,11 +8,12 @@ import {
   UpWrap,
   DownWrap,
 } from '../style'
-const DetailHeader = (props: { ids: number[] }) => {
+const DetailHeader = (props: { ids: number[]; onCancel: () => void }) => {
   const [currentIndex, setCurrentIndex] = useState(4)
   const onCancel = () => {
     // 获取当前需求的下标， 用作上一下一切换
     //  setCurrentIndex((ids || []).findIndex((i: any) => i === info.id))
+    props.onCancel()
   }
   return (
     <HeaderStyle>
