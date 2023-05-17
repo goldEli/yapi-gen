@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as services from '@/services'
 import { AppDispatch, store } from '@store/index'
-import { setSaveAsViewModelInfo } from '.'
+import { setSaveAsViewModelInfo, setShareModelInfo } from '.'
 import { getMessage } from '@/components/Message'
 
 const name = 'sprintKanBan'
@@ -28,15 +28,17 @@ export const onSaveAsViewModel =
     dispatch(closeSaveAsViewModel())
   }
 
+// 打开分享弹窗
 export const openShareModel = () => async (dispatch: AppDispatch) => {
-  dispatch(setSaveAsViewModelInfo({ visible: true }))
+  dispatch(setShareModelInfo({ visible: true }))
 }
 
+// 关闭分享弹窗
 export const closeShareModel = () => async (dispatch: AppDispatch) => {
-  dispatch(setSaveAsViewModelInfo({ visible: false }))
+  dispatch(setShareModelInfo({ visible: false }))
 }
 
-// 保存视图
+// 分享
 export const onShareModel = () => async (dispatch: AppDispatch) => {
   // TODO
 
