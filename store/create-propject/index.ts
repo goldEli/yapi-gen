@@ -1,6 +1,6 @@
 import { message } from 'antd'
 import { createSlice } from '@reduxjs/toolkit'
-import { postCreate, postEditCreate } from './thunks'
+import { postCreate, postEditCreate, getProjectRole } from './thunks'
 
 type SliceState = {
   createVisible: boolean
@@ -9,6 +9,7 @@ type SliceState = {
   groupId: any
   typeId: any
   projectType: string
+  projectRoleList?: any
 }
 
 const slice = createSlice({
@@ -54,6 +55,9 @@ const slice = createSlice({
           state.createVisible = false
           state.isEditId = ''
         }
+      })
+      .addCase(getProjectRole.fulfilled, (state, action) => {
+        state.projectRoleList = state
       })
   },
 })

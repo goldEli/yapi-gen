@@ -126,6 +126,18 @@ const routes = [
             element: lazy(() => import('@/views/Iteration')),
           },
           {
+            path: 'KanBan',
+            element: lazy(() => import('@/views/IterationKanBan')),
+          },
+          {
+            path: 'IterationReport',
+            element: lazy(() => import('@/views/IterationReport')),
+          },
+          {
+            path: 'Defect',
+            element: lazy(() => import('@/views/IterationDefect')),
+          },
+          {
             path: 'ProjectSetting',
             element: lazy(() => import('@/views/ProjectSetting')),
           },

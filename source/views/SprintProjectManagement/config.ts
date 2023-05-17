@@ -20,7 +20,7 @@ export const menuList = [
 
   {
     name: '报表',
-    icon: 'interation-2',
+    icon: 'pie-chart-02',
     path: '/SprintProjectManagement/SprintReport',
     isPermission: true,
   },
