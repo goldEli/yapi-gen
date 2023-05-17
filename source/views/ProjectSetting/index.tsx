@@ -6,6 +6,8 @@ import styled from '@emotion/styled'
 import ProjectInfo from './components/ProjectInfo'
 import ProjectMember from './components/ProjectMember'
 import ProjectSet from './components/ProjectSet'
+import KanBanSettings from './components/KanBanSetting'
+import HomeSettings from './components/HomeSetting'
 import DemandSetting from '../DemandSetting'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -81,6 +83,18 @@ const Setting = () => {
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
         String(i.identity).includes('b/project/story_config'),
       ).length,
+    },
+    {
+      name: 'Kanban配置',
+      icon: 'settings',
+      content: <KanBanSettings />,
+      isPermission: true,
+    },
+    {
+      name: '首页配置',
+      icon: 'settings',
+      content: <HomeSettings />,
+      isPermission: true,
     },
   ]
   useEffect(() => {

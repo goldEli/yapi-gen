@@ -50,7 +50,7 @@ const DrawerComponent = (props: DrawerComponentProps) => {
     companyId: '',
     companyUserId: '',
   })
-
+  console.log('currentMenu', currentMenu)
   // 点击菜单
   const onChangeCurrentMenu = (item: any) => {
     props.onChange(false)
@@ -294,7 +294,7 @@ const HeaderLeft = () => {
     }
   }, [menuPermission, routerPath])
 
-  const showTopNav = useMemo(() => {
+  const showTopNav: any = useMemo(() => {
     return (
       currentMenu?.children &&
       currentMenu?.children.length > 0 &&

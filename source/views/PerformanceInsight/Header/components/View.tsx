@@ -98,7 +98,7 @@ const View = () => {
       },
     ])
   }, [])
-  const onOpenChange: MenuProps['onClick'] = e => {
+  const onOpenChange: MenuProps['onClick'] = (e: { key: string }) => {
     if (e.key === 'first') {
       setValue({
         title: '系统视图',

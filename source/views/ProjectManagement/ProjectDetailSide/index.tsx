@@ -12,6 +12,7 @@ import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import DemandSettingSide from '../DemandSettingSide'
+import { Button, Menu } from 'antd'
 import {
   AllWrap,
   MenuBox,
@@ -73,51 +74,127 @@ const ProjectDetailSide = () => {
               String(i.group_name).includes('迭代'),
             ).length,
     },
+    {
+      name: 'KanBan',
+      icon: 'layout',
+      path: '/ProjectManagement/KanBan',
+      isPermission: true,
+    },
+    {
+      name: '报表',
+      icon: 'interation-2',
+      path: '/ProjectManagement/IterationReport',
+      isPermission: true,
+    },
+    {
+      name: '缺陷',
+      icon: 'interation-2',
+      path: '/ProjectManagement/Defect',
+      isPermission: true,
+    },
   ]
 
   const sideList = [
+    // {
+    //   name: t('project.projectInformation'),
+    //   icon: 'file-text',
+    //   path: '/ProjectManagement/ProjectSetting',
+    //   isPermission: true,
+    //   key: 'info',
+    // },
+    // {
+    //   name: t('project.projectMember'),
+    //   icon: 'team',
+    //   path: '/ProjectManagement/ProjectSetting',
+    //   isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+    //     String(i.identity).includes('b/project/member'),
+    //   ).length,
+    //   key: 'member',
+    // },
+    // {
+    //   name: t('project.projectPermissionGroup'),
+    //   icon: 'lock',
+    //   path: '/ProjectManagement/ProjectSetting',
+    //   isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+    //     String(i.identity).includes('b/project/role'),
+    //   ).length,
+    //   key: 'permission',
+    // },
+    // {
+    //   name: t('newlyAdd.demandSet'),
+    //   icon: 'settings',
+    //   path: '/ProjectManagement/ProjectSetting',
+    //   isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+    //     String(i.identity).includes('b/project/story_config'),
+    //   ).length,
+    //   key: 'main',
+    // },
+    // {
+    //   name: t('notification_settings'),
+    //   icon: 'bell',
+    //   path: '/ProjectManagement/ProjectSetting',
+    //   isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
+    //     String(i.identity).includes('b/project/notification'),
+    //   ).length,
+    //   key: 'note',
+    // },
+
     {
-      name: t('project.projectInformation'),
-      icon: 'file-text',
+      label: '项目信息',
+      icon: <CommonIconFont type="file-text" size={18} />,
       path: '/ProjectManagement/ProjectSetting',
       isPermission: true,
       key: 'info',
     },
     {
-      name: t('project.projectMember'),
-      icon: 'team',
+      label: '项目成员',
+      icon: <CommonIconFont type="team" size={18} />,
       path: '/ProjectManagement/ProjectSetting',
-      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-        String(i.identity).includes('b/project/member'),
-      ).length,
+      isPermission: true,
       key: 'member',
     },
     {
-      name: t('project.projectPermissionGroup'),
-      icon: 'lock',
+      label: '项目角色',
+      icon: <CommonIconFont type="lock" size={18} />,
       path: '/ProjectManagement/ProjectSetting',
-      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-        String(i.identity).includes('b/project/role'),
-      ).length,
+      isPermission: true,
       key: 'permission',
     },
     {
-      name: t('newlyAdd.demandSet'),
-      icon: 'settings',
+      label: '通知配置',
+      icon: <CommonIconFont type="bell" size={18} />,
       path: '/ProjectManagement/ProjectSetting',
-      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-        String(i.identity).includes('b/project/story_config'),
-      ).length,
-      key: 'main',
+      isPermission: true,
+      key: 'note',
     },
     {
-      name: t('notification_settings'),
-      icon: 'bell',
+      label: '类型配置',
+      icon: <CommonIconFont type="selections" size={18} />,
       path: '/ProjectManagement/ProjectSetting',
-      isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
-        String(i.identity).includes('b/project/notification'),
-      ).length,
-      key: 'note',
+      isPermission: true,
+      key: 'ProjectAffair',
+    },
+    {
+      label: 'Kanban配置',
+      icon: <CommonIconFont type="layout" size={18} />,
+      path: '/ProjectManagement/ProjectSetting',
+      isPermission: true,
+      key: '2',
+      children: [
+        {
+          label: '列与状态',
+          path: '/ProjectManagement/ProjectSetting',
+          isPermission: true,
+          key: 'ProjectKanBan',
+        },
+      ],
+    },
+    {
+      label: '首页配置',
+      icon: <CommonIconFont type="settings" size={18} />,
+      path: '/ProjectManagement/ProjectSetting',
+      isPermission: true,
+      key: 'ProjectHome',
     },
   ]
 
@@ -200,6 +277,31 @@ const ProjectDetailSide = () => {
     }
   }
 
+  const projectSettingsClick = ({ item, key }: any) => {
+    // setSelectedKeys(key)
+    console.log(item, key)
+    const maps: any = {
+      info: 0,
+      member: 1,
+      permission: 2,
+      note: 3,
+      ProjectAffair: 4,
+      ProjectKanBan: 5,
+      ProjectHome: 6,
+    }
+    const params = encryptPhp(
+      JSON.stringify({
+        type: maps[key],
+        id: projectInfo.id,
+        pageIdx: key,
+      }),
+    )
+    if (key === 'ProjectAffair') {
+      onChangeSetCategory()
+      return
+    }
+    navigate(`${item.props.path}?data=${params}`)
+  }
   const onCategoryBack = () => {
     const params = encryptPhp(
       JSON.stringify({
@@ -293,7 +395,7 @@ const ProjectDetailSide = () => {
         </Back>
         <Provider />
         <MenuBox>
-          {sideList.map((i: any, index: number) => (
+          {/* {sideList.map((i: any, index: number) => (
             <MenuItem
               key={i.icon}
               isActive={paramsData?.type === index}
@@ -307,7 +409,16 @@ const ProjectDetailSide = () => {
               />
               <div>{i.name}</div>
             </MenuItem>
-          ))}
+          ))} */}
+          {
+            <Menu
+              items={sideList}
+              onClick={projectSettingsClick}
+              mode="inline"
+              style={{ background: 'transparent' }}
+              //  selectedKeys={selectedKeys}
+            ></Menu>
+          }
         </MenuBox>
       </WrapSet>
 

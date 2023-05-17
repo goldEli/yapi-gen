@@ -36,8 +36,9 @@ const HomeSetting: React.FC<IProps> = props => {
           }}
           value={value}
         >
-          <Radio value={1}>事务列表</Radio>
-          <Radio value={2}>冲刺</Radio>
+          <Radio value={1}>需求列表</Radio>
+          <Radio value={2}>缺陷列表</Radio>
+          <Radio value={5}>迭代</Radio>
           <Radio value={3}>Kanban</Radio>
           <Radio value={4}>报表</Radio>
         </Radio.Group>

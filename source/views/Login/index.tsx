@@ -94,7 +94,7 @@ const Page = () => {
     z-index: 99;
     right: 0px;
     .slick-dots {
-      margin-left: 45%;
+      margin-left: 40%;
       width: 68px;
       height: 24px;
       background: rgba(0, 0, 0, 0.2);
