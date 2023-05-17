@@ -15,6 +15,7 @@ import { useLocation, useSearchParams } from 'react-router-dom'
 import ScreenMinHover from '../ScreenMinHover'
 import { getMessage } from '../Message'
 import SetShowField from './SetShowField'
+import SaveAsViewModal from './SaveAsViewModal'
 
 interface Props {
   onChangeFilter?(): void
@@ -136,10 +137,10 @@ const KanBanOperation = (props: Props) => {
       <ScreenMinHover label={'分享'} icon="share" onClick={() => {}} />
       <DividerWrap type="vertical" />
       {/* 视图 */}
-      <>
+      {/* <>
         <ViewPort pid={projectId} />
         <DividerWrap type="vertical" />
-      </>
+      </> */}
 
       {/* <DropDownMenu
         isVisible={isVisible}
@@ -195,6 +196,7 @@ const KanBanOperation = (props: Props) => {
       >
         <div>{t('common.tableFieldSet')}</div>
       </DropDownMenu>
+      <SaveAsViewModal />
     </SpaceWrap>
   )
 }

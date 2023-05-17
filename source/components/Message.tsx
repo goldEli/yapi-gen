@@ -4,7 +4,7 @@ import CommonIconFont from './CommonIconFont'
 
 interface Props {
   msg: string
-  type: string
+  type: 'success' | 'warning' | 'error'
   num?: number
 }
 

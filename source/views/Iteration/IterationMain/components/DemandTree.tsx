@@ -19,13 +19,12 @@ import { ExpendedWrap } from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { OptionalFeld } from '@/components/OptionalFeld'
-import { useDynamicColumns } from '@/components/CreateProjectTableColum'
+import { useDynamicColumns } from '@/components/TableColumns/ProjectTableColumn'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { getIsPermission, getParamsData } from '@/tools'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
-import FloatBatch from '@/components/FloatBatch'
 import { useDispatch, useSelector } from '@store/index'
 import {
   getDemandList,
@@ -33,12 +32,13 @@ import {
   updatePriority,
 } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
-import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
-import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
+import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/DemandDropdownMenu'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ResizeTable from '@/components/ResizeTable'
 import CreateDemandButton from './CreateDemandButton'
 import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
 import { getMessage } from '@/components/Message'
+import FloatBatch from '@/components/BatchOperation/FloatBatch'
 
 const Content = styled.div({
   padding: '20px 12px 0 8px',

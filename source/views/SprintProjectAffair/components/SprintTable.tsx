@@ -4,12 +4,12 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-no-leaked-render */
 import { createRef, useEffect, useMemo, useState } from 'react'
-import { message, Menu, Table } from 'antd'
+import { Button, Menu, Table } from 'antd'
 import styled from '@emotion/styled'
 import { useSearchParams } from 'react-router-dom'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import { OptionalFeld } from '@/components/OptionalFeld'
-import { useDynamicColumns } from '@/components/CreateProjectTableColum'
+import { useDynamicColumns } from '@/components/TableColumns/ProjectTableColumn'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
 import { getIsPermission, getParamsData } from '@/tools'
@@ -20,12 +20,12 @@ import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
 import { updateDemandStatus, updatePriority } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
 import { saveSort, saveTitles } from '@store/view'
-import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { getMessage } from '@/components/Message'
 import { SprintOperationDropdownMenu } from './SprintOperationDropdownMenu'
 import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
-import FloatBatch from '@/components/FloatBatch'
+import FloatBatch from '@/components/BatchOperation/FloatBatch'
 
 const Content = styled.div`
   background: var(--neutral-white-d1);
@@ -71,6 +71,7 @@ const SprintTable = (props: Props) => {
   asyncSetTtile(`事务【${projectInfo.name}】`)
   const dispatch = useDispatch()
   const [openDemandDetail] = useOpenDemandDetail()
+  const [dataSource, setDataSource] = useState([])
 
   useEffect(() => {
     dispatch(
@@ -79,6 +80,10 @@ const SprintTable = (props: Props) => {
       }),
     )
   }, [orderKey, order])
+
+  useEffect(() => {
+    setDataSource(props.data?.list || [])
+  }, [props.data])
 
   useEffect(() => {
     if (tapSort) {
@@ -415,13 +420,19 @@ const SprintTable = (props: Props) => {
     dispatch(setFilterParamsModal(filterParams))
   }
 
+  const onCreate = (id: number) => {
+    const findIdx = dataSource.findIndex((i: any) => i.id === id)
+    console.log(findIdx)
+  }
+
   return (
     <Content>
+      <Button onClick={() => onCreate(1003271)}>添加子事务</Button>
       <ResizeTable
         isSpinning={props.isSpinning}
         dataWrapNormalHeight="calc(100% - 64px)"
         col={selectColum}
-        dataSource={props.data?.list}
+        dataSource={dataSource}
         rowSelection={
           !hasBatch &&
           ({

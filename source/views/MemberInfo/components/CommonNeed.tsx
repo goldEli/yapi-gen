@@ -25,7 +25,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { useTranslation } from 'react-i18next'
 import styled from '@emotion/styled'
 import NoData from '@/components/NoData'
-import { useDynamicColumns } from '@/components/CreateProjectTableColumInfo'
+import { useDynamicColumns } from '@/components/TableColumns/MineOrHisTableColumn'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import MoreDropdown from '@/components/MoreDropdown'
@@ -50,9 +50,9 @@ import {
 } from '@store/project'
 import { deleteDemand } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
-import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
+import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/DemandDropdownMenu'
 import SetShowField from '@/components/SetShowField/indedx'
-import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ResizeTable from '@/components/ResizeTable'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import { getMessage } from '@/components/Message'
@@ -172,7 +172,6 @@ const CommonNeed = (props: any) => {
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
   const [isDelVisible, setIsDelVisible] = useState(false)
-  const [isVisible, setIsVisible] = useState(false)
   const [isMany, setIsMany] = useState(
     !!props?.isMember && props?.type === 'abeyance',
   )
@@ -366,6 +365,7 @@ const CommonNeed = (props: any) => {
     plainOptions3,
     projectId: props.id,
     onClickItem,
+    projectType: projectInfo.projectType,
   })
 
   const selectColum: any = useMemo(() => {

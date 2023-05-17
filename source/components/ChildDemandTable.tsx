@@ -23,7 +23,7 @@ import NoData from '@/components/NoData'
 import IconFont from './IconFont'
 import { useSelector } from '@store/index'
 import { getDemandList } from '@/services/demand'
-import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import StateTag from './StateTag'
 import TableColorText from './TableColorText'
 

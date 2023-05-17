@@ -18,7 +18,7 @@ import {
 import IconFont from '@/components/IconFont'
 import { Menu, message, Space, Spin, Table } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
-import { useDynamicColumns } from '@/components/CreateProjectTableColumInfo'
+import { useDynamicColumns } from '@/components/TableColumns/MineOrHisTableColumn'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import TableFilter from '@/components/TableFilter'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -47,9 +47,9 @@ import {
 } from '@store/project'
 import { deleteDemand } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
-import { DemandOperationDropdownMenu } from '@/components/DemandComponent/DemandOperationDropdownMenu'
+import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/DemandDropdownMenu'
 import SetShowField from '@/components/SetShowField/indedx'
-import useOpenDemandDetail from '@/hooks/useOpenDemandDeatil'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import ResizeTable from '@/components/ResizeTable'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import { getMessage } from '@/components/Message'
@@ -155,7 +155,6 @@ const CommonNeed = (props: any) => {
   const { isUpdateCreate } = useSelector(store => store.mine)
   const { projectInfo } = useSelector(store => store.project)
   const [isDelVisible, setIsDelVisible] = useState(false)
-  const [isVisible, setIsVisible] = useState(false)
   const [isMany, setIsMany] = useState(false)
   const [operationItem, setOperationItem] = useState<any>({})
   const [projectId, setProjectId] = useState<any>()
@@ -336,6 +335,7 @@ const CommonNeed = (props: any) => {
     plainOptions3,
     projectId: props.id,
     onClickItem,
+    projectType: projectInfo.projectType,
   })
 
   const selectColum: any = useMemo(() => {

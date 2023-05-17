@@ -21,11 +21,11 @@ import { setFilterParams, setIsUpdateDemand } from '@store/demand'
 import { deleteDemand, getDemandList } from '@/services/demand'
 import ManageView from '@/components/ManageView'
 import CreateViewPort from '@/components/CreateViewPort'
-import DemandTable from '@/components/DemandComponent/DemandTable'
-import DemandTree from '@/components/DemandComponent/DemandTree'
 import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
 import { Content, DemandContent } from './style'
 import { getMessage } from '@/components/Message'
+import DemandTree from './components/DemandTree'
+import DemandTable from './components/DemandTable'
 
 const Right = styled.div<{ isShowLeft: boolean }>({
   width: '100%',
@@ -311,7 +311,7 @@ const DemandMain = (props: Props) => {
         onConfirm={onDeleteConfirm}
       />
       <CreateViewPort pid={projectId} />
-      <ManageView pid={projectId} />
+      <ManageView projectId={projectId} />
       <Content>
         <ProjectCommonOperation onInputSearch={onInputSearch} />
         <DemandContent>

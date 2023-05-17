@@ -9,17 +9,19 @@ import TableFilter from '@/components/TableFilter'
 import { useEffect, useRef, useState } from 'react'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
-import IconFont from '@/components/IconFont'
 import DeleteConfirm from '@/components/DeleteConfirm'
 // import ExportDemand from './ExportDemand'
 // import ImportDemand from './ImportDemand'
 import { useDispatch, useSelector } from '@store/index'
-import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
-import { setCreateCategory } from '@store/demand'
+
 import { saveScreen } from '@store/view'
-import CommonIconFont from '@/components/CommonIconFont'
 import KanBanOperation from '@/components/KanBanOperation'
-import SelectOptions from '../SelectOptions'
+import {
+  onChangeSortByGroupOptions,
+  onChangeSortByRowAndStatusOptions,
+  onChangeSortByView,
+} from '@store/sprintKanBan'
+import SelectOptions from '@/components/SelectOptions'
 
 const OperationWrap = styled.div({
   minHeight: 32,
@@ -48,40 +50,6 @@ const StickyWrap = styled.div({
   background: 'white',
 })
 
-const LiWrap = styled.div({
-  cursor: 'pointer',
-  padding: '0 16px',
-  width: '100%',
-  height: 32,
-  display: 'flex',
-  alignItems: 'center',
-  background: 'var(--neutral-white-d3)',
-  '&: hover': {
-    background: 'var(--hover-d3)',
-  },
-})
-
-const MoreItem = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  height: 32,
-  color: 'var(--neutral-n2)',
-  fontSize: 14,
-  fontWeight: 400,
-  cursor: 'pointer',
-  padding: '0 16px',
-  svg: {
-    color: 'var(--neutral-n3)',
-  },
-  '&: hover': {
-    color: 'var(--neutral-n1-d1)!important',
-    background: 'var(--hover-d3)',
-    svg: {
-      color: 'var(--neutral-n1-d1)!important',
-    },
-  },
-})
-
 interface Props {
   isGrid: any
   onChangeGrid(val: any): void
@@ -98,12 +66,10 @@ interface Props {
 }
 
 const Operation = (props: Props) => {
-  const [t, i18n] = useTranslation()
+  const [t] = useTranslation()
+  const { sortByGroupOptions, sortByRowAndStatusOptions, sortByView } =
+    useSelector(store => store.sprintKanBan)
 
-  const [isVisible, setIsVisible] = useState(false)
-  const [isVisibleMore, setIsVisibleMore] = useState(false)
-  const [isShowImport, setIsShowImport] = useState(false)
-  const [isShowExport, setIsShowExport] = useState(false)
   const [filterState, setFilterState] = useState(true)
   const [defaultValue, setDefaultValue] = useState({})
 
@@ -137,15 +103,15 @@ const Operation = (props: Props) => {
   const stickyWrapDom = useRef<HTMLDivElement>(null)
   const dispatch = useDispatch()
 
-  const hasImport = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/story/import',
-  )
+  // const hasImport = getIsPermission(
+  //   projectInfo?.projectPermissions,
+  //   'b/story/import',
+  // )
 
-  const hasExport = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/story/export',
-  )
+  // const hasExport = getIsPermission(
+  //   projectInfo?.projectPermissions,
+  //   'b/story/export',
+  // )
 
   const onFilterSearch = (e: any, customField: any) => {
     const params = {
@@ -236,74 +202,74 @@ const Operation = (props: Props) => {
     setFilterState(!filterState)
   }
 
-  const onChangeCategory = (e: any, item: any) => {
-    dispatch(setCreateCategory(item))
+  // const onChangeCategory = (e: any, item: any) => {
+  //   dispatch(setCreateCategory(item))
 
-    // 需求列表筛选参数赋值给 弹窗
-    dispatch(setFilterParamsModal(filterParams))
-    setTimeout(() => {
-      dispatch(
-        setAddWorkItemModal({
-          visible: true,
-          params: { projectId: projectInfo?.id },
-        }),
-      )
-      setIsVisible(false)
-    }, 0)
-  }
+  //   // 需求列表筛选参数赋值给 弹窗
+  //   dispatch(setFilterParamsModal(filterParams))
+  //   setTimeout(() => {
+  //     dispatch(
+  //       setAddWorkItemModal({
+  //         visible: true,
+  //         params: { projectId: projectInfo?.id },
+  //       }),
+  //     )
+  //     setIsVisible(false)
+  //   }, 0)
+  // }
 
-  const changeStatus = (
-    <div
-      style={{
-        padding: '4px 0px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        minWidth: i18n.language === 'zh' ? 110 : 151,
-      }}
-    >
-      {projectInfoValues
-        ?.filter((i: any) => i.key === 'category')[0]
-        ?.children?.filter((i: any) => i.status === 1)
-        ?.map((k: any) => {
-          return (
-            <LiWrap key={k.id} onClick={(e: any) => onChangeCategory(e, k)}>
-              <img
-                src={
-                  k.category_attachment
-                    ? k.category_attachment
-                    : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
-                }
-                style={{
-                  width: '18px',
-                  height: '18px',
-                  marginRight: '8px',
-                }}
-                alt=""
-              />
-              <span>{k.content}</span>
-            </LiWrap>
-          )
-        })}
-    </div>
-  )
+  // const changeStatus = (
+  //   <div
+  //     style={{
+  //       padding: '4px 0px',
+  //       display: 'flex',
+  //       flexDirection: 'column',
+  //       alignItems: 'flex-start',
+  //       minWidth: i18n.language === 'zh' ? 110 : 151,
+  //     }}
+  //   >
+  //     {projectInfoValues
+  //       ?.filter((i: any) => i.key === 'category')[0]
+  //       ?.children?.filter((i: any) => i.status === 1)
+  //       ?.map((k: any) => {
+  //         return (
+  //           <LiWrap key={k.id} onClick={(e: any) => onChangeCategory(e, k)}>
+  //             <img
+  //               src={
+  //                 k.category_attachment
+  //                   ? k.category_attachment
+  //                   : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
+  //               }
+  //               style={{
+  //                 width: '18px',
+  //                 height: '18px',
+  //                 marginRight: '8px',
+  //               }}
+  //               alt=""
+  //             />
+  //             <span>{k.content}</span>
+  //           </LiWrap>
+  //         )
+  //       })}
+  //   </div>
+  // )
 
-  const onImportClick = () => {
-    setIsVisible(false)
-    setIsShowImport(true)
-    setIsVisibleMore(false)
-  }
+  // const onImportClick = () => {
+  //   setIsVisible(false)
+  //   setIsShowImport(true)
+  //   setIsVisibleMore(false)
+  // }
 
-  const onExportClick = () => {
-    if (props.dataLength > 5000) {
-      setIsVisibleMore(false)
-      setExceedState(true)
-      return
-    }
-    setIsVisible(false)
-    setIsShowExport(true)
-    setIsVisibleMore(false)
-  }
+  // const onExportClick = () => {
+  //   if (props.dataLength > 5000) {
+  //     setIsVisibleMore(false)
+  //     setExceedState(true)
+  //     return
+  //   }
+  //   setIsVisible(false)
+  //   setIsShowExport(true)
+  //   setIsVisibleMore(false)
+  // }
 
   return (
     <StickyWrap ref={stickyWrapDom}>
@@ -317,9 +283,31 @@ const Operation = (props: Props) => {
 
       <OperationWrap>
         <LeftBox>
-          <SelectOptions title="分组" />
-          <SelectOptions title="列与状态" />
-          <SelectOptions title="视图" />
+          <SelectOptions
+            title="分组"
+            options={sortByGroupOptions ?? []}
+            onChange={key => {
+              dispatch(onChangeSortByGroupOptions(key))
+            }}
+          />
+          <SelectOptions
+            title="列与状态"
+            options={sortByRowAndStatusOptions ?? []}
+            onChange={key => {
+              dispatch(onChangeSortByRowAndStatusOptions(key))
+            }}
+          />
+          <SelectOptions
+            title="视图"
+            options={sortByView ?? []}
+            onChange={key => {
+              dispatch(onChangeSortByView(key))
+            }}
+            operation
+            onDel={key => {}}
+            onEdit={key => {}}
+            onCreateView={() => {}}
+          />
         </LeftBox>
         <RightBox>
           <KanBanOperation

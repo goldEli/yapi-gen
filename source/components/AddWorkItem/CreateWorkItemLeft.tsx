@@ -621,7 +621,7 @@ const CreateDemandLeft = (props: Props) => {
             </CustomSelect>
           </Form.Item>
           <Form.Item
-            label={t('categoryOfNeeds')}
+            label="类别"
             name="requiredCategory"
             style={{ width: '50%' }}
             rules={[{ required: true, message: '' }]}

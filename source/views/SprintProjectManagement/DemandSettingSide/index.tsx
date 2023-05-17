@@ -304,7 +304,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
         </Tabs>
         <div>
           {affairType.map((item, index) => (
-            <AffairTypeWrap>
+            <AffairTypeWrap key={index}>
               <AffairTypeHeader
                 onClick={() => {
                   affairType[index].visible = !affairType[index].visible

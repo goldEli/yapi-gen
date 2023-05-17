@@ -73,6 +73,10 @@ const routes = [
             path: 'Formwork',
             element: lazy(() => import('@/views/WorkReport/Formwork')),
           },
+          {
+            path: 'xn',
+            element: lazy(() => import('@/views/PerformanceInsight')),
+          },
         ],
       },
       {
@@ -199,6 +203,12 @@ const routes = [
             path: 'WaterMarkManagement',
             element: lazy(
               () => import('@/views/AdminManagement/WaterMarkManagement'),
+            ),
+          },
+          {
+            path: 'NoteManagement',
+            element: lazy(
+              () => import('@/views/AdminManagement/NoteManagement'),
             ),
           },
           {

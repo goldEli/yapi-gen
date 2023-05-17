@@ -41,7 +41,6 @@ export class ErrorBoundary extends React.Component<PropsType, StateType> {
 
   //捕获抛出异常
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.log({ error, errorInfo })
     //传递异常信息
     this.setState({
       error,

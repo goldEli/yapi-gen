@@ -233,6 +233,7 @@ export const getProjectInfo: any = async (params: any) => {
     affiliation: response.data.affiliation,
     leaderName: response.data.leader_name,
     permissionType: response.data.permission_type,
+    projectType: response.data.project_type,
   }
 }
 

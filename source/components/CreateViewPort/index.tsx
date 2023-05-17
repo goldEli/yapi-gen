@@ -11,13 +11,16 @@ import CommonModal from '../CommonModal'
 import FormTitleSmall from '../FormTitleSmall'
 import { getMessage } from '../Message'
 import { Wrap, WrapText } from './style'
+import { useEffect, useRef } from 'react'
 
 const CreateViewPort = (props: any) => {
   const [t] = useTranslation()
   const [form] = Form.useForm()
+  const inputDom: any = useRef<HTMLInputElement>(null)
   const { searchKey, valueKey, titles, sort, createVisible, inputKey } =
     useSelector(state => state.view)
   const dispatch = useDispatch()
+
   const onConfirm = async () => {
     const res = await form.validateFields()
     const obj: any = {}
@@ -41,10 +44,20 @@ const CreateViewPort = (props: any) => {
     getMessage({ msg: t('common.createSuccess'), type: 'success' })
     form.resetFields()
   }
+
   const onClose = () => {
     form.resetFields()
     dispatch(changeCreateVisible(false))
   }
+
+  useEffect(() => {
+    if (createVisible) {
+      setTimeout(() => {
+        inputDom?.current?.focus()
+      }, 10)
+    }
+  }, [createVisible])
+
   return (
     <CommonModal
       onConfirm={onConfirm}
@@ -67,6 +80,9 @@ const CreateViewPort = (props: any) => {
             <Input
               maxLength={20}
               placeholder={t('please_enter_a_view_name_limited_to_20_words')}
+              autoComplete="off"
+              ref={inputDom}
+              autoFocus
             />
           </Form.Item>
         </Form>
