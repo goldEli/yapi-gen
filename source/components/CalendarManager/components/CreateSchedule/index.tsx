@@ -587,7 +587,6 @@ const CreateSchedule = () => {
       }, 100)
     }
   }, [scheduleModal])
-
   return (
     <>
       <RepeatModal
