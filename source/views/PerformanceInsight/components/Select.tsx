@@ -2,6 +2,7 @@ import { Select } from 'antd'
 import { useState } from 'react'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { Segm } from './style'
+import CommonIconFont from '@/components/CommonIconFont'
 
 interface ItemProps {
   label: string
@@ -32,9 +33,9 @@ const SelectMain = (props: Props) => {
     <>
       <Select
         style={{ width: 184 }}
-        notFoundContent={null}
         maxTagCount={1}
         mode="multiple"
+        suffixIcon={<CommonIconFont type="down" />}
         onSearch={onSearch}
         onChange={changeValue}
         showSearch
@@ -42,17 +43,15 @@ const SelectMain = (props: Props) => {
         getPopupContainer={node => node}
         searchValue={searchValue}
         value={value}
-        defaultActiveFirstOption={false}
-        placeholder="请输入"
-        showArrow={false}
+        placeholder="请选择"
+        showArrow={true}
         autoClearSearchValue
         filterOption={false}
         dropdownStyle={{ minWidth: 184 }}
         dropdownMatchSelectWidth={false}
         dropdownRender={menu => (
           <>
-            {' '}
-            {menu}{' '}
+            {menu}
             {!props.more && (
               <Segm onClick={() => props.onShowAll()}>查看更多</Segm>
             )}
