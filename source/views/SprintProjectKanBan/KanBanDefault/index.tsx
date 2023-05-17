@@ -1,23 +1,10 @@
 import React, { useState } from 'react'
-import styled from '@emotion/styled'
 import { columnsFromBackend, issueColumns } from './data'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
-import { getId } from './utils'
+import { getId } from '../utils'
 import { produce } from 'immer'
-import IssuesGroup from './IssuesGroup'
-
-const Title = styled.span`
-  width: 302px;
-  height: 48px;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-`
-
-const ColumnTitleArea = styled.div`
-  display: flex;
-  gap: 16px;
-`
+import IssuesGroup from '../IssuesGroup'
+import ColumnTitleArea from '../ColumnTitleArea'
 
 const KanBanDefault = () => {
   const [data, setData] = useState(columnsFromBackend)
@@ -74,11 +61,7 @@ const KanBanDefault = () => {
         console.log(start)
       }}
     >
-      <ColumnTitleArea>
-        {issueColumns.map(item => {
-          return <Title key={item.id}>{`${item.title}（${item.total}）`}</Title>
-        })}
-      </ColumnTitleArea>
+      <ColumnTitleArea />
       {data.map(issuesGroup => {
         return (
           <IssuesGroup key={issuesGroup.groupId} issuesGroup={issuesGroup} />

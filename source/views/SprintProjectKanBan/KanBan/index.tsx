@@ -22,7 +22,6 @@ const KanBan = () => {
         return <KanBanDefault />
       case 'person':
         return <KanBanSortByPerson />
-
       case 'category':
         return <KanBanSortByCategory />
       case 'priority':
