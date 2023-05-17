@@ -1,15 +1,12 @@
-import UploadAttach from '@/components/UploadAttach'
 import { Form, Input } from 'antd'
-import { createRef, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { AddWrap } from '@/components/StyleCommon'
-import { Editor } from '@xyfe/uikit'
-import { useDispatch, useSelector } from '@store/index'
-import { changeRestScroll } from '@store/scroll'
-import { getIdsForAt, removeNull } from '@/tools'
 import { getMessage } from '@/components/Message'
 import CommonModal from '@/components/CommonModal'
-import IconFont from '@/components/IconFont'
+import { useDispatch, useSelector } from '@store/index'
+import {
+  closeSaveAsViewModel,
+  onSaveAsViewModel,
+} from '@store/sprintKanBan/sprintKanban.thunk'
 
 const LabelTitle = (props: any) => {
   return (
@@ -36,14 +33,16 @@ interface SaveAsViewModalProps {}
 const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
   const [form] = Form.useForm()
   const [t] = useTranslation()
+  const { saveAsViewModelInfo } = useSelector(store => store.sprintKanBan)
+  const dispatch = useDispatch()
 
   const onClose = () => {
-    // props.editClose()
+    dispatch(closeSaveAsViewModel())
   }
 
   const confirm = async () => {
     await form.validateFields()
-    getMessage({ msg: '保存成功!', type: 'success' })
+    dispatch(onSaveAsViewModel())
   }
 
   const onsubmit = () => {
@@ -53,7 +52,7 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
     <CommonModal
       width={528}
       title={'另存为视图'}
-      isVisible={false}
+      isVisible={saveAsViewModelInfo.visible}
       onClose={onClose}
       onConfirm={onsubmit}
       confirmText={'确认'}
