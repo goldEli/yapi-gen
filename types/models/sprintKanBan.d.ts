@@ -6,4 +6,6 @@ declare namespace Model.SprintKanBan {
     isDefault?: boolean
     operation?: boolean
   }
+
+  type guideVisible = boolean
 }

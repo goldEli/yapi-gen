@@ -17,6 +17,7 @@ export interface CounterState {
     visible: boolean
     params?: Model.Project.AddWorkItemParams
   }
+  guideVisible: boolean
 }
 
 const initialState: CounterState = {
@@ -50,6 +51,7 @@ const initialState: CounterState = {
     visible: false,
     params: {},
   },
+  guideVisible: false,
 }
 
 export const projectSlice = createSlice({
@@ -97,6 +99,13 @@ export const projectSlice = createSlice({
         ...action.payload,
       }
     },
+    // 引导页弹窗
+    onChangeGuideVisible(
+      state,
+      action: PayloadAction<CounterState['guideVisible']>,
+    ) {
+      state.guideVisible = action.payload
+    },
   },
   extraReducers(builder) {
     //
@@ -113,6 +122,7 @@ export const {
   setProjectInfoValues,
   setIsUpdateMember,
   setAddWorkItemModal,
+  onChangeGuideVisible,
 } = projectSlice.actions
 
 export default projectSlice.reducer

@@ -4,6 +4,7 @@ type SliceState = {
   sortByGroupOptions?: Model.SprintKanBan.Option[]
   sortByRowAndStatusOptions?: Model.SprintKanBan.Option[]
   sortByView?: Model.SprintKanBan.Option[]
+  guideVisible: Model.SprintKanBan.guideVisible
 }
 
 const initialState: SliceState = {
@@ -24,12 +25,19 @@ const initialState: SliceState = {
     { key: '3', value: '重点关注', check: false },
     { key: '4', value: '进度跟踪', check: false },
   ],
+  guideVisible: true,
 }
 
 const slice = createSlice({
   name: 'sprintKanBan',
   initialState,
   reducers: {
+    onChangeGuideVisible(
+      state,
+      action: PayloadAction<SliceState['guideVisible']>,
+    ) {
+      state.guideVisible = action.payload
+    },
     onChangeSortByGroupOptions(
       state,
       action: PayloadAction<Model.SprintKanBan.Option['key']>,
@@ -90,6 +98,7 @@ export const {
   onChangeSortByGroupOptions,
   onChangeSortByRowAndStatusOptions,
   onChangeSortByView,
+  onChangeGuideVisible,
 } = slice.actions
 
 export default sprintKanBan
