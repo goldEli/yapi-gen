@@ -107,6 +107,10 @@ const ItemDropdown = (props: PropsType) => {
       }),
     )
     setIsOpen(false)
+    if (el.prefix === 'sprint') {
+      navigate(`/SprintProjectManagement/KanBan?data=${params}`)
+      return
+    }
     navigate(`/ProjectManagement/Demand?data=${params}`)
   }
   const itmeMain = (item: any) => {
