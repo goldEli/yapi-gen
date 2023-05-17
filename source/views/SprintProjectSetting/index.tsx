@@ -45,6 +45,7 @@ const Setting = () => {
   const paramsData = getParamsData(searchParams)
   const activeTabs = paramsData.type || 'ProjectInfo'
   const { currentMenu } = useSelector(store => store.user)
+  console.log('')
   const [searchValue, setSearchValue] = useState('')
 
   let maps = new Map([

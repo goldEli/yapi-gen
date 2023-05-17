@@ -36,6 +36,9 @@ const Project = () => {
     '/ProjectManagement/ProjectSetting',
     '/ProjectManagement/Demand',
     '/ProjectManagement/Iteration',
+    '/ProjectManagement/KanBan',
+    '/ProjectManagement/IterationReport',
+    '/ProjectManagement/Defect',
     '/ProjectManagement/WorkFlow',
   ]
 

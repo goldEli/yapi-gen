@@ -6,6 +6,8 @@ declare namespace Model.SprintKanBan {
     isDefault?: boolean
     operation?: boolean
   }
+
+  type guideVisible = boolean
   interface GroupInfoItem {
     key: 'none' | 'person' | 'category' | 'priority'
     value: string

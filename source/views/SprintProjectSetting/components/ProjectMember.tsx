@@ -29,6 +29,7 @@ import useSetTitle from '@/hooks/useSetTitle'
 import AddMemberCommonModal from '@/components/AddUser/CommonModal'
 import TableSelectOptions from '@/components/TableSelectOptions'
 import { getAddDepartMember, getPositionSelectList } from '@/services/staff'
+import { getProjectRole } from '@store/create-propject/thunks'
 import {
   addMember,
   getProjectInfo,
@@ -214,6 +215,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
   useEffect(() => {
     getJobList()
     getPermission()
+    // dispatch(getProjectRole({ projectId }))
   }, [])
 
   useEffect(() => {
@@ -436,7 +438,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
       width: 200,
       render: (text: string, record: any) => {
         return (
-          <div style={{ position: 'relative' }}>
+          <div style={{ position: 'relative' }} data-column-key="roleName">
             <span>
               {text}
               {record.id === selectRowKey && (

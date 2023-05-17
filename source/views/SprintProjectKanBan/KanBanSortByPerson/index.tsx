@@ -1,14 +1,24 @@
-import React from 'react'
-import styled from '@emotion/styled'
+import React, { useState } from 'react'
+import { columnsFromBackend, issueColumns } from './data'
+import { DragDropContext, DropResult } from 'react-beautiful-dnd'
+import ColumnTitleArea from '../ColumnTitleArea'
+import useKanBanData from '../hooks/useKanBanData'
+import IssuesGroupList from '../IssuesGroupList'
 
-interface KanBanSortByPersonProps {}
+const KanBanSortByPerson = () => {
+  const { data, onDragEnd } = useKanBanData(columnsFromBackend)
 
-const KanBanSortByPersonBox = styled.div`
-  width: 100%;
-`
-
-const KanBanSortByPerson: React.FC<KanBanSortByPersonProps> = props => {
-  return <KanBanSortByPersonBox>KanBanSortByPerson</KanBanSortByPersonBox>
+  return (
+    <DragDropContext
+      onDragEnd={onDragEnd}
+      onDragStart={start => {
+        console.log(start)
+      }}
+    >
+      <ColumnTitleArea />
+      <IssuesGroupList data={data} />
+    </DragDropContext>
+  )
 }
 
 export default KanBanSortByPerson

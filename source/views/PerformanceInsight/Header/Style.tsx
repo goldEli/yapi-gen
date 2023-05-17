@@ -281,3 +281,20 @@ export const TableStyle = styled.div`
   height: calc(100% - 300px);
   padding: 24px 24px 0 24px;
 `
+export const Btn1 = styled.div`
+  width: 60px;
+  height: 22px;
+  background: #f6f7f9;
+  border-radius: 6px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  color: var(--neutral-n2);
+  justify-content: center;
+  padding: 0 8px;
+  margin-left: 8px;
+  &:hover {
+    color: var(--primary-d1);
+    cursor: pointer;
+  }
+`

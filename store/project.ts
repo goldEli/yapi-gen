@@ -17,6 +17,7 @@ export interface CounterState {
     visible: boolean
     params?: Model.Project.AddWorkItemParams
   }
+  guideVisible: boolean
   addQuickSprintModal: {
     visible: boolean
     params?: Model.Project.AddQuickSprintParams
@@ -54,6 +55,7 @@ const initialState: CounterState = {
     visible: false,
     params: {},
   },
+  guideVisible: false,
   addQuickSprintModal: {
     visible: false,
     params: {
@@ -108,6 +110,13 @@ export const projectSlice = createSlice({
         ...action.payload,
       }
     },
+    // 引导页弹窗
+    onChangeGuideVisible(
+      state,
+      action: PayloadAction<CounterState['guideVisible']>,
+    ) {
+      state.guideVisible = action.payload
+    },
     setAddQuickSprintModal(
       state,
       action: PayloadAction<CounterState['addQuickSprintModal']>,
@@ -133,6 +142,7 @@ export const {
   setProjectInfoValues,
   setIsUpdateMember,
   setAddWorkItemModal,
+  onChangeGuideVisible,
   setAddQuickSprintModal,
 } = projectSlice.actions
 

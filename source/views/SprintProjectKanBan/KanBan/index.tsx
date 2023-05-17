@@ -11,6 +11,10 @@ const Container = styled.div`
   flex-direction: column;
   width: 100%;
   box-sizing: border-box;
+  flex: 1;
+  height: 0;
+  overflow: auto;
+  /* height: 0; */
 `
 
 const KanBan = () => {
@@ -22,7 +26,6 @@ const KanBan = () => {
         return <KanBanDefault />
       case 'person':
         return <KanBanSortByPerson />
-
       case 'category':
         return <KanBanSortByCategory />
       case 'priority':
