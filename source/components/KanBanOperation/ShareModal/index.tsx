@@ -8,6 +8,7 @@ import CommonModal from '@/components/CommonModal'
 import { useDispatch, useSelector } from '@store/index'
 import { closeShareModel } from '@store/sprintKanBan/sprintKanban.thunk'
 import styled from '@emotion/styled'
+import IconFont from '@/components/IconFont'
 
 interface SaveAsViewModalProps {}
 
@@ -27,6 +28,26 @@ const WarnTips = styled.div`
   align-items: center;
   color: var(--neutral-n2);
   margin-bottom: 24px;
+`
+
+const CopyButton = styled.div`
+  width: 112px;
+  height: 32px;
+  border-radius: 6px 6px 6px 6px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 16px;
+  align-items: center;
+  color: var(--auxiliary-text-t2-d1);
+  position: absolute;
+  bottom: 24px;
+  left: 0px;
+  cursor: pointer;
+`
+
+const ModalContentBox = styled.div`
+  padding: 0 24px;
 `
 
 const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
@@ -74,11 +95,7 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
       onConfirm={onsubmit}
       confirmText={'确认'}
     >
-      <div
-        style={{
-          padding: '0 24px',
-        }}
-      >
+      <ModalContentBox>
         <WarnTips>单前视图未保存，分享时将为您保存为“视图”</WarnTips>
         <Form
           form={form}
@@ -103,7 +120,11 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
             <Input.TextArea placeholder="添加消息" style={{ height: 148 }} />
           </Form.Item>
         </Form>
-      </div>
+      </ModalContentBox>
+      <CopyButton>
+        <IconFont type="link" />
+        <span>复制链接</span>
+      </CopyButton>
     </CommonModal>
   )
 }
