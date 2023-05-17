@@ -1,15 +1,16 @@
-import UploadAttach from '@/components/UploadAttach'
+/**
+ * 另存为视图  编辑视图弹窗
+ */
+import React from 'react'
 import { Form, Input } from 'antd'
-import { createRef, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { AddWrap } from '@/components/StyleCommon'
-import { Editor } from '@xyfe/uikit'
-import { useDispatch, useSelector } from '@store/index'
-import { changeRestScroll } from '@store/scroll'
-import { getIdsForAt, removeNull } from '@/tools'
 import { getMessage } from '@/components/Message'
 import CommonModal from '@/components/CommonModal'
-import IconFont from '@/components/IconFont'
+import { useDispatch, useSelector } from '@store/index'
+import {
+  closeSaveAsViewModel,
+  onSaveAsViewModel,
+} from '@store/sprintKanBan/sprintKanban.thunk'
 
 const LabelTitle = (props: any) => {
   return (
@@ -31,29 +32,56 @@ const LabelTitle = (props: any) => {
   )
 }
 
-interface SaveAsViewModalProps {}
+interface ShareModalProps {}
 
-const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
+const ShareModal: React.FC<ShareModalProps> = props => {
   const [form] = Form.useForm()
   const [t] = useTranslation()
+  const { saveAsViewModelInfo } = useSelector(store => store.sprintKanBan)
+  const dispatch = useDispatch()
 
   const onClose = () => {
-    // props.editClose()
+    dispatch(closeSaveAsViewModel())
   }
 
   const confirm = async () => {
-    await form.validateFields()
-    getMessage({ msg: '保存成功!', type: 'success' })
+    const data = await form.validateFields()
+    dispatch(
+      onSaveAsViewModel({
+        ...saveAsViewModelInfo.viewItem,
+        value: data.name,
+      }),
+    )
   }
 
   const onsubmit = () => {
     form.submit()
   }
+
+  const title = React.useMemo(() => {
+    if (saveAsViewModelInfo.viewItem) {
+      return '编辑视图'
+    }
+    return '另存为视图'
+  }, [saveAsViewModelInfo.viewItem])
+
+  React.useEffect(() => {
+    if (saveAsViewModelInfo.viewItem) {
+      form.setFieldsValue({
+        name: saveAsViewModelInfo.viewItem.value,
+      })
+      return
+    }
+    form.setFieldsValue({
+      name: '',
+    })
+  }, [saveAsViewModelInfo.viewItem])
+
   return (
     <CommonModal
       width={528}
-      title={'另存为视图'}
-      isVisible={true}
+      title={title}
+      isVisible={saveAsViewModelInfo.visible}
       onClose={onClose}
       onConfirm={onsubmit}
       confirmText={'确认'}
@@ -86,4 +114,4 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
   )
 }
 
-export default SaveAsViewModal
+export default ShareModal

@@ -12,5 +12,7 @@ declare global {
     }
     // 是否正在拖拽日程
     isMovingSchedule?: boolean
+    // 是否取消视图修改
+    isCloseView: boolean
   }
 }
