@@ -29,4 +29,10 @@ declare namespace Model.Project {
     // 弹窗名称
     title?: string
   }
+
+  interface AddQuickSprintParams {
+    id?: number
+    name?: string
+    icon?: string
+  }
 }

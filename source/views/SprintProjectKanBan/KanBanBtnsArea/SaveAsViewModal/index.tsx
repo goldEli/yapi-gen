@@ -32,9 +32,9 @@ const LabelTitle = (props: any) => {
   )
 }
 
-interface SaveAsViewModalProps {}
+interface ShareModalProps {}
 
-const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
+const ShareModal: React.FC<ShareModalProps> = props => {
   const [form] = Form.useForm()
   const [t] = useTranslation()
   const { saveAsViewModelInfo } = useSelector(store => store.sprintKanBan)
@@ -57,6 +57,7 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
   const onsubmit = () => {
     form.submit()
   }
+
   const title = React.useMemo(() => {
     if (saveAsViewModelInfo.viewItem) {
       return '编辑视图'
@@ -113,4 +114,4 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
   )
 }
 
-export default SaveAsViewModal
+export default ShareModal

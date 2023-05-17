@@ -513,49 +513,53 @@ const ProjectSet = () => {
                 </Title>
                 <MenuItems>
                   <MenuItemsTitle>系统分组</MenuItemsTitle>
-                  {dataList?.map((item: any) => (
-                    <MenuItem
-                      key={item.id}
-                      onClick={() => onChangeTabs(item)}
-                      isActive={item.id === activeDetail.id}
-                    >
-                      <div className="name">{item.name}</div>
-                      {/* <span className="subName">
+                  {dataList
+                    ?.filter((item: { type: number }) => item.type === 1)
+                    .map((item: any) => (
+                      <MenuItem
+                        key={item.id}
+                        onClick={() => onChangeTabs(item)}
+                        isActive={item.id === activeDetail.id}
+                      >
+                        <div className="name">{item.name}</div>
+                        {/* <span className="subName">
                         {item.type === 1
                           ? t('setting.systemGroup')
                           : t('setting.customGroup')}
                       </span> */}
-                      <MoreDropdown
-                        isHidden={item.type === 1}
-                        isMoreVisible={isMoreVisible}
-                        onChangeVisible={setIsMoreVisible}
-                        menu={menu(item)}
-                      />
-                    </MenuItem>
-                  ))}
+                        <MoreDropdown
+                          isHidden={item.type === 1}
+                          isMoreVisible={isMoreVisible}
+                          onChangeVisible={setIsMoreVisible}
+                          menu={menu(item)}
+                        />
+                      </MenuItem>
+                    ))}
                 </MenuItems>
                 <MenuItems>
                   <MenuItemsTitle>自定义角色</MenuItemsTitle>
-                  {[1].map((item: any) => (
-                    <MenuItem
-                      key={item.id}
-                      onClick={() => onChangeTabs(item)}
-                      isActive={item.id === activeDetail.id}
-                    >
-                      <div className="name">自定义权限组</div>
-                      {/* <span className="subName">
+                  {dataList
+                    ?.filter((item: { type: number }) => item.type === 2)
+                    .map((item: any) => (
+                      <MenuItem
+                        key={item.id}
+                        onClick={() => onChangeTabs(item)}
+                        isActive={item.id === activeDetail.id}
+                      >
+                        <div className="name">{item.name}</div>
+                        {/* <span className="subName">
                         {item.type === 1
                           ? t('setting.systemGroup')
                           : t('setting.customGroup')}
                       </span> */}
-                      <MoreDropdown
-                        isHidden={item.type === 1}
-                        isMoreVisible={isMoreVisible}
-                        onChangeVisible={setIsMoreVisible}
-                        menu={menu(item)}
-                      />
-                    </MenuItem>
-                  ))}
+                        <MoreDropdown
+                          isHidden={item.type === 1}
+                          isMoreVisible={isMoreVisible}
+                          onChangeVisible={setIsMoreVisible}
+                          menu={menu(item)}
+                        />
+                      </MenuItem>
+                    ))}
                 </MenuItems>
               </SetLeft>
               <SetRight>

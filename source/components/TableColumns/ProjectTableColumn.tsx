@@ -70,7 +70,7 @@ const Wrap = styled.div<{ isEdit?: any }>(
 export const useDynamicColumns = (state: any) => {
   const [t] = useTranslation()
   const { userInfo } = useSelector(store => store.user)
-  const { projectInfo, colorList } = useSelector(store => store.project)
+  const { projectInfo } = useSelector(store => store.project)
   const hight = useSelector(store => store.colorText.text)
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&

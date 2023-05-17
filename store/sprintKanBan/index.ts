@@ -122,6 +122,7 @@ export const {
   onChangeSortByRowAndStatusOptions,
   onChangeSortByView,
   setSaveAsViewModelInfo,
+  setShareModelInfo,
 } = slice.actions
 
 export default sprintKanBan
