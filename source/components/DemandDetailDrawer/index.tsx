@@ -12,7 +12,10 @@ import {
 } from '@/services/demand'
 import { getProjectInfo } from '@/services/project'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import { setIsUpdateDemand } from '@store/demand'
+import {
+  setIsDemandDetailDrawerVisible,
+  setIsUpdateDemand,
+} from '@store/demand'
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
 import { setAddWorkItemModal, setProjectInfo } from '@store/project'
 import { Drawer, message, Popover, Skeleton, Space } from 'antd'
@@ -175,6 +178,7 @@ const DemandDetailDrawer = () => {
         params: {},
       }),
     )
+    dispatch(setIsDemandDetailDrawerVisible(false))
     dispatch(saveDemandDetailDrawer({}))
     setShowState(normalState)
   }
@@ -315,6 +319,7 @@ const DemandDetailDrawer = () => {
 
   useEffect(() => {
     if (isDemandDetailDrawerVisible || demandDetailDrawerProps?.id) {
+      console.log(222, isDemandDetailDrawerVisible, demandDetailDrawerProps?.id)
       setDemandIds(demandDetailDrawerProps?.demandIds || [])
       getDemandDetail('', demandDetailDrawerProps?.demandIds || [])
       setShowState(normalState)
@@ -323,6 +328,7 @@ const DemandDetailDrawer = () => {
 
   useEffect(() => {
     if (isUpdateDemand) {
+      console.log(1111)
       setCurrentIndex(0)
       setDemandIds([])
       if (isDemandDetailDrawerVisible) {
