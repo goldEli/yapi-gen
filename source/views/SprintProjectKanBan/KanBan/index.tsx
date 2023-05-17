@@ -10,16 +10,16 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  box-sizing: border-box;
+  padding: 20px;
 `
 
 const Title = styled.span`
-  color: #10957d;
-  background: rgba(16, 149, 125, 0.15);
-  width: 341px;
+  width: 302px;
+  height: 48px;
   box-sizing: border-box;
-  padding: 2px 10px;
-  border-radius: 5px;
-  align-self: flex-start;
+  display: flex;
+  align-items: center;
 `
 
 const ColumnTitleArea = styled.div`
