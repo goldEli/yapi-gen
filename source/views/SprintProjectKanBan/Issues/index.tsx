@@ -3,7 +3,6 @@ import styled from '@emotion/styled'
 import { Droppable } from 'react-beautiful-dnd'
 import IssueCard from '../IssueCard'
 import { handleId } from '../utils'
-import { columnsFromBackend, issueColumns } from '../data'
 
 interface IssuesProps {
   issues: Model.SprintKanBan.Issues
@@ -31,7 +30,6 @@ const DropStatusArea = styled.div`
 `
 const Issues: React.FC<IssuesProps> = props => {
   const { issues, groupId } = props
-  const column = issueColumns?.find(item => item.id === issues.id)
   return (
     <Droppable key={issues.id} droppableId={handleId(groupId, issues.id)}>
       {(provided, snapshot) => {

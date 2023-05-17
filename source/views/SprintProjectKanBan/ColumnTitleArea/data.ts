@@ -68,10 +68,16 @@ export const columnsFromBackend: Model.SprintKanBan.IssuesGroup[] = [
 ]
 
 export const issueColumns: Model.SprintKanBan.IssueColumn[] = [
-  { id: 1, title: '规划中', deps: [{ id: 2222, title: '规划中', to: [1111] }] },
+  {
+    id: 1,
+    title: '规划中',
+    total: 7,
+    deps: [{ id: 2222, title: '规划中', to: [1111] }],
+  },
   {
     id: 2,
     title: '实现中',
+    total: 17,
     deps: [
       {
         id: 1111,
@@ -79,5 +85,10 @@ export const issueColumns: Model.SprintKanBan.IssueColumn[] = [
       },
     ],
   },
-  { id: 3, title: '已完成' },
+  {
+    id: 3,
+    title: '已完成',
+
+    total: 8,
+  },
 ]

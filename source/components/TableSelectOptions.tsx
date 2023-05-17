@@ -34,7 +34,7 @@ const TableSelectOptions = (props: IProps) => {
   return (
     <SelectOptions>
       {['管理员', '编辑者', '参与者'].map((item, index) => (
-        <SelectItem>
+        <SelectItem key={item}>
           <span className={index === 1 ? 'activity' : ''}>{item}</span>
           {index === 1 && (
             <IconFont

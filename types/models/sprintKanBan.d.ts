@@ -6,6 +6,13 @@ declare namespace Model.SprintKanBan {
     isDefault?: boolean
     operation?: boolean
   }
+
+  type guideVisible = boolean
+  interface GroupInfoItem {
+    key: 'none' | 'person' | 'category' | 'priority'
+    value: string
+    check: boolean
+  }
   interface Issue {
     id: number
     name: string
@@ -27,6 +34,7 @@ declare namespace Model.SprintKanBan {
   interface IssueColumn {
     id: number
     title: string
+    total: number
     deps?: { id: number; title: string; to?: number[] }[]
   }
   interface IssuesGroup {
