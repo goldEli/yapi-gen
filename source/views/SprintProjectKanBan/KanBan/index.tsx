@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from '@emotion/styled'
-import { columnsFromBackend, issueColumns } from './data'
-import { DragDropContext, DropResult } from 'react-beautiful-dnd'
-import { getId } from './utils'
-import { produce } from 'immer'
-import IssuesGroup from './IssuesGroup'
+import { useSelector } from '@store/index'
+import KanBanDefault from '../KanBanDefault'
+import KanBanSortByPerson from '../KanBanSortByPerson'
+import KanBanSortByCategory from '../KanBanSortByCategory'
+import KanBanSortByPriority from '../KanBanSortByPriority'
 
 const Container = styled.div`
   display: flex;
@@ -14,92 +14,26 @@ const Container = styled.div`
   padding: 20px;
 `
 
-const Title = styled.span`
-  width: 302px;
-  height: 48px;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-`
-
-const ColumnTitleArea = styled.div`
-  display: flex;
-  gap: 8px;
-`
-type InfoItem = {
-  issuesId: Model.SprintKanBan.Issues['id']
-  visible: boolean
-}
-
 const KanBan = () => {
-  const [data, setData] = useState(columnsFromBackend)
+  const { sortByGroupOptions } = useSelector(store => store.sprintKanBan)
+  const ele = React.useMemo(() => {
+    const type = sortByGroupOptions?.find(item => item.check)?.key
+    switch (type) {
+      case 'none':
+        return <KanBanDefault />
+      case 'person':
+        return <KanBanSortByPerson />
 
-  // refactor with immerjs
-  const onDragEnd = (result: DropResult) => {
-    if (!result.destination) return
-    const { source, destination } = result
+      case 'category':
+        return <KanBanSortByCategory />
+      case 'priority':
+        return <KanBanSortByPriority />
 
-    // 跨容器拖动
-    if (source.droppableId !== destination.droppableId) {
-      setData(
-        produce(draft => {
-          // 获取拖动源数据
-          const sourceData = draft
-            .find(item => item.groupId === getId(source.droppableId).groupId)
-            ?.data.find(item => item.id === getId(source.droppableId).id)
-          // 获取目标数据
-          const destinationData = draft
-            .find(
-              item => item.groupId === getId(destination.droppableId).groupId,
-            )
-            ?.data.find(item => item.id === getId(destination.droppableId).id)
-          // 源移除的卡片数据
-          const [removed] = sourceData?.list?.splice(source.index, 1) ?? []
-          // 移除的卡片数据插入目标中
-          if (removed) {
-            destinationData?.list?.splice(destination.index, 0, removed)
-          }
-        }),
-      )
-      return
+      default:
+        return <></>
     }
-    setData(
-      produce(draft => {
-        // 获取拖动源数据
-        const sourceData = draft
-          .find(item => item.groupId === getId(source.droppableId).groupId)
-          ?.data.find(item => item.id === getId(source.droppableId).id)
-        // 源移除的卡片数据
-        const [removed] = sourceData?.list?.splice(source.index, 1) ?? []
-        // 移除的卡片数据插入目标中
-        if (removed) {
-          sourceData?.list?.splice(destination.index, 0, removed)
-        }
-      }),
-    )
-  }
-
-  return (
-    <DragDropContext
-      onDragEnd={onDragEnd}
-      onDragStart={start => {
-        console.log(start)
-      }}
-    >
-      <Container>
-        <ColumnTitleArea>
-          {issueColumns.map(item => {
-            return <Title key={item.id}>{item.title}</Title>
-          })}
-        </ColumnTitleArea>
-        {data.map(issuesGroup => {
-          return (
-            <IssuesGroup key={issuesGroup.groupId} issuesGroup={issuesGroup} />
-          )
-        })}
-      </Container>
-    </DragDropContext>
-  )
+  }, sortByGroupOptions)
+  return <Container>{ele}</Container>
 }
 
 export default KanBan
