@@ -40,7 +40,7 @@ const SelectMain = (props: Props) => {
         onChange={changeValue}
         showSearch
         allowClear
-        getPopupContainer={node => node}
+        getPopupContainer={(node: any) => node}
         searchValue={searchValue}
         value={value}
         placeholder="请选择"
@@ -49,7 +49,7 @@ const SelectMain = (props: Props) => {
         filterOption={false}
         dropdownStyle={{ minWidth: 184 }}
         dropdownMatchSelectWidth={false}
-        dropdownRender={menu => (
+        dropdownRender={(menu: any) => (
           <>
             {menu}
             {!props.more && (
