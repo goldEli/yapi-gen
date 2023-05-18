@@ -74,8 +74,14 @@ const routes = [
             element: lazy(() => import('@/views/WorkReport/Formwork')),
           },
           {
-            path: 'xn',
+            path: 'PerformanceInsight',
             element: lazy(() => import('@/views/PerformanceInsight')),
+          },
+          {
+            path: 'ChildLevel',
+            element: lazy(
+              () => import('@/views/PerformanceInsight/ChildLevel'),
+            ),
           },
         ],
       },
