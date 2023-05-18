@@ -24,8 +24,10 @@ interface Props {
   visible: boolean
   id: number
   onCancel: () => void
+  type: string
 }
 interface UserInfo {
+  type: string
   user: {
     avatar: string
     name: string[]
@@ -168,19 +170,34 @@ const Main = (props: UserInfo) => {
         // onClick={() => setIsVisible(true)}
         >
           {/* 快捷操作，打开创建事务的弹窗 */}
-          <span className="text">分配事务</span>
+          {(props.type === 'Progress0' ||
+            props.type === 'Progress1' ||
+            props.type === 'Defect0' ||
+            props.type === 'Defect1') && <span className="text">分配事务</span>}
         </BtnStyle>
       </MainStyle1>
       <MainWrap size={32}>
         <Item onClick={() => onChangeIdx(0)} activeIdx={type === 0}>
           <span>工作记录</span>
         </Item>
-        <Item onClick={() => onChangeIdx(1)} activeIdx={type === 1}>
-          <span>他创建的事务</span>
-        </Item>
-        <Item onClick={() => onChangeIdx(2)} activeIdx={type === 2}>
-          <span>分配给他的事务</span>
-        </Item>
+        {/* // 进展对比 Progress0-迭代 Progress1冲刺 ProgressAll全局
+    //缺陷 Defect0-迭代 Defect1冲刺 DefectAll全局 */}
+        {props.type === 'Progress0' ||
+        props.type === 'Progress1' ||
+        props.type === 'ProgressAll' ? (
+          <>
+            <Item onClick={() => onChangeIdx(1)} activeIdx={type === 1}>
+              <span>他创建的事务</span>
+            </Item>
+            <Item onClick={() => onChangeIdx(2)} activeIdx={type === 2}>
+              <span>分配给他的事务</span>
+            </Item>
+          </>
+        ) : (
+          <Item onClick={() => onChangeIdx(2)} activeIdx={type === 2}>
+            <span>分配给他的缺陷</span>
+          </Item>
+        )}
       </MainWrap>
       {type === 0 ? (
         <WorkRecords
@@ -219,12 +236,13 @@ const Main = (props: UserInfo) => {
   )
 }
 const SelectPersonnel = (props: Props) => {
+  console.log(props, 'props')
   return (
     <Detail
       children={
         <>
           <DetailHeader ids={props.ids} onCancel={() => props.onCancel()} />
-          <Main user={{ avatar: '123', name: ['1'] }} />
+          <Main type={props.type} user={{ avatar: '123', name: ['1'] }} />
         </>
       }
       visible={props.visible}

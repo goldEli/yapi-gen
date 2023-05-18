@@ -25,6 +25,7 @@ import SprintTable from './components/SprintTable'
 import { getDemandList } from '@/services/demand'
 import SprintTree from './components/SprintTree'
 import DeleteConfirm from '@/components/DeleteConfirm'
+import ChangeStatusPopover from '@/components/ChangeStatusPopover/index'
 
 interface IProps {}
 
@@ -339,6 +340,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
     // >
     <TreeContext.Provider value={keyValue}>
       <Wrap>
+        <ChangeStatusPopover>12121</ChangeStatusPopover>
         <DeleteConfirm
           title={`删除【${deleteItem?.storyPrefixKey}】？`}
           isVisible={isVisible}

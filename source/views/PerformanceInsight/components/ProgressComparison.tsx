@@ -247,7 +247,7 @@ const ProgressComparison = (props: Props) => {
     },
     {
       dataIndex: 'user',
-      title: getTitleTips('缺陷修复率', '已完成工作项/新增工作项*100%'),
+      title: getTitleTips('缺陷修复率', '当期已修复缺陷/档期总缺陷*100%'),
     },
     {
       title: '待修复',
@@ -262,8 +262,8 @@ const ProgressComparison = (props: Props) => {
       dataIndex: 'storyPrefixKey',
     },
     {
-      title: '缺陷重开',
-      dataIndex: 'storyPrefixKey',
+      dataIndex: 'user',
+      title: getTitleTips('缺陷重开', '当期重开缺陷/当期总缺陷*100%'),
     },
     {
       title: '缺陷重开率',
@@ -271,7 +271,7 @@ const ProgressComparison = (props: Props) => {
     },
     {
       dataIndex: 'user',
-      title: getTitleTips('缺陷存量', '（当期）超过14天未完成的工作项'),
+      title: getTitleTips('缺陷存量', '当期未修复缺陷'),
     },
   ]
   useEffect(() => {
@@ -410,6 +410,7 @@ const ProgressComparison = (props: Props) => {
       />
       {/* 选择人员 */}
       <SelectPersonnel
+        type={props.type}
         visible={isvisible}
         ids={[1, 2, 3]}
         id={2}

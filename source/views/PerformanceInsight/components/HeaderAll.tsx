@@ -28,12 +28,6 @@ const HeaderAll = (props: HaderProps) => {
   const [isVisibleSuccess, setIsVisibleSuccess] = useState<boolean>(false)
   const [more, setMore] = useState(false)
   const [options, setOptions] = useState<ItemProps[] | []>([])
-  // const [person, setPerson] = useState<ItemProps[] | []>([{
-  //     label: '1',
-  //     value: '1',
-  //     id: '1',
-  //     avatar: ''
-  // }])
   useEffect(() => {
     const a = []
     for (let i = 1; i < 10; i++) {
@@ -73,17 +67,6 @@ const HeaderAll = (props: HaderProps) => {
           <CommonIconFont type="left-md" size={16} />
           <span className="text">返回</span>
         </Back>
-        {/*<Select onSearch={onSearch} options={options} more={more} onChange={(value: string[]) => console.log(value)} onShowAll={() => onShowAll()} />
-                        <DivStyle onClick={() => setIsOpen(!isOpen)}>
-                            {person.length > 0 ?
-                                <Left><span>成员</span><Btn>已选{person.length}人</Btn></Left>
-                                : <>全员</>}
-                            <CommonIconFont
-                                type={isOpen ? 'up' : 'down'}
-                                size={14}
-                                color="var(--neutral-n4)"
-                            />
-                        </DivStyle> */}
         <RightRow>
           {/* 全部多一个下拉搜索条件，先传10个，查看更多展示完成 */}
           <div style={{ marginRight: '16px' }}>
