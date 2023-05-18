@@ -170,8 +170,10 @@ const Main = (props: UserInfo) => {
         // onClick={() => setIsVisible(true)}
         >
           {/* 快捷操作，打开创建事务的弹窗 */}
-          {props.type === 'Progress0' || props.type === 'Progress1'}
-          <span className="text">分配事务</span>
+          {(props.type === 'Progress0' ||
+            props.type === 'Progress1' ||
+            props.type === 'Defect0' ||
+            props.type === 'Defect1') && <span className="text">分配事务</span>}
         </BtnStyle>
       </MainStyle1>
       <MainWrap size={32}>
