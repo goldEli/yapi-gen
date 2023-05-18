@@ -1,7 +1,5 @@
 import styled from '@emotion/styled'
 import { Space } from 'antd'
-import exp from 'constants'
-
 export const HeaderStyle = styled.div`
   height: 52px;
   background: var(--neutral-white-d5);
