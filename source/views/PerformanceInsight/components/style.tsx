@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import { Space } from 'antd'
+import { HighchartsReact } from 'highcharts-react-official'
 export const HeaderStyle = styled.div`
   height: 52px;
   background: var(--neutral-white-d5);
@@ -270,3 +271,23 @@ export const Left = styled.div`
   display: flex;
   align-items: center;
 `
+export const CharTitle = styled.div`
+  font-size: 12px;
+  color: var(--neutral-n2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .day {
+    font-family: SiYuanRegular;
+    font-size: 20px;
+    color: var(--neutral-n1-d1);
+    margin: 0 12px 0 4px;
+  }
+  .time {
+    color: var(--neutral-n3);
+    margin-left: 2px;
+  }
+`
+export const HighchartsReactWrap = styled(HighchartsReact)({
+  height: '300px',
+})

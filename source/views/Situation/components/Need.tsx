@@ -40,7 +40,7 @@ const Need = (props: any) => {
     },
     xAxis: {
       categories: [
-        t('situation.January'),
+        t('situation.January') + 9,
         t('situation.February'),
         t('situation.March'),
         t('situation.April'),
@@ -70,7 +70,7 @@ const Need = (props: any) => {
     },
     series: data?.chartsData,
   }
-
+  console.log(data?.chartsData, 'data?.chartsData')
   return (
     <ChartsWrap>
       <div className={titleCss}>{t('situation.demandSurvey')}</div>

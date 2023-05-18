@@ -362,3 +362,16 @@ export const TextNum = styled.div`
     font-size: 14px;
   }
 `
+export const HightChartsWrap = styled.div`
+  width: 584px;
+  height: 396px;
+  border-radius: 6px;
+  background: var(--white-d4);
+  border: 1px solid var(--neutral-n6-d1);
+  padding: 24px;
+  .highcharts-container,
+  .highcharts-root {
+    width: 533px !important;
+    // height:300px !important;
+  }
+`
