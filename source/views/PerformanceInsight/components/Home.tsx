@@ -87,6 +87,7 @@ const HightChartMain = () => {
   const options1 = {
     chart: {
       type: 'spline',
+      height: 340,
     },
     credits: {
       enabled: false,
@@ -157,6 +158,7 @@ const HightChartMain = () => {
       enabled: false,
     },
     chart: {
+      height: 340,
       type: 'column',
     },
     xAxis: {
@@ -199,9 +201,9 @@ const HightChartMain = () => {
       borderColor: '#fff',
       shadow: false,
       headerFormat:
-        '<div style="width:120px;background:#fff;height:76px;padding:16px"><div style="background:#fff;font-size:12px;font-family: SiYuanMedium;">{point.key}</div>',
+        '<div style="width:120px;background:#fff;height:76px;padding:16px"><div style="background:#fff;font-size:12px;font-family: SiYuanMedium;">{point.key}</div><div>',
       pointFormat:
-        '<div style="marginTop:4px;background:#fff;display:flex;alignItems:center;"><div style="width:8px;height:8px;borderRadius:50%;background:#43BA9A;"></div><div style="marginLeft:8px;fontSize:12px,color:#646566">工作项：{point.y}项</div></div>',
+        '<div style="marginTop:4px;background:#fff;display:flex;alignItems:center;"><div style="width:8px;height:8px;borderRadius:50%;background:{series.color};"></div><div style="marginLeft:8px;fontSize:12px,color:#646566">工作项：{point.y}项</div></div>',
       footerFormat: '</div>',
       shared: true,
       useHTML: true,
