@@ -7,7 +7,7 @@ interface Props {
   isShow?: boolean
   children: ReactNode
   //   onChangeStatus(value: any): void
-  record: any
+  // record: any
   projectId?: any
   isCanOperation?: boolean
 }
