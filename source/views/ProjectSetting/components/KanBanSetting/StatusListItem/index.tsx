@@ -17,6 +17,7 @@ const StatusListItemBox = styled.div`
   justify-content: space-between;
   padding: 0 16px;
   box-sizing: border-box;
+  flex-shrink: 0;
 `
 const StatusListItemLeft = styled.div`
   display: flex;
