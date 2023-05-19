@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
+import StateTag from '@/components/StateTag'
 
 interface StatusListProps {}
 
@@ -32,10 +33,10 @@ const ImageIcon = styled.img`
   width: 20px;
   height: 20px;
 `
-const Text = styled.div`
+const Text = styled.div<{ bg: string }>`
   width: 52px;
   height: 22px;
-  background: var(--primary-d1);
+  background: ${props => props.bg};
   border-radius: 6px 6px 6px 6px;
   opacity: 1;
   font-size: 12px;
@@ -63,6 +64,8 @@ const data: Model.KanbanConfig.Status[] = [
     attachment_path:
       'https://dev.staryuntech.com/dev-agile/attachment/category_icon/home.png',
     status_name: '已关闭',
+    is_end: 1,
+    is_start: 2,
   },
   {
     story_type_id: 5711,
@@ -71,6 +74,8 @@ const data: Model.KanbanConfig.Status[] = [
     attachment_path:
       'https://dev.staryuntech.com/dev-agile/attachment/category_icon/home.png',
     status_name: '已开始',
+    is_end: 2,
+    is_start: 1,
   },
 ]
 
@@ -83,7 +88,19 @@ const StatusList: React.FC<StatusListProps> = props => {
             <StatusListItemLeft>
               <IconWarp active type="move" />
               <ImageIcon src={item.attachment_path} />
-              <Text>{item.status_name}</Text>
+              {/* <Text bg={item.status_color}>{item.status_name}</Text> */}
+              <StateTag
+                name={item.status_name}
+                state={
+                  item?.is_start === 1 && item?.is_end === 2
+                    ? 1
+                    : item?.is_end === 1 && item?.is_start === 2
+                    ? 2
+                    : item?.is_start === 2 && item?.is_end === 2
+                    ? 3
+                    : 0
+                }
+              />
             </StatusListItemLeft>
             <Count>{`${item.stories_count}个事务`}</Count>
           </StatusListItem>
