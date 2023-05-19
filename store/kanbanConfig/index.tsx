@@ -2,6 +2,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 type SliceState = {
   viewList?: Model.KanbanConfig.ConfigListItem[]
+  saveAsViewModelInfo: {
+    visible: boolean
+    viewItem?: Model.KanbanConfig.ConfigListItem
+  }
 }
 
 const initialState: SliceState = {
@@ -12,12 +16,24 @@ const initialState: SliceState = {
     { id: 4, project_id: 11, name: '重点关注', check: false },
     { id: 5, project_id: 11, name: '进度跟踪', check: false },
   ],
+  saveAsViewModelInfo: {
+    visible: false,
+  },
 }
 
 const slice = createSlice({
   name: 'kanbanConfig',
   initialState,
   reducers: {
+    setSaveAsViewModelInfo(
+      state,
+      action: PayloadAction<SliceState['saveAsViewModelInfo']>,
+    ) {
+      state.saveAsViewModelInfo = {
+        ...state.saveAsViewModelInfo,
+        ...action.payload,
+      }
+    },
     onChangeViewList(
       state,
       action: PayloadAction<Model.KanbanConfig.ConfigListItem['id']>,
@@ -38,6 +54,6 @@ const slice = createSlice({
 
 const KanbanConfig = slice.reducer
 
-export const { onChangeViewList } = slice.actions
+export const { onChangeViewList, setSaveAsViewModelInfo } = slice.actions
 
 export default KanbanConfig

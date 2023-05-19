@@ -3,12 +3,12 @@ import styled from '@emotion/styled'
 import SelectOptions from '@/components/SelectOptions'
 import { useDispatch, useSelector } from '@store/index'
 import { onChangeViewList } from '@store/kanbanConfig'
-import SaveAsViewModal from '@/views/SprintProjectKanBan/KanBanBtnsArea/SaveAsViewModal'
-import { openSaveAsViewModel } from '@store/sprintKanBan/sprintKanban.thunk'
-import DeleteConfirm from '@/components/DeleteConfirm'
+
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import IconFont from '@/components/IconFont'
 import CommonButton from '@/components/CommonButton'
+import { openSaveAsViewModel } from '@store/kanbanConfig/kanbanConfig.thunk'
+import SaveAsViewModal from '../SaveAsViewModal'
 
 interface ToolBarProps {}
 
@@ -64,19 +64,24 @@ const ToolBar: React.FC<ToolBarProps> = props => {
   }, [viewList])
 
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
+  const onDel = () => {
+    open({
+      title: '确认删除',
+      text: '确认删除该列与状态，删除后再看板中将无法使用该列与状态',
+      onConfirm() {
+        return Promise.resolve()
+      },
+    })
+  }
+  const current = handleViewList.find(item => item.check)
+  console.log(current, 'current')
   return (
     <ToolBarBox>
       <Left>
         <DeleteConfirmModal />
         <SelectOptions
           onDel={key => {
-            open({
-              title: '确认删除',
-              text: '确认删除该列与状态，删除后再看板中将无法使用该列与状态',
-              onConfirm() {
-                return Promise.resolve()
-              },
-            })
+            onDel()
           }}
           title="视图"
           createViewTitle="创建列与状态"
@@ -87,7 +92,7 @@ const ToolBar: React.FC<ToolBarProps> = props => {
           operation
           onDefault={key => {}}
           onEdit={key => {
-            dispatch(openSaveAsViewModel(key))
+            dispatch(openSaveAsViewModel(Number(key)))
           }}
           onCreateView={() => {
             dispatch(openSaveAsViewModel())
@@ -95,9 +100,8 @@ const ToolBar: React.FC<ToolBarProps> = props => {
         />
         <Btn
           onClick={() => {
-            const current = handleViewList.find(item => item.check)
             if (current?.key) {
-              dispatch(openSaveAsViewModel(current.key))
+              dispatch(openSaveAsViewModel(Number(current.key)))
             }
           }}
         >
@@ -108,8 +112,23 @@ const ToolBar: React.FC<ToolBarProps> = props => {
       </Left>
       <Right>
         <CommonButton type="icon" icon="tag-96pg0hf3" />
-        <CommonButton type="icon" icon="edit" />
-        <CommonButton type="icon" icon="delete" />
+        <CommonButton
+          onClick={() => {
+            console.log(current, '111')
+            if (current?.key) {
+              dispatch(openSaveAsViewModel(Number(current.key)))
+            }
+          }}
+          type="icon"
+          icon="edit"
+        />
+        <CommonButton
+          onClick={() => {
+            onDel()
+          }}
+          type="icon"
+          icon="delete"
+        />
       </Right>
     </ToolBarBox>
   )
