@@ -901,6 +901,7 @@ const ModalFooter = styled(Space)({
   justifyContent: 'flex-end',
   height: 80,
   padding: '0 20px 0 24px',
+  position: 'relative',
 })
 
 const SeverityWrap = styled.div`

@@ -10,7 +10,7 @@ import { uploadFile } from '@/components/AddWorkItem/CreateWorkItemLeft'
 
 import { LabelTitle } from '@/views/WorkReport/Review/components/style'
 import { Editor } from '@xyfe/uikit'
-import { Checkbox, Dropdown, Form, Input, Radio } from 'antd'
+import { Checkbox, DatePicker, Dropdown, Form, Input, Radio } from 'antd'
 
 import React, { useEffect, useState } from 'react'
 import type1 from '/type1.png'
@@ -24,6 +24,13 @@ import AddDepartmentOrTeamModal from '@/components/AddDepartmentOrTeamModal'
 import CommonModal2 from '@/components/AddUser/CommonModal'
 import CommonModal from '@/components/CommonModal'
 import { seleData1 } from '@/views/WorkReport/Formwork/DataList'
+import {
+  Col,
+  DefalutIcon,
+  NameText,
+  PersonContainer,
+} from '@/views/WorkReport/Formwork/Addperson'
+import CommonUserAvatar from '@/components/CommonUserAvatar'
 interface Item {
   label: string
   key: string
@@ -50,8 +57,10 @@ const CreateNoteModal = (props: any) => {
       label: t('formWork.addtd'),
     },
   ])
-
+  const [personData, setPersonData] = useState<any>()
   const [isVisible, setIsVisible] = useState(false)
+  const [taskTime, setTaskTime] = useState(false)
+  const [isEmail, setIsEmail] = useState(false)
   const [targetType, setTargetType] = useState<number>(0)
   const [isAddVisible, setIsAddVisible] = useState(false)
   const [userType, setUserType] = useState<number>(0)
@@ -71,8 +80,20 @@ const CreateNoteModal = (props: any) => {
   }
   const onChange = (e: any) => {
     console.log(`checked = ${e.target.checked}`)
+    setTaskTime(e.target.checked)
   }
-
+  const onChange2 = (e: any) => {
+    console.log(`checked = ${e.target.checked}`)
+    setIsEmail(e.target.checked)
+  }
+  const fitlerDataList = (data: any) => {
+    let obj: any = {}
+    let set: any = data?.reduce((cur: any, next: any) => {
+      obj[next.target_id] ? '' : (obj[next.target_id] = true && cur.push(next))
+      return cur
+    }, [])
+    return set
+  }
   const onConfirm = (data: any) => {
     const setData = data.map((el: any) => ({
       ...el,
@@ -80,7 +101,8 @@ const CreateNoteModal = (props: any) => {
       target_type: targetType,
       target_value: { name: el.name, avatar: el.avatar },
     }))
-
+    console.log(setData, '成员')
+    setPersonData(setData)
     setIsVisible(false)
   }
 
@@ -95,6 +117,8 @@ const CreateNoteModal = (props: any) => {
         avatar: item.type === 1 ? 2 : item.type,
       },
     }))
+    console.log(values, '部门')
+    setPersonData(values)
   }
   const getName = (key: string, type: string) => {
     switch (key) {
@@ -110,6 +134,48 @@ const CreateNoteModal = (props: any) => {
         return type === 'id' ? 5 : t('formWork.allSup')
       case 'all':
         return t('formWork.whole')
+    }
+  }
+  const getImg = (item: any) => {
+    if (
+      item.target_value?.avatar &&
+      item.target_type !== 3 &&
+      item.target_type !== 2 &&
+      item.target_type !== 4
+    ) {
+      return <img src={item?.target_value?.avatar} />
+    } else if (item.target_value?.avatar === 3 || item.target_type === 3) {
+      return (
+        <DefalutIcon bgc="rgba(152, 172, 224, 1)">
+          <CommonIconFont
+            type="team-2"
+            size={16}
+            color="var(--neutral-white-d7)"
+          />
+        </DefalutIcon>
+      )
+    } else if (item.target_value?.target_type === 2 || item.target_type === 2) {
+      return (
+        <DefalutIcon bgc="rgba(121, 209, 193, 1)">
+          <CommonIconFont
+            type="branch"
+            size={16}
+            color="var(--neutral-white-d7)"
+          />
+        </DefalutIcon>
+      )
+    } else if (item.target_value?.key === 'all' || item?.target_type === 4) {
+      return (
+        <DefalutIcon bgc="rgba(125, 189, 225, 1)">
+          <CommonIconFont
+            type="userAll"
+            size={16}
+            color="var(--neutral-white-d7)"
+          />
+        </DefalutIcon>
+      )
+    } else {
+      return <CommonUserAvatar />
     }
   }
   const onOpenChange = (e: { key: string }) => {
@@ -144,7 +210,7 @@ const CreateNoteModal = (props: any) => {
             },
           },
         ]
-        props.onChangeValues(data)
+        setPersonData(data)
         break
       default:
         const data1 = [
@@ -164,23 +230,33 @@ const CreateNoteModal = (props: any) => {
             },
           },
         ]
-        props.onChangeValues(data1)
+        setPersonData(data1)
         setTargetType(4)
         break
     }
   }
-
+  const delPerson = (el: { target_id: any }) => {
+    props.onChangedel(el)
+  }
+  const onHandleOk = () => {
+    console.log(form.getFieldsValue())
+    console.log(personData)
+  }
   return (
     <CommonModal
+      draft
       isVisible={props.isVisible}
       width={784}
       title="发送通知"
       onClose={props.onClose}
-      onConfirm={props.onHandleOk}
+      onConfirm={onHandleOk}
     >
       <div
         style={{
           padding: '0 24px',
+          position: 'relative',
+          overflow: 'scroll',
+          height: 'calc(100vh - 300px)',
         }}
       >
         <Form form={form} layout="vertical">
@@ -226,25 +302,22 @@ const CreateNoteModal = (props: any) => {
           </Form.Item>
 
           <Form.Item
+            initialValue="a"
             name="radio-group"
             label={<LabelTitle>通知类型</LabelTitle>}
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
             <Radio.Group>
-              <Radio value="a">item 1</Radio>
-              <Radio value="b">item 2</Radio>
+              <Radio value="a">日常通知</Radio>
+              <Radio value="b">系统通知</Radio>
               <Radio defaultChecked value="c">
-                item 3
+                重要通知
               </Radio>
-              <Radio value="d">item 2</Radio>
-              <Radio value="e">item 3</Radio>
+              <Radio value="d">活动通知</Radio>
+              <Radio value="e">放假通知</Radio>
             </Radio.Group>
           </Form.Item>
           <Form.Item
-            style={{
-              position: 'relative',
-            }}
-            name="radio-group1"
             label={<LabelTitle>接收对象</LabelTitle>}
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
@@ -253,8 +326,20 @@ const CreateNoteModal = (props: any) => {
                 position: 'relative',
               }}
             >
-              <div style={{ position: 'absolute', top: '-35px', left: '80px' }}>
-                <Checkbox onChange={onChange}>同时邮件通知</Checkbox>
+              <div style={{ position: 'absolute', top: '-30px', left: '80px' }}>
+                <Checkbox onChange={onChange2}>
+                  <span
+                    style={{
+                      height: '20px',
+                      fontSize: '12px',
+                      verticalAlign: 'text-bottom',
+                      color: '#646566',
+                      lineHeight: '20px',
+                    }}
+                  >
+                    同时邮件通知
+                  </span>{' '}
+                </Checkbox>
               </div>
               <div>
                 <Dropdown
@@ -280,11 +365,31 @@ const CreateNoteModal = (props: any) => {
                     />
                   </CommonButton>
                 </Dropdown>
+                <PersonContainer
+                  style={{
+                    padding: '0px',
+                    marginTop: '8px',
+                  }}
+                >
+                  {personData?.map((el: any) => (
+                    <Col key={el.id}>
+                      {getImg(el)}
+                      <NameText>{el?.target_value?.name}</NameText>
+                      <CommonIconFont
+                        onClick={() => delPerson(el)}
+                        type="close"
+                        size={14}
+                        color="var(--neutral-n3)"
+                      />
+                    </Col>
+                  ))}
+                </PersonContainer>
               </div>
             </div>
           </Form.Item>
 
           <Form.Item
+            initialValue="b"
             name="type"
             label={<LabelTitle>提醒方式</LabelTitle>}
             rules={[{ required: true, message: 'Please input your username!' }]}
@@ -304,7 +409,7 @@ const CreateNoteModal = (props: any) => {
                     gap: '8px',
                   }}
                 >
-                  <Radio value="a">item 1</Radio>
+                  <Radio value="a">弹窗提醒</Radio>
                   <img
                     style={{
                       width: '104px',
@@ -321,7 +426,7 @@ const CreateNoteModal = (props: any) => {
                   }}
                 >
                   <Radio defaultChecked value="b">
-                    item 1
+                    顶部横幅
                   </Radio>
                   <img
                     style={{
@@ -334,7 +439,37 @@ const CreateNoteModal = (props: any) => {
               </div>
             </Radio.Group>
           </Form.Item>
+          <Form.Item
+            label={<LabelTitle>失效时间</LabelTitle>}
+            name="expirationTime"
+            rules={[{ required: true, message: 'Please input your username!' }]}
+          >
+            <DatePicker
+              showTime
+              style={{
+                width: '100%',
+              }}
+            />
+          </Form.Item>
         </Form>
+        <div>
+          <Checkbox onChange={onChange}>定时发送</Checkbox>
+          {taskTime && (
+            <div
+              style={{
+                marginTop: '8px',
+              }}
+            >
+              <DatePicker
+                showTime
+                style={{
+                  width: '100%',
+                }}
+              />
+            </div>
+          )}
+        </div>
+
         {isVisible && (
           <CommonModal2
             title={t('formWork.addUser')}
