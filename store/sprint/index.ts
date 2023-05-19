@@ -4,10 +4,18 @@ import { getSprintList } from './sprint.thunk'
 type SliceState = {
   guideVisible: Model.Sprint.Visible
   taskList?: Model.Sprint.Task[]
+  sprintDetailDrawer: {
+    visible: boolean
+    params?: any
+  }
 }
 
 const initialState: SliceState = {
-  guideVisible: true,
+  guideVisible: false,
+  sprintDetailDrawer: {
+    visible: false,
+    params: {},
+  },
 }
 
 const slice = createSlice({
@@ -16,6 +24,15 @@ const slice = createSlice({
   reducers: {
     setGuideVisible(state, action: PayloadAction<SliceState['guideVisible']>) {
       state.guideVisible = action.payload
+    },
+    setSprintDetailDrawer(
+      state,
+      action: PayloadAction<SliceState['sprintDetailDrawer']>,
+    ) {
+      state.sprintDetailDrawer = {
+        ...state.sprintDetailDrawer,
+        ...action.payload,
+      }
     },
   },
   extraReducers(builder) {
@@ -27,6 +44,6 @@ const slice = createSlice({
 
 const sprint = slice.reducer
 
-export const { setGuideVisible } = slice.actions
+export const { setGuideVisible, setSprintDetailDrawer } = slice.actions
 
 export default sprint

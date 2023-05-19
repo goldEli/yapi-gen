@@ -462,6 +462,7 @@ export const ShapeContent = (props: any) => {
     setActiveStatus(props.row.status)
     const res2 = await getProjectMember(projectId)
     setOptionsList(res2.data)
+    console.log(props)
     const res = await getShapeRight({
       id: props.row.project_id,
       nId: props.sid,

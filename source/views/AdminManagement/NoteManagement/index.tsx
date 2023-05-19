@@ -7,7 +7,7 @@
 /* eslint-disable no-undefined */
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import { Menu, message } from 'antd'
+import { Menu, Skeleton, message } from 'antd'
 import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
 
 import { DividerWrap } from '@/components/StyleCommon'
@@ -38,6 +38,12 @@ import SearchList2 from './components/SearchList2'
 import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
 import { TextChange } from '@/components/TextChange/TextChange'
+import NoteCard from '@/views/NoteCard/NoteCard'
+import { scrollListWrap } from '@/views/SiteNotifications/AllNotes'
+import InfiniteScroll from 'react-infinite-scroll-component'
+import CreateNoteModal from './components/CreateNoteModal/CreateNoteModal'
+import NoteDetailDrawer from './components/NoteDetailDrawer/NoteDetailDrawer'
+import MemberModal from './components/MemberModal/MemberModal'
 
 export const tableWrapP = css`
   display: flex;
@@ -125,6 +131,8 @@ const StaffManagement = () => {
     'created_at',
   ])
   const [allTitleList, setAllTitleList] = useState<any[]>([])
+  const [hasMore, setHasMore] = useState(true)
+  const [visible, setVisible] = useState(false)
   const hasCheck = getIsPermission(userInfo?.company_permissions, 'b/user/info')
   const navigate = useNavigate()
   const isHaveCheck = userInfo?.company_permissions?.filter(
@@ -133,7 +141,7 @@ const StaffManagement = () => {
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([])
   const [roleOptions, setRoleOptions] = useState<number[]>([])
-
+  const [list, setList] = useState(Array.from({ length: 20 }))
   const getStaffListData = async () => {
     setIsSpinning(true)
     const res = await getStaffList({
@@ -324,9 +332,6 @@ const StaffManagement = () => {
       duration: 0,
       content: <TextChange />,
       className: 'custom-class',
-      style: {
-        marginTop: '8vh',
-      },
     })
   }, [])
   useEffect(() => {
@@ -378,7 +383,15 @@ const StaffManagement = () => {
     selectedRowKeys,
     onChange: onSelectChange,
   }
-
+  const fetchMoreData = () => {
+    if (list.length >= 500) {
+      setHasMore(false)
+      return
+    }
+    setTimeout(() => {
+      setList(list.concat(Array.from({ length: 20 })))
+    }, 3000)
+  }
   return (
     <PermissionWrap
       auth="/AdminManagement/StaffManagement"
@@ -386,6 +399,14 @@ const StaffManagement = () => {
         ?.filter((k: any) => k.url === '/AdminManagement')?.[0]
         ?.children?.map((i: any) => i.url)}
     >
+      <CreateNoteModal
+        onClose={() => setVisible(false)}
+        onHandleOk={() => setVisible(false)}
+        isVisible={visible}
+      />
+
+      <MemberModal />
+      <NoteDetailDrawer />
       <div
         style={{
           display: 'flex',
@@ -435,20 +456,45 @@ const StaffManagement = () => {
       </div>
       <div
         style={{
-          padding: '24px',
+          padding: '0 24px',
         }}
       >
-        {isShow ? <SearchList2 onSearch={onSearch} /> : null}{' '}
+        {isShow ? <SearchList2 onSearch={onSearch} /> : null}
       </div>
       <div
         style={{
           display: 'flex',
-          gap: '24px',
+          gap: '8px',
           padding: '24px',
         }}
       >
-        <CommonButton type="primary"> 发送新通知 </CommonButton>
+        <CommonButton onClick={() => setVisible(true)} type="primary">
+          发送新通知
+        </CommonButton>
         <CommonButton type="primaryText"> 定时发送的通知（3）</CommonButton>
+      </div>
+      <div>
+        <InfiniteScroll
+          dataLength={list.length}
+          next={fetchMoreData}
+          style={{
+            overflow: 'auto',
+            height: 'calc(100vh - 220px)',
+            padding: '0px 24px',
+
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '16px',
+          }}
+          hasMore={hasMore}
+          height={document.body.clientHeight - 220}
+          loader={<Skeleton avatar paragraph={{ rows: 2 }} active />}
+          scrollableTarget="scrollableDiv"
+        >
+          {list.map((i: any) => (
+            <NoteCard key={i} />
+          ))}
+        </InfiniteScroll>
       </div>
     </PermissionWrap>
   )

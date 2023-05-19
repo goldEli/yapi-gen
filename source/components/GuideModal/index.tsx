@@ -34,10 +34,15 @@ const Container = styled.div`
   background-color: rgba(135, 136, 137, 0.6);
 `
 
-const ImgWrap = styled.div<{ if: boolean }>`
+const ImgWrap = styled.div`
   position: absolute;
   transition: opacity 5s;
-  opacity: ${props => (props.if ? 1 : 0)};
+`
+const activeCss = css`
+  opacity: 1;
+`
+const noCss = css`
+  opacity: 0;
 `
 
 const textBoxCss = css`
@@ -124,10 +129,11 @@ const GuideModal = (props: {
   }, [active])
 
   const ImgData = useMemo(() => {
+    // todo 待解决不能渐变问题
     return (
       <div className={imgBoxCss}>
-        {props?.inform?.map((k, idx) => (
-          <ImgWrap key={idx} if={idx === active}>
+        {props?.inform?.map(k => (
+          <ImgWrap key={k.key} className={active === k.key ? activeCss : noCss}>
             <img src={k.img} width={props?.width} />
           </ImgWrap>
         ))}

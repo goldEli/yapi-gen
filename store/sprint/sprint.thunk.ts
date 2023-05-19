@@ -1,6 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as services from '@/services'
 import { AppDispatch } from '@store/index'
+import { setSprintDetailDrawer } from '.'
+import { setListActiveId } from '@store/global'
 
 const name = 'sprint'
 
@@ -13,3 +15,9 @@ export const getSprintList = createAsyncThunk(
     return res.data.list
   },
 )
+
+export const saveSprintDetailDrawer =
+  (params: any) => async (dispatch: AppDispatch) => {
+    dispatch(setSprintDetailDrawer(params))
+    dispatch(setListActiveId(params?.id ?? 0))
+  }
