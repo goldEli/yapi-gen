@@ -20,9 +20,7 @@ const Right = styled.div``
 
 const ToolBar: React.FC<ToolBarProps> = props => {
   const { viewList } = useSelector(store => store.KanbanConfig)
-  const [deleteModalVisible, setDeleteModalVisible] = useState(false)
 
-  const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const dispatch = useDispatch()
   const handleViewList = useMemo<Model.SprintKanBan.ViewItem[]>(() => {
     const res =
@@ -37,19 +35,13 @@ const ToolBar: React.FC<ToolBarProps> = props => {
       }) ?? []
     return res
   }, [viewList])
+
+  const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   return (
     <ToolBarBox>
       <Left>
         <DeleteConfirmModal />
-        <SaveAsViewModal />
         <SelectOptions
-          title="视图"
-          createViewTitle="创建列与状态"
-          options={handleViewList}
-          onChange={key => {
-            dispatch(onChangeViewList(Number(key)))
-          }}
-          operation
           onDel={key => {
             open({
               title: '确认删除',
@@ -58,8 +50,14 @@ const ToolBar: React.FC<ToolBarProps> = props => {
                 return Promise.resolve()
               },
             })
-            setDeleteModalVisible(true)
           }}
+          title="视图"
+          createViewTitle="创建列与状态"
+          options={handleViewList}
+          onChange={key => {
+            dispatch(onChangeViewList(Number(key)))
+          }}
+          operation
           onDefault={key => {}}
           onEdit={key => {
             dispatch(openSaveAsViewModel(key))
@@ -68,6 +66,7 @@ const ToolBar: React.FC<ToolBarProps> = props => {
             dispatch(openSaveAsViewModel())
           }}
         />
+        <SaveAsViewModal />
       </Left>
       <Right></Right>
     </ToolBarBox>
