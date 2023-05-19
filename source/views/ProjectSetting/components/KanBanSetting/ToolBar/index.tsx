@@ -7,16 +7,43 @@ import SaveAsViewModal from '@/views/SprintProjectKanBan/KanBanBtnsArea/SaveAsVi
 import { openSaveAsViewModel } from '@store/sprintKanBan/sprintKanban.thunk'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import IconFont from '@/components/IconFont'
+import CommonButton from '@/components/CommonButton'
 
 interface ToolBarProps {}
 
 const ToolBarBox = styled.div`
   width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding-right: 59px;
+  box-sizing: border-box;
 `
+const Btn = styled.div`
+  font-size: 14px;
+  color: var(--auxiliary-text-t2-d2);
+`
+
 const Left = styled.div`
   display: flex;
+  gap: 16px;
+  align-items: center;
+  cursor: pointer;
 `
-const Right = styled.div``
+const Right = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+`
+
+const IconWrap = styled(IconFont)`
+  font-size: 14px;
+  color: var(--neutral-n3);
+  &:hover {
+    color: var(--auxiliary-b1);
+  }
+`
 
 const ToolBar: React.FC<ToolBarProps> = props => {
   const { viewList } = useSelector(store => store.KanbanConfig)
@@ -66,9 +93,24 @@ const ToolBar: React.FC<ToolBarProps> = props => {
             dispatch(openSaveAsViewModel())
           }}
         />
+        <Btn
+          onClick={() => {
+            const current = handleViewList.find(item => item.check)
+            if (current?.key) {
+              dispatch(openSaveAsViewModel(current.key))
+            }
+          }}
+        >
+          另存为
+        </Btn>
+        <Btn>保存更改</Btn>
         <SaveAsViewModal />
       </Left>
-      <Right></Right>
+      <Right>
+        <CommonButton type="icon" icon="tag-96pg0hf3" />
+        <CommonButton type="icon" icon="edit" />
+        <CommonButton type="icon" icon="delete" />
+      </Right>
     </ToolBarBox>
   )
 }
