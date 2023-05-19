@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next'
 import { getMessage } from '@/components/Message'
 import IconFont from '@/components/IconFont'
 import CommonIconFont from '@/components/CommonIconFont'
+import { useNavigate } from 'react-router-dom'
 
 const ChangeItem = styled.div<{ isActive?: boolean; height?: number }>`
   width: 100%;
@@ -38,6 +39,7 @@ const SetShowField = (props: Props) => {
   const { userPreferenceConfig } = useSelector(store => store.user)
   const dispatch = useDispatch()
   const [active, setActive] = useState()
+  const navigate = useNavigate()
   const onChangeViewMode = async (type: number) => {
     await updateCompanyUserPreferenceConfig({
       previewModel: type,
@@ -57,7 +59,15 @@ const SetShowField = (props: Props) => {
   let menuItems = [
     {
       key: '0',
-      label: <div>配置面板</div>,
+      label: (
+        <div
+          onClick={() => {
+            navigate('/SprintProjectManagement/Setting')
+          }}
+        >
+          配置面板
+        </div>
+      ),
     },
     {
       key: '1-1',
