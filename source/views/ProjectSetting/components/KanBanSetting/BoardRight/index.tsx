@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from '@emotion/styled'
+import KanBan from '../KanBan'
 
 interface BoardRightProps {}
 
@@ -10,7 +11,11 @@ const BoardRightBox = styled.div`
 `
 
 const BoardRight: React.FC<BoardRightProps> = props => {
-  return <BoardRightBox>BoardRight</BoardRightBox>
+  return (
+    <BoardRightBox>
+      <KanBan />
+    </BoardRightBox>
+  )
 }
 
 export default BoardRight
