@@ -25,6 +25,7 @@ import ReportDetailDrawer from '../WorkReport/Review/components/ReportDetailDraw
 import { saveDemandDetailDrawer } from '@store/demand/demand.thunk'
 import AddWorkItem from '@/components/AddWorkItem'
 import AddQuickSprint from '@/components/AddQuickSprint'
+import NoteModal from '@/components/NoteModal'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -163,7 +164,7 @@ export const Container = () => {
             close={() => setIsNextVisible(false)}
           />
         </LayoutWrap>
-
+        <NoteModal />
         <CreateAProjectForm />
         <CreateIteration />
         <DemandDetailDrawer />
