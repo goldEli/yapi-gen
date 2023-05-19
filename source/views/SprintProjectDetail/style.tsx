@@ -4,7 +4,8 @@ import { Space } from 'antd'
 export const Wrap = styled.div`
   height: 100%;
   display: flex;
-  padding: 20px 16px 0 24px;
+  padding-top: 20px;
+  /* padding: 20px 16px 0 24px; */
   flex-direction: column;
 `
 
@@ -13,6 +14,7 @@ export const DetailTop = styled.div`
   align-items: center;
   justify-content: space-between;
   height: 32px;
+  padding: 0 24px;
 `
 
 export const ButtonGroup = styled(Space)`
@@ -65,9 +67,10 @@ export const DownWrap = styled(NextWrap)<{ isOnly?: boolean }>`
 
 export const DetailTitle = styled.div`
   display: flex;
-  margin-top: 20px;
-  padding-bottom: 20px;
   border-bottom: 1px solid var(--neutral-n6-d1);
+  padding: 20px 0px 20px;
+  width: calc(100% - 48px);
+  margin-left: 24px;
 `
 
 export const Img = styled.img`
@@ -93,13 +96,14 @@ export const DetailText = styled.div`
 export const DetailMain = styled.div`
   display: flex;
   margin-top: 20px;
+  padding-right: 24px;
 `
 
 export const DetailInfoWrap = styled.div`
   width: 100%;
   height: 100%;
   overflow: auto;
-  padding: 0 0px 24px 0;
+  /* padding: 0 0px 0px 0; */
 `
 
 export const InfoItem = styled.div`
@@ -107,6 +111,8 @@ export const InfoItem = styled.div`
   margin-top: 20px;
   position: relative;
   flex-direction: column;
+  width: max-content;
+  padding-left: 24px;
 `
 
 export const Label = styled.div`

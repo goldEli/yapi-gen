@@ -51,7 +51,6 @@ import {
 import CommonButton from '../CommonButton'
 import { saveDemandDetailDrawer } from '@store/demand/demand.thunk'
 import { getMessage } from '../Message'
-import styled from '@emotion/styled'
 import { DemandOperationDropdownMenu } from '../TableDropdownMenu/DemandDropdownMenu'
 
 const DemandDetailDrawer = () => {
