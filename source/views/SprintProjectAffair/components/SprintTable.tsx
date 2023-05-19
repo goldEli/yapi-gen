@@ -34,7 +34,6 @@ const Content = styled.div`
 
 interface Props {
   data: any
-  onChangeVisible(e: any, item: any): void
   onDelete(item: any): void
   onChangePageNavigation?(item: any): void
   onChangeRow?(): void
@@ -420,14 +419,8 @@ const SprintTable = (props: Props) => {
     dispatch(setFilterParamsModal(filterParams))
   }
 
-  const onCreate = (id: number) => {
-    const findIdx = dataSource.findIndex((i: any) => i.id === id)
-    console.log(findIdx)
-  }
-
   return (
     <Content>
-      <Button onClick={() => onCreate(1003271)}>添加子事务</Button>
       <ResizeTable
         isSpinning={props.isSpinning}
         dataWrapNormalHeight="calc(100% - 64px)"

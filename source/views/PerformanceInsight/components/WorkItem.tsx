@@ -2,19 +2,13 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { Select, Space } from 'antd'
-import { useState } from 'react'
 import Detail from './Detail'
-
+import DetailHeader from './DetailHeader'
 import {
   TableStyle,
   Title,
   Text,
   FilterType,
-  HeaderStyle,
-  BackIcon,
-  ChangeIconGroup,
-  UpWrap,
-  DownWrap,
   MainStyle,
   UserMsg,
   UserInfo,
@@ -24,57 +18,7 @@ interface Props {
   visible: boolean
   id: number
   ids: number[]
-}
-const Header = (props: { ids: number[] }) => {
-  const [currentIndex, setCurrentIndex] = useState(4)
-  const onCancel = () => {
-    // 获取当前需求的下标， 用作上一下一切换
-    //  setCurrentIndex((ids || []).findIndex((i: any) => i === info.id))
-  }
-  return (
-    <HeaderStyle>
-      <Space size={16}>
-        <BackIcon onClick={onCancel}>
-          <CommonIconFont type="right-02" size={20} color="var(--neutral-n2)" />
-        </BackIcon>
-      </Space>
-      <Space size={16}>
-        <ChangeIconGroup>
-          {currentIndex > 0 && (
-            <UpWrap
-              // onClick={onUpDemand}
-              id="upIcon"
-              isOnly={
-                props.ids?.length === 0 ||
-                currentIndex === props.ids?.length - 1
-              }
-            >
-              <CommonIconFont
-                type="up"
-                size={20}
-                color="var(--neutral-n1-d1)"
-              />
-            </UpWrap>
-          )}
-          {!(
-            props.ids?.length === 0 || currentIndex === props.ids?.length - 1
-          ) && (
-            <DownWrap
-              //   onClick={onDownDemand}
-              id="downIcon"
-              isOnly={currentIndex <= 0}
-            >
-              <CommonIconFont
-                type="down"
-                size={20}
-                color="var(--neutral-n1-d1)"
-              />
-            </DownWrap>
-          )}
-        </ChangeIconGroup>
-      </Space>
-    </HeaderStyle>
-  )
+  onCancel: () => void
 }
 interface UserInfo {
   user: {
@@ -174,7 +118,7 @@ const WorkItem = (props: Props) => {
       <Detail
         children={
           <>
-            <Header ids={props.ids} />
+            <DetailHeader ids={props.ids} onCancel={() => props.onCancel()} />
             <Main user={{ avatar: '', name: ['1', '2'] }} />
           </>
         }

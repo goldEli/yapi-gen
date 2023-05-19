@@ -29,6 +29,7 @@ import useSetTitle from '@/hooks/useSetTitle'
 import AddMemberCommonModal from '@/components/AddUser/CommonModal'
 import TableSelectOptions from '@/components/TableSelectOptions'
 import { getAddDepartMember, getPositionSelectList } from '@/services/staff'
+import { getProjectRole } from '@store/create-propject/thunks'
 import {
   addMember,
   getProjectInfo,
@@ -106,6 +107,7 @@ const NameWrap = styled.span({
 const selectOptionsIcon = css`
   color: var(--neutral-n4);
   margin-left: 10px;
+  cursor: pointer;
 `
 const NewSort = (sortProps: any) => {
   return (
@@ -147,6 +149,8 @@ const ProjectMember = (props: { searchValue?: string }) => {
   const [departments, setDepartments] = useState([])
   const [member, setMember] = useState<any>()
   const [userDataList, setUserDataList] = useState<any[]>([])
+  const [selectRowKey, setSelectRowKey] = useState('')
+  const [optionsDrop, setOptionsDrop] = useState(false)
   asyncSetTtile(`${t('title.a2')}【${projectInfo.name ?? ''}】`)
   const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([])
   const dispatch = useDispatch()
@@ -211,6 +215,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
   useEffect(() => {
     getJobList()
     getPermission()
+    // dispatch(getProjectRole({ projectId }))
   }, [])
 
   useEffect(() => {
@@ -431,21 +436,28 @@ const ProjectMember = (props: { searchValue?: string }) => {
       ),
       dataIndex: 'roleName',
       width: 200,
-      render: (text: string) => {
+      render: (text: string, record: any) => {
         return (
-          <div style={{ position: 'relative' }}>
+          <div style={{ position: 'relative' }} data-column-key="roleName">
             <span>
               {text}
-              <label className={selectOptionsIcon}>
-                {' '}
-                <IconFont type="down-icon" />
-              </label>
+              {record.id === selectRowKey && (
+                <label
+                  className={selectOptionsIcon}
+                  onClick={() => {
+                    setOptionsDrop(!optionsDrop)
+                  }}
+                >
+                  {' '}
+                  <IconFont type="down-icon" />
+                </label>
+              )}
             </span>
-            {/* <TableSelectOptions></TableSelectOptions> */}
+            {optionsDrop && record.id === selectRowKey && (
+              <TableSelectOptions></TableSelectOptions>
+            )}
           </div>
         )
-        return
-        return <span>{text}12</span>
       },
     },
     {
@@ -505,7 +517,6 @@ const ProjectMember = (props: { searchValue?: string }) => {
     initColumns.push(Table.SELECTION_COLUMN as any)
     return [...initColumns, ...columns]
   }, [columns])
-
   const onChangeUpdate = () => {
     setOperationItem({})
     getList(order, pageObj)
@@ -634,10 +645,11 @@ const ProjectMember = (props: { searchValue?: string }) => {
   const onRow = (record: any, index: number) => {
     return {
       onMouseEnter: () => {
-        record.hovered = true
+        setSelectRowKey(record.id)
       },
       onMouseLeave: () => {
-        record.hovered = false
+        setSelectRowKey('')
+        setOptionsDrop(false)
       },
     }
   }

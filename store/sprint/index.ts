@@ -2,20 +2,20 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { getSprintList } from './sprint.thunk'
 
 type SliceState = {
-  visible: boolean
+  guideVisible: Model.Sprint.Visible
   taskList?: Model.Sprint.Task[]
 }
 
 const initialState: SliceState = {
-  visible: false,
+  guideVisible: false,
 }
 
 const slice = createSlice({
   name: 'sprint',
   initialState,
   reducers: {
-    setVisible(state, action: PayloadAction<SliceState['visible']>) {
-      state.visible = action.payload
+    setGuideVisible(state, action: PayloadAction<SliceState['guideVisible']>) {
+      state.guideVisible = action.payload
     },
   },
   extraReducers(builder) {
@@ -27,6 +27,6 @@ const slice = createSlice({
 
 const sprint = slice.reducer
 
-export const { setVisible } = slice.actions
+export const { setGuideVisible } = slice.actions
 
 export default sprint

@@ -74,8 +74,14 @@ const routes = [
             element: lazy(() => import('@/views/WorkReport/Formwork')),
           },
           {
-            path: 'xn',
+            path: 'PerformanceInsight',
             element: lazy(() => import('@/views/PerformanceInsight')),
+          },
+          {
+            path: 'ChildLevel',
+            element: lazy(
+              () => import('@/views/PerformanceInsight/ChildLevel'),
+            ),
           },
         ],
       },
@@ -124,6 +130,18 @@ const routes = [
           {
             path: 'Iteration',
             element: lazy(() => import('@/views/Iteration')),
+          },
+          {
+            path: 'KanBan',
+            element: lazy(() => import('@/views/IterationKanBan')),
+          },
+          {
+            path: 'IterationReport',
+            element: lazy(() => import('@/views/IterationReport')),
+          },
+          {
+            path: 'Defect',
+            element: lazy(() => import('@/views/IterationDefect')),
           },
           {
             path: 'ProjectSetting',

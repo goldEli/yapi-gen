@@ -12,11 +12,9 @@ import {
 } from './style'
 import { useSearchParams } from 'react-router-dom'
 import { getIsPermission, getParamsData } from '@/tools'
-import CommonMember from '@/components/CommonProjectComponent/CommonMember'
 import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
 import WrapLeft from './components/WrapLeft'
-import Operation from './components/Operation'
-import { Popover, Space, Tooltip } from 'antd'
+import { Checkbox, Popover, Space, Tooltip } from 'antd'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
@@ -26,6 +24,8 @@ import OperationGroup from '@/components/OperationGroup'
 import SprintTable from './components/SprintTable'
 import { getDemandList } from '@/services/demand'
 import SprintTree from './components/SprintTree'
+import DeleteConfirm from '@/components/DeleteConfirm'
+import ChangeStatusPopover from '@/components/ChangeStatusPopover/index'
 
 interface IProps {}
 
@@ -116,6 +116,8 @@ const SprintProjectAffair: React.FC<IProps> = props => {
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
+  const [deleteItem, setDeleteItem] = useState<any>({})
+  const [isDeleteCheck, setIsDeleteCheck] = useState(false)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -265,17 +267,10 @@ const SprintProjectAffair: React.FC<IProps> = props => {
     }
   }
 
-  // 点击操作左侧三点
-  const onChangeOperation = (e: any, item?: any) => {
-    // props.onSetOperationItem(item)
-    // props.onChangeVisible(e)
-    // setTopParentId(item?.topId)
-  }
-
   const onDelete = (item: any) => {
-    // setDeleteId(item.id)
-    // setIsVisible(true)
-    // setTopParentId(item?.topId)
+    setDeleteItem(item)
+    setIsVisible(true)
+    setTopParentId(item?.topId)
   }
 
   const onDeleteConfirm = async () => {
@@ -345,6 +340,20 @@ const SprintProjectAffair: React.FC<IProps> = props => {
     // >
     <TreeContext.Provider value={keyValue}>
       <Wrap>
+        <ChangeStatusPopover>12121</ChangeStatusPopover>
+        <DeleteConfirm
+          title={`删除【${deleteItem?.storyPrefixKey}】？`}
+          isVisible={isVisible}
+          onChangeVisible={() => setIsVisible(!isVisible)}
+          onConfirm={onDeleteConfirm}
+        >
+          <div style={{ marginBottom: 9 }}>
+            你将永久删除该事务，删除后将不可恢复请谨慎操作!
+          </div>
+          <Checkbox onChange={e => setIsDeleteCheck(e.target.checked)}>
+            同时删除该事务下所有子事务
+          </Checkbox>
+        </DeleteConfirm>
         <ProjectCommonOperation onInputSearch={onInputSearch} />
         <ContentWrap>
           <ContentLeft>
@@ -416,7 +425,6 @@ const SprintProjectAffair: React.FC<IProps> = props => {
             <ContentMain>
               {!isGrid && (
                 <SprintTable
-                  onChangeVisible={onChangeOperation}
                   onDelete={onDelete}
                   data={dataList}
                   onChangePageNavigation={onChangePageNavigation}

@@ -146,6 +146,7 @@ interface ResizeTableProps {
   }
   expandable?: any
   isTree?: boolean
+  rowClassName?: any
 }
 // 拖拽调整table
 const ResizeTable = (props: ResizeTableProps) => {
@@ -250,7 +251,7 @@ const ResizeTable = (props: ResizeTableProps) => {
               expandable={props?.expandable}
               onRow={props.onRow as any}
               rowClassName={(row: any) =>
-                row.id === listActiveId ? 'activeListItem' : ''
+                row.id === listActiveId ? 'activeListItem' : props.rowClassName
               }
             />
           )}

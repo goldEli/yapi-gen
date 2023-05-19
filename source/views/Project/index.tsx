@@ -21,17 +21,22 @@ import {
 import { getProjectCover } from '@store/cover/thunks'
 import { changeCreateVisible, onRest } from '@store/create-propject'
 import { useDispatch, useSelector } from '@store/index'
-import { setIsRefreshGroup } from '@store/project'
+import { setIsRefreshGroup, onChangeGuideVisible } from '@store/project'
 import { message, Spin } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Content, Wrap } from './style'
 import ProjectSide from './ProjectSide'
 import HasSideCommonLayout from '@/components/HasSideCommonLayout'
+import GuideModal from '@/components/GuideModal'
+import guide_1 from './img/guide_1.png'
+import guide_2 from './img/guide_2.png'
+import guide_3 from './img/guide_3.png'
 
 const ProjectManagementOptimization = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
+  const { guideVisible } = useSelector(store => store.project)
   const asyncSetTtile = useSetTitle()
   asyncSetTtile(t('title.project'))
 
@@ -76,6 +81,22 @@ const ProjectManagementOptimization = () => {
   const { groupId: storeGid, typeId } = useSelector(
     state => state.createProject,
   )
+  const inform = [
+    {
+      key: 0,
+      title: '项目管理的第一步',
+      desc: '这里可以按冲刺或迭代创建项目，选择不同的类型可以契合不同团队来管理您的项目',
+      img: guide_1,
+    },
+    {
+      key: 1,
+      title: '项目管理的第二步',
+      desc: '1. 这里鼠标移入点击后可以直接进入相应的模块，点击您负责的项目开始工作吧',
+      extra: '2. 在工作过程中您可以随时对项目进行编辑删除和结束ta',
+      img: guide_2,
+    },
+  ]
+
   const getList = async (
     active: number,
     isTable: boolean,
@@ -381,6 +402,13 @@ const ProjectManagementOptimization = () => {
         isVisible={isStop}
         onChangeVisible={() => setIsStop(!isStop)}
         onConfirm={onStopProject}
+      />
+      <GuideModal
+        width={784}
+        height={700}
+        visible={guideVisible}
+        inform={inform}
+        close={() => dispatch(onChangeGuideVisible(false))}
       />
     </PermissionWrap>
   )

@@ -426,6 +426,7 @@ export const ShapeContent = (props: any) => {
   }
 
   const change = async (item?: any) => {
+    console.log(item, '121212')
     setLoading(false)
     form.resetFields()
     setActiveStatus(item.status)
@@ -481,6 +482,7 @@ export const ShapeContent = (props: any) => {
       id: projectId,
       nId: myid,
     })
+    console.log(res2, '=1212')
     setLeftList(res2)
     getRight()
   }

@@ -1,11 +1,5 @@
-import Header from './Header/Iteration'
-import ProgressComparison from './components/ProgressComparison'
+import Home from './components/Home'
 const PerformanceInsight = () => {
-  return (
-    <>
-      {/* <Header /> */}
-      <ProgressComparison />
-    </>
-  )
+  return <Home />
 }
 export default PerformanceInsight
