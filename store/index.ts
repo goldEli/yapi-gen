@@ -31,7 +31,7 @@ import createScheduleVisualization from './createScheduleVisualization'
 import workReport from './workReport'
 import sprint from './sprint'
 import sprintKanBan from './sprintKanBan'
-
+import KanbanConfig from './kanbanConfig'
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
@@ -61,6 +61,7 @@ export const store = configureStore({
     workReport,
     sprint,
     sprintKanBan,
+    KanbanConfig,
   },
 })
 
