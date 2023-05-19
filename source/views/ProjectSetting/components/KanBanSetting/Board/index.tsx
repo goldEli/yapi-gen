@@ -10,6 +10,7 @@ const BoardBox = styled.div`
   display: flex;
   gap: 19px;
   flex: 1;
+  height: 0;
 `
 
 const Board: React.FC<BoardProps> = props => {

@@ -15,6 +15,8 @@ declare namespace Model.KanbanConfig {
     stories_count: number
     attachment_path: string
     status_name: string
+    is_start: 1 | 2
+    is_end: 1 | 2
   }
   interface Category {
     id: number

@@ -12,7 +12,7 @@ const KanBanSettingBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 20px 20px 0 20px;
+  padding: 0 20px 0 20px;
 `
 const KanBanSetting: React.FC<IProps> = props => {
   return (
