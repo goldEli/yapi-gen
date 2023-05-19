@@ -42,6 +42,8 @@ import NoteCard from '@/views/NoteCard/NoteCard'
 import { scrollListWrap } from '@/views/SiteNotifications/AllNotes'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import CreateNoteModal from './components/CreateNoteModal/CreateNoteModal'
+import NoteDetailDrawer from './components/NoteDetailDrawer/NoteDetailDrawer'
+import MemberModal from './components/MemberModal/MemberModal'
 
 export const tableWrapP = css`
   display: flex;
@@ -130,7 +132,7 @@ const StaffManagement = () => {
   ])
   const [allTitleList, setAllTitleList] = useState<any[]>([])
   const [hasMore, setHasMore] = useState(true)
-  const [visible, setVisible] = useState(true)
+  const [visible, setVisible] = useState(false)
   const hasCheck = getIsPermission(userInfo?.company_permissions, 'b/user/info')
   const navigate = useNavigate()
   const isHaveCheck = userInfo?.company_permissions?.filter(
@@ -402,6 +404,9 @@ const StaffManagement = () => {
         onHandleOk={() => setVisible(false)}
         isVisible={visible}
       />
+
+      <MemberModal />
+      <NoteDetailDrawer />
       <div
         style={{
           display: 'flex',
