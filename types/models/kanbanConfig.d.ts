@@ -12,7 +12,7 @@ declare namespace Model.KanbanConfig {
     // 必需 流转状态id
     flow_status_id: number
     stories_count: number
-    category_icon_path: string
+    attachment_path: string
     status_name: string
   }
   interface Category {
