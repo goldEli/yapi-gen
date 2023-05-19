@@ -7,7 +7,7 @@ interface Props {
   isShow?: boolean
   children: ReactNode
   //   onChangeStatus(value: any): void
-  //   record: any
+  // record: any
   projectId?: any
   isCanOperation?: boolean
 }
@@ -20,11 +20,30 @@ const ChangeStatusPopover = (props: Props) => {
   // 打开状态流转弹窗
   const onOpenModal = (item: any) => {
     setIsVisible(true)
-    setCheckStatusItem({ ...item })
+    setPopoverVisible(false)
+    setCheckStatusItem({
+      ...item,
+      infoId: 1003275,
+      // ?? props.record.id
+      dealName: '王灵娇;杨一',
+      formContent: '测试-add',
+      formIsStart: 1,
+      formIsEnd: 2,
+    })
   }
+
+  const onClosModal = () => {
+    setIsVisible(false)
+    setCheckStatusItem({})
+  }
+
   return (
     <>
-      {/* <StatusModal isVisible={isVisible} checkStatusItem={checkStatusItem} /> */}
+      <StatusModal
+        isVisible={isVisible}
+        checkStatusItem={checkStatusItem}
+        onClose={onClosModal}
+      />
       <Popover
         open={popoverVisible}
         onOpenChange={setPopoverVisible}
@@ -39,7 +58,7 @@ const ChangeStatusPopover = (props: Props) => {
             onOpenModal={onOpenModal}
             popoverVisible={popoverVisible}
             projectId={27}
-            id={1003272}
+            id={1003275}
           />
         }
       >

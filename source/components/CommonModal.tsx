@@ -32,6 +32,7 @@ const ModalStyle = styled(Modal)`
 `
 
 interface CommonModalProps {
+  draft?: boolean
   // 是否显示
   isVisible: boolean
   // 弹窗宽度
@@ -55,6 +56,7 @@ interface CommonModalProps {
   isShowMask?: boolean
   noCancel?: boolean
   dex?: number
+  isHeader?: boolean
 }
 
 const CommonModal = (props: CommonModalProps) => {
@@ -75,24 +77,39 @@ const CommonModal = (props: CommonModalProps) => {
       mask={props.isShowMask}
       zIndex={props.dex}
     >
-      <ModalHeader>
-        <span>{props?.title}</span>
-        <Space size={4}>
-          {props.hasTop}
-          <CloseWrap onClick={props?.onClose} width={32} height={32}>
-            <IconFont
-              style={{ fontSize: 20, color: 'var(--neutral-n2)' }}
-              type="close"
-            />
-          </CloseWrap>
-        </Space>
-      </ModalHeader>
+      {!props.isHeader && (
+        <ModalHeader>
+          <span>{props?.title}</span>
+          <Space size={4}>
+            {props.hasTop}
+            <CloseWrap onClick={props?.onClose} width={32} height={32}>
+              <IconFont
+                style={{ fontSize: 20, color: 'var(--neutral-n2)' }}
+                type="close"
+              />
+            </CloseWrap>
+          </Space>
+        </ModalHeader>
+      )}
+
       <div style={{ minHeight: 154 }}>{props?.children}</div>
       {!props?.isShowFooter && (
         <>
           {props?.hasFooter}
           {!props.hasFooter && (
             <ModalFooter size={16}>
+              {props.draft ? (
+                <div
+                  style={{
+                    position: 'absolute',
+                    left: '24px',
+                    bottom: '24px',
+                  }}
+                >
+                  <CommonButton type="secondaryText"> 存草稿</CommonButton>
+                </div>
+              ) : null}
+
               {props?.noCancel ? null : (
                 <CommonButton type="light" onClick={props?.onClose}>
                   {t('common.cancel')}

@@ -24,8 +24,10 @@ interface SelectBoxProps {
   options: Model.SprintKanBan.ViewItem[]
   operation?: Model.SprintKanBan.ViewItem['operation']
   onCreateView?: () => void
+  createViewTitle?: string
   onDel?: (key: string) => void
   onEdit?: (key: string) => void
+  onDefault?: (key: string) => void
 }
 
 const SelectOptions: React.FC<SelectBoxProps> = props => {
@@ -78,6 +80,16 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
               </CheckIcon>
               <BtnsArea>
                 <IconWrap
+                  visible={!!props.onDefault}
+                  onClick={e => {
+                    e.stopPropagation()
+                    setIsVisibleFormat(false)
+                    props?.onDefault?.(item.key)
+                  }}
+                  type="tag-96pg0hf3"
+                />
+                <IconWrap
+                  visible={!!props.onEdit}
                   onClick={e => {
                     e.stopPropagation()
                     setIsVisibleFormat(false)
@@ -86,6 +98,7 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
                   type="edit"
                 />
                 <IconWrap
+                  visible={!!props.onDel}
                   onClick={e => {
                     e.stopPropagation()
                     setIsVisibleFormat(false)
@@ -126,7 +139,9 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
                   props?.onCreateView?.()
                 }}
               >
-                <span className="label">{'创建视图'}</span>
+                <span className="label">
+                  {props.createViewTitle ? props.createViewTitle : '创建视图'}
+                </span>
               </Options>
             </HasIconMenu>
           ),
@@ -134,7 +149,7 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
       ]
     }
     return props.options.map(renderOption)
-  }, [props.options, key, props.operation])
+  }, [props.options, key, props.operation, props.createViewTitle])
 
   const title = useMemo(() => {
     return `${props.title}：${value}`

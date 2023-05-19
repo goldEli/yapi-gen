@@ -31,14 +31,14 @@ const AddPersonTitleText = styled.div`
     color: var(--function-error);
   }
 `
-const PersonContainer = styled.div`
+export const PersonContainer = styled.div`
   width: 100%;
   padding: 0 24px;
   display: flex;
   margin-bottom: 20px;
   flex-wrap: wrap;
 `
-const Col = styled.div`
+export const Col = styled.div`
   display: flex;
   align-items: center;
   /* min-width: 116px; */
@@ -59,12 +59,12 @@ const Col = styled.div`
     box-shadow: 0px 0px 10px 0px rgba(9, 9, 9, 0.09);
   }
 `
-const NameText = styled.div`
+export const NameText = styled.div`
   flex: 1;
   padding: 0 10px;
   min-width: 40px;
 `
-const DefalutIcon = styled.div<{ bgc?: any }>(
+export const DefalutIcon = styled.div<{ bgc?: any }>(
   {
     display: 'flex',
     justifyContent: 'center',
@@ -287,8 +287,13 @@ const Addperson = (props: Props) => {
     }
   }
   useEffect(() => {
+    console.log(props.person, '数据')
+
     setPersonData(fitlerDataList(props.person))
   }, [props.person])
+
+  console.log(personData, '人')
+
   return (
     <>
       <AddPersonText>

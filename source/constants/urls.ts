@@ -184,6 +184,19 @@ const urls = {
   modifySchedule: function (id: Model.Schedule.Info['schedule_id']) {
     return `/b/calendar/schedule/${id}`
   },
+
+  // 看板配置列表
+  getKanbanConfigList: '/b/project/kanban/configs/index',
+  // 看板配置
+  getKanbanConfig: '/b/project/kanban/configs/show',
+  // 创建看板配置
+  createKanbanConfig: '/b/project/kanban/configs/create',
+  // 修改看板配置
+  updateKanbanConfig: '/b/project/kanban/configs/update',
+  // 删除看板配置
+  deleteKanbanConfig: '/b/project/kanban/configs/delete',
+  // 看板配置剩余状态
+  getKanbanConfigRemainingStatus: '/b/project/kanban/configs/residueStatus',
 }
 export default urls
 

@@ -46,7 +46,7 @@ export const getContactStatistics: any = async () => {
 
 export const getMsg_list: any = async (params: any) => {
   const response: any = await http.post<any>('/b/msg/list', {
-    lastId: params.lastId ?? 0,
+    page: params.lastId ?? 1,
     read: params.read,
     friendUsername: params.friendUsername ? [params.friendUsername] : undefined,
     customType: params.msgType,

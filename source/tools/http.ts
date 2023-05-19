@@ -146,8 +146,7 @@ client.config({
         data.code === 'A0201' ||
         data.code === 'A0200' ||
         data.code === 'A0100' ||
-        data.code === 'A0001' ||
-        data.code === 'B0001'
+        data.code === 'A0001'
       ) {
         setTimeout(() => {
           localStorage.removeItem('agileToken')
@@ -165,6 +164,7 @@ client.config({
         data.code !== 'B0015'
       ) {
         getMessage({ msg: data.message, type: 'error' })
+        console.log(data.message, 'request error')
         return Promise.reject()
       }
       return {

@@ -26,7 +26,7 @@ import { css } from '@emotion/css'
 import NoData from '@/components/NoData'
 import AllSideFilter from '../components/AllSideFilter/AllSideFilter'
 
-const scrollListWrap = css`
+export const scrollListWrap = css`
   padding: 0px 4px 0px 80px;
   .ant-skeleton-active {
     .ant-skeleton-title,
@@ -42,7 +42,7 @@ interface ZoomRatioType {
   [MapZoom: string]: string
 }
 const Index = () => {
-  const lastId = useRef<any>()
+  const lastId = useRef<any>(1)
   const all = useSelector(store => store.siteNotifications.all)
   const friendUsername = useRef<any>(undefined)
   const msgType = useRef<any>(undefined)
@@ -65,18 +65,26 @@ const Index = () => {
       friendUsername: friendUsername.current,
       msgType: msgType.current,
     })
+    const maxPage = re4.pager.total
+    lastId.current += 1
 
-    lastId.current = re4.lastId
+    if (type === 1 && lastId.current === maxPage + 1) {
+      console.log(11)
 
-    if (type === 1 && re4.lastId === 0) {
       setList(re4.list)
       setHasMore(false)
     } else if (type === 1) {
+      console.log(12)
       setList(re4.list)
-    } else if (type === 2 && re4.lastId === 0) {
+      if (re4.list.length < 1) {
+        setHasMore(false)
+      }
+    } else if (type === 2 && lastId.current === maxPage + 1) {
+      console.log(13)
       setList(e => e.concat(re4.list))
       setHasMore(false)
     } else if (type === 2) {
+      console.log(14)
       setList(e => e.concat(re4.list))
     }
   }
@@ -92,7 +100,7 @@ const Index = () => {
       dispatch(changeNumber(num))
       setList([])
       setHasMore(true)
-      lastId.current = 0
+      lastId.current = 1
       fetchMoreData(1)
     }
   }
@@ -105,7 +113,7 @@ const Index = () => {
     setList([])
     msgType.current = id === '4' ? ['191', '132'].concat(arr ?? []) : arr
     friendUsername.current = str
-    lastId.current = undefined
+    lastId.current = 1
     setHasMore(true)
 
     fetchMoreData(1)
@@ -113,7 +121,7 @@ const Index = () => {
   const changeMsg = (arr: any) => {
     setList([])
     msgType.current = id === '4' ? ['191', '132'].concat(arr ?? []) : arr
-    lastId.current = undefined
+    lastId.current = 1
     setHasMore(true)
     fetchMoreData(1)
   }
@@ -123,11 +131,12 @@ const Index = () => {
     if (id === '4') {
       msgType.current = ['191', '132']
     }
-    lastId.current = 0
+    lastId.current = 1
     setList([])
     setHasMore(true)
     fetchMoreData(1)
   }, [id, all])
+  console.log(list, '当前list')
 
   return (
     <div>

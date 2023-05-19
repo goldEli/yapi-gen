@@ -19,7 +19,7 @@ export const SelectOptionsBox = styled.div`
 `
 
 export const OperationArea = styled.div`
-  width: 50px;
+  min-width: 50px;
 `
 export const BtnsArea = styled.div`
   display: none;
@@ -65,7 +65,8 @@ export const Options = styled.div`
     display: none;
   }
 `
-export const IconWrap = styled(IconFont)`
+export const IconWrap = styled(IconFont)<{ visible: boolean }>`
+  display: ${props => (props.visible ? 'block' : 'none')};
   font-size: 14px;
   color: var(--neutral-n3);
   &:hover {
