@@ -40,7 +40,7 @@ const ToolBar: React.FC<ToolBarProps> = props => {
   return (
     <ToolBarBox>
       <Left>
-        <DeleteConfirmModal />
+        <DeleteConfirmModal>123</DeleteConfirmModal>
         <SelectOptions
           onDel={key => {
             open({

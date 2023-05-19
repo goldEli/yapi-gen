@@ -8,16 +8,16 @@ import { useTranslation } from 'react-i18next'
 import { CloseWrap } from './StyleCommon'
 import CommonButton from './CommonButton'
 
-interface Props {
+export interface DeleteConfirmProps {
   isVisible: boolean
   title?: string
   text?: string
-  onChangeVisible?: any
+  onChangeVisible?: () => void
   onConfirm(): void
   children?: any
   // 没有取消按钮
   notCancel?: boolean
-  onCancel?: any
+  onCancel?: () => void
   onCancelState?: boolean
 }
 
@@ -65,7 +65,7 @@ const ModalStyle = styled(Modal)`
     box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
   }
 `
-const DeleteConfirm = (props: Props) => {
+const DeleteConfirm = (props: DeleteConfirmProps) => {
   const [t] = useTranslation()
   return (
     <ModalStyle
@@ -104,7 +104,9 @@ const DeleteConfirm = (props: Props) => {
             width={32}
             height={32}
             onClick={() =>
-              props?.onCancelState ? props.onCancel() : props.onChangeVisible()
+              props?.onCancelState
+                ? props?.onCancel?.()
+                : props?.onChangeVisible?.()
             }
           >
             <IconFont style={{ fontSize: 20 }} type="close" />
