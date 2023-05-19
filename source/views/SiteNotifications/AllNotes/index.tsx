@@ -26,7 +26,7 @@ import { css } from '@emotion/css'
 import NoData from '@/components/NoData'
 import AllSideFilter from '../components/AllSideFilter/AllSideFilter'
 
-const scrollListWrap = css`
+export const scrollListWrap = css`
   padding: 0px 4px 0px 80px;
   .ant-skeleton-active {
     .ant-skeleton-title,

@@ -8,11 +8,17 @@ import TimeMain from './components/TimeMain'
 import { Left } from '../components/style'
 import CommonIconFont from '@/components/CommonIconFont'
 import Select from '../components/Select'
+import AddMemberCommonModal from '@/components/AddUser/CommonModal'
+import { clear } from 'console'
 interface ItemProps {
+  name: string
+  id: number
+}
+interface OptionProps {
   label: string
   value: string
   id: string
-  avatar: string | undefined
+  avatar: string
 }
 const Iteration = () => {
   // sprint  iteration all
@@ -43,15 +49,9 @@ const Iteration = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const { RangePicker } = DatePicker
   const [more, setMore] = useState<boolean>(false)
-  const [person, setPerson] = useState<ItemProps[] | []>([
-    {
-      label: '1',
-      value: '1',
-      id: '1',
-      avatar: '',
-    },
-  ])
-  const [options, setOptions] = useState<ItemProps[] | []>([])
+  const [person, setPerson] = useState<ItemProps[] | []>([])
+  const [options, setOptions] = useState<OptionProps[] | []>([])
+  const [isVisible, setIsVisible] = useState<boolean>(false)
   const getTabsActive = (index: number) => {
     setTabsActive(index)
   }
@@ -92,6 +92,14 @@ const Iteration = () => {
     }
     setOptions(a)
   }
+  const onConfirm = (data: Array<{ name: string; id: number }>) => {
+    setIsVisible(false)
+    setPerson(data)
+  }
+  const clear = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    setPerson([])
+  }
   return (
     <HeaderRow>
       <Space size={16}>
@@ -111,20 +119,31 @@ const Iteration = () => {
             onShowAll={() => onShowAll()}
           />
         )}
-        <DivStyle onClick={() => 123}>
+        {/* 成员选择 */}
+        <DivStyle onClick={() => setIsVisible(true)}>
           {person.length > 0 ? (
             <Left>
               <span>成员</span>
               <Btn1>已选{person.length}人</Btn1>
             </Left>
           ) : (
-            <>全员</>
+            <span>全员</span>
           )}
-          <CommonIconFont
-            type={isOpen ? 'up' : 'down'}
-            size={14}
-            color="var(--neutral-n4)"
-          />
+          {person.length > 0 ? (
+            <CommonIconFont
+              type={'close-solid'}
+              size={14}
+              color="var(--neutral-n4)"
+              // onClick={(ev: React.MouseEvent) => clear(ev)}
+            />
+          ) : (
+            <CommonIconFont
+              onClick={() => setIsVisible(true)}
+              type={isOpen ? 'up' : 'down'}
+              size={14}
+              color="var(--neutral-n4)"
+            />
+          )}
         </DivStyle>
         {(type === 'sprint' || type === 'iteration') && (
           <Tabs>
@@ -146,6 +165,11 @@ const Iteration = () => {
         )}
         {timekey === 0 && <RangePicker style={{ width: '283px' }} />}
       </Space>
+      <AddMemberCommonModal
+        isVisible={isVisible}
+        onClose={() => setIsVisible(false)}
+        onConfirm={data => onConfirm(data)}
+      />
     </HeaderRow>
   )
 }

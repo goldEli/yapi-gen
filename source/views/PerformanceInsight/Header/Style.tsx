@@ -56,13 +56,20 @@ export const HeaderRow = styled.div`
   justify-content: space-between;
   align-items: center;
 `
-export const Text = styled.span`
-  font-size: 14px;
-  color: var(--auxiliary-text-t2-d2);
-  &:hover {
-    cursor: pointer;
-  }
-`
+
+export const Text = styled.span<{ size?: string; color?: string }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    '&:hover': {
+      cursor: 'pointer',
+    },
+  },
+  ({ size, color }) => ({
+    fontSize: size || '14px',
+    color: color || 'var(--auxiliary-text-t2-d2)',
+  }),
+)
 export const Tabs = styled.div`
   width: 140px;
   height: 32px;
@@ -244,9 +251,22 @@ export const Back = styled.div`
     cursor: pointer;
   }
 `
+export const LotBoxRow = styled.div`
+  display: flex;
+`
 export const RightRow = styled.div`
   display: flex;
   align-items: center;
+`
+export const LotIcon = styled.div`
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  background: var(--function-tag5);
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 export const Line = styled.span`
   display: inline-block;
@@ -260,6 +280,9 @@ export const PersonText = styled.div`
 `
 export const Col = styled.div`
   padding: 24px 24px 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `
 export const TitleCss = styled.div`
   color: var(--neutral-n1-d1);
@@ -282,7 +305,7 @@ export const TableStyle = styled.div`
   padding: 24px 24px 0 24px;
 `
 export const Btn1 = styled.div`
-  width: 60px;
+  min-width: 60px;
   height: 22px;
   background: #f6f7f9;
   border-radius: 6px;
@@ -296,5 +319,59 @@ export const Btn1 = styled.div`
   &:hover {
     color: var(--primary-d1);
     cursor: pointer;
+  }
+`
+export const Time = styled.span`
+  font-size: 12px;
+  color: var(--neutral-n3);
+`
+export const DataWrap = styled.div`
+  margin: 0 24px;
+  display: flex;
+  flex-wrap: wrap;
+`
+export const LotBox = styled.div`
+  width: 220px;
+  height: 84px;
+  background: var(--neutral-n10);
+  border-radius: 6px;
+  margin-right: 24px;
+  margin-bottom: 24px;
+  padding: 16px;
+  &:hover {
+    background: var(--white-d6);
+    box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+  }
+`
+export const TextNum = styled.div`
+  min-width: 51px;
+  display: flex;
+  align-items: center;
+  height: 24px;
+  margin: 0px 0px 8px 0px;
+  justify-content: space-between;
+  span:nth-child(1) {
+    font-family: SiYuanMedium;
+    color: var(--neutral-n1-d1);
+    font-size: 24px;
+    margin-right: 16px;
+  }
+  span:nth-child(2) {
+    color: var(--neutral-n1-d1);
+    font-size: 14px;
+  }
+`
+export const HightChartsWrap = styled.div`
+  width: 584px;
+  height: 396px;
+  border-radius: 6px;
+  background: var(--white-d4);
+  border: 1px solid var(--neutral-n6-d1);
+  padding: 24px;
+  .highcharts-container,
+  .highcharts-root {
+    width: 533px !important;
+    // height:300px !important;
   }
 `

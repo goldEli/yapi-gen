@@ -7,7 +7,7 @@ type SliceState = {
 }
 
 const initialState: SliceState = {
-  guideVisible: true,
+  guideVisible: false,
 }
 
 const slice = createSlice({

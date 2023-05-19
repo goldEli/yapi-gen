@@ -410,6 +410,7 @@ const ProgressComparison = (props: Props) => {
       />
       {/* 选择人员 */}
       <SelectPersonnel
+        type={props.type}
         visible={isvisible}
         ids={[1, 2, 3]}
         id={2}
