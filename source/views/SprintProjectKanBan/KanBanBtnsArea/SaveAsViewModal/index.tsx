@@ -32,9 +32,9 @@ const LabelTitle = (props: any) => {
   )
 }
 
-interface ShareModalProps {}
+interface SaveAsViewModalProps {}
 
-const ShareModal: React.FC<ShareModalProps> = props => {
+const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
   const [form] = Form.useForm()
   const [t] = useTranslation()
   const { saveAsViewModelInfo } = useSelector(store => store.sprintKanBan)
@@ -114,4 +114,4 @@ const ShareModal: React.FC<ShareModalProps> = props => {
   )
 }
 
-export default ShareModal
+export default SaveAsViewModal

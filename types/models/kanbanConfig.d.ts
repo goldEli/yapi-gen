@@ -3,7 +3,8 @@ declare namespace Model.KanbanConfig {
     id: number
     project_id: number
     name: string
-    is_default: 0 | 1
+    is_default?: 0 | 1
+    check?: boolean
   }
   interface Status {
     id?: number

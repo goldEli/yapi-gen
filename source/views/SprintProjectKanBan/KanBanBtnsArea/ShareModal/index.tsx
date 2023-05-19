@@ -10,7 +10,7 @@ import { closeShareModel } from '@store/sprintKanBan/sprintKanban.thunk'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 
-interface SaveAsViewModalProps {}
+interface ShareModalProps {}
 
 const Tips = styled.div`
   font-size: 12px;
@@ -50,7 +50,7 @@ const ModalContentBox = styled.div`
   padding: 0 24px;
 `
 
-const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
+const ShareModal: React.FC<ShareModalProps> = props => {
   const [form] = Form.useForm()
   const [t] = useTranslation()
   const { shareModelInfo } = useSelector(store => store.sprintKanBan)
@@ -129,4 +129,4 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
   )
 }
 
-export default SaveAsViewModal
+export default ShareModal
