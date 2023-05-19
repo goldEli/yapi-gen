@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import GuideModal from '@/components/GuideModal'
 import guide_1 from './img/guide_1.png'
 import guide_2 from './img/guide_2.png'
@@ -9,9 +9,17 @@ import { useDispatch, useSelector } from '@store/index'
 import styled from '@emotion/styled'
 import CommonBreadCrumd from '@/components/CommonBreadcrumd'
 import InputSearch from '@/components/InputSearch'
-import { CloseWrap, DragLine, MouseDom } from '@/components/StyleCommon'
+import {
+  CloseWrap,
+  DragLine,
+  MouseDom,
+  SelectWrapBedeck,
+} from '@/components/StyleCommon'
 import TabItem from './components/TabItem'
 import IconFont from '@/components/IconFont'
+import { Popover, Tooltip } from 'antd'
+import CustomSelect from '@/components/CustomSelect'
+import DndKitTable from './components/DndKitTable'
 
 const SearchBox = styled.div`
   display: flex;
@@ -29,7 +37,6 @@ const ContentWrap = styled.div`
 const Left = styled.div<{ active: boolean }>`
   min-width: 316px;
   box-sizing: border-box;
-  padding: 0px 24px;
   height: 100%;
   border-right: ${props =>
     props.active ? '1px solid transparent' : '1px solid var(--neutral-n6-d1)'};
@@ -37,6 +44,7 @@ const Left = styled.div<{ active: boolean }>`
     display: flex;
     justify-content: space-between;
   }
+  padding-bottom: 52px;
 `
 const TabsWrap = styled.div`
   width: 128px;
@@ -70,6 +78,8 @@ const TabsWrap = styled.div`
 `
 
 const RightIcon = styled.div`
+  width: 84px;
+  height: 32px;
   display: flex;
   align-items: center;
   .line {
@@ -79,11 +89,108 @@ const RightIcon = styled.div`
     border: 1px solid var(--neutral-n6-d1);
     margin: 0px 10px;
   }
+  .filter {
+    width: 120px;
+    height: 104px;
+    background: #ffffff;
+    box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+    border-radius: 6px 6px 6px 6px;
+    cursor: pointer;
+    .item {
+      height: 32px;
+      padding: 0px 16px;
+      font-size: 14px;
+      font-family: MiSans-Regular, MiSans;
+      font-weight: 400;
+      color: var(--neutral-n2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      &:hover {
+        background: var(--hover-d3);
+      }
+    }
+    .active {
+      color: var(--primary-d2);
+    }
+  }
+`
+const IconWrap = styled(IconFont)<{ isActive: any }>(
+  {
+    fontSize: 20,
+    color: 'var(--neutral-n3)',
+    cursor: 'pointer',
+    padding: 6,
+    borderRadius: 6,
+    '&: hover': {
+      color: 'var(--neutral-n1-d1)',
+      background: 'var(--hover-d3)',
+    },
+  },
+  ({ isActive }) => ({
+    color: isActive ? 'var(--neutral-n1-d1)' : 'var(--neutral-n3)',
+    background: isActive ? 'var(--hover-d3)' : 'white',
+  }),
+)
+
+const IconBox = styled(IconFont)({
+  fontSize: 20,
+  color: 'var(--neutral-n3)',
+  cursor: 'pointer',
+  padding: 6,
+  borderRadius: 6,
+  '&: hover': {
+    color: 'var(--neutral-n1-d1)',
+    background: 'var(--hover-d3)',
+  },
+})
+
+const TabItemWrap = styled.div`
+  height: 100%;
+  padding: 0px 24px;
+  overflow: scroll;
 `
 
-const TabItemWrap = styled.div``
+const Right = styled.div`
+  padding: 0px 24px;
+  flex: 1;
+  .header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+`
+const SelectWrapForList = styled(SelectWrapBedeck)`
+  margin-left: 16px;
+`
+const ClearButton = styled.div`
+  width: 56px;
+  height: 22px;
+  font-size: 14px;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: var(--primary-d2);
+  line-height: 22px;
+  margin-left: 24px;
+  white-space: nowrap;
+  cursor: pointer;
+`
+const DragContent = styled.div``
 
-const Right = styled.div``
+const filterList = [
+  {
+    id: 0,
+    name: '未完成的',
+  },
+  {
+    id: 1,
+    name: '已完成的',
+  },
+  {
+    id: 2,
+    name: '全部冲刺',
+  },
+]
 
 interface IProps {}
 const SprintProjectSprint: React.FC<IProps> = props => {
@@ -95,6 +202,10 @@ const SprintProjectSprint: React.FC<IProps> = props => {
   const [endWidth, setEndWidth] = useState<any>()
   const leftRef = useRef<any>()
   const [activeKey, setActiveKey] = useState(0)
+  const [isExpand, setIsExpand] = useState(true)
+  const [isFilter, setIsFilter] = useState(false)
+  const [currentFilter, setCurrentFilter] = useState(filterList[0])
+
   const inform = [
     {
       key: 0,
@@ -144,6 +255,34 @@ const SprintProjectSprint: React.FC<IProps> = props => {
   const changeStoryTab = () => {
     setActiveKey(1)
   }
+
+  const onChangeFilter = (item: any) => {
+    setCurrentFilter(item)
+    setIsFilter(false)
+  }
+
+  const filterContent = (
+    <div className="filter">
+      {filterList.map((item: any) => (
+        <div
+          className={`item ${item.id === currentFilter.id ? 'active' : ''}`}
+          key={item.id}
+          onClick={() => onChangeFilter(item)}
+        >
+          {item.name}
+          <IconFont
+            className="icon"
+            type={currentFilter.id === item.id ? 'check' : ''}
+          />
+        </div>
+      ))}
+    </div>
+  )
+
+  const onVisibleChange = (visible: any) => {
+    setIsFilter(visible)
+  }
+
   return (
     <div>
       <SearchBox>
@@ -157,47 +296,133 @@ const SprintProjectSprint: React.FC<IProps> = props => {
         </div>
       </SearchBox>
       <ContentWrap>
-        <Left ref={leftRef} active={focus}>
-          <MouseDom
-            active={focus}
-            onMouseDown={onDragLine}
-            style={{ left: endWidth ? endWidth : 312 }}
-          >
-            <DragLine active={focus} className="line" />
-          </MouseDom>
+        {isExpand ? (
+          <Left ref={leftRef} active={focus}>
+            <MouseDom
+              active={focus}
+              onMouseDown={onDragLine}
+              style={{ left: endWidth ? endWidth : 312 }}
+            >
+              <DragLine active={focus} className="line" />
+            </MouseDom>
+            <div className="header">
+              <TabsWrap>
+                <div
+                  className={`tab1 ${activeKey === 0 ? 'active' : ''}`}
+                  onClick={changeSprintTab}
+                >
+                  冲刺
+                </div>
+                <div
+                  className={`tab2 ${activeKey === 1 ? 'active' : ''}`}
+                  onClick={changeStoryTab}
+                >
+                  长故事
+                </div>
+              </TabsWrap>
+              <RightIcon>
+                <CloseWrap width={24} height={24}>
+                  <IconFont
+                    style={{
+                      fontSize: 18,
+                      color: 'var(--neutral-n3)',
+                    }}
+                    type="plus"
+                  />
+                </CloseWrap>
+                <div className="line" />
+                <Popover
+                  trigger="click"
+                  placement="bottomRight"
+                  content={filterContent}
+                  getPopupContainer={node => node}
+                  visible={isFilter}
+                  onVisibleChange={onVisibleChange}
+                >
+                  <Tooltip title={t('common.search')}>
+                    <IconWrap type="filter" isActive={isFilter} />
+                  </Tooltip>
+                </Popover>
+              </RightIcon>
+            </div>
+            <TabItemWrap>
+              <TabItem />
+            </TabItemWrap>
+          </Left>
+        ) : null}
+        <Right>
           <div className="header">
-            <TabsWrap>
-              <div
-                className={`tab1 ${activeKey === 0 ? 'active' : ''}`}
-                onClick={changeSprintTab}
+            {isExpand ? (
+              <Tooltip
+                style={{ display: isExpand ? 'block' : 'none' }}
+                onVisibleChange={() => {}}
+                getTooltipContainer={node => node}
+                title={isExpand ? t('common.collapseMenu') : ''}
               >
-                冲刺
-              </div>
-              <div
-                className={`tab2 ${activeKey === 1 ? 'active' : ''}`}
-                onClick={changeStoryTab}
-              >
-                长故事
-              </div>
-            </TabsWrap>
-            <RightIcon>
-              <CloseWrap width={24} height={24}>
-                <IconFont
-                  style={{
-                    fontSize: 18,
-                    color: 'var(--neutral-n3)',
+                <IconBox
+                  onClick={() => {
+                    setIsExpand(false)
                   }}
-                  type="plus"
+                  type="outdent"
+                  color="black"
                 />
-              </CloseWrap>
-              <div className="line" />
-            </RightIcon>
+              </Tooltip>
+            ) : (
+              <Tooltip
+                style={{ display: isExpand ? 'none' : 'block' }}
+                onVisibleChange={() => {}}
+                getTooltipContainer={node => node}
+                title={isExpand ? '' : t('common.openMenu')}
+              >
+                <IconBox
+                  onClick={() => {
+                    setIsExpand(true)
+                  }}
+                  type="indent"
+                  color="black"
+                />
+              </Tooltip>
+            )}
+            <SelectWrapForList>
+              <span style={{ margin: '0 16px', fontSize: '14px' }}>经办人</span>
+              <CustomSelect
+                style={{ width: 148 }}
+                getPopupContainer={(node: any) => node}
+                allowClear
+                optionFilterProp="label"
+                showArrow
+                showSearch
+                value=""
+                options={[]}
+                onChange={() => {}}
+                onConfirm={() => null}
+              />
+            </SelectWrapForList>
+            <SelectWrapForList>
+              <span style={{ margin: '0 16px', fontSize: '14px' }}>
+                事务类型
+              </span>
+              <CustomSelect
+                style={{ width: 148 }}
+                getPopupContainer={(node: any) => node}
+                allowClear
+                optionFilterProp="label"
+                showArrow
+                showSearch
+                value=""
+                options={[]}
+                onChange={() => {}}
+                onConfirm={() => null}
+              />
+            </SelectWrapForList>
+            <ClearButton onClick={() => {}}>
+              {t('common.clearForm')}
+            </ClearButton>
           </div>
-          <TabItemWrap>
-            <TabItem />
-          </TabItemWrap>
-        </Left>
-        <Right></Right>
+          <DragContent>
+            <DndKitTable />
+          </DragContent>
+        </Right>
       </ContentWrap>
       <GuideModal
         width={784}
