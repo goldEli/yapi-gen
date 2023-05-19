@@ -26,7 +26,7 @@ export const TextChange = () => {
     <div
       style={{
         position: 'relative',
-        padding: '0px 24px',
+        padding: '0px 45px 0px 24px',
       }}
     >
       <div
@@ -54,7 +54,7 @@ export const TextChange = () => {
       <div
         ref={e1}
         style={{
-          maxWidth: '600px',
+          maxWidth: '640px',
           overflow: 'hidden',
         }}
       >
@@ -69,7 +69,7 @@ export const TextChange = () => {
               lineHeight: '22px',
             }}
           >
-            12和工艺规 12和工艺规
+            12和工艺规 12和工艺规 12和工艺规 12和工艺规 12和工艺规
           </span>
         </div>
       </div>
