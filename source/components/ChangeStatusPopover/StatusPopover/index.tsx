@@ -1,48 +1,7 @@
 import StateTag from '@/components/StateTag'
 import { getShapeLeft } from '@/services/demand'
-import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
-
-const Items = styled.div`
-  padding: 4px 0;
-  border-radius: 6px;
-  background: var(--neutral-white-d5);
-  width: max-content;
-`
-
-const Item = styled.div`
-  height: 40px;
-  padding: 0 16px;
-  width: 100%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  .name {
-    font-size: 14px;
-    color: var(--neutral-n2);
-  }
-  .provider {
-    display: flex;
-    align-items: center;
-    margin: 0 12px;
-    position: relative;
-    div {
-      height: 0px;
-      border-bottom: 1px dashed var(--neutral-n5);
-      width: 32px;
-    }
-    span {
-      display: inline-block;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--neutral-n5);
-    }
-  }
-  &:hover {
-    background: var(--hover-d3);
-  }
-`
+import { Item, Items, PopoverStatusWrap } from '../style'
 
 interface StatusListItem {
   id: number
@@ -73,6 +32,7 @@ const StatusPopover = (props: Props) => {
       id: props.projectId,
       nId: props.id,
     })
+    console.log(res2, '=wwwww')
     setStatusList(
       res2.map((i: any) => ({
         id: i.id,
@@ -80,6 +40,8 @@ const StatusPopover = (props: Props) => {
         is_start: i.is_start,
         statusId: i.status_id,
         content: i.status.content,
+        projectId: i.project_id,
+        canChange: i.can_changes_category_status,
       })),
     )
   }
@@ -99,8 +61,7 @@ const StatusPopover = (props: Props) => {
             <div />
             <span />
           </div>
-          <StateTag
-            name={i.content}
+          <PopoverStatusWrap
             state={
               i?.is_start === 1 && i?.is_end === 2
                 ? 1
@@ -110,7 +71,9 @@ const StatusPopover = (props: Props) => {
                 ? 3
                 : 0
             }
-          />
+          >
+            {i.content}
+          </PopoverStatusWrap>
         </Item>
       ))}
     </Items>
