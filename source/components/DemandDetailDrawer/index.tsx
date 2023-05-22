@@ -30,7 +30,6 @@ import BasicDemand from './BasicDemand'
 import ChildrenDemand from './ChildrenDemand'
 import DemandComment from './DemandComment'
 import DetailDemand from './DetailDemand'
-import DetailsSkeleton from './DetailsSkeleton'
 import { throttle } from 'lodash'
 import {
   Header,
@@ -52,6 +51,7 @@ import CommonButton from '../CommonButton'
 import { saveDemandDetailDrawer } from '@store/demand/demand.thunk'
 import { getMessage } from '../Message'
 import { DemandOperationDropdownMenu } from '../TableDropdownMenu/DemandDropdownMenu'
+import DetailsSkeleton from '../DetailsSkeleton'
 
 const DemandDetailDrawer = () => {
   const normalState = {

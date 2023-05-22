@@ -8,7 +8,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
 import { setProjectInfo, setProjectInfoValues } from '@store/project'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import DemandSettingSide from '../DemandSettingSide'
@@ -49,6 +49,7 @@ const ProjectDetailSide = () => {
   const projectId = paramsData?.id
   const { projectInfo } = useSelector(store => store.project)
   const { projectType } = useSelector(state => state.createProject)
+  const [selectedKeys, setSelectedKeys] = useState(['ProjectInfo'])
   const routerPath = useLocation()
   const navigate = useNavigate()
   let menuList = [
@@ -60,8 +61,8 @@ const ProjectDetailSide = () => {
         projectInfo?.isPublic === 1
           ? true
           : projectInfo?.projectPermissions?.filter((i: any) =>
-            String(i.group_name).includes('需求'),
-          ).length,
+              String(i.group_name).includes('需求'),
+            ).length,
     },
     {
       name: t('iteration'),
@@ -71,8 +72,8 @@ const ProjectDetailSide = () => {
         projectInfo?.isPublic === 1
           ? true
           : projectInfo?.projectPermissions?.filter((i: any) =>
-            String(i.group_name).includes('迭代'),
-          ).length,
+              String(i.group_name).includes('迭代'),
+            ).length,
     },
     {
       name: 'KanBan',
@@ -93,7 +94,15 @@ const ProjectDetailSide = () => {
       isPermission: true,
     },
   ]
-
+  const menuKeys = [
+    'main',
+    'info',
+    'member',
+    'permission',
+    'note',
+    'ProjectKanBan',
+    'ProjectHome',
+  ]
   const sideList = [
     // {
     //   name: t('project.projectInformation'),
@@ -233,6 +242,7 @@ const ProjectDetailSide = () => {
       )
       navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
     }
+    setSelectedKeys(['info'])
   }
 
   useEffect(() => {
@@ -263,23 +273,8 @@ const ProjectDetailSide = () => {
     navigate(`${path}?data=${params}`)
   }
 
-  const onToInfo = (item: any, index: any) => {
-    const params = encryptPhp(
-      JSON.stringify({
-        type: index,
-        id: projectInfo.id,
-        pageIdx: item.key,
-      }),
-    )
-    navigate(`${item.path}?data=${params}`)
-    if (index === 3) {
-      onChangeSetCategory()
-    }
-  }
-
   const projectSettingsClick = ({ item, key }: any) => {
-    // setSelectedKeys(key)
-    console.log(item, key)
+    setSelectedKeys(key)
     const maps: any = {
       info: 0,
       member: 1,
@@ -316,32 +311,55 @@ const ProjectDetailSide = () => {
   }
 
   useEffect(() => {
-    if (paramsData?.pageIdx) {
-      if (projectSide.current === null) return
-      if (projectSetCategory.current === null) return
-      if (projectSetSide.current === null) return
-
-      // 配置工作流或者是没有type的，跳转需求/迭代侧边栏
-      if (!paramsData?.type && paramsData.pageIdx !== 'work') {
-        projectSide.current.style.width = '0px'
-        projectSetCategory.current.style.width = '0px'
-        projectSetSide.current.style.width = '100%'
-        projectSetSide.current.style.display = 'block'
-      }
-    } else {
-      if (projectSide.current === null) return
-      if (projectSetCategory.current === null) return
-      if (projectSetSide.current === null) return
-      projectSetSide.current.style.width = '0px'
-      projectSetCategory.current.style.width = '0px'
+    const key = paramsData.pageIdx
+    if (!key) {
       projectSide.current.style.width = '100%'
-      setTimeout(() => {
-        if (projectSetSide.current === null) return
-        projectSetSide.current.style.display = 'none'
-      }, 200)
+      projectSetCategory.current.style.width = '0px'
+      projectSetSide.current.style.width = '0'
+      projectSetSide.current.style.display = 'none'
+      return
     }
-  }, [paramsData])
+    if (menuKeys.includes(key)) {
+      projectSide.current.style.width = '0px'
+      projectSetCategory.current.style.width = '0px'
+      projectSetSide.current.style.width = '100%'
+      projectSetSide.current.style.display = 'block'
+      return
+    }
+    projectSetSide.current.style.width = '0px'
+    projectSetCategory.current.style.width = '100%'
+    projectSide.current.style.width = '0px'
+    projectSetCategory.current.style.display = 'block'
+    // if (paramsData?.pageIdx) {
+    //   if (projectSide.current === null) return
+    //   if (projectSetCategory.current === null) return
+    //   if (projectSetSide.current === null) return
 
+    //   // 配置工作流或者是没有type的，跳转需求/迭代侧边栏
+    //   if (!paramsData?.type && paramsData.pageIdx !== 'work') {
+    //     debugger
+    //     projectSide.current.style.width = '0px'
+    //     projectSetCategory.current.style.width = '0px'
+    //     projectSetSide.current.style.width = '100%'
+    //     projectSetSide.current.style.display = 'block'
+    //   }
+    // } else {
+    //   if (projectSide.current === null) return
+    //   if (projectSetCategory.current === null) return
+    //   if (projectSetSide.current === null) return
+    //   projectSetSide.current.style.width = '0px'
+    //   projectSetCategory.current.style.width = '0px'
+    //   projectSide.current.style.width = '100%'
+    //   setTimeout(() => {
+    //     if (projectSetSide.current === null) return
+    //     projectSetSide.current.style.display = 'none'
+    //   }, 200)
+    // }
+  }, [paramsData])
+  useEffect(() => {
+    const key = paramsData.pageIdx === 'main' ? 'info' : paramsData.pageIdx
+    setSelectedKeys([key])
+  }, [])
   return (
     <AllWrap>
       <WrapDetail ref={projectSide}>
@@ -396,28 +414,13 @@ const ProjectDetailSide = () => {
         </Back>
         <Provider />
         <MenuBox>
-          {/* {sideList.map((i: any, index: number) => (
-            <MenuItem
-              key={i.icon}
-              isActive={paramsData?.type === index}
-              onClick={() => onToInfo(i, index)}
-              hidden={!i.isPermission}
-            >
-              <CommonIconFont
-                type={i.icon}
-                color="var(--neutral-n3)"
-                size={18}
-              />
-              <div>{i.name}</div>
-            </MenuItem>
-          ))} */}
           {
             <Menu
               items={sideList}
               onClick={projectSettingsClick}
               mode="inline"
               style={{ background: 'transparent' }}
-            //  selectedKeys={selectedKeys}
+              selectedKeys={selectedKeys}
             ></Menu>
           }
         </MenuBox>

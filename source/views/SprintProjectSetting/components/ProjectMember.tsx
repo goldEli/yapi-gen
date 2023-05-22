@@ -123,7 +123,7 @@ const NewSort = (sortProps: any) => {
     </Sort>
   )
 }
-const OptionDrapTd = styled.div`
+const OptionDropTd = styled.div`
   height: 52px;
   display: flex;
   align-items: center;
@@ -138,7 +138,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
   const [isAddVisible, setIsAddVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
   const [operationItem, setOperationItem] = useState<any>({})
-  const [memberList, setMemberList] = useState<any>({list:undefined})
+  const [memberList, setMemberList] = useState<any>({ list: undefined })
   const [jobList, setJobList] = useState<any>([])
   const [projectPermission, setProjectPermission] = useState<any>([])
   const { userInfo } = useSelector(store => store.user)
@@ -191,7 +191,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
       ...values,
       searchValue: props?.searchValue,
     })
-    console.log('resulue',result)
+    console.log('resulue', result)
     setMemberList(result)
     setIsSpinning(false)
     dispatch(setIsUpdateMember(false))
@@ -444,7 +444,8 @@ const ProjectMember = (props: { searchValue?: string }) => {
       width: 200,
       render: (text: string, record: any, index: number) => {
         return (
-          <OptionDrapTd style={{ position: 'relative' }}
+          <OptionDropTd
+            style={{ position: 'relative' }}
             onMouseEnter={() => {
               setSelectRowKey(record.id)
             }}
@@ -468,9 +469,12 @@ const ProjectMember = (props: { searchValue?: string }) => {
               )}
             </span>
             {optionsDrop && record.id === selectRowKey && (
-              <TableSelectOptions roleName={text} callBack={(data) => setProjectClick(data, record, index)}></TableSelectOptions>
+              <TableSelectOptions
+                roleName={text}
+                callBack={data => setProjectClick(data, record, index)}
+              ></TableSelectOptions>
             )}
-          </OptionDrapTd>
+          </OptionDropTd>
         )
       },
     },
@@ -519,23 +523,30 @@ const ProjectMember = (props: { searchValue?: string }) => {
     },
   ]
   // 修改角色权限
-  const setProjectClick = async (data: Model.Sprint.ProjectSettings, record: any, index: number) => {
+  const setProjectClick = async (
+    data: Model.Sprint.ProjectSettings,
+    record: any,
+    index: number,
+  ) => {
     console.log(data, record, index)
     try {
-      await updateProjectRole({ user_group_id: data.id, project_id: projectId, user_id: record.id })
+      await updateProjectRole({
+        user_group_id: data.id,
+        project_id: projectId,
+        user_id: record.id,
+      })
       getMessage({ msg: t('common.editSuccess') as string, type: 'success' })
-      setMemberList((prevData:any)=>{
-        let obj={...prevData}
-        let cloneList=[...obj.list]
-        cloneList[index]={...record,roleName: data.name }
-        obj.list=cloneList
+      setMemberList((prevData: any) => {
+        let obj = { ...prevData }
+        let cloneList = [...obj.list]
+        cloneList[index] = { ...record, roleName: data.name }
+        obj.list = cloneList
         return obj
       })
       setOptionsDrop(false)
     } catch (error) {
       getMessage({ msg: error as string, type: 'error' })
     }
-
   }
   const selectColumns: any = useMemo(() => {
     const initColumns = [
