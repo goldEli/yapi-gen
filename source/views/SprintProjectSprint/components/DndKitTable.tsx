@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { type TableColumnProps } from 'antd'
 import XTable from './XTable'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
@@ -8,6 +7,9 @@ import MoreDropdown from '@/components/MoreDropdown'
 import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/DemandDropdownMenu'
 import ChangePriorityPopover from '@/components/ChangePriorityPopover'
 import { PriorityWrap } from '@/components/StyleCommon'
+import ChangeStatusPopover from '@/components/ChangeStatusPopover'
+import { useSelector, useDispatch } from '@store/index'
+import { setSprintTableData } from '@store/sprint'
 
 const MoveFont = styled(IconFont)`
   fontsize: 16;
@@ -19,69 +21,6 @@ const MoveFont = styled(IconFont)`
   cursor: move;
 `
 
-export const data = [
-  {
-    id: '1',
-    list: [
-      {
-        id: '1',
-        name: '事务标题名称名称...',
-        bh: 'DXKJ-22',
-        long: '项目管理模块',
-        zi: 3,
-        user: '李钟硕',
-        level: '低',
-        status: '进行中',
-      },
-      {
-        id: '2',
-        name: '事务标题名称名称...',
-        bh: 'DXKJ-22',
-        long: '项目管理模块',
-        zi: 3,
-        user: '李钟硕',
-        level: '低',
-        status: '进行中',
-      },
-      {
-        id: '3',
-        name: '事务标题名称名称...',
-        bh: 'DXKJ-22',
-        long: '项目管理模块',
-        zi: 3,
-        user: '李钟硕',
-        level: '低',
-        status: '进行中',
-      },
-    ],
-  },
-  {
-    id: '2',
-    list: [
-      {
-        id: '1',
-        name: '事务标题名称名称...',
-        bh: 'DXKJ-22',
-        long: '项目管理模块',
-        zi: 3,
-        user: '李钟硕',
-        level: '低',
-        status: '进行中',
-      },
-      {
-        id: '2',
-        name: '事务标题名称名称...',
-        bh: 'DXKJ-22',
-        long: '项目管理模块',
-        zi: 3,
-        user: '李钟硕',
-        level: '低',
-        status: '进行中',
-      },
-    ],
-  },
-]
-
 type TableItem = {
   id: string
   name?: string
@@ -91,6 +30,8 @@ type TableItem = {
 }
 
 const DndKitTable = () => {
+  const { sprintTableData } = useSelector(state => state.sprint)
+  const dispatch = useDispatch()
   const columns: TableColumnProps<TableItem>[] = [
     {
       render: (text: any, record: any) => {
@@ -152,15 +93,71 @@ const DndKitTable = () => {
         )
       },
     },
-    { title: '状态', dataIndex: 'status' },
+    {
+      title: '状态',
+      dataIndex: 'status',
+      render: (text: any, record: any) => {
+        return (
+          <ChangeStatusPopover
+            children={<div>11111</div>}
+            onChangeStatus={function (value: any): void {
+              throw new Error('Function not implemented.')
+            }}
+            record={record}
+          />
+        )
+      },
+    },
   ]
 
   const handleDragEnd = (result: DropResult) => {
     console.log(result)
+    if (result.destination?.droppableId === result.source.droppableId) {
+      // 同表格换位置
+      const data = [...sprintTableData]
+      const idx = data.findIndex(k => k.id === result.destination?.droppableId)
+      const destList = data[idx]
+      const source = [...destList.list]
+
+      const item = destList.list.find((_, i) => i === result.source?.index)
+      source.splice(result.source?.index, 1)
+      source.splice(result.destination?.index ?? 0, 0, item)
+      const res: any = data.map(k => {
+        if (k.id === result.destination?.droppableId) {
+          return { ...k, list: source }
+        }
+        return k
+      })
+      dispatch(setSprintTableData(res))
+    } else {
+      // 不同表格拖动
+      const data = [...sprintTableData]
+      const destIdx = data.findIndex(
+        k => k.id === result.destination?.droppableId,
+      )
+      const sourceIdx = data.findIndex(k => k.id === result.source?.droppableId)
+      const item = data[sourceIdx].list.find(
+        (_, i) => i === result.source?.index,
+      )
+      const source = [...data[sourceIdx].list]
+      source.splice(result.source?.index, 1)
+      const dest = [...data[destIdx].list]
+      dest.splice(result.destination?.index ?? 0, 0, item)
+      const res = data.map(k => {
+        if (k.id === result.destination?.droppableId) {
+          return { ...k, list: dest }
+        }
+        if (k.id === result.source?.droppableId) {
+          return { ...k, list: source }
+        }
+        return k
+      })
+      dispatch(setSprintTableData(res))
+    }
   }
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      {data.map(item => {
+      {sprintTableData?.map(item => {
         return (
           <XTable
             key={item.id}

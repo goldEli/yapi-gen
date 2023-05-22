@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { SortableItem } from './SortableItem'
 import { Droppable } from 'react-beautiful-dnd'
 import styled from '@emotion/styled'
@@ -7,6 +7,7 @@ import NoData from '@/components/NoData'
 import { Collapse } from 'antd'
 import IconFont from '@/components/IconFont'
 import CommonButton from '@/components/CommonButton'
+import PaginationBox from '@/components/TablePagination'
 const { Panel } = Collapse
 
 interface XTableProps {
@@ -22,12 +23,22 @@ const XTableWrap = styled.div`
       height: 52px;
     }
   }
+  .nodata {
+    height: 50px;
+    line-height: 50px;
+    background: var(--neutral-white-d4);
+    border-radius: 6px 6px 6px 6px;
+    border: 1px solid var(--neutral-n6-d1);
+    font-size: 12px;
+    font-family: MiSans-Regular, MiSans;
+    color: var(--neutral-n3);
+    text-align: center;
+  }
 
   // 元素拖动样式
   .dragItem {
     position: relative;
     touch-action: none;
-
     transform: translate3d(var(--translate-x, 0), var(--translate-y, 0), 0)
       scale(var(--scale, 1));
     transition: box-shadow 200ms ease;
@@ -85,27 +96,19 @@ const CreateTransactionButton = styled.div`
   align-items: center;
   cursor: pointer;
 `
+const PanelWrap = styled(Panel)`
+  .ant-collapse-content-box {
+    max-height: inherit !important;
+  }
+`
 
 const XTable: React.FC<XTableProps> = props => {
-  // const { isOver, setNodeRef } = useDroppable({
-  //   id: props.id,
-  // });
-  // const style = {
-  //   opacity: isOver ? 1 : 0.5,
-  // };
+  const [pageObj, setPageObj] = useState<any>({})
   return (
     <Droppable key={props.id} droppableId={props.id}>
-      {(provided, snapshot) => {
+      {provided => {
         return (
           <XTableWrap ref={provided.innerRef} {...provided.droppableProps}>
-            {/* <Table
-              rowKey="id"
-              className="dnd"
-              dataSource={props.data}
-              columns={props.columns}
-              pagination={{ pageSize: 2 }}
-              components={{ body: { row: SortableItem } }}
-            /> */}
             <Collapse
               defaultActiveKey={['1']}
               ghost
@@ -129,7 +132,7 @@ const XTable: React.FC<XTableProps> = props => {
                 )
               }}
             >
-              <Panel
+              <PanelWrap
                 header={
                   <PanelHeader
                     onClick={e => {
@@ -162,29 +165,38 @@ const XTable: React.FC<XTableProps> = props => {
                 }
                 key="1"
               >
+                <CreateTransactionButton>
+                  <IconFont
+                    style={{
+                      fontSize: 16,
+                      marginRight: 8,
+                    }}
+                    type="plus"
+                  />
+                  <span>新事物</span>
+                </CreateTransactionButton>
                 <ResizeTable
                   className="dnd"
                   isSpinning={false}
                   dataWrapNormalHeight=""
                   col={props.columns}
-                  noData={<NoData />}
+                  noData={
+                    <div className="nodata">
+                      从待办事项拖动或新建事务，以规划该冲刺的工作，添加事务并编辑冲刺后，点击开始冲刺
+                    </div>
+                  }
                   dataSource={props.data}
                   components={{ body: { row: SortableItem } }}
-                  footer={() => (
-                    <CreateTransactionButton>
-                      <IconFont
-                        style={{
-                          fontSize: 16,
-                          marginRight: 8,
-                        }}
-                        type="plus"
-                      />
-                      <span>新事物</span>
-                    </CreateTransactionButton>
-                  )}
                 />
+                <PaginationBox
+                  total={10}
+                  pageSize={pageObj.pagesize}
+                  currentPage={pageObj.page}
+                  onChange={() => {}}
+                />
+
                 {provided.placeholder}
-              </Panel>
+              </PanelWrap>
             </Collapse>
           </XTableWrap>
         )
