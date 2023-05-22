@@ -56,6 +56,7 @@ const Need = (props: any) => {
       ],
     },
     yAxis: {
+      gridLineDashStyle: 'Dash',
       title: {
         text: '',
       },
