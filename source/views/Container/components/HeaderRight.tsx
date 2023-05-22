@@ -45,6 +45,8 @@ import { setIsRefresh } from '@store/user'
 import { setWriteReportModal } from '@store/workReport'
 import { getMessage } from '@/components/Message'
 import { setAddWorkItemModal } from '@store/project'
+import SystemFeedback from '@/components/SystemFeedback/SystemFeedback'
+import { changeFreedVisibleVisible } from '@store/feedback'
 
 const ChangeComponent = (props: { item: any; onClose(): void }) => {
   const { language, theme } = useSelector(store => store.global)
@@ -198,6 +200,7 @@ const HeaderRight = () => {
       icon: 'calendar-days',
       isPermission: true,
     },
+
     {
       name: t('calendarManager.subscription_calendar'),
       key: 'subscribe',
@@ -367,9 +370,13 @@ const HeaderRight = () => {
       </ChangeItems>
     )
   }
-
+  const onFeedback = () => {
+    console.log('12')
+    dispatch(changeFreedVisibleVisible(true))
+  }
   return (
     <>
+      <SystemFeedback />
       {/* 退出登录 */}
       <DeleteConfirm
         title={t('confirmation_prompt') as string}
@@ -453,6 +460,11 @@ const HeaderRight = () => {
         <Tooltip title={t('container.help') as string}>
           <CloseWrap width={32} height={32} onClick={onHelp}>
             <CommonIconFont type="question" size={24} />
+          </CloseWrap>
+        </Tooltip>
+        <Tooltip title={t('container.help') as string}>
+          <CloseWrap width={32} height={32} onClick={onFeedback}>
+            <CommonIconFont type="draft" size={24} />
           </CloseWrap>
         </Tooltip>
 
