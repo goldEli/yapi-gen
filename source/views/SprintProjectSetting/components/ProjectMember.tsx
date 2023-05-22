@@ -29,6 +29,7 @@ import useSetTitle from '@/hooks/useSetTitle'
 import AddMemberCommonModal from '@/components/AddUser/CommonModal'
 import TableSelectOptions from '@/components/TableSelectOptions'
 import { getAddDepartMember, getPositionSelectList } from '@/services/staff'
+import { updateProjectRole } from '@/services/sprint'
 import { getProjectRole } from '@store/create-propject/thunks'
 import {
   addMember,
@@ -51,6 +52,7 @@ import ScreenMinHover from '@/components/ScreenMinHover'
 import BatchSetPermGroup from './BatchSetPermGroup'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { getMessage } from '@/components/Message'
+import { menuList } from '@/views/SprintProjectManagement/config'
 
 const Wrap = styled.div({
   padding: '0 24px',
@@ -121,7 +123,12 @@ const NewSort = (sortProps: any) => {
     </Sort>
   )
 }
-
+const OptionDrapTd = styled.div`
+  height: 52px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`
 const ProjectMember = (props: { searchValue?: string }) => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
@@ -131,9 +138,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
   const [isAddVisible, setIsAddVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
   const [operationItem, setOperationItem] = useState<any>({})
-  const [memberList, setMemberList] = useState<any>({
-    list: undefined,
-  })
+  const [memberList, setMemberList] = useState<any>({list:undefined})
   const [jobList, setJobList] = useState<any>([])
   const [projectPermission, setProjectPermission] = useState<any>([])
   const { userInfo } = useSelector(store => store.user)
@@ -186,6 +191,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
       ...values,
       searchValue: props?.searchValue,
     })
+    console.log('resulue',result)
     setMemberList(result)
     setIsSpinning(false)
     dispatch(setIsUpdateMember(false))
@@ -436,9 +442,17 @@ const ProjectMember = (props: { searchValue?: string }) => {
       ),
       dataIndex: 'roleName',
       width: 200,
-      render: (text: string, record: any) => {
+      render: (text: string, record: any, index: number) => {
         return (
-          <div style={{ position: 'relative' }} data-column-key="roleName">
+          <OptionDrapTd style={{ position: 'relative' }}
+            onMouseEnter={() => {
+              setSelectRowKey(record.id)
+            }}
+            onMouseLeave={() => {
+              setSelectRowKey('')
+              setOptionsDrop(false)
+            }}
+          >
             <span>
               {text}
               {record.id === selectRowKey && (
@@ -454,9 +468,9 @@ const ProjectMember = (props: { searchValue?: string }) => {
               )}
             </span>
             {optionsDrop && record.id === selectRowKey && (
-              <TableSelectOptions></TableSelectOptions>
+              <TableSelectOptions roleName={text} callBack={(data) => setProjectClick(data, record, index)}></TableSelectOptions>
             )}
-          </div>
+          </OptionDrapTd>
         )
       },
     },
@@ -504,7 +518,25 @@ const ProjectMember = (props: { searchValue?: string }) => {
       },
     },
   ]
+  // 修改角色权限
+  const setProjectClick = async (data: Model.Sprint.ProjectSettings, record: any, index: number) => {
+    console.log(data, record, index)
+    try {
+      await updateProjectRole({ user_group_id: data.id, project_id: projectId, user_id: record.id })
+      getMessage({ msg: t('common.editSuccess') as string, type: 'success' })
+      setMemberList((prevData:any)=>{
+        let obj={...prevData}
+        let cloneList=[...obj.list]
+        cloneList[index]={...record,roleName: data.name }
+        obj.list=cloneList
+        return obj
+      })
+      setOptionsDrop(false)
+    } catch (error) {
+      getMessage({ msg: error as string, type: 'error' })
+    }
 
+  }
   const selectColumns: any = useMemo(() => {
     const initColumns = [
       {
@@ -641,17 +673,6 @@ const ProjectMember = (props: { searchValue?: string }) => {
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange,
-  }
-  const onRow = (record: any, index: number) => {
-    return {
-      onMouseEnter: () => {
-        setSelectRowKey(record.id)
-      },
-      onMouseLeave: () => {
-        setSelectRowKey('')
-        setOptionsDrop(false)
-      },
-    }
   }
   return (
     <PermissionWrap
@@ -801,7 +822,6 @@ const ProjectMember = (props: { searchValue?: string }) => {
             dataSource={memberList?.list}
             rowSelection={rowSelection}
             noData={<NoData />}
-            onRow={onRow}
           />
           <PaginationBox
             total={memberList?.total}

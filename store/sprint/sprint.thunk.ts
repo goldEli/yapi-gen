@@ -21,3 +21,12 @@ export const saveSprintDetailDrawer =
     dispatch(setSprintDetailDrawer(params))
     dispatch(setListActiveId(params?.id ?? 0))
   }
+
+  // 获取项目权限角色列表
+  export const  getProjectRoleList= createAsyncThunk(
+    `${name}/getProjectRoleList`,
+    async (params:API.Sprint.GetProjectRoleList.Params) => {
+      const res = await services.sprint.getProjectRoleList(params)
+      return res.data
+    },
+  )
