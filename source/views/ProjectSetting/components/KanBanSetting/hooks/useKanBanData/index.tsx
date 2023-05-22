@@ -2,7 +2,6 @@ import React from 'react'
 import { DropResult } from 'react-beautiful-dnd'
 import { produce } from 'immer'
 import { getId } from '../../utils'
-import { columnsFromBackend, issueColumns } from './data'
 import { useDispatch, useSelector } from '@store/index'
 import { UNASSIGNED_STATUS } from '../../constant'
 import { modifyAssignedStatus } from '@store/kanbanConfig'
@@ -19,11 +18,9 @@ const useKanBanData = () => {
 
     // 跨容器拖动
     if (
-      source.droppableId !== destination.droppableId &&
-      source.droppableId !== UNASSIGNED_STATUS &&
-      destination.droppableId !== UNASSIGNED_STATUS
+      source.droppableId === UNASSIGNED_STATUS ||
+      destination.droppableId === UNASSIGNED_STATUS
     ) {
-      dispatch(modifyAssignedStatus({ source, destination }))
       // setData(
       //   produce(draft => {
       //     // 获取拖动源数据
@@ -46,6 +43,7 @@ const useKanBanData = () => {
       // )
       return
     }
+    dispatch(modifyAssignedStatus({ source, destination }))
     // setData(
     //   produce(draft => {
     //     // 获取拖动源数据
@@ -63,8 +61,6 @@ const useKanBanData = () => {
   }
 
   return {
-    // data,
-    issueColumns,
     onDragEnd,
     columnList,
   }

@@ -47,20 +47,36 @@ const slice = createSlice({
       }>,
     ) {
       const { source, destination } = action.payload
-
+      // 跨容器拖动
+      if (source.droppableId !== destination.droppableId) {
+        // 获取拖动源数据
+        const sourceData = state.columnList
+          .find(item => item.id === getId(source.droppableId).groupId)
+          ?.categories.find(item => item.id === getId(source.droppableId).id)
+        // 获取目标数据
+        const destinationData = state.columnList
+          .find(item => item.id === getId(destination.droppableId).groupId)
+          ?.categories.find(
+            item => item.id === getId(destination.droppableId).id,
+          )
+        // 源移除的卡片数据
+        const [removed] = sourceData?.status?.splice(source.index, 1) ?? []
+        // 移除的卡片数据插入目标中
+        if (removed) {
+          destinationData?.status?.splice(destination.index, 0, removed)
+        }
+        return
+      }
+      // 同容器拖动
       // 获取拖动源数据
       const sourceData = state.columnList
         .find(item => item.id === getId(source.droppableId).groupId)
         ?.categories.find(item => item.id === getId(source.droppableId).id)
-      // 获取目标数据
-      const destinationData = state.columnList
-        .find(item => item.id === getId(destination.droppableId).groupId)
-        ?.categories.find(item => item.id === getId(destination.droppableId).id)
       // 源移除的卡片数据
       const [removed] = sourceData?.status?.splice(source.index, 1) ?? []
       // 移除的卡片数据插入目标中
       if (removed) {
-        destinationData?.status?.splice(destination.index, 0, removed)
+        sourceData?.status?.splice(destination.index, 0, removed)
       }
     },
     setSaveAsViewModelInfo(
