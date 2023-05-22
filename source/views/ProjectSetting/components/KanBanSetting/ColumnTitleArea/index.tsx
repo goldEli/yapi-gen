@@ -27,10 +27,13 @@ const ColumnTitle = styled.span`
   justify-content: space-between;
 `
 
-const ColumnTitleAreaBox = styled.div`
+const ColumnTitleAreaBox = styled.div<{ showBorder: boolean }>`
   display: flex;
   gap: 16px;
   flex-direction: column;
+  box-sizing: border-box;
+  border: 1px solid
+    ${props => (props.showBorder ? 'var(--primary-d1)' : 'transparent')};
 `
 const Text = styled.div`
   font-size: 14px;
@@ -66,6 +69,7 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
           <ColumnTitleAreaBox
             ref={provided.innerRef}
             {...provided.draggableProps}
+            showBorder={snapshot.isDragging}
           >
             <ColumnTitle {...provided.dragHandleProps} key={item.id}>
               <Left>
