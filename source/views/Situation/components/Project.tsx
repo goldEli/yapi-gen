@@ -3,6 +3,7 @@
 import { Column } from '@ant-design/plots'
 import {
   ChartsItem,
+  ChartsItem2,
   chartsTitle,
   ChartsWrap,
   HightChartsWrap,
@@ -25,7 +26,7 @@ const DemoColumn = (props: any) => {
     color: ['#5b8ff9', '#5ad8a6', '#f6bd16', '#75cbed', '#657798'],
     data: res,
     columnStyle: {
-      radius: [20, 20, 0, 0],
+      radius: [6, 6, 0, 0],
     },
     xField: 'type',
     yField: 'sales',
@@ -51,8 +52,8 @@ const DemoColumn = (props: any) => {
           style: {
             stroke: 'black',
             lineWidth: 1,
-            lineDash: [4, 5],
-            strokeOpacity: 0.7,
+            lineDash: [4],
+            strokeOpacity: 0.1,
             shadowColor: 'black',
             shadowBlur: 10,
             shadowOffsetX: 5,
@@ -77,30 +78,31 @@ const Project = (props: any) => {
     <ChartsWrap>
       <div className={titleCss}>{t('situation.projectSurvey')}</div>
       <TextWrap>
-        <TextBlueWrap>
-          <ChartsItem>
-            <span className={title1Css1}>{data?.total ?? 0}</span>
-            <span className={title2Css}>{t('situation.companyProject')}</span>
-          </ChartsItem>
-        </TextBlueWrap>
-        <HomeWrap>
-          <ChartsItem>
-            <span className={title1Css}>{data?.open_count ?? 0}</span>
-            <span className={title2Css}>{t('situation.openProject')}</span>
-          </ChartsItem>
-          <ChartsItem>
-            <span className={title1Css}>{data?.end_count ?? 0}</span>
-            <span className={title2Css}>{t('situation.stopProject')}</span>
-          </ChartsItem>
-          <ChartsItem>
-            <span className={title1Css}>{data?.private_count ?? 0}</span>
-            <span className={title2Css}>{t('common.privateProject')}</span>
-          </ChartsItem>
-          <ChartsItem>
-            <span className={title1Css}>{data?.public_count ?? 0}</span>
-            <span className={title2Css}>{t('common.publicProject')}</span>
-          </ChartsItem>
-        </HomeWrap>
+        {/* <TextBlueWrap> */}
+        <ChartsItem>
+          <span className={title1Css1}>{data?.total ?? 0}</span>
+          <span className={title2Css}>{t('situation.companyProject')}</span>
+        </ChartsItem>
+        {/* </TextBlueWrap> */}
+        {/* <HomeWrap> */}
+        <ChartsItem2 />
+        <ChartsItem>
+          <span className={title1Css}>{data?.open_count ?? 0}</span>
+          <span className={title2Css}>{t('situation.openProject')}</span>
+        </ChartsItem>
+        <ChartsItem>
+          <span className={title1Css}>{data?.end_count ?? 0}</span>
+          <span className={title2Css}>{t('situation.stopProject')}</span>
+        </ChartsItem>
+        <ChartsItem>
+          <span className={title1Css}>{data?.private_count ?? 0}</span>
+          <span className={title2Css}>{t('common.privateProject')}</span>
+        </ChartsItem>
+        <ChartsItem>
+          <span className={title1Css}>{data?.public_count ?? 0}</span>
+          <span className={title2Css}>{t('common.publicProject')}</span>
+        </ChartsItem>
+        {/* </HomeWrap> */}
       </TextWrap>
       <div className={chartsTitle}>{t('situation.companyProgress')}</div>
       <HightChartsWrap>

@@ -136,7 +136,6 @@ const Index = () => {
     setHasMore(true)
     fetchMoreData(1)
   }, [id, all])
-  console.log(list, '当前list')
 
   return (
     <div>

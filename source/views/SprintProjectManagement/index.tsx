@@ -13,6 +13,7 @@ const Project: React.FC<IProps> = props => {
     '/SprintProjectManagement/Setting',
     '/SprintProjectManagement/DemandSetting',
     '/SprintProjectManagement/WorkFlow',
+    '/SprintProjectManagement/SprintProjectDetail',
   ]
   return (
     <ProjectWrap>

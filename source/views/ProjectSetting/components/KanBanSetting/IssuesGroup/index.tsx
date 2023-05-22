@@ -1,9 +1,12 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import Issues from '../Issues'
+import useKanBanData from '../hooks/useKanBanData'
 
 interface IssuesGroupProps {
-  issuesGroup: Model.SprintKanBan.IssuesGroup
+  // issuesGroup: Model.SprintKanBan.IssuesGroup
+  index: number
+  groupId: Model.SprintKanBan.IssuesGroup['groupId']
 }
 
 const IssuesGroupBox = styled.div`
@@ -18,20 +21,18 @@ const DropAreaList = styled.div`
 `
 
 const IssuesGroup: React.FC<IssuesGroupProps> = props => {
-  const { issuesGroup } = props
+  const { data } = useKanBanData()
+  const group = data.find(item => item.groupId === props.groupId)
+  const issues = group?.data?.[props.index ?? 0]
   return (
     <IssuesGroupBox>
-      <div>{issuesGroup.title}</div>
+      <div>{group?.title}</div>
       <DropAreaList>
-        {issuesGroup.data.map(issues => {
-          return (
-            <Issues
-              key={issues.id}
-              issues={issues}
-              groupId={issuesGroup.groupId}
-            />
-          )
-        })}
+        {/* {issuesGroup.data.map(issues => {
+          return ( */}
+        <Issues key={issues?.id} issues={issues} groupId={group?.groupId} />
+        {/* )
+        })} */}
       </DropAreaList>
     </IssuesGroupBox>
   )

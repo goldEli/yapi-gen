@@ -32,6 +32,7 @@ import workReport from './workReport'
 import sprint from './sprint'
 import sprintKanBan from './sprintKanBan'
 import KanbanConfig from './kanbanConfig'
+import freed from './feedback'
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
@@ -62,6 +63,7 @@ export const store = configureStore({
     sprint,
     sprintKanBan,
     KanbanConfig,
+    freed,
   },
 })
 
