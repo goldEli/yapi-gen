@@ -6,6 +6,7 @@ import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import {
   ChartsItem,
+  ChartsItem2,
   chartsTitle,
   ChartsWrap,
   HightChartsWrap,
@@ -88,26 +89,27 @@ const Need = (props: any) => {
     <ChartsWrap>
       <div className={titleCss}>{t('situation.demandSurvey')}</div>
       <TextWrap>
-        <TextBlueWrap>
-          <ChartsItem>
-            <span className={title1Css1}>{data?.total ?? 0}</span>
-            <span className={title2Css}>{t('common.createDemand')}</span>
-          </ChartsItem>
-        </TextBlueWrap>
-        <HomeWrap>
-          <ChartsItem>
-            <span className={title1Css}>{data?.planningTotal ?? 0}</span>
-            <span className={title2Css}>{t('situation.notStarted')}</span>
-          </ChartsItem>
-          <ChartsItem>
-            <span className={title1Css}>{data?.ongoingTotal ?? 0}</span>
-            <span className={title2Css}>{t('situation.ongoing')}</span>
-          </ChartsItem>
-          <ChartsItem>
-            <span className={title1Css}>{data?.endTotal ?? 0}</span>
-            <span className={title2Css}>{t('situation.end')}</span>
-          </ChartsItem>
-        </HomeWrap>
+        {/* <TextBlueWrap> */}
+        <ChartsItem>
+          <span className={title1Css1}>{data?.total ?? 0}</span>
+          <span className={title2Css}>{t('common.createDemand')}</span>
+        </ChartsItem>
+        {/* </TextBlueWrap> */}
+        {/* <HomeWrap> */}
+        <ChartsItem2 />
+        <ChartsItem>
+          <span className={title1Css}>{data?.planningTotal ?? 0}</span>
+          <span className={title2Css}>{t('situation.notStarted')}</span>
+        </ChartsItem>
+        <ChartsItem>
+          <span className={title1Css}>{data?.ongoingTotal ?? 0}</span>
+          <span className={title2Css}>{t('situation.ongoing')}</span>
+        </ChartsItem>
+        <ChartsItem>
+          <span className={title1Css}>{data?.endTotal ?? 0}</span>
+          <span className={title2Css}>{t('situation.end')}</span>
+        </ChartsItem>
+        {/* </HomeWrap> */}
       </TextWrap>
       <div className={chartsTitle}>{t('situation.demandDiagram')}</div>
       <HightChartsWrap style={{ height: '300px' }}>
