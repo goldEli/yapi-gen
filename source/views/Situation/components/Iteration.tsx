@@ -3,6 +3,7 @@
 import { Column } from '@ant-design/plots'
 import {
   ChartsItem,
+  ChartsItem2,
   chartsTitle,
   ChartsWrap,
   HightChartsWrap,
@@ -22,6 +23,9 @@ const DemoColumn = (props: any) => {
     seriesField: 'type',
     color: ['#5ad8a6', '#5b8ff9', '#f6bd16', '#75cbed', '#657798'],
     data: res,
+    columnStyle: {
+      radius: [6, 6, 0, 0],
+    },
     xField: 'type',
     yField: 'sales',
     appendPadding: 20,
@@ -40,6 +44,19 @@ const DemoColumn = (props: any) => {
         autoRotate: false,
       },
     },
+    yAxis: {
+      grid: {
+        line: {
+          style: {
+            stroke: 'black',
+            lineWidth: 1,
+            lineDash: [4, 3],
+            strokeOpacity: 0.1,
+            shadowColor: 'black',
+          },
+        },
+      },
+    },
   }
   if (res) {
     return <Column {...(config as any)} />
@@ -55,26 +72,27 @@ const Iteration = (props: any) => {
     <ChartsWrap>
       <div className={titleCss}>{t('common.iterateSurvey')}</div>
       <TextWrap>
-        <TextBlueWrap>
-          <ChartsItem>
-            <span className={title1Css1}>{data?.total ?? 0}</span>
-            <span className={title2Css}>{t('common.createIterate')}</span>
-          </ChartsItem>
-        </TextBlueWrap>
-        <HomeWrap>
-          <ChartsItem>
-            <span className={title1Css}>{data?.open_count ?? 0}</span>
-            <span className={title2Css}>{t('situation.openIterate')}</span>
-          </ChartsItem>
-          <ChartsItem>
-            <span className={title1Css}>{data?.finish_count ?? 0}</span>
-            <span className={title2Css}>{t('version2.finishIteration')}</span>
-          </ChartsItem>
-          <ChartsItem>
-            <span className={title1Css}>{data?.end_count ?? 0}</span>
-            <span className={title2Css}>{t('situation.stopIterate')}</span>
-          </ChartsItem>
-        </HomeWrap>
+        {/* <TextBlueWrap> */}
+        <ChartsItem>
+          <span className={title1Css1}>{data?.total ?? 0}</span>
+          <span className={title2Css}>{t('common.createIterate')}</span>
+        </ChartsItem>
+        {/* </TextBlueWrap> */}
+        {/* <HomeWrap> */}
+        <ChartsItem2 />
+        <ChartsItem>
+          <span className={title1Css}>{data?.open_count ?? 0}</span>
+          <span className={title2Css}>{t('situation.openIterate')}</span>
+        </ChartsItem>
+        <ChartsItem>
+          <span className={title1Css}>{data?.finish_count ?? 0}</span>
+          <span className={title2Css}>{t('version2.finishIteration')}</span>
+        </ChartsItem>
+        <ChartsItem>
+          <span className={title1Css}>{data?.end_count ?? 0}</span>
+          <span className={title2Css}>{t('situation.stopIterate')}</span>
+        </ChartsItem>
+        {/* </HomeWrap> */}
       </TextWrap>
 
       <div className={chartsTitle}>{t('situation.iterateProgress')}</div>

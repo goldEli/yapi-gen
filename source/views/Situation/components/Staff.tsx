@@ -3,6 +3,7 @@
 import { Column } from '@ant-design/plots'
 import {
   ChartsItem,
+  ChartsItem2,
   chartsTitle,
   ChartsWrap,
   HightChartsWrap,
@@ -21,8 +22,10 @@ const DemoColumn = (props: any) => {
 
   const config = {
     seriesField: 'type',
-    color: ['#5b8ff9', '#5ad8a6', '#f6bd16', '#75cbed', '#657798'],
-
+    color: ['#6688FF'],
+    columnStyle: {
+      radius: [6, 6, 0, 0],
+    },
     data: res,
     xField: 'type',
     yField: 'sales',
@@ -42,6 +45,18 @@ const DemoColumn = (props: any) => {
         autoRotate: false,
       },
     },
+    yAxis: {
+      grid: {
+        line: {
+          style: {
+            stroke: 'black',
+            lineWidth: 1,
+            lineDash: [4, 3],
+            strokeOpacity: 0.1,
+          },
+        },
+      },
+    },
   }
   if (res) {
     return <Column {...(config as any)} />
@@ -56,22 +71,23 @@ const Staff = (props: any) => {
     <ChartsWrap>
       <div className={titleCss}>{t('situation.staffSurvey')}</div>
       <TextWrap>
-        <TextBlueWrap>
-          <ChartsItem>
-            <span className={title1Css1}>{data?.total ?? 0}</span>
-            <span className={title2Css}>{t('situation.companyStaff')}</span>
-          </ChartsItem>
-        </TextBlueWrap>
-        <HomeWrap>
-          <ChartsItem>
-            <span className={title1Css}>{data?.boyCount ?? 0}</span>
-            <span className={title2Css}>{t('common.male')}</span>
-          </ChartsItem>
-          <ChartsItem>
-            <span className={title1Css}>{data?.girlCount ?? 0}</span>
-            <span className={title2Css}>{t('common.female')}</span>
-          </ChartsItem>
-        </HomeWrap>
+        {/* <TextBlueWrap> */}
+        <ChartsItem>
+          <span className={title1Css1}>{data?.total ?? 0}</span>
+          <span className={title2Css}>{t('situation.companyStaff')}</span>
+        </ChartsItem>
+        {/* </TextBlueWrap> */}
+        {/* <HomeWrap> */}
+        <ChartsItem2 />
+        <ChartsItem>
+          <span className={title1Css}>{data?.boyCount ?? 0}</span>
+          <span className={title2Css}>{t('common.male')}</span>
+        </ChartsItem>
+        <ChartsItem>
+          <span className={title1Css}>{data?.girlCount ?? 0}</span>
+          <span className={title2Css}>{t('common.female')}</span>
+        </ChartsItem>
+        {/* </HomeWrap> */}
       </TextWrap>
       <div className={chartsTitle}>{t('situation.jobProgress')}</div>
       <HightChartsWrap>
