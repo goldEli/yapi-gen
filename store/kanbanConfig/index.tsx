@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { columnList, unassignStatusList } from './mockData'
 
 type SliceState = {
   viewList?: Model.KanbanConfig.ConfigListItem[]
@@ -7,6 +8,7 @@ type SliceState = {
     viewItem?: Model.KanbanConfig.ConfigListItem
   }
   unassignStatusList: Model.KanbanConfig.Status[]
+  columnList: Model.KanbanConfig.Column[]
 }
 
 const initialState: SliceState = {
@@ -17,21 +19,12 @@ const initialState: SliceState = {
     { id: 4, project_id: 11, name: '重点关注', check: false },
     { id: 5, project_id: 11, name: '进度跟踪', check: false },
   ],
+  columnList: columnList,
+
   saveAsViewModelInfo: {
     visible: false,
   },
-  unassignStatusList: [
-    {
-      story_type_id: 571,
-      flow_status_id: 1824,
-      is_end: 1,
-      is_start: 2,
-      stories_count: 0,
-      attachment_path:
-        'https://dev.staryuntech.com/dev-agile/attachment/category_icon/home.png',
-      status_name: '已关闭',
-    },
-  ],
+  unassignStatusList: unassignStatusList,
 }
 
 const slice = createSlice({
