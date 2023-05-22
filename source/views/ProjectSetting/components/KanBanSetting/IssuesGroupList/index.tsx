@@ -3,6 +3,7 @@ import IssuesGroup from '../IssuesGroup'
 
 interface IssuesGroupListProps {
   data: Model.SprintKanBan.IssuesGroup[]
+  index: number
 }
 
 const IssuesGroupList: React.FC<IssuesGroupListProps> = props => {
@@ -10,7 +11,11 @@ const IssuesGroupList: React.FC<IssuesGroupListProps> = props => {
     <>
       {props.data.map(issuesGroup => {
         return (
-          <IssuesGroup key={issuesGroup.groupId} issuesGroup={issuesGroup} />
+          <IssuesGroup
+            index={props.index}
+            key={issuesGroup.groupId}
+            issuesGroup={issuesGroup}
+          />
         )
       })}
     </>

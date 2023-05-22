@@ -6,8 +6,14 @@ import styled from '@emotion/styled'
 import { issueColumns } from './data'
 import MoveIcon from '../MoveIcon'
 import IconFont from '@/components/IconFont'
+import { Draggable } from 'react-beautiful-dnd'
+// import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd'
 
-interface ColumnTitleAreaProps {}
+interface ColumnTitleAreaProps {
+  index: number
+  // provided: DraggableProvided
+  // snapshot: DraggableStateSnapshot
+}
 const ColumnTitle = styled.span`
   width: 302px;
   height: 48px;
@@ -22,6 +28,7 @@ const ColumnTitle = styled.span`
 const ColumnTitleAreaBox = styled.div`
   display: flex;
   gap: 16px;
+  flex-direction: column;
 `
 const Text = styled.div`
   font-size: 14px;
@@ -47,21 +54,27 @@ const IconWrap = styled(IconFont)`
   color: var(--neutral-n1-d1);
 `
 const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
+  const item = issueColumns?.[props.index ?? 0]
   return (
-    <ColumnTitleAreaBox>
-      {issueColumns.map(item => {
+    <Draggable draggableId={item.id + '1'} index={props.index}>
+      {(provided, snapshot) => {
         return (
-          <ColumnTitle key={item.id}>
-            <Left>
-              <MoveIcon active />
-              <Text>{item.title}</Text>
-              <Count>最大：100</Count>
-            </Left>
-            <IconWrap onClick={e => {}} type="edit" />
-          </ColumnTitle>
+          <ColumnTitleAreaBox
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+          >
+            <ColumnTitle {...provided.dragHandleProps} key={item.id}>
+              <Left>
+                <MoveIcon active={snapshot.isDragging} />
+                <Text>{item.title}</Text>
+                <Count>最大：100</Count>
+              </Left>
+              <IconWrap onClick={e => {}} type="edit" />
+            </ColumnTitle>
+          </ColumnTitleAreaBox>
         )
-      })}
-    </ColumnTitleAreaBox>
+      }}
+    </Draggable>
   )
 }
 

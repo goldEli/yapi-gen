@@ -4,6 +4,7 @@ import Issues from '../Issues'
 
 interface IssuesGroupProps {
   issuesGroup: Model.SprintKanBan.IssuesGroup
+  index: number
 }
 
 const IssuesGroupBox = styled.div`
@@ -19,19 +20,16 @@ const DropAreaList = styled.div`
 
 const IssuesGroup: React.FC<IssuesGroupProps> = props => {
   const { issuesGroup } = props
+  const issues = issuesGroup.data?.[props.index ?? 0]
   return (
     <IssuesGroupBox>
       <div>{issuesGroup.title}</div>
       <DropAreaList>
-        {issuesGroup.data.map(issues => {
-          return (
-            <Issues
-              key={issues.id}
-              issues={issues}
-              groupId={issuesGroup.groupId}
-            />
-          )
-        })}
+        {/* {issuesGroup.data.map(issues => {
+          return ( */}
+        <Issues key={issues.id} issues={issues} groupId={issuesGroup.groupId} />
+        {/* )
+        })} */}
       </DropAreaList>
     </IssuesGroupBox>
   )
