@@ -52,6 +52,9 @@ const XTableWrap = styled.div`
       }
     }
   }
+  .ant-table-footer {
+    background-color: var(--neutral-white-d1);
+  }
 `
 const PanelHeader = styled.div`
   height: 32px;
@@ -72,6 +75,15 @@ const PanelHeader = styled.div`
     margin-left: 16px;
     margin-right: 16px;
   }
+`
+const CreateTransactionButton = styled.div`
+  font-size: 14px;
+  font-family: MiSans-Regular, MiSans;
+  font-weight: 400;
+  color: var(--auxiliary-text-t2-d2);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 `
 
 const XTable: React.FC<XTableProps> = props => {
@@ -158,6 +170,18 @@ const XTable: React.FC<XTableProps> = props => {
                   noData={<NoData />}
                   dataSource={props.data}
                   components={{ body: { row: SortableItem } }}
+                  footer={() => (
+                    <CreateTransactionButton>
+                      <IconFont
+                        style={{
+                          fontSize: 16,
+                          marginRight: 8,
+                        }}
+                        type="plus"
+                      />
+                      <span>新事物</span>
+                    </CreateTransactionButton>
+                  )}
                 />
                 {provided.placeholder}
               </Panel>
