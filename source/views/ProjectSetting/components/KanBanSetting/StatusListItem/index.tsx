@@ -2,6 +2,7 @@ import React from 'react'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import StateTag from '@/components/StateTag'
+import MoveIcon from '../MoveIcon'
 
 interface StatusListItemProps {
   data: Model.KanbanConfig.Status
@@ -57,7 +58,7 @@ const StatusListItem: React.FC<StatusListItemProps> = props => {
   return (
     <StatusListItemBox key={data.flow_status_id}>
       <StatusListItemLeft>
-        <IconWarp active type="move" />
+        <MoveIcon active />
         <ImageIcon src={data.attachment_path} />
         {/* <Text bg={item.status_color}>{item.status_name}</Text> */}
         <StateTag

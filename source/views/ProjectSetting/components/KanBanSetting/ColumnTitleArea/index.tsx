@@ -4,6 +4,8 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import { issueColumns } from './data'
+import MoveIcon from '../MoveIcon'
+import IconFont from '@/components/IconFont'
 
 interface ColumnTitleAreaProps {}
 const ColumnTitle = styled.span`
@@ -12,21 +14,51 @@ const ColumnTitle = styled.span`
   box-sizing: border-box;
   display: flex;
   align-items: center;
+  background-color: var(--neutral-n9);
+  padding: 0 16px;
+  justify-content: space-between;
 `
 
 const ColumnTitleAreaBox = styled.div`
   display: flex;
   gap: 16px;
 `
+const Text = styled.div`
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--neutral-n1-d1);
+  margin-left: 8px;
+  margin-right: 16px;
+`
 
+const Count = styled.div`
+  display: flex;
+  font-size: 12px;
+  color: var(--neutral-n3);
+`
+const Left = styled.div`
+  display: flex;
+  align-items: center;
+`
+const IconWrap = styled(IconFont)`
+  font-size: 20px;
+  color: var(--neutral-n1-d1);
+`
 const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
   return (
     <ColumnTitleAreaBox>
       {issueColumns.map(item => {
         return (
-          <ColumnTitle
-            key={item.id}
-          >{`${item.title}（${item.total}）`}</ColumnTitle>
+          <ColumnTitle key={item.id}>
+            <Left>
+              <MoveIcon active />
+              <Text>{item.title}</Text>
+              <Count>最大：100</Count>
+            </Left>
+            <IconWrap onClick={e => {}} type="edit" />
+          </ColumnTitle>
         )
       })}
     </ColumnTitleAreaBox>
