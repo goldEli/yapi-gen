@@ -914,6 +914,12 @@ const SeverityWrap = styled.div`
   color: var(--neutral-n1-d1);
 `
 
+const DragTableIcon = styled(IconFont)`
+  font-size: 16px;
+  color: var(--neutral-n3);
+  cursor: pointer;
+`
+
 export {
   title1Css1,
   HiddenText,
@@ -964,4 +970,5 @@ export {
   ModalFooter,
   MouseDom,
   SeverityWrap,
+  DragTableIcon,
 }

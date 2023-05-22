@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Space } from 'antd'
+import { Progress, Space } from 'antd'
 
 export const Wrap = styled.div`
   height: 100%;
@@ -101,7 +101,7 @@ export const DetailMain = styled.div`
 
 export const DetailInfoWrap = styled.div`
   width: 100%;
-  height: 100%;
+  height: calc(100% - 60px);
   overflow: auto;
   /* padding: 0 0px 0px 0; */
 `
@@ -111,8 +111,8 @@ export const InfoItem = styled.div`
   margin-top: 20px;
   position: relative;
   flex-direction: column;
-  width: max-content;
-  padding-left: 24px;
+  /* width: max-content; */
+  padding: 0 24px;
 `
 
 export const Label = styled.div`
@@ -121,6 +121,8 @@ export const Label = styled.div`
   min-width: 120px;
   font-family: SiYuanMedium;
   margin-bottom: 8px;
+  height: 32px;
+  line-height: 32px;
 `
 export const TextWrap = styled.div`
   color: var(--neutral-n1-d1);
@@ -130,4 +132,64 @@ export const TextWrap = styled.div`
   img: {
     max-width: 20%;
   }
+`
+
+export const InfoItemWrap = styled.div`
+  /* width: max-content; */
+`
+
+export const LabelWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
+export const SubLabel = styled.div`
+  margin: 8px 0;
+  font-size: 12px;
+  color: var(--neutral-n3);
+`
+
+export const AddText = styled.div`
+  font-size: 14px;
+  color: var(--auxiliary-text-t2-d2);
+  cursor: pointer;
+`
+
+export const CancelText = styled.div`
+  font-size: 14px;
+  color: var(--auxiliary-text-t2-d1);
+  cursor: pointer;
+`
+
+export const ProgressWrap = styled(Progress)`
+  width: 100%;
+  margin: 4px 0;
+  .ant-progress-outer {
+    margin-right: calc(-4em - 16px);
+    padding-right: calc(4em + 24px);
+  }
+  .ant-progress-text {
+    font-size: 12px;
+    color: var(--neutral-n2);
+  }
+`
+
+export const ActivityTabItem = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+export const ItemNumber = styled.div<{ isActive?: boolean }>`
+  margin-left: 4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: ${props =>
+    props.isActive ? 'var(--primary-d1)' : 'var(--function-tag5)'};
+  color: ${props =>
+    props.isActive ? 'var(--neutral-white-d7)' : 'var(--primary-d1)'};
 `

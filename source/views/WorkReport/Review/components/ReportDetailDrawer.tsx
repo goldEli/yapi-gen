@@ -515,6 +515,8 @@ const ReportDetailDrawer = () => {
           }${t('report.list.log')}`}
           personList={arr}
           onConfirm={onComment}
+          style={{ padding: 24 }}
+          maxHeight="72vh"
         />
       )}
       <DeleteConfirm

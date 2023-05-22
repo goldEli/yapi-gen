@@ -9,6 +9,10 @@ import IconFont from '@/components/IconFont'
 import UploadAttach from '@/components/UploadAttach'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import CommonButton from '@/components/CommonButton'
+import ChildSprint from './ChildSprint'
+import LinkSprint from './LinkSprint'
+import ActivitySprint from './ActivitySprint'
+import CommonComment from '@/components/CommonComment'
 
 const SprintDetailInfo = () => {
   const [t] = useTranslation()
@@ -47,12 +51,17 @@ const SprintDetailInfo = () => {
     dom.scrollTop = dom.scrollHeight
   }
 
+  // 提交评论
+  const onConfirmComment = (value: any) => {
+    console.log(value)
+  }
+
   return (
     <DragMoveContainer
       max="65vw"
       min="30vw"
       width="65vw"
-      height="calc(100vh - 176px)"
+      height="calc(100vh - 236px)"
     >
       <DeleteConfirmModal />
       <DetailInfoWrap ref={LeftDom}>
@@ -73,7 +82,6 @@ const SprintDetailInfo = () => {
             <TextWrap>--</TextWrap>
           )}
         </InfoItem>
-
         <InfoItem>
           <Label>{t('common.attachment')}</Label>
           <div>
@@ -119,31 +127,17 @@ const SprintDetailInfo = () => {
             }
           />
         </InfoItem>
-        <InfoItem>
-          <Label>子事务</Label>
-          <CommonButton type="primaryText" icon="plus">
-            创建子事务
-          </CommonButton>
-        </InfoItem>
-        <InfoItem>
-          <Label>链接事务</Label>
-          <CommonButton type="primaryText" icon="plus">
-            创建链接的事务
-          </CommonButton>
-        </InfoItem>
-        <InfoItem>
-          <Label>活动</Label>
-          <TagComponent
-            defaultList={tagList}
-            canAdd
-            addWrap={
-              <AddWrap hasDash>
-                <IconFont type="plus" />
-              </AddWrap>
-            }
-          />
-        </InfoItem>
+        <ChildSprint />
+        <LinkSprint />
+        <ActivitySprint />
       </DetailInfoWrap>
+      <CommonComment
+        placeholder="发表评论（按M快捷键发表评论）"
+        personList={[]}
+        onConfirm={onConfirmComment}
+        style={{ padding: '0 24px', width: 'calc(100% - 24px)' }}
+        maxHeight="60vh"
+      />
     </DragMoveContainer>
   )
 }
