@@ -60,8 +60,8 @@ const ProjectDetailSide = () => {
         projectInfo?.isPublic === 1
           ? true
           : projectInfo?.projectPermissions?.filter((i: any) =>
-              String(i.group_name).includes('需求'),
-            ).length,
+            String(i.group_name).includes('需求'),
+          ).length,
     },
     {
       name: t('iteration'),
@@ -71,8 +71,8 @@ const ProjectDetailSide = () => {
         projectInfo?.isPublic === 1
           ? true
           : projectInfo?.projectPermissions?.filter((i: any) =>
-              String(i.group_name).includes('迭代'),
-            ).length,
+            String(i.group_name).includes('迭代'),
+          ).length,
     },
     {
       name: 'KanBan',
@@ -297,6 +297,7 @@ const ProjectDetailSide = () => {
       }),
     )
     if (key === 'ProjectAffair') {
+      navigate(`${item.props.path}?data=${params}`)
       onChangeSetCategory()
       return
     }
@@ -416,7 +417,7 @@ const ProjectDetailSide = () => {
               onClick={projectSettingsClick}
               mode="inline"
               style={{ background: 'transparent' }}
-              //  selectedKeys={selectedKeys}
+            //  selectedKeys={selectedKeys}
             ></Menu>
           }
         </MenuBox>

@@ -69,17 +69,17 @@ const Setting = () => {
       ).length,
     },
     {
-      name: t('newlyAdd.demandSet'),
+      name: t('notification_settings'),
       icon: 'settings',
-      content: <DemandSetting />,
+      content: <ProjectNote />,
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
         String(i.identity).includes('b/project/story_config'),
       ).length,
     },
     {
-      name: t('notification_settings'),
+      name: t('newlyAdd.demandSet'),
       icon: 'settings',
-      content: <ProjectNote />,
+      content: <DemandSetting />,
       isPermission: projectInfo?.projectPermissions?.filter((i: any) =>
         String(i.identity).includes('b/project/story_config'),
       ).length,
