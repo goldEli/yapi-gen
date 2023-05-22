@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { columnList, unassignStatusList } from './mockData'
+import { UNASSIGNED_STATUS } from '@/views/ProjectSetting/components/KanBanSetting/constant'
+import { getId } from '@/views/ProjectSetting/components/KanBanSetting/utils'
 
 type SliceState = {
   viewList?: Model.KanbanConfig.ConfigListItem[]
@@ -31,6 +33,36 @@ const slice = createSlice({
   name: 'kanbanConfig',
   initialState,
   reducers: {
+    modifyAssignedStatus(
+      state,
+      action: PayloadAction<{
+        source: {
+          droppableId: string
+          index: number
+        }
+        destination: {
+          droppableId: string
+          index: number
+        }
+      }>,
+    ) {
+      const { source, destination } = action.payload
+
+      // 获取拖动源数据
+      const sourceData = state.columnList
+        .find(item => item.id === getId(source.droppableId).groupId)
+        ?.categories.find(item => item.id === getId(source.droppableId).id)
+      // 获取目标数据
+      const destinationData = state.columnList
+        .find(item => item.id === getId(destination.droppableId).groupId)
+        ?.categories.find(item => item.id === getId(destination.droppableId).id)
+      // 源移除的卡片数据
+      const [removed] = sourceData?.status?.splice(source.index, 1) ?? []
+      // 移除的卡片数据插入目标中
+      if (removed) {
+        destinationData?.status?.splice(destination.index, 0, removed)
+      }
+    },
     setSaveAsViewModelInfo(
       state,
       action: PayloadAction<SliceState['saveAsViewModelInfo']>,
@@ -60,6 +92,10 @@ const slice = createSlice({
 
 const KanbanConfig = slice.reducer
 
-export const { onChangeViewList, setSaveAsViewModelInfo } = slice.actions
+export const {
+  onChangeViewList,
+  setSaveAsViewModelInfo,
+  modifyAssignedStatus,
+} = slice.actions
 
 export default KanbanConfig

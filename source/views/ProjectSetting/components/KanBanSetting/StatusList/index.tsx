@@ -2,6 +2,7 @@ import React from 'react'
 import styled from '@emotion/styled'
 import StatusListItem from '../StatusListItem'
 import { Droppable } from 'react-beautiful-dnd'
+import { UNASSIGNED_STATUS } from '../constant'
 
 interface StatusListProps {
   list: Model.KanbanConfig.Status[]
@@ -20,7 +21,7 @@ const StatusListBox = styled.div`
 
 const StatusList: React.FC<StatusListProps> = props => {
   return (
-    <Droppable droppableId="UNASSIGNED-STATUS" type="STATUS">
+    <Droppable droppableId={UNASSIGNED_STATUS} type="STATUS">
       {(provided, snapshot) => {
         return (
           <StatusListBox ref={provided.innerRef} {...provided.droppableProps}>

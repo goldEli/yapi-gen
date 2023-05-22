@@ -16,7 +16,7 @@ const BoardBox = styled.div`
 `
 
 const Board: React.FC<BoardProps> = props => {
-  const { data, issueColumns, onDragEnd } = useKanBanData()
+  const { onDragEnd } = useKanBanData()
 
   return (
     <DragDropContext
