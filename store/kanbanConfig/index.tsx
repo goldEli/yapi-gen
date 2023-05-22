@@ -57,7 +57,21 @@ const slice = createSlice({
         destinationData?.status?.splice(destination.index, 0, removed)
       }
     },
-    unassignStatus(state, action: PayloadAction<DragResult>) {},
+    unassignStatus(state, action: PayloadAction<DragResult>) {
+      const { source, destination } = action.payload
+      // 获取拖动源数据
+      const sourceData = state.columnList
+        .find(item => item.id === getId(source.droppableId).groupId)
+        ?.categories.find(item => item.id === getId(source.droppableId).id)
+      // 获取目标数据
+      const destinationData = state.unassignStatusList
+      // 源移除的卡片数据
+      const [removed] = sourceData?.status?.splice(source.index, 1) ?? []
+      // 移除的卡片数据插入目标中
+      if (removed) {
+        destinationData?.splice(destination.index, 0, removed)
+      }
+    },
     modifyUnassignedStatus(state, action: PayloadAction<DragResult>) {
       const { source, destination } = action.payload
       if (source.droppableId !== destination.droppableId) {
