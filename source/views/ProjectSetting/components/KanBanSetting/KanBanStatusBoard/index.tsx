@@ -3,6 +3,7 @@ import { Droppable } from 'react-beautiful-dnd'
 import ColumnTitleArea from '../ColumnTitleArea'
 import useKanBanData from '../hooks/useKanBanData'
 import styled from '@emotion/styled'
+import { COLUMN } from '../constant'
 
 const Container = styled.div`
   display: flex;
@@ -14,7 +15,7 @@ const KanBanStatusBoard = () => {
   const { columnList } = useKanBanData()
 
   return (
-    <Droppable droppableId="board" type="COLUMN" direction="horizontal">
+    <Droppable droppableId={COLUMN} type={COLUMN} direction="horizontal">
       {provided => {
         return (
           <Container ref={provided.innerRef} {...provided.droppableProps}>
