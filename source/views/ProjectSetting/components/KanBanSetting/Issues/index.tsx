@@ -5,7 +5,7 @@ import IssueCard from '../IssueCard'
 import { handleId } from '../utils'
 import StatusList from '../StatusList'
 import StatusListItem from '../StatusListItem'
-import useMaxStatusNum from '../hooks/useMaxStatusNum'
+import usePlaceholderStatusNum from '../hooks/usePlaceholderStatusNum'
 
 interface IssuesProps {
   issues?: Model.KanbanConfig.Category
@@ -42,7 +42,7 @@ const StatusListItemPlaceholder = styled.div`
 const Issues: React.FC<IssuesProps> = props => {
   const { issues, groupId } = props
   const droppableId = handleId(groupId ?? 0, issues?.id ?? 0)
-  const { placeholderItemsLength } = useMaxStatusNum(issues)
+  const { placeholderItemsLength } = usePlaceholderStatusNum(issues)
 
   return (
     <Droppable type="STATUS" key={issues?.id} droppableId={droppableId}>

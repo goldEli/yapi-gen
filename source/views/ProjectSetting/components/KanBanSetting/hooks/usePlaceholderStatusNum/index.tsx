@@ -1,7 +1,7 @@
 import { useSelector } from '@store/index'
 import React, { useMemo } from 'react'
 
-const useMaxStatusNum = (category?: Model.KanbanConfig.Category) => {
+const usePlaceholderStatusNum = (category?: Model.KanbanConfig.Category) => {
   const { columnList } = useSelector(store => store.KanbanConfig)
 
   const maxNum = useMemo(() => {
@@ -24,4 +24,4 @@ const useMaxStatusNum = (category?: Model.KanbanConfig.Category) => {
   }
 }
 
-export default useMaxStatusNum
+export default usePlaceholderStatusNum
