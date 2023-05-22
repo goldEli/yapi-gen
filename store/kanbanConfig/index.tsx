@@ -28,24 +28,40 @@ const initialState: SliceState = {
   },
   unassignStatusList: unassignStatusList,
 }
-
+interface DragResult {
+  source: {
+    droppableId: string
+    index: number
+  }
+  destination: {
+    droppableId: string
+    index: number
+  }
+}
 const slice = createSlice({
   name: 'kanbanConfig',
   initialState,
   reducers: {
-    modifyAssignedStatus(
-      state,
-      action: PayloadAction<{
-        source: {
-          droppableId: string
-          index: number
-        }
-        destination: {
-          droppableId: string
-          index: number
-        }
-      }>,
-    ) {
+    assignStatus(state, action: PayloadAction<DragResult>) {},
+    unassignStatus(state, action: PayloadAction<DragResult>) {},
+    modifyUnassignedStatus(state, action: PayloadAction<DragResult>) {
+      const { source, destination } = action.payload
+      if (source.droppableId !== destination.droppableId) {
+        return
+      }
+      // 同容器拖动
+      // 获取拖动源数据
+      // const sourceData = state.unassignStatusList.find(
+      //   item => item.flow_status_id + '' === draggableId,
+      // )
+      // 源移除的卡片数据
+      const [removed] = state.unassignStatusList?.splice(source.index, 1) ?? []
+      // 移除的卡片数据插入目标中
+      if (removed) {
+        state.unassignStatusList?.splice(destination.index, 0, removed)
+      }
+    },
+    modifyAssignedStatus(state, action: PayloadAction<DragResult>) {
       const { source, destination } = action.payload
       // 跨容器拖动
       if (source.droppableId !== destination.droppableId) {
@@ -112,6 +128,7 @@ export const {
   onChangeViewList,
   setSaveAsViewModelInfo,
   modifyAssignedStatus,
+  modifyUnassignedStatus,
 } = slice.actions
 
 export default KanbanConfig
