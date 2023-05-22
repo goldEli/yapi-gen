@@ -86,7 +86,7 @@ const CommonComment = (props: CommonCommentProps) => {
                   ref={editorRef}
                   upload={uploadFile}
                   getSuggestions={() => props.personList}
-                  // maxHeight={props.maxHeight}
+                  maxHeight={props.maxHeight}
                 />
               </Form.Item>
             </Form>
