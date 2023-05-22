@@ -72,7 +72,7 @@ const StatusListItem: React.FC<StatusListItemProps> = props => {
             key={data.flow_status_id}
           >
             <StatusListItemLeft>
-              <MoveIcon active />
+              <MoveIcon active={snapshot.isDragging} />
               <ImageIcon src={data.attachment_path} />
               {/* <Text bg={item.status_color}>{item.status_name}</Text> */}
               <StateTag

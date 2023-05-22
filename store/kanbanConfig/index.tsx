@@ -6,6 +6,7 @@ type SliceState = {
     visible: boolean
     viewItem?: Model.KanbanConfig.ConfigListItem
   }
+  unassignStatusList: Model.KanbanConfig.Status[]
 }
 
 const initialState: SliceState = {
@@ -19,6 +20,18 @@ const initialState: SliceState = {
   saveAsViewModelInfo: {
     visible: false,
   },
+  unassignStatusList: [
+    {
+      story_type_id: 571,
+      flow_status_id: 1824,
+      is_end: 1,
+      is_start: 2,
+      stories_count: 0,
+      attachment_path:
+        'https://dev.staryuntech.com/dev-agile/attachment/category_icon/home.png',
+      status_name: '已关闭',
+    },
+  ],
 }
 
 const slice = createSlice({
