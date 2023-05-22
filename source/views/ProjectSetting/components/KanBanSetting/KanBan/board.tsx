@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import styled from '@emotion/styled'
 import { Global, css } from '@emotion/react'
-import { colors } from '@atlaskit/theme'
+// import { colors } from '@atlaskit/theme'
 // import type {
 //   DropResult,
 //   DraggableLocation,
@@ -26,7 +26,6 @@ const ParentContainer = styled.div<any>`
 `
 
 const Container = styled.div`
-  background-color: ${colors.B100};
   min-height: 100vh;
   /* like display:flex but will allow bleeding over the window width */
   min-width: 100vw;

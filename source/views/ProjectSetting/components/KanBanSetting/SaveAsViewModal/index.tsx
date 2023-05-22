@@ -4,7 +4,6 @@
 import React from 'react'
 import { Form, Input } from 'antd'
 import { useTranslation } from 'react-i18next'
-import { getMessage } from '@/components/Message'
 import CommonModal from '@/components/CommonModal'
 import { useDispatch, useSelector } from '@store/index'
 import {

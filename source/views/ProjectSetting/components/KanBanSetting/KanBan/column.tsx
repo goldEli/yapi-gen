@@ -1,10 +1,10 @@
 // @flow
 import React, { Component } from 'react'
 import styled from '@emotion/styled'
-import { colors } from '@atlaskit/theme'
+// import { colors } from '@atlaskit/theme'
 import { grid, borderRadius } from './constants'
 import QuoteList from './primatives/quote-list'
-import Title from './primatives/title'
+// import Title from './primatives/title'
 import type { Quote } from './types'
 import {
   Draggable,
@@ -18,19 +18,19 @@ const Container = styled.div`
   flex-direction: column;
 `
 
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-top-left-radius: ${borderRadius}px;
-  border-top-right-radius: ${borderRadius}px;
-  background-color: ${colors.N30};
-  transition: background-color 0.2s ease;
+// const Header = styled.div`
+// display: flex;
+// align-items: center;
+// justify-content: center;
+// border-top-left-radius: ${borderRadius}px;
+// border-top-right-radius: ${borderRadius}px;
+// background-color: ${colors.N30};
+// transition: background-color 0.2s ease;
 
-  &:hover {
-    background-color: ${colors.G50};
-  }
-`
+// &:hover {
+//   background-color: ${colors.G50};
+// }
+// `
 
 type Props = {
   title: string
@@ -50,7 +50,7 @@ export default class Column extends Component<Props> {
       <Draggable draggableId={title} index={index}>
         {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
           <Container ref={provided.innerRef} {...provided.draggableProps}>
-            <Header>
+            {/* <Header>
               <Title
                 // isDragging={snapshot.isDragging}
                 {...provided.dragHandleProps}
@@ -58,13 +58,13 @@ export default class Column extends Component<Props> {
               >
                 {title}
               </Title>
-            </Header>
+            </Header> */}
             <QuoteList
               listId={title}
               listType="QUOTE"
-              style={{
-                backgroundColor: snapshot.isDragging ? colors.G50 : null,
-              }}
+              // style={{
+              //   backgroundColor: snapshot.isDragging ? colors.G50 : null,
+              // }}
               quotes={quotes}
               internalScroll={this.props.isScrollable}
               isCombineEnabled={Boolean(this.props.isCombineEnabled)}

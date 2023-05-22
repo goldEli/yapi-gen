@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import styled from '@emotion/styled'
-import { colors } from '@atlaskit/theme'
+// import { colors } from '@atlaskit/theme'
 import { borderRadius, grid } from '../constants'
 import type { Quote, AuthorColors } from '../types'
 import { DraggableProvided } from 'react-beautiful-dnd'
@@ -26,10 +26,10 @@ const getBackgroundColor = (
   }
 
   if (isGroupedOver) {
-    return colors.N30
+    return ''
   }
 
-  return colors.N0
+  return ''
 }
 
 const getBorderColor = (isDragging: boolean, authorColors: AuthorColors) =>
@@ -38,9 +38,9 @@ const getBorderColor = (isDragging: boolean, authorColors: AuthorColors) =>
 const imageSize = 40
 
 const CloneBadge = styled.div`
-  background: ${colors.G100};
+  background: '';
   bottom: ${grid / 2}px;
-  border: 2px solid ${colors.G200};
+  border: 2px solid '';
   border-radius: 50%;
   box-sizing: border-box;
   font-size: 10px;
@@ -63,8 +63,7 @@ const Container = styled.a<any>`
   border-color: ${props => getBorderColor(props.isDragging, props.colors)};
   background-color: ${props =>
     getBackgroundColor(props.isDragging, props.isGroupedOver, props.colors)};
-  box-shadow: ${({ isDragging }) =>
-    isDragging ? `2px 2px 1px ${colors.N70}` : 'none'};
+  box-shadow: ${({ isDragging }) => (isDragging ? `2px 2px 1px '` : 'none')};
   box-sizing: border-box;
   padding: ${grid}px;
   min-height: ${imageSize}px;
@@ -72,11 +71,11 @@ const Container = styled.a<any>`
   user-select: none;
 
   /* anchor overrides */
-  color: ${colors.N900};
+  color: ';
 
   &:hover,
   &:active {
-    color: ${colors.N900};
+    color: ';
     text-decoration: none;
   }
 

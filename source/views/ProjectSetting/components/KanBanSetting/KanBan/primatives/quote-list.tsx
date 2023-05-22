@@ -1,10 +1,10 @@
 /* eslint-disable  */
 import React from 'react'
 import styled from '@emotion/styled'
-import { colors } from '@atlaskit/theme'
+// import { colors } from '@atlaskit/theme'
 import QuoteItem from './quote-item'
 import { grid } from '../constants'
-import Title from './title'
+// import Title from './title'
 import type { Quote } from '../types'
 import {
   DroppableProvided,
@@ -20,12 +20,12 @@ export const getBackgroundColor = (
   isDraggingFrom: boolean,
 ): string => {
   if (isDraggingOver) {
-    return colors.R50
+    return ''
   }
   if (isDraggingFrom) {
-    return colors.T50
+    return ''
   }
-  return colors.N30
+  return ''
 }
 
 const Wrapper = styled.div<any>`
@@ -112,7 +112,7 @@ type InnerListProps = {
 
 function InnerList(props: InnerListProps) {
   const { quotes, dropProvided } = props
-  const title = props.title ? <Title>{props.title}</Title> : null
+  const title = null
 
   return (
     <Container>

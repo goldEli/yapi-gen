@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import KanBanStatusBoard from '../KanBanStatusBoard'
-import { colors } from '@atlaskit/theme'
+// import { colors } from '@atlaskit/theme'
 import type { Author, Quote, QuoteMap } from './types'
 
 // import Board from './board'
@@ -12,8 +12,8 @@ const jake: Author = {
   url: 'http://adventuretime.wikia.com/wiki/Jake',
   avatarUrl: '',
   colors: {
-    soft: colors.Y50,
-    hard: colors.N400A,
+    soft: '',
+    hard: '',
   },
 }
 
@@ -23,8 +23,8 @@ const BMO: Author = {
   url: 'http://adventuretime.wikia.com/wiki/BMO',
   avatarUrl: '',
   colors: {
-    soft: colors.G50,
-    hard: colors.N400A,
+    soft: '',
+    hard: '',
   },
 }
 
@@ -34,8 +34,8 @@ const finn: Author = {
   url: 'http://adventuretime.wikia.com/wiki/Finn',
   avatarUrl: '',
   colors: {
-    soft: colors.B50,
-    hard: colors.N400A,
+    soft: '',
+    hard: '',
   },
 }
 
@@ -45,8 +45,8 @@ const princess: Author = {
   url: 'http://adventuretime.wikia.com/wiki/Princess_Bubblegum',
   avatarUrl: '',
   colors: {
-    soft: colors.P50,
-    hard: colors.N400A,
+    soft: '',
+    hard: '',
   },
 }
 
