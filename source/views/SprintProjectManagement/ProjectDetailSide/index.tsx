@@ -117,6 +117,7 @@ const ProjectDetailSide = () => {
   //   点击项目设置
   const onSprintProjectSetting = (isInit?: boolean) => {
     console.log('projectId---', projectId)
+    setSelectedKeys(['ProjectInfo'])
     const params = encryptPhp(
       JSON.stringify({ id: projectId, pageIdx: 'main', type: 0 }),
     )
@@ -128,6 +129,7 @@ const ProjectDetailSide = () => {
     const params = encryptPhp(JSON.stringify({ id: projectId }))
     navigate(`${path}?data=${params}`)
   }
+  // 项目设计导航
   const projectSettingsClick = ({ item, key }: any) => {
     setSelectedKeys(key)
     const params = encryptPhp(
@@ -154,13 +156,11 @@ const ProjectDetailSide = () => {
   useEffect(() => {
     getInfo()
   }, [projectId])
-  useEffect(()=>{
-    console.log('paramsData',paramsData)
+  useEffect(() => {
+    console.log('paramsData', paramsData)
     setSelectedKeys([paramsData.type])
-  },[])
-  useEffect(()=>{
-    
-  },[pathname])
+  }, [])
+  useEffect(() => {}, [pathname])
   return (
     <AllWrap>
       {pathname !== '/SprintProjectManagement/DemandSetting' &&

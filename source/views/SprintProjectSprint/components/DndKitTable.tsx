@@ -4,6 +4,10 @@ import XTable from './XTable'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
+import MoreDropdown from '@/components/MoreDropdown'
+import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/DemandDropdownMenu'
+import ChangePriorityPopover from '@/components/ChangePriorityPopover'
+import { PriorityWrap } from '@/components/StyleCommon'
 
 const MoveFont = styled(IconFont)`
   fontsize: 16;
@@ -19,19 +23,61 @@ export const data = [
   {
     id: '1',
     list: [
-      { id: '1', name: '张三', age: 33, sex: '女' },
-      { id: '2', name: '李四', age: 90, sex: '男' },
-      { id: '3', name: '王五', age: 17, sex: '女' },
+      {
+        id: '1',
+        name: '事务标题名称名称...',
+        bh: 'DXKJ-22',
+        long: '项目管理模块',
+        zi: 3,
+        user: '李钟硕',
+        level: '低',
+        status: '进行中',
+      },
+      {
+        id: '2',
+        name: '事务标题名称名称...',
+        bh: 'DXKJ-22',
+        long: '项目管理模块',
+        zi: 3,
+        user: '李钟硕',
+        level: '低',
+        status: '进行中',
+      },
+      {
+        id: '3',
+        name: '事务标题名称名称...',
+        bh: 'DXKJ-22',
+        long: '项目管理模块',
+        zi: 3,
+        user: '李钟硕',
+        level: '低',
+        status: '进行中',
+      },
     ],
   },
   {
     id: '2',
     list: [
-      { id: '11', name: '孔艳', age: 33, sex: '女' },
-      { id: '22', name: '江艳', age: 90, sex: '男' },
-      { id: '33', name: '姚娜', age: 17, sex: '女' },
-      { id: '44', name: '何洋', age: 77, sex: '女' },
-      { id: '55', name: '卢静', age: 47, sex: '男' },
+      {
+        id: '1',
+        name: '事务标题名称名称...',
+        bh: 'DXKJ-22',
+        long: '项目管理模块',
+        zi: 3,
+        user: '李钟硕',
+        level: '低',
+        status: '进行中',
+      },
+      {
+        id: '2',
+        name: '事务标题名称名称...',
+        bh: 'DXKJ-22',
+        long: '项目管理模块',
+        zi: 3,
+        user: '李钟硕',
+        level: '低',
+        status: '进行中',
+      },
     ],
   },
 ]
@@ -47,16 +93,66 @@ type TableItem = {
 const DndKitTable = () => {
   const columns: TableColumnProps<TableItem>[] = [
     {
-      title: '排序',
-      dataIndex: 'sort',
-      width: 60,
-      render: () => <MoveFont type="move" />,
-      align: 'center',
+      render: (text: any, record: any) => {
+        return (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <MoreDropdown
+              menu={
+                <DemandOperationDropdownMenu
+                  onEditChange={() => {}}
+                  onDeleteChange={() => {}}
+                  onCreateChild={() => {}}
+                  record={record}
+                />
+              }
+            />
+          </div>
+        )
+      },
     },
-    { title: '姓名', dataIndex: 'name' },
-    { title: '性别', dataIndex: 'sex' },
-    { title: '年龄', dataIndex: 'age' },
-    { title: '地址', dataIndex: 'address' },
+    {
+      dataIndex: 'sort',
+      render: () => <MoveFont type="move" />,
+    },
+    { title: '编号', dataIndex: 'bh' },
+    { title: '标题', dataIndex: 'name' },
+    { title: '长故事', dataIndex: 'long' },
+    { title: '子事务', dataIndex: 'zi' },
+    { title: '经办人', dataIndex: 'user' },
+    {
+      title: '优先级',
+      dataIndex: 'priority',
+      key: 'priority',
+      width: 180,
+      render: (text: any, record: Record<string, string | number>) => {
+        return (
+          <ChangePriorityPopover
+            isCanOperation
+            onChangePriority={item => () => {}}
+            record={{ project_id: 1, id: record.id }}
+            projectId={1}
+          >
+            <PriorityWrap>
+              {text?.icon ? (
+                <IconFont
+                  className="priorityIcon"
+                  type={text?.icon}
+                  style={{
+                    fontSize: 20,
+                    color: text?.color,
+                  }}
+                />
+              ) : null}
+              <span style={{ marginLeft: '5px' }}>
+                {!text?.icon && <span>--</span>}
+                <IconFont className="icon" type="down-icon" />
+              </span>
+            </PriorityWrap>
+          </ChangePriorityPopover>
+        )
+      },
+    },
+    { title: '状态', dataIndex: 'status' },
   ]
 
   const handleDragEnd = (result: DropResult) => {
@@ -72,7 +168,7 @@ const DndKitTable = () => {
             data={item.list.map(i => {
               return {
                 ...i,
-                id: item.id + '-' + i.id,
+                id: `${item.id}-${i.id}`,
               }
             })}
             columns={columns}

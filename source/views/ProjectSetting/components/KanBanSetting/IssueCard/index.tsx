@@ -31,12 +31,9 @@ interface IssueCardProps {
 
 const IssueCard = (props: IssueCardProps) => {
   const { item, index } = props
+  const draggableId = handleId(props.groupId, item.id)
   return (
-    <Draggable
-      key={item.id}
-      draggableId={handleId(props.groupId, item.id)}
-      index={index}
-    >
+    <Draggable key={item.id} draggableId={draggableId} index={index}>
       {provided => (
         <div
           ref={provided.innerRef}

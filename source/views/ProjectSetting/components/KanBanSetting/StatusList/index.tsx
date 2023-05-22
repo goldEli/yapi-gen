@@ -3,6 +3,8 @@ import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import StateTag from '@/components/StateTag'
 import StatusListItem from '../StatusListItem'
+import { Droppable } from 'react-beautiful-dnd'
+import { useSelector } from '@store/index'
 
 interface StatusListProps {}
 
@@ -35,31 +37,43 @@ const StatusListBox = styled.div`
 //     attachment_path:
 //       'https://dev.staryuntech.com/dev-agile/attachment/category_icon/home.png',
 //     status_name: '已开始',
-//     is_end: 2,
-//     is_start: 1,
+//     is_end: 2, //     is_start: 1,
 //   },
 // ]
-const data: Model.KanbanConfig.Status[] = Array(60)
-  .fill(0)
-  .map((_, idx) => {
-    return {
-      story_type_id: 571,
-      flow_status_id: idx,
-      stories_count: idx + 1,
-      attachment_path:
-        'https://dev.staryuntech.com/dev-agile/attachment/category_icon/home.png',
-      status_name: '已关闭',
-      is_end: 1,
-      is_start: 2,
-    }
-  })
+// const data: Model.KanbanConfig.Status[] = Array(60)
+//   .fill(0)
+//   .map((_, idx) => {
+//     return {
+//       story_type_id: 571,
+//       flow_status_id: idx,
+//       stories_count: idx + 1,
+//       attachment_path:
+//         'https://dev.staryuntech.com/dev-agile/attachment/category_icon/home.png',
+//       status_name: '已关闭',
+//       is_end: 1,
+//       is_start: 2,
+//     }
+//   })
 const StatusList: React.FC<StatusListProps> = props => {
+  const { unassignStatusList } = useSelector(store => store.KanbanConfig)
   return (
-    <StatusListBox>
-      {data.map(item => {
-        return <StatusListItem key={item.flow_status_id} data={item} />
-      })}
-    </StatusListBox>
+    <Droppable droppableId="UNASSIGNED-STATUS" type="STATUS">
+      {(provided, snapshot) => {
+        return (
+          <StatusListBox ref={provided.innerRef} {...provided.droppableProps}>
+            {unassignStatusList?.map?.((item, index) => {
+              return (
+                <StatusListItem
+                  index={index}
+                  key={item.flow_status_id}
+                  data={item}
+                />
+              )
+            })}
+          </StatusListBox>
+        )
+      }}
+    </Droppable>
   )
 }
 

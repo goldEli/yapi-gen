@@ -3,9 +3,11 @@ import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import StateTag from '@/components/StateTag'
 import MoveIcon from '../MoveIcon'
+import { Draggable } from 'react-beautiful-dnd'
 
 interface StatusListItemProps {
   data: Model.KanbanConfig.Status
+  index: number
 }
 
 const StatusListItemBox = styled.div`
@@ -56,26 +58,41 @@ const IconWarp = styled(IconFont)<{ active: boolean }>`
 const StatusListItem: React.FC<StatusListItemProps> = props => {
   const { data } = props
   return (
-    <StatusListItemBox key={data.flow_status_id}>
-      <StatusListItemLeft>
-        <MoveIcon active />
-        <ImageIcon src={data.attachment_path} />
-        {/* <Text bg={item.status_color}>{item.status_name}</Text> */}
-        <StateTag
-          name={data.status_name}
-          state={
-            data?.is_start === 1 && data?.is_end === 2
-              ? 1
-              : data?.is_end === 1 && data?.is_start === 2
-              ? 2
-              : data?.is_start === 2 && data?.is_end === 2
-              ? 3
-              : 0
-          }
-        />
-      </StatusListItemLeft>
-      <Count>{`${data.stories_count}个事务`}</Count>
-    </StatusListItemBox>
+    <Draggable
+      key={data.id}
+      draggableId={data.flow_status_id + ''}
+      index={props.index}
+    >
+      {(provided, snapshot) => {
+        return (
+          <StatusListItemBox
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            key={data.flow_status_id}
+          >
+            <StatusListItemLeft>
+              <MoveIcon active={snapshot.isDragging} />
+              <ImageIcon src={data.attachment_path} />
+              {/* <Text bg={item.status_color}>{item.status_name}</Text> */}
+              <StateTag
+                name={data.status_name}
+                state={
+                  data?.is_start === 1 && data?.is_end === 2
+                    ? 1
+                    : data?.is_end === 1 && data?.is_start === 2
+                    ? 2
+                    : data?.is_start === 2 && data?.is_end === 2
+                    ? 3
+                    : 0
+                }
+              />
+            </StatusListItemLeft>
+            <Count>{`${data.stories_count}个事务`}</Count>
+          </StatusListItemBox>
+        )
+      }}
+    </Draggable>
   )
 }
 

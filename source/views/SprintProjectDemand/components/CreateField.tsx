@@ -2,7 +2,7 @@
 /* eslint-disable no-constant-binary-expression */
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
-import { Input } from 'antd'
+import { Input, Select } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CreateDragging from './CreateDragging'
@@ -38,6 +38,19 @@ const BottomTitleStyle = styled.div`
   &:hover {
     cursor: pointer;
   }
+`
+const FieldWrap = styled.div`
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  .ant-select-selection-placeholder {
+    color: var(--auxiliary-text-t2-d1);
+  }
+`
+const DivideWrap = styled.div`
+  width: 1px;
+  height: 16px;
+  background: var(--hover-d2);
 `
 const BottomList = styled.div`
   margin-top: 24px;
@@ -199,7 +212,6 @@ const CreateField = () => {
                 color="var(--neutral-n3)"
               />
             )}
-
             <span
               style={{
                 marginLeft: '4px',
@@ -246,6 +258,40 @@ const CreateField = () => {
             />
           )}
         </BottomTitleStyle>
+        <FieldWrap>
+          <Select
+            style={{ width: 100 }}
+            bordered={false}
+            placeholder="系统字段"
+            options={[
+              {
+                value: 'jack',
+                label: 'Jack',
+              },
+              {
+                value: 'lucy',
+                label: 'Lucy',
+              },
+            ]}
+          />
+          <DivideWrap></DivideWrap>
+          <Select
+            style={{ width: 100 }}
+            bordered={false}
+            placeholder="所有类型"
+            options={[
+              {
+                value: 'jack',
+                label: 'Jack',
+              },
+              {
+                value: 'lucy',
+                label: 'Lucy',
+              },
+            ]}
+          />
+        </FieldWrap>
+
         {searchIcon && (
           <ProjectDragging
             list={searchDataList}

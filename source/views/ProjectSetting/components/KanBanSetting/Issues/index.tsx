@@ -5,8 +5,8 @@ import IssueCard from '../IssueCard'
 import { handleId } from '../utils'
 
 interface IssuesProps {
-  issues: Model.SprintKanBan.Issues
-  groupId: Model.SprintKanBan.IssuesGroup['groupId']
+  issues?: Model.SprintKanBan.Issues
+  groupId?: Model.SprintKanBan.IssuesGroup['groupId']
 }
 
 const DropArea = styled.div`
@@ -30,18 +30,18 @@ const DropStatusArea = styled.div`
 `
 const Issues: React.FC<IssuesProps> = props => {
   const { issues, groupId } = props
+  const droppableId = handleId(groupId ?? 0, issues?.id ?? 0)
   return (
-    <Droppable key={issues.id} droppableId={handleId(groupId, issues.id)}>
+    <Droppable type="STATUS" key={issues?.id} droppableId={droppableId}>
       {(provided, snapshot) => {
-        console.log(snapshot, groupId)
         return (
           <DropArea ref={provided.innerRef} {...provided.droppableProps}>
             {/* {column?.deps?.map?.((item) => {
               return <DropStatusArea>{`123 -> ${item.title}`}</DropStatusArea>;
             })} */}
-            {issues.list?.map((item, index) => (
+            {issues?.list?.map((item, index) => (
               <IssueCard
-                groupId={groupId}
+                groupId={groupId ?? 0}
                 key={item.id}
                 item={item}
                 index={index}
