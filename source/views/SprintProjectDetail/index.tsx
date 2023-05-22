@@ -20,6 +20,11 @@ import SprintDetailInfo from './components/SprintDetailInfo'
 import SprintDetailBasic from './components/SprintDetailBasic'
 interface IProps {}
 const SprintProjectDetail: React.FC<IProps> = props => {
+  // 复制标题
+  const onCopy = () => {
+    //
+  }
+
   return (
     <Wrap>
       <DetailTop>
@@ -73,7 +78,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
           <span className="name">
             事务名称事务名称事务名称事务名称事务名称事务名称事务名称事务名称事务名称事务名称名称事务名称事务名称事事务名称事务名称事务名称事务名称事务名称事务名称事务名称事务名称事务名称事务名称名称事务名称事务名称事务名称事务名称事务名称事务名称事务名称事务名称事务名称事务名称事务名称事务名称事
           </span>
-          <span className="icon">
+          <span className="icon" onClick={onCopy}>
             <CommonIconFont type="copy" color="var(--neutral-n3)" />
           </span>
           <ChangeStatusPopover>

@@ -28,12 +28,6 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import CommonModal from '@/components/CommonModal'
 import AddWorkflow from './AddWorkflow'
 import { CategoryWrap, HiddenText } from '@/components/StyleCommon'
-import { arrayMoveImmutable } from 'array-move'
-import {
-  SortableContainer as sortableContainer,
-  SortableElement as sortableElement,
-  SortableHandle as sortableHandle,
-} from 'react-sortable-hoc'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import NoData from '@/components/NoData'
@@ -51,6 +45,7 @@ import StateTag from '@/components/StateTag'
 import CommonButton from '@/components/CommonButton'
 import CustomSelect from '@/components/CustomSelect'
 import { getMessage } from '@/components/Message'
+import DragTable from '@/components/DragTable'
 
 const TableWrap = styled.div({
   width: '100%',
@@ -100,7 +95,6 @@ const StepPageOne = (propsOne: Props) => {
   const [dataSource, setDataSource] = useState<any>({
     list: undefined,
   })
-  const { colorList } = useSelector(store => store.project)
   const dispatch = useDispatch()
 
   const getList = async (isUpdateList?: any) => {
@@ -256,58 +250,7 @@ const StepPageOne = (propsOne: Props) => {
     }
   }
 
-  const DragHandle = sortableHandle(() => (
-    <IconFont
-      type="move"
-      style={{ fontSize: 16, cursor: 'pointer', color: 'var(--neutral-n3)' }}
-    />
-  ))
-
-  const SortableItem = sortableElement(
-    (props: React.HTMLAttributes<HTMLTableRowElement>) => <tr {...props} />,
-  )
-
-  const SortableBody = sortableContainer(
-    (props: React.HTMLAttributes<HTMLTableSectionElement>) => (
-      <tbody {...props} />
-    ),
-  )
-
-  const onSortEnd = ({ oldIndex, newIndex }: any) => {
-    if (oldIndex !== newIndex) {
-      const newData = arrayMoveImmutable(
-        dataSource?.list?.slice(),
-        oldIndex,
-        newIndex,
-      ).filter((el: any) => !!el)
-      setDataSource({ list: newData })
-    }
-  }
-
-  const DraggableContainer = (props: any) => (
-    <SortableBody
-      useDragHandle
-      helperClass="row-dragging"
-      disableAutoscroll
-      onSortEnd={onSortEnd}
-      {...props}
-    />
-  )
-
-  const DraggableBodyRow: React.FC<any> = ({ ...restProps }) => {
-    const index = dataSource?.list?.findIndex(
-      (x: any) => x.index === restProps['data-row-key'],
-    )
-    return <SortableItem index={index} {...restProps} />
-  }
-
   const columns = [
-    {
-      title: '',
-      dataIndex: 'sort',
-      width: 30,
-      render: () => <DragHandle />,
-    },
     {
       title: t('newlyAdd.statusName'),
       width: 180,
@@ -509,18 +452,10 @@ const StepPageOne = (propsOne: Props) => {
           {!!dataSource?.list &&
             (dataSource?.list?.length > 0 ? (
               <div style={{ width: '100%' }}>
-                <Table
-                  pagination={false}
-                  dataSource={dataSource?.list}
+                <DragTable
+                  dataSource={dataSource}
                   columns={columns}
-                  rowKey="index"
-                  sticky
-                  components={{
-                    body: {
-                      wrapper: DraggableContainer,
-                      row: DraggableBodyRow,
-                    },
-                  }}
+                  onChangeData={setDataSource}
                 />
                 <div
                   style={{

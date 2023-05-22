@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import StatusList from '../StatusList'
+import { useSelector } from '@store/index'
 
 interface BoardLeftProps {}
 
@@ -22,10 +23,12 @@ const Title = styled.div`
 `
 
 const BoardLeft: React.FC<BoardLeftProps> = props => {
+  const { unassignStatusList } = useSelector(store => store.KanbanConfig)
+
   return (
     <BoardLeftBox>
       <Title>未分配状态</Title>
-      <StatusList />
+      <StatusList list={unassignStatusList} />
     </BoardLeftBox>
   )
 }

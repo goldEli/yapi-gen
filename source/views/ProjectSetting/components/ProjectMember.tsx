@@ -12,6 +12,7 @@ import {
   DividerWrap,
 } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
+import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { Menu, message, Form, Space, Checkbox, Tooltip, Table } from 'antd'
@@ -48,7 +49,8 @@ import ScreenMinHover from '@/components/ScreenMinHover'
 import BatchSetPermGroup from './BatchSetPermGroup'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { getMessage } from '@/components/Message'
-
+import TableSelectOptions from '@/components/TableSelectOptions'
+import { updateProjectRole } from '@/services/sprint'
 const Wrap = styled.div({
   padding: '0 24px',
   display: 'flex',
@@ -114,7 +116,17 @@ const NewSort = (sortProps: any) => {
     </Sort>
   )
 }
-
+const OptionDropTd = styled.div`
+  height: 52px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`
+const selectOptionsIcon = css`
+  color: var(--neutral-n4);
+  margin-left: 10px;
+  cursor: pointer;
+`
 const ProjectMember = (props: { searchValue?: string }) => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
@@ -142,6 +154,8 @@ const ProjectMember = (props: { searchValue?: string }) => {
   const [departments, setDepartments] = useState([])
   const [member, setMember] = useState<any>()
   const [userDataList, setUserDataList] = useState<any[]>([])
+  const [selectRowKey, setSelectRowKey] = useState('')
+  const [optionsDrop, setOptionsDrop] = useState(false)
   asyncSetTtile(`${t('title.a2')}【${projectInfo.name ?? ''}】`)
   const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([])
   const dispatch = useDispatch()
@@ -426,8 +440,40 @@ const ProjectMember = (props: { searchValue?: string }) => {
       ),
       dataIndex: 'roleName',
       width: 200,
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: string, record: any, index: number) => {
+        return (
+          <OptionDropTd
+            style={{ position: 'relative' }}
+            onMouseEnter={() => {
+              setSelectRowKey(record.id)
+            }}
+            onMouseLeave={() => {
+              setSelectRowKey('')
+              setOptionsDrop(false)
+            }}
+          >
+            <span>
+              {text}
+              {record.id === selectRowKey && (
+                <label
+                  className={selectOptionsIcon}
+                  onClick={() => {
+                    setOptionsDrop(!optionsDrop)
+                  }}
+                >
+                  {' '}
+                  <IconFont type="down-icon" />
+                </label>
+              )}
+            </span>
+            {optionsDrop && record.id === selectRowKey && (
+              <TableSelectOptions
+                roleName={text}
+                callBack={data => setProjectClick(data, record, index)}
+              ></TableSelectOptions>
+            )}
+          </OptionDropTd>
+        )
       },
     },
     {
@@ -474,7 +520,33 @@ const ProjectMember = (props: { searchValue?: string }) => {
       },
     },
   ]
-
+  // 修改角色权限
+  const setProjectClick = async (
+    data: Model.Sprint.ProjectSettings,
+    record: any,
+    index: number,
+  ) => {
+    console.log(data, record, index)
+    try {
+      await updateProjectRole({
+        user_group_id: data.id,
+        project_id: projectId,
+        user_id: record.id,
+      })
+      getMessage({ msg: t('common.editSuccess') as string, type: 'success' })
+      setMemberList((prevData: any) => {
+        let obj = { ...prevData }
+        let cloneList = [...obj.list]
+        cloneList[index] = { ...record, roleName: data.name }
+        obj.list = cloneList
+        return obj
+      })
+      setOptionsDrop(false)
+    } catch (error) {
+      console.log('error', error)
+      getMessage({ msg: error as string, type: 'error' })
+    }
+  }
   const selectColumns: any = useMemo(() => {
     const initColumns = [
       {

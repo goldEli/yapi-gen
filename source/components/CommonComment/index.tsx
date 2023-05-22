@@ -10,6 +10,8 @@ interface CommonCommentProps {
   placeholder: string
   onConfirm(value: any): void
   personList: any
+  style?: any
+  maxHeight?: string
 }
 
 const CommonComment = (props: CommonCommentProps) => {
@@ -51,10 +53,10 @@ const CommonComment = (props: CommonCommentProps) => {
   }
 
   return (
-    <CommentFooter isReview={isReview}>
+    <CommentFooter isReview={isReview} style={{ ...props.style }}>
       {isReview ? (
         <>
-          <div className="editBox">
+          <div>
             <Form form={form}>
               <Form.Item
                 name="info"
@@ -84,6 +86,7 @@ const CommonComment = (props: CommonCommentProps) => {
                   ref={editorRef}
                   upload={uploadFile}
                   getSuggestions={() => props.personList}
+                  maxHeight={props.maxHeight}
                 />
               </Form.Item>
             </Form>

@@ -2,61 +2,85 @@ import React from 'react'
 import { DropResult } from 'react-beautiful-dnd'
 import { produce } from 'immer'
 import { getId } from '../../utils'
-import { columnsFromBackend, issueColumns } from './data'
+import { useDispatch, useSelector } from '@store/index'
+import { UNASSIGNED_STATUS } from '../../constant'
+import {
+  assignStatus,
+  modifyAssignedStatus,
+  modifyUnassignedStatus,
+  unassignStatus,
+} from '@store/kanbanConfig'
 
 const useKanBanData = () => {
-  const [data, setData] = React.useState(columnsFromBackend)
+  const { columnList } = useSelector(store => store.KanbanConfig)
+  const dispatch = useDispatch()
 
   // refactor with immerjs
   const onDragEnd = (result: DropResult) => {
     console.log(result)
     if (!result.destination) return
-    const { source, destination } = result
+    const { source, destination, draggableId } = result
 
-    // 跨容器拖动
-    if (source.droppableId !== destination.droppableId) {
-      setData(
-        produce(draft => {
-          // 获取拖动源数据
-          const sourceData = draft
-            .find(item => item.groupId === getId(source.droppableId).groupId)
-            ?.data.find(item => item.id === getId(source.droppableId).id)
-          // 获取目标数据
-          const destinationData = draft
-            .find(
-              item => item.groupId === getId(destination.droppableId).groupId,
-            )
-            ?.data.find(item => item.id === getId(destination.droppableId).id)
-          // 源移除的卡片数据
-          const [removed] = sourceData?.list?.splice(source.index, 1) ?? []
-          // 移除的卡片数据插入目标中
-          if (removed) {
-            destinationData?.list?.splice(destination.index, 0, removed)
-          }
+    // 未分配状态排序
+    if (
+      source.droppableId === UNASSIGNED_STATUS &&
+      destination.droppableId === UNASSIGNED_STATUS
+    ) {
+      dispatch(
+        modifyUnassignedStatus({
+          source,
+          destination,
         }),
       )
       return
     }
-    setData(
-      produce(draft => {
-        // 获取拖动源数据
-        const sourceData = draft
-          .find(item => item.groupId === getId(source.droppableId).groupId)
-          ?.data.find(item => item.id === getId(source.droppableId).id)
-        // 源移除的卡片数据
-        const [removed] = sourceData?.list?.splice(source.index, 1) ?? []
-        // 移除的卡片数据插入目标中
-        if (removed) {
-          sourceData?.list?.splice(destination.index, 0, removed)
-        }
-      }),
-    )
+    // 分配状态
+    if (
+      source.droppableId === UNASSIGNED_STATUS &&
+      destination.droppableId !== UNASSIGNED_STATUS
+    ) {
+      dispatch(
+        assignStatus({
+          source,
+          destination,
+        }),
+      )
+      return
+    }
+
+    // 取消状态分配
+    if (
+      source.droppableId !== UNASSIGNED_STATUS &&
+      destination.droppableId === UNASSIGNED_STATUS
+    ) {
+      dispatch(
+        unassignStatus({
+          source,
+          destination,
+        }),
+      )
+      return
+    }
+    dispatch(modifyAssignedStatus({ source, destination }))
+    // setData(
+    //   produce(draft => {
+    //     // 获取拖动源数据
+    //     const sourceData = draft
+    //       .find(item => item.groupId === getId(source.droppableId).groupId)
+    //       ?.data.find(item => item.id === getId(source.droppableId).id)
+    //     // 源移除的卡片数据
+    //     const [removed] = sourceData?.list?.splice(source.index, 1) ?? []
+    //     // 移除的卡片数据插入目标中
+    //     if (removed) {
+    //       sourceData?.list?.splice(destination.index, 0, removed)
+    //     }
+    //   }),
+    // )
   }
 
   return {
-    data,
-    issueColumns,
     onDragEnd,
+    columnList,
   }
 }
 

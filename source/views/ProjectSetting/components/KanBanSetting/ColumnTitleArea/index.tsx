@@ -56,10 +56,11 @@ const IconWrap = styled(IconFont)`
   color: var(--neutral-n1-d1);
 `
 const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
-  const { data, issueColumns } = useKanBanData()
-  const item = issueColumns?.[props.index ?? 0]
+  const { columnList } = useKanBanData()
+  const item = columnList?.[props.index ?? 0]
+  const draggableId = item.id + '1'
   return (
-    <Draggable draggableId={item.id + '1'} index={props.index}>
+    <Draggable draggableId={draggableId} index={props.index}>
       {(provided, snapshot) => {
         return (
           <ColumnTitleAreaBox
@@ -69,20 +70,17 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
             <ColumnTitle {...provided.dragHandleProps} key={item.id}>
               <Left>
                 <MoveIcon active={snapshot.isDragging} />
-                <Text>{item?.title}</Text>
-                <Count>最大：100</Count>
+                <Text>{item?.name}</Text>
+                <Count>{`最大：${item.max_num}`}</Count>
               </Left>
               <IconWrap onClick={e => {}} type="edit" />
             </ColumnTitle>
-            {data?.map((dataItem, index) => {
-              return (
-                <IssuesGroupList
-                  groupId={dataItem.groupId}
-                  key={dataItem.groupId}
-                  index={props.index}
-                />
-              )
-            })}
+
+            <IssuesGroupList
+              groupId={item.id}
+              key={item.id}
+              index={props.index}
+            />
           </ColumnTitleAreaBox>
         )
       }}

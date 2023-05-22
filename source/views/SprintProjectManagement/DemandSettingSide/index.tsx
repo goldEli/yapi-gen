@@ -328,7 +328,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
                 />
               </AffairTypeHeader>
 
-              <MenuBox className={!item.visible ? toggleDropUp : toggleDropDown}>
+              <MenuBox className={item.visible ? toggleDropDown : toggleDropUp}>
                 <Dragging
                   list={item.children}
                   setList={setList}
