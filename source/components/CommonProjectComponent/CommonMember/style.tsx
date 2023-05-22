@@ -124,7 +124,7 @@ export const Myd = styled.div<{ active: boolean }>`
   color: var(--neutral-n2);
   &:hover {
     color: var(--neutral-n1-d1);
-    background-color: var(--neutral-n6-d1);
+    // background-color: var(--neutral-n6-d1);
   }
   color: ${({ active }) => (active ? 'var(--primary-d2) !important' : '')};
 `
