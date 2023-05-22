@@ -30,13 +30,10 @@ const DropStatusArea = styled.div`
 `
 const Issues: React.FC<IssuesProps> = props => {
   const { issues, groupId } = props
+  const droppableId = handleId(groupId ?? 0, issues?.id ?? 0)
   return (
-    <Droppable
-      key={issues?.id}
-      droppableId={handleId(groupId ?? 0, issues?.id ?? 0)}
-    >
+    <Droppable type="STATUS" key={issues?.id} droppableId={droppableId}>
       {(provided, snapshot) => {
-        console.log(snapshot, groupId)
         return (
           <DropArea ref={provided.innerRef} {...provided.droppableProps}>
             {/* {column?.deps?.map?.((item) => {

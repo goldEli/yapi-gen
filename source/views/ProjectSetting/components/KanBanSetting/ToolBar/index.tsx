@@ -74,7 +74,6 @@ const ToolBar: React.FC<ToolBarProps> = props => {
     })
   }
   const current = handleViewList.find(item => item.check)
-  console.log(current, 'current')
   return (
     <ToolBarBox>
       <Left>
@@ -114,7 +113,6 @@ const ToolBar: React.FC<ToolBarProps> = props => {
         <CommonButton type="icon" icon="tag-96pg0hf3" />
         <CommonButton
           onClick={() => {
-            console.log(current, '111')
             if (current?.key) {
               dispatch(openSaveAsViewModel(Number(current.key)))
             }

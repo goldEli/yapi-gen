@@ -21,24 +21,24 @@ const KanBanStatusBoard = () => {
   const { data, issueColumns, onDragEnd } = useKanBanData()
 
   return (
-    <DragDropContext
-      onDragEnd={onDragEnd}
-      onDragStart={start => {
-        console.log(start)
+    // <DragDropContext
+    //   onDragEnd={onDragEnd}
+    //   onDragStart={start => {
+    //     console.log(start)
+    //   }}
+    // >
+    <Droppable droppableId="board" type="COLUMN" direction="horizontal">
+      {provided => {
+        return (
+          <Container ref={provided.innerRef} {...provided.droppableProps}>
+            {issueColumns.map((item, index) => {
+              return <ColumnTitleArea key={item.id} index={index} />
+            })}
+          </Container>
+        )
       }}
-    >
-      <Droppable droppableId="board" type="COLUMN" direction="horizontal">
-        {provided => {
-          return (
-            <Container ref={provided.innerRef} {...provided.droppableProps}>
-              {issueColumns.map((item, index) => {
-                return <ColumnTitleArea key={item.id} index={index} />
-              })}
-            </Container>
-          )
-        }}
-      </Droppable>
-    </DragDropContext>
+    </Droppable>
+    // </DragDropContext>
   )
 }
 

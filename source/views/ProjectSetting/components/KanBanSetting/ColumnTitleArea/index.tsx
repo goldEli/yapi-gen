@@ -58,8 +58,9 @@ const IconWrap = styled(IconFont)`
 const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
   const { data, issueColumns } = useKanBanData()
   const item = issueColumns?.[props.index ?? 0]
+  const draggableId = item.id + '1'
   return (
-    <Draggable draggableId={item.id + '1'} index={props.index}>
+    <Draggable draggableId={draggableId} index={props.index}>
       {(provided, snapshot) => {
         return (
           <ColumnTitleAreaBox
