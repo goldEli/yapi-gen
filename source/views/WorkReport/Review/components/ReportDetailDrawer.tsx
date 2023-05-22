@@ -36,7 +36,6 @@ import {
   delReportComment,
 } from '@/services/report'
 import UploadAttach from '@/components/UploadAttach'
-import CommonButton from '@/components/CommonButton'
 import ReportDetailSkeleton from './ReportDetailSkeleton'
 import { saveViewReportDetailDrawer } from '@store/workReport/workReport.thunk'
 import { getStaffListAll } from '@/services/staff'
@@ -45,7 +44,7 @@ import IconFont from '@/components/IconFont'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { setUpdateList } from '@store/workReport'
 import { getMessage } from '@/components/Message'
-import CommonComment from '@/components/CommonComment'
+import CommentFooter from '@/components/CommonComment/CommentFooter'
 
 interface TargetTabsProps {
   list: any
@@ -509,7 +508,7 @@ const ReportDetailDrawer = () => {
       </Content>
 
       {!skeletonLoading && (
-        <CommonComment
+        <CommentFooter
           placeholder={`${t('common.comment')}${
             drawerInfo?.user?.name || '--'
           }${t('report.list.log')}`}
