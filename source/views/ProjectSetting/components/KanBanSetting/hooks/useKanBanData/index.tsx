@@ -5,8 +5,10 @@ import { getId } from '../../utils'
 import { useDispatch, useSelector } from '@store/index'
 import { UNASSIGNED_STATUS } from '../../constant'
 import {
+  assignStatus,
   modifyAssignedStatus,
   modifyUnassignedStatus,
+  unassignStatus,
 } from '@store/kanbanConfig'
 
 const useKanBanData = () => {
@@ -19,13 +21,40 @@ const useKanBanData = () => {
     if (!result.destination) return
     const { source, destination, draggableId } = result
 
-    // 跨容器拖动
+    // 未分配状态排序
     if (
       source.droppableId === UNASSIGNED_STATUS &&
       destination.droppableId === UNASSIGNED_STATUS
     ) {
       dispatch(
         modifyUnassignedStatus({
+          source,
+          destination,
+        }),
+      )
+      return
+    }
+    // 分配状态
+    if (
+      source.droppableId === UNASSIGNED_STATUS &&
+      destination.droppableId !== UNASSIGNED_STATUS
+    ) {
+      dispatch(
+        assignStatus({
+          source,
+          destination,
+        }),
+      )
+      return
+    }
+
+    // 取消状态分配
+    if (
+      source.droppableId !== UNASSIGNED_STATUS &&
+      destination.droppableId === UNASSIGNED_STATUS
+    ) {
+      dispatch(
+        unassignStatus({
           source,
           destination,
         }),
