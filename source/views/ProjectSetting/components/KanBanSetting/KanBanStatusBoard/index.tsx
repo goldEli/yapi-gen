@@ -17,8 +17,8 @@ const Container = styled.div`
   height: 100%;
 `
 
-const KanBanSortByPerson = () => {
-  const { data, issueColumns, onDragEnd } = useKanBanData(columnsFromBackend)
+const KanBanStatusBoard = () => {
+  const { data, issueColumns, onDragEnd } = useKanBanData()
 
   return (
     <DragDropContext
@@ -42,7 +42,7 @@ const KanBanSortByPerson = () => {
   )
 }
 
-export default KanBanSortByPerson
+export default KanBanStatusBoard
 
 // {issueColumns.map((item, index) => {
 //   console.log({item})

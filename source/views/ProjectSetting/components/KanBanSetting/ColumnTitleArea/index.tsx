@@ -3,10 +3,11 @@
  */
 import React from 'react'
 import styled from '@emotion/styled'
-import { issueColumns } from './data'
 import MoveIcon from '../MoveIcon'
 import IconFont from '@/components/IconFont'
 import { Draggable } from 'react-beautiful-dnd'
+import IssuesGroupList from '../IssuesGroupList'
+import useKanBanData from '../hooks/useKanBanData'
 // import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd'
 
 interface ColumnTitleAreaProps {
@@ -15,6 +16,7 @@ interface ColumnTitleAreaProps {
   // snapshot: DraggableStateSnapshot
 }
 const ColumnTitle = styled.span`
+  flex-shrink: 0;
   width: 302px;
   height: 48px;
   box-sizing: border-box;
@@ -54,6 +56,7 @@ const IconWrap = styled(IconFont)`
   color: var(--neutral-n1-d1);
 `
 const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
+  const { data, issueColumns } = useKanBanData()
   const item = issueColumns?.[props.index ?? 0]
   return (
     <Draggable draggableId={item.id + '1'} index={props.index}>
@@ -66,11 +69,20 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
             <ColumnTitle {...provided.dragHandleProps} key={item.id}>
               <Left>
                 <MoveIcon active={snapshot.isDragging} />
-                <Text>{item.title}</Text>
+                <Text>{item?.title}</Text>
                 <Count>最大：100</Count>
               </Left>
               <IconWrap onClick={e => {}} type="edit" />
             </ColumnTitle>
+            {data?.map((dataItem, index) => {
+              return (
+                <IssuesGroupList
+                  groupId={dataItem.groupId}
+                  key={dataItem.groupId}
+                  index={props.index}
+                />
+              )
+            })}
           </ColumnTitleAreaBox>
         )
       }}

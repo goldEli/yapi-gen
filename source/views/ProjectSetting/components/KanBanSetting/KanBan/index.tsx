@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from '@emotion/styled'
-import KanBanSortByPerson from '../KanBanSortByPerson'
+import KanBanStatusBoard from '../KanBanStatusBoard'
 import { colors } from '@atlaskit/theme'
 import type { Author, Quote, QuoteMap } from './types'
 
@@ -142,7 +142,7 @@ const Container = styled.div`
 const KanBan = () => {
   return (
     <Container>
-      <KanBanSortByPerson />
+      <KanBanStatusBoard />
       {/* <Board initial={authorQuoteMap} /> */}
     </Container>
   )

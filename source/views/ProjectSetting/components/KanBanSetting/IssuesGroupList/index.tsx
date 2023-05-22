@@ -1,25 +1,14 @@
 import React from 'react'
 import IssuesGroup from '../IssuesGroup'
+import useKanBanData from '../hooks/useKanBanData'
 
 interface IssuesGroupListProps {
-  data: Model.SprintKanBan.IssuesGroup[]
   index: number
+  groupId: Model.SprintKanBan.IssuesGroup['groupId']
 }
 
 const IssuesGroupList: React.FC<IssuesGroupListProps> = props => {
-  return (
-    <>
-      {props.data.map(issuesGroup => {
-        return (
-          <IssuesGroup
-            index={props.index}
-            key={issuesGroup.groupId}
-            issuesGroup={issuesGroup}
-          />
-        )
-      })}
-    </>
-  )
+  return <IssuesGroup index={props.index} groupId={props.groupId} />
 }
 
 export default IssuesGroupList
