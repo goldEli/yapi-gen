@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { getSprintList,getProjectRoleList } from './sprint.thunk'
+import { getSprintList, getProjectRoleList } from './sprint.thunk'
 
 type SliceState = {
   guideVisible: Model.Sprint.Visible
@@ -7,8 +7,8 @@ type SliceState = {
   sprintDetailDrawer: {
     visible: boolean
     params?: any
-  },
-  projectRoleList?:Model.Sprint.ProjectSettings[]
+  }
+  projectRoleList?: Model.Sprint.ProjectSettings[]
 }
 
 const initialState: SliceState = {
@@ -40,9 +40,9 @@ const slice = createSlice({
     builder.addCase(getSprintList.fulfilled, (state, action) => {
       state.taskList = action.payload
     })
-    builder.addCase(getProjectRoleList.fulfilled,(state,action)=>{
-      console.log('action',action)
-      state.projectRoleList=action.payload
+    builder.addCase(getProjectRoleList.fulfilled, (state, action) => {
+      console.log('action', action)
+      state.projectRoleList = action.payload
     })
   },
 })

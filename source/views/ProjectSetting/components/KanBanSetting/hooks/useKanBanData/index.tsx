@@ -3,11 +3,12 @@ import { DropResult } from 'react-beautiful-dnd'
 import { produce } from 'immer'
 import { getId } from '../../utils'
 import { useDispatch, useSelector } from '@store/index'
-import { UNASSIGNED_STATUS } from '../../constant'
+import { COLUMN, UNASSIGNED_STATUS } from '../../constant'
 import {
   assignStatus,
   modifyAssignedStatus,
   modifyUnassignedStatus,
+  sortColumn,
   unassignStatus,
 } from '@store/kanbanConfig'
 
@@ -19,7 +20,18 @@ const useKanBanData = () => {
   const onDragEnd = (result: DropResult) => {
     console.log(result)
     if (!result.destination) return
-    const { source, destination, draggableId } = result
+    const { source, destination, type } = result
+
+    // 列排序
+    if (type === COLUMN) {
+      dispatch(
+        sortColumn({
+          source,
+          destination,
+        }),
+      )
+      return
+    }
 
     // 未分配状态排序
     if (

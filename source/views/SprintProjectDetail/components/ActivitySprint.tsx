@@ -1,6 +1,9 @@
 import { Tabs, TabsProps } from 'antd'
 import { ActivityTabItem, InfoItem, ItemNumber, Label } from '../style'
 import { useState } from 'react'
+import ChangeRecord from './ChangeRecord'
+import Circulation from './Circulation'
+import CommonComment from '@/components/CommonComment'
 
 const ActivitySprint = () => {
   const [activeKey, setActiveKey] = useState('1')
@@ -9,31 +12,31 @@ const ActivitySprint = () => {
       key: '1',
       label: (
         <ActivityTabItem>
-          <span>Tab 1</span>
+          <span>评论</span>
           <ItemNumber isActive={activeKey === '1'}>5</ItemNumber>
         </ActivityTabItem>
       ),
-      children: `Content of Tab Pane 1`,
+      children: <CommonComment />,
     },
     {
       key: '2',
       label: (
         <ActivityTabItem>
-          <span>Tab 1</span>
+          <span>变更记录</span>
           <ItemNumber isActive={activeKey === '2'}>6</ItemNumber>
         </ActivityTabItem>
       ),
-      children: `Content of Tab Pane 2`,
+      children: <ChangeRecord />,
     },
     {
       key: '3',
       label: (
         <ActivityTabItem>
-          <span>Tab 1</span>
+          <span>流转记录</span>
           <ItemNumber isActive={activeKey === '3'}>8</ItemNumber>
         </ActivityTabItem>
       ),
-      children: `Content of Tab Pane 3`,
+      children: <Circulation />,
     },
   ]
 

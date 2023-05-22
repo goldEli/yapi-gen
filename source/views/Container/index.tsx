@@ -26,6 +26,7 @@ import { saveDemandDetailDrawer } from '@store/demand/demand.thunk'
 import AddWorkItem from '@/components/AddWorkItem'
 import AddQuickSprint from '@/components/AddQuickSprint'
 import NoteModal from '@/components/NoteModal'
+import SprintDetailDrawer from '@/components/SprintDetailDrawer'
 
 const LayoutWrap = styled.div`
   width: 100%;
@@ -172,6 +173,7 @@ export const Container = () => {
         <SiteDrawer />
         <AddWorkItem />
         <AddQuickSprint />
+        <SprintDetailDrawer />
       </ConfigProvider>
     </KitConfigProvider>
   )

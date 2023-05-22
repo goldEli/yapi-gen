@@ -41,6 +41,15 @@ const slice = createSlice({
   name: 'kanbanConfig',
   initialState,
   reducers: {
+    sortColumn(state, action: PayloadAction<DragResult>) {
+      const { source, destination } = action.payload
+      // 源移除的卡片数据
+      const [removed] = state.columnList?.splice(source.index, 1) ?? []
+      // 移除的卡片数据插入目标中
+      if (removed) {
+        state.columnList?.splice(destination.index, 0, removed)
+      }
+    },
     assignStatus(state, action: PayloadAction<DragResult>) {
       const { source, destination } = action.payload
       // 源移除的卡片数据
@@ -144,6 +153,7 @@ export const {
   modifyUnassignedStatus,
   assignStatus,
   unassignStatus,
+  sortColumn,
 } = slice.actions
 
 export default KanbanConfig
