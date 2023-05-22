@@ -3,9 +3,11 @@ import { DropResult } from 'react-beautiful-dnd'
 import { produce } from 'immer'
 import { getId } from '../../utils'
 import { columnsFromBackend, issueColumns } from './data'
+import { useSelector } from '@store/index'
 
 const useKanBanData = () => {
   const [data, setData] = React.useState(columnsFromBackend)
+  const { columnList } = useSelector(store => store.KanbanConfig)
 
   // refactor with immerjs
   const onDragEnd = (result: DropResult) => {
@@ -57,6 +59,7 @@ const useKanBanData = () => {
     data,
     issueColumns,
     onDragEnd,
+    columnList,
   }
 }
 

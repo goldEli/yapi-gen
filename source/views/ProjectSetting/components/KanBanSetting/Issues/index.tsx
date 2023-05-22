@@ -3,9 +3,11 @@ import styled from '@emotion/styled'
 import { Droppable } from 'react-beautiful-dnd'
 import IssueCard from '../IssueCard'
 import { handleId } from '../utils'
+import StatusList from '../StatusList'
+import StatusListItem from '../StatusListItem'
 
 interface IssuesProps {
-  issues?: Model.SprintKanBan.Issues
+  issues?: Model.KanbanConfig.Category
   groupId?: Model.SprintKanBan.IssuesGroup['groupId']
 }
 
@@ -36,17 +38,16 @@ const Issues: React.FC<IssuesProps> = props => {
       {(provided, snapshot) => {
         return (
           <DropArea ref={provided.innerRef} {...provided.droppableProps}>
-            {/* {column?.deps?.map?.((item) => {
-              return <DropStatusArea>{`123 -> ${item.title}`}</DropStatusArea>;
-            })} */}
-            {issues?.list?.map((item, index) => (
-              <IssueCard
-                groupId={groupId ?? 0}
-                key={item.id}
-                item={item}
-                index={index}
-              />
-            ))}
+            {issues?.status?.map((item, idx) => {
+              return (
+                <StatusListItem
+                  hiddenIcon
+                  index={idx}
+                  key={item.flow_status_id}
+                  data={item}
+                />
+              )
+            })}
             {provided.placeholder}
           </DropArea>
         )

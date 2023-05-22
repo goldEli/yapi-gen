@@ -25,13 +25,7 @@ const Board: React.FC<BoardProps> = props => {
         console.log(start)
       }}
     >
-      {/* <Droppable droppableId="unassigned-status" type="UNASSIGNED-STATUS">
-        {provided => {
-          return ( */}
       <BoardBox>{props.children}</BoardBox>
-      {/* )
-        }}
-      </Droppable> */}
     </DragDropContext>
   )
 }
