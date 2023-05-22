@@ -2,6 +2,7 @@ import React from 'react'
 
 import styled from '@emotion/styled'
 import IconFont from './IconFont'
+import {useSelector} from '@store/index'
 const SelectOptions = styled.div`
   position: absolute;
   top: 30px;
@@ -29,18 +30,24 @@ const SelectItem = styled.div`
     color: var(--primary-d2);
   }
 `
-interface IProps {}
+interface IProps {
+  roleName:string,
+  callBack(data:Model.Sprint.ProjectSettings) : void
+}
 const TableSelectOptions = (props: IProps) => {
+  const {projectRoleList}=useSelector(state=>state.sprint)
   return (
     <SelectOptions>
-      {['管理员', '编辑者', '参与者'].map((item, index) => (
-        <SelectItem key={index}>
-          <span className={index === 1 ? 'activity' : ''}>{item}</span>
-          {index === 1 && (
+      {projectRoleList?.map((item, index) => (
+        <SelectItem key={index} onClick={()=>{
+          props.callBack(item)
+        }}>
+          <span className={props.roleName === item.name ? 'activity' : ''}>{item.name}</span>
+          {props.roleName === item.name&& (
             <IconFont
               type="check"
               style={{ marginLeft: '30px' }}
-              className={index === 1 ? 'activity' : ''}
+              className={props.roleName === item.name? 'activity' : ''}
             ></IconFont>
           )}
         </SelectItem>

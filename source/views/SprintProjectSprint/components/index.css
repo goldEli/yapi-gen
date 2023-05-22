@@ -1,0 +1,26 @@
+/* 内容过多以...显示 */
+/* .ellipsisText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+} */
+/* 显示拖拽样式 */
+.react-resizable {
+  position: relative;
+  background-clip: padding-box;
+}
+/* 显示拖拽手势 */
+.react-resizable-handle {
+  position: absolute;
+  width: 6px;
+  height: 28px;
+  right: 0;
+  cursor: col-resize;
+  z-index: 9;
+  top: 8px;
+}
+.react-resizable-handle:active,
+.react-resizable-handle:hover {
+  border-right: 1px solid var(--primary-d1);
+}

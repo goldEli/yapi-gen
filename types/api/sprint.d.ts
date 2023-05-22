@@ -17,4 +17,15 @@ declare namespace API.Sprint {
       data: Model.SprintKanBan.Issues[]
     }
   }
+  namespace GetProjectRoleList{
+    type Params={
+      project_id:number
+    }
+    type Result=Model.Sprint.ProjectSettings[]
+    type updateParams={
+      user_group_id:number,
+      project_id:number,
+      user_id:number
+    }
+  }
 }

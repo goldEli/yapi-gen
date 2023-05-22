@@ -154,6 +154,13 @@ const ProjectDetailSide = () => {
   useEffect(() => {
     getInfo()
   }, [projectId])
+  useEffect(()=>{
+    console.log('paramsData',paramsData)
+    setSelectedKeys([paramsData.type])
+  },[])
+  useEffect(()=>{
+    
+  },[pathname])
   return (
     <AllWrap>
       {pathname !== '/SprintProjectManagement/DemandSetting' &&

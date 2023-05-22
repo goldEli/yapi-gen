@@ -40,7 +40,7 @@ const Need = (props: any) => {
     },
     xAxis: {
       categories: [
-        t('situation.January') + 9,
+        t('situation.January'),
         t('situation.February'),
         t('situation.March'),
         t('situation.April'),
@@ -68,9 +68,22 @@ const Need = (props: any) => {
         enableMouseTracking: false,
       },
     },
-    series: data?.chartsData,
+    series: [
+      {
+        name: '创建需求',
+        data: [0, 69, 116, 306, 365, 0, 0, 0, 0, 0, 0, 0],
+      },
+      {
+        name: '进行中',
+        data: [0, 1, 2, 19, 38, 0, 0, 0, 0, 0, 0, 0],
+      },
+      {
+        name: '已结束',
+        data: [0, 69, 116, 306, 365, 0, 0, 0, 0, 0, 0, 0],
+      },
+    ],
   }
-  console.log(data?.chartsData, 'data?.chartsData')
+  console.log(data?.chartsData, 'data11?.chartsData')
   return (
     <ChartsWrap>
       <div className={titleCss}>{t('situation.demandSurvey')}</div>

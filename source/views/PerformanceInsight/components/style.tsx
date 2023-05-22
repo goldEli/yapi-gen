@@ -291,3 +291,36 @@ export const CharTitle = styled.div`
 export const HighchartsReactWrap = styled(HighchartsReact)({
   height: '300px',
 })
+export const ChartRow = styled.div`
+  display: flex;
+  align-items: center;
+`
+export const BorderRow = styled.div`
+  display: flex;
+  align-items: center;
+  .text {
+    font-size: 12px;
+    color: var(--neutral-n3);
+    margin-left: 8px;
+  }
+`
+export const Bor = styled.div<{ color: string }>(
+  {
+    width: '8px',
+    height: '1px',
+  },
+  ({ color }) => ({
+    border: `1px solid ${color}`,
+  }),
+)
+export const Radius = styled.div<{ color: string }>(
+  {
+    width: '7px',
+    height: '7px',
+    borderRadius: '50%',
+    margin: '0 1px',
+  },
+  ({ color }) => ({
+    backgroundColor: color,
+  }),
+)

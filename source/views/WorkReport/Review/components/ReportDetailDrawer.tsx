@@ -6,15 +6,13 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/no-danger */
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
-import { Drawer, message, Form, Space, Input } from 'antd'
+import { Drawer, Form, Space } from 'antd'
 import type { EditorRef } from '@xyfe/uikit'
 import { Editor } from '@xyfe/uikit'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonIconFont from '@/components/CommonIconFont'
 import { DragLine, MouseDom } from '@/components/StyleCommon'
-import { throttle } from 'lodash'
-import { uploadFileToKey } from '@/services/cos'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import {
   Header,
@@ -24,7 +22,6 @@ import {
   UpWrap,
   DownWrap,
   ContentHeadWrap,
-  CommentFooter,
   DetailItem,
   TargetUserItem,
   TargetUserContent,
@@ -48,6 +45,7 @@ import IconFont from '@/components/IconFont'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { setUpdateList } from '@store/workReport'
 import { getMessage } from '@/components/Message'
+import CommonComment from '@/components/CommonComment'
 
 interface TargetTabsProps {
   list: any
@@ -272,8 +270,7 @@ const ReportDetailDrawer = () => {
   }
 
   // 评论
-  const onComment = async () => {
-    const value = await form.validateFields()
+  const onComment = async (value: any) => {
     const params = {
       report_user_id: drawerInfo.id,
       content: value.info,
@@ -291,23 +288,6 @@ const ReportDetailDrawer = () => {
     form.resetFields()
     // 更新List页面
     dispatch(setUpdateList({ isFresh: 1 }))
-  }
-
-  // 富文本上传
-  const uploadFile = (file: File, dom: any, key2?: any) => {
-    const key = uploadFileToKey(
-      file,
-      file.name,
-      `richEditorFiles_${new Date().getTime()}`,
-      false,
-      data => {
-        if (key2 === 'copy') {
-          dom.past(data.url)
-        }
-        dom?.notifyUploaded(data.key, data.url)
-      },
-    )
-    return key
   }
 
   // 关闭汇报抽屉
@@ -351,15 +331,6 @@ const ReportDetailDrawer = () => {
       document.removeEventListener('keydown', getKeyDown)
     }
   }, [])
-
-  const onValidator = (rule: any, value: any) => {
-    if (value === '<p><br></p>' || value === '<p></p>' || value.trim() === '') {
-      return Promise.reject(
-        new Error('The two passwords that you entered do not match!'),
-      )
-    }
-    return Promise.resolve()
-  }
 
   // 删除评论
   const onDeleteComment = (item: any) => {
@@ -538,81 +509,13 @@ const ReportDetailDrawer = () => {
       </Content>
 
       {!skeletonLoading && (
-        <CommentFooter isReview={isReview}>
-          {isReview ? (
-            <>
-              <div className="editBox">
-                <Form form={form}>
-                  <Form.Item
-                    name="info"
-                    rules={[
-                      {
-                        validateTrigger: ['onFinish', 'onBlur', 'onFocus'],
-                        required: true,
-                        message: (
-                          <div
-                            style={{
-                              margin: '5px 0',
-                              fontSize: '12px',
-                              display: 'flex',
-                              alignItems: 'center',
-                            }}
-                          >
-                            {t('report.list.noEmpty')}
-                          </div>
-                        ),
-                        whitespace: true,
-                        validator: onValidator,
-                      },
-                    ]}
-                  >
-                    <Editor
-                      at
-                      ref={editorRef}
-                      upload={uploadFile}
-                      getSuggestions={() => arr}
-                    />
-                  </Form.Item>
-                </Form>
-              </div>
-              <div className="buttonBox">
-                <Space>
-                  <CommonButton
-                    type="light"
-                    size="small"
-                    onClick={() => {
-                      setIsReview(false)
-                      form.resetFields()
-                    }}
-                    style={{ fontSize: 12 }}
-                  >
-                    {t('report.list.cancel')}
-                  </CommonButton>
-                  <CommonButton
-                    type="primary"
-                    size="small"
-                    style={{ fontSize: 12 }}
-                    onClick={onComment}
-                  >
-                    {t('common.comment')}
-                  </CommonButton>
-                </Space>
-              </div>
-            </>
-          ) : (
-            <Input
-              placeholder={`${t('common.comment')}${
-                drawerInfo?.user?.name || '--'
-              }${t('report.list.log')}`}
-              onFocus={() => {
-                setIsReview(true)
-                setTimeout(() => {
-                  editorRef.current?.focus()
-                }, 50)
-              }}
-            />
-          )}
-        </CommentFooter>
+        <CommonComment
+          placeholder={`${t('common.comment')}${
+            drawerInfo?.user?.name || '--'
+          }${t('report.list.log')}`}
+          personList={arr}
+          onConfirm={onComment}
+        />
       )}
       <DeleteConfirm
         text={t('mark.cd')}

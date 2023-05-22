@@ -348,18 +348,18 @@ const GlobalStyle = () => {
     .ant-modal-header {
       border: none;
     }
-    .highcharts-tick {
-      stroke: transparent;
-    }
-    .highcharts-axis-line {
-      stroke: transparent;
-    }
-    .highcharts-grid-line {
-      stroke: transparent;
-    }
-    .ant-upload-list-item:hover .ant-upload-list-item-info {
-      background-color: transparent;
-    }
+    // .highcharts-tick {
+    //   stroke: transparent;
+    // }
+    // .highcharts-axis-line {
+    //   stroke: transparent;
+    // }
+    // .highcharts-grid-line {
+    //   stroke: transparent;
+    // }
+    // .ant-upload-list-item:hover .ant-upload-list-item-info {
+    //   background-color: transparent;
+    // }
     .ant-empty {
       // visibility: hidden;
     }
