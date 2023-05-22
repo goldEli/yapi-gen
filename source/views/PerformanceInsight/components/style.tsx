@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Space } from 'antd'
+import { Modal, Space } from 'antd'
 import { HighchartsReact } from 'highcharts-react-official'
 export const HeaderStyle = styled.div`
   height: 52px;
@@ -324,3 +324,37 @@ export const Radius = styled.div<{ color: string }>(
     backgroundColor: color,
   }),
 )
+export const DialogMain = styled.div`
+  width: 420px;
+  height: 205px;
+  background: var(--neutral-white-d5);
+  box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
+  border-radius: 6px;
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 999999999;
+  padding: 24px;
+`
+export const DialogHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  fontfamily: SiYuanMedium;
+  &:hover {
+    cursor: pointer;
+  }
+`
+export const TextColor = styled.div`
+  font-size: 14px;
+  color: var(--neutral-n2);
+  margin-left: 36px;
+`
+export const Footer = styled.div`
+  height: 80px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+export const HomeModal = styled(Modal)({})

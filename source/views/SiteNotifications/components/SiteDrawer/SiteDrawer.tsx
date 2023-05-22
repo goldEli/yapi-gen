@@ -38,7 +38,9 @@ import NoData from '@/components/NoData'
 const SiteDrawer = () => {
   const [t] = useTranslation()
   const [active, setActive] = useState('1')
-  const newName = useRef<any>(undefined)
+  const newName = useRef<any>(
+    Math.floor((new Date().getTime() - 30 * 24 * 3600 * 1000) / 1000),
+  )
   const atmy = useRef<any>(undefined)
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -46,7 +48,7 @@ const SiteDrawer = () => {
   const { isRefresh } = useSelector(store => store.user)
   const [list, setList] = useState([])
   const [now, setNow] = useState()
-  const lastId = useRef(0)
+  const lastId = useRef(1)
   const tabBox = useRef<HTMLDivElement>(null)
   const tabActive = useRef<HTMLDivElement>(null)
   const [hasMore, setHasMore] = useState(true)
@@ -68,7 +70,7 @@ const SiteDrawer = () => {
   ]
 
   const onChange = (e: CheckboxChangeEvent) => {
-    lastId.current = 0
+    lastId.current = 1
     setHasMore(true)
     setList([])
     setRead(e.target.checked ? 0 : undefined)
@@ -88,17 +90,26 @@ const SiteDrawer = () => {
       latTime: newName.current,
       msgType: atmy.current,
     })
-    lastId.current = re4.lastId
+    const maxPage = re4.pager.total
+    lastId.current += 1
 
-    if (type === 1 && re4.lastId === 0) {
+    if (type === 1 && lastId.current === maxPage + 1) {
+      console.log(11)
+
       setList(re4.list)
       setHasMore(false)
     } else if (type === 1) {
+      console.log(12)
       setList(re4.list)
-    } else if (type === 2 && re4.lastId === 0) {
+      if (re4.list.length < 1) {
+        setHasMore(false)
+      }
+    } else if (type === 2 && lastId.current === maxPage + 1) {
+      console.log(13)
       setList(e => e.concat(re4.list))
       setHasMore(false)
     } else if (type === 2) {
+      console.log(14)
       setList(e => e.concat(re4.list))
     }
   }
@@ -109,13 +120,13 @@ const SiteDrawer = () => {
     if (id === '3') {
       atmy.current = undefined
       newName.current = undefined
-      lastId.current = 0
+      lastId.current = 1
       fetchMoreData(1)
     }
     if (id === '2') {
       newName.current = undefined
       atmy.current = ['191', '132']
-      lastId.current = 0
+      lastId.current = 1
       fetchMoreData(1)
     }
     if (id === '1') {
@@ -126,7 +137,7 @@ const SiteDrawer = () => {
       )
 
       newName.current = tenMinutesAgoTimestamp
-      lastId.current = 0
+      lastId.current = 1
       fetchMoreData(1)
     }
   }
@@ -145,7 +156,7 @@ const SiteDrawer = () => {
       dispatch(changeNumber(num))
       setHasMore(true)
       setList([])
-      lastId.current = 0
+      lastId.current = 1
       fetchMoreData(1)
     }
   }
@@ -159,11 +170,11 @@ const SiteDrawer = () => {
     setNow(a.nread)
   }
   const n2 = () => {
-    lastId.current = 0
+    lastId.current = 1
     setHasMore(true)
   }
   useEffect(() => {
-    lastId.current = 0
+    lastId.current = 1
     isVisible ? fetchMoreData(1) : n2()
     isVisible ? reset() : null
   }, [isVisible, read, all])

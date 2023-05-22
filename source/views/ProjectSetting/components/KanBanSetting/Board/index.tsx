@@ -1,5 +1,7 @@
 import React from 'react'
 import styled from '@emotion/styled'
+import useKanBanData from '../hooks/useKanBanData'
+import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
 interface BoardProps {
   children: React.ReactNode
@@ -14,7 +16,18 @@ const BoardBox = styled.div`
 `
 
 const Board: React.FC<BoardProps> = props => {
-  return <BoardBox>{props.children}</BoardBox>
+  const { onDragEnd } = useKanBanData()
+
+  return (
+    <DragDropContext
+      onDragEnd={onDragEnd}
+      onDragStart={start => {
+        console.log(start)
+      }}
+    >
+      <BoardBox>{props.children}</BoardBox>
+    </DragDropContext>
+  )
 }
 
 export default Board

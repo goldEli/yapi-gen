@@ -281,6 +281,7 @@ export const PersonText = styled.div`
 export const Col = styled.div`
   padding: 24px 24px 12px 24px;
   display: flex;
+  height: 32px;
   align-items: center;
   justify-content: space-between;
 `
@@ -326,7 +327,7 @@ export const Time = styled.span`
   color: var(--neutral-n3);
 `
 export const DataWrap = styled.div`
-  margin: 0 24px;
+  margin: 16px 24px 0 24px;
   display: flex;
   flex-wrap: wrap;
 `
@@ -339,7 +340,7 @@ export const LotBox = styled.div`
   margin-bottom: 24px;
   padding: 16px;
   &:hover {
-    background: var(--white-d6);
+    background: var(--neutral--white-d6);
     box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
     cursor: pointer;
   }
@@ -366,7 +367,7 @@ export const HightChartsWrap = styled.div<{ height: number }>(
   {
     width: '100%',
     borderRadius: '6px',
-    background: 'var(--white-d4)',
+    background: 'var(--neutral--white-d4)',
     border: '1px solid var(--neutral-n6-d1)',
     padding: '24px',
     '.highcharts-container,.highcharts-root ': {

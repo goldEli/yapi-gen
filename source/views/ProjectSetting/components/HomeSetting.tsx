@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/react'
-import type { RadioChangeEvent } from 'antd'
 import { Radio } from 'antd'
 const Wrap = styled.div`
   padding-left: 24px;
