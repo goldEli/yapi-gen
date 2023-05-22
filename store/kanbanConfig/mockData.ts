@@ -9,6 +9,16 @@ export const unassignStatusList: Model.KanbanConfig.Status[] = [
       'https://dev.staryuntech.com/dev-agile/attachment/category_icon/home.png',
     status_name: '已关闭',
   },
+  {
+    story_type_id: 571,
+    flow_status_id: 18241,
+    is_end: 1,
+    is_start: 2,
+    stories_count: 33,
+    attachment_path:
+      'https://dev.staryuntech.com/dev-agile/attachment/category_icon/home.png',
+    status_name: '已关闭1',
+  },
 ]
 
 export const columnList: Model.KanbanConfig.Column[] = [

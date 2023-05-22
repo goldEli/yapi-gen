@@ -8,6 +8,7 @@ import { Draggable } from 'react-beautiful-dnd'
 interface StatusListItemProps {
   data: Model.KanbanConfig.Status
   index: number
+  hiddenIcon?: boolean
 }
 
 const StatusListItemBox = styled.div`
@@ -50,17 +51,13 @@ const Count = styled.div`
   color: var(--neutral-n3);
 `
 
-const IconWarp = styled(IconFont)<{ active: boolean }>`
-  font-size: 16px;
-  color: ${props => (props.active ? 'var(--primary-d1)' : 'var(--neutral-n3)')};
-`
-
 const StatusListItem: React.FC<StatusListItemProps> = props => {
   const { data } = props
+  const draggableId = data.flow_status_id + ''
   return (
     <Draggable
-      key={data.id}
-      draggableId={data.flow_status_id + ''}
+      key={data.flow_status_id}
+      draggableId={draggableId}
       index={props.index}
     >
       {(provided, snapshot) => {
@@ -73,7 +70,7 @@ const StatusListItem: React.FC<StatusListItemProps> = props => {
           >
             <StatusListItemLeft>
               <MoveIcon active={snapshot.isDragging} />
-              <ImageIcon src={data.attachment_path} />
+              {!props.hiddenIcon && <ImageIcon src={data.attachment_path} />}
               {/* <Text bg={item.status_color}>{item.status_name}</Text> */}
               <StateTag
                 name={data.status_name}

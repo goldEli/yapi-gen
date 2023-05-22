@@ -17,22 +17,29 @@ const DropAreaList = styled.div`
   display: flex;
   width: 100%;
   gap: 16px;
+  flex-direction: column;
   /* min-height: 80vh; */
+`
+const CateGoryTittleArea = styled.div<{ visible: boolean }>`
+  visibility: ${props => (props.visible ? 'visible' : 'hidden')};
 `
 
 const IssuesGroup: React.FC<IssuesGroupProps> = props => {
-  const { data } = useKanBanData()
-  const group = data.find(item => item.groupId === props.groupId)
-  const issues = group?.data?.[props.index ?? 0]
+  const { columnList } = useKanBanData()
+  const group = columnList.find(item => item.id === props.groupId)
   return (
     <IssuesGroupBox>
-      <div>{group?.title}</div>
       <DropAreaList>
-        {/* {issuesGroup.data.map(issues => {
-          return ( */}
-        <Issues key={issues?.id} issues={issues} groupId={group?.groupId} />
-        {/* )
-        })} */}
+        {group?.categories.map(issues => {
+          return (
+            <>
+              <CateGoryTittleArea visible={props.index === 0}>
+                {issues.name}
+              </CateGoryTittleArea>
+              <Issues key={issues?.id} issues={issues} groupId={group?.id} />
+            </>
+          )
+        })}
       </DropAreaList>
     </IssuesGroupBox>
   )
