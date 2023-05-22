@@ -12,9 +12,12 @@ import CommonButton from '@/components/CommonButton'
 import ChildSprint from './ChildSprint'
 import LinkSprint from './LinkSprint'
 import ActivitySprint from './ActivitySprint'
-import CommonComment from '@/components/CommonComment'
+import CommentFooter from '@/components/CommonComment/CommentFooter'
+import { setSprintDetailDrawer } from '@store/sprint'
+import { useDispatch } from '@store/index'
 
 const SprintDetailInfo = () => {
+  const dispatch = useDispatch()
   const [t] = useTranslation()
   const LeftDom = useRef<HTMLDivElement>(null)
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
@@ -56,6 +59,14 @@ const SprintDetailInfo = () => {
     console.log(value)
   }
 
+  const openModal = () => {
+    dispatch(
+      setSprintDetailDrawer({
+        visible: true,
+      }),
+    )
+  }
+
   return (
     <DragMoveContainer
       max="65vw"
@@ -64,6 +75,7 @@ const SprintDetailInfo = () => {
       height="calc(100vh - 236px)"
     >
       <DeleteConfirmModal />
+      <div onClick={openModal}>打开详情弹窗</div>
       <DetailInfoWrap ref={LeftDom}>
         <InfoItem
           style={{
@@ -131,12 +143,13 @@ const SprintDetailInfo = () => {
         <LinkSprint />
         <ActivitySprint />
       </DetailInfoWrap>
-      <CommonComment
+      <CommentFooter
         placeholder="发表评论（按M快捷键发表评论）"
         personList={[]}
         onConfirm={onConfirmComment}
         style={{ padding: '0 24px', width: 'calc(100% - 24px)' }}
         maxHeight="60vh"
+        hasAvatar
       />
     </DragMoveContainer>
   )
