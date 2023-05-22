@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { columnList, unassignStatusList } from './mockData'
 
 type SliceState = {
   viewList?: Model.KanbanConfig.ConfigListItem[]
@@ -6,6 +7,8 @@ type SliceState = {
     visible: boolean
     viewItem?: Model.KanbanConfig.ConfigListItem
   }
+  unassignStatusList: Model.KanbanConfig.Status[]
+  columnList: Model.KanbanConfig.Column[]
 }
 
 const initialState: SliceState = {
@@ -16,9 +19,12 @@ const initialState: SliceState = {
     { id: 4, project_id: 11, name: '重点关注', check: false },
     { id: 5, project_id: 11, name: '进度跟踪', check: false },
   ],
+  columnList: columnList,
+
   saveAsViewModelInfo: {
     visible: false,
   },
+  unassignStatusList: unassignStatusList,
 }
 
 const slice = createSlice({

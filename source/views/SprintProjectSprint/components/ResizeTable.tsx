@@ -135,20 +135,21 @@ interface ResizeTableProps {
   noData?: any
   isSpinning?: boolean
   rowSelection?: any
-  onRow?: (
+  onRow?(
     record: any,
     index: number,
-  ) => {
-    onMouseEnter?: () => void
-    onMouseLeave?: () => void
-    onClick?: () => void
-    onDoubleClick?: () => void
+  ): {
+    onMouseEnter?(): void
+    onMouseLeave?(): void
+    onClick?(): void
+    onDoubleClick?(): void
   }
   expandable?: any
   isTree?: boolean
   rowClassName?: any
   className?: any
   components?: any
+  footer?: any
 }
 // 拖拽调整table
 const ResizeTable = (props: ResizeTableProps) => {
@@ -257,11 +258,12 @@ const ResizeTable = (props: ResizeTableProps) => {
               rowClassName={(row: any) =>
                 row.id === listActiveId ? 'activeListItem' : props.rowClassName
               }
+              footer={props?.footer}
             />
           )}
-          {props.dataSource && props.dataSource?.length <= 0 && (
+          {props.dataSource && props.dataSource?.length <= 0 ? (
             <div style={{ height: '100%' }}>{props.noData}</div>
-          )}
+          ) : null}
         </Spin>
       </div>
     </DataWrap>

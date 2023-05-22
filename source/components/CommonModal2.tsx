@@ -92,6 +92,7 @@ interface CommonModalProps {
   isShowMask?: boolean
   noCancel?: boolean
   dex?: number
+  noFooter?: boolean
 }
 
 const CommonModal = (props: CommonModalProps) => {
@@ -127,18 +128,19 @@ const CommonModal = (props: CommonModalProps) => {
           </CloseWrap>
         </ModalHeader>
         <div style={{ height: 'calc(100vh - 56px)' }}>{props?.children}</div>
+        {!props.noFooter && (
+          <ModalFooter>
+            {props?.noCancel ? null : (
+              <CommonButton type="light" onClick={props?.onClose}>
+                {t('common.cancel')}
+              </CommonButton>
+            )}
 
-        <ModalFooter>
-          {props?.noCancel ? null : (
-            <CommonButton type="light" onClick={props?.onClose}>
-              {t('common.cancel')}
+            <CommonButton type="primary" onClick={props?.onConfirm}>
+              {props?.confirmText ? props?.confirmText : t('common.confirm')}
             </CommonButton>
-          )}
-
-          <CommonButton type="primary" onClick={props?.onConfirm}>
-            {props?.confirmText ? props?.confirmText : t('common.confirm')}
-          </CommonButton>
-        </ModalFooter>
+          </ModalFooter>
+        )}
       </div>
     </ModalStyle>
   )

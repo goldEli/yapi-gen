@@ -281,6 +281,7 @@ export const PersonText = styled.div`
 export const Col = styled.div`
   padding: 24px 24px 12px 24px;
   display: flex;
+  height: 32px;
   align-items: center;
   justify-content: space-between;
 `

@@ -62,6 +62,11 @@ const CloseWrap = styled.div<{ width?: any; height?: any }>`
   }
 `
 
+const ChartsItem2 = styled.span`
+  width: 1px;
+  height: 56px;
+  border-right: 1px solid var(--neutral-n6-d1);
+`
 const ChartsItem = styled.span`
   align-items: center;
   display: flex;
@@ -107,16 +112,20 @@ const chartsTitle = css`
 
 const HomeWrap = styled.div`
   height: 104px;
-  border: 1px solid var(--neutral-n6-d1);
+  /* border: 1px solid var(--neutral-n6-d1); */
   border-radius: 6px;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
   flex: 1;
 `
 
 const TextWrap = styled.div`
+  border-radius: 6px;
+  height: 104px;
+  border: 1px solid var(--neutral-n6-d1);
   display: flex;
+  justify-content: space-around;
   align-items: center;
   margin-bottom: 24px;
   margin-top: 16px;
@@ -915,6 +924,7 @@ const SeverityWrap = styled.div`
 `
 
 export {
+  ChartsItem2,
   title1Css1,
   HiddenText,
   ClickWrap,
