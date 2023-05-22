@@ -2,12 +2,14 @@ import React from 'react'
 import { DropResult } from 'react-beautiful-dnd'
 import { produce } from 'immer'
 import { getId } from '../../utils'
+import { columnsFromBackend, issueColumns } from './data'
 
-const useKanBanData = (d: Model.SprintKanBan.IssuesGroup[]) => {
-  const [data, setData] = React.useState(d)
+const useKanBanData = () => {
+  const [data, setData] = React.useState(columnsFromBackend)
 
   // refactor with immerjs
   const onDragEnd = (result: DropResult) => {
+    console.log(result)
     if (!result.destination) return
     const { source, destination } = result
 
@@ -53,6 +55,7 @@ const useKanBanData = (d: Model.SprintKanBan.IssuesGroup[]) => {
 
   return {
     data,
+    issueColumns,
     onDragEnd,
   }
 }

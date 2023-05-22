@@ -20,9 +20,7 @@ export const SortableItem = (props: any) => {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          // {...listeners}
-          // className={cls}
-          // style={{ ...style }}
+          className={className}
           {...rest}
           data-cypress="draggable-item"
         >
