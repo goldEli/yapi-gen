@@ -9,6 +9,10 @@ type SliceState = {
     visible: boolean
     viewItem?: Model.KanbanConfig.ConfigListItem
   }
+  editColumnModelInfo: {
+    visible: boolean
+    columnInfo?: Model.KanbanConfig.Column
+  }
   unassignStatusList: Model.KanbanConfig.Status[]
   columnList: Model.KanbanConfig.Column[]
   /**
@@ -21,6 +25,9 @@ type SliceState = {
 }
 
 const initialState: SliceState = {
+  editColumnModelInfo: {
+    visible: false,
+  },
   categoryVisibleInfo: [],
   viewList: [
     { id: 1, project_id: 11, name: '看板', is_default: 1, check: true },
@@ -50,6 +57,31 @@ const slice = createSlice({
   name: 'kanbanConfig',
   initialState,
   reducers: {
+    setEditColumnModelInfo(
+      state,
+      action: PayloadAction<SliceState['editColumnModelInfo']>,
+    ) {
+      state.editColumnModelInfo = action.payload
+    },
+    modifyColumn(state, action: PayloadAction<Model.KanbanConfig.Column>) {
+      state.columnList = state.columnList.map(item => {
+        if (item.id === action.payload.id) {
+          return action.payload
+        }
+        return item
+      })
+    },
+    deleteColumn(
+      state,
+      action: PayloadAction<Model.KanbanConfig.Column['id']>,
+    ) {
+      const index = state.columnList.findIndex(
+        item => item.id === action.payload,
+      )
+      if (index) {
+        state.columnList.splice(index, 1)
+      }
+    },
     createColumn(
       state,
       action: PayloadAction<Model.KanbanConfig.Column['name']>,
@@ -211,6 +243,9 @@ export const {
   sortColumn,
   setCategoryVisibleInfo,
   createColumn,
+  setEditColumnModelInfo,
+  deleteColumn,
+  modifyColumn,
 } = slice.actions
 
 export default KanbanConfig

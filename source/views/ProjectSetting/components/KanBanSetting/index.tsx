@@ -4,6 +4,7 @@ import ToolBar from './ToolBar'
 import Board from './Board'
 import BoardLeft from './BoardLeft'
 import BoardRight from './BoardRight'
+import EditColumnModal from './EditColumnModal'
 interface IProps {}
 const KanBanSettingBox = styled.div`
   width: 100%;
@@ -22,6 +23,7 @@ const KanBanSetting: React.FC<IProps> = props => {
         <BoardLeft />
         <BoardRight />
       </Board>
+      <EditColumnModal />
     </KanBanSettingBox>
   )
 }
