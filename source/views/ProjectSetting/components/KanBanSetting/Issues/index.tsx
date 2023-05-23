@@ -53,7 +53,6 @@ const Issues: React.FC<IssuesProps> = props => {
       {(provided, snapshot) => {
         const { draggingFromThisWith } = snapshot
         const isDrop = checkIsDrop(issues?.id ?? 0, draggingFromThisWith ?? '')
-        console.log(isDrop, issues?.id, issues?.name)
         return (
           <DropArea
             showBorder={isDrop}

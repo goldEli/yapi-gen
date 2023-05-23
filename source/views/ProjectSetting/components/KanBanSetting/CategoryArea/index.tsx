@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react'
 import styled from '@emotion/styled'
 import CommonButton from '@/components/CommonButton'
-import IconFont from '@/components/IconFont'
 import UpDownBtn from '../UpDownBtn'
 import { useDispatch, useSelector } from '@store/index'
 import { setCategoryVisibleInfo } from '@store/kanbanConfig'
+import { useNavigate } from 'react-router'
 
 interface CategoryAreaProps {
   data: Model.KanbanConfig.Category
@@ -23,6 +23,7 @@ const TitleArea = styled.div<{ visible: boolean }>`
   display: flex;
   align-items: center;
   gap: 8px;
+  cursor: pointer;
 `
 
 const IconImg = styled.img`
@@ -44,6 +45,7 @@ const CategoryArea: React.FC<CategoryAreaProps> = props => {
     return !categoryVisibleInfo.find(item => item.categoryId === props.data.id)
       ?.close
   }, [categoryVisibleInfo, props.data])
+  const navigate = useNavigate()
 
   const children = useMemo(() => {
     if (!isOpen) {
@@ -62,7 +64,16 @@ const CategoryArea: React.FC<CategoryAreaProps> = props => {
         <UpDownBtn isOpen={isOpen} />
         <IconImg src={props.data.attachment_path} />
         <Text>{props.data.name}</Text>
-        <CommonButton type="secondary">编辑工作流</CommonButton>
+        <CommonButton
+          onClick={e => {
+            console.log({ e })
+            e.stopPropagation()
+            navigate('/SprintProjectManagement/WorkFlow')
+          }}
+          type="secondary"
+        >
+          编辑工作流
+        </CommonButton>
       </TitleArea>
       {children}
     </CategoryAreaBox>
