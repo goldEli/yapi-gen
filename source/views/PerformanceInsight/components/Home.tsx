@@ -3,6 +3,8 @@ import CommonIconFont from '@/components/CommonIconFont'
 import { Dropdown, Menu, Space } from 'antd'
 import Header from '../Header'
 import Highcharts from 'highcharts'
+import { setSave } from '@store/performanceInsight'
+import { useDispatch } from 'react-redux'
 import {
   Col,
   RightRow,
@@ -23,6 +25,10 @@ import {
   Radius,
   BorderRow,
   Row,
+  DialogMain,
+  DialogHeader,
+  TextColor,
+  Footer,
 } from './style'
 import {
   MoreWrap2,
@@ -30,6 +36,10 @@ import {
 } from '@/components/CommonProjectComponent/CommonMember/style'
 import IconFont from '@/components/IconFont'
 import { useState } from 'react'
+import SelectMain from '../Header/components/SelectMain'
+import CommonButton from '@/components/CommonButton'
+import { useSelector } from '@store/index'
+import ViewDialog from '../Header/components/ViewDialog'
 interface Props {
   title: string
   time: string
@@ -295,11 +305,11 @@ const HightChartMainBar = (props: {
           ) : null}
 
           <div>
-            {/* <HighchartsReactWrap
+            <HighchartsReactWrap
               width={400}
               highcharts={Highcharts}
               options={options}
-            /> */}
+            />
           </div>
         </HightChartsWrap>
       </div>
@@ -412,11 +422,11 @@ const HightChartMainLine = (props: {
             <span className="time">较前14天 -10%</span>
           </CharTitle>
           <div>
-            {/* <HighchartsReactWrap
+            <HighchartsReactWrap
               width={400}
               highcharts={Highcharts}
               options={options}
-            /> */}
+            />
           </div>
         </HightChartsWrap>
       </div>
@@ -471,6 +481,10 @@ const HightChartMainPie = (props: {
         },
         showInLegend: true,
       },
+    },
+    labelFormatter: function () {
+      // const event: any = this
+      // return `<div style='fontSize: 14px;color:#646566;display:flex; width: 204px;height:26px;lineHeight:14px;paddingBottom:2px;whiteSpace: nowrap; overflow: hidden; textOverflow: ellipsis'>${event?.name}: ${event.y}%</div>`
     },
     tooltip: {
       backgroundColor: '#fff',
@@ -702,8 +716,17 @@ const HightChartMainSpline = (props: {
 }
 // 效能洞察的主页
 const Home = () => {
+  const dispatch = useDispatch()
+  const [isVisible, setIsVisible] = useState(false)
+  const { save } = useSelector(store => store.performanceInsight)
   return (
-    <div style={{ overflowY: 'auto', height: 'calc(100% - 24px)' }}>
+    <div
+      style={{
+        overflowY: 'auto',
+        height: 'calc(100% - 24px)',
+        position: 'relative',
+      }}
+    >
       <Header />
       <WorkingStatus
         data={[
@@ -793,6 +816,86 @@ const Home = () => {
           </div>
         </div>
       </div>
+      {/* 保存提示操作 */}
+      {save && (
+        <DialogMain>
+          <DialogHeader>
+            <Space size={14}>
+              <CommonIconFont
+                type={'Warning'}
+                size={20}
+                color="var(--function-warning)"
+              />
+              <span>检测到此视图有未保存的更改</span>
+            </Space>
+            <CommonIconFont
+              onClick={() => dispatch(setSave(false))}
+              type={'close'}
+              size={16}
+              color="var(--neutral-n2)"
+            />
+          </DialogHeader>
+          <TextColor>单击“保存”按钮可以将更改保存在如下视图</TextColor>
+          <div style={{ margin: '8px 0 0 32px' }}>
+            <SelectMain
+              onChange={e => console.log(e)}
+              placeholder="请选择"
+              list={[
+                {
+                  name: '近7天',
+                  key: 7,
+                },
+                {
+                  name: '近15天',
+                  key: 15,
+                },
+                {
+                  name: '近1月',
+                  key: 1,
+                },
+                {
+                  name: '近3个月',
+                  key: 3,
+                },
+                {
+                  name: '自定义',
+                  key: 0,
+                },
+              ]}
+            />
+          </div>
+          <Footer>
+            <Space size={6}>
+              <span
+                style={{
+                  color: 'var(--auxiliary-text-t2-d1)',
+                  cursor: 'pointer',
+                }}
+              >
+                不保存
+              </span>
+            </Space>
+            <Space size={16}>
+              <CommonButton type="light" onClick={() => setIsVisible(true)}>
+                另存为
+              </CommonButton>
+              <CommonButton type="primary" onClick={() => 123}>
+                保存
+              </CommonButton>
+            </Space>
+          </Footer>
+        </DialogMain>
+      )}
+      {/* 新建和编辑视图 1*/}
+      <ViewDialog
+        name={''}
+        title={'另存为视图'}
+        onConfirm={() => {
+          console.log(123)
+        }}
+        onClose={() => setIsVisible(false)}
+        isVisible={isVisible}
+      />
     </div>
   )
 }

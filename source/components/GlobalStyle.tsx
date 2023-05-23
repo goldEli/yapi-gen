@@ -689,7 +689,7 @@ const GlobalStyle = () => {
     .ant-input-number-focused,
     .ant-select-selector,
     .ant-select:hover {
-      box-shadow: inherit !important;
+      box-shadow: initial;
       .ant-dropdown-menu-item:hover {
         background-color: var(--hover-d3);
         color: var(--neutral-n1-d1);
@@ -797,13 +797,12 @@ const GlobalStyle = () => {
       width: 16px;
       font-size: 16px;
     }
-  //   .ant-dropdown-menu-item-divider, .ant-dropdown-menu-submenu-title-divider {
-  //     margin: 4px 12px;
-  //   }
-  //   .ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title{
-  //     padding: 0 12px;
-  //  }
-  }
+    //   .ant-dropdown-menu-item-divider, .ant-dropdown-menu-submenu-title-divider {
+    //     margin: 4px 12px;
+    //   }
+    //   .ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title{
+    //     padding: 0 12px;
+    //  }
   `
   return <Global styles={globalCss} />
 }

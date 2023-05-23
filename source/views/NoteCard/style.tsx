@@ -10,9 +10,14 @@ export const Wrap2 = styled.div`
   gap: 16px;
   align-items: center;
 `
-export const ColorBox = styled.div`
+export const ColorBox = styled.div<{ colors: number }>`
   padding: 0px 8px;
-  background-color: rgba(250, 151, 70, 0.2);
+  background-color: ${props =>
+    props.colors === 1
+      ? 'rgba(250, 151, 70, 0.2)'
+      : props.colors === 2
+      ? ' rgba(67,186,154,0.2)'
+      : 'rgba(150,151,153,0.14)'};
   height: 20px;
   border-radius: 6px 6px 6px 6px;
   height: 20px;

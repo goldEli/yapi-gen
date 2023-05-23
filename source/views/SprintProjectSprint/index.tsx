@@ -153,6 +153,7 @@ const TabItemWrap = styled.div`
 
 const Right = styled.div`
   padding: 0px 24px;
+  overflow-y: scroll;
   flex: 1;
   .header {
     display: flex;
