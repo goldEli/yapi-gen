@@ -6,15 +6,15 @@ import { setListActiveId } from '@store/global'
 
 const name = 'sprint'
 
-// 任务列表列表
-export const getSprintKanBanList = createAsyncThunk(
-  `${name}/getSprintKanBanList`,
-  async () => {
-    const res = await services.sprint.getSprintKanBanList({ id: 123 })
+// // 任务列表列表
+// export const getSprintKanBanList = createAsyncThunk(
+//   `${name}/getSprintKanBanList`,
+//   async () => {
+//     const res = await services.sprint.getSprintKanBanList({ id: 123 })
 
-    return res.data.list
-  },
-)
+//     return res.data.list
+//   },
+// )
 
 export const saveSprintDetailDrawer =
   (params: any) => async (dispatch: AppDispatch) => {

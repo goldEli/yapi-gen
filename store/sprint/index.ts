@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { getSprintKanBanList, getProjectRoleList } from './sprint.thunk'
+import { getProjectRoleList } from './sprint.thunk'
 
 type SliceState = {
   guideVisible: Model.Sprint.Visible
@@ -125,9 +125,9 @@ const slice = createSlice({
     },
   },
   extraReducers(builder) {
-    builder.addCase(getSprintKanBanList.fulfilled, (state, action) => {
-      state.sprintTableData = action.payload
-    })
+    // builder.addCase(getSprintKanBanList.fulfilled, (state, action) => {
+    //   state.sprintTableData = action.payload
+    // })
     builder.addCase(getProjectRoleList.fulfilled, (state, action) => {
       console.log('action', action)
       state.projectRoleList = action.payload
