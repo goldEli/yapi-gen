@@ -1,7 +1,7 @@
 /**
  * kanban 列title区域
  */
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
 import MoveIcon from '../MoveIcon'
 import IconFont from '@/components/IconFont'
@@ -11,6 +11,7 @@ import useKanBanData from '../hooks/useKanBanData'
 import { useDispatch } from '@store/index'
 import { openEditColumnModel } from '@store/kanbanConfig/kanbanConfig.thunk'
 import { Tooltip } from 'antd'
+import useIsTextOverflowed from '../hooks/useIsTextOverflowed'
 // import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd'
 
 interface ColumnTitleAreaProps {
@@ -78,6 +79,9 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
   const item = columnList?.[props.index ?? 0]
   const draggableId = item.id + '1'
   const dispatch = useDispatch()
+
+  const { textRef, isTextOverflowed } = useIsTextOverflowed(item.name)
+
   return (
     <Draggable draggableId={draggableId} index={props.index}>
       {(provided, snapshot) => {
@@ -91,8 +95,8 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
               <Left>
                 <MoveIcon active={snapshot.isDragging} />
                 <TextBox>
-                  <Tooltip title={item?.name}>
-                    <Text>{item?.name}</Text>
+                  <Tooltip title={isTextOverflowed ? item?.name : ''}>
+                    <Text ref={textRef}>{item?.name}</Text>
                   </Tooltip>
                 </TextBox>
                 <Count>{`最大：${item.max_num}`}</Count>
