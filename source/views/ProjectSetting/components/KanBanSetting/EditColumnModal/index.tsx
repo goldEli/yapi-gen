@@ -7,10 +7,12 @@ import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
 import { useDispatch, useSelector } from '@store/index'
 import {
-  closeSaveAsViewModel,
+  closeEditColumnModel,
   onOkEditColumnModel,
-  onSaveAsViewModel,
 } from '@store/kanbanConfig/kanbanConfig.thunk'
+import styled from '@emotion/styled'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import { deleteColumn } from '@store/kanbanConfig'
 
 const LabelTitle = (props: any) => {
   return (
@@ -32,11 +34,22 @@ const LabelTitle = (props: any) => {
   )
 }
 
+const DelBtn = styled.div`
+  font-size: 14px;
+  color: var(--auxiliary-text-t2-d1);
+  position: absolute;
+  bottom: 29px;
+  left: 26px;
+  cursor: pointer;
+  z-index: 100;
+`
+
 interface EditColumnModalProps {}
 
 const EditColumnModal: React.FC<EditColumnModalProps> = props => {
   const [form] = Form.useForm()
   const [t] = useTranslation()
+  const { DeleteConfirmModal, open } = useDeleteConfirmModal()
   const { editColumnModelInfo } = useSelector(store => store.KanbanConfig)
   React.useEffect(() => {
     if (editColumnModelInfo.columnInfo) {
@@ -50,7 +63,7 @@ const EditColumnModal: React.FC<EditColumnModalProps> = props => {
   const dispatch = useDispatch()
 
   const onClose = () => {
-    dispatch(closeSaveAsViewModel())
+    dispatch(closeEditColumnModel())
   }
 
   const confirm = async () => {
@@ -99,6 +112,7 @@ const EditColumnModal: React.FC<EditColumnModalProps> = props => {
           </Form.Item>
           {/* max_num */}
           <Form.Item
+            extra="当列中的卡片数量超过该列最大数会突出显示"
             rules={[{ required: true, message: '' }]}
             label={<LabelTitle title={'最大数量'} />}
             name="max_num"
@@ -107,6 +121,25 @@ const EditColumnModal: React.FC<EditColumnModalProps> = props => {
           </Form.Item>
         </Form>
       </div>
+      <DelBtn
+        onClick={() => {
+          open({
+            title: '删除确认',
+            text: '确认删除该列与状态，删除后再看板中将无法使用该列与状态',
+            onConfirm: () => {
+              if (!editColumnModelInfo.columnInfo?.id) {
+                return Promise.reject()
+              }
+              dispatch(deleteColumn(editColumnModelInfo.columnInfo?.id))
+              onClose()
+              return Promise.resolve()
+            },
+          })
+        }}
+      >
+        删除列
+      </DelBtn>
+      <DeleteConfirmModal />
     </CommonModal>
   )
 }
