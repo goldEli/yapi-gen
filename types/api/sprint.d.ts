@@ -72,4 +72,38 @@ declare namespace API.Sprint {
       user_id: number
     }
   }
+  namespace GetCompletionRate {
+    type Params = {
+      project_id: string
+      user_ids: Array<number>
+      start_time: string
+      end_time: string
+      sort: string
+    }
+    type Result = Array<{
+      user_name: string
+      completion_rate: string
+      work_total: number
+    }>
+  }
+  namespace GetDefectRatio {
+    type Params = {
+      project_id: string
+      user_ids: Array<number>
+      start_time: string
+      end_time: string
+      sort: string
+      dimension: string
+    }
+    type Result = Array<{ name: string; number: number; ratio: string }>
+  }
+  namespace GetBugList {
+    type Params = {
+      project_id: string
+      user_ids: Array<number>
+      start_time: string
+      end_time: string
+    }
+    type Result = Array<{ name: string; number: number; ratio: string }>
+  }
 }

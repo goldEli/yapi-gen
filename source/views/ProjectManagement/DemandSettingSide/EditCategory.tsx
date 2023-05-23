@@ -44,6 +44,7 @@ interface EditorProps {
   item?: any
   onClose(): void
   onUpdate(): void
+  workType?: string
 }
 
 const EditorCategory = (props: EditorProps) => {
@@ -111,7 +112,7 @@ const EditorCategory = (props: EditorProps) => {
       }
     } else {
       try {
-        await addStoryConfigCategory(params)
+        await addStoryConfigCategory({ ...params, work_type: props.workType })
         getMessage({ msg: t('common.createSuccess'), type: 'success' })
         onReset()
       } catch (error) {

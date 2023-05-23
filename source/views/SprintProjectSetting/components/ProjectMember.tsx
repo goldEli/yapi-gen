@@ -346,7 +346,6 @@ const ProjectMember = (props: { searchValue?: string }) => {
       dataIndex: 'nickname',
       width: 240,
       render: (text: string, record: any) => {
-        console.log(record)
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <CommonUserAvatar avatar={record.avatar} size="large" />
@@ -360,7 +359,21 @@ const ProjectMember = (props: { searchValue?: string }) => {
               {text}
             </span>
             {record.is_admin === 1 && (
-              <CommonIconFont type="edit"></CommonIconFont>
+              <Tooltip
+                placement="top"
+                title="项目负责人"
+                getPopupContainer={node => node}
+                zIndex={99999}
+                trigger="hover"
+              >
+                <div style={{ cursor: 'pointer' }}>
+                  <CommonIconFont
+                    type="leader"
+                    size={20}
+                    color="#FA9746"
+                  ></CommonIconFont>
+                </div>
+              </Tooltip>
             )}
           </div>
         )

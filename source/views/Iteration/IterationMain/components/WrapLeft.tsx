@@ -445,7 +445,6 @@ const WrapLeft = (props: Props) => {
           {hasFilter ? null : (
             <Divider style={{ margin: 0, height: 20 }} type="vertical" />
           )}
-
           {hasFilter ? null : (
             <Popover
               trigger="click"

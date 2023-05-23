@@ -21,6 +21,15 @@ const Title = styled.div`
   color: var(--neutral-n1-d1);
   align-items: center;
 `
+const Tips = styled.div<{ show: boolean }>`
+  flex: 1;
+  width: 100%;
+  display: ${props => (props.show ? 'flex' : 'none')};
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--neutral-n3);
+`
 
 const BoardLeft: React.FC<BoardLeftProps> = props => {
   const { unassignStatusList } = useSelector(store => store.KanbanConfig)
@@ -29,6 +38,9 @@ const BoardLeft: React.FC<BoardLeftProps> = props => {
     <BoardLeftBox>
       <Title>未分配状态</Title>
       <StatusList list={unassignStatusList} />
+      <Tips show={!unassignStatusList.length}>
+        将状态拖放到此处，以将其在看板中隐藏
+      </Tips>
     </BoardLeftBox>
   )
 }

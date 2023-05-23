@@ -5,7 +5,7 @@ import CommonIconFont from '@/components/CommonIconFont'
 import { getCategorySaveSort } from '@/services/demand'
 import { getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
-import { useEffect, useState } from 'react'
+import { JSXElementConstructor, ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import EditCategory from './EditCategory'
@@ -20,6 +20,10 @@ import {
   BackStyle,
   TitleStyle,
   NoDataCreateWrap,
+  AffairTypeWrap,
+  AffairTypeHeader,
+  AffairTypeText,
+  AffairTypeList,
 } from './style'
 import Dragging from './Dragging'
 import { setStartUsing } from '@store/category'
@@ -30,8 +34,12 @@ import {
   setCategoryConfigDataList,
 } from '@store/category/index'
 import styled from '@emotion/styled'
+import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
 import { CloseWrap } from '@/components/StyleCommon'
+type affairProps = {
+  [key in string]: Model.Project.Category[]
+}
 
 const IconFontStyle = styled(IconFont)({
   color: 'var(--neutral-n2)',
@@ -73,6 +81,14 @@ const Tabs = styled.div`
     border: 1px solid var(--neutral-n6-d1);
   }
 `
+const toggleDropUp = css`
+  max-height: 0;
+  transition: all 0.5s;
+`
+const toggleDropDown = css`
+  max-height: 30vh;
+  transition: all 0.5s;
+`
 const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   const [t] = useTranslation()
   const { startUsing, categoryList, activeCategory } = useSelector(
@@ -87,7 +103,9 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   const [tabsActive, setTabsActive] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   const [list, setList] = useState<any>()
+  const [affairType, setAffairType] = useState<any>()
   const [categoryItem, setCategoryItem] = useState(paramsData?.categoryItem)
+  const [workType, setWorkType] = useState('')
   const tabs = [
     {
       label: t('start_using'),
@@ -128,9 +146,44 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
       }))
     }
     dataItem?.length <= 1 && dispatch(setCategoryConfigDataList([]))
+    const affairTypeData = getTypeCategory(dataItem, 'work_type')
+    setAffairType(affairTypeData)
     setList(dataItem)
   }
-
+  const getTypeCategory = (
+    arr: Model.Project.Category[],
+    filed: 'work_type',
+  ) => {
+    const maps = new Map<number, string>([
+      [1, '需求类型'],
+      [2, '缺陷类型'],
+    ])
+    const obj: affairProps = {}
+    console.log('arry', arr)
+    for (let i = 0; i < arr.length; i++) {
+      const item = arr[i]
+      const key = item[filed]
+      if (!key) {
+        return
+      }
+      if (obj[key]) {
+        obj[key].push(item)
+      } else {
+        obj[key] = [item]
+      }
+    }
+    const resArr: Model.Project.CategoryList[] = []
+    Object.keys(obj).forEach(key => {
+      resArr.push({
+        name: maps.get(parseInt(key, 10)) ?? '',
+        children: obj[key],
+        visible: true,
+        workType: key,
+      })
+    })
+    console.log('data----', obj)
+    return resArr
+  }
   // 需求类别中间列表
   const getCategoryConfig = async (dataItem: any) => {
     const itemId = dataItem?.find((item: any) => item.active)?.id
@@ -233,7 +286,20 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
       props.onBack()
     }
   }, [projectInfo])
-
+  const updateNode = (child: { name: any }) => {
+    setAffairType((prevData: any) => {
+      const newData = [...prevData]
+      return newData.map(obj => {
+        const updatedChildren = [...obj.children]
+        return {
+          ...obj,
+          children: updatedChildren.map(item => {
+            return { ...item, active: item.name === child.name }
+          }),
+        }
+      })
+    })
+  }
   return (
     <AllWrap>
       <WrapSet>
@@ -249,7 +315,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
           <span>{t('demandSettingSide.back')}</span>
         </BackStyle>
         <Provider />
-        <TitleStyle>
+        {/* <TitleStyle>
           <span>{t('demandSettingSide.classification')}</span>{' '}
           {isCreate > 0 && (
             <CloseWrap width={24} height={24}>
@@ -260,7 +326,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
               />
             </CloseWrap>
           )}
-        </TitleStyle>
+        </TitleStyle> */}
         <Tabs>
           {tabs.map((el, index) => (
             <span
@@ -272,7 +338,60 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
             </span>
           ))}
         </Tabs>
-        <MenuBox>
+
+        <div>
+          {affairType?.map(
+            (item: Model.Project.CategoryList, index: number) => (
+              <AffairTypeWrap key={index}>
+                <AffairTypeHeader
+                  onClick={() => {
+                    affairType[index].visible = !affairType[index].visible
+                    setAffairType([...affairType])
+                  }}
+                >
+                  <div style={{ cursor: 'pointer' }}>
+                    <IconFont
+                      style={{ fontSize: 12 }}
+                      type={affairType[index].visible ? 'down' : 'up'}
+                    />
+                    <AffairTypeText>{item.name}</AffairTypeText>
+                  </div>
+                  <IconFont
+                    style={{ fontSize: 14 }}
+                    type="plus"
+                    onClick={e => {
+                      console.log('item', item)
+                      e.stopPropagation()
+                      setIsVisible(true)
+                      setWorkType(item.workType)
+                    }}
+                  />
+                </AffairTypeHeader>
+
+                <MenuBox
+                  className={item.visible ? toggleDropDown : toggleDropUp}
+                >
+                  <Dragging
+                    list={item.children}
+                    setList={setList}
+                    onClick={(i: number, child: any) => {
+                      dispatch(
+                        getCategoryConfigList({
+                          projectId: projectId,
+                          categoryId: child.id || 695,
+                        }),
+                      )
+                      updateNode(child)
+                    }}
+                    onMove={(data: any) => onMove(data)}
+                  ></Dragging>
+                </MenuBox>
+              </AffairTypeWrap>
+            ),
+          )}
+        </div>
+
+        {/* <MenuBox>
           {list?.length >= 1 ? (
             <Dragging
               list={list}
@@ -313,13 +432,14 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
               </div>
             </NoDataCreateWrap>
           )}
-        </MenuBox>
+        </MenuBox> */}
       </WrapSet>
       <EditCategory
         onClose={() => setIsVisible(false)}
         onUpdate={() => getList('add')}
         item={null}
         isVisible={isVisible}
+        workType={workType}
       />
     </AllWrap>
   )

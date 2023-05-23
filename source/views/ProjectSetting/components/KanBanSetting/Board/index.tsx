@@ -16,15 +16,10 @@ const BoardBox = styled.div`
 `
 
 const Board: React.FC<BoardProps> = props => {
-  const { onDragEnd } = useKanBanData()
+  const { onDragEnd, onDragStart } = useKanBanData()
 
   return (
-    <DragDropContext
-      onDragEnd={onDragEnd}
-      onDragStart={start => {
-        console.log({ start })
-      }}
-    >
+    <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
       <BoardBox>{props.children}</BoardBox>
     </DragDropContext>
   )
