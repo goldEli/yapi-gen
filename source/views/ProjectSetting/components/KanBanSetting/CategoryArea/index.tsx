@@ -5,6 +5,7 @@ import UpDownBtn from '../UpDownBtn'
 import { useDispatch, useSelector } from '@store/index'
 import { setCategoryVisibleInfo } from '@store/kanbanConfig'
 import { useNavigate } from 'react-router'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 interface CategoryAreaProps {
   data: Model.KanbanConfig.Category
@@ -68,7 +69,26 @@ const CategoryArea: React.FC<CategoryAreaProps> = props => {
           onClick={e => {
             console.log({ e })
             e.stopPropagation()
-            navigate('/SprintProjectManagement/WorkFlow')
+            const params = encryptPhp(
+              JSON.stringify({
+                id: 441,
+                pageIdx: 'work',
+                // categoryItem: props.data,
+                categoryItem: {
+                  name: props.data.name,
+                  //   hasDemand: 0,
+                  //   color: '#969799',
+                  id: props.data.id,
+                  //   isCheck: 1,
+                  statusCount: props.data.status.length,
+                  //   remark: '',
+                  attachmentPath: props.data.attachment_path,
+                  //   status: 1,
+                  //   active: true,
+                },
+              }),
+            )
+            navigate(`/SprintProjectManagement/WorkFlow?data=${params}`)
           }}
           type="secondary"
         >
