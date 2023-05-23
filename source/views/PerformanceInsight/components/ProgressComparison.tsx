@@ -15,7 +15,7 @@ const getTitleTips = (text: string, tips: string) => {
   return (
     <div style={{ display: 'flex', cursor: 'pointer' }}>
       {text}
-      <Tooltip title={tips} trigger="click" defaultOpen>
+      <Tooltip title={tips} trigger="click">
         <div style={{ margin: '0 8px' }}>
           <CommonIconFont type="question" size={16} />
         </div>
@@ -336,7 +336,6 @@ const ProgressComparison = (props: Props) => {
         </div>
       )}
       {/* 全局的 */}
-      {props.type}
       {props.type === 'Progress_all' && (
         <div
           style={{ display: 'flex', alignItems: 'center', padding: '0 24px' }}
@@ -412,7 +411,9 @@ const ProgressComparison = (props: Props) => {
         visible={isvisible}
         ids={[1, 2, 3]}
         id={2}
-        onCancel={() => setVisible(false)}
+        onCancel={() => {
+          setIsvisible(false)
+        }}
       />
       {/* 新增工作项 */}
       <SelectPersonnel
@@ -420,7 +421,7 @@ const ProgressComparison = (props: Props) => {
         visible={visible}
         ids={[1, 2, 3]}
         id={2}
-        onCancel={() => setIsvisible(false)}
+        onCancel={() => setVisible(false)}
       />
     </>
   )

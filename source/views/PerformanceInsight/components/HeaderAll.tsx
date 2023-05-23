@@ -90,7 +90,7 @@ const HeaderAll = (props: HaderProps) => {
           <PersonText>
             {' '}
             {props.personData?.length ? (
-              <span>已选 ({props.personData?.length}人)</span>
+              <span>已选 {props.personData?.length}人</span>
             ) : (
               <span>已选 0</span>
             )}
