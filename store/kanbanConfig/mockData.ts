@@ -151,4 +151,28 @@ export const columnList: Model.KanbanConfig.Column[] = [
       },
     ],
   },
+  {
+    id: 5555,
+    kanban_config_id: 1,
+    name: '123123',
+    max_num: 1,
+    categories: [
+      {
+        id: 499,
+        name: '需求',
+        attachment_id: 457,
+        attachment_path:
+          'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png',
+        status: [],
+      },
+      {
+        id: 571,
+        name: '测试需求类别（jx）',
+        attachment_id: 458,
+        attachment_path:
+          'https://dev.staryuntech.com/dev-agile/attachment/category_icon/home.png',
+        status: [],
+      },
+    ],
+  },
 ]
