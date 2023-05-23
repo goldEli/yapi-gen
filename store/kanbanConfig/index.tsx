@@ -10,9 +10,17 @@ type SliceState = {
   }
   unassignStatusList: Model.KanbanConfig.Status[]
   columnList: Model.KanbanConfig.Column[]
+  /**
+   * 分类收起菜单控制
+   */
+  categoryVisibleInfo: {
+    categoryId: Model.KanbanConfig.Category['id']
+    close: boolean
+  }[]
 }
 
 const initialState: SliceState = {
+  categoryVisibleInfo: [],
   viewList: [
     { id: 1, project_id: 11, name: '看板', is_default: 1, check: true },
     { id: 2, project_id: 11, name: '团队啥的话那就阿萨德看板', check: false },
@@ -41,6 +49,22 @@ const slice = createSlice({
   name: 'kanbanConfig',
   initialState,
   reducers: {
+    setCategoryVisibleInfo(
+      state,
+      action: PayloadAction<Model.KanbanConfig.Category['id']>,
+    ) {
+      const current = state.categoryVisibleInfo.find(
+        item => item.categoryId === action.payload,
+      )
+      if (current) {
+        current.close = !current.close
+        return
+      }
+      state.categoryVisibleInfo.push({
+        categoryId: action.payload,
+        close: true,
+      })
+    },
     sortColumn(state, action: PayloadAction<DragResult>) {
       const { source, destination } = action.payload
       // 源移除的卡片数据
@@ -154,6 +178,7 @@ export const {
   assignStatus,
   unassignStatus,
   sortColumn,
+  setCategoryVisibleInfo,
 } = slice.actions
 
 export default KanbanConfig

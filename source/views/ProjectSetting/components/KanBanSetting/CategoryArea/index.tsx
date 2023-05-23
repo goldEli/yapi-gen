@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import styled from '@emotion/styled'
 import CommonButton from '@/components/CommonButton'
 import IconFont from '@/components/IconFont'
 import UpDownBtn from '../UpDownBtn'
+import { useDispatch, useSelector } from '@store/index'
+import { setCategoryVisibleInfo } from '@store/kanbanConfig'
 
 interface CategoryAreaProps {
   data: Model.KanbanConfig.Category
@@ -41,10 +43,21 @@ const IconWrap = styled(IconFont)`
 `
 
 const CategoryArea: React.FC<CategoryAreaProps> = props => {
+  const dispatch = useDispatch()
+  const { categoryVisibleInfo } = useSelector(store => store.KanbanConfig)
+  const isOpen = useMemo(() => {
+    return !categoryVisibleInfo.find(item => item.categoryId === props.data.id)
+      ?.close
+  }, [categoryVisibleInfo, props.data])
   return (
     <CategoryAreaBox>
-      <TitleArea visible={props.showTitle}>
-        <UpDownBtn isOpen={true} />
+      <TitleArea
+        onClick={() => {
+          dispatch(setCategoryVisibleInfo(props.data.id))
+        }}
+        visible={props.showTitle}
+      >
+        <UpDownBtn isOpen={isOpen} />
         <IconImg src={props.data.attachment_path} />
         <Text>{props.data.name}</Text>
         <CommonButton type="secondary">编辑工作流</CommonButton>
