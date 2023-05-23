@@ -1,8 +1,7 @@
 /* eslint-disable react/jsx-handler-names */
 import CommonIconFont from '@/components/CommonIconFont'
-import { Dropdown, Menu, Space } from 'antd'
+import { Space } from 'antd'
 import Header from '../Header'
-import Highcharts from 'highcharts'
 import { setSave } from '@store/performanceInsight'
 import { useDispatch } from 'react-redux'
 import {
@@ -16,25 +15,9 @@ import {
   TextNum,
   LotBoxRow,
   LotIcon,
-  HightChartsWrap,
 } from '../Header/Style'
-import {
-  HighchartsReactWrap,
-  CharTitle,
-  Bor,
-  Radius,
-  BorderRow,
-  Row,
-  DialogMain,
-  DialogHeader,
-  TextColor,
-  Footer,
-} from './style'
-import {
-  MoreWrap2,
-  Myd,
-} from '@/components/CommonProjectComponent/CommonMember/style'
-import IconFont from '@/components/IconFont'
+import { DialogMain, DialogHeader, TextColor, Footer } from './style'
+
 import { useState } from 'react'
 import SelectMain from '../Header/components/SelectMain'
 import CommonButton from '@/components/CommonButton'
@@ -42,10 +25,14 @@ import { useSelector } from '@store/index'
 import ViewDialog from '../Header/components/ViewDialog'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { useNavigate } from 'react-router-dom'
+import HightChartMainBar from './HightChartMainBar'
+import HightChartMainLine from './HightChartMainLine'
+import HightChartMainPie from './HightChartMainPie'
+import HightChartMainSpline from './HightChartMainSpline'
+
 interface Props {
   title: string
   time: string
-  type: string
   data: Array<{ num: number; icon: string; type: string }>
   homeType: string
   num: number
@@ -53,13 +40,19 @@ interface Props {
 const WorkingStatus = (props: Props) => {
   const navigate = useNavigate()
   const onClick = () => {
-    // 进展对比 Progress0-迭代 Progress1冲刺 ProgressAll全局
-    //缺陷 Defect0-迭代 Defect1冲刺 DefectAll全局
     const params = encryptPhp(
       JSON.stringify({
-        type: 'Progress0',
+        type:
+          props.num === 1
+            ? `Progress_${props.homeType}`
+            : `Defect_${props.homeType}`,
         homeType: props.homeType,
-        title: props.num === 1 ? '工作进展对比' : '缺陷趋势分析',
+        title:
+          props.num === 1 && props.homeType === 'all'
+            ? '数据明细'
+            : props.num === 1
+            ? '工作进展对比'
+            : '缺陷趋势分析',
       }),
     )
     navigate(`/Report/ChildLevel?data=${params}`)
@@ -122,620 +115,11 @@ const WorkingStatus = (props: Props) => {
     </>
   )
 }
-interface PropsMoreDropdown {
-  data: Array<{ label: string; key: number }>
-  onClickMenu: (value: { label: string; key: number }) => void
-  defaultValue: { label: string; key: number }
-}
-const MoreDropdown = (props: PropsMoreDropdown) => {
-  const [isVisible, setIsVisible] = useState(false)
-  const menu = () => {
-    const menuItems: any = []
-    props.data?.forEach((i: { label: string; key: number }, idx: number) => {
-      menuItems.push({
-        key: idx,
-        label: (
-          <Myd
-            active={i.key === props.defaultValue.key}
-            onClick={() => props.onClickMenu(i)}
-          >
-            {i.label}
-            {i.key === props.defaultValue.key && (
-              <IconFont
-                style={{ fontSize: 16, margin: '1px 0px 0px 15px' }}
-                type="check"
-              />
-            )}
-          </Myd>
-        ),
-      })
-    })
-    return <Menu items={menuItems} />
-  }
-
-  return (
-    <Dropdown
-      key={isVisible ? isVisible.toString() : null}
-      visible={isVisible}
-      overlay={menu}
-      trigger={['hover']}
-      placement="bottomRight"
-      getPopupContainer={node => node}
-      onVisibleChange={setIsVisible}
-    >
-      <MoreWrap2
-        style={{
-          padding: '0 8px',
-        }}
-      >
-        <div
-          style={{
-            marginRight: '4px',
-          }}
-          className="job"
-        >
-          {props.defaultValue.label}
-        </div>
-        <span className="job1">
-          <IconFont style={{ fontSize: 14 }} type="down" />
-        </span>
-      </MoreWrap2>
-    </Dropdown>
-  )
-}
-// 图表位置柱状图
-const HightChartMainBar = (props: {
-  numType: boolean
-  titleType: boolean
-  height: number
-  title: string
-  time: string
-  onChange: (val: boolean) => void
-}) => {
-  // 图表位置柱状图
-  const options = {
-    credits: {
-      enabled: false,
-      type: 'column',
-    },
-    chart: {
-      type: 'column',
-      height: props.titleType ? 330 : 310,
-    },
-    title: {
-      style: {
-        display: 'none',
-      },
-    },
-    accessibility: {
-      enabled: false,
-    },
-    legend: {
-      enabled: false,
-    },
-    xAxis: {
-      minorGridLineColor: '#D5D6D9',
-      tickColor: '#D5D6D9',
-      tickWidth: 1,
-      lineColor: '#D5D6D9',
-      labels: {
-        rotation: -30,
-        style: {
-          color: '#646566',
-          fontSize: '12px',
-        },
-      },
-      style: {
-        color: '#646566',
-      },
-      categories: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec',
-      ],
-    },
-    yAxis: [
-      {
-        tickColor: '#ECEDEF',
-        gridLineColor: '#ECEDEF',
-        gridLineDashStyle: 'longdash',
-        borderRadius: 6,
-        min: 0,
-        max: 100,
-        title: {
-          text: false,
-        },
-        labels: {
-          style: {
-            color: '#646566',
-            fontSize: '12px',
-          },
-        },
-      },
-    ],
-    tooltip: {
-      backgroundColor: '#fff',
-      background: '#fff',
-      shadow: true,
-      borderColor: '#fff',
-      borderRadius: 6,
-      headerFormat:
-        '<div style="width:140px;background:#fff;height:76px;padding:16px"><div style="background:#fff;font-size:12px;margin-bottom:4px;font-family: SiYuanMedium;">{point.key}</div><div>',
-      pointFormat:
-        '<span style="display:inline-block;width:8px;height:8px;borderRadius:50%;background:#43BA9A;"></span><span style="marginLeft:8px;fontSize:12px,color:#646566">工作项：{point.y}项</span></div>',
-      footerFormat: '</div>',
-      shared: true,
-      useHTML: true,
-    },
-    colors: ['#43BA9A '],
-    series: [
-      {
-        borderRadius: 4,
-        data: [
-          29.9, 71.5, 10.4, 1.2, 14.0, 16.0, 15.6, 48.5, 21.4, 14.1, 5.6, 5.4,
-        ],
-      },
-    ],
-  }
-  return (
-    <div style={{ width: '49%' }}>
-      <Col style={{ padding: '0 24px', marginBottom: '16px' }}>
-        <RightRow>
-          <Space size={12}>
-            <TitleCss>{props.title}</TitleCss>
-            <Time>{props.time}</Time>
-          </Space>
-        </RightRow>
-        <Text
-          size={'14px'}
-          color={'var(--neutral-n2)'}
-          onClick={() => props.onChange(!props.numType)}
-        >
-          <Space size={4}>
-            <CommonIconFont type={'sort'} size={14} color="var(--neutral-n2)" />
-            <span>{props.numType ? '由高到低' : '由低到高'}</span>
-          </Space>
-        </Text>
-      </Col>
-      <div style={{ width: '100%' }}>
-        <HightChartsWrap height={props.height}>
-          {props.titleType ? (
-            <CharTitle>
-              <span>统计周期</span>
-              <span className="day">14天</span>
-              <CommonIconFont
-                type={'down-left'}
-                size={16}
-                color="var(--function-error)"
-              />
-              <span className="time">较前14天 -10%</span>
-            </CharTitle>
-          ) : null}
-
-          <div>
-            <HighchartsReactWrap
-              width={400}
-              highcharts={Highcharts}
-              options={options}
-            />
-          </div>
-        </HightChartsWrap>
-      </div>
-    </div>
-  )
-}
-// 图表折线图
-const HightChartMainLine = (props: {
-  height: number
-  title: string
-  time: string
-}) => {
-  // 折线图
-  const options = {
-    chart: {
-      type: 'line',
-      height: 330,
-    },
-    colors: ['#F6BD16'],
-    credits: {
-      enabled: false,
-    },
-    title: {
-      style: {
-        display: 'none',
-      },
-    },
-    accessibility: {
-      enabled: false,
-    },
-    legend: {
-      enabled: false,
-    },
-    xAxis: {
-      labels: {
-        rotation: -30,
-      },
-      style: {
-        color: '#646566',
-        fontSize: '12px',
-      },
-      categories: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec',
-      ],
-    },
-    yAxis: {
-      min: 0,
-      max: 100,
-      title: {
-        text: false,
-      },
-      style: {
-        color: '#646566',
-        fontSize: '12px',
-      },
-    },
-    tooltip: {
-      backgroundColor: '#fff',
-      background: '#fff',
-      shadow: true,
-      borderColor: '#fff',
-      borderRadius: 6,
-      headerFormat:
-        '<div style="minWidth:140px;background:#fff;height:76px;padding:16px"><div style="background:#fff;font-size:12px;margin-bottom:4px;font-family: SiYuanMedium;">{point.key}</div><div>',
-      pointFormat:
-        '<span style="display:inline-block;width:8px;height:8px;borderRadius:50%;background:#F6BD16;"></span><span style="marginLeft:8px;fontSize:12px,color:#646566">工作完成项：{point.y}项</span></div>',
-      footerFormat: '</div>',
-      shared: true,
-      useHTML: true,
-    },
-    series: [
-      {
-        data: [
-          29.9, 71.5, 11.4, 12.2, 14.0, 16.0, 13.6, 18.5, 21.4, 14.1, 5.6, 54.4,
-        ],
-      },
-    ],
-  }
-  return (
-    <div style={{ width: '49%' }}>
-      <Col style={{ padding: '0 24px', marginBottom: '16px' }}>
-        <RightRow>
-          <Space size={12}>
-            <TitleCss>{props.title}</TitleCss>
-            <Time>{props.time}</Time>
-          </Space>
-        </RightRow>
-      </Col>
-      <div style={{ width: '100%' }}>
-        <HightChartsWrap height={props.height}>
-          <CharTitle>
-            <span>统计周期</span>
-            <span className="day">14天</span>
-            <CommonIconFont
-              type={'down-left'}
-              size={16}
-              color="var(--function-error)"
-            />
-            <span className="time">较前14天 -10%</span>
-          </CharTitle>
-          <div>
-            <HighchartsReactWrap
-              width={400}
-              highcharts={Highcharts}
-              options={options}
-            />
-          </div>
-        </HightChartsWrap>
-      </div>
-    </div>
-  )
-}
-// 饼图
-const HightChartMainPie = (props: {
-  height: number
-  titleType: boolean
-  title: string
-  time?: string
-}) => {
-  const options: any = {
-    credits: {
-      enabled: false,
-      spacing: [40, 0, 40, 0],
-    },
-    title: {
-      floating: true,
-      text: props.titleType ? '' : '13 项',
-      align: 'center',
-      verticalAlign: 'middle',
-      y: 30,
-      x: -90,
-      style: {
-        fontSize: 20,
-      },
-    },
-    chart: {
-      height: 290,
-      labelLine: {
-        show: false,
-      },
-    },
-    legend: {
-      data: ['私有云', '数据中心', '造价通', '供应商', '造价通1', '供应商1'],
-      layout: 'vertical',
-      align: 'right',
-      verticalAlign: 'center',
-      borderWidth: 0,
-      y: 45,
-      itemMarginBottom: 16,
-      useHTML: true,
-    },
-    plotOptions: {
-      pie: {
-        allowPointSelect: true,
-        cursor: 'pointer',
-        dataLabels: {
-          enabled: false,
-        },
-        showInLegend: true,
-      },
-    },
-    labelFormatter: function () {
-      // const event: any = this
-      // return `<div style='fontSize: 14px;color:#646566;display:flex; width: 204px;height:26px;lineHeight:14px;paddingBottom:2px;whiteSpace: nowrap; overflow: hidden; textOverflow: ellipsis'>${event?.name}: ${event.y}%</div>`
-    },
-    tooltip: {
-      backgroundColor: '#fff',
-      background: '#fff',
-      shadow: true,
-      borderColor: '#fff',
-      borderRadius: 6,
-      headerFormat:
-        '<div style="background:#fff;minWidth:108;height:76px;padding:16px"><div style="background:#fff;font-size:12px;margin-bottom:4px;font-family: SiYuanMedium;">{point.key}</div><div>',
-      pointFormat:
-        '<span style="display:inline-block;width:8px;height:8px;borderRadius:50%;background:{point.color}"></span><span style="marginLeft:8px;fontSize:12px,color:#646566">工作项：{point.y}项</span></div>',
-      footerFormat: '</div>',
-      shared: true,
-      useHTML: true,
-    },
-    colors: ['#4267ED', '#6688FF', '#9CB0F8', '#CED7F8', '#E3E9FA '],
-    series: [
-      {
-        type: 'pie',
-        size: '90%',
-        name: 'Browser share',
-        innerSize: '80%',
-        center: ['35%', '55%'],
-        data: [
-          ['私有云', 25],
-          ['数据中心', 60],
-          ['造价通', 30],
-        ],
-      },
-    ],
-  }
-  const [defaultValue, setDefaultValue] = useState<{
-    label: string
-    key: number
-  }>({ label: '按优先级', key: 1 })
-  const onClickMenu = async (item: { label: string; key: number }) => {
-    console.log(item, 'oo')
-    setDefaultValue(item)
-  }
-  return (
-    <div style={{ width: '49%' }}>
-      <Col style={{ padding: '0 24px', marginBottom: '16px' }}>
-        <RightRow>
-          <Space size={12}>
-            <TitleCss>{props.title}</TitleCss>
-            <Time>{props.time}</Time>
-          </Space>
-        </RightRow>
-        {props.titleType && (
-          <MoreDropdown
-            onClickMenu={(value: { label: string; key: number }) =>
-              onClickMenu(value)
-            }
-            data={[
-              { label: '按严重程度', key: 0 },
-              { label: '按优先级', key: 1 },
-              { label: '按状态', key: 2 },
-            ]}
-            defaultValue={defaultValue}
-          />
-        )}
-      </Col>
-      <HightChartsWrap height={props.height}>
-        <HighchartsReactWrap
-          width={400}
-          highcharts={Highcharts}
-          options={options}
-        />
-      </HightChartsWrap>
-    </div>
-  )
-}
-const HightChartMainSpline = (props: {
-  height: number
-  title: string
-  time: string
-}) => {
-  // 曲线图
-  const options = {
-    colors: ['#F6BD16', '#6688FF', '#43BA9A'],
-    chart: {
-      height: 300,
-      type: 'spline',
-    },
-    title: {
-      text: '',
-    },
-    subtitle: {
-      text: '',
-    },
-    credits: {
-      enabled: false,
-    },
-    legend: {
-      enabled: false,
-    },
-    xAxis: {
-      minorGridLineColor: '#D5D6D9',
-      tickColor: '#D5D6D9',
-      tickWidth: 1,
-      lineColor: '#D5D6D9',
-      categories: [
-        '03-01',
-        '03-02',
-        '03-03',
-        '03-04',
-        '03-05',
-        '03-06',
-        '03-07',
-        '03-08',
-        '03-09',
-        '03-10',
-        '03-11',
-        '03-12',
-      ],
-    },
-    yAxis: {
-      tickColor: '#ECEDEF',
-      gridLineColor: '#ECEDEF',
-      gridLineDashStyle: 'longdash',
-      borderRadius: 6,
-      title: {
-        text: '',
-      },
-    },
-    plotOptions: {
-      line: {
-        dataLabels: {
-          enabled: true,
-        },
-        enableMouseTracking: false,
-      },
-      series: {
-        marker: {
-          radius: 3,
-          symbol: 'circle',
-        },
-      },
-    },
-    tooltip: {
-      backgroundColor: '#fff',
-      background: '#fff',
-      shadow: true,
-      borderColor: '#fff',
-      borderRadius: 6,
-      headerFormat:
-        '<div style="background:#fff;minWidth:136px"><div style="background:#fff;font-size:12px;margin-bottom:4px;font-family: SiYuanMedium;">{point.key}</div><div>',
-      pointFormat:
-        '<span style="display:inline-block;width:8px;height:8px;borderRadius:50%;background:{series.color}"></span><span style="marginLeft:8px;fontSize:12px,color:#646566">{series.name}：{point.y}</span></div>',
-      footerFormat: '</div>',
-      shared: true,
-      useHTML: true,
-    },
-    series: [
-      {
-        name: '创建需求',
-        data: [0, 69, 116, 306, 365, 0, 0, 0, 0, 0, 0, 0],
-      },
-      {
-        name: '进行中',
-        data: [0, 1, 2, 19, 38, 0, 0, 0, 0, 0, 0, 0],
-      },
-      {
-        name: '已结束',
-        data: [0, 1, 3, 13, 16, 0, 0, 0, 0, 0, 0, 0],
-      },
-    ],
-  }
-  return (
-    <div style={{ width: '49%' }}>
-      <Col style={{ padding: '0 24px', marginBottom: '16px' }}>
-        <RightRow>
-          <Space size={12}>
-            <TitleCss>{props.title}</TitleCss>
-            <Time>{props.time}</Time>
-          </Space>
-        </RightRow>
-      </Col>
-      <div style={{ width: '100%' }}>
-        <HightChartsWrap height={props.height}>
-          <Row style={{ marginBottom: '32px' }}>
-            <Row>
-              <Space size={16}>
-                <BorderRow>
-                  <BorderRow>
-                    <Bor color="#F6BD16" />
-                    <Radius color="#F6BD16 " />
-                    <Bor color="#F6BD16" />
-                  </BorderRow>
-                  <span className="text">待修复</span>
-                </BorderRow>
-                <BorderRow>
-                  <BorderRow>
-                    <Bor color="#6688FF" />
-                    <Radius color="#6688FF" />
-                    <Bor color="#6688FF" />
-                  </BorderRow>
-                  <span className="text">修复中</span>
-                </BorderRow>
-                <BorderRow>
-                  <BorderRow>
-                    <Bor color="#43BA9A" />
-                    <Radius color="#43BA9A" />
-                    <Bor color="#43BA9A" />
-                  </BorderRow>
-                  <span className="text">已完成</span>
-                </BorderRow>
-              </Space>
-            </Row>
-            <div>
-              <Space size={12}>
-                <Time>修复率： 60%</Time>
-                <Time>缺陷新增： 60</Time>
-                <Time>修复： 60</Time>
-              </Space>
-            </div>
-          </Row>
-          <div>
-            <HighchartsReactWrap
-              width={400}
-              highcharts={Highcharts}
-              options={options}
-            />
-          </div>
-        </HightChartsWrap>
-      </div>
-    </div>
-  )
-}
-// 效能洞察的主页
 const Home = () => {
   const dispatch = useDispatch()
   const [isVisible, setIsVisible] = useState(false)
   const { save } = useSelector(store => store.performanceInsight)
+  const [homeType, setHomeType] = useState('all')
   return (
     <div
       style={{
@@ -744,27 +128,25 @@ const Home = () => {
         position: 'relative',
       }}
     >
-      <Header />
+      <Header homeType={homeType} />
       <WorkingStatus
-        homeType="all"
+        homeType={homeType}
         data={[
           { num: 120, type: '待修复', icon: 'right' },
           { num: 120, type: '待修复', icon: 'right' },
           { num: 120, type: '待修复', icon: 'right' },
         ]}
-        title={'工作项现状'}
+        title={homeType === 'all' ? '现状' : '工作项现状'}
         time={'2023-03-01 ~ 2023-03-14'}
-        type="Progress"
         num={1}
       />
       <div style={{ margin: '32px 0' }}>
         <WorkingStatus
           num={2}
-          homeType="all"
+          homeType={homeType}
           data={[{ num: 40, type: '缺陷修复露', icon: 'right' }]}
           title={'缺陷现状'}
           time={'2023-03-01 ~ 2023-03-14'}
-          type="Defect"
         />
       </div>
       <div style={{ width: '100%', display: 'flex' }}>
@@ -778,15 +160,17 @@ const Home = () => {
             }}
           >
             <HightChartMainBar
-              title="阶段新增工作Top10"
+              title={
+                homeType === 'all' ? '新增工作排行Top10' : '阶段新增工作Top10'
+              }
               titleType={true}
               height={396}
               numType={false}
               time={'2012-010'}
-              onChange={val => console.log('c')}
+              onChange={(val: any) => console.log('c', val)}
             />
             <HightChartMainLine
-              title="工作周期对比"
+              title={homeType === 'all' ? '工作完成周期' : '工作周期对比'}
               time="2023-03-01 ~ 2023-03-14"
               height={396}
             />
@@ -803,15 +187,15 @@ const Home = () => {
             <HightChartMainPie
               height={352}
               titleType={false}
-              title="阶段存量风险"
+              title={homeType === 'all' ? '存量风险' : '阶段存量风险'}
             />
             <HightChartMainBar
               titleType={false}
               height={352}
               numType={false}
-              title={'阶段完成率Top10'}
+              title={homeType === 'all' ? '完成率Top10' : '阶段完成率Top10'}
               time={'2012-010'}
-              onChange={val => console.log('c')}
+              onChange={(val: any) => console.log('c')}
             />
           </div>
           <div
