@@ -22,10 +22,10 @@ import PaginationBox from '@/components/TablePagination'
 import { saveSort, saveTitles } from '@store/view'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { getMessage } from '@/components/Message'
-import { SprintOperationDropdownMenu } from './SprintOperationDropdownMenu'
 import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
 import FloatBatch from '@/components/BatchOperation/FloatBatch'
+import { SprintDropdownMenu } from '@/components/TableDropdownMenu/SprintDropdownMenu'
 
 const Content = styled.div`
   background: var(--neutral-white-d1);
@@ -37,11 +37,13 @@ interface Props {
   onDelete(item: any): void
   onChangePageNavigation?(item: any): void
   onChangeRow?(): void
-  settingState: boolean
-  onChangeSetting(val: boolean): void
   onChangeOrder?(item: any): void
   isSpinning?: boolean
   onUpdate(updateState?: boolean): void
+  titleList?: any
+  titleList2?: any
+  titleList3?: any
+  allTitleList?: any
 }
 
 const SprintTable = (props: Props) => {
@@ -49,18 +51,10 @@ const SprintTable = (props: Props) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const projectId = 27 ?? paramsData.id
+  const projectId = paramsData.id
   const { projectInfo, filterKeys } = useSelector(store => store.project)
-  const titles = useSelector(store => store.view.tapTitles)
   const tapSort = useSelector(store => store.view.tapSort)
   const { filterParams } = useSelector(store => store.demand)
-  const [titleList, setTitleList] = useState<any[]>([])
-  const [titleList2, setTitleList2] = useState<any[]>([])
-  const [titleList3, setTitleList3] = useState<any[]>([])
-  const [allTitleList, setAllTitleList] = useState<any[]>([])
-  const [plainOptions, setPlainOptions] = useState<any>([])
-  const [plainOptions2, setPlainOptions2] = useState<any>([])
-  const [plainOptions3, setPlainOptions3] = useState<any>([])
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
   const [isShowMore, setIsShowMore] = useState(false)
@@ -70,7 +64,6 @@ const SprintTable = (props: Props) => {
   asyncSetTtile(`事务【${projectInfo.name}】`)
   const dispatch = useDispatch()
   const [openDemandDetail] = useOpenDemandDetail()
-  const [dataSource, setDataSource] = useState([])
 
   useEffect(() => {
     dispatch(
@@ -79,10 +72,6 @@ const SprintTable = (props: Props) => {
       }),
     )
   }, [orderKey, order])
-
-  useEffect(() => {
-    setDataSource(props.data?.list || [])
-  }, [props.data])
 
   useEffect(() => {
     if (tapSort) {
@@ -95,70 +84,6 @@ const SprintTable = (props: Props) => {
       }
     }
   }, [tapSort])
-
-  const getShowkey = () => {
-    setPlainOptions(projectInfo?.plainOptions || [])
-    setPlainOptions2(projectInfo?.plainOptions2 || [])
-    setPlainOptions3(projectInfo?.plainOptions3 || [])
-    setTitleList(projectInfo?.titleList || [])
-    setTitleList2(projectInfo?.titleList2 || [])
-    setTitleList3(projectInfo?.titleList3 || [])
-    setAllTitleList([
-      ...(projectInfo.titleList || []),
-      ...(projectInfo.titleList2 || []),
-      ...(projectInfo.titleList3 || []),
-    ])
-    dispatch(
-      saveTitles([
-        ...(projectInfo.titleList || []),
-        ...(projectInfo.titleList2 || []),
-        ...(projectInfo.titleList3 || []),
-      ]),
-    )
-  }
-
-  useEffect(() => {
-    getShowkey()
-  }, [projectInfo])
-
-  function getTitle(arr: any, arr1: any) {
-    const arr2: any = []
-    arr1.forEach((i: any) => {
-      arr2.push(i.value)
-    })
-
-    const myArr: any = []
-    arr.forEach((i: any) => {
-      if (arr2.includes(i)) {
-        myArr.push(i)
-      }
-    })
-
-    return myArr
-  }
-
-  useEffect(() => {
-    if (titles) {
-      setTitleList(getTitle(titles, plainOptions))
-      setTitleList2(getTitle(titles, plainOptions2))
-      setTitleList3(getTitle(titles, plainOptions3))
-
-      setAllTitleList(titles)
-    }
-  }, [titles])
-
-  const getCheckList = (
-    list: CheckboxValueType[],
-    list2: CheckboxValueType[],
-    list3: CheckboxValueType[],
-    all: CheckboxValueType[],
-  ) => {
-    setTitleList(list)
-    setTitleList2(list2)
-    setTitleList3(list3)
-    setAllTitleList(all)
-    dispatch(saveTitles(all))
-  }
 
   // 勾选或者取消勾选，显示数量 keys: 所有选择的数量，type： 添加还是移除
   const onOperationCheckbox = (type: any, keys?: any) => {
@@ -220,17 +145,6 @@ const SprintTable = (props: Props) => {
     setOrderKey(key)
     setOrder(val)
     props.onChangeOrder?.({ value: val === 2 ? 'desc' : 'asc', key })
-  }
-
-  // 点击编辑
-  const onEditChange = (item: any) => {
-    setIsShowMore(false)
-    dispatch(
-      setAddWorkItemModal({
-        visible: true,
-        params: { projectId: item.project_id, editId: item.id },
-      }),
-    )
   }
 
   // 点击删除
@@ -339,7 +253,7 @@ const SprintTable = (props: Props) => {
   }
 
   const selectColum: any = useMemo(() => {
-    const arr = allTitleList
+    const arr = props.allTitleList
     const newList = []
     for (let i = 0; i < arr.length; i++) {
       for (let j = 0; j < columns?.length; j++) {
@@ -363,8 +277,7 @@ const SprintTable = (props: Props) => {
                       .includes(record.id) ? (
                       menuBatch()
                     ) : (
-                      <SprintOperationDropdownMenu
-                        onEditChange={onEditChange}
+                      <SprintDropdownMenu
                         onDeleteChange={onDeleteChange}
                         onCreateChild={onCreateChild}
                         record={record}
@@ -383,7 +296,13 @@ const SprintTable = (props: Props) => {
       arrList.push(Table.SELECTION_COLUMN as any)
     }
     return [...arrList, ...newList]
-  }, [titleList, titleList2, titleList3, columns, selectedRowKeys])
+  }, [
+    props.titleList,
+    props.titleList2,
+    props.titleList3,
+    columns,
+    selectedRowKeys,
+  ])
 
   // 需求勾选
   const onSelectChange = (record: any, selected: any) => {
@@ -425,7 +344,7 @@ const SprintTable = (props: Props) => {
         isSpinning={props.isSpinning}
         dataWrapNormalHeight="calc(100% - 64px)"
         col={selectColum}
-        dataSource={dataSource}
+        dataSource={props.data.list}
         rowSelection={
           !hasBatch &&
           ({
@@ -437,7 +356,7 @@ const SprintTable = (props: Props) => {
         }
         noData={
           <NoData
-            subText={hasCreate ? '' : t('version2.noDataCreateDemandList')}
+            subText={hasCreate ? '' : '当前项目还未创建事务，创建一个吧~'}
             haveFilter={filterKeys?.length > 0}
           >
             {!hasCreate && (
@@ -446,7 +365,7 @@ const SprintTable = (props: Props) => {
                 onClick={onClick}
                 style={{ marginTop: 24 }}
               >
-                {t('common.createDemand')}
+                创建事务
               </CommonButton>
             )}
           </NoData>
@@ -469,19 +388,6 @@ const SprintTable = (props: Props) => {
         total={props.data?.total}
         onChange={onChangePage}
         hasPadding
-      />
-
-      <OptionalFeld
-        allTitleList={allTitleList}
-        plainOptions={plainOptions}
-        plainOptions2={plainOptions2}
-        plainOptions3={plainOptions3}
-        checkList={titleList}
-        checkList2={titleList2}
-        checkList3={titleList3}
-        isVisible={props.settingState}
-        onClose={() => props.onChangeSetting(false)}
-        getCheckList={getCheckList}
       />
     </Content>
   )

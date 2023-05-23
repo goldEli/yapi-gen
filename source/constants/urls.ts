@@ -175,6 +175,7 @@ const urls = {
   getScheduleListDaysOfDate: '/b/calendar/schedule/daysOfDate',
   getScheduleSearch: '/b/calendar/schedule/search',
 
+  getSprintKanBanList: '/b/list',
   // 事务列表
   getSprintList: '/b/transaction/getlist',
   // 事务详情

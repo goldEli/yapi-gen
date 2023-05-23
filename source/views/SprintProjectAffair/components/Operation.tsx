@@ -20,23 +20,8 @@ import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
 import { setCreateCategory } from '@store/demand'
 import { saveScreen } from '@store/view'
 import CommonIconFont from '@/components/CommonIconFont'
-
-const OperationWrap = styled.div({
-  minHeight: 32,
-  minWidth: '800px',
-  lineHeight: '32px',
-  background: 'var(--neutral-white-d2)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  '.ant-space-item': {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  '.ant-popover-content': {
-    width: 'max-content',
-  },
-})
+import { OperationWrap } from '../style'
+import CommonButton from '@/components/CommonButton'
 
 const StickyWrap = styled.div({
   background: 'white',
@@ -178,6 +163,10 @@ const Operation = (props: Props) => {
   )
 
   const onFilterSearch = (e: any, customField: any) => {
+    // 如果筛选未打开
+    if (filterState) {
+      return
+    }
     const params = {
       statusId: e.status,
       priorityId: e.priority,
@@ -282,42 +271,6 @@ const Operation = (props: Props) => {
     }, 0)
   }
 
-  const changeStatus = (
-    <div
-      style={{
-        padding: '4px 0px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        minWidth: i18n.language === 'zh' ? 110 : 151,
-      }}
-    >
-      {projectInfoValues
-        ?.filter((i: any) => i.key === 'category')[0]
-        ?.children?.filter((i: any) => i.status === 1)
-        ?.map((k: any) => {
-          return (
-            <LiWrap key={k.id} onClick={(e: any) => onChangeCategory(e, k)}>
-              <img
-                src={
-                  k.category_attachment
-                    ? k.category_attachment
-                    : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
-                }
-                style={{
-                  width: '18px',
-                  height: '18px',
-                  marginRight: '8px',
-                }}
-                alt=""
-              />
-              <span>{k.content}</span>
-            </LiWrap>
-          )
-        })}
-    </div>
-  )
-
   const onImportClick = () => {
     setIsVisible(false)
     setIsShowImport(true)
@@ -346,13 +299,13 @@ const Operation = (props: Props) => {
       {hasImport || projectInfo?.status !== 1 ? null : (
         <MoreItem onClick={onImportClick}>
           <CommonIconFont type="export" />
-          <span style={{ marginLeft: 8 }}>{t('newlyAdd.importDemand')}</span>
+          <span style={{ marginLeft: 8 }}>导入事务</span>
         </MoreItem>
       )}
       {hasExport ? null : (
         <MoreItem onClick={onExportClick}>
           <CommonIconFont type="Import" />
-          <span style={{ marginLeft: 8 }}>{t('newlyAdd.exportDemand')}</span>
+          <span style={{ marginLeft: 8 }}>导出事务</span>
         </MoreItem>
       )}
     </div>
@@ -420,21 +373,7 @@ const Operation = (props: Props) => {
           )}
           {getIsPermission(projectInfo?.projectPermissions, 'b/story/save') ||
           projectInfo?.status !== 1 ? null : (
-            <Popover
-              content={changeStatus}
-              placement="bottomLeft"
-              getPopupContainer={node => node}
-              visible={isVisible}
-              onVisibleChange={visible => setIsVisible(visible)}
-            >
-              <MoreWrap type="create">
-                <span>{t('common.createDemand')}</span>
-                <IconFont
-                  style={{ fontSize: 16, marginLeft: 8 }}
-                  type={isVisible ? 'up' : 'down'}
-                />
-              </MoreWrap>
-            </Popover>
+            <CommonButton type="primary">创建事务</CommonButton>
           )}
           {hasExport && hasImport ? null : (
             <Popover
@@ -477,9 +416,7 @@ const Operation = (props: Props) => {
           noNeed
           defaultValue={defaultValue}
           onFilter={getSearchKey}
-          onSearch={(e: any, customField: any) =>
-            onFilterSearch(e, customField)
-          }
+          onSearch={onFilterSearch}
           list={searchList}
           basicsList={filterBasicsList}
           specialList={filterSpecialList}

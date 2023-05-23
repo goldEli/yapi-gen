@@ -146,7 +146,7 @@ const KanBanBtnsArea = (props: Props) => {
       <DividerWrap type="vertical" />
       {/* 视图 */}
       {/* <>
-        <ViewPort pid={projectId} />
+        <ViewPort pid={projectId} type={2} />
         <DividerWrap type="vertical" />
       </> */}
 

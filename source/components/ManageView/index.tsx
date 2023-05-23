@@ -38,7 +38,9 @@ interface Item {
 const ManageView = (props: { projectId: number }) => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
-  const { viewVisible, viewList } = useSelector(state => state.view)
+  const { viewVisible, viewList, createViewPort } = useSelector(
+    state => state.view,
+  )
   const [operationObj, setOperationObj] = useState<any>({})
   const [isDeleteVisible, setIsDeleteVisible] = useState(false)
   const [data, setData] = useState<Item[]>([])
@@ -239,7 +241,9 @@ const ManageView = (props: { projectId: number }) => {
 
   const onClose = () => {
     dispatch(changeViewVisible(false))
-    dispatch(getViewList(props.projectId))
+    dispatch(
+      getViewList({ projectId: props.projectId, type: createViewPort.type }),
+    )
     setOperationObj({})
   }
 

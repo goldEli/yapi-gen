@@ -14,6 +14,9 @@ type SliceState = {
   viewList: any[]
   sort: any
   tapSort: any
+  createViewPort: {
+    type: number
+  }
 }
 
 const slice = createSlice({
@@ -24,6 +27,9 @@ const slice = createSlice({
     titles: [],
     createVisible: false,
     viewVisible: false,
+    createViewPort: {
+      type: 0,
+    },
   } as SliceState,
   reducers: {
     changeCreateVisible: (state, action) => {
@@ -59,6 +65,12 @@ const slice = createSlice({
     saveSort: (state, action) => {
       state.sort = action.payload
     },
+    setCreateViewPort: (state, action) => {
+      state.createViewPort = {
+        ...state.createViewPort,
+        ...action.payload,
+      }
+    },
   },
 
   extraReducers(builder) {
@@ -80,6 +92,7 @@ export const {
   saveValue,
   onTapSort,
   saveInputKey,
+  setCreateViewPort,
 } = slice.actions
 
 export default slice.reducer

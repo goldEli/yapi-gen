@@ -7,6 +7,7 @@ import {
   onTapSearchChoose,
   onTapSort,
   onTapTitles,
+  setCreateViewPort,
 } from '@store/view'
 import { getViewList } from '@store/view/thunk'
 import { Divider, Dropdown } from 'antd'
@@ -71,7 +72,7 @@ const ViewPort = (props: any) => {
     }
   }
   useEffect(() => {
-    dispatch(getViewList(props.pid))
+    dispatch(getViewList({ projectId: props.pid, type: props.type }))
   }, [])
 
   const name = useMemo(() => {
@@ -92,6 +93,7 @@ const ViewPort = (props: any) => {
   const onChangeCreate = () => {
     onOpenChange(false)
     dispatch(changeCreateVisible(true))
+    dispatch(setCreateViewPort({ type: props.type }))
   }
   // 视图管理
   const onChangeView = () => {

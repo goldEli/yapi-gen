@@ -644,7 +644,10 @@ export const useDynamicColumns = (state: any) => {
               type={currentFields?.attr}
               defaultText={text?.value}
               keyText={element.value}
-              item={record}
+              item={{
+                ...record,
+                ...{ fieldContentValue: currentFields.values },
+              }}
               onUpdate={() => onUpdate(record)}
               remarks={currentFields?.remarks}
               isCustom

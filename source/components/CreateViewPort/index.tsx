@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
 import { useDispatch, useSelector } from '@store/index'
-import { changeCreateVisible } from '@store/view'
+import { changeCreateVisible, setCreateViewPort } from '@store/view'
 import { addViewList, getViewList } from '@store/view/thunk'
 import { Form, Input, message } from 'antd'
 import { useTranslation } from 'react-i18next'
@@ -17,8 +17,15 @@ const CreateViewPort = (props: any) => {
   const [t] = useTranslation()
   const [form] = Form.useForm()
   const inputDom: any = useRef<HTMLInputElement>(null)
-  const { searchKey, valueKey, titles, sort, createVisible, inputKey } =
-    useSelector(state => state.view)
+  const {
+    searchKey,
+    valueKey,
+    titles,
+    sort,
+    createVisible,
+    inputKey,
+    createViewPort,
+  } = useSelector(state => state.view)
   const dispatch = useDispatch()
 
   const onConfirm = async () => {
@@ -36,10 +43,13 @@ const CreateViewPort = (props: any) => {
         sort,
       },
       project_id: props.pid,
+      use_type: createViewPort.type,
     }
 
     await dispatch(addViewList(data))
-    await dispatch(getViewList(props.pid))
+    await dispatch(
+      getViewList({ projectId: props.pid, type: createViewPort.type }),
+    )
     await dispatch(changeCreateVisible(false))
     getMessage({ msg: t('common.createSuccess'), type: 'success' })
     form.resetFields()

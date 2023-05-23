@@ -1,7 +1,4 @@
 declare namespace Model.Sprint {
-  interface CustomFiledInfo {
-    [key in string]: string | number | string[] | number[]
-  }
   interface SprintTableData {
     id: string
     list: any[]
@@ -58,43 +55,42 @@ declare namespace Model.Sprint {
   interface ListItem {
     id: number
     name: string
-    demand: number
+    child_story_count: number
     priority: number | PriorityInfo
-    iteration: string
+    iterate_name: string
     status: StatusInfo
-    dealName: string
-    time: string
-    expectedStart: string
-    expectedEnd: string
+    users_name: string
+    created_at: string
+    expected_start_at: string
+    expected_end_at: string
     info: string
-    userIds: number | number[]
-    iterateId: number
-    parentId: number
-    finishTime: string
-    updatedTime: string
-    usersCopySendName: string
-    userName: number
+    user_id: number | number[]
+    iterate_id: number
+    parent_id: number
+    finish_at: string
+    updated_at: string
+    users_copysend_name: string
+    user_name: number
     tag: any
-    isExamine: number
+    verify_lock: number
     category: string
     class: null | number
     schedule: number
     custom_field: CustomFiledInfo
-    categoryColor: string
-    categoryRemark: string
-    categoryId: number
+    category_color: string
+    category_remark: string
+    category_id: number
     project_id: number
-    usersNameIds: string[] | number[]
-    usersCopySendIds: string[] | number[]
+    users_name_ids: string[] | number[]
+    users_copysend_name_ids: string[] | number[]
     category_attachment: string
-    allChildrenCount: number
-    allChildrenIds: string[] | number[]
+    all_child_story_count: number
+    all_child_ids: string[] | number[]
     children: null | ListItem[]
-    isExpended?: boolean
+    topParentId?: number
     level: number | string
-    topId: number
-    categoryConfigList: CategoryConfigList
-    storyPrefixKey: string
+    category_config_list: CategoryConfigList
+    story_prefix_key: string
   }
   type Visible = boolean
 }

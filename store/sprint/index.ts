@@ -1,5 +1,10 @@
+/* eslint-disable no-undefined */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { getProjectRoleList } from './sprint.thunk'
+import {
+  getSprintKanBanList,
+  getProjectRoleList,
+  getSprintList,
+} from './sprint.thunk'
 
 type SliceState = {
   guideVisible: Model.Sprint.Visible
@@ -9,6 +14,13 @@ type SliceState = {
     params?: any
   }
   projectRoleList?: Model.Sprint.ProjectSettings[]
+  // // 事务列表
+  // sprintList: {
+  //   list?: Model.Sprint.ListItem[]
+  //   total?: number
+  //   pageSize?: number
+  //   currentPage?: number
+  // }
 }
 
 const initialState: SliceState = {
@@ -99,6 +111,9 @@ const initialState: SliceState = {
     visible: false,
     params: {},
   },
+  // sprintList: {
+  //   list: undefined,
+  // },
 }
 
 const slice = createSlice({
@@ -123,10 +138,19 @@ const slice = createSlice({
         ...action.payload,
       }
     },
+    // setSprintList(state, action: PayloadAction<SliceState['sprintList']>) {
+    //   state.sprintList = {
+    //     ...state.sprintList,
+    //     ...action.payload,
+    //   }
+    // },
   },
   extraReducers(builder) {
-    // builder.addCase(getSprintKanBanList.fulfilled, (state, action) => {
-    //   state.sprintTableData = action.payload
+    builder.addCase(getSprintKanBanList.fulfilled, (state, action) => {
+      state.sprintTableData = action.payload
+    })
+    // builder.addCase(getSprintList.fulfilled, (state, action) => {
+    //   state.sprintList = action.payload
     // })
     builder.addCase(getProjectRoleList.fulfilled, (state, action) => {
       console.log('action', action)
@@ -137,7 +161,11 @@ const slice = createSlice({
 
 const sprint = slice.reducer
 
-export const { setGuideVisible, setSprintDetailDrawer, setSprintTableData } =
-  slice.actions
+export const {
+  setGuideVisible,
+  setSprintDetailDrawer,
+  setSprintTableData,
+  // setSprintList,
+} = slice.actions
 
 export default sprint

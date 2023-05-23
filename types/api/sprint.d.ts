@@ -1,38 +1,54 @@
 declare namespace API.Sprint {
+  namespace GetSprintKanBanList {
+    type Params = {
+      id: number
+    }
+    type Result = {
+      list: Model.SprintKanBan.Task[]
+    }
+  }
   namespace GetSprintList {
     type Params = {
-      project_id: number
-      keyword: string
-      iterate_id: number[]
-      status: number[]
-      priority: number[]
-      user_id: number[] | number
-      tag: number[]
-      created_at: string
-      expected_start_at: string
-      expected_end_at: string
-      updated_at: string
-      finish_at: string
-      users_name: number[]
-      users_copysend_name: number[]
-      parent_id: number
+      projectId: number
+      searchValue: string
+      iterateIds: number[]
+      statusIds: number[]
+      priorityIds: number[]
+      userId: number[] | number
+      tagIds: number[]
+      startTime: string
+      expectedStart: string
+      expectedEnd: string
+      updatedTime: string
+      endTime: string
+      usersNameId: number[]
+      copySendId: number[]
+      parentId: number
       all: boolean
       panel: boolean
       class_ids: number[]
       class_id: number
       category_id: number
       schedule_start: number | string
+      schedule_end: number | string
       custom_field: Model.Sprint.CustomFiledInfo
       tree: boolean | number
-      top_parent_id: number
+      topParentId: number
       system_view: number | string
       pageSize: number
       page: number
-      orderkey: string
+      orderKey: string
       order: string
+      isChildren?: boolean
     }
+    type SelectResult = Model.Sprint.ListItem[]
     type Result = {
-      list: Model.Sprint.listItem[]
+      pager?: {
+        page: number
+        pagesize: number
+        total: number
+      }
+      list: Model.Sprint.ListItem[]
     }
   }
   namespace GetSprintIssueList {
