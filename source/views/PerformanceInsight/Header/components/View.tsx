@@ -118,6 +118,7 @@ const View = () => {
         title: '视图' + '' + item.name,
         value: item.key,
       })
+      setIsOpen(false)
     }
   }
   return (
