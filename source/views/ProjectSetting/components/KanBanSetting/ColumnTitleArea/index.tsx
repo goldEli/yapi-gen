@@ -10,6 +10,7 @@ import IssuesGroupList from '../IssuesGroupList'
 import useKanBanData from '../hooks/useKanBanData'
 import { useDispatch } from '@store/index'
 import { openEditColumnModel } from '@store/kanbanConfig/kanbanConfig.thunk'
+import { Tooltip } from 'antd'
 // import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd'
 
 interface ColumnTitleAreaProps {
@@ -17,7 +18,7 @@ interface ColumnTitleAreaProps {
   // provided: DraggableProvided
   // snapshot: DraggableStateSnapshot
 }
-const ColumnTitle = styled.span`
+const ColumnTitle = styled.div`
   flex-shrink: 0;
   width: 302px;
   height: 48px;
@@ -27,6 +28,7 @@ const ColumnTitle = styled.span`
   background-color: var(--neutral-n9);
   padding: 0 16px;
   justify-content: space-between;
+  overflow: hidden;
 `
 
 const ColumnTitleAreaBox = styled.div<{ showBorder: boolean }>`
@@ -37,24 +39,35 @@ const ColumnTitleAreaBox = styled.div<{ showBorder: boolean }>`
   border: 1px solid
     ${props => (props.showBorder ? 'var(--primary-d1)' : 'transparent')};
 `
-const Text = styled.div`
-  font-size: 14px;
+const TextBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--neutral-n1-d1);
   margin-left: 8px;
   margin-right: 16px;
+  overflow: hidden;
+`
+const Text = styled.span`
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--neutral-n1-d1);
 `
 
 const Count = styled.div`
   display: flex;
   font-size: 12px;
   color: var(--neutral-n3);
+  flex-shrink: 0;
 `
 const Left = styled.div`
   display: flex;
+  flex: 1;
+  overflow: hidden;
   align-items: center;
+  padding-right: 8px;
+  box-sizing: border-box;
 `
 const IconWrap = styled(IconFont)`
   font-size: 20px;
@@ -77,7 +90,11 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
             <ColumnTitle {...provided.dragHandleProps} key={item.id}>
               <Left>
                 <MoveIcon active={snapshot.isDragging} />
-                <Text>{item?.name}</Text>
+                <TextBox>
+                  <Tooltip title={item?.name}>
+                    <Text>{item?.name}</Text>
+                  </Tooltip>
+                </TextBox>
                 <Count>{`最大：${item.max_num}`}</Count>
               </Left>
               <IconWrap
