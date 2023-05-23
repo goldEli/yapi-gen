@@ -174,18 +174,6 @@ const DndKitTable = () => {
       })}
     </DragDropContext>
   )
-
-  // return (
-  //   <DndContext onDragEnd={handleDragEnd}>
-  //     <SortableContext
-  //       items={[...data1, ...dataSource].map((c) => c.id)}
-  //       strategy={verticalListSortingStrategy}
-  //     >
-  //       <XTable id="1" data={data1} columns={columns} />
-  //       <XTable id="2" data={dataSource} columns={columns} />
-  //     </SortableContext>
-  //   </DndContext>
-  // );
 }
 
 export default DndKitTable

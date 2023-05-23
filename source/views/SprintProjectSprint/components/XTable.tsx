@@ -19,20 +19,26 @@ interface XTableProps {
 const XTableWrap = styled.div`
   .dnd {
     .ant-table-tbody td[data-cypress='draggable-handle'] {
-      cursor: move;
       height: 52px;
     }
+  }
+  .ant-table-body {
+    max-height: 400px !important;
   }
   .nodata {
     height: 50px;
     line-height: 50px;
     background: var(--neutral-white-d4);
     border-radius: 6px 6px 6px 6px;
-    border: 1px solid var(--neutral-n6-d1);
+    border: 1px dashed var(--neutral-n6-d1);
     font-size: 12px;
     font-family: MiSans-Regular, MiSans;
     color: var(--neutral-n3);
     text-align: center;
+    &:hover {
+      border: 1px dashed var(--primary-d1);
+    }
+    margin-top: 17px;
   }
 
   // 元素拖动样式
@@ -42,6 +48,7 @@ const XTableWrap = styled.div`
     transform: translate3d(var(--translate-x, 0), var(--translate-y, 0), 0)
       scale(var(--scale, 1));
     transition: box-shadow 200ms ease;
+    cursor: pointer;
   }
 
   .dragOverlay {
@@ -65,6 +72,9 @@ const XTableWrap = styled.div`
   }
   .ant-table-footer {
     background-color: var(--neutral-white-d1);
+  }
+  .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+    padding: 0px 16px !important;
   }
 `
 const PanelHeader = styled.div`

@@ -7,6 +7,7 @@ import StatusList from '../StatusList'
 import StatusListItem from '../StatusListItem'
 import usePlaceholderStatusNum from '../hooks/usePlaceholderStatusNum'
 import useKanBanData from '../hooks/useKanBanData'
+import { useSelector } from '@store/index'
 
 interface IssuesProps {
   issues?: Model.KanbanConfig.Category
@@ -24,6 +25,7 @@ const DropArea = styled.div<{ showBorder: boolean }>`
   gap: 8px;
   border: 1px dashed
     ${props => (props.showBorder ? 'var(--primary-d1)' : 'transparent')};
+  position: relative;
 `
 
 const DropStatusArea = styled.div`
@@ -34,6 +36,18 @@ const DropStatusArea = styled.div`
   &:hover {
     border: 1px solid green;
   }
+`
+const Tips = styled.div<{ show: boolean }>`
+  width: 100%;
+  height: 100%;
+  display: ${props => (props.show ? 'flex' : 'none')};
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--neutral-n3);
+  position: absolute;
+  left: 0;
+  top: 0;
 `
 const StatusListItemPlaceholder = styled.div`
   width: 100%;
@@ -46,13 +60,18 @@ const Issues: React.FC<IssuesProps> = props => {
   const { issues, groupId } = props
   const droppableId = handleId(groupId ?? 0, issues?.id ?? 0)
   const { placeholderItemsLength } = usePlaceholderStatusNum(issues)
-  const { checkIsDrop } = useKanBanData()
 
+  const { checkIsDrop } = useKanBanData()
+  const { movingStatus } = useSelector(store => store.KanbanConfig)
+  const isDrop = checkIsDrop(issues?.id ?? 0)
   return (
-    <Droppable type="STATUS" key={issues?.id} droppableId={droppableId}>
+    <Droppable
+      isDropDisabled={!isDrop}
+      type="STATUS"
+      key={issues?.id}
+      droppableId={droppableId}
+    >
       {(provided, snapshot) => {
-        const { draggingFromThisWith } = snapshot
-        const isDrop = checkIsDrop(issues?.id ?? 0, draggingFromThisWith ?? '')
         return (
           <DropArea
             showBorder={isDrop}
@@ -75,6 +94,9 @@ const Issues: React.FC<IssuesProps> = props => {
                 return <StatusListItemPlaceholder key={idx} />
               })}
             {provided.placeholder}
+            <Tips show={!issues?.status?.length}>
+              将某一状态移动至此外，以将其分配给此列
+            </Tips>
           </DropArea>
         )
       }}

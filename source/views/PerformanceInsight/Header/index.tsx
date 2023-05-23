@@ -23,7 +23,10 @@ interface OptionProps {
   id: string
   avatar: string
 }
-const Iteration = () => {
+interface Props {
+  homeType: string
+}
+const Iteration = (props: Props) => {
   // sprint  iteration all
   const [type, setType] = useState('all')
   const [tabs, setTabs] = useState<Array<{ label: string; key: string }>>([])
@@ -62,11 +65,8 @@ const Iteration = () => {
     setTabsActive(index)
   }
   useEffect(() => {
-    if (type === 'iteration') {
-      setTabs(tabs1)
-    } else {
-      setTabs(tabs2)
-    }
+    props.homeType === 'iteration' && setTabs(tabs2)
+    props.homeType === 'sprint' && setTabs(tabs1)
   }, [])
   const onSearch = (value: string) => {
     console.log(value)
@@ -119,7 +119,7 @@ const Iteration = () => {
 
       <Space size={16}>
         {/* 全部多一个下拉搜索条件，先传10个，查看更多展示完成 */}
-        {type === 'all' && (
+        {props.homeType === 'all' && (
           <Select
             onSearch={onSearch}
             options={options}
@@ -156,7 +156,7 @@ const Iteration = () => {
             />
           )}
         </DivStyle>
-        {(type === 'sprint' || type === 'iteration') && (
+        {(props.homeType === 'sprint' || props.homeType === 'iteration') && (
           <Tabs>
             {tabs.map((el, index) => (
               <span
