@@ -4,6 +4,7 @@ import ColumnTitleArea from '../ColumnTitleArea'
 import useKanBanData from '../hooks/useKanBanData'
 import styled from '@emotion/styled'
 import { COLUMN } from '../constant'
+import CreateColumnBtn from '../CreateColumnBtn'
 
 const Container = styled.div`
   display: flex;
@@ -22,6 +23,7 @@ const KanBanStatusBoard = () => {
             {columnList.map((item, index) => {
               return <ColumnTitleArea key={item.id} index={index} />
             })}
+            <CreateColumnBtn />
           </Container>
         )
       }}

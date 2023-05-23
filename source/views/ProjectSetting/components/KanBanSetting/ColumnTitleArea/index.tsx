@@ -8,6 +8,8 @@ import IconFont from '@/components/IconFont'
 import { Draggable } from 'react-beautiful-dnd'
 import IssuesGroupList from '../IssuesGroupList'
 import useKanBanData from '../hooks/useKanBanData'
+import { useDispatch } from '@store/index'
+import { openEditColumnModel } from '@store/kanbanConfig/kanbanConfig.thunk'
 // import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd'
 
 interface ColumnTitleAreaProps {
@@ -62,6 +64,7 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
   const { columnList } = useKanBanData()
   const item = columnList?.[props.index ?? 0]
   const draggableId = item.id + '1'
+  const dispatch = useDispatch()
   return (
     <Draggable draggableId={draggableId} index={props.index}>
       {(provided, snapshot) => {
@@ -77,7 +80,13 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
                 <Text>{item?.name}</Text>
                 <Count>{`最大：${item.max_num}`}</Count>
               </Left>
-              <IconWrap onClick={e => {}} type="edit" />
+              <IconWrap
+                onClick={e => {
+                  e.stopPropagation()
+                  dispatch(openEditColumnModel(item))
+                }}
+                type="edit"
+              />
             </ColumnTitle>
 
             <IssuesGroupList

@@ -90,9 +90,27 @@ const useKanBanData = () => {
     // )
   }
 
+  const getStatusByStatusId = (id: string) => {
+    for (const column of columnList) {
+      for (const category of column?.categories) {
+        for (const status of category?.status ?? []) {
+          if (status.flow_status_id + '' === id) {
+            return status
+          }
+        }
+      }
+    }
+    return null
+  }
+  const checkIsDrop = (categoryId: number, statusId: string) => {
+    const status = getStatusByStatusId(statusId)
+    return categoryId === status?.story_type_id
+  }
+
   return {
     onDragEnd,
     columnList,
+    checkIsDrop,
   }
 }
 
