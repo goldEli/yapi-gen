@@ -78,7 +78,7 @@ const slice = createSlice({
       const index = state.columnList.findIndex(
         item => item.id === action.payload,
       )
-      if (index) {
+      if (index >= 0) {
         state.columnList.splice(index, 1)
       }
     },
