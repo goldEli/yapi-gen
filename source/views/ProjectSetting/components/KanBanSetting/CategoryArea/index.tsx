@@ -2,6 +2,7 @@ import React from 'react'
 import styled from '@emotion/styled'
 import CommonButton from '@/components/CommonButton'
 import IconFont from '@/components/IconFont'
+import UpDownBtn from '../UpDownBtn'
 
 interface CategoryAreaProps {
   data: Model.KanbanConfig.Category
@@ -43,7 +44,7 @@ const CategoryArea: React.FC<CategoryAreaProps> = props => {
   return (
     <CategoryAreaBox>
       <TitleArea visible={props.showTitle}>
-        <IconWrap type="down-icon" />
+        <UpDownBtn isOpen={true} />
         <IconImg src={props.data.attachment_path} />
         <Text>{props.data.name}</Text>
         <CommonButton type="secondary">编辑工作流</CommonButton>
