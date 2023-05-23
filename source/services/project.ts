@@ -51,10 +51,10 @@ export const getProjectList: any = async (params: any) => {
         prefix: i.prefix,
         isPublic: i.is_public,
         groupIds: i.groups?.map((k: any) => k.id),
+        project_type: i.project_type,
       })),
     }
   }
-
   return {
     currentPage: params.page,
     pageSize: params.pageSize,
@@ -74,6 +74,7 @@ export const getProjectList: any = async (params: any) => {
       createName: i.user_name,
       info: i.info,
       isPublic: i.is_public,
+      project_type: i.project_type,
     })),
   }
 }

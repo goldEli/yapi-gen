@@ -107,7 +107,7 @@ const ItemDropdown = (props: PropsType) => {
       }),
     )
     setIsOpen(false)
-    if (el.prefix === 'sprint') {
+    if (el.project_type === 2) {
       navigate(`/SprintProjectManagement/KanBan?data=${params}`)
       return
     }

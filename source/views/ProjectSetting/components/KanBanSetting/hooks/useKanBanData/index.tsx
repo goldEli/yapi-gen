@@ -93,7 +93,7 @@ const useKanBanData = () => {
   const getStatusByStatusId = (id: string) => {
     for (const column of columnList) {
       for (const category of column?.categories) {
-        for (const status of category?.status) {
+        for (const status of category?.status ?? []) {
           if (status.flow_status_id + '' === id) {
             return status
           }
