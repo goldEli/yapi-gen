@@ -80,7 +80,7 @@ const CategoryArea: React.FC<CategoryAreaProps> = props => {
                   //   color: '#969799',
                   id: props.data.id,
                   //   isCheck: 1,
-                  statusCount: props.data.status.length,
+                  statusCount: props.data?.status?.length ?? 0,
                   //   remark: '',
                   attachmentPath: props.data.attachment_path,
                   //   status: 1,
