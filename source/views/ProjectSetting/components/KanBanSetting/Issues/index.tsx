@@ -50,7 +50,6 @@ const Issues: React.FC<IssuesProps> = props => {
 
   const { checkIsDrop } = useKanBanData()
   const { movingStatus } = useSelector(store => store.KanbanConfig)
-  console.log({ movingStatus })
   const isDrop = checkIsDrop(issues?.id ?? 0)
   return (
     <Droppable
