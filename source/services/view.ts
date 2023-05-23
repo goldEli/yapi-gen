@@ -19,7 +19,7 @@ export const addViews: any = async (params: any) => {
 }
 
 export const editViews: any = async (params: any) => {
-  const response: any = await http.patch<any>('/b/story/views/update', {
+  const response: any = await http.put<any>('/b/story/views/update', {
     project_id: params.project_id,
     status: params.state ? 1 : 2,
     name: params.name,

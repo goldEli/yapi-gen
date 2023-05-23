@@ -99,6 +99,7 @@ const ViewPort = (props: any) => {
   const onChangeView = () => {
     onOpenChange(false)
     dispatch(changeViewVisible(true))
+    dispatch(setCreateViewPort({ type: props.type }))
   }
   return (
     <Dropdown

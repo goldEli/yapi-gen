@@ -192,7 +192,7 @@ const ManageView = (props: { projectId: number }) => {
                 <Space size={16}>
                   <span
                     style={{ color: 'var(--primary-d2)', cursor: 'pointer' }}
-                    onClick={() => onChangeName(viewName, record)}
+                    onClick={() => (window.isCloseView = true)}
                   >
                     完成
                   </span>

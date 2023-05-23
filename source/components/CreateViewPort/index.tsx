@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
 import { useDispatch, useSelector } from '@store/index'
-import { changeCreateVisible, setCreateViewPort } from '@store/view'
+import { changeCreateVisible } from '@store/view'
 import { addViewList, getViewList } from '@store/view/thunk'
 import { Form, Input, message } from 'antd'
 import { useTranslation } from 'react-i18next'
