@@ -251,6 +251,12 @@ const urls = {
   deleteKanbanConfig: '/b/project/kanban/configs/delete',
   // 看板配置剩余状态
   getKanbanConfigRemainingStatus: '/b/project/kanban/configs/residueStatus',
+  // 完成率Top10
+  getCompletionRate: 'b/efficiency/contrast/completion_rate',
+  // 阶段缺陷占比
+  getDefectRatio: 'b/efficiency/defect_ratio',
+  // 缺陷趋势
+  getBugList: 'b/efficiency/member/bug/list',
 }
 export default urls
 
