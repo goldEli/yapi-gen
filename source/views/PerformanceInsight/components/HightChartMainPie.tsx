@@ -1,5 +1,5 @@
 // eslint-disable @typescript-eslint/no-invalid-this
-// eslint-disable @typescript-eslint/no-invalid-this
+// eslint-disable consistent-this
 import {
   MoreWrap2,
   Myd,
@@ -110,8 +110,9 @@ const HightChartMainPie = (props: {
       itemMarginBottom: 16,
       useHTML: true,
       labelFormatter: function () {
-        // const _this: any = this
-        // return `<div style='fontSize: 14px;color:#646566;display:flex; width: 204px;height:26px;lineHeight:14px;paddingBottom:2px;whiteSpace: nowrap; overflow: hidden; textOverflow: ellipsis'>${_this?.name}: ${_this.y}%</div>`
+        // eslint-disable-next-line
+        const _this: any = this
+        return `<div style='fontSize: 14px;color:#646566;display:flex; width: 204px;height:26px;lineHeight:14px;paddingBottom:2px;whiteSpace: nowrap; overflow: hidden; textOverflow: ellipsis'>${_this?.name}: ${_this.y}%</div>`
       },
     },
     plotOptions: {

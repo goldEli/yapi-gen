@@ -152,7 +152,7 @@
         {
           "allowDestructuring": false,
           "allowedNames": [
-            "self"
+            "_this"
           ]
         }
       ]
