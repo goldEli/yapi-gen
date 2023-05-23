@@ -1,9 +1,8 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import CommonModal from '@/components/CommonModal'
-import { DivStyle } from '@/views/PerformanceInsight/Header/Style'
 import styled from '@emotion/styled'
-import { Dropdown, Radio } from 'antd'
-import { useState } from 'react'
+import { Input, Popover, Radio, RadioChangeEvent, Space } from 'antd'
+import { SetStateAction, useEffect, useState } from 'react'
 const Titile = styled.div`
   font-size: 14px;
   color: var(--neutral-n1-d1);
@@ -32,6 +31,40 @@ const NameWrap = styled.div`
   font-size: 12px;
   color: var(--neutral-n12);
 `
+const Content = styled.div`
+  width: 480px;
+  height: 168px;
+  overflowy: auto;
+`
+const TitleText = styled.div`
+  font-size: 12px;
+  color: var(--neutral-n3);
+  height: 32px;
+  line-height: 32px;
+  padding-left: 16px;
+`
+const ItemName = styled.div`
+  padding-left: 16px;
+  line-height: 32px;
+  height: 32px;
+  font-size: 14px;
+  color: var(--neutral-n2);
+  &:hover {
+    cursor: pointer;
+    background-color: var(--hover-d3);
+    color: var(--neutral-n1-d1);
+  }
+`
+const Name = styled.div`
+  font-size: 14px;
+  color: var(--neutral-n1-d1);
+`
+const InputStyle = styled(Input)({
+  width: '480px',
+})
+const PopoverStyle = styled(Popover)({
+  marginTop: '8px',
+})
 interface Props {
   isVisible: boolean
   title: string
@@ -41,14 +74,61 @@ interface Props {
 }
 const Complete = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [value, setValue] = useState<any>({
-    title: '请选择迭代',
-    value: 'all',
+  const [value, setValue] = useState(1)
+  const [popoverValue, setPopoverValue] = useState<{
+    name: string
+    value: number
+  }>({
+    name: '',
+    value: 0,
   })
-  const [items, setItems] = useState([])
-  const onOpenChange = () => {}
+  const a = [
+    {
+      type: 'no',
+      data: [
+        {
+          name: '123',
+          value: 1,
+        },
+      ],
+    },
+    {
+      type: 'yes',
+      data: [
+        {
+          name: '456',
+          value: 2,
+        },
+      ],
+    },
+  ]
+  const activeItem = (item: { name: string; value: number }) => {
+    console.log(item)
+    setIsOpen(false)
+    setPopoverValue(item)
+  }
+  const content = () => {
+    return (
+      <Content>
+        {a.map(el => (
+          <>
+            <TitleText key={el.type}>{el.type}</TitleText>
+            {el.data.map(item => (
+              <ItemName onClick={() => activeItem(item)} key={item.name}>
+                {item.name}
+              </ItemName>
+            ))}
+          </>
+        ))}
+      </Content>
+    )
+  }
+  const onChange = (e: RadioChangeEvent) => {
+    setValue(e.target.value)
+  }
   return (
     <CommonModal
+      width={528}
       isVisible={props.isVisible}
       title={props.title}
       onClose={() => props.onClose()}
@@ -63,33 +143,45 @@ const Complete = (props: Props) => {
           </MainWrap>
         ))}
       </StatisticsWrap>
-      <div style={{ paddingLeft: '24px' }}>
-        <Radio value={1}>将剩余需求和缺陷移入其他迭代中</Radio>
-      </div>
-      <div style={{ paddingLeft: '24px', marginTop: '8px' }}>
-        <Dropdown
-          placement="bottomLeft"
-          visible={isOpen}
-          onVisibleChange={setIsOpen}
-          trigger={['click']}
-          menu={{ items, onClick: onOpenChange }}
-          overlayStyle={{
-            width: 120,
-            background: 'var(--neutral-white-d1)',
-          }}
+      <div style={{ paddingLeft: '24px', height: 150 }}>
+        <Radio.Group
+          onChange={(e: RadioChangeEvent) => onChange(e)}
+          value={value}
         >
-          <DivStyle onClick={() => setIsOpen(!isOpen)}>
-            <div>{value.title}</div>
-            <CommonIconFont
-              type={isOpen ? 'up' : 'down'}
-              size={14}
-              color="var(--neutral-n4)"
-            />
-          </DivStyle>
-        </Dropdown>
-      </div>
-      <div style={{ marginTop: '24px', paddingLeft: '24px' }}>
-        <Radio value={2}>移除剩余需求和缺陷</Radio>
+          <Space direction="vertical" size={24}>
+            <div>
+              <Radio value={1}>
+                <Name>将剩余需求和缺陷移入其他迭代中</Name>
+              </Radio>
+              {value === 1 && (
+                <PopoverStyle
+                  placement="bottomRight"
+                  title={''}
+                  visible={isOpen}
+                  onVisibleChange={setIsOpen}
+                  content={content}
+                  trigger="[click]"
+                >
+                  <InputStyle
+                    type="text"
+                    value={popoverValue.name}
+                    placeholder={'请选择'}
+                    suffix={
+                      <CommonIconFont
+                        type={isOpen ? 'up' : 'down'}
+                        size={14}
+                        color="var(--neutral-n4)"
+                      />
+                    }
+                  />
+                </PopoverStyle>
+              )}
+            </div>
+            <Radio value={2}>
+              <Name>移除剩余需求和缺陷</Name>
+            </Radio>
+          </Space>
+        </Radio.Group>
       </div>
     </CommonModal>
   )

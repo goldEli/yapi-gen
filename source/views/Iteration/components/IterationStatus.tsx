@@ -132,7 +132,7 @@ const IterationStatus = (props: Props) => {
             value: 56,
           },
         ]}
-        isVisible={true}
+        isVisible={false}
         title={'完成迭代'}
         onClose={() => 123}
         onConfirm={() => 123}
