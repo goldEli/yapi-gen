@@ -290,10 +290,9 @@ const Operation = (props: Props) => {
                 iterateInfo={props.currentDetail}
                 onChangeStatus={onChangeStatus}
               />
-              123
               <Space size={8} style={{ marginLeft: 8 }}>
                 <ScreenMinHover
-                  label={''}
+                  label={t('project.iterateTarget')}
                   icon="detail"
                   onClick={() => setVisible(true)}
                   isActive={visible}
@@ -302,7 +301,7 @@ const Operation = (props: Props) => {
                   <>
                     <DividerWrap type="vertical" />
                     <ScreenMinHover
-                      label={''}
+                      label={t('p2.d2')}
                       icon="iteration"
                       onClick={() => setIsAchievements(true)}
                       isActive={isAchievements}
