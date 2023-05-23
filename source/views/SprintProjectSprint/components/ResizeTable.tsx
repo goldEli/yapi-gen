@@ -3,7 +3,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Spin, Table } from 'antd'
 import { Resizable, ResizeCallbackData } from 'react-resizable'
-import './index.css'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
