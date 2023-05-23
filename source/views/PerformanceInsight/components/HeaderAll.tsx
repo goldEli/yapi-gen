@@ -8,8 +8,10 @@ import { useEffect, useState } from 'react'
 import CommonIconFont from '@/components/CommonIconFont'
 import Select from './Select'
 import CommonButton from '@/components/CommonButton'
+import { useNavigate } from 'react-router-dom'
 
 interface HaderProps {
+  type: string
   time: string
   personData: Array<{
     name: string
@@ -23,6 +25,7 @@ interface ItemProps {
   avatar: string | undefined
 }
 const HeaderAll = (props: HaderProps) => {
+  const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [isVisible, setIsVisible] = useState<boolean>(false)
   const [isVisibleSuccess, setIsVisibleSuccess] = useState<boolean>(false)
@@ -65,19 +68,25 @@ const HeaderAll = (props: HaderProps) => {
       <HeaderRowBox>
         <Back onClick={() => 123}>
           <CommonIconFont type="left-md" size={16} />
-          <span className="text">返回</span>
+          <span className="text" onClick={() => navigate(-1)}>
+            返回
+          </span>
         </Back>
         <RightRow>
           {/* 全部多一个下拉搜索条件，先传10个，查看更多展示完成 */}
-          <div style={{ marginRight: '16px' }}>
-            <Select
-              onSearch={onSearch}
-              options={options}
-              more={more}
-              onChange={(value: string[]) => console.log(value)}
-              onShowAll={() => onShowAll()}
-            />
-          </div>
+          {/* // 进展对比 Progress0-迭代 Progress1冲刺 ProgressAll全局
+        //缺陷 Defect0-迭代 Defect1冲刺 DefectAll全局 */}
+          {props.type === 'ProgressAll' && (
+            <div style={{ marginRight: '16px' }}>
+              <Select
+                onSearch={onSearch}
+                options={options}
+                more={more}
+                onChange={(value: string[]) => console.log(value)}
+                onShowAll={() => onShowAll()}
+              />
+            </div>
+          )}
           <PersonText>
             {' '}
             {props.personData?.length ? (

@@ -39,6 +39,8 @@ interface Props {
   // 进展对比 Progress0-迭代 Progress1冲刺 ProgressAll全局 //缺陷 Defect0-迭代 Defect1冲刺 DefectAll全局
   type: string
   title: string
+  //代表是全局还是冲刺迭代
+  homeType: string
 }
 const ProgressComparison = (props: Props) => {
   const [columns, setColumns] = useState<
@@ -275,6 +277,7 @@ const ProgressComparison = (props: Props) => {
     },
   ]
   useEffect(() => {
+    console.log(props.type, 'props.type ---')
     // 进展对比 Progress0-迭代 Progress1冲刺 ProgressAll全局
     //缺陷 Defect0-迭代 Defect1冲刺 DefectAll全局
     switch (props.type) {
@@ -306,6 +309,7 @@ const ProgressComparison = (props: Props) => {
       <HeaderAll
         time="2023-08-08 ~ 2023-09-08"
         personData={[{ name: '123' }]}
+        type={props.type}
       />
       {/* 表格 */}
       <Col>

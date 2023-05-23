@@ -123,16 +123,8 @@ const ProjectInfo = () => {
   asyncSetTtile(`${t('title.a1')}【${projectInfo.name}】`)
   localStorage.setItem('memberId', projectInfo.id)
   const dispatch = useDispatch()
-  const [value, setValue] = useState('')
   return (
     <Wrap>
-      <CategoryDrop
-        value={value}
-        categoryClick={data => {
-          console.log(data)
-          setValue(data.name)
-        }}
-      ></CategoryDrop>
       <InfoLeft>
         <Title>{t('v2_1_1.projectInformation')}</Title>
         <CardGroup size={32}>
@@ -188,7 +180,7 @@ const ProjectInfo = () => {
               'b/project/update',
             )}
             onClick={() => {
-              dispatch(editProject({ visible: true, id: projectInfo.id }))
+              dispatch(editProject({ id: projectInfo.id }))
             }}
             style={{
               marginLeft: 24,

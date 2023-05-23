@@ -40,13 +40,30 @@ import SelectMain from '../Header/components/SelectMain'
 import CommonButton from '@/components/CommonButton'
 import { useSelector } from '@store/index'
 import ViewDialog from '../Header/components/ViewDialog'
+import { encryptPhp } from '@/tools/cryptoPhp'
+import { useNavigate } from 'react-router-dom'
 interface Props {
   title: string
   time: string
   type: string
   data: Array<{ num: number; icon: string; type: string }>
+  homeType: string
+  num: number
 }
 const WorkingStatus = (props: Props) => {
+  const navigate = useNavigate()
+  const onClick = () => {
+    // 进展对比 Progress0-迭代 Progress1冲刺 ProgressAll全局
+    //缺陷 Defect0-迭代 Defect1冲刺 DefectAll全局
+    const params = encryptPhp(
+      JSON.stringify({
+        type: 'Progress0',
+        homeType: props.homeType,
+        title: props.num === 1 ? '工作进展对比' : '缺陷趋势分析',
+      }),
+    )
+    navigate(`/Report/ChildLevel?data=${params}`)
+  }
   return (
     <>
       <Col>
@@ -57,7 +74,7 @@ const WorkingStatus = (props: Props) => {
           </Space>
         </RightRow>
         <Text size={'12px'} onClick={() => 123}>
-          <Space size={4}>
+          <Space size={4} onClick={() => onClick()}>
             <span>查看明细</span>
             <CommonIconFont
               type={'right'}
@@ -729,6 +746,7 @@ const Home = () => {
     >
       <Header />
       <WorkingStatus
+        homeType="all"
         data={[
           { num: 120, type: '待修复', icon: 'right' },
           { num: 120, type: '待修复', icon: 'right' },
@@ -737,9 +755,12 @@ const Home = () => {
         title={'工作项现状'}
         time={'2023-03-01 ~ 2023-03-14'}
         type="Progress"
+        num={1}
       />
       <div style={{ margin: '32px 0' }}>
         <WorkingStatus
+          num={2}
+          homeType="all"
           data={[{ num: 40, type: '缺陷修复露', icon: 'right' }]}
           title={'缺陷现状'}
           time={'2023-03-01 ~ 2023-03-14'}

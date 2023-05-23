@@ -422,13 +422,13 @@ const WrapLeft = (props: Props) => {
         onConfirm={onDeleteConfirm}
       />
       <TopWrap>
-        {hasAdd || projectInfo?.status !== 1 ? (
+        {/* {hasAdd || projectInfo?.status !== 1 ? (
           <div />
-        ) : (
-          <CommonButton type="primary" icon="plus" onClick={onChangeClick}>
-            {t('common.createIterate')}
-          </CommonButton>
-        )}
+        ) : ( */}
+        <CommonButton type="primary" icon="plus" onClick={onChangeClick}>
+          {t('common.createIterate')}
+        </CommonButton>
+        {/* )} */}
         <Space size={8}>
           <Popover
             visible={isSort}
@@ -442,24 +442,24 @@ const WrapLeft = (props: Props) => {
               <IconWrap type="sort" isActive={isSort} />
             </Tooltip>
           </Popover>
-          {hasFilter ? null : (
-            <Divider style={{ margin: 0, height: 20 }} type="vertical" />
-          )}
+          {/* {hasFilter ? null : ( */}
+          <Divider style={{ margin: 0, height: 20 }} type="vertical" />
+          {/* )} */}
 
-          {hasFilter ? null : (
-            <Popover
-              trigger="click"
-              placement="bottomRight"
-              content={filterContent}
-              getPopupContainer={node => node}
-              visible={isFilter}
-              onVisibleChange={onVisibleChange}
-            >
-              <Tooltip title={t('common.search')}>
-                <IconWrap type="filter" isActive={isFilter} />
-              </Tooltip>
-            </Popover>
-          )}
+          {/* {hasFilter ? null : ( */}
+          <Popover
+            trigger="click"
+            placement="bottomRight"
+            content={filterContent}
+            getPopupContainer={node => node}
+            visible={isFilter}
+            onVisibleChange={onVisibleChange}
+          >
+            <Tooltip title={t('common.search')}>
+              <IconWrap type="filter" isActive={isFilter} />
+            </Tooltip>
+          </Popover>
+          {/* )} */}
         </Space>
       </TopWrap>
       <CardGroups>
