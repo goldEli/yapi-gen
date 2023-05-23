@@ -25,7 +25,7 @@ export const columnList: Model.KanbanConfig.Column[] = [
   {
     id: 110,
     kanban_config_id: 1,
-    name: '规划中',
+    name: '规划a阿斯蒂芬爱上你的费劲啊输入框的阿斯顿发水电费中',
     max_num: 1,
     categories: [
       {
