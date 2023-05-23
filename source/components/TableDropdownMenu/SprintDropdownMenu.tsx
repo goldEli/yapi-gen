@@ -31,8 +31,6 @@ interface Props {
   onCreateChild(row: any): void
   // 是否是所有项目
   isAllProject?: boolean
-  // 是否是最后层级
-  isLastLevel?: boolean
 }
 
 export const SprintDropdownMenu = (props: Props) => {
@@ -102,7 +100,7 @@ export const SprintDropdownMenu = (props: Props) => {
     }
   }
 
-  if (props.isLastLevel) {
+  if (![3, 4, 5].includes(props.record.work_type)) {
     menuItems = menuItems.filter((i: any) => i.key !== '1')
   }
 

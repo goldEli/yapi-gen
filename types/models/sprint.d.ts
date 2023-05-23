@@ -91,6 +91,10 @@ declare namespace Model.Sprint {
     level: number | string
     category_config_list: CategoryConfigList
     story_prefix_key: string
+    work_type: WorkType
   }
   type Visible = boolean
 }
+
+// 1：迭代-需求类型，2：迭代-缺陷类型，3：冲刺-长故事事务类型，4：冲刺-标准事务类型，5：冲刺-故障事务类型 6-子任务
+type WorkType = 1 | 2 | 3 | 4 | 5 | 6

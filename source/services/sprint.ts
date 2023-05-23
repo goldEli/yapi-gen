@@ -69,6 +69,7 @@ const getListItem = (array: any, params: API.Sprint.GetSprintList.Params) => {
     topId: params?.parentId ?? params?.topParentId,
     categoryConfigList: i.category_config_list,
     storyPrefixKey: i.story_prefix_key,
+    work_type: i.work_type,
   }))
 }
 
@@ -225,6 +226,7 @@ export const getSprintList = async (
         topId: i.id,
         categoryConfigList: i.category_config_list,
         storyPrefixKey: i.story_prefix_key,
+        work_type: i.work_type,
       })),
     }
   }

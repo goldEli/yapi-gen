@@ -25,7 +25,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import { OmitText } from '@star-yun/ui'
 import Circulation from './Circulation'
 import CommonModal from '@/components/CommonModal'
-import ChangeStatusPopover from '@/components/ChangeStatusPopover'
+import ChangeStatusPopover from '@/components/ChangeStatusPopover/index'
 import useSetTitle from '@/hooks/useSetTitle'
 import { setIsRefresh } from '@store/user'
 import { useDispatch, useSelector } from '@store/index'
@@ -599,8 +599,8 @@ const DemandBox = () => {
             <ChangeStatusPopover
               isCanOperation={isCanEdit && !demandInfo?.isExamine}
               projectId={projectId}
-              record={demandInfo}
-              onChangeStatus={onChangeStatus}
+              // record={demandInfo}
+              // onChangeStatus={onChangeStatus}
             >
               <StateTag
                 onClick={demandInfo?.isExamine ? onExamine : void 0}

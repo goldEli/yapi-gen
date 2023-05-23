@@ -7,7 +7,7 @@ import MoreDropdown from '@/components/MoreDropdown'
 import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/DemandDropdownMenu'
 import ChangePriorityPopover from '@/components/ChangePriorityPopover'
 import { PriorityWrap } from '@/components/StyleCommon'
-import ChangeStatusPopover from '@/components/ChangeStatusPopover'
+import ChangeStatusPopover from '@/components/ChangeStatusPopover/index'
 import { useSelector, useDispatch } from '@store/index'
 import { setSprintTableData } from '@store/sprint'
 
@@ -100,10 +100,10 @@ const DndKitTable = () => {
         return (
           <ChangeStatusPopover
             children={<div>11111</div>}
-            onChangeStatus={function (value: any): void {
-              throw new Error('Function not implemented.')
-            }}
-            record={record}
+            // onChangeStatus={function (value: any): void {
+            //   throw new Error('Function not implemented.')
+            // }}
+            // record={record}
           />
         )
       },
