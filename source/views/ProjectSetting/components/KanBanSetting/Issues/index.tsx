@@ -25,6 +25,7 @@ const DropArea = styled.div<{ showBorder: boolean }>`
   gap: 8px;
   border: 1px dashed
     ${props => (props.showBorder ? 'var(--primary-d1)' : 'transparent')};
+  position: relative;
 `
 
 const DropStatusArea = styled.div`
@@ -35,6 +36,18 @@ const DropStatusArea = styled.div`
   &:hover {
     border: 1px solid green;
   }
+`
+const Tips = styled.div<{ show: boolean }>`
+  width: 100%;
+  height: 100%;
+  display: ${props => (props.show ? 'flex' : 'none')};
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--neutral-n3);
+  position: absolute;
+  left: 0;
+  top: 0;
 `
 const StatusListItemPlaceholder = styled.div`
   width: 100%;
@@ -81,6 +94,9 @@ const Issues: React.FC<IssuesProps> = props => {
                 return <StatusListItemPlaceholder key={idx} />
               })}
             {provided.placeholder}
+            <Tips show={!issues?.status?.length}>
+              将某一状态移动至此外，以将其分配给此列
+            </Tips>
           </DropArea>
         )
       }}

@@ -1,7 +1,5 @@
 import React from 'react'
 import { DragStart, DropResult } from 'react-beautiful-dnd'
-import { produce } from 'immer'
-import { getId } from '../../utils'
 import { useDispatch, useSelector } from '@store/index'
 import { COLUMN, STATUS, UNASSIGNED_STATUS } from '../../constant'
 import {
