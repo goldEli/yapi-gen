@@ -7,6 +7,7 @@ import StatusList from '../StatusList'
 import StatusListItem from '../StatusListItem'
 import usePlaceholderStatusNum from '../hooks/usePlaceholderStatusNum'
 import useKanBanData from '../hooks/useKanBanData'
+import { useSelector } from '@store/index'
 
 interface IssuesProps {
   issues?: Model.KanbanConfig.Category
@@ -46,13 +47,19 @@ const Issues: React.FC<IssuesProps> = props => {
   const { issues, groupId } = props
   const droppableId = handleId(groupId ?? 0, issues?.id ?? 0)
   const { placeholderItemsLength } = usePlaceholderStatusNum(issues)
-  const { checkIsDrop } = useKanBanData()
 
+  const { checkIsDrop } = useKanBanData()
+  const { movingStatus } = useSelector(store => store.KanbanConfig)
+  console.log({ movingStatus })
+  const isDrop = checkIsDrop(issues?.id ?? 0)
   return (
-    <Droppable type="STATUS" key={issues?.id} droppableId={droppableId}>
+    <Droppable
+      isDropDisabled={!isDrop}
+      type="STATUS"
+      key={issues?.id}
+      droppableId={droppableId}
+    >
       {(provided, snapshot) => {
-        const { draggingFromThisWith } = snapshot
-        const isDrop = checkIsDrop(issues?.id ?? 0, draggingFromThisWith ?? '')
         return (
           <DropArea
             showBorder={isDrop}

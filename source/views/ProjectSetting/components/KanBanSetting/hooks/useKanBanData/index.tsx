@@ -1,13 +1,15 @@
 import React from 'react'
-import { DropResult } from 'react-beautiful-dnd'
+import { DragStart, DropResult } from 'react-beautiful-dnd'
 import { produce } from 'immer'
 import { getId } from '../../utils'
 import { useDispatch, useSelector } from '@store/index'
-import { COLUMN, UNASSIGNED_STATUS } from '../../constant'
+import { COLUMN, STATUS, UNASSIGNED_STATUS } from '../../constant'
 import {
   assignStatus,
+  clearMovingStatus,
   modifyAssignedStatus,
   modifyUnassignedStatus,
+  setMovingStatus,
   sortColumn,
   unassignStatus,
 } from '@store/kanbanConfig'
@@ -15,10 +17,12 @@ import {
 const useKanBanData = () => {
   const { columnList } = useSelector(store => store.KanbanConfig)
   const dispatch = useDispatch()
+  const { movingStatus } = useSelector(store => store.KanbanConfig)
 
   // refactor with immerjs
   const onDragEnd = (result: DropResult) => {
     console.log(result)
+    dispatch(clearMovingStatus())
     if (!result.destination) return
     const { source, destination, type } = result
 
@@ -102,15 +106,37 @@ const useKanBanData = () => {
     }
     return null
   }
-  const checkIsDrop = (categoryId: number, statusId: string) => {
-    const status = getStatusByStatusId(statusId)
-    return categoryId === status?.story_type_id
+  const checkIsDrop = (categoryId: number) => {
+    return categoryId === movingStatus?.story_type_id
+  }
+  const onDragStart = (result: DragStart) => {
+    console.log({ result })
+    const id = parseInt(result.draggableId, 10)
+    if (result.type === STATUS) {
+      if (result.source.droppableId === UNASSIGNED_STATUS) {
+        dispatch(
+          setMovingStatus({
+            id,
+            fromUnassignedPlane: true,
+          }),
+        )
+      } else {
+        dispatch(
+          setMovingStatus({
+            id,
+            fromUnassignedPlane: false,
+          }),
+        )
+      }
+    }
+    // if (result.type === STATUS)
   }
 
   return {
     onDragEnd,
     columnList,
     checkIsDrop,
+    onDragStart,
   }
 }
 
