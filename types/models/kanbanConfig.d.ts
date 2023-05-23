@@ -26,7 +26,7 @@ declare namespace Model.KanbanConfig {
     attachment_id: number
     // 图片地址
     attachment_path: string
-    status: Status[]
+    status?: Status[]
   }
   interface Column {
     id: number

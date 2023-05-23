@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { columnList, unassignStatusList } from './mockData'
 import { getId } from '@/views/ProjectSetting/components/KanBanSetting/utils'
+import { getNumberId } from './utils'
 
 type SliceState = {
   viewList?: Model.KanbanConfig.ConfigListItem[]
@@ -49,6 +50,36 @@ const slice = createSlice({
   name: 'kanbanConfig',
   initialState,
   reducers: {
+    createColumn(
+      state,
+      action: PayloadAction<Model.KanbanConfig.Column['name']>,
+    ) {
+      const kanban_config_id = state.viewList?.find(item => item.check)?.id
+      state.columnList.push({
+        id: getNumberId(state.viewList?.map(item => item.id)),
+        kanban_config_id: kanban_config_id ?? 0,
+        name: action.payload,
+        max_num: 1,
+        categories: [
+          {
+            id: 499,
+            name: '需求',
+            attachment_id: 457,
+            attachment_path:
+              'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png',
+            status: [],
+          },
+          {
+            id: 571,
+            name: '测试需求类别（jx）',
+            attachment_id: 458,
+            attachment_path:
+              'https://dev.staryuntech.com/dev-agile/attachment/category_icon/home.png',
+            status: [],
+          },
+        ],
+      })
+    },
     setCategoryVisibleInfo(
       state,
       action: PayloadAction<Model.KanbanConfig.Category['id']>,
@@ -179,6 +210,7 @@ export const {
   unassignStatus,
   sortColumn,
   setCategoryVisibleInfo,
+  createColumn,
 } = slice.actions
 
 export default KanbanConfig
