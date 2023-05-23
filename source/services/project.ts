@@ -317,7 +317,6 @@ export const getProjectMember: any = async (params: any) => {
       nickname: i.nickname,
       positionName: i.position_name,
       roleName: i.role_name,
-      is_admin: i.is_admin,
     }))
   } else {
     return {
@@ -338,6 +337,7 @@ export const getProjectMember: any = async (params: any) => {
         userIds: i.id,
         phone: i.phone,
         email: i.email,
+        is_admin: i.is_admin,
       })),
     }
   }
@@ -499,6 +499,7 @@ export const storyConfigCategoryList: any = async (params: any) => {
       remark: i.remark,
       attachmentPath: i.attachment_path,
       status: i.status,
+      work_type: i.work_type,
     })),
   }
 }
@@ -517,6 +518,7 @@ export const addStoryConfigCategory: any = async (params: any) => {
     attachment_id: params.attachment_id,
     project_id: params.projectId,
     remark: params.remark,
+    work_type: params.work_type,
   })
 }
 

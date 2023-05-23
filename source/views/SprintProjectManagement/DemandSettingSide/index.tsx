@@ -5,8 +5,16 @@ import CommonIconFont from '@/components/CommonIconFont'
 import { getCategorySaveSort } from '@/services/demand'
 import { getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
-import { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import {
+  JSXElementConstructor,
+  Key,
+  ReactElement,
+  ReactFragment,
+  ReactPortal,
+  useEffect,
+  useState,
+} from 'react'
+import { ReactI18NextChild, useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import EditCategory from './EditCategory'
 import { storyConfigCategoryList } from '@store/category/thunk'
@@ -37,6 +45,10 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
 import { CloseWrap } from '@/components/StyleCommon'
+type affairProps = {
+  [key in string]: Model.Project.Category[]
+}
+
 const Tabs = styled.div`
   height: 24px;
   border-radius: 4px;
@@ -89,34 +101,8 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   const [isVisible, setIsVisible] = useState(false)
   const [list, setList] = useState<any>()
   const [categoryItem, setCategoryItem] = useState(paramsData?.categoryItem)
-  const [affairType, setAffairType] = useState([
-    {
-      name: '长故事类型',
-      children: [{ name: '长故事', active: false }],
-      visible: true,
-    },
-    {
-      name: '标准事务类型',
-      children: [
-        { name: '故事', active: false },
-        { name: '任务', active: false },
-      ],
-      visible: true,
-    },
-    {
-      name: '故障事务类型',
-      visible: true,
-      children: [
-        { name: '故障', active: false },
-        { name: 'BUG缺陷', active: false },
-      ],
-    },
-    {
-      name: '子任务类型',
-      visible: true,
-      children: [{ name: '子任务', active: false }],
-    },
-  ])
+  const [affairType, setAffairType] = useState<any>()
+  const [workType, setWorkType] = useState('')
   const tabs = [
     {
       label: t('start_using'),
@@ -157,9 +143,47 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
       }))
     }
     dataItem?.length <= 1 && dispatch(setCategoryConfigDataList([]))
+    // console.log('dataItem', dataItem)
+    const affairTypeData = getTypeCategory(dataItem, 'work_type')
+    setAffairType(affairTypeData)
+    return
     setList(dataItem)
   }
-
+  const getTypeCategory = (
+    arr: Model.Project.Category[],
+    filed: 'work_type',
+  ) => {
+    const maps = new Map<number, string>([
+      [3, '长故事事务类型'],
+      [4, '标准事务类型'],
+      [5, '故障事务类型'],
+      [6, '子任务类型'],
+    ])
+    const obj: affairProps = {}
+    for (let i = 0; i < arr.length; i++) {
+      const item = arr[i]
+      const key = item[filed]
+      if (!key) {
+        return
+      }
+      if (obj[key]) {
+        obj[key].push(item)
+      } else {
+        obj[key] = [item]
+      }
+    }
+    const resArr: Model.Project.CategoryList[] = []
+    Object.keys(obj).forEach(key => {
+      resArr.push({
+        name: maps.get(parseInt(key, 10)) ?? '',
+        children: obj[key],
+        visible: true,
+        workType: key,
+      })
+    })
+    console.log('data----', obj)
+    return resArr
+  }
   // 需求类别中间列表
   const getCategoryConfig = async (dataItem: any) => {
     const itemId = dataItem?.find((item: any) => item.active)?.id
@@ -262,8 +286,8 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
       props.onBack()
     }
   }, [projectInfo])
-  const updateNode = (child: any) => {
-    setAffairType(prevData => {
+  const updateNode = (child: { name: any }) => {
+    setAffairType((prevData: any) => {
       const newData = [...prevData]
       return newData.map(obj => {
         const updatedChildren = [...obj.children]
@@ -303,49 +327,54 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
           ))}
         </Tabs>
         <div>
-          {affairType.map((item, index) => (
-            <AffairTypeWrap key={index}>
-              <AffairTypeHeader
-                onClick={() => {
-                  affairType[index].visible = !affairType[index].visible
-                  setAffairType([...affairType])
-                }}
-              >
-                <div style={{ cursor: 'pointer' }}>
+          {affairType?.map(
+            (item: Model.Project.CategoryList, index: number) => (
+              <AffairTypeWrap key={index}>
+                <AffairTypeHeader
+                  onClick={() => {
+                    affairType[index].visible = !affairType[index].visible
+                    setAffairType([...affairType])
+                  }}
+                >
+                  <div style={{ cursor: 'pointer' }}>
+                    <IconFont
+                      style={{ fontSize: 12 }}
+                      type={affairType[index].visible ? 'down' : 'up'}
+                    />
+                    <AffairTypeText>{item.name}</AffairTypeText>
+                  </div>
                   <IconFont
-                    style={{ fontSize: 12 }}
-                    type={affairType[index].visible ? 'down' : 'up'}
+                    style={{ fontSize: 14 }}
+                    type="plus"
+                    onClick={e => {
+                      e.stopPropagation()
+                      setIsVisible(true)
+                      setWorkType(item.workType)
+                    }}
                   />
-                  <AffairTypeText>{item.name}</AffairTypeText>
-                </div>
-                <IconFont
-                  style={{ fontSize: 14 }}
-                  type="plus"
-                  onClick={e => {
-                    e.stopPropagation()
-                    setIsVisible(true)
-                  }}
-                />
-              </AffairTypeHeader>
+                </AffairTypeHeader>
 
-              <MenuBox className={item.visible ? toggleDropDown : toggleDropUp}>
-                <Dragging
-                  list={item.children}
-                  setList={setList}
-                  onClick={(i: number, child: any) => {
-                    dispatch(
-                      getCategoryConfigList({
-                        projectId: projectId,
-                        categoryId: child.id || 695,
-                      }),
-                    )
-                    updateNode(child)
-                  }}
-                  onMove={(data: any) => onMove(data)}
-                ></Dragging>
-              </MenuBox>
-            </AffairTypeWrap>
-          ))}
+                <MenuBox
+                  className={item.visible ? toggleDropDown : toggleDropUp}
+                >
+                  <Dragging
+                    list={item.children}
+                    setList={setList}
+                    onClick={(i: number, child: any) => {
+                      dispatch(
+                        getCategoryConfigList({
+                          projectId: projectId,
+                          categoryId: child.id || 695,
+                        }),
+                      )
+                      updateNode(child)
+                    }}
+                    onMove={(data: any) => onMove(data)}
+                  ></Dragging>
+                </MenuBox>
+              </AffairTypeWrap>
+            ),
+          )}
         </div>
       </WrapSet>
       <EditCategory
@@ -353,6 +382,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
         onUpdate={() => getList('add')}
         item={null}
         isVisible={isVisible}
+        workType={workType}
       />
     </AllWrap>
   )

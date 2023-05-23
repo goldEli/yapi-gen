@@ -12,13 +12,13 @@ import DemandSetting from '../DemandSetting'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
-import { useSelector } from '@store/index'
+import { useSelector, useDispatch } from '@store/index'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
 import PermissionWrap from '@/components/PermissionWrap'
 import InputSearch from '@/components/InputSearch'
 import { useState, useEffect } from 'react'
 import ProjectNote from './components/ProjectNote'
-
+import { getProjectRoleList } from '@store/sprint/sprint.thunk'
 const Wrap = styled.div({
   display: 'flex',
   height: 'calc(100vh - 130px)',
@@ -45,6 +45,7 @@ const Setting = () => {
   const activeTabs = Number(paramsData.type) || 0
   const { currentMenu } = useSelector(store => store.user)
   const [searchValue, setSearchValue] = useState('')
+  const dispatch = useDispatch()
   const SideList = [
     {
       name: t('project.projectInformation'),
@@ -100,6 +101,9 @@ const Setting = () => {
   useEffect(() => {
     console.log('activeTabs========', activeTabs)
   }, [activeTabs])
+  useEffect(() => {
+    dispatch(getProjectRoleList({ project_id: paramsData.id }))
+  }, [])
   return (
     <PermissionWrap
       auth="/ProjectManagement/Project"
