@@ -103,11 +103,11 @@ const HightChartMainLine = (props: {
             <span>统计周期</span>
             <span className="day">14天</span>
             <CommonIconFont
-              type={'down-left'}
+              type={'up-right'}
               size={16}
-              color="var(--function-error)"
+              color="var(--function-success)"
             />
-            <span className="time">较前14天 -10%</span>
+            <span className="time">环比 +10%</span>
           </CharTitle>
           <div>
             <HighchartsReactWrap
