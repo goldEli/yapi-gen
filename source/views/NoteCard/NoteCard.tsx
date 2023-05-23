@@ -3,7 +3,7 @@ import { ColorBox, ColorBtn, ColorBtn2, Wrap1, Wrap2 } from './style'
 import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
 
-const NoteCard = () => {
+const NoteCard = (props: any) => {
   return (
     <div>
       <div
@@ -13,7 +13,7 @@ const NoteCard = () => {
         }}
       >
         <Wrap1>
-          <ColorBox>定时通知</ColorBox>
+          <ColorBox colors={1}>定时通知</ColorBox>
           <div
             style={{
               height: '24px',
@@ -39,7 +39,10 @@ const NoteCard = () => {
           <ColorBtn2>
             <CommonIconFont type="display" /> <span>全部已读</span>
           </ColorBtn2>
-          <ColorBtn>
+          <ColorBtn onClick={() => props.onDel(1)}>
+            <CommonIconFont type="file-text" /> <span>删除</span>
+          </ColorBtn>
+          <ColorBtn onClick={() => props.onRevocation(2)}>
             <CommonIconFont type="return" /> <span>撤回</span>
           </ColorBtn>
           <ColorBtn>
@@ -79,7 +82,7 @@ const NoteCard = () => {
           来自李钟硕的系统通知：我们抱歉的通知您，由于XXX的原因，导致XXXX需要延期XXX天
         </div>
 
-        <div
+        {/* <div
           style={{
             height: '52px',
             borderRadius: '0px 0px 0px 0px',
@@ -124,6 +127,48 @@ const NoteCard = () => {
                 开发部（1）
               </div>
             ))}
+        </div> */}
+        <div
+          style={{
+            height: '52px',
+            borderRadius: '0px 0px 0px 0px',
+            borderTop: '1px solid #ECEDEF',
+            marginTop: '16px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '24px',
+          }}
+        >
+          <div
+            style={{
+              height: '20px',
+              fontSize: '12px',
+              color: '#646566',
+              lineHeight: '20px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              borderRight: '1px solid #ECEDEF',
+              paddingRight: '24px',
+            }}
+          >
+            <CommonIconFont color="#646566" size={16} type="team-2" />
+            持续截止时间
+          </div>
+
+          <div
+            style={{
+              height: '20px',
+              fontSize: '12px',
+              color: '#646566',
+              lineHeight: '20px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+            }}
+          >
+            2023年4月17日12:00:19
+          </div>
         </div>
       </div>
     </div>

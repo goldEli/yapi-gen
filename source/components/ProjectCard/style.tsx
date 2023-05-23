@@ -116,3 +116,15 @@ export const HoverDiv = styled.div`
     color: var(--neutral-n2) !important;
   }
 `
+export const Tags = styled.span<{ type: number }>`
+  height: 16px;
+  background: ${props =>
+    props.type === 1
+      ? 'linear-gradient(225deg, #8dd2f6 0%, #6688ff 100%)'
+      : 'linear-gradient(225deg, #8DB1F6 0%, #7266FF 100%);'};
+  border-radius: 4px 4px 4px 4px;
+  font-size: 12px;
+  padding: 2px 4px;
+  margin-right: 8px;
+  color: #ffffff;
+`

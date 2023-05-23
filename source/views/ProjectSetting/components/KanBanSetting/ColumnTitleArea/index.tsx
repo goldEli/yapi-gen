@@ -27,10 +27,13 @@ const ColumnTitle = styled.span`
   justify-content: space-between;
 `
 
-const ColumnTitleAreaBox = styled.div`
+const ColumnTitleAreaBox = styled.div<{ showBorder: boolean }>`
   display: flex;
   gap: 16px;
   flex-direction: column;
+  box-sizing: border-box;
+  border: 1px solid
+    ${props => (props.showBorder ? 'var(--primary-d1)' : 'transparent')};
 `
 const Text = styled.div`
   font-size: 14px;
@@ -56,8 +59,8 @@ const IconWrap = styled(IconFont)`
   color: var(--neutral-n1-d1);
 `
 const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
-  const { data, issueColumns } = useKanBanData()
-  const item = issueColumns?.[props.index ?? 0]
+  const { columnList } = useKanBanData()
+  const item = columnList?.[props.index ?? 0]
   const draggableId = item.id + '1'
   return (
     <Draggable draggableId={draggableId} index={props.index}>
@@ -66,24 +69,22 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
           <ColumnTitleAreaBox
             ref={provided.innerRef}
             {...provided.draggableProps}
+            showBorder={snapshot.isDragging}
           >
             <ColumnTitle {...provided.dragHandleProps} key={item.id}>
               <Left>
                 <MoveIcon active={snapshot.isDragging} />
-                <Text>{item?.title}</Text>
-                <Count>最大：100</Count>
+                <Text>{item?.name}</Text>
+                <Count>{`最大：${item.max_num}`}</Count>
               </Left>
               <IconWrap onClick={e => {}} type="edit" />
             </ColumnTitle>
-            {data?.map((dataItem, index) => {
-              return (
-                <IssuesGroupList
-                  groupId={dataItem.groupId}
-                  key={dataItem.groupId}
-                  index={props.index}
-                />
-              )
-            })}
+
+            <IssuesGroupList
+              groupId={item.id}
+              key={item.id}
+              index={props.index}
+            />
           </ColumnTitleAreaBox>
         )
       }}

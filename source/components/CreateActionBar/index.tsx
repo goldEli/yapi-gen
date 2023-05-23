@@ -1,9 +1,15 @@
-import { Checkbox, Divider, Menu, message, Space } from 'antd'
+import { Checkbox, Divider, Menu, message, Select, Space } from 'antd'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import DropDownMenu from '../DropDownMenu'
 import IconFont from '../IconFont'
-import { DividerWrap, HasIconMenu, HoverWrap } from '../StyleCommon'
+import {
+  DividerWrap,
+  HasIconMenu,
+  HoverWrap,
+  SelectWrap,
+  SelectWrapBedeck,
+} from '../StyleCommon'
 import { MainTitle, WrapRight } from './style'
 import ScreenMinHover from '../ScreenMinHover'
 import { getMessage } from '../Message'
@@ -112,6 +118,34 @@ const CreateActionBar = (props: Props) => {
   return (
     <WrapRight>
       <Space size={8}>
+        <SelectWrapBedeck>
+          <span style={{ margin: '0 16px', fontSize: '14px' }}>项目类型</span>
+
+          <SelectWrap
+            onChange={confirm}
+            mode="multiple"
+            style={{ width: '100%' }}
+            placeholder={t('common.all')}
+            showSearch
+            optionFilterProp="label"
+            showArrow
+            allowClear
+            options={[
+              {
+                label: '冲刺',
+                value: 1,
+              },
+              {
+                label: '迭代',
+                value: 2,
+              },
+              {
+                label: '所有',
+                value: 3,
+              },
+            ]}
+          />
+        </SelectWrapBedeck>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Checkbox onChange={e => props.onChangeHidden(e.target.checked)} />
           <MainTitle style={{ marginLeft: 8 }}>

@@ -242,6 +242,14 @@ const MainTable = (props: Props) => {
       width: 160,
     },
     {
+      title: '类型',
+      dataIndex: 'prefix',
+      width: 160,
+      render: (text: string) => {
+        return <div>冲刺项目</div>
+      },
+    },
+    {
       title: (
         <NewSort
           fixedKey="member_count"

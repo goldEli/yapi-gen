@@ -1,12 +1,13 @@
 declare namespace Model.Sprint {
-  interface Task {
-    name: string
+  interface SprintTableData {
+    id: string
+    list: any[]
   }
-  interface ProjectSettings{
-    id:number,
-    name:string,
-    type:number,
-    content_txt:string
+  interface ProjectSettings {
+    id: number
+    name: string
+    type: number
+    content_txt: string
   }
   type Visible = boolean
 }

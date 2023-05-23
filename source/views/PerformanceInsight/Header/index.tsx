@@ -4,12 +4,15 @@ import { useEffect, useState } from 'react'
 import View from './components/View'
 import Sprint from './components/Sprint'
 import { HeaderRow, Text, Tabs, DivStyle, Btn1 } from './Style'
-import TimeMain from './components/TimeMain'
+import SelectMain from './components/SelectMain'
 import { Left } from '../components/style'
 import CommonIconFont from '@/components/CommonIconFont'
 import Select from '../components/Select'
 import AddMemberCommonModal from '@/components/AddUser/CommonModal'
-import { clear } from 'console'
+import { useSelector } from '@store/index'
+import { setSave } from '@store/performanceInsight'
+import { useDispatch } from 'react-redux'
+import ViewDialog from './components/ViewDialog'
 interface ItemProps {
   name: string
   id: number
@@ -22,7 +25,7 @@ interface OptionProps {
 }
 const Iteration = () => {
   // sprint  iteration all
-  const [type, setType] = useState('sprint')
+  const [type, setType] = useState('all')
   const [tabs, setTabs] = useState<Array<{ label: string; key: string }>>([])
   const tabs1 = [
     {
@@ -52,6 +55,9 @@ const Iteration = () => {
   const [person, setPerson] = useState<ItemProps[] | []>([])
   const [options, setOptions] = useState<OptionProps[] | []>([])
   const [isVisible, setIsVisible] = useState<boolean>(false)
+  const [isVisibleView, setIsVisibleView] = useState<boolean>(false)
+  const dispatch = useDispatch()
+  const { save } = useSelector(store => store.performanceInsight)
   const getTabsActive = (index: number) => {
     setTabsActive(index)
   }
@@ -93,6 +99,8 @@ const Iteration = () => {
     setOptions(a)
   }
   const onConfirm = (data: Array<{ name: string; id: number }>) => {
+    // 保存弹窗提示需要
+    dispatch(setSave(true))
     setIsVisible(false)
     setPerson(data)
   }
@@ -104,8 +112,9 @@ const Iteration = () => {
     <HeaderRow>
       <Space size={16}>
         <View />
-        <Text>另存为</Text>
-        <Text>保存</Text>
+        <Text onClick={() => setIsVisibleView(true)}>另存为</Text>
+        {/* 保存需要人员，项目选择和时间修改后 */}
+        {save && <Text>保存</Text>}
       </Space>
 
       <Space size={16}>
@@ -115,7 +124,9 @@ const Iteration = () => {
             onSearch={onSearch}
             options={options}
             more={more}
-            onChange={(value: string[]) => console.log(value)}
+            onChange={(value: string[]) => {
+              console.log(value, '项目'), dispatch(setSave(true))
+            }}
             onShowAll={() => onShowAll()}
           />
         )}
@@ -159,7 +170,34 @@ const Iteration = () => {
           </Tabs>
         )}
         {tabsActive === 0 ? (
-          <TimeMain onChange={e => setTimekey(e)} />
+          <SelectMain
+            onChange={e => {
+              setTimekey(e), dispatch(setSave(true))
+            }}
+            placeholder="按周期"
+            list={[
+              {
+                name: '近7天',
+                key: 7,
+              },
+              {
+                name: '近15天',
+                key: 15,
+              },
+              {
+                name: '近1月',
+                key: 1,
+              },
+              {
+                name: '近3个月',
+                key: 3,
+              },
+              {
+                name: '自定义',
+                key: 0,
+              },
+            ]}
+          />
         ) : (
           <Sprint />
         )}
@@ -169,6 +207,16 @@ const Iteration = () => {
         isVisible={isVisible}
         onClose={() => setIsVisible(false)}
         onConfirm={data => onConfirm(data)}
+      />
+      {/* 另存为视图 */}
+      <ViewDialog
+        name={''}
+        title={'另存为视图'}
+        onConfirm={val => {
+          console.log(123, val)
+        }}
+        onClose={() => setIsVisibleView(false)}
+        isVisible={isVisibleView}
       />
     </HeaderRow>
   )
