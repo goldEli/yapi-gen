@@ -53,6 +53,7 @@ import BatchSetPermGroup from './BatchSetPermGroup'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { getMessage } from '@/components/Message'
 import { menuList } from '@/views/SprintProjectManagement/config'
+import CommonIconFont from '@/components/CommonIconFont'
 
 const Wrap = styled.div({
   padding: '0 24px',
@@ -345,6 +346,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
       dataIndex: 'nickname',
       width: 240,
       render: (text: string, record: any) => {
+        console.log(record)
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <CommonUserAvatar avatar={record.avatar} size="large" />
@@ -357,6 +359,9 @@ const ProjectMember = (props: { searchValue?: string }) => {
             >
               {text}
             </span>
+            {record.is_admin === 1 && (
+              <CommonIconFont type="edit"></CommonIconFont>
+            )}
           </div>
         )
       },

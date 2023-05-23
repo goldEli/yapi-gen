@@ -1,13 +1,10 @@
+/* eslint-disable max-statements-per-line */
 /* eslint-disable react/jsx-handler-names */
-import React, {
-  useState,
-  useEffect,
-  forwardRef,
-  useImperativeHandle,
-} from 'react'
+import React, { useState, forwardRef, useImperativeHandle } from 'react'
 import { Select } from 'antd'
 import styled from '@emotion/styled'
 import CommonIconFont from '../CommonIconFont'
+import NoData from '../NoData'
 const Wrap = styled(Select)`
   margin-bottom: 10px;
 `
@@ -33,82 +30,25 @@ const DropBox = styled.div`
   cursor: pointer;
   color: var(--primary-d2);
 `
+interface childProps {
+  name: string
+  id: number
+}
+interface item {
+  name: string
+  id: number
+  children: childProps[]
+}
 interface IProps {
   width?: number
   value?: string
-  categoryClick(data: any): void
+  onChangeCallBack?(data: childProps): void
+  onClearCallback?(): void
+  options: item[]
 }
-const CategoryDrop = (props: IProps, ref: any) => {
+const CategoryDrop = (props: IProps) => {
   const [isOpen, setIsOpen] = useState(false)
-  const data = [
-    {
-      name: '长故事类型',
-      children: [{ name: '长故事', active: false }],
-      visible: true,
-    },
-    {
-      name: '标准事务类型',
-      children: [
-        { name: '故事', active: false },
-        { name: '任务', active: false },
-      ],
-      visible: true,
-    },
-    {
-      name: '故障事务类型',
-      visible: true,
-      children: [
-        { name: '故障', active: false },
-        { name: 'BUG缺陷', active: false },
-      ],
-    },
-    {
-      name: '子任务类型',
-      visible: true,
-      children: [{ name: '子任务', active: false }],
-    },
-  ]
-  const dropdownRender = () => {
-    const menu = data.map(item => (
-      <div key={item.name}>
-        <TypeBox>{item.name}</TypeBox>
-        {item.children.map(item => (
-          <CategoryBox
-            key={item.name}
-            onClick={() => props.categoryClick(item)}
-          >
-            <span>
-              {' '}
-              <img
-                style={{ width: '18px' }}
-                src={
-                  'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png'
-                }
-              />
-              <span
-                style={{
-                  color: props.value === item.name ? 'var(--primary-d2)' : '',
-                }}
-              >
-                {item.name}
-              </span>
-            </span>
-            {props.value === item.name && (
-              <CommonIconFont
-                type="check"
-                color={props.value === item.name ? 'var(--primary-d2)' : ''}
-              ></CommonIconFont>
-            )}
-          </CategoryBox>
-        ))}
-      </div>
-    ))
-    return <DropBox>{menu}</DropBox>
-  }
-  const onBlur = () => {}
-  useImperativeHandle(ref, () => {
-    onBlur
-  })
+  const { options, onClearCallback, onChangeCallBack } = props
   const toggleOpen = () => {
     setIsOpen(!isOpen)
   }
@@ -116,10 +56,52 @@ const CategoryDrop = (props: IProps, ref: any) => {
     <Wrap
       value={props.value ?? ''}
       placeholder="选择类别"
-      dropdownRender={dropdownRender}
+      dropdownRender={() => {
+        const menu = options?.map(item => (
+          <div key={item.name}>
+            <TypeBox>{item.name}</TypeBox>
+            {item.children.map(item => (
+              <CategoryBox
+                key={item.name}
+                onClick={() => onChangeCallBack && onChangeCallBack(item)}
+              >
+                <span>
+                  {' '}
+                  <img
+                    style={{ width: '18px' }}
+                    src={
+                      'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png'
+                    }
+                  />
+                  <span
+                    style={{
+                      color:
+                        props.value === item.name ? 'var(--primary-d2)' : '',
+                    }}
+                  >
+                    {item.name}
+                  </span>
+                </span>
+                {props.value === item.name && (
+                  <CommonIconFont
+                    type="check"
+                    color={props.value === item.name ? 'var(--primary-d2)' : ''}
+                  ></CommonIconFont>
+                )}
+              </CategoryBox>
+            ))}
+          </div>
+        ))
+        return <DropBox>{menu ? menu : <NoData></NoData>}</DropBox>
+      }}
       style={{ width: props.width ?? 300 }}
       open={isOpen}
       onClick={toggleOpen}
+      allowClear
+      onClear={() => {
+        setIsOpen(false)
+        onClearCallback && onClearCallback()
+      }}
     ></Wrap>
   )
 }
