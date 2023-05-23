@@ -17,6 +17,7 @@ import {
   HoverIcon,
   EndTag,
   HoverDiv,
+  Tags,
 } from './style'
 
 type Props = {
@@ -139,7 +140,10 @@ const Index = (props: any) => {
           placement="top"
           title={props.item.name}
         >
-          <CardRightFirst>{props.item.name}</CardRightFirst>
+          <CardRightFirst>
+            <Tags type={1}> 冲刺</Tags>
+            {props.item.name}
+          </CardRightFirst>
         </Tooltip>
 
         <CardRightSecond>

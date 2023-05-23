@@ -6,7 +6,7 @@ import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { OmitText } from '@star-yun/ui'
 import { Space } from 'antd'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getIsPermission } from '@/tools'
 import useSetTitle from '@/hooks/useSetTitle'
@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { getProjectInfo } from '@/services/project'
 import { setProjectInfo } from '@store/project'
 import { editProject } from '@store/create-propject'
-
+import CategoryDrop from '@/components/CategoryDrop'
 const Wrap = styled.div({
   background: 'white',
   height: '100%',
@@ -123,9 +123,16 @@ const ProjectInfo = () => {
   asyncSetTtile(`${t('title.a1')}【${projectInfo.name}】`)
   localStorage.setItem('memberId', projectInfo.id)
   const dispatch = useDispatch()
-
+  const [value, setValue] = useState('')
   return (
     <Wrap>
+      <CategoryDrop
+        value={value}
+        categoryClick={data => {
+          console.log(data)
+          setValue(data.name)
+        }}
+      ></CategoryDrop>
       <InfoLeft>
         <Title>{t('v2_1_1.projectInformation')}</Title>
         <CardGroup size={32}>

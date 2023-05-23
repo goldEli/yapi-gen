@@ -44,6 +44,7 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import CreateNoteModal from './components/CreateNoteModal/CreateNoteModal'
 import NoteDetailDrawer from './components/NoteDetailDrawer/NoteDetailDrawer'
 import MemberModal from './components/MemberModal/MemberModal'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 
 export const tableWrapP = css`
   display: flex;
@@ -82,6 +83,7 @@ const settingWrap = css`
 `
 
 const StaffManagement = () => {
+  const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   asyncSetTtile(t('title.b5'))
@@ -392,6 +394,28 @@ const StaffManagement = () => {
       setList(list.concat(Array.from({ length: 20 })))
     }, 3000)
   }
+  const onDel = (id: any) => {
+    open({
+      title: '删除确认',
+      text: '确认删除该消息？',
+      onConfirm() {
+        return Promise.resolve()
+      },
+    })
+    console.log(id)
+  }
+  const onRevocation = (id: any) => {
+    open({
+      title: '撤回确认',
+      text: '确认撤回该消息？',
+      onConfirm() {
+        console.log('确认')
+
+        return Promise.resolve()
+      },
+    })
+    console.log(id)
+  }
   return (
     <PermissionWrap
       auth="/AdminManagement/StaffManagement"
@@ -399,6 +423,7 @@ const StaffManagement = () => {
         ?.filter((k: any) => k.url === '/AdminManagement')?.[0]
         ?.children?.map((i: any) => i.url)}
     >
+      <DeleteConfirmModal />
       <CreateNoteModal
         onClose={() => setVisible(false)}
         onHandleOk={() => setVisible(false)}
@@ -492,7 +517,7 @@ const StaffManagement = () => {
           scrollableTarget="scrollableDiv"
         >
           {list.map((i: any) => (
-            <NoteCard key={i} />
+            <NoteCard onDel={onDel} onRevocation={onRevocation} key={i} />
           ))}
         </InfiniteScroll>
       </div>

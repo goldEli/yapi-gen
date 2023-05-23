@@ -6,13 +6,14 @@ import { handleId } from '../utils'
 import StatusList from '../StatusList'
 import StatusListItem from '../StatusListItem'
 import usePlaceholderStatusNum from '../hooks/usePlaceholderStatusNum'
+import useKanBanData from '../hooks/useKanBanData'
 
 interface IssuesProps {
   issues?: Model.KanbanConfig.Category
   groupId?: Model.SprintKanBan.IssuesGroup['groupId']
 }
 
-const DropArea = styled.div`
+const DropArea = styled.div<{ showBorder: boolean }>`
   min-height: 100px;
   display: flex;
   flex-direction: column;
@@ -21,6 +22,8 @@ const DropArea = styled.div`
   box-sizing: border-box;
   padding: 16px;
   gap: 8px;
+  border: 1px dashed
+    ${props => (props.showBorder ? 'var(--primary-d1)' : 'transparent')};
 `
 
 const DropStatusArea = styled.div`
@@ -43,12 +46,19 @@ const Issues: React.FC<IssuesProps> = props => {
   const { issues, groupId } = props
   const droppableId = handleId(groupId ?? 0, issues?.id ?? 0)
   const { placeholderItemsLength } = usePlaceholderStatusNum(issues)
+  const { checkIsDrop } = useKanBanData()
 
   return (
     <Droppable type="STATUS" key={issues?.id} droppableId={droppableId}>
       {(provided, snapshot) => {
+        const { draggingFromThisWith } = snapshot
+        const isDrop = checkIsDrop(issues?.id ?? 0, draggingFromThisWith ?? '')
         return (
-          <DropArea ref={provided.innerRef} {...provided.droppableProps}>
+          <DropArea
+            showBorder={isDrop}
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
             {issues?.status?.map((item, idx) => {
               return (
                 <StatusListItem
