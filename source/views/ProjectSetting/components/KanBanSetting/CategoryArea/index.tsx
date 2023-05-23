@@ -37,11 +37,6 @@ const Text = styled.div`
   padding-right: 8px;
 `
 
-const IconWrap = styled(IconFont)`
-  font-size: 14px;
-  color: var(--neutral-n3);
-`
-
 const CategoryArea: React.FC<CategoryAreaProps> = props => {
   const dispatch = useDispatch()
   const { categoryVisibleInfo } = useSelector(store => store.KanbanConfig)
@@ -49,6 +44,13 @@ const CategoryArea: React.FC<CategoryAreaProps> = props => {
     return !categoryVisibleInfo.find(item => item.categoryId === props.data.id)
       ?.close
   }, [categoryVisibleInfo, props.data])
+
+  const children = useMemo(() => {
+    if (!isOpen) {
+      return <></>
+    }
+    return props.children
+  }, [props.children, isOpen])
   return (
     <CategoryAreaBox>
       <TitleArea
@@ -62,7 +64,7 @@ const CategoryArea: React.FC<CategoryAreaProps> = props => {
         <Text>{props.data.name}</Text>
         <CommonButton type="secondary">编辑工作流</CommonButton>
       </TitleArea>
-      {props.children}
+      {children}
     </CategoryAreaBox>
   )
 }
