@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import KanBanStatusBoard from '../KanBanStatusBoard'
+import useControlScrollPlane from '../hooks/useControlScrollPlane'
+import { useSelector } from '@store/index'
 
 const Container = styled.div`
   display: flex;
@@ -13,9 +15,14 @@ const Container = styled.div`
 `
 
 const KanBan = () => {
+  const { columnList } = useSelector(store => store.KanbanConfig)
+  const { ControlScrollPlane, containerRef, childRef } = useControlScrollPlane(
+    columnList.length,
+  )
   return (
-    <Container>
+    <Container ref={containerRef}>
       <KanBanStatusBoard />
+      <ControlScrollPlane />
     </Container>
   )
 }

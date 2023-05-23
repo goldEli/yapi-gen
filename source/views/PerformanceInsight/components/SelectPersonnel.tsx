@@ -166,25 +166,29 @@ const Main = (props: UserInfo) => {
             <div className="msg">管理员1</div>
           </UserInfo>
         </UserMsg>
+        {props.type}
+
         <BtnStyle
         // onClick={() => setIsVisible(true)}
         >
           {/* 快捷操作，打开创建事务的弹窗 */}
-          {(props.type === 'Progress0' ||
-            props.type === 'Progress1' ||
-            props.type === 'Defect0' ||
-            props.type === 'Defect1') && <span className="text">分配事务</span>}
+          {(props.type === 'Progress_iteration' ||
+            props.type === 'Progress_sprint' ||
+            props.type === 'Defect_iteration' ||
+            props.type === 'Defect_sprint') && (
+            <span className="text">分配事务</span>
+          )}
         </BtnStyle>
       </MainStyle1>
       <MainWrap size={32}>
         <Item onClick={() => onChangeIdx(0)} activeIdx={type === 0}>
           <span>工作记录</span>
         </Item>
-        {/* // 进展对比 Progress0-迭代 Progress1冲刺 ProgressAll全局
-    //缺陷 Defect0-迭代 Defect1冲刺 DefectAll全局 */}
-        {props.type === 'Progress0' ||
-        props.type === 'Progress1' ||
-        props.type === 'ProgressAll' ? (
+        {/* // 进展对比 Progress_iteration-迭代 Progress_sprint冲刺 Progress_all全局
+       //缺陷 Defect_iteration-迭代 Defect1冲刺 DefectAll全局 */}
+        {props.type === 'Progress_iteration' ||
+        props.type === 'Progress_sprint' ||
+        props.type === 'Progress_all' ? (
           <>
             <Item onClick={() => onChangeIdx(1)} activeIdx={type === 1}>
               <span>他创建的事务</span>
@@ -236,7 +240,6 @@ const Main = (props: UserInfo) => {
   )
 }
 const SelectPersonnel = (props: Props) => {
-  console.log(props, 'props')
   return (
     <Detail
       children={

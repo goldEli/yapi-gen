@@ -2,6 +2,7 @@ import React from 'react'
 import styled from '@emotion/styled'
 import Issues from '../Issues'
 import useKanBanData from '../hooks/useKanBanData'
+import CategoryArea from '../CategoryArea'
 
 interface IssuesGroupProps {
   // issuesGroup: Model.SprintKanBan.IssuesGroup
@@ -20,9 +21,6 @@ const DropAreaList = styled.div`
   flex-direction: column;
   /* min-height: 80vh; */
 `
-const CateGoryTittleArea = styled.div<{ visible: boolean }>`
-  visibility: ${props => (props.visible ? 'visible' : 'hidden')};
-`
 
 const IssuesGroup: React.FC<IssuesGroupProps> = props => {
   const { columnList } = useKanBanData()
@@ -32,12 +30,13 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
       <DropAreaList>
         {group?.categories.map(issues => {
           return (
-            <>
-              <CateGoryTittleArea visible={props.index === 0}>
-                {issues.name}
-              </CateGoryTittleArea>
+            <CategoryArea
+              showTitle={props.index === 0}
+              key={issues.id}
+              data={issues}
+            >
               <Issues key={issues?.id} issues={issues} groupId={group?.id} />
-            </>
+            </CategoryArea>
           )
         })}
       </DropAreaList>

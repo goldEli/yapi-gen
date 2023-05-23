@@ -15,7 +15,7 @@ const getTitleTips = (text: string, tips: string) => {
   return (
     <div style={{ display: 'flex', cursor: 'pointer' }}>
       {text}
-      <Tooltip title={tips} trigger="click" defaultOpen>
+      <Tooltip title={tips} trigger="click">
         <div style={{ margin: '0 8px' }}>
           <CommonIconFont type="question" size={16} />
         </div>
@@ -36,9 +36,11 @@ const NewSort = (sortProps: any) => {
   )
 }
 interface Props {
-  // 进展对比 Progress0-迭代 Progress1冲刺 ProgressAll全局 //缺陷 Defect0-迭代 Defect1冲刺 DefectAll全局
+  // 进展对比 Progress_iteration-迭代 Progress1冲刺 ProgressAll全局 //缺陷 Defect_iteration-迭代 Defect1冲刺 DefectAll全局
   type: string
   title: string
+  //代表是全局还是冲刺迭代
+  homeType: string
 }
 const ProgressComparison = (props: Props) => {
   const [columns, setColumns] = useState<
@@ -275,25 +277,25 @@ const ProgressComparison = (props: Props) => {
     },
   ]
   useEffect(() => {
-    // 进展对比 Progress0-迭代 Progress1冲刺 ProgressAll全局
-    //缺陷 Defect0-迭代 Defect1冲刺 DefectAll全局
+    // 进展对比 Progress_iteration-迭代 Progress1冲刺 ProgressAll全局
+    //缺陷 Defect_iteration-迭代 Defect1冲刺 DefectAll全局
     switch (props.type) {
-      case 'Progress0':
+      case 'Progress_iteration':
         setColumns(columns1)
         break
-      case 'Progress1':
+      case 'Progress_sprint':
         setColumns(columns1)
         break
-      case 'ProgressAll':
+      case 'Progress_all':
         setColumns(columns2)
         break
-      case 'Defect0':
+      case 'Defect_iteration':
         setColumns(columns3)
         break
-      case 'Defect1':
+      case 'Defect_sprint':
         setColumns(columns3)
         break
-      case 'DefectAll':
+      case 'Defect_all':
         setColumns(columns3)
         break
     }
@@ -306,15 +308,17 @@ const ProgressComparison = (props: Props) => {
       <HeaderAll
         time="2023-08-08 ~ 2023-09-08"
         personData={[{ name: '123' }]}
+        type={props.type}
       />
       {/* 表格 */}
       <Col>
         <TitleCss>{props.title}</TitleCss>
       </Col>
-      {/* // 进展对比 Progress0-迭代 Progress1冲刺 ProgressAll全局
-    //缺陷 Defect0-迭代 Defect1冲刺 DefectAll全局 */}
+      {/* // 进展对比 Progress_iteration-迭代 Progress1冲刺 ProgressAll全局
+    //缺陷 Defect_iteration-迭代 Defect1冲刺 DefectAll全局 */}
       {/* 迭代和冲刺的 */}
-      {(props.type === 'Progress0' || props.type === 'Progress1') && (
+      {(props.type === 'Progress_iteration' ||
+        props.type === 'Progress_sprint') && (
         <div
           style={{ display: 'flex', alignItems: 'center', padding: '0 24px' }}
         >
@@ -332,7 +336,7 @@ const ProgressComparison = (props: Props) => {
         </div>
       )}
       {/* 全局的 */}
-      {props.type === 'ProgressAll' && (
+      {props.type === 'Progress_all' && (
         <div
           style={{ display: 'flex', alignItems: 'center', padding: '0 24px' }}
         >
@@ -347,7 +351,8 @@ const ProgressComparison = (props: Props) => {
           <PersonText>存量风险：30项</PersonText>
         </div>
       )}
-      {(props.type === 'Defect0' || props.type === 'Defect1') && (
+      {(props.type === 'Defect_iteration' ||
+        props.type === 'Defect_sprint') && (
         <div
           style={{ display: 'flex', alignItems: 'center', padding: '0 24px' }}
         >
@@ -366,7 +371,7 @@ const ProgressComparison = (props: Props) => {
           <PersonText>存量风险：30项</PersonText>
         </div>
       )}
-      {props.type === 'DefectAll' && (
+      {props.type === 'Defect_all' && (
         <div
           style={{ display: 'flex', alignItems: 'center', padding: '0 24px' }}
         >
@@ -401,20 +406,22 @@ const ProgressComparison = (props: Props) => {
           }
         />
       </TableStyle>
-      {/* 新增工作项 */}
+      {/* 选择人员 */}
       <WorkItem
+        visible={isvisible}
+        ids={[1, 2, 3]}
+        id={2}
+        onCancel={() => {
+          setIsvisible(false)
+        }}
+      />
+      {/* 新增工作项 */}
+      <SelectPersonnel
+        type={props.type}
         visible={visible}
         ids={[1, 2, 3]}
         id={2}
         onCancel={() => setVisible(false)}
-      />
-      {/* 选择人员 */}
-      <SelectPersonnel
-        type={props.type}
-        visible={isvisible}
-        ids={[1, 2, 3]}
-        id={2}
-        onCancel={() => setIsvisible(false)}
       />
     </>
   )

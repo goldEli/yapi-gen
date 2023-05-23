@@ -1,11 +1,11 @@
 import urls from '@/constants/urls'
 import * as http from '@/tools/http'
 
-export const getSprintList = async (
+export const getSprintKanBanList = async (
   params: API.Sprint.GetSprintList.Params,
 ) => {
   const response = await http.get<any, API.Sprint.GetSprintList.Result>(
-    'getSprintList',
+    'getSprintKanBanList',
     params,
   )
   return response
@@ -25,7 +25,32 @@ export const getProjectRoleList = async (
 // 修改权限角色
 export const updateProjectRole = (
   params: API.Sprint.GetProjectRoleList.updateParams,
-) => http.put<any, API.Sprint.GetProjectRoleList.Result>(
-  `updateMember`,
-  params,
-)
+) => http.put<any, API.Sprint.GetProjectRoleList.Result>(`updateMember`, params)
+// 完成率Top10
+export const getCompletionRate = async (
+  params: API.Sprint.GetCompletionRate.Params,
+) => {
+  const response = await http.get<any, API.Sprint.GetCompletionRate.Result>(
+    `getCompletionRate`,
+    params,
+  )
+  return response.data
+}
+// 阶段缺陷占比
+export const getDefectRatio = async (
+  params: API.Sprint.GetDefectRatio.Params,
+) => {
+  const response = await http.get<any, API.Sprint.GetDefectRatio.Result>(
+    `getDefectRatio`,
+    params,
+  )
+  return response.data
+}
+// 缺陷趋势
+export const getBugList = async (params: API.Sprint.GetDefectRatio.Params) => {
+  const response = await http.get<any, API.Sprint.GetDefectRatio.Result>(
+    `getDefectRatio`,
+    params,
+  )
+  return response.data
+}

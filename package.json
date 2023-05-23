@@ -146,6 +146,15 @@
       "max-lines": [
         2,
         1000
+      ],
+      "@typescript-eslint/no-this-alias": [
+        "error",
+        {
+          "allowDestructuring": false,
+          "allowedNames": [
+            "_this"
+          ]
+        }
       ]
     }
   },

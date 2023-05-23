@@ -7,10 +7,10 @@ import { setListActiveId } from '@store/global'
 const name = 'sprint'
 
 // 任务列表列表
-export const getSprintList = createAsyncThunk(
-  `${name}/getSprintList`,
+export const getSprintKanBanList = createAsyncThunk(
+  `${name}/getSprintKanBanList`,
   async () => {
-    const res = await services.sprint.getSprintList({ id: 123 })
+    const res = await services.sprint.getSprintKanBanList({ id: 123 })
 
     return res.data.list
   },
@@ -22,11 +22,11 @@ export const saveSprintDetailDrawer =
     dispatch(setListActiveId(params?.id ?? 0))
   }
 
-  // 获取项目权限角色列表
-  export const  getProjectRoleList= createAsyncThunk(
-    `${name}/getProjectRoleList`,
-    async (params:API.Sprint.GetProjectRoleList.Params) => {
-      const res = await services.sprint.getProjectRoleList(params)
-      return res.data
-    },
-  )
+// 获取项目权限角色列表
+export const getProjectRoleList = createAsyncThunk(
+  `${name}/getProjectRoleList`,
+  async (params: API.Sprint.GetProjectRoleList.Params) => {
+    const res = await services.sprint.getProjectRoleList(params)
+    return res.data
+  },
+)
