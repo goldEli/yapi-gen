@@ -22,7 +22,7 @@ const Board: React.FC<BoardProps> = props => {
     <DragDropContext
       onDragEnd={onDragEnd}
       onDragStart={start => {
-        console.log(start)
+        console.log({ start })
       }}
     >
       <BoardBox>{props.children}</BoardBox>
