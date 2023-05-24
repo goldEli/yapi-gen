@@ -17,7 +17,7 @@ import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
 import { getMessage } from '../Message'
 import TableQuickEdit from '../TableQuickEdit'
-import ChangeStatusPopover from '../ChangeStatusPopover'
+import ChangeStatusPopover from '../ChangeStatusPopover/index'
 import StateTag from '../StateTag'
 import ChangePriorityPopover from '../ChangePriorityPopover'
 import DemandProgress from '../DemandProgress'
@@ -336,8 +336,8 @@ export const useDynamicColumns = (state: any) => {
               )
             }
             projectId={record.project_id}
-            record={record}
-            onChangeStatus={(value: any) => state.updateStatus(value, record)}
+            // record={record}
+            // onChangeStatus={(value: any) => state.updateStatus(value, record)}
           >
             <StateTag
               style={{

@@ -16,6 +16,7 @@ declare namespace Model.KanbanConfig {
     attachment_path?: string
     status_name: string
     is_start: 1 | 2
+    status_color?: string
     is_end: 1 | 2
     kanban_column_id?: number
     can_flow_status?: number[]
@@ -26,7 +27,7 @@ declare namespace Model.KanbanConfig {
     attachment_id: number
     // 图片地址
     attachment_path: string
-    status: Status[]
+    status?: Status[]
   }
   interface Column {
     id: number

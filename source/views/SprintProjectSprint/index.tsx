@@ -7,7 +7,6 @@ import { useTranslation } from 'react-i18next'
 import { setGuideVisible } from '@store/sprint'
 import { useDispatch, useSelector } from '@store/index'
 import styled from '@emotion/styled'
-import CommonBreadCrumd from '@/components/CommonBreadcrumd'
 import InputSearch from '@/components/InputSearch'
 import {
   CloseWrap,
@@ -20,6 +19,9 @@ import IconFont from '@/components/IconFont'
 import { Popover, Tooltip } from 'antd'
 import CustomSelect from '@/components/CustomSelect'
 import DndKitTable from './components/DndKitTable'
+import MyBreadcrumb from '@/components/MyBreadcrumb'
+import CreateSprintModal from './components/CreateSprintModal'
+import CompleteSprintModal from './components/CompleteSprintModal'
 
 const SearchBox = styled.div`
   display: flex;
@@ -43,6 +45,7 @@ const Left = styled.div<{ active: boolean }>`
   .header {
     display: flex;
     justify-content: space-between;
+    padding: 0px 24px;
   }
   padding-bottom: 52px;
 `
@@ -153,11 +156,13 @@ const TabItemWrap = styled.div`
 
 const Right = styled.div`
   padding: 0px 24px;
+  overflow-y: scroll;
   flex: 1;
   .header {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    margin-bottom: 24px;
   }
 `
 const SelectWrapForList = styled(SelectWrapBedeck)`
@@ -205,6 +210,14 @@ const SprintProjectSprint: React.FC<IProps> = props => {
   const [isExpand, setIsExpand] = useState(true)
   const [isFilter, setIsFilter] = useState(false)
   const [currentFilter, setCurrentFilter] = useState(filterList[0])
+  const [sprintModal, setSprintModal] = useState<{
+    visible: boolean
+    type: any
+  }>({
+    visible: false,
+    type: 'create',
+  })
+  const [completeVisible, setCompleteVisible] = useState(false)
 
   const inform = [
     {
@@ -286,7 +299,7 @@ const SprintProjectSprint: React.FC<IProps> = props => {
   return (
     <div>
       <SearchBox>
-        <CommonBreadCrumd></CommonBreadCrumd>
+        <MyBreadcrumb />
         <div>
           <InputSearch
             onChangeSearch={setSearchValue}
@@ -321,7 +334,16 @@ const SprintProjectSprint: React.FC<IProps> = props => {
                 </div>
               </TabsWrap>
               <RightIcon>
-                <CloseWrap width={24} height={24}>
+                <CloseWrap
+                  width={24}
+                  height={24}
+                  onClick={() => {
+                    setSprintModal({
+                      visible: true,
+                      type: 'create',
+                    })
+                  }}
+                >
                   <IconFont
                     style={{
                       fontSize: 18,
@@ -430,6 +452,22 @@ const SprintProjectSprint: React.FC<IProps> = props => {
         visible={guideVisible}
         inform={inform}
         close={() => dispatch(setGuideVisible(false))}
+      />
+      <CreateSprintModal
+        type={sprintModal.type}
+        visible={sprintModal.visible}
+        onClose={() =>
+          setSprintModal({
+            visible: false,
+            type: 'create',
+          })
+        }
+      />
+      <CompleteSprintModal
+        visible={completeVisible}
+        onClose={() => {
+          setCompleteVisible(false)
+        }}
       />
     </div>
   )

@@ -238,6 +238,7 @@ const TagBox = (props: TagProps) => {
 
 interface Props {
   addWrap: React.ReactElement
+  // 是否支持直接修改
   canAdd?: boolean
   onChangeTag?(arr: any, type: string): void
   defaultList?: any

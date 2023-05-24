@@ -4,10 +4,11 @@
 
 import { useThrottle } from '@/hooks/useThrottle'
 import { css } from '@emotion/css'
-import { Space } from 'antd'
+import { Space, Button } from 'antd'
 import IconFont from './IconFont'
-import { AsyncButton as Button } from '@staryuntech/ant-pro'
+// import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import styled from '@emotion/styled'
+import { MouseEvent } from 'react'
 
 const primary = css`
   background: var(--auxiliary-b1) !important;
@@ -110,7 +111,7 @@ const icon = css`
   }
 `
 
-const ButtonWrap = styled(Button)<{ size?: any }>`
+const ButtonWrap = styled(Button as any)<{ size?: any }>`
   display: flex;
   align-items: center;
   height: ${props => (props.size === 'small' ? '24px' : '32px')};
@@ -118,7 +119,7 @@ const ButtonWrap = styled(Button)<{ size?: any }>`
 
 interface Props {
   hidden?: any
-  onClick?(): void
+  onClick?: React.MouseEventHandler<HTMLButtonElement>
   // 按钮文本
   children?: React.ReactNode
   // 按钮类型

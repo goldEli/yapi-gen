@@ -9,7 +9,7 @@ const usePlaceholderStatusNum = (category?: Model.KanbanConfig.Category) => {
     // let index = columnList.findIndex(item => item.id === columnId)
     columnList.forEach(column => {
       const current = column.categories.find(item => item.id === category?.id)
-      num = Math.max(num, current?.status.length ?? 0)
+      num = Math.max(num, current?.status?.length ?? 0)
     })
     return num
   }, [columnList, category])

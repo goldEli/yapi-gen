@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import HasSideCommonLayout from '@/components/HasSideCommonLayout'
 import { ProjectWrap } from './style'
 import ProjectDetailSide from './ProjectDetailSide'
-import { Outlet, useNavigate, useSearchParams } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 interface IProps {}
 const Project: React.FC<IProps> = props => {
   const path = [

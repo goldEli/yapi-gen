@@ -211,3 +211,24 @@ export const NoDataCreateWrap = styled.div({
     },
   },
 })
+
+export const AffairTypeWrap = styled.div``
+export const AffairTypeHeader = styled.div`
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 16px;
+  margin-bottom: 18px;
+`
+export const AffairTypeList = styled.div`
+  height: 30px;
+  border: 1px solid red;
+  cursor: pointer;
+`
+export const AffairTypeText = styled.div`
+  font-size: var(--font12);
+  color: var(--neutral-n3);
+  margin-left: 8px;
+  display: inline-block;
+`

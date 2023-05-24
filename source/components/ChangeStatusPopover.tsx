@@ -35,7 +35,7 @@ const ChangeStatusPopover = (props: Props) => {
       overlayStyle={{ width: 683 }}
       // 设置宽度是用于弹窗自适应宽度后会左右摆动问题
       content={
-        props?.isCanOperation && (
+        props?.isCanOperation ? (
           <ShapeContent
             onTap={onChangeStatus}
             onClosePopover={() => setPopoverVisible(false)}
@@ -49,7 +49,7 @@ const ChangeStatusPopover = (props: Props) => {
               },
             }}
           />
-        )
+        ) : null
       }
     >
       {props.children}

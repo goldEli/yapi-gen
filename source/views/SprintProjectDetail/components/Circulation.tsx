@@ -12,11 +12,10 @@ import { OmitText } from '@star-yun/ui'
 import NoData from '@/components/NoData'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
-import { getStoryStatusLog } from '@/services/demand'
-import { setIsUpdateChangeLog } from '@store/demand'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import StateTag from '@/components/StateTag'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
+import { getSprintStatusLog } from '@/services/sprint'
 
 const TimeLIneWrap = styled(Timeline)({
   marginTop: 24,
@@ -113,26 +112,29 @@ const ContentWrap = styled.div({
   width: 'calc(100% - 70px)',
 })
 
-const Circulation = () => {
+interface Props {
+  activeKey: string
+}
+
+const Circulation = (props: Props) => {
   const [t] = useTranslation()
   const [isSpin, setIsSpin] = useState(false)
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const projectId = paramsData.id
-  const { demandId } = paramsData
+  const { sprintId, id } = paramsData
   const [statusLogs, setStatusLogs] = useState<any>({
     list: undefined,
   })
-  const { isUpdateChangeLog } = useSelector(store => store.demand)
+  // const { isUpdateChangeLog } = useSelector(store => store.demand)
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
 
   const getLogs = async (state: boolean) => {
     if (state) {
       setIsSpin(true)
-      const result = await getStoryStatusLog({
-        projectId,
-        demandId,
+      const result = await getSprintStatusLog({
+        projectId: id,
+        sprintId,
         all: true,
       })
       setStatusLogs({
@@ -141,21 +143,23 @@ const Circulation = () => {
       dispatch(setIsRefresh(false))
       setIsSpin(false)
     } else {
-      const result = await getStoryStatusLog({
-        projectId,
-        demandId,
+      const result = await getSprintStatusLog({
+        projectId: id,
+        sprintId,
         all: true,
       })
       setStatusLogs({
         list: result,
       })
     }
-    dispatch(setIsUpdateChangeLog(false))
+    // dispatch(setIsUpdateChangeLog(false))
   }
 
   useEffect(() => {
-    getLogs(true)
-  }, [])
+    if (props.activeKey === '3') {
+      getLogs(true)
+    }
+  }, [props.activeKey])
 
   useEffect(() => {
     if (isRefresh) {
@@ -164,11 +168,11 @@ const Circulation = () => {
     }
   }, [isRefresh])
 
-  useEffect(() => {
-    if (isUpdateChangeLog) {
-      getLogs(false)
-    }
-  }, [isUpdateChangeLog])
+  // useEffect(() => {
+  //   if (isUpdateChangeLog) {
+  //     getLogs(false)
+  //   }
+  // }, [isUpdateChangeLog])
 
   // 返回自定义值
   const getValues = (key: any, values: any) => {

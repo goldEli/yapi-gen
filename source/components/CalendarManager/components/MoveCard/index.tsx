@@ -49,7 +49,7 @@ const MoveCard: React.FC<ScheduleCardProps> = props => {
 
   const content = useMemo(() => {
     const color = getColor(props.data?.color ?? 0)
-    if (data?.is_show_reply) {
+    if (data?.is_show_reply && data?.is_show_busy) {
       return (
         <>
           <BellRed />
@@ -59,6 +59,20 @@ const MoveCard: React.FC<ScheduleCardProps> = props => {
             className={getColorClassName()}
           >
             {data?.is_busy_text}
+          </Title>
+        </>
+      )
+    }
+    if (data?.is_show_reply && !data?.is_show_busy) {
+      return (
+        <>
+          <BellRed />
+          <Title
+            color={color}
+            isSelected={isSelected}
+            className={getColorClassName()}
+          >
+            {data?.subject}
           </Title>
         </>
       )

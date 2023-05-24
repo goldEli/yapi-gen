@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as services from '@/services'
 import { AppDispatch, store } from '@store/index'
-import { setSaveAsViewModelInfo } from '.'
+import { modifyColumn, setEditColumnModelInfo, setSaveAsViewModelInfo } from '.'
 import { getMessage } from '@/components/Message'
 
 const name = 'KanbanConfig'
@@ -29,4 +29,32 @@ export const onSaveAsViewModel =
     console.log('onSaveAsViewModel', data)
     getMessage({ msg: '保存成功!', type: 'success' })
     dispatch(closeSaveAsViewModel())
+  }
+
+export const openEditColumnModel =
+  (data: Model.KanbanConfig.Column) => async (dispatch: AppDispatch) => {
+    dispatch(
+      setEditColumnModelInfo({
+        visible: true,
+        columnInfo: data,
+      }),
+    )
+  }
+
+export const closeEditColumnModel = () => async (dispatch: AppDispatch) => {
+  dispatch(
+    setEditColumnModelInfo({
+      visible: false,
+    }),
+  )
+}
+
+export const onOkEditColumnModel =
+  (data: Model.KanbanConfig.Column) => async (dispatch: AppDispatch) => {
+    dispatch(modifyColumn(data))
+    dispatch(
+      setEditColumnModelInfo({
+        visible: false,
+      }),
+    )
   }

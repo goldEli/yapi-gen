@@ -35,4 +35,23 @@ declare namespace Model.Project {
     name?: string
     icon?: string
   }
+  interface Category {
+    active?: boolean
+    attachmentPath?: string
+    color?: string
+    hasDemand?: number
+    id?: number
+    isCheck?: number
+    name?: string
+    remark?: string
+    status?: number
+    statusCount?: number
+    work_type?: number
+  }
+  interface CategoryList {
+    name: string
+    children: Category[]
+    visible: boolean
+    workType: string
+  }
 }

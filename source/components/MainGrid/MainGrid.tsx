@@ -36,11 +36,24 @@ const MainGrid = (props: Props) => {
   const onToDetail = (item: any) => {
     const params = encryptPhp(JSON.stringify({ id: item.id }))
     dispatch(setProjectType(item.prefix))
-    if (item.prefix === 'sprint') {
-      navigate(`/SprintProjectManagement/KanBan?data=${params}`)
+    console.log('project_type', item)
+    if (item.projectType === 2) {
+      navigate(
+        `${
+          item.defaultHomeMenu
+            ? item.defaultHomeMenu
+            : '/SprintProjectManagement/KanBan'
+        }?data=${params}`,
+      )
       return
     }
-    navigate(`/ProjectManagement/Demand?data=${params}`)
+    navigate(
+      `${
+        item.defaultHomeMenu
+          ? item.defaultHomeMenu
+          : '/ProjectManagement/Demand'
+      }?data=${params}`,
+    )
   }
 
   const onAddClick = () => {

@@ -4,7 +4,7 @@
 import { Space, Menu, message } from 'antd'
 import styled from '@emotion/styled'
 import { getIsPermission, getParamsData } from '@/tools/index'
-import { DividerWrap, HasIconMenu, HoverWrap } from './StyleCommon'
+import { DividerWrap, HasIconMenu } from './StyleCommon'
 import { useTranslation } from 'react-i18next'
 import IconFont from './IconFont'
 import DropDownMenu from './DropDownMenu'
@@ -116,7 +116,7 @@ const OperationGroup = (props: Props) => {
       {(location.pathname.includes('Demand') ||
         location.pathname.includes('Affair')) && (
         <>
-          <ViewPort pid={projectId} />
+          <ViewPort pid={projectId} type={1} />
           <DividerWrap type="vertical" />
         </>
       )}

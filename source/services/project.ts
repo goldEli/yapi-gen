@@ -51,10 +51,11 @@ export const getProjectList: any = async (params: any) => {
         prefix: i.prefix,
         isPublic: i.is_public,
         groupIds: i.groups?.map((k: any) => k.id),
+        projectType: i.project_type,
+        defaultHomeMenu: i.default_home_menu,
       })),
     }
   }
-
   return {
     currentPage: params.page,
     pageSize: params.pageSize,
@@ -74,6 +75,8 @@ export const getProjectList: any = async (params: any) => {
       createName: i.user_name,
       info: i.info,
       isPublic: i.is_public,
+      projectType: i.project_type,
+      defaultHomeMenu: i.default_home_menu,
     })),
   }
 }
@@ -234,6 +237,7 @@ export const getProjectInfo: any = async (params: any) => {
     leaderName: response.data.leader_name,
     permissionType: response.data.permission_type,
     projectType: response.data.project_type,
+    defaultHomeMenu: response.data.default_home_menu,
   }
 }
 
@@ -316,7 +320,6 @@ export const getProjectMember: any = async (params: any) => {
       nickname: i.nickname,
       positionName: i.position_name,
       roleName: i.role_name,
-      is_admin: i.is_admin,
     }))
   } else {
     return {
@@ -337,6 +340,7 @@ export const getProjectMember: any = async (params: any) => {
         userIds: i.id,
         phone: i.phone,
         email: i.email,
+        is_admin: i.is_admin,
       })),
     }
   }
@@ -498,6 +502,7 @@ export const storyConfigCategoryList: any = async (params: any) => {
       remark: i.remark,
       attachmentPath: i.attachment_path,
       status: i.status,
+      work_type: i.work_type,
     })),
   }
 }
@@ -516,6 +521,7 @@ export const addStoryConfigCategory: any = async (params: any) => {
     attachment_id: params.attachment_id,
     project_id: params.projectId,
     remark: params.remark,
+    work_type: params.work_type,
   })
 }
 
@@ -906,5 +912,7 @@ export const getAffiliationUser = async (id: any) => {
 // 用户最近访问的项目列表
 export const getProjectRecent = async () => {
   const response = await http.get<any>('/b/project/recent')
-  return response.data
+  return response.data.map((item: { default_home_menu: string }) => {
+    return { ...item, defaultHomeMenu: item.default_home_menu }
+  })
 }

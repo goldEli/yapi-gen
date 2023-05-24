@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { SortableItem } from './SortableItem'
 import { Droppable } from 'react-beautiful-dnd'
 import styled from '@emotion/styled'
@@ -7,6 +7,8 @@ import NoData from '@/components/NoData'
 import { Collapse } from 'antd'
 import IconFont from '@/components/IconFont'
 import CommonButton from '@/components/CommonButton'
+import PaginationBox from '@/components/TablePagination'
+import CreateSprintModal from './CreateSprintModal'
 const { Panel } = Collapse
 
 interface XTableProps {
@@ -18,19 +20,36 @@ interface XTableProps {
 const XTableWrap = styled.div`
   .dnd {
     .ant-table-tbody td[data-cypress='draggable-handle'] {
-      cursor: move;
       height: 52px;
     }
+  }
+  .ant-table-body {
+    max-height: 400px !important;
+  }
+  .nodata {
+    height: 50px;
+    line-height: 50px;
+    background: var(--neutral-white-d4);
+    border-radius: 6px 6px 6px 6px;
+    border: 1px dashed var(--neutral-n6-d1);
+    font-size: 12px;
+    font-family: MiSans-Regular, MiSans;
+    color: var(--neutral-n3);
+    text-align: center;
+    &:hover {
+      border: 1px dashed var(--primary-d1);
+    }
+    margin-top: 17px;
   }
 
   // 元素拖动样式
   .dragItem {
     position: relative;
     touch-action: none;
-
     transform: translate3d(var(--translate-x, 0), var(--translate-y, 0), 0)
       scale(var(--scale, 1));
     transition: box-shadow 200ms ease;
+    cursor: pointer;
   }
 
   .dragOverlay {
@@ -54,6 +73,9 @@ const XTableWrap = styled.div`
   }
   .ant-table-footer {
     background-color: var(--neutral-white-d1);
+  }
+  .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+    padding: 0px 16px !important;
   }
 `
 const PanelHeader = styled.div`
@@ -85,111 +107,148 @@ const CreateTransactionButton = styled.div`
   align-items: center;
   cursor: pointer;
 `
+const PanelWrap = styled(Panel)`
+  .ant-collapse-content-box {
+    max-height: inherit !important;
+  }
+`
 
 const XTable: React.FC<XTableProps> = props => {
-  // const { isOver, setNodeRef } = useDroppable({
-  //   id: props.id,
-  // });
-  // const style = {
-  //   opacity: isOver ? 1 : 0.5,
-  // };
+  const [pageObj, setPageObj] = useState<any>({})
+  const [sprintModal, setSprintModal] = useState<{
+    visible: boolean
+    type: any
+  }>({
+    visible: false,
+    type: 'create',
+  })
+
   return (
-    <Droppable key={props.id} droppableId={props.id}>
-      {(provided, snapshot) => {
-        return (
-          <XTableWrap ref={provided.innerRef} {...provided.droppableProps}>
-            {/* <Table
-              rowKey="id"
-              className="dnd"
-              dataSource={props.data}
-              columns={props.columns}
-              pagination={{ pageSize: 2 }}
-              components={{ body: { row: SortableItem } }}
-            /> */}
-            <Collapse
-              defaultActiveKey={['1']}
-              ghost
-              expandIcon={({ isActive }: any) => {
-                return isActive ? (
-                  <IconFont
-                    style={{
-                      fontSize: 14,
-                      color: 'var(--neutral-n3)',
-                    }}
-                    type="down-icon"
-                  />
-                ) : (
-                  <IconFont
-                    style={{
-                      fontSize: 14,
-                      color: 'var(--neutral-n3)',
-                    }}
-                    type="right-icon"
-                  />
-                )
-              }}
-            >
-              <Panel
-                header={
-                  <PanelHeader
-                    onClick={e => {
-                      e.stopPropagation()
-                    }}
-                  >
-                    <div>
-                      <span className="title">三月第一周的冲刺</span>
-                      <span className="date">
-                        2022-06-17 ~ 2022-07-30（可见3个，共4个事务）
-                      </span>
-                      <IconFont
-                        style={{
-                          fontSize: 16,
-                          color: 'var(--neutral-n3)',
-                          marginRight: 16,
-                        }}
-                        type="edit"
-                      />
-                      <IconFont
-                        style={{
-                          fontSize: 16,
-                          color: 'var(--neutral-n3)',
-                        }}
-                        type="delete"
-                      />
-                    </div>
-                    <CommonButton type="light">开始冲刺</CommonButton>
-                  </PanelHeader>
-                }
-                key="1"
+    <>
+      <Droppable key={props.id} droppableId={props.id}>
+        {provided => {
+          return (
+            <XTableWrap ref={provided.innerRef} {...provided.droppableProps}>
+              <Collapse
+                defaultActiveKey={['1']}
+                ghost
+                expandIcon={({ isActive }: any) => {
+                  return isActive ? (
+                    <IconFont
+                      style={{
+                        fontSize: 14,
+                        color: 'var(--neutral-n3)',
+                      }}
+                      type="down-icon"
+                    />
+                  ) : (
+                    <IconFont
+                      style={{
+                        fontSize: 14,
+                        color: 'var(--neutral-n3)',
+                      }}
+                      type="right-icon"
+                    />
+                  )
+                }}
               >
-                <ResizeTable
-                  className="dnd"
-                  isSpinning={false}
-                  dataWrapNormalHeight=""
-                  col={props.columns}
-                  noData={<NoData />}
-                  dataSource={props.data}
-                  components={{ body: { row: SortableItem } }}
-                  footer={() => (
-                    <CreateTransactionButton>
-                      <IconFont
-                        style={{
-                          fontSize: 16,
-                          marginRight: 8,
+                <PanelWrap
+                  header={
+                    <PanelHeader
+                      onClick={e => {
+                        e.stopPropagation()
+                      }}
+                    >
+                      <div>
+                        <span className="title">三月第一周的冲刺</span>
+                        <span className="date">
+                          2022-06-17 ~ 2022-07-30（可见3个，共4个事务）
+                        </span>
+                        <IconFont
+                          onClick={() => {
+                            setSprintModal({
+                              visible: true,
+                              type: 'edit',
+                            })
+                          }}
+                          style={{
+                            fontSize: 16,
+                            color: 'var(--neutral-n3)',
+                            marginRight: 16,
+                          }}
+                          type="edit"
+                        />
+                        <IconFont
+                          style={{
+                            fontSize: 16,
+                            color: 'var(--neutral-n3)',
+                          }}
+                          type="delete"
+                        />
+                      </div>
+                      <CommonButton
+                        type="light"
+                        onClick={() => {
+                          setSprintModal({
+                            visible: true,
+                            type: 'start',
+                          })
                         }}
-                        type="plus"
-                      />
-                      <span>新事物</span>
-                    </CreateTransactionButton>
-                  )}
-                />
-                {provided.placeholder}
-              </Panel>
-            </Collapse>
-          </XTableWrap>
-        )
-      }}
-    </Droppable>
+                      >
+                        开始冲刺
+                      </CommonButton>
+                    </PanelHeader>
+                  }
+                  key="1"
+                >
+                  <CreateTransactionButton>
+                    <IconFont
+                      style={{
+                        fontSize: 16,
+                        marginRight: 8,
+                      }}
+                      type="plus"
+                    />
+                    <span>新事物</span>
+                  </CreateTransactionButton>
+                  <ResizeTable
+                    className="dnd"
+                    isSpinning={false}
+                    dataWrapNormalHeight=""
+                    col={props.columns}
+                    noData={
+                      <div className="nodata">
+                        从待办事项拖动或新建事务，以规划该冲刺的工作，添加事务并编辑冲刺后，点击开始冲刺
+                      </div>
+                    }
+                    dataSource={props.data}
+                    components={{ body: { row: SortableItem } }}
+                  />
+                  <PaginationBox
+                    total={10}
+                    pageSize={pageObj.pagesize}
+                    currentPage={pageObj.page}
+                    onChange={() => {}}
+                  />
+
+                  {provided.placeholder}
+                </PanelWrap>
+              </Collapse>
+            </XTableWrap>
+          )
+        }}
+      </Droppable>
+      <CreateSprintModal
+        type={sprintModal.type}
+        visible={sprintModal.visible}
+        onClose={() => {
+          setSprintModal({
+            ...sprintModal,
+            visible: false,
+          })
+        }}
+      />
+    </>
   )
 }
 

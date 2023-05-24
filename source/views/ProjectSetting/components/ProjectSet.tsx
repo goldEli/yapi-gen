@@ -156,7 +156,12 @@ export const MainWrap = styled.div({
   flexDirection: 'column',
   width: '100%',
 })
-
+const MenuItemsTitle = styled.div`
+  padding: 0px 16px;
+  color: var(--neutral-n3);
+  font-size: var(--font12);
+  margin-bottom: 16px;
+`
 const MainWrapItem = styled.div({
   borderBottom: '1px solid var(--neutral-n6-d1)',
   padding: '24px 0',
@@ -488,7 +493,7 @@ const ProjectSet = () => {
             <SetMain>
               <SetLeft>
                 <Title>
-                  {t('setting.userGroup')}
+                  角色
                   <CloseWrap width={24} height={24}>
                     <IconFont
                       style={{ fontSize: 18 }}
@@ -502,7 +507,7 @@ const ProjectSet = () => {
                     />
                   </CloseWrap>
                 </Title>
-                <MenuItems>
+                {/* <MenuItems>
                   {dataList?.map((item: any) => (
                     <MenuItem
                       key={item.id}
@@ -523,6 +528,56 @@ const ProjectSet = () => {
                       />
                     </MenuItem>
                   ))}
+                </MenuItems> */}
+                <MenuItems>
+                  <MenuItemsTitle>系统分组</MenuItemsTitle>
+                  {dataList
+                    ?.filter((item: { type: number }) => item.type === 1)
+                    .map((item: any) => (
+                      <MenuItem
+                        key={item.id}
+                        onClick={() => onChangeTabs(item)}
+                        isActive={item.id === activeDetail.id}
+                      >
+                        <div className="name">{item.name}</div>
+                        {/* <span className="subName">
+                        {item.type === 1
+                          ? t('setting.systemGroup')
+                          : t('setting.customGroup')}
+                      </span> */}
+                        <MoreDropdown
+                          isHidden={item.type === 1}
+                          isMoreVisible={isMoreVisible}
+                          onChangeVisible={setIsMoreVisible}
+                          menu={menu(item)}
+                        />
+                      </MenuItem>
+                    ))}
+                </MenuItems>
+                <MenuItems>
+                  <MenuItemsTitle>自定义角色</MenuItemsTitle>
+                  {dataList
+                    ?.filter((item: { type: number }) => item.type === 2)
+                    .map((item: any) => (
+                      <MenuItem
+                        key={item.id}
+                        onClick={() => onChangeTabs(item)}
+                        isActive={item.id === activeDetail.id}
+                      >
+                        <div className="name">{item.name}</div>
+                        {/* <span className="subName">
+                        {item.type === 1
+                          ? t('setting.systemGroup')
+                          : t('setting.customGroup')}
+                      </span> */}
+                        <MoreDropdown
+                          isHidden={item.type === 1}
+                          isMoreVisible={isMoreVisible}
+                          onChangeVisible={setIsMoreVisible}
+                          menu={menu(item)}
+                        />
+                      </MenuItem>
+                    ))}
                 </MenuItems>
               </SetLeft>
               <SetRight>

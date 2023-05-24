@@ -28,10 +28,10 @@ import PaginationBox from '@/components/TablePagination'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
 import { getMessage } from '@/components/Message'
-import { SprintOperationDropdownMenu } from './SprintOperationDropdownMenu'
 import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
 import FloatBatch from '@/components/BatchOperation/FloatBatch'
+import { SprintDropdownMenu } from '@/components/TableDropdownMenu/SprintDropdownMenu'
 
 const Content = styled.div`
   background: var(--neutral-white-d1);
@@ -43,14 +43,16 @@ interface Props {
   onDelete(item: any): void
   onChangePageNavigation?(item: any): void
   onChangeRow?(topId?: any): void
-  settingState: boolean
-  onChangeSetting(val: boolean): void
   onChangeOrder?(item: any): void
   isSpinning?: boolean
   onUpdate(updateState?: boolean, topId?: any): void
   filterParams: any
   isUpdated?: boolean
   onUpdateTopId?(value: any): void
+  titleList?: any
+  titleList2?: any
+  titleList3?: any
+  allTitleList?: any
 }
 
 interface TreeIconProps {
@@ -86,15 +88,8 @@ const SprintTree = (props: Props) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const projectId = 27 ?? paramsData.id
+  const projectId = paramsData.id
   const { projectInfo, filterKeys } = useSelector(store => store.project)
-  const [titleList, setTitleList] = useState<any[]>([])
-  const [titleList2, setTitleList2] = useState<any[]>([])
-  const [titleList3, setTitleList3] = useState<any[]>([])
-  const [allTitleList, setAllTitleList] = useState<any[]>([])
-  const [plainOptions, setPlainOptions] = useState<any>([])
-  const [plainOptions2, setPlainOptions2] = useState<any>([])
-  const [plainOptions3, setPlainOptions3] = useState<any>([])
   const [orderKey, setOrderKey] = useState<any>('')
   const [order, setOrder] = useState<any>('')
   const [isShowMore, setIsShowMore] = useState(false)
@@ -110,37 +105,7 @@ const SprintTree = (props: Props) => {
   const dispatch = useDispatch()
   const [openDemandDetail] = useOpenDemandDetail()
   const { filterParams } = useSelector(store => store.demand)
-
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
-  const getShowkey = () => {
-    setPlainOptions(projectInfo?.plainOptions || [])
-    setPlainOptions2(projectInfo?.plainOptions2 || [])
-    setPlainOptions3(projectInfo?.plainOptions3 || [])
-    setTitleList(projectInfo?.titleList || [])
-    setTitleList2(projectInfo?.titleList2 || [])
-    setTitleList3(projectInfo?.titleList3 || [])
-    setAllTitleList([
-      ...(projectInfo.titleList || []),
-      ...(projectInfo.titleList2 || []),
-      ...(projectInfo.titleList3 || []),
-    ])
-  }
-
-  useEffect(() => {
-    getShowkey()
-  }, [projectInfo])
-
-  const getCheckList = (
-    list: CheckboxValueType[],
-    list2: CheckboxValueType[],
-    list3: CheckboxValueType[],
-    all: CheckboxValueType[],
-  ) => {
-    setTitleList(list)
-    setTitleList2(list2)
-    setTitleList3(list3)
-    setAllTitleList(all)
-  }
 
   const onChangePage = (page: number, size: number) => {
     props.onChangePageNavigation?.({ page, size })
@@ -161,7 +126,7 @@ const SprintTree = (props: Props) => {
     } else {
       demandIds = props.data?.list?.map((i: any) => i.id)
     }
-    openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id)
+    openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id, 1)
   }
 
   // 修改优先级
@@ -196,22 +161,6 @@ const SprintTree = (props: Props) => {
     setOrder(val)
     setExpandedRowKeys([])
     props.onChangeOrder?.({ value: val === 2 ? 'desc' : 'asc', key })
-  }
-
-  // 点击编辑
-  const onEditChange = (item: any) => {
-    setIsShowMore(false)
-    setComputedTopId(item?.topId)
-    props.onUpdateTopId?.(item.topId)
-    dispatch(
-      setAddWorkItemModal({
-        visible: true,
-        params: {
-          projectId,
-          editId: item.id,
-        },
-      }),
-    )
   }
 
   // 点击删除
@@ -455,7 +404,7 @@ const SprintTree = (props: Props) => {
   }
 
   const selectColum: any = useMemo(() => {
-    const arr = allTitleList
+    const arr = props.allTitleList
     const newList = []
     for (let i = 0; i < arr.length; i++) {
       for (let j = 0; j < columns?.length; j++) {
@@ -480,8 +429,7 @@ const SprintTree = (props: Props) => {
                       .includes(record.id) ? (
                       menuBatch()
                     ) : (
-                      <SprintOperationDropdownMenu
-                        onEditChange={onEditChange}
+                      <SprintDropdownMenu
                         onDeleteChange={onDeleteChange}
                         onCreateChild={onCreateChild}
                         record={record}
@@ -500,7 +448,13 @@ const SprintTree = (props: Props) => {
       arrList.push(Table.SELECTION_COLUMN as any)
     }
     return [...arrList, ...newList]
-  }, [titleList, titleList2, titleList3, columns, selectedRowKeys])
+  }, [
+    props.titleList,
+    props.titleList2,
+    props.titleList3,
+    columns,
+    selectedRowKeys,
+  ])
 
   useEffect(() => {
     setData(props.data)
@@ -598,7 +552,7 @@ const SprintTree = (props: Props) => {
         }
         noData={
           <NoData
-            subText={hasCreate ? '' : t('version2.noDataCreateDemandList')}
+            subText={hasCreate ? '' : '当前项目还未创建事务，创建一个吧~'}
             haveFilter={filterKeys?.length > 0}
           >
             {!hasCreate && (
@@ -607,7 +561,7 @@ const SprintTree = (props: Props) => {
                 onClick={onClick}
                 style={{ marginTop: 24 }}
               >
-                {t('common.createDemand')}
+                创建事务
               </CommonButton>
             )}
           </NoData>
@@ -629,19 +583,6 @@ const SprintTree = (props: Props) => {
         pageSize={data?.pageSize}
         total={data?.total}
         onChange={onChangePage}
-      />
-
-      <OptionalFeld
-        allTitleList={allTitleList}
-        plainOptions={plainOptions}
-        plainOptions2={plainOptions2}
-        plainOptions3={plainOptions3}
-        checkList={titleList}
-        checkList2={titleList2}
-        checkList3={titleList3}
-        isVisible={props.settingState}
-        onClose={() => props.onChangeSetting(false)}
-        getCheckList={getCheckList}
       />
     </Content>
   )

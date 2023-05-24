@@ -8,32 +8,38 @@
 import { StepBoxWrap } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
-import { Upload, message, Spin, Space } from 'antd'
+import { Upload, Spin, Space } from 'antd'
 import { AsyncButton as Button } from '@staryuntech/ant-pro'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { formatFileSize } from '@/services/cos'
-import FieldsTemplate from './FieldsTemplate'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
 import { setIsRefresh } from '@store/user'
-import {
-  getImportDownloadModel,
-  getImportExcel,
-  getImportExcelUpdate,
-} from '@/services/demand'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import { getMessage } from '@/components/Message'
+import FieldsTemplate from './FieldsTemplate'
 
-const Wrap = styled.div<{ language: any }>(
-  {
-    paddingRight: 20,
-  },
-  ({ language }) => ({
-    minHeight: language === 'zh' ? 570 : 594,
-  }),
-)
+const Wrap = styled.div<{ language: any }>`
+  padding-right: 20px;
+  min-height: ${({ language }) => (language === 'zh' ? '570px' : '594px')};
+  .ant-upload.ant-upload-drag.ant-upload-drag-hover {
+    border: 1px dashed transparent !important;
+  }
+  .ant-upload.ant-upload-drag.ant-upload-drag-hover .uploadModal {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+  .ant-upload.ant-upload-drag.ant-upload-drag-hover .uploadModal .content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    flex-direction: column;
+    z-index: 99;
+    pointer-events: none;
+  }
+`
 
 const StepWrap = styled.div({
   display: 'flex',
@@ -78,13 +84,44 @@ const TextWrap = styled.div({
   },
 })
 
-const UploadDragger = styled(Upload.Dragger)({
-  height: '122px!important',
-  background: 'white!important',
-  border: '1px dashed #D5D6D9!important',
-  margin: '24px 0px 0 24px',
-  width: '97%!important',
-})
+const UploadDragger = styled(Upload.Dragger)`
+  height: 122px !important;
+  background: white !important;
+  border: 1px dashed #d5d6d9 !important;
+  margin: 24px 0px 0 24px;
+  width: 97% !important;
+  position: relative;
+  .uploadModal {
+    position: absolute;
+    height: 122px !important;
+    width: 100% !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0px;
+    background-color: rgba(255, 255, 255, 0);
+    .content {
+      display: none;
+      pointer-events: none;
+      .circle {
+        width: 48px;
+        height: 48px;
+        background: var(--primary-d1);
+        border-radius: 60px 60px 60px 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .text {
+        margin-top: 8px;
+        font-size: 14px;
+        font-family: SiYuanMedium;
+        font-weight: 500;
+        color: var(--primary-d1);
+      }
+    }
+  }
+`
 
 const CommonWrap = styled.div({
   display: 'flex',
@@ -128,7 +165,35 @@ const FilesItems = styled.div({
   justifyContent: 'space-between',
 })
 
-const ImportDemand = () => {
+interface CommonImportProps {
+  // 传入提示文案
+  tips: any
+  // step1的标题
+  stepText: string
+  // 导入需要的接口
+  interfaces: {
+    getImportDownloadModel: any
+    getImportExcel: any
+    getImportExcelUpdate: any
+  }
+  // template字段modal需要的接口
+  templateInterfaces: any
+  // template字段modal的标题
+  templateTitle: string
+}
+
+const CommonImport = (props: CommonImportProps) => {
+  const {
+    tips,
+    stepText,
+    interfaces: {
+      getImportDownloadModel,
+      getImportExcel,
+      getImportExcelUpdate,
+    },
+    templateInterfaces,
+    templateTitle,
+  } = props
   const [step, setStep] = useState(1)
   const [tabs, setTabs] = useState(2)
   const [fileList, setFileList] = useState<any>([])
@@ -235,11 +300,12 @@ const ImportDemand = () => {
     <Wrap language={i18n.language}>
       <FieldsTemplate
         visible={isVisible}
-        title={t('newlyAdd.importChoose')}
+        title={templateTitle}
         importState={tabs}
         onClose={() => setIsVisible(false)}
         onConfirm={onConfirmTemplate}
         isExport={false}
+        interfaces={templateInterfaces}
       />
 
       <StepWrap>
@@ -247,7 +313,7 @@ const ImportDemand = () => {
           <div className="border">
             <div className="circle">1</div>
           </div>
-          <span>{t('newlyAdd.uploadDemand')}</span>
+          <span>{stepText}</span>
         </StepBoxWrap>
         <div
           style={{
@@ -293,14 +359,7 @@ const ImportDemand = () => {
               <div style={{ color: 'var(--neutral-n2)' }}>
                 {t('newlyAdd.importText1')}
               </div>
-              <span>{t('newlyAdd.importText2')}</span>
-              <span>{t('newlyAdd.importText3')}</span>
-              <span>{t('newlyAdd.importText4')}</span>
-              <span>{t('newlyAdd.importText5')}</span>
-              <span>{t('newlyAdd.importText6')}</span>
-              <span>{t('newlyAdd.importText7')}</span>
-              <span>{t('newlyAdd.importText8')}</span>
-              <span>{t('newlyAdd.importText9')}</span>
+              {tips.tab1}
             </TextWrap>
           )}
           {tabs === 1 && (
@@ -308,14 +367,7 @@ const ImportDemand = () => {
               <div style={{ color: 'var(--neutral-n2)' }}>
                 {t('newlyAdd.importText1')}
               </div>
-              <span>{t('newlyAdd.importText10')}</span>
-              <span>{t('newlyAdd.importText4')}</span>
-              <span>{t('newlyAdd.importText6')}</span>
-              <span>{t('newlyAdd.importText7')}</span>
-              <span>{t('newlyAdd.importText8')}</span>
-              <span>{t('newlyAdd.importText9')}</span>
-              <span>{t('newlyAdd.importText11')}</span>
-              <span>{t('newlyAdd.importText12')}</span>
+              {tips.tab2}
             </TextWrap>
           )}
           <Button
@@ -398,6 +450,20 @@ const ImportDemand = () => {
               <span style={{ color: 'var(--neutral-n3)', fontSize: 12 }}>
                 {t('newlyAdd.uploadLimit')}
               </span>
+              <div className="uploadModal">
+                <div className="content">
+                  <div className="circle">
+                    <IconFont
+                      style={{
+                        color: '#FFFFFF',
+                        fontSize: 24,
+                      }}
+                      type="upload"
+                    />
+                  </div>
+                  <span className="text">{t('common.uploadFile')}</span>
+                </div>
+              </div>
             </UploadDragger>
           )}
         </>
@@ -553,4 +619,4 @@ const ImportDemand = () => {
   )
 }
 
-export default ImportDemand
+export default CommonImport

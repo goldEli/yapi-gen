@@ -53,6 +53,7 @@ import BatchSetPermGroup from './BatchSetPermGroup'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { getMessage } from '@/components/Message'
 import { menuList } from '@/views/SprintProjectManagement/config'
+import CommonIconFont from '@/components/CommonIconFont'
 
 const Wrap = styled.div({
   padding: '0 24px',
@@ -357,6 +358,23 @@ const ProjectMember = (props: { searchValue?: string }) => {
             >
               {text}
             </span>
+            {record.is_admin === 1 && (
+              <Tooltip
+                placement="top"
+                title="项目负责人"
+                getPopupContainer={node => node}
+                zIndex={99999}
+                trigger="hover"
+              >
+                <div style={{ cursor: 'pointer' }}>
+                  <CommonIconFont
+                    type="leader"
+                    size={20}
+                    color="#FA9746"
+                  ></CommonIconFont>
+                </div>
+              </Tooltip>
+            )}
           </div>
         )
       },

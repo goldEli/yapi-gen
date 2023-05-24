@@ -21,7 +21,7 @@ import { setAddWorkItemModal, setProjectInfo } from '@store/project'
 import { Drawer, message, Popover, Skeleton, Space } from 'antd'
 import { createRef, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import ChangeStatusPopover from '../ChangeStatusPopover'
+import ChangeStatusPopover from '../ChangeStatusPopover/index'
 import CommonIconFont from '../CommonIconFont'
 import DeleteConfirm from '../DeleteConfirm'
 import StateTag from '../StateTag'
@@ -154,13 +154,13 @@ const DemandDetailDrawer = () => {
       projectId: paramsProjectId,
       id: id ? id : demandDetailDrawerProps?.id,
     })
-    info.hierarchy.push({
+    info.level_tree.push({
       id: info.id,
-      categoryId: info.category,
-      prefixKey: info.prefixKey,
-      projectPrefix: info.projectPrefix,
-      categoryAttachment: info.category_attachment,
-      parentId: info.parentId,
+      category_id: info.category,
+      prefix_key: info.prefixKey,
+      project_prefix: info.projectPrefix,
+      category_attachment: info.category_attachment,
+      parent_id: info.parentId,
       name: info.name,
     })
     setDrawerInfo(info)
@@ -385,8 +385,8 @@ const DemandDetailDrawer = () => {
               <ChangeStatusPopover
                 isCanOperation={isCanEdit && !drawerInfo.isExamine}
                 projectId={drawerInfo.projectId}
-                record={drawerInfo}
-                onChangeStatus={onChangeStatus}
+                // record={drawerInfo}
+                // onChangeStatus={onChangeStatus}
               >
                 <StateTag
                   name={drawerInfo?.status?.status?.content}
@@ -474,16 +474,16 @@ const DemandDetailDrawer = () => {
           {!skeletonLoading && (
             <>
               <ParentBox size={8}>
-                {drawerInfo.hierarchy?.map((i: any, index: number) => (
-                  <DrawerHeader key={i.prefixKey}>
-                    <img src={i.categoryAttachment} alt="" />
+                {drawerInfo.level_tree?.map((i: any, index: number) => (
+                  <DrawerHeader key={i.prefix_key}>
+                    <img src={i.category_attachment} alt="" />
                     <div>
-                      {i.projectPrefix}-{i.prefixKey}
+                      {i.project_prefix}-{i.prefix_key}
                     </div>
                     <span
                       hidden={
-                        drawerInfo.hierarchy?.length <= 1 ||
-                        index === drawerInfo.hierarchy?.length - 1
+                        drawerInfo.level_tree?.length <= 1 ||
+                        index === drawerInfo.level_tree?.length - 1
                       }
                     >
                       /

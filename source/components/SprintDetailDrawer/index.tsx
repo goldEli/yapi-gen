@@ -295,16 +295,16 @@ const SprintDetailDrawer = () => {
           {!skeletonLoading && (
             <>
               <ParentBox size={8}>
-                {drawerInfo.hierarchy?.map((i: any, index: number) => (
-                  <DrawerHeader key={i.prefixKey}>
-                    <img src={i.categoryAttachment} alt="" />
+                {drawerInfo.level_tree?.map((i: any, index: number) => (
+                  <DrawerHeader key={i.prefix_key}>
+                    <img src={i.category_attachment} alt="" />
                     <div>
-                      {i.projectPrefix}-{i.prefixKey}
+                      {i.project_prefix}-{i.prefix_key}
                     </div>
                     <span
                       hidden={
-                        drawerInfo.hierarchy?.length <= 1 ||
-                        index === drawerInfo.hierarchy?.length - 1
+                        drawerInfo.level_tree?.length <= 1 ||
+                        index === drawerInfo.level_tree?.length - 1
                       }
                     >
                       /

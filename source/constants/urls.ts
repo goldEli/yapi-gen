@@ -132,12 +132,12 @@ const urls = {
   getMenuPermission: '/b/user_menu_list',
   getCompanyUserPreferenceConfig: '/b/preference/config',
   updateCompanyUserPreferenceConfig: '/b/preference/config',
+  deleteCommentAttach: '/b/story/comment/delete_att',
   /**
    * 日历管理
    */
   saveSchedule: '/b/calendar/schedule',
   getScheduleList: '/b/calendar/schedule_list',
-
   getCalendarDaysOfYearList: '/b/calendar/schedule/daysOfYear',
   getCalendarDaysOfMonthList: '/b/calendar/schedule/daysOfMonth',
   getCalendarConfig: '/b/calendar/getConfig',
@@ -148,7 +148,6 @@ const urls = {
   getDaysOfWeekList: '/b/calendar/daysOfWeek',
   getContactsCalendarList: '/b/calendar/getContacts',
   getDaysOfMonthList: '/b/calendar/daysOfMonth',
-
   createTemplate: '/b/work_report/template/create',
   upDateTemplate: '/b/work_report/template/edit',
   templateDetail: '/b/work_report/template/info',
@@ -171,13 +170,68 @@ const urls = {
   addReportComment: '/b/work_report/user/comment',
   supplyReport: '/b/work_report/user/supply',
   delReportComment: '/b/work_report/user/comment',
-
   getScheduleListDaysOfWeek: '/b/calendar/schedule/daysOfWeek',
   getScheduleListDaysOfMonth: '/b/calendar/schedule/daysOfMonth',
   getScheduleListDaysOfDate: '/b/calendar/schedule/daysOfDate',
   getScheduleSearch: '/b/calendar/schedule/search',
 
-  getSprintList: '/b/list',
+  getSprintKanBanList: '/b/list',
+  // 事务列表
+  getSprintList: '/b/transaction/getlist',
+  // 事务详情
+  getSprintInfo: '/b/transaction/getinfo',
+  // 修改事务状态
+  updateSprintStatus: '/b/transaction/update_status',
+  // 事务变更记录
+  getSprintChangeLog: '/b/transaction/getchangelog',
+  // 事务评论列表
+  getSprintCommentList: '/b/transaction/comment/getlist',
+  // 添加评论
+  addSprintComment: '/b/transaction/comment/save',
+  // 删除评论
+  deleteSprintComment: '/b/transaction/comment/delete',
+  // 添加事务
+  addSprint: '/b/transaction/save',
+  // 更新事务
+  updateSprint: '/b/transaction/update',
+  // 删除事务
+  deleteSprint: '/b/transaction/delete',
+  // 删除详情关联
+  deleteInfoSprint: '/b/transaction/update_operate/del',
+  // 添加详情关联
+  addInfoSprint: '/b/transaction/update_operate/add',
+  // 修改事务优先级
+  updateSprintPriority: '/b/transaction/update_priority',
+  // 事务快捷修改
+  changeSprintTableParams: '/b/transaction/update_fast',
+  // 获取状态可流转列表
+  getShapeSprintLeft: '/b/transaction/get_can_changes_workflows',
+  // 获取相应状态下的配置
+  getShapeSprintRight: '/b/transaction/get_workflows_config',
+  // 修改事务类别
+  updateSprintCategory: '/b/transaction/update/category',
+  // 获取事务流转记录
+  getSprintStatusLog: '/b/transaction/getstatuslog',
+  // 获取导入下载模板字段列表
+  getLoadSprintListFields: '/b/transaction/load_list_fields',
+  // 下载导入事务模板
+  getImportDownloadSprintModel: '/b/transaction/download_story_model',
+  // 确认新建导入事务
+  getImportSprintExcel: '/b/transaction/import_story_excel',
+  // 确认更新导入事务
+  getImportSprintExcelUpdate: '/b/transaction/import_story_update_excel',
+  // 确认导出事务
+  getExportSprintExcel: '/b/transaction/export_story_excel',
+  // 获取导出事务字段列表
+  getExportSprintFields: '/b/transaction/get_story_export_fields',
+  // 批量删除事务
+  batchSprintDelete: '/b/transaction/batch_delete',
+  // 批量编辑事务
+  batchSprintEdit: '/b/transaction/batch_update',
+  // 批量编辑的下拉列表
+  getBatchEditSprintConfig: '/b/transaction/batch_fields',
+  // 删除评论下的附件
+  deleteSprintCommentAttach: '/b/transaction/comment/delete_att',
 
   // 修改日程
 
@@ -197,6 +251,28 @@ const urls = {
   deleteKanbanConfig: '/b/project/kanban/configs/delete',
   // 看板配置剩余状态
   getKanbanConfigRemainingStatus: '/b/project/kanban/configs/residueStatus',
+  // 完成率Top10
+  getCompletionRate: 'b/efficiency/contrast/completion_rate',
+  // 阶段缺陷占比
+  getDefectRatio: 'b/efficiency/defect_ratio',
+  // 缺陷趋势
+  getBugList: 'b/efficiency/member/bug/list',
+
+  // 修改首页配置
+  updateHomeSetting: '/b/project/change/defaultHomeMenu',
+  /**
+   * 看板
+   */
+  // 看板查询
+  getKanban: '/b/project/kanban/index',
+  // 新增人员分组
+  createKanbanPeopleGrouping: '/b/project/kanban/storeGroup',
+  // 修改人员分组
+  modifyKanbanPeopleGrouping: '/b/project/kanban/updateGroup',
+  // 看板分组查询
+  getKanbanByGroup: '/b/project/kanban/storiesOfGroupBy',
+  // 修改看板事务顺序
+  modifyKanbanIssueSort: '/b/project/kanban/updateSort',
 }
 export default urls
 

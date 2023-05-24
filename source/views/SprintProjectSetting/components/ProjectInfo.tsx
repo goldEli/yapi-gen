@@ -6,7 +6,7 @@ import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { OmitText } from '@star-yun/ui'
 import { Space } from 'antd'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getIsPermission } from '@/tools'
 import useSetTitle from '@/hooks/useSetTitle'
@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { getProjectInfo } from '@/services/project'
 import { setProjectInfo } from '@store/project'
 import { editProject } from '@store/create-propject'
-
+import CategoryDrop from '@/components/CategoryDrop'
 const Wrap = styled.div({
   background: 'white',
   height: '100%',
@@ -123,7 +123,6 @@ const ProjectInfo = () => {
   asyncSetTtile(`${t('title.a1')}【${projectInfo.name}】`)
   localStorage.setItem('memberId', projectInfo.id)
   const dispatch = useDispatch()
-
   return (
     <Wrap>
       <InfoLeft>
@@ -181,7 +180,7 @@ const ProjectInfo = () => {
               'b/project/update',
             )}
             onClick={() => {
-              dispatch(editProject({ visible: true, id: projectInfo.id }))
+              dispatch(editProject({ id: projectInfo.id }))
             }}
             style={{
               marginLeft: 24,
