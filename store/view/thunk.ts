@@ -3,8 +3,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 
 export const getViewList = createAsyncThunk(
   'view/getViewList',
-  async (id: any) => {
-    const res = await getViews(id)
+  async (params: { projectId: number; type: number }) => {
+    const res = await getViews(params)
 
     return res
   },

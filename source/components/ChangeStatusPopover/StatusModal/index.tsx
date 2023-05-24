@@ -299,8 +299,6 @@ const StatusModal = (props: StatusModalProps) => {
     }
   }, [props.isVisible, props.checkStatusItem])
 
-  console.log(props.checkStatusItem)
-
   return (
     <CommonModal
       width={582}

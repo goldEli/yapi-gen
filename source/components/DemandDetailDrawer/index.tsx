@@ -21,7 +21,7 @@ import { setAddWorkItemModal, setProjectInfo } from '@store/project'
 import { Drawer, message, Popover, Skeleton, Space } from 'antd'
 import { createRef, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import ChangeStatusPopover from '../ChangeStatusPopover'
+import ChangeStatusPopover from '../ChangeStatusPopover/index'
 import CommonIconFont from '../CommonIconFont'
 import DeleteConfirm from '../DeleteConfirm'
 import StateTag from '../StateTag'
@@ -385,8 +385,8 @@ const DemandDetailDrawer = () => {
               <ChangeStatusPopover
                 isCanOperation={isCanEdit && !drawerInfo.isExamine}
                 projectId={drawerInfo.projectId}
-                record={drawerInfo}
-                onChangeStatus={onChangeStatus}
+                // record={drawerInfo}
+                // onChangeStatus={onChangeStatus}
               >
                 <StateTag
                   name={drawerInfo?.status?.status?.content}

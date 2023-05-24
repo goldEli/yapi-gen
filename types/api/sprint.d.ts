@@ -1,10 +1,54 @@
 declare namespace API.Sprint {
-  namespace GetSprintList {
+  namespace GetSprintKanBanList {
     type Params = {
       id: number
     }
     type Result = {
-      list: Model.Sprint.Task[]
+      list: Model.SprintKanBan.Task[]
+    }
+  }
+  namespace GetSprintList {
+    type Params = {
+      projectId: number
+      searchValue: string
+      iterateIds: number[]
+      statusIds: number[]
+      priorityIds: number[]
+      userId: number[] | number
+      tagIds: number[]
+      startTime: string
+      expectedStart: string
+      expectedEnd: string
+      updatedTime: string
+      endTime: string
+      usersNameId: number[]
+      copySendId: number[]
+      parentId: number
+      all: boolean
+      panel: boolean
+      class_ids: number[]
+      class_id: number
+      category_id: number
+      schedule_start: number | string
+      schedule_end: number | string
+      custom_field: Model.Sprint.CustomFiledInfo
+      tree: boolean | number
+      topParentId: number
+      system_view: number | string
+      pageSize: number
+      page: number
+      orderKey: string
+      order: string
+      isChildren?: boolean
+    }
+    type SelectResult = Model.Sprint.ListItem[]
+    type Result = {
+      pager?: {
+        page: number
+        pagesize: number
+        total: number
+      }
+      list: Model.Sprint.ListItem[]
     }
   }
   namespace GetSprintIssueList {

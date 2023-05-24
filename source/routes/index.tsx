@@ -133,7 +133,7 @@ const routes = [
           },
           {
             path: 'KanBan',
-            element: lazy(() => import('@/views/IterationKanBan')),
+            element: lazy(() => import('@/views/KanBanBoard')),
           },
           {
             path: 'IterationReport',

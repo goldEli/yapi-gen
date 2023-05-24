@@ -16,6 +16,15 @@ export const getSprintKanBanList = createAsyncThunk(
   },
 )
 
+// 事务列表
+export const getSprintList = createAsyncThunk(
+  `${name}/getSprintList`,
+  async (params: API.Sprint.GetSprintList.Params) => {
+    const res = await services.sprint.getSprintList(params)
+    return res
+  },
+)
+
 export const saveSprintDetailDrawer =
   (params: any) => async (dispatch: AppDispatch) => {
     dispatch(setSprintDetailDrawer(params))

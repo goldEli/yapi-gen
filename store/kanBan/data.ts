@@ -1,0 +1,333 @@
+export const kanbanInfo: Model.KanBan.Column[] = [
+  {
+    id: 112,
+    kanban_config_id: 1,
+    name: '规划中',
+    max_num: 1,
+    stories: [
+      {
+        id: 1003010,
+        name: '需求测试12（jxl）',
+        category_id: 571,
+        schedule: 0,
+        priority: 0,
+        created_at: '2023-03-22 18:07:39',
+        story_prefix_key: 'CSXM（JXL）-2',
+        children_count: 0,
+        category_status: {
+          id: 1821,
+          category_id: 571,
+          status_id: 9540,
+          is_start: 1,
+          is_end: 2,
+          status_name: '规划中',
+          color: '#FA9746',
+        },
+        project_category: {
+          id: 571,
+          name: '测试需求类别（jx）',
+          attachment_path:
+            'https://dev.staryuntech.com/dev-agile/attachment/category_icon/home.png',
+        },
+        story_config_priority: {
+          id: 0,
+          name: '无优先级',
+          content_txt: '',
+          group_content_txt: '',
+        },
+        handlers: [
+          {
+            id: 689,
+            name: '蒋晓龙',
+            avatar: '',
+          },
+        ],
+      },
+      {
+        id: 1002929,
+        name: '个人中心（jxl）',
+        category_id: 499,
+        schedule: 0,
+        priority: 9535,
+        created_at: '2023-03-16 09:32:00',
+        story_prefix_key: 'CSXM（JXL）-1',
+        children_count: 0,
+        category_status: {
+          id: 1821,
+          category_id: 571,
+          status_id: 9540,
+          is_start: 1,
+          is_end: 2,
+          status_name: '规划中',
+          color: '#FA9746',
+        },
+        project_category: {
+          id: 499,
+          name: '需求',
+          attachment_path:
+            'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png',
+        },
+        story_config_priority: {
+          id: 9535,
+          name: '极高',
+          content: '极高',
+          color: '#FF5C5E',
+          icon: 'extremely-high',
+          identity: 'priority',
+          content_txt: '极高',
+          group_content_txt: '',
+        },
+        handlers: [
+          {
+            id: 689,
+            name: '蒋晓龙',
+            avatar: '',
+          },
+        ],
+      },
+      {
+        id: 1003095,
+        name: '需求测试',
+        category_id: 499,
+        schedule: 0,
+        priority: 0,
+        created_at: '2023-03-24 18:52:40',
+        story_prefix_key: 'CSXM（JXL）-3',
+        children_count: 0,
+        category_status: {
+          id: 1642,
+          category_id: 499,
+          status_id: 9541,
+          is_start: 2,
+          is_end: 2,
+          status_name: '实现中',
+          color: '#2877FF',
+        },
+        project_category: {
+          id: 499,
+          name: '需求',
+          attachment_path:
+            'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png',
+        },
+        story_config_priority: {
+          id: 0,
+          name: '无优先级',
+          content_txt: '',
+          group_content_txt: '',
+        },
+        handlers: [
+          {
+            id: 689,
+            name: '蒋晓龙',
+            avatar: '',
+          },
+          {
+            id: 105,
+            name: '晚风',
+            avatar: '',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 99,
+    kanban_config_id: 1,
+    name: '已完成',
+    max_num: 1,
+    stories: [],
+  },
+  {
+    id: 114,
+    kanban_config_id: 1,
+    name: '其它状态列',
+    max_num: 1,
+    stories: [],
+  },
+]
+
+export const kanbanInfoByGroup: Model.KanBan.Group[] = [
+  {
+    id: 9535,
+    name: '极高',
+    content: '极高',
+    color: '#FF5C5E',
+    icon: 'extremely-high',
+    identity: 'priority',
+    content_txt: '极高',
+    columns: [
+      {
+        id: 112,
+        kanban_config_id: 1,
+        name: '规划中',
+        max_num: 1,
+        stories: [
+          {
+            id: 1002929,
+            name: '个人中心（jxl）',
+            category_id: 499,
+            schedule: 0,
+            priority: 9535,
+            created_at: '2023-03-16 09:32:00',
+            story_prefix_key: 'CSXM（JXL）-1',
+            children_count: 0,
+            category_status: {
+              id: 1821,
+              category_id: 571,
+              status_id: 9540,
+              is_start: 1,
+              is_end: 2,
+              status_name: '规划中',
+              color: '#FA9746',
+            },
+            project_category: {
+              id: 499,
+              name: '需求',
+              attachment_path:
+                'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png',
+            },
+            story_config_priority: {
+              id: 9535,
+              name: '极高',
+              content: '极高',
+              color: '#FF5C5E',
+              icon: 'extremely-high',
+              identity: 'priority',
+              content_txt: '极高',
+            },
+            handlers: [
+              {
+                id: 689,
+                name: '蒋晓龙',
+                avatar: '',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: 99,
+        kanban_config_id: 1,
+        name: '已完成',
+        max_num: 1,
+        stories: [],
+      },
+      {
+        id: 114,
+        kanban_config_id: 1,
+        name: '其它状态列',
+        max_num: 1,
+        stories: [],
+      },
+    ],
+  },
+  {
+    id: 0,
+    name: '无优先级',
+    content_txt: '',
+    columns: [
+      {
+        id: 112,
+        kanban_config_id: 1,
+        name: '规划中',
+        max_num: 1,
+        stories: [
+          {
+            id: 1003010,
+            name: '需求测试12（jxl）',
+            category_id: 571,
+            schedule: 0,
+            priority: 0,
+            created_at: '2023-03-22 18:07:39',
+            story_prefix_key: 'CSXM（JXL）-2',
+            children_count: 0,
+            category_status: {
+              id: 1821,
+              category_id: 571,
+              status_id: 9540,
+              is_start: 1,
+              is_end: 2,
+              status_name: '规划中',
+              color: '#FA9746',
+            },
+            project_category: {
+              id: 571,
+              name: '测试需求类别（jx）',
+              attachment_path:
+                'https://dev.staryuntech.com/dev-agile/attachment/category_icon/home.png',
+            },
+            story_config_priority: {
+              id: 0,
+              name: '无优先级',
+              content_txt: '',
+            },
+            handlers: [
+              {
+                id: 689,
+                name: '蒋晓龙',
+                avatar: '',
+              },
+            ],
+          },
+          {
+            id: 1003095,
+            name: '需求测试',
+            category_id: 499,
+            schedule: 0,
+            priority: 0,
+            created_at: '2023-03-24 18:52:40',
+            story_prefix_key: 'CSXM（JXL）-3',
+            children_count: 0,
+            category_status: {
+              id: 1642,
+              category_id: 499,
+              status_id: 9541,
+              is_start: 2,
+              is_end: 2,
+              status_name: '实现中',
+              color: '#2877FF',
+            },
+            project_category: {
+              id: 499,
+              name: '需求',
+              attachment_path:
+                'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png',
+            },
+            story_config_priority: {
+              id: 0,
+              name: '无优先级',
+              content_txt: '',
+              group_content_txt: '',
+            },
+            handlers: [
+              {
+                id: 689,
+                name: '蒋晓龙',
+                avatar: '',
+              },
+              {
+                id: 105,
+                name: '晚风',
+                avatar: '',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: 99,
+        kanban_config_id: 1,
+        name: '已完成',
+        max_num: 1,
+        stories: [],
+      },
+      {
+        id: 114,
+        kanban_config_id: 1,
+        name: '其它状态列',
+        max_num: 1,
+        stories: [],
+      },
+    ],
+  },
+]

@@ -260,6 +260,19 @@ const urls = {
 
   // 修改首页配置
   updateHomeSetting: '/b/project/change/defaultHomeMenu',
+  /**
+   * 看板
+   */
+  // 看板查询
+  getKanban: '/b/project/kanban/index',
+  // 新增人员分组
+  createKanbanPeopleGrouping: '/b/project/kanban/storeGroup',
+  // 修改人员分组
+  modifyKanbanPeopleGrouping: '/b/project/kanban/updateGroup',
+  // 看板分组查询
+  getKanbanByGroup: '/b/project/kanban/storiesOfGroupBy',
+  // 修改看板事务顺序
+  modifyKanbanIssueSort: '/b/project/kanban/updateSort',
 }
 export default urls
 

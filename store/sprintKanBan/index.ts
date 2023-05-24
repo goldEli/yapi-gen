@@ -32,7 +32,7 @@ const initialState: SliceState = {
     { key: '3', value: '重点关注', check: false },
     { key: '4', value: '进度跟踪', check: false },
   ],
-  guideVisible: true,
+  guideVisible: false,
   saveAsViewModelInfo: {
     visible: false,
   },

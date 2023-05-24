@@ -21,7 +21,7 @@ import { useSelector } from '@store/index'
 import { getMessage } from '../Message'
 import TableQuickEdit from '../TableQuickEdit'
 import TableColorText from '../TableColorText'
-import ChangeStatusPopover from '../ChangeStatusPopover'
+import ChangeStatusPopover from '../ChangeStatusPopover/index'
 import StateTag from '../StateTag'
 import ChangePriorityPopover from '../ChangePriorityPopover'
 import DemandProgress from '../DemandProgress'
@@ -186,8 +186,8 @@ export const useDynamicColumns = (state: any) => {
           <ChangeStatusPopover
             isCanOperation={isCanEdit && !record.isExamine}
             projectId={state.projectId}
-            record={record}
-            onChangeStatus={item => state.onChangeStatus(item, record)}
+            // record={record}
+            // onChangeStatus={item => state.onChangeStatus(item, record)}
           >
             <StateTag
               onClick={record.isExamine ? onExamine : void 0}
@@ -644,7 +644,10 @@ export const useDynamicColumns = (state: any) => {
               type={currentFields?.attr}
               defaultText={text?.value}
               keyText={element.value}
-              item={record}
+              item={{
+                ...record,
+                ...{ fieldContentValue: currentFields.values },
+              }}
               onUpdate={() => onUpdate(record)}
               remarks={currentFields?.remarks}
               isCustom
