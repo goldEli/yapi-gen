@@ -28,6 +28,15 @@ declare namespace API.Sprint {
       user_id: number
     }
   }
+  namespace UpdateHomeSetting {
+    type Params = {
+      id: number
+      default_home_menu: string
+    }
+    type Result = {
+      data: boolean
+    }
+  }
   namespace GetCompletionRate {
     type Params = {
       project_id: string

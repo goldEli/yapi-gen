@@ -25,13 +25,22 @@ export const getProjectRoleList = async (
 // 修改权限角色
 export const updateProjectRole = (
   params: API.Sprint.GetProjectRoleList.updateParams,
-) => http.put<any, API.Sprint.GetProjectRoleList.Result>(`updateMember`, params)
+) => http.put<any, API.Sprint.GetProjectRoleList.Result>('updateMember', params)
+
+// 修改项目首页配置
+export const updateHomeSetting = (
+  params: API.Sprint.UpdateHomeSetting.Params,
+) =>
+  http.put<any, API.Sprint.UpdateHomeSetting.Result>(
+    'updateHomeSetting',
+    params,
+  )
 // 完成率Top10
 export const getCompletionRate = async (
   params: API.Sprint.GetCompletionRate.Params,
 ) => {
   const response = await http.get<any, API.Sprint.GetCompletionRate.Result>(
-    `getCompletionRate`,
+    'getCompletionRate',
     params,
   )
   return response.data
@@ -41,7 +50,7 @@ export const getDefectRatio = async (
   params: API.Sprint.GetDefectRatio.Params,
 ) => {
   const response = await http.get<any, API.Sprint.GetDefectRatio.Result>(
-    `getDefectRatio`,
+    'getDefectRatio',
     params,
   )
   return response.data
@@ -49,7 +58,7 @@ export const getDefectRatio = async (
 // 缺陷趋势
 export const getBugList = async (params: API.Sprint.GetDefectRatio.Params) => {
   const response = await http.get<any, API.Sprint.GetDefectRatio.Result>(
-    `getDefectRatio`,
+    'getDefectRatio',
     params,
   )
   return response.data

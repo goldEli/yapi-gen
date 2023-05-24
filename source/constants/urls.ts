@@ -257,6 +257,9 @@ const urls = {
   getDefectRatio: 'b/efficiency/defect_ratio',
   // 缺陷趋势
   getBugList: 'b/efficiency/member/bug/list',
+
+  // 修改首页配置
+  updateHomeSetting: '/b/project/change/defaultHomeMenu',
 }
 export default urls
 
