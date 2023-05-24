@@ -894,6 +894,7 @@ export const getLoadListFields: any = async (params: any) => {
   const response: any = await http.get<any>('getLoadListFields', {
     project_id: params.projectId,
     is_update: params.isUpdate,
+    is_bug: params.isBug,
   })
 
   return {

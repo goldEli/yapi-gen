@@ -782,7 +782,10 @@
     "add23": "添加",
     "finishCreate": "完成并创建下一个",
     "confirm2": "确认",
-    "finished": "已完成"
+    "finished": "已完成",
+    "importTransaction": "导入事务",
+    "uploadTransaction": "上传事务",
+    "uploadFile": "上传文件"
   },
   "components": {
     "noALlPermission": "你当前无任何权限，请联系企业管理员分配权限",
@@ -944,7 +947,24 @@
     "confirmDelMember": "确认要删除当前成员？",
     "pleaseNickname": "输入昵称姓名",
     "projectPermissionGroup": "项目权限组",
-    "addChildDemand": "添加子需求"
+    "addChildDemand": "添加子需求",
+    "importText1": "① “事务类型”字段为必填项；",
+    "importText2": "② “标题”字段为必填项；",
+    "importText3": "③ “优先级”请填写：极高、高、中、低、极低；",
+    "importText4": "④ “父级”请填写长故事编号，请满足如下条件：1 父事务在本项目下；",
+    "importText5": "⑤ 人员类型字段请填写人员的昵称；",
+    "importText6": "⑥ 日期型字段格式为：YYYY/MM/DD；",
+    "importText7": "⑦ 多选类型的自定义字段格式为：a|b|c,请用‘|’隔开多个选项；",
+    "importText8": "⑧ 其他字段值，请确保与项目中配置的值保持一致。",
+    "importText9": "① 字段必须在excel中（为必填）；",
+    "importText10": "② 优先级请填写：极高、高、中、低、极低；",
+    "importText11": "③ 人员类型字段请填写人员的昵称；",
+    "importText12": "④ 日期型字段格式为：YYYY/MM/DD；",
+    "importText13": "⑤ 多选类型的自定义字段格式为：a|b|c,请用‘|’隔开多个选项；",
+    "importText14": "⑥ 其他字段值，请确保与项目中配置的值保持一致；",
+    "importText15": "⑦ 更新方式填写“1”空数据字段覆盖原来字段参数为空；填写“0”空数据不覆盖原来字段参数；",
+    "importText16": "⑧ 不支持对不在访问范围的事务进行更新。",
+    "importChoose": "导入事务字段选择"
   },
   "setting": {
     "companyInfo": "公司信息",
@@ -1477,6 +1497,6 @@
     "list": "列表",
     "acrossDay": "跨天",
     "conflict": "冲突",
-    "noSchedule":"暂无日程"
+    "noSchedule": "暂无日程"
   }
 }
