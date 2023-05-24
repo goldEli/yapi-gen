@@ -17,6 +17,7 @@ const DropArea = styled.div`
   width: 302px;
   box-sizing: border-box;
   padding: 16px;
+  gap: 8px;
 `
 
 const DropStatusArea = styled.div`

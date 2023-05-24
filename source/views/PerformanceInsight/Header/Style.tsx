@@ -49,6 +49,9 @@ export const Label = styled.div`
 export const FormWrap = styled(Form)`
   box-sizing: border-box;
   padding-right: 24px;
+  .ant-form-item {
+    margin: 0;
+  }
 `
 export const HeaderRow = styled.div`
   margin: 20px 24px 32px 24px;
@@ -128,7 +131,7 @@ export const MsgText = styled.div`
 `
 export const MsgText1 = styled.div`
   padding: 0 16px;
-  margin: 0 24px;
+  margin: 0 24px 24px 24px;
   width: 480px;
   height: 36px;
   border-radius: 6px;
@@ -210,7 +213,7 @@ export const TitleMsg = styled.div`
 `
 export const InputStyle = styled(Input)`
   width: 480px;
-  margin: 24px 24px 0 0px;
+  margin: 0px 24px 0 0px;
 `
 export const TextAreaStyle = styled(TextArea)`
   width: 480px;
@@ -279,9 +282,8 @@ export const PersonText = styled.div`
   color: var(--neutral-n3);
 `
 export const Col = styled.div`
-  padding: 24px 24px 12px 24px;
+  margin: 24px 24px 12px 24px;
   display: flex;
-  height: 32px;
   align-items: center;
   justify-content: space-between;
 `

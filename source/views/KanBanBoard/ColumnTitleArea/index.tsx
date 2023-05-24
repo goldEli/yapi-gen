@@ -12,6 +12,7 @@ const ColumnTitle = styled.span`
   box-sizing: border-box;
   display: flex;
   align-items: center;
+  flex-shrink: 0;
 `
 
 const ColumnTitleAreaBox = styled.div`

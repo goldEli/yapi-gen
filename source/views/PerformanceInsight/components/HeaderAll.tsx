@@ -9,7 +9,8 @@ import CommonIconFont from '@/components/CommonIconFont'
 import Select from './Select'
 import CommonButton from '@/components/CommonButton'
 import { useNavigate } from 'react-router-dom'
-
+import { useSelector } from '@store/index'
+import { getMonthBefor, getDays } from './Date'
 interface HaderProps {
   type: string
   time: string
@@ -18,51 +19,55 @@ interface HaderProps {
     id?: number
   }>
 }
-interface ItemProps {
-  label: string
-  value: string
-  id: string
-  avatar: string | undefined
+interface ProjectListType {
+  name: string
+  id: number
 }
+
 const HeaderAll = (props: HaderProps) => {
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [isVisible, setIsVisible] = useState<boolean>(false)
   const [isVisibleSuccess, setIsVisibleSuccess] = useState<boolean>(false)
   const [more, setMore] = useState(false)
-  const [options, setOptions] = useState<ItemProps[] | []>([])
+  const [projectList, setProjectList] = useState<any>()
+  const [time, setTime] = useState<{ startTime: string; endTime: string }>()
+  const { headerParmas, projectDataList } = useSelector(
+    store => store.performanceInsight,
+  )
   useEffect(() => {
-    const a = []
-    for (let i = 1; i < 10; i++) {
-      const value = i.toString(10) + i
-      a.push({
-        label: `Long Label: ${value}`,
-        value,
-        id: value,
-        avatar: '',
-      })
+    console.log(headerParmas, projectDataList)
+    switch (headerParmas.time.type) {
+      case 0:
+        setTime({
+          startTime: headerParmas.time.time[0],
+          endTime: headerParmas.time.time[1],
+        })
+        break
+      case 1:
+        setTime(getMonthBefor(1))
+        break
+      case 3:
+        setTime(getMonthBefor(3))
+        break
+      case 7:
+        setTime(getDays(7))
+        break
+      case 15:
+        setTime(getDays(15))
+        break
     }
-    setOptions(a)
+    // 根据图表的header选择的项目塞选出选择出来的项目
+    headerParmas.projectIds?.length >= 1
+      ? setProjectList(
+          projectDataList?.filter(el =>
+            headerParmas.projectIds.includes(el.id),
+          ),
+        )
+      : setProjectList(projectDataList)
   }, [])
 
-  const onShowAll = () => {
-    setMore(true)
-    const a = []
-    for (let i = 1; i < 50; i++) {
-      const value = i.toString(10) + i
-      a.push({
-        label: `Long Label: ${value}`,
-        value,
-        id: value,
-        avatar: '',
-      })
-    }
-    setOptions(a)
-  }
-  // 下拉框查询
-  const onSearch = (value: string) => {
-    console.log(value, 'value')
-  }
+  console.log(projectList, 'projectList')
   return (
     <>
       <HeaderRowBox>
@@ -79,24 +84,27 @@ const HeaderAll = (props: HaderProps) => {
           {props.type === 'Progress_all' && (
             <div style={{ marginRight: '16px' }}>
               <Select
-                onSearch={onSearch}
-                options={options}
-                more={more}
-                onChange={(value: string[]) => console.log(value)}
-                onShowAll={() => onShowAll()}
+                options={projectList}
+                more={true}
+                placeholder="请选择项目"
+                onChange={(value: number[]) => console.log(value)}
               />
             </div>
           )}
           <PersonText>
             {' '}
-            {props.personData?.length ? (
-              <span>已选 {props.personData?.length}人</span>
+            {headerParmas.users?.length ? (
+              <span>已选 {headerParmas.users?.length}人</span>
             ) : (
               <span>已选 0</span>
             )}
           </PersonText>
           <Line />
-          <PersonText>统计时间：{props.time}</PersonText>
+          {time?.startTime && time?.endTime && (
+            <PersonText>
+              统计时间：{time?.startTime} ~ {time?.endTime}
+            </PersonText>
+          )}
           <Back
             onClick={() => setIsVisible(true)}
             style={{ margin: '0 16px 0 24px' }}
@@ -122,14 +130,14 @@ const HeaderAll = (props: HaderProps) => {
       />
       {/* 导出 */}
       <Export
-        time={'2023-03-01 ~ 2023-03-14'}
+        time={`${time?.startTime} ~ ${time?.endTime}`}
         title="按周期导出"
         isVisible={isOpen}
         onClose={() => setIsOpen(false)}
         onConfirm={() => {
           setIsOpen(false), setIsVisibleSuccess(true)
         }}
-        personData={[{ name: '123' }]}
+        personData={headerParmas.users}
       />
       {/* 导出成功 */}
       <ExportSuccess

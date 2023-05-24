@@ -144,6 +144,34 @@ export const kanbanConfig: Model.KanbanConfig.Config = {
       max_num: 1,
       categories: [],
     },
+    {
+      id: 1141,
+      kanban_config_id: 1,
+      name: '其它状态列',
+      max_num: 1,
+      categories: [],
+    },
+    {
+      id: 1142,
+      kanban_config_id: 1,
+      name: '其它状态列',
+      max_num: 1,
+      categories: [],
+    },
+    {
+      id: 1143,
+      kanban_config_id: 1,
+      name: '其它状态列',
+      max_num: 1,
+      categories: [],
+    },
+    {
+      id: 1144,
+      kanban_config_id: 1,
+      name: '其它状态列',
+      max_num: 1,
+      categories: [],
+    },
   ],
 }
 export const kanbanInfo: Model.KanBan.Column[] = [
