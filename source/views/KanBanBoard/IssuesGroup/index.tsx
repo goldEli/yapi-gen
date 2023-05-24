@@ -40,6 +40,11 @@ const TitleBtn = styled.div`
   gap: 8px;
 `
 
+const Text = styled.div`
+  font-size: 12px;
+  color: var(--neutral-n3);
+`
+
 const IssuesGroup: React.FC<IssuesGroupProps> = props => {
   const { issuesGroup } = props
   return (
@@ -60,6 +65,7 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
             })}
           max={3}
         />
+        <Text>共计12人，0个事务</Text>
       </GroupTitleArea>
       <DropAreaList>
         {issuesGroup.columns.map(column => {
