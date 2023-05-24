@@ -1,3 +1,5 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable consistent-return */
 /* eslint-disable camelcase */
 // 公用弹窗
 
@@ -6,23 +8,33 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable no-constant-binary-expression */
-import { Form, message, Modal, Select, Space, Tree } from 'antd'
+import {
+  Breadcrumb,
+  Checkbox,
+  Form,
+  message,
+  Modal,
+  Select,
+  Space,
+  Tree,
+} from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
 import { CloseWrap, DelButton } from '@/components/StyleCommon'
 import CommonButton from '@/components/CommonButton'
-import { useEffect, useState } from 'react'
-import Checkbox from 'antd/lib/checkbox/Checkbox'
-import CommonUserAvatar from './CommonUserAvatar'
+import { useEffect, useMemo, useRef, useState } from 'react'
+
 import { useSelector } from '@store/index'
 import {
   getDepartmentUserList,
   getDepartmentUserList1,
 } from '@/services/setting'
 import { unionBy } from 'lodash'
-import CustomSelect from '../CustomSelect'
-import { getMessage } from '../Message'
+import CustomSelect from '@/components/CustomSelect'
+import { getMessage } from '@/components/Message'
+import CommonUserAvatar from '@/components/CommonUserAvatar'
+import CommonIconFont from '@/components/CommonIconFont'
 
 const { DirectoryTree } = Tree
 const ModalHeader = styled.div`
@@ -58,14 +70,27 @@ const CreatePerson = styled.div`
   height: 448px;
 `
 const LeftWrap = styled.div`
-  width: 264px;
+  width: 320px;
   display: flex;
+  box-sizing: border-box;
   flex-direction: column;
   padding-left: 24px;
   border-right: 1px solid var(--neutral-n6-d1);
 `
+
+const TreeLine = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px 0 15px;
+  height: 40px;
+  transition: all 0.3s;
+  :hover {
+    background-color: #f6f7f9;
+  }
+`
 const Tabs = styled.div`
-  width: 216px;
+  width: 270px;
   height: 24px;
   border-radius: 4px;
   margin-top: 16px;
@@ -78,7 +103,7 @@ const Tabs = styled.div`
     text-align: center;
     height: 24px;
     line-height: 24px;
-    width: 108px;
+    width: 135px;
     color: var(--neutral-n3);
   }
   &:hover {
@@ -202,6 +227,90 @@ const TreeStyle = styled(DirectoryTree)`
 `
 const SelectStyle = styled(CustomSelect)``
 
+const NewTree = (props: any) => {
+  const { selectKeys } = props
+
+  const tap = (id: any) => {
+    const tapDatas = props.treeData?.children.find((k: any) => id === k.id)
+
+    props.getTapData(tapDatas)
+  }
+
+  const choose = (item: any) => {
+    props.setKeys(item)
+  }
+
+  return (
+    <div>
+      {props.treeData?.children.map((i: any) => {
+        if (i.children && i.children.length >= 1) {
+          return (
+            <TreeLine key={i.id}>
+              <div>
+                <Checkbox
+                  checked={
+                    i.children.length > 0 &&
+                    i.children.every((item: any) => {
+                      return selectKeys
+                        .map((i: { id: any }) => i.id)
+                        .includes(item.id)
+                    })
+                  }
+                  indeterminate={
+                    i.children.length > 0 &&
+                    i.children.some((item: any) =>
+                      selectKeys
+                        .map((i: { id: any }) => i.id)
+                        .includes(item.id),
+                    )
+                  }
+                >
+                  <div
+                    onClick={() => choose(i)}
+                    style={{ display: 'flex', alignItems: 'end' }}
+                  >
+                    部门-- {i.name}
+                  </div>
+                </Checkbox>
+              </div>
+
+              {i.children && i.children.length >= 1 ? (
+                <CommonIconFont
+                  onClick={() =>
+                    i.children && i.children.length >= 1 ? tap(i.id) : null
+                  }
+                  type="right"
+                />
+              ) : null}
+            </TreeLine>
+          )
+        }
+      })}
+      {/* 成员渲染 */}
+      {props.treeData?.staffs.map((i: any) => {
+        return (
+          <TreeLine key={i.id}>
+            <div>
+              <Checkbox
+                checked={selectKeys
+                  .map((i: { id: any }) => i.id)
+                  .includes(i.id)}
+              >
+                <div
+                  onClick={() => choose(i)}
+                  style={{ display: 'flex', alignItems: 'end' }}
+                >
+                  成员-- {i.name}
+                </div>
+              </Checkbox>
+            </div>
+          </TreeLine>
+        )
+      })}
+    </div>
+  )
+}
+
 interface ModalProps {
   width?: number
   isVisible: boolean
@@ -221,8 +330,9 @@ interface ModalProps {
   state?: number
 }
 
-const CommonModal = (props: ModalProps) => {
+const NewAddUserModalForTandD = (props: ModalProps) => {
   const [t] = useTranslation()
+
   const { projectInfo } = useSelector(store => store.project)
   // 添加成员拍平数组
   const [selectDataList, setSelectDataList] = useState<any>()
@@ -230,7 +340,7 @@ const CommonModal = (props: ModalProps) => {
   const [checkedKeys, setCheckedKeys] = useState<any>()
   const [personData, setPersonData] = useState<any>([])
   const [tabsTreeDataList, setTabsTreeDataList] = useState<any>([])
-  const [teamId, setTeamId] = useState<any>([])
+
   const [tabs, setTabs] = useState([
     {
       label: t('commonModal.labelTitle'),
@@ -242,8 +352,10 @@ const CommonModal = (props: ModalProps) => {
     },
   ])
   const [tabsActive, setTabsActive] = useState(0)
+  const [showTreeData, setShowTreeData] = useState<any>()
   const [treeData, setTreeData] = useState<any>()
   const [treeData2, setTreeData2] = useState<any>()
+  const active = useRef<any>([])
   const [form] = Form.useForm()
   const onInit = () => {
     setPersonData([])
@@ -283,8 +395,8 @@ const CommonModal = (props: ModalProps) => {
       if (res[i].staffs?.length >= 1) {
         const data = res[i].staffs?.map((el: any) => ({
           ...el,
-          staffs: { ...el, id: 'department_id_' + el.id },
-          id: 'department_id_' + el.id,
+          staffs: { ...el, id: `department_id_${el.id}` },
+          id: `department_id_${el.id}`,
         }))
         if (res[i].children) {
           res[i].children = [...res[i]?.children, ...data]
@@ -296,8 +408,8 @@ const CommonModal = (props: ModalProps) => {
         newTreeData(res[i].children)
         res[i].staffs = res[i].staffs?.map((el: any) => ({
           ...el,
-          staffs: { ...el, id: 'department_id_' + el.id },
-          id: 'department_id_' + el.id,
+          staffs: { ...el, id: `department_id_${el.id}` },
+          id: `department_id_${el.id}`,
         }))
       }
     }
@@ -314,6 +426,7 @@ const CommonModal = (props: ModalProps) => {
     })
     const data1 = newTreeData(res)
     setTreeData2(data1)
+    setShowTreeData({ children: data1, staffs: [] })
     // 拍平数组
     const data = unionBy(checkdFilterData(res), 'id')
     setTabsTreeDataList(
@@ -333,7 +446,8 @@ const CommonModal = (props: ModalProps) => {
       },
     })
     setTreeData(res)
-    let data: any = []
+    // setShowTreeData(res)
+    const data: any = []
     res.forEach((el: any) => {
       el.children.forEach((item: any) => {
         data.push({ ...item, label: item.name, value: item.id })
@@ -343,11 +457,14 @@ const CommonModal = (props: ModalProps) => {
     setTabsTreeDataList(deleteDeep(data))
     setSelectDataList(deleteDeep(data))
   }
+
   useEffect(() => {
     if (tabsActive === 0 && props.isVisible) {
-      getTeam()
-    } else if (tabsActive === 1 && props.isVisible) {
       getCompany()
+      //   getTeam()
+    } else if (tabsActive === 1 && props.isVisible) {
+      //   getCompany()
+      getTeam()
     }
   }, [tabsActive, props.isVisible])
   useEffect(() => {
@@ -415,8 +532,8 @@ const CommonModal = (props: ModalProps) => {
   }
   // 去重，团队有重复人员
   function deleteDeep(arr: any) {
-    let set = new Set()
-    let newArr = []
+    const set = new Set()
+    const newArr = []
     for (let i = 0; i < arr.length; i++) {
       if (!set.has(arr[i].id)) {
         set.add(arr[i].id)
@@ -426,28 +543,9 @@ const CommonModal = (props: ModalProps) => {
     return newArr
   }
   // 勾选复选框
-  const onCheck = (checkedKey: any, e: any) => {
-    console.log(checkedKey, e.checkedNodes)
 
-    checkdFilterDataList = []
-    if (tabsActive === 1) {
-      const data = getStaffs(e.checkedNodes)
-      const filterArr = data.filter((el: any) =>
-        String(el.id).includes('department_id_'),
-      )
-      const emptyData = filterArr.filter((el: any) => el?.length !== 0)
-      setPersonData(deleteDeep(emptyData))
-      setCheckedKeys(checkedKey)
-    } else {
-      const fatherData = getKeyData(treeData, 0)
-      setCheckedKeys(checkedKey)
-      setPersonData(
-        e.checkedNodes?.filter((item: any) => !fatherData?.includes(item.id)),
-      )
-    }
-  }
   // 把team组成大数组去过滤父级
-  let dataTeam: any = []
+  const dataTeam: any = []
   const getKeyData = (res: any, preId: any) => {
     for (const i in res) {
       if (preId === res[i].team_id) {
@@ -501,14 +599,131 @@ const CommonModal = (props: ModalProps) => {
         })) || []
     if (props.isPermisGroup) {
       await form.validateFields()
-      props?.onConfirm?.(
-        tabsActive === 1 ? setData : personData,
-        form.getFieldsValue().userGroupId,
-      )
+      console.log(setData)
+      console.log(personData)
+
+      //   props?.onConfirm?.(
+      //     tabsActive === 1 ? setData : personData,
+      //     form.getFieldsValue().userGroupId,
+      //   )
     } else {
-      props?.onConfirm?.(tabsActive === 1 ? setData : personData)
+      console.log(setData)
+      console.log(personData)
+      //   props?.onConfirm?.(tabsActive === 1 ? setData : personData)
     }
   }
+
+  const getTapData = (datas: any) => {
+    console.log(datas)
+    active.current.push(datas)
+    setShowTreeData({ children: datas.children, staffs: datas.staffs })
+  }
+  // 选中节点
+  const setKeys = (keys: any) => {
+    if (keys.children && keys.children.length >= 1) {
+      getHaveChildBykeys(keys)
+    } else {
+      getNotHaveChildBykeys(keys)
+    }
+  }
+  // 去除每层级的 staffs 数组并遍历每层级的 children 取出 staffs 数组
+  function flattenStaffs(data: any) {
+    let result: any = []
+
+    function flatten(node: any) {
+      if (node.staffs) {
+        result = result.concat(node.staffs)
+      }
+
+      if (node.children && node.children.length > 0) {
+        node?.children.forEach((child: any) => {
+          flatten(child)
+        })
+      }
+    }
+
+    data.forEach((node: any) => {
+      flatten(node)
+    })
+
+    return result
+  }
+  function isEqual(obj1: any, obj2: any) {
+    return JSON.stringify(obj1) === JSON.stringify(obj2)
+  }
+  function compareArrays(A: any, B: any) {
+    const result = []
+
+    for (const item of B) {
+      const found = A.find((aItem: any) => isEqual(aItem, item))
+      if (!found) {
+        result.push(item)
+      }
+    }
+
+    for (const item of A) {
+      const found = B.find((bItem: any) => isEqual(bItem, item))
+      if (!found) {
+        result.push(item)
+      }
+    }
+
+    return result
+  }
+
+  // 辅助函数，用于比较两个对象是否相等
+
+  //处理数据无children解析为key作为右边
+  const getNotHaveChildBykeys = (keys: any) => {
+    console.log('选中的item-无children', keys)
+    const isHave = personData.map((i: { id: any }) => i.id).includes(keys.id)
+    console.log(isHave)
+    if (isHave) {
+      setPersonData(personData.filter((i: { id: any }) => i.id !== keys.id))
+    } else {
+      setPersonData([...personData, keys])
+    }
+  }
+  //处理数据有children解析为key作为右边
+
+  const getHaveChildBykeys = (keys: any) => {
+    console.log('选中的item-有children', keys)
+    // setPersonData(keys)
+    const flattenedStaffs = [
+      ...new Set(
+        flattenStaffs([keys]).map((item: any) => {
+          delete item.staffs
+          return item
+        }),
+      ),
+    ]
+    const newData = flattenedStaffs.reduce((acc: any, current: any) => {
+      // 使用对象来检查已经存在的id值
+      const ids = acc.map((item: any) => item.id)
+
+      // 如果当前项的id在已存在的id数组中不存在，则添加到结果数组中
+      if (!ids.includes(current.id)) {
+        acc.push(current)
+      }
+
+      return acc
+    }, [])
+    const isEquals = isEqual(personData, newData)
+    console.log(isEquals)
+
+    if (personData.length < 1) {
+      setPersonData(newData)
+    } else {
+      if (isEquals) {
+        setPersonData([])
+      } else {
+        console.log(compareArrays(personData, newData))
+
+        setPersonData(compareArrays(personData, newData))
+      }
+    }
+  }
+
   return (
     <ModalStyle
       footer={false}
@@ -516,7 +731,7 @@ const CommonModal = (props: ModalProps) => {
       title={false}
       closable={false}
       bodyStyle={{ padding: '0 4px 0 0' }}
-      width={props?.width || 528}
+      width={props?.width || 640}
       maskClosable={false}
       destroyOnClose
       keyboard={false}
@@ -541,7 +756,7 @@ const CommonModal = (props: ModalProps) => {
           <SelectStyle
             notFoundContent={null}
             showSearch
-            style={{ width: 216 }}
+            style={{ width: 270 }}
             // eslint-disable-next-line no-undefined
             value={searchVal || undefined}
             onChange={(e: any) => handleChange(e)}
@@ -569,35 +784,79 @@ const CommonModal = (props: ModalProps) => {
               ))}
             </Tabs>
           ) : null}
-          <Row>
-            <Checkbox
-              checked={personData?.length === tabsTreeDataList?.length}
-              onChange={(e: any) => checkAllChange(e)}
+          {active.current.length >= 1 && (
+            <div
+              style={{
+                height: '20px',
+                marginTop: '16px',
+              }}
             >
-              {t('commonModal.checkBoxTitle')}
-            </Checkbox>
-          </Row>
-          <TreeStyle
-            multiple
-            showIcon
-            checkable
-            onCheck={onCheck}
-            checkedKeys={checkedKeys}
-            switcherIcon={
-              <IconFont
-                type="down-icon"
-                style={{ color: ' var(--auxiliary-text-t2-d1)', fontSize: '8' }}
-              />
-            }
-            titleRender={(node: any) => (
-              <CommonUserAvatar avatar={node.avatar} name={node.name} />
-            )}
-            treeData={tabsActive === 0 ? treeData : treeData2}
-            fieldNames={{
-              title: 'name',
-              key: 'id',
+              <Breadcrumb>
+                <Breadcrumb.Item
+                  onClick={() => {
+                    setShowTreeData({ children: treeData2, staffs: [] })
+                    active.current = []
+                  }}
+                >
+                  <CommonIconFont color="#6688FF" type="return" />
+                  <span
+                    style={{
+                      color: '#6688FF',
+                    }}
+                  >
+                    返回
+                  </span>
+                </Breadcrumb.Item>
+
+                {active.current.map((i: any) => (
+                  <Breadcrumb.Item key={i.id}>
+                    <span
+                      onClick={() => {
+                        setShowTreeData({
+                          children: i.children,
+                          staffs: i.staffs,
+                        })
+
+                        const thisIndex = active.current.findIndex(
+                          (k: any) => i.id === k.id,
+                        )
+                        console.log(thisIndex)
+
+                        active.current.splice(
+                          thisIndex + 1,
+                          active.current.length - 1,
+                        )
+                      }}
+                    >
+                      {i.name}
+                    </span>
+                  </Breadcrumb.Item>
+                ))}
+              </Breadcrumb>
+            </div>
+          )}
+
+          <div
+            style={{
+              height: '320px',
+              overflow: 'scroll',
             }}
-          />
+          >
+            {/* <Row>
+              <Checkbox
+                checked={personData?.length === tabsTreeDataList?.length}
+                onChange={(e: any) => checkAllChange(e)}
+              >
+                {t('commonModal.checkBoxTitle')}
+              </Checkbox>
+            </Row> */}
+            <NewTree
+              selectKeys={personData}
+              setKeys={setKeys}
+              getTapData={getTapData}
+              treeData={showTreeData}
+            />
+          </div>
         </LeftWrap>
         <RightPerson>
           <Header>
@@ -690,4 +949,4 @@ const CommonModal = (props: ModalProps) => {
   )
 }
 
-export default CommonModal
+export default NewAddUserModalForTandD
