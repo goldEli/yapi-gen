@@ -2,6 +2,8 @@ import React from 'react'
 import styled from '@emotion/styled'
 import Issues from '../Issues'
 import UpDownBtn from '@/components/UpDownBtn'
+import CommonUserAvatar from '@/components/CommonUserAvatar'
+import MultipleAvatar from '@/components/MultipleAvatar'
 
 interface IssuesGroupProps {
   issuesGroup: Model.KanBan.Group
@@ -31,6 +33,7 @@ const Title = styled.div`
   font-family: SiYuanMedium;
   margin-left: 8px;
   margin-right: 16px;
+  flex-shrink: 0;
 `
 
 const IssuesGroup: React.FC<IssuesGroupProps> = props => {
@@ -40,6 +43,17 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
       <GroupTitleArea>
         <UpDownBtn isOpen={false} />
         <Title>{issuesGroup.name}</Title>
+        <MultipleAvatar
+          list={Array(4)
+            .fill(0)
+            .map((_, idx) => {
+              return {
+                id: idx,
+                name: 'lily' + idx,
+              }
+            })}
+          max={3}
+        />
       </GroupTitleArea>
       <DropAreaList>
         {issuesGroup.columns.map(column => {
