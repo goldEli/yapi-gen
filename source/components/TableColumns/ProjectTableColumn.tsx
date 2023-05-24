@@ -75,7 +75,8 @@ export const useDynamicColumns = (state: any) => {
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
-      (i: any) => i.name === t('requirementsForEditing'),
+      (i: any) =>
+        i.name === (projectInfo.projectType === 1 ? '编辑需求' : '编辑事务'),
     )?.length > 0
 
   const NewSort = (props: any) => {

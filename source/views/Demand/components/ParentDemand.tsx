@@ -3,13 +3,13 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled'
-import { message } from 'antd'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
 import HaveSearchAndList from '@/components/HaveSearchAndList'
 import { useSelector } from '@store/index'
 import { deleteInfoDemand } from '@/services/demand'
 import { getMessage } from '@/components/Message'
+import { deleteInfoSprint } from '@/services/sprint'
 
 const DemandCheckedItem = styled.div({
   minHeight: 22,
@@ -48,22 +48,31 @@ const ParentDemand = (props: Props) => {
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
-      (i: any) => i.identity === 'b/story/update',
+      (i: any) =>
+        i.identity ===
+        (projectInfo.projectType === 1
+          ? 'b/story/update'
+          : 'b/transaction/update'),
     )?.length > 0
 
   const onDeleteInfoDemand = async () => {
-    try {
+    if (projectInfo.projectType === 1) {
       await deleteInfoDemand({
         projectId: props.projectId,
         demandId: props.detail?.id,
         type: 'parent',
         targetId: props.detail?.parentId,
       })
-      getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-      props.onUpdate()
-    } catch (error) {
-      //
+    } else {
+      await deleteInfoSprint({
+        projectId: props.projectId,
+        sprintId: props.detail?.id,
+        type: 'parent',
+        targetId: props.detail?.parentId,
+      })
     }
+    getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
+    props.onUpdate()
   }
 
   return (

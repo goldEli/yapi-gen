@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-no-leaked-render */
 import styled from '@emotion/styled'
-import { message, Popover, Tooltip } from 'antd'
+import { Popover, Tooltip } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import IconFont from './IconFont'
@@ -13,6 +13,7 @@ import { useSelector } from '@store/index'
 import { addInfoDemand, getDemandList } from '@/services/demand'
 import InputSearch from './InputSearch'
 import { getMessage } from './Message'
+import { addInfoSprint } from '@/services/sprint'
 
 const PopoverWrap = styled(Popover)<{ isRight?: any }>({}, ({ isRight }) => ({
   '.ant-popover-placement-bottom': {
@@ -214,18 +215,23 @@ const HaveSearchAndList = (props: Props) => {
 
   // 需求详情添加父需求
   const onChangeParent = async (item: any) => {
-    try {
+    if (projectInfo.projectType === 1) {
       await addInfoDemand({
         projectId: props?.projectId,
         demandId: props?.demandId,
         type: 'parent',
         targetId: [item.value],
       })
-      getMessage({ msg: t('common.addSuccess'), type: 'success' })
-      props.onUpdate()
-    } catch (error) {
-      //
+    } else {
+      await addInfoSprint({
+        projectId: props.projectId,
+        sprintId: props.demandId,
+        type: 'parent',
+        targetId: [item.value],
+      })
     }
+    getMessage({ msg: t('common.addSuccess'), type: 'success' })
+    props.onUpdate()
   }
 
   const onChange = async (item: any) => {

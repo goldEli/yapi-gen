@@ -109,12 +109,12 @@ const Operation = (props: Props) => {
 
   // const hasImport = getIsPermission(
   //   projectInfo?.projectPermissions,
-  //   'b/story/import',
+  //   projectInfo.projectType === 1 ? 'b/story/import' : 'b/transaction/import',
   // )
 
   // const hasExport = getIsPermission(
   //   projectInfo?.projectPermissions,
-  //   'b/story/export',
+  //   projectInfo.projectType === 1 ? 'b/story/export' : 'b/transaction/export',
   // )
 
   const onFilterSearch = (e: any, customField: any) => {

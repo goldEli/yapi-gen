@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next'
 import { AddWrap } from '../StyleCommon'
 import IconFont from '../IconFont'
 import UploadAttach from '../UploadAttach'
-import TagComponent from '../TagComponent'
 import { Editor, EditorRef } from '@xyfe/uikit'
 import CustomSelect from '../CustomSelect'
 import MoreOptions from '../MoreOptions'
@@ -232,10 +231,13 @@ const CreateDemandLeft = (props: Props) => {
     if (result?.projectPermissions?.length <= 0) {
       onClearProjectId()
     } else {
+      const update =
+        result.projectType === 1 ? 'b/story/update' : 'b/transaction/update'
+      const save =
+        result.projectType === 1 ? 'b/story/save' : 'b/transaction/save'
       // 是否有创建需求权限
       isCreateDemand = result?.projectPermissions?.filter(
-        (i: any) =>
-          i.identity === (params?.editId ? 'b/story/update' : 'b/story/save'),
+        (i: any) => i.identity === (params?.editId ? update : save),
       )?.length
 
       props.onGetCreateWorkItem(isCreateDemand)
@@ -682,10 +684,18 @@ const CreateDemandLeft = (props: Props) => {
         {props.projectId &&
           projectInfo.projectPermissions?.length > 0 &&
           (projectInfo.projectPermissions?.filter(
-            (i: any) => i.identity === 'b/story/update',
+            (i: any) =>
+              i.identity ===
+              (projectInfo.projectType === 1
+                ? 'b/story/update'
+                : 'b/transaction/update'),
           )?.length > 0 ||
             projectInfo.projectPermissions?.filter(
-              (i: any) => i.identity === 'b/story/save',
+              (i: any) =>
+                i.identity ===
+                (projectInfo.projectType === 1
+                  ? 'b/story/save'
+                  : 'b/transaction/save'),
             )?.length > 0) && (
             <Form.Item name="tagIds" label={t('common.tag')}>
               {/* 需判断是冲刺还是迭代 */}

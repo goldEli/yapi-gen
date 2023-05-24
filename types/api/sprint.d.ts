@@ -1,4 +1,11 @@
 declare namespace API.Sprint {
+  namespace UpdateSprintPriority {
+    type Params = {
+      projectId: number
+      sprintId?: number
+      priorityId: number
+    }
+  }
   namespace AddInfoSprint {
     type Params = {
       projectId: number

@@ -460,6 +460,26 @@ export const deleteInfoSprint = async (
   })
 }
 
+// 快捷修改参数
+export const updateSprintTableParams = async (params: any) => {
+  await http.put<any>('changeSprintTableParams', {
+    project_id: params.projectId,
+    id: params.id,
+    ...params.otherParams,
+  })
+}
+
+// 修改优先级
+export const updateSprintPriority = async (
+  params: API.Sprint.UpdateSprintPriority.Params,
+) => {
+  await http.put<any>('updateSprintPriority', {
+    priority: params.priorityId,
+    id: params.sprintId,
+    project_id: params.projectId,
+  })
+}
+
 // 完成率Top10
 export const getCompletionRate = async (
   params: API.Sprint.GetCompletionRate.Params,

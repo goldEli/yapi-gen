@@ -67,8 +67,6 @@ const ActivitySprint = () => {
     }
   }
 
-  console.log(sprintInfo, '=sprintInfo')
-
   return (
     <InfoItem>
       <Label>活动</Label>

@@ -189,7 +189,11 @@ const UploadAttach = (props: any) => {
     const isCanEdit =
       projectInfo.projectPermissions?.length > 0 &&
       projectInfo.projectPermissions?.filter(
-        (i: any) => i.identity === 'b/story/update',
+        (i: any) =>
+          i.identity ===
+          (projectInfo.projectType === 1
+            ? 'b/story/update'
+            : 'b/transaction/update'),
       )?.length > 0
     isDownload = projectInfo?.projectPermissions?.filter(
       (i: any) => i.name === '附件下载',

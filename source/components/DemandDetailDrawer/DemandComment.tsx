@@ -70,7 +70,11 @@ const DemandComment = (props: Props) => {
   // 判断当前登录的人是否有编辑评论的权限
   const isComment =
     projectInfo?.projectPermissions?.filter(
-      (i: any) => i.identity === 'b/story/comment',
+      (i: any) =>
+        i.identity ===
+        (projectInfo.projectType === 1
+          ? 'b/story/comment'
+          : 'b/transaction/comment'),
     ).length > 0
 
   // 获取评论列表

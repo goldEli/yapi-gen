@@ -46,7 +46,7 @@ const OperationGroup = (props: Props) => {
 
   const hasFilter = getIsPermission(
     projectInfo?.projectPermissions,
-    'b/story/get',
+    projectInfo.projectType === 1 ? 'b/story/get' : 'b/transaction/get',
   )
 
   // 切换显示类型
