@@ -1,9 +1,8 @@
 import DragMoveContainer from '@/components/DragMoveContainer/DragMoveContainer'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { DetailInfoWrap, InfoItem, Label, TextWrap } from '../style'
 import { useTranslation } from 'react-i18next'
 import { Editor } from '@xyfe/uikit'
-import TagComponent from '@/components/TagComponent'
 import { AddWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import UploadAttach from '@/components/UploadAttach'
@@ -13,33 +12,72 @@ import ChildSprint from './ChildSprint'
 import LinkSprint from './LinkSprint'
 import ActivitySprint from './ActivitySprint'
 import CommentFooter from '@/components/CommonComment/CommentFooter'
-import { setSprintDetailDrawer } from '@store/sprint'
-import { useDispatch } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
+import {
+  addInfoSprint,
+  addSprintComment,
+  deleteInfoSprint,
+} from '@/services/sprint'
+import { useSearchParams } from 'react-router-dom'
+import { getIdsForAt, getParamsData, removeNull } from '@/tools'
+import { getMessage } from '@/components/Message'
+import { getSprintCommentList, getSprintInfo } from '@store/sprint/sprint.thunk'
+import SprintTag from '@/components/TagComponent/SprintTag'
 
 const SprintDetailInfo = () => {
-  const dispatch = useDispatch()
   const [t] = useTranslation()
+  const dispatch = useDispatch()
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const { id, sprintId } = paramsData
   const LeftDom = useRef<HTMLDivElement>(null)
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
+  const { sprintInfo } = useSelector(store => store.sprint)
+  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
   //   当前删除的附件数据
-  const [files, setFiles] = useState()
+  const [files, setFiles] = useState<Model.Sprint.AttachTarget[]>([])
   const [tagList, setTagList] = useState<any>([])
-  const demandInfo = {
-    info: '12112',
-    attachment: [],
+
+  const onBottom = () => {
+    const dom: any = LeftDom?.current
+    dom.scrollTop = dom.scrollHeight
   }
 
   //   添加附件
   const onAddInfoAttach = async (data: any) => {
-    //
+    const obj = {
+      url: data.data.url,
+      name: data.data.files.name,
+      size: data.data.files.size,
+      ext: data.data.files.suffix,
+      ctime: data.data.files.time,
+    }
+    await addInfoSprint({
+      projectId: id,
+      sprintId,
+      type: 'attachment',
+      targetId: [obj],
+    })
+    dispatch(getSprintInfo({ projectId: id, sprintId }))
+    onBottom()
   }
 
   //   确认删除附件事件
-  const onDeleteConfirm = async () => {}
+  const onDeleteConfirm = async () => {
+    await deleteInfoSprint({
+      projectId: id,
+      sprintId,
+      type: 'attachment',
+      targetId: files,
+    })
+    getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
+    dispatch(getSprintInfo({ projectId: id, sprintId }))
+    onBottom()
+  }
 
   //   删除附件弹窗
   const onDeleteInfoAttach = async (file?: any) => {
-    // setFiles(file)
+    setFiles(file)
     open({
       title: '确认删除',
       text: t('p2.del'),
@@ -49,87 +87,96 @@ const SprintDetailInfo = () => {
     })
   }
 
-  const onBottom = () => {
-    const dom: any = LeftDom?.current
-    dom.scrollTop = dom.scrollHeight
-  }
-
   // 提交评论
-  const onConfirmComment = (value: any) => {
-    console.log(value)
-  }
-
-  const openModal = () => {
+  const onConfirmComment = async (value: { info: string }) => {
+    await addSprintComment({
+      projectId: id,
+      sprintId,
+      content: value.info,
+      a_user_ids: getIdsForAt(value.info),
+    })
+    getMessage({ type: 'success', msg: '评论成功' })
     dispatch(
-      setSprintDetailDrawer({
-        visible: true,
+      getSprintCommentList({
+        projectId: id,
+        sprintId,
+        page: 1,
+        pageSize: 9999,
       }),
     )
   }
+
+  useEffect(() => {
+    setTagList(
+      sprintInfo?.tag?.map((i: any) => ({
+        id: i.id,
+        color: i.tag?.color,
+        name: i.tag?.content,
+      })),
+    )
+  }, [sprintInfo])
 
   return (
     <DragMoveContainer
       max="65vw"
       min="30vw"
       width="65vw"
-      height="calc(100vh - 236px)"
+      height="calc(100vh - 212px)"
     >
       <DeleteConfirmModal />
-      <div onClick={openModal}>打开详情弹窗</div>
       <DetailInfoWrap ref={LeftDom}>
         <InfoItem
           style={{
             marginTop: '0px',
           }}
         >
-          <Label>{t('mine.demandInfo')}</Label>
-          {demandInfo?.info ? (
+          <Label>描述</Label>
+          {sprintInfo?.info ? (
             <Editor
-              value={demandInfo?.info}
+              value={sprintInfo?.info}
               getSuggestions={() => []}
               readonly
             />
           ) : (
-            // <div dangerouslySetInnerHTML={{ __html: demandInfo?.info }} />
             <TextWrap>--</TextWrap>
           )}
         </InfoItem>
         <InfoItem>
           <Label>{t('common.attachment')}</Label>
           <div>
-            {/* {projectInfo?.projectPermissions?.filter(
+            {projectInfo?.projectPermissions?.filter(
               (i: any) => i.name === '附件上传',
-            ).length > 0 && ( */}
-            <UploadAttach
-              onBottom={onBottom}
-              defaultList={demandInfo?.attachment?.map((i: any) => ({
-                url: i.attachment.path,
-                id: i.id,
-                size: i.attachment.size,
-                time: i.created_at,
-                name: i.attachment.name,
-                suffix: i.attachment.ext,
-                username: i.user_name ?? '--',
-              }))}
-              canUpdate
-              onC
-              del={onDeleteInfoAttach}
-              add={onAddInfoAttach}
-              addWrap={
-                <CommonButton type="primaryText" icon="plus">
-                  添加附件
-                </CommonButton>
-              }
-            />
-            {/* )} */}
-            {/* {projectInfo?.projectPermissions?.filter(
+            ).length > 0 && (
+              <UploadAttach
+                onBottom={onBottom}
+                defaultList={sprintInfo?.attachment?.map((i: any) => ({
+                  url: i.attachment.path,
+                  id: i.id,
+                  size: i.attachment.size,
+                  time: i.created_at,
+                  name: i.attachment.name,
+                  suffix: i.attachment.ext,
+                  username: i.user_name ?? '--',
+                }))}
+                canUpdate
+                onC
+                del={onDeleteInfoAttach}
+                add={onAddInfoAttach}
+                addWrap={
+                  <CommonButton type="primaryText" icon="plus">
+                    添加附件
+                  </CommonButton>
+                }
+              />
+            )}
+            {projectInfo?.projectPermissions?.filter(
               (i: any) => i.name === '附件上传',
-            ).length <= 0 && <span>--</span>} */}
+            ).length <= 0 && <span>--</span>}
           </div>
         </InfoItem>
         <InfoItem>
           <Label>{t('common.tag')}</Label>
-          <TagComponent
+          <SprintTag
             defaultList={tagList}
             canAdd
             addWrap={
@@ -145,7 +192,12 @@ const SprintDetailInfo = () => {
       </DetailInfoWrap>
       <CommentFooter
         placeholder="发表评论（按M快捷键发表评论）"
-        personList={[]}
+        personList={removeNull(projectInfoValues, 'user_name')?.map(
+          (k: any) => ({
+            label: k.content,
+            id: k.id,
+          }),
+        )}
         onConfirm={onConfirmComment}
         style={{ padding: '0 24px', width: 'calc(100% - 24px)' }}
         maxHeight="60vh"

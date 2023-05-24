@@ -39,3 +39,21 @@ export const getProjectRoleList = createAsyncThunk(
     return res.data
   },
 )
+
+// 事务详情
+export const getSprintInfo = createAsyncThunk(
+  `${name}/getSprintInfo`,
+  async (params: API.Sprint.GetSprintInfo.Params) => {
+    const res = await services.sprint.getSprintInfo(params)
+    return res
+  },
+)
+
+// 事务评论列表
+export const getSprintCommentList = createAsyncThunk(
+  `${name}/getSprintCommentList`,
+  async (params: API.Sprint.GetSprintCommentList.Params) => {
+    const res = await services.sprint.getSprintCommentList(params)
+    return res
+  },
+)

@@ -4,6 +4,8 @@ import {
   getSprintKanBanList,
   getProjectRoleList,
   getSprintList,
+  getSprintInfo,
+  getSprintCommentList,
 } from './sprint.thunk'
 
 type SliceState = {
@@ -14,6 +16,10 @@ type SliceState = {
     params?: any
   }
   projectRoleList?: Model.Sprint.ProjectSettings[]
+  sprintInfo: Partial<Model.Sprint.SprintInfo>
+  sprintCommentList: {
+    list: Model.Sprint.CommentListInfo[]
+  }
   // // 事务列表
   // sprintList: {
   //   list?: Model.Sprint.ListItem[]
@@ -111,6 +117,12 @@ const initialState: SliceState = {
     visible: false,
     params: {},
   },
+  // 事务详情
+  sprintInfo: {},
+  // 事务列表
+  sprintCommentList: {
+    list: [],
+  },
   // sprintList: {
   //   list: undefined,
   // },
@@ -138,6 +150,15 @@ const slice = createSlice({
         ...action.payload,
       }
     },
+    setSprintInfo(state, action: PayloadAction<SliceState['sprintInfo']>) {
+      state.sprintInfo = action.payload
+    },
+    setSprintCommentList(
+      state,
+      action: PayloadAction<SliceState['sprintCommentList']>,
+    ) {
+      state.sprintCommentList = action.payload
+    },
     // setSprintList(state, action: PayloadAction<SliceState['sprintList']>) {
     //   state.sprintList = {
     //     ...state.sprintList,
@@ -152,6 +173,12 @@ const slice = createSlice({
     // builder.addCase(getSprintList.fulfilled, (state, action) => {
     //   state.sprintList = action.payload
     // })
+    builder.addCase(getSprintInfo.fulfilled, (state, action) => {
+      state.sprintInfo = action.payload
+    })
+    builder.addCase(getSprintCommentList.fulfilled, (state, action) => {
+      state.sprintCommentList = action.payload
+    })
     builder.addCase(getProjectRoleList.fulfilled, (state, action) => {
       console.log('action', action)
       state.projectRoleList = action.payload
@@ -165,6 +192,8 @@ export const {
   setGuideVisible,
   setSprintDetailDrawer,
   setSprintTableData,
+  setSprintInfo,
+  setSprintCommentList,
   // setSprintList,
 } = slice.actions
 

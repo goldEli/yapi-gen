@@ -14,7 +14,7 @@ const useOpenDemandDetail = () => {
   const openDemandDetail = (
     item: any,
     projectId: any,
-    demandId: any,
+    id: any,
     type?: number,
   ) => {
     // 弹窗预览
@@ -42,14 +42,29 @@ const useOpenDemandDetail = () => {
           break
       }
     } else {
-      const params = encryptPhp(
-        JSON.stringify({
-          type: 'info',
-          id: projectId,
-          demandId,
-        }),
-      )
-      navigate(`/ProjectManagement/Demand?data=${params}`)
+      let url = ''
+
+      if (type === 1) {
+        const params = encryptPhp(
+          JSON.stringify({
+            id: projectId,
+            sprintId: id,
+          }),
+        )
+        url = `/SprintProjectManagement/SprintProjectDetail?data=${params}`
+      } else if (type === 2) {
+        //
+      } else {
+        const params = encryptPhp(
+          JSON.stringify({
+            type: 'info',
+            id: projectId,
+            demandId: id,
+          }),
+        )
+        url = `/ProjectManagement/Demand?data=${params}`
+      }
+      navigate(url)
     }
   }
 

@@ -18,6 +18,7 @@ import { getDemandChangeLog } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
 import ResizeTable from '@/components/ResizeTable'
 import { Editor } from '@xyfe/uikit'
+import { getSprintChangeLog } from '@/services/sprint'
 
 const SpaceWrap = styled(Space)({
   '.ant-space-item': {
@@ -59,12 +60,15 @@ const NewSort = (sortProps: any) => {
   )
 }
 
-const ChangeRecord = () => {
+interface Props {
+  activeKey: string
+}
+
+const ChangeRecord = (props: Props) => {
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
-  const projectId = paramsData.id
-  const { demandId } = paramsData
+  const { sprintId, id } = paramsData
   const [dataList, setDataList] = useState<any>({
     list: undefined,
   })
@@ -75,13 +79,13 @@ const ChangeRecord = () => {
   const [isSpinning, setIsSpinning] = useState(false)
   const dispatch = useDispatch()
   const { isRefresh } = useSelector(store => store.user)
-  const { isUpdateChangeLog } = useSelector(store => store.demand)
+  // const { isUpdateChangeLog } = useSelector(store => store.demand)
 
   const getList = async (item?: any, orderVal?: any) => {
     setIsSpinning(true)
-    const result = await getDemandChangeLog({
-      demandId,
-      projectId,
+    const result = await getSprintChangeLog({
+      sprintId,
+      projectId: id,
       page: item ? item.page : 1,
       pageSize: item ? item.size : 10,
       order: orderVal.value,
@@ -94,8 +98,10 @@ const ChangeRecord = () => {
   }
 
   useEffect(() => {
-    getList(pageObj, order)
-  }, [])
+    if (props.activeKey === '2') {
+      getList(pageObj, order)
+    }
+  }, [props.activeKey])
 
   useEffect(() => {
     if (isRefresh) {
@@ -103,11 +109,11 @@ const ChangeRecord = () => {
     }
   }, [isRefresh])
 
-  useEffect(() => {
-    if (isUpdateChangeLog) {
-      getList(pageObj, order)
-    }
-  }, [isUpdateChangeLog])
+  // useEffect(() => {
+  //   if (isUpdateChangeLog) {
+  //     getList(pageObj, order)
+  //   }
+  // }, [isUpdateChangeLog])
 
   const onClickCheck = (item: any) => {
     setCheckDetail(item)
