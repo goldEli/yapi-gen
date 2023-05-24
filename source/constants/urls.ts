@@ -186,9 +186,9 @@ const urls = {
   getSprintChangeLog: '/b/transaction/getchangelog',
   // 事务评论列表
   getSprintCommentList: '/b/transaction/comment/getlist',
-  // 添加评论列表
+  // 添加评论
   addSprintComment: '/b/transaction/comment/save',
-  // 删除评论列表
+  // 删除评论
   deleteSprintComment: '/b/transaction/comment/delete',
   // 添加事务
   addSprint: '/b/transaction/save',
@@ -257,6 +257,8 @@ const urls = {
   getDefectRatio: 'b/efficiency/defect_ratio',
   // 缺陷趋势
   getBugList: 'b/efficiency/member/bug/list',
+  // 工作项和缺陷
+  getStatisticsTotal: 'b/efficiency/statistics/total',
 
   // 修改首页配置
   updateHomeSetting: '/b/project/change/defaultHomeMenu',

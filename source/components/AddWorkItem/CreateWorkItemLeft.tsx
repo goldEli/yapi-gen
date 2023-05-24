@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable no-undefined */
 /* eslint-disable require-unicode-regexp */
 import { Form, Input, Select } from 'antd'
@@ -18,6 +19,7 @@ import { getCategoryConfigList, updateDemandCategory } from '@/services/demand'
 import { decryptPhp } from '@/tools/cryptoPhp'
 import { removeNull } from '@/tools'
 import { uploadFileToKey } from '@/services/cos'
+import DemandTag from '../TagComponent/DemandTag'
 
 const LeftWrap = styled.div({
   height: '100%',
@@ -686,7 +688,8 @@ const CreateDemandLeft = (props: Props) => {
               (i: any) => i.identity === 'b/story/save',
             )?.length > 0) && (
             <Form.Item name="tagIds" label={t('common.tag')}>
-              <TagComponent
+              {/* 需判断是冲刺还是迭代 */}
+              <DemandTag
                 defaultList={tagCheckedList}
                 onChangeTag={onChangeTag}
                 isQuick

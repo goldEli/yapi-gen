@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-leaked-render */
 import CommonButton from '@/components/CommonButton'
 import {
   AddText,
@@ -10,7 +11,7 @@ import {
 } from '../style'
 import CommonIconFont from '@/components/CommonIconFont'
 import { CloseWrap } from '@/components/StyleCommon'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Space, Tooltip } from 'antd'
 import CustomSelect from '@/components/CustomSelect'
 import StateTag from '@/components/StateTag'
@@ -91,6 +92,10 @@ const ChildSprint = () => {
     },
   ]
 
+  useEffect(() => {
+    // 获取子事务列表
+  }, [])
+
   return (
     <InfoItem>
       <LabelWrap>
@@ -113,6 +118,7 @@ const ChildSprint = () => {
               onChange={onChangeSelect}
               mode="multiple"
               allowClear
+              autoFocus
             />
             <AddText>添加</AddText>
             <CancelText onClick={onCancelSearch}>取消</CancelText>

@@ -33,7 +33,6 @@ const Issues: React.FC<IssuesProps> = props => {
   return (
     <Droppable key={issues.id} droppableId={handleId(groupId, issues.id)}>
       {(provided, snapshot) => {
-        console.log(snapshot, groupId)
         return (
           <DropArea ref={provided.innerRef} {...provided.droppableProps}>
             {/* {column?.deps?.map?.((item) => {

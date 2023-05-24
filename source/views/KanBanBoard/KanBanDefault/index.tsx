@@ -6,7 +6,7 @@ import useKanBanData from '../hooks/useKanBanData'
 import IssuesGroupList from '../IssuesGroupList'
 
 const KanBanDefault = () => {
-  const { data, onDragEnd } = useKanBanData(columnsFromBackend)
+  const { data, onDragEnd } = useKanBanData()
 
   return (
     <DragDropContext

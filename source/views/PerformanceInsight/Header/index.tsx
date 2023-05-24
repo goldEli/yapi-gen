@@ -10,25 +10,24 @@ import CommonIconFont from '@/components/CommonIconFont'
 import Select from '../components/Select'
 import AddMemberCommonModal from '@/components/AddUser/CommonModal'
 import { useSelector } from '@store/index'
-import { setSave } from '@store/performanceInsight'
+import {
+  setSave,
+  setHeaderParmas,
+  setProjectDataList,
+} from '@store/performanceInsight'
 import { useDispatch } from 'react-redux'
 import ViewDialog from './components/ViewDialog'
+import { getProjectList } from '@/services/project'
+import dayjs from 'dayjs'
 interface ItemProps {
   name: string
   id: number
-}
-interface OptionProps {
-  label: string
-  value: string
-  id: string
-  avatar: string
 }
 interface Props {
   homeType: string
 }
 const Iteration = (props: Props) => {
   // sprint  iteration all
-  const [type, setType] = useState('all')
   const [tabs, setTabs] = useState<Array<{ label: string; key: string }>>([])
   const tabs1 = [
     {
@@ -52,61 +51,97 @@ const Iteration = (props: Props) => {
   ]
   const [tabsActive, setTabsActive] = useState<number>(0)
   const [timekey, setTimekey] = useState<number>(-1)
-  const [isOpen, setIsOpen] = useState<boolean>(false)
   const { RangePicker } = DatePicker
+  const dateFormat = 'YYYY-MM-DD'
   const [more, setMore] = useState<boolean>(false)
   const [person, setPerson] = useState<ItemProps[] | []>([])
-  const [options, setOptions] = useState<OptionProps[] | []>([])
   const [isVisible, setIsVisible] = useState<boolean>(false)
   const [isVisibleView, setIsVisibleView] = useState<boolean>(false)
+  const [projectListAll, setProjectListAll] = useState([])
+  const [projectList, setProjectList] = useState([])
+  // 项目的id
+  const [projectIds, setProjectIds] = useState<number[]>()
   const dispatch = useDispatch()
-  const { save } = useSelector(store => store.performanceInsight)
+  const { save, headerParmas } = useSelector(store => store.performanceInsight)
   const getTabsActive = (index: number) => {
     setTabsActive(index)
   }
   useEffect(() => {
     props.homeType === 'iteration' && setTabs(tabs2)
     props.homeType === 'sprint' && setTabs(tabs1)
+    props.homeType === 'all' && getProjectData()
   }, [])
-  const onSearch = (value: string) => {
-    console.log(value)
+  // 获取项目列表
+  const getProjectData = async () => {
+    const res = await getProjectList({
+      self: 1,
+      all: 1,
+    })
+    // 默认展示10条数据
+    setProjectListAll(
+      res.list.map((el: { id: number; name: string }) => ({
+        ...el,
+        label: el.name,
+        value: el.id,
+      })),
+    )
+    setProjectList(
+      res.list
+        .slice(0, 10)
+        .map((el: { id: number; name: string }) => ({
+          ...el,
+          label: el.name,
+          value: el.id,
+        })),
+    )
+    res.list.length <= 10 && setMore(true)
+    dispatch(
+      setProjectDataList(
+        res.list.map((el: { id: number; name: string }) => ({
+          ...el,
+          label: el.name,
+          value: el.id,
+        })),
+      ),
+    )
   }
-  useEffect(() => {
-    const a = []
-    for (let i = 1; i < 10; i++) {
-      const value = i.toString(10) + i
-      a.push({
-        label: `Long Label: ${value}`,
-        value,
-        id: value,
-        avatar: '',
-      })
-    }
-    setOptions(a)
-  }, [])
+  // 选择项目展开全部
   const onShowAll = () => {
+    setProjectList(projectListAll)
     setMore(true)
-    const a = []
-    for (let i = 1; i < 50; i++) {
-      const value = i.toString(10) + i
-      a.push({
-        label: `Long Label: ${value}`,
-        value,
-        id: value,
-        avatar: '',
-      })
-    }
-    setOptions(a)
   }
+  // 成员保存弹窗提示需要
   const onConfirm = (data: Array<{ name: string; id: number }>) => {
-    // 保存弹窗提示需要
     dispatch(setSave(true))
     setIsVisible(false)
     setPerson(data)
+    dispatch(
+      setHeaderParmas({
+        users: data,
+        projectIds,
+        time: headerParmas.time,
+        view: headerParmas.view,
+      }),
+    )
   }
-  const clear = (e: React.MouseEvent) => {
+  // 清除选择的成员
+  const onClear = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation()
     setPerson([])
+  }
+  // 自定义时间
+  const onChangeDate = (e: any, values: string[]) => {
+    dispatch(
+      setHeaderParmas({
+        users: person,
+        projectIds: headerParmas.projectIds,
+        time: {
+          type: 0,
+          time: values,
+        },
+        view: headerParmas.view,
+      }),
+    )
   }
   return (
     <HeaderRow>
@@ -116,18 +151,28 @@ const Iteration = (props: Props) => {
         {/* 保存需要人员，项目选择和时间修改后 */}
         {save && <Text>保存</Text>}
       </Space>
-
       <Space size={16}>
         {/* 全部多一个下拉搜索条件，先传10个，查看更多展示完成 */}
         {props.homeType === 'all' && (
           <Select
-            onSearch={onSearch}
-            options={options}
+            placeholder="请选择项目"
+            options={projectList}
             more={more}
-            onChange={(value: string[]) => {
-              console.log(value, '项目'), dispatch(setSave(true))
+            onChange={(value: number[]) => {
+              dispatch(setSave(true)), setProjectIds(value)
+              dispatch(
+                setHeaderParmas({
+                  users: person,
+                  projectIds: value,
+                  view: headerParmas.view,
+                  time: {
+                    type: timekey,
+                    time: '',
+                  },
+                }),
+              )
             }}
-            onShowAll={() => onShowAll()}
+            onShowAll={onShowAll}
           />
         )}
         {/* 成员选择 */}
@@ -145,12 +190,12 @@ const Iteration = (props: Props) => {
               type={'close-solid'}
               size={14}
               color="var(--neutral-n4)"
-              // onClick={(ev: React.MouseEvent) => clear(ev)}
+              onClick={onClear}
             />
           ) : (
             <CommonIconFont
               onClick={() => setIsVisible(true)}
-              type={isOpen ? 'up' : 'down'}
+              type={isVisible ? 'up' : 'down'}
               size={14}
               color="var(--neutral-n4)"
             />
@@ -173,8 +218,16 @@ const Iteration = (props: Props) => {
           <SelectMain
             onChange={e => {
               setTimekey(e), dispatch(setSave(true))
+              dispatch(
+                setHeaderParmas({
+                  userIds: person.map(el => el.id),
+                  projectIds,
+                  time: e,
+                  view: headerParmas.view,
+                }),
+              )
             }}
-            placeholder="按周期"
+            placeholder="请选择周期"
             list={[
               {
                 name: '近7天',
@@ -201,7 +254,18 @@ const Iteration = (props: Props) => {
         ) : (
           <Sprint />
         )}
-        {timekey === 0 && <RangePicker style={{ width: '283px' }} />}
+        {timekey === 0 && (
+          <RangePicker
+            format={(times: moment.Moment) => {
+              if (times.unix() === -28800 || times.unix() === 1893427200) {
+                return ''
+              }
+              return times.format('YYYY-MM-DD')
+            }}
+            onChange={onChangeDate}
+            style={{ width: '283px' }}
+          />
+        )}
       </Space>
       <AddMemberCommonModal
         isVisible={isVisible}

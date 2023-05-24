@@ -20,13 +20,12 @@ import {
   onChangeSortByGroupOptions,
   onChangeSortByRowAndStatusOptions,
   onChangeSortByView,
-} from '@store/sprintKanBan'
+} from '@store/kanBan'
 import SelectOptions from '@/components/SelectOptions'
 import {
   onRefreshKanBan,
   openSaveAsViewModel,
-} from '@store/sprintKanBan/sprintKanban.thunk'
-
+} from '@store/kanBan/kanBan.thunk'
 const OperationWrap = styled.div({
   minHeight: 32,
   minWidth: '800px',
@@ -72,7 +71,7 @@ interface Props {
 const Operation = (props: Props) => {
   const [t] = useTranslation()
   const { sortByGroupOptions, sortByRowAndStatusOptions, sortByView } =
-    useSelector(store => store.sprintKanBan)
+    useSelector(store => store.kanBan)
 
   const [filterState, setFilterState] = useState(true)
   const [defaultValue, setDefaultValue] = useState({})

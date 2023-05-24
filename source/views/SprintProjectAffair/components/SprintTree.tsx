@@ -126,7 +126,7 @@ const SprintTree = (props: Props) => {
     } else {
       demandIds = props.data?.list?.map((i: any) => i.id)
     }
-    openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id)
+    openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id, 1)
   }
 
   // 修改优先级

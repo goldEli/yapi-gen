@@ -23,7 +23,6 @@ import {
 import { arrayMoveImmutable } from 'array-move'
 import { ShowText } from '@/components/OptionalFeld'
 import { css } from '@emotion/css'
-import { getExportFields, getLoadListFields } from '@/services/demand'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -129,7 +128,7 @@ interface Props {
   title: string
   onClose(): void
   onConfirm(values: any): void
-
+  interfaces: any
   // 1是更新，2是新建
   importState?: any
   // 是否是导出
@@ -148,6 +147,9 @@ const SortItemLi = sortableElement<any>((props: any) => (
 const DragHandle = sortableHandle((props: any) => <div {...props} />)
 
 const FieldsTemplate = (props: Props) => {
+  const {
+    interfaces: { getExportFields, getLoadListFields },
+  } = props
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
@@ -165,6 +167,8 @@ const FieldsTemplate = (props: Props) => {
       : await getLoadListFields({
           projectId,
           isUpdate: props?.importState,
+          isBug: 1,
+          // todo 参数变更
         })
     const basicKeys = result?.baseFields?.map((k: any) => k.field)
     const otherKeys = result?.timeAndPersonFields?.map((k: any) => k.field)

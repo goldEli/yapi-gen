@@ -7,7 +7,7 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable no-constant-binary-expression */
 import { uploadFile } from '@/components/AddWorkItem/CreateWorkItemLeft'
-
+import CommonModal2 from '@/components/AddUser/CommonModal'
 import { LabelTitle } from '@/views/WorkReport/Review/components/style'
 import { Editor } from '@xyfe/uikit'
 import { Checkbox, DatePicker, Dropdown, Form, Input, Radio } from 'antd'
@@ -21,7 +21,7 @@ import { setEditSave } from '@store/formWork'
 import { useDispatch } from '@store/index'
 import { useTranslation } from 'react-i18next'
 import AddDepartmentOrTeamModal from '@/components/AddDepartmentOrTeamModal'
-import CommonModal2 from '@/components/AddUser/CommonModal'
+
 import CommonModal from '@/components/CommonModal'
 import { seleData1 } from '@/views/WorkReport/Formwork/DataList'
 import {
@@ -31,6 +31,7 @@ import {
   PersonContainer,
 } from '@/views/WorkReport/Formwork/Addperson'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
+import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
 interface Item {
   label: string
   key: string
@@ -471,7 +472,14 @@ const CreateNoteModal = (props: any) => {
         </div>
 
         {isVisible && (
-          <CommonModal2
+          //   <CommonModal2
+          //   title={t('formWork.addUser')}
+          //   state={2}
+          //   isVisible={isVisible}
+          //   onConfirm={onConfirm}
+          //   onClose={() => setIsVisible(false)}
+          // />
+          <NewAddUserModalForTandD
             title={t('formWork.addUser')}
             state={2}
             isVisible={isVisible}

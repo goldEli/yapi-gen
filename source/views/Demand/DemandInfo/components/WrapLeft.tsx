@@ -31,6 +31,7 @@ import TagComponent from '@/components/TagComponent'
 import { Editor } from '@xyfe/uikit'
 import { getMessage } from '@/components/Message'
 import DragMoveContainer from '@/components/DragMoveContainer/DragMoveContainer'
+import DemandTag from '@/components/TagComponent/DemandTag'
 
 const WrapLeft = styled.div({
   width: '100%',
@@ -165,13 +166,12 @@ const WrapLeftBox = () => {
               readonly
             />
           ) : (
-            // <div dangerouslySetInnerHTML={{ __html: demandInfo?.info }} />
             <TextWrap>--</TextWrap>
           )}
         </InfoItem>
         <InfoItem>
           <Label>{t('common.tag')}</Label>
-          <TagComponent
+          <DemandTag
             defaultList={tagList}
             canAdd
             addWrap={
