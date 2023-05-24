@@ -366,7 +366,7 @@ export const getSprintChangeLog = async (
   }
 }
 
-// 事务变更记录
+// 事务流转记录
 export const getSprintStatusLog = async (
   params: API.Sprint.GetSprintStatusLog.Params,
 ) => {
