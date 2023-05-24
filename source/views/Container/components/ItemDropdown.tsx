@@ -107,11 +107,22 @@ const ItemDropdown = (props: PropsType) => {
       }),
     )
     setIsOpen(false)
-    if (el.project_type === 2) {
-      navigate(`/SprintProjectManagement/KanBan?data=${params}`)
+    // debugger
+    if (el.projectType === 2) {
+      navigate(
+        `${
+          el.defaultHomeMenu
+            ? el.defaultHomeMenu
+            : '/SprintProjectManagement/KanBan'
+        }?data=${params}`,
+      )
       return
     }
-    navigate(`/ProjectManagement/Demand?data=${params}`)
+    navigate(
+      `${
+        el.defaultHomeMenu ? el.defaultHomeMenu : '/ProjectManagement/Demand'
+      }?data=${params}`,
+    )
   }
   const itmeMain = (item: any) => {
     return item.map((el: any) => (

@@ -817,7 +817,12 @@
     "add23": "Add",
     "finishCreate": "Finish and create the next one",
     "confirm2": "Confirm",
-    "finished": "Completed"
+    "finished": "Completed",
+    "importTransaction": "Import transaction",
+    "uploadTransaction": "Upload transaction",
+    "uploadFile": "Upload file",
+    "importDefect": "Import defect",
+    "uploadDefect": "Upload defect"
   },
   "components": {
     "noALlPermission": "You do not have any permissions at present. Please contact the enterprise administrator to assign permissions",
@@ -979,7 +984,24 @@
     "confirmDelMember": "Are you sure you want to delete the current member?",
     "pleaseNickname": "Enter nickname name",
     "projectPermissionGroup": "Project Permission",
-    "addChildDemand": "Add sub requirement"
+    "addChildDemand": "Add sub requirement",
+    "importText1": "① The 'transaction type' field is required;",
+    "importText2": "② The 'Title' field is mandatory;",
+    "importText3": "③ 'Priority' please fill in: extremely high, high, medium, low, very low;",
+    "importText4": "④ 'Parent' please fill in the long story number, please meet the following conditions: 1 parent transaction under this item;",
+    "importText5": "⑤ In the personnel type field, please fill in the nickname of the personnel;",
+    "importText6": "⑥ The format of the date field is YYYY/MM/DD;",
+    "importText7": "⑦ All landowners multiple types of custom fields format for: a | b | c, please separated by '|' multiple options;",
+    "importText8": "⑧ The values of other fields must be consistent with those configured in the project。",
+    "importText9": "① ① The number must be in excel (required);",
+    "importText10": "② Please fill in the priority: Very high, high, medium, low, very low;",
+    "importText11": "③ In the personnel type field, please fill in the nickname of the person;",
+    "importText12": "④ The format of the date field is YYYY/MM/DD;",
+    "importText13": "⑤ Multiple types of custom fields format for: a | b | c, please separated by '|' multiple options;",
+    "importText14": "⑥ Ensure that the values of other fields are consistent with those configured in the project;",
+    "importText15": "⑦ Update Mode Fill in '1' empty data field overwriting the original field parameter. Fill in '0' empty data does not overwrite the original field parameter;",
+    "importText16": "⑧ Updates to transactions that are not accessible are not supported。",
+    "importChoose": "Import the transaction field selection"
   },
   "setting": {
     "companyInfo": "Company Info",
@@ -1513,6 +1535,25 @@
     "list": "List",
     "acrossDay": "Cross day",
     "conflict": "Conflict",
-    "noSchedule":"No Schedule"
+    "noSchedule": "No Schedule"
+  },
+  "defect": {
+    "importText1": "① The 'Type' field is required;",
+    "importText2": "② The 'Title' field is mandatory;",
+    "importText3": "③ 'Priority' please fill in: extremely high, high, medium, low, very low;",
+    "importText4": "④ 'Severity' please fill in: Fatal, serious, normal, warning, advice;",
+    "importText5": "⑤ In the personnel type field, please fill in the nickname of the personnel;",
+    "importText6": "⑥ The format of the date field is YYYY/MM/DD;",
+    "importText7": "⑦ All landowners multiple types of custom fields format for: a | b | c, please separated by '|' multiple options;",
+    "importText8": "⑧ The values of other fields must be consistent with those configured in the project。",
+    "importText9": "① The number must be in excel (required);",
+    "importText10": "② Please fill in the priority: Very high, high, medium, low, very low;",
+    "importText11": "③ In the personnel type field, please fill in the nickname of the person;",
+    "importText12": "④ The format of the date field is YYYY/MM/DD;",
+    "importText13": "⑤ Multiple types of custom fields format for: a | b | c, please separated by '|' multiple options;",
+    "importText14": "⑥ Ensure that the values of other fields are consistent with those configured in the project;",
+    "importText15": "⑦ Update Mode Fill in '1' empty data field overwriting the original field parameter. Fill in '0' empty data does not overwrite the original field parameter;",
+    "importText16": "⑧ Updates to transactions that are not accessible are not supported。",
+    "importChoose": "Import defect field selection"
   }
 }

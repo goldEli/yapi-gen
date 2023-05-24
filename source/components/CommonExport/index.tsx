@@ -1,12 +1,11 @@
 // 需求主页-导出需求
 
-import FieldsTemplate from './FieldsTemplate'
+import FieldsTemplate from '@/components/CommonImport/FieldsTemplate'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { useState } from 'react'
 import { useSelector } from '@store/index'
-import { getExportExcel } from '@/services/demand'
 
 interface Props {
   // 是否是导出功能
@@ -14,9 +13,17 @@ interface Props {
   onClose(state: boolean): void
   searchGroups: any
   otherParams: any
+  // 导出窗口需要的接口
+  interfaces: any
+  // 模板modal需要的接口
+  templateInterfaces: any
 }
 
-const ExportDemand = (props: Props) => {
+const CommonExport = (props: Props) => {
+  const {
+    templateInterfaces,
+    interfaces: { getExportExcel },
+  } = props
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -54,8 +61,9 @@ const ExportDemand = (props: Props) => {
       onConfirm={onConfirmTemplate}
       isExport
       isSpin={isSpin}
+      interfaces={templateInterfaces}
     />
   )
 }
 
-export default ExportDemand
+export default CommonExport

@@ -85,7 +85,7 @@ const ChoosePeople = (props: any) => {
     getList()
   }, [])
   return (
-    <div style={{ alignItems: 'flex-start', marginTop: 8 }}>
+    <div style={{ alignItems: 'flex-start', marginTop: props.margin ?? 8 }}>
       <div
         style={{
           display: 'flex',
@@ -93,72 +93,74 @@ const ChoosePeople = (props: any) => {
           gap: '10px',
         }}
       >
-        {allMemberList?.map((i: any, index: any) => (
-          <div
-            key={i.id}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
+        {!props.hiddenNumbers &&
+          allMemberList?.map((i: any, index: any) => (
             <div
+              key={i.id}
               style={{
                 display: 'flex',
-
                 alignItems: 'center',
               }}
             >
-              <NewNameWrap>
-                {i.avatar ? (
-                  <img
-                    style={{
-                      width: 24,
-                      height: 24,
-                      borderRadius: 16,
-                    }}
-                    src={i.avatar}
-                  />
-                ) : (
-                  <div
-                    style={{
-                      marginRight: 8,
-                    }}
-                  >
-                    <CommonUserAvatar size="small" />
-                  </div>
-                )}
-                <IconFontWrap
-                  type="close-circle-fill"
-                  onClick={() => onDelCheckPerson(i.id)}
-                />
-              </NewNameWrap>
-              <span
+              <div
                 style={{
-                  marginLeft: '4px',
-                  color: 'var(--neutral-n2)',
-                  fontSize: '12px',
+                  display: 'flex',
+
+                  alignItems: 'center',
                 }}
               >
-                {i.name}
-              </span>
+                <NewNameWrap>
+                  {i.avatar ? (
+                    <img
+                      style={{
+                        width: 24,
+                        height: 24,
+                        borderRadius: 16,
+                      }}
+                      src={i.avatar}
+                    />
+                  ) : (
+                    <div
+                      style={{
+                        marginRight: 8,
+                      }}
+                    >
+                      <CommonUserAvatar size="small" />
+                    </div>
+                  )}
+                  <IconFontWrap
+                    type="close-circle-fill"
+                    onClick={() => onDelCheckPerson(i.id)}
+                  />
+                </NewNameWrap>
+                <span
+                  style={{
+                    marginLeft: '4px',
+                    color: 'var(--neutral-n2)',
+                    fontSize: '12px',
+                  }}
+                >
+                  {i.name}
+                </span>
+              </div>
+              {index !== allMemberList?.length - 1 && (
+                <IconFont
+                  style={{
+                    fontSize: 16,
+                    margin: '-20px 8px 0',
+                    color: 'var(--neutral-n4)',
+                  }}
+                  type=""
+                />
+              )}
             </div>
-            {index !== allMemberList?.length - 1 && (
-              <IconFont
-                style={{
-                  fontSize: 16,
-                  margin: '-20px 8px 0',
-                  color: 'var(--neutral-n4)',
-                }}
-                type=""
-              />
-            )}
-          </div>
-        ))}
+          ))}
         {/* 类型是模板只读 */}
         {props.type === 'formWork' ? (
           <div
             style={{
-              marginLeft: allMemberList?.length ? '28px' : '10px',
+              marginLeft:
+                props.margin ?? (allMemberList?.length ? '28px' : '10px'),
               marginTop: '1px',
               width: '24px',
               height: '24px',
@@ -205,7 +207,8 @@ const ChoosePeople = (props: any) => {
           >
             <div
               style={{
-                marginLeft: allMemberList?.length ? '28px' : '10px',
+                marginLeft:
+                  props.margin ?? (allMemberList?.length ? '28px' : '10px'),
                 marginTop: '1px',
                 width: '24px',
                 height: '24px',

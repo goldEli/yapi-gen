@@ -8,6 +8,7 @@ import { Collapse } from 'antd'
 import IconFont from '@/components/IconFont'
 import CommonButton from '@/components/CommonButton'
 import PaginationBox from '@/components/TablePagination'
+import CreateSprintModal from './CreateSprintModal'
 const { Panel } = Collapse
 
 interface XTableProps {
@@ -114,104 +115,140 @@ const PanelWrap = styled(Panel)`
 
 const XTable: React.FC<XTableProps> = props => {
   const [pageObj, setPageObj] = useState<any>({})
-  return (
-    <Droppable key={props.id} droppableId={props.id}>
-      {provided => {
-        return (
-          <XTableWrap ref={provided.innerRef} {...provided.droppableProps}>
-            <Collapse
-              defaultActiveKey={['1']}
-              ghost
-              expandIcon={({ isActive }: any) => {
-                return isActive ? (
-                  <IconFont
-                    style={{
-                      fontSize: 14,
-                      color: 'var(--neutral-n3)',
-                    }}
-                    type="down-icon"
-                  />
-                ) : (
-                  <IconFont
-                    style={{
-                      fontSize: 14,
-                      color: 'var(--neutral-n3)',
-                    }}
-                    type="right-icon"
-                  />
-                )
-              }}
-            >
-              <PanelWrap
-                header={
-                  <PanelHeader
-                    onClick={e => {
-                      e.stopPropagation()
-                    }}
-                  >
-                    <div>
-                      <span className="title">三月第一周的冲刺</span>
-                      <span className="date">
-                        2022-06-17 ~ 2022-07-30（可见3个，共4个事务）
-                      </span>
-                      <IconFont
-                        style={{
-                          fontSize: 16,
-                          color: 'var(--neutral-n3)',
-                          marginRight: 16,
-                        }}
-                        type="edit"
-                      />
-                      <IconFont
-                        style={{
-                          fontSize: 16,
-                          color: 'var(--neutral-n3)',
-                        }}
-                        type="delete"
-                      />
-                    </div>
-                    <CommonButton type="light">开始冲刺</CommonButton>
-                  </PanelHeader>
-                }
-                key="1"
-              >
-                <CreateTransactionButton>
-                  <IconFont
-                    style={{
-                      fontSize: 16,
-                      marginRight: 8,
-                    }}
-                    type="plus"
-                  />
-                  <span>新事物</span>
-                </CreateTransactionButton>
-                <ResizeTable
-                  className="dnd"
-                  isSpinning={false}
-                  dataWrapNormalHeight=""
-                  col={props.columns}
-                  noData={
-                    <div className="nodata">
-                      从待办事项拖动或新建事务，以规划该冲刺的工作，添加事务并编辑冲刺后，点击开始冲刺
-                    </div>
-                  }
-                  dataSource={props.data}
-                  components={{ body: { row: SortableItem } }}
-                />
-                <PaginationBox
-                  total={10}
-                  pageSize={pageObj.pagesize}
-                  currentPage={pageObj.page}
-                  onChange={() => {}}
-                />
+  const [sprintModal, setSprintModal] = useState<{
+    visible: boolean
+    type: any
+  }>({
+    visible: false,
+    type: 'create',
+  })
 
-                {provided.placeholder}
-              </PanelWrap>
-            </Collapse>
-          </XTableWrap>
-        )
-      }}
-    </Droppable>
+  return (
+    <>
+      <Droppable key={props.id} droppableId={props.id}>
+        {provided => {
+          return (
+            <XTableWrap ref={provided.innerRef} {...provided.droppableProps}>
+              <Collapse
+                defaultActiveKey={['1']}
+                ghost
+                expandIcon={({ isActive }: any) => {
+                  return isActive ? (
+                    <IconFont
+                      style={{
+                        fontSize: 14,
+                        color: 'var(--neutral-n3)',
+                      }}
+                      type="down-icon"
+                    />
+                  ) : (
+                    <IconFont
+                      style={{
+                        fontSize: 14,
+                        color: 'var(--neutral-n3)',
+                      }}
+                      type="right-icon"
+                    />
+                  )
+                }}
+              >
+                <PanelWrap
+                  header={
+                    <PanelHeader
+                      onClick={e => {
+                        e.stopPropagation()
+                      }}
+                    >
+                      <div>
+                        <span className="title">三月第一周的冲刺</span>
+                        <span className="date">
+                          2022-06-17 ~ 2022-07-30（可见3个，共4个事务）
+                        </span>
+                        <IconFont
+                          onClick={() => {
+                            setSprintModal({
+                              visible: true,
+                              type: 'edit',
+                            })
+                          }}
+                          style={{
+                            fontSize: 16,
+                            color: 'var(--neutral-n3)',
+                            marginRight: 16,
+                          }}
+                          type="edit"
+                        />
+                        <IconFont
+                          style={{
+                            fontSize: 16,
+                            color: 'var(--neutral-n3)',
+                          }}
+                          type="delete"
+                        />
+                      </div>
+                      <CommonButton
+                        type="light"
+                        onClick={() => {
+                          setSprintModal({
+                            visible: true,
+                            type: 'start',
+                          })
+                        }}
+                      >
+                        开始冲刺
+                      </CommonButton>
+                    </PanelHeader>
+                  }
+                  key="1"
+                >
+                  <CreateTransactionButton>
+                    <IconFont
+                      style={{
+                        fontSize: 16,
+                        marginRight: 8,
+                      }}
+                      type="plus"
+                    />
+                    <span>新事物</span>
+                  </CreateTransactionButton>
+                  <ResizeTable
+                    className="dnd"
+                    isSpinning={false}
+                    dataWrapNormalHeight=""
+                    col={props.columns}
+                    noData={
+                      <div className="nodata">
+                        从待办事项拖动或新建事务，以规划该冲刺的工作，添加事务并编辑冲刺后，点击开始冲刺
+                      </div>
+                    }
+                    dataSource={props.data}
+                    components={{ body: { row: SortableItem } }}
+                  />
+                  <PaginationBox
+                    total={10}
+                    pageSize={pageObj.pagesize}
+                    currentPage={pageObj.page}
+                    onChange={() => {}}
+                  />
+
+                  {provided.placeholder}
+                </PanelWrap>
+              </Collapse>
+            </XTableWrap>
+          )
+        }}
+      </Droppable>
+      <CreateSprintModal
+        type={sprintModal.type}
+        visible={sprintModal.visible}
+        onClose={() => {
+          setSprintModal({
+            ...sprintModal,
+            visible: false,
+          })
+        }}
+      />
+    </>
   )
 }
 

@@ -459,15 +459,8 @@ export const getDemandInfo: any = async (params: any) => {
     className: response.data.class,
     prefixKey: response.data.prefix_key,
     projectPrefix: response.data.project_prefix,
-    hierarchy: response.data.hierarchy?.map((k: any) => ({
-      id: k.id,
-      categoryId: k.category_id,
-      prefixKey: k.prefix_key,
-      projectPrefix: k.project_prefix,
-      categoryAttachment: k.category_attachment,
-      parentId: k.parent_id,
-      name: k.name,
-    })),
+    hierarchy: response.data.hierarchy,
+    level_tree: response.data.level_tree,
   }
 }
 
@@ -901,6 +894,7 @@ export const getLoadListFields: any = async (params: any) => {
   const response: any = await http.get<any>('getLoadListFields', {
     project_id: params.projectId,
     is_update: params.isUpdate,
+    is_bug: params.isBug,
   })
 
   return {

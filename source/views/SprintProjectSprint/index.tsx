@@ -217,7 +217,7 @@ const SprintProjectSprint: React.FC<IProps> = props => {
     visible: false,
     type: 'create',
   })
-  const [completeVisible, setCompleteVisible] = useState(true)
+  const [completeVisible, setCompleteVisible] = useState(false)
 
   const inform = [
     {
