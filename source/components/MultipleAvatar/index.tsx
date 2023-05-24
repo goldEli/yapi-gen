@@ -53,6 +53,12 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
   const data = props.list.slice(0, props.max)
   const len = props.list.length
   const hiddenNum = len - data.length
+  const text = React.useMemo(() => {
+    if (hiddenNum > 99) {
+      return '99+'
+    }
+    return `+${hiddenNum}`
+  }, [hiddenNum])
   return (
     <MultipleAvatarBox>
       {data.map((item, idx) => {
@@ -62,10 +68,9 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
           </AvatarBox>
         )
       })}
-      <MoreIcon
-        show={hiddenNum > 0}
-        left={data.length * 20}
-      >{`+${hiddenNum}`}</MoreIcon>
+      <MoreIcon show={hiddenNum > 0} left={data.length * 20}>
+        {text}
+      </MoreIcon>
     </MultipleAvatarBox>
   )
 }
