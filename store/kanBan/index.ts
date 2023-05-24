@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { kanbanInfo, kanbanInfoByGroup } from './data'
+import { kanbanInfo, kanbanInfoByGroup, kanbanConfig } from './data'
 
 type SliceState = {
   guideVisible: Model.KanBan.guideVisible
@@ -15,9 +15,11 @@ type SliceState = {
   }
   kanbanInfo: Model.KanBan.Column[]
   kanbanInfoByGroup: Model.KanBan.Group[]
+  kanbanConfig?: Model.KanbanConfig.Config
 }
 
 const initialState: SliceState = {
+  kanbanConfig: kanbanConfig,
   kanbanInfo: kanbanInfo,
   kanbanInfoByGroup: kanbanInfoByGroup,
   sortByGroupOptions: [
