@@ -1,16 +1,8 @@
 import React, { useState } from 'react'
-import CategoryDrop from '@/components/CategoryDrop'
 type affairProps = {
   [key in string]: Model.Project.Category[]
 }
-interface IProps {
-  width?: number
-  value?: string
-  onChangeCallBack?(): void
-  onClearCallback?(): void
-}
 const useCategory = () => {
-  const [options, setOptions] = useState<any>()
   const getTypeCategory = (
     arr: Model.Project.Category[],
     filed: 'work_type',
@@ -46,12 +38,8 @@ const useCategory = () => {
       })
     })
     console.log('data----', obj)
-    setOptions([...resArr])
     return resArr
   }
-  const CategoryDropModal: React.FC<IProps> = props => {
-    return <CategoryDrop options={options} {...props}></CategoryDrop>
-  }
-  return { getTypeCategory, CategoryDropModal }
+  return { getTypeCategory }
 }
 export default useCategory

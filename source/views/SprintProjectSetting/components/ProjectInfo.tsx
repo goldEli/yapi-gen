@@ -124,7 +124,9 @@ const ProjectInfo = () => {
   asyncSetTtile(`${t('title.a1')}【${projectInfo.name}】`)
   localStorage.setItem('memberId', projectInfo.id)
   const dispatch = useDispatch()
-  const { getTypeCategory, CategoryDropModal } = useCategory()
+  const { getTypeCategory } = useCategory()
+  const [b,setB]=useState<Model.Project.CategoryList[]>()
+  const [value,setValue]=useState<string | undefined>('')
   useEffect(() => {
     let a = [
       {
@@ -144,13 +146,39 @@ const ProjectInfo = () => {
         attachment_path:
           'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png',
       },
+      {
+        id: 1019,
+        project_id: 605,
+        company_id: 1504303190303051800,
+        name: 'dsdsdsds',
+        color: '',
+        attachment_id: 457,
+        sort: 999,
+        status: 2,
+        remark: '',
+        work_type: 4,
+        is_bug: 1,
+        story_count: 0,
+        status_count: 0,
+        attachment_path:
+          'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png',
+      },
     ]
-    getTypeCategory(a, 'work_type')
+    let b= getTypeCategory(a, 'work_type')
+    setB(b)
   }, [])
+
   return (
     <Wrap>
-      {/* <CategoryDrop></CategoryDrop> */}
-      <CategoryDropModal></CategoryDropModal>
+      <div style={{width:'400px'}}>
+      <CategoryDrop options={b} onClearCallback={()=>{
+        setValue('')
+      }} value={value} onChangeCallBack={(data)=>{
+        console.log(data)
+        setValue(data.name)
+      }}></CategoryDrop>
+      </div>
+     
       <InfoLeft>
         <Title>{t('v2_1_1.projectInformation')}</Title>
         <CardGroup size={32}>

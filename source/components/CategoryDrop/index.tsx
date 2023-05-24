@@ -40,7 +40,7 @@ interface IProps {
   value?: string
   onChangeCallBack?(data: Model.Project.Category): void
   onClearCallback?(): void
-  options?: Model.Project.CategoryList[]
+  options: Model.Project.CategoryList[] | undefined
 }
 const CategoryDrop = (props: IProps) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -48,7 +48,7 @@ const CategoryDrop = (props: IProps) => {
   const toggleOpen = () => {
     setIsOpen(!isOpen)
   }
-  useEffect(() => {}, [])
+  useEffect(() => { }, [])
 
   return (
     <Wrap
@@ -68,8 +68,7 @@ const CategoryDrop = (props: IProps) => {
                   <img
                     style={{ width: '18px' }}
                     src={
-                      item.attachmentPath ||
-                      'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png'
+                      item.attachment_path
                     }
                   />
                   <span
@@ -93,7 +92,7 @@ const CategoryDrop = (props: IProps) => {
         ))
         return <DropBox>{menu ? menu : <NoData></NoData>}</DropBox>
       }}
-      style={{ width: props.width ?? 300 }}
+      style={{ width: props.width ?? '100%' }}
       open={isOpen}
       onClick={toggleOpen}
       allowClear
