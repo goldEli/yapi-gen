@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
-import { Rnd } from 'react-rnd'
+import { DraggableData, Rnd } from 'react-rnd'
+import { DraggableEvent } from 'react-draggable'
 
 interface ControlScrollPlaneProps {}
 const planeWidth = 124 - 16
@@ -37,6 +38,7 @@ const Content = styled.div<{ gap: number }>`
   height: 100%;
   display: flex;
   gap: ${props => props.gap + 'px'};
+  position: relative;
 `
 
 const Strip = styled.div<{ width: number }>`
@@ -73,8 +75,8 @@ const useControlScrollPlane = (columnNum: number) => {
       observer.disconnect()
     }
   }, [])
-  console.log({ width, height, childWidth, childHeight })
   const widthRatio = planeWidth / childWidth
+  const heightRatio = planeHeight / childHeight
   const windowHeight = planeHeight * (height / childHeight)
   const windowWidth = planeWidth * (width / childWidth)
   const ControlScrollPlane: React.FC<ControlScrollPlaneProps> = props => {
@@ -91,6 +93,11 @@ const useControlScrollPlane = (columnNum: number) => {
             position={{
               x: 0,
               y: 0,
+            }}
+            onDrag={(e: DraggableEvent, data: DraggableData) => {
+              e.stopPropagation()
+              const { y, x } = data
+              containerRef.current?.scrollTo(x / widthRatio, y / heightRatio)
             }}
           />
           {Array(columnNum ?? 0)
