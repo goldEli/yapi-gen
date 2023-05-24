@@ -14,13 +14,21 @@ import IconFont from '@/components/IconFont'
 import { Popover, Space, Tooltip } from 'antd'
 import CommonModal from '@/components/CommonModal'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import ExportDemand from './ExportDemand'
-import ImportDemand from './ImportDemand'
+import ExportDemand from '@/components/CommonExport'
+import ImportDemand from '@/components/CommonImport'
 import { useDispatch, useSelector } from '@store/index'
 import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
 import { setCreateCategory } from '@store/demand'
 import { saveScreen } from '@store/view'
 import CommonIconFont from '@/components/CommonIconFont'
+import {
+  getImportDownloadModel,
+  getImportExcel,
+  getImportExcelUpdate,
+  getExportFields,
+  getLoadListFields,
+  getExportExcel,
+} from '@/services/demand'
 
 const OperationWrap = styled.div({
   minHeight: 32,
@@ -388,7 +396,45 @@ const Operation = (props: Props) => {
         isShowFooter
         onClose={onImportClose}
       >
-        <ImportDemand />
+        <ImportDemand
+          tips={{
+            tab1: (
+              <>
+                <span>{t('newlyAdd.importText2')}</span>
+                <span>{t('newlyAdd.importText3')}</span>
+                <span>{t('newlyAdd.importText4')}</span>
+                <span>{t('newlyAdd.importText5')}</span>
+                <span>{t('newlyAdd.importText6')}</span>
+                <span>{t('newlyAdd.importText7')}</span>
+                <span>{t('newlyAdd.importText8')}</span>
+                <span>{t('newlyAdd.importText9')}</span>
+              </>
+            ),
+            tab2: (
+              <>
+                <span>{t('newlyAdd.importText10')}</span>
+                <span>{t('newlyAdd.importText4')}</span>
+                <span>{t('newlyAdd.importText6')}</span>
+                <span>{t('newlyAdd.importText7')}</span>
+                <span>{t('newlyAdd.importText8')}</span>
+                <span>{t('newlyAdd.importText9')}</span>
+                <span>{t('newlyAdd.importText11')}</span>
+                <span>{t('newlyAdd.importText12')}</span>
+              </>
+            ),
+          }}
+          stepText={t('newlyAdd.uploadDemand')}
+          interfaces={{
+            getImportDownloadModel,
+            getImportExcel,
+            getImportExcelUpdate,
+          }}
+          templateInterfaces={{
+            getExportFields,
+            getLoadListFields,
+          }}
+          templateTitle={t('newlyAdd.importChoose')}
+        />
       </CommonModal>
 
       <ExportDemand
@@ -396,6 +442,11 @@ const Operation = (props: Props) => {
         onClose={setIsShowExport}
         searchGroups={searchGroups}
         otherParams={props.otherParams}
+        interfaces={{ getExportExcel }}
+        templateInterfaces={{
+          getExportFields,
+          getLoadListFields,
+        }}
       />
 
       <OperationWrap>

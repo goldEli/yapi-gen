@@ -508,3 +508,13 @@ export const getBugList = async (params: API.Sprint.GetDefectRatio.Params) => {
   )
   return response.data
 }
+// 工作项和缺陷
+export const getStatisticsTotal = async (
+  params: API.Sprint.GetDefectRatio.Params,
+) => {
+  const response = await http.get<any, API.Sprint.GetStatisticsTotal.Result>(
+    `getDefectRatio`,
+    params,
+  )
+  return response.data
+}

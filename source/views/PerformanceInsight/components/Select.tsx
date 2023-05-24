@@ -1,6 +1,5 @@
 import { Select } from 'antd'
 import { useState } from 'react'
-import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { Segm } from './style'
 import CommonIconFont from '@/components/CommonIconFont'
 
@@ -11,20 +10,21 @@ interface ItemProps {
   avatar: string | undefined
 }
 interface Props {
-  onChange: (data: string[]) => void
-  onShowAll: () => void
-  onSearch: (value: string) => void
+  onChange: (data: number[]) => void
+  onShowAll?: () => void
+  onSearch?: (value: string) => void
   options: Array<ItemProps>
   more: boolean
+  placeholder: string
 }
 const SelectMain = (props: Props) => {
-  const [value, setValue] = useState<string[]>([])
+  const [value, setValue] = useState<number[]>([])
   const [searchValue, setSearchValue] = useState<string>('')
   const onSearch = (e: string) => {
     setSearchValue(e)
-    props.onSearch(e)
+    props.onSearch?.(e)
   }
-  const changeValue = (newValue: string[]) => {
+  const changeValue = (newValue: number[]) => {
     console.log(newValue, 'newValue')
     setValue(newValue)
     props.onChange(newValue)
@@ -35,43 +35,28 @@ const SelectMain = (props: Props) => {
         style={{ width: 184 }}
         maxTagCount={1}
         mode="multiple"
+        options={props.options}
         suffixIcon={<CommonIconFont type="down" />}
-        onSearch={onSearch}
         onChange={changeValue}
         showSearch
+        optionFilterProp="label"
         allowClear
         getPopupContainer={(node: any) => node}
-        searchValue={searchValue}
         value={value}
-        placeholder="请选择"
+        placeholder={props.placeholder}
         showArrow={true}
         autoClearSearchValue
-        filterOption={false}
         dropdownStyle={{ minWidth: 184 }}
         dropdownMatchSelectWidth={false}
         dropdownRender={(menu: any) => (
           <>
             {menu}
             {!props.more && (
-              <Segm onClick={() => props.onShowAll()}>查看更多</Segm>
+              <Segm onClick={() => props.onShowAll?.()}>查看更多</Segm>
             )}
           </>
         )}
-      >
-        {props.options?.map((item: any) => {
-          return (
-            <>
-              <Select.Option key={`${item.id}`} value={`${item.value}`}>
-                <CommonUserAvatar
-                  name={item.value}
-                  fontSize={14}
-                  avatar={item.avatar}
-                />
-              </Select.Option>
-            </>
-          )
-        })}
-      </Select>
+      ></Select>
     </>
   )
 }

@@ -1,6 +1,9 @@
 import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
 import CommonModal from '@/components/CommonModal'
+import { copyLink } from '@/tools'
+import { encryptPhp } from '@/tools/cryptoPhp'
+import { useSelector } from '@store/index'
 import { Form, Space } from 'antd'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -23,6 +26,7 @@ interface PropsType {
 const Share = (props: PropsType) => {
   const [t] = useTranslation()
   const [form] = Form.useForm()
+  const { save } = useSelector(store => store.performanceInsight)
   const onConfirm = async () => {
     await form.validateFields()
     const formValues = form.getFieldsValue()
@@ -31,7 +35,23 @@ const Share = (props: PropsType) => {
   useEffect(() => {
     props.isVisible && form.resetFields()
   }, [props.isVisible])
-
+  // 复制链接
+  const onCopyLink = () => {
+    let text: any = ''
+    let beforeUrl: any
+    beforeUrl = window.origin
+    // 看后面这个页面需要的参数合并,具体的某个路径
+    // const params = encryptPhp(
+    //   JSON.stringify({
+    //     type: 'info',
+    //     id: props.record.project_id,
+    //     demandId: props.record.id,
+    //   }),
+    // )
+    // const url = `/ProjectManagement/Demand?data=${params}`
+    // text += `${beforeUrl}${url} \n`
+    copyLink(text, '复制成功！', '复制失败！')
+  }
   return (
     <CommonModal
       isShowFooter={true}
@@ -39,7 +59,7 @@ const Share = (props: PropsType) => {
       title={props.title}
       onClose={props.onClose}
     >
-      {props.save ? (
+      {save ? (
         <MsgText1>当前视图未保存，分享时将为您保存为“视图”</MsgText1>
       ) : null}
       <FormWrap form={form} layout="vertical" style={{ padding: '0 24px' }}>
@@ -62,7 +82,7 @@ const Share = (props: PropsType) => {
         />
       </Form.Item>
       <Footer>
-        <Space size={6}>
+        <Space size={6} onClick={onCopyLink}>
           <CommonIconFont
             type={'link'}
             size={16}

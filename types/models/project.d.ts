@@ -53,5 +53,6 @@ declare namespace Model.Project {
     children: Category[]
     visible: boolean
     workType: string
+    // id?: number
   }
 }

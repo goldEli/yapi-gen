@@ -1,7 +1,7 @@
 /**
  * 多个头像展示组件
  */
-import React from 'react'
+import React, { useMemo } from 'react'
 import styled from '@emotion/styled'
 import CommonUserAvatar from '../CommonUserAvatar'
 
@@ -15,8 +15,8 @@ interface MultipleAvatarProps {
   max: number
 }
 
-const MultipleAvatarBox = styled.div`
-  width: 100%;
+const MultipleAvatarBox = styled.div<{ width: number }>`
+  width: ${props => props.width}px;
   height: 24px;
   display: flex;
   position: relative;
@@ -59,8 +59,14 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
     }
     return `+${hiddenNum}`
   }, [hiddenNum])
+  const width = useMemo(() => {
+    if (hiddenNum) {
+      return (data.length + 1) * 22
+    }
+    return data.length * 22
+  }, [data, hiddenNum])
   return (
-    <MultipleAvatarBox>
+    <MultipleAvatarBox width={width}>
       {data.map((item, idx) => {
         return (
           <AvatarBox left={idx * 20} key={item.id}>

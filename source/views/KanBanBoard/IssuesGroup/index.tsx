@@ -2,9 +2,8 @@ import React from 'react'
 import styled from '@emotion/styled'
 import Issues from '../Issues'
 import UpDownBtn from '@/components/UpDownBtn'
-import CommonUserAvatar from '@/components/CommonUserAvatar'
 import MultipleAvatar from '@/components/MultipleAvatar'
-
+import ChoosePeople from '@/views/WorkReport/Formwork/ChoosePeople'
 interface IssuesGroupProps {
   issuesGroup: Model.KanBan.Group
 }
@@ -40,6 +39,11 @@ const TitleBtn = styled.div`
   gap: 8px;
 `
 
+const Text = styled.div`
+  font-size: 12px;
+  color: var(--neutral-n3);
+`
+
 const IssuesGroup: React.FC<IssuesGroupProps> = props => {
   const { issuesGroup } = props
   return (
@@ -60,6 +64,15 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
             })}
           max={3}
         />
+        <ChoosePeople
+          margin={0}
+          onChange={(...args: any) => {
+            console.log({ args })
+          }}
+          hiddenNumbers
+          initValue={[]}
+        />
+        <Text>共计12人，0个事务</Text>
       </GroupTitleArea>
       <DropAreaList>
         {issuesGroup.columns.map(column => {
