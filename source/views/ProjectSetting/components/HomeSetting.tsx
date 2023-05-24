@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/react'
 import { Radio } from 'antd'
+import { useSelector } from '@store/index'
+import { updateHomeSetting } from '@/services/sprint'
+import { getMessage } from '@/components/Message'
 const Wrap = styled.div`
   padding-left: 24px;
 `
@@ -23,23 +26,45 @@ const RadioWrap = styled.div`
 `
 interface IProps {}
 const HomeSetting: React.FC<IProps> = props => {
-  const [value, setValue] = useState('1')
+  const [value, setValue] = useState('')
+  const { projectInfo } = useSelector(state => state.project)
+  const urls = [
+    { url: '/ProjectManagement/Demand', name: '需求' },
+    { url: '/ProjectManagement/Iteration', name: '迭代' },
+    { url: '/ProjectManagement/KanBan', name: 'Kanban' },
+    { url: '/ProjectManagement/IterationReport', name: '报表' },
+    { url: '/ProjectManagement/Defect', name: '缺陷' },
+  ]
+  console.log(projectInfo)
+  const onChange = async (e: any) => {
+    setValue(e.target.value)
+    try {
+      await updateHomeSetting({
+        id: projectInfo.id,
+        default_home_menu: e.target.value,
+      })
+      getMessage({ msg: '配置成功', type: 'success' })
+    } catch (error) {
+      //
+    }
+  }
+  useEffect(() => {
+    if (!projectInfo.defaultHomeMenu) {
+      return
+    }
+    setValue(projectInfo.defaultHomeMenu)
+  }, [])
   return (
     <Wrap>
       <Title>项目首页配置</Title>
       <SubTitle>定义项目默认首页位置</SubTitle>
       <RadioWrap>
-        <Radio.Group
-          onChange={e => {
-            setValue(e.target.value)
-          }}
-          value={value}
-        >
-          <Radio value={1}>需求列表</Radio>
-          <Radio value={2}>缺陷列表</Radio>
-          <Radio value={5}>迭代</Radio>
-          <Radio value={3}>Kanban</Radio>
-          <Radio value={4}>报表</Radio>
+        <Radio.Group onChange={onChange} value={value}>
+          {urls.map(item => (
+            <Radio key={item.url} value={item.url}>
+              {item.name}
+            </Radio>
+          ))}
         </Radio.Group>
       </RadioWrap>
     </Wrap>
