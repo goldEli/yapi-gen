@@ -1,6 +1,11 @@
 /* eslint-disable max-statements-per-line */
 /* eslint-disable react/jsx-handler-names */
-import React, { useState, forwardRef, useImperativeHandle } from 'react'
+import React, {
+  useState,
+  forwardRef,
+  useImperativeHandle,
+  useEffect,
+} from 'react'
 import { Select } from 'antd'
 import styled from '@emotion/styled'
 import CommonIconFont from '../CommonIconFont'
@@ -30,21 +35,12 @@ const DropBox = styled.div`
   cursor: pointer;
   color: var(--primary-d2);
 `
-interface childProps {
-  name: string
-  id: number
-}
-interface item {
-  name: string
-  id: number
-  children: childProps[]
-}
 interface IProps {
   width?: number
   value?: string
-  onChangeCallBack?(data: childProps): void
+  onChangeCallBack?(data: Model.Project.Category): void
   onClearCallback?(): void
-  options: item[]
+  options?: Model.Project.CategoryList[]
 }
 const CategoryDrop = (props: IProps) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -52,6 +48,8 @@ const CategoryDrop = (props: IProps) => {
   const toggleOpen = () => {
     setIsOpen(!isOpen)
   }
+  useEffect(() => {}, [])
+
   return (
     <Wrap
       value={props.value ?? ''}
@@ -70,6 +68,7 @@ const CategoryDrop = (props: IProps) => {
                   <img
                     style={{ width: '18px' }}
                     src={
+                      item.attachmentPath ||
                       'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png'
                     }
                   />

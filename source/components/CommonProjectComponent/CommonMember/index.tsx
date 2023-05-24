@@ -15,6 +15,7 @@ import NoData from '@/components/NoData'
 import AddMemberCommonModal from '@/components/AddUser/CommonModal'
 import { getAddDepartMember } from '@/services/staff'
 import { CloseWrap } from '@/components/StyleCommon'
+import HandOverModal from '@/components/ProjectOverModal'
 import {
   addMember,
   getProjectInfo,
@@ -53,11 +54,20 @@ interface DropDownProps {
   onClickMenu(item: any, row: any): void
   roleOptions: any
   name: any
+  openRemoveModal(row: any): void
 }
-
+const RemoveBox = styled.div`
+  height: 32px;
+  background: var(--hover-d3);
+  color: var(--function-error);
+  font-size: var(--font14);
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
+  font-family: MiSans-Regular, MiSans;
+`
 const MoreDropdown = (props: DropDownProps) => {
   const [isVisible, setIsVisible] = useState(false)
-
   const onClickItem = (item: any) => {
     setIsVisible(false)
     props.onClickMenu(item, props.row)
@@ -84,6 +94,18 @@ const MoreDropdown = (props: DropDownProps) => {
         ),
       })
     })
+    menuItems.push({
+      key: menuItems.length,
+      label: (
+        <RemoveBox
+          onClick={() => {
+            props.openRemoveModal(props.row)
+          }}
+        >
+          移除成员
+        </RemoveBox>
+      ),
+    })
     return <Menu items={menuItems} />
   }
 
@@ -92,7 +114,7 @@ const MoreDropdown = (props: DropDownProps) => {
       key={isVisible ? isVisible.toString() : null}
       visible={isVisible}
       overlay={menu}
-      trigger={['hover']}
+      trigger={['click']}
       placement="bottomRight"
       getPopupContainer={node => node}
       onVisibleChange={setIsVisible}
@@ -119,9 +141,12 @@ const CommonMember = (props: Props) => {
   const { projectInfo, projectInfoValues } = useSelector(store => store.project)
   const [isVisible, setIsVisible] = useState(false)
   const [roleOptions, setRoleOptions] = useState([])
+
   const [departments, setDepartments] = useState([])
   const [member, setMember] = useState<any>()
   const [search, setSearch] = useState<any>()
+  const [handOvervisible, setHandOvervisible] = useState(false)
+  const [editItem, setEditItem] = useState()
   const [memberList, setMemberList] = useState<any>([])
   const [projectPermission, setProjectPermission] = useState<any>([])
   const [form] = Form.useForm()
@@ -220,7 +245,10 @@ const CommonMember = (props: Props) => {
       //
     }
   }
-
+  const setModalVisibleClick = (data: any) => {
+    setEditItem(data)
+    setHandOvervisible(true)
+  }
   const onChangeSearch = (value: string) => {
     setSearch(value)
   }
@@ -349,6 +377,7 @@ const CommonMember = (props: Props) => {
                   <MoreDropdown
                     onClickMenu={onClickMenu}
                     roleOptions={roleOptions}
+                    openRemoveModal={setModalVisibleClick}
                     row={i}
                     name={i.positionName}
                   />
@@ -372,6 +401,16 @@ const CommonMember = (props: Props) => {
           </div>
         )}
       </DrawerWrap>
+      <HandOverModal
+        visible={handOvervisible}
+        close={() => {
+          setHandOvervisible(false)
+        }}
+        confirm={() => {
+          setHandOvervisible(false)
+        }}
+        id={editItem}
+      ></HandOverModal>
     </WaiWrap>
   )
 }

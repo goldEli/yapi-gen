@@ -37,10 +37,7 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import IconFont from '@/components/IconFont'
 import { CloseWrap } from '@/components/StyleCommon'
-type affairProps = {
-  [key in string]: Model.Project.Category[]
-}
-
+import useCategory from '@/hooks/useCategoryList'
 const IconFontStyle = styled(IconFont)({
   color: 'var(--neutral-n2)',
   fontSize: '18px',
@@ -95,6 +92,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
     store => store.category,
   )
   const dispatch = useDispatch()
+  const { getTypeCategory } = useCategory()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const paramsType = paramsData?.type
@@ -150,40 +148,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
     setAffairType(affairTypeData)
     setList(dataItem)
   }
-  const getTypeCategory = (
-    arr: Model.Project.Category[],
-    filed: 'work_type',
-  ) => {
-    const maps = new Map<number, string>([
-      [1, '需求类型'],
-      [2, '缺陷类型'],
-    ])
-    const obj: affairProps = {}
-    console.log('arry', arr)
-    for (let i = 0; i < arr.length; i++) {
-      const item = arr[i]
-      const key = item[filed]
-      if (!key) {
-        return
-      }
-      if (obj[key]) {
-        obj[key].push(item)
-      } else {
-        obj[key] = [item]
-      }
-    }
-    const resArr: Model.Project.CategoryList[] = []
-    Object.keys(obj).forEach(key => {
-      resArr.push({
-        name: maps.get(parseInt(key, 10)) ?? '',
-        children: obj[key],
-        visible: true,
-        workType: key,
-      })
-    })
-    console.log('data----', obj)
-    return resArr
-  }
+
   // 需求类别中间列表
   const getCategoryConfig = async (dataItem: any) => {
     const itemId = dataItem?.find((item: any) => item.active)?.id
