@@ -23,6 +23,16 @@ declare namespace Model.KanBan {
     name: string
     avatar: string
   }
+  interface Group {
+    id: number
+    name: string
+    content: string
+    color: string
+    icon: string
+    identity: string
+    content_txt: string
+    columns: Column[]
+  }
   interface Story {
     id: number
     name: string
