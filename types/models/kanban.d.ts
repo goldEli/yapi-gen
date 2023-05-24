@@ -6,6 +6,7 @@ declare namespace Model.KanBan {
     is_start: number
     is_end: number
     status_name: string
+    color: string
   }
   interface ProjectCategory {
     id: number
@@ -15,8 +16,13 @@ declare namespace Model.KanBan {
   interface StoryConfigPriority {
     id: number
     name: string
+    // 翻译
     content_txt: string
-    group_content_txt: string
+    content?: string
+    group_content_txt?: string
+    color?: string
+    icon?: string
+    identity?: string
   }
   interface Handler {
     id: number
@@ -26,13 +32,15 @@ declare namespace Model.KanBan {
   interface Group {
     id: number
     name: string
-    content: string
-    color: string
-    icon: string
-    identity: string
     content_txt: string
+    content?: string
+    color?: string
+    icon?: string
+    identity?: string
     columns: Column[]
   }
+  // 分组类型，users:用户分组，priority：优先级，category：类别
+  type GroupType = 'users' | 'priority' | 'category'
   interface Story {
     id: number
     name: string
@@ -48,7 +56,7 @@ declare namespace Model.KanBan {
     handlers: Handler[]
   }
   type Column = Omit<Model.KanbanConfig.Column, 'categories'> & {
-    Stories: Story[]
+    stories: Story[]
   }
 
   interface ViewItem {
@@ -61,7 +69,7 @@ declare namespace Model.KanBan {
 
   type guideVisible = boolean
   interface GroupInfoItem {
-    key: 'none' | 'person' | 'category' | 'priority'
+    key: 'none' | GroupType
     value: string
     check: boolean
   }

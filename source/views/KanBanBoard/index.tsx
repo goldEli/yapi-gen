@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from '@store/index'
 import guide_1 from './img/guide_1.png'
 import guide_2 from './img/guide_2.png'
 import guide_3 from './img/guide_3.png'
-import KanBan from './KanBan'
+import Board from './Borad'
 
 interface IProps {}
 const SprintProjectKanBanBox = styled.div`
@@ -78,7 +78,7 @@ const SprintProjectKanBan: React.FC<IProps> = props => {
         inform={inform}
         close={() => dispatch(onChangeGuideVisible(false))}
       />
-      <KanBan />
+      <Board />
     </SprintProjectKanBanBox>
   )
 }

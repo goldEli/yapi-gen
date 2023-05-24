@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { kanbanInfo, kanbanInfoByGroup } from './data'
 
 type SliceState = {
   guideVisible: Model.KanBan.guideVisible
@@ -12,12 +13,16 @@ type SliceState = {
   shareModelInfo: {
     visible: boolean
   }
+  kanbanInfo: Model.KanBan.Column[]
+  kanbanInfoByGroup: Model.KanBan.Group[]
 }
 
 const initialState: SliceState = {
+  kanbanInfo: kanbanInfo,
+  kanbanInfoByGroup: kanbanInfoByGroup,
   sortByGroupOptions: [
     { key: 'none', value: '无', check: true },
-    { key: 'person', value: '按人员', check: false },
+    { key: 'users', value: '按人员', check: false },
     { key: 'category', value: '按类别', check: false },
     { key: 'priority', value: '按优先级', check: false },
   ],

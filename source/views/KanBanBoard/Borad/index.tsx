@@ -17,7 +17,7 @@ const Container = styled.div`
   /* height: 0; */
 `
 
-const KanBan = () => {
+const Board = () => {
   const { sortByGroupOptions } = useSelector(store => store.sprintKanBan)
   const ele = React.useMemo(() => {
     const type = sortByGroupOptions?.find(item => item.check)?.key
@@ -38,4 +38,4 @@ const KanBan = () => {
   return <Container>{ele}</Container>
 }
 
-export default KanBan
+export default Board

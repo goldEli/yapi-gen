@@ -34,7 +34,10 @@ declare namespace API.Kanban {
   }
   // getKanbanByGroup
   namespace GetKanbanByGroup {
-    type Params = SearchParams
+    type Params = SearchParams & {
+      // 分组类型，users:用户分组，priority：优先级，category：类别
+      group_by: Model.KanBan.GroupType
+    }
     type Result = Model.KanBan.Group[]
   }
   // modifyKanbanIssueSort
