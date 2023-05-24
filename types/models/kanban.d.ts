@@ -47,7 +47,22 @@ declare namespace Model.KanBan {
     story_config_priority: StoryConfigPriority
     handlers: Handler[]
   }
-  export type Column = Omit<Model.KanbanConfig.Column, 'categories'> & {
+  type Column = Omit<Model.KanbanConfig.Column, 'categories'> & {
     Stories: Story[]
+  }
+
+  interface ViewItem {
+    key: string
+    value: string
+    check: boolean
+    isDefault?: boolean
+    operation?: boolean
+  }
+
+  type guideVisible = boolean
+  interface GroupInfoItem {
+    key: 'none' | 'person' | 'category' | 'priority'
+    value: string
+    check: boolean
   }
 }
