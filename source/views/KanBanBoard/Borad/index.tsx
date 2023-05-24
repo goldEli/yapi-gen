@@ -5,6 +5,7 @@ import KanBanDefault from '../KanBanDefault'
 import KanBanSortByPerson from '../KanBanSortByPerson'
 import KanBanSortByCategory from '../KanBanSortByCategory'
 import KanBanSortByPriority from '../KanBanSortByPriority'
+import useControlScrollPlane from '@/views/ProjectSetting/components/KanBanSetting/hooks/useControlScrollPlane'
 
 const Container = styled.div`
   display: flex;
@@ -18,13 +19,20 @@ const Container = styled.div`
 `
 
 const Board = () => {
-  const { sortByGroupOptions } = useSelector(store => store.sprintKanBan)
+  const { sortByGroupOptions, kanbanConfig } = useSelector(
+    store => store.kanBan,
+  )
+
+  const { ControlScrollPlane, containerRef } = useControlScrollPlane(
+    kanbanConfig?.columns.length ?? 0,
+  )
+
   const ele = React.useMemo(() => {
     const type = sortByGroupOptions?.find(item => item.check)?.key
     switch (type) {
       case 'none':
         return <KanBanDefault />
-      case 'person':
+      case 'users':
         return <KanBanSortByPerson />
       case 'category':
         return <KanBanSortByCategory />
@@ -35,7 +43,12 @@ const Board = () => {
         return <></>
     }
   }, sortByGroupOptions)
-  return <Container>{ele}</Container>
+  return (
+    <Container ref={containerRef}>
+      {ele}
+      <ControlScrollPlane />
+    </Container>
+  )
 }
 
 export default Board
