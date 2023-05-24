@@ -1,56 +1,30 @@
-import React, { useEffect, useRef, useState } from 'react'
-import styled from '@emotion/styled'
-import { Rnd } from 'react-rnd'
+/**
+ * 滚动快捷控制面板
+ * 1. 面板展示容器缩略图
+ * 2. 面板方块拖动控制容易滚动条快捷滚动
+ */
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { DraggableData } from 'react-rnd'
+import { DraggableEvent } from 'react-draggable'
+import { Content, ControlScrollPlaneBox, Strip, WindowArea } from './styled'
 
 interface ControlScrollPlaneProps {}
+
+// 面板缩略图宽度
 const planeWidth = 124 - 16
 const planeHeight = 64 - 16
+// 容器中列的宽度
 const columnWidth = 302
 const columnGap = 16
-const ControlScrollPlaneBox = styled.div`
-  width: 124px;
-  height: 64px;
-  background: var(--neutral-white-d7);
-  box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.12);
-  border-radius: 6px 6px 6px 6px;
-  opacity: 1;
-  position: absolute;
-  right: 16px;
-  bottom: 16px;
-  padding: 8px;
-  box-sizing: border-box;
-`
-
-const WindowArea = styled(Rnd)`
-  /* width: ${props => props.width + 'px'};
-  height: ${props => props.height + 'px'}; */
-  border: 1px solid var(--primary-d1);
-  box-sizing: border-box;
-  position: absolute;
-  /* left: ${props => props.left + 'px'};
-  top: ${props => props.top + 'px'}; */
-  cursor: pointer;
-`
-
-const Content = styled.div<{ gap: number }>`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  gap: ${props => props.gap + 'px'};
-`
-
-const Strip = styled.div<{ width: number }>`
-  width: ${props => props.width + 'px'};
-  height: 100%;
-  background-color: var(--neutral-n7);
-`
 
 const useControlScrollPlane = (columnNum: number) => {
+  // 需要控制滚动条的容器
   const containerRef = useRef<HTMLDivElement>(null)
-  const childRef = useRef<HTMLDivElement>(null)
+  // 容器可视区域宽高
   const [width, setWidth] = useState(0)
   const [height, setHeight] = useState(0)
 
+  // 容易滚动区域宽高
   const [childWidth, setChildWidth] = useState(0)
   const [childHeight, setChildHeight] = useState(0)
 
@@ -67,17 +41,31 @@ const useControlScrollPlane = (columnNum: number) => {
     })
 
     if (containerRef.current) {
+      // 监听容易宽高变化
       observer.observe(containerRef.current)
     }
     return () => {
       observer.disconnect()
     }
   }, [])
-  console.log({ width, height, childWidth, childHeight })
+  // 缩略图与容器宽高比列
   const widthRatio = planeWidth / childWidth
+  const heightRatio = planeHeight / childHeight
+
+  // 缩略的可视宽高
   const windowHeight = planeHeight * (height / childHeight)
   const windowWidth = planeWidth * (width / childWidth)
+
   const ControlScrollPlane: React.FC<ControlScrollPlaneProps> = props => {
+    // 缩略内容展示
+    const thumbnailContent = useMemo(() => {
+      return Array(columnNum ?? 0)
+        .fill(0)
+        .map((_, idx) => {
+          return <Strip key={idx} width={columnWidth * widthRatio} />
+        })
+    }, [columnNum, columnWidth, widthRatio])
+
     return (
       <ControlScrollPlaneBox>
         <Content gap={widthRatio * columnGap} className="controlScrollPlaneBox">
@@ -92,12 +80,13 @@ const useControlScrollPlane = (columnNum: number) => {
               x: 0,
               y: 0,
             }}
+            onDrag={(e: DraggableEvent, data: DraggableData) => {
+              e.stopPropagation()
+              const { y, x } = data
+              containerRef.current?.scrollTo(x / widthRatio, y / heightRatio)
+            }}
           />
-          {Array(columnNum ?? 0)
-            .fill(0)
-            .map((_, idx) => {
-              return <Strip key={idx} width={columnWidth * widthRatio} />
-            })}
+          {thumbnailContent}
         </Content>
       </ControlScrollPlaneBox>
     )
@@ -105,7 +94,6 @@ const useControlScrollPlane = (columnNum: number) => {
   return {
     ControlScrollPlane,
     containerRef,
-    childRef,
   }
 }
 

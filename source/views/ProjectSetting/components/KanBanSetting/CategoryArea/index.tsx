@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import styled from '@emotion/styled'
 import CommonButton from '@/components/CommonButton'
-import UpDownBtn from '../UpDownBtn'
+import UpDownBtn from '../../../../../components/UpDownBtn'
 import { useDispatch, useSelector } from '@store/index'
 import { setCategoryVisibleInfo } from '@store/kanbanConfig'
 import { useNavigate } from 'react-router'

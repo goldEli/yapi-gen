@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   ButtonGroup,
   ChangeIconGroup,
@@ -18,12 +18,34 @@ import StateTag from '@/components/StateTag'
 import ChangeStatusPopover from '@/components/ChangeStatusPopover/index'
 import SprintDetailInfo from './components/SprintDetailInfo'
 import SprintDetailBasic from './components/SprintDetailBasic'
+import { useDispatch, useSelector } from '@store/index'
+import { getSprintCommentList, getSprintInfo } from '@store/sprint/sprint.thunk'
+import { useSearchParams } from 'react-router-dom'
+import { getParamsData } from '@/tools'
 interface IProps {}
 const SprintProjectDetail: React.FC<IProps> = props => {
+  const dispatch = useDispatch()
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const { id, sprintId } = paramsData
+  const { sprintInfo } = useSelector(store => store.sprint)
+
   // 复制标题
   const onCopy = () => {
     //
   }
+
+  useEffect(() => {
+    dispatch(getSprintInfo({ projectId: id, sprintId }))
+    dispatch(
+      getSprintCommentList({
+        projectId: id,
+        sprintId,
+        page: 1,
+        pageSize: 999,
+      }),
+    )
+  }, [])
 
   return (
     <Wrap>
@@ -70,19 +92,28 @@ const SprintProjectDetail: React.FC<IProps> = props => {
         </ButtonGroup>
       </DetailTop>
       <DetailTitle>
-        <Img
-          src="https://dev.staryuntech.com/dev-agile/attachment/category_icon/settings.png"
-          alt=""
-        />
+        <Img src={sprintInfo.category_attachment} alt="" />
         <DetailText>
-          <span className="name">
-            事务名称事务名称事务名称事务名称事务名称事务名称事务名称事务名称事务名称事务名称名称事务名称事务名称事事务名称事务名称事务名称事务名称事务名称事务名称事务名称事务名称事务名称事务名称名称事务名称事务名称事务名称事务名称事务名称事务名称事务名称事务名称事务名称事务名称事务名称事务名称事
-          </span>
+          <span className="name">{sprintInfo.name}</span>
           <span className="icon" onClick={onCopy}>
             <CommonIconFont type="copy" color="var(--neutral-n3)" />
           </span>
           <ChangeStatusPopover>
-            <StateTag name="待办" state={1} />
+            <StateTag
+              name={sprintInfo.status?.status.content}
+              state={
+                sprintInfo.status?.is_start === 1 &&
+                sprintInfo.status?.is_end === 2
+                  ? 1
+                  : sprintInfo.status?.is_end === 1 &&
+                    sprintInfo.status?.is_start === 2
+                  ? 2
+                  : sprintInfo.status?.is_start === 2 &&
+                    sprintInfo.status?.is_end === 2
+                  ? 3
+                  : 0
+              }
+            />
           </ChangeStatusPopover>
         </DetailText>
       </DetailTitle>
