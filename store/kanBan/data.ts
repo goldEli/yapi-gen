@@ -384,7 +384,7 @@ export const kanbanInfoByGroup: Model.KanBan.Group[] = [
             id: 1003010,
             name: '需求测试12（jxl）',
             category_id: 571,
-            schedule: 0,
+            schedule: 70,
             priority: 0,
             created_at: '2023-03-22 18:07:39',
             story_prefix_key: 'CSXM（JXL）-2',
