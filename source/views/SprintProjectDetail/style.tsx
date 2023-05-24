@@ -101,9 +101,8 @@ export const DetailMain = styled.div`
 
 export const DetailInfoWrap = styled.div`
   width: 100%;
-  height: calc(100% - 60px);
+  height: calc(100% - 40px);
   overflow: auto;
-  /* padding: 0 0px 0px 0; */
 `
 
 export const InfoItem = styled.div`

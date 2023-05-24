@@ -1,4 +1,55 @@
 declare namespace API.Sprint {
+  namespace AddInfoSprint {
+    type Params = {
+      projectId: number
+      sprintId?: number
+      targetId: Model.Sprint.AttachTarget[] | { name: string; color: string }[]
+      type: string
+    }
+  }
+
+  namespace GetSprintStatusLog {
+    type Params = {
+      projectId: number
+      sprintId: number
+      all: boolean
+    }
+  }
+  namespace GetSprintChangeLog {
+    type Params = {
+      projectId: number
+      sprintId: number
+      pageSize: number
+      page: number
+      orderKey: string
+      order: string
+    }
+    type Result = {
+      pager?: {
+        page: number
+        pagesize: number
+        total: number
+      }
+      list: Model.Sprint.SprintChangeLogResultInfo[]
+    }
+  }
+
+  namespace AddSprintComment {
+    type Params = {
+      projectId: number
+      sprintId: number
+      content: string
+      attachment?: Model.Sprint.AddSprintCommentAttach[]
+      a_user_ids?: (string | null)[]
+    }
+  }
+
+  namespace DeleteSprintComment {
+    type Params = {
+      projectId: number
+      id: number
+    }
+  }
   namespace GetSprintKanBanList {
     type Params = {
       id: number
@@ -49,6 +100,38 @@ declare namespace API.Sprint {
         total: number
       }
       list: Model.Sprint.ListItem[]
+    }
+  }
+
+  namespace GetSprintInfo {
+    type Params = {
+      projectId: number
+      sprintId?: number
+    }
+
+    type Result = Model.Sprint.SprintInfoResult
+  }
+
+  namespace GetSprintCommentList {
+    type Params = {
+      sprintId: number
+      projectId: number
+      page: number
+      pageSize: number
+    }
+    type Result = {
+      a_user_ids: number[]
+      app_attachment: Model.Sprint.ListItemUserOrAttach[]
+      avatar: string
+      content: string
+      created_at: string
+      id: number
+      name: string
+      status: number
+      status_content: string
+      story_id: number
+      updated_at: string
+      user_id: number
     }
   }
   namespace GetSprintIssueList {

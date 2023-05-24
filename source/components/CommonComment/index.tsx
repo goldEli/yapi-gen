@@ -28,31 +28,22 @@ import NoData from '../NoData'
 import { getCommentList } from '@/services/demand'
 
 const imgs = ['png', 'webp', 'jpg', 'jpeg', 'png', 'gif']
-const CommonComment = () => {
+
+interface CommonCommentProps {
+  data: {
+    list: Model.Sprint.CommentListInfo[]
+  }
+}
+
+const CommonComment = (props: CommonCommentProps) => {
   const [t]: any = useTranslation()
   const { userInfo } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
   const [previewOpen, setPreviewOpen] = useState<boolean>(false)
-  const [dataList, setDataList] = useState<any>({
-    list: undefined,
-  })
   const [pictureList, setPictureList] = useState({
     imageArray: [],
     index: 0,
   })
-
-  // 获取评论列表
-  const getList = async () => {
-    const result = await getCommentList({
-      projectId: 27,
-      demandId: 1002317,
-      page: 1,
-      pageSize: 999,
-    })
-    console.log(result)
-    setDataList(result)
-  }
-
   // 判断当前登录的人是否有编辑评论的权限
   const isComment =
     projectInfo?.projectPermissions?.filter(
@@ -110,16 +101,12 @@ const CommonComment = () => {
     // getList()
   }
 
-  useEffect(() => {
-    getList()
-  }, [])
-
   return (
     <div>
-      {!!dataList?.list &&
-        (dataList?.list?.length > 0 ? (
+      {!!props.data?.list &&
+        (props.data?.list?.length > 0 ? (
           <div>
-            {dataList?.list?.map((item: any) => (
+            {props.data?.list?.map((item: any) => (
               <CommentItem key={item.id}>
                 <CommonUserAvatar avatar={item.avatar} />
                 <TextWrap>
