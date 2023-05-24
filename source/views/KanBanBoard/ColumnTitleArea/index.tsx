@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import styled from '@emotion/styled'
-import { issueColumns } from './data'
+import { useSelector } from '@store/index'
 
 interface ColumnTitleAreaProps {}
 const ColumnTitle = styled.span`
@@ -20,13 +20,18 @@ const ColumnTitleAreaBox = styled.div`
 `
 
 const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
+  const { kanbanConfig, kanbanInfoByGroup } = useSelector(store => store.kanBan)
   return (
     <ColumnTitleAreaBox>
-      {issueColumns.map(item => {
+      {kanbanConfig?.columns.map(item => {
+        const num = kanbanInfoByGroup.reduce((res, group) => {
+          const len =
+            group.columns.find(column => column.id === item.id)?.stories
+              .length ?? 0
+          return len + res
+        }, 0)
         return (
-          <ColumnTitle
-            key={item.id}
-          >{`${item.title}（${item.total}）`}</ColumnTitle>
+          <ColumnTitle key={item.id}>{`${item.name}（${num}）`}</ColumnTitle>
         )
       })}
     </ColumnTitleAreaBox>

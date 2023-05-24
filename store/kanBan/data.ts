@@ -5,7 +5,7 @@ export const kanbanConfig: Model.KanbanConfig.Config = {
   is_default: 1,
   columns: [
     {
-      id: 110,
+      id: 112,
       kanban_config_id: 1,
       name: '规划中',
       max_num: 1,
@@ -136,6 +136,13 @@ export const kanbanConfig: Model.KanbanConfig.Config = {
             'https://dev.staryuntech.com/dev-agile/attachment/category_icon/home.png',
         },
       ],
+    },
+    {
+      id: 114,
+      kanban_config_id: 1,
+      name: '其它状态列',
+      max_num: 1,
+      categories: [],
     },
   ],
 }
