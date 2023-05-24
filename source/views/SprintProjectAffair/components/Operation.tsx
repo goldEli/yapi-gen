@@ -13,8 +13,6 @@ import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
 import { Popover, Space, Tooltip } from 'antd'
 import DeleteConfirm from '@/components/DeleteConfirm'
-// import ExportDemand from './ExportDemand'
-// import ImportDemand from './ImportDemand'
 import { useDispatch, useSelector } from '@store/index'
 import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
 import { setCreateCategory } from '@store/demand'
@@ -22,6 +20,17 @@ import { saveScreen } from '@store/view'
 import CommonIconFont from '@/components/CommonIconFont'
 import { OperationWrap } from '../style'
 import CommonButton from '@/components/CommonButton'
+import CommonModal from '@/components/CommonModal'
+import CommonImport from '@/components/CommonImport'
+import {
+  getImportDownloadModel,
+  getImportExcel,
+  getImportExcelUpdate,
+  getExportFields,
+  getLoadListFields,
+  getExportExcel,
+} from '@/services/demand'
+import CommonExport from '@/components/CommonExport'
 
 const StickyWrap = styled.div({
   background: 'white',
@@ -333,22 +342,62 @@ const Operation = (props: Props) => {
         title={t('p2.toast')}
         text={t('p2.exportDemandText')}
       />
-      {/* <CommonModal
+      <CommonModal
         isVisible={isShowImport}
         width={784}
-        title={t('newlyAdd.importDemand')}
+        title={t('common.importTransaction')}
         isShowFooter
         onClose={onImportClose}
       >
-        <ImportDemand />
-      </CommonModal> */}
+        <CommonImport
+          templateTitle={t('project.importChoose')}
+          interfaces={{
+            getImportDownloadModel,
+            getImportExcel,
+            getImportExcelUpdate,
+          }}
+          templateInterfaces={{
+            getExportFields,
+            getLoadListFields,
+          }}
+          stepText={t('common.uploadTransaction')}
+          tips={{
+            tab1: (
+              <>
+                <span>{t('project.importText1')}</span>
+                <span>{t('project.importText2')}</span>
+                <span>{t('project.importText3')}</span>
+                <span>{t('project.importText4')}</span>
+                <span>{t('project.importText5')}</span>
+                <span>{t('project.importText6')}</span>
+                <span>{t('project.importText7')}</span>
+                <span>{t('project.importText8')}</span>
+              </>
+            ),
+            tab2: (
+              <>
+                <span>{t('project.importText9')}</span>
+                <span>{t('project.importText10')}</span>
+                <span>{t('project.importText11')}</span>
+                <span>{t('project.importText12')}</span>
+                <span>{t('project.importText13')}</span>
+                <span>{t('project.importText14')}</span>
+                <span>{t('project.importText15')}</span>
+                <span>{t('project.importText16')}</span>
+              </>
+            ),
+          }}
+        />
+      </CommonModal>
 
-      {/* <ExportDemand
+      <CommonExport
+        interfaces={{ getExportExcel }}
         isShowExport={isShowExport}
         onClose={setIsShowExport}
         searchGroups={searchGroups}
         otherParams={props.otherParams}
-      /> */}
+        templateInterfaces={{ getExportFields, getLoadListFields }}
+      />
 
       <OperationWrap>
         <Space size={16} style={{ position: 'relative' }}>
