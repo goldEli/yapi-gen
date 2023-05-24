@@ -374,8 +374,6 @@ const IterationTable = (props: Props) => {
     )
   }
 
-  console.log(hasCreate)
-
   return (
     <Content
       style={{

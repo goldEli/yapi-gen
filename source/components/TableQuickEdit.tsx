@@ -357,8 +357,6 @@ const TableQuickEdit = (props: Props) => {
     }
   }, [isShowControl])
 
-  console.log(projectInfo, '=1212项目信息')
-
   // 操作框改变
   const onChange = async (newValue: any, type?: any) => {
     if (props.item.categoryConfigList[props.keyText] === 1 && !newValue) {
