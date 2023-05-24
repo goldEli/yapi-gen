@@ -51,7 +51,8 @@ export const getProjectList: any = async (params: any) => {
         prefix: i.prefix,
         isPublic: i.is_public,
         groupIds: i.groups?.map((k: any) => k.id),
-        project_type: i.project_type,
+        projectType: i.project_type,
+        defaultHomeMenu: i.default_home_menu,
       })),
     }
   }
@@ -74,7 +75,8 @@ export const getProjectList: any = async (params: any) => {
       createName: i.user_name,
       info: i.info,
       isPublic: i.is_public,
-      project_type: i.project_type,
+      projectType: i.project_type,
+      defaultHomeMenu: i.default_home_menu,
     })),
   }
 }
@@ -235,6 +237,7 @@ export const getProjectInfo: any = async (params: any) => {
     leaderName: response.data.leader_name,
     permissionType: response.data.permission_type,
     projectType: response.data.project_type,
+    defaultHomeMenu: response.data.default_home_menu,
   }
 }
 
@@ -909,5 +912,7 @@ export const getAffiliationUser = async (id: any) => {
 // 用户最近访问的项目列表
 export const getProjectRecent = async () => {
   const response = await http.get<any>('/b/project/recent')
-  return response.data
+  return response.data.map((item: { default_home_menu: string }) => {
+    return { ...item, defaultHomeMenu: item.default_home_menu }
+  })
 }

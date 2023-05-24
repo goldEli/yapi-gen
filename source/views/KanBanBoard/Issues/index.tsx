@@ -5,7 +5,7 @@ import IssueCard from '../IssueCard'
 import { handleId } from '../utils'
 
 interface IssuesProps {
-  issues: Model.SprintKanBan.Issues
+  issues: Model.KanBan.Column
   groupId: Model.SprintKanBan.IssuesGroup['groupId']
 }
 
@@ -38,11 +38,11 @@ const Issues: React.FC<IssuesProps> = props => {
             {/* {column?.deps?.map?.((item) => {
               return <DropStatusArea>{`123 -> ${item.title}`}</DropStatusArea>;
             })} */}
-            {issues.list?.map((item, index) => (
+            {issues.stories?.map((story, index) => (
               <IssueCard
                 groupId={groupId}
-                key={item.id}
-                item={item}
+                key={story.id}
+                item={story}
                 index={index}
               />
             ))}

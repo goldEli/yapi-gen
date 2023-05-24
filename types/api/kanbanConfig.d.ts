@@ -56,7 +56,7 @@ declare namespace API.KanbanConfig {
       id: number
       project_id: number
     }
-    type Result = Model.KanbanConfig.Status[]
+    type Result = Model.KanbanConfig.Config[]
   }
   namespace GetKanbanConfig {
     type Params = {
