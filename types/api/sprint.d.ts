@@ -104,6 +104,12 @@ declare namespace API.Sprint {
       start_time: string
       end_time: string
     }
-    type Result = Array<{ name: string; number: number; ratio: string }>
+    type Result = Model.Sprint.ListItem[]
+  }
+  namespace GetStatisticsTotal {
+    type Result = {
+      work: Model.Sprint.WorkListItem
+      defect: Model.Sprint.DefectListItem
+    }
   }
 }

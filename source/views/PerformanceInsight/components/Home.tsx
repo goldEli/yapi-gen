@@ -119,6 +119,7 @@ const Home = () => {
   const dispatch = useDispatch()
   const [isVisible, setIsVisible] = useState(false)
   const { save } = useSelector(store => store.performanceInsight)
+  // 'iteration''sprint' 'all'
   const [homeType, setHomeType] = useState('all')
   return (
     <div

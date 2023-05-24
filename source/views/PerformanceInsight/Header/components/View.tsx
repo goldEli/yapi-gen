@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react'
 import ViewDialog from './ViewDialog'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { DivStyle, DefaultLabel, DefaultLabelAdd, Btn, Label } from '../Style'
+import { useDispatch, useSelector } from '@store/index'
+import { setHeaderParmas } from '@store/performanceInsight'
 interface Item {
   label?: string
   key: string
@@ -16,6 +18,8 @@ interface ValueType {
 }
 
 const View = () => {
+  const dispatch = useDispatch()
+  const { headerParmas } = useSelector(store => store.performanceInsight)
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [items, setItems] = useState<MenuProps['items']>([])
   const [value, setValue] = useState<ValueType>({
@@ -118,6 +122,17 @@ const View = () => {
         title: '视图' + '' + item.name,
         value: item.key,
       })
+      dispatch(
+        setHeaderParmas({
+          users: headerParmas.users,
+          projectIds: headerParmas.projectIds,
+          time: headerParmas.time,
+          view: {
+            title: '视图' + '' + item.name,
+            value: item.key,
+          },
+        }),
+      )
       setIsOpen(false)
     }
   }
