@@ -26,14 +26,18 @@ const GroupTitleArea = styled.div`
   height: 24px;
   display: flex;
   align-items: center;
+  gap: 16px;
 `
 const Title = styled.div`
   font-size: 14px;
   color: var(--neutral-n1-d1);
   font-family: SiYuanMedium;
-  margin-left: 8px;
-  margin-right: 16px;
   flex-shrink: 0;
+`
+const TitleBtn = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
 `
 
 const IssuesGroup: React.FC<IssuesGroupProps> = props => {
@@ -41,8 +45,10 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
   return (
     <IssuesGroupBox>
       <GroupTitleArea>
-        <UpDownBtn isOpen={false} />
-        <Title>{issuesGroup.name}</Title>
+        <TitleBtn>
+          <UpDownBtn isOpen={false} />
+          <Title>{issuesGroup.name}</Title>
+        </TitleBtn>
         <MultipleAvatar
           list={Array(4)
             .fill(0)
