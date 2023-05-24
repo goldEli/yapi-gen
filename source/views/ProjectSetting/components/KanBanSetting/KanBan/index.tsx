@@ -16,7 +16,7 @@ const Container = styled.div`
 
 const KanBan = () => {
   const { columnList } = useSelector(store => store.KanbanConfig)
-  const { ControlScrollPlane, containerRef, childRef } = useControlScrollPlane(
+  const { ControlScrollPlane, containerRef } = useControlScrollPlane(
     columnList.length,
   )
   return (
