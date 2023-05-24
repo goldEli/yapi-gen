@@ -24,7 +24,7 @@ const IssueCardBox = styled.div`
 `
 
 interface IssueCardProps {
-  item: Model.SprintKanBan.Issue
+  item: Model.KanBan.Story
   index: number
   groupId: Model.SprintKanBan.IssuesGroup['groupId']
 }

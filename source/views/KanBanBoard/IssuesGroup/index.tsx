@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import Issues from '../Issues'
 
 interface IssuesGroupProps {
-  issuesGroup: Model.SprintKanBan.IssuesGroup
+  issuesGroup: Model.KanBan.Group
 }
 
 const IssuesGroupBox = styled.div`
@@ -21,15 +21,11 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
   const { issuesGroup } = props
   return (
     <IssuesGroupBox>
-      <div>{issuesGroup.title}</div>
+      <div>{issuesGroup.name}</div>
       <DropAreaList>
-        {issuesGroup.data.map(issues => {
+        {issuesGroup.columns.map(column => {
           return (
-            <Issues
-              key={issues.id}
-              issues={issues}
-              groupId={issuesGroup.groupId}
-            />
+            <Issues key={column.id} issues={column} groupId={issuesGroup.id} />
           )
         })}
       </DropAreaList>
