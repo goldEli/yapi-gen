@@ -6,6 +6,7 @@ import BoardLeft from './BoardLeft'
 import BoardRight from './BoardRight'
 import EditColumnModal from './EditColumnModal'
 import {
+  getCategoryList,
   getKanbanConfig,
   getKanbanConfigList,
   getKanbanConfigRemainingStatus,
@@ -47,6 +48,7 @@ const KanBanSetting: React.FC<IProps> = props => {
     }
     dispatch(getKanbanConfigRemainingStatus(params))
     dispatch(getKanbanConfig(params))
+    dispatch(getCategoryList({ project_id: params.project_id }))
   }, [viewList, projectId])
   const content = useMemo(() => {
     if (showNoData) {

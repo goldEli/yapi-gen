@@ -80,4 +80,12 @@ declare namespace API.KanbanConfig {
     }
     type Result = Model.KanbanConfig.Config
   }
+  // GetCategoryList
+  namespace GetCategoryList {
+    type Params = {
+      is_select: 1 | 2
+      project_id: number
+    }
+    type Result = Model.KanbanConfig.Category[]
+  }
 }

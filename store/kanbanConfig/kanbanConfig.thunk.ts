@@ -7,6 +7,20 @@ import { getParamsValueByKey } from '@/tools'
 import { produce } from 'immer'
 
 const name = 'KanbanConfig'
+// 分类列表
+export const getCategoryList = createAsyncThunk(
+  `${name}/getCategoryList`,
+  async (
+    params: Pick<API.KanbanConfig.GetCategoryList.Params, 'project_id'>,
+  ) => {
+    const res = await services.kanbanConfig.getCategoryList({
+      project_id: params.project_id,
+      is_select: 2,
+    })
+    return res.data
+  },
+)
+
 // 获取未分配状态列表
 export const getKanbanConfigRemainingStatus = createAsyncThunk(
   `${name}/getKanbanConfigRemainingStatus`,

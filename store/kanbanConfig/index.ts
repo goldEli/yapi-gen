@@ -4,6 +4,7 @@ import { getId } from '@/views/ProjectSetting/components/KanBanSetting/utils'
 import { getNumberId } from './utils'
 import category from '@store/category'
 import {
+  getCategoryList,
   getKanbanConfig,
   getKanbanConfigList,
   getKanbanConfigRemainingStatus,
@@ -11,6 +12,7 @@ import {
 
 type SliceState = {
   viewList?: Model.KanbanConfig.Config[]
+  categoryList?: Model.KanbanConfig.Category[]
   saveAsViewModelInfo: {
     visible: boolean
     title?: string
@@ -34,6 +36,7 @@ type SliceState = {
 }
 
 const initialState: SliceState = {
+  categoryList: [],
   movingStatus: null,
   editColumnModelInfo: {
     visible: false,
@@ -295,6 +298,9 @@ const slice = createSlice({
     )
     builder.addCase(getKanbanConfig.fulfilled, (state, action) => {
       state.columnList = action.payload ?? []
+    })
+    builder.addCase(getCategoryList.fulfilled, (state, action) => {
+      state.categoryList = action.payload
     })
   },
 })
