@@ -17,6 +17,7 @@ import { getMessage } from '@/components/Message'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import IconFont from '@/components/IconFont'
 import DropDownMenu from '@/components/DropDownMenu'
+import useShareModal from '@/hooks/useShareModal'
 
 interface Props {
   onChangeFilter?(): void
@@ -51,6 +52,8 @@ const KanBanBtnsArea = (props: Props) => {
     projectInfo?.projectPermissions,
     projectInfo.projectType === 1 ? 'b/story/get' : 'b/transaction/get',
   )
+
+  const { open, ShareModal } = useShareModal()
 
   // 切换显示类型
   const onClickMenu = (number: any) => {
@@ -135,12 +138,18 @@ const KanBanBtnsArea = (props: Props) => {
   }
   return (
     <SpaceWrap size={8} style={{ marginLeft: 8 }}>
+      <ShareModal />
       {/* 分享 */}
       <ScreenMinHover
         label={'分享'}
         icon="share"
         onClick={() => {
-          dispatch(openShareModel())
+          // dispatch(openShareModel())
+          open({
+            onOk: () => {
+              return Promise.resolve()
+            },
+          })
         }}
       />
       <DividerWrap type="vertical" />
