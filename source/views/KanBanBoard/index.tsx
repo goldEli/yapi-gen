@@ -12,6 +12,7 @@ import Board from './Borad'
 import { getKanbanConfigList } from '@store/kanBan/kanBan.thunk'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
+import useProjectId from './hooks/useProjectId'
 
 interface IProps {}
 const SprintProjectKanBanBox = styled.div`
@@ -35,13 +36,11 @@ const ToolBarBox = styled.div`
 const SprintProjectKanBan: React.FC<IProps> = props => {
   const dispatch = useDispatch()
   const { guideVisible } = useSelector(store => store.sprintKanBan)
-  const [searchParams] = useSearchParams()
-  const paramsData = getParamsData(searchParams)
-  const { id } = paramsData
+  const { projectId } = useProjectId()
 
   useEffect(() => {
-    dispatch(getKanbanConfigList({ project_id: id }))
-  }, [id])
+    dispatch(getKanbanConfigList({ project_id: projectId }))
+  }, [projectId])
 
   const inform = [
     {
