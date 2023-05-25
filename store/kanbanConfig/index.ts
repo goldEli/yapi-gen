@@ -1,16 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { columnList, unassignStatusList } from './mockData'
 import { getId } from '@/views/ProjectSetting/components/KanBanSetting/utils'
 import { getNumberId } from './utils'
-import category from '@store/category'
 import {
+  getCategoryList,
   getKanbanConfig,
   getKanbanConfigList,
   getKanbanConfigRemainingStatus,
 } from './kanbanConfig.thunk'
+import { store } from '..'
 
 type SliceState = {
+  projectId?: Model.KanbanConfig.Config['project_id']
   viewList?: Model.KanbanConfig.Config[]
+  categoryList?: Model.KanbanConfig.Category[]
   saveAsViewModelInfo: {
     visible: boolean
     title?: string
@@ -34,6 +36,7 @@ type SliceState = {
 }
 
 const initialState: SliceState = {
+  categoryList: [],
   movingStatus: null,
   editColumnModelInfo: {
     visible: false,
@@ -126,30 +129,27 @@ const slice = createSlice({
       action: PayloadAction<Model.KanbanConfig.Column['name']>,
     ) {
       const kanban_config_id = state.viewList?.find(item => item.check)?.id
-      state.columnList.push({
-        id: getNumberId(state.viewList?.map(item => item.id)),
+      const categories = state.columnList.length
+        ? state.columnList[0].categories.map(item => {
+            return {
+              ...item,
+              status: [],
+            }
+          })
+        : state.categoryList?.map(item => {
+            return {
+              ...item,
+              status: [],
+            }
+          }) ?? []
+      const list = {
+        id: getNumberId(state.columnList?.map(item => item.id)),
         kanban_config_id: kanban_config_id ?? 0,
         name: action.payload,
         max_num: 1,
-        categories: [
-          {
-            id: 499,
-            name: '需求',
-            attachment_id: 457,
-            attachment_path:
-              'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png',
-            status: [],
-          },
-          {
-            id: 571,
-            name: '测试需求类别（jx）',
-            attachment_id: 458,
-            attachment_path:
-              'https://dev.staryuntech.com/dev-agile/attachment/category_icon/home.png',
-            status: [],
-          },
-        ],
-      })
+        categories,
+      }
+      state.columnList.push(list)
     },
     setCategoryVisibleInfo(
       state,
@@ -295,6 +295,9 @@ const slice = createSlice({
     )
     builder.addCase(getKanbanConfig.fulfilled, (state, action) => {
       state.columnList = action.payload ?? []
+    })
+    builder.addCase(getCategoryList.fulfilled, (state, action) => {
+      state.categoryList = action.payload
     })
   },
 })

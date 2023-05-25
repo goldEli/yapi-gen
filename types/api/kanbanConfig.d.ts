@@ -24,7 +24,7 @@ declare namespace API.KanbanConfig {
   namespace UpdateKanbanConfig {
     type Params = Pick<
       Model.KanbanConfig.Config,
-      'id' | 'name' | 'project_id' | 'is_default'
+      'id' | 'name' | 'project_id' | 'is_default' | 'columns'
     >
     // type Params = {
     //   // 必需 看板配置id
@@ -79,5 +79,13 @@ declare namespace API.KanbanConfig {
       project_id: number
     }
     type Result = Model.KanbanConfig.Config
+  }
+  // GetCategoryList
+  namespace GetCategoryList {
+    type Params = {
+      is_select: 1 | 2
+      project_id: number
+    }
+    type Result = Model.KanbanConfig.Category[]
   }
 }

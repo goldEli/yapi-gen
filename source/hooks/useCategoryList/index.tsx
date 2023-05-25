@@ -18,6 +18,7 @@ const useCategory = () => {
     const obj: affairProps = {}
     for (let i = 0; i < arr.length; i++) {
       const item = arr[i]
+
       const key = item[filed]
       if (!key) {
         return
