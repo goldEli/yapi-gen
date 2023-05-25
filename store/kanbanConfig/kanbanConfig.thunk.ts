@@ -19,7 +19,18 @@ export const getKanbanConfigList = createAsyncThunk(
   `${name}/getKanbanConfigList`,
   async (param: API.KanbanConfig.GetKanbanConfigList.Params) => {
     const res = await services.kanbanConfig.getKanbanConfigList(param)
-    return res.data
+    return res.data.map((item, idx) => {
+      if (idx === 0) {
+        return {
+          ...item,
+          check: true,
+        }
+      }
+      return {
+        ...item,
+        check: false,
+      }
+    })
   },
 )
 

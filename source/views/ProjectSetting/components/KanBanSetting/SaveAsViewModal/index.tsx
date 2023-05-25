@@ -55,7 +55,7 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
     form.setFieldsValue({
       name: '',
     })
-  }, [saveAsViewModelInfo.viewItem])
+  }, [saveAsViewModelInfo])
   const dispatch = useDispatch()
 
   const onClose = () => {
