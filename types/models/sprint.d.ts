@@ -356,18 +356,16 @@ declare namespace Model.Sprint {
     ratio: string
   }
   interface WorkListItem {
-    completion_rate: string
-    new: number
-    completed: number
-    total: number
-    risk: number
+    name: string
+    value: number
+    unit: string
+    icon: string
   }
   interface DefectListItem {
-    completion_rate: string
-    not_fixed: number
-    fixing: number
-    fixed: number
-    total: number
+    name: string
+    value: number
+    unit: string
+    icon: string
   }
 }
 

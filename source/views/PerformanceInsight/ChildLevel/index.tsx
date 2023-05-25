@@ -7,8 +7,10 @@ const ChildLevel = () => {
   const paramsData = getParamsData(searchParams)
   // 进展对比 Progress_iteration-迭代 Progress1冲刺 ProgressAll全局
   //缺陷 Defect_iteration-迭代 Defect1冲刺 DefectAll全局
+  console.log(paramsData)
   return (
     <ProgressComparison
+      data={paramsData.data}
       title={paramsData.title}
       type={paramsData.type}
       homeType={paramsData.homeType}

@@ -52,7 +52,6 @@ const Iteration = (props: Props) => {
   const [tabsActive, setTabsActive] = useState<number>(0)
   const [timekey, setTimekey] = useState<number>(-1)
   const { RangePicker } = DatePicker
-  const dateFormat = 'YYYY-MM-DD'
   const [more, setMore] = useState<boolean>(false)
   const [person, setPerson] = useState<ItemProps[] | []>([])
   const [isVisible, setIsVisible] = useState<boolean>(false)

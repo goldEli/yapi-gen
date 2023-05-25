@@ -15,6 +15,7 @@ const DetailHeader = (props: { ids: number[]; onCancel: () => void }) => {
     //  setCurrentIndex((ids || []).findIndex((i: any) => i === info.id))
     props.onCancel()
   }
+  const onUpDemand = () => {}
   return (
     <HeaderStyle>
       <Space size={16}>
@@ -26,7 +27,7 @@ const DetailHeader = (props: { ids: number[]; onCancel: () => void }) => {
         <ChangeIconGroup>
           {currentIndex > 0 && (
             <UpWrap
-              // onClick={onUpDemand}
+              onClick={onUpDemand}
               id="upIcon"
               isOnly={
                 props.ids?.length === 0 ||
