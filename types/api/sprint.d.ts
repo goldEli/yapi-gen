@@ -1,4 +1,19 @@
 declare namespace API.Sprint {
+  namespace UpdateSprintCategory {
+    type Params = {
+      projectId: number
+      sprintId?: number
+      categoryId: number
+      statusId: number
+    }
+  }
+  namespace UpdateSprintPriority {
+    type Params = {
+      projectId: number
+      sprintId?: number
+      priorityId: number
+    }
+  }
   namespace AddInfoSprint {
     type Params = {
       projectId: number
@@ -91,6 +106,7 @@ declare namespace API.Sprint {
       orderKey: string
       order: string
       isChildren?: boolean
+      usersInfo: Model.Sprint.ListUsersInfo[]
     }
     type SelectResult = Model.Sprint.ListItem[]
     type Result = {

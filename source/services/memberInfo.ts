@@ -83,6 +83,7 @@ export const getUserInfoAbeyanceStory: any = async (params: any) => {
                 'b/story/delete',
               ),
             },
+            userInfo: i.userInfo,
           }))
         : [],
     }))
@@ -130,6 +131,7 @@ export const getUserInfoAbeyanceStory: any = async (params: any) => {
                 'b/story/delete',
               ),
             },
+            userInfo: i.userInfo,
           }))
         : [],
       pager: response.data.pager,
@@ -209,6 +211,7 @@ export const getUserInfoCreateStory: any = async (params: any) => {
               'b/story/delete',
             ),
           },
+          userInfo: i.userInfo,
         }))
       : [],
     pager: response.data.pager,
@@ -287,6 +290,7 @@ export const getUserInfoFinishStory: any = async (params: any) => {
               'b/story/delete',
             ),
           },
+          userInfo: i.userInfo,
         }))
       : [],
     pager: response.data.pager,
@@ -422,6 +426,7 @@ export const getMemberInfoAbeyanceStory: any = async (params: any) => {
                 'b/story/delete',
               ),
             },
+            userInfo: i.userInfo,
           }))
         : [],
     }))
@@ -469,6 +474,7 @@ export const getMemberInfoAbeyanceStory: any = async (params: any) => {
                 'b/story/delete',
               ),
             },
+            userInfo: i.userInfo,
           }))
         : [],
       pager: response.data.pager,
@@ -548,6 +554,7 @@ export const getMemberInfoCreateStory: any = async (params: any) => {
               'b/story/delete',
             ),
           },
+          userInfo: i.userInfo,
         }))
       : [],
     pager: response.data.pager,
@@ -626,6 +633,7 @@ export const getMemberInfoFinishStory: any = async (params: any) => {
               'b/story/delete',
             ),
           },
+          userInfo: i.userInfo,
         }))
       : [],
     pager: response.data.pager,

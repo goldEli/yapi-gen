@@ -164,6 +164,7 @@ const SetConfig = (props: Props) => {
   const [memberList, setMemberList] = useState<any>([])
   const [staffList, setStaffList] = useState<any>([])
   const [allMemberList, setAllMemberList] = useState<any>([])
+  const [circulationName, setCirculationName] = useState('')
   const [normalList, setNormalList] = useState([
     { id: new Date().getTime(), obj: {} },
   ])
@@ -178,6 +179,7 @@ const SetConfig = (props: Props) => {
       fromId: props?.item?.id,
       toId: props?.item?.toId,
     })
+    setCirculationName(result.name)
     setInfo(result)
     form.setFieldsValue(result)
     form.setFieldsValue({
@@ -266,6 +268,7 @@ const SetConfig = (props: Props) => {
         user_fields: obj.user_fields,
       },
       fields: dataSource,
+      name: circulationName,
     }
     if (isSwitch) {
       params.verify_type = radioValue
@@ -764,6 +767,16 @@ const SetConfig = (props: Props) => {
       confirmText={t('newlyAdd.submit')}
     >
       <div style={{ height: 544, overflowY: 'auto', padding: '0 16px 0 24px' }}>
+        <ItemWrap style={{ marginTop: 8 }}>
+          <LabelWrap>流转名称</LabelWrap>
+          <Input
+            style={{ width: 184 }}
+            value={circulationName}
+            onChange={e => {
+              setCirculationName(e.target.value)
+            }}
+          ></Input>
+        </ItemWrap>
         <ItemWrap style={{ marginTop: 8 }}>
           <LabelWrap>{t('newlyAdd.currentReview')}</LabelWrap>
           <ItemWrap>

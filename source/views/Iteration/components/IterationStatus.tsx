@@ -77,41 +77,41 @@ const IterationStatus = (props: Props) => {
 
   return (
     <>
-      {/* {props.hasChangeStatus ? ( */}
-      <StatusTag
-        style={{ cursor: 'inherit' }}
-        status={props.iterateInfo?.status}
-      >
-        {onGetStatusName(props.iterateInfo?.status)}
-      </StatusTag>
+      {props.hasChangeStatus ? (
+        <StatusTag
+          style={{ cursor: 'inherit' }}
+          status={props.iterateInfo?.status}
+        >
+          {onGetStatusName(props.iterateInfo?.status)}
+        </StatusTag>
       ) : (
-      <Popover
-        placement="bottom"
-        content={changeStatus}
-        getPopupContainer={node => node}
-        visible={isVisible}
-        onVisibleChange={visible => setIsVisible(visible)}
-      >
-        {props.iterateInfo ? (
-          <StatusTag status={props.iterateInfo?.status}>
-            {onGetStatusName(props.iterateInfo?.status)}
-            <IconFont
-              type="down-icon"
-              style={{
-                fontSize: 12,
-                marginLeft: 4,
-                color:
-                  props.iterateInfo?.status === 1
-                    ? 'var(--primary-d2)'
-                    : props.iterateInfo?.status === 2
-                    ? 'var(--function-success)'
-                    : 'var(--neutral-n3)',
-              }}
-            />
-          </StatusTag>
-        ) : null}
-      </Popover>
-      {/* )} */}
+        <Popover
+          placement="bottom"
+          content={changeStatus}
+          getPopupContainer={node => node}
+          visible={isVisible}
+          onVisibleChange={visible => setIsVisible(visible)}
+        >
+          {props.iterateInfo ? (
+            <StatusTag status={props.iterateInfo?.status}>
+              {onGetStatusName(props.iterateInfo?.status)}
+              <IconFont
+                type="down-icon"
+                style={{
+                  fontSize: 12,
+                  marginLeft: 4,
+                  color:
+                    props.iterateInfo?.status === 1
+                      ? 'var(--primary-d2)'
+                      : props.iterateInfo?.status === 2
+                      ? 'var(--function-success)'
+                      : 'var(--neutral-n3)',
+                }}
+              />
+            </StatusTag>
+          ) : null}
+        </Popover>
+      )}
       {/* 完成迭代的弹窗 */}
       <Complete
         data={[

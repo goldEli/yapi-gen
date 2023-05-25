@@ -46,7 +46,7 @@ const OperationGroup = (props: Props) => {
 
   const hasFilter = getIsPermission(
     projectInfo?.projectPermissions,
-    'b/story/get',
+    projectInfo.projectType === 1 ? 'b/story/get' : 'b/transaction/get',
   )
 
   // 切换显示类型
@@ -80,6 +80,31 @@ const OperationGroup = (props: Props) => {
               </span>
             </div>
             <IconFont className="checked" type={props.isGrid ? '' : 'check'} />
+          </HasIconMenu>
+        ),
+      },
+      {
+        key: 'tree',
+        label: (
+          <HasIconMenu
+            onClick={() => onClickMenu(1)}
+            isCheck={props.isGrid === 1}
+          >
+            <div className="left">
+              <IconFont className="icon" type="tree-list" />
+              <span
+                style={{
+                  color: 'var(--neutral-n2)',
+                }}
+                className="label"
+              >
+                看板
+              </span>
+            </div>
+            <IconFont
+              className="checked"
+              type={props.isGrid === 1 ? 'check' : ''}
+            />
           </HasIconMenu>
         ),
       },

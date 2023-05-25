@@ -541,6 +541,7 @@ export const getDemandList: any = async (params: any) => {
       topId: params?.parentId ?? params?.topParentId,
       categoryConfigList: i.category_config_list,
       storyPrefixKey: i.story_prefix_key,
+      usersInfo: i.usersInfo,
     }))
   }
 
@@ -564,6 +565,7 @@ export const getDemandList: any = async (params: any) => {
           schedule: i.schedule,
           categoryId: i.category_id,
           storyPrefixKey: i.story_prefix_key,
+          usersInfo: i.usersInfo,
         })),
         name: k.content_txt,
         id: k.status_id,
@@ -590,6 +592,7 @@ export const getDemandList: any = async (params: any) => {
       priority: i.priority,
       storyPrefixKey: i.story_prefix_key,
       categoryId: i.category_id,
+      usersInfo: i.usersInfo,
     }))
   } else if (params?.isChildren) {
     return {
@@ -640,6 +643,7 @@ export const getDemandList: any = async (params: any) => {
         topId: i.id,
         categoryConfigList: i.category_config_list,
         storyPrefixKey: i.story_prefix_key,
+        usersInfo: i.usersInfo,
       })),
     }
   }

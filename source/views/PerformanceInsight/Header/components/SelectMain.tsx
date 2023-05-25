@@ -5,6 +5,7 @@ interface Props {
   onChange: (key: number) => void
   list: Array<{ name: string; key: number }>
   placeholder: string
+  value: number
 }
 const SelectMain = (props: Props) => {
   return (
@@ -12,6 +13,7 @@ const SelectMain = (props: Props) => {
       style={{ width: '184px' }}
       showArrow
       showSearch
+      value={props.value}
       suffixIcon={<CommonIconFont type="down" />}
       placeholder={props.placeholder}
       onChange={(e: number) => {

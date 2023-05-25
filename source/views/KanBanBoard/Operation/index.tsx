@@ -49,9 +49,9 @@ const LeftBox = styled.div`
 `
 const RightBox = styled.div``
 
-const StickyWrap = styled.div({
-  background: 'white',
-})
+const StickyWrap = styled.div`
+  width: 100%;
+`
 
 interface Props {
   isGrid: any
@@ -108,12 +108,12 @@ const Operation = (props: Props) => {
 
   // const hasImport = getIsPermission(
   //   projectInfo?.projectPermissions,
-  //   'b/story/import',
+  //   projectInfo.projectType === 1 ? 'b/story/import' : 'b/transaction/import',
   // )
 
   // const hasExport = getIsPermission(
   //   projectInfo?.projectPermissions,
-  //   'b/story/export',
+  //   projectInfo.projectType === 1 ? 'b/story/export' : 'b/transaction/export',
   // )
 
   const onFilterSearch = (e: any, customField: any) => {

@@ -25,8 +25,9 @@ import ChangeStatusPopover from '../ChangeStatusPopover/index'
 import StateTag from '../StateTag'
 import ChangePriorityPopover from '../ChangePriorityPopover'
 import DemandProgress from '../DemandProgress'
-import { getCustomNormalValue } from '@/tools'
+import { getCustomNormalValueTable } from '@/tools'
 import ChangeSeverityPopover from '../ChangeSeverityPopover'
+import MultipleAvatar from '../MultipleAvatar'
 
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
   {
@@ -75,7 +76,8 @@ export const useDynamicColumns = (state: any) => {
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
-      (i: any) => i.name === t('requirementsForEditing'),
+      (i: any) =>
+        i.name === (projectInfo.projectType === 1 ? '编辑需求' : '编辑事务'),
     )?.length > 0
 
   const NewSort = (props: any) => {
@@ -357,8 +359,15 @@ export const useDynamicColumns = (state: any) => {
       dataIndex: 'userName',
       key: 'user_name',
       width: 120,
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: string, record: any) => {
+        return (
+          <MultipleAvatar
+            max={3}
+            list={text.split(';')?.map((i: any) => ({
+              name: i,
+            }))}
+          />
+        )
       },
     },
     {
@@ -375,7 +384,14 @@ export const useDynamicColumns = (state: any) => {
             item={record}
             onUpdate={() => onUpdate(record)}
           >
-            <span>{text || '--'}</span>
+            <MultipleAvatar
+              max={3}
+              list={record.usersInfo?.map((i: any) => ({
+                id: i.id,
+                name: i.name,
+                avatar: i.avatar,
+              }))}
+            />
           </TableQuickEdit>
         )
       },
@@ -438,7 +454,12 @@ export const useDynamicColumns = (state: any) => {
             item={record}
             onUpdate={() => onUpdate(record)}
           >
-            <span>{text || '--'}</span>
+            <MultipleAvatar
+              max={3}
+              list={text.split(';')?.map((i: any) => ({
+                name: i,
+              }))}
+            />
           </TableQuickEdit>
         )
       },
@@ -653,7 +674,9 @@ export const useDynamicColumns = (state: any) => {
               isCustom
               defaultTextValues={text?.true_value}
             >
-              <span>{getCustomNormalValue(currentFields?.attr, text)}</span>
+              <span>
+                {getCustomNormalValueTable(currentFields?.attr, text)}
+              </span>
             </TableQuickEdit>
           )
         },

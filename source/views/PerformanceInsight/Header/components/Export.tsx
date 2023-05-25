@@ -41,8 +41,8 @@ const Export = (props: PropsType) => {
           <TextColor>{props.time}</TextColor>
         </Row>
         <Row>
-          {props.personData.length ? (
-            <span>已选 ({props.personData.length}人)</span>
+          {props.personData?.length ? (
+            <span>已选 ({props.personData?.length}人)</span>
           ) : (
             <span>已选</span>
           )}

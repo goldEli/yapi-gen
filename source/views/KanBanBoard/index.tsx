@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Operation from './Operation'
 import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHeader'
 import GuideModal from '@/components/GuideModal'
@@ -9,6 +9,10 @@ import guide_1 from './img/guide_1.png'
 import guide_2 from './img/guide_2.png'
 import guide_3 from './img/guide_3.png'
 import Board from './Borad'
+import { getKanbanConfigList } from '@store/kanBan/kanBan.thunk'
+import { useSearchParams } from 'react-router-dom'
+import { getParamsData } from '@/tools'
+import useProjectId from './hooks/useProjectId'
 
 interface IProps {}
 const SprintProjectKanBanBox = styled.div`
@@ -32,6 +36,12 @@ const ToolBarBox = styled.div`
 const SprintProjectKanBan: React.FC<IProps> = props => {
   const dispatch = useDispatch()
   const { guideVisible } = useSelector(store => store.sprintKanBan)
+  const { projectId } = useProjectId()
+
+  useEffect(() => {
+    dispatch(getKanbanConfigList({ project_id: projectId }))
+  }, [projectId])
+
   const inform = [
     {
       key: 0,

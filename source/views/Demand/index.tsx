@@ -201,11 +201,11 @@ const DemandBox = () => {
   asyncSetTtile(`${t('title.need')}【${projectInfo.name}】`)
   const isEdit = getIsPermission(
     projectInfo?.projectPermissions,
-    'b/story/update',
+    projectInfo.projectType === 1 ? 'b/story/update' : 'b/transaction/update',
   )
   const isDelete = getIsPermission(
     projectInfo?.projectPermissions,
-    'b/story/delete',
+    projectInfo.projectType === 1 ? 'b/story/delete' : 'b/transaction/delete',
   )
 
   // 计算当前选中下是否有项目管理权限
@@ -217,7 +217,11 @@ const DemandBox = () => {
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
-      (i: any) => i.identity === 'b/story/update',
+      (i: any) =>
+        i.identity ===
+        (projectInfo.projectType === 1
+          ? 'b/story/update'
+          : 'b/transaction/update'),
     )?.length > 0
 
   const init = async () => {

@@ -21,13 +21,23 @@ declare namespace Model.KanBan {
     content?: string
     group_content_txt?: string
     color?: string
-    icon?: string
+    // #FF5C5Eextremely-high --function-tag3
+    // #FA9746high           --function-tag4
+    // #2877FFmiddle         --function-tag5
+    // #43BA9Alow            --function-tag2
+    // #BBBDBFextremely-low  --function-tag6
+    icon?: 'extremely-high' | 'high' | 'middle' | 'low' | 'extremely-low'
     identity?: string
   }
   interface Handler {
     id: number
     name: string
     avatar: string
+  }
+  interface User {
+    id: number
+    name: string
+    avatar?: string
   }
   interface Group {
     id: number
@@ -38,6 +48,7 @@ declare namespace Model.KanBan {
     icon?: string
     identity?: string
     columns: Column[]
+    users?: User[]
   }
   // 分组类型，users:用户分组，priority：优先级，category：类别
   type GroupType = 'users' | 'priority' | 'category'

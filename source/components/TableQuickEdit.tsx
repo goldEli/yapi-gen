@@ -29,6 +29,8 @@ import {
 } from '@/services/demand'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
 import { getMessage } from './Message'
+import { updateSprintTableParams } from '@/services/sprint'
+import { getSprintInfo } from '@store/sprint/sprint.thunk'
 
 const LimitText = styled.div`
   width: 192px;
@@ -118,6 +120,7 @@ const TableQuickEdit = (props: Props) => {
   if (props.isMineOrHis) {
     isCanEdit =
       props?.item?.project?.isEdit ||
+      // -----------待修改
       props?.projectPermissions?.filter(
         (i: any) => i.identity === 'b/story/update',
       )
@@ -127,7 +130,11 @@ const TableQuickEdit = (props: Props) => {
     isCanEdit =
       projectInfo.projectPermissions?.length > 0 &&
       projectInfo.projectPermissions?.filter(
-        (i: any) => i.identity === 'b/story/update',
+        (i: any) =>
+          i.identity ===
+          (projectInfo.projectType === 1
+            ? 'b/story/update'
+            : 'b/transaction/update'),
       )?.length > 0
     const paramsData = getParamsData(searchParams)
     projectId = paramsData?.id
@@ -422,7 +429,7 @@ const TableQuickEdit = (props: Props) => {
       }
     }
 
-    try {
+    if (projectInfo.projectType === 1) {
       await updateTableParams(obj)
       if (props.isInfoPage) {
         const result = await getDemandInfo({ projectId, id: props.item?.id })
@@ -430,12 +437,17 @@ const TableQuickEdit = (props: Props) => {
       } else {
         props.onUpdate?.()
       }
-      getMessage({ msg: t('common.editSuccess'), type: 'success' })
-      if (type === 1) {
-        setIsShowControl(false)
+    } else {
+      await updateSprintTableParams(obj)
+      if (props.isInfoPage) {
+        dispatch(getSprintInfo({ projectId, sprintId: props.item?.id }))
+      } else {
+        props.onUpdate?.()
       }
-    } catch (error) {
-      //
+    }
+    getMessage({ msg: t('common.editSuccess'), type: 'success' })
+    if (type === 1) {
+      setIsShowControl(false)
     }
   }
 

@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'
+/* eslint-disable no-undefined */
+import React, { useEffect, useState } from 'react'
 import {
   ButtonGroup,
   ChangeIconGroup,
@@ -7,7 +8,9 @@ import {
   DetailTitle,
   DetailTop,
   DownWrap,
+  FormWrap,
   Img,
+  LiWrap,
   UpWrap,
   Wrap,
 } from './style'
@@ -22,17 +25,107 @@ import { useDispatch, useSelector } from '@store/index'
 import { getSprintCommentList, getSprintInfo } from '@store/sprint/sprint.thunk'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
+import { Popover, Tooltip, Form } from 'antd'
+import CommonModal from '@/components/CommonModal'
+import { useTranslation } from 'react-i18next'
+import CustomSelect from '@/components/CustomSelect'
+import { getWorkflowList } from '@/services/project'
+import { getMessage } from '@/components/Message'
+import { updateSprintCategory } from '@/services/sprint'
+
 interface IProps {}
+
 const SprintProjectDetail: React.FC<IProps> = props => {
+  const [t] = useTranslation()
   const dispatch = useDispatch()
+  const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { id, sprintId } = paramsData
   const { sprintInfo } = useSelector(store => store.sprint)
+  const { projectInfoValues } = useSelector(store => store.project)
+  const [isShowChange, setIsShowChange] = useState(false)
+  const [isShowCategory, setIsShowCategory] = useState(false)
+  const [resultCategory, setResultCategory] = useState([])
+  // 工作流列表
+  const [workList, setWorkList] = useState<any>({
+    list: undefined,
+  })
 
   // 复制标题
   const onCopy = () => {
     //
+  }
+
+  const changeStatus = (
+    <div
+      style={{
+        padding: '4px 0px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+      }}
+    >
+      {resultCategory?.map((k: any) => {
+        return (
+          <LiWrap key={k.id}>
+            <img
+              src={
+                k.category_attachment
+                  ? k.category_attachment
+                  : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
+              }
+              style={{
+                width: '18px',
+                height: '18px',
+                marginRight: '8px',
+              }}
+              alt=""
+            />
+            <span>{k.content}</span>
+          </LiWrap>
+        )
+      })}
+    </div>
+  )
+
+  // 点击类别获取工作流列表
+  const onChangeSelect = async (value: any) => {
+    if (value) {
+      const result = await getWorkflowList({
+        projectId: paramsData.id,
+        categoryId: value,
+      })
+      setWorkList(result)
+    } else {
+      form.resetFields()
+    }
+  }
+
+  // 关闭类别弹窗
+  const onCloseCategory = () => {
+    setIsShowCategory(false)
+    setTimeout(() => {
+      form.resetFields()
+    }, 100)
+  }
+
+  // 切换类别确认事件
+  const onConfirmCategory = async () => {
+    await form.validateFields()
+    await updateSprintCategory({
+      projectId: id,
+      sprintId,
+      ...form.getFieldsValue(),
+    })
+    getMessage({ msg: t('newlyAdd.changeSuccess'), type: 'success' })
+    setIsShowCategory(false)
+    // dispatch(setIsUpdateStatus(true))
+    // dispatch(setIsRefresh(true))
+    dispatch(getSprintInfo({ projectId: id, sprintId }))
+    setTimeout(() => {
+      form.resetFields()
+    }, 100)
   }
 
   useEffect(() => {
@@ -47,8 +140,81 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     )
   }, [])
 
+  useEffect(() => {
+    // 获取项目信息中的需求类别
+    const list = projectInfoValues?.filter((i: any) => i.key === 'category')[0]
+      ?.children
+    setResultCategory(
+      list
+        ?.filter((i: any) => i.id !== sprintInfo?.category)
+        ?.filter((i: any) => i.status === 1),
+    )
+  }, [sprintInfo, projectInfoValues])
+
   return (
     <Wrap>
+      <CommonModal
+        isVisible={isShowCategory}
+        onClose={onCloseCategory}
+        title={t('newlyAdd.changeCategory')}
+        onConfirm={onConfirmCategory}
+      >
+        <FormWrap
+          form={form}
+          layout="vertical"
+          style={{ padding: '0 20px 0 24px' }}
+        >
+          <Form.Item label={t('newlyAdd.beforeCategory')}>
+            <img
+              src={sprintInfo?.category_attachment}
+              style={{
+                width: '18px',
+                height: '18px',
+                marginRight: '8px',
+              }}
+              alt=""
+            />
+            <span>{sprintInfo?.categoryName}</span>
+          </Form.Item>
+          <Form.Item
+            label={t('newlyAdd.afterCategory')}
+            name="categoryId"
+            rules={[{ required: true, message: '' }]}
+          >
+            <CustomSelect
+              placeholder={t('common.pleaseSelect')}
+              showArrow
+              showSearch
+              getPopupContainer={(node: any) => node}
+              allowClear
+              optionFilterProp="label"
+              onChange={onChangeSelect}
+              options={resultCategory?.map((k: any) => ({
+                label: k.content,
+                value: k.id,
+              }))}
+            />
+          </Form.Item>
+          <Form.Item
+            label={t('newlyAdd.afterStatus')}
+            name="statusId"
+            rules={[{ required: true, message: '' }]}
+          >
+            <CustomSelect
+              placeholder={t('common.pleaseSelect')}
+              showArrow
+              showSearch
+              getPopupContainer={(node: any) => node}
+              allowClear
+              optionFilterProp="label"
+              options={workList?.list?.map((k: any) => ({
+                label: k.name,
+                value: k.statusId,
+              }))}
+            />
+          </Form.Item>
+        </FormWrap>
+      </CommonModal>
       <DetailTop>
         <MyBreadcrumb />
         <ButtonGroup size={16}>
@@ -92,7 +258,21 @@ const SprintProjectDetail: React.FC<IProps> = props => {
         </ButtonGroup>
       </DetailTop>
       <DetailTitle>
-        <Img src={sprintInfo.category_attachment} alt="" />
+        <Tooltip title={sprintInfo?.categoryName}>
+          <Popover
+            trigger={['hover']}
+            visible={isShowChange}
+            placement="bottomLeft"
+            content={changeStatus}
+            getPopupContainer={node => node}
+            onVisibleChange={visible => setIsShowChange(visible)}
+          >
+            <div>
+              <Img src={sprintInfo.category_attachment} alt="" />
+            </div>
+          </Popover>
+        </Tooltip>
+
         <DetailText>
           <span className="name">{sprintInfo.name}</span>
           <span className="icon" onClick={onCopy}>

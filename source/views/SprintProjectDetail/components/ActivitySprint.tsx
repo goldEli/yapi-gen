@@ -9,6 +9,8 @@ import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
 import { getSprintCommentList } from '@store/sprint/sprint.thunk'
+import { deleteSprintComment } from '@/services/sprint'
+import { getMessage } from '@/components/Message'
 
 const ActivitySprint = () => {
   const dispatch = useDispatch()
@@ -17,6 +19,25 @@ const ActivitySprint = () => {
   const paramsData = getParamsData(searchParams)
   const { id, sprintId } = paramsData
   const { sprintCommentList, sprintInfo } = useSelector(store => store.sprint)
+
+  // 获取评论列表
+  const getList = () => {
+    dispatch(
+      getSprintCommentList({
+        projectId: id,
+        sprintId,
+        page: 1,
+        pageSize: 999,
+      }),
+    )
+  }
+
+  const onDeleteCommentConfirm = async (commentId: number) => {
+    await deleteSprintComment({ projectId: id, id: commentId })
+    getMessage({ type: 'success', msg: '删除成功' })
+    getList()
+  }
+
   const items: TabsProps['items'] = [
     {
       key: '1',
@@ -28,7 +49,12 @@ const ActivitySprint = () => {
           </ItemNumber>
         </ActivityTabItem>
       ),
-      children: <CommonComment data={sprintCommentList} />,
+      children: (
+        <CommonComment
+          data={sprintCommentList}
+          onDeleteConfirm={onDeleteCommentConfirm}
+        />
+      ),
     },
     {
       key: '2',
@@ -56,18 +82,9 @@ const ActivitySprint = () => {
   const onChange = (key: string) => {
     setActiveKey(key)
     if (key === '1') {
-      dispatch(
-        getSprintCommentList({
-          projectId: id,
-          sprintId,
-          page: 1,
-          pageSize: 999,
-        }),
-      )
+      getList()
     }
   }
-
-  console.log(sprintInfo, '=sprintInfo')
 
   return (
     <InfoItem>

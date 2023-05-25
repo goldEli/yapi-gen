@@ -1,5 +1,5 @@
 import DragMoveContainer from '@/components/DragMoveContainer/DragMoveContainer'
-import { useEffect, useRef, useState } from 'react'
+import { createRef, useEffect, useRef, useState } from 'react'
 import { DetailInfoWrap, InfoItem, Label, TextWrap } from '../style'
 import { useTranslation } from 'react-i18next'
 import { Editor } from '@xyfe/uikit'
@@ -31,6 +31,7 @@ const SprintDetailInfo = () => {
   const paramsData = getParamsData(searchParams)
   const { id, sprintId } = paramsData
   const LeftDom = useRef<HTMLDivElement>(null)
+  const commentDom: any = createRef()
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const { sprintInfo } = useSelector(store => store.sprint)
   const { projectInfo, projectInfoValues } = useSelector(store => store.project)
@@ -79,10 +80,11 @@ const SprintDetailInfo = () => {
   const onDeleteInfoAttach = async (file?: any) => {
     setFiles(file)
     open({
-      title: '确认删除',
+      title: '删除确认',
       text: t('p2.del'),
-      onConfirm() {
-        return onDeleteConfirm()
+      onConfirm: () => {
+        onDeleteConfirm()
+        return Promise.resolve()
       },
     })
   }
@@ -104,6 +106,7 @@ const SprintDetailInfo = () => {
         pageSize: 9999,
       }),
     )
+    commentDom.current.cancel()
   }
 
   useEffect(() => {
@@ -117,93 +120,96 @@ const SprintDetailInfo = () => {
   }, [sprintInfo])
 
   return (
-    <DragMoveContainer
-      max="65vw"
-      min="30vw"
-      width="65vw"
-      height="calc(100vh - 212px)"
-    >
+    <>
       <DeleteConfirmModal />
-      <DetailInfoWrap ref={LeftDom}>
-        <InfoItem
-          style={{
-            marginTop: '0px',
-          }}
-        >
-          <Label>描述</Label>
-          {sprintInfo?.info ? (
-            <Editor
-              value={sprintInfo?.info}
-              getSuggestions={() => []}
-              readonly
-            />
-          ) : (
-            <TextWrap>--</TextWrap>
-          )}
-        </InfoItem>
-        <InfoItem>
-          <Label>{t('common.attachment')}</Label>
-          <div>
-            {projectInfo?.projectPermissions?.filter(
-              (i: any) => i.name === '附件上传',
-            ).length > 0 && (
-              <UploadAttach
-                onBottom={onBottom}
-                defaultList={sprintInfo?.attachment?.map((i: any) => ({
-                  url: i.attachment.path,
-                  id: i.id,
-                  size: i.attachment.size,
-                  time: i.created_at,
-                  name: i.attachment.name,
-                  suffix: i.attachment.ext,
-                  username: i.user_name ?? '--',
-                }))}
-                canUpdate
-                onC
-                del={onDeleteInfoAttach}
-                add={onAddInfoAttach}
-                addWrap={
-                  <CommonButton type="primaryText" icon="plus">
-                    添加附件
-                  </CommonButton>
-                }
+      <DragMoveContainer
+        max="65vw"
+        min="30vw"
+        width="65vw"
+        height="calc(100vh - 212px)"
+      >
+        <DetailInfoWrap ref={LeftDom}>
+          <InfoItem
+            style={{
+              marginTop: '0px',
+            }}
+          >
+            <Label>描述</Label>
+            {sprintInfo?.info ? (
+              <Editor
+                value={sprintInfo?.info}
+                getSuggestions={() => []}
+                readonly
               />
+            ) : (
+              <TextWrap>--</TextWrap>
             )}
-            {projectInfo?.projectPermissions?.filter(
-              (i: any) => i.name === '附件上传',
-            ).length <= 0 && <span>--</span>}
-          </div>
-        </InfoItem>
-        <InfoItem>
-          <Label>{t('common.tag')}</Label>
-          <SprintTag
-            defaultList={tagList}
-            canAdd
-            addWrap={
-              <AddWrap hasDash>
-                <IconFont type="plus" />
-              </AddWrap>
-            }
-          />
-        </InfoItem>
-        <ChildSprint />
-        <LinkSprint />
-        <ActivitySprint />
-      </DetailInfoWrap>
-      <CommentFooter
-        placeholder="发表评论（按M快捷键发表评论）"
-        personList={removeNull(projectInfoValues, 'user_name')?.map(
-          (k: any) => ({
-            label: k.content,
-            id: k.id,
-          }),
-        )}
-        onConfirm={onConfirmComment}
-        style={{ padding: '0 24px', width: 'calc(100% - 24px)' }}
-        maxHeight="60vh"
-        hasAvatar
-      />
-    </DragMoveContainer>
+          </InfoItem>
+          <InfoItem>
+            <Label>{t('common.attachment')}</Label>
+            <div>
+              {projectInfo?.projectPermissions?.filter(
+                (i: any) => i.name === '附件上传',
+              ).length > 0 && (
+                <UploadAttach
+                  onBottom={onBottom}
+                  defaultList={sprintInfo?.attachment?.map((i: any) => ({
+                    url: i.attachment.path,
+                    id: i.id,
+                    size: i.attachment.size,
+                    time: i.created_at,
+                    name: i.attachment.name,
+                    suffix: i.attachment.ext,
+                    username: i.user_name ?? '--',
+                  }))}
+                  canUpdate
+                  onC
+                  del={onDeleteInfoAttach}
+                  add={onAddInfoAttach}
+                  addWrap={
+                    <CommonButton type="primaryText" icon="plus">
+                      添加附件
+                    </CommonButton>
+                  }
+                />
+              )}
+              {projectInfo?.projectPermissions?.filter(
+                (i: any) => i.name === '附件上传',
+              ).length <= 0 && <span>--</span>}
+            </div>
+          </InfoItem>
+          <InfoItem>
+            <Label>{t('common.tag')}</Label>
+            <SprintTag
+              defaultList={tagList}
+              canAdd
+              addWrap={
+                <AddWrap hasDash>
+                  <IconFont type="plus" />
+                </AddWrap>
+              }
+            />
+          </InfoItem>
+          <ChildSprint />
+          <LinkSprint />
+          <ActivitySprint />
+        </DetailInfoWrap>
+        <CommentFooter
+          onRef={commentDom}
+          placeholder="发表评论（按M快捷键发表评论）"
+          personList={removeNull(projectInfoValues, 'user_name')?.map(
+            (k: any) => ({
+              label: k.content,
+              id: k.id,
+            }),
+          )}
+          onConfirm={onConfirmComment}
+          style={{ padding: '0 24px', width: 'calc(100% - 24px)' }}
+          maxHeight="60vh"
+          hasAvatar
+        />
+      </DragMoveContainer>
+    </>
   )
 }
 

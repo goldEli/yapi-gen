@@ -167,6 +167,7 @@ const SetConfig = (props: Props) => {
   const [normalList, setNormalList] = useState([
     { id: new Date().getTime(), obj: {} },
   ])
+  const [circulationName, setCirculationName] = useState('')
   const [form] = Form.useForm()
   const [dataSource, setDataSource] = useState<any>([])
   const [options, setOptions] = useState<any>([])
@@ -178,6 +179,7 @@ const SetConfig = (props: Props) => {
       fromId: props?.item?.id,
       toId: props?.item?.toId,
     })
+    setCirculationName(result.name)
     setInfo(result)
     form.setFieldsValue(result)
     form.setFieldsValue({
@@ -266,6 +268,7 @@ const SetConfig = (props: Props) => {
         user_fields: obj.user_fields,
       },
       fields: dataSource,
+      name: circulationName,
     }
     if (isSwitch) {
       params.verify_type = radioValue
@@ -300,7 +303,7 @@ const SetConfig = (props: Props) => {
       getMessage({ msg: t('newlyAdd.needNormal'), type: 'warning' })
       return
     }
-
+    console.log('params-----', params)
     await saveWorkflowConfig(params)
     getMessage({ msg: t('common.saveSuccess') as string, type: 'success' })
     onClose()
@@ -764,11 +767,17 @@ const SetConfig = (props: Props) => {
       confirmText={t('newlyAdd.submit')}
     >
       <div style={{ height: 544, overflowY: 'auto', padding: '0 16px 0 24px' }}>
-        <ItemWrap style={{ marginTop: 32 }}>
-          <LabelWrap>流转名称</LabelWrap>
-          <Input style={{ width: 184 }}></Input>
-        </ItemWrap>
         <ItemWrap style={{ marginTop: 8 }}>
+          <LabelWrap>流转名称</LabelWrap>
+          <Input
+            style={{ width: 184 }}
+            value={circulationName}
+            onChange={e => {
+              setCirculationName(e.target.value)
+            }}
+          ></Input>
+        </ItemWrap>
+        <ItemWrap style={{ marginTop: 24 }}>
           <LabelWrap>{t('newlyAdd.currentReview')}</LabelWrap>
           <ItemWrap>
             <StatusWrap

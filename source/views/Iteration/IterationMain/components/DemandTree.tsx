@@ -395,23 +395,26 @@ const DemandTree = (props: Props) => {
   })
 
   const hasCreate =
-    !getIsPermission(projectInfo?.projectPermissions, 'b/story/save') &&
+    !getIsPermission(
+      projectInfo?.projectPermissions,
+      projectInfo.projectType === 1 ? 'b/story/save' : 'b/transaction/save',
+    ) &&
     props.hasId &&
     props.hasId?.status === 1 &&
     projectInfo?.status === 1
 
+  const hasBatch = getIsPermission(
+    projectInfo?.projectPermissions,
+    projectInfo.projectType === 1 ? 'b/story/batch' : 'b/transaction/batch',
+  )
+
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
-    'b/story/update',
+    projectInfo.projectType === 1 ? 'b/story/update' : 'b/transaction/update',
   )
   const hasDel = getIsPermission(
     projectInfo?.projectPermissions,
-    'b/story/delete',
-  )
-
-  const hasBatch = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/story/batch',
+    projectInfo.projectType === 1 ? 'b/story/delete' : 'b/transaction/delete',
   )
 
   //  点击批量

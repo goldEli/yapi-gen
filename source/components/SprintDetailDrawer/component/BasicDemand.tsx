@@ -2,14 +2,10 @@
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
-import {
-  getCategoryConfigList,
-  updatePriority,
-  updateTableParams,
-} from '@/services/demand'
-import { getCustomNormalValue } from '@/tools'
+import { getCategoryConfigList } from '@/services/demand'
+import { getCustomNormalValueTable } from '@/tools'
 import ParentDemand from '@/views/Demand/components/ParentDemand'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
 import { message, Tooltip } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -31,11 +27,19 @@ import {
 import CommonButton from '@/components/CommonButton'
 import ChangePriorityPopover from '@/components/ChangePriorityPopover'
 import IconFont from '@/components/IconFont'
+import {
+  updateSprintPriority,
+  updateSprintTableParams,
+} from '@/services/sprint'
+import { getSprintInfo } from '@store/sprint/sprint.thunk'
 
 interface Props {
   detail?: any
   isOpen?: boolean
   onUpdate(): void
+  hasPadding?: boolean
+  // 是否是详情页面
+  isInfoPage?: boolean
 }
 
 const LimitLabel = (props: { label: string; width: number }) => {
@@ -54,6 +58,7 @@ const LimitLabel = (props: { label: string; width: number }) => {
 
 const BasicDemand = (props: Props) => {
   const [t] = useTranslation()
+  const dispatch = useDispatch()
   // 折叠字段
   const [foldList, setFoldList] = useState<any>([])
   // 不折叠字段
@@ -64,12 +69,16 @@ const BasicDemand = (props: Props) => {
   const { userInfo } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
   const [canOperationKeys, setCanOperationKeys] = useState<any>({})
-  const { demandDetailDrawerProps } = useSelector(store => store.demand)
+  const { sprintDetailDrawer } = useSelector(store => store.sprint)
 
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
-      (i: any) => i.identity === 'b/story/update',
+      (i: any) =>
+        i.identity ===
+        (projectInfo.projectType === 1
+          ? 'b/story/update'
+          : 'b/transaction/update'),
     )?.length > 0
 
   // 修改进度
@@ -84,24 +93,32 @@ const BasicDemand = (props: Props) => {
         id: props.detail?.id,
         otherParams: { schedule },
       }
-      try {
-        await updateTableParams(obj)
-        props.onUpdate?.()
-      } catch (error) {
-        //
-      }
+      await updateSprintTableParams(obj)
+      props.onUpdate?.()
+      dispatch(
+        getSprintInfo({
+          projectId: props.detail.projectId,
+          sprintId: props.detail?.id,
+        }),
+      )
     }
   }
 
   const onChangeState = async (item: any) => {
     try {
-      await updatePriority({
-        demandId: props.detail.id,
+      await updateSprintPriority({
+        sprintId: props.detail.id,
         priorityId: item.priorityId,
         projectId: props.detail.projectId,
       })
       getMessage({ msg: t('common.prioritySuccess'), type: 'success' })
       props.onUpdate?.()
+      dispatch(
+        getSprintInfo({
+          projectId: props.detail.projectId,
+          sprintId: props.detail?.id,
+        }),
+      )
     } catch (error) {
       //
     }
@@ -225,7 +242,8 @@ const BasicDemand = (props: Props) => {
           defaultText={defaultValues?.defaultText}
           value={defaultValues.valueType || null}
           onUpdate={props.onUpdate}
-          isMineOrHis={demandDetailDrawerProps?.isMineOrHis}
+          isMineOrHis={sprintDetailDrawer.params?.isMineOrHis}
+          isInfoPage={props.isInfoPage}
         >
           {defaultValues.defaultHtml}
         </TableQuickEdit>
@@ -338,10 +356,11 @@ const BasicDemand = (props: Props) => {
         isCustom
         remarks={item?.remarks}
         onUpdate={props.onUpdate}
-        isMineOrHis={demandDetailDrawerProps?.isMineOrHis}
+        isMineOrHis={sprintDetailDrawer.params?.isMineOrHis}
+        isInfoPage={props.isInfoPage}
       >
         <span>
-          {getCustomNormalValue(
+          {getCustomNormalValueTable(
             item.fieldContent?.attr,
             props.detail?.customField[item.content],
           )}
@@ -357,7 +376,7 @@ const BasicDemand = (props: Props) => {
   }, [props.isOpen, props.detail])
 
   return (
-    <div>
+    <div style={{ width: '100%', paddingLeft: props.hasPadding ? '24px' : 0 }}>
       <Label>{t('newlyAdd.basicInfo')}</Label>
       {notFoldList?.map((i: any) => {
         return (

@@ -39,11 +39,11 @@ export const SprintDropdownMenu = (props: Props) => {
 
   const hasCreate = getIsPermission(
     projectInfo?.projectPermissions,
-    'b/story/save',
+    projectInfo.projectType === 1 ? 'b/story/save' : 'b/transaction/save',
   )
   const hasDel = getIsPermission(
     projectInfo?.projectPermissions,
-    'b/story/delete',
+    projectInfo.projectType === 1 ? 'b/story/delete' : 'b/transaction/delete',
   )
 
   // 复制需求id

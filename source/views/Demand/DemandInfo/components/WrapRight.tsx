@@ -173,7 +173,12 @@ const NewWrapRight = () => {
           </div>
         </TitleWrap>
         {activeTabs === 1 && (
-          <BasicDemand detail={demandInfo} onUpdate={onUpdate} isOpen />
+          <BasicDemand
+            detail={demandInfo}
+            onUpdate={onUpdate}
+            isOpen
+            isInfoPage
+          />
         )}
         {activeTabs === 2 && (
           <DemandComment

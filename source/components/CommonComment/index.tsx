@@ -25,7 +25,7 @@ import { fileIconMap } from '../UploadAttach'
 import Viewer from 'react-viewer'
 import { bytesToSize } from '@/tools'
 import NoData from '../NoData'
-import { getCommentList } from '@/services/demand'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 
 const imgs = ['png', 'webp', 'jpg', 'jpeg', 'png', 'gif']
 
@@ -33,10 +33,12 @@ interface CommonCommentProps {
   data: {
     list: Model.Sprint.CommentListInfo[]
   }
+  onDeleteConfirm(id: number): void
 }
 
 const CommonComment = (props: CommonCommentProps) => {
   const [t]: any = useTranslation()
+  const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const { userInfo } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
   const [previewOpen, setPreviewOpen] = useState<boolean>(false)
@@ -47,13 +49,23 @@ const CommonComment = (props: CommonCommentProps) => {
   // 判断当前登录的人是否有编辑评论的权限
   const isComment =
     projectInfo?.projectPermissions?.filter(
-      (i: any) => i.identity === 'b/story/comment',
+      (i: any) =>
+        i.identity ===
+        (projectInfo.projectType === 1
+          ? 'b/story/comment'
+          : 'b/transaction/comment'),
     ).length > 0
 
   // 删除评论
   const onDeleteComment = (item: any) => {
-    // setIsVisible(true)
-    // setIsDeleteId(item.id)
+    open({
+      title: '删除确认',
+      text: '确认删除该评论？',
+      onConfirm: () => {
+        props.onDeleteConfirm(item.id)
+        return Promise.resolve()
+      },
+    })
   }
 
   const onReview = (item: any, attachList: any) => {
@@ -90,7 +102,7 @@ const CommonComment = (props: CommonCommentProps) => {
     downloadIamge(url, name1)
   }
 
-  // 删除附件
+  // 删除附件 -- 需求
   const onTapRemove = async (attid: any, id: any) => {
     // await delCommonAt({
     //   project_id: props.detail.projectId,
@@ -103,6 +115,7 @@ const CommonComment = (props: CommonCommentProps) => {
 
   return (
     <div>
+      <DeleteConfirmModal />
       {!!props.data?.list &&
         (props.data?.list?.length > 0 ? (
           <div>

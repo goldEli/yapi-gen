@@ -7,7 +7,7 @@ import {
   updatePriority,
   updateTableParams,
 } from '@/services/demand'
-import { getCustomNormalValue } from '@/tools'
+import { getCustomNormalValueTable } from '@/tools'
 import ParentDemand from '@/views/Demand/components/ParentDemand'
 import { useSelector } from '@store/index'
 import { message, Tooltip } from 'antd'
@@ -36,6 +36,7 @@ interface Props {
   detail?: any
   isOpen?: boolean
   onUpdate(): void
+  isInfoPage?: boolean
 }
 
 const LimitLabel = (props: { label: string; width: number }) => {
@@ -69,7 +70,11 @@ const BasicDemand = (props: Props) => {
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
-      (i: any) => i.identity === 'b/story/update',
+      (i: any) =>
+        i.identity ===
+        (projectInfo.projectType === 1
+          ? 'b/story/update'
+          : 'b/transaction/update'),
     )?.length > 0
 
   // 修改进度
@@ -226,6 +231,7 @@ const BasicDemand = (props: Props) => {
           value={defaultValues.valueType || null}
           onUpdate={props.onUpdate}
           isMineOrHis={demandDetailDrawerProps?.isMineOrHis}
+          isInfoPage={props.isInfoPage}
         >
           {defaultValues.defaultHtml}
         </TableQuickEdit>
@@ -340,9 +346,10 @@ const BasicDemand = (props: Props) => {
         remarks={item?.remarks}
         onUpdate={props.onUpdate}
         isMineOrHis={demandDetailDrawerProps?.isMineOrHis}
+        isInfoPage={props.isInfoPage}
       >
         <span>
-          {getCustomNormalValue(
+          {getCustomNormalValueTable(
             item.fieldContent?.attr,
             props.detail?.customField[item.content],
           )}

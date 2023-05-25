@@ -29,6 +29,7 @@ import ProjectCommonOperation from '@/components/CommonProjectComponent/CommonHe
 import DemandTree from './components/DemandTree'
 import { setFilterKeys } from '@store/project'
 import { getMessage } from '@/components/Message'
+import IterationGrid from './components/IterationGrid'
 
 const Right = styled.div({
   width: '100%',
@@ -153,6 +154,7 @@ const IterationMain = (props: Props) => {
   }
 
   const onChangeGrid = (val: any) => {
+    console.log(val, '111111111111')
     setIsGrid(val)
     setDataList({ list: undefined })
     if (keyRef.current?.id) {
@@ -265,6 +267,8 @@ const IterationMain = (props: Props) => {
     getList(isGrid, pageObj, searchItems, false, topParentId)
   }
 
+  console.log(isGrid)
+
   return (
     <>
       <DeleteConfirm
@@ -335,6 +339,17 @@ const IterationMain = (props: Props) => {
                 settingState={isSettingState}
                 onChangeSetting={setIsSettingState}
                 onChangeOrder={onChangeOrder}
+                isSpinning={isSpinning}
+                hasId={keyRef.current}
+                onUpdate={onUpdate}
+                iterateId={keyRef.current?.id}
+              />
+            )}
+            {isGrid === 1 && (
+              <IterationGrid
+                onChangeVisible={onChangeOperation}
+                onDelete={onDelete}
+                data={dataList}
                 isSpinning={isSpinning}
                 hasId={keyRef.current}
                 onUpdate={onUpdate}

@@ -224,7 +224,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
   }, [])
 
   useEffect(() => {
-    getList(order, pageObj)
+    getList(order, { ...pageObj, page: 1 })
   }, [props?.searchValue])
 
   const onChangePage = (page: number, size: number) => {

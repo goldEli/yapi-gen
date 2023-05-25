@@ -178,12 +178,12 @@ const Operation = (props: Props) => {
 
   const hasImport = getIsPermission(
     projectInfo?.projectPermissions,
-    'b/story/import',
+    projectInfo.projectType === 1 ? 'b/story/import' : 'b/transaction/import',
   )
 
   const hasExport = getIsPermission(
     projectInfo?.projectPermissions,
-    'b/story/export',
+    projectInfo.projectType === 1 ? 'b/story/export' : 'b/transaction/export',
   )
 
   const onFilterSearch = (e: any, customField: any) => {
@@ -470,8 +470,12 @@ const Operation = (props: Props) => {
               <IconWrap onClick={() => onClickIcon(2)} type="indent" />
             </Tooltip>
           )}
-          {getIsPermission(projectInfo?.projectPermissions, 'b/story/save') ||
-          projectInfo?.status !== 1 ? null : (
+          {getIsPermission(
+            projectInfo?.projectPermissions,
+            projectInfo.projectType === 1
+              ? 'b/story/save'
+              : 'b/transaction/save',
+          ) || projectInfo?.status !== 1 ? null : (
             <Popover
               content={changeStatus}
               placement="bottomLeft"
