@@ -543,6 +543,7 @@ export const getMineNoFinishList: any = async (params: any) => {
                 'b/story/delete',
               ),
             },
+            userInfo: i.userInfo,
           }))
         : [],
     }))
@@ -591,6 +592,7 @@ export const getMineNoFinishList: any = async (params: any) => {
                 'b/story/delete',
               ),
             },
+            userInfo: i.userInfo,
             isExamine: i.verify_lock === 1,
             ...i.custom_field,
           }))
@@ -674,6 +676,7 @@ export const getMineCreacteList: any = async (params: any) => {
               'b/story/delete',
             ),
           },
+          userInfo: i.userInfo,
         }))
       : [],
     pager: response.data.pager,
@@ -754,6 +757,7 @@ export const getMineFinishList: any = async (params: any) => {
               'b/story/delete',
             ),
           },
+          userInfo: i.userInfo,
         }))
       : [],
     pager: response.data.pager,
@@ -833,6 +837,7 @@ export const getMineNeedList: any = async (params: any) => {
               'b/story/delete',
             ),
           },
+          userInfo: i.userInfo,
           isExamine: i.verify_lock === 1,
           ...i.custom_field,
         }))
@@ -984,6 +989,7 @@ export const getVerifyUserList: any = async (params: any) => {
       statusFromTo: i.status_from_to,
       projectId: i.project_id,
       storyPrefixKey: i.story_prefix_key,
+      userInfo: i.userInfo,
     })),
   }
 }
@@ -1022,6 +1028,7 @@ export const getVerifyList: any = async (params: any) => {
       statusFromTo: i.status_from_to,
       projectId: i.project_id,
       storyPrefixKey: i.story_prefix_key,
+      userInfo: i.userInfo,
     })),
   }
 }

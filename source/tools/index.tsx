@@ -339,8 +339,8 @@ function removeNull(list: any, key: string) {
     ?.children?.filter((i: any) => i.id !== -1)
 }
 
-// 获取自定义字段默认值
-function getCustomNormalValue(attr: any, text: any) {
+// 获取自定义字段默认值 -- 表格
+function getCustomNormalValueTable(attr: any, text: any) {
   let result: any
   if (Array.isArray(text?.value) && !text?.true_value) {
     result = text?.value?.join(';')
@@ -409,7 +409,6 @@ function getIdsForAt(htmlString: string) {
   const dataIdValues = Array.from(dataIdElements).map(el =>
     el.getAttribute('data-id'),
   )
-  console.log(dataIdValues)
 
   return Array.from(new Set(dataIdValues))
 }
@@ -424,7 +423,7 @@ export {
   filterTreeData,
   bytesToSize,
   removeNull,
-  getCustomNormalValue,
+  getCustomNormalValueTable,
   copyLink,
   getNowDate,
   isDateIntersection,

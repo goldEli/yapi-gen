@@ -79,6 +79,7 @@ const getListItem = (array: any, params: API.Sprint.GetSprintList.Params) => {
     categoryConfigList: i.category_config_list,
     storyPrefixKey: i.story_prefix_key,
     work_type: i.work_type,
+    usersInfo: i.usersInfo,
   }))
 }
 
@@ -236,6 +237,7 @@ export const getSprintList = async (
         categoryConfigList: i.category_config_list,
         storyPrefixKey: i.story_prefix_key,
         work_type: i.work_type,
+        usersInfo: i.usersInfo,
       })),
     }
   }
@@ -287,6 +289,7 @@ export const getSprintInfo = async (
     projectPrefix: response.data.project_prefix,
     hierarchy: response.data.hierarchy,
     level_tree: response.data.level_tree,
+    categoryName: response.data.category,
   }
 }
 
@@ -455,7 +458,7 @@ export const deleteInfoSprint = async (
   await http.put<any>('deleteInfoSprint', {
     project_id: Number(params.projectId),
     id: Number(params.sprintId),
-    target: params.targetId,
+    targetId: params.targetId,
     type: params.type,
   })
 }
@@ -477,6 +480,18 @@ export const updateSprintPriority = async (
     priority: params.priorityId,
     id: params.sprintId,
     project_id: params.projectId,
+  })
+}
+
+// 修改事务类型
+export const updateSprintCategory = async (
+  params: API.Sprint.UpdateSprintCategory.Params,
+) => {
+  await http.put<any>('updateSprintCategory', {
+    project_id: params.projectId,
+    story_id: params.sprintId,
+    category_id: params.categoryId,
+    status_id: params.statusId,
   })
 }
 

@@ -11,6 +11,7 @@ import StateTag from '../StateTag'
 import { PriorityWrap } from '../StyleCommon'
 import { Label } from './style'
 import { setAddWorkItemModal } from '@store/project'
+import MultipleAvatar from '../MultipleAvatar'
 
 interface Props {
   detail?: any
@@ -82,8 +83,17 @@ const ChildrenDemand = (props: Props) => {
     {
       title: t('common.dealName'),
       dataIndex: 'dealName',
-      render: (text: any) => {
-        return <span>{text?.join(';') || '--'}</span>
+      render: (text: any, record: any) => {
+        return (
+          <MultipleAvatar
+            max={3}
+            list={record.usersInfo?.map((i: any) => ({
+              id: i.id,
+              name: i.name,
+              avatar: i.avatar,
+            }))}
+          />
+        )
       },
     },
   ]
