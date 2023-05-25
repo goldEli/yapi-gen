@@ -9,6 +9,7 @@ import CommonButton from '@/components/CommonButton'
 import {
   deleteKanbanConfig,
   openSaveAsViewModel,
+  saveKanbanConfig,
   setDefaultKanbanConfig,
 } from '@store/kanbanConfig/kanbanConfig.thunk'
 import useProjectId from '../hooks/useProjectId'
@@ -138,7 +139,14 @@ const ToolBar: React.FC<ToolBarProps> = props => {
         >
           另存为
         </Btn>
-        <Btn>保存更改</Btn>
+        <Btn
+          onClick={e => {
+            e.stopPropagation()
+            dispatch(saveKanbanConfig())
+          }}
+        >
+          保存更改
+        </Btn>
       </Left>
       <Right>
         <CommonButton

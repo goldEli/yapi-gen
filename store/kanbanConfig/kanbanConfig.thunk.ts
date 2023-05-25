@@ -53,6 +53,21 @@ export const updateKanbanConfig =
     )
   }
 
+// 修改看板配置(包含列)
+export const saveKanbanConfig = () => async (dispatch: AppDispatch) => {
+  const { viewList, columnList } = store.getState().KanbanConfig
+  const checked = viewList?.find(item => item.check)
+  if (!checked) {
+    throw Error('params error')
+  }
+  const params: API.KanbanConfig.UpdateKanbanConfig.Params = {
+    ...checked,
+    columns: columnList,
+  }
+  const res = await services.kanbanConfig.updateKanbanConfig(params)
+  getMessage({ type: 'success', msg: '保存成功！' })
+}
+
 // 删除看板配置
 export const deleteKanbanConfig =
   (params: API.KanbanConfig.DeleteKanbanConfig.Params) =>
