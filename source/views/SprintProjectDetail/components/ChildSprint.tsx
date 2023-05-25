@@ -104,7 +104,7 @@ const ChildSprint = () => {
   }, [])
 
   return (
-    <InfoItem>
+    <InfoItem id="sprint-childSprint">
       <LabelWrap>
         <Label>子事务</Label>
         {!isSearch && (

@@ -18,7 +18,10 @@ declare namespace API.Sprint {
     type Params = {
       projectId: number
       sprintId?: number
-      targetId: Model.Sprint.AttachTarget[] | { name: string; color: string }[]
+      targetId:
+        | Model.Sprint.AttachTarget[]
+        | { name: string; color: string }[]
+        | number
       type: string
     }
   }

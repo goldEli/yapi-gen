@@ -18,7 +18,7 @@ import { useEffect, useState } from 'react'
 import CommonUserAvatar from '../CommonUserAvatar'
 import { useSelector } from '@store/index'
 import IconFont from '../IconFont'
-import { HiddenText } from '../StyleCommon'
+import { CloseWrap, HiddenText } from '../StyleCommon'
 import { OmitText } from '@star-yun/ui'
 import { Editor } from '@xyfe/uikit'
 import { fileIconMap } from '../UploadAttach'
@@ -26,6 +26,7 @@ import Viewer from 'react-viewer'
 import { bytesToSize } from '@/tools'
 import NoData from '../NoData'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import { Space } from 'antd'
 
 const imgs = ['png', 'webp', 'jpg', 'jpeg', 'png', 'gif']
 
@@ -126,10 +127,22 @@ const CommonComment = (props: CommonCommentProps) => {
                   <MyDiv>
                     <HovDiv>
                       {isComment && userInfo?.id === item.userId ? (
-                        <IconFont
-                          type="close"
+                        <CloseWrap
+                          width={24}
+                          height={24}
+                          // onClick={() => onEditComment(item)}
+                        >
+                          <IconFont type="edit" style={{ fontSize: 16 }} />
+                        </CloseWrap>
+                      ) : null}
+                      {isComment && userInfo?.id === item.userId ? (
+                        <CloseWrap
+                          width={24}
+                          height={24}
                           onClick={() => onDeleteComment(item)}
-                        />
+                        >
+                          <IconFont type="delete" style={{ fontSize: 16 }} />
+                        </CloseWrap>
                       ) : null}
                     </HovDiv>
 

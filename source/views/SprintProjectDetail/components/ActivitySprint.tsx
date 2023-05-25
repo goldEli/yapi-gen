@@ -87,7 +87,7 @@ const ActivitySprint = () => {
   }
 
   return (
-    <InfoItem>
+    <InfoItem id="sprint-activity">
       <Label>活动</Label>
       <Tabs defaultActiveKey={activeKey} items={items} onChange={onChange} />
     </InfoItem>

@@ -14,5 +14,6 @@ declare global {
     isMovingSchedule?: boolean
     // 是否取消视图修改
     isCloseView: boolean
+    name: string
   }
 }

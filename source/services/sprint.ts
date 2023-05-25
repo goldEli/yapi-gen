@@ -458,7 +458,7 @@ export const deleteInfoSprint = async (
   await http.put<any>('deleteInfoSprint', {
     project_id: Number(params.projectId),
     id: Number(params.sprintId),
-    targetId: params.targetId,
+    target_id: params.targetId,
     type: params.type,
   })
 }
