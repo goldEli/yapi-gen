@@ -54,7 +54,7 @@ export const deleteKanbanConfig = async (
 export const getKanbanConfigRemainingStatus = async (
   params: API.KanbanConfig.GetKanbanConfigRemainingStatus.Params,
 ) => {
-  const response = await http.delete<
+  const response = await http.get<
     any,
     API.KanbanConfig.GetKanbanConfigRemainingStatus.Result
   >('getKanbanConfigRemainingStatus', params)
