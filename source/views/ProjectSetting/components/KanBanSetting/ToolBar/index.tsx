@@ -1,14 +1,17 @@
 import React, { useMemo, useState } from 'react'
 import styled from '@emotion/styled'
-import SelectOptions from '@/components/SelectOptions'
 import { useDispatch, useSelector } from '@store/index'
 import { onChangeViewList } from '@store/kanbanConfig'
 
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import IconFont from '@/components/IconFont'
 import CommonButton from '@/components/CommonButton'
-import { openSaveAsViewModel } from '@store/kanbanConfig/kanbanConfig.thunk'
-import SaveAsViewModal from '../SaveAsViewModal'
+import {
+  deleteKanbanConfig,
+  openSaveAsViewModel,
+} from '@store/kanbanConfig/kanbanConfig.thunk'
+import useProjectId from '../hooks/useProjectId'
+import SelectOptions from '../SelectOptions'
 
 interface ToolBarProps {}
 
@@ -56,7 +59,7 @@ const ToolBar: React.FC<ToolBarProps> = props => {
           key: String(item.id),
           value: item.name,
           check: item.check ?? false,
-          isDefault: !!item.is_default,
+          isDefault: item.is_default === 1,
           operation: true,
         }
       }) ?? []
@@ -64,11 +67,18 @@ const ToolBar: React.FC<ToolBarProps> = props => {
   }, [viewList])
 
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
-  const onDel = () => {
+  const { projectId } = useProjectId()
+  const onDel = (id: number) => {
     open({
       title: '确认删除',
       text: '确认删除该列与状态，删除后再看板中将无法使用该列与状态',
       onConfirm() {
+        dispatch(
+          deleteKanbanConfig({
+            project_id: projectId,
+            id,
+          }),
+        )
         return Promise.resolve()
       },
     })
@@ -80,7 +90,7 @@ const ToolBar: React.FC<ToolBarProps> = props => {
         <DeleteConfirmModal />
         <SelectOptions
           onDel={key => {
-            onDel()
+            onDel(parseInt(key, 10))
           }}
           title="视图"
           createViewTitle="创建列与状态"
@@ -91,30 +101,45 @@ const ToolBar: React.FC<ToolBarProps> = props => {
           operation
           onDefault={key => {}}
           onEdit={key => {
-            dispatch(openSaveAsViewModel(Number(key)))
+            dispatch(
+              openSaveAsViewModel({
+                id: Number(key),
+              }),
+            )
           }}
           onCreateView={() => {
-            dispatch(openSaveAsViewModel())
+            dispatch(
+              openSaveAsViewModel({
+                title: '创建列与状态',
+              }),
+            )
           }}
         />
         <Btn
           onClick={() => {
             if (current?.key) {
-              dispatch(openSaveAsViewModel(Number(current.key)))
+              dispatch(
+                openSaveAsViewModel({
+                  id: Number(current.key),
+                }),
+              )
             }
           }}
         >
           另存为
         </Btn>
         <Btn>保存更改</Btn>
-        <SaveAsViewModal />
       </Left>
       <Right>
         <CommonButton type="icon" icon="tag-96pg0hf3" />
         <CommonButton
           onClick={() => {
             if (current?.key) {
-              dispatch(openSaveAsViewModel(Number(current.key)))
+              dispatch(
+                openSaveAsViewModel({
+                  id: Number(current.key),
+                }),
+              )
             }
           }}
           type="icon"
@@ -122,7 +147,7 @@ const ToolBar: React.FC<ToolBarProps> = props => {
         />
         <CommonButton
           onClick={() => {
-            onDel()
+            // onDel()
           }}
           type="icon"
           icon="delete"

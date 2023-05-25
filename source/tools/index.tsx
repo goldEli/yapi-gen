@@ -54,6 +54,15 @@ function getParamsData(params: any) {
   return JSON.parse(decryptPhp(params.get('data') as string))
 }
 
+export function getParamsValueByKey(key: string) {
+  const url = new URL(window.location.href)
+  const searchParams = url.searchParams
+
+  const params = getParamsData(searchParams)
+
+  return params[key]
+}
+
 // 需求分类树
 function filterTreeData(data: any) {
   const newData = data.map((item: any) => ({

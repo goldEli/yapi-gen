@@ -24,7 +24,7 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
   const { kanbanConfig, kanbanInfoByGroup } = useSelector(store => store.kanBan)
   return (
     <ColumnTitleAreaBox>
-      {kanbanConfig?.columns.map(item => {
+      {kanbanConfig?.columns?.map(item => {
         const num = kanbanInfoByGroup.reduce((res, group) => {
           const len =
             group.columns.find(column => column.id === item.id)?.stories

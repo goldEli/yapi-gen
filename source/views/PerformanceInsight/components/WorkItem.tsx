@@ -69,6 +69,7 @@ const Main = (props: UserInfo) => {
           </div>
         </UserInfo>
       </UserMsg>
+      <Title>待完成工作项：10项</Title>
       <FilterType>
         <Select
           style={{
@@ -92,7 +93,6 @@ const Main = (props: UserInfo) => {
           />
         </Text>
       </FilterType>
-      <Title>待完成工作项：10项</Title>
       <TableStyle>
         <Table
           paginationShow={false}

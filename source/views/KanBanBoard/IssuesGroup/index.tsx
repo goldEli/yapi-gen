@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import styled from '@emotion/styled'
 import Issues from '../Issues'
 import UpDownBtn from '@/components/UpDownBtn'
@@ -46,34 +46,46 @@ const Text = styled.div`
 
 const IssuesGroup: React.FC<IssuesGroupProps> = props => {
   const { issuesGroup } = props
+
+  const text = useMemo(() => {
+    const storiesNum = issuesGroup.columns.reduce((res, column) => {
+      const n = column.stories.length ?? 0
+      return res + n
+    }, 0)
+    return `共计${issuesGroup?.users?.length}人，${storiesNum}个事务`
+  }, [issuesGroup])
+
+  const titleArea = (
+    <GroupTitleArea>
+      <TitleBtn>
+        <UpDownBtn isOpen={false} />
+        <Title>{issuesGroup.name}</Title>
+      </TitleBtn>
+      <MultipleAvatar
+        list={Array(4)
+          .fill(0)
+          .map((_, idx) => {
+            return {
+              id: idx,
+              name: 'lily' + idx,
+            }
+          })}
+        max={3}
+      />
+      <ChoosePeople
+        margin={0}
+        onChange={(...args: any) => {
+          console.log({ args })
+        }}
+        hiddenNumbers
+        initValue={[]}
+      />
+      <Text>{text}</Text>
+    </GroupTitleArea>
+  )
   return (
     <IssuesGroupBox>
-      <GroupTitleArea>
-        <TitleBtn>
-          <UpDownBtn isOpen={false} />
-          <Title>{issuesGroup.name}</Title>
-        </TitleBtn>
-        <MultipleAvatar
-          list={Array(4)
-            .fill(0)
-            .map((_, idx) => {
-              return {
-                id: idx,
-                name: 'lily' + idx,
-              }
-            })}
-          max={3}
-        />
-        <ChoosePeople
-          margin={0}
-          onChange={(...args: any) => {
-            console.log({ args })
-          }}
-          hiddenNumbers
-          initValue={[]}
-        />
-        <Text>共计12人，0个事务</Text>
-      </GroupTitleArea>
+      {titleArea}
       <DropAreaList>
         {issuesGroup.columns.map(column => {
           return (

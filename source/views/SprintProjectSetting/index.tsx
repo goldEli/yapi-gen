@@ -12,14 +12,14 @@ import HomeSettings from './components/HomeSetting'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { getParamsData } from '@/tools'
-import { useSelector,useDispatch } from '@store/index'
+import { useSelector, useDispatch } from '@store/index'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
 import PermissionWrap from '@/components/PermissionWrap'
 import InputSearch from '@/components/InputSearch'
 import { useState, useEffect } from 'react'
 import ProjectNote from './components/ProjectNote'
 import CommonBreadCrumd from '@/components/CommonBreadcrumd'
-import {getProjectRoleList} from '@store/sprint/sprint.thunk'
+import { getProjectRoleList } from '@store/sprint/sprint.thunk'
 const Wrap = styled.div({
   display: 'flex',
   height: 'calc(100vh - 130px)',
@@ -46,7 +46,7 @@ const Setting = () => {
   console.log(paramsData)
   const activeTabs = paramsData.type || 'ProjectInfo'
   const { currentMenu } = useSelector(store => store.user)
-  const dispatch=useDispatch()
+  const dispatch = useDispatch()
   const [searchValue, setSearchValue] = useState('')
 
   let maps = new Map([
@@ -107,10 +107,11 @@ const Setting = () => {
   ])
   useEffect(() => {
     console.log('activeTabs========', activeTabs)
+    setSearchValue('')
   }, [activeTabs])
-  useEffect(()=>{
-    dispatch(getProjectRoleList({project_id:paramsData.id}))
-  },[])
+  useEffect(() => {
+    dispatch(getProjectRoleList({ project_id: paramsData.id }))
+  }, [])
   return (
     <div style={{ height: '100%' }}>
       <SearchBox>
