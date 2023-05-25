@@ -17,7 +17,6 @@ const IssuesGroupList: React.FC<IssuesGroupListProps> = props => {
   return (
     <IssuesGroupListBox>
       {props.data.map(issuesGroup => {
-        console.log({ issuesGroup })
         return <IssuesGroup key={issuesGroup.id} issuesGroup={issuesGroup} />
       })}
     </IssuesGroupListBox>

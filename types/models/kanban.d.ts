@@ -34,6 +34,11 @@ declare namespace Model.KanBan {
     name: string
     avatar: string
   }
+  interface User {
+    id: number
+    name: string
+    avatar?: string
+  }
   interface Group {
     id: number
     name: string
@@ -43,6 +48,7 @@ declare namespace Model.KanBan {
     icon?: string
     identity?: string
     columns: Column[]
+    users?: User[]
   }
   // 分组类型，users:用户分组，priority：优先级，category：类别
   type GroupType = 'users' | 'priority' | 'category'

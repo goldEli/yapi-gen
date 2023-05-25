@@ -331,6 +331,18 @@ export const kanbanInfoByGroup: Model.KanBan.Group[] = [
     icon: 'extremely-high',
     identity: 'priority',
     content_txt: '极高',
+    users: [
+      {
+        id: 689,
+        name: '蒋晓龙',
+        avatar: '',
+      },
+      {
+        id: 690,
+        name: 'jxl2',
+        avatar: '',
+      },
+    ],
     columns: [
       {
         id: 112,
@@ -401,6 +413,18 @@ export const kanbanInfoByGroup: Model.KanBan.Group[] = [
     id: 0,
     name: '无优先级',
     content_txt: '',
+    users: [
+      {
+        id: 689,
+        name: '蒋晓龙',
+        avatar: '',
+      },
+      {
+        id: 690,
+        name: 'jxl2',
+        avatar: '',
+      },
+    ],
     columns: [
       {
         id: 112,
