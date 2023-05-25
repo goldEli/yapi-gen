@@ -3,12 +3,14 @@ import { columnList, unassignStatusList } from './mockData'
 import { getId } from '@/views/ProjectSetting/components/KanBanSetting/utils'
 import { getNumberId } from './utils'
 import category from '@store/category'
+import { getKanbanConfigList } from './kanbanConfig.thunk'
 
 type SliceState = {
-  viewList?: Model.KanbanConfig.ConfigListItem[]
+  viewList?: Model.KanbanConfig.Config[]
   saveAsViewModelInfo: {
     visible: boolean
-    viewItem?: Model.KanbanConfig.ConfigListItem
+    title?: string
+    viewItem?: Model.KanbanConfig.Config
   }
   editColumnModelInfo: {
     visible: boolean
@@ -276,6 +278,11 @@ const slice = createSlice({
         }
       })
     },
+  },
+  extraReducers(builder) {
+    builder.addCase(getKanbanConfigList.fulfilled, (state, action) => {
+      state.viewList = action.payload
+    })
   },
 })
 
