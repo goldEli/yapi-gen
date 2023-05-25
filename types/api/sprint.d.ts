@@ -199,12 +199,11 @@ declare namespace API.Sprint {
   }
   namespace GetDefectRatio {
     type Params = {
-      project_id: string
+      project_ids: Array<number>
       user_ids: Array<number>
       start_time: string
       end_time: string
-      sort: string
-      dimension: string
+      iterate_ids: Array<number>
     }
     type Result = Array<{ name: string; number: number; ratio: string }>
   }
@@ -219,8 +218,36 @@ declare namespace API.Sprint {
   }
   namespace GetStatisticsTotal {
     type Result = {
-      work: Model.Sprint.WorkListItem
-      defect: Model.Sprint.DefectListItem
+      work: Array<Model.Sprint.WorkListItem>
+      defect: Array<Model.Sprint.DefectListItem>
+    }
+  }
+  namespace WorkContrastList {
+    type Result = {
+      work: Array<Model.Sprint.WorkListItem>
+      list: Array<Model.Sprint.WorkDataListItem>
+      pager: {
+        total: number
+        page: number
+        pagesize: number
+      }
+    }
+  }
+  namespace MemberBugList {
+    type Result = {
+      defect: Array<Model.Sprint.WorkListItem>
+      list: Array<Model.Sprint.BugDataListItem>
+      pager: {
+        total: number
+        page: number
+        pagesize: number
+      }
+    }
+  }
+  namespace PlugSelectionUserInfo {
+    type Result = {
+      userInfo: Model.Sprint.UserInfo1
+      status: Array<Model.Sprint.StatusInfo1>
     }
   }
 }

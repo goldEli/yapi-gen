@@ -2,7 +2,6 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { Checkbox } from 'antd'
-import React from 'react'
 
 const TreeLine = styled.div`
   display: flex;
@@ -17,8 +16,6 @@ const TreeLine = styled.div`
 `
 
 const NewAddShowList = (props: any) => {
-  console.log(props.treeData, '传进来的树')
-
   const { selectKeys } = props
 
   const tap = (id: any) => {
@@ -39,14 +36,7 @@ const NewAddShowList = (props: any) => {
               <TreeLine key={i.id}>
                 <div>
                   <Checkbox
-                    checked={
-                      i.children.length > 0 &&
-                      i.children.every((item: any) => {
-                        return selectKeys
-                          .map((i: { id: any }) => i.id)
-                          .includes(item.id)
-                      })
-                    }
+                    onChange={() => choose(i)}
                     indeterminate={
                       i.children.length > 0 &&
                       i.children.some((item: any) =>
@@ -55,11 +45,16 @@ const NewAddShowList = (props: any) => {
                           .includes(item.id),
                       )
                     }
+                    checked={
+                      i.children.length > 0 &&
+                      i.children.every((item: any) => {
+                        return selectKeys
+                          .map((i: { id: any }) => i.id)
+                          .includes(item.id)
+                      })
+                    }
                   >
-                    <div
-                      onClick={() => choose(i)}
-                      style={{ display: 'flex', alignItems: 'end' }}
-                    >
+                    <div style={{ display: 'flex', alignItems: 'end' }}>
                       部门-- {i.name}
                     </div>
                   </Checkbox>
@@ -78,28 +73,24 @@ const NewAddShowList = (props: any) => {
           }
         })}
         {/* 成员渲染 */}
-        {props.isDe
-          ? props.treeData?.staffs.map((i: any) => {
-              return (
-                <TreeLine key={i.id}>
-                  <div>
-                    <Checkbox
-                      checked={selectKeys
-                        .map((i: { id: any }) => i.id)
-                        .includes(i.id)}
-                    >
-                      <div
-                        onClick={() => choose(i)}
-                        style={{ display: 'flex', alignItems: 'end' }}
-                      >
-                        成员-- {i.name}
-                      </div>
-                    </Checkbox>
+        {props.treeData?.staffs.map((i: any) => {
+          return (
+            <TreeLine key={i.id}>
+              <div>
+                <Checkbox
+                  onChange={() => choose(i)}
+                  checked={selectKeys
+                    .map((i: { id: any }) => i.id)
+                    .includes(i.id)}
+                >
+                  <div style={{ display: 'flex', alignItems: 'end' }}>
+                    成员-- {i.name}
                   </div>
-                </TreeLine>
-              )
-            })
-          : null}
+                </Checkbox>
+              </div>
+            </TreeLine>
+          )
+        })}
       </div>
     )
   }
@@ -111,6 +102,7 @@ const NewAddShowList = (props: any) => {
             <TreeLine key={i.id}>
               <div>
                 <Checkbox
+                  onChange={() => choose(i)}
                   checked={
                     i.children.length > 0 &&
                     i.children.every((item: any) => {
@@ -128,10 +120,7 @@ const NewAddShowList = (props: any) => {
                     )
                   }
                 >
-                  <div
-                    onClick={() => choose(i)}
-                    style={{ display: 'flex', alignItems: 'end' }}
-                  >
+                  <div style={{ display: 'flex', alignItems: 'end' }}>
                     团队-- {i.name}
                   </div>
                 </Checkbox>
@@ -151,11 +140,13 @@ const NewAddShowList = (props: any) => {
         return (
           <TreeLine key={i.id}>
             <div>
-              <Checkbox>
-                <div
-                  onClick={() => choose(i)}
-                  style={{ display: 'flex', alignItems: 'end' }}
-                >
+              <Checkbox
+                onChange={() => choose(i)}
+                checked={selectKeys
+                  .map((i: { id: any }) => i.id)
+                  .includes(i.id)}
+              >
+                <div style={{ display: 'flex', alignItems: 'end' }}>
                   成员-- {i.name}
                 </div>
               </Checkbox>

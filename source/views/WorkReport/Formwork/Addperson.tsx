@@ -16,6 +16,7 @@ import { useDispatch } from '@store/index'
 import { setEditSave } from '@store/formWork'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import { useTranslation } from 'react-i18next'
+import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
 const AddPersonText = styled.div`
   margin-left: 26px;
   display: flex;
@@ -338,7 +339,14 @@ const Addperson = (props: Props) => {
       </PersonContainer>
       {/* 添加成员弹窗 */}
       {isVisible && (
-        <CommonModal
+        // <CommonModal
+        //   title={t('formWork.addUser')}
+        //   state={2}
+        //   isVisible={isVisible}
+        //   onConfirm={onConfirm}
+        //   onClose={() => setIsVisible(false)}
+        // />
+        <NewAddUserModalForTandD
           title={t('formWork.addUser')}
           state={2}
           isVisible={isVisible}
