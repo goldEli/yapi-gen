@@ -14,8 +14,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { getProjectInfo } from '@/services/project'
 import { setProjectInfo } from '@store/project'
 import { editProject } from '@store/create-propject'
-import CategoryDrop from '@/components/CategoryDrop'
-import useCategory from '@/hooks/useCategoryList'
+import CategoryDropdown from '@/components/CategoryDropdown'
 const Wrap = styled.div({
   background: 'white',
   height: '100%',
@@ -128,7 +127,7 @@ const ProjectInfo = () => {
   return (
     <Wrap>
       <div style={{ width: '400px' }}>
-        <CategoryDrop
+        <CategoryDropdown
           onClearCallback={() => {
             setValue('')
           }}
@@ -139,7 +138,7 @@ const ProjectInfo = () => {
           }}
           projectId={605}
           is_select={2}
-        ></CategoryDrop>
+        ></CategoryDropdown>
       </div>
 
       <InfoLeft>
