@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  forwardRef,
-  useImperativeHandle,
-  useEffect,
-  useMemo,
-} from 'react'
+import React, { useState, forwardRef, useEffect, useMemo, useRef } from 'react'
 import { Select } from 'antd'
 import styled from '@emotion/styled'
 import CommonIconFont from '../CommonIconFont'
@@ -35,6 +29,8 @@ const DropBox = styled.div`
   padding: 6px 16px;
   cursor: pointer;
   color: var(--primary-d2);
+  max-height: 400px;
+  overflow-y: auto;
 `
 interface IProps {
   width?: number
@@ -46,6 +42,7 @@ interface IProps {
 }
 const CategoryDropdown = (props: IProps) => {
   const [isOpen, setIsOpen] = useState(false)
+  const containerRef = useRef<any>(null)
   const { onClearCallback, onChangeCallBack, projectId, is_select } = props
   const [options, setOptions] = useState<Model.Project.CategoryList[]>([])
   const { getTypeCategory } = useCategoryList()
@@ -68,13 +65,25 @@ const CategoryDropdown = (props: IProps) => {
     init()
   }, [memoProjectId])
 
+  const handleClickOutside = (event: { target: any }) => {
+    if (containerRef.current && !containerRef.current?.contains(event.target)) {
+      setIsOpen(false)
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
   return (
     <Wrap
       value={props.value ?? ''}
       placeholder="选择类别"
       dropdownRender={() => {
         const menu = options?.map(item => (
-          <div key={item.name} className="rc-virtual-list">
+          <div key={item.name}>
             <TypeBox>{item.name}</TypeBox>
             {item.children.map(item => (
               <CategoryBox
@@ -103,7 +112,11 @@ const CategoryDropdown = (props: IProps) => {
             ))}
           </div>
         ))
-        return <DropBox>{menu ? menu : <NoData></NoData>}</DropBox>
+        return (
+          <DropBox ref={containerRef} className="rc-virtual-list">
+            {menu ? menu : <NoData></NoData>}
+          </DropBox>
+        )
       }}
       style={{ width: props.width ?? '100%' }}
       open={isOpen}

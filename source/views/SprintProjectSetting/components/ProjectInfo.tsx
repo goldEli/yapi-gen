@@ -196,7 +196,7 @@ const ProjectInfo = () => {
               'b/project/update',
             )}
             onClick={() => {
-              dispatch(editProject({ id: projectInfo.id }))
+              dispatch(editProject({ id: projectInfo.id, visible: true }))
             }}
             style={{
               marginLeft: 24,
