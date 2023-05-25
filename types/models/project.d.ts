@@ -37,7 +37,7 @@ declare namespace Model.Project {
   }
   interface Category {
     active?: boolean
-    attachment_path?: string
+    attachmentPath?: string
     color?: string
     hasDemand?: number
     id?: number
