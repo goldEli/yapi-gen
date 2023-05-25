@@ -7,8 +7,12 @@ import { onChangeViewList } from '@store/kanbanConfig'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import IconFont from '@/components/IconFont'
 import CommonButton from '@/components/CommonButton'
-import { openSaveAsViewModel } from '@store/kanbanConfig/kanbanConfig.thunk'
+import {
+  deleteKanbanConfig,
+  openSaveAsViewModel,
+} from '@store/kanbanConfig/kanbanConfig.thunk'
 import SaveAsViewModal from '../SaveAsViewModal'
+import useProjectId from '../hooks/useProjectId'
 
 interface ToolBarProps {}
 
@@ -64,11 +68,18 @@ const ToolBar: React.FC<ToolBarProps> = props => {
   }, [viewList])
 
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
-  const onDel = () => {
+  const { projectId } = useProjectId()
+  const onDel = (id: number) => {
     open({
       title: '确认删除',
       text: '确认删除该列与状态，删除后再看板中将无法使用该列与状态',
       onConfirm() {
+        dispatch(
+          deleteKanbanConfig({
+            project_id: projectId,
+            id,
+          }),
+        )
         return Promise.resolve()
       },
     })
@@ -80,7 +91,7 @@ const ToolBar: React.FC<ToolBarProps> = props => {
         <DeleteConfirmModal />
         <SelectOptions
           onDel={key => {
-            onDel()
+            onDel(parseInt(key, 10))
           }}
           title="视图"
           createViewTitle="创建列与状态"
@@ -133,7 +144,7 @@ const ToolBar: React.FC<ToolBarProps> = props => {
         />
         <CommonButton
           onClick={() => {
-            onDel()
+            // onDel()
           }}
           type="icon"
           icon="delete"

@@ -6,6 +6,14 @@ import { getMessage } from '@/components/Message'
 
 const name = 'KanbanConfig'
 
+// 删除
+export const deleteKanbanConfig =
+  (params: API.KanbanConfig.DeleteKanbanConfig.Params) =>
+  async (dispatch: AppDispatch) => {
+    const res = await services.kanbanConfig.deleteKanbanConfig(params)
+    getMessage({ type: 'success', msg: '删除成功！' })
+  }
+
 // 看板配置列表
 export const getKanbanConfigList = createAsyncThunk(
   `${name}/getKanbanConfigList`,
@@ -41,9 +49,20 @@ export const closeSaveAsViewModel = () => async (dispatch: AppDispatch) => {
 
 // 保存视图
 export const onSaveAsViewModel =
-  (data: Partial<Model.SprintKanBan.ViewItem>) =>
+  (
+    data: Partial<Model.SprintKanBan.ViewItem> & {
+      projectId: number
+    },
+  ) =>
   async (dispatch: AppDispatch) => {
     // TODO
+    if (!data.value) {
+      return
+    }
+    const res = await services.kanbanConfig.createKanbanConfig({
+      name: data.value,
+      project_id: data.projectId,
+    })
     console.log('onSaveAsViewModel', data)
     getMessage({ msg: '保存成功!', type: 'success' })
     dispatch(closeSaveAsViewModel())
