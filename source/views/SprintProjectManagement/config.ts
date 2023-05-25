@@ -24,4 +24,10 @@ export const menuList = [
     path: '/SprintProjectManagement/SprintReport',
     isPermission: true,
   },
+  // {
+  //   name: '报表',
+  //   icon: 'pie-chart-02',
+  //   path: '/Report/PerformanceInsight',
+  //   isPermission: true,
+  // },
 ]

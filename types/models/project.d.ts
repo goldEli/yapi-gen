@@ -42,11 +42,13 @@ declare namespace Model.Project {
     hasDemand?: number
     id?: number
     isCheck?: number
-    name?: string
+    name?: string | React.ReactNode
+    eleName?: React.ReactNode
     remark?: string
     status?: number
     statusCount?: number
     work_type?: number
+    labelName?: string
   }
   interface CategoryList {
     name: string
