@@ -21,7 +21,7 @@ import ChangeStatusPopover from '../ChangeStatusPopover/index'
 import StateTag from '../StateTag'
 import ChangePriorityPopover from '../ChangePriorityPopover'
 import DemandProgress from '../DemandProgress'
-import { getCustomNormalValueTable } from '@/tools'
+import { getCustomNormalValue } from '@/tools'
 import ChangeSeverityPopover from '../ChangeSeverityPopover'
 import MultipleAvatar from '../MultipleAvatar'
 
@@ -686,7 +686,7 @@ export const useDynamicColumns = (state: any) => {
               projectId={state.projectId}
             >
               <span>
-                {getCustomNormalValueTable(record[element.value]?.attr, text)}
+                {getCustomNormalValue(record[element.value]?.attr, text)}
               </span>
             </TableQuickEdit>
           )
