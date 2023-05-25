@@ -18,6 +18,14 @@ export const getKanbanConfigRemainingStatus = createAsyncThunk(
   },
 )
 
+export const getKanbanConfig = createAsyncThunk(
+  `${name}/getKanbanConfig`,
+  async (params: API.KanbanConfig.GetKanbanConfig.Params) => {
+    const res = await services.kanbanConfig.getKanbanConfig(params)
+    return res.data.columns
+  },
+)
+
 // 修改看板配置
 export const updateKanbanConfig =
   (params: API.KanbanConfig.UpdateKanbanConfig.Params) =>

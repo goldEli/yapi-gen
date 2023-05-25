@@ -64,14 +64,14 @@ declare namespace API.KanbanConfig {
     }
     type Result = Model.KanbanConfig.Status[]
   }
-  namespace GetKanbanConfig {
-    type Params = {
-      // 必需 看板配置id
-      id: number
-      project_id: number
-    }
-    type Result = Model.KanbanConfig.Config[]
-  }
+  // namespace GetKanbanConfig {
+  //   type Params = {
+  //     // 必需 看板配置id
+  //     id: number
+  //     project_id: number
+  //   }
+  //   type Result = Model.KanbanConfig.Config
+  // }
   namespace GetKanbanConfig {
     type Params = {
       // 必需 看板配置id

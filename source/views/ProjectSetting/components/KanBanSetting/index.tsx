@@ -6,6 +6,7 @@ import BoardLeft from './BoardLeft'
 import BoardRight from './BoardRight'
 import EditColumnModal from './EditColumnModal'
 import {
+  getKanbanConfig,
   getKanbanConfigList,
   getKanbanConfigRemainingStatus,
   openSaveAsViewModel,
@@ -40,12 +41,12 @@ const KanBanSetting: React.FC<IProps> = props => {
     if (!viewList?.length) {
       return
     }
-    dispatch(
-      getKanbanConfigRemainingStatus({
-        project_id: projectId,
-        id: viewList?.find(item => item.check)?.id ?? 0,
-      }),
-    )
+    const params = {
+      project_id: projectId,
+      id: viewList?.find(item => item.check)?.id ?? 0,
+    }
+    dispatch(getKanbanConfigRemainingStatus(params))
+    dispatch(getKanbanConfig(params))
   }, [viewList, projectId])
   const content = useMemo(() => {
     if (showNoData) {

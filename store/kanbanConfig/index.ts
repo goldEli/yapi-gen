@@ -4,6 +4,7 @@ import { getId } from '@/views/ProjectSetting/components/KanBanSetting/utils'
 import { getNumberId } from './utils'
 import category from '@store/category'
 import {
+  getKanbanConfig,
   getKanbanConfigList,
   getKanbanConfigRemainingStatus,
 } from './kanbanConfig.thunk'
@@ -45,12 +46,12 @@ const initialState: SliceState = {
     // { id: 4, project_id: 11, name: '重点关注', check: false },
     // { id: 5, project_id: 11, name: '进度跟踪', check: false },
   ],
-  columnList: columnList,
+  columnList: [],
 
   saveAsViewModelInfo: {
     visible: false,
   },
-  unassignStatusList: unassignStatusList,
+  unassignStatusList: [],
 }
 interface DragResult {
   source: {
@@ -292,6 +293,9 @@ const slice = createSlice({
         state.unassignStatusList = action.payload
       },
     )
+    builder.addCase(getKanbanConfig.fulfilled, (state, action) => {
+      state.columnList = action.payload ?? []
+    })
   },
 })
 
