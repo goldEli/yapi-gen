@@ -6,6 +6,7 @@ import { OmitText } from '@star-yun/ui'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 import { Tooltip } from 'antd'
+import MultipleAvatar from '@/components/MultipleAvatar'
 
 const CircleWrap = styled.div({
   width: 8,
@@ -124,8 +125,17 @@ export const useDynamicColumns = (state: any) => {
       title: t('common.dealName'),
       dataIndex: 'usersName',
       key: 'users_name',
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: string, record: any) => {
+        return (
+          <MultipleAvatar
+            max={3}
+            list={record.usersInfo?.map((i: any) => ({
+              id: i.id,
+              name: i.name,
+              avatar: i.avatar,
+            }))}
+          />
+        )
       },
     },
     {
@@ -133,7 +143,14 @@ export const useDynamicColumns = (state: any) => {
       dataIndex: 'userName',
       key: 'user_name',
       render: (text: string) => {
-        return <span>{text || '--'}</span>
+        return (
+          <MultipleAvatar
+            max={3}
+            list={text.split(';')?.map((i: any) => ({
+              name: i,
+            }))}
+          />
+        )
       },
     },
 

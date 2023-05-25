@@ -3,10 +3,16 @@ import { columnList, unassignStatusList } from './mockData'
 import { getId } from '@/views/ProjectSetting/components/KanBanSetting/utils'
 import { getNumberId } from './utils'
 import category from '@store/category'
-import { getKanbanConfigList } from './kanbanConfig.thunk'
+import {
+  getCategoryList,
+  getKanbanConfig,
+  getKanbanConfigList,
+  getKanbanConfigRemainingStatus,
+} from './kanbanConfig.thunk'
 
 type SliceState = {
   viewList?: Model.KanbanConfig.Config[]
+  categoryList?: Model.KanbanConfig.Category[]
   saveAsViewModelInfo: {
     visible: boolean
     title?: string
@@ -30,6 +36,7 @@ type SliceState = {
 }
 
 const initialState: SliceState = {
+  categoryList: [],
   movingStatus: null,
   editColumnModelInfo: {
     visible: false,
@@ -42,12 +49,12 @@ const initialState: SliceState = {
     // { id: 4, project_id: 11, name: '重点关注', check: false },
     // { id: 5, project_id: 11, name: '进度跟踪', check: false },
   ],
-  columnList: columnList,
+  columnList: [],
 
   saveAsViewModelInfo: {
     visible: false,
   },
-  unassignStatusList: unassignStatusList,
+  unassignStatusList: [],
 }
 interface DragResult {
   source: {
@@ -282,6 +289,18 @@ const slice = createSlice({
   extraReducers(builder) {
     builder.addCase(getKanbanConfigList.fulfilled, (state, action) => {
       state.viewList = action.payload
+    })
+    builder.addCase(
+      getKanbanConfigRemainingStatus.fulfilled,
+      (state, action) => {
+        state.unassignStatusList = action.payload
+      },
+    )
+    builder.addCase(getKanbanConfig.fulfilled, (state, action) => {
+      state.columnList = action.payload ?? []
+    })
+    builder.addCase(getCategoryList.fulfilled, (state, action) => {
+      state.categoryList = action.payload
     })
   },
 })

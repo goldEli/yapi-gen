@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react'
 import styled from '@emotion/styled'
-import SelectOptions from '@/components/SelectOptions'
 import { useDispatch, useSelector } from '@store/index'
 import { onChangeViewList } from '@store/kanbanConfig'
 
@@ -10,9 +9,10 @@ import CommonButton from '@/components/CommonButton'
 import {
   deleteKanbanConfig,
   openSaveAsViewModel,
+  setDefaultKanbanConfig,
 } from '@store/kanbanConfig/kanbanConfig.thunk'
-import SaveAsViewModal from '../SaveAsViewModal'
 import useProjectId from '../hooks/useProjectId'
+import SelectOptions from '../SelectOptions'
 
 interface ToolBarProps {}
 
@@ -51,6 +51,9 @@ const IconWrap = styled(IconFont)`
 
 const ToolBar: React.FC<ToolBarProps> = props => {
   const { viewList } = useSelector(store => store.KanbanConfig)
+  const checkedViewListItem = useMemo(() => {
+    return viewList?.find(item => item.check)
+  }, [viewList])
 
   const dispatch = useDispatch()
   const handleViewList = useMemo<Model.SprintKanBan.ViewItem[]>(() => {
@@ -60,7 +63,7 @@ const ToolBar: React.FC<ToolBarProps> = props => {
           key: String(item.id),
           value: item.name,
           check: item.check ?? false,
-          isDefault: !!item.is_default,
+          isDefault: item.is_default === 1,
           operation: true,
         }
       }) ?? []
@@ -100,7 +103,13 @@ const ToolBar: React.FC<ToolBarProps> = props => {
             dispatch(onChangeViewList(Number(key)))
           }}
           operation
-          onDefault={key => {}}
+          onDefault={key => {
+            dispatch(
+              setDefaultKanbanConfig({
+                id: Number(key),
+              }),
+            )
+          }}
           onEdit={key => {
             dispatch(
               openSaveAsViewModel({
@@ -109,7 +118,11 @@ const ToolBar: React.FC<ToolBarProps> = props => {
             )
           }}
           onCreateView={() => {
-            dispatch(openSaveAsViewModel())
+            dispatch(
+              openSaveAsViewModel({
+                title: '创建列与状态',
+              }),
+            )
           }}
         />
         <Btn
@@ -128,7 +141,19 @@ const ToolBar: React.FC<ToolBarProps> = props => {
         <Btn>保存更改</Btn>
       </Left>
       <Right>
-        <CommonButton type="icon" icon="tag-96pg0hf3" />
+        <CommonButton
+          onClick={() => {
+            if (checkedViewListItem?.id) {
+              dispatch(
+                setDefaultKanbanConfig({
+                  id: checkedViewListItem?.id,
+                }),
+              )
+            }
+          }}
+          type="icon"
+          icon="tag-96pg0hf3"
+        />
         <CommonButton
           onClick={() => {
             if (current?.key) {
@@ -144,7 +169,9 @@ const ToolBar: React.FC<ToolBarProps> = props => {
         />
         <CommonButton
           onClick={() => {
-            // onDel()
+            if (checkedViewListItem?.id) {
+              onDel(checkedViewListItem?.id)
+            }
           }}
           type="icon"
           icon="delete"

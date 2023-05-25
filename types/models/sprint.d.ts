@@ -1,4 +1,12 @@
 declare namespace Model.Sprint {
+  interface ListUsersInfo {
+    avatar: string
+    email: string
+    gender: number
+    id: number
+    name: string
+    nickname: string
+  }
   interface AttachTarget {
     url: string
     name: string
@@ -286,6 +294,7 @@ declare namespace Model.Sprint {
     projectPrefix?: string
     hierarchy?: Hierarchy[]
     level_tree?: Hierarchy[]
+    categoryName: string | number
   }
 
   interface SprintInfoResult {
@@ -347,18 +356,16 @@ declare namespace Model.Sprint {
     ratio: string
   }
   interface WorkListItem {
-    completion_rate: string
-    new: number
-    completed: number
-    total: number
-    risk: number
+    name: string
+    value: number
+    unit: string
+    icon: string
   }
   interface DefectListItem {
-    completion_rate: string
-    not_fixed: number
-    fixing: number
-    fixed: number
-    total: number
+    name: string
+    value: number
+    unit: string
+    icon: string
   }
 }
 

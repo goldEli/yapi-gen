@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useImperativeHandle, useRef, useState } from 'react'
 import { CommentFooterWrap } from './style'
 import { useTranslation } from 'react-i18next'
 import { Form, Input, Space } from 'antd'
@@ -15,6 +15,7 @@ interface CommentFooterProps {
   style?: any
   maxHeight?: string
   hasAvatar?: boolean
+  onRef?: any
 }
 
 const CommentFooter = (props: CommentFooterProps) => {
@@ -55,6 +56,18 @@ const CommentFooter = (props: CommentFooterProps) => {
     )
     return key
   }
+
+  // 关闭评论
+  const onCancel = () => {
+    setIsReview(false)
+    form.resetFields()
+  }
+
+  useImperativeHandle(props.onRef, () => {
+    return {
+      cancel: onCancel,
+    }
+  })
 
   return (
     <CommentFooterWrap isReview={isReview} style={{ ...props.style }}>
