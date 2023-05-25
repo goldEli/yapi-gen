@@ -7,8 +7,20 @@ import { getParamsValueByKey } from '@/tools'
 import { produce } from 'immer'
 
 const name = 'KanbanConfig'
+// 修改看板配置
+export const updateKanbanConfig =
+  (params: API.KanbanConfig.UpdateKanbanConfig.Params) =>
+  async (dispatch: AppDispatch) => {
+    const res = await services.kanbanConfig.updateKanbanConfig(params)
+    getMessage({ type: 'success', msg: '保存成功！' })
+    dispatch(
+      getKanbanConfigList({
+        project_id: params.project_id,
+      }),
+    )
+  }
 
-// 删除
+// 删除看板配置
 export const deleteKanbanConfig =
   (params: API.KanbanConfig.DeleteKanbanConfig.Params) =>
   async (dispatch: AppDispatch) => {
@@ -83,25 +95,54 @@ export const closeSaveAsViewModel = () => async (dispatch: AppDispatch) => {
 
 // 保存视图
 export const onSaveAsViewModel =
-  (
-    data: Partial<Model.SprintKanBan.ViewItem> & {
-      projectId: number
-    },
-  ) =>
+  (data: API.KanbanConfig.UpdateKanbanConfig.Params) =>
   async (dispatch: AppDispatch) => {
     // TODO
-    if (!data.value) {
+    if (!data.name) {
       return
     }
-    const res = await services.kanbanConfig.createKanbanConfig({
-      name: data.value,
-      project_id: data.projectId,
-    })
+    if (!data.id) {
+      const res = await services.kanbanConfig.createKanbanConfig({
+        name: data.name,
+        project_id: data.project_id,
+      })
+    }
+    if (!!data.id) {
+      const res = await services.kanbanConfig.updateKanbanConfig({
+        id: data.id,
+        name: data.name,
+        project_id: data.project_id,
+      })
+    }
     getMessage({ msg: '保存成功!', type: 'success' })
     dispatch(closeSaveAsViewModel())
     dispatch(
       getKanbanConfigList({
-        project_id: data.projectId,
+        project_id: data.project_id,
+      }),
+    )
+  }
+
+export const setDefaultKanbanConfig =
+  (data: Pick<API.KanbanConfig.UpdateKanbanConfig.Params, 'id'>) =>
+  async (dispatch: AppDispatch) => {
+    const { name, project_id } =
+      store
+        .getState()
+        .KanbanConfig.viewList?.find(item => item.id === data.id) ?? {}
+    if (!name || !project_id) {
+      throw Error('params error')
+    }
+    const res = await services.kanbanConfig.updateKanbanConfig({
+      id: data.id,
+      name: name,
+      project_id: project_id,
+      is_default: 1,
+    })
+    getMessage({ msg: '保存成功!', type: 'success' })
+    dispatch(
+      getKanbanConfigList({
+        project_id: project_id,
       }),
     )
   }

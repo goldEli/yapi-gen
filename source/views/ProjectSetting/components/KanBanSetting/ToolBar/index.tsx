@@ -9,6 +9,7 @@ import CommonButton from '@/components/CommonButton'
 import {
   deleteKanbanConfig,
   openSaveAsViewModel,
+  setDefaultKanbanConfig,
 } from '@store/kanbanConfig/kanbanConfig.thunk'
 import useProjectId from '../hooks/useProjectId'
 import SelectOptions from '../SelectOptions'
@@ -99,7 +100,13 @@ const ToolBar: React.FC<ToolBarProps> = props => {
             dispatch(onChangeViewList(Number(key)))
           }}
           operation
-          onDefault={key => {}}
+          onDefault={key => {
+            dispatch(
+              setDefaultKanbanConfig({
+                id: Number(key),
+              }),
+            )
+          }}
           onEdit={key => {
             dispatch(
               openSaveAsViewModel({

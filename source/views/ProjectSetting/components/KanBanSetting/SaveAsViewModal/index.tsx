@@ -67,9 +67,10 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
     const data = await form.validateFields()
     dispatch(
       onSaveAsViewModel({
-        ...saveAsViewModelInfo.viewItem,
-        value: data.name,
-        projectId,
+        // ...saveAsViewModelInfo.viewItem,
+        id: saveAsViewModelInfo.viewItem?.id ?? 0,
+        name: data.name as string,
+        project_id: projectId,
       }),
     )
   }
