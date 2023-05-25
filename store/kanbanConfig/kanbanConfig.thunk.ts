@@ -63,9 +63,13 @@ export const onSaveAsViewModel =
       name: data.value,
       project_id: data.projectId,
     })
-    console.log('onSaveAsViewModel', data)
     getMessage({ msg: '保存成功!', type: 'success' })
     dispatch(closeSaveAsViewModel())
+    dispatch(
+      getKanbanConfigList({
+        project_id: data.projectId,
+      }),
+    )
   }
 
 export const openEditColumnModel =
