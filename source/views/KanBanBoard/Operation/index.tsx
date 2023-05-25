@@ -49,9 +49,9 @@ const LeftBox = styled.div`
 `
 const RightBox = styled.div``
 
-const StickyWrap = styled.div({
-  background: 'white',
-})
+const StickyWrap = styled.div`
+  width: 100%;
+`
 
 interface Props {
   isGrid: any
