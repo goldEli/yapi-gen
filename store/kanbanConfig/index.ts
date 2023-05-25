@@ -9,8 +9,10 @@ import {
   getKanbanConfigList,
   getKanbanConfigRemainingStatus,
 } from './kanbanConfig.thunk'
+import { store } from '..'
 
 type SliceState = {
+  projectId?: Model.KanbanConfig.Config['project_id']
   viewList?: Model.KanbanConfig.Config[]
   categoryList?: Model.KanbanConfig.Category[]
   saveAsViewModelInfo: {

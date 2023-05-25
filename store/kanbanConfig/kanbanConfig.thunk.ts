@@ -69,7 +69,7 @@ export const deleteKanbanConfig =
 // 看板配置列表
 export const getKanbanConfigList = createAsyncThunk(
   `${name}/getKanbanConfigList`,
-  async (param: API.KanbanConfig.GetKanbanConfigList.Params) => {
+  async (param: API.KanbanConfig.GetKanbanConfigList.Params, { dispatch }) => {
     const res = await services.kanbanConfig.getKanbanConfigList(param)
     const { viewList } = store.getState().KanbanConfig
     const currentCheck = viewList?.find(
@@ -89,6 +89,19 @@ export const getKanbanConfigList = createAsyncThunk(
         }
       }
     })
+
+    // 更新相关数据
+    const checkedViewListItem = ret.find(item => item.check)
+    if (!checkedViewListItem) {
+      return
+    }
+    const params = {
+      project_id: checkedViewListItem.project_id,
+      id: checkedViewListItem.id,
+    }
+    dispatch(getKanbanConfigRemainingStatus(params))
+    dispatch(getKanbanConfig(params))
+    dispatch(getCategoryList({ project_id: params.project_id }))
 
     return ret
   },
