@@ -37,7 +37,6 @@ const useCategory = () => {
         workType: key,
       })
     })
-    console.log('data----', obj)
     return resArr
   }
   return { getTypeCategory }

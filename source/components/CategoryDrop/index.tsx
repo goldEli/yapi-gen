@@ -1,15 +1,16 @@
-/* eslint-disable max-statements-per-line */
-/* eslint-disable react/jsx-handler-names */
 import React, {
   useState,
   forwardRef,
   useImperativeHandle,
   useEffect,
+  useMemo,
 } from 'react'
 import { Select } from 'antd'
 import styled from '@emotion/styled'
 import CommonIconFont from '../CommonIconFont'
 import NoData from '../NoData'
+import { storyConfigCategoryList } from '@/services/project'
+import useCategoryList from '@/hooks/useCategoryList'
 const Wrap = styled(Select)`
   margin-bottom: 10px;
 `
@@ -40,15 +41,32 @@ interface IProps {
   value?: string
   onChangeCallBack?(data: Model.Project.Category): void
   onClearCallback?(): void
-  options: Model.Project.CategoryList[] | undefined
+  projectId: number
+  is_select: number
 }
 const CategoryDrop = (props: IProps) => {
   const [isOpen, setIsOpen] = useState(false)
-  const { options, onClearCallback, onChangeCallBack } = props
+  const { onClearCallback, onChangeCallBack, projectId, is_select } = props
+  const [options, setOptions] = useState<Model.Project.CategoryList[]>([])
+  const { getTypeCategory } = useCategoryList()
   const toggleOpen = () => {
     setIsOpen(!isOpen)
   }
-  useEffect(() => { }, [])
+  const init = async () => {
+    const params = { projectId, is_select }
+    const res = await storyConfigCategoryList(params)
+    const data = getTypeCategory(res.list, 'work_type')
+    console.log(data)
+    if (!data) {
+      return
+    }
+    setOptions(data)
+  }
+
+  const memoProjectId = useMemo(() => projectId, [])
+  useEffect(() => {
+    init()
+  }, [memoProjectId])
 
   return (
     <Wrap
@@ -56,7 +74,7 @@ const CategoryDrop = (props: IProps) => {
       placeholder="选择类别"
       dropdownRender={() => {
         const menu = options?.map(item => (
-          <div key={item.name}>
+          <div key={item.name} className="rc-virtual-list">
             <TypeBox>{item.name}</TypeBox>
             {item.children.map(item => (
               <CategoryBox
@@ -65,12 +83,7 @@ const CategoryDrop = (props: IProps) => {
               >
                 <span>
                   {' '}
-                  <img
-                    style={{ width: '18px' }}
-                    src={
-                      item.attachment_path
-                    }
-                  />
+                  <img style={{ width: '18px' }} src={item.attachmentPath} />
                   <span
                     style={{
                       color:
