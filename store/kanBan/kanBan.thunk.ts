@@ -1,3 +1,4 @@
+import { kanbanConfig } from './data'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as services from '@/services'
 import { AppDispatch, store } from '@store/index'
@@ -5,6 +6,15 @@ import { setSaveAsViewModelInfo, setShareModelInfo } from '.'
 import { getMessage } from '@/components/Message'
 
 const name = 'kanBan'
+
+// 看板配置列表
+export const getKanbanConfigList = createAsyncThunk(
+  `${name}/getKanbanConfigList`,
+  async (param: API.KanbanConfig.GetKanbanConfigList.Params) => {
+    const res = await services.kanbanConfig.getKanbanConfigList(param)
+    console.log(res)
+  },
+)
 
 // 属性看板
 export const onRefreshKanBan = () => async (dispatch: AppDispatch) => {}
