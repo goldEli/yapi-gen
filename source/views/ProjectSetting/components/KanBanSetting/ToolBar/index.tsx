@@ -51,6 +51,9 @@ const IconWrap = styled(IconFont)`
 
 const ToolBar: React.FC<ToolBarProps> = props => {
   const { viewList } = useSelector(store => store.KanbanConfig)
+  const checkedViewListItem = useMemo(() => {
+    return viewList?.find(item => item.check)
+  }, [viewList])
 
   const dispatch = useDispatch()
   const handleViewList = useMemo<Model.SprintKanBan.ViewItem[]>(() => {
@@ -138,7 +141,19 @@ const ToolBar: React.FC<ToolBarProps> = props => {
         <Btn>保存更改</Btn>
       </Left>
       <Right>
-        <CommonButton type="icon" icon="tag-96pg0hf3" />
+        <CommonButton
+          onClick={() => {
+            if (checkedViewListItem?.id) {
+              dispatch(
+                setDefaultKanbanConfig({
+                  id: checkedViewListItem?.id,
+                }),
+              )
+            }
+          }}
+          type="icon"
+          icon="tag-96pg0hf3"
+        />
         <CommonButton
           onClick={() => {
             if (current?.key) {
@@ -154,7 +169,9 @@ const ToolBar: React.FC<ToolBarProps> = props => {
         />
         <CommonButton
           onClick={() => {
-            // onDel()
+            if (checkedViewListItem?.id) {
+              onDel(checkedViewListItem?.id)
+            }
           }}
           type="icon"
           icon="delete"
