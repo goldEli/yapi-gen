@@ -17,6 +17,8 @@ type SliceState = {
     }
   }
   projectDataList: Array<{ name: string; id: number }>
+  visiblePerson: boolean
+  visibleWork: boolean
 }
 
 const initialState: SliceState = {
@@ -34,6 +36,8 @@ const initialState: SliceState = {
     },
   },
   projectDataList: [],
+  visiblePerson: false,
+  visibleWork: false,
 }
 
 const slice = createSlice({
@@ -49,12 +53,26 @@ const slice = createSlice({
     setProjectDataList: (state, action) => {
       state.projectDataList = action.payload
     },
+    setVisiblePerson: (state, action) => {
+      console.log(action.payload, 'action.payload')
+      state.visiblePerson = action.payload
+    },
+    setVisibleWork: (state, action) => {
+      console.log(action.payload, 'action.payload')
+      state.visibleWork = action.payload
+    },
   },
   extraReducers(builder) {},
 })
 
 const performanceInsight = slice.reducer
 
-export const { setSave, setHeaderParmas, setProjectDataList } = slice.actions
+export const {
+  setSave,
+  setHeaderParmas,
+  setProjectDataList,
+  setVisiblePerson,
+  setVisibleWork,
+} = slice.actions
 
 export default performanceInsight

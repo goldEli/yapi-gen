@@ -36,6 +36,7 @@ const Detail = (props: Props) => {
   }
   // 关闭弹窗
   const onCancel = () => {
+    console.log(999)
     setFocus(false)
     // dispatch(saveViewReportDetailDrawer({ visible: false, id: 0, ids: [] }))
   }

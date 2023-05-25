@@ -120,7 +120,7 @@ const Home = () => {
   const [isVisible, setIsVisible] = useState(false)
   const { save } = useSelector(store => store.performanceInsight)
   // 'iteration''sprint' 'all'
-  const [homeType, setHomeType] = useState('all')
+  const [homeType, setHomeType] = useState('sprint')
   return (
     <div
       style={{
@@ -246,6 +246,7 @@ const Home = () => {
             <SelectMain
               onChange={e => console.log(e)}
               placeholder="请选择"
+              value={1}
               list={[
                 {
                   name: '近7天',
