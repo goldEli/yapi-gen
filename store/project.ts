@@ -59,8 +59,9 @@ const initialState: CounterState = {
   addQuickSprintModal: {
     visible: false,
     params: {
-      name: '长故事',
+      name: '',
       icon: 'https://dev.staryuntech.com/dev-agile/attachment/category_icon/message.png',
+      parentName: '长故事',
     },
   },
 }

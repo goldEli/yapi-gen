@@ -7,7 +7,7 @@ import CommonUserAvatar from '../CommonUserAvatar'
 
 interface MultipleAvatarProps {
   list: {
-    id: number
+    id?: number
     name: string
     avatar?: string
   }[]
@@ -65,12 +65,21 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
     }
     return data.length * 22
   }, [data, hiddenNum])
+  if (len === 1) {
+    return (
+      <CommonUserAvatar
+        isBorder
+        name={props.list[0].name}
+        avatar={props.list[0]?.avatar}
+      />
+    )
+  }
   return (
     <MultipleAvatarBox width={width}>
       {data.map((item, idx) => {
         return (
           <AvatarBox left={idx * 20} key={item.id}>
-            <CommonUserAvatar isBorder />
+            <CommonUserAvatar isBorder avatar={item?.avatar} />
           </AvatarBox>
         )
       })}

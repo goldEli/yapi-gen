@@ -21,8 +21,9 @@ import ChangeStatusPopover from '../ChangeStatusPopover/index'
 import StateTag from '../StateTag'
 import ChangePriorityPopover from '../ChangePriorityPopover'
 import DemandProgress from '../DemandProgress'
-import { getCustomNormalValue } from '@/tools'
+import { getCustomNormalValueTable } from '@/tools'
 import ChangeSeverityPopover from '../ChangeSeverityPopover'
+import MultipleAvatar from '../MultipleAvatar'
 
 const Wrap = styled.div<{ isEdit?: any }>(
   {
@@ -370,7 +371,14 @@ export const useDynamicColumns = (state: any) => {
       key: 'user_name',
       width: 120,
       render: (text: string) => {
-        return <span>{text || '--'}</span>
+        return (
+          <MultipleAvatar
+            max={3}
+            list={text.split(';')?.map((i: any) => ({
+              name: i,
+            }))}
+          />
+        )
       },
     },
     {
@@ -389,7 +397,14 @@ export const useDynamicColumns = (state: any) => {
             isMineOrHis
             projectId={state.projectId}
           >
-            <span>{text || '--'}</span>
+            <MultipleAvatar
+              max={3}
+              list={record.usersInfo?.map((i: any) => ({
+                id: i.id,
+                name: i.name,
+                avatar: i.avatar,
+              }))}
+            />
           </TableQuickEdit>
         )
       },
@@ -452,7 +467,12 @@ export const useDynamicColumns = (state: any) => {
             isMineOrHis
             projectId={state.projectId}
           >
-            <span>{text || '--'}</span>
+            <MultipleAvatar
+              max={3}
+              list={text.split(';')?.map((i: any) => ({
+                name: i,
+              }))}
+            />
           </TableQuickEdit>
         )
       },
@@ -666,7 +686,7 @@ export const useDynamicColumns = (state: any) => {
               projectId={state.projectId}
             >
               <span>
-                {getCustomNormalValue(record[element.value]?.attr, text)}
+                {getCustomNormalValueTable(record[element.value]?.attr, text)}
               </span>
             </TableQuickEdit>
           )
