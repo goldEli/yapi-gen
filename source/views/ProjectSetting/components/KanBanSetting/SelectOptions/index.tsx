@@ -117,16 +117,14 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
   const menuItems = useMemo(() => {
     // 如果是视图
     if (props.operation) {
-      const arr = props.options.filter(item => !item.isDefault)
-      const arrWithDefault = props.options.filter(item => item.isDefault)
+      // const arr = props.options.filter(item => !item.isDefault)
+      // const arrWithDefault = props.options.filter(item => item.isDefault)
       const dividerItem = { key: '', label: '', type: 'divider' }
-      const arrWithDefaultItems = arrWithDefault?.map(
-        renderOptionWidthOperation,
-      )
-      const arrItems = arr?.map(renderOptionWidthOperation)
+
+      const arrItems = props.options?.map(renderOptionWidthOperation)
       return [
-        ...arrWithDefaultItems,
-        dividerItem,
+        // ...arrWithDefaultItems,
+        // dividerItem,
         ...arrItems,
         dividerItem,
         {

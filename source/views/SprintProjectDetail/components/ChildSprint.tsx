@@ -16,8 +16,11 @@ import { Space, Tooltip } from 'antd'
 import CustomSelect from '@/components/CustomSelect'
 import StateTag from '@/components/StateTag'
 import DragTable from '@/components/DragTable'
+import { setAddQuickSprintModal } from '@store/project'
+import { useDispatch } from '@store/index'
 
 const ChildSprint = () => {
+  const dispatch = useDispatch()
   const [isSearch, setIsSearch] = useState(false)
   const [searchValue, setSearchValue] = useState('')
   const [dataSource, setDataSource] = useState<any>({
@@ -92,6 +95,10 @@ const ChildSprint = () => {
     },
   ]
 
+  const onCreateChild = () => {
+    dispatch(setAddQuickSprintModal({ visible: true }))
+  }
+
   useEffect(() => {
     // 获取子事务列表
   }, [])
@@ -127,7 +134,7 @@ const ChildSprint = () => {
       </LabelWrap>
 
       <InfoItemWrap>
-        <CommonButton type="primaryText" icon="plus">
+        <CommonButton type="primaryText" icon="plus" onClick={onCreateChild}>
           创建子事务
         </CommonButton>
         <Tooltip title="3 done / 3 in progress / 4 to do">

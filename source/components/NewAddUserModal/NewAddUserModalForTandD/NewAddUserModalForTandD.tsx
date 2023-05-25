@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable array-callback-return */
 /* eslint-disable consistent-return */
 /* eslint-disable camelcase */
@@ -8,20 +9,11 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable no-constant-binary-expression */
-import {
-  Breadcrumb,
-  Checkbox,
-  Form,
-  message,
-  Modal,
-  Select,
-  Space,
-  Tree,
-} from 'antd'
+import { Breadcrumb, Checkbox, Form, Modal, Space, Tree } from 'antd'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import { useTranslation } from 'react-i18next'
-import { CloseWrap, DelButton } from '@/components/StyleCommon'
+import { CloseWrap } from '@/components/StyleCommon'
 import CommonButton from '@/components/CommonButton'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
@@ -129,7 +121,7 @@ const RightPerson = styled.div`
   padding-left: 24px;
 `
 const Header = styled.div`
-  width: 216px;
+  width: 230px;
   display: flex;
   height: 36px;
   background: var(--neutral-n7);
@@ -148,7 +140,7 @@ const Header = styled.div`
   }
 `
 const ListItem = styled.div`
-  width: 216px;
+  width: 230px;
   height: 36px;
   line-height: 36px;
   border-radius: 6px;
@@ -269,7 +261,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
     setSearchVal('')
     setCheckedKeys([])
   }
-  console.log(tabsActive)
+
   useEffect(() => {
     if (props.isVisible) {
       onInit()
@@ -506,27 +498,27 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
         })) || []
     if (props.isPermisGroup) {
       await form.validateFields()
-      console.log(setData)
-      console.log(personData)
+      console.log(tabsActive === 1 ? setData : personData)
 
-      //   props?.onConfirm?.(
-      //     tabsActive === 1 ? setData : personData,
-      //     form.getFieldsValue().userGroupId,
-      //   )
+      props?.onConfirm?.(
+        tabsActive === 1 ? setData : personData,
+        form.getFieldsValue().userGroupId,
+      )
     } else {
-      console.log(setData)
-      console.log(personData)
-      //   props?.onConfirm?.(tabsActive === 1 ? setData : personData)
+      console.log(tabsActive === 1 ? setData : personData)
+
+      props?.onConfirm?.(tabsActive === 1 ? setData : personData)
     }
   }
 
   const getTapData = (datas: any) => {
-    console.log(datas)
     active.current.push(datas)
     setShowTreeData({ children: datas.children, staffs: datas.staffs })
   }
   // 选中节点
   const setKeys = (keys: any) => {
+    console.log(keys, '当前选中')
+
     if (keys.children && keys.children.length >= 1) {
       getHaveChildBykeys(keys)
     } else {
@@ -555,6 +547,27 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
 
     return result
   }
+  // 获取最底层的children数组
+  function findBottomChildren(tree: any) {
+    const result: any = []
+
+    function traverse(node: any) {
+      if (node.children && node.children.length > 0) {
+        for (const child of node.children) {
+          traverse(child)
+        }
+      } else {
+        result.push(node)
+      }
+    }
+
+    for (const node of tree) {
+      traverse(node)
+    }
+
+    return result
+  }
+
   function isEqual(obj1: any, obj2: any) {
     return JSON.stringify(obj1) === JSON.stringify(obj2)
   }
@@ -595,16 +608,45 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
 
   const getHaveChildBykeys = (keys: any) => {
     console.log('选中的item-有children', keys)
-    // setPersonData(keys)
-    const flattenedStaffs = [
-      ...new Set(
-        flattenStaffs([keys]).map((item: any) => {
-          delete item.staffs
-          return item
-        }),
-      ),
-    ]
-    const newData = flattenedStaffs.reduce((acc: any, current: any) => {
+    //部门的处理方法
+    if (tabsActive === 1) {
+      const flattenedStaffs = [
+        ...new Set(
+          flattenStaffs([keys]).map((item: any) => {
+            delete item.staffs
+            return item
+          }),
+        ),
+      ]
+      const newData = flattenedStaffs.reduce((acc: any, current: any) => {
+        // 使用对象来检查已经存在的id值
+        const ids = acc.map((item: any) => item.id)
+
+        // 如果当前项的id在已存在的id数组中不存在，则添加到结果数组中
+        if (!ids.includes(current.id)) {
+          acc.push(current)
+        }
+
+        return acc
+      }, [])
+      const isEquals = isEqual(personData, newData)
+      console.log(isEquals)
+
+      if (personData.length < 1) {
+        setPersonData(newData)
+      } else if (isEquals) {
+        setPersonData([])
+      } else {
+        console.log(compareArrays(personData, newData))
+
+        setPersonData(compareArrays(personData, newData))
+      }
+      return
+    }
+    // 非部门的处理方法
+    const findBottomChildrens = findBottomChildren([keys])
+    console.log(findBottomChildrens)
+    const newData = findBottomChildrens.reduce((acc: any, current: any) => {
       // 使用对象来检查已经存在的id值
       const ids = acc.map((item: any) => item.id)
 
@@ -623,11 +665,187 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
     } else if (isEquals) {
       setPersonData([])
     } else {
-      console.log(compareArrays(personData, newData))
+      const newData2 = compareArrays(personData, newData).reduce(
+        (acc: any, current: any) => {
+          // 使用对象来检查已经存在的id值
+          const ids = acc.map((item: any) => item.id)
 
+          // 如果当前项的id在已存在的id数组中不存在，则添加到结果数组中
+          if (!ids.includes(current.id)) {
+            acc.push(current)
+          }
+
+          return acc
+        },
+        [],
+      )
+      setPersonData(newData2)
+    }
+    // setPersonData(keys)
+  }
+  function filterUniqueItems(arr1: any, arr2: any) {
+    const uniqueItems = arr1.filter((item1: any) => {
+      return !arr2.some((item2: any) => item2.id === item1.id)
+    })
+
+    return uniqueItems
+  }
+  // 新的全选逻辑
+  const checkAllChangeNew = () => {
+    console.log(showTreeData, '当前展示的列表')
+    if (tabsActive === 1) {
+      const allStaffs = flattenStaffs([showTreeData])
+      console.log(allStaffs)
+
+      //去重
+      const newData = allStaffs.reduce((acc: any, current: any) => {
+        // 使用对象来检查已经存在的id值
+        const ids = acc.map((item: any) => item.id)
+
+        // 如果当前项的id在已存在的id数组中不存在，则添加到结果数组中
+        if (!ids.includes(current.id)) {
+          acc.push(current)
+        }
+
+        return acc
+      }, [])
+      console.log(newData)
+      //判断 拿到的是否包含一部分
+      const isSomeHave = personData.some((item: any) =>
+        newData.map((i: { id: any }) => i.id).includes(item.id),
+      )
+
+      if (isSomeHave) {
+        setPersonData(filterUniqueItems(personData, newData))
+      } else {
+        setPersonData(compareArrays(personData, newData))
+      }
+      return
+    }
+    // setKeys(showTreeData)
+    //拿到所有child
+    const findBottomChildrens = findBottomChildren([showTreeData])
+    //去重
+    const newData = findBottomChildrens.reduce((acc: any, current: any) => {
+      // 使用对象来检查已经存在的id值
+      const ids = acc.map((item: any) => item.id)
+
+      // 如果当前项的id在已存在的id数组中不存在，则添加到结果数组中
+      if (!ids.includes(current.id)) {
+        acc.push(current)
+      }
+
+      return acc
+    }, [])
+    console.log(newData)
+    //判断 拿到的是否包含一部分
+    const isSomeHave = personData.some((item: any) =>
+      newData.map((i: { id: any }) => i.id).includes(item.id),
+    )
+
+    if (isSomeHave) {
+      setPersonData(filterUniqueItems(personData, newData))
+    } else {
       setPersonData(compareArrays(personData, newData))
     }
+    //
   }
+
+  const isSomeChoose = () => {
+    console.log(showTreeData)
+    if (showTreeData && tabsActive === 0) {
+      const findBottomChildrens = findBottomChildren([showTreeData])
+      //去重
+      const newData = findBottomChildrens.reduce((acc: any, current: any) => {
+        // 使用对象来检查已经存在的id值
+        const ids = acc.map((item: any) => item.id)
+
+        // 如果当前项的id在已存在的id数组中不存在，则添加到结果数组中
+        if (!ids.includes(current.id)) {
+          acc.push(current)
+        }
+
+        return acc
+      }, [])
+      console.log(newData)
+      let isAll: boolean
+
+      isAll = newData.some((item: any) =>
+        personData.map((i: { id: any }) => i.id).includes(item.id),
+      )
+      return isAll
+    }
+    if (showTreeData && tabsActive === 1) {
+      const findBottomChildrens = flattenStaffs([showTreeData])
+      //去重
+      const newData = findBottomChildrens.reduce((acc: any, current: any) => {
+        // 使用对象来检查已经存在的id值
+        const ids = acc.map((item: any) => item.id)
+
+        // 如果当前项的id在已存在的id数组中不存在，则添加到结果数组中
+        if (!ids.includes(current.id)) {
+          acc.push(current)
+        }
+
+        return acc
+      }, [])
+      console.log(newData)
+      let isAll: boolean
+
+      isAll = newData.some((item: any) =>
+        personData.map((i: { id: any }) => i.id).includes(item.id),
+      )
+      return isAll
+    }
+  }
+
+  const isAllChoose = () => {
+    if (showTreeData && tabsActive === 0) {
+      const findBottomChildrens = findBottomChildren([showTreeData])
+      //去重
+      const newData = findBottomChildrens.reduce((acc: any, current: any) => {
+        // 使用对象来检查已经存在的id值
+        const ids = acc.map((item: any) => item.id)
+
+        // 如果当前项的id在已存在的id数组中不存在，则添加到结果数组中
+        if (!ids.includes(current.id)) {
+          acc.push(current)
+        }
+
+        return acc
+      }, [])
+      console.log(newData)
+      let isAll: boolean
+
+      isAll = newData.every((item: any) =>
+        personData.map((i: { id: any }) => i.id).includes(item.id),
+      )
+      return isAll
+    }
+    if (showTreeData && tabsActive === 1) {
+      const findBottomChildrens = findBottomChildren([showTreeData])
+      //去重
+      const newData = findBottomChildrens.reduce((acc: any, current: any) => {
+        // 使用对象来检查已经存在的id值
+        const ids = acc.map((item: any) => item.id)
+
+        // 如果当前项的id在已存在的id数组中不存在，则添加到结果数组中
+        if (!ids.includes(current.id)) {
+          acc.push(current)
+        }
+
+        return acc
+      }, [])
+      console.log(newData)
+      let isAll: boolean
+
+      isAll = newData.every((item: any) =>
+        personData.map((i: { id: any }) => i.id).includes(item.id),
+      )
+      return isAll
+    }
+  }
+  console.log(isAllChoose, isSomeChoose)
 
   return (
     <ModalStyle
@@ -681,6 +899,11 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
                     setPersonData([])
                     setSearchVal('')
                     setTabsActive(index)
+                    setShowTreeData({
+                      children: tabsActive === 1 ? treeData2 : treeData,
+                      staffs: [],
+                    })
+                    active.current = []
                   }}
                   key={el.label}
                 >
@@ -743,21 +966,21 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
               </Breadcrumb>
             </div>
           )}
-
+          <Row>
+            <Checkbox
+              indeterminate={isSomeChoose()}
+              checked={isAllChoose()}
+              onChange={checkAllChangeNew}
+            >
+              {t('commonModal.checkBoxTitle')}
+            </Checkbox>
+          </Row>
           <div
             style={{
               height: '320px',
               overflow: 'scroll',
             }}
           >
-            {/* <Row>
-              <Checkbox
-                checked={personData?.length === tabsTreeDataList?.length}
-                onChange={(e: any) => checkAllChange(e)}
-              >
-                {t('commonModal.checkBoxTitle')}
-              </Checkbox>
-            </Row> */}
             <NewAddShowList
               isDe={tabsActive === 1}
               selectKeys={personData}

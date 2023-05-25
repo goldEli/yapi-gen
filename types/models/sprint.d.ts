@@ -1,4 +1,12 @@
 declare namespace Model.Sprint {
+  interface ListUsersInfo {
+    avatar: string
+    email: string
+    gender: number
+    id: number
+    name: string
+    nickname: string
+  }
   interface AttachTarget {
     url: string
     name: string
@@ -286,6 +294,7 @@ declare namespace Model.Sprint {
     projectPrefix?: string
     hierarchy?: Hierarchy[]
     level_tree?: Hierarchy[]
+    categoryName: string | number
   }
 
   interface SprintInfoResult {

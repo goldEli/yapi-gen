@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Progress, Space } from 'antd'
+import { Form, Progress, Space } from 'antd'
 
 export const Wrap = styled.div`
   height: 100%;
@@ -192,3 +192,22 @@ export const ItemNumber = styled.div<{ isActive?: boolean }>`
   color: ${props =>
     props.isActive ? 'var(--neutral-white-d7)' : 'var(--primary-d1)'};
 `
+
+export const LiWrap = styled.div({
+  cursor: 'pointer',
+  padding: '0 16px',
+  width: '100%',
+  height: 32,
+  display: 'flex',
+  alignItems: 'center',
+  background: 'var(--neutral-white-d3)',
+  '&: hover': {
+    background: 'var(--hover-d3)',
+  },
+})
+
+export const FormWrap = styled(Form)({
+  '.ant-form-item': {
+    margin: '22px 0 0 0',
+  },
+})

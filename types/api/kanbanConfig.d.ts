@@ -22,14 +22,20 @@ declare namespace API.KanbanConfig {
   }
 
   namespace UpdateKanbanConfig {
-    type Params = {
-      // 必需 看板配置id
-      id: number
-      // 必需 看板配置名称
-      name: string
-      // 必需 看板配置所属项目
-      project_id: number
-    }
+    type Params = Pick<
+      Model.KanbanConfig.Config,
+      'id' | 'name' | 'project_id' | 'is_default'
+    >
+    // type Params = {
+    //   // 必需 看板配置id
+    //   id: number
+    //   // 必需 看板配置名称
+    //   name: string
+    //   // 必需 看板配置所属项目
+    //   project_id: number
+    //   // 是否默认
+    //   is_default:
+    // }
     type Result = {
       id: number
       project_id: number

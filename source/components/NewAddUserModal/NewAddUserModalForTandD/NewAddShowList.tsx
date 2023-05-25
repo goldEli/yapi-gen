@@ -2,7 +2,6 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import styled from '@emotion/styled'
 import { Checkbox } from 'antd'
-import React from 'react'
 
 const TreeLine = styled.div`
   display: flex;
@@ -17,8 +16,6 @@ const TreeLine = styled.div`
 `
 
 const NewAddShowList = (props: any) => {
-  console.log(props.treeData, '传进来的树')
-
   const { selectKeys } = props
 
   const tap = (id: any) => {
@@ -78,28 +75,26 @@ const NewAddShowList = (props: any) => {
           }
         })}
         {/* 成员渲染 */}
-        {props.isDe
-          ? props.treeData?.staffs.map((i: any) => {
-              return (
-                <TreeLine key={i.id}>
-                  <div>
-                    <Checkbox
-                      checked={selectKeys
-                        .map((i: { id: any }) => i.id)
-                        .includes(i.id)}
-                    >
-                      <div
-                        onClick={() => choose(i)}
-                        style={{ display: 'flex', alignItems: 'end' }}
-                      >
-                        成员-- {i.name}
-                      </div>
-                    </Checkbox>
+        {props.treeData?.staffs.map((i: any) => {
+          return (
+            <TreeLine key={i.id}>
+              <div>
+                <Checkbox
+                  checked={selectKeys
+                    .map((i: { id: any }) => i.id)
+                    .includes(i.id)}
+                >
+                  <div
+                    onClick={() => choose(i)}
+                    style={{ display: 'flex', alignItems: 'end' }}
+                  >
+                    成员-- {i.name}
                   </div>
-                </TreeLine>
-              )
-            })
-          : null}
+                </Checkbox>
+              </div>
+            </TreeLine>
+          )
+        })}
       </div>
     )
   }
@@ -151,7 +146,11 @@ const NewAddShowList = (props: any) => {
         return (
           <TreeLine key={i.id}>
             <div>
-              <Checkbox>
+              <Checkbox
+                checked={selectKeys
+                  .map((i: { id: any }) => i.id)
+                  .includes(i.id)}
+              >
                 <div
                   onClick={() => choose(i)}
                   style={{ display: 'flex', alignItems: 'end' }}
