@@ -219,4 +219,32 @@ declare namespace API.Sprint {
       defect: Array<Model.Sprint.DefectListItem>
     }
   }
+  namespace WorkContrastList {
+    type Result = {
+      work: Array<Model.Sprint.WorkListItem>
+      list: Array<Model.Sprint.WorkDataListItem>
+      pager: {
+        total: number
+        page: number
+        pagesize: number
+      }
+    }
+  }
+  namespace MemberBugList {
+    type Result = {
+      defect: Array<Model.Sprint.WorkListItem>
+      list: Array<Model.Sprint.BugDataListItem>
+      pager: {
+        total: number
+        page: number
+        pagesize: number
+      }
+    }
+  }
+  namespace PlugSelectionUserInfo {
+    type Result = {
+      userInfo: Model.Sprint.UserInfo1
+      status: Array<Model.Sprint.StatusInfo1>
+    }
+  }
 }

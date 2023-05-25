@@ -359,13 +359,65 @@ declare namespace Model.Sprint {
     name: string
     value: number
     unit: string
-    icon: string
+    icon?: string
   }
   interface DefectListItem {
     name: string
     value: number
     unit: string
-    icon: string
+    icon?: string
+  }
+
+  interface BugDataListItem {
+    id: number
+    userName: string
+    departmentName: string
+    positionName: string
+    completion_rate: string
+    not_fixed: number
+    fixing: number
+    fixed: number
+    repeat_open_rate: string
+    stock_risk: number
+  }
+  interface WorkDataListItem {
+    id: number
+    userName: string
+    departmentName: string
+    positionName: string
+    completion_rate: string
+    new: number
+    completed: number
+    work_stock: number
+    work_progress: string
+    repeat_rate: string
+    risk: number
+  }
+  interface UserItem {
+    id: number
+    name: string
+    department_id: number
+    job_id: number
+    avatar: string
+    department: {
+      id: number
+      name: string
+    }
+    position: {
+      id: number
+      name: string
+    }
+  }
+  interface UserInfo1 {
+    id: number
+    name: string
+    avatar: string
+    departmentName: string
+    positionName: string
+  }
+  interface StatusInfo1 {
+    value: number
+    label: string
   }
 }
 

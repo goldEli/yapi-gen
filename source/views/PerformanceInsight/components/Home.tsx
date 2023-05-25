@@ -118,7 +118,7 @@ const Home = () => {
   const [isVisible, setIsVisible] = useState(false)
   const { save } = useSelector(store => store.performanceInsight)
   // 'iteration''sprint' 'all'
-  const [homeType, setHomeType] = useState('sprint')
+  const [homeType, setHomeType] = useState('all')
   const [workDataList, setWorkDataList] =
     useState<API.Sprint.GetStatisticsTotal.Result>()
   useEffect(() => {
