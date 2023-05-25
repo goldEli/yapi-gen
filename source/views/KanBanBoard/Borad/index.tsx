@@ -24,7 +24,7 @@ const Board = () => {
   )
 
   const { ControlScrollPlane, containerRef } = useControlScrollPlane(
-    kanbanConfig?.columns.length ?? 0,
+    kanbanConfig?.columns?.length ?? 0,
   )
 
   const ele = React.useMemo(() => {

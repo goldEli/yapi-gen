@@ -38,7 +38,7 @@ export const CommonDropdownMenu = (props: Props) => {
 
   const hasDel = getIsPermission(
     projectInfo?.projectPermissions,
-    'b/story/delete',
+    projectInfo.projectType === 1 ? 'b/story/delete' : 'b/transaction/delete',
   )
 
   // 复制需求id

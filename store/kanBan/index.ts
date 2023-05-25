@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { kanbanInfo, kanbanInfoByGroup, kanbanConfig } from './data'
+import { getKanbanConfigList } from './kanBan.thunk'
 
 type SliceState = {
   guideVisible: Model.KanBan.guideVisible
@@ -16,9 +17,11 @@ type SliceState = {
   kanbanInfo: Model.KanBan.Column[]
   kanbanInfoByGroup: Model.KanBan.Group[]
   kanbanConfig?: Model.KanbanConfig.Config
+  kanbanConfigList: Model.KanbanConfig.Config[]
 }
 
 const initialState: SliceState = {
+  kanbanConfigList: [],
   kanbanConfig: kanbanConfig,
   kanbanInfo: kanbanInfo,
   kanbanInfoByGroup: kanbanInfoByGroup,
@@ -127,6 +130,9 @@ const slice = createSlice({
         }
       })
     },
+  },
+  extraReducers(builder) {
+    builder.addCase(getKanbanConfigList.fulfilled, (state, action) => {})
   },
 })
 

@@ -37,6 +37,6 @@ declare namespace Model.KanbanConfig {
     categories: Category[]
   }
   interface Config extends ConfigListItem {
-    columns: Column[]
+    columns?: Column[]
   }
 }

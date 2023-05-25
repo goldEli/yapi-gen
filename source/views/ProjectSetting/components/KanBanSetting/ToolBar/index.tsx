@@ -91,7 +91,11 @@ const ToolBar: React.FC<ToolBarProps> = props => {
           operation
           onDefault={key => {}}
           onEdit={key => {
-            dispatch(openSaveAsViewModel(Number(key)))
+            dispatch(
+              openSaveAsViewModel({
+                id: Number(key),
+              }),
+            )
           }}
           onCreateView={() => {
             dispatch(openSaveAsViewModel())
@@ -100,21 +104,28 @@ const ToolBar: React.FC<ToolBarProps> = props => {
         <Btn
           onClick={() => {
             if (current?.key) {
-              dispatch(openSaveAsViewModel(Number(current.key)))
+              dispatch(
+                openSaveAsViewModel({
+                  id: Number(current.key),
+                }),
+              )
             }
           }}
         >
           另存为
         </Btn>
         <Btn>保存更改</Btn>
-        <SaveAsViewModal />
       </Left>
       <Right>
         <CommonButton type="icon" icon="tag-96pg0hf3" />
         <CommonButton
           onClick={() => {
             if (current?.key) {
-              dispatch(openSaveAsViewModel(Number(current.key)))
+              dispatch(
+                openSaveAsViewModel({
+                  id: Number(current.key),
+                }),
+              )
             }
           }}
           type="icon"

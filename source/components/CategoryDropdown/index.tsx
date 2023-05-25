@@ -1,10 +1,16 @@
-/* eslint-disable max-statements-per-line */
-/* eslint-disable react/jsx-handler-names */
-import React, { useState, forwardRef, useImperativeHandle } from 'react'
+import React, {
+  useState,
+  forwardRef,
+  useImperativeHandle,
+  useEffect,
+  useMemo,
+} from 'react'
 import { Select } from 'antd'
 import styled from '@emotion/styled'
 import CommonIconFont from '../CommonIconFont'
 import NoData from '../NoData'
+import { storyConfigCategoryList } from '@/services/project'
+import useCategoryList from '@/hooks/useCategoryList'
 const Wrap = styled(Select)`
   margin-bottom: 10px;
 `
@@ -30,35 +36,45 @@ const DropBox = styled.div`
   cursor: pointer;
   color: var(--primary-d2);
 `
-interface childProps {
-  name: string
-  id: number
-}
-interface item {
-  name: string
-  id: number
-  children: childProps[]
-}
 interface IProps {
   width?: number
   value?: string
-  onChangeCallBack?(data: childProps): void
+  onChangeCallBack?(data: Model.Project.Category): void
   onClearCallback?(): void
-  options: item[]
+  projectId: number
+  is_select: number
 }
-const CategoryDrop = (props: IProps) => {
+const CategoryDropdown = (props: IProps) => {
   const [isOpen, setIsOpen] = useState(false)
-  const { options, onClearCallback, onChangeCallBack } = props
+  const { onClearCallback, onChangeCallBack, projectId, is_select } = props
+  const [options, setOptions] = useState<Model.Project.CategoryList[]>([])
+  const { getTypeCategory } = useCategoryList()
   const toggleOpen = () => {
     setIsOpen(!isOpen)
   }
+  const init = async () => {
+    const params = { projectId, is_select }
+    const res = await storyConfigCategoryList(params)
+    const data = getTypeCategory(res.list, 'work_type')
+    console.log(data)
+    if (!data) {
+      return
+    }
+    setOptions(data)
+  }
+
+  const memoProjectId = useMemo(() => projectId, [])
+  useEffect(() => {
+    init()
+  }, [memoProjectId])
+
   return (
     <Wrap
       value={props.value ?? ''}
       placeholder="选择类别"
       dropdownRender={() => {
         const menu = options?.map(item => (
-          <div key={item.name}>
+          <div key={item.name} className="rc-virtual-list">
             <TypeBox>{item.name}</TypeBox>
             {item.children.map(item => (
               <CategoryBox
@@ -67,12 +83,7 @@ const CategoryDrop = (props: IProps) => {
               >
                 <span>
                   {' '}
-                  <img
-                    style={{ width: '18px' }}
-                    src={
-                      'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png'
-                    }
-                  />
+                  <img style={{ width: '18px' }} src={item.attachmentPath} />
                   <span
                     style={{
                       color:
@@ -94,7 +105,7 @@ const CategoryDrop = (props: IProps) => {
         ))
         return <DropBox>{menu ? menu : <NoData></NoData>}</DropBox>
       }}
-      style={{ width: props.width ?? 300 }}
+      style={{ width: props.width ?? '100%' }}
       open={isOpen}
       onClick={toggleOpen}
       allowClear
@@ -105,4 +116,4 @@ const CategoryDrop = (props: IProps) => {
     ></Wrap>
   )
 }
-export default forwardRef(CategoryDrop)
+export default forwardRef(CategoryDropdown)

@@ -35,6 +35,7 @@ import CustomSelect from '@/components/CustomSelect'
 import { getMessage } from '@/components/Message'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import CommonIconFont from '@/components/CommonIconFont'
+import NewAddShowList from './NewAddShowList'
 
 const { DirectoryTree } = Tree
 const ModalHeader = styled.div`
@@ -78,17 +79,6 @@ const LeftWrap = styled.div`
   border-right: 1px solid var(--neutral-n6-d1);
 `
 
-const TreeLine = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 40px 0 15px;
-  height: 40px;
-  transition: all 0.3s;
-  :hover {
-    background-color: #f6f7f9;
-  }
-`
 const Tabs = styled.div`
   width: 270px;
   height: 24px;
@@ -227,90 +217,6 @@ const TreeStyle = styled(DirectoryTree)`
 `
 const SelectStyle = styled(CustomSelect)``
 
-const NewTree = (props: any) => {
-  const { selectKeys } = props
-
-  const tap = (id: any) => {
-    const tapDatas = props.treeData?.children.find((k: any) => id === k.id)
-
-    props.getTapData(tapDatas)
-  }
-
-  const choose = (item: any) => {
-    props.setKeys(item)
-  }
-
-  return (
-    <div>
-      {props.treeData?.children.map((i: any) => {
-        if (i.children && i.children.length >= 1) {
-          return (
-            <TreeLine key={i.id}>
-              <div>
-                <Checkbox
-                  checked={
-                    i.children.length > 0 &&
-                    i.children.every((item: any) => {
-                      return selectKeys
-                        .map((i: { id: any }) => i.id)
-                        .includes(item.id)
-                    })
-                  }
-                  indeterminate={
-                    i.children.length > 0 &&
-                    i.children.some((item: any) =>
-                      selectKeys
-                        .map((i: { id: any }) => i.id)
-                        .includes(item.id),
-                    )
-                  }
-                >
-                  <div
-                    onClick={() => choose(i)}
-                    style={{ display: 'flex', alignItems: 'end' }}
-                  >
-                    部门-- {i.name}
-                  </div>
-                </Checkbox>
-              </div>
-
-              {i.children && i.children.length >= 1 ? (
-                <CommonIconFont
-                  onClick={() =>
-                    i.children && i.children.length >= 1 ? tap(i.id) : null
-                  }
-                  type="right"
-                />
-              ) : null}
-            </TreeLine>
-          )
-        }
-      })}
-      {/* 成员渲染 */}
-      {props.treeData?.staffs.map((i: any) => {
-        return (
-          <TreeLine key={i.id}>
-            <div>
-              <Checkbox
-                checked={selectKeys
-                  .map((i: { id: any }) => i.id)
-                  .includes(i.id)}
-              >
-                <div
-                  onClick={() => choose(i)}
-                  style={{ display: 'flex', alignItems: 'end' }}
-                >
-                  成员-- {i.name}
-                </div>
-              </Checkbox>
-            </div>
-          </TreeLine>
-        )
-      })}
-    </div>
-  )
-}
-
 interface ModalProps {
   width?: number
   isVisible: boolean
@@ -351,6 +257,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
       key: '2',
     },
   ])
+
   const [tabsActive, setTabsActive] = useState(0)
   const [showTreeData, setShowTreeData] = useState<any>()
   const [treeData, setTreeData] = useState<any>()
@@ -362,7 +269,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
     setSearchVal('')
     setCheckedKeys([])
   }
-
+  console.log(tabsActive)
   useEffect(() => {
     if (props.isVisible) {
       onInit()
@@ -377,7 +284,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
     }
   }, [props.isVisible])
   // 勾选后获取到成员
-  let checkdFilterDataList: any = []
+  const checkdFilterDataList: any = []
   const checkdFilterData = (data: any) => {
     for (const i in data) {
       if (data[i]?.staffs?.length >= 1) {
@@ -446,7 +353,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
       },
     })
     setTreeData(res)
-    // setShowTreeData(res)
+    setShowTreeData({ children: res, staffs: [] })
     const data: any = []
     res.forEach((el: any) => {
       el.children.forEach((item: any) => {
@@ -460,11 +367,11 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
 
   useEffect(() => {
     if (tabsActive === 0 && props.isVisible) {
-      getCompany()
-      //   getTeam()
-    } else if (tabsActive === 1 && props.isVisible) {
-      //   getCompany()
+      // getCompany()
       getTeam()
+    } else if (tabsActive === 1 && props.isVisible) {
+      getCompany()
+      // getTeam()
     }
   }, [tabsActive, props.isVisible])
   useEffect(() => {
@@ -673,7 +580,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
 
   // 辅助函数，用于比较两个对象是否相等
 
-  //处理数据无children解析为key作为右边
+  // 处理数据无children解析为key作为右边
   const getNotHaveChildBykeys = (keys: any) => {
     console.log('选中的item-无children', keys)
     const isHave = personData.map((i: { id: any }) => i.id).includes(keys.id)
@@ -684,7 +591,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
       setPersonData([...personData, keys])
     }
   }
-  //处理数据有children解析为key作为右边
+  // 处理数据有children解析为key作为右边
 
   const getHaveChildBykeys = (keys: any) => {
     console.log('选中的item-有children', keys)
@@ -713,14 +620,12 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
 
     if (personData.length < 1) {
       setPersonData(newData)
+    } else if (isEquals) {
+      setPersonData([])
     } else {
-      if (isEquals) {
-        setPersonData([])
-      } else {
-        console.log(compareArrays(personData, newData))
+      console.log(compareArrays(personData, newData))
 
-        setPersonData(compareArrays(personData, newData))
-      }
+      setPersonData(compareArrays(personData, newData))
     }
   }
 
@@ -794,7 +699,10 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
               <Breadcrumb>
                 <Breadcrumb.Item
                   onClick={() => {
-                    setShowTreeData({ children: treeData2, staffs: [] })
+                    setShowTreeData({
+                      children: tabsActive === 1 ? treeData2 : treeData,
+                      staffs: [],
+                    })
                     active.current = []
                   }}
                 >
@@ -850,7 +758,8 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
                 {t('commonModal.checkBoxTitle')}
               </Checkbox>
             </Row> */}
-            <NewTree
+            <NewAddShowList
+              isDe={tabsActive === 1}
               selectKeys={personData}
               setKeys={setKeys}
               getTapData={getTapData}

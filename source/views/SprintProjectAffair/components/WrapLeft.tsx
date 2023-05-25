@@ -262,7 +262,9 @@ const TreeItem = (props: any) => {
       {props.pid === 0 ||
       getIsPermission(
         projectInfo?.projectPermissions,
-        'b/project/story/class',
+        projectInfo.projectType === 1
+          ? 'b/project/story/class'
+          : 'b/project/transaction/class',
       ) ? (
         ''
       ) : (

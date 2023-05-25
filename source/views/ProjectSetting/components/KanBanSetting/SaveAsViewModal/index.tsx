@@ -69,11 +69,14 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
   }
 
   const title = React.useMemo(() => {
+    if (saveAsViewModelInfo.title) {
+      return saveAsViewModelInfo.title
+    }
     if (saveAsViewModelInfo.viewItem) {
       return '编辑视图'
     }
     return '另存为视图'
-  }, [saveAsViewModelInfo.viewItem])
+  }, [saveAsViewModelInfo])
 
   return (
     <CommonModal

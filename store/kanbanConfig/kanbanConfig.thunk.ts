@@ -6,15 +6,33 @@ import { getMessage } from '@/components/Message'
 
 const name = 'KanbanConfig'
 
+// 看板配置列表
+export const getKanbanConfigList = createAsyncThunk(
+  `${name}/getKanbanConfigList`,
+  async (param: API.KanbanConfig.GetKanbanConfigList.Params) => {
+    const res = await services.kanbanConfig.getKanbanConfigList(param)
+    return res.data
+  },
+)
+
 // 属性看板
 export const onRefreshKanBan = () => async (dispatch: AppDispatch) => {}
 
 export const openSaveAsViewModel =
-  (id?: Model.KanbanConfig.ConfigListItem['id']) =>
+  (options?: {
+    id?: Model.KanbanConfig.ConfigListItem['id']
+    title?: string
+  }) =>
   async (dispatch: AppDispatch) => {
     const { viewList } = store.getState()?.KanbanConfig
-    const viewItem = viewList?.find(item => item.id === id)
-    dispatch(setSaveAsViewModelInfo({ visible: true, viewItem }))
+    const viewItem = viewList?.find(item => item.id === options?.id)
+    dispatch(
+      setSaveAsViewModelInfo({
+        visible: true,
+        viewItem,
+        title: options?.title,
+      }),
+    )
   }
 
 export const closeSaveAsViewModel = () => async (dispatch: AppDispatch) => {

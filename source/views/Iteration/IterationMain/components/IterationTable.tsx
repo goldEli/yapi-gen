@@ -222,23 +222,23 @@ const IterationTable = (props: Props) => {
     onUpdate: props?.onUpdate,
   })
 
-  const hasEdit = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/story/update',
-  )
-  const hasDel = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/story/delete',
-  )
-
   const hasCreate = getIsPermission(
     projectInfo?.projectPermissions,
-    'b/story/save',
+    projectInfo.projectType === 1 ? 'b/story/save' : 'b/transaction/save',
   )
 
   const hasBatch = getIsPermission(
     projectInfo?.projectPermissions,
-    'b/story/batch',
+    projectInfo.projectType === 1 ? 'b/story/batch' : 'b/transaction/batch',
+  )
+
+  const hasEdit = getIsPermission(
+    projectInfo?.projectPermissions,
+    projectInfo.projectType === 1 ? 'b/story/update' : 'b/transaction/update',
+  )
+  const hasDel = getIsPermission(
+    projectInfo?.projectPermissions,
+    projectInfo.projectType === 1 ? 'b/story/delete' : 'b/transaction/delete',
   )
 
   //  点击批量
@@ -373,8 +373,6 @@ const IterationTable = (props: Props) => {
       }),
     )
   }
-
-  console.log(hasCreate)
 
   return (
     <Content

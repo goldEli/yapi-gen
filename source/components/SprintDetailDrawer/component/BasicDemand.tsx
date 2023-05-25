@@ -2,11 +2,7 @@
 /* eslint-disable react/jsx-no-leaked-render */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
-import {
-  getCategoryConfigList,
-  updatePriority,
-  updateTableParams,
-} from '@/services/demand'
+import { getCategoryConfigList } from '@/services/demand'
 import { getCustomNormalValue } from '@/tools'
 import ParentDemand from '@/views/Demand/components/ParentDemand'
 import { useSelector } from '@store/index'
@@ -31,6 +27,10 @@ import {
 import CommonButton from '@/components/CommonButton'
 import ChangePriorityPopover from '@/components/ChangePriorityPopover'
 import IconFont from '@/components/IconFont'
+import {
+  updateSprintPriority,
+  updateSprintTableParams,
+} from '@/services/sprint'
 
 interface Props {
   detail?: any
@@ -64,12 +64,16 @@ const BasicDemand = (props: Props) => {
   const { userInfo } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
   const [canOperationKeys, setCanOperationKeys] = useState<any>({})
-  const { demandDetailDrawerProps } = useSelector(store => store.demand)
+  const { sprintDetailDrawer } = useSelector(store => store.sprint)
 
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
     projectInfo.projectPermissions?.filter(
-      (i: any) => i.identity === 'b/story/update',
+      (i: any) =>
+        i.identity ===
+        (projectInfo.projectType === 1
+          ? 'b/story/update'
+          : 'b/transaction/update'),
     )?.length > 0
 
   // 修改进度
@@ -85,7 +89,7 @@ const BasicDemand = (props: Props) => {
         otherParams: { schedule },
       }
       try {
-        await updateTableParams(obj)
+        await updateSprintTableParams(obj)
         props.onUpdate?.()
       } catch (error) {
         //
@@ -95,8 +99,8 @@ const BasicDemand = (props: Props) => {
 
   const onChangeState = async (item: any) => {
     try {
-      await updatePriority({
-        demandId: props.detail.id,
+      await updateSprintPriority({
+        sprintId: props.detail.id,
         priorityId: item.priorityId,
         projectId: props.detail.projectId,
       })
@@ -225,7 +229,7 @@ const BasicDemand = (props: Props) => {
           defaultText={defaultValues?.defaultText}
           value={defaultValues.valueType || null}
           onUpdate={props.onUpdate}
-          isMineOrHis={demandDetailDrawerProps?.isMineOrHis}
+          isMineOrHis={sprintDetailDrawer.params?.isMineOrHis}
         >
           {defaultValues.defaultHtml}
         </TableQuickEdit>
@@ -338,7 +342,7 @@ const BasicDemand = (props: Props) => {
         isCustom
         remarks={item?.remarks}
         onUpdate={props.onUpdate}
-        isMineOrHis={demandDetailDrawerProps?.isMineOrHis}
+        isMineOrHis={sprintDetailDrawer.params?.isMineOrHis}
       >
         <span>
           {getCustomNormalValue(
@@ -357,7 +361,7 @@ const BasicDemand = (props: Props) => {
   }, [props.isOpen, props.detail])
 
   return (
-    <div>
+    <div style={{ width: '100%' }}>
       <Label>{t('newlyAdd.basicInfo')}</Label>
       {notFoldList?.map((i: any) => {
         return (

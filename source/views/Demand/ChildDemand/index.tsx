@@ -231,11 +231,11 @@ const ChildDemand = () => {
 
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
-    'b/story/update',
+    projectInfo.projectType === 1 ? 'b/story/update' : 'b/transaction/update',
   )
   const hasDel = getIsPermission(
     projectInfo?.projectPermissions,
-    'b/story/delete',
+    projectInfo.projectType === 1 ? 'b/story/delete' : 'b/transaction/delete',
   )
 
   // 点击编辑
@@ -314,8 +314,10 @@ const ChildDemand = () => {
         onConfirm={onDeleteConfirm}
       />
       <Operation>
-        {getIsPermission(projectInfo?.projectPermissions, 'b/story/save') ||
-        projectInfo?.status !== 1 ? (
+        {getIsPermission(
+          projectInfo?.projectPermissions,
+          projectInfo.projectType === 1 ? 'b/story/save' : 'b/transaction/save',
+        ) || projectInfo?.status !== 1 ? (
           <div />
         ) : (
           <CommonButton

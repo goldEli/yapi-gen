@@ -70,18 +70,18 @@ const DemandWrap = (props: Props) => {
   const [isSpinning, setIsSpinning] = useState(false)
   const [openDemandDetail] = useOpenDemandDetail()
 
+  const hasCreate = getIsPermission(
+    projectInfo?.projectPermissions,
+    projectInfo.projectType === 1 ? 'b/story/save' : 'b/transaction/save',
+  )
+
   const hasEdit = getIsPermission(
     projectInfo?.projectPermissions,
-    'b/story/update',
+    projectInfo.projectType === 1 ? 'b/story/update' : 'b/transaction/update',
   )
   const hasDel = getIsPermission(
     projectInfo?.projectPermissions,
-    'b/story/delete',
-  )
-
-  const hasCreate = getIsPermission(
-    projectInfo?.projectPermissions,
-    'b/story/save',
+    projectInfo.projectType === 1 ? 'b/story/delete' : 'b/transaction/delete',
   )
 
   const getList = async (
