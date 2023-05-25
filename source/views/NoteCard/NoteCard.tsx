@@ -45,7 +45,7 @@ const NoteCard = (props: any) => {
           <ColorBtn onClick={() => props.onRevocation(2)}>
             <CommonIconFont type="return" /> <span>撤回</span>
           </ColorBtn>
-          <ColorBtn>
+          <ColorBtn onClick={() => props.onShowDetail()}>
             <CommonIconFont type="file-text" /> <span>查看详情</span>
           </ColorBtn>
         </Wrap2>

@@ -88,6 +88,8 @@ const StaffManagement = () => {
   const [t] = useTranslation()
   asyncSetTtile(t('title.b5'))
   const dispatch = useDispatch()
+  const [memberVisible, setMemberVisible] = useState(false)
+  const [detailVisible, setDetailVisible] = useState(false)
   const { userInfo, isRefresh } = useSelector(store => store.user)
   const { menuPermission } = useSelector(store => store.user)
   const [isShow, setIsShow] = useState<boolean>(false)
@@ -416,6 +418,14 @@ const StaffManagement = () => {
     })
     console.log(id)
   }
+
+  const onShowDetail = () => {
+    setDetailVisible(true)
+  }
+  const onHandleOk = (datas: any) => {
+    console.log(datas)
+  }
+
   return (
     <PermissionWrap
       auth="/AdminManagement/StaffManagement"
@@ -426,12 +436,15 @@ const StaffManagement = () => {
       <DeleteConfirmModal />
       <CreateNoteModal
         onClose={() => setVisible(false)}
-        onHandleOk={() => setVisible(false)}
+        onHandleOk={onHandleOk}
         isVisible={visible}
       />
 
-      <MemberModal />
-      <NoteDetailDrawer />
+      <MemberModal isVisible={memberVisible} />
+      <NoteDetailDrawer
+        onCancel={() => setDetailVisible(false)}
+        isVisible={detailVisible}
+      />
       <div
         style={{
           display: 'flex',
@@ -517,7 +530,12 @@ const StaffManagement = () => {
           scrollableTarget="scrollableDiv"
         >
           {list.map((i: any) => (
-            <NoteCard onDel={onDel} onRevocation={onRevocation} key={i} />
+            <NoteCard
+              onDel={onDel}
+              onShowDetail={onShowDetail}
+              onRevocation={onRevocation}
+              key={i}
+            />
           ))}
         </InfiniteScroll>
       </div>

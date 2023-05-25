@@ -77,6 +77,7 @@ const NoteDetailDrawer = (props: any) => {
 
   // 关闭弹窗
   const onCancel = () => {
+    props.onCancel()
     // 更新List页面
   }
 

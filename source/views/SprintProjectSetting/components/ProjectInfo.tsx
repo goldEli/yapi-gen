@@ -123,7 +123,7 @@ const ProjectInfo = () => {
   asyncSetTtile(`${t('title.a1')}【${projectInfo.name}】`)
   localStorage.setItem('memberId', projectInfo.id)
   const dispatch = useDispatch()
-  const [value, setValue] = useState<string | undefined>('')
+  const [value, setValue] = useState<any>('')
   return (
     <Wrap>
       <div style={{ width: '400px' }}>
@@ -133,8 +133,7 @@ const ProjectInfo = () => {
           }}
           value={value}
           onChangeCallBack={data => {
-            console.log(data)
-            setValue(data.name)
+            setValue(data.id)
           }}
           projectId={605}
           is_select={2}

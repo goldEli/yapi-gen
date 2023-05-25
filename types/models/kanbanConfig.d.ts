@@ -28,6 +28,7 @@ declare namespace Model.KanbanConfig {
     // 图片地址
     attachment_path: string
     status?: Status[]
+    project_id?: number
   }
   interface Column {
     id: number

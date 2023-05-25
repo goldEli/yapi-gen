@@ -7,6 +7,39 @@ import { getParamsValueByKey } from '@/tools'
 import { produce } from 'immer'
 
 const name = 'KanbanConfig'
+// 分类列表
+export const getCategoryList = createAsyncThunk(
+  `${name}/getCategoryList`,
+  async (
+    params: Pick<API.KanbanConfig.GetCategoryList.Params, 'project_id'>,
+  ) => {
+    const res = await services.kanbanConfig.getCategoryList({
+      project_id: params.project_id,
+      is_select: 2,
+    })
+    return res.data
+  },
+)
+
+// 获取未分配状态列表
+export const getKanbanConfigRemainingStatus = createAsyncThunk(
+  `${name}/getKanbanConfigRemainingStatus`,
+  async (params: API.KanbanConfig.GetKanbanConfigRemainingStatus.Params) => {
+    const res = await services.kanbanConfig.getKanbanConfigRemainingStatus(
+      params,
+    )
+    return res.data
+  },
+)
+
+export const getKanbanConfig = createAsyncThunk(
+  `${name}/getKanbanConfig`,
+  async (params: API.KanbanConfig.GetKanbanConfig.Params) => {
+    const res = await services.kanbanConfig.getKanbanConfig(params)
+    return res.data.columns
+  },
+)
+
 // 修改看板配置
 export const updateKanbanConfig =
   (params: API.KanbanConfig.UpdateKanbanConfig.Params) =>
@@ -19,6 +52,21 @@ export const updateKanbanConfig =
       }),
     )
   }
+
+// 修改看板配置(包含列)
+export const saveKanbanConfig = () => async (dispatch: AppDispatch) => {
+  const { viewList, columnList } = store.getState().KanbanConfig
+  const checked = viewList?.find(item => item.check)
+  if (!checked) {
+    throw Error('params error')
+  }
+  const params: API.KanbanConfig.UpdateKanbanConfig.Params = {
+    ...checked,
+    columns: columnList,
+  }
+  const res = await services.kanbanConfig.updateKanbanConfig(params)
+  getMessage({ type: 'success', msg: '保存成功！' })
+}
 
 // 删除看板配置
 export const deleteKanbanConfig =
@@ -36,38 +84,41 @@ export const deleteKanbanConfig =
 // 看板配置列表
 export const getKanbanConfigList = createAsyncThunk(
   `${name}/getKanbanConfigList`,
-  async (param: API.KanbanConfig.GetKanbanConfigList.Params) => {
+  async (param: API.KanbanConfig.GetKanbanConfigList.Params, { dispatch }) => {
     const res = await services.kanbanConfig.getKanbanConfigList(param)
     const { viewList } = store.getState().KanbanConfig
     const currentCheck = viewList?.find(
       item => res.data.some(i => i.id === item.id) && item.check,
     )
-    if (currentCheck) {
-      return res.data.map(item => {
-        if (currentCheck.id === item.id) {
-          return {
-            ...item,
-            check: true,
-          }
-        }
-        return {
-          ...item,
-          check: false,
-        }
-      })
-    }
-    return res.data.map((item, idx) => {
-      if (idx === 0) {
-        return {
-          ...item,
-          check: true,
-        }
+    const ret = produce(res.data, draft => {
+      // 如果当前没有选中的，默认第一个选中
+      if (!currentCheck && draft.length) {
+        draft[0].check = true
+        return
       }
-      return {
-        ...item,
-        check: false,
+      // 新列表恢复选中状态
+      for (const item of draft) {
+        if (currentCheck && currentCheck.id === item.id) {
+          item.check = true
+          break
+        }
       }
     })
+
+    // 更新相关数据
+    const checkedViewListItem = ret.find(item => item.check)
+    if (!checkedViewListItem) {
+      return
+    }
+    const params = {
+      project_id: checkedViewListItem.project_id,
+      id: checkedViewListItem.id,
+    }
+    dispatch(getKanbanConfigRemainingStatus(params))
+    dispatch(getKanbanConfig(params))
+    dispatch(getCategoryList({ project_id: params.project_id }))
+
+    return ret
   },
 )
 
