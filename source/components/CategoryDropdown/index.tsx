@@ -8,29 +8,14 @@ import useCategoryList from '@/hooks/useCategoryList'
 const Wrap = styled(Select)`
   margin-bottom: 10px;
 `
-const TypeBox = styled.div`
-  color: var(--neutral-n3);
-  font-size: var(--font12);
-  margin-bottom: 6px;
-`
-const CategoryBox = styled.div`
-  color: var(--neutral-n2);
-  font-size: var(--font14);
-  height: 32px;
+const LabelBox = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  img {
-    margin-right: 4px;
-    vertical-align: sub;
+  /* border: 1px solid;s */
+  height: 32px;
+  span {
+    margin-left: 4px;
   }
-`
-const DropBox = styled.div`
-  padding: 6px 16px;
-  cursor: pointer;
-  color: var(--primary-d2);
-  max-height: 400px;
-  overflow-y: auto;
 `
 interface IProps {
   width?: number
@@ -41,92 +26,86 @@ interface IProps {
   is_select: number
 }
 const CategoryDropdown = (props: IProps) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const containerRef = useRef<any>(null)
-  const { onClearCallback, onChangeCallBack, projectId, is_select } = props
+  const { onClearCallback, onChangeCallBack, projectId, is_select, value } =
+    props
+
   const [options, setOptions] = useState<Model.Project.CategoryList[]>([])
+
+  const memoProjectId = useMemo(() => projectId, [])
+
   const { getTypeCategory } = useCategoryList()
-  const toggleOpen = () => {
-    setIsOpen(!isOpen)
-  }
+
   const init = async () => {
     const params = { projectId, is_select }
     const res = await storyConfigCategoryList(params)
-    const data = getTypeCategory(res.list, 'work_type')
-    console.log(data)
-    if (!data) {
+    let { list } = res
+    list = list.map((item: { name: any }) => {
+      return { ...item, labelName: item.name }
+    })
+    const data = getTypeCategory(list, 'work_type')
+    const options = getOptions(data)
+    if (!options) {
       return
     }
-    setOptions(data)
+    setOptions(options)
   }
 
-  const memoProjectId = useMemo(() => projectId, [])
   useEffect(() => {
     init()
   }, [memoProjectId])
 
-  const handleClickOutside = (event: { target: any }) => {
-    if (containerRef.current && !containerRef.current?.contains(event.target)) {
-      setIsOpen(false)
-    }
+  const LabelElement = (props: {
+    url: string | undefined
+    labelName: string | undefined
+  }) => {
+    return (
+      <LabelBox>
+        <img src={props.url} alt="" style={{ width: '18px' }} />
+        <span>{props.labelName}</span>
+      </LabelBox>
+    )
   }
-
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [])
+  const getOptions = (data: Model.Project.CategoryList[] | undefined) => {
+    data?.forEach(item => {
+      item.children.forEach(item => {
+        item.name = (
+          <LabelElement
+            url={item.attachmentPath}
+            labelName={item.labelName}
+          ></LabelElement>
+        )
+      })
+    })
+    return data
+  }
   return (
     <Wrap
-      value={props.value ?? ''}
       placeholder="选择类别"
-      dropdownRender={() => {
-        const menu = options?.map(item => (
-          <div key={item.name}>
-            <TypeBox>{item.name}</TypeBox>
-            {item.children.map(item => (
-              <CategoryBox
-                key={item.name}
-                onClick={() => onChangeCallBack && onChangeCallBack(item)}
-              >
-                <span>
-                  {' '}
-                  <img style={{ width: '18px' }} src={item.attachmentPath} />
-                  <span
-                    style={{
-                      color:
-                        props.value === item.name ? 'var(--primary-d2)' : '',
-                    }}
-                  >
-                    {item.name}
-                  </span>
-                </span>
-                {props.value === item.name && (
-                  <CommonIconFont
-                    type="check"
-                    color={props.value === item.name ? 'var(--primary-d2)' : ''}
-                  ></CommonIconFont>
-                )}
-              </CategoryBox>
-            ))}
-          </div>
-        ))
+      value={value}
+      style={{ width: 200 }}
+      onChange={(data: any) => {
+        if (!data) {
+          return
+        }
+        onChangeCallBack &&
+          onChangeCallBack({ name: data.label.props.labelName, id: data.value })
+      }}
+      showSearch
+      allowClear
+      options={options}
+      labelInValue
+      filterOption={(inputValue, option) => {
+        console.log(option)
         return (
-          <DropBox ref={containerRef} className="rc-virtual-list">
-            {menu ? menu : <NoData></NoData>}
-          </DropBox>
+          option?.labelName?.toLowerCase().indexOf(inputValue.toLowerCase()) >=
+          0
         )
       }}
-      style={{ width: props.width ?? '100%' }}
-      open={isOpen}
-      onClick={toggleOpen}
-      allowClear
+      fieldNames={{ label: 'name', value: 'id', options: 'children' }}
       onClear={() => {
-        setIsOpen(false)
         onClearCallback && onClearCallback()
       }}
     ></Wrap>
   )
 }
-export default forwardRef(CategoryDropdown)
+export default CategoryDropdown
