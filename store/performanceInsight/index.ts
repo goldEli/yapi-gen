@@ -54,11 +54,9 @@ const slice = createSlice({
       state.projectDataList = action.payload
     },
     setVisiblePerson: (state, action) => {
-      console.log(action.payload, 'action.payload')
       state.visiblePerson = action.payload
     },
     setVisibleWork: (state, action) => {
-      console.log(action.payload, 'action.payload')
       state.visibleWork = action.payload
     },
   },

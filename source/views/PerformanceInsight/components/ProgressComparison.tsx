@@ -44,8 +44,10 @@ interface Props {
   title: string
   //代表是全局还是冲刺迭代
   homeType: string
+  data: Array<Model.Sprint.WorkListItem>
 }
 const ProgressComparison = (props: Props) => {
+  console.log(props, 'props--------')
   const dispatch = useDispatch()
   const [columns, setColumns] = useState<
     Array<{
@@ -300,7 +302,7 @@ const ProgressComparison = (props: Props) => {
       },
     },
   ]
-  // 缺陷迭代和冲刺的
+  // 缺陷迭代和冲刺的全局
   const columns3 = [
     {
       dataIndex: 'user',
@@ -342,26 +344,86 @@ const ProgressComparison = (props: Props) => {
     {
       title: '待修复',
       dataIndex: 'storyPrefixKey',
+      render: (text: string, record: any) => {
+        return (
+          <div
+            style={{ display: 'flex', alignItems: 'center' }}
+            onClick={e => openDetail(e, record)}
+          >
+            {text}
+          </div>
+        )
+      },
     },
     {
       title: '修复中',
       dataIndex: 'storyPrefixKey',
+      render: (text: string, record: any) => {
+        return (
+          <div
+            style={{ display: 'flex', alignItems: 'center' }}
+            onClick={e => openDetail(e, record)}
+          >
+            {text}
+          </div>
+        )
+      },
     },
     {
       title: '已完成',
       dataIndex: 'storyPrefixKey',
+      render: (text: string, record: any) => {
+        return (
+          <div
+            style={{ display: 'flex', alignItems: 'center' }}
+            onClick={e => openDetail(e, record)}
+          >
+            {text}
+          </div>
+        )
+      },
     },
     {
       dataIndex: 'user',
       title: getTitleTips('缺陷重开', '当期重开缺陷/当期总缺陷*100%'),
+      render: (text: string, record: any) => {
+        return (
+          <div
+            style={{ display: 'flex', alignItems: 'center' }}
+            onClick={e => openDetail(e, record)}
+          >
+            {text}
+          </div>
+        )
+      },
     },
     {
       title: '缺陷重开率',
       dataIndex: 'storyPrefixKey',
+      render: (text: string, record: any) => {
+        return (
+          <div
+            style={{ display: 'flex', alignItems: 'center' }}
+            onClick={e => openDetail(e, record)}
+          >
+            {text}
+          </div>
+        )
+      },
     },
     {
       dataIndex: 'user',
       title: getTitleTips('缺陷存量', '当期未修复缺陷'),
+      render: (text: string, record: any) => {
+        return (
+          <div
+            style={{ display: 'flex', alignItems: 'center' }}
+            onClick={e => openDetail(e, record)}
+          >
+            {text}
+          </div>
+        )
+      },
     },
   ]
   useEffect(() => {
@@ -409,82 +471,17 @@ const ProgressComparison = (props: Props) => {
       <Col>
         <TitleCss>{props.title}</TitleCss>
       </Col>
-      {/* // 进展对比 Progress_iteration-迭代 Progress1冲刺 ProgressAll全局
-    //缺陷 Defect_iteration-迭代 Defect1冲刺 DefectAll全局 */}
-      {/* 迭代和冲刺的 */}
-      {(props.type === 'Progress_iteration' ||
-        props.type === 'Progress_sprint') && (
-        <div
-          style={{ display: 'flex', alignItems: 'center', padding: '0 24px' }}
-        >
-          <PersonText>完成率：30%</PersonText>
-          <Line />
-          <PersonText>新增：40项</PersonText>
-          <Line />
-          <PersonText>已完成：40项</PersonText>
-          <Line />
-          <PersonText>工作项存量：100项</PersonText>
-          <Line />
-          <PersonText>工作项重复率：100%</PersonText>
-          <Line />
-          <PersonText>存量风险：30项</PersonText>
-        </div>
-      )}
-      {/* 全局的 */}
-      {props.type === 'Progress_all' && (
-        <div
-          style={{ display: 'flex', alignItems: 'center', padding: '0 24px' }}
-        >
-          <PersonText>总完成率：30%</PersonText>
-          <Line />
-          <PersonText>当前新增：40项</PersonText>
-          <Line />
-          <PersonText>当前已完成：40项</PersonText>
-          <Line />
-          <PersonText>总工作项存量：100项</PersonText>
-          <Line />
-          <PersonText>存量风险：30项</PersonText>
-        </div>
-      )}
-      {(props.type === 'Defect_iteration' ||
-        props.type === 'Defect_sprint') && (
-        <div
-          style={{ display: 'flex', alignItems: 'center', padding: '0 24px' }}
-        >
-          <PersonText>缺陷修复率：30%</PersonText>
-          <Line />
-          <PersonText>待修复：40项</PersonText>
-          <Line />
-          <PersonText>进行中：40项</PersonText>
-          <Line />
-          <PersonText>已完成：100项</PersonText>
-          <Line />
-          <PersonText>缺陷存量：30%</PersonText>
-          <Line />
-          <PersonText>缺陷重开率：30%</PersonText>
-          <Line />
-          <PersonText>存量风险：30项</PersonText>
-        </div>
-      )}
-      {props.type === 'Defect_all' && (
-        <div
-          style={{ display: 'flex', alignItems: 'center', padding: '0 24px' }}
-        >
-          <PersonText>总缺陷修复率：30%</PersonText>
-          <Line />
-          <PersonText>待修复：40项</PersonText>
-          <Line />
-          <PersonText>进行中：40项</PersonText>
-          <Line />
-          <PersonText>已完成：100项</PersonText>
-          <Line />
-          <PersonText>缺陷存量：30%</PersonText>
-          <Line />
-          <PersonText>缺陷重开率：30%</PersonText>
-          <Line />
-          <PersonText>存量风险：30项</PersonText>
-        </div>
-      )}
+      <div style={{ display: 'flex', alignItems: 'center', padding: '0 24px' }}>
+        {props.data.map((el, index) => (
+          <>
+            <PersonText>
+              {el.name}: {el.value}
+              {el.unit}
+            </PersonText>
+            {index !== props.data.length - 1 && <Line />}
+          </>
+        ))}
+      </div>
       <TableStyle>
         <Table
           paginationShow={true}

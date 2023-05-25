@@ -512,9 +512,74 @@ export const getBugList = async (params: API.Sprint.GetDefectRatio.Params) => {
 export const getStatisticsTotal = async (
   params: API.Sprint.GetDefectRatio.Params,
 ) => {
-  const response = await http.get<any, API.Sprint.GetStatisticsTotal.Result>(
-    `getDefectRatio`,
-    params,
-  )
-  return response.data
+  // const response = await http.get<any, API.Sprint.GetStatisticsTotal.Result>(
+  //   `getDefectRatio`,
+  //   params,
+  // )
+  return {
+    work: [
+      {
+        name: '完成率',
+        value: 50,
+        unit: '%',
+        icon: 'https://agile.ifun.com/',
+      },
+      {
+        name: '新增工作项',
+        value: 40,
+        unit: '项',
+        icon: 'https://agile.ifun.com/',
+      },
+      {
+        name: '已完成工作项',
+        value: 20,
+        unit: '项',
+        icon: 'https://agile.ifun.com/',
+      },
+      {
+        name: '工作项存量',
+        value: 200,
+        unit: '项',
+        icon: 'https://agile.ifun.com/',
+      },
+      {
+        name: '存量风险',
+        value: 10,
+        unit: '项',
+        icon: 'https://agile.ifun.com/',
+      },
+    ],
+    defect: [
+      {
+        name: '缺陷修复率',
+        value: 60,
+        unit: '%',
+        icon: 'https://agile.ifun.com/',
+      },
+      {
+        name: '待修复',
+        value: 20,
+        unit: '项',
+        icon: 'https://agile.ifun.com/',
+      },
+      {
+        name: '修复中',
+        value: 20,
+        unit: '项',
+        icon: 'https://agile.ifun.com/',
+      },
+      {
+        name: '已完成',
+        value: 60,
+        unit: '项',
+        icon: 'https://agile.ifun.com/',
+      },
+      {
+        name: '缺陷存量',
+        value: 120,
+        unit: '项',
+        icon: 'https://agile.ifun.com/',
+      },
+    ],
+  }
 }
