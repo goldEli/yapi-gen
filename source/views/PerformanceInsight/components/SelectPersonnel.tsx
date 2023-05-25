@@ -166,19 +166,17 @@ const Main = (props: UserInfo) => {
             <div className="msg">管理员1</div>
           </UserInfo>
         </UserMsg>
-        {props.type}
-
-        <BtnStyle
-        // onClick={() => setIsVisible(true)}
-        >
-          {/* 快捷操作，打开创建事务的弹窗 */}
-          {(props.type === 'Progress_iteration' ||
-            props.type === 'Progress_sprint' ||
-            props.type === 'Defect_iteration' ||
-            props.type === 'Defect_sprint') && (
+        {(props.type === 'Progress_iteration' ||
+          props.type === 'Progress_sprint' ||
+          props.type === 'Defect_iteration' ||
+          props.type === 'Defect_sprint') && (
+          <BtnStyle
+          // onClick={() => setIsVisible(true)}
+          >
+            {/* 快捷操作，打开创建事务的弹窗 */}
             <span className="text">分配事务</span>
-          )}
-        </BtnStyle>
+          </BtnStyle>
+        )}
       </MainStyle1>
       <MainWrap size={32}>
         <Item onClick={() => onChangeIdx(0)} activeIdx={type === 0}>

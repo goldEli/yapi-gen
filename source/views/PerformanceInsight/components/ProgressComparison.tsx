@@ -10,6 +10,9 @@ import Table from './Table'
 import { Tooltip } from 'antd'
 import WorkItem from './WorkItem'
 import SelectPersonnel from './SelectPersonnel'
+// setVisiblePerson, setVisibleWork
+import { setVisiblePerson, setVisibleWork } from '@store/performanceInsight'
+import { useDispatch, useSelector } from '@store/index'
 // 进展对比
 const getTitleTips = (text: string, tips: string) => {
   return (
@@ -43,6 +46,7 @@ interface Props {
   homeType: string
 }
 const ProgressComparison = (props: Props) => {
+  const dispatch = useDispatch()
   const [columns, setColumns] = useState<
     Array<{
       title: string | ReactElement
@@ -53,8 +57,9 @@ const ProgressComparison = (props: Props) => {
     value: '',
     key: '',
   })
-  const [visible, setVisible] = useState<boolean>(false)
-  const [isvisible, setIsvisible] = useState<boolean>(false)
+  const { visiblePerson, visibleWork } = useSelector(
+    store => store.performanceInsight,
+  )
   const onUpdateOrderKey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
     // props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
@@ -68,8 +73,9 @@ const ProgressComparison = (props: Props) => {
         return (
           <div
             style={{ display: 'flex', alignItems: 'center' }}
-            onClick={() => {
-              setIsvisible(!isvisible)
+            onClick={(event: any) => {
+              event.stopPropagation()
+              dispatch(setVisibleWork(!visibleWork))
             }}
           >
             {text}
@@ -104,7 +110,7 @@ const ProgressComparison = (props: Props) => {
         return (
           <div
             style={{ display: 'flex', alignItems: 'center' }}
-            onClick={() => openDetail(record)}
+            onClick={e => openDetail(e, record)}
           >
             {text}
           </div>
@@ -114,10 +120,30 @@ const ProgressComparison = (props: Props) => {
     {
       title: '已完成工作项',
       dataIndex: 'storyPrefixKey',
+      render: (text: string, record: any) => {
+        return (
+          <div
+            style={{ display: 'flex', alignItems: 'center' }}
+            onClick={e => openDetail(e, record)}
+          >
+            {text}
+          </div>
+        )
+      },
     },
     {
       title: '工作项存量',
       dataIndex: 'storyPrefixKey',
+      render: (text: string, record: any) => {
+        return (
+          <div
+            style={{ display: 'flex', alignItems: 'center' }}
+            onClick={e => openDetail(e, record)}
+          >
+            {text}
+          </div>
+        )
+      },
     },
     {
       title: '工作进度',
@@ -130,10 +156,30 @@ const ProgressComparison = (props: Props) => {
     {
       dataIndex: 'user',
       title: getTitleTips('工作重复率', '审批不通过次数/全部审批次数*100%'),
+      render: (text: string, record: any) => {
+        return (
+          <div
+            style={{ display: 'flex', alignItems: 'center' }}
+            onClick={e => openDetail(e, record)}
+          >
+            {text}
+          </div>
+        )
+      },
     },
     {
       dataIndex: 'user',
       title: getTitleTips('存量风险', '（当期）超过14天未完成的工作项'),
+      render: (text: string, record: any) => {
+        return (
+          <div
+            style={{ display: 'flex', alignItems: 'center' }}
+            onClick={e => openDetail(e, record)}
+          >
+            {text}
+          </div>
+        )
+      },
     },
   ]
   //进展工作对比全局的
@@ -145,8 +191,9 @@ const ProgressComparison = (props: Props) => {
         return (
           <div
             style={{ display: 'flex', alignItems: 'center' }}
-            onClick={() => {
-              setIsvisible(!isvisible)
+            onClick={(event: any) => {
+              dispatch(setVisibleWork(!visibleWork))
+              event.stopPropagation()
             }}
           >
             {text}
@@ -181,7 +228,7 @@ const ProgressComparison = (props: Props) => {
         return (
           <div
             style={{ display: 'flex', alignItems: 'center' }}
-            onClick={() => openDetail(record)}
+            onClick={e => openDetail(e, record)}
           >
             {text}
           </div>
@@ -191,10 +238,30 @@ const ProgressComparison = (props: Props) => {
     {
       title: '当前已完成工作项',
       dataIndex: 'storyPrefixKey',
+      render: (text: string, record: any) => {
+        return (
+          <div
+            style={{ display: 'flex', alignItems: 'center' }}
+            onClick={e => openDetail(e, record)}
+          >
+            {text}
+          </div>
+        )
+      },
     },
     {
       title: '总工作项存量',
       dataIndex: 'storyPrefixKey',
+      render: (text: string, record: any) => {
+        return (
+          <div
+            style={{ display: 'flex', alignItems: 'center' }}
+            onClick={e => openDetail(e, record)}
+          >
+            {text}
+          </div>
+        )
+      },
     },
     {
       title: '总工作进度',
@@ -207,10 +274,30 @@ const ProgressComparison = (props: Props) => {
     {
       dataIndex: 'user',
       title: getTitleTips('总工作重复率', '审批不通过次数/全部审批次数*100%'),
+      render: (text: string, record: any) => {
+        return (
+          <div
+            style={{ display: 'flex', alignItems: 'center' }}
+            onClick={e => openDetail(e, record)}
+          >
+            {text}
+          </div>
+        )
+      },
     },
     {
       dataIndex: 'user',
       title: getTitleTips('存量风险', '（当期）超过14天未完成的工作项'),
+      render: (text: string, record: any) => {
+        return (
+          <div
+            style={{ display: 'flex', alignItems: 'center' }}
+            onClick={e => openDetail(e, record)}
+          >
+            {text}
+          </div>
+        )
+      },
     },
   ]
   // 缺陷迭代和冲刺的
@@ -222,8 +309,9 @@ const ProgressComparison = (props: Props) => {
         return (
           <div
             style={{ display: 'flex', alignItems: 'center' }}
-            onClick={() => {
-              setIsvisible(!isvisible)
+            onClick={(event: any) => {
+              event.stopPropagation()
+              dispatch(setVisibleWork(!visiblePerson))
             }}
           >
             {text}
@@ -300,11 +388,18 @@ const ProgressComparison = (props: Props) => {
         break
     }
   }, [])
-  const openDetail = (row: any) => {
-    setVisible(!visible)
+  const openDetail = (event: any, row: any) => {
+    event.stopPropagation()
+    dispatch(setVisiblePerson(!visiblePerson))
   }
+
   return (
-    <>
+    <div
+      style={{ height: '100%' }}
+      onClick={() => {
+        dispatch(setVisiblePerson(false)), dispatch(setVisibleWork(false))
+      }}
+    >
       <HeaderAll
         time="2023-08-08 ~ 2023-09-08"
         personData={[{ name: '123' }]}
@@ -408,22 +503,22 @@ const ProgressComparison = (props: Props) => {
       </TableStyle>
       {/* 选择人员 */}
       <WorkItem
-        visible={isvisible}
+        visible={visiblePerson}
         ids={[1, 2, 3]}
         id={2}
         onCancel={() => {
-          setIsvisible(false)
+          dispatch(setVisiblePerson(!visiblePerson))
         }}
       />
       {/* 新增工作项 */}
       <SelectPersonnel
         type={props.type}
-        visible={visible}
+        visible={visibleWork}
         ids={[1, 2, 3]}
         id={2}
-        onCancel={() => setVisible(false)}
+        onCancel={() => dispatch(setVisibleWork(!visibleWork))}
       />
-    </>
+    </div>
   )
 }
 export default ProgressComparison

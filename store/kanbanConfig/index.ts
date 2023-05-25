@@ -3,12 +3,14 @@ import { columnList, unassignStatusList } from './mockData'
 import { getId } from '@/views/ProjectSetting/components/KanBanSetting/utils'
 import { getNumberId } from './utils'
 import category from '@store/category'
+import { getKanbanConfigList } from './kanbanConfig.thunk'
 
 type SliceState = {
-  viewList?: Model.KanbanConfig.ConfigListItem[]
+  viewList?: Model.KanbanConfig.Config[]
   saveAsViewModelInfo: {
     visible: boolean
-    viewItem?: Model.KanbanConfig.ConfigListItem
+    title?: string
+    viewItem?: Model.KanbanConfig.Config
   }
   editColumnModelInfo: {
     visible: boolean
@@ -34,11 +36,11 @@ const initialState: SliceState = {
   },
   categoryVisibleInfo: [],
   viewList: [
-    { id: 1, project_id: 11, name: '看板', is_default: 1, check: true },
-    { id: 2, project_id: 11, name: '团队啥的话那就阿萨德看板', check: false },
-    { id: 3, project_id: 11, name: '日常跟进', check: false },
-    { id: 4, project_id: 11, name: '重点关注', check: false },
-    { id: 5, project_id: 11, name: '进度跟踪', check: false },
+    // { id: 1, project_id: 11, name: '看板', is_default: 1, check: true },
+    // { id: 2, project_id: 11, name: '团队啥的话那就阿萨德看板', check: false },
+    // { id: 3, project_id: 11, name: '日常跟进', check: false },
+    // { id: 4, project_id: 11, name: '重点关注', check: false },
+    // { id: 5, project_id: 11, name: '进度跟踪', check: false },
   ],
   columnList: columnList,
 
@@ -276,6 +278,11 @@ const slice = createSlice({
         }
       })
     },
+  },
+  extraReducers(builder) {
+    builder.addCase(getKanbanConfigList.fulfilled, (state, action) => {
+      state.viewList = action.payload
+    })
   },
 })
 
