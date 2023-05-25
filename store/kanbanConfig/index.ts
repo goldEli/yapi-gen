@@ -3,7 +3,10 @@ import { columnList, unassignStatusList } from './mockData'
 import { getId } from '@/views/ProjectSetting/components/KanBanSetting/utils'
 import { getNumberId } from './utils'
 import category from '@store/category'
-import { getKanbanConfigList } from './kanbanConfig.thunk'
+import {
+  getKanbanConfigList,
+  getKanbanConfigRemainingStatus,
+} from './kanbanConfig.thunk'
 
 type SliceState = {
   viewList?: Model.KanbanConfig.Config[]
@@ -283,6 +286,12 @@ const slice = createSlice({
     builder.addCase(getKanbanConfigList.fulfilled, (state, action) => {
       state.viewList = action.payload
     })
+    builder.addCase(
+      getKanbanConfigRemainingStatus.fulfilled,
+      (state, action) => {
+        state.unassignStatusList = action.payload
+      },
+    )
   },
 })
 

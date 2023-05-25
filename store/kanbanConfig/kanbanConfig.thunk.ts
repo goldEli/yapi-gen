@@ -7,6 +7,17 @@ import { getParamsValueByKey } from '@/tools'
 import { produce } from 'immer'
 
 const name = 'KanbanConfig'
+// 获取未分配状态列表
+export const getKanbanConfigRemainingStatus = createAsyncThunk(
+  `${name}/getKanbanConfigRemainingStatus`,
+  async (params: API.KanbanConfig.GetKanbanConfigRemainingStatus.Params) => {
+    const res = await services.kanbanConfig.getKanbanConfigRemainingStatus(
+      params,
+    )
+    return res.data
+  },
+)
+
 // 修改看板配置
 export const updateKanbanConfig =
   (params: API.KanbanConfig.UpdateKanbanConfig.Params) =>
@@ -42,32 +53,22 @@ export const getKanbanConfigList = createAsyncThunk(
     const currentCheck = viewList?.find(
       item => res.data.some(i => i.id === item.id) && item.check,
     )
-    if (currentCheck) {
-      return res.data.map(item => {
-        if (currentCheck.id === item.id) {
-          return {
-            ...item,
-            check: true,
-          }
-        }
-        return {
-          ...item,
-          check: false,
-        }
-      })
-    }
-    return res.data.map((item, idx) => {
-      if (idx === 0) {
-        return {
-          ...item,
-          check: true,
-        }
+    const ret = produce(res.data, draft => {
+      // 如果当前没有选中的，默认第一个选中
+      if (!currentCheck && draft.length) {
+        draft[0].check = true
+        return
       }
-      return {
-        ...item,
-        check: false,
+      // 新列表恢复选中状态
+      for (const item of draft) {
+        if (currentCheck && currentCheck.id === item.id) {
+          item.check = true
+          break
+        }
       }
     })
+
+    return ret
   },
 )
 
