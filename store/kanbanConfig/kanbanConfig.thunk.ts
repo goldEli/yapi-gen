@@ -3,6 +3,8 @@ import * as services from '@/services'
 import { AppDispatch, store } from '@store/index'
 import { modifyColumn, setEditColumnModelInfo, setSaveAsViewModelInfo } from '.'
 import { getMessage } from '@/components/Message'
+import { getParamsValueByKey } from '@/tools'
+import { produce } from 'immer'
 
 const name = 'KanbanConfig'
 
@@ -12,6 +14,11 @@ export const deleteKanbanConfig =
   async (dispatch: AppDispatch) => {
     const res = await services.kanbanConfig.deleteKanbanConfig(params)
     getMessage({ type: 'success', msg: '删除成功！' })
+    dispatch(
+      getKanbanConfigList({
+        project_id: params.project_id,
+      }),
+    )
   }
 
 // 看板配置列表
@@ -19,6 +26,22 @@ export const getKanbanConfigList = createAsyncThunk(
   `${name}/getKanbanConfigList`,
   async (param: API.KanbanConfig.GetKanbanConfigList.Params) => {
     const res = await services.kanbanConfig.getKanbanConfigList(param)
+    const { viewList } = store.getState().KanbanConfig
+    const currentCheck = viewList?.find(item => item.check)
+    if (currentCheck) {
+      return res.data.map(item => {
+        if (currentCheck.id === item.id) {
+          return {
+            ...item,
+            check: true,
+          }
+        }
+        return {
+          ...item,
+          check: false,
+        }
+      })
+    }
     return res.data.map((item, idx) => {
       if (idx === 0) {
         return {

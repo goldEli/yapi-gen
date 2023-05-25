@@ -58,8 +58,7 @@ export function getParamsValueByKey(key: string) {
   const url = new URL(window.location.href)
   const searchParams = url.searchParams
 
-  const paramValue = searchParams.get('data')
-  const params = getParamsData(paramValue)
+  const params = getParamsData(searchParams)
 
   return params[key]
 }
