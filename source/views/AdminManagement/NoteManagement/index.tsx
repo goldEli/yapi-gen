@@ -422,6 +422,10 @@ const StaffManagement = () => {
   const onShowDetail = () => {
     setDetailVisible(true)
   }
+  const onHandleOk = (datas: any) => {
+    console.log(datas)
+  }
+
   return (
     <PermissionWrap
       auth="/AdminManagement/StaffManagement"
@@ -432,7 +436,7 @@ const StaffManagement = () => {
       <DeleteConfirmModal />
       <CreateNoteModal
         onClose={() => setVisible(false)}
-        onHandleOk={() => setVisible(false)}
+        onHandleOk={onHandleOk}
         isVisible={visible}
       />
 
