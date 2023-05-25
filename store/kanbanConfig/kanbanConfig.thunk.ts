@@ -39,7 +39,9 @@ export const getKanbanConfigList = createAsyncThunk(
   async (param: API.KanbanConfig.GetKanbanConfigList.Params) => {
     const res = await services.kanbanConfig.getKanbanConfigList(param)
     const { viewList } = store.getState().KanbanConfig
-    const currentCheck = viewList?.find(item => item.check)
+    const currentCheck = viewList?.find(
+      item => res.data.some(i => i.id === item.id) && item.check,
+    )
     if (currentCheck) {
       return res.data.map(item => {
         if (currentCheck.id === item.id) {
