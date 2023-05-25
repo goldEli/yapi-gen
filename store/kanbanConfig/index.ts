@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { columnList, unassignStatusList } from './mockData'
 import { getId } from '@/views/ProjectSetting/components/KanBanSetting/utils'
 import { getNumberId } from './utils'
-import category from '@store/category'
 import {
   getCategoryList,
   getKanbanConfig,
@@ -131,19 +129,27 @@ const slice = createSlice({
       action: PayloadAction<Model.KanbanConfig.Column['name']>,
     ) {
       const kanban_config_id = state.viewList?.find(item => item.check)?.id
-      state.columnList.push({
-        id: getNumberId(state.viewList?.map(item => item.id)),
-        kanban_config_id: kanban_config_id ?? 0,
-        name: action.payload,
-        max_num: 1,
-        categories:
-          state.categoryList?.map(item => {
+      const categories = state.columnList.length
+        ? state.columnList[0].categories.map(item => {
             return {
               ...item,
               status: [],
             }
-          }) ?? [],
-      })
+          })
+        : state.categoryList?.map(item => {
+            return {
+              ...item,
+              status: [],
+            }
+          }) ?? []
+      const list = {
+        id: getNumberId(state.columnList?.map(item => item.id)),
+        kanban_config_id: kanban_config_id ?? 0,
+        name: action.payload,
+        max_num: 1,
+        categories,
+      }
+      state.columnList.push(list)
     },
     setCategoryVisibleInfo(
       state,

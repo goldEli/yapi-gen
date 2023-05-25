@@ -60,6 +60,7 @@ const Issues: React.FC<IssuesProps> = props => {
   const { issues, groupId } = props
   const droppableId = handleId(groupId ?? 0, issues?.id ?? 0)
   const { placeholderItemsLength } = usePlaceholderStatusNum(issues)
+  console.log('issues', issues?.id, placeholderItemsLength)
 
   const { checkIsDrop } = useKanBanData()
   const { movingStatus } = useSelector(store => store.KanbanConfig)
