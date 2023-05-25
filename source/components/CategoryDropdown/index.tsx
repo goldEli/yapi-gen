@@ -44,7 +44,7 @@ interface IProps {
   projectId: number
   is_select: number
 }
-const CategoryDrop = (props: IProps) => {
+const CategoryDropdown = (props: IProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const { onClearCallback, onChangeCallBack, projectId, is_select } = props
   const [options, setOptions] = useState<Model.Project.CategoryList[]>([])
@@ -116,4 +116,4 @@ const CategoryDrop = (props: IProps) => {
     ></Wrap>
   )
 }
-export default forwardRef(CategoryDrop)
+export default forwardRef(CategoryDropdown)
