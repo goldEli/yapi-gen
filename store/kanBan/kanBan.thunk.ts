@@ -2,7 +2,12 @@ import { kanbanConfig } from './data'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as services from '@/services'
 import { AppDispatch, store } from '@store/index'
-import { setSaveAsViewModelInfo, setShareModelInfo, setViewItemConfig } from '.'
+import {
+  onChangeSortByView,
+  setSaveAsViewModelInfo,
+  setShareModelInfo,
+  setViewItemConfig,
+} from '.'
 import { getMessage } from '@/components/Message'
 import { produce } from 'immer'
 import useProjectId from '@/views/KanBanBoard/hooks/useProjectId'
@@ -22,15 +27,18 @@ export const delView =
   }
 
 export const createView =
-  (params: API.Kanban.CreateView.Params) => async (dispatch: AppDispatch) => {
+  (params: Omit<API.Kanban.CreateView.Params, 'use_type'>) =>
+  async (dispatch: AppDispatch) => {
     const project_id = getParamsValueByKey('id')
-    await services.kanban.createView({
+    const res = await services.kanban.createView({
       ...params,
       config: store.getState().kanBan.viewItemConfig,
       project_id,
+      use_type: 2,
     })
     getMessage({ msg: i18n.t('common.saveSuccess') as string, type: 'success' })
-    dispatch(getStoryViewList())
+    await dispatch(getStoryViewList())
+    dispatch(onChangeSortByView(res.data.id))
   }
 
 export const updateView =

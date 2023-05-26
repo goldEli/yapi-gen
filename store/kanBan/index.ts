@@ -155,7 +155,8 @@ const slice = createSlice({
     builder.addCase(getStoryViewList.fulfilled, (state, action) => {
       state.sortByView = action.payload
 
-      const checked = state.sortByView
+      const checked = state.sortByView.find(item => item.check)
+      state.viewItemConfig = checked?.config
     })
   },
 })
