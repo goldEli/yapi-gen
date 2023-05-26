@@ -415,9 +415,41 @@ declare namespace Model.Sprint {
     departmentName: string
     positionName: string
   }
+  interface UserInfo2 {
+    id: number
+    name: string
+    avatar: string
+    department: {
+      name: string
+    }
+    position: {
+      name: string
+    }
+  }
   interface StatusInfo1 {
     value: number
     label: string
+  }
+  interface StatusInfo2 {
+    content: string
+    id: number
+  }
+  interface Total {
+    name: string
+    value: number
+    unit: string
+  }
+  interface List {
+    id: number
+    name: string
+    created_at: string | undefined
+    story_prefix_key: string | undefined
+    category_attachment: string
+    expected_start_at: string | undefined
+    expected_end_at: string | undefined
+    status: number
+    user: { name: string; avatar: string; id: number }
+    relate_users: Array<{ name: string; avatar: string; id: number }>
   }
 }
 

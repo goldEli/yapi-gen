@@ -29,7 +29,7 @@ import HightChartMainBar from './HightChartMainBar'
 import HightChartMainLine from './HightChartMainLine'
 import HightChartMainPie from './HightChartMainPie'
 import HightChartMainSpline from './HightChartMainSpline'
-import { getStatisticsTotal } from '@/services/sprint'
+import { getStatisticsTotal } from '@/services/efficiency'
 
 interface Props {
   title: string
