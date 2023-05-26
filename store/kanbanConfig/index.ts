@@ -267,7 +267,7 @@ const slice = createSlice({
         ...action.payload,
       }
     },
-    onChangeViewList(
+    setViewList(
       state,
       action: PayloadAction<Model.KanbanConfig.ConfigListItem['id']>,
     ) {
@@ -305,7 +305,7 @@ const slice = createSlice({
 const KanbanConfig = slice.reducer
 
 export const {
-  onChangeViewList,
+  setViewList,
   setSaveAsViewModelInfo,
   modifyAssignedStatus,
   modifyUnassignedStatus,
