@@ -1,13 +1,13 @@
 import React, { useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import { useDispatch, useSelector } from '@store/index'
-import { onChangeViewList } from '@store/kanbanConfig'
 
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import IconFont from '@/components/IconFont'
 import CommonButton from '@/components/CommonButton'
 import {
   deleteKanbanConfig,
+  onChangeViewList,
   openSaveAsViewModel,
   saveKanbanConfig,
   setDefaultKanbanConfig,

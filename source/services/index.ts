@@ -14,6 +14,7 @@ import * as report from './report'
 import * as sprint from './sprint'
 import * as kanban from './kanban'
 import * as kanbanConfig from './kanbanConfig'
+import * as efficiency from './efficiency'
 
 export {
   formwork,
@@ -32,4 +33,5 @@ export {
   sprint,
   kanban,
   kanbanConfig,
+  efficiency,
 }

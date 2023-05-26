@@ -252,14 +252,21 @@ const urls = {
   // 看板配置剩余状态
   getKanbanConfigRemainingStatus: '/b/project/kanban/configs/residueStatus',
   // 完成率Top10
-  getCompletionRate: 'b/efficiency/contrast/completion_rate',
+  getCompletionRate: '/b/efficiency/contrast/completion_rate',
   // 阶段缺陷占比
-  getDefectRatio: 'b/efficiency/defect_ratio',
+  getDefectRatio: '/b/efficiency/defect_ratio',
   // 缺陷趋势
-  getBugList: 'b/efficiency/member/bug/list',
+  getBugList: '/b/efficiency/member/bug/list',
   // 工作项和缺陷
-  getStatisticsTotal: 'b/efficiency/statistics/total',
-
+  getStatisticsTotal: '/b/efficiency/statistics/total',
+  // 对比列表
+  workContrastList: '/b/efficiency/member/work_contrast/list',
+  // 缺陷分析列表
+  memberBugList: '/b/efficiency/member/bug/list',
+  // 进展对比后半截弹窗
+  efficiencyMemberWorkList: '/b/efficiency/member/work_list',
+  // 缺陷分析后半截
+  efficiencyMemberDefectList: 'b/efficiency/member/defect_list',
   // 修改首页配置
   updateHomeSetting: '/b/project/change/defaultHomeMenu',
   /**
@@ -275,6 +282,15 @@ const urls = {
   getKanbanByGroup: '/b/project/kanban/storiesOfGroupBy',
   // 修改看板事务顺序
   modifyKanbanIssueSort: '/b/project/kanban/updateSort',
+  // 检查试图是否保存
+  checkUpdate: '/b/story/views/checkUpdate',
+  // 分享视图
+  shareView: '/b/story/views/share',
+
+  /**
+   * 视图管理
+   */
+  getStoryViewList: '/b/story/views/list',
 }
 export default urls
 

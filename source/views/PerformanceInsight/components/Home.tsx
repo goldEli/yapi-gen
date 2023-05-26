@@ -29,7 +29,7 @@ import HightChartMainBar from './HightChartMainBar'
 import HightChartMainLine from './HightChartMainLine'
 import HightChartMainPie from './HightChartMainPie'
 import HightChartMainSpline from './HightChartMainSpline'
-import { getStatisticsTotal } from '@/services/sprint'
+import { getStatisticsTotal } from '@/services/efficiency'
 
 interface Props {
   title: string
@@ -118,7 +118,7 @@ const Home = () => {
   const [isVisible, setIsVisible] = useState(false)
   const { save } = useSelector(store => store.performanceInsight)
   // 'iteration''sprint' 'all'
-  const [homeType, setHomeType] = useState('sprint')
+  const [homeType, setHomeType] = useState('all')
   const [workDataList, setWorkDataList] =
     useState<API.Sprint.GetStatisticsTotal.Result>()
   useEffect(() => {

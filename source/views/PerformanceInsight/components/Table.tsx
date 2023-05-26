@@ -9,8 +9,8 @@ interface Props {
     dataIndex: string
   }>
   dataSource: Array<{
-    user: string
-    id?: number
+    // user: string
+    // id?: number
   }>
   isSpinning: boolean
   data: {
@@ -22,13 +22,14 @@ interface Props {
   onChangePage: (pageNum: number, pageSize: number) => void
 }
 const Table = (props: Props) => {
+  console.log(props.dataSource, 'props')
   return (
     <>
       <ResizeTable
         isSpinning={false}
         dataWrapNormalHeight="100%"
         col={props.columns}
-        dataSource={[{ user: '123' }]}
+        dataSource={props.dataSource}
       />
       {props.paginationShow && (
         <PaginationBox

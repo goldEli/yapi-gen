@@ -1,6 +1,8 @@
 /* eslint-disable react/jsx-handler-names */
 import CommonIconFont from '@/components/CommonIconFont'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
+import MultipleAvatar from '@/components/MultipleAvatar'
+import StateTag from '@/components/StateTag'
 import { Select, Space } from 'antd'
 import Detail from './Detail'
 import DetailHeader from './DetailHeader'
@@ -12,35 +14,114 @@ import {
   MainStyle,
   UserMsg,
   UserInfo,
+  RowTableCol,
 } from './style'
 import Table from './Table'
 interface Props {
   visible: boolean
-  id: number
+  status: Array<Model.Sprint.StatusInfo1>
+  userInfo: Model.Sprint.UserInfo1
+  type: string
   ids: number[]
+  memberWorkList: API.Sprint.EfficiencyMemberWorkList.Result | undefined
+  onPageNum: (id: number) => void
   onCancel: () => void
+  onChange: (value: API.Sprint.EfficiencyMemberWorkList.Params) => void
+  statusType: string
 }
 interface UserInfo {
-  user: {
-    avatar: string
-    name: string[]
-  }
+  statusType: string
+  userInfo: Model.Sprint.UserInfo1
+  status: Array<Model.Sprint.StatusInfo1>
+  memberWorkList: API.Sprint.EfficiencyMemberWorkList.Result | undefined
+  onChange: (value: API.Sprint.EfficiencyMemberWorkList.Params) => void
 }
 const Main = (props: UserInfo) => {
+  console.log(props, 'props.status}')
   const columns = [
     {
       title: '编号',
-      dataIndex: 'user',
+      dataIndex: 'story_prefix_key',
+      render: (text: string, record: { category_attachment: string }) => {
+        return (
+          <RowTableCol>
+            <div className="text">{text}</div>
+          </RowTableCol>
+        )
+      },
     },
     {
       title: '标题',
-      dataIndex: 'user',
-      render: (text: string, record: { img: string }) => {
+      dataIndex: 'name',
+      render: (text: string, record: { category_attachment: string }) => {
+        return (
+          <RowTableCol>
+            <img style={{ width: 18 }} src={record.category_attachment} />
+            <div className="text">{text}</div>
+          </RowTableCol>
+        )
+      },
+    },
+    {
+      title: '状态',
+      dataIndex: 'status',
+      render: (text: number) => {
+        return (
+          <StateTag
+            name={text === 3 ? '进行中' : text === 2 ? '已完成' : '待办'}
+            state={text}
+          />
+        )
+      },
+    },
+    {
+      title: '处理人',
+      dataIndex: 'expected_start_at',
+      render: (
+        text: string,
+        record: { user: { avatar: string; name: string } },
+      ) => {
+        return (
+          <CommonUserAvatar
+            size="large"
+            avatar={record.user.avatar}
+            name={record.user.name}
+          />
+        )
+      },
+    },
+    {
+      title: '创建人',
+      dataIndex: 'expected_start_at',
+      render: (
+        text: string,
+        record: {
+          relate_users: Array<{ name: string; avatar: string; id: number }>
+        },
+      ) => {
         return (
           <>
-            <img src={record.img} />
-            <span>{text}</span>
+            {record.relate_users.length === 1 ? (
+              <CommonUserAvatar
+                size="large"
+                avatar={record.relate_users[0].avatar}
+                name={record.relate_users[0].name}
+              />
+            ) : (
+              <MultipleAvatar max={3} list={record.relate_users} />
+            )}
           </>
+        )
+      },
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'created_at',
+      render: (text: string, record: { category_attachment: string }) => {
+        return (
+          <RowTableCol>
+            <div className="text">{text}</div>
+          </RowTableCol>
         )
       },
     },
@@ -48,28 +129,27 @@ const Main = (props: UserInfo) => {
   return (
     <MainStyle>
       <UserMsg>
-        <CommonUserAvatar size="large" avatar={props.user.avatar} />
+        <CommonUserAvatar size="large" avatar={props.userInfo.avatar} />
         <UserInfo>
-          <div> 李四（xxxxxx@ifun.com）</div>
+          <div> {props.userInfo.name}（xxxxxx@ifun.com）</div>
           <div className="msg">
             <Space size={4}>
-              {props.user.name.map((el: string, index: number) => (
+              {/* {props.user.name.map((el: string, index: number) => (
                 <>
                   <span>{el}</span>
                   {index !== props.user.name.length - 1 && (
-                    <CommonIconFont
-                      type="right"
-                      size={14}
-                      color="var(--neutral-n3)"
-                    />
+                   
                   )}
                 </>
-              ))}
+              ))} */}
             </Space>
           </div>
         </UserInfo>
       </UserMsg>
-      <Title>待完成工作项：10项</Title>
+      <Title>
+        {props.memberWorkList?.total.name}：{props.memberWorkList?.total.value}
+        {props.memberWorkList?.total.unit}
+      </Title>
       <FilterType>
         <Select
           style={{
@@ -77,10 +157,14 @@ const Main = (props: UserInfo) => {
           }}
           placeholder={'筛选状态'}
           onChange={(newValue: any) => {
-            console.log(newValue, 'newValue')
+            props.onChange({
+              user_id: props.userInfo.id,
+              type: props.statusType,
+              status_id: newValue,
+            })
           }}
           suffixIcon={<CommonIconFont type="down" />}
-          options={[{ label: '123', value: 99 }]}
+          options={props.status}
           notFoundContent={null}
         />
         <Text>
@@ -97,7 +181,7 @@ const Main = (props: UserInfo) => {
         <Table
           paginationShow={false}
           columns={columns}
-          dataSource={[{ user: '123' }]}
+          dataSource={props.memberWorkList?.list || []}
           isSpinning={false}
           data={{
             currentPage: 2,
@@ -113,13 +197,25 @@ const Main = (props: UserInfo) => {
   )
 }
 const WorkItem = (props: Props) => {
+  console.log(props.ids, 'ids')
   return (
     <>
       <Detail
         children={
           <>
-            <DetailHeader ids={props.ids} onCancel={() => props.onCancel()} />
-            <Main user={{ avatar: '', name: ['1', '2'] }} />
+            <DetailHeader
+              ids={props.ids}
+              onCancel={() => props.onCancel()}
+              infoId={props.userInfo.id}
+              onPageNum={props.onPageNum}
+            />
+            <Main
+              statusType={props.statusType}
+              onChange={props.onChange}
+              memberWorkList={props.memberWorkList}
+              userInfo={props.userInfo}
+              status={props.status}
+            />
           </>
         }
         visible={props.visible}

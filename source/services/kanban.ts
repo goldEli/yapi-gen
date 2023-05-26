@@ -9,6 +9,20 @@ export const getKanban = async (params: API.Kanban.GetKanban.Params) => {
   return response
 }
 
+export const getStoryViewList = async (
+  params: Pick<API.Kanban.GetStoryViewList.Params, 'project_id'>,
+) => {
+  const response = await http.get<any, API.Kanban.GetStoryViewList.Result>(
+    'getStoryViewList',
+    {
+      ...params,
+      use_type: 2,
+    },
+  )
+  return response
+}
+// getStoryViewList
+
 export const createKanbanPeopleGrouping = async (
   params: API.Kanban.CreateKanbanPeopleGrouping.Params,
 ) => {

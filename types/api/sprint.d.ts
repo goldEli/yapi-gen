@@ -18,7 +18,10 @@ declare namespace API.Sprint {
     type Params = {
       projectId: number
       sprintId?: number
-      targetId: Model.Sprint.AttachTarget[] | { name: string; color: string }[]
+      targetId:
+        | Model.Sprint.AttachTarget[]
+        | { name: string; color: string }[]
+        | number
       type: string
     }
   }
@@ -217,6 +220,47 @@ declare namespace API.Sprint {
     type Result = {
       work: Array<Model.Sprint.WorkListItem>
       defect: Array<Model.Sprint.DefectListItem>
+    }
+  }
+  namespace WorkContrastList {
+    type Result = {
+      work: Array<Model.Sprint.WorkListItem>
+      list: Array<Model.Sprint.WorkDataListItem>
+      pager: {
+        total: number
+        page: number
+        pagesize: number
+      }
+    }
+  }
+  namespace MemberBugList {
+    type Result = {
+      defect: Array<Model.Sprint.WorkListItem>
+      list: Array<Model.Sprint.BugDataListItem>
+      pager: {
+        total: number
+        page: number
+        pagesize: number
+      }
+    }
+  }
+  namespace PlugSelectionUserInfo {
+    type Result = {
+      userInfo: Model.Sprint.UserInfo2
+      status: Array<Model.Sprint.StatusInfo2>
+    }
+  }
+  namespace EfficiencyMemberWorkList {
+    type Params = { user_id: number; type: string; status_id?: number }
+    type Result = {
+      total: Model.Sprint.Total
+      list: Array<Model.Sprint.List>
+    }
+  }
+  namespace CheckUpdate {
+    type Params = {
+      id: number
+      config: any
     }
   }
 }

@@ -1,6 +1,6 @@
-import urls from '@/constants/urls'
+/* eslint-disable @typescript-eslint/no-loss-of-precision */
+// eslint-disable max-lines
 import * as http from '@/tools/http'
-
 export const getSprintKanBanList = async (
   params: API.Sprint.GetSprintKanBanList.Params,
 ) => {
@@ -191,55 +191,54 @@ export const getSprintList = async (
     return {
       list: getListItem(response.data, params),
     }
-  } else {
-    return {
-      currentPage: params.page,
-      pageSize: params.pageSize,
-      total: response.data.pager?.total,
-      list: response.data.list.map((i: any) => ({
-        id: i.id,
-        name: i.name,
-        demand: i.child_story_count,
-        priority: i.priority,
-        iteration: i.iterate_name,
-        status: i.status,
-        dealName: i.users_name || '--',
-        time: i.created_at,
-        expectedStart: i.expected_start_at,
-        expectedEnd: i.expected_end_at,
-        info: i.info,
-        userIds: i.user_id,
-        iterateId: i.iterate_id,
-        parentId: i.parent_id,
-        finishTime: i.finish_at,
-        updatedTime: i.updated_at,
-        usersCopySendName: i.users_copysend_name,
-        userName: i.user_name,
-        tag: i.tag,
-        isExamine: i.verify_lock === 1,
-        category: i.category,
-        class: i.class,
-        schedule: i.schedule,
-        ...i.custom_field,
-        categoryColor: i.category_color,
-        categoryRemark: i.category_remark,
-        categoryId: i.category_id,
-        project_id: i.project_id,
-        usersNameIds: i.users_name_ids,
-        usersCopySendIds: i.users_copysend_name_ids,
-        category_attachment: i.category_attachment,
-        allChildrenCount: i.all_child_story_count,
-        allChildrenIds: i.all_child_ids,
-        children: getListItem(i.children, params) || null,
-        isExpended: params.topParentId === i.id,
-        level: 1,
-        topId: i.id,
-        categoryConfigList: i.category_config_list,
-        storyPrefixKey: i.story_prefix_key,
-        work_type: i.work_type,
-        usersInfo: i.usersInfo,
-      })),
-    }
+  }
+  return {
+    currentPage: params.page,
+    pageSize: params.pageSize,
+    total: response.data.pager?.total,
+    list: response.data.list.map((i: any) => ({
+      id: i.id,
+      name: i.name,
+      demand: i.child_story_count,
+      priority: i.priority,
+      iteration: i.iterate_name,
+      status: i.status,
+      dealName: i.users_name || '--',
+      time: i.created_at,
+      expectedStart: i.expected_start_at,
+      expectedEnd: i.expected_end_at,
+      info: i.info,
+      userIds: i.user_id,
+      iterateId: i.iterate_id,
+      parentId: i.parent_id,
+      finishTime: i.finish_at,
+      updatedTime: i.updated_at,
+      usersCopySendName: i.users_copysend_name,
+      userName: i.user_name,
+      tag: i.tag,
+      isExamine: i.verify_lock === 1,
+      category: i.category,
+      class: i.class,
+      schedule: i.schedule,
+      ...i.custom_field,
+      categoryColor: i.category_color,
+      categoryRemark: i.category_remark,
+      categoryId: i.category_id,
+      project_id: i.project_id,
+      usersNameIds: i.users_name_ids,
+      usersCopySendIds: i.users_copysend_name_ids,
+      category_attachment: i.category_attachment,
+      allChildrenCount: i.all_child_story_count,
+      allChildrenIds: i.all_child_ids,
+      children: getListItem(i.children, params) || null,
+      isExpended: params.topParentId === i.id,
+      level: 1,
+      topId: i.id,
+      categoryConfigList: i.category_config_list,
+      storyPrefixKey: i.story_prefix_key,
+      work_type: i.work_type,
+      usersInfo: i.usersInfo,
+    })),
   }
 }
 
@@ -248,7 +247,7 @@ export const getSprintInfo = async (
   params: API.Sprint.GetSprintInfo.Params,
 ) => {
   const response = await http.get<any, API.Sprint.GetSprintInfo.Result>(
-    `getSprintInfo`,
+    'getSprintInfo',
     {
       project_id: params.projectId,
       id: params.sprintId,
@@ -458,7 +457,7 @@ export const deleteInfoSprint = async (
   await http.put<any>('deleteInfoSprint', {
     project_id: Number(params.projectId),
     id: Number(params.sprintId),
-    targetId: params.targetId,
+    target_id: params.targetId,
     type: params.type,
   })
 }
@@ -495,106 +494,17 @@ export const updateSprintCategory = async (
   })
 }
 
-// 完成率Top10
-export const getCompletionRate = async (
-  params: API.Sprint.GetCompletionRate.Params,
-) => {
-  const response = await http.get<any, API.Sprint.GetCompletionRate.Result>(
-    'getCompletionRate',
+// 检查是否保存视图
+export const checkUpdates = async (params: API.Sprint.CheckUpdate.Params) => {
+  const response = await http.post('checkUpdate', params)
+  return response.data
+}
+
+// 分享视图
+export const shareView = async (params: API.Sprint.GetDefectRatio.Params) => {
+  const response = await http.post<any, API.Sprint.GetStatisticsTotal.Result>(
+    'shareView',
     params,
   )
   return response.data
-}
-// 阶段缺陷占比
-export const getDefectRatio = async (
-  params: API.Sprint.GetDefectRatio.Params,
-) => {
-  const response = await http.get<any, API.Sprint.GetDefectRatio.Result>(
-    'getDefectRatio',
-    params,
-  )
-  return response.data
-}
-// 缺陷趋势
-export const getBugList = async (params: API.Sprint.GetDefectRatio.Params) => {
-  const response = await http.get<any, API.Sprint.GetDefectRatio.Result>(
-    'getDefectRatio',
-    params,
-  )
-  return response.data
-}
-// 工作项和缺陷
-export const getStatisticsTotal = async (
-  params: API.Sprint.GetDefectRatio.Params,
-) => {
-  // const response = await http.get<any, API.Sprint.GetStatisticsTotal.Result>(
-  //   `getDefectRatio`,
-  //   params,
-  // )
-  return {
-    work: [
-      {
-        name: '完成率',
-        value: 50,
-        unit: '%',
-        icon: 'https://agile.ifun.com/',
-      },
-      {
-        name: '新增工作项',
-        value: 40,
-        unit: '项',
-        icon: 'https://agile.ifun.com/',
-      },
-      {
-        name: '已完成工作项',
-        value: 20,
-        unit: '项',
-        icon: 'https://agile.ifun.com/',
-      },
-      {
-        name: '工作项存量',
-        value: 200,
-        unit: '项',
-        icon: 'https://agile.ifun.com/',
-      },
-      {
-        name: '存量风险',
-        value: 10,
-        unit: '项',
-        icon: 'https://agile.ifun.com/',
-      },
-    ],
-    defect: [
-      {
-        name: '缺陷修复率',
-        value: 60,
-        unit: '%',
-        icon: 'https://agile.ifun.com/',
-      },
-      {
-        name: '待修复',
-        value: 20,
-        unit: '项',
-        icon: 'https://agile.ifun.com/',
-      },
-      {
-        name: '修复中',
-        value: 20,
-        unit: '项',
-        icon: 'https://agile.ifun.com/',
-      },
-      {
-        name: '已完成',
-        value: 60,
-        unit: '项',
-        icon: 'https://agile.ifun.com/',
-      },
-      {
-        name: '缺陷存量',
-        value: 120,
-        unit: '项',
-        icon: 'https://agile.ifun.com/',
-      },
-    ],
-  }
 }

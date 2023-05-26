@@ -472,27 +472,25 @@ const ProjectMember = (props: { searchValue?: string }) => {
               setSelectRowKey('')
               setOptionsDrop(false)
             }}
+            onClick={() => {
+              setOptionsDrop(!optionsDrop)
+            }}
           >
             <span>
               {text}
               {record.id === selectRowKey && (
-                <label
-                  className={selectOptionsIcon}
-                  onClick={() => {
-                    setOptionsDrop(!optionsDrop)
-                  }}
-                >
+                <label className={selectOptionsIcon}>
                   {' '}
                   <IconFont type="down-icon" />
                 </label>
               )}
             </span>
-            {optionsDrop && record.id === selectRowKey && (
+            {optionsDrop && record.id === selectRowKey ? (
               <TableSelectOptions
                 roleName={text}
                 callBack={data => setProjectClick(data, record, index)}
               ></TableSelectOptions>
-            )}
+            ) : null}
           </OptionDropTd>
         )
       },

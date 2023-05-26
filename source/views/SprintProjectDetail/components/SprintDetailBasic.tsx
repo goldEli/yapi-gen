@@ -14,13 +14,15 @@ const SprintDetailBasic = () => {
     dispatch(getSprintInfo({ projectId: id, sprintId }))
   }
   return (
-    <BasicDemand
-      onUpdate={onUpdate}
-      detail={sprintInfo}
-      isOpen
-      hasPadding
-      isInfoPage
-    />
+    <div style={{ width: 400 }}>
+      <BasicDemand
+        onUpdate={onUpdate}
+        detail={sprintInfo}
+        isOpen
+        hasPadding
+        isInfoPage
+      />
+    </div>
   )
 }
 

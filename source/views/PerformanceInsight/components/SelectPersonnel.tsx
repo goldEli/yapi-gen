@@ -20,11 +20,16 @@ import {
   Item,
 } from './style'
 interface Props {
-  ids: number[]
   visible: boolean
-  id: number
-  onCancel: () => void
+  status: Array<Model.Sprint.StatusInfo1>
+  userInfo: Model.Sprint.UserInfo1
   type: string
+  ids: number[]
+  memberWorkList: API.Sprint.EfficiencyMemberWorkList.Result | undefined
+  onPageNum: (id: number) => void
+  onCancel: () => void
+  onChange: (value: API.Sprint.EfficiencyMemberWorkList.Params) => void
+  statusType: string
 }
 interface UserInfo {
   type: string
@@ -242,7 +247,12 @@ const SelectPersonnel = (props: Props) => {
     <Detail
       children={
         <>
-          <DetailHeader ids={props.ids} onCancel={() => props.onCancel()} />
+          <DetailHeader
+            ids={props.ids}
+            onCancel={() => props.onCancel()}
+            infoId={props.userInfo.id}
+            onPageNum={props.onPageNum}
+          />
           <Main type={props.type} user={{ avatar: '123', name: ['1'] }} />
         </>
       }
