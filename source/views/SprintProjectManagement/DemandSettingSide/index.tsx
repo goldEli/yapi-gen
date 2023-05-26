@@ -97,6 +97,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   const dragCategoryList = useRef<Model.Project.Category[]>()
   const dragCategoryIds = useRef<number[]>()
   const { getTypeCategory } = useCategory()
+
   const tabs = [
     {
       label: t('start_using'),
@@ -182,32 +183,26 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   const onGoBack = () => {
     props.onClick()
   }
-  const arrayFlat = (array: Model.Project.CategoryList[], ids: any) => {
-    console.log('arry', array, ids)
-    let data = [...ids]
+  const arrayFlat = (
+    array: Model.Project.CategoryList[],
+    prevIndex: number,
+    nextIndex: number,
+  ) => {
+    // debugger
     let newData: Model.Project.Category[] = []
-    let newIds: number[] = []
     array.forEach(item => {
       item.children.forEach(item => {
         newData.push(item)
       })
     })
-    // debugger
     console.log(dragCategoryList.current)
     if (dragCategoryList.current) {
       newData = [...dragCategoryList.current]
-      data = newData.filter(item => data.includes(item.id)).map(item => item.id)
-      console.log(data)
     }
-    const index = newData.findIndex(item => data.includes(item.id))
-    const currentItem = newData.find(item => data.includes(item.id))
-    if (!currentItem) {
-      return
-    }
-    newData[index] = newData[index + 1]
-    newData[index + 1] = currentItem
+    const currentItem = newData[prevIndex]
+    newData[prevIndex] = newData[nextIndex]
+    newData[nextIndex] = currentItem
     dragCategoryList.current = newData
-    // dragCategoryIds.current = data
     const list = getTypeCategory(newData, 'work_type')
     if (!list) {
       return
@@ -219,12 +214,15 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
 
     console.log(newData)
   }
-  const onMove = async (data: Model.Project.Category[]) => {
-    const ids = data.map(item => item.id)
+  const onMove = async (
+    data: Model.Project.Category[],
+    prevIndex: number,
+    nextIndex: number,
+  ) => {
     if (!cacheData) {
       return
     }
-    arrayFlat(cacheData, ids)
+    arrayFlat(cacheData, prevIndex, nextIndex)
     const dataSort = data.map((el: any, index: any) => ({
       id: el.id,
       sort: index,
@@ -374,7 +372,9 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
                       updateNode(child)
                     }}
                     // TODO
-                    onMove={(data: any) => onMove(data)}
+                    onMove={(data: any, prevIndex: number, nextIndex: number) =>
+                      onMove(data, prevIndex, nextIndex)
+                    }
                   ></Dragging>
                 </MenuBox>
               </AffairTypeWrap>

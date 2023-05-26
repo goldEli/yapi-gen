@@ -63,7 +63,7 @@ const DemandSetting = () => {
     getCategoryConfigDataList?.configDataList?.length
       ? setIsNoData(true)
       : setIsNoData(false)
-  }, [])
+  }, [getCategoryConfigDataList?.configDataList])
   return (
     <PermissionWrap
       auth={
