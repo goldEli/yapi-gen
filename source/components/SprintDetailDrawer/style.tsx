@@ -170,6 +170,11 @@ export const CollapseItemContent = styled.div<{ isOpen?: boolean }>`
   padding-top: ${props => (props.isOpen ? 16 : 0)}px;
   overflow: hidden;
   transition: 0.2s;
+  position: relative;
+  .info_item_tab {
+    padding: 0;
+    margin: 0;
+  }
 `
 
 export const DrawerHeader = styled.div`

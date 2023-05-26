@@ -1,5 +1,5 @@
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
-import { useDispatch, useSelector } from '@store/index'
+import { useDispatch, useSelector, store as storeAll } from '@store/index'
 import { setSprintDetailDrawer } from '@store/sprint'
 import { Drawer, Popover, Skeleton, Space } from 'antd'
 import { DragLine, MouseDom } from '../StyleCommon'
@@ -24,11 +24,22 @@ import ChangeStatusPopover from '../ChangeStatusPopover/index'
 import StateTag from '../StateTag'
 import CommonButton from '../CommonButton'
 import { useTranslation } from 'react-i18next'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { getMessage } from '../Message'
 import DetailsSkeleton from '../DetailsSkeleton'
 import ChildSprint from '@/views/SprintProjectDetail/components/ChildSprint'
 import LinkSprint from '@/views/SprintProjectDetail/components/LinkSprint'
+import { getSprintInfo } from '@/services/sprint'
+import { getProjectInfo } from '@/services/project'
+import { setProjectInfo } from '@store/project'
+import {
+  getSprintCommentList,
+  saveSprintDetailDrawer,
+} from '@store/sprint/sprint.thunk'
+import { encryptPhp } from '@/tools/cryptoPhp'
+import SprintDetail from './component/SprintDetail'
+import BasicDemand from './component/BasicDemand'
+import CommonComment from '../CommonComment'
 
 const SprintDetailDrawer = () => {
   const normalState = {
@@ -64,7 +75,9 @@ const SprintDetailDrawer = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [demandIds, setDemandIds] = useState([])
   const [showState, setShowState] = useState<any>(normalState)
-  const { sprintDetailDrawer } = useSelector(store => store.sprint)
+  const { sprintDetailDrawer, sprintCommentList } = useSelector(
+    store => store.sprint,
+  )
   const { projectInfo } = useSelector(store => store.project)
 
   const modeList = [
@@ -74,16 +87,6 @@ const SprintDetailDrawer = () => {
     { name: '基本信息', key: 'basicInfo', content: '' },
     { name: '事务评论', key: 'demandComment', content: '' },
   ]
-
-  // 关闭弹窗
-  const onCancel = () => {
-    dispatch(
-      setSprintDetailDrawer({
-        visible: false,
-        params: {},
-      }),
-    )
-  }
 
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
@@ -127,9 +130,69 @@ const SprintDetailDrawer = () => {
     })
   }
 
+  // 获取项目详情权限
+  const getProjectData = async () => {
+    const response = await getProjectInfo({
+      projectId:
+        sprintDetailDrawer.params.project_id ??
+        sprintDetailDrawer.params.projectId,
+    })
+    dispatch(setProjectInfo(response))
+  }
+
+  // 获取事务详情
+  const getSprintDetail = async (id?: any, ids?: any) => {
+    const paramsProjectId =
+      sprintDetailDrawer.params.project_id ??
+      sprintDetailDrawer.params.projectId
+    if (sprintDetailDrawer.params?.isAllProject) {
+      getProjectData()
+    }
+    setDrawerInfo({})
+    setSkeletonLoading(true)
+    const info = await getSprintInfo({
+      projectId: paramsProjectId,
+      sprintId: id ? id : sprintDetailDrawer.params?.id,
+    })
+    info.level_tree?.push({
+      id: info.id,
+      category_id: info.category,
+      prefix_key: info.prefixKey || 0,
+      project_prefix: info.projectPrefix || '',
+      category_attachment: info.category_attachment,
+      parent_id: info.parentId || 0,
+      name: info.name,
+      work_type: 5,
+      attachment_id: 0,
+    })
+    setDrawerInfo(info)
+    setSkeletonLoading(false)
+    // 获取当前需求的下标， 用作上一下一切换
+    setCurrentIndex((ids || []).findIndex((i: any) => i === info.id))
+  }
+
+  // 关闭弹窗
+  const onCancel = () => {
+    dispatch(
+      setSprintDetailDrawer({
+        visible: false,
+        params: {},
+      }),
+    )
+    dispatch(saveSprintDetailDrawer({}))
+    setShowState(normalState)
+  }
+
   // 跳转详情页面
   const onToDetail = () => {
-    //
+    const params = encryptPhp(
+      JSON.stringify({
+        id: drawerInfo.projectId,
+        sprintId: drawerInfo.id,
+      }),
+    )
+    const url = `SprintProjectManagement/SprintProjectDetail?data=${params}`
+    window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
   }
 
   // 修改状态
@@ -139,30 +202,33 @@ const SprintDetailDrawer = () => {
 
   // 向上查找需求
   const onUpDemand = () => {
-    // const newIndex = demandIds[currentIndex - 1]
-    // if (!currentIndex) return
-    // dispatch(
-    //   saveDemandDetailDrawer({
-    //     ...demandDetailDrawerProps,
-    //     ...{ id: newIndex },
-    //   }),
-    // )
+    const newIndex = demandIds[currentIndex - 1]
+    if (!currentIndex) return
+    dispatch(
+      saveSprintDetailDrawer({
+        ...sprintDetailDrawer.params,
+        ...{ id: newIndex },
+      }),
+    )
   }
 
   // 向下查找需求
   const onDownDemand = () => {
-    // const newIndex = demandIds[currentIndex + 1]
-    // if (currentIndex === demandIds?.length - 1) return
-    // dispatch(
-    //   saveDemandDetailDrawer({
-    //     ...demandDetailDrawerProps,
-    //     ...{ id: newIndex },
-    //   }),
-    // )
+    const newIndex = demandIds[currentIndex + 1]
+    if (currentIndex === demandIds?.length - 1) return
+    dispatch(
+      saveSprintDetailDrawer({
+        ...sprintDetailDrawer.params,
+        ...{ id: newIndex },
+      }),
+    )
   }
 
   // 改变模块显示
   const onChangeShowState = (item: any) => {
+    const paramsProjectId =
+      sprintDetailDrawer.params.project_id ??
+      sprintDetailDrawer.params.projectId
     const newState = Object.assign({}, showState)
     const resState = {
       isOpen: !newState[item.key].isOpen,
@@ -171,7 +237,62 @@ const SprintDetailDrawer = () => {
     newState[item.key].dom.current.style.height = resState.isOpen ? 'auto' : 0
     newState[item.key] = resState
     setShowState(newState)
+    if (item.key === 'demandComment') {
+      // 获取评论列表
+      dispatch(
+        getSprintCommentList({
+          projectId: paramsProjectId,
+          sprintId: sprintDetailDrawer.params.id,
+          page: 1,
+          pageSize: 999,
+        }),
+      )
+    }
   }
+
+  const getKeyDown = (e: any) => {
+    if (storeAll.getState().sprint.sprintDetailDrawer.visible) {
+      if (e.keyCode === 38) {
+        //up
+        document.getElementById('upIcon')?.click()
+      }
+      if (e.keyCode === 40) {
+        //down
+        document.getElementById('downIcon')?.click()
+      }
+    }
+  }
+
+  // 删除评论确认
+  const onDeleteConmentConfirm = () => {
+    //
+  }
+
+  useEffect(() => {
+    if (sprintDetailDrawer.visible || sprintDetailDrawer.params?.id) {
+      console.log(sprintDetailDrawer, '=sprintDetailDrawersprintDetailDrawer')
+      setDemandIds(sprintDetailDrawer.params?.demandIds || [])
+      getSprintDetail('', sprintDetailDrawer.params?.demandIds || [])
+      setShowState(normalState)
+    }
+  }, [sprintDetailDrawer])
+
+  // useEffect(() => {
+  //   if (isUpdateDemand) {
+  //     setCurrentIndex(0)
+  //     setDemandIds([])
+  //     if (isDemandDetailDrawerVisible) {
+  //       getDemandDetail()
+  //     }
+  //   }
+  // }, [isUpdateDemand])
+
+  useEffect(() => {
+    document.addEventListener('keydown', getKeyDown)
+    return () => {
+      document.removeEventListener('keydown', getKeyDown)
+    }
+  }, [])
 
   return (
     <>
@@ -331,44 +452,27 @@ const SprintDetailDrawer = () => {
                     isOpen={showState[i.key].isOpen}
                   >
                     {i.key === 'detailInfo' && (
-                      <div>详细信息</div>
-                      // <DetailDemand
-                      //   detail={drawerInfo}
-                      //   onUpdate={getDemandDetail}
-                      // />
+                      <SprintDetail
+                        detail={drawerInfo}
+                        onUpdate={() => getSprintDetail('', demandIds)}
+                      />
                     )}
                     {i.key === 'childSprint' && showState[i.key].isOpen && (
                       <ChildSprint />
-                      // <ChildrenDemand
-                      //   detail={drawerInfo}
-                      //   isOpen={showState[i.key].isOpen}
-                      // />
                     )}
-                    {i.key === 'linkSprint' && (
-                      <LinkSprint />
-                      // <DemandComment
-                      //   detail={drawerInfo}
-                      //   isOpen={showState[i.key].isOpen}
-                      //   onRef={commentDom}
-                      //   isOpenInfo
-                      // />
-                    )}
+                    {i.key === 'linkSprint' && <LinkSprint />}
                     {i.key === 'basicInfo' && showState[i.key].isOpen && (
-                      <div>基本信息</div>
-                      // <BasicDemand
-                      //   detail={drawerInfo}
-                      //   isOpen={showState[i.key].isOpen}
-                      //   onUpdate={getDemandDetail}
-                      // />
+                      <BasicDemand
+                        detail={drawerInfo}
+                        isOpen={showState[i.key].isOpen}
+                        onUpdate={() => getSprintDetail('', demandIds)}
+                      />
                     )}
                     {i.key === 'demandComment' && (
-                      <div>事务评论</div>
-                      // <DemandComment
-                      //   detail={drawerInfo}
-                      //   isOpen={showState[i.key].isOpen}
-                      //   onRef={commentDom}
-                      //   isOpenInfo
-                      // />
+                      <CommonComment
+                        data={sprintCommentList}
+                        onDeleteConfirm={onDeleteConmentConfirm}
+                      />
                     )}
                   </CollapseItemContent>
                 </CollapseItem>
