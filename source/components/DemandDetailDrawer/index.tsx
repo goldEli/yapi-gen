@@ -388,7 +388,7 @@ const DemandDetailDrawer = () => {
               <ChangeStatusPopover
                 isCanOperation={isCanEdit && !drawerInfo.isExamine}
                 projectId={drawerInfo.projectId}
-                // record={drawerInfo}
+                record={drawerInfo}
                 // onChangeStatus={onChangeStatus}
               >
                 <StateTag

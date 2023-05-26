@@ -188,7 +188,7 @@ export const useDynamicColumns = (state: any) => {
           <ChangeStatusPopover
             isCanOperation={isCanEdit && !record.isExamine}
             projectId={state.projectId}
-            // record={record}
+            record={record}
             // onChangeStatus={item => state.onChangeStatus(item, record)}
           >
             <StateTag

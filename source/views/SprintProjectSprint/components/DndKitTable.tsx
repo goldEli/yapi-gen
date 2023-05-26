@@ -103,7 +103,7 @@ const DndKitTable = () => {
             // onChangeStatus={function (value: any): void {
             //   throw new Error('Function not implemented.')
             // }}
-            // record={record}
+            record={record}
           />
         )
       },

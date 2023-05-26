@@ -503,6 +503,7 @@ const SprintDetailDrawer = () => {
               <ChangeStatusPopover
                 isCanOperation={isCanEdit && !drawerInfo.isExamine}
                 projectId={drawerInfo.projectId}
+                record={drawerInfo}
                 // onChangeStatus={onChangeStatus}
               >
                 <StateTag

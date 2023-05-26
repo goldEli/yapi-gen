@@ -432,7 +432,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
           <span className="icon" onClick={onCopy}>
             <CommonIconFont type="copy" color="var(--neutral-n3)" />
           </span>
-          <ChangeStatusPopover>
+          <ChangeStatusPopover record={{}}>
             <StateTag
               name={sprintInfo.status?.status.content}
               state={

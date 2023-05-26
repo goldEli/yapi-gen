@@ -19,6 +19,7 @@ interface StatusModalProps {
   isVisible: boolean
   checkStatusItem: any
   onClose(): void
+  // onChangeStatusConfirm(value: any): void
 }
 
 const LabelComponent = (props: any) => {
@@ -274,8 +275,8 @@ const StatusModal = (props: StatusModalProps) => {
     const res = await getShapeRight({
       id: props.checkStatusItem.projectId,
       nId: props.checkStatusItem.infoId,
-      fromId: props.checkStatusItem.id,
-      toId: props.checkStatusItem.id ?? props.checkStatusItem.statusId,
+      fromId: props.checkStatusItem.fromId,
+      toId: props.checkStatusItem.id,
     })
     setConfigData(res)
     form.setFieldsValue(setValue(res))
@@ -288,9 +289,36 @@ const StatusModal = (props: StatusModalProps) => {
     setConfigData({})
   }
 
+  const confirm = async () => {
+    // const res2 = await form.validateFields()
+    // const res = JSON.parse(JSON.stringify(res2))
+    // for (const key in res) {
+    //   if (typeof res[key] === 'undefined') {
+    //     res[key] = null
+    //   }
+    // }
+    // await form.validateFields()
+    // const putData = {
+    //   projectId,
+    //   nId: myid,
+    //   toId: active,
+    //   fields: res,
+    //   verifyId: reviewerValue,
+    // }
+    // const putData2 = {
+    //   projectId: props.row.project_id,
+    //   nId: props.sid,
+    //   toId: props.row.id,
+    //   fields: res,
+    //   verifyId: reviewerValue,
+    // }
+    // await tap(props.noleft ? putData2 : putData)
+    // onClear()
+  }
+
   // 提交表单
-  const onConfirm = () => {
-    //
+  const onConfirm = async () => {
+    await confirm()
   }
 
   useEffect(() => {

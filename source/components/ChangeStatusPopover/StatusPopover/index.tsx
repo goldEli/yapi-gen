@@ -1,4 +1,3 @@
-import StateTag from '@/components/StateTag'
 import { getShapeLeft } from '@/services/demand'
 import { useEffect, useState } from 'react'
 import { Item, Items, PopoverStatusWrap } from '../style'
@@ -32,7 +31,6 @@ const StatusPopover = (props: Props) => {
       id: props.projectId,
       nId: props.id,
     })
-    console.log(res2, '=wwwww')
     setStatusList(
       res2.map((i: any) => ({
         id: i.id,
