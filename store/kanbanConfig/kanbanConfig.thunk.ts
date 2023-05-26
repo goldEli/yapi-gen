@@ -16,8 +16,8 @@ const name = 'KanbanConfig'
 export const onChangeViewList =
   (id: Model.KanbanConfig.ConfigListItem['id']) =>
   async (dispatch: AppDispatch) => {
-    dispatch(setViewList(id))
     dispatch(saveKanbanConfig())
+    dispatch(setViewList(id))
     const checked = store
       .getState()
       .KanbanConfig.viewList?.find(item => item.id === id)
@@ -61,6 +61,11 @@ export const getKanbanConfig = createAsyncThunk(
 export const updateKanbanConfig =
   (params: API.KanbanConfig.UpdateKanbanConfig.Params) =>
   async (dispatch: AppDispatch) => {
+    const { columnList } = store.getState().KanbanConfig
+    const p: API.KanbanConfig.UpdateKanbanConfig.Params = {
+      ...params,
+      columns: columnList,
+    }
     const res = await services.kanbanConfig.updateKanbanConfig(params)
     getMessage({ type: 'success', msg: '保存成功！' })
     dispatch(
