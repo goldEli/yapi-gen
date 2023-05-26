@@ -6,6 +6,8 @@ import {
   getSprintList,
   getSprintInfo,
   getSprintCommentList,
+  getRightSprintList,
+  getLeftSprintList,
 } from './sprint.thunk'
 
 type SliceState = {
@@ -27,6 +29,11 @@ type SliceState = {
   //   pageSize?: number
   //   currentPage?: number
   // }
+  rightSprintList: any[]
+  leftSprintList: {
+    list: any[]
+    unassigned_count: number
+  }
 }
 
 const initialState: SliceState = {
@@ -126,6 +133,11 @@ const initialState: SliceState = {
   // sprintList: {
   //   list: undefined,
   // },
+  rightSprintList: [],
+  leftSprintList: {
+    list: [],
+    unassigned_count: 0,
+  },
 }
 
 const slice = createSlice({
@@ -159,12 +171,24 @@ const slice = createSlice({
     ) {
       state.sprintCommentList = action.payload
     },
-    // setSprintList(state, action: PayloadAction<SliceState['sprintList']>) {
-    //   state.sprintList = {
-    //     ...state.sprintList,
-    //     ...action.payload,
-    //   }
-    // },
+    setRightSprintList(
+      state,
+      action: PayloadAction<SliceState['rightSprintList']>,
+    ) {
+      state.rightSprintList = {
+        ...state.rightSprintList,
+        ...action.payload,
+      }
+    },
+    setLeftSprintList(
+      state,
+      action: PayloadAction<SliceState['leftSprintList']>,
+    ) {
+      state.leftSprintList = {
+        ...state.leftSprintList,
+        ...action.payload,
+      }
+    },
   },
   extraReducers(builder) {
     builder.addCase(getSprintKanBanList.fulfilled, (state, action) => {
@@ -183,6 +207,12 @@ const slice = createSlice({
       console.log('action', action)
       state.projectRoleList = action.payload
     })
+    builder.addCase(getRightSprintList.fulfilled, (state, action) => {
+      state.rightSprintList = action.payload
+    })
+    builder.addCase(getLeftSprintList.fulfilled, (state, action) => {
+      state.leftSprintList = action.payload
+    })
   },
 })
 
@@ -195,6 +225,8 @@ export const {
   setSprintInfo,
   setSprintCommentList,
   // setSprintList,
+  setRightSprintList,
+  setLeftSprintList,
 } = slice.actions
 
 export default sprint

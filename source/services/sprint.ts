@@ -888,3 +888,18 @@ export const plugSelectionUserInfo = async (params: { id: number }) => {
     status: res.status.map(el => ({ label: el.content, value: el.id })),
   }
 }
+
+// 按冲刺分组的事务列表
+export const getSprintGroupList = async (
+  params: API.Sprint.SprintGroupList.Params,
+) => {
+  const response = await http.get('getSprintGroupList', params)
+  return response.data
+}
+// 冲刺左边列表
+export const getLeftSprintList = async (
+  params: API.Sprint.SprintList.Params,
+) => {
+  const response = await http.get('getLeftSprintList', params)
+  return response.data
+}

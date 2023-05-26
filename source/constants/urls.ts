@@ -282,6 +282,10 @@ const urls = {
   checkUpdate: '/b/story/views/checkUpdate',
   // 分享视图
   shareView: '/b/story/views/share',
+  // 获取按冲刺分组的事务列表
+  getSprintGroupList: '/b/sprint/groupList',
+  // 获取按冲刺分组的事务列表
+  getLeftSprintList: '/b/sprint/getList',
 }
 export default urls
 

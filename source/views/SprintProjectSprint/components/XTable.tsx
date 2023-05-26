@@ -14,7 +14,7 @@ const { Panel } = Collapse
 interface XTableProps {
   data: any
   columns: any
-  id: string
+  list: any
 }
 
 const XTableWrap = styled.div`
@@ -114,6 +114,7 @@ const PanelWrap = styled(Panel)`
 `
 
 const XTable: React.FC<XTableProps> = props => {
+  const { data, list } = props
   const [pageObj, setPageObj] = useState<any>({})
   const [sprintModal, setSprintModal] = useState<{
     visible: boolean
@@ -125,7 +126,7 @@ const XTable: React.FC<XTableProps> = props => {
 
   return (
     <>
-      <Droppable key={props.id} droppableId={props.id}>
+      <Droppable key={data.id} droppableId={data.id}>
         {provided => {
           return (
             <XTableWrap ref={provided.innerRef} {...provided.droppableProps}>
@@ -160,9 +161,14 @@ const XTable: React.FC<XTableProps> = props => {
                       }}
                     >
                       <div>
-                        <span className="title">三月第一周的冲刺</span>
+                        <span className="title">{data.name}</span>
                         <span className="date">
-                          2022-06-17 ~ 2022-07-30（可见3个，共4个事务）
+                          {`${data?.start_at ? data.start_at : ''}${
+                            data?.start_at && data?.end_at ? '~ ' : ''
+                          }${data?.end_at ? data?.end_at : ''}`}
+                          {data?.story_visible_count
+                            ? `（可见${data?.story_visible_count}个，共${data?.story_count}个事务）`
+                            : ''}
                         </span>
                         <IconFont
                           onClick={() => {
@@ -221,7 +227,7 @@ const XTable: React.FC<XTableProps> = props => {
                         从待办事项拖动或新建事务，以规划该冲刺的工作，添加事务并编辑冲刺后，点击开始冲刺
                       </div>
                     }
-                    dataSource={props.data}
+                    dataSource={list}
                     components={{ body: { row: SortableItem } }}
                   />
                   <PaginationBox

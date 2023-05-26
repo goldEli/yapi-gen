@@ -64,390 +64,55 @@ const NoSprintButton = styled.div`
   }
 `
 
-const TabItem = () => {
+const TabItem = (props: any) => {
+  const { data } = props
   return (
     <div>
-      <Item>
-        <div className="title">
-          <span>三月第一周的冲刺</span>
-          <Checkbox />
-        </div>
-        <div className="date">2022-06-17 ~ 2022-07-30</div>
-        <div className="progress">
-          <div className="iconBox">
-            <IconFont
-              type="recover"
-              style={{
-                fontSize: 16,
-                marginLeft: 2,
-                color: 'var(--neutral-n3)',
-              }}
-            />
-            <span className="text">3/10</span>
-            <IconFont
-              type="branch"
-              style={{
-                fontSize: 16,
-                marginLeft: 12,
-                marginRight: 5,
-                color: 'var(--neutral-n3)',
-              }}
-            />
-            <span className="text">3</span>
+      {data?.list?.map((item: any) => (
+        <Item key={item.id}>
+          <div className="title">
+            <span>{item.name}</span>
+            <Checkbox />
           </div>
-          <div style={{ width: 108 }}>
-            <Progress
-              strokeColor="var(--function-success)"
-              percent={30}
-              size="small"
-              trailColor="var(--neutral-n6-d2)"
-            />
+          <div className="date">
+            {item.start_at && item.end_at
+              ? `${item.start_at} ~ ${item.end_at}`
+              : '--'}
           </div>
-        </div>
-      </Item>
-      <Item>
-        <div className="title">
-          <span>三月第一周的冲刺</span>
-          <Checkbox />
-        </div>
-        <div className="date">2022-06-17 ~ 2022-07-30</div>
-        <div className="progress">
-          <div className="iconBox">
-            <IconFont
-              type="recover"
-              style={{
-                fontSize: 16,
-                marginLeft: 2,
-                color: 'var(--neutral-n3)',
-              }}
-            />
-            <span className="text">3/10</span>
-            <IconFont
-              type="branch"
-              style={{
-                fontSize: 16,
-                marginLeft: 12,
-                marginRight: 5,
-                color: 'var(--neutral-n3)',
-              }}
-            />
-            <span className="text">3</span>
+          <div className="progress">
+            <div className="iconBox">
+              <IconFont
+                type="recover"
+                style={{
+                  fontSize: 16,
+                  marginLeft: 2,
+                  color: 'var(--neutral-n3)',
+                }}
+              />
+              <span className="text">{`${item.story_finish_count}/${item.story_count}`}</span>
+              <IconFont
+                type="branch"
+                style={{
+                  fontSize: 16,
+                  marginLeft: 12,
+                  marginRight: 5,
+                  color: 'var(--neutral-n3)',
+                }}
+              />
+              <span className="text">{item.child_story_total}</span>
+            </div>
+            <div style={{ width: 108 }}>
+              <Progress
+                strokeColor="var(--function-success)"
+                percent={Number(item.story_finish_count / item.story_count)}
+                size="small"
+                trailColor="var(--neutral-n6-d2)"
+              />
+            </div>
           </div>
-          <div style={{ width: 108 }}>
-            <Progress
-              strokeColor="var(--function-success)"
-              percent={30}
-              size="small"
-              trailColor="var(--neutral-n6-d2)"
-            />
-          </div>
-        </div>
-      </Item>
-      <Item>
-        <div className="title">
-          <span>三月第一周的冲刺</span>
-          <Checkbox />
-        </div>
-        <div className="date">2022-06-17 ~ 2022-07-30</div>
-        <div className="progress">
-          <div className="iconBox">
-            <IconFont
-              type="recover"
-              style={{
-                fontSize: 16,
-                marginLeft: 2,
-                color: 'var(--neutral-n3)',
-              }}
-            />
-            <span className="text">3/10</span>
-            <IconFont
-              type="branch"
-              style={{
-                fontSize: 16,
-                marginLeft: 12,
-                marginRight: 5,
-                color: 'var(--neutral-n3)',
-              }}
-            />
-            <span className="text">3</span>
-          </div>
-          <div style={{ width: 108 }}>
-            <Progress
-              strokeColor="var(--function-success)"
-              percent={30}
-              size="small"
-              trailColor="var(--neutral-n6-d2)"
-            />
-          </div>
-        </div>
-      </Item>
-      <Item>
-        <div className="title">
-          <span>三月第一周的冲刺</span>
-          <Checkbox />
-        </div>
-        <div className="date">2022-06-17 ~ 2022-07-30</div>
-        <div className="progress">
-          <div className="iconBox">
-            <IconFont
-              type="recover"
-              style={{
-                fontSize: 16,
-                marginLeft: 2,
-                color: 'var(--neutral-n3)',
-              }}
-            />
-            <span className="text">3/10</span>
-            <IconFont
-              type="branch"
-              style={{
-                fontSize: 16,
-                marginLeft: 12,
-                marginRight: 5,
-                color: 'var(--neutral-n3)',
-              }}
-            />
-            <span className="text">3</span>
-          </div>
-          <div style={{ width: 108 }}>
-            <Progress
-              strokeColor="var(--function-success)"
-              percent={30}
-              size="small"
-              trailColor="var(--neutral-n6-d2)"
-            />
-          </div>
-        </div>
-      </Item>
-      <Item>
-        <div className="title">
-          <span>三月第一周的冲刺</span>
-          <Checkbox />
-        </div>
-        <div className="date">2022-06-17 ~ 2022-07-30</div>
-        <div className="progress">
-          <div className="iconBox">
-            <IconFont
-              type="recover"
-              style={{
-                fontSize: 16,
-                marginLeft: 2,
-                color: 'var(--neutral-n3)',
-              }}
-            />
-            <span className="text">3/10</span>
-            <IconFont
-              type="branch"
-              style={{
-                fontSize: 16,
-                marginLeft: 12,
-                marginRight: 5,
-                color: 'var(--neutral-n3)',
-              }}
-            />
-            <span className="text">3</span>
-          </div>
-          <div style={{ width: 108 }}>
-            <Progress
-              strokeColor="var(--function-success)"
-              percent={30}
-              size="small"
-              trailColor="var(--neutral-n6-d2)"
-            />
-          </div>
-        </div>
-      </Item>
-      <Item>
-        <div className="title">
-          <span>三月第一周的冲刺</span>
-          <Checkbox />
-        </div>
-        <div className="date">2022-06-17 ~ 2022-07-30</div>
-        <div className="progress">
-          <div className="iconBox">
-            <IconFont
-              type="recover"
-              style={{
-                fontSize: 16,
-                marginLeft: 2,
-                color: 'var(--neutral-n3)',
-              }}
-            />
-            <span className="text">3/10</span>
-            <IconFont
-              type="branch"
-              style={{
-                fontSize: 16,
-                marginLeft: 12,
-                marginRight: 5,
-                color: 'var(--neutral-n3)',
-              }}
-            />
-            <span className="text">3</span>
-          </div>
-          <div style={{ width: 108 }}>
-            <Progress
-              strokeColor="var(--function-success)"
-              percent={30}
-              size="small"
-              trailColor="var(--neutral-n6-d2)"
-            />
-          </div>
-        </div>
-      </Item>
-      <Item>
-        <div className="title">
-          <span>三月第一周的冲刺</span>
-          <Checkbox />
-        </div>
-        <div className="date">2022-06-17 ~ 2022-07-30</div>
-        <div className="progress">
-          <div className="iconBox">
-            <IconFont
-              type="recover"
-              style={{
-                fontSize: 16,
-                marginLeft: 2,
-                color: 'var(--neutral-n3)',
-              }}
-            />
-            <span className="text">3/10</span>
-            <IconFont
-              type="branch"
-              style={{
-                fontSize: 16,
-                marginLeft: 12,
-                marginRight: 5,
-                color: 'var(--neutral-n3)',
-              }}
-            />
-            <span className="text">3</span>
-          </div>
-          <div style={{ width: 108 }}>
-            <Progress
-              strokeColor="var(--function-success)"
-              percent={30}
-              size="small"
-              trailColor="var(--neutral-n6-d2)"
-            />
-          </div>
-        </div>
-      </Item>
-      <Item>
-        <div className="title">
-          <span>三月第一周的冲刺</span>
-          <Checkbox />
-        </div>
-        <div className="date">2022-06-17 ~ 2022-07-30</div>
-        <div className="progress">
-          <div className="iconBox">
-            <IconFont
-              type="recover"
-              style={{
-                fontSize: 16,
-                marginLeft: 2,
-                color: 'var(--neutral-n3)',
-              }}
-            />
-            <span className="text">3/10</span>
-            <IconFont
-              type="branch"
-              style={{
-                fontSize: 16,
-                marginLeft: 12,
-                marginRight: 5,
-                color: 'var(--neutral-n3)',
-              }}
-            />
-            <span className="text">3</span>
-          </div>
-          <div style={{ width: 108 }}>
-            <Progress
-              strokeColor="var(--function-success)"
-              percent={30}
-              size="small"
-              trailColor="var(--neutral-n6-d2)"
-            />
-          </div>
-        </div>
-      </Item>
-      <Item>
-        <div className="title">
-          <span>三月第一周的冲刺</span>
-          <Checkbox />
-        </div>
-        <div className="date">2022-06-17 ~ 2022-07-30</div>
-        <div className="progress">
-          <div className="iconBox">
-            <IconFont
-              type="recover"
-              style={{
-                fontSize: 16,
-                marginLeft: 2,
-                color: 'var(--neutral-n3)',
-              }}
-            />
-            <span className="text">3/10</span>
-            <IconFont
-              type="branch"
-              style={{
-                fontSize: 16,
-                marginLeft: 12,
-                marginRight: 5,
-                color: 'var(--neutral-n3)',
-              }}
-            />
-            <span className="text">3</span>
-          </div>
-          <div style={{ width: 108 }}>
-            <Progress
-              strokeColor="var(--function-success)"
-              percent={30}
-              size="small"
-              trailColor="var(--neutral-n6-d2)"
-            />
-          </div>
-        </div>
-      </Item>
-      <Item>
-        <div className="title">
-          <span>三月第一周的冲刺</span>
-          <Checkbox />
-        </div>
-        <div className="date">2022-06-17 ~ 2022-07-30</div>
-        <div className="progress">
-          <div className="iconBox">
-            <IconFont
-              type="recover"
-              style={{
-                fontSize: 16,
-                marginLeft: 2,
-                color: 'var(--neutral-n3)',
-              }}
-            />
-            <span className="text">3/10</span>
-            <IconFont
-              type="branch"
-              style={{
-                fontSize: 16,
-                marginLeft: 12,
-                marginRight: 5,
-                color: 'var(--neutral-n3)',
-              }}
-            />
-            <span className="text">3</span>
-          </div>
-          <div style={{ width: 108 }}>
-            <Progress
-              strokeColor="var(--function-success)"
-              percent={30}
-              size="small"
-              trailColor="var(--neutral-n6-d2)"
-            />
-          </div>
-        </div>
-      </Item>
-      <NoSprintButton>未创建冲刺的事务（9）</NoSprintButton>
+        </Item>
+      ))}
+      <NoSprintButton>{`未创建冲刺的事务（${data.unassigned_count}）`}</NoSprintButton>
     </div>
   )
 }

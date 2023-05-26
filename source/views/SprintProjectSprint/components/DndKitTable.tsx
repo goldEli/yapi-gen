@@ -10,6 +10,12 @@ import { PriorityWrap } from '@/components/StyleCommon'
 import ChangeStatusPopover from '@/components/ChangeStatusPopover/index'
 import { useSelector, useDispatch } from '@store/index'
 import { setSprintTableData } from '@store/sprint'
+import { useTranslation } from 'react-i18next'
+import StateTag from '@/components/StateTag'
+import { getParamsData } from '@/tools'
+import { useSearchParams } from 'react-router-dom'
+import TableQuickEdit from '@/components/TableQuickEdit'
+import MultipleAvatar from '@/components/MultipleAvatar'
 
 const MoveFont = styled(IconFont)`
   fontsize: 16;
@@ -30,8 +36,28 @@ type TableItem = {
 }
 
 const DndKitTable = () => {
-  const { sprintTableData } = useSelector(state => state.sprint)
+  const [t] = useTranslation()
+  const { rightSprintList } = useSelector(state => state.sprint)
   const dispatch = useDispatch()
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
+
+  const onChangeState = async (item: any) => {
+    // try {
+    //   await updatePriority({
+    //     demandId: item.id,
+    //     priorityId: item.priorityId,
+    //     projectId,
+    //   })
+    //   getMessage({ msg: t('common.prioritySuccess'), type: 'success' })
+    //   props.onChangeRow?.()
+    // } catch (error) {
+    //   //
+    // }
+  }
+  const onUpdate = (row: any, isClass?: any) => {}
+
   const columns: TableColumnProps<TableItem>[] = [
     {
       render: (text: any, record: any) => {
@@ -55,13 +81,39 @@ const DndKitTable = () => {
       dataIndex: 'sort',
       render: () => <MoveFont type="move" />,
     },
-    { title: '编号', dataIndex: 'bh' },
+    { title: '编号', dataIndex: 'story_prefix_key' },
     { title: '标题', dataIndex: 'name' },
-    { title: '长故事', dataIndex: 'long' },
-    { title: '子事务', dataIndex: 'zi' },
-    { title: '经办人', dataIndex: 'user' },
+    { title: '长故事', dataIndex: 'long_story_name' },
+    { title: '子事务', dataIndex: 'child_story_count' },
+    { title: '经办人', dataIndex: 'handlers_name_ids' },
     {
-      title: '优先级',
+      title: '经办人',
+      dataIndex: 'handlers',
+      key: 'handlers',
+      width: 180,
+      render: (text: any, record: any) => {
+        return (
+          // <TableQuickEdit
+          //   type="fixed_select"
+          //   defaultText={record?.handlers_name_ids || []}
+          //   keyText="users"
+          //   item={record}
+          //   onUpdate={() => onUpdate(record)}
+          // >
+          <MultipleAvatar
+            max={3}
+            list={record.handlers?.map((i: any) => ({
+              id: i.id,
+              name: i.name,
+              avatar: i.avatar,
+            }))}
+          />
+          // </TableQuickEdit>
+        )
+      },
+    },
+    {
+      title: t('common.priority'),
       dataIndex: 'priority',
       key: 'priority',
       width: 180,
@@ -69,9 +121,8 @@ const DndKitTable = () => {
         return (
           <ChangePriorityPopover
             isCanOperation
-            onChangePriority={item => () => {}}
-            record={{ project_id: 1, id: record.id }}
-            projectId={1}
+            onChangePriority={item => onChangeState(item)}
+            record={{ project_id: projectId, id: record.id }}
           >
             <PriorityWrap>
               {text?.icon ? (
@@ -94,17 +145,34 @@ const DndKitTable = () => {
       },
     },
     {
-      title: '状态',
+      title: t('common.status'),
       dataIndex: 'status',
+      key: 'status',
+      width: 190,
       render: (text: any, record: any) => {
         return (
           <ChangeStatusPopover
-            children={<div>11111</div>}
-            // onChangeStatus={function (value: any): void {
-            //   throw new Error('Function not implemented.')
-            // }}
-            // record={record}
-          />
+          // isCanOperation={isCanEdit && !record.isExamine}
+          // projectId={state.projectId}
+          // record={record}
+          // onChangeStatus={item => state.onChangeStatus(item, record)}
+          >
+            <StateTag
+              // onClick={record.isExamine ? onExamine : void 0}
+              // isShow={isCanEdit || record.isExamine}
+              isShow
+              name={record.status.status.content}
+              state={
+                text?.is_start === 1 && text?.is_end === 2
+                  ? 1
+                  : text?.is_end === 1 && text?.is_start === 2
+                  ? 2
+                  : text?.is_start === 2 && text?.is_end === 2
+                  ? 3
+                  : 0
+              }
+            />
+          </ChangeStatusPopover>
         )
       },
     },
@@ -114,12 +182,14 @@ const DndKitTable = () => {
     console.log(result)
     if (result.destination?.droppableId === result.source.droppableId) {
       // 同表格换位置
-      const data = [...sprintTableData]
+      const data = [...rightSprintList]
       const idx = data.findIndex(k => k.id === result.destination?.droppableId)
       const destList = data[idx]
       const source = [...destList.list]
 
-      const item = destList.list.find((_, i) => i === result.source?.index)
+      const item = destList.list.find(
+        (_: any, i: any) => i === result.source?.index,
+      )
       source.splice(result.source?.index, 1)
       source.splice(result.destination?.index ?? 0, 0, item)
       const res: any = data.map(k => {
@@ -131,13 +201,13 @@ const DndKitTable = () => {
       dispatch(setSprintTableData(res))
     } else {
       // 不同表格拖动
-      const data = [...sprintTableData]
+      const data = [...rightSprintList]
       const destIdx = data.findIndex(
         k => k.id === result.destination?.droppableId,
       )
       const sourceIdx = data.findIndex(k => k.id === result.source?.droppableId)
       const item = data[sourceIdx].list.find(
-        (_, i) => i === result.source?.index,
+        (_: any, i: any) => i === result.source?.index,
       )
       const source = [...data[sourceIdx].list]
       source.splice(result.source?.index, 1)
@@ -155,19 +225,18 @@ const DndKitTable = () => {
       dispatch(setSprintTableData(res))
     }
   }
+
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      {sprintTableData?.map(item => {
+      {rightSprintList?.map((item: any) => {
         return (
           <XTable
             key={item.id}
-            id={item.id}
-            data={item.list.map(i => {
-              return {
-                ...i,
-                id: `${item.id}-${i.id}`,
-              }
-            })}
+            data={item}
+            list={item?.stories?.map((i: any) => ({
+              ...i,
+              id: `${item.id}-${i.id}`,
+            }))}
             columns={columns}
           />
         )

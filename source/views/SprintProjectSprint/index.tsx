@@ -22,6 +22,10 @@ import DndKitTable from './components/DndKitTable'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
 import CreateSprintModal from './components/CreateSprintModal'
 import CompleteSprintModal from './components/CompleteSprintModal'
+import {
+  getRightSprintList,
+  getLeftSprintList,
+} from '@store/sprint/sprint.thunk'
 
 const SearchBox = styled.div`
   display: flex;
@@ -200,7 +204,7 @@ const filterList = [
 interface IProps {}
 const SprintProjectSprint: React.FC<IProps> = props => {
   const dispatch = useDispatch()
-  const { guideVisible } = useSelector(store => store.sprint)
+  const { guideVisible, leftSprintList } = useSelector(store => store.sprint)
   const [t] = useTranslation()
   const [searchValue, setSearchValue] = useState('')
   const [focus, setFocus] = useState(false)
@@ -273,6 +277,36 @@ const SprintProjectSprint: React.FC<IProps> = props => {
     setCurrentFilter(item)
     setIsFilter(false)
   }
+
+  useEffect(() => {
+    // 获取右边的表格数据
+    dispatch(
+      getRightSprintList({
+        order: 'desc',
+        orderkey: 'id',
+        search: {
+          all: 1,
+          project_id: 604,
+        },
+        is_long_story: 1,
+      }),
+    )
+    // 获取左边列表数据
+    dispatch(
+      getLeftSprintList({
+        order: 'desc',
+        orderkey: 'id',
+        search: {
+          all: 1,
+          sprint_status: 0,
+          project_id: 604,
+        },
+        is_long_story: 0,
+      }),
+    )
+  }, [])
+
+  console.log(leftSprintList, 'leftSprintList')
 
   const filterContent = (
     <div className="filter">
@@ -368,7 +402,8 @@ const SprintProjectSprint: React.FC<IProps> = props => {
               </RightIcon>
             </div>
             <TabItemWrap>
-              <TabItem />
+              {activeKey === 0 ? <TabItem data={leftSprintList} /> : null}
+              {activeKey === 1 ? <TabItem data={leftSprintList} /> : null}
             </TabItemWrap>
           </Left>
         ) : null}

@@ -256,4 +256,32 @@ declare namespace API.Sprint {
       config: any
     }
   }
+  namespace SprintGroupList {
+    type Params = {
+      order: string
+      orderkey: string
+      search: {
+        all: number
+        project_id: number
+        id?: number[]
+        user_id?: number[]
+        category_id?: number[]
+        story_name?: string
+      }
+      is_long_story: number
+    }
+  }
+
+  namespace SprintList {
+    type Params = {
+      order: string
+      orderkey: string
+      search: {
+        all: number
+        project_id: number
+        sprint_status: number
+      }
+      is_long_story: number
+    }
+  }
 }
