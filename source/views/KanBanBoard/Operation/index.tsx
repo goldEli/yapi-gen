@@ -139,6 +139,7 @@ const Operation = (props: Props) => {
       custom_field: customField,
     }
     setSearchGroups(params)
+    console.log(params)
     props.onSearch(params)
   }
 

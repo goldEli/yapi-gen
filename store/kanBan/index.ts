@@ -8,6 +8,7 @@ type SliceState = {
   sortByGroupOptions?: Model.KanBan.GroupInfoItem[]
   sortByRowAndStatusOptions?: Options[]
   sortByView?: Model.KanBan.ViewItem[]
+  viewItemConfig?: Model.KanBan.ViewItem['config']
   saveAsViewModelInfo: {
     visible: boolean
     viewItem?: Model.KanBan.ViewItem
@@ -56,6 +57,15 @@ const slice = createSlice({
   name: 'kanBan',
   initialState,
   reducers: {
+    setViewItemConfig(
+      state,
+      action: PayloadAction<SliceState['viewItemConfig']>,
+    ) {
+      state.viewItemConfig = {
+        ...state.viewItemConfig,
+        ...action.payload,
+      }
+    },
     onChangeGuideVisible(
       state,
       action: PayloadAction<SliceState['guideVisible']>,
@@ -144,6 +154,8 @@ const slice = createSlice({
     })
     builder.addCase(getStoryViewList.fulfilled, (state, action) => {
       state.sortByView = action.payload
+
+      const checked = state.sortByView
     })
   },
 })
@@ -157,6 +169,7 @@ export const {
   onChangeGuideVisible,
   setSaveAsViewModelInfo,
   setShareModelInfo,
+  setViewItemConfig,
 } = slice.actions
 
 export default kanBan

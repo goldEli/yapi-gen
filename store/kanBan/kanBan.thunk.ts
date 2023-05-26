@@ -2,11 +2,53 @@ import { kanbanConfig } from './data'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as services from '@/services'
 import { AppDispatch, store } from '@store/index'
-import { setSaveAsViewModelInfo, setShareModelInfo } from '.'
+import { setSaveAsViewModelInfo, setShareModelInfo, setViewItemConfig } from '.'
 import { getMessage } from '@/components/Message'
 import { produce } from 'immer'
+import useProjectId from '@/views/KanBanBoard/hooks/useProjectId'
+import { getParamsValueByKey } from '@/tools'
+import i18n from 'i18next'
 
 const name = 'kanBan'
+
+export const delView =
+  (params: API.Kanban.DelView.Params) => async (dispatch: AppDispatch) => {
+    await services.kanban.delView(params)
+    getMessage({
+      msg: i18n.t('common.deleteSuccess') as string,
+      type: 'success',
+    })
+    dispatch(getStoryViewList())
+  }
+
+export const createView =
+  (params: API.Kanban.CreateView.Params) => async (dispatch: AppDispatch) => {
+    const project_id = getParamsValueByKey('id')
+    await services.kanban.createView({
+      ...params,
+      config: store.getState().kanBan.viewItemConfig,
+      project_id,
+    })
+    getMessage({ msg: i18n.t('common.saveSuccess') as string, type: 'success' })
+    dispatch(getStoryViewList())
+  }
+
+export const updateView =
+  (params: API.Kanban.UpdateView.Params) => async (dispatch: AppDispatch) => {
+    await services.kanban.updateView(params)
+    getMessage({ msg: i18n.t('common.editSuccess') as string, type: 'success' })
+    dispatch(getStoryViewList())
+  }
+
+export const onFilter =
+  (data: Model.KanBan.ViewItemConfig) => async (dispatch: AppDispatch) => {
+    await dispatch(
+      setViewItemConfig({
+        search: data,
+      }),
+    )
+    // dispatch(getStoryViewList())
+  }
 
 // 看板配置列表
 export const getKanbanConfigList = createAsyncThunk(
@@ -35,8 +77,9 @@ export const closeSaveAsViewModel = () => async (dispatch: AppDispatch) => {
 // 视图列表
 export const getStoryViewList = createAsyncThunk(
   `${name}/getStoryViewList`,
-  async (params: API.Kanban.GetStoryViewList.Params) => {
-    const res = await services.kanban.getStoryViewList(params)
+  async () => {
+    const project_id = getParamsValueByKey('id')
+    const res = await services.kanban.getStoryViewList({ project_id })
     const { data } = res
 
     const { sortByView } = store.getState().kanBan
@@ -70,7 +113,12 @@ export const getStoryViewList = createAsyncThunk(
 export const onSaveAsViewModel =
   (data: Partial<Model.SprintKanBan.ViewItem>) =>
   async (dispatch: AppDispatch) => {
-    // TODO
+    dispatch(
+      createView({
+        name: data.value ?? '',
+        project_id: getParamsValueByKey('id'),
+      }),
+    )
     console.log('onSaveAsViewModel', data)
     getMessage({ msg: '保存成功!', type: 'success' })
     dispatch(closeSaveAsViewModel())
