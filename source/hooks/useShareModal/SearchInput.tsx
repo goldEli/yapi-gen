@@ -65,7 +65,7 @@ const PersonItemWrap = styled.div<{ isActive: boolean }>(
 )
 
 const SearchInput = (props: any) => {
-  const { placeholder, onChange, fail } = props
+  const { placeholder, onChange, fail, changeFirstState } = props
   const [t]: any = useTranslation()
   const [popoverVisible, setPopoverVisible] = useState(false)
   const [value, setValue] = useState('')
@@ -179,6 +179,7 @@ const SearchInput = (props: any) => {
             }, 300)
           }}
           onChange={(e: any) => {
+            changeFirstState()
             const val = e.target.value
             setValue(val)
           }}

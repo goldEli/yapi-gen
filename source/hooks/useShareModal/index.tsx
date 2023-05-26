@@ -23,10 +23,10 @@ interface Options {
 
 const useShareModal = () => {
   const [visible, setVisible] = useState(false)
-  const isFirst = useRef(0)
+  const notFirst = useRef(false)
   const onClose = () => {
     setVisible(false)
-    isFirst.current = 0
+    notFirst.current = false
   }
 
   const onOkRef = useRef<Options['onOk'] | null>(null)
@@ -72,11 +72,10 @@ const useShareModal = () => {
     }, [id])
 
     const onValidator = (rule: any, value: any) => {
-      isFirst.current += 1
       if (
         !(typeof value === 'string' && !!value && EMAIL_REGEXP.test(value)) &&
         !(typeof value === 'object' && !!value) &&
-        isFirst.current >= 2
+        notFirst.current
       ) {
         return Promise.reject(new Error('请输入正确的用户名或邮箱'))
       }
@@ -108,7 +107,7 @@ const useShareModal = () => {
             onValuesChange={changedValues => {
               if (changedValues.name) {
                 setFail(false)
-              } else if (isFirst.current >= 2) {
+              } else if (notFirst.current) {
                 setFail(true)
               }
             }}
@@ -127,6 +126,9 @@ const useShareModal = () => {
               <SearchInput
                 placeholder="请输入用户名或邮箱地址(必填)"
                 fail={fail}
+                changeFirstState={() => {
+                  notFirst.current = true
+                }}
                 setFail={setFail}
               />
             </Form.Item>
