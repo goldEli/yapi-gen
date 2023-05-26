@@ -26,6 +26,7 @@ import { getDemandList } from '@/services/demand'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import StateTag from './StateTag'
 import TableColorText from './TableColorText'
+import MultipleAvatar from './MultipleAvatar'
 
 const NewSort = (sortProps: any) => {
   return (
@@ -265,8 +266,17 @@ const ChildDemandTable = (props: {
       title: t('common.dealName'),
       dataIndex: 'dealName',
       width: 150,
-      render: (text: any) => {
-        return <span>{text?.join(';') || '--'}</span>
+      render: (text: any, record: any) => {
+        return (
+          <MultipleAvatar
+            max={3}
+            list={record.usersInfo?.map((i: any) => ({
+              id: i.id,
+              name: i.name,
+              avatar: i.avatar,
+            }))}
+          />
+        )
       },
     },
   ]

@@ -226,6 +226,7 @@ const ProjectMember = (props: { searchValue?: string }) => {
   }, [])
 
   useEffect(() => {
+    getList(order, { ...pageObj, page: 1 })
     getList(order, pageObj)
   }, [props?.searchValue])
 

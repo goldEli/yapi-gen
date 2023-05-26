@@ -18,7 +18,7 @@ import {
 } from '../Header/Style'
 import { DialogMain, DialogHeader, TextColor, Footer } from './style'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import SelectMain from '../Header/components/SelectMain'
 import CommonButton from '@/components/CommonButton'
 import { useSelector } from '@store/index'
@@ -29,11 +29,12 @@ import HightChartMainBar from './HightChartMainBar'
 import HightChartMainLine from './HightChartMainLine'
 import HightChartMainPie from './HightChartMainPie'
 import HightChartMainSpline from './HightChartMainSpline'
+import { getStatisticsTotal } from '@/services/sprint'
 
 interface Props {
   title: string
   time: string
-  data: Array<{ num: number; icon: string; type: string }>
+  data: Array<Model.Sprint.WorkListItem>
   homeType: string
   num: number
 }
@@ -42,6 +43,7 @@ const WorkingStatus = (props: Props) => {
   const onClick = () => {
     const params = encryptPhp(
       JSON.stringify({
+        data: props.data,
         type:
           props.num === 1
             ? `Progress_${props.homeType}`
@@ -78,8 +80,8 @@ const WorkingStatus = (props: Props) => {
         </Text>
       </Col>
       <DataWrap>
-        {props.data.map(el => (
-          <LotBox key={el.num}>
+        {props.data?.map(el => (
+          <LotBox key={el.name} onClick={() => onClick()}>
             <LotBoxRow>
               <LotIcon>
                 <CommonIconFont
@@ -90,8 +92,8 @@ const WorkingStatus = (props: Props) => {
               </LotIcon>
               <div>
                 <TextNum>
-                  <span>{el.num}</span>
-                  <span>项</span>
+                  <span>{el.value}</span>
+                  <span>{el.unit}</span>
                 </TextNum>
                 <Text
                   size={'12px'}
@@ -99,12 +101,8 @@ const WorkingStatus = (props: Props) => {
                   onClick={() => 123}
                 >
                   <Space size={4}>
-                    <span>{el.type}</span>
-                    <CommonIconFont
-                      type={'right'}
-                      size={12}
-                      color="var(--neutral-n2)"
-                    />
+                    <span>{el.name}</span>
+                    <CommonIconFont type={'right'} size={12} />
                   </Space>
                 </Text>
               </div>
@@ -121,6 +119,22 @@ const Home = () => {
   const { save } = useSelector(store => store.performanceInsight)
   // 'iteration''sprint' 'all'
   const [homeType, setHomeType] = useState('all')
+  const [workDataList, setWorkDataList] =
+    useState<API.Sprint.GetStatisticsTotal.Result>()
+  useEffect(() => {
+    // 缺陷现状和工作项现状
+    getWorkList()
+  }, [])
+  const getWorkList = async () => {
+    let res = await getStatisticsTotal({
+      project_ids: [1, 2],
+      iterate_ids: [12, 23],
+      user_ids: [1, 23, 44],
+      start_time: '2023-05-30 00:00:00',
+      end_time: '2023-05-30 00:00:00',
+    })
+    setWorkDataList(res)
+  }
   return (
     <div
       style={{
@@ -132,11 +146,7 @@ const Home = () => {
       <Header homeType={homeType} />
       <WorkingStatus
         homeType={homeType}
-        data={[
-          { num: 120, type: '待修复', icon: 'right' },
-          { num: 120, type: '待修复', icon: 'right' },
-          { num: 120, type: '待修复', icon: 'right' },
-        ]}
+        data={workDataList?.work || []}
         title={homeType === 'all' ? '现状' : '工作项现状'}
         time={'2023-03-01 ~ 2023-03-14'}
         num={1}
@@ -145,7 +155,7 @@ const Home = () => {
         <WorkingStatus
           num={2}
           homeType={homeType}
-          data={[{ num: 40, type: '缺陷修复露', icon: 'right' }]}
+          data={workDataList?.defect || []}
           title={'缺陷现状'}
           time={'2023-03-01 ~ 2023-03-14'}
         />
@@ -246,6 +256,7 @@ const Home = () => {
             <SelectMain
               onChange={e => console.log(e)}
               placeholder="请选择"
+              value={1}
               list={[
                 {
                   name: '近7天',

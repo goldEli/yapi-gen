@@ -29,6 +29,9 @@ export const HovDiv = styled.div`
   visibility: hidden;
   position: absolute;
   right: 0px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 `
 
 export const CommentItem = styled.div<{ isShow?: boolean }>`

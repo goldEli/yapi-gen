@@ -3,7 +3,7 @@ declare namespace Model.KanbanConfig {
     id: number
     project_id: number
     name: string
-    is_default?: 0 | 1
+    is_default?: 1 | 2
     check?: boolean
   }
   interface Status {
@@ -28,6 +28,7 @@ declare namespace Model.KanbanConfig {
     // 图片地址
     attachment_path: string
     status?: Status[]
+    project_id?: number
   }
   interface Column {
     id: number
@@ -37,6 +38,6 @@ declare namespace Model.KanbanConfig {
     categories: Category[]
   }
   interface Config extends ConfigListItem {
-    columns: Column[]
+    columns?: Column[]
   }
 }

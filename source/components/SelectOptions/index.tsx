@@ -21,8 +21,8 @@ import {
 interface SelectBoxProps {
   title: string
   onChange(key: string): void
-  options: Model.SprintKanBan.ViewItem[]
-  operation?: Model.SprintKanBan.ViewItem['operation']
+  options: Model.KanBan.ViewItem[]
+  operation?: Model.KanBan.ViewItem['operation']
   onCreateView?: () => void
   createViewTitle?: string
   onDel?: (key: string) => void
@@ -45,7 +45,7 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
     return [current?.value, current?.key]
   }, [props.options])
 
-  const renderOption = (item: Model.SprintKanBan.ViewItem) => {
+  const renderOption = (item: Model.KanBan.ViewItem) => {
     return {
       key: item.key,
       label: (
@@ -61,7 +61,7 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
       ),
     }
   }
-  const renderOptionWidthOperation = (item: Model.SprintKanBan.ViewItem) => {
+  const renderOptionWidthOperation = (item: Model.KanBan.ViewItem) => {
     return {
       key: item.key,
       label: (

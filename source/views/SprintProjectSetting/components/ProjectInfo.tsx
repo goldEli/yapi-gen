@@ -14,8 +14,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { getProjectInfo } from '@/services/project'
 import { setProjectInfo } from '@store/project'
 import { editProject } from '@store/create-propject'
-import CategoryDrop from '@/components/CategoryDrop'
-import useCategory from '@/hooks/useCategoryList'
+import CategoryDropdown from '@/components/CategoryDropdown'
 const Wrap = styled.div({
   background: 'white',
   height: '100%',
@@ -124,61 +123,23 @@ const ProjectInfo = () => {
   asyncSetTtile(`${t('title.a1')}【${projectInfo.name}】`)
   localStorage.setItem('memberId', projectInfo.id)
   const dispatch = useDispatch()
-  const { getTypeCategory } = useCategory()
-  const [b,setB]=useState<Model.Project.CategoryList[]>()
-  const [value,setValue]=useState<string | undefined>('')
-  useEffect(() => {
-    let a = [
-      {
-        id: 1019,
-        project_id: 605,
-        company_id: 1504303190303051800,
-        name: '故障1',
-        color: '',
-        attachment_id: 457,
-        sort: 999,
-        status: 2,
-        remark: '',
-        work_type: 5,
-        is_bug: 1,
-        story_count: 0,
-        status_count: 0,
-        attachment_path:
-          'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png',
-      },
-      {
-        id: 1019,
-        project_id: 605,
-        company_id: 1504303190303051800,
-        name: 'dsdsdsds',
-        color: '',
-        attachment_id: 457,
-        sort: 999,
-        status: 2,
-        remark: '',
-        work_type: 4,
-        is_bug: 1,
-        story_count: 0,
-        status_count: 0,
-        attachment_path:
-          'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png',
-      },
-    ]
-    let b= getTypeCategory(a, 'work_type')
-    setB(b)
-  }, [])
-
+  const [value, setValue] = useState<any>('')
   return (
     <Wrap>
-      <div style={{width:'400px'}}>
-      <CategoryDrop options={b} onClearCallback={()=>{
-        setValue('')
-      }} value={value} onChangeCallBack={(data)=>{
-        console.log(data)
-        setValue(data.name)
-      }}></CategoryDrop>
+      <div style={{ width: '400px' }}>
+        <CategoryDropdown
+          onClearCallback={() => {
+            setValue('')
+          }}
+          value={value}
+          onChangeCallBack={data => {
+            setValue(data.id)
+          }}
+          projectId={605}
+          is_select={2}
+        ></CategoryDropdown>
       </div>
-     
+
       <InfoLeft>
         <Title>{t('v2_1_1.projectInformation')}</Title>
         <CardGroup size={32}>
@@ -234,7 +195,7 @@ const ProjectInfo = () => {
               'b/project/update',
             )}
             onClick={() => {
-              dispatch(editProject({ id: projectInfo.id }))
+              dispatch(editProject({ id: projectInfo.id, visible: true }))
             }}
             style={{
               marginLeft: 24,

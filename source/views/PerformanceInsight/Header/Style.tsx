@@ -66,6 +66,7 @@ export const Text = styled.span<{ size?: string; color?: string }>(
     alignItems: 'center',
     '&:hover': {
       cursor: 'pointer',
+      color: 'var(--primary-d2)',
     },
   },
   ({ size, color }) => ({

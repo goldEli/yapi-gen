@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-handler-names */
 import { DragLine, MouseDom } from '@/components/StyleCommon'
 import { Drawer } from 'antd'
 import { useState } from 'react'
@@ -36,28 +37,31 @@ const Detail = (props: Props) => {
   }
   // 关闭弹窗
   const onCancel = () => {
+    console.log(999)
     setFocus(false)
     // dispatch(saveViewReportDetailDrawer({ visible: false, id: 0, ids: [] }))
   }
   return (
-    <Drawer
-      closable={false}
-      placement="right"
-      bodyStyle={{ padding: 0, position: 'relative' }}
-      width={leftWidth}
-      open={props.visible}
-      onClose={onCancel}
-      destroyOnClose
-      maskClosable={false}
-      mask={false}
-      getContainer={false}
-      className="drawerRoot"
-    >
-      <MouseDom active={focus} onMouseDown={onDragLine} style={{ left: 0 }}>
-        <DragLine active={focus} className="line" style={{ marginLeft: 0 }} />
-      </MouseDom>
-      {props.children}
-    </Drawer>
+    <div onClick={event => event.stopPropagation()}>
+      <Drawer
+        closable={false}
+        placement="right"
+        bodyStyle={{ padding: 0, position: 'relative' }}
+        width={leftWidth}
+        open={props.visible}
+        onClose={onCancel}
+        destroyOnClose
+        maskClosable={false}
+        mask={false}
+        getContainer={false}
+        className="drawerRoot"
+      >
+        <MouseDom active={focus} onMouseDown={onDragLine} style={{ left: 0 }}>
+          <DragLine active={focus} className="line" style={{ marginLeft: 0 }} />
+        </MouseDom>
+        {props.children}
+      </Drawer>
+    </div>
   )
 }
 export default Detail

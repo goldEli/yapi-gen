@@ -1,14 +1,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { columnList, unassignStatusList } from './mockData'
 import { getId } from '@/views/ProjectSetting/components/KanBanSetting/utils'
 import { getNumberId } from './utils'
-import category from '@store/category'
+import {
+  getCategoryList,
+  getKanbanConfig,
+  getKanbanConfigList,
+  getKanbanConfigRemainingStatus,
+} from './kanbanConfig.thunk'
+import { store } from '..'
 
 type SliceState = {
-  viewList?: Model.KanbanConfig.ConfigListItem[]
+  projectId?: Model.KanbanConfig.Config['project_id']
+  viewList?: Model.KanbanConfig.Config[]
+  categoryList?: Model.KanbanConfig.Category[]
   saveAsViewModelInfo: {
     visible: boolean
-    viewItem?: Model.KanbanConfig.ConfigListItem
+    title?: string
+    viewItem?: Model.KanbanConfig.Config
   }
   editColumnModelInfo: {
     visible: boolean
@@ -28,24 +36,25 @@ type SliceState = {
 }
 
 const initialState: SliceState = {
+  categoryList: [],
   movingStatus: null,
   editColumnModelInfo: {
     visible: false,
   },
   categoryVisibleInfo: [],
   viewList: [
-    { id: 1, project_id: 11, name: '看板', is_default: 1, check: true },
-    { id: 2, project_id: 11, name: '团队啥的话那就阿萨德看板', check: false },
-    { id: 3, project_id: 11, name: '日常跟进', check: false },
-    { id: 4, project_id: 11, name: '重点关注', check: false },
-    { id: 5, project_id: 11, name: '进度跟踪', check: false },
+    // { id: 1, project_id: 11, name: '看板', is_default: 1, check: true },
+    // { id: 2, project_id: 11, name: '团队啥的话那就阿萨德看板', check: false },
+    // { id: 3, project_id: 11, name: '日常跟进', check: false },
+    // { id: 4, project_id: 11, name: '重点关注', check: false },
+    // { id: 5, project_id: 11, name: '进度跟踪', check: false },
   ],
-  columnList: columnList,
+  columnList: [],
 
   saveAsViewModelInfo: {
     visible: false,
   },
-  unassignStatusList: unassignStatusList,
+  unassignStatusList: [],
 }
 interface DragResult {
   source: {
@@ -120,30 +129,27 @@ const slice = createSlice({
       action: PayloadAction<Model.KanbanConfig.Column['name']>,
     ) {
       const kanban_config_id = state.viewList?.find(item => item.check)?.id
-      state.columnList.push({
-        id: getNumberId(state.viewList?.map(item => item.id)),
+      const categories = state.columnList.length
+        ? state.columnList[0].categories.map(item => {
+            return {
+              ...item,
+              status: [],
+            }
+          })
+        : state.categoryList?.map(item => {
+            return {
+              ...item,
+              status: [],
+            }
+          }) ?? []
+      const list = {
+        id: getNumberId(state.columnList?.map(item => item.id)),
         kanban_config_id: kanban_config_id ?? 0,
         name: action.payload,
         max_num: 1,
-        categories: [
-          {
-            id: 499,
-            name: '需求',
-            attachment_id: 457,
-            attachment_path:
-              'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png',
-            status: [],
-          },
-          {
-            id: 571,
-            name: '测试需求类别（jx）',
-            attachment_id: 458,
-            attachment_path:
-              'https://dev.staryuntech.com/dev-agile/attachment/category_icon/home.png',
-            status: [],
-          },
-        ],
-      })
+        categories,
+      }
+      state.columnList.push(list)
     },
     setCategoryVisibleInfo(
       state,
@@ -276,6 +282,23 @@ const slice = createSlice({
         }
       })
     },
+  },
+  extraReducers(builder) {
+    builder.addCase(getKanbanConfigList.fulfilled, (state, action) => {
+      state.viewList = action.payload
+    })
+    builder.addCase(
+      getKanbanConfigRemainingStatus.fulfilled,
+      (state, action) => {
+        state.unassignStatusList = action.payload
+      },
+    )
+    builder.addCase(getKanbanConfig.fulfilled, (state, action) => {
+      state.columnList = action.payload ?? []
+    })
+    builder.addCase(getCategoryList.fulfilled, (state, action) => {
+      state.categoryList = action.payload
+    })
   },
 })
 

@@ -28,6 +28,8 @@ const useControlScrollPlane = (columnNum: number) => {
   const [childWidth, setChildWidth] = useState(0)
   const [childHeight, setChildHeight] = useState(0)
 
+  const [position, setPosition] = useState({ x: 0, y: 0 })
+
   useEffect(() => {
     const observer = new ResizeObserver(entries => {
       if (containerRef.current) {
@@ -76,14 +78,15 @@ const useControlScrollPlane = (columnNum: number) => {
             }}
             bounds=".controlScrollPlaneBox"
             enableResizing={false}
-            position={{
-              x: 0,
-              y: 0,
-            }}
+            position={position}
             onDrag={(e: DraggableEvent, data: DraggableData) => {
               e.stopPropagation()
               const { y, x } = data
               containerRef.current?.scrollTo(x / widthRatio, y / heightRatio)
+            }}
+            onDragStop={(e: DraggableEvent, data: DraggableData) => {
+              const { y, x } = data
+              setPosition({ x, y })
             }}
           />
           {thumbnailContent}

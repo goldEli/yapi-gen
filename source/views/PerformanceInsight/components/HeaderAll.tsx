@@ -36,8 +36,7 @@ const HeaderAll = (props: HaderProps) => {
     store => store.performanceInsight,
   )
   useEffect(() => {
-    console.log(headerParmas, projectDataList)
-    switch (headerParmas.time.type) {
+    switch (headerParmas.time.type || headerParmas.time) {
       case 0:
         setTime({
           startTime: headerParmas.time.time[0],

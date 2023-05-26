@@ -18,14 +18,15 @@ import { useEffect, useState } from 'react'
 import CommonUserAvatar from '../CommonUserAvatar'
 import { useSelector } from '@store/index'
 import IconFont from '../IconFont'
-import { HiddenText } from '../StyleCommon'
+import { CloseWrap, HiddenText } from '../StyleCommon'
 import { OmitText } from '@star-yun/ui'
 import { Editor } from '@xyfe/uikit'
 import { fileIconMap } from '../UploadAttach'
 import Viewer from 'react-viewer'
 import { bytesToSize } from '@/tools'
 import NoData from '../NoData'
-import { getCommentList } from '@/services/demand'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import { Space } from 'antd'
 
 const imgs = ['png', 'webp', 'jpg', 'jpeg', 'png', 'gif']
 
@@ -33,10 +34,12 @@ interface CommonCommentProps {
   data: {
     list: Model.Sprint.CommentListInfo[]
   }
+  onDeleteConfirm(id: number): void
 }
 
 const CommonComment = (props: CommonCommentProps) => {
   const [t]: any = useTranslation()
+  const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const { userInfo } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
   const [previewOpen, setPreviewOpen] = useState<boolean>(false)
@@ -56,8 +59,14 @@ const CommonComment = (props: CommonCommentProps) => {
 
   // 删除评论
   const onDeleteComment = (item: any) => {
-    // setIsVisible(true)
-    // setIsDeleteId(item.id)
+    open({
+      title: '删除确认',
+      text: '确认删除该评论？',
+      onConfirm: () => {
+        props.onDeleteConfirm(item.id)
+        return Promise.resolve()
+      },
+    })
   }
 
   const onReview = (item: any, attachList: any) => {
@@ -94,7 +103,7 @@ const CommonComment = (props: CommonCommentProps) => {
     downloadIamge(url, name1)
   }
 
-  // 删除附件
+  // 删除附件 -- 需求
   const onTapRemove = async (attid: any, id: any) => {
     // await delCommonAt({
     //   project_id: props.detail.projectId,
@@ -107,6 +116,7 @@ const CommonComment = (props: CommonCommentProps) => {
 
   return (
     <div>
+      <DeleteConfirmModal />
       {!!props.data?.list &&
         (props.data?.list?.length > 0 ? (
           <div>
@@ -117,10 +127,22 @@ const CommonComment = (props: CommonCommentProps) => {
                   <MyDiv>
                     <HovDiv>
                       {isComment && userInfo?.id === item.userId ? (
-                        <IconFont
-                          type="close"
+                        <CloseWrap
+                          width={24}
+                          height={24}
+                          // onClick={() => onEditComment(item)}
+                        >
+                          <IconFont type="edit" style={{ fontSize: 16 }} />
+                        </CloseWrap>
+                      ) : null}
+                      {isComment && userInfo?.id === item.userId ? (
+                        <CloseWrap
+                          width={24}
+                          height={24}
                           onClick={() => onDeleteComment(item)}
-                        />
+                        >
+                          <IconFont type="delete" style={{ fontSize: 16 }} />
+                        </CloseWrap>
                       ) : null}
                     </HovDiv>
 

@@ -34,19 +34,22 @@ declare namespace Model.Project {
     id?: number
     name?: string
     icon?: string
+    parentName?: string
   }
   interface Category {
     active?: boolean
-    attachment_path?: string
+    attachmentPath?: string
     color?: string
     hasDemand?: number
     id?: number
     isCheck?: number
-    name?: string
+    name?: string | React.ReactNode
+    eleName?: React.ReactNode
     remark?: string
     status?: number
     statusCount?: number
     work_type?: number
+    labelName?: string
   }
   interface CategoryList {
     name: string

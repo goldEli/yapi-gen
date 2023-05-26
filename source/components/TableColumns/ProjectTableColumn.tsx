@@ -27,6 +27,7 @@ import ChangePriorityPopover from '../ChangePriorityPopover'
 import DemandProgress from '../DemandProgress'
 import { getCustomNormalValue } from '@/tools'
 import ChangeSeverityPopover from '../ChangeSeverityPopover'
+import MultipleAvatar from '../MultipleAvatar'
 
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
   {
@@ -358,8 +359,15 @@ export const useDynamicColumns = (state: any) => {
       dataIndex: 'userName',
       key: 'user_name',
       width: 120,
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: string, record: any) => {
+        return (
+          <MultipleAvatar
+            max={3}
+            list={text.split(';')?.map((i: any) => ({
+              name: i,
+            }))}
+          />
+        )
       },
     },
     {
@@ -376,7 +384,14 @@ export const useDynamicColumns = (state: any) => {
             item={record}
             onUpdate={() => onUpdate(record)}
           >
-            <span>{text || '--'}</span>
+            <MultipleAvatar
+              max={3}
+              list={record.usersInfo?.map((i: any) => ({
+                id: i.id,
+                name: i.name,
+                avatar: i.avatar,
+              }))}
+            />
           </TableQuickEdit>
         )
       },
@@ -439,7 +454,12 @@ export const useDynamicColumns = (state: any) => {
             item={record}
             onUpdate={() => onUpdate(record)}
           >
-            <span>{text || '--'}</span>
+            <MultipleAvatar
+              max={3}
+              list={text.split(';')?.map((i: any) => ({
+                name: i,
+              }))}
+            />
           </TableQuickEdit>
         )
       },

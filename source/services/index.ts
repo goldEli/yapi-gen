@@ -13,6 +13,7 @@ import * as formwork from './formwork'
 import * as report from './report'
 import * as sprint from './sprint'
 import * as kanban from './kanban'
+import * as kanbanConfig from './kanbanConfig'
 
 export {
   formwork,
@@ -30,4 +31,5 @@ export {
   calendar,
   sprint,
   kanban,
+  kanbanConfig,
 }

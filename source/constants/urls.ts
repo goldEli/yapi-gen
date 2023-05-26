@@ -252,14 +252,17 @@ const urls = {
   // 看板配置剩余状态
   getKanbanConfigRemainingStatus: '/b/project/kanban/configs/residueStatus',
   // 完成率Top10
-  getCompletionRate: 'b/efficiency/contrast/completion_rate',
+  getCompletionRate: '/b/efficiency/contrast/completion_rate',
   // 阶段缺陷占比
-  getDefectRatio: 'b/efficiency/defect_ratio',
+  getDefectRatio: '/b/efficiency/defect_ratio',
   // 缺陷趋势
-  getBugList: 'b/efficiency/member/bug/list',
+  getBugList: '/b/efficiency/member/bug/list',
   // 工作项和缺陷
-  getStatisticsTotal: 'b/efficiency/statistics/total',
-
+  getStatisticsTotal: '/b/efficiency/statistics/total',
+  // 对比列表
+  workContrastList: '/b/efficiency/member/work_contrast/list',
+  // 缺陷分析列表
+  memberBugList: '/b/efficiency/member/bug/list',
   // 修改首页配置
   updateHomeSetting: '/b/project/change/defaultHomeMenu',
   /**

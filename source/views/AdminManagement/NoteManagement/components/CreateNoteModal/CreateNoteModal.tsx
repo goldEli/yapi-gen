@@ -32,6 +32,8 @@ import {
 } from '@/views/WorkReport/Formwork/Addperson'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
+import { Moment } from 'moment'
+import { createSysNotice } from '@/services/sysNotice'
 interface Item {
   label: string
   key: string
@@ -61,6 +63,7 @@ const CreateNoteModal = (props: any) => {
   const [personData, setPersonData] = useState<any>()
   const [isVisible, setIsVisible] = useState(false)
   const [taskTime, setTaskTime] = useState(false)
+  const [taskTimeString, setTaskTimeString] = useState<string>('')
   const [isEmail, setIsEmail] = useState(false)
   const [targetType, setTargetType] = useState<number>(0)
   const [isAddVisible, setIsAddVisible] = useState(false)
@@ -88,8 +91,8 @@ const CreateNoteModal = (props: any) => {
     setIsEmail(e.target.checked)
   }
   const fitlerDataList = (data: any) => {
-    let obj: any = {}
-    let set: any = data?.reduce((cur: any, next: any) => {
+    const obj: any = {}
+    const set: any = data?.reduce((cur: any, next: any) => {
       obj[next.target_id] ? '' : (obj[next.target_id] = true && cur.push(next))
       return cur
     }, [])
@@ -118,6 +121,7 @@ const CreateNoteModal = (props: any) => {
         avatar: item.type === 1 ? 2 : item.type,
       },
     }))
+
     console.log(values, '部门')
     setPersonData(values)
   }
@@ -175,9 +179,8 @@ const CreateNoteModal = (props: any) => {
           />
         </DefalutIcon>
       )
-    } else {
-      return <CommonUserAvatar />
     }
+    return <CommonUserAvatar />
   }
   const onOpenChange = (e: { key: string }) => {
     setIsOpen(false)
@@ -200,7 +203,7 @@ const CreateNoteModal = (props: any) => {
             user_type: props.state,
             key: 'all',
             id: -props.state,
-            target_id: -props.state,
+            target_id: props.state,
             name: getName(e.key, ''),
             avatar: '',
             target_value: {
@@ -239,9 +242,26 @@ const CreateNoteModal = (props: any) => {
   const delPerson = (el: { target_id: any }) => {
     props.onChangedel(el)
   }
-  const onHandleOk = () => {
-    console.log(form.getFieldsValue())
-    console.log(personData)
+  const onHandleOk = async () => {
+    const res = await form.validateFields()
+    res.expire_time = res.expire_time.format('YYYY-MM-DD HH:mm:ss')
+    const obj = {
+      send_email: isEmail ? 1 : 2,
+      send_time: taskTimeString,
+      recipient: {
+        all: 1,
+      },
+    }
+
+    const mergedObj = { ...res, ...obj }
+    console.log(mergedObj)
+    const res2 = await createSysNotice(mergedObj)
+    console.log(res2)
+  }
+
+  const onChangeTaskTime = (time: any, timeString: string) => {
+    setTaskTimeString(timeString)
+    console.log(time, timeString)
   }
   return (
     <CommonModal
@@ -263,7 +283,7 @@ const CreateNoteModal = (props: any) => {
         <Form form={form} layout="vertical">
           <Form.Item
             label={<LabelTitle>通知标题</LabelTitle>}
-            name="username"
+            name="title"
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
             <Input maxLength={20} placeholder="请输入通知标题最多20字" />
@@ -303,19 +323,19 @@ const CreateNoteModal = (props: any) => {
           </Form.Item>
 
           <Form.Item
-            initialValue="a"
-            name="radio-group"
+            initialValue={1}
+            name="type"
             label={<LabelTitle>通知类型</LabelTitle>}
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
             <Radio.Group>
-              <Radio value="a">日常通知</Radio>
-              <Radio value="b">系统通知</Radio>
-              <Radio defaultChecked value="c">
+              <Radio value={1}>日常通知</Radio>
+              <Radio value={2}>系统通知</Radio>
+              <Radio defaultChecked value={3}>
                 重要通知
               </Radio>
-              <Radio value="d">活动通知</Radio>
-              <Radio value="e">放假通知</Radio>
+              <Radio value={4}>活动通知</Radio>
+              <Radio value={5}>放假通知</Radio>
             </Radio.Group>
           </Form.Item>
           <Form.Item
@@ -339,7 +359,7 @@ const CreateNoteModal = (props: any) => {
                     }}
                   >
                     同时邮件通知
-                  </span>{' '}
+                  </span>
                 </Checkbox>
               </div>
               <div>
@@ -390,12 +410,12 @@ const CreateNoteModal = (props: any) => {
           </Form.Item>
 
           <Form.Item
-            initialValue="b"
-            name="type"
+            initialValue={2}
+            name="notice_style"
             label={<LabelTitle>提醒方式</LabelTitle>}
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
-            <Radio.Group value="a">
+            <Radio.Group>
               <div
                 style={{
                   display: 'flex',
@@ -410,7 +430,7 @@ const CreateNoteModal = (props: any) => {
                     gap: '8px',
                   }}
                 >
-                  <Radio value="a">弹窗提醒</Radio>
+                  <Radio value={1}>弹窗提醒</Radio>
                   <img
                     style={{
                       width: '104px',
@@ -426,7 +446,7 @@ const CreateNoteModal = (props: any) => {
                     gap: '8px',
                   }}
                 >
-                  <Radio defaultChecked value="b">
+                  <Radio defaultChecked value={2}>
                     顶部横幅
                   </Radio>
                   <img
@@ -442,7 +462,7 @@ const CreateNoteModal = (props: any) => {
           </Form.Item>
           <Form.Item
             label={<LabelTitle>失效时间</LabelTitle>}
-            name="expirationTime"
+            name="expire_time"
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
             <DatePicker
@@ -455,30 +475,24 @@ const CreateNoteModal = (props: any) => {
         </Form>
         <div>
           <Checkbox onChange={onChange}>定时发送</Checkbox>
-          {taskTime && (
+          {taskTime ? (
             <div
               style={{
                 marginTop: '8px',
               }}
             >
               <DatePicker
+                onChange={onChangeTaskTime}
                 showTime
                 style={{
                   width: '100%',
                 }}
               />
             </div>
-          )}
+          ) : null}
         </div>
 
-        {isVisible && (
-          //   <CommonModal2
-          //   title={t('formWork.addUser')}
-          //   state={2}
-          //   isVisible={isVisible}
-          //   onConfirm={onConfirm}
-          //   onClose={() => setIsVisible(false)}
-          // />
+        {isVisible ? (
           <NewAddUserModalForTandD
             title={t('formWork.addUser')}
             state={2}
@@ -486,7 +500,7 @@ const CreateNoteModal = (props: any) => {
             onConfirm={onConfirm}
             onClose={() => setIsVisible(false)}
           />
-        )}
+        ) : null}
         <AddDepartmentOrTeamModal
           isVisible={isAddVisible}
           onClose={() => setIsAddVisible(false)}

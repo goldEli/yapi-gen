@@ -2,7 +2,7 @@
  * 另存为视图  编辑视图弹窗
  */
 import React from 'react'
-import { Form, Input } from 'antd'
+import { Form, Input, InputRef } from 'antd'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
 import { useDispatch, useSelector } from '@store/index'
@@ -10,6 +10,7 @@ import {
   closeSaveAsViewModel,
   onSaveAsViewModel,
 } from '@store/kanbanConfig/kanbanConfig.thunk'
+import useProjectId from '../hooks/useProjectId'
 
 const LabelTitle = (props: any) => {
   return (
@@ -37,6 +38,13 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
   const [form] = Form.useForm()
   const [t] = useTranslation()
   const { saveAsViewModelInfo } = useSelector(store => store.KanbanConfig)
+  // const inputRef = React.useRef<InputRef>(null)
+  // React.useEffect(() => {
+  //   inputRef.current?.focus?.({
+  //     cursor: 'start',
+  //   })
+  // }, [saveAsViewModelInfo])
+
   React.useEffect(() => {
     if (saveAsViewModelInfo.viewItem) {
       form.setFieldsValue({
@@ -47,19 +55,22 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
     form.setFieldsValue({
       name: '',
     })
-  }, [saveAsViewModelInfo.viewItem])
+  }, [saveAsViewModelInfo])
   const dispatch = useDispatch()
 
   const onClose = () => {
     dispatch(closeSaveAsViewModel())
   }
+  const { projectId } = useProjectId()
 
   const confirm = async () => {
     const data = await form.validateFields()
     dispatch(
       onSaveAsViewModel({
-        ...saveAsViewModelInfo.viewItem,
-        value: data.name,
+        // ...saveAsViewModelInfo.viewItem,
+        id: saveAsViewModelInfo.viewItem?.id ?? 0,
+        name: data.name as string,
+        project_id: projectId,
       }),
     )
   }
@@ -69,11 +80,14 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
   }
 
   const title = React.useMemo(() => {
+    if (saveAsViewModelInfo.title) {
+      return saveAsViewModelInfo.title
+    }
     if (saveAsViewModelInfo.viewItem) {
       return '编辑视图'
     }
     return '另存为视图'
-  }, [saveAsViewModelInfo.viewItem])
+  }, [saveAsViewModelInfo])
 
   return (
     <CommonModal
@@ -103,7 +117,7 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
             <Input
               maxLength={30}
               placeholder="请输入实视图名称限30字"
-              autoFocus
+              // ref={inputRef}
             />
           </Form.Item>
         </Form>

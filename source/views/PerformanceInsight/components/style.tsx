@@ -95,7 +95,6 @@ export const FilterType = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 24px 0;
 `
 export const Text = styled.span`
   font-size: 14px;
@@ -110,6 +109,7 @@ export const Text = styled.span`
 export const Title = styled.div`
   font-size: 14px;
   color: var(--neutral-n2);
+  margin: 24px 0;
 `
 export const TableStyle = styled.div`
   height: 408px;

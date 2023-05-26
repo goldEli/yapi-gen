@@ -331,7 +331,6 @@ const DemandDetailDrawer = () => {
 
   useEffect(() => {
     if (isUpdateDemand) {
-      console.log(1111)
       setCurrentIndex(0)
       setDemandIds([])
       if (isDemandDetailDrawerVisible) {

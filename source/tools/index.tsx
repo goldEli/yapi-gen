@@ -54,6 +54,15 @@ function getParamsData(params: any) {
   return JSON.parse(decryptPhp(params.get('data') as string))
 }
 
+export function getParamsValueByKey(key: string) {
+  const url = new URL(window.location.href)
+  const searchParams = url.searchParams
+
+  const params = getParamsData(searchParams)
+
+  return params[key]
+}
+
 // 需求分类树
 function filterTreeData(data: any) {
   const newData = data.map((item: any) => ({
@@ -340,7 +349,7 @@ function removeNull(list: any, key: string) {
     ?.children?.filter((i: any) => i.id !== -1)
 }
 
-// 获取自定义字段默认值
+// 获取自定义字段默认值 -- 表格
 function getCustomNormalValue(attr: any, text: any) {
   let result: any
   if (Array.isArray(text?.value) && !text?.true_value) {
@@ -410,7 +419,6 @@ function getIdsForAt(htmlString: string) {
   const dataIdValues = Array.from(dataIdElements).map(el =>
     el.getAttribute('data-id'),
   )
-  console.log(dataIdValues)
 
   return Array.from(new Set(dataIdValues))
 }

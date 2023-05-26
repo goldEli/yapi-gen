@@ -52,7 +52,6 @@ const Iteration = (props: Props) => {
   const [tabsActive, setTabsActive] = useState<number>(0)
   const [timekey, setTimekey] = useState<number>(-1)
   const { RangePicker } = DatePicker
-  const dateFormat = 'YYYY-MM-DD'
   const [more, setMore] = useState<boolean>(false)
   const [person, setPerson] = useState<ItemProps[] | []>([])
   const [isVisible, setIsVisible] = useState<boolean>(false)
@@ -86,13 +85,11 @@ const Iteration = (props: Props) => {
       })),
     )
     setProjectList(
-      res.list
-        .slice(0, 10)
-        .map((el: { id: number; name: string }) => ({
-          ...el,
-          label: el.name,
-          value: el.id,
-        })),
+      res.list.slice(0, 10).map((el: { id: number; name: string }) => ({
+        ...el,
+        label: el.name,
+        value: el.id,
+      })),
     )
     res.list.length <= 10 && setMore(true)
     dispatch(
@@ -227,6 +224,7 @@ const Iteration = (props: Props) => {
                 }),
               )
             }}
+            value={1}
             placeholder="请选择周期"
             list={[
               {

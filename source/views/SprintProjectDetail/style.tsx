@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Progress, Space } from 'antd'
+import { Dropdown, Form, Progress, Space } from 'antd'
 
 export const Wrap = styled.div`
   height: 100%;
@@ -86,6 +86,7 @@ export const DetailText = styled.div`
     color: var(--neutral-n1-d1);
     margin-right: 16px;
     font-family: SiYuanMedium;
+    outline: none;
   }
   .icon {
     margin-right: 16px;
@@ -103,6 +104,7 @@ export const DetailInfoWrap = styled.div`
   width: 100%;
   height: calc(100% - 40px);
   overflow: auto;
+  border-right: 1px solid red;
 `
 
 export const InfoItem = styled.div`
@@ -191,4 +193,38 @@ export const ItemNumber = styled.div<{ isActive?: boolean }>`
     props.isActive ? 'var(--primary-d1)' : 'var(--function-tag5)'};
   color: ${props =>
     props.isActive ? 'var(--neutral-white-d7)' : 'var(--primary-d1)'};
+`
+
+export const LiWrap = styled.div({
+  cursor: 'pointer',
+  padding: '0 16px',
+  width: '100%',
+  height: 32,
+  display: 'flex',
+  alignItems: 'center',
+  background: 'var(--neutral-white-d3)',
+  '&: hover': {
+    background: 'var(--hover-d3)',
+  },
+})
+
+export const FormWrap = styled(Form)({
+  '.ant-form-item': {
+    margin: '22px 0 0 0',
+  },
+})
+
+export const DropdownMenu = styled(Dropdown)`
+  .ant-dropdown-menu-item {
+    padding: 4px 16px;
+  }
+  .ant-dropdown-menu-item-divider {
+    margin: 4px 16px;
+  }
+`
+
+export const InfoWrap = styled.div`
+  height: calc(100vh - 212px);
+  flex: 1;
+  position: relative;
 `

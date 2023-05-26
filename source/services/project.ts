@@ -743,6 +743,7 @@ export const saveWorkflowConfig: any = async (params: any) => {
       process: params.process,
     },
     auth: params.auth,
+    name: params.name,
   })
 }
 
