@@ -282,6 +282,15 @@ const urls = {
   getKanbanByGroup: '/b/project/kanban/storiesOfGroupBy',
   // 修改看板事务顺序
   modifyKanbanIssueSort: '/b/project/kanban/updateSort',
+  // 检查试图是否保存
+  checkUpdate: '/b/story/views/checkUpdate',
+  // 分享视图
+  shareView: '/b/story/views/share',
+
+  /**
+   * 视图管理
+   */
+  getStoryViewList: '/b/story/views/list',
 }
 export default urls
 

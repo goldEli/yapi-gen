@@ -18,7 +18,10 @@ declare namespace API.Sprint {
     type Params = {
       projectId: number
       sprintId?: number
-      targetId: Model.Sprint.AttachTarget[] | { name: string; color: string }[]
+      targetId:
+        | Model.Sprint.AttachTarget[]
+        | { name: string; color: string }[]
+        | number
       type: string
     }
   }
@@ -252,6 +255,12 @@ declare namespace API.Sprint {
     type Result = {
       total: Model.Sprint.Total
       list: Array<Model.Sprint.List>
+    }
+  }
+  namespace CheckUpdate {
+    type Params = {
+      id: number
+      config: any
     }
   }
 }

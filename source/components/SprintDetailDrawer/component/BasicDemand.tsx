@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable camelcase */
 import { getCategoryConfigList } from '@/services/demand'
-import { getCustomNormalValueTable } from '@/tools'
+import { getCustomNormalValue } from '@/tools'
 import ParentDemand from '@/views/Demand/components/ParentDemand'
 import { useDispatch, useSelector } from '@store/index'
 import { message, Tooltip } from 'antd'
@@ -360,9 +360,9 @@ const BasicDemand = (props: Props) => {
         isInfoPage={props.isInfoPage}
       >
         <span>
-          {getCustomNormalValueTable(
+          {getCustomNormalValue(
             item.fieldContent?.attr,
-            props.detail?.customField[item.content],
+            props.detail?.customField?.[item.content],
           )}
         </span>
       </TableQuickEdit>
@@ -376,7 +376,13 @@ const BasicDemand = (props: Props) => {
   }, [props.isOpen, props.detail])
 
   return (
-    <div style={{ width: '100%', paddingLeft: props.hasPadding ? '24px' : 0 }}>
+    <div
+      style={{
+        width: '100%',
+        paddingLeft: props.hasPadding ? '24px' : 0,
+        height: '100%',
+      }}
+    >
       <Label>{t('newlyAdd.basicInfo')}</Label>
       {notFoldList?.map((i: any) => {
         return (

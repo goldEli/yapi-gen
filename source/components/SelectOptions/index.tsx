@@ -18,23 +18,30 @@ import {
   SelectOptionsBox,
 } from './styled'
 
+export interface Options {
+  id: number
+  name: string
+  check: boolean
+  isDefault?: boolean
+  operation?: boolean
+}
 interface SelectBoxProps {
   title: string
-  onChange(key: string): void
-  options: Model.KanBan.ViewItem[]
-  operation?: Model.KanBan.ViewItem['operation']
+  onChange(key: number): void
+  options: Options[]
+  operation?: Options['operation']
   onCreateView?: () => void
   createViewTitle?: string
-  onDel?: (key: string) => void
-  onEdit?: (key: string) => void
-  onDefault?: (key: string) => void
+  onDel?: (key: number) => void
+  onEdit?: (key: number) => void
+  onDefault?: (key: number) => void
 }
 
 const SelectOptions: React.FC<SelectBoxProps> = props => {
   const [isVisibleFormat, setIsVisibleFormat] = useState(false)
 
   // 切换显示类型
-  const onClickMenuFormat = (key: string) => {
+  const onClickMenuFormat = (key: number) => {
     // getMessage({ msg: t('version2.reviewModeChangeSuccess'), type: 'success' })
     props.onChange(key)
     setIsVisibleFormat(false)
@@ -42,36 +49,43 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
 
   const [value, key] = useMemo(() => {
     const current = props.options.find(item => item.check)
-    return [current?.value, current?.key]
+    return [current?.name, current?.id]
   }, [props.options])
 
-  const renderOption = (item: Model.KanBan.ViewItem) => {
+  const renderOption = (item: Options) => {
     return {
-      key: item.key,
+      key: item.id,
       label: (
         <HasIconMenu
-          onClick={() => onClickMenuFormat(item.key)}
-          isCheck={item.key === key}
+          onClick={() => onClickMenuFormat(item.id)}
+          isCheck={item.id === key}
         >
           <Options>
-            <span className="label">{item.value}</span>
-            {item.check && <IconFont className="checked" type="check" />}
+            <LabelArea>
+              <span className="label">{item.name}</span>
+              <DefaultTag visible={item.isDefault ?? false}>默认</DefaultTag>
+            </LabelArea>
+            <OperationArea>
+              <CheckIcon visible={item.check}>
+                <IconFont className="checked" type="check" />
+              </CheckIcon>
+            </OperationArea>
           </Options>
         </HasIconMenu>
       ),
     }
   }
-  const renderOptionWidthOperation = (item: Model.KanBan.ViewItem) => {
+  const renderOptionWidthOperation = (item: Options) => {
     return {
-      key: item.key,
+      key: item.id,
       label: (
         <HasIconMenu
-          onClick={() => onClickMenuFormat(item.key)}
-          isCheck={item.key === key}
+          onClick={() => onClickMenuFormat(item.id)}
+          isCheck={item.id === key}
         >
           <Options>
             <LabelArea>
-              <span className="label">{item.value}</span>
+              <span className="label">{item.name}</span>
               <DefaultTag visible={item.isDefault ?? false}>默认</DefaultTag>
             </LabelArea>
             <OperationArea>
@@ -84,7 +98,7 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
                   onClick={e => {
                     e.stopPropagation()
                     setIsVisibleFormat(false)
-                    props?.onDefault?.(item.key)
+                    props?.onDefault?.(item.id)
                   }}
                   type="tag-96pg0hf3"
                 />
@@ -93,7 +107,7 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
                   onClick={e => {
                     e.stopPropagation()
                     setIsVisibleFormat(false)
-                    props?.onEdit?.(item.key)
+                    props?.onEdit?.(item.id)
                   }}
                   type="edit"
                 />
@@ -102,7 +116,7 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
                   onClick={e => {
                     e.stopPropagation()
                     setIsVisibleFormat(false)
-                    props?.onDel?.(item.key)
+                    props?.onDel?.(item.id)
                   }}
                   type="delete"
                 />
@@ -119,16 +133,18 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
     if (props.operation) {
       const arr = props.options.filter(item => !item.isDefault)
       const arrWithDefault = props.options.filter(item => item.isDefault)
-      const dividerItem = { key: '', label: '', type: 'divider' }
-      const arrWithDefaultItems = arrWithDefault?.map(
-        renderOptionWidthOperation,
-      )
+      const dividerItem = { key: 0, label: '', type: 'divider' }
+      const arrWithDefaultItems = arrWithDefault?.map(renderOption)
+      if (arrWithDefaultItems.length) {
+        arrWithDefaultItems.push(dividerItem as any)
+      }
       const arrItems = arr?.map(renderOptionWidthOperation)
+      if (arrItems.length) {
+        arrItems.push(dividerItem as any)
+      }
       return [
         ...arrWithDefaultItems,
-        dividerItem,
         ...arrItems,
-        dividerItem,
         {
           key: 'create-view',
           label: (

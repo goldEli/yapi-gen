@@ -9,7 +9,10 @@ import guide_1 from './img/guide_1.png'
 import guide_2 from './img/guide_2.png'
 import guide_3 from './img/guide_3.png'
 import Board from './Borad'
-import { getKanbanConfigList } from '@store/kanBan/kanBan.thunk'
+import {
+  getKanbanConfigList,
+  getStoryViewList,
+} from '@store/kanBan/kanBan.thunk'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import useProjectId from './hooks/useProjectId'
@@ -40,6 +43,7 @@ const SprintProjectKanBan: React.FC<IProps> = props => {
 
   useEffect(() => {
     dispatch(getKanbanConfigList({ project_id: projectId }))
+    dispatch(getStoryViewList(projectId))
   }, [projectId])
 
   const inform = [

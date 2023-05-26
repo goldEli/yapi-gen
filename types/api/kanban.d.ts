@@ -48,4 +48,12 @@ declare namespace API.Kanban {
     }
     type Result = null
   }
+  namespace GetStoryViewList {
+    type Params = {
+      project_id: number
+      // 用途，1：需求列表，2：看板，3：报表
+      use_type: 1 | 2 | 3
+    }
+    type Result = Model.KanBan.ViewItem[]
+  }
 }

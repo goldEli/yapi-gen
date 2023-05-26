@@ -5,7 +5,14 @@ import CommonIconFont from '@/components/CommonIconFont'
 import { getCategorySaveSort } from '@/services/demand'
 import { getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
-import { JSXElementConstructor, ReactElement, useEffect, useState } from 'react'
+import _ from 'lodash'
+import {
+  JSXElementConstructor,
+  ReactElement,
+  useEffect,
+  useState,
+  useRef,
+} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import EditCategory from './EditCategory'
@@ -103,6 +110,8 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   const [list, setList] = useState<any>()
   const [affairType, setAffairType] = useState<any>()
   const [categoryItem, setCategoryItem] = useState(paramsData?.categoryItem)
+  const [cacheData, setCacheData] = useState<Model.Project.CategoryList[]>()
+  const dragCategoryList = useRef<Model.Project.Category[]>()
   const [workType, setWorkType] = useState('')
   const tabs = [
     {
@@ -146,7 +155,9 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
     dataItem?.length <= 1 && dispatch(setCategoryConfigDataList([]))
     const affairTypeData = getTypeCategory(dataItem, 'work_type')
     setAffairType(affairTypeData)
-    setList(dataItem)
+    setCacheData(_.cloneDeep(affairTypeData))
+
+    // setList(dataItem)
   }
 
   // 需求类别中间列表
@@ -183,8 +194,53 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   const onGoBack = () => {
     props.onClick()
   }
+  const arrayFlat = (
+    array: Model.Project.CategoryList[],
+    prevIndex: number,
+    nextIndex: number,
+    workType: any[],
+  ) => {
+    if (!workType.length) {
+      return
+    }
+    const newData: Model.Project.Category[] = []
+    array.forEach(item => {
+      item.children.forEach(item => {
+        newData.push(item)
+      })
+    })
+    const otherCategoryData = newData.filter(
+      item => !workType.includes(item.work_type),
+    )
+    const CategoryData = newData.filter(item =>
+      workType.includes(item.work_type),
+    )
+    console.log(dragCategoryList.current)
 
-  const onMove = async (data: any) => {
+    const currentItem = CategoryData[prevIndex]
+    CategoryData[prevIndex] = CategoryData[nextIndex]
+    CategoryData[nextIndex] = currentItem
+
+    const list = getTypeCategory(
+      [...CategoryData, ...otherCategoryData],
+      'work_type',
+    )
+    if (!list) {
+      return
+    }
+    setAffairType(list)
+    setCacheData(list)
+  }
+  const onMove = async (
+    data: Model.Project.Category[],
+    prevIndex: number,
+    nextIndex: number,
+  ) => {
+    if (!cacheData) {
+      return
+    }
+    const workType = data.map(item => item.work_type)
+    arrayFlat(cacheData, prevIndex, nextIndex, workType)
     const dataSort = data.map((el: any, index: any) => ({
       id: el.id,
       sort: index,
@@ -348,7 +404,9 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
                       )
                       updateNode(child)
                     }}
-                    onMove={(data: any) => onMove(data)}
+                    onMove={(data: any, prevIndex: number, nextIndex: number) =>
+                      onMove(data, prevIndex, nextIndex)
+                    }
                   ></Dragging>
                 </MenuBox>
               </AffairTypeWrap>
