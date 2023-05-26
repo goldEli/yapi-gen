@@ -263,6 +263,10 @@ const urls = {
   workContrastList: '/b/efficiency/member/work_contrast/list',
   // 缺陷分析列表
   memberBugList: '/b/efficiency/member/bug/list',
+  // 进展对比后半截弹窗
+  efficiencyMemberWorkList: '/b/efficiency/member/work_list',
+  // 缺陷分析后半截
+  efficiencyMemberDefectList: 'b/efficiency/member/defect_list',
   // 修改首页配置
   updateHomeSetting: '/b/project/change/defaultHomeMenu',
   /**
