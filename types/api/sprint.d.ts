@@ -250,4 +250,10 @@ declare namespace API.Sprint {
       status: Array<Model.Sprint.StatusInfo1>
     }
   }
+  namespace CheckUpdate {
+    type Params = {
+      id: number
+      config: any
+    }
+  }
 }

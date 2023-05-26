@@ -32,6 +32,7 @@ export const CopyButton = styled.div`
   bottom: 24px;
   left: 0px;
   cursor: pointer;
+  z-index: 99;
 `
 
 export const ModalContentBox = styled.div`
