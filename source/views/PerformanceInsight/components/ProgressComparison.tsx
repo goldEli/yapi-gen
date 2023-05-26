@@ -18,7 +18,7 @@ import {
   memberBugList,
   plugSelectionUserInfo,
   workContrastList,
-} from '@/services/sprint'
+} from '@/services/efficiency'
 import { RowText } from './style'
 // 进展对比tips
 const getTitleTips = (text: string, tips: string) => {
