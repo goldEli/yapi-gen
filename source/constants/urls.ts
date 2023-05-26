@@ -282,6 +282,11 @@ const urls = {
   checkUpdate: '/b/story/views/checkUpdate',
   // 分享视图
   shareView: '/b/story/views/share',
+
+  /**
+   * 视图管理
+   */
+  getStoryViewList: '/b/story/views/list',
 }
 export default urls
 
