@@ -12,6 +12,8 @@ import { ContentItem, Label } from '../style'
 import DrawerTagComponent from '@/components/DemandDetailDrawer/DrawerTagComponent'
 import UploadAttach from '@/components/UploadAttach'
 import CommonButton from '@/components/CommonButton'
+import { addInfoSprint, deleteInfoSprint } from '@/services/sprint'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 
 interface DetailDemand {
   detail: any
@@ -20,60 +22,52 @@ interface DetailDemand {
 
 const SprintDetail = (props: DetailDemand) => {
   const [t] = useTranslation()
+  const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const { projectInfo } = useSelector(store => store.project)
-  const [isDelVisible, setIsDelVisible] = useState(false)
-  const [files, setFiles] = useState()
-
-  const onDeleteInfoAttach = async (file: any) => {
-    setIsDelVisible(true)
-    setFiles(file)
-  }
 
   const onAddInfoAttach = async (data: any) => {
-    // const obj = {
-    //   url: data.data.url,
-    //   name: data.data.files.name,
-    //   size: data.data.files.size,
-    //   ext: data.data.files.suffix,
-    //   ctime: data.data.files.time,
-    // }
-    // try {
-    //   await addInfoDemand({
-    //     projectId: props.detail.projectId,
-    //     demandId: props.detail.id,
-    //     type: 'attachment',
-    //     targetId: [obj],
-    //   })
-    //   props.onUpdate()
-    // } catch (error) {
-    //   //
-    // }
+    const obj = {
+      url: data.data.url,
+      name: data.data.files.name,
+      size: data.data.files.size,
+      ext: data.data.files.suffix,
+      ctime: data.data.files.time,
+    }
+    await addInfoSprint({
+      projectId: props.detail.projectId,
+      sprintId: props.detail.id,
+      type: 'attachment',
+      targetId: [obj],
+    })
+    props.onUpdate()
   }
 
-  const onDeleteConfirm = async () => {
-    // try {
-    //   await deleteInfoDemand({
-    //     projectId: props.detail.projectId,
-    //     demandId: props.detail.id,
-    //     type: 'attachment',
-    //     targetId: files,
-    //   })
-    //   getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-    //   props.onUpdate()
-    // } catch (error) {
-    //   //
-    // }
-    // setIsDelVisible(false)
+  const onDeleteConfirm = async (targetId: number) => {
+    await deleteInfoSprint({
+      projectId: props.detail.projectId,
+      sprintId: props.detail.id,
+      type: 'attachment',
+      targetId,
+    })
+    getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
+    props.onUpdate()
+  }
+
+  //   删除附件弹窗
+  const onDeleteInfoAttach = async (file?: any) => {
+    open({
+      title: '删除确认',
+      text: t('p2.del'),
+      onConfirm: () => {
+        onDeleteConfirm(file)
+        return Promise.resolve()
+      },
+    })
   }
 
   return (
     <>
-      {/* <DeleteConfirm
-        text={t('p2.del')}
-        isVisible={isDelVisible}
-        onChangeVisible={() => setIsDelVisible(!isDelVisible)}
-        onConfirm={onDeleteConfirm}
-      /> */}
+      <DeleteConfirmModal />
       <ContentItem>
         <Label>{t('requirement_description')}</Label>
         {props.detail.info ? (
@@ -83,18 +77,17 @@ const SprintDetail = (props: DetailDemand) => {
             readonly
           />
         ) : (
-          // <div dangerouslySetInnerHTML={{ __html: props.detail.info }} />
           '--'
         )}
       </ContentItem>
-      <ContentItem>
+      <ContentItem id="sprint-tag">
         <Label>{t('label')}</Label>
         <DrawerTagComponent
           demandDetail={props.detail}
           onUpdate={props.onUpdate}
         />
       </ContentItem>
-      <ContentItem style={{ marginBottom: 0 }}>
+      <ContentItem style={{ marginBottom: 0 }} id="sprint-attachment">
         <Label>{t('common.attachment')}</Label>
         <div>
           {projectInfo?.projectPermissions?.filter(
