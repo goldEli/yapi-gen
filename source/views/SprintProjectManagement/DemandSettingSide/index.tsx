@@ -93,8 +93,8 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   const [categoryItem, setCategoryItem] = useState(paramsData?.categoryItem)
   const [affairType, setAffairType] = useState<Model.Project.CategoryList[]>([])
   const [cacheData, setCacheData] = useState<Model.Project.CategoryList[]>()
-  const [workType, setWorkType] = useState('')
   const dragCategoryList = useRef<Model.Project.Category[]>()
+  const [workType, setWorkType] = useState('')
   const dragCategoryIds = useRef<number[]>()
   const { getTypeCategory } = useCategory()
 
@@ -187,32 +187,38 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
     array: Model.Project.CategoryList[],
     prevIndex: number,
     nextIndex: number,
+    workType: any[],
   ) => {
-    // debugger
-    let newData: Model.Project.Category[] = []
+    if (!workType.length) {
+      return
+    }
+    const newData: Model.Project.Category[] = []
     array.forEach(item => {
       item.children.forEach(item => {
         newData.push(item)
       })
     })
+    const otherCategoryData = newData.filter(
+      item => !workType.includes(item.work_type),
+    )
+    const CategoryData = newData.filter(item =>
+      workType.includes(item.work_type),
+    )
     console.log(dragCategoryList.current)
-    if (dragCategoryList.current) {
-      newData = [...dragCategoryList.current]
-    }
-    const currentItem = newData[prevIndex]
-    newData[prevIndex] = newData[nextIndex]
-    newData[nextIndex] = currentItem
-    dragCategoryList.current = newData
-    const list = getTypeCategory(newData, 'work_type')
+
+    const currentItem = CategoryData[prevIndex]
+    CategoryData[prevIndex] = CategoryData[nextIndex]
+    CategoryData[nextIndex] = currentItem
+
+    const list = getTypeCategory(
+      [...CategoryData, ...otherCategoryData],
+      'work_type',
+    )
     if (!list) {
       return
     }
     setAffairType(list)
-    if (!dragCategoryList.current) {
-      return
-    }
-
-    console.log(newData)
+    setCacheData(list)
   }
   const onMove = async (
     data: Model.Project.Category[],
@@ -222,7 +228,8 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
     if (!cacheData) {
       return
     }
-    arrayFlat(cacheData, prevIndex, nextIndex)
+    const workType = data.map(item => item.work_type)
+    arrayFlat(cacheData, prevIndex, nextIndex, workType)
     const dataSort = data.map((el: any, index: any) => ({
       id: el.id,
       sort: index,

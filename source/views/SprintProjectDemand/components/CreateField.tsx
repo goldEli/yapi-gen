@@ -176,7 +176,6 @@ const CreateField = () => {
     filterData(getCategoryConfigArray, getProjectFieIdsData)
   }, [getCategoryConfigArray, getProjectFieIdsData])
   useEffect(() => {
-    console.log('activeCategory', activeCategory)
     getProjectFieIdsApi()
   }, [activeCategory])
   return (
