@@ -18,11 +18,18 @@ import {
   SelectOptionsBox,
 } from './styled'
 
+export interface Options {
+  id: number
+  name: string
+  check: boolean
+  isDefault?: boolean
+  operation?: boolean
+}
 interface SelectBoxProps {
   title: string
   onChange(key: number): void
-  options: Model.KanBan.ViewItem[]
-  operation?: Model.KanBan.ViewItem['operation']
+  options: Options[]
+  operation?: Options['operation']
   onCreateView?: () => void
   createViewTitle?: string
   onDel?: (key: number) => void
@@ -45,7 +52,7 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
     return [current?.name, current?.id]
   }, [props.options])
 
-  const renderOption = (item: Model.KanBan.ViewItem) => {
+  const renderOption = (item: Options) => {
     return {
       key: item.id,
       label: (
@@ -68,7 +75,7 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
       ),
     }
   }
-  const renderOptionWidthOperation = (item: Model.KanBan.ViewItem) => {
+  const renderOptionWidthOperation = (item: Options) => {
     return {
       key: item.id,
       label: (
