@@ -5,15 +5,8 @@ import CommonIconFont from '@/components/CommonIconFont'
 import { getCategorySaveSort } from '@/services/demand'
 import { getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
-import {
-  JSXElementConstructor,
-  Key,
-  ReactElement,
-  ReactFragment,
-  ReactPortal,
-  useEffect,
-  useState,
-} from 'react'
+import _ from 'lodash'
+import { useEffect, useState, useRef } from 'react'
 import { ReactI18NextChild, useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import EditCategory from './EditCategory'
@@ -98,8 +91,11 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   const [isVisible, setIsVisible] = useState(false)
   const [list, setList] = useState<any>()
   const [categoryItem, setCategoryItem] = useState(paramsData?.categoryItem)
-  const [affairType, setAffairType] = useState<any>()
+  const [affairType, setAffairType] = useState<Model.Project.CategoryList[]>([])
+  const [cacheData, setCacheData] = useState<Model.Project.CategoryList[]>()
   const [workType, setWorkType] = useState('')
+  const dragCategoryList = useRef<Model.Project.Category[]>()
+  const dragCategoryIds = useRef<number[]>()
   const { getTypeCategory } = useCategory()
   const tabs = [
     {
@@ -140,12 +136,17 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
         active: index === 0 ? true : false,
       }))
     }
+    // debugger
     dataItem?.length <= 1 && dispatch(setCategoryConfigDataList([]))
     // console.log('dataItem', dataItem)
     const affairTypeData = getTypeCategory(dataItem, 'work_type')
+    if (!affairTypeData) {
+      return
+    }
     setAffairType(affairTypeData)
-    return
-    setList(dataItem)
+    setCacheData(_.cloneDeep(affairTypeData))
+    // return
+    // setList(dataItem)
   }
   // 需求类别中间列表
   const getCategoryConfig = async (dataItem: any) => {
@@ -181,8 +182,49 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   const onGoBack = () => {
     props.onClick()
   }
+  const arrayFlat = (array: Model.Project.CategoryList[], ids: any) => {
+    console.log('arry', array, ids)
+    let data = [...ids]
+    let newData: Model.Project.Category[] = []
+    let newIds: number[] = []
+    array.forEach(item => {
+      item.children.forEach(item => {
+        newData.push(item)
+      })
+    })
+    // debugger
+    console.log(dragCategoryList.current)
+    if (dragCategoryList.current) {
+      newData = [...dragCategoryList.current]
+      data = newData.filter(item => data.includes(item.id)).map(item => item.id)
+      console.log(data)
+    }
+    const index = newData.findIndex(item => data.includes(item.id))
+    const currentItem = newData.find(item => data.includes(item.id))
+    if (!currentItem) {
+      return
+    }
+    newData[index] = newData[index + 1]
+    newData[index + 1] = currentItem
+    dragCategoryList.current = newData
+    // dragCategoryIds.current = data
+    const list = getTypeCategory(newData, 'work_type')
+    if (!list) {
+      return
+    }
+    setAffairType(list)
+    if (!dragCategoryList.current) {
+      return
+    }
 
-  const onMove = async (data: any) => {
+    console.log(newData)
+  }
+  const onMove = async (data: Model.Project.Category[]) => {
+    const ids = data.map(item => item.id)
+    if (!cacheData) {
+      return
+    }
+    arrayFlat(cacheData, ids)
     const dataSort = data.map((el: any, index: any) => ({
       id: el.id,
       sort: index,
@@ -331,6 +373,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
                       )
                       updateNode(child)
                     }}
+                    // TODO
                     onMove={(data: any) => onMove(data)}
                   ></Dragging>
                 </MenuBox>

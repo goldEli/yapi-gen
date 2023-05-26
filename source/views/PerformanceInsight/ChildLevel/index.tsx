@@ -10,7 +10,6 @@ const ChildLevel = () => {
   console.log(paramsData)
   return (
     <ProgressComparison
-      data={paramsData.data}
       title={paramsData.title}
       type={paramsData.type}
       homeType={paramsData.homeType}
