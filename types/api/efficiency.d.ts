@@ -1,16 +1,20 @@
-declare namespace API.Member {
-  namespace CreateKanbanConfig {
+declare namespace API.Efficiency {
+  namespace historyWorkList {
     type Params = {
-      name: string
-      project_id: number
+      id: number
     }
     type Result = {
-      name: string
-      project_id: number
-      creator_id: number
-      updated_at: string
-      created_at: string
       id: number
+      name: string
+      email: string
+      avatar: string
+      role: {
+        id: number
+        name: string
+      }
+      work_record: Array<Models.Efficiency.WorkRecord>
+      created_word: Array<Models.Efficiency.CreatedWord>
+      word: Array<Models.Efficiency.CreatedWord>
     }
   }
 }
