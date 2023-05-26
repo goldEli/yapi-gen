@@ -211,4 +211,10 @@ declare namespace API.Sprint {
       defect: Model.Sprint.DefectListItem
     }
   }
+  namespace CheckUpdate {
+    type Params = {
+      id: number
+      config: any
+    }
+  }
 }

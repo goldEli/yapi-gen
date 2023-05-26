@@ -1,4 +1,3 @@
-import urls from '@/constants/urls'
 import * as http from '@/tools/http'
 
 export const getSprintKanBanList = async (
@@ -190,54 +189,53 @@ export const getSprintList = async (
     return {
       list: getListItem(response.data, params),
     }
-  } else {
-    return {
-      currentPage: params.page,
-      pageSize: params.pageSize,
-      total: response.data.pager?.total,
-      list: response.data.list.map((i: any) => ({
-        id: i.id,
-        name: i.name,
-        demand: i.child_story_count,
-        priority: i.priority,
-        iteration: i.iterate_name,
-        status: i.status,
-        dealName: i.users_name || '--',
-        time: i.created_at,
-        expectedStart: i.expected_start_at,
-        expectedEnd: i.expected_end_at,
-        info: i.info,
-        userIds: i.user_id,
-        iterateId: i.iterate_id,
-        parentId: i.parent_id,
-        finishTime: i.finish_at,
-        updatedTime: i.updated_at,
-        usersCopySendName: i.users_copysend_name,
-        userName: i.user_name,
-        tag: i.tag,
-        isExamine: i.verify_lock === 1,
-        category: i.category,
-        class: i.class,
-        schedule: i.schedule,
-        ...i.custom_field,
-        categoryColor: i.category_color,
-        categoryRemark: i.category_remark,
-        categoryId: i.category_id,
-        project_id: i.project_id,
-        usersNameIds: i.users_name_ids,
-        usersCopySendIds: i.users_copysend_name_ids,
-        category_attachment: i.category_attachment,
-        allChildrenCount: i.all_child_story_count,
-        allChildrenIds: i.all_child_ids,
-        children: getListItem(i.children, params) || null,
-        isExpended: params.topParentId === i.id,
-        level: 1,
-        topId: i.id,
-        categoryConfigList: i.category_config_list,
-        storyPrefixKey: i.story_prefix_key,
-        work_type: i.work_type,
-      })),
-    }
+  }
+  return {
+    currentPage: params.page,
+    pageSize: params.pageSize,
+    total: response.data.pager?.total,
+    list: response.data.list.map((i: any) => ({
+      id: i.id,
+      name: i.name,
+      demand: i.child_story_count,
+      priority: i.priority,
+      iteration: i.iterate_name,
+      status: i.status,
+      dealName: i.users_name || '--',
+      time: i.created_at,
+      expectedStart: i.expected_start_at,
+      expectedEnd: i.expected_end_at,
+      info: i.info,
+      userIds: i.user_id,
+      iterateId: i.iterate_id,
+      parentId: i.parent_id,
+      finishTime: i.finish_at,
+      updatedTime: i.updated_at,
+      usersCopySendName: i.users_copysend_name,
+      userName: i.user_name,
+      tag: i.tag,
+      isExamine: i.verify_lock === 1,
+      category: i.category,
+      class: i.class,
+      schedule: i.schedule,
+      ...i.custom_field,
+      categoryColor: i.category_color,
+      categoryRemark: i.category_remark,
+      categoryId: i.category_id,
+      project_id: i.project_id,
+      usersNameIds: i.users_name_ids,
+      usersCopySendIds: i.users_copysend_name_ids,
+      category_attachment: i.category_attachment,
+      allChildrenCount: i.all_child_story_count,
+      allChildrenIds: i.all_child_ids,
+      children: getListItem(i.children, params) || null,
+      isExpended: params.topParentId === i.id,
+      level: 1,
+      topId: i.id,
+      categoryConfigList: i.category_config_list,
+      storyPrefixKey: i.story_prefix_key,
+      work_type: i.work_type,
+    })),
   }
 }
 
@@ -246,7 +244,7 @@ export const getSprintInfo = async (
   params: API.Sprint.GetSprintInfo.Params,
 ) => {
   const response = await http.get<any, API.Sprint.GetSprintInfo.Result>(
-    `getSprintInfo`,
+    'getSprintInfo',
     {
       project_id: params.projectId,
       id: params.sprintId,
@@ -513,7 +511,21 @@ export const getStatisticsTotal = async (
   params: API.Sprint.GetDefectRatio.Params,
 ) => {
   const response = await http.get<any, API.Sprint.GetStatisticsTotal.Result>(
-    `getDefectRatio`,
+    'getDefectRatio',
+    params,
+  )
+  return response.data
+}
+// 检查是否保存视图
+export const checkUpdates = async (params: API.Sprint.CheckUpdate.Params) => {
+  const response = await http.post('checkUpdate', params)
+  return response.data
+}
+
+// 分享视图
+export const shareView = async (params: API.Sprint.GetDefectRatio.Params) => {
+  const response = await http.post<any, API.Sprint.GetStatisticsTotal.Result>(
+    'shareView',
     params,
   )
   return response.data

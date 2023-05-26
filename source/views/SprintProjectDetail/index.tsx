@@ -21,7 +21,9 @@ import SprintDetailBasic from './components/SprintDetailBasic'
 import { useDispatch, useSelector } from '@store/index'
 import { getSprintCommentList, getSprintInfo } from '@store/sprint/sprint.thunk'
 import { useSearchParams } from 'react-router-dom'
-import { getParamsData } from '@/tools'
+import { getParamsData, copyLink } from '@/tools'
+import useShareModal from '@/hooks/useShareModal'
+
 interface IProps {}
 const SprintProjectDetail: React.FC<IProps> = props => {
   const dispatch = useDispatch()
@@ -29,6 +31,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   const paramsData = getParamsData(searchParams)
   const { id, sprintId } = paramsData
   const { sprintInfo } = useSelector(store => store.sprint)
+  const { open, ShareModal } = useShareModal()
 
   // 复制标题
   const onCopy = () => {
@@ -87,7 +90,13 @@ const SprintProjectDetail: React.FC<IProps> = props => {
             </DownWrap>
             {/* )} */}
           </ChangeIconGroup>
-          <CommonButton type="icon" icon="share" />
+          <CommonButton
+            type="icon"
+            icon="share"
+            onClick={() => {
+              open({ onOk: async () => {} })
+            }}
+          />
           <CommonButton type="icon" icon="more" />
         </ButtonGroup>
       </DetailTop>
@@ -121,6 +130,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
         <SprintDetailInfo />
         <SprintDetailBasic />
       </DetailMain>
+      <ShareModal copyLink={() => copyLink(window.origin, '复制成功', '1')} />
     </Wrap>
   )
 }
