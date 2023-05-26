@@ -1,6 +1,6 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import { Space } from 'antd'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   HeaderStyle,
   BackIcon,
@@ -8,18 +8,34 @@ import {
   UpWrap,
   DownWrap,
 } from '../style'
-const DetailHeader = (props: { ids: number[]; onCancel: () => void }) => {
+interface Header {
+  ids: number[]
+  infoId: number
+  onCancel: () => void
+  onPageNum: (id: number) => void
+}
+const DetailHeader = (props: Header) => {
   const [currentIndex, setCurrentIndex] = useState(4)
-  const onCancel = () => {
-    // 获取当前需求的下标， 用作上一下一切换
-    //  setCurrentIndex((ids || []).findIndex((i: any) => i === info.id))
-    props.onCancel()
+  // 向上查找需求
+  const onUpDemand = () => {
+    const newIndex = props.ids[currentIndex - 1]
+    if (!currentIndex) return
+    props.onPageNum(newIndex)
   }
-  const onUpDemand = () => {}
+  // 向下查找需求
+  const onDownDemand = () => {
+    const newIndex = props.ids[currentIndex + 1]
+    if (currentIndex === props.ids?.length - 1) return
+    props.onPageNum(newIndex)
+  }
+  useEffect(() => {
+    // 根据当前获取当前id的下标， 用作上一下一切换
+    setCurrentIndex((props.ids || []).findIndex((i: any) => i === 4))
+  }, [])
   return (
     <HeaderStyle>
       <Space size={16}>
-        <BackIcon onClick={onCancel}>
+        <BackIcon onClick={props.onCancel}>
           <CommonIconFont type="right-02" size={20} color="var(--neutral-n2)" />
         </BackIcon>
       </Space>
@@ -45,7 +61,7 @@ const DetailHeader = (props: { ids: number[]; onCancel: () => void }) => {
             props.ids?.length === 0 || currentIndex === props.ids?.length - 1
           ) && (
             <DownWrap
-              //   onClick={onDownDemand}
+              onClick={onDownDemand}
               id="downIcon"
               isOnly={currentIndex <= 0}
             >

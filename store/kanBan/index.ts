@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { kanbanInfo, kanbanInfoByGroup, kanbanConfig } from './data'
-import { getKanbanConfigList } from './kanBan.thunk'
+import { getKanbanConfigList, getStoryViewList } from './kanBan.thunk'
+import { Options } from '@/components/SelectOptionsNormal'
 
 type SliceState = {
   guideVisible: Model.KanBan.guideVisible
   sortByGroupOptions?: Model.KanBan.GroupInfoItem[]
-  sortByRowAndStatusOptions?: Model.KanBan.ViewItem[]
+  sortByRowAndStatusOptions?: Options[]
   sortByView?: Model.KanBan.ViewItem[]
   saveAsViewModelInfo: {
     visible: boolean
@@ -32,15 +33,15 @@ const initialState: SliceState = {
     { key: 'priority', value: '按优先级', check: false },
   ],
   sortByRowAndStatusOptions: [
-    { key: 'statue', value: '按状态', check: true },
-    { key: 'name', value: '工作流名称', check: false },
+    // { key: 'statue', value: '按状态', check: true },
+    // { key: 'name', value: '工作流名称', check: false },
   ],
   sortByView: [
-    { key: 'default', value: '看板', isDefault: true, check: true },
-    { key: '1', value: '团队看板', check: false },
-    { key: '2', value: '日常跟进', check: false },
-    { key: '3', value: '重点关注', check: false },
-    { key: '4', value: '进度跟踪', check: false },
+    // { key: 'default', value: '看板', isDefault: true, check: true },
+    // { key: '1', value: '团队看板', check: false },
+    // { key: '2', value: '日常跟进', check: false },
+    // { key: '3', value: '重点关注', check: false },
+    // { key: '4', value: '进度跟踪', check: false },
   ],
   guideVisible: false,
   saveAsViewModelInfo: {
@@ -79,10 +80,7 @@ const slice = createSlice({
         ...action.payload,
       }
     },
-    onChangeSortByGroupOptions(
-      state,
-      action: PayloadAction<Model.KanBan.ViewItem['key']>,
-    ) {
+    onChangeSortByGroupOptions(state, action: PayloadAction<Options['key']>) {
       const current = state.sortByGroupOptions?.find(
         item => item.key === action.payload,
       )
@@ -98,7 +96,7 @@ const slice = createSlice({
     },
     onChangeSortByRowAndStatusOptions(
       state,
-      action: PayloadAction<Model.KanBan.ViewItem['key']>,
+      action: PayloadAction<Options['key']>,
     ) {
       const current = state.sortByRowAndStatusOptions?.find(
         item => item.key === action.payload,
@@ -115,24 +113,38 @@ const slice = createSlice({
     },
     onChangeSortByView(
       state,
-      action: PayloadAction<Model.KanBan.ViewItem['key']>,
+      action: PayloadAction<Model.KanBan.ViewItem['id']>,
     ) {
-      const current = state.sortByView?.find(
-        item => item.key === action.payload,
-      )
+      const current = state.sortByView?.find(item => item.id === action.payload)
       if (!current) {
         return
       }
       state.sortByView?.forEach(item => {
         item.check = false
-        if (item.key === current?.key) {
+        if (item.id === current?.id) {
           item.check = true
         }
       })
     },
   },
   extraReducers(builder) {
-    builder.addCase(getKanbanConfigList.fulfilled, (state, action) => {})
+    builder.addCase(getKanbanConfigList.fulfilled, (state, action) => {
+      state.kanbanConfigList = action.payload
+      const res = action.payload.map(item => {
+        return {
+          check: false,
+          value: item.name,
+          key: item.id + '',
+        }
+      })
+      if (res.length) {
+        res[0].check = true
+      }
+      state.sortByRowAndStatusOptions = res
+    })
+    builder.addCase(getStoryViewList.fulfilled, (state, action) => {
+      state.sortByView = action.payload
+    })
   },
 })
 
