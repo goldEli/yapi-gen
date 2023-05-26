@@ -16,17 +16,17 @@ import {
 import Table from './Table'
 interface Props {
   visible: boolean
-  id: number
+  status: Array<Model.Sprint.StatusInfo1>
+  userInfo: Model.Sprint.UserInfo1
   ids: number[]
   onCancel: () => void
 }
 interface UserInfo {
-  user: {
-    avatar: string
-    name: string[]
-  }
+  userInfo: Model.Sprint.UserInfo1
+  status: Array<Model.Sprint.StatusInfo1>
 }
 const Main = (props: UserInfo) => {
+  console.log(props.status, 'props.status}')
   const columns = [
     {
       title: '编号',
@@ -48,23 +48,19 @@ const Main = (props: UserInfo) => {
   return (
     <MainStyle>
       <UserMsg>
-        <CommonUserAvatar size="large" avatar={props.user.avatar} />
+        <CommonUserAvatar size="large" avatar={props.userInfo.avatar} />
         <UserInfo>
-          <div> 李四（xxxxxx@ifun.com）</div>
+          <div> {props.userInfo.name}（xxxxxx@ifun.com）</div>
           <div className="msg">
             <Space size={4}>
-              {props.user.name.map((el: string, index: number) => (
+              {/* {props.user.name.map((el: string, index: number) => (
                 <>
                   <span>{el}</span>
                   {index !== props.user.name.length - 1 && (
-                    <CommonIconFont
-                      type="right"
-                      size={14}
-                      color="var(--neutral-n3)"
-                    />
+                   
                   )}
                 </>
-              ))}
+              ))} */}
             </Space>
           </div>
         </UserInfo>
@@ -80,7 +76,7 @@ const Main = (props: UserInfo) => {
             console.log(newValue, 'newValue')
           }}
           suffixIcon={<CommonIconFont type="down" />}
-          options={[{ label: '123', value: 99 }]}
+          options={props.status}
           notFoundContent={null}
         />
         <Text>
@@ -119,7 +115,7 @@ const WorkItem = (props: Props) => {
         children={
           <>
             <DetailHeader ids={props.ids} onCancel={() => props.onCancel()} />
-            <Main user={{ avatar: '', name: ['1', '2'] }} />
+            <Main userInfo={props.userInfo} status={props.status} />
           </>
         }
         visible={props.visible}

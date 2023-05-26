@@ -331,7 +331,8 @@ function bytesToSize(fileByte: any) {
 
 // 复制
 function copyLink(text: any, successText: string, errorText: string) {
-  navigator.clipboard.writeText(text).then(
+  const result = text?.includes('】') ? text?.split('】')?.join('】\n') : text
+  navigator.clipboard.writeText(result).then(
     () => {
       getMessage({ msg: successText as string, type: 'success' })
     },
@@ -349,7 +350,7 @@ function removeNull(list: any, key: string) {
 }
 
 // 获取自定义字段默认值 -- 表格
-function getCustomNormalValueTable(attr: any, text: any) {
+function getCustomNormalValue(attr: any, text: any) {
   let result: any
   if (Array.isArray(text?.value) && !text?.true_value) {
     result = text?.value?.join(';')
@@ -432,7 +433,7 @@ export {
   filterTreeData,
   bytesToSize,
   removeNull,
-  getCustomNormalValueTable,
+  getCustomNormalValue,
   copyLink,
   getNowDate,
   isDateIntersection,

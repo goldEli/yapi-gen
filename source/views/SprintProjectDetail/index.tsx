@@ -1,5 +1,5 @@
 /* eslint-disable no-undefined */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   ButtonGroup,
   ChangeIconGroup,
@@ -8,6 +8,7 @@ import {
   DetailTitle,
   DetailTop,
   DownWrap,
+  DropdownMenu,
   FormWrap,
   Img,
   LiWrap,
@@ -24,20 +25,29 @@ import SprintDetailBasic from './components/SprintDetailBasic'
 import { useDispatch, useSelector } from '@store/index'
 import { getSprintCommentList, getSprintInfo } from '@store/sprint/sprint.thunk'
 import { useSearchParams } from 'react-router-dom'
-import { getParamsData } from '@/tools'
-import { Popover, Tooltip, Form } from 'antd'
+import { getParamsData, copyLink } from '@/tools'
+import useShareModal from '@/hooks/useShareModal'
+import { Popover, Tooltip, Form, Input, Dropdown, MenuProps } from 'antd'
 import CommonModal from '@/components/CommonModal'
 import { useTranslation } from 'react-i18next'
 import CustomSelect from '@/components/CustomSelect'
 import { getWorkflowList } from '@/services/project'
 import { getMessage } from '@/components/Message'
-import { updateSprintCategory } from '@/services/sprint'
+import {
+  updateSprintCategory,
+  updateSprintTableParams,
+} from '@/services/sprint'
+import { setSprintInfo } from '@store/sprint'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 
 interface IProps {}
 
 const SprintProjectDetail: React.FC<IProps> = props => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
+  const { open, ShareModal } = useShareModal()
+  // const { open, DeleteConfirmModal } = useDeleteConfirmModal()
+  const spanDom = useRef<HTMLSpanElement>(null)
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -54,7 +64,21 @@ const SprintProjectDetail: React.FC<IProps> = props => {
 
   // 复制标题
   const onCopy = () => {
-    //
+    copyLink(sprintInfo.name, '复制成功！', '复制失败！')
+  }
+
+  // 点击切换类别
+  const onClickCategory = async (k: any) => {
+    const result = await getWorkflowList({
+      projectId: paramsData.id,
+      categoryId: k.id,
+    })
+    setWorkList(result)
+    form.setFieldsValue({
+      categoryId: k.id,
+    })
+    setIsShowChange(false)
+    setIsShowCategory(true)
   }
 
   const changeStatus = (
@@ -68,7 +92,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     >
       {resultCategory?.map((k: any) => {
         return (
-          <LiWrap key={k.id}>
+          <LiWrap key={k.id} onClick={() => onClickCategory(k)}>
             <img
               src={
                 k.category_attachment
@@ -128,7 +152,108 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     }, 100)
   }
 
+  // 快捷修改名称
+  const onNameConfirm = async () => {
+    const value = spanDom.current?.innerText
+    if ((value?.length || 0) <= 0) {
+      getMessage({ type: 'warning', msg: '名称不能为空' })
+      return
+    }
+    if ((value?.length || 0) > 100) {
+      getMessage({ type: 'warning', msg: '名称不能超过100个字' })
+      return
+    }
+    if (value !== sprintInfo.name) {
+      await updateSprintTableParams({
+        projectId: id,
+        id: sprintId,
+        otherParams: {
+          name: value,
+        },
+      })
+      getMessage({ type: 'success', msg: '修改成功' })
+      // 提交名称
+      setSprintInfo({
+        ...sprintInfo,
+        name: value,
+      })
+    }
+  }
+
+  // 返回
+  const onBack = () => {
+    history.go(-1)
+  }
+
+  // 确认分享
+  const onShareConfirm = () => {
+    //
+  }
+
+  // 确认删除
+  const onDeleteConfirm = () => {
+    //
+  }
+
+  // 分享弹窗
+  const onShare = () => {
+    open({
+      onOk: () => {
+        onShareConfirm()
+        return Promise.resolve()
+      },
+    })
+  }
+
+  // 删除事务弹窗
+  const onDelete = () => {
+    // openDelete({
+    //   title: '删除确认',
+    //   text: '确认删除该事务？',
+    //   onConfirm() {
+    //     onDeleteConfirm()
+    //     return Promise.resolve()
+    //   },
+    // })
+  }
+
+  // 跳转配置
+  const onConfig = () => {
+    //
+  }
+
+  // 更多下拉
+  const items: MenuProps['items'] = [
+    {
+      label: <div onClick={onDelete}>删除</div>,
+      key: '0',
+    },
+    {
+      type: 'divider',
+    },
+    {
+      label: '添加附件',
+      key: '1',
+    },
+    {
+      label: '添加子事务',
+      key: '2',
+    },
+    {
+      label: '添加标签',
+      key: '3',
+    },
+    {
+      type: 'divider',
+    },
+    {
+      label: <div onClick={onConfig}>配置</div>,
+      key: '4',
+    },
+  ]
+
   useEffect(() => {
+    dispatch(setSprintInfo({}))
     dispatch(getSprintInfo({ projectId: id, sprintId }))
     dispatch(
       getSprintCommentList({
@@ -153,6 +278,12 @@ const SprintProjectDetail: React.FC<IProps> = props => {
 
   return (
     <Wrap>
+      <ShareModal
+        copyLink={() => {
+          // Todo 传入复制方法
+        }}
+      />
+      {/* <DeleteConfirmModal /> */}
       <CommonModal
         isVisible={isShowCategory}
         onClose={onCloseCategory}
@@ -218,7 +349,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
       <DetailTop>
         <MyBreadcrumb />
         <ButtonGroup size={16}>
-          <CommonButton type="icon" icon="left-md" />
+          <CommonButton type="icon" icon="left-md" onClick={onBack} />
           <ChangeIconGroup>
             {/* {currentIndex > 0 && ( */}
             <UpWrap
@@ -253,8 +384,25 @@ const SprintProjectDetail: React.FC<IProps> = props => {
             </DownWrap>
             {/* )} */}
           </ChangeIconGroup>
-          <CommonButton type="icon" icon="share" />
+          <CommonButton
+            type="icon"
+            icon="share"
+            onClick={() => {
+              open({ onOk: async () => {} })
+            }}
+          />
           <CommonButton type="icon" icon="more" />
+          <CommonButton type="icon" icon="share" onClick={onShare} />
+          <DropdownMenu
+            placement="bottomRight"
+            trigger={['click']}
+            menu={{ items }}
+            getPopupContainer={n => n}
+          >
+            <div>
+              <CommonButton type="icon" icon="more" />
+            </div>
+          </DropdownMenu>
         </ButtonGroup>
       </DetailTop>
       <DetailTitle>
@@ -272,9 +420,15 @@ const SprintProjectDetail: React.FC<IProps> = props => {
             </div>
           </Popover>
         </Tooltip>
-
         <DetailText>
-          <span className="name">{sprintInfo.name}</span>
+          <span
+            className="name"
+            ref={spanDom}
+            contentEditable
+            onBlur={onNameConfirm}
+          >
+            {sprintInfo.name}
+          </span>
           <span className="icon" onClick={onCopy}>
             <CommonIconFont type="copy" color="var(--neutral-n3)" />
           </span>
@@ -301,6 +455,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
         <SprintDetailInfo />
         <SprintDetailBasic />
       </DetailMain>
+      <ShareModal copyLink={() => copyLink(window.origin, '复制成功', '1')} />
     </Wrap>
   )
 }

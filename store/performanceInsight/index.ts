@@ -36,7 +36,7 @@ const initialState: SliceState = {
     },
   },
   projectDataList: [],
-  visiblePerson: false,
+  visiblePerson: true,
   visibleWork: false,
 }
 

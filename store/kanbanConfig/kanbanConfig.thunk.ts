@@ -1,12 +1,29 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as services from '@/services'
 import { AppDispatch, store } from '@store/index'
-import { modifyColumn, setEditColumnModelInfo, setSaveAsViewModelInfo } from '.'
+import {
+  modifyColumn,
+  setEditColumnModelInfo,
+  setSaveAsViewModelInfo,
+  setViewList,
+} from '.'
 import { getMessage } from '@/components/Message'
 import { getParamsValueByKey } from '@/tools'
 import { produce } from 'immer'
 
 const name = 'KanbanConfig'
+
+export const onChangeViewList =
+  (id: Model.KanbanConfig.ConfigListItem['id']) =>
+  async (dispatch: AppDispatch) => {
+    dispatch(saveKanbanConfig())
+    dispatch(setViewList(id))
+    const checked = store
+      .getState()
+      .KanbanConfig.viewList?.find(item => item.id === id)
+
+    checked && dispatch<any>(onFresh(checked))
+  }
 // 分类列表
 export const getCategoryList = createAsyncThunk(
   `${name}/getCategoryList`,
@@ -44,6 +61,11 @@ export const getKanbanConfig = createAsyncThunk(
 export const updateKanbanConfig =
   (params: API.KanbanConfig.UpdateKanbanConfig.Params) =>
   async (dispatch: AppDispatch) => {
+    const { columnList } = store.getState().KanbanConfig
+    const p: API.KanbanConfig.UpdateKanbanConfig.Params = {
+      ...params,
+      columns: columnList,
+    }
     const res = await services.kanbanConfig.updateKanbanConfig(params)
     getMessage({ type: 'success', msg: '保存成功！' })
     dispatch(
@@ -107,20 +129,27 @@ export const getKanbanConfigList = createAsyncThunk(
 
     // 更新相关数据
     const checkedViewListItem = ret.find(item => item.check)
-    if (!checkedViewListItem) {
+    if (checkedViewListItem) {
+      dispatch<any>(onFresh(checkedViewListItem))
+    }
+    return ret
+  },
+)
+
+export const onFresh =
+  (currentViewListItem: Model.KanbanConfig.ConfigListItem) =>
+  async (dispatch: AppDispatch) => {
+    if (!currentViewListItem) {
       return
     }
     const params = {
-      project_id: checkedViewListItem.project_id,
-      id: checkedViewListItem.id,
+      project_id: currentViewListItem.project_id,
+      id: currentViewListItem.id,
     }
     dispatch(getKanbanConfigRemainingStatus(params))
     dispatch(getKanbanConfig(params))
     dispatch(getCategoryList({ project_id: params.project_id }))
-
-    return ret
-  },
-)
+  }
 
 // 属性看板
 export const onRefreshKanBan = () => async (dispatch: AppDispatch) => {}

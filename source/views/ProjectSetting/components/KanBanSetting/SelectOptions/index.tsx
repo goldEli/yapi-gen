@@ -120,7 +120,6 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
       // const arr = props.options.filter(item => !item.isDefault)
       // const arrWithDefault = props.options.filter(item => item.isDefault)
       const dividerItem = { key: '', label: '', type: 'divider' }
-
       const arrItems = props.options?.map(renderOptionWidthOperation)
       return [
         // ...arrWithDefaultItems,
