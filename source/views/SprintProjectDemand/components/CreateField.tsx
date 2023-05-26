@@ -97,7 +97,6 @@ const CreateField = () => {
   const { projectInfo } = useSelector(store => store.project)
   const [payloadDataList, setPayloadDataList] = useState<any>()
   const [searchValue, setSearchValue] = useState('')
-
   const option = [
     {
       label: t('newlyAdd.lineText'),

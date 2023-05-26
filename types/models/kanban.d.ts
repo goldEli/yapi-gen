@@ -69,13 +69,27 @@ declare namespace Model.KanBan {
   type Column = Omit<Model.KanbanConfig.Column, 'categories'> & {
     stories: Story[]
   }
+  interface ViewItemConfig {
+    [key in string]: any
+    // sort: { schedule: string }
+    // fields: string[]
+    // search: {
+    //   [key in string]: string | number
+    // }
+  }
 
   interface ViewItem {
-    key: string
-    value: string
+    id: number
+    name: string
     check: boolean
     isDefault?: boolean
     operation?: boolean
+    // 类型，1：个人视图，2：系统视图
+    type: 1 | 2
+    // 视图状态，1：正常，2：禁用
+    status: 1 | 2
+    // 视图配置
+    config?: ViewItemConfig
   }
 
   type guideVisible = boolean

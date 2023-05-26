@@ -9,10 +9,15 @@ import guide_1 from './img/guide_1.png'
 import guide_2 from './img/guide_2.png'
 import guide_3 from './img/guide_3.png'
 import Board from './Borad'
-import { getKanbanConfigList } from '@store/kanBan/kanBan.thunk'
+import {
+  getKanbanConfigList,
+  getStoryViewList,
+  onFilter,
+} from '@store/kanBan/kanBan.thunk'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import useProjectId from './hooks/useProjectId'
+import { setViewItemConfig } from '@store/kanBan'
 
 interface IProps {}
 const SprintProjectKanBanBox = styled.div`
@@ -40,6 +45,7 @@ const SprintProjectKanBan: React.FC<IProps> = props => {
 
   useEffect(() => {
     dispatch(getKanbanConfigList({ project_id: projectId }))
+    dispatch(getStoryViewList())
   }, [projectId])
 
   const inform = [
@@ -64,7 +70,13 @@ const SprintProjectKanBan: React.FC<IProps> = props => {
   ]
   return (
     <SprintProjectKanBanBox>
-      <ProjectCommonOperation onInputSearch={val => {}} />
+      <ProjectCommonOperation
+        onInputSearch={val => {
+          // dispatch(onFilter({
+          //   searchValue: val
+          // }))
+        }}
+      />
       <ToolBarBox>
         <Operation
           pid={1}
@@ -73,7 +85,9 @@ const SprintProjectKanBan: React.FC<IProps> = props => {
           onChangeIsShowLeft={() => {}}
           onChangeVisible={(e: any) => {}}
           onRefresh={() => {}}
-          onSearch={() => {}}
+          onSearch={data => {
+            dispatch(onFilter(data))
+          }}
           settingState={true}
           onChangeSetting={() => {}}
           isShowLeft={false}

@@ -263,6 +263,10 @@ const urls = {
   workContrastList: '/b/efficiency/member/work_contrast/list',
   // 缺陷分析列表
   memberBugList: '/b/efficiency/member/bug/list',
+  // 进展对比后半截弹窗
+  efficiencyMemberWorkList: '/b/efficiency/member/work_list',
+  // 缺陷分析后半截
+  efficiencyMemberDefectList: 'b/efficiency/member/defect_list',
   // 修改首页配置
   updateHomeSetting: '/b/project/change/defaultHomeMenu',
   /**
@@ -278,6 +282,22 @@ const urls = {
   getKanbanByGroup: '/b/project/kanban/storiesOfGroupBy',
   // 修改看板事务顺序
   modifyKanbanIssueSort: '/b/project/kanban/updateSort',
+  // 检查试图是否保存
+  checkUpdate: '/b/story/views/checkUpdate',
+  // 分享视图
+  shareView: '/b/story/views/share',
+
+  /**
+   * 视图管理
+   */
+  // 获取视图列表
+  getStoryViewList: '/b/story/views/list',
+  // 更新视图
+  updateView: '/b/story/views/update',
+  // 新建视图
+  createView: '/b/story/views/create',
+  // 删除视图
+  delView: '/b/story/views/delete',
 }
 export default urls
 

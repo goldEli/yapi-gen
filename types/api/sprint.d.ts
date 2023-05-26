@@ -246,8 +246,21 @@ declare namespace API.Sprint {
   }
   namespace PlugSelectionUserInfo {
     type Result = {
-      userInfo: Model.Sprint.UserInfo1
-      status: Array<Model.Sprint.StatusInfo1>
+      userInfo: Model.Sprint.UserInfo2
+      status: Array<Model.Sprint.StatusInfo2>
+    }
+  }
+  namespace EfficiencyMemberWorkList {
+    type Params = { user_id: number; type: string; status_id?: number }
+    type Result = {
+      total: Model.Sprint.Total
+      list: Array<Model.Sprint.List>
+    }
+  }
+  namespace CheckUpdate {
+    type Params = {
+      id: number
+      config: any
     }
   }
 }

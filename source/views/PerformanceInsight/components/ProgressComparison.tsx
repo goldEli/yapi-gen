@@ -13,11 +13,14 @@ import SelectPersonnel from './SelectPersonnel'
 import { setVisiblePerson, setVisibleWork } from '@store/performanceInsight'
 import { useDispatch, useSelector } from '@store/index'
 import {
+  efficiencyMemberDefectList,
+  efficiencyMemberWorkList,
+  historyWorkList,
   memberBugList,
   plugSelectionUserInfo,
   workContrastList,
-} from '@/services/sprint'
-import { getUserInfoAbeyanceStory } from '@/services/memberInfo'
+} from '@/services/efficiency'
+import { RowText } from './style'
 // 进展对比tips
 const getTitleTips = (text: string, tips: string) => {
   return (
@@ -84,7 +87,12 @@ const ProgressComparison = (props: Props) => {
   const [total, setTotal] = useState(0)
   const [pageNum, setPageNum] = useState(1)
   const [pageSize, setPageSize] = useState(15)
-
+  const [memberWorkList, setMemberWorkList] =
+    useState<API.Sprint.EfficiencyMemberWorkList.Result>()
+  const [statusType, setStatusType] = useState('')
+  const [ids, setIds] = useState<number[]>([])
+  const [historyWorkObj, setHistoryWorkObj] =
+    useState<API.Efficiency.historyWorkList.Result>()
   const onUpdateOrderKey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
     // props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
@@ -96,15 +104,15 @@ const ProgressComparison = (props: Props) => {
       title: '用户',
       render: (text: string, record: any) => {
         return (
-          <div
-            style={{ display: 'flex', alignItems: 'center' }}
+          <RowText
             onClick={(event: any) => {
               event.stopPropagation()
               dispatch(setVisibleWork(!visibleWork))
+              getDatail(record)
             }}
           >
             {text}
-          </div>
+          </RowText>
         )
       },
     },
@@ -133,12 +141,7 @@ const ProgressComparison = (props: Props) => {
       title: '新增工作项',
       render: (text: string, record: any) => {
         return (
-          <div
-            style={{ display: 'flex', alignItems: 'center' }}
-            onClick={e => openDetail(e, record)}
-          >
-            {text}
-          </div>
+          <RowText onClick={e => openDetail(e, record, 'new')}>{text}</RowText>
         )
       },
     },
@@ -147,12 +150,9 @@ const ProgressComparison = (props: Props) => {
       dataIndex: 'completed',
       render: (text: string, record: any) => {
         return (
-          <div
-            style={{ display: 'flex', alignItems: 'center' }}
-            onClick={e => openDetail(e, record)}
-          >
+          <RowText onClick={e => openDetail(e, record, 'completed')}>
             {text}
-          </div>
+          </RowText>
         )
       },
     },
@@ -161,12 +161,9 @@ const ProgressComparison = (props: Props) => {
       dataIndex: 'work_stock',
       render: (text: string, record: any) => {
         return (
-          <div
-            style={{ display: 'flex', alignItems: 'center' }}
-            onClick={e => openDetail(e, record)}
-          >
+          <RowText onClick={e => openDetail(e, record, 'work_stock')}>
             {text}
-          </div>
+          </RowText>
         )
       },
     },
@@ -183,12 +180,9 @@ const ProgressComparison = (props: Props) => {
       title: getTitleTips('工作重复率', '审批不通过次数/全部审批次数*100%'),
       render: (text: string, record: any) => {
         return (
-          <div
-            style={{ display: 'flex', alignItems: 'center' }}
-            onClick={e => openDetail(e, record)}
-          >
+          <RowText onClick={e => openDetail(e, record, 'repeat_rate')}>
             {text}
-          </div>
+          </RowText>
         )
       },
     },
@@ -197,12 +191,7 @@ const ProgressComparison = (props: Props) => {
       title: getTitleTips('存量风险', '（当期）超过14天未完成的工作项'),
       render: (text: string, record: any) => {
         return (
-          <div
-            style={{ display: 'flex', alignItems: 'center' }}
-            onClick={e => openDetail(e, record)}
-          >
-            {text}
-          </div>
+          <RowText onClick={e => openDetail(e, record, 'risk')}>{text}</RowText>
         )
       },
     },
@@ -214,15 +203,15 @@ const ProgressComparison = (props: Props) => {
       title: '用户',
       render: (text: string, record: any) => {
         return (
-          <div
-            style={{ display: 'flex', alignItems: 'center' }}
+          <RowText
             onClick={(event: any) => {
               dispatch(setVisibleWork(!visibleWork))
               event.stopPropagation()
+              getDatail(record)
             }}
           >
             {text}
-          </div>
+          </RowText>
         )
       },
     },
@@ -251,12 +240,7 @@ const ProgressComparison = (props: Props) => {
       title: '当前新增工作项',
       render: (text: string, record: any) => {
         return (
-          <div
-            style={{ display: 'flex', alignItems: 'center' }}
-            onClick={e => openDetail(e, record)}
-          >
-            {text}
-          </div>
+          <RowText onClick={e => openDetail(e, record, 'new')}>{text}</RowText>
         )
       },
     },
@@ -265,12 +249,9 @@ const ProgressComparison = (props: Props) => {
       dataIndex: 'completed',
       render: (text: string, record: any) => {
         return (
-          <div
-            style={{ display: 'flex', alignItems: 'center' }}
-            onClick={e => openDetail(e, record)}
-          >
+          <RowText onClick={e => openDetail(e, record, 'completed')}>
             {text}
-          </div>
+          </RowText>
         )
       },
     },
@@ -279,12 +260,9 @@ const ProgressComparison = (props: Props) => {
       dataIndex: 'work_stock',
       render: (text: string, record: any) => {
         return (
-          <div
-            style={{ display: 'flex', alignItems: 'center' }}
-            onClick={e => openDetail(e, record)}
-          >
+          <RowText onClick={e => openDetail(e, record, 'work_stock')}>
             {text}
-          </div>
+          </RowText>
         )
       },
     },
@@ -301,12 +279,9 @@ const ProgressComparison = (props: Props) => {
       title: getTitleTips('总工作重复率', '审批不通过次数/全部审批次数*100%'),
       render: (text: string, record: any) => {
         return (
-          <div
-            style={{ display: 'flex', alignItems: 'center' }}
-            onClick={e => openDetail(e, record)}
-          >
+          <RowText onClick={e => openDetail(e, record, 'repeat_rate')}>
             {text}
-          </div>
+          </RowText>
         )
       },
     },
@@ -315,12 +290,7 @@ const ProgressComparison = (props: Props) => {
       title: getTitleTips('存量风险', '（当期）超过14天未完成的工作项'),
       render: (text: string, record: any) => {
         return (
-          <div
-            style={{ display: 'flex', alignItems: 'center' }}
-            onClick={e => openDetail(e, record)}
-          >
-            {text}
-          </div>
+          <RowText onClick={e => openDetail(e, record, 'risk')}>{text}</RowText>
         )
       },
     },
@@ -332,15 +302,14 @@ const ProgressComparison = (props: Props) => {
       title: '用户',
       render: (text: string, record: any) => {
         return (
-          <div
-            style={{ display: 'flex', alignItems: 'center' }}
+          <RowText
             onClick={(event: any) => {
               event.stopPropagation()
               dispatch(setVisibleWork(!visiblePerson))
             }}
           >
             {text}
-          </div>
+          </RowText>
         )
       },
     },
@@ -369,12 +338,9 @@ const ProgressComparison = (props: Props) => {
       dataIndex: 'not_fixed',
       render: (text: string, record: any) => {
         return (
-          <div
-            style={{ display: 'flex', alignItems: 'center' }}
-            onClick={e => openDetail(e, record)}
-          >
+          <RowText onClick={e => openDetail(e, record, 'not_fixed')}>
             {text}
-          </div>
+          </RowText>
         )
       },
     },
@@ -383,12 +349,9 @@ const ProgressComparison = (props: Props) => {
       dataIndex: 'fixing',
       render: (text: string, record: any) => {
         return (
-          <div
-            style={{ display: 'flex', alignItems: 'center' }}
-            onClick={e => openDetail(e, record)}
-          >
+          <RowText onClick={e => openDetail(e, record, 'fixing')}>
             {text}
-          </div>
+          </RowText>
         )
       },
     },
@@ -397,12 +360,9 @@ const ProgressComparison = (props: Props) => {
       dataIndex: 'fixed',
       render: (text: string, record: any) => {
         return (
-          <div
-            style={{ display: 'flex', alignItems: 'center' }}
-            onClick={e => openDetail(e, record)}
-          >
+          <RowText onClick={e => openDetail(e, record, 'fixed')}>
             {text}
-          </div>
+          </RowText>
         )
       },
     },
@@ -411,26 +371,20 @@ const ProgressComparison = (props: Props) => {
       title: getTitleTips('缺陷重开', '当期重开缺陷/当期总缺陷*100%'),
       render: (text: string, record: any) => {
         return (
-          <div
-            style={{ display: 'flex', alignItems: 'center' }}
-            onClick={e => openDetail(e, record)}
-          >
+          <RowText onClick={e => openDetail(e, record, 'repeat_open')}>
             {text}
-          </div>
+          </RowText>
         )
       },
     },
     {
       title: '缺陷重开率',
-      dataIndex: 'storyPrefixKey',
+      dataIndex: 'repeat_open_rate',
       render: (text: string, record: any) => {
         return (
-          <div
-            style={{ display: 'flex', alignItems: 'center' }}
-            onClick={e => openDetail(e, record)}
-          >
+          <RowText onClick={e => openDetail(e, record, 'repeat_open')}>
             {text}
-          </div>
+          </RowText>
         )
       },
     },
@@ -439,12 +393,7 @@ const ProgressComparison = (props: Props) => {
       title: getTitleTips('缺陷存量', '当期未修复缺陷'),
       render: (text: string, record: any) => {
         return (
-          <div
-            style={{ display: 'flex', alignItems: 'center' }}
-            onClick={e => openDetail(e, record)}
-          >
-            {text}
-          </div>
+          <RowText onClick={e => openDetail(e, record, 'risk')}>{text}</RowText>
         )
       },
     },
@@ -454,7 +403,7 @@ const ProgressComparison = (props: Props) => {
     //缺陷 Defect_iteration-迭代 Defect1冲刺 DefectAll全局
     if (props.type.includes('Progress')) {
       getWorkContrastList()
-      getMemberBugList()
+      // getMemberBugList()
     } else {
       getMemberBugList()
     }
@@ -479,7 +428,7 @@ const ProgressComparison = (props: Props) => {
         break
     }
   }, [])
-  // 工作进展对比
+  // 工作进展对比列表
   const getWorkContrastList = async () => {
     const res = await workContrastList({
       project_ids: [1, 2],
@@ -491,8 +440,10 @@ const ProgressComparison = (props: Props) => {
     setWork(res.work)
     setTableList(res.list)
     setTotal(res.pager.total)
+    // setIds(res.list.map(el => el.id))
+    setIds([1, 3, 4])
   }
-  // 缺陷分析
+  // 缺陷分析列表
   const getMemberBugList = async () => {
     const res = await memberBugList({
       project_ids: [1, 2],
@@ -504,19 +455,78 @@ const ProgressComparison = (props: Props) => {
     setWork(res.defect)
     setTableList1(res.list)
     setTotal(res.pager.total)
+    // setIds(res.list.map(el => el.id))
+    setIds([1, 3, 4])
   }
-  // 详情弹窗
-  const openDetail = (event: any, row: { id: number }) => {
-    console.log(row, '9999')
+  // 后半截详情弹窗
+  const openDetail = (event: any, row: { id: number }, str: string) => {
     event.stopPropagation()
     dispatch(setVisiblePerson(!visiblePerson))
     getUserInfo(row.id)
+    setStatusType(str)
+    const parmas = {
+      user_id: row.id,
+      type: str,
+    }
+    if (props.type.includes('Progress')) {
+      getEfficiencyMemberWorkList(parmas)
+    } else {
+      getEfficiencyMemberDefectList(parmas)
+    }
   }
+  // 前半截详情的弹窗
+  const getDatail = (row: { id: number }) => {
+    getHistoryWorkList(row.id)
+  }
+  // 进展对比的前半截api
+  const getHistoryWorkList = async (id: number) => {
+    const res = await historyWorkList({ id })
+    console.log(res, 'oooo')
+    setHistoryWorkObj(res)
+  }
+
   // 获取用户信息
   const getUserInfo = async (id: number) => {
     const res = await plugSelectionUserInfo({ id })
     setUserInfo(res.userInfo)
     setStatus(res.status)
+  }
+  // 获取后半截进展对比的列表
+  const getEfficiencyMemberWorkList = async (
+    parmas: API.Sprint.EfficiencyMemberWorkList.Params,
+  ) => {
+    const res = await efficiencyMemberWorkList(parmas)
+    setMemberWorkList(res)
+  }
+  // 获取后半截缺陷的列表
+  const getEfficiencyMemberDefectList = async (
+    parmas: API.Sprint.EfficiencyMemberWorkList.Params,
+  ) => {
+    const res = await efficiencyMemberDefectList(parmas)
+    setMemberWorkList(res)
+  }
+  // 详情塞选项的回调
+  const plugSelection = (
+    parmas: API.Sprint.EfficiencyMemberWorkList.Params,
+  ) => {
+    if (props.type.includes('Progress')) {
+      getEfficiencyMemberWorkList(parmas)
+    } else {
+      getEfficiencyMemberDefectList(parmas)
+    }
+  }
+  // 弹窗详情的翻页查询
+  const onPageNum = (id: number) => {
+    getUserInfo(id)
+    const parmas = {
+      user_id: id,
+      type: statusType,
+    }
+    if (props.type.includes('Progress')) {
+      getEfficiencyMemberWorkList(parmas)
+    } else {
+      getEfficiencyMemberDefectList(parmas)
+    }
   }
   return (
     <div
@@ -525,7 +535,6 @@ const ProgressComparison = (props: Props) => {
         dispatch(setVisiblePerson(false)), dispatch(setVisibleWork(false))
       }}
     >
-      {props.type}
       <HeaderAll
         time="2023-08-08 ~ 2023-09-08"
         personData={[{ name: '123' }]}
@@ -569,23 +578,30 @@ const ProgressComparison = (props: Props) => {
           }}
         />
       </TableStyle>
-      {/* 选择人员 */}
+      {/* 后半截的弹窗 */}
       <WorkItem
         visible={visiblePerson}
-        ids={[1, 2, 3]}
+        ids={ids}
         status={status}
+        statusType={statusType}
+        type={props.type}
+        memberWorkList={memberWorkList}
+        onPageNum={id => onPageNum(id)}
         userInfo={userInfo}
+        onChange={obj => plugSelection(obj)}
         onCancel={() => {
           dispatch(setVisiblePerson(!visiblePerson))
         }}
       />
-      {/* 新增工作项 */}
+      {/* 前半截的弹窗 */}
       <SelectPersonnel
+        historyWorkObj={historyWorkObj}
+        onPageNum={id => onPageNum(id)}
         type={props.type}
         visible={visibleWork}
-        ids={[1, 2, 3]}
-        id={2}
+        ids={ids}
         onCancel={() => dispatch(setVisibleWork(!visibleWork))}
+        onChange={() => 123}
       />
     </div>
   )

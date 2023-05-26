@@ -331,7 +331,8 @@ function bytesToSize(fileByte: any) {
 
 // 复制
 function copyLink(text: any, successText: string, errorText: string) {
-  navigator.clipboard.writeText(text).then(
+  const result = text?.includes('】') ? text?.split('】')?.join('】\n') : text
+  navigator.clipboard.writeText(result).then(
     () => {
       getMessage({ msg: successText as string, type: 'success' })
     },

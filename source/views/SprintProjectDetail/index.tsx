@@ -28,7 +28,8 @@ import { useDispatch, useSelector } from '@store/index'
 import { getSprintCommentList, getSprintInfo } from '@store/sprint/sprint.thunk'
 import { useSearchParams } from 'react-router-dom'
 import { copyLink, getParamsData } from '@/tools'
-import { Popover, Tooltip, Form, MenuProps } from 'antd'
+import useShareModal from '@/hooks/useShareModal'
+import { Popover, Tooltip, Form, Input, Dropdown, MenuProps } from 'antd'
 import CommonModal from '@/components/CommonModal'
 import { useTranslation } from 'react-i18next'
 import CustomSelect from '@/components/CustomSelect'
@@ -39,7 +40,6 @@ import {
   updateSprintTableParams,
 } from '@/services/sprint'
 import { setSprintInfo } from '@store/sprint'
-import useShareModal from '@/hooks/useShareModal'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 
 interface IProps {}
@@ -290,8 +290,13 @@ const SprintProjectDetail: React.FC<IProps> = props => {
 
   return (
     <Wrap>
-      <ShareModal />
       <DeleteConfirmModal />
+      <ShareModal
+        copyLink={() => {
+          // Todo 传入复制方法
+        }}
+      />
+      {/* <DeleteConfirmModal /> */}
       <CommonModal
         isVisible={isShowCategory}
         onClose={onCloseCategory}
@@ -392,6 +397,14 @@ const SprintProjectDetail: React.FC<IProps> = props => {
             </DownWrap>
             {/* )} */}
           </ChangeIconGroup>
+          <CommonButton
+            type="icon"
+            icon="share"
+            onClick={() => {
+              open({ onOk: async () => {} })
+            }}
+          />
+          <CommonButton type="icon" icon="more" />
           <CommonButton type="icon" icon="share" onClick={onShare} />
           <DropdownMenu
             placement="bottomRight"
@@ -467,6 +480,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
           <SprintDetailBasic onRef={basicInfoDom} />
         </div>
       </DetailMain>
+      <ShareModal copyLink={() => copyLink(window.origin, '复制成功', '1')} />
     </Wrap>
   )
 }

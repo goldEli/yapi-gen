@@ -82,7 +82,7 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   Action<string>
 >
 
-// export const useDispatch: () => AppDispatch = useOriginDispatch
-export const useDispatch = () => useOriginDispatch<AppDispatch>()
+export const useDispatch: () => AppDispatch = useOriginDispatch
+// export const useDispatch = () => useOriginDispatch<AppDispatch>()
 
 export const useSelector: TypedUseSelectorHook<RootState> = useOriginSelector

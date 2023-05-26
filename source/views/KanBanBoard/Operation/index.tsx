@@ -6,7 +6,7 @@
 /* eslint-disable complexity */
 import styled from '@emotion/styled'
 import TableFilter from '@/components/TableFilter'
-import { useEffect, useRef, useState } from 'react'
+import React, { useMemo, useEffect, useRef, useState } from 'react'
 import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import DeleteConfirm from '@/components/DeleteConfirm'
@@ -26,6 +26,7 @@ import {
   onRefreshKanBan,
   openSaveAsViewModel,
 } from '@store/kanBan/kanBan.thunk'
+import SelectOptionsNormal from '@/components/SelectOptionsNormal'
 const OperationWrap = styled.div({
   minHeight: 32,
   minWidth: '800px',
@@ -138,6 +139,7 @@ const Operation = (props: Props) => {
       custom_field: customField,
     }
     setSearchGroups(params)
+    console.log(params)
     props.onSearch(params)
   }
 
@@ -286,14 +288,14 @@ const Operation = (props: Props) => {
 
       <OperationWrap>
         <LeftBox>
-          <SelectOptions
+          <SelectOptionsNormal
             title="分组"
             options={sortByGroupOptions ?? []}
             onChange={key => {
               dispatch(onChangeSortByGroupOptions(key))
             }}
           />
-          <SelectOptions
+          <SelectOptionsNormal
             title="列与状态"
             options={sortByRowAndStatusOptions ?? []}
             onChange={key => {

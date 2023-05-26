@@ -11,7 +11,6 @@ import { useLocation, useSearchParams } from 'react-router-dom'
 import SetShowField from './SetShowField'
 import SaveAsViewModal from './SaveAsViewModal'
 import { openShareModel } from '@store/sprintKanBan/sprintKanban.thunk'
-import ShareModal from './ShareModal'
 import { DividerWrap, HasIconMenu, HoverWrap } from '@/components/StyleCommon'
 import { getMessage } from '@/components/Message'
 import ScreenMinHover from '@/components/ScreenMinHover'
@@ -138,7 +137,11 @@ const KanBanBtnsArea = (props: Props) => {
   }
   return (
     <SpaceWrap size={8} style={{ marginLeft: 8 }}>
-      <ShareModal />
+      <ShareModal
+        copyLink={() => {
+          // Todo 待传入分享组件中复制链接方法
+        }}
+      />
       {/* 分享 */}
       <ScreenMinHover
         label={'分享'}
@@ -214,7 +217,6 @@ const KanBanBtnsArea = (props: Props) => {
         <div>{t('common.tableFieldSet')}</div>
       </DropDownMenu>
       <SaveAsViewModal />
-      <ShareModal />
     </SpaceWrap>
   )
 }

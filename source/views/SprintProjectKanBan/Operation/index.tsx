@@ -285,7 +285,7 @@ const Operation = (props: Props) => {
         text={t('p2.exportDemandText')}
       />
 
-      <OperationWrap>
+      {/* <OperationWrap>
         <LeftBox>
           <SelectOptions
             title="分组"
@@ -330,7 +330,7 @@ const Operation = (props: Props) => {
             onChangeSetting={() => props.onChangeSetting(!props.settingState)}
           />
         </RightBox>
-      </OperationWrap>
+      </OperationWrap> */}
 
       <div
         style={{
