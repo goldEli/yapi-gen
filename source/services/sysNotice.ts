@@ -9,76 +9,37 @@ export const createSysNotice: any = async (params: any) => {
 
   return response.data
 }
-
-export const getAllNoteSet: any = async () => {
-  const response: any = await http.get<any>('/b/msgConf/sysList')
-
-  return response.data
-}
-
-export const getMyAllNoteSet: any = async () => {
-  const response: any = await http.get<any>('/b/msgConf/userConf')
-
-  return response.data
-}
-
-export const editMyAllNoteSet: any = async (params: any) => {
-  const response: any = await http.post<any>('/b/msgConf/editUserConf', {
-    rules: params.length < 1 ? null : params,
-  })
-  return response
-}
-
-// --------------------------------------------------------------------------消息
-export const getContactStatistics: any = async () => {
-  const response: any = await http.get<any>('/b/msg/contactStatistics', {
-    latTime: Math.floor((new Date().getTime() - 30 * 24 * 3600 * 1000) / 1000),
-  })
-
-  return response.data
-}
-
-// export const getContactList: any = async () => {
-//   const response: any = await http.get<any>('/b/msg/contactList')
-
-//   return response.data
-// }
-
-// export const getDetail: any = async () => {
-//   const response: any = await http.get<any>('/b/msg/detail', { msgId: 341 })
-
-//   return response.data
-// }
-
-export const setReadApi: any = async (params: any) => {
-  const response: any = await http.post<any>('/b/msg/setRead', {
-    msgIds: params,
-  })
+//删除通知
+export const delSysNotice: any = async (id: any) => {
+  const response: any = await http.delete<any>(`/b/sys_notice/${id}/destroy`)
 
   return response
 }
-// --------------------------------------------------------------------------消息
+//撤回通知
+export const recallSysNotice: any = async (id: any) => {
+  const response: any = await http.put<any>(`/b/sys_notice/${id}/recall`)
 
-export const getConfig: any = async (projectId: any) => {
+  return response
+}
+// 系统通知列表
+export const getMyAllSysNotice: any = async (params: any) => {
+  const response: any = await http.get<any>('/b/sys_notice/list', params)
+
+  return response.data
+}
+// 系统通知用户列表
+export const getMyAllSysNoticeNumber: any = async (params: any) => {
   const response: any = await http.get<any>(
-    `/b/project/tip/${projectId}/config`,
+    '/b/sys_notice/receive/user_list',
+    params,
   )
-  console.log(response.data)
 
-  return response.data.list
+  return response.data
 }
 
-export const getSysConfig: any = async () => {
-  const response: any = await http.get<any>('/b/project/tip/sysConfig')
+// 提交反馈
+export const sendFeedback: any = async (params: any) => {
+  const response: any = await http.post<any>('/b/feedback/submit', params)
 
-  return response.data.list
-}
-
-export const editSaveConfig: any = async (params: any) => {
-  const response: any = await http.post<any>('/b/project/tip/saveConfig', {
-    project_id: params.projectId,
-    data: params.data,
-    type: params.type,
-  })
-  return response
+  return response.data
 }

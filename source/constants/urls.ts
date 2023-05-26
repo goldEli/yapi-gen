@@ -290,7 +290,14 @@ const urls = {
   /**
    * 视图管理
    */
+  // 获取视图列表
   getStoryViewList: '/b/story/views/list',
+  // 更新视图
+  updateView: '/b/story/views/update',
+  // 新建视图
+  createView: '/b/story/views/create',
+  // 删除视图
+  delView: '/b/story/views/delete',
 }
 export default urls
 

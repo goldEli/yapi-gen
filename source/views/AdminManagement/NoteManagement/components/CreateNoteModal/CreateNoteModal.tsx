@@ -263,6 +263,8 @@ const CreateNoteModal = (props: any) => {
     setTaskTimeString(timeString)
     console.log(time, timeString)
   }
+  console.log(personData, '数据')
+
   return (
     <CommonModal
       draft

@@ -70,11 +70,12 @@ declare namespace Model.KanBan {
     stories: Story[]
   }
   interface ViewItemConfig {
-    sort: { schedule: string }
-    fields: string[]
-    search: {
-      [key in string]: string | number
-    }
+    [key in string]: any
+    // sort: { schedule: string }
+    // fields: string[]
+    // search: {
+    //   [key in string]: string | number
+    // }
   }
 
   interface ViewItem {
@@ -88,7 +89,7 @@ declare namespace Model.KanBan {
     // 视图状态，1：正常，2：禁用
     status: 1 | 2
     // 视图配置
-    config: ViewItemConfig
+    config?: ViewItemConfig
   }
 
   type guideVisible = boolean

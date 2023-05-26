@@ -56,4 +56,20 @@ declare namespace API.Kanban {
     }
     type Result = Model.KanBan.ViewItem[]
   }
+  namespace UpdateView {
+    type Params = {
+      project_id: number
+    } & Pick<Model.KanBan.ViewItem, 'config' | 'id' | 'name' | 'type'>
+    type Result = null
+  }
+  namespace CreateView {
+    type Params = {
+      project_id: number
+    } & Pick<Model.KanBan.ViewItem, 'config' | 'name'>
+    type Result = null
+  }
+  namespace DelView {
+    type Params = Pick<Model.KanBan.ViewItem, 'id'>
+    type Result = null
+  }
 }
