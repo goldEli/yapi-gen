@@ -254,3 +254,14 @@ useEffect(() => {
   }
 }, [])
 ```
+
+### 成员选择弹窗
+
+D:\Project\敏捷\scrum\source\components\NewAddUserModal\NewAddUserModalForTandD\NewAddUserModalForTandD.tsx
+<NewAddUserModalForTandD
+title={t('formWork.addUser')}
+state={2}
+isVisible={isVisible}
+onConfirm={onConfirm}
+onClose={() => setIsVisible(false)}
+/>
