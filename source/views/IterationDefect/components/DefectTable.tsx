@@ -1,10 +1,7 @@
-// 需求主页-需求表格模式
-/* eslint-disable no-constant-binary-expression */
-/* eslint-disable complexity */
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable react/jsx-no-leaked-render */
+// 缺陷主页-缺陷表格模式
+
 import { createRef, useEffect, useMemo, useState } from 'react'
-import { Button, Menu, Table } from 'antd'
+import { Menu, Table } from 'antd'
 import styled from '@emotion/styled'
 import { useSearchParams } from 'react-router-dom'
 import { useDynamicColumns } from '@/components/TableColumns/ProjectTableColumn'
@@ -15,15 +12,15 @@ import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch, useSelector } from '@store/index'
 import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
+// import { updateDemandStatus, updatePriority } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
-import { saveSort } from '@store/view'
+import { saveSort, saveTitles } from '@store/view'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { getMessage } from '@/components/Message'
 import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
 import FloatBatch from '@/components/BatchOperation/FloatBatch'
-import { SprintDropdownMenu } from '@/components/TableDropdownMenu/SprintDropdownMenu'
-import { updateSprintPriority, updateSprintStatus } from '@/services/sprint'
+import { DefectDropdownMenu } from '@/components/TableDropdownMenu/DefectDropdownMenu'
 
 const Content = styled.div`
   background: var(--neutral-white-d1);
@@ -44,7 +41,7 @@ interface Props {
   allTitleList?: any
 }
 
-const SprintTable = (props: Props) => {
+const DefectTable = (props: Props) => {
   const asyncSetTtile = useSetTitle()
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
@@ -59,7 +56,7 @@ const SprintTable = (props: Props) => {
   const batchDom: any = createRef()
   // 勾选的id集合
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
-  asyncSetTtile(`事务【${projectInfo.name}】`)
+  asyncSetTtile(`缺陷【${projectInfo.name}】`)
   const dispatch = useDispatch()
   const [openDemandDetail] = useOpenDemandDetail()
 
@@ -114,19 +111,27 @@ const SprintTable = (props: Props) => {
   }
 
   const onChangeState = async (item: any) => {
-    await updateSprintPriority({
-      sprintId: item.id,
-      priorityId: item.priorityId,
-      projectId,
-    })
-    getMessage({ msg: t('common.prioritySuccess'), type: 'success' })
-    props.onChangeRow?.()
+    // try {
+    //   await updatePriority({
+    //     demandId: item.id,
+    //     priorityId: item.priorityId,
+    //     projectId,
+    //   })
+    //   getMessage({ msg: t('common.prioritySuccess'), type: 'success' })
+    //   props.onChangeRow?.()
+    // } catch (error) {
+    //   //
+    // }
   }
 
   const onChangeStatus = async (value: any) => {
-    await updateSprintStatus(value)
-    getMessage({ msg: t('common.statusSuccess'), type: 'success' })
-    props.onChangeRow?.()
+    // try {
+    //   await updateDemandStatus(value)
+    //   getMessage({ msg: t('common.statusSuccess'), type: 'success' })
+    //   props.onChangeRow?.()
+    // } catch (error) {
+    //   //
+    // }
   }
 
   const updateOrderkey = (key: any, val: any) => {
@@ -141,22 +146,6 @@ const SprintTable = (props: Props) => {
   const onDeleteChange = (item: any) => {
     setIsShowMore(false)
     props.onDelete(item)
-  }
-
-  // 点击创建子需求
-  const onCreateChild = (item: any) => {
-    setIsShowMore(false)
-    dispatch(
-      setAddWorkItemModal({
-        visible: true,
-        params: {
-          projectId: item.project_id,
-          isChild: true,
-          parentId: item.id,
-          categoryId: item.categoryId,
-        },
-      }),
-    )
   }
 
   const columns = useDynamicColumns({
@@ -267,9 +256,8 @@ const SprintTable = (props: Props) => {
                       .includes(record.id) ? (
                       menuBatch()
                     ) : (
-                      <SprintDropdownMenu
+                      <DefectDropdownMenu
                         onDeleteChange={onDeleteChange}
-                        onCreateChild={onCreateChild}
                         record={record}
                       />
                     )
@@ -319,13 +307,13 @@ const SprintTable = (props: Props) => {
   }
 
   const onClick = () => {
-    dispatch(
-      setAddWorkItemModal({
-        visible: true,
-        params: { noDataCreate: true },
-      }),
-    )
-    dispatch(setFilterParamsModal(filterParams))
+    // dispatch(
+    //   setAddWorkItemModal({
+    //     visible: true,
+    //     params: { noDataCreate: true },
+    //   }),
+    // )
+    // dispatch(setFilterParamsModal(filterParams))
   }
 
   return (
@@ -346,7 +334,7 @@ const SprintTable = (props: Props) => {
         }
         noData={
           <NoData
-            subText={hasCreate ? '' : '当前项目还未创建事务，创建一个吧~'}
+            subText={hasCreate ? '' : '当前项目还未创建缺陷，创建一个吧~'}
             haveFilter={filterKeys?.length > 0}
           >
             {!hasCreate && (
@@ -355,7 +343,7 @@ const SprintTable = (props: Props) => {
                 onClick={onClick}
                 style={{ marginTop: 24 }}
               >
-                创建事务
+                创建缺陷
               </CommonButton>
             )}
           </NoData>
@@ -383,4 +371,4 @@ const SprintTable = (props: Props) => {
   )
 }
 
-export default SprintTable
+export default DefectTable
