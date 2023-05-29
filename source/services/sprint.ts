@@ -500,7 +500,7 @@ export const updateSprintStatus = async (
   params: API.Sprint.UpdateSprintStatus.Params,
 ) => {
   delete params.fields.reviewerValue
-  await http.put<any>('updateDemandStatus', {
+  await http.put<any>('updateSprintStatus', {
     project_id: params.projectId,
     story_id: params.nId,
     category_status_to_id: params.toId,
@@ -643,6 +643,49 @@ export const getExportSprintExcel = async (params: any) => {
     { responseType: 'blob' },
   )
   return response
+}
+
+// 获取批量编辑的配置属性
+export const getSprintBatchEditConfig = async (
+  params: API.Sprint.GetSprintBatchEditConfig.Params,
+) => {
+  const response: any = await http.get<
+    any,
+    API.Sprint.GetSprintBatchEditConfig.Result
+  >('getBatchEditSprintConfig', {
+    project_id: params.projectId,
+    story_ids: params.demandIds,
+  })
+
+  return response.data?.map((i: any) => ({
+    label: i.title,
+    value: i.content,
+    selectList: i.values || [],
+    attr: i.attr,
+  }))
+}
+
+// 事务批量删除
+export const batchSprintDelete = async (
+  params: API.Sprint.BatchSprintDelete.Params,
+) => {
+  await http.delete<any>('batchSprintDelete', {
+    project_id: params.projectId,
+    story_ids: params.demandIds,
+    is_delete_childs: params.isDeleteChild,
+  })
+}
+
+// 事务批量编辑
+export const batchSprintEdit = async (
+  params: API.Sprint.BatchSprintEdit.Params,
+) => {
+  await http.put<any>('batchSprintEdit', {
+    project_id: params.projectId,
+    story_ids: params.demandIds,
+    type: params.type,
+    target: params.target,
+  })
 }
 
 // 检查是否保存视图
