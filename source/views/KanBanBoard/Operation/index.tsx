@@ -16,17 +16,18 @@ import { useDispatch, useSelector } from '@store/index'
 
 import { saveScreen } from '@store/view'
 import KanBanBtnsArea from '../KanBanBtnsArea'
+
+import SelectOptions from '@/components/SelectOptions'
 import {
+  delView,
   onChangeSortByGroupOptions,
   onChangeSortByRowAndStatusOptions,
   onChangeSortByView,
-} from '@store/kanBan'
-import SelectOptions from '@/components/SelectOptions'
-import {
   onRefreshKanBan,
   openSaveAsViewModel,
 } from '@store/kanBan/kanBan.thunk'
 import SelectOptionsNormal from '@/components/SelectOptionsNormal'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 const OperationWrap = styled.div({
   minHeight: 32,
   minWidth: '800px',
@@ -106,6 +107,7 @@ const Operation = (props: Props) => {
   })
   const stickyWrapDom = useRef<HTMLDivElement>(null)
   const dispatch = useDispatch()
+  const { open, DeleteConfirmModal } = useDeleteConfirmModal()
 
   // const hasImport = getIsPermission(
   //   projectInfo?.projectPermissions,
@@ -161,7 +163,45 @@ const Operation = (props: Props) => {
     }
     const arr = filterFelid?.filter((item: any) => item.isDefault === 1)
 
-    setSearchList(arr)
+    setSearchList([
+      {
+        type: 'select_checkbox',
+        id: 12309,
+        name: '迭代',
+        key: 'iterate_name',
+        isDefault: 1,
+        contentTxt: '迭代',
+        content: 'iterate_name',
+      },
+      {
+        type: 'select_checkbox',
+        id: 12306,
+        name: '状态',
+        key: 'status',
+        isDefault: 1,
+        contentTxt: '状态',
+        content: 'status',
+      },
+      {
+        type: 'select_checkbox',
+        id: 12307,
+        name: '优先级',
+        key: 'priority',
+        isDefault: 1,
+        contentTxt: '优先级',
+        content: 'priority',
+      },
+
+      {
+        type: 'time',
+        id: 12314,
+        name: '创建时间',
+        key: 'created_at',
+        isDefault: 1,
+        contentTxt: '创建时间',
+        content: 'created_at',
+      },
+    ])
     dispatch(saveScreen(arr))
     setFilterBasicsList(projectInfo?.filterBasicsList)
     setFilterSpecialList(projectInfo?.filterSpecialList)
@@ -278,14 +318,14 @@ const Operation = (props: Props) => {
 
   return (
     <StickyWrap ref={stickyWrapDom}>
-      <DeleteConfirm
+      {/* <DeleteConfirm
         onConfirm={() => setExceedState(false)}
         onChangeVisible={() => setExceedState(false)}
         isVisible={exceedState}
         title={t('p2.toast')}
         text={t('p2.exportDemandText')}
-      />
-
+      /> */}
+      <DeleteConfirmModal />
       <OperationWrap>
         <LeftBox>
           <SelectOptionsNormal
@@ -309,7 +349,20 @@ const Operation = (props: Props) => {
               dispatch(onChangeSortByView(key))
             }}
             operation
-            onDel={key => {}}
+            onDel={key => {
+              open({
+                title: t('confirmationOfDeletion'),
+                text: t('confirmDeletingTheView'),
+                onConfirm: () => {
+                  dispatch(
+                    delView({
+                      id: key,
+                    }),
+                  )
+                  return Promise.resolve()
+                },
+              })
+            }}
             onEdit={key => {
               dispatch(openSaveAsViewModel(key))
             }}
@@ -347,7 +400,7 @@ const Operation = (props: Props) => {
             onFilterSearch(e, customField)
           }
           list={searchList}
-          basicsList={filterBasicsList}
+          basicsList={filterBasicsList.filter((i: any) => i.is_flaw !== 1)}
           specialList={filterSpecialList}
           customList={filterCustomList}
         />

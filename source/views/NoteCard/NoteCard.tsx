@@ -31,12 +31,38 @@ const NoteCard = (props: any) => {
     return text
   }
   const computeLength = (arr: any) => {
-    let totalLength = 0
+    if (Array.isArray(arr)) {
+      let totalLength = 0
 
-    arr.forEach((item: any) => {
-      totalLength += item.user_ids.length
-    })
-    return totalLength
+      arr?.forEach((item: any) => {
+        totalLength += item.user_ids.length
+      })
+      return totalLength
+    }
+    return arr.all
+  }
+
+  const recipientArr = (values: any) => {
+    if (Array.isArray(values)) {
+      return values.map((i: any) => (
+        <div
+          key={i}
+          style={{
+            height: '20px',
+            fontSize: '12px',
+            color: '#646566',
+            lineHeight: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {i.name}（{i.user_ids.length}）
+        </div>
+      ))
+    }
+    return
   }
   return (
     <div>
@@ -93,7 +119,7 @@ const NoteCard = (props: any) => {
             </ColorBtn>
           )}
 
-          <ColorBtn onClick={() => props.onShowDetail(values.id)}>
+          <ColorBtn onClick={() => props.onShowDetail(values)}>
             <CommonIconFont type="file-text" /> <span>查看详情</span>
           </ColorBtn>
         </Wrap2>
@@ -131,6 +157,7 @@ const NoteCard = (props: any) => {
         </div>
 
         <div
+          onClick={() => props.onShowNumber(values.id)}
           style={{
             height: '52px',
             borderRadius: '0px 0px 0px 0px',
@@ -139,13 +166,14 @@ const NoteCard = (props: any) => {
             display: 'flex',
             alignItems: 'center',
             gap: '24px',
+            cursor: 'pointer',
           }}
         >
           <div
             style={{
               height: '20px',
               fontSize: '12px',
-              color: '#646566',
+              color: 'var(--neutral-n2)',
               lineHeight: '20px',
               display: 'flex',
               alignItems: 'center',
@@ -154,25 +182,10 @@ const NoteCard = (props: any) => {
               paddingRight: '24px',
             }}
           >
-            <CommonIconFont color="#646566" size={16} type="team-2" />
+            <CommonIconFont color="var(--neutral-n4)" size={16} type="team" />
             {computeLength(values.recipient)}
           </div>
-          {values.recipient.map((i: any) => (
-            <div
-              key={i}
-              style={{
-                height: '20px',
-                fontSize: '12px',
-                color: '#646566',
-                lineHeight: '20px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-              }}
-            >
-              {i.name}（{i.user_ids.length}）
-            </div>
-          ))}
+          {recipientArr(values.recipient)}
         </div>
         {/* <div
           style={{

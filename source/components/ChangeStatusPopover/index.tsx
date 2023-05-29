@@ -6,7 +6,7 @@ import StatusModal from './StatusModal'
 interface Props {
   isShow?: boolean
   children: ReactNode
-  // onChangeStatus(value: any): void
+  onChangeStatus(value: any): void
   record: any
   projectId?: any
   isCanOperation?: boolean
@@ -29,6 +29,7 @@ const ChangeStatusPopover = (props: Props) => {
       fromIsStart: props.record?.status?.is_start,
       fromIsEnd: props.record?.status?.is_end,
       fromId: props.record?.status?.id,
+      statusName: item.statusName,
     })
   }
 
@@ -43,8 +44,10 @@ const ChangeStatusPopover = (props: Props) => {
         isVisible={isVisible}
         checkStatusItem={checkStatusItem}
         onClose={onClosModal}
-        // onChangeStatusConfirm={props.onChangeStatus}
+        record={props.record}
+        onChangeStatusConfirm={props.onChangeStatus}
       />
+
       <Popover
         open={popoverVisible}
         onOpenChange={setPopoverVisible}
@@ -52,15 +55,16 @@ const ChangeStatusPopover = (props: Props) => {
         trigger="click"
         destroyTooltipOnHide
         getPopupContainer={n => (props.isShow ? n : document.body)}
-        //   overlayStyle={{ width: 683 }}
         // 设置宽度是用于弹窗自适应宽度后会左右摆动问题
         content={
-          <StatusPopover
-            onOpenModal={onOpenModal}
-            popoverVisible={popoverVisible}
-            projectId={props.record.project_id ?? props.record.projectId}
-            id={props.record.id}
-          />
+          props.isCanOperation && (
+            <StatusPopover
+              onOpenModal={onOpenModal}
+              popoverVisible={popoverVisible}
+              projectId={props.record.project_id ?? props.record.projectId}
+              id={props.record.id}
+            />
+          )
         }
       >
         {props.children}

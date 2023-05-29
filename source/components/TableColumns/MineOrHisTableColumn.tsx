@@ -24,6 +24,7 @@ import DemandProgress from '../DemandProgress'
 import { getCustomNormalValue } from '@/tools'
 import ChangeSeverityPopover from '../ChangeSeverityPopover'
 import MultipleAvatar from '../MultipleAvatar'
+import { CommonIconFont } from '../CommonIconFont'
 
 const Wrap = styled.div<{ isEdit?: any }>(
   {
@@ -73,9 +74,11 @@ export const useDynamicColumns = (state: any) => {
               className="canClickDetail"
               onClick={() => state.onClickItem(record)}
               isClose={record.status?.is_end === 1}
+              style={{ marginRight: 16 }}
             >
               {record.storyPrefixKey}
             </ClickWrap>
+            {record.isExamine && <CommonIconFont type="review" size={40} />}
           </div>
         )
       },
@@ -338,7 +341,7 @@ export const useDynamicColumns = (state: any) => {
             }
             projectId={record.project_id}
             record={record}
-            // onChangeStatus={(value: any) => state.updateStatus(value, record)}
+            onChangeStatus={(value: any) => state.updateStatus(value, record)}
           >
             <StateTag
               style={{
@@ -397,14 +400,17 @@ export const useDynamicColumns = (state: any) => {
             isMineOrHis
             projectId={state.projectId}
           >
-            <MultipleAvatar
-              max={3}
-              list={record.usersInfo?.map((i: any) => ({
-                id: i.id,
-                name: i.name,
-                avatar: i.avatar,
-              }))}
-            />
+            {record?.usersInfo && record?.usersInfo.length > 0 && (
+              <MultipleAvatar
+                max={3}
+                list={record?.usersInfo?.map((i: any) => ({
+                  id: i.id,
+                  name: i.name,
+                  avatar: i.avatar,
+                }))}
+              />
+            )}
+            {!record?.usersInfo && '--'}
           </TableQuickEdit>
         )
       },

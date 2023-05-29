@@ -1,16 +1,105 @@
-import { kanbanConfig } from './data'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as services from '@/services'
 import { AppDispatch, store } from '@store/index'
-import { setSaveAsViewModelInfo, setShareModelInfo, setViewItemConfig } from '.'
+import {
+  // onChangeSortByView,
+  setSortByView,
+  setSaveAsViewModelInfo,
+  setShareModelInfo,
+  setSortByGroupOptions,
+  setSortByRowAndStatusOptions,
+  // setViewItemConfig,
+} from '.'
 import { getMessage } from '@/components/Message'
-import { produce } from 'immer'
-import useProjectId from '@/views/KanBanBoard/hooks/useProjectId'
 import { getParamsValueByKey } from '@/tools'
 import i18n from 'i18next'
+import { onTapSearchChoose, saveValue } from '@store/view'
+import { generatorFilterParams } from './utils'
+import _ from 'lodash'
+import { Options } from '@/components/SelectOptionsNormal'
 
 const name = 'kanBan'
 
+// 获取看板配置
+export const getKanbanConfig = createAsyncThunk(
+  `${name}/getKanbanConfig`,
+  async (params: API.KanbanConfig.GetKanbanConfig.Params) => {
+    const res = await services.kanbanConfig.getKanbanConfig(params)
+    return res.data
+  },
+)
+
+// 获取故事列表（分组）
+export const getKanbanByGroup = createAsyncThunk(
+  `${name}/getKanbanByGroup`,
+  async () => {
+    const { valueKey } = store.getState().view
+    const { sortByGroupOptions, sortByRowAndStatusOptions } =
+      store.getState().kanBan
+    const type = sortByGroupOptions?.find(item => item.check)?.key
+    const columnId = sortByRowAndStatusOptions?.find(item => item.check)?.key
+    if (!columnId) {
+      return []
+    }
+    if (!type) {
+      return []
+    }
+    if (type === 'none') {
+      return []
+    }
+    const params: Omit<
+      API.Kanban.GetKanbanByGroup.Params,
+      'pagesize' | 'page'
+    > = {
+      search: _.isEmpty(valueKey)
+        ? {
+            all: 1,
+          }
+        : valueKey,
+      project_id: getParamsValueByKey('id'),
+      group_by: type,
+      kanban_config_id: parseInt(columnId, 10),
+    }
+    const res = await services.kanban.getKanbanByGroup(params)
+    return res.data
+  },
+)
+
+// 更换视图
+export const onChangeSortByView =
+  (id: Model.KanBan.ViewItem['id']) => async (dispatch: AppDispatch) => {
+    await dispatch(setSortByView(id))
+    const current = store
+      .getState()
+      .kanBan.sortByView?.find(item => item.id === id)
+    if (!current) {
+      return
+    }
+    await dispatch(saveValue(current.config?.search ?? {}))
+    const params = generatorFilterParams(current.config)
+    await dispatch(onTapSearchChoose(params))
+    dispatch(getKanbanByGroup())
+  }
+// 修改分组
+export const onChangeSortByGroupOptions =
+  (key: Options['key']) => async (dispatch: AppDispatch) => {
+    await dispatch(setSortByGroupOptions(key))
+    dispatch(getKanbanByGroup())
+  }
+// 修改列
+export const onChangeSortByRowAndStatusOptions =
+  (key: Options['key']) => async (dispatch: AppDispatch) => {
+    const res = await dispatch(setSortByRowAndStatusOptions(key))
+
+    dispatch(
+      getKanbanConfig({
+        id: parseInt(key, 10),
+        project_id: getParamsValueByKey('id'),
+      }),
+    )
+    dispatch(getKanbanByGroup())
+  }
+// 删除视图
 export const delView =
   (params: API.Kanban.DelView.Params) => async (dispatch: AppDispatch) => {
     await services.kanban.delView(params)
@@ -21,16 +110,20 @@ export const delView =
     dispatch(getStoryViewList())
   }
 
+// 创建视图
 export const createView =
-  (params: API.Kanban.CreateView.Params) => async (dispatch: AppDispatch) => {
+  (params: Omit<API.Kanban.CreateView.Params, 'use_type'>) =>
+  async (dispatch: AppDispatch) => {
     const project_id = getParamsValueByKey('id')
-    await services.kanban.createView({
+    const res = await services.kanban.createView({
       ...params,
-      config: store.getState().kanBan.viewItemConfig,
+      config: store.getState().view,
       project_id,
+      use_type: 2,
     })
     getMessage({ msg: i18n.t('common.saveSuccess') as string, type: 'success' })
-    dispatch(getStoryViewList())
+    await dispatch(getStoryViewList())
+    dispatch(onChangeSortByView(res.data.id))
   }
 
 export const updateView =
@@ -42,21 +135,41 @@ export const updateView =
 
 export const onFilter =
   (data: Model.KanBan.ViewItemConfig) => async (dispatch: AppDispatch) => {
-    await dispatch(
-      setViewItemConfig({
-        search: data,
-      }),
-    )
+    const { valueKey } = store.getState().view
+    console.log({ valueKey })
+
     // dispatch(getStoryViewList())
   }
 
 // 看板配置列表
 export const getKanbanConfigList = createAsyncThunk(
   `${name}/getKanbanConfigList`,
-  async (param: API.KanbanConfig.GetKanbanConfigList.Params) => {
+  async (param: API.KanbanConfig.GetKanbanConfigList.Params, { dispatch }) => {
     const res = await services.kanbanConfig.getKanbanConfigList(param)
-    console.log(res)
-    return res.data
+    const { data } = res
+    const sortByRowAndStatusOptions = data.map(item => {
+      return {
+        check: false,
+        value: item.name,
+        key: item.id + '',
+      }
+    })
+    if (sortByRowAndStatusOptions.length) {
+      sortByRowAndStatusOptions[0].check = true
+    }
+    const checked = sortByRowAndStatusOptions[0]
+    if (checked) {
+      dispatch(
+        getKanbanConfig({
+          id: parseInt(checked.key, 10),
+          project_id: getParamsValueByKey('id'),
+        }),
+      )
+    }
+    return {
+      kanbanConfigList: res.data,
+      sortByRowAndStatusOptions,
+    }
   },
 )
 
@@ -77,7 +190,7 @@ export const closeSaveAsViewModel = () => async (dispatch: AppDispatch) => {
 // 视图列表
 export const getStoryViewList = createAsyncThunk(
   `${name}/getStoryViewList`,
-  async () => {
+  async (_, { dispatch }) => {
     const project_id = getParamsValueByKey('id')
     const res = await services.kanban.getStoryViewList({ project_id })
     const { data } = res
@@ -91,21 +204,27 @@ export const getStoryViewList = createAsyncThunk(
         isDefault: item.type === 2,
       }
     })
-    if (!sortByView?.length) {
-      ret[0].check = true
-      return ret
-    }
-    const checked = sortByView.find(item => item.check)
-
-    return ret.map(item => {
-      if (item.id === checked?.id) {
-        return {
-          ...item,
-          check: true,
+    const checked = sortByView?.find(
+      item => item.check && ret.some(i => i.id === item.id),
+    )
+    if (checked) {
+      const params = generatorFilterParams(checked?.config)
+      dispatch(onTapSearchChoose(params))
+      return ret.map(item => {
+        if (item.id === checked?.id) {
+          return {
+            ...item,
+            check: true,
+          }
         }
-      }
-      return item
-    })
+        return item
+      })
+    }
+    ret[0].check = true
+    const config = ret[0]?.config ?? {}
+    const params = generatorFilterParams(config)
+    dispatch(onTapSearchChoose(params))
+    return ret
   },
 )
 

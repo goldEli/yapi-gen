@@ -4,7 +4,10 @@ import * as http from '@/tools/http'
 export const delView = async (params: API.Kanban.DelView.Params) => {
   const response = await http.delete<any, API.Kanban.DelView.Result>(
     'delView',
-    params,
+    {
+      use_type: 2,
+      ...params,
+    },
   )
   return response
 }
@@ -68,11 +71,15 @@ export const modifyKanbanPeopleGrouping = async (
 }
 
 export const getKanbanByGroup = async (
-  params: API.Kanban.GetKanbanByGroup.Params,
+  params: Omit<API.Kanban.GetKanbanByGroup.Params, 'pagesize' | 'page'>,
 ) => {
   const response = await http.get<any, API.Kanban.GetKanbanByGroup.Result>(
     'getKanbanByGroup',
-    params,
+    {
+      pagesize: 20,
+      page: 0,
+      ...params,
+    },
   )
   return response
 }

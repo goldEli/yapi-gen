@@ -37,6 +37,7 @@ import { getWorkflowList } from '@/services/project'
 import { getMessage } from '@/components/Message'
 import {
   updateSprintCategory,
+  updateSprintStatus,
   updateSprintTableParams,
 } from '@/services/sprint'
 import { setSprintInfo } from '@store/sprint'
@@ -131,6 +132,13 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     } else {
       form.resetFields()
     }
+  }
+
+  // 修改事务状态
+  const onChangeStatus = async (value: any) => {
+    await updateSprintStatus(value)
+    getMessage({ msg: t('common.statusSuccess'), type: 'success' })
+    dispatch(getSprintInfo({ projectId: id, sprintId }))
   }
 
   // 关闭类别弹窗
@@ -296,7 +304,6 @@ const SprintProjectDetail: React.FC<IProps> = props => {
           // Todo 传入复制方法
         }}
       />
-      {/* <DeleteConfirmModal /> */}
       <CommonModal
         isVisible={isShowCategory}
         onClose={onCloseCategory}
@@ -445,7 +452,10 @@ const SprintProjectDetail: React.FC<IProps> = props => {
           <span className="icon" onClick={onCopy}>
             <CommonIconFont type="copy" color="var(--neutral-n3)" />
           </span>
-          <ChangeStatusPopover record={{}}>
+          <ChangeStatusPopover
+            record={sprintInfo}
+            onChangeStatus={onChangeStatus}
+          >
             <StateTag
               name={sprintInfo.status?.status.content}
               state={

@@ -12,15 +12,15 @@ import { getIsPermission } from '@/tools/index'
 import { useTranslation } from 'react-i18next'
 import IconFont from '@/components/IconFont'
 import { Popover, Space, Tooltip } from 'antd'
-import CommonModal from '@/components/CommonModal'
 import DeleteConfirm from '@/components/DeleteConfirm'
-import ExportDemand from '@/components/CommonExport'
-import ImportDemand from '@/components/CommonImport'
 import { useDispatch, useSelector } from '@store/index'
 import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
 import { setCreateCategory } from '@store/demand'
 import { saveScreen } from '@store/view'
 import CommonIconFont from '@/components/CommonIconFont'
+import CommonButton from '@/components/CommonButton'
+import CommonModal from '@/components/CommonModal'
+import CommonImport from '@/components/CommonImport'
 import {
   getImportDownloadModel,
   getImportExcel,
@@ -29,23 +29,8 @@ import {
   getLoadListFields,
   getExportExcel,
 } from '@/services/demand'
-
-const OperationWrap = styled.div({
-  minHeight: 32,
-  minWidth: '800px',
-  lineHeight: '32px',
-  background: 'var(--neutral-white-d2)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  '.ant-space-item': {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  '.ant-popover-content': {
-    width: 'max-content',
-  },
-})
+import CommonExport from '@/components/CommonExport'
+import { OperationWrap } from '../style'
 
 const StickyWrap = styled.div({
   background: 'white',
@@ -121,9 +106,6 @@ const MoreItem = styled.div({
 })
 
 interface Props {
-  isGrid: any
-  onChangeGrid(val: any): void
-  onChangeVisible?(e?: any): void
   onSearch(params: any): void
   onRefresh(): void
   settingState: boolean
@@ -148,10 +130,10 @@ const Operation = (props: Props) => {
 
   // 导出超出限制提示
   const [exceedState, setExceedState] = useState(false)
-  const { projectInfo, filterKeys, projectInfoValues } = useSelector(
+  const { projectInfo, colorList, filterKeys, projectInfoValues } = useSelector(
     store => store.project,
   )
-  const { filterParams } = useSelector(store => store.demand)
+  // const { filterParams } = useSelector(store => store.demand)
   const { searchChoose } = useSelector(store => store.view)
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
@@ -187,6 +169,10 @@ const Operation = (props: Props) => {
   )
 
   const onFilterSearch = (e: any, customField: any) => {
+    // 如果筛选未打开
+    if (filterState) {
+      return
+    }
     const params = {
       statusId: e.status,
       priorityId: e.priority,
@@ -276,56 +262,19 @@ const Operation = (props: Props) => {
   }
 
   const onChangeCategory = (e: any, item: any) => {
-    dispatch(setCreateCategory(item))
-
-    // 需求列表筛选参数赋值给 弹窗
-    dispatch(setFilterParamsModal(filterParams))
-    setTimeout(() => {
-      dispatch(
-        setAddWorkItemModal({
-          visible: true,
-          params: { projectId: projectInfo?.id },
-        }),
-      )
-      setIsVisible(false)
-    }, 0)
+    // dispatch(setCreateCategory(item))
+    // // 需求列表筛选参数赋值给 弹窗
+    // dispatch(setFilterParamsModal(filterParams))
+    // setTimeout(() => {
+    //   dispatch(
+    //     setAddWorkItemModal({
+    //       visible: true,
+    //       params: { projectId: projectInfo?.id },
+    //     }),
+    //   )
+    //   setIsVisible(false)
+    // }, 0)
   }
-
-  const changeStatus = (
-    <div
-      style={{
-        padding: '4px 0px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        minWidth: i18n.language === 'zh' ? 110 : 151,
-      }}
-    >
-      {projectInfoValues
-        ?.filter((i: any) => i.key === 'category')[0]
-        ?.children?.filter((i: any) => i.status === 1)
-        ?.map((k: any) => {
-          return (
-            <LiWrap key={k.id} onClick={(e: any) => onChangeCategory(e, k)}>
-              <img
-                src={
-                  k.category_attachment
-                    ? k.category_attachment
-                    : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
-                }
-                style={{
-                  width: '18px',
-                  height: '18px',
-                  marginRight: '8px',
-                }}
-                alt=""
-              />
-              <span>{k.content}</span>
-            </LiWrap>
-          )
-        })}
-    </div>
-  )
 
   const onImportClick = () => {
     setIsVisible(false)
@@ -355,13 +304,13 @@ const Operation = (props: Props) => {
       {hasImport || projectInfo?.status !== 1 ? null : (
         <MoreItem onClick={onImportClick}>
           <CommonIconFont type="export" />
-          <span style={{ marginLeft: 8 }}>{t('newlyAdd.importDemand')}</span>
+          <span style={{ marginLeft: 8 }}>导入缺陷</span>
         </MoreItem>
       )}
       {hasExport ? null : (
         <MoreItem onClick={onExportClick}>
           <CommonIconFont type="Import" />
-          <span style={{ marginLeft: 8 }}>{t('newlyAdd.exportDemand')}</span>
+          <span style={{ marginLeft: 8 }}>导出缺陷</span>
         </MoreItem>
       )}
     </div>
@@ -392,38 +341,12 @@ const Operation = (props: Props) => {
       <CommonModal
         isVisible={isShowImport}
         width={784}
-        title={t('newlyAdd.importDemand')}
+        title={t('common.importDefect')}
         isShowFooter
         onClose={onImportClose}
       >
-        <ImportDemand
-          tips={{
-            tab1: (
-              <>
-                <span>{t('newlyAdd.importText2')}</span>
-                <span>{t('newlyAdd.importText3')}</span>
-                <span>{t('newlyAdd.importText4')}</span>
-                <span>{t('newlyAdd.importText5')}</span>
-                <span>{t('newlyAdd.importText6')}</span>
-                <span>{t('newlyAdd.importText7')}</span>
-                <span>{t('newlyAdd.importText8')}</span>
-                <span>{t('newlyAdd.importText9')}</span>
-              </>
-            ),
-            tab2: (
-              <>
-                <span>{t('newlyAdd.importText10')}</span>
-                <span>{t('newlyAdd.importText4')}</span>
-                <span>{t('newlyAdd.importText6')}</span>
-                <span>{t('newlyAdd.importText7')}</span>
-                <span>{t('newlyAdd.importText8')}</span>
-                <span>{t('newlyAdd.importText9')}</span>
-                <span>{t('newlyAdd.importText11')}</span>
-                <span>{t('newlyAdd.importText12')}</span>
-              </>
-            ),
-          }}
-          stepText={t('newlyAdd.uploadDemand')}
+        <CommonImport
+          templateTitle={t('defect.importChoose')}
           interfaces={{
             getImportDownloadModel,
             getImportExcel,
@@ -433,20 +356,43 @@ const Operation = (props: Props) => {
             getExportFields,
             getLoadListFields,
           }}
-          templateTitle={t('newlyAdd.importChoose')}
+          stepText={t('common.uploadDefect')}
+          tips={{
+            tab1: (
+              <>
+                <span>{t('defect.importText1')}</span>
+                <span>{t('defect.importText2')}</span>
+                <span>{t('defect.importText3')}</span>
+                <span>{t('defect.importText4')}</span>
+                <span>{t('defect.importText5')}</span>
+                <span>{t('defect.importText6')}</span>
+                <span>{t('defect.importText7')}</span>
+                <span>{t('defect.importText8')}</span>
+              </>
+            ),
+            tab2: (
+              <>
+                <span>{t('defect.importText9')}</span>
+                <span>{t('defect.importText10')}</span>
+                <span>{t('defect.importText11')}</span>
+                <span>{t('defect.importText12')}</span>
+                <span>{t('defect.importText13')}</span>
+                <span>{t('defect.importText14')}</span>
+                <span>{t('defect.importText15')}</span>
+                <span>{t('defect.importText16')}</span>
+              </>
+            ),
+          }}
         />
       </CommonModal>
 
-      <ExportDemand
+      <CommonExport
+        interfaces={{ getExportExcel }}
         isShowExport={isShowExport}
         onClose={setIsShowExport}
         searchGroups={searchGroups}
         otherParams={props.otherParams}
-        interfaces={{ getExportExcel }}
-        templateInterfaces={{
-          getExportFields,
-          getLoadListFields,
-        }}
+        templateInterfaces={{ getExportFields, getLoadListFields }}
       />
 
       <OperationWrap>
@@ -476,21 +422,7 @@ const Operation = (props: Props) => {
               ? 'b/story/save'
               : 'b/transaction/save',
           ) || projectInfo?.status !== 1 ? null : (
-            <Popover
-              content={changeStatus}
-              placement="bottomLeft"
-              getPopupContainer={node => node}
-              visible={isVisible}
-              onVisibleChange={visible => setIsVisible(visible)}
-            >
-              <MoreWrap type="create">
-                <span>{t('common.createDemand')}</span>
-                <IconFont
-                  style={{ fontSize: 16, marginLeft: 8 }}
-                  type={isVisible ? 'up' : 'down'}
-                />
-              </MoreWrap>
-            </Popover>
+            <CommonButton type="primary">创建缺陷</CommonButton>
           )}
           {hasExport && hasImport ? null : (
             <Popover
@@ -514,12 +446,11 @@ const Operation = (props: Props) => {
 
         <OperationGroup
           onChangeFilter={onChangeFilter}
-          onChangeGrid={props.onChangeGrid}
           onRefresh={props.onRefresh}
-          isGrid={props.isGrid}
           filterState={filterState}
           settingState={props.settingState}
           onChangeSetting={() => props.onChangeSetting(!props.settingState)}
+          notGrid
         />
       </OperationWrap>
 
@@ -533,11 +464,9 @@ const Operation = (props: Props) => {
           noNeed
           defaultValue={defaultValue}
           onFilter={getSearchKey}
-          onSearch={(e: any, customField: any) =>
-            onFilterSearch(e, customField)
-          }
+          onSearch={onFilterSearch}
           list={searchList}
-          basicsList={filterBasicsList.filter((i: any) => i.is_flaw !== 1)}
+          basicsList={filterBasicsList}
           specialList={filterSpecialList}
           customList={filterCustomList}
         />

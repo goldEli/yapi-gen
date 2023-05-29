@@ -78,6 +78,7 @@ const StaffManagement = () => {
   const [t] = useTranslation()
   asyncSetTtile(t('title.b5'))
   const dispatch = useDispatch()
+  const [detailInner, setDetailInner] = useState<any>()
   const [memberVisible, setMemberVisible] = useState(false)
   const [detailVisible, setDetailVisible] = useState(false)
   const { userInfo, isRefresh } = useSelector(store => store.user)
@@ -85,6 +86,7 @@ const StaffManagement = () => {
   const [isShow, setIsShow] = useState<boolean>(false)
 
   const [page, setPage] = useState<number>(1)
+  const [showId, setShowId] = useState('')
   const [pagesize, setPagesize] = useState<number>(10)
   const [total, setTotal] = useState<number>(0)
   const [keyword, setKeyword] = useState<string>()
@@ -246,7 +248,9 @@ const StaffManagement = () => {
     console.log(id)
   }
 
-  const onShowDetail = () => {
+  const onShowDetail = (values: any) => {
+    console.log(values)
+    setDetailInner(values)
     setDetailVisible(true)
   }
   const onHandleOk = (datas: any) => {
@@ -257,6 +261,10 @@ const StaffManagement = () => {
   }, [keyword, searchGroups, page])
   console.log(list, '现在的列表')
 
+  const showNumber = (id: any) => {
+    setShowId(id)
+    setMemberVisible(true)
+  }
   return (
     <PermissionWrap
       auth="/AdminManagement/StaffManagement"
@@ -271,8 +279,13 @@ const StaffManagement = () => {
         isVisible={visible}
       />
 
-      <MemberModal isVisible={memberVisible} />
+      <MemberModal
+        onCloseMember={() => setMemberVisible(false)}
+        showId={showId}
+        isVisible={memberVisible}
+      />
       <NoteDetailDrawer
+        detailInner={detailInner}
         onCancel={() => setDetailVisible(false)}
         isVisible={detailVisible}
       />
@@ -365,6 +378,7 @@ const StaffManagement = () => {
         >
           {list.map((i: any) => (
             <NoteCard
+              onShowNumber={showNumber}
               values={i}
               onDel={onDel}
               onShowDetail={onShowDetail}

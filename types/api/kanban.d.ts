@@ -35,8 +35,11 @@ declare namespace API.Kanban {
   // getKanbanByGroup
   namespace GetKanbanByGroup {
     type Params = SearchParams & {
+      project_id: number
       // 分组类型，users:用户分组，priority：优先级，category：类别
       group_by: Model.KanBan.GroupType
+      pagesize: 20
+      page: 0
     }
     type Result = Model.KanBan.Group[]
   }
@@ -59,17 +62,26 @@ declare namespace API.Kanban {
   namespace UpdateView {
     type Params = {
       project_id: number
+      // 用途，1：需求列表，2：看板，3：报表
+      use_type: 1 | 2 | 3
     } & Pick<Model.KanBan.ViewItem, 'config' | 'id' | 'name' | 'type'>
-    type Result = null
+    type Result = Model.KanBan.ViewItem
   }
   namespace CreateView {
     type Params = {
       project_id: number
+      // 用途，1：需求列表，2：看板，3：报表
+      use_type: 1 | 2 | 3
     } & Pick<Model.KanBan.ViewItem, 'config' | 'name'>
-    type Result = null
+    type Result = Model.KanBan.ViewItem
   }
   namespace DelView {
-    type Params = Pick<Model.KanBan.ViewItem, 'id'>
-    type Result = null
+    type Params =
+      | Pick<Model.KanBan.ViewItem, 'id'>
+      | {
+          // 用途，1：需求列表，2：看板，3：报表
+          use_type: 1 | 2 | 3
+        }
+    type Result = Model.KanBan.ViewItem
   }
 }

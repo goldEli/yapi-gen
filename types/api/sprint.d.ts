@@ -1,4 +1,72 @@
 declare namespace API.Sprint {
+  namespace BatchSprintEdit {
+    type Params = {
+      projectId: number
+      demandIds: number[]
+      type: string
+      target: number | number[] | string | Model.Sprint.CustomFiledInfo
+    }
+  }
+  namespace BatchSprintDelete {
+    type Params = {
+      projectId: number
+      demandIds: number[]
+      isDeleteChild: number
+    }
+  }
+  namespace GetSprintBatchEditConfig {
+    type Params = {
+      projectId: number
+      demandIds: number[]
+    }
+
+    type Result = {
+      attr: null | string
+      content: string
+      content_txt: string
+      is_customize: number
+      title: string
+      values: { content: string; id: number; parent_id: number }[]
+    }[]
+  }
+  namespace GetSprintExcel {
+    type Params = {
+      projectId: number
+      filePath: string
+    }
+  }
+
+  namespace GetImportDownloadSprintModel {
+    type Params = {
+      projectId: number
+      isUpdate: boolean | number
+      fields: string
+    }
+  }
+  namespace GetLoadSprintListFields {
+    type Params = {
+      projectId: number
+      isUpdate: boolean | number
+      isBug: boolean | number
+    }
+    type Result = {
+      base_fields: { field: string; name: string }[]
+      time_person_fields: { field: string; name: string }[]
+      custom_fields: { field: string; name: string }[]
+    }
+  }
+  namespace UpdateSprintStatus {
+    type Params = {
+      projectId: number
+      nId?: number
+      toId: number
+      verifyId: number
+      fields: {
+        reviewerValue: any
+      }
+    }
+  }
+
   namespace UpdateSprintCategory {
     type Params = {
       projectId: number
