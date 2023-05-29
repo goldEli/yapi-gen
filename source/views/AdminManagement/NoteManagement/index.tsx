@@ -78,6 +78,7 @@ const StaffManagement = () => {
   const [t] = useTranslation()
   asyncSetTtile(t('title.b5'))
   const dispatch = useDispatch()
+  const [detailInner, setDetailInner] = useState<any>()
   const [memberVisible, setMemberVisible] = useState(false)
   const [detailVisible, setDetailVisible] = useState(false)
   const { userInfo, isRefresh } = useSelector(store => store.user)
@@ -247,7 +248,9 @@ const StaffManagement = () => {
     console.log(id)
   }
 
-  const onShowDetail = () => {
+  const onShowDetail = (values: any) => {
+    console.log(values)
+    setDetailInner(values)
     setDetailVisible(true)
   }
   const onHandleOk = (datas: any) => {
@@ -282,6 +285,7 @@ const StaffManagement = () => {
         isVisible={memberVisible}
       />
       <NoteDetailDrawer
+        detailInner={detailInner}
         onCancel={() => setDetailVisible(false)}
         isVisible={detailVisible}
       />

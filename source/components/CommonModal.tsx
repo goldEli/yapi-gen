@@ -57,6 +57,7 @@ interface CommonModalProps {
   noCancel?: boolean
   dex?: number
   isHeader?: boolean
+  onSaveDraft?(): void
 }
 
 const CommonModal = (props: CommonModalProps) => {
@@ -106,7 +107,12 @@ const CommonModal = (props: CommonModalProps) => {
                     bottom: '24px',
                   }}
                 >
-                  <CommonButton type="secondaryText"> 存草稿</CommonButton>
+                  <CommonButton
+                    type="secondaryText"
+                    onClick={props.onSaveDraft}
+                  >
+                    存草稿
+                  </CommonButton>
                 </div>
               ) : null}
 

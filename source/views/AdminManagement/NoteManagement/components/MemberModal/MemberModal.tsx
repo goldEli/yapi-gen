@@ -162,7 +162,7 @@ const MemberModal = (props: any) => {
     >
       <div
         style={{
-          height: 'calc(100vh - 302px)',
+          height: '648px',
           overflow: 'auto',
           padding: '0 24px',
         }}
