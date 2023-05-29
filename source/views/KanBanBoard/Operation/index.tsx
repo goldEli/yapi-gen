@@ -400,7 +400,7 @@ const Operation = (props: Props) => {
             onFilterSearch(e, customField)
           }
           list={searchList}
-          basicsList={filterBasicsList}
+          basicsList={filterBasicsList.filter((i: any) => i.is_flaw !== 1)}
           specialList={filterSpecialList}
           customList={filterCustomList}
         />

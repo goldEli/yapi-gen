@@ -632,7 +632,7 @@ const DemandTree = (props: Props) => {
 
       <OptionalFeld
         allTitleList={allTitleList}
-        plainOptions={plainOptions}
+        plainOptions={plainOptions.filter((i: any) => i.is_flaw !== 1)}
         plainOptions2={plainOptions2}
         plainOptions3={plainOptions3}
         checkList={titleList}
