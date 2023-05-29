@@ -14,9 +14,10 @@ import {
   getStoryViewList,
   onFilter,
 } from '@store/kanBan/kanBan.thunk'
-import { useSearchParams } from 'react-router-dom'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import useProjectId from './hooks/useProjectId'
+import { encryptPhp } from '@/tools/cryptoPhp'
 
 interface IProps {}
 const SprintProjectKanBanBox = styled.div`
@@ -41,10 +42,23 @@ const SprintProjectKanBan: React.FC<IProps> = props => {
   const dispatch = useDispatch()
   const { guideVisible } = useSelector(store => store.sprintKanBan)
   const { projectId } = useProjectId()
+  const navigate = useNavigate()
 
   useEffect(() => {
-    dispatch(getKanbanConfigList({ project_id: projectId }))
-    dispatch(getStoryViewList())
+    async function run() {
+      const res = await dispatch(getKanbanConfigList({ project_id: projectId }))
+      const list = res.payload as any
+      if (!list?.length) {
+        // 如果没有配置列 跳转到列配置页面
+        const params = encryptPhp(
+          JSON.stringify({ id: projectId, pageIdx: 'main', type: 1 }),
+        )
+        navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
+        return
+      }
+      dispatch(getStoryViewList())
+    }
+    run()
   }, [projectId])
 
   const inform = [
