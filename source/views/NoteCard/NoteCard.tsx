@@ -173,7 +173,7 @@ const NoteCard = (props: any) => {
             style={{
               height: '20px',
               fontSize: '12px',
-              color: '#646566',
+              color: 'var(--neutral-n2)',
               lineHeight: '20px',
               display: 'flex',
               alignItems: 'center',
@@ -182,7 +182,7 @@ const NoteCard = (props: any) => {
               paddingRight: '24px',
             }}
           >
-            <CommonIconFont color="#646566" size={16} type="team-2" />
+            <CommonIconFont color="var(--neutral-n4)" size={16} type="team" />
             {computeLength(values.recipient)}
           </div>
           {recipientArr(values.recipient)}

@@ -22,11 +22,12 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { setFilterKeys } from '@store/project'
 import CreateViewPort from '@/components/CreateViewPort'
 import ManageView from '@/components/ManageView'
-import { getSprintList } from '@/services/sprint'
+import { deleteSprint, getSprintList } from '@/services/sprint'
 import Operation from './components/Operation'
 import { saveTitles } from '@store/view'
 import { OptionalFeld } from '@/components/OptionalFeld'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
+import { getMessage } from '@/components/Message'
 
 interface IProps {}
 
@@ -233,17 +234,18 @@ const SprintProjectAffair: React.FC<IProps> = props => {
     setTopParentId(item?.topId)
   }
 
+  // 删除事务
   const onDeleteConfirm = async () => {
-    // try {
-    //   await deleteDemand({ projectId, id: deleteId })
-    //   getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-    //   setIsVisible(false)
-    //   setDeleteId(0)
-    //   getList(isGrid, searchItems, pageObj, order)
-    //   myTreeComponent?.current?.init()
-    // } catch (error) {
-    //   //
-    // }
+    await deleteSprint({
+      projectId,
+      id: deleteItem.id,
+      isDeleteChild: isDeleteCheck ? 1 : 2,
+    })
+    getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
+    setIsVisible(false)
+    setDeleteItem({})
+    getList(isGrid, searchItems, pageObj, order)
+    myTreeComponent?.current?.init()
   }
 
   const onChangePageNavigation = (item: any) => {

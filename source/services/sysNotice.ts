@@ -36,6 +36,11 @@ export const getMyAllSysNoticeNumber: any = async (params: any) => {
 
   return response.data
 }
+export const getMyAllSysNoticeDetail: any = async (id: any) => {
+  const response: any = await http.get<any>(`/b/sys_notice/${id}/detail`)
+
+  return response.data
+}
 
 // 提交反馈
 export const sendFeedback: any = async (params: any) => {
