@@ -357,6 +357,7 @@ const DefectTable = (props: Props) => {
           selectRows={selectedRowKeys}
           onUpdate={props.onUpdate}
           onRef={batchDom}
+          type={2}
         />
       )}
 

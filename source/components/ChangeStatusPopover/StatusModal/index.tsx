@@ -284,7 +284,7 @@ const StatusModal = (props: StatusModalProps) => {
       projectId: props.checkStatusItem.projectId,
       all: 1,
     })
-    setOptionsList(res2.data)
+    setOptionsList(res2)
   }
 
   // 获取状态流转配置

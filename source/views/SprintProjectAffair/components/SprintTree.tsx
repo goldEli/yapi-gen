@@ -565,6 +565,7 @@ const SprintTree = (props: Props) => {
           selectRows={selectedRowKeys}
           onUpdate={props.onUpdate}
           onRef={batchDom}
+          type={3}
         />
       )}
 

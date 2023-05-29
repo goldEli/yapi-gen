@@ -459,6 +459,7 @@ const DemandTable = (props: Props) => {
           selectRows={selectedRowKeys}
           onUpdate={props.onUpdate}
           onRef={batchDom}
+          type={1}
         />
       )}
 

@@ -184,7 +184,7 @@ const CreateNoteModal = (props: any) => {
           <Form.Item
             label={<LabelTitle>通知标题</LabelTitle>}
             name="title"
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            rules={[{ required: true, message: '请输入标题!' }]}
           >
             <Input maxLength={20} placeholder="请输入通知标题最多20字" />
           </Form.Item>
@@ -207,7 +207,7 @@ const CreateNoteModal = (props: any) => {
                       alignItems: 'center',
                     }}
                   >
-                    味甜希仁
+                    请输入通知内容
                   </div>
                 ),
                 whitespace: true,
@@ -241,7 +241,7 @@ const CreateNoteModal = (props: any) => {
           <Form.Item
             name="recipient2"
             label={<LabelTitle>接收对象</LabelTitle>}
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            rules={[{ required: true, message: '请选择接收对象!' }]}
           >
             <AcceptorSelection />
           </Form.Item>
@@ -300,7 +300,7 @@ const CreateNoteModal = (props: any) => {
           <Form.Item
             label={<LabelTitle>失效时间</LabelTitle>}
             name="expire_time"
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            rules={[{ required: true, message: '请选择失效时间!' }]}
           >
             <DatePicker
               disabledDate={disabledDate}

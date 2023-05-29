@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable no-constant-binary-expression */
 /* eslint-disable no-case-declarations */
 /* eslint-disable react/prop-types */
@@ -206,11 +207,13 @@ const AcceptorSelection = (props: any) => {
   }, [reportContentCopy])
   console.log(person1, '选中的人')
   useEffect(() => {
-    props.onChange({
-      member: person1,
+    if (person1.length > 1) {
+      props.onChange({
+        member: person1,
 
-      isEmail: isEmail,
-    })
+        isEmail: isEmail,
+      })
+    }
   }, [person1, isEmail])
   return (
     <div

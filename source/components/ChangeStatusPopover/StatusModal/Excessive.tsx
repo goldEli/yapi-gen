@@ -31,7 +31,7 @@ const Excessive = (props: Props) => {
       </PopoverStatusWrap>
       <ExcessiveLine>
         <ExcessiveProvider>
-          <span>流转名称</span>
+          <span>{props.checkStatusItem?.statusName}</span>
         </ExcessiveProvider>
         <div className="circle" />
       </ExcessiveLine>
