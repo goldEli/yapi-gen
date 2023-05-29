@@ -1,3 +1,4 @@
+import { DragLine, MouseDom } from '@/components/StyleCommon'
 import styled from '@emotion/styled'
 import { Dropdown, Form, Progress, Space } from 'antd'
 
@@ -98,13 +99,14 @@ export const DetailMain = styled.div`
   display: flex;
   margin-top: 20px;
   padding-right: 24px;
+  position: relative;
 `
 
-export const DetailInfoWrap = styled.div`
+export const DetailInfoWrap = styled.div<{ isScroll?: boolean }>`
   width: 100%;
-  height: calc(100% - 40px);
+  height: ${props =>
+    props.isScroll ? 'calc(100% - 100px)' : 'calc(100% - 40px)'};
   overflow: auto;
-  border-right: 1px solid red;
 `
 
 export const InfoItem = styled.div`
@@ -227,4 +229,32 @@ export const InfoWrap = styled.div`
   height: calc(100vh - 212px);
   flex: 1;
   position: relative;
+  .ant-tabs-nav {
+    padding-left: 24px;
+  }
+  .ant-tabs-top > .ant-tabs-nav::before,
+  .ant-tabs-bottom > .ant-tabs-nav::before,
+  .ant-tabs-top > div > .ant-tabs-nav::before,
+  .ant-tabs-bottom > div > .ant-tabs-nav::before {
+    border-bottom: none;
+  }
+  .ant-tabs-tab {
+    padding: 0 0 16px;
+  }
+  .ant-tabs-tab-btn {
+    font-size: 14px;
+    color: var(--neutral-n2);
+  }
+  .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: var(--primary-d1);
+  }
+`
+
+export const SprintDetailDragLine = styled(DragLine)`
+  background: ${props =>
+    props.active ? 'var(--primary-d2)' : 'var(--neutral-n6-d1)'}!important;
+`
+
+export const SprintDetailMouseDom = styled(MouseDom)`
+  background: transparent;
 `

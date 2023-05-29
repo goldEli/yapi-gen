@@ -114,7 +114,7 @@ export const Title = styled.div`
 export const TableStyle = styled.div`
   height: 408px;
   overflow-y: auto;
-  padding: 24px 24px 0 24px;
+  padding: 24px 0px 0 0px;
 `
 export const BtnStyle = styled.div`
   width: 88px;
@@ -271,6 +271,13 @@ export const Left = styled.div`
   display: flex;
   align-items: center;
 `
+export const RowText = styled.div`
+  display: flex;
+  align-items: center;
+  &:hover {
+    cursor: pointer;
+  }
+`
 export const CharTitle = styled.div`
   font-size: 12px;
   color: var(--neutral-n2);
@@ -356,5 +363,16 @@ export const Footer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+`
+export const RowTableCol = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  .text {
+    width: 90%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
 `
 export const HomeModal = styled(Modal)({})

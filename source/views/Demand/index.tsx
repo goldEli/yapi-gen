@@ -603,8 +603,8 @@ const DemandBox = () => {
             <ChangeStatusPopover
               isCanOperation={isCanEdit && !demandInfo?.isExamine}
               projectId={projectId}
-              // record={demandInfo}
-              // onChangeStatus={onChangeStatus}
+              record={demandInfo}
+              onChangeStatus={onChangeStatus}
             >
               <StateTag
                 onClick={demandInfo?.isExamine ? onExamine : void 0}

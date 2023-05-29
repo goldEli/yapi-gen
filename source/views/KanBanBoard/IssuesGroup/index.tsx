@@ -4,6 +4,7 @@ import Issues from '../Issues'
 import UpDownBtn from '@/components/UpDownBtn'
 import MultipleAvatar from '@/components/MultipleAvatar'
 import ChoosePeople from '@/views/WorkReport/Formwork/ChoosePeople'
+import ChooseMember from '../ChooseMember'
 interface IssuesGroupProps {
   issuesGroup: Model.KanBan.Group
 }
@@ -48,11 +49,12 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
   const { issuesGroup } = props
 
   const text = useMemo(() => {
-    const storiesNum = issuesGroup.columns.reduce((res, column) => {
-      const n = column.stories.length ?? 0
-      return res + n
-    }, 0)
-    return `共计${issuesGroup?.users?.length}人，${storiesNum}个事务`
+    const storiesNum =
+      issuesGroup?.columns?.reduce((res, column) => {
+        const n = column.stories.length ?? 0
+        return res + n
+      }, 0) ?? 0
+    return `共计${issuesGroup?.users?.length ?? 0}人，${storiesNum}个事务`
   }, [issuesGroup])
 
   const titleArea = (
@@ -72,14 +74,15 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
           })}
         max={3}
       />
-      <ChoosePeople
+      <ChooseMember />
+      {/* <ChoosePeople
         margin={0}
         onChange={(...args: any) => {
           console.log({ args })
         }}
         hiddenNumbers
         initValue={[]}
-      />
+      /> */}
       <Text>{text}</Text>
     </GroupTitleArea>
   )
@@ -87,7 +90,7 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
     <IssuesGroupBox>
       {titleArea}
       <DropAreaList>
-        {issuesGroup.columns.map(column => {
+        {issuesGroup?.columns?.map(column => {
           return (
             <Issues key={column.id} issues={column} groupId={issuesGroup.id} />
           )

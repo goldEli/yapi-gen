@@ -7,44 +7,34 @@
 /* eslint-disable no-undefined */
 import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import { Menu, Skeleton, message } from 'antd'
-import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
+import { Divider, Skeleton } from 'antd'
 
 import { DividerWrap } from '@/components/StyleCommon'
 
-import { getIsPermission } from '@/tools/index'
 import { css } from '@emotion/css'
 import { useTranslation } from 'react-i18next'
-import Loading from '@/components/Loading'
 import { debounce } from 'lodash'
-import { encryptPhp } from '@/tools/cryptoPhp'
 import useSetTitle from '@/hooks/useSetTitle'
-import {
-  getStaffList,
-  refreshStaff,
-  updateStaff,
-  batchUpdateStaff,
-} from '@/services/staff'
+import { refreshStaff } from '@/services/staff'
 import { useDispatch, useSelector } from '@store/index'
-import { setIsRefresh } from '@store/user'
 import InputSearch from '@/components/InputSearch'
-import { useNavigate } from 'react-router-dom'
 import PermissionWrap from '@/components/PermissionWrap'
-import { confirmHand, restHand } from '@/services/handover'
 import ScreenMinHover from '@/components/ScreenMinHover'
 import { getMessage } from '@/components/Message'
-import SearchList from '../StaffManagement/components/SearchList'
 import SearchList2 from './components/SearchList2'
 import CommonButton from '@/components/CommonButton'
-import CommonIconFont from '@/components/CommonIconFont'
-import { TextChange } from '@/components/TextChange/TextChange'
 import NoteCard from '@/views/NoteCard/NoteCard'
-import { scrollListWrap } from '@/views/SiteNotifications/AllNotes'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import CreateNoteModal from './components/CreateNoteModal/CreateNoteModal'
 import NoteDetailDrawer from './components/NoteDetailDrawer/NoteDetailDrawer'
 import MemberModal from './components/MemberModal/MemberModal'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import {
+  delSysNotice,
+  getMyAllSysNotice,
+  recallSysNotice,
+} from '@/services/sysNotice'
+import NoData from '@/components/NoData'
 
 export const tableWrapP = css`
   display: flex;
@@ -88,86 +78,79 @@ const StaffManagement = () => {
   const [t] = useTranslation()
   asyncSetTtile(t('title.b5'))
   const dispatch = useDispatch()
+  const [detailInner, setDetailInner] = useState<any>()
   const [memberVisible, setMemberVisible] = useState(false)
   const [detailVisible, setDetailVisible] = useState(false)
   const { userInfo, isRefresh } = useSelector(store => store.user)
   const { menuPermission } = useSelector(store => store.user)
   const [isShow, setIsShow] = useState<boolean>(false)
-  const [loadingState, setLoadingState] = useState<boolean>(false)
+
   const [page, setPage] = useState<number>(1)
-  const [pagesize, setPagesize] = useState<number>(20)
+  const [showId, setShowId] = useState('')
+  const [pagesize, setPagesize] = useState<number>(10)
   const [total, setTotal] = useState<number>(0)
-  const [keyword, setKeyword] = useState<string>('')
+  const [keyword, setKeyword] = useState<string>()
   const [searchGroups, setSearchGroups] = useState<any>({
-    jobId: [],
-    departmentId: [],
-    userGroupId: [],
+    end_at: undefined,
+    receive_user_ids: undefined,
+    send_type: undefined,
+    send_user_ids: undefined,
+    start_at: undefined,
+    type: undefined,
   })
-  const [listData, setListData] = useState<any>(undefined)
-  const [editData, setEditData] = useState<any>({})
-  const [plainOptions, setPlainOptions] = useState<any>([])
-  const [plainOptions2, setPlainOptions2] = useState<any>([])
-  const [orderKey, setOrderKey] = useState<any>()
-  const [order, setOrder] = useState<any>(3)
+
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
-  const [isSpinning, setIsSpinning] = useState(false)
-  const [isStaffPersonalVisible, setIsStaffPersonalVisible] =
-    useState<boolean>(false)
-  const [batchEditVisible, setBatchEditVisible] = useState(false)
+
   const [isVisibleFields, setIsVisibleFields] = useState(false)
-  const [isVisibleFieldsA, setIsVisibleFieldsA] = useState(false)
-  const [isVisibleFieldsB, setIsVisibleFieldsB] = useState(false)
-  const [isVisibleFieldsC, setIsVisibleFieldsC] = useState(false)
-  const [titleList, setTitleList] = useState<CheckboxValueType[]>([
-    'nickname',
-    'name',
-    'gender',
-    'email',
-    'phone',
-    'department_name',
-    'position_name',
-    'project_num',
-    'role_name',
-    'status',
-    'handover_status',
-  ])
-  const [titleList2, setTitleList2] = useState<CheckboxValueType[]>([
-    'created_at',
-  ])
-  const [allTitleList, setAllTitleList] = useState<any[]>([])
+
   const [hasMore, setHasMore] = useState(true)
   const [visible, setVisible] = useState(false)
-  const hasCheck = getIsPermission(userInfo?.company_permissions, 'b/user/info')
-  const navigate = useNavigate()
+
   const isHaveCheck = userInfo?.company_permissions?.filter(
     (i: any) => i.identity === 'b/companyuser/info',
   )?.length
 
-  const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([])
-  const [roleOptions, setRoleOptions] = useState<number[]>([])
-  const [list, setList] = useState(Array.from({ length: 20 }))
+  const [list, setList] = useState<any>([])
+  function convertArrayAndEmptyString(obj: any) {
+    for (let key in obj) {
+      if (Array.isArray(obj[key])) {
+        // 将数组转换为字符串
+        obj[key] = obj[key].join(',')
+      }
+      if (obj[key] === '') {
+        // 将空字符串转换为 undefined
+        obj[key] = undefined
+      }
+    }
+  }
   const getStaffListData = async () => {
-    setIsSpinning(true)
-    const res = await getStaffList({
-      jobId: searchGroups.jobId,
-      departmentId: searchGroups.departmentId,
-      userGroupId: searchGroups.userGroupId,
-      handover_status: searchGroups?.handover_status,
-      status: searchGroups?.status,
+    const searchGroups1 = JSON.parse(JSON.stringify(searchGroups))
+    convertArrayAndEmptyString(searchGroups1)
+    console.log(searchGroups1)
+
+    const data = await getMyAllSysNotice({
+      ...searchGroups1,
       keyword,
-      order,
-      orderkey: orderKey,
       page,
       pagesize,
     })
+    if (page === 1) {
+      setList(data.list)
+      if (data.pager.total <= 10) {
+        setHasMore(false)
+      } else {
+        setHasMore(true)
+      }
+      return
+    }
 
-    setListData(res.list)
-    setIsSpinning(false)
-    setTotal(res.pager.total)
-    setPlainOptions(res.plainOptions)
-    await setPlainOptions2(res.plainOptions2)
-    setLoadingState(true)
-    dispatch(setIsRefresh(false))
+    if (list.length < data.pager.total) {
+      setList((e: any) => e.concat(data.list))
+    }
+    if (list.length === data.pager.total) {
+      setHasMore(false)
+    }
+    console.log(list.length, data.pager.total, '数量')
   }
 
   const init = () => {
@@ -180,168 +163,25 @@ const StaffManagement = () => {
     }
   }, [isRefresh])
 
-  const controlStaffPersonalVisible = (e: any) => {
-    setEditData(e)
-    setIsStaffPersonalVisible(true)
-  }
-  const controlStaffPersonalVisibleA = (e: any) => {
-    setEditData(e)
-    if (e.project_num === 0) {
-      setIsVisibleFieldsB(true)
-      return
-    }
-
-    setIsVisibleFieldsA(true)
-  }
-  const controlStaffPersonalVisibleC = (e: any) => {
-    setEditData(e)
-    setIsVisibleFieldsC(true)
-  }
-  const closeStaffPersonal = async (e: any) => {
-    const res = await updateStaff(e)
-
-    if (res.code === 0) {
-      getMessage({ msg: res.message, type: 'success' })
-      getStaffListData()
-      setIsStaffPersonalVisible(false)
-    }
-  }
-
-  const onConfirmBatchEdit = async (roleId: any) => {
-    try {
-      await batchUpdateStaff({
-        roleId,
-        userIds: selectedRowKeys.map(i => Number(i)),
-      })
-      getMessage({ msg: t('report.list.success'), type: 'success' })
-      setSelectedRowKeys([])
-      getStaffListData()
-      setBatchEditVisible(false)
-    } catch (error) {
-      //
-    }
-  }
-
-  const updateOrderkey = (key: any, orderVal: any) => {
-    setOrderKey(key)
-    setOrder(orderVal)
-  }
-
-  const menuTable = (record: any) => {
-    const items = [
-      {
-        key: '1',
-        label: (
-          <div onClick={() => controlStaffPersonalVisible(record)}>
-            {t('staff.setPermission')}
-          </div>
-        ),
-      },
-      {
-        key: '12',
-        label: (
-          <div onClick={() => controlStaffPersonalVisibleA(record)}>
-            {t('quitAndHandover')}
-          </div>
-        ),
-      },
-      {
-        key: '123',
-        label: (
-          <div onClick={() => controlStaffPersonalVisibleC(record)}>
-            {t('the_handover_state_is_restored')}
-          </div>
-        ),
-      },
-    ]
-    let newArr: any = []
-    if (record.handover_status === 1) {
-      newArr = items.slice(0, 2)
-    } else if (record.handover_status === 2) {
-      newArr = items.slice(2, 3)
-    }
-    return <Menu items={newArr} />
-  }
-
-  const onToDetail = (row: any) => {
-    if (row.id === userInfo.id) {
-      navigate('/ProjectManagement/Mine/Profile')
-    } else {
-      const params = encryptPhp(
-        JSON.stringify({ id: '', isMember: false, userId: row.id }),
-      )
-      navigate(`/MemberInfo/Profile?data=${params}`)
-    }
-  }
-  const onOperationCheckbox = (keys: number[]) => {
-    const redClassElements = document.getElementsByClassName(
-      'ant-checkbox-wrapper',
-    )
-    for (const i of redClassElements) {
-      if (i.getElementsByClassName('tagLength')[0]) {
-        i.removeChild(i.getElementsByClassName('tagLength')[0])
-      }
-      if (keys?.length > 0) {
-        const div2 = document.createElement('div')
-        div2.innerText = String(keys.length)
-        div2.className = 'tagLength'
-        i.appendChild(div2)
-      }
-    }
-  }
-  const onSelectChange = (keys: number[]) => {
-    setSelectedRowKeys(keys)
-    onOperationCheckbox(keys)
-  }
-
-  const showModal = () => {
-    setIsModalVisible(true)
-    setIsVisibleFields(false)
-  }
-  const close2 = () => {
-    setIsModalVisible(false)
-  }
-
-  const getCheckList = (
-    list: CheckboxValueType[],
-    list2: CheckboxValueType[],
-    list3: CheckboxValueType[],
-    all: CheckboxValueType[],
-  ) => {
-    setTitleList(list)
-    setTitleList2(list2)
-    setAllTitleList(all)
-  }
   const onSearch = async (e: any) => {
-    setSearchGroups({
-      jobId: e.position,
-      departmentId: e.department,
-      userGroupId: e.userGroup,
-      handover_status: e?.handover_status,
-      status: e?.status,
-    })
-  }
-  const onChangePage = (newPage: any, size: any) => {
-    setPagesize(size)
-    setPage(newPage)
+    console.log(e)
+    setPage(1)
+    setSearchGroups(e)
   }
 
   const onPressEnter = (value: any) => {
+    setHasMore(true)
     setPage(1)
     setKeyword(value)
   }
-  useEffect(() => {
-    message.success({
-      icon: <span></span>,
-      duration: 0,
-      content: <TextChange />,
-      className: 'custom-class',
-    })
-  }, [])
-  useEffect(() => {
-    setAllTitleList([...titleList, ...titleList2])
-    init()
-  }, [keyword, searchGroups, orderKey, order, page, pagesize])
+  // useEffect(() => {
+  //   message.success({
+  //     icon: <span></span>,
+  //     duration: 0,
+  //     content: <TextChange />,
+  //     className: 'custom-class',
+  //   })
+  // }, [])
 
   const refresh = debounce(
     async () => {
@@ -362,46 +202,26 @@ const StaffManagement = () => {
     setIsShow(!isShow)
   }
 
-  if (!loadingState) {
-    return <Loading />
-  }
-
-  const onConfirm = async () => {
-    const res1 = await confirmHand({ id: editData.id })
-
-    if (res1.code === 0) {
-      getMessage({ msg: t('succeed'), type: 'success' })
-      setIsVisibleFieldsB(false)
-      getStaffListData()
-    }
-  }
-  const onConfirm2 = async () => {
-    const res = await restHand(editData.id)
-    if (res.code === 0) {
-      getMessage({ msg: t('succeed'), type: 'success' })
-      setIsVisibleFieldsC(false)
-      getStaffListData()
-    }
-  }
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-  }
   const fetchMoreData = () => {
-    if (list.length >= 500) {
-      setHasMore(false)
-      return
-    }
-    setTimeout(() => {
-      setList(list.concat(Array.from({ length: 20 })))
-    }, 3000)
+    setPage(i => i + 1)
   }
   const onDel = (id: any) => {
     open({
       title: '删除确认',
       text: '确认删除该消息？',
-      onConfirm() {
-        return Promise.resolve()
+      async onConfirm() {
+        const res = await delSysNotice(id)
+        console.log(res.code)
+
+        if (res.code === 0) {
+          setHasMore(true)
+          setPage(1)
+          getMessage({
+            msg: t('common.editSuccess') as string,
+            type: 'success',
+          })
+          return Promise.resolve()
+        }
       },
     })
     console.log(id)
@@ -410,22 +230,41 @@ const StaffManagement = () => {
     open({
       title: '撤回确认',
       text: '确认撤回该消息？',
-      onConfirm() {
+      async onConfirm() {
         console.log('确认')
-
-        return Promise.resolve()
+        const res = await recallSysNotice(id)
+        console.log(res.code)
+        if (res.code === 0) {
+          setHasMore(true)
+          setPage(1)
+          getMessage({
+            msg: t('common.editSuccess') as string,
+            type: 'success',
+          })
+          return Promise.resolve()
+        }
       },
     })
     console.log(id)
   }
 
-  const onShowDetail = () => {
+  const onShowDetail = (values: any) => {
+    console.log(values)
+    setDetailInner(values)
     setDetailVisible(true)
   }
   const onHandleOk = (datas: any) => {
     console.log(datas)
   }
+  useEffect(() => {
+    init()
+  }, [keyword, searchGroups, page])
+  console.log(list, '现在的列表')
 
+  const showNumber = (id: any) => {
+    setShowId(id)
+    setMemberVisible(true)
+  }
   return (
     <PermissionWrap
       auth="/AdminManagement/StaffManagement"
@@ -440,8 +279,13 @@ const StaffManagement = () => {
         isVisible={visible}
       />
 
-      <MemberModal isVisible={memberVisible} />
+      <MemberModal
+        onCloseMember={() => setMemberVisible(false)}
+        showId={showId}
+        isVisible={memberVisible}
+      />
       <NoteDetailDrawer
+        detailInner={detailInner}
         onCancel={() => setDetailVisible(false)}
         isVisible={detailVisible}
       />
@@ -514,10 +358,10 @@ const StaffManagement = () => {
       <div>
         <InfiniteScroll
           dataLength={list.length}
-          next={fetchMoreData}
+          next={() => fetchMoreData()}
           style={{
             overflow: 'auto',
-            height: 'calc(100vh - 220px)',
+            height: 'calc(100vh - 320px)',
             padding: '0px 24px',
 
             display: 'flex',
@@ -528,13 +372,18 @@ const StaffManagement = () => {
           height={document.body.clientHeight - 220}
           loader={<Skeleton avatar paragraph={{ rows: 2 }} active />}
           scrollableTarget="scrollableDiv"
+          endMessage={
+            list.length < 1 ? <NoData /> : <Divider plain>{t('nm')} </Divider>
+          }
         >
           {list.map((i: any) => (
             <NoteCard
+              onShowNumber={showNumber}
+              values={i}
               onDel={onDel}
               onShowDetail={onShowDetail}
               onRevocation={onRevocation}
-              key={i}
+              key={i.id}
             />
           ))}
         </InfiniteScroll>

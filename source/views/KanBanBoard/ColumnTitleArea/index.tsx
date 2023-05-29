@@ -25,9 +25,9 @@ const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {
   return (
     <ColumnTitleAreaBox>
       {kanbanConfig?.columns?.map(item => {
-        const num = kanbanInfoByGroup.reduce((res, group) => {
+        const num = kanbanInfoByGroup?.reduce?.((res, group) => {
           const len =
-            group.columns.find(column => column.id === item.id)?.stories
+            group.columns?.find(column => column.id === item.id)?.stories
               .length ?? 0
           return len + res
         }, 0)

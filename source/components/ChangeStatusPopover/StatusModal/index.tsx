@@ -14,11 +14,14 @@ import { useTranslation } from 'react-i18next'
 import { FormWrap, MyDiv } from '../style'
 import Excessive from './Excessive'
 import WanderVerify from './Verify'
+import { getProjectMember } from '@/services/project'
 
 interface StatusModalProps {
   isVisible: boolean
   checkStatusItem: any
   onClose(): void
+  record: any
+  onChangeStatusConfirm(value: any): void
 }
 
 const LabelComponent = (props: any) => {
@@ -167,6 +170,8 @@ const NumericInput = (props: any) => {
 const StatusModal = (props: StatusModalProps) => {
   const [t] = useTranslation()
   const [configData, setConfigData] = useState<any>({})
+  const [reviewerValue, setReviewerValue] = useState('')
+  const [optionsList, setOptionsList] = useState([])
   const [active, setActive] = useState()
   const [form] = Form.useForm()
   const info = useGetloginInfo()
@@ -268,14 +273,29 @@ const StatusModal = (props: StatusModalProps) => {
     })
   }
 
+  // 下拉选择审核人员
+  const handleChange = (value: string) => {
+    setReviewerValue(value)
+  }
+
+  // 获取项目成员列表
+  const getProjectMemberData = async () => {
+    const res2 = await getProjectMember({
+      projectId: props.checkStatusItem.projectId,
+      all: 1,
+    })
+    setOptionsList(res2)
+  }
+
   // 获取状态流转配置
   const getConfig = async () => {
+    getProjectMemberData()
     setActive(props.checkStatusItem.id)
     const res = await getShapeRight({
       id: props.checkStatusItem.projectId,
       nId: props.checkStatusItem.infoId,
-      fromId: props.checkStatusItem.id,
-      toId: props.checkStatusItem.id ?? props.checkStatusItem.statusId,
+      fromId: props.checkStatusItem.fromId,
+      toId: props.checkStatusItem.id,
     })
     setConfigData(res)
     form.setFieldsValue(setValue(res))
@@ -288,9 +308,29 @@ const StatusModal = (props: StatusModalProps) => {
     setConfigData({})
   }
 
+  const confirm = async () => {
+    const res2 = await form.validateFields()
+    const res = JSON.parse(JSON.stringify(res2))
+    for (const key in res) {
+      if (typeof res[key] === 'undefined') {
+        res[key] = null
+      }
+    }
+    await form.validateFields()
+    const params = {
+      projectId: props.record.project_id,
+      nId: props.record.id,
+      toId: props.checkStatusItem.id,
+      fields: res,
+      verifyId: reviewerValue,
+    }
+    await props.onChangeStatusConfirm(params)
+    onClose()
+  }
+
   // 提交表单
-  const onConfirm = () => {
-    //
+  const onConfirm = async () => {
+    await confirm()
   }
 
   useEffect(() => {
@@ -564,14 +604,14 @@ const StatusModal = (props: StatusModalProps) => {
                 ]}
               >
                 <CustomSelect
-                  // onChange={handleChange}
+                  onChange={handleChange}
                   placeholder={t('common.pleaseSelect')}
                   allowClear
                   getPopupContainer={(node: any) => node}
-                  // options={optionsList?.map((item: any) => ({
-                  //   label: item.name,
-                  //   value: item.id,
-                  // }))}
+                  options={optionsList?.map((item: any) => ({
+                    label: item.name,
+                    value: item.id,
+                  }))}
                   optionFilterProp="label"
                 />
               </Form.Item>

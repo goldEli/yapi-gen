@@ -144,6 +144,7 @@
       "@typescript-eslint/member-delimiter-style": 0,
       "react/jsx-no-literals": 0,
       "react-hooks/exhaustive-deps": 0,
+      "array-callback-return": 0,
       "max-lines": [
         2,
         1000

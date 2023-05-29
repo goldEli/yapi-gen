@@ -212,7 +212,6 @@ const slice = createSlice({
       state.sprintCommentList = action.payload
     })
     builder.addCase(getProjectRoleList.fulfilled, (state, action) => {
-      console.log('action', action)
       state.projectRoleList = action.payload
     })
     builder.addCase(getRightSprintList.pending, state => {

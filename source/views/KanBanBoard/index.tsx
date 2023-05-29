@@ -9,10 +9,17 @@ import guide_1 from './img/guide_1.png'
 import guide_2 from './img/guide_2.png'
 import guide_3 from './img/guide_3.png'
 import Board from './Borad'
-import { getKanbanConfigList } from '@store/kanBan/kanBan.thunk'
-import { useSearchParams } from 'react-router-dom'
+import {
+  getKanbanByGroup,
+  getKanbanConfigList,
+  getStoryViewList,
+  onFilter,
+} from '@store/kanBan/kanBan.thunk'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import useProjectId from './hooks/useProjectId'
+import { encryptPhp } from '@/tools/cryptoPhp'
+import { jumpToKanbanConfig } from './utils'
 
 interface IProps {}
 const SprintProjectKanBanBox = styled.div`
@@ -37,9 +44,20 @@ const SprintProjectKanBan: React.FC<IProps> = props => {
   const dispatch = useDispatch()
   const { guideVisible } = useSelector(store => store.sprintKanBan)
   const { projectId } = useProjectId()
+  const navigate = useNavigate()
 
   useEffect(() => {
-    dispatch(getKanbanConfigList({ project_id: projectId }))
+    async function run() {
+      const res = await dispatch(getKanbanConfigList({ project_id: projectId }))
+      const { sortByRowAndStatusOptions } = res.payload as any
+      if (!sortByRowAndStatusOptions?.length) {
+        jumpToKanbanConfig(navigate)
+        return
+      }
+      await dispatch(getStoryViewList())
+      dispatch(getKanbanByGroup())
+    }
+    run()
   }, [projectId])
 
   const inform = [
@@ -64,7 +82,13 @@ const SprintProjectKanBan: React.FC<IProps> = props => {
   ]
   return (
     <SprintProjectKanBanBox>
-      <ProjectCommonOperation onInputSearch={val => {}} />
+      <ProjectCommonOperation
+        onInputSearch={val => {
+          // dispatch(onFilter({
+          //   searchValue: val
+          // }))
+        }}
+      />
       <ToolBarBox>
         <Operation
           pid={1}
@@ -73,7 +97,9 @@ const SprintProjectKanBan: React.FC<IProps> = props => {
           onChangeIsShowLeft={() => {}}
           onChangeVisible={(e: any) => {}}
           onRefresh={() => {}}
-          onSearch={() => {}}
+          onSearch={data => {
+            dispatch(onFilter(data))
+          }}
           settingState={true}
           onChangeSetting={() => {}}
           isShowLeft={false}

@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 // 公司员工筛选组件
 
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -17,6 +18,8 @@ import {
 } from '@/services/staff'
 import CustomSelect from '@/components/CustomSelect'
 import { useSelector } from '@store/index'
+import RangePicker from '@/components/RangePicker'
+import { getAffiliationUser } from '@/services/project'
 
 const Wrap = styled.div({
   display: 'flex',
@@ -59,14 +62,10 @@ const SearchList = (props: Props) => {
     props.onSearch(value)
   }
   const init = async () => {
-    const res = await getDepartmentSelectList()
+    const res = await getAffiliationUser(0)
+    console.log(res)
 
-    setDepartmentOptions(res.data)
-
-    const res2 = await getPositionSelectList()
-    setPositionOptions(res2.data)
-    const res3 = await getRoleList()
-    setRoleOptions(res3.data)
+    setDepartmentOptions(res)
   }
 
   useEffect(() => {
@@ -78,27 +77,50 @@ const SearchList = (props: Props) => {
       init()
     }
   }, [isRefresh])
-
+  const onChangePicker = async (_values: any) => {
+    form.setFieldsValue({
+      times: _values,
+    })
+    const value = await form.validateFields()
+    const obj = {
+      ...value,
+      start_at: value.times
+        ? value.times[0].format('YYYY-MM-DD HH:mm:ss')
+        : undefined,
+      end_at: value.times
+        ? value.times[1].format('YYYY-MM-DD HH:mm:ss')
+        : undefined,
+      times: undefined,
+    }
+    props.onSearch(obj)
+  }
   const confirm = async () => {
     const value = await form.validateFields()
-
-    props.onSearch(value)
+    const obj = {
+      ...value,
+      start_at: value.times
+        ? value.times[0].format('YYYY-MM-DD HH:mm:ss')
+        : undefined,
+      end_at: value.times
+        ? value.times[1].format('YYYY-MM-DD HH:mm:ss')
+        : undefined,
+      times: undefined,
+    }
+    props.onSearch(obj)
   }
   return (
     <SearchLine style={{ padding: '0 0 0 24px' }}>
       <Wrap hidden={props.showForm}>
         <FormWrap form={form}>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '14px' }}>
-              {t('common.department')}
-            </span>
-            <Form.Item name="department">
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>发送人</span>
+            <Form.Item name="send_user_ids">
               <SelectWrap
                 showArrow
                 onChange={confirm}
                 mode="multiple"
                 style={{ width: '100%' }}
-                placeholder={t('common.all')}
+                placeholder={t('common.pleaseSelect')}
                 showSearch
                 optionFilterProp="label"
                 allowClear
@@ -110,20 +132,18 @@ const SearchList = (props: Props) => {
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '14px' }}>
-              {t('common.job')}
-            </span>
-            <Form.Item name="position">
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>接收人</span>
+            <Form.Item name="receive_user_ids">
               <SelectWrap
                 onChange={confirm}
                 mode="multiple"
                 style={{ width: '100%' }}
-                placeholder={t('common.all')}
+                placeholder={t('common.pleaseSelect')}
                 showSearch
                 optionFilterProp="label"
                 showArrow
                 allowClear
-                options={positionOptions.map((item: any) => ({
+                options={departmentOptions.map((item: any) => ({
                   label: item.name,
                   value: item.id,
                 }))}
@@ -132,78 +152,64 @@ const SearchList = (props: Props) => {
           </SelectWrapBedeck>
           <SelectWrapBedeck>
             <span style={{ margin: '0 16px', fontSize: '14px' }}>
-              {t('common.permissionGroup')}
+              {t('setting.operationTime')}
             </span>
-            <Form.Item name="userGroup">
-              <SelectWrap
-                onChange={confirm}
-                mode="multiple"
-                style={{ width: '100%' }}
-                placeholder={t('common.all')}
-                showSearch
-                optionFilterProp="label"
-                showArrow
-                allowClear
-                options={roleOptions.map((item: any) => ({
-                  label: item.content_txt,
-                  value: item.id,
-                }))}
+            <Form.Item name="times" noStyle>
+              <RangePicker
+                isShowQuick
+                dateValue={form.getFieldValue('times')}
+                onChange={(_values: any) => onChangePicker(_values)}
               />
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '14px' }}>
-              {t('common.status')}
-            </span>
-            <Form.Item name="status">
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>通知类型</span>
+            <Form.Item name="type">
               <SelectWrap
-                mode="multiple"
                 onChange={confirm}
                 style={{ width: '100%' }}
-                placeholder={t('common.all')}
+                placeholder={t('common.pleaseSelect')}
                 showSearch
                 optionFilterProp="label"
                 showArrow
                 allowClear
                 options={[
                   {
-                    label: t('common.job1'),
+                    label: '顶部',
                     value: 1,
                   },
                   {
-                    label: t('common.job2'),
+                    label: '窗口',
                     value: 2,
-                  },
-                  {
-                    label: t('common.del'),
-                    value: 3,
                   },
                 ]}
               />
             </Form.Item>
           </SelectWrapBedeck>
           <SelectWrapBedeck>
-            <span style={{ margin: '0 16px', fontSize: '14px' }}>
-              {t('handover_status')}
-            </span>
-            <Form.Item name="handover_status">
+            <span style={{ margin: '0 16px', fontSize: '14px' }}>发送类型</span>
+            <Form.Item name="send_type">
               <SelectWrap
                 mode="multiple"
                 onChange={confirm}
                 style={{ width: '100%' }}
-                placeholder={t('common.all')}
+                placeholder={t('common.pleaseSelect')}
                 showSearch
                 optionFilterProp="label"
                 showArrow
                 allowClear
                 options={[
                   {
-                    label: t('normal'),
+                    label: '草稿',
                     value: 1,
                   },
                   {
-                    label: t('handed_over'),
+                    label: '已撤回',
                     value: 2,
+                  },
+                  {
+                    label: '已发送',
+                    value: 3,
                   },
                 ]}
               />

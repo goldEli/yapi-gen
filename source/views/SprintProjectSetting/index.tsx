@@ -106,7 +106,6 @@ const Setting = () => {
     ],
   ])
   useEffect(() => {
-    console.log('activeTabs========', activeTabs)
     setSearchValue('')
   }, [activeTabs])
   useEffect(() => {

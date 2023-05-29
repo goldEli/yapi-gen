@@ -388,8 +388,8 @@ const DemandDetailDrawer = () => {
               <ChangeStatusPopover
                 isCanOperation={isCanEdit && !drawerInfo.isExamine}
                 projectId={drawerInfo.projectId}
-                // record={drawerInfo}
-                // onChangeStatus={onChangeStatus}
+                record={drawerInfo}
+                onChangeStatus={onChangeStatus}
               >
                 <StateTag
                   name={drawerInfo?.status?.status?.content}
@@ -511,7 +511,7 @@ const DemandDetailDrawer = () => {
                     {i.key === 'detailInfo' && (
                       <DetailDemand
                         detail={drawerInfo}
-                        onUpdate={getDemandDetail}
+                        onUpdate={() => getDemandDetail('', demandIds)}
                       />
                     )}
                     {i.key === 'detailDemands' && showState[i.key].isOpen && (
@@ -524,7 +524,7 @@ const DemandDetailDrawer = () => {
                       <BasicDemand
                         detail={drawerInfo}
                         isOpen={showState[i.key].isOpen}
-                        onUpdate={getDemandDetail}
+                        onUpdate={() => getDemandDetail('', demandIds)}
                       />
                     )}
                     {i.key === 'demandComment' && (

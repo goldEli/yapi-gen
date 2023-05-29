@@ -28,6 +28,7 @@ import DemandProgress from '../DemandProgress'
 import { getCustomNormalValue } from '@/tools'
 import ChangeSeverityPopover from '../ChangeSeverityPopover'
 import MultipleAvatar from '../MultipleAvatar'
+import CommonIconFont from '../CommonIconFont'
 
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
   {
@@ -114,9 +115,11 @@ export const useDynamicColumns = (state: any) => {
               className="canClickDetail"
               onClick={() => state.onClickItem(record)}
               isClose={record.status?.is_end === 1}
+              style={{ marginRight: 16 }}
             >
               {record.storyPrefixKey}
             </ClickWrap>
+            {record.isExamine && <CommonIconFont type="review" size={40} />}
           </div>
         )
       },
@@ -188,8 +191,8 @@ export const useDynamicColumns = (state: any) => {
           <ChangeStatusPopover
             isCanOperation={isCanEdit && !record.isExamine}
             projectId={state.projectId}
-            // record={record}
-            // onChangeStatus={item => state.onChangeStatus(item, record)}
+            record={record}
+            onChangeStatus={item => state.onChangeStatus(item, record)}
           >
             <StateTag
               onClick={record.isExamine ? onExamine : void 0}
@@ -384,14 +387,17 @@ export const useDynamicColumns = (state: any) => {
             item={record}
             onUpdate={() => onUpdate(record)}
           >
-            <MultipleAvatar
-              max={3}
-              list={record.usersInfo?.map((i: any) => ({
-                id: i.id,
-                name: i.name,
-                avatar: i.avatar,
-              }))}
-            />
+            {record?.usersInfo.length && (
+              <MultipleAvatar
+                max={3}
+                list={record?.usersInfo?.map((i: any) => ({
+                  id: i.id,
+                  name: i.name,
+                  avatar: i.avatar,
+                }))}
+              />
+            )}
+            {!record?.usersInfo.length && '--'}
           </TableQuickEdit>
         )
       },

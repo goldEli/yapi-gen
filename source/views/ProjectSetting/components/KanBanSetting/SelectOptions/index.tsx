@@ -18,11 +18,18 @@ import {
   SelectOptionsBox,
 } from './styled'
 
+type ViewItem = {
+  key: string
+  value: string
+  check: boolean
+  isDefault?: boolean
+  operation?: boolean
+}
 interface SelectBoxProps {
   title: string
   onChange(key: string): void
-  options: Model.KanBan.ViewItem[]
-  operation?: Model.KanBan.ViewItem['operation']
+  options: ViewItem[]
+  operation?: boolean
   onCreateView?: () => void
   createViewTitle?: string
   onDel?: (key: string) => void
@@ -45,7 +52,7 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
     return [current?.value, current?.key]
   }, [props.options])
 
-  const renderOption = (item: Model.KanBan.ViewItem) => {
+  const renderOption = (item: ViewItem) => {
     return {
       key: item.key,
       label: (
@@ -61,7 +68,7 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
       ),
     }
   }
-  const renderOptionWidthOperation = (item: Model.KanBan.ViewItem) => {
+  const renderOptionWidthOperation = (item: ViewItem) => {
     return {
       key: item.key,
       label: (
@@ -120,7 +127,6 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
       // const arr = props.options.filter(item => !item.isDefault)
       // const arrWithDefault = props.options.filter(item => item.isDefault)
       const dividerItem = { key: '', label: '', type: 'divider' }
-
       const arrItems = props.options?.map(renderOptionWidthOperation)
       return [
         // ...arrWithDefaultItems,

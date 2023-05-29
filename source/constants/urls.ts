@@ -176,6 +176,9 @@ const urls = {
   getScheduleSearch: '/b/calendar/schedule/search',
 
   getSprintKanBanList: '/b/list',
+  /**
+   * 冲刺项目-事务
+   */
   // 事务列表
   getSprintList: '/b/transaction/getlist',
   // 事务详情
@@ -190,9 +193,11 @@ const urls = {
   addSprintComment: '/b/transaction/comment/save',
   // 删除评论
   deleteSprintComment: '/b/transaction/comment/delete',
-  // 添加事务
+  // 编辑评论 --------------
+  updateSprintComment: '/b/transaction/comment/update',
+  // 添加事务 --------------
   addSprint: '/b/transaction/save',
-  // 更新事务
+  // 更新事务 --------------
   updateSprint: '/b/transaction/update',
   // 删除事务
   deleteSprint: '/b/transaction/delete',
@@ -230,8 +235,6 @@ const urls = {
   batchSprintEdit: '/b/transaction/batch_update',
   // 批量编辑的下拉列表
   getBatchEditSprintConfig: '/b/transaction/batch_fields',
-  // 删除评论下的附件
-  deleteSprintCommentAttach: '/b/transaction/comment/delete_att',
 
   // 修改日程
 
@@ -263,6 +266,10 @@ const urls = {
   workContrastList: '/b/efficiency/member/work_contrast/list',
   // 缺陷分析列表
   memberBugList: '/b/efficiency/member/bug/list',
+  // 进展对比后半截弹窗
+  efficiencyMemberWorkList: '/b/efficiency/member/work_list',
+  // 缺陷分析后半截
+  efficiencyMemberDefectList: 'b/efficiency/member/defect_list',
   // 修改首页配置
   updateHomeSetting: '/b/project/change/defaultHomeMenu',
   /**
@@ -288,6 +295,18 @@ const urls = {
   getLeftSprintList: '/b/sprint/getList',
   // 创建冲刺
   createSprint: '/b/sprint/store',
+
+  /**
+   * 视图管理
+   */
+  // 获取视图列表
+  getStoryViewList: '/b/story/views/list',
+  // 更新视图
+  updateView: '/b/story/views/update',
+  // 新建视图
+  createView: '/b/story/views/create',
+  // 删除视图
+  delView: '/b/story/views/delete',
 }
 export default urls
 

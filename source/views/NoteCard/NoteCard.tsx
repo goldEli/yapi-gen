@@ -4,6 +4,66 @@ import CommonButton from '@/components/CommonButton'
 import CommonIconFont from '@/components/CommonIconFont'
 
 const NoteCard = (props: any) => {
+  const { values } = props
+
+  const senseByte = (num: any) => {
+    let text = ''
+    switch (num) {
+      case 1:
+        text = '系统更新'
+        break
+      case 2:
+        text = '日常通知'
+        break
+      case 3:
+        text = '重要通知'
+        break
+      case 4:
+        text = '活动通知'
+        break
+      case 5:
+        text = '放假通知'
+        break
+
+      default:
+        break
+    }
+    return text
+  }
+  const computeLength = (arr: any) => {
+    if (Array.isArray(arr)) {
+      let totalLength = 0
+
+      arr?.forEach((item: any) => {
+        totalLength += item.user_ids.length
+      })
+      return totalLength
+    }
+    return arr.all
+  }
+
+  const recipientArr = (values: any) => {
+    if (Array.isArray(values)) {
+      return values.map((i: any) => (
+        <div
+          key={i}
+          style={{
+            height: '20px',
+            fontSize: '12px',
+            color: '#646566',
+            lineHeight: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {i.name}（{i.user_ids.length}）
+        </div>
+      ))
+    }
+    return
+  }
   return (
     <div>
       <div
@@ -13,7 +73,11 @@ const NoteCard = (props: any) => {
         }}
       >
         <Wrap1>
-          <ColorBox colors={1}>定时通知</ColorBox>
+          {values.is_draft === 1 && <ColorBox colors={3}>草稿</ColorBox>}
+          {values.is_drew_back === 1 && <ColorBox colors={3}>已撤回</ColorBox>}
+          {values.is_send === 1 && <ColorBox colors={2}>已发送</ColorBox>}
+          {values.send_time ? <ColorBox colors={1}>定时通知</ColorBox> : null}
+
           <div
             style={{
               height: '24px',
@@ -22,7 +86,7 @@ const NoteCard = (props: any) => {
               lineHeight: '24px',
             }}
           >
-            关于XXX通知
+            {values.title}
           </div>
           <div
             style={{
@@ -32,20 +96,30 @@ const NoteCard = (props: any) => {
               lineHeight: '20px',
             }}
           >
-            日常通知
+            {senseByte(values.type)}
           </div>
         </Wrap1>
         <Wrap2>
           <ColorBtn2>
             <CommonIconFont type="display" /> <span>全部已读</span>
           </ColorBtn2>
-          <ColorBtn onClick={() => props.onDel(1)}>
-            <CommonIconFont type="file-text" /> <span>删除</span>
-          </ColorBtn>
-          <ColorBtn onClick={() => props.onRevocation(2)}>
-            <CommonIconFont type="return" /> <span>撤回</span>
-          </ColorBtn>
-          <ColorBtn onClick={() => props.onShowDetail()}>
+          {values.is_draft === 1 && (
+            <ColorBtn onClick={() => props.onDel(values.id)}>
+              <CommonIconFont type="file-text" /> <span>删除</span>
+            </ColorBtn>
+          )}
+          {values.is_drew_back === 1 && (
+            <ColorBtn onClick={() => props.onDel(values.id)}>
+              <CommonIconFont type="file-text" /> <span>删除</span>
+            </ColorBtn>
+          )}
+          {values.is_send === 1 && (
+            <ColorBtn onClick={() => props.onRevocation(values.id)}>
+              <CommonIconFont type="return" /> <span>撤回</span>
+            </ColorBtn>
+          )}
+
+          <ColorBtn onClick={() => props.onShowDetail(values)}>
             <CommonIconFont type="file-text" /> <span>查看详情</span>
           </ColorBtn>
         </Wrap2>
@@ -58,7 +132,7 @@ const NoteCard = (props: any) => {
           lineHeight: '20px',
         }}
       >
-        【张三】将于2023-04-08 17:09:09发送
+        【{values.user.name}】将于{values.send_time}发送
       </div>
 
       <div
@@ -79,10 +153,11 @@ const NoteCard = (props: any) => {
             lineHeight: '22px',
           }}
         >
-          来自李钟硕的系统通知：我们抱歉的通知您，由于XXX的原因，导致XXXX需要延期XXX天
+          {values.content}
         </div>
 
-        {/* <div
+        <div
+          onClick={() => props.onShowNumber(values.id)}
           style={{
             height: '52px',
             borderRadius: '0px 0px 0px 0px',
@@ -91,13 +166,14 @@ const NoteCard = (props: any) => {
             display: 'flex',
             alignItems: 'center',
             gap: '24px',
+            cursor: 'pointer',
           }}
         >
           <div
             style={{
               height: '20px',
               fontSize: '12px',
-              color: '#646566',
+              color: 'var(--neutral-n2)',
               lineHeight: '20px',
               display: 'flex',
               alignItems: 'center',
@@ -106,29 +182,12 @@ const NoteCard = (props: any) => {
               paddingRight: '24px',
             }}
           >
-            <CommonIconFont color="#646566" size={16} type="team-2" />
-            123
+            <CommonIconFont color="var(--neutral-n4)" size={16} type="team" />
+            {computeLength(values.recipient)}
           </div>
-          {Array(3)
-            .fill(null)
-            .map((i: any) => (
-              <div
-                key={i}
-                style={{
-                  height: '20px',
-                  fontSize: '12px',
-                  color: '#646566',
-                  lineHeight: '20px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                }}
-              >
-                开发部（1）
-              </div>
-            ))}
-        </div> */}
-        <div
+          {recipientArr(values.recipient)}
+        </div>
+        {/* <div
           style={{
             height: '52px',
             borderRadius: '0px 0px 0px 0px',
@@ -169,7 +228,7 @@ const NoteCard = (props: any) => {
           >
             2023年4月17日12:00:19
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   )

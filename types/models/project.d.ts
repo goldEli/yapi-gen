@@ -58,4 +58,8 @@ declare namespace Model.Project {
     workType: string
     // id?: number
   }
+  interface CategoryValue {
+    name: string | undefined
+    id?: number | undefined
+  }
 }

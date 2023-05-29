@@ -9,6 +9,8 @@ import CommonButton from '../CommonButton'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
 import { changeFreedVisibleVisible } from '@store/feedback'
+import { sendFeedback } from '@/services/sysNotice'
+import { getMessage } from '../Message'
 const { Option } = Select
 const ModalFooter = styled.div({
   position: 'absolute',
@@ -59,7 +61,22 @@ const SystemFeedback = () => {
   const freedVisible = useSelector(store => store.freed.freedVisible)
   const [t] = useTranslation()
   const [form] = Form.useForm()
-  const onConfirm = () => {}
+
+  const onConfirm = async () => {
+    console.log(1)
+
+    const res = await form.validateFields()
+    const data = await sendFeedback(res)
+    console.log(data)
+    if (data.code === 0) {
+      getMessage({
+        msg: t('common.editSuccess') as string,
+        type: 'success',
+      })
+      form.resetFields()
+      dispatch(changeFreedVisibleVisible(false))
+    }
+  }
   const onValidator = (rule: any, value: any) => {
     if (
       (value === '<p><br></p>' ||
@@ -85,7 +102,7 @@ const SystemFeedback = () => {
         height: '100vh',
         minWidth: '1400px',
       }}
-      onConfirm={onConfirm}
+      onConfirm={() => onConfirm()}
       onClose={() => {
         dispatch(changeFreedVisibleVisible(false))
       }}
@@ -112,15 +129,15 @@ const SystemFeedback = () => {
           <Form form={form} layout="vertical">
             <Form.Item
               label={<LabelTitle>建议类型</LabelTitle>}
-              name="username"
+              name="type"
               rules={[
                 { required: true, message: 'Please input your username!' },
               ]}
             >
               <Select placeholder="我想..." allowClear>
-                <Option value="male">提供改进建议</Option>
-                <Option value="female">提供功能缺陷</Option>
-                <Option value="other">提出其他问题</Option>
+                <Option value={1}>提供改进建议</Option>
+                <Option value={2}>提供功能缺陷</Option>
+                <Option value={9}>提出其他问题</Option>
               </Select>
             </Form.Item>
             <Form.Item
@@ -174,7 +191,9 @@ const SystemFeedback = () => {
                 {t('common.cancel')}
               </CommonButton>
 
-              <CommonButton type="primary">{t('common.confirm')}</CommonButton>
+              <CommonButton onClick={onConfirm} type="primary">
+                {t('common.confirm')}
+              </CommonButton>
             </div>
           </Footer>
         </LessWrap>

@@ -328,7 +328,7 @@ const Operation = (props: Props) => {
           onFilter={getSearchKey}
           onSearch={onFilterSearch}
           list={searchList}
-          basicsList={filterBasicsList}
+          basicsList={filterBasicsList.filter((i: any) => i.is_flaw !== 1)}
           specialList={filterSpecialList}
           customList={filterCustomList}
           isIteration

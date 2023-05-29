@@ -7,8 +7,6 @@ import { createRef, useEffect, useMemo, useState } from 'react'
 import { Button, Menu, Table } from 'antd'
 import styled from '@emotion/styled'
 import { useSearchParams } from 'react-router-dom'
-import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
-import { OptionalFeld } from '@/components/OptionalFeld'
 import { useDynamicColumns } from '@/components/TableColumns/ProjectTableColumn'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
@@ -17,15 +15,15 @@ import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch, useSelector } from '@store/index'
 import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
-import { updateDemandStatus, updatePriority } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
-import { saveSort, saveTitles } from '@store/view'
+import { saveSort } from '@store/view'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { getMessage } from '@/components/Message'
 import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
 import FloatBatch from '@/components/BatchOperation/FloatBatch'
 import { SprintDropdownMenu } from '@/components/TableDropdownMenu/SprintDropdownMenu'
+import { updateSprintPriority, updateSprintStatus } from '@/services/sprint'
 
 const Content = styled.div`
   background: var(--neutral-white-d1);
@@ -116,27 +114,19 @@ const SprintTable = (props: Props) => {
   }
 
   const onChangeState = async (item: any) => {
-    try {
-      await updatePriority({
-        demandId: item.id,
-        priorityId: item.priorityId,
-        projectId,
-      })
-      getMessage({ msg: t('common.prioritySuccess'), type: 'success' })
-      props.onChangeRow?.()
-    } catch (error) {
-      //
-    }
+    await updateSprintPriority({
+      sprintId: item.id,
+      priorityId: item.priorityId,
+      projectId,
+    })
+    getMessage({ msg: t('common.prioritySuccess'), type: 'success' })
+    props.onChangeRow?.()
   }
 
   const onChangeStatus = async (value: any) => {
-    try {
-      await updateDemandStatus(value)
-      getMessage({ msg: t('common.statusSuccess'), type: 'success' })
-      props.onChangeRow?.()
-    } catch (error) {
-      //
-    }
+    await updateSprintStatus(value)
+    getMessage({ msg: t('common.statusSuccess'), type: 'success' })
+    props.onChangeRow?.()
   }
 
   const updateOrderkey = (key: any, val: any) => {
@@ -379,6 +369,7 @@ const SprintTable = (props: Props) => {
           selectRows={selectedRowKeys}
           onUpdate={props.onUpdate}
           onRef={batchDom}
+          type={3}
         />
       )}
 

@@ -16,8 +16,8 @@ const name = 'KanbanConfig'
 export const onChangeViewList =
   (id: Model.KanbanConfig.ConfigListItem['id']) =>
   async (dispatch: AppDispatch) => {
+    await dispatch(saveKanbanConfig())
     dispatch(setViewList(id))
-    dispatch(saveKanbanConfig())
     const checked = store
       .getState()
       .KanbanConfig.viewList?.find(item => item.id === id)
@@ -61,6 +61,11 @@ export const getKanbanConfig = createAsyncThunk(
 export const updateKanbanConfig =
   (params: API.KanbanConfig.UpdateKanbanConfig.Params) =>
   async (dispatch: AppDispatch) => {
+    const { columnList } = store.getState().KanbanConfig
+    const p: API.KanbanConfig.UpdateKanbanConfig.Params = {
+      ...params,
+      columns: columnList,
+    }
     const res = await services.kanbanConfig.updateKanbanConfig(params)
     getMessage({ type: 'success', msg: '保存成功！' })
     dispatch(
@@ -121,6 +126,7 @@ export const getKanbanConfigList = createAsyncThunk(
         }
       }
     })
+    // 从缓存中取出
 
     // 更新相关数据
     const checkedViewListItem = ret.find(item => item.check)
@@ -174,15 +180,16 @@ export const closeSaveAsViewModel = () => async (dispatch: AppDispatch) => {
 export const onSaveAsViewModel =
   (data: API.KanbanConfig.UpdateKanbanConfig.Params) =>
   async (dispatch: AppDispatch) => {
-    // TODO
     if (!data.name) {
       return
     }
+    let createId = 0
     if (!data.id) {
       const res = await services.kanbanConfig.createKanbanConfig({
         name: data.name,
         project_id: data.project_id,
       })
+      createId = res.data.id
     }
     if (!!data.id) {
       const res = await services.kanbanConfig.updateKanbanConfig({
@@ -190,14 +197,16 @@ export const onSaveAsViewModel =
         name: data.name,
         project_id: data.project_id,
       })
+      createId = res.data.id
     }
     getMessage({ msg: '保存成功!', type: 'success' })
     dispatch(closeSaveAsViewModel())
-    dispatch(
+    await dispatch(
       getKanbanConfigList({
         project_id: data.project_id,
       }),
     )
+    dispatch(onChangeViewList(createId))
   }
 
 export const setDefaultKanbanConfig =

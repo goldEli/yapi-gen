@@ -93,10 +93,11 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   const [categoryItem, setCategoryItem] = useState(paramsData?.categoryItem)
   const [affairType, setAffairType] = useState<Model.Project.CategoryList[]>([])
   const [cacheData, setCacheData] = useState<Model.Project.CategoryList[]>()
-  const [workType, setWorkType] = useState('')
   const dragCategoryList = useRef<Model.Project.Category[]>()
+  const [workType, setWorkType] = useState('')
   const dragCategoryIds = useRef<number[]>()
   const { getTypeCategory } = useCategory()
+
   const tabs = [
     {
       label: t('start_using'),
@@ -182,49 +183,53 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
   const onGoBack = () => {
     props.onClick()
   }
-  const arrayFlat = (array: Model.Project.CategoryList[], ids: any) => {
-    console.log('arry', array, ids)
-    let data = [...ids]
-    let newData: Model.Project.Category[] = []
-    let newIds: number[] = []
+  const arrayFlat = (
+    array: Model.Project.CategoryList[],
+    prevIndex: number,
+    nextIndex: number,
+    workType: any[],
+  ) => {
+    if (!workType.length) {
+      return
+    }
+    const newData: Model.Project.Category[] = []
     array.forEach(item => {
       item.children.forEach(item => {
         newData.push(item)
       })
     })
-    // debugger
+    const otherCategoryData = newData.filter(
+      item => !workType.includes(item.work_type),
+    )
+    const CategoryData = newData.filter(item =>
+      workType.includes(item.work_type),
+    )
     console.log(dragCategoryList.current)
-    if (dragCategoryList.current) {
-      newData = [...dragCategoryList.current]
-      data = newData.filter(item => data.includes(item.id)).map(item => item.id)
-      console.log(data)
-    }
-    const index = newData.findIndex(item => data.includes(item.id))
-    const currentItem = newData.find(item => data.includes(item.id))
-    if (!currentItem) {
-      return
-    }
-    newData[index] = newData[index + 1]
-    newData[index + 1] = currentItem
-    dragCategoryList.current = newData
-    // dragCategoryIds.current = data
-    const list = getTypeCategory(newData, 'work_type')
+
+    const currentItem = CategoryData[prevIndex]
+    CategoryData[prevIndex] = CategoryData[nextIndex]
+    CategoryData[nextIndex] = currentItem
+
+    const list = getTypeCategory(
+      [...CategoryData, ...otherCategoryData],
+      'work_type',
+    )
     if (!list) {
       return
     }
     setAffairType(list)
-    if (!dragCategoryList.current) {
-      return
-    }
-
-    console.log(newData)
+    setCacheData(list)
   }
-  const onMove = async (data: Model.Project.Category[]) => {
-    const ids = data.map(item => item.id)
+  const onMove = async (
+    data: Model.Project.Category[],
+    prevIndex: number,
+    nextIndex: number,
+  ) => {
     if (!cacheData) {
       return
     }
-    arrayFlat(cacheData, ids)
+    const workType = data.map(item => item.work_type)
+    arrayFlat(cacheData, prevIndex, nextIndex, workType)
     const dataSort = data.map((el: any, index: any) => ({
       id: el.id,
       sort: index,
@@ -374,7 +379,9 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
                       updateNode(child)
                     }}
                     // TODO
-                    onMove={(data: any) => onMove(data)}
+                    onMove={(data: any, prevIndex: number, nextIndex: number) =>
+                      onMove(data, prevIndex, nextIndex)
+                    }
                   ></Dragging>
                 </MenuBox>
               </AffairTypeWrap>

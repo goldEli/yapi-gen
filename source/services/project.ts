@@ -113,12 +113,14 @@ export const getProjectInfo: any = async (params: any) => {
         content: any
         is_default_display: any
         content_txt: any
+        is_flaw: number
       }) => {
         return {
           label: item.title,
           value: item.content,
           is_default_display: item.is_default_display,
           labelTxt: item.content_txt,
+          is_flaw: item.is_flaw,
         }
       },
     )
@@ -133,12 +135,14 @@ export const getProjectInfo: any = async (params: any) => {
         title: any
         content: any
         content_txt: any
+        is_flaw: number
       }) => {
         return {
           label: item.title,
           value: item.content,
           is_default_display: item.is_default_display,
           labelTxt: item.content_txt,
+          is_flaw: item.is_flaw,
         }
       },
     )
@@ -151,6 +155,7 @@ export const getProjectInfo: any = async (params: any) => {
         value: item.content,
         is_default_display: item.is_default_display,
         labelTxt: item.content_txt,
+        is_flaw: item.is_flaw,
       }
     })
 

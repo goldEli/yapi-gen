@@ -166,27 +166,12 @@ const DndKitTable = () => {
       render: (text: any, record: any) => {
         return (
           <ChangeStatusPopover
-          // isCanOperation={isCanEdit && !record.isExamine}
-          // projectId={state.projectId}
-          // record={record}
-          // onChangeStatus={item => state.onChangeStatus(item, record)}
-          >
-            <StateTag
-              // onClick={record.isExamine ? onExamine : void 0}
-              // isShow={isCanEdit || record.isExamine}
-              isShow
-              name={record.status.status.content}
-              state={
-                text?.is_start === 1 && text?.is_end === 2
-                  ? 1
-                  : text?.is_end === 1 && text?.is_start === 2
-                  ? 2
-                  : text?.is_start === 2 && text?.is_end === 2
-                  ? 3
-                  : 0
-              }
-            />
-          </ChangeStatusPopover>
+            children={<div>11111</div>}
+            onChangeStatus={function (value: any): void {
+              throw new Error('Function not implemented.')
+            }}
+            record={record}
+          />
         )
       },
     },
