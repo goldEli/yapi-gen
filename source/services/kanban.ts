@@ -4,7 +4,10 @@ import * as http from '@/tools/http'
 export const delView = async (params: API.Kanban.DelView.Params) => {
   const response = await http.delete<any, API.Kanban.DelView.Result>(
     'delView',
-    params,
+    {
+      use_type: 2,
+      ...params,
+    },
   )
   return response
 }

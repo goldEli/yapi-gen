@@ -11,7 +11,7 @@ import {
 import { getMessage } from '@/components/Message'
 import { getParamsValueByKey } from '@/tools'
 import i18n from 'i18next'
-import { onTapSearchChoose, saveValue, setView } from '@store/view'
+import { onTapSearchChoose, saveValue } from '@store/view'
 import { generatorFilterParams } from './utils'
 
 const name = 'kanBan'
@@ -29,6 +29,7 @@ export const onChangeSortByView =
     const params = generatorFilterParams(current.config)
     dispatch(onTapSearchChoose(params))
   }
+// 删除视图
 export const delView =
   (params: API.Kanban.DelView.Params) => async (dispatch: AppDispatch) => {
     await services.kanban.delView(params)
@@ -110,25 +111,27 @@ export const getStoryViewList = createAsyncThunk(
         isDefault: item.type === 2,
       }
     })
-    if (!sortByView?.length) {
-      ret[0].check = true
-      const config = ret[0]?.config ?? {}
-      const params = generatorFilterParams(config)
+    const checked = sortByView?.find(
+      item => item.check && ret.some(i => i.id === item.id),
+    )
+    if (checked) {
+      const params = generatorFilterParams(checked?.config)
       dispatch(onTapSearchChoose(params))
-      return ret
-    }
-    const checked = sortByView.find(item => item.check)
-    const params = generatorFilterParams(checked?.config)
-    dispatch(onTapSearchChoose(params))
-    return ret.map(item => {
-      if (item.id === checked?.id) {
-        return {
-          ...item,
-          check: true,
+      return ret.map(item => {
+        if (item.id === checked?.id) {
+          return {
+            ...item,
+            check: true,
+          }
         }
-      }
-      return item
-    })
+        return item
+      })
+    }
+    ret[0].check = true
+    const config = ret[0]?.config ?? {}
+    const params = generatorFilterParams(config)
+    dispatch(onTapSearchChoose(params))
+    return ret
   },
 )
 

@@ -22,11 +22,13 @@ import {
 } from '@store/kanBan'
 import SelectOptions from '@/components/SelectOptions'
 import {
+  delView,
   onChangeSortByView,
   onRefreshKanBan,
   openSaveAsViewModel,
 } from '@store/kanBan/kanBan.thunk'
 import SelectOptionsNormal from '@/components/SelectOptionsNormal'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 const OperationWrap = styled.div({
   minHeight: 32,
   minWidth: '800px',
@@ -106,6 +108,7 @@ const Operation = (props: Props) => {
   })
   const stickyWrapDom = useRef<HTMLDivElement>(null)
   const dispatch = useDispatch()
+  const { open, DeleteConfirmModal } = useDeleteConfirmModal()
 
   // const hasImport = getIsPermission(
   //   projectInfo?.projectPermissions,
@@ -316,14 +319,14 @@ const Operation = (props: Props) => {
 
   return (
     <StickyWrap ref={stickyWrapDom}>
-      <DeleteConfirm
+      {/* <DeleteConfirm
         onConfirm={() => setExceedState(false)}
         onChangeVisible={() => setExceedState(false)}
         isVisible={exceedState}
         title={t('p2.toast')}
         text={t('p2.exportDemandText')}
-      />
-
+      /> */}
+      <DeleteConfirmModal />
       <OperationWrap>
         <LeftBox>
           <SelectOptionsNormal
@@ -347,7 +350,20 @@ const Operation = (props: Props) => {
               dispatch(onChangeSortByView(key))
             }}
             operation
-            onDel={key => {}}
+            onDel={key => {
+              open({
+                title: t('confirmationOfDeletion'),
+                text: t('confirmDeletingTheView'),
+                onConfirm: () => {
+                  dispatch(
+                    delView({
+                      id: key,
+                    }),
+                  )
+                  return Promise.resolve()
+                },
+              })
+            }}
             onEdit={key => {
               dispatch(openSaveAsViewModel(key))
             }}
