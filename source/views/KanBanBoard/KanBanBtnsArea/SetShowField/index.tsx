@@ -11,6 +11,7 @@ import { getMessage } from '@/components/Message'
 import IconFont from '@/components/IconFont'
 import CommonIconFont from '@/components/CommonIconFont'
 import { useNavigate } from 'react-router-dom'
+import { jumpToKanbanConfig } from '../../utils'
 
 const ChangeItem = styled.div<{ isActive?: boolean; height?: number }>`
   width: 100%;
@@ -62,7 +63,7 @@ const SetShowField = (props: Props) => {
       label: (
         <div
           onClick={() => {
-            navigate('/SprintProjectManagement/Setting')
+            jumpToKanbanConfig(navigate)
           }}
         >
           配置面板
