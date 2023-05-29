@@ -4,6 +4,7 @@ import Issues from '../Issues'
 import UpDownBtn from '@/components/UpDownBtn'
 import MultipleAvatar from '@/components/MultipleAvatar'
 import ChoosePeople from '@/views/WorkReport/Formwork/ChoosePeople'
+import ChooseMember from '../ChooseMember'
 interface IssuesGroupProps {
   issuesGroup: Model.KanBan.Group
 }
@@ -73,14 +74,15 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
           })}
         max={3}
       />
-      <ChoosePeople
+      <ChooseMember />
+      {/* <ChoosePeople
         margin={0}
         onChange={(...args: any) => {
           console.log({ args })
         }}
         hiddenNumbers
         initValue={[]}
-      />
+      /> */}
       <Text>{text}</Text>
     </GroupTitleArea>
   )
