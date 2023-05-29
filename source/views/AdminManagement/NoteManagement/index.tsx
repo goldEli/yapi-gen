@@ -85,6 +85,7 @@ const StaffManagement = () => {
   const [isShow, setIsShow] = useState<boolean>(false)
 
   const [page, setPage] = useState<number>(1)
+  const [showId, setShowId] = useState('')
   const [pagesize, setPagesize] = useState<number>(10)
   const [total, setTotal] = useState<number>(0)
   const [keyword, setKeyword] = useState<string>()
@@ -257,6 +258,10 @@ const StaffManagement = () => {
   }, [keyword, searchGroups, page])
   console.log(list, '现在的列表')
 
+  const showNumber = (id: any) => {
+    setShowId(id)
+    setMemberVisible(true)
+  }
   return (
     <PermissionWrap
       auth="/AdminManagement/StaffManagement"
@@ -271,7 +276,11 @@ const StaffManagement = () => {
         isVisible={visible}
       />
 
-      <MemberModal isVisible={memberVisible} />
+      <MemberModal
+        onCloseMember={() => setMemberVisible(false)}
+        showId={showId}
+        isVisible={memberVisible}
+      />
       <NoteDetailDrawer
         onCancel={() => setDetailVisible(false)}
         isVisible={detailVisible}
@@ -365,6 +374,7 @@ const StaffManagement = () => {
         >
           {list.map((i: any) => (
             <NoteCard
+              onShowNumber={showNumber}
               values={i}
               onDel={onDel}
               onShowDetail={onShowDetail}

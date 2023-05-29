@@ -19,10 +19,10 @@ import KanBanBtnsArea from '../KanBanBtnsArea'
 import {
   onChangeSortByGroupOptions,
   onChangeSortByRowAndStatusOptions,
-  onChangeSortByView,
 } from '@store/kanBan'
 import SelectOptions from '@/components/SelectOptions'
 import {
+  onChangeSortByView,
   onRefreshKanBan,
   openSaveAsViewModel,
 } from '@store/kanBan/kanBan.thunk'
