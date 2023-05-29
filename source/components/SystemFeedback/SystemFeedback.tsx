@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from '@store/index'
 import { changeFreedVisibleVisible } from '@store/feedback'
 import { sendFeedback } from '@/services/sysNotice'
+import { getMessage } from '../Message'
 const { Option } = Select
 const ModalFooter = styled.div({
   position: 'absolute',
@@ -67,8 +68,14 @@ const SystemFeedback = () => {
     const res = await form.validateFields()
     const data = await sendFeedback(res)
     console.log(data)
-    form.resetFields()
-    dispatch(changeFreedVisibleVisible(false))
+    if (data.code === 0) {
+      getMessage({
+        msg: t('common.editSuccess') as string,
+        type: 'success',
+      })
+      form.resetFields()
+      dispatch(changeFreedVisibleVisible(false))
+    }
   }
   const onValidator = (rule: any, value: any) => {
     if (

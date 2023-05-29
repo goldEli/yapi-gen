@@ -32,8 +32,8 @@ import {
 } from '@/views/WorkReport/Formwork/Addperson'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
-import { Moment } from 'moment'
 import { createSysNotice } from '@/services/sysNotice'
+import moment from 'moment'
 interface Item {
   label: string
   key: string
@@ -265,6 +265,17 @@ const CreateNoteModal = (props: any) => {
   }
   console.log(personData, '数据')
 
+  function disabledDate(current: any) {
+    // 获取当前时间
+
+    // 获取当前时间10分钟后的时间
+    const minTime = moment().add(10, 'minutes')
+    console.log(minTime)
+
+    // 如果当前日期小于或等于当前时间10分钟后的日期，则禁用
+    return current && current <= minTime
+  }
+
   return (
     <CommonModal
       draft
@@ -484,6 +495,7 @@ const CreateNoteModal = (props: any) => {
               }}
             >
               <DatePicker
+                disabledDate={disabledDate}
                 onChange={onChangeTaskTime}
                 showTime
                 style={{

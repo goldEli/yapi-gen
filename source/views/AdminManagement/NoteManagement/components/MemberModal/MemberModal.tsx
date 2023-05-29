@@ -6,6 +6,7 @@ import ResizeTable from '@/components/ResizeTable'
 import { HiddenText } from '@/components/StyleCommon'
 import PaginationBox from '@/components/TablePagination'
 import { getStaffList } from '@/services/staff'
+import { getMyAllSysNoticeNumber } from '@/services/sysNotice'
 import { css } from '@emotion/css'
 import { OmitText } from '@star-yun/ui'
 import React, { useEffect, useState } from 'react'
@@ -16,6 +17,8 @@ const flexCss = css`
 `
 
 const MemberModal = (props: any) => {
+  console.log(props.showId)
+
   const [t] = useTranslation()
   const [isSpinning, setIsSpinning] = useState(false)
   const [listData, setListData] = useState<any>(undefined)
@@ -209,23 +212,28 @@ const MemberModal = (props: any) => {
   ]
   const getStaffListData = async () => {
     setIsSpinning(true)
-    const res = await getStaffList({
+    const res = await getMyAllSysNoticeNumber({
+      id: props.showId,
       page,
       pagesize,
     })
+    console.log(res)
 
     setListData(res.list)
     setIsSpinning(false)
     setTotal(res.pager.total)
   }
   useEffect(() => {
-    getStaffListData()
-  }, [])
+    if (props.isVisible) {
+      getStaffListData()
+    }
+  }, [props.isVisible])
   useEffect(() => {
     getStaffListData()
   }, [page, pagesize])
   return (
     <CommonModal
+      onClose={() => props.onCloseMember()}
       title="查看成员"
       width={832}
       hasFooter={<span></span>}
