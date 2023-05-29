@@ -1,9 +1,16 @@
-import DragMoveContainer from '@/components/DragMoveContainer/DragMoveContainer'
 import { createRef, useEffect, useRef, useState } from 'react'
-import { DetailInfoWrap, InfoItem, InfoWrap, Label, TextWrap } from '../style'
+import {
+  DetailInfoWrap,
+  InfoItem,
+  InfoWrap,
+  Label,
+  SprintDetailDragLine,
+  SprintDetailMouseDom,
+  TextWrap,
+} from '../style'
 import { useTranslation } from 'react-i18next'
 import { Editor, EditorRef } from '@xyfe/uikit'
-import { AddWrap, DragLine, MouseDom } from '@/components/StyleCommon'
+import { AddWrap } from '@/components/StyleCommon'
 import IconFont from '@/components/IconFont'
 import UploadAttach from '@/components/UploadAttach'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
@@ -23,7 +30,7 @@ import { getIdsForAt, getParamsData, removeNull } from '@/tools'
 import { getMessage } from '@/components/Message'
 import { getSprintCommentList, getSprintInfo } from '@store/sprint/sprint.thunk'
 import SprintTag from '@/components/TagComponent/SprintTag'
-import { Anchor, Tabs, TabsProps } from 'antd'
+import { Tabs, TabsProps } from 'antd'
 
 const SprintDetailInfo = () => {
   const [t] = useTranslation()
@@ -40,11 +47,8 @@ const SprintDetailInfo = () => {
   //   当前删除的附件数据
   const [tagList, setTagList] = useState<any>([])
   const [isEditInfo, setIsEditInfo] = useState(false)
-  const [focus, setFocus] = useState(false)
-  const maxWidth = 422
-  const [leftWidth, setLeftWidth] = useState(200)
-  const [endWidth, setEndWidth] = useState(200)
   const [tabActive, setTabActive] = useState('sprint-info')
+  const [isScroll, setIsScroll] = useState(false)
 
   const onBottom = () => {
     const dom: any = LeftDom?.current
@@ -115,73 +119,61 @@ const SprintDetailInfo = () => {
     commentDom.current.cancel()
   }
 
+  // tab标签栏
   const items: TabsProps['items'] = [
     {
       key: 'sprint-info',
-      label: `Tab 1`,
+      label: '描述',
     },
     {
       key: 'sprint-attachment',
-      label: `Tab 2`,
+      label: '附件',
     },
     {
       key: 'sprint-tag',
-      label: `Tab 3`,
+      label: '标签',
     },
     {
       key: 'sprint-childSprint',
-      label: `Tab 1`,
+      label: '子事务',
     },
     {
       key: 'sprint-linkSprint',
-      label: `Tab 2`,
+      label: '链接事务',
     },
     {
       key: 'sprint-activity',
-      label: `Tab 3`,
+      label: '活动',
     },
   ]
 
-  // 拖动线条
-  const onDragLine = () => {
-    // let width = LeftDom.current?.clientWidth || 0
-    // document.onmousemove = e => {
-    //   setEndWidth(200)
-    //   setFocus(true)
-    //   if (!LeftDom.current) return
-    //   LeftDom.current.style.transition = '0s'
-    //   width = e.clientX
-    //   if (width > maxWidth) {
-    //     setLeftWidth(maxWidth)
-    //   } else {
-    //     setLeftWidth(width < 26 ? 26 : width)
-    //   }
-    // }
-    // document.onmouseup = () => {
-    //   if (width < 200) {
-    //     setEndWidth(width)
-    //     setLeftWidth(26)
-    //   } else if (width > maxWidth) {
-    //     setLeftWidth(maxWidth)
-    //   } else {
-    //     setLeftWidth(width)
-    //   }
-    //   if (!LeftDom.current) return
-    //   LeftDom.current.style.transition = '0.3s'
-    //   document.onmousemove = null
-    //   document.onmouseup = null
-    //   setFocus(false)
-    // }
+  // 监听左侧信息滚动
+  const onChangeTabs = (value: string) => {
+    const dom = document.getElementById(value)
+    dom?.scrollIntoView({
+      behavior: 'smooth',
+    })
   }
 
-  useEffect(() => {
-    if (tabActive) {
-      const dom = document.getElementById(tabActive)
-      dom?.scrollIntoView({
-        behavior: 'smooth',
-      })
-    }
-  }, [tabActive])
+  // 计算滚动选中tab
+  const handleScroll = (e: any) => {
+    setIsScroll(!(e.target.scrollTop < 60))
+    // 滚动容器
+    const { scrollTop } = document.querySelector(
+      '.sprintDetail_dom',
+    ) as HTMLElement
+    // 所有标题节点
+    const titleItems = document.querySelectorAll('.info_item_tab')
+    let arr: any = []
+    titleItems.forEach(element => {
+      const { offsetTop, id } = element as HTMLElement
+      if (offsetTop <= scrollTop + 120) {
+        const keys = [...arr, ...[id]]
+        arr = [...new Set(keys)]
+      }
+    })
+    setTabActive(arr[arr.length - 1])
+  }
 
   useEffect(() => {
     setTagList(
@@ -193,26 +185,27 @@ const SprintDetailInfo = () => {
     )
   }, [sprintInfo])
 
+  useEffect(() => {
+    window?.addEventListener('scroll', handleScroll, true)
+    return () => {
+      window.removeEventListener('scroll', handleScroll, false)
+    }
+  }, [])
+
   return (
     <>
       <DeleteConfirmModal />
       <InfoWrap>
-        <div style={{ display: 'flex' }}>
-          {items.map((i: any) => (
-            <div key={i.key} onClick={() => setTabActive(i.key)}>
-              {i.label}
-            </div>
-          ))}
-        </div>
-        <DetailInfoWrap ref={LeftDom}>
-          <MouseDom active={focus} onMouseDown={onDragLine} style={{ left: 0 }}>
-            <DragLine
-              active={focus}
-              className="line"
-              style={{ marginLeft: 0 }}
-            />
-          </MouseDom>
+        {isScroll && (
+          <Tabs activeKey={tabActive} items={items} onChange={onChangeTabs} />
+        )}
+        <DetailInfoWrap
+          ref={LeftDom}
+          className="sprintDetail_dom"
+          isScroll={isScroll}
+        >
           <InfoItem
+            className="info_item_tab"
             id="sprint-info"
             style={{
               marginTop: '0px',
@@ -236,7 +229,7 @@ const SprintDetailInfo = () => {
               <TextWrap>--</TextWrap>
             )}
           </InfoItem>
-          <InfoItem id="sprint-attachment">
+          <InfoItem id="sprint-attachment" className="info_item_tab">
             <Label>{t('common.attachment')}</Label>
             <div>
               {projectInfo?.projectPermissions?.filter(
@@ -269,7 +262,7 @@ const SprintDetailInfo = () => {
               ).length <= 0 && <span>--</span>}
             </div>
           </InfoItem>
-          <InfoItem id="sprint-tag">
+          <InfoItem id="sprint-tag" className="info_item_tab">
             <Label>{t('common.tag')}</Label>
             <SprintTag
               defaultList={tagList}
@@ -295,7 +288,7 @@ const SprintDetailInfo = () => {
             }),
           )}
           onConfirm={onConfirmComment}
-          style={{ padding: '0 24px', width: 'calc(100% - 24px)' }}
+          style={{ padding: '0 0 0 24px', width: 'calc(100% - 24px)' }}
           maxHeight="60vh"
           hasAvatar
         />

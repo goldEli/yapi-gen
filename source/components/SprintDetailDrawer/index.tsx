@@ -1,7 +1,7 @@
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
-import { useDispatch, useSelector } from '@store/index'
+import { useDispatch, useSelector, store as storeAll } from '@store/index'
 import { setSprintDetailDrawer } from '@store/sprint'
-import { Drawer, Popover, Skeleton, Space } from 'antd'
+import { Drawer, MenuProps, Popover, Skeleton, Space } from 'antd'
 import { DragLine, MouseDom } from '../StyleCommon'
 import {
   Header,
@@ -18,17 +18,35 @@ import {
   SkeletonStatus,
   UpWrap,
   DownWrap,
+  DropdownMenu,
 } from './style'
 import CommonIconFont from '../CommonIconFont'
 import ChangeStatusPopover from '../ChangeStatusPopover/index'
 import StateTag from '../StateTag'
 import CommonButton from '../CommonButton'
 import { useTranslation } from 'react-i18next'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { getMessage } from '../Message'
 import DetailsSkeleton from '../DetailsSkeleton'
 import ChildSprint from '@/views/SprintProjectDetail/components/ChildSprint'
 import LinkSprint from '@/views/SprintProjectDetail/components/LinkSprint'
+import {
+  deleteSprintComment,
+  getSprintInfo,
+  updateSprintTableParams,
+} from '@/services/sprint'
+import { getProjectInfo } from '@/services/project'
+import { setProjectInfo } from '@store/project'
+import {
+  getSprintCommentList,
+  saveSprintDetailDrawer,
+} from '@store/sprint/sprint.thunk'
+import { encryptPhp } from '@/tools/cryptoPhp'
+import SprintDetail from './component/SprintDetail'
+import BasicDemand from './component/BasicDemand'
+import CommonComment from '../CommonComment'
+import useShareModal from '@/hooks/useShareModal'
+import { copyLink } from '@/tools'
 
 const SprintDetailDrawer = () => {
   const normalState = {
@@ -56,15 +74,18 @@ const SprintDetailDrawer = () => {
   const [t] = useTranslation()
   const leftWidth = 640
   const dispatch = useDispatch()
-  const { open, DeleteConfirmModal } = useDeleteConfirmModal()
+  const { open, ShareModal } = useShareModal()
+  const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
   const [skeletonLoading, setSkeletonLoading] = useState(false)
-  const [isMoreVisible, setIsMoreVisible] = useState(false)
+  const spanDom = useRef<HTMLSpanElement>(null)
   const [focus, setFocus] = useState(false)
   const [drawerInfo, setDrawerInfo] = useState<any>({})
   const [currentIndex, setCurrentIndex] = useState(0)
   const [demandIds, setDemandIds] = useState([])
   const [showState, setShowState] = useState<any>(normalState)
-  const { sprintDetailDrawer } = useSelector(store => store.sprint)
+  const { sprintDetailDrawer, sprintCommentList } = useSelector(
+    store => store.sprint,
+  )
   const { projectInfo } = useSelector(store => store.project)
 
   const modeList = [
@@ -75,15 +96,12 @@ const SprintDetailDrawer = () => {
     { name: '事务评论', key: 'demandComment', content: '' },
   ]
 
-  // 关闭弹窗
-  const onCancel = () => {
-    dispatch(
-      setSprintDetailDrawer({
-        visible: false,
-        params: {},
-      }),
-    )
-  }
+  const anchorList = [
+    { name: '附件', key: 'sprint-attachment', domKey: 'detailInfo' },
+    { name: '添加标签', key: 'sprint-tag', domKey: 'detailInfo' },
+    { name: '添加子事务', key: 'sprint-childSprint', domKey: 'childSprint' },
+    { name: '链接事务', key: 'sprint-linkSprint', domKey: 'linkSprint' },
+  ]
 
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
@@ -127,9 +145,69 @@ const SprintDetailDrawer = () => {
     })
   }
 
+  // 获取项目详情权限
+  const getProjectData = async () => {
+    const response = await getProjectInfo({
+      projectId:
+        sprintDetailDrawer.params.project_id ??
+        sprintDetailDrawer.params.projectId,
+    })
+    dispatch(setProjectInfo(response))
+  }
+
+  // 获取事务详情
+  const getSprintDetail = async (id?: any, ids?: any) => {
+    const paramsProjectId =
+      sprintDetailDrawer.params.project_id ??
+      sprintDetailDrawer.params.projectId
+    if (sprintDetailDrawer.params?.isAllProject) {
+      getProjectData()
+    }
+    setDrawerInfo({})
+    setSkeletonLoading(true)
+    const info = await getSprintInfo({
+      projectId: paramsProjectId,
+      sprintId: id ? id : sprintDetailDrawer.params?.id,
+    })
+    info.level_tree?.push({
+      id: info.id,
+      category_id: info.category,
+      prefix_key: info.prefixKey || 0,
+      project_prefix: info.projectPrefix || '',
+      category_attachment: info.category_attachment,
+      parent_id: info.parentId || 0,
+      name: info.name,
+      work_type: 5,
+      attachment_id: 0,
+    })
+    setDrawerInfo(info)
+    setSkeletonLoading(false)
+    // 获取当前需求的下标， 用作上一下一切换
+    setCurrentIndex((ids || []).findIndex((i: any) => i === info.id))
+  }
+
+  // 关闭弹窗
+  const onCancel = () => {
+    dispatch(
+      setSprintDetailDrawer({
+        visible: false,
+        params: {},
+      }),
+    )
+    dispatch(saveSprintDetailDrawer({}))
+    setShowState(normalState)
+  }
+
   // 跳转详情页面
   const onToDetail = () => {
-    //
+    const params = encryptPhp(
+      JSON.stringify({
+        id: drawerInfo.projectId,
+        sprintId: drawerInfo.id,
+      }),
+    )
+    const url = `SprintProjectManagement/SprintProjectDetail?data=${params}`
+    window.open(`${window.origin}${import.meta.env.__URL_HASH__}${url}`)
   }
 
   // 修改状态
@@ -139,30 +217,33 @@ const SprintDetailDrawer = () => {
 
   // 向上查找需求
   const onUpDemand = () => {
-    // const newIndex = demandIds[currentIndex - 1]
-    // if (!currentIndex) return
-    // dispatch(
-    //   saveDemandDetailDrawer({
-    //     ...demandDetailDrawerProps,
-    //     ...{ id: newIndex },
-    //   }),
-    // )
+    const newIndex = demandIds[currentIndex - 1]
+    if (!currentIndex) return
+    dispatch(
+      saveSprintDetailDrawer({
+        ...sprintDetailDrawer.params,
+        ...{ id: newIndex },
+      }),
+    )
   }
 
   // 向下查找需求
   const onDownDemand = () => {
-    // const newIndex = demandIds[currentIndex + 1]
-    // if (currentIndex === demandIds?.length - 1) return
-    // dispatch(
-    //   saveDemandDetailDrawer({
-    //     ...demandDetailDrawerProps,
-    //     ...{ id: newIndex },
-    //   }),
-    // )
+    const newIndex = demandIds[currentIndex + 1]
+    if (currentIndex === demandIds?.length - 1) return
+    dispatch(
+      saveSprintDetailDrawer({
+        ...sprintDetailDrawer.params,
+        ...{ id: newIndex },
+      }),
+    )
   }
 
   // 改变模块显示
   const onChangeShowState = (item: any) => {
+    const paramsProjectId =
+      sprintDetailDrawer.params.project_id ??
+      sprintDetailDrawer.params.projectId
     const newState = Object.assign({}, showState)
     const resState = {
       isOpen: !newState[item.key].isOpen,
@@ -171,10 +252,226 @@ const SprintDetailDrawer = () => {
     newState[item.key].dom.current.style.height = resState.isOpen ? 'auto' : 0
     newState[item.key] = resState
     setShowState(newState)
+    if (item.key === 'demandComment') {
+      // 获取评论列表
+      dispatch(
+        getSprintCommentList({
+          projectId: paramsProjectId,
+          sprintId: sprintDetailDrawer.params.id,
+          page: 1,
+          pageSize: 999,
+        }),
+      )
+    }
   }
+
+  const getKeyDown = (e: any) => {
+    if (storeAll.getState().sprint.sprintDetailDrawer.visible) {
+      if (e.keyCode === 38) {
+        //up
+        document.getElementById('upIcon')?.click()
+      }
+      if (e.keyCode === 40) {
+        //down
+        document.getElementById('downIcon')?.click()
+      }
+    }
+  }
+
+  // 删除评论确认
+  const onDeleteCommentConfirm = async (commentId: number) => {
+    const paramsProjectId =
+      sprintDetailDrawer.params.project_id ??
+      sprintDetailDrawer.params.projectId
+    await deleteSprintComment({ projectId: paramsProjectId, id: commentId })
+    getMessage({ type: 'success', msg: '删除成功' })
+    dispatch(
+      getSprintCommentList({
+        projectId: paramsProjectId,
+        sprintId: sprintDetailDrawer.params.id,
+        page: 1,
+        pageSize: 999,
+      }),
+    )
+  }
+
+  // 快捷修改名称
+  const onNameConfirm = async () => {
+    const value = spanDom.current?.innerText
+    if ((value?.length || 0) <= 0) {
+      getMessage({ type: 'warning', msg: '名称不能为空' })
+      return
+    }
+    if ((value?.length || 0) > 100) {
+      getMessage({ type: 'warning', msg: '名称不能超过100个字' })
+      return
+    }
+    if (value !== drawerInfo.name) {
+      await updateSprintTableParams({
+        projectId: drawerInfo.project_id ?? drawerInfo.projectId,
+        id: drawerInfo.id,
+        otherParams: {
+          name: value,
+        },
+      })
+      getMessage({ type: 'success', msg: '修改成功' })
+      // 提交名称
+      setDrawerInfo({
+        ...drawerInfo,
+        name: value,
+      })
+    }
+  }
+
+  // 复制标题
+  const onCopy = () => {
+    copyLink(drawerInfo.name, '复制成功！', '复制失败！')
+  }
+
+  // 点击锚点跳转
+  const onClickAnchorList = (item: {
+    key: string
+    domKey: string
+    name?: string
+  }) => {
+    console.log(showState, item)
+    const newState = Object.assign({}, showState)
+    newState[item.domKey].isOpen = true
+    newState[item.domKey].dom.current.style.height = 'auto'
+    setShowState(newState)
+    const dom = document.getElementById(item.key)
+    dom?.scrollIntoView({
+      behavior: 'smooth',
+    })
+  }
+
+  const onDeleteSprintConfirm = () => {
+    //
+  }
+
+  // 删除事务弹窗
+  const onDelete = () => {
+    openDelete({
+      title: '删除确认',
+      text: '确认删除该事务？',
+      onConfirm() {
+        onDeleteSprintConfirm()
+        return Promise.resolve()
+      },
+    })
+  }
+
+  // 分享弹窗
+  const onShare = () => {
+    open({
+      onOk: () => {
+        // onShareConfirm()
+        return Promise.resolve()
+      },
+    })
+  }
+
+  // 跳转配置
+  const onConfig = () => {
+    //
+  }
+
+  // 更多下拉
+  const items: MenuProps['items'] = [
+    {
+      label: <div onClick={onDelete}>删除</div>,
+      key: '0',
+    },
+    {
+      type: 'divider',
+    },
+    {
+      label: (
+        <div
+          onClick={() =>
+            onClickAnchorList({
+              key: 'sprint-attachment',
+              domKey: 'detailInfo',
+            })
+          }
+        >
+          添加附件
+        </div>
+      ),
+      key: '1',
+    },
+    {
+      label: (
+        <div
+          onClick={() =>
+            onClickAnchorList({
+              key: 'sprint-childSprint',
+              domKey: 'childSprint',
+            })
+          }
+        >
+          添加子事务
+        </div>
+      ),
+      key: '2',
+    },
+    {
+      label: (
+        <div
+          onClick={() =>
+            onClickAnchorList({
+              key: 'sprint-linkSprint',
+              domKey: 'detailInfo',
+            })
+          }
+        >
+          添加标签
+        </div>
+      ),
+      key: '3',
+    },
+    {
+      type: 'divider',
+    },
+    {
+      label: <div onClick={onConfig}>配置</div>,
+      key: '4',
+    },
+  ]
+
+  useEffect(() => {
+    if (sprintDetailDrawer.visible || sprintDetailDrawer.params?.id) {
+      console.log(sprintDetailDrawer, '=sprintDetailDrawersprintDetailDrawer')
+      setDemandIds(sprintDetailDrawer.params?.demandIds || [])
+      getSprintDetail('', sprintDetailDrawer.params?.demandIds || [])
+      setShowState(normalState)
+    }
+  }, [sprintDetailDrawer])
+
+  // useEffect(() => {
+  //   if (isUpdateDemand) {
+  //     setCurrentIndex(0)
+  //     setDemandIds([])
+  //     if (isDemandDetailDrawerVisible) {
+  //       getDemandDetail()
+  //     }
+  //   }
+  // }, [isUpdateDemand])
+
+  useEffect(() => {
+    document.addEventListener('keydown', getKeyDown)
+    return () => {
+      document.removeEventListener('keydown', getKeyDown)
+    }
+  }, [])
 
   return (
     <>
+      <ShareModal
+        copyLink={() => {
+          // Todo 待传入分享组件中复制链接方法
+        }}
+      />
       <DeleteConfirmModal />
       <Drawer
         closable={false}
@@ -210,6 +507,7 @@ const SprintDetailDrawer = () => {
               <ChangeStatusPopover
                 isCanOperation={isCanEdit && !drawerInfo.isExamine}
                 projectId={drawerInfo.projectId}
+                record={drawerInfo}
                 // onChangeStatus={onChangeStatus}
               >
                 <StateTag
@@ -267,31 +565,16 @@ const SprintDetailDrawer = () => {
                 </DownWrap>
               )}
             </ChangeIconGroup>
-            <div onClick={onToDetail}>
-              <CommonButton type="icon" icon="full-screen" />
-            </div>
-            <Popover
-              open={isMoreVisible}
-              onOpenChange={setIsMoreVisible}
+            <CommonButton type="icon" icon="share" onClick={onShare} />
+            <CommonButton type="icon" icon="full-screen" onClick={onToDetail} />
+            <DropdownMenu
               placement="bottomRight"
-              trigger={['click', 'hover']}
+              trigger={['click']}
+              menu={{ items }}
               getPopupContainer={n => n}
-              content={
-                <div>1</div>
-                // <DemandOperationDropdownMenu
-                //   haveComment
-                //   onEditChange={onEditChange}
-                //   onDeleteChange={onDeleteChange}
-                //   onCreateChild={onCreateChild}
-                //   onAddComment={() => commentDom.current?.addComment()}
-                //   record={demandDetailDrawerProps}
-                // />
-              }
             >
-              <div>
-                <CommonButton type="icon" icon="more" />
-              </div>
-            </Popover>
+              <CommonButton type="icon" icon="more" />
+            </DropdownMenu>
           </Space>
         </Header>
         <Content>
@@ -316,7 +599,32 @@ const SprintDetailDrawer = () => {
                   </DrawerHeader>
                 ))}
               </ParentBox>
-              <DemandName>{drawerInfo.name}</DemandName>
+              <DemandName>
+                <span
+                  className="name"
+                  ref={spanDom}
+                  contentEditable
+                  onBlur={onNameConfirm}
+                >
+                  {drawerInfo.name}
+                </span>
+                <span className="icon" onClick={onCopy}>
+                  <CommonIconFont type="copy" color="var(--neutral-n3)" />
+                </span>
+              </DemandName>
+              <Space size={8} style={{ marginTop: 16 }}>
+                {anchorList.map(
+                  (i: { key: string; domKey: string; name: string }) => (
+                    <CommonButton
+                      key={i.key}
+                      type="light"
+                      onClick={() => onClickAnchorList(i)}
+                    >
+                      {i.name}
+                    </CommonButton>
+                  ),
+                )}
+              </Space>
               {modeList.map((i: any) => (
                 <CollapseItem key={i.key}>
                   <CollapseItemTitle onClick={() => onChangeShowState(i)}>
@@ -331,44 +639,27 @@ const SprintDetailDrawer = () => {
                     isOpen={showState[i.key].isOpen}
                   >
                     {i.key === 'detailInfo' && (
-                      <div>详细信息</div>
-                      // <DetailDemand
-                      //   detail={drawerInfo}
-                      //   onUpdate={getDemandDetail}
-                      // />
+                      <SprintDetail
+                        detail={drawerInfo}
+                        onUpdate={() => getSprintDetail('', demandIds)}
+                      />
                     )}
                     {i.key === 'childSprint' && showState[i.key].isOpen && (
                       <ChildSprint />
-                      // <ChildrenDemand
-                      //   detail={drawerInfo}
-                      //   isOpen={showState[i.key].isOpen}
-                      // />
                     )}
-                    {i.key === 'linkSprint' && (
-                      <LinkSprint />
-                      // <DemandComment
-                      //   detail={drawerInfo}
-                      //   isOpen={showState[i.key].isOpen}
-                      //   onRef={commentDom}
-                      //   isOpenInfo
-                      // />
-                    )}
+                    {i.key === 'linkSprint' && <LinkSprint />}
                     {i.key === 'basicInfo' && showState[i.key].isOpen && (
-                      <div>基本信息</div>
-                      // <BasicDemand
-                      //   detail={drawerInfo}
-                      //   isOpen={showState[i.key].isOpen}
-                      //   onUpdate={getDemandDetail}
-                      // />
+                      <BasicDemand
+                        detail={drawerInfo}
+                        isOpen={showState[i.key].isOpen}
+                        onUpdate={() => getSprintDetail('', demandIds)}
+                      />
                     )}
                     {i.key === 'demandComment' && (
-                      <div>事务评论</div>
-                      // <DemandComment
-                      //   detail={drawerInfo}
-                      //   isOpen={showState[i.key].isOpen}
-                      //   onRef={commentDom}
-                      //   isOpenInfo
-                      // />
+                      <CommonComment
+                        data={sprintCommentList}
+                        onDeleteConfirm={onDeleteCommentConfirm}
+                      />
                     )}
                   </CollapseItemContent>
                 </CollapseItem>

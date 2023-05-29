@@ -603,7 +603,7 @@ const DemandBox = () => {
             <ChangeStatusPopover
               isCanOperation={isCanEdit && !demandInfo?.isExamine}
               projectId={projectId}
-              // record={demandInfo}
+              record={demandInfo}
               // onChangeStatus={onChangeStatus}
             >
               <StateTag

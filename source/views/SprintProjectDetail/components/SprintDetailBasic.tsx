@@ -4,7 +4,11 @@ import { useDispatch, useSelector } from '@store/index'
 import { getSprintInfo } from '@store/sprint/sprint.thunk'
 import { useSearchParams } from 'react-router-dom'
 
-const SprintDetailBasic = () => {
+interface Props {
+  onRef: any
+}
+
+const SprintDetailBasic = (props: Props) => {
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -14,7 +18,7 @@ const SprintDetailBasic = () => {
     dispatch(getSprintInfo({ projectId: id, sprintId }))
   }
   return (
-    <div style={{ width: 400 }}>
+    <div ref={props.onRef}>
       <BasicDemand
         onUpdate={onUpdate}
         detail={sprintInfo}

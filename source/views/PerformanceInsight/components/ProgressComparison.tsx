@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from '@store/index'
 import {
   efficiencyMemberDefectList,
   efficiencyMemberWorkList,
+  historyWorkList,
   memberBugList,
   plugSelectionUserInfo,
   workContrastList,
@@ -90,6 +91,8 @@ const ProgressComparison = (props: Props) => {
     useState<API.Sprint.EfficiencyMemberWorkList.Result>()
   const [statusType, setStatusType] = useState('')
   const [ids, setIds] = useState<number[]>([])
+  const [historyWorkObj, setHistoryWorkObj] =
+    useState<API.Efficiency.historyWorkList.Result>()
   const onUpdateOrderKey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
     // props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
@@ -105,6 +108,7 @@ const ProgressComparison = (props: Props) => {
             onClick={(event: any) => {
               event.stopPropagation()
               dispatch(setVisibleWork(!visibleWork))
+              getDatail(record)
             }}
           >
             {text}
@@ -203,6 +207,7 @@ const ProgressComparison = (props: Props) => {
             onClick={(event: any) => {
               dispatch(setVisibleWork(!visibleWork))
               event.stopPropagation()
+              getDatail(record)
             }}
           >
             {text}
@@ -398,7 +403,7 @@ const ProgressComparison = (props: Props) => {
     //缺陷 Defect_iteration-迭代 Defect1冲刺 DefectAll全局
     if (props.type.includes('Progress')) {
       getWorkContrastList()
-      getMemberBugList()
+      // getMemberBugList()
     } else {
       getMemberBugList()
     }
@@ -423,7 +428,7 @@ const ProgressComparison = (props: Props) => {
         break
     }
   }, [])
-  // 工作进展对比
+  // 工作进展对比列表
   const getWorkContrastList = async () => {
     const res = await workContrastList({
       project_ids: [1, 2],
@@ -438,7 +443,7 @@ const ProgressComparison = (props: Props) => {
     // setIds(res.list.map(el => el.id))
     setIds([1, 3, 4])
   }
-  // 缺陷分析
+  // 缺陷分析列表
   const getMemberBugList = async () => {
     const res = await memberBugList({
       project_ids: [1, 2],
@@ -453,7 +458,7 @@ const ProgressComparison = (props: Props) => {
     // setIds(res.list.map(el => el.id))
     setIds([1, 3, 4])
   }
-  // 详情弹窗
+  // 后半截详情弹窗
   const openDetail = (event: any, row: { id: number }, str: string) => {
     event.stopPropagation()
     dispatch(setVisiblePerson(!visiblePerson))
@@ -469,6 +474,17 @@ const ProgressComparison = (props: Props) => {
       getEfficiencyMemberDefectList(parmas)
     }
   }
+  // 前半截详情的弹窗
+  const getDatail = (row: { id: number }) => {
+    getHistoryWorkList(row.id)
+  }
+  // 进展对比的前半截api
+  const getHistoryWorkList = async (id: number) => {
+    const res = await historyWorkList({ id })
+    console.log(res, 'oooo')
+    setHistoryWorkObj(res)
+  }
+
   // 获取用户信息
   const getUserInfo = async (id: number) => {
     const res = await plugSelectionUserInfo({ id })
@@ -519,7 +535,6 @@ const ProgressComparison = (props: Props) => {
         dispatch(setVisiblePerson(false)), dispatch(setVisibleWork(false))
       }}
     >
-      {props.type}
       <HeaderAll
         time="2023-08-08 ~ 2023-09-08"
         personData={[{ name: '123' }]}
@@ -579,17 +594,15 @@ const ProgressComparison = (props: Props) => {
         }}
       />
       {/* 前半截的弹窗 */}
-      {/* <SelectPersonnel
-        onPageNum={(id) => onPageNum(id)}
-        userInfo={userInfo}
+      <SelectPersonnel
+        historyWorkObj={historyWorkObj}
+        onPageNum={id => onPageNum(id)}
         type={props.type}
         visible={visibleWork}
         ids={ids}
         onCancel={() => dispatch(setVisibleWork(!visibleWork))}
-        status={[]}
-         memberWorkList={[{}]}
         onChange={() => 123}
-        statusType={''} /> */}
+      />
     </div>
   )
 }

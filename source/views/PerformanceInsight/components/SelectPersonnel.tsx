@@ -21,15 +21,12 @@ import {
 } from './style'
 interface Props {
   visible: boolean
-  status: Array<Model.Sprint.StatusInfo1>
-  userInfo: Model.Sprint.UserInfo1
   type: string
   ids: number[]
-  memberWorkList: API.Sprint.EfficiencyMemberWorkList.Result | undefined
+  historyWorkObj: API.Efficiency.historyWorkList.Result | undefined
   onPageNum: (id: number) => void
   onCancel: () => void
   onChange: (value: API.Sprint.EfficiencyMemberWorkList.Params) => void
-  statusType: string
 }
 interface UserInfo {
   type: string
@@ -37,63 +34,33 @@ interface UserInfo {
     avatar: string
     name: string[]
   }
+  historyWorkObj: API.Efficiency.historyWorkList.Result | undefined
 }
-interface DataList {
-  type: string
-  isOpen: boolean
-  list: Array<{
-    title: string
-    msg: string
-    time: string
-  }>
-}
+
 interface WorkType {
-  data: Array<DataList>
+  data: Array<Models.Efficiency.CreatedWord> | []
 }
-interface Item {
-  isOpen: boolean
-  type: string
-  list: Array<{
-    title: string
-    msg: string
-    time: string
-  }>
-}
-interface ItemMain1 {
-  type: string
-  list: Array<{
-    title: string
-    msg: string
-    time: string
-  }>
-}
-// 创建和分配
+
+// 创建和分配事务组件
 const Work = (props: WorkType) => {
-  const { data } = props
-  const [list, setList] = useState<Array<DataList>>([
-    {
-      type: '',
-      isOpen: false,
-      list: [],
-    },
-  ])
-  useEffect(() => {
-    setList(data.map((el: Item) => ({ ...el, isOpen: false })))
-  }, [])
-  const activeItem = (el: Item) => {
+  const [list, setList] = useState<Array<Models.Efficiency.CreatedWord>>(
+    props.data,
+  )
+  const activeItem = (el: Models.Efficiency.CreatedWord) => {
     setList(
-      list.map((item: Item) => ({
+      list.map((item: Models.Efficiency.CreatedWord) => ({
         ...item,
-        isOpen: el.type === item.type ? !item.isOpen : item.isOpen,
+        isOpen:
+          el.status_name === item.status_name ? !item.isOpen : item.isOpen,
       })),
     )
   }
   return (
     <ItemMain>
       {list.map(el => (
-        <WorkStyle key={el.type}>
+        <WorkStyle key={el.status_name}>
           <TitleType onClick={() => activeItem(el)}>
-            <span>{el.type}</span>
+            <span>{el.status_name}</span>
             <CommonIconFont
               type={el.isOpen ? 'up' : 'down'}
               size={16}
@@ -103,12 +70,12 @@ const Work = (props: WorkType) => {
           {el.isOpen
             ? null
             : el.list.map(item => (
-                <RowItem key={item.title}>
+                <RowItem key={item.name}>
                   <Row>
-                    <span className="title">{item.title}</span>
-                    <span className="time">{item.time} 到期</span>
+                    <span className="title">{item.parent_name}</span>
+                    <span className="time">{item.created_at} 到期</span>
                   </Row>
-                  <span className="msg">{item.msg}</span>
+                  <span className="msg">{item.name}</span>
                 </RowItem>
               ))}
         </WorkStyle>
@@ -117,43 +84,35 @@ const Work = (props: WorkType) => {
   )
 }
 interface WorkRecordsTyle {
-  list: Array<{ title: string; msg: string; time: string }>
-  data: Array<ItemMain1>
+  list: Array<Models.Efficiency.WorkRecord>
 }
 // 工作记录
 const WorkRecords = (props: WorkRecordsTyle) => {
+  const { list } = props
   return (
-    <>
-      {props.list.map(item => (
-        <RowItem key={item.title}>
-          <Row>
-            <span className="title">{item.title}</span>
-            <span className="time">{item.time}</span>
-          </Row>
-          <span className="msg">{item.msg}</span>
-        </RowItem>
+    <ItemMain>
+      {list.map(el => (
+        <WorkStyle key={el.date}>
+          {el.list.map(item => (
+            <RowItem key={item.name + item.created_at}>
+              <Row>
+                <span className="title">{item.name}</span>
+                <span className="time">{item.created_at}</span>
+              </Row>
+              <span className="msg">
+                状态由【{item.status_from.content}】更改为【
+                {item.status_to.content}】
+              </span>
+            </RowItem>
+          ))}
+          <TypeBox>
+            <Line />
+            {el.date}
+            <Line />
+          </TypeBox>
+        </WorkStyle>
       ))}
-      <ItemMain1>
-        {props.data.map(el => (
-          <WorkStyle key={el.type}>
-            <TypeBox>
-              <Line />
-              {el.type}
-              <Line />
-            </TypeBox>
-            {el.list.map(item => (
-              <RowItem key={item.title}>
-                <Row>
-                  <span className="title">{item.title}</span>
-                  <span className="time">{item.time} 到期</span>
-                </Row>
-                <span className="msg">{item.msg}</span>
-              </RowItem>
-            ))}
-          </WorkStyle>
-        ))}
-      </ItemMain1>
-    </>
+    </ItemMain>
   )
 }
 const Main = (props: UserInfo) => {
@@ -167,8 +126,11 @@ const Main = (props: UserInfo) => {
         <UserMsg>
           <CommonUserAvatar size="large" avatar={props.user.avatar} />
           <UserInfo>
-            <div> 李四（xxxxxx@ifun.com）</div>
-            <div className="msg">管理员1</div>
+            <div>
+              {' '}
+              {props.historyWorkObj?.name}（{props.historyWorkObj?.email}）
+            </div>
+            <div className="msg">{props.historyWorkObj?.role.name}</div>
           </UserInfo>
         </UserMsg>
         {(props.type === 'Progress_iteration' ||
@@ -207,36 +169,20 @@ const Main = (props: UserInfo) => {
         )}
       </MainWrap>
       {type === 0 ? (
-        <WorkRecords
-          data={[
-            {
-              type: '进行中',
-              list: [{ title: '123', msg: '999', time: '2022-19-10' }],
-            },
-            {
-              type: '已逾期',
-              list: [{ title: '123', msg: '999', time: '2022-19-10' }],
-            },
-          ]}
-          list={[
-            { title: '123', msg: '999', time: '2022-19-10' },
-            { title: '1235555555', msg: '995555559', time: '2022-19-10' },
-          ]}
-        />
+        <WorkRecords list={props.historyWorkObj?.work_record || []} />
       ) : (
         <Work
-          data={[
-            {
-              type: '进行中',
-              isOpen: false,
-              list: [{ title: '123', msg: '999', time: '2022-19-10' }],
-            },
-            {
-              type: '已逾期',
-              isOpen: false,
-              list: [{ title: '123', msg: '999', time: '2022-19-10' }],
-            },
-          ]}
+          data={
+            (type === 1
+              ? props.historyWorkObj?.created_word.map(el => ({
+                  ...el,
+                  isOpen: false,
+                }))
+              : props.historyWorkObj?.word.map(el => ({
+                  ...el,
+                  isOpen: false,
+                }))) || []
+          }
         />
       )}
     </>
@@ -250,10 +196,14 @@ const SelectPersonnel = (props: Props) => {
           <DetailHeader
             ids={props.ids}
             onCancel={() => props.onCancel()}
-            infoId={props.userInfo.id}
+            infoId={props.historyWorkObj?.id || 0}
             onPageNum={props.onPageNum}
           />
-          <Main type={props.type} user={{ avatar: '123', name: ['1'] }} />
+          <Main
+            type={props.type}
+            historyWorkObj={props.historyWorkObj}
+            user={{ avatar: '123', name: ['1'] }}
+          />
         </>
       }
       visible={props.visible}

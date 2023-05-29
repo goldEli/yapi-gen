@@ -6,8 +6,8 @@ import StatusModal from './StatusModal'
 interface Props {
   isShow?: boolean
   children: ReactNode
-  //   onChangeStatus(value: any): void
-  // record: any
+  // onChangeStatus(value: any): void
+  record: any
   projectId?: any
   isCanOperation?: boolean
 }
@@ -23,12 +23,12 @@ const ChangeStatusPopover = (props: Props) => {
     setPopoverVisible(false)
     setCheckStatusItem({
       ...item,
-      infoId: 1003275,
-      // ?? props.record.id
-      dealName: '王灵娇;杨一',
-      formContent: '测试-add',
-      formIsStart: 1,
-      formIsEnd: 2,
+      infoId: props.record.id,
+      dealName: props.record?.userName,
+      fromContent: props.record?.status?.status?.content,
+      fromIsStart: props.record?.status?.is_start,
+      fromIsEnd: props.record?.status?.is_end,
+      fromId: props.record?.status?.id,
     })
   }
 
@@ -43,6 +43,7 @@ const ChangeStatusPopover = (props: Props) => {
         isVisible={isVisible}
         checkStatusItem={checkStatusItem}
         onClose={onClosModal}
+        // onChangeStatusConfirm={props.onChangeStatus}
       />
       <Popover
         open={popoverVisible}
@@ -57,8 +58,8 @@ const ChangeStatusPopover = (props: Props) => {
           <StatusPopover
             onOpenModal={onOpenModal}
             popoverVisible={popoverVisible}
-            projectId={27}
-            id={1003275}
+            projectId={props.record.project_id ?? props.record.projectId}
+            id={props.record.id}
           />
         }
       >
