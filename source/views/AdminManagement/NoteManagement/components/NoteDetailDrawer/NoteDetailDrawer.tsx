@@ -8,7 +8,7 @@
 import { useDispatch, useSelector } from '@store/index'
 import { Drawer, Form, Space } from 'antd'
 import { Editor } from '@xyfe/uikit'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommonIconFont from '@/components/CommonIconFont'
 import { DragLine, MouseDom } from '@/components/StyleCommon'
@@ -27,6 +27,7 @@ import {
 
 import { Content, Title, Text } from './style'
 import { Col, NameText } from '@/views/WorkReport/Formwork/Addperson'
+import { getMyAllSysNoticeDetail } from '@/services/sysNotice'
 
 interface TargetTabsProps {
   list: any
@@ -89,6 +90,15 @@ const NoteDetailDrawer = (props: any) => {
 
   // 向下查找需求
   const onDownDemand = () => {}
+
+  const init = async () => {
+    const res = await getMyAllSysNoticeDetail(props.detailInner.id)
+    console.log(res, '详情')
+  }
+  useEffect(() => {
+    props.isVisible && init()
+  }, [props.isVisible])
+
   if (props.isVisible) {
     return (
       <Drawer
