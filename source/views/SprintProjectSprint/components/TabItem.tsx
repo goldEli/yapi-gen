@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { Checkbox, Progress } from 'antd'
 import IconFont from '@/components/IconFont'
+import { useDispatch, useSelector } from '@store/index'
+import { setCheckList } from '@store/sprint'
 
 const Item = styled.div`
   cursor: pointer;
@@ -66,13 +68,23 @@ const NoSprintButton = styled.div`
 
 const TabItem = (props: any) => {
   const { data } = props
+  const { checkList } = useSelector(state => state.sprint)
+  const dispatch = useDispatch()
+
   return (
     <div>
-      {data?.list?.map((item: any) => (
+      {data?.list?.map((item: any, idx: number) => (
         <Item key={item.id}>
           <div className="title">
             <span>{item.name}</span>
-            <Checkbox />
+            <Checkbox
+              checked={checkList[idx]}
+              onChange={e => {
+                const temp = [...checkList]
+                temp[idx] = e.target.checked
+                dispatch(setCheckList(temp))
+              }}
+            />
           </div>
           <div className="date">
             {item.start_at && item.end_at

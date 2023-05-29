@@ -30,10 +30,13 @@ type SliceState = {
   //   currentPage?: number
   // }
   rightSprintList: any[]
+  rightLoading: boolean
   leftSprintList: {
     list: any[]
     unassigned_count: number
   }
+  leftLoading: boolean
+  checkList: boolean[]
 }
 
 const initialState: SliceState = {
@@ -133,11 +136,16 @@ const initialState: SliceState = {
   // sprintList: {
   //   list: undefined,
   // },
+  // 冲刺页面右边的列表数据
   rightSprintList: [],
+  rightLoading: false,
+  // 冲刺页面左边的列表数据
   leftSprintList: {
     list: [],
     unassigned_count: 0,
   },
+  leftLoading: false,
+  checkList: [],
 }
 
 const slice = createSlice({
@@ -175,10 +183,7 @@ const slice = createSlice({
       state,
       action: PayloadAction<SliceState['rightSprintList']>,
     ) {
-      state.rightSprintList = {
-        ...state.rightSprintList,
-        ...action.payload,
-      }
+      state.rightSprintList = action.payload
     },
     setLeftSprintList(
       state,
@@ -188,6 +193,9 @@ const slice = createSlice({
         ...state.leftSprintList,
         ...action.payload,
       }
+    },
+    setCheckList(state, action: PayloadAction<SliceState['checkList']>) {
+      state.checkList = action.payload
     },
   },
   extraReducers(builder) {
@@ -207,11 +215,26 @@ const slice = createSlice({
       console.log('action', action)
       state.projectRoleList = action.payload
     })
+    builder.addCase(getRightSprintList.pending, state => {
+      state.rightLoading = true
+    })
     builder.addCase(getRightSprintList.fulfilled, (state, action) => {
       state.rightSprintList = action.payload
+      state.rightLoading = false
+    })
+    builder.addCase(getRightSprintList.rejected, state => {
+      state.rightLoading = false
     })
     builder.addCase(getLeftSprintList.fulfilled, (state, action) => {
       state.leftSprintList = action.payload
+      state.checkList = new Array(action.payload?.list?.length).fill(true)
+      state.leftLoading = false
+    })
+    builder.addCase(getLeftSprintList.pending, state => {
+      state.leftLoading = true
+    })
+    builder.addCase(getLeftSprintList.rejected, state => {
+      state.leftLoading = false
     })
   },
 })
@@ -227,6 +250,7 @@ export const {
   // setSprintList,
   setRightSprintList,
   setLeftSprintList,
+  setCheckList,
 } = slice.actions
 
 export default sprint

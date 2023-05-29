@@ -284,4 +284,18 @@ declare namespace API.Sprint {
       is_long_story: number
     }
   }
+
+  namespace CreateSprint {
+    type Params = {
+      project_id: number
+      name: string
+      info?: string
+      start_at: any
+      end_at: any
+      duration: {
+        is_weekend: number
+        week_type: number
+      }
+    }
+  }
 }

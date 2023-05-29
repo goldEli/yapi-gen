@@ -36,12 +36,8 @@ const customBox = css`
 `
 
 const ChooseDate = (props: any) => {
-  const { onChange, value } = props
-  const [params, setParams] = useState<any>({
-    include: true,
-    radio: 1,
-    date: [],
-  })
+  const { onChange, value, initNumber } = props
+  const [params, setParams] = useState<any>({})
 
   const getDay = (type: number) => {
     // 根据几周来计算结束日期
@@ -97,13 +93,19 @@ const ChooseDate = (props: any) => {
 
   useEffect(() => {
     if (value) {
-      setParams({
+      const temp = {
         ...value,
         date:
-          value.radio === 5
+          value.radio === 0
             ? value.date
             : [moment(new Date()), getDay(value?.radio)],
-      })
+      }
+      setParams(temp)
+      if (initNumber.current === 0) {
+        console.log(initNumber.current, temp)
+        onChange(temp)
+        initNumber.current++
+      }
     } else {
       setParams({})
     }
@@ -130,7 +132,7 @@ const ChooseDate = (props: any) => {
       <div className="radio">
         <Radio.Group
           onChange={(e: any) => {
-            if (e.target.value === 5) {
+            if (e.target.value === 0) {
               setParams({
                 ...params,
                 radio: e.target.value,
@@ -159,7 +161,7 @@ const ChooseDate = (props: any) => {
             <Radio value={2}>二周</Radio>
             <Radio value={3}>三周</Radio>
             <Radio value={4}>四周</Radio>
-            <Radio value={5}>自定义</Radio>
+            <Radio value={0}>自定义</Radio>
           </Space>
         </Radio.Group>
       </div>
@@ -170,12 +172,12 @@ const ChooseDate = (props: any) => {
             setParams({
               ...params,
               date,
-              radio: 5,
+              radio: 0,
             })
             onChange({
               ...params,
               date,
-              radio: 5,
+              radio: 0,
             })
           }}
         />

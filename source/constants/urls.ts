@@ -286,6 +286,8 @@ const urls = {
   getSprintGroupList: '/b/sprint/groupList',
   // 获取按冲刺分组的事务列表
   getLeftSprintList: '/b/sprint/getList',
+  // 创建冲刺
+  createSprint: '/b/sprint/store',
 }
 export default urls
 

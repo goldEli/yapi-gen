@@ -16,8 +16,8 @@ import {
 } from '@/components/StyleCommon'
 import TabItem from './components/TabItem'
 import IconFont from '@/components/IconFont'
-import { Popover, Tooltip } from 'antd'
-import CustomSelect from '@/components/CustomSelect'
+import { Popover, Spin, Tooltip } from 'antd'
+import CustomSelect from '@/components/MoreSelect'
 import DndKitTable from './components/DndKitTable'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
 import CreateSprintModal from './components/CreateSprintModal'
@@ -26,6 +26,12 @@ import {
   getRightSprintList,
   getLeftSprintList,
 } from '@store/sprint/sprint.thunk'
+import { getStaffList } from '@/services/staff'
+import NewLoadingTransition from '@/components/NewLoadingTransition'
+import NoData from './components/NoData'
+import CommonButton from '@/components/CommonButton'
+import { useSearchParams } from 'react-router-dom'
+import { getParamsData } from '@/tools'
 
 const SearchBox = styled.div`
   display: flex;
@@ -41,7 +47,7 @@ const ContentWrap = styled.div`
 `
 
 const Left = styled.div<{ active: boolean }>`
-  min-width: 316px;
+  width: 316px;
   box-sizing: border-box;
   height: 100%;
   border-right: ${props =>
@@ -188,25 +194,55 @@ const DragContent = styled.div``
 
 const filterList = [
   {
-    id: 0,
+    id: 1,
     name: '未完成的',
   },
   {
-    id: 1,
+    id: 2,
     name: '已完成的',
   },
   {
-    id: 2,
+    id: 0,
     name: '全部冲刺',
+  },
+]
+
+const filterList1 = [
+  {
+    id: 1,
+    name: '未完成的',
+  },
+  {
+    id: 2,
+    name: '已完成的',
+  },
+  {
+    id: 0,
+    name: '全部长故事',
   },
 ]
 
 interface IProps {}
 const SprintProjectSprint: React.FC<IProps> = props => {
   const dispatch = useDispatch()
-  const { guideVisible, leftSprintList } = useSelector(store => store.sprint)
+  const { guideVisible, leftSprintList, checkList, rightLoading, leftLoading } =
+    useSelector(store => store.sprint)
   const [t] = useTranslation()
-  const [searchValue, setSearchValue] = useState('')
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
+  console.log('projectId', projectId)
+
+  const [searchObject, setSearchObject] = useState<any>({
+    order: 'desc',
+    orderkey: 'id',
+    search: {
+      all: 1,
+      sprint_status: 0,
+      project_id: 604,
+    },
+    is_long_story: 0,
+  })
   const [focus, setFocus] = useState(false)
   const [endWidth, setEndWidth] = useState<any>()
   const leftRef = useRef<any>()
@@ -222,6 +258,17 @@ const SprintProjectSprint: React.FC<IProps> = props => {
     type: 'create',
   })
   const [completeVisible, setCompleteVisible] = useState(false)
+  const [userOptions, setUserOptions] = useState<any[]>([])
+  const [leftSearchObject, setLeftSearchObject] = useState<any>({
+    order: 'desc',
+    orderkey: 'id',
+    search: {
+      all: 1,
+      sprint_status: 0,
+      project_id: 604,
+    },
+    is_long_story: 0,
+  })
 
   const inform = [
     {
@@ -256,7 +303,9 @@ const SprintProjectSprint: React.FC<IProps> = props => {
     }
     document.onmouseup = () => {
       if (leftRef && leftRef.current) {
-        leftRef.current.style.width = `${Number(width)}px`
+        leftRef.current.style.width = `${
+          Number(width) < 316 ? 316 : Number(width)
+        }px`
         leftRef.current.style.transition = 'all 0.3s'
       }
       document.onmousemove = null
@@ -267,50 +316,85 @@ const SprintProjectSprint: React.FC<IProps> = props => {
 
   const changeSprintTab = () => {
     setActiveKey(0)
+    setSearchObject({
+      ...searchObject,
+      is_long_story: 0,
+    })
+    setLeftSearchObject({
+      ...leftSearchObject,
+      is_long_story: 0,
+    })
   }
 
   const changeStoryTab = () => {
     setActiveKey(1)
+    setSearchObject({
+      ...searchObject,
+      is_long_story: 1,
+    })
+    setLeftSearchObject({
+      ...leftSearchObject,
+      is_long_story: 1,
+    })
   }
 
   const onChangeFilter = (item: any) => {
     setCurrentFilter(item)
     setIsFilter(false)
+    setSearchObject({
+      ...searchObject,
+      search: {
+        ...searchObject.search,
+        sprint_status: item.id,
+      },
+    })
+    setLeftSearchObject({
+      ...leftSearchObject,
+      search: {
+        ...searchObject.search,
+        sprint_status: item.id,
+      },
+    })
+  }
+
+  const generateOptions = (item: any) => {
+    return {
+      label: item.name,
+      value: item.id,
+      id: item.id,
+    }
+  }
+  const getUserList = async () => {
+    const data = await getStaffList({ all: 1 })
+    setUserOptions(data.map(generateOptions))
   }
 
   useEffect(() => {
-    // 获取右边的表格数据
-    dispatch(
-      getRightSprintList({
-        order: 'desc',
-        orderkey: 'id',
-        search: {
-          all: 1,
-          project_id: 604,
-        },
-        is_long_story: 1,
-      }),
-    )
-    // 获取左边列表数据
-    dispatch(
-      getLeftSprintList({
-        order: 'desc',
-        orderkey: 'id',
-        search: {
-          all: 1,
-          sprint_status: 0,
-          project_id: 604,
-        },
-        is_long_story: 0,
-      }),
-    )
+    // 获取经办人数据
+    getUserList()
   }, [])
 
-  console.log(leftSprintList, 'leftSprintList')
+  useEffect(() => {
+    dispatch(
+      getRightSprintList({
+        ...searchObject,
+        search: {
+          ...searchObject.search,
+          id: leftSprintList.list
+            .filter((_, idx) => checkList[idx])
+            .map(k => k.id),
+        },
+      }),
+    )
+  }, [searchObject, checkList])
+
+  useEffect(() => {
+    dispatch(getLeftSprintList(leftSearchObject))
+  }, [leftSearchObject])
 
   const filterContent = (
     <div className="filter">
-      {filterList.map((item: any) => (
+      {(activeKey === 0 ? filterList : filterList1).map((item: any) => (
         <div
           className={`item ${item.id === currentFilter.id ? 'active' : ''}`}
           key={item.id}
@@ -336,7 +420,15 @@ const SprintProjectSprint: React.FC<IProps> = props => {
         <MyBreadcrumb />
         <div>
           <InputSearch
-            onChangeSearch={setSearchValue}
+            onChangeSearch={(val: any) => {
+              setSearchObject({
+                ...searchObject,
+                search: {
+                  ...searchObject.search,
+                  story_name: val,
+                },
+              })
+            }}
             placeholder="搜索事务或描述"
             leftIcon
           />
@@ -402,11 +494,41 @@ const SprintProjectSprint: React.FC<IProps> = props => {
               </RightIcon>
             </div>
             <TabItemWrap>
-              {activeKey === 0 ? <TabItem data={leftSprintList} /> : null}
-              {activeKey === 1 ? <TabItem data={leftSprintList} /> : null}
+              <Spin
+                spinning={rightLoading}
+                indicator={<NewLoadingTransition />}
+              >
+                {/* <TabItem data={leftSprintList} /> */}
+                <NoData
+                  size
+                  subText={
+                    <div>
+                      创建您的第一个冲刺，
+                      <div style={{ marginTop: 0 }}>
+                        以便开始为您的团队分解工作任务！
+                      </div>
+                    </div>
+                  }
+                  children={
+                    <CommonButton
+                      type="light"
+                      style={{ marginTop: 24 }}
+                      onClick={() => {
+                        setSprintModal({
+                          visible: true,
+                          type: 'create',
+                        })
+                      }}
+                    >
+                      创建新的冲刺
+                    </CommonButton>
+                  }
+                />
+              </Spin>
             </TabItemWrap>
           </Left>
         ) : null}
+
         <Right>
           <div className="header">
             {isExpand ? (
@@ -449,9 +571,17 @@ const SprintProjectSprint: React.FC<IProps> = props => {
                 optionFilterProp="label"
                 showArrow
                 showSearch
-                value=""
-                options={[]}
-                onChange={() => {}}
+                value={searchObject.search?.user_id}
+                options={userOptions}
+                onChange={(users: any) => {
+                  setSearchObject({
+                    ...searchObject,
+                    search: {
+                      ...searchObject.search,
+                      user_id: users,
+                    },
+                  })
+                }}
                 onConfirm={() => null}
               />
             </SelectWrapForList>
@@ -472,13 +602,26 @@ const SprintProjectSprint: React.FC<IProps> = props => {
                 onConfirm={() => null}
               />
             </SelectWrapForList>
-            <ClearButton onClick={() => {}}>
+            <ClearButton
+              onClick={() => {
+                setSearchObject({
+                  ...searchObject,
+                  search: {
+                    ...searchObject.search,
+                    user_id: [],
+                    // todo 事务
+                  },
+                })
+              }}
+            >
               {t('common.clearForm')}
             </ClearButton>
           </div>
-          <DragContent>
-            <DndKitTable />
-          </DragContent>
+          <Spin spinning={rightLoading} indicator={<NewLoadingTransition />}>
+            <DragContent>
+              <DndKitTable />
+            </DragContent>
+          </Spin>
         </Right>
       </ContentWrap>
       <GuideModal
@@ -489,6 +632,7 @@ const SprintProjectSprint: React.FC<IProps> = props => {
         close={() => dispatch(setGuideVisible(false))}
       />
       <CreateSprintModal
+        id={projectId}
         type={sprintModal.type}
         visible={sprintModal.visible}
         onClose={() =>

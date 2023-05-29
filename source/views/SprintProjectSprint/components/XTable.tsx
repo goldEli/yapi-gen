@@ -170,27 +170,31 @@ const XTable: React.FC<XTableProps> = props => {
                             ? `（可见${data?.story_visible_count}个，共${data?.story_count}个事务）`
                             : ''}
                         </span>
-                        <IconFont
-                          onClick={() => {
-                            setSprintModal({
-                              visible: true,
-                              type: 'edit',
-                            })
-                          }}
-                          style={{
-                            fontSize: 16,
-                            color: 'var(--neutral-n3)',
-                            marginRight: 16,
-                          }}
-                          type="edit"
-                        />
-                        <IconFont
-                          style={{
-                            fontSize: 16,
-                            color: 'var(--neutral-n3)',
-                          }}
-                          type="delete"
-                        />
+                        {data.id === -1 ? null : (
+                          <>
+                            <IconFont
+                              onClick={() => {
+                                setSprintModal({
+                                  visible: true,
+                                  type: 'edit',
+                                })
+                              }}
+                              style={{
+                                fontSize: 16,
+                                color: 'var(--neutral-n3)',
+                                marginRight: 16,
+                              }}
+                              type="edit"
+                            />
+                            <IconFont
+                              style={{
+                                fontSize: 16,
+                                color: 'var(--neutral-n3)',
+                              }}
+                              type="delete"
+                            />
+                          </>
+                        )}
                       </div>
                       <CommonButton
                         type="light"
@@ -223,9 +227,13 @@ const XTable: React.FC<XTableProps> = props => {
                     dataWrapNormalHeight=""
                     col={props.columns}
                     noData={
-                      <div className="nodata">
-                        从待办事项拖动或新建事务，以规划该冲刺的工作，添加事务并编辑冲刺后，点击开始冲刺
-                      </div>
+                      data.id === -1 ? (
+                        <NoData subText="暂无事务" />
+                      ) : (
+                        <div className="nodata">
+                          从待办事项拖动或新建事务，以规划该冲刺的工作，添加事务并编辑冲刺后，点击开始冲刺
+                        </div>
+                      )
                     }
                     dataSource={list}
                     components={{ body: { row: SortableItem } }}
@@ -253,6 +261,7 @@ const XTable: React.FC<XTableProps> = props => {
             visible: false,
           })
         }}
+        id={0}
       />
     </>
   )

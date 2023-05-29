@@ -903,3 +903,9 @@ export const getLeftSprintList = async (
   const response = await http.get('getLeftSprintList', params)
   return response.data
 }
+
+// 新建冲刺
+export const createSprint = async (params: API.Sprint.CreateSprint.Params) => {
+  const response = await http.post('createSprint', params)
+  return response.data
+}

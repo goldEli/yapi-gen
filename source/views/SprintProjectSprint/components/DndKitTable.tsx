@@ -1,4 +1,4 @@
-import { type TableColumnProps } from 'antd'
+import { Tooltip, type TableColumnProps } from 'antd'
 import XTable from './XTable'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 import IconFont from '@/components/IconFont'
@@ -9,12 +9,11 @@ import ChangePriorityPopover from '@/components/ChangePriorityPopover'
 import { PriorityWrap } from '@/components/StyleCommon'
 import ChangeStatusPopover from '@/components/ChangeStatusPopover/index'
 import { useSelector, useDispatch } from '@store/index'
-import { setSprintTableData } from '@store/sprint'
+import { setRightSprintList } from '@store/sprint'
 import { useTranslation } from 'react-i18next'
 import StateTag from '@/components/StateTag'
 import { getParamsData } from '@/tools'
 import { useSearchParams } from 'react-router-dom'
-import TableQuickEdit from '@/components/TableQuickEdit'
 import MultipleAvatar from '@/components/MultipleAvatar'
 
 const MoveFont = styled(IconFont)`
@@ -26,14 +25,6 @@ const MoveFont = styled(IconFont)`
   }
   cursor: move;
 `
-
-type TableItem = {
-  id: string
-  name?: string
-  sex?: string
-  age?: number
-  address?: string
-}
 
 const DndKitTable = () => {
   const [t] = useTranslation()
@@ -58,7 +49,7 @@ const DndKitTable = () => {
   }
   const onUpdate = (row: any, isClass?: any) => {}
 
-  const columns: TableColumnProps<TableItem>[] = [
+  const columns: TableColumnProps<any>[] = [
     {
       render: (text: any, record: any) => {
         return (
@@ -81,11 +72,42 @@ const DndKitTable = () => {
       dataIndex: 'sort',
       render: () => <MoveFont type="move" />,
     },
-    { title: '编号', dataIndex: 'story_prefix_key' },
-    { title: '标题', dataIndex: 'name' },
+    {
+      title: '编号',
+      dataIndex: 'story_prefix_key',
+      key: 'story_prefix_key',
+      width: 200,
+    },
+    {
+      title: '标题',
+      dataIndex: 'name',
+      key: 'name',
+      width: 200,
+      render(value, record) {
+        return (
+          <div>
+            <Tooltip placement="top" title={record.category}>
+              <img
+                src={
+                  record.category_attachment
+                    ? record.category_attachment
+                    : 'https://varlet.gitee.io/varlet-ui/cat.jpg'
+                }
+                style={{
+                  width: '18px',
+                  height: '18px',
+                  marginRight: '8px',
+                }}
+                alt=""
+              />
+            </Tooltip>
+            {value}
+          </div>
+        )
+      },
+    },
     { title: '长故事', dataIndex: 'long_story_name' },
     { title: '子事务', dataIndex: 'child_story_count' },
-    { title: '经办人', dataIndex: 'handlers_name_ids' },
     {
       title: '经办人',
       dataIndex: 'handlers',
@@ -93,13 +115,6 @@ const DndKitTable = () => {
       width: 180,
       render: (text: any, record: any) => {
         return (
-          // <TableQuickEdit
-          //   type="fixed_select"
-          //   defaultText={record?.handlers_name_ids || []}
-          //   keyText="users"
-          //   item={record}
-          //   onUpdate={() => onUpdate(record)}
-          // >
           <MultipleAvatar
             max={3}
             list={record.handlers?.map((i: any) => ({
@@ -108,7 +123,6 @@ const DndKitTable = () => {
               avatar: i.avatar,
             }))}
           />
-          // </TableQuickEdit>
         )
       },
     },
@@ -185,20 +199,20 @@ const DndKitTable = () => {
       const data = [...rightSprintList]
       const idx = data.findIndex(k => k.id === result.destination?.droppableId)
       const destList = data[idx]
-      const source = [...destList.list]
+      const source = [...destList.stories]
 
-      const item = destList.list.find(
+      const item = destList.stories.find(
         (_: any, i: any) => i === result.source?.index,
       )
       source.splice(result.source?.index, 1)
       source.splice(result.destination?.index ?? 0, 0, item)
       const res: any = data.map(k => {
         if (k.id === result.destination?.droppableId) {
-          return { ...k, list: source }
+          return { ...k, stories: source }
         }
         return k
       })
-      dispatch(setSprintTableData(res))
+      dispatch(setRightSprintList(res))
     } else {
       // 不同表格拖动
       const data = [...rightSprintList]
@@ -206,23 +220,23 @@ const DndKitTable = () => {
         k => k.id === result.destination?.droppableId,
       )
       const sourceIdx = data.findIndex(k => k.id === result.source?.droppableId)
-      const item = data[sourceIdx].list.find(
+      const item = data[sourceIdx].stories.find(
         (_: any, i: any) => i === result.source?.index,
       )
-      const source = [...data[sourceIdx].list]
+      const source = [...data[sourceIdx].stories]
       source.splice(result.source?.index, 1)
-      const dest = [...data[destIdx].list]
+      const dest = [...data[destIdx].stories]
       dest.splice(result.destination?.index ?? 0, 0, item)
       const res = data.map(k => {
         if (k.id === result.destination?.droppableId) {
-          return { ...k, list: dest }
+          return { ...k, stories: dest }
         }
         if (k.id === result.source?.droppableId) {
-          return { ...k, list: source }
+          return { ...k, stories: source }
         }
         return k
       })
-      dispatch(setSprintTableData(res))
+      dispatch(setRightSprintList(res))
     }
   }
 
