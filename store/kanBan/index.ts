@@ -57,15 +57,15 @@ const slice = createSlice({
   name: 'kanBan',
   initialState,
   reducers: {
-    setViewItemConfig(
-      state,
-      action: PayloadAction<SliceState['viewItemConfig']>,
-    ) {
-      state.viewItemConfig = {
-        ...state.viewItemConfig,
-        ...action.payload,
-      }
-    },
+    // setViewItemConfig(
+    //   state,
+    //   action: PayloadAction<SliceState['viewItemConfig']>,
+    // ) {
+    //   state.viewItemConfig = {
+    //     ...state.viewItemConfig,
+    //     ...action.payload,
+    //   }
+    // },
     onChangeGuideVisible(
       state,
       action: PayloadAction<SliceState['guideVisible']>,
@@ -121,10 +121,8 @@ const slice = createSlice({
         }
       })
     },
-    onChangeSortByView(
-      state,
-      action: PayloadAction<Model.KanBan.ViewItem['id']>,
-    ) {
+    setSortByView(state, action: PayloadAction<Model.KanBan.ViewItem['id']>) {
+      // onTapSearchChoose
       const current = state.sortByView?.find(item => item.id === action.payload)
       if (!current) {
         return
@@ -166,11 +164,11 @@ const kanBan = slice.reducer
 export const {
   onChangeSortByGroupOptions,
   onChangeSortByRowAndStatusOptions,
-  onChangeSortByView,
+  setSortByView,
   onChangeGuideVisible,
   setSaveAsViewModelInfo,
   setShareModelInfo,
-  setViewItemConfig,
+  // setViewItemConfig,
 } = slice.actions
 
 export default kanBan

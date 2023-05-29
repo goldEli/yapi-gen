@@ -1,21 +1,31 @@
-import { kanbanConfig } from './data'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as services from '@/services'
 import { AppDispatch, store } from '@store/index'
 import {
-  onChangeSortByView,
+  // onChangeSortByView,
+  setSortByView,
   setSaveAsViewModelInfo,
   setShareModelInfo,
-  setViewItemConfig,
+  // setViewItemConfig,
 } from '.'
 import { getMessage } from '@/components/Message'
-import { produce } from 'immer'
-import useProjectId from '@/views/KanBanBoard/hooks/useProjectId'
 import { getParamsValueByKey } from '@/tools'
 import i18n from 'i18next'
+import { onTapSearchChoose, saveValue } from '@store/view'
 
 const name = 'kanBan'
 
+export const onChangeSortByView =
+  (id: Model.KanBan.ViewItem['id']) => async (dispatch: AppDispatch) => {
+    await dispatch(setSortByView(id))
+    const current = store
+      .getState()
+      .kanBan.sortByView?.find(item => item.id === id)
+    if (!current) {
+      return
+    }
+    dispatch(saveValue(current.config?.search ?? {}))
+  }
 export const delView =
   (params: API.Kanban.DelView.Params) => async (dispatch: AppDispatch) => {
     await services.kanban.delView(params)
@@ -26,13 +36,16 @@ export const delView =
     dispatch(getStoryViewList())
   }
 
+// 创建视图
 export const createView =
   (params: Omit<API.Kanban.CreateView.Params, 'use_type'>) =>
   async (dispatch: AppDispatch) => {
     const project_id = getParamsValueByKey('id')
     const res = await services.kanban.createView({
       ...params,
-      config: store.getState().kanBan.viewItemConfig,
+      config: {
+        search: store.getState().view.valueKey,
+      },
       project_id,
       use_type: 2,
     })
@@ -50,11 +63,9 @@ export const updateView =
 
 export const onFilter =
   (data: Model.KanBan.ViewItemConfig) => async (dispatch: AppDispatch) => {
-    await dispatch(
-      setViewItemConfig({
-        search: data,
-      }),
-    )
+    const { valueKey } = store.getState().view
+    console.log({ valueKey })
+
     // dispatch(getStoryViewList())
   }
 
@@ -63,7 +74,6 @@ export const getKanbanConfigList = createAsyncThunk(
   `${name}/getKanbanConfigList`,
   async (param: API.KanbanConfig.GetKanbanConfigList.Params) => {
     const res = await services.kanbanConfig.getKanbanConfigList(param)
-    console.log(res)
     return res.data
   },
 )
@@ -85,7 +95,7 @@ export const closeSaveAsViewModel = () => async (dispatch: AppDispatch) => {
 // 视图列表
 export const getStoryViewList = createAsyncThunk(
   `${name}/getStoryViewList`,
-  async () => {
+  async (_, { dispatch }) => {
     const project_id = getParamsValueByKey('id')
     const res = await services.kanban.getStoryViewList({ project_id })
     const { data } = res
@@ -101,10 +111,12 @@ export const getStoryViewList = createAsyncThunk(
     })
     if (!sortByView?.length) {
       ret[0].check = true
+      dispatch(onTapSearchChoose(ret[0]?.config?.search ?? {}))
       return ret
     }
     const checked = sortByView.find(item => item.check)
 
+    dispatch(onTapSearchChoose(checked?.config?.search ?? {}))
     return ret.map(item => {
       if (item.id === checked?.id) {
         return {

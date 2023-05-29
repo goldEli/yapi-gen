@@ -70,12 +70,12 @@ declare namespace Model.KanBan {
     stories: Story[]
   }
   interface ViewItemConfig {
-    [key in string]: any
+    // [key in string]: any
     // sort: { schedule: string }
     // fields: string[]
-    // search: {
-    //   [key in string]: string | number
-    // }
+    search: {
+      [key in string]: string | number
+    }
   }
 
   interface ViewItem {
