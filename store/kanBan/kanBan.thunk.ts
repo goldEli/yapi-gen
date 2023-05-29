@@ -111,11 +111,11 @@ export const getStoryViewList = createAsyncThunk(
     })
     if (!sortByView?.length) {
       ret[0].check = true
-      dispatch(onTapSearchChoose(ret[0]?.config?.search ?? {}))
+      const { search } = ret[0]?.config ?? {}
+      dispatch(onTapSearchChoose(search ?? {}))
       return ret
     }
     const checked = sortByView.find(item => item.check)
-
     dispatch(onTapSearchChoose(checked?.config?.search ?? {}))
     return ret.map(item => {
       if (item.id === checked?.id) {
