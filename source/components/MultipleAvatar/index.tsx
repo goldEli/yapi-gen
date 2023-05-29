@@ -4,6 +4,8 @@
 import React, { useMemo } from 'react'
 import styled from '@emotion/styled'
 import CommonUserAvatar from '../CommonUserAvatar'
+import DropDownMenu from '../DropDownMenu'
+import { Dropdown, Menu } from 'antd'
 
 interface MultipleAvatarProps {
   list: {
@@ -74,19 +76,74 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
       />
     )
   }
+  const items = [
+    {
+      key: '1',
+      label: (
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://www.antgroup.com"
+        >
+          1st menu item
+        </a>
+      ),
+    },
+
+    {
+      key: '3',
+      label: (
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://www.luohanacademy.com"
+        >
+          3rd menu item (disabled)
+        </a>
+      ),
+      disabled: true,
+    },
+    {
+      key: '4',
+      danger: true,
+      label: 'a danger item',
+    },
+  ]
   return (
-    <MultipleAvatarBox width={width}>
-      {data.map((item, idx) => {
-        return (
-          <AvatarBox left={idx * 20} key={item.id}>
-            <CommonUserAvatar isBorder avatar={item?.avatar} />
-          </AvatarBox>
-        )
-      })}
-      <MoreIcon show={hiddenNum > 0} left={data.length * 20}>
-        {text}
-      </MoreIcon>
-    </MultipleAvatarBox>
+    <Dropdown
+      // isVisible={false}
+      // onChangeVisible={() => {}}
+      menu={{ items }}
+      // menu={
+      //   <Menu
+      //     items={props.list.map(item => {
+      //       return {
+      //         key: item.id + '',
+      //         label: (
+      //           <CommonUserAvatar
+      //             isBorder
+      //             name={item.name}
+      //             avatar={item?.avatar}
+      //           />
+      //         ),
+      //       }
+      //     })}
+      //   />
+      // }
+    >
+      <MultipleAvatarBox width={width}>
+        {data.map((item, idx) => {
+          return (
+            <AvatarBox left={idx * 20} key={item.id}>
+              <CommonUserAvatar isBorder avatar={item?.avatar} />
+            </AvatarBox>
+          )
+        })}
+        <MoreIcon show={hiddenNum > 0} left={data.length * 20}>
+          {text}
+        </MoreIcon>
+      </MultipleAvatarBox>
+    </Dropdown>
   )
 }
 

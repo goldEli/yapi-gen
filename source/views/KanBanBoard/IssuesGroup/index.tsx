@@ -48,7 +48,7 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
   const { issuesGroup } = props
 
   const text = useMemo(() => {
-    const storiesNum = issuesGroup.columns.reduce((res, column) => {
+    const storiesNum = issuesGroup?.columns?.reduce((res, column) => {
       const n = column.stories.length ?? 0
       return res + n
     }, 0)
@@ -87,7 +87,7 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
     <IssuesGroupBox>
       {titleArea}
       <DropAreaList>
-        {issuesGroup.columns.map(column => {
+        {issuesGroup?.columns?.map(column => {
           return (
             <Issues key={column.id} issues={column} groupId={issuesGroup.id} />
           )
