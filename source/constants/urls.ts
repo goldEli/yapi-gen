@@ -193,6 +193,8 @@ const urls = {
   addSprintComment: '/b/transaction/comment/save',
   // 删除评论
   deleteSprintComment: '/b/transaction/comment/delete',
+  // 编辑评论 --------------
+  updateSprintComment: '/b/transaction/comment/update',
   // 添加事务 --------------
   addSprint: '/b/transaction/save',
   // 更新事务 --------------
