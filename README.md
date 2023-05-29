@@ -224,3 +224,23 @@ Y:\project\敏捷系统\scrum\source\components\DropDownMenu.tsx
 ### 带有侧边栏折叠及拖拽
 
 Y:\project\敏捷系统\scrum\source\components\HasSideCommonLayout
+
+### 视图管理
+
+视图中筛选字段调用 sotre 的 onTapSearchChoose 方法
+传参内容为
+示例，根据 Tablefilter 组件
+{
+
+    "tag": null,
+    "status": null,
+    "category": null,
+    "priority": null,
+    "schedule": null,
+    "user_name": null,
+    "created_at": null,
+    "iterate_name": null,
+    "users_copysend_name": null
+
+}
+searchChoose 该值为需要给到后端的字段值。
