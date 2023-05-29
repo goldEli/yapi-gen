@@ -227,6 +227,8 @@ Y:\project\敏捷系统\scrum\source\components\HasSideCommonLayout
 
 ### 视图管理
 
+D:\Project\敏捷\scrum\store\view\index.ts
+
 视图中筛选字段调用 sotre 的 onTapSearchChoose 方法 1.传参内容为
 示例，根据 Tablefilter 组件
 {
