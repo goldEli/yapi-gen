@@ -6,6 +6,8 @@ import {
   setSortByView,
   setSaveAsViewModelInfo,
   setShareModelInfo,
+  setSortByGroupOptions,
+  setSortByRowAndStatusOptions,
   // setViewItemConfig,
 } from '.'
 import { getMessage } from '@/components/Message'
@@ -14,6 +16,7 @@ import i18n from 'i18next'
 import { onTapSearchChoose, saveValue } from '@store/view'
 import { generatorFilterParams } from './utils'
 import _ from 'lodash'
+import { Options } from '@/components/SelectOptionsNormal'
 
 const name = 'kanBan'
 
@@ -21,10 +24,6 @@ const name = 'kanBan'
 export const getKanbanByGroup = createAsyncThunk(
   `${name}/getKanbanByGroup`,
   async () => {
-    // kanban_config_id: Model.KanbanConfig.Config['id']
-    // search?: {
-    //   [key in string]: number | string
-    // }
     const { valueKey } = store.getState().view
     const { sortByGroupOptions, sortByRowAndStatusOptions } =
       store.getState().kanBan
@@ -67,9 +66,22 @@ export const onChangeSortByView =
     if (!current) {
       return
     }
-    dispatch(saveValue(current.config?.search ?? {}))
+    await dispatch(saveValue(current.config?.search ?? {}))
     const params = generatorFilterParams(current.config)
-    dispatch(onTapSearchChoose(params))
+    await dispatch(onTapSearchChoose(params))
+    dispatch(getKanbanByGroup())
+  }
+// 修改分组
+export const onChangeSortByGroupOptions =
+  (key: Options['key']) => async (dispatch: AppDispatch) => {
+    await dispatch(setSortByGroupOptions(key))
+    dispatch(getKanbanByGroup())
+  }
+// 修改列
+export const onChangeSortByRowAndStatusOptions =
+  (key: Options['key']) => async (dispatch: AppDispatch) => {
+    await dispatch(setSortByRowAndStatusOptions(key))
+    dispatch(getKanbanByGroup())
   }
 // 删除视图
 export const delView =

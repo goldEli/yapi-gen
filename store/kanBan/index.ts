@@ -94,7 +94,7 @@ const slice = createSlice({
         ...action.payload,
       }
     },
-    onChangeSortByGroupOptions(state, action: PayloadAction<Options['key']>) {
+    setSortByGroupOptions(state, action: PayloadAction<Options['key']>) {
       const current = state.sortByGroupOptions?.find(
         item => item.key === action.payload,
       )
@@ -108,10 +108,7 @@ const slice = createSlice({
         }
       })
     },
-    onChangeSortByRowAndStatusOptions(
-      state,
-      action: PayloadAction<Options['key']>,
-    ) {
+    setSortByRowAndStatusOptions(state, action: PayloadAction<Options['key']>) {
       const current = state.sortByRowAndStatusOptions?.find(
         item => item.key === action.payload,
       )
@@ -169,8 +166,8 @@ const slice = createSlice({
 const kanBan = slice.reducer
 
 export const {
-  onChangeSortByGroupOptions,
-  onChangeSortByRowAndStatusOptions,
+  setSortByGroupOptions,
+  setSortByRowAndStatusOptions,
   setSortByView,
   onChangeGuideVisible,
   setSaveAsViewModelInfo,

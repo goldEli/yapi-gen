@@ -16,13 +16,12 @@ import { useDispatch, useSelector } from '@store/index'
 
 import { saveScreen } from '@store/view'
 import KanBanBtnsArea from '../KanBanBtnsArea'
-import {
-  onChangeSortByGroupOptions,
-  onChangeSortByRowAndStatusOptions,
-} from '@store/kanBan'
+
 import SelectOptions from '@/components/SelectOptions'
 import {
   delView,
+  onChangeSortByGroupOptions,
+  onChangeSortByRowAndStatusOptions,
   onChangeSortByView,
   onRefreshKanBan,
   openSaveAsViewModel,
