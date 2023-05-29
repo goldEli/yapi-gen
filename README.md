@@ -227,8 +227,7 @@ Y:\project\敏捷系统\scrum\source\components\HasSideCommonLayout
 
 ### 视图管理
 
-视图中筛选字段调用 sotre 的 onTapSearchChoose 方法
-传参内容为
+视图中筛选字段调用 sotre 的 onTapSearchChoose 方法 1.传参内容为
 示例，根据 Tablefilter 组件
 {
 
@@ -243,4 +242,11 @@ Y:\project\敏捷系统\scrum\source\components\HasSideCommonLayout
     "users_copysend_name": null
 
 }
-searchChoose 该值为需要给到后端的字段值。
+searchChoose 该值为需要给到后端的字段值。 2.筛选字段值为 store 中的字段，要清空，可以在组件离开或手动清除。
+useEffect(() => {
+init()
+return () => {
+
+dispatch(onTapSearchChoose({}))
+}
+}, [])
