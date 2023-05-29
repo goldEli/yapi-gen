@@ -26,6 +26,7 @@ import {
 } from '@/views/WorkReport/Review/components/style'
 
 import { Content, Title, Text } from './style'
+import { Col, NameText } from '@/views/WorkReport/Formwork/Addperson'
 
 interface TargetTabsProps {
   list: any
@@ -170,6 +171,25 @@ const NoteDetailDrawer = (props: any) => {
           <Title>发送于</Title>
           <Text>{props.detailInner.send_time}</Text>
           <Title>接收人</Title>
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+            }}
+          >
+            {props.detailInner.recipient.map((i: any) => (
+              <Col
+                style={{
+                  whiteSpace: 'nowrap',
+                }}
+                key={i.id}
+              >
+                <NameText>
+                  {i.name}({i.user_ids.length})
+                </NameText>
+              </Col>
+            ))}
+          </div>
         </Content>
       </Drawer>
     )

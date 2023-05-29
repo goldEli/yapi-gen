@@ -4,6 +4,8 @@
 import React, { useMemo } from 'react'
 import styled from '@emotion/styled'
 import CommonUserAvatar from '../CommonUserAvatar'
+import DropDownMenu from '../DropDownMenu'
+import { Dropdown, Menu } from 'antd'
 
 interface MultipleAvatarProps {
   list: {
@@ -20,6 +22,7 @@ const MultipleAvatarBox = styled.div<{ width: number }>`
   height: 24px;
   display: flex;
   position: relative;
+  cursor: pointer;
 `
 const MoreIcon = styled.div<{ left: number; show: boolean }>`
   width: 24px;
@@ -74,19 +77,32 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
       />
     )
   }
+  const items = props.list.map((item, idx) => {
+    return {
+      key: item?.id + '' + idx,
+      label: (
+        <CommonUserAvatar isBorder name={item.name} avatar={item?.avatar} />
+      ),
+    }
+  })
   return (
-    <MultipleAvatarBox width={width}>
-      {data.map((item, idx) => {
-        return (
-          <AvatarBox left={idx * 20} key={item.id}>
-            <CommonUserAvatar isBorder avatar={item?.avatar} />
-          </AvatarBox>
-        )
-      })}
-      <MoreIcon show={hiddenNum > 0} left={data.length * 20}>
-        {text}
-      </MoreIcon>
-    </MultipleAvatarBox>
+    <Dropdown
+      menu={{ items }}
+      // trigger={['click']}
+    >
+      <MultipleAvatarBox width={width}>
+        {data.map((item, idx) => {
+          return (
+            <AvatarBox left={idx * 20} key={item.id}>
+              <CommonUserAvatar isBorder avatar={item?.avatar} />
+            </AvatarBox>
+          )
+        })}
+        <MoreIcon show={hiddenNum > 0} left={data.length * 20}>
+          {text}
+        </MoreIcon>
+      </MultipleAvatarBox>
+    </Dropdown>
   )
 }
 

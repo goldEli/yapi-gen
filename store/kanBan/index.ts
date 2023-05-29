@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { kanbanInfo, kanbanInfoByGroup, kanbanConfig } from './data'
 import {
   getKanbanByGroup,
   getKanbanConfig,
@@ -29,7 +28,7 @@ type SliceState = {
 
 const initialState: SliceState = {
   kanbanConfigList: [],
-  kanbanInfo: kanbanInfo,
+  kanbanInfo: [],
   kanbanInfoByGroup: [],
   sortByGroupOptions: [
     { key: 'none', value: '无', check: false },
