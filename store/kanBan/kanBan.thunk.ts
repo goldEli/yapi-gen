@@ -11,7 +11,8 @@ import {
 import { getMessage } from '@/components/Message'
 import { getParamsValueByKey } from '@/tools'
 import i18n from 'i18next'
-import { onTapSearchChoose, saveValue } from '@store/view'
+import { onTapSearchChoose, saveValue, setView } from '@store/view'
+import { generatorFilterParams } from './utils'
 
 const name = 'kanBan'
 
@@ -25,6 +26,8 @@ export const onChangeSortByView =
       return
     }
     dispatch(saveValue(current.config?.search ?? {}))
+    const params = generatorFilterParams(current.config)
+    dispatch(onTapSearchChoose(params))
   }
 export const delView =
   (params: API.Kanban.DelView.Params) => async (dispatch: AppDispatch) => {
@@ -43,9 +46,7 @@ export const createView =
     const project_id = getParamsValueByKey('id')
     const res = await services.kanban.createView({
       ...params,
-      config: {
-        search: store.getState().view.valueKey,
-      },
+      config: store.getState().view,
       project_id,
       use_type: 2,
     })
@@ -111,12 +112,14 @@ export const getStoryViewList = createAsyncThunk(
     })
     if (!sortByView?.length) {
       ret[0].check = true
-      const { search } = ret[0]?.config ?? {}
-      dispatch(onTapSearchChoose(search ?? {}))
+      const config = ret[0]?.config ?? {}
+      const params = generatorFilterParams(config)
+      dispatch(onTapSearchChoose(params))
       return ret
     }
     const checked = sortByView.find(item => item.check)
-    dispatch(onTapSearchChoose(checked?.config?.search ?? {}))
+    const params = generatorFilterParams(checked?.config)
+    dispatch(onTapSearchChoose(params))
     return ret.map(item => {
       if (item.id === checked?.id) {
         return {

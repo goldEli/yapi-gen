@@ -32,6 +32,11 @@ const slice = createSlice({
     },
   } as SliceState,
   reducers: {
+    setView(state, action) {
+      state.searchKey = action.payload['searchKey']
+      state.valueKey = action.payload['valueKey']
+      state.searchChoose = action.payload['searchChoose']
+    },
     //打开创建视图管理弹窗
     changeCreateVisible: (state, action) => {
       state.createVisible = action.payload
@@ -103,6 +108,7 @@ export const {
   onTapSort,
   saveInputKey,
   setCreateViewPort,
+  setView,
 } = slice.actions
 
 export default slice.reducer

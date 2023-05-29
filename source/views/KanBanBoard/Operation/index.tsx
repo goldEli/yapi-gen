@@ -161,7 +161,45 @@ const Operation = (props: Props) => {
     }
     const arr = filterFelid?.filter((item: any) => item.isDefault === 1)
 
-    setSearchList(arr)
+    setSearchList([
+      {
+        type: 'select_checkbox',
+        id: 12309,
+        name: '迭代',
+        key: 'iterate_name',
+        isDefault: 1,
+        contentTxt: '迭代',
+        content: 'iterate_name',
+      },
+      {
+        type: 'select_checkbox',
+        id: 12306,
+        name: '状态',
+        key: 'status',
+        isDefault: 1,
+        contentTxt: '状态',
+        content: 'status',
+      },
+      {
+        type: 'select_checkbox',
+        id: 12307,
+        name: '优先级',
+        key: 'priority',
+        isDefault: 1,
+        contentTxt: '优先级',
+        content: 'priority',
+      },
+
+      {
+        type: 'time',
+        id: 12314,
+        name: '创建时间',
+        key: 'created_at',
+        isDefault: 1,
+        contentTxt: '创建时间',
+        content: 'created_at',
+      },
+    ])
     dispatch(saveScreen(arr))
     setFilterBasicsList(projectInfo?.filterBasicsList)
     setFilterSpecialList(projectInfo?.filterSpecialList)
