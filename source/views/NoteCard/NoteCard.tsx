@@ -55,6 +55,7 @@ const NoteCard = (props: any) => {
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
+            whiteSpace: 'nowrap',
           }}
         >
           {i.name}（{i.user_ids.length}）

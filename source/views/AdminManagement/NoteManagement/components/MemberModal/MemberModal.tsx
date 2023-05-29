@@ -75,7 +75,7 @@ const MemberModal = (props: any) => {
       },
     },
     {
-      width: 200,
+      width: 150,
       title: <span>{t('project.realName')}</span>,
       dataIndex: 'name',
       key: 'name',
@@ -106,107 +106,31 @@ const MemberModal = (props: any) => {
     },
     {
       title: <span>{t('common.phone')}</span>,
-      dataIndex: 'phone',
+      dataIndex: 'account',
       key: 'phone',
       width: 150,
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: any) => {
+        return <span>{text.phone || '--'}</span>
       },
     },
     {
       title: <span>{t('common.department')}</span>,
-      dataIndex: 'department_name',
+      dataIndex: 'department',
       key: 'department_name',
       width: 160,
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: any) => {
+        console.log(text)
+
+        return <span>{text?.name || '--'}</span>
       },
     },
     {
       title: <span>{t('common.job')}</span>,
-      dataIndex: 'position_name',
+      dataIndex: 'position',
       key: 'position_name',
       width: 120,
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
-      },
-    },
-    {
-      title: <span>{t('common.permissionGroup')}</span>,
-      dataIndex: 'role_name',
-      key: 'role_name',
-      width: 170,
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
-      },
-    },
-    {
-      title: <span>{t('common.status')}</span>,
-      dataIndex: 'status',
-      key: 'status',
-      width: 120,
-      render: (
-        text: string | number,
-        record: Record<string, string | number>,
-      ) => {
-        return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <span
-              style={{
-                display: 'inline-block',
-                width: 8,
-                height: 8,
-                borderRadius: '50%',
-                marginRight: 8,
-                background: text === 2 ? 'var(--neutral-n5)' : '#43ba9a',
-              }}
-            />
-            {text === 1 ? t('common.job1') : t('common.job2')}
-          </div>
-        )
-      },
-    },
-    {
-      title: <span>{t('between_jobs')}</span>,
-      dataIndex: 'handover_status',
-      key: 'handover_status',
-      width: 120,
-      render: (
-        text: string | number,
-        record: Record<string, string | number>,
-      ) => {
-        return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <span
-              style={{
-                display: 'inline-block',
-                width: 8,
-                height: 8,
-                marginRight: 8,
-                borderRadius: '50%',
-                background: text === 1 ? 'var(--neutral-n5)' : '#A176FB',
-              }}
-            />
-            {text === 1 ? t('normal') : t('handed_over')}
-          </div>
-        )
-      },
-    },
-    {
-      title: <span>{t('staff.projectCount')}</span>,
-      dataIndex: 'project_num',
-      key: 'project_num',
-      width: 135,
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
-      },
-    },
-    {
-      title: <span>{t('common.createTime')}</span>,
-      dataIndex: 'created_at',
-      key: 'created_at',
-      render: (text: string) => {
-        return <span>{text || '--'}</span>
+      render: (text: any) => {
+        return <span>{text?.name || '--'}</span>
       },
     },
   ]
@@ -217,20 +141,17 @@ const MemberModal = (props: any) => {
       page,
       pagesize,
     })
-    console.log(res)
 
     setListData(res.list)
     setIsSpinning(false)
     setTotal(res.pager.total)
   }
+
   useEffect(() => {
     if (props.isVisible) {
       getStaffListData()
     }
-  }, [props.isVisible])
-  useEffect(() => {
-    getStaffListData()
-  }, [page, pagesize])
+  }, [page, pagesize, props.isVisible])
   return (
     <CommonModal
       onClose={() => props.onCloseMember()}
