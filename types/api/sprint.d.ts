@@ -1,4 +1,34 @@
 declare namespace API.Sprint {
+  namespace BatchSprintEdit {
+    type Params = {
+      projectId: number
+      demandIds: number[]
+      type: string
+      target: number | number[] | string | Model.Sprint.CustomFiledInfo
+    }
+  }
+  namespace BatchSprintDelete {
+    type Params = {
+      projectId: number
+      demandIds: number[]
+      isDeleteChild: number
+    }
+  }
+  namespace GetSprintBatchEditConfig {
+    type Params = {
+      projectId: number
+      demandIds: number[]
+    }
+
+    type Result = {
+      attr: null | string
+      content: string
+      content_txt: string
+      is_customize: number
+      title: string
+      values: { content: string; id: number; parent_id: number }[]
+    }[]
+  }
   namespace GetSprintExcel {
     type Params = {
       projectId: number

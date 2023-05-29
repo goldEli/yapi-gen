@@ -60,6 +60,8 @@ interface Props {
   selectRows?: any
   onUpdate(): void
   onRef: any
+  // 1-需求，2-缺陷，3-事务
+  type: number
 }
 
 const FloatBatch = (props: Props) => {
@@ -114,6 +116,7 @@ const FloatBatch = (props: Props) => {
           type={currentType}
           selectRows={props.selectRows}
           onClose={onClose}
+          modelType={props.type}
         />
       )}
       {props.isVisible && (
