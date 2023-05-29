@@ -37,6 +37,19 @@ export const updateHomeSetting = (
     params,
   )
 
+// 删除事务
+export const deleteSprint = async (params: {
+  projectId: number
+  id: number
+  isDeleteChild?: number
+}) => {
+  await http.post<any>('deleteSprint', {
+    project_id: params.projectId,
+    id: params.id,
+    is_delete_childs: params.isDeleteChild,
+  })
+}
+
 // 处理事务列表数据
 const getListItem = (array: any, params: API.Sprint.GetSprintList.Params) => {
   return array?.map((i: any) => ({
