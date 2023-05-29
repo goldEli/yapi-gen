@@ -18,6 +18,7 @@ import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import useProjectId from './hooks/useProjectId'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import { jumpToKanbanConfig } from './utils'
 
 interface IProps {}
 const SprintProjectKanBanBox = styled.div`
@@ -49,11 +50,7 @@ const SprintProjectKanBan: React.FC<IProps> = props => {
       const res = await dispatch(getKanbanConfigList({ project_id: projectId }))
       const list = res.payload as any
       if (!list?.length) {
-        // 如果没有配置列 跳转到列配置页面
-        const params = encryptPhp(
-          JSON.stringify({ id: projectId, pageIdx: 'main', type: 1 }),
-        )
-        navigate(`/ProjectManagement/ProjectSetting?data=${params}`)
+        jumpToKanbanConfig(navigate)
         return
       }
       dispatch(getStoryViewList())
