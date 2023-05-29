@@ -189,7 +189,7 @@ export const useDynamicColumns = (state: any) => {
             isCanOperation={isCanEdit && !record.isExamine}
             projectId={state.projectId}
             record={record}
-            // onChangeStatus={item => state.onChangeStatus(item, record)}
+            onChangeStatus={item => state.onChangeStatus(item, record)}
           >
             <StateTag
               onClick={record.isExamine ? onExamine : void 0}

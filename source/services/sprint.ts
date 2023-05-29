@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/no-loss-of-precision */
 // eslint-disable max-lines
 import * as http from '@/tools/http'
@@ -492,6 +493,156 @@ export const updateSprintCategory = async (
     category_id: params.categoryId,
     status_id: params.statusId,
   })
+}
+
+// 修改事务状态
+export const updateSprintStatus = async (
+  params: API.Sprint.UpdateSprintStatus.Params,
+) => {
+  delete params.fields.reviewerValue
+  await http.put<any>('updateDemandStatus', {
+    project_id: params.projectId,
+    story_id: params.nId,
+    category_status_to_id: params.toId,
+    fields: params.fields,
+    verify_user_id: params.verifyId ?? undefined,
+  })
+}
+
+export const getLoadSprintListFields = async (
+  params: API.Sprint.GetLoadSprintListFields.Params,
+) => {
+  const response: any = await http.get<
+    any,
+    API.Sprint.GetLoadSprintListFields.Result
+  >('getLoadSprintListFields', {
+    project_id: params.projectId,
+    is_update: params.isUpdate,
+    is_bug: params.isBug,
+  })
+
+  return {
+    baseFields: response.data.base_fields,
+    timeAndPersonFields: response.data.time_person_fields,
+    customFields: response.data.custom_fields,
+  }
+}
+
+// 导出事务字段列表
+export const getExportSprintFields = async (params: { projectId: number }) => {
+  const response: any = await http.get<
+    any,
+    API.Sprint.GetLoadSprintListFields.Result
+  >('getExportSprintFields', {
+    project_id: params.projectId,
+  })
+
+  return {
+    baseFields: response.data.base_fields,
+    timeAndPersonFields: response.data.time_person_fields,
+    customFields: response.data.custom_fields,
+  }
+}
+
+// 获取下载模板
+export const getImportDownloadSprintModel = async (
+  params: API.Sprint.GetImportDownloadSprintModel.Params,
+) => {
+  const response = await http.get(
+    'getImportDownloadSprintModel',
+    {
+      is_update: params.isUpdate,
+      project_id: params.projectId,
+      fields: params.fields,
+    },
+    { responseType: 'blob' },
+  )
+
+  return response
+}
+
+// 导入事务
+export const getImportSprintExcel = async (
+  params: API.Sprint.GetSprintExcel.Params,
+) => {
+  const formData = new FormData()
+  formData.append('project_id', String(params.projectId))
+  formData.append('file_path', params.filePath)
+  const response = await http.post('getImportSprintExcel', formData, {
+    headers: {
+      'Content-Type': undefined,
+    },
+  })
+
+  return {
+    successCount: response.data.count || 0,
+    errorCount: response.data.error_list
+      ? Object.keys(response.data.error_list)?.length
+      : 0,
+    errorList: response.data.error_list ? response.data.error_list : {},
+  }
+}
+
+// 导入更新
+export const getImportSprintExcelUpdate = async (
+  params: API.Sprint.GetSprintExcel.Params,
+) => {
+  const formData = new FormData()
+  formData.append('project_id', String(params.projectId))
+  formData.append('file_path', params.filePath)
+  const response = await http.post('getImportSprintExcelUpdate', formData, {
+    headers: {
+      'Content-Type': undefined,
+    },
+  })
+
+  return {
+    successCount: response.data.count || 0,
+    errorCount: response.data.error_list
+      ? Object.keys(response.data.error_list)?.length
+      : 0,
+    errorList: response.data.error_list ? response.data.error_list : {},
+  }
+}
+
+// 导出事务
+export const getExportSprintExcel = async (params: any) => {
+  const response = await http.post(
+    'getExportSprintExcel',
+    {
+      search: {
+        project_id: params?.projectId,
+        keyword: params?.searchValue,
+        iterate_id: params?.iterateId,
+        status: params?.statusId,
+        priority: params?.priorityId,
+        user_id: params?.userId,
+        tag: params?.tagId,
+        created_at: params?.createdAtId,
+        expected_start_at: params?.expectedStartAtId,
+        expected_end_at: params?.expectedendat,
+        updated_at: params?.updatedat,
+        finish_at: params?.finishAt,
+        users_name: params?.usersnameId,
+        users_copysend_name: params?.usersCopysendNameId,
+        all: params?.all ? 1 : 0,
+        panel: params?.panel ? 1 : 0,
+        class_ids: params.class_ids,
+        class_id: params.class_id,
+        category_id: params.category_id,
+        schedule_start: params.schedule_start,
+        schedule_end: params.schedule_end,
+        custom_field: params?.custom_field,
+      },
+      pagesize: params?.pageSize,
+      page: params?.page,
+      orderkey: params?.orderKey,
+      order: params?.order,
+      fields: params.fields,
+    },
+    { responseType: 'blob' },
+  )
+  return response
 }
 
 // 检查是否保存视图

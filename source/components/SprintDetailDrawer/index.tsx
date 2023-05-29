@@ -508,7 +508,7 @@ const SprintDetailDrawer = () => {
                 isCanOperation={isCanEdit && !drawerInfo.isExamine}
                 projectId={drawerInfo.projectId}
                 record={drawerInfo}
-                // onChangeStatus={onChangeStatus}
+                onChangeStatus={onChangeStatus}
               >
                 <StateTag
                   name={drawerInfo?.status?.status?.content}

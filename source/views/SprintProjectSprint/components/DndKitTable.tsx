@@ -100,9 +100,9 @@ const DndKitTable = () => {
         return (
           <ChangeStatusPopover
             children={<div>11111</div>}
-            // onChangeStatus={function (value: any): void {
-            //   throw new Error('Function not implemented.')
-            // }}
+            onChangeStatus={function (value: any): void {
+              throw new Error('Function not implemented.')
+            }}
             record={record}
           />
         )

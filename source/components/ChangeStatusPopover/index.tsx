@@ -6,7 +6,7 @@ import StatusModal from './StatusModal'
 interface Props {
   isShow?: boolean
   children: ReactNode
-  // onChangeStatus(value: any): void
+  onChangeStatus(value: any): void
   record: any
   projectId?: any
   isCanOperation?: boolean
@@ -43,7 +43,8 @@ const ChangeStatusPopover = (props: Props) => {
         isVisible={isVisible}
         checkStatusItem={checkStatusItem}
         onClose={onClosModal}
-        // onChangeStatusConfirm={props.onChangeStatus}
+        record={props.record}
+        onChangeStatusConfirm={props.onChangeStatus}
       />
       <Popover
         open={popoverVisible}
@@ -52,7 +53,6 @@ const ChangeStatusPopover = (props: Props) => {
         trigger="click"
         destroyTooltipOnHide
         getPopupContainer={n => (props.isShow ? n : document.body)}
-        //   overlayStyle={{ width: 683 }}
         // 设置宽度是用于弹窗自适应宽度后会左右摆动问题
         content={
           <StatusPopover
