@@ -30,7 +30,7 @@ const initialState: SliceState = {
   kanbanConfigList: [],
   kanbanConfig: kanbanConfig,
   kanbanInfo: kanbanInfo,
-  kanbanInfoByGroup: kanbanInfoByGroup,
+  kanbanInfoByGroup: [],
   sortByGroupOptions: [
     { key: 'none', value: '无', check: false },
     { key: 'users', value: '按人员', check: true },
