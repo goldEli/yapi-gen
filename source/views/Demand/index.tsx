@@ -604,7 +604,7 @@ const DemandBox = () => {
               isCanOperation={isCanEdit && !demandInfo?.isExamine}
               projectId={projectId}
               record={demandInfo}
-              // onChangeStatus={onChangeStatus}
+              onChangeStatus={onChangeStatus}
             >
               <StateTag
                 onClick={demandInfo?.isExamine ? onExamine : void 0}

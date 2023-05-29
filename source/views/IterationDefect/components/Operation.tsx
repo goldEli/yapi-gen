@@ -15,21 +15,22 @@ import { Popover, Space, Tooltip } from 'antd'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useDispatch, useSelector } from '@store/index'
 import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
+import { setCreateCategory } from '@store/demand'
 import { saveScreen } from '@store/view'
 import CommonIconFont from '@/components/CommonIconFont'
-import { OperationWrap } from '../style'
 import CommonButton from '@/components/CommonButton'
 import CommonModal from '@/components/CommonModal'
 import CommonImport from '@/components/CommonImport'
 import {
-  getImportDownloadSprintModel,
-  getImportSprintExcel,
-  getImportSprintExcelUpdate,
-  getExportSprintFields,
-  getLoadSprintListFields,
-  getExportSprintExcel,
-} from '@/services/sprint'
+  getImportDownloadModel,
+  getImportExcel,
+  getImportExcelUpdate,
+  getExportFields,
+  getLoadListFields,
+  getExportExcel,
+} from '@/services/demand'
 import CommonExport from '@/components/CommonExport'
+import { OperationWrap } from '../style'
 
 const StickyWrap = styled.div({
   background: 'white',
@@ -105,9 +106,6 @@ const MoreItem = styled.div({
 })
 
 interface Props {
-  isGrid: any
-  onChangeGrid(val: any): void
-  onChangeVisible?(e?: any): void
   onSearch(params: any): void
   onRefresh(): void
   settingState: boolean
@@ -263,6 +261,21 @@ const Operation = (props: Props) => {
     setFilterState(!filterState)
   }
 
+  const onChangeCategory = (e: any, item: any) => {
+    // dispatch(setCreateCategory(item))
+    // // 需求列表筛选参数赋值给 弹窗
+    // dispatch(setFilterParamsModal(filterParams))
+    // setTimeout(() => {
+    //   dispatch(
+    //     setAddWorkItemModal({
+    //       visible: true,
+    //       params: { projectId: projectInfo?.id },
+    //     }),
+    //   )
+    //   setIsVisible(false)
+    // }, 0)
+  }
+
   const onImportClick = () => {
     setIsVisible(false)
     setIsShowImport(true)
@@ -291,13 +304,13 @@ const Operation = (props: Props) => {
       {hasImport || projectInfo?.status !== 1 ? null : (
         <MoreItem onClick={onImportClick}>
           <CommonIconFont type="export" />
-          <span style={{ marginLeft: 8 }}>导入事务</span>
+          <span style={{ marginLeft: 8 }}>导入缺陷</span>
         </MoreItem>
       )}
       {hasExport ? null : (
         <MoreItem onClick={onExportClick}>
           <CommonIconFont type="Import" />
-          <span style={{ marginLeft: 8 }}>导出事务</span>
+          <span style={{ marginLeft: 8 }}>导出缺陷</span>
         </MoreItem>
       )}
     </div>
@@ -328,45 +341,45 @@ const Operation = (props: Props) => {
       <CommonModal
         isVisible={isShowImport}
         width={784}
-        title={t('common.importTransaction')}
+        title={t('common.importDefect')}
         isShowFooter
         onClose={onImportClose}
       >
         <CommonImport
-          templateTitle={t('project.importChoose')}
+          templateTitle={t('defect.importChoose')}
           interfaces={{
-            getImportDownloadModel: getImportDownloadSprintModel,
-            getImportExcel: getImportSprintExcel,
-            getImportExcelUpdate: getImportSprintExcelUpdate,
+            getImportDownloadModel,
+            getImportExcel,
+            getImportExcelUpdate,
           }}
           templateInterfaces={{
-            getExportSprintFields,
-            getLoadSprintListFields,
+            getExportFields,
+            getLoadListFields,
           }}
-          stepText={t('common.uploadTransaction')}
+          stepText={t('common.uploadDefect')}
           tips={{
             tab1: (
               <>
-                <span>{t('project.importText1')}</span>
-                <span>{t('project.importText2')}</span>
-                <span>{t('project.importText3')}</span>
-                <span>{t('project.importText4')}</span>
-                <span>{t('project.importText5')}</span>
-                <span>{t('project.importText6')}</span>
-                <span>{t('project.importText7')}</span>
-                <span>{t('project.importText8')}</span>
+                <span>{t('defect.importText1')}</span>
+                <span>{t('defect.importText2')}</span>
+                <span>{t('defect.importText3')}</span>
+                <span>{t('defect.importText4')}</span>
+                <span>{t('defect.importText5')}</span>
+                <span>{t('defect.importText6')}</span>
+                <span>{t('defect.importText7')}</span>
+                <span>{t('defect.importText8')}</span>
               </>
             ),
             tab2: (
               <>
-                <span>{t('project.importText9')}</span>
-                <span>{t('project.importText10')}</span>
-                <span>{t('project.importText11')}</span>
-                <span>{t('project.importText12')}</span>
-                <span>{t('project.importText13')}</span>
-                <span>{t('project.importText14')}</span>
-                <span>{t('project.importText15')}</span>
-                <span>{t('project.importText16')}</span>
+                <span>{t('defect.importText9')}</span>
+                <span>{t('defect.importText10')}</span>
+                <span>{t('defect.importText11')}</span>
+                <span>{t('defect.importText12')}</span>
+                <span>{t('defect.importText13')}</span>
+                <span>{t('defect.importText14')}</span>
+                <span>{t('defect.importText15')}</span>
+                <span>{t('defect.importText16')}</span>
               </>
             ),
           }}
@@ -374,12 +387,12 @@ const Operation = (props: Props) => {
       </CommonModal>
 
       <CommonExport
-        interfaces={{ getExportSprintExcel }}
+        interfaces={{ getExportExcel }}
         isShowExport={isShowExport}
         onClose={setIsShowExport}
         searchGroups={searchGroups}
         otherParams={props.otherParams}
-        templateInterfaces={{ getExportSprintFields, getLoadSprintListFields }}
+        templateInterfaces={{ getExportFields, getLoadListFields }}
       />
 
       <OperationWrap>
@@ -409,7 +422,7 @@ const Operation = (props: Props) => {
               ? 'b/story/save'
               : 'b/transaction/save',
           ) || projectInfo?.status !== 1 ? null : (
-            <CommonButton type="primary">创建事务</CommonButton>
+            <CommonButton type="primary">创建缺陷</CommonButton>
           )}
           {hasExport && hasImport ? null : (
             <Popover
@@ -433,12 +446,11 @@ const Operation = (props: Props) => {
 
         <OperationGroup
           onChangeFilter={onChangeFilter}
-          onChangeGrid={props.onChangeGrid}
           onRefresh={props.onRefresh}
-          isGrid={props.isGrid}
           filterState={filterState}
           settingState={props.settingState}
           onChangeSetting={() => props.onChangeSetting(!props.settingState)}
+          notGrid
         />
       </OperationWrap>
 

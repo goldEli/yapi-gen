@@ -177,7 +177,6 @@ const SprintProjectAffair: React.FC<IProps> = props => {
 
   // 筛选条件
   const onSearch = (params: any) => {
-    console.log(111111111111, 'onSearch')
     setDataList({ list: undefined })
     setIsUpdated(true)
     setSearchItems(params)

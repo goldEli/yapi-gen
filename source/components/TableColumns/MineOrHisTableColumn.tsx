@@ -338,7 +338,7 @@ export const useDynamicColumns = (state: any) => {
             }
             projectId={record.project_id}
             record={record}
-            // onChangeStatus={(value: any) => state.updateStatus(value, record)}
+            onChangeStatus={(value: any) => state.updateStatus(value, record)}
           >
             <StateTag
               style={{

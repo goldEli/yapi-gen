@@ -40,6 +40,7 @@ const StatusPopover = (props: Props) => {
         content: i.status.content,
         projectId: i.project_id,
         canChange: i.can_changes_category_status,
+        statusName: i.story_status_config.name || '--',
       })),
     )
   }
@@ -54,7 +55,7 @@ const StatusPopover = (props: Props) => {
     <Items>
       {statusList.map((i: any) => (
         <Item key={i.id} onClick={() => onOpenModal(i)}>
-          <div className="name">流转名称</div>
+          <div className="name">{i.statusName}</div>
           <div className="provider">
             <div />
             <span />

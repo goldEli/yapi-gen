@@ -245,10 +245,12 @@ D:\Project\敏捷\scrum\store\view\index.ts
 
 }
 searchChoose 该值为需要给到后端的字段值。 2.筛选字段值为 store 中的字段，要清空，可以在组件离开或手动清除。
-useEffect(() => {
-init()
-return () => {
 
-dispatch(onTapSearchChoose({}))
-}
+```js
+useEffect(() => {
+  init()
+  return () => {
+    dispatch(onTapSearchChoose({}))
+  }
 }, [])
+```
