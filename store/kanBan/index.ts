@@ -1,6 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { kanbanInfo, kanbanInfoByGroup, kanbanConfig } from './data'
-import { getKanbanConfigList, getStoryViewList } from './kanBan.thunk'
+import {
+  getKanbanByGroup,
+  getKanbanConfigList,
+  getStoryViewList,
+} from './kanBan.thunk'
 import { Options } from '@/components/SelectOptionsNormal'
 
 type SliceState = {
@@ -155,6 +159,9 @@ const slice = createSlice({
 
       const checked = state.sortByView.find(item => item.check)
       state.viewItemConfig = checked?.config
+    })
+    builder.addCase(getKanbanByGroup.fulfilled, (state, action) => {
+      state.kanbanInfoByGroup = action.payload
     })
   },
 })

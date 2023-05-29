@@ -13,9 +13,51 @@ import { getParamsValueByKey } from '@/tools'
 import i18n from 'i18next'
 import { onTapSearchChoose, saveValue } from '@store/view'
 import { generatorFilterParams } from './utils'
+import _ from 'lodash'
 
 const name = 'kanBan'
 
+// 获取故事列表（分组）
+export const getKanbanByGroup = createAsyncThunk(
+  `${name}/getKanbanByGroup`,
+  async () => {
+    // kanban_config_id: Model.KanbanConfig.Config['id']
+    // search?: {
+    //   [key in string]: number | string
+    // }
+    const { valueKey } = store.getState().view
+    const { sortByGroupOptions, sortByRowAndStatusOptions } =
+      store.getState().kanBan
+    const type = sortByGroupOptions?.find(item => item.check)?.key
+    const columnId = sortByRowAndStatusOptions?.find(item => item.check)?.key
+    if (!columnId) {
+      return []
+    }
+    if (!type) {
+      return []
+    }
+    if (type === 'none') {
+      return []
+    }
+    const params: Omit<
+      API.Kanban.GetKanbanByGroup.Params,
+      'pagesize' | 'page'
+    > = {
+      search: _.isEmpty(valueKey)
+        ? {
+            all: 1,
+          }
+        : valueKey,
+      project_id: getParamsValueByKey('id'),
+      group_by: type,
+      kanban_config_id: parseInt(columnId, 10),
+    }
+    const res = await services.kanban.getKanbanByGroup(params)
+    return res.data
+  },
+)
+
+// 更换视图
 export const onChangeSortByView =
   (id: Model.KanBan.ViewItem['id']) => async (dispatch: AppDispatch) => {
     await dispatch(setSortByView(id))
