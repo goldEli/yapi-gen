@@ -119,7 +119,7 @@ const NoteCard = (props: any) => {
             </ColorBtn>
           )}
 
-          <ColorBtn onClick={() => props.onShowDetail(values.id)}>
+          <ColorBtn onClick={() => props.onShowDetail(values)}>
             <CommonIconFont type="file-text" /> <span>查看详情</span>
           </ColorBtn>
         </Wrap2>

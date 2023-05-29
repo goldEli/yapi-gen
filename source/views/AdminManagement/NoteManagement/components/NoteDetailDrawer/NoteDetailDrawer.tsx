@@ -61,8 +61,10 @@ const NoteDetailDrawer = (props: any) => {
       drawerBody.style.minWidth = '100%'
       drawerBody.style.right = '0px'
       const nextWidth = innerWidth - ev.clientX
-      if (nextWidth <= leftWidth) return
-      drawer!.style.width = innerWidth - ev.clientX + 'px'
+      if (nextWidth <= leftWidth) {
+        return
+      }
+      drawer!.style.width = `${innerWidth - ev.clientX}px`
     }
     drawer.style.transition = '0s'
     // const debounceWrap: any = throttle(moveHandler, 60, {})
@@ -86,87 +88,93 @@ const NoteDetailDrawer = (props: any) => {
 
   // 向下查找需求
   const onDownDemand = () => {}
-
-  return (
-    <Drawer
-      closable={false}
-      placement="right"
-      bodyStyle={{ padding: 0, position: 'relative' }}
-      width={leftWidth}
-      open={props.isVisible}
-      onClose={onCancel}
-      destroyOnClose
-      maskClosable={false}
-      mask={false}
-      getContainer={false}
-      className="drawerRoot"
-    >
-      <MouseDom active={focus} onMouseDown={onDragLine} style={{ left: 0 }}>
-        <DragLine active={focus} className="line" style={{ marginLeft: 0 }} />
-      </MouseDom>
-      <Header>
-        <Space size={16}>
-          <BackIcon onClick={onCancel}>
-            <CommonIconFont
-              type="right-02"
-              size={20}
-              color="var(--neutral-n2)"
-            />
-          </BackIcon>
-        </Space>
-        <Space size={16}>
-          <ChangeIconGroup>
-            <UpWrap
-              onClick={onUpDemand}
-              id="upIcon"
-              isOnly={
-                reportIds?.length === 0 ||
-                currentIndex === reportIds?.length - 1
-              }
-            >
+  if (props.isVisible) {
+    return (
+      <Drawer
+        closable={false}
+        placement="right"
+        bodyStyle={{ padding: 0, position: 'relative' }}
+        width={leftWidth}
+        open={props.isVisible}
+        onClose={onCancel}
+        destroyOnClose
+        maskClosable={false}
+        mask={false}
+        getContainer={false}
+        className="drawerRoot"
+      >
+        <MouseDom active={focus} onMouseDown={onDragLine} style={{ left: 0 }}>
+          <DragLine active={focus} className="line" style={{ marginLeft: 0 }} />
+        </MouseDom>
+        <Header>
+          <Space size={16}>
+            <BackIcon onClick={onCancel}>
               <CommonIconFont
-                type="up"
+                type="right-02"
                 size={20}
-                color="var(--neutral-n1-d1)"
+                color="var(--neutral-n2)"
               />
-            </UpWrap>
+            </BackIcon>
+          </Space>
+          <Space size={16}>
+            <ChangeIconGroup>
+              <UpWrap
+                onClick={onUpDemand}
+                id="upIcon"
+                isOnly={
+                  reportIds?.length === 0 ||
+                  currentIndex === reportIds?.length - 1
+                }
+              >
+                <CommonIconFont
+                  type="up"
+                  size={20}
+                  color="var(--neutral-n1-d1)"
+                />
+              </UpWrap>
 
-            <DownWrap
-              onClick={onDownDemand}
-              id="downIcon"
-              isOnly={currentIndex <= 0}
-            >
-              <CommonIconFont
-                type="down"
-                size={20}
-                color="var(--neutral-n1-d1)"
-              />
-            </DownWrap>
-          </ChangeIconGroup>
-        </Space>
-      </Header>
-      <Content>
-        <div
-          style={{
-            height: '24px',
-            fontSize: '16px',
-            color: '#323233',
-            lineHeight: '24px',
-            fontFamily: 'SiYuanMedium',
-          }}
-        >
-          关于XXXX标题标题关于XXXX标题标题关于XXXX标题标题
-        </div>
-        <Title>内容</Title>
-        <Editor value={'--'} getSuggestions={() => []} readonly />
-        <Title>作者</Title>
-        <Text>李钟硕</Text>
-        <Title>发送于</Title>
-        <Text>2023-08-08 09:08:09</Text>
-        <Title>接收人</Title>
-      </Content>
-    </Drawer>
-  )
+              <DownWrap
+                onClick={onDownDemand}
+                id="downIcon"
+                isOnly={currentIndex <= 0}
+              >
+                <CommonIconFont
+                  type="down"
+                  size={20}
+                  color="var(--neutral-n1-d1)"
+                />
+              </DownWrap>
+            </ChangeIconGroup>
+          </Space>
+        </Header>
+        <Content>
+          <div
+            style={{
+              height: '24px',
+              fontSize: '16px',
+              color: '#323233',
+              lineHeight: '24px',
+              fontFamily: 'SiYuanMedium',
+            }}
+          >
+            {props.detailInner.title}
+          </div>
+          <Title> 内容</Title>
+          <Editor
+            value={props.detailInner.content ?? '--'}
+            getSuggestions={() => []}
+            readonly
+          />
+          <Title>作者</Title>
+          <Text> {props.detailInner.user.name}</Text>
+          <Title>发送于</Title>
+          <Text>{props.detailInner.send_time}</Text>
+          <Title>接收人</Title>
+        </Content>
+      </Drawer>
+    )
+  }
+  return null
 }
 
 export default NoteDetailDrawer

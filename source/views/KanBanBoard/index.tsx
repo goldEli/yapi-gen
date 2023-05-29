@@ -10,6 +10,7 @@ import guide_2 from './img/guide_2.png'
 import guide_3 from './img/guide_3.png'
 import Board from './Borad'
 import {
+  getKanbanByGroup,
   getKanbanConfigList,
   getStoryViewList,
   onFilter,
@@ -48,12 +49,13 @@ const SprintProjectKanBan: React.FC<IProps> = props => {
   useEffect(() => {
     async function run() {
       const res = await dispatch(getKanbanConfigList({ project_id: projectId }))
-      const list = res.payload as any
-      if (!list?.length) {
+      const { sortByRowAndStatusOptions } = res.payload as any
+      if (!sortByRowAndStatusOptions?.length) {
         jumpToKanbanConfig(navigate)
         return
       }
-      dispatch(getStoryViewList())
+      await dispatch(getStoryViewList())
+      dispatch(getKanbanByGroup())
     }
     run()
   }, [projectId])

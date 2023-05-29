@@ -7,7 +7,7 @@ import * as http from '@/tools/http'
 export const createSysNotice: any = async (params: any) => {
   const response: any = await http.post<any>('/b/sys_notice/create', params)
 
-  return response.data
+  return response
 }
 //删除通知
 export const delSysNotice: any = async (id: any) => {
