@@ -41,5 +41,5 @@ export const getMyAllSysNoticeNumber: any = async (params: any) => {
 export const sendFeedback: any = async (params: any) => {
   const response: any = await http.post<any>('/b/feedback/submit', params)
 
-  return response.data
+  return response
 }
