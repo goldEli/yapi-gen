@@ -17,7 +17,6 @@ import {
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import useProjectId from './hooks/useProjectId'
-import { setViewItemConfig } from '@store/kanBan'
 
 interface IProps {}
 const SprintProjectKanBanBox = styled.div`
