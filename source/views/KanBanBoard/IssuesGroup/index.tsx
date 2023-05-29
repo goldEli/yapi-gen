@@ -48,11 +48,12 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
   const { issuesGroup } = props
 
   const text = useMemo(() => {
-    const storiesNum = issuesGroup?.columns?.reduce((res, column) => {
-      const n = column.stories.length ?? 0
-      return res + n
-    }, 0)
-    return `共计${issuesGroup?.users?.length}人，${storiesNum}个事务`
+    const storiesNum =
+      issuesGroup?.columns?.reduce((res, column) => {
+        const n = column.stories.length ?? 0
+        return res + n
+      }, 0) ?? 0
+    return `共计${issuesGroup?.users?.length ?? 0}人，${storiesNum}个事务`
   }, [issuesGroup])
 
   const titleArea = (

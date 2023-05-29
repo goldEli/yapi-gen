@@ -22,6 +22,7 @@ const MultipleAvatarBox = styled.div<{ width: number }>`
   height: 24px;
   display: flex;
   position: relative;
+  cursor: pointer;
 `
 const MoreIcon = styled.div<{ left: number; show: boolean }>`
   width: 24px;
@@ -76,60 +77,18 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
       />
     )
   }
-  const items = [
-    {
-      key: '1',
+  const items = props.list.map((item, idx) => {
+    return {
+      key: item?.id + '' + idx,
       label: (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.antgroup.com"
-        >
-          1st menu item
-        </a>
+        <CommonUserAvatar isBorder name={item.name} avatar={item?.avatar} />
       ),
-    },
-
-    {
-      key: '3',
-      label: (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.luohanacademy.com"
-        >
-          3rd menu item (disabled)
-        </a>
-      ),
-      disabled: true,
-    },
-    {
-      key: '4',
-      danger: true,
-      label: 'a danger item',
-    },
-  ]
+    }
+  })
   return (
     <Dropdown
-      // isVisible={false}
-      // onChangeVisible={() => {}}
       menu={{ items }}
-      // menu={
-      //   <Menu
-      //     items={props.list.map(item => {
-      //       return {
-      //         key: item.id + '',
-      //         label: (
-      //           <CommonUserAvatar
-      //             isBorder
-      //             name={item.name}
-      //             avatar={item?.avatar}
-      //           />
-      //         ),
-      //       }
-      //     })}
-      //   />
-      // }
+      // trigger={['click']}
     >
       <MultipleAvatarBox width={width}>
         {data.map((item, idx) => {
