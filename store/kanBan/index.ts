@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { kanbanInfo, kanbanInfoByGroup, kanbanConfig } from './data'
 import {
   getKanbanByGroup,
+  getKanbanConfig,
   getKanbanConfigList,
   getStoryViewList,
 } from './kanBan.thunk'
@@ -28,7 +29,6 @@ type SliceState = {
 
 const initialState: SliceState = {
   kanbanConfigList: [],
-  kanbanConfig: kanbanConfig,
   kanbanInfo: kanbanInfo,
   kanbanInfoByGroup: [],
   sortByGroupOptions: [
@@ -138,18 +138,9 @@ const slice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(getKanbanConfigList.fulfilled, (state, action) => {
-      state.kanbanConfigList = action.payload
-      const res = action.payload.map(item => {
-        return {
-          check: false,
-          value: item.name,
-          key: item.id + '',
-        }
-      })
-      if (res.length) {
-        res[0].check = true
-      }
-      state.sortByRowAndStatusOptions = res
+      const { kanbanConfigList, sortByRowAndStatusOptions } = action.payload
+      state.kanbanConfigList = kanbanConfigList
+      state.sortByRowAndStatusOptions = sortByRowAndStatusOptions
     })
     builder.addCase(getStoryViewList.fulfilled, (state, action) => {
       state.sortByView = action.payload
@@ -159,6 +150,9 @@ const slice = createSlice({
     })
     builder.addCase(getKanbanByGroup.fulfilled, (state, action) => {
       state.kanbanInfoByGroup = action.payload
+    })
+    builder.addCase(getKanbanConfig.fulfilled, (state, action) => {
+      state.kanbanConfig = action.payload
     })
   },
 })

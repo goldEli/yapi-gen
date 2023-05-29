@@ -20,6 +20,15 @@ import { Options } from '@/components/SelectOptionsNormal'
 
 const name = 'kanBan'
 
+// 获取看板配置
+export const getKanbanConfig = createAsyncThunk(
+  `${name}/getKanbanConfig`,
+  async (params: API.KanbanConfig.GetKanbanConfig.Params) => {
+    const res = await services.kanbanConfig.getKanbanConfig(params)
+    return res.data
+  },
+)
+
 // 获取故事列表（分组）
 export const getKanbanByGroup = createAsyncThunk(
   `${name}/getKanbanByGroup`,
@@ -80,7 +89,14 @@ export const onChangeSortByGroupOptions =
 // 修改列
 export const onChangeSortByRowAndStatusOptions =
   (key: Options['key']) => async (dispatch: AppDispatch) => {
-    await dispatch(setSortByRowAndStatusOptions(key))
+    const res = await dispatch(setSortByRowAndStatusOptions(key))
+
+    dispatch(
+      getKanbanConfig({
+        id: parseInt(key, 10),
+        project_id: getParamsValueByKey('id'),
+      }),
+    )
     dispatch(getKanbanByGroup())
   }
 // 删除视图
@@ -128,9 +144,32 @@ export const onFilter =
 // 看板配置列表
 export const getKanbanConfigList = createAsyncThunk(
   `${name}/getKanbanConfigList`,
-  async (param: API.KanbanConfig.GetKanbanConfigList.Params) => {
+  async (param: API.KanbanConfig.GetKanbanConfigList.Params, { dispatch }) => {
     const res = await services.kanbanConfig.getKanbanConfigList(param)
-    return res.data
+    const { data } = res
+    const sortByRowAndStatusOptions = data.map(item => {
+      return {
+        check: false,
+        value: item.name,
+        key: item.id + '',
+      }
+    })
+    if (sortByRowAndStatusOptions.length) {
+      sortByRowAndStatusOptions[0].check = true
+    }
+    const checked = sortByRowAndStatusOptions[0]
+    if (checked) {
+      dispatch(
+        getKanbanConfig({
+          id: parseInt(checked.key, 10),
+          project_id: getParamsValueByKey('id'),
+        }),
+      )
+    }
+    return {
+      kanbanConfigList: res.data,
+      sortByRowAndStatusOptions,
+    }
   },
 )
 

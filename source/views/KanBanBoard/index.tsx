@@ -49,8 +49,8 @@ const SprintProjectKanBan: React.FC<IProps> = props => {
   useEffect(() => {
     async function run() {
       const res = await dispatch(getKanbanConfigList({ project_id: projectId }))
-      const list = res.payload as any
-      if (!list?.length) {
+      const { sortByRowAndStatusOptions } = res.payload as any
+      if (!sortByRowAndStatusOptions?.length) {
         jumpToKanbanConfig(navigate)
         return
       }
