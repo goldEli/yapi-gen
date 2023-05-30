@@ -12,6 +12,8 @@ export const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;
+  z-index: 999;
 `
 export const SearchBox = styled.div`
   /* border: 1px solid red; */
@@ -32,6 +34,7 @@ export const ContentItem = styled.div`
   display: flex;
   align-items: center;
   display: flex;
+  cursor: pointer;
   img {
     width: 20px;
   }

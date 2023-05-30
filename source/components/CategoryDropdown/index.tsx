@@ -185,6 +185,7 @@ const CategoryDropdown = (props: IProps) => {
       }}
       showSearch
       allowClear
+      showArrow
       options={options}
       labelInValue
       filterOption={(inputValue, option) => {
