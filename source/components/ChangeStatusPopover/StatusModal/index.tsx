@@ -17,10 +17,15 @@ import WanderVerify from './Verify'
 import { getProjectMember } from '@/services/project'
 
 interface StatusModalProps {
+  // 弹窗显示状态
   isVisible: boolean
-  checkStatusItem: any
+  // 当前选中的状态
+  checkStatusItem: Model.Project.CheckStatusItem
+  // 关闭弹窗
   onClose(): void
+  // 每条数据
   record: any
+  // 修改状态接口
   onChangeStatusConfirm(value: any): void
 }
 
@@ -172,7 +177,7 @@ const StatusModal = (props: StatusModalProps) => {
   const [configData, setConfigData] = useState<any>({})
   const [reviewerValue, setReviewerValue] = useState('')
   const [optionsList, setOptionsList] = useState([])
-  const [active, setActive] = useState()
+  // const [active, setActive] = useState<number>()
   const [form] = Form.useForm()
   const info = useGetloginInfo()
 
@@ -210,9 +215,12 @@ const StatusModal = (props: StatusModalProps) => {
     return form1Obj
   }
 
-  const activeContent =
-    props.checkStatusItem.canChange?.filter((i: any) => i.id === active)[0]
-      ?.content !== '规划中'
+  console.log(props.checkStatusItem, '=checkStatusItemcheckStatusItem')
+
+  // const activeContent =
+  //   props.checkStatusItem.canChange?.filter((i: any) => i.id === active)[0]
+  //     ?.content !== '规划中'
+
   const hasDealName = props.checkStatusItem?.dealName === '--'
 
   const valid = () => {
@@ -290,7 +298,7 @@ const StatusModal = (props: StatusModalProps) => {
   // 获取状态流转配置
   const getConfig = async () => {
     getProjectMemberData()
-    setActive(props.checkStatusItem.id)
+    // setActive(props.checkStatusItem.id)
     const res = await getShapeRight({
       id: props.checkStatusItem.projectId,
       nId: props.checkStatusItem.infoId,
@@ -598,7 +606,8 @@ const StatusModal = (props: StatusModalProps) => {
                 name="reviewerValue"
                 rules={[
                   {
-                    required: activeContent || (!activeContent && !hasDealName),
+                    // required: activeContent || (!activeContent && !hasDealName),
+                    required: true,
                     message: '',
                   },
                 ]}
