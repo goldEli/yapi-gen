@@ -209,20 +209,13 @@ const TreeStyle = styled(DirectoryTree)`
 `
 const SelectStyle = styled(CustomSelect)``
 
-export interface User {
-  id: number
-  name: string
-  avatar: string
-  team_id: number
-}
-
 interface ModalProps {
   width?: number
   isVisible: boolean
   title?: string
   onClose?(): void
   children?: any
-  onConfirm?(list: User[], id?: number): void
+  onConfirm?(list: Model.User.User[], id?: number): void
   confirmText?: string
   hasFooter?: any
   isShowFooter?: boolean

@@ -20,6 +20,12 @@ type SliceState = {
   shareModelInfo: {
     visible: boolean
   }
+  userGroupingModelInfo: {
+    visible: boolean
+    userList: Model.User.User[]
+    groupName: string
+    id?: number
+  }
   kanbanInfo: Model.KanBan.Column[]
   kanbanInfoByGroup: Model.KanBan.Group[]
   kanbanConfig?: Model.KanbanConfig.Config
@@ -30,6 +36,11 @@ const initialState: SliceState = {
   kanbanConfigList: [],
   kanbanInfo: [],
   kanbanInfoByGroup: [],
+  userGroupingModelInfo: {
+    visible: false,
+    userList: [],
+    groupName: '',
+  },
   sortByGroupOptions: [
     { key: 'none', value: '无', check: false },
     { key: 'users', value: '按人员', check: true },
@@ -69,6 +80,12 @@ const slice = createSlice({
     //     ...action.payload,
     //   }
     // },
+    setUserGroupingModelInfo(
+      state,
+      action: PayloadAction<SliceState['userGroupingModelInfo']>,
+    ) {
+      state.userGroupingModelInfo = action.payload
+    },
     onChangeGuideVisible(
       state,
       action: PayloadAction<SliceState['guideVisible']>,
@@ -165,6 +182,7 @@ export const {
   onChangeGuideVisible,
   setSaveAsViewModelInfo,
   setShareModelInfo,
+  setUserGroupingModelInfo,
   // setViewItemConfig,
 } = slice.actions
 
