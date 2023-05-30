@@ -33,7 +33,11 @@ import {
 } from '@/views/WorkReport/Formwork/Addperson'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
-import { createSysNotice, getMyAllSysNoticeDetail } from '@/services/sysNotice'
+import {
+  createSysNotice,
+  editCreateSysNotice,
+  getMyAllSysNoticeDetail,
+} from '@/services/sysNotice'
 import moment from 'moment'
 import AcceptorSelection from '@/components/AcceptorSelection/AcceptorSelection'
 import { getMessage } from '@/components/Message'
@@ -109,7 +113,20 @@ const CreateNoteModal = (props: any) => {
 
     const mergedObj = { ...res, ...obj }
     delete mergedObj.recipient2
+    if (props.editId) {
+      const res2 = await editCreateSysNotice({ ...mergedObj, id: props.editId })
 
+      if (res2.code === 0) {
+        form.resetFields()
+        props.onClose()
+        getMessage({
+          msg: t('common.editSuccess') as string,
+          type: 'success',
+        })
+        props.onHandleOk()
+      }
+      return
+    }
     const res2 = await createSysNotice(mergedObj)
 
     if (res2.code === 0) {
@@ -136,6 +153,20 @@ const CreateNoteModal = (props: any) => {
     const mergedObj = { ...res, ...obj }
     delete mergedObj.recipient2
 
+    if (props.editId) {
+      const res2 = await editCreateSysNotice({ ...mergedObj, id: props.editId })
+
+      if (res2.code === 0) {
+        form.resetFields()
+        props.onClose()
+        getMessage({
+          msg: t('common.editSuccess') as string,
+          type: 'success',
+        })
+        props.onHandleOk()
+      }
+      return
+    }
     const res2 = await createSysNotice(mergedObj)
 
     if (res2.code === 0) {
@@ -226,7 +257,7 @@ const CreateNoteModal = (props: any) => {
       draft
       isVisible={props.isVisible}
       width={784}
-      title="发送通知"
+      title={props.editId ? '编辑通知' : '发送通知'}
       onClose={props.onClose}
       onConfirm={onHandleOk}
     >

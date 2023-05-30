@@ -9,6 +9,11 @@ export const createSysNotice: any = async (params: any) => {
 
   return response
 }
+export const editCreateSysNotice: any = async (params: any) => {
+  const response: any = await http.put<any>('/b/sys_notice/update', params)
+
+  return response
+}
 //删除通知
 export const delSysNotice: any = async (id: any) => {
   const response: any = await http.delete<any>(`/b/sys_notice/${id}/destroy`)
