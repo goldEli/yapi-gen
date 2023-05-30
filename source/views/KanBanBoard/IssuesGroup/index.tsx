@@ -40,18 +40,32 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
         <UpDownBtn isOpen={false} />
         <Title>{issuesGroup.name}</Title>
       </TitleBtn>
-      <MultipleAvatar
-        list={
-          issuesGroup.users?.map(item => {
-            return {
-              id: item.id,
-              name: item.name,
-              avatar: item.avatar,
-            }
-          }) ?? []
-        }
-        max={3}
-      />
+      <div
+        onClick={e => {
+          e.stopPropagation()
+          dispatch(
+            openUserGroupingModel({
+              userList: issuesGroup.users ?? [],
+              groupName: issuesGroup.name,
+              id: issuesGroup.id,
+            }),
+          )
+        }}
+      >
+        <MultipleAvatar
+          list={
+            issuesGroup.users?.map(item => {
+              return {
+                id: item.id,
+                name: item.name,
+                avatar: item.avatar,
+              }
+            }) ?? []
+          }
+          disableDropDown
+          max={3}
+        />
+      </div>
       <div
         onClick={e => {
           e.stopPropagation()

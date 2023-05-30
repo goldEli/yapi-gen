@@ -24,6 +24,7 @@ type SliceState = {
     visible: boolean
     userList: Model.User.User[]
     groupName: string
+    id?: number
   }
   kanbanInfo: Model.KanBan.Column[]
   kanbanInfoByGroup: Model.KanBan.Group[]

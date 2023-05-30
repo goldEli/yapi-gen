@@ -15,6 +15,7 @@ interface MultipleAvatarProps {
   }[]
   // 最多展示多少个头像
   max: number
+  disableDropDown?: boolean
 }
 
 const MultipleAvatarBox = styled.div<{ width: number }>`
@@ -88,6 +89,7 @@ const MultipleAvatar: React.FC<MultipleAvatarProps> = props => {
   return (
     <Dropdown
       menu={{ items }}
+      disabled={props.disableDropDown}
       // trigger={['click']}
     >
       <MultipleAvatarBox width={width}>
