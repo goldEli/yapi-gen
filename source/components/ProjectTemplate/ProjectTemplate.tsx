@@ -79,7 +79,7 @@ const ProjectTemplate = (props: any) => {
     list: undefined,
   })
   const ids = useRef(null)
-  const [activeTab, setActiveTab] = useState(0)
+  const [activeTab, setActiveTab] = useState<any>(1)
   const [order, setOrder] = useState<any>({ value: 'asc', key: 'name' })
   const [searchVal, setSearchVal] = useState('')
   const [activeType, setActiveType] = useState(0)
@@ -109,6 +109,8 @@ const ProjectTemplate = (props: any) => {
       orderKey: sortVal.key,
       order: sortVal.value,
       status: isDisable ? 1 : 0,
+      is_my_created: activeTab,
+      self: activeTab === 2,
     }
     if (isTable) {
       params.all = true
@@ -151,7 +153,7 @@ const ProjectTemplate = (props: any) => {
   }
   useEffect(() => {
     getList(activeType, false, isHidden, searchVal, order, pageObj)
-  }, [pageObj, order, props.searchId])
+  }, [pageObj, order, props.searchId, activeTab])
   return (
     <div style={{ width: '1000px' }}>
       <Title>选择项目模版</Title>
@@ -236,10 +238,10 @@ const ProjectTemplate = (props: any) => {
             padding: '0 24px',
           }}
         >
-          <TabsItem isActive={activeTab === 0} onClick={() => onChangeTab(0)}>
+          <TabsItem isActive={activeTab === 1} onClick={() => onChangeTab(1)}>
             <div>我创建的项目</div>
           </TabsItem>
-          <TabsItem isActive={activeTab === 1} onClick={() => onChangeTab(1)}>
+          <TabsItem isActive={activeTab === 2} onClick={() => onChangeTab(2)}>
             <div>我加入的项目</div>
           </TabsItem>
         </div>

@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable complexity */
 /* eslint-disable max-lines */
 /* eslint-disable no-else-return */
@@ -18,6 +19,7 @@ import { getStaffListAll } from './staff'
 export const getProjectList: any = async (params: any) => {
   const response: any = await http.get<any>('getProjectList', {
     search: {
+      is_my_created: params.is_my_created === 1 ? 1 : undefined,
       project_type: params.project_type,
       self: params.self ? 1 : 0,
       keyword: params.searchValue,
