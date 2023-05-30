@@ -33,6 +33,7 @@ const useDropData = (
 
     return data
   }, [kanbanConfig, movingStory, columnId])
+
   const showStateTransitionList = React.useMemo(() => {
     return movingStory?.columnId !== columnId && data?.length > 0
   }, [movingStory, columnId, data])
@@ -46,6 +47,7 @@ const useDropData = (
     }
     return false
   }, [groupType, columnId, movingStory, groupId])
+
   return {
     data,
     showStateTransitionList,
