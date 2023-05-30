@@ -221,20 +221,27 @@ const SprintDetailDrawer = () => {
     if (!currentIndex) return
     dispatch(
       saveAffairsDetailDrawer({
-        ...affairsDetailDrawer.params,
-        ...{ id: newIndex },
+        visible: affairsDetailDrawer.visible,
+        params: {
+          ...affairsDetailDrawer.params,
+          ...{ id: newIndex },
+        },
       }),
     )
   }
 
   // 向下查找需求
   const onDownDemand = () => {
+    console.log(demandIds, '=demandIdsdemandIdsdemandIds')
     const newIndex = demandIds[currentIndex + 1]
     if (currentIndex === demandIds?.length - 1) return
     dispatch(
       saveAffairsDetailDrawer({
-        ...affairsDetailDrawer.params,
-        ...{ id: newIndex },
+        visible: affairsDetailDrawer.visible,
+        params: {
+          ...affairsDetailDrawer.params,
+          ...{ id: newIndex },
+        },
       }),
     )
   }
@@ -334,7 +341,6 @@ const SprintDetailDrawer = () => {
     domKey: string
     name?: string
   }) => {
-    console.log(showState, item)
     const newState = Object.assign({}, showState)
     newState[item.domKey].isOpen = true
     newState[item.domKey].dom.current.style.height = 'auto'
@@ -441,10 +447,6 @@ const SprintDetailDrawer = () => {
 
   useEffect(() => {
     if (affairsDetailDrawer.visible || affairsDetailDrawer.params?.id) {
-      console.log(
-        affairsDetailDrawer,
-        '=affairsDetailDraweraffairsDetailDrawer',
-      )
       setDemandIds(affairsDetailDrawer.params?.demandIds || [])
       getSprintDetail('', affairsDetailDrawer.params?.demandIds || [])
       setShowState(normalState)

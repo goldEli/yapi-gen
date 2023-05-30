@@ -88,7 +88,7 @@ const StaffManagement = () => {
   const [page, setPage] = useState<number>(1)
   const [showId, setShowId] = useState('')
   const [pagesize, setPagesize] = useState<number>(10)
-  const [total, setTotal] = useState<number>(0)
+  const [editId, setEditId] = useState<any>()
   const [keyword, setKeyword] = useState<string>()
   const [searchGroups, setSearchGroups] = useState<any>({
     end_at: undefined,
@@ -98,10 +98,6 @@ const StaffManagement = () => {
     start_at: undefined,
     type: undefined,
   })
-
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
-
-  const [isVisibleFields, setIsVisibleFields] = useState(false)
 
   const [hasMore, setHasMore] = useState(true)
   const [visible, setVisible] = useState(false)
@@ -126,7 +122,6 @@ const StaffManagement = () => {
   const getStaffListData = async () => {
     const searchGroups1 = JSON.parse(JSON.stringify(searchGroups))
     convertArrayAndEmptyString(searchGroups1)
-    console.log(searchGroups1)
 
     const data = await getMyAllSysNotice({
       ...searchGroups1,
@@ -150,7 +145,6 @@ const StaffManagement = () => {
     if (list.length === data.pager.total) {
       setHasMore(false)
     }
-    console.log(list.length, data.pager.total, '数量')
   }
 
   const init = () => {
@@ -164,7 +158,6 @@ const StaffManagement = () => {
   }, [isRefresh])
 
   const onSearch = async (e: any) => {
-    console.log(e)
     setPage(1)
     setSearchGroups(e)
   }
@@ -185,11 +178,8 @@ const StaffManagement = () => {
 
   const refresh = debounce(
     async () => {
-      const res = await refreshStaff()
-      if (res.code === 0) {
-        getMessage({ msg: t('staff.refreshSuccess'), type: 'success' })
-        init()
-      }
+      getStaffListData()
+      getMessage({ msg: t('staff.refreshSuccess'), type: 'success' })
     },
     1000,
     {
@@ -211,7 +201,6 @@ const StaffManagement = () => {
       text: '确认删除该消息？',
       async onConfirm() {
         const res = await delSysNotice(id)
-        console.log(res.code)
 
         if (res.code === 0) {
           setHasMore(true)
@@ -224,16 +213,14 @@ const StaffManagement = () => {
         }
       },
     })
-    console.log(id)
   }
   const onRevocation = (id: any) => {
     open({
       title: '撤回确认',
       text: '确认撤回该消息？',
       async onConfirm() {
-        console.log('确认')
         const res = await recallSysNotice(id)
-        console.log(res.code)
+
         if (res.code === 0) {
           setHasMore(true)
           setPage(1)
@@ -245,25 +232,26 @@ const StaffManagement = () => {
         }
       },
     })
-    console.log(id)
   }
 
   const onShowDetail = (values: any) => {
-    console.log(values)
     setDetailInner(values)
     setDetailVisible(true)
   }
-  const onHandleOk = (datas: any) => {
-    console.log(datas)
+  const onHandleOk = () => {
+    init()
   }
   useEffect(() => {
     init()
   }, [keyword, searchGroups, page])
-  console.log(list, '现在的列表')
 
   const showNumber = (id: any) => {
     setShowId(id)
     setMemberVisible(true)
+  }
+  const onEditDetail = (datas: any) => {
+    setVisible(true)
+    setEditId(datas.id)
   }
   return (
     <PermissionWrap
@@ -274,6 +262,7 @@ const StaffManagement = () => {
     >
       <DeleteConfirmModal />
       <CreateNoteModal
+        editId={editId}
         onClose={() => setVisible(false)}
         onHandleOk={onHandleOk}
         isVisible={visible}
@@ -350,7 +339,13 @@ const StaffManagement = () => {
           padding: '24px',
         }}
       >
-        <CommonButton onClick={() => setVisible(true)} type="primary">
+        <CommonButton
+          onClick={() => {
+            setEditId(null)
+            setVisible(true)
+          }}
+          type="primary"
+        >
           发送新通知
         </CommonButton>
         <CommonButton type="primaryText"> 定时发送的通知（3）</CommonButton>
@@ -381,6 +376,7 @@ const StaffManagement = () => {
               onShowNumber={showNumber}
               values={i}
               onDel={onDel}
+              onEditDetail={onEditDetail}
               onShowDetail={onShowDetail}
               onRevocation={onRevocation}
               key={i.id}

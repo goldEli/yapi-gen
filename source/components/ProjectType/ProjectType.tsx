@@ -29,7 +29,7 @@ const ProjectType = (props: any) => {
             src={isRefresh === 'zh' ? i.img : i.en_img}
             alt=""
           />
-          <MyBtn onClick={() => props.choose(i.type)} type={i.type === 1}>
+          <MyBtn onClick={() => props.choose(i.id)} type={i.type === 1}>
             使用类型
             <CommonIconFont
               type="right-md"

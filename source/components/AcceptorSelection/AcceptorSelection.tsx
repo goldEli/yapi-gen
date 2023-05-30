@@ -10,6 +10,8 @@ import { setReportContent, setReportContentCopy } from '@store/formWork'
 import { useDispatch, useSelector } from '@store/index'
 
 const AcceptorSelection = (props: any) => {
+  console.log(props.value, '进来的值')
+
   const dispatch = useDispatch()
   const [isEmail, setIsEmail] = useState(false)
   const [t] = useTranslation()
@@ -19,12 +21,15 @@ const AcceptorSelection = (props: any) => {
   )
 
   const [person1, setPerson1] = useState<any>([])
-  const [person2, setPerson2] = useState<any>([])
-  const [person3, setPerson3] = useState<any>([])
 
   const onChange2 = (e: any) => {
-    console.log(`checked = ${e.target.checked}`)
     setIsEmail(e.target.checked)
+
+    props.onChange({
+      member: person1,
+
+      isEmail: e.target.checked,
+    })
   }
 
   const fitlerDataList = (data: any) => {
@@ -53,43 +58,33 @@ const AcceptorSelection = (props: any) => {
   }
   const onChangedel = (el: any, num: number) => {
     let data1: any = person1 || []
-    let data2: any = person2 || []
-    let data3: any = person3 || []
+
     if (num === 1) {
       data1 = person1.filter((item: any) =>
         el?.target_id ? item?.target_id !== el?.target_id : el.key !== item.key,
       )
-    } else if (num === 2) {
-      data2 = person2.filter((item: any) => item.target_id !== el.target_id)
-    } else {
-      data3 = person3.filter((item: any) =>
-        el?.target_id ? item?.target_id !== el?.target_id : el.key !== item.key,
-      )
     }
-    const v3 = data3.find(
-      (item: any) =>
-        item.user_type === 3 &&
-        (item.key === 'all' || item.target_value?.key === 'all'),
-    )
+
     const v1 = data1.find(
       (item: any) =>
         item.user_type === 1 &&
         (item.key === 'all' || item.target_value?.key === 'all'),
     )
+    props.onChange({
+      member: data1,
 
-    dispatch(
-      setReportContentCopy({
-        is_all_view: v3 ? 1 : 2,
-        is_all_write: v1 ? 1 : 2,
-        template_configs: filterValues([...data1, ...data2, ...data3]),
-      }),
-    )
+      isEmail,
+    })
+    // dispatch(
+    //   setReportContentCopy({
+    //     is_all_write: v1 ? 1 : 2,
+    //     template_configs: filterValues([...data1]),
+    //   }),
+    // )
   }
   const onChangeValues = (values: any, num: number) => {
-    console.log(values, 'values')
     let d1: any = person1 || []
-    let d2 = person2 || []
-    let d3 = person3 || []
+
     if (num === 1) {
       const val1 =
         values?.map((el: any) => ({
@@ -99,43 +94,25 @@ const AcceptorSelection = (props: any) => {
           target_value: el.target_value,
         })) || []
       d1 = [...person1, ...val1]
-    } else if (num === 2) {
-      const val2 =
-        values?.map((el: any) => ({
-          target_id: el.id || el.target_id,
-          user_type: el.user_type,
-          target_type: el.target_type,
-          target_value: el.target_value,
-        })) || []
-      d2 = [...person2, ...val2]
-      setPerson2(d2)
-    } else {
-      const val3 =
-        values?.map((el: any) => ({
-          target_id: el.id || el.target_id,
-          user_type: el.user_type,
-          target_type: el.target_type,
-          target_value: el.target_value,
-        })) || []
-      d3 = [...person3, ...val3]
     }
-    const d3V = d3.find(
-      (item: any) =>
-        item.user_type === 3 &&
-        (item.key === 'all' || item?.target_value?.key === 'all'),
-    )
+
     const d1v = d1.find(
       (item: any) =>
         item.user_type === 1 &&
         (item.key === 'all' || item?.target_value?.key === 'all'),
     )
-    dispatch(
-      setReportContentCopy({
-        is_all_view: d3V ? 1 : 2,
-        is_all_write: d1v ? 1 : 2,
-        template_configs: [...d1, ...d2, ...d3],
-      }),
-    )
+    console.log(d1)
+    props.onChange({
+      member: d1,
+
+      isEmail,
+    })
+    // dispatch(
+    //   setReportContentCopy({
+    //     is_all_write: d1v ? 1 : 2,
+    //     template_configs: [...d1],
+    //   }),
+    // )
   }
   // 组装数据
   const assemblyData = () => {
@@ -144,38 +121,11 @@ const AcceptorSelection = (props: any) => {
       reportContentCopy.template_configs?.filter(
         (item: { user_type: number }) => item.user_type === 1,
       ) || []
-    //  汇报对象
-    let data2 = reportContentCopy.template_configs?.filter(
-      (item: { user_type: number }) => item.user_type === 2,
-    )
-    //  谁可以看
-    let data3 =
-      reportContentCopy.template_configs?.filter(
-        (item: { user_type: number }) => item.user_type === 3,
-      ) || []
-    // 有已经存在的情况，需要过滤掉
-    if (reportContentCopy.is_all_view === 1) {
-      const newData3 = [
-        {
-          user_type: 3,
-          key: 'all',
-          name: '全员',
-          avatar: '',
-          target_id: -1,
-          target_value: {
-            user_type: 3,
-            key: 'all',
-            name: '全员',
-            avatar: '',
-          },
-        },
-        ...data3,
-      ]
-      const hasAll = data3.find((el: any) => el.target_value.key === 'all')
-      setPerson3(hasAll ? data3 : newData3)
-    }
+
     // 有已经存在的情况，需要过滤掉
     if (reportContentCopy.is_all_write === 1) {
+      console.log('feji')
+
       const newData1 = [
         {
           user_type: 1,
@@ -193,28 +143,29 @@ const AcceptorSelection = (props: any) => {
         ...data1,
       ]
       const hasAll = data1.find((el: any) => el.target_value.key === 'all')
-      setPerson1(hasAll ? data1 : newData1)
-    }
-    reportContentCopy.is_all_view === 2 && setPerson3(data3)
-    reportContentCopy.is_all_write === 2 && setPerson1(data1)
-    setPerson2(data2)
-  }
-  useEffect(() => {
-    reportContentCopy && assemblyData()
-    return () => {
-      dispatch(setReportContentCopy(null))
-    }
-  }, [reportContentCopy])
-  console.log(person1, '选中的人')
-  useEffect(() => {
-    if (person1.length > 1) {
-      props.onChange({
-        member: person1,
 
-        isEmail: isEmail,
+      props.onChange({
+        member: hasAll ? data1 : newData1,
+
+        isEmail,
       })
     }
-  }, [person1, isEmail])
+
+    reportContentCopy.is_all_write === 2 && setPerson1(data1)
+  }
+  // useEffect(() => {
+  //   reportContentCopy && assemblyData()
+
+  //   return () => {
+  //     dispatch(setReportContentCopy(null))
+  //   }
+  // }, [reportContentCopy])
+
+  useEffect(() => {
+    setIsEmail(props?.value?.isEmail)
+    setPerson1(props?.value?.member ? props?.value?.member : [])
+  }, [props.value])
+
   return (
     <div
       style={{
@@ -222,7 +173,7 @@ const AcceptorSelection = (props: any) => {
       }}
     >
       <div style={{ position: 'absolute', top: '-30px', left: '80px' }}>
-        <Checkbox onChange={onChange2}>
+        <Checkbox checked={isEmail} onChange={onChange2}>
           <span
             style={{
               height: '20px',

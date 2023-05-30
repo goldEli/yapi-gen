@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import styled from '@emotion/styled'
 import { Droppable } from 'react-beautiful-dnd'
 import IssueCard from '../IssueCard'
 import { handleId } from '../utils'
+import DropCardList from '../DropCardList'
+import useDropData from '../hooks/useDropData'
+import DropCard from '../DropCard'
 
 interface IssuesProps {
   issues: Model.KanBan.Column
@@ -31,22 +34,40 @@ const DropStatusArea = styled.div`
 `
 const Issues: React.FC<IssuesProps> = props => {
   const { issues, groupId } = props
+  const droppableId = useMemo(() => {
+    return handleId(groupId, issues.id)
+  }, [groupId, issues.id])
+
+  const { data, showStateTransitionList, disableDrop } = useDropData(
+    issues.id,
+    groupId,
+  )
+
   return (
-    <Droppable key={issues.id} droppableId={handleId(groupId, issues.id)}>
+    <Droppable
+      key={droppableId}
+      droppableId={droppableId}
+      // droppableId={'dropCardId'}
+      type="drop-status"
+      isDropDisabled={disableDrop}
+    >
       {(provided, snapshot) => {
         return (
           <DropArea ref={provided.innerRef} {...provided.droppableProps}>
             {/* {column?.deps?.map?.((item) => {
               return <DropStatusArea>{`123 -> ${item.title}`}</DropStatusArea>;
             })} */}
-            {issues.stories?.map((story, index) => (
-              <IssueCard
-                groupId={groupId}
-                key={story.id}
-                item={story}
-                index={index}
-              />
-            ))}
+            {!showStateTransitionList &&
+              issues.stories?.map((story, index) => (
+                <IssueCard
+                  groupId={groupId}
+                  key={story.id}
+                  item={story}
+                  index={index}
+                />
+              ))}
+
+            {showStateTransitionList && <DropCardList list={data} />}
             {provided.placeholder}
           </DropArea>
         )

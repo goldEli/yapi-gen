@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState, forwardRef, useEffect, useMemo, useRef } from 'react'
 import { Select, Tag } from 'antd'
 import styled from '@emotion/styled'
@@ -8,6 +9,14 @@ import useCategoryList from '@/hooks/useCategoryList'
 import { css } from '@emotion/css'
 const Wrap = styled(Select)`
   /* margin-bottom: 10px; */
+  .ant-select-selection-overflow-item {
+    .inputLabel {
+      overflow: hidden; //超出的文本隐藏
+      text-overflow: ellipsis; //溢出用省略号显示
+      white-space: nowrap; //溢出不换行 */
+      width: 60px;
+    }
+  }
 `
 const LabelBox = styled.div`
   display: flex;
@@ -15,6 +24,10 @@ const LabelBox = styled.div`
   /* margin-bottom: 6px; */
   span {
     margin-left: 4px;
+    /* width: 60px;
+    overflow: hidden; //超出的文本隐藏
+    text-overflow: ellipsis; //溢出用省略号显示
+    white-space: nowrap; //溢出不换行 */
   }
 `
 
@@ -82,7 +95,7 @@ const CategoryDropdown = (props: IProps) => {
     return (
       <LabelBox>
         <img src={props.url} alt="" style={{ width: '18px' }} />
-        <span>{props.labelName}</span>
+        <span className="inputLabel">{props.labelName}</span>
       </LabelBox>
     )
   }
@@ -101,7 +114,6 @@ const CategoryDropdown = (props: IProps) => {
   }
   // 反选
   const reverseClick = () => {
-    console.log('反选', props, cacheList)
     const { value } = props
     if (!mode) {
       return
@@ -167,7 +179,6 @@ const CategoryDropdown = (props: IProps) => {
         }
       }}
       onFocus={() => {
-        console.log(cacheList, selectData)
         const selectDataIds = selectData.map(item => item.id)
         const filterSelectData = cacheList.filter(item =>
           selectDataIds.includes(item.id),
@@ -181,7 +192,6 @@ const CategoryDropdown = (props: IProps) => {
           return
         }
         setOptions(getOptions)
-        console.log(filterSelectData, otherSelectData, sortData, getOptions)
       }}
       showSearch
       allowClear

@@ -62,6 +62,7 @@ const initialState: CounterState = {
       name: '',
       icon: 'https://dev.staryuntech.com/dev-agile/attachment/category_icon/message.png',
       parentName: '长故事',
+      parentId: 0,
     },
   },
 }

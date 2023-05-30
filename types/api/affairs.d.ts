@@ -1,4 +1,85 @@
 declare namespace API.Affairs {
+  namespace AddQuickAffair {
+    type Params = {
+      name: string
+      category_id: number
+      parent_id: number
+      projectId: number
+    }
+  }
+  namespace AffairsRelationDragSort {
+    type Params = {
+      projectId: number
+      id?: number
+      relationIds: number[]
+      type: Model.Affairs.RelationType
+    }
+  }
+  namespace AddAffairsRelation {
+    type Params = {
+      projectId: number
+      id: number
+      relationId: number
+      type: Model.Affairs.RelationType
+    }
+  }
+  namespace GetAffairsSelectChildrenRecent {
+    type Params = {
+      projectId: number
+      id?: number
+    }
+  }
+
+  namespace GetAffairsSelectChildren {
+    type Params = {
+      projectId: number
+      id?: number
+    }
+    type Result = Model.Affairs.AffairsInfo[]
+  }
+
+  namespace AffairsChildDragSort {
+    type Params = {
+      projectId: number
+      id?: number
+      childrenIds: number[]
+    }
+  }
+  namespace AddAffairsChild {
+    type Params = {
+      projectId: number
+      id?: number
+      childId: string
+    }
+  }
+
+  namespace GetAffairsRelationList {
+    type Params = {
+      projectId: number
+      id?: number
+      searchValue?: string
+    }
+
+    type Result = Model.Affairs.AffairsInfo[]
+  }
+  namespace GetAffairsChildList {
+    type Params = {
+      projectId: number
+      id?: number
+      searchValue?: string
+      page: number
+      pagesize: number
+    }
+
+    type Result = {
+      pager: {
+        page: number
+        pagesize: number
+        total: number
+      }
+      data: Model.Affairs.AffairsInfo[]
+    }
+  }
   namespace BatchAffairsEdit {
     type Params = {
       projectId: number
