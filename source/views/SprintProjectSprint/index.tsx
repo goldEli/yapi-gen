@@ -29,9 +29,10 @@ import {
 import { getStaffList } from '@/services/staff'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import NoData from './components/NoData'
-import CommonButton from '@/components/CommonButton'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
+import CategoryDropdown from '@/components/CategoryDropdown'
+import { getCategoryList } from '@/services/kanbanConfig'
 
 const SearchBox = styled.div`
   display: flex;
@@ -178,6 +179,21 @@ const Right = styled.div`
 const SelectWrapForList = styled(SelectWrapBedeck)`
   margin-left: 16px;
 `
+const CategorySelectWrap = styled.div`
+  width: 280px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--active);
+  border-radius: 6px;
+  margin-left: 16px;
+  padding-left: 12px;
+  box-sizing: border-box;
+  .title {
+    font-size: 14;
+    white-space: nowrap;
+  }
+`
 const ClearButton = styled.div`
   width: 56px;
   height: 22px;
@@ -258,6 +274,7 @@ const SprintProjectSprint: React.FC<IProps> = props => {
   })
   const [completeVisible, setCompleteVisible] = useState(false)
   const [userOptions, setUserOptions] = useState<any[]>([])
+  const [categoryOptions, setCategoryOptions] = useState<any[]>([])
   const [leftSearchObject, setLeftSearchObject] = useState<any>({
     order: 'desc',
     orderkey: 'id',
@@ -364,8 +381,24 @@ const SprintProjectSprint: React.FC<IProps> = props => {
     }
   }
   const getUserList = async () => {
-    const data = await getStaffList({ all: 1 })
-    setUserOptions(data.map(generateOptions))
+    try {
+      const data = await getStaffList({ all: 1 })
+      setUserOptions(data.map(generateOptions))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const getCategoryData = async () => {
+    try {
+      const result = await getCategoryList({
+        is_select: 1,
+        project_id: projectId,
+      })
+      setCategoryOptions(result.data)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   useEffect(() => {
@@ -584,23 +617,33 @@ const SprintProjectSprint: React.FC<IProps> = props => {
                 onConfirm={() => null}
               />
             </SelectWrapForList>
-            <SelectWrapForList>
-              <span style={{ margin: '0 16px', fontSize: '14px' }}>
-                事务类型
-              </span>
-              <CustomSelect
-                style={{ width: 148 }}
-                getPopupContainer={(node: any) => node}
-                allowClear
-                optionFilterProp="label"
-                showArrow
-                showSearch
-                value=""
-                options={[]}
-                onChange={() => {}}
-                onConfirm={() => null}
+            <CategorySelectWrap>
+              <span className="title">事务类型</span>
+              <CategoryDropdown
+                projectId={projectId}
+                value={searchObject.search?.category_id}
+                onChangeCallBack={(val: Model.Project.CategoryValue[]) => {
+                  console.log(val, 'val')
+                  setSearchObject({
+                    ...searchObject,
+                    search: {
+                      ...searchObject.search,
+                      category_id: val.map(item => item.id),
+                    },
+                  })
+                }}
+                onClearCallback={() => {
+                  setSearchObject({
+                    ...searchObject,
+                    search: {
+                      ...searchObject.search,
+                      category_id: [],
+                    },
+                  })
+                }}
+                mode="multiple"
               />
-            </SelectWrapForList>
+            </CategorySelectWrap>
             <ClearButton
               onClick={() => {
                 setSearchObject({

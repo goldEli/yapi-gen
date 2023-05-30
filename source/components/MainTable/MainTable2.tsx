@@ -468,6 +468,7 @@ const MainTable = (props: Props) => {
     }
   }, [])
   const rowSelection = {
+    type: 'radio',
     selectedRowKeys,
     onChange: onSelectChange,
   }

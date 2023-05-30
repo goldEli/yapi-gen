@@ -60,7 +60,7 @@ export function getParamsValueByKey(key: string) {
 
   const params = getParamsData(searchParams)
 
-  return params[key]
+  return parseInt(params[key], 10)
 }
 
 // 需求分类树

@@ -6,7 +6,11 @@ declare namespace API.Kanban {
     }
   }
   namespace GetKanban {
-    type Params = SearchParams
+    type Params = SearchParams & {
+      project_id: number
+      pagesize: 20
+      page: 0
+    }
     type Result = Model.Kanban.Column[]
   }
   namespace CreateKanbanPeopleGrouping {

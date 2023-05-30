@@ -18,7 +18,7 @@ import { getDemandChangeLog } from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
 import ResizeTable from '@/components/ResizeTable'
 import { Editor } from '@xyfe/uikit'
-import { getSprintChangeLog } from '@/services/sprint'
+import { getAffairsChangeLog } from '@/services/affairs'
 
 const SpaceWrap = styled(Space)({
   '.ant-space-item': {
@@ -83,7 +83,7 @@ const ChangeRecord = (props: Props) => {
 
   const getList = async (item?: any, orderVal?: any) => {
     setIsSpinning(true)
-    const result = await getSprintChangeLog({
+    const result = await getAffairsChangeLog({
       sprintId,
       projectId: id,
       page: item ? item.page : 1,

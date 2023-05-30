@@ -35,8 +35,10 @@ import KanbanConfig from './kanbanConfig'
 import freed from './feedback'
 import performanceInsight from './performanceInsight'
 import kanBan from './kanBan'
+import affairs from './affairs'
 export const store = configureStore({
   reducer: {
+    affairs,
     kanBan,
     counter: counterReducer,
     water: waterReducer,

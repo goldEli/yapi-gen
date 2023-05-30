@@ -38,16 +38,12 @@ interface TargetTabsProps {
 const NoteDetailDrawer = (props: any) => {
   const [t] = useTranslation()
   const { viewReportModal } = useSelector(store => store.workReport)
-  const [skeletonLoading, setSkeletonLoading] = useState(false)
   const [focus, setFocus] = useState(false)
   const [drawerInfo, setDrawerInfo] = useState<any>({})
   const [currentIndex, setCurrentIndex] = useState(0)
   const [reportIds, setReportIds] = useState<any>([])
-  const [isReview, setIsReview] = useState(false)
-  const [commentList, setCommentList] = useState([])
   const [form] = Form.useForm()
   const [arr, setArr] = useState<any>(null)
-  const reviewRef = useRef<any>()
   const leftWidth = 640
 
   // 拖动线条
@@ -93,7 +89,8 @@ const NoteDetailDrawer = (props: any) => {
 
   const init = async () => {
     const res = await getMyAllSysNoticeDetail(props.detailInner.id)
-    console.log(res, '详情')
+
+    setArr(res.recipient_users)
   }
   useEffect(() => {
     props.isVisible && init()
@@ -187,16 +184,15 @@ const NoteDetailDrawer = (props: any) => {
               flexWrap: 'wrap',
             }}
           >
-            {props.detailInner.recipient.map((i: any) => (
+            {arr?.map((i: any) => (
               <Col
                 style={{
                   whiteSpace: 'nowrap',
                 }}
                 key={i.id}
               >
-                <NameText>
-                  {i.name}({i.user_ids.length})
-                </NameText>
+                <CommonUserAvatar avatar={i.avatar} />
+                <NameText>{i.name}</NameText>
               </Col>
             ))}
           </div>

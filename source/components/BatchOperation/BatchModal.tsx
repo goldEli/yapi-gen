@@ -18,10 +18,10 @@ import DeleteConfirm from '../DeleteConfirm'
 import CommonModal from '../CommonModal'
 import CustomSelect from '../CustomSelect'
 import {
-  batchSprintDelete,
-  getSprintBatchEditConfig,
-  batchSprintEdit,
-} from '@/services/sprint'
+  batchAffairsDelete,
+  getAffairsBatchEditConfig,
+  batchAffairsEdit,
+} from '@/services/affairs'
 
 interface Props {
   // 弹窗状态
@@ -30,6 +30,7 @@ interface Props {
   onChangeVisible(): void
   // 编辑、删除
   type: 'edit' | 'delete'
+  // 批量勾选的数组
   selectRows: any
   onClose(): void
   // 1-需求，2-缺陷，3-事务
@@ -69,9 +70,9 @@ const BatchModal = (props: Props) => {
     },
     {
       type: 3,
-      config: getSprintBatchEditConfig,
-      update: batchSprintEdit,
-      del: batchSprintDelete,
+      config: getAffairsBatchEditConfig,
+      update: batchAffairsEdit,
+      del: batchAffairsDelete,
       checkboxText: '同时删除对应子事务',
       text: '勾选的事务将被删除，确认删除吗？',
     },

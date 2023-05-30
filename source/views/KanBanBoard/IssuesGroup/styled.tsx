@@ -36,3 +36,7 @@ export const Text = styled.div`
   font-size: 12px;
   color: var(--neutral-n3);
 `
+export const ImgIcon = styled.img`
+  width: 20px;
+  height: 20px;
+`

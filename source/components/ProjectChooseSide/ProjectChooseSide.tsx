@@ -1,16 +1,37 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Liu, People, ScaleDiv, Side } from './style'
 import CommonButton from '../CommonButton'
 import { TitleStyle } from '@/views/DemandSetting/components/Main'
 import CommonIconFont from '../CommonIconFont'
 import CommonUserAvatar from '../CommonUserAvatar'
+import { getProjectInfoOnly } from '@/services/project'
+import { spawn } from 'child_process'
 
 const ProjectChooseSide = (props: any) => {
   const [infoIcon, setInfoIcon] = useState(true)
   const [infoIcon2, setInfoIcon2] = useState(true)
+  const [info, setInfo] = useState<any>()
+
+  const init = async () => {
+    if (props.cloneIds[0]) {
+      const res = await getProjectInfoOnly(props.cloneIds[0], true)
+
+      setInfo({
+        name: res.name,
+        category_list: res.category_list,
+        member_list: res.member_list,
+      })
+    }
+  }
+
+  useEffect(() => {
+    init()
+    console.log(props.cloneIds, '克隆ID')
+  }, [props.cloneIds])
+
   return (
     <Side op={props.op}>
-      <div className="t1">从XXXX项目导入工作流</div>
+      <div className="t1">从{info?.name}导入工作流</div>
       <div
         style={{
           overflowY: 'auto',
@@ -28,23 +49,31 @@ const ProjectChooseSide = (props: any) => {
             <span style={{ marginLeft: '8px' }}>工作流</span>
           </TitleStyle>
           <ScaleDiv hi={!infoIcon}>
-            {Array(3)
-              .fill(null)
-              .map((i: any) => (
-                <Liu key={i}>
-                  <div className="l1">
-                    <CommonIconFont
-                      type="colorDOC-76p4mioh"
-                      size={18}
-                      color="var(--neutral-n3)"
-                    />
-                    3D设计
-                  </div>
-                  <div className="l2">
-                    【规划中】-【设计中】-【评审中...6个流程
-                  </div>
-                </Liu>
-              ))}
+            {info?.category_list.map((i: any) => (
+              <Liu key={i.id}>
+                <div className="l1">
+                  <img
+                    style={{
+                      width: '18px',
+                      height: '18px',
+                    }}
+                    src={i.attachment_id}
+                    alt=""
+                  />
+                  {/* <CommonIconFont
+                    type="colorDOC-76p4mioh"
+                    size={18}
+                    color="var(--neutral-n3)"
+                  /> */}
+                  {i.name}
+                </div>
+                <div className="l2">
+                  {i.status_list.map((k: any) => (
+                    <span key={k.id}>【{k.content}】-</span>
+                  ))}
+                </div>
+              </Liu>
+            ))}
           </ScaleDiv>
         </div>
         <div>
@@ -55,22 +84,22 @@ const ProjectChooseSide = (props: any) => {
               color="var(--neutral-n3)"
             />
 
-            <span style={{ marginLeft: '8px' }}>项目成员（50）</span>
+            <span style={{ marginLeft: '8px' }}>
+              项目成员（{info?.member_list.length}）
+            </span>
           </TitleStyle>
           <ScaleDiv hi={!infoIcon2}>
-            {Array(2)
-              .fill(null)
-              .map((i: any) => (
-                <People key={i}>
-                  <div>
-                    <CommonUserAvatar size="large" />
-                  </div>
-                  <div className="p2">
-                    <span className="p11">李四的工作日报</span>
-                    <span className="p12">0px</span>
-                  </div>
-                </People>
-              ))}
+            {info?.member_list.map((i: any) => (
+              <People key={i.id}>
+                <div>
+                  <CommonUserAvatar size="large" />
+                </div>
+                <div className="p2">
+                  <span className="p11">{i.name}</span>
+                  <span className="p12">{i.role_name}</span>
+                </div>
+              </People>
+            ))}
           </ScaleDiv>
         </div>
       </div>
