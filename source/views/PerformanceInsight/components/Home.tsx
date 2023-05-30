@@ -29,16 +29,16 @@ import HightChartMainBar from './HightChartMainBar'
 import HightChartMainLine from './HightChartMainLine'
 import HightChartMainPie from './HightChartMainPie'
 import HightChartMainSpline from './HightChartMainSpline'
-import { getStatisticsTotal } from '@/services/efficiency'
+import {
+  contrastNewWork,
+  getCompletionRate,
+  getDefectRatio,
+  getStatisticsTotal,
+  statisticsOther,
+  viewsList,
+} from '@/services/efficiency'
 
-interface Props {
-  title: string
-  time: string
-  data: Array<Model.Sprint.WorkListItem>
-  homeType: string
-  num: number
-}
-const WorkingStatus = (props: Props) => {
+const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
   const navigate = useNavigate()
   const onClick = () => {
     const params = encryptPhp(
@@ -117,6 +117,12 @@ const Home = () => {
   const dispatch = useDispatch()
   const [isVisible, setIsVisible] = useState(false)
   const { save } = useSelector(store => store.performanceInsight)
+  const [charts6, setCharts6] = useState<Models.Efficiency.ChartPie>()
+  const [charts4, setCharts4] = useState<Models.Efficiency.ChartBar>()
+  const [charts1, setCharts1] = useState<Models.Efficiency.ChartBar>()
+  const [charts2, setCharts2] = useState<Models.Efficiency.WorkChart>()
+  const [charts3, setCharts3] = useState<Models.Efficiency.ChartPie>()
+  const [charts5, setCharts5] = useState<Models.Efficiency.ChartSpline>()
   // 'iteration''sprint' 'all'
   const [homeType, setHomeType] = useState('all')
   const [workDataList, setWorkDataList] =
@@ -124,7 +130,20 @@ const Home = () => {
   useEffect(() => {
     // 缺陷现状和工作项现状
     getWorkList()
+    // 新增工作top10对比
+    getContrastNewWork('desc')
+    // 完成率top10对比
+    getCompletionRateChart('desc')
+    //阶段缺陷占比
+    getDefectRatioChart('severity')
+    // 集合图表
+    getStatisticsOther()
+    // 视图列表
+    getViewList({ project_id: '1', use_type: 3 })
   }, [])
+  const getViewList = async (parmas: API.Efficiency.ViewsList.Params) => {
+    const res = await viewsList(parmas)
+  }
   // 缺陷现状和工作项现状
   const getWorkList = async () => {
     let res = await getStatisticsTotal({
@@ -137,6 +156,106 @@ const Home = () => {
         '周期时间：two_week,four_week,one_month,three_month,six_month',
     })
     setWorkDataList(res)
+  }
+  // 新增工作top10对比第一个图表
+  const getContrastNewWork = async (str: string) => {
+    const res = await contrastNewWork({
+      project_ids: '1,2',
+      iterate_ids: '12,23',
+      user_ids: '12,23,707',
+      start_time: '2023-05-30 00:00:00',
+      end_time: '2023-05-30 00:00:00',
+      sort: str,
+    })
+    setCharts1({
+      time: res.start_time + ' ~ ' + res.end_time,
+      chartType: str,
+      yData: res.list.map(el => el.user_name),
+      seriesData: res.list.map(el => el.work_total),
+    })
+  }
+  // 完成率top10对比 第4个图表
+  const getCompletionRateChart = async (str: string) => {
+    let res = await getCompletionRate({
+      project_ids: '1,2',
+      iterate_ids: '12,23',
+      user_ids: '12,23,707',
+      start_time: '2023-05-30 00:00:00',
+      end_time: '2023-05-30 00:00:00',
+      sort: str,
+    })
+    setCharts4({
+      time: res.start_time + ' ~ ' + res.end_time,
+      chartType: str,
+      yData: res.list.map(el => el.user_name),
+      seriesData: res.list.map(el => el.work_total),
+    })
+  }
+  // 阶段缺陷占比第6个图表
+  const getDefectRatioChart = async (str: string) => {
+    const res = await getDefectRatio({
+      project_ids: '1,2',
+      iterate_ids: '12,23',
+      user_ids: '12,23,707',
+      start_time: '2023-05-30 00:00:00',
+      end_time: '2023-05-30 00:00:00',
+      dimension: str,
+    })
+    setCharts6({
+      time: res.start_time + ' ~ ' + res.end_time,
+      chartType: str,
+      seriesData: res.list.map(el => [el.name, parseInt(el.ratio, 10)]),
+    })
+  }
+  // 2,3,5图表集合
+  const getStatisticsOther = async () => {
+    const res = await statisticsOther({
+      project_ids: '1,2',
+      iterate_ids: '12,23',
+      user_ids: '12,23,707',
+      start_time: '2023-05-30 00:00:00',
+      end_time: '2023-05-30 00:00:00',
+    })
+    setCharts2({
+      time:
+        res.work_completion_period.start_time +
+        ' ~ ' +
+        res.work_completion_period.end_time,
+      yData: res.work_completion_period.list.map(el => el.start_time),
+      seriesData: res.work_completion_period.list.map(el => el.completed),
+    })
+    setCharts3({
+      time: res.risk_stock.start_time + ' ~ ' + res.risk_stock.end_time,
+      total: res.risk_stock.total,
+      seriesData: res.risk_stock.list.map(el => [
+        el.name,
+        parseInt(el.ratio, 10),
+      ]),
+    })
+    setCharts5({
+      time: res.defect_trend.start_time + ' ~ ' + res.defect_trend.end_time,
+      yData: res.defect_trend.not_fixed.map(el => el.date),
+      fixed_rate: res.defect_trend.fixed_rate,
+      new_total: res.defect_trend.new_total,
+      fixed_total: res.defect_trend.fixed_total,
+      seriesData: [
+        {
+          name: '待修复',
+          dataNum: res.defect_trend.fixed.map(el => el.number),
+          data: res.defect_trend.not_fixed.map(el => parseInt(el.rate, 10)),
+        },
+        {
+          name: '修复中',
+          dataNum: res.defect_trend.fixed.map(el => el.number),
+          data: res.defect_trend.fixing.map(el => parseInt(el.rate, 10)),
+        },
+        {
+          name: '已完成',
+          dataNum: res.defect_trend.fixed.map(el => el.number),
+          data: res.defect_trend.fixed.map(el => parseInt(el.rate, 10)),
+        },
+      ],
+    })
   }
   return (
     <div
@@ -179,13 +298,12 @@ const Home = () => {
               }
               titleType={true}
               height={396}
-              numType={false}
-              time={'2012-010'}
-              onChange={(val: any) => console.log('c', val)}
+              chart={charts1}
+              onChange={(val: any) => getContrastNewWork(val)}
             />
             <HightChartMainLine
+              chart={charts2}
               title={homeType === 'all' ? '工作完成周期' : '工作周期对比'}
-              time="2023-03-01 ~ 2023-03-14"
               height={396}
             />
           </div>
@@ -200,16 +318,19 @@ const Home = () => {
           >
             <HightChartMainPie
               height={352}
+              chart={charts3}
               titleType={false}
               title={homeType === 'all' ? '存量风险' : '阶段存量风险'}
             />
+            {/* 柱状图 */}
             <HightChartMainBar
               titleType={false}
+              chart={charts4}
               height={352}
-              numType={false}
               title={homeType === 'all' ? '完成率Top10' : '阶段完成率Top10'}
-              time={'2012-010'}
-              onChange={(val: any) => console.log('c')}
+              onChange={(val: string) => {
+                getCompletionRateChart(val), console.log(val, 'bal')
+              }}
             />
           </div>
           <div
@@ -223,14 +344,15 @@ const Home = () => {
           >
             <HightChartMainSpline
               title="缺陷趋势"
-              time="2023-03-01 ~ 2023-03-14"
+              chart={charts5}
               height={396}
             />
             <HightChartMainPie
               height={396}
+              chart={charts6}
               titleType={true}
               title="阶段缺陷占比"
-              time="2023-03-01 ~ 2023-03-14"
+              onChange={item => getDefectRatioChart(item.key)}
             />
           </div>
         </div>

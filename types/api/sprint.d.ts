@@ -253,11 +253,12 @@ declare namespace API.Sprint {
   }
   namespace GetCompletionRate {
     type Params = {
-      project_id: string
-      user_ids: Array<number>
-      start_time: string
-      end_time: string
-      sort: string
+      project_ids?: string
+      iterate_ids?: string
+      user_ids?: string
+      start_time?: string
+      end_time?: string
+      sort?: string
     }
     type Result = Array<{
       user_name: string
@@ -267,11 +268,14 @@ declare namespace API.Sprint {
   }
   namespace GetDefectRatio {
     type Params = {
-      project_ids: Array<number>
-      user_ids: Array<number>
-      start_time: string
-      end_time: string
-      iterate_ids: Array<number>
+      project_ids?: string
+      user_ids?: string
+      iterate_ids?: string
+      start_time?: string
+      end_time?: string
+      iterate_ids?: string
+      sort?: string
+      dimension?: string
     }
     type Result = Array<{ name: string; number: number; ratio: string }>
   }
@@ -300,6 +304,16 @@ declare namespace API.Sprint {
     }
   }
   namespace WorkContrastList {
+    type Params = {
+      project_ids?: string
+      iterate_ids?: string
+      user_ids?: string
+      period_time?: string
+      start_time?: string
+      end_time?: string
+      page: 1
+      pagesize: 20
+    }
     type Result = {
       work: Array<Model.Sprint.WorkListItem>
       list: Array<Model.Sprint.WorkDataListItem>
