@@ -236,7 +236,25 @@ const urls = {
   // 批量编辑的下拉列表
   getBatchEditAffairsConfig: '/b/transaction/batch_fields',
   // 子事务 - 下拉查询
-  getAffairsSelectChildrenSearch: '/b/transaction/selectChildrenSearch',
+  getAffairsSelectChildren: '/b/transaction/selectChildrenSearch',
+  // 子事务 - 最近事务
+  getAffairsSelectChildrenRecent: '/b/transaction/selectChildrenRecent',
+  // 添加子事务
+  addAffairsChild: '/b/transaction/addChild',
+  // 子事务拖拽排序
+  affairsChildDragSort: '/b/transaction/dragChildSort',
+  // 子事务列表
+  getAffairsChildList: '/b/transaction/children',
+  // 关联事务 - 下拉查询
+  getAffairsSelectRelationSearch: '/b/transaction/selectRelationSearch',
+  // 关联事务 - 最近事务
+  getAffairsSelectRelationRecent: '/b/transaction/selectRelationRecent',
+  // 添加关联事务
+  addAffairsRelation: '/b/transaction/addRelation',
+  // 关联事务拖拽排序
+  affairsRelationDragSort: '/b/transaction/dragRelationSort',
+  // 关联事务列表
+  getAffairsRelationStoriesList: '/b/transaction/relationStories',
 
   // 修改日程
 
