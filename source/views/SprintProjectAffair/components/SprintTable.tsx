@@ -23,7 +23,7 @@ import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
 import FloatBatch from '@/components/BatchOperation/FloatBatch'
 import { SprintDropdownMenu } from '@/components/TableDropdownMenu/SprintDropdownMenu'
-import { updateSprintPriority, updateSprintStatus } from '@/services/sprint'
+import { updateAffairsPriority, updateAffairsStatus } from '@/services/affairs'
 
 const Content = styled.div`
   background: var(--neutral-white-d1);
@@ -114,7 +114,7 @@ const SprintTable = (props: Props) => {
   }
 
   const onChangeState = async (item: any) => {
-    await updateSprintPriority({
+    await updateAffairsPriority({
       sprintId: item.id,
       priorityId: item.priorityId,
       projectId,
@@ -124,7 +124,7 @@ const SprintTable = (props: Props) => {
   }
 
   const onChangeStatus = async (value: any) => {
-    await updateSprintStatus(value)
+    await updateAffairsStatus(value)
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
     props.onChangeRow?.()
   }

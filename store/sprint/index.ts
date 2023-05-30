@@ -3,9 +3,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
   getSprintKanBanList,
   getProjectRoleList,
-  getSprintList,
-  getSprintInfo,
-  getSprintCommentList,
   getRightSprintList,
   getLeftSprintList,
 } from './sprint.thunk'
@@ -13,22 +10,8 @@ import {
 type SliceState = {
   guideVisible: Model.Sprint.Visible
   sprintTableData: Model.Sprint.SprintTableData[]
-  sprintDetailDrawer: {
-    visible: boolean
-    params?: any
-  }
   projectRoleList?: Model.Sprint.ProjectSettings[]
-  sprintInfo: Partial<Model.Sprint.SprintInfo>
-  sprintCommentList: {
-    list: Model.Sprint.CommentListInfo[]
-  }
-  // // 事务列表
-  // sprintList: {
-  //   list?: Model.Sprint.ListItem[]
-  //   total?: number
-  //   pageSize?: number
-  //   currentPage?: number
-  // }
+
   rightSprintList: any[]
   rightLoading: boolean
   leftSprintList: {
@@ -123,19 +106,6 @@ const initialState: SliceState = {
       ],
     },
   ],
-  sprintDetailDrawer: {
-    visible: false,
-    params: {},
-  },
-  // 事务详情
-  sprintInfo: {},
-  // 事务列表
-  sprintCommentList: {
-    list: [],
-  },
-  // sprintList: {
-  //   list: undefined,
-  // },
   // 冲刺页面右边的列表数据
   rightSprintList: [],
   rightLoading: false,
@@ -161,24 +131,6 @@ const slice = createSlice({
     ) {
       state.sprintTableData = action.payload
     },
-    setSprintDetailDrawer(
-      state,
-      action: PayloadAction<SliceState['sprintDetailDrawer']>,
-    ) {
-      state.sprintDetailDrawer = {
-        ...state.sprintDetailDrawer,
-        ...action.payload,
-      }
-    },
-    setSprintInfo(state, action: PayloadAction<SliceState['sprintInfo']>) {
-      state.sprintInfo = action.payload
-    },
-    setSprintCommentList(
-      state,
-      action: PayloadAction<SliceState['sprintCommentList']>,
-    ) {
-      state.sprintCommentList = action.payload
-    },
     setRightSprintList(
       state,
       action: PayloadAction<SliceState['rightSprintList']>,
@@ -201,15 +153,6 @@ const slice = createSlice({
   extraReducers(builder) {
     builder.addCase(getSprintKanBanList.fulfilled, (state, action) => {
       state.sprintTableData = action.payload
-    })
-    // builder.addCase(getSprintList.fulfilled, (state, action) => {
-    //   state.sprintList = action.payload
-    // })
-    builder.addCase(getSprintInfo.fulfilled, (state, action) => {
-      state.sprintInfo = action.payload
-    })
-    builder.addCase(getSprintCommentList.fulfilled, (state, action) => {
-      state.sprintCommentList = action.payload
     })
     builder.addCase(getProjectRoleList.fulfilled, (state, action) => {
       state.projectRoleList = action.payload
@@ -242,11 +185,7 @@ const sprint = slice.reducer
 
 export const {
   setGuideVisible,
-  setSprintDetailDrawer,
   setSprintTableData,
-  setSprintInfo,
-  setSprintCommentList,
-  // setSprintList,
   setRightSprintList,
   setLeftSprintList,
   setCheckList,

@@ -1,6 +1,6 @@
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
-import { setSprintDetailDrawer } from '@store/sprint'
+import { setAffairsDetailDrawer } from '@store/affairs'
 import { Drawer, MenuProps, Popover, Skeleton, Space } from 'antd'
 import { DragLine, MouseDom } from '../StyleCommon'
 import {
@@ -31,16 +31,16 @@ import DetailsSkeleton from '../DetailsSkeleton'
 import ChildSprint from '@/views/SprintProjectDetail/components/ChildSprint'
 import LinkSprint from '@/views/SprintProjectDetail/components/LinkSprint'
 import {
-  deleteSprintComment,
-  getSprintInfo,
-  updateSprintTableParams,
-} from '@/services/sprint'
+  deleteAffairsComment,
+  getAffairsInfo,
+  updateAffairsTableParams,
+} from '@/services/affairs'
 import { getProjectInfo } from '@/services/project'
 import { setProjectInfo } from '@store/project'
 import {
-  getSprintCommentList,
-  saveSprintDetailDrawer,
-} from '@store/sprint/sprint.thunk'
+  getAffairsCommentList,
+  saveAffairsDetailDrawer,
+} from '@store/affairs/affairs.thunk'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import SprintDetail from './component/SprintDetail'
 import BasicDemand from './component/BasicDemand'
@@ -83,8 +83,8 @@ const SprintDetailDrawer = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [demandIds, setDemandIds] = useState([])
   const [showState, setShowState] = useState<any>(normalState)
-  const { sprintDetailDrawer, sprintCommentList } = useSelector(
-    store => store.sprint,
+  const { affairsDetailDrawer, affairsCommentList } = useSelector(
+    store => store.affairs,
   )
   const { projectInfo } = useSelector(store => store.project)
 
@@ -149,8 +149,8 @@ const SprintDetailDrawer = () => {
   const getProjectData = async () => {
     const response = await getProjectInfo({
       projectId:
-        sprintDetailDrawer.params.project_id ??
-        sprintDetailDrawer.params.projectId,
+        affairsDetailDrawer.params.project_id ??
+        affairsDetailDrawer.params.projectId,
     })
     dispatch(setProjectInfo(response))
   }
@@ -158,16 +158,16 @@ const SprintDetailDrawer = () => {
   // 获取事务详情
   const getSprintDetail = async (id?: any, ids?: any) => {
     const paramsProjectId =
-      sprintDetailDrawer.params.project_id ??
-      sprintDetailDrawer.params.projectId
-    if (sprintDetailDrawer.params?.isAllProject) {
+      affairsDetailDrawer.params.project_id ??
+      affairsDetailDrawer.params.projectId
+    if (affairsDetailDrawer.params?.isAllProject) {
       getProjectData()
     }
     setDrawerInfo({})
     setSkeletonLoading(true)
-    const info = await getSprintInfo({
+    const info = await getAffairsInfo({
       projectId: paramsProjectId,
-      sprintId: id ? id : sprintDetailDrawer.params?.id,
+      sprintId: id ? id : affairsDetailDrawer.params?.id,
     })
     info.level_tree?.push({
       id: info.id,
@@ -189,12 +189,12 @@ const SprintDetailDrawer = () => {
   // 关闭弹窗
   const onCancel = () => {
     dispatch(
-      setSprintDetailDrawer({
+      setAffairsDetailDrawer({
         visible: false,
         params: {},
       }),
     )
-    dispatch(saveSprintDetailDrawer({}))
+    dispatch(saveAffairsDetailDrawer({}))
     setShowState(normalState)
   }
 
@@ -220,8 +220,8 @@ const SprintDetailDrawer = () => {
     const newIndex = demandIds[currentIndex - 1]
     if (!currentIndex) return
     dispatch(
-      saveSprintDetailDrawer({
-        ...sprintDetailDrawer.params,
+      saveAffairsDetailDrawer({
+        ...affairsDetailDrawer.params,
         ...{ id: newIndex },
       }),
     )
@@ -232,8 +232,8 @@ const SprintDetailDrawer = () => {
     const newIndex = demandIds[currentIndex + 1]
     if (currentIndex === demandIds?.length - 1) return
     dispatch(
-      saveSprintDetailDrawer({
-        ...sprintDetailDrawer.params,
+      saveAffairsDetailDrawer({
+        ...affairsDetailDrawer.params,
         ...{ id: newIndex },
       }),
     )
@@ -242,8 +242,8 @@ const SprintDetailDrawer = () => {
   // 改变模块显示
   const onChangeShowState = (item: any) => {
     const paramsProjectId =
-      sprintDetailDrawer.params.project_id ??
-      sprintDetailDrawer.params.projectId
+      affairsDetailDrawer.params.project_id ??
+      affairsDetailDrawer.params.projectId
     const newState = Object.assign({}, showState)
     const resState = {
       isOpen: !newState[item.key].isOpen,
@@ -255,9 +255,9 @@ const SprintDetailDrawer = () => {
     if (item.key === 'demandComment') {
       // 获取评论列表
       dispatch(
-        getSprintCommentList({
+        getAffairsCommentList({
           projectId: paramsProjectId,
-          sprintId: sprintDetailDrawer.params.id,
+          sprintId: affairsDetailDrawer.params.id,
           page: 1,
           pageSize: 999,
         }),
@@ -266,7 +266,7 @@ const SprintDetailDrawer = () => {
   }
 
   const getKeyDown = (e: any) => {
-    if (storeAll.getState().sprint.sprintDetailDrawer.visible) {
+    if (storeAll.getState().affairs.affairsDetailDrawer.visible) {
       if (e.keyCode === 38) {
         //up
         document.getElementById('upIcon')?.click()
@@ -281,14 +281,14 @@ const SprintDetailDrawer = () => {
   // 删除评论确认
   const onDeleteCommentConfirm = async (commentId: number) => {
     const paramsProjectId =
-      sprintDetailDrawer.params.project_id ??
-      sprintDetailDrawer.params.projectId
-    await deleteSprintComment({ projectId: paramsProjectId, id: commentId })
+      affairsDetailDrawer.params.project_id ??
+      affairsDetailDrawer.params.projectId
+    await deleteAffairsComment({ projectId: paramsProjectId, id: commentId })
     getMessage({ type: 'success', msg: '删除成功' })
     dispatch(
-      getSprintCommentList({
+      getAffairsCommentList({
         projectId: paramsProjectId,
-        sprintId: sprintDetailDrawer.params.id,
+        sprintId: affairsDetailDrawer.params.id,
         page: 1,
         pageSize: 999,
       }),
@@ -307,7 +307,7 @@ const SprintDetailDrawer = () => {
       return
     }
     if (value !== drawerInfo.name) {
-      await updateSprintTableParams({
+      await updateAffairsTableParams({
         projectId: drawerInfo.project_id ?? drawerInfo.projectId,
         id: drawerInfo.id,
         otherParams: {
@@ -440,13 +440,16 @@ const SprintDetailDrawer = () => {
   ]
 
   useEffect(() => {
-    if (sprintDetailDrawer.visible || sprintDetailDrawer.params?.id) {
-      console.log(sprintDetailDrawer, '=sprintDetailDrawersprintDetailDrawer')
-      setDemandIds(sprintDetailDrawer.params?.demandIds || [])
-      getSprintDetail('', sprintDetailDrawer.params?.demandIds || [])
+    if (affairsDetailDrawer.visible || affairsDetailDrawer.params?.id) {
+      console.log(
+        affairsDetailDrawer,
+        '=affairsDetailDraweraffairsDetailDrawer',
+      )
+      setDemandIds(affairsDetailDrawer.params?.demandIds || [])
+      getSprintDetail('', affairsDetailDrawer.params?.demandIds || [])
       setShowState(normalState)
     }
-  }, [sprintDetailDrawer])
+  }, [affairsDetailDrawer])
 
   // useEffect(() => {
   //   if (isUpdateDemand) {
@@ -478,7 +481,7 @@ const SprintDetailDrawer = () => {
         placement="right"
         bodyStyle={{ padding: 0, position: 'relative' }}
         width={leftWidth}
-        open={sprintDetailDrawer.visible}
+        open={affairsDetailDrawer.visible}
         onClose={onCancel}
         destroyOnClose
         maskClosable={false}
@@ -657,7 +660,7 @@ const SprintDetailDrawer = () => {
                     )}
                     {i.key === 'demandComment' && (
                       <CommonComment
-                        data={sprintCommentList}
+                        data={affairsCommentList}
                         onDeleteConfirm={onDeleteCommentConfirm}
                       />
                     )}
