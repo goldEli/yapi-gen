@@ -408,22 +408,18 @@ declare namespace Model.Sprint {
       name: string
     }
   }
-  interface UserInfo1 {
-    id: number
-    name: string
-    avatar: string
-    departmentName: string
-    positionName: string
-  }
   interface UserInfo2 {
     id: number
     name: string
     avatar: string
-    department: {
+    email: string
+    departments: Array<{
       name: string
-    }
+      id: number
+    }>
     position: {
       name: string
+      id: number
     }
   }
   interface StatusInfo1 {

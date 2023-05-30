@@ -5,13 +5,14 @@ import CommonIconFont from '../CommonIconFont'
 import NoData from '../NoData'
 import { storyConfigCategoryList } from '@/services/project'
 import useCategoryList from '@/hooks/useCategoryList'
+import { css } from '@emotion/css'
 const Wrap = styled(Select)`
   margin-bottom: 10px;
 `
 const LabelBox = styled.div`
   display: flex;
   align-items: center;
-  height: 32px;
+  /* margin-bottom: 6px; */
   span {
     margin-left: 4px;
   }
@@ -32,30 +33,10 @@ const ClearOptionsBox = styled.div`
     align-items: center;
   }
 `
-const TagBox = styled.div`
-  display: flex;
-  align-items: center;
-  > div {
-    background: #f2f2f4;
-    border-radius: 6px 6px 6px 6px;
-    margin-right: 4px;
-    min-width: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0px 8px;
+const customStyle = css`
+  .ant-select-item-option {
+    margin-bottom: 6px;
   }
-  .text {
-    color: var(--neutral-n2);
-    font-size: var(--font12);
-  }
-`
-const HasMore = styled.div`
-  background: #f2f2f4;
-  border-radius: 6px 6px 6px 6px;
-  margin-right: 4px;
-  min-width: 70px;
-  cursor: pointer;
 `
 /**
  * width 宽度
@@ -67,7 +48,7 @@ const HasMore = styled.div`
  */
 interface IProps {
   width?: number
-  value?: number[] | number
+  value?: number[] | number | string
   onChangeCallBack?(
     data: Model.Project.CategoryValue[] | Model.Project.CategoryValue,
   ): void
@@ -168,7 +149,6 @@ const CategoryDropdown = (props: IProps) => {
       value={value}
       style={{ width: width }}
       onChange={(data: any) => {
-        // debugger
         if (!data) {
           return
         }
@@ -186,6 +166,23 @@ const CategoryDropdown = (props: IProps) => {
             })
         }
       }}
+      onFocus={() => {
+        console.log(cacheList, selectData)
+        const selectDataIds = selectData.map(item => item.id)
+        const filterSelectData = cacheList.filter(item =>
+          selectDataIds.includes(item.id),
+        )
+        const otherSelectData = cacheList.filter(
+          item => !selectDataIds.includes(item.id),
+        )
+        const sortData = [...filterSelectData, ...otherSelectData]
+        const getOptions = getTypeCategory(sortData, 'work_type')
+        if (!getOptions) {
+          return
+        }
+        setOptions(getOptions)
+        console.log(filterSelectData, otherSelectData, sortData, getOptions)
+      }}
       showSearch
       allowClear
       options={options}
@@ -201,7 +198,7 @@ const CategoryDropdown = (props: IProps) => {
         onClearCallback && onClearCallback()
       }}
       mode={mode}
-      maxTagTextLength={1}
+      maxTagCount={1}
       dropdownRender={menu => {
         return (
           <>
@@ -219,24 +216,7 @@ const CategoryDropdown = (props: IProps) => {
           </>
         )
       }}
-      tagRender={props => {
-        // eslint-disable-next-line react/prop-types
-
-        console.log('props----', props)
-
-        return (
-          <TagBox>
-            <div>
-              <span className="text">美术</span>
-              <CommonIconFont type="close" size={12}></CommonIconFont>
-            </div>
-            <HasMore>
-              <span className="text">+12</span>
-              <CommonIconFont type="close" size={12}></CommonIconFont>
-            </HasMore>
-          </TagBox>
-        )
-      }}
+      popupClassName={customStyle}
     ></Wrap>
   )
 }
