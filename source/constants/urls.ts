@@ -236,7 +236,25 @@ const urls = {
   // 批量编辑的下拉列表
   getBatchEditAffairsConfig: '/b/transaction/batch_fields',
   // 子事务 - 下拉查询
-  getAffairsSelectChildrenSearch: '/b/transaction/selectChildrenSearch',
+  getAffairsSelectChildren: '/b/transaction/selectChildrenSearch',
+  // 子事务 - 最近事务
+  getAffairsSelectChildrenRecent: '/b/transaction/selectChildrenRecent',
+  // 添加子事务
+  addAffairsChild: '/b/transaction/addChild',
+  // 子事务拖拽排序
+  affairsChildDragSort: '/b/transaction/dragChildSort',
+  // 子事务列表
+  getAffairsChildList: '/b/transaction/children',
+  // 关联事务 - 下拉查询
+  getAffairsSelectRelationSearch: '/b/transaction/selectRelationSearch',
+  // 关联事务 - 最近事务
+  getAffairsSelectRelationRecent: '/b/transaction/selectRelationRecent',
+  // 添加关联事务
+  addAffairsRelation: '/b/transaction/addRelation',
+  // 关联事务拖拽排序
+  affairsRelationDragSort: '/b/transaction/dragRelationSort',
+  // 关联事务列表
+  getAffairsRelationStoriesList: '/b/transaction/relationStories',
 
   // 修改日程
 
@@ -258,22 +276,26 @@ const urls = {
   getKanbanConfigRemainingStatus: '/b/project/kanban/configs/residueStatus',
   // 完成率Top10
   getCompletionRate: '/b/efficiency/contrast/completion_rate',
-  // 阶段缺陷占比
+  // 新增工作排行榜图标第一个
+  contrastNewWork: '/b/efficiency/contrast/new_work',
+  // 阶段缺陷占比图标最后一个
   getDefectRatio: '/b/efficiency/defect_ratio',
-  // 缺陷趋势
-  getBugList: '/b/efficiency/member/bug/list',
   // 工作项和缺陷
   getStatisticsTotal: '/b/efficiency/statistics/total',
   // 对比列表
   workContrastList: '/b/efficiency/member/work_contrast/list',
   // 缺陷分析列表
   memberBugList: '/b/efficiency/member/bug/list',
+  // 2，3，5，图表汇总数
+  statisticsOther: '/b/efficiency/statistics/other',
   // 进展对比后半截弹窗
   efficiencyMemberWorkList: '/b/efficiency/member/work_list',
   // 缺陷分析后半截
   efficiencyMemberDefectList: '/b/efficiency/member/defect_list',
   // 修改首页配置
   updateHomeSetting: '/b/project/change/defaultHomeMenu',
+  // 视图列表
+  viewsList: '/b/story/views/list',
   /**
    * 看板
    */

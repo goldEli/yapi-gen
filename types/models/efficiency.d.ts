@@ -36,4 +36,52 @@ declare namespace Models.Efficiency {
     percent: number
     file: File
   }
+  export interface WorkingStatus {
+    title: string
+    time: string
+    data: Array<Model.Sprint.WorkListItem>
+    homeType: string
+    num: number
+  }
+  export interface ChartBar {
+    chartType: string
+    yData: Array<string>
+    seriesData: Array<number>
+    time: string
+  }
+  export interface ChartPie {
+    chartType?: string
+    time?: string
+    seriesData: Array<[string, number]>
+    total?: number
+  }
+  export interface Work {
+    completed: number
+    start_time: string
+    end_time?: string
+  }
+  export interface WorkChart {
+    time: string
+    yData: string[]
+    seriesData: number[]
+  }
+  export interface Defect {
+    number: number
+    rate: string
+    date: string
+  }
+  export interface ChartSpline {
+    yData: string[]
+    time: string
+    fixed_rate: string
+    new_total: number
+    fixed_total: number
+    seriesData: Array<{ name: string; data: number[]; dataNum: number[] }>
+  }
+  export interface ViewItem {
+    id: number
+    name: string
+    status: number
+    type: number
+  }
 }

@@ -47,6 +47,8 @@ const TextOfIcon = (props: Props) => (
   </Tooltip>
 )
 const Index = (props: any) => {
+  console.log(props)
+
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const { userInfo } = useSelector(store => store.user)
@@ -141,7 +143,12 @@ const Index = (props: any) => {
           title={props.item.name}
         >
           <CardRightFirst>
-            <Tags type={1}> 冲刺</Tags>
+            {props.item.projectType === 1 ? (
+              <Tags type={1}> 迭代</Tags>
+            ) : (
+              <Tags type={2}> 冲刺</Tags>
+            )}
+
             {props.item.name}
           </CardRightFirst>
         </Tooltip>

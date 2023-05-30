@@ -13,7 +13,7 @@ import {
 const HightChartMainSpline = (props: {
   height: number
   title: string
-  time: string
+  chart: Models.Efficiency.ChartSpline | undefined
 }) => {
   const options = {
     colors: ['#F6BD16', '#6688FF', '#43BA9A'],
@@ -33,25 +33,20 @@ const HightChartMainSpline = (props: {
     legend: {
       enabled: false,
     },
+
     xAxis: {
       minorGridLineColor: '#D5D6D9',
       tickColor: '#D5D6D9',
       tickWidth: 1,
       lineColor: '#D5D6D9',
-      categories: [
-        '03-01',
-        '03-02',
-        '03-03',
-        '03-04',
-        '03-05',
-        '03-06',
-        '03-07',
-        '03-08',
-        '03-09',
-        '03-10',
-        '03-11',
-        '03-12',
-      ],
+      categories: props.chart?.yData,
+      labels: {
+        rotation: -30,
+        style: {
+          color: '#646566',
+          fontSize: '12px',
+        },
+      },
     },
     yAxis: {
       tickColor: '#ECEDEF',
@@ -85,25 +80,12 @@ const HightChartMainSpline = (props: {
       headerFormat:
         '<div style="background:#fff;minWidth:136px"><div style="background:#fff;font-size:12px;margin-bottom:4px;font-family: SiYuanMedium;">{point.key}</div><div>',
       pointFormat:
-        '<span style="display:inline-block;width:8px;height:8px;borderRadius:50%;background:{series.color}"></span><span style="marginLeft:8px;fontSize:12px,color:#646566">{series.name}：{point.y}</span></div>',
+        '<span style="display:inline-block;width:8px;height:8px;borderRadius:50%;background:{series.color}"></span><span style="marginLeft:8px;fontSize:12px,color:#646566">{series.name}：{point.y}%</span></div>',
       footerFormat: '</div>',
       shared: true,
       useHTML: true,
     },
-    series: [
-      {
-        name: '创建需求',
-        data: [0, 69, 116, 306, 365, 0, 0, 0, 0, 0, 0, 0],
-      },
-      {
-        name: '进行中',
-        data: [0, 1, 2, 19, 38, 0, 0, 0, 0, 0, 0, 0],
-      },
-      {
-        name: '已结束',
-        data: [0, 1, 3, 13, 16, 0, 0, 0, 0, 0, 0, 0],
-      },
-    ],
+    series: props.chart?.seriesData,
   }
   return (
     <div style={{ width: '49%' }}>
@@ -111,7 +93,7 @@ const HightChartMainSpline = (props: {
         <RightRow>
           <Space size={12}>
             <TitleCss>{props.title}</TitleCss>
-            <Time>{props.time}</Time>
+            <Time>{props.chart?.time}</Time>
           </Space>
         </RightRow>
       </Col>
@@ -148,9 +130,9 @@ const HightChartMainSpline = (props: {
             </Row>
             <div>
               <Space size={12}>
-                <Time>修复率： 60%</Time>
-                <Time>缺陷新增： 60</Time>
-                <Time>修复： 60</Time>
+                <Time>修复率： {props.chart?.fixed_rate}</Time>
+                <Time>缺陷新增： {props.chart?.new_total}</Time>
+                <Time>修复： {props.chart?.fixed_total}</Time>
               </Space>
             </div>
           </Row>
