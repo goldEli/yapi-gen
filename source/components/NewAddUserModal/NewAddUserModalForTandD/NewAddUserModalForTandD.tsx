@@ -209,20 +209,13 @@ const TreeStyle = styled(DirectoryTree)`
 `
 const SelectStyle = styled(CustomSelect)``
 
-export interface User {
-  id: number
-  name: string
-  avatar: string
-  team_id: number
-}
-
 interface ModalProps {
   width?: number
   isVisible: boolean
   title?: string
   onClose?(): void
   children?: any
-  onConfirm?(list: User[], id?: number): void
+  onConfirm?(list: Model.User.User[], id?: number): void
   confirmText?: string
   hasFooter?: any
   isShowFooter?: boolean
@@ -759,7 +752,6 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   }
 
   const isSomeChoose = () => {
-    console.log(showTreeData)
     if (showTreeData && tabsActive === 0) {
       const findBottomChildrens = findBottomChildren([showTreeData])
       //去重
@@ -852,7 +844,6 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
       return isAll
     }
   }
-  console.log(isAllChoose, isSomeChoose)
 
   return (
     <ModalStyle

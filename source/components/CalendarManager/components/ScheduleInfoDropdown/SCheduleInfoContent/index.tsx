@@ -60,7 +60,6 @@ const ScheduleInfoContent: React.FC<IProps> = props => {
     <ScheduleInfoContentBox
       showFooter={props.showFooter}
       onClick={() => {
-        console.log('content')
         dispatch(setShowScheduleInfoTip(false))
       }}
     >

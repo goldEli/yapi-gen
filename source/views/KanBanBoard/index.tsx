@@ -20,6 +20,7 @@ import { getParamsData } from '@/tools'
 import useProjectId from './hooks/useProjectId'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { jumpToKanbanConfig } from './utils'
+import UserGroupingModal from './UserGroupingModal'
 
 interface IProps {}
 const SprintProjectKanBanBox = styled.div`
@@ -115,6 +116,7 @@ const SprintProjectKanBan: React.FC<IProps> = props => {
         close={() => dispatch(onChangeGuideVisible(false))}
       />
       <Board />
+      <UserGroupingModal />
     </SprintProjectKanBanBox>
   )
 }

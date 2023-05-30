@@ -89,6 +89,8 @@ export const UserInfo = styled.div`
     font-weight: 400;
     color: var(--neutral-n3);
     font-family: MiSans-Regular, MiSans;
+    display: flex;
+    align-items: center;
   }
 `
 export const FilterType = styled.div`

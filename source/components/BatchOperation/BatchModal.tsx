@@ -24,9 +24,12 @@ import {
 } from '@/services/sprint'
 
 interface Props {
+  // 弹窗状态
   isVisible: boolean
+  // 关闭弹窗
   onChangeVisible(): void
-  type: string
+  // 编辑、删除
+  type: 'edit' | 'delete'
   selectRows: any
   onClose(): void
   // 1-需求，2-缺陷，3-事务
