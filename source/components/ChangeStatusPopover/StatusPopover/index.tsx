@@ -36,7 +36,6 @@ const StatusPopover = (props: Props) => {
         id: i.id,
         is_end: i.is_end,
         is_start: i.is_start,
-        statusId: i.status_id,
         content: i.status.content,
         projectId: i.project_id,
         canChange: i.can_changes_category_status,

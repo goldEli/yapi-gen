@@ -6,7 +6,7 @@ import {
 } from '../style'
 
 interface Props {
-  checkStatusItem: any
+  checkStatusItem: Model.Project.CheckStatusItem
 }
 
 const Excessive = (props: Props) => {
