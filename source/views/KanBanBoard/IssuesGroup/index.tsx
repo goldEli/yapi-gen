@@ -6,7 +6,10 @@ import MultipleAvatar from '@/components/MultipleAvatar'
 import ChoosePeople from '@/views/WorkReport/Formwork/ChoosePeople'
 import ChooseMember from '../ChooseMember'
 import useAddUserModal from '@/hooks/useAddUserModal'
-import { openUserGroupingModel } from '@store/kanBan/kanBan.thunk'
+import {
+  openUserGroupingModel,
+  saveUserGroupingModel,
+} from '@store/kanBan/kanBan.thunk'
 import { useDispatch } from '@store/index'
 import {
   DropAreaList,
@@ -16,6 +19,7 @@ import {
   Title,
   TitleBtn,
 } from './styled'
+import useCloseMap from '../hooks/useCloseMap'
 interface IssuesGroupProps {
   issuesGroup: Model.KanBan.Group
 }
@@ -23,6 +27,7 @@ interface IssuesGroupProps {
 const IssuesGroup: React.FC<IssuesGroupProps> = props => {
   const { issuesGroup } = props
   const { AddUserModalElement, open } = useAddUserModal()
+  const { closeMap, onChange } = useCloseMap()
 
   const text = useMemo(() => {
     const storiesNum =
@@ -32,14 +37,23 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
       }, 0) ?? 0
     return `共计${issuesGroup?.users?.length ?? 0}人，${storiesNum}个事务`
   }, [issuesGroup])
-  const dispatch = useDispatch()
 
-  const titleArea = (
-    <GroupTitleArea>
-      <TitleBtn>
-        <UpDownBtn isOpen={false} />
-        <Title>{issuesGroup.name}</Title>
-      </TitleBtn>
+  const dispatch = useDispatch()
+  const hidden = !!closeMap?.get(issuesGroup.id)
+
+  const showPeople = (
+    <div
+      onClick={e => {
+        e.stopPropagation()
+        dispatch(
+          openUserGroupingModel({
+            userList: issuesGroup.users ?? [],
+            groupName: issuesGroup.name,
+            id: issuesGroup.id,
+          }),
+        )
+      }}
+    >
       <MultipleAvatar
         list={
           issuesGroup.users?.map(item => {
@@ -50,11 +64,21 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
             }
           }) ?? []
         }
+        disableDropDown
         max={3}
       />
-      <div
-        onClick={e => {
-          e.stopPropagation()
+    </div>
+  )
+
+  const addPeopleBtn = (
+    <div
+      onClick={e => {
+        e.stopPropagation()
+        /**
+         * 如果是id === 0 是系统内置的无分组 可以创建新分组
+         * 不为0只添加成员即可
+         */
+        if (issuesGroup.id === 0) {
           open({
             async onConfirm(data) {
               console.log(data, 123)
@@ -66,10 +90,39 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
               return Promise.resolve()
             },
           })
+          return
+        }
+        open({
+          async onConfirm(data) {
+            dispatch(
+              openUserGroupingModel({
+                userList: data,
+                groupName: issuesGroup.name,
+                id: issuesGroup.id,
+              }),
+            )
+            return Promise.resolve()
+          },
+        })
+      }}
+    >
+      <ChooseMember />
+    </div>
+  )
+
+  const titleArea = (
+    <GroupTitleArea>
+      <TitleBtn
+        onClick={e => {
+          e.stopPropagation()
+          onChange(issuesGroup.id)
         }}
       >
-        <ChooseMember />
-      </div>
+        <UpDownBtn isOpen={hidden} />
+        <Title>{issuesGroup.name}</Title>
+      </TitleBtn>
+      {showPeople}
+      {addPeopleBtn}
       {AddUserModalElement}
       <Text>{text}</Text>
     </GroupTitleArea>
@@ -77,7 +130,7 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
   return (
     <IssuesGroupBox>
       {titleArea}
-      <DropAreaList>
+      <DropAreaList hidden={hidden}>
         {issuesGroup?.columns?.map(column => {
           return (
             <Issues key={column.id} issues={column} groupId={issuesGroup.id} />

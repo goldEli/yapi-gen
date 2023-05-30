@@ -70,5 +70,21 @@ export const getLeftSprintList = async (
 // 新建冲刺
 export const createSprint = async (params: API.Sprint.CreateSprint.Params) => {
   const response = await http.post('createSprint', params)
-  return response.data
+  return response
+}
+
+// 冲刺详情
+export const getSprintDetail = async (
+  params: API.Sprint.GetSprintDetail.Params,
+) => {
+  const response = await http.get('getSprintDetail', params)
+  return response
+}
+
+// 编辑冲刺
+export const updateSprintInfo = async (
+  params: API.Sprint.UpdateSprintInfo.Params,
+) => {
+  const response = await http.patch('updateSprintInfo', params)
+  return response
 }

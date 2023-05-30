@@ -271,7 +271,7 @@ const urls = {
   // 进展对比后半截弹窗
   efficiencyMemberWorkList: '/b/efficiency/member/work_list',
   // 缺陷分析后半截
-  efficiencyMemberDefectList: 'b/efficiency/member/defect_list',
+  efficiencyMemberDefectList: '/b/efficiency/member/defect_list',
   // 修改首页配置
   updateHomeSetting: '/b/project/change/defaultHomeMenu',
   /**
@@ -297,7 +297,10 @@ const urls = {
   getLeftSprintList: '/b/sprint/getList',
   // 创建冲刺
   createSprint: '/b/sprint/store',
-
+  // 获取冲刺详情
+  getSprintDetail: '/b/sprint/getInfo',
+  // 编辑冲刺
+  updateSprintInfo: '/b/sprint/update',
   /**
    * 视图管理
    */

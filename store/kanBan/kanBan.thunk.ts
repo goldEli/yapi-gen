@@ -34,6 +34,7 @@ export const openUserGroupingModel =
         groupName: params?.groupName ?? '',
         visible: true,
         userList: params?.userList ?? [],
+        id: params.id,
       }),
     )
   }
@@ -52,10 +53,40 @@ export const saveUserGroupingModel =
   (params: Omit<API.Kanban.CreateKanbanPeopleGrouping.Params, 'project_id'>) =>
   async (dispatch: AppDispatch) => {
     const projectId = getParamsValueByKey('id')
-    const res = await services.kanban.createKanbanPeopleGrouping({
+    const { userGroupingModelInfo } = store.getState().kanBan
+    const p = {
       project_id: projectId,
       name: params.name,
       user_ids: params.user_ids,
+    }
+    if (userGroupingModelInfo.id) {
+      const res = await services.kanban.modifyKanbanPeopleGrouping({
+        ...p,
+        id: userGroupingModelInfo.id,
+      })
+    } else {
+      const res = await services.kanban.createKanbanPeopleGrouping(p)
+    }
+    getMessage({ msg: i18n.t('common.saveSuccess'), type: 'success' })
+    dispatch(closeUserGroupingModel())
+    dispatch(getKanbanByGroup())
+  }
+
+// 修改分组弹窗
+export const modifyKanbanPeopleGrouping =
+  (
+    params: Pick<
+      API.Kanban.ModifyKanbanPeopleGrouping.Params,
+      'name' | 'user_ids' | 'id'
+    >,
+  ) =>
+  async (dispatch: AppDispatch) => {
+    const projectId = getParamsValueByKey('id')
+    const res = await services.kanban.modifyKanbanPeopleGrouping({
+      project_id: projectId,
+      name: params.name,
+      user_ids: params.user_ids,
+      id: params.id,
     })
     getMessage({ msg: i18n.t('common.saveSuccess'), type: 'success' })
     dispatch(closeUserGroupingModel())

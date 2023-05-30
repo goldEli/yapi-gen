@@ -358,7 +358,6 @@ const UploadAttach = (props: any) => {
 
   const setDefaultList = () => {
     if (props.defaultList?.length >= 1) {
-      console.log(props.defaultList)
       const arr: any[] = []
       props.defaultList.forEach((i: any, index: any) => {
         const obj = {
@@ -380,7 +379,6 @@ const UploadAttach = (props: any) => {
         }
         arr.push(obj)
       })
-      console.log(arr, '=232323223')
       setFileList(arr)
     }
     // else {

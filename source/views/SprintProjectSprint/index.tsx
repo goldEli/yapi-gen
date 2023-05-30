@@ -231,7 +231,6 @@ const SprintProjectSprint: React.FC<IProps> = props => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  console.log('projectId', projectId)
 
   const [searchObject, setSearchObject] = useState<any>({
     order: 'desc',
@@ -239,7 +238,7 @@ const SprintProjectSprint: React.FC<IProps> = props => {
     search: {
       all: 1,
       sprint_status: 0,
-      project_id: 604,
+      project_id: projectId,
     },
     is_long_story: 0,
   })
@@ -265,7 +264,7 @@ const SprintProjectSprint: React.FC<IProps> = props => {
     search: {
       all: 1,
       sprint_status: 0,
-      project_id: 604,
+      project_id: projectId,
     },
     is_long_story: 0,
   })
@@ -498,8 +497,8 @@ const SprintProjectSprint: React.FC<IProps> = props => {
                 spinning={rightLoading}
                 indicator={<NewLoadingTransition />}
               >
-                {/* <TabItem data={leftSprintList} /> */}
-                <NoData
+                <TabItem data={leftSprintList} />
+                {/* <NoData
                   size
                   subText={
                     <div>
@@ -523,7 +522,7 @@ const SprintProjectSprint: React.FC<IProps> = props => {
                       创建新的冲刺
                     </CommonButton>
                   }
-                />
+                /> */}
               </Spin>
             </TabItemWrap>
           </Left>
@@ -632,7 +631,7 @@ const SprintProjectSprint: React.FC<IProps> = props => {
         close={() => dispatch(setGuideVisible(false))}
       />
       <CreateSprintModal
-        id={projectId}
+        projectId={projectId}
         type={sprintModal.type}
         visible={sprintModal.visible}
         onClose={() =>
