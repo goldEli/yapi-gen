@@ -217,6 +217,19 @@ declare namespace API.Sprint {
     }
   }
   namespace DelSprintItem {
-    type id = number
+    type Params = {
+      id: number
+    }
+  }
+
+  namespace CompleteSprint {
+    type Params = {
+      project_id: number
+      id: number
+      finish_at: string
+      result?: string | undefined
+      move_type: number
+      move_target: number
+    }
   }
 }
