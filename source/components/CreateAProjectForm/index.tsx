@@ -306,6 +306,7 @@ const CreateAProjectForm = () => {
 
     form.resetFields()
     setLock(true)
+
     setMyCover('')
     // return () => {
     //   dispatch(editProject({ visible: false, id: '' }))
@@ -345,6 +346,7 @@ const CreateAProjectForm = () => {
 
   return (
     <CommonModal2
+      noFooter={step !== 3}
       bodyStyle={{
         height: '100vh',
         minWidth: '1400px',
