@@ -1,10 +1,18 @@
 import CommonModal from '@/components/CommonModal'
 import CustomSelect from '@/components/CustomSelect'
+import { getMessage } from '@/components/Message'
+import { completeSprint } from '@/services/sprint'
 import { css } from '@emotion/css'
+import { useDispatch, useSelector } from '@store/index'
+import { setSprintRefresh } from '@store/sprint'
 import { DatePicker, Form, Input } from 'antd'
+import moment from 'moment'
+import { useEffect, useState } from 'react'
 
 interface sprintProps {
   visible: boolean
+  id: number
+  projectId: number
   onClose(): void
 }
 
@@ -19,19 +27,71 @@ const content = css`
 `
 
 const CompleteSprintModal = (props: sprintProps) => {
-  const { visible, onClose } = props
+  const { visible, onClose, id, projectId } = props
   const [form] = Form.useForm()
+  const { rightSprintList } = useSelector(store => store.sprint)
+  const [targetId, setTargetId] = useState(id)
+  const dispatch = useDispatch()
+
+  const onClear = (isFresh?: boolean) => {
+    form.setFieldsValue({
+      // eslint-disable-next-line no-undefined
+      result: undefined,
+      // eslint-disable-next-line no-undefined
+      move_target: undefined,
+    })
+    onClose()
+    if (isFresh) {
+      dispatch(setSprintRefresh(1))
+    }
+  }
 
   const onConfirm = async () => {
-    const res = await form.validateFields()
+    const value = await form.validateFields()
+    try {
+      const result: any = await completeSprint({
+        id: value.current,
+        project_id: projectId,
+        finish_at: moment(value.finish_at).format('YYYY-MM-DD'),
+        result: value.result,
+        move_type: 1,
+        move_target: value.move_target,
+      })
+      if (result && result.code === 0) {
+        getMessage({
+          msg: '完成冲刺',
+          type: 'success',
+        })
+        onClear(true)
+      } else {
+        getMessage({
+          msg: result?.message,
+          type: 'error',
+        })
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
+
+  useEffect(() => {
+    setTargetId(id)
+  }, [id])
+
+  useEffect(() => {
+    form.setFieldsValue({
+      finish_at: moment(
+        rightSprintList.find((k: any) => k.id === targetId)?.end_at,
+      ),
+    })
+  }, [targetId])
 
   return (
     <CommonModal
       title="完成冲刺"
       width={528}
       isVisible={visible}
-      onClose={() => onClose()}
+      onClose={() => onClear(false)}
       onConfirm={onConfirm}
       confirmText="完成"
       children={
@@ -44,25 +104,55 @@ const CompleteSprintModal = (props: sprintProps) => {
             autoComplete="off"
           >
             <Form.Item
-              label="冲刺名称"
-              name="name"
+              label="当前"
+              name="current"
               rules={[{ required: true, message: '请输入冲刺名称' }]}
+              initialValue={targetId}
             >
-              <Input placeholder="新建的冲刺1" />
+              <CustomSelect
+                options={rightSprintList
+                  .filter((k: any) => k.id !== -1 && k.status === 1)
+                  .map((item: any) => ({
+                    label: item.name,
+                    value: item.id,
+                    key: item.id,
+                  }))}
+                onChange={(value: number) => {
+                  setTargetId(value)
+                }}
+              />
             </Form.Item>
             <Form.Item
               label="结束日期"
-              name="time"
+              name="finish_at"
               rules={[{ required: true }]}
             >
               <DatePicker style={{ width: '100%' }} />
             </Form.Item>
+            <Form.Item label="结果" name="result">
+              <Input.TextArea
+                showCount
+                maxLength={300}
+                autoSize={{ minRows: 1, maxRows: 5 }}
+                placeholder="请输入"
+              />
+            </Form.Item>
             <Form.Item
               label="移动至"
-              name="target"
+              name="move_target"
               rules={[{ required: true }]}
             >
-              <CustomSelect />
+              <CustomSelect
+                options={rightSprintList
+                  .filter(
+                    (k: any) => k.id !== -1 && k.status === 1 && k.id !== id,
+                  )
+                  .map((item: any) => ({
+                    label: item.name,
+                    value: item.id,
+                    key: item.id,
+                  }))}
+              />
             </Form.Item>
           </Form>
         </div>
