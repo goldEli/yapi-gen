@@ -752,7 +752,6 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   }
 
   const isSomeChoose = () => {
-    console.log(showTreeData)
     if (showTreeData && tabsActive === 0) {
       const findBottomChildrens = findBottomChildren([showTreeData])
       //去重

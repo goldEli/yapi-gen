@@ -37,7 +37,6 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
 
   const dispatch = useDispatch()
   const hidden = !!closeMap?.get(issuesGroup.id)
-  console.log({ hidden }, issuesGroup.id)
 
   const titleArea = (
     <GroupTitleArea>

@@ -426,7 +426,6 @@ export const ShapeContent = (props: any) => {
   }
 
   const change = async (item?: any) => {
-    console.log(item, '121212')
     setLoading(false)
     form.resetFields()
     setActiveStatus(item.status)
@@ -462,7 +461,6 @@ export const ShapeContent = (props: any) => {
     setActiveStatus(props.row.status)
     const res2 = await getProjectMember(projectId)
     setOptionsList(res2.data)
-    console.log(props)
     const res = await getShapeRight({
       id: props.row.project_id,
       nId: props.sid,
@@ -483,7 +481,6 @@ export const ShapeContent = (props: any) => {
       id: projectId,
       nId: myid,
     })
-    console.log(res2, '=1212')
     setLeftList(res2)
     getRight()
   }
