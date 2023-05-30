@@ -394,4 +394,25 @@ declare namespace API.Sprint {
       }
     }
   }
+
+  namespace GetSprintDetail {
+    type Params = {
+      project_id: number
+      id: number
+    }
+  }
+  namespace UpdateSprintInfo {
+    type Params = {
+      project_id: number
+      id: number
+      name: string
+      info?: string
+      start_at: any
+      end_at: any
+      duration: {
+        is_weekend: number
+        week_type: number
+      }
+    }
+  }
 }

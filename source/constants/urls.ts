@@ -293,7 +293,10 @@ const urls = {
   getLeftSprintList: '/b/sprint/getList',
   // 创建冲刺
   createSprint: '/b/sprint/store',
-
+  // 获取冲刺详情
+  getSprintDetail: '/b/sprint/getInfo',
+  // 编辑冲刺
+  updateSprintInfo: '/b/sprint/update',
   /**
    * 视图管理
    */
