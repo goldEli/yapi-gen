@@ -88,3 +88,9 @@ export const updateSprintInfo = async (
   const response = await http.patch('updateSprintInfo', params)
   return response
 }
+
+// 删除冲刺
+export const delSprintItem = async (params: API.Sprint.DelSprintItem.id) => {
+  const response = await http.delete('delSprintItem', params)
+  return response
+}
