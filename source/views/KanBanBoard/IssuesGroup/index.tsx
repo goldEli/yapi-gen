@@ -20,6 +20,7 @@ import {
   TitleBtn,
 } from './styled'
 import useCloseMap from '../hooks/useCloseMap'
+import useGroupType from '../hooks/useGroupType'
 interface IssuesGroupProps {
   issuesGroup: Model.KanBan.Group
 }
@@ -28,6 +29,9 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
   const { issuesGroup } = props
   const { AddUserModalElement, open } = useAddUserModal()
   const { closeMap, onChange } = useCloseMap()
+  const dispatch = useDispatch()
+  const hidden = !!closeMap?.get(issuesGroup.id)
+  const { showUserRelatedInformation } = useGroupType()
 
   const text = useMemo(() => {
     const storiesNum =
@@ -35,13 +39,13 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
         const n = column.stories.length ?? 0
         return res + n
       }, 0) ?? 0
+    if (!showUserRelatedInformation) {
+      return `${storiesNum}个事务`
+    }
     return `共计${issuesGroup?.users?.length ?? 0}人，${storiesNum}个事务`
-  }, [issuesGroup])
+  }, [issuesGroup, showUserRelatedInformation])
 
-  const dispatch = useDispatch()
-  const hidden = !!closeMap?.get(issuesGroup.id)
-
-  const showPeople = (
+  const showPeople = showUserRelatedInformation && (
     <div
       onClick={e => {
         e.stopPropagation()
@@ -70,7 +74,7 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
     </div>
   )
 
-  const addPeopleBtn = (
+  const addPeopleBtn = showUserRelatedInformation && (
     <div
       onClick={e => {
         e.stopPropagation()

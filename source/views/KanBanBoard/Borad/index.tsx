@@ -35,9 +35,9 @@ const Board = () => {
       case 'users':
         return <KanBanSortByPerson />
       case 'category':
-        return <KanBanSortByCategory />
+        return <KanBanSortByPerson />
       case 'priority':
-        return <KanBanSortByPriority />
+        return <KanBanSortByPerson />
 
       default:
         return <></>
