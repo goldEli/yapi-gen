@@ -13,6 +13,8 @@ import MainTable2 from '../MainTable/MainTable2'
 import { TabsItem } from '../StyleCommon'
 
 const ProjectTemplate = (props: any) => {
+  console.log(props.searchId)
+
   const arr = [
     {
       id: 1,
@@ -102,6 +104,7 @@ const ProjectTemplate = (props: any) => {
   ) => {
     setIsSpinning(true)
     const params: any = {
+      project_type: props.searchId,
       searchValue: val,
       orderKey: sortVal.key,
       order: sortVal.value,
@@ -148,7 +151,7 @@ const ProjectTemplate = (props: any) => {
   }
   useEffect(() => {
     getList(activeType, false, isHidden, searchVal, order, pageObj)
-  }, [pageObj, order])
+  }, [pageObj, order, props.searchId])
   return (
     <div style={{ width: '1000px' }}>
       <Title>选择项目模版</Title>
