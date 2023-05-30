@@ -178,11 +178,8 @@ const StaffManagement = () => {
 
   const refresh = debounce(
     async () => {
-      const res = await refreshStaff()
-      if (res.code === 0) {
-        getMessage({ msg: t('staff.refreshSuccess'), type: 'success' })
-        init()
-      }
+      getStaffListData()
+      getMessage({ msg: t('staff.refreshSuccess'), type: 'success' })
     },
     1000,
     {
