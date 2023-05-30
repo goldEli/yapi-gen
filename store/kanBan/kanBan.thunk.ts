@@ -126,23 +126,32 @@ export const getKanbanByGroup = createAsyncThunk(
     if (!type) {
       return []
     }
-    if (type === 'none') {
-      return []
-    }
-    const params: Omit<
-      API.Kanban.GetKanbanByGroup.Params,
-      'pagesize' | 'page'
-    > = {
+    const params = {
       search: isEmpty(valueKey)
         ? {
             all: 1,
           }
         : valueKey,
       project_id: getParamsValueByKey('id'),
-      group_by: type,
       kanban_config_id: parseInt(columnId, 10),
     }
-    const res = await services.kanban.getKanbanByGroup(params)
+    if (type === 'none') {
+      const res = await services.kanban.getKanban(params)
+      return [
+        {
+          // 无分组id
+          id: 0,
+          name: '',
+          content_txt: '',
+          columns: res.data,
+        },
+      ]
+    }
+
+    const res = await services.kanban.getKanbanByGroup({
+      ...params,
+      group_by: type,
+    })
     return res.data
   },
 )

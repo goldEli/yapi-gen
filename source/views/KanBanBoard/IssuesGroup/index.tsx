@@ -33,7 +33,7 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
   const { closeMap, onChange } = useCloseMap()
   const dispatch = useDispatch()
   const hidden = !!closeMap?.get(issuesGroup.id)
-  const { showUserRelatedInformation, groupType } = useGroupType()
+  const { showUserRelatedInformation, groupType, isNoGroup } = useGroupType()
 
   const text = useMemo(() => {
     const storiesNum =
@@ -128,7 +128,7 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
     )
   }, [showUserRelatedInformation, groupType, issuesGroup])
 
-  const titleArea = (
+  const titleArea = !isNoGroup && (
     <GroupTitleArea>
       <TitleBtn
         onClick={e => {
