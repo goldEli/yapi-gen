@@ -14,6 +14,7 @@ import { useDispatch } from '@store/index'
 import {
   DropAreaList,
   GroupTitleArea,
+  ImgIcon,
   IssuesGroupBox,
   Text,
   Title,
@@ -21,6 +22,7 @@ import {
 } from './styled'
 import useCloseMap from '../hooks/useCloseMap'
 import useGroupType from '../hooks/useGroupType'
+import PriorityIcon from '@/components/PriorityIcon'
 interface IssuesGroupProps {
   issuesGroup: Model.KanBan.Group
 }
@@ -31,7 +33,7 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
   const { closeMap, onChange } = useCloseMap()
   const dispatch = useDispatch()
   const hidden = !!closeMap?.get(issuesGroup.id)
-  const { showUserRelatedInformation } = useGroupType()
+  const { showUserRelatedInformation, groupType } = useGroupType()
 
   const text = useMemo(() => {
     const storiesNum =
@@ -114,6 +116,18 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
     </div>
   )
 
+  const icon = useMemo(() => {
+    if (showUserRelatedInformation) {
+      return <></>
+    }
+    if (groupType === 'category') {
+      return <ImgIcon src={issuesGroup.attachment_path} />
+    }
+    return (
+      <PriorityIcon icon={issuesGroup.icon} color={issuesGroup.color ?? ''} />
+    )
+  }, [showUserRelatedInformation, groupType, issuesGroup])
+
   const titleArea = (
     <GroupTitleArea>
       <TitleBtn
@@ -123,6 +137,7 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
         }}
       >
         <UpDownBtn isOpen={hidden} />
+        {icon}
         <Title>{issuesGroup.name}</Title>
       </TitleBtn>
       {showPeople}
