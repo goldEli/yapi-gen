@@ -7,8 +7,8 @@ export const IssuesGroupBox = styled.div`
   gap: 16px;
 `
 
-export const DropAreaList = styled.div`
-  display: flex;
+export const DropAreaList = styled.div<{ hidden: boolean }>`
+  display: ${props => (props.hidden ? 'none' : 'flex')};
   width: 100%;
   gap: 16px;
   /* min-height: 80vh; */
@@ -29,9 +29,14 @@ export const TitleBtn = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  cursor: pointer;
 `
 
 export const Text = styled.div`
   font-size: 12px;
   color: var(--neutral-n3);
+`
+export const ImgIcon = styled.img`
+  width: 20px;
+  height: 20px;
 `

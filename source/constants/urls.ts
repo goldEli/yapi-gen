@@ -180,61 +180,63 @@ const urls = {
    * 冲刺项目-事务
    */
   // 事务列表
-  getSprintList: '/b/transaction/getlist',
+  getAffairsList: '/b/transaction/getlist',
   // 事务详情
-  getSprintInfo: '/b/transaction/getinfo',
+  getAffairsInfo: '/b/transaction/getinfo',
   // 修改事务状态
-  updateSprintStatus: '/b/transaction/update_status',
+  updateAffairsStatus: '/b/transaction/update_status',
   // 事务变更记录
-  getSprintChangeLog: '/b/transaction/getchangelog',
+  getAffairsChangeLog: '/b/transaction/getchangelog',
   // 事务评论列表
-  getSprintCommentList: '/b/transaction/comment/getlist',
+  getAffairsCommentList: '/b/transaction/comment/getlist',
   // 添加评论
-  addSprintComment: '/b/transaction/comment/save',
+  addAffairsComment: '/b/transaction/comment/save',
   // 删除评论
-  deleteSprintComment: '/b/transaction/comment/delete',
+  deleteAffairsComment: '/b/transaction/comment/delete',
   // 编辑评论 --------------
-  updateSprintComment: '/b/transaction/comment/update',
+  updateAffairsComment: '/b/transaction/comment/update',
   // 添加事务 --------------
-  addSprint: '/b/transaction/save',
+  addAffairs: '/b/transaction/save',
   // 更新事务 --------------
-  updateSprint: '/b/transaction/update',
+  updateAffairs: '/b/transaction/update',
   // 删除事务
-  deleteSprint: '/b/transaction/delete',
+  deleteAffairs: '/b/transaction/delete',
   // 删除详情关联
-  deleteInfoSprint: '/b/transaction/update_operate/del',
+  deleteInfoAffairs: '/b/transaction/update_operate/del',
   // 添加详情关联
-  addInfoSprint: '/b/transaction/update_operate/add',
+  addInfoAffairs: '/b/transaction/update_operate/add',
   // 修改事务优先级
-  updateSprintPriority: '/b/transaction/update_priority',
+  updateAffairsPriority: '/b/transaction/update_priority',
   // 事务快捷修改
-  changeSprintTableParams: '/b/transaction/update_fast',
+  changeAffairsTableParams: '/b/transaction/update_fast',
   // 获取状态可流转列表
-  getShapeSprintLeft: '/b/transaction/get_can_changes_workflows',
+  getShapeAffairsLeft: '/b/transaction/get_can_changes_workflows',
   // 获取相应状态下的配置
-  getShapeSprintRight: '/b/transaction/get_workflows_config',
+  getShapeAffairsRight: '/b/transaction/get_workflows_config',
   // 修改事务类别
-  updateSprintCategory: '/b/transaction/update/category',
+  updateAffairsCategory: '/b/transaction/update/category',
   // 获取事务流转记录
-  getSprintStatusLog: '/b/transaction/getstatuslog',
+  getAffairsStatusLog: '/b/transaction/getstatuslog',
   // 获取导入下载模板字段列表
-  getLoadSprintListFields: '/b/transaction/load_list_fields',
+  getLoadAffairsListFields: '/b/transaction/load_list_fields',
   // 下载导入事务模板
-  getImportDownloadSprintModel: '/b/transaction/download_story_model',
+  getImportDownloadAffairsModel: '/b/transaction/download_story_model',
   // 确认新建导入事务
-  getImportSprintExcel: '/b/transaction/import_story_excel',
+  getImportAffairsExcel: '/b/transaction/import_story_excel',
   // 确认更新导入事务
-  getImportSprintExcelUpdate: '/b/transaction/import_story_update_excel',
+  getImportAffairsExcelUpdate: '/b/transaction/import_story_update_excel',
   // 确认导出事务
-  getExportSprintExcel: '/b/transaction/export_story_excel',
+  getExportAffairsExcel: '/b/transaction/export_story_excel',
   // 获取导出事务字段列表
-  getExportSprintFields: '/b/transaction/get_story_export_fields',
+  getExportAffairsFields: '/b/transaction/get_story_export_fields',
   // 批量删除事务
-  batchSprintDelete: '/b/transaction/batch_delete',
+  batchAffairsDelete: '/b/transaction/batch_delete',
   // 批量编辑事务
-  batchSprintEdit: '/b/transaction/batch_update',
+  batchAffairsEdit: '/b/transaction/batch_update',
   // 批量编辑的下拉列表
-  getBatchEditSprintConfig: '/b/transaction/batch_fields',
+  getBatchEditAffairsConfig: '/b/transaction/batch_fields',
+  // 子事务 - 下拉查询
+  getAffairsSelectChildrenSearch: '/b/transaction/selectChildrenSearch',
 
   // 修改日程
 
@@ -269,7 +271,7 @@ const urls = {
   // 进展对比后半截弹窗
   efficiencyMemberWorkList: '/b/efficiency/member/work_list',
   // 缺陷分析后半截
-  efficiencyMemberDefectList: 'b/efficiency/member/defect_list',
+  efficiencyMemberDefectList: '/b/efficiency/member/defect_list',
   // 修改首页配置
   updateHomeSetting: '/b/project/change/defaultHomeMenu',
   /**
@@ -295,7 +297,10 @@ const urls = {
   getLeftSprintList: '/b/sprint/getList',
   // 创建冲刺
   createSprint: '/b/sprint/store',
-
+  // 获取冲刺详情
+  getSprintDetail: '/b/sprint/getInfo',
+  // 编辑冲刺
+  updateSprintInfo: '/b/sprint/update',
   /**
    * 视图管理
    */

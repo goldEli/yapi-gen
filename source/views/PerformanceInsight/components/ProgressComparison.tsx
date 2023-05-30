@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from '@store/index'
 import {
   efficiencyMemberDefectList,
   efficiencyMemberWorkList,
+  historyDefectList,
   historyWorkList,
   memberBugList,
   plugSelectionUserInfo,
@@ -73,12 +74,13 @@ const ProgressComparison = (props: Props) => {
   const [tableList1, setTableList1] = useState<
     Array<Model.Sprint.BugDataListItem>
   >([])
-  const [userInfo, setUserInfo] = useState<Model.Sprint.UserInfo1>({
+  const [userInfo, setUserInfo] = useState<Model.Sprint.UserInfo2>({
     id: 0,
     name: '',
     avatar: '',
-    departmentName: '',
-    positionName: '',
+    email: '',
+    departments: [{ id: 0, name: '' }],
+    position: { id: 0, name: '' },
   })
   const [status, setStatus] = useState<Array<Model.Sprint.StatusInfo1> | []>([])
   const { visiblePerson, visibleWork } = useSelector(
@@ -306,6 +308,7 @@ const ProgressComparison = (props: Props) => {
             onClick={(event: any) => {
               event.stopPropagation()
               dispatch(setVisibleWork(!visiblePerson))
+              getDatail(record)
             }}
           >
             {text}
@@ -403,7 +406,6 @@ const ProgressComparison = (props: Props) => {
     //缺陷 Defect_iteration-迭代 Defect1冲刺 DefectAll全局
     if (props.type.includes('Progress')) {
       getWorkContrastList()
-      // getMemberBugList()
     } else {
       getMemberBugList()
     }
@@ -428,7 +430,7 @@ const ProgressComparison = (props: Props) => {
         break
     }
   }, [])
-  // 工作进展对比列表
+  // 工作进展对比大的列表
   const getWorkContrastList = async () => {
     const res = await workContrastList({
       project_ids: [1, 2],
@@ -443,7 +445,7 @@ const ProgressComparison = (props: Props) => {
     // setIds(res.list.map(el => el.id))
     setIds([1, 3, 4])
   }
-  // 缺陷分析列表
+  // 缺陷分析大的列表
   const getMemberBugList = async () => {
     const res = await memberBugList({
       project_ids: [1, 2],
@@ -476,16 +478,24 @@ const ProgressComparison = (props: Props) => {
   }
   // 前半截详情的弹窗
   const getDatail = (row: { id: number }) => {
-    getHistoryWorkList(row.id)
+    if (props.type.includes('Progress')) {
+      getHistoryWorkList(row.id)
+    } else {
+      getHistoryDefectList(row.id)
+    }
   }
   // 进展对比的前半截api
   const getHistoryWorkList = async (id: number) => {
     const res = await historyWorkList({ id })
-    console.log(res, 'oooo')
+    setHistoryWorkObj(res)
+  }
+  // 缺陷分析的前半截
+  const getHistoryDefectList = async (id: number) => {
+    const res = await historyDefectList({ id })
     setHistoryWorkObj(res)
   }
 
-  // 获取用户信息
+  // 前半截的详情弹窗上半截的获取用户信息
   const getUserInfo = async (id: number) => {
     const res = await plugSelectionUserInfo({ id })
     setUserInfo(res.userInfo)

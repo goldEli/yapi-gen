@@ -1,8 +1,8 @@
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { saveDemandDetailDrawer } from '@store/demand/demand.thunk'
 import { useDispatch, useSelector } from '@store/index'
-import { setSprintDetailDrawer } from '@store/sprint'
-import { saveSprintDetailDrawer } from '@store/sprint/sprint.thunk'
+import { setAffairsDetailDrawer } from '@store/affairs'
+import { saveAffairsDetailDrawer } from '@store/affairs/affairs.thunk'
 import { useNavigate } from 'react-router-dom'
 
 const useOpenDemandDetail = () => {
@@ -21,12 +21,12 @@ const useOpenDemandDetail = () => {
     if (userPreferenceConfig.previewModel === 1) {
       switch (type) {
         case 1:
-          dispatch(setSprintDetailDrawer({ visible: true, params: item }))
-          dispatch(saveSprintDetailDrawer({ visible: true, params: item }))
+          dispatch(setAffairsDetailDrawer({ visible: true, params: item }))
+          dispatch(saveAffairsDetailDrawer({ visible: true, params: item }))
           break
         case 2:
           // dispatch(
-          //   setSprintDetailDrawer({ visible: true, params: { id: 1003275 } }),
+          //   setAffairsDetailDrawer({ visible: true, params: { id: 1003275 } }),
           // )
           // dispatch(saveDemandDetailDrawer(item))
           break

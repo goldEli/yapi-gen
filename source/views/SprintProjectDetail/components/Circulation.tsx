@@ -15,7 +15,7 @@ import { setIsRefresh } from '@store/user'
 import NewLoadingTransition from '@/components/NewLoadingTransition'
 import StateTag from '@/components/StateTag'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
-import { getSprintStatusLog } from '@/services/sprint'
+import { getAffairsStatusLog } from '@/services/affairs'
 
 const TimeLIneWrap = styled(Timeline)({
   marginTop: 24,
@@ -132,7 +132,7 @@ const Circulation = (props: Props) => {
   const getLogs = async (state: boolean) => {
     if (state) {
       setIsSpin(true)
-      const result = await getSprintStatusLog({
+      const result = await getAffairsStatusLog({
         projectId: id,
         sprintId,
         all: true,
@@ -143,7 +143,7 @@ const Circulation = (props: Props) => {
       dispatch(setIsRefresh(false))
       setIsSpin(false)
     } else {
-      const result = await getSprintStatusLog({
+      const result = await getAffairsStatusLog({
         projectId: id,
         sprintId,
         all: true,

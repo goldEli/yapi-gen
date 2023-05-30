@@ -26,10 +26,10 @@ import CommonButton from '@/components/CommonButton'
 import FloatBatch from '@/components/BatchOperation/FloatBatch'
 import { SprintDropdownMenu } from '@/components/TableDropdownMenu/SprintDropdownMenu'
 import {
-  getSprintList,
-  updateSprintPriority,
-  updateSprintStatus,
-} from '@/services/sprint'
+  getAffairsList,
+  updateAffairsPriority,
+  updateAffairsStatus,
+} from '@/services/affairs'
 
 const Content = styled.div`
   background: var(--neutral-white-d1);
@@ -129,7 +129,7 @@ const SprintTree = (props: Props) => {
 
   // 修改优先级
   const onChangeState = async (item: any, row?: any) => {
-    await updateSprintPriority({
+    await updateAffairsPriority({
       sprintId: item.id,
       priorityId: item.priorityId,
       projectId,
@@ -140,7 +140,7 @@ const SprintTree = (props: Props) => {
 
   // 修改状态
   const onChangeStatus = async (value: any, row?: any) => {
-    await updateSprintStatus(value)
+    await updateAffairsStatus(value)
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
     props.onChangeRow?.()
   }
@@ -261,7 +261,7 @@ const SprintTree = (props: Props) => {
     let resultList: any
     // 第一级调用接口获取子级， 并且全部展开子级
     if (!row.isExpended && !row.parentId) {
-      dataChildren = await getSprintList({
+      dataChildren = await getAffairsList({
         tree: 1,
         ...props.filterParams,
         all: false,

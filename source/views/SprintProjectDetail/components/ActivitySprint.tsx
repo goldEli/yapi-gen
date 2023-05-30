@@ -8,8 +8,8 @@ import CommonComment from '@/components/CommonComment'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
-import { getSprintCommentList } from '@store/sprint/sprint.thunk'
-import { deleteSprintComment } from '@/services/sprint'
+import { getAffairsCommentList } from '@store/affairs/affairs.thunk'
+import { deleteAffairsComment } from '@/services/affairs'
 import { getMessage } from '@/components/Message'
 
 const ActivitySprint = () => {
@@ -18,12 +18,14 @@ const ActivitySprint = () => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { id, sprintId } = paramsData
-  const { sprintCommentList, sprintInfo } = useSelector(store => store.sprint)
+  const { affairsCommentList, affairsInfo } = useSelector(
+    store => store.affairs,
+  )
 
   // 获取评论列表
   const getList = () => {
     dispatch(
-      getSprintCommentList({
+      getAffairsCommentList({
         projectId: id,
         sprintId,
         page: 1,
@@ -33,7 +35,7 @@ const ActivitySprint = () => {
   }
 
   const onDeleteCommentConfirm = async (commentId: number) => {
-    await deleteSprintComment({ projectId: id, id: commentId })
+    await deleteAffairsComment({ projectId: id, id: commentId })
     getMessage({ type: 'success', msg: '删除成功' })
     getList()
   }
@@ -45,13 +47,13 @@ const ActivitySprint = () => {
         <ActivityTabItem>
           <span>评论</span>
           <ItemNumber isActive={activeKey === '1'}>
-            {sprintCommentList?.list.length || 0}
+            {affairsCommentList?.list.length || 0}
           </ItemNumber>
         </ActivityTabItem>
       ),
       children: (
         <CommonComment
-          data={sprintCommentList}
+          data={affairsCommentList}
           onDeleteConfirm={onDeleteCommentConfirm}
         />
       ),
@@ -62,7 +64,7 @@ const ActivitySprint = () => {
         <ActivityTabItem>
           <span>变更记录</span>
           <ItemNumber isActive={activeKey === '2'}>
-            {sprintInfo.changeCount}
+            {affairsInfo.changeCount}
           </ItemNumber>
         </ActivityTabItem>
       ),

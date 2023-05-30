@@ -13,6 +13,12 @@ declare namespace Model.KanBan {
     name: string
     attachment_path: string
   }
+  // #FF5C5Eextremely-high --function-tag3
+  // #FA9746high           --function-tag4
+  // #2877FFmiddle         --function-tag5
+  // #43BA9Alow            --function-tag2
+  // #BBBDBFextremely-low  --function-tag6
+  type IconType = 'extremely-high' | 'high' | 'middle' | 'low' | 'extremely-low'
   interface StoryConfigPriority {
     id: number
     name: string
@@ -21,12 +27,7 @@ declare namespace Model.KanBan {
     content?: string
     group_content_txt?: string
     color?: string
-    // #FF5C5Eextremely-high --function-tag3
-    // #FA9746high           --function-tag4
-    // #2877FFmiddle         --function-tag5
-    // #43BA9Alow            --function-tag2
-    // #BBBDBFextremely-low  --function-tag6
-    icon?: 'extremely-high' | 'high' | 'middle' | 'low' | 'extremely-low'
+    icon?: IconType
     identity?: string
   }
   interface Handler {
@@ -45,7 +46,8 @@ declare namespace Model.KanBan {
     content_txt: string
     content?: string
     color?: string
-    icon?: string
+    icon?: IconType
+    attachment_path?: string
     identity?: string
     columns: Column[]
     users?: User[]
