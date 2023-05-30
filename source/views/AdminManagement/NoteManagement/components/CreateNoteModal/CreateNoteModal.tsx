@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable consistent-return */
 /* eslint-disable no-case-declarations */
 /* eslint-disable camelcase */
@@ -32,7 +33,7 @@ import {
 } from '@/views/WorkReport/Formwork/Addperson'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
-import { createSysNotice } from '@/services/sysNotice'
+import { createSysNotice, getMyAllSysNoticeDetail } from '@/services/sysNotice'
 import moment from 'moment'
 import AcceptorSelection from '@/components/AcceptorSelection/AcceptorSelection'
 import { getMessage } from '@/components/Message'
@@ -102,7 +103,7 @@ const CreateNoteModal = (props: any) => {
     res.expire_time = res.expire_time.format('YYYY-MM-DD HH:mm:ss')
     const obj = {
       send_email: res.recipient2.isEmail ? 1 : 2,
-      send_time: taskTimeString,
+
       recipient: setPeople(res.recipient2.member),
     }
 
@@ -118,6 +119,7 @@ const CreateNoteModal = (props: any) => {
         msg: t('common.editSuccess') as string,
         type: 'success',
       })
+      props.onHandleOk()
     }
   }
   const onSaveDraft = async () => {
@@ -127,7 +129,7 @@ const CreateNoteModal = (props: any) => {
     const obj = {
       is_draft: 1,
       send_email: res.recipient2.isEmail ? 1 : 2,
-      send_time: taskTimeString,
+
       recipient: setPeople(res.recipient2.member),
     }
 
@@ -143,6 +145,7 @@ const CreateNoteModal = (props: any) => {
         msg: t('common.editSuccess') as string,
         type: 'success',
       })
+      props.onHandleOk()
     }
   }
 
@@ -156,11 +159,66 @@ const CreateNoteModal = (props: any) => {
 
     // 获取当前时间10分钟后的时间
     const minTime = moment().add(10, 'minutes')
-    console.log(minTime)
 
     // 如果当前日期小于或等于当前时间10分钟后的日期，则禁用
     return current && current <= minTime
   }
+  const judge = (time: any) => {
+    if (time) {
+      setTaskTime(true)
+      form.setFieldsValue({
+        send_time: moment(time),
+      })
+    }
+  }
+  const transformedArray = (array: any) => {
+    console.log(array)
+
+    return array?.map((item: any) => {
+      return {
+        target_id: item.id,
+        user_type: 1,
+        target_type: 1,
+        target_value: {
+          name: item.name,
+          avatar: item.avatar,
+        },
+      }
+    })
+  }
+  const judgePeople = (data: any) => {
+    form.setFieldsValue({
+      recipient2: data,
+    })
+  }
+
+  const getEditData = async () => {
+    const res = await getMyAllSysNoticeDetail(props.editId)
+    form.setFieldsValue({
+      content: res.content,
+      title: res.title,
+      type: res.type,
+      notice_style: res.notice_style,
+      expire_time: moment(res.expire_time),
+
+      // send_time: res.expire_time ? moment(res.send_time):null,
+    })
+    judgePeople({
+      member: transformedArray(res.recipient_users),
+
+      isEmail: res.send_email,
+    })
+    judge(res.send_time)
+  }
+
+  useEffect(() => {
+    if (props.editId && props.isVisible) {
+      getEditData()
+    }
+    return () => {
+      form.resetFields()
+    }
+  }, [props.editId, props.isVisible])
 
   return (
     <CommonModal
@@ -316,7 +374,7 @@ const CreateNoteModal = (props: any) => {
             {taskTime ? (
               <Form.Item
                 label={<LabelTitle></LabelTitle>}
-                name="expire_time2"
+                name="send_time"
                 rules={[
                   { required: true, message: 'Please input your username!' },
                 ]}

@@ -505,15 +505,12 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
         })) || []
     if (props.isPermisGroup) {
       await form.validateFields()
-      console.log(tabsActive === 1 ? setData : personData)
 
       props?.onConfirm?.(
         tabsActive === 1 ? setData : personData,
         form.getFieldsValue().userGroupId,
       )
     } else {
-      console.log(tabsActive === 1 ? setData : personData)
-
       props?.onConfirm?.(tabsActive === 1 ? setData : personData)
     }
   }
@@ -524,8 +521,6 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   }
   // 选中节点
   const setKeys = (keys: any) => {
-    console.log(keys, '当前选中')
-
     if (keys.children && keys.children.length >= 1) {
       getHaveChildBykeys(keys)
     } else {
@@ -602,9 +597,8 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
 
   // 处理数据无children解析为key作为右边
   const getNotHaveChildBykeys = (keys: any) => {
-    console.log('选中的item-无children', keys)
     const isHave = personData.map((i: { id: any }) => i.id).includes(keys.id)
-    console.log(isHave)
+
     if (isHave) {
       setPersonData(personData.filter((i: { id: any }) => i.id !== keys.id))
     } else {
@@ -614,7 +608,6 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   // 处理数据有children解析为key作为右边
 
   const getHaveChildBykeys = (keys: any) => {
-    console.log('选中的item-有children', keys)
     //部门的处理方法
     if (tabsActive === 1) {
       const flattenedStaffs = [
@@ -637,22 +630,19 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
         return acc
       }, [])
       const isEquals = isEqual(personData, newData)
-      console.log(isEquals)
 
       if (personData.length < 1) {
         setPersonData(newData)
       } else if (isEquals) {
         setPersonData([])
       } else {
-        console.log(compareArrays(personData, newData))
-
         setPersonData(compareArrays(personData, newData))
       }
       return
     }
     // 非部门的处理方法
     const findBottomChildrens = findBottomChildren([keys])
-    console.log(findBottomChildrens)
+
     const newData = findBottomChildrens.reduce((acc: any, current: any) => {
       // 使用对象来检查已经存在的id值
       const ids = acc.map((item: any) => item.id)
@@ -665,7 +655,6 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
       return acc
     }, [])
     const isEquals = isEqual(personData, newData)
-    console.log(isEquals)
 
     if (personData.length < 1) {
       setPersonData(newData)
@@ -699,10 +688,8 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   }
   // 新的全选逻辑
   const checkAllChangeNew = () => {
-    console.log(showTreeData, '当前展示的列表')
     if (tabsActive === 1) {
       const allStaffs = flattenStaffs([showTreeData])
-      console.log(allStaffs)
 
       //去重
       const newData = allStaffs.reduce((acc: any, current: any) => {
@@ -716,7 +703,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
 
         return acc
       }, [])
-      console.log(newData)
+
       //判断 拿到的是否包含一部分
       const isSomeHave = personData.some((item: any) =>
         newData.map((i: { id: any }) => i.id).includes(item.id),
@@ -744,7 +731,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
 
       return acc
     }, [])
-    console.log(newData)
+
     //判断 拿到的是否包含一部分
     const isSomeHave = personData.some((item: any) =>
       newData.map((i: { id: any }) => i.id).includes(item.id),
@@ -759,7 +746,6 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
   }
 
   const isSomeChoose = () => {
-    console.log(showTreeData)
     if (showTreeData && tabsActive === 0) {
       const findBottomChildrens = findBottomChildren([showTreeData])
       //去重
@@ -774,7 +760,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
 
         return acc
       }, [])
-      console.log(newData)
+
       let isAll: boolean
 
       isAll = newData.some((item: any) =>
@@ -796,7 +782,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
 
         return acc
       }, [])
-      console.log(newData)
+
       let isAll: boolean
 
       isAll = newData.some((item: any) =>
@@ -821,7 +807,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
 
         return acc
       }, [])
-      console.log(newData)
+
       let isAll: boolean
 
       isAll = newData.every((item: any) =>
@@ -843,7 +829,7 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
 
         return acc
       }, [])
-      console.log(newData)
+
       let isAll: boolean
 
       isAll = newData.every((item: any) =>
@@ -852,7 +838,6 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
       return isAll
     }
   }
-  console.log(isAllChoose, isSomeChoose)
 
   return (
     <ModalStyle
@@ -958,7 +943,6 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
                         const thisIndex = active.current.findIndex(
                           (k: any) => i.id === k.id,
                         )
-                        console.log(thisIndex)
 
                         active.current.splice(
                           thisIndex + 1,
