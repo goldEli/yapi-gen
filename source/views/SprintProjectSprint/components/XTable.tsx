@@ -9,6 +9,8 @@ import IconFont from '@/components/IconFont'
 import CommonButton from '@/components/CommonButton'
 import PaginationBox from '@/components/TablePagination'
 import CreateSprintModal from './CreateSprintModal'
+import { useSearchParams } from 'react-router-dom'
+import { getParamsData } from '@/tools'
 const { Panel } = Collapse
 
 interface XTableProps {
@@ -123,6 +125,9 @@ const XTable: React.FC<XTableProps> = props => {
     visible: false,
     type: 'create',
   })
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
 
   return (
     <>
@@ -196,17 +201,32 @@ const XTable: React.FC<XTableProps> = props => {
                           </>
                         )}
                       </div>
-                      <CommonButton
-                        type="light"
-                        onClick={() => {
-                          setSprintModal({
-                            visible: true,
-                            type: 'start',
-                          })
-                        }}
-                      >
-                        开始冲刺
-                      </CommonButton>
+                      {data.id === -1 ? (
+                        <CommonButton
+                          type="light"
+                          onClick={() => {
+                            setSprintModal({
+                              visible: true,
+                              type: 'create',
+                            })
+                          }}
+                        >
+                          新建冲刺
+                        </CommonButton>
+                      ) : (
+                        <CommonButton
+                          type="light"
+                          isDisable={data?.stories?.length === 0}
+                          onClick={() => {
+                            setSprintModal({
+                              visible: true,
+                              type: 'start',
+                            })
+                          }}
+                        >
+                          开始冲刺
+                        </CommonButton>
+                      )}
                     </PanelHeader>
                   }
                   key="1"
@@ -261,7 +281,8 @@ const XTable: React.FC<XTableProps> = props => {
             visible: false,
           })
         }}
-        id={0}
+        editId={data.id}
+        projectId={projectId}
       />
     </>
   )
