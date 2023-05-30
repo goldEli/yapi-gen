@@ -4,15 +4,14 @@ import { useSelector } from '@store/index'
 import './styles.css'
 
 export const SortableItem = (props: any) => {
-  const { sprintTableData } = useSelector(state => state.sprint)
+  const { rightSprintList } = useSelector(state => state.sprint)
   const id = props['data-row-key']
 
   const [groupId, itemId] = id.split('-')
-
   const { style, className, children, ...rest } = props
-  const index = sprintTableData
-    ?.find(item => item.id === groupId)
-    ?.list?.findIndex(item => item.id === itemId)
+  const index = rightSprintList
+    ?.find((item: any) => item.id === Number(groupId))
+    ?.stories?.findIndex((item: any) => item.id === Number(itemId))
 
   return (
     <Draggable key={id} draggableId={id} index={index ?? 0}>

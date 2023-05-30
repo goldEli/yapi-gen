@@ -176,6 +176,9 @@ const urls = {
   getScheduleSearch: '/b/calendar/schedule/search',
 
   getSprintKanBanList: '/b/list',
+  /**
+   * 冲刺项目-事务
+   */
   // 事务列表
   getSprintList: '/b/transaction/getlist',
   // 事务详情
@@ -190,9 +193,11 @@ const urls = {
   addSprintComment: '/b/transaction/comment/save',
   // 删除评论
   deleteSprintComment: '/b/transaction/comment/delete',
-  // 添加事务
+  // 编辑评论 --------------
+  updateSprintComment: '/b/transaction/comment/update',
+  // 添加事务 --------------
   addSprint: '/b/transaction/save',
-  // 更新事务
+  // 更新事务 --------------
   updateSprint: '/b/transaction/update',
   // 删除事务
   deleteSprint: '/b/transaction/delete',
@@ -230,8 +235,6 @@ const urls = {
   batchSprintEdit: '/b/transaction/batch_update',
   // 批量编辑的下拉列表
   getBatchEditSprintConfig: '/b/transaction/batch_fields',
-  // 删除评论下的附件
-  deleteSprintCommentAttach: '/b/transaction/comment/delete_att',
 
   // 修改日程
 
@@ -286,6 +289,12 @@ const urls = {
   checkUpdate: '/b/story/views/checkUpdate',
   // 分享视图
   shareView: '/b/story/views/share',
+  // 获取按冲刺分组的事务列表
+  getSprintGroupList: '/b/sprint/groupList',
+  // 获取按冲刺分组的事务列表
+  getLeftSprintList: '/b/sprint/getList',
+  // 创建冲刺
+  createSprint: '/b/sprint/store',
 
   /**
    * 视图管理

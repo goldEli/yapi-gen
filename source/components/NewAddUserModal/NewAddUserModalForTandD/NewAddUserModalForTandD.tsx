@@ -215,7 +215,7 @@ interface ModalProps {
   title?: string
   onClose?(): void
   children?: any
-  onConfirm?(list: any[], id?: number): void
+  onConfirm?(list: Model.User.User[], id?: number): void
   confirmText?: string
   hasFooter?: any
   isShowFooter?: boolean

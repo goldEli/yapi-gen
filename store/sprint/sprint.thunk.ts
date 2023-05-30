@@ -57,3 +57,21 @@ export const getSprintCommentList = createAsyncThunk(
     return res
   },
 )
+
+// 冲刺左边的列表数据
+export const getLeftSprintList = createAsyncThunk(
+  `${name}/getLeftSprintList`,
+  async (params: API.Sprint.SprintList.Params) => {
+    const res = await services.sprint.getLeftSprintList(params)
+    return res
+  },
+)
+
+// 冲刺右边的列表数据
+export const getRightSprintList = createAsyncThunk(
+  `${name}/getRightSprintList`,
+  async (params: API.Sprint.SprintGroupList.Params) => {
+    const res = await services.sprint.getSprintGroupList(params)
+    return res
+  },
+)

@@ -1,4 +1,3 @@
-import StateTag from '@/components/StateTag'
 import { getShapeLeft } from '@/services/demand'
 import { useEffect, useState } from 'react'
 import { Item, Items, PopoverStatusWrap } from '../style'
@@ -32,16 +31,15 @@ const StatusPopover = (props: Props) => {
       id: props.projectId,
       nId: props.id,
     })
-    console.log(res2, '=wwwww')
     setStatusList(
       res2.map((i: any) => ({
         id: i.id,
         is_end: i.is_end,
         is_start: i.is_start,
-        statusId: i.status_id,
         content: i.status.content,
         projectId: i.project_id,
         canChange: i.can_changes_category_status,
+        statusName: i.story_status_config.name || '--',
       })),
     )
   }
@@ -56,7 +54,7 @@ const StatusPopover = (props: Props) => {
     <Items>
       {statusList.map((i: any) => (
         <Item key={i.id} onClick={() => onOpenModal(i)}>
-          <div className="name">流转名称</div>
+          <div className="name">{i.statusName}</div>
           <div className="provider">
             <div />
             <span />

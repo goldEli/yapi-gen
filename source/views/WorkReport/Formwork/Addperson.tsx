@@ -87,7 +87,7 @@ interface Props {
   // 成员数据
   person: any
   // 标题名称
-  title: string
+  title?: string
   // 红色必选
   isShow: boolean
   // 类型

@@ -28,7 +28,7 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
   return (
     <IssuesGroupBox>
       <DropAreaList>
-        {group?.categories.map(issues => {
+        {group?.categories?.map(issues => {
           return (
             <CategoryArea
               showTitle={props.index === 0}

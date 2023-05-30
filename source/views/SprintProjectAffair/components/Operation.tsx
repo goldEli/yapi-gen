@@ -15,7 +15,6 @@ import { Popover, Space, Tooltip } from 'antd'
 import DeleteConfirm from '@/components/DeleteConfirm'
 import { useDispatch, useSelector } from '@store/index'
 import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
-import { setCreateCategory } from '@store/demand'
 import { saveScreen } from '@store/view'
 import CommonIconFont from '@/components/CommonIconFont'
 import { OperationWrap } from '../style'
@@ -23,13 +22,13 @@ import CommonButton from '@/components/CommonButton'
 import CommonModal from '@/components/CommonModal'
 import CommonImport from '@/components/CommonImport'
 import {
-  getImportDownloadModel,
-  getImportExcel,
-  getImportExcelUpdate,
-  getExportFields,
-  getLoadListFields,
-  getExportExcel,
-} from '@/services/demand'
+  getImportDownloadSprintModel,
+  getImportSprintExcel,
+  getImportSprintExcelUpdate,
+  getExportSprintFields,
+  getLoadSprintListFields,
+  getExportSprintExcel,
+} from '@/services/sprint'
 import CommonExport from '@/components/CommonExport'
 
 const StickyWrap = styled.div({
@@ -136,7 +135,7 @@ const Operation = (props: Props) => {
   const { projectInfo, colorList, filterKeys, projectInfoValues } = useSelector(
     store => store.project,
   )
-  const { filterParams } = useSelector(store => store.demand)
+  // const { filterParams } = useSelector(store => store.demand)
   const { searchChoose } = useSelector(store => store.view)
   const [searchList, setSearchList] = useState<any[]>([])
   const [filterBasicsList, setFilterBasicsList] = useState<any[]>([])
@@ -264,22 +263,6 @@ const Operation = (props: Props) => {
     setFilterState(!filterState)
   }
 
-  const onChangeCategory = (e: any, item: any) => {
-    dispatch(setCreateCategory(item))
-
-    // 需求列表筛选参数赋值给 弹窗
-    dispatch(setFilterParamsModal(filterParams))
-    setTimeout(() => {
-      dispatch(
-        setAddWorkItemModal({
-          visible: true,
-          params: { projectId: projectInfo?.id },
-        }),
-      )
-      setIsVisible(false)
-    }, 0)
-  }
-
   const onImportClick = () => {
     setIsVisible(false)
     setIsShowImport(true)
@@ -352,13 +335,13 @@ const Operation = (props: Props) => {
         <CommonImport
           templateTitle={t('project.importChoose')}
           interfaces={{
-            getImportDownloadModel,
-            getImportExcel,
-            getImportExcelUpdate,
+            getImportDownloadModel: getImportDownloadSprintModel,
+            getImportExcel: getImportSprintExcel,
+            getImportExcelUpdate: getImportSprintExcelUpdate,
           }}
           templateInterfaces={{
-            getExportFields,
-            getLoadListFields,
+            getExportSprintFields,
+            getLoadSprintListFields,
           }}
           stepText={t('common.uploadTransaction')}
           tips={{
@@ -391,12 +374,12 @@ const Operation = (props: Props) => {
       </CommonModal>
 
       <CommonExport
-        interfaces={{ getExportExcel }}
+        interfaces={{ getExportSprintExcel }}
         isShowExport={isShowExport}
         onClose={setIsShowExport}
         searchGroups={searchGroups}
         otherParams={props.otherParams}
-        templateInterfaces={{ getExportFields, getLoadListFields }}
+        templateInterfaces={{ getExportSprintFields, getLoadSprintListFields }}
       />
 
       <OperationWrap>

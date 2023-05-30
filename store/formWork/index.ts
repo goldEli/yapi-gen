@@ -13,6 +13,7 @@ type SliceState = {
   // 装表单的参数 填写要求的表单内容
   fillingRequirements: any
   // 装汇报内容的参数
+  reportContentCopy: any
   reportContent: any
   // 开始时间和结束时间有误
   err: boolean
@@ -52,6 +53,7 @@ const formWork = createSlice({
     dataList: [],
     fillingRequirements: {},
     reportContent: null,
+    reportContentCopy: null,
     templateName: '',
     templateContentConfigs: [
       {
@@ -72,6 +74,9 @@ const formWork = createSlice({
       state.fillingRequirements = action.payload
     },
     // 装汇报内容的参数
+    setReportContentCopy: (state: any, action) => {
+      state.reportContentCopy = action.payload
+    },
     setReportContent: (state: any, action) => {
       state.reportContent = action.payload
     },
@@ -200,5 +205,6 @@ export const {
   setEditSave,
   setErrMsg,
   setTemplateName,
+  setReportContentCopy,
 } = formWork.actions
 export default formWork.reducer

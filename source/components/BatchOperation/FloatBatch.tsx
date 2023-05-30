@@ -60,18 +60,20 @@ interface Props {
   selectRows?: any
   onUpdate(): void
   onRef: any
+  // 1-需求，2-缺陷，3-事务
+  type: number
 }
 
 const FloatBatch = (props: Props) => {
   const [t] = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
-  const [currentType, setCurrentType] = useState('')
+  const [currentType, setCurrentType] = useState<'edit' | 'delete'>('edit')
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
 
   // 点击每项操作
-  const onClickItem = (type: string) => {
+  const onClickItem = (type: 'edit' | 'delete') => {
     setCurrentType(type)
     setIsVisible(true)
   }
@@ -114,6 +116,7 @@ const FloatBatch = (props: Props) => {
           type={currentType}
           selectRows={props.selectRows}
           onClose={onClose}
+          modelType={props.type}
         />
       )}
       {props.isVisible && (

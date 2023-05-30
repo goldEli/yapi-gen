@@ -549,10 +549,11 @@ const Iteration = () => {
             )}
           </MainWrap>
 
+          {/* 迭代详情-需求列表 */}
           {type === 'demand' && (
             <OptionalFeld
               allTitleList={allTitleList}
-              plainOptions={plainOptions}
+              plainOptions={plainOptions.filter((i: any) => i.is_flaw !== 1)}
               plainOptions2={plainOptions2}
               plainOptions3={plainOptions3}
               checkList={titleList}
@@ -569,7 +570,7 @@ const Iteration = () => {
               onFilter={getSearchKey}
               onSearch={onFilterSearch}
               list={searchList}
-              basicsList={filterBasicsList}
+              basicsList={filterBasicsList.filter((i: any) => i.is_flaw !== 1)}
               specialList={filterSpecialList}
               customList={filterCustomList}
               isIteration

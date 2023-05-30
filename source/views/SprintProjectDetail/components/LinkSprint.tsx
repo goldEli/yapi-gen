@@ -128,7 +128,7 @@ const LinkSprint = () => {
   }
 
   return (
-    <InfoItem id="sprint-linkSprint">
+    <InfoItem id="sprint-linkSprint" className="info_item_tab">
       <CommonModal
         isVisible={isVisible}
         title="链接事务"

@@ -10,14 +10,17 @@ import guide_2 from './img/guide_2.png'
 import guide_3 from './img/guide_3.png'
 import Board from './Borad'
 import {
+  getKanbanByGroup,
   getKanbanConfigList,
   getStoryViewList,
   onFilter,
 } from '@store/kanBan/kanBan.thunk'
-import { useSearchParams } from 'react-router-dom'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
 import useProjectId from './hooks/useProjectId'
-import { setViewItemConfig } from '@store/kanBan'
+import { encryptPhp } from '@/tools/cryptoPhp'
+import { jumpToKanbanConfig } from './utils'
+import UserGroupingModal from './UserGroupingModal'
 
 interface IProps {}
 const SprintProjectKanBanBox = styled.div`
@@ -42,10 +45,20 @@ const SprintProjectKanBan: React.FC<IProps> = props => {
   const dispatch = useDispatch()
   const { guideVisible } = useSelector(store => store.sprintKanBan)
   const { projectId } = useProjectId()
+  const navigate = useNavigate()
 
   useEffect(() => {
-    dispatch(getKanbanConfigList({ project_id: projectId }))
-    dispatch(getStoryViewList())
+    async function run() {
+      const res = await dispatch(getKanbanConfigList({ project_id: projectId }))
+      const { sortByRowAndStatusOptions } = res.payload as any
+      if (!sortByRowAndStatusOptions?.length) {
+        jumpToKanbanConfig(navigate)
+        return
+      }
+      await dispatch(getStoryViewList())
+      dispatch(getKanbanByGroup())
+    }
+    run()
   }, [projectId])
 
   const inform = [
@@ -103,6 +116,7 @@ const SprintProjectKanBan: React.FC<IProps> = props => {
         close={() => dispatch(onChangeGuideVisible(false))}
       />
       <Board />
+      <UserGroupingModal />
     </SprintProjectKanBanBox>
   )
 }

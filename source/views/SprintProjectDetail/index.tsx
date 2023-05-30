@@ -12,6 +12,8 @@ import {
   FormWrap,
   Img,
   LiWrap,
+  SprintDetailDragLine,
+  SprintDetailMouseDom,
   UpWrap,
   Wrap,
 } from './style'
@@ -25,7 +27,7 @@ import SprintDetailBasic from './components/SprintDetailBasic'
 import { useDispatch, useSelector } from '@store/index'
 import { getSprintCommentList, getSprintInfo } from '@store/sprint/sprint.thunk'
 import { useSearchParams } from 'react-router-dom'
-import { getParamsData, copyLink } from '@/tools'
+import { copyLink, getParamsData } from '@/tools'
 import useShareModal from '@/hooks/useShareModal'
 import { Popover, Tooltip, Form, Input, Dropdown, MenuProps } from 'antd'
 import CommonModal from '@/components/CommonModal'
@@ -35,6 +37,7 @@ import { getWorkflowList } from '@/services/project'
 import { getMessage } from '@/components/Message'
 import {
   updateSprintCategory,
+  updateSprintStatus,
   updateSprintTableParams,
 } from '@/services/sprint'
 import { setSprintInfo } from '@store/sprint'
@@ -46,8 +49,9 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const { open, ShareModal } = useShareModal()
-  // const { open, DeleteConfirmModal } = useDeleteConfirmModal()
+  const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
   const spanDom = useRef<HTMLSpanElement>(null)
+  const basicInfoDom = useRef<HTMLDivElement>(null)
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -57,10 +61,14 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   const [isShowChange, setIsShowChange] = useState(false)
   const [isShowCategory, setIsShowCategory] = useState(false)
   const [resultCategory, setResultCategory] = useState([])
+
   // 工作流列表
   const [workList, setWorkList] = useState<any>({
     list: undefined,
   })
+  const [focus, setFocus] = useState(false)
+  const minWidth = 400
+  const [leftWidth, setLeftWidth] = useState(400)
 
   // 复制标题
   const onCopy = () => {
@@ -124,6 +132,13 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     } else {
       form.resetFields()
     }
+  }
+
+  // 修改事务状态
+  const onChangeStatus = async (value: any) => {
+    await updateSprintStatus(value)
+    getMessage({ msg: t('common.statusSuccess'), type: 'success' })
+    dispatch(getSprintInfo({ projectId: id, sprintId }))
   }
 
   // 关闭类别弹窗
@@ -207,14 +222,14 @@ const SprintProjectDetail: React.FC<IProps> = props => {
 
   // 删除事务弹窗
   const onDelete = () => {
-    // openDelete({
-    //   title: '删除确认',
-    //   text: '确认删除该事务？',
-    //   onConfirm() {
-    //     onDeleteConfirm()
-    //     return Promise.resolve()
-    //   },
-    // })
+    openDelete({
+      title: '删除确认',
+      text: '确认删除该事务？',
+      onConfirm() {
+        onDeleteConfirm()
+        return Promise.resolve()
+      },
+    })
   }
 
   // 跳转配置
@@ -252,6 +267,11 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     },
   ]
 
+  // 拖动线条
+  const onDragLine = () => {
+    //
+  }
+
   useEffect(() => {
     dispatch(setSprintInfo({}))
     dispatch(getSprintInfo({ projectId: id, sprintId }))
@@ -278,12 +298,12 @@ const SprintProjectDetail: React.FC<IProps> = props => {
 
   return (
     <Wrap>
+      <DeleteConfirmModal />
       <ShareModal
         copyLink={() => {
           // Todo 传入复制方法
         }}
       />
-      {/* <DeleteConfirmModal /> */}
       <CommonModal
         isVisible={isShowCategory}
         onClose={onCloseCategory}
@@ -432,7 +452,10 @@ const SprintProjectDetail: React.FC<IProps> = props => {
           <span className="icon" onClick={onCopy}>
             <CommonIconFont type="copy" color="var(--neutral-n3)" />
           </span>
-          <ChangeStatusPopover>
+          <ChangeStatusPopover
+            record={sprintInfo}
+            onChangeStatus={onChangeStatus}
+          >
             <StateTag
               name={sprintInfo.status?.status.content}
               state={
@@ -453,7 +476,19 @@ const SprintProjectDetail: React.FC<IProps> = props => {
       </DetailTitle>
       <DetailMain>
         <SprintDetailInfo />
-        <SprintDetailBasic />
+        <div
+          ref={basicInfoDom}
+          style={{ position: 'relative', width: leftWidth }}
+        >
+          <SprintDetailMouseDom
+            active={focus}
+            onMouseDown={onDragLine}
+            style={{ left: 0 }}
+          >
+            <SprintDetailDragLine active={focus} className="line" />
+          </SprintDetailMouseDom>
+          <SprintDetailBasic onRef={basicInfoDom} />
+        </div>
       </DetailMain>
       <ShareModal copyLink={() => copyLink(window.origin, '复制成功', '1')} />
     </Wrap>

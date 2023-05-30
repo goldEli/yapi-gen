@@ -10,8 +10,6 @@ import { message, Menu, Table } from 'antd'
 import styled from '@emotion/styled'
 import { ExpendedWrap } from '@/components/StyleCommon'
 import { useSearchParams } from 'react-router-dom'
-import type { CheckboxValueType } from 'antd/lib/checkbox/Group'
-import { OptionalFeld } from '@/components/OptionalFeld'
 import { useDynamicColumns } from '@/components/TableColumns/ProjectTableColumn'
 import { useTranslation } from 'react-i18next'
 import NoData from '@/components/NoData'
@@ -19,11 +17,6 @@ import { getIsPermission, getParamsData } from '@/tools'
 import MoreDropdown from '@/components/MoreDropdown'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch, useSelector } from '@store/index'
-import {
-  getDemandList,
-  updateDemandStatus,
-  updatePriority,
-} from '@/services/demand'
 import PaginationBox from '@/components/TablePagination'
 import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
 import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
@@ -32,6 +25,11 @@ import ResizeTable from '@/components/ResizeTable'
 import CommonButton from '@/components/CommonButton'
 import FloatBatch from '@/components/BatchOperation/FloatBatch'
 import { SprintDropdownMenu } from '@/components/TableDropdownMenu/SprintDropdownMenu'
+import {
+  getSprintList,
+  updateSprintPriority,
+  updateSprintStatus,
+} from '@/services/sprint'
 
 const Content = styled.div`
   background: var(--neutral-white-d1);
@@ -131,28 +129,20 @@ const SprintTree = (props: Props) => {
 
   // 修改优先级
   const onChangeState = async (item: any, row?: any) => {
-    try {
-      await updatePriority({
-        demandId: item.id,
-        priorityId: item.priorityId,
-        projectId,
-      })
-      getMessage({ msg: t('common.prioritySuccess'), type: 'success' })
-      props.onChangeRow?.(row?.topId)
-    } catch (error) {
-      //
-    }
+    await updateSprintPriority({
+      sprintId: item.id,
+      priorityId: item.priorityId,
+      projectId,
+    })
+    getMessage({ msg: t('common.prioritySuccess'), type: 'success' })
+    props.onChangeRow?.()
   }
 
   // 修改状态
   const onChangeStatus = async (value: any, row?: any) => {
-    try {
-      await updateDemandStatus(value)
-      getMessage({ msg: t('common.statusSuccess'), type: 'success' })
-      props.onChangeRow?.(row?.topId)
-    } catch (error) {
-      //
-    }
+    await updateSprintStatus(value)
+    getMessage({ msg: t('common.statusSuccess'), type: 'success' })
+    props.onChangeRow?.()
   }
 
   // 点击排序
@@ -271,7 +261,7 @@ const SprintTree = (props: Props) => {
     let resultList: any
     // 第一级调用接口获取子级， 并且全部展开子级
     if (!row.isExpended && !row.parentId) {
-      dataChildren = await getDemandList({
+      dataChildren = await getSprintList({
         tree: 1,
         ...props.filterParams,
         all: false,
@@ -575,6 +565,7 @@ const SprintTree = (props: Props) => {
           selectRows={selectedRowKeys}
           onUpdate={props.onUpdate}
           onRef={batchDom}
+          type={3}
         />
       )}
 

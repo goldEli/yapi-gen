@@ -32,42 +32,18 @@ import {
 } from '@/views/WorkReport/Formwork/Addperson'
 import CommonUserAvatar from '@/components/CommonUserAvatar'
 import NewAddUserModalForTandD from '@/components/NewAddUserModal/NewAddUserModalForTandD/NewAddUserModalForTandD'
-import { Moment } from 'moment'
 import { createSysNotice } from '@/services/sysNotice'
-interface Item {
-  label: string
-  key: string
-}
+import moment from 'moment'
+import AcceptorSelection from '@/components/AcceptorSelection/AcceptorSelection'
+import { getMessage } from '@/components/Message'
+
 const CreateNoteModal = (props: any) => {
   const [form] = Form.useForm()
-  const [isOpen, setIsOpen] = useState(false)
   const [t] = useTranslation()
-  const [items, setItems] = useState<Array<Item>>([
-    {
-      key: 'all',
-      label: t('formWork.all'),
-    },
-    {
-      key: 'user',
-      label: t('formWork.addUser'),
-    },
-    {
-      key: 'department',
-      label: t('formWork.addbm'),
-    },
-    {
-      key: 'team',
-      label: t('formWork.addtd'),
-    },
-  ])
-  const [personData, setPersonData] = useState<any>()
-  const [isVisible, setIsVisible] = useState(false)
+
   const [taskTime, setTaskTime] = useState(false)
   const [taskTimeString, setTaskTimeString] = useState<string>('')
-  const [isEmail, setIsEmail] = useState(false)
-  const [targetType, setTargetType] = useState<number>(0)
-  const [isAddVisible, setIsAddVisible] = useState(false)
-  const [userType, setUserType] = useState<number>(0)
+
   const onValidator = (rule: any, value: any) => {
     if (
       (value === '<p><br></p>' ||
@@ -86,187 +62,109 @@ const CreateNoteModal = (props: any) => {
     console.log(`checked = ${e.target.checked}`)
     setTaskTime(e.target.checked)
   }
-  const onChange2 = (e: any) => {
-    console.log(`checked = ${e.target.checked}`)
-    setIsEmail(e.target.checked)
-  }
-  const fitlerDataList = (data: any) => {
-    const obj: any = {}
-    const set: any = data?.reduce((cur: any, next: any) => {
-      obj[next.target_id] ? '' : (obj[next.target_id] = true && cur.push(next))
-      return cur
-    }, [])
-    return set
-  }
-  const onConfirm = (data: any) => {
-    const setData = data.map((el: any) => ({
-      ...el,
-      user_type: userType,
-      target_type: targetType,
-      target_value: { name: el.name, avatar: el.avatar },
-    }))
-    console.log(setData, '成员')
-    setPersonData(setData)
-    setIsVisible(false)
-  }
+  const setPeople = (memebr: any) => {
+    return memebr.reduce((acc: any, item: any) => {
+      const { target_type, target_id } = item
 
-  // 添加团队部门
-  const onAddConfirm = (data: any) => {
-    const values = data.map((item: any) => ({
-      ...item,
-      user_type: userType,
-      target_type: item.type === 3 ? 3 : 2,
-      target_value: {
-        name: item.name,
-        avatar: item.type === 1 ? 2 : item.type,
-      },
-    }))
+      if (target_id === -1) {
+        acc.all = 1
+      } else {
+        switch (target_type) {
+          case 1:
+            if (!acc.user_ids) {
+              acc.user_ids = []
+            }
+            acc.user_ids.push(target_id)
+            break
+          case 2:
+            if (!acc.department_ids) {
+              acc.department_ids = []
+            }
+            acc.department_ids.push(target_id)
+            break
+          case 3:
+            if (!acc.team_ids) {
+              acc.team_ids = []
+            }
+            acc.team_ids.push(target_id)
+            break
+          default:
+            break
+        }
+      }
 
-    console.log(values, '部门')
-    setPersonData(values)
-  }
-  const getName = (key: string, type: string) => {
-    switch (key) {
-      case 'obj':
-        return type === 'id' ? 1 : t('formWork.reportTo')
-      case 'departmentHead':
-        return type === 'id' ? 2 : t('formWork.director')
-      case 'teamManagement':
-        return type === 'id' ? 3 : t('formWork.team')
-      case 'reportsTo':
-        return type === 'id' ? 4 : t('formWork.reportsTo')
-      case 'allSuperiors':
-        return type === 'id' ? 5 : t('formWork.allSup')
-      case 'all':
-        return t('formWork.whole')
-    }
-  }
-  const getImg = (item: any) => {
-    if (
-      item.target_value?.avatar &&
-      item.target_type !== 3 &&
-      item.target_type !== 2 &&
-      item.target_type !== 4
-    ) {
-      return <img src={item?.target_value?.avatar} />
-    } else if (item.target_value?.avatar === 3 || item.target_type === 3) {
-      return (
-        <DefalutIcon bgc="rgba(152, 172, 224, 1)">
-          <CommonIconFont
-            type="team-2"
-            size={16}
-            color="var(--neutral-white-d7)"
-          />
-        </DefalutIcon>
-      )
-    } else if (item.target_value?.target_type === 2 || item.target_type === 2) {
-      return (
-        <DefalutIcon bgc="rgba(121, 209, 193, 1)">
-          <CommonIconFont
-            type="branch"
-            size={16}
-            color="var(--neutral-white-d7)"
-          />
-        </DefalutIcon>
-      )
-    } else if (item.target_value?.key === 'all' || item?.target_type === 4) {
-      return (
-        <DefalutIcon bgc="rgba(125, 189, 225, 1)">
-          <CommonIconFont
-            type="userAll"
-            size={16}
-            color="var(--neutral-white-d7)"
-          />
-        </DefalutIcon>
-      )
-    }
-    return <CommonUserAvatar />
-  }
-  const onOpenChange = (e: { key: string }) => {
-    setIsOpen(false)
-    setIsVisible(e.key === 'user')
-    setIsAddVisible(['department', 'team'].includes(e.key))
-    setUserType(props.state)
-    switch (e.key) {
-      case 'user':
-        setTargetType(1)
-        break
-      case 'department':
-        setTargetType(2)
-        break
-      case 'team':
-        setTargetType(3)
-        break
-      case 'all':
-        const data = [
-          {
-            user_type: props.state,
-            key: 'all',
-            id: -props.state,
-            target_id: props.state,
-            name: getName(e.key, ''),
-            avatar: '',
-            target_value: {
-              user_type: props.state,
-              key: 'all',
-              name: getName(e.key, ''),
-              avatar: '',
-            },
-          },
-        ]
-        setPersonData(data)
-        break
-      default:
-        const data1 = [
-          {
-            user_type: props.state,
-            key: e.key,
-            target_type: 4,
-            name: getName(e.key, ''),
-            avatar: '',
-            target_id: getName(e.key, 'id'),
-            target_value: {
-              user_type: props.state,
-              key: e.key,
-              target_type: 4,
-              name: getName(e.key, ''),
-              avatar: '',
-            },
-          },
-        ]
-        setPersonData(data1)
-        setTargetType(4)
-        break
-    }
-  }
-  const delPerson = (el: { target_id: any }) => {
-    props.onChangedel(el)
+      return acc
+    }, {})
   }
   const onHandleOk = async () => {
     const res = await form.validateFields()
+
     res.expire_time = res.expire_time.format('YYYY-MM-DD HH:mm:ss')
     const obj = {
-      send_email: isEmail ? 1 : 2,
+      send_email: res.recipient2.isEmail ? 1 : 2,
       send_time: taskTimeString,
-      recipient: {
-        all: 1,
-      },
+      recipient: setPeople(res.recipient2.member),
     }
 
     const mergedObj = { ...res, ...obj }
-    console.log(mergedObj)
+    delete mergedObj.recipient2
+
     const res2 = await createSysNotice(mergedObj)
-    console.log(res2)
+
+    if (res2.code === 0) {
+      form.resetFields()
+      props.onClose()
+      getMessage({
+        msg: t('common.editSuccess') as string,
+        type: 'success',
+      })
+    }
+  }
+  const onSaveDraft = async () => {
+    const res = await form.validateFields()
+
+    res.expire_time = res.expire_time.format('YYYY-MM-DD HH:mm:ss')
+    const obj = {
+      is_draft: 1,
+      send_email: res.recipient2.isEmail ? 1 : 2,
+      send_time: taskTimeString,
+      recipient: setPeople(res.recipient2.member),
+    }
+
+    const mergedObj = { ...res, ...obj }
+    delete mergedObj.recipient2
+
+    const res2 = await createSysNotice(mergedObj)
+
+    if (res2.code === 0) {
+      form.resetFields()
+      props.onClose()
+      getMessage({
+        msg: t('common.editSuccess') as string,
+        type: 'success',
+      })
+    }
   }
 
   const onChangeTaskTime = (time: any, timeString: string) => {
     setTaskTimeString(timeString)
     console.log(time, timeString)
   }
-  console.log(personData, '数据')
+
+  function disabledDate(current: any) {
+    // 获取当前时间
+
+    // 获取当前时间10分钟后的时间
+    const minTime = moment().add(10, 'minutes')
+    console.log(minTime)
+
+    // 如果当前日期小于或等于当前时间10分钟后的日期，则禁用
+    return current && current <= minTime
+  }
 
   return (
     <CommonModal
+      onSaveDraft={onSaveDraft}
       draft
       isVisible={props.isVisible}
       width={784}
@@ -286,7 +184,7 @@ const CreateNoteModal = (props: any) => {
           <Form.Item
             label={<LabelTitle>通知标题</LabelTitle>}
             name="title"
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            rules={[{ required: true, message: '请输入标题!' }]}
           >
             <Input maxLength={20} placeholder="请输入通知标题最多20字" />
           </Form.Item>
@@ -309,7 +207,7 @@ const CreateNoteModal = (props: any) => {
                       alignItems: 'center',
                     }}
                   >
-                    味甜希仁
+                    请输入通知内容
                   </div>
                 ),
                 whitespace: true,
@@ -341,74 +239,11 @@ const CreateNoteModal = (props: any) => {
             </Radio.Group>
           </Form.Item>
           <Form.Item
+            name="recipient2"
             label={<LabelTitle>接收对象</LabelTitle>}
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            rules={[{ required: true, message: '请选择接收对象!' }]}
           >
-            <div
-              style={{
-                position: 'relative',
-              }}
-            >
-              <div style={{ position: 'absolute', top: '-30px', left: '80px' }}>
-                <Checkbox onChange={onChange2}>
-                  <span
-                    style={{
-                      height: '20px',
-                      fontSize: '12px',
-                      verticalAlign: 'text-bottom',
-                      color: '#646566',
-                      lineHeight: '20px',
-                    }}
-                  >
-                    同时邮件通知
-                  </span>
-                </Checkbox>
-              </div>
-              <div>
-                <Dropdown
-                  placement="bottomLeft"
-                  open={isOpen}
-                  onOpenChange={setIsOpen}
-                  trigger={['click']}
-                  menu={{ items, onClick: onOpenChange }}
-                  overlayStyle={{
-                    width: 120,
-                    background: 'var(--neutral-white-d1)',
-                  }}
-                >
-                  <CommonButton
-                    type="primaryText"
-                    onClick={() => setIsOpen(!isOpen)}
-                  >
-                    {t('formWork.add')}
-                    <CommonIconFont
-                      type={isOpen ? 'up' : 'down'}
-                      size={14}
-                      color="var(--primary-d2)"
-                    />
-                  </CommonButton>
-                </Dropdown>
-                <PersonContainer
-                  style={{
-                    padding: '0px',
-                    marginTop: '8px',
-                  }}
-                >
-                  {personData?.map((el: any) => (
-                    <Col key={el.id}>
-                      {getImg(el)}
-                      <NameText>{el?.target_value?.name}</NameText>
-                      <CommonIconFont
-                        onClick={() => delPerson(el)}
-                        type="close"
-                        size={14}
-                        color="var(--neutral-n3)"
-                      />
-                    </Col>
-                  ))}
-                </PersonContainer>
-              </div>
-            </div>
+            <AcceptorSelection />
           </Form.Item>
 
           <Form.Item
@@ -465,50 +300,38 @@ const CreateNoteModal = (props: any) => {
           <Form.Item
             label={<LabelTitle>失效时间</LabelTitle>}
             name="expire_time"
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            rules={[{ required: true, message: '请选择失效时间!' }]}
           >
             <DatePicker
+              disabledDate={disabledDate}
               showTime
               style={{
                 width: '100%',
               }}
             />
           </Form.Item>
-        </Form>
-        <div>
-          <Checkbox onChange={onChange}>定时发送</Checkbox>
-          {taskTime ? (
-            <div
-              style={{
-                marginTop: '8px',
-              }}
-            >
-              <DatePicker
-                onChange={onChangeTaskTime}
-                showTime
-                style={{
-                  width: '100%',
-                }}
-              />
-            </div>
-          ) : null}
-        </div>
 
-        {isVisible ? (
-          <NewAddUserModalForTandD
-            title={t('formWork.addUser')}
-            state={2}
-            isVisible={isVisible}
-            onConfirm={onConfirm}
-            onClose={() => setIsVisible(false)}
-          />
-        ) : null}
-        <AddDepartmentOrTeamModal
-          isVisible={isAddVisible}
-          onClose={() => setIsAddVisible(false)}
-          type={targetType === 2 ? 4 : 3}
-          onConfirm={onAddConfirm}
-        />
+          <div>
+            <Checkbox onChange={onChange}>定时发送</Checkbox>
+            {taskTime ? (
+              <Form.Item
+                label={<LabelTitle></LabelTitle>}
+                name="expire_time2"
+                rules={[
+                  { required: true, message: 'Please input your username!' },
+                ]}
+              >
+                <DatePicker
+                  disabledDate={disabledDate}
+                  showTime
+                  style={{
+                    width: '100%',
+                  }}
+                />
+              </Form.Item>
+            ) : null}
+          </div>
+        </Form>
       </div>
     </CommonModal>
   )

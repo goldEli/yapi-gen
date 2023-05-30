@@ -21,10 +21,8 @@ const useOpenDemandDetail = () => {
     if (userPreferenceConfig.previewModel === 1) {
       switch (type) {
         case 1:
-          dispatch(
-            setSprintDetailDrawer({ visible: true, params: { id: 1003275 } }),
-          )
-          dispatch(saveSprintDetailDrawer(item))
+          dispatch(setSprintDetailDrawer({ visible: true, params: item }))
+          dispatch(saveSprintDetailDrawer({ visible: true, params: item }))
           break
         case 2:
           // dispatch(

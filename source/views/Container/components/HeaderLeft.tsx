@@ -50,7 +50,6 @@ const DrawerComponent = (props: DrawerComponentProps) => {
     companyId: '',
     companyUserId: '',
   })
-  console.log('currentMenu', currentMenu)
   // 点击菜单
   const onChangeCurrentMenu = (item: any) => {
     props.onChange(false)
@@ -206,11 +205,11 @@ const DrawerComponent = (props: DrawerComponentProps) => {
                     type={
                       currentMenu?.id === i.id
                         ? menuIconList?.filter((k: any) =>
-                          String(i.url).includes(k.key),
-                        )[0]?.active
+                            String(i.url).includes(k.key),
+                          )[0]?.active
                         : menuIconList?.filter((k: any) =>
-                          String(i.url).includes(k.key),
-                        )[0]?.normal
+                            String(i.url).includes(k.key),
+                          )[0]?.normal
                     }
                     size={24}
                   />
@@ -231,21 +230,21 @@ const DrawerComponent = (props: DrawerComponentProps) => {
         {/* 后台管理 */}
         {menuPermission?.menus?.filter((i: any) => i.url === '/AdminManagement')
           ?.length > 0 && (
-            <DrawerFooter onClick={onToAdmin}>
-              <div>
-                <CommonIconFont
-                  type={
-                    menuIconList?.filter(
-                      (i: any) => i.key === '/AdminManagement',
-                    )[0].normal
-                  }
-                  size={20}
-                  color="var(--neutral-n2)"
-                />
-                <div>{t('back_stage_management')}</div>
-              </div>
-            </DrawerFooter>
-          )}
+          <DrawerFooter onClick={onToAdmin}>
+            <div>
+              <CommonIconFont
+                type={
+                  menuIconList?.filter(
+                    (i: any) => i.key === '/AdminManagement',
+                  )[0].normal
+                }
+                size={20}
+                color="var(--neutral-n2)"
+              />
+              <div>{t('back_stage_management')}</div>
+            </div>
+          </DrawerFooter>
+        )}
       </Drawer>
     </>
   )
@@ -284,15 +283,12 @@ const HeaderLeft = () => {
           (i: any) => i.url === menuPermission.priorityUrl,
         )[0]
       } else {
-        resultMenu = menuPermission?.menus?.filter(
-          (i: any) => {
-            if (routerPath.pathname.includes('Sprint')) {
-              return routerPath.pathname.replace('Sprint','').includes(i.url)
-            }
-            return routerPath.pathname.includes(i.url)
+        resultMenu = menuPermission?.menus?.filter((i: any) => {
+          if (routerPath.pathname.includes('Sprint')) {
+            return routerPath.pathname.replace('Sprint', '').includes(i.url)
           }
-        )?.[0]
-
+          return routerPath.pathname.includes(i.url)
+        })?.[0]
       }
       dispatch(setCurrentMenu(resultMenu))
     }

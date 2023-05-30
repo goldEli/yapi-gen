@@ -20,11 +20,13 @@ interface Props {
   onChangeFilter?(): void
   onChangeGrid?(val: any): void
   onChangeSetting?(): void
-  isGrid: any
+  isGrid?: any
   filterState: boolean | undefined
   settingState: boolean | undefined
   isDemand?: boolean
   onRefresh?(): void
+  // 是否有切换模式
+  notGrid?: boolean
 }
 
 const SpaceWrap = styled(Space)({
@@ -146,30 +148,32 @@ const OperationGroup = (props: Props) => {
         </>
       )}
 
-      <DropDownMenu
-        isVisible={isVisible}
-        onChangeVisible={setIsVisible}
-        menu={menuType}
-        icon={props.isGrid === 2 ? 'tree-list' : 'unorderedlist'}
-      >
-        <HasIconMenu>
-          <div className="label">
-            {props.isGrid === 2 && t('version2.tree')}
-            {!props.isGrid && t('common.list')}
-          </div>
-        </HasIconMenu>
-      </DropDownMenu>
+      {!props.notGrid && (
+        <>
+          <DropDownMenu
+            isVisible={isVisible}
+            onChangeVisible={setIsVisible}
+            menu={menuType}
+            icon={props.isGrid === 2 ? 'tree-list' : 'unorderedlist'}
+          >
+            <HasIconMenu>
+              <div className="label">
+                {props.isGrid === 2 && t('version2.tree')}
+                {!props.isGrid && t('common.list')}
+              </div>
+            </HasIconMenu>
+          </DropDownMenu>
+          <DividerWrap type="vertical" />
+        </>
+      )}
 
       {!hasFilter && (
-        <>
-          <DividerWrap type="vertical" />
-          <ScreenMinHover
-            label={t('common.search')}
-            icon="filter"
-            onClick={props.onChangeFilter}
-            isActive={!props.filterState}
-          />
-        </>
+        <ScreenMinHover
+          label={t('common.search')}
+          icon="filter"
+          onClick={props.onChangeFilter}
+          isActive={!props.filterState}
+        />
       )}
 
       <DividerWrap type="vertical" />

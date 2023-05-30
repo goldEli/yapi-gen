@@ -1,4 +1,3 @@
-import StateTag from '@/components/StateTag'
 import {
   ExcessiveBox,
   ExcessiveLine,
@@ -7,7 +6,7 @@ import {
 } from '../style'
 
 interface Props {
-  checkStatusItem: any
+  checkStatusItem: Model.Project.CheckStatusItem
 }
 
 const Excessive = (props: Props) => {
@@ -17,22 +16,22 @@ const Excessive = (props: Props) => {
     <ExcessiveBox>
       <PopoverStatusWrap
         state={
-          checkStatusItem?.formIsStart === 1 && checkStatusItem?.formIsEnd === 2
+          checkStatusItem?.fromIsStart === 1 && checkStatusItem?.fromIsEnd === 2
             ? 1
-            : checkStatusItem?.formIsEnd === 1 &&
-              checkStatusItem?.formIsStart === 2
+            : checkStatusItem?.fromIsEnd === 1 &&
+              checkStatusItem?.fromIsStart === 2
             ? 2
-            : checkStatusItem?.formIsEnd === 2 &&
-              checkStatusItem?.formIsStart === 2
+            : checkStatusItem?.fromIsEnd === 2 &&
+              checkStatusItem?.fromIsStart === 2
             ? 3
             : 0
         }
       >
-        {checkStatusItem.formContent}
+        {checkStatusItem.fromContent}
       </PopoverStatusWrap>
       <ExcessiveLine>
         <ExcessiveProvider>
-          <span>流转名称</span>
+          <span>{props.checkStatusItem?.statusName}</span>
         </ExcessiveProvider>
         <div className="circle" />
       </ExcessiveLine>

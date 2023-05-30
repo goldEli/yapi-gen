@@ -1,4 +1,31 @@
 declare namespace Model.Project {
+  interface CheckStatusItem {
+    // 可流转的状态列表
+    canChange: string[]
+    content: string
+    // 处理人 例：'张三;李四'
+    dealName: string
+    // 来自id状态名称
+    fromContent: string
+    // 流转名称
+    statusName: string
+    // 来自id
+    fromId: number
+    // 来自id是否是结束状态
+    fromIsEnd: number
+    // 来自id是否是开始状态
+    fromIsStart: number
+    // 流转到id
+    id: number
+    // 需求id、事务id、缺陷id
+    infoId: number
+    // 流转到id是否是结束状态
+    is_end: number
+    // 流转到id是否是结束状态
+    is_start: number
+    // 项目id
+    projectId: number
+  }
   interface AddWorkItemParams {
     // 编辑传入的id
     editId?: any
@@ -57,5 +84,9 @@ declare namespace Model.Project {
     visible: boolean
     workType: string
     // id?: number
+  }
+  interface CategoryValue {
+    name: string | undefined
+    id?: number | undefined
   }
 }

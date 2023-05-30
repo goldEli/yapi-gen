@@ -59,6 +59,8 @@ const ViewPort = (props: any) => {
   ]
 
   const onClick = (e: any) => {
+    console.log(123)
+
     setIsVisible(false)
     setShow(false)
     const value =

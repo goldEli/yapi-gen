@@ -1,0 +1,375 @@
+// 缺陷主页-缺陷表格模式
+
+import { createRef, useEffect, useMemo, useState } from 'react'
+import { Menu, Table } from 'antd'
+import styled from '@emotion/styled'
+import { useSearchParams } from 'react-router-dom'
+import { useDynamicColumns } from '@/components/TableColumns/ProjectTableColumn'
+import { useTranslation } from 'react-i18next'
+import NoData from '@/components/NoData'
+import { getIsPermission, getParamsData } from '@/tools'
+import MoreDropdown from '@/components/MoreDropdown'
+import useSetTitle from '@/hooks/useSetTitle'
+import { useDispatch, useSelector } from '@store/index'
+import { setAddWorkItemModal, setFilterParamsModal } from '@store/project'
+// import { updateDemandStatus, updatePriority } from '@/services/demand'
+import PaginationBox from '@/components/TablePagination'
+import { saveSort, saveTitles } from '@store/view'
+import useOpenDemandDetail from '@/hooks/useOpenDemandDetail'
+import { getMessage } from '@/components/Message'
+import ResizeTable from '@/components/ResizeTable'
+import CommonButton from '@/components/CommonButton'
+import FloatBatch from '@/components/BatchOperation/FloatBatch'
+import { DefectDropdownMenu } from '@/components/TableDropdownMenu/DefectDropdownMenu'
+
+const Content = styled.div`
+  background: var(--neutral-white-d1);
+  height: 100%;
+`
+
+interface Props {
+  data: any
+  onDelete(item: any): void
+  onChangePageNavigation?(item: any): void
+  onChangeRow?(): void
+  onChangeOrder?(item: any): void
+  isSpinning?: boolean
+  onUpdate(updateState?: boolean): void
+  titleList?: any
+  titleList2?: any
+  titleList3?: any
+  allTitleList?: any
+}
+
+const DefectTable = (props: Props) => {
+  const asyncSetTtile = useSetTitle()
+  const [t] = useTranslation()
+  const [searchParams] = useSearchParams()
+  const paramsData = getParamsData(searchParams)
+  const projectId = paramsData.id
+  const { projectInfo, filterKeys } = useSelector(store => store.project)
+  const tapSort = useSelector(store => store.view.tapSort)
+  const { filterParams } = useSelector(store => store.demand)
+  const [orderKey, setOrderKey] = useState<any>('')
+  const [order, setOrder] = useState<any>('')
+  const [isShowMore, setIsShowMore] = useState(false)
+  const batchDom: any = createRef()
+  // 勾选的id集合
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any>([])
+  asyncSetTtile(`缺陷【${projectInfo.name}】`)
+  const dispatch = useDispatch()
+  const [openDemandDetail] = useOpenDemandDetail()
+
+  useEffect(() => {
+    dispatch(
+      saveSort({
+        [orderKey]: order,
+      }),
+    )
+  }, [orderKey, order])
+
+  useEffect(() => {
+    if (tapSort) {
+      const key = Object.keys(tapSort)
+      const value = Object.values(tapSort)
+
+      if (tapSort) {
+        setOrderKey(key[0])
+        setOrder(value[0])
+      }
+    }
+  }, [tapSort])
+
+  // 勾选或者取消勾选，显示数量 keys: 所有选择的数量，type： 添加还是移除
+  const onOperationCheckbox = (type: any, keys?: any) => {
+    const redClassElements = document.getElementsByClassName(
+      'ant-checkbox-wrapper',
+    )
+    for (const i of redClassElements) {
+      if (i.getElementsByClassName('tagLength')[0]) {
+        i.removeChild(i.getElementsByClassName('tagLength')[0])
+      }
+      if (type === 'add' && keys?.length > 0) {
+        const div2 = document.createElement('div')
+        div2.innerText = String(keys.length)
+        div2.className = 'tagLength'
+        i.appendChild(div2)
+      }
+    }
+  }
+
+  const onChangePage = (page: number, size: number) => {
+    props.onChangePageNavigation?.({ page, size })
+    setSelectedRowKeys([])
+    onOperationCheckbox('remove')
+  }
+
+  // 点击打开详情并组装当前平级的需求id列表
+  const onClickItem = (item: any) => {
+    const demandIds = props.data?.list?.map((i: any) => i.id)
+    openDemandDetail({ ...item, ...{ demandIds } }, projectId, item.id, 1)
+  }
+
+  const onChangeState = async (item: any) => {
+    // try {
+    //   await updatePriority({
+    //     demandId: item.id,
+    //     priorityId: item.priorityId,
+    //     projectId,
+    //   })
+    //   getMessage({ msg: t('common.prioritySuccess'), type: 'success' })
+    //   props.onChangeRow?.()
+    // } catch (error) {
+    //   //
+    // }
+  }
+
+  const onChangeStatus = async (value: any) => {
+    // try {
+    //   await updateDemandStatus(value)
+    //   getMessage({ msg: t('common.statusSuccess'), type: 'success' })
+    //   props.onChangeRow?.()
+    // } catch (error) {
+    //   //
+    // }
+  }
+
+  const updateOrderkey = (key: any, val: any) => {
+    setSelectedRowKeys([])
+    onOperationCheckbox('remove')
+    setOrderKey(key)
+    setOrder(val)
+    props.onChangeOrder?.({ value: val === 2 ? 'desc' : 'asc', key })
+  }
+
+  // 点击删除
+  const onDeleteChange = (item: any) => {
+    setIsShowMore(false)
+    props.onDelete(item)
+  }
+
+  const columns = useDynamicColumns({
+    projectId,
+    orderKey,
+    order,
+    updateOrderkey,
+    onChangeStatus,
+    onChangeState,
+    onClickItem,
+    showChildCOntent: true,
+    onUpdate: props?.onUpdate,
+  })
+
+  const hasCreate = getIsPermission(
+    projectInfo?.projectPermissions,
+    projectInfo.projectType === 1 ? 'b/story/save' : 'b/transaction/save',
+  )
+
+  const hasBatch = getIsPermission(
+    projectInfo?.projectPermissions,
+    projectInfo.projectType === 1 ? 'b/story/batch' : 'b/transaction/batch',
+  )
+
+  const hasEdit = getIsPermission(
+    projectInfo?.projectPermissions,
+    projectInfo.projectType === 1 ? 'b/story/update' : 'b/transaction/update',
+  )
+  const hasDel = getIsPermission(
+    projectInfo?.projectPermissions,
+    projectInfo.projectType === 1 ? 'b/story/delete' : 'b/transaction/delete',
+  )
+
+  //  点击批量
+  const onClickBatch = (e: any, type: any) => {
+    setIsShowMore(false)
+    e.stopPropagation()
+    if (type === 'copy') {
+      batchDom.current?.copy()
+    } else {
+      batchDom.current?.clickMenu(type)
+    }
+  }
+
+  const menuBatch = () => {
+    const batchItems = [
+      {
+        key: '0',
+        disabled: true,
+        label: (
+          <div>
+            {t('version2.checked', {
+              count: selectedRowKeys?.map((i: any) => i.id)?.length,
+            })}
+          </div>
+        ),
+      },
+      {
+        key: '1',
+        label: (
+          <div onClick={e => onClickBatch(e, 'edit')}>
+            {t('version2.batchEdit')}
+          </div>
+        ),
+      },
+      {
+        key: '2',
+        label: (
+          <div onClick={e => onClickBatch(e, 'delete')}>
+            {t('version2.batchDelete')}
+          </div>
+        ),
+      },
+      {
+        key: '3',
+        label: (
+          <div onClick={e => onClickBatch(e, 'copy')}>
+            {t('version2.batchCopyLink')}
+          </div>
+        ),
+      },
+    ]
+    return <Menu style={{ minWidth: 56 }} items={batchItems} />
+  }
+
+  const selectColum: any = useMemo(() => {
+    const arr = props.allTitleList
+    const newList = []
+    for (let i = 0; i < arr.length; i++) {
+      for (let j = 0; j < columns?.length; j++) {
+        if (arr[i] === columns[j].key) {
+          newList.push(columns[j])
+        }
+      }
+    }
+
+    const arrList = [
+      {
+        render: (text: any, record: any) => {
+          return (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              {hasEdit && hasDel && hasCreate ? null : (
+                <MoreDropdown
+                  isMoreVisible={isShowMore}
+                  menu={
+                    selectedRowKeys
+                      ?.map((i: any) => i.id)
+                      .includes(record.id) ? (
+                      menuBatch()
+                    ) : (
+                      <DefectDropdownMenu
+                        onDeleteChange={onDeleteChange}
+                        record={record}
+                      />
+                    )
+                  }
+                  onChangeVisible={setIsShowMore}
+                />
+              )}
+            </div>
+          )
+        },
+      },
+    ]
+    if (!hasBatch) {
+      arrList.push(Table.SELECTION_COLUMN as any)
+    }
+    return [...arrList, ...newList]
+  }, [
+    props.titleList,
+    props.titleList2,
+    props.titleList3,
+    columns,
+    selectedRowKeys,
+  ])
+
+  // 需求勾选
+  const onSelectChange = (record: any, selected: any) => {
+    const resultKeys = selected
+      ? [...selectedRowKeys, ...[record], ...(record.allChildrenIds || [])]
+      : selectedRowKeys?.filter((i: any) => i.id !== record.id)
+    setSelectedRowKeys([...new Set(resultKeys)])
+    onOperationCheckbox('add', [...new Set(resultKeys)])
+  }
+
+  // 全选
+  const onSelectAll = (selected: any) => {
+    if (selected) {
+      let childKeys: any = []
+      props.data?.list?.forEach((element: any) => {
+        childKeys = [...childKeys, ...[element]]
+      })
+      setSelectedRowKeys([...new Set(childKeys)])
+      onOperationCheckbox('add', [...new Set(childKeys)])
+    } else {
+      setSelectedRowKeys([])
+      onOperationCheckbox('remove')
+    }
+  }
+
+  const onClick = () => {
+    // dispatch(
+    //   setAddWorkItemModal({
+    //     visible: true,
+    //     params: { noDataCreate: true },
+    //   }),
+    // )
+    // dispatch(setFilterParamsModal(filterParams))
+  }
+
+  return (
+    <Content>
+      <ResizeTable
+        isSpinning={props.isSpinning}
+        dataWrapNormalHeight="calc(100% - 64px)"
+        col={selectColum}
+        dataSource={props.data.list}
+        rowSelection={
+          !hasBatch &&
+          ({
+            selectedRowKeys: selectedRowKeys?.map((i: any) => i.id),
+            onSelect: (record: any, selected: any) =>
+              onSelectChange(record, selected),
+            onSelectAll,
+          } as any)
+        }
+        noData={
+          <NoData
+            subText={hasCreate ? '' : '当前项目还未创建缺陷，创建一个吧~'}
+            haveFilter={filterKeys?.length > 0}
+          >
+            {!hasCreate && (
+              <CommonButton
+                type="light"
+                onClick={onClick}
+                style={{ marginTop: 24 }}
+              >
+                创建缺陷
+              </CommonButton>
+            )}
+          </NoData>
+        }
+      />
+
+      {!hasBatch && (
+        <FloatBatch
+          isVisible={selectedRowKeys.length > 0}
+          onClose={() => onSelectAll(false)}
+          selectRows={selectedRowKeys}
+          onUpdate={props.onUpdate}
+          onRef={batchDom}
+          type={2}
+        />
+      )}
+
+      <PaginationBox
+        currentPage={props.data?.currentPage}
+        pageSize={props.data?.pageSize}
+        total={props.data?.total}
+        onChange={onChangePage}
+        hasPadding
+      />
+    </Content>
+  )
+}
+
+export default DefectTable

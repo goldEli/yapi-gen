@@ -1,10 +1,5 @@
+/* eslint-disable no-lonely-if */
 // 批量操作弹窗 -- 编辑及删除
-
-/* eslint-disable @typescript-eslint/naming-convention */
-
-/* eslint-disable react/jsx-no-leaked-render */
-/* eslint-disable complexity */
-/* eslint-disable camelcase */
 import { useEffect, useState } from 'react'
 import { Checkbox, DatePicker, Form, message, Select, TreeSelect } from 'antd'
 import { useTranslation } from 'react-i18next'
@@ -22,13 +17,23 @@ import { getMessage } from '../Message'
 import DeleteConfirm from '../DeleteConfirm'
 import CommonModal from '../CommonModal'
 import CustomSelect from '../CustomSelect'
+import {
+  batchSprintDelete,
+  getSprintBatchEditConfig,
+  batchSprintEdit,
+} from '@/services/sprint'
 
 interface Props {
+  // 弹窗状态
   isVisible: boolean
+  // 关闭弹窗
   onChangeVisible(): void
-  type: string
+  // 编辑、删除
+  type: 'edit' | 'delete'
   selectRows: any
   onClose(): void
+  // 1-需求，2-缺陷，3-事务
+  modelType: number
 }
 
 const BatchModal = (props: Props) => {
@@ -45,10 +50,39 @@ const BatchModal = (props: Props) => {
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
   const { projectInfoValues } = useSelector(store => store.project)
+  const modelMethods = [
+    {
+      type: 1,
+      config: getBatchEditConfig,
+      update: batchEdit,
+      del: batchDelete,
+      checkboxText: '同时删除对应子需求',
+      text: '勾选的需求将被删除，确认删除吗？',
+    },
+    {
+      type: 2,
+      config: getBatchEditConfig,
+      update: batchEdit,
+      del: batchDelete,
+      checkboxText: '同时删除对应子需求',
+      text: '勾选的缺陷将被删除，确认删除吗？',
+    },
+    {
+      type: 3,
+      config: getSprintBatchEditConfig,
+      update: batchSprintEdit,
+      del: batchSprintDelete,
+      checkboxText: '同时删除对应子事务',
+      text: '勾选的事务将被删除，确认删除吗？',
+    },
+  ]
+  const currentType = modelMethods.filter(
+    (i: any) => i.type === props.modelType,
+  )[0]
 
   // 获取批量编辑的下拉列表
   const getBatchEditConfigList = async () => {
-    const response = await getBatchEditConfig({
+    const response = await currentType?.config({
       projectId,
       demandIds: props.selectRows?.map((i: any) => i.id),
     })
@@ -138,18 +172,14 @@ const BatchModal = (props: Props) => {
 
   // 批量删除的确认事件
   const onConfirmDelete = async () => {
-    try {
-      await batchDelete({
-        isDeleteChild: haveChildren ? 1 : 2,
-        demandIds: props.selectRows?.map((i: any) => i.id),
-        projectId,
-      })
-      getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-      setHaveChildren(false)
-      props.onClose()
-    } catch (error) {
-      //
-    }
+    await currentType?.del({
+      isDeleteChild: haveChildren ? 1 : 2,
+      demandIds: props.selectRows?.map((i: any) => i.id),
+      projectId,
+    })
+    getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
+    setHaveChildren(false)
+    props.onClose()
   }
 
   // 批量编辑的取消事件
@@ -205,14 +235,10 @@ const BatchModal = (props: Props) => {
         params.target = targetValue
       }
     }
-    try {
-      await batchEdit(params)
-      getMessage({ msg: t('common.editSuccess'), type: 'success' })
-      onEditClose()
-      props.onClose()
-    } catch (error) {
-      //
-    }
+    await currentType?.update(params)
+    getMessage({ msg: t('common.editSuccess'), type: 'success' })
+    onEditClose()
+    props.onClose()
   }
 
   // 单独控制需求类别的状态
@@ -253,9 +279,9 @@ const BatchModal = (props: Props) => {
           title={t('version2.deleteTitle', { count: props.selectRows?.length })}
           onConfirm={onConfirmDelete}
         >
-          <div style={{ marginBottom: 12 }}>{t('version2.deleteToast')}</div>
+          <div style={{ marginBottom: 12 }}>{currentType?.text}</div>
           <Checkbox onChange={e => setHaveChildren(e.target.checked)}>
-            {t('version2.deleteChildren')}
+            {currentType?.checkboxText}
           </Checkbox>
         </DeleteConfirm>
       )}
