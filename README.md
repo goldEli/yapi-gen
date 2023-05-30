@@ -231,24 +231,25 @@ D:\Project\敏捷\scrum\store\view\index.ts
 
 视图中筛选字段调用 sotre 的 onTapSearchChoose 方法 1.传参内容为
 示例，根据 Tablefilter 组件
+
+```json
 {
-
-    "tag": null,
-    "status": null,
-    "category": null,
-    "priority": null,
-    "schedule": null,
-    "user_name": null,
-    "created_at": null,
-    "iterate_name": null,
-    "users_copysend_name": null
-
+  "tag": null,
+  "status": null,
+  "category": null,
+  "priority": null,
+  "schedule": null,
+  "user_name": null,
+  "created_at": null,
+  "iterate_name": null,
+  "users_copysend_name": null
 }
+```
+
 searchChoose 该值为需要给到后端的字段值。 2.筛选字段值为 store 中的字段，要清空，可以在组件离开或手动清除。
 
 ```js
 useEffect(() => {
-  init()
   return () => {
     dispatch(onTapSearchChoose({}))
   }
@@ -258,10 +259,30 @@ useEffect(() => {
 ### 成员选择弹窗
 
 D:\Project\敏捷\scrum\source\components\NewAddUserModal\NewAddUserModalForTandD\NewAddUserModalForTandD.tsx
+
+```js
 <NewAddUserModalForTandD
-title={t('formWork.addUser')}
-state={2}
-isVisible={isVisible}
-onConfirm={onConfirm}
-onClose={() => setIsVisible(false)}
+  title={t('formWork.addUser')}
+  state={2}
+  isVisible={isVisible}
+  onConfirm={onConfirm}
+  onClose={() => setIsVisible(false)}
 />
+```
+
+也可以调用 hooks
+
+```js
+const { AddUserModalElement, open } = useAddUserModal()
+
+ open({
+  async onConfirm(data) {
+    if (error) {
+      return Promise.reject()
+    }
+    return Promise.resolve()
+  },
+})
+
+return <>{AddUserModalElement}<>
+```

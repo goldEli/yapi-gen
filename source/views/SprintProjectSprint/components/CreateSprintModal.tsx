@@ -1,16 +1,23 @@
 import CommonModal from '@/components/CommonModal'
-import { createSprint } from '@/services/sprint'
+import { getMessage } from '@/components/Message'
+import {
+  createSprint,
+  getSprintDetail,
+  updateSprintInfo,
+} from '@/services/sprint'
 import { css } from '@emotion/css'
 import { Form, Input } from 'antd'
 import moment from 'moment'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import ChooseDate from './ChooseDate'
 
 interface sprintProps {
   type: 'create' | 'start' | 'edit'
   visible: boolean
   onClose(): void
-  id: number
+  projectId: number
+  editId?: number
 }
 
 const content = css`
@@ -24,7 +31,8 @@ const content = css`
 `
 
 const CreateSprintModal = (props: sprintProps) => {
-  const { type, visible, onClose, id } = props
+  const { type, visible, onClose, projectId, editId } = props
+  const [t]: any = useTranslation()
   const [form] = Form.useForm()
   const initNumber = useRef(0)
   const getTitle = (val: string) => {
@@ -43,23 +51,69 @@ const CreateSprintModal = (props: sprintProps) => {
     return ''
   }
 
+  const onClear = () => {
+    initNumber.current = 0
+    form.resetFields()
+    onClose()
+  }
+
   const onConfirm = async () => {
     const value = await form.validateFields()
-    if (type === 'create') {
-      const result = await createSprint({
-        project_id: id,
-        name: value?.name,
-        start_at: moment(value?.group?.date?.[0]).format('YYYY-MM-DD'),
-        end_at: moment(value?.group?.date?.[1]).format('YYYY-MM-DD'),
-        duration: {
-          is_weekend: value?.group?.include,
-          week_type: value?.group?.radio,
-        },
-      })
-      if (result && result.code === 0) {
-        onClose()
-        initNumber.current = 0
+    try {
+      if (type === 'create') {
+        const result: any = await createSprint({
+          project_id: projectId,
+          name: value?.name,
+          start_at: moment(value?.group?.date?.[0]).format('YYYY-MM-DD'),
+          end_at: moment(value?.group?.date?.[1]).format('YYYY-MM-DD'),
+          duration: {
+            is_weekend: value?.group?.include,
+            week_type: value?.group?.radio,
+          },
+          info: value?.info,
+        })
+
+        if (result && result.code === 0) {
+          getMessage({
+            msg: '创建成功',
+            type: 'success',
+          })
+          onClear()
+        } else {
+          getMessage({
+            msg: result?.message,
+            type: 'error',
+          })
+        }
       }
+      if (type === 'edit') {
+        const result: any = await updateSprintInfo({
+          id: editId as any,
+          project_id: projectId,
+          name: value?.name,
+          start_at: moment(value?.group?.date?.[0]).format('YYYY-MM-DD'),
+          end_at: moment(value?.group?.date?.[1]).format('YYYY-MM-DD'),
+          duration: {
+            is_weekend: value?.group?.include,
+            week_type: value?.group?.radio,
+          },
+          info: value?.info,
+        })
+        if (result && result.code === 0) {
+          getMessage({
+            msg: '编辑成功',
+            type: 'success',
+          })
+          onClear()
+        } else {
+          getMessage({
+            msg: result?.message,
+            type: 'error',
+          })
+        }
+      }
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -69,6 +123,40 @@ const CreateSprintModal = (props: sprintProps) => {
     }
     return Promise.resolve()
   }
+
+  // 获取冲刺详情
+  const getSprintInfo = async () => {
+    try {
+      const result: any = await getSprintDetail({
+        project_id: projectId,
+        id: editId as any,
+      })
+      if (result && result.code === 0 && result.data) {
+        form.setFieldsValue({
+          name: result.data.name,
+          info: result.data.info,
+          group: {
+            date: [moment(result.data.start_at), moment(result.data.end_at)],
+            include: result.data.duration?.is_weekend,
+            radio: result.data.duration?.week_type,
+          },
+        })
+      } else {
+        getMessage({
+          msg: result?.message,
+          type: 'error',
+        })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    if (editId && type === 'edit' && visible) {
+      getSprintInfo()
+    }
+  }, [editId, visible])
 
   return (
     <CommonModal

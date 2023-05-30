@@ -15,7 +15,7 @@ import CommonUserAvatar from '@/components/CommonUserAvatar'
 
 interface Props {
   configData: any
-  checkStatusItem: any
+  checkStatusItem: Model.Project.CheckStatusItem
 }
 
 const WanderVerify = (props: Props) => {

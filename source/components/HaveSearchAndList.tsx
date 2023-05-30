@@ -13,7 +13,7 @@ import { useSelector } from '@store/index'
 import { addInfoDemand, getDemandList } from '@/services/demand'
 import InputSearch from './InputSearch'
 import { getMessage } from './Message'
-import { addInfoSprint } from '@/services/sprint'
+import { addInfoAffairs } from '@/services/affairs'
 
 const PopoverWrap = styled(Popover)<{ isRight?: any }>({}, ({ isRight }) => ({
   '.ant-popover-placement-bottom': {
@@ -223,7 +223,7 @@ const HaveSearchAndList = (props: Props) => {
         targetId: [item.value],
       })
     } else {
-      await addInfoSprint({
+      await addInfoAffairs({
         projectId: props.projectId,
         sprintId: props.demandId,
         type: 'parent',

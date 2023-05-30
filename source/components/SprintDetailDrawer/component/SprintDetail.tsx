@@ -12,7 +12,7 @@ import { ContentItem, Label } from '../style'
 import DrawerTagComponent from '@/components/DemandDetailDrawer/DrawerTagComponent'
 import UploadAttach from '@/components/UploadAttach'
 import CommonButton from '@/components/CommonButton'
-import { addInfoSprint, deleteInfoSprint } from '@/services/sprint'
+import { addInfoAffairs, deleteInfoAffairs } from '@/services/affairs'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 
 interface DetailDemand {
@@ -33,7 +33,7 @@ const SprintDetail = (props: DetailDemand) => {
       ext: data.data.files.suffix,
       ctime: data.data.files.time,
     }
-    await addInfoSprint({
+    await addInfoAffairs({
       projectId: props.detail.projectId,
       sprintId: props.detail.id,
       type: 'attachment',
@@ -43,7 +43,7 @@ const SprintDetail = (props: DetailDemand) => {
   }
 
   const onDeleteConfirm = async (targetId: number) => {
-    await deleteInfoSprint({
+    await deleteInfoAffairs({
       projectId: props.detail.projectId,
       sprintId: props.detail.id,
       type: 'attachment',

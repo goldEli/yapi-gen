@@ -11,11 +11,9 @@ import { useTranslation } from 'react-i18next'
 import { getIsPermission } from '@/tools'
 import useSetTitle from '@/hooks/useSetTitle'
 import { useDispatch, useSelector } from '@store/index'
-import { getProjectInfo } from '@/services/project'
-import { setProjectInfo } from '@store/project'
 import { editProject } from '@store/create-propject'
 import CategoryDropdown from '@/components/CategoryDropdown'
-import LongStoryDropdown from '@/components/LongStoryDropdown'
+import LongStroyBread from '@/components/LongStroyBread'
 const Wrap = styled.div({
   background: 'white',
   height: '100%',
@@ -124,24 +122,11 @@ const ProjectInfo = () => {
   asyncSetTtile(`${t('title.a1')}【${projectInfo.name}】`)
   localStorage.setItem('memberId', projectInfo.id)
   const dispatch = useDispatch()
-  const [value, setValue] = useState<number[]>([])
   return (
     <Wrap>
-      <div style={{ width: '600px' }}>
-        <CategoryDropdown
-          onClearCallback={() => {
-            setValue([])
-          }}
-          value={value}
-          onChangeCallBack={(data: any) => {
-            const ids = data.map((item: any) => item.id)
-            console.log('ids', data)
-            setValue(ids)
-          }}
-          projectId={605}
-          mode="multiple"
-        ></CategoryDropdown>
-        {/* <LongStoryDropdown></LongStoryDropdown> */}
+      <div style={{ marginBottom: '0px', width: 400 }}>
+        {/* <CategoryDropdown projectId={605} mode="multiple"></CategoryDropdown> */}
+        {/* <LongStroyBread></LongStroyBread> */}
       </div>
       <InfoLeft>
         <Title>{t('v2_1_1.projectInformation')}</Title>

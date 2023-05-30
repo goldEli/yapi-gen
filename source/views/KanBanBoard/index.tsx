@@ -20,6 +20,8 @@ import { getParamsData } from '@/tools'
 import useProjectId from './hooks/useProjectId'
 import { encryptPhp } from '@/tools/cryptoPhp'
 import { jumpToKanbanConfig } from './utils'
+import UserGroupingModal from './UserGroupingModal'
+import { saveInputKey } from '@store/view'
 
 interface IProps {}
 const SprintProjectKanBanBox = styled.div`
@@ -83,10 +85,9 @@ const SprintProjectKanBan: React.FC<IProps> = props => {
   return (
     <SprintProjectKanBanBox>
       <ProjectCommonOperation
-        onInputSearch={val => {
-          // dispatch(onFilter({
-          //   searchValue: val
-          // }))
+        onInputSearch={async val => {
+          console.log(val)
+          dispatch(onFilter())
         }}
       />
       <ToolBarBox>
@@ -98,7 +99,7 @@ const SprintProjectKanBan: React.FC<IProps> = props => {
           onChangeVisible={(e: any) => {}}
           onRefresh={() => {}}
           onSearch={data => {
-            dispatch(onFilter(data))
+            dispatch(onFilter())
           }}
           settingState={true}
           onChangeSetting={() => {}}
@@ -115,6 +116,7 @@ const SprintProjectKanBan: React.FC<IProps> = props => {
         close={() => dispatch(onChangeGuideVisible(false))}
       />
       <Board />
+      <UserGroupingModal />
     </SprintProjectKanBanBox>
   )
 }

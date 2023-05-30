@@ -9,7 +9,7 @@ import HaveSearchAndList from '@/components/HaveSearchAndList'
 import { useSelector } from '@store/index'
 import { deleteInfoDemand } from '@/services/demand'
 import { getMessage } from '@/components/Message'
-import { deleteInfoSprint } from '@/services/sprint'
+import { deleteInfoAffairs } from '@/services/affairs'
 
 const DemandCheckedItem = styled.div({
   minHeight: 22,
@@ -64,7 +64,7 @@ const ParentDemand = (props: Props) => {
         targetId: props.detail?.parentId,
       })
     } else {
-      await deleteInfoSprint({
+      await deleteInfoAffairs({
         projectId: props.projectId,
         sprintId: props.detail?.id,
         type: 'parent',

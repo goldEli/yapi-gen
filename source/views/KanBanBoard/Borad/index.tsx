@@ -31,13 +31,13 @@ const Board = () => {
     const type = sortByGroupOptions?.find(item => item.check)?.key
     switch (type) {
       case 'none':
-        return <KanBanDefault />
+        return <KanBanSortByPerson />
       case 'users':
         return <KanBanSortByPerson />
       case 'category':
-        return <KanBanSortByCategory />
+        return <KanBanSortByPerson />
       case 'priority':
-        return <KanBanSortByPriority />
+        return <KanBanSortByPerson />
 
       default:
         return <></>

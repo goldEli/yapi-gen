@@ -8,6 +8,7 @@ import {
   setShareModelInfo,
   setSortByGroupOptions,
   setSortByRowAndStatusOptions,
+  setUserGroupingModelInfo,
   // setViewItemConfig,
 } from '.'
 import { getMessage } from '@/components/Message'
@@ -20,6 +21,78 @@ import { Options } from '@/components/SelectOptionsNormal'
 
 const name = 'kanBan'
 
+// 打开分组弹窗
+export const openUserGroupingModel =
+  (
+    params: Partial<
+      Omit<Parameters<typeof setUserGroupingModelInfo>[0], 'visible'>
+    >,
+  ) =>
+  async (dispatch: AppDispatch) => {
+    dispatch(
+      setUserGroupingModelInfo({
+        groupName: params?.groupName ?? '',
+        visible: true,
+        userList: params?.userList ?? [],
+        id: params.id,
+      }),
+    )
+  }
+// 关闭分组弹窗
+export const closeUserGroupingModel = () => async (dispatch: AppDispatch) => {
+  dispatch(
+    setUserGroupingModelInfo({
+      groupName: '',
+      visible: false,
+      userList: [],
+    }),
+  )
+}
+// 保存分组弹窗
+export const saveUserGroupingModel =
+  (params: Omit<API.Kanban.CreateKanbanPeopleGrouping.Params, 'project_id'>) =>
+  async (dispatch: AppDispatch) => {
+    const projectId = getParamsValueByKey('id')
+    const { userGroupingModelInfo } = store.getState().kanBan
+    const p = {
+      project_id: projectId,
+      name: params.name,
+      user_ids: params.user_ids,
+    }
+    if (userGroupingModelInfo.id) {
+      const res = await services.kanban.modifyKanbanPeopleGrouping({
+        ...p,
+        id: userGroupingModelInfo.id,
+      })
+    } else {
+      const res = await services.kanban.createKanbanPeopleGrouping(p)
+    }
+    getMessage({ msg: i18n.t('common.saveSuccess'), type: 'success' })
+    dispatch(closeUserGroupingModel())
+    dispatch(getKanbanByGroup())
+  }
+
+// 修改分组弹窗
+export const modifyKanbanPeopleGrouping =
+  (
+    params: Pick<
+      API.Kanban.ModifyKanbanPeopleGrouping.Params,
+      'name' | 'user_ids' | 'id'
+    >,
+  ) =>
+  async (dispatch: AppDispatch) => {
+    const projectId = getParamsValueByKey('id')
+    const res = await services.kanban.modifyKanbanPeopleGrouping({
+      project_id: projectId,
+      name: params.name,
+      user_ids: params.user_ids,
+      id: params.id,
+    })
+    getMessage({ msg: i18n.t('common.saveSuccess'), type: 'success' })
+    dispatch(closeUserGroupingModel())
+    dispatch(getKanbanByGroup())
+  }
+
 // 获取看板配置
 export const getKanbanConfig = createAsyncThunk(
   `${name}/getKanbanConfig`,
@@ -29,11 +102,20 @@ export const getKanbanConfig = createAsyncThunk(
   },
 )
 
+const isEmpty = (data: any) => {
+  if (_.isEmpty(data)) {
+    return true
+  }
+  return Object.entries(data).every(([key, value]) => {
+    return _.isEmpty(value)
+  })
+}
+
 // 获取故事列表（分组）
 export const getKanbanByGroup = createAsyncThunk(
   `${name}/getKanbanByGroup`,
   async () => {
-    const { valueKey } = store.getState().view
+    const { valueKey, inputKey } = store.getState().view
     const { sortByGroupOptions, sortByRowAndStatusOptions } =
       store.getState().kanBan
     const type = sortByGroupOptions?.find(item => item.check)?.key
@@ -44,23 +126,33 @@ export const getKanbanByGroup = createAsyncThunk(
     if (!type) {
       return []
     }
-    if (type === 'none') {
-      return []
-    }
-    const params: Omit<
-      API.Kanban.GetKanbanByGroup.Params,
-      'pagesize' | 'page'
-    > = {
-      search: _.isEmpty(valueKey)
+    const params = {
+      search: isEmpty(valueKey)
         ? {
             all: 1,
+            keyword: inputKey,
           }
-        : valueKey,
+        : { ...valueKey, keyword: inputKey },
       project_id: getParamsValueByKey('id'),
-      group_by: type,
       kanban_config_id: parseInt(columnId, 10),
     }
-    const res = await services.kanban.getKanbanByGroup(params)
+    if (type === 'none') {
+      const res = await services.kanban.getKanban(params)
+      return [
+        {
+          // 无分组id
+          id: 0,
+          name: '',
+          content_txt: '',
+          columns: res.data,
+        },
+      ]
+    }
+
+    const res = await services.kanban.getKanbanByGroup({
+      ...params,
+      group_by: type,
+    })
     return res.data
   },
 )
@@ -133,13 +225,11 @@ export const updateView =
     dispatch(getStoryViewList())
   }
 
-export const onFilter =
-  (data: Model.KanBan.ViewItemConfig) => async (dispatch: AppDispatch) => {
-    const { valueKey } = store.getState().view
-    console.log({ valueKey })
-
-    // dispatch(getStoryViewList())
-  }
+export const onFilter = () => async (dispatch: AppDispatch) => {
+  setTimeout(() => {
+    dispatch(getKanbanByGroup())
+  })
+}
 
 // 看板配置列表
 export const getKanbanConfigList = createAsyncThunk(
@@ -174,7 +264,9 @@ export const getKanbanConfigList = createAsyncThunk(
 )
 
 // 属性看板
-export const onRefreshKanBan = () => async (dispatch: AppDispatch) => {}
+export const onRefreshKanBan = () => async (dispatch: AppDispatch) => {
+  dispatch(getKanbanByGroup())
+}
 
 export const openSaveAsViewModel =
   (id?: Model.KanBan.ViewItem['id']) => async (dispatch: AppDispatch) => {
@@ -239,7 +331,7 @@ export const onSaveAsViewModel =
       }),
     )
     console.log('onSaveAsViewModel', data)
-    getMessage({ msg: '保存成功!', type: 'success' })
+    getMessage({ msg: i18n.t('common.saveSuccess'), type: 'success' })
     dispatch(closeSaveAsViewModel())
   }
 

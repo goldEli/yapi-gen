@@ -39,11 +39,11 @@ const ChooseDate = (props: any) => {
   const { onChange, value, initNumber } = props
   const [params, setParams] = useState<any>({})
 
-  const getDay = (type: number) => {
+  const getDay = (type: number, include: boolean) => {
     // 根据几周来计算结束日期
     switch (type) {
       case 1:
-        if (params.include) {
+        if (include) {
           return moment(new Date()).add(6, 'day')
         }
         if (moment(new Date()).day() === 0) {
@@ -54,7 +54,7 @@ const ChooseDate = (props: any) => {
         }
         return moment(new Date()).add(6, 'day')
       case 2:
-        if (params.include) {
+        if (include) {
           return moment(new Date()).add(13, 'day')
         }
         if (moment(new Date()).day() === 0) {
@@ -65,7 +65,7 @@ const ChooseDate = (props: any) => {
         }
         return moment(new Date()).add(13, 'day')
       case 3:
-        if (params.include) {
+        if (include) {
           return moment(new Date()).add(20, 'day')
         }
         if (moment(new Date()).day() === 0) {
@@ -76,7 +76,7 @@ const ChooseDate = (props: any) => {
         }
         return moment(new Date()).add(20, 'day')
       case 4:
-        if (params.include) {
+        if (include) {
           return moment(new Date()).add(27, 'day')
         }
         if (moment(new Date()).day() === 0) {
@@ -98,11 +98,10 @@ const ChooseDate = (props: any) => {
         date:
           value.radio === 0
             ? value.date
-            : [moment(new Date()), getDay(value?.radio)],
+            : [moment(new Date()), getDay(value?.radio, value.radio)],
       }
       setParams(temp)
       if (initNumber.current === 0) {
-        console.log(initNumber.current, temp)
         onChange(temp)
         initNumber.current++
       }
@@ -121,10 +120,12 @@ const ChooseDate = (props: any) => {
             setParams({
               ...params,
               include: checked,
+              date: [moment(new Date()), getDay(params?.radio, checked)],
             })
             onChange({
               ...params,
               include: checked,
+              date: [moment(new Date()), getDay(params?.radio, checked)],
             })
           }}
         />
@@ -145,12 +146,18 @@ const ChooseDate = (props: any) => {
               setParams({
                 ...params,
                 radio: e.target.value,
-                date: [moment(new Date()), getDay(e.target.value)],
+                date: [
+                  moment(new Date()),
+                  getDay(e.target.value, params.include),
+                ],
               })
               onChange({
                 ...params,
                 radio: e.target.value,
-                date: [moment(new Date()), getDay(e.target.value)],
+                date: [
+                  moment(new Date()),
+                  getDay(e.target.value, params.include),
+                ],
               })
             }
           }}

@@ -29,8 +29,8 @@ import {
 } from '@/services/demand'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
 import { getMessage } from './Message'
-import { updateSprintTableParams } from '@/services/sprint'
-import { getSprintInfo } from '@store/sprint/sprint.thunk'
+import { updateAffairsTableParams } from '@/services/affairs'
+import { getAffairsInfo } from '@store/affairs/affairs.thunk'
 
 const LimitText = styled.div`
   width: 192px;
@@ -438,9 +438,9 @@ const TableQuickEdit = (props: Props) => {
         props.onUpdate?.()
       }
     } else {
-      await updateSprintTableParams(obj)
+      await updateAffairsTableParams(obj)
       if (props.isInfoPage) {
-        dispatch(getSprintInfo({ projectId, sprintId: props.item?.id }))
+        dispatch(getAffairsInfo({ projectId, sprintId: props.item?.id }))
       } else {
         props.onUpdate?.()
       }

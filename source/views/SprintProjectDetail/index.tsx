@@ -25,7 +25,10 @@ import ChangeStatusPopover from '@/components/ChangeStatusPopover/index'
 import SprintDetailInfo from './components/SprintDetailInfo'
 import SprintDetailBasic from './components/SprintDetailBasic'
 import { useDispatch, useSelector } from '@store/index'
-import { getSprintCommentList, getSprintInfo } from '@store/sprint/sprint.thunk'
+import {
+  getAffairsCommentList,
+  getAffairsInfo,
+} from '@store/affairs/affairs.thunk'
 import { useSearchParams } from 'react-router-dom'
 import { copyLink, getParamsData } from '@/tools'
 import useShareModal from '@/hooks/useShareModal'
@@ -36,11 +39,11 @@ import CustomSelect from '@/components/CustomSelect'
 import { getWorkflowList } from '@/services/project'
 import { getMessage } from '@/components/Message'
 import {
-  updateSprintCategory,
-  updateSprintStatus,
-  updateSprintTableParams,
-} from '@/services/sprint'
-import { setSprintInfo } from '@store/sprint'
+  updateAffairsCategory,
+  updateAffairsStatus,
+  updateAffairsTableParams,
+} from '@/services/affairs'
+import { setAffairsInfo } from '@store/affairs'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 
 interface IProps {}
@@ -56,7 +59,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { id, sprintId } = paramsData
-  const { sprintInfo } = useSelector(store => store.sprint)
+  const { affairsInfo } = useSelector(store => store.affairs)
   const { projectInfoValues } = useSelector(store => store.project)
   const [isShowChange, setIsShowChange] = useState(false)
   const [isShowCategory, setIsShowCategory] = useState(false)
@@ -72,7 +75,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
 
   // 复制标题
   const onCopy = () => {
-    copyLink(sprintInfo.name, '复制成功！', '复制失败！')
+    copyLink(affairsInfo.name, '复制成功！', '复制失败！')
   }
 
   // 点击切换类别
@@ -136,9 +139,9 @@ const SprintProjectDetail: React.FC<IProps> = props => {
 
   // 修改事务状态
   const onChangeStatus = async (value: any) => {
-    await updateSprintStatus(value)
+    await updateAffairsStatus(value)
     getMessage({ msg: t('common.statusSuccess'), type: 'success' })
-    dispatch(getSprintInfo({ projectId: id, sprintId }))
+    dispatch(getAffairsInfo({ projectId: id, sprintId }))
   }
 
   // 关闭类别弹窗
@@ -152,7 +155,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   // 切换类别确认事件
   const onConfirmCategory = async () => {
     await form.validateFields()
-    await updateSprintCategory({
+    await updateAffairsCategory({
       projectId: id,
       sprintId,
       ...form.getFieldsValue(),
@@ -161,7 +164,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
     setIsShowCategory(false)
     // dispatch(setIsUpdateStatus(true))
     // dispatch(setIsRefresh(true))
-    dispatch(getSprintInfo({ projectId: id, sprintId }))
+    dispatch(getAffairsInfo({ projectId: id, sprintId }))
     setTimeout(() => {
       form.resetFields()
     }, 100)
@@ -178,8 +181,8 @@ const SprintProjectDetail: React.FC<IProps> = props => {
       getMessage({ type: 'warning', msg: '名称不能超过100个字' })
       return
     }
-    if (value !== sprintInfo.name) {
-      await updateSprintTableParams({
+    if (value !== affairsInfo.name) {
+      await updateAffairsTableParams({
         projectId: id,
         id: sprintId,
         otherParams: {
@@ -188,8 +191,8 @@ const SprintProjectDetail: React.FC<IProps> = props => {
       })
       getMessage({ type: 'success', msg: '修改成功' })
       // 提交名称
-      setSprintInfo({
-        ...sprintInfo,
+      setAffairsInfo({
+        ...affairsInfo,
         name: value,
       })
     }
@@ -273,10 +276,10 @@ const SprintProjectDetail: React.FC<IProps> = props => {
   }
 
   useEffect(() => {
-    dispatch(setSprintInfo({}))
-    dispatch(getSprintInfo({ projectId: id, sprintId }))
+    dispatch(setAffairsInfo({}))
+    dispatch(getAffairsInfo({ projectId: id, sprintId }))
     dispatch(
-      getSprintCommentList({
+      getAffairsCommentList({
         projectId: id,
         sprintId,
         page: 1,
@@ -291,10 +294,10 @@ const SprintProjectDetail: React.FC<IProps> = props => {
       ?.children
     setResultCategory(
       list
-        ?.filter((i: any) => i.id !== sprintInfo?.category)
+        ?.filter((i: any) => i.id !== affairsInfo?.category)
         ?.filter((i: any) => i.status === 1),
     )
-  }, [sprintInfo, projectInfoValues])
+  }, [affairsInfo, projectInfoValues])
 
   return (
     <Wrap>
@@ -317,7 +320,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
         >
           <Form.Item label={t('newlyAdd.beforeCategory')}>
             <img
-              src={sprintInfo?.category_attachment}
+              src={affairsInfo?.category_attachment}
               style={{
                 width: '18px',
                 height: '18px',
@@ -325,7 +328,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
               }}
               alt=""
             />
-            <span>{sprintInfo?.categoryName}</span>
+            <span>{affairsInfo?.categoryName}</span>
           </Form.Item>
           <Form.Item
             label={t('newlyAdd.afterCategory')}
@@ -426,7 +429,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
         </ButtonGroup>
       </DetailTop>
       <DetailTitle>
-        <Tooltip title={sprintInfo?.categoryName}>
+        <Tooltip title={affairsInfo?.categoryName}>
           <Popover
             trigger={['hover']}
             visible={isShowChange}
@@ -436,7 +439,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
             onVisibleChange={visible => setIsShowChange(visible)}
           >
             <div>
-              <Img src={sprintInfo.category_attachment} alt="" />
+              <Img src={affairsInfo.category_attachment} alt="" />
             </div>
           </Popover>
         </Tooltip>
@@ -447,26 +450,26 @@ const SprintProjectDetail: React.FC<IProps> = props => {
             contentEditable
             onBlur={onNameConfirm}
           >
-            {sprintInfo.name}
+            {affairsInfo.name}
           </span>
           <span className="icon" onClick={onCopy}>
             <CommonIconFont type="copy" color="var(--neutral-n3)" />
           </span>
           <ChangeStatusPopover
-            record={sprintInfo}
+            record={affairsInfo}
             onChangeStatus={onChangeStatus}
           >
             <StateTag
-              name={sprintInfo.status?.status.content}
+              name={affairsInfo.status?.status.content}
               state={
-                sprintInfo.status?.is_start === 1 &&
-                sprintInfo.status?.is_end === 2
+                affairsInfo.status?.is_start === 1 &&
+                affairsInfo.status?.is_end === 2
                   ? 1
-                  : sprintInfo.status?.is_end === 1 &&
-                    sprintInfo.status?.is_start === 2
+                  : affairsInfo.status?.is_end === 1 &&
+                    affairsInfo.status?.is_start === 2
                   ? 2
-                  : sprintInfo.status?.is_start === 2 &&
-                    sprintInfo.status?.is_end === 2
+                  : affairsInfo.status?.is_start === 2 &&
+                    affairsInfo.status?.is_end === 2
                   ? 3
                   : 0
               }

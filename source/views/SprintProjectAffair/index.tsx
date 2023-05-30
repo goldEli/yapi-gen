@@ -22,7 +22,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { setFilterKeys } from '@store/project'
 import CreateViewPort from '@/components/CreateViewPort'
 import ManageView from '@/components/ManageView'
-import { deleteSprint, getSprintList } from '@/services/sprint'
+import { deleteAffairs, getAffairsList } from '@/services/affairs'
 import Operation from './components/Operation'
 import { saveTitles } from '@store/view'
 import { OptionalFeld } from '@/components/OptionalFeld'
@@ -166,7 +166,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
       params.topParentId = topId ?? topParentId
     }
     // dispatch(setFilterParams(params))
-    const result = await getSprintList(params)
+    const result = await getAffairsList(params)
     setDataList(result)
     setIsSpinning(false)
     // props.onIsUpdate?.()
@@ -236,7 +236,7 @@ const SprintProjectAffair: React.FC<IProps> = props => {
 
   // 删除事务
   const onDeleteConfirm = async () => {
-    await deleteSprint({
+    await deleteAffairs({
       projectId,
       id: deleteItem.id,
       isDeleteChild: isDeleteCheck ? 1 : 2,
