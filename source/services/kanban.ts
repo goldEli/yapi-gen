@@ -28,10 +28,16 @@ export const updateView = async (params: API.Kanban.UpdateView.Params) => {
   return response
 }
 
-export const getKanban = async (params: API.Kanban.GetKanban.Params) => {
+export const getKanban = async (
+  params: Omit<API.Kanban.GetKanban.Params, 'pagesize' | 'page'>,
+) => {
   const response = await http.get<any, API.Kanban.GetKanban.Result>(
     'getKanban',
-    params,
+    {
+      pagesize: 20,
+      page: 0,
+      ...params,
+    },
   )
   return response
 }

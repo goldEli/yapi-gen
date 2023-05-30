@@ -11,7 +11,9 @@ import CommonInput from '../CommonInput'
 import { List } from 'antd'
 const LongStoryDropdown = () => {
   const [loading, setLoading] = useState(false)
-  const onLoadMore = () => {}
+  const onLoadMore = () => {
+    console.log('加载更多')
+  }
   const list = Array(10).fill(0)
   return (
     <Wrap>
@@ -32,7 +34,12 @@ const LongStoryDropdown = () => {
           loadMore={<LoadMore onClick={onLoadMore}>加载更多</LoadMore>}
           dataSource={list}
           renderItem={(item, index) => (
-            <ContentItem key={index}>
+            <ContentItem
+              key={index}
+              onClick={() => {
+                console.log(111)
+              }}
+            >
               <img
                 src="https://dev.staryuntech.com/dev-agile/attachment/category_icon/security.png"
                 alt=""
