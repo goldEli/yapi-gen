@@ -1,7 +1,8 @@
-declare namespace Models.User {
+declare namespace Model.User {
   export interface User {
     name: string
-    age: number
-    id: string
+    id: number
+    avatar?: string
+    team_id?: number
   }
 }

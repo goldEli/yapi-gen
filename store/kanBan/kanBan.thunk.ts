@@ -8,6 +8,7 @@ import {
   setShareModelInfo,
   setSortByGroupOptions,
   setSortByRowAndStatusOptions,
+  setUserGroupingModelInfo,
   // setViewItemConfig,
 } from '.'
 import { getMessage } from '@/components/Message'
@@ -20,6 +21,47 @@ import { Options } from '@/components/SelectOptionsNormal'
 
 const name = 'kanBan'
 
+// 打开分组弹窗
+export const openUserGroupingModel =
+  (
+    params: Partial<
+      Omit<Parameters<typeof setUserGroupingModelInfo>[0], 'visible'>
+    >,
+  ) =>
+  async (dispatch: AppDispatch) => {
+    dispatch(
+      setUserGroupingModelInfo({
+        groupName: params?.groupName ?? '',
+        visible: true,
+        userList: params?.userList ?? [],
+      }),
+    )
+  }
+// 关闭分组弹窗
+export const closeUserGroupingModel = () => async (dispatch: AppDispatch) => {
+  dispatch(
+    setUserGroupingModelInfo({
+      groupName: '',
+      visible: false,
+      userList: [],
+    }),
+  )
+}
+// 保存分组弹窗
+export const saveUserGroupingModel =
+  (params: Omit<API.Kanban.CreateKanbanPeopleGrouping.Params, 'project_id'>) =>
+  async (dispatch: AppDispatch) => {
+    const projectId = getParamsValueByKey('id')
+    const res = await services.kanban.createKanbanPeopleGrouping({
+      project_id: projectId,
+      name: params.name,
+      user_ids: params.user_ids,
+    })
+    getMessage({ msg: i18n.t('common.saveSuccess'), type: 'success' })
+    dispatch(closeUserGroupingModel())
+    dispatch(getKanbanByGroup())
+  }
+
 // 获取看板配置
 export const getKanbanConfig = createAsyncThunk(
   `${name}/getKanbanConfig`,
@@ -28,6 +70,15 @@ export const getKanbanConfig = createAsyncThunk(
     return res.data
   },
 )
+
+const isEmpty = (data: any) => {
+  if (_.isEmpty(data)) {
+    return true
+  }
+  return Object.entries(data).every(([key, value]) => {
+    return _.isEmpty(value)
+  })
+}
 
 // 获取故事列表（分组）
 export const getKanbanByGroup = createAsyncThunk(
@@ -51,7 +102,7 @@ export const getKanbanByGroup = createAsyncThunk(
       API.Kanban.GetKanbanByGroup.Params,
       'pagesize' | 'page'
     > = {
-      search: _.isEmpty(valueKey)
+      search: isEmpty(valueKey)
         ? {
             all: 1,
           }
@@ -239,7 +290,7 @@ export const onSaveAsViewModel =
       }),
     )
     console.log('onSaveAsViewModel', data)
-    getMessage({ msg: '保存成功!', type: 'success' })
+    getMessage({ msg: i18n.t('common.saveSuccess'), type: 'success' })
     dispatch(closeSaveAsViewModel())
   }
 
