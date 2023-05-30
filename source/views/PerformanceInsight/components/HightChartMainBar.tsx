@@ -6,12 +6,11 @@ import { CharTitle, HighchartsReactWrap, RightRow } from './style'
 
 // 图表位置柱状图
 const HightChartMainBar = (props: {
-  numType: boolean
   titleType: boolean
   height: number
   title: string
-  time: string
-  onChange: (val: boolean) => void
+  chart: Models.Efficiency.ChartBar | undefined
+  onChange: (val: string) => void
 }) => {
   // 图表位置柱状图
   const options = {
@@ -49,20 +48,7 @@ const HightChartMainBar = (props: {
       style: {
         color: '#646566',
       },
-      categories: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec',
-      ],
+      categories: props.chart?.yData,
     },
     yAxis: [
       {
@@ -97,13 +83,11 @@ const HightChartMainBar = (props: {
       shared: true,
       useHTML: true,
     },
-    colors: ['#43BA9A '],
+    colors: ['#43BA9A'],
     series: [
       {
         borderRadius: 4,
-        data: [
-          29.9, 71.5, 10.4, 1.2, 14.0, 16.0, 15.6, 48.5, 21.4, 14.1, 5.6, 5.4,
-        ],
+        data: props.chart?.seriesData,
       },
     ],
   }
@@ -113,17 +97,21 @@ const HightChartMainBar = (props: {
         <RightRow>
           <Space size={12}>
             <TitleCss>{props.title}</TitleCss>
-            <Time>{props.time}</Time>
+            <Time>{props.chart?.time}</Time>
           </Space>
         </RightRow>
         <Text
           size={'14px'}
           color={'var(--neutral-n2)'}
-          onClick={() => props.onChange(!props.numType)}
+          onClick={() =>
+            props.onChange(props.chart?.chartType === 'asc' ? 'desc' : 'asc')
+          }
         >
           <Space size={4}>
-            <CommonIconFont type={'sort'} size={14} color="var(--neutral-n2)" />
-            <span>{props.numType ? '由高到低' : '由低到高'}</span>
+            <CommonIconFont type={'sort'} size={14} />
+            <span>
+              {props.chart?.chartType === 'desc' ? '由高到低' : '由低到高'}
+            </span>
           </Space>
         </Text>
       </Col>

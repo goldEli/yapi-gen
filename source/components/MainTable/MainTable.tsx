@@ -243,10 +243,10 @@ const MainTable = (props: Props) => {
     },
     {
       title: '类型',
-      dataIndex: 'prefix',
+      dataIndex: 'project_type',
       width: 160,
-      render: (text: string) => {
-        return <div>冲刺项目</div>
+      render: (text: number) => {
+        return <div>{text === 1 ? '迭代' : '冲刺'}项目</div>
       },
     },
     {
@@ -263,34 +263,34 @@ const MainTable = (props: Props) => {
       dataIndex: 'memberCount',
       width: 160,
     },
-    {
-      title: (
-        <NewSort
-          fixedKey="story_count"
-          nowKey={props.order.key}
-          order={props.order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('project.demandCount')}
-        </NewSort>
-      ),
-      dataIndex: 'storyCount',
-      width: 160,
-    },
-    {
-      title: (
-        <NewSort
-          fixedKey="iterate_count"
-          nowKey={props.order.key}
-          order={props.order.value}
-          onUpdateOrderKey={onUpdateOrderKey}
-        >
-          {t('project.iterateCount')}
-        </NewSort>
-      ),
-      dataIndex: 'iterateCount',
-      width: 160,
-    },
+    // {
+    //   title: (
+    //     <NewSort
+    //       fixedKey="story_count"
+    //       nowKey={props.order.key}
+    //       order={props.order.value}
+    //       onUpdateOrderKey={onUpdateOrderKey}
+    //     >
+    //       {t('project.demandCount')}
+    //     </NewSort>
+    //   ),
+    //   dataIndex: 'storyCount',
+    //   width: 160,
+    // },
+    // {
+    //   title: (
+    //     <NewSort
+    //       fixedKey="iterate_count"
+    //       nowKey={props.order.key}
+    //       order={props.order.value}
+    //       onUpdateOrderKey={onUpdateOrderKey}
+    //     >
+    //       {t('project.iterateCount')}
+    //     </NewSort>
+    //   ),
+    //   dataIndex: 'iterateCount',
+    //   width: 160,
+    // },
     {
       title: (
         <NewSort

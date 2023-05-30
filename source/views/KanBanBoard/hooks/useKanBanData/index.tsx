@@ -30,7 +30,10 @@ const useKanBanData = () => {
 
   const onDragStart = (start: DragStart) => {
     console.log('onDragStart', start)
-    const { columnId } = getIds(start.source.droppableId, start.draggableId)
+    const { columnId, groupId } = getIds(
+      start.source.droppableId,
+      start.draggableId,
+    )
     const story = getStory(start.source.droppableId, start.draggableId) ?? null
     if (!story) {
       throw Error('no data')
@@ -45,6 +48,7 @@ const useKanBanData = () => {
         columnId,
         story,
         status,
+        groupId,
       }),
     )
   }

@@ -34,6 +34,7 @@ type SliceState = {
     columnId: Model.KanBan.Column['id']
     story: Model.KanBan.Story
     status?: Model.KanbanConfig.Status
+    groupId: Model.KanBan.Group['id']
   } | null
 }
 

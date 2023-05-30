@@ -8,7 +8,7 @@ import { CharTitle, HighchartsReactWrap } from './style'
 const HightChartMainLine = (props: {
   height: number
   title: string
-  time: string
+  chart: Models.Efficiency.WorkChart | undefined
 }) => {
   // 折线图
   const options = {
@@ -39,20 +39,7 @@ const HightChartMainLine = (props: {
         color: '#646566',
         fontSize: '12px',
       },
-      categories: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec',
-      ],
+      categories: props.chart?.yData,
     },
     yAxis: {
       min: 0,
@@ -81,9 +68,7 @@ const HightChartMainLine = (props: {
     },
     series: [
       {
-        data: [
-          29.9, 71.5, 11.4, 12.2, 14.0, 16.0, 13.6, 18.5, 21.4, 14.1, 5.6, 54.4,
-        ],
+        data: props.chart?.seriesData,
       },
     ],
   }
@@ -93,7 +78,7 @@ const HightChartMainLine = (props: {
         <RightRow>
           <Space size={12}>
             <TitleCss>{props.title}</TitleCss>
-            <Time>{props.time}</Time>
+            <Time>{props.chart?.time}</Time>
           </Space>
         </RightRow>
       </Col>

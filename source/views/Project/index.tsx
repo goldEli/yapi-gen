@@ -66,6 +66,7 @@ const ProjectManagementOptimization = () => {
   const [activeType, setActiveType] = useState(0)
   const [isHidden, setIsHidden] = useState(false)
   const [pageObj, setPageObj] = useState<any>({ page: 1, size: 20 })
+  const [projectTypes, setProjectTypes] = useState('')
   const [searchVal, setSearchVal] = useState('')
   const [isVisible, setIsVisible] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
@@ -113,6 +114,7 @@ const ProjectManagementOptimization = () => {
       order: sortVal.value,
       status: isDisable ? 1 : 0,
       groupId: groupIdVal,
+      project_types: projectTypes,
     }
     if (isTable) {
       params.all = true
@@ -135,7 +137,17 @@ const ProjectManagementOptimization = () => {
 
   useEffect(() => {
     getList(activeType, isGrid, isHidden, searchVal, order, pageObj, groupId)
-  }, [isHidden, activeType, order, searchVal, isGrid, pageObj, groupId, isRest])
+  }, [
+    isHidden,
+    activeType,
+    order,
+    searchVal,
+    isGrid,
+    pageObj,
+    groupId,
+    isRest,
+    projectTypes,
+  ])
 
   useEffect(() => {
     dispatch(getProjectCover())
@@ -264,7 +276,10 @@ const ProjectManagementOptimization = () => {
       size: pageObj.size,
     })
   }
-
+  const onChangeProjectType = (data: any) => {
+    console.log(data, '数据')
+    setProjectTypes(data)
+  }
   // 切换分组查询列表
   const onChangeGroup = (id: number) => {
     setGroupId(id)
@@ -361,6 +376,7 @@ const ProjectManagementOptimization = () => {
             onChangeFormat={onChangeGrid}
             onChangeHidden={onChangeHidden}
             onChangeSearch={onChangeSearch}
+            onChangeProjectType={onChangeProjectType}
           />
         </div>
         <Wrap>
