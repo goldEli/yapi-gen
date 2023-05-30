@@ -1,14 +1,57 @@
 import React from 'react'
-import { DropResult } from 'react-beautiful-dnd'
+import { DragStart, DropResult } from 'react-beautiful-dnd'
 import { produce } from 'immer'
 import { getId } from '../../utils'
-import { useSelector } from '@store/index'
+import { useDispatch, useSelector } from '@store/index'
+import { setMovingStory } from '@store/kanBan'
 
 const useKanBanData = () => {
-  const { kanbanInfoByGroup } = useSelector(store => store.kanBan)
+  const { kanbanInfoByGroup, kanbanConfig } = useSelector(store => store.kanBan)
+  const dispatch = useDispatch()
 
+  const getIds = (droppableId: string, draggableId: string) => {
+    const { id: columnId, groupId } = getId(droppableId)
+    const { id: storyId } = getId(draggableId)
+    return {
+      storyId,
+      columnId,
+      groupId,
+    }
+  }
+
+  const getStory = (droppableId: string, draggableId: string) => {
+    const { storyId, columnId, groupId } = getIds(droppableId, draggableId)
+    const group = kanbanInfoByGroup.find(group => group.id === groupId)
+    const column = group?.columns.find(column => column.id === columnId)
+    const story = column?.stories.find(story => story.id === storyId)
+
+    return story
+  }
+
+  const onDragStart = (start: DragStart) => {
+    console.log('onDragStart', start)
+    const { columnId } = getIds(start.source.droppableId, start.draggableId)
+    const story = getStory(start.source.droppableId, start.draggableId) ?? null
+    if (!story) {
+      throw Error('no data')
+    }
+    const { category_status_id } = story
+    const status = kanbanConfig?.columns
+      ?.find(column => column.id === columnId)
+      ?.categories.find(category => category.id === story.category_id)
+      ?.status?.find(item => item.flow_status_id === category_status_id)
+    dispatch(
+      setMovingStory({
+        columnId,
+        story,
+        status,
+      }),
+    )
+  }
   // refactor with immerjs
   const onDragEnd = (result: DropResult) => {
+    console.log('onDragEnd', result)
+    dispatch(setMovingStory(null))
     if (!result.destination) return
     // const { source, destination } = result
 
@@ -55,6 +98,7 @@ const useKanBanData = () => {
   return {
     data: kanbanInfoByGroup,
     onDragEnd,
+    onDragStart,
   }
 }
 

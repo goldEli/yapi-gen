@@ -4,7 +4,7 @@ import styled from '@emotion/styled'
 import { handleId } from '../utils'
 import IconFont from '@/components/IconFont'
 import MultipleAvatar from '@/components/MultipleAvatar'
-import { priorityIconBgColor } from '../constant'
+import PriorityIcon from '@/components/PriorityIcon'
 
 const IssueCardBox = styled.div`
   display: flex;
@@ -81,17 +81,6 @@ const WrapIcon = styled(IconFont)`
   color: var(--neutral-n3);
 `
 
-const PriorityIcon = styled(IconFont)<{
-  color: string
-  iconType?: Model.KanBan.StoryConfigPriority['icon']
-}>`
-  font-size: 16px;
-  color: ${props => props.color};
-  background: ${props =>
-    props.iconType ? priorityIconBgColor[props.iconType] : ''};
-  border-radius: 50%;
-`
-
 interface IssueCardProps {
   item: Model.KanBan.Story
   index: number
@@ -129,8 +118,7 @@ const IssueCard = (props: IssueCardProps) => {
                   {item.children_count}
                 </Sub>
                 <PriorityIcon
-                  type={item.story_config_priority.icon ?? ''}
-                  iconType={item.story_config_priority.icon}
+                  icon={item.story_config_priority.icon}
                   color={item.story_config_priority.color ?? ''}
                 />
               </BottomRight>

@@ -18,6 +18,7 @@ import { getStaffListAll } from './staff'
 export const getProjectList: any = async (params: any) => {
   const response: any = await http.get<any>('getProjectList', {
     search: {
+      project_type: params.project_type,
       self: params.self ? 1 : 0,
       keyword: params.searchValue,
       is_public: params?.isPublic ? Number(params.isPublic) : '',
@@ -93,9 +94,10 @@ export const getProjectCoverList: any = async () => {
   return response.data
 }
 
-export const getProjectInfoOnly: any = async (params: any) => {
+export const getProjectInfoOnly: any = async (params: any, isClone?: any) => {
   const response: any = await http.get<any>('getProjectInfo', {
     id: params,
+    is_clone: isClone ? 1 : 0,
   })
   return response.data
 }

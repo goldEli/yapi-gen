@@ -85,6 +85,7 @@ interface RowsItem {
 }
 interface Props {
   // 成员数据
+  onChangePeople?(): void
   person: any
   // 标题名称
   title?: string
@@ -100,6 +101,8 @@ interface Item {
   key: string
 }
 const Addperson = (props: Props) => {
+  console.log(props)
+
   const dispatch = useDispatch()
   const [isOpen, setIsOpen] = useState(false)
   const [items, setItems] = useState<Array<Item>>()
@@ -230,6 +233,7 @@ const Addperson = (props: Props) => {
 
     props.onChangeValues(setData)
     setIsVisible(false)
+    props.onChangePeople?.()
   }
 
   // 添加团队部门
@@ -288,12 +292,8 @@ const Addperson = (props: Props) => {
     }
   }
   useEffect(() => {
-    console.log(props.person, '数据')
-
     setPersonData(fitlerDataList(props.person))
   }, [props.person])
-
-  console.log(personData, '人')
 
   return (
     <>

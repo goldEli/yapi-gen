@@ -181,4 +181,7 @@ declare namespace API.Sprint {
       }
     }
   }
+  namespace DelSprintItem {
+    type id = number
+  }
 }

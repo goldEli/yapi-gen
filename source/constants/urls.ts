@@ -309,6 +309,9 @@ const urls = {
   checkUpdate: '/b/story/views/checkUpdate',
   // 分享视图
   shareView: '/b/story/views/share',
+  /**
+   * 冲刺板块
+   */
   // 获取按冲刺分组的事务列表
   getSprintGroupList: '/b/sprint/groupList',
   // 获取按冲刺分组的事务列表
@@ -319,6 +322,8 @@ const urls = {
   getSprintDetail: '/b/sprint/getInfo',
   // 编辑冲刺
   updateSprintInfo: '/b/sprint/update',
+  // 删除冲刺
+  delSprintItem: '/b/sprint/del',
   /**
    * 视图管理
    */

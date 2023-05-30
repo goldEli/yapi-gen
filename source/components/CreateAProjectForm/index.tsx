@@ -118,9 +118,10 @@ const CreateAProjectForm = () => {
   const [user, setUser] = useState<any>()
   const dispatch = useDispatch()
   const inputRefDom = useRef<HTMLInputElement>(null)
-  const [step, setStep] = useState(3)
+  const [step, setStep] = useState(1)
   const [type, setType] = useState(0)
-  const [model, setModel] = useState(0)
+  const [model, setModel] = useState<any>(0)
+  const [multipleSelectionItems, setMultipleSelectionItems] = useState<any>([])
   const onCustomRequest = async (file: any) => {
     const data = await uploadFileByTask(file.file, '2', '2')
     setMyCover(data.url)
@@ -130,6 +131,8 @@ const CreateAProjectForm = () => {
     const formData = await form.validateFields()
 
     const obj = {
+      model_type: model,
+      project_type: type,
       cover: activeCover,
       ...formData,
     }
@@ -224,7 +227,7 @@ const CreateAProjectForm = () => {
 
   //编辑项目逻辑
   const getProjectInfo = async () => {
-    const res = await getProjectInfoOnly(isEditId)
+    const res = await getProjectInfoOnly(isEditId || multipleSelectionItems[0])
     const res2 = await getAffiliationUser(res.team_id)
 
     setSelectLeaders(
@@ -296,7 +299,7 @@ const CreateAProjectForm = () => {
       getGroupData()
       setActiveCover(covers[0]?.path)
 
-      if (isEditId) {
+      if (isEditId || multipleSelectionItems.length === 1) {
         getProjectInfo()
       }
     }
@@ -318,18 +321,25 @@ const CreateAProjectForm = () => {
     setStep(val)
   }
   const choose = (type: any) => {
+    console.log(type)
+
     setType(type)
     onChangeStep(2)
   }
   const chooseModel = (type: any) => {
-    console.log(3)
+    console.log(type)
 
     setModel(type)
+    // setMultipleSelectionItems(undefined)
     onChangeStep(3)
   }
   const getIdS = (ids: any) => {
     console.log(ids, '侧边栏的IDs')
+    setMultipleSelectionItems(ids)
+    setModel(undefined)
   }
+  console.log(multipleSelectionItems)
+
   return (
     <CommonModal2
       bodyStyle={{
@@ -354,9 +364,11 @@ const CreateAProjectForm = () => {
           position: 'relative',
         }}
       >
-        <ProjectChooseSide op={step === 3 && model === 3}>
-          侧边
-        </ProjectChooseSide>
+        <ProjectChooseSide
+          cloneIds={multipleSelectionItems}
+          op={step === 3 && model === 3}
+        />
+
         {/* 右边 */}
         <div
           style={{
@@ -409,7 +421,11 @@ const CreateAProjectForm = () => {
               </div>
             </OpacityDiv>
             <OpacityDiv op={step === 2}>
-              <ProjectTemplate getIdS={getIdS} choose={chooseModel} />
+              <ProjectTemplate
+                searchId={type}
+                getIdS={getIdS}
+                choose={chooseModel}
+              />
             </OpacityDiv>
             <OpacityDiv
               op={step === 3}

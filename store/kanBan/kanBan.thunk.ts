@@ -115,7 +115,7 @@ const isEmpty = (data: any) => {
 export const getKanbanByGroup = createAsyncThunk(
   `${name}/getKanbanByGroup`,
   async () => {
-    const { valueKey } = store.getState().view
+    const { valueKey, inputKey } = store.getState().view
     const { sortByGroupOptions, sortByRowAndStatusOptions } =
       store.getState().kanBan
     const type = sortByGroupOptions?.find(item => item.check)?.key
@@ -126,23 +126,33 @@ export const getKanbanByGroup = createAsyncThunk(
     if (!type) {
       return []
     }
-    if (type === 'none') {
-      return []
-    }
-    const params: Omit<
-      API.Kanban.GetKanbanByGroup.Params,
-      'pagesize' | 'page'
-    > = {
+    const params = {
       search: isEmpty(valueKey)
         ? {
             all: 1,
+            keyword: inputKey,
           }
-        : valueKey,
+        : { ...valueKey, keyword: inputKey },
       project_id: getParamsValueByKey('id'),
-      group_by: type,
       kanban_config_id: parseInt(columnId, 10),
     }
-    const res = await services.kanban.getKanbanByGroup(params)
+    if (type === 'none') {
+      const res = await services.kanban.getKanban(params)
+      return [
+        {
+          // 无分组id
+          id: 0,
+          name: '',
+          content_txt: '',
+          columns: res.data,
+        },
+      ]
+    }
+
+    const res = await services.kanban.getKanbanByGroup({
+      ...params,
+      group_by: type,
+    })
     return res.data
   },
 )
@@ -215,13 +225,11 @@ export const updateView =
     dispatch(getStoryViewList())
   }
 
-export const onFilter =
-  (data: Model.KanBan.ViewItemConfig) => async (dispatch: AppDispatch) => {
-    const { valueKey } = store.getState().view
-    console.log({ valueKey })
-
-    // dispatch(getStoryViewList())
-  }
+export const onFilter = () => async (dispatch: AppDispatch) => {
+  setTimeout(() => {
+    dispatch(getKanbanByGroup())
+  })
+}
 
 // 看板配置列表
 export const getKanbanConfigList = createAsyncThunk(
@@ -255,8 +263,10 @@ export const getKanbanConfigList = createAsyncThunk(
   },
 )
 
-// 属性看板
-export const onRefreshKanBan = () => async (dispatch: AppDispatch) => {}
+// 刷新看板
+export const onRefreshKanBan = () => async (dispatch: AppDispatch) => {
+  dispatch(getKanbanByGroup())
+}
 
 export const openSaveAsViewModel =
   (id?: Model.KanBan.ViewItem['id']) => async (dispatch: AppDispatch) => {

@@ -30,9 +30,15 @@ type SliceState = {
   kanbanInfoByGroup: Model.KanBan.Group[]
   kanbanConfig?: Model.KanbanConfig.Config
   kanbanConfigList: Model.KanbanConfig.Config[]
+  movingStory: {
+    columnId: Model.KanBan.Column['id']
+    story: Model.KanBan.Story
+    status?: Model.KanbanConfig.Status
+  } | null
 }
 
 const initialState: SliceState = {
+  movingStory: null,
   kanbanConfigList: [],
   kanbanInfo: [],
   kanbanInfoByGroup: [],
@@ -80,6 +86,9 @@ const slice = createSlice({
     //     ...action.payload,
     //   }
     // },
+    setMovingStory(state, action: PayloadAction<SliceState['movingStory']>) {
+      state.movingStory = action.payload
+    },
     setUserGroupingModelInfo(
       state,
       action: PayloadAction<SliceState['userGroupingModelInfo']>,
@@ -183,7 +192,7 @@ export const {
   setSaveAsViewModelInfo,
   setShareModelInfo,
   setUserGroupingModelInfo,
-  // setViewItemConfig,
+  setMovingStory,
 } = slice.actions
 
 export default kanBan

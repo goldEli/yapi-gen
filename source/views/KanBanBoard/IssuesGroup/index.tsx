@@ -14,12 +14,15 @@ import { useDispatch } from '@store/index'
 import {
   DropAreaList,
   GroupTitleArea,
+  ImgIcon,
   IssuesGroupBox,
   Text,
   Title,
   TitleBtn,
 } from './styled'
 import useCloseMap from '../hooks/useCloseMap'
+import useGroupType from '../hooks/useGroupType'
+import PriorityIcon from '@/components/PriorityIcon'
 interface IssuesGroupProps {
   issuesGroup: Model.KanBan.Group
 }
@@ -28,6 +31,9 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
   const { issuesGroup } = props
   const { AddUserModalElement, open } = useAddUserModal()
   const { closeMap, onChange } = useCloseMap()
+  const dispatch = useDispatch()
+  const hidden = !!closeMap?.get(issuesGroup.id)
+  const { showUserRelatedInformation, groupType, isNoGroup } = useGroupType()
 
   const text = useMemo(() => {
     const storiesNum =
@@ -35,13 +41,13 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
         const n = column.stories.length ?? 0
         return res + n
       }, 0) ?? 0
+    if (!showUserRelatedInformation) {
+      return `${storiesNum}个事务`
+    }
     return `共计${issuesGroup?.users?.length ?? 0}人，${storiesNum}个事务`
-  }, [issuesGroup])
+  }, [issuesGroup, showUserRelatedInformation])
 
-  const dispatch = useDispatch()
-  const hidden = !!closeMap?.get(issuesGroup.id)
-
-  const showPeople = (
+  const showPeople = showUserRelatedInformation && (
     <div
       onClick={e => {
         e.stopPropagation()
@@ -70,7 +76,7 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
     </div>
   )
 
-  const addPeopleBtn = (
+  const addPeopleBtn = showUserRelatedInformation && (
     <div
       onClick={e => {
         e.stopPropagation()
@@ -110,7 +116,19 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
     </div>
   )
 
-  const titleArea = (
+  const icon = useMemo(() => {
+    if (showUserRelatedInformation) {
+      return <></>
+    }
+    if (groupType === 'category') {
+      return <ImgIcon src={issuesGroup.attachment_path} />
+    }
+    return (
+      <PriorityIcon icon={issuesGroup.icon} color={issuesGroup.color ?? ''} />
+    )
+  }, [showUserRelatedInformation, groupType, issuesGroup])
+
+  const titleArea = !isNoGroup && (
     <GroupTitleArea>
       <TitleBtn
         onClick={e => {
@@ -119,6 +137,7 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
         }}
       >
         <UpDownBtn isOpen={hidden} />
+        {icon}
         <Title>{issuesGroup.name}</Title>
       </TitleBtn>
       {showPeople}
