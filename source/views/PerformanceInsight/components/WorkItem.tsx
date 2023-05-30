@@ -20,7 +20,7 @@ import Table from './Table'
 interface Props {
   visible: boolean
   status: Array<Model.Sprint.StatusInfo1>
-  userInfo: Model.Sprint.UserInfo1
+  userInfo: Model.Sprint.UserInfo2
   type: string
   ids: number[]
   memberWorkList: API.Sprint.EfficiencyMemberWorkList.Result | undefined
@@ -31,7 +31,7 @@ interface Props {
 }
 interface UserInfo {
   statusType: string
-  userInfo: Model.Sprint.UserInfo1
+  userInfo: Model.Sprint.UserInfo2
   status: Array<Model.Sprint.StatusInfo1>
   memberWorkList: API.Sprint.EfficiencyMemberWorkList.Result | undefined
   onChange: (value: API.Sprint.EfficiencyMemberWorkList.Params) => void
@@ -126,22 +126,30 @@ const Main = (props: UserInfo) => {
       },
     },
   ]
+  console.log(props.userInfo, 'props.userInfo')
   return (
     <MainStyle>
       <UserMsg>
         <CommonUserAvatar size="large" avatar={props.userInfo.avatar} />
         <UserInfo>
-          <div> {props.userInfo.name}（xxxxxx@ifun.com）</div>
+          <div>
+            {' '}
+            {props.userInfo.name}（{props.userInfo.email}）
+          </div>
           <div className="msg">
             <Space size={4}>
-              {/* {props.user.name.map((el: string, index: number) => (
+              {props.userInfo.departments?.map((el, index: number) => (
                 <>
-                  <span>{el}</span>
-                  {index !== props.user.name.length - 1 && (
-                   
+                  <span>{el.name}</span>
+                  {index !== props.userInfo.departments.length - 1 && (
+                    <CommonIconFont
+                      type="right"
+                      size={14}
+                      color="var(--neutral-n3)"
+                    />
                   )}
                 </>
-              ))} */}
+              ))}
             </Space>
           </div>
         </UserInfo>

@@ -113,10 +113,106 @@ export const workContrastList = async (
 export const memberBugList = async (
   params: API.Sprint.GetDefectRatio.Params,
 ) => {
-  const res = await http.get<any, API.Sprint.MemberBugList.Result>(
-    'memberBugList',
-    params,
-  )
+  // const res = await http.get<any, API.Sprint.MemberBugList.Result>(
+  //   'memberBugList',
+  //   params,
+  // )
+  const res = {
+    data: {
+      defect: [
+        {
+          name: '缺陷修复率',
+          value: 60,
+          unit: '%',
+        },
+        {
+          name: '待修复',
+          value: 20,
+          unit: '项',
+        },
+        {
+          name: '修复中',
+          value: 20,
+          unit: '项',
+        },
+        {
+          name: '已完成',
+          value: 60,
+          unit: '项',
+        },
+        {
+          name: '缺陷存量',
+          value: 120,
+          unit: '项',
+        },
+        {
+          name: '缺陷重开率',
+          value: 33,
+          unit: '%',
+        },
+        {
+          name: '存量风险',
+          value: 30,
+          unit: '项',
+        },
+      ],
+      list: [
+        {
+          user: {
+            id: 1,
+            name: '张三',
+            department_id: 1542079930036355073,
+            job_id: 1542079890593120258,
+            avatar:
+              'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
+            department: {
+              id: 1542079930036355073,
+              name: '总经办',
+            },
+            position: {
+              id: 1542079890593120258,
+              name: '总助ds',
+            },
+          },
+          completion_rate: '50%',
+          not_fixed: 20,
+          fixing: 20,
+          fixed: 60,
+          repeat_open_rate: '10|20 50%',
+          stock_risk: 5,
+        },
+        {
+          user: {
+            id: 2,
+            name: '李四',
+            department_id: 1542079930036355073,
+            job_id: 1542079890593120258,
+            avatar:
+              'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
+            department: {
+              id: 1542079930036355073,
+              name: '总经办',
+            },
+            position: {
+              id: 1542079890593120258,
+              name: '总助ds',
+            },
+          },
+          completion_rate: '50%',
+          not_fixed: 20,
+          fixing: 20,
+          fixed: 60,
+          repeat_open_rate: '10|20 50%',
+          stock_risk: 5,
+        },
+      ],
+      pager: {
+        total: 155,
+        page: 1,
+        pagesize: 20,
+      },
+    },
+  }
   return {
     list: res.data.list.map((el: any) => ({
       id: el.user.id,
@@ -175,17 +271,57 @@ export const memberBugList = async (
   }
 }
 export const plugSelectionUserInfo = async (params: { id: number }) => {
-  const response = await http.get<any, API.Sprint.PlugSelectionUserInfo.Result>(
-    `b/efficiency/member/${params.id}/search/info`,
-    params,
-  )
+  // const response = await http.get<any, API.Sprint.PlugSelectionUserInfo.Result>(
+  //   `b/efficiency/member/${params.id}/search/info`,
+  //   params,
+  // )
+  const response = {
+    data: {
+      id: 1,
+      name: '张三',
+      email: 'lijianbo@dingstartech.com',
+      department_id: 1542079930036355073,
+      job_id: 1542079890593120258,
+      avatar:
+        'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
+      departments: [
+        {
+          id: 1542079930036355073,
+          name: '总经办',
+        },
+        {
+          id: 1542079930036355074,
+          name: '副总裁',
+        },
+      ],
+      position: {
+        id: 1542079890593120258,
+        name: '总助ds',
+      },
+      status: [
+        {
+          id: 11462,
+          content: '规划中',
+        },
+        {
+          id: 11463,
+          content: '实现中',
+        },
+        {
+          id: 11464,
+          content: '已完成',
+        },
+      ],
+    },
+  }
   return {
     userInfo: {
-      id: response.data.userInfo.id,
-      name: response.data.userInfo.name,
-      departmentName: response.data.userInfo.department.name,
-      positionName: response.data.userInfo.position.name,
-      avatar: response.data.userInfo.avatar,
+      id: response.data.id,
+      name: response.data.name,
+      departments: response.data.departments,
+      position: response.data.position,
+      email: response.data.email,
+      avatar: response.data.avatar,
     },
     status: response.data.status.map(el => ({
       label: el.content,
@@ -197,10 +333,93 @@ export const plugSelectionUserInfo = async (params: { id: number }) => {
 export const efficiencyMemberWorkList = async (
   params: API.Sprint.EfficiencyMemberWorkList.Params,
 ) => {
-  const response = await http.get<
-    any,
-    API.Sprint.EfficiencyMemberWorkList.Result
-  >(`efficiencyMemberWorkList`, params)
+  // const response = await http.get<
+  //   any,
+  //   API.Sprint.EfficiencyMemberWorkList.Result
+  // >(`efficiencyMemberWorkList`, params)
+  const response = {
+    data: {
+      total: {
+        name: '有返工的工作项',
+        value: 10,
+        unit: '项',
+      },
+      list: [
+        {
+          id: 1003429,
+          name: '测试123456测试123456',
+          story_prefix_key: 'CSXM2-FL-103',
+          category_attachment:
+            'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png',
+          status: 1,
+          user: {
+            id: 1,
+            name: '张三',
+            avatar:
+              'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
+          },
+          relate_users: [
+            {
+              id: 2,
+              name: '杨春平',
+              avatar:
+                'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
+            },
+            {
+              id: 3,
+              name: '汪志君',
+              avatar:
+                'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
+            },
+            {
+              id: 3,
+              name: '付亮',
+              avatar: '',
+            },
+          ],
+          expected_end_at: '2023-05-18',
+          expected_start_at: '2023-05-18',
+          created_at: '2023-05-24 02:46:55',
+        },
+        {
+          id: 1003430,
+          name: '测试123456',
+          story_prefix_key: 'CSXM2-FL-123456',
+          category_attachment:
+            'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png',
+          status: 2,
+          user: {
+            id: 1,
+            name: '张三',
+            avatar:
+              'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
+          },
+          relate_users: [
+            {
+              id: 2,
+              name: '杨春平',
+              avatar:
+                'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
+            },
+            {
+              id: 3,
+              name: '汪志君',
+              avatar:
+                'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
+            },
+            {
+              id: 3,
+              name: '付亮',
+              avatar: '',
+            },
+          ],
+          expected_end_at: '2023-05-18',
+          expected_start_at: '2023-05-18',
+          created_at: '2023-05-24 02:46:55',
+        },
+      ],
+    },
+  }
   return {
     total: response.data.total,
     list: response.data.list.map(el => ({
@@ -221,10 +440,94 @@ export const efficiencyMemberWorkList = async (
 export const efficiencyMemberDefectList = async (
   params: API.Sprint.EfficiencyMemberWorkList.Params,
 ) => {
-  const response = await http.get<
-    any,
-    API.Sprint.EfficiencyMemberWorkList.Result
-  >(`efficiencyMemberDefectList`, params)
+  // const response = await http.get<
+  //   any,
+  //   API.Sprint.EfficiencyMemberWorkList.Result
+  // >(`efficiencyMemberDefectList`, params)
+  const response = {
+    data: {
+      total: {
+        name: '重开缺陷',
+        value: 10,
+        unit: '项',
+      },
+      list: [
+        {
+          id: 1003429,
+          name: '测试123456测试123456',
+          story_prefix_key: 'CSXM2-FL-103',
+          category_attachment:
+            'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png',
+          status: 2,
+          user: {
+            id: 1,
+            name: '张三',
+            avatar:
+              'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
+          },
+          relate_users: [
+            {
+              id: 2,
+              name: '杨春平',
+              avatar:
+                'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
+            },
+            {
+              id: 3,
+              name: '汪志君',
+              avatar:
+                'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
+            },
+            {
+              id: 3,
+              name: '付亮',
+              avatar: '',
+            },
+          ],
+          expected_end_at: '2023-05-18',
+          expected_start_at: '2023-05-18',
+          created_at: '2023-05-24 02:46:55',
+        },
+        {
+          id: 1003430,
+          name: '测试123456',
+          story_prefix_key: 'CSXM2-FL-123456',
+          category_attachment:
+            'https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png',
+          status: 3,
+          user: {
+            id: 1,
+            name: '张三',
+            avatar:
+              'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
+          },
+          relate_users: [
+            {
+              id: 2,
+              name: '杨春平',
+              avatar:
+                'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
+            },
+            {
+              id: 3,
+              name: '汪志君',
+              avatar:
+                'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
+            },
+            {
+              id: 3,
+              name: '付亮',
+              avatar: '',
+            },
+          ],
+          expected_end_at: '2023-05-18',
+          expected_start_at: '2023-05-18',
+          created_at: '2023-05-24 02:46:55',
+        },
+      ],
+    },
+  }
+
   return {
     total: response.data.total,
     list: response.data.list.map(
@@ -296,10 +599,162 @@ export const getStatisticsTotal = async (
 export const historyWorkList = async (
   params: API.Efficiency.historyWorkList.Params,
 ) => {
-  const response = await http.get<any, API.Efficiency.historyWorkList.Result>(
-    `getDefectRatio`,
-    params,
-  )
+  // const response = await http.get<any, API.Efficiency.historyWorkList.Result>(
+  //   `b/efficiency/member/${params.id}/history/work_list`,
+  //   params,
+  // )
+  const res = {
+    id: 2,
+    name: '李四',
+    user_group_id: 3,
+    email: 'lijianbo@dingstartech.com',
+    avatar:
+      'https://oa-1308485183.cos.ap-chengdu.myqcloud.com/oa-dev-img/1504303190303051778/1504306850059784194/2022-10-12/images.jpg',
+    role: {
+      id: 3,
+      name: '参与者',
+    },
+    work_record: [
+      {
+        date: '今天',
+        list: [
+          {
+            id: 1,
+            name: '办事大厅相关功能',
+            status_from: {
+              id: 11462,
+              content: '规划中',
+            },
+            status_to: {
+              id: 11463,
+              content: '实现中',
+            },
+            expected_start_at: '2023-04-30',
+            expected_end_at: '2023-05-30',
+            created_at: '2023-04-30 00:00:00',
+          },
+        ],
+      },
+      {
+        date: '昨天',
+        list: [
+          {
+            id: 2,
+            name: '事务相关功能',
+            status_from: {
+              id: 11462,
+              content: '规划中',
+            },
+            status_to: {
+              id: 11463,
+              content: '实现中',
+            },
+            expected_start_at: '2023-04-30',
+            expected_end_at: '2023-05-30',
+            created_at: '2023-04-30 00:00:00',
+          },
+        ],
+      },
+    ],
+    created_word: [
+      {
+        status_name: '进行中',
+        list: [
+          {
+            id: 1,
+            name: '办事大厅相关功能BUG修改',
+            parent_name: '项目管理模块',
+            expected_start_at: '2023-04-30',
+            expected_end_at: '2023-05-30',
+            created_at: '2023-04-30 00:00:00',
+          },
+          {
+            id: 2,
+            name: '事务相关功能BUG修改',
+            parent_name: '项目管理模块',
+            expected_start_at: '2023-04-30',
+            expected_end_at: '2023-05-30',
+            created_at: '2023-04-30 00:00:00',
+          },
+        ],
+      },
+      {
+        status_name: '已逾期',
+        list: [
+          {
+            id: 1,
+            name: '办事大厅相关功能BUG修改',
+            parent_name: '项目管理模块',
+            expected_start_at: '2023-04-30',
+            expected_end_at: '2023-05-30',
+            created_at: '2023-04-30 00:00:00',
+          },
+          {
+            id: 2,
+            name: '事务相关功能BUG修改',
+            parent_name: '项目管理模块',
+            expected_start_at: '2023-04-30',
+            expected_end_at: '2023-05-30',
+            created_at: '2023-04-30 00:00:00',
+          },
+        ],
+      },
+    ],
+    word: [
+      {
+        status_name: '进行中',
+        list: [
+          {
+            id: 1,
+            name: '办事大厅相关功能BUG修改',
+            parent_name: '项目管理模块',
+            expected_start_at: '2023-04-30',
+            expected_end_at: '2023-05-30',
+            created_at: '2023-04-30 00:00:00',
+          },
+          {
+            id: 2,
+            name: '事务相关功能BUG修改',
+            parent_name: '项目管理模块',
+            expected_start_at: '2023-04-30',
+            expected_end_at: '2023-05-30',
+            created_at: '2023-04-30 00:00:00',
+          },
+        ],
+      },
+      {
+        status_name: '已逾期',
+        list: [
+          {
+            id: 1,
+            name: '办事大厅相关功能BUG修改',
+            parent_name: '项目管理模块',
+            expected_start_at: '2023-04-30',
+            expected_end_at: '2023-05-30',
+            created_at: '2023-04-30 00:00:00',
+          },
+          {
+            id: 2,
+            name: '事务相关功能BUG修改',
+            parent_name: '项目管理模块',
+            expected_start_at: '2023-04-30',
+            expected_end_at: '2023-05-30',
+            created_at: '2023-04-30 00:00:00',
+          },
+        ],
+      },
+    ],
+  }
+  return res
+}
+// 缺陷分析的前半截
+export const historyDefectList = async (
+  params: API.Efficiency.historyWorkList.Params,
+) => {
+  // const response = await http.get<any, API.Efficiency.historyWorkList.Result>(
+  //   `b/efficiency/member/${params.id}/history/defect_list`,
+  //   params,
+  // )
   const res = {
     id: 2,
     name: '李四',
