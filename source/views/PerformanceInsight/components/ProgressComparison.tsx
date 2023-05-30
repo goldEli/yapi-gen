@@ -497,7 +497,7 @@ const ProgressComparison = (props: Props) => {
 
   // 前半截的详情弹窗上半截的获取用户信息
   const getUserInfo = async (id: number) => {
-    const res = await plugSelectionUserInfo({ id })
+    const res = await plugSelectionUserInfo({ user_id: id, project_ids: 0 })
     setUserInfo(res.userInfo)
     setStatus(res.status)
   }

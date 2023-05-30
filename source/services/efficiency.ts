@@ -270,9 +270,12 @@ export const memberBugList = async (
     ],
   }
 }
-export const plugSelectionUserInfo = async (params: { id: number }) => {
+export const plugSelectionUserInfo = async (params: {
+  user_id: number
+  project_ids?: number
+}) => {
   // const response = await http.get<any, API.Sprint.PlugSelectionUserInfo.Result>(
-  //   `b/efficiency/member/${params.id}/search/info`,
+  //   `b/efficiency/member/search/info`,
   //   params,
   // )
   const response = {
