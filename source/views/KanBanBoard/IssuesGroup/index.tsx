@@ -41,14 +41,15 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
         <Title>{issuesGroup.name}</Title>
       </TitleBtn>
       <MultipleAvatar
-        list={Array(4)
-          .fill(0)
-          .map((_, idx) => {
+        list={
+          issuesGroup.users?.map(item => {
             return {
-              id: idx,
-              name: 'lily' + idx,
+              id: item.id,
+              name: item.name,
+              avatar: item.avatar,
             }
-          })}
+          }) ?? []
+        }
         max={3}
       />
       <div
