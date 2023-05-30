@@ -1,8 +1,14 @@
 import { useSelector } from '@store/index'
 import React from 'react'
+import useGroupType from '../useGroupType'
 
-const useDropData = (columnId: Model.KanBan.Column['id']) => {
+const useDropData = (
+  columnId: Model.KanBan.Column['id'],
+  groupId: Model.KanBan.Group['id'],
+) => {
   const { kanbanConfig, movingStory } = useSelector(store => store.kanBan)
+  const { groupType } = useGroupType()
+
   const data = React.useMemo(() => {
     if (!movingStory || !kanbanConfig) {
       return []
@@ -30,9 +36,20 @@ const useDropData = (columnId: Model.KanBan.Column['id']) => {
   const showStateTransitionList = React.useMemo(() => {
     return movingStory?.columnId !== columnId && data.length
   }, [movingStory, columnId, data])
+
+  const disableDrop = React.useMemo(() => {
+    // 如果是人员分组 只能在同组拖动
+    if (groupType === 'users') {
+      return (
+        columnId === movingStory?.columnId && movingStory.groupId !== groupId
+      )
+    }
+    return false
+  }, [groupType, columnId, movingStory, groupId])
   return {
     data,
     showStateTransitionList,
+    disableDrop,
   }
 }
 
