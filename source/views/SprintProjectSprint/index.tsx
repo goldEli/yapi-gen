@@ -180,10 +180,15 @@ const SelectWrapForList = styled(SelectWrapBedeck)`
   margin-left: 16px;
 `
 const CategorySelectWrap = styled.div`
-  width: 184px;
+  width: 280px;
   height: 32px;
   display: flex;
-  /* align-items: center; */
+  align-items: center;
+  border: 1px solid var(--active);
+  border-radius: 6px;
+  margin-left: 16px;
+  padding-left: 12px;
+  box-sizing: border-box;
   .title {
     font-size: 14;
     white-space: nowrap;
@@ -617,8 +622,15 @@ const SprintProjectSprint: React.FC<IProps> = props => {
               <CategoryDropdown
                 projectId={projectId}
                 value={searchObject.search?.category_id}
-                onChangeCallBack={(val: any) => {
+                onChangeCallBack={(val: Model.Project.CategoryValue[]) => {
                   console.log(val, 'val')
+                  setSearchObject({
+                    ...searchObject,
+                    search: {
+                      ...searchObject.search,
+                      category_id: val.map(item => item.id),
+                    },
+                  })
                 }}
                 onClearCallback={() => {
                   setSearchObject({

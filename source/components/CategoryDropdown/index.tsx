@@ -7,7 +7,7 @@ import { storyConfigCategoryList } from '@/services/project'
 import useCategoryList from '@/hooks/useCategoryList'
 import { css } from '@emotion/css'
 const Wrap = styled(Select)`
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
 `
 const LabelBox = styled.div`
   display: flex;
@@ -186,6 +186,7 @@ const CategoryDropdown = (props: IProps) => {
       showSearch
       allowClear
       showArrow
+      bordered={false}
       options={options}
       labelInValue
       filterOption={(inputValue, option) => {
