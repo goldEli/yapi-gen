@@ -82,7 +82,7 @@ const RepeatModal = (props: RepeatModalProps) => {
       getMessage({ msg: t('calendarManager.end_type_null'), type: 'warning' })
       return
     }
-    console.log(endType, '=12121', endDate)
+
     if (endType === 1 && !endDate) {
       getMessage({
         msg: t('calendarManager.end_type_time_null'),
