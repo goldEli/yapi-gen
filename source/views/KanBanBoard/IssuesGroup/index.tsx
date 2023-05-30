@@ -5,6 +5,7 @@ import UpDownBtn from '@/components/UpDownBtn'
 import MultipleAvatar from '@/components/MultipleAvatar'
 import ChoosePeople from '@/views/WorkReport/Formwork/ChoosePeople'
 import ChooseMember from '../ChooseMember'
+import useAddUserModal from '@/hooks/useAddUserModal'
 interface IssuesGroupProps {
   issuesGroup: Model.KanBan.Group
 }
@@ -47,6 +48,7 @@ const Text = styled.div`
 
 const IssuesGroup: React.FC<IssuesGroupProps> = props => {
   const { issuesGroup } = props
+  const { AddUserModalElement, open } = useAddUserModal()
 
   const text = useMemo(() => {
     const storiesNum =
@@ -74,15 +76,20 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
           })}
         max={3}
       />
-      <ChooseMember />
-      {/* <ChoosePeople
-        margin={0}
-        onChange={(...args: any) => {
-          console.log({ args })
+      <div
+        onClick={e => {
+          e.stopPropagation()
+          open({
+            onConfirm(data) {
+              console.log(data, 123)
+              return Promise.resolve()
+            },
+          })
         }}
-        hiddenNumbers
-        initValue={[]}
-      /> */}
+      >
+        <ChooseMember />
+      </div>
+      {AddUserModalElement}
       <Text>{text}</Text>
     </GroupTitleArea>
   )
