@@ -14,7 +14,7 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 // import ImportDemand from './ImportDemand'
 import { useDispatch, useSelector } from '@store/index'
 
-import { saveScreen } from '@store/view'
+import { onTapSearchChoose, saveScreen } from '@store/view'
 import KanBanBtnsArea from '../KanBanBtnsArea'
 
 import SelectOptions from '@/components/SelectOptions'
@@ -141,7 +141,6 @@ const Operation = (props: Props) => {
       custom_field: customField,
     }
     setSearchGroups(params)
-    console.log(params)
     props.onSearch(params)
   }
 
@@ -315,6 +314,9 @@ const Operation = (props: Props) => {
   //   setIsShowExport(true)
   //   setIsVisibleMore(false)
   // }
+  useEffect(() => {
+    dispatch(onTapSearchChoose({}))
+  }, [])
 
   return (
     <StickyWrap ref={stickyWrapDom}>

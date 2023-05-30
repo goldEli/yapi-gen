@@ -250,7 +250,6 @@ searchChoose 该值为需要给到后端的字段值。 2.筛选字段值为 sto
 
 ```js
 useEffect(() => {
-  init()
   return () => {
     dispatch(onTapSearchChoose({}))
   }
