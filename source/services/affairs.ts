@@ -1,4 +1,5 @@
 /* eslint-disable no-undefined */
+import urls from '@/constants/urls'
 import * as http from '@/tools/http'
 
 // 删除事务
@@ -267,6 +268,7 @@ export const getAffairsInfo = async (
     hierarchy: response.data.hierarchy,
     level_tree: response.data.level_tree,
     categoryName: response.data.category,
+    child_story_statistics: response.data.child_story_statistics,
   }
 }
 
@@ -276,7 +278,7 @@ export const getAffairsCommentList = async (
 ) => {
   const response: any = await http.get<
     any,
-    API.Affairs.GetAffairsCommentList.Params
+    API.Affairs.GetAffairsCommentList.Result
   >('getAffairsCommentList', {
     search: {
       story_id: params.sprintId,
@@ -320,6 +322,19 @@ export const deleteAffairsComment = async (
   await http.delete<any>('deleteAffairsComment', {
     project_id: params.projectId,
     id: params.id,
+  })
+}
+
+// 编辑评论
+export const updateAffairsComment = async (
+  params: API.Affairs.UpdateAffairsComment.Params,
+) => {
+  await http.put<any>(urls.updateAffairsComment(params.id), {
+    project_id: params.projectId,
+    story_id: params.storyId,
+    content: params.content,
+    attachment: params.attachment,
+    a_user_ids: params.ids,
   })
 }
 
@@ -816,5 +831,17 @@ export const addQuickAffairs: any = async (
     name: params.name,
     category_id: params?.category_id,
     parent_id: params?.parent_id || 0,
+  })
+}
+
+// 编辑富文本
+export const updateEditor: any = async (
+  params: API.Affairs.UpdateEditor.Params,
+) => {
+  await http.put<any>('updateAffairs', {
+    project_id: params.projectId,
+    info: params.info,
+    id: params.id,
+    name: params.name,
   })
 }
