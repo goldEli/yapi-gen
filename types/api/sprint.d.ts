@@ -285,6 +285,15 @@ declare namespace API.Sprint {
     type Result = Model.Sprint.ListItem[]
   }
   namespace GetStatisticsTotal {
+    type Params = {
+      project_ids: Array<number>
+      iterate_ids: Array<number>
+      user_ids: Array<number>
+      user_ids?: number
+      start_time: string
+      end_time: string
+      period_time?: string
+    }
     type Result = {
       work: Array<Model.Sprint.WorkListItem>
       defect: Array<Model.Sprint.DefectListItem>
@@ -302,6 +311,18 @@ declare namespace API.Sprint {
     }
   }
   namespace MemberBugList {
+    type Params = {
+      project_ids?: string
+      user_ids?: string
+      start_time: string
+      end_time: string
+      iterate_ids?: string
+      period_time?: string
+      two_week?: string
+      page: number
+
+      pagesize: number
+    }
     type Result = {
       defect: Array<Model.Sprint.WorkListItem>
       list: Array<Model.Sprint.BugDataListItem>

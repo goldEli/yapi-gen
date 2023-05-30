@@ -448,11 +448,14 @@ const ProgressComparison = (props: Props) => {
   // 缺陷分析大的列表
   const getMemberBugList = async () => {
     const res = await memberBugList({
-      project_ids: [1, 2],
-      iterate_ids: [12, 23],
-      user_ids: [1, 23, 44],
+      project_ids: '1,2',
+      iterate_ids: '12,23',
+      user_ids: '12,23,707',
+      period_time: 'two_week',
       start_time: '2023-05-30 00:00:00',
       end_time: '2023-05-30 00:00:00',
+      page: 1,
+      pagesize: 20,
     })
     setWork(res.defect)
     setTableList1(res.list)

@@ -125,6 +125,7 @@ const Home = () => {
     // 缺陷现状和工作项现状
     getWorkList()
   }, [])
+  // 缺陷现状和工作项现状
   const getWorkList = async () => {
     let res = await getStatisticsTotal({
       project_ids: [1, 2],
@@ -132,6 +133,8 @@ const Home = () => {
       user_ids: [1, 23, 44],
       start_time: '2023-05-30 00:00:00',
       end_time: '2023-05-30 00:00:00',
+      period_time:
+        '周期时间：two_week,four_week,one_month,three_month,six_month',
     })
     setWorkDataList(res)
   }

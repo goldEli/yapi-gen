@@ -111,7 +111,7 @@ export const workContrastList = async (
 }
 // 缺陷分析列表
 export const memberBugList = async (
-  params: API.Sprint.GetDefectRatio.Params,
+  params: API.Sprint.MemberBugList.Params,
 ) => {
   // const res = await http.get<any, API.Sprint.MemberBugList.Result>(
   //   'memberBugList',
@@ -270,6 +270,7 @@ export const memberBugList = async (
     ],
   }
 }
+// 后半截弹窗顶部的详情
 export const plugSelectionUserInfo = async (params: {
   user_id: number
   project_ids?: number
@@ -560,42 +561,84 @@ export const efficiencyMemberDefectList = async (
     ),
   }
 }
-// 完成率Top10
-export const getCompletionRate = async (
-  params: API.Sprint.GetCompletionRate.Params,
-) => {
-  const response = await http.get<any, API.Sprint.GetCompletionRate.Result>(
-    'getCompletionRate',
-    params,
-  )
-  return response.data
-}
-// 阶段缺陷占比
-export const getDefectRatio = async (
-  params: API.Sprint.GetDefectRatio.Params,
-) => {
-  const response = await http.get<any, API.Sprint.GetDefectRatio.Result>(
-    'getDefectRatio',
-    params,
-  )
-  return response.data
-}
-// 缺陷趋势
-export const getBugList = async (params: API.Sprint.GetDefectRatio.Params) => {
-  const response = await http.get<any, API.Sprint.GetDefectRatio.Result>(
-    'getDefectRatio',
-    params,
-  )
-  return response.data
-}
-// 工作项和缺陷
+// 工作项和缺陷的卡片
 export const getStatisticsTotal = async (
-  params: API.Sprint.GetDefectRatio.Params,
+  params: API.Sprint.GetStatisticsTotal.Params,
 ) => {
-  const response = await http.get<any, API.Sprint.GetStatisticsTotal.Result>(
-    `getDefectRatio`,
-    params,
-  )
+  // const response = await http.get<any, API.Sprint.GetStatisticsTotal.Result>(
+  //   `getStatisticsTotal`,
+  //   params,
+  // )
+  const response = {
+    data: {
+      work: [
+        {
+          name: '完成率',
+          value: 50,
+          unit: '%',
+          icon: 'chart-02',
+        },
+        {
+          name: '新增工作项',
+          value: 40,
+          unit: '项',
+          icon: 'chart-01',
+        },
+        {
+          name: '已完成工作项',
+          value: 20,
+          unit: '项',
+          icon: 'clock-check',
+        },
+        {
+          name: '工作项存量',
+          value: 200,
+          unit: '项',
+          icon: 'demand',
+        },
+        {
+          name: '存量风险',
+          value: 10,
+          unit: '项',
+          icon: 'warning-02',
+        },
+      ],
+      defect: [
+        {
+          name: '缺陷修复率',
+          value: 60,
+          unit: '%',
+          icon: 'chart-03',
+        },
+        {
+          name: '待修复',
+          value: 20,
+          unit: '项',
+          icon: 'time',
+        },
+        {
+          name: '修复中',
+          value: 20,
+          unit: '项',
+          icon: 'chart-04',
+        },
+        {
+          name: '已完成',
+          value: 60,
+          unit: '项',
+          icon: 'check-circle',
+        },
+        {
+          name: '缺陷存量',
+          value: 120,
+          unit: '项',
+          icon: 'bug',
+        },
+      ],
+      start_time: '2023-04-30',
+      end_time: '2023-05-15',
+    },
+  }
   return response.data
 }
 // 进展对比前半截
@@ -901,4 +944,26 @@ export const historyDefectList = async (
     ],
   }
   return res
+}
+
+// 图表页面
+// 完成率Top10
+export const getCompletionRate = async (
+  params: API.Sprint.GetCompletionRate.Params,
+) => {
+  const response = await http.get<any, API.Sprint.GetCompletionRate.Result>(
+    'getCompletionRate',
+    params,
+  )
+  return response.data
+}
+// 阶段缺陷占比
+export const getDefectRatio = async (
+  params: API.Sprint.GetDefectRatio.Params,
+) => {
+  const response = await http.get<any, API.Sprint.GetDefectRatio.Result>(
+    'getDefectRatio',
+    params,
+  )
+  return response.data
 }

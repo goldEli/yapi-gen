@@ -256,10 +256,8 @@ const urls = {
   getKanbanConfigRemainingStatus: '/b/project/kanban/configs/residueStatus',
   // 完成率Top10
   getCompletionRate: '/b/efficiency/contrast/completion_rate',
-  // 阶段缺陷占比
+  // 阶段缺陷占比图标最后一个
   getDefectRatio: '/b/efficiency/defect_ratio',
-  // 缺陷趋势
-  getBugList: '/b/efficiency/member/bug/list',
   // 工作项和缺陷
   getStatisticsTotal: '/b/efficiency/statistics/total',
   // 对比列表
