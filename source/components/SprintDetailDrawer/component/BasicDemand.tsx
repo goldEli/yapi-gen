@@ -28,10 +28,10 @@ import CommonButton from '@/components/CommonButton'
 import ChangePriorityPopover from '@/components/ChangePriorityPopover'
 import IconFont from '@/components/IconFont'
 import {
-  updateSprintPriority,
-  updateSprintTableParams,
-} from '@/services/sprint'
-import { getSprintInfo } from '@store/sprint/sprint.thunk'
+  updateAffairsPriority,
+  updateAffairsTableParams,
+} from '@/services/affairs'
+import { getAffairsInfo } from '@store/affairs/affairs.thunk'
 
 interface Props {
   detail?: any
@@ -69,7 +69,7 @@ const BasicDemand = (props: Props) => {
   const { userInfo } = useSelector(store => store.user)
   const { projectInfo } = useSelector(store => store.project)
   const [canOperationKeys, setCanOperationKeys] = useState<any>({})
-  const { sprintDetailDrawer } = useSelector(store => store.sprint)
+  const { affairsDetailDrawer } = useSelector(store => store.affairs)
 
   const isCanEdit =
     projectInfo.projectPermissions?.length > 0 &&
@@ -93,10 +93,10 @@ const BasicDemand = (props: Props) => {
         id: props.detail?.id,
         otherParams: { schedule },
       }
-      await updateSprintTableParams(obj)
+      await updateAffairsTableParams(obj)
       props.onUpdate?.()
       dispatch(
-        getSprintInfo({
+        getAffairsInfo({
           projectId: props.detail.projectId,
           sprintId: props.detail?.id,
         }),
@@ -106,7 +106,7 @@ const BasicDemand = (props: Props) => {
 
   const onChangeState = async (item: any) => {
     try {
-      await updateSprintPriority({
+      await updateAffairsPriority({
         sprintId: props.detail.id,
         priorityId: item.priorityId,
         projectId: props.detail.projectId,
@@ -114,7 +114,7 @@ const BasicDemand = (props: Props) => {
       getMessage({ msg: t('common.prioritySuccess'), type: 'success' })
       props.onUpdate?.()
       dispatch(
-        getSprintInfo({
+        getAffairsInfo({
           projectId: props.detail.projectId,
           sprintId: props.detail?.id,
         }),
@@ -242,7 +242,7 @@ const BasicDemand = (props: Props) => {
           defaultText={defaultValues?.defaultText}
           value={defaultValues.valueType || null}
           onUpdate={props.onUpdate}
-          isMineOrHis={sprintDetailDrawer.params?.isMineOrHis}
+          isMineOrHis={affairsDetailDrawer.params?.isMineOrHis}
           isInfoPage={props.isInfoPage}
         >
           {defaultValues.defaultHtml}
@@ -356,7 +356,7 @@ const BasicDemand = (props: Props) => {
         isCustom
         remarks={item?.remarks}
         onUpdate={props.onUpdate}
-        isMineOrHis={sprintDetailDrawer.params?.isMineOrHis}
+        isMineOrHis={affairsDetailDrawer.params?.isMineOrHis}
         isInfoPage={props.isInfoPage}
       >
         <span>

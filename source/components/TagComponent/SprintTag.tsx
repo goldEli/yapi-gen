@@ -16,8 +16,8 @@ import {
   TagItem,
   TagWrap,
 } from './style'
-import { addInfoSprint, deleteInfoSprint } from '@/services/sprint'
-import { getSprintInfo } from '@store/sprint/sprint.thunk'
+import { addInfoAffairs, deleteInfoAffairs } from '@/services/affairs'
+import { getAffairsInfo } from '@store/affairs/affairs.thunk'
 
 interface TagProps {
   tap?(value: any): void
@@ -34,7 +34,7 @@ const TagBox = (props: TagProps) => {
   const dispatch = useDispatch()
   const [t] = useTranslation()
   const { projectInfoValues } = useSelector(store => store.project)
-  const { sprintInfo } = useSelector(store => store.sprint)
+  const { affairsInfo } = useSelector(store => store.affairs)
   const [value, setValue] = useState('')
   const [arr, setArr] = useState<any>([])
   const [searchParams] = useSearchParams()
@@ -91,14 +91,14 @@ const TagBox = (props: TagProps) => {
   const onHasTagAdd = async (item: any) => {
     if (props.canAdd) {
       try {
-        await addInfoSprint({
+        await addInfoAffairs({
           projectId,
-          sprintId: sprintInfo.id,
+          sprintId: affairsInfo.id,
           type: 'tag',
           targetId: [{ name: item.content, color: item.color }],
         })
         getMessage({ msg: t('common.addSuccess'), type: 'success' })
-        dispatch(getSprintInfo({ projectId, sprintId: sprintInfo.id }))
+        dispatch(getAffairsInfo({ projectId, sprintId: affairsInfo.id }))
         props.onChangeIsOpen(false)
       } catch (error) {
         //
@@ -156,7 +156,7 @@ interface Props {
 
 const SprintTag = (props: Props) => {
   const [t] = useTranslation()
-  const { sprintInfo } = useSelector(store => store.sprint)
+  const { affairsInfo } = useSelector(store => store.affairs)
   const [newTag, setNewTag] = useState<any>('')
   const [isChooseColor, setIsChooseColor] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
@@ -198,14 +198,14 @@ const SprintTag = (props: Props) => {
   const onAddInfoDemand = async (value: any) => {
     if (props.canAdd) {
       try {
-        await addInfoSprint({
+        await addInfoAffairs({
           projectId,
-          sprintId: sprintInfo?.id,
+          sprintId: affairsInfo?.id,
           type: 'tag',
           targetId: [{ name: newTag, color: value }],
         })
         getMessage({ msg: t('common.addSuccess'), type: 'success' })
-        dispatch(getSprintInfo({ projectId, sprintId: sprintInfo?.id }))
+        dispatch(getAffairsInfo({ projectId, sprintId: affairsInfo?.id }))
         setNewTag('')
         setIsChooseColor(false)
         setIsClear(false)
@@ -229,14 +229,14 @@ const SprintTag = (props: Props) => {
   const onDeleteInfoDemand = async (item: any) => {
     if (props.canAdd) {
       try {
-        await deleteInfoSprint({
+        await deleteInfoAffairs({
           projectId,
-          sprintId: sprintInfo?.id,
+          sprintId: affairsInfo?.id,
           type: 'tag',
           targetId: item.id,
         })
         getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-        dispatch(getSprintInfo({ projectId, sprintId: sprintInfo?.id }))
+        dispatch(getAffairsInfo({ projectId, sprintId: affairsInfo?.id }))
       } catch (error) {
         //
       }

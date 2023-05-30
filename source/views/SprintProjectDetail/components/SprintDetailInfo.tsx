@@ -21,14 +21,17 @@ import ActivitySprint from './ActivitySprint'
 import CommentFooter from '@/components/CommonComment/CommentFooter'
 import { useDispatch, useSelector } from '@store/index'
 import {
-  addInfoSprint,
-  addSprintComment,
-  deleteInfoSprint,
-} from '@/services/sprint'
+  addInfoAffairs,
+  addAffairsComment,
+  deleteInfoAffairs,
+} from '@/services/affairs'
 import { useSearchParams } from 'react-router-dom'
 import { getIdsForAt, getParamsData, removeNull } from '@/tools'
 import { getMessage } from '@/components/Message'
-import { getSprintCommentList, getSprintInfo } from '@store/sprint/sprint.thunk'
+import {
+  getAffairsCommentList,
+  getAffairsInfo,
+} from '@store/affairs/affairs.thunk'
 import SprintTag from '@/components/TagComponent/SprintTag'
 import { Tabs, TabsProps } from 'antd'
 
@@ -42,13 +45,14 @@ const SprintDetailInfo = () => {
   const editorRef = useRef<EditorRef>(null)
   const commentDom: any = createRef()
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
-  const { sprintInfo } = useSelector(store => store.sprint)
+  const { affairsInfo } = useSelector(store => store.affairs)
   const { projectInfo, projectInfoValues } = useSelector(store => store.project)
   //   当前删除的附件数据
   const [tagList, setTagList] = useState<any>([])
   const [isEditInfo, setIsEditInfo] = useState(false)
   const [tabActive, setTabActive] = useState('sprint-info')
   const [isScroll, setIsScroll] = useState(false)
+  const [info, setInfo] = useState('')
 
   const onBottom = () => {
     const dom: any = LeftDom?.current
@@ -64,25 +68,25 @@ const SprintDetailInfo = () => {
       ext: data.data.files.suffix,
       ctime: data.data.files.time,
     }
-    await addInfoSprint({
+    await addInfoAffairs({
       projectId: id,
       sprintId,
       type: 'attachment',
       targetId: [obj],
     })
-    dispatch(getSprintInfo({ projectId: id, sprintId }))
+    dispatch(getAffairsInfo({ projectId: id, sprintId }))
     onBottom()
   }
 
   //   确认删除附件事件
   const onDeleteConfirm = async (targetId: number) => {
-    await deleteInfoSprint({
+    await deleteInfoAffairs({
       projectId: id,
       sprintId,
       type: 'attachment',
       targetId,
     })
-    dispatch(getSprintInfo({ projectId: id, sprintId }))
+    dispatch(getAffairsInfo({ projectId: id, sprintId }))
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
     // onBottom()
   }
@@ -101,7 +105,7 @@ const SprintDetailInfo = () => {
 
   // 提交评论
   const onConfirmComment = async (value: { info: string }) => {
-    await addSprintComment({
+    await addAffairsComment({
       projectId: id,
       sprintId,
       content: value.info,
@@ -109,7 +113,7 @@ const SprintDetailInfo = () => {
     })
     getMessage({ type: 'success', msg: '评论成功' })
     dispatch(
-      getSprintCommentList({
+      getAffairsCommentList({
         projectId: id,
         sprintId,
         page: 1,
@@ -175,15 +179,21 @@ const SprintDetailInfo = () => {
     setTabActive(arr[arr.length - 1])
   }
 
+  // 富文本回车
+  const onBlurEditor = () => {
+    console.log(info, '富文本')
+  }
+
   useEffect(() => {
     setTagList(
-      sprintInfo?.tag?.map((i: any) => ({
+      affairsInfo?.tag?.map((i: any) => ({
         id: i.id,
         color: i.tag?.color,
         name: i.tag?.content,
       })),
     )
-  }, [sprintInfo])
+    setInfo(affairsInfo.info || '')
+  }, [affairsInfo])
 
   useEffect(() => {
     window?.addEventListener('scroll', handleScroll, true)
@@ -212,18 +222,20 @@ const SprintDetailInfo = () => {
             }}
           >
             <Label>描述</Label>
-            {sprintInfo?.info ? (
+            {info ? (
               <Editor
-                value={sprintInfo?.info}
+                value={info}
                 getSuggestions={() => []}
                 readonly={!isEditInfo}
                 ref={editorRef}
-                // onReadonlyClick={() => {
-                //   setIsEditInfo(true)
-                //   setTimeout(() => {
-                //     editorRef.current?.focus()
-                //   }, 0)
-                // }}
+                onReadonlyClick={() => {
+                  setIsEditInfo(true)
+                  setTimeout(() => {
+                    editorRef.current?.focus()
+                  }, 0)
+                }}
+                onChange={(value: string) => setInfo(value)}
+                onBlur={onBlurEditor}
               />
             ) : (
               <TextWrap>--</TextWrap>
@@ -237,7 +249,7 @@ const SprintDetailInfo = () => {
               ).length > 0 && (
                 <UploadAttach
                   onBottom={onBottom}
-                  defaultList={sprintInfo?.attachment?.map((i: any) => ({
+                  defaultList={affairsInfo?.attachment?.map((i: any) => ({
                     url: i.attachment.path,
                     id: i.id,
                     size: i.attachment.size,

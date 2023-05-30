@@ -22,13 +22,13 @@ import CommonButton from '@/components/CommonButton'
 import CommonModal from '@/components/CommonModal'
 import CommonImport from '@/components/CommonImport'
 import {
-  getImportDownloadSprintModel,
-  getImportSprintExcel,
-  getImportSprintExcelUpdate,
-  getExportSprintFields,
-  getLoadSprintListFields,
-  getExportSprintExcel,
-} from '@/services/sprint'
+  getImportDownloadAffairsModel,
+  getImportAffairsExcel,
+  getImportAffairsExcelUpdate,
+  getExportAffairsFields,
+  getLoadAffairsListFields,
+  getExportAffairsExcel,
+} from '@/services/affairs'
 import CommonExport from '@/components/CommonExport'
 
 const StickyWrap = styled.div({
@@ -335,13 +335,13 @@ const Operation = (props: Props) => {
         <CommonImport
           templateTitle={t('project.importChoose')}
           interfaces={{
-            getImportDownloadModel: getImportDownloadSprintModel,
-            getImportExcel: getImportSprintExcel,
-            getImportExcelUpdate: getImportSprintExcelUpdate,
+            getImportDownloadModel: getImportDownloadAffairsModel,
+            getImportExcel: getImportAffairsExcel,
+            getImportExcelUpdate: getImportAffairsExcelUpdate,
           }}
           templateInterfaces={{
-            getExportSprintFields,
-            getLoadSprintListFields,
+            getExportAffairsFields,
+            getLoadAffairsListFields,
           }}
           stepText={t('common.uploadTransaction')}
           tips={{
@@ -374,12 +374,15 @@ const Operation = (props: Props) => {
       </CommonModal>
 
       <CommonExport
-        interfaces={{ getExportSprintExcel }}
+        interfaces={{ getExportAffairsExcel }}
         isShowExport={isShowExport}
         onClose={setIsShowExport}
         searchGroups={searchGroups}
         otherParams={props.otherParams}
-        templateInterfaces={{ getExportSprintFields, getLoadSprintListFields }}
+        templateInterfaces={{
+          getExportAffairsFields,
+          getLoadAffairsListFields,
+        }}
       />
 
       <OperationWrap>

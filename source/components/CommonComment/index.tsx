@@ -32,7 +32,7 @@ const imgs = ['png', 'webp', 'jpg', 'jpeg', 'png', 'gif']
 
 interface CommonCommentProps {
   data: {
-    list: Model.Sprint.CommentListInfo[]
+    list: Model.Affairs.CommentListInfo[]
   }
   onDeleteConfirm(id: number): void
 }
