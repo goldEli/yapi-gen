@@ -16,6 +16,7 @@ import {
   Title,
   TitleBtn,
 } from './styled'
+import useCloseMap from '../hooks/useCloseMap'
 interface IssuesGroupProps {
   issuesGroup: Model.KanBan.Group
 }
@@ -23,6 +24,7 @@ interface IssuesGroupProps {
 const IssuesGroup: React.FC<IssuesGroupProps> = props => {
   const { issuesGroup } = props
   const { AddUserModalElement, open } = useAddUserModal()
+  const { closeMap, onChange } = useCloseMap()
 
   const text = useMemo(() => {
     const storiesNum =
@@ -32,12 +34,20 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
       }, 0) ?? 0
     return `共计${issuesGroup?.users?.length ?? 0}人，${storiesNum}个事务`
   }, [issuesGroup])
+
   const dispatch = useDispatch()
+  const hidden = !!closeMap?.get(issuesGroup.id)
+  console.log({ hidden }, issuesGroup.id)
 
   const titleArea = (
     <GroupTitleArea>
-      <TitleBtn>
-        <UpDownBtn isOpen={false} />
+      <TitleBtn
+        onClick={e => {
+          e.stopPropagation()
+          onChange(issuesGroup.id)
+        }}
+      >
+        <UpDownBtn isOpen={hidden} />
         <Title>{issuesGroup.name}</Title>
       </TitleBtn>
       <div
@@ -91,7 +101,7 @@ const IssuesGroup: React.FC<IssuesGroupProps> = props => {
   return (
     <IssuesGroupBox>
       {titleArea}
-      <DropAreaList>
+      <DropAreaList hidden={hidden}>
         {issuesGroup?.columns?.map(column => {
           return (
             <Issues key={column.id} issues={column} groupId={issuesGroup.id} />

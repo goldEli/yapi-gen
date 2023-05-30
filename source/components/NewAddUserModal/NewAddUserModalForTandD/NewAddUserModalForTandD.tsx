@@ -845,7 +845,6 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
       return isAll
     }
   }
-  console.log(isAllChoose, isSomeChoose)
 
   return (
     <ModalStyle
