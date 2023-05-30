@@ -124,23 +124,21 @@ const ProjectInfo = () => {
   asyncSetTtile(`${t('title.a1')}【${projectInfo.name}】`)
   localStorage.setItem('memberId', projectInfo.id)
   const dispatch = useDispatch()
-  const [value, setValue] = useState<number[]>([])
   return (
     <Wrap>
-      <div style={{ width: '600px' }}>
-        <CategoryDropdown
+      <div style={{ width: '300px' }}>
+        {/* <CategoryDropdown
           onClearCallback={() => {
-            setValue([])
+            setValue('')
           }}
           value={value}
           onChangeCallBack={(data: any) => {
-            const ids = data.map((item: any) => item.id)
-            console.log('ids', data)
-            setValue(ids)
+            console.log(data)
+            // const ids = data.map((item: any) => item.id)
+            setValue(data.id)
           }}
           projectId={605}
-          mode="multiple"
-        ></CategoryDropdown>
+        ></CategoryDropdown> */}
         {/* <LongStoryDropdown></LongStoryDropdown> */}
       </div>
       <InfoLeft>
