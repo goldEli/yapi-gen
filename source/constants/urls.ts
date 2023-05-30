@@ -276,22 +276,26 @@ const urls = {
   getKanbanConfigRemainingStatus: '/b/project/kanban/configs/residueStatus',
   // 完成率Top10
   getCompletionRate: '/b/efficiency/contrast/completion_rate',
-  // 阶段缺陷占比
+  // 新增工作排行榜图标第一个
+  contrastNewWork: '/b/efficiency/contrast/new_work',
+  // 阶段缺陷占比图标最后一个
   getDefectRatio: '/b/efficiency/defect_ratio',
-  // 缺陷趋势
-  getBugList: '/b/efficiency/member/bug/list',
   // 工作项和缺陷
   getStatisticsTotal: '/b/efficiency/statistics/total',
   // 对比列表
   workContrastList: '/b/efficiency/member/work_contrast/list',
   // 缺陷分析列表
   memberBugList: '/b/efficiency/member/bug/list',
+  // 2，3，5，图表汇总数
+  statisticsOther: '/b/efficiency/statistics/other',
   // 进展对比后半截弹窗
   efficiencyMemberWorkList: '/b/efficiency/member/work_list',
   // 缺陷分析后半截
   efficiencyMemberDefectList: '/b/efficiency/member/defect_list',
   // 修改首页配置
   updateHomeSetting: '/b/project/change/defaultHomeMenu',
+  // 视图列表
+  viewsList: '/b/story/views/list',
   /**
    * 看板
    */
