@@ -806,3 +806,15 @@ export const getAffairsSelectRelationRecent = async (
   })
   return response.data
 }
+
+// 创建子事务-快捷
+export const addQuickAffairs: any = async (
+  params: API.Affairs.AddQuickAffair.Params,
+) => {
+  await http.post<any>('addAffairs', {
+    project_id: Number(params.projectId),
+    name: params.name,
+    category_id: params?.category_id,
+    parent_id: params?.parent_id || 0,
+  })
+}

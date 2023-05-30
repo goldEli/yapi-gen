@@ -1,4 +1,12 @@
 declare namespace API.Affairs {
+  namespace AddQuickAffair {
+    type Params = {
+      name: string
+      category_id: number
+      parent_id: number
+      projectId: number
+    }
+  }
   namespace AffairsRelationDragSort {
     type Params = {
       projectId: number

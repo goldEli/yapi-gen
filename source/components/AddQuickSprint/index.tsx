@@ -8,6 +8,8 @@ import CustomSelect from '../CustomSelect'
 import { useTranslation } from 'react-i18next'
 import MoreOptions from '../MoreOptions'
 import styled from '@emotion/styled'
+import { addQuickAffairs } from '@/services/affairs'
+import { getMessage } from '../Message'
 
 const ParentWrap = styled.div`
   height: 24px;
@@ -31,7 +33,9 @@ const ParentWrap = styled.div`
 const AddQuickSprint = () => {
   const [t] = useTranslation()
   const dispatch = useDispatch()
-  const { addQuickSprintModal } = useSelector(store => store.project)
+  const { addQuickSprintModal, projectInfo } = useSelector(
+    store => store.project,
+  )
   const { visible, params } = addQuickSprintModal
   const [form] = Form.useForm()
 
@@ -62,7 +66,14 @@ const AddQuickSprint = () => {
   //   创建子事务
   const onConfirm = async () => {
     await form.validateFields()
-    // console.log(form.getFieldsValue())
+    await addQuickAffairs({
+      ...form.getFieldsValue(),
+      projectId: projectInfo.id,
+      parent_id: params?.parentId,
+    })
+    getMessage({ type: 'success', msg: '创建成功' })
+    onClose()
+    // 需要更新详情及列表
   }
 
   return (
@@ -82,7 +93,7 @@ const AddQuickSprint = () => {
         </Form.Item>
         <Form.Item
           label="类别"
-          name="category"
+          name="category_id"
           rules={[{ required: true, message: '' }]}
         >
           <CustomSelect

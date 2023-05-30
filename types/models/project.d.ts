@@ -62,6 +62,7 @@ declare namespace Model.Project {
     name?: string
     icon?: string
     parentName?: string
+    parentId?: number
   }
   interface Category {
     active?: boolean
