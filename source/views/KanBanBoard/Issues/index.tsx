@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import styled from '@emotion/styled'
 import { Droppable } from 'react-beautiful-dnd'
 import IssueCard from '../IssueCard'
 import { handleId } from '../utils'
+import DropCardList from '../DropCardList'
 
 interface IssuesProps {
   issues: Model.KanBan.Column
@@ -31,8 +32,15 @@ const DropStatusArea = styled.div`
 `
 const Issues: React.FC<IssuesProps> = props => {
   const { issues, groupId } = props
+  const droppableId = useMemo(() => {
+    return handleId(groupId, issues.id)
+  }, [groupId, issues.id])
   return (
-    <Droppable key={issues.id} droppableId={handleId(groupId, issues.id)}>
+    <Droppable
+      key={droppableId}
+      droppableId={droppableId}
+      // droppableId={'dropCardId'}
+    >
       {(provided, snapshot) => {
         return (
           <DropArea ref={provided.innerRef} {...provided.droppableProps}>
@@ -47,6 +55,7 @@ const Issues: React.FC<IssuesProps> = props => {
                 index={index}
               />
             ))}
+            <DropCardList columnId={issues.id} groupId={groupId} />
             {provided.placeholder}
           </DropArea>
         )

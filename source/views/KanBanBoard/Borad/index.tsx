@@ -19,33 +19,15 @@ const Container = styled.div`
 `
 
 const Board = () => {
-  const { sortByGroupOptions, kanbanConfig } = useSelector(
-    store => store.kanBan,
-  )
+  const { kanbanConfig } = useSelector(store => store.kanBan)
 
   const { ControlScrollPlane, containerRef } = useControlScrollPlane(
     kanbanConfig?.columns?.length ?? 0,
   )
 
-  const ele = React.useMemo(() => {
-    const type = sortByGroupOptions?.find(item => item.check)?.key
-    switch (type) {
-      case 'none':
-        return <KanBanSortByPerson />
-      case 'users':
-        return <KanBanSortByPerson />
-      case 'category':
-        return <KanBanSortByPerson />
-      case 'priority':
-        return <KanBanSortByPerson />
-
-      default:
-        return <></>
-    }
-  }, sortByGroupOptions)
   return (
     <Container ref={containerRef}>
-      {ele}
+      <KanBanSortByPerson />
       <ControlScrollPlane />
     </Container>
   )
