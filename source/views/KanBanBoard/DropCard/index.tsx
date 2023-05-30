@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import StateTag from '@/components/StateTag'
@@ -35,20 +35,48 @@ const getState = (text: any) => {
 }
 
 const DropCard: React.FC<DropCardProps> = props => {
+  const { source, target } = props
+  const droppableId = 'inner-block-' + source?.id + '-' + target?.id
+  // return (
+  //   <Droppable
+  //     key={droppableId}
+  //     droppableId={droppableId}
+  //     type="drop-status"
+  //     // droppableId={'dropCardId'}
+  //   >
+  //     {(provided, snapshot) => {
+  //       return (
+  //         <DropCardBox ref={provided.innerRef} {...provided.droppableProps}>
+  //           <StateTag
+  //             state={getState(props.source)}
+  //             name={props.source?.status_name}
+  //           />
+  //           <IconFont type="flow" />
+  //           <StateTag
+  //             state={getState(props.target)}
+  //             name={props.target?.status_name}
+  //           />
+  //         </DropCardBox>
+  //       )
+  //     }}
+  //   </Droppable>
+  // )
+  const onMouseUp = useCallback(
+    (e: MouseEvent) => {
+      console.log(props.source?.status_name, props.target?.status_name)
+    },
+    [props.source, props.target],
+  )
   return (
-    <DropCardBox>
-      {/* <StateTag
-        name={text.status.content}
-        state={
-          text?.is_start === 1 && text?.is_end === 2
-            ? 1
-            : text?.is_end === 1 && text?.is_start === 2
-            ? 2
-            : text?.is_start === 2 && text?.is_end === 2
-            ? 3
-            : 0
-        }
-      /> */}
+    <DropCardBox
+      onDrop={e => {
+        console.log(e)
+      }}
+      onMouseEnter={e => {
+        window.removeEventListener('mouseup', onMouseUp)
+        window.addEventListener('mouseup', onMouseUp)
+      }}
+    >
       <StateTag
         state={getState(props.source)}
         name={props.source?.status_name}
