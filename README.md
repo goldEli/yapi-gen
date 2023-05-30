@@ -270,3 +270,20 @@ D:\Project\敏捷\scrum\source\components\NewAddUserModal\NewAddUserModalForTand
   onClose={() => setIsVisible(false)}
 />
 ```
+
+也可以调用 hooks
+
+```js
+const { AddUserModalElement, open } = useAddUserModal()
+
+ open({
+  async onConfirm(data) {
+    if (error) {
+      return Promise.reject()
+    }
+    return Promise.resolve()
+  },
+})
+
+return <>{AddUserModalElement}<>
+```
