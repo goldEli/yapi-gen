@@ -263,7 +263,7 @@ export const getKanbanConfigList = createAsyncThunk(
   },
 )
 
-// 属性看板
+// 刷新看板
 export const onRefreshKanBan = () => async (dispatch: AppDispatch) => {
   dispatch(getKanbanByGroup())
 }
