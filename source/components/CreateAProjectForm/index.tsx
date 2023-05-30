@@ -313,7 +313,7 @@ const CreateAProjectForm = () => {
     setTimeout(() => {
       inputRefDom.current?.focus()
     }, 100)
-  }, [createVisible])
+  }, [createVisible, multipleSelectionItems])
   const onChangeStep = (val: number) => {
     if (step === val) {
       return
@@ -327,7 +327,7 @@ const CreateAProjectForm = () => {
     onChangeStep(2)
   }
   const chooseModel = (type: any) => {
-    console.log(type)
+    console.log('组织')
 
     setModel(type)
     // setMultipleSelectionItems(undefined)
@@ -339,6 +339,9 @@ const CreateAProjectForm = () => {
     setModel(undefined)
   }
   console.log(multipleSelectionItems)
+  useEffect(() => {
+    setMultipleSelectionItems([])
+  }, [model])
 
   return (
     <CommonModal2
