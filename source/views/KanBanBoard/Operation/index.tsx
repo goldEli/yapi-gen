@@ -315,7 +315,9 @@ const Operation = (props: Props) => {
   //   setIsVisibleMore(false)
   // }
   useEffect(() => {
-    dispatch(onTapSearchChoose({}))
+    return () => {
+      dispatch(onTapSearchChoose({}))
+    }
   }, [])
 
   return (

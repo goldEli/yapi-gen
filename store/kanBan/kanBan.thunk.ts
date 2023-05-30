@@ -226,7 +226,9 @@ export const updateView =
   }
 
 export const onFilter = () => async (dispatch: AppDispatch) => {
-  dispatch(getKanbanByGroup())
+  setTimeout(() => {
+    dispatch(getKanbanByGroup())
+  })
 }
 
 // 看板配置列表
@@ -262,7 +264,9 @@ export const getKanbanConfigList = createAsyncThunk(
 )
 
 // 属性看板
-export const onRefreshKanBan = () => async (dispatch: AppDispatch) => {}
+export const onRefreshKanBan = () => async (dispatch: AppDispatch) => {
+  dispatch(getKanbanByGroup())
+}
 
 export const openSaveAsViewModel =
   (id?: Model.KanBan.ViewItem['id']) => async (dispatch: AppDispatch) => {
