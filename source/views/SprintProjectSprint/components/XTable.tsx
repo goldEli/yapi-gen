@@ -4,13 +4,17 @@ import { Droppable } from 'react-beautiful-dnd'
 import styled from '@emotion/styled'
 import ResizeTable from './ResizeTable'
 import NoData from '@/components/NoData'
-import { Collapse } from 'antd'
+import { Checkbox, Collapse } from 'antd'
 import IconFont from '@/components/IconFont'
 import CommonButton from '@/components/CommonButton'
 import PaginationBox from '@/components/TablePagination'
 import CreateSprintModal from './CreateSprintModal'
 import { useSearchParams } from 'react-router-dom'
 import { getParamsData } from '@/tools'
+import DeleteConfirm from '@/components/DeleteConfirm'
+import { getMessage } from '@/components/Message'
+import { deleteAffairs } from '@/services/affairs'
+import { useTranslation } from 'react-i18next'
 const { Panel } = Collapse
 
 interface XTableProps {
@@ -118,6 +122,7 @@ const PanelWrap = styled(Panel)`
 const XTable: React.FC<XTableProps> = props => {
   const { data, list } = props
   const [pageObj, setPageObj] = useState<any>({})
+  const [deleteItem, setDeleteItem] = useState<any>({})
   const [sprintModal, setSprintModal] = useState<{
     visible: boolean
     type: any
@@ -128,6 +133,27 @@ const XTable: React.FC<XTableProps> = props => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
+  const [isVisible, setIsVisible] = useState(false)
+  const [t]: any = useTranslation()
+  const [isDeleteCheck, setIsDeleteCheck] = useState(false)
+
+  // 删除事务
+  const onDeleteConfirm = async () => {
+    await deleteAffairs({
+      projectId,
+      id: deleteItem.id,
+      isDeleteChild: isDeleteCheck ? 1 : 2,
+    })
+    getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
+    setIsVisible(false)
+    setDeleteItem({})
+    // todo 更新列表
+  }
+
+  // 删除冲刺
+  const delSprintItem = async (id: number) => {
+    // const result = await delSprintItem()
+  }
 
   return (
     <>
@@ -192,6 +218,9 @@ const XTable: React.FC<XTableProps> = props => {
                               type="edit"
                             />
                             <IconFont
+                              onClick={() => {
+                                delSprintItem(data.id)
+                              }}
                               style={{
                                 fontSize: 16,
                                 color: 'var(--neutral-n3)',
@@ -284,6 +313,19 @@ const XTable: React.FC<XTableProps> = props => {
         editId={data.id}
         projectId={projectId}
       />
+      <DeleteConfirm
+        title={`删除【${deleteItem?.storyPrefixKey}】？`}
+        isVisible={isVisible}
+        onChangeVisible={() => setIsVisible(!isVisible)}
+        onConfirm={onDeleteConfirm}
+      >
+        <div style={{ marginBottom: 9 }}>
+          你将永久删除该事务，删除后将不可恢复请谨慎操作!
+        </div>
+        <Checkbox onChange={e => setIsDeleteCheck(e.target.checked)}>
+          同时删除该事务下所有子事务
+        </Checkbox>
+      </DeleteConfirm>
     </>
   )
 }
