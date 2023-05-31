@@ -6,10 +6,10 @@ import ChangeRecord from './ChangeRecord'
 import Circulation from './Circulation'
 import CommonComment from '@/components/CommonComment'
 import { useSearchParams } from 'react-router-dom'
-import { getParamsData } from '@/tools'
+import { getIdsForAt, getParamsData } from '@/tools'
 import { useDispatch, useSelector } from '@store/index'
 import { getAffairsCommentList } from '@store/affairs/affairs.thunk'
-import { deleteAffairsComment } from '@/services/affairs'
+import { deleteAffairsComment, updateAffairsComment } from '@/services/affairs'
 import { getMessage } from '@/components/Message'
 
 const ActivitySprint = () => {
@@ -34,9 +34,23 @@ const ActivitySprint = () => {
     )
   }
 
+  // 删除评论
   const onDeleteCommentConfirm = async (commentId: number) => {
     await deleteAffairsComment({ projectId: id, id: commentId })
     getMessage({ type: 'success', msg: '删除成功' })
+    getList()
+  }
+
+  // 编辑评论
+  const onEditComment = async (value: string, id: number) => {
+    await updateAffairsComment({
+      projectId: id,
+      id,
+      storyId: sprintId,
+      content: value,
+      ids: getIdsForAt(value),
+    })
+    getMessage({ type: 'success', msg: '编辑成功' })
     getList()
   }
 
@@ -55,6 +69,7 @@ const ActivitySprint = () => {
         <CommonComment
           data={affairsCommentList}
           onDeleteConfirm={onDeleteCommentConfirm}
+          onEditComment={onEditComment}
         />
       ),
     },

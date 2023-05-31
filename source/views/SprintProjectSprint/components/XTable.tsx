@@ -4,7 +4,7 @@ import { Droppable } from 'react-beautiful-dnd'
 import styled from '@emotion/styled'
 import ResizeTable from './ResizeTable'
 import NoData from '@/components/NoData'
-import { Checkbox, Collapse } from 'antd'
+import { Checkbox, Collapse, Tooltip } from 'antd'
 import IconFont from '@/components/IconFont'
 import CommonButton from '@/components/CommonButton'
 import PaginationBox from '@/components/TablePagination'
@@ -15,6 +15,11 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { getMessage } from '@/components/Message'
 import { deleteAffairs } from '@/services/affairs'
 import { useTranslation } from 'react-i18next'
+import { delSprintItem } from '@/services/sprint'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import { useDispatch } from '@store/index'
+import { setAddWorkItemModal } from '@store/project'
+import CompleteSprintModal from './CompleteSprintModal'
 const { Panel } = Collapse
 
 interface XTableProps {
@@ -105,6 +110,7 @@ const PanelHeader = styled.div`
   }
 `
 const CreateTransactionButton = styled.div`
+  width: 66px;
   font-size: 14px;
   font-family: MiSans-Regular, MiSans;
   font-weight: 400;
@@ -136,6 +142,9 @@ const XTable: React.FC<XTableProps> = props => {
   const [isVisible, setIsVisible] = useState(false)
   const [t]: any = useTranslation()
   const [isDeleteCheck, setIsDeleteCheck] = useState(false)
+  const { DeleteConfirmModal, open } = useDeleteConfirmModal()
+  const dispatch = useDispatch()
+  const [completeVisible, setCompleteVisible] = useState(false)
 
   // 删除事务
   const onDeleteConfirm = async () => {
@@ -151,8 +160,64 @@ const XTable: React.FC<XTableProps> = props => {
   }
 
   // 删除冲刺
-  const delSprintItem = async (id: number) => {
-    // const result = await delSprintItem()
+  const deleteSprint = async (id: number) => {
+    try {
+      const result = await delSprintItem({ id })
+      console.log(result, 'result')
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const getSprintButton = (status: number) => {
+    switch (status) {
+      case 4:
+        return (
+          <CommonButton
+            type="light"
+            isDisable={data?.stories?.length === 0}
+            onClick={() => {
+              setSprintModal({
+                visible: true,
+                type: 'start',
+              })
+            }}
+          >
+            开始冲刺
+          </CommonButton>
+        )
+      case 1:
+        return data?.stories?.length === 0 ? (
+          <Tooltip
+            placement="top"
+            title="此冲刺不含任何事务"
+            getPopupContainer={node => node}
+          >
+            <div>
+              <CommonButton
+                type="light"
+                isDisable
+                onClick={() => {
+                  setCompleteVisible(true)
+                }}
+              >
+                完成冲刺
+              </CommonButton>
+            </div>
+          </Tooltip>
+        ) : (
+          <CommonButton
+            type="light"
+            onClick={() => {
+              setCompleteVisible(true)
+            }}
+          >
+            完成冲刺
+          </CommonButton>
+        )
+      default:
+        return null
+    }
   }
 
   return (
@@ -219,7 +284,11 @@ const XTable: React.FC<XTableProps> = props => {
                             />
                             <IconFont
                               onClick={() => {
-                                delSprintItem(data.id)
+                                open({
+                                  title: '删除冲刺',
+                                  text: `确认要删除【${data.name}】的冲刺吗？`,
+                                  onConfirm: () => deleteSprint(data.id),
+                                })
                               }}
                               style={{
                                 fontSize: 16,
@@ -243,24 +312,22 @@ const XTable: React.FC<XTableProps> = props => {
                           新建冲刺
                         </CommonButton>
                       ) : (
-                        <CommonButton
-                          type="light"
-                          isDisable={data?.stories?.length === 0}
-                          onClick={() => {
-                            setSprintModal({
-                              visible: true,
-                              type: 'start',
-                            })
-                          }}
-                        >
-                          开始冲刺
-                        </CommonButton>
+                        getSprintButton(data.status)
                       )}
                     </PanelHeader>
                   }
                   key="1"
                 >
-                  <CreateTransactionButton>
+                  <CreateTransactionButton
+                    onClick={() => {
+                      // todo 创建新事物
+                      dispatch(
+                        setAddWorkItemModal({
+                          visible: true,
+                        }),
+                      )
+                    }}
+                  >
                     <IconFont
                       style={{
                         fontSize: 16,
@@ -288,9 +355,8 @@ const XTable: React.FC<XTableProps> = props => {
                     components={{ body: { row: SortableItem } }}
                   />
                   <PaginationBox
-                    total={10}
-                    pageSize={pageObj.pagesize}
-                    currentPage={pageObj.page}
+                    total={list?.length}
+                    pageSize={10}
                     onChange={() => {}}
                   />
 
@@ -313,6 +379,14 @@ const XTable: React.FC<XTableProps> = props => {
         editId={data.id}
         projectId={projectId}
       />
+      <CompleteSprintModal
+        id={data.id}
+        projectId={projectId}
+        visible={completeVisible}
+        onClose={() => {
+          setCompleteVisible(false)
+        }}
+      />
       <DeleteConfirm
         title={`删除【${deleteItem?.storyPrefixKey}】？`}
         isVisible={isVisible}
@@ -326,6 +400,7 @@ const XTable: React.FC<XTableProps> = props => {
           同时删除该事务下所有子事务
         </Checkbox>
       </DeleteConfirm>
+      <DeleteConfirmModal />
     </>
   )
 }

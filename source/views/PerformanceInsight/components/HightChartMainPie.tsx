@@ -7,19 +7,19 @@ import {
 import IconFont from '@/components/IconFont'
 import { Dropdown, Menu, Space } from 'antd'
 import Highcharts from 'highcharts'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Col, HightChartsWrap, Time, TitleCss } from '../Header/Style'
 import { HighchartsReactWrap, RightRow } from './style'
 interface PropsMoreDropdown {
-  data: Array<{ label: string; key: number }>
-  onClickMenu: (value: { label: string; key: number }) => void
-  defaultValue: { label: string; key: number }
+  data: Array<{ label: string; key: string }>
+  onClickMenu: (value: { label: string; key: string }) => void
+  defaultValue: { label: string; key: string }
 }
 const MoreDropdown = (props: PropsMoreDropdown) => {
   const [isVisible, setIsVisible] = useState(false)
   const menu = () => {
     const menuItems: any = []
-    props.data?.forEach((i: { label: string; key: number }, idx: number) => {
+    props.data?.forEach((i: { label: string; key: string }, idx: number) => {
       menuItems.push({
         key: idx,
         label: (
@@ -76,8 +76,11 @@ const HightChartMainPie = (props: {
   height: number
   titleType: boolean
   title: string
-  time?: string
+  chart: Models.Efficiency.ChartPie | undefined
+  onChange?: (item: { key: string; label: string }) => void
 }) => {
+  const [tips, setTips] = useState('')
+
   const options: any = {
     credits: {
       enabled: false,
@@ -85,7 +88,7 @@ const HightChartMainPie = (props: {
     },
     title: {
       floating: true,
-      text: props.titleType ? '' : '13 项',
+      text: props.titleType ? '' : `${props.chart?.total}项`,
       align: 'center',
       verticalAlign: 'middle',
       y: 30,
@@ -101,7 +104,6 @@ const HightChartMainPie = (props: {
       },
     },
     legend: {
-      data: ['私有云', '数据中心', '造价通', '供应商', '造价通1', '供应商1'],
       layout: 'vertical',
       align: 'right',
       verticalAlign: 'center',
@@ -131,10 +133,12 @@ const HightChartMainPie = (props: {
       shadow: true,
       borderColor: '#fff',
       borderRadius: 6,
-      headerFormat:
-        '<div style="background:#fff;minWidth:108;height:76px;padding:16px"><div style="background:#fff;font-size:12px;margin-bottom:4px;font-family: SiYuanMedium;">{point.key}</div><div>',
-      pointFormat:
-        '<span style="display:inline-block;width:8px;height:8px;borderRadius:50%;background:{point.color}"></span><span style="marginLeft:8px;fontSize:12px,color:#646566">工作项：{point.y}项</span></div>',
+      headerFormat: props.titleType
+        ? ''
+        : '<div style="background:#fff;minWidth:108;height:76px;padding:16px"><div style="background:#fff;font-size:12px;margin-bottom:4px;font-family: SiYuanMedium;">{point.key}</div><div>',
+      pointFormat: props.titleType
+        ? '<span style="display:inline-block;width:8px;height:8px;borderRadius:50%;background:{point.color}"></span><span style="marginLeft:8px;fontSize:12px,color:#646566">{point.name}:{point.y}</span></div>'
+        : '<span style="display:inline-block;width:8px;height:8px;borderRadius:50%;background:{point.color}"></span><span style="marginLeft:8px;fontSize:12px,color:#646566">工作项：{point.y}</span></div>',
       footerFormat: '</div>',
       shared: true,
       useHTML: true,
@@ -149,20 +153,18 @@ const HightChartMainPie = (props: {
         name: 'Browser share',
         innerSize: '80%',
         center: ['35%', '55%'],
-        data: [
-          ['私有云', 25],
-          ['数据中心', 60],
-          ['造价通', 30],
-        ],
+        data: props.chart?.seriesData,
       },
     ],
   }
   const [defaultValue, setDefaultValue] = useState<{
     label: string
-    key: number
-  }>({ label: '按优先级', key: 1 })
-  const onClickMenu = async (item: { label: string; key: number }) => {
+    key: string
+  }>({ label: '按优先级', key: 'priority' })
+  // 切换状态
+  const onClickMenu = async (item: { label: string; key: string }) => {
     setDefaultValue(item)
+    props.onChange?.(item)
   }
   return (
     <div style={{ width: '49%' }}>
@@ -170,18 +172,18 @@ const HightChartMainPie = (props: {
         <RightRow>
           <Space size={12}>
             <TitleCss>{props.title}</TitleCss>
-            <Time>{props.time}</Time>
+            <Time>{props.chart?.time}</Time>
           </Space>
         </RightRow>
         {props.titleType && (
           <MoreDropdown
-            onClickMenu={(value: { label: string; key: number }) =>
+            onClickMenu={(value: { label: string; key: string }) =>
               onClickMenu(value)
             }
             data={[
-              { label: '按严重程度', key: 0 },
-              { label: '按优先级', key: 1 },
-              { label: '按状态', key: 2 },
+              { label: '按严重程度', key: 'severity' },
+              { label: '按优先级', key: 'priority' },
+              { label: '按状态', key: 'status' },
             ]}
             defaultValue={defaultValue}
           />

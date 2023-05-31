@@ -18,7 +18,7 @@ export const getAffairsList = createAsyncThunk(
 export const saveAffairsDetailDrawer =
   (params: any) => async (dispatch: AppDispatch) => {
     dispatch(setAffairsDetailDrawer(params))
-    dispatch(setListActiveId(params?.id ?? 0))
+    dispatch(setListActiveId(params.params?.id ?? 0))
   }
 
 // 事务详情

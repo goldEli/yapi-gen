@@ -90,7 +90,9 @@ export const updateSprintInfo = async (
 }
 
 // 删除冲刺
-export const delSprintItem = async (params: API.Sprint.DelSprintItem.id) => {
+export const delSprintItem = async (
+  params: API.Sprint.DelSprintItem.Params,
+) => {
   const response = await http.delete('delSprintItem', params)
   return response
 }
@@ -102,5 +104,12 @@ export const getLongStroyList = async (
     'getLongStoryList',
     params,
   )
+  return response
+}
+// 完成冲刺
+export const completeSprint = async (
+  params: API.Sprint.CompleteSprint.Params,
+) => {
+  const response = await http.put('completeSprint', params)
   return response
 }

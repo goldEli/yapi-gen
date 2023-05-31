@@ -40,11 +40,12 @@ declare namespace API.Sprint {
   }
   namespace GetCompletionRate {
     type Params = {
-      project_id: string
-      user_ids: Array<number>
-      start_time: string
-      end_time: string
-      sort: string
+      project_ids?: string
+      iterate_ids?: string
+      user_ids?: string
+      start_time?: string
+      end_time?: string
+      sort?: string
     }
     type Result = Array<{
       user_name: string
@@ -54,11 +55,14 @@ declare namespace API.Sprint {
   }
   namespace GetDefectRatio {
     type Params = {
-      project_ids: Array<number>
-      user_ids: Array<number>
-      start_time: string
-      end_time: string
-      iterate_ids: Array<number>
+      project_ids?: string
+      user_ids?: string
+      iterate_ids?: string
+      start_time?: string
+      end_time?: string
+      iterate_ids?: string
+      sort?: string
+      dimension?: string
     }
     type Result = Array<{ name: string; number: number; ratio: string }>
   }
@@ -72,12 +76,31 @@ declare namespace API.Sprint {
     type Result = Model.Sprint.ListItem[]
   }
   namespace GetStatisticsTotal {
+    type Params = {
+      project_ids: Array<number>
+      iterate_ids: Array<number>
+      user_ids: Array<number>
+      user_ids?: number
+      start_time: string
+      end_time: string
+      period_time?: string
+    }
     type Result = {
       work: Array<Model.Sprint.WorkListItem>
       defect: Array<Model.Sprint.DefectListItem>
     }
   }
   namespace WorkContrastList {
+    type Params = {
+      project_ids?: string
+      iterate_ids?: string
+      user_ids?: string
+      period_time?: string
+      start_time?: string
+      end_time?: string
+      page: 1
+      pagesize: 20
+    }
     type Result = {
       work: Array<Model.Sprint.WorkListItem>
       list: Array<Model.Sprint.WorkDataListItem>
@@ -89,6 +112,18 @@ declare namespace API.Sprint {
     }
   }
   namespace MemberBugList {
+    type Params = {
+      project_ids?: string
+      user_ids?: string
+      start_time: string
+      end_time: string
+      iterate_ids?: string
+      period_time?: string
+      two_week?: string
+      page: number
+
+      pagesize: number
+    }
     type Result = {
       defect: Array<Model.Sprint.WorkListItem>
       list: Array<Model.Sprint.BugDataListItem>
@@ -182,7 +217,20 @@ declare namespace API.Sprint {
     }
   }
   namespace DelSprintItem {
-    type id = number
+    type Params = {
+      id: number
+    }
+  }
+
+  namespace CompleteSprint {
+    type Params = {
+      project_id: number
+      id: number
+      finish_at: string
+      result?: string | undefined
+      move_type: number
+      move_target: number
+    }
   }
   namespace getLeftSprintList {
     interface searchParams {

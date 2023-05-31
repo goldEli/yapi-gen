@@ -1,4 +1,50 @@
 declare namespace Model.Affairs {
+  // 1：关联、2：前置、3：后置、4：阻塞，5：被阻塞、6：克隆
+  type RelationType = 1 | 2 | 3 | 4 | 5 | 6
+  interface AffairsInfo {
+    id: number
+    name: string
+    category_status_id: number
+    category_id: number
+    schedule: number
+    priority: number | PriorityInfo
+    created_at: string
+    story_prefix_key: string
+    children_count: number
+    category_status: {
+      id: number
+      category_id: number
+      status_id: number
+      is_start: number
+      is_end: number
+      status_name: string
+      color: string
+    }
+    project_category: {
+      id: number
+      name: string
+      attachment_path: string
+    }
+    story_config_priority: {
+      id: number
+      name: string
+      content: string
+      color: string
+      icon: string
+      identity: string
+      content_txt: string
+      group_content_txt: string
+    }
+    handlers: {
+      id: number
+      name: string
+      avatar: string
+    }[]
+    pivot?: {
+      type: RelationType
+      sort: number
+    }
+  }
   interface ListUsersInfo {
     avatar: string
     email: string
@@ -229,12 +275,22 @@ declare namespace Model.Affairs {
     work_type: WorkType
   }
 
+  interface ChildStoryStatistics {
+    finish_count: number
+    finish_percent: number
+    processing_count: number
+    processing_percent: number
+    start_count: number
+    start_percent: number
+    total_count: number
+  }
+
   interface AffairsInfo {
     category_attachment: string
     id: number
     name: string
     info: string
-    priority: PriorityInfo | number
+    priority: PriorityInfo | number | undefined
     expectedStart: string
     expectedEnd: string
     finishTime: string
@@ -264,6 +320,7 @@ declare namespace Model.Affairs {
     hierarchy?: Hierarchy[]
     level_tree?: Hierarchy[]
     categoryName: string | number
+    child_story_statistics: ChildStoryStatistics
   }
 
   interface AffairsInfoResult {
@@ -317,6 +374,7 @@ declare namespace Model.Affairs {
     attachment?: ListItemUserOrAttach[]
     hierarchy?: Hierarchy[]
     level_tree?: Hierarchy[]
+    child_story_statistics: ChildStoryStatistics
   }
 
   // 1：迭代-需求类型，2：迭代-缺陷类型，3：冲刺-长故事事务类型，4：冲刺-标准事务类型，5：冲刺-故障事务类型 6-子任务

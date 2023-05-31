@@ -1,4 +1,5 @@
 /* eslint-disable no-undefined */
+import urls from '@/constants/urls'
 import * as http from '@/tools/http'
 
 // 删除事务
@@ -267,6 +268,7 @@ export const getAffairsInfo = async (
     hierarchy: response.data.hierarchy,
     level_tree: response.data.level_tree,
     categoryName: response.data.category,
+    child_story_statistics: response.data.child_story_statistics,
   }
 }
 
@@ -276,7 +278,7 @@ export const getAffairsCommentList = async (
 ) => {
   const response: any = await http.get<
     any,
-    API.Affairs.GetAffairsCommentList.Params
+    API.Affairs.GetAffairsCommentList.Result
   >('getAffairsCommentList', {
     search: {
       story_id: params.sprintId,
@@ -320,6 +322,19 @@ export const deleteAffairsComment = async (
   await http.delete<any>('deleteAffairsComment', {
     project_id: params.projectId,
     id: params.id,
+  })
+}
+
+// 编辑评论
+export const updateAffairsComment = async (
+  params: API.Affairs.UpdateAffairsComment.Params,
+) => {
+  await http.put<any>(urls.updateAffairsComment(params.id), {
+    project_id: params.projectId,
+    story_id: params.storyId,
+    content: params.content,
+    attachment: params.attachment,
+    a_user_ids: params.ids,
   })
 }
 
@@ -662,5 +677,171 @@ export const batchAffairsEdit = async (
     story_ids: params.demandIds,
     type: params.type,
     target: params.target,
+  })
+}
+
+// 获取子事务列表
+export const getAffairsChildList = async (
+  params: API.Affairs.GetAffairsChildList.Params,
+) => {
+  const response = await http.get<any, API.Affairs.GetAffairsChildList.Result>(
+    'getAffairsChildList',
+    {
+      project_id: params.projectId,
+      id: params.id,
+      keywords: params.searchValue,
+      page: params.page,
+      pagesize: params.pagesize,
+    },
+  )
+
+  return {
+    currentPage: response.data.pager?.page,
+    pageSize: response.data.pager?.pagesize,
+    total: response.data.pager?.total,
+    list: response.data,
+  }
+}
+
+//  下拉添加子事务
+export const addAffairsChild = async (
+  params: API.Affairs.AddAffairsChild.Params,
+) => {
+  await http.post<any>('addAffairsChild', {
+    project_id: params.projectId,
+    id: params.id,
+    child_id: params.childId,
+  })
+}
+
+// 子事务拖拽排序
+export const affairsChildDragSort = async (
+  params: API.Affairs.AffairsChildDragSort.Params,
+) => {
+  await http.post<any>('affairsChildDragSort', {
+    project_id: params.projectId,
+    id: params.id,
+    children_ids: params.childrenIds,
+  })
+}
+
+// 搜索查询下拉子事务
+export const getAffairsSelectChildren = async (
+  params: API.Affairs.GetAffairsSelectChildren.Params,
+) => {
+  const response = await http.get<
+    any,
+    API.Affairs.GetAffairsSelectChildren.Result
+  >('getAffairsSelectChildren', {
+    project_id: params.projectId,
+    id: params.id,
+  })
+
+  return response.data
+}
+
+// 最近子事务查询
+export const getAffairsSelectChildrenRecent = async (
+  params: API.Affairs.GetAffairsSelectChildrenRecent.Params,
+) => {
+  const response = await http.get<any>('getAffairsSelectChildrenRecent', {
+    project_id: params.projectId,
+    id: params.id,
+  })
+  return response.data
+}
+
+// 获取链接事务列表
+export const getAffairsRelationStoriesList = async (
+  params: API.Affairs.GetAffairsRelationList.Params,
+) => {
+  const response = await http.get<
+    any,
+    API.Affairs.GetAffairsRelationList.Result
+  >('getAffairsRelationStoriesList', {
+    project_id: params.projectId,
+    id: params.id,
+  })
+
+  return {
+    list: response.data,
+  }
+}
+
+//  添加关联事务
+export const addAffairsRelation = async (
+  params: API.Affairs.AddAffairsRelation.Params,
+) => {
+  await http.post<any>('addAffairsRelation', {
+    project_id: params.projectId,
+    id: params.id,
+    relation_id: params.relationId,
+    type: params.type,
+  })
+}
+
+// 关联事务拖拽排序
+export const affairsRelationDragSort = async (
+  params: API.Affairs.AffairsRelationDragSort.Params,
+) => {
+  await http.post<any>('affairsRelationDragSort', {
+    project_id: params.projectId,
+    id: params.id,
+    relation_ids: params.relationIds,
+    type: params.type,
+  })
+}
+
+// 搜索查询下拉关联事务
+export const getAffairsSelectRelationSearch = async (
+  params: API.Affairs.GetAffairsRelationList.Params,
+) => {
+  const response = await http.get<
+    any,
+    API.Affairs.GetAffairsRelationList.Result
+  >('getAffairsSelectRelationSearch', {
+    project_id: params.projectId,
+    id: params.id,
+    keywords: params.searchValue,
+  })
+
+  return response.data
+}
+
+// 最近子事务查询
+export const getAffairsSelectRelationRecent = async (
+  params: API.Affairs.GetAffairsRelationList.Params,
+) => {
+  const response = await http.get<
+    any,
+    API.Affairs.GetAffairsRelationList.Result
+  >('getAffairsSelectRelationRecent', {
+    project_id: params.projectId,
+    id: params.id,
+  })
+  return response.data
+}
+
+// 创建子事务-快捷
+export const addQuickAffairs: any = async (
+  params: API.Affairs.AddQuickAffair.Params,
+) => {
+  await http.post<any>('addAffairs', {
+    project_id: Number(params.projectId),
+    name: params.name,
+    category_id: params?.category_id,
+    parent_id: params?.parent_id || 0,
+  })
+}
+
+// 编辑富文本
+export const updateEditor: any = async (
+  params: API.Affairs.UpdateEditor.Params,
+) => {
+  await http.put<any>('updateAffairs', {
+    project_id: params.projectId,
+    info: params.info,
+    id: params.id,
+    name: params.name,
   })
 }

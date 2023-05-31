@@ -94,7 +94,7 @@ const ProgressComparison = (props: Props) => {
   const [statusType, setStatusType] = useState('')
   const [ids, setIds] = useState<number[]>([])
   const [historyWorkObj, setHistoryWorkObj] =
-    useState<API.Efficiency.historyWorkList.Result>()
+    useState<API.Efficiency.HistoryWorkList.Result>()
   const onUpdateOrderKey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
     // props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
@@ -433,11 +433,14 @@ const ProgressComparison = (props: Props) => {
   // 工作进展对比大的列表
   const getWorkContrastList = async () => {
     const res = await workContrastList({
-      project_ids: [1, 2],
-      iterate_ids: [12, 23],
-      user_ids: [1, 23, 44],
+      project_ids: '1,2',
+      iterate_ids: '12,23',
+      user_ids: '12,23,707',
+      period_time: 'two_week',
       start_time: '2023-05-30 00:00:00',
       end_time: '2023-05-30 00:00:00',
+      page: 1,
+      pagesize: 20,
     })
     setWork(res.work)
     setTableList(res.list)
@@ -448,11 +451,14 @@ const ProgressComparison = (props: Props) => {
   // 缺陷分析大的列表
   const getMemberBugList = async () => {
     const res = await memberBugList({
-      project_ids: [1, 2],
-      iterate_ids: [12, 23],
-      user_ids: [1, 23, 44],
+      project_ids: '1,2',
+      iterate_ids: '12,23',
+      user_ids: '12,23,707',
+      period_time: 'two_week',
       start_time: '2023-05-30 00:00:00',
       end_time: '2023-05-30 00:00:00',
+      page: 1,
+      pagesize: 20,
     })
     setWork(res.defect)
     setTableList1(res.list)
@@ -497,7 +503,7 @@ const ProgressComparison = (props: Props) => {
 
   // 前半截的详情弹窗上半截的获取用户信息
   const getUserInfo = async (id: number) => {
-    const res = await plugSelectionUserInfo({ id })
+    const res = await plugSelectionUserInfo({ user_id: id, project_ids: 0 })
     setUserInfo(res.userInfo)
     setStatus(res.status)
   }

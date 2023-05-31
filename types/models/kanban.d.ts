@@ -64,6 +64,7 @@ declare namespace Model.KanBan {
     story_prefix_key: string
     children_count: number
     category_status: CategoryStatus
+    category_status_id: number
     project_category: ProjectCategory
     story_config_priority: StoryConfigPriority
     handlers: Handler[]

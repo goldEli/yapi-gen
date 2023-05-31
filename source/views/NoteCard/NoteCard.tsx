@@ -118,10 +118,15 @@ const NoteCard = (props: any) => {
               <CommonIconFont type="return" /> <span>撤回</span>
             </ColorBtn>
           )}
-
-          <ColorBtn onClick={() => props.onShowDetail(values)}>
-            <CommonIconFont type="file-text" /> <span>查看详情</span>
-          </ColorBtn>
+          {values.is_draft === 1 ? (
+            <ColorBtn onClick={() => props.onEditDetail(values)}>
+              <CommonIconFont type="file-text" /> <span>编辑草稿</span>
+            </ColorBtn>
+          ) : (
+            <ColorBtn onClick={() => props.onShowDetail(values)}>
+              <CommonIconFont type="file-text" /> <span>查看详情</span>
+            </ColorBtn>
+          )}
         </Wrap2>
       </div>
       <div

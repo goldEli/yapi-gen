@@ -23,7 +23,7 @@ interface Props {
   visible: boolean
   type: string
   ids: number[]
-  historyWorkObj: API.Efficiency.historyWorkList.Result | undefined
+  historyWorkObj: API.Efficiency.HistoryWorkList.Result | undefined
   onPageNum: (id: number) => void
   onCancel: () => void
   onChange: (value: API.Sprint.EfficiencyMemberWorkList.Params) => void
@@ -34,7 +34,7 @@ interface UserInfo {
     avatar: string
     name: string[]
   }
-  historyWorkObj: API.Efficiency.historyWorkList.Result | undefined
+  historyWorkObj: API.Efficiency.HistoryWorkList.Result | undefined
 }
 
 interface WorkType {

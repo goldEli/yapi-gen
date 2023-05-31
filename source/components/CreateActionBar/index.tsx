@@ -23,6 +23,7 @@ interface Props {
   onChangeHidden(val: boolean): void
   onChangeSearch?(val: string): void
   onRefresh?(): void
+  onChangeProjectType?(value: any): void
 }
 
 const CreateActionBar = (props: Props) => {
@@ -42,7 +43,9 @@ const CreateActionBar = (props: Props) => {
     props.onChangeFormat(type)
     setIsVisibleFormat(false)
   }
-
+  const confirm = (value: any) => {
+    props.onChangeProjectType?.(value)
+  }
   const menu = (
     <Menu
       items={[
@@ -122,8 +125,8 @@ const CreateActionBar = (props: Props) => {
           <span style={{ margin: '0 16px', fontSize: '14px' }}>项目类型</span>
 
           <SelectWrap
-            onChange={confirm}
             mode="multiple"
+            onChange={confirm}
             style={{ width: '100%' }}
             placeholder={t('common.all')}
             showSearch
@@ -132,16 +135,20 @@ const CreateActionBar = (props: Props) => {
             allowClear
             options={[
               {
-                label: '冲刺',
+                label: '冲刺-企业项目 ',
                 value: 1,
               },
               {
-                label: '迭代',
+                label: ' 冲刺-团队项目 ',
                 value: 2,
               },
               {
-                label: '所有',
+                label: '迭代-企业项目',
                 value: 3,
+              },
+              {
+                label: '迭代-团队项目',
+                value: 4,
               },
             ]}
           />

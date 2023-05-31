@@ -6,15 +6,10 @@ import useKanBanData from '../hooks/useKanBanData'
 import IssuesGroupList from '../IssuesGroupList'
 
 const KanBanSortByPerson = () => {
-  const { data, onDragEnd } = useKanBanData()
+  const { data, onDragEnd, onDragStart } = useKanBanData()
 
   return (
-    <DragDropContext
-      onDragEnd={onDragEnd}
-      onDragStart={start => {
-        console.log(start)
-      }}
-    >
+    <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
       <ColumnTitleArea />
       <IssuesGroupList data={data} />
     </DragDropContext>
