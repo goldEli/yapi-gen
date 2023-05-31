@@ -39,10 +39,7 @@ const Issues: React.FC<IssuesProps> = props => {
     return handleId(groupId, issues.id)
   }, [groupId, issues.id])
 
-  const { data, showStateTransitionList, disableDrop } = useDropData(
-    issues.id,
-    groupId,
-  )
+  const { data, showStateTransitionList } = useDropData(issues.id, groupId)
   const dropCardListContent = (
     <DropCardList
       hidden={!showStateTransitionList}
@@ -69,7 +66,7 @@ const Issues: React.FC<IssuesProps> = props => {
       key={droppableId}
       droppableId={droppableId}
       type="drop-status"
-      isDropDisabled={disableDrop}
+      // isDropDisabled={false}
     >
       {(provided, snapshot) => {
         return (

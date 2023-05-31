@@ -66,6 +66,9 @@ const DropCard: React.FC<DropCardProps> = props => {
   //   </Droppable>
   // )
   const dispatch = useDispatch()
+  if (props.source?.flow_status_id === props.target?.flow_status_id) {
+    return <></>
+  }
   return (
     <DropCardBox
       onDrop={e => {
