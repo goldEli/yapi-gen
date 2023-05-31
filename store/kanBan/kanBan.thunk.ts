@@ -132,9 +132,47 @@ export const modifyStatus =
 
     dispatch(setMovingStory(null))
   }
+// 同列修改优先级
+export const modifyPriority =
+  (options: {
+    sourceColumnId: Model.KanBan.Column['id']
+    sourceGroupId: Model.KanBan.Group['id']
 
-// 人员分组看板排序
-export const sortStoryInUserGrouping =
+    targetColumnId: Model.KanBan.Column['id']
+    targetGroupId: Model.KanBan.Group['id']
+    startIndex: number
+    targetIndex: number
+  }) =>
+  async (dispatch: AppDispatch) => {
+    const {
+      sourceColumnId,
+      sourceGroupId,
+
+      targetColumnId,
+      targetGroupId,
+      startIndex,
+      targetIndex,
+    } = options
+    const { kanbanInfoByGroup } = store.getState().kanBan
+    const data = produce(kanbanInfoByGroup, draft => {
+      const sourceStories =
+        draft
+          .find(item => item.id === sourceGroupId)
+          ?.columns.find(item => item.id === sourceColumnId)?.stories ?? []
+      const [removed] = sourceStories.splice(startIndex, 1)
+      const targetStories =
+        draft
+          .find(item => item.id === targetGroupId)
+          ?.columns.find(item => item.id === targetColumnId)?.stories ?? []
+
+      targetStories.splice(targetIndex, 0, removed)
+    })
+    console.log(data)
+    dispatch(setKanbanInfoByGroup(data))
+  }
+
+// 同组同列排序
+export const sortStory =
   (options: {
     storyId: Model.KanBan.Story['id']
     columnId: Model.KanBan.Column['id']
