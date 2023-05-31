@@ -193,7 +193,7 @@ export const sortStory =
     await dispatch(setKanbanInfoByGroup(data))
     dispatch(
       sortStoryServer({
-        kanban_config_id: options.columnId,
+        kanban_column_id: options.columnId,
       }),
     )
   }
@@ -201,20 +201,20 @@ export const sortStory =
 // 更新排序同步到服务端
 export const sortStoryServer =
   (
-    options: Pick<API.Kanban.ModifyKanbanIssueSort.Params, 'kanban_config_id'>,
+    options: Pick<API.Kanban.ModifyKanbanIssueSort.Params, 'kanban_column_id'>,
   ) =>
   async (dispatch: AppDispatch) => {
     const { kanbanInfoByGroup } = store.getState().kanBan
     const ids: number[] = []
     kanbanInfoByGroup.forEach(group => {
       group.columns.forEach(column => {
-        if (column.id === options.kanban_config_id) {
+        if (column.id === options.kanban_column_id) {
           ids.push(...column.stories.map(story => story.id))
         }
       })
     })
     const params: API.Kanban.ModifyKanbanIssueSort.Params = {
-      kanban_config_id: options.kanban_config_id,
+      kanban_column_id: options.kanban_column_id,
       story_ids: ids,
       project_id: getParamsValueByKey('id'),
     }
