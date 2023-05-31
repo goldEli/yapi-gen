@@ -24,6 +24,26 @@ import { produce } from 'immer'
 
 const name = 'kanBan'
 
+// 状态改变
+export const modifyStatus =
+  (options: {
+    columnId: Model.KanBan.Column['id']
+    groupId: Model.KanBan.Group['id']
+    storyId: Model.KanBan.Story['id']
+  }) =>
+  async (dispatch: AppDispatch) => {
+    const { kanbanInfoByGroup } = store.getState().kanBan
+    const data = produce(kanbanInfoByGroup, draft => {
+      const stories =
+        draft
+          .find(item => item.id === options.groupId)
+          ?.columns.find(item => item.id === options.columnId)?.stories ?? []
+      const index = stories.findIndex(item => item.id === options.storyId)
+      stories.splice(index, 1)
+    })
+    dispatch(setKanbanInfoByGroup(data))
+  }
+
 // 人员分组看板排序
 export const sortStoryInUserGrouping =
   (options: {

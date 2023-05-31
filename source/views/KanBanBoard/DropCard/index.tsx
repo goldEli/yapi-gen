@@ -3,6 +3,8 @@ import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
 import StateTag from '@/components/StateTag'
 import { Droppable } from 'react-beautiful-dnd'
+import { useDispatch, useSelector } from '@store/index'
+import { modifyStatus } from '@store/kanBan/kanBan.thunk'
 
 interface DropCardProps {
   source?: Model.KanbanConfig.Status
@@ -36,7 +38,7 @@ const getState = (text: any) => {
 
 const DropCard: React.FC<DropCardProps> = props => {
   const { source, target } = props
-  const droppableId = 'inner-block-' + source?.id + '-' + target?.id
+  const { movingStory } = useSelector(store => store.kanBan)
   // return (
   //   <Droppable
   //     key={droppableId}
@@ -61,20 +63,25 @@ const DropCard: React.FC<DropCardProps> = props => {
   //     }}
   //   </Droppable>
   // )
-  const onMouseUp = useCallback(
-    (e: MouseEvent) => {
-      console.log(props.source?.status_name, props.target?.status_name)
-    },
-    [props.source, props.target],
-  )
+  const dispatch = useDispatch()
   return (
     <DropCardBox
       onDrop={e => {
         console.log(e)
       }}
-      onMouseEnter={e => {
-        window.removeEventListener('mouseup', onMouseUp)
-        window.addEventListener('mouseup', onMouseUp)
+      onMouseUp={e => {
+        console.log(props.source, props.target)
+        if (!movingStory) {
+          console.error('movingStory is null')
+          return
+        }
+        dispatch(
+          modifyStatus({
+            groupId: movingStory?.groupId,
+            columnId: movingStory?.columnId,
+            storyId: movingStory?.story.id,
+          }),
+        )
       }}
     >
       <StateTag
