@@ -328,6 +328,8 @@ const urls = {
   updateSprintInfo: '/b/sprint/update',
   // 删除冲刺
   delSprintItem: '/b/sprint/del',
+  // 获取事务
+  getLongStoryList: '/b/sprint/getList',
   // 完成冲刺
   completeSprint: '/b/sprint/complete',
   /**

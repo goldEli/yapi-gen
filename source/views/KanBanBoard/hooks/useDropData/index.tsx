@@ -35,15 +35,26 @@ const useDropData = (
   }, [kanbanConfig, movingStory, columnId])
 
   const showStateTransitionList = React.useMemo(() => {
-    return movingStory?.columnId !== columnId && data?.length > 0
-  }, [movingStory, columnId, data])
+    // 人员分组，只有同组才能转换状态
+    if (groupType === 'users') {
+      return (
+        movingStory?.columnId !== columnId &&
+        data?.length > 0 &&
+        movingStory?.groupId === groupId
+      )
+    }
+
+    return (
+      !(
+        movingStory?.columnId === columnId && movingStory?.groupId === groupId
+      ) && data?.length > 0
+    )
+  }, [movingStory, columnId, data, groupId, groupType])
 
   const disableDrop = React.useMemo(() => {
     // 如果是人员分组 只能在同组拖动
     if (groupType === 'users') {
-      return (
-        columnId === movingStory?.columnId && movingStory.groupId !== groupId
-      )
+      return movingStory?.groupId !== groupId
     }
     return false
   }, [groupType, columnId, movingStory, groupId])

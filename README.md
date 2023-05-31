@@ -289,10 +289,8 @@ return <>{AddUserModalElement}<>
 
 ### 富文本编辑器
 
+```js
 import { Editor } from '@xyfe/uikit'
-
-````ts类型
-
 interface Props {
   onReadonlyClick?(): void
   onPressEnter?(): void
@@ -323,36 +321,50 @@ interface Props {
         label: ReactNode
       }[]
 }
-```组件引用
- <Editor
-        onBlur={() => {
-          console.log('失焦')
-          console.log(text)
+```
 
-          setMyReadonly(true)
-        }}
-        onReadonlyClick={() => {
-          setMyReadonly(false)
-          console.log('只读模式点击')
-        }}
-        value={text}
-        onChange={setText}
-        readonly={myReadonly}
-        getSuggestions={() => {
-          return new Promise(resolve => {
-            setTimeout(() => {
-              // resolve([])
-              resolve([
-                { id: '1', label: 'bbb' },
-                { id: '12', label: 'bbb1' },
-                { id: '13', label: 'bbb2' },
-                { id: '14', label: 'bbb3' },
-                { id: '15', label: 'bbb4' },
-                { id: '16', label: 'bbb5' },
-              ])
-            }, 1000)
-          })
-        }}
-        upload={}
-      />
-````
+```js
+ <Editor
+  onBlur={() => {
+    console.log('失焦')
+    console.log(text)
+
+    setMyReadonly(true)
+  }}
+  onReadonlyClick={() => {
+    setMyReadonly(false)
+    console.log('只读模式点击')
+  }}
+  value={text}
+  onChange={setText}
+  readonly={myReadonly}
+  getSuggestions={() => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        // resolve([])
+        resolve([
+          { id: '1', label: 'bbb' },
+          { id: '12', label: 'bbb1' },
+          { id: '13', label: 'bbb2' },
+          { id: '14', label: 'bbb3' },
+          { id: '15', label: 'bbb4' },
+          { id: '16', label: 'bbb5' },
+        ])
+      }, 1000)
+    })
+  }}
+  upload={}
+/>
+```
+
+### immerjs
+
+```js
+import { produce } from 'immer'
+
+setData(
+  produce(draft => {
+    draft.a = 123
+  }),
+)
+```

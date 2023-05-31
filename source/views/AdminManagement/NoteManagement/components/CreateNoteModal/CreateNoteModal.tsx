@@ -257,7 +257,7 @@ const CreateNoteModal = (props: any) => {
       draft
       isVisible={props.isVisible}
       width={784}
-      title={props.editId ? '编辑通知' : '发送通知'}
+      title={props.editId ? t('edit_notification') : t('send_notification')}
       onClose={props.onClose}
       onConfirm={onHandleOk}
     >
@@ -271,17 +271,17 @@ const CreateNoteModal = (props: any) => {
       >
         <Form form={form} layout="vertical">
           <Form.Item
-            label={<LabelTitle>通知标题</LabelTitle>}
+            label={<LabelTitle>{t('notification_title')}</LabelTitle>}
             name="title"
-            rules={[{ required: true, message: '请输入标题!' }]}
+            rules={[{ required: true, message: t('enter_title') }]}
           >
-            <Input maxLength={20} placeholder="请输入通知标题最多20字" />
+            <Input maxLength={20} placeholder={t('enter_title_max_length')} />
           </Form.Item>
           <Form.Item
             style={{
               marginBottom: '30px',
             }}
-            label={<LabelTitle>通知内容</LabelTitle>}
+            label={<LabelTitle>{t('notification_content')}</LabelTitle>}
             name="content"
             rules={[
               {
@@ -296,7 +296,7 @@ const CreateNoteModal = (props: any) => {
                       alignItems: 'center',
                     }}
                   >
-                    请输入通知内容
+                    {t('enter_content')}
                   </div>
                 ),
                 whitespace: true,
@@ -307,29 +307,29 @@ const CreateNoteModal = (props: any) => {
             <Editor
               upload={uploadFile}
               getSuggestions={() => []}
-              placeholder="请输入通知内容最多200字"
+              placeholder={t('enter_content_max_length')}
             />
           </Form.Item>
 
           <Form.Item
             initialValue={1}
             name="type"
-            label={<LabelTitle>通知类型</LabelTitle>}
+            label={<LabelTitle>{t('notification_type')}</LabelTitle>}
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
             <Radio.Group>
-              <Radio value={1}>日常通知</Radio>
-              <Radio value={2}>系统通知</Radio>
+              <Radio value={1}>{t('daily_notification')}</Radio>
+              <Radio value={2}>{t('system_notification')}</Radio>
               <Radio defaultChecked value={3}>
-                重要通知
+                {t('important_notification')}
               </Radio>
-              <Radio value={4}>活动通知</Radio>
-              <Radio value={5}>放假通知</Radio>
+              <Radio value={4}>{t('activity_notification')}</Radio>
+              <Radio value={5}>{t('holiday_notification')}</Radio>
             </Radio.Group>
           </Form.Item>
           <Form.Item
             name="recipient2"
-            label={<LabelTitle>接收对象</LabelTitle>}
+            label={<LabelTitle>{t('recipient')}</LabelTitle>}
             rules={[{ required: true, message: '请选择接收对象!' }]}
           >
             <AcceptorSelection />
@@ -338,7 +338,7 @@ const CreateNoteModal = (props: any) => {
           <Form.Item
             initialValue={2}
             name="notice_style"
-            label={<LabelTitle>提醒方式</LabelTitle>}
+            label={<LabelTitle>{t('reminder_method')}</LabelTitle>}
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
             <Radio.Group>
@@ -356,7 +356,7 @@ const CreateNoteModal = (props: any) => {
                     gap: '8px',
                   }}
                 >
-                  <Radio value={1}>弹窗提醒</Radio>
+                  <Radio value={1}>{t('popup_reminder')}</Radio>
                   <img
                     style={{
                       width: '104px',
@@ -373,7 +373,7 @@ const CreateNoteModal = (props: any) => {
                   }}
                 >
                   <Radio defaultChecked value={2}>
-                    顶部横幅
+                    {t('top_banner_reminder')}
                   </Radio>
                   <img
                     style={{
@@ -387,9 +387,9 @@ const CreateNoteModal = (props: any) => {
             </Radio.Group>
           </Form.Item>
           <Form.Item
-            label={<LabelTitle>失效时间</LabelTitle>}
+            label={<LabelTitle>{t('expiration_time')}</LabelTitle>}
             name="expire_time"
-            rules={[{ required: true, message: '请选择失效时间!' }]}
+            rules={[{ required: true, message: t('select_expiration_time') }]}
           >
             <DatePicker
               disabledDate={disabledDate}
@@ -401,13 +401,13 @@ const CreateNoteModal = (props: any) => {
           </Form.Item>
 
           <div>
-            <Checkbox onChange={onChange}>定时发送</Checkbox>
+            <Checkbox onChange={onChange}>{t('schedule_send')}</Checkbox>
             {taskTime ? (
               <Form.Item
                 label={<LabelTitle></LabelTitle>}
                 name="send_time"
                 rules={[
-                  { required: true, message: 'Please input your username!' },
+                  { required: true, message: t('select_schedule_send_time') },
                 ]}
               >
                 <DatePicker

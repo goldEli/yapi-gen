@@ -97,6 +97,10 @@ const CreateField = () => {
   const { projectInfo } = useSelector(store => store.project)
   const [payloadDataList, setPayloadDataList] = useState<any>()
   const [searchValue, setSearchValue] = useState('')
+  const [fieldType, setFieldType] = useState<any>(() => {
+    return { is_customize: '', content: '' }
+  })
+  const [cacheSearchlist, setCacheSearchlist] = useState<any>()
   const option = [
     {
       label: t('newlyAdd.lineText'),
@@ -154,6 +158,11 @@ const CreateField = () => {
     setSearchDataList(
       payloadList?.filter((item: any) => !filterIds?.includes(item.id)),
     )
+    // setSearchDataList(payloadDataList)
+    setCacheSearchlist(
+      payloadList?.filter((item: any) => !filterIds?.includes(item.id)),
+    )
+    console.log(searchDataList)
   }
   // 请求api
   const getProjectFieIdsApi = async () => {
@@ -178,6 +187,13 @@ const CreateField = () => {
   useEffect(() => {
     getProjectFieIdsApi()
   }, [activeCategory])
+  useEffect(() => {
+    console.log(11111, cacheSearchlist, fieldType)
+    const data = cacheSearchlist?.filter(
+      (item: any) => item.is_customize === fieldType.is_customize,
+    )
+    setSearchDataList(data)
+  }, [fieldType])
   return (
     <CreateFieldWrap draggable="false">
       <TitleStyle draggable="false" onClick={() => setCreateIcon(!createIcon)}>
@@ -215,15 +231,14 @@ const CreateField = () => {
               style={{
                 marginLeft: '4px',
                 display: 'inline-block',
-                width: search ? '111px' : '160px',
+                width: 160,
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',
                 textOverflow: 'ellipsis',
               }}
             >
               {t('project_existing_fields')}
-              {payloadDataList?.length >= 1 &&
-                '(' + payloadDataList?.length + ')'}
+              {searchDataList?.length >= 1 && '(' + searchDataList.length + ')'}
             </span>
           </div>
           {search && (
@@ -261,33 +276,36 @@ const CreateField = () => {
           <Select
             style={{ width: 100 }}
             bordered={false}
-            placeholder="系统字段"
+            placeholder="所有字段"
             options={[
               {
-                value: 'jack',
-                label: 'Jack',
+                value: 2,
+                label: '系统字段',
               },
               {
-                value: 'lucy',
-                label: 'Lucy',
+                value: 1,
+                label: '自定义字段',
               },
             ]}
+            onChange={e => {
+              console.log(e)
+              setFieldType((p: any) => {
+                return { ...p, is_customize: e }
+              })
+            }}
           />
           <DivideWrap></DivideWrap>
           <Select
             style={{ width: 100 }}
             bordered={false}
             placeholder="所有类型"
-            options={[
-              {
-                value: 'jack',
-                label: 'Jack',
-              },
-              {
-                value: 'lucy',
-                label: 'Lucy',
-              },
-            ]}
+            options={option}
+            onChange={e => {
+              console.log(e, option)
+              setFieldType((p: any) => {
+                return { ...p, content: e }
+              })
+            }}
           />
         </FieldWrap>
 
