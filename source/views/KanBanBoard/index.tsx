@@ -22,6 +22,7 @@ import { encryptPhp } from '@/tools/cryptoPhp'
 import { jumpToKanbanConfig } from './utils'
 import UserGroupingModal from './UserGroupingModal'
 import { saveInputKey } from '@store/view'
+import ModifyStatusModal from './ModifyStatusModal'
 
 interface IProps {}
 const SprintProjectKanBanBox = styled.div`
@@ -117,6 +118,7 @@ const SprintProjectKanBan: React.FC<IProps> = props => {
       />
       <Board />
       <UserGroupingModal />
+      <ModifyStatusModal />
     </SprintProjectKanBanBox>
   )
 }

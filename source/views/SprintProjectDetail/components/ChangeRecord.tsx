@@ -383,7 +383,7 @@ const ChangeRecord = (props: Props) => {
   }
 
   return (
-    <div style={{ height: 'calc(100% - 74px)' }}>
+    <div>
       <CommonModal
         isVisible={isVisible}
         title={t('project.changeInfo')}
@@ -424,7 +424,7 @@ const ChangeRecord = (props: Props) => {
       </CommonModal>
       <ResizeTable
         isSpinning={isSpinning}
-        dataWrapNormalHeight="calc(100% - 40px)"
+        dataWrapNormalHeight="400px"
         col={columns}
         dataSource={dataList?.list}
         noData={<NoData />}
