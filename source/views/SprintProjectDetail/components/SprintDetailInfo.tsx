@@ -135,8 +135,8 @@ const SprintDetailInfo = () => {
           affairsInfo={affairsInfo as Model.Affairs.AffairsInfo}
           onUpdate={onUpdate}
         />
-        <ChildSprint />
-        <LinkSprint />
+        <ChildSprint detail={affairsInfo as Model.Affairs.AffairsInfo} />
+        <LinkSprint detail={affairsInfo as Model.Affairs.AffairsInfo} />
         <ActivitySprint />
       </DetailInfoWrap>
       <CommentFooter

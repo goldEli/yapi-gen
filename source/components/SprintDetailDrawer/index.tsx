@@ -675,9 +675,11 @@ const SprintDetailDrawer = () => {
                       />
                     )}
                     {i.key === 'childSprint' && showState[i.key].isOpen && (
-                      <ChildSprint />
+                      <ChildSprint detail={drawerInfo} />
                     )}
-                    {i.key === 'linkSprint' && <LinkSprint />}
+                    {i.key === 'linkSprint' && (
+                      <LinkSprint detail={drawerInfo} />
+                    )}
                     {i.key === 'basicInfo' && showState[i.key].isOpen && (
                       <BasicDemand
                         detail={drawerInfo}
@@ -718,7 +720,11 @@ const SprintDetailDrawer = () => {
             }),
           )}
           onConfirm={onConfirmComment}
-          style={{ padding: '0 0 0 24px', width: 'calc(100% - 24px)' }}
+          style={{
+            padding: '24px 0 24px 24px',
+            width: 'calc(100% - 24px)',
+            height: 80,
+          }}
           maxHeight="60vh"
           hasAvatar
         />

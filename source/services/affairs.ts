@@ -329,11 +329,10 @@ export const deleteAffairsComment = async (
 export const updateAffairsComment = async (
   params: API.Affairs.UpdateAffairsComment.Params,
 ) => {
-  await http.put<any>('updateAffairsComment', {
+  await http.post<any>('updateAffairsComment', {
     project_id: params.projectId,
     story_id: params.storyId,
     content: params.content,
-    attachment: params.attachment,
     a_user_ids: params.ids,
     id: params.id,
   })
@@ -736,6 +735,7 @@ export const getAffairsSelectChildren = async (
   >('getAffairsSelectChildren', {
     project_id: params.projectId,
     id: params.id,
+    keywords: params.keywords,
   })
 
   return response.data
@@ -824,7 +824,7 @@ export const getAffairsSelectRelationRecent = async (
 }
 
 // 创建子事务-快捷
-export const addQuickAffairs: any = async (
+export const addQuickAffairs = async (
   params: API.Affairs.AddQuickAffair.Params,
 ) => {
   await http.post<any>('addAffairs', {
@@ -836,9 +836,7 @@ export const addQuickAffairs: any = async (
 }
 
 // 编辑富文本
-export const updateEditor: any = async (
-  params: API.Affairs.UpdateEditor.Params,
-) => {
+export const updateEditor = async (params: API.Affairs.UpdateEditor.Params) => {
   await http.put<any>('updateAffairs', {
     project_id: params.projectId,
     info: params.info,

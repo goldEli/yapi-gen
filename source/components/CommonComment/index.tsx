@@ -29,7 +29,7 @@ import { OmitText } from '@star-yun/ui'
 import { Editor, EditorRef } from '@xyfe/uikit'
 import { fileIconMap } from '../UploadAttach'
 import Viewer from 'react-viewer'
-import { bytesToSize } from '@/tools'
+import { bytesToSize, removeNull } from '@/tools'
 import NoData from '../NoData'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { Space } from 'antd'
@@ -44,6 +44,7 @@ const CommentEditor = (props: CommentEditorProps) => {
   const editorRef = useRef<EditorRef>(null)
   const [isEditInfo, setIsEditInfo] = useState(false)
   const [editInfo, setEditInfo] = useState('')
+  const { projectInfoValues } = useSelector(store => store.project)
 
   // 富文本失焦
   const onBlurEditor = async () => {
@@ -77,7 +78,12 @@ const CommentEditor = (props: CommentEditorProps) => {
       at
       ref={editorRef}
       value={editInfo}
-      getSuggestions={() => []}
+      getSuggestions={removeNull(projectInfoValues, 'user_name')?.map(
+        (k: any) => ({
+          label: k.content,
+          id: k.id,
+        }),
+      )}
       readonly={!isEditInfo}
       onReadonlyClick={onReadonlyClick}
       onChange={(value: string) => setEditInfo(value)}

@@ -121,7 +121,7 @@ export const DownWrap = styled(NextWrap)<{ isOnly?: boolean }>`
 export const Content = styled.div`
   height: calc(100% - 53px);
   overflow: auto;
-  padding: 16px 24px;
+  padding: 16px 24px 60px;
   position: relative;
 `
 
@@ -228,10 +228,7 @@ export const DetailFooter = styled.div`
   align-items: center;
   justify-content: space-between;
   height: 80px;
-  padding-left: 24px;
   background: var(--neutral-white-d5);
-  position: absolute;
-  bottom: 0;
   width: 100%;
   .textBox {
     display: flex;
