@@ -87,20 +87,20 @@ const Project = (props: any) => {
         {/* <HomeWrap> */}
         <ChartsItem2 />
         <ChartsItem>
-          <span className={title1Css}>{data?.open_count ?? 0}</span>
-          <span className={title2Css}>{t('situation.openProject')}</span>
+          <span className={title1Css}>{data?.sprint_team_count ?? 0}</span>
+          <span className={title2Css}>冲刺-团队项目</span>
         </ChartsItem>
         <ChartsItem>
-          <span className={title1Css}>{data?.end_count ?? 0}</span>
-          <span className={title2Css}>{t('situation.stopProject')}</span>
+          <span className={title1Css}>{data?.sprint_company_count ?? 0}</span>
+          <span className={title2Css}>冲刺-企业项目</span>
         </ChartsItem>
         <ChartsItem>
-          <span className={title1Css}>{data?.private_count ?? 0}</span>
-          <span className={title2Css}>{t('common.privateProject')}</span>
+          <span className={title1Css}>{data?.iterate_team_count ?? 0}</span>
+          <span className={title2Css}>迭代-团队项目</span>
         </ChartsItem>
         <ChartsItem>
-          <span className={title1Css}>{data?.public_count ?? 0}</span>
-          <span className={title2Css}>{t('common.publicProject')}</span>
+          <span className={title1Css}>{data?.iterate_company_count ?? 0}</span>
+          <span className={title2Css}>迭代-企业项目</span>
         </ChartsItem>
         {/* </HomeWrap> */}
       </TextWrap>
