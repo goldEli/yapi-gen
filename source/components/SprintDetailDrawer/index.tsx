@@ -232,7 +232,6 @@ const SprintDetailDrawer = () => {
 
   // 向下查找需求
   const onDownDemand = () => {
-    console.log(demandIds, '=demandIdsdemandIdsdemandIds')
     const newIndex = demandIds[currentIndex + 1]
     if (currentIndex === demandIds?.length - 1) return
     dispatch(

@@ -216,7 +216,12 @@ const SprintDetailInfo = () => {
       <DeleteConfirmModal />
       <InfoWrap>
         {isScroll && (
-          <Tabs activeKey={tabActive} items={items} onChange={onChangeTabs} />
+          <Tabs
+            className="tabs"
+            activeKey={tabActive}
+            items={items}
+            onChange={onChangeTabs}
+          />
         )}
         <DetailInfoWrap
           ref={LeftDom}

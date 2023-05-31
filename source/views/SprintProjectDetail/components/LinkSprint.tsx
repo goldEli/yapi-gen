@@ -285,7 +285,6 @@ const LinkSprint = () => {
       },
     ]
     const newArr = JSON.parse(JSON.stringify(typeList))
-    console.log(newArr)
     newArr.forEach((element: any) => {
       response.forEach((i: any) => {
         if (i.pivot?.type === element.value) {

@@ -229,7 +229,7 @@ export const InfoWrap = styled.div`
   height: calc(100vh - 212px);
   flex: 1;
   position: relative;
-  .ant-tabs-nav {
+  .tabs {
     padding-left: 24px;
   }
   .ant-tabs-top > .ant-tabs-nav::before,
