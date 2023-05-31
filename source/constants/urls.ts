@@ -329,7 +329,7 @@ const urls = {
   // 删除冲刺
   delSprintItem: '/b/sprint/del',
   // 获取事务
-  getLongStoryList: '/b/sprint/getList',
+  getLongStoryList: '/b/transaction/getLongStory',
   // 完成冲刺
   completeSprint: '/b/sprint/complete',
   /**

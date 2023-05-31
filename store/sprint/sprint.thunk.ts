@@ -45,6 +45,7 @@ export const getLongStoryList = createAsyncThunk(
   `${name}/getLongStoryList`,
   async (params: API.Sprint.getLongStoryList.Params) => {
     const res = await services.sprint.getLongStroyList(params)
-    return res.data.list
+    console.log('res----', res)
+    return res.data
   },
 )

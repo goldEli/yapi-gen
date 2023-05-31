@@ -62,6 +62,14 @@ export const LoadMore = styled.div`
   justify-content: center;
   cursor: pointer;
 `
+export const CancelParentBox = styled.div`
+  color: var(--neutral-n2);
+  font-size: var(--font14);
+  font-family: MiSans-Regular, MiSans;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+`
 export const FooterBox = styled.div`
   height: 32px;
   color: var(--neutral-n3);
