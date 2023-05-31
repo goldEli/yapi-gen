@@ -84,6 +84,8 @@ export const getUserInfoAbeyanceStory: any = async (params: any) => {
               ),
             },
             userInfo: i.userInfo,
+            is_bug: i.is_bug,
+            project_type: i.project_type,
           }))
         : [],
     }))
@@ -132,6 +134,8 @@ export const getUserInfoAbeyanceStory: any = async (params: any) => {
               ),
             },
             userInfo: i.userInfo,
+            is_bug: i.is_bug,
+            project_type: i.project_type,
           }))
         : [],
       pager: response.data.pager,
@@ -212,6 +216,8 @@ export const getUserInfoCreateStory: any = async (params: any) => {
             ),
           },
           userInfo: i.userInfo,
+          is_bug: i.is_bug,
+          project_type: i.project_type,
         }))
       : [],
     pager: response.data.pager,
@@ -291,6 +297,8 @@ export const getUserInfoFinishStory: any = async (params: any) => {
             ),
           },
           userInfo: i.userInfo,
+          is_bug: i.is_bug,
+          project_type: i.project_type,
         }))
       : [],
     pager: response.data.pager,
@@ -427,6 +435,8 @@ export const getMemberInfoAbeyanceStory: any = async (params: any) => {
               ),
             },
             userInfo: i.userInfo,
+            is_bug: i.is_bug,
+            project_type: i.project_type,
           }))
         : [],
     }))
@@ -475,6 +485,8 @@ export const getMemberInfoAbeyanceStory: any = async (params: any) => {
               ),
             },
             userInfo: i.userInfo,
+            is_bug: i.is_bug,
+            project_type: i.project_type,
           }))
         : [],
       pager: response.data.pager,
@@ -555,6 +567,8 @@ export const getMemberInfoCreateStory: any = async (params: any) => {
             ),
           },
           userInfo: i.userInfo,
+          is_bug: i.is_bug,
+          project_type: i.project_type,
         }))
       : [],
     pager: response.data.pager,
@@ -634,6 +648,8 @@ export const getMemberInfoFinishStory: any = async (params: any) => {
             ),
           },
           userInfo: i.userInfo,
+          is_bug: i.is_bug,
+          project_type: i.project_type,
         }))
       : [],
     pager: response.data.pager,

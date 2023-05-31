@@ -544,6 +544,8 @@ export const getMineNoFinishList: any = async (params: any) => {
               ),
             },
             userInfo: i.userInfo,
+            is_bug: i.is_bug,
+            project_type: i.project_type,
           }))
         : [],
     }))
@@ -593,6 +595,8 @@ export const getMineNoFinishList: any = async (params: any) => {
               ),
             },
             userInfo: i.userInfo,
+            is_bug: i.is_bug,
+            project_type: i.project_type,
             isExamine: i.verify_lock === 1,
             ...i.custom_field,
           }))
@@ -677,6 +681,8 @@ export const getMineCreacteList: any = async (params: any) => {
             ),
           },
           userInfo: i.userInfo,
+          is_bug: i.is_bug,
+          project_type: i.project_type,
         }))
       : [],
     pager: response.data.pager,
@@ -758,6 +764,8 @@ export const getMineFinishList: any = async (params: any) => {
             ),
           },
           userInfo: i.userInfo,
+          is_bug: i.is_bug,
+          project_type: i.project_type,
         }))
       : [],
     pager: response.data.pager,
@@ -838,6 +846,8 @@ export const getMineNeedList: any = async (params: any) => {
             ),
           },
           userInfo: i.userInfo,
+          is_bug: i.is_bug,
+          project_type: i.project_type,
           isExamine: i.verify_lock === 1,
           ...i.custom_field,
         }))
@@ -990,6 +1000,8 @@ export const getVerifyUserList: any = async (params: any) => {
       projectId: i.project_id,
       storyPrefixKey: i.story_prefix_key,
       userInfo: i.userInfo,
+      is_bug: i.is_bug,
+      project_type: i.project_type,
     })),
   }
 }
@@ -1029,6 +1041,8 @@ export const getVerifyList: any = async (params: any) => {
       projectId: i.project_id,
       storyPrefixKey: i.story_prefix_key,
       userInfo: i.userInfo,
+      is_bug: i.is_bug,
+      project_type: i.project_type,
     })),
   }
 }

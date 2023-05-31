@@ -141,7 +141,8 @@ const OperationGroup = (props: Props) => {
   return (
     <SpaceWrap size={8} style={{ marginLeft: 8 }}>
       {(location.pathname.includes('Demand') ||
-        location.pathname.includes('Affair')) && (
+        location.pathname.includes('Affair') ||
+        location.pathname.includes('Defect')) && (
         <>
           <ViewPort pid={projectId} type={1} />
           <DividerWrap type="vertical" />

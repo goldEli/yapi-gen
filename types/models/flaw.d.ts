@@ -233,6 +233,17 @@ declare namespace Model.Flaw {
     attachment_id: number
   }
 
+  interface Severity {
+    id: number
+    content: string
+    sort: number
+    color: string
+    icon: string
+    identity: string
+    content_txt: string
+    group_content_txt: string
+  }
+
   interface ListItem {
     id: number
     name: string
@@ -273,6 +284,11 @@ declare namespace Model.Flaw {
     category_config_list: CategoryConfigList
     story_prefix_key: string
     work_type: WorkType
+    project_type: 1 | 2
+    severity: Severity
+    discovery_version_name: string
+    discovery_version: null | number
+    solution: string
   }
 
   interface ChildStoryStatistics {
@@ -321,6 +337,7 @@ declare namespace Model.Flaw {
     level_tree?: Hierarchy[]
     categoryName: string | number
     child_story_statistics: ChildStoryStatistics
+    project_type: 1 | 2
   }
 
   interface FlawInfoResult {
@@ -375,6 +392,7 @@ declare namespace Model.Flaw {
     hierarchy?: Hierarchy[]
     level_tree?: Hierarchy[]
     child_story_statistics: ChildStoryStatistics
+    project_type: 1 | 2
   }
 
   // 1：迭代-需求类型，2：迭代-缺陷类型，3：冲刺-长故事事务类型，4：冲刺-标准事务类型，5：冲刺-故障事务类型 6-子任务

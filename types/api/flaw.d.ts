@@ -169,7 +169,7 @@ declare namespace API.Flaw {
   namespace UpdateFlawCategory {
     type Params = {
       projectId: number
-      sprintId?: number
+      id?: number
       categoryId: number
       statusId: number
     }
@@ -177,14 +177,14 @@ declare namespace API.Flaw {
   namespace UpdateFlawPriority {
     type Params = {
       projectId: number
-      sprintId?: number
+      id?: number
       priorityId: number
     }
   }
   namespace AddInfoFlaw {
     type Params = {
       projectId: number
-      sprintId?: number
+      id?: number
       targetId:
         | Model.Flaw.AttachTarget[]
         | { name: string; color: string }[]
@@ -196,14 +196,14 @@ declare namespace API.Flaw {
   namespace GetFlawStatusLog {
     type Params = {
       projectId: number
-      sprintId: number
+      id: number
       all: boolean
     }
   }
   namespace GetFlawChangeLog {
     type Params = {
       projectId: number
-      sprintId: number
+      id: number
       pageSize: number
       page: number
       orderKey: string
@@ -222,7 +222,7 @@ declare namespace API.Flaw {
   namespace AddFlawComment {
     type Params = {
       projectId: number
-      sprintId: number
+      id: number
       content: string
       attachment?: Model.Flaw.AddFlawCommentAttach[]
       a_user_ids?: (string | null)[]
@@ -252,24 +252,20 @@ declare namespace API.Flaw {
       endTime: string
       usersNameId: number[]
       copySendId: number[]
-      parentId: number
-      all: boolean
-      panel: boolean
+      parentId?: number
       class_ids: number[]
-      class_id: number
+      class_id?: number
       category_id: number
       schedule_start: number | string
       schedule_end: number | string
       custom_field: Model.Flaw.CustomFiledInfo
-      tree: boolean | number
-      topParentId: number
-      system_view: number | string
+      system_view?: number | string
       pageSize: number
       page: number
       orderKey: string
       order: string
       isChildren?: boolean
-      usersInfo: Model.Flaw.ListUsersInfo[]
+      usersInfo?: Model.Flaw.ListUsersInfo[]
     }
     type SelectResult = Model.Flaw.ListItem[]
     type Result = {
@@ -285,7 +281,7 @@ declare namespace API.Flaw {
   namespace GetFlawInfo {
     type Params = {
       projectId: number
-      sprintId?: number
+      id?: number
     }
 
     type Result = Model.Flaw.FlawInfoResult
@@ -293,7 +289,7 @@ declare namespace API.Flaw {
 
   namespace GetFlawCommentList {
     type Params = {
-      sprintId: number
+      id: number
       projectId: number
       page: number
       pageSize: number

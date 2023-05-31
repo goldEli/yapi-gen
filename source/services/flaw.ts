@@ -1,4 +1,5 @@
 /* eslint-disable no-undefined */
+import { filterTreeData, transData } from '@/tools'
 import * as http from '@/tools/http'
 
 // 删除缺陷
@@ -12,53 +13,6 @@ export const deleteFlaw = async (params: {
     id: params.id,
     is_delete_childs: params.isDeleteChild,
   })
-}
-
-// 处理缺陷列表数据
-const getListItem = (array: any, params: API.Flaw.GetFlawList.Params) => {
-  return array?.map((i: any) => ({
-    id: i.id,
-    name: i.name,
-    demand: i.child_story_count,
-    priority: i.priority,
-    iteration: i.iterate_name,
-    status: i.status,
-    dealName: i.users_name || '--',
-    time: i.created_at,
-    expectedStart: i.expected_start_at,
-    expectedEnd: i.expected_end_at,
-    info: i.info,
-    userIds: i.user_id,
-    iterateId: i.iterate_id,
-    parentId: i.parent_id,
-    finishTime: i.finish_at,
-    updatedTime: i.updated_at,
-    usersCopySendName: i.users_copysend_name,
-    userName: i.user_name,
-    tag: i.tag,
-    isExamine: i.verify_lock === 1,
-    category: i.category,
-    class: i.class,
-    schedule: i.schedule,
-    ...i.custom_field,
-    categoryColor: i.category_color,
-    categoryRemark: i.category_remark,
-    category_attachment: i.category_attachment,
-    categoryId: i.category_id,
-    project_id: i.project_id,
-    usersNameIds: i.users_name_ids,
-    usersCopySendIds: i.users_copysend_name_ids,
-    allChildrenCount: i.all_child_story_count,
-    allChildrenIds: i.all_child_ids,
-    children: getListItem(i.children, params) || null,
-    level: i.level,
-    isExpended: true,
-    topId: params?.parentId ?? params?.topParentId,
-    categoryConfigList: i.category_config_list,
-    storyPrefixKey: i.story_prefix_key,
-    work_type: i.work_type,
-    usersInfo: i.usersInfo,
-  }))
 }
 
 // 纯数组-缺陷列表
@@ -84,16 +38,12 @@ export const getFlawSelectList = async (
         users_name: params?.usersNameId,
         users_copysend_name: params?.copySendId,
         parent_id: params?.parentId,
-        all: params?.all ? 1 : 0,
-        panel: params?.panel ? 1 : 0,
         class_ids: params.class_ids,
         class_id: params.class_id,
         category_id: params.category_id,
         schedule_start: params.schedule_start,
         schedule_end: params.schedule_end,
         custom_field: params?.custom_field,
-        tree: params?.tree || 0,
-        top_parent_id: params?.topParentId,
         system_view: params?.system_view,
       },
       pagesize: params?.pageSize,
@@ -144,16 +94,12 @@ export const getFlawList = async (params: API.Flaw.GetFlawList.Params) => {
         users_name: params?.usersNameId,
         users_copysend_name: params?.copySendId,
         parent_id: params?.parentId,
-        all: params?.all ? 1 : 0,
-        panel: params?.panel ? 1 : 0,
         class_ids: params.class_ids,
         class_id: params.class_id,
         category_id: params.category_id,
         schedule_start: params.schedule_start,
         schedule_end: params.schedule_end,
         custom_field: params?.custom_field,
-        tree: params?.tree || 0,
-        top_parent_id: params?.topParentId,
         system_view: params?.system_view,
       },
       pagesize: params?.pageSize,
@@ -163,11 +109,6 @@ export const getFlawList = async (params: API.Flaw.GetFlawList.Params) => {
     },
   )
 
-  if (params?.isChildren) {
-    return {
-      list: getListItem(response.data, params),
-    }
-  }
   return {
     currentPage: params.page,
     pageSize: params.pageSize,
@@ -206,14 +147,18 @@ export const getFlawList = async (params: API.Flaw.GetFlawList.Params) => {
       category_attachment: i.category_attachment,
       allChildrenCount: i.all_child_story_count,
       allChildrenIds: i.all_child_ids,
-      children: getListItem(i.children, params) || null,
-      isExpended: params.topParentId === i.id,
       level: 1,
       topId: i.id,
       categoryConfigList: i.category_config_list,
       storyPrefixKey: i.story_prefix_key,
       work_type: i.work_type,
       usersInfo: i.usersInfo,
+      is_bug: i.is_bug,
+      project_type: i.project_type,
+      solution: i.solution,
+      discovery_version_name: i.discovery_version_name,
+      severity: i.severity,
+      discovery_version: i.discovery_version,
     })),
   }
 }
@@ -224,7 +169,7 @@ export const getFlawInfo = async (params: API.Flaw.GetFlawInfo.Params) => {
     'getFlawInfo',
     {
       project_id: params.projectId,
-      id: params.sprintId,
+      id: params.id,
     },
   )
 
@@ -264,6 +209,7 @@ export const getFlawInfo = async (params: API.Flaw.GetFlawInfo.Params) => {
     level_tree: response.data.level_tree,
     categoryName: response.data.category,
     child_story_statistics: response.data.child_story_statistics,
+    project_type: response.data.project_type,
   }
 }
 
@@ -275,7 +221,7 @@ export const getFlawCommentList = async (
     'getFlawCommentList',
     {
       search: {
-        story_id: params.sprintId,
+        story_id: params.id,
         project_id: params.projectId,
       },
       page: params.page,
@@ -303,7 +249,7 @@ export const addFlawComment = async (
 ) => {
   await http.post<any>('addFlawComment', {
     project_id: params.projectId,
-    story_id: params.sprintId,
+    story_id: params.id,
     content: params.content,
     attachment: params.attachment,
     a_user_ids: params.a_user_ids,
@@ -341,7 +287,7 @@ export const getFlawChangeLog = async (
     'getFlawChangeLog',
     {
       search: {
-        story_id: params.sprintId,
+        story_id: params.id,
         project_id: params.projectId,
       },
       pagesize: params.pageSize,
@@ -371,7 +317,7 @@ export const getFlawStatusLog = async (
 ) => {
   const response = await http.get<any>('getFlawStatusLog', {
     search: {
-      story_id: params.sprintId,
+      story_id: params.id,
       project_id: params.projectId,
       all: params?.all ? 1 : 0,
     },
@@ -430,7 +376,7 @@ export const getFlawStatusLog = async (
 export const addInfoFlaw = async (params: API.Flaw.AddInfoFlaw.Params) => {
   await http.put<any>('addInfoFlaw', {
     project_id: Number(params.projectId),
-    id: Number(params.sprintId),
+    id: Number(params.id),
     target: params.targetId,
     type: params.type,
   })
@@ -440,7 +386,7 @@ export const addInfoFlaw = async (params: API.Flaw.AddInfoFlaw.Params) => {
 export const deleteInfoFlaw = async (params: API.Flaw.AddInfoFlaw.Params) => {
   await http.put<any>('deleteInfoFlaw', {
     project_id: Number(params.projectId),
-    id: Number(params.sprintId),
+    id: Number(params.id),
     target_id: params.targetId,
     type: params.type,
   })
@@ -461,7 +407,7 @@ export const updateFlawPriority = async (
 ) => {
   await http.put<any>('updateFlawPriority', {
     priority: params.priorityId,
-    id: params.sprintId,
+    id: params.id,
     project_id: params.projectId,
   })
 }
@@ -472,7 +418,7 @@ export const updateFlawCategory = async (
 ) => {
   await http.put<any>('updateFlawCategory', {
     project_id: params.projectId,
-    story_id: params.sprintId,
+    story_id: params.id,
     category_id: params.categoryId,
     status_id: params.statusId,
   })
@@ -669,157 +615,6 @@ export const batchFlawEdit = async (params: API.Flaw.BatchFlawEdit.Params) => {
   })
 }
 
-// 获取子缺陷列表
-export const getFlawChildList = async (
-  params: API.Flaw.GetFlawChildList.Params,
-) => {
-  const response = await http.get<any, API.Flaw.GetFlawChildList.Result>(
-    'getFlawChildList',
-    {
-      project_id: params.projectId,
-      id: params.id,
-      keywords: params.searchValue,
-      page: params.page,
-      pagesize: params.pagesize,
-    },
-  )
-
-  return {
-    currentPage: response.data.pager?.page,
-    pageSize: response.data.pager?.pagesize,
-    total: response.data.pager?.total,
-    list: response.data,
-  }
-}
-
-//  下拉添加子缺陷
-export const addFlawChild = async (params: API.Flaw.AddFlawChild.Params) => {
-  await http.post<any>('addFlawChild', {
-    project_id: params.projectId,
-    id: params.id,
-    child_id: params.childId,
-  })
-}
-
-// 子缺陷拖拽排序
-export const flawChildDragSort = async (
-  params: API.Flaw.FlawChildDragSort.Params,
-) => {
-  await http.post<any>('flawChildDragSort', {
-    project_id: params.projectId,
-    id: params.id,
-    children_ids: params.childrenIds,
-  })
-}
-
-// 搜索查询下拉子缺陷
-export const getFlawSelectChildren = async (
-  params: API.Flaw.GetFlawSelectChildren.Params,
-) => {
-  const response = await http.get<any, API.Flaw.GetFlawSelectChildren.Result>(
-    'getFlawSelectChildren',
-    {
-      project_id: params.projectId,
-      id: params.id,
-      keywords: params.keywords,
-    },
-  )
-
-  return response.data
-}
-
-// 最近子缺陷查询
-export const getFlawSelectChildrenRecent = async (
-  params: API.Flaw.GetFlawSelectChildrenRecent.Params,
-) => {
-  const response = await http.get<any>('getFlawSelectChildrenRecent', {
-    project_id: params.projectId,
-    id: params.id,
-  })
-  return response.data
-}
-
-// 获取链接缺陷列表
-export const getFlawRelationStoriesList = async (
-  params: API.Flaw.GetFlawRelationList.Params,
-) => {
-  const response = await http.get<any, API.Flaw.GetFlawRelationList.Result>(
-    'getFlawRelationStoriesList',
-    {
-      project_id: params.projectId,
-      id: params.id,
-    },
-  )
-
-  return {
-    list: response.data,
-  }
-}
-
-//  添加关联缺陷
-export const addFlawRelation = async (
-  params: API.Flaw.AddFlawRelation.Params,
-) => {
-  await http.post<any>('addFlawRelation', {
-    project_id: params.projectId,
-    id: params.id,
-    relation_id: params.relationId,
-    type: params.type,
-  })
-}
-
-// 关联缺陷拖拽排序
-export const flawRelationDragSort = async (
-  params: API.Flaw.FlawRelationDragSort.Params,
-) => {
-  await http.post<any>('flawRelationDragSort', {
-    project_id: params.projectId,
-    id: params.id,
-    relation_ids: params.relationIds,
-    type: params.type,
-  })
-}
-
-// 搜索查询下拉关联缺陷
-export const getFlawSelectRelationSearch = async (
-  params: API.Flaw.GetFlawRelationList.Params,
-) => {
-  const response = await http.get<any, API.Flaw.GetFlawRelationList.Result>(
-    'getFlawSelectRelationSearch',
-    {
-      project_id: params.projectId,
-      id: params.id,
-      keywords: params.searchValue,
-    },
-  )
-
-  return response.data
-}
-
-// 最近子缺陷查询
-export const getFlawSelectRelationRecent = async (
-  params: API.Flaw.GetFlawRelationList.Params,
-) => {
-  const response = await http.get<any, API.Flaw.GetFlawRelationList.Result>(
-    'getFlawSelectRelationRecent',
-    {
-      project_id: params.projectId,
-      id: params.id,
-    },
-  )
-  return response.data
-}
-
-// 创建子缺陷-快捷
-export const addQuickFlaw = async (params: API.Flaw.AddQuickAffair.Params) => {
-  await http.post<any>('addFlaw', {
-    project_id: Number(params.projectId),
-    name: params.name,
-    category_id: params?.category_id,
-    parent_id: params?.parent_id || 0,
-  })
-}
-
 // 编辑富文本
 export const updateEditor = async (params: API.Flaw.UpdateEditor.Params) => {
   await http.put<any>('updateFlaw', {
@@ -828,4 +623,294 @@ export const updateEditor = async (params: API.Flaw.UpdateEditor.Params) => {
     id: params.id,
     name: params.name,
   })
+}
+
+// 获取可流转的
+export const getShapeFlawLeft = async (params: any) => {
+  const res = await http.get('getShapeFlawLeft', {
+    project_id: params.id,
+    story_id: params.nId,
+  })
+  return res.data
+}
+
+// 可流转状态配置
+export const getShapeFlawRight = async (params: any) => {
+  const res = await http.get('getShapeFlawRight', {
+    project_id: params.id,
+    story_id: params.nId,
+    category_status_from_id: params.fromId,
+    category_status_to_id: params.toId,
+  })
+
+  const selectData = res.data.fieldsFilterData
+  // 公司
+  const filterCompanyList = selectData.company_user
+
+  // 处理人、抄送人
+
+  const filterMemberList = selectData.project_member
+
+  // console.log(filterMemberList, '处理人、抄送人')
+
+  // 分类
+
+  const treeData = [
+    {
+      name: '全部分类',
+      key: 0,
+      id: 0,
+      pid: 1,
+      parent_id: 0,
+      story_count: res.data[0]?.story_count,
+      children: [
+        {
+          key: -1,
+          name: '未分类',
+          pid: 0,
+          id: -1,
+          story_count: res.data[1]?.story_count,
+        },
+        ...(transData(
+          selectData.class ? selectData.class : [],
+          'id',
+          'parent_id',
+          'children',
+        ) ?? []),
+      ],
+    },
+  ]
+  const filterTreeList = filterTreeData(treeData)
+
+  // 迭代
+
+  const filterIterateList = selectData.iterate_name
+
+  // 标签
+
+  const filterGetTagList = selectData.tag?.map((i: any) => ({
+    id: i.id,
+    name: i.content,
+  }))
+
+  // console.log(filterGetTagList, '标签')
+
+  // 优先级
+
+  const filterGetPriOrStu = selectData.priority?.map((i: any) => ({
+    id: i.id,
+    name: i.content,
+  }))
+
+  // console.log(filterGetPriOrStu, '优先级')
+
+  const filterFieldsList = res.data.fields.map((item: any, index: number) => {
+    if (item.title.includes('时间') && !item.attr) {
+      return {
+        ...item,
+        id: index,
+        name: item.title,
+        key: item.content,
+        content: item.content,
+        type: 'time',
+      }
+    } else if (item.content.includes('users_name') && !item.attr) {
+      return {
+        ...item,
+        id: item.id,
+        name: item.title,
+        key: item.content,
+        content: item.content,
+        children: [...filterMemberList],
+        type: 'select_checkbox',
+        isDefault: item.is_default_filter,
+        contentTxt: item.content_txt,
+      }
+    } else if (item.content.includes('users_copysend_name') && !item.attr) {
+      return {
+        ...item,
+        id: item.id,
+        name: item.title,
+        key: item.content,
+        content: item.content,
+        children: [...filterCompanyList],
+        type: 'select_checkbox',
+        isDefault: item.is_default_filter,
+        contentTxt: item.content_txt,
+      }
+    } else if (item.content.includes('class') && !item.attr) {
+      return {
+        ...item,
+        id: item.id,
+        name: item.title,
+        key: item.content,
+        content: item.content,
+        children: filterTreeList,
+        type: 'tree',
+        isDefault: item.is_default_filter,
+        contentTxt: item.content_txt,
+      }
+    } else if (item.content.includes('iterate_name') && !item.attr) {
+      return {
+        ...item,
+        id: item.id,
+        name: item.title,
+        key: item.content,
+        content: item.content,
+        children: filterIterateList,
+        type: 'select',
+        isDefault: item.is_default_filter,
+        contentTxt: item.content_txt,
+      }
+    } else if (item.content.includes('tag') && !item.attr) {
+      return {
+        ...item,
+        id: item.id,
+        name: item.title,
+        key: item.content,
+        content: item.content,
+        children: filterGetTagList,
+        type: 'tag',
+        isDefault: item.is_default_filter,
+        contentTxt: item.content_txt,
+      }
+    } else if (item.content.includes('priority') && !item.attr) {
+      return {
+        ...item,
+        id: item.id,
+        name: item.title,
+        key: item.content,
+        content: item.content,
+        children: filterGetPriOrStu,
+        type: 'select',
+        isDefault: item.is_default_filter,
+        contentTxt: item.content_txt,
+      }
+    } else if (item.title.includes('需求进度') && !item.attr) {
+      return {
+        ...item,
+        id: item.id,
+        name: item.title,
+        key: item.content,
+        content: item.content,
+        children: item.values,
+        type: 'number',
+        isDefault: item.is_default_filter,
+        contentTxt: item.content_txt,
+      }
+    } else if (item.content.includes('comment') && !item.attr) {
+      return {
+        ...item,
+        id: item.id,
+        name: item.title,
+        key: item.content,
+        content: item.content,
+        children: item.values,
+        type: 'area',
+        isDefault: item.is_default_filter,
+        contentTxt: item.content_txt,
+      }
+    } else if (item.attr) {
+      if (item.attr === 'date') {
+        return {
+          ...item,
+          id: index,
+          name: item.title,
+          key: item.content,
+          content: item.content,
+          dvalue: item.true_value,
+          type: item.value[0],
+        }
+      }
+
+      // 这里操作人员
+
+      if (item.attr === 'user_select') {
+        if (item.value[0] === 'projectMember') {
+          return {
+            ...item,
+            id: index,
+            name: item.title,
+            key: item.content,
+            content: item.content,
+            dvalue: item.true_value,
+            type: 'select',
+            children: [...filterMemberList],
+          }
+        }
+        if (item.value[0] === 'companyMember') {
+          return {
+            ...item,
+            id: index,
+            name: item.title,
+            key: item.content,
+            content: item.content,
+            dvalue: item.true_value,
+            type: 'select',
+            children: [...filterCompanyList],
+          }
+        }
+      }
+      if (item.attr === 'user_select_checkbox') {
+        if (item.value[0] === 'projectMember') {
+          return {
+            ...item,
+            id: index,
+            name: item.title,
+            key: item.content,
+            content: item.content,
+            dvalue: item.true_value,
+            type: 'select_checkbox',
+            children: [...filterMemberList],
+          }
+        }
+        if (item.value[0] === 'companyMember') {
+          return {
+            ...item,
+            id: index,
+            name: item.title,
+            key: item.content,
+            content: item.content,
+            dvalue: item.true_value,
+            type: 'select_checkbox',
+            children: [...filterCompanyList],
+          }
+        }
+      }
+      return {
+        ...item,
+        id: index,
+        name: item.title,
+        key: item.content,
+        content: item.content,
+        type: item.attr,
+        dvalue: item.true_value,
+        children: item?.value
+          ? item?.value?.map((k: any) => ({
+              name: k,
+              id: k,
+            }))
+          : [],
+      }
+    }
+
+    return {
+      ...item,
+      id: index,
+      name: item.title,
+      key: item.content,
+      content: item.content,
+
+      type: 'select',
+    }
+  })
+
+  const obj = {
+    fields: filterFieldsList,
+    verify: res.data.verify,
+    is_verify: res.data.is_verify === 1,
+    user_has_auth: res.data.user_has_auth,
+    originalStatusUserIds: res.data.originalStatusUserIds,
+  }
+  return obj
 }
