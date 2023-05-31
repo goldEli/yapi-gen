@@ -42,6 +42,15 @@ export const getKanban = async (
   return response
 }
 
+export const updateStoryPriority = async (
+  params: API.Kanban.UpdateStoryPriority.Params,
+) => {
+  await http.put<any, API.Kanban.UpdateStoryPriority.Result>(
+    'changeTableParams',
+    params,
+  )
+}
+
 export const getStoryViewList = async (
   params: Pick<API.Kanban.GetStoryViewList.Params, 'project_id'>,
 ) => {
