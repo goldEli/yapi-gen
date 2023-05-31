@@ -24,7 +24,7 @@ interface StatusModalProps {
   // 关闭弹窗
   onClose(): void
   // 每条数据
-  record: any
+  record?: any
   // 修改状态接口
   onChangeStatusConfirm(value: any): void
 }
@@ -324,8 +324,8 @@ const StatusModal = (props: StatusModalProps) => {
     }
     await form.validateFields()
     const params = {
-      projectId: props.record.project_id,
-      nId: props.record.id,
+      projectId: props?.record?.project_id,
+      nId: props?.record?.id,
       toId: props.checkStatusItem.id,
       fields: res,
       verifyId: reviewerValue,

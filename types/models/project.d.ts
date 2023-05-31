@@ -1,10 +1,10 @@
 declare namespace Model.Project {
   interface CheckStatusItem {
     // 可流转的状态列表
-    canChange: string[]
+    canChange?: string[]
     content: string
     // 处理人 例：'张三;李四'
-    dealName: string
+    dealName?: string
     // 来自id状态名称
     fromContent: string
     // 流转名称

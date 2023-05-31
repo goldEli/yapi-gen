@@ -215,7 +215,37 @@ Y:\project\敏捷系统\scrum\source\components\CustomSelect
 
 ### 三个点下拉操作组件
 
-Y:\project\敏捷系统\scrum\source\components\MoreDropdown.tsx
+```js
+// Y:\project\敏捷系统\scrum\source\components\MoreDropdown.tsx
+const menu = (item: any) => (
+  <Menu
+    items={[
+      {
+        key: '1',
+        label: (
+          <div onClick={e => onClickMenu(e, 'edit', item)}>
+            {t('common.edit')}
+          </div>
+        ),
+      },
+      {
+        key: '2',
+        label: (
+          <div onClick={e => onClickMenu(e, 'delete', item)}>
+            {t('common.del')}
+          </div>
+        ),
+      },
+    ]}
+  />
+)
+ <MoreDropdown
+  isHidden={item.type === 1}
+  isMoreVisible={isMoreVisible}
+  onChangeVisible={setIsMoreVisible}
+  menu={menu(item)}
+/>
+```
 
 ### dropdown 下拉组件
 

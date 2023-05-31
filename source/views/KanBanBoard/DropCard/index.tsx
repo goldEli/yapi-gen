@@ -71,7 +71,7 @@ const DropCard: React.FC<DropCardProps> = props => {
       }}
       onMouseUp={e => {
         console.log(props.source, props.target)
-        if (!movingStory) {
+        if (!movingStory || !props.source || !props.target) {
           console.error('movingStory is null')
           return
         }
@@ -80,6 +80,8 @@ const DropCard: React.FC<DropCardProps> = props => {
             groupId: movingStory?.groupId,
             columnId: movingStory?.columnId,
             storyId: movingStory?.story.id,
+            source: props.source,
+            target: props.target,
           }),
         )
       }}
