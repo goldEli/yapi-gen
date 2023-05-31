@@ -84,17 +84,14 @@ const WrapIcon = styled(IconFont)`
 interface IssueCardProps {
   item: Model.KanBan.Story
   index: number
-  groupId: Model.SprintKanBan.IssuesGroup['groupId']
+  // groupId-columnId-storyId
+  uuid: string
 }
 
 const IssueCard = (props: IssueCardProps) => {
   const { item, index } = props
   return (
-    <Draggable
-      key={item.id}
-      draggableId={handleId(props.groupId, item.id)}
-      index={index}
-    >
+    <Draggable key={item.id} draggableId={props.uuid} index={index}>
       {provided => (
         <div
           ref={provided.innerRef}

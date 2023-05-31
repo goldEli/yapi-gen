@@ -26,6 +26,11 @@ type SliceState = {
     groupName: string
     id?: number
   }
+  modifyStatusModalInfo: {
+    visible: boolean
+    storyId?: Model.KanBan.Story['id']
+    info?: Model.Project.CheckStatusItem
+  }
   kanbanInfo: Model.KanBan.Column[]
   kanbanInfoByGroup: Model.KanBan.Group[]
   kanbanConfig?: Model.KanbanConfig.Config
@@ -43,6 +48,9 @@ const initialState: SliceState = {
   kanbanConfigList: [],
   kanbanInfo: [],
   kanbanInfoByGroup: [],
+  modifyStatusModalInfo: {
+    visible: false,
+  },
   userGroupingModelInfo: {
     visible: false,
     userList: [],
@@ -78,6 +86,18 @@ const slice = createSlice({
   name: 'kanBan',
   initialState,
   reducers: {
+    setModifyStatusModalInfo(
+      state,
+      action: PayloadAction<SliceState['modifyStatusModalInfo']>,
+    ) {
+      state.modifyStatusModalInfo = action.payload
+    },
+    setKanbanInfoByGroup(
+      state,
+      action: PayloadAction<SliceState['kanbanInfoByGroup']>,
+    ) {
+      state.kanbanInfoByGroup = action.payload
+    },
     // setViewItemConfig(
     //   state,
     //   action: PayloadAction<SliceState['viewItemConfig']>,
@@ -194,6 +214,8 @@ export const {
   setShareModelInfo,
   setUserGroupingModelInfo,
   setMovingStory,
+  setKanbanInfoByGroup,
+  setModifyStatusModalInfo,
 } = slice.actions
 
 export default kanBan
