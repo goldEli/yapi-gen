@@ -31,11 +31,10 @@ interface SelectItem {
   value: number
 }
 
-const LinkSprint = () => {
+const LinkSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
   const [form] = Form.useForm()
   const [isVisible, setIsVisible] = useState(false)
   const [searchValue, setSearchValue] = useState('')
-  const { affairsInfo } = useSelector(store => store.affairs)
   const { projectInfo } = useSelector(store => store.project)
   const [pageParams, setPageParams] = useState({ page: 1, pagesize: 20 })
   // 下拉数据
@@ -137,7 +136,7 @@ const LinkSprint = () => {
   }) => {
     // const response = await getAffairsRelationStoriesList({
     //   projectId: projectInfo.id,
-    //   id: affairsInfo.id,
+    //   id: props.detail.id,
     //   ...page,
     // })
     // setAllDataSource(response)
@@ -285,7 +284,6 @@ const LinkSprint = () => {
       },
     ]
     const newArr = JSON.parse(JSON.stringify(typeList))
-    console.log(newArr)
     newArr.forEach((element: any) => {
       response.forEach((i: any) => {
         if (i.pivot?.type === element.value) {
@@ -300,7 +298,7 @@ const LinkSprint = () => {
   const getSelectRelationSearch = async () => {
     const response = await getAffairsSelectRelationSearch({
       projectId: projectInfo.id,
-      id: affairsInfo.id,
+      id: props.detail.id,
     })
     setSelectList(
       response.map((i: Model.Affairs.AffairsInfo) => ({
@@ -314,7 +312,7 @@ const LinkSprint = () => {
   const getSelectRelationRecent = async () => {
     const response = await getAffairsSelectRelationRecent({
       projectId: projectInfo.id,
-      id: affairsInfo.id,
+      id: props.detail.id,
     })
     setRecentList(
       response.map((i: Model.Affairs.AffairsInfo) => ({
@@ -344,7 +342,7 @@ const LinkSprint = () => {
     await addAffairsRelation({
       ...values,
       projectId: projectInfo.id,
-      id: affairsInfo.id,
+      id: props.detail.id,
     })
     getMessage({ type: 'success', msg: '添加成功' })
     getRelationStoriesList(pageParams)
@@ -370,18 +368,18 @@ const LinkSprint = () => {
     )
     await affairsRelationDragSort({
       projectId: projectInfo.id,
-      id: affairsInfo.id,
+      id: props.detail.id,
       relationIds: data.list.map((i: Model.Affairs.AffairsInfo) => i.id),
       type: item.value,
     })
   }
 
   useEffect(() => {
-    if (projectInfo.id && affairsInfo.id) {
+    if (projectInfo.id && props.detail.id) {
       // 获取链接事务列表
       getRelationStoriesList(pageParams)
     }
-  }, [affairsInfo, projectInfo])
+  }, [props.detail, projectInfo])
 
   return (
     <InfoItem id="sprint-linkSprint" className="info_item_tab">

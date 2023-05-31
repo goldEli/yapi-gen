@@ -14,7 +14,13 @@ import {
   Second,
   TextWrap,
 } from './style'
-import { useEffect, useRef, useState } from 'react'
+import {
+  createRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react'
 import CommonUserAvatar from '../CommonUserAvatar'
 import { useSelector } from '@store/index'
 import IconFont from '../IconFont'
@@ -23,7 +29,7 @@ import { OmitText } from '@star-yun/ui'
 import { Editor, EditorRef } from '@xyfe/uikit'
 import { fileIconMap } from '../UploadAttach'
 import Viewer from 'react-viewer'
-import { bytesToSize } from '@/tools'
+import { bytesToSize, removeNull } from '@/tools'
 import NoData from '../NoData'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { Space } from 'antd'
@@ -38,11 +44,20 @@ const CommentEditor = (props: CommentEditorProps) => {
   const editorRef = useRef<EditorRef>(null)
   const [isEditInfo, setIsEditInfo] = useState(false)
   const [editInfo, setEditInfo] = useState('')
+  const { projectInfoValues } = useSelector(store => store.project)
 
   // 富文本失焦
   const onBlurEditor = async () => {
     setIsEditInfo(false)
     props.onEditComment(editInfo)
+  }
+
+  // 只读编辑
+  const onReadonlyClick = () => {
+    setIsEditInfo(true)
+    setTimeout(() => {
+      editorRef.current?.focus()
+    }, 10)
   }
 
   useEffect(() => {
@@ -52,21 +67,25 @@ const CommentEditor = (props: CommentEditorProps) => {
           ? props.item.content
           : `<p>${props.item.content}</p>`,
       )
+      if (props.item.isEdit) {
+        onReadonlyClick()
+      }
     }
   }, [props.item])
 
   return (
     <Editor
       at
+      ref={editorRef}
       value={editInfo}
-      getSuggestions={() => []}
+      getSuggestions={removeNull(projectInfoValues, 'user_name')?.map(
+        (k: any) => ({
+          label: k.content,
+          id: k.id,
+        }),
+      )}
       readonly={!isEditInfo}
-      onReadonlyClick={() => {
-        setIsEditInfo(true)
-        setTimeout(() => {
-          editorRef.current?.focus()
-        }, 0)
-      }}
+      onReadonlyClick={onReadonlyClick}
       onChange={(value: string) => setEditInfo(value)}
       onBlur={onBlurEditor}
     />
@@ -90,6 +109,10 @@ const CommonComment = (props: CommonCommentProps) => {
     imageArray: [],
     index: 0,
   })
+  const [dataSource, setDataSource] = useState<{
+    list: Model.Affairs.CommentListInfo[]
+  }>()
+
   // 判断当前登录的人是否有编辑评论的权限
   const isComment =
     projectInfo?.projectPermissions?.filter(
@@ -157,13 +180,29 @@ const CommonComment = (props: CommonCommentProps) => {
     // getList()
   }
 
+  // 点击编辑评论按钮
+  const onEdit = (item: Model.Affairs.CommentListInfo) => {
+    const result =
+      dataSource?.list.map((i: Model.Affairs.CommentListInfo) => ({
+        ...i,
+        isEdit: i.id === item.id ? true : false,
+      })) || []
+    setDataSource({ list: result })
+  }
+
+  useEffect(() => {
+    setDataSource({
+      list: props.data.list || [],
+    })
+  }, [props.data])
+
   return (
     <div>
       <DeleteConfirmModal />
-      {!!props.data?.list &&
-        (props.data?.list?.length > 0 ? (
+      {!!dataSource?.list &&
+        (dataSource?.list?.length > 0 ? (
           <div>
-            {props.data?.list?.map((item: any) => (
+            {dataSource?.list?.map((item: any) => (
               <CommentItem key={item.id}>
                 <CommonUserAvatar avatar={item.avatar} />
                 <TextWrap>
@@ -173,7 +212,7 @@ const CommonComment = (props: CommonCommentProps) => {
                         <CloseWrap
                           width={24}
                           height={24}
-                          // onClick={() => onEditComment(item)}
+                          onClick={() => onEdit(item)}
                         >
                           <IconFont type="edit" style={{ fontSize: 16 }} />
                         </CloseWrap>

@@ -5,13 +5,6 @@ declare namespace API.Affairs {
       id: number
       content: string
       storyId: number
-      attachment?: {
-        url: string
-        ctime: string
-        name: string
-        ext: string
-        size: number
-      }
       ids: (string | null)[]
     }
   }
@@ -58,6 +51,7 @@ declare namespace API.Affairs {
     type Params = {
       projectId: number
       id?: number
+      keywords?: string
     }
     type Result = Model.Affairs.AffairsInfo[]
   }
