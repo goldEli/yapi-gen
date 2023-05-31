@@ -106,11 +106,15 @@ const Head = styled.div`
   flex: 8;
 `
 const Center = styled.div`
+  padding: 0 24px;
   display: flex;
+  gap: 24px;
   flex: 7;
 `
 
 const CenterRight = styled.div`
+  box-shadow: 0px 0px 7px 1px rgba(0, 0, 0, 0.06);
+  border-radius: 6px 6px 6px 6px;
   box-sizing: border-box;
   padding: 24px;
   flex: 1;
@@ -141,7 +145,6 @@ const TimeLineWrap = styled.div`
   height: 320px;
   padding-top: 25px;
   padding-left: 16px;
-  box-shadow: 0px 0px 7px 1px rgba(0, 0, 0, 0.06);
 `
 const LineItem = styled.div`
   display: flex;
@@ -417,7 +420,7 @@ const Profile = () => {
                 <Timeline
                   style={{
                     overflowY: 'scroll',
-                    height: '280px',
+                    height: '367px',
                     overflowX: 'hidden',
                     padding: '10px 10px 0 0',
                   }}
