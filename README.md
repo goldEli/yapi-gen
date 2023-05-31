@@ -291,7 +291,7 @@ return <>{AddUserModalElement}<>
 
 import { Editor } from '@xyfe/uikit'
 
-````ts类型
+```js
 
 interface Props {
   onReadonlyClick?(): void
@@ -323,7 +323,9 @@ interface Props {
         label: ReactNode
       }[]
 }
-```组件引用
+```
+
+```js
  <Editor
         onBlur={() => {
           console.log('失焦')
@@ -355,4 +357,4 @@ interface Props {
         }}
         upload={}
       />
-````
+```
