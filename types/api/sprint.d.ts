@@ -217,6 +217,48 @@ declare namespace API.Sprint {
     }
   }
   namespace DelSprintItem {
-    type id = number
+    type Params = {
+      id: number
+    }
+  }
+
+  namespace CompleteSprint {
+    type Params = {
+      project_id: number
+      id: number
+      finish_at: string
+      result?: string | undefined
+      move_type: number
+      move_target: number
+    }
+  }
+  namespace getLeftSprintList {
+    interface searchParams {
+      all: number
+      sprint_status: number
+      project_id: number
+    }
+    type Params = {
+      order: string
+      orderkey: string
+      search: searchParams
+      is_long_story: number
+    }
+    type Result = Model.Sprint.SprintleftList[]
+  }
+  namespace getLongStoryList {
+    type Params = {
+      order: string
+      orderkey: string
+      search: {
+        all: number
+        sprint_status: number
+        project_id: number
+      }
+      is_long_story: number
+    }
+    type Result = {
+      list: Model.Sprint.LongStory[]
+    }
   }
 }

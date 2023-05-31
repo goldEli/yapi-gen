@@ -24,6 +24,7 @@ import {
   addInfoAffairs,
   addAffairsComment,
   deleteInfoAffairs,
+  updateEditor,
 } from '@/services/affairs'
 import { useSearchParams } from 'react-router-dom'
 import { getIdsForAt, getParamsData, removeNull } from '@/tools'
@@ -52,7 +53,7 @@ const SprintDetailInfo = () => {
   const [isEditInfo, setIsEditInfo] = useState(false)
   const [tabActive, setTabActive] = useState('sprint-info')
   const [isScroll, setIsScroll] = useState(false)
-  const [info, setInfo] = useState('')
+  const [editInfo, setEditInfo] = useState('')
 
   const onBottom = () => {
     const dom: any = LeftDom?.current
@@ -75,7 +76,6 @@ const SprintDetailInfo = () => {
       targetId: [obj],
     })
     dispatch(getAffairsInfo({ projectId: id, sprintId }))
-    onBottom()
   }
 
   //   确认删除附件事件
@@ -88,7 +88,6 @@ const SprintDetailInfo = () => {
     })
     dispatch(getAffairsInfo({ projectId: id, sprintId }))
     getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-    // onBottom()
   }
 
   //   删除附件弹窗
@@ -179,9 +178,19 @@ const SprintDetailInfo = () => {
     setTabActive(arr[arr.length - 1])
   }
 
-  // 富文本回车
-  const onBlurEditor = () => {
-    console.log(info, '富文本')
+  // 富文本失焦
+  const onBlurEditor = async () => {
+    setIsEditInfo(false)
+
+    if (editInfo === affairsInfo.info) return
+    const params = {
+      info: editInfo,
+      projectId: id,
+      id: affairsInfo.id,
+      name: affairsInfo.name,
+    }
+    await updateEditor(params)
+    dispatch(getAffairsInfo({ projectId: id, sprintId }))
   }
 
   useEffect(() => {
@@ -192,7 +201,7 @@ const SprintDetailInfo = () => {
         name: i.tag?.content,
       })),
     )
-    setInfo(affairsInfo.info || '')
+    setEditInfo(affairsInfo.info || '')
   }, [affairsInfo])
 
   useEffect(() => {
@@ -222,9 +231,9 @@ const SprintDetailInfo = () => {
             }}
           >
             <Label>描述</Label>
-            {info ? (
+            {editInfo ? (
               <Editor
-                value={info}
+                value={editInfo}
                 getSuggestions={() => []}
                 readonly={!isEditInfo}
                 ref={editorRef}
@@ -234,7 +243,7 @@ const SprintDetailInfo = () => {
                     editorRef.current?.focus()
                   }, 0)
                 }}
-                onChange={(value: string) => setInfo(value)}
+                onChange={(value: string) => setEditInfo(value)}
                 onBlur={onBlurEditor}
               />
             ) : (

@@ -14,13 +14,13 @@ import {
   Second,
   TextWrap,
 } from './style'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import CommonUserAvatar from '../CommonUserAvatar'
 import { useSelector } from '@store/index'
 import IconFont from '../IconFont'
 import { CloseWrap, HiddenText } from '../StyleCommon'
 import { OmitText } from '@star-yun/ui'
-import { Editor } from '@xyfe/uikit'
+import { Editor, EditorRef } from '@xyfe/uikit'
 import { fileIconMap } from '../UploadAttach'
 import Viewer from 'react-viewer'
 import { bytesToSize } from '@/tools'
@@ -30,13 +30,56 @@ import { Space } from 'antd'
 
 const imgs = ['png', 'webp', 'jpg', 'jpeg', 'png', 'gif']
 
+interface CommentEditorProps {
+  item: any
+  onEditComment(value: string): void
+}
+const CommentEditor = (props: CommentEditorProps) => {
+  const editorRef = useRef<EditorRef>(null)
+  const [isEditInfo, setIsEditInfo] = useState(false)
+  const [editInfo, setEditInfo] = useState('')
+
+  // 富文本失焦
+  const onBlurEditor = async () => {
+    setIsEditInfo(false)
+    props.onEditComment(editInfo)
+  }
+
+  useEffect(() => {
+    if (props.item.id) {
+      setEditInfo(
+        /(?<start>^<p>*)|(?<end><\p>*$)/g.test(props.item.content)
+          ? props.item.content
+          : `<p>${props.item.content}</p>`,
+      )
+    }
+  }, [props.item])
+
+  return (
+    <Editor
+      at
+      value={editInfo}
+      getSuggestions={() => []}
+      readonly={!isEditInfo}
+      onReadonlyClick={() => {
+        setIsEditInfo(true)
+        setTimeout(() => {
+          editorRef.current?.focus()
+        }, 0)
+      }}
+      onChange={(value: string) => setEditInfo(value)}
+      onBlur={onBlurEditor}
+    />
+  )
+}
+
 interface CommonCommentProps {
   data: {
     list: Model.Affairs.CommentListInfo[]
   }
   onDeleteConfirm(id: number): void
+  onEditComment?(value: string, id: number): void
 }
-
 const CommonComment = (props: CommonCommentProps) => {
   const [t]: any = useTranslation()
   const { open, DeleteConfirmModal } = useDeleteConfirmModal()
@@ -181,16 +224,12 @@ const CommonComment = (props: CommonCommentProps) => {
                   <div className="common" style={{ paddingRight: 30 }}>
                     {item.createdTime}
                   </div>
-                  <Editor
-                    value={
-                      /(?<start>^<p>*)|(?<end><\p>*$)/g.test(item.content)
-                        ? item.content
-                        : `<p>${item.content}</p>`
+                  <CommentEditor
+                    item={item}
+                    onEditComment={value =>
+                      props.onEditComment?.(value, item.id)
                     }
-                    getSuggestions={() => []}
-                    readonly
                   />
-
                   {item.attachment?.length > 0 && (
                     <div
                       style={{

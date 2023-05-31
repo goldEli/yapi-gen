@@ -6,6 +6,8 @@ import {
   updateSprintInfo,
 } from '@/services/sprint'
 import { css } from '@emotion/css'
+import { useDispatch } from '@store/index'
+import { setSprintRefresh } from '@store/sprint'
 import { Form, Input } from 'antd'
 import moment from 'moment'
 import { useEffect, useRef } from 'react'
@@ -34,6 +36,7 @@ const CreateSprintModal = (props: sprintProps) => {
   const { type, visible, onClose, projectId, editId } = props
   const [t]: any = useTranslation()
   const [form] = Form.useForm()
+  const dispatch = useDispatch()
   const initNumber = useRef(0)
   const getTitle = (val: string) => {
     if (val === 'create') {
@@ -51,10 +54,13 @@ const CreateSprintModal = (props: sprintProps) => {
     return ''
   }
 
-  const onClear = () => {
+  const onClear = (isFresh?: boolean) => {
     initNumber.current = 0
     form.resetFields()
     onClose()
+    if (isFresh) {
+      dispatch(setSprintRefresh(1))
+    }
   }
 
   const onConfirm = async () => {
@@ -78,7 +84,7 @@ const CreateSprintModal = (props: sprintProps) => {
             msg: '创建成功',
             type: 'success',
           })
-          onClear()
+          onClear(true)
         } else {
           getMessage({
             msg: result?.message,
@@ -86,7 +92,7 @@ const CreateSprintModal = (props: sprintProps) => {
           })
         }
       }
-      if (type === 'edit') {
+      if (type === 'edit' || type === 'start') {
         const result: any = await updateSprintInfo({
           id: editId as any,
           project_id: projectId,
@@ -104,7 +110,7 @@ const CreateSprintModal = (props: sprintProps) => {
             msg: '编辑成功',
             type: 'success',
           })
-          onClear()
+          onClear(true)
         } else {
           getMessage({
             msg: result?.message,
@@ -153,7 +159,7 @@ const CreateSprintModal = (props: sprintProps) => {
   }
 
   useEffect(() => {
-    if (editId && type === 'edit' && visible) {
+    if (editId && (type === 'edit' || type === 'start') && visible) {
       getSprintInfo()
     }
   }, [editId, visible])
@@ -163,7 +169,7 @@ const CreateSprintModal = (props: sprintProps) => {
       title={getTitle(type)}
       width={528}
       isVisible={visible}
-      onClose={() => onClose()}
+      onClose={() => onClear(false)}
       onConfirm={onConfirm}
       children={
         <div className={content}>
@@ -180,7 +186,7 @@ const CreateSprintModal = (props: sprintProps) => {
               name="name"
               rules={[{ required: true, message: '请输入冲刺名称' }]}
             >
-              <Input placeholder="新建的冲刺1" />
+              <Input placeholder="新建的冲刺1" maxLength={150} />
             </Form.Item>
             <Form.Item
               label="持续时间"
@@ -191,7 +197,12 @@ const CreateSprintModal = (props: sprintProps) => {
               <ChooseDate initNumber={initNumber} />
             </Form.Item>
             <Form.Item label="冲刺目标" name="info">
-              <Input placeholder="请输入" />
+              <Input.TextArea
+                showCount
+                maxLength={300}
+                autoSize={{ minRows: 1, maxRows: 5 }}
+                placeholder="请输入"
+              />
             </Form.Item>
           </Form>
         </div>

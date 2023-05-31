@@ -39,3 +39,12 @@ export const getRightSprintList = createAsyncThunk(
     return res
   },
 )
+// 获取所以的长故事列表
+
+export const getLongStoryList = createAsyncThunk(
+  `${name}/getLongStoryList`,
+  async (params: API.Sprint.getLongStoryList.Params) => {
+    const res = await services.sprint.getLongStroyList(params)
+    return res.data.list
+  },
+)
