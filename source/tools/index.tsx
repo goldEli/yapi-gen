@@ -10,6 +10,7 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import { decryptPhp } from './cryptoPhp'
 import dayjs from 'dayjs'
+import { FAULT_MAPS } from '../constants/index'
 import {
   Select,
   Input,
@@ -408,6 +409,38 @@ function mapToArray(res: props) {
       const item = res[key]
       array.push({ date: key, list: item })
     })
+  return array
+}
+// 筛选故障的类别
+export const filterCategory = (
+  work_type: number | undefined,
+  data: any,
+  fieldType?: any,
+  ids?: string[],
+) => {
+  console.log(fieldType, ids)
+  let array: any = data?.filter((item: { title: string }) => {
+    if (work_type !== 2 && work_type !== 5) {
+      return !FAULT_MAPS.includes(item.title)
+    }
+    return true
+  })
+  if (ids) {
+    const { is_customize, content } = fieldType
+    array = array?.filter((item: { is_customize: number; attr: string }) => {
+      if (is_customize && !content) {
+        return item.is_customize === is_customize
+      }
+      if (content && !is_customize) {
+        return item.attr === content
+      }
+      if (is_customize && is_customize) {
+        return item.attr === content && item.is_customize === is_customize
+      }
+      return true
+    })
+    return array
+  }
   return array
 }
 function getIdsForAt(htmlString: string) {

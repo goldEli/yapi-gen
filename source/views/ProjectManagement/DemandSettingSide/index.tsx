@@ -16,7 +16,6 @@ import {
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import EditCategory from './EditCategory'
-import { storyConfigCategoryList } from '@store/category/thunk'
 import {
   AllWrap,
   MenuBox,
@@ -35,7 +34,11 @@ import {
 import Dragging from './Dragging'
 import { setStartUsing } from '@store/category'
 // eslint-disable-next-line no-duplicate-imports
-import { getCategoryConfigList } from '@store/category/thunk'
+import {
+  getCategoryConfigList,
+  storyConfigCategoryList,
+} from '@store/category/thunk'
+import { setCategoryWorkType } from '@store/project'
 import {
   setActiveCategory,
   setCategoryConfigDataList,
@@ -396,6 +399,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
                     list={item.children}
                     setList={setList}
                     onClick={(i: number, child: any) => {
+                      dispatch(setCategoryWorkType(child.work_type))
                       dispatch(
                         getCategoryConfigList({
                           projectId: projectId,
