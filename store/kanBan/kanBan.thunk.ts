@@ -10,6 +10,7 @@ import {
   setSortByRowAndStatusOptions,
   setUserGroupingModelInfo,
   setKanbanInfoByGroup,
+  setMovingStory,
   // setViewItemConfig,
 } from '.'
 import { getMessage } from '@/components/Message'
@@ -19,7 +20,6 @@ import { onTapSearchChoose, saveValue } from '@store/view'
 import { generatorFilterParams } from './utils'
 import _ from 'lodash'
 import { Options } from '@/components/SelectOptionsNormal'
-import { DropResult } from 'react-beautiful-dnd'
 import { produce } from 'immer'
 
 const name = 'kanBan'
@@ -41,7 +41,9 @@ export const modifyStatus =
       const index = stories.findIndex(item => item.id === options.storyId)
       stories.splice(index, 1)
     })
-    dispatch(setKanbanInfoByGroup(data))
+    await dispatch(setKanbanInfoByGroup(data))
+
+    dispatch(setMovingStory(null))
   }
 
 // 人员分组看板排序
