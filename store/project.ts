@@ -22,6 +22,7 @@ export interface CounterState {
     visible: boolean
     params?: Model.Project.AddQuickSprintParams
   }
+  work_type?: number
 }
 
 const initialState: CounterState = {
@@ -129,6 +130,9 @@ export const projectSlice = createSlice({
         ...action.payload,
       }
     },
+    setCategoryWorkType(state, action: PayloadAction<number>) {
+      state.work_type = action.payload
+    },
   },
   extraReducers(builder) {
     //
@@ -147,6 +151,7 @@ export const {
   setAddWorkItemModal,
   onChangeGuideVisible,
   setAddQuickSprintModal,
+  setCategoryWorkType,
 } = projectSlice.actions
 
 export default projectSlice.reducer

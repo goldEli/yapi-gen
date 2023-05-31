@@ -88,4 +88,12 @@ declare namespace API.Kanban {
         }
     type Result = Model.KanBan.ViewItem
   }
+  namespace UpdateStoryPriority {
+    type Params = {
+      project_id: number
+      id: Model.KanBan.Story['id']
+      priority: Model.KanBan.Group['id']
+    }
+    type Result = null
+  }
 }

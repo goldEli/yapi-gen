@@ -9,6 +9,8 @@ import { modifyStatus } from '@store/kanBan/kanBan.thunk'
 interface DropCardProps {
   source?: Model.KanbanConfig.Status
   target?: Model.KanbanConfig.Status
+  groupId: Model.KanBan.Group['id']
+  columnId: Model.KanBan.Column['id']
 }
 
 const DropCardBox = styled.div<{ active?: boolean }>`
@@ -79,6 +81,8 @@ const DropCard: React.FC<DropCardProps> = props => {
           modifyStatus({
             groupId: movingStory?.groupId,
             columnId: movingStory?.columnId,
+            targetColumnId: props.columnId,
+            targetGroupId: props.groupId,
             storyId: movingStory?.story.id,
             source: props.source,
             target: props.target,

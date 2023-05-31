@@ -101,7 +101,7 @@ const DelBtnText = styled.span`
 const Sortable = (props: any) => {
   const [t] = useTranslation()
   const { list } = props
-  console.log('---------', list)
+
   const { option } = useSelector(store => store.category)
   const [current, setCurrent] = useState<any>(null)
   const [endIndex, setEndIndex] = useState<any>(null)

@@ -11,6 +11,7 @@ import { ReactI18NextChild, useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import EditCategory from './EditCategory'
 import { storyConfigCategoryList } from '@store/category/thunk'
+import { setCategoryWorkType } from '@store/project'
 import {
   AllWrap,
   MenuBox,
@@ -370,6 +371,7 @@ const ProjectDetailSide = (props: { onClick(): void; onBack(): void }) => {
                     list={item.children}
                     setList={setList}
                     onClick={(i: number, child: any) => {
+                      dispatch(setCategoryWorkType(child.work_type))
                       dispatch(
                         getCategoryConfigList({
                           projectId: projectId,

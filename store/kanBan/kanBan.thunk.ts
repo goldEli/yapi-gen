@@ -27,11 +27,15 @@ const name = 'kanBan'
 
 // 打开修改状态弹窗
 export const openModifyStatusModalInfo =
-  (params: Model.Project.CheckStatusItem) => async (dispatch: AppDispatch) => {
+  (params: {
+    info: Model.Project.CheckStatusItem
+    storyId: Model.KanBan.Story['id']
+  }) =>
+  async (dispatch: AppDispatch) => {
     dispatch(
       setModifyStatusModalInfo({
         visible: true,
-        info: params,
+        ...params,
       }),
     )
   }
@@ -52,7 +56,7 @@ export const saveModifyStatusModalInfo =
     const { modifyStatusModalInfo } = store.getState().kanBan
     const res = await services.affairs.updateAffairsStatus({
       ...params,
-      nId: modifyStatusModalInfo.info?.id,
+      nId: modifyStatusModalInfo.storyId,
       projectId: getParamsValueByKey('id'),
     })
 
@@ -63,6 +67,8 @@ export const modifyStatus =
   (options: {
     columnId: Model.KanBan.Column['id']
     groupId: Model.KanBan.Group['id']
+    targetColumnId: Model.KanBan.Column['id']
+    targetGroupId: Model.KanBan.Group['id']
     storyId: Model.KanBan.Story['id']
     source: Model.KanbanConfig.Status
     target: Model.KanbanConfig.Status
@@ -76,35 +82,44 @@ export const modifyStatus =
           .find(item => item.id === options.groupId)
           ?.columns.find(item => item.id === options.columnId)?.stories ?? []
       const index = stories.findIndex(item => item.id === options.storyId)
-      stories.splice(index, 1)
+      const [removed] = stories.splice(index, 1)
+      const targetStories =
+        draft
+          .find(item => item.id === options.targetGroupId)
+          ?.columns.find(item => item.id === options.targetColumnId)?.stories ??
+        []
+      targetStories.unshift(removed)
     })
+    dispatch(setKanbanInfoByGroup(data))
     dispatch(
       openModifyStatusModalInfo({
-        // 可流转的状态列表
-        content: target.status_name,
-        // 来自id状态名称
-        fromContent: source.status_name,
-        // 流转名称
-        statusName: '123',
-        // 来自id
-        fromId: source.flow_status_id,
-        // 来自id是否是结束状态
-        fromIsEnd: source.is_end,
-        // 来自id是否是开始状态
-        fromIsStart: source.is_start,
-        // 流转到id
-        id: target.flow_status_id,
-        // 需求id、事务id、缺陷id
-        infoId: storyId,
-        // 流转到id是否是结束状态
-        is_end: target.is_end,
-        // 流转到id是否是结束状态
-        is_start: target.is_start,
-        // 项目id
-        projectId: getParamsValueByKey('id'),
+        storyId,
+        info: {
+          // 可流转的状态列表
+          content: target.status_name,
+          // 来自id状态名称
+          fromContent: source.status_name,
+          // 流转名称
+          statusName: '123',
+          // 来自id
+          fromId: source.flow_status_id,
+          // 来自id是否是结束状态
+          fromIsEnd: source.is_end,
+          // 来自id是否是开始状态
+          fromIsStart: source.is_start,
+          // 流转到id
+          id: target.flow_status_id,
+          // 需求id、事务id、缺陷id
+          infoId: storyId,
+          // 流转到id是否是结束状态
+          is_end: target.is_end,
+          // 流转到id是否是结束状态
+          is_start: target.is_start,
+          // 项目id
+          projectId: getParamsValueByKey('id'),
+        },
       }),
     )
-    await dispatch(setKanbanInfoByGroup(data))
 
     dispatch(setMovingStory(null))
   }

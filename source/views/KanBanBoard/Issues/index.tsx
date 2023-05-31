@@ -43,7 +43,7 @@ const Issues: React.FC<IssuesProps> = props => {
     groupId,
   )
   const content = showStateTransitionList ? (
-    <DropCardList list={data} />
+    <DropCardList list={data} groupId={groupId} columnId={issues.id} />
   ) : (
     issues.stories?.map((story, index) => {
       const uuid = `${groupId}-${issues.id}-${story.id}`

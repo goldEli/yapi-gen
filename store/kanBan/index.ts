@@ -28,6 +28,7 @@ type SliceState = {
   }
   modifyStatusModalInfo: {
     visible: boolean
+    storyId?: Model.KanBan.Story['id']
     info?: Model.Project.CheckStatusItem
   }
   kanbanInfo: Model.KanBan.Column[]
