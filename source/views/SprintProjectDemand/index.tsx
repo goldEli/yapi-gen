@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from '@store/index'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getCategoryConfigList } from '@store/category/thunk'
+import { setCategoryWorkType } from '@store/project'
 import NoData from '@/components/NoData'
 import CommonBreadCrumd from '@/components/CommonBreadcrumd'
 const Wrap = styled.div`
@@ -69,6 +70,9 @@ const DemandSetting = () => {
       ? setIsNoData(true)
       : setIsNoData(false)
   }, [getCategoryConfigDataList?.configDataList])
+  useEffect(() => {
+    dispatch(setCategoryWorkType(3))
+  }, [])
   return (
     <PermissionWrap
       auth={

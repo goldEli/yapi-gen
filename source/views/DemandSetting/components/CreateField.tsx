@@ -10,7 +10,7 @@ import * as services from '@/services'
 import { useDispatch, useSelector } from '@store/index'
 import ProjectDragging from './ProDragging'
 import { setProjectFieIdsData } from '@store/category'
-
+import { filterCategory } from '@/tools'
 const CreateFieldWrap = styled.div`
   margin: 20px 0 0 0px;
   border-left: 1px solid var(--neutral-n6-d1);
@@ -101,6 +101,7 @@ const CreateField = () => {
     return { is_customize: '', content: '' }
   })
   const [cacheSearchlist, setCacheSearchlist] = useState<any>()
+  const { work_type } = useSelector(state => state.project)
   const option = [
     {
       label: t('newlyAdd.lineText'),
@@ -155,9 +156,10 @@ const CreateField = () => {
     setDataList(
       payloadList?.filter((item: any) => !filterIds?.includes(item.id)),
     )
-    setSearchDataList(
-      payloadList?.filter((item: any) => !filterIds?.includes(item.id)),
+    const data = payloadList?.filter(
+      (item: any) => !filterIds?.includes(item.id),
     )
+    setSearchDataList(filterCategory(work_type, data))
     setCacheSearchlist(
       payloadList?.filter((item: any) => !filterIds?.includes(item.id)),
     )
@@ -186,11 +188,10 @@ const CreateField = () => {
     getProjectFieIdsApi()
   }, [activeCategory])
   useEffect(() => {
-    console.log(11111, cacheSearchlist, fieldType)
-    const data = cacheSearchlist?.filter(
-      (item: any) => item.is_customize === fieldType.is_customize,
+    const ids = option.map(item => item.type)
+    setSearchDataList(
+      filterCategory(work_type, cacheSearchlist, fieldType, ids),
     )
-    setSearchDataList(data)
   }, [fieldType])
   return (
     <CreateFieldWrap draggable="false">
@@ -277,6 +278,7 @@ const CreateField = () => {
             style={{ width: 100 }}
             bordered={false}
             placeholder="所以字段"
+            allowClear
             options={[
               {
                 value: 2,
@@ -288,7 +290,6 @@ const CreateField = () => {
               },
             ]}
             onChange={e => {
-              console.log(e)
               setFieldType((p: any) => {
                 return { ...p, is_customize: e }
               })
@@ -299,11 +300,14 @@ const CreateField = () => {
             style={{ width: 100 }}
             bordered={false}
             placeholder="所有类型"
+            allowClear
             options={option}
             onChange={e => {
-              console.log(e, option)
               setFieldType((p: any) => {
-                return { ...p, content: e }
+                return {
+                  ...p,
+                  content: option.find(item => item.value === e)?.type,
+                }
               })
             }}
           />
