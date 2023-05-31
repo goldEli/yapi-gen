@@ -48,6 +48,15 @@ export const closeModifyStatusModalInfo =
         visible: false,
       }),
     )
+
+    /**
+     * 看板数据更新后，卡片的位置没有更新，手动触发滚动条触发
+     */
+    const dom = document.querySelector('#kanbanContainer')
+    if (!dom) return
+    // 获取元素滚动条的当前位置
+    var scrollPosition = dom?.scrollTop
+    dom.scrollTop = scrollPosition + 1
   }
 // 状态改变同步到服务端
 export const saveModifyStatusModalInfo =

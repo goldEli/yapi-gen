@@ -54,7 +54,10 @@ const useDropData = (
   const disableDrop = React.useMemo(() => {
     // 如果是人员分组 只能在同组拖动
     if (groupType === 'users') {
-      return movingStory?.groupId !== groupId
+      return !(
+        movingStory?.groupId === groupId && movingStory?.columnId === columnId
+      )
+      // return movingStory?.groupId !== groupId
     }
     return false
   }, [groupType, columnId, movingStory, groupId])
