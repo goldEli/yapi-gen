@@ -126,7 +126,7 @@ const ProjectInfo = () => {
     <Wrap>
       <div style={{ marginBottom: '0px', width: 400 }}>
         {/* <CategoryDropdown projectId={605} mode="multiple"></CategoryDropdown> */}
-        {/* <LongStroyBread></LongStroyBread> */}
+        <LongStroyBread></LongStroyBread>
       </div>
       <InfoLeft>
         <Title>{t('v2_1_1.projectInformation')}</Title>

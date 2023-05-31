@@ -94,3 +94,13 @@ export const delSprintItem = async (params: API.Sprint.DelSprintItem.id) => {
   const response = await http.delete('delSprintItem', params)
   return response
 }
+
+export const getLongStroyList = async (
+  params: API.Sprint.getLongStoryList.Params,
+) => {
+  const response = await http.get<any, API.Sprint.getLongStoryList.Result>(
+    'getLongStoryList',
+    params,
+  )
+  return response
+}

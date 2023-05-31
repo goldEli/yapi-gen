@@ -18,7 +18,7 @@ export const getCategoryConfigList = async (params: any) => {
       project_id: params.projectId,
     },
   )
-
+  console.log('response----', response)
   return response.data?.map((i: any) => ({
     id: i.id,
     categoryId: i.category_id,
@@ -32,6 +32,7 @@ export const getCategoryConfigList = async (params: any) => {
     isCustomize: i.is_customize,
     fieldContent: i.field_content,
     remarks: i.remarks,
+    attr: i.attr,
   }))
 }
 

@@ -12,8 +12,10 @@ export const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  position: relative;
+  position: absolute;
   z-index: 999;
+  left: 0px;
+  top: 20px;
 `
 export const SearchBox = styled.div`
   /* border: 1px solid red; */

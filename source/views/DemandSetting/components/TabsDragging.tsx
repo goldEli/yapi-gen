@@ -61,6 +61,7 @@ const ItemList = styled.div`
 `
 
 const ListMsg = styled.div`
+  flex: 1;
   div:nth-child(1) {
     font-size: 14px;
     color: var(--neutral-n1-d1);
@@ -107,6 +108,52 @@ const Sortable = (props: any) => {
   const container: any = useRef()
   const [dragItem, setDragItem] = useState<any>()
   let timer: any = null
+  const optionFields = [
+    {
+      label: t('newlyAdd.lineText'),
+      value: '1',
+      type: 'text',
+      icon: 'text-alone',
+    },
+    {
+      label: t('newlyAdd.moreLineText'),
+      value: '2',
+      type: 'textarea',
+      icon: 'text-more',
+    },
+    {
+      label: t('newlyAdd.radioDropdown'),
+      value: '3',
+      type: 'select',
+      icon: 'select-alone',
+    },
+    {
+      label: t('newlyAdd.multiDropdown'),
+      value: '4',
+      type: 'select_checkbox',
+      icon: 'select-more',
+    },
+    { label: t('newlyAdd.time'), value: '7', type: 'date', icon: 'calendar' },
+    { label: t('newlyAdd.number'), value: '8', type: 'number', icon: 'number' },
+    {
+      label: t('version2.personRadio'),
+      value: '9',
+      type: 'user_select',
+      icon: 'user-alone',
+    },
+    {
+      label: t('version2.personCheckbox'),
+      value: '10',
+      type: 'user_select_checkbox',
+      icon: 'user-more',
+    },
+    {
+      label: t('confirm_that_it_is_checked'),
+      value: '11',
+      type: 'single_checkbox',
+      icon: 'check-circle',
+    },
+  ]
   // 拖动传值
   const onDragStart = (ev: any, index: number, item: any) => {
     localStorage.className = ref?.current?.className
@@ -251,6 +298,16 @@ const Sortable = (props: any) => {
                           )}
                         </div>
                       </ListMsg>
+                      <div style={{ flex: 1 }}>
+                        {' '}
+                        {
+                          optionFields.find(ele => ele.type === child.attr)
+                            ?.label
+                        }
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        {child?.is_customize === 2 ? '系统字段' : '自定义字段'}
+                      </div>
                     </div>
                     <RightOperate>
                       {child?.content === 'users_name' ||
@@ -292,7 +349,7 @@ const Sortable = (props: any) => {
                 </Tooltip>
               ) : (
                 <ItemList>
-                  <div style={{ display: 'flex' }}>
+                  <div style={{ display: 'flex', width: '100%' }}>
                     <IconBox>
                       <CommonIconFont
                         type={
@@ -317,6 +374,13 @@ const Sortable = (props: any) => {
                         )}
                       </div>
                     </ListMsg>
+                    <div style={{ flex: 1 }}>
+                      {optionFields.find(ele => ele.type === child.attr)?.label}
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      {' '}
+                      {child?.is_customize === 2 ? '系统字段' : '自定义字段'}
+                    </div>
                   </div>
                   <RightOperate>
                     <Checkbox
