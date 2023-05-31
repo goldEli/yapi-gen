@@ -48,6 +48,15 @@ export const closeModifyStatusModalInfo =
         visible: false,
       }),
     )
+
+    /**
+     * 看板数据更新后，卡片的位置没有更新，手动触发滚动条触发
+     */
+    const dom = document.querySelector('#kanbanContainer')
+    if (!dom) return
+    // 获取元素滚动条的当前位置
+    var scrollPosition = dom?.scrollTop
+    dom.scrollTop = scrollPosition + 1
   }
 // 状态改变同步到服务端
 export const saveModifyStatusModalInfo =
@@ -123,9 +132,47 @@ export const modifyStatus =
 
     dispatch(setMovingStory(null))
   }
+// 同列修改优先级
+export const modifyPriority =
+  (options: {
+    sourceColumnId: Model.KanBan.Column['id']
+    sourceGroupId: Model.KanBan.Group['id']
 
-// 人员分组看板排序
-export const sortStoryInUserGrouping =
+    targetColumnId: Model.KanBan.Column['id']
+    targetGroupId: Model.KanBan.Group['id']
+    startIndex: number
+    targetIndex: number
+  }) =>
+  async (dispatch: AppDispatch) => {
+    const {
+      sourceColumnId,
+      sourceGroupId,
+
+      targetColumnId,
+      targetGroupId,
+      startIndex,
+      targetIndex,
+    } = options
+    const { kanbanInfoByGroup } = store.getState().kanBan
+    const data = produce(kanbanInfoByGroup, draft => {
+      const sourceStories =
+        draft
+          .find(item => item.id === sourceGroupId)
+          ?.columns.find(item => item.id === sourceColumnId)?.stories ?? []
+      const [removed] = sourceStories.splice(startIndex, 1)
+      const targetStories =
+        draft
+          .find(item => item.id === targetGroupId)
+          ?.columns.find(item => item.id === targetColumnId)?.stories ?? []
+
+      targetStories.splice(targetIndex, 0, removed)
+    })
+    console.log(data)
+    dispatch(setKanbanInfoByGroup(data))
+  }
+
+// 同组同列排序
+export const sortStory =
   (options: {
     storyId: Model.KanBan.Story['id']
     columnId: Model.KanBan.Column['id']
@@ -143,7 +190,36 @@ export const sortStoryInUserGrouping =
       const [removed] = stories.splice(options.startIndex, 1)
       stories.splice(options.destinationIndex, 0, removed)
     })
-    dispatch(setKanbanInfoByGroup(data))
+    await dispatch(setKanbanInfoByGroup(data))
+    dispatch(
+      sortStoryServer({
+        kanban_column_id: options.columnId,
+      }),
+    )
+  }
+
+// 更新排序同步到服务端
+export const sortStoryServer =
+  (
+    options: Pick<API.Kanban.ModifyKanbanIssueSort.Params, 'kanban_column_id'>,
+  ) =>
+  async (dispatch: AppDispatch) => {
+    const { kanbanInfoByGroup } = store.getState().kanBan
+    const ids: number[] = []
+    kanbanInfoByGroup.forEach(group => {
+      group.columns.forEach(column => {
+        if (column.id === options.kanban_column_id) {
+          ids.push(...column.stories.map(story => story.id))
+        }
+      })
+    })
+    const params: API.Kanban.ModifyKanbanIssueSort.Params = {
+      kanban_column_id: options.kanban_column_id,
+      story_ids: ids,
+      project_id: getParamsValueByKey('id'),
+    }
+    await services.kanban.modifyKanbanIssueSort(params)
+    dispatch(getKanbanByGroup())
   }
 
 // 打开分组弹窗

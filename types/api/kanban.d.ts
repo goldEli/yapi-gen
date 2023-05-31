@@ -50,7 +50,8 @@ declare namespace API.Kanban {
   // modifyKanbanIssueSort
   namespace ModifyKanbanIssueSort {
     type Params = {
-      kanban_config_id: Model.KanbanConfig.Config['id']
+      project_id: number
+      kanban_column_id: Model.KanbanConfig.Config['id']
       story_ids: Model.KanBan.Story['id'][]
     }
     type Result = null

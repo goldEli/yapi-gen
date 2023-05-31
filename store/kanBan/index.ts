@@ -58,9 +58,9 @@ const initialState: SliceState = {
   },
   sortByGroupOptions: [
     { key: 'none', value: '无', check: false },
-    { key: 'users', value: '按人员', check: true },
+    { key: 'users', value: '按人员', check: false },
     { key: 'category', value: '按类别', check: false },
-    { key: 'priority', value: '按优先级', check: false },
+    { key: 'priority', value: '按优先级', check: true },
   ],
   sortByRowAndStatusOptions: [
     // { key: 'statue', value: '按状态', check: true },

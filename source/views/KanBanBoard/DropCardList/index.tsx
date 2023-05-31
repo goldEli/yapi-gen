@@ -10,18 +10,22 @@ interface DropCardListProps {
   }[]
   groupId: Model.KanBan.Group['id']
   columnId: Model.KanBan.Column['id']
+  hidden?: boolean
 }
 
-const DropCardListBox = styled.div`
+const DropCardListBox = styled.div<{ hidden?: boolean }>`
   width: 100%;
-  display: flex;
+  display: ${props => (props.hidden ? 'none' : 'flex')};
   gap: 8px;
   flex-direction: column;
+  /* position: absolute;
+  top: 0px;
+  left: 0px; */
 `
 
 const DropCardList: React.FC<DropCardListProps> = props => {
   return (
-    <DropCardListBox>
+    <DropCardListBox hidden={props.hidden}>
       {props.list?.map(item => {
         const { source, target } = item
         return (
