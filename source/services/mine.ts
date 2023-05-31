@@ -12,6 +12,15 @@ import { getTreeList } from '@/services/demand'
 import { storyConfigCategoryList } from '@/services/project'
 import { getStaffListAll } from './staff'
 
+//获取工作项接收处理概况
+
+export const getProjectCharts: any = async (params: any) => {
+  const response = await http.get(
+    `/b/efficiency/member/work_handle/${params}/statistics`,
+  )
+  return response
+}
+
 function filterTreeData(data: any) {
   const newData = data.map((item: any) => ({
     title: item.name,

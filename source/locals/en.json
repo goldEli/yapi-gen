@@ -1,4 +1,13 @@
 {
+  "originalArray": {
+    "new": "New backlog workflow ",
+
+    "completed": "Process the workflow ",
+
+    "create": "Create workflow ",
+
+    "verify": "Verify work item"
+  },
   "edit_notification": "Edit notification",
 
   "send_notification": "Send notification",

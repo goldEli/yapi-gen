@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // 我的模块-我的概况
 
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -8,7 +9,7 @@ import { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { ChartsItem, HiddenText, SecondTitle } from '@/components/StyleCommon'
-import { Timeline, message } from 'antd'
+import { Select, Timeline, message } from 'antd'
 import Gantt from '@/components/Gantt'
 import moment from 'moment'
 import IconFont from '@/components/IconFont'
@@ -23,11 +24,13 @@ import { setIsUpdateCreate } from '@store/mine'
 import {
   getMineChartsList,
   getMineGatte,
+  getProjectCharts,
   getUserFeedList,
 } from '@/services/mine'
 import PaginationBox from '@/components/TablePagination'
 import { useNavigate } from 'react-router-dom'
 import { getMessage } from '@/components/Message'
+import LineAnimation from '../components/LineAnimation'
 
 const Mygante = styled(Gantt)`
   min-width: 1000px;
@@ -142,8 +145,12 @@ const Profile = () => {
   asyncSetTtile(t('title.a9'))
 
   const dispatch = useDispatch()
+
   const { isUpdateCreate } = useSelector(store => store.mine)
   const [data, setData] = useState<any>({})
+  const [nowYear, setNowYear] = useState<any>(2023)
+  const [chartData, setChartData] = useState<any>([])
+  const [nowYearOptions, setNowYearOptions] = useState<any>()
   const [gatteData, setGatteData] = useState<any>([])
   const [lineData, setLineData] = useState<any>([])
   const [monthIndex, setMonthIndex] = useState<any>(moment().month())
@@ -225,10 +232,53 @@ const Profile = () => {
     const res = await getMineChartsList()
     setData(res)
   }
+  const changeName = (key: any) => {
+    let name: any
+    switch (key) {
+      case 'new':
+        name = t('originalArray.new')
+        break
+      case 'completed':
+        name = t('originalArray.completed')
+        break
+      case 'create':
+        name = t('originalArray.create')
+        break
+      case 'verify':
+        name = t('originalArray.verify')
+        break
+
+      default:
+        break
+    }
+    return name
+  }
+  const trans = (originalData: any) => {
+    return originalData.flatMap(({ year, month, data }: any) =>
+      Object.entries(data).map(([name, gdp]) => ({
+        name: changeName(name),
+        year: month,
+        gdp,
+      })),
+    )
+  }
+  const getYearList = async () => {
+    const res = await getProjectCharts(nowYear)
+
+    setNowYearOptions(res.data.years)
+
+    console.log(trans(res.data.list), '---')
+
+    setChartData(trans(res.data.list))
+  }
 
   useEffect(() => {
     getFeedList()
   }, [isUpdateCreate])
+
+  useEffect(() => {
+    getYearList()
+  }, [nowYear])
 
   useEffect(() => {
     init()
@@ -272,16 +322,19 @@ const Profile = () => {
   const onChangePage = (page: any, size: number) => {
     setPageObj({ page, size })
   }
-
+  const handleChange = (value: string) => {
+    console.log(`selected ${value}`)
+    setNowYear(value)
+  }
   if (!loadingState) {
     return <Loading />
   }
   return (
     <>
-      <StyledWrap>
+      <div>
         <Head>
           <div>
-            <SecondTitle>{t('mine.basicSurvey')}</SecondTitle>
+            {/* <SecondTitle>{t('mine.basicSurvey')}</SecondTitle> */}
             <InnerWrap>
               <ChartsItem>
                 <span className={titleNumberCss3}>{data?.firstP}</span>
@@ -295,28 +348,23 @@ const Profile = () => {
                 <span className={titleNumberCss3}>{data?.firstD}</span>
                 <span className={titleTextCss}>{t('mine.totalIterate')}</span>
               </ChartsItem>
-            </InnerWrap>
-          </div>
-          <div>
-            <SecondTitle> {t('mine.backLog')}</SecondTitle>
-            <InnerWrap>
-              <ChartsItem style={{ width: '20%' }}>
+              <ChartsItem>
                 <span className={titleNumberCss3}>{data?.secondAll}</span>
                 <span className={titleTextCss}>{t('mine.total')}</span>
               </ChartsItem>
-              <ChartsItem style={{ width: '20%' }}>
+              <ChartsItem>
                 <span className={titleNumberCss3}>{data?.secondNoFinish}</span>
                 <span className={titleTextCss}>{t('mine.needDeal')}</span>
               </ChartsItem>
-              <ChartsItem style={{ width: '20%' }}>
+              <ChartsItem>
                 <span className={titleNumberCss2}>{data?.secondTimeOut}</span>
                 <span className={titleTextCss}>{t('mine.overdue')}</span>
               </ChartsItem>
-              <ChartsItem style={{ width: '20%' }}>
+              <ChartsItem>
                 <span className={titleNumberCss}>{data?.secondFinish}</span>
                 <span className={titleTextCss}>{t('mine.finishOn')}</span>
               </ChartsItem>
-              <ChartsItem style={{ width: '20%' }}>
+              <ChartsItem>
                 <span className={titleNumberCss2}>{data?.secondOutFinish}</span>
                 <span className={titleTextCss}>{t('mine.finishOver')}</span>
               </ChartsItem>
@@ -324,6 +372,25 @@ const Profile = () => {
           </div>
         </Head>
         <Center>
+          <CenterRight>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <SecondTitle>工作项接收处理情况</SecondTitle>
+              <Select
+                onChange={handleChange}
+                defaultValue={nowYear}
+                style={{ width: 120 }}
+                options={nowYearOptions}
+              />
+            </div>
+
+            <LineAnimation data={chartData} />
+          </CenterRight>
           <CenterRight>
             <SecondTitle>{t('mine.mineNews')}</SecondTitle>
             {lineData.length < 1 ? (
@@ -381,7 +448,7 @@ const Profile = () => {
             )}
           </CenterRight>
         </Center>
-      </StyledWrap>
+      </div>
       <GatteWrap>
         <div style={{ padding: '28px 24px 0' }}>
           <SecondTitle>{t('mine.demandGatt')}</SecondTitle>
