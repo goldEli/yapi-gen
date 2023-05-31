@@ -67,6 +67,8 @@ export const modifyStatus =
   (options: {
     columnId: Model.KanBan.Column['id']
     groupId: Model.KanBan.Group['id']
+    targetColumnId: Model.KanBan.Column['id']
+    targetGroupId: Model.KanBan.Group['id']
     storyId: Model.KanBan.Story['id']
     source: Model.KanbanConfig.Status
     target: Model.KanbanConfig.Status
@@ -80,8 +82,15 @@ export const modifyStatus =
           .find(item => item.id === options.groupId)
           ?.columns.find(item => item.id === options.columnId)?.stories ?? []
       const index = stories.findIndex(item => item.id === options.storyId)
-      stories.splice(index, 1)
+      const [removed] = stories.splice(index, 1)
+      const targetStories =
+        draft
+          .find(item => item.id === options.targetGroupId)
+          ?.columns.find(item => item.id === options.targetColumnId)?.stories ??
+        []
+      targetStories.unshift(removed)
     })
+    dispatch(setKanbanInfoByGroup(data))
     dispatch(
       openModifyStatusModalInfo({
         storyId,
@@ -111,7 +120,6 @@ export const modifyStatus =
         },
       }),
     )
-    await dispatch(setKanbanInfoByGroup(data))
 
     dispatch(setMovingStory(null))
   }

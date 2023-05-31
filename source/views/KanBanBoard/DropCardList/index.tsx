@@ -8,6 +8,8 @@ interface DropCardListProps {
     source?: Model.KanbanConfig.Status
     target?: Model.KanbanConfig.Status
   }[]
+  groupId: Model.KanBan.Group['id']
+  columnId: Model.KanBan.Column['id']
 }
 
 const DropCardListBox = styled.div`
@@ -26,6 +28,8 @@ const DropCardList: React.FC<DropCardListProps> = props => {
           <DropCard
             source={source}
             target={target}
+            groupId={props.groupId}
+            columnId={props.columnId}
             key={source?.id + '-' + target?.id}
           />
         )
