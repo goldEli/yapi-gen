@@ -178,6 +178,7 @@ const StaffManagement = () => {
 
   const refresh = debounce(
     async () => {
+      setPage(1)
       getStaffListData()
       getMessage({ msg: t('staff.refreshSuccess'), type: 'success' })
     },
@@ -197,8 +198,8 @@ const StaffManagement = () => {
   }
   const onDel = (id: any) => {
     open({
-      title: '删除确认',
-      text: '确认删除该消息？',
+      title: t('confirmationOfDeletion'),
+      text: t('confirm_to_delete_the_message'),
       async onConfirm() {
         const res = await delSysNotice(id)
 
@@ -209,6 +210,7 @@ const StaffManagement = () => {
             msg: t('common.editSuccess') as string,
             type: 'success',
           })
+          getStaffListData()
           return Promise.resolve()
         }
       },
@@ -216,18 +218,20 @@ const StaffManagement = () => {
   }
   const onRevocation = (id: any) => {
     open({
-      title: '撤回确认',
-      text: '确认撤回该消息？',
+      title: t('retract_confirmation'),
+      text: t('confirm_to_withdraw_the_message'),
       async onConfirm() {
         const res = await recallSysNotice(id)
 
         if (res.code === 0) {
           setHasMore(true)
           setPage(1)
+
           getMessage({
             msg: t('common.editSuccess') as string,
             type: 'success',
           })
+          getStaffListData()
           return Promise.resolve()
         }
       },
@@ -294,7 +298,7 @@ const StaffManagement = () => {
             color: 'var(--neutral-n1-d1)',
           }}
         >
-          通知管理
+          {t('notification_management')}
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -302,7 +306,7 @@ const StaffManagement = () => {
             <InputSearch
               leftIcon
               width={184}
-              placeholder="输入通知内容"
+              placeholder={t('enter_notification_content')}
               onChangeSearch={onPressEnter}
             />
           </div>
@@ -346,9 +350,12 @@ const StaffManagement = () => {
           }}
           type="primary"
         >
-          发送新通知
+          {t('send_new_notification')}
         </CommonButton>
-        <CommonButton type="primaryText"> 定时发送的通知（3）</CommonButton>
+        <CommonButton type="primaryText">
+          {' '}
+          {t('scheduled_notification')}（3）
+        </CommonButton>
       </div>
       <div>
         <InfiniteScroll
