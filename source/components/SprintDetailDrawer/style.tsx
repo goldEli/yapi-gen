@@ -222,3 +222,28 @@ export const DropdownMenu = styled(Dropdown)`
     margin: 4px 16px;
   }
 `
+
+export const DetailFooter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+  padding-left: 24px;
+  background: var(--neutral-white-d5);
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  .textBox {
+    display: flex;
+    flex-direction: column;
+    div {
+      font-size: 12px;
+      color: var(--neutral-n3);
+      margin-bottom: 4px;
+    }
+    span {
+      font-size: 12px;
+      color: var(--neutral-n3);
+    }
+  }
+`

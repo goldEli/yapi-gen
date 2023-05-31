@@ -1,31 +1,11 @@
 import { createRef, useEffect, useRef, useState } from 'react'
-import {
-  DetailInfoWrap,
-  InfoItem,
-  InfoWrap,
-  Label,
-  SprintDetailDragLine,
-  SprintDetailMouseDom,
-  TextWrap,
-} from '../style'
-import { useTranslation } from 'react-i18next'
-import { Editor, EditorRef } from '@xyfe/uikit'
-import { AddWrap } from '@/components/StyleCommon'
-import IconFont from '@/components/IconFont'
-import UploadAttach from '@/components/UploadAttach'
-import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
-import CommonButton from '@/components/CommonButton'
+import { DetailInfoWrap, InfoWrap } from '../style'
 import ChildSprint from './ChildSprint'
 import LinkSprint from './LinkSprint'
 import ActivitySprint from './ActivitySprint'
 import CommentFooter from '@/components/CommonComment/CommentFooter'
 import { useDispatch, useSelector } from '@store/index'
-import {
-  addInfoAffairs,
-  addAffairsComment,
-  deleteInfoAffairs,
-  updateEditor,
-} from '@/services/affairs'
+import { addAffairsComment } from '@/services/affairs'
 import { useSearchParams } from 'react-router-dom'
 import { getIdsForAt, getParamsData, removeNull } from '@/tools'
 import { getMessage } from '@/components/Message'
@@ -33,74 +13,20 @@ import {
   getAffairsCommentList,
   getAffairsInfo,
 } from '@store/affairs/affairs.thunk'
-import SprintTag from '@/components/TagComponent/SprintTag'
 import { Tabs, TabsProps } from 'antd'
+import AffairsDetail from './AffairsDetail'
 
 const SprintDetailInfo = () => {
-  const [t] = useTranslation()
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const { id, sprintId } = paramsData
   const LeftDom = useRef<HTMLDivElement>(null)
-  const editorRef = useRef<EditorRef>(null)
   const commentDom: any = createRef()
-  const { open, DeleteConfirmModal } = useDeleteConfirmModal()
   const { affairsInfo } = useSelector(store => store.affairs)
-  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
-  //   当前删除的附件数据
-  const [tagList, setTagList] = useState<any>([])
-  const [isEditInfo, setIsEditInfo] = useState(false)
+  const { projectInfoValues } = useSelector(store => store.project)
   const [tabActive, setTabActive] = useState('sprint-info')
   const [isScroll, setIsScroll] = useState(false)
-  const [editInfo, setEditInfo] = useState('')
-
-  const onBottom = () => {
-    const dom: any = LeftDom?.current
-    dom.scrollTop = dom.scrollHeight
-  }
-
-  //   添加附件
-  const onAddInfoAttach = async (data: any) => {
-    const obj = {
-      url: data.data.url,
-      name: data.data.files.name,
-      size: data.data.files.size,
-      ext: data.data.files.suffix,
-      ctime: data.data.files.time,
-    }
-    await addInfoAffairs({
-      projectId: id,
-      sprintId,
-      type: 'attachment',
-      targetId: [obj],
-    })
-    dispatch(getAffairsInfo({ projectId: id, sprintId }))
-  }
-
-  //   确认删除附件事件
-  const onDeleteConfirm = async (targetId: number) => {
-    await deleteInfoAffairs({
-      projectId: id,
-      sprintId,
-      type: 'attachment',
-      targetId,
-    })
-    dispatch(getAffairsInfo({ projectId: id, sprintId }))
-    getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-  }
-
-  //   删除附件弹窗
-  const onDeleteInfoAttach = async (file?: any) => {
-    open({
-      title: '删除确认',
-      text: t('p2.del'),
-      onConfirm: () => {
-        onDeleteConfirm(file)
-        return Promise.resolve()
-      },
-    })
-  }
 
   // 提交评论
   const onConfirmComment = async (value: { info: string }) => {
@@ -178,31 +104,10 @@ const SprintDetailInfo = () => {
     setTabActive(arr[arr.length - 1])
   }
 
-  // 富文本失焦
-  const onBlurEditor = async () => {
-    setIsEditInfo(false)
-
-    if (editInfo === affairsInfo.info) return
-    const params = {
-      info: editInfo,
-      projectId: id,
-      id: affairsInfo.id,
-      name: affairsInfo.name,
-    }
-    await updateEditor(params)
+  // 更新
+  const onUpdate = () => {
     dispatch(getAffairsInfo({ projectId: id, sprintId }))
   }
-
-  useEffect(() => {
-    setTagList(
-      affairsInfo?.tag?.map((i: any) => ({
-        id: i.id,
-        color: i.tag?.color,
-        name: i.tag?.content,
-      })),
-    )
-    setEditInfo(affairsInfo.info || '')
-  }, [affairsInfo])
 
   useEffect(() => {
     window?.addEventListener('scroll', handleScroll, true)
@@ -212,114 +117,43 @@ const SprintDetailInfo = () => {
   }, [])
 
   return (
-    <>
-      <DeleteConfirmModal />
-      <InfoWrap>
-        {isScroll && (
-          <Tabs
-            className="tabs"
-            activeKey={tabActive}
-            items={items}
-            onChange={onChangeTabs}
-          />
-        )}
-        <DetailInfoWrap
-          ref={LeftDom}
-          className="sprintDetail_dom"
-          isScroll={isScroll}
-        >
-          <InfoItem
-            className="info_item_tab"
-            id="sprint-info"
-            style={{
-              marginTop: '0px',
-            }}
-          >
-            <Label>描述</Label>
-            {editInfo ? (
-              <Editor
-                value={editInfo}
-                getSuggestions={() => []}
-                readonly={!isEditInfo}
-                ref={editorRef}
-                onReadonlyClick={() => {
-                  setIsEditInfo(true)
-                  setTimeout(() => {
-                    editorRef.current?.focus()
-                  }, 0)
-                }}
-                onChange={(value: string) => setEditInfo(value)}
-                onBlur={onBlurEditor}
-              />
-            ) : (
-              <TextWrap>--</TextWrap>
-            )}
-          </InfoItem>
-          <InfoItem id="sprint-attachment" className="info_item_tab">
-            <Label>{t('common.attachment')}</Label>
-            <div>
-              {projectInfo?.projectPermissions?.filter(
-                (i: any) => i.name === '附件上传',
-              ).length > 0 && (
-                <UploadAttach
-                  onBottom={onBottom}
-                  defaultList={affairsInfo?.attachment?.map((i: any) => ({
-                    url: i.attachment.path,
-                    id: i.id,
-                    size: i.attachment.size,
-                    time: i.created_at,
-                    name: i.attachment.name,
-                    suffix: i.attachment.ext,
-                    username: i.user_name ?? '--',
-                  }))}
-                  canUpdate
-                  onC
-                  del={onDeleteInfoAttach}
-                  add={onAddInfoAttach}
-                  addWrap={
-                    <CommonButton type="primaryText" icon="plus">
-                      添加附件
-                    </CommonButton>
-                  }
-                />
-              )}
-              {projectInfo?.projectPermissions?.filter(
-                (i: any) => i.name === '附件上传',
-              ).length <= 0 && <span>--</span>}
-            </div>
-          </InfoItem>
-          <InfoItem id="sprint-tag" className="info_item_tab">
-            <Label>{t('common.tag')}</Label>
-            <SprintTag
-              defaultList={tagList}
-              canAdd
-              addWrap={
-                <AddWrap hasDash>
-                  <IconFont type="plus" />
-                </AddWrap>
-              }
-            />
-          </InfoItem>
-          <ChildSprint />
-          <LinkSprint />
-          <ActivitySprint />
-        </DetailInfoWrap>
-        <CommentFooter
-          onRef={commentDom}
-          placeholder="发表评论（按M快捷键发表评论）"
-          personList={removeNull(projectInfoValues, 'user_name')?.map(
-            (k: any) => ({
-              label: k.content,
-              id: k.id,
-            }),
-          )}
-          onConfirm={onConfirmComment}
-          style={{ padding: '0 0 0 24px', width: 'calc(100% - 24px)' }}
-          maxHeight="60vh"
-          hasAvatar
+    <InfoWrap>
+      {isScroll && (
+        <Tabs
+          className="tabs"
+          activeKey={tabActive}
+          items={items}
+          onChange={onChangeTabs}
         />
-      </InfoWrap>
-    </>
+      )}
+      <DetailInfoWrap
+        ref={LeftDom}
+        className="sprintDetail_dom"
+        isScroll={isScroll}
+      >
+        <AffairsDetail
+          affairsInfo={affairsInfo as Model.Affairs.AffairsInfo}
+          onUpdate={onUpdate}
+        />
+        <ChildSprint />
+        <LinkSprint />
+        <ActivitySprint />
+      </DetailInfoWrap>
+      <CommentFooter
+        onRef={commentDom}
+        placeholder="发表评论（按M快捷键发表评论）"
+        personList={removeNull(projectInfoValues, 'user_name')?.map(
+          (k: any) => ({
+            label: k.content,
+            id: k.id,
+          }),
+        )}
+        onConfirm={onConfirmComment}
+        style={{ padding: '0 0 0 24px', width: 'calc(100% - 24px)' }}
+        maxHeight="60vh"
+        hasAvatar
+      />
+    </InfoWrap>
   )
 }
 

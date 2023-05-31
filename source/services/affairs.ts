@@ -329,12 +329,13 @@ export const deleteAffairsComment = async (
 export const updateAffairsComment = async (
   params: API.Affairs.UpdateAffairsComment.Params,
 ) => {
-  await http.put<any>(urls.updateAffairsComment(params.id), {
+  await http.put<any>('updateAffairsComment', {
     project_id: params.projectId,
     story_id: params.storyId,
     content: params.content,
     attachment: params.attachment,
     a_user_ids: params.ids,
+    id: params.id,
   })
 }
 
