@@ -188,7 +188,7 @@
   "confirm_that_it_is_checked": "确认勾选",
   "creating_fields": "创建字段",
   "drag_the_field_to_the_left_area_to_create_the_field": "将字段拖动左侧区域创建字段",
-  "project_existing_fields": "项目已有字段",
+  "project_existing_fields": "项目未使用字段",
   "language": "语言",
   "theme_switching": "主题切换",
   "untick": "不勾选",

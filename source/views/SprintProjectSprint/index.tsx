@@ -241,8 +241,14 @@ const filterList1 = [
 interface IProps {}
 const SprintProjectSprint: React.FC<IProps> = props => {
   const dispatch = useDispatch()
-  const { guideVisible, leftSprintList, checkList, rightLoading, leftLoading } =
-    useSelector(store => store.sprint)
+  const {
+    guideVisible,
+    leftSprintList,
+    checkList,
+    rightLoading,
+    leftLoading,
+    sprintRefresh,
+  } = useSelector(store => store.sprint)
   const [t] = useTranslation()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
@@ -272,9 +278,7 @@ const SprintProjectSprint: React.FC<IProps> = props => {
     visible: false,
     type: 'create',
   })
-  const [completeVisible, setCompleteVisible] = useState(false)
   const [userOptions, setUserOptions] = useState<any[]>([])
-  const [categoryOptions, setCategoryOptions] = useState<any[]>([])
   const [leftSearchObject, setLeftSearchObject] = useState<any>({
     order: 'desc',
     orderkey: 'id',
@@ -389,18 +393,6 @@ const SprintProjectSprint: React.FC<IProps> = props => {
     }
   }
 
-  const getCategoryData = async () => {
-    try {
-      const result = await getCategoryList({
-        is_select: 1,
-        project_id: projectId,
-      })
-      setCategoryOptions(result.data)
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   useEffect(() => {
     // 获取经办人数据
     getUserList()
@@ -423,6 +415,13 @@ const SprintProjectSprint: React.FC<IProps> = props => {
   useEffect(() => {
     dispatch(getLeftSprintList(leftSearchObject))
   }, [leftSearchObject])
+
+  useEffect(() => {
+    if (sprintRefresh > 0) {
+      dispatch(getLeftSprintList(leftSearchObject))
+      dispatch(getRightSprintList(searchObject))
+    }
+  }, [sprintRefresh])
 
   const filterContent = (
     <div className="filter">
@@ -526,10 +525,7 @@ const SprintProjectSprint: React.FC<IProps> = props => {
               </RightIcon>
             </div>
             <TabItemWrap>
-              <Spin
-                spinning={rightLoading}
-                indicator={<NewLoadingTransition />}
-              >
+              <Spin spinning={leftLoading} indicator={<NewLoadingTransition />}>
                 <TabItem data={leftSprintList} />
                 {/* <NoData
                   size
@@ -623,7 +619,6 @@ const SprintProjectSprint: React.FC<IProps> = props => {
                 projectId={projectId}
                 value={searchObject.search?.category_id}
                 onChangeCallBack={(val: Model.Project.CategoryValue[]) => {
-                  console.log(val, 'val')
                   setSearchObject({
                     ...searchObject,
                     search: {
@@ -683,12 +678,6 @@ const SprintProjectSprint: React.FC<IProps> = props => {
             type: 'create',
           })
         }
-      />
-      <CompleteSprintModal
-        visible={completeVisible}
-        onClose={() => {
-          setCompleteVisible(false)
-        }}
       />
     </div>
   )

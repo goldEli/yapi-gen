@@ -243,10 +243,25 @@ const ChildSprint = () => {
         </CommonButton>
         {dataSource.list && (
           <>
-            <Tooltip title="3 done / 3 in progress / 4 to do">
+            <Tooltip
+              title={`${
+                affairsInfo.child_story_statistics?.finish_percent
+              }%已完成,${
+                (affairsInfo.child_story_statistics?.finish_percent || 0) +
+                (affairsInfo.child_story_statistics?.processing_percent || 0)
+              }%进行中,${
+                affairsInfo.child_story_statistics?.start_percent
+              }%未完成`}
+            >
               <ProgressWrap
-                percent={60}
-                success={{ percent: 20, strokeColor: 'var(--primary-d1)' }}
+                percent={
+                  (affairsInfo.child_story_statistics?.finish_percent || 0) +
+                  (affairsInfo.child_story_statistics?.processing_percent || 0)
+                }
+                success={{
+                  percent: affairsInfo.child_story_statistics?.finish_percent,
+                  strokeColor: 'var(--primary-d1)',
+                }}
                 format={percent => `已完成${percent}%`}
                 trailColor="rgba(102, 136, 255, 0.1)"
                 strokeColor="rgba(102, 136, 255, 0.4)"

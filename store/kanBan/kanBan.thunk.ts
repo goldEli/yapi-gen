@@ -9,6 +9,7 @@ import {
   setSortByGroupOptions,
   setSortByRowAndStatusOptions,
   setUserGroupingModelInfo,
+  setKanbanInfoByGroup,
   // setViewItemConfig,
 } from '.'
 import { getMessage } from '@/components/Message'
@@ -18,8 +19,32 @@ import { onTapSearchChoose, saveValue } from '@store/view'
 import { generatorFilterParams } from './utils'
 import _ from 'lodash'
 import { Options } from '@/components/SelectOptionsNormal'
+import { DropResult } from 'react-beautiful-dnd'
+import { produce } from 'immer'
 
 const name = 'kanBan'
+
+// 人员分组看板排序
+export const sortStoryInUserGrouping =
+  (options: {
+    storyId: Model.KanBan.Story['id']
+    columnId: Model.KanBan.Column['id']
+    groupId: Model.KanBan.Group['id']
+    startIndex: number
+    destinationIndex: number
+  }) =>
+  async (dispatch: AppDispatch) => {
+    const { kanbanInfoByGroup } = store.getState().kanBan
+    const data = produce(kanbanInfoByGroup, draft => {
+      const stories =
+        draft
+          .find(item => item.id === options.groupId)
+          ?.columns.find(item => item.id === options.columnId)?.stories ?? []
+      const [removed] = stories.splice(options.startIndex, 1)
+      stories.splice(options.destinationIndex, 0, removed)
+    })
+    dispatch(setKanbanInfoByGroup(data))
+  }
 
 // 打开分组弹窗
 export const openUserGroupingModel =

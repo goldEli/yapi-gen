@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Wrap,
   SearchBox,
@@ -8,13 +8,39 @@ import {
   LoadMore,
 } from './style'
 import CommonInput from '../CommonInput'
+import { getLongStoryList } from '@store/sprint/sprint.thunk'
+import { useDispatch, useSelector } from '@store/index'
 import { List } from 'antd'
 const LongStoryDropdown = () => {
   const [loading, setLoading] = useState(false)
+  const dispatch = useDispatch()
+  const { longStoryList } = useSelector(state => state.sprint)
+  const [list, setList] = useState<Model.Sprint.LongStory[]>([])
+  const [params, setParams] = useState<API.Sprint.getLongStoryList.Params>({
+    order: 'asc',
+    orderkey: 'id',
+    search: {
+      all: 1,
+      sprint_status: 0,
+      project_id: 604,
+    },
+    is_long_story: 1,
+  })
   const onLoadMore = () => {
     console.log('加载更多')
   }
-  const list = Array(10).fill(0)
+  const getList = async () => {
+    dispatch(getLongStoryList(params))
+  }
+  useEffect(() => {
+    getList()
+  }, [params])
+  useEffect(() => {
+    if (!longStoryList) {
+      return
+    }
+    setList(longStoryList)
+  }, [longStoryList])
   return (
     <Wrap>
       <SearchBox>
@@ -23,7 +49,11 @@ const LongStoryDropdown = () => {
           bgColor="#fff"
           width="100%"
           onChangeSearch={value => {
-            console.log(value)
+            setParams((p: API.Sprint.getLongStoryList.Params) => {
+              let { search } = { ...p }
+              search = { ...search, sprint_status: 1 }
+              return { ...p, search }
+            })
           }}
         ></CommonInput>
       </SearchBox>
@@ -37,7 +67,7 @@ const LongStoryDropdown = () => {
             <ContentItem
               key={index}
               onClick={() => {
-                console.log(111)
+                console.log(item)
               }}
             >
               <img
@@ -45,7 +75,7 @@ const LongStoryDropdown = () => {
                 alt=""
               />
               <span>DXKJ-256</span>
-              <span>事务名称事务名称事务名称</span>
+              <span>{item.name}</span>
             </ContentItem>
           )}
         ></List>

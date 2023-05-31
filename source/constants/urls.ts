@@ -193,8 +193,10 @@ const urls = {
   addAffairsComment: '/b/transaction/comment/save',
   // 删除评论
   deleteAffairsComment: '/b/transaction/comment/delete',
-  // 编辑评论 --------------
-  updateAffairsComment: '/b/transaction/comment/update',
+  // 编辑评论
+  updateAffairsComment: function (id: number) {
+    return `/b/transaction/comment/update/${id}`
+  },
   // 添加事务 --------------
   addAffairs: '/b/transaction/save',
   // 更新事务 --------------
@@ -328,6 +330,10 @@ const urls = {
   updateSprintInfo: '/b/sprint/update',
   // 删除冲刺
   delSprintItem: '/b/sprint/del',
+  // 获取事务
+  getLongStoryList: '/b/sprint/getList',
+  // 完成冲刺
+  completeSprint: '/b/sprint/complete',
   /**
    * 视图管理
    */

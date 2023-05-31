@@ -1,4 +1,28 @@
 declare namespace API.Affairs {
+  namespace UpdateAffairsComment {
+    type Params = {
+      projectId: number
+      id: number
+      content: string
+      storyId: number
+      attachment?: {
+        url: string
+        ctime: string
+        name: string
+        ext: string
+        size: number
+      }
+      ids: (string | null)[]
+    }
+  }
+  namespace UpdateEditor {
+    type Params = {
+      projectId: number
+      info: string
+      id: number
+      name: string
+    }
+  }
   namespace AddQuickAffair {
     type Params = {
       name: string

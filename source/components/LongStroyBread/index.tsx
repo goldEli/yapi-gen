@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import LongStoryDropdown from '../LongStoryDropdown'
 import CommonIconFont from '../CommonIconFont'
 import styled from '@emotion/styled'
@@ -6,6 +6,7 @@ const BreadBox = styled.div`
   display: flex;
   align-items: center;
   flex-shrink: 0;
+  position: relative;
   svg {
     margin: 0px 6px;
   }
@@ -27,8 +28,21 @@ interface IProps {
 }
 const LongStroyBread = (props: IProps) => {
   const [visible, setVisible] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside)
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [])
+  const handleClickOutside = (event: { target: any }) => {
+    if (ref.current && !ref.current.contains(event.target)) {
+      setVisible(false)
+    }
+  }
+
   return (
-    <div>
+    <div style={{ position: 'relative' }} ref={ref}>
       <BreadBox>
         <LongStroyWrap
           onClick={() => {
@@ -52,7 +66,6 @@ const LongStroyBread = (props: IProps) => {
         />
         <AffairTypeBox>DXKJ-0003</AffairTypeBox>
       </BreadBox>
-
       {visible ? <LongStoryDropdown></LongStoryDropdown> : null}
     </div>
   )
