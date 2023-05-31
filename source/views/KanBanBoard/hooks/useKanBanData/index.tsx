@@ -4,10 +4,13 @@ import { produce } from 'immer'
 import { getId } from '../../utils'
 import { useDispatch, useSelector } from '@store/index'
 import { setMovingStory } from '@store/kanBan'
+import useGroupType from '../useGroupType'
+import { sortStoryInUserGrouping } from '@store/kanBan/kanBan.thunk'
 
 const useKanBanData = () => {
   const { kanbanInfoByGroup, kanbanConfig } = useSelector(store => store.kanBan)
   const dispatch = useDispatch()
+  const { groupType } = useGroupType()
 
   const getIds = (droppableId: string, draggableId: string) => {
     const { id: columnId, groupId } = getId(droppableId)
@@ -57,7 +60,30 @@ const useKanBanData = () => {
     console.log('onDragEnd', result)
     dispatch(setMovingStory(null))
     if (!result.destination) return
-    // const { source, destination } = result
+    const { source, destination } = result
+
+    /**
+     * 人员分组
+     */
+    if (groupType === 'users') {
+      // 拖拽排序
+      if (source.droppableId === destination.droppableId) {
+        const { storyId, groupId, columnId } = getIds(
+          source.droppableId,
+          result.draggableId,
+        )
+        // draggableId
+        dispatch(
+          sortStoryInUserGrouping({
+            groupId,
+            columnId,
+            storyId,
+            startIndex: source.index,
+            destinationIndex: destination.index,
+          }),
+        )
+      }
+    }
 
     // // 跨容器拖动
     // if (source.droppableId !== destination.droppableId) {

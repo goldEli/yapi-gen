@@ -78,6 +78,12 @@ const slice = createSlice({
   name: 'kanBan',
   initialState,
   reducers: {
+    setKanbanInfoByGroup(
+      state,
+      action: PayloadAction<SliceState['kanbanInfoByGroup']>,
+    ) {
+      state.kanbanInfoByGroup = action.payload
+    },
     // setViewItemConfig(
     //   state,
     //   action: PayloadAction<SliceState['viewItemConfig']>,
@@ -194,6 +200,7 @@ export const {
   setShareModelInfo,
   setUserGroupingModelInfo,
   setMovingStory,
+  setKanbanInfoByGroup,
 } = slice.actions
 
 export default kanBan
