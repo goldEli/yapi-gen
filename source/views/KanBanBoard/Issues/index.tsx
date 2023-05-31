@@ -42,6 +42,14 @@ const Issues: React.FC<IssuesProps> = props => {
     issues.id,
     groupId,
   )
+  const content = showStateTransitionList ? (
+    <DropCardList list={data} />
+  ) : (
+    issues.stories?.map((story, index) => {
+      const uuid = `${groupId}-${issues.id}-${story.id}`
+      return <IssueCard uuid={uuid} key={uuid} item={story} index={index} />
+    })
+  )
 
   return (
     <Droppable
@@ -53,23 +61,7 @@ const Issues: React.FC<IssuesProps> = props => {
       {(provided, snapshot) => {
         return (
           <DropArea ref={provided.innerRef} {...provided.droppableProps}>
-            {/* {column?.deps?.map?.((item) => {
-              return <DropStatusArea>{`123 -> ${item.title}`}</DropStatusArea>;
-            })} */}
-            {!showStateTransitionList &&
-              issues.stories?.map((story, index) => {
-                const uuid = `${groupId}-${issues.id}-${story.id}`
-                return (
-                  <IssueCard
-                    uuid={uuid}
-                    key={uuid}
-                    item={story}
-                    index={index}
-                  />
-                )
-              })}
-
-            {showStateTransitionList && <DropCardList list={data} />}
+            {content}
             {provided.placeholder}
           </DropArea>
         )
