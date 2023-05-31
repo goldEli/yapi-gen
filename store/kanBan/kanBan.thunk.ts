@@ -27,11 +27,15 @@ const name = 'kanBan'
 
 // 打开修改状态弹窗
 export const openModifyStatusModalInfo =
-  (params: Model.Project.CheckStatusItem) => async (dispatch: AppDispatch) => {
+  (params: {
+    info: Model.Project.CheckStatusItem
+    storyId: Model.KanBan.Story['id']
+  }) =>
+  async (dispatch: AppDispatch) => {
     dispatch(
       setModifyStatusModalInfo({
         visible: true,
-        info: params,
+        ...params,
       }),
     )
   }
@@ -44,6 +48,15 @@ export const closeModifyStatusModalInfo =
         visible: false,
       }),
     )
+
+    /**
+     * 看板数据更新后，卡片的位置没有更新，手动触发滚动条触发
+     */
+    const dom = document.querySelector('#kanbanContainer')
+    if (!dom) return
+    // 获取元素滚动条的当前位置
+    var scrollPosition = dom?.scrollTop
+    dom.scrollTop = scrollPosition + 1
   }
 // 状态改变同步到服务端
 export const saveModifyStatusModalInfo =
@@ -52,7 +65,7 @@ export const saveModifyStatusModalInfo =
     const { modifyStatusModalInfo } = store.getState().kanBan
     const res = await services.affairs.updateAffairsStatus({
       ...params,
-      nId: modifyStatusModalInfo.info?.id,
+      nId: modifyStatusModalInfo.storyId,
       projectId: getParamsValueByKey('id'),
     })
 
@@ -63,6 +76,8 @@ export const modifyStatus =
   (options: {
     columnId: Model.KanBan.Column['id']
     groupId: Model.KanBan.Group['id']
+    targetColumnId: Model.KanBan.Column['id']
+    targetGroupId: Model.KanBan.Group['id']
     storyId: Model.KanBan.Story['id']
     source: Model.KanbanConfig.Status
     target: Model.KanbanConfig.Status
@@ -76,41 +91,88 @@ export const modifyStatus =
           .find(item => item.id === options.groupId)
           ?.columns.find(item => item.id === options.columnId)?.stories ?? []
       const index = stories.findIndex(item => item.id === options.storyId)
-      stories.splice(index, 1)
+      const [removed] = stories.splice(index, 1)
+      const targetStories =
+        draft
+          .find(item => item.id === options.targetGroupId)
+          ?.columns.find(item => item.id === options.targetColumnId)?.stories ??
+        []
+      targetStories.unshift(removed)
     })
+    dispatch(setKanbanInfoByGroup(data))
     dispatch(
       openModifyStatusModalInfo({
-        // 可流转的状态列表
-        content: target.status_name,
-        // 来自id状态名称
-        fromContent: source.status_name,
-        // 流转名称
-        statusName: '123',
-        // 来自id
-        fromId: source.flow_status_id,
-        // 来自id是否是结束状态
-        fromIsEnd: source.is_end,
-        // 来自id是否是开始状态
-        fromIsStart: source.is_start,
-        // 流转到id
-        id: target.flow_status_id,
-        // 需求id、事务id、缺陷id
-        infoId: storyId,
-        // 流转到id是否是结束状态
-        is_end: target.is_end,
-        // 流转到id是否是结束状态
-        is_start: target.is_start,
-        // 项目id
-        projectId: getParamsValueByKey('id'),
+        storyId,
+        info: {
+          // 可流转的状态列表
+          content: target.status_name,
+          // 来自id状态名称
+          fromContent: source.status_name,
+          // 流转名称
+          statusName: '123',
+          // 来自id
+          fromId: source.flow_status_id,
+          // 来自id是否是结束状态
+          fromIsEnd: source.is_end,
+          // 来自id是否是开始状态
+          fromIsStart: source.is_start,
+          // 流转到id
+          id: target.flow_status_id,
+          // 需求id、事务id、缺陷id
+          infoId: storyId,
+          // 流转到id是否是结束状态
+          is_end: target.is_end,
+          // 流转到id是否是结束状态
+          is_start: target.is_start,
+          // 项目id
+          projectId: getParamsValueByKey('id'),
+        },
       }),
     )
-    await dispatch(setKanbanInfoByGroup(data))
 
     dispatch(setMovingStory(null))
   }
+// 同列修改优先级
+export const modifyPriority =
+  (options: {
+    sourceColumnId: Model.KanBan.Column['id']
+    sourceGroupId: Model.KanBan.Group['id']
 
-// 人员分组看板排序
-export const sortStoryInUserGrouping =
+    targetColumnId: Model.KanBan.Column['id']
+    targetGroupId: Model.KanBan.Group['id']
+    startIndex: number
+    targetIndex: number
+  }) =>
+  async (dispatch: AppDispatch) => {
+    const {
+      sourceColumnId,
+      sourceGroupId,
+
+      targetColumnId,
+      targetGroupId,
+      startIndex,
+      targetIndex,
+    } = options
+    const { kanbanInfoByGroup } = store.getState().kanBan
+    const data = produce(kanbanInfoByGroup, draft => {
+      const sourceStories =
+        draft
+          .find(item => item.id === sourceGroupId)
+          ?.columns.find(item => item.id === sourceColumnId)?.stories ?? []
+      const [removed] = sourceStories.splice(startIndex, 1)
+      const targetStories =
+        draft
+          .find(item => item.id === targetGroupId)
+          ?.columns.find(item => item.id === targetColumnId)?.stories ?? []
+
+      targetStories.splice(targetIndex, 0, removed)
+    })
+    console.log(data)
+    dispatch(setKanbanInfoByGroup(data))
+  }
+
+// 同组同列排序
+export const sortStory =
   (options: {
     storyId: Model.KanBan.Story['id']
     columnId: Model.KanBan.Column['id']
@@ -128,7 +190,36 @@ export const sortStoryInUserGrouping =
       const [removed] = stories.splice(options.startIndex, 1)
       stories.splice(options.destinationIndex, 0, removed)
     })
-    dispatch(setKanbanInfoByGroup(data))
+    await dispatch(setKanbanInfoByGroup(data))
+    dispatch(
+      sortStoryServer({
+        kanban_column_id: options.columnId,
+      }),
+    )
+  }
+
+// 更新排序同步到服务端
+export const sortStoryServer =
+  (
+    options: Pick<API.Kanban.ModifyKanbanIssueSort.Params, 'kanban_column_id'>,
+  ) =>
+  async (dispatch: AppDispatch) => {
+    const { kanbanInfoByGroup } = store.getState().kanBan
+    const ids: number[] = []
+    kanbanInfoByGroup.forEach(group => {
+      group.columns.forEach(column => {
+        if (column.id === options.kanban_column_id) {
+          ids.push(...column.stories.map(story => story.id))
+        }
+      })
+    })
+    const params: API.Kanban.ModifyKanbanIssueSort.Params = {
+      kanban_column_id: options.kanban_column_id,
+      story_ids: ids,
+      project_id: getParamsValueByKey('id'),
+    }
+    await services.kanban.modifyKanbanIssueSort(params)
+    dispatch(getKanbanByGroup())
   }
 
 // 打开分组弹窗

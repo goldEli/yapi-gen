@@ -5,7 +5,7 @@ import { getId } from '../../utils'
 import { useDispatch, useSelector } from '@store/index'
 import { setMovingStory } from '@store/kanBan'
 import useGroupType from '../useGroupType'
-import { sortStoryInUserGrouping } from '@store/kanBan/kanBan.thunk'
+import { modifyPriority, sortStory } from '@store/kanBan/kanBan.thunk'
 
 const useKanBanData = () => {
   const { kanbanInfoByGroup, kanbanConfig } = useSelector(store => store.kanBan)
@@ -70,23 +70,47 @@ const useKanBanData = () => {
     if (!result.destination) return
     const { source, destination } = result
 
-    /**
-     * 人员分组
-     */
-    if (groupType === 'users') {
-      // 拖拽排序
-      if (source.droppableId === destination.droppableId) {
-        const { storyId, groupId, columnId } = getIdsFromDraggableId(
-          result.draggableId,
+    // 同组同列拖拽排序
+    if (source.droppableId === destination.droppableId) {
+      const { storyId, groupId, columnId } = getIdsFromDraggableId(
+        result.draggableId,
+      )
+      // draggableId
+      dispatch(
+        sortStory({
+          groupId,
+          columnId,
+          storyId,
+          startIndex: source.index,
+          destinationIndex: destination.index,
+        }),
+      )
+    }
+
+    if (groupType === 'priority') {
+      // 修改优先级
+      if (source.droppableId !== destination.droppableId) {
+        const {
+          storyId: sourceStoryId,
+          groupId: sourceGroupId,
+          columnId: sourceColumnId,
+        } = getIdsFromDraggableId(result.draggableId)
+        const { id: targetColumnId, groupId: targetGroupId } = getId(
+          destination.droppableId,
         )
+        // 只有同列才能拖动
+        if (targetColumnId !== sourceColumnId) {
+          return
+        }
         // draggableId
         dispatch(
-          sortStoryInUserGrouping({
-            groupId,
-            columnId,
-            storyId,
+          modifyPriority({
+            sourceColumnId,
+            sourceGroupId,
+            targetColumnId,
+            targetGroupId,
             startIndex: source.index,
-            destinationIndex: destination.index,
+            targetIndex: destination.index,
           }),
         )
       }

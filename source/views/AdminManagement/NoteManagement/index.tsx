@@ -167,14 +167,6 @@ const StaffManagement = () => {
     setPage(1)
     setKeyword(value)
   }
-  // useEffect(() => {
-  //   message.success({
-  //     icon: <span></span>,
-  //     duration: 0,
-  //     content: <TextChange />,
-  //     className: 'custom-class',
-  //   })
-  // }, [])
 
   const refresh = debounce(
     async () => {

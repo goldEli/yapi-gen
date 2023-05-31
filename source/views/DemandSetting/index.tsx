@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from '@store/index'
 import PermissionWrap from '@/components/PermissionWrap'
 import { getCategoryConfigList } from '@store/category/thunk'
 import NoData from '@/components/NoData'
-
+import { setCategoryWorkType } from '@store/project'
 const Wrap = styled.div`
   width: 100%;
   display: flex;
@@ -64,6 +64,9 @@ const DemandSetting = () => {
       ? setIsNoData(true)
       : setIsNoData(false)
   }, [getCategoryConfigDataList?.configDataList])
+  useEffect(() => {
+    dispatch(setCategoryWorkType(1))
+  }, [])
   return (
     <PermissionWrap
       auth={

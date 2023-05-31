@@ -1,4 +1,10 @@
 {
+  "originalArray": {
+    "new": "新增待办工作流",
+    "completed": "处理工作流",
+    "create": "创建工作流",
+    "verify": "审核工作项"
+  },
   "edit_notification": "编辑通知",
   "send_notification": "发送通知",
   "notification_title": "通知标题",
@@ -21,7 +27,6 @@
   "select_expiration_time": "请选择失效时间",
   "schedule_send": "定时发送",
   "select_schedule_send_time": "请选择定时发送时间",
-
   "confirm_to_delete_the_message": "确认删除该消息？",
   "retract_confirmation": "撤回确认",
   "confirm_to_withdraw_the_message": "确认撤回消息?",

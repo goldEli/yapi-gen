@@ -50,7 +50,8 @@ declare namespace API.Kanban {
   // modifyKanbanIssueSort
   namespace ModifyKanbanIssueSort {
     type Params = {
-      kanban_config_id: Model.KanbanConfig.Config['id']
+      project_id: number
+      kanban_column_id: Model.KanbanConfig.Config['id']
       story_ids: Model.KanBan.Story['id'][]
     }
     type Result = null
@@ -87,5 +88,13 @@ declare namespace API.Kanban {
           use_type: 1 | 2 | 3
         }
     type Result = Model.KanBan.ViewItem
+  }
+  namespace UpdateStoryPriority {
+    type Params = {
+      project_id: number
+      id: Model.KanBan.Story['id']
+      priority: Model.KanBan.Group['id']
+    }
+    type Result = null
   }
 }
