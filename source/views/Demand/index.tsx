@@ -605,6 +605,7 @@ const DemandBox = () => {
               projectId={projectId}
               record={demandInfo}
               onChangeStatus={onChangeStatus}
+              type={1}
             >
               <StateTag
                 onClick={demandInfo?.isExamine ? onExamine : void 0}

@@ -35,34 +35,34 @@ const useDropData = (
   }, [kanbanConfig, movingStory, columnId])
 
   const showStateTransitionList = React.useMemo(() => {
-    // 人员分组，只有同组才能转换状态
-    if (groupType === 'users') {
+    // // 人员分组和类别分组，只有同组才能转换状态
+    if (groupType === 'users' || groupType === 'category') {
       return (
-        movingStory?.columnId !== columnId &&
-        data?.length > 0 &&
-        movingStory?.groupId === groupId
+        !!movingStory &&
+        !(
+          movingStory?.columnId === columnId && movingStory?.groupId === groupId
+        )
       )
     }
 
-    return (
-      !(
-        movingStory?.columnId === columnId && movingStory?.groupId === groupId
-      ) && data?.length > 0
-    )
+    // 跨分组可拖
+    return !!movingStory && movingStory?.columnId !== columnId
   }, [movingStory, columnId, data, groupId, groupType])
 
-  const disableDrop = React.useMemo(() => {
-    // 如果是人员分组 只能在同组拖动
-    if (groupType === 'users') {
-      return movingStory?.groupId !== groupId
-    }
-    return false
-  }, [groupType, columnId, movingStory, groupId])
+  // const disableDrop = React.useMemo(() => {
+  //   // 如果是人员分组 只能在同组拖动
+  //   if (groupType === 'users' || groupType === 'category') {
+  //     return !(
+  //       movingStory?.groupId === groupId && movingStory?.columnId === columnId
+  //     )
+  //   }
+  //   return false
+  // }, [groupType, columnId, movingStory, groupId])
 
   return {
     data,
     showStateTransitionList,
-    disableDrop,
+    // disableDrop,
   }
 }
 

@@ -14,8 +14,8 @@ import {
   setMyConfiguration,
   setMyEmailConfiguration,
 } from '@store/SiteNotifications'
-import { Badge, notification } from 'antd'
-import React, { useEffect } from 'react'
+import { Badge, message, notification } from 'antd'
+import React, { useEffect, useState } from 'react'
 import {
   getAllNoteSet,
   getContactStatistics,
@@ -23,8 +23,12 @@ import {
   getMyAllNoteSet,
 } from '@/services/SiteNotifications'
 import { useTranslation } from 'react-i18next'
+import { TextChange } from '@/components/TextChange/TextChange'
+import NoteModal from '@/components/NoteModal'
 
 const SiteNotifications = () => {
+  const [first, setFirst] = useState(false)
+  const [first2, setFirst2] = useState({})
   const [t] = useTranslation()
   const { wsData } = useWebsocket()
   const dispatch = useDispatch()
@@ -40,6 +44,22 @@ const SiteNotifications = () => {
     dispatch(changeNumber(num))
   }
   const sendMsg = () => {
+    console.log(wsData, '长数据')
+    if (wsData.data.customData.noticeStyle === '2') {
+      message.success({
+        icon: <span></span>,
+        duration: 0,
+        content: <TextChange text={wsData.data.msgBody.title} />,
+        className: 'custom-class',
+      })
+    } else if (wsData.data.customData.noticeStyle === '1') {
+      setFirst(true)
+      setFirst2({
+        customData: wsData.data.customData,
+        msgBody: wsData.data.msgBody,
+      })
+    }
+
     Notification.requestPermission().then(result => {
       if (result === 'granted') {
         const n: any = new Notification(wsData.data.msgBody.title, {
@@ -293,19 +313,26 @@ const SiteNotifications = () => {
   }, [wsData])
 
   return (
-    <div
-      style={{
-        cursor: 'pointer',
-      }}
-      onClick={() => {
-        dispatch(changeVisible(!isVisible))
-        dispatch(changeVisibleFilter(false))
-      }}
-    >
-      <Badge size="small" offset={[-2, 1]} count={all}>
-        <CommonIconFont color="var(--neutral-n2)" size={24} type="bell" />
-      </Badge>
-    </div>
+    <>
+      <div
+        style={{
+          cursor: 'pointer',
+        }}
+        onClick={() => {
+          dispatch(changeVisible(!isVisible))
+          dispatch(changeVisibleFilter(false))
+        }}
+      >
+        <Badge size="small" offset={[-2, 1]} count={all}>
+          <CommonIconFont color="var(--neutral-n2)" size={24} type="bell" />
+        </Badge>
+      </div>
+      <NoteModal
+        onClose={() => setFirst(false)}
+        data={first2}
+        isVisible={first}
+      />
+    </>
   )
 }
 

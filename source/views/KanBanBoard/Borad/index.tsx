@@ -26,7 +26,7 @@ const Board = () => {
   )
 
   return (
-    <Container ref={containerRef}>
+    <Container id="kanbanContainer" ref={containerRef}>
       <KanBanSortByPerson />
       <ControlScrollPlane />
     </Container>

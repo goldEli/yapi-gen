@@ -216,6 +216,7 @@ const DndKitTable = () => {
               throw new Error('Function not implemented.')
             }}
             record={record}
+            type={2}
           />
         )
       },
