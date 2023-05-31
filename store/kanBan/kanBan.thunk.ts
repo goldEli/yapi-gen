@@ -11,6 +11,7 @@ import {
   setUserGroupingModelInfo,
   setKanbanInfoByGroup,
   setMovingStory,
+  setModifyStatusModalInfo,
   // setViewItemConfig,
 } from '.'
 import { getMessage } from '@/components/Message'
@@ -24,15 +25,51 @@ import { produce } from 'immer'
 
 const name = 'kanBan'
 
+// 打开修改状态弹窗
+export const openModifyStatusModalInfo =
+  (params: Model.Project.CheckStatusItem) => async (dispatch: AppDispatch) => {
+    dispatch(
+      setModifyStatusModalInfo({
+        visible: true,
+        info: params,
+      }),
+    )
+  }
+
+// 关闭修改状态弹窗
+export const closeModifyStatusModalInfo =
+  () => async (dispatch: AppDispatch) => {
+    dispatch(
+      setModifyStatusModalInfo({
+        visible: false,
+      }),
+    )
+  }
+// 状态改变同步到服务端
+export const saveModifyStatusModalInfo =
+  (params: API.Affairs.UpdateAffairsStatus.Params) =>
+  async (dispatch: AppDispatch) => {
+    const { modifyStatusModalInfo } = store.getState().kanBan
+    const res = await services.affairs.updateAffairsStatus({
+      ...params,
+      nId: modifyStatusModalInfo.info?.id,
+      projectId: getParamsValueByKey('id'),
+    })
+
+    dispatch(getKanbanByGroup())
+  }
 // 状态改变
 export const modifyStatus =
   (options: {
     columnId: Model.KanBan.Column['id']
     groupId: Model.KanBan.Group['id']
     storyId: Model.KanBan.Story['id']
+    source: Model.KanbanConfig.Status
+    target: Model.KanbanConfig.Status
   }) =>
   async (dispatch: AppDispatch) => {
     const { kanbanInfoByGroup } = store.getState().kanBan
+    const { source, target, storyId } = options
     const data = produce(kanbanInfoByGroup, draft => {
       const stories =
         draft
@@ -41,6 +78,32 @@ export const modifyStatus =
       const index = stories.findIndex(item => item.id === options.storyId)
       stories.splice(index, 1)
     })
+    dispatch(
+      openModifyStatusModalInfo({
+        // 可流转的状态列表
+        content: target.status_name,
+        // 来自id状态名称
+        fromContent: source.status_name,
+        // 流转名称
+        statusName: '123',
+        // 来自id
+        fromId: source.flow_status_id,
+        // 来自id是否是结束状态
+        fromIsEnd: source.is_end,
+        // 来自id是否是开始状态
+        fromIsStart: source.is_start,
+        // 流转到id
+        id: target.flow_status_id,
+        // 需求id、事务id、缺陷id
+        infoId: storyId,
+        // 流转到id是否是结束状态
+        is_end: target.is_end,
+        // 流转到id是否是结束状态
+        is_start: target.is_start,
+        // 项目id
+        projectId: getParamsValueByKey('id'),
+      }),
+    )
     await dispatch(setKanbanInfoByGroup(data))
 
     dispatch(setMovingStory(null))
