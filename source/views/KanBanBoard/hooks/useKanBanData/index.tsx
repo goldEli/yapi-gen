@@ -12,9 +12,20 @@ const useKanBanData = () => {
   const dispatch = useDispatch()
   const { groupType } = useGroupType()
 
-  const getIds = (droppableId: string, draggableId: string) => {
-    const { id: columnId, groupId } = getId(droppableId)
-    const { id: storyId } = getId(draggableId)
+  // const getIds = (droppableId: string, draggableId: string) => {
+  //   const { id: columnId, groupId } = getId(droppableId)
+  //   const { id: storyId } = getId(draggableId)
+  //   return {
+  //     storyId,
+  //     columnId,
+  //     groupId,
+  //   }
+  // }
+
+  const getIdsFromDraggableId = (draggableId: string) => {
+    const [groupId, columnId, storyId] = draggableId
+      .split('-')
+      .map(item => parseInt(item, 10))
     return {
       storyId,
       columnId,
@@ -22,8 +33,8 @@ const useKanBanData = () => {
     }
   }
 
-  const getStory = (droppableId: string, draggableId: string) => {
-    const { storyId, columnId, groupId } = getIds(droppableId, draggableId)
+  const getStory = (draggableId: string) => {
+    const { storyId, columnId, groupId } = getIdsFromDraggableId(draggableId)
     const group = kanbanInfoByGroup.find(group => group.id === groupId)
     const column = group?.columns.find(column => column.id === columnId)
     const story = column?.stories.find(story => story.id === storyId)
@@ -33,11 +44,8 @@ const useKanBanData = () => {
 
   const onDragStart = (start: DragStart) => {
     console.log('onDragStart', start)
-    const { columnId, groupId } = getIds(
-      start.source.droppableId,
-      start.draggableId,
-    )
-    const story = getStory(start.source.droppableId, start.draggableId) ?? null
+    const { columnId, groupId } = getIdsFromDraggableId(start.draggableId)
+    const story = getStory(start.draggableId) ?? null
     if (!story) {
       throw Error('no data')
     }
@@ -68,8 +76,7 @@ const useKanBanData = () => {
     if (groupType === 'users') {
       // 拖拽排序
       if (source.droppableId === destination.droppableId) {
-        const { storyId, groupId, columnId } = getIds(
-          source.droppableId,
+        const { storyId, groupId, columnId } = getIdsFromDraggableId(
           result.draggableId,
         )
         // draggableId
