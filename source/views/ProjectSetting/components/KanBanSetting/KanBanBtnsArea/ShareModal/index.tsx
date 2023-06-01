@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { closeShareModel } from '@store/sprintKanBan/sprintKanban.thunk'
 import styled from '@emotion/styled'
 import IconFont from '@/components/IconFont'
+import useI18n from '@/hooks/useI18n'
 
 interface ShareModalProps {}
 
@@ -52,7 +53,7 @@ const ModalContentBox = styled.div`
 
 const ShareModal: React.FC<ShareModalProps> = props => {
   const [form] = Form.useForm()
-  const [t] = useTranslation()
+  const { t } = useI18n()
   const { shareModelInfo } = useSelector(store => store.sprintKanBan)
   const dispatch = useDispatch()
 
@@ -74,29 +75,17 @@ const ShareModal: React.FC<ShareModalProps> = props => {
     form.submit()
   }
 
-  // React.useEffect(() => {
-  //   if (shareModelInfo.viewItem) {
-  //     form.setFieldsValue({
-  //       name: shareModelInfo.viewItem.value,
-  //     })
-  //     return
-  //   }
-  //   form.setFieldsValue({
-  //     name: '',
-  //   })
-  // }, [shareModelInfo.viewItem])
-
   return (
     <CommonModal
       width={528}
-      title={'分享'}
+      title={t('share')}
       isVisible={shareModelInfo.visible}
       onClose={onClose}
       onConfirm={onsubmit}
-      confirmText={'确认'}
+      confirmText={t('confirm')}
     >
       <ModalContentBox>
-        <WarnTips>单前视图未保存，分享时将为您保存为“视图”</WarnTips>
+        <WarnTips>{t('saveTips')}</WarnTips>
         <Form
           form={form}
           onFinish={confirm}
@@ -109,21 +98,27 @@ const ShareModal: React.FC<ShareModalProps> = props => {
             label={''}
             name="name"
           >
-            <Input placeholder="请输入用户名或邮箱地址" autoFocus />
+            <Input
+              placeholder={t('please_enter_a_username_or_email_address')}
+              autoFocus
+            />
           </Form.Item>
-          <Tips>接收人将会收到分享的站内消息</Tips>
+          <Tips>{t('the_recipient_will_receive_the_shared_site_message')}</Tips>
           <Form.Item
             rules={[{ required: true, message: '' }]}
             label={''}
             name="message"
           >
-            <Input.TextArea placeholder="添加消息" style={{ height: 148 }} />
+            <Input.TextArea
+              placeholder={t('add_message')}
+              style={{ height: 148 }}
+            />
           </Form.Item>
         </Form>
       </ModalContentBox>
       <CopyButton>
         <IconFont type="link" />
-        <span>复制链接</span>
+        <span>{t('copy_Link')}</span>
       </CopyButton>
     </CommonModal>
   )
