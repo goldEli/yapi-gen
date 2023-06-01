@@ -20,7 +20,7 @@ import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { useTranslation } from 'react-i18next'
 import CommonModal from '@/components/CommonModal'
 import { useEffect, useState } from 'react'
-import { Form, MenuProps, Popover, TabsProps, Tooltip } from 'antd'
+import { Form, MenuProps, Popover, Tabs, TabsProps, Tooltip } from 'antd'
 import { useDispatch, useSelector } from '@store/index'
 import CustomSelect from '@/components/CustomSelect'
 import MyBreadcrumb from '@/components/MyBreadcrumb'
@@ -36,6 +36,8 @@ import { copyLink, getParamsData } from '@/tools'
 import { getWorkflowList } from '@/services/project'
 import { setFlawInfo } from '@store/flaw'
 import FlawInfo from './components/FlawInfo'
+import ChangeRecord from './components/ChangeRecord'
+import Circulation from './components/Circulation'
 
 const IterationDefectDetail = () => {
   const [t] = useTranslation()
@@ -49,6 +51,7 @@ const IterationDefectDetail = () => {
   const [isShowChange, setIsShowChange] = useState(false)
   const [isShowCategory, setIsShowCategory] = useState(false)
   const [resultCategory, setResultCategory] = useState([])
+  const [tabActive, setTabActive] = useState('1')
   const { flawInfo } = useSelector(store => store.flaw)
   const { projectInfoValues } = useSelector(store => store.project)
   // 工作流列表
@@ -227,50 +230,56 @@ const IterationDefectDetail = () => {
     </div>
   )
 
-  //   const tabItems: TabsProps['items'] = [
-  //     {
-  //       key: '1',
-  //       label: (
-  //         <ActivityTabItem>
-  //           <span>详细信息</span>
-  //           <ItemNumber isActive={activeKey === '1'}>
-  //             {affairsCommentList?.list.length || 0}
-  //           </ItemNumber>
-  //         </ActivityTabItem>
-  //       ),
-  //       children: (
-  //         <CommonComment
-  //           data={affairsCommentList}
-  //           onDeleteConfirm={onDeleteCommentConfirm}
-  //           onEditComment={onEditComment}
-  //         />
-  //       ),
-  //     },
-  //     {
-  //       key: '2',
-  //       label: (
-  //         <ActivityTabItem>
-  //           <span>变更记录</span>
-  //           <ItemNumber isActive={activeKey === '2'}>
-  //             {flawInfo.changeCount}
-  //           </ItemNumber>
-  //         </ActivityTabItem>
-  //       ),
-  //       children: <ChangeRecord activeKey={activeKey} />,
-  //     },
-  //     {
-  //       key: '3',
-  //       label: (
-  //         <ActivityTabItem>
-  //           <span>流转记录</span>
-  //         </ActivityTabItem>
-  //       ),
-  //       children: <Circulation activeKey={activeKey} />,
-  //     },
-  //   ]
+  const tabItems: TabsProps['items'] = [
+    {
+      key: '1',
+      label: (
+        <ActivityTabItem>
+          <span>详细信息</span>
+        </ActivityTabItem>
+      ),
+      children: <FlawInfo />,
+    },
+    {
+      key: '2',
+      label: (
+        <ActivityTabItem>
+          <span>关联工作项</span>
+        </ActivityTabItem>
+      ),
+      children: <div>12</div>,
+      //   <ChangeRecord activeKey={activeKey} />
+    },
+    {
+      key: '3',
+      label: (
+        <ActivityTabItem>
+          <span>变更记录</span>
+        </ActivityTabItem>
+      ),
+      children: <ChangeRecord activeKey={tabActive} />,
+    },
+    {
+      key: '4',
+      label: (
+        <ActivityTabItem>
+          <span>流转记录</span>
+        </ActivityTabItem>
+      ),
+      children: <Circulation activeKey={tabActive} />,
+    },
+  ]
+
+  // 监听左侧信息滚动
+  const onChangeTabs = (value: string) => {
+    setTabActive(value)
+    if (value === '1') {
+      dispatch(getFlawInfo({ projectId: id, id: flawId }))
+    }
+  }
 
   useEffect(() => {
-    dispatch(setFlawInfo({}))
+    // dispatch(setFlawInfo({}))
     dispatch(getFlawInfo({ projectId: id, id: flawId }))
   }, [])
 
@@ -448,7 +457,12 @@ const IterationDefectDetail = () => {
           </ChangeStatusPopover>
         </DetailText>
       </DetailTitle>
-      <FlawInfo />
+      <Tabs
+        className="tabs"
+        activeKey={tabActive}
+        items={tabItems}
+        onChange={onChangeTabs}
+      />
     </Wrap>
   )
 }

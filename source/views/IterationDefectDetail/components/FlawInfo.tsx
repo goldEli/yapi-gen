@@ -47,7 +47,6 @@ const FlawInfo = () => {
         <FlawDetail flawInfo={flawInfo} onUpdate={onUpdate} />
         <FlawInfoInfoItem>
           <FlawInfoLabel>{t('new_p1.a3')}</FlawInfoLabel>
-          {/* <DemandStatus pid={projectId} sid={flawInfo.id} /> */}
         </FlawInfoInfoItem>
       </FlawInfoLeft>
       <WrapRight>
@@ -70,14 +69,14 @@ const FlawInfo = () => {
             isInfoPage
           />
         )}
-        {activeTabs === 2 && (
+        {/* {activeTabs === 2 && (
           <div>12</div>
           //   <DemandComment
           //     isOpen={activeTabs === 2}
           //     detail={demandInfo}
           //     isOpenInfo
           //   />
-        )}
+        )} */}
       </WrapRight>
     </FlawInfoWrap>
   )

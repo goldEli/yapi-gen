@@ -24,7 +24,6 @@ import CommonButton from '@/components/CommonButton'
 import ChangePriorityPopover from '@/components/ChangePriorityPopover'
 import IconFont from '@/components/IconFont'
 import { updateFlawPriority, updateFlawTableParams } from '@/services/flaw'
-import { getFlawInfo } from '@store/flaw/flaw.thunk'
 import { getCategoryConfigList } from '@/services/demand'
 import ChangeSeverityPopover from '@/components/ChangeSeverityPopover'
 
@@ -184,13 +183,19 @@ const BasicDemand = (props: Props) => {
           ? props.detail?.copySend?.map((i: any) => i.copysend.name).join(';')
           : '--',
       }
-    } else if (['discovery_version', 'iterate_name'].includes(content)) {
+    } else if (['iterate_name'].includes(content)) {
       // 迭代取值
       value = {
         defaultText:
           props.detail?.iterateName === '--' ? '' : props.detail?.iterateName,
         defaultHtml:
           props.detail?.iterateName === '--' ? '--' : props.detail?.iterateName,
+      }
+    } else if (content === 'discovery_version') {
+      // 发现版本取值
+      value = {
+        defaultText: props.detail?.discovery_version_name ?? '--',
+        defaultHtml: props.detail?.discovery_version_name ?? '--',
       }
     } else if (content === 'class') {
       // 需求分类取值
@@ -237,6 +242,7 @@ const BasicDemand = (props: Props) => {
         (i: any) => i.content === item.content,
       )[0]
       const defaultValues = getDefaultValue(item.content)
+      console.log(defaultValues, '=1212', filterContent)
       nodeComponent = (
         <TableQuickEdit
           item={{
@@ -419,8 +425,9 @@ const BasicDemand = (props: Props) => {
       style={{
         width: '100%',
         paddingLeft: props.hasPadding ? '24px' : 0,
-        height: '100%',
-        overflow: 'auto',
+        height: 'calc(100% - 64px)',
+        overflowY: 'auto',
+        overflowX: 'hidden',
       }}
     >
       <Label>{t('newlyAdd.basicInfo')}</Label>

@@ -6,8 +6,33 @@ export const Wrap = styled.div`
   height: 100%;
   display: flex;
   padding-top: 20px;
-  /* padding: 20px 16px 0 24px; */
   flex-direction: column;
+  .tabs {
+    padding: 0 24px 0 0;
+  }
+  .ant-tabs-nav {
+    padding-left: 24px;
+  }
+  .ant-tabs-tab {
+    padding: 0 0 16px;
+  }
+  .ant-tabs-tab-btn {
+    font-size: 14px;
+    color: var(--neutral-n2);
+  }
+  .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: var(--primary-d1);
+  }
+  .ant-tabs-content {
+    height: calc(100vh - 246px);
+    .ant-tabs-tabpane {
+      height: 100%;
+    }
+  }
+  .ant-tabs-top > .ant-tabs-nav::before,
+  .ant-tabs-top > div > .ant-tabs-nav::before {
+    left: 24px;
+  }
 `
 
 export const DetailTop = styled.div`
@@ -68,7 +93,7 @@ export const DownWrap = styled(NextWrap)<{ isOnly?: boolean }>`
 
 export const DetailTitle = styled.div`
   display: flex;
-  border-bottom: 1px solid var(--neutral-n6-d1);
+  /* border-bottom: 1px solid var(--neutral-n6-d1); */
   padding: 20px 0px 20px;
   width: calc(100% - 48px);
   margin-left: 24px;
@@ -225,31 +250,6 @@ export const DropdownMenu = styled(Dropdown)`
   }
 `
 
-export const InfoWrap = styled.div`
-  height: calc(100vh - 212px);
-  flex: 1;
-  position: relative;
-  .tabs {
-    padding-left: 24px;
-  }
-  .ant-tabs-top > .ant-tabs-nav::before,
-  .ant-tabs-bottom > .ant-tabs-nav::before,
-  .ant-tabs-top > div > .ant-tabs-nav::before,
-  .ant-tabs-bottom > div > .ant-tabs-nav::before {
-    border-bottom: none;
-  }
-  .ant-tabs-tab {
-    padding: 0 0 16px;
-  }
-  .ant-tabs-tab-btn {
-    font-size: 14px;
-    color: var(--neutral-n2);
-  }
-  .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-    color: var(--primary-d1);
-  }
-`
-
 export const SprintDetailDragLine = styled(DragLine)`
   background: ${props =>
     props.active ? 'var(--primary-d2)' : 'var(--neutral-n6-d1)'}!important;
@@ -294,14 +294,14 @@ export const BasicFooter = styled.div`
 
 export const FlawInfoWrap = styled.div({
   display: 'flex',
-  height: 'calc(100% - 64px)',
+  height: '100%',
 })
 
 export const FlawInfoLeft = styled.div({
-  width: '100%',
+  width: '80%',
   height: '100%',
   overflow: 'auto',
-  padding: '0 20px 24px 0',
+  padding: '0 20px 0px 24px',
   position: 'relative',
 })
 
@@ -374,13 +374,10 @@ export const LabelItem = styled.div`
 `
 
 export const WrapRight = styled.div({
-  width: '100%',
-  minWidth: '370px',
-  overflowY: 'auto',
+  width: 400,
   height: '100%',
-  padding: '16px 10px 10px 24px',
+  padding: '0px 10px 0px 24px',
   position: 'relative',
-  overflowX: 'hidden',
 })
 
 export const TitleWrap = styled.div<{ activeTabs?: any }>(
