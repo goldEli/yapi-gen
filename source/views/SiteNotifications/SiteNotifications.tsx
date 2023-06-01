@@ -44,6 +44,8 @@ const SiteNotifications = () => {
     dispatch(changeNumber(num))
   }
   const sendMsg = () => {
+    console.log(wsData)
+
     if (wsData.data.customData.noticeStyle === '2') {
       message.success({
         icon: <span></span>,
@@ -59,6 +61,7 @@ const SiteNotifications = () => {
       setFirst2({
         customData: wsData.data.customData,
         msgBody: wsData.data.msgBody,
+        id: wsData.data.msgIds,
       })
     }
 

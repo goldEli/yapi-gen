@@ -93,7 +93,7 @@ const ScheduleInfoContent: React.FC<IProps> = props => {
         <div className={contentTip}>
           <span>
             {t('calendarManager.participant')}（{scheduleInfo?.members?.length}
-            人）
+            {t('people')}）
           </span>
           <span onClick={e => {}} className="icon">
             <IconFont

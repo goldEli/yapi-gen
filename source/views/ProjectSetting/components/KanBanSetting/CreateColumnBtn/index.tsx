@@ -11,6 +11,7 @@ import {
   IconWrap,
   TextBtn,
 } from './styled'
+import useI18n from '@/hooks/useI18n'
 
 interface CreateColumnBtnProps {}
 
@@ -19,6 +20,7 @@ const CreateColumnBtn: React.FC<CreateColumnBtnProps> = props => {
   const inputTagRef = useRef<InputRef>(null)
   const dispatch = useDispatch()
   const [inputValue, setInputValue] = useState('')
+  const { t } = useI18n()
 
   useEffect(() => {
     if (inputTagRef.current) {
@@ -48,7 +50,7 @@ const CreateColumnBtn: React.FC<CreateColumnBtnProps> = props => {
           }}
           value={inputValue}
           ref={inputTagRef}
-          placeholder="输入列的名称"
+          placeholder={t('enter_the_name_of_the_column')}
           style={{ width: 182 }}
         />
         <TextBtn
@@ -62,7 +64,7 @@ const CreateColumnBtn: React.FC<CreateColumnBtnProps> = props => {
           }}
           active
         >
-          创建
+          {t('create')}
         </TextBtn>
         <TextBtn
           onClick={e => {
@@ -70,7 +72,7 @@ const CreateColumnBtn: React.FC<CreateColumnBtnProps> = props => {
             onCancel()
           }}
         >
-          取消
+          {t('cancel')}
         </TextBtn>
       </EditArea>
     </CreateColumnBtnBox>

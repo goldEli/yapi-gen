@@ -137,7 +137,7 @@ const KanBanBtnsArea = (props: Props) => {
     <SpaceWrap size={8} style={{ marginLeft: 8 }}>
       {/* 分享 */}
       <ScreenMinHover
-        label={'分享'}
+        label={t('share')}
         icon="share"
         onClick={() => {
           dispatch(openShareModel())
@@ -192,7 +192,11 @@ const KanBanBtnsArea = (props: Props) => {
 
       <DividerWrap type="vertical" />
       {/* 全屏 */}
-      <ScreenMinHover label={'全屏'} icon="full-screen" onClick={() => {}} />
+      <ScreenMinHover
+        label={t('full_screen')}
+        icon="full-screen"
+        onClick={() => {}}
+      />
       <DividerWrap type="vertical" />
 
       {/* 设置 */}
