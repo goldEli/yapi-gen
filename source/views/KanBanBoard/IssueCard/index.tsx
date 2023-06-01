@@ -33,44 +33,53 @@ interface IssueCardProps {
 
 const IssueCard = (props: IssueCardProps) => {
   const { item, index } = props
+  const isDragDisabled = props.item.verify_lock === 1
+
+  const cardContent = (
+    <IssueCardBoxContainer hidden={props.hidden}>
+      <Top>
+        <TopLeft>
+          <TopProjectIcon src={item.project_category.attachment_path} />
+          <TopText>{item.story_prefix_key}</TopText>
+        </TopLeft>
+        <TopRight>
+          <ThreeDot story={item} />
+        </TopRight>
+      </Top>
+      <Middle>{item.name}</Middle>
+      <Bottom>
+        <BottomLeft>
+          <MultipleAvatar max={3} list={item.handlers} />
+        </BottomLeft>
+        <BottomRight>
+          <PercentageBox>{`${item.schedule}%`}</PercentageBox>
+          <Sub>
+            <WrapIcon type="apartment" />
+            {item.children_count}
+          </Sub>
+          <PriorityIcon
+            icon={item.story_config_priority.icon}
+            color={item.story_config_priority.color ?? ''}
+          />
+        </BottomRight>
+      </Bottom>
+    </IssueCardBoxContainer>
+  )
+
   return (
-    <Draggable key={item.id} draggableId={props.uuid} index={index}>
+    <Draggable
+      isDragDisabled={isDragDisabled}
+      key={item.id}
+      draggableId={props.uuid}
+      index={index}
+    >
       {provided => (
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <IssueCardBox>
-            <IssueCardBoxContainer hidden={props.hidden}>
-              <Top>
-                <TopLeft>
-                  <TopProjectIcon src={item.project_category.attachment_path} />
-                  <TopText>{item.story_prefix_key}</TopText>
-                </TopLeft>
-                <TopRight>
-                  <ThreeDot story={item} />
-                </TopRight>
-              </Top>
-              <Middle>{item.name}</Middle>
-              <Bottom>
-                <BottomLeft>
-                  <MultipleAvatar max={3} list={item.handlers} />
-                </BottomLeft>
-                <BottomRight>
-                  <PercentageBox>{`${item.schedule}%`}</PercentageBox>
-                  <Sub>
-                    <WrapIcon type="apartment" />
-                    {item.children_count}
-                  </Sub>
-                  <PriorityIcon
-                    icon={item.story_config_priority.icon}
-                    color={item.story_config_priority.color ?? ''}
-                  />
-                </BottomRight>
-              </Bottom>
-            </IssueCardBoxContainer>
-          </IssueCardBox>
+          <IssueCardBox>{cardContent}</IssueCardBox>
         </div>
       )}
     </Draggable>
