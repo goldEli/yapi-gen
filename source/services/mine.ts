@@ -878,18 +878,8 @@ export const getMineProjectList: any = async (params: any) => {
 // 获取我的概况
 export const getMineChartsList: any = async () => {
   const response = await http.get('getMineChartsList')
-  const { join, abeyance } = response.data
 
-  return {
-    firstP: join.project_count,
-    firstN: join.story_count,
-    firstD: join.iterate_count,
-    secondAll: abeyance.total,
-    secondNoFinish: abeyance.abeyance_count,
-    secondTimeOut: abeyance.expired_count,
-    secondFinish: abeyance.finish_count,
-    secondOutFinish: abeyance.expired_finish_count,
-  }
+  return response.data
 }
 
 // 表单区域
