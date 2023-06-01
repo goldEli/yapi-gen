@@ -25,6 +25,15 @@ import { produce } from 'immer'
 
 const name = 'kanBan'
 
+// 获取流转配置
+export const getFlowConfig =
+  (params: API.Kanban.GetFlowConfig.Params) =>
+  async (dispatch: AppDispatch) => {
+    const res = await services.kanban.getFlowConfig(params)
+
+    return res.data
+  }
+
 // 打开修改状态弹窗
 export const openModifyStatusModalInfo =
   (params: {
@@ -100,6 +109,15 @@ export const modifyStatus =
       targetStories.unshift(removed)
     })
     dispatch(setKanbanInfoByGroup(data))
+    const res = await dispatch(
+      getFlowConfig({
+        story_id: options.storyId,
+        // 项目id
+        project_id: getParamsValueByKey('id'),
+        // 目标状态id
+        category_status_to_id: target.flow_status_id,
+      }),
+    )
     dispatch(
       openModifyStatusModalInfo({
         storyId,
@@ -109,7 +127,7 @@ export const modifyStatus =
           // 来自id状态名称
           fromContent: source.status_name,
           // 流转名称
-          statusName: '123',
+          statusName: res.name,
           // 来自id
           fromId: source.flow_status_id,
           // 来自id是否是结束状态
