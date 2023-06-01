@@ -249,6 +249,8 @@ const StaffManagement = () => {
     setVisible(true)
     setEditId(datas.id)
   }
+  console.log(list)
+
   return (
     <PermissionWrap
       auth="/AdminManagement/StaffManagement"
@@ -273,6 +275,7 @@ const StaffManagement = () => {
         detailInner={detailInner}
         onCancel={() => setDetailVisible(false)}
         isVisible={detailVisible}
+        reportIds={list?.map((i: any) => i.id)}
       />
       <div
         style={{
