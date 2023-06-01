@@ -1,6 +1,17 @@
 import urls from '@/constants/urls'
 import * as http from '@/tools/http'
 
+// getFlowConfig
+export const getFlowConfig = async (
+  params: API.Kanban.GetFlowConfig.Params,
+) => {
+  const response = await http.get<any, API.Kanban.GetFlowConfig.Result>(
+    urls.getFlowConfig,
+    params,
+  )
+  return response
+}
+
 export const delView = async (params: API.Kanban.DelView.Params) => {
   const response = await http.delete<any, API.Kanban.DelView.Result>(
     'delView',

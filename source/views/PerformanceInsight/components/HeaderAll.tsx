@@ -29,7 +29,6 @@ const HeaderAll = (props: HaderProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [isVisible, setIsVisible] = useState<boolean>(false)
   const [isVisibleSuccess, setIsVisibleSuccess] = useState<boolean>(false)
-  const [more, setMore] = useState(false)
   const [projectList, setProjectList] = useState<any>()
   const [time, setTime] = useState<{ startTime: string; endTime: string }>()
   const { headerParmas, projectDataList } = useSelector(
@@ -85,6 +84,7 @@ const HeaderAll = (props: HaderProps) => {
               <Select
                 options={projectList}
                 more={true}
+                value={[]}
                 placeholder="请选择项目"
                 onChange={(value: number[]) => console.log(value)}
               />

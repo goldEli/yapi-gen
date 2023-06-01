@@ -255,9 +255,11 @@ const urls = {
   affairsRelationDragSort: '/b/transaction/dragRelationSort',
   // 关联事务列表
   getAffairsRelationStoriesList: '/b/transaction/relationStories',
-
+  // 编辑视图
+  viewsUpdate: '/b/story/views/update',
+  // 新建视图
+  createViewList: '/b/story/views/create',
   // 修改日程
-
   modifySchedule: function (id: Model.Schedule.Info['schedule_id']) {
     return `/b/calendar/schedule/${id}`
   },
@@ -401,9 +403,12 @@ const urls = {
   // 批量删除缺陷
   batchFlawDelete: '/b/flaw/batch_delete',
   // 批量编辑缺陷
-  batchFlawEdit: '/b/flaw/batch_update',
+  batchFlawEdit: '/b/flaw_update',
   // 批量编辑的下拉列表
   getBatchEditFlawConfig: '/b/flaw/batch_fields',
+
+  // 获取需求流转配置
+  getFlowConfig: '/b/story/flowConfig',
 }
 export default urls
 

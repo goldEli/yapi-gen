@@ -26,7 +26,11 @@ import {
 } from '@/views/WorkReport/Review/components/style'
 
 import { Content, Title, Text } from './style'
-import { Col, NameText } from '@/views/WorkReport/Formwork/Addperson'
+import {
+  Col,
+  DefalutIcon,
+  NameText,
+} from '@/views/WorkReport/Formwork/Addperson'
 import { getMyAllSysNoticeDetail } from '@/services/sysNotice'
 
 interface TargetTabsProps {
@@ -184,17 +188,34 @@ const NoteDetailDrawer = (props: any) => {
               flexWrap: 'wrap',
             }}
           >
-            {arr?.map((i: any) => (
+            {props.detailInner.recipient.all ? (
               <Col
                 style={{
                   whiteSpace: 'nowrap',
                 }}
-                key={i.id}
               >
-                <CommonUserAvatar avatar={i.avatar} />
-                <NameText>{i.name}</NameText>
+                <DefalutIcon bgc="rgba(125, 189, 225, 1)">
+                  <CommonIconFont
+                    type="userAll"
+                    size={16}
+                    color="var(--neutral-white-d7)"
+                  />
+                </DefalutIcon>
+                <NameText>全员</NameText>
               </Col>
-            ))}
+            ) : (
+              arr?.map((i: any) => (
+                <Col
+                  style={{
+                    whiteSpace: 'nowrap',
+                  }}
+                  key={i.id}
+                >
+                  <CommonUserAvatar avatar={i.avatar} />
+                  <NameText>{i.name}</NameText>
+                </Col>
+              ))
+            )}
           </div>
         </Content>
       </Drawer>
