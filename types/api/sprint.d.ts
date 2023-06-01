@@ -98,8 +98,8 @@ declare namespace API.Sprint {
       period_time?: string
       start_time?: string
       end_time?: string
-      page: 1
-      pagesize: 20
+      page: number
+      pagesize: number
     }
     type Result = {
       work: Array<Model.Sprint.WorkListItem>

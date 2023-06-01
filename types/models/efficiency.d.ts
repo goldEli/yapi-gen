@@ -95,4 +95,16 @@ declare namespace Models.Efficiency {
     end_time?: string
     period_time?: string
   }
+  export interface HeaderParmas {
+    projectIds: number[]
+    users: []
+    time: {
+      type: number
+      time: string[] | ''
+    }
+    view: {
+      title: string
+      value: number
+    }
+  }
 }

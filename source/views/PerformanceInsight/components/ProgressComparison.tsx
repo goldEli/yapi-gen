@@ -22,6 +22,8 @@ import {
   workContrastList,
 } from '@/services/efficiency'
 import { RowText } from './style'
+import { getDays, getMonthBefor } from './Date'
+
 // 进展对比tips
 const getTitleTips = (text: string, tips: string) => {
   return (
@@ -53,9 +55,10 @@ interface Props {
   title: string
   //代表是全局还是冲刺迭代
   homeType: string
+  headerParmas: Models.Efficiency.HeaderParmas
+  projectDataList: Array<{ name: string; id: number }>
 }
 const ProgressComparison = (props: Props) => {
-  console.log(props, 'props--------')
   const dispatch = useDispatch()
   const [columns, setColumns] = useState<
     Array<{
@@ -95,6 +98,7 @@ const ProgressComparison = (props: Props) => {
   const [ids, setIds] = useState<number[]>([])
   const [historyWorkObj, setHistoryWorkObj] =
     useState<API.Efficiency.HistoryWorkList.Result>()
+  const [time, setTime] = useState<{ startTime: string; endTime: string }>()
   const onUpdateOrderKey = (key: any, val: any) => {
     setOrder({ value: val === 2 ? 'desc' : 'asc', key })
     // props.onUpdateOrderKey({ value: val === 2 ? 'desc' : 'asc', key })
@@ -404,11 +408,7 @@ const ProgressComparison = (props: Props) => {
   useEffect(() => {
     // 进展对比 Progress_iteration-迭代 Progress1冲刺 ProgressAll全局
     //缺陷 Defect_iteration-迭代 Defect1冲刺 DefectAll全局
-    if (props.type.includes('Progress')) {
-      getWorkContrastList()
-    } else {
-      getMemberBugList()
-    }
+    onSearchData([])
     switch (props.type) {
       case 'Progress_iteration':
         setColumns(columns1)
@@ -430,17 +430,64 @@ const ProgressComparison = (props: Props) => {
         break
     }
   }, [])
+  const onSearchData = (value: number[]) => {
+    if (props.type.includes('Progress')) {
+      getWorkContrastList(value)
+    } else {
+      getMemberBugList(value)
+    }
+  }
+  // 获取时间
+  const getTime = (time: { type: number; time: any }) => {
+    switch (time.type) {
+      case 1:
+        return getMonthBefor(1)
+      case 3:
+        return getMonthBefor(3)
+      case 6:
+        return getMonthBefor(6)
+      case 14:
+        return getDays(14)
+      case 28:
+        return getDays(28)
+      default:
+        return {
+          startTime: time?.time?.[0],
+          endTime: time?.time?.[1],
+        }
+    }
+  }
+  const getTimeStr = (time: { type: number; time: any }) => {
+    switch (time.type) {
+      case 1:
+        return 'one_month'
+      case 3:
+        return 'three_month'
+      case 6:
+        return 'six_month'
+      case 14:
+        return 'two_week'
+      case 28:
+        return 'four_week'
+      default:
+        return ''
+    }
+  }
   // 工作进展对比大的列表
-  const getWorkContrastList = async () => {
+  const getWorkContrastList = async (value: number[]) => {
+    const time = props.headerParmas?.time && getTime(props.headerParmas?.time)
     const res = await workContrastList({
-      project_ids: '1,2',
+      project_ids:
+        value.length >= 1
+          ? value.join(',')
+          : props.headerParmas?.projectIds?.join?.(','),
       iterate_ids: '12,23',
-      user_ids: '12,23,707',
-      period_time: 'two_week',
-      start_time: '2023-05-30 00:00:00',
-      end_time: '2023-05-30 00:00:00',
-      page: 1,
-      pagesize: 20,
+      user_ids: props.headerParmas.users?.join(','),
+      period_time: getTimeStr(props.headerParmas?.time),
+      start_time: time.startTime,
+      end_time: time.endTime,
+      page: pageNum,
+      pagesize: pageSize,
     })
     setWork(res.work)
     setTableList(res.list)
@@ -449,16 +496,22 @@ const ProgressComparison = (props: Props) => {
     setIds([1, 3, 4])
   }
   // 缺陷分析大的列表
-  const getMemberBugList = async () => {
+  const getMemberBugList = async (value: number[]) => {
+    const time = getTime(props.headerParmas.time)
     const res = await memberBugList({
-      project_ids: '1,2',
+      project_ids:
+        value.length >= 1 || props.headerParmas?.projectIds.length >= 1
+          ? value.length >= 1
+            ? value.join(',')
+            : props.headerParmas?.projectIds?.join?.(',')
+          : '',
       iterate_ids: '12,23',
-      user_ids: '12,23,707',
-      period_time: 'two_week',
-      start_time: '2023-05-30 00:00:00',
-      end_time: '2023-05-30 00:00:00',
-      page: 1,
-      pagesize: 20,
+      user_ids: props.headerParmas.users?.join(','),
+      period_time: getTimeStr(props.headerParmas?.time),
+      start_time: time.startTime,
+      end_time: time.endTime,
+      page: pageNum,
+      pagesize: pageSize,
     })
     setWork(res.defect)
     setTableList1(res.list)
@@ -552,9 +605,10 @@ const ProgressComparison = (props: Props) => {
       }}
     >
       <HeaderAll
-        time="2023-08-08 ~ 2023-09-08"
-        personData={[{ name: '123' }]}
+        onSearchData={onSearchData}
         type={props.type}
+        headerParmas={props.headerParmas}
+        projectDataList={props.projectDataList}
       />
       {/* 表格 */}
       <Col>
