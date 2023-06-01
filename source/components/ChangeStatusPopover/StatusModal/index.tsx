@@ -29,6 +29,9 @@ interface StatusModalProps {
   record?: any
   // 修改状态接口
   onChangeStatusConfirm(value: any): void
+  /**
+   * 1 迭代 2 冲刺（冲刺里是事务）
+   */
   // 1-需求，2-事务，3-缺陷
   type?: 1 | 2 | 3
 }
