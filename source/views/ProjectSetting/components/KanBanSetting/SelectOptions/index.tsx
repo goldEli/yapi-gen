@@ -17,6 +17,7 @@ import {
   Options,
   SelectOptionsBox,
 } from './styled'
+import useI18n from '@/hooks/useI18n'
 
 type ViewItem = {
   key: string
@@ -39,6 +40,7 @@ interface SelectBoxProps {
 
 const SelectOptions: React.FC<SelectBoxProps> = props => {
   const [isVisibleFormat, setIsVisibleFormat] = useState(false)
+  const { t } = useI18n()
 
   // 切换显示类型
   const onClickMenuFormat = (key: string) => {
@@ -79,7 +81,9 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
           <Options>
             <LabelArea>
               <span className="label">{item.value}</span>
-              <DefaultTag visible={item.isDefault ?? false}>默认</DefaultTag>
+              <DefaultTag visible={item.isDefault ?? false}>
+                {t('default')}
+              </DefaultTag>
             </LabelArea>
             <OperationArea>
               <CheckIcon visible={item.check}>
@@ -144,7 +148,9 @@ const SelectOptions: React.FC<SelectBoxProps> = props => {
                 }}
               >
                 <span className="label">
-                  {props.createViewTitle ? props.createViewTitle : '创建视图'}
+                  {props.createViewTitle
+                    ? props.createViewTitle
+                    : t('create_view')}
                 </span>
               </Options>
             </HasIconMenu>
