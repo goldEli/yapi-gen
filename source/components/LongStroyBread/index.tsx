@@ -27,7 +27,6 @@ const HasStroyWrap = styled.div`
   display: flex;
 `
 interface IProps {
-  visible?: boolean
   longStroy?: any
 }
 const LongStroyBread = (props: IProps) => {
@@ -56,17 +55,6 @@ const LongStroyBread = (props: IProps) => {
   return (
     <div style={{ position: 'relative' }} ref={ref}>
       <BreadBox>
-        {/* <LongStroyWrap
-          onClick={() => {
-            setVisible(true)
-          }}
-        >
-          <CommonIconFont
-            type="edit"
-            color="var(--neutral-n3)"
-          ></CommonIconFont>
-          <LabelBox>添加长故事</LabelBox>
-        </LongStroyWrap> */}
         {longStroy ? (
           <LongStroyWrap>
             {showEditIcon ? (
