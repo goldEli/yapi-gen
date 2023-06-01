@@ -56,10 +56,12 @@ declare namespace API.Efficiency {
   }
   namespace ViewsEditList {
     type Params = {
-      id: number
-      project_id?: number[]
+      use_type?: number
+      id?: number
+      project_id?: number
       status?: number
       name: string
+      config?: Models.Efficiency.ConfigItem
     }
     type Result = {
       data: boolean

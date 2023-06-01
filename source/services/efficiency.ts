@@ -959,7 +959,7 @@ export const viewsList = async (parmas: API.Efficiency.ViewsList.Params) => {
   const response = {
     data: [
       {
-        id: 27678313.95481859,
+        id: 27,
         name: 'Duis anim',
         config: {
           project_id: [441, 437],
@@ -970,9 +970,10 @@ export const viewsList = async (parmas: API.Efficiency.ViewsList.Params) => {
         },
         status: -69632682.78917724,
         type: 79917760,
+        is_default: 1,
       },
       {
-        id: -72959592.7626661,
+        id: 28,
         name: 'occaecat officia culpa est in',
         config: {
           project_id: [441, 437],
@@ -983,9 +984,10 @@ export const viewsList = async (parmas: API.Efficiency.ViewsList.Params) => {
         },
         status: -77288136.07175744,
         type: 27217600,
+        is_default: 2,
       },
       {
-        id: 56721607.603690505,
+        id: 89,
         name: 'culpa',
         config: {
           project_id: [441, 437],
@@ -996,9 +998,10 @@ export const viewsList = async (parmas: API.Efficiency.ViewsList.Params) => {
         },
         status: -79455814.85011317,
         type: 3712589,
+        is_default: 2,
       },
       {
-        id: -82173928.99264961,
+        id: 74,
         name: 'aliq',
         config: {
           project_id: [441, 437],
@@ -1009,6 +1012,7 @@ export const viewsList = async (parmas: API.Efficiency.ViewsList.Params) => {
         },
         status: 32169567.50605288,
         type: -88587158,
+        is_default: 2,
       },
     ],
   }
@@ -1018,6 +1022,7 @@ export const viewsList = async (parmas: API.Efficiency.ViewsList.Params) => {
     status: el.status,
     type: el.type,
     config: el.config,
+    key: el.id + '',
   }))
 }
 // 视图修改
@@ -1040,10 +1045,13 @@ export const createViewList = async (
   )
   return response.data
 }
-// viewsUpdate: '/b/story/views/update',
-//   // 新建视图
-//   createViewList: '/b/story/views/create',
-
+export const delView = async (id: number) => {
+  const response = await http.post<any, API.Efficiency.ViewsEditList.Result>(
+    `delView`,
+    id,
+  )
+  return response.data
+}
 // 视图的接口 end
 
 // 图表页面 start

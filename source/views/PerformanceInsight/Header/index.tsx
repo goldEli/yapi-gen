@@ -24,10 +24,12 @@ interface ItemProps {
 }
 interface Props {
   homeType: string
-  viewDataList: []
+  viewDataList: Array<Models.Efficiency.ViewItem> | undefined
   headerParmas: {
     projectIds: number[]
   }
+  onCreateView: (value: string, type: string, key?: string) => void
+  onDelView: (key: string) => void
 }
 const Iteration = (props: Props) => {
   // sprint  iteration all
@@ -146,7 +148,11 @@ const Iteration = (props: Props) => {
   return (
     <HeaderRow>
       <Space size={16}>
-        <View viewDataList={props.viewDataList} />
+        <View
+          viewDataList={props.viewDataList}
+          onCreateView={props.onCreateView}
+          onDelView={props.onDelView}
+        />
         <Text onClick={() => setIsVisibleView(true)}>另存为</Text>
         {/* 保存需要人员，项目选择和时间修改后 */}
         {save && <Text>保存</Text>}
@@ -278,7 +284,7 @@ const Iteration = (props: Props) => {
       {/* 另存为视图 */}
       <ViewDialog
         name={''}
-        title={'另存为视图'}
+        titleType={{ title: '另存为视图', type: 'add' }}
         onConfirm={val => {
           console.log(123, val)
         }}

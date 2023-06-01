@@ -96,7 +96,6 @@ const NoteDetailDrawer = (props: any) => {
   // 向上查找需求
   const onUpDemand = () => {
     const newIndex = reportIds[currentIndex - 1]
-    console.log(newIndex, '上标')
     changeData(newIndex)
     setCurrentIndex(reportIds.findIndex((i: any) => i === newIndex))
   }
@@ -114,12 +113,14 @@ const NoteDetailDrawer = (props: any) => {
     setArr(res)
   }
   useEffect(() => {
+    props.isVisible && init()
+  }, [props.isVisible])
+
+  useEffect(() => {
     setCurrentIndex(
       reportIds.findIndex((i: any) => i === props?.detailInner?.id),
     )
-    props.isVisible && init()
-  }, [props.isVisible])
-  console.log(currentIndex, '当前下标')
+  }, [reportIds])
 
   if (props.isVisible) {
     return (
