@@ -5,10 +5,27 @@ import { Dropdown, Menu } from 'antd'
 import IconFont from '@/components/IconFont'
 import { HoverIcon } from '../IssueCard/styled'
 import { getMessage } from '@/components/Message'
+import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import { useDispatch } from '@store/index'
+import { deleteStory } from '@store/kanBan/kanBan.thunk'
 
 interface ThreeDotProps {
   story: Model.KanBan.Story
 }
+//   //  点击复制链接
+//   const onCopy = () => {
+//     let text: any = ''
+//     let beforeUrl: any
+//     beforeUrl = `${window.origin}${import.meta.env.__URL_HASH__}`
+//     props.selectRows?.forEach((element: any) => {
+//       const params = encryptPhp(
+//         JSON.stringify({ type: 'info', id: projectId, demandId: element.id }),
+//       )
+//       const url = `ProjectManagement/Demand?data=${params}`
+//       text += `【${element.name}】 ${beforeUrl}${url} \n`
+//     })
+//     copyLink(text, t('version2.copyLinkSuccess'), t('version2.copyLinkError'))
+//   }
 
 const Item = styled.div`
   width: 100%;
@@ -27,6 +44,8 @@ function copyTextToClipboard(text: string) {
     })
 }
 const ThreeDot: React.FC<ThreeDotProps> = props => {
+  const { open, DeleteConfirmModal } = useDeleteConfirmModal()
+  const dispatch = useDispatch()
   const copyTitle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation()
     copyTextToClipboard(props.story.name)
@@ -35,41 +54,59 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
     e.stopPropagation()
     copyTextToClipboard(props.story.id + '')
   }
+  const onDel = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.stopPropagation()
+    open({
+      title: '删除确认',
+      text: '确认删除该需求吗？',
+      onConfirm: () => {
+        dispatch(
+          deleteStory({
+            id: props.story.id,
+          }),
+        )
+        return Promise.resolve()
+      },
+    })
+  }
   return (
-    <Dropdown
-      trigger={['hover']}
-      menu={{
-        items: [
-          {
-            key: '1',
-            label: <Item>编辑</Item>,
-          },
-          {
-            key: '2',
-            label: <Item>删除</Item>,
-          },
-          {
-            key: '3',
-            label: <Item onClick={copyNo}>复制编号</Item>,
-          },
-          {
-            key: '4',
-            label: <Item onClick={copyTitle}>复制标题</Item>,
-          },
-        ],
-      }}
-      placement="bottomRight"
-      getPopupContainer={(i: any) => i.parentNode}
-    >
-      <HoverIcon>
-        <IconFont
-          style={{
-            color: 'var(--neutral-n3)',
-          }}
-          type="more"
-        />
-      </HoverIcon>
-    </Dropdown>
+    <>
+      <Dropdown
+        trigger={['hover']}
+        menu={{
+          items: [
+            {
+              key: '1',
+              label: <Item>编辑</Item>,
+            },
+            {
+              key: '2',
+              label: <Item onClick={onDel}>删除</Item>,
+            },
+            {
+              key: '3',
+              label: <Item onClick={copyNo}>复制编号</Item>,
+            },
+            {
+              key: '4',
+              label: <Item onClick={copyTitle}>复制标题</Item>,
+            },
+          ],
+        }}
+        placement="bottomRight"
+        getPopupContainer={(i: any) => i.parentNode}
+      >
+        <HoverIcon>
+          <IconFont
+            style={{
+              color: 'var(--neutral-n3)',
+            }}
+            type="more"
+          />
+        </HoverIcon>
+      </Dropdown>
+      <DeleteConfirmModal />
+    </>
   )
 }
 

@@ -111,4 +111,16 @@ declare namespace API.Kanban {
       name: string
     }
   }
+
+  namespace DeleteStory {
+    type Params = {
+      id: Model.KanBan.Story['id']
+      // 项目id
+      project_id: number
+    }
+    type Result = {
+      id: number
+      name: string
+    }
+  }
 }

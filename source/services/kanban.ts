@@ -1,5 +1,9 @@
 import urls from '@/constants/urls'
 import * as http from '@/tools/http'
+//
+export const deleteStory = async (params: API.Kanban.DeleteStory.Params) => {
+  await http.post<any, API.Kanban.DeleteStory.Result>(urls.deleteDemand, params)
+}
 
 // getFlowConfig
 export const getFlowConfig = async (

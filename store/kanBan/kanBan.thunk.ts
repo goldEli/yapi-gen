@@ -25,6 +25,17 @@ import { produce } from 'immer'
 
 const name = 'kanBan'
 
+// 删除story
+export const deleteStory =
+  (params: Pick<API.Kanban.DeleteStory.Params, 'id'>) =>
+  async (dispatch: AppDispatch) => {
+    await services.kanban.deleteStory({
+      ...params,
+      project_id: getParamsValueByKey('id'),
+    })
+    dispatch(getKanbanByGroup())
+  }
+
 // 获取流转配置
 export const getFlowConfig =
   (params: API.Kanban.GetFlowConfig.Params) =>
