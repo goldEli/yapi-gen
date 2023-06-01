@@ -1638,6 +1638,10 @@
     "save_Changes": "Save Changes",
     "default": "Default",
     "create_view": "Create view",
-    "count_transaction": "{{count}} transaction"
+    "count_transaction": "{{count}} transaction",
+    "full_screen": "Full screen",
+    "move_a_status_here_to_assign_it_to_this_column": "Move a status here to assign it to this column",
+    "enter_the_name_of_the_column": "Enter the name of the column",
+    "create": "Create"
   }
 }
