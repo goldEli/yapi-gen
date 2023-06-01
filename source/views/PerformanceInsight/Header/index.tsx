@@ -30,6 +30,7 @@ interface Props {
   }
   onCreateView: (value: string, type: string, key?: string) => void
   onDelView: (key: string) => void
+  onSetDefaulut: (id: number) => void
 }
 const Iteration = (props: Props) => {
   // sprint  iteration all
@@ -152,6 +153,7 @@ const Iteration = (props: Props) => {
           viewDataList={props.viewDataList}
           onCreateView={props.onCreateView}
           onDelView={props.onDelView}
+          onSetDefaulut={props.onSetDefaulut}
         />
         <Text onClick={() => setIsVisibleView(true)}>另存为</Text>
         {/* 保存需要人员，项目选择和时间修改后 */}

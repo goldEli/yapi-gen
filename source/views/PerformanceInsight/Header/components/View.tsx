@@ -8,28 +8,28 @@ import { DivStyle, DefaultLabel, DefaultLabelAdd, Btn, Label } from '../Style'
 import { useDispatch, useSelector } from '@store/index'
 import { setHeaderParmas } from '@store/performanceInsight'
 interface Item {
+  type: number
   label?: string
   key: string
-  name?: string
+  name: string
 }
 interface ValueType {
   title: string
   value: string
+  type: string
 }
 interface View {
   viewDataList: Array<Models.Efficiency.ViewItem> | undefined
   onCreateView: (value: string, type: string, key?: string) => void
   onDelView: (key: string) => void
+  onSetDefaulut: (id: number) => void
 }
 const View = (props: View) => {
   const dispatch = useDispatch()
   const { headerParmas } = useSelector(store => store.performanceInsight)
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [items, setItems] = useState<MenuProps['items']>([])
-  const [value, setValue] = useState<ValueType>({
-    title: '系统视图',
-    value: 'all',
-  })
+  const [value, setValue] = useState<Models.Efficiency.ViewItem>()
   const [isVisible, setIsVisible] = useState<boolean>(false)
   const [delIsVisible, setDelIsVisible] = useState<boolean>(false)
   const [dialogTitle, setDialogTitle] = useState<{
@@ -39,16 +39,15 @@ const View = (props: View) => {
   const [dialogItem, setDialogItem] = useState<{ name: string; id?: number }>({
     name: '',
   })
+  // 剔除来的默认视图
   const [optionsDefault, setOptionsDefault] =
-    useState<Array<Models.Efficiency.ViewItem>>()
+    useState<Models.Efficiency.ViewItem>()
   const [options, setOptions] = useState<Array<Models.Efficiency.ViewItem>>()
   // 用于后面接口判断使用
   const [key, setKey] = useState('first')
   useEffect(() => {
     props.viewDataList &&
-      setOptionsDefault(
-        props.viewDataList.filter(el => el.is_default === 1) || [],
-      )
+      setOptionsDefault(props.viewDataList.find(el => el.is_default === 1))
     props.viewDataList &&
       setOptions(props.viewDataList.filter(el => el.is_default !== 1) || [])
   }, [props.viewDataList])
@@ -57,7 +56,7 @@ const View = (props: View) => {
       {
         label: (
           <DefaultLabel>
-            <span>系统视图</span>
+            <span>{optionsDefault?.name}</span>
             <Btn>默认</Btn>
           </DefaultLabel>
         ),
@@ -79,6 +78,8 @@ const View = (props: View) => {
         key: 'last',
       },
     ])
+    props.viewDataList &&
+      setValue(props.viewDataList.find(el => el.is_default === 1))
   }, [options])
   const getLabel = (el: { name: string; id: number }) => {
     return (
@@ -88,7 +89,7 @@ const View = (props: View) => {
           <Space size={12}>
             <CommonIconFont
               onClick={() => {
-                console.log('默认')
+                props.onSetDefaulut(el.id)
               }}
               type={'tag-96pg0hf3'}
               size={16}
@@ -127,12 +128,10 @@ const View = (props: View) => {
     }))
   }
   const onOpenChange: MenuProps['onClick'] = (e: { key: string }) => {
+    console.log(e.key, 'ooo')
     setKey(e.key)
     if (e.key === 'first') {
-      setValue({
-        title: '系统视图',
-        value: 'all',
-      })
+      return
     } else if (e.key === 'last') {
       setIsOpen(false)
       setDialogItem({ name: '' })
@@ -142,15 +141,20 @@ const View = (props: View) => {
       })
       setIsVisible(true)
     } else {
-      let item: Item = options?.find(
+      let item: Models.Efficiency.ViewItem = options?.find(
         (el: { key: string }) => el.key === e.key,
       ) || {
         label: '',
         key: '',
+        type: 0,
+        name: '',
+        status: 0,
+        id: 0,
+        config: {},
       }
       setValue({
-        title: '视图' + '' + item.name,
-        value: item.key,
+        ...item,
+        name: item.type === 2 ? '视图' + '' + item.name : item.name,
       })
       dispatch(
         setHeaderParmas({
@@ -180,7 +184,7 @@ const View = (props: View) => {
         }}
       >
         <DivStyle onClick={() => setIsOpen(!isOpen)}>
-          <div className="name">{value.title}</div>
+          <div className="name">{value?.name}</div>
           <CommonIconFont
             type={isOpen ? 'up' : 'down'}
             size={14}

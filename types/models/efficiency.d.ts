@@ -81,6 +81,7 @@ declare namespace Models.Efficiency {
   export interface ViewItem {
     id: number
     name: string
+    label: string
     status: number
     type: number
     key: string

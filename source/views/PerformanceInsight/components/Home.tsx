@@ -32,6 +32,7 @@ import HightChartMainSpline from './HightChartMainSpline'
 import {
   contrastNewWork,
   createViewList,
+  defaultView,
   delView,
   getCompletionRate,
   getDefectRatio,
@@ -183,6 +184,11 @@ const Home = () => {
     // // 刷新视图的接口
     // getViewList({ project_id: '1', use_type: 3 })
   }
+  // 设置默认视图
+  const onSetDefaulut = async (id: number) => {
+    console.log(id, '99')
+    const res = await defaultView(id)
+  }
   // 缺陷现状和工作项现状
   const getWorkList = async () => {
     let res = await getStatisticsTotal({
@@ -310,6 +316,7 @@ const Home = () => {
         headerParmas={headerParmas}
         onCreateView={onCreateView}
         onDelView={onDelView}
+        onSetDefaulut={onSetDefaulut}
       />
       <WorkingStatus
         homeType={homeType}
