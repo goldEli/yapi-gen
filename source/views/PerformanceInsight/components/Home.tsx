@@ -2,7 +2,7 @@
 import CommonIconFont from '@/components/CommonIconFont'
 import { Space } from 'antd'
 import Header from '../Header'
-import { setSave } from '@store/performanceInsight'
+import { setHeaderParmas, setSave } from '@store/performanceInsight'
 import { useDispatch } from 'react-redux'
 import {
   Col,
@@ -32,6 +32,7 @@ import HightChartMainSpline from './HightChartMainSpline'
 import {
   contrastNewWork,
   createViewList,
+  defaultView,
   delView,
   getCompletionRate,
   getDefectRatio,
@@ -40,9 +41,11 @@ import {
   viewsList,
   viewsUpdate,
 } from '@/services/efficiency'
-import { StringNullableChain } from 'lodash'
 
 const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
+  const { headerParmas, projectDataList } = useSelector(
+    store => store.performanceInsight,
+  )
   const navigate = useNavigate()
   const onClick = () => {
     const params = encryptPhp(
@@ -59,6 +62,8 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
             : props.num === 1
             ? '工作进展对比'
             : '缺陷趋势分析',
+        headerParmas,
+        projectDataList,
       }),
     )
     navigate(`/Report/ChildLevel?data=${params}`)
@@ -120,22 +125,22 @@ const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
 const Home = () => {
   const dispatch = useDispatch()
   const [isVisible, setIsVisible] = useState(false)
-  const { save } = useSelector(store => store.performanceInsight)
+  const { save, headerParmas } = useSelector(store => store.performanceInsight)
   const [charts6, setCharts6] = useState<Models.Efficiency.ChartPie>()
   const [charts4, setCharts4] = useState<Models.Efficiency.ChartBar>()
   const [charts1, setCharts1] = useState<Models.Efficiency.ChartBar>()
   const [charts2, setCharts2] = useState<Models.Efficiency.WorkChart>()
   const [charts3, setCharts3] = useState<Models.Efficiency.ChartPie>()
   const [charts5, setCharts5] = useState<Models.Efficiency.ChartSpline>()
-  const [headerParmas, setHeaderParmas] = useState({
-    projectIds: [],
-  })
   const [viewDataList, setViewDataList] =
     useState<Array<Models.Efficiency.ViewItem>>()
   // 'iteration''sprint' 'all'
   const [homeType, setHomeType] = useState('all')
   const [workDataList, setWorkDataList] =
     useState<API.Sprint.GetStatisticsTotal.Result>()
+  const [optionVal, setOptionVal] = useState<number>(0)
+  const [defalutConfig, setDefalutConfig] =
+    useState<Models.Efficiency.ConfigItem>()
   useEffect(() => {
     // 缺陷现状和工作项现状
     getWorkList()
@@ -153,7 +158,7 @@ const Home = () => {
   const getViewList = async (parmas: API.Efficiency.ViewsList.Params) => {
     const res = await viewsList(parmas)
     setViewDataList(res)
-    console.log(res, 'ooo')
+    setDefalutConfig(res.find(el => el.is_default === 1)?.config)
   }
   // 创建和编辑视图的接口
   const onCreateView = async (val: string, type: string, key?: string) => {
@@ -178,10 +183,25 @@ const Home = () => {
   }
   // 删除视图
   const onDelView = async (key: string) => {
-    console.log(key, 'del')
     // const res = await delView(Number(key))
     // // 刷新视图的接口
     // getViewList({ project_id: '1', use_type: 3 })
+  }
+  // 设置默认视图
+  const onSetDefaulut = async (id: number) => {
+    const res = await defaultView(id)
+  }
+  // 获取下拉框的值视图的
+  const onGetOptionValue = (id: number) => {
+    setOptionVal(id)
+    dispatch(
+      setHeaderParmas({
+        users: headerParmas.users,
+        projectIds: headerParmas.projectIds,
+        time: headerParmas.time,
+        view: id,
+      }),
+    )
   }
   // 缺陷现状和工作项现状
   const getWorkList = async () => {
@@ -304,12 +324,15 @@ const Home = () => {
         position: 'relative',
       }}
     >
+      {/*头部组件 */}
       <Header
         homeType={homeType}
+        defalutConfig={defalutConfig}
         viewDataList={viewDataList}
-        headerParmas={headerParmas}
         onCreateView={onCreateView}
         onDelView={onDelView}
+        onChange={onGetOptionValue}
+        onSetDefaulut={onSetDefaulut}
       />
       <WorkingStatus
         homeType={homeType}
@@ -424,31 +447,13 @@ const Home = () => {
           <TextColor>单击“保存”按钮可以将更改保存在如下视图</TextColor>
           <div style={{ margin: '8px 0 0 32px' }}>
             <SelectMain
-              onChange={e => console.log(e)}
+              onChange={e => setOptionVal(e)}
               placeholder="请选择"
-              value={1}
-              list={[
-                {
-                  name: '近7天',
-                  key: 7,
-                },
-                {
-                  name: '近15天',
-                  key: 15,
-                },
-                {
-                  name: '近1月',
-                  key: 1,
-                },
-                {
-                  name: '近3个月',
-                  key: 3,
-                },
-                {
-                  name: '自定义',
-                  key: 0,
-                },
-              ]}
+              value={optionVal}
+              list={viewDataList?.map(el => ({
+                name: el.name,
+                key: Number(el.key),
+              }))}
             />
           </div>
           <Footer>
@@ -458,6 +463,7 @@ const Home = () => {
                   color: 'var(--auxiliary-text-t2-d1)',
                   cursor: 'pointer',
                 }}
+                onClick={() => dispatch(setSave(false))}
               >
                 不保存
               </span>

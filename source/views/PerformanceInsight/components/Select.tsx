@@ -16,7 +16,7 @@ interface Props {
   options: Array<ItemProps>
   more: boolean
   placeholder: string
-  value: number[] | []
+  value: number[] | [] | undefined
 }
 const SelectMain = (props: Props) => {
   const changeValue = (newValue: number[]) => {

@@ -345,6 +345,8 @@ const urls = {
   createView: '/b/story/views/create',
   // 删除视图
   delView: '/b/story/views/delete',
+  // 设置为默认视图
+  defaultView: 'b/story/views/default',
 
   /**
    * 迭代项目-缺陷
