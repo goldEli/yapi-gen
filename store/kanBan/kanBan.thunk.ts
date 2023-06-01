@@ -12,6 +12,7 @@ import {
   setKanbanInfoByGroup,
   setMovingStory,
   setModifyStatusModalInfo,
+  setFullScreen,
   // setViewItemConfig,
 } from '.'
 import { getMessage } from '@/components/Message'
@@ -24,6 +25,15 @@ import { Options } from '@/components/SelectOptionsNormal'
 import { produce } from 'immer'
 
 const name = 'kanBan'
+
+// 触发全屏模式
+export const onFullScreenMode = () => async (dispatch: AppDispatch) => {
+  dispatch(setFullScreen(true))
+}
+// 关闭全屏模式
+export const offFullScreenMode = () => async (dispatch: AppDispatch) => {
+  dispatch(setFullScreen(false))
+}
 
 // 删除story
 export const deleteStory =
