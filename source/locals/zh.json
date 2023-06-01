@@ -1561,5 +1561,9 @@
   "please_enter_a_username_or_email_address": "请输入用户名或邮箱地址",
   "the_recipient_will_receive_the_shared_site_message": "接收人将会收到分享的站内消息",
   "add_message": "添加消息",
-  "copy_Link": "复制链接"
+  "copy_Link": "复制链接",
+  "edit_view": "编辑视图",
+  "save_as_view": "另存为视图",
+  "name1": "名称",
+  "please_enter_the_real_view_name_limit_30_characters": "请输入实视图名称限30字"
 }

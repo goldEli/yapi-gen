@@ -1626,6 +1626,10 @@
     "please_enter_a_username_or_email_address": "Please enter a username or email address",
     "the_recipient_will_receive_the_shared_site_message": "The recipient will receive the shared site message",
     "add_message": "Add message",
-    "copy_Link": "Copy Link"
+    "copy_Link": "Copy Link",
+    "edit_view": "Edit view",
+    "save_as_view": "Save as view",
+    "name1": "Name",
+    "please_enter_the_real_view_name_limit_30_characters": "Please enter the real view name limit 30 characters"
   }
 }
