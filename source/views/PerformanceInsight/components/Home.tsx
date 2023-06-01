@@ -31,12 +31,16 @@ import HightChartMainPie from './HightChartMainPie'
 import HightChartMainSpline from './HightChartMainSpline'
 import {
   contrastNewWork,
+  createViewList,
+  delView,
   getCompletionRate,
   getDefectRatio,
   getStatisticsTotal,
   statisticsOther,
   viewsList,
+  viewsUpdate,
 } from '@/services/efficiency'
+import { StringNullableChain } from 'lodash'
 
 const WorkingStatus = (props: Models.Efficiency.WorkingStatus) => {
   const navigate = useNavigate()
@@ -126,7 +130,8 @@ const Home = () => {
   const [headerParmas, setHeaderParmas] = useState({
     projectIds: [],
   })
-  const [viewDataList, setViewDataList] = useState<any>()
+  const [viewDataList, setViewDataList] =
+    useState<Array<Models.Efficiency.ViewItem>>()
   // 'iteration''sprint' 'all'
   const [homeType, setHomeType] = useState('all')
   const [workDataList, setWorkDataList] =
@@ -149,6 +154,34 @@ const Home = () => {
     const res = await viewsList(parmas)
     setViewDataList(res)
     console.log(res, 'ooo')
+  }
+  // 创建和编辑视图的接口
+  const onCreateView = async (val: string, type: string, key?: string) => {
+    console.log(val, 'xina', type, key)
+    const res =
+      type === 'add'
+        ? await createViewList({
+            use_type: 3,
+            name: '员工对比表1',
+            config: {
+              project_id: [92, 27, 41],
+              user_ids: [37, 22, 10, 100],
+              start_time: '1992-02-27 08:42:02',
+              end_time: '1974-06-21 00:22:31',
+              period_time: 'four_week',
+            },
+            project_id: 18,
+          })
+        : await viewsUpdate({ id: Number(key), project_id: 1, name: val })
+    // // 刷新视图的接口
+    // getViewList({ project_id: '1', use_type: 3 })
+  }
+  // 删除视图
+  const onDelView = async (key: string) => {
+    console.log(key, 'del')
+    // const res = await delView(Number(key))
+    // // 刷新视图的接口
+    // getViewList({ project_id: '1', use_type: 3 })
   }
   // 缺陷现状和工作项现状
   const getWorkList = async () => {
@@ -273,8 +306,10 @@ const Home = () => {
     >
       <Header
         homeType={homeType}
-        viewDataList={viewDataList || []}
+        viewDataList={viewDataList}
         headerParmas={headerParmas}
+        onCreateView={onCreateView}
+        onDelView={onDelView}
       />
       <WorkingStatus
         homeType={homeType}
@@ -441,9 +476,9 @@ const Home = () => {
       {/* 新建和编辑视图 1*/}
       <ViewDialog
         name={''}
-        title={'另存为视图'}
-        onConfirm={() => {
-          console.log(123)
+        titleType={{ title: '另存为视图', type: 'add' }}
+        onConfirm={(value, type) => {
+          onCreateView(value, type, '')
         }}
         onClose={() => setIsVisible(false)}
         isVisible={isVisible}

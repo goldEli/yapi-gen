@@ -17,7 +17,9 @@ interface ValueType {
   value: string
 }
 interface View {
-  viewDataList: []
+  viewDataList: Array<Models.Efficiency.ViewItem> | undefined
+  onCreateView: (value: string, type: string, key?: string) => void
+  onDelView: (key: string) => void
 }
 const View = (props: View) => {
   const dispatch = useDispatch()
@@ -30,30 +32,75 @@ const View = (props: View) => {
   })
   const [isVisible, setIsVisible] = useState<boolean>(false)
   const [delIsVisible, setDelIsVisible] = useState<boolean>(false)
-  const [dialogTitle, setDialogTitle] = useState<string>('')
+  const [dialogTitle, setDialogTitle] = useState<{
+    title: string
+    type: string
+  }>()
   const [dialogItem, setDialogItem] = useState<{ name: string; id?: number }>({
     name: '',
   })
-  const a = [
-    {
-      name: '1',
-      key: '1',
-    },
-    {
-      name: '2',
-      key: '2',
-    },
-  ]
+  const [optionsDefault, setOptionsDefault] =
+    useState<Array<Models.Efficiency.ViewItem>>()
+  const [options, setOptions] = useState<Array<Models.Efficiency.ViewItem>>()
+  // 用于后面接口判断使用
+  const [key, setKey] = useState('first')
+  useEffect(() => {
+    props.viewDataList &&
+      setOptionsDefault(
+        props.viewDataList.filter(el => el.is_default === 1) || [],
+      )
+    props.viewDataList &&
+      setOptions(props.viewDataList.filter(el => el.is_default !== 1) || [])
+  }, [props.viewDataList])
+  useEffect(() => {
+    setItems([
+      {
+        label: (
+          <DefaultLabel>
+            <span>系统视图</span>
+            <Btn>默认</Btn>
+          </DefaultLabel>
+        ),
+        key: 'first',
+      },
+      {
+        type: 'divider',
+      },
+      ...(getHtml() || []),
+      {
+        type: 'divider',
+      },
+      {
+        label: (
+          <DefaultLabelAdd>
+            <span>新建视图</span>
+          </DefaultLabelAdd>
+        ),
+        key: 'last',
+      },
+    ])
+  }, [options])
   const getLabel = (el: { name: string; id: number }) => {
     return (
-      <Label>
+      <Label key={el.id}>
         <span className="labelName">{el.name}</span>
         <span>
           <Space size={12}>
             <CommonIconFont
               onClick={() => {
+                console.log('默认')
+              }}
+              type={'tag-96pg0hf3'}
+              size={16}
+              color="var(--neutral-n3)"
+            />
+            <CommonIconFont
+              onClick={() => {
                 setDialogItem(el),
-                  setDialogTitle('编辑视图'),
+                  setDialogTitle({
+                    title: '编辑视图',
+                    type: 'edit',
+                  }),
                   setIsVisible(true)
               }}
               type={'edit'}
@@ -74,41 +121,13 @@ const View = (props: View) => {
     )
   }
   const getHtml = () => {
-    console.log(props.viewDataList, 'key')
-    return props.viewDataList.map((el: any) => ({
+    return options?.map((el: any) => ({
       label: getLabel(el),
       key: el.key,
     }))
   }
-  useEffect(() => {
-    setItems([
-      {
-        label: (
-          <DefaultLabel>
-            <span>系统视图</span>
-            <Btn>默认</Btn>
-          </DefaultLabel>
-        ),
-        key: 'first',
-      },
-      {
-        type: 'divider',
-      },
-      ...getHtml(),
-      {
-        type: 'divider',
-      },
-      {
-        label: (
-          <DefaultLabelAdd>
-            <span>新建视图</span>
-          </DefaultLabelAdd>
-        ),
-        key: 'last',
-      },
-    ])
-  }, [])
   const onOpenChange: MenuProps['onClick'] = (e: { key: string }) => {
+    setKey(e.key)
     if (e.key === 'first') {
       setValue({
         title: '系统视图',
@@ -117,12 +136,17 @@ const View = (props: View) => {
     } else if (e.key === 'last') {
       setIsOpen(false)
       setDialogItem({ name: '' })
-      setDialogTitle('新建视图')
+      setDialogTitle({
+        title: '新建视图',
+        type: 'add',
+      })
       setIsVisible(true)
     } else {
-      let item: Item = a.find((el: { key: string }) => el.key === e.key) || {
-        key: '',
+      let item: Item = options?.find(
+        (el: { key: string }) => el.key === e.key,
+      ) || {
         label: '',
+        key: '',
       }
       setValue({
         title: '视图' + '' + item.name,
@@ -156,7 +180,7 @@ const View = (props: View) => {
         }}
       >
         <DivStyle onClick={() => setIsOpen(!isOpen)}>
-          <div>{value.title}</div>
+          <div className="name">{value.title}</div>
           <CommonIconFont
             type={isOpen ? 'up' : 'down'}
             size={14}
@@ -167,9 +191,9 @@ const View = (props: View) => {
       {/* 新建和编辑视图 */}
       <ViewDialog
         name={dialogItem.name}
-        title={dialogTitle}
-        onConfirm={() => {
-          setDialogItem({ name: '' }), console.log(123)
+        titleType={dialogTitle}
+        onConfirm={(value, type) => {
+          setDialogItem({ name: '' }), props.onCreateView(value, type, key)
         }}
         onClose={() => setIsVisible(false)}
         isVisible={isVisible}
@@ -180,6 +204,7 @@ const View = (props: View) => {
         isVisible={delIsVisible}
         onConfirm={() => {
           setDelIsVisible(false)
+          props.onDelView(key)
         }}
         onChangeVisible={() => setDelIsVisible(false)}
       />
