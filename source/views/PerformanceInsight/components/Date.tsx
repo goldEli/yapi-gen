@@ -79,3 +79,28 @@ export const getDays = (num: number) => {
   }
   return days
 }
+export const getDate = (type: string) => {
+  console.log()
+  let date = 0
+  switch (type) {
+    case 'one_month':
+      date = 1
+      break
+    case 'three_month':
+      date = 3
+      break
+    case 'six_month':
+      date = 6
+      break
+    case 'two_week':
+      date = 14
+      break
+    case 'four_week':
+      date = 28
+      break
+    default:
+      date = 0
+      break
+  }
+  return date
+}

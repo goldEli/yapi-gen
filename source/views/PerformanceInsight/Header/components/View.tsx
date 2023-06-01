@@ -7,23 +7,14 @@ import DeleteConfirm from '@/components/DeleteConfirm'
 import { DivStyle, DefaultLabel, DefaultLabelAdd, Btn, Label } from '../Style'
 import { useDispatch, useSelector } from '@store/index'
 import { setHeaderParmas } from '@store/performanceInsight'
-interface Item {
-  type: number
-  label?: string
-  key: string
-  name: string
-}
-interface ValueType {
-  title: string
-  value: string
-  type: string
-}
+
 interface View {
   viewDataList: Array<Models.Efficiency.ViewItem> | undefined
   onCreateView: (value: string, type: string, key?: string) => void
   onDelView: (key: string) => void
   onSetDefaulut: (id: number) => void
-  onChange: (id: number) => void
+  onChange: (title: string, value: number) => void
+  defalutConfig: Models.Efficiency.ConfigItem | undefined
 }
 const View = (props: View) => {
   const dispatch = useDispatch()
@@ -81,7 +72,9 @@ const View = (props: View) => {
     ])
     props.viewDataList &&
       setValue(props.viewDataList.find(el => el.is_default === 1))
-    props.viewDataList && props.onChange(optionsDefault?.id || 0)
+    // optionsDefault?.id || 0
+    props.viewDataList &&
+      props.onChange(optionsDefault?.name || '', optionsDefault?.id || 0)
   }, [options])
   const getLabel = (el: { name: string; id: number }) => {
     return (
@@ -153,7 +146,7 @@ const View = (props: View) => {
         id: 0,
         config: {},
       }
-      props.onChange(item.id)
+      props.onChange(item.name, item.id)
       setValue({
         ...item,
         name: item.type === 2 ? '视图' + '' + item.name : item.name,
@@ -164,7 +157,7 @@ const View = (props: View) => {
           projectIds: headerParmas.projectIds,
           time: headerParmas.time,
           view: {
-            title: '视图' + '' + item.name,
+            title: item.name,
             value: item.key,
           },
         }),
