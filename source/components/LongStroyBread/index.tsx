@@ -19,14 +19,21 @@ const LabelBox = styled.div`
   color: var(--neutral-n3);
   font-size: var(--font12);
   cursor: pointer;
+  display: flex;
+  align-items: center;
 `
 const AffairTypeBox = styled.div`
   color: var(--neutral-n1-d1);
   font-size: var(--font12);
 `
 const HasStroyWrap = styled.div`
-  display: flex;
+  display: inline-block;
+  width: 24px;
+  svg {
+    margin: 0px;
+  }
 `
+
 interface IProps {
   longStroy?: any
   layer?: boolean
@@ -55,8 +62,8 @@ const LongStroyBread = (props: IProps) => {
   }
   useEffect(() => {
     // hasLongStroy 为true可以添加长故事
-    const hasLongStroy = false
-    longStroy?.level_tree?.length === 0 ||
+    const hasLongStroy =
+      longStroy?.level_tree?.length === 0 ||
       (longStroy?.level_tree?.length &&
         longStroy.level_tree?.every(
           (item: { work_type: number }) => item.work_type !== 3,
@@ -69,35 +76,41 @@ const LongStroyBread = (props: IProps) => {
         {longStroy?.work_type === 3 ? null : (
           <div style={{ display: 'flex' }}>
             {layer ? null : (
-              <CommonIconFont
-                type="right"
-                color="var(--neutral-n1-d1)"
-              ></CommonIconFont>
+              <span style={{ display: 'flex', alignItems: 'center' }}>
+                <CommonIconFont
+                  type="right"
+                  color="var(--neutral-n1-d1)"
+                ></CommonIconFont>
+              </span>
             )}
 
             {hasLongStroy === false ? (
               <LongStroyWrap>
-                {true ? (
-                  <CommonIconFont
-                    type="edit"
-                    color="var(--neutral-n3)"
-                    onMouseLeave={() => {
-                      setShowEditIcon(false)
-                    }}
-                    onClick={() => setVisible(true)}
-                  ></CommonIconFont>
+                {showEditIcon ? (
+                  <HasStroyWrap>
+                    <CommonIconFont
+                      type="edit"
+                      color="var(--neutral-n3)"
+                      onMouseLeave={() => {
+                        setShowEditIcon(false)
+                      }}
+                      onClick={() => setVisible(true)}
+                    ></CommonIconFont>
+                  </HasStroyWrap>
                 ) : (
-                  <img
-                    src={longStroy.category_attachment}
-                    alt=""
-                    onMouseEnter={() => {
-                      setShowEditIcon(true)
-                    }}
-                    onMouseLeave={() => {
-                      setShowEditIcon(false)
-                    }}
-                    style={{ width: 20, marginRight: '6px' }}
-                  />
+                  <HasStroyWrap>
+                    <img
+                      src={longStroy.category_attachment}
+                      alt=""
+                      onMouseEnter={() => {
+                        setShowEditIcon(true)
+                      }}
+                      onMouseLeave={() => {
+                        setShowEditIcon(false)
+                      }}
+                      style={{ width: 20, marginRight: '6px' }}
+                    />
+                  </HasStroyWrap>
                 )}
                 <LabelBox>{longStroy?.projectPrefix}</LabelBox>
               </LongStroyWrap>
