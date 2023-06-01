@@ -74,8 +74,10 @@ export const getConfig: any = async (projectId: any) => {
   return response.data.list
 }
 
-export const getSysConfig: any = async () => {
-  const response: any = await http.get<any>('/b/project/tip/sysConfig')
+export const getSysConfig: any = async (params: any) => {
+  const response: any = await http.get<any>('/b/project/tip/sysConfig', {
+    project_type: params?.project_type,
+  })
 
   return response.data.list
 }

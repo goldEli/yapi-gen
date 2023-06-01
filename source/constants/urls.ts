@@ -333,7 +333,13 @@ const urls = {
   // 获取事务
   getLongStoryList: '/b/transaction/getLongStory',
   // 完成冲刺
-  completeSprint: '/b/sprint/complete',
+  completeSprint: '/b/sprint/finish',
+  // 更换冲刺
+  moveStory: '/b/sprint/moveStory',
+  // 拖动排序
+  sortStory: '/b/sprint/sort',
+  // 长故事下拉列表
+  getLongStory: '/b/transaction/getLongStory',
   /**
    * 视图管理
    */
@@ -345,6 +351,8 @@ const urls = {
   createView: '/b/story/views/create',
   // 删除视图
   delView: '/b/story/views/delete',
+  // 设置为默认视图
+  defaultView: 'b/story/views/default',
 
   /**
    * 迭代项目-缺陷

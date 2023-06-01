@@ -423,7 +423,6 @@ const TableFilter = (props: any) => {
       }))
       .concat(newB)
   }
-
   return (
     <SearchLine hasLeft={props?.hasLeft}>
       <Wrap hidden={props.showForm} style={{ userSelect: 'none' }}>

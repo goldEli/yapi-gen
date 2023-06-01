@@ -960,7 +960,7 @@ export const viewsList = async (parmas: API.Efficiency.ViewsList.Params) => {
     data: [
       {
         id: 27,
-        name: 'Duis anim',
+        name: '系统视图',
         config: {
           project_id: [441, 437],
           user_ids: [1],
@@ -969,12 +969,12 @@ export const viewsList = async (parmas: API.Efficiency.ViewsList.Params) => {
           period_time: 'two_week',
         },
         status: -69632682.78917724,
-        type: 79917760,
+        type: 1,
         is_default: 1,
       },
       {
         id: 28,
-        name: 'occaecat officia culpa est in',
+        name: 'est in',
         config: {
           project_id: [441, 437],
           user_ids: [1],
@@ -983,7 +983,7 @@ export const viewsList = async (parmas: API.Efficiency.ViewsList.Params) => {
           period_time: 'two_week',
         },
         status: -77288136.07175744,
-        type: 27217600,
+        type: 2,
         is_default: 2,
       },
       {
@@ -997,7 +997,7 @@ export const viewsList = async (parmas: API.Efficiency.ViewsList.Params) => {
           period_time: 'two_week',
         },
         status: -79455814.85011317,
-        type: 3712589,
+        type: 2,
         is_default: 2,
       },
       {
@@ -1011,7 +1011,7 @@ export const viewsList = async (parmas: API.Efficiency.ViewsList.Params) => {
           period_time: 'two_week',
         },
         status: 32169567.50605288,
-        type: -88587158,
+        type: 2,
         is_default: 2,
       },
     ],
@@ -1019,10 +1019,12 @@ export const viewsList = async (parmas: API.Efficiency.ViewsList.Params) => {
   return response.data.map(el => ({
     id: el.id,
     name: el.name,
+    label: el.name,
     status: el.status,
     type: el.type,
     config: el.config,
     key: el.id + '',
+    is_default: el.is_default,
   }))
 }
 // 视图修改
@@ -1045,9 +1047,18 @@ export const createViewList = async (
   )
   return response.data
 }
+// 删除视图
 export const delView = async (id: number) => {
-  const response = await http.post<any, API.Efficiency.ViewsEditList.Result>(
+  const response = await http.delete<any, API.Efficiency.ViewsEditList.Result>(
     `delView`,
+    id,
+  )
+  return response.data
+}
+// 设置默认视图
+export const defaultView = async (id: number) => {
+  const response = await http.patch<any, API.Efficiency.ViewsEditList.Result>(
+    `defaultView`,
     id,
   )
   return response.data

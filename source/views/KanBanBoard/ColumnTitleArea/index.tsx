@@ -18,6 +18,10 @@ const ColumnTitle = styled.span`
 const ColumnTitleAreaBox = styled.div`
   display: flex;
   gap: 16px;
+  background: var(--neutral-white-d2);
+  position: sticky;
+  top: 0px;
+  z-index: 200;
 `
 
 const ColumnTitleArea: React.FC<ColumnTitleAreaProps> = props => {

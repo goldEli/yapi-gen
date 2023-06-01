@@ -86,11 +86,11 @@ const EditColumnModal: React.FC<EditColumnModalProps> = props => {
   return (
     <CommonModal
       width={528}
-      title={'编辑列'}
+      title={t('edit_column')}
       isVisible={editColumnModelInfo.visible}
       onClose={onClose}
       onConfirm={onsubmit}
-      confirmText={'确认'}
+      confirmText={t('confirm')}
     >
       <div
         style={{
@@ -105,16 +105,24 @@ const EditColumnModal: React.FC<EditColumnModalProps> = props => {
         >
           <Form.Item
             rules={[{ required: true, message: '' }]}
-            label={<LabelTitle title={'名称'} />}
+            label={<LabelTitle title={t('name1')} />}
             name="name"
           >
-            <Input maxLength={30} placeholder="请输入列名称限30字" autoFocus />
+            <Input
+              maxLength={30}
+              placeholder={t(
+                'please_enter_a_column_name_with_a_limit_of_30_characters',
+              )}
+              autoFocus
+            />
           </Form.Item>
           {/* max_num */}
           <Form.Item
-            extra="当列中的卡片数量超过该列最大数会突出显示"
+            extra={t(
+              'highlights_when_the_number_of_cards_in_a_column_exceeds_the_maximum_number_for_that_column',
+            )}
             rules={[{ required: true, message: '' }]}
-            label={<LabelTitle title={'最大数量'} />}
+            label={<LabelTitle title={t('greatest_amount')} />}
             name="max_num"
           >
             <InputNumber min={0} defaultValue={1} />
@@ -124,8 +132,10 @@ const EditColumnModal: React.FC<EditColumnModalProps> = props => {
       <DelBtn
         onClick={() => {
           open({
-            title: '删除确认',
-            text: '确认删除该列与状态，删除后再看板中将无法使用该列与状态',
+            title: t('confirm_deletion'),
+            text: t(
+              'confirm_to_delete_the_column_and_status,_after_deletion,_the_column_and_status_will_not_be_available_in_the_Kanban',
+            ),
             onConfirm: () => {
               if (!editColumnModelInfo.columnInfo?.id) {
                 return Promise.reject()
@@ -137,7 +147,7 @@ const EditColumnModal: React.FC<EditColumnModalProps> = props => {
           })
         }}
       >
-        删除列
+        {t('delete_column')}
       </DelBtn>
       <DeleteConfirmModal />
     </CommonModal>

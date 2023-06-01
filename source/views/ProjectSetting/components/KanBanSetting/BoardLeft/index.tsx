@@ -2,6 +2,7 @@ import React from 'react'
 import styled from '@emotion/styled'
 import StatusList from '../StatusList'
 import { useSelector } from '@store/index'
+import useI18n from '@/hooks/useI18n'
 
 interface BoardLeftProps {}
 
@@ -33,13 +34,14 @@ const Tips = styled.div<{ show: boolean }>`
 
 const BoardLeft: React.FC<BoardLeftProps> = props => {
   const { unassignStatusList } = useSelector(store => store.KanbanConfig)
+  const { t } = useI18n()
 
   return (
     <BoardLeftBox>
-      <Title>未分配状态</Title>
+      <Title>{t('unassigned_state')}</Title>
       <StatusList list={unassignStatusList} />
       <Tips show={!unassignStatusList.length}>
-        将状态拖放到此处，以将其在看板中隐藏
+        {t('drag_and_drop_a_status_here_to_hide_it_from_the_board')}
       </Tips>
     </BoardLeftBox>
   )

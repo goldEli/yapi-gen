@@ -496,6 +496,8 @@ const NewAddUserModalForTandD = (props: ModalProps) => {
           avatar: el.avatar,
           nickname: el.nickname,
         })) || []
+    console.log(personData)
+    return
     if (props.isPermisGroup) {
       await form.validateFields()
 

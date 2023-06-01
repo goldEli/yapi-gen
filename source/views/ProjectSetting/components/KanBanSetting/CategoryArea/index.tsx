@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from '@store/index'
 import { setCategoryVisibleInfo } from '@store/kanbanConfig'
 import { useNavigate } from 'react-router'
 import { encryptPhp } from '@/tools/cryptoPhp'
+import useI18n from '@/hooks/useI18n'
 
 interface CategoryAreaProps {
   data: Model.KanbanConfig.Category
@@ -47,6 +48,7 @@ const CategoryArea: React.FC<CategoryAreaProps> = props => {
       ?.close
   }, [categoryVisibleInfo, props.data])
   const navigate = useNavigate()
+  const { t } = useI18n()
 
   const children = useMemo(() => {
     if (!isOpen) {
@@ -92,7 +94,7 @@ const CategoryArea: React.FC<CategoryAreaProps> = props => {
           }}
           type="secondary"
         >
-          编辑工作流
+          {t('edit_workflow')}
         </CommonButton>
       </TitleArea>
       {children}

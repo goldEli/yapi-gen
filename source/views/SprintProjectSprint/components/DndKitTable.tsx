@@ -1,22 +1,36 @@
-import { Tooltip, type TableColumnProps } from 'antd'
+import { Checkbox, Menu, Tooltip, type TableColumnProps } from 'antd'
 import XTable from './XTable'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
-import MoreDropdown from '@/components/MoreDropdown'
-import { DemandOperationDropdownMenu } from '@/components/TableDropdownMenu/DemandDropdownMenu'
 import ChangePriorityPopover from '@/components/ChangePriorityPopover'
-import { PriorityWrap } from '@/components/StyleCommon'
 import ChangeStatusPopover from '@/components/ChangeStatusPopover/index'
 import { useSelector, useDispatch } from '@store/index'
-import { setRightSprintList } from '@store/sprint'
+import { setRightSprintList, setSprintRefresh } from '@store/sprint'
 import { useTranslation } from 'react-i18next'
 import StateTag from '@/components/StateTag'
-import { getParamsData } from '@/tools'
+import { getIsPermission, getParamsData } from '@/tools'
 import { useSearchParams } from 'react-router-dom'
 import MultipleAvatar from '@/components/MultipleAvatar'
 import { setAffairsDetailDrawer } from '@store/affairs'
 import { saveAffairsDetailDrawer } from '@store/affairs/affairs.thunk'
+import {
+  deleteAffairs,
+  updateAffairsPriority,
+  updateAffairsStatus,
+} from '@/services/affairs'
+import { getMessage } from '@/components/Message'
+import TableQuickEdit from '@/components/TableQuickEdit'
+import { SprintDropdownMenu } from './SprintDropdownMenu'
+import { useEffect, useState } from 'react'
+import MoreDropdown from '@/components/MoreDropdown'
+import DeleteConfirm from '@/components/DeleteConfirm'
+import { setAddWorkItemModal } from '@store/project'
+import { getLongStory, moveStory, sortStory } from '@/services/sprint'
+import moment from 'moment'
+import { LatelyLongStoryMenu } from './LatelyLongStoryMenu'
+import { DropdownWrap } from '@/components/StyleCommon'
+import ClickDropdown from './ClickDropdown'
 
 const MoveFont = styled(IconFont)`
   fontsize: 16;
@@ -42,28 +56,108 @@ const TitleWrap = styled.div`
   }
 `
 
-const DndKitTable = () => {
+const PriorityWrap = styled.div<{ isShow?: boolean }>(
+  {
+    display: 'flex',
+    alignItems: 'center',
+    div: {
+      color: 'var(--neutral-n1-d2)',
+      fontSize: 14,
+      marginLeft: 8,
+    },
+    '.icon': {
+      marginLeft: 8,
+      visibility: 'hidden',
+      fontSize: 14,
+      color: 'var(--neutral-n4)',
+    },
+    '.priorityIcon': {
+      fontSize: 14,
+    },
+  },
+  ({ isShow }) => ({
+    cursor: isShow ? 'pointer' : 'inherit',
+    '&: hover': {
+      '.icon': {
+        visibility: isShow ? 'visible' : 'hidden',
+      },
+    },
+  }),
+)
+
+const DndKitTable = (props: any) => {
   const [t] = useTranslation()
   const { rightSprintList } = useSelector(state => state.sprint)
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
+  const { projectInfo } = useSelector(store => store.project)
+  const [isShowMore, setIsShowMore] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
+  const [isDeleteCheck, setIsDeleteCheck] = useState(false)
+  const [deleteItem, setDeleteItem] = useState<any>({})
+  const [longStoryList, setLongStoryList] = useState<any>([])
+  const [isEditLongStory, setIsEditLongStory] = useState(true)
 
-  const onChangeState = async (item: any) => {
-    // try {
-    //   await updatePriority({
-    //     demandId: item.id,
-    //     priorityId: item.priorityId,
-    //     projectId,
-    //   })
-    //   getMessage({ msg: t('common.prioritySuccess'), type: 'success' })
-    //   props.onChangeRow?.()
-    // } catch (error) {
-    //   //
-    // }
+  const isCanEdit = getIsPermission(
+    projectInfo?.projectPermissions,
+    projectInfo.projectType === 1 ? 'b/story/update' : 'b/transaction/update',
+  )
+  const hasDel = getIsPermission(
+    projectInfo?.projectPermissions,
+    projectInfo.projectType === 1 ? 'b/story/delete' : 'b/transaction/delete',
+  )
+
+  // 获取长故事列表
+  const getLongStoryData = async () => {
+    try {
+      const result = await getLongStory({
+        order: 'desc',
+        orderkey: 'updated_at',
+        search: {
+          all: 1,
+          project_id: projectId,
+        },
+      })
+      if (result && result.code === 0 && result.data) {
+        setLongStoryList(result.data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
-  const onUpdate = (row: any, isClass?: any) => {}
+
+  useEffect(() => {
+    getLongStoryData()
+  }, [])
+
+  // 更改状态
+  const onChangeStatus = async (value: any) => {
+    await updateAffairsStatus(value)
+    getMessage({ msg: t('common.statusSuccess'), type: 'success' })
+    dispatch(setSprintRefresh(1))
+  }
+
+  // 更改优先级
+  const onChangeState = async (item: any) => {
+    await updateAffairsPriority({
+      sprintId: item.id,
+      priorityId: item.priorityId,
+      projectId,
+    })
+    getMessage({ msg: t('common.prioritySuccess'), type: 'success' })
+    dispatch(setSprintRefresh(1))
+  }
+
+  const onExamine = () => {
+    getMessage({ msg: t('newlyAdd.underReview'), type: 'warning' })
+  }
+
+  // 更新列表
+  const onUpdate = () => {
+    dispatch(setSprintRefresh(1))
+  }
 
   // 点击打开详情并组装当前平级的需求id列表
   const onClickItem = (item: any) => {
@@ -72,7 +166,6 @@ const DndKitTable = () => {
     const demandIds: any[] = rightSprintList
       .find(k => k.id === group_id)
       ?.stories?.map((k: any) => k.id)
-    console.log({ ...item, ...{ demandIds }, id }, 'qipa')
 
     dispatch(
       setAffairsDetailDrawer({
@@ -88,21 +181,98 @@ const DndKitTable = () => {
     )
   }
 
+  // 编辑事物
+  const onEditItem = () => {
+    // todo 编辑事物
+    dispatch(
+      setAddWorkItemModal({
+        visible: true,
+      }),
+    )
+  }
+
+  // 移动事务
+  const onRemoveSprintItem = async (
+    iterate_id: number,
+    story_id: number,
+    to_iterate_id: number,
+  ) => {
+    try {
+      const result = await moveStory({
+        iterate_id,
+        story_id,
+        to_iterate_id,
+        project_id: projectId,
+      })
+      if (result && result.code === 0) {
+        getMessage({
+          msg: '移动成功',
+          type: 'success',
+        })
+        dispatch(setSprintRefresh(1))
+      }
+    } catch (error) {
+      console.log('error', error)
+    }
+  }
+
+  // 设置选中的事务
+  const onDeleteChange = (item: any) => {
+    const id = Number(item.id?.split('-')[1]) || 0
+    setDeleteItem({ ...item, id })
+    setIsVisible(true)
+  }
+
+  // 删除事务
+  const onDeleteConfirm = async () => {
+    await deleteAffairs({
+      projectId,
+      id: deleteItem.id,
+      isDeleteChild: isDeleteCheck ? 1 : 2,
+    })
+    getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
+    setIsVisible(false)
+    setDeleteItem({})
+    dispatch(setSprintRefresh(1))
+  }
+
+  // 判断当前事务是否超出冲刺时间范围
+  const getIsExceedTimeRange = (item: any) => {
+    const groupId = item.id?.split('-')?.[0]
+    const sprintObj = rightSprintList.find(k => k.id === Number(groupId))
+    if (
+      (moment(item.expected_start_at).isSame(sprintObj?.start_at) ||
+        moment(item.expected_start_at).isAfter(sprintObj?.start_at)) &&
+      (moment(item.expected_end_at).isSame(sprintObj?.end_at) ||
+        moment(item.expected_end_at).isBefore(sprintObj?.end_at))
+    ) {
+      return false
+    }
+    return true
+  }
+
   const columns: TableColumnProps<any>[] = [
     {
       render: (text: any, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <MoreDropdown
-              menu={
-                <DemandOperationDropdownMenu
-                  onEditChange={() => {}}
-                  onDeleteChange={() => {}}
-                  onCreateChild={() => {}}
-                  record={record}
-                />
-              }
-            />
+            {!isCanEdit && !hasDel && (
+              <MoreDropdown
+                hasChild
+                isMoreVisible={isShowMore}
+                menu={
+                  <SprintDropdownMenu
+                    onDeleteChange={() => {
+                      onDeleteChange(record)
+                    }}
+                    onEditItem={onEditItem}
+                    onRemoveSprintItem={onRemoveSprintItem}
+                    record={record}
+                  />
+                }
+                onChangeVisible={setIsShowMore}
+              />
+            )}
           </div>
         )
       },
@@ -151,23 +321,71 @@ const DndKitTable = () => {
         )
       },
     },
-    { title: '长故事', dataIndex: 'long_story_name' },
+    {
+      title: '长故事',
+      dataIndex: 'long_story_name',
+      width: 120,
+      render: (text: any, record: any) => {
+        return isCanEdit ? (
+          <div>{text ? text : '--'}</div>
+        ) : (
+          <div
+            style={{ display: 'flex', alignItems: 'center' }}
+            onClick={() => setIsEditLongStory(true)}
+          >
+            <ClickDropdown
+              contentText={text}
+              hasChild
+              isMoreVisible={isEditLongStory}
+              menu={
+                <LatelyLongStoryMenu
+                  setIsVisible={(item: any) => {
+                    setIsVisible(true)
+                    setDeleteItem(item)
+                  }}
+                  longStoryList={longStoryList}
+                  record={record}
+                />
+              }
+              onChangeVisible={setIsEditLongStory}
+            />
+          </div>
+        )
+      },
+    },
     { title: '子事务', dataIndex: 'child_story_count' },
     {
       title: '经办人',
       dataIndex: 'handlers',
       key: 'handlers',
       width: 180,
-      render: (text: any, record: any) => {
+      render: (text: any, temp: any) => {
+        const id = temp.id?.split('-')?.[1]
+        const record = {
+          ...temp,
+          id,
+          categoryConfigList: temp.category_config_list,
+        }
         return (
-          <MultipleAvatar
-            max={3}
-            list={record.handlers?.map((i: any) => ({
-              id: i.id,
-              name: i.name,
-              avatar: i.avatar,
-            }))}
-          />
+          <TableQuickEdit
+            type="fixed_select"
+            defaultText={record?.handlers_name_ids || []}
+            keyText="users"
+            item={record}
+            onUpdate={() => onUpdate()}
+          >
+            {record?.handlers?.length ? (
+              <MultipleAvatar
+                max={3}
+                list={record?.handlers?.map((i: any) => ({
+                  id: i.id,
+                  name: i.name,
+                  avatar: i.avatar,
+                }))}
+              />
+            ) : null}
+            {!record?.handlers?.length && '--'}
+          </TableQuickEdit>
         )
       },
     },
@@ -176,14 +394,19 @@ const DndKitTable = () => {
       dataIndex: 'priority',
       key: 'priority',
       width: 180,
-      render: (text: any, record: Record<string, string | number>) => {
+      render: (text: any, temp: any) => {
+        const id = temp.id?.split('-')?.[1]
+        const record = { ...temp, id }
         return (
           <ChangePriorityPopover
-            isCanOperation
+            isCanOperation={
+              !isCanEdit &&
+              Object.keys(record.category_config_list).includes('priority')
+            }
             onChangePriority={item => onChangeState(item)}
             record={{ project_id: projectId, id: record.id }}
           >
-            <PriorityWrap>
+            <PriorityWrap isShow={isCanEdit}>
               {text?.icon ? (
                 <IconFont
                   className="priorityIcon"
@@ -208,27 +431,82 @@ const DndKitTable = () => {
       dataIndex: 'status',
       key: 'status',
       width: 190,
-      render: (text: any, record: any) => {
+      render: (text: any, temp: any) => {
+        const id = temp.id?.split('-')?.[1]
+        const record = { ...temp, id, isExamine: temp.verify_lock === 1 }
         return (
-          <ChangeStatusPopover
-            children={<div>11111</div>}
-            onChangeStatus={function (value: any): void {
-              throw new Error('Function not implemented.')
-            }}
-            record={record}
-            type={2}
-          />
+          <>
+            <ChangeStatusPopover
+              isCanOperation={!isCanEdit && !record.isExamine}
+              projectId={projectId}
+              record={record}
+              onChangeStatus={item => onChangeStatus(item)}
+            >
+              <StateTag
+                onClick={record.isExamine ? onExamine : void 0}
+                isShow={!isCanEdit || !record.verify_lock}
+                name={record.status.status.content}
+                state={
+                  text?.is_start === 1 && text?.is_end === 2
+                    ? 1
+                    : text?.is_end === 1 && text?.is_start === 2
+                    ? 2
+                    : text?.is_start === 2 && text?.is_end === 2
+                    ? 3
+                    : 0
+                }
+              />
+            </ChangeStatusPopover>
+            {getIsExceedTimeRange(temp) ? (
+              <Tooltip placement="top" title="该事务超出冲刺时间范围">
+                <IconFont
+                  style={{
+                    fontSize: 16,
+                    marginLeft: 20,
+                    color: 'var(--function-warning)',
+                  }}
+                  type="warning-02"
+                />
+              </Tooltip>
+            ) : null}
+          </>
         )
       },
     },
   ]
 
+  // 拖动排序接口
+  const handleSort = async (iterate_id: number, story_ids: number[]) => {
+    try {
+      const result: any = await sortStory({
+        iterate_id,
+        story_ids,
+        project_id: projectId,
+      })
+      if (result && result.code === 0) {
+        getMessage({
+          msg: '移动成功',
+          type: 'success',
+        })
+      } else {
+        getMessage({
+          msg: result?.message,
+          type: 'error',
+        })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  // 拖动事务放下后的处理
   const handleDragEnd = (result: DropResult) => {
-    console.log(result)
     if (result.destination?.droppableId === result.source.droppableId) {
       // 同表格换位置
       const data = [...rightSprintList]
-      const idx = data.findIndex(k => k.id === result.destination?.droppableId)
+      const idx = data.findIndex(
+        k => String(k.id) === result.destination?.droppableId,
+      )
       const destList = data[idx]
       const source = [...destList.stories]
 
@@ -238,19 +516,25 @@ const DndKitTable = () => {
       source.splice(result.source?.index, 1)
       source.splice(result.destination?.index ?? 0, 0, item)
       const res: any = data.map(k => {
-        if (k.id === result.destination?.droppableId) {
+        if (String(k.id) === result.destination?.droppableId) {
           return { ...k, stories: source }
         }
         return k
       })
+      handleSort(
+        destList?.id,
+        source?.map((k: any) => k.id),
+      )
       dispatch(setRightSprintList(res))
     } else {
       // 不同表格拖动
       const data = [...rightSprintList]
       const destIdx = data.findIndex(
-        k => k.id === result.destination?.droppableId,
+        k => String(k.id) === result.destination?.droppableId,
       )
-      const sourceIdx = data.findIndex(k => k.id === result.source?.droppableId)
+      const sourceIdx = data.findIndex(
+        k => String(k.id) === result.source?.droppableId,
+      )
       const item = data[sourceIdx].stories.find(
         (_: any, i: any) => i === result.source?.index,
       )
@@ -259,10 +543,10 @@ const DndKitTable = () => {
       const dest = [...data[destIdx].stories]
       dest.splice(result.destination?.index ?? 0, 0, item)
       const res = data.map(k => {
-        if (k.id === result.destination?.droppableId) {
+        if (String(k.id) === result.destination?.droppableId) {
           return { ...k, stories: dest }
         }
-        if (k.id === result.source?.droppableId) {
+        if (String(k.id) === result.source?.droppableId) {
           return { ...k, stories: source }
         }
         return k
@@ -273,7 +557,10 @@ const DndKitTable = () => {
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      {rightSprintList?.map((item: any) => {
+      {(props?.checkCommission
+        ? rightSprintList.filter((i: any) => i.id === -1)
+        : rightSprintList
+      )?.map((item: any) => {
         return (
           <XTable
             key={item.id}
@@ -286,6 +573,19 @@ const DndKitTable = () => {
           />
         )
       })}
+      <DeleteConfirm
+        title={`删除【${deleteItem?.story_prefix_key}】？`}
+        isVisible={isVisible}
+        onChangeVisible={() => setIsVisible(!isVisible)}
+        onConfirm={onDeleteConfirm}
+      >
+        <div style={{ marginBottom: 9 }}>
+          你将永久删除该事务，删除后将不可恢复请谨慎操作!
+        </div>
+        <Checkbox onChange={e => setIsDeleteCheck(e.target.checked)}>
+          同时删除该事务下所有子事务
+        </Checkbox>
+      </DeleteConfirm>
     </DragDropContext>
   )
 }

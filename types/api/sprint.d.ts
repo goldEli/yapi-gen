@@ -98,8 +98,8 @@ declare namespace API.Sprint {
       period_time?: string
       start_time?: string
       end_time?: string
-      page: 1
-      pagesize: 20
+      page: number
+      pagesize: number
     }
     type Result = {
       work: Array<Model.Sprint.WorkListItem>
@@ -219,6 +219,7 @@ declare namespace API.Sprint {
   namespace DelSprintItem {
     type Params = {
       id: number
+      project_id: number
     }
   }
 
@@ -232,20 +233,29 @@ declare namespace API.Sprint {
       move_target: number
     }
   }
-  namespace getLeftSprintList {
-    interface searchParams {
-      all: number
-      sprint_status: number
+
+  namespace MoveStory {
+    type Params = {
+      iterate_id: number
+      story_id: number
+      to_iterate_id: number
       project_id: number
     }
+  }
+  namespace GetLongStory {
     type Params = {
       order: string
       orderkey: string
-      search: searchParams
-      is_long_story: number
+      search: {
+        all: number
+        project_id: number
+        keyword?: string
+      }
+      page?: number
+      pagesize?: number
     }
-    type Result = Model.Sprint.SprintleftList[]
   }
+
   namespace getLongStoryList {
     type Params = {
       order: string
@@ -259,5 +269,13 @@ declare namespace API.Sprint {
       pagesize: number
     }
     type Result = Model.Sprint.LongStory
+  }
+
+  namespace SortStory {
+    type Params = {
+      iterate_id: number
+      story_ids: number[]
+      project_id: number
+    }
   }
 }

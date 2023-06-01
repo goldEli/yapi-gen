@@ -276,6 +276,7 @@ export const getAffairsInfo = async (
     categoryName: response.data.category,
     child_story_statistics: response.data.child_story_statistics,
     project_type: response.data.project_type,
+    work_type: response.data.work_type,
   }
 }
 
@@ -462,8 +463,21 @@ export const deleteInfoAffairs = async (
   })
 }
 
+// 更新事务详情关联
+export const updateInfoAffairs = async (
+  params: API.Affairs.AddInfoAffairs.Params,
+) => {
+  await http.put<any>('updateAffairs', {
+    project_id: Number(params.projectId),
+    id: Number(params.sprintId),
+    target_id: params.targetId,
+    type: params.type,
+  })
+}
 // 快捷修改参数
 export const updateAffairsTableParams = async (params: any) => {
+  console.log(params, 'params')
+
   await http.put<any>('changeAffairsTableParams', {
     project_id: params.projectId,
     id: params.id,

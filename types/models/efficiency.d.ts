@@ -81,6 +81,7 @@ declare namespace Models.Efficiency {
   export interface ViewItem {
     id: number
     name: string
+    label: string
     status: number
     type: number
     key: string
@@ -93,5 +94,17 @@ declare namespace Models.Efficiency {
     start_time?: string
     end_time?: string
     period_time?: string
+  }
+  export interface HeaderParmas {
+    projectIds: number[]
+    users: []
+    time: {
+      type: number
+      time: string[] | ''
+    }
+    view: {
+      title: string
+      value: number
+    }
   }
 }

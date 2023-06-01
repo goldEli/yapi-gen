@@ -29,6 +29,9 @@ interface StatusModalProps {
   record?: any
   // 修改状态接口
   onChangeStatusConfirm(value: any): void
+  /**
+   * 1 迭代 2 冲刺（冲刺里是事务）
+   */
   // 1-需求，2-事务，3-缺陷
   type?: 1 | 2 | 3
 }
@@ -370,11 +373,11 @@ const StatusModal = (props: StatusModalProps) => {
           </CommonButton>
           <CommonButton
             type="primary"
-            isDisable={!configData.user_has_auth}
+            isDisable={!configData?.user_has_auth}
             onClick={onConfirm}
             style={{ marginLeft: '16px' }}
           >
-            {configData.is_verify
+            {configData?.is_verify
               ? t('newlyAdd.submitReview')
               : t('common.circulation')}
           </CommonButton>
@@ -609,7 +612,7 @@ const StatusModal = (props: StatusModalProps) => {
                 )}
               </div>
             ))}
-            {configData.is_verify && configData.verify.verify_type === 2 ? (
+            {configData?.is_verify && configData?.verify.verify_type === 2 ? (
               <Form.Item
                 labelAlign="left"
                 label={t('newlyAdd.reviewPerson')}

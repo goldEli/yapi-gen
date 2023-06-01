@@ -157,7 +157,9 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
     {
       title: '',
       dataIndex: 'handlers',
-      render: (text: any) => <MultipleAvatar max={3} list={text?.handlers} />,
+      render: (text: any) => (
+        <MultipleAvatar max={3} list={text?.handlers ?? []} />
+      ),
     },
     {
       title: '',

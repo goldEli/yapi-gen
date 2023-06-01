@@ -22,7 +22,6 @@ interface Props {
   onChangePage: (pageNum: number, pageSize: number) => void
 }
 const Table = (props: Props) => {
-  console.log(props.dataSource, 'props')
   return (
     <>
       <ResizeTable

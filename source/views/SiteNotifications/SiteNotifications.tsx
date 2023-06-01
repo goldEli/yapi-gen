@@ -44,7 +44,8 @@ const SiteNotifications = () => {
     dispatch(changeNumber(num))
   }
   const sendMsg = () => {
-    console.log(wsData, '长数据')
+    console.log(wsData)
+
     if (wsData.data.customData.noticeStyle === '2') {
       message.success({
         icon: <span></span>,
@@ -56,10 +57,18 @@ const SiteNotifications = () => {
         },
       })
     } else if (wsData.data.customData.noticeStyle === '1') {
+      const arrs = localStorage.getItem('noteIds')
+      if (arrs) {
+        const arrs2 = JSON.parse(arrs)
+        if (arrs2.includes(wsData.data.msgIds[0])) {
+          return
+        }
+      }
       setFirst(true)
       setFirst2({
         customData: wsData.data.customData,
         msgBody: wsData.data.msgBody,
+        id: wsData.data.msgIds,
       })
     }
 

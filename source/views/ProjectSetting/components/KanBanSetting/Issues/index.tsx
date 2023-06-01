@@ -1,13 +1,11 @@
 import React, { useMemo } from 'react'
 import styled from '@emotion/styled'
 import { Droppable } from 'react-beautiful-dnd'
-import IssueCard from '../IssueCard'
 import { handleId } from '../utils'
-import StatusList from '../StatusList'
 import StatusListItem from '../StatusListItem'
 import usePlaceholderStatusNum from '../hooks/usePlaceholderStatusNum'
 import useKanBanData from '../hooks/useKanBanData'
-import { useSelector } from '@store/index'
+import useI18n from '@/hooks/useI18n'
 
 interface IssuesProps {
   issues?: Model.KanbanConfig.Category
@@ -28,15 +26,6 @@ const DropArea = styled.div<{ showBorder: boolean }>`
   position: relative;
 `
 
-const DropStatusArea = styled.div`
-  width: 100%;
-  height: 100px;
-  box-sizing: border-box;
-  border: 1px solid purple;
-  &:hover {
-    border: 1px solid green;
-  }
-`
 const Tips = styled.div<{ show: boolean }>`
   width: 100%;
   height: 100%;
@@ -60,10 +49,8 @@ const Issues: React.FC<IssuesProps> = props => {
   const { issues, groupId } = props
   const droppableId = handleId(groupId ?? 0, issues?.id ?? 0)
   const { placeholderItemsLength } = usePlaceholderStatusNum(issues)
-  console.log('issues', issues?.id, placeholderItemsLength)
-
+  const { t } = useI18n()
   const { checkIsDrop } = useKanBanData()
-  const { movingStatus } = useSelector(store => store.KanbanConfig)
   const isDrop = checkIsDrop(issues?.id ?? 0)
   return (
     <Droppable
@@ -96,7 +83,7 @@ const Issues: React.FC<IssuesProps> = props => {
               })}
             {provided.placeholder}
             <Tips show={!issues?.status?.length}>
-              将某一状态移动至此外，以将其分配给此列
+              {t('move_a_status_here_to_assign_it_to_this_column')}
             </Tips>
           </DropArea>
         )
