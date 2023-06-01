@@ -45,6 +45,13 @@ export const Label = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  .labelName {
+    display: inline-block;
+    width: 100px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 `
 export const FormWrap = styled(Form)`
   box-sizing: border-box;

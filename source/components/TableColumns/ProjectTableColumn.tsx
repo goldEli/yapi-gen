@@ -397,7 +397,7 @@ export const useDynamicColumns = (state: any) => {
                 }))}
               />
             )}
-            {!record?.usersInfo.length && '--'}
+            {!record?.usersInfo?.length && '--'}
           </TableQuickEdit>
         )
       },

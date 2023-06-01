@@ -18,13 +18,16 @@ import {
 import { useDispatch } from 'react-redux'
 import ViewDialog from './components/ViewDialog'
 import { getProjectList } from '@/services/project'
-import dayjs from 'dayjs'
 interface ItemProps {
   name: string
   id: number
 }
 interface Props {
   homeType: string
+  viewDataList: []
+  headerParmas: {
+    projectIds: number[]
+  }
 }
 const Iteration = (props: Props) => {
   // sprint  iteration all
@@ -143,7 +146,7 @@ const Iteration = (props: Props) => {
   return (
     <HeaderRow>
       <Space size={16}>
-        <View />
+        <View viewDataList={props.viewDataList} />
         <Text onClick={() => setIsVisibleView(true)}>另存为</Text>
         {/* 保存需要人员，项目选择和时间修改后 */}
         {save && <Text>保存</Text>}
@@ -155,19 +158,21 @@ const Iteration = (props: Props) => {
             placeholder="请选择项目"
             options={projectList}
             more={more}
+            value={projectIds || []}
             onChange={(value: number[]) => {
-              dispatch(setSave(true)), setProjectIds(value)
-              dispatch(
-                setHeaderParmas({
-                  users: person,
-                  projectIds: value,
-                  view: headerParmas.view,
-                  time: {
-                    type: timekey,
-                    time: '',
-                  },
-                }),
-              )
+              setProjectIds(value),
+                dispatch(setSave(true)),
+                dispatch(
+                  setHeaderParmas({
+                    users: person,
+                    projectIds: value,
+                    view: headerParmas.view,
+                    time: {
+                      type: timekey,
+                      time: '',
+                    },
+                  }),
+                )
             }}
             onShowAll={onShowAll}
           />

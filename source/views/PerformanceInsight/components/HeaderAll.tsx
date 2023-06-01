@@ -85,6 +85,7 @@ const HeaderAll = (props: HaderProps) => {
               <Select
                 options={projectList}
                 more={true}
+                value={[]}
                 placeholder="请选择项目"
                 onChange={(value: number[]) => console.log(value)}
               />
