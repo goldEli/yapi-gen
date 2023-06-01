@@ -14,6 +14,15 @@ import { getStaffListAll } from './staff'
 
 //获取工作项接收处理概况
 
+export const getHisProjectCharts: any = async (params: any) => {
+  const response = await http.get(
+    `/b/efficiency/member/work_handle/statistics`,
+    params,
+  )
+  return response
+}
+//获取工作项接收处理概况
+
 export const getProjectCharts: any = async (params: any) => {
   const response = await http.get(
     `/b/efficiency/member/work_handle/${params}/statistics`,
