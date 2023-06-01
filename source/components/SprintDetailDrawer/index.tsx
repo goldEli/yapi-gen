@@ -50,6 +50,7 @@ import useShareModal from '@/hooks/useShareModal'
 import { copyLink, getIdsForAt, removeNull } from '@/tools'
 import AffairsDetail from '@/views/SprintProjectDetail/components/AffairsDetail'
 import CommentFooter from '../CommonComment/CommentFooter'
+import LongStroyBread from '../LongStroyBread'
 
 const SprintDetailDrawer = () => {
   const normalState = {
@@ -612,7 +613,7 @@ const SprintDetailDrawer = () => {
           {skeletonLoading && <DetailsSkeleton />}
           {!skeletonLoading && (
             <>
-              <ParentBox size={8}>
+              {/* <ParentBox size={8}>
                 {drawerInfo.level_tree?.map((i: any, index: number) => (
                   <DrawerHeader key={i.prefix_key}>
                     <img src={i.category_attachment} alt="" />
@@ -629,7 +630,8 @@ const SprintDetailDrawer = () => {
                     </span>
                   </DrawerHeader>
                 ))}
-              </ParentBox>
+              </ParentBox> */}
+              <LongStroyBread longStroy={drawerInfo}></LongStroyBread>
               <DemandName>
                 <span
                   className="name"
