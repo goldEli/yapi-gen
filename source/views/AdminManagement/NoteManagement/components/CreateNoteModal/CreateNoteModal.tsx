@@ -189,7 +189,16 @@ const CreateNoteModal = (props: any) => {
     // 获取当前时间
 
     // 获取当前时间10分钟后的时间
-    const minTime = moment().add(10, 'minutes')
+    const minTime = moment().add(11, 'minutes')
+
+    // 如果当前日期小于或等于当前时间10分钟后的日期，则禁用
+    return current && current <= minTime
+  }
+  function disabledDate2(current: any) {
+    // 获取当前时间
+
+    // 获取当前时间10分钟后的时间
+    const minTime = moment().add(1, 'minutes')
 
     // 如果当前日期小于或等于当前时间10分钟后的日期，则禁用
     return current && current <= minTime
@@ -407,7 +416,7 @@ const CreateNoteModal = (props: any) => {
             rules={[{ required: true, message: t('select_expiration_time') }]}
           >
             <DatePicker
-              disabledDate={disabledDate}
+              disabledDate={disabledDate2}
               showTime
               style={{
                 width: '100%',
