@@ -20,6 +20,7 @@ import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { useDispatch } from '@store/index'
 import { setAddWorkItemModal } from '@store/project'
 import CompleteSprintModal from './CompleteSprintModal'
+import { setSprintRefresh } from '@store/sprint'
 const { Panel } = Collapse
 
 interface XTableProps {
@@ -128,7 +129,6 @@ const PanelWrap = styled(Panel)`
 const XTable: React.FC<XTableProps> = props => {
   const { data, list } = props
   const [pageObj, setPageObj] = useState<any>({})
-  const [deleteItem, setDeleteItem] = useState<any>({})
   const [sprintModal, setSprintModal] = useState<{
     visible: boolean
     type: any
@@ -139,31 +139,27 @@ const XTable: React.FC<XTableProps> = props => {
   const [searchParams] = useSearchParams()
   const paramsData = getParamsData(searchParams)
   const projectId = paramsData.id
-  const [isVisible, setIsVisible] = useState(false)
   const [t]: any = useTranslation()
-  const [isDeleteCheck, setIsDeleteCheck] = useState(false)
   const { DeleteConfirmModal, open } = useDeleteConfirmModal()
   const dispatch = useDispatch()
   const [completeVisible, setCompleteVisible] = useState(false)
 
-  // 删除事务
-  const onDeleteConfirm = async () => {
-    await deleteAffairs({
-      projectId,
-      id: deleteItem.id,
-      isDeleteChild: isDeleteCheck ? 1 : 2,
-    })
-    getMessage({ msg: t('common.deleteSuccess'), type: 'success' })
-    setIsVisible(false)
-    setDeleteItem({})
-    // todo 更新列表
-  }
-
   // 删除冲刺
   const deleteSprint = async (id: number) => {
     try {
-      const result = await delSprintItem({ id })
-      console.log(result, 'result')
+      const result: any = await delSprintItem({ id, project_id: projectId })
+      if (result && result.code === 0) {
+        getMessage({
+          msg: '删除成功',
+          type: 'success',
+        })
+        dispatch(setSprintRefresh(1))
+      } else {
+        getMessage({
+          msg: result?.message,
+          type: 'error',
+        })
+      }
     } catch (error) {
       console.log(error)
     }
@@ -222,7 +218,7 @@ const XTable: React.FC<XTableProps> = props => {
 
   return (
     <>
-      <Droppable key={data.id} droppableId={data.id}>
+      <Droppable key={data.id} droppableId={String(data.id)}>
         {provided => {
           return (
             <XTableWrap ref={provided.innerRef} {...provided.droppableProps}>
@@ -268,34 +264,38 @@ const XTable: React.FC<XTableProps> = props => {
                         </span>
                         {data.id === -1 ? null : (
                           <>
-                            <IconFont
-                              onClick={() => {
-                                setSprintModal({
-                                  visible: true,
-                                  type: 'edit',
-                                })
-                              }}
-                              style={{
-                                fontSize: 16,
-                                color: 'var(--neutral-n3)',
-                                marginRight: 16,
-                              }}
-                              type="edit"
-                            />
-                            <IconFont
-                              onClick={() => {
-                                open({
-                                  title: '删除冲刺',
-                                  text: `确认要删除【${data.name}】的冲刺吗？`,
-                                  onConfirm: () => deleteSprint(data.id),
-                                })
-                              }}
-                              style={{
-                                fontSize: 16,
-                                color: 'var(--neutral-n3)',
-                              }}
-                              type="delete"
-                            />
+                            <Tooltip title="编辑">
+                              <IconFont
+                                onClick={() => {
+                                  setSprintModal({
+                                    visible: true,
+                                    type: 'edit',
+                                  })
+                                }}
+                                style={{
+                                  fontSize: 16,
+                                  color: 'var(--neutral-n3)',
+                                  marginRight: 16,
+                                }}
+                                type="edit"
+                              />
+                            </Tooltip>
+                            <Tooltip title="删除">
+                              <IconFont
+                                onClick={() => {
+                                  open({
+                                    title: '删除冲刺',
+                                    text: `确认要删除【${data.name}】的冲刺吗？`,
+                                    onConfirm: () => deleteSprint(data.id),
+                                  })
+                                }}
+                                style={{
+                                  fontSize: 16,
+                                  color: 'var(--neutral-n3)',
+                                }}
+                                type="delete"
+                              />
+                            </Tooltip>
                           </>
                         )}
                       </div>
@@ -347,7 +347,9 @@ const XTable: React.FC<XTableProps> = props => {
                         <NoData subText="暂无事务" />
                       ) : (
                         <div className="nodata">
-                          从待办事项拖动或新建事务，以规划该冲刺的工作，添加事务并编辑冲刺后，点击开始冲刺
+                          {data.status === 4
+                            ? '从待办事项拖动或新建事务，以规划该冲刺的工作，添加事务并编辑冲刺后，点击开始冲刺'
+                            : '可将已有事务拖拽到此处，来确定冲刺计划'}
                         </div>
                       )
                     }
@@ -387,19 +389,6 @@ const XTable: React.FC<XTableProps> = props => {
           setCompleteVisible(false)
         }}
       />
-      <DeleteConfirm
-        title={`删除【${deleteItem?.storyPrefixKey}】？`}
-        isVisible={isVisible}
-        onChangeVisible={() => setIsVisible(!isVisible)}
-        onConfirm={onDeleteConfirm}
-      >
-        <div style={{ marginBottom: 9 }}>
-          你将永久删除该事务，删除后将不可恢复请谨慎操作!
-        </div>
-        <Checkbox onChange={e => setIsDeleteCheck(e.target.checked)}>
-          同时删除该事务下所有子事务
-        </Checkbox>
-      </DeleteConfirm>
       <DeleteConfirmModal />
     </>
   )

@@ -144,6 +144,10 @@ const routes = [
             element: lazy(() => import('@/views/IterationDefect')),
           },
           {
+            path: 'DefectDetail',
+            element: lazy(() => import('@/views/IterationDefectDetail')),
+          },
+          {
             path: 'ProjectSetting',
             element: lazy(() => import('@/views/ProjectSetting')),
           },
@@ -163,7 +167,7 @@ const routes = [
         children: [
           {
             path: 'KanBan',
-            element: lazy(() => import('@/views/SprintProjectKanBan')),
+            element: lazy(() => import('@/views/KanBanBoard')),
           },
           {
             path: 'SprintReport',

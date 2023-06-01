@@ -455,6 +455,7 @@ const UploadAttach = (props: any) => {
         style={{
           display: 'flex',
           flexWrap: 'wrap',
+          marginTop: 8,
         }}
       >
         {fileList.map((i: any) => {

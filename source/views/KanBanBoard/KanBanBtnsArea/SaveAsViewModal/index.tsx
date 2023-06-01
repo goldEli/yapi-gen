@@ -4,7 +4,6 @@
 import React from 'react'
 import { Form, Input } from 'antd'
 import { useTranslation } from 'react-i18next'
-import { getMessage } from '@/components/Message'
 import CommonModal from '@/components/CommonModal'
 import { useDispatch, useSelector } from '@store/index'
 import {
@@ -60,9 +59,9 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
 
   const title = React.useMemo(() => {
     if (saveAsViewModelInfo.viewItem) {
-      return '编辑视图'
+      return t('edit_view')
     }
-    return '另存为视图'
+    return t('save_as_view')
   }, [saveAsViewModelInfo.viewItem])
 
   React.useEffect(() => {
@@ -84,7 +83,7 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
       isVisible={saveAsViewModelInfo.visible}
       onClose={onClose}
       onConfirm={onsubmit}
-      confirmText={'确认'}
+      confirmText={t('confirm')}
     >
       <div
         style={{
@@ -99,12 +98,14 @@ const SaveAsViewModal: React.FC<SaveAsViewModalProps> = props => {
         >
           <Form.Item
             rules={[{ required: true, message: '' }]}
-            label={<LabelTitle title={'名称'} />}
+            label={<LabelTitle title={t('name1')} />}
             name="name"
           >
             <Input
               maxLength={30}
-              placeholder="请输入实视图名称限30字"
+              placeholder={t(
+                'please_enter_the_real_view_name_limit_30_characters',
+              )}
               autoFocus
             />
           </Form.Item>

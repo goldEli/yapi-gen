@@ -51,7 +51,13 @@ const useOpenDemandDetail = () => {
         )
         url = `/SprintProjectManagement/SprintProjectDetail?data=${params}`
       } else if (type === 2) {
-        //
+        const params = encryptPhp(
+          JSON.stringify({
+            id: projectId,
+            flawId: id,
+          }),
+        )
+        url = `/ProjectManagement/DefectDetail?data=${params}`
       } else {
         const params = encryptPhp(
           JSON.stringify({

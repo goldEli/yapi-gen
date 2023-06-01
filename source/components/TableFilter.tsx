@@ -20,7 +20,6 @@ import { setFilterKeys } from '@store/project'
 import { saveValue } from '@store/view'
 import MoreSelect from './MoreSelect'
 import { useGetloginInfo } from '@/hooks/useGetloginInfo'
-import { log } from 'console'
 
 const MySpan = styled.div`
   cursor: pointer;
@@ -424,7 +423,6 @@ const TableFilter = (props: any) => {
       }))
       .concat(newB)
   }
-
   return (
     <SearchLine hasLeft={props?.hasLeft}>
       <Wrap hidden={props.showForm} style={{ userSelect: 'none' }}>
