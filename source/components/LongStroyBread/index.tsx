@@ -144,19 +144,21 @@ const LongStroyBread = (props: IProps) => {
         <AffairTypeBox>
           {longStroy?.projectPrefix}-{longStroy?.prefixKey}
         </AffairTypeBox>
-        <Tooltip placement="top" title="复制链接" zIndex={999999}>
-          <span>
-            <CommonIconFont
-              type="link"
-              color="var(--primary-d2)"
-              onClick={() => {
-                console.log(111)
-                copyLink('AA', '复制成功', '复制失败')
-              }}
-              size={18}
-            ></CommonIconFont>
-          </span>
-        </Tooltip>
+        {layer ? null : (
+          <Tooltip placement="top" title="复制链接" zIndex={999999}>
+            <span style={{ display: 'flex', alignItems: 'center' }}>
+              <CommonIconFont
+                type="link"
+                color="var(--primary-d2)"
+                onClick={() => {
+                  console.log(111)
+                  copyLink('AA', '复制成功', '复制失败')
+                }}
+                size={18}
+              ></CommonIconFont>
+            </span>
+          </Tooltip>
+        )}
       </BreadBox>
       {visible ? (
         <LongStoryDropdown detail={longStroy}></LongStoryDropdown>
