@@ -79,7 +79,7 @@ const StyledWrap = styled.div`
   display: flex;
   gap: 17px;
 `
-const FullScreenDiv = styled.div<{ isScreen: boolean }>`
+export const FullScreenDiv = styled.div<{ isScreen: boolean }>`
   ${props =>
     props.isScreen
       ? `
@@ -250,6 +250,7 @@ const Profile = () => {
 
   const init = async () => {
     const res = await getMineChartsList()
+
     setData(res)
   }
   const changeName = (key: any) => {
@@ -349,6 +350,8 @@ const Profile = () => {
   if (!loadingState) {
     return <Loading />
   }
+  console.log(data)
+
   return (
     <>
       <div>
@@ -357,37 +360,41 @@ const Profile = () => {
             {/* <SecondTitle>{t('mine.basicSurvey')}</SecondTitle> */}
             <InnerWrap>
               <ChartsItem>
-                <span className={titleNumberCss3}>{data?.firstP}</span>
+                <span className={titleNumberCss3}>{data?.project_count}</span>
                 <span className={titleTextCss}>{t('mine.totalProject')}</span>
               </ChartsItem>
               <ChartsItem>
-                <span className={titleNumberCss3}>{data?.firstN}</span>
-                <span className={titleTextCss}>{t('mine.totalDemand')}</span>
+                <span className={titleNumberCss}>{data?.story_count}</span>
+                <span className={titleTextCss}>累计参与工作项</span>
               </ChartsItem>
               <ChartsItem>
-                <span className={titleNumberCss3}>{data?.firstD}</span>
-                <span className={titleTextCss}>{t('mine.totalIterate')}</span>
+                <span className={titleNumberCss3}>{data?.abeyance_count}</span>
+                <span className={titleTextCss}>待办工作项</span>
               </ChartsItem>
               <ChartsItem>
-                <span className={titleNumberCss3}>{data?.secondAll}</span>
-                <span className={titleTextCss}>{t('mine.total')}</span>
+                <span className={titleNumberCss3}>{data?.finish_count}</span>
+                <span className={titleTextCss}>已办工作项</span>
               </ChartsItem>
               <ChartsItem>
-                <span className={titleNumberCss3}>{data?.secondNoFinish}</span>
-                <span className={titleTextCss}>{t('mine.needDeal')}</span>
+                <span className={titleNumberCss3}>{data?.create_count}</span>
+                <span className={titleTextCss}>我创建的工作项</span>
               </ChartsItem>
               <ChartsItem>
-                <span className={titleNumberCss2}>{data?.secondTimeOut}</span>
-                <span className={titleTextCss}>{t('mine.overdue')}</span>
+                <span className={titleNumberCss3}>{data?.copy_me_count}</span>
+                <span className={titleTextCss}>抄送我的工作项</span>
               </ChartsItem>
               <ChartsItem>
+                <span className={titleNumberCss2}>{data?.approving_count}</span>
+                <span className={titleTextCss}>待审核的工作项</span>
+              </ChartsItem>
+              {/* <ChartsItem>
                 <span className={titleNumberCss}>{data?.secondFinish}</span>
                 <span className={titleTextCss}>{t('mine.finishOn')}</span>
               </ChartsItem>
               <ChartsItem>
                 <span className={titleNumberCss2}>{data?.secondOutFinish}</span>
                 <span className={titleTextCss}>{t('mine.finishOver')}</span>
-              </ChartsItem>
+              </ChartsItem> */}
             </InnerWrap>
           </div>
         </Head>

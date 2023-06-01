@@ -17,6 +17,7 @@ import ScreenMinHover from '@/components/ScreenMinHover'
 import IconFont from '@/components/IconFont'
 import DropDownMenu from '@/components/DropDownMenu'
 import useShareModal from '@/hooks/useShareModal'
+import { onFullScreenMode } from '@store/kanBan/kanBan.thunk'
 
 interface Props {
   onChangeFilter?(): void
@@ -204,7 +205,13 @@ const KanBanBtnsArea = (props: Props) => {
 
       <DividerWrap type="vertical" />
       {/* 全屏 */}
-      <ScreenMinHover label={'全屏'} icon="full-screen" onClick={() => {}} />
+      <ScreenMinHover
+        label={'全屏'}
+        icon="full-screen"
+        onClick={() => {
+          dispatch(onFullScreenMode())
+        }}
+      />
       <DividerWrap type="vertical" />
 
       {/* 设置 */}

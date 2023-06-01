@@ -43,7 +43,6 @@ const Setting = () => {
   const [searchParams] = useSearchParams()
   const { projectInfo } = useSelector(store => store.project)
   const paramsData = getParamsData(searchParams)
-  console.log(paramsData)
   const activeTabs = paramsData.type || 'ProjectInfo'
   const { currentMenu } = useSelector(store => store.user)
   const dispatch = useDispatch()

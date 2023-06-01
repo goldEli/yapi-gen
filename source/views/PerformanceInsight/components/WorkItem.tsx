@@ -205,7 +205,6 @@ const Main = (props: UserInfo) => {
   )
 }
 const WorkItem = (props: Props) => {
-  console.log(props.ids, 'ids')
   return (
     <>
       <Detail

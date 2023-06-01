@@ -320,18 +320,8 @@ export const getUserInfoOverviewStatistics: any = async (params: any) => {
     target_id: params.targetId,
     project_id: params?.projectId,
   })
-  const { join, abeyance } = response.data
 
-  return {
-    firstP: join.project_count,
-    firstN: join.story_count,
-    firstD: join.iterate_count,
-    secondAll: abeyance.total,
-    secondNoFinish: abeyance.abeyance_count,
-    secondTimeOut: abeyance.expired_count,
-    secondFinish: abeyance.finish_count,
-    secondOutFinish: abeyance.expired_finish_count,
-  }
+  return response.data
 }
 
 export const getUserInfoOverviewFeed: any = async (params: any) => {

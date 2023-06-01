@@ -8,6 +8,8 @@ import {
 import { Options } from '@/components/SelectOptionsNormal'
 
 type SliceState = {
+  // 全屏状态
+  fullScreen: boolean
   guideVisible: Model.KanBan.guideVisible
   sortByGroupOptions?: Model.KanBan.GroupInfoItem[]
   sortByRowAndStatusOptions?: Options[]
@@ -44,6 +46,7 @@ type SliceState = {
 }
 
 const initialState: SliceState = {
+  fullScreen: false,
   movingStory: null,
   kanbanConfigList: [],
   kanbanInfo: [],
@@ -86,6 +89,9 @@ const slice = createSlice({
   name: 'kanBan',
   initialState,
   reducers: {
+    setFullScreen(state, action: PayloadAction<SliceState['fullScreen']>) {
+      state.fullScreen = action.payload
+    },
     setModifyStatusModalInfo(
       state,
       action: PayloadAction<SliceState['modifyStatusModalInfo']>,
@@ -216,6 +222,7 @@ export const {
   setMovingStory,
   setKanbanInfoByGroup,
   setModifyStatusModalInfo,
+  setFullScreen,
 } = slice.actions
 
 export default kanBan
