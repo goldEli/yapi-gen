@@ -51,6 +51,9 @@ const SiteNotifications = () => {
         duration: 0,
         content: <TextChange text={wsData.data.msgBody.title} />,
         className: 'custom-class',
+        onClick: () => {
+          dispatch(changeVisible(!isVisible))
+        },
       })
     } else if (wsData.data.customData.noticeStyle === '1') {
       setFirst(true)

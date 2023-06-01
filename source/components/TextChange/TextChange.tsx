@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-handler-names */
 import React, { useEffect, useRef } from 'react'
 import CommonIconFont from '../CommonIconFont'
 import { message } from 'antd'
@@ -24,6 +25,9 @@ export const TextChange = (props: any) => {
 
   return (
     <div
+      onClick={() => {
+        message.destroy()
+      }}
       style={{
         position: 'relative',
         padding: '0px 45px 0px 24px',
@@ -47,7 +51,7 @@ export const TextChange = (props: any) => {
         <CommonIconFont
           size={18}
           // eslint-disable-next-line react/jsx-handler-names
-          onClick={() => message.destroy()}
+
           type="close-solid"
         />
       </div>
