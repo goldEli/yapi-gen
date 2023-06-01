@@ -1,19 +1,18 @@
 import IconFont from '@/components/IconFont'
 import styled from '@emotion/styled'
 
+export const HoverIcon = styled.div`
+  cursor: pointer;
+  visibility: hidden;
+`
 export const IssueCardBox = styled.div`
   width: 270px;
   height: 144px;
   border-radius: 6px 6px 6px 6px;
-  /* visibility: ${props => (props.hidden ? 'hidden' : 'visible')}; */
 
-  /* .secondary-details {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    font-size: 12px;
-  } */
+  &:hover ${HoverIcon} {
+    visibility: visible;
+  }
 `
 export const IssueCardBoxContainer = styled.div<{ hidden?: boolean }>`
   padding: 16px;
@@ -31,7 +30,15 @@ export const Top = styled.div`
   height: 20px;
   display: flex;
   gap: 8px;
+  align-items: center;
+  justify-content: space-between;
 `
+
+export const TopLeft = styled.div`
+  display: flex;
+  gap: 8px;
+`
+export const TopRight = styled.div``
 export const TopProjectIcon = styled.img`
   height: 18px;
   width: 18px;
