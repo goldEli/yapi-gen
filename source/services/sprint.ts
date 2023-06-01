@@ -104,3 +104,21 @@ export const completeSprint = async (
   const response = await http.put('completeSprint', params)
   return response
 }
+
+// 拖动--更换冲刺
+export const moveStory = async (params: API.Sprint.MoveStory.Params) => {
+  const response = await http.post('moveStory', params)
+  return response
+}
+
+// 拖动排序冲刺
+export const sortStory = async (params: API.Sprint.SortStory.Params) => {
+  const response = await http.put('sortStory', params)
+  return response
+}
+
+// 长故事下拉列表
+export const getLongStory = async (params: API.Sprint.GetLongStory.Params) => {
+  const response = await http.get('getLongStory', params)
+  return response
+}

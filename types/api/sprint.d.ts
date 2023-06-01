@@ -219,6 +219,7 @@ declare namespace API.Sprint {
   namespace DelSprintItem {
     type Params = {
       id: number
+      project_id: number
     }
   }
 
@@ -230,6 +231,36 @@ declare namespace API.Sprint {
       result?: string | undefined
       move_type: number
       move_target: number
+    }
+  }
+
+  namespace MoveStory {
+    type Params = {
+      iterate_id: number
+      story_id: number
+      to_iterate_id: number
+      project_id: number
+    }
+  }
+  namespace GetLongStory {
+    type Params = {
+      order: string
+      orderkey: string
+      search: {
+        all: number
+        project_id: number
+        keyword?: string
+      }
+      page?: number
+      pagesize?: number
+    }
+  }
+
+  namespace SortStory {
+    type Params = {
+      iterate_id: number
+      story_ids: number[]
+      project_id: number
     }
   }
 }

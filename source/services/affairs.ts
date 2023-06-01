@@ -442,6 +442,8 @@ export const deleteInfoAffairs = async (
 
 // 快捷修改参数
 export const updateAffairsTableParams = async (params: any) => {
+  console.log(params, 'params')
+
   await http.put<any>('changeAffairsTableParams', {
     project_id: params.projectId,
     id: params.id,

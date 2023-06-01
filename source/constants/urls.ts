@@ -329,7 +329,13 @@ const urls = {
   // 删除冲刺
   delSprintItem: '/b/sprint/del',
   // 完成冲刺
-  completeSprint: '/b/sprint/complete',
+  completeSprint: '/b/sprint/finish',
+  // 更换冲刺
+  moveStory: '/b/sprint/moveStory',
+  // 拖动排序
+  sortStory: '/b/sprint/sort',
+  // 长故事下拉列表
+  getLongStory: '/b/transaction/getLongStory',
   /**
    * 视图管理
    */
