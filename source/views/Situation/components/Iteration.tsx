@@ -84,10 +84,10 @@ const Iteration = (props: any) => {
           <span className={title1Css}>{data?.open_count ?? 0}</span>
           <span className={title2Css}>{t('situation.openIterate')}</span>
         </ChartsItem>
-        <ChartsItem>
+        {/* <ChartsItem>
           <span className={title1Css}>{data?.finish_count ?? 0}</span>
           <span className={title2Css}>{t('version2.finishIteration')}</span>
-        </ChartsItem>
+        </ChartsItem> */}
         <ChartsItem>
           <span className={title1Css}>{data?.end_count ?? 0}</span>
           <span className={title2Css}>{t('situation.stopIterate')}</span>
