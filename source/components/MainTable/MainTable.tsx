@@ -459,8 +459,26 @@ const MainTable = (props: Props) => {
   const onTableRow = useCallback((row: any) => {
     return {
       onClick: () => {
+        console.log('row---', row)
         const params = encryptPhp(JSON.stringify({ id: row.id }))
-        navigate(`/ProjectManagement/Demand?data=${params}`)
+
+        if (row.projectType === 2) {
+          navigate(
+            `${
+              row.defaultHomeMenu
+                ? row.defaultHomeMenu
+                : '/SprintProjectManagement/KanBan'
+            }?data=${params}`,
+          )
+          return
+        }
+        navigate(
+          `${
+            row.defaultHomeMenu
+              ? row.defaultHomeMenu
+              : '/ProjectManagement/Demand'
+          }?data=${params}`,
+        )
       },
     }
   }, [])
