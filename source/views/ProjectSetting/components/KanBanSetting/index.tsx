@@ -6,10 +6,7 @@ import BoardLeft from './BoardLeft'
 import BoardRight from './BoardRight'
 import EditColumnModal from './EditColumnModal'
 import {
-  getCategoryList,
-  getKanbanConfig,
   getKanbanConfigList,
-  getKanbanConfigRemainingStatus,
   openSaveAsViewModel,
 } from '@store/kanbanConfig/kanbanConfig.thunk'
 import { useDispatch, useSelector } from '@store/index'
@@ -17,7 +14,6 @@ import useProjectId from './hooks/useProjectId'
 import NoData from '@/components/NoData'
 import CommonButton from '@/components/CommonButton'
 import SaveAsViewModal from './SaveAsViewModal'
-import { PayloadAction } from '@reduxjs/toolkit'
 interface IProps {}
 const KanBanSettingBox = styled.div`
   width: 100%;
