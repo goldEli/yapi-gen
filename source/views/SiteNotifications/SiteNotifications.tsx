@@ -44,7 +44,6 @@ const SiteNotifications = () => {
     dispatch(changeNumber(num))
   }
   const sendMsg = () => {
-    console.log(wsData, '长数据')
     if (wsData.data.customData.noticeStyle === '2') {
       message.success({
         icon: <span></span>,
