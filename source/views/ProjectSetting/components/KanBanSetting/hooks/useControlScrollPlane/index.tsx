@@ -29,6 +29,7 @@ const useControlScrollPlane = (columnNum: number) => {
   const [childHeight, setChildHeight] = useState(0)
 
   const [position, setPosition] = useState({ x: 0, y: 0 })
+  const isMovingRef = useRef(false)
 
   useEffect(() => {
     const observer = new ResizeObserver(entries => {
@@ -50,9 +51,31 @@ const useControlScrollPlane = (columnNum: number) => {
       observer.disconnect()
     }
   }, [])
+
   // 缩略图与容器宽高比列
   const widthRatio = planeWidth / childWidth
   const heightRatio = planeHeight / childHeight
+
+  useEffect(() => {
+    if (!containerRef.current) {
+      return
+    }
+    function onScroll() {
+      if (isMovingRef.current) {
+        return
+      }
+      const scrollTop = containerRef.current?.scrollTop || 0
+      const scrollLeft = containerRef.current?.scrollLeft || 0
+      setPosition({
+        x: scrollLeft * widthRatio,
+        y: scrollTop * heightRatio,
+      })
+    }
+    containerRef.current.addEventListener('scroll', onScroll)
+    return () => {
+      containerRef.current?.removeEventListener('scroll', onScroll)
+    }
+  }, [widthRatio, heightRatio])
 
   // 缩略的可视宽高
   const windowHeight = planeHeight * (height / childHeight)
@@ -83,8 +106,10 @@ const useControlScrollPlane = (columnNum: number) => {
               e.stopPropagation()
               const { y, x } = data
               containerRef.current?.scrollTo(x / widthRatio, y / heightRatio)
+              isMovingRef.current = true
             }}
             onDragStop={(e: DraggableEvent, data: DraggableData) => {
+              isMovingRef.current = false
               const { y, x } = data
               setPosition({ x, y })
             }}
