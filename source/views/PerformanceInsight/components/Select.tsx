@@ -16,17 +16,10 @@ interface Props {
   options: Array<ItemProps>
   more: boolean
   placeholder: string
+  value: number[] | []
 }
 const SelectMain = (props: Props) => {
-  const [value, setValue] = useState<number[]>([])
-  const [searchValue, setSearchValue] = useState<string>('')
-  const onSearch = (e: string) => {
-    setSearchValue(e)
-    props.onSearch?.(e)
-  }
   const changeValue = (newValue: number[]) => {
-    console.log(newValue, 'newValue')
-    setValue(newValue)
     props.onChange(newValue)
   }
   return (
@@ -35,6 +28,7 @@ const SelectMain = (props: Props) => {
         style={{ width: 184 }}
         maxTagCount={1}
         mode="multiple"
+        value={props.value}
         options={props.options}
         suffixIcon={<CommonIconFont type="down" />}
         onChange={changeValue}
@@ -42,7 +36,6 @@ const SelectMain = (props: Props) => {
         optionFilterProp="label"
         allowClear
         getPopupContainer={(node: any) => node}
-        value={value}
         placeholder={props.placeholder}
         showArrow={true}
         autoClearSearchValue

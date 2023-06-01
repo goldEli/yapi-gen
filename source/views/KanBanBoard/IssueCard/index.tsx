@@ -15,10 +15,13 @@ import {
   PercentageBox,
   Sub,
   Top,
+  TopLeft,
   TopProjectIcon,
+  TopRight,
   TopText,
   WrapIcon,
 } from './styled'
+import ThreeDot from '../ThreeDot'
 
 interface IssueCardProps {
   item: Model.KanBan.Story
@@ -41,8 +44,13 @@ const IssueCard = (props: IssueCardProps) => {
           <IssueCardBox>
             <IssueCardBoxContainer hidden={props.hidden}>
               <Top>
-                <TopProjectIcon src={item.project_category.attachment_path} />
-                <TopText>{item.story_prefix_key}</TopText>
+                <TopLeft>
+                  <TopProjectIcon src={item.project_category.attachment_path} />
+                  <TopText>{item.story_prefix_key}</TopText>
+                </TopLeft>
+                <TopRight>
+                  <ThreeDot story={item} />
+                </TopRight>
               </Top>
               <Middle>{item.name}</Middle>
               <Bottom>

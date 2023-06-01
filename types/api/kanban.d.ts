@@ -97,4 +97,30 @@ declare namespace API.Kanban {
     }
     type Result = null
   }
+
+  namespace GetFlowConfig {
+    type Params = {
+      story_id: Model.KanBan.Story['id']
+      // 项目id
+      project_id: number
+      // 目标状态id
+      category_status_to_id: number
+    }
+    type Result = {
+      id: number
+      name: string
+    }
+  }
+
+  namespace DeleteStory {
+    type Params = {
+      id: Model.KanBan.Story['id']
+      // 项目id
+      project_id: number
+    }
+    type Result = {
+      id: number
+      name: string
+    }
+  }
 }

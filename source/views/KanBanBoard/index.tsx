@@ -23,6 +23,7 @@ import { jumpToKanbanConfig } from './utils'
 import UserGroupingModal from './UserGroupingModal'
 import { saveInputKey } from '@store/view'
 import ModifyStatusModal from './ModifyStatusModal'
+import ThreeDot from './ThreeDot'
 
 interface IProps {}
 const SprintProjectKanBanBox = styled.div`
@@ -91,6 +92,7 @@ const SprintProjectKanBan: React.FC<IProps> = props => {
           dispatch(onFilter())
         }}
       />
+      {/* <ThreeDot /> */}
       <ToolBarBox>
         <Operation
           pid={1}

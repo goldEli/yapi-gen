@@ -83,5 +83,12 @@ declare namespace Models.Efficiency {
     name: string
     status: number
     type: number
+    config: {
+      project_id?: number[]
+      user_ids?: number[]
+      start_time?: string
+      end_time?: string
+      period_time?: string
+    }
   }
 }
