@@ -8,6 +8,11 @@ import { getMessage } from '@/components/Message'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { useDispatch } from '@store/index'
 import { deleteStory } from '@store/kanBan/kanBan.thunk'
+import {
+  onCopyLink,
+  onCopyName,
+} from '@/components/TableDropdownMenu/CommonDropdownMenu'
+import { getParamsValueByKey } from '@/tools'
 
 interface ThreeDotProps {
   story: Model.KanBan.Story
@@ -85,11 +90,32 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
             },
             {
               key: '3',
-              label: <Item onClick={copyNo}>复制编号</Item>,
+              label: (
+                <Item
+                  onClick={e => {
+                    e.stopPropagation()
+                    onCopyName(props.story.name)
+                  }}
+                >
+                  复制编号
+                </Item>
+              ),
             },
             {
               key: '4',
-              label: <Item onClick={copyTitle}>复制标题</Item>,
+              label: (
+                <Item
+                  onClick={e => {
+                    e.stopPropagation()
+                    onCopyLink({
+                      project_id: getParamsValueByKey('id'),
+                      id: props.story.id,
+                    })
+                  }}
+                >
+                  复制标题
+                </Item>
+              ),
             },
           ],
         }}
