@@ -100,7 +100,6 @@ const slice = createSlice({
       state.leftLoading = false
     })
     builder.addCase(getLongStoryList.fulfilled, (state, action) => {
-      console.log('action.payload', action.payload)
       state.longStoryList = action.payload
     })
   },

@@ -52,7 +52,7 @@ const LongStoryDropdown = () => {
       return
     }
     setLoading(false)
-    console.log('longStoryList', longStoryList)
+
     setList(longStoryList.list)
   }, [longStoryList])
   return (
