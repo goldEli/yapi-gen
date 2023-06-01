@@ -45,6 +45,7 @@ import {
 } from '@/services/affairs'
 import { setAffairsInfo } from '@store/affairs'
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
+import LongStroyBread from '@/components/LongStroyBread'
 
 interface IProps {}
 
@@ -370,7 +371,11 @@ const SprintProjectDetail: React.FC<IProps> = props => {
         </FormWrap>
       </CommonModal>
       <DetailTop>
-        <MyBreadcrumb />
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <MyBreadcrumb />
+          <LongStroyBread longStroy={affairsInfo}></LongStroyBread>
+        </div>
+
         <ButtonGroup size={16}>
           <CommonButton type="icon" icon="left-md" onClick={onBack} />
           <ChangeIconGroup>

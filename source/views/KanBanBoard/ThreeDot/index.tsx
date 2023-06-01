@@ -11,6 +11,7 @@ import {
   onCopyName,
 } from '@/components/TableDropdownMenu/CommonDropdownMenu'
 import { getIsPermission, getParamsValueByKey } from '@/tools'
+import { setAddWorkItemModal } from '@store/project'
 
 interface ThreeDotProps {
   story: Model.KanBan.Story
@@ -81,7 +82,26 @@ const ThreeDot: React.FC<ThreeDotProps> = props => {
   const items = [
     {
       key: '1',
-      label: <Item>编辑</Item>,
+      label: (
+        <Item
+          onClick={e => {
+            e.stopPropagation()
+            dispatch(
+              setAddWorkItemModal({
+                visible: true,
+                params: {
+                  type: 2,
+                  editId: props.story.id,
+                  projectId: getParamsValueByKey('id'),
+                  title: '编辑事务',
+                },
+              }),
+            )
+          }}
+        >
+          编辑
+        </Item>
+      ),
     },
     {
       key: '2',

@@ -274,7 +274,7 @@ const ChildSprint = (props: { detail: Model.Affairs.AffairsInfo }) => {
             </Tooltip>
             <DragTable
               columns={columns}
-              dataSource={dataSource}
+              dataSource={dataSource.list}
               onChangeData={onDragTable}
             />
           </>
