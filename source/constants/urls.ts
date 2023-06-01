@@ -255,9 +255,11 @@ const urls = {
   affairsRelationDragSort: '/b/transaction/dragRelationSort',
   // 关联事务列表
   getAffairsRelationStoriesList: '/b/transaction/relationStories',
-
+  // 编辑视图
+  viewsUpdate: '/b/story/views/update',
+  // 新建视图
+  createViewList: '/b/story/views/create',
   // 修改日程
-
   modifySchedule: function (id: Model.Schedule.Info['schedule_id']) {
     return `/b/calendar/schedule/${id}`
   },

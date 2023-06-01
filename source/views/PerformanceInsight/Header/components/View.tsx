@@ -16,8 +16,10 @@ interface ValueType {
   title: string
   value: string
 }
-
-const View = () => {
+interface View {
+  viewDataList: []
+}
+const View = (props: View) => {
   const dispatch = useDispatch()
   const { headerParmas } = useSelector(store => store.performanceInsight)
   const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -45,7 +47,7 @@ const View = () => {
   const getLabel = (el: { name: string; id: number }) => {
     return (
       <Label>
-        <span>{el.name}</span>
+        <span className="labelName">{el.name}</span>
         <span>
           <Space size={12}>
             <CommonIconFont
@@ -72,7 +74,11 @@ const View = () => {
     )
   }
   const getHtml = () => {
-    return a.map((el: any) => ({ label: getLabel(el), key: el.key }))
+    console.log(props.viewDataList, 'key')
+    return props.viewDataList.map((el: any) => ({
+      label: getLabel(el),
+      key: el.key,
+    }))
   }
   useEffect(() => {
     setItems([

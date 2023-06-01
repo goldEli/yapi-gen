@@ -401,7 +401,7 @@ export const useDynamicColumns = (state: any) => {
             isMineOrHis
             projectId={state.projectId}
           >
-            {record?.usersInfo && record?.usersInfo.length > 0 && (
+            {record?.usersInfo && record?.usersInfo?.length > 0 && (
               <MultipleAvatar
                 max={3}
                 list={record?.usersInfo?.map((i: any) => ({

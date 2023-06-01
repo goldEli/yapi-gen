@@ -123,6 +123,10 @@ const Home = () => {
   const [charts2, setCharts2] = useState<Models.Efficiency.WorkChart>()
   const [charts3, setCharts3] = useState<Models.Efficiency.ChartPie>()
   const [charts5, setCharts5] = useState<Models.Efficiency.ChartSpline>()
+  const [headerParmas, setHeaderParmas] = useState({
+    projectIds: [],
+  })
+  const [viewDataList, setViewDataList] = useState<any>()
   // 'iteration''sprint' 'all'
   const [homeType, setHomeType] = useState('all')
   const [workDataList, setWorkDataList] =
@@ -143,6 +147,8 @@ const Home = () => {
   }, [])
   const getViewList = async (parmas: API.Efficiency.ViewsList.Params) => {
     const res = await viewsList(parmas)
+    setViewDataList(res)
+    console.log(res, 'ooo')
   }
   // 缺陷现状和工作项现状
   const getWorkList = async () => {
@@ -265,7 +271,11 @@ const Home = () => {
         position: 'relative',
       }}
     >
-      <Header homeType={homeType} />
+      <Header
+        homeType={homeType}
+        viewDataList={viewDataList || []}
+        headerParmas={headerParmas}
+      />
       <WorkingStatus
         homeType={homeType}
         data={workDataList?.work || []}

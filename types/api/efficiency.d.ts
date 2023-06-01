@@ -54,4 +54,15 @@ declare namespace API.Efficiency {
       data: Array<Models.Efficiency.ViewItem>
     }
   }
+  namespace ViewsEditList {
+    type Params = {
+      id: number
+      project_id?: number[]
+      status?: number
+      name: string
+    }
+    type Result = {
+      data: boolean
+    }
+  }
 }
