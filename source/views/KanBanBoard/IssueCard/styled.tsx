@@ -61,6 +61,12 @@ export const Middle = styled.div`
   -webkit-line-clamp: 2; /* 这里是超出几行省略 */
   overflow: hidden;
 `
+export const StoryText = styled.span`
+  cursor: pointer;
+  &:hover {
+    color: var(--primary-d2);
+  }
+`
 export const Bottom = styled.div`
   height: 24px;
   display: flex;

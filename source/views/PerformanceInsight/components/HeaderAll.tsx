@@ -19,11 +19,6 @@ interface HaderProps {
     id?: number
   }>
 }
-interface ProjectListType {
-  name: string
-  id: number
-}
-
 const HeaderAll = (props: HaderProps) => {
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState<boolean>(false)
