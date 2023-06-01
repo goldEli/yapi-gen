@@ -1588,5 +1588,12 @@
   "highlights_when_the_number_of_cards_in_a_column_exceeds_the_maximum_number_for_that_column": "当列中的卡片数量超过该列最大数会突出显示",
   "maximum": "最大",
   "moon": "月",
-  "people": "人"
+  "people": "人",
+  "columns_and_statuses_have_not_been_created_yet": "当前还未创建列与状态，使用列和状态来定义工作在看板上的推进方式",
+  "status_of_Kanban_work_items": "Kanban工作项的状态",
+  "the_card_state_changes_the_final_state_of_ta_according_to_the_draggable_destination": "卡片状态根据可拖动的目的地来改变ta的最终状态",
+  "grouped_view": "分组视图",
+  "at_the_same_time": "同时支持按人员、类别、优先级三个横向参数进行工作对比与查看",
+  "columns_and_status": "列与状态",
+  "vertical_filtering_can_be_performed_according_to_different_workflows": "可以按不同工作流进行纵向筛选，如需定义工作流可在配置看板中新增或编辑它"
 }

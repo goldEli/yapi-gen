@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react'
 import LongStoryDropdown from '../LongStoryDropdown'
 import CommonIconFont from '../CommonIconFont'
 import styled from '@emotion/styled'
+import { Tooltip } from 'antd'
+import { copyLink } from '@/tools'
 import IconFont from '../IconFont'
 const BreadBox = styled.div`
   display: flex;
@@ -61,7 +63,7 @@ const LongStroyBread = (props: IProps) => {
     }
   }
   useEffect(() => {
-    // hasLongStroy 为true可以添加长故事
+    // hasLongStroy 为true可以添加长故事 work_type 为4,5才可以添加关联
     const hasLongStroy =
       longStroy?.level_tree?.length === 0 ||
       (longStroy?.level_tree?.length &&
@@ -142,6 +144,21 @@ const LongStroyBread = (props: IProps) => {
         <AffairTypeBox>
           {longStroy?.projectPrefix}-{longStroy?.prefixKey}
         </AffairTypeBox>
+        {layer ? null : (
+          <Tooltip placement="top" title="复制链接" zIndex={999999}>
+            <span style={{ display: 'flex', alignItems: 'center' }}>
+              <CommonIconFont
+                type="link"
+                color="var(--primary-d2)"
+                onClick={() => {
+                  console.log(111)
+                  copyLink('AA', '复制成功', '复制失败')
+                }}
+                size={18}
+              ></CommonIconFont>
+            </span>
+          </Tooltip>
+        )}
       </BreadBox>
       {visible ? (
         <LongStoryDropdown detail={longStroy}></LongStoryDropdown>

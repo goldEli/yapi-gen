@@ -1653,6 +1653,13 @@
     "highlights_when_the_number_of_cards_in_a_column_exceeds_the_maximum_number_for_that_column": "Highlights when the number of cards in a column exceeds the maximum number for that column",
     "maximum": "Maximum",
     "moon": "Moon",
-    "people": "People"
+    "people": "People",
+    "columns_and_statuses_have_not_been_created_yet": "Columns and statuses have not been created yet, use columns and statuses to define how work progresses on the Kanban board",
+    "status_of_Kanban_work_items": "Status of Kanban work items",
+    "the_card_state_changes_the_final_state_of_ta_according_to_the_draggable_destination": "The card state changes the final state of ta according to the draggable destination",
+    "grouped_view": "Grouped view",
+    "at_the_same_time": "At the same time, it supports work comparison and viewing according to three horizontal parameters: personnel, category, and priority",
+    "columns_and_status": "Columns and status",
+    "vertical_filtering_can_be_performed_according_to_different_workflows": "Vertical filtering can be performed according to different workflows. If you need to define a workflow, you can add or edit it in the configuration kanban"
   }
 }
