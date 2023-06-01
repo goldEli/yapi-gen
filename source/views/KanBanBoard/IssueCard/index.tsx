@@ -49,7 +49,7 @@ const IssueCard = (props: IssueCardProps) => {
                   <TopText>{item.story_prefix_key}</TopText>
                 </TopLeft>
                 <TopRight>
-                  <ThreeDot />
+                  <ThreeDot story={item} />
                 </TopRight>
               </Top>
               <Middle>{item.name}</Middle>
