@@ -8,7 +8,9 @@ const useProjectType = () => {
    * 1 迭代(迭代里叫需求) 2 冲刺（冲刺里是事务）
    */
   // 1-需求，2-事务，3-缺陷
-  return projectInfo.projectType as 1 | 2 | 3
+  return {
+    projectType: projectInfo.projectType as 1 | 2 | 3,
+  }
 }
 
 export default useProjectType
