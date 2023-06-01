@@ -26,6 +26,11 @@ type SliceState = {
     groupName: string
     id?: number
   }
+  modifyStatusModalInfo: {
+    visible: boolean
+    storyId?: Model.KanBan.Story['id']
+    info?: Model.Project.CheckStatusItem
+  }
   kanbanInfo: Model.KanBan.Column[]
   kanbanInfoByGroup: Model.KanBan.Group[]
   kanbanConfig?: Model.KanbanConfig.Config
@@ -34,6 +39,7 @@ type SliceState = {
     columnId: Model.KanBan.Column['id']
     story: Model.KanBan.Story
     status?: Model.KanbanConfig.Status
+    groupId: Model.KanBan.Group['id']
   } | null
 }
 
@@ -42,6 +48,9 @@ const initialState: SliceState = {
   kanbanConfigList: [],
   kanbanInfo: [],
   kanbanInfoByGroup: [],
+  modifyStatusModalInfo: {
+    visible: false,
+  },
   userGroupingModelInfo: {
     visible: false,
     userList: [],
@@ -49,9 +58,9 @@ const initialState: SliceState = {
   },
   sortByGroupOptions: [
     { key: 'none', value: '无', check: false },
-    { key: 'users', value: '按人员', check: true },
+    { key: 'users', value: '按人员', check: false },
     { key: 'category', value: '按类别', check: false },
-    { key: 'priority', value: '按优先级', check: false },
+    { key: 'priority', value: '按优先级', check: true },
   ],
   sortByRowAndStatusOptions: [
     // { key: 'statue', value: '按状态', check: true },
@@ -77,6 +86,18 @@ const slice = createSlice({
   name: 'kanBan',
   initialState,
   reducers: {
+    setModifyStatusModalInfo(
+      state,
+      action: PayloadAction<SliceState['modifyStatusModalInfo']>,
+    ) {
+      state.modifyStatusModalInfo = action.payload
+    },
+    setKanbanInfoByGroup(
+      state,
+      action: PayloadAction<SliceState['kanbanInfoByGroup']>,
+    ) {
+      state.kanbanInfoByGroup = action.payload
+    },
     // setViewItemConfig(
     //   state,
     //   action: PayloadAction<SliceState['viewItemConfig']>,
@@ -193,6 +214,8 @@ export const {
   setShareModelInfo,
   setUserGroupingModelInfo,
   setMovingStory,
+  setKanbanInfoByGroup,
+  setModifyStatusModalInfo,
 } = slice.actions
 
 export default kanBan

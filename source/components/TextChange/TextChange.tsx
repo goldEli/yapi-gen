@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import CommonIconFont from '../CommonIconFont'
 import { message } from 'antd'
 
-export const TextChange = () => {
+export const TextChange = (props: any) => {
   const e1 = useRef<HTMLDivElement>(null)
   const e2 = useRef<HTMLDivElement>(null)
   const e3 = useRef<HTMLSpanElement>(null)
@@ -69,7 +69,7 @@ export const TextChange = () => {
               lineHeight: '22px',
             }}
           >
-            12和工艺规 12和工艺规 12和工艺规 12和工艺规 12和工艺规
+            {props.text}
           </span>
         </div>
       </div>

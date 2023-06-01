@@ -29,7 +29,6 @@ const HeaderAll = (props: HaderProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [isVisible, setIsVisible] = useState<boolean>(false)
   const [isVisibleSuccess, setIsVisibleSuccess] = useState<boolean>(false)
-  const [more, setMore] = useState(false)
   const [projectList, setProjectList] = useState<any>()
   const [time, setTime] = useState<{ startTime: string; endTime: string }>()
   const { headerParmas, projectDataList } = useSelector(

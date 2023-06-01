@@ -4,6 +4,8 @@ import { Droppable } from 'react-beautiful-dnd'
 import IssueCard from '../IssueCard'
 import { handleId } from '../utils'
 import DropCardList from '../DropCardList'
+import useDropData from '../hooks/useDropData'
+import DropCard from '../DropCard'
 
 interface IssuesProps {
   issues: Model.KanBan.Column
@@ -19,6 +21,7 @@ const DropArea = styled.div`
   box-sizing: border-box;
   padding: 16px;
   gap: 8px;
+  position: relative;
 `
 
 const DropStatusArea = styled.div`
@@ -35,27 +38,41 @@ const Issues: React.FC<IssuesProps> = props => {
   const droppableId = useMemo(() => {
     return handleId(groupId, issues.id)
   }, [groupId, issues.id])
+
+  const { data, showStateTransitionList } = useDropData(issues.id, groupId)
+  const dropCardListContent = (
+    <DropCardList
+      hidden={!showStateTransitionList}
+      list={data}
+      groupId={groupId}
+      columnId={issues.id}
+    />
+  )
+  const issueCardListContent = issues.stories?.map((story, index) => {
+    const uuid = `${groupId}-${issues.id}-${story.id}`
+    return (
+      <IssueCard
+        hidden={showStateTransitionList}
+        uuid={uuid}
+        key={uuid}
+        item={story}
+        index={index}
+      />
+    )
+  })
+
   return (
     <Droppable
       key={droppableId}
       droppableId={droppableId}
-      // droppableId={'dropCardId'}
+      type="drop-status"
+      // isDropDisabled={false}
     >
       {(provided, snapshot) => {
         return (
           <DropArea ref={provided.innerRef} {...provided.droppableProps}>
-            {/* {column?.deps?.map?.((item) => {
-              return <DropStatusArea>{`123 -> ${item.title}`}</DropStatusArea>;
-            })} */}
-            {issues.stories?.map((story, index) => (
-              <IssueCard
-                groupId={groupId}
-                key={story.id}
-                item={story}
-                index={index}
-              />
-            ))}
-            <DropCardList columnId={issues.id} groupId={groupId} />
+            {dropCardListContent}
+            {issueCardListContent}
             {provided.placeholder}
           </DropArea>
         )

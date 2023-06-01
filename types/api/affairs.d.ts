@@ -1,4 +1,21 @@
 declare namespace API.Affairs {
+  namespace UpdateAffairsComment {
+    type Params = {
+      projectId: number
+      id: number
+      content: string
+      storyId: number
+      ids: (string | null)[]
+    }
+  }
+  namespace UpdateEditor {
+    type Params = {
+      projectId: number
+      info: string
+      id: number
+      name: string
+    }
+  }
   namespace AddQuickAffair {
     type Params = {
       name: string
@@ -34,6 +51,7 @@ declare namespace API.Affairs {
     type Params = {
       projectId: number
       id?: number
+      keywords?: string
     }
     type Result = Model.Affairs.AffairsInfo[]
   }

@@ -342,6 +342,7 @@ export const useDynamicColumns = (state: any) => {
             projectId={record.project_id}
             record={record}
             onChangeStatus={(value: any) => state.updateStatus(value, record)}
+            type={record.project_type === 1 ? (record.is_bug === 1 ? 3 : 1) : 2}
           >
             <StateTag
               style={{
@@ -410,7 +411,7 @@ export const useDynamicColumns = (state: any) => {
                 }))}
               />
             )}
-            {!record?.usersInfo && '--'}
+            {record?.usersInfo.length <= 0 && '--'}
           </TableQuickEdit>
         )
       },
@@ -593,42 +594,12 @@ export const useDynamicColumns = (state: any) => {
             isCanOperation={
               !(
                 record.project?.isPublic !== 1 && !record.project?.isUserMember
-              ) && Object.keys(record.categoryConfigList).includes('priority')
+              ) && Object.keys(record.categoryConfigList).includes('severity')
             }
             onChangeSeverity={item => state.onChangeSeverity(item, record)}
             record={record}
             projectId={state.projectId}
-          >
-            <Wrap
-              isEdit={
-                record.project?.isPublic !== 1 && !record.project?.isUserMember
-              }
-            >
-              <Wrap
-                isEdit={
-                  record.project?.isPublic !== 1 &&
-                  !record.project?.isUserMember
-                }
-              >
-                {text?.id && (
-                  <SeverityWrap style={{ background: '#FA9746' }}>
-                    严重
-                  </SeverityWrap>
-                )}
-                {!text?.id && <span style={{ marginLeft: '5px' }}>--</span>}
-              </Wrap>
-              {!(
-                record.project?.isPublic !== 1 && !record.project?.isUserMember
-              ) && (
-                <ShowWrap>
-                  <IconFont
-                    style={{ color: 'var(--primary-d2)' }}
-                    type="down-icon"
-                  />
-                </ShowWrap>
-              )}
-            </Wrap>
-          </ChangeSeverityPopover>
+          />
         )
       },
     },
@@ -653,7 +624,7 @@ export const useDynamicColumns = (state: any) => {
                   getPopupContainer: node => node,
                 }}
               >
-                {text || '--'}
+                {record.discovery_version_name || '--'}
               </OmitText>
             </HiddenText>
           </TableQuickEdit>

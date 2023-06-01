@@ -15,6 +15,8 @@ import { FormWrap, MyDiv } from '../style'
 import Excessive from './Excessive'
 import WanderVerify from './Verify'
 import { getProjectMember } from '@/services/project'
+import { getShapeAffairsRight } from '@/services/affairs'
+import { getShapeFlawRight } from '@/services/flaw'
 
 interface StatusModalProps {
   // 弹窗显示状态
@@ -24,9 +26,11 @@ interface StatusModalProps {
   // 关闭弹窗
   onClose(): void
   // 每条数据
-  record: any
+  record?: any
   // 修改状态接口
   onChangeStatusConfirm(value: any): void
+  // 1-需求，2-事务，3-缺陷
+  type?: 1 | 2 | 3
 }
 
 const LabelComponent = (props: any) => {
@@ -228,6 +232,14 @@ const StatusModal = (props: StatusModalProps) => {
     return str1?.includes(str2)
   }
 
+  const rightList = [
+    { key: 1, url: getShapeRight },
+    { key: 2, url: getShapeAffairsRight },
+    { key: 3, url: getShapeFlawRight },
+  ]
+
+  const currentType = rightList.filter((i: any) => i.key === props.type)[0]
+
   const formatName = (content: any, name: any, id: any) => {
     if (content === 'users_name' && id === info) {
       return `${name} （${t('myself')}）`
@@ -297,7 +309,7 @@ const StatusModal = (props: StatusModalProps) => {
   const getConfig = async () => {
     getProjectMemberData()
     // setActive(props.checkStatusItem.id)
-    const res = await getShapeRight({
+    const res = await currentType?.url({
       id: props.checkStatusItem.projectId,
       nId: props.checkStatusItem.infoId,
       fromId: props.checkStatusItem.fromId,
@@ -324,8 +336,8 @@ const StatusModal = (props: StatusModalProps) => {
     }
     await form.validateFields()
     const params = {
-      projectId: props.record.project_id,
-      nId: props.record.id,
+      projectId: props?.record?.project_id,
+      nId: props?.record?.id,
       toId: props.checkStatusItem.id,
       fields: res,
       verifyId: reviewerValue,

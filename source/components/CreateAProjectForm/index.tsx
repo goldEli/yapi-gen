@@ -293,19 +293,28 @@ const CreateAProjectForm = () => {
       getLeader()
     }
   }, [leaderId])
+  useEffect(() => {
+    if (multipleSelectionItems.length === 1) {
+      getProjectInfo()
+    }
+  }, [multipleSelectionItems])
 
   useEffect(() => {
     if (createVisible) {
       getGroupData()
       setActiveCover(covers[0]?.path)
 
-      if (isEditId || multipleSelectionItems.length === 1) {
+      if (isEditId) {
+        setStep(3)
         getProjectInfo()
+      } else {
+        setStep(1)
       }
     }
 
     form.resetFields()
     setLock(true)
+
     setMyCover('')
     // return () => {
     //   dispatch(editProject({ visible: false, id: '' }))
@@ -313,7 +322,7 @@ const CreateAProjectForm = () => {
     setTimeout(() => {
       inputRefDom.current?.focus()
     }, 100)
-  }, [createVisible, multipleSelectionItems])
+  }, [createVisible])
   const onChangeStep = (val: number) => {
     if (step === val) {
       return
@@ -321,30 +330,27 @@ const CreateAProjectForm = () => {
     setStep(val)
   }
   const choose = (type: any) => {
-    console.log(type)
-
     setType(type)
     onChangeStep(2)
   }
   const chooseModel = (type: any) => {
-    console.log('组织')
-
     setModel(type)
     // setMultipleSelectionItems(undefined)
     onChangeStep(3)
   }
   const getIdS = (ids: any) => {
-    console.log(ids, '侧边栏的IDs')
     setMultipleSelectionItems(ids)
     setModel(undefined)
   }
-  console.log(multipleSelectionItems)
+
   useEffect(() => {
     setMultipleSelectionItems([])
+    form.resetFields()
   }, [model])
 
   return (
     <CommonModal2
+      noFooter={step !== 3}
       bodyStyle={{
         height: '100vh',
         minWidth: '1400px',

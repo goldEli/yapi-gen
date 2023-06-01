@@ -215,7 +215,37 @@ Y:\project\敏捷系统\scrum\source\components\CustomSelect
 
 ### 三个点下拉操作组件
 
-Y:\project\敏捷系统\scrum\source\components\MoreDropdown.tsx
+```js
+// Y:\project\敏捷系统\scrum\source\components\MoreDropdown.tsx
+const menu = (item: any) => (
+  <Menu
+    items={[
+      {
+        key: '1',
+        label: (
+          <div onClick={e => onClickMenu(e, 'edit', item)}>
+            {t('common.edit')}
+          </div>
+        ),
+      },
+      {
+        key: '2',
+        label: (
+          <div onClick={e => onClickMenu(e, 'delete', item)}>
+            {t('common.del')}
+          </div>
+        ),
+      },
+    ]}
+  />
+)
+ <MoreDropdown
+  isHidden={item.type === 1}
+  isMoreVisible={isMoreVisible}
+  onChangeVisible={setIsMoreVisible}
+  menu={menu(item)}
+/>
+```
 
 ### dropdown 下拉组件
 
@@ -285,4 +315,86 @@ const { AddUserModalElement, open } = useAddUserModal()
 })
 
 return <>{AddUserModalElement}<>
+```
+
+### 富文本编辑器
+
+```js
+import { Editor } from '@xyfe/uikit'
+interface Props {
+  onReadonlyClick?(): void
+  onPressEnter?(): void
+  onBlur?(): void
+  maxHeight?: string
+  minHeight?: string
+  at?: boolean
+  focusState?: boolean
+  placeholder?: string
+  readonly?: boolean
+  value?: string
+  onChange?(value?: string): void
+  upload?(
+    file: File,
+    editorRef?: EditorRef | null,
+    key?: string,
+  ): Promise<string> | string
+  disableUpdateValue?: boolean
+  getSuggestions?(params: { query: string; editor: EditorCore }):
+    | Promise<
+        {
+          id: string
+          label: ReactNode
+        }[]
+      >
+    | {
+        id: string
+        label: ReactNode
+      }[]
+}
+```
+
+```js
+ <Editor
+  onBlur={() => {
+    console.log('失焦')
+    console.log(text)
+
+    setMyReadonly(true)
+  }}
+  onReadonlyClick={() => {
+    setMyReadonly(false)
+    console.log('只读模式点击')
+  }}
+  value={text}
+  onChange={setText}
+  readonly={myReadonly}
+  getSuggestions={() => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        // resolve([])
+        resolve([
+          { id: '1', label: 'bbb' },
+          { id: '12', label: 'bbb1' },
+          { id: '13', label: 'bbb2' },
+          { id: '14', label: 'bbb3' },
+          { id: '15', label: 'bbb4' },
+          { id: '16', label: 'bbb5' },
+        ])
+      }, 1000)
+    })
+  }}
+  upload={}
+/>
+```
+
+### immerjs
+
+```js
+import { produce } from 'immer'
+
+setData(
+  produce(draft => {
+    draft.a = 123
+  }),
+)
 ```

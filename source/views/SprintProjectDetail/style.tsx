@@ -229,7 +229,7 @@ export const InfoWrap = styled.div`
   height: calc(100vh - 212px);
   flex: 1;
   position: relative;
-  .ant-tabs-nav {
+  .tabs {
     padding-left: 24px;
   }
   .ant-tabs-top > .ant-tabs-nav::before,
@@ -257,4 +257,37 @@ export const SprintDetailDragLine = styled(DragLine)`
 
 export const SprintDetailMouseDom = styled(MouseDom)`
   background: transparent;
+`
+
+export const BasicWrap = styled.div`
+  position: relative;
+  height: 100%;
+`
+
+export const BasicContent = styled.div`
+  height: calc(100% - 60px);
+`
+
+export const BasicFooter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 24px;
+  background: var(--neutral-white-d5);
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  .textBox {
+    display: flex;
+    flex-direction: column;
+    div {
+      font-size: 12px;
+      color: var(--neutral-n3);
+      margin-bottom: 4px;
+    }
+    span {
+      font-size: 12px;
+      color: var(--neutral-n3);
+    }
+  }
 `

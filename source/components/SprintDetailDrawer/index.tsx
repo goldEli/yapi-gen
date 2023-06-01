@@ -1,8 +1,8 @@
 import useDeleteConfirmModal from '@/hooks/useDeleteConfirmModal'
 import { useDispatch, useSelector, store as storeAll } from '@store/index'
 import { setAffairsDetailDrawer } from '@store/affairs'
-import { Drawer, MenuProps, Popover, Skeleton, Space } from 'antd'
-import { DragLine, MouseDom } from '../StyleCommon'
+import { Drawer, MenuProps, Popover, Skeleton, Space, Tooltip } from 'antd'
+import { CloseWrap, DragLine, MouseDom } from '../StyleCommon'
 import {
   Header,
   BackIcon,
@@ -19,18 +19,20 @@ import {
   UpWrap,
   DownWrap,
   DropdownMenu,
+  DetailFooter,
 } from './style'
 import CommonIconFont from '../CommonIconFont'
 import ChangeStatusPopover from '../ChangeStatusPopover/index'
 import StateTag from '../StateTag'
 import CommonButton from '../CommonButton'
 import { useTranslation } from 'react-i18next'
-import { useEffect, useRef, useState } from 'react'
+import { createRef, useEffect, useRef, useState } from 'react'
 import { getMessage } from '../Message'
 import DetailsSkeleton from '../DetailsSkeleton'
 import ChildSprint from '@/views/SprintProjectDetail/components/ChildSprint'
 import LinkSprint from '@/views/SprintProjectDetail/components/LinkSprint'
 import {
+  addAffairsComment,
   deleteAffairsComment,
   getAffairsInfo,
   updateAffairsTableParams,
@@ -42,11 +44,12 @@ import {
   saveAffairsDetailDrawer,
 } from '@store/affairs/affairs.thunk'
 import { encryptPhp } from '@/tools/cryptoPhp'
-import SprintDetail from './component/SprintDetail'
 import BasicDemand from './component/BasicDemand'
 import CommonComment from '../CommonComment'
 import useShareModal from '@/hooks/useShareModal'
-import { copyLink } from '@/tools'
+import { copyLink, getIdsForAt, removeNull } from '@/tools'
+import AffairsDetail from '@/views/SprintProjectDetail/components/AffairsDetail'
+import CommentFooter from '../CommonComment/CommentFooter'
 
 const SprintDetailDrawer = () => {
   const normalState = {
@@ -78,6 +81,7 @@ const SprintDetailDrawer = () => {
   const { open: openDelete, DeleteConfirmModal } = useDeleteConfirmModal()
   const [skeletonLoading, setSkeletonLoading] = useState(false)
   const spanDom = useRef<HTMLSpanElement>(null)
+  const commentDom: any = createRef()
   const [focus, setFocus] = useState(false)
   const [drawerInfo, setDrawerInfo] = useState<any>({})
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -86,7 +90,7 @@ const SprintDetailDrawer = () => {
   const { affairsDetailDrawer, affairsCommentList } = useSelector(
     store => store.affairs,
   )
-  const { projectInfo } = useSelector(store => store.project)
+  const { projectInfo, projectInfoValues } = useSelector(store => store.project)
 
   const modeList = [
     { name: '详细信息', key: 'detailInfo', content: '' },
@@ -232,7 +236,6 @@ const SprintDetailDrawer = () => {
 
   // 向下查找需求
   const onDownDemand = () => {
-    console.log(demandIds, '=demandIdsdemandIdsdemandIds')
     const newIndex = demandIds[currentIndex + 1]
     if (currentIndex === demandIds?.length - 1) return
     dispatch(
@@ -346,9 +349,11 @@ const SprintDetailDrawer = () => {
     newState[item.domKey].dom.current.style.height = 'auto'
     setShowState(newState)
     const dom = document.getElementById(item.key)
-    dom?.scrollIntoView({
-      behavior: 'smooth',
-    })
+    setTimeout(() => {
+      dom?.scrollIntoView({
+        behavior: 'smooth',
+      })
+    }, 10)
   }
 
   const onDeleteSprintConfirm = () => {
@@ -380,6 +385,26 @@ const SprintDetailDrawer = () => {
   // 跳转配置
   const onConfig = () => {
     //
+  }
+
+  // 提交评论
+  const onConfirmComment = async (value: { info: string }) => {
+    await addAffairsComment({
+      projectId: projectInfo.id,
+      sprintId: drawerInfo.id,
+      content: value.info,
+      a_user_ids: getIdsForAt(value.info),
+    })
+    getMessage({ type: 'success', msg: '评论成功' })
+    dispatch(
+      getAffairsCommentList({
+        projectId: projectInfo.id,
+        sprintId: drawerInfo.id,
+        page: 1,
+        pageSize: 9999,
+      }),
+    )
+    commentDom.current.cancel()
   }
 
   // 更多下拉
@@ -514,6 +539,7 @@ const SprintDetailDrawer = () => {
                 projectId={drawerInfo.projectId}
                 record={drawerInfo}
                 onChangeStatus={onChangeStatus}
+                type={2}
               >
                 <StateTag
                   name={drawerInfo?.status?.status?.content}
@@ -644,15 +670,17 @@ const SprintDetailDrawer = () => {
                     isOpen={showState[i.key].isOpen}
                   >
                     {i.key === 'detailInfo' && (
-                      <SprintDetail
-                        detail={drawerInfo}
+                      <AffairsDetail
+                        affairsInfo={drawerInfo}
                         onUpdate={() => getSprintDetail('', demandIds)}
                       />
                     )}
                     {i.key === 'childSprint' && showState[i.key].isOpen && (
-                      <ChildSprint />
+                      <ChildSprint detail={drawerInfo} />
                     )}
-                    {i.key === 'linkSprint' && <LinkSprint />}
+                    {i.key === 'linkSprint' && (
+                      <LinkSprint detail={drawerInfo} />
+                    )}
                     {i.key === 'basicInfo' && showState[i.key].isOpen && (
                       <BasicDemand
                         detail={drawerInfo}
@@ -671,7 +699,36 @@ const SprintDetailDrawer = () => {
               ))}
             </>
           )}
+          <DetailFooter>
+            <div className="textBox">
+              <div>已创建：5天</div>
+              <span>更新日期：4分钟前</span>
+            </div>
+            <Tooltip title="配置字段">
+              <CloseWrap width={32} height={32} onClick={onConfig}>
+                <CommonIconFont type="settings" />
+              </CloseWrap>
+            </Tooltip>
+          </DetailFooter>
         </Content>
+        <CommentFooter
+          onRef={commentDom}
+          placeholder="发表评论（按M快捷键发表评论）"
+          personList={removeNull(projectInfoValues, 'user_name')?.map(
+            (k: any) => ({
+              label: k.content,
+              id: k.id,
+            }),
+          )}
+          onConfirm={onConfirmComment}
+          style={{
+            padding: '24px 0 24px 24px',
+            width: 'calc(100% - 24px)',
+            height: 80,
+          }}
+          maxHeight="60vh"
+          hasAvatar
+        />
       </Drawer>
     </>
   )

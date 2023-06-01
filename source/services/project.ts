@@ -19,6 +19,7 @@ import { getStaffListAll } from './staff'
 export const getProjectList: any = async (params: any) => {
   const response: any = await http.get<any>('getProjectList', {
     search: {
+      project_types: params.project_types,
       is_my_created: params.is_my_created === 1 ? 1 : undefined,
       project_type: params.project_type,
       self: params.self ? 1 : 0,
@@ -260,6 +261,8 @@ export const addProject: any = async (params: any) => {
     prefix: params?.prefix,
     groups: params?.groups,
     leader_id: params?.leader_id,
+    model_type: params?.model_type,
+    project_type: params?.project_type,
   })
   if (res.code === 0) {
     getMessage({ msg: t('common.createSuccess') as string, type: 'success' })
@@ -279,6 +282,8 @@ export const updateProject: any = async (params: any) => {
     prefix: params?.prefix,
     groups: params?.groups,
     leader_id: params?.leader_id,
+    model_type: params?.model_type,
+    project_type: params?.project_type,
     id: params.id,
   })
   if (res.code === 0) {

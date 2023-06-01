@@ -121,7 +121,7 @@ export const DownWrap = styled(NextWrap)<{ isOnly?: boolean }>`
 export const Content = styled.div`
   height: calc(100% - 53px);
   overflow: auto;
-  padding: 16px 24px;
+  padding: 16px 24px 60px;
   position: relative;
 `
 
@@ -220,5 +220,27 @@ export const DropdownMenu = styled(Dropdown)`
   }
   .ant-dropdown-menu-item-divider {
     margin: 4px 16px;
+  }
+`
+
+export const DetailFooter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+  background: var(--neutral-white-d5);
+  width: 100%;
+  .textBox {
+    display: flex;
+    flex-direction: column;
+    div {
+      font-size: 12px;
+      color: var(--neutral-n3);
+      margin-bottom: 4px;
+    }
+    span {
+      font-size: 12px;
+      color: var(--neutral-n3);
+    }
   }
 `

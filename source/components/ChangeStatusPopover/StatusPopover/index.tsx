@@ -1,4 +1,6 @@
 import { getShapeLeft } from '@/services/demand'
+import { getShapeAffairsLeft } from '@/services/affairs'
+import { getShapeFlawLeft } from '@/services/flaw'
 import { useEffect, useState } from 'react'
 import { Item, Items, PopoverStatusWrap } from '../style'
 
@@ -16,6 +18,8 @@ interface Props {
   projectId: number
   //   需求、事务、缺陷id
   id: number
+  // 1-需求，2-事务，3-缺陷
+  type?: 1 | 2 | 3
 }
 
 const StatusPopover = (props: Props) => {
@@ -25,12 +29,21 @@ const StatusPopover = (props: Props) => {
     props.onOpenModal(i)
   }
 
+  const leftList = [
+    { key: 1, url: getShapeLeft },
+    { key: 2, url: getShapeAffairsLeft },
+    { key: 3, url: getShapeFlawLeft },
+  ]
+
+  const currentType = leftList.filter((i: any) => i.key === props.type)[0]
+
   //   获取状态列表
   const getStatusList = async () => {
-    const res2 = await getShapeLeft({
+    const res2 = await currentType?.url({
       id: props.projectId,
       nId: props.id,
     })
+    console.log(res2)
     setStatusList(
       res2.map((i: any) => ({
         id: i.id,

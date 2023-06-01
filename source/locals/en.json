@@ -1,4 +1,69 @@
 {
+  "originalArray": {
+    "new": "New backlog workflow ",
+
+    "completed": "Process the workflow ",
+
+    "create": "Create workflow ",
+
+    "verify": "Verify work item"
+  },
+  "edit_notification": "Edit notification",
+
+  "send_notification": "Send notification",
+
+  "notification_title": "notification title",
+
+  "enter_title": "Please enter the title",
+
+  "enter_title_max_length": "Please enter a notification title of up to 20 words ",
+
+  "notification_content": "notification content",
+
+  "enter_content": "Please enter notification content",
+
+  "enter_content_max_length": "Please enter notification content of up to 200 words ",
+
+  "notification_type": "notification type",
+
+  "daily_notification": "daily notification",
+
+  "system_notification": "System notification",
+
+  "important_notification": "important notification",
+
+  "activity_notification": "Activity notification",
+
+  "holiday_notification": "holiday notification",
+
+  "recipient": "Recipient ",
+
+  "reminder_method": "reminder method",
+
+  "popup_reminder": "popup reminder",
+
+  "top_banner_reminder": "Top banner ",
+
+  "expiration_time": "expiration_time",
+
+  "select_expiration_time": "Please select expiration time",
+
+  "schedule_send": "scheduled sending",
+
+  "select_schedule_send_time": "Please select a scheduled sending time",
+  "confirm_to_delete_the_message": " Are you sure to delete this message?",
+
+  "retract_confirmation": " withdraw confirmation",
+
+  "Confirm_to_withdraw_the_message": "confirm withdrawal news?",
+
+  "notification_management": " Notification management",
+
+  "enter_notification_content": " Enter notification content",
+
+  "send_new_notification": "Send a new notification",
+
+  "scheduled_notification": "scheduled notification",
   "member_change": "Member change",
 
   "edit_project": "Project editor ",
@@ -194,7 +259,7 @@
   "confirm_that_it_is_checked": " Confirm this is checked",
   "creating_fields": " Create fields",
   "drag_the_field_to_the_left_area_to_create_the_field": " Drag the field to the left area to create the field",
-  "project_existing_fields": " Existing fields in the project ",
+  "project_existing_fields": " Project unused field",
   "language": "language",
   "theme_switching": "theme switching",
   "untick": " untick",

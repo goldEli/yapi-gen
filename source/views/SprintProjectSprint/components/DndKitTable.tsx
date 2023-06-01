@@ -15,6 +15,8 @@ import StateTag from '@/components/StateTag'
 import { getParamsData } from '@/tools'
 import { useSearchParams } from 'react-router-dom'
 import MultipleAvatar from '@/components/MultipleAvatar'
+import { setAffairsDetailDrawer } from '@store/affairs'
+import { saveAffairsDetailDrawer } from '@store/affairs/affairs.thunk'
 
 const MoveFont = styled(IconFont)`
   fontsize: 16;
@@ -24,6 +26,20 @@ const MoveFont = styled(IconFont)`
     cursor: move;
   }
   cursor: move;
+`
+const TitleWrap = styled.div`
+  display: flex;
+  align-items: center;
+  .content {
+    width: 160px;
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    &:hover {
+      color: var(--primary-d2);
+    }
+  }
 `
 
 const DndKitTable = () => {
@@ -48,6 +64,29 @@ const DndKitTable = () => {
     // }
   }
   const onUpdate = (row: any, isClass?: any) => {}
+
+  // 点击打开详情并组装当前平级的需求id列表
+  const onClickItem = (item: any) => {
+    const group_id = Number(item.id?.split('-')[0]) || 0
+    const id = Number(item.id?.split('-')[1]) || 0
+    const demandIds: any[] = rightSprintList
+      .find(k => k.id === group_id)
+      ?.stories?.map((k: any) => k.id)
+    console.log({ ...item, ...{ demandIds }, id }, 'qipa')
+
+    dispatch(
+      setAffairsDetailDrawer({
+        visible: true,
+        params: { ...item, ...{ demandIds }, id },
+      }),
+    )
+    dispatch(
+      saveAffairsDetailDrawer({
+        visible: true,
+        params: { ...item, ...{ demandIds }, id },
+      }),
+    )
+  }
 
   const columns: TableColumnProps<any>[] = [
     {
@@ -85,7 +124,11 @@ const DndKitTable = () => {
       width: 200,
       render(value, record) {
         return (
-          <div>
+          <TitleWrap
+            onClick={() => {
+              onClickItem(record)
+            }}
+          >
             <Tooltip placement="top" title={record.category}>
               <img
                 src={
@@ -101,8 +144,10 @@ const DndKitTable = () => {
                 alt=""
               />
             </Tooltip>
-            {value}
-          </div>
+            <Tooltip placement="top" title={value}>
+              <span className="content">{value}</span>
+            </Tooltip>
+          </TitleWrap>
         )
       },
     },
@@ -171,6 +216,7 @@ const DndKitTable = () => {
               throw new Error('Function not implemented.')
             }}
             record={record}
+            type={2}
           />
         )
       },

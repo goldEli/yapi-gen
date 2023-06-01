@@ -26,9 +26,9 @@ import StateTag from '../StateTag'
 import ChangePriorityPopover from '../ChangePriorityPopover'
 import DemandProgress from '../DemandProgress'
 import { getCustomNormalValue } from '@/tools'
-import ChangeSeverityPopover from '../ChangeSeverityPopover'
 import MultipleAvatar from '../MultipleAvatar'
 import CommonIconFont from '../CommonIconFont'
+import ChangeSeverityPopover from '../ChangeSeverityPopover'
 
 const PriorityWrap = styled.div<{ isShow?: boolean }>(
   {
@@ -193,6 +193,7 @@ export const useDynamicColumns = (state: any) => {
             projectId={state.projectId}
             record={record}
             onChangeStatus={item => state.onChangeStatus(item, record)}
+            type={record.project_type === 1 ? (record.is_bug === 1 ? 3 : 1) : 2}
           >
             <StateTag
               onClick={record.isExamine ? onExamine : void 0}
@@ -387,7 +388,7 @@ export const useDynamicColumns = (state: any) => {
             item={record}
             onUpdate={() => onUpdate(record)}
           >
-            {record?.usersInfo.length && (
+            {record?.usersInfo.length > 0 && (
               <MultipleAvatar
                 max={3}
                 list={record?.usersInfo?.map((i: any) => ({
@@ -574,44 +575,13 @@ export const useDynamicColumns = (state: any) => {
         return (
           <ChangeSeverityPopover
             isCanOperation={
-              !(
-                record.project?.isPublic !== 1 && !record.project?.isUserMember
-              ) && Object.keys(record.categoryConfigList).includes('priority')
+              isCanEdit &&
+              Object.keys(record.categoryConfigList).includes('severity')
             }
             onChangeSeverity={item => state.onChangeSeverity(item, record)}
             record={record}
             projectId={state.projectId}
-          >
-            <Wrap
-              isEdit={
-                record.project?.isPublic !== 1 && !record.project?.isUserMember
-              }
-            >
-              <Wrap
-                isEdit={
-                  record.project?.isPublic !== 1 &&
-                  !record.project?.isUserMember
-                }
-              >
-                {text?.id && (
-                  <SeverityWrap style={{ background: '#FA9746' }}>
-                    严重
-                  </SeverityWrap>
-                )}
-                {!text?.id && <span style={{ marginLeft: '5px' }}>--</span>}
-              </Wrap>
-              {!(
-                record.project?.isPublic !== 1 && !record.project?.isUserMember
-              ) && (
-                <ShowWrap>
-                  <IconFont
-                    style={{ color: 'var(--primary-d2)' }}
-                    type="down-icon"
-                  />
-                </ShowWrap>
-              )}
-            </Wrap>
-          </ChangeSeverityPopover>
+          />
         )
       },
     },
@@ -636,7 +606,7 @@ export const useDynamicColumns = (state: any) => {
                   getPopupContainer: node => node,
                 }}
               >
-                {text || '--'}
+                {record.discovery_version_name || '--'}
               </OmitText>
             </HiddenText>
           </TableQuickEdit>

@@ -1,4 +1,7 @@
+/* eslint-disable max-lines */
 /* eslint-disable no-undefined */
+import urls from '@/constants/urls'
+import { filterTreeData, transData } from '@/tools'
 import * as http from '@/tools/http'
 
 // 删除事务
@@ -58,6 +61,8 @@ const getListItem = (array: any, params: API.Affairs.GetAffairsList.Params) => {
     storyPrefixKey: i.story_prefix_key,
     work_type: i.work_type,
     usersInfo: i.usersInfo,
+    is_bug: i.is_bug,
+    project_type: i.project_type,
   }))
 }
 
@@ -216,6 +221,8 @@ export const getAffairsList = async (
       storyPrefixKey: i.story_prefix_key,
       work_type: i.work_type,
       usersInfo: i.usersInfo,
+      is_bug: i.is_bug,
+      project_type: i.project_type,
     })),
   }
 }
@@ -267,6 +274,8 @@ export const getAffairsInfo = async (
     hierarchy: response.data.hierarchy,
     level_tree: response.data.level_tree,
     categoryName: response.data.category,
+    child_story_statistics: response.data.child_story_statistics,
+    project_type: response.data.project_type,
   }
 }
 
@@ -276,7 +285,7 @@ export const getAffairsCommentList = async (
 ) => {
   const response: any = await http.get<
     any,
-    API.Affairs.GetAffairsCommentList.Params
+    API.Affairs.GetAffairsCommentList.Result
   >('getAffairsCommentList', {
     search: {
       story_id: params.sprintId,
@@ -319,6 +328,19 @@ export const deleteAffairsComment = async (
 ) => {
   await http.delete<any>('deleteAffairsComment', {
     project_id: params.projectId,
+    id: params.id,
+  })
+}
+
+// 编辑评论
+export const updateAffairsComment = async (
+  params: API.Affairs.UpdateAffairsComment.Params,
+) => {
+  await http.post<any>('updateAffairsComment', {
+    project_id: params.projectId,
+    story_id: params.storyId,
+    content: params.content,
+    a_user_ids: params.ids,
     id: params.id,
   })
 }
@@ -720,6 +742,7 @@ export const getAffairsSelectChildren = async (
   >('getAffairsSelectChildren', {
     project_id: params.projectId,
     id: params.id,
+    keywords: params.keywords,
   })
 
   return response.data
@@ -808,7 +831,7 @@ export const getAffairsSelectRelationRecent = async (
 }
 
 // 创建子事务-快捷
-export const addQuickAffairs: any = async (
+export const addQuickAffairs = async (
   params: API.Affairs.AddQuickAffair.Params,
 ) => {
   await http.post<any>('addAffairs', {
@@ -817,4 +840,305 @@ export const addQuickAffairs: any = async (
     category_id: params?.category_id,
     parent_id: params?.parent_id || 0,
   })
+}
+
+// 编辑富文本
+export const updateEditor = async (params: API.Affairs.UpdateEditor.Params) => {
+  await http.put<any>('updateAffairs', {
+    project_id: params.projectId,
+    info: params.info,
+    id: params.id,
+    name: params.name,
+  })
+}
+
+// 获取可流转的
+export const getShapeAffairsLeft = async (params: any) => {
+  const res = await http.get('getShapeAffairsLeft', {
+    project_id: params.id,
+    story_id: params.nId,
+  })
+
+  return res.data
+}
+
+// 可流转状态配置
+export const getShapeAffairsRight = async (params: any) => {
+  const res = await http.get('getShapeAffairsRight', {
+    project_id: params.id,
+    story_id: params.nId,
+    category_status_from_id: params.fromId,
+    category_status_to_id: params.toId,
+  })
+
+  const selectData = res.data.fieldsFilterData
+  // 公司
+  const filterCompanyList = selectData.company_user
+
+  // 处理人、抄送人
+
+  const filterMemberList = selectData.project_member
+
+  // console.log(filterMemberList, '处理人、抄送人')
+
+  // 分类
+
+  const treeData = [
+    {
+      name: '全部分类',
+      key: 0,
+      id: 0,
+      pid: 1,
+      parent_id: 0,
+      story_count: res.data[0]?.story_count,
+      children: [
+        {
+          key: -1,
+          name: '未分类',
+          pid: 0,
+          id: -1,
+          story_count: res.data[1]?.story_count,
+        },
+        ...(transData(
+          selectData.class ? selectData.class : [],
+          'id',
+          'parent_id',
+          'children',
+        ) ?? []),
+      ],
+    },
+  ]
+  const filterTreeList = filterTreeData(treeData)
+
+  // 迭代
+
+  const filterIterateList = selectData.iterate_name
+
+  // 标签
+
+  const filterGetTagList = selectData.tag?.map((i: any) => ({
+    id: i.id,
+    name: i.content,
+  }))
+
+  // console.log(filterGetTagList, '标签')
+
+  // 优先级
+
+  const filterGetPriOrStu = selectData.priority?.map((i: any) => ({
+    id: i.id,
+    name: i.content,
+  }))
+
+  // console.log(filterGetPriOrStu, '优先级')
+
+  const filterFieldsList = res.data.fields.map((item: any, index: number) => {
+    if (item.title.includes('时间') && !item.attr) {
+      return {
+        ...item,
+        id: index,
+        name: item.title,
+        key: item.content,
+        content: item.content,
+        type: 'time',
+      }
+    } else if (item.content.includes('users_name') && !item.attr) {
+      return {
+        ...item,
+        id: item.id,
+        name: item.title,
+        key: item.content,
+        content: item.content,
+        children: [...filterMemberList],
+        type: 'select_checkbox',
+        isDefault: item.is_default_filter,
+        contentTxt: item.content_txt,
+      }
+    } else if (item.content.includes('users_copysend_name') && !item.attr) {
+      return {
+        ...item,
+        id: item.id,
+        name: item.title,
+        key: item.content,
+        content: item.content,
+        children: [...filterCompanyList],
+        type: 'select_checkbox',
+        isDefault: item.is_default_filter,
+        contentTxt: item.content_txt,
+      }
+    } else if (item.content.includes('class') && !item.attr) {
+      return {
+        ...item,
+        id: item.id,
+        name: item.title,
+        key: item.content,
+        content: item.content,
+        children: filterTreeList,
+        type: 'tree',
+        isDefault: item.is_default_filter,
+        contentTxt: item.content_txt,
+      }
+    } else if (item.content.includes('iterate_name') && !item.attr) {
+      return {
+        ...item,
+        id: item.id,
+        name: item.title,
+        key: item.content,
+        content: item.content,
+        children: filterIterateList,
+        type: 'select',
+        isDefault: item.is_default_filter,
+        contentTxt: item.content_txt,
+      }
+    } else if (item.content.includes('tag') && !item.attr) {
+      return {
+        ...item,
+        id: item.id,
+        name: item.title,
+        key: item.content,
+        content: item.content,
+        children: filterGetTagList,
+        type: 'tag',
+        isDefault: item.is_default_filter,
+        contentTxt: item.content_txt,
+      }
+    } else if (item.content.includes('priority') && !item.attr) {
+      return {
+        ...item,
+        id: item.id,
+        name: item.title,
+        key: item.content,
+        content: item.content,
+        children: filterGetPriOrStu,
+        type: 'select',
+        isDefault: item.is_default_filter,
+        contentTxt: item.content_txt,
+      }
+    } else if (item.title.includes('需求进度') && !item.attr) {
+      return {
+        ...item,
+        id: item.id,
+        name: item.title,
+        key: item.content,
+        content: item.content,
+        children: item.values,
+        type: 'number',
+        isDefault: item.is_default_filter,
+        contentTxt: item.content_txt,
+      }
+    } else if (item.content.includes('comment') && !item.attr) {
+      return {
+        ...item,
+        id: item.id,
+        name: item.title,
+        key: item.content,
+        content: item.content,
+        children: item.values,
+        type: 'area',
+        isDefault: item.is_default_filter,
+        contentTxt: item.content_txt,
+      }
+    } else if (item.attr) {
+      if (item.attr === 'date') {
+        return {
+          ...item,
+          id: index,
+          name: item.title,
+          key: item.content,
+          content: item.content,
+          dvalue: item.true_value,
+          type: item.value[0],
+        }
+      }
+
+      // 这里操作人员
+
+      if (item.attr === 'user_select') {
+        if (item.value[0] === 'projectMember') {
+          return {
+            ...item,
+            id: index,
+            name: item.title,
+            key: item.content,
+            content: item.content,
+            dvalue: item.true_value,
+            type: 'select',
+            children: [...filterMemberList],
+          }
+        }
+        if (item.value[0] === 'companyMember') {
+          return {
+            ...item,
+            id: index,
+            name: item.title,
+            key: item.content,
+            content: item.content,
+            dvalue: item.true_value,
+            type: 'select',
+            children: [...filterCompanyList],
+          }
+        }
+      }
+      if (item.attr === 'user_select_checkbox') {
+        if (item.value[0] === 'projectMember') {
+          return {
+            ...item,
+            id: index,
+            name: item.title,
+            key: item.content,
+            content: item.content,
+            dvalue: item.true_value,
+            type: 'select_checkbox',
+            children: [...filterMemberList],
+          }
+        }
+        if (item.value[0] === 'companyMember') {
+          return {
+            ...item,
+            id: index,
+            name: item.title,
+            key: item.content,
+            content: item.content,
+            dvalue: item.true_value,
+            type: 'select_checkbox',
+            children: [...filterCompanyList],
+          }
+        }
+      }
+      return {
+        ...item,
+        id: index,
+        name: item.title,
+        key: item.content,
+        content: item.content,
+        type: item.attr,
+        dvalue: item.true_value,
+        children: item?.value
+          ? item?.value?.map((k: any) => ({
+              name: k,
+              id: k,
+            }))
+          : [],
+      }
+    }
+
+    return {
+      ...item,
+      id: index,
+      name: item.title,
+      key: item.content,
+      content: item.content,
+
+      type: 'select',
+    }
+  })
+
+  const obj = {
+    fields: filterFieldsList,
+    verify: res.data.verify,
+    is_verify: res.data.is_verify === 1,
+    user_has_auth: res.data.user_has_auth,
+    originalStatusUserIds: res.data.originalStatusUserIds,
+  }
+  return obj
 }

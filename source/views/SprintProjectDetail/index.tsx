@@ -407,14 +407,6 @@ const SprintProjectDetail: React.FC<IProps> = props => {
             </DownWrap>
             {/* )} */}
           </ChangeIconGroup>
-          <CommonButton
-            type="icon"
-            icon="share"
-            onClick={() => {
-              open({ onOk: async () => {} })
-            }}
-          />
-          <CommonButton type="icon" icon="more" />
           <CommonButton type="icon" icon="share" onClick={onShare} />
           <DropdownMenu
             placement="bottomRight"
@@ -458,6 +450,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
           <ChangeStatusPopover
             record={affairsInfo}
             onChangeStatus={onChangeStatus}
+            type={2}
           >
             <StateTag
               name={affairsInfo.status?.status.content}
@@ -478,7 +471,11 @@ const SprintProjectDetail: React.FC<IProps> = props => {
         </DetailText>
       </DetailTitle>
       <DetailMain>
-        <SprintDetailInfo />
+        <div
+          style={{ position: 'relative', width: `calc(100% - ${leftWidth}px)` }}
+        >
+          <SprintDetailInfo />
+        </div>
         <div
           ref={basicInfoDom}
           style={{ position: 'relative', width: leftWidth }}
@@ -493,7 +490,6 @@ const SprintProjectDetail: React.FC<IProps> = props => {
           <SprintDetailBasic onRef={basicInfoDom} />
         </div>
       </DetailMain>
-      <ShareModal copyLink={() => copyLink(window.origin, '复制成功', '1')} />
     </Wrap>
   )
 }

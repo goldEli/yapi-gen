@@ -180,7 +180,13 @@ const HasSideCommonLayout = (props: HasSideCommonLayoutProps) => {
         </SideWrap>
       )}
       <OutletWrap width={leftWidth}>
-        <div style={{ minWidth: `${1440 - leftWidth}px`, height: '100%' }}>
+        <div
+          style={{
+            minWidth: `${1440 - leftWidth}px`,
+            height: '100%',
+            overflow: 'scroll',
+          }}
+        >
           {props.children}
         </div>
       </OutletWrap>
