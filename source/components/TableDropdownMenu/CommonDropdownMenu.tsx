@@ -32,6 +32,31 @@ interface Props {
   isAllProject?: boolean
 }
 
+// 复制需求id
+export const onCopyName = (name: string) => {
+  copyLink(`${name}`, '复制成功！', '复制失败！')
+}
+// 复制需求链接
+export const onCopyLink = (options: {
+  project_id: number
+  id: number
+  route?: string
+}) => {
+  let text: any = ''
+  let beforeUrl: any
+  beforeUrl = window.origin
+  const params = encryptPhp(
+    JSON.stringify({
+      type: 'info',
+      id: options.project_id,
+      demandId: options.id,
+    }),
+  )
+  const { route = '/ProjectManagement/Demand' } = options
+  const url = `${route}?data=${params}`
+  text += `${beforeUrl}${url} \n`
+  copyLink(text, '复制成功！', '复制失败！')
+}
 export const CommonDropdownMenu = (props: Props) => {
   const [t] = useTranslation()
   const { projectInfo } = useSelector(store => store.project)
@@ -40,28 +65,6 @@ export const CommonDropdownMenu = (props: Props) => {
     projectInfo?.projectPermissions,
     projectInfo.projectType === 1 ? 'b/story/delete' : 'b/transaction/delete',
   )
-
-  // 复制需求id
-  const onCopyName = () => {
-    copyLink(`${props.record.name}`, '复制成功！', '复制失败！')
-  }
-
-  // 复制需求链接
-  const onCopyLink = () => {
-    let text: any = ''
-    let beforeUrl: any
-    beforeUrl = window.origin
-    const params = encryptPhp(
-      JSON.stringify({
-        type: 'info',
-        id: props.record.project_id,
-        demandId: props.record.id,
-      }),
-    )
-    const url = `/ProjectManagement/Demand?data=${params}`
-    text += `${beforeUrl}${url} \n`
-    copyLink(text, '复制成功！', '复制失败！')
-  }
 
   let menuItems = [
     {
@@ -74,11 +77,22 @@ export const CommonDropdownMenu = (props: Props) => {
     },
     {
       key: '5',
-      label: <div onClick={onCopyName}>复制标题</div>,
+      label: <div onClick={() => onCopyName(props.record.name)}>复制标题</div>,
     },
     {
       key: '6',
-      label: <div onClick={onCopyLink}>复制链接</div>,
+      label: (
+        <div
+          onClick={() =>
+            onCopyLink({
+              project_id: props.record.project_id,
+              id: props.record.id,
+            })
+          }
+        >
+          复制链接
+        </div>
+      ),
     },
   ]
 

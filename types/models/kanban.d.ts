@@ -68,6 +68,8 @@ declare namespace Model.KanBan {
     project_category: ProjectCategory
     story_config_priority: StoryConfigPriority
     handlers: Handler[]
+    // 1 不能操作 2 可以操作
+    verify_lock: 1 | 2
   }
   type Column = Omit<Model.KanbanConfig.Column, 'categories'> & {
     stories: Story[]
