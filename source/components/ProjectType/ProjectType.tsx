@@ -15,8 +15,8 @@ const ProjectType = (props: any) => {
   const [t, { language: isRefresh }] = useTranslation()
 
   const arr = [
-    { id: 1, img: type1, en_img: type1_en, type: 1 },
-    { id: 2, img: type2, en_img: type2_en, type: 2 },
+    { id: 2, img: type1, en_img: type1_en, type: 2 },
+    { id: 1, img: type2, en_img: type2_en, type: 1 },
   ]
   return (
     <div style={{ display: 'flex', gap: '64px' }}>

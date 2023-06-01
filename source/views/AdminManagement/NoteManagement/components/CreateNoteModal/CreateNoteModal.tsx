@@ -234,8 +234,23 @@ const CreateNoteModal = (props: any) => {
 
       // send_time: res.expire_time ? moment(res.send_time):null,
     })
+    console.log(res, '成员')
+
     judgePeople({
-      member: transformedArray(res.recipient_users),
+      member: res.recipient?.all
+        ? [
+            {
+              target_id: -1,
+              user_type: 1,
+              target_value: {
+                user_type: 1,
+                key: 'all',
+                name: '全员',
+                avatar: '',
+              },
+            },
+          ]
+        : transformedArray(res.recipient_users),
 
       isEmail: res.send_email,
     })
