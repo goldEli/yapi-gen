@@ -41,13 +41,11 @@ const LongStroyBread = (props: IProps) => {
     }
   }, [])
   const handleClickOutside = (event: { target: any }) => {
-    console.log(
-      'handleClickOutside',
-      event.target,
-      ref.current,
-      typeof event.target,
-    )
-    if (ref.current && !ref.current.contains(event.target)) {
+    if (
+      ref.current &&
+      !ref.current.contains(event.target) &&
+      typeof event.target.getAttribute('xlink:href') !== 'string'
+    ) {
       setVisible(false)
     }
   }
