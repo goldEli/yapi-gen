@@ -167,8 +167,29 @@ export const modifyPriority =
 
       targetStories.splice(targetIndex, 0, removed)
     })
-    console.log(data)
-    dispatch(setKanbanInfoByGroup(data))
+    await dispatch(setKanbanInfoByGroup(data))
+    const storyId = kanbanInfoByGroup
+      .find(item => item.id === sourceGroupId)
+      ?.columns.find(item => item.id === sourceColumnId)?.stories[startIndex].id
+    if (!!storyId) {
+      await dispatch(
+        updateStoryPriority({
+          id: storyId,
+          priority: targetGroupId,
+        }),
+      )
+    }
+    console.log(data, 123)
+    dispatch(
+      sortStoryServer({
+        kanban_column_id: options.sourceColumnId,
+      }),
+    )
+    dispatch(
+      sortStoryServer({
+        kanban_column_id: options.targetColumnId,
+      }),
+    )
   }
 
 // 同组同列排序
@@ -196,6 +217,16 @@ export const sortStory =
         kanban_column_id: options.columnId,
       }),
     )
+  }
+
+// 修改权限
+export const updateStoryPriority =
+  (params: Pick<API.Kanban.UpdateStoryPriority.Params, 'id' | 'priority'>) =>
+  async (dispatch: AppDispatch) => {
+    const res = await services.kanban.updateStoryPriority({
+      project_id: getParamsValueByKey('id'),
+      ...params,
+    })
   }
 
 // 更新排序同步到服务端

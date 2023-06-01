@@ -1,77 +1,26 @@
-/* eslint-disable max-lines */
 /* eslint-disable no-undefined */
-import urls from '@/constants/urls'
 import { filterTreeData, transData } from '@/tools'
 import * as http from '@/tools/http'
 
-// 删除事务
-export const deleteAffairs = async (params: {
+// 删除缺陷
+export const deleteFlaw = async (params: {
   projectId: number
   id: number
   isDeleteChild?: number
 }) => {
-  await http.post<any>('deleteAffairs', {
+  await http.post<any>('deleteFlaw', {
     project_id: params.projectId,
     id: params.id,
     is_delete_childs: params.isDeleteChild,
   })
 }
 
-// 处理事务列表数据
-const getListItem = (array: any, params: API.Affairs.GetAffairsList.Params) => {
-  return array?.map((i: any) => ({
-    id: i.id,
-    name: i.name,
-    demand: i.child_story_count,
-    priority: i.priority,
-    iteration: i.iterate_name,
-    status: i.status,
-    dealName: i.users_name || '--',
-    time: i.created_at,
-    expectedStart: i.expected_start_at,
-    expectedEnd: i.expected_end_at,
-    info: i.info,
-    userIds: i.user_id,
-    iterateId: i.iterate_id,
-    parentId: i.parent_id,
-    finishTime: i.finish_at,
-    updatedTime: i.updated_at,
-    usersCopySendName: i.users_copysend_name,
-    userName: i.user_name,
-    tag: i.tag,
-    isExamine: i.verify_lock === 1,
-    category: i.category,
-    class: i.class,
-    schedule: i.schedule,
-    ...i.custom_field,
-    categoryColor: i.category_color,
-    categoryRemark: i.category_remark,
-    category_attachment: i.category_attachment,
-    categoryId: i.category_id,
-    project_id: i.project_id,
-    usersNameIds: i.users_name_ids,
-    usersCopySendIds: i.users_copysend_name_ids,
-    allChildrenCount: i.all_child_story_count,
-    allChildrenIds: i.all_child_ids,
-    children: getListItem(i.children, params) || null,
-    level: i.level,
-    isExpended: true,
-    topId: params?.parentId ?? params?.topParentId,
-    categoryConfigList: i.category_config_list,
-    storyPrefixKey: i.story_prefix_key,
-    work_type: i.work_type,
-    usersInfo: i.usersInfo,
-    is_bug: i.is_bug,
-    project_type: i.project_type,
-  }))
-}
-
-// 纯数组-事务列表
-export const getAffairsSelectList = async (
-  params: API.Affairs.GetAffairsList.Params,
+// 纯数组-缺陷列表
+export const getFlawSelectList = async (
+  params: API.Flaw.GetFlawList.Params,
 ) => {
-  const response = await http.get<any, API.Affairs.GetAffairsList.SelectResult>(
-    'getAffairsList',
+  const response = await http.get<any, API.Flaw.GetFlawList.SelectResult>(
+    'getFlawList',
     {
       search: {
         project_id: params?.projectId,
@@ -89,16 +38,12 @@ export const getAffairsSelectList = async (
         users_name: params?.usersNameId,
         users_copysend_name: params?.copySendId,
         parent_id: params?.parentId,
-        all: params?.all ? 1 : 0,
-        panel: params?.panel ? 1 : 0,
         class_ids: params.class_ids,
         class_id: params.class_id,
         category_id: params.category_id,
         schedule_start: params.schedule_start,
         schedule_end: params.schedule_end,
         custom_field: params?.custom_field,
-        tree: params?.tree || 0,
-        top_parent_id: params?.topParentId,
         system_view: params?.system_view,
       },
       pagesize: params?.pageSize,
@@ -128,12 +73,10 @@ export const getAffairsSelectList = async (
   }))
 }
 
-// 获取事务列表 -- list格式
-export const getAffairsList = async (
-  params: API.Affairs.GetAffairsList.Params,
-) => {
-  const response = await http.get<any, API.Affairs.GetAffairsList.Result>(
-    'getAffairsList',
+// 获取缺陷列表 -- list格式
+export const getFlawList = async (params: API.Flaw.GetFlawList.Params) => {
+  const response = await http.get<any, API.Flaw.GetFlawList.Result>(
+    'getFlawList',
     {
       search: {
         project_id: params?.projectId,
@@ -151,16 +94,12 @@ export const getAffairsList = async (
         users_name: params?.usersNameId,
         users_copysend_name: params?.copySendId,
         parent_id: params?.parentId,
-        all: params?.all ? 1 : 0,
-        panel: params?.panel ? 1 : 0,
         class_ids: params.class_ids,
         class_id: params.class_id,
         category_id: params.category_id,
         schedule_start: params.schedule_start,
         schedule_end: params.schedule_end,
         custom_field: params?.custom_field,
-        tree: params?.tree || 0,
-        top_parent_id: params?.topParentId,
         system_view: params?.system_view,
       },
       pagesize: params?.pageSize,
@@ -170,11 +109,6 @@ export const getAffairsList = async (
     },
   )
 
-  if (params?.isChildren) {
-    return {
-      list: getListItem(response.data, params),
-    }
-  }
   return {
     currentPage: params.page,
     pageSize: params.pageSize,
@@ -213,8 +147,6 @@ export const getAffairsList = async (
       category_attachment: i.category_attachment,
       allChildrenCount: i.all_child_story_count,
       allChildrenIds: i.all_child_ids,
-      children: getListItem(i.children, params) || null,
-      isExpended: params.topParentId === i.id,
       level: 1,
       topId: i.id,
       categoryConfigList: i.category_config_list,
@@ -223,19 +155,21 @@ export const getAffairsList = async (
       usersInfo: i.usersInfo,
       is_bug: i.is_bug,
       project_type: i.project_type,
+      solution: i.solution,
+      discovery_version_name: i.discovery_version_name,
+      severity: i.severity,
+      discovery_version: i.discovery_version,
     })),
   }
 }
 
-// 获取事务详情
-export const getAffairsInfo = async (
-  params: API.Affairs.GetAffairsInfo.Params,
-) => {
-  const response = await http.get<any, API.Affairs.GetAffairsInfo.Result>(
-    'getAffairsInfo',
+// 获取缺陷详情
+export const getFlawInfo = async (params: API.Flaw.GetFlawInfo.Params) => {
+  const response = await http.get<any, API.Flaw.GetFlawInfo.Result>(
+    'getFlawInfo',
     {
       project_id: params.projectId,
-      id: params.sprintId,
+      id: params.id,
     },
   )
 
@@ -279,21 +213,21 @@ export const getAffairsInfo = async (
   }
 }
 
-// 获取事务评论列表
-export const getAffairsCommentList = async (
-  params: API.Affairs.GetAffairsCommentList.Params,
+// 获取缺陷评论列表
+export const getFlawCommentList = async (
+  params: API.Flaw.GetFlawCommentList.Params,
 ) => {
-  const response: any = await http.get<
-    any,
-    API.Affairs.GetAffairsCommentList.Result
-  >('getAffairsCommentList', {
-    search: {
-      story_id: params.sprintId,
-      project_id: params.projectId,
+  const response: any = await http.get<any, API.Flaw.GetFlawCommentList.Result>(
+    'getFlawCommentList',
+    {
+      search: {
+        story_id: params.id,
+        project_id: params.projectId,
+      },
+      page: params.page,
+      pagesize: params.pageSize,
     },
-    page: params.page,
-    pagesize: params.pageSize,
-  })
+  )
 
   return {
     list: response.data.list.map((i: any) => ({
@@ -310,12 +244,12 @@ export const getAffairsCommentList = async (
 }
 
 // 添加评论
-export const addAffairsComment = async (
-  params: API.Affairs.AddAffairsComment.Params,
+export const addFlawComment = async (
+  params: API.Flaw.AddFlawComment.Params,
 ) => {
-  await http.post<any>('addAffairsComment', {
+  await http.post<any>('addFlawComment', {
     project_id: params.projectId,
-    story_id: params.sprintId,
+    story_id: params.id,
     content: params.content,
     attachment: params.attachment,
     a_user_ids: params.a_user_ids,
@@ -323,20 +257,20 @@ export const addAffairsComment = async (
 }
 
 // 删除评论
-export const deleteAffairsComment = async (
-  params: API.Affairs.DeleteAffairsComment.Params,
+export const deleteFlawComment = async (
+  params: API.Flaw.DeleteFlawComment.Params,
 ) => {
-  await http.delete<any>('deleteAffairsComment', {
+  await http.delete<any>('deleteFlawComment', {
     project_id: params.projectId,
     id: params.id,
   })
 }
 
 // 编辑评论
-export const updateAffairsComment = async (
-  params: API.Affairs.UpdateAffairsComment.Params,
+export const updateFlawComment = async (
+  params: API.Flaw.UpdateFlawComment.Params,
 ) => {
-  await http.post<any>('updateAffairsComment', {
+  await http.post<any>('updateFlawComment', {
     project_id: params.projectId,
     story_id: params.storyId,
     content: params.content,
@@ -345,15 +279,15 @@ export const updateAffairsComment = async (
   })
 }
 
-// 事务变更记录
-export const getAffairsChangeLog = async (
-  params: API.Affairs.GetAffairsChangeLog.Params,
+// 缺陷变更记录
+export const getFlawChangeLog = async (
+  params: API.Flaw.GetFlawChangeLog.Params,
 ) => {
-  const response = await http.get<any, API.Affairs.GetAffairsChangeLog.Result>(
-    'getAffairsChangeLog',
+  const response = await http.get<any, API.Flaw.GetFlawChangeLog.Result>(
+    'getFlawChangeLog',
     {
       search: {
-        story_id: params.sprintId,
+        story_id: params.id,
         project_id: params.projectId,
       },
       pagesize: params.pageSize,
@@ -377,13 +311,13 @@ export const getAffairsChangeLog = async (
   }
 }
 
-// 事务流转记录
-export const getAffairsStatusLog = async (
-  params: API.Affairs.GetAffairsStatusLog.Params,
+// 缺陷流转记录
+export const getFlawStatusLog = async (
+  params: API.Flaw.GetFlawStatusLog.Params,
 ) => {
-  const response = await http.get<any>('getAffairsStatusLog', {
+  const response = await http.get<any>('getFlawStatusLog', {
     search: {
-      story_id: params.sprintId,
+      story_id: params.id,
       project_id: params.projectId,
       all: params?.all ? 1 : 0,
     },
@@ -438,33 +372,29 @@ export const getAffairsStatusLog = async (
   }))
 }
 
-// 添加事务详情关联
-export const addInfoAffairs = async (
-  params: API.Affairs.AddInfoAffairs.Params,
-) => {
-  await http.put<any>('addInfoAffairs', {
+// 添加缺陷详情关联
+export const addInfoFlaw = async (params: API.Flaw.AddInfoFlaw.Params) => {
+  await http.put<any>('addInfoFlaw', {
     project_id: Number(params.projectId),
-    id: Number(params.sprintId),
+    id: Number(params.id),
     target: params.targetId,
     type: params.type,
   })
 }
 
-// 删除事务详情关联
-export const deleteInfoAffairs = async (
-  params: API.Affairs.AddInfoAffairs.Params,
-) => {
-  await http.put<any>('deleteInfoAffairs', {
+// 删除缺陷详情关联
+export const deleteInfoFlaw = async (params: API.Flaw.AddInfoFlaw.Params) => {
+  await http.put<any>('deleteInfoFlaw', {
     project_id: Number(params.projectId),
-    id: Number(params.sprintId),
+    id: Number(params.id),
     target_id: params.targetId,
     type: params.type,
   })
 }
 
 // 快捷修改参数
-export const updateAffairsTableParams = async (params: any) => {
-  await http.put<any>('changeAffairsTableParams', {
+export const updateFlawTableParams = async (params: any) => {
+  await http.put<any>('changeFlawTableParams', {
     project_id: params.projectId,
     id: params.id,
     ...params.otherParams,
@@ -472,34 +402,34 @@ export const updateAffairsTableParams = async (params: any) => {
 }
 
 // 修改优先级
-export const updateAffairsPriority = async (
-  params: API.Affairs.UpdateAffairsPriority.Params,
+export const updateFlawPriority = async (
+  params: API.Flaw.UpdateFlawPriority.Params,
 ) => {
-  await http.put<any>('updateAffairsPriority', {
+  await http.put<any>('updateFlawPriority', {
     priority: params.priorityId,
-    id: params.sprintId,
+    id: params.id,
     project_id: params.projectId,
   })
 }
 
-// 修改事务类型
-export const updateAffairsCategory = async (
-  params: API.Affairs.UpdateAffairsCategory.Params,
+// 修改缺陷类型
+export const updateFlawCategory = async (
+  params: API.Flaw.UpdateFlawCategory.Params,
 ) => {
-  await http.put<any>('updateAffairsCategory', {
+  await http.put<any>('updateFlawCategory', {
     project_id: params.projectId,
-    story_id: params.sprintId,
+    story_id: params.id,
     category_id: params.categoryId,
     status_id: params.statusId,
   })
 }
 
-// 修改事务状态
-export const updateAffairsStatus = async (
-  params: API.Affairs.UpdateAffairsStatus.Params,
+// 修改缺陷状态
+export const updateFlawStatus = async (
+  params: API.Flaw.UpdateFlawStatus.Params,
 ) => {
   delete params.fields.reviewerValue
-  await http.put<any>('updateAffairsStatus', {
+  await http.put<any>('updateFlawStatus', {
     project_id: params.projectId,
     story_id: params.nId,
     category_status_to_id: params.toId,
@@ -508,13 +438,13 @@ export const updateAffairsStatus = async (
   })
 }
 
-export const getLoadAffairsListFields = async (
-  params: API.Affairs.GetLoadAffairsListFields.Params,
+export const getLoadFlawListFields = async (
+  params: API.Flaw.GetLoadFlawListFields.Params,
 ) => {
   const response: any = await http.get<
     any,
-    API.Affairs.GetLoadAffairsListFields.Result
-  >('getLoadAffairsListFields', {
+    API.Flaw.GetLoadFlawListFields.Result
+  >('getLoadFlawListFields', {
     project_id: params.projectId,
     is_update: params.isUpdate,
     is_bug: params.isBug,
@@ -527,12 +457,12 @@ export const getLoadAffairsListFields = async (
   }
 }
 
-// 导出事务字段列表
-export const getExportAffairsFields = async (params: { projectId: number }) => {
+// 导出缺陷字段列表
+export const getExportFlawFields = async (params: { projectId: number }) => {
   const response: any = await http.get<
     any,
-    API.Affairs.GetLoadAffairsListFields.Result
-  >('getExportAffairsFields', {
+    API.Flaw.GetLoadFlawListFields.Result
+  >('getExportFlawFields', {
     project_id: params.projectId,
   })
 
@@ -544,11 +474,11 @@ export const getExportAffairsFields = async (params: { projectId: number }) => {
 }
 
 // 获取下载模板
-export const getImportDownloadAffairsModel = async (
-  params: API.Affairs.GetImportDownloadAffairsModel.Params,
+export const getImportDownloadFlawModel = async (
+  params: API.Flaw.GetImportDownloadFlawModel.Params,
 ) => {
   const response = await http.get(
-    'getImportDownloadAffairsModel',
+    'getImportDownloadFlawModel',
     {
       is_update: params.isUpdate,
       project_id: params.projectId,
@@ -560,14 +490,14 @@ export const getImportDownloadAffairsModel = async (
   return response
 }
 
-// 导入事务
-export const getImportAffairsExcel = async (
-  params: API.Affairs.GetAffairsExcel.Params,
+// 导入缺陷
+export const getImportFlawExcel = async (
+  params: API.Flaw.GetFlawExcel.Params,
 ) => {
   const formData = new FormData()
   formData.append('project_id', String(params.projectId))
   formData.append('file_path', params.filePath)
-  const response = await http.post('getImportAffairsExcel', formData, {
+  const response = await http.post('getImportFlawExcel', formData, {
     headers: {
       'Content-Type': undefined,
     },
@@ -583,13 +513,13 @@ export const getImportAffairsExcel = async (
 }
 
 // 导入更新
-export const getImportAffairsExcelUpdate = async (
-  params: API.Affairs.GetAffairsExcel.Params,
+export const getImportFlawExcelUpdate = async (
+  params: API.Flaw.GetFlawExcel.Params,
 ) => {
   const formData = new FormData()
   formData.append('project_id', String(params.projectId))
   formData.append('file_path', params.filePath)
-  const response = await http.post('getImportAffairsExcelUpdate', formData, {
+  const response = await http.post('getImportFlawExcelUpdate', formData, {
     headers: {
       'Content-Type': undefined,
     },
@@ -604,10 +534,10 @@ export const getImportAffairsExcelUpdate = async (
   }
 }
 
-// 导出事务
-export const getExportAffairsExcel = async (params: any) => {
+// 导出缺陷
+export const getExportFlawExcel = async (params: any) => {
   const response = await http.post(
-    'getExportAffairsExcel',
+    'getExportFlawExcel',
     {
       search: {
         project_id: params?.projectId,
@@ -645,13 +575,13 @@ export const getExportAffairsExcel = async (params: any) => {
 }
 
 // 获取批量编辑的配置属性
-export const getAffairsBatchEditConfig = async (
-  params: API.Affairs.GetAffairsBatchEditConfig.Params,
+export const getFlawBatchEditConfig = async (
+  params: API.Flaw.GetFlawBatchEditConfig.Params,
 ) => {
   const response: any = await http.get<
     any,
-    API.Affairs.GetAffairsBatchEditConfig.Result
-  >('getBatchEditAffairsConfig', {
+    API.Flaw.GetFlawBatchEditConfig.Result
+  >('getBatchEditFlawConfig', {
     project_id: params.projectId,
     story_ids: params.demandIds,
   })
@@ -664,22 +594,20 @@ export const getAffairsBatchEditConfig = async (
   }))
 }
 
-// 事务批量删除
-export const batchAffairsDelete = async (
-  params: API.Affairs.BatchAffairsDelete.Params,
+// 缺陷批量删除
+export const batchFlawDelete = async (
+  params: API.Flaw.BatchFlawDelete.Params,
 ) => {
-  await http.delete<any>('batchAffairsDelete', {
+  await http.delete<any>('batchFlawDelete', {
     project_id: params.projectId,
     story_ids: params.demandIds,
     is_delete_childs: params.isDeleteChild,
   })
 }
 
-// 事务批量编辑
-export const batchAffairsEdit = async (
-  params: API.Affairs.BatchAffairsEdit.Params,
-) => {
-  await http.put<any>('batchAffairsEdit', {
+// 缺陷批量编辑
+export const batchFlawEdit = async (params: API.Flaw.BatchFlawEdit.Params) => {
+  await http.put<any>('batchFlawEdit', {
     project_id: params.projectId,
     story_ids: params.demandIds,
     type: params.type,
@@ -687,164 +615,9 @@ export const batchAffairsEdit = async (
   })
 }
 
-// 获取子事务列表
-export const getAffairsChildList = async (
-  params: API.Affairs.GetAffairsChildList.Params,
-) => {
-  const response = await http.get<any, API.Affairs.GetAffairsChildList.Result>(
-    'getAffairsChildList',
-    {
-      project_id: params.projectId,
-      id: params.id,
-      keywords: params.searchValue,
-      page: params.page,
-      pagesize: params.pagesize,
-    },
-  )
-
-  return {
-    currentPage: response.data.pager?.page,
-    pageSize: response.data.pager?.pagesize,
-    total: response.data.pager?.total,
-    list: response.data,
-  }
-}
-
-//  下拉添加子事务
-export const addAffairsChild = async (
-  params: API.Affairs.AddAffairsChild.Params,
-) => {
-  await http.post<any>('addAffairsChild', {
-    project_id: params.projectId,
-    id: params.id,
-    child_id: params.childId,
-  })
-}
-
-// 子事务拖拽排序
-export const affairsChildDragSort = async (
-  params: API.Affairs.AffairsChildDragSort.Params,
-) => {
-  await http.post<any>('affairsChildDragSort', {
-    project_id: params.projectId,
-    id: params.id,
-    children_ids: params.childrenIds,
-  })
-}
-
-// 搜索查询下拉子事务
-export const getAffairsSelectChildren = async (
-  params: API.Affairs.GetAffairsSelectChildren.Params,
-) => {
-  const response = await http.get<
-    any,
-    API.Affairs.GetAffairsSelectChildren.Result
-  >('getAffairsSelectChildren', {
-    project_id: params.projectId,
-    id: params.id,
-    keywords: params.keywords,
-  })
-
-  return response.data
-}
-
-// 最近子事务查询
-export const getAffairsSelectChildrenRecent = async (
-  params: API.Affairs.GetAffairsSelectChildrenRecent.Params,
-) => {
-  const response = await http.get<any>('getAffairsSelectChildrenRecent', {
-    project_id: params.projectId,
-    id: params.id,
-  })
-  return response.data
-}
-
-// 获取链接事务列表
-export const getAffairsRelationStoriesList = async (
-  params: API.Affairs.GetAffairsRelationList.Params,
-) => {
-  const response = await http.get<
-    any,
-    API.Affairs.GetAffairsRelationList.Result
-  >('getAffairsRelationStoriesList', {
-    project_id: params.projectId,
-    id: params.id,
-  })
-
-  return {
-    list: response.data,
-  }
-}
-
-//  添加关联事务
-export const addAffairsRelation = async (
-  params: API.Affairs.AddAffairsRelation.Params,
-) => {
-  await http.post<any>('addAffairsRelation', {
-    project_id: params.projectId,
-    id: params.id,
-    relation_id: params.relationId,
-    type: params.type,
-  })
-}
-
-// 关联事务拖拽排序
-export const affairsRelationDragSort = async (
-  params: API.Affairs.AffairsRelationDragSort.Params,
-) => {
-  await http.post<any>('affairsRelationDragSort', {
-    project_id: params.projectId,
-    id: params.id,
-    relation_ids: params.relationIds,
-    type: params.type,
-  })
-}
-
-// 搜索查询下拉关联事务
-export const getAffairsSelectRelationSearch = async (
-  params: API.Affairs.GetAffairsRelationList.Params,
-) => {
-  const response = await http.get<
-    any,
-    API.Affairs.GetAffairsRelationList.Result
-  >('getAffairsSelectRelationSearch', {
-    project_id: params.projectId,
-    id: params.id,
-    keywords: params.searchValue,
-  })
-
-  return response.data
-}
-
-// 最近子事务查询
-export const getAffairsSelectRelationRecent = async (
-  params: API.Affairs.GetAffairsRelationList.Params,
-) => {
-  const response = await http.get<
-    any,
-    API.Affairs.GetAffairsRelationList.Result
-  >('getAffairsSelectRelationRecent', {
-    project_id: params.projectId,
-    id: params.id,
-  })
-  return response.data
-}
-
-// 创建子事务-快捷
-export const addQuickAffairs = async (
-  params: API.Affairs.AddQuickAffair.Params,
-) => {
-  await http.post<any>('addAffairs', {
-    project_id: Number(params.projectId),
-    name: params.name,
-    category_id: params?.category_id,
-    parent_id: params?.parent_id || 0,
-  })
-}
-
 // 编辑富文本
-export const updateEditor = async (params: API.Affairs.UpdateEditor.Params) => {
-  await http.put<any>('updateAffairs', {
+export const updateEditor = async (params: API.Flaw.UpdateEditor.Params) => {
+  await http.put<any>('updateFlaw', {
     project_id: params.projectId,
     info: params.info,
     id: params.id,
@@ -853,18 +626,17 @@ export const updateEditor = async (params: API.Affairs.UpdateEditor.Params) => {
 }
 
 // 获取可流转的
-export const getShapeAffairsLeft = async (params: any) => {
-  const res = await http.get('getShapeAffairsLeft', {
+export const getShapeFlawLeft = async (params: any) => {
+  const res = await http.get('getShapeFlawLeft', {
     project_id: params.id,
     story_id: params.nId,
   })
-
   return res.data
 }
 
 // 可流转状态配置
-export const getShapeAffairsRight = async (params: any) => {
-  const res = await http.get('getShapeAffairsRight', {
+export const getShapeFlawRight = async (params: any) => {
+  const res = await http.get('getShapeFlawRight', {
     project_id: params.id,
     story_id: params.nId,
     category_status_from_id: params.fromId,

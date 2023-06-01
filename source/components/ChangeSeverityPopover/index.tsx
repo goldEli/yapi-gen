@@ -5,10 +5,10 @@
 
 import { Popover } from 'antd'
 import { ReactNode, useEffect, useState } from 'react'
-import { LevelContent } from './Level'
+import { getPriOrStu } from '@/services/mine'
 import styled from '@emotion/styled'
 import { useSelector } from '@store/index'
-import { SeverityWrap } from './StyleCommon'
+import { SeverityWrap } from '../StyleCommon'
 
 const Wrap = styled.div`
   height: 32px;
@@ -45,24 +45,21 @@ const SeverityContent = (props: SeverityContentProps) => {
 
   const { record, onHide, onTap } = props
   const { project_id: pid, id: storyID } = record
-  const [showData, setShowData] = useState<any>([
-    { id: 0, content: '一般', content_txt: '一般', color: '#FF5C5E' },
-    { id: 1, content: '严重', content_txt: '严重', color: '#FF5C5E' },
-  ])
+  const [showData, setShowData] = useState<any>([])
 
   const init = async () => {
     if (props.projectId === 0) {
-      //   const res = await getPriOrStu({
-      //     projectId: pid,
-      //     type: 'priority',
-      //   })
-      //   setShowData(res.data)
+      const res = await getPriOrStu({
+        projectId: pid,
+        type: 'severity',
+      })
+      setShowData(res.data)
     } else {
-      //   setShowData(
-      //     projectInfoValues
-      //       ?.filter((i: any) => i.key === 'priority')[0]
-      //       ?.children?.filter((k: any) => k.id !== -1),
-      //   )
+      setShowData(
+        projectInfoValues
+          ?.filter((i: any) => i.key === 'severity')[0]
+          ?.children?.filter((k: any) => k.id !== -1),
+      )
     }
   }
 
@@ -72,7 +69,7 @@ const SeverityContent = (props: SeverityContentProps) => {
 
   const changeState = (value: any) => {
     const data = {
-      priorityId: value,
+      severity: value,
       projectId: pid,
       id: storyID,
     }
@@ -86,7 +83,7 @@ const SeverityContent = (props: SeverityContentProps) => {
       {showData.map((item: any) => (
         <Wrap onClick={() => changeState(item.id)} key={item.id}>
           <SeverityWrap style={{ background: item.color }}>
-            {item.content_txt}
+            {item.content}
           </SeverityWrap>
         </Wrap>
       ))}
@@ -96,7 +93,6 @@ const SeverityContent = (props: SeverityContentProps) => {
 
 interface Props {
   isShow?: boolean
-  children: ReactNode
   onChangeSeverity?(item: any): void
   record: any
   isCanOperation?: boolean
@@ -107,7 +103,8 @@ interface Props {
 const ChangeSeverityPopover = (props: Props) => {
   const [popoverVisible, setPopoverVisible] = useState(false)
 
-  const onChangePriority = (item: any) => {
+  // 修改严重程度
+  const onChangeSeverity = (item: any) => {
     props.onChangeSeverity?.(item)
     setPopoverVisible(false)
   }
@@ -123,7 +120,7 @@ const ChangeSeverityPopover = (props: Props) => {
       content={
         props?.isCanOperation && (
           <SeverityContent
-            onTap={onChangePriority}
+            onTap={onChangeSeverity}
             onHide={() => setPopoverVisible(false)}
             record={props?.record}
             projectId={props?.projectId}
@@ -132,7 +129,16 @@ const ChangeSeverityPopover = (props: Props) => {
         )
       }
     >
-      {props.children}
+      <SeverityWrap
+        style={{
+          background: props.record.severity.color,
+          width: 'max-content',
+          cursor: props.isCanOperation ? 'pointer' : 'initial',
+        }}
+      >
+        {props.record.severity.content}
+      </SeverityWrap>
+      {/* {props.children} */}
     </Popover>
   )
 }

@@ -23,11 +23,16 @@ const AffairTypeBox = styled.div`
   color: var(--neutral-n1-d1);
   font-size: var(--font12);
 `
+const HasStroyWrap = styled.div`
+  display: flex;
+`
 interface IProps {
-  visible?: boolean
+  longStroy?: any
 }
 const LongStroyBread = (props: IProps) => {
   const [visible, setVisible] = useState(false)
+  const [showEditIcon, setShowEditIcon] = useState(false)
+  const { longStroy } = props
   const ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
     document.addEventListener('click', handleClickOutside)
@@ -36,6 +41,12 @@ const LongStroyBread = (props: IProps) => {
     }
   }, [])
   const handleClickOutside = (event: { target: any }) => {
+    console.log(
+      'handleClickOutside',
+      event.target,
+      ref.current,
+      typeof event.target,
+    )
     if (ref.current && !ref.current.contains(event.target)) {
       setVisible(false)
     }
@@ -44,17 +55,47 @@ const LongStroyBread = (props: IProps) => {
   return (
     <div style={{ position: 'relative' }} ref={ref}>
       <BreadBox>
-        <LongStroyWrap
-          onClick={() => {
-            setVisible(true)
-          }}
-        >
-          <CommonIconFont
-            type="edit"
-            color="var(--neutral-n3)"
-          ></CommonIconFont>
-          <LabelBox>添加长故事</LabelBox>
-        </LongStroyWrap>
+        {longStroy ? (
+          <LongStroyWrap>
+            {showEditIcon ? (
+              <CommonIconFont
+                type="edit"
+                color="var(--neutral-n3)"
+                onMouseLeave={() => {
+                  setShowEditIcon(false)
+                }}
+                onClick={() => setVisible(true)}
+              ></CommonIconFont>
+            ) : (
+              <img
+                src="https://dev.staryuntech.com/dev-agile/attachment/category_icon/folder.png"
+                alt=""
+                onMouseEnter={() => {
+                  console.log('onMouseEnter')
+                  setShowEditIcon(true)
+                }}
+                onMouseLeave={() => {
+                  console.log('onMouseLeave')
+                  setShowEditIcon(false)
+                }}
+                style={{ width: 20, marginRight: '6px' }}
+              />
+            )}
+            <LabelBox>{longStroy.sn}</LabelBox>
+          </LongStroyWrap>
+        ) : (
+          <LongStroyWrap
+            onClick={() => {
+              setVisible(true)
+            }}
+          >
+            <CommonIconFont
+              type="edit"
+              color="var(--neutral-n3)"
+            ></CommonIconFont>
+            <LabelBox>添加长故事</LabelBox>
+          </LongStroyWrap>
+        )}
         <CommonIconFont
           type="right"
           color="var(--neutral-n1-d1)"
@@ -64,7 +105,7 @@ const LongStroyBread = (props: IProps) => {
           alt=""
           style={{ width: 20, marginRight: '6px' }}
         />
-        <AffairTypeBox>DXKJ-0003</AffairTypeBox>
+        <AffairTypeBox title="EWEWEWEWEWEWEW">DXKJ-0003</AffairTypeBox>
       </BreadBox>
       {visible ? <LongStoryDropdown></LongStoryDropdown> : null}
     </div>

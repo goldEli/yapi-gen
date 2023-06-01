@@ -1,7 +1,7 @@
-declare namespace Model.Affairs {
+declare namespace Model.Flaw {
   // 1：关联、2：前置、3：后置、4：阻塞，5：被阻塞、6：克隆
   type RelationType = 1 | 2 | 3 | 4 | 5 | 6
-  interface AffairsInfo {
+  interface FlawInfo {
     id: number
     name: string
     category_status_id: number
@@ -60,7 +60,7 @@ declare namespace Model.Affairs {
     ext: string
     ctime: string
   }
-  interface AffairsChangeLogResultInfo {
+  interface FlawChangeLogResultInfo {
     id: number
     fields: CustomFiledInfo
     user_name: string
@@ -77,7 +77,7 @@ declare namespace Model.Affairs {
     after: CustomFiledInfo
   }
 
-  interface AffairsChangeLogInfo {
+  interface FlawChangeLogInfo {
     id: number
     fields: CustomFiledInfo
     userName: string
@@ -93,7 +93,7 @@ declare namespace Model.Affairs {
     beforeField: CustomFiledInfo
     afterField: CustomFiledInfo
   }
-  interface AddAffairsCommentAttach {
+  interface AddFlawCommentAttach {
     url: string
     ctime: string
     username: string
@@ -122,7 +122,7 @@ declare namespace Model.Affairs {
     createdTime: string
     statusContent: string
     userId: number
-    attachment: Model.Affairs.ListItemUserOrAttach[]
+    attachment: Model.Flaw.ListItemUserOrAttach[]
   }
   // 状态
   interface StatusInfo {
@@ -233,6 +233,17 @@ declare namespace Model.Affairs {
     attachment_id: number
   }
 
+  interface Severity {
+    id: number
+    content: string
+    sort: number
+    color: string
+    icon: string
+    identity: string
+    content_txt: string
+    group_content_txt: string
+  }
+
   interface ListItem {
     id: number
     name: string
@@ -273,6 +284,11 @@ declare namespace Model.Affairs {
     category_config_list: CategoryConfigList
     story_prefix_key: string
     work_type: WorkType
+    project_type: 1 | 2
+    severity: Severity
+    discovery_version_name: string
+    discovery_version: null | number
+    solution: string
   }
 
   interface ChildStoryStatistics {
@@ -285,7 +301,7 @@ declare namespace Model.Affairs {
     total_count: number
   }
 
-  interface AffairsInfo {
+  interface FlawInfo {
     category_attachment: string
     id: number
     name: string
@@ -324,7 +340,7 @@ declare namespace Model.Affairs {
     project_type: 1 | 2
   }
 
-  interface AffairsInfoResult {
+  interface FlawInfoResult {
     id: number
     name: string
     child_story_count: number

@@ -450,6 +450,7 @@ const SprintProjectDetail: React.FC<IProps> = props => {
           <ChangeStatusPopover
             record={affairsInfo}
             onChangeStatus={onChangeStatus}
+            type={2}
           >
             <StateTag
               name={affairsInfo.status?.status.content}

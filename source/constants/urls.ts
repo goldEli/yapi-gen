@@ -329,7 +329,7 @@ const urls = {
   // 删除冲刺
   delSprintItem: '/b/sprint/del',
   // 获取事务
-  getLongStoryList: '/b/sprint/getList',
+  getLongStoryList: '/b/transaction/getLongStory',
   // 完成冲刺
   completeSprint: '/b/sprint/complete',
   /**
@@ -343,6 +343,67 @@ const urls = {
   createView: '/b/story/views/create',
   // 删除视图
   delView: '/b/story/views/delete',
+
+  /**
+   * 迭代项目-缺陷
+   */
+
+  // 缺陷列表
+  getFlawList: '/b/flaw/getlist',
+  // 缺陷详情
+  getFlawInfo: '/b/flaw/getinfo',
+  // 修改缺陷状态
+  updateFlawStatus: '/b/flaw/update_status',
+  // 缺陷变更记录
+  getFlawChangeLog: '/b/flaw/getchangelog',
+  // 缺陷评论列表
+  getFlawCommentList: '/b/flaw/comment/getlist',
+  // 添加评论
+  addFlawComment: '/b/flaw/comment/save',
+  // 删除评论
+  deleteFlawComment: '/b/flaw/comment/delete',
+  // 编辑评论
+  updateFlawComment: '/b/flaw/comment/update',
+  // 添加缺陷
+  addFlaw: '/b/flaw/save',
+  // 更新缺陷
+  updateFlaw: '/b/flaw/update',
+  // 删除缺陷
+  deleteFlaw: '/b/flaw/delete',
+  // 删除详情关联
+  deleteInfoFlaw: '/b/flaw/update_operate/del',
+  // 添加详情关联
+  addInfoFlaw: '/b/flaw/update_operate/add',
+  // 修改缺陷优先级
+  updateFlawPriority: '/b/flaw/update_priority',
+  // 缺陷快捷修改
+  changeFlawTableParams: '/b/flaw/update_fast',
+  // 获取状态可流转列表
+  getShapeFlawLeft: '/b/flaw/get_can_changes_workflows',
+  // 获取相应状态下的配置
+  getShapeFlawRight: '/b/flaw/get_workflows_config',
+  // 修改缺陷类别
+  updateFlawCategory: '/b/flaw/update/category',
+  // 获取缺陷流转记录
+  getFlawStatusLog: '/b/flaw/getstatuslog',
+  // 获取导入下载模板字段列表
+  getLoadFlawListFields: '/b/flaw/load_list_fields',
+  // 下载导入缺陷模板
+  getImportDownloadFlawModel: '/b/flaw/download_story_model',
+  // 确认新建导入缺陷
+  getImportFlawExcel: '/b/flaw/import_story_excel',
+  // 确认更新导入缺陷
+  getImportFlawExcelUpdate: '/b/flaw/import_story_update_excel',
+  // 确认导出缺陷
+  getExportFlawExcel: '/b/flaw/export_story_excel',
+  // 获取导出缺陷字段列表
+  getExportFlawFields: '/b/flaw/get_story_export_fields',
+  // 批量删除缺陷
+  batchFlawDelete: '/b/flaw/batch_delete',
+  // 批量编辑缺陷
+  batchFlawEdit: '/b/flaw/batch_update',
+  // 批量编辑的下拉列表
+  getBatchEditFlawConfig: '/b/flaw/batch_fields',
 }
 export default urls
 
